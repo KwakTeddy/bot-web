@@ -19,11 +19,13 @@ module.exports = function (app, db) {
     // Load SSL key and certificate
     var privateKey = fs.readFileSync(path.resolve(config.secure.privateKey), 'utf8');
     var certificate = fs.readFileSync(path.resolve(config.secure.certificate), 'utf8');
+    var ca = fs.readFileSync(path.resolve(config.secure.ca), 'utf8');
     var options = {
       key: privateKey,
       cert: certificate,
-      //  requestCert : true,
-      //  rejectUnauthorized : true,
+      ca: ca,
+      requestCert : true,
+      rejectUnauthorized : true,
       secureProtocol: 'TLSv1_method',
       ciphers: [
         'ECDHE-RSA-AES128-GCM-SHA256',
