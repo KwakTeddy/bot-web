@@ -57,7 +57,8 @@ function getUserBankInfo(userKey, successCallback, failCallback) {
     successCallback(global.users[userKey].userAccounts);
 
   } else {
-    if(userKey == "com2best" || userKey == "QRtjQoQse8CX") {
+    //if(userKey == "com2best" || userKey == "QRtjQoQse8CX") {
+    if(true) {
 
       var userAccounts = {
         banks: [
