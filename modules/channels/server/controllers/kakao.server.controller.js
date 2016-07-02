@@ -60,18 +60,6 @@ exports.deleteFriend = function (req, res) {
 
 exports.deleteChatRoom = function (req, res) {
   console.log("kakao chat_room");
-
-  var chatscriptSocket = net.createConnection(chatscriptConfig, function(){
-    if(req.params.user_key) {
-      var user_key = req.params.user_key;
-      var text = ":reset user";
-      payload = user_key + '\x00' + chatBot + '\x00' + text + '\x00'
-      chatscriptSocket.write(payload)
-      console.log("send:" + text);
-
-    }
-  })
-
   res.end();
 };
 
