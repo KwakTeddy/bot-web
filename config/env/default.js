@@ -8,6 +8,7 @@ module.exports = {
     googleAnalyticsTrackingID: process.env.GOOGLE_ANALYTICS_TRACKING_ID || 'GOOGLE_ANALYTICS_TRACKING_ID'
   },
   port: process.env.PORT || 3000,
+  hostname: process.env.HOSTNAME || "bot.wefund.co.kr",
   templateEngine: 'swig',
   // Session Cookie settings
   sessionCookie: {
