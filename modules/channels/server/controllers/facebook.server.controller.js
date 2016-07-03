@@ -36,6 +36,7 @@ exports.message = function (req, res) {
 
       // Iterate over each messaging event
       pageEntry.messaging.forEach(function(messagingEvent) {
+        messagingEvent.botId = req.params.botId;
         if (messagingEvent.optin) {
           receivedAuthentication(messagingEvent);
         } else if (messagingEvent.message) {
@@ -182,7 +183,7 @@ function receivedMessage(event) {
   var messageText = message.text;
   var messageAttachments = message.attachments;
 
-  chat.write(senderID, chatBot, messageText, function (serverText) {
+  chat.write(senderID, event.botId, messageText, function (serverText) {
     moneybot.receivedMoneyBot(senderID, serverText, function(retText, url) {
       respondMessage(senderID, retText, url);
     });

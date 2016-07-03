@@ -22,9 +22,10 @@ module.exports.start = function() {
     console.log('listening on *:3000')
   });
 
-  app.route('/kakao/moneybot/keyboard').get(kakao.keyboard);
-  app.route('/kakao/moneybot/message').post(kakao.message);
-  app.route('/kakao/moneybot/friend').post(kakao.friend);
-  app.route('/kakao/moneybot/friend/:user_key').delete(kakao.deleteFriend);
-  app.route('/kakao/moneybot/chat_room/:user_key').delete(kakao.deleteChatRoom);
+  app.route('/kakao/:botId/keyboard').get(kakao.keyboard);
+  app.route('/kakao/:botId/message').post(kakao.message);
+  app.route('/kakao/:botId/friend').post(kakao.friend);
+  app.route('/kakao/:botId/friend/:user_key').delete(kakao.deleteFriend);
+  app.route('/kakao/:botId/chat_room/:user_key').delete(kakao.deleteChatRoom);
 }
+

@@ -38,7 +38,7 @@ exports.message = function (req, res) {
     var type = req.body.type;
     var text = req.body.content;
 
-    chat.write(from, chatBot, text, function (serverText) {
+    chat.write(from, req.params.botId, text, function (serverText) {
       moneybot.receivedMoneyBot(from, serverText, function(retText, url) {
         respondMessage(res, retText, url)
       });
