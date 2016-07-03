@@ -18,6 +18,12 @@ const sendHeader = {
   'X-Line-Trusted-User-With-ACL' : MID
 };
 
+exports.receiveGet = function(req, res) {
+  console.log("get receive");
+  res.send("ok");
+  res.end();
+}
+
 exports.receive = function (req, res) {
   console.log("put receive");
   console.log(JSON.stringify(req.body));
