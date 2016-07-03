@@ -14,8 +14,6 @@ const sendHeader = {
   'X-Line-Trusted-User-With-ACL' : MID
 };
 
-var chatBot = "";
-
 exports.keyboard = function (req, res) {
   console.log("kakao keyboard");
 

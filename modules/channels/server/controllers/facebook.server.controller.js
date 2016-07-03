@@ -7,8 +7,6 @@ var APP_SECRET =  "174b2a851e3811c3f2c267d46708d212";
 var PAGE_ACCESS_TOKEN =  "EAAYwPrsj1ZA0BAORAoGhxvLLs5eRZADJ8BheTdjOXu8lT0X2tVFwZAZCEJiWFenFHCVqSuctfONET6dhbPDBnlivq5sXEvBABTnRlYpX8hLxZAnO2lywRiA6sVlbYAvG1n1EpQwkVhZAdrmq1p9PlQRUu327O1ohcZBwVLYZCn3beQZDZD";
 var VALIDATION_TOKEN = "my_voice_is_my_password_verify_me";
 
-var chatBot = "";
-
 
 exports.messageGet =  function(req, res) {
   if (req.query['hub.mode'] === 'subscribe' &&

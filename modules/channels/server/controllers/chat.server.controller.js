@@ -1,11 +1,10 @@
 var net = require('net');
 
 var chatSocketConfig = {port: 1024, host: 'localhost', allowHalfOpen: true};
-var chatBot = "";
 
 exports.write = function(from, to, text, successCallback, errorCallback, endCallback) {
   var chatSocket = net.createConnection(chatSocketConfig, function(){
-      var payload = from + '\x00' + chatBot + '\x00' + text + '\x00';
+      var payload = from + '\x00' + to + '\x00' + text + '\x00';
       chatSocket.write(payload);
 
       console.log("send:" + text);

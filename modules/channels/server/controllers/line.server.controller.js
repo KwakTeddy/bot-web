@@ -4,8 +4,6 @@ var request = require('request');
 var chat = require('../controllers/chat.server.controller');
 var moneybot = require('../controllers/moneybot.server.controller');
 
-var chatBot = "";
-
 const CHANNEL_ID = 1469815524;
 const CHANNEL_SECRET = 'b3250f6b4b68374c2c9d70314980b814';
 const MID = 'uf4867e86aa4c0e064754b0555d52a98f';
