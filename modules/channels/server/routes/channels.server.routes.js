@@ -16,11 +16,11 @@ module.exports = function (app) {
   //app.route('/chat_room/:user_key').delete(kakao.deleteChatRoom);
 
   // 라인
-  app.route('/receive').get(line.receiveGet);
-  app.route('/receive').post(line.receive);
+  app.route('/line/moneybot/receive').get(line.receiveGet);
+  app.route('/line/moneybot/receive').post(line.receive);
 
   // 페이스북
-  app.route('/webhook').get(facebook.messageGet);
-  app.route('/webhook').post(facebook.message);
+  app.route('/facebook/moneybot/webhook').get(facebook.messageGet);
+  app.route('/facebook/moneybot/webhook').post(facebook.message);
 
 };
