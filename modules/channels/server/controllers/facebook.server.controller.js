@@ -3,8 +3,8 @@ var request = require('request');
 var chat = require('../controllers/chat.server.controller');
 var moneybot = require('../controllers/moneybot.server.controller');
 
-var APP_SECRET =  "77bf9491678f2cdaea4bc7c5bc3160c1";
-var PAGE_ACCESS_TOKEN =  "EAAZAqEhDvlUQBAAUF6hWwDmTZC0QDPZAT7ZAEqOm5FNOwlCnoIny00jaA1lZCnW4nM7AG5mNbUnDhNTHQcCcuJYRZAZAW2PgqyGMpJ56mGReiqnQ7J0r5LWGWHAxZCkCT97VZClxKBfxd8TgpCAUCheZCtKvrAPrbIvbKnsTDFZCnuZBZAgZDZD";
+var APP_SECRET =  "174b2a851e3811c3f2c267d46708d212";
+var PAGE_ACCESS_TOKEN =  "EAAYwPrsj1ZA0BAORAoGhxvLLs5eRZADJ8BheTdjOXu8lT0X2tVFwZAZCEJiWFenFHCVqSuctfONET6dhbPDBnlivq5sXEvBABTnRlYpX8hLxZAnO2lywRiA6sVlbYAvG1n1EpQwkVhZAdrmq1p9PlQRUu327O1ohcZBwVLYZCn3beQZDZD";
 var VALIDATION_TOKEN = "my_voice_is_my_password_verify_me";
 
 var chatBot = "";
