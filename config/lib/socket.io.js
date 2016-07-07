@@ -101,6 +101,11 @@ module.exports = function (app, db) {
 
   // Add an event listener to the 'connection' event
   io.on('connection', function (socket) {
+    //require("../../modules/bot/server/sockets/bot.server.socket.config.js")(io, socket);
+    //var chat = require("../../modules/bot/server/sockets/bot.server.socket.config");
+    //var chat = require(path.resolve("modules/bot/server/sockets/bot.server.socket.config.js"));
+    //chat(io, socket);
+
     config.files.server.sockets.forEach(function (socketConfiguration) {
       require(path.resolve(socketConfiguration))(io, socket);
     });

@@ -1,63 +1,347 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-  <base href="/">
-  <title>{{title}}</title>
-  <meta name="description" content="{{description}}">
-  <meta name="fragment" content="!">
+<!doctype html>
+<html class="fixed">
+	<head>
+    <base href="/">
 
-  <!-- Apple META -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!-- Basic -->
+		<meta charset="UTF-8">
 
-  <!-- Facebook META -->
-  <meta property="fb:app_id" content="{{facebookAppId}}">
-  <meta property="og:site_name" content="{{title}}">
-  <meta property="og:title" content="{{title}}">
-  <meta property="og:description" content="{{description}}">
-  <meta property="og:url" content="{{url}}">
-  <meta property="og:image" content="{{logo}}">
-  <meta property="og:type" content="website">
+		<title>Dashboard | Porto Admin - Responsive HTML5 Template 1.5.2</title>
+		<meta name="keywords" content="HTML5 Admin Template" />
+		<meta name="description" content="Porto Admin - Responsive HTML5 Template">
+		<meta name="author" content="okler.net">
 
-  <!-- Twitter META -->
-  <meta name="twitter:title" content="{{title}}">
-  <meta name="twitter:description" content="{{description}}">
-  <meta name="twitter:url" content="{{url}}">
-  <meta name="twitter:image" content="{{logo}}">
+		<!-- Mobile Metas -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-  <!-- Fav Icon -->
-  <link href="{{favicon}}" rel="shortcut icon" type="image/x-icon">
+		<!-- Web Fonts  -->
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
 
-  <!-- Application CSS Files -->
-  {% for cssFile in cssFiles %}<link rel="stylesheet" href="{{cssFile}}">{% endfor %}
-</head>
+		<!-- Vendor CSS -->
+		<link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.css" />
 
-<body class="ng-cloak">
-  <header ng-include="'/modules/core/client/views/header.client.view.html'" class="navbar navbar-fixed-top navbar-inverse"></header>
-  <section class="content">
-    <section class="container">
-      {% block content %}{% endblock %}
-    </section>
-  </section>
+		<link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.css" />
+		<link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" />
+		<link rel="stylesheet" href="/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.css" />
 
-  <!--Embedding The User Object-->
-  <script type="text/javascript">
-    var user = {{ user | json | safe }};
-  </script>
+		<!-- Specific Page Vendor CSS -->
+		<!--<link rel="stylesheet" href="/vendor/jquery-ui/jquery-ui.css" />-->
+		<!--<link rel="stylesheet" href="/vendor/jquery-ui/jquery-ui.theme.css" />-->
+		<!--<link rel="stylesheet" href="/vendor/bootstrap-multiselect/bootstrap-multiselect.css" />-->
+		<!--<link rel="stylesheet" href="/vendor/morris.js/morris.css" />-->
 
-  <!--Load The Socket.io File-->
-  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="/vendor/select2/css/select2.css" />
+    <link rel="stylesheet" href="/vendor/select2-bootstrap-theme/select2-bootstrap.css" />
+    <link rel="stylesheet" href="/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
 
-  <!--Application JavaScript Files-->
-  {% for jsFile in jsFiles %}<script type="text/javascript" src="{{jsFile}}"></script>{% endfor %}
+    <!-- Specific Page Vendor CSS 코드에디터 -->
+    <link rel="stylesheet" href="/vendor/codemirror/lib/codemirror.css" />
+    <link rel="stylesheet" href="/vendor/codemirror/theme/monokai.css" />
 
-  {% if livereload %}
-  <!--Livereload script rendered -->
-  <script type="text/javascript" src="{{host}}:35729/livereload.js"></script>
-  {% endif %}
+
+    <!-- Theme CSS -->
+		<link rel="stylesheet" href="/css/theme.css" />
+
+		<!-- Skin CSS -->
+		<link rel="stylesheet" href="/css/skins/default.css" />
+
+		<!-- Theme Custom CSS -->
+		<link rel="stylesheet" href="/css/theme-custom.css">
+
+    <link rel="stylesheet" href="/css/custom.css">
+
+    <!-- Head Libs -->
+		<script src="/vendor/modernizr/modernizr.js"></script>
+
+	</head>
+	<body>
+		<section class="body">
+
+      <section ng-include="'/modules/core/client/views/header.client.view.html'" ></section>
+
+			<div class="inner-wrapper">
+
+        <!--<section ng-include="'/modules/core/client/views/menu.client.view.html'"></section>-->
+
+        <!-- start: sidebar -->
+        <aside id="sidebar-left" class="sidebar-left">
+
+          <div class="sidebar-header">
+            <div class="sidebar-title">
+              Navigation
+            </div>
+            <div class="sidebar-toggle hidden-xs" data-toggle-class="sidebar-left-collapsed" data-target="html" data-fire-event="sidebar-left-toggle">
+              <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+            </div>
+          </div>
+
+          <div class="nano">
+            <div class="nano-content">
+              <nav id="menu" class="nav-main" role="navigation">
+                <ul class="nav nav-main">
+                  <li class="nav-active">
+                    <a ui-sref="home">
+                      <i class="fa fa-comment" aria-hidden="true"></i>
+                      <span>대화하기</span>
+                    </a>
+                  </li>
+                  <li class="nav-parent">
+                    <a>
+                      <i class="fa fa-cube" aria-hidden="true"></i>
+                      <span>봇개발도구</span>
+                    </a>
+                    <ul class="nav nav-children">
+                      <li>
+                        <a ui-sref="bots.list">
+                          봇 관리
+                        </a>
+                      </li>
+                      <li>
+                        <a ui-sref="bots.files">
+                          파일관리
+                        </a>
+                      </li>
+                      <li>
+                        <a ui-sref="bots.ide">
+                          개발도구
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="nav-parent">
+                    <a>
+                      <i class="fa fa-copy" aria-hidden="true"></i>
+                      <span>주제/대화 관리</span>
+                    </a>
+                    <ul class="nav nav-children">
+                      <li>
+                        <a href="pages-signup.html">
+                          질의응답 관리
+                        </a>
+                      </li>
+                      <li>
+                        <a href="pages-signin.html">
+                          테스크 관리
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="nav-parent">
+                    <a>
+                      <i class="fa fa-tasks" aria-hidden="true"></i>
+                      <span>대화 템플릿 관리</span>
+                    </a>
+                    <ul class="nav nav-children">
+                      <li>
+                        <a href="ui-elements-typography.html">
+                          템플릿 Base 관리
+                        </a>
+                      </li>
+                      <li>
+                        <a href="ui-elements-tabs.html">
+                          사용자별 템플릿 관리
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="nav-parent">
+                    <a>
+                      <i class="fa fa-list-alt" aria-hidden="true"></i>
+                      <span>권한관리</span>
+                    </a>
+                    <ul class="nav nav-children">
+                      <li>
+                        <a href="forms-basic.html">
+                          사용자 관리
+                        </a>
+                      </li>
+                      <li>
+                        <a href="forms-advanced.html">
+                          사용자별 메뉴 관리
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="nav-parent">
+                    <a>
+                      <i class="fa fa-table" aria-hidden="true"></i>
+                      <span>지식DB관리</span>
+                    </a>
+                    <ul class="nav nav-children">
+                      <li>
+                        <a href="extra-changelog.html">
+                          사전
+                        </a>
+                      </li>
+                      <li>
+                        <a href="extra-ajax-made-easy.html">
+                          개념
+                        </a>
+                      </li>
+                      <li>
+                        <a href="extra-ajax-made-easy.html">
+                          기본형
+                        </a>
+                      </li>
+                      <li>
+                        <a href="extra-ajax-made-easy.html">
+                          지식
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="nav-parent">
+                    <a>
+                      <i class="fa fa-asterisk" aria-hidden="true"></i>
+                      <span>연동 인터페이스</span>
+                    </a>
+                    <ul class="nav nav-children">
+                      <li>
+                        <a href="extra-changelog.html">
+                          Action 관리
+                        </a>
+                      </li>
+                      <li>
+                        <a href="extra-ajax-made-easy.html">
+                          포맷 관리
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="nav-parent">
+                    <a>
+                      <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                      <span>캠페인 관리</span>
+                    </a>
+                    <ul class="nav nav-children">
+                      <li>
+                        <a>캠페인 관리 </a>
+                      </li>
+                      <li>
+                        <a>발송하기</a>
+                      </li>
+                      <li>
+                        <a>발송내역</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="nav-parent">
+                    <a>
+                      <i class="fa fa-align-left" aria-hidden="true"></i>
+                      <span>분석도구</span>
+                    </a>
+                    <ul class="nav nav-children">
+                      <li>
+                        <a>사용자 대화 분석</a>
+                      </li>
+                      <li>
+                        <a>사용자 실패율 분석</a>
+                      </li>
+                      <li>
+                        <a>분석 최적화</a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </nav>
+
+
+              <script>
+                // Preserve Scroll Position
+                if (typeof localStorage !== 'undefined') {
+                  if (localStorage.getItem('sidebar-left-position') !== null) {
+                    var initialPosition = localStorage.getItem('sidebar-left-position'),
+                      sidebarLeft = document.querySelector('#sidebar-left .nano-content');
+
+                    sidebarLeft.scrollTop = initialPosition;
+                  }
+                }
+              </script>
+
+            </div>
+          </div>
+
+        </aside>
+        <!-- end: sidebar -->
+
+				<section role="main" class="content-body">
+          {% block content %}{% endblock %}
+
+        </section>
+			</div>
+		</section>
+
+    <!--&lt;!&ndash; Vendor &ndash;&gt;-->
+    <script src="/vendor/jquery/jquery.js"></script>
+    <script src="/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.js"></script>
+    <script src="/vendor/nanoscroller/nanoscroller.js"></script>
+    <script src="/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="/vendor/magnific-popup/jquery.magnific-popup.js"></script>
+    <script src="/vendor/jquery-placeholder/jquery-placeholder.js"></script>
+
+    <!--&lt;!&ndash; Specific Page Vendor &ndash;&gt;-->
+    <script src="/vendor/jquery-ui/jquery-ui.js"></script>
+    <script src="/vendor/jqueryui-touch-punch/jqueryui-touch-punch.js"></script>
+    <script src="/vendor/jquery-appear/jquery-appear.js"></script>
+    <script src="/vendor/bootstrap-multiselect/bootstrap-multiselect.js"></script>
+    <!--<script src="/vendor/jquery.easy-pie-chart/jquery.easy-pie-chart.js"></script>-->
+    <!--<script src="/vendor/flot/jquery.flot.js"></script>-->
+    <!--<script src="/vendor/flot.tooltip/flot.tooltip.js"></script>-->
+    <!--<script src="/vendor/flot/jquery.flot.pie.js"></script>-->
+    <!--<script src="/vendor/flot/jquery.flot.categories.js"></script>-->
+    <!--<script src="/vendor/flot/jquery.flot.resize.js"></script>-->
+    <!--<script src="/vendor/jquery-sparkline/jquery-sparkline.js"></script>-->
+    <!--<script src="/vendor/raphael/raphael.js"></script>-->
+    <!--<script src="/vendor/morris.js/morris.js"></script>-->
+    <!--<script src="/vendor/gauge/gauge.js"></script>-->
+    <!--<script src="/vendor/snap.svg/snap.svg.js"></script>-->
+    <!--<script src="/vendor/liquid-meter/liquid.meter.js"></script>-->
+    <!--<script src="/vendor/jqvmap/jquery.vmap.js"></script>-->
+    <!--<script src="/vendor/jqvmap/data/jquery.vmap.sampledata.js"></script>-->
+    <!--<script src="/vendor/jqvmap/maps/jquery.vmap.world.js"></script>-->
+    <!--<script src="/vendor/jqvmap/maps/continents/jquery.vmap.africa.js"></script>-->
+    <!--<script src="/vendor/jqvmap/maps/continents/jquery.vmap.asia.js"></script>-->
+    <!--<script src="/vendor/jqvmap/maps/continents/jquery.vmap.australia.js"></script>-->
+    <!--<script src="/vendor/jqvmap/maps/continents/jquery.vmap.europe.js"></script>-->
+    <!--<script src="/vendor/jqvmap/maps/continents/jquery.vmap.north-america.js"></script>-->
+    <!--<script src="/vendor/jqvmap/maps/continents/jquery.vmap.south-america.js"></script>-->
+
+    <!-- Specific Page Vendor -->
+    <script src="/vendor/select2/js/select2.js"></script>
+    <script src="/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+    <script src="/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+    <script src="/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+    <!--&lt;!&ndash; Theme Base, Components and Settings &ndash;&gt;-->
+    <script src="/js/theme.js"></script>
+
+    <!--&lt;!&ndash; Theme Custom &ndash;&gt;-->
+    <script src="/js/theme.custom.js"></script>
+
+    <!--&lt;!&ndash; Theme Initialization Files &ndash;&gt;-->
+    <script src="/js/theme.init.js"></script>
+
+    <!--Embedding The User Object-->
+    <script type="text/javascript">
+      var user = {{ user | json | safe }};
+    </script>
+
+    <!--Load The Socket.io File-->
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+    <!--Application JavaScript Files-->
+    {% for jsFile in jsFiles %}<script type="text/javascript" src="{{jsFile}}"></script>{% endfor %}
+
+    {% if livereload %}
+    <!--Livereload script rendered -->
+    <script type="text/javascript" src="{{host}}:35729/livereload.js"></script>
+    {% endif %}
+
+
+  </body>
+</html>
+
+
 </body>
-
 </html>

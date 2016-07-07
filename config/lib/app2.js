@@ -6,7 +6,7 @@ module.exports.start = function() {
   var app = express();
   var http = require('http');
   var bodyParser = require('body-parser');
-  var kakao = require('../../modules/channels/server/controllers/kakao.server.controller');
+  var kakao = require('.././server/controllers/kakao.server.controller');
 
   app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
   app.use(bodyParser.json()); // for parsing application/jsonå

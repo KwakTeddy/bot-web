@@ -1,0 +1,61 @@
+<header class="page-header">
+  <h2>Code Editor</h2>
+
+  <div class="right-wrapper pull-right">
+    <ol class="breadcrumbs">
+      <li>
+        <a href="index.html">
+          <i class="fa fa-home"></i>
+        </a>
+      </li>
+      <li><span>Forms</span></li>
+      <li><span>Code Editor</span></li>
+    </ol>
+
+    <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+  </div>
+</header>
+
+<!-- start: page -->
+<div class="row">
+  <div class="col-xs-12">
+    <section class="panel">
+      <header class="panel-heading"  style="padding: 10px 15px;">
+        <div class="row">
+          <div class="col-sm-6 pull-left">
+            <h2 class="panel-title">Code Editor</h2>
+          </div>
+
+          <div class="col-sm-6 text-right">
+            <a class="btn btn-primary" ui-sref="articles.create">
+              Save & Build (F5)
+            </a>
+          </div>
+        </div>
+
+        <!--<div class="panel-actions">-->
+          <!--<a href="#" class="panel-action panel-action-toggle" data-panel-toggle></a>-->
+          <!--<a href="#" class="panel-action panel-action-dismiss" data-panel-dismiss></a>-->
+        <!--</div>-->
+
+        <!--<h2 class="panel-title">Code Editor</h2>-->
+      </header>
+      <div class="panel-body">
+        <form class="form-horizontal" action="#">
+            <div class="col-md-12">
+						<textarea class="form-control" rows="20" id="codemirror_js_code" name="code_js" data-plugin-codemirror data-plugin-options='{ "mode": "text/javascript" }'>
+            </textarea>
+            </div>
+        </form>
+      </div>
+    </section>
+  </div>
+</div>
+<!-- end: page -->
+
+
+<!-- Specific Page Vendor -->
+<script src="/vendor/codemirror/lib/codemirror.js"></script>
+<script src="/vendor/codemirror/addon/selection/active-line.js"></script>
+<script src="/vendor/codemirror/addon/edit/matchbrackets.js"></script>
+<script src="/vendor/codemirror/mode/javascript/javascript.js"></script>
