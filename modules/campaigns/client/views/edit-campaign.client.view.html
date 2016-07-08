@@ -1,0 +1,48 @@
+<header class="page-header">
+  <h2>Articles</h2>
+
+  <div class="right-wrapper pull-right">
+    <ol class="breadcrumbs">
+      <li>
+        <a href="index.html">
+          <i class="fa fa-home"></i>
+        </a>
+      </li>
+      <li><span>Articles</span></li>
+    </ol>
+
+    <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+  </div>
+</header>
+
+
+
+
+<section ng-controller="CampaignsController" ng-init="findOne()">
+  <div class="page-header">
+    <h1>Edit Campaign</h1>
+  </div>
+  <div class="col-md-12">
+    <form name="campaignForm" class="form-horizontal" ng-submit="update(campaignForm.$valid)" novalidate>
+      <fieldset>
+        <div class="form-group" show-errors>
+          <label for="title">Title</label>
+          <input name="title" type="text" ng-model="campaign.title" id="title" class="form-control" placeholder="Title" required>
+          <div ng-messages="campaignForm.title.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Campaign title is required.</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="content">Content</label>
+          <textarea name="content" ng-model="campaign.content" id="content" class="form-control" cols="30" rows="10" placeholder="Content"></textarea>
+        </div>
+        <div class="form-group">
+          <input type="submit" value="Update" class="btn btn-default">
+        </div>
+        <div ng-show="error" class="text-danger">
+          <strong ng-bind="error"></strong>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</section>
