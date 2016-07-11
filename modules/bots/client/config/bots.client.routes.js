@@ -12,37 +12,67 @@ angular.module('bots').config(['$stateProvider',
       })
       .state('bots.list', {
         url: '',
-        templateUrl: 'modules/bots/client/views/list-bots.client.view.html'
-      })
-      .state('bots.files', {
-        url: '/files',
-        templateUrl: 'modules/bots/client/views/files-bots.client.view.html'
+        templateUrl: 'modules/bots/client/views/list-bots.client.view.html',
+        controller: 'BotListController',
+        controllerAs: 'vm',
+        resolve: {
+          botsResolve: getBots
+        }
       })
       .state('bots.create', {
         url: '/create',
-        templateUrl: 'modules/bots/client/views/create-bot.client.view.html',
-        data: {
-          roles: ['user', 'admin']
+        templateUrl: 'modules/bots/client/views/edit-bot.client.view.html',
+        controller: 'BotController',
+        controllerAs: 'vm',
+        resolve: {
+          botResolve: newBot
         }
-      })
-      .state('bots.ide', {
-        url: '/ide',
-        templateUrl: 'modules/bots/client/views/ide.client.view.html',
-        data: {
-          roles: ['user', 'admin']
-        }
-      })
-      .state('bots.view', {
-        url: '/:botId',
-        templateUrl: 'modules/bots/client/views/view-bot.client.view.html'
       })
       .state('bots.edit', {
         url: '/:botId/edit',
         templateUrl: 'modules/bots/client/views/edit-bot.client.view.html',
-        data: {
-          roles: ['user', 'admin']
+        controller: 'BotController',
+        controllerAs: 'vm',
+        resolve: {
+          botResolve: getBot
         }
       })
-;
+      .state('bots.ide', {
+        url: '/ide',
+        templateUrl: 'modules/bots/client/views/ide.client.view.html'
+      })
+      .state('bots.files', {
+        url: '/:botId/files',
+        templateUrl: 'modules/bots/client/views/files-bot.client.view.html',
+        controller: 'BotFilesController',
+        controllerAs: 'vm',
+        resolve: {
+          botFilesResolve: getBotFiles
+        }
+      });
   }
 ]);
+
+getBots.$inject = ['BotsService'];
+function getBots(BotsService) {
+  return BotsService.query().$promise;
+}
+
+getBot.$inject = ['BotsService', '$stateParams'];
+function getBot(BotsService, $stateParams) {
+  return BotsService.get({
+    botId: $stateParams.botId
+  }).$promise;
+}
+
+newBot.$inject = ['BotsService'];
+function newBot(BotsService) {
+  return new BotsService();
+}
+
+getBotFiles.$inject = ['BotFilesService', '$stateParams'];
+function getBotFiles(BotFilesService, $stateParams) {
+  return BotFilesService.query({
+    botId: $stateParams.botId
+  }).$promise;
+}

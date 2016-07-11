@@ -206,6 +206,10 @@ var initGlobalConfig = function () {
   // Validate session secret
   validateSessionSecret(config);
 
+  if(process.env.CHAT_SERVER) {
+    config.chatServer = process.env.CHAT_SERVER;
+  }
+
   // Expose configuration utilities
   config.utils = {
     getGlobbedPaths: getGlobbedPaths,

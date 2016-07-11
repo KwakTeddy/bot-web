@@ -1,0 +1,60 @@
+<header class="page-header">
+  <h2>파일관리</h2>
+
+  <div class="right-wrapper pull-right">
+    <ol class="breadcrumbs">
+      <li>
+        <a href="index.html">
+          <i class="fa fa-home"></i>
+        </a>
+      </li>
+      <li><span>Tables</span></li>
+      <li><span>Editable</span></li>
+    </ol>
+
+    <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+  </div>
+</header>
+
+<!-- start: page -->
+<section class="panel">
+  <header class="panel-heading">
+    <div class="panel-actions">
+      <input type="text" class="mb-md" ng-model="vm.addFileName" placeholder="파일명"/>
+      <button id="addToTable" class="btn btn-primary" ng-click="vm.create()"><i class="fa fa-plus"></i> 파일추가</button>
+    </div>
+
+    <h2 class="panel-title">Default</h2>
+  </header>
+  <div class="panel-body">
+    <table datatable="ng" class="table table-bordered table-striped mb-none">
+      <thead>
+      <tr>
+        <th class="text-center">파일명</th>
+        <th class="text-center">작성자</th>
+        <th class="text-center">수정일</th>
+        <th class="text-center">등록일</th>
+        <th class="text-center">관리</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="file in ::vm.files">
+        <td name="fileName" class="text-center">{{file.name}}</td>
+        <td class="text-center">{{file.user}}</td>
+        <td class="text-center">{{file.updated | date: 'yyyy-MM-dd'}}</td>
+        <td class="text-center">{{file.created | date: 'yyyy-MM-dd'}}</td>
+        <td class="actions">
+          <a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
+          <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
+          <a href="#" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
+          <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<!-- end: page -->
+
+
+<!--<script src="/js/tables/files-bots.datatable.js"></script>-->

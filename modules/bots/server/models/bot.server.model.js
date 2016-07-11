@@ -10,24 +10,39 @@ var mongoose = require('mongoose'),
  * Bot Schema
  */
 var BotSchema = new Schema({
-  created: {
-    type: Date,
-    default: Date.now
+  id: {
+    type: String
   },
-  title: {
-    type: String,
-    default: '',
-    trim: true,
-    required: 'Title cannot be blank'
+  name: {
+    type: String
   },
-  content: {
-    type: String,
-    default: '',
-    trim: true
+  description: {
+    type: String
   },
+  kakao: {
+    type: Boolean,
+    default: false
+  },
+  line: {
+    type: Boolean,
+    default: false
+  },
+  facebook: {
+    type: Boolean,
+    default: false
+  },
+  using: {
+    type: Boolean,
+    default: false
+  },
+
   user: {
     type: Schema.ObjectId,
     ref: 'User'
+  },
+  created: {
+    type: Date,
+    default: Date.now
   }
 });
 

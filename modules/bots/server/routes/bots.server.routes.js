@@ -8,15 +8,20 @@ var botsPolicy = require('../policies/bots.server.policy'),
 
 module.exports = function (app) {
   // Bots collection routes
-  app.route('/api/bots').all(botsPolicy.isAllowed)
+  app.route('/api/bots')
     .get(bots.list)
     .post(bots.create);
 
   // Single bot routes
-  app.route('/api/bots/:botId').all(botsPolicy.isAllowed)
+  // app.route('/api/bots/:botId').all(botsPolicy.isAllowed)
+  app.route('/api/bots/:botId')
     .get(bots.read)
     .put(bots.update)
     .delete(bots.delete);
+
+  app.route('/api/bots/files/:botId')
+    .get(bots.listFile)
+    .post(bots.createFile);
 
   // Finish by binding the bot middleware
   app.param('botId', bots.botByID);

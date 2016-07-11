@@ -15,37 +15,59 @@
   </div>
 </header>
 
-<section class="panel" ng-controller="BotsController">
+<section class="panel">
+  <div class="form-group">
+    <div class="col-md-4">
+      <select class="form-control mb-md" id="selectServer" name="selectServer"
+              ng-options="option for option in vm.servers"
+              ng-model="vm.server">
+      </select>
+    </div>
+    <div class="col-md-4">
+      <select class="form-control mb-md" id="selectBot" name="selectBot"
+              ng-options="option for option in vm.bots"
+              ng-model="vm.bot">
+      </select>
+    </div>
+    <div class="col-md-4">
+      <div class="input-group mb-md">
+        <input type="text" class="form-control" id="userName" name="userName"
+               ng-model="vm.userId"
+               placeholder="유저명"/>
+        <span class="input-group-btn">
+          <button class="btn btn-success" type="button" ng-click="vm.connect()">CONNECT</button>
+        </span>
+      </div>
+    </div>
+  </div>
+
+
   <header class="panel-heading">
-    <h2 class="panel-title">머니봇</h2>
+    <h2 class="panel-title">{{vm.isConnected ? vm.bot : '접속해주세요'}}</h2>
   </header>
 
-    <div class="panel-body " style="background-color: #ddd;">
+  <div class="panel-body " style="background-color: #ddd;">
 
-      <div id="chat_main" class="chat_main">
-
-        <div class="bubble">
-          안녕하세요. 금융봇 입니다. 안녕하세요. 금융봇 입니다.
-          안녕하세요. 금융봇 입니다. 안녕하세요. 금융봇 입니다.
-          안녕하세요. 금융봇 입니다.안녕하세요. 금융봇 입니다.
-        </div>
-
-      </div>
+    <div id="chat_main" class="chat_main">
 
     </div>
-    <footer class="panel-footer" style="height: 34px;padding: 0 15px;">
-      <form name="botForm" class="form-horizontal form-bordered" ng-submit="create(botForm.$valid)" novalidate="novalidate">
+
+  </div>
+  <footer class="panel-footer" style="height: 34px;padding: 0 15px;">
+    <form name="chatForm" class="form-horizontal form-bordered" novalidate="novalidate"
+          ng-submit="vm.sendMsg()">
       <div class="row">
         <div class="input-group mb-md">
-          <input type="text" class="form-control" name="inputbox" id="inputbox" onkeypress="if(event.keyCode==13) {inputMessage(this.value); return false;}">
-														<span class="input-group-btn">
-															<button class="btn btn-primary" type="button">Send</button>
-														</span>
+          <input type="text" class="form-control" name="inputbox" id="inputbox"
+                 ng-model="vm.msg" />
+          <span class="input-group-btn">
+            <button class="btn btn-primary" type="submit">SEND</button>
+          </span>
         </div>
 
       </div>
-      </form>
-    </footer>
+    </form>
+  </footer>
 </section>
 
 

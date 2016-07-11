@@ -46,6 +46,7 @@ Theme Version: 	1.5.2
 					null,
 					null,
 					null,
+					null,
 					{ "bSortable": false }
 				]
 			});
@@ -133,7 +134,7 @@ Theme Version: 	1.5.2
 				'<a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>'
 			].join(' ');
 
-			data = this.datatable.row.add([ '', '', '', actions ]);
+			data = this.datatable.row.add([ '', '', '', '', actions ]);
 			$row = this.datatable.row( data[0] ).nodes().to$();
 
 			$row
@@ -180,7 +181,9 @@ Theme Version: 	1.5.2
 				if ( $this.hasClass('actions') ) {
 					_self.rowSetActionsEditing( $row );
 				} else {
-					$this.html( '<input type="text" class="form-control input-block" value="' + data[i] + '"/>' );
+					if($this.attr('name') == 'fileName' || i == 0) {
+						$this.html( '<input type="text" class="form-control input-block" value="' + data[i] + '"/>' );
+					}
 				}
 			});
 		},
