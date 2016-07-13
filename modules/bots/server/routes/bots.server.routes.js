@@ -23,6 +23,14 @@ module.exports = function (app) {
     .get(bots.listFile)
     .post(bots.createFile);
 
+  app.route('/api/bots/files/:botId/:fileId')
+    .get(bots.readFile)
+    .post(bots.editFile)
+    .delete(bots.removeFile)
+    .put(bots.renameFile);
+
+
   // Finish by binding the bot middleware
   app.param('botId', bots.botByID);
+  app.param('fileId', bots.fileByID);
 };

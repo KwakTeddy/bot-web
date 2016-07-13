@@ -19,7 +19,7 @@ exports.create = function (req, res) {
   var bot = new Bot(req.body);
   bot.user = req.user;
 
-  var botFolder = config.chatServer + 'RAWDATA/' + bot.id;
+  var botFolder = generateBotFolder(bot.id);
   try {
     fs.statSync(botFolder);
   } catch(e) {
@@ -74,12 +74,13 @@ exports.update = function (req, res) {
 exports.delete = function (req, res) {
   var bot = req.bot;
 
-  var botFolder = config.chatServer + 'RAWDATA/' + bot.id;
+  var botFolder = generateBotFolder(bot.id);
   try {
-    fs.rmdirSync(botFolder);
+    // fs.rmdirSync(botFolder);
+    deleteFolderRecursive(botFolder);
   } catch(e) {
     return res.status(400).send({
-      message: 'Remove Directory Failed'
+      message: 'Remove Directory Failed: ' + e.toString()
     });
   }
 
@@ -89,7 +90,15 @@ exports.delete = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(bot);
+      BotFile.remove({bot: bot._id}, function (err) {
+        if (err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.json(bot);
+        }
+      });
     }
   });
 };
@@ -113,7 +122,6 @@ exports.list = function (req, res) {
  * Bot middleware
  */
 exports.botByID = function (req, res, next, id) {
-
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
       message: 'Bot is invalid'
@@ -132,13 +140,43 @@ exports.botByID = function (req, res, next, id) {
     next();
   });
 };
+exports.fileByID = function (req, res, next, id) {
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).send({
+      message: 'File is invalid'
+    });
+  }
+
+  BotFile.findById(id).populate('user', 'displayName').populate('bot').exec(function (err, file) {
+    if (err) {
+      return next(err);
+    } else if (!file) {
+      return res.status(404).send({
+        message: 'No file with that identifier has been found'
+      });
+    }
+    req.file = file;
+    next();
+  });
+};
 
 
-
+exports.listFile = function (req, res) {
+  BotFile.find({bot: req.bot._id}).populate('user', 'displayName').populate('bot').exec(function (err, files) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json(files);
+    }
+  });
+};
 exports.createFile = function (req, res) {
   var bot = req.bot;
-  var botFolder = config.chatServer + 'RAWDATA/' + bot.id + '/';
-  fs.writeFile(botFolder + req.body.fileName, '# Created By ...', {flag: 'wx'}, function(err) {
+  var botFolder = generateBotFolder(bot.id);
+  fs.writeFile(botFolder + req.body.fileName + '.top', '# Created By ...', {flag: 'wx'}, function(err) {
+    console.log('writeFile Result: ' + err);
     if(err) {
       res.status(400).send({
         message: 'File Already Exists'
@@ -148,6 +186,7 @@ exports.createFile = function (req, res) {
       botFile.bot = bot;
       botFile.name = req.body.fileName;
       botFile.user = req.user;
+      console.log('botFile: ' + botFile.name);
       botFile.save(function (err) {
         if (err) {
           return res.status(400).send({
@@ -155,6 +194,7 @@ exports.createFile = function (req, res) {
           });
         } else {
           res.json(botFile);
+          console.log('res.json');
         }
       })
     }
@@ -162,22 +202,94 @@ exports.createFile = function (req, res) {
 
 };
 exports.removeFile = function (req, res) {
-
-};
-exports.renameFile = function (req, res) {
-
-};
-exports.editFile = function (req, res) {
-
-};
-exports.listFile = function (req, res) {
-  BotFile.find({bot: req.bot._id}).populate('user', 'displayName').exec(function (err, files) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
+  var file = req.file;
+  var botFolder = generateBotFolder(file.bot.id);
+  fs.unlink(botFolder + file.name + '.top', function (err) {
+    if(err) {
+      res.status(400).send({
+        message: 'Remove File Failed'
       });
     } else {
-      res.json(files);
+      file.remove(function (err) {
+        if (err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.json(file);
+        }
+      })
     }
+  })
+};
+exports.renameFile = function (req, res) {
+  var file = req.file;
+  var botFolder = generateBotFolder(file.bot.id);
+  fs.rename(botFolder + file.name + '.top', botFolder + req.body.renameFileName + '.top', function (err) {
+    if(err) {
+      res.status(400).send({
+        message: 'Rename File Failed'
+      });
+    } else {
+      file.name = req.body.renameFileName;
+      file.updated = Date.now();
+      file.save(function (err) {
+        if (err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.json(file);
+        }
+      })
+    }
+  })
+};
+exports.readFile = function (req, res) {
+  var bot = req.bot;
+  var file = req.file;
+  var botFolder = generateBotFolder(file.bot.id);
+  fs.readFile(botFolder + file.name + '.top', function (err, data) {
+    if(err) {
+      console.log(err.toString());
+      res.status(400).send({
+        message: 'Read File Failed'
+      });
+    } else {
+      console.log('data: ' + data);
+      res.json({botName: bot.name, name: file.name, data: data.toString()});
+    }
+  })
+};
+exports.editFile = function (req, res) {
+  var file = req.file;
+  var botFolder = generateBotFolder(file.bot.id);
+  fs.writeFile(botFolder + file.name + '.top', req.body.fileData, {flag: 'w'}, function(err) {
+    console.log('writeFile Result: ' + err);
+    if(err) {
+      res.status(400).send({
+        message: 'Write File Failed'
+      });
+    }
+    res.json({data: req.body.fileData});
   });
+};
+
+function generateBotFolder(botId) {
+  return config.chatServer + 'RAWDATA/' + botId + '/';
+}
+function deleteFolderRecursive(path) {
+  var files = [];
+  if( fs.existsSync(path) ) {
+    files = fs.readdirSync(path);
+    files.forEach(function(file,index){
+      var curPath = path + "/" + file;
+      if(fs.lstatSync(curPath).isDirectory()) { // recurse
+        deleteFolderRecursive(curPath);
+      } else { // delete file
+        fs.unlinkSync(curPath);
+      }
+    });
+    fs.rmdirSync(path);
+  }
 };

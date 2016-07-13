@@ -8,8 +8,8 @@
           <i class="fa fa-home"></i>
         </a>
       </li>
-      <li><span>Tables</span></li>
-      <li><span>Editable</span></li>
+      <li><span>봇 관리</span></li>
+      <li><span>{{vm.bot.name}}</span></li>
     </ol>
 
     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
@@ -24,7 +24,7 @@
       <button id="addToTable" class="btn btn-primary" ng-click="vm.create()"><i class="fa fa-plus"></i> 파일추가</button>
     </div>
 
-    <h2 class="panel-title">Default</h2>
+    <h2 class="panel-title">{{vm.bot.name}}</h2>
   </header>
   <div class="panel-body">
     <table datatable="ng" class="table table-bordered table-striped mb-none">
@@ -38,16 +38,25 @@
       </tr>
       </thead>
       <tbody>
-      <tr ng-repeat="file in ::vm.files">
-        <td name="fileName" class="text-center">{{file.name}}</td>
+      <tr ng-repeat="file in vm.files track by $index">
+        <td name="fileName" class="text-center">
+          <div ng-show="!file.edit">
+            {{file.name}}.top
+          </div>
+          <input type="text" class="form-control input-block" ng-model="file.renameFileName" ng-show="file.edit"/>
+        </td>
+        <!--<td class="text-center" ng-show="file.edit">-->
+          <!---->
+        <!--</td>-->
         <td class="text-center">{{file.user}}</td>
-        <td class="text-center">{{file.updated | date: 'yyyy-MM-dd'}}</td>
-        <td class="text-center">{{file.created | date: 'yyyy-MM-dd'}}</td>
+        <td class="text-center">{{file.updated | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+        <td class="text-center">{{file.created | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
         <td class="actions">
-          <a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
-          <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-          <a href="#" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
-          <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
+          <a ng-click="vm.edit($index, false)" ng-show="file.edit"><i class="fa fa-times"></i></a>
+          <a ng-click="vm.rename($index)" ng-show="file.edit"><i class="fa fa-save"></i></a>
+          <a ng-click="vm.edit($index, true)" ng-show="!file.edit"><i class="fa fa-pencil"></i></a>
+          <a ui-sref="bots.ide({botId: file.bot._id, fileId: file._id})" ng-show="!file.edit"><i class="fa fa-edit"></i></a>
+          <a ng-click="vm.remove($index)" ng-show="!file.edit"><i class="fa fa-trash-o"></i></a>
         </td>
       </tr>
       </tbody>

@@ -38,8 +38,13 @@ angular.module('bots').config(['$stateProvider',
         }
       })
       .state('bots.ide', {
-        url: '/ide',
-        templateUrl: 'modules/bots/client/views/ide.client.view.html'
+        url: '/ide/:botId/:fileId',
+        templateUrl: 'modules/bots/client/views/ide.client.view.html',
+        controller: 'IDEController',
+        controllerAs: 'vm',
+        resolve: {
+          fileResolve: readBotFile
+        }
       })
       .state('bots.files', {
         url: '/:botId/files',
@@ -47,6 +52,7 @@ angular.module('bots').config(['$stateProvider',
         controller: 'BotFilesController',
         controllerAs: 'vm',
         resolve: {
+          botResolve: getBot,
           botFilesResolve: getBotFiles
         }
       });
@@ -74,5 +80,12 @@ getBotFiles.$inject = ['BotFilesService', '$stateParams'];
 function getBotFiles(BotFilesService, $stateParams) {
   return BotFilesService.query({
     botId: $stateParams.botId
+  }).$promise;
+}
+readBotFile.$inject = ['BotFilesService', '$stateParams'];
+function readBotFile(BotFilesService, $stateParams) {
+  return BotFilesService.get({
+    botId: $stateParams.botId,
+    fileId: $stateParams.fileId
   }).$promise;
 }

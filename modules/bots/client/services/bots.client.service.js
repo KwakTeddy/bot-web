@@ -11,13 +11,15 @@ angular.module('bots').factory('BotsService', ['$resource',
       }
     });
   }
-]).factory('BotFilesService', ['$resource',
-function($resource) {
-  return $resource('api/bots/files/:botId', {
-    botId: '@_id'
-  }, {
-    update: {
-      method: 'PUT'
-    }
-  });
-}]);
+])
+  .factory('BotFilesService', ['$resource',
+    function ($resource) {
+      return $resource('api/bots/files/:botId/:fileId', {
+        botId: '@botId',
+        fileId: '@_id'
+      }, {
+        update: {
+          method: 'PUT'
+        }
+      });
+    }]);

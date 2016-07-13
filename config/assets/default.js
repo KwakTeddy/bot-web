@@ -16,13 +16,17 @@ module.exports = {
         'public/lib/angular-ui-router/release/angular-ui-router.js',
         'public/lib/angular-ui-utils/ui-utils.js',
         'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
-        'public/lib/angular-file-upload/angular-file-upload.js',
-        'public/lib/owasp-password-strength-test/owasp-password-strength-test.js'
+        'public/lib/angular-file-upload/dist/angular-file-upload.js',
+        'public/lib/owasp-password-strength-test/owasp-password-strength-test.js',
+        'public/lib/codemirror/lib/codemirror.js',
+        'public/lib/codemirror/mode/javascript/javascript.js',
+        'public/lib/angular-ui-codemirror/ui-codemirror.js'
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
     },
     css: [
-      'modules/*/client/css/*.css'
+      'modules/*/client/css/*.css',
+      'public/lib/codemirror/lib/codemirror.css'
     ],
     less: [
       'modules/*/client/less/*.less'

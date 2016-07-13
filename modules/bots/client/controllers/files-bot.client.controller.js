@@ -4,29 +4,45 @@
 'use strict';
 
 // Bots controller
-angular.module('bots').controller('BotFilesController', ['$scope', '$stateParams', 'botFilesResolve', 'BotFilesService', 'CoreUtils',
-  function ($scope, $stateParams, files, BotFilesService, CoreUtils) {
+angular.module('bots').controller('BotFilesController', ['$scope', '$stateParams', 'botResolve', 'botFilesResolve', 'BotFilesService', 'CoreUtils',
+  function ($scope, $stateParams, bot, files, BotFilesService, CoreUtils) {
     var vm = this;
+    vm.bot = bot;
     vm.files = files;
     vm.addFileName = '';
 
     vm.remove = function (index) {
       CoreUtils.showYesOrNoAlert('정말 지우시겠습니까?', function () {
-        vm.files[index].$remove(function () {
+        vm.files[index].$remove({botId: vm.files[index].bot._id}, function (res) {
           vm.files.splice(index, 1);
-        }, function (res) {
-
+        }, function (err) {
+          CoreUtils.showConfirmAlert(err.data.message);
         });
       });
     };
 
     vm.create = function () {
       if(vm.addFileName && vm.addFileName.length > 0) {
-        new BotFilesService({fileName: vm.addFileName + '.top'}).$save(function (botFile) {
+        new BotFilesService({botId: vm.bot._id, fileName: vm.addFileName}).$save(function (botFile) {
           vm.files.push(botFile);
         }, function (err) {
-          
+          CoreUtils.showConfirmAlert(err.data.message);
         });
+      }
+    };
+
+    vm.rename = function (index) {
+      vm.files[index].$update({botId: vm.files[index].bot._id}, function (file) {
+        vm.files.splice(index, 1, file);
+      }, function (err) {
+        CoreUtils.showConfirmAlert(err.data.message);
+      })
+    };
+
+    vm.edit = function (index, edit) {
+      vm.files[index].edit = edit;
+      if(edit) {
+        vm.files[index].renameFileName = vm.files[index].name;
       }
     };
     

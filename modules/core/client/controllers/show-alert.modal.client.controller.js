@@ -46,7 +46,7 @@ angular.module('core').controller('AlertController', ['$scope', '$stateParams', 
       // }
     };
     $scope.no = function () {
-      $scope.dismiss();
+      $uibModalInstance.close();
     }
   }
 ]);
