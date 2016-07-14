@@ -3,7 +3,8 @@
 var http = require('http');
 var bodyParser = require('body-parser');
 var request = require('request');
-var os = require('os');
+var path = require('path');
+var config = require(path.resolve('./config/config'));
 // var bank = require('../../../banks/server/controllers/banks.server.controller');
 // var botUser = require('../../../bot-users/server/controllers/bot-users.server.controller.js');
 var mongoose = require('mongoose'),
@@ -37,8 +38,11 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
         responseCallback(serverJSON.content.replace(/ n /gi, "\n"), serverJSON);
       } else {
         if(userAccounts.banks.length <= 0 || !userAccounts.currentBankAccount) {
-          serverJSON.url = os.hostname() + '/banks/save/' + from;
+          serverJSON.url = config.host + '/banks/save/' + from;
           responseCallback('은행 계정 정보를 입력해주세요!'.replace(/ n /gi, "\n"), serverJSON);
+          if (global.users && global.users[from] && global.users[from].userAccounts) {
+            global.users[from] = null;
+          }
         } else {
           if(!userAccounts.currentBankAccount.bankAccount) {
             bankProcess(userAccounts.currentBankAccount, {action: 'bankAccounts'}, function (retText, retJson) {
