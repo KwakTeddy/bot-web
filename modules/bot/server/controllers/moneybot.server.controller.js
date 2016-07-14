@@ -33,31 +33,45 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
         responseCallback(serverJSON.text.replace(/ n /gi, "\n"), url);
 
       } else {
-        if(userAccounts.banks.length <= 0) {
+        if(userAccounts.banks.length <= 0 || !userAccounts.currentBankAccount) {
           responseCallback('은행 계정 정보를 입력해주세요!'.replace(/ n /gi, "\n"), os.hostname() + '/banks/save/' + from);
         } else {
-
-          if (serverJSON.action == "selectAccount") {
-            var num = serverJSON.accountNumber - 1;
-
-            if (global.users[from].selectAccounts && global.users[from].selectAccounts.length > num && num >= 0) {
-              userAccounts.currentBankAccount.bankAccount = global.users[from].selectAccounts[num].accountNumber;
-              global.users[from].userAccounts = userAccounts;
-              global.users[from].selectAccounts = null;
-            }
-
-            serverJSON.action = 'bankBalance';
-          }
-
-          bankProcess(userAccounts.currentBankAccount, serverJSON, function (retText, retJson) {
-            if (serverJSON.action == "bankAccounts") {
+          if(!userAccounts.currentBankAccount.bankAccount) {
+            bankProcess(userAccounts.currentBankAccount, {action: 'bankAccounts'}, function (retText, retJson) {
               if (!global.users) global.users = {};
               if (!global.users[from]) global.users[from] = {};
               global.users[from].selectAccounts = retJson;
+
+              doBankProcess();
+            });
+          } else {
+            doBankProcess();
+          }
+
+
+          function doBankProcess() {
+            if (serverJSON.action == "selectAccount") {
+              var num = serverJSON.accountNumber - 1;
+
+              if (global.users[from].selectAccounts && global.users[from].selectAccounts.length > num && num >= 0) {
+                userAccounts.currentBankAccount.bankAccount = global.users[from].selectAccounts[num].accountNumber;
+                global.users[from].userAccounts = userAccounts;
+                global.users[from].selectAccounts = null;
+              }
+
+              serverJSON.action = 'bankBalance';
             }
 
-            responseCallback(retText);
-          });
+            bankProcess(userAccounts.currentBankAccount, serverJSON, function (retText, retJson) {
+              if (serverJSON.action == "bankAccounts") {
+                if (!global.users) global.users = {};
+                if (!global.users[from]) global.users[from] = {};
+                global.users[from].selectAccounts = retJson;
+              }
+
+              responseCallback(retText);
+            });
+          }
         }
       }
     })
@@ -110,9 +124,11 @@ function getUserBankInfo(userKey, successCallback, failCallback) {
             bankCode: botUser.currentBank.bankCode,
             bank: botUser.currentBank.bankName,
             id: botUser.currentBank.userID,
-            password: botUser.currentBank.userPassword,
-            bankAccount: botUser.currentAccount
+            password: botUser.currentBank.userPassword
           };
+          if(botUser.currentAccount) {
+            userAccounts.currentBankAccount.bankAccount = botUser.currentAccount;
+          }
         }
 
         if (!global.users) global.users = {};
