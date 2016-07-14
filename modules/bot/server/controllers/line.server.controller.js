@@ -38,7 +38,7 @@ exports.receive = function (req, res) {
   }
 };
 
-function respondMessage(to, text, link) {
+function respondMessage(to, text, json) {
   var sendMsg =
   {
     "to": [],

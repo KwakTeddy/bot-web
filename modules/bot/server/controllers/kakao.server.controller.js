@@ -38,8 +38,8 @@ exports.message = function (req, res) {
     var type = req.body.type;
     var text = req.body.content;
 
-    chat.write(from, req.params.botId, text, function (serverText, url) {
-      respondMessage(res, serverText, url)
+    chat.write(from, req.params.botId, text, function (serverText, json) {
+      respondMessage(res, serverText, json)
 
       //moneybot.receivedMoneyBot(from, serverText, function(retText, url) {
       //  respondMessage(res, retText, url)
@@ -66,15 +66,15 @@ exports.deleteChatRoom = function (req, res) {
 };
 
 
-function respondMessage(res, text, link) {
-  if(link) {
+function respondMessage(res, text, json) {
+  if(json && json.url) {
     var linkMsg =
     {
       "message": {
         "text": text,
         "message_button": {
           "label": "상세정보보기",
-          "url": link
+          "url": url
         }
       }
     };

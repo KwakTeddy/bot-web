@@ -58,7 +58,7 @@ exports.message = function (req, res) {
 };
 
 
-function respondMessage(to, text, link) {
+function respondMessage(to, text, json) {
   if (text) {
 
     // If we receive a text message, check to see if it matches any special
@@ -181,9 +181,9 @@ function receivedMessage(event) {
   var messageText = message.text;
   var messageAttachments = message.attachments;
 
-  chat.write(senderID, event.botId, messageText, function (retText, url) {
+  chat.write(senderID, event.botId, messageText, function (retText, json) {
     //moneybot.receivedMoneyBot(senderID, serverText, function(retText, url) {
-      respondMessage(senderID, retText, url);
+      respondMessage(senderID, retText, json);
     //});
   });
 }
