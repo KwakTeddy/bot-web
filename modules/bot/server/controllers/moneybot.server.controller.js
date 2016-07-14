@@ -61,7 +61,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
       || serverJSON.action == "credit"
       || serverJSON.action == "deposit"
       || serverJSON.action == "installment") {
-      Product.find({category: serverJSON.action}).sort('-rate').exec(function (err, products) {
+      Product.find({category: serverJSON.action}).sort('+rate').exec(function (err, products) {
         if (err || !products || products.length <= 0) {
           serverJSON.content = '죄송합니다! 일치하는 상품을 찾지 못했습니다ㅠㅜ';
         } else {
@@ -76,7 +76,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
               if(serverJSON.content.length > 0) {
                 serverJSON.content += '\n';
               }
-              serverJSON.content += ((i+1) + products[i].title + ' ' + products[i].rate);
+              serverJSON.content += ((i+1) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
             }
           } else {
             for (var i = products.length-1; i >= 0; i--) {
@@ -86,7 +86,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
               if(serverJSON.content.length > 0) {
                 serverJSON.content += '\n';
               }
-              serverJSON.content += ((products.length - i) + products[i].title + ' ' + products[i].rate);
+              serverJSON.content += ((products.length - i) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
             }
           }
         }
