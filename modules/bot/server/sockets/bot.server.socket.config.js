@@ -2,6 +2,7 @@
 
 var net = require('net');
 var _ = require('lodash');
+var moneybot = require('../controllers/moneybot.server.controller');
 
 var chatscriptConfig = {port: 0, host: '', allowHalfOpen: true};
 
@@ -22,7 +23,13 @@ module.exports = function (io, socket) {
     // on receive data from chatscriptSocket
     chatscriptSocket.on('data', function(data) {
       console.log(data.toString());
-      socket.emit('send_msg', data.toString()); // FROM SERVER
+
+//      socket.emit('send_msg', data.toString()); // FROM SERVER
+
+      moneybot.receivedMoneyBot(msg.user, data.toString(), function(retText, url) {
+        socket.emit('send_msg', retText); // FROM SERVER
+      });
+
     });
     // on end from chatscriptSocket
     chatscriptSocket.on('end', function() {

@@ -1,4 +1,5 @@
 var net = require('net');
+var moneybot = require('../controllers/moneybot.server.controller');
 
 var chatSocketConfig = {port: 1024, host: 'localhost', allowHalfOpen: true};
 
@@ -13,7 +14,11 @@ exports.write = function(from, to, text, successCallback, errorCallback, endCall
   chatSocket.on('data', function(data) {
     console.log("received:" + data.toString());
 
-    successCallback(data.toString());
+    //successCallback(data.toString());
+
+    moneybot.receivedMoneyBot(from, data.toString(), function(retText, url) {
+      successCallback(retText, url);
+    });
   })
 
   chatSocket.on('end', function() {

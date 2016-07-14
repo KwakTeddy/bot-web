@@ -31,19 +31,21 @@ exports.message = function (req, res) {
   console.log("kakao message");
   console.log(JSON.stringify(req.body));
 
-  respondMessage2(res, "")
+  //respondMessage2(res, "")
 
-  //if(req.body && req.body.user_key && req.body.content) {
-  //  var from = req.body.user_key;
-  //  var type = req.body.type;
-  //  var text = req.body.content;
-  //
-  //  chat.write(from, req.params.botId, text, function (serverText) {
-  //    moneybot.receivedMoneyBot(from, serverText, function(retText, url) {
-  //      respondMessage(res, retText, url)
-  //    });
-  //  });
-  //}
+  if(req.body && req.body.user_key && req.body.content) {
+    var from = req.body.user_key;
+    var type = req.body.type;
+    var text = req.body.content;
+
+    chat.write(from, req.params.botId, text, function (serverText, url) {
+      respondMessage(res, serverText, url)
+
+      //moneybot.receivedMoneyBot(from, serverText, function(retText, url) {
+      //  respondMessage(res, retText, url)
+      //});
+    });
+  }
 
 };
 
