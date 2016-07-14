@@ -43,7 +43,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
         if (err || !faq) {
           serverJSON.content = '죄송합니다! 일치하는 답변을 찾지 못했습니다ㅠㅜ';
         } else {
-          serverJSON.content = faq.content;
+          serverJSON.content = faq.title + '\n' + faq.content;
         }
         responseCallback(serverJSON.content.replace(/ n /gi, "\n"), serverJSON);
       });

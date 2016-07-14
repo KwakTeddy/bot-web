@@ -18,6 +18,8 @@
     vm.remove = remove;
     vm.save = save;
 
+    vm.product.bankCode = '88';
+
     // Remove existing Product
     function remove() {
       if (confirm('Are you sure you want to delete?')) {
@@ -40,9 +42,9 @@
       }
 
       function successCallback(res) {
-        $state.go('products.view', {
-          productId: res._id
-        });
+        $state.go('products.create', {
+
+        }, {reload: true});
       }
 
       function errorCallback(res) {
