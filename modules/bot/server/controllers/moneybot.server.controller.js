@@ -76,7 +76,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
               if(serverJSON.content.length > 0) {
                 serverJSON.content += '\n';
               }
-              serverJSON.content += products[i].content;
+              serverJSON.content += ((i+1) + products[i].title + ' ' + products[i].rate);
             }
           } else {
             for (var i = products.length-1; i >= 0; i--) {
@@ -86,7 +86,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
               if(serverJSON.content.length > 0) {
                 serverJSON.content += '\n';
               }
-              serverJSON.content += products[i].content;
+              serverJSON.content += ((products.length - i) + products[i].title + ' ' + products[i].rate);
             }
           }
         }
