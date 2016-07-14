@@ -18,6 +18,8 @@
     vm.remove = remove;
     vm.save = save;
 
+    vm.faq.bankCode = '88';
+
     // Remove existing Faq
     function remove() {
       if (confirm('Are you sure you want to delete?')) {
@@ -40,9 +42,9 @@
       }
 
       function successCallback(res) {
-        $state.go('faqs.view', {
-          faqId: res._id
-        });
+        $state.go('faqs.create', {
+
+        }, {reload: true});
       }
 
       function errorCallback(res) {
