@@ -51,7 +51,10 @@
       vm.bank.userPassword = null;
     };
 
-    vm.save = function() {
+    vm.save = function(valid) {
+      if(!valid) {
+        return;
+      }
       if(vm.bank._id) {
         vm.bank.$save({userKey: userKey}, successCallback, errorCallback);
       } else {

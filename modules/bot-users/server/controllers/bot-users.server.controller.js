@@ -15,45 +15,48 @@ var path = require('path'),
  */
 exports.create = function (req, res) {
   var botUser = null;
-  BotUser.findOne({userKey: req.params.userKey}).exec(function (err, b) {
-    if (err || !b) {
-      botUser = new BotUser(req.body);
-      botUser.userKey = req.params.userKey;
-    } else {
-      botUser = b;
-    }
+  if (!req.botUser) {
+    botUser = new BotUser(req.body);
+    botUser.userKey = req.params.userKey;
+  } else {
+    botUser = req.botUser;
+  }
 
-    if (req.body.bank
-      && req.body.account) {
-      Bank.findOne({userKey: botUser.userKey, bankName: req.body.bank}).exec(function (err, b) {
-        if (!err && b) {
-          botUser.currentBank = b;
-          botUser.currentAccount = req.body.account;
-        }
-        save();
-      })
-    } else {
+  if (req.body.bank
+    && req.body.account) {
+    Bank.findOne({userKey: botUser.userKey, bankName: req.body.bank}).exec(function (err, b) {
+      if (!err && b) {
+        botUser.currentBank = b;
+        botUser.currentAccount = req.body.account;
+      }
       save();
-    }
+    })
+  } else {
+    save();
+  }
 
-    function save() {
-      botUser.save(function (err) {
-        if (err) {
-          return res.status(400).send({
-            message: errorHandler.getErrorMessage(err)
-          });
-        } else {
-          res.jsonp(botUser);
-        }
-      });
-    }
-  });
+  function save() {
+    botUser.save(function (err) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(botUser);
+      }
+    });
+  }
 };
 
 /**
  * Show the current Bot user
  */
 exports.read = function (req, res) {
+  if (!req.botUser) {
+    return res.status(404).send({
+      message: 'No Bot user with that identifier has been found'
+    });
+  }
   // convert mongoose document to JSON
   var botUser = req.botUser ? req.botUser.toJSON() : {};
 
@@ -68,6 +71,12 @@ exports.read = function (req, res) {
  * Update a Bot user
  */
 exports.update = function (req, res) {
+  if (!req.botUser) {
+    return res.status(404).send({
+      message: 'No Bot user with that identifier has been found'
+    });
+  }
+
   var botUser = req.botUser;
 
   botUser = _.extend(botUser, req.body);
@@ -87,6 +96,12 @@ exports.update = function (req, res) {
  * Delete an Bot user
  */
 exports.delete = function (req, res) {
+  if (!req.botUser) {
+    return res.status(404).send({
+      message: 'No Bot user with that identifier has been found'
+    });
+  }
+
   var botUser = req.botUser;
 
   botUser.remove(function (err) {
@@ -104,7 +119,7 @@ exports.delete = function (req, res) {
  * List of Bot users
  */
 exports.list = function (req, res) {
-  BotUser.find().sort('-created').populate('user', 'displayName').exec(function (err, botUsers) {
+  BotUser.find().sort('-created').populate('currentBank').exec(function (err, botUsers) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -126,7 +141,7 @@ exports.botUserByID = function (req, res, next, id) {
     });
   }
 
-  BotUser.findById(id).populate('user', 'displayName').exec(function (err, botUser) {
+  BotUser.findById(id).populate('currentBank').exec(function (err, botUser) {
     if (err) {
       return next(err);
     } else if (!botUser) {
@@ -139,14 +154,11 @@ exports.botUserByID = function (req, res, next, id) {
   });
 };
 exports.botUserByUserKey = function (req, res, next, userKey) {
-  BotUser.findOne({userKey: userKey}).exec(function (err, botUser) {
+  BotUser.findOne({userKey: userKey}).populate('currentBank').exec(function (err, botUser) {
     if (err) {
       return next(err);
-    } else if (!botUser) {
-      return res.status(404).send({
-        message: 'No Bot user with that identifier has been found'
-      });
     }
+
     req.botUser = botUser;
     next();
   });

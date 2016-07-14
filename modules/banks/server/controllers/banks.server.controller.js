@@ -6,6 +6,7 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   Bank = mongoose.model('Bank'),
+  BotUser = mongoose.model('BotUser'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
 
@@ -19,6 +20,12 @@ exports.renderSave = function (req, res) {
  * Create a Bank
  */
 exports.create = function(req, res) {
+  if(!req.botUser) {
+    return res.status(404).send({
+      message: 'No Bot user with that identifier has been found'
+    });
+  }
+
   var bank = undefined;
   Bank.findOne({userKey: req.params.userKey, bankName: req.body.bankName}).exec(function (err, b) {
     if(err || !b) {
@@ -41,7 +48,19 @@ exports.create = function(req, res) {
             message: errorHandler.getErrorMessage(err)
           });
         } else {
-          res.jsonp(bank);
+          if(!req.botUser.currentBank) {
+            req.botUser.currentBank = bank;
+            req.botUser.save(function (err) {
+              if(err) {
+                return res.status(400).send({
+                  message: errorHandler.getErrorMessage(err)
+                });
+              }
+              res.jsonp(bank);
+            })
+          } else {
+            res.jsonp(bank);
+          }
         }
       });
     }

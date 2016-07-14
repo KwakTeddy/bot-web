@@ -32,7 +32,6 @@
           faqResolve: newFaq
         },
         data: {
-          roles: ['user', 'admin'],
           pageTitle : 'Faqs Create'
         }
       })
@@ -45,7 +44,6 @@
           faqResolve: getFaq
         },
         data: {
-          roles: ['user', 'admin'],
           pageTitle: 'Edit Faq {{ faqResolve.name }}'
         }
       })
