@@ -29,7 +29,7 @@
         controller: 'BotUsersController',
         controllerAs: 'vm',
         resolve: {
-          bot-userResolve: newBotUser
+          botUserResolve: newBotUser
         },
         data: {
           roles: ['user', 'admin'],
@@ -42,7 +42,7 @@
         controller: 'BotUsersController',
         controllerAs: 'vm',
         resolve: {
-          bot-userResolve: getBotUser
+          botUserResolve: getBotUser
         },
         data: {
           roles: ['user', 'admin'],
@@ -55,7 +55,7 @@
         controller: 'BotUsersController',
         controllerAs: 'vm',
         resolve: {
-          bot-userResolve: getBotUser
+          botUserResolve: getBotUser
         },
         data:{
           pageTitle: 'Bot user {{ articleResolve.name }}'
