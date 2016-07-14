@@ -10,7 +10,8 @@ var config = require(path.resolve('./config/config'));
 var mongoose = require('mongoose'),
   Bank = mongoose.model('Bank'),
   BotUser = mongoose.model('BotUser'),
-  Faq = mongoose.model('Faq');
+  Faq = mongoose.model('Faq'),
+  Product = mongoose.model('Product');
 
 exports.receivedMoneyBot = function (from, serverText, responseCallback) {
 
@@ -21,7 +22,10 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
   serverText = serverText.replace(/%5b/gi, "[");
   serverText = serverText.replace(/%5d/gi, "]");
 
-  try { serverJSON = JSON.parse(serverText); } catch(e) {}
+  try {
+    serverJSON = JSON.parse(serverText);
+  } catch (e) {
+  }
 
   if (serverJSON && typeof serverJSON == 'object') {
     if (serverJSON.action == "link") {
@@ -32,9 +36,9 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
 
       responseCallback(serverJSON.content.replace(/ n /gi, "\n"), serverJSON);
 
-    } else if(serverJSON.action == "text") {
+    } else if (serverJSON.action == "text") {
       responseCallback(serverJSON.content.replace(/ n /gi, "\n"), serverJSON);
-    } else if(serverJSON.action == "faq") {
+    } else if (serverJSON.action == "faq") {
       Faq.findById(serverJSON.id).exec(function (err, faq) {
         if (err || !faq) {
           serverJSON.content = '죄송합니다! 일치하는 답변을 찾지 못했습니다ㅠㅜ';
@@ -43,16 +47,61 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
         }
         responseCallback(serverJSON.content.replace(/ n /gi, "\n"), serverJSON);
       });
+    } else if (serverJSON.action == "product") {
+      Product.findById(serverJSON.id).exec(function (err, product) {
+        if (err || !product) {
+          serverJSON.content = '죄송합니다! 일치하는 상품을 찾지 못했습니다ㅠㅜ';
+        } else {
+          serverJSON.content = product.content;
+        }
+        responseCallback(serverJSON.content.replace(/ n /gi, "\n"), serverJSON);
+      });
+    } else if (serverJSON.action == "mortgage"
+      || serverJSON.action == "lend"
+      || serverJSON.action == "credit"
+      || serverJSON.action == "deposit"
+      || serverJSON.action == "installment") {
+      Product.find({category: serverJSON.action}).sort('-rate').exec(function (err, products) {
+        if (err || !products || products.length <= 0) {
+          serverJSON.content = '죄송합니다! 일치하는 상품을 찾지 못했습니다ㅠㅜ';
+        } else {
+          serverJSON.content = '';
+          if (serverJSON.action == 'mortgage'
+            || serverJSON.action == 'lend'
+            || serverJSON.action == 'credit') {
+            for (var i = 0; i < products.length; i++) {
+              if (i >= 3) {
+                break;
+              }
+              if(serverJSON.content.length > 0) {
+                serverJSON.content += '\n';
+              }
+              serverJSON.content += products[i].content;
+            }
+          } else {
+            for (var i = products.length-1; i >= 0; i--) {
+              if (i <= products.length-4) {
+                break;
+              }
+              if(serverJSON.content.length > 0) {
+                serverJSON.content += '\n';
+              }
+              serverJSON.content += products[i].content;
+            }
+          }
+        }
+        responseCallback(serverJSON.content.replace(/ n /gi, "\n"), serverJSON);
+      });
     } else {
       getUserBankInfo(from, function (userAccounts) {
-        if(userAccounts.banks.length <= 0 || !userAccounts.currentBankAccount) {
+        if (userAccounts.banks.length <= 0 || !userAccounts.currentBankAccount) {
           serverJSON.url = config.host + '/banks/save/' + from;
           responseCallback('은행 계정 정보를 입력해주세요!'.replace(/ n /gi, "\n"), serverJSON);
           if (global.users && global.users[from] && global.users[from].userAccounts) {
             global.users[from] = null;
           }
         } else {
-          if(!userAccounts.currentBankAccount.bankAccount) {
+          if (!userAccounts.currentBankAccount.bankAccount) {
             bankProcess(userAccounts.currentBankAccount, {action: 'bankAccounts'}, function (retText, retJson) {
               if (!global.users) global.users = {};
               if (!global.users[from]) global.users[from] = {};
@@ -104,11 +153,11 @@ function getUserBankInfo(userKey, successCallback, failCallback) {
 
   } else {
     BotUser.findOne({userKey: userKey}).populate('currentBank').exec(function (err, botUser) {
-      if(err || !botUser) {
+      if (err || !botUser) {
         botUser = new BotUser();
         botUser.userKey = userKey;
         botUser.save(function (err) {
-          if(err) {
+          if (err) {
             return failCallback();
           } else {
             setBanks(botUser);
@@ -124,8 +173,8 @@ function getUserBankInfo(userKey, successCallback, failCallback) {
       userAccounts.banks = [];
       userAccounts.currentBankAccount = null;
       Bank.find({userKey: botUser.userKey}).exec(function (err, banks) {
-        if(!err && banks && banks.length > 0) {
-          for(var i=0; i<banks.length; i++) {
+        if (!err && banks && banks.length > 0) {
+          for (var i = 0; i < banks.length; i++) {
             userAccounts.banks.push({
               bankCode: banks[i].bankCode,
               bank: banks[i].bankName,
@@ -134,14 +183,14 @@ function getUserBankInfo(userKey, successCallback, failCallback) {
             })
           }
         }
-        if(botUser.currentBank) {
+        if (botUser.currentBank) {
           userAccounts.currentBankAccount = {
             bankCode: botUser.currentBank.bankCode,
             bank: botUser.currentBank.bankName,
             id: botUser.currentBank.userID,
             password: botUser.currentBank.userPassword
           };
-          if(botUser.currentAccount) {
+          if (botUser.currentAccount) {
             userAccounts.currentBankAccount.bankAccount = botUser.currentAccount;
           }
         }
@@ -219,28 +268,28 @@ function bankProcess(accountInfo, json, successCallback) {
     //      successCallback(text);
     //    }
     //  });
-  } else if(json.action == "bankHistory") {
+  } else if (json.action == "bankHistory") {
     scrappingCode = "103";
 
     var startDate = null, endDate = null;
-    if(json.periodWord) {
+    if (json.periodWord) {
       var today = new Date();
 
-      endDate = today.getFullYear() + "" + ("00"+(today.getMonth() + 1)).slice(-2) + "" + ("00"+today.getDate()).slice(-2);
+      endDate = today.getFullYear() + "" + ("00" + (today.getMonth() + 1)).slice(-2) + "" + ("00" + today.getDate()).slice(-2);
 
-      if(json.periodWord == "today") {
+      if (json.periodWord == "today") {
         startDate = endDate;
-      } else if(json.periodWord == "week") {
+      } else if (json.periodWord == "week") {
         var start = new Date();
         start.setDate(start.getDate() - 7);
-        startDate = start.getFullYear() + "" + ("00"+(start.getMonth() + 1)).slice(-2) + "" + ("00"+start.getDate()).slice(-2);
-      } else if(json.periodWord == "month") {
+        startDate = start.getFullYear() + "" + ("00" + (start.getMonth() + 1)).slice(-2) + "" + ("00" + start.getDate()).slice(-2);
+      } else if (json.periodWord == "month") {
         var start = new Date();
         start.setMonth(start.getMonth() - 1);
-        startDate = start.getFullYear() + "" + ("00"+(start.getMonth() + 1)).slice(-2) + "" + ("00"+start.getDate()).slice(-2);
+        startDate = start.getFullYear() + "" + ("00" + (start.getMonth() + 1)).slice(-2) + "" + ("00" + start.getDate()).slice(-2);
       }
 
-    } else if(json.startDate || json.endDate) {
+    } else if (json.startDate || json.endDate) {
       startDate = json.startDate;
       endDate = json.endDate;
     } else {
@@ -250,7 +299,7 @@ function bankProcess(accountInfo, json, successCallback) {
 
     //successCallback(startDate + " " + endDate);
 
-    request('http://211.232.21.89:8081/biz/scraping/BankScrapApp?'+
+    request('http://211.232.21.89:8081/biz/scraping/BankScrapApp?' +
       'action=' + scrappingCode + '&bank_id=' + accountInfo.bankCode + '&online_web_id=' + accountInfo.id + '&online_web_pwd=' + accountInfo.password + '&acct_no=' + accountInfo.bankAccount +
       '&start_date=' + startDate + '&end_date=' + endDate
       , function (error, response, body) {
@@ -258,23 +307,23 @@ function bankProcess(accountInfo, json, successCallback) {
           var serverText = response.body;
           var tokens = serverText.split("\r\n");
 
-          if(tokens[0] == "000") {
+          if (tokens[0] == "000") {
             var balance = tokens[1].split("\t")[0];
             var len = tokens.length;
-            for(i = 2; i < len; i++) {
+            for (i = 2; i < len; i++) {
               var tokens2 = tokens[i].split("\t");
 
-              if(json.ai) { // 입출금 지정한 경우
-                if(json.ai == "out" && tokens2[1] != "AI") continue;
-                else if(json.ai == "out" && tokens2[1] == "AI") continue;
+              if (json.ai) { // 입출금 지정한 경우
+                if (json.ai == "out" && tokens2[1] != "AI") continue;
+                else if (json.ai == "out" && tokens2[1] == "AI") continue;
               }
 
-              text +=  tokens2[0] + " " + tokens2[4] + " " + tokens2[2] + " " +  (tokens2[1] == "AI" ? "입금":"출금") + "\r\n";
+              text += tokens2[0] + " " + tokens2[4] + " " + tokens2[2] + " " + (tokens2[1] == "AI" ? "입금" : "출금") + "\r\n";
             }
-            text +=  "잔액 " + balance + "\r\n";
+            text += "잔액 " + balance + "\r\n";
 
             successCallback(attachText(text, json));
-          } else if(tokens[0] == "001") {
+          } else if (tokens[0] == "001") {
             text = startDate + "-" + endDate + "\r\n" + " 거래내역이 없습니다.\r\n다른 계좌조회는 '다른계좌' 입력해 주세요";
             successCallback(text);
           } else {
@@ -293,8 +342,8 @@ function bankProcess(accountInfo, json, successCallback) {
 }
 
 function attachText(text, json) {
-  if(json.preText) text = json.preText + "\r\n" + text;
-  if(json.postText) text = text + "\r\n" + json.postText;
+  if (json.preText) text = json.preText + "\r\n" + text;
+  if (json.postText) text = text + "\r\n" + json.postText;
   return text;
 }
 
