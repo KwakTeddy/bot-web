@@ -8,9 +8,13 @@ var request = require('request');
 exports.receivedMoneyBot = function(from, serverText, responseCallback) {
 
   var serverJSON = null;
+  serverText = serverText.replace(/%22 /gi, "\"");
+  serverText = serverText.replace(/ %22/gi, "\"");
+
   try { serverJSON = JSON.parse(serverText); } catch(e) {}
 
   if(serverJSON && typeof serverJSON == 'object') {
+
     getUserBankInfo(from, function (userAccounts) {
 
       if(serverJSON.action == "link") {
@@ -123,54 +127,94 @@ function bankProcess(accountInfo, json, successCallback) {
   } else if(json.action == "bankBalance") {
     scrappingCode = "104";
 
-    //successCallback("신한 371-12-3682362 100,000원 입니다.");
+    successCallback("신한 371-12-3682362 100,000원 입니다.");
 
-    request('http://211.232.21.89:8081/biz/scraping/BankScrapApp?' +
-      'action=' + scrappingCode + '&bank_id=' + accountInfo.bankCode + '&online_web_id=' + accountInfo.id + '&online_web_pwd=' + accountInfo.password + '&acct_no=' + accountInfo.bankAccount
-      , function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-          var serverText = response.body;
-          var tokens = serverText.split("\r\n");
-          var balance = tokens[1].split("\t")[2];
-          text =  accountInfo.bank + " " + accountInfo.bankAccount + " 잔액 " + balance + "\r\n";
-          text += "다른 계좌조회는 '다른계좌' 입력해 주세요"
-          successCallback(text, null);
-        } else {
-          console.error(response);
-          console.error(error);
-
-          text = "봇서버에서 응답을 받을 수 없습니다.";
-          successCallback(text);
-        }
-      });
+    //request('http://211.232.21.89:8081/biz/scraping/BankScrapApp?' +
+    //  'action=' + scrappingCode + '&bank_id=' + accountInfo.bankCode + '&online_web_id=' + accountInfo.id + '&online_web_pwd=' + accountInfo.password + '&acct_no=' + accountInfo.bankAccount
+    //  , function (error, response, body) {
+    //    if (!error && response.statusCode == 200) {
+    //      var serverText = response.body;
+    //      var tokens = serverText.split("\r\n");
+    //      var balance = tokens[1].split("\t")[2];
+    //      text =  accountInfo.bank + " " + accountInfo.bankAccount + " 잔액 " + balance + "\r\n";
+    //      text += "다른 계좌조회는 '다른계좌' 입력해 주세요"
+    //      successCallback(text, null);
+    //    } else {
+    //      console.error(response);
+    //      console.error(error);
+    //
+    //      text = "봇서버에서 응답을 받을 수 없습니다.";
+    //      successCallback(text);
+    //    }
+    //  });
   } else if(json.action == "bankHistory") {
     scrappingCode = "103";
-    accountInfo.startDate = "20160620";
-    accountInfo.endDate = "20160623";
+
+    var startDate = null, endDate = null;
+    if(json.periodWord) {
+      var today = new Date();
+
+      endDate = today.getFullYear() + "" + ("00"+(today.getMonth() + 1)).slice(-2) + "" + ("00"+today.getDate()).slice(-2);
+
+      if(json.periodWord == "today") {
+        startDate = endDate;
+      } else if(json.periodWord == "week") {
+        var start = new Date();
+        start.setDate(start.getDate() - 7);
+        startDate = start.getFullYear() + "" + ("00"+(start.getMonth() + 1)).slice(-2) + "" + ("00"+start.getDate()).slice(-2);
+      } else if(json.periodWord == "month") {
+        var start = new Date();
+        start.setMonth(start.getMonth() - 1);
+        startDate = start.getFullYear() + "" + ("00"+(start.getMonth() + 1)).slice(-2) + "" + ("00"+start.getDate()).slice(-2);
+      }
+
+    } else if(json.startDate || json.endDate) {
+      startDate = json.startDate;
+      endDate = json.endDate;
+    } else {
+      startDate = "20160620";
+      endDate = "20160623";
+    }
+
+    //successCallback(startDate + " " + endDate);
 
     request('http://211.232.21.89:8081/biz/scraping/BankScrapApp?'+
       'action=' + scrappingCode + '&bank_id=' + accountInfo.bankCode + '&online_web_id=' + accountInfo.id + '&online_web_pwd=' + accountInfo.password + '&acct_no=' + accountInfo.bankAccount +
-      '&start_date=' + accountInfo.startDate + '&end_date=' + accountInfo.endDate
+      '&start_date=' + startDate + '&end_date=' + endDate
       , function (error, response, body) {
         if (!error && response.statusCode == 200) {
           var serverText = response.body;
           var tokens = serverText.split("\r\n");
-          var balance = tokens[1].split("\t")[0];
-          var len = tokens.length;
-          for(i = 2; i < len; i++) {
-            var tokens2 = tokens[i].split("\t");
 
-            text +=  tokens2[0] + " " + tokens2[4] + " " + tokens2[2] + " " +  (tokens2[1] == "AI" ? "입금":"출금") + "\r\n";
+          if(tokens[0] == "000") {
+            var balance = tokens[1].split("\t")[0];
+            var len = tokens.length;
+            for(i = 2; i < len; i++) {
+              var tokens2 = tokens[i].split("\t");
+
+              if(json.ai) { // 입출금 지정한 경우
+                if(json.ai == "입금" && tokens2[1] != "AI") continue;
+                else if(json.ai == "출금" && tokens2[1] == "AI") continue;
+              }
+
+              text +=  tokens2[0] + " " + tokens2[4] + " " + tokens2[2] + " " +  (tokens2[1] == "AI" ? "입금":"출금") + "\r\n";
+            }
+            text +=  "잔액 " + balance + "\r\n";
+            text += "다른 계좌조회는 '다른계좌' 입력해 주세요"
+
+            successCallback(text, null);
+          } else if(tokens[0] == "001") {
+            text = startDate + "-" + endDate + "\r\n" + " 거래내역이 없습니다.\r\n다른 계좌조회는 '다른계좌' 입력해 주세요";
+            successCallback(text);
+          } else {
+            text = "계좌 내역을 읽어올 수 없습니다.\r\n잠시후 다시 시도해 주세요";
+            successCallback(text);
           }
-          text +=  "잔액 " + balance + "\r\n";
-          text += "다른 계좌조회는 '다른계좌' 입력해 주세요"
-
-          successCallback(text, null);
         } else {
           console.error(response);
           console.error(error);
 
-          text = "봇서버에서 응답을 받을 수 없습니다.";
+          text = "계좌 내역을 읽어올 수 없습니다.\r\n잠시후 다시 시도해 주세요";
           successCallback(text);
         }
       });

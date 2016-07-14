@@ -12,7 +12,7 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 
     // TODO: Get Server, Bot List
     vm.servers = ['localhost:1024'];
-    vm.bots = ['HARRY'];
+    vm.bots = ['MONEYBOT'];
 
     vm.server = vm.servers[0];
     vm.bot = vm.bots[0];

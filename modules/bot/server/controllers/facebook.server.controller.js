@@ -181,10 +181,10 @@ function receivedMessage(event) {
   var messageText = message.text;
   var messageAttachments = message.attachments;
 
-  chat.write(senderID, event.botId, messageText, function (serverText) {
-    moneybot.receivedMoneyBot(senderID, serverText, function(retText, url) {
+  chat.write(senderID, event.botId, messageText, function (retText, url) {
+    //moneybot.receivedMoneyBot(senderID, serverText, function(retText, url) {
       respondMessage(senderID, retText, url);
-    });
+    //});
   });
 }
 
