@@ -21,6 +21,8 @@ exports.receivedMoneyBot = function(from, serverText, responseCallback) {
         responseCallback(serverJSON.text.replace(/ n /gi, "\n"), url);
 
       } else {
+
+
         if(serverJSON.action == "selectAccount") {
           var num = serverJSON.accountNumber-1;
 
