@@ -12,15 +12,18 @@
   <!-- CSS  -->
   <link href="/css/bank/plugin-min.css" type="text/css" rel="stylesheet">
   <link href="/css/bank/custom-min.css" type="text/css" rel="stylesheet" >
+  <link href="/css/custom_du.css" type="text/css" rel="stylesheet" >
 </head>
 <body id="top" class="scrollspy" ng-controller="BankSaveController as vm" ng-init="vm.init()">
 <div class="navbar-fixed">
   <nav id="nav_f" class="yellow" role="navigation">
     <div class="container">
-      <div class="nav-wrapper">
-        <a href="#" id="logo-container" class="brand-logo brown-text">은행 저장</a>
+      <div class="nav-wrapper t_center">
+        <a href="#" id="logo-container" class="saxsax">사용자 정보를 저장하세요.</a>
       </div>
     </div>
+
+
   </nav>
 </div>
 
@@ -54,17 +57,20 @@
       <form class="col s12" name="saveForm" ng-submit="vm.save(saveForm.$valid)">
         <div class="input-field col s12">
           <input id="user_id" name="id" type="text" class="validate black-text" required
-          ng-model="vm.bank.userID">
-          <label for="user_id" class="brown-text">아이디</label>
+          ng-model="vm.bank.userID" >
+          <label for="user_id" class="brown-text ">아이디</label>
         </div>
         <div class="input-field col s12">
           <input id="user_password" name="name" type="password" class="validate black-text" required
           ng-model="vm.bank.userPassword">
-          <label for="user_password" class="brown-text">비밀번호</label>
+          <label for="user_password" class="brown-text ">비밀번호</label>
         </div>
-        <button class="col offset-s1 s10 btn waves-effect waves-light yellow darken-1 brown-text" type="submit" ng-disabled="!vm.bank.bankName">
+        <button class="bank_butt mt20" type="submit" ng-disabled="!vm.bank.bankName">
           저장
         </button>
+<!--         <button class="col offset-s1 s10 btn waves-effect waves-light yellow darken-1 brown-text" type="submit" ng-disabled="!vm.bank.bankName">
+          저장
+        </button> -->
       </form>
     </div>
   </div>
