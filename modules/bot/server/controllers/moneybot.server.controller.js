@@ -9,7 +9,8 @@ var config = require(path.resolve('./config/config'));
 // var botUser = require('../../../bot-users/server/controllers/bot-users.server.controller.js');
 var mongoose = require('mongoose'),
   Bank = mongoose.model('Bank'),
-  BotUser = mongoose.model('BotUser');
+  BotUser = mongoose.model('BotUser'),
+  Faq = mongoose.model('Faq');
 
 exports.receivedMoneyBot = function (from, serverText, responseCallback) {
 
@@ -23,20 +24,27 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
   try { serverJSON = JSON.parse(serverText); } catch(e) {}
 
   if (serverJSON && typeof serverJSON == 'object') {
+    if (serverJSON.action == "link") {
+      var url = serverJSON.url;
+      url = url.replace(/%26/gi, "&");
+      url = url.replace(/%5F/gi, "_");
+      serverJSON.url = url;
 
-    getUserBankInfo(from, function (userAccounts) {
+      responseCallback(serverJSON.content.replace(/ n /gi, "\n"), serverJSON);
 
-      if (serverJSON.action == "link") {
-        var url = serverJSON.url;
-        url = url.replace(/%26/gi, "&");
-        url = url.replace(/%5F/gi, "_");
-        serverJSON.url = url;
-
+    } else if(serverJSON.action == "text") {
+      responseCallback(serverJSON.content.replace(/ n /gi, "\n"), serverJSON);
+    } else if(serverJSON.action == "faq") {
+      Faq.findById(serverJSON.id).exec(function (err, faq) {
+        if (err || !faq) {
+          serverJSON.content = '죄송합니다! 일치하는 답변을 찾지 못했습니다ㅠㅜ';
+        } else {
+          serverJSON.content = faq.content;
+        }
         responseCallback(serverJSON.content.replace(/ n /gi, "\n"), serverJSON);
-
-      } else if(serverJSON.action == "text") {
-        responseCallback(serverJSON.content.replace(/ n /gi, "\n"), serverJSON);
-      } else {
+      });
+    } else {
+      getUserBankInfo(from, function (userAccounts) {
         if(userAccounts.banks.length <= 0 || !userAccounts.currentBankAccount) {
           serverJSON.url = config.host + '/banks/save/' + from;
           responseCallback('은행 계정 정보를 입력해주세요!'.replace(/ n /gi, "\n"), serverJSON);
@@ -81,9 +89,8 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
             });
           }
         }
-      }
-    })
-
+      });
+    }
   } else {
     responseCallback(serverText, serverJSON);
   }
