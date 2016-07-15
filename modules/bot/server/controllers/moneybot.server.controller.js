@@ -59,8 +59,8 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
         responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
       });
     } else if (serverJSON.action == "selectproduct") {
-      serverJSON.id = global.users[from].products[serverJSON.select].id;
-      global.users[from].products = null;
+      var selectProduct = global.users[from].products[serverJSON.select-1];
+      serverJSON.id = selectProduct._id;
       Product.findById(serverJSON.id).exec(function (err, product) {
         if (err || !product) {
           serverJSON.content = '죄송합니다! 일치하는 상품을 찾지 못했습니다ㅠㅜ';
@@ -70,6 +70,8 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
 
         responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
       });
+      global.users[from].products = null;
+
     } else if (serverJSON.action == "mortgage"
       || serverJSON.action == "lend"
       || serverJSON.action == "credit"
@@ -79,6 +81,8 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
         if (err || !products || products.length <= 0) {
           serverJSON.content = '죄송합니다! 일치하는 상품을 찾지 못했습니다ㅠㅜ';
         } else {
+          if (!global.users) global.users = {};
+          if (!global.users[from]) global.users[from] = {};
           global.users[from].products = products;
 
           serverJSON.content = '';
