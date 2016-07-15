@@ -74,7 +74,7 @@ function respondMessage(res, text, json) {
         "text": text,
         "message_button": {
           "label": "상세정보보기",
-          "url": url
+          "url": json.url
         }
       }
     };
