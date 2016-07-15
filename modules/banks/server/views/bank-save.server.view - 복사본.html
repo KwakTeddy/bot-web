@@ -14,7 +14,11 @@
   <link href="/css/bank/custom-min.css" type="text/css" rel="stylesheet" >
   <link href="/css/custom_du.css" type="text/css" rel="stylesheet" >
 </head>
+
+
+
 <body id="top" class="scrollspy" ng-controller="BankSaveController as vm" ng-init="vm.init()">
+
 <div class="navbar-fixed">
   <nav id="nav_f" class="yellow" role="navigation">
     <div class="container">
@@ -31,11 +35,13 @@
   <div class="container">
     <div class="row">
       <div class="col s3" ng-repeat="bank in vm.BANKS">
+
+
         <div class="card card-avatar">
           <div class="card-content" ng-class="{'brown': bank.bankName == vm.bank.bankName, 'yellow': bank.bankName != vm.bank.bankName}"
-          ng-click="vm.selectBank(bank)" style="box-shadow: none;">
+          ng-click="vm.selectBank(bank)">
           <span class="card-title activator" >
-            <div class="brown-text fw700 f16"
+            <div class="brown-text fw700"
                  ng-class="{'white-text': bank == vm.bank, 'brown-text': bank != vm.bank}"
                  ng-bind="bank.bankName"></div>
             <!--<small>-->
@@ -73,6 +79,10 @@
         </button>
       </form>
     </div>
+
+      <div class="foot_info">Finger INC X MoneyBrain</div>
+
+
   </div>
 </div>
 <div ng-show="vm.error" class="container">
