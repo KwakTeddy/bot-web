@@ -34,18 +34,19 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
       url = url.replace(/%5F/gi, "_");
       serverJSON.url = url;
 
-      responseCallback(serverJSON.content.replace(/ n /gi, "\n"), serverJSON);
-
+      responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
     } else if (serverJSON.action == "text") {
-      responseCallback(serverJSON.content.replace(/ n /gi, "\n"), serverJSON);
+      responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
+
     } else if (serverJSON.action == "faq") {
       Faq.findById(serverJSON.id).exec(function (err, faq) {
         if (err || !faq) {
           serverJSON.content = '죄송합니다! 일치하는 답변을 찾지 못했습니다ㅠㅜ';
         } else {
-          serverJSON.content = faq.title + '\n' + faq.content;
+          serverJSON.content = "[" + faq.title + "]" + '\n\n' + faq.content;
         }
-        responseCallback(serverJSON.content.replace(/ n /gi, "\n"), serverJSON);
+
+        responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
       });
     } else if (serverJSON.action == "product") {
       Product.findById(serverJSON.id).exec(function (err, product) {
@@ -54,7 +55,20 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
         } else {
           serverJSON.content = product.content;
         }
-        responseCallback(serverJSON.content.replace(/ n /gi, "\n"), serverJSON);
+
+        responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
+      });
+    } else if (serverJSON.action == "selectproduct") {
+      serverJSON.id = global.users[from].products[serverJSON.select].id;
+      global.users[from].products = null;
+      Product.findById(serverJSON.id).exec(function (err, product) {
+        if (err || !product) {
+          serverJSON.content = '죄송합니다! 일치하는 상품을 찾지 못했습니다ㅠㅜ';
+        } else {
+          serverJSON.content = product.title + "\n" + product.content;
+        }
+
+        responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
       });
     } else if (serverJSON.action == "mortgage"
       || serverJSON.action == "lend"
@@ -65,6 +79,8 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
         if (err || !products || products.length <= 0) {
           serverJSON.content = '죄송합니다! 일치하는 상품을 찾지 못했습니다ㅠㅜ';
         } else {
+          global.users[from].products = products;
+
           serverJSON.content = '';
           if (serverJSON.action == 'mortgage'
             || serverJSON.action == 'lend'
@@ -90,24 +106,26 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
             }
           }
         }
-        responseCallback(serverJSON.content.replace(/ n /gi, "\n"), serverJSON);
+        responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
       });
     } else {
       getUserBankInfo(from, function (userAccounts) {
         if (userAccounts.banks.length <= 0 || !userAccounts.currentBankAccount) {
           serverJSON.url = config.host + '/banks/save/' + from;
-          responseCallback('은행 계정 정보를 입력해주세요!'.replace(/ n /gi, "\n"), serverJSON);
+          responseCallback("은행 계정 정보를 입력해주세요!", serverJSON);
           if (global.users && global.users[from] && global.users[from].userAccounts) {
             global.users[from] = null;
           }
         } else {
-          if (!userAccounts.currentBankAccount.bankAccount) {
+          if (serverJSON.action != "selectAccount" && !userAccounts.currentBankAccount.bankAccount) {
             bankProcess(userAccounts.currentBankAccount, {action: 'bankAccounts'}, function (retText, retJson) {
               if (!global.users) global.users = {};
               if (!global.users[from]) global.users[from] = {};
               global.users[from].selectAccounts = retJson;
 
-              doBankProcess();
+              responseCallback(retText, serverJSON);
+
+              //doBankProcess();
             });
           } else {
             doBankProcess();
@@ -134,7 +152,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
                 global.users[from].selectAccounts = retJson;
               }
 
-              responseCallback(retText);
+              responseCallback(retText, serverJSON);
             });
           }
         }
@@ -248,26 +266,26 @@ function bankProcess(accountInfo, json, successCallback) {
   } else if (json.action == "bankBalance") {
     scrappingCode = "104";
 
-    text = "신한 371-12-3682362 100,000원 입니다.";
-    successCallback(attachText(text, json));
+    //text = "신한 371-12-3682362 100,000원 입니다.";
+    //successCallback(attachText(text, json));
 
-    //request('http://211.232.21.89:8081/biz/scraping/BankScrapApp?' +
-    //  'action=' + scrappingCode + '&bank_id=' + accountInfo.bankCode + '&online_web_id=' + accountInfo.id + '&online_web_pwd=' + accountInfo.password + '&acct_no=' + accountInfo.bankAccount
-    //  , function (error, response, body) {
-    //    if (!error && response.statusCode == 200) {
-    //      var serverText = response.body;
-    //      var tokens = serverText.split("\r\n");
-    //      var balance = tokens[1].split("\t")[2];
-    //      text =  accountInfo.bank + " " + accountInfo.bankAccount + " 잔액 " + balance + "\r\n";
-    //      successCallback(attachText(text, json));
-    //    } else {
-    //      console.error(response);
-    //      console.error(error);
-    //
-    //      text = "봇서버에서 응답을 받을 수 없습니다.";
-    //      successCallback(text);
-    //    }
-    //  });
+    request('http://211.232.21.89:8081/biz/scraping/BankScrapApp?' +
+      'action=' + scrappingCode + '&bank_id=' + accountInfo.bankCode + '&online_web_id=' + accountInfo.id + '&online_web_pwd=' + accountInfo.password + '&acct_no=' + accountInfo.bankAccount
+      , function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+          var serverText = response.body;
+          var tokens = serverText.split("\r\n");
+          var balance = tokens[1].split("\t")[2];
+          text =  accountInfo.bank + " " + accountInfo.bankAccount + " 잔액 " + balance + "\r\n";
+          successCallback(attachText(text, json));
+        } else {
+          console.error(response);
+          console.error(error);
+
+          text = "봇서버에서 응답을 받을 수 없습니다.";
+          successCallback(text);
+        }
+      });
   } else if (json.action == "bankHistory") {
     scrappingCode = "103";
 
@@ -343,7 +361,11 @@ function bankProcess(accountInfo, json, successCallback) {
 
 function attachText(text, json) {
   if (json.preText) text = json.preText + "\r\n" + text;
+  else if (json.pretext) text = json.pretext + "\r\n" + text;
+
   if (json.postText) text = text + "\r\n" + json.postText;
+  else if (json.posttext) text = text + "\r\n" + json.posttext;
+
   return text;
 }
 
