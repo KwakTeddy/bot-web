@@ -79,6 +79,8 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
         if (err || !products || products.length <= 0) {
           serverJSON.content = '죄송합니다! 일치하는 상품을 찾지 못했습니다ㅠㅜ';
         } else {
+          if (!global.users) global.users = {};
+          if (!global.users[from]) global.users[from] = {};
           global.users[from].products = products;
 
           serverJSON.content = '';
