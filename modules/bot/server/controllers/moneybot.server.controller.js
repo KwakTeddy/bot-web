@@ -60,7 +60,8 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
     //    responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
     //  });
     } else if (serverJSON.action == "selectproduct") {
-      var selectProduct = global.users[from].products[serverJSON.select - 1];
+      var sel = parseNumber(serverJSON.select);
+      var selectProduct = global.users[from].products[sel - 1];
       serverJSON.id = selectProduct._id;
       Product.findById(serverJSON.id).exec(function (err, product) {
         if (err || !product) {
@@ -84,6 +85,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
           global.users[from].products = products;
 
           serverJSON.content = '';
+          serverJSON.buttons = [];
           if (serverJSON.action == 'mortgage'
             || serverJSON.action == 'lend'
             || serverJSON.action == 'credit') {
@@ -95,6 +97,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
                 serverJSON.content += '\n';
               }
               serverJSON.content += ((i+1) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
+              serverJSON.buttons.push((i+1) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
             }
           } else {
             for (var i = products.length-1; i >= 0; i--) {
@@ -105,6 +108,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
                 serverJSON.content += '\n';
               }
               serverJSON.content += ((products.length - i) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
+              serverJSON.buttons.push((products.length - i) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
             }
           }
         }
@@ -409,6 +413,23 @@ function attachText(text, json) {
   else if (json.posttext) text = text + "\r\n" + json.posttext;
 
   return text;
+}
+
+function parseNumber(text, json) {
+  var _text = text.trim();
+  if(_text.endsWith(".")) _text = _text.substr(0, _text.length -1);
+  else if(_text.endsWith(",")) _text = _text.substr(0, _text.length -1);
+  else if(_text.startsWith("일") || _text.startsWith("처") || _text.startsWith("첫")) _text = "1";
+  else if(_text.startsWith("이") || _text.startsWith("두") || _text.startsWith("둘")) _text = "2";
+  else if(_text.startsWith("삼") || _text.startsWith("세") || _text.startsWith("셋")) _text = "3";
+  else if(_text.startsWith("사") || _text.startsWith("네") || _text.startsWith("넷")) _text = "4";
+  else if(_text.startsWith("오") || _text.startsWith("다섯")) _text = "5";
+  else if(_text.startsWith("육") || _text.startsWith("여섯")) _text = "6";
+  else if(_text.startsWith("칠") || _text.startsWith("일곱")) _text = "7";
+  else if(_text.startsWith("팔") || _text.startsWith("여덟")) _text = "8";
+  else if(_text.startsWith("구") || _text.startsWith("아홉")) _text = "9";
+
+  return _text;
 }
 
 //function openUserBankInfo() {
