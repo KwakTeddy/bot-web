@@ -74,7 +74,7 @@ function respondMessage(res, text, json) {
         "text": text,
         "message_button": {
           "label": "상세정보보기",
-          "url": url
+          "url": json.url
         }
       }
     };
@@ -90,6 +90,23 @@ function respondMessage(res, text, json) {
         "text": text
       }
     };
+
+
+    if(json && json.url) {
+      sendMsg.message.message_button =
+      {
+        "label": "상세정보보기",
+        "url": json.url
+      };
+    }
+
+    if(json && json.buttons) {
+      sendMsg.keyboard =
+      {
+        "type": "buttons",
+        "buttons": json.buttons
+      };
+    }
 
     console.log(JSON.stringify(sendMsg));
     res.write(JSON.stringify(sendMsg));
