@@ -19,6 +19,9 @@
         templateUrl: 'modules/bot-users/client/views/list-bot-users.client.view.html',
         controller: 'BotUsersListController',
         controllerAs: 'vm',
+        resolve: {
+          botUsersResolve: getBotUsers
+        },
         data: {
           pageTitle: 'Bot users List'
         }
@@ -63,8 +66,12 @@
       });
   }
 
-  getBotUser.$inject = ['$stateParams', 'BotUsersService'];
+  getBotUsers.$inject = ['BotUsersService'];
+  function getBotUsers(BotUsersService) {
+    return BotUsersService.query().$promise;
+  }
 
+  getBotUser.$inject = ['$stateParams', 'BotUsersService'];
   function getBotUser($stateParams, BotUsersService) {
     return BotUsersService.get({
       botUserId: $stateParams.botUserId

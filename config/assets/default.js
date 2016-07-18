@@ -20,7 +20,9 @@ module.exports = {
         'public/lib/owasp-password-strength-test/owasp-password-strength-test.js',
         'public/lib/codemirror/lib/codemirror.js',
         'public/lib/codemirror/mode/javascript/javascript.js',
-        'public/lib/angular-ui-codemirror/ui-codemirror.js'
+        'public/lib/angular-ui-codemirror/ui-codemirror.js',
+        'public/lib/angular-ui-select/dist/select.js',
+        'public/lib/angular-sanitize/angular-sanitize.js'
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
     },

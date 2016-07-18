@@ -5,11 +5,11 @@
     .module('bot-users')
     .controller('BotUsersListController', BotUsersListController);
 
-  BotUsersListController.$inject = ['BotUsersService'];
+  BotUsersListController.$inject = ['botUsersResolve'];
 
-  function BotUsersListController(BotUsersService) {
+  function BotUsersListController(botUsers) {
     var vm = this;
 
-    vm.botUsers = BotUsersService.query();
+    vm.botUsers = botUsers;
   }
 })();
