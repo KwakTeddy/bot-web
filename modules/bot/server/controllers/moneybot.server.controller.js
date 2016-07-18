@@ -18,6 +18,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
   var serverJSON = null;
   serverText = serverText.replace(/%22 /gi, "\"");
   serverText = serverText.replace(/ %22/gi, "\"");
+  serverText = serverText.replace(/%22/gi, "\"");
 
   serverText = serverText.replace(/%5b/gi, "[");
   serverText = serverText.replace(/%5d/gi, "]");
@@ -48,18 +49,18 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
 
         responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
       });
-    } else if (serverJSON.action == "product") {
-      Product.findById(serverJSON.id).exec(function (err, product) {
-        if (err || !product) {
-          serverJSON.content = '죄송합니다! 일치하는 상품을 찾지 못했습니다ㅠㅜ';
-        } else {
-          serverJSON.content = product.content;
-        }
-
-        responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
-      });
+    //} else if (serverJSON.action == "product") {
+    //  Product.findById(serverJSON.id).exec(function (err, product) {
+    //    if (err || !product) {
+    //      serverJSON.content = '죄송합니다! 일치하는 상품을 찾지 못했습니다ㅠㅜ';
+    //    } else {
+    //      serverJSON.content = product.content;
+    //    }
+    //
+    //    responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
+    //  });
     } else if (serverJSON.action == "selectproduct") {
-      var selectProduct = global.users[from].products[serverJSON.select-1];
+      var selectProduct = global.users[from].products[serverJSON.select - 1];
       serverJSON.id = selectProduct._id;
       Product.findById(serverJSON.id).exec(function (err, product) {
         if (err || !product) {
@@ -72,12 +73,9 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
       });
       global.users[from].products = null;
 
-    } else if (serverJSON.action == "mortgage"
-      || serverJSON.action == "lend"
-      || serverJSON.action == "credit"
-      || serverJSON.action == "deposit"
-      || serverJSON.action == "installment") {
-      Product.find({category: serverJSON.action}).sort('+rate').exec(function (err, products) {
+    } else if(serverJSON.action == "recommendproduct") {
+
+      Product.find({category: serverJSON.category}).sort('+rate').exec(function (err, products) {
         if (err || !products || products.length <= 0) {
           serverJSON.content = '죄송합니다! 일치하는 상품을 찾지 못했습니다ㅠㅜ';
         } else {
@@ -112,6 +110,46 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
         }
         responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
       });
+    //} else if (serverJSON.action == "mortgage"
+    //  || serverJSON.action == "lend"
+    //  || serverJSON.action == "credit"
+    //  || serverJSON.action == "deposit"
+    //  || serverJSON.action == "installment") {
+    //  Product.find({category: serverJSON.action}).sort('+rate').exec(function (err, products) {
+    //    if (err || !products || products.length <= 0) {
+    //      serverJSON.content = '죄송합니다! 일치하는 상품을 찾지 못했습니다ㅠㅜ';
+    //    } else {
+    //      if (!global.users) global.users = {};
+    //      if (!global.users[from]) global.users[from] = {};
+    //      global.users[from].products = products;
+    //
+    //      serverJSON.content = '';
+    //      if (serverJSON.action == 'mortgage'
+    //        || serverJSON.action == 'lend'
+    //        || serverJSON.action == 'credit') {
+    //        for (var i = 0; i < products.length; i++) {
+    //          if (i >= 3) {
+    //            break;
+    //          }
+    //          if(serverJSON.content.length > 0) {
+    //            serverJSON.content += '\n';
+    //          }
+    //          serverJSON.content += ((i+1) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
+    //        }
+    //      } else {
+    //        for (var i = products.length-1; i >= 0; i--) {
+    //          if (i <= products.length-4) {
+    //            break;
+    //          }
+    //          if(serverJSON.content.length > 0) {
+    //            serverJSON.content += '\n';
+    //          }
+    //          serverJSON.content += ((products.length - i) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
+    //        }
+    //      }
+    //    }
+    //    responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
+    //  });
     } else {
       getUserBankInfo(from, function (userAccounts) {
         if (userAccounts.banks.length <= 0 || !userAccounts.currentBankAccount) {
