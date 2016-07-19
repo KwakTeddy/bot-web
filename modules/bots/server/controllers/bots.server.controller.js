@@ -27,7 +27,7 @@ exports.create = function (req, res) {
       fs.mkdirSync(botFolder);
     } catch(e) {
       return res.status(400).send({
-        message: 'Create Directory Failed'
+        message: 'Create Directory Failed: ' + botFolder
       });
     }
   }
