@@ -68,6 +68,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
           serverJSON.content = '죄송합니다! 일치하는 상품을 찾지 못했습니다ㅠㅜ';
         } else {
           serverJSON.content = product.title + "\n" + product.content;
+          serverJSON.url = product.link;
         }
 
         responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
@@ -82,24 +83,13 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
         } else {
           if (!global.users) global.users = {};
           if (!global.users[from]) global.users[from] = {};
-          global.users[from].products = products;
+          global.users[from].products = [];
 
           serverJSON.content = '';
           serverJSON.buttons = [];
-          if (serverJSON.action == 'mortgage'
-            || serverJSON.action == 'lend'
-            || serverJSON.action == 'credit') {
-            for (var i = 0; i < products.length; i++) {
-              if (i >= 3) {
-                break;
-              }
-              if(serverJSON.content.length > 0) {
-                serverJSON.content += '\n';
-              }
-              serverJSON.content += ((i+1) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
-              serverJSON.buttons.push((i+1) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
-            }
-          } else {
+          if (serverJSON.category == 'mortgage'
+            || serverJSON.category == 'lend'
+            || serverJSON.category == 'credit') {
             for (var i = products.length-1; i >= 0; i--) {
               if (i <= products.length-4) {
                 break;
@@ -109,6 +99,21 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
               }
               serverJSON.content += ((products.length - i) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
               serverJSON.buttons.push((products.length - i) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
+
+              global.users[from].products.push(products[i]);
+            }
+          } else {
+            for (var i = 0; i < products.length; i++) {
+              if (i >= 3) {
+                break;
+              }
+              if(serverJSON.content.length > 0) {
+                serverJSON.content += '\n';
+              }
+              serverJSON.content += ((i+1) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
+              serverJSON.buttons.push((i+1) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
+
+              global.users[from].products.push(products[i]);
             }
           }
         }
