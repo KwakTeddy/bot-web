@@ -207,8 +207,11 @@ var initGlobalConfig = function () {
   validateSessionSecret(config);
 
   console.log('chatServer: ' + config.chatServer);
-  if(process.env.CHAT_SERVER) {
+  if(process.env && process.env.CHAT_SERVER) {
+    console.log('CHAT_SERVER: ' + process.env.CHAT_SERVER);
     config.chatServer = process.env.CHAT_SERVER;
+  } else {
+    console.log('process.env does not exist');
   }
   console.log('chatServer: ' + config.chatServer);
   // Expose configuration utilities
