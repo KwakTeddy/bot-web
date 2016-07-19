@@ -206,10 +206,11 @@ var initGlobalConfig = function () {
   // Validate session secret
   validateSessionSecret(config);
 
+  console.log('chatServer: ' + config.chatServer);
   if(process.env.CHAT_SERVER) {
     config.chatServer = process.env.CHAT_SERVER;
   }
-
+  console.log('chatServer: ' + config.chatServer);
   // Expose configuration utilities
   config.utils = {
     getGlobbedPaths: getGlobbedPaths,
