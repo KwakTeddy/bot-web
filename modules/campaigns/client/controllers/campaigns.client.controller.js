@@ -6,15 +6,21 @@
     .module('campaigns')
     .controller('CampaignsController', CampaignsController);
 
-  CampaignsController.$inject = ['$scope', '$state', 'Authentication', 'campaignResolve', 'botUsersResolve', 'FileUploader', 'CampaignUsersService'];
+  CampaignsController.$inject = ['$scope', '$state', 'Authentication', 'campaignResolve', 'botUsersResolve', 'campaignUsersResolve', 'FileUploader', 'CampaignUsersService'];
 
-  function CampaignsController($scope, $state, Authentication, campaign, botUsers, FileUploader, CampaignUsersService) {
+  function CampaignsController($scope, $state, Authentication, campaign, botUsers, campaignUsers, FileUploader, CampaignUsersService) {
     var vm = this;
 
     vm.categories = [
       '설문', '이벤트'
     ];
     vm.botUsers = botUsers;
+    vm.campaignUsers = [];
+    if(campaignUsers) {
+      angular.forEach(campaignUsers, function (campaignUser) {
+        vm.campaignUsers.push(campaignUser.botUser);
+      });
+    }
 
     vm.authentication = Authentication;
     vm.campaign = campaign;
