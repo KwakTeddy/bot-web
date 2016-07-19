@@ -26,5 +26,9 @@
     vm.uploader.onAfterAddingFile = function(fileItem) {
       vm.image = fileItem.file.name;
     };
+
+    vm.send = function () {
+      console.log('send: ' + vm.text);
+    }
   }
 })();

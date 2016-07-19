@@ -33,7 +33,8 @@
         controllerAs: 'vm',
         resolve: {
           campaignResolve: newCampaign,
-          botUsersResolve: getBotUsers
+          botUsersResolve: getBotUsers,
+          campaignUsersResolve: getCampaignUsers
         },
         data: {
           // roles: ['user', 'admin'],
@@ -47,7 +48,8 @@
         controllerAs: 'vm',
         resolve: {
           campaignResolve: getCampaign,
-          botUsersResolve: getBotUsers
+          botUsersResolve: getBotUsers,
+          campaignUsersResolve: getCampaignUsers
         },
         data: {
           // roles: ['user', 'admin'],
@@ -61,7 +63,8 @@
         controllerAs: 'vm',
         resolve: {
           campaignResolve: getCampaign,
-          botUsersResolve: getBotUsers
+          botUsersResolve: getBotUsers,
+          campaignUsersResolve: getCampaignUsers
         },
         data:{
           pageTitle: 'Custom action {{ articleResolve.name }}'
@@ -98,9 +101,13 @@
 
   getCampaignUsers.$inject = ['$stateParams', 'CampaignUsersService'];
   function getCampaignUsers($stateParams, CampaignUsersService) {
-    return CampaignUsersService.query({
-      campaignId: $stateParams.campaignId
-    }).$promise;
+    if($stateParams.campaignId) {
+      return CampaignUsersService.query({
+        campaignId: $stateParams.campaignId
+      }).$promise;
+    } else {
+      return null;
+    }
   }
   getBotUsers.$inject = ['BotUsersService'];
   function getBotUsers(BotUsersService) {

@@ -5,11 +5,12 @@
     .module('campaigns')
     .controller('CampaignUsersController', CampaignUsersController);
 
-  CampaignUsersController.$inject = ['campaignUsersResolve'];
+  CampaignUsersController.$inject = ['campaignResolve', 'campaignUsersResolve'];
 
-  function CampaignUsersController(campaignUsers) {
+  function CampaignUsersController(campaign, campaignUsers) {
     var vm = this;
 
+    vm.campaign = campaign;
     vm.campaignUsers = campaignUsers;
   }
 })();
