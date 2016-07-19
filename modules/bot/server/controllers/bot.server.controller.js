@@ -29,7 +29,7 @@ exports.write = function(from, to, text, successCallback, errorCallback, endCall
         });
       }
     });
-
+ 
   } else {
     var chatSocket = net.createConnection(chatSocketConfig, function(){
       var payload = from + '\x00' + to + '\x00' + text + '\x00';
