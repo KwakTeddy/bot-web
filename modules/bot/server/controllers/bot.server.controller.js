@@ -22,9 +22,8 @@ exports.write = function(from, to, text, successCallback, errorCallback, endCall
 
           var serverJSON = global.users[from].lastJSON;
           global.users[from].lastJSON = null;
-          moneybot.receivedMoneyBot(msg.user, JSON.stringify(serverJSON), function (retText, json) {
-            socket.emit('send_msg', retText + (json && json.url ? " url: " + json.url : "") + " " +
-              (json && json.buttons ? " buttons: " + json.buttons : "")); // FROM SERVER
+          moneybot.receivedMoneyBot(from, JSON.stringify(serverJSON), function (retText, json) {
+            successCallback(retText, json);
           });
         });
       }
