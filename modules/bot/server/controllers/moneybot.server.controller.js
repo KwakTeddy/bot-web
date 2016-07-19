@@ -24,6 +24,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
   serverText = serverText.replace(/%5d/gi, "]");
 
   serverText = serverText.replace(/%0a/gi, "\\n");
+  serverText = serverText.replace(/ url/gi, "url");
 
   try {
     serverJSON = JSON.parse(serverText);
