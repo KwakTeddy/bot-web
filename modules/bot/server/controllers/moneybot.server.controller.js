@@ -163,7 +163,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
       getUserBankInfo(from, function (userAccounts) {
         if (userAccounts.banks.length <= 0 || !userAccounts.currentBankAccount) {
           serverJSON.url = config.host + '/banks/save/' + from;
-          responseCallback("은행 계정 정보를 입력해주세요!", serverJSON);
+          responseCallback("은행 계정 정보를 입력해주세요! \n 입력을 완료한 후에는 다시 한번 \"조회\"라고 입력해 주세요", serverJSON);
           if (global.users && global.users[from] && global.users[from].userAccounts) {
             global.users[from] = null;
           }
@@ -361,9 +361,13 @@ function bankProcess(accountInfo, json, successCallback) {
     } else if (json.startDate || json.endDate) {
       startDate = json.startDate;
       endDate = json.endDate;
-    } else {
-      startDate = "20160620";
-      endDate = "20160623";
+    } else {    // 기본 일주일
+      var today = new Date();
+      endDate = today.getFullYear() + "" + ("00" + (today.getMonth() + 1)).slice(-2) + "" + ("00" + today.getDate()).slice(-2);
+
+      var start = new Date();
+      start.setDate(start.getDate() - 7);
+      startDate = start.getFullYear() + "" + ("00" + (start.getMonth() + 1)).slice(-2) + "" + ("00" + start.getDate()).slice(-2);
     }
 
     //successCallback(startDate + " " + endDate);

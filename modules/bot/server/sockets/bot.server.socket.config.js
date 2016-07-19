@@ -29,8 +29,10 @@ module.exports = function (io, socket) {
 
           botUser.save(function (err) {
             global.users[from].selectAccounts = null;
+            global.users[from].userAccounts = null;
 
             var serverJSON = global.users[from].lastJSON;
+            global.users[from].lastJSON = null;
             moneybot.receivedMoneyBot(msg.user, JSON.stringify(serverJSON), function(retText, json) {
               socket.emit('send_msg', retText + (json && json.url ? " url: " + json.url : "") + " " +
                 (json && json.buttons ? " buttons: " + json.buttons: "")); // FROM SERVER
