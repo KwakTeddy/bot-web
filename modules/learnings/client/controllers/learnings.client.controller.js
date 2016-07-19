@@ -6,8 +6,9 @@ angular.module('learnings').controller('LearningsController', ['$scope', '$state
     $scope.authentication = Authentication;
 
 
-    $scope.learningInput = function(inputSentence) {
-
+    $scope.learnInput = function() {
+      var myRe = new RegExp("d(b+)d", "g");
+      var myArray = myRe.exec("cdbbdbsbz");
 
     };
 

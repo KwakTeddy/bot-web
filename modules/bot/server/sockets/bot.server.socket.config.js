@@ -34,8 +34,8 @@ module.exports = function (io, socket) {
             var serverJSON = global.users[from].lastJSON;
             global.users[from].lastJSON = null;
             moneybot.receivedMoneyBot(msg.user, JSON.stringify(serverJSON), function(retText, json) {
-              socket.emit('send_msg', retText + (json && json.url ? " url: " + json.url : "") + " " +
-                (json && json.buttons ? " buttons: " + json.buttons: "")); // FROM SERVER
+              socket.emit('send_msg', retText + (json && json.url ? "\nurl: " + json.url : "") + " " +
+                (json && json.buttons ? "\nbuttons: " + json.buttons: "")); // FROM SERVER
             });
           });
         }
@@ -55,8 +55,8 @@ module.exports = function (io, socket) {
 //      socket.emit('send_msg', data.toString()); // FROM SERVER
 
         moneybot.receivedMoneyBot(msg.user, data.toString(), function(retText, json) {
-          socket.emit('send_msg', retText + (json && json.url ? " url: " + json.url : "") + " " +
-            (json && json.buttons ? " buttons: " + json.buttons: "")); // FROM SERVER
+          socket.emit('send_msg', retText + (json && json.url ? "\nurl: " + json.url : "") + " " +
+            (json && json.buttons ? "\nbuttons: " + json.buttons: "")); // FROM SERVER
         });
 
       });
