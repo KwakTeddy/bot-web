@@ -8,7 +8,7 @@ var mongoose = require('mongoose'),
 
 exports.write = function(from, to, text, successCallback, errorCallback, endCallback) {
 
-  if(global.users && global.users[from] && global.users[from].selectAccounts) {
+  if(global.users && global.users[from] && global.users[from].selectAccounts && global.users[from].lastJSON) {
     var num = text.substr(0, 1);
 
     BotUser.findOne({userKey: from}).populate('currentBank').exec(function (err, botUser) {
