@@ -5,6 +5,12 @@ angular.module('learnings').controller('LearningsController', ['$scope', '$state
   function ($scope, $stateParams, $location, Authentication, Learnings) {
     $scope.authentication = Authentication;
 
+
+    $scope.learningInput = function(inputSentence) {
+
+
+    };
+
     // Create new Learning
     $scope.create = function (isValid) {
       $scope.error = null;

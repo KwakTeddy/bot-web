@@ -42,6 +42,10 @@ Theme Version: 	1.5.2
 
 		build: function() {
 			this.datatable = this.$table.DataTable({
+        "paging": false,
+        "ordering": false,
+        "info": false,
+        "searching": false,
 				aoColumns: [
 					null,
 					null,
