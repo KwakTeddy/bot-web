@@ -5,106 +5,106 @@
  */
 var path = require('path'),
   mongoose = require('mongoose'),
-  Article = mongoose.model('Article'),
+  Learning = mongoose.model('Learning'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 /**
- * Create a article
+ * Create a learning
  */
 exports.create = function (req, res) {
-  var article = new Article(req.body);
-  article.user = req.user;
+  var learning = new Learning(req.body);
+  learning.user = req.user;
 
-  article.save(function (err) {
+  learning.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(article);
+      res.json(learning);
     }
   });
 };
 
 /**
- * Show the current article
+ * Show the current learning
  */
 exports.read = function (req, res) {
-  res.json(req.article);
+  res.json(req.learning);
 };
 
 /**
- * Update a article
+ * Update a learning
  */
 exports.update = function (req, res) {
-  var article = req.article;
+  var learning = req.learning;
 
-  article.title = req.body.title;
-  article.content = req.body.content;
+  learning.title = req.body.title;
+  learning.content = req.body.content;
 
-  article.save(function (err) {
+  learning.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(article);
+      res.json(learning);
     }
   });
 };
 
 /**
- * Delete an article
+ * Delete an learning
  */
 exports.delete = function (req, res) {
-  var article = req.article;
+  var learning = req.learning;
 
-  article.remove(function (err) {
+  learning.remove(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(article);
+      res.json(learning);
     }
   });
 };
 
 /**
- * List of Articles
+ * List of Learnings
  */
 exports.list = function (req, res) {
-  Article.find().sort('-created').populate('user').exec(function (err, articles) {
+  Learning.find().sort('-created').populate('user').exec(function (err, learnings) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(articles);
+      res.json(learnings);
     }
   });
 };
 
 /**
- * Article middleware
+ * Learning middleware
  */
-exports.articleByID = function (req, res, next, id) {
+exports.learningByID = function (req, res, next, id) {
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
-      message: 'Article is invalid'
+      message: 'Learning is invalid'
     });
   }
 
-  Article.findById(id).populate('user', 'displayName').exec(function (err, article) {
+  Learning.findById(id).populate('user', 'displayName').exec(function (err, learning) {
     if (err) {
       return next(err);
-    } else if (!article) {
+    } else if (!learning) {
       return res.status(404).send({
-        message: 'No article with that identifier has been found'
+        message: 'No learning with that identifier has been found'
       });
     }
-    req.article = article;
+    req.learning = learning;
     next();
   });
 };
