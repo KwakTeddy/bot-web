@@ -73,7 +73,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
 
         responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
       });
-      global.users[from].products = null;
+      //global.users[from].products = null;
 
     } else if(serverJSON.action == "recommendproduct") {
 
@@ -163,7 +163,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
       getUserBankInfo(from, function (userAccounts) {
         if (userAccounts.banks.length <= 0 || !userAccounts.currentBankAccount) {
           serverJSON.url = config.host + '/banks/save/' + from;
-          responseCallback("은행 계정 정보를 입력해주세요!", serverJSON);
+          responseCallback("은행 계정 정보를 입력해주세요! \n 입력을 완료한 후에는 다시 한번 \"조회\"라고 입력해 주세요", serverJSON);
           if (global.users && global.users[from] && global.users[from].userAccounts) {
             global.users[from] = null;
           }
@@ -173,6 +173,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
               if (!global.users) global.users = {};
               if (!global.users[from]) global.users[from] = {};
               global.users[from].selectAccounts = retJson;
+              global.users[from].lastJSON = serverJSON;
 
               responseCallback(retText, serverJSON);
 
@@ -181,7 +182,6 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
           } else {
             doBankProcess();
           }
-
 
           function doBankProcess() {
             if (serverJSON.action == "selectAccount") {
@@ -301,9 +301,9 @@ function bankProcess(accountInfo, json, successCallback) {
             text += i + ". " + tokens2[0] + " " + tokens2[1] + "\r\n";
             selectAccounts.push({"accountName": tokens2[0], "accountNumber": tokens2[1]});
           }
-          text += (++i) + ". " + "다른 은행 계좌 선택\r\n";
+          //text += (++i) + ". " + "다른 은행 계좌 선택\r\n";
 
-          text += "번호로 계좌를 선택해 주세요.";
+          text += "조회할 계좌를 선택해 주세요.";
 
           successCallback(attachText(text, json), selectAccounts);
         } else {
@@ -361,9 +361,13 @@ function bankProcess(accountInfo, json, successCallback) {
     } else if (json.startDate || json.endDate) {
       startDate = json.startDate;
       endDate = json.endDate;
-    } else {
-      startDate = "20160620";
-      endDate = "20160623";
+    } else {    // 기본 일주일
+      var today = new Date();
+      endDate = today.getFullYear() + "" + ("00" + (today.getMonth() + 1)).slice(-2) + "" + ("00" + today.getDate()).slice(-2);
+
+      var start = new Date();
+      start.setDate(start.getDate() - 7);
+      startDate = start.getFullYear() + "" + ("00" + (start.getMonth() + 1)).slice(-2) + "" + ("00" + start.getDate()).slice(-2);
     }
 
     //successCallback(startDate + " " + endDate);
