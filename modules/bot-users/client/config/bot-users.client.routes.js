@@ -35,7 +35,7 @@
           botUserResolve: newBotUser
         },
         data: {
-          roles: ['user', 'admin'],
+          // roles: ['user', 'admin'],
           pageTitle : 'Bot users Create'
         }
       })
@@ -48,7 +48,7 @@
           botUserResolve: getBotUser
         },
         data: {
-          roles: ['user', 'admin'],
+          // roles: ['user', 'admin'],
           pageTitle: 'Edit Bot user {{ bot-userResolve.name }}'
         }
       })
