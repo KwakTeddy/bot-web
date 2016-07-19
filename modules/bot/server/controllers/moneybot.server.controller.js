@@ -185,7 +185,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
 
           function doBankProcess() {
             if (serverJSON.action == "selectAccount") {
-              var num = serverJSON.accountNumber - 1;
+              var num = parseNumber(serverJSON.accountNumber) - 1;
 
               if (global.users[from].selectAccounts && global.users[from].selectAccounts.length > num && num >= 0) {
                 userAccounts.currentBankAccount.bankAccount = global.users[from].selectAccounts[num].accountNumber;
@@ -205,7 +205,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
 
                 serverJSON.buttons = [];
                 for(i = 0; retJson && i < retJson.length; i++) {
-                  serverJSON.buttons.push((i+1)+". " + retJson[i].accountNumber);
+                  serverJSON.buttons.push((i+1)+". " + retJson[i].accountName + " " + retJson[i].accountNumber);
                 }
 
               }
