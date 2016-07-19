@@ -54,7 +54,7 @@
       <div class="row">
         <div class="col-sm-12 text-center" ng-hide="vm.botUser && vm.botUser._id">
           <!--<button class="btn btn-primary">Submit</button>-->
-          <button type="submit" class="btn btn-primary">생성</button>
+          <button type="submit" class="btn btn-primary" ng-click="vm.save(form.$valid)">생성</button>
           <!--<button type="reset" class="btn btn-default">초기화</button>-->
           <button type="button" class="btn btn-danger" ui-sref="bot-users.list">취소</button>
         </div>
@@ -74,8 +74,8 @@
         </div>
       </div>
     </footer>
-    <div ng-show="error" class="text-danger">
-      <strong ng-bind="error"></strong>
+    <div ng-show="vm.error" class="text-danger">
+      <strong ng-bind="vm.error"></strong>
     </div>
   </form>
 </section>
