@@ -69,6 +69,9 @@
         templateUrl: 'modules/messages/client/views/send-message.client.view.html',
         controller: 'MessageSendController',
         controllerAs: 'vm',
+        resolve: {
+          botUsersResolve: getBotUsers
+        },
         params: {
           userKey: null,
           channel: null,
@@ -80,6 +83,10 @@
       });
   }
 
+  getBotUsers.$inject = ['BotUsersService'];
+  function getBotUsers(BotUsersService) {
+    return BotUsersService.query().$promise;
+  }
   getMessages.$inject = ['MessagesService'];
   function getMessages(MessagesService) {
     return MessagesService.query().$promise;

@@ -1,16 +1,14 @@
-'use strict';
-
 (function () {
-  // Campaigns Controller Spec
-  describe('Campaigns Controller Tests', function () {
+  'use strict';
+
+  describe('Custom actions Controller Tests', function () {
     // Initialize global variables
     var CampaignsController,
-      scope,
+      $scope,
       $httpBackend,
-      $stateParams,
-      $location,
+      $state,
       Authentication,
-      Campaigns,
+      CampaignsService,
       mockCampaign;
 
     // The $resource service augments the response object with methods for updating and deleting the resource.
@@ -38,22 +36,20 @@
     // The injector ignores leading and trailing underscores here (i.e. _$httpBackend_).
     // This allows us to inject a service but then attach it to a variable
     // with the same name as the service.
-    beforeEach(inject(function ($controller, $rootScope, _$location_, _$stateParams_, _$httpBackend_, _Authentication_, _Campaigns_) {
+    beforeEach(inject(function ($controller, $rootScope, _$state_, _$httpBackend_, _Authentication_, _CampaignsService_) {
       // Set a new global scope
-      scope = $rootScope.$new();
+      $scope = $rootScope.$new();
 
       // Point global variables to injected services
-      $stateParams = _$stateParams_;
       $httpBackend = _$httpBackend_;
-      $location = _$location_;
+      $state = _$state_;
       Authentication = _Authentication_;
-      Campaigns = _Campaigns_;
+      CampaignsService = _CampaignsService_;
 
-      // create mock campaign
-      mockCampaign = new Campaigns({
+      // create mock Custom action
+      mockCampaign = new CampaignsService({
         _id: '525a8422f6d0f87f0e407a33',
-        title: 'An Campaign about MEAN',
-        content: 'MEAN rocks!'
+        name: 'Custom action Name'
       });
 
       // Mock logged in user
@@ -61,150 +57,114 @@
         roles: ['user']
       };
 
-      // Initialize the Campaigns controller.
-      CampaignsController = $controller('CampaignsController', {
-        $scope: scope
+      // Initialize the Custom actions controller.
+      CampaignsController = $controller('Custom actionsController as vm', {
+        $scope: $scope,
+        campaignResolve: {}
       });
+
+      //Spy on state go
+      spyOn($state, 'go');
     }));
 
-    it('$scope.find() should create an array with at least one campaign object fetched from XHR', inject(function (Campaigns) {
-      // Create a sample campaigns array that includes the new campaign
-      var sampleCampaigns = [mockCampaign];
-
-      // Set GET response
-      $httpBackend.expectGET('api/campaigns').respond(sampleCampaigns);
-
-      // Run controller functionality
-      scope.find();
-      $httpBackend.flush();
-
-      // Test scope value
-      expect(scope.campaigns).toEqualData(sampleCampaigns);
-    }));
-
-    it('$scope.findOne() should create an array with one campaign object fetched from XHR using a campaignId URL parameter', inject(function (Campaigns) {
-      // Set the URL parameter
-      $stateParams.campaignId = mockCampaign._id;
-
-      // Set GET response
-      $httpBackend.expectGET(/api\/campaigns\/([0-9a-fA-F]{24})$/).respond(mockCampaign);
-
-      // Run controller functionality
-      scope.findOne();
-      $httpBackend.flush();
-
-      // Test scope value
-      expect(scope.campaign).toEqualData(mockCampaign);
-    }));
-
-    describe('$scope.create()', function () {
+    describe('vm.save() as create', function () {
       var sampleCampaignPostData;
 
       beforeEach(function () {
-        // Create a sample campaign object
-        sampleCampaignPostData = new Campaigns({
-          title: 'An Campaign about MEAN',
-          content: 'MEAN rocks!'
+        // Create a sample Custom action object
+        sampleCampaignPostData = new CampaignsService({
+          name: 'Custom action Name'
         });
 
-        // Fixture mock form input values
-        scope.title = 'An Campaign about MEAN';
-        scope.content = 'MEAN rocks!';
-
-        spyOn($location, 'path');
+        $scope.vm.campaign = sampleCampaignPostData;
       });
 
-      it('should send a POST request with the form input values and then locate to new object URL', inject(function (Campaigns) {
+      it('should send a POST request with the form input values and then locate to new object URL', inject(function (CampaignsService) {
         // Set POST response
         $httpBackend.expectPOST('api/campaigns', sampleCampaignPostData).respond(mockCampaign);
 
         // Run controller functionality
-        scope.create(true);
+        $scope.vm.save(true);
         $httpBackend.flush();
 
-        // Test form inputs are reset
-        expect(scope.title).toEqual('');
-        expect(scope.content).toEqual('');
-
-        // Test URL redirection after the campaign was created
-        expect($location.path.calls.mostRecent().args[0]).toBe('campaigns/' + mockCampaign._id);
+        // Test URL redirection after the Custom action was created
+        expect($state.go).toHaveBeenCalledWith('campaigns.view', {
+          campaignId: mockCampaign._id
+        });
       }));
 
-      it('should set scope.error if save error', function () {
+      it('should set $scope.vm.error if error', function () {
         var errorMessage = 'this is an error message';
         $httpBackend.expectPOST('api/campaigns', sampleCampaignPostData).respond(400, {
           message: errorMessage
         });
 
-        scope.create(true);
+        $scope.vm.save(true);
         $httpBackend.flush();
 
-        expect(scope.error).toBe(errorMessage);
+        expect($scope.vm.error).toBe(errorMessage);
       });
     });
 
-    describe('$scope.update()', function () {
+    describe('vm.save() as update', function () {
       beforeEach(function () {
-        // Mock campaign in scope
-        scope.campaign = mockCampaign;
+        // Mock Custom action in $scope
+        $scope.vm.campaign = mockCampaign;
       });
 
-      it('should update a valid campaign', inject(function (Campaigns) {
+      it('should update a valid Custom action', inject(function (CampaignsService) {
         // Set PUT response
         $httpBackend.expectPUT(/api\/campaigns\/([0-9a-fA-F]{24})$/).respond();
 
         // Run controller functionality
-        scope.update(true);
+        $scope.vm.save(true);
         $httpBackend.flush();
 
         // Test URL location to new object
-        expect($location.path()).toBe('/campaigns/' + mockCampaign._id);
+        expect($state.go).toHaveBeenCalledWith('campaigns.view', {
+          campaignId: mockCampaign._id
+        });
       }));
 
-      it('should set scope.error to error response message', inject(function (Campaigns) {
+      it('should set $scope.vm.error if error', inject(function (CampaignsService) {
         var errorMessage = 'error';
         $httpBackend.expectPUT(/api\/campaigns\/([0-9a-fA-F]{24})$/).respond(400, {
           message: errorMessage
         });
 
-        scope.update(true);
+        $scope.vm.save(true);
         $httpBackend.flush();
 
-        expect(scope.error).toBe(errorMessage);
+        expect($scope.vm.error).toBe(errorMessage);
       }));
     });
 
-    describe('$scope.remove(campaign)', function () {
+    describe('vm.remove()', function () {
       beforeEach(function () {
-        // Create new campaigns array and include the campaign
-        scope.campaigns = [mockCampaign, {}];
-
-        // Set expected DELETE response
-        $httpBackend.expectDELETE(/api\/campaigns\/([0-9a-fA-F]{24})$/).respond(204);
-
-        // Run controller functionality
-        scope.remove(mockCampaign);
+        //Setup Custom actions
+        $scope.vm.campaign = mockCampaign;
       });
 
-      it('should send a DELETE request with a valid campaignId and remove the campaign from the scope', inject(function (Campaigns) {
-        expect(scope.campaigns.length).toBe(1);
-      }));
-    });
-
-    describe('scope.remove()', function () {
-      beforeEach(function () {
-        spyOn($location, 'path');
-        scope.campaign = mockCampaign;
+      it('should delete the Custom action and redirect to Custom actions', function () {
+        //Return true on confirm message
+        spyOn(window, 'confirm').and.returnValue(true);
 
         $httpBackend.expectDELETE(/api\/campaigns\/([0-9a-fA-F]{24})$/).respond(204);
 
-        scope.remove();
+        $scope.vm.remove();
         $httpBackend.flush();
+
+        expect($state.go).toHaveBeenCalledWith('campaigns.list');
       });
 
-      it('should redirect to campaigns', function () {
-        expect($location.path).toHaveBeenCalledWith('campaigns');
+      it('should should not delete the Custom action and not redirect', function () {
+        //Return false on confirm message
+        spyOn(window, 'confirm').and.returnValue(false);
+
+        $scope.vm.remove();
+
+        expect($state.go).not.toHaveBeenCalled();
       });
     });
   });
-}());
+})();

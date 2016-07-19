@@ -5,9 +5,9 @@
     .module('messages')
     .controller('MessageSendController', MessageSendController);
 
-  MessageSendController.$inject = ['$state', '$stateParams'];
+  MessageSendController.$inject = ['$state', '$stateParams', 'FileUploader', 'botUsersResolve'];
 
-  function MessageSendController($state, $stateParams) {
+  function MessageSendController($state, $stateParams, FileUploader, botUsers) {
     var vm = this;
 
     vm.users = [];
@@ -20,7 +20,11 @@
     vm.linkAddress = $stateParams.linkAddress;
 
 
-    vm.botUsers = [{userKey: 'asdf', channel: 'kakao'}, {userKey: 'asdf', channel: 'kakao'}, {userKey: 'asdf', channel: 'kakao'}];
+    vm.botUsers = botUsers;
 
+    vm.uploader = new FileUploader();
+    vm.uploader.onAfterAddingFile = function(fileItem) {
+      vm.image = fileItem.file.name;
+    };
   }
 })();

@@ -22,13 +22,16 @@ module.exports = {
         'public/lib/codemirror/mode/javascript/javascript.js',
         'public/lib/angular-ui-codemirror/ui-codemirror.js',
         'public/lib/angular-ui-select/dist/select.js',
-        'public/lib/angular-sanitize/angular-sanitize.js'
+        'public/lib/angular-sanitize/angular-sanitize.js',
+        'public/lib/dropzone/downloads/dropzone.js',
+        'public/lib/angular-dropzone/lib/angular-dropzone.js'
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
     },
     css: [
       'modules/*/client/css/*.css',
-      'public/lib/codemirror/lib/codemirror.css'
+      'public/lib/codemirror/lib/codemirror.css',
+      'public/lib/dropzone/downloads/css/dropzone.css'
     ],
     less: [
       'modules/*/client/less/*.less'

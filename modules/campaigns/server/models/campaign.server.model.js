@@ -7,23 +7,51 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 /**
- * Campaign Schema
+ * Custom action Schema
  */
 var CampaignSchema = new Schema({
-  created: {
+  bot: {
+    type: Schema.ObjectId,
+    ref: 'Bot'
+  },
+  name: {
+    type: String,
+    unique: true
+  },
+  category: {
+    type: String
+  },
+  description: {
+    type: String
+  },
+  start: {
+    type: Date
+  },
+  end: {
+    type: Date
+  },
+
+  messageText: {
+    type: String
+  },
+  messageLinkMessage: {
+    type: String
+  },
+  messageLinkAddress: {
+    type: String
+  },
+  image: {
+    type: String
+  },
+
+
+  updated: {
     type: Date,
     default: Date.now
   },
-  title: {
-    type: String,
-    default: '',
-    trim: true,
-    required: 'Title cannot be blank'
-  },
-  content: {
-    type: String,
-    default: '',
-    trim: true
+  created: {
+    type: Date,
+    default: Date.now
   },
   user: {
     type: Schema.ObjectId,

@@ -5,7 +5,7 @@
  */
 var path = require('path'),
   mongoose = require('mongoose'),
-  Campaign = mongoose.model('Campaign'),
+  CampaignUser = mongoose.model('CampaignUser'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
 
@@ -13,7 +13,8 @@ var path = require('path'),
  * Create a Custom action
  */
 exports.create = function(req, res) {
-  var campaign = new Campaign(req.body);
+  var campaign = new CampaignUser(req.body);
+  campaign.campaign = req.campaign;
   campaign.user = req.user;
 
   campaign.save(function(err) {
@@ -32,7 +33,7 @@ exports.create = function(req, res) {
  */
 exports.read = function(req, res) {
   // convert mongoose document to JSON
-  var campaign = req.campaign ? req.campaign.toJSON() : {};
+  var campaign = req.campaignUser ? req.campaignUser.toJSON() : {};
 
   // Add a custom field to the Article, for determining if the current User is the "owner".
   // NOTE: This field is NOT persisted to the database, since it doesn't exist in the Article model.
@@ -45,7 +46,7 @@ exports.read = function(req, res) {
  * Update a Custom action
  */
 exports.update = function(req, res) {
-  var campaign = req.campaign ;
+  var campaign = req.campaignUser ;
 
   campaign = _.extend(campaign , req.body);
 
@@ -64,7 +65,7 @@ exports.update = function(req, res) {
  * Delete an Custom action
  */
 exports.delete = function(req, res) {
-  var campaign = req.campaign ;
+  var campaign = req.campaignUser ;
 
   campaign.remove(function(err) {
     if (err) {
@@ -81,7 +82,7 @@ exports.delete = function(req, res) {
  * List of Custom actions
  */
 exports.list = function(req, res) { 
-  Campaign.find().sort('-created').populate('user', 'displayName').exec(function(err, campaigns) {
+  CampaignUser.find({campaign: req.campaign._id}).sort('-created').populate('user', 'displayName').populate('campaign').populate('botUser').exec(function(err, campaigns) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -95,7 +96,7 @@ exports.list = function(req, res) {
 /**
  * Custom action middleware
  */
-exports.campaignByID = function(req, res, next, id) {
+exports.campaignUserByID = function(req, res, next, id) {
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
@@ -103,7 +104,7 @@ exports.campaignByID = function(req, res, next, id) {
     });
   }
 
-  Campaign.findById(id).populate('user', 'displayName').exec(function (err, campaign) {
+  CampaignUser.findById(id).populate('user', 'displayName').populate('campaign').populate('botUser').exec(function (err, campaign) {
     if (err) {
       return next(err);
     } else if (!campaign) {
@@ -111,7 +112,7 @@ exports.campaignByID = function(req, res, next, id) {
         message: 'No Custom action with that identifier has been found'
       });
     }
-    req.campaign = campaign;
+    req.campaignUser = campaign;
     next();
   });
 };

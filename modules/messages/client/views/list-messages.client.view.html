@@ -15,6 +15,7 @@
       <tr>
         <!--<th class="text-center">봇아이디</th>-->
         <th class="text-center">유저키</th>
+        <th class="text-center">이름</th>
         <th class="text-center">채널</th>
         <th class="text-center">전화번호</th>
         <th class="text-center">상태</th>
@@ -27,6 +28,7 @@
       <tr ng-repeat="message in vm.messages">
         <!--<td class="text-center">{{message.bot.id}}</td>-->
         <td class="text-center">{{message.botUser ? message.botUser.userKey : ''}}</td>
+        <td class="text-center">{{message.botUser ? message.botUser.name : ''}}</td>
         <td class="text-center">{{message.botUser ? message.botUser.channel : ''}}</td>
         <td class="text-center">{{message.botUser ? message.botUser.phone : ''}}</td>
         <td class="text-center">{{message.status}}</td>
