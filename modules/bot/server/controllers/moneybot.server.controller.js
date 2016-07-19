@@ -163,7 +163,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
       getUserBankInfo(from, function (userAccounts) {
         if (userAccounts.banks.length <= 0 || !userAccounts.currentBankAccount) {
           serverJSON.url = config.host + '/banks/save/' + from;
-          responseCallback("은행 계정 정보를 입력해주세요! \n 입력을 완료한 후에는 다시 한번 \"조회\"라고 입력해 주세요", serverJSON);
+          responseCallback("은행 계정 정보를 입력해주세요! \n 입력을 완료한 후에는 다시 한번 \"잔액조회\"라고 입력해 주세요", serverJSON);
           if (global.users && global.users[from] && global.users[from].userAccounts) {
             global.users[from] = null;
           }
@@ -194,6 +194,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
               }
 
               serverJSON.action = 'bankBalance';
+              serverJSON.postText = "필요하신 게 더 있으신가요?n (도움말 : help)";
             }
 
             bankProcess(userAccounts.currentBankAccount, serverJSON, function (retText, retJson) {
@@ -201,6 +202,12 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
                 if (!global.users) global.users = {};
                 if (!global.users[from]) global.users[from] = {};
                 global.users[from].selectAccounts = retJson;
+
+                serverJSON.buttons = [];
+                for(i = 0; retJson && i < retJson.length; i++) {
+                  serverJSON.buttons.push((i+1)+". " + retJson[i].accountNumber);
+                }
+
               }
 
               responseCallback(retText, serverJSON);
@@ -398,7 +405,7 @@ function bankProcess(accountInfo, json, successCallback) {
             successCallback(attachText(text, json));
           } else if (tokens[0] == "001") {
             text = startDate + "-" + endDate + "\r\n" + " 거래내역이 없습니다.\r\n다른 계좌조회는 '다른계좌' 입력해 주세요";
-            successCallback(text);
+            successCallback(attachText(text, json));
           } else {
             text = "계좌 내역을 읽어올 수 없습니다.\r\n잠시후 다시 시도해 주세요";
             successCallback(text);

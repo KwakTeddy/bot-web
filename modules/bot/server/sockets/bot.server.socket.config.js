@@ -18,7 +18,7 @@ module.exports = function (io, socket) {
   });
 
   socket.on('send_msg', function(msg) {
-    if(global.users && global.users[msg.user] && global.users[msg.user].selectAccounts) {
+    if(global.users && global.users[msg.user] && global.users[msg.user].selectAccounts && global.users[msg.user].lastJSON) {
       var from = msg.user;
       var num = msg.msg.substr(0, 1);
 
