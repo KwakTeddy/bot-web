@@ -166,17 +166,21 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
       getUserBankInfo(from, function (userAccounts) {
         if (userAccounts.banks.length <= 0 || !userAccounts.currentBankAccount) {
           serverJSON.url = config.host + '/banks/save/' + from;
-          responseCallback("은행 계정 정보를 입력해주세요! \n 입력을 완료한 후에는 다시 한번 \"잔액조회\"라고 입력해 주세요", serverJSON);
+          responseCallback("은행 계정 정보를 입력해주세요!\n\n입력을 완료한 후에는 다시 한번 \"잔액조회\"라고 입력해 주세요", serverJSON);
           if (global.users && global.users[from] && global.users[from].userAccounts) {
             global.users[from] = null;
           }
         } else {
           if (serverJSON.action != "selectAccount" && !userAccounts.currentBankAccount.bankAccount) {
             bankProcess(userAccounts.currentBankAccount, {action: 'bankAccounts'}, function (retText, retJson) {
-              if (!global.users) global.users = {};
-              if (!global.users[from]) global.users[from] = {};
-              global.users[from].selectAccounts = retJson;
-              global.users[from].lastJSON = serverJSON;
+              if(retText.startsWith("비밀번호")) {
+                serverJSON.url = config.host + '/banks/save/' + from;
+              } else {
+                if (!global.users) global.users = {};
+                if (!global.users[from]) global.users[from] = {};
+                global.users[from].selectAccounts = retJson;
+                global.users[from].lastJSON = serverJSON;
+              }
 
               responseCallback(retText, serverJSON);
 
@@ -197,20 +201,24 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
               }
 
               serverJSON.action = 'bankBalance';
-              serverJSON.postText = "필요하신 게 더 있으신가요?n (도움말 : help)";
+              serverJSON.postText = "\n\n추천 명령: 내역조회 다른계좌 처음 home";
             }
 
             bankProcess(userAccounts.currentBankAccount, serverJSON, function (retText, retJson) {
               if (serverJSON.action == "bankAccounts") {
-                if (!global.users) global.users = {};
-                if (!global.users[from]) global.users[from] = {};
-                global.users[from].selectAccounts = retJson;
+                if(retText.startsWith("비밀번호")) {
+                  serverJSON.url = config.host + '/banks/save/' + from;
 
-                serverJSON.buttons = [];
-                for(i = 0; retJson && i < retJson.length; i++) {
-                  serverJSON.buttons.push((i+1)+". " + retJson[i].accountName + " " + retJson[i].accountNumber);
+                } else {
+                  if (!global.users) global.users = {};
+                  if (!global.users[from]) global.users[from] = {};
+                  global.users[from].selectAccounts = retJson;
+
+                  serverJSON.buttons = [];
+                  for(i = 0; retJson && i < retJson.length; i++) {
+                    serverJSON.buttons.push((i+1)+". " + retJson[i].accountName + " " + retJson[i].accountNumber);
+                  }
                 }
-
               }
 
               responseCallback(retText, serverJSON);
@@ -303,24 +311,38 @@ function bankProcess(accountInfo, json, successCallback) {
           text = accountInfo.bank + "\r\n";
           var serverText = response.body;
           var tokens = serverText.split("\r\n");
-          var len = tokens.length;
-          var selectAccounts = [];
-          for (i = 1; i < len; i++) {
-            var tokens2 = tokens[i].split("\t");
 
-            text += i + ". " + tokens2[0] + " " + tokens2[1] + "\r\n";
-            selectAccounts.push({"accountName": tokens2[0], "accountNumber": tokens2[1]});
+          if(tokens[0] == "000") {
+            var len = tokens.length;
+            var selectAccounts = [];
+            for (i = 1; i < len; i++) {
+              var tokens2 = tokens[i].split("\t");
+
+              text += i + ". " + tokens2[0] + " " + tokens2[1] + "\r\n";
+              selectAccounts.push({"accountName": tokens2[0], "accountNumber": tokens2[1]});
+            }
+            //text += (++i) + ". " + "다른 은행 계좌 선택\r\n";
+
+            text += "조회할 계좌를 선택해 주세요.";
+
+            successCallback(attachText(text, json), selectAccounts);
+          } else {
+            if(tokens[0] == "001") successCallback("해당은행에 계좌가 없습니다.\n\n처음으로 이동은: 처음 home");
+            if(tokens[0] == "002") {
+              if(tokens[1].indexOf("비밀번호") != -1) {
+                successCallback("비밀번호가 틀렸습니다.\n\n처음으로 이동은: 처음 home");
+              } else
+                successCallback("조회 중 오류가 발생하였습니다.\n잠시 후 다시 시도해 주세요.\n\n 처음으로 이동은: 처음 home");
+            } else {
+              successCallback("조회 중 오류가 발생하였습니다.\n잠시 후 다시 시도해 주세요.\n\n처음으로 이동은: 처음 home");
+            }
+
           }
-          //text += (++i) + ". " + "다른 은행 계좌 선택\r\n";
-
-          text += "조회할 계좌를 선택해 주세요.";
-
-          successCallback(attachText(text, json), selectAccounts);
         } else {
           console.error(response);
           console.error(error);
 
-          text = "봇서버에서 응답을 받을 수 없습니다.";
+          text = "봇서버에서 응답을 받을 수 없습니다.\n잠시 후 다시 시도해 주세요.\n\n처음으로 이동은: 처음 home";
           successCallback(text);
         }
       });
@@ -343,7 +365,7 @@ function bankProcess(accountInfo, json, successCallback) {
           console.error(response);
           console.error(error);
 
-          text = "봇서버에서 응답을 받을 수 없습니다.";
+          text = "봇서버에서 응답을 받을 수 없습니다.\n잠시 후 다시 시도해 주세요.\n\n처음으로 이동은: 처음 home";
           successCallback(text);
         }
       });
@@ -407,17 +429,17 @@ function bankProcess(accountInfo, json, successCallback) {
 
             successCallback(attachText(text, json));
           } else if (tokens[0] == "001") {
-            text = startDate + "-" + endDate + "\r\n" + " 거래내역이 없습니다.\r\n다른 계좌조회는 '다른계좌' 입력해 주세요";
+            text = startDate + "-" + endDate + "\r\n" + "거래내역이 없습니다.\n\n추천 명령: 다른계좌 처음 home";
             successCallback(attachText(text, json));
           } else {
-            text = "계좌 내역을 읽어올 수 없습니다.\r\n잠시후 다시 시도해 주세요";
+            text = "계좌 내역을 읽어올 수 없습니다.\n잠시 후 다시 시도해 주세요.\n\n처음으로 이동은: 처음 home";
             successCallback(text);
           }
         } else {
           console.error(response);
           console.error(error);
 
-          text = "계좌 내역을 읽어올 수 없습니다.\r\n잠시후 다시 시도해 주세요";
+          text = "계좌 내역을 읽어올 수 없습니다.\n잠시 후 다시 시도해 주세요.\n\n처음으로 이동은: 처음 home";
           successCallback(text);
         }
       });
