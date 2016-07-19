@@ -14,9 +14,9 @@
         <label class="col-sm-3 control-label">메시지 <span class="required" aria-required="true">*</span></label>
         <div class="col-sm-9">
           <textarea type="text" name="id" ng-model="vm.text" class="form-control valid"
-                 placeholder="메시지"
-                 required=""
-                 aria-required="true" aria-invalid="false">
+                    placeholder="고객님의 잔액은 {balance}입니다."
+                    required=""
+                    aria-required="true" aria-invalid="false">
             </textarea>
         </div>
       </div>
@@ -24,7 +24,7 @@
         <label class="col-sm-3 control-label">링크 메시지 </label>
         <div class="col-sm-9">
           <input type="text" name="id" ng-model="vm.linkMessage" class="form-control valid"
-                 placeholder="링크 메시지"
+                 placeholder="링크를 누르면 이동합니다."
                  aria-required="true" aria-invalid="false">
         </div>
       </div>
@@ -32,14 +32,27 @@
         <label class="col-sm-3 control-label">링크 주소 </label>
         <div class="col-sm-9">
           <input type="text" name="id" ng-model="vm.linkAddress" class="form-control valid"
-                 placeholder="링크 주소"
+                 placeholder="www.moneybrain.co.kr"
                  aria-required="true" aria-invalid="false">
         </div>
       </div>
       <div class="form-group">
         <label class="col-sm-3 control-label">이미지 </label>
         <div class="col-sm-9">
-          <form action="/upload" class="dropzone dz-square" id="dropzone-example"></form>
+          <input class="btn btn-default" type="file" nv-file-select uploader="vm.uploader"/><br/>
+          <!--<span class="btn btn-default btn-file" ngf-select ng-model="vm.image" ngf-accept="'image/*'"-->
+                <!--ngf-resize="{width: 300}">-->
+              <!--선택-->
+          <!--</span>-->
+          <!--<form class="dropzone"-->
+                <!--method="post"-->
+                <!--enctype="multipart/form-data"-->
+                <!--ng-dropzone-->
+                <!--dropzone="vm.dropzone"-->
+                <!--dropzone-config="vm.dropzoneConfig"-->
+                <!--event-handlers="{ 'addedfile': vm.dropzoneAdded, 'error': vm.dropzoneError }">-->
+          <!--</form>-->
+          <!--<form action="/upload" class="dropzone dz-square" id="dropzone-example"></form>-->
         </div>
       </div>
       <div class="form-group">
@@ -47,7 +60,8 @@
         <div class="col-md-9">
           <ui-select multiple ng-model="vm.users" theme="bootstrap" close-on-select="false" class="col-md-9">
             <ui-select-match placeholder="유저를 선택해주세요">{{$item.userKey}} ({{$item.channel}})</ui-select-match>
-            <ui-select-choices repeat="user in vm.botUsers | propsFilter: {userKey: $select.search, channel: $select.search}">
+            <ui-select-choices
+              repeat="user in vm.botUsers | propsFilter: {userKey: $select.search, channel: $select.search}">
               {{user.userKey}} ({{user.channel}})
             </ui-select-choices>
           </ui-select>
@@ -56,19 +70,8 @@
     </div>
     <footer class="panel-footer">
       <div class="row">
-        <div class="col-sm-12 text-center" ng-hide="vm.message && vm.message._id">
-          <!--<button class="btn btn-primary">Submit</button>-->
-          <button type="submit" class="btn btn-primary">생성</button>
-          <!--<button type="reset" class="btn btn-default">초기화</button>-->
-          <button type="button" class="btn btn-danger" ui-sref="messages.list">취소</button>
-        </div>
-        <div class="col-sm-12 text-center" ng-show="vm.message && vm.message._id">
-          <a class="btn btn-primary" ng-click="vm.save(form.$valid)">
-            <i class="glyphicon glyphicon-edit"></i> 수정
-          </a>
-          <a class="btn btn-danger" ng-click="vm.remove()">
-            <i class="glyphicon glyphicon-trash"></i> 삭제
-          </a>
+        <div class="col-sm-12 text-center">
+          <button class="btn btn-primary col-sm-offset-3 col-sm-6" ng-click="vm.send()">전송</button>
         </div>
       </div>
     </footer>
@@ -77,5 +80,3 @@
     </div>
   </form>
 </section>
-
-<script src="assets/vendor/select2/js/select2.js"></script>

@@ -36,7 +36,7 @@
         <td class="text-center">{{botUser.created | date: 'yyyy-MM-dd'}}</td>
         <td class="text-center">{{botUser.isOn ? ' ON' : 'OFF'}}</td>
         <td>
-          <a class="btn btn-primary" ui-sref="">
+          <a class="btn btn-primary" ui-sref="messages.send({userKey: botUser.userKey, channel: botUser.channel})">
             <i class="glyphicon glyphicon-send"></i> 전송
           </a>
         </td>

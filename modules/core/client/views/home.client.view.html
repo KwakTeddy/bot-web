@@ -6,7 +6,7 @@
   </div>
 </header>
 
-<section class="panel">
+<section class="panel" ng-keyup="vm.onKeyPress($event.keyCode)">
   <div class="form-group">
     <div class="col-md-4">
       <select class="form-control mb-md" id="selectServer" name="selectServer"
@@ -55,9 +55,12 @@
             <button class="btn btn-primary" type="submit">SEND</button>
           </span>
         </div>
-
       </div>
     </form>
+    <div class="row">
+      <button class="col-sm-offset-6 col-sm-3 btn btn-danger" ng-click="vm.buildBot()">빌드 (F5)</button>
+      <button class="col-sm-3 btn btn-info" ng-click="vm.resetBot()">초기화 (F6)</button>
+    </div>
   </footer>
 </section>
 

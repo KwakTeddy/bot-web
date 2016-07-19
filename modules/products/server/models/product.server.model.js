@@ -22,6 +22,10 @@ var ProductSchema = new Schema({
   content: {
     type: String
   },
+  link: {
+    type: String
+  },
+
   rate: {
     type: Number
   },

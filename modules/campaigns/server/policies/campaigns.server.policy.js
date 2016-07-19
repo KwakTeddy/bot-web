@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Module dependencies.
+ * Module dependencies
  */
 var acl = require('acl');
 
@@ -9,7 +9,7 @@ var acl = require('acl');
 acl = new acl(new acl.memoryBackend());
 
 /**
- * Invoke Campaigns Permissions
+ * Invoke Custom actions Permissions
  */
 exports.invokeRolesPolicies = function () {
   acl.allow([{
@@ -43,20 +43,20 @@ exports.invokeRolesPolicies = function () {
 };
 
 /**
- * Check If Campaigns Policy Allows
+ * Check If Custom actions Policy Allows
  */
 exports.isAllowed = function (req, res, next) {
   var roles = (req.user) ? req.user.roles : ['guest'];
 
-  // If an campaign is being processed and the current user created it then allow any manipulation
-  if (req.campaign && req.user && req.campaign.user.id === req.user.id) {
+  // If an Custom action is being processed and the current user created it then allow any manipulation
+  if (req.campaign && req.user && req.campaign.user && req.campaign.user.id === req.user.id) {
     return next();
   }
 
   // Check for user roles
   acl.areAnyRolesAllowed(roles, req.route.path, req.method.toLowerCase(), function (err, isAllowed) {
     if (err) {
-      // An authorization error occurred.
+      // An authorization error occurred
       return res.status(500).send('Unexpected authorization error');
     } else {
       if (isAllowed) {

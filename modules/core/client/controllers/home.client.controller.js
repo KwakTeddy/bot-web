@@ -37,20 +37,59 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
     };
     vm.init = init;
 
-    vm.sendMsg = function () {
-      if(!vm.isConnected) {
-        return;
+    vm.sendMsg = function (msg) {
+      console.log('sendMsg: ' + msg);
+      if (!vm.isConnected) {
+        return false;
+      }
+      var useInput = false;
+      if(!msg || msg.length <= 0) {
+        msg = vm.msg;
+        useInput = true;
+      }
+      if(!msg || msg.length <= 0) {
+        return false;
       }
 
-      if (vm.msg == ':초기화') {
+      if(msg == ':build') {
+        build();
+        return false;
+      }
+
+      if (msg == ':init') {
         init();
         return false;
       }
 
       addUserBubble(vm.msg);
       emitMsg(vm.msg);
-      vm.msg = '';
+
+      if(useInput) {
+        vm.msg = '';
+      }
     };
+
+
+    vm.buildBot = function () {
+      vm.sendMsg(':build');
+    };
+    vm.resetBot = function () {
+      vm.sendMsg(':init');
+    };
+
+    vm.onKeyPress = function (keyCode) {
+      if(keyCode == 116) {
+        vm.buildBot();
+      } else if(keyCode == 117) {
+        vm.resetBot();
+      }
+    };
+
+    function build() {
+      clearBubble();
+      addBotBubble('머니봇 [' + vm.bot + '] 접속 (' + vm.server.split(':')[0] + ':' + vm.server.split(':')[1] + ' as ' + vm.userId + ')');
+      emitMsg(':build ' + vm.bot + ' reset');
+    }
 
     function init() {
       clearBubble();

@@ -1,84 +1,93 @@
-'use strict';
+(function () {
+  'use strict';
 
-// Campaigns controller
-angular.module('campaigns').controller('CampaignsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Campaigns',
-  function ($scope, $stateParams, $location, Authentication, Campaigns) {
-    $scope.authentication = Authentication;
+  // Custom actions controller
+  angular
+    .module('campaigns')
+    .controller('CampaignsController', CampaignsController);
 
-    // Create new Campaign
-    $scope.create = function (isValid) {
-      $scope.error = null;
+  CampaignsController.$inject = ['$scope', '$state', 'Authentication', 'campaignResolve', 'botUsersResolve', 'campaignUsersResolve', 'FileUploader', 'CampaignUsersService'];
 
+  function CampaignsController($scope, $state, Authentication, campaign, botUsers, campaignUsers, FileUploader, CampaignUsersService) {
+    var vm = this;
+
+    vm.categories = [
+      '설문', '이벤트'
+    ];
+    vm.botUsers = botUsers;
+    vm.campaignUsers = [];
+    if(campaignUsers) {
+      angular.forEach(campaignUsers, function (campaignUser) {
+        vm.campaignUsers.push(campaignUser.botUser);
+      });
+    }
+
+    vm.authentication = Authentication;
+    vm.campaign = campaign;
+    vm.error = null;
+    vm.form = {};
+    vm.remove = remove;
+    vm.save = save;
+
+    vm.uploader = new FileUploader();
+    vm.uploader.onAfterAddingFile = function(fileItem) {
+      vm.image = fileItem.file.name;
+    };
+
+    if(!vm.campaign.category) {
+      vm.campaign.category = vm.categories[0];
+    }
+
+    // Remove existing Custom action
+    function remove() {
+      if (confirm('Are you sure you want to delete?')) {
+        vm.campaign.$remove($state.go('campaigns.list'), {}, {reload: true});
+      }
+    }
+
+    // Save Custom action
+    function save(isValid) {
       if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'campaignForm');
-
+        $scope.$broadcast('show-errors-check-validity', 'vm.form.campaignForm');
         return false;
       }
 
-      // Create new Campaign object
-      var campaign = new Campaigns({
-        title: this.title,
-        content: this.content
-      });
-
-      // Redirect after save
-      campaign.$save(function (response) {
-        $location.path('campaigns/' + response._id);
-
-        // Clear form fields
-        $scope.title = '';
-        $scope.content = '';
-      }, function (errorResponse) {
-        $scope.error = errorResponse.data.message;
-      });
-    };
-
-    // Remove existing Campaign
-    $scope.remove = function (campaign) {
-      if (campaign) {
-        campaign.$remove();
-
-        for (var i in $scope.campaigns) {
-          if ($scope.campaigns[i] === campaign) {
-            $scope.campaigns.splice(i, 1);
-          }
-        }
+      // TODO: move create/update logic to service
+      if (vm.campaign._id) {
+        vm.campaign.$update(successCallback, errorCallback);
       } else {
-        $scope.campaign.$remove(function () {
-          $location.path('campaigns');
+        vm.campaign.$save(successCallback, errorCallback);
+      }
+
+      function successCallback(res) {
+        console.log('success');
+        createCampaignUser(vm.campaignUsers, 0, function () {
+          $state.go('campaigns.list', {
+            campaignId: res._id
+          }, {reload: true});
         });
       }
-    };
 
-    // Update existing Campaign
-    $scope.update = function (isValid) {
-      $scope.error = null;
-
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'campaignForm');
-
-        return false;
+      function errorCallback(res) {
+        vm.error = res.data.message;
       }
+    }
 
-      var campaign = $scope.campaign;
-
-      campaign.$update(function () {
-        $location.path('campaigns/' + campaign._id);
-      }, function (errorResponse) {
-        $scope.error = errorResponse.data.message;
+    function createCampaignUser(botUsers, index, callback) {
+      console.log('create: ' + index);
+      if(!botUsers || index < 0 || index >= botUsers.length) {
+        callback();
+        return;
+      }
+      var campaignUser = new CampaignUsersService({campaignId: vm.campaign._id});
+      campaignUser.botUser = botUsers[index]._id;
+      campaignUser.campaign = vm.campaign._id;
+      campaignUser.$save(function (res) {
+        createCampaignUser(botUsers, index+1, callback);
+      }, function (res) {
+        createCampaignUser(botUsers, index+1, callback);
       });
-    };
-
-    // Find a list of Campaigns
-    $scope.find = function () {
-      $scope.campaigns = Campaigns.query();
-    };
-
-    // Find existing Campaign
-    $scope.findOne = function () {
-      $scope.campaign = Campaigns.get({
-        campaignId: $stateParams.campaignId
-      });
-    };
+    }
   }
-]);
+
+})();

@@ -15,7 +15,7 @@ var BotUserSchema = new Schema({
   },
   channel: {
     type: String,
-    default: 'kakao'
+    default: '카카오톡'
   },
   currentBank: {
     type: Schema.ObjectId,
