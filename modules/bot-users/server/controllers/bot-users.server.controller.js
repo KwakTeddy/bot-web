@@ -17,7 +17,7 @@ exports.create = function (req, res) {
   var botUser = null;
   if (!req.botUser) {
     botUser = new BotUser(req.body);
-    botUser.userKey = req.params.userKey;
+    // botUser.userKey = req.params.userKey;
   } else {
     botUser = req.botUser;
   }
