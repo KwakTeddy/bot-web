@@ -37,5 +37,5 @@ module.exports = {
       }
     }
   },
-  chatServer: '../../SublimeProjects/ChatScript/'
+  chatServer: '../bot-server/'
 };
