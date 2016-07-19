@@ -67,7 +67,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
         if (err || !product) {
           serverJSON.content = '죄송합니다! 일치하는 상품을 찾지 못했습니다ㅠㅜ';
         } else {
-          serverJSON.content = product.title + "\n" + product.content;
+          serverJSON.content = product.title + "\n" + product.content + "\n" + product.link;
           serverJSON.url = product.link;
         }
 
