@@ -56,6 +56,7 @@ module.exports.start = function start(callback) {
         console.log(chalk.green('MEAN.JS version:\t\t\t' + config.meanjs['meanjs-version']));
       console.log('--');
 
+      console.log(chalk.red('CHAT_SERVER:\t\t\t' + process.env.CHAT_SERVER));
       if (callback) callback(app, db, config);
     });
 

@@ -63,7 +63,7 @@
     vm.randomCreate = function () {
       vm.botUser.userKey = randomString(10);
       vm.botUser.channel = vm.channels[Math.floor(Math.random() * vm.channels.length)];
-      vm.botUser.name = randomString(Math.floor(Math.random() * 8));
+      vm.botUser.name = randomString(Math.floor(Math.random() * 4) + 4);
       vm.botUser.phone = '010-' + randomNumber(4) + '-' + randomNumber(4);
       vm.botUser.email = vm.botUser.name + randomEmail();
       vm.botUser.isOn = Math.floor(Math.random() * 2) == 0 ? true : false;

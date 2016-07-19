@@ -177,27 +177,43 @@ exports.createFile = function (req, res) {
   var botFolder = generateBotFolder(bot.id);
   fs.writeFile(botFolder + req.body.fileName + '.top', '# Created By ...', {flag: 'wx'}, function(err) {
     console.log('writeFile Result: ' + err);
-    if(err) {
-      res.status(400).send({
-        message: 'File Already Exists'
-      });
-    } else {
-      var botFile = new BotFile();
-      botFile.bot = bot;
-      botFile.name = req.body.fileName;
-      botFile.user = req.user;
-      console.log('botFile: ' + botFile.name);
-      botFile.save(function (err) {
-        if (err) {
-          return res.status(400).send({
-            message: errorHandler.getErrorMessage(err)
-          });
-        } else {
-          res.json(botFile);
-          console.log('res.json');
-        }
-      })
-    }
+    var botFile = new BotFile();
+    botFile.bot = bot;
+    botFile.name = req.body.fileName;
+    botFile.user = req.user;
+    console.log('botFile: ' + botFile.name);
+    botFile.save(function (err) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.json(botFile);
+        console.log('res.json');
+      }
+    });
+
+    // if(err) {
+    //   res.status(400).send({
+    //     message: 'File Already Exists'
+    //   });
+    // } else {
+    //   var botFile = new BotFile();
+    //   botFile.bot = bot;
+    //   botFile.name = req.body.fileName;
+    //   botFile.user = req.user;
+    //   console.log('botFile: ' + botFile.name);
+    //   botFile.save(function (err) {
+    //     if (err) {
+    //       return res.status(400).send({
+    //         message: errorHandler.getErrorMessage(err)
+    //       });
+    //     } else {
+    //       res.json(botFile);
+    //       console.log('res.json');
+    //     }
+    //   })
+    // }
   });
 
 };
@@ -205,21 +221,31 @@ exports.removeFile = function (req, res) {
   var file = req.file;
   var botFolder = generateBotFolder(file.bot.id);
   fs.unlink(botFolder + file.name + '.top', function (err) {
-    if(err) {
-      res.status(400).send({
-        message: 'Remove File Failed'
-      });
-    } else {
-      file.remove(function (err) {
-        if (err) {
-          return res.status(400).send({
-            message: errorHandler.getErrorMessage(err)
-          });
-        } else {
-          res.json(file);
-        }
-      })
-    }
+    file.remove(function (err) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.json(file);
+      }
+    });
+
+    // if(err) {
+    //   res.status(400).send({
+    //     message: 'Remove File Failed'
+    //   });
+    // } else {
+    //   file.remove(function (err) {
+    //     if (err) {
+    //       return res.status(400).send({
+    //         message: errorHandler.getErrorMessage(err)
+    //       });
+    //     } else {
+    //       res.json(file);
+    //     }
+    //   })
+    // }
   })
 };
 exports.renameFile = function (req, res) {
