@@ -54,6 +54,7 @@
       }
 
       function successCallback(res) {
+        console.log('success');
         createCampaignUser(vm.campaignUsers, 0, function () {
           $state.go('campaigns.list', {
             campaignId: res._id
@@ -65,21 +66,22 @@
         vm.error = res.data.message;
       }
     }
-  }
 
-
-  function createCampaignUser(botUsers, index, callback) {
-    if(!botUsers || index < 0 || index >= botUsers.length) {
-      callback();
+    function createCampaignUser(botUsers, index, callback) {
+      console.log('create: ' + index);
+      if(!botUsers || index < 0 || index >= botUsers.length) {
+        callback();
+        return;
+      }
+      var campaignUser = new CampaignUsersService({campaignId: vm.campaign._id});
+      campaignUser.botUser = botUsers[index]._id;
+      campaignUser.campaign = vm.campaign._id;
+      campaignUser.$save(function (res) {
+        createCampaignUser(botUsers, index+1, callback);
+      }, function (res) {
+        createCampaignUser(botUsers, index+1, callback);
+      });
     }
-    var campaignUser = new CampaignUsersService();
-    campaignUser.botUser = botUsers[index]._id;
-    campaignUser.campaign = vm.campaign._id;
-    campaignUser.$save(function (res) {
-      createCampaignUser(botUsers, index+1, callback);
-    }, function (res) {
-      createCampaignUser(botUsers, index+1, callback);
-    });
   }
 
 })();
