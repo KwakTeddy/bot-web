@@ -76,7 +76,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
 
     } else if(serverJSON.action == "recommendproduct") {
 
-      Product.find({category: serverJSON.category}).sort('+rate').exec(function (err, products) {
+      Product.find({category: serverJSON.category}).sort('-rate').exec(function (err, products) {
         if (err || !products || products.length <= 0) {
           serverJSON.content = '죄송합니다! 일치하는 상품을 찾지 못했습니다ㅠㅜ';
         } else {
