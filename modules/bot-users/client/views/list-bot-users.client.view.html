@@ -1,22 +1,47 @@
-<section>
-  <div class="page-header">
-    <h1>Bot users</h1>
+<header class="page-header">
+  <h2>친구 목록</h2>
+
+  <div class="right-wrapper pull-right">
+    <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
   </div>
-  <div class="list-group">
-    <a data-ng-repeat="bot-user in vm.botUsers"
-       data-ui-sref="botUsers.view({ bot-userId: bot-user._id })"
-       class="list-group-item">
-      <small class="list-group-item-text">
-        Posted on
-        <span data-ng-bind="botUser.created | date:'mediumDate'"></span>
-        by
-        <span data-ng-if="botUser.user" data-ng-bind="botUser.user.displayName"></span>
-        <span data-ng-if="!botUser.user">Deleted User</span>
-      </small>
-      <h4 class="list-group-item-heading" data-ng-bind="bot-user.name"></h4>
-    </a>
-  </div>
-  <div class="alert alert-warning text-center" data-ng-if="vm.botUsers.$resolved && !vm.botUsers.length">
-    No Bot users yet, why don't you <a data-ui-sref="botUsers.create">create one</a>?
+</header>
+
+
+<!-- start: page -->
+<section class="panel">
+  <header class="panel-heading">
+    <h2 class="panel-title">친구 목록</h2>
+  </header>
+  <div class="panel-body">
+    <table datatable="ng" class="table table-bordered table-striped mb-none">
+      <thead>
+      <tr>
+        <th class="text-center">유저키</th>
+        <th class="text-center">채널</th>
+        <th class="text-center">이름</th>
+        <th class="text-center">전화번호</th>
+        <th class="text-center">이메일</th>
+        <th class="text-center">등록일</th>
+        <th class="text-center">접속</th>
+        <th class="text-center">메시지</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="botUser in ::vm.botUsers">
+        <td class="text-center">{{botUser.userKey}}</td>
+        <td class="text-center">{{botUser.channel}}</td>
+        <td class="text-center">{{botUser.name}}</td>
+        <td class="text-center">{{botUser.phone}}</td>
+        <td class="text-center">{{botUser.email}}</td>
+        <td class="text-center">{{botUser.created | date: 'yyyy-MM-dd'}}</td>
+        <td class="text-center">{{botUser.isOn ? ' ON' : 'OFF'}}</td>
+        <td>
+          <a class="btn btn-primary" ui-sref="">
+            <i class="glyphicon glyphicon-send"></i> 전송
+          </a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
   </div>
 </section>

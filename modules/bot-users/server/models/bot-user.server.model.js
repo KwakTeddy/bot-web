@@ -25,6 +25,19 @@ var BotUserSchema = new Schema({
     type: String
   },
 
+  name: {
+    type: String
+  },
+  phone: {
+    type: String
+  },
+  email: {
+    type: String
+  },
+  isOn: {
+    type: Boolean
+  },
+
   created: {
     type: Date,
     default: Date.now
