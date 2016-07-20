@@ -32,7 +32,7 @@ angular.module('users').config(['$stateProvider',
       .state('authentication', {
         abstract: true,
         url: '/authentication',
-        templateUrl: 'modules/users/client/views/authentication/authentication.client.view.html'
+        template: '<ui-view />'
       })
       .state('authentication.signup', {
         url: '/signup',

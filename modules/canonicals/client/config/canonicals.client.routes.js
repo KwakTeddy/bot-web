@@ -12,7 +12,10 @@
       .state('canonicals', {
         abstract: true,
         url: '/canonicals',
-        template: '<ui-view/>'
+        template: '<ui-view/>',
+        data: {
+          roles: ['user', 'admin']
+        }
       })
       .state('canonicals.list', {
         url: '',

@@ -8,11 +8,11 @@ var botUsersPolicy = require('../policies/bot-users.server.policy'),
 
 module.exports = function(app) {
   // Bot users Routes
-  app.route('/api/bot-users')//.all(botUsersPolicy.isAllowed)
+  app.route('/api/bot-users').all(botUsersPolicy.isAllowed)
     .post(botUsers.create)
     .get(botUsers.list);
 
-  app.route('/api/bot-users/:botUserId')//.all(botUsersPolicy.isAllowed)
+  app.route('/api/bot-users/:botUserId').all(botUsersPolicy.isAllowed)
     .get(botUsers.read)
     .put(botUsers.update)
     .delete(botUsers.delete);

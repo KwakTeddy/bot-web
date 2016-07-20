@@ -12,7 +12,10 @@
       .state('dicts', {
         abstract: true,
         url: '/dicts',
-        template: '<ui-view/>'
+        template: '<ui-view/>',
+        data: {
+          roles: ['user', 'admin']
+        }
       })
       .state('dicts.list', {
         url: '',

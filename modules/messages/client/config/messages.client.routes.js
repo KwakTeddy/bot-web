@@ -12,7 +12,10 @@
       .state('messages', {
         abstract: true,
         url: '/messages',
-        template: '<ui-view/>'
+        template: '<ui-view/>',
+        data: {
+          roles: ['user', 'admin']
+        }
       })
       .state('messages.list', {
         url: '',

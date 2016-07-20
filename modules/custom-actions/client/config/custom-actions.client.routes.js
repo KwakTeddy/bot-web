@@ -12,7 +12,10 @@
       .state('custom-actions', {
         abstract: true,
         url: '/custom-actions',
-        template: '<ui-view/>'
+        template: '<ui-view/>',
+        data: {
+          roles: ['user', 'admin']
+        }
       })
       .state('custom-actions.list', {
         url: '',

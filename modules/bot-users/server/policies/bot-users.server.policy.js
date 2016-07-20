@@ -20,15 +20,21 @@ exports.invokeRolesPolicies = function () {
     }, {
       resources: '/api/bot-users/:botUserId',
       permissions: '*'
+    }, {
+      resources: '/api/bot-users/by-key/:userKey',
+      permissions: '*'
     }]
   }, {
     roles: ['user'],
     allows: [{
       resources: '/api/bot-users',
-      permissions: ['get', 'post']
+      permissions: '*'
     }, {
       resources: '/api/bot-users/:botUserId',
-      permissions: ['get']
+      permissions: '*'
+    }, {
+      resources: '/api/bot-users/by-key/:userKey',
+      permissions: '*'
     }]
   }, {
     roles: ['guest'],

@@ -8,7 +8,10 @@ angular.module('learnings').config(['$stateProvider',
       .state('learnings', {
         abstract: true,
         url: '/learnings',
-        template: '<ui-view/>'
+        template: '<ui-view/>',
+        data: {
+          roles: ['user', 'admin']
+        }
       })
       .state('learnings.list', {
         url: '',

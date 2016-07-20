@@ -12,7 +12,10 @@
       .state('common-actions', {
         abstract: true,
         url: '/common-actions',
-        template: '<ui-view/>'
+        template: '<ui-view/>',
+        data: {
+          roles: ['user', 'admin']
+        }
       })
       .state('common-actions.list', {
         url: '',
