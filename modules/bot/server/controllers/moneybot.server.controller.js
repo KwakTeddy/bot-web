@@ -52,16 +52,16 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
 
         responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
       });
-    //} else if (serverJSON.action == "product") {
-    //  Product.findById(serverJSON.id).exec(function (err, product) {
-    //    if (err || !product) {
-    //      serverJSON.content = '죄송합니다! 일치하는 상품을 찾지 못했습니다ㅠㅜ';
-    //    } else {
-    //      serverJSON.content = product.content;
-    //    }
-    //
-    //    responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
-    //  });
+      //} else if (serverJSON.action == "product") {
+      //  Product.findById(serverJSON.id).exec(function (err, product) {
+      //    if (err || !product) {
+      //      serverJSON.content = '죄송합니다! 일치하는 상품을 찾지 못했습니다ㅠㅜ';
+      //    } else {
+      //      serverJSON.content = product.content;
+      //    }
+      //
+      //    responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
+      //  });
     } else if (serverJSON.action == "selectproduct") {
       var sel = parseNumber(serverJSON.select);
       var selectProduct = global.users[from].products[sel - 1];
@@ -78,7 +78,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
       });
       //global.users[from].products = null;
 
-    } else if(serverJSON.action == "recommendproduct") {
+    } else if (serverJSON.action == "recommendproduct") {
 
       Product.find({category: serverJSON.category}).sort('-rate').exec(function (err, products) {
         if (err || !products || products.length <= 0) {
@@ -93,11 +93,11 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
           if (serverJSON.category == 'mortgage'
             || serverJSON.category == 'lend'
             || serverJSON.category == 'credit') {
-            for (var i = products.length-1; i >= 0; i--) {
-              if (i <= products.length-4) {
+            for (var i = products.length - 1; i >= 0; i--) {
+              if (i <= products.length - 4) {
                 break;
               }
-              if(serverJSON.content.length > 0) {
+              if (serverJSON.content.length > 0) {
                 serverJSON.content += '\n';
               }
               serverJSON.content += ((products.length - i) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
@@ -110,11 +110,11 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
               if (i >= 3) {
                 break;
               }
-              if(serverJSON.content.length > 0) {
+              if (serverJSON.content.length > 0) {
                 serverJSON.content += '\n';
               }
-              serverJSON.content += ((i+1) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
-              serverJSON.buttons.push((i+1) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
+              serverJSON.content += ((i + 1) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
+              serverJSON.buttons.push((i + 1) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
 
               global.users[from].products.push(products[i]);
             }
@@ -122,46 +122,46 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
         }
         responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
       });
-    //} else if (serverJSON.action == "mortgage"
-    //  || serverJSON.action == "lend"
-    //  || serverJSON.action == "credit"
-    //  || serverJSON.action == "deposit"
-    //  || serverJSON.action == "installment") {
-    //  Product.find({category: serverJSON.action}).sort('+rate').exec(function (err, products) {
-    //    if (err || !products || products.length <= 0) {
-    //      serverJSON.content = '죄송합니다! 일치하는 상품을 찾지 못했습니다ㅠㅜ';
-    //    } else {
-    //      if (!global.users) global.users = {};
-    //      if (!global.users[from]) global.users[from] = {};
-    //      global.users[from].products = products;
-    //
-    //      serverJSON.content = '';
-    //      if (serverJSON.action == 'mortgage'
-    //        || serverJSON.action == 'lend'
-    //        || serverJSON.action == 'credit') {
-    //        for (var i = 0; i < products.length; i++) {
-    //          if (i >= 3) {
-    //            break;
-    //          }
-    //          if(serverJSON.content.length > 0) {
-    //            serverJSON.content += '\n';
-    //          }
-    //          serverJSON.content += ((i+1) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
-    //        }
-    //      } else {
-    //        for (var i = products.length-1; i >= 0; i--) {
-    //          if (i <= products.length-4) {
-    //            break;
-    //          }
-    //          if(serverJSON.content.length > 0) {
-    //            serverJSON.content += '\n';
-    //          }
-    //          serverJSON.content += ((products.length - i) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
-    //        }
-    //      }
-    //    }
-    //    responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
-    //  });
+      //} else if (serverJSON.action == "mortgage"
+      //  || serverJSON.action == "lend"
+      //  || serverJSON.action == "credit"
+      //  || serverJSON.action == "deposit"
+      //  || serverJSON.action == "installment") {
+      //  Product.find({category: serverJSON.action}).sort('+rate').exec(function (err, products) {
+      //    if (err || !products || products.length <= 0) {
+      //      serverJSON.content = '죄송합니다! 일치하는 상품을 찾지 못했습니다ㅠㅜ';
+      //    } else {
+      //      if (!global.users) global.users = {};
+      //      if (!global.users[from]) global.users[from] = {};
+      //      global.users[from].products = products;
+      //
+      //      serverJSON.content = '';
+      //      if (serverJSON.action == 'mortgage'
+      //        || serverJSON.action == 'lend'
+      //        || serverJSON.action == 'credit') {
+      //        for (var i = 0; i < products.length; i++) {
+      //          if (i >= 3) {
+      //            break;
+      //          }
+      //          if(serverJSON.content.length > 0) {
+      //            serverJSON.content += '\n';
+      //          }
+      //          serverJSON.content += ((i+1) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
+      //        }
+      //      } else {
+      //        for (var i = products.length-1; i >= 0; i--) {
+      //          if (i <= products.length-4) {
+      //            break;
+      //          }
+      //          if(serverJSON.content.length > 0) {
+      //            serverJSON.content += '\n';
+      //          }
+      //          serverJSON.content += ((products.length - i) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
+      //        }
+      //      }
+      //    }
+      //    responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
+      //  });
     } else {
       getUserBankInfo(from, function (userAccounts) {
         if (userAccounts.banks.length <= 0 || !userAccounts.currentBankAccount) {
@@ -173,7 +173,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
         } else {
           if (serverJSON.action != "selectAccount" && !userAccounts.currentBankAccount.bankAccount) {
             bankProcess(userAccounts.currentBankAccount, {action: 'bankAccounts'}, function (retText, retJson) {
-              if(retText.startsWith("비밀번호")) {
+              if (retText.startsWith("비밀번호")) {
                 serverJSON.url = config.host + '/banks/save/' + from;
               } else {
                 if (!global.users) global.users = {};
@@ -206,7 +206,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
 
             bankProcess(userAccounts.currentBankAccount, serverJSON, function (retText, retJson) {
               if (serverJSON.action == "bankAccounts") {
-                if(retText.startsWith("비밀번호")) {
+                if (retText.startsWith("비밀번호")) {
                   serverJSON.url = config.host + '/banks/save/' + from;
 
                 } else {
@@ -215,8 +215,8 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
                   global.users[from].selectAccounts = retJson;
 
                   serverJSON.buttons = [];
-                  for(i = 0; retJson && i < retJson.length; i++) {
-                    serverJSON.buttons.push((i+1)+". " + retJson[i].accountName + " " + retJson[i].accountNumber);
+                  for (i = 0; retJson && i < retJson.length; i++) {
+                    serverJSON.buttons.push((i + 1) + ". " + retJson[i].accountName + " " + retJson[i].accountNumber);
                   }
                 }
               }
@@ -312,7 +312,7 @@ function bankProcess(accountInfo, json, successCallback) {
           var serverText = response.body;
           var tokens = serverText.split("\r\n");
 
-          if(tokens[0] == "000") {
+          if (tokens[0] == "000") {
             var len = tokens.length;
             var selectAccounts = [];
             for (i = 1; i < len; i++) {
@@ -327,9 +327,9 @@ function bankProcess(accountInfo, json, successCallback) {
 
             successCallback(attachText(text, json), selectAccounts);
           } else {
-            if(tokens[0] == "001") successCallback("해당은행에 계좌가 없습니다.\n\n처음으로 이동은: 처음 home");
-            if(tokens[0] == "002") {
-              if(tokens[1].indexOf("비밀번호") != -1) {
+            if (tokens[0] == "001") successCallback("해당은행에 계좌가 없습니다.\n\n처음으로 이동은: 처음 home");
+            if (tokens[0] == "002") {
+              if (tokens[1].indexOf("비밀번호") != -1) {
                 successCallback("비밀번호가 틀렸습니다.\n\n처음으로 이동은: 처음 home");
               } else
                 successCallback("조회 중 오류가 발생하였습니다.\n잠시 후 다시 시도해 주세요.\n\n 처음으로 이동은: 처음 home");
@@ -359,7 +359,7 @@ function bankProcess(accountInfo, json, successCallback) {
           var serverText = response.body;
           var tokens = serverText.split("\r\n");
           var balance = tokens[1].split("\t")[2];
-          text =  accountInfo.bank + " " + accountInfo.bankAccount + " 잔액 " + balance + "\r\n";
+          text = accountInfo.bank + " " + accountInfo.bankAccount + " 잔액 " + balance + "\r\n";
           successCallback(attachText(text, json));
         } else {
           console.error(response);
@@ -458,17 +458,17 @@ function attachText(text, json) {
 
 function parseNumber(text, json) {
   var _text = text.trim();
-  if(_text.endsWith(".")) _text = _text.substr(0, _text.length -1);
-  else if(_text.endsWith(",")) _text = _text.substr(0, _text.length -1);
-  else if(_text.startsWith("일") || _text.startsWith("처") || _text.startsWith("첫")) _text = "1";
-  else if(_text.startsWith("이") || _text.startsWith("두") || _text.startsWith("둘")) _text = "2";
-  else if(_text.startsWith("삼") || _text.startsWith("세") || _text.startsWith("셋")) _text = "3";
-  else if(_text.startsWith("사") || _text.startsWith("네") || _text.startsWith("넷")) _text = "4";
-  else if(_text.startsWith("오") || _text.startsWith("다섯")) _text = "5";
-  else if(_text.startsWith("육") || _text.startsWith("여섯")) _text = "6";
-  else if(_text.startsWith("칠") || _text.startsWith("일곱")) _text = "7";
-  else if(_text.startsWith("팔") || _text.startsWith("여덟")) _text = "8";
-  else if(_text.startsWith("구") || _text.startsWith("아홉")) _text = "9";
+  if (_text.endsWith(".")) _text = _text.substr(0, _text.length - 1);
+  else if (_text.endsWith(",")) _text = _text.substr(0, _text.length - 1);
+  else if (_text.startsWith("일") || _text.startsWith("처") || _text.startsWith("첫")) _text = "1";
+  else if (_text.startsWith("이") || _text.startsWith("두") || _text.startsWith("둘")) _text = "2";
+  else if (_text.startsWith("삼") || _text.startsWith("세") || _text.startsWith("셋")) _text = "3";
+  else if (_text.startsWith("사") || _text.startsWith("네") || _text.startsWith("넷")) _text = "4";
+  else if (_text.startsWith("오") || _text.startsWith("다섯")) _text = "5";
+  else if (_text.startsWith("육") || _text.startsWith("여섯")) _text = "6";
+  else if (_text.startsWith("칠") || _text.startsWith("일곱")) _text = "7";
+  else if (_text.startsWith("팔") || _text.startsWith("여덟")) _text = "8";
+  else if (_text.startsWith("구") || _text.startsWith("아홉")) _text = "9";
 
   return _text;
 }
