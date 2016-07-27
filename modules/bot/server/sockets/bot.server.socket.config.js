@@ -3,6 +3,7 @@
 var net = require('net');
 var _ = require('lodash');
 var moneybot = require('../controllers/moneybot.server.controller');
+var action = require('../controllers/action.server.controller');
 
 var chatscriptConfig = {port: 0, host: '', allowHalfOpen: true};
 
