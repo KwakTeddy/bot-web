@@ -57,7 +57,9 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
         });
         break;
       default:
+        console.log('default: ' + serverJSON.action);
         getUserBankInfo(from, function (userAccounts) {
+          console.log('getUserBankInfo: ' + JSON.stringify(userAccounts));
           if (!userAccounts.banks || userAccounts.banks.length <= 0 || !userAccounts.currentBankAccount) {
             // 은행 계정 정보가 하나도 없을때
             saveBank(from, serverJSON, function (retText, serverJSON) {
@@ -99,13 +101,16 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
                 responseCallback(retText, serverJSON);
               });
             } else if (serverJSON.action == 'bankBanks') {
-              updateGlobalUser(userKey, 'selectBanks', userAccounts.banks);
+              updateGlobalUser(from, 'selectBanks', userAccounts.banks);
               var retText = '';
               serverJSON.buttons = [];
               for (var i = 0; userAccounts.banks && i < userAccounts.banks.length; i++) {
-                retText += (i + 1) + '. ' + userAccounts.banks[i].bank;
+                retText += (i + 1) + '. ' + userAccounts.banks[i].bank + '\n';
                 serverJSON.buttons.push((i + 1) + ". " + userAccounts.banks[i].bank);
               }
+              retText += (userAccounts.banks ? userAccounts.banks.length + 1 : 1) + '. ' + '은행추가';
+              serverJSON.buttons.push((userAccounts.banks ? userAccounts.banks.length + 1 : 1) + '. ' + '은행추가');
+
               responseCallback(retText, serverJSON);
             } else if (serverJSON.action == 'selectBank') {
               var num = parseNumber(serverJSON.bankNumber) - 1;
@@ -119,14 +124,19 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
                     botUser.currentBank = userAccounts.currentBankAccount;
                     botUser.currentAccount = null;
                     botUser.save(function (err) {
-
+                      actionBankAccounts(from, userAccounts, serverJSON, function (retText, serverJSON) {
+                        responseCallback(retText, serverJSON);
+                      })
                     });
+                  } else {
+                    responseCallback('해당하는 유저가 존재하지 않습니다.', serverJSON);
                   }
                 });
+              } else {
+                saveBank(from, serverJSON, function (retText, serverJSON) {
+                  responseCallback(retText, serverJSON);
+                })
               }
-              actionBankAccounts(from, userAccounts, serverJSON, function (retText, serverJSON) {
-                responseCallback(retText, serverJSON);
-              })
             } else {
               // updateGlobalUser(from, 'lastJSON', serverJSON);
               if (!userAccounts.currentBankAccount.bankAccount) {
@@ -292,7 +302,11 @@ function saveBank(userKey, serverJSON, callback) {
   // updateGlobalUser(userKey, 'lastAction', serverJSON.action);
 
   serverJSON.url = config.host + '/banks/save/' + userKey;
-  callback('은행 계정 정보를 입력해주세요!\n\n입력을 완료한 후에는 다시 한번 "' + actionNameFromCode(serverJSON.action) + '"라고 입력해 주세요', serverJSON);
+  if(serverJSON.action != 'selectBank') {
+    callback('은행 계정 정보를 입력해주세요!\n\n입력을 완료한 후에는 다시 한번 "' + actionNameFromCode(serverJSON.action) + '"라고 입력해 주세요', serverJSON);
+  } else {
+    callback('은행 계정 정보를 입력해주세요!', serverJSON);
+  }
 }
 function actionBankAccounts(userKey, userAccounts, serverJSON, callback) {
   bankProcess(userAccounts.currentBankAccount, {action: 'bankAccounts'}, function (retText, retJson) {
@@ -496,7 +510,7 @@ function parseNumber(text, json) {
 
 function updateGlobalUser(userKey, key, value) {
   if (!global.users) global.users = {};
-  if (!global.users[from]) global.users[userKey] = {};
+  if (!global.users[userKey]) global.users[userKey] = {};
 
   global.users[userKey][key] = value;
 }
@@ -507,8 +521,10 @@ function actionNameFromCode(actionCode) {
       return '잔액조회';
     case 'bankHistory':
       return '내역조회';
-    case 'bankBank':
+    case 'bankBanks':
       return '다른은행';
+    case 'bankAccounts':
+      return '계좌조회';
     default:
       return '';
   }

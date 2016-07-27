@@ -35,7 +35,7 @@ exports.create = function (req, res) {
       if (!error && response.statusCode == 200) {
         var serverText = response.body;
         var tokens = serverText.split("\r\n");
-
+        console.log(tokens);
         if (tokens[0] == '000' || tokens[0] == '001') {
           // It's OK
           somethingWrong = false;
