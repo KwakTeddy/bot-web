@@ -118,7 +118,6 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
               if (global.users[from].selectBanks && global.users[from].selectBanks.length > num && num >= 0) {
                 userAccounts.currentBankAccount = global.users[from].selectBanks[num];
                 updateGlobalUser(from, 'userAccounts', userAccounts);
-                updateGlobalUser(from, 'selectBanks', null);
                 BotUser.findOne({userKey: from}).populate('currentBank').exec(function (err, botUser) {
                   if (botUser) {
                     botUser.currentBank = userAccounts.currentBankAccount;
@@ -137,6 +136,7 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
                   responseCallback(retText, serverJSON);
                 })
               }
+              updateGlobalUser(from, 'selectBanks', null);
             } else {
               // updateGlobalUser(from, 'lastJSON', serverJSON);
               if (!userAccounts.currentBankAccount.bankAccount) {
@@ -392,6 +392,7 @@ function bankProcess(accountInfo, json, successCallback) {
       , function (error, response, body) {
         if (!error && response.statusCode == 200) {
           var serverText = response.body;
+          console.log('bankBalance: ' + serverText);
           var tokens = serverText.split("\r\n");
           var balance = tokens[1].split("\t")[2];
           text = accountInfo.bank + " " + accountInfo.bankAccount + " 잔액 " + balance + "\r\n";
