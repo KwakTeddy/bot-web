@@ -17,6 +17,9 @@ module.exports = function(app) {
     .put(messages.update)
     .delete(messages.delete);
 
+  app.route('/api/messages/talk/kakao')
+    .post(messages.sendKakao);
+
   // Finish by binding the Custom action middleware
   app.param('messageId', messages.messageByID);
 };

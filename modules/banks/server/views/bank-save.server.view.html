@@ -15,17 +15,18 @@
   <link href="/css/custom_du.css" type="text/css" rel="stylesheet" >
 </head>
 <body id="top" class="scrollspy" ng-controller="BankSaveController as vm" ng-init="vm.init()">
-<div class="navbar-fixed">
-  <nav id="nav_f" class="yellow" role="navigation">
-    <div class="container">
-      <div class="nav-wrapper t_center">
-        <a href="#" id="logo-container" class="saxsax">사용자 정보 저장</a>
-      </div>
-    </div>
+
+<!--<div class="navbar-fixed">-->
+  <!--<nav id="nav_f" class="yellow" role="navigation">-->
+    <!--<div class="container">-->
+      <!--<div class="nav-wrapper t_center">-->
+        <!--<a href="#" id="logo-container" class="saxsax">사용자 정보 저장</a>-->
+      <!--</div>-->
+    <!--</div>-->
 
 
-  </nav>
-</div>
+  <!--</nav>-->
+<!--</div>-->
 
 <div class="section" id="list">
   <div class="container">
@@ -70,15 +71,6 @@
         </button> -->
         <button class="col offset-s1 s10 btn waves-effect waves-light yellow darken-1 brown-text" type="submit" ng-disabled="!vm.bank.bankName" style="width:100%; height:58px; margin-left:0%; font-weight:700; font-size:20px; margin-top:20px;">
           저장
-        </button>
-        <button class="col offset-s1 s10 btn waves-effect waves-light yellow darken-1 brown-text"  onclick="window.close();" type="button" style="width:100%; height:58px; margin-left:0%; font-weight:700; font-size:20px; margin-top:20px;">
-          닫기
-        </button>
-        <button class="col offset-s1 s10 btn waves-effect waves-light yellow darken-1 brown-text"  onclick="self.close();" type="button" style="width:100%; height:58px; margin-left:0%; font-weight:700; font-size:20px; margin-top:20px;">
-          닫기
-        </button>
-        <button class="col offset-s1 s10 btn waves-effect waves-light yellow darken-1 brown-text"  onclick="alert('test');" type="button" style="width:100%; height:58px; margin-left:0%; font-weight:700; font-size:20px; margin-top:20px;">
-          닫기
         </button>
       </form>
     </div>

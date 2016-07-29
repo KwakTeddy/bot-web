@@ -11,7 +11,7 @@ var mongoose = require('mongoose'),
   Bank = mongoose.model('Bank'),
   BotUser = mongoose.model('BotUser'),
   Faq = mongoose.model('Faq'),
-  Product = mongoose.model('Product');
+  Product = mongoose.model('Product');;;;;;;;
 
 exports.receivedMoneyBot = function (from, serverText, responseCallback) {
 
@@ -23,198 +23,137 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
   serverText = serverText.replace(/%5b/gi, "[");
   serverText = serverText.replace(/%5d/gi, "]");
 
+  serverText = serverText.replace(/%0a/gi, "\\n");
+  serverText = serverText.replace(/ url/gi, "url");
+
   try {
     serverJSON = JSON.parse(serverText);
   } catch (e) {
   }
 
   if (serverJSON && typeof serverJSON == 'object') {
-    if (serverJSON.action == "link") {
-      var url = serverJSON.url;
-      url = url.replace(/%26/gi, "&");
-      url = url.replace(/%5F/gi, "_");
-      serverJSON.url = url;
-
-      responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
-    } else if (serverJSON.action == "text") {
-      responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
-
-    } else if (serverJSON.action == "faq") {
-      Faq.findById(serverJSON.id).exec(function (err, faq) {
-        if (err || !faq) {
-          serverJSON.content = '죄송합니다! 일치하는 답변을 찾지 못했습니다ㅠㅜ';
-        } else {
-          serverJSON.content = "[" + faq.title + "]" + '\n\n' + faq.content;
-        }
-
+    switch (serverJSON.action) {
+      case 'link':
+        linkProcess(serverJSON, function (serverJSON) {
+          responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
+        });
+        break;
+      case 'text':
         responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
-      });
-    //} else if (serverJSON.action == "product") {
-    //  Product.findById(serverJSON.id).exec(function (err, product) {
-    //    if (err || !product) {
-    //      serverJSON.content = '죄송합니다! 일치하는 상품을 찾지 못했습니다ㅠㅜ';
-    //    } else {
-    //      serverJSON.content = product.content;
-    //    }
-    //
-    //    responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
-    //  });
-    } else if (serverJSON.action == "selectproduct") {
-      var sel = parseNumber(serverJSON.select);
-      var selectProduct = global.users[from].products[sel - 1];
-      serverJSON.id = selectProduct._id;
-      Product.findById(serverJSON.id).exec(function (err, product) {
-        if (err || !product) {
-          serverJSON.content = '죄송합니다! 일치하는 상품을 찾지 못했습니다ㅠㅜ';
-        } else {
-          serverJSON.content = product.title + "\n" + product.content;
-          serverJSON.url = product.link;
-        }
-
-        responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
-      });
-      //global.users[from].products = null;
-
-    } else if(serverJSON.action == "recommendproduct") {
-
-      Product.find({category: serverJSON.category}).sort('-rate').exec(function (err, products) {
-        if (err || !products || products.length <= 0) {
-          serverJSON.content = '죄송합니다! 일치하는 상품을 찾지 못했습니다ㅠㅜ';
-        } else {
-          if (!global.users) global.users = {};
-          if (!global.users[from]) global.users[from] = {};
-          global.users[from].products = [];
-
-          serverJSON.content = '';
-          serverJSON.buttons = [];
-          if (serverJSON.category == 'mortgage'
-            || serverJSON.category == 'lend'
-            || serverJSON.category == 'credit') {
-            for (var i = products.length-1; i >= 0; i--) {
-              if (i <= products.length-4) {
-                break;
-              }
-              if(serverJSON.content.length > 0) {
-                serverJSON.content += '\n';
-              }
-              serverJSON.content += ((products.length - i) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
-              serverJSON.buttons.push((products.length - i) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
-
-              global.users[from].products.push(products[i]);
-            }
-          } else {
-            for (var i = 0; i < products.length; i++) {
-              if (i >= 3) {
-                break;
-              }
-              if(serverJSON.content.length > 0) {
-                serverJSON.content += '\n';
-              }
-              serverJSON.content += ((i+1) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
-              serverJSON.buttons.push((i+1) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
-
-              global.users[from].products.push(products[i]);
-            }
-          }
-        }
-        responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
-      });
-    //} else if (serverJSON.action == "mortgage"
-    //  || serverJSON.action == "lend"
-    //  || serverJSON.action == "credit"
-    //  || serverJSON.action == "deposit"
-    //  || serverJSON.action == "installment") {
-    //  Product.find({category: serverJSON.action}).sort('+rate').exec(function (err, products) {
-    //    if (err || !products || products.length <= 0) {
-    //      serverJSON.content = '죄송합니다! 일치하는 상품을 찾지 못했습니다ㅠㅜ';
-    //    } else {
-    //      if (!global.users) global.users = {};
-    //      if (!global.users[from]) global.users[from] = {};
-    //      global.users[from].products = products;
-    //
-    //      serverJSON.content = '';
-    //      if (serverJSON.action == 'mortgage'
-    //        || serverJSON.action == 'lend'
-    //        || serverJSON.action == 'credit') {
-    //        for (var i = 0; i < products.length; i++) {
-    //          if (i >= 3) {
-    //            break;
-    //          }
-    //          if(serverJSON.content.length > 0) {
-    //            serverJSON.content += '\n';
-    //          }
-    //          serverJSON.content += ((i+1) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
-    //        }
-    //      } else {
-    //        for (var i = products.length-1; i >= 0; i--) {
-    //          if (i <= products.length-4) {
-    //            break;
-    //          }
-    //          if(serverJSON.content.length > 0) {
-    //            serverJSON.content += '\n';
-    //          }
-    //          serverJSON.content += ((products.length - i) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
-    //        }
-    //      }
-    //    }
-    //    responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
-    //  });
-    } else {
-      getUserBankInfo(from, function (userAccounts) {
-        if (userAccounts.banks.length <= 0 || !userAccounts.currentBankAccount) {
-          serverJSON.url = config.host + '/banks/save/' + from;
-          responseCallback("은행 계정 정보를 입력해주세요! \n 입력을 완료한 후에는 다시 한번 \"잔액조회\"라고 입력해 주세요", serverJSON);
-          if (global.users && global.users[from] && global.users[from].userAccounts) {
-            global.users[from] = null;
-          }
-        } else {
-          if (serverJSON.action != "selectAccount" && !userAccounts.currentBankAccount.bankAccount) {
-            bankProcess(userAccounts.currentBankAccount, {action: 'bankAccounts'}, function (retText, retJson) {
-              if (!global.users) global.users = {};
-              if (!global.users[from]) global.users[from] = {};
-              global.users[from].selectAccounts = retJson;
-              global.users[from].lastJSON = serverJSON;
-
+        break;
+      case 'faq':
+        faqProcess(serverJSON, function (serverJSON) {
+          responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
+        });
+        break;
+      case 'selectproduct':
+        selectProductProcess(serverJSON, function (serverJSON) {
+          responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
+        });
+        break;
+      case 'recommendproduct':
+        recommendProductProcess(serverJSON, function (serverJSON) {
+          responseCallback(attachText(serverJSON.content, serverJSON), serverJSON);
+        });
+        break;
+      default:
+        console.log('default: ' + serverJSON.action);
+        getUserBankInfo(from, function (userAccounts) {
+          console.log('getUserBankInfo: ' + JSON.stringify(userAccounts));
+          if (!userAccounts.banks || userAccounts.banks.length <= 0 || !userAccounts.currentBankAccount) {
+            // 은행 계정 정보가 하나도 없을때
+            saveBank(from, serverJSON, function (retText, serverJSON) {
               responseCallback(retText, serverJSON);
-
-              //doBankProcess();
-            });
+            })
           } else {
-            doBankProcess();
-          }
-
-          function doBankProcess() {
-            if (serverJSON.action == "selectAccount") {
+            // 은행 계정 정보는 존재한다.
+            if (serverJSON.action == 'bankAccounts') {
+              // Do Bank Account
+              actionBankAccounts(from, userAccounts, serverJSON, function (retText, serverJSON) {
+                responseCallback(retText, serverJSON);
+              })
+            } else if (serverJSON.action == 'selectAccount') {
               var num = parseNumber(serverJSON.accountNumber) - 1;
 
               if (global.users[from].selectAccounts && global.users[from].selectAccounts.length > num && num >= 0) {
                 userAccounts.currentBankAccount.bankAccount = global.users[from].selectAccounts[num].accountNumber;
-                global.users[from].userAccounts = userAccounts;
-                global.users[from].selectAccounts = null;
+                updateGlobalUser(from, 'userAccounts', userAccounts);
+                updateGlobalUser(from, 'selectAccounts', null);
+                BotUser.findOne({userKey: from}).populate('currentBank').exec(function (err, botUser) {
+                  if (botUser) {
+                    botUser.currentAccount = userAccounts.currentBankAccount.bankAccount;
+                    botUser.save(function (err) {
+
+                    });
+                  }
+                });
               }
 
-              serverJSON.action = 'bankBalance';
-              serverJSON.postText = "필요하신 게 더 있으신가요?n (도움말 : help)";
-            }
-
-            bankProcess(userAccounts.currentBankAccount, serverJSON, function (retText, retJson) {
-              if (serverJSON.action == "bankAccounts") {
-                if (!global.users) global.users = {};
-                if (!global.users[from]) global.users[from] = {};
-                global.users[from].selectAccounts = retJson;
-
-                serverJSON.buttons = [];
-                for(i = 0; retJson && i < retJson.length; i++) {
-                  serverJSON.buttons.push((i+1)+". " + retJson[i].accountName + " " + retJson[i].accountNumber);
-                }
-
+              if (global.users && global.users[from] && global.users[from].lastJSON) {
+                serverJSON = global.users[from].lastJSON;
+                global.users[from].lastJSON = null;
+              } else {
+                serverJSON.action = 'bankBalance';
+                serverJSON.postText = "\n\n추천 명령: 내역조회 다른계좌 처음 home";
               }
+
+              bankProcess(userAccounts.currentBankAccount, serverJSON, function (retText, retJson) {
+                responseCallback(retText, serverJSON);
+              });
+            } else if (serverJSON.action == 'bankBanks') {
+              updateGlobalUser(from, 'selectBanks', userAccounts.banks);
+              var retText = '';
+              serverJSON.buttons = [];
+              for (var i = 0; userAccounts.banks && i < userAccounts.banks.length; i++) {
+                retText += (i + 1) + '. ' + userAccounts.banks[i].bank + '\n';
+                serverJSON.buttons.push((i + 1) + ". " + userAccounts.banks[i].bank);
+              }
+              retText += (userAccounts.banks ? userAccounts.banks.length + 1 : 1) + '. ' + '은행추가';
+              serverJSON.buttons.push((userAccounts.banks ? userAccounts.banks.length + 1 : 1) + '. ' + '은행추가');
 
               responseCallback(retText, serverJSON);
-            });
+            } else if (serverJSON.action == 'selectBank') {
+              var num = parseNumber(serverJSON.bankNumber) - 1;
+
+              if (global.users[from].selectBanks && global.users[from].selectBanks.length > num && num >= 0) {
+                userAccounts.currentBankAccount = global.users[from].selectBanks[num];
+                updateGlobalUser(from, 'userAccounts', userAccounts);
+                BotUser.findOne({userKey: from}).populate('currentBank').exec(function (err, botUser) {
+                  if (botUser) {
+                    botUser.currentBank = userAccounts.currentBankAccount;
+                    botUser.currentAccount = null;
+                    botUser.save(function (err) {
+                      actionBankAccounts(from, userAccounts, serverJSON, function (retText, serverJSON) {
+                        responseCallback(retText, serverJSON);
+                      })
+                    });
+                  } else {
+                    responseCallback('해당하는 유저가 존재하지 않습니다.', serverJSON);
+                  }
+                });
+              } else {
+                saveBank(from, serverJSON, function (retText, serverJSON) {
+                  responseCallback(retText, serverJSON);
+                })
+              }
+              updateGlobalUser(from, 'selectBanks', null);
+            } else {
+              // updateGlobalUser(from, 'lastJSON', serverJSON);
+              if (!userAccounts.currentBankAccount.bankAccount) {
+                actionBankAccounts(from, userAccounts, serverJSON, function (retText, serverJSON) {
+                  responseCallback(retText, serverJSON);
+                })
+              } else {
+                bankProcess(userAccounts.currentBankAccount, serverJSON, function (retText, retJson) {
+                  responseCallback(retText, serverJSON);
+                });
+              }
+            }
           }
-        }
-      });
+        }, function () {
+          responseCallback("조회 중 오류가 발생하였습니다.\n잠시 후 다시 시도해 주세요.\n\n처음으로 이동은: 처음 home", serverJSON);
+        });
+        break;
     }
   } else {
     responseCallback(serverText, serverJSON);
@@ -222,11 +161,89 @@ exports.receivedMoneyBot = function (from, serverText, responseCallback) {
 
 };
 
+function linkProcess(serverJSON, callback) {
+  var url = serverJSON.url;
+  url = url.replace(/%26/gi, "&");
+  url = url.replace(/%5F/gi, "_");
+  serverJSON.url = url;
+
+  callback(serverJSON);
+}
+function faqProcess(serverJSON, callback) {
+  Faq.findById(serverJSON.id).exec(function (err, faq) {
+    if (err || !faq) {
+      serverJSON.content = '죄송합니다! 일치하는 답변을 찾지 못했습니다ㅠㅜ';
+    } else {
+      serverJSON.content = "[" + faq.title + "]" + '\n\n' + faq.content;
+    }
+
+    callback(serverJSON);
+  });
+}
+function selectProductProcess(serverJSON, callback) {
+  var sel = parseNumber(serverJSON.select);
+  var selectProduct = global.users[from].products[sel - 1];
+  serverJSON.id = selectProduct._id;
+  Product.findById(serverJSON.id).exec(function (err, product) {
+    if (err || !product) {
+      serverJSON.content = '죄송합니다! 일치하는 상품을 찾지 못했습니다ㅠㅜ';
+    } else {
+      serverJSON.content = product.title + "\n" + product.content;
+      serverJSON.url = product.link;
+    }
+
+    callback(serverJSON);
+  });
+}
+function recommendProductProcess(serverJSON, callback) {
+  Product.find({category: serverJSON.category}).sort('-rate').exec(function (err, products) {
+    if (err || !products || products.length <= 0) {
+      serverJSON.content = '죄송합니다! 일치하는 상품을 찾지 못했습니다ㅠㅜ';
+    } else {
+      if (!global.users) global.users = {};
+      if (!global.users[from]) global.users[from] = {};
+      global.users[from].products = [];
+
+      serverJSON.content = '';
+      serverJSON.buttons = [];
+      if (serverJSON.category == 'mortgage'
+        || serverJSON.category == 'lend'
+        || serverJSON.category == 'credit') {
+        for (var i = products.length - 1; i >= 0; i--) {
+          if (i <= products.length - 4) {
+            break;
+          }
+          if (serverJSON.content.length > 0) {
+            serverJSON.content += '\n';
+          }
+          serverJSON.content += ((products.length - i) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
+          serverJSON.buttons.push((products.length - i) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
+
+          global.users[from].products.push(products[i]);
+        }
+      } else {
+        for (var i = 0; i < products.length; i++) {
+          if (i >= 3) {
+            break;
+          }
+          if (serverJSON.content.length > 0) {
+            serverJSON.content += '\n';
+          }
+          serverJSON.content += ((i + 1) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
+          serverJSON.buttons.push((i + 1) + '. ' + products[i].title + ' (' + products[i].rate + '%)');
+
+          global.users[from].products.push(products[i]);
+        }
+      }
+    }
+    callback(serverJSON);
+  });
+}
+
 
 function getUserBankInfo(userKey, successCallback, failCallback) {
   if (global.users && global.users[userKey] && global.users[userKey].userAccounts) {
     successCallback(global.users[userKey].userAccounts);
-
   } else {
     BotUser.findOne({userKey: userKey}).populate('currentBank').exec(function (err, botUser) {
       if (err || !botUser) {
@@ -280,7 +297,36 @@ function getUserBankInfo(userKey, successCallback, failCallback) {
 
   }
 }
+function saveBank(userKey, serverJSON, callback) {
+  updateGlobalUser(userKey, 'userAccounts', null);
+  // updateGlobalUser(userKey, 'lastAction', serverJSON.action);
 
+  serverJSON.url = config.host + '/banks/save/' + userKey;
+  if(serverJSON.action != 'selectBank') {
+    callback('은행 계정 정보를 입력해주세요!\n\n입력을 완료한 후에는 다시 한번 "' + actionNameFromCode(serverJSON.action) + '"라고 입력해 주세요', serverJSON);
+  } else {
+    callback('은행 계정 정보를 입력해주세요!', serverJSON);
+  }
+}
+function actionBankAccounts(userKey, userAccounts, serverJSON, callback) {
+  bankProcess(userAccounts.currentBankAccount, {action: 'bankAccounts'}, function (retText, retJson) {
+    if (retText.startsWith("비밀번호")) {
+      serverJSON.url = config.host + '/banks/save/' + from;
+    } else {
+      updateGlobalUser(userKey, 'selectAccounts', retJson);
+      if (serverJSON.action == 'bankAccounts'
+        || serverJSON.action == 'selectBank') {
+        serverJSON.buttons = [];
+        for (var i = 0; retJson && i < retJson.length; i++) {
+          serverJSON.buttons.push((i + 1) + ". " + retJson[i].accountName + " " + retJson[i].accountNumber);
+        }
+      } else {
+        updateGlobalUser(userKey, 'lastJSON', serverJSON);
+      }
+    }
+    callback(retText, serverJSON);
+  });
+}
 
 function bankProcess(accountInfo, json, successCallback) {
   var text = "";
@@ -300,24 +346,38 @@ function bankProcess(accountInfo, json, successCallback) {
           text = accountInfo.bank + "\r\n";
           var serverText = response.body;
           var tokens = serverText.split("\r\n");
-          var len = tokens.length;
-          var selectAccounts = [];
-          for (i = 1; i < len; i++) {
-            var tokens2 = tokens[i].split("\t");
 
-            text += i + ". " + tokens2[0] + " " + tokens2[1] + "\r\n";
-            selectAccounts.push({"accountName": tokens2[0], "accountNumber": tokens2[1]});
+          if (tokens[0] == "000") {
+            var len = tokens.length;
+            var selectAccounts = [];
+            for (i = 1; i < len; i++) {
+              var tokens2 = tokens[i].split("\t");
+
+              text += i + ". " + tokens2[0] + " " + tokens2[1] + "\r\n";
+              selectAccounts.push({"accountName": tokens2[0], "accountNumber": tokens2[1]});
+            }
+            //text += (++i) + ". " + "다른 은행 계좌 선택\r\n";
+
+            text += "조회할 계좌를 선택해 주세요.";
+
+            successCallback(attachText(text, json), selectAccounts);
+          } else {
+            if (tokens[0] == "001") successCallback("해당은행에 계좌가 없습니다.\n\n처음으로 이동은: 처음 home");
+            if (tokens[0] == "002") {
+              if (tokens[1].indexOf("비밀번호") != -1) {
+                successCallback("비밀번호가 틀렸습니다.\n\n처음으로 이동은: 처음 home");
+              } else
+                successCallback("조회 중 오류가 발생하였습니다.\n잠시 후 다시 시도해 주세요.\n\n 처음으로 이동은: 처음 home");
+            } else {
+              successCallback("조회 중 오류가 발생하였습니다.\n잠시 후 다시 시도해 주세요.\n\n처음으로 이동은: 처음 home");
+            }
+
           }
-          //text += (++i) + ". " + "다른 은행 계좌 선택\r\n";
-
-          text += "조회할 계좌를 선택해 주세요.";
-
-          successCallback(attachText(text, json), selectAccounts);
         } else {
           console.error(response);
           console.error(error);
 
-          text = "봇서버에서 응답을 받을 수 없습니다.";
+          text = "봇서버에서 응답을 받을 수 없습니다.\n잠시 후 다시 시도해 주세요.\n\n처음으로 이동은: 처음 home";
           successCallback(text);
         }
       });
@@ -332,15 +392,16 @@ function bankProcess(accountInfo, json, successCallback) {
       , function (error, response, body) {
         if (!error && response.statusCode == 200) {
           var serverText = response.body;
+          console.log('bankBalance: ' + serverText);
           var tokens = serverText.split("\r\n");
           var balance = tokens[1].split("\t")[2];
-          text =  accountInfo.bank + " " + accountInfo.bankAccount + " 잔액 " + balance + "\r\n";
+          text = accountInfo.bank + " " + accountInfo.bankAccount + " 잔액 " + balance + "\r\n";
           successCallback(attachText(text, json));
         } else {
           console.error(response);
           console.error(error);
 
-          text = "봇서버에서 응답을 받을 수 없습니다.";
+          text = "봇서버에서 응답을 받을 수 없습니다.\n잠시 후 다시 시도해 주세요.\n\n처음으로 이동은: 처음 home";
           successCallback(text);
         }
       });
@@ -404,17 +465,17 @@ function bankProcess(accountInfo, json, successCallback) {
 
             successCallback(attachText(text, json));
           } else if (tokens[0] == "001") {
-            text = startDate + "-" + endDate + "\r\n" + " 거래내역이 없습니다.\r\n다른 계좌조회는 '다른계좌' 입력해 주세요";
+            text = startDate + "-" + endDate + "\r\n" + "거래내역이 없습니다.\n\n추천 명령: 다른계좌 처음 home";
             successCallback(attachText(text, json));
           } else {
-            text = "계좌 내역을 읽어올 수 없습니다.\r\n잠시후 다시 시도해 주세요";
+            text = "계좌 내역을 읽어올 수 없습니다.\n잠시 후 다시 시도해 주세요.\n\n처음으로 이동은: 처음 home";
             successCallback(text);
           }
         } else {
           console.error(response);
           console.error(error);
 
-          text = "계좌 내역을 읽어올 수 없습니다.\r\n잠시후 다시 시도해 주세요";
+          text = "계좌 내역을 읽어올 수 없습니다.\n잠시 후 다시 시도해 주세요.\n\n처음으로 이동은: 처음 home";
           successCallback(text);
         }
       });
@@ -433,19 +494,41 @@ function attachText(text, json) {
 
 function parseNumber(text, json) {
   var _text = text.trim();
-  if(_text.endsWith(".")) _text = _text.substr(0, _text.length -1);
-  else if(_text.endsWith(",")) _text = _text.substr(0, _text.length -1);
-  else if(_text.startsWith("일") || _text.startsWith("처") || _text.startsWith("첫")) _text = "1";
-  else if(_text.startsWith("이") || _text.startsWith("두") || _text.startsWith("둘")) _text = "2";
-  else if(_text.startsWith("삼") || _text.startsWith("세") || _text.startsWith("셋")) _text = "3";
-  else if(_text.startsWith("사") || _text.startsWith("네") || _text.startsWith("넷")) _text = "4";
-  else if(_text.startsWith("오") || _text.startsWith("다섯")) _text = "5";
-  else if(_text.startsWith("육") || _text.startsWith("여섯")) _text = "6";
-  else if(_text.startsWith("칠") || _text.startsWith("일곱")) _text = "7";
-  else if(_text.startsWith("팔") || _text.startsWith("여덟")) _text = "8";
-  else if(_text.startsWith("구") || _text.startsWith("아홉")) _text = "9";
+  if (_text.endsWith(".")) _text = _text.substr(0, _text.length - 1);
+  else if (_text.endsWith(",")) _text = _text.substr(0, _text.length - 1);
+  else if (_text.startsWith("일") || _text.startsWith("처") || _text.startsWith("첫")) _text = "1";
+  else if (_text.startsWith("이") || _text.startsWith("두") || _text.startsWith("둘")) _text = "2";
+  else if (_text.startsWith("삼") || _text.startsWith("세") || _text.startsWith("셋")) _text = "3";
+  else if (_text.startsWith("사") || _text.startsWith("네") || _text.startsWith("넷")) _text = "4";
+  else if (_text.startsWith("오") || _text.startsWith("다섯")) _text = "5";
+  else if (_text.startsWith("육") || _text.startsWith("여섯")) _text = "6";
+  else if (_text.startsWith("칠") || _text.startsWith("일곱")) _text = "7";
+  else if (_text.startsWith("팔") || _text.startsWith("여덟")) _text = "8";
+  else if (_text.startsWith("구") || _text.startsWith("아홉")) _text = "9";
 
   return _text;
+}
+
+function updateGlobalUser(userKey, key, value) {
+  if (!global.users) global.users = {};
+  if (!global.users[userKey]) global.users[userKey] = {};
+
+  global.users[userKey][key] = value;
+}
+
+function actionNameFromCode(actionCode) {
+  switch (actionCode) {
+    case 'bankBalance':
+      return '잔액조회';
+    case 'bankHistory':
+      return '내역조회';
+    case 'bankBanks':
+      return '다른은행';
+    case 'bankAccounts':
+      return '계좌조회';
+    default:
+      return '';
+  }
 }
 
 //function openUserBankInfo() {

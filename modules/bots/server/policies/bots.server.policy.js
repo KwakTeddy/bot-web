@@ -20,15 +20,27 @@ exports.invokeRolesPolicies = function () {
     }, {
       resources: '/api/bots/:botId',
       permissions: '*'
+    }, {
+      resources: '/api/bots/files/:botId',
+      permissions: '*'
+    }, {
+      resources: '/api/bots/files/:botId/:fileId',
+      permissions: '*'
     }]
   }, {
     roles: ['user'],
     allows: [{
       resources: '/api/bots',
-      permissions: ['get', 'post']
+      permissions: '*'
     }, {
       resources: '/api/bots/:botId',
-      permissions: ['get']
+      permissions: '*'
+    }, {
+      resources: '/api/bots/files/:botId',
+      permissions: '*'
+    }, {
+      resources: '/api/bots/files/:botId/:fileId',
+      permissions: '*'
     }]
   }, {
     roles: ['guest'],

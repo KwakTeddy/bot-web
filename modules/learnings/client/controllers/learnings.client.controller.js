@@ -5,6 +5,13 @@ angular.module('learnings').controller('LearningsController', ['$scope', '$state
   function ($scope, $stateParams, $location, Authentication, Learnings) {
     $scope.authentication = Authentication;
 
+
+    $scope.learnInput = function() {
+      var myRe = new RegExp("d(b+)d", "g");
+      var myArray = myRe.exec("cdbbdbsbz");
+
+    };
+
     // Create new Learning
     $scope.create = function (isValid) {
       $scope.error = null;

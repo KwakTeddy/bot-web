@@ -63,7 +63,7 @@
 
       function successCallback(res) {
         // Close ?
-        vm.error = '저장되었습니다';
+        vm.error = '저장되었습니다. 상단 뒤로가기로 카카오톡으로 돌아가 주세요';
       }
 
       function errorCallback(res) {

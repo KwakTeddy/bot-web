@@ -8,7 +8,10 @@ angular.module('bots').config(['$stateProvider',
       .state('bots', {
         abstract: true,
         url: '/bots',
-        template: '<ui-view/>'
+        template: '<ui-view/>',
+        data: {
+          roles: ['user', 'admin']
+        }
       })
       .state('bots.list', {
         url: '',

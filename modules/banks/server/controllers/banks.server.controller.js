@@ -8,7 +8,8 @@ var path = require('path'),
   Bank = mongoose.model('Bank'),
   BotUser = mongoose.model('BotUser'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
-  _ = require('lodash');
+  _ = require('lodash'),
+  request = require('request');
 
 exports.renderSave = function (req, res) {
   res.render('modules/banks/server/views/bank-save', {
@@ -19,58 +20,94 @@ exports.renderSave = function (req, res) {
 /**
  * Create a Bank
  */
-exports.create = function(req, res) {
-  if(!req.botUser) {
+exports.create = function (req, res) {
+  if (!req.botUser) {
     return res.status(404).send({
       message: 'No Bot user with that identifier has been found'
     });
   }
 
-  var bank = undefined;
-  Bank.findOne({userKey: req.params.userKey, bankName: req.body.bankName}).exec(function (err, b) {
-    if(err || !b) {
-      bank = new Bank(req.body);
-      bank.userKey = req.params.userKey;
-    } else {
-      bank = b;
-      bank.userID = req.body.userID;
-      bank.userPassword = req.body.userPassword;
-    }
-
-    if(!bank) {
-      return res.status(400).send({
-        message: 'Something went wrong..'
-      });
-    } else {
-      bank.save(function(err) {
-        if (err) {
-          return res.status(400).send({
-            message: errorHandler.getErrorMessage(err)
-          });
+  // Bank Account Check
+  request('http://211.232.21.89:8081/biz/scraping/BankScrapApp?' +
+    'action=' + '105' + '&bank_id=' + req.body.bankCode + '&online_web_id=' + req.body.userID + '&online_web_pwd=' + req.body.userPassword
+    , function (error, response) {
+      var somethingWrong = false;
+      if (!error && response.statusCode == 200) {
+        var serverText = response.body;
+        var tokens = serverText.split("\r\n");
+        console.log(tokens);
+        if (tokens[0] == '000' || tokens[0] == '001') {
+          // It's OK
+          somethingWrong = false;
+        } else if (tokens[0] == '002') {
+          if (tokens[1].indexOf("비밀번호") != -1) {
+            somethingWrong = true;
+            return res.status(400).send({
+              message: '비밀번호가 틀렸습니다.'
+            });
+          } else {
+            somethingWrong = true;
+          }
         } else {
-          if(!req.botUser.currentBank) {
-            req.botUser.currentBank = bank;
-            req.botUser.save(function (err) {
-              if(err) {
+          somethingWrong = true;
+        }
+      } else {
+        somethingWrong = true;
+      }
+
+      if (somethingWrong) {
+        return res.status(400).send({
+          message: '조회 중 오류가 발생하였습니다. 잠시 후 다시 시도해 주세요.'
+        });
+      } else {
+        // Save Bank
+        var bank = undefined;
+        Bank.findOne({userKey: req.params.userKey, bankName: req.body.bankName}).exec(function (err, b) {
+          if (err || !b) {
+            bank = new Bank(req.body);
+            bank.userKey = req.params.userKey;
+          } else {
+            bank = b;
+            bank.userID = req.body.userID;
+            bank.userPassword = req.body.userPassword;
+          }
+
+          if (!bank) {
+            return res.status(400).send({
+              message: 'Something went wrong..'
+            });
+          } else {
+            bank.save(function (err) {
+              if (err) {
                 return res.status(400).send({
                   message: errorHandler.getErrorMessage(err)
                 });
+              } else {
+                if (!req.botUser.currentBank) {
+                  req.botUser.currentBank = bank;
+                  req.botUser.save(function (err) {
+                    if (err) {
+                      return res.status(400).send({
+                        message: errorHandler.getErrorMessage(err)
+                      });
+                    }
+                    res.jsonp(bank);
+                  })
+                } else {
+                  res.jsonp(bank);
+                }
               }
-              res.jsonp(bank);
-            })
-          } else {
-            res.jsonp(bank);
+            });
           }
-        }
-      });
-    }
-  });
+        });
+      }
+    });
 };
 
 /**
  * Show the current Bank
  */
-exports.read = function(req, res) {
+exports.read = function (req, res) {
   // convert mongoose document to JSON
   var bank = req.bank ? req.bank.toJSON() : {};
 
@@ -84,12 +121,12 @@ exports.read = function(req, res) {
 /**
  * Update a Bank
  */
-exports.update = function(req, res) {
-  var bank = req.bank ;
+exports.update = function (req, res) {
+  var bank = req.bank;
 
-  bank = _.extend(bank , req.body);
+  bank = _.extend(bank, req.body);
 
-  bank.save(function(err) {
+  bank.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -103,10 +140,10 @@ exports.update = function(req, res) {
 /**
  * Delete an Bank
  */
-exports.delete = function(req, res) {
-  var bank = req.bank ;
+exports.delete = function (req, res) {
+  var bank = req.bank;
 
-  bank.remove(function(err) {
+  bank.remove(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -120,8 +157,8 @@ exports.delete = function(req, res) {
 /**
  * List of Banks
  */
-exports.list = function(req, res) { 
-  Bank.find({userKey: req.params.userKey}).sort('-bankName').exec(function(err, banks) {
+exports.list = function (req, res) {
+  Bank.find({userKey: req.params.userKey}).sort('-bankName').exec(function (err, banks) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -135,7 +172,7 @@ exports.list = function(req, res) {
 /**
  * Bank middleware
  */
-exports.bankByID = function(req, res, next, id) {
+exports.bankByID = function (req, res, next, id) {
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({

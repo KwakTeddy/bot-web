@@ -23,19 +23,16 @@
           <label class="col-sm-3 control-label">질문 <span class="required" aria-required="true">*</span></label>
           <div class="col-sm-9">
 
-            <input type="text" id="input" name="input" ng-model="input" class="form-control valid mb-xs" placeholder="질문을 입력해주세요" required="" aria-required="true" aria-invalid="false">
-
-            <input type="text" id="input" name="input" ng-model="input" class="form-control valid mb-xs" placeholder="질문을 입력해주세요" required="" aria-required="true" aria-invalid="false">
-
             <div class="input-group input-group-icon">
-              <input type="text" class="form-control mb-xs" placeholder="Right icon">
-                <div style="border-radius: 30px; height: 30px; line-height: 30px; margin: 0px auto; text-align: center; width: 30px; position: relative; background-color: white;" id="LoadingOverlayApi" data-loading-overlay="" class="loading-overlay-showing input-group-addon">
+              <input type="text" class="form-control mb-xs" placeholder="질문을 입력해주세요">
 
-                  <div class="loading-overlay" style="border-radius: 30px; background-color: white;visibility: hidden;"><div class="loader black"></div></div>
-                </div>
+              <div style="border-radius: 30px; height: 30px; line-height: 30px; margin: 0px auto; text-align: center; width: 30px; position: relative; background-color: white;" id="LoadingOverlayApi" data-loading-overlay="" class="loading-overlay-showing input-group-addon">
+
+                <div class="loading-overlay" style="border-radius: 30px; background-color: white;visibility: hidden;"><div class="loader black"></div></div>
+              </div>
             </div>
 
-            <button type="button" class="mb-xs mr-xs btn btn-sm btn-info"><i class="glyphicon glyphicon-plus"></i> 질문추가</button>
+            <button type="button" ng-click="learnInput()" class="mb-xs mr-xs btn btn-sm btn-info"><i class="glyphicon glyphicon-plus"></i> 질문추가</button>
           </div>
         </div>
         <div class="form-group">
@@ -46,19 +43,17 @@
             <table class="table table-bordered table-striped mb-none" id="datatable-editable">
               <thead>
               <tr>
-                <th>Rendering engine</th>
-                <th>Browser</th>
-                <th>Platform(s)</th>
+                <th>변수명</th>
+                <th>타입</th>
+                <th>부재 시 질문</th>
                 <th>Actions</th>
               </tr>
               </thead>
               <tbody>
               <tr class="gradeX">
-                <td>Trident</td>
-                <td>Internet
-                  Explorer 4.0
-                </td>
-                <td>Win 95+</td>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td class="actions">
                   <a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
                   <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
@@ -69,13 +64,17 @@
               </tbody>
             </table>
 
+            <button type="button" id="addToTable" class="mb-xs mr-xs btn btn-sm btn-info"><i class="glyphicon glyphicon-plus"></i> 파라메타 추가</button>
+
           </div>
         </div>
         <div class="form-group">
           <label class="col-sm-3 control-label">답변 <span class="required" aria-required="true">*</span></label>
           <div class="col-sm-9">
 
-            <input type="text" id="output" name="output" ng-model="output" class="form-control valid" placeholder="답변을 입력해주세요" required="" aria-required="true" aria-invalid="false">
+            <input type="text" id="output" name="output" ng-model="output" class="form-control valid mb-xs" placeholder="답변을 입력해주세요" required="" aria-required="true" aria-invalid="false">
+
+            <button type="button" class="mb-xs mr-xs btn btn-sm btn-info"><i class="glyphicon glyphicon-plus"></i> 답변추가</button>
           </div>
         </div>
       </div>
@@ -91,7 +90,7 @@
   </form>
 </section>
 
-<script src="assets/javascripts/tables/examples.datatables.editable.js"></script>
+<script src="js/tables/examples.datatables.editable.js"></script>
 
 <!--<section ng-controller="LearningsController">-->
   <!--<div class="page-header">-->

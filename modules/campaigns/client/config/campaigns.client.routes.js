@@ -12,7 +12,10 @@
       .state('campaigns', {
         abstract: true,
         url: '/campaigns',
-        template: '<ui-view/>'
+        template: '<ui-view/>',
+        data: {
+          roles: ['user', 'admin']
+        }
       })
       .state('campaigns.list', {
         url: '',

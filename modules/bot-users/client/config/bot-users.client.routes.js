@@ -23,6 +23,7 @@
           botUsersResolve: getBotUsers
         },
         data: {
+          roles: ['user', 'admin'],
           pageTitle: 'Bot users List'
         }
       })
@@ -35,7 +36,7 @@
           botUserResolve: newBotUser
         },
         data: {
-          // roles: ['user', 'admin'],
+          roles: ['user', 'admin'],
           pageTitle : 'Bot users Create'
         }
       })
@@ -48,7 +49,7 @@
           botUserResolve: getBotUser
         },
         data: {
-          // roles: ['user', 'admin'],
+          roles: ['user', 'admin'],
           pageTitle: 'Edit Bot user {{ bot-userResolve.name }}'
         }
       })
@@ -61,6 +62,7 @@
           botUserResolve: getBotUser
         },
         data:{
+          roles: ['user', 'admin'],
           pageTitle: 'Bot user {{ articleResolve.name }}'
         }
       });

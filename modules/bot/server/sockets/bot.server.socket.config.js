@@ -3,6 +3,7 @@
 var net = require('net');
 var _ = require('lodash');
 var moneybot = require('../controllers/moneybot.server.controller');
+var action = require('../controllers/action.server.controller');
 
 var chatscriptConfig = {port: 0, host: '', allowHalfOpen: true};
 
@@ -22,26 +23,62 @@ module.exports = function (io, socket) {
       var from = msg.user;
       var num = msg.msg.substr(0, 1);
 
-      BotUser.findOne({userKey: from}).populate('currentBank').exec(function (err, botUser) {
-        if (botUser) {
-
-          botUser.currentAccount =  global.users[from].selectAccounts[num-1].accountNumber;
-
-          botUser.save(function (err) {
-            global.users[from].selectAccounts = null;
-            global.users[from].userAccounts = null;
-
-            var serverJSON = global.users[from].lastJSON;
-            global.users[from].lastJSON = null;
-            moneybot.receivedMoneyBot(msg.user, JSON.stringify(serverJSON), function(retText, json) {
-              socket.emit('send_msg', retText + (json && json.url ? " url: " + json.url : "") + " " +
-                (json && json.buttons ? " buttons: " + json.buttons: "")); // FROM SERVER
-            });
-          });
-        }
+      var serverJSON = {};
+      serverJSON.action = 'selectAccount';
+      serverJSON.accountNumber = num;
+      moneybot.receivedMoneyBot(from, JSON.stringify(serverJSON), function(retText, json) {
+        socket.emit('send_msg', retText + (json && json.url ? "\nurl: " + json.url : "") + " " +
+          (json && json.buttons ? "\nbuttons: " + json.buttons: "")); // FROM SERVER
       });
 
+      // BotUser.findOne({userKey: from}).populate('currentBank').exec(function (err, botUser) {
+      //   if (botUser) {
+      //
+      //     botUser.currentAccount =  global.users[from].selectAccounts[num-1].accountNumber;
+      //
+      //     botUser.save(function (err) {
+      //       global.users[from].selectAccounts = null;
+      //       global.users[from].userAccounts = null;
+      //
+      //       var serverJSON = global.users[from].lastJSON;
+      //       global.users[from].lastJSON = null;
+      //       moneybot.receivedMoneyBot(msg.user, JSON.stringify(serverJSON), function(retText, json) {
+      //         socket.emit('send_msg', retText + (json && json.url ? "\nurl: " + json.url : "") + " " +
+      //           (json && json.buttons ? "\nbuttons: " + json.buttons: "")); // FROM SERVER
+      //       });
+      //     });
+      //   }
+      // });
+    } else if(global.users && global.users[msg.user] && global.users[msg.user].selectBanks) {
+      var from = msg.user;
+      var num = msg.msg.substr(0, 1);
 
+      var serverJSON = {};
+      serverJSON.action = 'selectBank';
+      serverJSON.bankNumber = num;
+      moneybot.receivedMoneyBot(from, JSON.stringify(serverJSON), function(retText, json) {
+        socket.emit('send_msg', retText + (json && json.url ? "\nurl: " + json.url : "") + " " +
+          (json && json.buttons ? "\nbuttons: " + json.buttons: "")); // FROM SERVER
+      });
+
+      // BotUser.findOne({userKey: from}).populate('currentBank').exec(function (err, botUser) {
+      //   if (botUser) {
+      //
+      //     botUser.currentAccount =  global.users[from].selectAccounts[num-1].accountNumber;
+      //
+      //     botUser.save(function (err) {
+      //       global.users[from].selectAccounts = null;
+      //       global.users[from].userAccounts = null;
+      //
+      //       var serverJSON = global.users[from].lastJSON;
+      //       global.users[from].lastJSON = null;
+      //       moneybot.receivedMoneyBot(msg.user, JSON.stringify(serverJSON), function(retText, json) {
+      //         socket.emit('send_msg', retText + (json && json.url ? "\nurl: " + json.url : "") + " " +
+      //           (json && json.buttons ? "\nbuttons: " + json.buttons: "")); // FROM SERVER
+      //       });
+      //     });
+      //   }
+      // });
     } else {
       var chatscriptSocket = net.createConnection(_.assign(chatscriptConfig, {host: msg.host, port: msg.port}), function(){
         chatscriptSocket.write(msg.user+'\x00'+msg.bot+'\x00'+msg.msg+'\x00');
@@ -55,8 +92,8 @@ module.exports = function (io, socket) {
 //      socket.emit('send_msg', data.toString()); // FROM SERVER
 
         moneybot.receivedMoneyBot(msg.user, data.toString(), function(retText, json) {
-          socket.emit('send_msg', retText + (json && json.url ? " url: " + json.url : "") + " " +
-            (json && json.buttons ? " buttons: " + json.buttons: "")); // FROM SERVER
+          socket.emit('send_msg', retText + (json && json.url ? "\nurl: " + json.url : "") + " " +
+            (json && json.buttons ? "\nbuttons: " + json.buttons: "")); // FROM SERVER
         });
 
       });

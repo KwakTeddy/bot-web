@@ -10,24 +10,57 @@ exports.write = function(from, to, text, successCallback, errorCallback, endCall
 
   if(global.users && global.users[from] && global.users[from].selectAccounts && global.users[from].lastJSON) {
     var num = text.substr(0, 1);
-
-    BotUser.findOne({userKey: from}).populate('currentBank').exec(function (err, botUser) {
-      if (botUser) {
-
-        botUser.currentAccount = global.users[from].selectAccounts[num - 1].accountNumber;
-
-        botUser.save(function (err) {
-          global.users[from].selectAccounts = null;
-          global.users[from].userAccounts = null;
-
-          var serverJSON = global.users[from].lastJSON;
-          global.users[from].lastJSON = null;
-          moneybot.receivedMoneyBot(from, JSON.stringify(serverJSON), function (retText, json) {
-            successCallback(retText, json);
-          });
-        });
-      }
+    var serverJSON = {};
+    serverJSON.action = 'selectAccount';
+    serverJSON.accountNumber = num;
+    moneybot.receivedMoneyBot(from, JSON.stringify(serverJSON), function (retText, json) {
+      successCallback(retText, json);
     });
+
+    // BotUser.findOne({userKey: from}).populate('currentBank').exec(function (err, botUser) {
+    //   if (botUser) {
+    //
+    //     botUser.currentAccount = global.users[from].selectAccounts[num - 1].accountNumber;
+    //
+    //     botUser.save(function (err) {
+    //       global.users[from].selectAccounts = null;
+    //       global.users[from].userAccounts = null;
+    //
+    //       var serverJSON = global.users[from].lastJSON;
+    //       global.users[from].lastJSON = null;
+    //       moneybot.receivedMoneyBot(from, JSON.stringify(serverJSON), function (retText, json) {
+    //         successCallback(retText, json);
+    //       });
+    //     });
+    //   }
+    // });
+
+  } else if(global.users && global.users[from] && global.users[from].selectBanks) {
+    var num = text.substr(0, 1);
+    var serverJSON = {};
+    serverJSON.action = 'selectBank';
+    serverJSON.bankNumber = num;
+    moneybot.receivedMoneyBot(from, JSON.stringify(serverJSON), function (retText, json) {
+      successCallback(retText, json);
+    });
+
+    // BotUser.findOne({userKey: from}).populate('currentBank').exec(function (err, botUser) {
+    //   if (botUser) {
+    //
+    //     botUser.currentAccount = global.users[from].selectAccounts[num - 1].accountNumber;
+    //
+    //     botUser.save(function (err) {
+    //       global.users[from].selectAccounts = null;
+    //       global.users[from].userAccounts = null;
+    //
+    //       var serverJSON = global.users[from].lastJSON;
+    //       global.users[from].lastJSON = null;
+    //       moneybot.receivedMoneyBot(from, JSON.stringify(serverJSON), function (retText, json) {
+    //         successCallback(retText, json);
+    //       });
+    //     });
+    //   }
+    // });
 
   } else {
     var chatSocket = net.createConnection(chatSocketConfig, function(){
