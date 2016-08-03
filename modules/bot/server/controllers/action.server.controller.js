@@ -1,10 +1,37 @@
 'use strict'
 
-exports.processInput = function(text, callback) {
+var nlp = require('../../engine/nlp/processor');
+
+const TAG_START = '\\+';
+const TAG_END = '\\+';
+const ARRAY_TAG_START = '#';
+const ARRAY_TAG_END = '#';
+const IN_TAG_START = '{';
+const IN_TAG_END = '}';
+
+const DOC_NAME = 'doc';
+
+
+exports.processInput = function(botName, user, text, callback) {
+  if(text.startsWith(":")) callback(text, null);
+
   var json = {}
 
-  commonFormat(text, json, callback);
+  var nlpKo = new nlp({
+    stemmer: true,      // (optional default: true)
+    normalizer: true,   // (optional default: true)
+    spamfilter: true     // (optional default: false)
+  });
 
+  commonFormat(text, json, function(inText, inJson) {
+    nlpKo.tokenizeToStrings(inText, function(err, result) {
+      var nlpText =result.join(' ');
+
+      nlpText = nlpText.replace(/(?:\{ | \})/g, '+');
+
+      callback(nlpText, inJson);
+    }) // async
+  })
 }
 
 
@@ -17,7 +44,7 @@ function commonFormat(text, json, callback) {
       json.amount = p1;
     }
 
-    return '{$amount}';
+    return IN_TAG_START + 'amount' + IN_TAG_END;
   });
 
   text = text.replace(/\b((?:010-\d{4}|01[1|6|7|8|9][-.]?\d{3,4})[-.]?\d{4})\b/g, function(match, p1, offset, string) {
@@ -28,7 +55,7 @@ function commonFormat(text, json, callback) {
       json.$mobile = p1;
     }
 
-    return '{$mobile}';
+    return IN_TAG_START + 'mobile' + IN_TAG_END;
   });
 
   text = text.replace(/\b((?:0(?:2|3[0-3]|4[1-4]|5[0-5]|6[0-4]|70|80))[-.]?\d{3,4}[-.]?\d{4})\b/g, function(match, p1, offset, string) {
@@ -39,13 +66,13 @@ function commonFormat(text, json, callback) {
       json.phone = p1;
     }
 
-    return '{$phone}';
+    return IN_TAG_START + 'phone' + IN_TAG_END;
   });
 
 
 //text = text.replace(/(\b\d{3}[-.]?\d{4}[-.]?\d{4}\b)/g, function(match, p1, offset, string) {
 //	json.phone = p1;
-//	return '{$phone}';
+//	return IN_TAG_START + $phone + IN_TAG_END;
 //});
 
 
@@ -57,7 +84,7 @@ function commonFormat(text, json, callback) {
       json.date = p1;
     }
 
-    return '{$date}';
+    return IN_TAG_START + 'date' + IN_TAG_END;
   });
 
 
@@ -69,11 +96,11 @@ function commonFormat(text, json, callback) {
       json.time = p1;
     }
 
-    return '{$time}';
+    return IN_TAG_START + 'time' + IN_TAG_END;
   });
 
 
-  text = text.replace(/(\b[\d-]+\b)/g, function(match, p1, offset, string) {
+  text = text.replace(/(\b[\d-]+-[\d-]+\b)/g, function(match, p1, offset, string) {
     if(json.account) {
       if(Array.isArray(json.account)) json.account.push(p1);
       else json.account = [json.account];
@@ -81,36 +108,278 @@ function commonFormat(text, json, callback) {
       json.account = p1;
     }
 
-    return '{$account}';
+    return IN_TAG_START + 'account' + IN_TAG_END;
   });
 
+  //text = text.replace(/(\b[\d]+\b)/g, function(match, p1, offset, string) {
+  //  if(json.account) {
+  //    if(Array.isArray(json.account)) json.account.push(p1);
+  //    else json.account = [json.account];
+  //  } else {
+  //    json.account = p1;
+  //  }
+  //
+  //  return IN_TAG_START + 'number' + IN_TAG_END;
+  //});
 
   callback(text, json);
 }
 
+function processOutput(inJson, outJson, text) {
+  try {
+    //if (outJson.preText) text = outJson.preText + "\r\n" + text;
+    //else if (outJson.pretext) text = outJson.pretext + "\r\n" + text;
+    //
+    //if (outJson.postText) text = text + "\r\n" + outJson.postText;
+    //else if (outJson.posttext) text = text + "\r\n" + outJson.posttext;
 
-exports.execAction = function(resJson, callback) {
-  var action = require('../../action/common/' + resJson.action);
+    var re = new RegExp(ARRAY_TAG_START + "([\\w\\d-_\\.]*)" + ARRAY_TAG_START + "([^" + ARRAY_TAG_END + "]*)" + ARRAY_TAG_END, "g");
+    var re2 = new RegExp(TAG_START + "([\\w\\d-_\\.]+)" + TAG_END, "g");
 
-  if(action) {
-    action.execute(resJson.params, function(json) {
-      if(callback) callback(processOutput(json, resJson.text));
+    //text = text.replace(/\\#/g, "%23");
+
+    text = text.replace(re, function (match, p1, p2, offset, string) {
+      var val;
+      if (outJson && outJson[DOC_NAME]) {
+        if(p1 == '') val = outJson[DOC_NAME];
+        else  val = eval('(' + 'outJson.' + DOC_NAME + '.' + p1 + ')');
+      }
+      if (!val && inJson) val = eval('(' + 'inJson.' + p1 + ')');
+
+      if (val && Array.isArray(val)) {
+        var formatArray = [];
+
+        p2 = p2.replace(/%23/g, "#");
+
+        p2.replace(re2, function (match1, p11, offset1, string1) {
+          for (var i = 0; i < val.length; i++) {
+            var val1 = val[i][p11];
+
+            if (val1) {
+              if (!(formatArray[i])) formatArray[i] = string1;
+              formatArray[i] = formatArray[i].replace(match1, val1);
+            } else if(p11 == 'index') {
+              if (!(formatArray[i])) formatArray[i] = string1;
+              formatArray[i] = formatArray[i].replace(match1, (i+1));
+            }
+          }
+
+          return match1;
+        });
+
+        return formatArray.join('');
+      }
+
+      return p1;
     });
+
+    text = text.replace(re2, function replacer(match, p1, offset, string) {
+      var val;
+      if (outJson && outJson[DOC_NAME]) val = eval('(' + 'outJson.' + DOC_NAME + '.' + p1 + ')');
+      if (!val && outJson) val = eval('(' + 'outJson.' + p1 + ')');
+      if (!val && inJson) val = eval('(' + 'inJson.' + p1 + ')');
+
+      if (val) return val;
+
+      return p1;
+    });
+
+  } catch(e) {
+    console.log("processOutput:error: " + e);
   }
-}
 
-
-function processOutput(json, text) {
-
-  function replacer(match, p1, offset, string) {
-    var val = eval('json.' + p1);
-    if(val) return val;
-    else return p1;
-  }
-
-  if(text) return text.replace(/\{\$([\w\d-_\.]+)\}/g, replacer);
-  else text;
+  return text;
 }
 
 exports.processOutput = processOutput;
+
+
+function processButtons(inJson, outJson, text) {
+  var re = new RegExp(ARRAY_TAG_START + "([\\w]*)" + ARRAY_TAG_START + "([^" + ARRAY_TAG_END +"]*)" + ARRAY_TAG_END, "g");
+  var re2 = new RegExp(TAG_START + "([\\w\\d-_\\.]+)" + TAG_END, "g");
+
+  //text = text.replace(/\\#/g, "%23");
+
+//  console.log(text);
+
+  var formatArray = [];
+
+  text = text.replace(re, function(match, p1, p2, offset, string) {
+    var val = eval('('+'outJson.' + p1+')');
+    if(!val) val = eval('('+'inJson.' + p1+')');
+
+    if(val && Array.isArray(val)) {
+
+      p2 = p2.replace(/%23/g, "#");
+
+      p2.replace(re2, function(match1, p11, offset1, string1){
+        for(var i = 0; i < val.length; i++) {
+          var val1 = val[i][p11];
+
+          if(val1) {
+            if(!(formatArray[i])) formatArray[i] = string1;
+            formatArray[i] = formatArray[i].replace(match1, val1);
+          }
+        }
+
+        return match1;
+      });
+
+      if(formatArray && formatArray.length > 0) return formatArray;
+      else return undefined;
+    }
+
+    return p1;
+  });
+
+  if(formatArray && formatArray.length > 0) return formatArray;
+  else return undefined;
+
+//  console.log(text);
+
+
+  return text;
+
+}
+
+function attachText(text, json) {
+  if (json.preText) text = json.preText + "\r\n" + text;
+  else if (json.pretext) text = json.pretext + "\r\n" + text;
+
+  if (json.postText) text = text + "\r\n" + json.postText;
+  else if (json.posttext) text = text + "\r\n" + json.posttext;
+
+  return text;
+}
+
+function chatserverEscape(text) {
+
+  text = text.replace(/%22 /gi, "\"");
+  text = text.replace(/ %22/gi, "\"");
+  text = text.replace(/%22/gi, "\"");
+
+  text = text.replace(/%5b/gi, "[");
+  text = text.replace(/%5d/gi, "]");
+
+  text = text.replace(/%0a/gi, "\\n");
+  text = text.replace(/ url/gi, "url");
+
+  text = text.replace(/%5f/gi, "_");
+
+  return text;
+}
+
+exports.chatserverEscape = chatserverEscape;
+
+
+exports.parseNumber =parseNumber;
+
+function parseNumber(text, json) {
+  var _text = text.trim();
+  if (_text.endsWith(".")) _text = _text.substr(0, _text.length - 1);
+  else if (_text.endsWith(",")) _text = _text.substr(0, _text.length - 1);
+  else if (_text.startsWith("일") || _text.startsWith("처") || _text.startsWith("첫")) _text = "1";
+  else if (_text.startsWith("이") || _text.startsWith("두") || _text.startsWith("둘")) _text = "2";
+  else if (_text.startsWith("삼") || _text.startsWith("세") || _text.startsWith("셋")) _text = "3";
+  else if (_text.startsWith("사") || _text.startsWith("네") || _text.startsWith("넷")) _text = "4";
+  else if (_text.startsWith("오") || _text.startsWith("다섯")) _text = "5";
+  else if (_text.startsWith("육") || _text.startsWith("여섯")) _text = "6";
+  else if (_text.startsWith("칠") || _text.startsWith("일곱")) _text = "7";
+  else if (_text.startsWith("팔") || _text.startsWith("여덟")) _text = "8";
+  else if (_text.startsWith("구") || _text.startsWith("아홉")) _text = "9";
+
+  return _text;
+}
+
+exports.execute = execute;
+function execute(botName, user, text, inJson, successCallback, errorCallback) {
+  var outJson = null;
+  text = chatserverEscape(text);
+
+  try {
+    outJson = JSON.parse(text);
+  } catch (e) {
+    if(text.startsWith("{")) console.log("acton.server.controller:execute>> action JSON 포맷 오류\n" + text);
+  }
+
+  if (outJson && typeof outJson == 'object') {
+    //outJson.action = 'rest';
+
+    var action, template;
+
+    if(!outJson.module) {
+      // bot action
+      try {
+        action = require('../../../../custom_modules/' + botName + '/' + botName);
+      } catch(err) {
+        //console.log("error loading custom module: " + botName + "/" + botName);
+      }
+    } else {
+      //template action
+      if(!action && outJson.module == 'template') {
+        var templateModule;
+        try {
+          templateModule = require('../../../../custom_modules/' + botName + '/template');
+          if(templateModule) template = templateModule.templates[outJson.action];
+        } catch(err) {
+          //console.log("error loading template module: " + botName + "/template");
+        }
+
+        if (template) {
+          outJson.templateAction = outJson.action;
+          outJson.module = template.module;
+          outJson.action = template.action;
+
+          try {
+            action = require('../../action/common/' + outJson.module);
+          } catch(e) {
+            //console.log("error loading template module: " + outJson.module); console.log("error loading template module: " + e);
+          }
+        }
+      }
+
+      // custom action
+      if(!action) {
+        try {
+          action = require('../../../../custom_modules/' + botName + '/' + outJson.module);
+        } catch(err) {
+          //console.log("error loading custom module: " + botName + "/" + outJson.module);
+        }
+      }
+
+      // common action
+      if(!action) {
+        try {
+          action = require('../../action/common/' + outJson.module);
+        } catch(e) {
+          //console.log("error loading common module: " + outJson.module);
+          //console.log("error loading common module: " + e);
+        }
+      }
+    }
+
+    if(action) {
+      action.execute(outJson.action, botName, user, inJson, outJson, function(json) {
+          if(typeof json.buttons === "string") {
+            json.buttons = processButtons(inJson, json, json.buttons);
+          }
+          if(successCallback) successCallback(processOutput(inJson, json, json.content), inJson, json);
+        }, function(errorJson) {
+          if(errorCallback) errorCallback(processOutput(errorJson, null, json.content), inJson, json);
+          else console.log("execAction:" + action + ": error: " + errorJson);
+        },
+        template);
+
+      return true;
+    } else {
+      return false;
+    }
+
+  } else {
+    if(successCallback) successCallback(processOutput(inJson, null, text));
+
+    return false;
+  }
+}
+
 

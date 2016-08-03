@@ -80,33 +80,48 @@ module.exports = function (io, socket) {
       //   }
       // });
     } else {
-      var chatscriptSocket = net.createConnection(_.assign(chatscriptConfig, {host: msg.host, port: msg.port}), function(){
-        chatscriptSocket.write(msg.user+'\x00'+msg.bot+'\x00'+msg.msg+'\x00');
-        // console.log('send_msg')
-      });
 
-      // on receive data from chatscriptSocket
-      chatscriptSocket.on('data', function(data) {
-        console.log(data.toString());
+      console.log("사용자 입력>> " + msg.msg);
+      action.processInput(msg.bot, msg.user, msg.msg, function(inText, inJson) {
+
+        msg.msg = inText;
+        console.log("자연어 처리>> " + msg.msg);
+
+        var chatscriptSocket = net.createConnection(_.assign(chatscriptConfig, {host: msg.host, port: msg.port}), function(){
+          chatscriptSocket.write(msg.user+'\x00'+msg.bot+'\x00'+msg.msg+'\x00');
+          // console.log('send_msg')
+        });
+
+        // on receive data from chatscriptSocket
+        chatscriptSocket.on('data', function(data) {
+          console.log("챗서버 답변>> " + data.toString());
 
 //      socket.emit('send_msg', data.toString()); // FROM SERVER
 
-        moneybot.receivedMoneyBot(msg.user, data.toString(), function(retText, json) {
-          socket.emit('send_msg', retText + (json && json.url ? "\nurl: " + json.url : "") + " " +
-            (json && json.buttons ? "\nbuttons: " + json.buttons: "")); // FROM SERVER
+          action.execute(msg.bot, msg.user, data.toString(), inJson, function(text, inJson, outJson) {
+            console.log("사용자 출력>> " + text + "\n");
+            socket.emit('send_msg', text + (outJson && outJson.link ? "\nlink: " + outJson.link : "") + " " +
+              (outJson && outJson.buttons ? "\nbuttons: " + outJson.buttons: "")); // FROM SERVER
+          })
+
+          //moneybot.receivedMoneyBot(msg.user, data.toString(), function(retText, json) {
+          //  socket.emit('send_msg', retText + (json && json.url ? "\nurl: " + json.url : "") + " " +
+          //    (json && json.buttons ? "\nbuttons: " + json.buttons: "")); // FROM SERVER
+          //});
+
+        });
+        // on end from chatscriptSocket
+        chatscriptSocket.on('end', function() {
+          // console.log('disconnected from server');
+        });
+        // on error from chatscriptSocket
+        chatscriptSocket.on('error', function(err) {
+          console.log('error from server ' + err +' '+ chatscriptSocket.address()[1]);
         });
 
-      });
-      // on end from chatscriptSocket
-      chatscriptSocket.on('end', function() {
-        // console.log('disconnected from server');
-      });
-      // on error from chatscriptSocket
-      chatscriptSocket.on('error', function(err) {
-        console.log('error from server ' + err +' '+ chatscriptSocket.address()[1]);
-      });
-
+      })
     }
+
 
   })
 };
