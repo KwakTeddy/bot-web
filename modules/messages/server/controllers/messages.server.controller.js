@@ -15,7 +15,7 @@ var mySqlPool = mysql.createPool({
   host: 'wefund.co.kr',//'localhost',
   port: '3306',
   user: 'root',
-  password: 'Wefund4ever!',
+  // password: 'Wefund4ever!',
   database: 'kakao_agent',
   connectionLimit: 20,
   waitForConnections: false
@@ -128,21 +128,24 @@ exports.messageByID = function (req, res, next, id) {
   });
 };
 
+var sendKakaoSeq = 0;
 exports.sendKakao = function (req, res) {
+  console.log('sendKakao');
   var phoneNum = req.body.phoneNum;
   var message = req.body.message;
-  var now = now();
+  sendKakaoSeq++;
 
   mySqlPool.getConnection(function (err, connection) {
+    console.log(err);
     var query = connection.query('INSERT INTO MZSENDTRAN (SN, SENDER_KEY, CHANNEL, PHONE_NUM, TMPL_CD, SND_MSG, REQ_DTM, TRAN_STS)' +
       'VALUES (' +
-      '\'발송일련번호\',' +
-      '\'발신프로필키\',' +
-      '\'A\' ,' +
+      '\'' + dateformat(new Date(), 'yyyymmddHHMMss') + '\',' +//'\'' + sendKakaoSeq + '\',' +
+      '\'484a760f0ab588a483034d6d583f0ae8c2882829\',' +
+      '\'A\',' +
       '\'' + phoneNum + '\',' +
       '\'A001_01\',' +
       '\'' + message + '\',' +
-      '\'' + dateformat(new Date(), 'YYYYmmmmddddhhMMss') + '\'' +
+      '\'' + dateformat(new Date()+9*60*60, 'yyyymmddHHMMss') + '\',' +
       '\'1\');'
       , function (err, rows) {
         if (err) {
