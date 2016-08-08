@@ -15,10 +15,13 @@
       </select>
     </div>
     <div class="col-md-4">
-      <select class="form-control mb-md" id="selectBot" name="selectBot"
-              ng-options="option for option in vm.bots"
-              ng-model="vm.bot">
-      </select>
+      <!--<select class="form-control mb-md" id="selectBot" name="selectBot"-->
+              <!--ng-options="option for option in vm.bots"-->
+              <!--ng-model="vm.bot">-->
+      <!--</select>-->
+      <input type="text" class="form-control" id="selectBot" name="selectBot"
+             ng-model="vm.bot"
+             placeholder="봇 이름"/>
     </div>
     <div class="col-md-4">
       <div class="input-group mb-md">
