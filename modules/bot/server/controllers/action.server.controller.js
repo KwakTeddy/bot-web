@@ -13,7 +13,10 @@ const DOC_NAME = 'doc';
 
 
 exports.processInput = function(botName, user, text, callback) {
-  if(text.startsWith(":")) callback(text, null);
+  if(text.startsWith(":")) {
+    callback(text, null);
+    return;
+  }
 
   var json = {}
 
