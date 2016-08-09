@@ -1,4 +1,34 @@
 var templates = {
+  "fssCredit": {
+    "module": "http",
+    "action": "xpathRepeat",
+    "method": "POST",
+    "url": "http://finlife.fss.or.kr",
+    "path": "/creditfacility/selectCreditfacility.do?menuId=2000104",
+    "param": {
+      "pageType": 3,
+      "pageIndex": 1,
+      "pageSize": 10,
+      "total": 30,
+      "crdtPrdtTypeNM": "전체",
+      "listOrder": "crdtGradAvgAsc",
+      "menuId":"2000104",
+      "BLTN_ID":"BB000000000000000151"
+    },
+    "docMerge": "add",
+    "xpath": {
+      "repeat": "//table[@class='table_list resTable MyMoneybank01']/tbody/tr[@class='onOffTr']",
+      //"limit": "5",
+      "doc": {
+        "company": "//td[1]/text()",
+        "title": "//td[2]/text()",
+        "rate": "//td[4]/text()"
+      },
+      "pages": "//div[@class='paginate']/a/text()",
+      "currentPage": "//div[@class='paginate']/a[@class='pag-select']/text()"
+    }
+  },
+
   "movies": {
     "module": "http",
     "action": "xpathRepeat",

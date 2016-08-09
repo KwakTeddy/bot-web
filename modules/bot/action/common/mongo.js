@@ -15,10 +15,10 @@ function execute(action, botName, user, inJson, outJson, successCallback, errorC
           if (err || !doc) {
             outJson.error = outJson.errMsg.nodata;
           } else {
-            outJson[DOC_NAME] = doc;
+            outJson[DOC_NAME] = doc._doc;
           }
 
-          console.log("mongo:findById>> " + JSON.stringify(doc));
+          console.log("mongo:findById>> " + JSON.stringify(doc._doc));
           successCallback(outJson);
         });
 

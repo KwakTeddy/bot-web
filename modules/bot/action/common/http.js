@@ -2,6 +2,7 @@ var request = require('request');
 var xpath = require('xpath')
   , dom = require('xmldom').DOMParser;
 var actionController = require('../../server/controllers/action.server.controller');
+var utils = require('./utils');
 
 var commonHeaders = {"Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
   "Accept-Encoding":"gzip, deflate, sdch",
@@ -16,12 +17,17 @@ var commonHeaders = {"Accept":"text/html,application/xhtml+xml,application/xml;q
 };
 
 const DOC_NAME = 'doc';
+const PAGES_NAME = 'pages';
+const CURRENT_PAGE_NAME = 'currentPage';
 exports.DOC_NAME = DOC_NAME;
+exports.PAGES_NAME = PAGES_NAME;
+exports.CURRENTPAGE_NAME = CURRENT_PAGE_NAME;
+
 exports.execute = execute;
 
 function execute(action, botName, user, inJson, outJson, successCallback, errorCallback, template) {
   var method, uri, path, param, options;
-  var isSave, xpathRepeat, xpathLimit, xpathDoc;
+  var isSave, xpathRepeat, xpathLimit, xpathDoc, xpathPages, xpathCurrentPage;
 
   var xmldomErrorHandler = {
     warning: function(w) {},
@@ -71,6 +77,9 @@ function execute(action, botName, user, inJson, outJson, successCallback, errorC
           }
 
           if (successCallback) successCallback(outJson);
+        } else {
+          if (errorCallback) errorCallback(error);
+          else console.log("[common.action: http." + action + "] error: " + error);
         }
       });
 
@@ -79,14 +88,18 @@ function execute(action, botName, user, inJson, outJson, successCallback, errorC
       method = template && template.method ? template.method : outJson.method;
       uri = template && template.url ? template.url : outJson.url;
       path = template && template.path ? template.path : (outJson.path ? outJson.path : "");
-      param = template && template.param ? template.param : outJson.param;
+      param = utils.mergeJSON(template ? template.param : undefined, outJson.param);
       isSave = template && template.save ? template.save : outJson.save;
       xpathRepeat = template && template.xpath && template.xpath.repeat ?
         template.xpath.repeat : (outJson.xpath ? outJson.xpath.repeat: undefined);
       xpathLimit = template && template.xpath && template.xpath.limit ?
         template.xpath.limit : (outJson.xpath ? outJson.xpath.limit: undefined);
-      xpathDoc = template && template.xpath && template.xpath.doc ?
-        template.xpath.doc : (outJson.xpath.doc ? outJson.xpath.doc: undefined);
+      xpathDoc = utils.mergeJSON(template ? (template.xpath ? template.xpath.doc : undefined): undefined,
+        outJson.xpath ? outJson.xpath.doc : undefined);
+      xpathPages = template && template.xpath && template.xpath.pages ?
+        template.xpath.pages : (outJson.xpath ? outJson.xpath.pages: undefined);
+      xpathCurrentPage = template && template.xpath && template.xpath.currentPage ?
+        template.xpath.currentPage : (outJson.xpath ? outJson.xpath.currentPage: undefined);
 
       options = {
         method: method,
@@ -94,7 +107,7 @@ function execute(action, botName, user, inJson, outJson, successCallback, errorC
         header: commonHeaders
       };
 
-      if(method && method.toUpperCase() == "PUT") {
+      if(method && method.toUpperCase() == "POST") {
         options.form = param;
       } else {
         options.qs = param;
@@ -133,6 +146,12 @@ function execute(action, botName, user, inJson, outJson, successCallback, errorC
             }
           }
 
+          outJson[PAGES_NAME] = []
+          var pages = xpath.select(xpathPages, doc);
+          for(var i = 0; pages && i < pages.length; i++)
+            outJson[PAGES_NAME][i] = pages[i].toString();
+          outJson[CURRENT_PAGE_NAME] = xpath.select(xpathCurrentPage, doc).toString();
+
           if(isSave) {
             if (!global.users) global.users = {};
             if (!global.users[user]) global.users[user] = {};
@@ -141,6 +160,9 @@ function execute(action, botName, user, inJson, outJson, successCallback, errorC
 
           console.log("xpathRepeat >> " + JSON.stringify(outJson[DOC_NAME]));
           if(successCallback) successCallback(outJson);
+        } else {
+          if(errorCallback) errorCallback(error);
+          else console.log("[common.action: http." + action + "] error: " + error);
         }
       });
 
@@ -161,9 +183,9 @@ function execute(action, botName, user, inJson, outJson, successCallback, errorC
       method = template && template.method ? template.method : outJson.method;
       uri = template && template.url ? template.url : outJson.url;
       path = template && template.path ? template.path : (outJson.path ? outJson.path : "");
-      param = template && template.param ? template.param : outJson.param;
-      xpathDoc = template && template.xpath && template.xpath.doc ?
-        template.xpath.doc : (outJson.xpath.doc ? outJson.xpath.doc: undefined);
+      param = utils.mergeJSON(template ? template.param : undefined, outJson.param);
+      xpathDoc = utils.mergeJSON(template ? (template.xpath ? template.xpath.doc : undefined): undefined,
+        outJson.xpath ? outJson.xpath.doc : undefined);
 
       options = {
         method: method,
@@ -206,6 +228,9 @@ function execute(action, botName, user, inJson, outJson, successCallback, errorC
           console.log("xpath >> " + JSON.stringify(outJson[DOC_NAME]));
 
           if(successCallback) successCallback(outJson);
+        } else {
+          if (errorCallback) errorCallback(error);
+          else console.log("[common.action: http." + action + "] error: " + error);
         }
       });
 
@@ -240,6 +265,9 @@ function execute(action, botName, user, inJson, outJson, successCallback, errorC
           outJson[DOC_NAME] = body;
 
           if (successCallback) successCallback(outJson);
+        } else {
+          if(errorCallback) errorCallback(error);
+          else console.log("[common.action: http." + action + "] error: " + error);
         }
       });
     } else if(action == 'selectByIndex') {

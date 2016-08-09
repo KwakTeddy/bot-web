@@ -308,58 +308,58 @@ function execute(botName, user, text, inJson, successCallback, errorCallback) {
   if (outJson && typeof outJson == 'object') {
     //outJson.action = 'rest';
 
-    var action, template;
+    var action = findModule(outJson, botName);
 
-    if(!outJson.module) {
-      // bot action
-      try {
-        action = require('../../../../custom_modules/' + botName + '/' + botName);
-      } catch(err) {
-        //console.log("error loading custom module: " + botName + "/" + botName);
-      }
-    } else {
-      //template action
-      if(!action && outJson.module == 'template') {
-        var templateModule;
-        try {
-          templateModule = require('../../../../custom_modules/' + botName + '/template');
-          if(templateModule) template = templateModule.templates[outJson.action];
-        } catch(err) {
-          //console.log("error loading template module: " + botName + "/template");
-        }
-
-        if (template) {
-          outJson.templateAction = outJson.action;
-          outJson.module = template.module;
-          outJson.action = template.action;
-
-          try {
-            action = require('../../action/common/' + outJson.module);
-          } catch(e) {
-            //console.log("error loading template module: " + outJson.module); console.log("error loading template module: " + e);
-          }
-        }
-      }
-
-      // custom action
-      if(!action) {
-        try {
-          action = require('../../../../custom_modules/' + botName + '/' + outJson.module);
-        } catch(err) {
-          //console.log("error loading custom module: " + botName + "/" + outJson.module);
-        }
-      }
-
-      // common action
-      if(!action) {
-        try {
-          action = require('../../action/common/' + outJson.module);
-        } catch(e) {
-          //console.log("error loading common module: " + outJson.module);
-          //console.log("error loading common module: " + e);
-        }
-      }
-    }
+    //if(!outJson.module) {
+    //  // bot action
+    //  try {
+    //    action = require('../../../../custom_modules/' + botName + '/' + botName);
+    //  } catch(err) {
+    //    //console.log("error loading custom module: " + botName + "/" + botName);
+    //  }
+    //} else {
+    //  //template action
+    //  if(!action && outJson.module == 'template') {
+    //    var templateModule;
+    //    try {
+    //      templateModule = require('../../../../custom_modules/' + botName + '/template');
+    //      if(templateModule) template = templateModule.templates[outJson.action];
+    //    } catch(err) {
+    //      //console.log("error loading template module: " + botName + "/template");
+    //    }
+    //
+    //    if (template) {
+    //      outJson.templateAction = outJson.action;
+    //      outJson.module = template.module;
+    //      outJson.action = template.action;
+    //
+    //      try {
+    //        action = require('../../action/common/' + outJson.module);
+    //      } catch(e) {
+    //        //console.log("error loading template module: " + outJson.module); console.log("error loading template module: " + e);
+    //      }
+    //    }
+    //  }
+    //
+    //  // custom action
+    //  if(!action) {
+    //    try {
+    //      action = require('../../../../custom_modules/' + botName + '/' + outJson.module);
+    //    } catch(err) {
+    //      //console.log("error loading custom module: " + botName + "/" + outJson.module);
+    //    }
+    //  }
+    //
+    //  // common action
+    //  if(!action) {
+    //    try {
+    //      action = require('../../action/common/' + outJson.module);
+    //    } catch(e) {
+    //      //console.log("error loading common module: " + outJson.module);
+    //      //console.log("error loading common module: " + e);
+    //    }
+    //  }
+    //}
 
     if(action) {
       action.execute(outJson.action, botName, user, inJson, outJson, function(json) {
@@ -369,9 +369,9 @@ function execute(botName, user, text, inJson, successCallback, errorCallback) {
           if(successCallback) successCallback(processOutput(inJson, json, json.content), inJson, json);
         }, function(errorJson) {
           if(errorCallback) errorCallback(processOutput(errorJson, null, json.content), inJson, json);
-          else console.log("execAction:" + action + ": error: " + errorJson);
+          else console.log("execAction:" + outJson.module + "." + outJson.action + ": error: " + errorJson);
         },
-        template);
+        outJson.template);
 
       return true;
     } else {
@@ -385,4 +385,63 @@ function execute(botName, user, text, inJson, successCallback, errorCallback) {
   }
 }
 
+
+exports.findModule = findModule;
+
+function findModule(outJson, botName) {
+  var action;
+
+  if(!outJson.module) {
+    // bot action
+    try {
+      action = require('../../../../custom_modules/' + botName + '/' + botName);
+    } catch(err) {
+      //console.log("error loading custom module: " + botName + "/" + botName);
+    }
+  } else {
+    //template action
+    if(!action && outJson.module == 'template') {
+      var templateModule;
+      try {
+        templateModule = require('../../../../custom_modules/' + botName + '/template');
+        if(templateModule) outJson.template = templateModule.templates[outJson.action];
+      } catch(err) {
+        //console.log("error loading template module: " + botName + "/template");
+      }
+
+      if (outJson.template) {
+        outJson.templateAction = outJson.action;
+        outJson.module = outJson.template.module;
+        outJson.action = outJson.template.action;
+
+        try {
+          action = require('../../action/common/' + outJson.module);
+        } catch(e) {
+          //console.log("error loading template module: " + outJson.module); console.log("error loading template module: " + e);
+        }
+      }
+    }
+
+    // custom action
+    if(!action) {
+      try {
+        action = require('../../../../custom_modules/' + botName + '/' + outJson.module);
+      } catch(err) {
+        //console.log("error loading custom module: " + botName + "/" + outJson.module);
+      }
+    }
+
+    // common action
+    if(!action) {
+      try {
+        action = require('../../action/common/' + outJson.module);
+      } catch(e) {
+        //console.log("error loading common module: " + outJson.module);
+        //console.log("error loading common module: " + e);
+      }
+    }
+  }
+
+  return action;
+}
 
