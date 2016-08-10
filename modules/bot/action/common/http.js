@@ -32,7 +32,7 @@ function execute(action, botName, user, inJson, outJson, successCallback, errorC
   var xmldomErrorHandler = {
     warning: function(w) {},
     error: function(e) {},
-    fatalError: function(e) {console.error(e);}
+    fatalError: function(e) {}
   };
 
   try {

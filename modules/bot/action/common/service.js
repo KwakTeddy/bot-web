@@ -3,23 +3,115 @@ var task = require('./task');
 exports.execute = execute;
 
 function execute(action, botName, user, inJson, outJson, successCallback, errorCallback, template) {
-  outJson.actionLimit = 2;
-  outJson.actions = [
-    {
-      "module": "template",
-      "action": "fssCredit",
-      "param": {
-        "pageIndex": 1
-      },
+  //outJson.actionLimit = 2;
+  //outJson.actions = [
+  //  {
+  //    "module": "template",
+  //    "action": "fssCredit",
+  //    "param": {
+  //      "pageIndex": 1
+  //    },
+  //
+  //    "preCallback": function(outJson, json, callback) {
+  //      console.log('preCallback');
+  //      callback(outJson);
+  //    },
+  //    "postCallback": function(outJson, json, callback) {
+  //      json.param.pageIndex++;
+  //      callback(json);
+  //    }
+  //  }
+  //];
+  //
+  //task.execute('repeater', botName, user, inJson, outJson, successCallback, errorCallback, template);
 
-      "postCallback": function(outJson, json, callback) {
-        json.param.pageIndex++;
-        callback(json);
+  //var actions = {
+  //  module: 'task',
+  //  action: 'sequence',
+  //  actions: [
+  //    {
+  //      module: 'task',
+  //      action: 'sequence',
+  //      actions: [
+  //        {
+  //          "module": "template",
+  //          "action": "fssCredit",
+  //          "param": {
+  //            "pageIndex": 1
+  //          }
+  //        },
+  //        {
+  //          "module": "template",
+  //          "action": "fssCredit",
+  //          "param": {
+  //            "pageIndex": 2
+  //          }
+  //        },
+  //        {
+  //          "module": "template",
+  //          "action": "fssCredit",
+  //          "param": {
+  //            "pageIndex": 3
+  //          }
+  //        }]
+  //    },
+  //    {
+  //      'module': 'mongo',
+  //      'action': 'save',
+  //      'mongo': {
+  //        'model': 'FinProduct',
+  //        'schema': {
+  //          company: 'String',
+  //          title: 'String',
+  //          rate: 'String'
+  //        }
+  //      }
+  //    }
+  //  ]
+  //};
+
+
+  outJson.actions= [
+    {
+      module: 'task',
+      action: 'sequence',
+      actions: [
+        {
+          "module": "template",
+          "action": "fssCredit",
+          "param": {
+            "pageIndex": 1
+          }
+        },
+        {
+          "module": "template",
+          "action": "fssCredit",
+          "param": {
+            "pageIndex": 2
+          }
+        },
+        {
+          "module": "template",
+          "action": "fssCredit",
+          "param": {
+            "pageIndex": 3
+          }
+        }]
+    },
+    {
+      'module': 'mongo',
+      'action': 'save',
+      setData: true,
+      'mongo': {
+        'model': 'FinProduct',
+        'schema': {
+          company: 'String',
+          title: 'String',
+          rate: 'String'
+        }
       }
     }
   ];
-
-  task.execute('repeater', botName, user, inJson, outJson, successCallback, errorCallback, template);
 
   //outJson.actions = [
   //  {
@@ -135,7 +227,7 @@ function execute(action, botName, user, inJson, outJson, successCallback, errorC
   //  {'module': require('http'), 'action': 'json', 'docType': 'add', 'preHandler': function(json) {json.page=3;}}
   //];
 
-  //task.execute('sequence', botName, user, inJson, outJson, successCallback, errorCallback, template);
+  task.execute('sequence', botName, user, inJson, outJson, successCallback, errorCallback, template);
 
 }
 
