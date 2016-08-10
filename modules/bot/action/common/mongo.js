@@ -6,8 +6,100 @@ const DOC_NAME = 'doc';
 exports.execute = execute;
 
 function execute(action, botName, user, inJson, outJson, successCallback, errorCallback, template) {
+  var modelName, schema, query, update, fields, sort, limit, options;
+
+  modelName = template && template.mongo && template.mongo.model ? template.mongo.model : (outJson.mongo ? outJson.mongo.model : undefined);
+  schema = template && template.mongo && template.mongo.schema ? template.mongo.schema : (outJson.mongo ? outJson.mongo.schema : undefined);
+  query = template && template.mongo && template.mongo.query ? template.mongo.query : (outJson.mongo? outJson.mongo.query: undefined);
+  update = template && template.mongo && template.mongo.update ? template.mongo.update : (outJson.mongo ? outJson.mongo.update : undefined);
+  fields = template && template.mongo && template.mongo.fields ? template.mongo.fields : (outJson.mongo ? outJson.mongo.fields : undefined);
+  sort = template && template.mongo && template.mongo.sort ? template.mongo.sort : (outJson.mongo ? outJson.mongo.sort : undefined);
+  limit = template && template.mongo && template.mongo.limit ? template.mongo.limit : (outJson.mongo ? outJson.mongo.limit : undefined);
+  options = template && template.mongo && template.mongo.options ? template.mongo.options : (outJson.mongo ? outJson.mongo.options : undefined);
+
   try {
     switch (action) {
+      case 'save':
+        var model;
+        if (mongoose.models[modelName]) {
+          model = mongoose.model(modelName);
+        } else {
+          model = mongoose.model(modelName, new mongoose.Schema(schema));
+        }
+
+        if(Array.isArray(outJson.doc)) {
+          model.create(outJson.doc, function(err, _docs) {
+            if (err) {
+              throw err;
+            } else {
+              successCallback(outJson);
+            }
+          });
+        } else {
+          var item = new model(outJson.doc);
+          item.save(function (err) {
+            if (err) {
+              throw err;
+            } else {
+              successCallback(outJson);
+            }
+          });
+        }
+
+        break;
+
+      case 'update':
+        var model;
+        if (mongoose.models[modelName]) {
+          model = mongoose.model(modelName);
+        } else {
+          model = mongoose.model(modelName, new mongoose.Schema(schema));
+        }
+
+        if(Array.isArray(outJson.doc)) {
+          var count = 0;
+          for(var i = 0; i < outJson.doc.length; i++) {
+            var _doc = outJson.doc[i];
+
+            for(var key in query)
+              if(_doc[key]) query[key] = _doc[key];
+
+            if(update) {
+              for (var key in update)
+                if (update[key]) update[key] = _doc[key];
+            } else update = JSON.clone(_doc);
+
+            model.update(query, update, options, function (err, numAffected) {
+              count ++;
+              if (err) {
+                throw err;
+              } else {
+                if(count >= outJson.doc.length)
+                  successCallback(outJson);
+              }
+            });
+          }
+        } else {
+          var _doc = outJson.doc;
+
+          for(var key in query.keys)
+            if(_doc[key]) query[key] = _doc[key];
+
+          if(update) {
+            for(var key in update.keys)
+              if(update[key]) update[key] = _doc[key];
+          } else update = _doc;
+
+          model.update(query, update, options, function (err) {
+            if (err) {
+              throw err;
+            } else {
+              successCallback(outJson);
+            }
+          });
+        }
+
+        break;
       case 'findById':
         var model = mongoose.model(outJson.mongo.model);
 
@@ -39,15 +131,20 @@ function execute(action, botName, user, inJson, outJson, successCallback, errorC
 
         break;
       case 'find':
-        var model = mongoose.model(outJson.mongo.model);
+        var model;
+        if (mongoose.models[modelName]) {
+          model = mongoose.model(modelName);
+        } else {
+          model = mongoose.model(modelName, new mongoose.Schema(schema));
+        }
 
-        var query = model.find(outJson.mongo.query, outJson.mongo.fields, outJson.mongo.options);
-        if(outJson.mongo.sort) query.sort(outJson.mongo.sort);
-        if(outJson.mongo.limit) query.limit(outJson.mongo.limit);
+        var _query = model.find(query, fields, options);
+        if(sort) _query.sort(sort);
+        if(limit) _query.limit(limit);
 
-        query.exec(function (err, docs) {
+        _query.lean().exec(function (err, docs) {
           if (err || !docs || docs.length <= 0) {
-            outJson.error = outJson.errMsg.nodata;
+            outJson.error = err;
           } else {
             outJson[DOC_NAME] = docs;
 
