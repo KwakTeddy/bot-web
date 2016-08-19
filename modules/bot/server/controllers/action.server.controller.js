@@ -295,7 +295,9 @@ function parseNumber(text, json) {
 }
 
 exports.execute = execute;
-function execute(botName, user, text, inJson, successCallback, errorCallback) {var outJson = null;
+function execute(botName, user, text, inJson, successCallback, errorCallback) {
+  var outJson = null;
+
   text = chatserverEscape(text);
 
   try {
@@ -305,52 +307,72 @@ function execute(botName, user, text, inJson, successCallback, errorCallback) {v
   }
 
   if (outJson && typeof outJson == 'object') {
-    //outJson.action = 'rest';
-
-    var action = findModule(outJson, botName);
-
-    if(action) {
-      var preCallback = outJson.template && outJson.template.preCallback ? outJson.template.preCallback : outJson.preCallback;
-      var postCallback = outJson.template && outJson.template.postCallback ? outJson.template.postCallback : outJson.postCallback;
-
-      var _successCallback = function(json) {
-        if(typeof json.buttons === "string") {
-          json.buttons = processButtons(inJson, json, json.buttons);
-        }
-
-        if(postCallback) {
-          postCallback(outJson, json, function(_json) {
-            if(successCallback) successCallback(processOutput(inJson, _json, _json.content), inJson, _json);
-          });
-        } else {
-          if(successCallback) successCallback(processOutput(inJson, json, json.content), inJson, json);
-        }
-
-      };
-
-      var _errorCallback = function(errorJson) {
-        if(errorCallback) errorCallback(processOutput(errorJson, null, json.content), inJson, json);
-        else console.log("execAction:" + outJson.module + "." + outJson.action + ": error: " + errorJson);
-      };
-
-      if(preCallback) {
-        preCallback(outJson, outJson, function(_json) {
-          action.execute(outJson.action, botName, user, inJson, _json, _successCallback, _errorCallback, _outJson.template);
-        });
-      } else {
-        action.execute(outJson.action, botName, user, inJson, outJson, _successCallback, _errorCallback, outJson.template);
-      }
-
-      return true;
-    } else {
-      return false;
-    }
-
+    executeJson(outJson.action, botName, user, inJson, outJson, successCallback, errorCallback);
   } else {
     if(successCallback) successCallback(processOutput(inJson, null, text));
 
     return false;
   }
+}
+
+function executeJson(action, botName, user, inJson, outJson, successCallback, errorCallback) {
+  var action = findModule(outJson, botName);
+
+  if(action) {
+
+    var params = outJson.template && outJson.template.params ? outJson.template.params : outJson.params;
+    if(params) {
+      for(var i = 0; i < params.length; i++) {
+        if(!outJson[params[i].name]) {
+          global.users[user].pendingCallback = function(_text) {
+            outJson[params[i].name] = _text;
+
+            global.users[user].pendingCallback = null;
+            executeJson(outJson.action, botName, user, inJson, outJson, successCallback, errorCallback);
+          };
+
+          if(successCallback) successCallback(params[i].question);
+          return;
+        }
+      }
+    }
+
+    var preCallback = outJson.template && outJson.template.preCallback ? outJson.template.preCallback : outJson.preCallback;
+    var postCallback = outJson.template && outJson.template.postCallback ? outJson.template.postCallback : outJson.postCallback;
+
+    var _successCallback = function(json) {
+      if(typeof json.buttons === "string") {
+        json.buttons = processButtons(inJson, json, json.buttons);
+      }
+
+      if(postCallback) {
+        postCallback(outJson, json, function(_json) {
+          if(successCallback) successCallback(processOutput(inJson, _json, _json.content), inJson, _json);
+        });
+      } else {
+        if(successCallback) successCallback(processOutput(inJson, json, json.content), inJson, json);
+      }
+
+    };
+
+    var _errorCallback = function(errorJson) {
+      if(errorCallback) errorCallback(processOutput(errorJson, null, json.content), inJson, json);
+      else console.log("execAction:" + outJson.module + "." + outJson.action + ": error: " + errorJson);
+    };
+
+    if(preCallback) {
+      preCallback(outJson, outJson, function(_json) {
+        action.execute(outJson.action, botName, user, inJson, _json, _successCallback, _errorCallback, _json.template);
+      });
+    } else {
+      action.execute(outJson.action, botName, user, inJson, outJson, _successCallback, _errorCallback, outJson.template);
+    }
+
+    return true;
+  } else {
+    return false;
+  }
+
 }
 
 
@@ -388,41 +410,6 @@ function findModule(outJson, botName) {
       //console.log("error loading custom module: " + botName + "/" + outJson.module + '/' + outJson.action);
     }
 
-    //template action
-    //if(!action && outJson.module == 'template') {
-    //  var templateModule;
-    //  try {
-    //    templateModule = require('../../../../custom_modules/' + botName + '/template');
-    //
-    //    //TODO 템플릿 복사하지 않고 doc 기존 데이터 남지 않게 처리
-    //    //if(templateModule) outJson.template = templateModule.templates[outJson.action];
-    //    if(templateModule) outJson.template = clone(templateModule.templates[outJson.action]);
-    //  } catch(err) {
-    //    //console.log("error loading template module: " + botName + "/template");
-    //  }
-    //
-    //  if (outJson.template) {
-    //    outJson.templateAction = outJson.action;
-    //    outJson.module = outJson.template.module;
-    //    outJson.action = outJson.template.action;
-    //
-    //    try {
-    //      action = require('../../action/common/' + outJson.module);
-    //    } catch(e) {
-    //      //console.log("error loading template module: " + outJson.module); console.log("error loading template module: " + e);
-    //    }
-    //  }
-    //}
-    //
-    //// custom action
-    //if(!action) {
-    //  try {
-    //    action = require('../../../../custom_modules/' + botName + '/' + outJson.module);
-    //  } catch(err) {
-    //    //console.log("error loading custom module: " + botName + "/" + outJson.module);
-    //  }
-    //}
-
     // common action
     if(!action) {
       try {
@@ -456,6 +443,11 @@ function clone(obj) {
     copy = new Date();
     copy.setTime(obj.getTime());
     return copy;
+  }
+
+  // Handle RegExp
+  if (obj instanceof RegExp) {
+    return obj;
   }
 
   // Handle Array

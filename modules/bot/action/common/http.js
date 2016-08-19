@@ -1,7 +1,8 @@
+var path = require('path');
 var request = require('request');
 var xpath = require('xpath')
   , dom = require('xmldom').DOMParser;
-var actionController = require('../../server/controllers/action.server.controller');
+var formatter = require(path.resolve('./modules/bot/server/controllers/formatter'));
 var utils = require('./utils');
 
 var commonHeaders = {"Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
@@ -25,9 +26,8 @@ exports.CURRENTPAGE_NAME = CURRENT_PAGE_NAME;
 
 exports.execute = execute;
 
-function execute(action, botName, user, inJson, outJson, successCallback, errorCallback, template) {
-  var method, uri, path, param, options;
-  var isSave, xpathRepeat, xpathLimit, xpathDoc, xpathPages, xpathCurrentPage;
+function execute(task, context, successCallback, errorCallback) {
+  var options;
 
   var xmldomErrorHandler = {
     warning: function(w) {},
@@ -36,23 +36,18 @@ function execute(action, botName, user, inJson, outJson, successCallback, errorC
   };
 
   try {
-    if(action == 'json') {
-      method = template && template.method ? template.method : outJson.method;
-      uri = template && template.url ? template.url : outJson.url;
-      path = template && template.path ? template.path : (outJson.path ? outJson.path : "");
-      param = template && template.param ? template.param : outJson.param;
-      isSave = template && template.save ? template.save : outJson.save;
+    if(task.action == 'json') {
 
       options = {
-        method: method,
-        uri: uri  + encodeURI(path),
-        header: commonHeaders
+        method: task.method,
+        uri: task.url  + encodeURI(task.path),
+        header: utils.merge(commonHeaders, task.headers)
       };
 
-      if(method && method.toUpperCase() == "PUT") {
-        options.form = param;
+      if(task.method && task.method.toUpperCase() == "PUT") {
+        options.form = task.param;
       } else {
-        options.qs = param;
+        options.qs = task.param;
         options.useQuerystring = true;
       }
 
@@ -68,49 +63,29 @@ function execute(action, botName, user, inJson, outJson, successCallback, errorC
             result = body;
           }
 
-          outJson[DOC_NAME] = result;
+          task[DOC_NAME] = result;
 
-          if(isSave) {
-            if (!global.users) global.users = {};
-            if (!global.users[user]) global.users[user] = {};
-            global.users[user][DOC_NAME] = outJson[DOC_NAME];
-          }
+          if(task.save) context.user[DOC_NAME] = task[DOC_NAME];
 
-          if (successCallback) successCallback(outJson);
+          if (successCallback) successCallback(task, context);
         } else {
-          if (errorCallback) errorCallback(error);
-          else console.log("[common.action: http." + action + "] error: " + error);
+          if (errorCallback) errorCallback(error, task, context);
+          else console.log("[common.task.action: http." + task.action + "] error: " + error);
         }
       });
 
-    } else if(action == 'xpathRepeat') {
-
-      method = template && template.method ? template.method : outJson.method;
-      uri = template && template.url ? template.url : outJson.url;
-      path = template && template.path ? template.path : (outJson.path ? outJson.path : "");
-      param = utils.mergeJSON(template ? template.param : undefined, outJson.param);
-      isSave = template && template.save ? template.save : outJson.save;
-      xpathRepeat = template && template.xpath && template.xpath.repeat ?
-        template.xpath.repeat : (outJson.xpath ? outJson.xpath.repeat: undefined);
-      xpathLimit = template && template.xpath && template.xpath.limit ?
-        template.xpath.limit : (outJson.xpath ? outJson.xpath.limit: undefined);
-      xpathDoc = utils.mergeJSON(template ? (template.xpath ? template.xpath.doc : undefined): undefined,
-        outJson.xpath ? outJson.xpath.doc : undefined);
-      xpathPages = template && template.xpath && template.xpath.pages ?
-        template.xpath.pages : (outJson.xpath ? outJson.xpath.pages: undefined);
-      xpathCurrentPage = template && template.xpath && template.xpath.currentPage ?
-        template.xpath.currentPage : (outJson.xpath ? outJson.xpath.currentPage: undefined);
+    } else if(task.action == 'xpathRepeat') {
 
       options = {
-        method: method,
-        uri: uri  + path,
-        header: commonHeaders
+        method: task.method,
+        uri: task.url  + encodeURI(task.path),
+        header: utils.merge(commonHeaders, task.headers)
       };
 
-      if(method && method.toUpperCase() == "POST") {
-        options.form = param;
+      if(task.method && task.method.toUpperCase() == "POST") {
+        options.form = task.param;
       } else {
-        options.qs = param;
+        options.qs = task.param;
         options.useQuerystring = true;
       }
 
@@ -119,84 +94,77 @@ function execute(action, botName, user, inJson, outJson, successCallback, errorC
         //console.log(body);
 
         if (!error && response.statusCode == 200) {
-          if(!body || !xpathRepeat || !xpathDoc)
-            if(errorCallback) errorCallback(null);
+          if(!body || !task.xpath || !task.xpath.repeat || !task.xpath.doc) {
+            task.plaintext = body;
+            if(successCallback) successCallback(task, context);
+          }
 
           var xml = body;
 
           var doc = new dom({errorHandler: xmldomErrorHandler}).parseFromString(xml);
-          var nodes = xpath.select(xpathRepeat, doc)
+          var nodes = xpath.select(task.xpath.repeat, doc)
           //var nodes = xpath.select("//ul[@class='lst_detail_t1']/li//dt/a/text()", doc)
 
-          outJson[DOC_NAME] = [];
+          task[DOC_NAME] = [];
           for(var i = 0; nodes && i < nodes.length; i++) {
-            if(xpathLimit && i >= xpathLimit) break;
-            outJson[DOC_NAME][i] = {};
-            outJson[DOC_NAME][i]["index"] = (i+1);
+            if(task.xpath.limit && i >= task.xpath.limit) break;
+            task[DOC_NAME][i] = {};
+            task[DOC_NAME][i]["index"] = (i+1);
 
-            for(var j in xpathDoc){
+            for(var j in task.xpath.doc){
               var key = j;
-              var val = xpathDoc[j];
+              var val = task.xpath.doc[j];
 
               //TODO 전체 문서에서 아니라 nodes[i]부터 검색하도록
               if(val.search(/\/@[\w-_]*$/g) != -1)  // @attribute
-                outJson[DOC_NAME][i][key] = xpath.select1(xpathRepeat + "[" + (i+1) + "]" + val, doc).value;
+                task[DOC_NAME][i][key] = xpath.select1(task.xpath.repeat + "[" + (i+1) + "]" + val, doc).value;
               else
-                outJson[DOC_NAME][i][key] = xpath.select(xpathRepeat + "[" + (i+1) + "]" + val, doc).toString();
+                task[DOC_NAME][i][key] = xpath.select(task.xpath.repeat + "[" + (i+1) + "]" + val, doc).toString();
             }
           }
 
-          outJson[PAGES_NAME] = []
-          var pages = xpath.select(xpathPages, doc);
+          task[PAGES_NAME] = []
+          var pages = xpath.select(task.xpath.pages, doc);
           for(var i = 0; pages && i < pages.length; i++)
-            outJson[PAGES_NAME][i] = pages[i].toString();
-          outJson[CURRENT_PAGE_NAME] = xpath.select(xpathCurrentPage, doc).toString();
+            task[PAGES_NAME][i] = pages[i].toString();
+          task[CURRENT_PAGE_NAME] = xpath.select(task.xpath.currentPage, doc).toString();
 
-          if(isSave) {
-            if (!global.users) global.users = {};
-            if (!global.users[user]) global.users[user] = {};
-            global.users[user][DOC_NAME] = outJson[DOC_NAME];
-          }
+          if(task.save) context.user[DOC_NAME] = task[DOC_NAME];
 
-          console.log("xpathRepeat >> " + JSON.stringify(outJson[DOC_NAME]));
-          if(successCallback) successCallback(outJson);
+          console.log("xpathRepeat >> " + JSON.stringify(task[DOC_NAME]));
+          if(successCallback) successCallback(task, context);
         } else {
-          if(errorCallback) errorCallback(error);
-          else console.log("[common.action: http." + action + "] error: " + error);
+          if(errorCallback) errorCallback(error, task, context);
+          else console.log("[common.task.action: http." + task.action + "] error: " + error);
         }
       });
 
-    } else if(action == 'xpath' || action == 'xpathByIndex') {
+    } else if(task.action == 'xpath' || task.action == 'xpathByIndex') {
 
-      var index, selectDoc;
-      if(action == 'xpathByIndex') {
-        index = actionController.parseNumber(outJson.index);
+      var index = task.index ? task.index : 0;
+      var selectDoc;
 
-        if(!global.users || !global.users[user] || !global.users[user][DOC_NAME]) {
+      if(task.action == 'xpathByIndex') {
+        index = formatter.parseNumber(index);
+
+        if(!context.user[DOC_NAME]) {
           throw new Error("docs not saved");
         }
 
-        selectDoc = global.users[user][DOC_NAME][index - 1];
-        outJson.path = selectDoc.path;
+        selectDoc = context.user[DOC_NAME][index - 1];
+        task.path = selectDoc.path;
       }
 
-      method = template && template.method ? template.method : outJson.method;
-      uri = template && template.url ? template.url : outJson.url;
-      path = template && template.path ? template.path : (outJson.path ? outJson.path : "");
-      param = utils.mergeJSON(template ? template.param : undefined, outJson.param);
-      xpathDoc = utils.mergeJSON(template ? (template.xpath ? template.xpath.doc : undefined): undefined,
-        outJson.xpath ? outJson.xpath.doc : undefined);
-
       options = {
-        method: method,
-        uri: uri  + path,
-        header: commonHeaders
+        method: task.method,
+        uri: task.url  + task.path,
+        header: utils.merge(commonHeaders, task.headers)
       };
 
-      if(method && method.toUpperCase() == "PUT") {
-        options.form = param;
+      if(task.method && task.method.toUpperCase() == "PUT") {
+        options.form = task.param;
       } else {
-        options.qs = param;
+        options.qs = task.param;
         options.useQuerystring = true;
       }
 
@@ -205,52 +173,50 @@ function execute(action, botName, user, inJson, outJson, successCallback, errorC
         //console.log(body);
 
         if (!error && response.statusCode == 200) {
-          if(!body || !xpathDoc)
-            if(errorCallback) errorCallback(null);
+          if(!body || !task.xpath || !task.xpath.doc) {
+            task.plaintext = body;
+            if(successCallback) successCallback(task, context);
+            return;
+          }
 
           var xml = body;
 
           var doc = new dom({errorHandler: xmldomErrorHandler}).parseFromString(xml);
 
-          outJson[DOC_NAME] = {};
-          for(var j in xpathDoc){
+          task[DOC_NAME] = {};
+          for(var j in task.xpath.doc){
             var key = j;
-            var val = xpathDoc[j];
+            var val = task.xpath.doc[j];
 
             if(val.search(/\/@[\w-_]*$/g) != -1)  // @attribute
-              outJson[DOC_NAME][key] = xpath.select1(val, doc).value;
+              task[DOC_NAME][key] = xpath.select1(val, doc).value;
             else
-              outJson[DOC_NAME][key] = xpath.select(val, doc).toString();
+              task[DOC_NAME][key] = xpath.select(val, doc).toString();
           }
 
-          if(action == 'selectByIndex') global.users[user][DOC_NAME] = null;
+          if(task.action == 'selectByIndex') context.user[DOC_NAME] = null;
 
-          console.log("xpath >> " + JSON.stringify(outJson[DOC_NAME]));
+          console.log("xpath >> " + JSON.stringify(task[DOC_NAME]));
 
-          if(successCallback) successCallback(outJson);
+          if(successCallback) successCallback(task, context);
         } else {
-          if (errorCallback) errorCallback(error);
-          else console.log("[common.action: http." + action + "] error: " + error);
+          if (errorCallback) errorCallback(error, task, context);
+          else console.log("[common.task.action: http." + task.action + "] error: " + error);
         }
       });
 
-    } else if(action == 'plaintext') {
-
-      method = template && template.method ? template.method : outJson.method;
-      uri = template && template.url ? template.url : outJson.url;
-      path = template && template.path ? template.path : (outJson.path ? outJson.path : "");
-      param = template && template.param ? template.param : outJson.param;
+    } else if(task.action == 'plaintext') {
 
       options = {
-        method: method,
-        uri: uri + path,
-        header: commonHeaders
+        method: task.method,
+        uri: task.url + task.path,
+        header: utils.merge(commonHeaders, task.headers)
       };
 
-      if (method && method.toUpperCase() == "PUT") {
-        options.form = param;
+      if (task.method && task.method.toUpperCase() == "PUT") {
+        options.form = task.param;
       } else {
-        options.qs = param;
+        options.qs = task.param;
         options.useQuerystring = true;
       }
 
@@ -259,32 +225,46 @@ function execute(action, botName, user, inJson, outJson, successCallback, errorC
         //console.log(body);
 
         if (!error && response.statusCode == 200) {
-          if (!body || !xpathDoc)
-            if (errorCallback) errorCallback(null);
+          if (!body) {
+            task.error = error;
+            if (successCallback) successCallback(task, context);
+          }
 
-          outJson[DOC_NAME] = body;
+          //body = 'jQuery18200016291653109714588_1470820544969({"seq":"9939311","authCode":"945182","errorCode":"0","errorMsg":"\uC778\uC99D\uBC88\uD638\uAC00 \uBC1C\uC1A1\uB418\uC5C8\uC2B5\uB2C8\uB2E4 \uC7A0\uC2DC \uAE30\uB2E4\uB824\uC8FC\uC138\uC694"})';
 
-          if (successCallback) successCallback(outJson);
+          task[DOC_NAME]={};
+          task[DOC_NAME]['plaintext'] = body;
+
+          if(task.regexp && task.regexp.doc) {
+            for(var key in task.regexp.doc) {
+              var re = task.regexp.doc[key];
+              var match = re.exec(body);
+
+              task[DOC_NAME][key] = match[1];
+            }
+          }
+
+          if (successCallback) successCallback(task, context);
         } else {
-          if(errorCallback) errorCallback(error);
-          else console.log("[common.action: http." + action + "] error: " + error);
+          if (errorCallback) errorCallback(error, task, context);
+          else console.log("[common.task.action: http." + task.action + "] error: " + error);
         }
       });
-    } else if(action == 'selectByIndex') {
-      var index = actionController.parseNumber(outJson.index);
+    } else if(task.action == 'selectByIndex') {
+      var index = formatter.parseNumber(task.index);
 
-      if(!global.users || !global.users[user] || !global.users[user][DOC_NAME]) {
+      if(!context.user[DOC_NAME]) {
         throw new Error("docs not saved");
       }
 
-      if(outJson.array) outJson[DOC_NAME] = eval('(' + 'global.users.' + user + '.' + DOC_NAME + '.' + outJson.array + '[' + (index-1) + ']' + ')');
-      else outJson[DOC_NAME] = global.users[user][DOC_NAME][index - 1];
+      if(task.array) task[DOC_NAME] = eval('(' + 'context.user.' + DOC_NAME + '.' + task.array + '[' + (index-1) + ']' + ')');
+      else task[DOC_NAME] = context.user[DOC_NAME][index - 1];
 
-      if(successCallback) successCallback(outJson);
+      if(successCallback) successCallback(task, context);
     }
   } catch(e) {
-    if(errorCallback) errorCallback(e);
-    else console.log("[common.action: http." + action + "] error: " + e);
+    if(errorCallback) errorCallback(e, task, context);
+    else console.log("[common.task.action: http." + task.action + "] error: " + e);
   }
 
 }

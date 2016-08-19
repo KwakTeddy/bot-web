@@ -1,181 +1,208 @@
 var utils = require('./utils');
-var actionController = require('../../server/controllers/action.server.controller');
+
 const MAX_ACTION = 100;
+
+exports.executeTask = executeTask;
+
+function executeTask(task, context, successCallback, errorCallback) {
+  var taskModule = findModule(task, context);
+
+  if(!task.topTask) task.topTask = task;
+
+  if(taskModule) {
+    if(task.paramDefs) {
+      for(var i = 0; i < task.paramDefs.length; i++) {
+        if(!task[task.paramDefs[i].name]) {
+          context.user.pendingCallback = function(_text) {
+            task[task.paramDefs[i].name] = _text;
+
+            context.user.pendingCallback = null;
+            executeTask(task, context, successCallback, errorCallback);
+          };
+
+          if(successCallback) successCallback(task.paramDefs[i].question);
+          return;
+        }
+      }
+    }
+
+    var _successCallback = function(task, context) {
+      if(task.postCallback) {
+        task.postCallback(task, context, function(_task, _context) {
+          if(successCallback) successCallback(_task, _context);
+        });
+      } else {
+        if(successCallback) successCallback(task, context);
+      }
+    };
+
+    console.log('executeTask: ' + task.module + '.' + task.action);
+
+    if(task.preCallback) {
+      task.preCallback(task, context, function(_task, _context) {
+        taskModule.execute(_task, _context, _successCallback, errorCallback);
+      });
+    } else {
+      taskModule.execute(task, context, _successCallback, errorCallback);
+    }
+
+    return true;
+  } else {
+    errorCallback(new Error('Module not exist.'), task, context);
+    return false;
+  }
+}
+
 
 exports.execute = execute;
 
-function execute(action, botName, user, inJson, outJson, successCallback, errorCallback, template) {
-  var actionJson = template && template.actions ? template.actions : outJson.actions;
+function execute(task, context, successCallback, errorCallback) {
+  if(task.action == 'sequence' || task.action == 'repeat') {
+    var taskCounter = 0;
+    var taskNum = 0;
+    var curTask = task.actions[taskNum];
 
-  if(action == 'sequence' || action == 'repeater') {
+    var _successCallback = function(_task, _context) {
+      var docMerge = curTask.docMerge;
 
-    var actionCounter = 0;
-    var actionNum = 0;
-    var actions = [];
-
-    for(var i = 0; i < actionJson.length; i++) {
-      actions[i] = actionController.findModule(actionJson[i], botName);
-    }
-
-    var _successCallback = function(json) {
-      var docMerge = actionJson[actionNum].template ? actionJson[actionNum].template.docMerge :
-        actionJson[actionNum].docMerge;
-
-      if(Array.isArray(json.doc)) {
-        if(!outJson.doc) outJson.doc = [];
-        if(docMerge != 'none') outJson.doc = outJson.doc.concat(json.doc);
+      if (Array.isArray(_task.doc)) {
+        if (!task.doc) task.doc = [];
+        if (docMerge != 'none') task.doc = task.doc.concat(_task.doc);
       } else {
-        if(docMerge == 'add') {
-          if(!outJson.doc) outJson.doc = [];
-          outJson.doc = outJson.doc.concat(json.doc);
+        if (docMerge == 'add') {
+          if (!task.doc) task.doc = [];
+          task.doc = task.doc.concat(_task.doc);
         }
-        else if(docMerge == 'out') outJson = utils.mergeJSON(outJson, json.doc);
-        else if(docMerge == 'replace') outJson.doc = json.doc;
-        else outJson.doc = utils.mergeJSON(outJson.doc, json.doc);
+        else if (docMerge == 'out') task = utils.merge(task, _task.doc);
+        else if (docMerge == 'replace') task.doc = _task.doc;
+        else task.doc = utils.merge(task.doc, _task.doc);
       }
 
-      actionCounter++;
+      taskCounter++;
 
-      if(action == 'sequence' && (actionNum = actionCounter) >= actions.length) {
+      _executeTask(curTask, _context, _successCallback, errorCallback);
+    };
 
-        successCallback(outJson);
-      } else if(action == 'repeater' && (json.pages && json.currentPage && json.currentPage >= json.pages[json.pages.length-1]) ||
-          actionCounter >= outJson.actionLimit || actionCounter >= MAX_ACTION) {
+    var _executeTask = function(_task, _context, __successCallback, errorCallback) {
+      if (task.action == 'sequence' && (taskNum = taskCounter) >= task.actions.length) {
 
-          successCallback(outJson);
+        successCallback(task, context);
+      } else if (task.action == 'repeat' &&
+        ((typeof _task.condition == 'string' && !eval(_task.condition)) ||
+        (_task.condition instanceof Function && !_task.condition(_task, _context)) ||
+        taskCounter >= task.taskLimit || taskCounter >= MAX_ACTION)) {
+
+        successCallback(task, context);
       } else {
-        if(actionJson[actionNum].setData)
-          actionJson[actionNum].doc = outJson.doc;
+        curTask = task.actions[taskNum];
+        curTask.parent =  task;
+        curTask.topTask = task.topTask;
 
-        if(actionJson[actionNum].preCallback) {
-          actionJson[actionNum].preCallback(outJson, actionJson[actionNum], function(outJson) {
-            actions[actionNum].execute(actionJson[actionNum].action, botName, user, inJson, actionJson[actionNum], postCallback, errorCallback, actionJson[actionNum].template);
-          });
-        } else {
-          actions[actionNum].execute(actionJson[actionNum].action, botName, user, inJson, actionJson[actionNum], postCallback, errorCallback, actionJson[actionNum].template);
-        }
+        if (curTask.setData) curTask.doc = _task.doc;
+
+        executeTask(curTask, _context, __successCallback, errorCallback);
       }
     };
 
-    var postCallback;
-    if(actionJson[actionNum].postCallback) {
-      postCallback = function(json) {
-        actionJson[actionNum].postCallback(outJson, json, _successCallback);
-      }
-    } else {
-      postCallback = _successCallback;
-    }
+    _executeTask(curTask, context, _successCallback, errorCallback);
 
-    if(actionJson[actionNum].setData) actionJson[actionNum].doc = outJson.doc;
+  } else if(task.action == 'if') {
 
-    if(actionJson[actionNum].preCallback) {
-      actionJson[actionNum].preCallback(outJson, actionJson[actionNum], function(outJson) {
-        actions[actionNum].execute(actionJson[actionNum].action, botName, user, inJson, actionJson[actionNum], postCallback, errorCallback, actionJson[actionNum].template);
-      });
-    } else {
-      actions[actionNum].execute(actionJson[actionNum].action, botName, user, inJson, actionJson[actionNum], postCallback, errorCallback, actionJson[actionNum].template);
-    }
+    for(var i =0; i < task.actions.length; i++) {
+      var curTask = task.actions[i];
+      curTask.parent =  task;
+      curTask.topTask = task.topTask;
 
-  } else if(action == 'repeater') {
-
-    var actionCounter = 0;
-    var actions = [];
-    var docs = [];
-
-    for(var i = 0; i < outJson.actions.length; i++) {
-      actions[i] = actionController.findModule(actionNames[i], botName);
-    }
-
-    var _successCallback = function(json) {
-      var docMerge = outJson.actions[0].template ? outJson.actions[0].template.docMerge :
-        outJson.actions[0].docMerge;
-
-      if(Array.isArray(json.doc)) {
-        if(!outJson.doc) outJson.doc = [];
-        outJson.doc = outJson.doc.concat(json.doc);
-      } else {
-        if(docMerge == 'add') {
-          if(!outJson.doc) outJson.doc = [];
-          outJson.doc = outJson.doc.concat(json.doc);
-        }
-        else if(docMerge == 'out') outJson = utils.mergeJSON(outJson, json.doc);
-        else if(docMerge == 'replace') outJson.doc = json.doc;
-        else outJson.doc = utils.mergeJSON(outJson.doc, json.doc);
-      }
-
-      if((json.pages && json.currentPage && json.currentPage >= json.pages[json.pages.length-1]) ||
-        ++actionCounter >= outJson.actionLimit || actionCounter >= MAX_ACTION) {
-        if(docMerge == 'add') outJson.doc = docs;
-
-        successCallback(outJson);
-      } else {
-
-        if(outJson.actions[0].preCallback) {
-          outJson.actions[0].preCallback(outJson, outJson.actions[0], function(outJson) {
-            actions[0].execute(outJson.actions[0].action, botName, user, inJson, outJson.actions[0], postCallback, errorCallback, outJson.actions[0].template);
-          });
-        } else {
-          actions[0].execute(outJson.actions[0].action, botName, user, inJson, outJson.actions[0], postCallback, errorCallback, outJson.actions[0].template);
+      if(curTask.condition) {
+        if((typeof curTask.condition == 'string' && eval(curTask.condition)) ||
+          (curTask.condition instanceof Function && curTask.condition(curTask, context)))
+        {
+          executeTask(curTask, context, successCallback, errorCallback);
+          return;
         }
       }
-    };
-
-
-    var postCallback;
-    if(outJson.actions[0].postCallback) {
-      postCallback = function(json) {
-        outJson.actions[0].postCallback(outJson, json, _successCallback);
-      }
-    } else {
-      postCallback = _successCallback;
     }
 
+    successCallback(task, context);
 
-    if(outJson.actions[0].preCallback) {
-      outJson.actions[0].preCallback(outJson, outJson.actions[0], function(outJson) {
-        actions[0].execute(outJson.actions[0].action, botName, user, inJson, outJson.actions[0], postCallback, errorCallback, outJson.actions[0].template);
-      });
-    } else {
-      actions[0].execute(outJson.actions[0].action, botName, user, inJson, outJson.actions[0], postCallback, errorCallback, outJson.actions[0].template);
-    }
+  } else if(task.action == 'synchronous') {
 
-
-  } else if(action == 'synchronous') {
-
-    var actions = outJson.actions;
-    var bCallback = false;
-
-    var _successCallback = function(json) {
-      if(!bCallback) {
-        bCallback = true;
-        successCallback(json);
-      }
-    };
-
-    for(var i = 0; i < actions.length; i++) {
-      actions[i](action, botName, inJson, outJson, _successCallback, errorCallback, template);
-    }
-
-  } else if(action == 'synchronous-join') {
-
-    var actionCounter = 0;
-    var actions = outJson.actions;
+    var taskCounter = 0;
     var docs =[];
 
-    var _successCallback = function(json) {
-      if(++actionCounter >= actions.length) {
-        json.doc = docs;
-        outJson.joinder(json, function(_json) {
-          successCallback(_json);
+    var _successCallback = function(_task, _context) {
+      if(++taskCounter >= task.actions.length) {
+        _task.doc = docs;
+
+        task.joinder(_task, function(__task, __context) {
+          successCallback(__task, __context);
         });
+
       } else {
-        docs.push(json.doc);
+        docs.push(_task.doc);
       }
     };
 
-    for(var i = 0; i < actions.length; i++) {
-      actions[i](action, botName, inJson, outJson, _successCallback, errorCallback, template);
+    for(var i = 0; i < task.actions.length; i++) {
+      var curTask = task.actions[i];
+      curTask.parent =  task;
+      curTask.topTask = task.topTask;
+
+      executeTask(curTask, context, _successCallback, errorCallback);
+    }
+  }
+}
+
+exports.findModule = findModule;
+
+function findModule(task, context) {
+  var taskModule;
+  var botName = context.bot.botName;
+
+  if(!task.module) {
+    // bot action
+    try {
+      taskModule = require('../../../../custom_modules/' + botName + '/' + botName);
+    } catch(err) {
+      //console.log("error loading custom module: " + botName + "/" + botName);
+    }
+  } else {
+    //template action
+    var templateModule;
+    try {
+      templateModule = require('../../../../custom_modules/' + botName + '/' + task.module);
+
+      if(templateModule) {
+        if(templateModule[task.action]) {
+          //var template = utils.clone(templateModule[task.action]);
+          var template = templateModule[task.action];
+          task.templateAction = task.action;
+          task.module = template.module;
+          task.action = template.action;
+          task = utils.merge(task, template);
+          task.template = template;
+
+          taskModule = require('../../action/common/' + task.module);
+
+        } else {
+          taskModule = templateModule;
+        }
+      }
+    } catch(err) {
+      //console.log("error loading custom module: " + botName + "/" + task.module + '/' + task.action);
+      //console.log(err);
     }
 
+    // common action
+    if(!taskModule) {
+      try {
+        taskModule = require('../../action/common/' + task.module);
+      } catch(e) {
+        //console.log("error loading common module: " + outJson.module);
+        //console.log("error loading common module: " + e);
+      }
+    }
   }
+
+  return taskModule;
 }

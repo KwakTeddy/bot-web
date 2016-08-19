@@ -1,9 +1,11 @@
 'use strict';
 
+var path = require('path');
 var net = require('net');
 var _ = require('lodash');
 var moneybot = require('../controllers/moneybot.server.controller');
-var action = require('../controllers/action.server.controller');
+var botProcess = require('../controllers/_action.server.controller');
+var type = require(path.resolve('./modules/bot/action/common/type'));
 
 var chatscriptConfig = {port: 0, host: '', allowHalfOpen: true};
 
@@ -80,42 +82,48 @@ module.exports = function (io, socket) {
       //   }
       // });
     } else {
+      var botName = msg.bot;
+      var user = msg.user;
+      var _inText = msg.msg;
 
-      console.log("사용자 입력>> " + msg.msg);
-      action.processInput(msg.bot, msg.user, msg.msg, function(inText, inJson) {
+      var context = getContext(botName, user);
 
-        msg.msg = inText;
-        console.log("자연어 처리>> " + msg.msg);
+      console.log("사용자 입력>> " + _inText);
+
+      type.processInput(context, _inText, function(inText, inDoc) {
+
+        if(context.user.pendingCallback) {
+          context.user.pendingCallback(inText);
+          return;
+        }
+
+        console.log("자연어 처리>> " + inText);
 
         var chatscriptSocket = net.createConnection(_.assign(chatscriptConfig, {host: msg.host, port: msg.port}), function(){
-          chatscriptSocket.write(msg.user+'\x00'+msg.bot+'\x00'+msg.msg+'\x00');
-          // console.log('send_msg')
+          chatscriptSocket.write(user+'\x00'+botName+'\x00'+inText+'\x00');
         });
 
-        // on receive data from chatscriptSocket
-        chatscriptSocket.on('data', function(data) {
-          console.log("챗서버 답변>> " + data.toString());
+        chatscriptSocket.on('data', function(data) {    // on receive data from chatscriptSocket
+          var chatserverOut = data.toString();
 
-//      socket.emit('send_msg', data.toString()); // FROM SERVER
+          console.log("챗서버 답변>> " + chatserverOut);
 
-          action.execute(msg.bot, msg.user, data.toString(), inJson, function(text, inJson, outJson) {
-            console.log("사용자 출력>> " + text + "\n");
-            socket.emit('send_msg', text + (outJson && outJson.link ? "\nlink: " + outJson.link : "") + " " +
-              (outJson && outJson.buttons ? "\nbuttons: " + outJson.buttons: "")); // FROM SERVER
+          botProcess.processChatserverOut(context, chatserverOut, inText, _inText, inDoc, function(_out, _task) {
+            console.log("사용자 출력>> " + _out + "\n");
+            socket.emit('send_msg', _out + (_task && _task.link ? "\nlink: " + _task.link : "") + " " +
+              (_task && _task.buttons ? "\nbuttons: " + _task.buttons: ""));
+          }, function(_out, _task) {
+            console.log("오류 출력>> " + _out + "\n");
+            socket.emit('send_msg', _out + (_task && _task.link ? "\nlink: " + _task.link : "") + " " +
+              (_task && _task.buttons ? "\nbuttons: " + _task.buttons: ""));
           })
-
-          //moneybot.receivedMoneyBot(msg.user, data.toString(), function(retText, json) {
-          //  socket.emit('send_msg', retText + (json && json.url ? "\nurl: " + json.url : "") + " " +
-          //    (json && json.buttons ? "\nbuttons: " + json.buttons: "")); // FROM SERVER
-          //});
-
         });
-        // on end from chatscriptSocket
-        chatscriptSocket.on('end', function() {
+
+        chatscriptSocket.on('end', function() {       // on end from chatscriptSocket
           // console.log('disconnected from server');
         });
-        // on error from chatscriptSocket
-        chatscriptSocket.on('error', function(err) {
+
+        chatscriptSocket.on('error', function(err) {  // on error from chatscriptSocket
           console.log('error from server ' + err +' '+ chatscriptSocket.address()[1]);
         });
 
@@ -125,3 +133,46 @@ module.exports = function (io, socket) {
 
   })
 };
+
+//var RiveScript = require(path.resolve('./external_modules/rivescript/rivescript'));
+//
+//var botPath = path.resolve('./custom_modules/testbot/brain');
+//
+//var bot = new RiveScript({
+//  debug: true,
+//  utf8:  true
+//});
+//
+//bot.loadDirectory(botPath, loading_done, loading_error);
+//
+//function loading_done(batch_num) {
+//  bot.sortReplies();
+//
+//  console.log("Bot Loaded: " + botPath);
+//
+//  //var reply = bot.reply("localuser", cmd);
+//}
+//
+//function loading_error(error, loadBatch) {
+//  console.error("Loading error: " + error);
+//}
+//
+//
+function getContext(botName, user) {
+  if(!global._context) global._context = {};
+  if(!global._bots) global._bots = [];
+  if(!global._bots[botName]) global._bots[botName] = {};
+  if(!global._users) global._users = [];
+  if(!global._users[user]) global._users[user] = {};
+
+  var context = {
+    global: global._context,
+    bot: global._bots[botName],
+    user: global._users[user]
+  };
+
+  context.bot.botName = botName;
+  context.user.userId = user;
+
+  return context;
+}

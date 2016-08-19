@@ -1,47 +1,38 @@
+var path = require('path');
 var mongoose = require('mongoose');
-var actionController = require('../../server/controllers/action.server.controller');
+var formatter = require(path.resolve('./modules/bot/server/controllers/formatter'));
 
 const DOC_NAME = 'doc';
 
 exports.execute = execute;
 
-function execute(action, botName, user, inJson, outJson, successCallback, errorCallback, template) {
-  var modelName, schema, query, update, fields, sort, limit, options;
-
-  modelName = template && template.mongo && template.mongo.model ? template.mongo.model : (outJson.mongo ? outJson.mongo.model : undefined);
-  schema = template && template.mongo && template.mongo.schema ? template.mongo.schema : (outJson.mongo ? outJson.mongo.schema : undefined);
-  query = template && template.mongo && template.mongo.query ? template.mongo.query : (outJson.mongo? outJson.mongo.query: undefined);
-  update = template && template.mongo && template.mongo.update ? template.mongo.update : (outJson.mongo ? outJson.mongo.update : undefined);
-  fields = template && template.mongo && template.mongo.fields ? template.mongo.fields : (outJson.mongo ? outJson.mongo.fields : undefined);
-  sort = template && template.mongo && template.mongo.sort ? template.mongo.sort : (outJson.mongo ? outJson.mongo.sort : undefined);
-  limit = template && template.mongo && template.mongo.limit ? template.mongo.limit : (outJson.mongo ? outJson.mongo.limit : undefined);
-  options = template && template.mongo && template.mongo.options ? template.mongo.options : (outJson.mongo ? outJson.mongo.options : undefined);
+function execute(task, context, successCallback, errorCallback) {
 
   try {
-    switch (action) {
+    switch (task.action) {
       case 'save':
         var model;
-        if (mongoose.models[modelName]) {
-          model = mongoose.model(modelName);
+        if (mongoose.models[task.mongo.model]) {
+          model = mongoose.model(task.mongo.model);
         } else {
-          model = mongoose.model(modelName, new mongoose.Schema(schema));
+          model = mongoose.model(task.mongo.model, new mongoose.Schema(task.mongo.schema));
         }
 
-        if(Array.isArray(outJson.doc)) {
-          model.create(outJson.doc, function(err, _docs) {
+        if(Array.isArray(task.doc)) {
+          model.create(task.doc, function(err, _docs) {
             if (err) {
               throw err;
             } else {
-              successCallback(outJson);
+              successCallback(task, context);
             }
           });
         } else {
-          var item = new model(outJson.doc);
+          var item = new model(task.doc);
           item.save(function (err) {
             if (err) {
               throw err;
             } else {
-              successCallback(outJson);
+              successCallback(task, context);
             }
           });
         }
@@ -50,146 +41,158 @@ function execute(action, botName, user, inJson, outJson, successCallback, errorC
 
       case 'update':
         var model;
-        if (mongoose.models[modelName]) {
-          model = mongoose.model(modelName);
+        if (mongoose.models[task.mongo.model]) {
+          model = mongoose.model(task.mongo.model);
         } else {
-          model = mongoose.model(modelName, new mongoose.Schema(schema));
+          model = mongoose.model(task.mongo.model, new mongoose.Schema(task.mongo.schema));
         }
 
-        if(Array.isArray(outJson.doc)) {
+        if(Array.isArray(task.doc)) {
           var count = 0;
-          for(var i = 0; i < outJson.doc.length; i++) {
-            var _doc = outJson.doc[i];
+          for(var i = 0; i < task.doc.length; i++) {
+            var _doc = task.doc[i];
 
-            for(var key in query)
-              if(_doc[key]) query[key] = _doc[key];
+            for(var key in task.mongo.query)
+              if(_doc[key]) task.mongo.query[key] = _doc[key];
 
-            if(update) {
-              for (var key in update)
-                if (update[key]) update[key] = _doc[key];
-            } else update = JSON.clone(_doc);
+            if(task.mongo.update) {
+              for (var key in task.mongo.update)
+                if (task.mongo.update[key]) task.mongo.update[key] = _doc[key];
+            } else task.mongo.update = JSON.clone(_doc);
 
-            model.update(query, update, options, function (err, numAffected) {
+            model.update(task.mongo.query, task.mongo.update, task.mongo.options, function (err, numAffected) {
               count ++;
               if (err) {
                 throw err;
               } else {
-                if(count >= outJson.doc.length)
-                  successCallback(outJson);
+                if(count >= task.doc.length)
+                  successCallback(task, context);
               }
             });
           }
         } else {
-          var _doc = outJson.doc;
+          var _doc = task.doc;
 
-          for(var key in query.keys)
-            if(_doc[key]) query[key] = _doc[key];
+          for(var key in task.mongo.query.keys)
+            if(_doc[key]) task.mongo.query[key] = _doc[key];
 
-          if(update) {
-            for(var key in update.keys)
-              if(update[key]) update[key] = _doc[key];
-          } else update = _doc;
+          if(task.mongo.update) {
+            for(var key in task.mongo.update.keys)
+              if(task.mongo.update[key]) task.mongo.update[key] = _doc[key];
+          } else task.mongo.update = _doc;
 
-          model.update(query, update, options, function (err) {
+          model.update(task.mongo.query, task.mongo.update, task.mongo.options, function (err) {
             if (err) {
               throw err;
             } else {
-              successCallback(outJson);
+              successCallback(task, context);
             }
           });
         }
 
         break;
       case 'findById':
-        var model = mongoose.model(outJson.mongo.model);
+        var model;
+        if (mongoose.models[task.mongo.model]) {
+          model = mongoose.model(task.mongo.model);
+        } else {
+          model = mongoose.model(task.mongo.model, new mongoose.Schema(task.mongo.schema));
+        }
 
-        model.findById(outJson.mongo._id, function (err, doc) {
+
+        model.findById(task.mongo._id, function (err, doc) {
           if (err || !doc) {
-            outJson.error = outJson.errMsg.nodata;
+            task.error = task.errMsg.nodata;
           } else {
-            outJson[DOC_NAME] = doc._doc;
+            task[DOC_NAME] = doc._doc;
           }
 
           console.log("mongo:findById>> " + JSON.stringify(doc._doc));
-          successCallback(outJson);
+          successCallback(task, context);
         });
 
         break;
       case 'findOne':
-        var model = mongoose.model(outJson.mongo.model);
+        var model;
+        if (mongoose.models[task.mongo.model]) {
+          model = mongoose.model(task.mongo.model);
+        } else {
+          model = mongoose.model(task.mongo.model, new mongoose.Schema(task.mongo.schema));
+        }
 
-        model.findOne(outJson.mongo.query, function (err, doc) {
+        model.findOne(task.mongo.query, function (err, doc) {
           if (err || !doc) {
-            outJson.error = outJson.errMsg.nodata;
+            task.error = task.errMsg.nodata;
           } else {
-            outJson[DOC_NAME] = doc;
+            task[DOC_NAME] = doc;
           }
 
           console.log("mongo:findOne>> " + JSON.stringify(doc));
-          successCallback(outJson);
+          successCallback(task, context);
         });
 
         break;
       case 'find':
         var model;
-        if (mongoose.models[modelName]) {
-          model = mongoose.model(modelName);
+        if (mongoose.models[task.mongo.model]) {
+          model = mongoose.model(task.mongo.model);
         } else {
-          model = mongoose.model(modelName, new mongoose.Schema(schema));
+          model = mongoose.model(task.mongo.model, new mongoose.Schema(task.mongo.schema));
         }
 
-        var _query = model.find(query, fields, options);
-        if(sort) _query.sort(sort);
-        if(limit) _query.limit(limit);
+        var _query = model.find(task.mongo.query, task.mongo.fields, task.mongo.options);
+        if(task.mongo.sort) _query.sort(task.mongo.sort);
+        if(task.mongo.limit) _query.limit(task.mongo.limit);
 
         _query.lean().exec(function (err, docs) {
           if (err || !docs || docs.length <= 0) {
-            outJson.error = err;
+            task.error = err;
           } else {
-            outJson[DOC_NAME] = docs;
+            task[DOC_NAME] = docs;
 
-            if(outJson.save) {
-              if (!global.users) global.users = {};
-              if (!global.users[user]) global.users[user] = {};
-              global.users[user][DOC_NAME] = docs;
-            }
+            if(task.save) context.user[DOC_NAME] = docs;
           }
 
           console.log("mongo:find>> " + JSON.stringify(docs));
-          successCallback(outJson);
+          successCallback(task, context);
         });
 
         break;
       case 'findByIndex':
-        var model = mongoose.model(outJson.mongo.model);
+        var model;
+        if (mongoose.models[task.mongo.model]) {
+          model = mongoose.model(task.mongo.model);
+        } else {
+          model = mongoose.model(task.mongo.model, new mongoose.Schema(task.mongo.schema));
+        }
 
-        var index = actionController.parseNumber(outJson.index);
-        var selectDoc = global.users[user][DOC_NAME][index - 1];
-        outJson.id = selectDoc._id;
+        var index = formatter.parseNumber(task.index);
+        var selectDoc = context.user[DOC_NAME][index - 1];
+        task.id = selectDoc._id;
 
-        model.findById(outJson.id, function (err, doc) {
+        model.findById(task.id, function (err, doc) {
           if (err || !doc) {
-            outJson.error = outJson.errMsg.nodata;
+            task.error = task.errMsg.nodata;
           } else {
-            outJson[DOC_NAME] = doc;
+            task[DOC_NAME] = doc;
           }
 
           console.log("mongo:findByIndex>> " + JSON.stringify(doc));
-          successCallback(outJson);
+          successCallback(task, context);
         });
 
-        global.users[user][DOC_NAME] = null;
+        context.user[DOC_NAME] = null;
 
         break;
 
       case 'selectByIndex':
-        var index = actionController.parseNumber(outJson.index);
-        var selectDoc = global.users[user][DOC_NAME][index - 1];
+        var index = formatter.parseNumber(task.index);
+        var selectDoc = context.user[DOC_NAME][index - 1];
 
-        outJson[DOC_NAME] = selectDoc;
-        successCallback(outJson);
+        task[DOC_NAME] = selectDoc;
+        successCallback(task, context);
 
-        global.users[user][DOC_NAME] = null;
+        context.user[DOC_NAME] = null;
 
         break;
       default:
@@ -197,8 +200,8 @@ function execute(action, botName, user, inJson, outJson, successCallback, errorC
     }
 
   } catch(e) {
-    if(errorCallback) errorCallback(e);
-    else console.log("[common.action: mongo." + action + "] error: " + e);
+    if(errorCallback) errorCallback(e, task, context);
+    else console.log("[common.action: mongo." + task.action + "] error: " + e);
   }
 };
 
