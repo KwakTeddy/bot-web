@@ -1,6 +1,7 @@
 var path = require('path');
 var mongoose = require('mongoose');
 var type = require(path.resolve('./modules/bot/action/common/type'));
+var utils = require(path.resolve('./modules/bot/action/common/utils'));
 
 const DOC_NAME = 'doc';
 
@@ -58,7 +59,7 @@ function execute(task, context, successCallback, errorCallback) {
             if(task.mongo.update) {
               for (var key in task.mongo.update)
                 if (task.mongo.update[key]) task.mongo.update[key] = _doc[key];
-            } else task.mongo.update = JSON.clone(_doc);
+            } else task.mongo.update = utils.clone(_doc);
 
             model.update(task.mongo.query, task.mongo.update, task.mongo.options, function (err, numAffected) {
               count ++;
