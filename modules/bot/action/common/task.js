@@ -17,10 +17,13 @@ function executeTask(task, context, successCallback, errorCallback) {
             task[task.paramDefs[i].name] = _text;
 
             context.user.pendingCallback = null;
+            context.user.pendingType = null;
             executeTask(task, context, successCallback, errorCallback);
           };
 
-          if(successCallback) successCallback(task.paramDefs[i].question);
+          context.user.pendingType = task.paramDefs[i].type;
+
+          if(task.topSuccessCallback) task.topSuccessCallback(task.paramDefs[i].question);
           return;
         }
       }
@@ -189,17 +192,17 @@ function findModule(task, context) {
         }
       }
     } catch(err) {
-      //console.log("error loading custom module: " + botName + "/" + task.module + '/' + task.action);
-      //console.log(err);
+      // console.log("error loading custom module: " + botName + "/" + task.module + '/' + task.action);
+      // console.log(err);
     }
 
     // common action
     if(!taskModule) {
       try {
         taskModule = require('../../action/common/' + task.module);
-      } catch(e) {
-        //console.log("error loading common module: " + outJson.module);
-        //console.log("error loading common module: " + e);
+      } catch(err) {
+        // console.log("error loading common module: " + task.module);
+        // console.log(err);
       }
     }
   }

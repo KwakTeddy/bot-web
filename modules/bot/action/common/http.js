@@ -2,7 +2,7 @@ var path = require('path');
 var request = require('request');
 var xpath = require('xpath')
   , dom = require('xmldom').DOMParser;
-var formatter = require(path.resolve('./modules/bot/server/controllers/formatter'));
+var type = require(path.resolve('./modules/bot/action/common/type'));
 var utils = require('./utils');
 
 var commonHeaders = {"Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
@@ -145,7 +145,7 @@ function execute(task, context, successCallback, errorCallback) {
       var selectDoc;
 
       if(task.action == 'xpathByIndex') {
-        index = formatter.parseNumber(index);
+        index = type.parseNumber(index);
 
         if(!context.user[DOC_NAME]) {
           throw new Error("docs not saved");
@@ -251,7 +251,7 @@ function execute(task, context, successCallback, errorCallback) {
         }
       });
     } else if(task.action == 'selectByIndex') {
-      var index = formatter.parseNumber(task.index);
+      var index = type.parseNumber(task.index);
 
       if(!context.user[DOC_NAME]) {
         throw new Error("docs not saved");

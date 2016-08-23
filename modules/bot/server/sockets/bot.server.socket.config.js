@@ -92,12 +92,22 @@ module.exports = function (io, socket) {
 
       type.processInput(context, _inText, function(inText, inDoc) {
 
+        console.log("자연어 처리>> " + inText);
+
         if(context.user.pendingCallback) {
-          context.user.pendingCallback(inText);
+          if(type[context.user.pendingType+'Type']) {
+            type[context.user.pendingType+'Type'].typeCheck(inText, type[context.user.pendingType+'Type'], inDoc, context, function(_text, _inDoc) {
+              if(!_inDoc[context.user.pendingType] && type[context.user.pendingType+'Type'].required) {
+                socket.emit('send_msg', type[context.user.pendingType+'Type'].required(_text));
+              } else {
+                context.user.pendingCallback(_text);
+              }
+            });
+          } else {
+            context.user.pendingCallback(inText);
+          }
           return;
         }
-
-        console.log("자연어 처리>> " + inText);
 
         var chatscriptSocket = net.createConnection(_.assign(chatscriptConfig, {host: msg.host, port: msg.port}), function(){
           chatscriptSocket.write(user+'\x00'+botName+'\x00'+inText+'\x00');

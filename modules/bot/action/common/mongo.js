@@ -1,6 +1,6 @@
 var path = require('path');
 var mongoose = require('mongoose');
-var formatter = require(path.resolve('./modules/bot/server/controllers/formatter'));
+var type = require(path.resolve('./modules/bot/action/common/type'));
 
 const DOC_NAME = 'doc';
 
@@ -166,7 +166,7 @@ function execute(task, context, successCallback, errorCallback) {
           model = mongoose.model(task.mongo.model, new mongoose.Schema(task.mongo.schema));
         }
 
-        var index = formatter.parseNumber(task.index);
+        var index = type.parseNumber(task.index);
         var selectDoc = context.user[DOC_NAME][index - 1];
         task.id = selectDoc._id;
 
@@ -186,7 +186,7 @@ function execute(task, context, successCallback, errorCallback) {
         break;
 
       case 'selectByIndex':
-        var index = formatter.parseNumber(task.index);
+        var index = type.parseNumber(task.index);
         var selectDoc = context.user[DOC_NAME][index - 1];
 
         task[DOC_NAME] = selectDoc;

@@ -307,8 +307,11 @@ function parseNumber(text, json) {
 
 var regexpTypeCheck = function (text, type, task, context, callback) {
   var re = type.regexp;
+  var matched = false;
 
   text = text.replace(re, function(match, p1, offset, string) {
+    matched = true;
+
     if(task[type.name]) {
       if(Array.isArray(task[type.name])) task[type.name].push(p1);
       else task[type.name] = [task[type.name], p1];
@@ -319,7 +322,7 @@ var regexpTypeCheck = function (text, type, task, context, callback) {
     return IN_TAG_START + type.name + IN_TAG_END;
   });
 
-  callback(text, task);
+  callback(text, task, matched);
 };
 
 var amountType = {
@@ -332,33 +335,34 @@ var mobileType = {
   name: 'mobile',
   typeCheck: regexpTypeCheck,
   regexp: /\b((?:010-\d{4}|01[1|6|7|8|9][-.]?\d{3,4})[-.]?\d{4})\b/g,
-  required: function(text) {
+  required: function(text, type, inDoc, context) {
     if(text.length < 13) return '자리수가 맞지 않습니다';
     else if(text.search(/[^\d-]/g) != -1) return '숫자와 - 기호만 사용할 수 있습니다';
   }
 };
 
+exports.mobileType = mobileType;
 
 var phoneType = {
-  name: 'mobile',
+  name: 'phone',
   typeCheck: regexpTypeCheck,
   regexp: /\b((?:0(?:2|3[0-3]|4[1-4]|5[0-5]|6[0-4]|70|80))[-.]?\d{3,4}[-.]?\d{4})\b/g
 };
 
 var dateType = {
-  name: 'mobile',
+  name: 'date',
   typeCheck: regexpTypeCheck,
   regexp: /(\d{4}[-/.년][ ]?(?:0[1-9]|1[012]|[1-9])[-/.월][ ]?(?:0[1-9]|[12][0-9]|3[0-1]|[1-9])[일]?)/g
 };
 
 var timeType = {
-  name: 'mobile',
+  name: 'time',
   typeCheck: regexpTypeCheck,
   regexp: /((?:[01][0-9]|2[0-3]|[1-9])[:시][ ]?(?:[0-5][0-9]|[1-9])[분]?)/g
 };
 
 var accountType = {
-  name: 'mobile',
+  name: 'account',
   typeCheck: regexpTypeCheck,
   regexp: /(\b[\d-]+-[\d-]+\b)/g
 };
@@ -372,7 +376,10 @@ var productType = {
     //query: {},
     //sort: "-rate1",
     limit: 5,
-    minMatch: 2
+    minMatch: 2,
+    required: function(text, type, inDoc, context) {
+      return '금융상품이 존재하지 않습니다';
+    }
   }
 }
 
@@ -463,9 +470,9 @@ function mongoDbTypeCheck(text, format, inDoc, context, callback) {
             inDoc[format.name] = matchedText;
           }
 
-          callback(text, inDoc);
+          callback(text, inDoc, true);
         } else {
-          callback(text, inDoc);
+          callback(text, inDoc, false);
         }
       }
 

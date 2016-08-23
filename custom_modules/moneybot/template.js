@@ -4,8 +4,9 @@ exports.order = {
   url: 'https://www.google.com',
   path: '/',
   paramDefs: [
-    {type: 'Address', name: 'address', display: '주소', isReuired: true, question: '주소를 말씀해 주세요.'},
-    {type: 'Menu', name: 'menu', display: '메뉴', isReuired: true, question: '주문하실 메뉴를 말씀해 주세요.'}
+    {type: 'mobile', name: 'mobile', display: '휴대폰번호', isReuired: true, question: '휴대폰번호를 말씀해 주세요.'},
+    {type: 'address', name: 'address', display: '주소', isReuired: true, question: '주소를 말씀해 주세요.'},
+    {type: 'menu', name: 'menu', display: '메뉴', isReuired: true, question: '주문하실 메뉴를 말씀해 주세요.'}
   ]
 };
 

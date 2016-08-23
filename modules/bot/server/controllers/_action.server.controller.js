@@ -29,6 +29,8 @@ exports.processChatserverOut = function (context, outText, inText, _inText, inDo
     task._in = _inText;
     task.out = out;
 
+    task.topSuccessCallback = successCallback;
+
     taskModule.executeTask(task, context, function(_task, _context) {
       if(typeof _task.buttons === "string") {
         _task.buttons = type.processButtons(_task, _context, _task.buttons);
