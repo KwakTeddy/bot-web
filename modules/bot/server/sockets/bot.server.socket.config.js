@@ -33,24 +33,6 @@ module.exports = function (io, socket) {
           (json && json.buttons ? "\nbuttons: " + json.buttons: "")); // FROM SERVER
       });
 
-      // BotUser.findOne({userKey: from}).populate('currentBank').exec(function (err, botUser) {
-      //   if (botUser) {
-      //
-      //     botUser.currentAccount =  global.users[from].selectAccounts[num-1].accountNumber;
-      //
-      //     botUser.save(function (err) {
-      //       global.users[from].selectAccounts = null;
-      //       global.users[from].userAccounts = null;
-      //
-      //       var serverJSON = global.users[from].lastJSON;
-      //       global.users[from].lastJSON = null;
-      //       moneybot.receivedMoneyBot(msg.user, JSON.stringify(serverJSON), function(retText, json) {
-      //         socket.emit('send_msg', retText + (json && json.url ? "\nurl: " + json.url : "") + " " +
-      //           (json && json.buttons ? "\nbuttons: " + json.buttons: "")); // FROM SERVER
-      //       });
-      //     });
-      //   }
-      // });
     } else if(global.users && global.users[msg.user] && global.users[msg.user].selectBanks) {
       var from = msg.user;
       var num = msg.msg.substr(0, 1);
@@ -63,24 +45,6 @@ module.exports = function (io, socket) {
           (json && json.buttons ? "\nbuttons: " + json.buttons: "")); // FROM SERVER
       });
 
-      // BotUser.findOne({userKey: from}).populate('currentBank').exec(function (err, botUser) {
-      //   if (botUser) {
-      //
-      //     botUser.currentAccount =  global.users[from].selectAccounts[num-1].accountNumber;
-      //
-      //     botUser.save(function (err) {
-      //       global.users[from].selectAccounts = null;
-      //       global.users[from].userAccounts = null;
-      //
-      //       var serverJSON = global.users[from].lastJSON;
-      //       global.users[from].lastJSON = null;
-      //       moneybot.receivedMoneyBot(msg.user, JSON.stringify(serverJSON), function(retText, json) {
-      //         socket.emit('send_msg', retText + (json && json.url ? "\nurl: " + json.url : "") + " " +
-      //           (json && json.buttons ? "\nbuttons: " + json.buttons: "")); // FROM SERVER
-      //       });
-      //     });
-      //   }
-      // });
     } else {
       var botName = msg.bot;
       var user = msg.user;
@@ -166,6 +130,7 @@ module.exports = function (io, socket) {
 //}
 //
 //
+
 function getContext(botName, user) {
   if(!global._context) global._context = {};
   if(!global._bots) global._bots = [];
