@@ -146,11 +146,11 @@ exports.processOutput = processOutput;
 
 function processOutput(task, context, out) {
   try {
-    //if (outJson.preText) text = outJson.preText + "\r\n" + text;
-    //else if (outJson.pretext) text = outJson.pretext + "\r\n" + text;
-    //
-    //if (outJson.postText) text = text + "\r\n" + outJson.postText;
-    //else if (outJson.posttext) text = text + "\r\n" + outJson.posttext;
+    if (task.preText) out = task.preText + "\r\n" + out;
+    else if (task.pretext) out = task.pretext + "\r\n" + out;
+
+    if (task.postText) out = out + "\r\n" + task.postText;
+    else if (task.posttext) out = out + "\r\n" + task.posttext;
 
     var re = new RegExp(ARRAY_TAG_START + "([\\w\\d-_\\.]*)" + ARRAY_TAG_START + "([^" + ARRAY_TAG_END + "]*)" + ARRAY_TAG_END, "g");
     var re2 = new RegExp(TAG_START + "([\\w\\d-_\\.]+)" + TAG_END, "g");
