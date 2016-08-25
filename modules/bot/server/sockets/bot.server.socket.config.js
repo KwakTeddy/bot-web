@@ -6,9 +6,9 @@ var _ = require('lodash');
 var moneybot = require('../controllers/moneybot.server.controller');
 var botProcess = require('../controllers/_action.server.controller');
 var type = require(path.resolve('./modules/bot/action/common/type'));
+var tough = require('tough-cookie');
 
 var chatscriptConfig = {port: 0, host: '', allowHalfOpen: true};
-
 
 var mongoose = require('mongoose'),
   BotUser = mongoose.model('BotUser');
@@ -139,8 +139,6 @@ module.exports = function (io, socket) {
 
       })
     }
-
-
   })
 };
 
@@ -183,6 +181,8 @@ function getContext(botName, user) {
 
   context.bot.botName = botName;
   context.user.userId = user;
+
+  if(!context.user.cookie) context.user.cookie = new tough.CookieJar();
 
   return context;
 }

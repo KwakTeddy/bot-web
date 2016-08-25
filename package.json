@@ -71,7 +71,8 @@
     "swig": "^1.4.2",
     "validator": "^3.41.2",
     "xmldom": "^0.1.22",
-    "xpath": "^0.0.23"
+    "xpath": "^0.0.23",
+    "tough-cookie": "^2.3.1"
   },
   "devDependencies": {
     "coveralls": "^2.11.4",

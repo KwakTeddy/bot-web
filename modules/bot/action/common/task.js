@@ -5,6 +5,10 @@ const MAX_ACTION = 100;
 exports.executeTask = executeTask;
 
 function executeTask(task, context, successCallback, errorCallback) {
+  if(!task) throw new Error('task.js:executeTask: Wrong arguments. task undefined');
+  if(!context) throw new Error('task.js:executeTask: Wrong arguments. context undefined ' + task.module + '.' + task.action);
+  if(!context) throw new Error('task.js:executeTask: Wrong arguments. successCallback undefined' + task.module + '.' + task.action);
+
   var taskModule = findModule(task, context);
 
   if(!task.topTask) task.topTask = task;
@@ -32,6 +36,8 @@ function executeTask(task, context, successCallback, errorCallback) {
     var _successCallback = function(task, context) {
       if(task.postCallback) {
         task.postCallback(task, context, function(_task, _context) {
+          if(!_task || !_context) throw new Error('task.js:executeTask: wrong postCallback. In ' + task.module + '.' + task.action + ', Check callback(task, context)');
+
           if(successCallback) successCallback(_task, _context);
         });
       } else {
@@ -43,6 +49,8 @@ function executeTask(task, context, successCallback, errorCallback) {
 
     if(task.preCallback) {
       task.preCallback(task, context, function(_task, _context) {
+        if(!_task || !_context) throw new Error('task.js:executeTask: wrong preCallback. In ' + task.module + '.' + task.action + ', Check callback(task, context)');
+
         taskModule.execute(_task, _context, _successCallback, errorCallback);
       });
     } else {
@@ -64,6 +72,7 @@ function execute(task, context, successCallback, errorCallback) {
     var taskCounter = 0;
     var taskNum = 0;
     var curTask = task.actions[taskNum];
+    var preTask;
 
     var _successCallback = function(_task, _context) {
       var docMerge = curTask.docMerge;
@@ -97,9 +106,11 @@ function execute(task, context, successCallback, errorCallback) {
 
         successCallback(task, context);
       } else {
+        if(taskCounter != 0) preTask = curTask;
         curTask = task.actions[taskNum];
         curTask.parent =  task;
         curTask.topTask = task.topTask;
+        curTask.preTask = preTask;
 
         if (curTask.setData) curTask.doc = _task.doc;
 

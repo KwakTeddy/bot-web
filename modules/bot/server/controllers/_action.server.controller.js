@@ -4,6 +4,7 @@ var path = require('path');
 var taskModule = require(path.resolve('./modules/bot/action/common/task'));
 var type = require(path.resolve('./modules/bot/action/common/type'));
 var utils = require(path.resolve('./modules/bot/action/common/utils'));
+var tough = require('tough-cookie');
 
 exports.processChatserverOut = function (context, outText, inText, _inText, inDoc, successCallback, errorCallback) {
   var task = null;
@@ -18,6 +19,8 @@ exports.processChatserverOut = function (context, outText, inText, _inText, inDo
       console.log("acton.server.controller:execute>> Task JSON 포맷 오류\n" + e);
       console.log(outText);
     }
+
+    if(successCallback) successCallback(outText);
     return;
   }
 

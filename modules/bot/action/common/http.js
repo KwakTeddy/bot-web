@@ -4,6 +4,7 @@ var xpath = require('xpath')
   , dom = require('xmldom').DOMParser;
 var type = require(path.resolve('./modules/bot/action/common/type'));
 var utils = require('./utils');
+var tough = require('tough-cookie');
 
 var commonHeaders = {"Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
   "Accept-Encoding":"gzip, deflate, sdch",
@@ -28,6 +29,7 @@ exports.execute = execute;
 
 function execute(task, context, successCallback, errorCallback) {
   var options;
+  var cookiejar = context.user.cookie;
 
   var xmldomErrorHandler = {
     warning: function(w) {},
@@ -41,7 +43,8 @@ function execute(task, context, successCallback, errorCallback) {
       options = {
         method: task.method,
         uri: task.url  + encodeURI(task.path),
-        header: utils.merge(commonHeaders, task.headers)
+        header: utils.merge(commonHeaders, task.headers),
+        followAllRedirects: true
       };
 
       if(task.method && task.method.toUpperCase() == "PUT") {
@@ -75,12 +78,14 @@ function execute(task, context, successCallback, errorCallback) {
       });
 
     } else if(task.action == 'xpathRepeat') {
-
       options = {
         method: task.method,
         uri: task.url  + encodeURI(task.path),
-        header: utils.merge(commonHeaders, task.headers)
+        headers: utils.merge(commonHeaders, task.headers),
+        followAllRedirects: true
       };
+
+      options.headers['Cookie'] = cookiejar.getCookieStringSync(options.uri);
 
       if(task.method && task.method.toUpperCase() == "POST") {
         options.form = task.param;
@@ -94,8 +99,15 @@ function execute(task, context, successCallback, errorCallback) {
         //console.log(body);
 
         if (!error && response.statusCode == 200) {
+          task._text = body;
+
+          var cookieHeaders = response.headers['set-cookie'];
+          for(var i = 0; cookieHeaders && i < cookieHeaders.length; i++) {
+            var cookie = tough.Cookie.parse(cookieHeaders[i]);
+            cookiejar.setCookie(cookie, options.uri, function() {});
+          }
+
           if(!body || !task.xpath || !task.xpath.repeat || !task.xpath.doc) {
-            task.plaintext = body;
             if(successCallback) successCallback(task, context);
           }
 
@@ -140,7 +152,6 @@ function execute(task, context, successCallback, errorCallback) {
       });
 
     } else if(task.action == 'xpath' || task.action == 'xpathByIndex') {
-
       var index = task.index ? task.index : 0;
       var selectDoc;
 
@@ -158,10 +169,11 @@ function execute(task, context, successCallback, errorCallback) {
       options = {
         method: task.method,
         uri: task.url  + task.path,
-        header: utils.merge(commonHeaders, task.headers)
+        headers: utils.merge(commonHeaders, task.headers),
+        followAllRedirects: true
       };
 
-      if(task.method && task.method.toUpperCase() == "PUT") {
+      if(task.method && task.method.toUpperCase() == "POST") {
         options.form = task.param;
       } else {
         options.qs = task.param;
@@ -173,8 +185,15 @@ function execute(task, context, successCallback, errorCallback) {
         //console.log(body);
 
         if (!error && response.statusCode == 200) {
+          task._text = body;
+
+          var cookieHeaders = response.headers['set-cookie'];
+          for(var i = 0; cookieHeaders && i < cookieHeaders.length; i++) {
+            var cookie = tough.Cookie.parse(cookieHeaders[i]);
+            cookiejar.setCookie(cookie, options.uri, function() {});
+          }
+
           if(!body || !task.xpath || !task.xpath.doc) {
-            task.plaintext = body;
             if(successCallback) successCallback(task, context);
             return;
           }
@@ -206,14 +225,16 @@ function execute(task, context, successCallback, errorCallback) {
       });
 
     } else if(task.action == 'plaintext') {
-
       options = {
         method: task.method,
         uri: task.url + task.path,
-        header: utils.merge(commonHeaders, task.headers)
+        headers: utils.merge(commonHeaders, task.headers),
+        followAllRedirects: true
       };
 
-      if (task.method && task.method.toUpperCase() == "PUT") {
+      options.headers['Cookie'] = cookiejar.getCookieStringSync(options.uri) + ';';
+
+      if (task.method && task.method.toUpperCase() == "POST") {
         options.form = task.param;
       } else {
         options.qs = task.param;
@@ -221,13 +242,21 @@ function execute(task, context, successCallback, errorCallback) {
       }
 
       request(options, function (error, response, body) {
-        console.log("status:" + response.statusCode);
+        // console.log("status:" + response.statusCode);
         //console.log(body);
 
         if (!error && response.statusCode == 200) {
           if (!body) {
             task.error = error;
             if (successCallback) successCallback(task, context);
+          }
+
+          task._text = body;
+
+          var cookieHeaders = response.headers['set-cookie'];
+          for(var i = 0; cookieHeaders && i < cookieHeaders.length; i++) {
+            var cookie = tough.Cookie.parse(cookieHeaders[i]);
+            cookiejar.setCookie(cookie, options.uri, function() {});
           }
 
           //body = 'jQuery18200016291653109714588_1470820544969({"seq":"9939311","authCode":"945182","errorCode":"0","errorMsg":"\uC778\uC99D\uBC88\uD638\uAC00 \uBC1C\uC1A1\uB418\uC5C8\uC2B5\uB2C8\uB2E4 \uC7A0\uC2DC \uAE30\uB2E4\uB824\uC8FC\uC138\uC694"})';
@@ -240,7 +269,7 @@ function execute(task, context, successCallback, errorCallback) {
               var re = task.regexp.doc[key];
               var match = re.exec(body);
 
-              task[DOC_NAME][key] = match[1];
+              if(match) task[DOC_NAME][key] = match[1];
             }
           }
 
@@ -263,8 +292,8 @@ function execute(task, context, successCallback, errorCallback) {
       if(successCallback) successCallback(task, context);
     }
   } catch(e) {
+    console.log("[http." + task.action + "] error: " + e);
     if(errorCallback) errorCallback(e, task, context);
-    else console.log("[common.task.action: http." + task.action + "] error: " + e);
   }
 
 }
