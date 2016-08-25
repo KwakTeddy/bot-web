@@ -18,7 +18,7 @@
     vm.remove = remove;
     vm.save = save;
 
-    vm.faq.bankCode = '88';
+    vm.faq.bankCode = '11';
 
     // Remove existing Faq
     function remove() {
