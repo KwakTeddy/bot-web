@@ -1303,10 +1303,10 @@ exports.misterpizzaSave = {
         for (var i = 0; i < json.length; i++) {
           var pizza = {
             product: json[i].product_nm,
-            price: json[i].price
+            price: json[i].price,
+            sort: '파스타&라이스'
           };
           doc.push(pizza);
-          task.doc[i].sort='파스타&라이스'
         }
 
         task.doc = doc;
@@ -1331,10 +1331,10 @@ exports.misterpizzaSave = {
         for (var i = 0; i < json.length; i++) {
           var pizza = {
             product: json[i].product_nm,
-            price: json[i].price
+            price: json[i].price,
+            sort: '특가세트'
           };
           doc.push(pizza);
-          task.doc[i].sort='특가세트'
         }
 
         task.doc = doc;
@@ -1360,10 +1360,10 @@ exports.misterpizzaSave = {
         for (var i = 0; i < json.length; i++) {
           var pizza = {
             product: json[i].product_nm,
-            price: json[i].price
+            price: json[i].price,
+            sort : '음료'
           };
           doc.push(pizza);
-          task.doc[i].sort='음료'
         }
 
         task.doc = doc;
