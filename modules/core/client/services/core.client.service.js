@@ -58,7 +58,7 @@
           fullAddr = data.roadAddress;
 
         } else { // 사용자가 지번 주소를 선택했을 경우(J)
-          fullAddr = data.jibunAddress;
+          fullAddr = data.addressJibun;
         }
 
         // 사용자가 선택한 주소가 도로명 타입일때 조합한다.

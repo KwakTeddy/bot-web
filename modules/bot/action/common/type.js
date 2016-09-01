@@ -1,6 +1,7 @@
 'use strict'
 
 var nlp = require('../../engine/nlp/processor');
+var utils = require('./utils');
 
 const TAG_START = '\\+';
 const TAG_END = '\\+';
@@ -312,12 +313,12 @@ var regexpTypeCheck = function (text, type, task, context, callback) {
   text = text.replace(re, function(match, p1, offset, string) {
     matched = true;
 
-    if(task[type.name]) {
-      if(Array.isArray(task[type.name])) task[type.name].push(p1);
-      else task[type.name] = [task[type.name], p1];
-    } else {
+    // if(task[type.name]) {
+    //   if(Array.isArray(task[type.name])) task[type.name].push(p1);
+    //   else task[type.name] = [task[type.name], p1];
+    // } else {
       task[type.name] = p1;
-    }
+    // }
 
     return IN_TAG_START + type.name + IN_TAG_END;
   });
@@ -336,8 +337,9 @@ var mobileType = {
   typeCheck: regexpTypeCheck,
   regexp: /\b((?:010-\d{4}|01[1|6|7|8|9][-.]?\d{3,4})[-.]?\d{4})\b/g,
   required: function(text, type, inDoc, context) {
-    if(text.length < 13) return '자리수가 맞지 않습니다';
-    else if(text.search(/[^\d-]/g) != -1) return '숫자와 - 기호만 사용할 수 있습니다';
+    if(text.search(/[^\d-]/g) != -1) return '숫자와 - 기호만 사용할 수 있습니다';
+    else if(text.length < 13) return '자리수가 맞지 않습니다';
+    else return '휴대폰전화번호 형식으로 입력해 주세요';
   }
 };
 
@@ -367,6 +369,14 @@ var accountType = {
   regexp: /(\b[\d-]+-[\d-]+\b)/g
 };
 
+var countType = {
+  name: 'count',
+  typeCheck: regexpTypeCheck,
+  regexp: /(\d)\s?(?:개)/g
+};
+
+exports.countType = countType;
+
 var productType = {
   name: 'product',
   typeCheck: mongoDbTypeCheck,
@@ -382,6 +392,24 @@ var productType = {
     }
   }
 }
+
+var lotteriaMenuType = {
+  typeCheck: mongoDbTypeCheck,
+  mongo: {
+    model: 'lotteriaMenu',
+    queryFields: ['title'],
+    //query: {},
+    //sort: "-rate1",
+    limit: 5,
+    minMatch: 2,
+    required: function(text, type, inDoc, context) {
+      return '말씀하신 메뉴를 찾을 수 없습니다.';
+    }
+  }
+}
+
+exports.lotteriaMenuType = lotteriaMenuType;
+
 
 var mongoose = require('mongoose');
 
@@ -582,4 +610,176 @@ function findType(type, context) {
   }
 
   return typeModule;
+}
+
+
+var addressType = {
+  name: 'address',
+  typeCheck: addressTypeCheck
+}
+
+exports.addressType= addressType;
+
+const ADDRESS_KEY = 'U01TX0FVVEgyMDE2MDgyODEwMjEyMDE0ODU1';
+
+function addressTypeCheck(text, type, task, context, callback) {
+  var userTokens = text.split(' ');
+  var tmpTokens = utils.clone(userTokens);
+  var addrPart, addrDetail;
+  for(var i = tmpTokens.length - 1; i >= 0; i--) {
+    if(tmpTokens[i].endsWith('길') || tmpTokens[i].endsWith('로')) {
+      addrPart = tmpTokens.splice(0, i+2).join(' ');
+      addrDetail = tmpTokens.join(' ');
+      break;
+    } else if(tmpTokens[i].search(/^[^\d].*동$/g) != -1 || userTokens[i].endsWith('리')) {
+      addrPart = tmpTokens.splice(0, i+2).join(' ');
+      addrDetail = tmpTokens.join(' ');
+      break;
+    }
+  }
+
+  task.addressOrg = {};
+  task.addressOrg.address = text;
+  task.addressOrg.addrTokens = userTokens;
+  task.addressOrg.addrPart = addrPart;
+  task.addressOrg.addrDetail = addrDetail;
+  task.addressOrg.detailToken = tmpTokens;
+
+  if(!addrPart) {
+    type.message = context.global.messages.typeAddress;
+    return;
+  }
+
+  var http = require('./http');
+  var httpTask = {
+    action: 'xml',
+    url: 'http://www.juso.go.kr',
+    path: '/addrlink/addrLinkApi.do',
+    param: {confmKey: ADDRESS_KEY, currentPage: 1, countPerPage: 30, keyword: addrPart}
+  };
+
+  http.execute(httpTask, context, function(_task, context) {
+    if(_task.doc.results.common.totalCount == 0) {
+      type.message = context.global.messages.typeAddressCheck1;
+    } else {
+      var addr;
+      if(_task.doc.results.juso instanceof Array) {
+        addr = _task.doc.results.juso[0];
+      } else {
+        addr = _task.doc.results.juso;
+      }
+
+      task.address = {};
+      task.addressJibun = {};
+
+      task.address.address = addr.roadAddr;
+      task.address.roadAddrPart1 = addr.roadAddrPart1;
+      task.address.roadAddrPart2 = addr.roadAddrPart2;
+      task.address.zipNo = addr.zipNo;
+
+      task.addressJibun.address = addr.jibunAddr;
+      task.addressJibun.zipNo = addr.zipNo;
+
+      var jusoToken = addr.jibunAddr.split(' ');
+      var roadToken = addr.roadAddrPart1.split(' ');
+      if(jusoToken[0].endsWith('시')) {
+        task.addressJibun.sido = jusoToken[0];
+        task.addressJibun.sigungu = jusoToken[1];
+        task.addressJibun.dong = jusoToken[2];
+        task.addressJibun.bungi = jusoToken[4];
+        task.addressJibun.building = jusoToken[5];
+
+        task.address.sido = roadToken[0];
+        task.address.sigungu = roadToken[1];
+        task.address.road = roadToken[2];
+        task.address.roadNum = roadToken[3];
+      } else {
+        if (jusoToken[1].endsWith('시')) {
+          task.addressJibun.sido = jusoToken[0];
+          // 현재 도로명주소 API 비정상으로 나오고 있음
+          // task.addressJibun.sigungu = jusoToken[1] + ' ' + jusoToken[2];
+          // task.addressJibun.dong = jusoToken[3];
+          task.addressJibun.sigungu = jusoToken[1];
+          task.addressJibun.dong = jusoToken[2];
+          task.addressJibun.bungi = jusoToken[4];
+          task.addressJibun.building = jusoToken[5];
+
+          task.address.sido = roadToken[0];
+          task.address.sigungu = roadToken[1] + ' ' + roadToken[2];;
+          task.address.road = roadToken[3];
+          task.address.roadNum = roadToken[4];
+
+        } else if (jusoToken[1].endsWith('군')) {
+          task.addressJibun.sido = jusoToken[0];
+          task.addressJibun.sigungu = jusoToken[1];
+          task.addressJibun.dong = jusoToken[2];
+          task.addressJibun.bungi = jusoToken[4];
+          task.addressJibun.building = jusoToken[5];
+
+          task.address.sido = roadToken[0];
+          task.address.sigungu = roadToken[1];
+          task.address.road = roadToken[2];
+          task.address.roadNum = roadToken[3];
+        }
+      }
+
+      for(var i = 0; i < tmpTokens.length; i++) {
+        if(task.addressJibun.address.indexOf(tmpTokens[i]) == -1) {
+          task.addressJibun.detail = tmpTokens.slice(i).join(' ');
+          task.addressJibun.address += ' ' + task.addressJibun.detail;
+          break;
+        }
+      }
+
+      // 주소 API 에서 동이 안나오는 오류 임시 처리
+
+      var sigu = task.addressJibun.sigungu.split(' ');
+      if(sigu.length == 1 && sigu[0].endsWith('시')) {
+        for(var i = 0; i < userTokens.length; i++) {
+          if(userTokens[i].search(/^[^\d].*구$/g) != -1) {
+            task.addressJibun.sigungu += ' ' + userTokens[i];
+            break;
+          }
+        }
+      }
+
+      task.address.detail = task.addressJibun.detail;
+      task.address.address = addr.roadAddrPart1 + ', ' + task.address.detail + addr.roadAddrPart2;
+
+      console.log(JSON.stringify(task.address));
+      console.log(JSON.stringify(task.addressJibun));
+
+      callback(text, task, true);
+    }
+  });
+}
+
+
+var stringType = {
+  name: 'string',
+  typeCheck: stringTypeCheck
+}
+
+exports.stringType= stringType;
+
+function stringTypeCheck(text, type, task, context, callback) {
+  task[type.name] = text;
+  callback(text, task, true);
+}
+
+
+var numberType = {
+  name: 'number',
+  typeCheck: numberTypeCheck
+}
+
+exports.numberType= numberType;
+
+function numberTypeCheck(text, type, task, context, callback) {
+  if(text.search(/^(\d)+$/g) != -1) {
+    task[type.name] = text;
+    callback(text, task, true);
+  } else {
+    callback(text, task, false);
+  }
 }

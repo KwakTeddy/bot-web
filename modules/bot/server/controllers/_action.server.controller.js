@@ -2,13 +2,14 @@
 
 var path = require('path');
 var taskModule = require(path.resolve('./modules/bot/action/common/task'));
-var type = require(path.resolve('./modules/bot/action/common/type'));
 var utils = require(path.resolve('./modules/bot/action/common/utils'));
 var tough = require('tough-cookie');
 
 exports.processChatserverOut = function (context, outText, inText, _inText, inDoc, successCallback, errorCallback) {
   var task = null;
   var out = null;
+
+  var type = utils.requireNoCache(path.resolve('./modules/bot/action/common/type'));
 
   outText = type.chatserverEscape(outText);
 
@@ -34,16 +35,17 @@ exports.processChatserverOut = function (context, outText, inText, _inText, inDo
 
     task.topSuccessCallback = successCallback;
 
-    taskModule.executeTask(task, context, function(_task, _context) {
-      if(typeof _task.buttons === "string") {
+    taskModule.executeTask(task, context, function (_task, _context) {
+      if (typeof _task.buttons === "string") {
         _task.buttons = type.processButtons(_task, _context, _task.buttons);
       }
 
-      if(successCallback) successCallback(type.processOutput(_task, _context, out), _task, _context);
-    }, function(error, _task, _context) {
-      if(errorCallback) errorCallback(error, _task, _context);
+      if (successCallback) successCallback(type.processOutput(_task, _context, out), _task, _context);
+    }, function (error, _task, _context) {
+      if (errorCallback) errorCallback(error, _task, _context);
       else console.log("execAction:" + _task.module + "." + _task.action + ": error: " + error);
     });
+    console.log(task.module + '.' + task.action + + e);
   } else {
     task = {};
     task.in = inText;
@@ -51,7 +53,7 @@ exports.processChatserverOut = function (context, outText, inText, _inText, inDo
     task.doc = inDoc;
     out = outText;
 
-    if(successCallback) successCallback(type.processOutput(task, context, out));
+    if(successCallback) successCallback(type.processOutput(task, context, out), inDoc, context);
   }
 }
 

@@ -1,6 +1,5 @@
 var path = require('path');
 var mongoose = require('mongoose');
-var type = require(path.resolve('./modules/bot/action/common/type'));
 var utils = require(path.resolve('./modules/bot/action/common/utils'));
 
 const DOC_NAME = 'doc';
@@ -8,6 +7,8 @@ const DOC_NAME = 'doc';
 exports.execute = execute;
 
 function execute(task, context, successCallback, errorCallback) {
+
+  var type = utils.requireNoCache(path.resolve('./modules/bot/action/common/type'));
 
   try {
     switch (task.action) {
@@ -104,7 +105,7 @@ function execute(task, context, successCallback, errorCallback) {
 
         model.findById(task.mongo._id, function (err, doc) {
           if (err || !doc) {
-            task.error = task.errMsg.nodata;
+            task.error = err;
           } else {
             task[DOC_NAME] = doc._doc;
           }

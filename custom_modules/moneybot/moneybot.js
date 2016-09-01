@@ -1,8 +1,6 @@
 var path = require('path');
 var utils = require(path.resolve('./modules/bot/action/common/utils'));
 
-
-
 exports.creditLoanQuery= {
   module: 'task',
     action: 'sequence',

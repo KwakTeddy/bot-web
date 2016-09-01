@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('core').controller('HomeController', ['$scope', 'Authentication', 'Socket',
-  function ($scope, Authentication, Socket) {
+angular.module('core').controller('HomeController', ['$scope', '$document', 'Authentication', 'Socket',
+  function ($scope, $document, Authentication, Socket) {
     var vm = this;
 
     // if (!Socket.socket) {
@@ -77,13 +77,24 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
       vm.sendMsg(':init');
     };
 
-    vm.onKeyPress = function (keyCode) {
-      if(keyCode == 116) {
-        vm.buildBot();
-      } else if(keyCode == 117) {
-        vm.resetBot();
-      }
-    };
+    // 전체화면 이벤트로 전환
+    $document.bind("keydown", function(event) {
+      // console.debug('keydown:' + event.keyCode)
+
+        if(event.keyCode == 116) {    // F5
+          vm.buildBot();
+        } else if(event.keyCode == 27) {
+          vm.resetBot();
+        }
+    });
+
+    // vm.onKeyPress = function (keyCode) {
+    //   if(keyCode == 116) {    // F5
+    //     vm.buildBot();
+    //   } else if(keyCode == 27) {
+    //     vm.resetBot();
+    //   }
+    // };
 
     function build() {
       clearBubble();
@@ -95,6 +106,12 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
       clearBubble();
       addBotBubble('머니봇 [' + vm.bot + '] 접속 (' + vm.server.split(':')[0] + ':' + vm.server.split(':')[1] + ' as ' + vm.userId + ')');
       emitMsg(':reset user');
+
+      setTimeout(function() {
+        console.log('init: ' + vm.initMsg);
+        if(vm.initMsg != undefined && vm.initMsg != null && vm.initMsg != '') emitMsg(vm.initMsg);
+      }, 200);
+
     }
 
     Socket.on('send_msg', function (message) {
