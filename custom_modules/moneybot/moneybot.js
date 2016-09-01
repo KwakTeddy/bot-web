@@ -1,6 +1,23 @@
 var path = require('path');
 var utils = require(path.resolve('./modules/bot/action/common/utils'));
 
+exports.text = function (task, context, successCallback, errorCallback) {
+  successCallback(task, context);
+};
+
+exports.faq = {
+  module: 'mongo',
+  action: 'findById',
+  mongo: {
+    model: 'faq',
+    _id: ''
+  },
+  preCallback: function(task, context, callback) {
+    task.mongo._id = task.id;
+    callback(task, context);
+  }
+};
+
 exports.creditLoanQuery= {
   module: 'task',
     action: 'sequence',
