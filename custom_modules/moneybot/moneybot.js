@@ -12,9 +12,9 @@ exports.faq = {
     model: 'faq',
     _id: ''
   },
-  content: '+title+ \n +content+',
   preCallback: function(task, context, callback) {
     task.mongo._id = task.id;
+    task.out = '+title+ \n +content+';
     callback(task, context);
   }
 };
