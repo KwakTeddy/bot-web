@@ -108,9 +108,9 @@ function execute(task, context, successCallback, errorCallback) {
             task.error = err;
           } else {
             task[DOC_NAME] = doc._doc;
+            console.log("mongo:findById>> " + JSON.stringify(doc._doc));
           }
 
-          console.log("mongo:findById>> " + JSON.stringify(doc._doc));
           successCallback(task, context);
         });
 
