@@ -16,8 +16,6 @@ exports.faq = {
   preCallback: function(task, context, callback) {
     task.mongo._id = task.id;
     callback(task, context);
-  },
-  postCallback: function(task, context, callback) {
   }
 };
 
