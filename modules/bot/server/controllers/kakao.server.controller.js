@@ -19,8 +19,10 @@ exports.keyboard = function (req, res) {
 
   var sendMsg =
   {
-    "type": "buttons",
-    "buttons": ["잔액조회", "상품추천", "고객상담"]
+    type: 'text'
+
+    // "type": "buttons",
+    // "buttons": ["잔액조회", "상품추천", "고객상담"]
 
   };
 
