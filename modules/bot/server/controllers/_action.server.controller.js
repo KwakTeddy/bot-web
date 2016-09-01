@@ -40,7 +40,7 @@ exports.processChatserverOut = function (context, outText, inText, _inText, inDo
         _task.buttons = type.processButtons(_task, _context, _task.buttons);
       }
 
-      if (successCallback) successCallback(type.processOutput(_task, _context, out), _task, _context);
+      if (successCallback) successCallback(type.processOutput(_task, _context, _task.out), _task, _context);
     }, function (error, _task, _context) {
       if (errorCallback) errorCallback(error, _task, _context);
       else console.log("execAction:" + _task.module + "." + _task.action + ": error: " + error);
@@ -53,7 +53,7 @@ exports.processChatserverOut = function (context, outText, inText, _inText, inDo
     task.doc = inDoc;
     out = outText;
 
-    if(successCallback) successCallback(type.processOutput(task, context, out), inDoc, context);
+    if(successCallback) successCallback(type.processOutput(task, context, task.out), inDoc, context);
   }
 }
 
