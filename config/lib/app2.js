@@ -22,10 +22,10 @@ module.exports.start = function() {
   // app.set('view engine', 'ejs');
   // app.engine('.html', require('ejs').renderFile());
 
-  app.engine('.html', consolidate['swig']);
+  app.engine('html', consolidate['swig']);
   // Set views path and view engine
-  app.set('view engine', '.html');
-  app.set('views', './');
+  app.set('view engine', 'html');
+  // app.set('views', './');
 
   var httpsServer = http.createServer(app);
   httpsServer.listen(3000, function() {
