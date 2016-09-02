@@ -8,7 +8,7 @@ module.exports.start = function() {
   var bodyParser = require('body-parser');
   var kakao = require('../../modules/bot/server/controllers/kakao.server.controller');
   var action = require('../../modules/bot/server/controllers/_action.server.controller');
-  var consolidate = require('consolidate'),
+  var consolidate = require('consolidate');
 
   app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
   app.use(bodyParser.json()); // for parsing application/jsonå
@@ -17,7 +17,7 @@ module.exports.start = function() {
     resave: false,
     saveUninitialized: true,
     cookie: { secure: true }
-  }))
+  }));
 
   // app.set('view engine', 'ejs');
   // app.engine('.html', require('ejs').renderFile());
