@@ -18,18 +18,11 @@ module.exports.start = function() {
     cookie: { secure: true }
   }));
 
-  // app.set('view engine', 'ejs');
-  // app.engine('.html', require('ejs').renderFile());
-
   var swig = require('swig');
   var swig = new swig.Swig();
   app.engine('server.view.html', swig.renderFile);
   app.set('view engine', 'server.view.html');
   app.set('views', './');
-
-  // app.engine('html', consolidate['swig']);
-  // app.set('view engine', 'html');
-  // // app.set('views', './');
 
   var httpsServer = http.createServer(app);
   httpsServer.listen(3000, function() {
