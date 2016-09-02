@@ -36,7 +36,7 @@ exports.faq = {
 exports.nhApp = function (task, context, successCallback, errorCallback) {
   if(task.urlMessage == undefined) task.urlMessage = '앱 실행하기';
 
-  var ANDROID_STORE = 'https://market.android.com/details?id='
+  var ANDROID_STORE = 'https://market.android.com/details?id=';
   var IOS_STORE = 'https://itunes.apple.com/kr/app/';
   var androidStore = '';
   var iosStore = '';
@@ -59,7 +59,7 @@ exports.nhApp = function (task, context, successCallback, errorCallback) {
     iosStore = IOS_STORE + 'ol-wonbaengkeu-all-one-bank/id1138584631?mt=8';
   }
 
-  task.url = config.host + (process.env.APP_PORT ? ':' + process.env.APP_PORT) + '/bot/app/' +
+  task.url = config.host + (process.env.APP_PORT ? ':' + process.env.APP_PORT : '') + '/bot/app/' +
     encodeURIComponent(task.url) + '/' + encodeURIComponent(androidStore) + '/' +
     encodeURIComponent(task.iosUrl ? task.iosUrl : task.url) + '/' + encodeURIComponent(iosStore);
 
