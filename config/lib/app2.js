@@ -9,9 +9,6 @@ module.exports.start = function() {
   var kakao = require('../../modules/bot/server/controllers/kakao.server.controller');
   var action = require('../../modules/bot/server/controllers/_action.server.controller');
 
-  app.set('view engine', 'ejs');
-  app.engine('.html', require('ejs').renderFile());
-
   app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
   app.use(bodyParser.json()); // for parsing application/jsonå
   app.use(session({
@@ -20,6 +17,14 @@ module.exports.start = function() {
     saveUninitialized: true,
     cookie: { secure: true }
   }))
+
+  // app.set('view engine', 'ejs');
+  // app.engine('.html', require('ejs').renderFile());
+
+  app.engine('.html', consolidate['swig']);
+  // Set views path and view engine
+  app.set('view engine', '.html');
+  app.set('views', './');
 
   var httpsServer = http.createServer(app);
   httpsServer.listen(3000, function() {
