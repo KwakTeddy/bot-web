@@ -21,6 +21,7 @@ module.exports.start = function() {
   // app.set('view engine', 'ejs');
   // app.engine('.html', require('ejs').renderFile());
 
+  var swig = require('swig');
   var swig = new swig.Swig();
   app.engine('html', swig.renderFile);
   app.set('view engine', 'html');
