@@ -7,6 +7,7 @@ module.exports.start = function() {
   var http = require('http');
   var bodyParser = require('body-parser');
   var kakao = require('../../modules/bot/server/controllers/kakao.server.controller');
+  var action = require('../../modules/bot/server/controllers/_action.server.controller');
 
   app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
   app.use(bodyParser.json()); // for parsing application/jsonå
@@ -27,5 +28,9 @@ module.exports.start = function() {
   app.route('/kakao/:botId/friend').post(kakao.friend);
   app.route('/kakao/:botId/friend/:user_key').delete(kakao.deleteFriend);
   app.route('/kakao/:botId/chat_room/:user_key').delete(kakao.deleteChatRoom);
+
+  // app 실행하기
+  app.route('/bot/app/:androidUrl/:androidStore/:iosUrl/:iosStore')
+    .get(action.appExec);
 }
 

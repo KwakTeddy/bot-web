@@ -6,7 +6,6 @@
 //var kakao = require('../controllers/kakao.server.controller');
 var line = require('../controllers/line.server.controller');
 var facebook = require('../controllers/facebook.server.controller');
-var action = require('../controllers/_action.server.controller');
 
 module.exports = function (app) {
   // 카카오톡
@@ -24,7 +23,4 @@ module.exports = function (app) {
   app.route('/facebook/:botId/webhook').get(facebook.messageGet);
   app.route('/facebook/:botId/webhook').post(facebook.message);
 
-  // app 실행하기
-  app.route('/bot/app/:androidUrl/:androidStore/:iosUrl/:iosStore')
-    .get(action.appExec);
 };
