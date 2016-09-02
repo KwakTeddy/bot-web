@@ -7,7 +7,7 @@ module.exports = {
     privateKey: './config/sslcerts/wefund.co.kr.pem',
     certificate: './config/sslcerts/wefund.co.kr.crt'
   },
-  host: "https://bot.wefund.co.kr:8443",
+  host: process.env.HOST || 'https://localhost',
   port: process.env.PORT || 8443,
   db: {
     uri: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://' + (process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost') + '/bot',

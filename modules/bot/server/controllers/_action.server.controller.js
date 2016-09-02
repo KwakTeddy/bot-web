@@ -70,3 +70,11 @@ exports.processIn = function(botName, user, text, successCallback, errorCallback
 }
 
 
+exports.appExec = function (req, res) {
+  res.render('modules/bot/server/views/app-exec', {
+    androidUrl: req.params.androidUrl,
+    androidStore: req.params.androidStore,
+    iosUrl: req.params.iosUrl,
+    iosStore: req.params.iosStore
+  });
+};

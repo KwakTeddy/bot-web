@@ -407,8 +407,26 @@ var lotteriaMenuType = {
     }
   }
 }
-
 exports.lotteriaMenuType = lotteriaMenuType;
+
+var faqType = {
+  typeCheck: mongoDbTypeCheck,
+  mongo: {
+    model: 'faq',
+    queryFields: ['title'],
+    fields: 'title content' ,
+    taskFields: ['title', 'content'],
+    //query: {},
+    //sort: "-rate1",
+    limit: 5,
+    minMatch: 2,
+    required: function(text, type, inDoc, context) {
+      return '학습되어 있지 않은 질문 입니다.';
+    }
+  }
+}
+
+exports.faqType = faqType;
 
 
 var mongoose = require('mongoose');
@@ -496,6 +514,10 @@ function mongoDbTypeCheck(text, format, inDoc, context, callback) {
             else inDoc[format.name] = [inDoc[format.name], matchedText];
           } else {
             inDoc[format.name] = matchedText;
+          }
+
+          for(var l = 0 ; format.mongo.taskFields && l < format.mongo.taskFields.length; l++) {
+            inDoc[format.mongo.taskFields[l]] = bestDoc[format.mongo.taskFields[l]];
           }
 
           callback(text, inDoc, true);
