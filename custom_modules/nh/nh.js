@@ -47,7 +47,7 @@ exports.nhApp = function (task, context, successCallback, errorCallback) {
     iosStore = IOS_STORE + 'ol-wonbaengkeu-all-one-bank/id1138584631?mt=8';
   }
 
-  task.url = config.host + (config.port ? ':' + config.port : '') + '/bot/app' +
+  task.url = config.host + (config.port ? ':' + config.port : '') + '/bot/app/' +
     encodeURIComponent(task.url) + '/' + encodeURIComponent(androidStore) + '/' +
     encodeURIComponent(task.iosUrl ? task.iosUrl : task.url) + '/' + encodeURIComponent(iosStore);
 
