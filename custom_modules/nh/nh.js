@@ -24,27 +24,27 @@ exports.faq = {
 exports.nhApp = function (task, context, successCallback, errorCallback) {
   if(task.urlMessage == undefined) task.urlMessage = '앱 실행하기';
 
-  var ANDROID_STORE = 'https://market.android.com/details?id='
-  var IOS_STORE = 'https://itunes.apple.com/kr/app/';
+  // var ANDROID_STORE = 'https://market.android.com/details?id='
+  // var IOS_STORE = 'https://itunes.apple.com/kr/app/';
   var androidStore = '';
   var iosStore = '';
 
   if(task.url.startsWith('NHSmartCenter')) {
     // 금융상품몰
-    androidStore = ANDROID_STORE + 'nh.smart.fincenter';
-    iosStore = IOS_STORE + 'nhgeum-yungsangpummakes/id1063199138?mt=8';
+    androidStore = 'nh.smart.fincenter';
+    iosStore = 'nhgeum-yungsangpummakes/id1063199138?mt=8';
   } else if(task.url.startsWith('nhsmartbank') || task.url.startsWith('com.nonghyup.nhsmartbanking')) {
     // NH스마트뱅킹
-    androidStore = ANDROID_STORE + 'nh.smart';
-    iosStore = IOS_STORE + 'new_nhseumateubaengking/id398002630?mt=8';
+    androidStore = 'nh.smart';
+    iosStore = 'new_nhseumateubaengking/id398002630?mt=8';
   } else if(task.url.startsWith('nh.smart.card') || task.url.startsWith('com.nonghyup.nhcard')) {
     // NH카드
-    androidStore = ANDROID_STORE + 'nh.smart.card';
-    iosStore = IOS_STORE + 'seumartnhnonghyeobkadeu/id406473666?mt=8';
+    androidStore = 'nh.smart.card';
+    iosStore = 'seumartnhnonghyeobkadeu/id406473666?mt=8';
   } else {
     // 올원뱅크
-    androidStore = ANDROID_STORE + 'nh.smart.allonebank';
-    iosStore = IOS_STORE + 'ol-wonbaengkeu-all-one-bank/id1138584631?mt=8';
+    androidStore = 'nh.smart.allonebank';
+    iosStore = 'ol-wonbaengkeu-all-one-bank/id1138584631?mt=8';
   }
 
   task.url = 'http://bot-dev.moneybrain.ai:3000' + '/bot/app/' +
