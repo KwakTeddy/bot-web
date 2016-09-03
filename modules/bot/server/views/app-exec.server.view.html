@@ -16,7 +16,7 @@
 <body>
 <!--<center>-->
   <!--자동으로 실행이 되지 않는 경우 아래 수동 실행을 클릭해 주세요. <br /><br />-->
-  <!--<a href="#" onclick="javascript:executeAppOrGoStore()">앱 실행하기</a>-->
+  <a href="#" onclick="javascript:executeAppOrGoStore()">앱 실행하기</a>
 <!--</center>-->
 
 <script>
@@ -24,6 +24,9 @@
   var androidStore = '{{androidStore}}';
   var iosUrl = '{{iosUrl}}';
   var iosStore = '{{iosStore}}';
+
+  androidUrl = androidUrl.replace(/&amp;/g, '&');
+  iosUrl = iosUrl.replace(/&amp;/g, '&');
 
   var os = "";
   // 아래는 OS 구분에 대한 부분은 예시 코드다.  모바일이 아닌 경우도 고려해야 한다.
@@ -51,6 +54,7 @@
       document.location.href = androidUrl;
     }
   }
+
   // 이 코드는 대부분 사용하는 코드다.
   function executeAppOrGoStore() {
     var openAt = new Date;
