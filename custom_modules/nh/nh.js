@@ -9,7 +9,8 @@ exports.faqQuestion =     {
   module: 'task',
   action: 'question',
   paramDefs: [
-    {type: 'faq', name: 'faq질문', isDisplay: false, question: '죄송합니다.\n질문이 없습니다.'}
+    {type: 'faq', name: 'faq질문', isDisplay: false, question: '죄송합니다. \n해당 질문이 학습되어 있지 않습니다.',
+      buttons: ['처음으로 돌아가기', '계속 상담하기', '콜센터로 연결']}
   ],
   preCallback: function(task, context, callback) {
     callback(task, context);
@@ -18,7 +19,7 @@ exports.faqQuestion =     {
     if(task.typeDoc && task.typeDoc.length > 1) {
       task.doc = task.typeDoc;
       context.user.doc = task.typeDoc;
-      task.out = '문의하신 질문에 가장 적합한 답변들 입니다.\n##+index+. +title+\n#\n원하는 답변을 선택해 주세요.';
+      task.out = '문의하신 질문에 가장 적합한 답변들 입니다.\n##+index+. +title+\n#\n원하는 답변을 선택해 주세요.\n원하시는 답변이 없을 경우 조금 더 자세히 질문해주세요.';
     } else {
       task.out = '[+title+]\n+content+';
     }

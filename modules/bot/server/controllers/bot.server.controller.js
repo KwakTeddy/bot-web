@@ -155,7 +155,8 @@ function getContext(botName, user) {
 }
 
 var messages = {
-  typeExit: '\n처음으로 돌아가기: \'ㄱ\'',
+  // typeExit: '\n처음으로 돌아가기: \'ㄱ\'',
+  typeExit: '',
   typeAddress: '주소 형식이 틀렸습니다.',
   typeAddressCheck1: '입력하신 주소가 없습니다.',
   yesRegExp: "응|그래|네|그렇다|오케이|예스|ㅇㅋ|ㅇㅇ|OK|ok|Ok|YES|yes|Yes",

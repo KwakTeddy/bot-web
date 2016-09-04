@@ -124,11 +124,11 @@ function executeTask(task, context, successCallback, errorCallback) {
                         return executeTask(__task, context, successCallback, errorCallback);
                       } else {
                         if(paramType.required) {
-                          task.topTask.topSuccessCallback(paramType.required(__text) + '\n' +
+                          task.topTask.topSuccessCallback(paramType.required(__text) +
                             context.global.messages.typeExit);
                         } else {
-                          task.topTask.topSuccessCallback((paramDef.question instanceof Function ? paramDef.question(_task, context) : paramDef.question) + '\n' +
-                            context.global.messages.typeExit);
+                          task.topTask.topSuccessCallback((paramDef.question instanceof Function ? paramDef.question(_task, context) : paramDef.question) +
+                            context.global.messages.typeExit, (paramDef.buttons ? {buttons: paramDef.buttons}: null));
                         }
                       }
                     });
@@ -137,11 +137,11 @@ function executeTask(task, context, successCallback, errorCallback) {
                   }
                 } else {
                   if(paramType.required) {
-                    task.topTask.topSuccessCallback(paramType.required(_text) + '\n' +
+                    task.topTask.topSuccessCallback(paramType.required(_text) +
                       context.global.messages.typeExit);
                   } else {
-                    task.topTask.topSuccessCallback((paramDef.question instanceof Function ? paramDef.question(_task, context) : paramDef.question) + '\n' +
-                      context.global.messages.typeExit);
+                    task.topTask.topSuccessCallback((paramDef.question instanceof Function ? paramDef.question(_task, context) : paramDef.question) +
+                      context.global.messages.typeExit, (paramDef.buttons ? {buttons: paramDef.buttons}: null));
                   }
                 }
 
