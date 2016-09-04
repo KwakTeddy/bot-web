@@ -21,7 +21,8 @@ exports.faqQuestion =     {
       context.user.doc = task.typeDoc;
       task.out = '문의하신 질문에 가장 적합한 답변들 입니다.\n\n##+index+. +title+\n\n#원하는 답변을 선택해 주세요.\n\n원하시는 답변이 없을 경우 조금 더 자세히 질문해주세요.';
     } else {
-      task.out = '[+title+]\n+content+';
+      task.out = '문의하신 질문에 가장 적합한 답변들 입니다.\n\n##+index+. +title+\n\n#원하는 답변을 선택해 주세요.\n\n원하시는 답변이 없을 경우 조금 더 자세히 질문해주세요.';
+      // task.out = '[+title+]\n+content+';
     }
 
     callback(task, context);
