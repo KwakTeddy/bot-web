@@ -451,7 +451,9 @@ function mongoDbTypeCheck(text, format, inDoc, context, callback) {
 
     var query = {};
     for(var j = 0; j < format.mongo.queryFields.length; j++) {
-      query[format.mongo.queryFields[j]] = new RegExp(word, 'i');
+      try {
+        query[format.mongo.queryFields[j]] = new RegExp(word, 'i');
+      } catch(e) {}
     }
 
     var _query = model.find(query, format.mongo.fields, format.mongo.options);
@@ -604,12 +606,12 @@ function mongoDbTypeCheck(text, format, inDoc, context, callback) {
 
 
 var commonTypes = [
-  amountType,
-  mobileType,
-  phoneType,
-  dateType,
-  timeType,
-  accountType
+  // amountType,
+  // mobileType,
+  // phoneType,
+  // dateType,
+  // timeType,
+  // accountType
 ];
 
 

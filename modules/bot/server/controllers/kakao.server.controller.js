@@ -29,6 +29,11 @@ exports.keyboard = function (req, res) {
 
   };
 
+  var from = req.body.user_key;
+  chat.write(from, req.params.botId, ":reset user", function (serverText, json) {
+    // respondMessage(res, serverText, json)
+  });
+
   res.write(JSON.stringify(sendMsg));
   res.end();
 };
