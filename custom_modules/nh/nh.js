@@ -9,7 +9,7 @@ exports.faqQuestion =     {
   module: 'task',
   action: 'question',
   paramDefs: [
-    {type: 'faq', name: 'faq질문', isDisplay: false, question: '궁금한 질문을 입력해주세요.'}
+    {type: 'faq', name: 'faq질문', isDisplay: false, question: '죄송합니다.\n질문이 없습니다.'}
   ],
   preCallback: function(task, context, callback) {
     callback(task, context);
