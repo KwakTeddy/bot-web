@@ -8,6 +8,7 @@ module.exports.start = function() {
   var bodyParser = require('body-parser');
   var kakao = require('../../modules/bot/server/controllers/kakao.server.controller');
   var action = require('../../modules/bot/server/controllers/_action.server.controller');
+  var path = require('path');
 
   app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
   app.use(bodyParser.json()); // for parsing application/jsonå
@@ -23,6 +24,8 @@ module.exports.start = function() {
   app.engine('server.view.html', swig.renderFile);
   app.set('view engine', 'server.view.html');
   app.set('views', './');
+
+  app.use('/', express.static(path.resolve('./public')));
 
   var httpsServer = http.createServer(app);
   httpsServer.listen(3000, function() {

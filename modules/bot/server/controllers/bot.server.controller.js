@@ -104,7 +104,8 @@ function botProc(botName, user, _inText, outCallback, chatServerConfig) {
         console.log("사용자 출력>> " + _out + "\n");
 
         if(_task && _task.photoUrl && !_task.photoUrl.startsWith('http')) {
-          _task.photoUrl = config.host + (config.port ? ':' + config.port : '') + _task.photoUrl;
+          //_task.photoUrl = config.host + (config.port ? ':' + config.port : '') + _task.photoUrl;
+          _task.photoUrl = (process.env.HTTP_HOST ? process.env.HTTP_HOST : '') + _task.photoUrl;
         }
 
         outCallback(_out, _task);
