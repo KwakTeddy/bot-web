@@ -15,6 +15,8 @@ const sendHeader = {
 };
 
 exports.keyboard = function (req, res) {
+  console.log("kakao keyboard");
+
   var sendMsg =
   {
     // type: 'text'
@@ -26,13 +28,6 @@ exports.keyboard = function (req, res) {
     "buttons": ["상품안내", "이벤트안내", "이용시간안내", "FAQ", "올원뱅크연결"]
 
   };
-
-  var from = req.body.user_key;
-  console.log("kakao keyboard: " + from + "," + req.params.bodId);
-
-  chat.write(from, req.params.botId, ":reset user", function (serverText, json) {
-    // respondMessage(res, serverText, json)
-  });
 
   res.write(JSON.stringify(sendMsg));
   res.end();
@@ -73,7 +68,14 @@ exports.deleteFriend = function (req, res) {
 };
 
 exports.deleteChatRoom = function (req, res) {
-  console.log("kakao chat_room");
+  var from = req.body.user_key;
+  console.log("kakao delete chatroom: " + from + "," + req.params.bodId);
+
+  chat.write(from, req.params.botId, ":reset user", function (serverText, json) {
+    // respondMessage(res, serverText, json)
+  });
+
+
   res.end();
 };
 
