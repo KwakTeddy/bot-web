@@ -15,8 +15,6 @@ const sendHeader = {
 };
 
 exports.keyboard = function (req, res) {
-  console.log("kakao keyboard");
-
   var sendMsg =
   {
     // type: 'text'
@@ -30,6 +28,8 @@ exports.keyboard = function (req, res) {
   };
 
   var from = req.body.user_key;
+  console.log("kakao keyboard: " + from + "," + req.params.bodId);
+
   chat.write(from, req.params.botId, ":reset user", function (serverText, json) {
     // respondMessage(res, serverText, json)
   });
