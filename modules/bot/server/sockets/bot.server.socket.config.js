@@ -25,7 +25,12 @@ module.exports = function (io, socket) {
   socket.on('send_msg', function(msg) {
 
     bot.botProc(msg.bot, msg.user, msg.msg, function(_out, _task) {
-      socket.emit('send_msg', _out + (_task && _task.url ? "\nlink: " + _task.url : "") + " " +
+      socket.emit('send_msg', _out +
+        (_task && _task.photoUrl ? "\nphoto: " + _task.photoUrl : "") + " " +
+        (_task && _task.photoWidth ? "\nwidth: " + _task.photoWidth : "") + " " +
+        (_task && _task.photoHeight ? "\nheight: " + _task.photoHeight : "") + " " +
+        (_task && _task.urlMessage ? "\nurlMessage: " + _task.urlMessage : "") + " " +
+        (_task && _task.url ? "\nurl: " + _task.url : "") + " " +
         (_task && _task.buttons ? "\nbuttons: " + _task.buttons: ""));
     }, _.assign(chatscriptConfig, {host: msg.host, port: msg.port}));
 

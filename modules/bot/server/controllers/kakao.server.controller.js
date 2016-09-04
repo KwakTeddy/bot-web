@@ -74,51 +74,40 @@ exports.deleteChatRoom = function (req, res) {
 
 
 function respondMessage(res, text, json) {
-  if(json && json.url) {
-    var linkMsg =
-    {
-      "message": {
-        "text": text,
-        "message_button": {
-          "label": "상세정보보기",
-          "url": json.url
-        }
-      }
-    };
-
-    console.log(JSON.stringify(linkMsg));
-    res.write(JSON.stringify(linkMsg));
-    res.end();
-
-  } else {
-    var sendMsg =
-    {
-      "message": {
-        "text": text
-      }
-    };
-
-
-    if(json && json.url) {
-      sendMsg.message.message_button =
-      {
-        "label": "상세정보보기",
-        "url": json.url
-      };
+  var sendMsg =
+  {
+    "message": {
+      "text": text
     }
+  };
 
-    if(json && json.buttons) {
-      sendMsg.keyboard =
-      {
-        "type": "buttons",
-        "buttons": json.buttons
-      };
+  if(json && json.photoUrl) {
+    sendMsg.message.photo = {
+      "url": json.photoUrl,
+      "width": json.photoWidth,
+      "height": json.photoHeight
     }
-
-    console.log(JSON.stringify(sendMsg));
-    res.write(JSON.stringify(sendMsg));
-    res.end();
   }
+
+  if(json && json.url) {
+    sendMsg.message.message_button =
+    {
+      "label": (json.urlMessage ? json.urlMessage : "상세정보보기"),
+      "url": json.url
+    };
+  }
+
+  if(json && json.buttons) {
+    sendMsg.keyboard =
+    {
+      "type": "buttons",
+      "buttons": json.buttons
+    };
+  }
+
+  console.log(JSON.stringify(sendMsg));
+  res.write(JSON.stringify(sendMsg));
+  res.end();
 }
 
 
