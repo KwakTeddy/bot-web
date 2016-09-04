@@ -83,7 +83,7 @@ function executeTask(task, context, successCallback, errorCallback) {
             paramDef.default = context.user[paramDef.name];
           }
 
-          if(paramDef.default == undefined) {
+          if(paramDef.default == undefined && paramDef.isDisplay == true) {
             context.user.pendingCallback = function(inText, _inText, inDoc) {
               task = utils.merge(task, inDoc);
               task.in = inText;
@@ -112,13 +112,14 @@ function executeTask(task, context, successCallback, errorCallback) {
             var paramType = type[paramDef.type+'Type'];
             if(paramType && paramType.typeCheck) {
 
+              var typeText = paramDef.default ? paramDef.default : task.in;
               paramType.name = paramDef.name;
-              paramType.typeCheck(paramDef.default, paramType, task, context, function (_text, _task, matched) {
+              paramType.typeCheck(typeText, paramType, task, context, function (_text, _task, matched) {
                 paramType.name = paramDef.type;
 
                 if(matched) {
                   if(paramDef.customCheck) {
-                    paramDef.customCheck(paramDef.default, paramType, task, context, function (__text, __task, _matched) {
+                    paramDef.customCheck(typeText, paramType, task, context, function (__text, __task, _matched) {
                       if(_matched) {
                         return executeTask(__task, context, successCallback, errorCallback);
                       } else {

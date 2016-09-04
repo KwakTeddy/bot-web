@@ -5,6 +5,71 @@ exports.text = function (task, context, successCallback, errorCallback) {
   successCallback(task, context);
 };
 
+exports.faqQuestion =     {
+  module: 'task',
+  action: 'question',
+  paramDefs: [
+    {type: 'faq', name: 'faq질문', isDisplay: false, question: '궁금한 질문을 입력해주세요.'}
+  ],
+  preCallback: function(task, context, callback) {
+    callback(task, context);
+  },
+  postCallback: function(task, context, callback) {
+    if(task.typeDoc && task.typeDoc.length > 1) {
+      task.doc = task.typeDoc;
+      context.user.doc = task.typeDoc;
+      task.out = '문의하신 질문에 가장 적합한 답변들 입니다.\n##+index+. +title+\n#\n원하는 답변을 선택해 주세요.';
+    } else {
+      task.out = '[+title+]\n+content+';
+    }
+
+    callback(task, context);
+  }
+};
+
+// exports.faqQuestion = {
+//   module: 'task',
+//   action: 'sequence',
+//   actions: [
+//     {
+//       module: 'task',
+//       action: 'question',
+//       paramDefs: [
+//         {type: 'faq', name: 'faq질문', isDisplay: false, question: '궁금한 질문을 입력해주세요.'}
+//       ],
+//       preCallback: function(task, context, callback) {
+//         task.in = task.parent.in;
+//         callback(task, context);
+//       },
+//       postCallback: function(task, context, callback) {
+//         if(task.typeDoc && task.typeDoc.length > 1) {
+//           task.doc = task.typeDoc;
+//           task.out = '##+index+. +title+\n#';
+//         } else {
+//           task.out = '[+title+]\n+content+';
+//         }
+//
+//         callback(task, context);
+//       },
+//       taskOut: "원하는 메뉴를 선택해 주세요.\n##+index+ +title+ +price+원\n#"
+//     },
+//     {
+//       module: 'task',
+//       action: 'question',
+//       paramDefs: [
+//         {type: 'num', name: '질문번호', isDisplay: false, question: 'FAQ번호를 입력해주세요.'}
+//       ],
+//       preCallback: function(task, context, callback) {
+//         task.out = '[+title+]%0a+content+';
+//         task.title = task.preTask.doc[task.num-1].title;
+//         task.content = task.preTask.doc[task.num-1].content
+//
+//         callback(task, context);
+//       }
+//     }
+//   ]
+// };
+
 exports.faq = {
   module: 'mongo',
   action: 'findById',
