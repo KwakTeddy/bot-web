@@ -533,13 +533,13 @@ function mongoDbTypeCheck(text, format, inDoc, context, callback) {
 
 
 var commonTypes = [
-  amountType,
-  mobileType,
-  phoneType,
-  dateType,
-  timeType,
-  accountType,
-  productType
+//  amountType,
+//  mobileType,
+//  phoneType,
+//  dateType,
+//  timeType,
+//  accountType,
+//  productType
 ];
 
 
