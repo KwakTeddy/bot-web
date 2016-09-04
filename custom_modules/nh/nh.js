@@ -19,7 +19,7 @@ exports.faqQuestion =     {
     if(task.typeDoc && task.typeDoc.length > 1) {
       task.doc = task.typeDoc;
       context.user.doc = task.typeDoc;
-      task.out = '문의하신 질문에 가장 적합한 답변들 입니다.\n##+index+. +title+\n#\n원하는 답변을 선택해 주세요.\n원하시는 답변이 없을 경우 조금 더 자세히 질문해주세요.';
+      task.out = '문의하신 질문에 가장 적합한 답변들 입니다.\n##+index+. +title+\n\n#원하는 답변을 선택해 주세요.\n원하시는 답변이 없을 경우 조금 더 자세히 질문해주세요.';
     } else {
       task.out = '[+title+]\n+content+';
     }
