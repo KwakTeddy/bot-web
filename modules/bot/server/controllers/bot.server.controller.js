@@ -101,6 +101,10 @@ function botProc(botName, user, _inText, outCallback, chatServerConfig) {
       botProcess.processChatserverOut(context, chatserverOut, inText, _inText, inDoc, function(_out, _task) {
         console.log("사용자 출력>> " + _out + "\n");
 
+        if(_task && _task.photoUrl && !_task.photoUrl.startsWith('http')) {
+          _task.photoUrl = process.env.HTTP_HOST + _task.photoUrl;
+        }
+
         outCallback(_out, _task);
       }, function(_out, _task) {
         console.log("오류 출력>> " + _out + "\n");
