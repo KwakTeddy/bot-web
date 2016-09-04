@@ -45,7 +45,7 @@ exports.processChatserverOut = function (context, outText, inText, _inText, inDo
       if (errorCallback) errorCallback(error, _task, _context);
       else console.log("execAction:" + _task.module + "." + _task.action + ": error: " + error);
     });
-    console.log(task.module + '.' + task.action + + e);
+
   } else {
     task = {};
     task.in = inText;

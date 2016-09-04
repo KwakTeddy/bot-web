@@ -52,11 +52,15 @@ function botProc(botName, user, _inText, outCallback, chatServerConfig) {
                   context.user.pendingCallback(inText, _inText, __inDoc);
                 } else {
                   if(paramType.required) {
-                    socket.emit('send_msg', paramType.required(__text) + '\n' +
-                      context.global.messages.typeExit);
+                    outCallback(paramType.required(__text) + '\n' +
+                      context.global.messages.typeExit, __inDoc);
+                    // socket.emit('send_msg', paramType.required(__text) + '\n' +
+                    //   context.global.messages.typeExit);
                   } else {
-                    socket.emit('send_msg', (paramDef.question instanceof Function ? paramDef.question(__inDoc, context) : paramDef.question) + '\n' +
-                      context.global.messages.typeExit);
+                    outCallback((paramDef.question instanceof Function ? paramDef.question(__inDoc, context) : paramDef.question) + '\n' +
+                      context.global.messages.typeExit, __inDoc);
+                    // socket.emit('send_msg', (paramDef.question instanceof Function ? paramDef.question(__inDoc, context) : paramDef.question) + '\n' +
+                    //   context.global.messages.typeExit);
                   }
                 }
               });
@@ -65,14 +69,17 @@ function botProc(botName, user, _inText, outCallback, chatServerConfig) {
             }
           } else {
             if(paramType.required) {
-              socket.emit('send_msg', paramType.required(_text) + '\n' +
-                context.global.messages.typeExit);
+              outCallback(paramType.required(_text) + '\n' +
+                context.global.messages.typeExit, _inDoc);
+              // socket.emit('send_msg', paramType.required(_text) + '\n' +
+              //   context.global.messages.typeExit);
             } else {
-              socket.emit('send_msg', (paramDef.question instanceof Function ? paramDef.question(_inDoc, context) : paramDef.question) + '\n' +
-                context.global.messages.typeExit);
+              outCallback((paramDef.question instanceof Function ? paramDef.question(_inDoc, context) : paramDef.question) + '\n' +
+                context.global.messages.typeExit, _inDoc);
+              // socket.emit('send_msg', (paramDef.question instanceof Function ? paramDef.question(_inDoc, context) : paramDef.question) + '\n' +
+              //   context.global.messages.typeExit);
             }
           }
-
         });
 
         return;
@@ -83,7 +90,7 @@ function botProc(botName, user, _inText, outCallback, chatServerConfig) {
     }
 
     var chatscriptSocket = net.createConnection(chatServerConfig, function(){
-      chatscriptSocket.write(user+'\x00'+botName+'\x00'+inText+'\x00');
+      chatscriptSocket.write(user+'\x00'+ /*botName*/ '' +'\x00'+inText+'\x00');
     });
 
     chatscriptSocket.on('data', function(data) {    // on receive data from chatscriptSocket
