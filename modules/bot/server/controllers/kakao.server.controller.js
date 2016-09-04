@@ -68,10 +68,9 @@ exports.deleteFriend = function (req, res) {
 };
 
 exports.deleteChatRoom = function (req, res) {
-  var from = req.body.user_key;
-  console.log("kakao delete chatroom: " + from + "," + req.params.bodId);
+  console.log("kakao delete chatroom: " + req.params.user_key + "," + req.params.bodId);
 
-  chat.write(from, req.params.botId, ":reset user", function (serverText, json) {
+  chat.write(req.params.user_key, req.params.botId, ":reset user", function (serverText, json) {
     // respondMessage(res, serverText, json)
   });
 
