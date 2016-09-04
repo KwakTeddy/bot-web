@@ -85,7 +85,7 @@ function respondMessage(res, text, json) {
     sendMsg.message.photo = {
       "url": json.photoUrl,
       "width": json.photoWidth,
-      "height": json.photoHeight
+      "height":json.photoHeight
     }
   }
 

@@ -5,6 +5,8 @@ var botProcess = require('../controllers/_action.server.controller');
 var tough = require('tough-cookie');
 var _ = require('lodash');
 var utils = require(path.resolve('./modules/bot/action/common/utils'));
+var config = require(path.resolve('./config/config'));
+
 
 var chatSocketConfig = {port: 1024, host: 'localhost', allowHalfOpen: true};
 
@@ -102,7 +104,7 @@ function botProc(botName, user, _inText, outCallback, chatServerConfig) {
         console.log("사용자 출력>> " + _out + "\n");
 
         if(_task && _task.photoUrl && !_task.photoUrl.startsWith('http')) {
-          _task.photoUrl = process.env.HTTP_HOST + _task.photoUrl;
+          _task.photoUrl = config.host + (config.port ? ':' + config.port : '') + _task.photoUrl;
         }
 
         outCallback(_out, _task);
