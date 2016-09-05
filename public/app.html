@@ -90,7 +90,7 @@
 
     var appUrl;
     function inputExec() {
-        appUrl = document.elementById('url').value;
+        appUrl = document.getElementById('url').value;
         alert(appUrl);
 
         if (os == "ios") {
@@ -113,7 +113,7 @@
 </script>
 
 스키마주소<br/>
-<input type="text" name="url" style="width: 100%;"/><br/>
+<input type="text" id="url" name="url" style="width: 100%;"/><br/>
 <input type="button" onClick="javascript:inputExec();" value="실행">
 
 </body>
