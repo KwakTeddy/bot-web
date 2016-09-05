@@ -65,9 +65,9 @@
             iframe.style.border = 'none';
             iframe.style.width = '1px';
             iframe.style.height = '1px';
-//      iframe.onload = function() {
-//        document.location = androidUrl;
-//      }
+            iframe.onload = function() {
+              document.location = androidUrl;
+            }
             iframe.src = androidUrl;
             document.body.appendChild(iframe);
 
