@@ -20,12 +20,16 @@
 <body>
 <!--<center>-->
 <!--자동으로 실행이 되지 않는 경우 아래 수동 실행을 클릭해 주세요. <br /><br />-->
-<!--<a href="#" onclick="javascript:executeAppOrGoStore()">앱 실행하기</a>-->
+<a href="#" onclick="javascript:goAppStoreOrPlayStore()">앱 설치</a>
 <!--</center>-->
 
 <script>
-    var androidUrl = 'nhallonebank:///servlet/ABCU1804R.view';
-    var androidStore = 'nh.smart.allonebank';
+    //var androidUrl = 'nhallonebank:///servlet/ABCU1809R.view';  // 올원 이벤트
+    //var androidStore = 'nh.smart.allonebank';
+
+    var androidUrl = 'nh.smart.card:///nhsmartcard';  //카드ㅓㅓ 
+    var androidStore = 'nh.smart.card';
+
     var iosUrl = '{{iosUrl}}';
     var iosStore = '{{iosStore}}';
 
@@ -91,7 +95,6 @@
 </script>
 
 <center>
-    11
     <img src="/images/nh/closeapp.png" width="100%"/>
 </center>
 </body>
