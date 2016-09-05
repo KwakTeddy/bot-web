@@ -93,21 +93,23 @@
         appUrl = document.getElementById('url').value;
         alert(appUrl);
 
-        if (os == "ios") {
-            document.location.href = appUrl;
-        } else {
-            var iframe = document.createElement('iframe');
-            iframe.style.border = 'none';
-            iframe.style.width = '1px';
-            iframe.style.height = '1px';
-//      iframe.onload = function() {
-//        document.location = androidUrl;
-//      }
-            iframe.src = appUrl;
-            document.body.appendChild(iframe);
+        document.location.href = appUrl;
 
-//            document.location.href = androidUrl;
-        }
+//        if (os == "ios") {
+//            document.location.href = appUrl;
+//        } else {
+//            var iframe = document.createElement('iframe');
+//            iframe.style.border = 'none';
+//            iframe.style.width = '1px';
+//            iframe.style.height = '1px';
+////      iframe.onload = function() {
+////        document.location = androidUrl;
+////      }
+//            iframe.src = appUrl;
+//            document.body.appendChild(iframe);
+//
+////            document.location.href = androidUrl;
+//        }
     }
 
 </script>
