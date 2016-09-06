@@ -81,7 +81,7 @@ exports.delete = function(req, res) {
  * List of Faqs
  */
 exports.list = function(req, res) { 
-  Faq.find().sort('-created').populate('user', 'displayName').exec(function(err, faqs) {
+  Faq.find().sort('+created').populate('user', 'displayName').exec(function(err, faqs) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
