@@ -19,6 +19,8 @@ module.exports = {
     debug: process.env.MONGODB_DEBUG || false
   },
   log: {
+    level: process.env.LOG_LEVEL || 'verbose',
+
     // logging with Morgan - https://github.com/expressjs/morgan
     // Can specify one of 'combined', 'common', 'dev', 'short', 'tiny'
     format: process.env.LOG_FORMAT || 'combined',
@@ -101,5 +103,5 @@ module.exports = {
         roles: ['user', 'admin']
       }
     }
-  }
+  },
 };

@@ -28,7 +28,7 @@
     }
 
     // Save Faq
-    function save(isValid) {
+    function save(isValid, nextId) {
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.form.faqForm');
         return false;
@@ -42,9 +42,16 @@
       }
 
       function successCallback(res) {
-        $state.go('faqs.create', {
+        console.log(nextId);
+        if(nextId) {
+          $state.go('faqs.edit', {
+             faqId: nextId
+          });
+        } else {
+          $state.go('faqs.create', {
 
-        }, {reload: true});
+          }, {reload: true});
+        }
       }
 
       function errorCallback(res) {

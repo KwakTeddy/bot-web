@@ -1,11 +1,10 @@
 'use strict';
-
 process.binding('http_parser').HTTPParser = require('http-parser-js').HTTPParser;
 
 // error 발생해도 node 죽지 않게
 process.on('uncaughtException', function (err) {
   console.log('Caught exception: ' + err);
-
+  console.trace();
 });
 
 

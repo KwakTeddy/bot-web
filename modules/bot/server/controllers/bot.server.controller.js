@@ -6,7 +6,7 @@ var tough = require('tough-cookie');
 var _ = require('lodash');
 var utils = require(path.resolve('./modules/bot/action/common/utils'));
 var config = require(path.resolve('./config/config'));
-
+var logger = require(path.resolve('./config/lib/logger'));
 
 var chatSocketConfig = {port: 1024, host: 'localhost', allowHalfOpen: true};
 
@@ -25,12 +25,12 @@ function botProc(botName, user, _inText, outCallback, chatServerConfig) {
 
   var context = getContext(botName, user);
 
-  console.log("사용자 입력>> " + _inText);
+  logger.verbose("사용자 입력>> " + _inText);
 
   var type = utils.requireNoCache(path.resolve('./modules/bot/action/common/type'));
 
   type.processInput(context, _inText, function(inText, inDoc) {
-    console.log("자연어 처리>> " + inText);
+    logger.verbose("자연어 처리>> " + inText);
 
     if(context.user.pendingCallback) {
       if(inText.search(/(처음|메뉴)/g) != -1 || inText.startsWith(':')) {
@@ -98,10 +98,10 @@ function botProc(botName, user, _inText, outCallback, chatServerConfig) {
     chatscriptSocket.on('data', function(data) {    // on receive data from chatscriptSocket
       var chatserverOut = data.toString();
 
-      console.log("챗서버 답변>> " + chatserverOut);
+      logger.verbose("챗서버 답변>> " + chatserverOut);
 
       botProcess.processChatserverOut(context, chatserverOut, inText, _inText, inDoc, function(_out, _task) {
-        console.log("사용자 출력>> " + _out + "\n");
+        logger.verbose("사용자 출력>> " + _out + "\n");
 
         if(_task && _task.photoUrl && !_task.photoUrl.startsWith('http')) {
           //_task.photoUrl = config.host + (config.port ? ':' + config.port : '') + _task.photoUrl;
@@ -110,7 +110,7 @@ function botProc(botName, user, _inText, outCallback, chatServerConfig) {
 
         outCallback(_out, _task);
       }, function(_out, _task) {
-        console.log("오류 출력>> " + _out + "\n");
+        logger.error("오류 출력>> " + _out + "\n");
 
         outCallback(_out, _task);
       })

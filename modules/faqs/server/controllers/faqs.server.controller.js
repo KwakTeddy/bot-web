@@ -38,7 +38,16 @@ exports.read = function(req, res) {
   // NOTE: This field is NOT persisted to the database, since it doesn't exist in the Article model.
   faq.isCurrentUserOwner = req.user && faq.user && faq.user._id.toString() === req.user._id.toString() ? true : false;
 
-  res.jsonp(faq);
+
+  Faq.findOne({_id: {$gt: faq._id}}).exec(function (err, doc) {
+    if (err || !doc) {
+    } else {
+      faq.nextId = doc._id;
+    }
+    res.jsonp(faq);
+  });
+  
+  // res.jsonp(faq);
 };
 
 /**
@@ -115,3 +124,4 @@ exports.faqByID = function(req, res, next, id) {
     next();
   });
 };
+

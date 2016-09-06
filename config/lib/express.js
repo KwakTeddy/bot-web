@@ -6,7 +6,7 @@
 var config = require('../config'),
   express = require('express'),
   morgan = require('morgan'),
-  logger = require('./logger'),
+  logger = require('./logger2'),
   bodyParser = require('body-parser'),
   session = require('express-session'),
   MongoStore = require('connect-mongo')(session),

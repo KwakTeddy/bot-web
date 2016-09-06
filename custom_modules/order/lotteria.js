@@ -97,6 +97,9 @@ exports.order = {
     {
       module: 'task',
       action: 'iteration',
+      preCallback: function(task, context, callback) {
+        callback(task, context);
+      },
       condition: function(task, context) {
         return task.isRepeat == undefined || task.isRepeat;
       },

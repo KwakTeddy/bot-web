@@ -14,6 +14,8 @@ module.exports = {
   },
   host: process.env.HOST || 'http://localhost',
   log: {
+    level: process.env.LOG_LEVEL || 'debug',
+
     // logging with Morgan - https://github.com/expressjs/morgan
     // Can specify one of 'combined', 'common', 'dev', 'short', 'tiny'
     format: 'combined',
