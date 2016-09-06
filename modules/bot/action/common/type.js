@@ -395,8 +395,9 @@ var productType = {
 
 var lotteriaMenuType = {
   typeCheck: mongoDbTypeCheck,
+  limit: 1,
   mongo: {
-    model: 'lotteriaMenu',
+    model: 'lotteriamenu',
     queryFields: ['title'],
     //query: {},
     //sort: "-rate1",
@@ -441,7 +442,6 @@ function mongoDbTypeCheck(text, format, inDoc, context, callback) {
   } else {
     model = mongoose.model(format.mongo.model, new mongoose.Schema(format.mongo.schema));
   }
-
 
   var matchedDoc = [];
   var bestDoc;

@@ -4,7 +4,7 @@
   </div>
   <div class="list-group">
     <a data-ng-repeat="faq in vm.faqs"
-       data-ui-sref="faqs.view({ faqId: faq._id })"
+       data-ui-sref="faqs.edit({ faqId: faq._id })"
        class="list-group-item">
       <small class="list-group-item-text">
         <span data-ng-bind="faq.title"></span>

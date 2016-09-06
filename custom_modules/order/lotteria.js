@@ -89,7 +89,7 @@ exports.order = {
   action: 'sequence',
   paramDefs: [
     {type: 'lotteriaMenu', name: 'menu', display: '메뉴'},
-    {type: 'count', name: 'orderCount', display: '주문개수'}
+    {type: 'count', name: 'orderCount', isRequire: false, display: '주문개수'}
   ],
   actions: [
 
@@ -105,6 +105,10 @@ exports.order = {
         {
           module: 'task',
           action: 'question',
+          condition: function(task, context) {
+            if(task.topTask.pId) return false;
+            return true;
+          },
           paramDefs: [
             {type: 'string', name: 'menuType', question: '종류를 선택해주세요\n1.추천메뉴\n2.버거\n3.팩\n4.치킨\n5.디저트\n6.드링크',
               customCheck: function (text, type, task, context, callback) {
@@ -136,6 +140,10 @@ exports.order = {
         {
           module: 'http',
           action: 'xpathRepeat',
+          condition: function(task, context) {
+            if(task.topTask.pId) return false;
+            return true;
+          },
           url: 'https://homeservice.lotteria.com',
           path: '/RIA/homeservice/homeservice.asp',
           xpath: {
@@ -187,6 +195,10 @@ exports.order = {
         {
           module: 'task',
           action: 'question',
+          condition: function(task, context) {
+            if(task.topTask.pId) return false;
+            return true;
+          },
           paramDefs: [
             {
               type: 'number', name: 'menu', display: '메뉴', isRequired: true, isDisplay: false, question: '메뉴를 선택해 주세요 ',
@@ -216,7 +228,7 @@ exports.order = {
           module: 'task',
           action: 'question',
           condition: function(task, context) {
-            if(task.topTask.selectMenu.options && task.topTask.selectMenu.options.length > 0) return true;
+            if(!task.topTask.pId && task.topTask.selectMenu.options && task.topTask.selectMenu.options.length > 0) return true;
             return false;
           },
           paramDefs: [
@@ -285,6 +297,7 @@ exports.order = {
             } else {
               task.isRepeat = false;
             }
+            task.topTask.pId = null;
 
             callback(task, context);
           }
