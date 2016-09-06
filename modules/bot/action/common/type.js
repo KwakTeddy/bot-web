@@ -416,10 +416,19 @@ var faqType = {
   mongo: {
     model: 'faq',
     queryFields: ['title'],
-    fields: 'title content' ,
+    fields: 'title content created' ,
     taskFields: ['_id', 'title', 'content'],
+    taskSort: function(a, b) {
+      if(b.matchCount > a.matchCount) return 1;
+      else if(b.matchCount < a.matchCount) return -1;
+      else {
+        if(b.created.getTime() < a.created.getTime()) return 1;
+        else if(b.created.getTime() > a.created.getTime()) return -1;
+        else return 0;
+      }
+    },
     //query: {},
-    //sort: "-rate1",
+    // sort: "-created",
     // limit: 5,
     minMatch: 1,
     required: function(text, type, inDoc, context) {
@@ -519,10 +528,13 @@ function mongoDbTypeCheck(text, format, inDoc, context, callback) {
         if(format.limit && format.limit == 1) {
 
         } else {
-          matchedDoc.sort(function(a, b) {
-            // return a.matchCount - b.matchCount;
-            return b.matchCount - a.matchCount;
-          });
+          if(format.mongo.taskSort && format.mongo.taskSort instanceof Function) {
+            matchedDoc.sort(format.mongo.taskSort);
+          } else {
+            matchedDoc.sort(function(a, b) {
+              return b.matchCount - a.matchCount;
+            });
+          }
         }
 
         if(bestDoc) {
