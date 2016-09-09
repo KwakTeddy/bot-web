@@ -1,95 +1,12 @@
 var path = require('path');
 var utils = require(path.resolve('./modules/bot/action/common/utils'));
-var taskModule = require(path.resolve('./modules/bot/action/common/task'));
-
-exports.login = login;
-
-var login = {
-  module: 'task',
-  action: 'sequence',
-  actions: [
-    {
-      module: 'http',
-      action: 'xpath',
-      url: 'https://member.lpoint.com',
-      path: '/door/sso/authUser.jsp',
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      },
-      param:
-      {
-        returnurl: 'https://homeservice.lotteria.com/RIA/member/login.proc.asp?rtnUrl=https://homeservice.lotteria.com/RIA/',
-        sid: 'RIAHS',
-        opentype: '',
-        loginid: 'com2best',
-        password: 'rltkd6tl!'
-      },
-      preCallback: function(task, context, callback) {
-        callback(task, context);
-      },
-      postCallback: function(task, context, callback) {
-        console.log(task._text);
-        console.log('login: ' + task.param.loginid);
-        callback(task, context);
-      }
-    },
-    {
-      module: 'http',
-      action: 'xpath',
-      url: 'https://member.lpoint.com',
-      path: '/app/login/LSLA100200.do',
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      },
-      param: {
-        onlId: 'com2best',
-        popup: 'N',
-        gubun: 'F',
-        sid: 'RIAHS',
-        frnYn: 'N',
-        type: 'PW5',
-        returnurl: 'https://homeservice.lotteria.com/RIA/member/login.proc.asp?rtnUrl=https://homeservice.lotteria.com/RIA/',
-      },
-      postCallback: function (task, context, callback) {
-        context.user.logined = true;
-        console.log(task._text);
-        callback(task, context);
-      }
-    },
-    {
-      module: 'http',
-      action: 'xpath',
-      url: 'https://member.lpoint.com',
-      path: '/app/login/LSLA100210.do',
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      },
-      param: {
-        msgcd: '1',
-        frnYn: 'N',
-        popup: 'N',
-        type: 'PW5',
-        sid: 'RIAHS',
-        returnurl: 'https://homeservice.lotteria.com/RIA/member/login.proc.asp?rtnUrl=https://homeservice.lotteria.com/RIA/',
-      },
-      postCallback: function (task, context, callback) {
-        context.user.logined = true;
-        console.log(task._text);
-        callback(task, context);
-      }
-    }
-  ]
-};
 
 exports.order = {
   module: 'task',
   action: 'sequence',
   paramDefs: [
-    {type: 'lotteriaMenu', name: 'menu', display: '메뉴'},
-    {type: 'count', name: 'orderCount', isRequire: false, display: '주문개수'}
+    {type: 'lotteriaMenu', name: 'menu', display: '메뉴', isDisplay: false},
+    {type: 'count', name: 'orderCount', isRequire: false, display: '주문개수', isDisplay: false}
   ],
   actions: [
 
@@ -98,12 +15,30 @@ exports.order = {
       module: 'task',
       action: 'iteration',
       preCallback: function(task, context, callback) {
+        task.topTask.pId = task.topTask.typeDoc.id;
         callback(task, context);
       },
       condition: function(task, context) {
         return task.isRepeat == undefined || task.isRepeat;
       },
       actions: [
+        {
+          module: 'task',
+          action: 'question',
+          condition: function(task, context) {
+            if(task.topTask.pId) return false;
+            return true;
+          },
+          paramDefs: [
+            {type: 'lotteriaMenu', name: 'menu', display: '메뉴', required: true, question: '주문할 메뉴를 말씀해 주세요.'},
+            {type: 'count', name: 'orderCount', display: '주문개수', required: false}
+          ],
+          preCallback: function(task, context) {
+            task.topTask.pId = task.typeDoc.id;
+            task.topTask.count = task.count;
+            callback(task, context);
+          }
+        },
         // 메뉴 카테고리
         {
           module: 'task',
@@ -204,7 +139,7 @@ exports.order = {
           },
           paramDefs: [
             {
-              type: 'number', name: 'menu', display: '메뉴', isRequired: true, isDisplay: false, question: '메뉴를 선택해 주세요 ',
+              type: 'number', name: 'menu', display: '메뉴', required: true, isDisplay: false, question: '메뉴를 선택해 주세요 ',
               customCheck: function (text, type, task, context, callback) {
                 try {
                   var num = Number(text);
@@ -268,7 +203,7 @@ exports.order = {
           module: 'http',
           action: 'plaintext',
           url: 'https://homeservice.lotteria.com',
-          path: '/RIA/api/json/Cart/Cart.Proc.json.asp',
+          path: '/RIA/api/json/Cart/Cart.Proc.json.asp?callback=jQuery18200016291653109714588_1470820544969',
           method: 'POST',
           headers: {
             'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -277,12 +212,25 @@ exports.order = {
             pId: '',
             cnt: 1
           },
+          regexp: {
+            doc: {
+              json: /\((.*)\)$/g
+              // result: /"Result"\s*:\s*(\w*)\s*,/g,
+              // eMessage: /"eMessage"\s*:\s*"([^"]*)"/g
+            }
+          },
           preCallback: function(task, context, callback) {
             task.param.pId = task.topTask.pId;
+            if(task.topTask.count) task.param.cnt = task.topTask.count;
             callback(task, context);
           },
           postCallback: function(task, context, callback) {
-            callback(task, context);
+            // task.doc = JSON.parse(task.doc.json);
+            // if(task.doc.result == 'false') {
+            //   task.topTask.topSuccessCallback('장바구니에 담을 수 없습니다.\n' + task.doc.eMessage);
+            // } else {
+              callback(task, context);
+            // }
           }
         },
 
@@ -291,7 +239,7 @@ exports.order = {
           module: 'task',
           action: 'question',
           paramDefs: [
-            {type: 'string', name: 'addOrderCheck', question: '다른 메뉴를 추가로 주문하시겠습니까?'}
+            {type: 'string', name: 'addOrderCheck', required: true, question: '다른 메뉴를 추가로 주문하시겠습니까?'}
           ],
           postCallback: function(task, context, callback) {
             var re = new RegExp(context.global.messages.yesRegExp, 'g');
@@ -763,5 +711,88 @@ exports.order = {
       }
     }
 
+  ]
+};
+
+
+exports.login = login;
+
+var login = {
+  module: 'task',
+  action: 'sequence',
+  actions: [
+    {
+      module: 'http',
+      action: 'xpath',
+      url: 'https://member.lpoint.com',
+      path: '/door/sso/authUser.jsp',
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      param:
+      {
+        returnurl: 'https://homeservice.lotteria.com/RIA/member/login.proc.asp?rtnUrl=https://homeservice.lotteria.com/RIA/',
+        sid: 'RIAHS',
+        opentype: '',
+        loginid: 'com2best',
+        password: 'rltkd6tl!'
+      },
+      preCallback: function(task, context, callback) {
+        callback(task, context);
+      },
+      postCallback: function(task, context, callback) {
+        console.log(task._text);
+        console.log('login: ' + task.param.loginid);
+        callback(task, context);
+      }
+    },
+    {
+      module: 'http',
+      action: 'xpath',
+      url: 'https://member.lpoint.com',
+      path: '/app/login/LSLA100200.do',
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      param: {
+        onlId: 'com2best',
+        popup: 'N',
+        gubun: 'F',
+        sid: 'RIAHS',
+        frnYn: 'N',
+        type: 'PW5',
+        returnurl: 'https://homeservice.lotteria.com/RIA/member/login.proc.asp?rtnUrl=https://homeservice.lotteria.com/RIA/',
+      },
+      postCallback: function (task, context, callback) {
+        context.user.logined = true;
+        console.log(task._text);
+        callback(task, context);
+      }
+    },
+    {
+      module: 'http',
+      action: 'xpath',
+      url: 'https://member.lpoint.com',
+      path: '/app/login/LSLA100210.do',
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      param: {
+        msgcd: '1',
+        frnYn: 'N',
+        popup: 'N',
+        type: 'PW5',
+        sid: 'RIAHS',
+        returnurl: 'https://homeservice.lotteria.com/RIA/member/login.proc.asp?rtnUrl=https://homeservice.lotteria.com/RIA/',
+      },
+      postCallback: function (task, context, callback) {
+        context.user.logined = true;
+        console.log(task._text);
+        callback(task, context);
+      }
+    }
   ]
 };

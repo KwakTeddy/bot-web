@@ -53,10 +53,10 @@ function botProc(botName, user, _inText, outCallback, chatServerConfig) {
                 if(_matched) {
                   context.user.pendingCallback(inText, _inText, __inDoc);
                 } else {
-                  if(paramType.required) {
-                    outCallback(paramType.required(__text) + '\n' +
+                  if(paramType.checkRequired) {
+                    outCallback(paramType.checkRequired(__text) + '\n' +
                       context.global.messages.typeExit, __inDoc);
-                    // socket.emit('send_msg', paramType.required(__text) + '\n' +
+                    // socket.emit('send_msg', paramType.checkRequired(__text) + '\n' +
                     //   context.global.messages.typeExit);
                   } else {
                     outCallback((paramDef.question instanceof Function ? paramDef.question(__inDoc, context) : paramDef.question) + '\n' +
@@ -70,10 +70,10 @@ function botProc(botName, user, _inText, outCallback, chatServerConfig) {
               context.user.pendingCallback(inText, _inText, _inDoc);
             }
           } else {
-            if(paramType.required) {
-              outCallback(paramType.required(_text) + '\n' +
+            if(paramType.checkRequired) {
+              outCallback(paramType.checkRequired(_text) + '\n' +
                 context.global.messages.typeExit, _inDoc);
-              // socket.emit('send_msg', paramType.required(_text) + '\n' +
+              // socket.emit('send_msg', paramType.checkRequired(_text) + '\n' +
               //   context.global.messages.typeExit);
             } else {
               outCallback((paramDef.question instanceof Function ? paramDef.question(_inDoc, context) : paramDef.question) + '\n' +

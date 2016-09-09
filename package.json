@@ -76,7 +76,8 @@
     "charset": "^1.0.0",
     "iconv": "^2.2.1",
     "xml2js": "^0.4.17",
-    "winston": "^2.2.0"
+    "winston": "^2.2.0",
+    "if-async": "^3.7.4"
 
   },
   "devDependencies": {

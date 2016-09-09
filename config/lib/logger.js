@@ -8,6 +8,7 @@ var logger = new (winston.Logger)({
   ]
 });
 
+logger.level = config.log.level;
 logger.info('Log Level: ' + logger.level);
 
 module.exports = logger;

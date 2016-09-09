@@ -1,8 +1,8 @@
 'use strict'
 
 var path = require('path');
-var taskModule = require(path.resolve('./modules/bot/action/common/task'));
 var utils = require(path.resolve('./modules/bot/action/common/utils'));
+var taskModule = utils.requireNoCache(path.resolve('./modules/bot/action/common/task'));
 var tough = require('tough-cookie');
 
 exports.processChatserverOut = function (context, outText, inText, _inText, inDoc, successCallback, errorCallback) {

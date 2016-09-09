@@ -2,6 +2,8 @@
 
 var nlp = require('../../engine/nlp/processor');
 var utils = require('./utils');
+var path = require('path');
+var logger = require(path.resolve('./config/lib/logger'));
 
 const TAG_START = '\\+';
 const TAG_END = '\\+';
@@ -310,6 +312,9 @@ var regexpTypeCheck = function (text, type, task, context, callback) {
   var re = type.regexp;
   var matched = false;
 
+  logger.debug('');
+  logger.debug('type.js:regexpTypeCheck: START ' + type.name + ' "' + text + '" inDoc: ' + JSON.stringify(task[type.name]));
+
   text = text.replace(re, function(match, p1, offset, string) {
     matched = true;
 
@@ -322,6 +327,9 @@ var regexpTypeCheck = function (text, type, task, context, callback) {
 
     return IN_TAG_START + type.name + IN_TAG_END;
   });
+
+  if(matched)
+    logger.debug('type.js:regexpTypeCheck: MATCHED ' + type.name + ' "' + text + '" inDoc: ' + JSON.stringify(task[type.name]));
 
   callback(text, task, matched);
 };
@@ -336,7 +344,7 @@ var mobileType = {
   name: 'mobile',
   typeCheck: regexpTypeCheck,
   regexp: /\b((?:010-\d{4}|01[1|6|7|8|9][-.]?\d{3,4})[-.]?\d{4})\b/g,
-  required: function(text, type, inDoc, context) {
+  checkRequired: function(text, type, inDoc, context) {
     if(text.search(/[^\d-]/g) != -1) return '숫자와 - 기호만 사용할 수 있습니다';
     else if(text.length < 13) return '자리수가 맞지 않습니다';
     else return '휴대폰전화번호 형식으로 입력해 주세요';
@@ -387,7 +395,7 @@ var productType = {
     //sort: "-rate1",
     limit: 5,
     minMatch: 2,
-    required: function(text, type, inDoc, context) {
+    checkRequired: function(text, type, inDoc, context) {
       return '금융상품이 존재하지 않습니다';
     }
   }
@@ -403,7 +411,7 @@ var lotteriaMenuType = {
     //sort: "-rate1",
     limit: 5,
     minMatch: 2,
-    required: function(text, type, inDoc, context) {
+    checkRequired: function(text, type, inDoc, context) {
       return '말씀하신 메뉴를 찾을 수 없습니다.';
     }
   }
@@ -431,7 +439,7 @@ var faqType = {
     // sort: "-created",
     // limit: 5,
     minMatch: 1,
-    required: function(text, type, inDoc, context) {
+    checkRequired: function(text, type, inDoc, context) {
       return '학습되어 있지 않은 질문 입니다.';
     }
   }
@@ -445,6 +453,13 @@ var mongoose = require('mongoose');
 exports.customMongoDBFormat = mongoDbTypeCheck;
 
 function mongoDbTypeCheck(text, format, inDoc, context, callback) {
+  logger.debug('');
+  try {
+    logger.debug('type.js:mongoDbTypeCheck: START ' + format.name + ' "' + text + '" inDoc: ' + JSON.stringify(inDoc));
+  } catch(e) {
+    logger.debug('type.js:mongoDbTypeCheck: START ' + format.name + ' "' + text + '"');
+  }
+
   var model;
   if (mongoose.models[format.mongo.model]) {
     model = mongoose.model(format.mongo.model);
@@ -464,7 +479,7 @@ function mongoDbTypeCheck(text, format, inDoc, context, callback) {
         query[format.mongo.queryFields[j]] = new RegExp(word, 'i');
       } catch(e) {}
     }
-
+    
     var _query = model.find(query, format.mongo.fields, format.mongo.options);
     if(format.mongo.sort) _query.sort(format.mongo.sort);
     if(format.mongo.limit) _query.limit(format.mongo.limit);
@@ -483,12 +498,14 @@ function mongoDbTypeCheck(text, format, inDoc, context, callback) {
           var matchIndex = -1, matchMin = -1, matchMax = -1;
           for(var l = 0; l < format.mongo.queryFields.length; l++) {
             for(var m = 0; m < words.length; m++) {
-              matchIndex = doc[format.mongo.queryFields[l]].indexOf(words[m]);
+              // matchIndex = doc[format.mongo.queryFields[l]].toLowerCase().indexOf(words[m].toLowerCase());
+              matchIndex = doc[format.mongo.queryFields[l]].search(new RegExp(words[m], 'i'));
 
               if(matchIndex != -1) {
                 matchCount++;
 
-                var matchOrgIndex = text.indexOf(words[m]);
+                // var matchOrgIndex = text.toLowerCase().indexOf(words[m].toLowerCase());
+                var matchOrgIndex = text.search(new RegExp(words[m], 'i'));
                 if(matchOrgIndex != -1 && (matchMin == -1 || matchOrgIndex < matchMin)) matchMin = matchOrgIndex;
                 if(matchOrgIndex != -1 && (matchMax == -1 || matchOrgIndex + words[m].length> matchMax)) matchMax = matchOrgIndex + words[m].length;
               }
@@ -566,6 +583,14 @@ function mongoDbTypeCheck(text, format, inDoc, context, callback) {
             inDoc[format.mongo.taskFields[l]] = bestDoc[format.mongo.taskFields[l]];
           }
 
+          inDoc.typeDoc = bestDoc;
+
+          try {
+            logger.debug('type.js:mongoDbTypeCheck: MATCHED ' + format.name + ' "' + text + '" inDoc: ' + JSON.stringify(inDoc));
+          } catch(e) {
+            logger.debug('type.js:mongoDbTypeCheck: MATCHED ' + format.name + ' "' + text + '" inDoc.' + format.name + ': ' + inDoc[format.name] + ' inDoc.typeDoc: ' + JSON.stringify(inDoc.typeDoc));
+          }
+
           callback(text, inDoc, true);
         } else if(matchedDoc.length > 0) {
           inDoc.typeDoc = [];
@@ -605,8 +630,20 @@ function mongoDbTypeCheck(text, format, inDoc, context, callback) {
             if(inDoc.typeDoc.length >= format.limit) break;
           }
 
+          try {
+            logger.debug('type.js:mongoDbTypeCheck: MATCHED ' + format.name + ' "' + text + '" inDoc: ' + JSON.stringify(inDoc));
+          } catch(e) {
+            logger.debug('type.js:mongoDbTypeCheck: MATCHED ' + format.name + ' "' + text + '" inDoc.' + format.name + ': ' + inDoc[format.name] + ' inDoc.typeDoc: ' + JSON.stringify(inDoc.typeDoc));
+          }
+
           callback(text, inDoc, true);
         } else {
+          try {
+            logger.debug('type.js:mongoDbTypeCheck: NOT MATCHED ' + format.name + ' "' + text + '" inDoc: ' + JSON.stringify(inDoc));
+          } catch(e) {
+            logger.debug('type.js:mongoDbTypeCheck: MATCHED ' + format.name + ' "' + text + '" inDoc.' + format.name + ': ' + inDoc[format.name] + ' inDoc.typeDoc: ' + JSON.stringify(inDoc.typeDoc));
+          }
+
           callback(text, inDoc, false);
         }
       }

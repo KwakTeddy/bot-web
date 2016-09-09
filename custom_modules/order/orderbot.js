@@ -8,20 +8,17 @@ exports.fssLotteriaSave2 = {
             module: "orderbot",
             action: "fssLotteria",
             path : "/RIA/homeservice/burger.asp",
-            // param: {
-            //     a: 1798581530,
-            //     z: 375957775,
-            //     dl: 'https://homeservice.lotteria.com/RIA/homeservice/burger.asp'
-            // },
             "xpath": {
                 "repeat": "//ul[@class='menu_list']/li[@class='product']",
-                //"limit": "5",
                 "doc": {
                     title: '//p[@class="desc"]/text()',
                     "soloprice": "//div[@class='cart_wrap']/div[@class='cart_left']/div[1]/label/b/text()",
-                    "setprice": "//div[@class='cart_wrap']/div[@class='cart_left']/div[2]/label/b/text()"
+                    "setprice": "//div[@class='cart_wrap']/div[@class='cart_left']/div[2]/label/b/text()",
+                    solid: "//div[@class='cart_wrap']/div[@class='cart_left']/div[1]/input/@value",
+                    setid: "//div[@class='cart_wrap']/div[@class='cart_left']/div[2]/input/@value"
                 }
             },
+
             postCallback: function (task, context, callback) {
                 for(var i = 0; i < task.doc.length; i++) {
                     task.doc[i].sort = '버거'
@@ -33,17 +30,12 @@ exports.fssLotteriaSave2 = {
             module: "orderbot",
             action: "fssLotteria",
             path : "/RIA/homeservice/pack.asp",
-            // param: {
-            //     a: 1891420703,
-            //     z: 2147133306,
-            //     dl: 'https://homeservice.lotteria.com/RIA/homeservice/pack.asp'
-            // },
             xpath: {
                 "repeat": "//ul[@class='menu_list']/li[@class='product']",
-                //"limit": "5",
                 "doc": {
                     title: '//p[@class="desc"]/text()',
-                    "price": "//div[@class='cart_wrap']/div[@class='cart_left']/span/b/text()"
+                    "price": "//div[@class='cart_wrap']/div[@class='cart_left']/span/b/text()",
+                    id: '//div[@class="cart_left"]/span/input/@value'
                 }
             },
             postCallback: function (task, context, callback) {
@@ -57,17 +49,12 @@ exports.fssLotteriaSave2 = {
             module: "orderbot",
             action: "fssLotteria",
             path : "/RIA/homeservice/chicken.asp",
-            // param: {
-            //     a: 262626634,
-            //     z: 208966946,
-            //     dl: 'https://homeservice.lotteria.com/RIA/homeservice/chicken.asp'
-            // },
             xpath: {
                 "repeat": "//ul[@class='menu_list']/li[@class='product']",
-                //"limit": "5",
                 "doc": {
                     title: '//p[@class="desc"]/text()',
-                    "price": "//div[@class='cart_wrap']/div[@class='cart_left']/span/b/text()"
+                    "price": "//div[@class='cart_wrap']/div[@class='cart_left']/span/b/text()",
+                  id: '//div[@class="cart_left"]/span/input/@value'
                 }
             },
             postCallback: function (task, context, callback) {
@@ -81,17 +68,12 @@ exports.fssLotteriaSave2 = {
             module: "orderbot",
             action: "fssLotteria",
             path : "/RIA/homeservice/dessert.asp",
-            // param: {
-            //     a: 766690042,
-            //     z: 917500388,
-            //     dl: 'https://homeservice.lotteria.com/RIA/homeservice/dessert.asp'
-            // },
             xpath: {
                 "repeat": "//ul[@class='menu_list']/li[@class='product']",
-                //"limit": "5",
                 "doc": {
                     title: '//p[@class="desc"]/text()',
-                    "price": "//div[@class='cart_wrap']/div[@class='cart_left']/span/b/text()"
+                    "price": "//div[@class='cart_wrap']/div[@class='cart_left']/span/b/text()",
+                  id: '//div[@class="cart_left"]/span/input/@value'
                 }
             },
             postCallback: function (task, context, callback) {
@@ -105,17 +87,12 @@ exports.fssLotteriaSave2 = {
             module: "orderbot",
             action: "fssLotteria",
             path : "/RIA/homeservice/drink.asp",
-            // param: {
-            //     a: 1197707916,
-            //     z: 23969862,
-            //     dl: 'https://homeservice.lotteria.com/RIA/homeservice/drink.asp'
-            // },
             xpath: {
                 "repeat": "//ul[@class='menu_list']/li[@class='product']",
-                //"limit": "5",
                 "doc": {
                     title: '//p[@class="desc"]/text()',
-                    "price": "//div[@class='cart_wrap']/div[@class='cart_left']/span/b/text()"
+                    "price": "//div[@class='cart_wrap']/div[@class='cart_left']/span/b/text()",
+                  id: '//div[@class="cart_left"]/span/input/@value'
                 }
             },
             postCallback: function (task, context, callback) {
@@ -137,6 +114,7 @@ exports.fssLotteriaSave2 = {
                     sort: 'String',
                     calories: 'String',
                     price: 'String',
+                    id: 'String',
                     soloprice: 'String',
                     setprice: 'String'
                 },
