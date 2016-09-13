@@ -1,3 +1,6 @@
+exports.text = function (task, context, successCallback, errorCallback) {
+    successCallback(task, context);
+};
 
 
 exports.fssLotteriaSave2 = {
@@ -136,11 +139,7 @@ exports.fssLotteriaSave = {
     action: 'sequence',
     actions: [
         {
-            module: 'task',
-            action: 'repeater',
-            actions: [
-                {
-                    module: "moneybot",
+                    module: "orderbot",
                     action: "fssLotteria",
                     path : "/RIA/homeservice/burger.asp",
                     param: {
@@ -156,22 +155,16 @@ exports.fssLotteriaSave = {
                             "setprice": "//div[@class='cart_wrap']/div[@class='cart_left']/div[2]/label/b/text()"
                         }
 
-                    },
-                    postCallback: function (outJson, json, callback) {
-                        for(var i = 0; i < json.doc.length; i++) {
-                            json.doc[i].sort = '버거'
-                        }
-                        callback(json);
                     }
-                }
-            ]
+                    // postCallback: function (outJson, json, callback) {
+                    //     for(var i = 0; i < json.doc.length; i++) {
+                    //         json.doc[i].sort = '버거'
+                    //     }
+                    //     callback(json);
+                    // }
         },
         {
-            module: 'task',
-            action: 'repeater',
-            actions: [
-                {
-                    module: "moneybot",
+                    module: "orderbot",
                     action: "fssLotteria",
                     path : "/RIA/homeservice/pack.asp",
                     param: {
@@ -185,22 +178,16 @@ exports.fssLotteriaSave = {
                         "doc": {
                             "price": "//div[@class='cart_wrap']/div[@class='cart_left']/span/b/text()"
                         }
-                    },
-                    postCallback: function (outJson, json, callback) {
-                        for(var i = 0; i < json.doc.length; i++) {
-                            json.doc[i].sort = '팩'
-                        }
-                        callback(json);
                     }
-                }
-            ]
+                    // postCallback: function (outJson, json, callback) {
+                    //     for(var i = 0; i < json.doc.length; i++) {
+                    //         json.doc[i].sort = '팩'
+                    //     }
+                    //     callback(json);
+                    // }
         },
         {
-            module: 'task',
-            action: 'repeater',
-            actions: [
-                {
-                    module: "moneybot",
+                    module: "orderbot",
                     action: "fssLotteria",
                     path : "/RIA/homeservice/chicken.asp",
                     param: {
@@ -214,22 +201,16 @@ exports.fssLotteriaSave = {
                         "doc": {
                             "price": "//div[@class='cart_wrap']/div[@class='cart_left']/span/b/text()"
                         }
-                    },
-                    postCallback: function (outJson, json, callback) {
-                        for(var i = 0; i < json.doc.length; i++) {
-                            json.doc[i].sort = '치킨'
-                        }
-                        callback(json);
                     }
-                }
-            ]
+                    // postCallback: function (outJson, json, callback) {
+                    //     for(var i = 0; i < json.doc.length; i++) {
+                    //         json.doc[i].sort = '치킨'
+                    //     }
+                    //     callback(json);
+                    // }
         },
         {
-            module: 'task',
-            action: 'repeater',
-            actions: [
-                {
-                    module: "moneybot",
+                    module: "orderbot",
                     action: "fssLotteria",
                     path : "/RIA/homeservice/dessert.asp",
                     param: {
@@ -243,22 +224,16 @@ exports.fssLotteriaSave = {
                         "doc": {
                             "price": "//div[@class='cart_wrap']/div[@class='cart_left']/span/b/text()"
                         }
-                    },
-                    postCallback: function (outJson, json, callback) {
-                        for(var i = 0; i < json.doc.length; i++) {
-                            json.doc[i].sort = '디저트'
-                        }
-                        callback(json);
                     }
-                }
-            ]
+                    // postCallback: function (outJson, json, callback) {
+                    //     for(var i = 0; i < json.doc.length; i++) {
+                    //         json.doc[i].sort = '디저트'
+                    //     }
+                    //     callback(json);
+                    // }
         },
         {
-            module: 'task',
-            action: 'repeater',
-            actions: [
-                {
-                    module: "moneybot",
+                    module: "orderbot",
                     action: "fssLotteria",
                     path : "/RIA/homeservice/drink.asp",
                     param: {
@@ -272,15 +247,13 @@ exports.fssLotteriaSave = {
                         "doc": {
                             "price": "//div[@class='cart_wrap']/div[@class='cart_left']/span/b/text()"
                         }
-                    },
-                    postCallback: function (outJson, json, callback) {
-                        for(var i = 0; i < json.doc.length; i++) {
-                            json.doc[i].sort = '드링크'
-                        }
-                        callback(json);
                     }
-                }
-            ]
+                    // postCallback: function (outJson, json, callback) {
+                    //     for(var i = 0; i < json.doc.length; i++) {
+                    //         json.doc[i].sort = '드링크'
+                    //     }
+                    //     callback(json);
+                    // }
         },
         {
             module: 'mongo',

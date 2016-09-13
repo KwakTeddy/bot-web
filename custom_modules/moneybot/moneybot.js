@@ -1240,6 +1240,7 @@ exports.fssLotteriaSave = {
         model: 'Lotteria',
         schema: {
           sort: 'String',
+          product: 'String',
           calories: 'String',
           price: 'String',
           soloprice: 'String',
@@ -1279,6 +1280,128 @@ exports.fssLotteria = {
       "product": "//div[@class='info']/div[@class='name']/p[@class='desc']/text()",
       "calories": "//div[@class='info']/div[@class='name']/p[@class='desc']/span/text()"
     }
+  }
+};
+
+exports.BBQSave = {
+  module: 'task',
+  action: 'sequence',
+  actions: [
+    {
+      module: "moneybot",
+      action: "BBQ",
+      path: "/menu_new/menu_list_R.asp?cate=B0102&cate2=B0102001&SCHKEY=&SCHTEXT=&catenm=피자",
+
+      preCallback: function(task, context, callback) {
+        callback(task, context);
+      },
+      postCallback: function (task, context, callback) {
+        for (var i = 0; i < task.doc.length; i++) {
+          task.doc[i].sort = '피자'
+        }
+        callback(task, context);
+      }
+    },
+    {
+      module: "moneybot",
+      action: "BBQ",
+      path: "/menu_list_R.asp?cate=B0101&cate2=&SCHKEY=&SCHTEXT=&catenm=치킨",
+
+      preCallback: function(task, context, callback) {
+        callback(task, context);
+      },
+      postCallback: function (task, context, callback) {
+        for (var i = 0; i < task.doc.length; i++) {
+          task.doc[i].sort = '치킨'
+        }
+        callback(task, context);
+      }
+    },
+    {
+      module: "moneybot",
+      action: "BBQ",
+      path: "/menu_new/menu_list_R.asp?cate=B0103&cate2=&SCHKEY=&SCHTEXT=&catenm=스파게티",
+
+      preCallback: function(task, context, callback) {
+        callback(task, context);
+      },
+      postCallback: function (task, context, callback) {
+        for (var i = 0; i < task.doc.length; i++) {
+          task.doc[i].sort = '스파게티'
+        }
+        callback(task, context);
+      }
+    },
+    {
+      module: "moneybot",
+      action: "BBQ",
+      path: "/menu_new/menu_list_R.asp?cate=B0104&cate2=&SCHKEY=&SCHTEXT=&catenm=스넥",
+
+      preCallback: function(task, context, callback) {
+        callback(task, context);
+      },
+      postCallback: function (task, context, callback) {
+        for (var i = 0; i < task.doc.length; i++) {
+          task.doc[i].sort = '스넥'
+        }
+        callback(task, context);
+      }
+    },
+    {
+      module: "moneybot",
+      action: "BBQ",
+      path: "/menu_new/menu_list_R.asp?cate=B0113&cate2=&SCHKEY=&SCHTEXT=&catenm=올리브%20치도락",
+
+      preCallback: function(task, context, callback) {
+        callback(task, context);
+      },
+      postCallback: function (task, context, callback) {
+        for (var i = 0; i < task.doc.length; i++) {
+          task.doc[i].sort = '올리브 치도락'
+        }
+        callback(task, context);
+      }
+    },
+    {
+      module: 'mongo',
+      action: 'update',
+      setData: true,
+      docMerge: 'none',
+      mongo: {
+        model: 'BBQ',
+        schema: {
+          sort: 'String',
+          product: 'String',
+          price: 'String'
+        },
+        query: {sort: ''},
+        options: {upsert: true}
+      },
+      postCallback: function (task, context, callback) {
+        callback(task, context);
+      }
+    }
+  ]
+};
+
+exports.BBQ = {
+  "module": "http",
+  "action": "xpathRepeat",
+  "method": "GET",
+  "url": "https://www.bbq.co.kr",
+  "path": "/menu_new/menu_list_R.asp?cate=B0101&cate2=&SCHKEY=&SCHTEXT=&catenm=치킨",
+  "docMerge": "add",
+  "xpath": {
+    "repeat": "//div[@class='wrap_goods']/div",
+    //"limit": "5",
+    "doc": {
+      "product": "//div[@class='pt3']/p[1]/text()",
+      "price": "//div[@class='pt3']/p[@class='pt5']/em/text()"
+    }
+  },
+  postCallback: function(task, context, callback) {
+    // console.log(task._text);
+    callback(task, context);
   }
 };
 
@@ -1458,4 +1581,6 @@ exports.misterpizzaSave = {
       }
     }
   ]
-}
+};
+
+
