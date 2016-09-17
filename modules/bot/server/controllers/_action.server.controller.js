@@ -5,7 +5,7 @@ var utils = require(path.resolve('./modules/bot/action/common/utils'));
 var taskModule = utils.requireNoCache(path.resolve('./modules/bot/action/common/task'));
 var tough = require('tough-cookie');
 
-exports.processChatserverOut = function (context, outText, inText, _inText, inDoc, successCallback, errorCallback) {
+exports.processChatserverOut = function (context, outText, inText, inTextRaw, inDoc, successCallback, errorCallback) {
   var task = null;
   var out = null;
 
@@ -30,10 +30,10 @@ exports.processChatserverOut = function (context, outText, inText, _inText, inDo
 
     task = utils.merge(task, inDoc);
     task.in = inText;
-    task._in = _inText;
+    task.inRaw = inTextRaw;
     task.out = out;
 
-    task.topSuccessCallback = successCallback;
+    task.print = successCallback;
 
     taskModule.executeTask(task, context, function (_task, _context) {
       if (typeof _task.buttons === "string") {
@@ -49,9 +49,9 @@ exports.processChatserverOut = function (context, outText, inText, _inText, inDo
   } else {
     task = {};
     task.in = inText;
-    task._in = _inText;
+    task.inRaw = inTextRaw;
     task.doc = inDoc;
-    out = outText;
+    task.out = outText;
 
     if(successCallback) successCallback(type.processOutput(task, context, task.out), inDoc, context);
   }

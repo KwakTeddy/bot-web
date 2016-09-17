@@ -21,13 +21,31 @@ function execute(task, context, successCallback, errorCallback) {
         }
 
         if(Array.isArray(task.doc)) {
-          model.create(task.doc, function(err, _docs) {
-            if (err) {
-              throw err;
-            } else {
-              successCallback(task, context);
-            }
-          });
+          var count = 0;
+          for(var i = 0; i < task.doc.length; i++) {
+            var _doc = task.doc[i];
+
+          //   var item = new model(_doc);
+          //   item.save(function (err) {
+          //     count ++;
+          //     if (err) {
+          //       throw err;
+          //     } else {
+          //       if(count >= task.doc.length)
+          //         successCallback(task, context);
+          //     }
+          //   });
+
+            model.create(_doc, function(err, _docs) {
+              count ++;
+              if (err) {
+                throw err;
+              } else {
+                if(count >= task.doc.length)
+                  successCallback(task, context);
+              }
+            });
+          }
         } else {
           var item = new model(task.doc);
           item.save(function (err) {
@@ -38,6 +56,24 @@ function execute(task, context, successCallback, errorCallback) {
             }
           });
         }
+
+        break;
+
+      case 'remove':
+        var model;
+        if (mongoose.models[task.mongo.model]) {
+          model = mongoose.model(task.mongo.model);
+        } else {
+          model = mongoose.model(task.mongo.model, new mongoose.Schema(task.mongo.schema));
+        }
+
+        model.remove(task.mongo.query, function (err) {
+          if (err) {
+            throw err;
+          } else {
+            successCallback(task, context);
+          }
+        });
 
         break;
 

@@ -95,9 +95,9 @@
             // storage functions
             has: function(key) {
                 if (this._area.has) {
-                    return this._area.has(this._in(key));//extension hook
+                    return this._area.has(this.inRaw(key));//extension hook
                 }
-                return !!(this._in(key) in this._area);
+                return !!(this.inRaw(key) in this._area);
             },
             size: function(){ return this.keys().length; },
             each: function(fn, and) {
@@ -116,7 +116,7 @@
                 return this.each(function(k, list){ list.push(k); }, []);
             },
             get: function(key, alt) {
-                var s = _.get(this._area, this._in(key));
+                var s = _.get(this._area, this.inRaw(key));
                 return s !== null ? _.parse(s) : alt || s;// support alt for easy default mgmt
             },
             getAll: function() {
@@ -127,7 +127,7 @@
                 if (d != null && overwrite === false) {
                     return data;
                 }
-                return _.set(this._area, this._in(key), _.stringify(data), overwrite) || d;
+                return _.set(this._area, this.inRaw(key), _.stringify(data), overwrite) || d;
             },
             setAll: function(data, overwrite) {
                 var changed, val;
@@ -141,14 +141,14 @@
             },
             remove: function(key) {
                 var d = this.get(key);
-                _.remove(this._area, this._in(key));
+                _.remove(this._area, this.inRaw(key));
                 return d;
             },
             clear: function() {
                 if (!this._ns) {
                     _.clear(this._area);
                 } else {
-                    this.each(function(k){ _.remove(this._area, this._in(k)); }, 1);
+                    this.each(function(k){ _.remove(this._area, this.inRaw(k)); }, 1);
                 }
                 return this;
             },
@@ -165,7 +165,7 @@
             },
 
             // internal use functions
-            _in: function(k) {
+            inRaw: function(k) {
                 if (typeof k !== "string"){ k = _.stringify(k); }
                 return this._ns ? this._ns + k : k;
             },

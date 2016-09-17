@@ -77,8 +77,8 @@
     "iconv": "^2.2.1",
     "xml2js": "^0.4.17",
     "winston": "^2.2.0",
-    "if-async": "^3.7.4"
-
+    "if-async": "^3.7.4",
+    "xlsx": "^0.8.0"
   },
   "devDependencies": {
     "coveralls": "^2.11.4",

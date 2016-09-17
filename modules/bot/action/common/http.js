@@ -135,7 +135,7 @@ function execute(task, context, successCallback, errorCallback) {
 
           var encoding = charset(response.headers['content-type']);
           if(encoding && encoding != 'UTF-8') {
-            console.log('encoding:' + encoding);
+            // console.log('encoding:' + encoding);
 
             var Iconv  = require('iconv').Iconv;
             var iconv = new Iconv(encoding.toUpperCase(), 'UTF-8//TRANSLIT//IGNORE');

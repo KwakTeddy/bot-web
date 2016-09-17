@@ -1,12 +1,17 @@
 var path = require('path');
 var utils = require(path.resolve('./modules/bot/action/common/utils'));
+var taskModule = require(path.resolve('./modules/bot/action/common/task'));
+var type = require(path.resolve('./modules/bot/action/common/type'));
 
 exports.order = {
   module: 'task',
   action: 'sequence',
   paramDefs: [
-    {type: 'lotteriaMenu', name: 'menu', display: '메뉴', isDisplay: false},
-    {type: 'count', name: 'orderCount', isRequire: false, display: '주문개수', isDisplay: false}
+    {type: 'lotteriaMenu', name: 'menu', display: '메뉴', isDisplay: false, required: true, question: '주문할 메뉴를 말씀해 주세요.'
+      // customCheck: function(text, type, task, context, callback) {
+      // }
+    },
+    {type: 'count', name: 'orderCount', isRequire: false, display: '주문개수', isDisplay: false, required: false, question: '주문개수를 입력해주세요'}
   ],
   actions: [
 
@@ -15,7 +20,7 @@ exports.order = {
       module: 'task',
       action: 'iteration',
       preCallback: function(task, context, callback) {
-        task.topTask.pId = task.topTask.typeDoc.id;
+        // task.topTask.pId = task.topTask.menu._id.id;
         callback(task, context);
       },
       condition: function(task, context) {
@@ -30,15 +35,73 @@ exports.order = {
             return true;
           },
           paramDefs: [
-            {type: 'lotteriaMenu', name: 'menu', display: '메뉴', required: true, question: '주문할 메뉴를 말씀해 주세요.'},
+            {type: 'lotteriaMenu', name: 'menu', display: '메뉴', required: true, question: '주문할 메뉴를 말씀해 주세요.',
+              customCheck: function(text, type, task, context, callback) {
+                if (task.customCheckType == 1) {
+                  try {
+                    var num = Number(text);
+                    if (num >= 1 && num <= context.user.doc.length) {
+                      task.menuOption = context.user.doc[num - 1];
+
+                      context.user.doc = null;
+                      task.customCheckType = null;
+                      task.requiredOut = null;
+
+                      callback(text, task, true);
+                    } else {
+                      callback(text, task, false);
+                    }
+                  } catch(e) {
+                    callback(text, task, false);
+                  }
+                } else {
+                  if (task[type.name] && task[type.name].options instanceof Array) {
+                    var words = text.split(' ');
+
+                    var matched = false;
+                    for (var i = 0; i < task[type.name].options.length; i++) {
+                      if (matched) break;
+                      for (var j = 0; j < words.length; j++) {
+                        if (task[type.name].options[i].name.search(new RegExp(words[j], 'i')) != -1) {
+                          matched = true;
+                          task.menuOption = task[type.name].options[i];
+                          break;
+                        }
+                      }
+                    }
+
+                    if (!matched) {
+                      context.user.doc = task[type.name].options;
+
+                      task.customCheckType = 1;
+                      task.requiredOut = '세부 메뉴를 선택해주세요.\n';
+                      for (var i = 0; i < task[type.name].options.length; i++) {
+                        task.requiredOut += (i + 1) + '. ' + task[type.name].options[i].name + ' ' + task[type.name].options[i].price + '\n';
+                      }
+                    }
+
+                    callback(text, task, matched);
+                  } else {
+                    callback(text, task, false);
+                  }
+                }
+              }
+            },
             {type: 'count', name: 'orderCount', display: '주문개수', required: false}
           ],
-          preCallback: function(task, context) {
-            task.topTask.pId = task.typeDoc.id;
+          preCallback: function(task, context, callback) {
+            task.topTask.menu = task.menu;
+            task.topTask.menuOption = task.menuOption;
+
+            if(task.menuOption) task.topTask.pId = task.menuOption.id;
+            else task.topTask.pId = task.menu.id;
+
             task.topTask.count = task.count;
+
             callback(task, context);
           }
         },
+
         // 메뉴 카테고리
         {
           module: 'task',
@@ -227,7 +290,7 @@ exports.order = {
           postCallback: function(task, context, callback) {
             // task.doc = JSON.parse(task.doc.json);
             // if(task.doc.result == 'false') {
-            //   task.topTask.topSuccessCallback('장바구니에 담을 수 없습니다.\n' + task.doc.eMessage);
+            //   task.topTask.print('장바구니에 담을 수 없습니다.\n' + task.doc.eMessage);
             // } else {
               callback(task, context);
             // }
@@ -239,11 +302,11 @@ exports.order = {
           module: 'task',
           action: 'question',
           paramDefs: [
-            {type: 'string', name: 'addOrderCheck', required: true, question: '다른 메뉴를 추가로 주문하시겠습니까?'}
+            {type: 'string', name: 'addOrderCheck', required: true, question: '추가로 주문할 메뉴가 있으면 "네" 없으면 "아니요" 라고 말씀해주세요'}
           ],
           postCallback: function(task, context, callback) {
             var re = new RegExp(context.global.messages.yesRegExp, 'g');
-            if(!task.parent.isRepeat && task.in.search(re) != -1) {
+            if(!task.parent.isRepeat && task.addOrderCheck.search(re) != -1) {
               task.isRepeat = true;
             } else {
               task.isRepeat = false;
@@ -303,7 +366,7 @@ exports.order = {
           return match;
         });
 
-        callback(task, context);
+        // callback(task, context);
       },
       postCallback: function(task, context, callback) {
         context.user.mobile = task.mobile;
@@ -795,4 +858,365 @@ var login = {
       }
     }
   ]
+};
+
+
+exports.lotteriaSave2 = {
+  module: 'task',
+  action: 'sequence',
+  actions: [
+    {
+      module: "lotteria",
+      action: "lotteriaHttp",
+      path : "/RIA/homeservice/burger.asp",
+      xpath: {
+        repeat: "//ul[@class='menu_list']/li[@class='product']",
+        doc: {
+          name: '//p[@class="desc"]/text()',
+          // optionsPath: '//div[@class="cart_left"]/div'
+          soloprice: "//div[@class='cart_wrap']/div[@class='cart_left']/div[1]/label/b/text()",
+          setprice: "//div[@class='cart_wrap']/div[@class='cart_left']/div[2]/label/b/text()",
+          comboprice: "//div[@class='cart_wrap']/div[@class='cart_left']/div[3]/label/b/text()",
+          solid: "//div[@class='cart_wrap']/div[@class='cart_left']/div[1]/input/@value",
+          setid: "//div[@class='cart_wrap']/div[@class='cart_left']/div[2]/input/@value",
+          comboid: "//div[@class='cart_wrap']/div[@class='cart_left']/div[3]/input/@value"
+        }
+      },
+
+      postCallback: function (task, context, callback) {
+        for(var i = 0; i < task.doc.length; i++) {
+          task.doc[i].franchise = '57dcafc489f921a81474455e';      // 관리자에서 프랜차이즈 아이디확인 수정시에 주소창에서 확인
+          task.doc[i].category = ['버거'];
+
+          // 숫자로 입력해야 해서 , 제거
+          task.doc[i].soloprice = task.doc[i].soloprice.replace(/,/g, '');
+          task.doc[i].setprice = task.doc[i].setprice.replace(/,/g, '');
+          if(task.doc[i].comboprice)
+            task.doc[i].comboprice = task.doc[i].comboprice.replace(/,/g, '');
+
+          if(task.doc[i].comboprice) {
+            task.doc[i].options = [
+              {
+                optionName: '단품세트',
+                optionValues: [
+                  {name: '단품', price: task.doc[i].soloprice, id: task.doc[i].solid},
+                  {name: '세트', price: task.doc[i].setprice, id: task.doc[i].setid},
+                  {name: '콤보', price: task.doc[i].comboprice, id: task.doc[i].comboid}
+                ]
+              }
+            ];
+          } else {
+            task.doc[i].options = [
+              {
+                optionName: '단품세트',
+                optionValues: [
+                  {name: '단품', price: task.doc[i].soloprice, id: task.doc[i].solid},
+                  {name: '세트', price: task.doc[i].setprice, id: task.doc[i].setid}
+                ]
+              }
+            ];
+          }
+
+          // if(task.doc[i].optionsPath) {
+          //   task.doc[i].options = [];
+          //
+          //   for(var j = 0; j < task.doc[i].optionsPath.length; j++) {
+          //     task.doc[i].options.push({
+          //       name: task.doc[i].optionsPath[j].childNodes[1].firstChild.toString(),
+          //       price: task.doc[i].optionsPath[j].childNodes[1].childNodes[1].firstChild.toString().replace(/,/g, ''),
+          //       id: task.doc[i].optionsPath[j].childNodes[0].getAttribute('value')
+          //     });
+          //   }
+          //
+          //   task.doc[i].optionsPath = null;
+          // }
+        }
+
+        callback(task, context);
+      }
+    },
+    {
+      module: "lotteria",
+      action: "lotteriaHttp",
+      path : "/RIA/homeservice/pack.asp",
+      xpath: {
+        repeat: "//ul[@class='menu_list']/li[@class='product']",
+        doc: {
+          name: '//p[@class="desc"]/text()',
+          price: "//div[@class='cart_wrap']/div[@class='cart_left']/span/b/text()",
+          id: '//div[@class="cart_left"]/span/input/@value'
+        }
+      },
+      postCallback: function (task, context, callback) {
+        for(var i = 0; i < task.doc.length; i++) {
+          task.doc[i].franchise = '57dcafc489f921a81474455e';      // 관리자에서 프랜차이즈 아이디확인 수정시에 주소창에서 확인
+          task.doc[i].category = ['팩'];
+          task.doc[i].price = task.doc[i].price.replace(/,/g, '');
+        }
+        callback(task, context);
+      }
+    },
+    {
+      module: "lotteria",
+      action: "lotteriaHttp",
+      path : "/RIA/homeservice/chicken.asp",
+      xpath: {
+        repeat: "//ul[@class='menu_list']/li[@class='product']",
+        doc: {
+          name: '//p[@class="desc"]/text()',
+          price: "//div[@class='cart_wrap']/div[@class='cart_left']/span/b/text()",
+          id: '//div[@class="cart_left"]/span/input/@value'
+        }
+      },
+      postCallback: function (task, context, callback) {
+        for(var i = 0; i < task.doc.length; i++) {
+          task.doc[i].franchise = '57dcafc489f921a81474455e';      // 관리자에서 프랜차이즈 아이디확인 수정시에 주소창에서 확인
+          task.doc[i].category = ['치킨'];
+          task.doc[i].price = task.doc[i].price.replace(/,/g, '');
+        }
+        callback(task, context);
+      }
+    },
+    {
+      module: "lotteria",
+      action: "lotteriaHttp",
+      path : "/RIA/homeservice/dessert.asp",
+      xpath: {
+        repeat: "//ul[@class='menu_list']/li[@class='product']",
+        doc: {
+          name: '//p[@class="desc"]/text()',
+          price: "//div[@class='cart_wrap']/div[@class='cart_left']/span/b/text()",
+          id: '//div[@class="cart_left"]/span/input/@value'
+        }
+      },
+      postCallback: function (task, context, callback) {
+        for(var i = 0; i < task.doc.length; i++) {
+          task.doc[i].franchise = '57dcafc489f921a81474455e';      // 관리자에서 프랜차이즈 아이디확인 수정시에 주소창에서 확인
+          task.doc[i].category = ['디저트'];
+          task.doc[i].price = task.doc[i].price.replace(/,/g, '');
+        }
+        callback(task, context);
+      }
+    },
+    {
+      module: "lotteria",
+      action: "lotteriaHttp",
+      path : "/RIA/homeservice/drink.asp",
+      xpath: {
+        repeat: "//ul[@class='menu_list']/li[@class='product']",
+        doc: {
+          name: '//p[@class="desc"]/text()',
+          price: "//div[@class='cart_wrap']/div[@class='cart_left']/span/b/text()",
+          id: '//div[@class="cart_left"]/span/input/@value'
+        }
+      },
+      postCallback: function (task, context, callback) {
+        for(var i = 0; i < task.doc.length; i++) {
+          task.doc[i].franchise = '57dcafc489f921a81474455e';      // 관리자에서 프랜차이즈 아이디확인 수정시에 주소창에서 확인
+          task.doc[i].category = ['드링크'];
+          task.doc[i].price = task.doc[i].price.replace(/,/g, '');
+        }
+        callback(task, context);
+      }
+    },
+    {
+      module: 'mongo',
+      action: 'update',
+      setData: true,
+      docMerge: 'none',
+      mongo: {
+        model: 'FranchiseMenu',
+        // schema: {
+        //   title: 'String',
+        //   sort: 'String',
+        //   price: 'String',
+        //   id: 'String',
+        //   options: Array
+        //   // options: [
+        //   //   {
+        //   //     name: 'String',
+        //   //     price: 'String',
+        //   //     id: 'String'
+        //   //   }
+        //   // ]
+        // },
+        query: {category: '', name: ''},
+        options: {upsert: true}
+      },
+      preCallback: function(task, context, callback) {
+        task.doc = task.topTask.doc;
+        callback(task, context);
+      }
+
+    }
+  ]
+};
+
+exports.lotteriaSave = {
+  module: 'task',
+  action: 'sequence',
+  actions: [
+    {
+      module: "lotteria",
+      action: "lotteriaHttp",
+      path : "/RIA/homeservice/burger.asp",
+      xpath: {
+        repeat: "//ul[@class='menu_list']/li[@class='product']",
+        doc: {
+          title: '//p[@class="desc"]/text()',
+          optionsPath: '//div[@class="cart_left"]/div'
+          // soloprice: "//div[@class='cart_wrap']/div[@class='cart_left']/div[1]/label/b/text()",
+          // setprice: "//div[@class='cart_wrap']/div[@class='cart_left']/div[2]/label/b/text()",
+          // comboprice: "//div[@class='cart_wrap']/div[@class='cart_left']/div[3]/label/b/text()",
+          // solid: "//div[@class='cart_wrap']/div[@class='cart_left']/div[1]/input/@value",
+          // setid: "//div[@class='cart_wrap']/div[@class='cart_left']/div[2]/input/@value",
+          // comboid: "//div[@class='cart_wrap']/div[@class='cart_left']/div[3]/input/@value"
+        }
+      },
+
+      postCallback: function (task, context, callback) {
+        for(var i = 0; i < task.doc.length; i++) {
+          task.doc[i].sort = '버거';
+
+          if(task.doc[i].optionsPath) {
+            task.doc[i].options = [];
+
+            for(var j = 0; j < task.doc[i].optionsPath.length; j++) {
+              task.doc[i].options.push({
+                name: task.doc[i].optionsPath[j].childNodes[1].firstChild.toString(),
+                price: task.doc[i].optionsPath[j].childNodes[1].childNodes[1].firstChild.toString().replace(/,/g, ''),
+                id: task.doc[i].optionsPath[j].childNodes[0].getAttribute('value')
+              });
+            }
+
+            task.doc[i].optionsPath = null;
+          }
+        }
+
+        callback(task, context);
+      }
+    },
+    {
+      module: "lotteria",
+      action: "lotteriaHttp",
+      path : "/RIA/homeservice/pack.asp",
+      xpath: {
+        repeat: "//ul[@class='menu_list']/li[@class='product']",
+        doc: {
+          title: '//p[@class="desc"]/text()',
+          price: "//div[@class='cart_wrap']/div[@class='cart_left']/span/b/text()",
+          id: '//div[@class="cart_left"]/span/input/@value'
+        }
+      },
+      postCallback: function (task, context, callback) {
+        for(var i = 0; i < task.doc.length; i++) {
+          task.doc[i].sort = '팩'
+        }
+        callback(task, context);
+      }
+    },
+    {
+      module: "lotteria",
+      action: "lotteriaHttp",
+      path : "/RIA/homeservice/chicken.asp",
+      xpath: {
+        repeat: "//ul[@class='menu_list']/li[@class='product']",
+        doc: {
+          title: '//p[@class="desc"]/text()',
+          price: "//div[@class='cart_wrap']/div[@class='cart_left']/span/b/text()",
+          id: '//div[@class="cart_left"]/span/input/@value'
+        }
+      },
+      postCallback: function (task, context, callback) {
+        for(var i = 0; i < task.doc.length; i++) {
+          task.doc[i].sort = '치킨'
+        }
+        callback(task, context);
+      }
+    },
+    {
+      module: "lotteria",
+      action: "lotteriaHttp",
+      path : "/RIA/homeservice/dessert.asp",
+      xpath: {
+        repeat: "//ul[@class='menu_list']/li[@class='product']",
+        doc: {
+          title: '//p[@class="desc"]/text()',
+          price: "//div[@class='cart_wrap']/div[@class='cart_left']/span/b/text()",
+          id: '//div[@class="cart_left"]/span/input/@value'
+        }
+      },
+      postCallback: function (task, context, callback) {
+        for(var i = 0; i < task.doc.length; i++) {
+          task.doc[i].sort = '디저트'
+        }
+        callback(task, context);
+      }
+    },
+    {
+      module: "lotteria",
+      action: "lotteriaHttp",
+      path : "/RIA/homeservice/drink.asp",
+      xpath: {
+        repeat: "//ul[@class='menu_list']/li[@class='product']",
+        doc: {
+          title: '//p[@class="desc"]/text()',
+          price: "//div[@class='cart_wrap']/div[@class='cart_left']/span/b/text()",
+          id: '//div[@class="cart_left"]/span/input/@value'
+        }
+      },
+      postCallback: function (task, context, callback) {
+        for(var i = 0; i < task.doc.length; i++) {
+          task.doc[i].sort = '드링크'
+        }
+        callback(task, context);
+      }
+    },
+    {
+      module: 'mongo',
+      action: 'update',
+      setData: true,
+      docMerge: 'none',
+      mongo: {
+        model: 'lotteriaMenu',
+        schema: {
+          title: 'String',
+          sort: 'String',
+          price: 'String',
+          id: 'String',
+          options: Array
+          // options: [
+          //   {
+          //     name: 'String',
+          //     price: 'String',
+          //     id: 'String'
+          //   }
+          // ]
+        },
+        query: {sort: '', title: ''},
+        options: {upsert: true, multi: true}
+      },
+      preCallback: function(task, context, callback) {
+        task.doc = task.topTask.doc;
+        callback(task, context);
+      }
+
+    }
+  ]
+};
+
+exports.lotteriaHttp = {
+  module: "http",
+  action: "xpathRepeat",
+  method: "POST",
+  url: "https://homeservice.lotteria.com",
+  path: "/RIA/homeservice/burger.asp",
+  docMerge: "add",
+  xpath: {
+    repeat: "//ul[@class='menu_list']/li[@class='product']",
+    doc: {
+      title: "//div[@class='info']/div[@class='name']/p[@class='desc']/text()",
+      calories: "//div[@class='info']/div[@class='name']/p[@class='desc']/span/text()"
+    }
+  }
 };

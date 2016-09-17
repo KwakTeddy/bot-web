@@ -21,78 +21,30 @@ exports.write = function(from, to, text, successCallback, errorCallback, endCall
 
 exports.botProc = botProc;
 
-function botProc(botName, user, _inText, outCallback, chatServerConfig) {
+function botProc(botName, user, inTextRaw, outCallback, chatServerConfig) {
 
   var context = getContext(botName, user);
 
-  logger.verbose("사용자 입력>> " + _inText);
+  logger.verbose("사용자 입력>> " + inTextRaw);
 
   var type = utils.requireNoCache(path.resolve('./modules/bot/action/common/type'));
 
-  type.processInput(context, _inText, function(inText, inDoc) {
-    logger.verbose("자연어 처리>> " + inText);
+  type.processInput(context, inTextRaw, function(inTextNLP, inDoc) {
+    logger.verbose("자연어 처리>> " + inTextNLP);
 
     if(context.user.pendingCallback) {
-      if(inText.search(/(처음|메뉴)/g) != -1 || inText.startsWith(':')) {
+      if(inTextRaw.search(/(처음|메뉴)/g) != -1 || inTextRaw.startsWith(':')) {
         context.user.pendingCallback = null;
         context.user.pendingType = null;
 
-      } else if(type[context.user.pendingType+'Type']) {
-
-        var paramType = type[context.user.pendingType+'Type'];
-        var paramDef = context.user.pendingParamDef;
-        paramType.name = paramDef.name;
-
-        paramType.typeCheck(_inText, paramType, inDoc, context, function(_text, _inDoc, matched) {
-
-          paramType.name = paramDef.type;
-
-          if(matched) {
-            if(paramDef.customCheck) {
-              paramDef.customCheck(_inText, paramType, inDoc, context, function(__text, __inDoc, _matched) {
-                if(_matched) {
-                  context.user.pendingCallback(inText, _inText, __inDoc);
-                } else {
-                  if(paramType.checkRequired) {
-                    outCallback(paramType.checkRequired(__text) + '\n' +
-                      context.global.messages.typeExit, __inDoc);
-                    // socket.emit('send_msg', paramType.checkRequired(__text) + '\n' +
-                    //   context.global.messages.typeExit);
-                  } else {
-                    outCallback((paramDef.question instanceof Function ? paramDef.question(__inDoc, context) : paramDef.question) + '\n' +
-                      context.global.messages.typeExit, __inDoc);
-                    // socket.emit('send_msg', (paramDef.question instanceof Function ? paramDef.question(__inDoc, context) : paramDef.question) + '\n' +
-                    //   context.global.messages.typeExit);
-                  }
-                }
-              });
-            } else {
-              context.user.pendingCallback(inText, _inText, _inDoc);
-            }
-          } else {
-            if(paramType.checkRequired) {
-              outCallback(paramType.checkRequired(_text) + '\n' +
-                context.global.messages.typeExit, _inDoc);
-              // socket.emit('send_msg', paramType.checkRequired(_text) + '\n' +
-              //   context.global.messages.typeExit);
-            } else {
-              outCallback((paramDef.question instanceof Function ? paramDef.question(_inDoc, context) : paramDef.question) + '\n' +
-                context.global.messages.typeExit, _inDoc);
-              // socket.emit('send_msg', (paramDef.question instanceof Function ? paramDef.question(_inDoc, context) : paramDef.question) + '\n' +
-              //   context.global.messages.typeExit);
-            }
-          }
-        });
-
-        return;
       } else {
-        context.user.pendingCallback(inText, inDoc);
+        context.user.pendingCallback(inTextRaw, inTextNLP, inDoc);
         return;
       }
     }
 
     var chatscriptSocket = net.createConnection(chatServerConfig, function(){
-      chatscriptSocket.write(user+'\x00'+ /*botName*/ '' +'\x00'+inText+'\x00');
+      chatscriptSocket.write(user+'\x00'+ /*botName*/ '' +'\x00'+inTextNLP+'\x00');
     });
 
     chatscriptSocket.on('data', function(data) {    // on receive data from chatscriptSocket
@@ -100,7 +52,7 @@ function botProc(botName, user, _inText, outCallback, chatServerConfig) {
 
       logger.verbose("챗서버 답변>> " + chatserverOut);
 
-      botProcess.processChatserverOut(context, chatserverOut, inText, _inText, inDoc, function(_out, _task) {
+      botProcess.processChatserverOut(context, chatserverOut, inTextNLP, inTextRaw, inDoc, function(_out, _task) {
         logger.verbose("사용자 출력>> " + _out + "\n");
 
         if(_task && _task.photoUrl && !_task.photoUrl.startsWith('http')) {

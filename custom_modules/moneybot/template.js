@@ -112,9 +112,12 @@ exports.paramCheck = {
   url: 'https://www.google.com',
   path: '/',
   paramDefs: [
-    {type: 'address', name: 'address', display: '주소', isReuired: true, question: '주소를 말씀해 주세요.'},
-    {type: 'menu', name: 'menu', display: '메뉴', isReuired: true, question: '주문하실 메뉴를 말씀해 주세요.'},
-    {type: 'mobile', name: 'mobile', display: '휴대폰번호', isReuired: true, question: '휴대폰번호를 말씀해 주세요.'}
+    {type: 'lotteriaMenu', name: 'menu', display: '메뉴', required: true, question: '주문할 메뉴를 말씀해 주세요.'},
+    {type: 'count', name: 'orderCount', display: '주문개수', required: true, question: '주문할 개수를 입력해 주세요'}
+
+    // {type: 'address', name: 'address', display: '주소', isReuired: true, question: '주소를 말씀해 주세요.'},
+    // {type: 'menu', name: 'menu', display: '메뉴', isReuired: true, question: '주문하실 메뉴를 말씀해 주세요.'},
+    // {type: 'mobile', name: 'mobile', display: '휴대폰번호', isReuired: true, question: '휴대폰번호를 말씀해 주세요.'}
   ]
 }
 
