@@ -48,6 +48,10 @@ var RestaurantSchema = new Schema({
   user: {
     type: Schema.ObjectId,
     ref: 'User'
+  },
+  franchise: {
+    type: Schema.ObjectId,
+    ref: 'Franchise'
   }
 });
 

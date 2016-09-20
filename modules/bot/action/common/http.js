@@ -7,7 +7,7 @@ var tough = require('tough-cookie');
 var charset = require('charset');
 
 var commonHeaders = {"Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-  "Accept-Encoding":"gzip, deflate, sdch",
+  // "Accept-Encoding":"gzip, deflate, sdch",
   "Accept-Language":"en-US,en;q=0.8,ko;q=0.6",
   "Cache-Control":"max-age=0",
   "Connection":"keep-alive",
@@ -59,7 +59,7 @@ function execute(task, context, successCallback, errorCallback) {
         options.form = task.param;
       } else {
         options.qs = task.param;
-        options.useQuerystring = true;
+        options.useQuerystring = false;
       }
 
       if(options.headers) console.log('task.headers: ' + JSON.stringify(options.headers, null, 2));
@@ -382,7 +382,7 @@ function execute(task, context, successCallback, errorCallback) {
         options.form = task.param;
       } else {
         options.qs = task.param;
-        options.useQuerystring = true;
+        options.useQuerystring = false;
       }
 
       if(options.headers) console.log('task.headers: ' + JSON.stringify(options.headers, null, 2));
@@ -398,7 +398,7 @@ function execute(task, context, successCallback, errorCallback) {
           }
 
           var encoding = charset(response.headers['content-type']);
-          if(encoding && encoding != 'UTF-8') {
+          if(encoding && encoding != 'UTF-8' && encoding != 'utf8') {
             console.log('encoding:' + encoding);
 
             var Iconv  = require('iconv').Iconv;

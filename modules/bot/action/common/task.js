@@ -35,7 +35,10 @@ function executeTask(task, context, successCallback, errorCallback) {
         logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + '.paramDefs.' + paramDef.name + ': ' + task[paramDef.name] + ' each start ');
 
         if(task[paramDef.name] == undefined) {
-          var paramType = type[paramDef.type+'Type'];
+          var paramType;
+          if(typeof paramDef.type === 'string' || paramDef.type instanceof String) paramType = type[paramDef.type+'Type'];
+          else paramType = paramDef.type;
+
           paramType.name = paramDef.name;
 
           var printRequired = function(text, inDoc, paramDef, paramType) {
@@ -47,12 +50,26 @@ function executeTask(task, context, successCallback, errorCallback) {
             }
           };
 
-          var typeText = task.in;
+          var preType = function(callback) {
+            if(paramDef.preType) {
+              paramDef.preType(task, context, paramType, paramDef, function (_task, _context) {
+                callback(null);
+              });
+            } else {
+              callback(null);
+            }
+          };
+
+          var typeText;
           var matchedCheck = function(callback) {
 
-            // 디폴트 값 user context 에서 가져오기
-            if(!typeText && context.user[paramDef.name]) paramDef.default = context.user[paramDef.name];
-            if(!typeText && paramDef.default) typeText = paramDef.default;
+            if(task.in && (paramDef.match == undefined || paramDef.match)) {
+              typeText = task.in;
+            } else {
+              // 디폴트 값 user context 에서 가져오기
+              if(context.user[paramDef.name] && typeof context.user[paramDef.name] == 'string') typeText = context.user[paramDef.name];
+              else if(paramDef.default && typeof paramDef.default == 'string') typeText = paramDef.default;
+            }
 
             if(typeText) {
               callback(null, typeText, typeText, task);
@@ -82,18 +99,19 @@ function executeTask(task, context, successCallback, errorCallback) {
 
           var multiMatched = function(inRaw, inNLP, inDoc, matched, callback) {
             if (matched) {
-              if(inDoc.typeDoc instanceof Array) {
+              if(inDoc[paramDef.name] instanceof Array) {
 
-                if(inDoc.typeDoc.length == 1) {
-                  inDoc[paramDef.name] = inDoc.typeDoc[0];
+                if(inDoc[paramDef.name].length == 1) {
+                  inDoc[paramDef.name] = inDoc[paramDef.name][0];
                   callback(null, inRaw, inNLP, inDoc, matched);
                 } else {
-                  context.user.doc = inDoc.typeDoc;
+                  context.user.doc = inDoc[paramDef.name];
                   context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc) {
                     callback(null, _inRaw, inNLP, task, false);
                   };
 
-                  task.print(type.processOutput(inDoc, context, '다음 중 원하시는 것을 선택해주세요.\n#typeDoc#+index+. +title+\n#'));
+                  // task.print(type.processOutput(inDoc, context, '다음 중 원하시는 것을 선택해주세요.\n#'+paramDef.name+'#+index+. +name+\n#'));
+                  task.print(type.processOutput(inDoc, context, paramType.out));
                 }
 
               } else
@@ -118,9 +136,14 @@ function executeTask(task, context, successCallback, errorCallback) {
             } else {
               try {
                 var num = Number(inRaw);
-                if (num >= 1 && num <= 3) {
+                if (num >= 1 && num <= context.user.doc.length) {
                   task[paramDef.name] = context.user.doc[num-1];
                   context.user.doc = null;
+
+                  if(task.in && task[paramDef.name]['matchOriginal']) {
+                    task.in = task.in.replace(task[paramDef.name]['matchOriginal'], type.IN_TAG_START + paramDef.name + type.IN_TAG_END);
+                    task[paramDef.name+'Original'] = task[paramDef.name]['matchOriginal'];
+                  }
 
                   callback(null, inRaw, inNLP, inDoc, true);
                 } else {
@@ -172,6 +195,7 @@ function executeTask(task, context, successCallback, errorCallback) {
 
 
           async.waterfall([
+            preType,
             matchedCheck,
             typeCheck,
             multiMatched,
@@ -490,7 +514,7 @@ function execute(task, context, successCallback, errorCallback) {
 
         if (Array.isArray(_task.doc)) {
           if (!task.doc) task.doc = [];
-          if (docMerge != 'none') task.doc = task.doc.concat(_task.doc);
+          if (docMerge != 'none' && Array.isArray(task.doc)) task.doc = task.doc.concat(_task.doc);
         } else {
           if (docMerge == 'add') {
             if (!task.doc) task.doc = [];
@@ -613,10 +637,13 @@ function findModule(task, context) {
   var botName = context.bot.botName;
 
   //template action
+  var modulePath;
   var templateModule;
+
   try {
-    delete require.cache[require.resolve('../../../../custom_modules/' + botName + '/' + (task.module ? task.module : botName))];
-    templateModule = require('../../../../custom_modules/' + botName + '/' + (task.module ? task.module : botName));
+    modulePath = '../../../../custom_modules/' + botName + '/' + (task.module ? task.module : botName);
+    delete require.cache[require.resolve(modulePath)];
+    templateModule = require(modulePath);
 
     if(templateModule) {
       if(templateModule[task.action] && !(templateModule[task.action] instanceof Function)) {
@@ -628,8 +655,9 @@ function findModule(task, context) {
         task = utils.merge(task, template);
         task.template = template;
 
-        delete require.cache[require.resolve('../../action/common/' + task.module)];
-        taskModule = require('../../action/common/' + task.module);
+        modulePath = '../../action/common/' + task.module;
+        delete require.cache[require.resolve(modulePath)];
+        taskModule = require(modulePath);
 
       } else {
         taskModule = templateModule;
@@ -643,8 +671,9 @@ function findModule(task, context) {
   // common action
   if(!taskModule) {
     try {
-      delete require.cache[require.resolve('../../action/common/' + task.module)];
-      taskModule = require('../../action/common/' + task.module);
+      modulePath = '../../action/common/' + task.module;
+      delete require.cache[require.resolve(modulePath)];
+      taskModule = require(modulePath);
     } catch(err) {
       // console.log("error loading common module: " + task.module);
       // console.log(err);

@@ -5,14 +5,23 @@ var utils = require('./utils');
 var path = require('path');
 var logger = require(path.resolve('./config/lib/logger'));
 
+
 const TAG_START = '\\+';
 const TAG_END = '\\+';
 const ARRAY_TAG_START = '#';
 const ARRAY_TAG_END = '#';
 const IN_TAG_START = '{';
 const IN_TAG_END = '}';
-
 const DOC_NAME = 'doc';
+
+exports.TAG_START = TAG_START;
+exports.TAG_END = TAG_END;
+exports.ARRAY_TAG_START = ARRAY_TAG_START;
+exports.ARRAY_TAG_END = ARRAY_TAG_END;
+exports.IN_TAG_START = IN_TAG_START;
+exports.IN_TAG_END = IN_TAG_END;
+exports.DOC_NAME = DOC_NAME;
+
 
 exports.processInput = function(context, inText, callback) {
   if(inText.startsWith(":")) {
@@ -402,6 +411,7 @@ var productType = {
   }
 }
 
+
 var lotteriaMenuType = {
   typeCheck: menuTypeCheck,
   limit: 5,
@@ -418,6 +428,7 @@ var lotteriaMenuType = {
       return '말씀하신 메뉴를 찾을 수 없습니다.';
     }
   }
+
 }
 exports.lotteriaMenuType = lotteriaMenuType;
 
@@ -551,28 +562,28 @@ function menuTypeCheck(text, format, inDoc, context, callback) {
           for (var _l = 0; _l < matchedDoc.length; _l++) {
             var matchDoc = matchedDoc[_l];
 
-            var matchedText = '';
+            var matchText = '';
             for (var l = 0; l < format.mongo.queryFields.length; l++) {
               var _text = matchDoc[format.mongo.queryFields[l]]
-              if (matchedText == '') matchedText = matchedText.concat(_text);
-              else matchedText = matchedText.concat(' ', _text);
+              if (matchText == '') matchText = matchText.concat(_text);
+              else matchText = matchText.concat(' ', _text);
             }
 
-            var matchedOriginal = text.substring(matchDoc.matchMin, matchDoc.matchMax);
-            text = text.replace(matchedOriginal, IN_TAG_START + format.name + IN_TAG_END);
+            var matchOriginal = text.substring(matchDoc.matchMin, matchDoc.matchMax);
+            text = text.replace(matchOriginal, IN_TAG_START + format.name + IN_TAG_END);
 
             if (inDoc['_' + format.name]) {
-              if (Array.isArray(inDoc['_' + format.name])) inDoc['_' + format.name].push(matchedOriginal);
-              else inDoc['_' + format.name] = [inDoc['_' + format.name], matchedOriginal];
+              if (Array.isArray(inDoc['_' + format.name])) inDoc['_' + format.name].push(matchOriginal);
+              else inDoc['_' + format.name] = [inDoc['_' + format.name], matchOriginal];
             } else {
-              inDoc['_' + format.name] = matchedOriginal;
+              inDoc['_' + format.name] = matchOriginal;
             }
 
             if (inDoc[format.name]) {
-              if (Array.isArray(inDoc[format.name])) inDoc[format.name].push(matchedText);
-              else inDoc[format.name] = [inDoc[format.name], matchedText];
+              if (Array.isArray(inDoc[format.name])) inDoc[format.name].push(matchText);
+              else inDoc[format.name] = [inDoc[format.name], matchText];
             } else {
-              inDoc[format.name] = matchedText;
+              inDoc[format.name] = matchText;
             }
 
             if (format.mongo.taskFields) {
@@ -714,28 +725,28 @@ function mongoDbTypeCheck(text, format, inDoc, context, callback) {
         }
 
         if(bestDoc) {
-          var matchedText = '';
+          var matchText = '';
           for (var l = 0; l < format.mongo.queryFields.length; l++) {
             var _text = bestDoc[format.mongo.queryFields[l]]
-            if (matchedText == '') matchedText = matchedText.concat(_text);
-            else matchedText = matchedText.concat(' ', _text);
+            if (matchText == '') matchText = matchText.concat(_text);
+            else matchText = matchText.concat(' ', _text);
           }
 
-          var matchedOriginal = text.substring(bestDoc.matchMin, bestDoc.matchMax);
-          text = text.replace(matchedOriginal, IN_TAG_START + format.name + IN_TAG_END);
+          var matchOriginal = text.substring(bestDoc.matchMin, bestDoc.matchMax);
+          text = text.replace(matchOriginal, IN_TAG_START + format.name + IN_TAG_END);
 
           if (inDoc['_' + format.name]) {
-            if (Array.isArray(inDoc['_' + format.name])) inDoc['_' + format.name].push(matchedOriginal);
-            else inDoc['_' + format.name] = [inDoc['_' + format.name], matchedOriginal];
+            if (Array.isArray(inDoc['_' + format.name])) inDoc['_' + format.name].push(matchOriginal);
+            else inDoc['_' + format.name] = [inDoc['_' + format.name], matchOriginal];
           } else {
-            inDoc['_' + format.name] = matchedOriginal;
+            inDoc['_' + format.name] = matchOriginal;
           }
 
           if (inDoc[format.name]) {
-            if (Array.isArray(inDoc[format.name])) inDoc[format.name].push(matchedText);
-            else inDoc[format.name] = [inDoc[format.name], matchedText];
+            if (Array.isArray(inDoc[format.name])) inDoc[format.name].push(matchText);
+            else inDoc[format.name] = [inDoc[format.name], matchText];
           } else {
-            inDoc[format.name] = matchedText;
+            inDoc[format.name] = matchText;
           }
 
           if(format.mongo.taskFields) {
@@ -760,28 +771,28 @@ function mongoDbTypeCheck(text, format, inDoc, context, callback) {
           for(var _l = 0; _l < matchedDoc.length; _l++) {
             var matchDoc = matchedDoc[_l];
 
-            var matchedText = '';
+            var matchText = '';
             for (var l = 0; l < format.mongo.queryFields.length; l++) {
               var _text = matchDoc[format.mongo.queryFields[l]]
-              if (matchedText == '') matchedText = matchedText.concat(_text);
-              else matchedText = matchedText.concat(' ', _text);
+              if (matchText == '') matchText = matchText.concat(_text);
+              else matchText = matchText.concat(' ', _text);
             }
 
-            var matchedOriginal = text.substring(matchDoc.matchMin, matchDoc.matchMax);
-            text = text.replace(matchedOriginal, IN_TAG_START + format.name + IN_TAG_END);
+            var matchOriginal = text.substring(matchDoc.matchMin, matchDoc.matchMax);
+            text = text.replace(matchOriginal, IN_TAG_START + format.name + IN_TAG_END);
 
             if (inDoc['_' + format.name]) {
-              if (Array.isArray(inDoc['_' + format.name])) inDoc['_' + format.name].push(matchedOriginal);
-              else inDoc['_' + format.name] = [inDoc['_' + format.name], matchedOriginal];
+              if (Array.isArray(inDoc['_' + format.name])) inDoc['_' + format.name].push(matchOriginal);
+              else inDoc['_' + format.name] = [inDoc['_' + format.name], matchOriginal];
             } else {
-              inDoc['_' + format.name] = matchedOriginal;
+              inDoc['_' + format.name] = matchOriginal;
             }
 
             if (inDoc[format.name]) {
-              if (Array.isArray(inDoc[format.name])) inDoc[format.name].push(matchedText);
-              else inDoc[format.name] = [inDoc[format.name], matchedText];
+              if (Array.isArray(inDoc[format.name])) inDoc[format.name].push(matchText);
+              else inDoc[format.name] = [inDoc[format.name], matchText];
             } else {
-              inDoc[format.name] = matchedText;
+              inDoc[format.name] = matchText;
             }
 
             if(format.mongo.taskFields) {
@@ -931,6 +942,7 @@ var addressType = {
 exports.addressType= addressType;
 
 const ADDRESS_KEY = 'U01TX0FVVEgyMDE2MDgyODEwMjEyMDE0ODU1';
+exports.ADDRESS_KEY = ADDRESS_KEY;
 
 function addressTypeCheck(text, type, task, context, callback) {
   var userTokens = text.split(' ');
@@ -1015,9 +1027,9 @@ function addressTypeCheck(text, type, task, context, callback) {
           task.addressJibun.building = jusoToken[5];
 
           task.address.sido = roadToken[0];
-          task.address.sigungu = roadToken[1] + ' ' + roadToken[2];;
-          task.address.road = roadToken[3];
-          task.address.roadNum = roadToken[4];
+          task.address.sigungu = roadToken[1];
+          task.address.road = roadToken[2];
+          task.address.roadNum = roadToken[3];
 
         } else if (jusoToken[1].endsWith('군')) {
           task.addressJibun.sido = jusoToken[0];

@@ -8,7 +8,7 @@ exports.domino = {
     "module": "http",
     "action": "xpathRepeat",
     "url": "http://www.dominos.co.kr",
-    "path": "/index.do",
+    "path": "/menu.do?todo=getMenuList&gubun=PZ15",
     // "xpath": {
     //     "repeat": "//div[@class='menu_content']/ul/li",
     //     "doc": {
