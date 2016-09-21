@@ -78,7 +78,9 @@
     "xml2js": "^0.4.17",
     "winston": "^2.2.0",
     "if-async": "^3.7.4",
-    "xlsx": "^0.8.0"
+    "xlsx": "^0.8.0",
+    "tls": "^0.0.1",
+    "constants": "^0.0.2"
   },
   "devDependencies": {
     "coveralls": "^2.11.4",

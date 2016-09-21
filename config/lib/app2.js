@@ -32,11 +32,11 @@ module.exports.start = function() {
     console.log('listening on *:3000')
   });
 
-  app.route('/kakao/:botId/keyboard').get(kakao.keyboard);
-  app.route('/kakao/:botId/message').post(kakao.message);
-  app.route('/kakao/:botId/friend').post(kakao.friend);
-  app.route('/kakao/:botId/friend/:user_key').delete(kakao.deleteFriend);
-  app.route('/kakao/:botId/chat_room/:user_key').delete(kakao.deleteChatRoom);
+  app.route('/kakao/:bot/keyboard').get(kakao.keyboard);
+  app.route('/kakao/:bot/message').post(kakao.message);
+  app.route('/kakao/:bot/friend').post(kakao.friend);
+  app.route('/kakao/:bot/friend/:user_key').delete(kakao.deleteFriend);
+  app.route('/kakao/:bot/chat_room/:user_key').delete(kakao.deleteChatRoom);
 
   // app 실행하기
   app.route('/bot/app/:androidUrl/:androidStore/:iosUrl/:iosStore')
