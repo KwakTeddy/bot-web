@@ -75,7 +75,7 @@ function executeTask(task, context, successCallback, errorCallback) {
               callback(null, typeText, typeText, task);
             } else if(paramDef.required) {
               context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, print) {
-                task.print = print;
+                task.topTask.print = print;
                 callback(null, _inRaw, _inNLP, task)
               };
 
@@ -108,7 +108,7 @@ function executeTask(task, context, successCallback, errorCallback) {
                 } else {
                   context.user.doc = inDoc[paramDef.name];
                   context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, print) {
-                    task.print = print;
+                    task.topTask.print = print;
                     callback(null, _inRaw, inNLP, task, false);
                   };
 
@@ -120,7 +120,7 @@ function executeTask(task, context, successCallback, errorCallback) {
                 callback(null, inRaw, inNLP, inDoc, matched);
             } else if(paramDef.required) {
               context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, print) {
-                task.print = print;
+                task.topTask.print = print;
                 typeCheck(_inRaw, _inNLP, task, typeCheckCallback);
               };
 
@@ -140,7 +140,7 @@ function executeTask(task, context, successCallback, errorCallback) {
               try {
                 var num = Number(inRaw);
                 if (num >= 1 && num <= context.user.doc.length) {
-                  task[paramDef.name] = context.user.doc[num-1];
+                  task[paramDef.name] = context.user.doc[num-1];k
                   context.user.doc = null;
 
                   if(task.in && task[paramDef.name]['matchOriginal']) {
@@ -151,7 +151,7 @@ function executeTask(task, context, successCallback, errorCallback) {
                   callback(null, inRaw, inNLP, inDoc, true);
                 } else {
                   context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, print) {
-                    task.print = print;
+                    task.topTask.print = print;
                     multiMatchedSelect(null, _inRaw, inNLP, task, multiMatchedSelectCallback);
                   };
 
@@ -159,7 +159,7 @@ function executeTask(task, context, successCallback, errorCallback) {
                 }
               } catch (e) {
                 context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, print) {
-                  task.print = print;
+                  task.topTask.print = print;
                   multiMatchedSelect(null, _inRaw, inNLP, task, multiMatchedSelectCallback);
                 };
 
@@ -189,7 +189,7 @@ function executeTask(task, context, successCallback, errorCallback) {
           var additionalCheck =  function(inRaw, inNLP, inDoc, matched, callback) {
             if(inDoc.requiredOut) {
               context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, print) {
-                task.print = print;
+                task.topTask.print = print;
                 customCheck(_inRaw, _inNLP, task, true, customCheckCallback);
               };
 
