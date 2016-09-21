@@ -43,9 +43,9 @@ function executeTask(task, context, successCallback, errorCallback) {
 
           var printRequired = function(text, inDoc, paramDef, paramType) {
             if(inDoc.requiredOut) {
-              task.print(inDoc.requiredOut + context.global.messages.typeExit, inDoc);
+              task.topTask.print(inDoc.requiredOut + context.global.messages.typeExit, inDoc);
             } else {
-              task.print((paramDef.question instanceof Function ? paramDef.question(inDoc, context) : paramDef.question) +
+              task.topTask.print((paramDef.question instanceof Function ? paramDef.question(inDoc, context) : paramDef.question) +
                 context.global.messages.typeExit, inDoc);
             }
           };
@@ -113,7 +113,7 @@ function executeTask(task, context, successCallback, errorCallback) {
                   };
 
                   // task.print(type.processOutput(inDoc, context, '다음 중 원하시는 것을 선택해주세요.\n#'+paramDef.name+'#+index+. +name+\n#'));
-                  task.print(type.processOutput(inDoc, context, paramType.out));
+                  task.topTask.print(type.processOutput(inDoc, context, paramType.out));
                 }
 
               } else
@@ -140,7 +140,7 @@ function executeTask(task, context, successCallback, errorCallback) {
               try {
                 var num = Number(inRaw);
                 if (num >= 1 && num <= context.user.doc.length) {
-                  task[paramDef.name] = context.user.doc[num-1];k
+                  task[paramDef.name] = context.user.doc[num-1];
                   context.user.doc = null;
 
                   if(task.in && task[paramDef.name]['matchOriginal']) {
@@ -155,7 +155,7 @@ function executeTask(task, context, successCallback, errorCallback) {
                     multiMatchedSelect(null, _inRaw, inNLP, task, multiMatchedSelectCallback);
                   };
 
-                  task.print('번호를 입력해 주세요.');
+                  task.topTask.print('번호를 입력해 주세요.');
                 }
               } catch (e) {
                 context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, print) {
@@ -163,7 +163,7 @@ function executeTask(task, context, successCallback, errorCallback) {
                   multiMatchedSelect(null, _inRaw, inNLP, task, multiMatchedSelectCallback);
                 };
 
-                task.print('번호를 입력해 주세요.');
+                task.topTask.print('번호를 입력해 주세요.');
               }
             }
           };
