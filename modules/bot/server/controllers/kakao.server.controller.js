@@ -45,7 +45,7 @@ exports.message = function (req, res) {
     var type = req.body.type;
     var text = req.body.content;
 
-    chat.write(from, req.params.botId, text, function (serverText, json) {
+    chat.write(from, req.params.bot, text, function (serverText, json) {
       respondMessage(res, serverText, json)
     });
   }
@@ -64,9 +64,9 @@ exports.deleteFriend = function (req, res) {
 };
 
 exports.deleteChatRoom = function (req, res) {
-  console.log("kakao delete chatroom: " + req.params.user_key + "," + req.params.botId);
+  console.log("kakao delete chatroom: " + req.params.user_key + "," + req.params.bot);
 
-  chat.write(req.params.user_key, req.params.botId, ":reset user", function (serverText, json) {
+  chat.write(req.params.user_key, req.params.bot, ":reset user", function (serverText, json) {
     // respondMessage(res, serverText, json)
   });
 
