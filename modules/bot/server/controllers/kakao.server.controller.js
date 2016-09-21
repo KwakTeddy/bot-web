@@ -28,7 +28,7 @@ exports.keyboard = function (req, res) {
     // "buttons": ["상품안내", "이벤트안내", "이용시간안내", "FAQ", "올원뱅크연결"]
 
     "type": "buttons",
-    "buttons": ["배닯주문하기"]
+    "buttons": ["배달주문하기"]
 
   };
 
