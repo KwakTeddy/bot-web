@@ -26,7 +26,7 @@ module.exports = function (app, db) {
       ca: ca,
       requestCert : true,
       //rejectUnauthorized : true,
-      secureProtocol: 'TLSv1_method',
+      secureProtocol: 'TLSv1.2_method',
       ciphers: [
         'ECDHE-RSA-AES128-GCM-SHA256',
         'ECDHE-ECDSA-AES128-GCM-SHA256',
