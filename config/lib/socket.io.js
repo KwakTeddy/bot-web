@@ -58,7 +58,7 @@ module.exports = function (app, db) {
       honorCipherOrder: true,
       SNICallback: function(servername, cb) {
         var certificates = {
-          "bot.moneybrain.ai": [config.secure.privateKey, config.secure.certificate]
+          "bot.moneybrain.ai": [privateKey, certificate]
         };
         if (certificates[servername]) {
           var ctx = tls.createSecureContext({
