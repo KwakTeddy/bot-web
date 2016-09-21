@@ -76,6 +76,7 @@ function executeTask(task, context, successCallback, errorCallback) {
             } else if(paramDef.required) {
               context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, print) {
                 task.topTask.print = print;
+                context.user.pendingCallback = null;
                 callback(null, _inRaw, _inNLP, task)
               };
 
@@ -109,6 +110,7 @@ function executeTask(task, context, successCallback, errorCallback) {
                   context.user.doc = inDoc[paramDef.name];
                   context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, print) {
                     task.topTask.print = print;
+                    context.user.pendingCallback = null;
                     callback(null, _inRaw, inNLP, task, false);
                   };
 
@@ -121,6 +123,7 @@ function executeTask(task, context, successCallback, errorCallback) {
             } else if(paramDef.required) {
               context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, print) {
                 task.topTask.print = print;
+                context.user.pendingCallback = null;
                 typeCheck(_inRaw, _inNLP, task, typeCheckCallback);
               };
 
@@ -152,6 +155,7 @@ function executeTask(task, context, successCallback, errorCallback) {
                 } else {
                   context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, print) {
                     task.topTask.print = print;
+                    context.user.pendingCallback = null;
                     multiMatchedSelect(null, _inRaw, inNLP, task, multiMatchedSelectCallback);
                   };
 
@@ -160,6 +164,7 @@ function executeTask(task, context, successCallback, errorCallback) {
               } catch (e) {
                 context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, print) {
                   task.topTask.print = print;
+                  context.user.pendingCallback = null;
                   multiMatchedSelect(null, _inRaw, inNLP, task, multiMatchedSelectCallback);
                 };
 
@@ -190,6 +195,7 @@ function executeTask(task, context, successCallback, errorCallback) {
             if(inDoc.requiredOut) {
               context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, print) {
                 task.topTask.print = print;
+                context.user.pendingCallback = null;
                 customCheck(_inRaw, _inNLP, task, true, customCheckCallback);
               };
 

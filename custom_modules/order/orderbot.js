@@ -125,6 +125,8 @@ var deliverOrder = {
                 task.url = 'tel: ' + task.topTask.restaurant.phone;
                 task.urlMessage = '전화걸기';
 
+                task.topTask._ended = true;
+                task.topTask.out = null;
                 task.topTask.print('해당 음식점의 메뉴판 정보가 입력되지 않아 전화주문이 가능합니다. 전화로 주문해주세요.', task);
                 callback(task, context);
               }
@@ -257,6 +259,8 @@ var deliverOrder = {
                 task.url = 'tel: ' + task.topTask.restaurant.phone;
                 task.urlMessage = '전화걸기';
 
+                task.topTask._ended = true;
+                task.topTask.out = null;
                 task.topTask.print('해당 음식점의 메뉴판 정보가 입력되지 않아 전화주문이 가능합니다. 전화로 주문해주세요.', task);
                 callback(task, context);
               }

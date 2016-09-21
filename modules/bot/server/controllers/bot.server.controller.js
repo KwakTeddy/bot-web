@@ -67,7 +67,7 @@ function botProc(botName, user, inTextRaw, outCallback, chatServerConfig) {
     });
 
     chatscriptSocket.on('end', function() {       // on end from chatscriptSocket
-      // console.log('disconnected from server');
+      console.log('disconnected from server');
     });
 
     chatscriptSocket.on('error', function(err) {  // on error from chatscriptSocket

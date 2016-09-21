@@ -28,7 +28,7 @@ exports.keyboard = function (req, res) {
     // "buttons": ["상품안내", "이벤트안내", "이용시간안내", "FAQ", "올원뱅크연결"]
 
     "type": "buttons",
-    "buttons": ["배달주문하기"]
+    "buttons": ["배달주문하기", "배달내역보기"]
 
   };
 
@@ -36,13 +36,9 @@ exports.keyboard = function (req, res) {
   res.end();
 };
 
-var count = 0;
 exports.message = function (req, res) {
-  res.count = ++count;
-  console.log(res.count + " kakao message");
+  console.log("kakao message");
   console.log(JSON.stringify(req.body));
-
-  //respondMessage2(res, "")
 
   if(req.body && req.body.user_key && req.body.content) {
     var from = req.body.user_key;
@@ -51,10 +47,6 @@ exports.message = function (req, res) {
 
     chat.write(from, req.params.botId, text, function (serverText, json) {
       respondMessage(res, serverText, json)
-
-      //moneybot.receivedMoneyBot(from, serverText, function(retText, url) {
-      //  respondMessage(res, retText, url)
-      //});
     });
   }
 
@@ -115,39 +107,8 @@ function respondMessage(res, text, json) {
     };
   }
 
-  console.log(res.count + ' ' + JSON.stringify(sendMsg));
-  res.write(JSON.stringify(sendMsg));
-  res.end();
-}
-
-
-function respondMessage2(res, text) {
-  var sendMsg =
-  {
-    "message": {
-      "text": "귀하의 차량이 성공적으로 등록되었습니다. 축하합니다!",
-      "photo": {
-        "url": "https://photo.src",
-        "width": 640,
-        "height": 480
-      },
-      "message_button": {
-        "label": "주유 쿠폰받기",
-        "url": "https://coupon/url"
-      }
-    },
-    "keyboard": {
-      "type": "buttons",
-      "buttons": [
-        "처음으로",
-        "다시 등록하기",
-        "취소하기"
-      ]
-    }
-  };
-
   console.log(JSON.stringify(sendMsg));
   res.write(JSON.stringify(sendMsg));
   res.end();
-
 }
+
