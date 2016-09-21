@@ -36,9 +36,10 @@ exports.keyboard = function (req, res) {
   res.end();
 };
 
-
+var count = 0;
 exports.message = function (req, res) {
-  console.log("kakao message");
+  res.count = ++count;
+  console.log(res.count + " kakao message");
   console.log(JSON.stringify(req.body));
 
   //respondMessage2(res, "")
@@ -114,7 +115,7 @@ function respondMessage(res, text, json) {
     };
   }
 
-  console.log(JSON.stringify(sendMsg));
+  console.log(res.count + ' ' + JSON.stringify(sendMsg));
   res.write(JSON.stringify(sendMsg));
   res.end();
 }
