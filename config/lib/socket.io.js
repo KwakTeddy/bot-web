@@ -6,6 +6,8 @@ var config = require('../config'),
   fs = require('fs'),
   http = require('http'),
   https = require('https'),
+  tls = require('tls'),
+  constants = require('constants'),
   cookieParser = require('cookie-parser'),
   passport = require('passport'),
   socketio = require('socket.io'),
@@ -26,7 +28,10 @@ module.exports = function (app, db) {
       ca: ca,
       requestCert : true,
       //rejectUnauthorized : true,
-      secureProtocol: 'TLSv1.2_method',
+      // secureProtocol: 'TLSv1.2_method',
+      secureProtocol: 'SSLv23_method',
+      secureOptions: constants.SSL_OP_NO_SSLv3 | constants.SSL_OP_NO_SSLv2,
+
       ciphers: [
         'ECDHE-RSA-AES128-GCM-SHA256',
         'ECDHE-ECDSA-AES128-GCM-SHA256',
@@ -57,8 +62,8 @@ module.exports = function (app, db) {
         };
         if (certificates[servername]) {
           var ctx = tls.createSecureContext({
-            key: fs.readFileSync(certificates[servername][0]),
-            cert: fs.readFileSync(certificates[servername][1])
+            key: certificates[servername][0],
+            cert: certificates[servername][1]
             // passphrase: passphrase
           });
           // Compatibility with old versions of node
