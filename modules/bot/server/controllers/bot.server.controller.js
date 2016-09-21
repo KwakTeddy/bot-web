@@ -32,13 +32,24 @@ function botProc(botName, user, inTextRaw, outCallback, chatServerConfig) {
   type.processInput(context, inTextRaw, function(inTextNLP, inDoc) {
     logger.verbose("자연어 처리>> " + inTextNLP);
 
+    var print = function(_out, _task) {
+      logger.verbose("사용자 출력>> " + _out + "\n");
+
+      if(_task && _task.photoUrl && !_task.photoUrl.startsWith('http')) {
+        //_task.photoUrl = config.host + (config.port ? ':' + config.port : '') + _task.photoUrl;
+        _task.photoUrl = (process.env.HTTP_HOST ? process.env.HTTP_HOST : '') + _task.photoUrl;
+      }
+
+      outCallback(_out, _task);
+    };
+
     if(context.user.pendingCallback) {
       if(inTextRaw.search(/(처음|메뉴)/g) != -1 || inTextRaw.startsWith(':')) {
         context.user.pendingCallback = null;
         context.user.pendingType = null;
 
       } else {
-        context.user.pendingCallback(inTextRaw, inTextNLP, inDoc);
+        context.user.pendingCallback(inTextRaw, inTextNLP, inDoc, print, print);
         return;
       }
     }
@@ -52,20 +63,7 @@ function botProc(botName, user, inTextRaw, outCallback, chatServerConfig) {
 
       logger.verbose("챗서버 답변>> " + chatserverOut);
 
-      botProcess.processChatserverOut(context, chatserverOut, inTextNLP, inTextRaw, inDoc, function(_out, _task) {
-        logger.verbose("사용자 출력>> " + _out + "\n");
-
-        if(_task && _task.photoUrl && !_task.photoUrl.startsWith('http')) {
-          //_task.photoUrl = config.host + (config.port ? ':' + config.port : '') + _task.photoUrl;
-          _task.photoUrl = (process.env.HTTP_HOST ? process.env.HTTP_HOST : '') + _task.photoUrl;
-        }
-
-        outCallback(_out, _task);
-      }, function(_out, _task) {
-        logger.error("오류 출력>> " + _out + "\n");
-
-        outCallback(_out, _task);
-      })
+      botProcess.processChatserverOut(context, chatserverOut, inTextNLP, inTextRaw, inDoc, print, print)
     });
 
     chatscriptSocket.on('end', function() {       // on end from chatscriptSocket

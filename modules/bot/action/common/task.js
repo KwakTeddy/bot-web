@@ -74,7 +74,8 @@ function executeTask(task, context, successCallback, errorCallback) {
             if(typeText) {
               callback(null, typeText, typeText, task);
             } else if(paramDef.required) {
-              context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc) {
+              context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, print) {
+                task.print = print;
                 callback(null, _inRaw, _inNLP, task)
               };
 
@@ -106,7 +107,8 @@ function executeTask(task, context, successCallback, errorCallback) {
                   callback(null, inRaw, inNLP, inDoc, matched);
                 } else {
                   context.user.doc = inDoc[paramDef.name];
-                  context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc) {
+                  context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, print) {
+                    task.print = print;
                     callback(null, _inRaw, inNLP, task, false);
                   };
 
@@ -117,7 +119,8 @@ function executeTask(task, context, successCallback, errorCallback) {
               } else
                 callback(null, inRaw, inNLP, inDoc, matched);
             } else if(paramDef.required) {
-              context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc) {
+              context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, print) {
+                task.print = print;
                 typeCheck(_inRaw, _inNLP, task, typeCheckCallback);
               };
 
@@ -147,14 +150,16 @@ function executeTask(task, context, successCallback, errorCallback) {
 
                   callback(null, inRaw, inNLP, inDoc, true);
                 } else {
-                  context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc) {
+                  context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, print) {
+                    task.print = print;
                     multiMatchedSelect(null, _inRaw, inNLP, task, multiMatchedSelectCallback);
                   };
 
                   task.print('번호를 입력해 주세요.');
                 }
               } catch (e) {
-                context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc) {
+                context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, print) {
+                  task.print = print;
                   multiMatchedSelect(null, _inRaw, inNLP, task, multiMatchedSelectCallback);
                 };
 
@@ -183,7 +188,8 @@ function executeTask(task, context, successCallback, errorCallback) {
 
           var additionalCheck =  function(inRaw, inNLP, inDoc, matched, callback) {
             if(inDoc.requiredOut) {
-              context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc) {
+              context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, print) {
+                task.print = print;
                 customCheck(_inRaw, _inNLP, task, true, customCheckCallback);
               };
 
