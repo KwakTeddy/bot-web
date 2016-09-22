@@ -39,6 +39,7 @@ exports.message = function (req, res) {
       // Iterate over each messaging event
       pageEntry.messaging.forEach(function(messagingEvent) {
         messagingEvent.botId = req.params.bot;
+
         if (messagingEvent.optin) {
           receivedAuthentication(messagingEvent);
         } else if (messagingEvent.message) {
@@ -61,7 +62,7 @@ exports.message = function (req, res) {
   }
 };
 
-
+exports.respondMessage = respondMessage;
 function respondMessage(to, text, json) {
   if (text) {
 
