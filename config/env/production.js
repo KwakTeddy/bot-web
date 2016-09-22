@@ -3,7 +3,8 @@
 module.exports = {
   secure: {
     ssl: true,
-    ca: './config/sslcerts/ca.pem',
+    ca: './config/sslcerts/sub.class1.server.ca.pem',
+    //ca: './config/sslcerts/ca.pem',
     privateKey: './config/sslcerts/ssl.key',
     certificate: './config/sslcerts/ssl.crt'
   },

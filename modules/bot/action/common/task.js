@@ -654,6 +654,7 @@ function findModule(task, context) {
 
   try {
     modulePath = '../../../../custom_modules/' + botName + '/' + (task.module ? task.module : botName);
+    console.log('findModule: ' + modulePath);
     delete require.cache[require.resolve(modulePath)];
     templateModule = require(modulePath);
 
@@ -668,6 +669,7 @@ function findModule(task, context) {
         task.template = template;
 
         modulePath = '../../action/common/' + task.module;
+        console.log('findModule1: ' + modulePath);
         delete require.cache[require.resolve(modulePath)];
         taskModule = require(modulePath);
 
@@ -676,19 +678,20 @@ function findModule(task, context) {
       }
     }
   } catch(err) {
-    // console.log("error loading custom module: " + botName + "/" + task.module + '/' + task.action);
-    // console.log(err);
+    console.log("error loading custom module: " + botName + "/" + task.module + '/' + task.action);
+    console.log(err);
   }
 
   // common action
   if(!taskModule) {
     try {
       modulePath = '../../action/common/' + task.module;
+      console.log('findModule2: ' + modulePath);
       delete require.cache[require.resolve(modulePath)];
       taskModule = require(modulePath);
     } catch(err) {
-      // console.log("error loading common module: " + task.module);
-      // console.log(err);
+      console.log("error loading common module: " + task.module);
+      console.log(err);
     }
   }
 

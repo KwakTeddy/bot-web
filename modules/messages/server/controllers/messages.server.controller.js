@@ -9,13 +9,14 @@ var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash'),
   mysql = require('mysql'),
+  fs = require('fs'),
   dateformat = require('dateformat');
 
 var mySqlPool = mysql.createPool({
-  host: 'wefund.co.kr',//'localhost',
+  host: 'localhost',
   port: '3306',
   user: 'root',
-  // password: 'Wefund4ever!',
+  password: 'Make01mb!',
   database: 'kakao_agent',
   connectionLimit: 20,
   waitForConnections: false
@@ -135,6 +136,13 @@ exports.sendKakao = function (req, res) {
   var message = req.body.message;
   sendKakaoSeq++;
 
+  fs.readFile('/home/bot/nh2.txt', function (err, data) {
+    if(err) {
+      console.log(err.toString());
+    } else {
+      console.log('data: ' + data);
+      message = data;
+
   mySqlPool.getConnection(function (err, connection) {
     console.log(err);
     var query = connection.query('INSERT INTO MZSENDTRAN (SN, SENDER_KEY, CHANNEL, PHONE_NUM, TMPL_CD, SND_MSG, REQ_DTM, TRAN_STS)' +
@@ -143,7 +151,7 @@ exports.sendKakao = function (req, res) {
       '\'484a760f0ab588a483034d6d583f0ae8c2882829\',' +
       '\'A\',' +
       '\'' + phoneNum + '\',' +
-      '\'A001_01\',' +
+      '\'code1\',' +
       '\'' + message + '\',' +
       '\'' + dateformat(new Date()+9*60*60, 'yyyymmddHHMMss') + '\',' +
       '\'1\');'
@@ -155,6 +163,11 @@ exports.sendKakao = function (req, res) {
 
         connection.release();
       });
-    console.log(query);
+//    console.log(query);
   })
+
+    }
+  })
+
+  res.end();
 };
