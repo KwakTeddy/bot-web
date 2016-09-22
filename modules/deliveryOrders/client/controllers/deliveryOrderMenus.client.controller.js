@@ -64,7 +64,6 @@
         return false;
       }
 
-      // TODO: move create/update logic to service
       // if (vm.menus._id) {
         vm.menus.$update(successCallback, errorCallback);
       // } else {

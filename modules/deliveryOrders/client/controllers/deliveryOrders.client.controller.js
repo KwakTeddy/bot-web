@@ -32,7 +32,6 @@
         return false;
       }
 
-      // TODO: move create/update logic to service
       if (vm.deliveryOrder._id) {
         vm.deliveryOrder.$update(successCallback, errorCallback);
       } else {
