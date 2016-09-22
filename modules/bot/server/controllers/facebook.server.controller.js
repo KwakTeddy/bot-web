@@ -12,7 +12,6 @@ var PAGE_ACCESS_TOKEN =  "EAAJGZBCFjFukBAE63miCdcKFwqTEmbbhSbm6jIr6ws5I7fKnWSMUq
 var VALIDATION_TOKEN = "moneybrain_token";
 
 
-
 exports.messageGet =  function(req, res) {
   console.log(req.query['hub.mode'] + ', ' + req.query['hub.verify_token'] + ',' + VALIDATION_TOKEN );
   if (req.query['hub.mode'] === 'subscribe' &&
@@ -41,6 +40,7 @@ exports.message = function (req, res) {
       // Iterate over each messaging event
       pageEntry.messaging.forEach(function(messagingEvent) {
         messagingEvent.botId = req.params.bot;
+
         if (messagingEvent.optin) {
           receivedAuthentication(messagingEvent);
         } else if (messagingEvent.message) {
@@ -63,7 +63,7 @@ exports.message = function (req, res) {
   }
 };
 
-
+exports.respondMessage = respondMessage;
 function respondMessage(to, text, json) {
   if (text) {
 
