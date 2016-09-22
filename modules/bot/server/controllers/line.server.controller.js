@@ -2,7 +2,6 @@ var https = require('https');
 var net = require('net');
 var request = require('request');
 var chat = require('./bot.server.controller');
-var moneybot = require('../controllers/moneybot.server.controller');
 
 const CHANNEL_ID = 1469815524;
 const CHANNEL_SECRET = 'b3250f6b4b68374c2c9d70314980b814';

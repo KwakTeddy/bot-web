@@ -1,36 +1,24 @@
 var net = require('net');
 var request = require('request');
 var chat = require('./bot.server.controller');
-var moneybot = require('../controllers/moneybot.server.controller');
-
-const CHANNEL_ID = 1469815524;
-const CHANNEL_SECRET = 'b3250f6b4b68374c2c9d70314980b814';
-const MID = 'uf4867e86aa4c0e064754b0555d52a98f';
-
-const sendHeader = {
-  'Content-Type' : 'application/json; charset=UTF-8',
-  'X-Line-ChannelID' : CHANNEL_ID,
-  'X-Line-ChannelSecret' : CHANNEL_SECRET,
-  'X-Line-Trusted-User-With-ACL' : MID
-};
 
 exports.keyboard = function (req, res) {
   console.log("kakao keyboard");
 
-  var sendMsg =
-  {
-    // type: 'text'
+  var context = chat.getContext(req.params.bot, req.params.user_key);
 
+  var sendMsg = context.bot.kakao.keyboard;
+  if(sendMsg == undefined) sendMsg = { type: 'text'};
+
+  // {
+    // type: 'text'
     // "type": "buttons",
     // "buttons": ["잔액조회", "상품추천", "고객상담"]
-
     // "type": "buttons",
     // "buttons": ["상품안내", "이벤트안내", "이용시간안내", "FAQ", "올원뱅크연결"]
-
-    "type": "buttons",
-    "buttons": ["배달주문하기", "배달내역보기"]
-
-  };
+    // "type": "buttons",
+    // "buttons": ["배달주문하기", "배달내역보기"]
+  // };
 
   res.write(JSON.stringify(sendMsg));
   res.end();

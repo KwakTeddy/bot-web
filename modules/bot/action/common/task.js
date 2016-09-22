@@ -678,8 +678,8 @@ function findModule(task, context) {
       }
     }
   } catch(err) {
-    console.log("error loading custom module: " + botName + "/" + task.module + '/' + task.action);
-    console.log(err);
+    // console.log("error loading custom module: " + botName + "/" + task.module + '/' + task.action);
+    // console.log(err);
   }
 
   // common action
@@ -690,8 +690,8 @@ function findModule(task, context) {
       delete require.cache[require.resolve(modulePath)];
       taskModule = require(modulePath);
     } catch(err) {
-      console.log("error loading common module: " + task.module);
-      console.log(err);
+      // console.log("error loading common module: " + task.module);
+      // console.log(err);
     }
   }
 

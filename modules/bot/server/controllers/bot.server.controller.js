@@ -1,6 +1,5 @@
 var net = require('net');
 var path = require('path');
-var moneybot = require('../controllers/moneybot.server.controller');
 var botProcess = require('../controllers/_action.server.controller');
 var tough = require('tough-cookie');
 var _ = require('lodash');
@@ -78,7 +77,7 @@ function botProc(botName, user, inTextRaw, outCallback, chatServerConfig) {
 
 }
 
-
+exports.getContext = getContext;
 function getContext(botName, user) {
   if(!global._context) global._context = {};
   if(!global._bots) global._bots = [];
@@ -103,6 +102,32 @@ function getContext(botName, user) {
 
   return context;
 }
+
+
+global._bots = {
+  order: {
+    kakao: {
+      keyboard: { type :"buttons", buttons:["배달주문하기", "배달내역보기"]}
+    },
+    facebook: {
+      APP_SECRET :  "eb2974959255583150013648e7ac5da4",
+      PAGE_ACCESS_TOKEN :  "EAAJGZBCFjFukBAE63miCdcKFwqTEmbbhSbm6jIr6ws5I7fKnWSMUqIzGfHZBDTqmW0wra5xZBZCLWg2O9miPcc6WdVQRyfHdDCYuhLjIbng0njUHqOdbasHcSZAs2WEO7zG72wgmciNsF138QCq1vLnzMHR3XYIP0VnV1iZBsZAngZDZD",
+      VALIDATION_TOKEN : "moneybrain_token"
+    }
+  },
+  moneybot: {
+    kakao: {
+      keyboard: { type :"buttons", buttons:["잔액조회", "상품추천", "고객상담"]}
+    },
+    facebook: {
+      APP_SECRET :  "174b2a851e3811c3f2c267d46708d212",
+      PAGE_ACCESS_TOKEN :  "EAAYwPrsj1ZA0BAORAoGhxvLLs5eRZADJ8BheTdjOXu8lT0X2tVFwZAZCEJiWFenFHCVqSuctfONET6dhbPDBnlivq5sXEvBABTnRlYpX8hLxZAnO2lywRiA6sVlbYAvG1n1EpQwkVhZAdrmq1p9PlQRUu327O1ohcZBwVLYZCn3beQZDZD",
+      VALIDATION_TOKEN : "my_voice_is_my_password_verify_me"
+    }
+  }
+
+};
+
 
 var messages = {
   // typeExit: '\n처음으로 돌아가기: \'ㄱ\'',

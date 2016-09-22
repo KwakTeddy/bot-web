@@ -1,21 +1,22 @@
 var net = require('net');
 var request = require('request');
 var chat = require('./bot.server.controller');
-var moneybot = require('../controllers/moneybot.server.controller');
 
 // var APP_SECRET =  "174b2a851e3811c3f2c267d46708d212";
 // var PAGE_ACCESS_TOKEN =  "EAAYwPrsj1ZA0BAORAoGhxvLLs5eRZADJ8BheTdjOXu8lT0X2tVFwZAZCEJiWFenFHCVqSuctfONET6dhbPDBnlivq5sXEvBABTnRlYpX8hLxZAnO2lywRiA6sVlbYAvG1n1EpQwkVhZAdrmq1p9PlQRUu327O1ohcZBwVLYZCn3beQZDZD";
 // var VALIDATION_TOKEN = "my_voice_is_my_password_verify_me";
 
-var APP_SECRET =  "eb2974959255583150013648e7ac5da4";
-var PAGE_ACCESS_TOKEN =  "EAAJGZBCFjFukBAE63miCdcKFwqTEmbbhSbm6jIr6ws5I7fKnWSMUqIzGfHZBDTqmW0wra5xZBZCLWg2O9miPcc6WdVQRyfHdDCYuhLjIbng0njUHqOdbasHcSZAs2WEO7zG72wgmciNsF138QCq1vLnzMHR3XYIP0VnV1iZBsZAngZDZD";
-var VALIDATION_TOKEN = "moneybrain_token";
+// var APP_SECRET =  "eb2974959255583150013648e7ac5da4";
+// var PAGE_ACCESS_TOKEN =  "EAAJGZBCFjFukBAE63miCdcKFwqTEmbbhSbm6jIr6ws5I7fKnWSMUqIzGfHZBDTqmW0wra5xZBZCLWg2O9miPcc6WdVQRyfHdDCYuhLjIbng0njUHqOdbasHcSZAs2WEO7zG72wgmciNsF138QCq1vLnzMHR3XYIP0VnV1iZBsZAngZDZD";
+// var VALIDATION_TOKEN = "moneybrain_token";
 
 
 exports.messageGet =  function(req, res) {
-  console.log(req.query['hub.mode'] + ', ' + req.query['hub.verify_token'] + ',' + VALIDATION_TOKEN );
+  var context = chat.getContext(req.params.bot, null);
+
+  console.log(req.query['hub.mode'] + ', ' + req.query['hub.verify_token'] + ',' + context.bot.VALIDATION_TOKEN );
   if (req.query['hub.mode'] === 'subscribe' &&
-    req.query['hub.verify_token'] === VALIDATION_TOKEN) {
+    req.query['hub.verify_token'] === context.bot.VALIDATION_TOKEN) {
     console.log("Validating webhook");
     res.status(200).send(req.query['hub.challenge']);
   } else {
@@ -64,37 +65,49 @@ exports.message = function (req, res) {
 };
 
 exports.respondMessage = respondMessage;
-function respondMessage(to, text, json) {
-  if (text) {
+function respondMessage(to, text, botId, task) {
 
-    // If we receive a text message, check to see if it matches any special
-    // keywords and send back the corresponding example. Otherwise, just echo
-    // the text we received.
-    switch (text) {
-      case 'image':
-        sendImageMessage(to);
-        break;
-
-      case 'button':
-        sendButtonMessage(to);
-        break;
-
-      case 'generic':
-        sendGenericMessage(to);
-        break;
-
-      case 'receipt':
-        sendReceiptMessage(to);
-        break;
-
-      default:
-        sendTextMessage(to, text);
+  var messageData = {
+    recipient: {
+      id: to
+    },
+    message: {
+      text: text
     }
-  } else if (messageAttachments) {
-    sendTextMessage(to, "Message with attachment received");
-  } else {
-    sendTextMessage(to, "서버가 연결되어 있지 않습니다.");
-  }
+  };
+
+  var context = chat.getContext(botId, to);
+  callSendAPI(messageData, context.bot.PAGE_ACCESS_TOKEN);
+
+  // if (text) {
+  //   // If we receive a text message, check to see if it matches any special
+  //   // keywords and send back the corresponding example. Otherwise, just echo
+  //   // the text we received.
+  //   switch (text) {
+  //     case 'image':
+  //       sendImageMessage(to);
+  //       break;
+  //
+  //     case 'button':
+  //       sendButtonMessage(to);
+  //       break;
+  //
+  //     case 'generic':
+  //       sendGenericMessage(to);
+  //       break;
+  //
+  //     case 'receipt':
+  //       sendReceiptMessage(to);
+  //       break;
+  //
+  //     default:
+  //       sendTextMessage(to, text);
+  //   }
+  // } else if (messageAttachments) {
+  //   sendTextMessage(to, "Message with attachment received");
+  // } else {
+  //   sendTextMessage(to, "서버가 연결되어 있지 않습니다.");
+  // }
 }
 
 /*
@@ -177,9 +190,9 @@ function receivedMessage(event) {
   var timeOfMessage = event.timestamp;
   var message = event.message;
 
-  console.log("Received message for user %d and page %d at %d with message:",
-    senderID, recipientID, timeOfMessage);
-  console.log(JSON.stringify(message));
+  // console.log("Received message for user %d and page %d at %d with message:",
+  //   senderID, recipientID, timeOfMessage);
+  // console.log(JSON.stringify(message));
 
   var messageId = message.mid;
 
@@ -187,10 +200,8 @@ function receivedMessage(event) {
   var messageText = message.text;
   var messageAttachments = message.attachments;
 
-  chat.write(senderID, event.botId, messageText, function (retText, json) {
-    //moneybot.receivedMoneyBot(senderID, serverText, function(retText, url) {
-      respondMessage(senderID, retText, json);
-    //});
+  chat.write(senderID, event.botId, messageText, function (retText, task) {
+      respondMessage(senderID, retText, event.botId, task);
   });
 }
 
@@ -439,7 +450,7 @@ function sendReceiptMessage(recipientId) {
  * get the message id in a response
  *
  */
-function callSendAPI(messageData) {
+function callSendAPI(messageData, PAGE_ACCESS_TOKEN) {
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: PAGE_ACCESS_TOKEN },
@@ -455,7 +466,7 @@ function callSendAPI(messageData) {
         messageId, recipientId);
     } else {
       console.error("Unable to send message.");
-      console.error(response);
+      // console.error(response);
       console.error(error);
     }
   });
