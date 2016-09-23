@@ -27,7 +27,6 @@ exports.messageGet =  function(req, res) {
 
 
 exports.message = function (req, res) {
-
   var data = req.body;
 
   // Make sure this is a page subscription
@@ -190,7 +189,9 @@ function receivedMessage(event) {
   var timeOfMessage = event.timestamp;
   var message = event.message;
 
-  if(recipientID == '1006864529411088') {
+  var context = chat.getContext(event.botId, 'facebook', senderID);
+
+  if(recipientID == context.bot.facebook.id) {
     // console.log("Received message for user %d and page %d at %d with message:",
     //   senderID, recipientID, timeOfMessage);
     // console.log(JSON.stringify(message));
