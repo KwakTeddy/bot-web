@@ -74,7 +74,7 @@ function executeTask(task, context, successCallback, errorCallback) {
             if(typeText) {
               callback(null, typeText, typeText, task);
             } else if(paramDef.required) {
-              context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, print) {
+              context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, _context, print) {
                 task.topTask.print = print;
                 context.user.pendingCallback = null;
                 callback(null, _inRaw, _inNLP, task)
@@ -108,7 +108,7 @@ function executeTask(task, context, successCallback, errorCallback) {
                   callback(null, inRaw, inNLP, inDoc, matched);
                 } else {
                   context.user.doc = inDoc[paramDef.name];
-                  context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, print) {
+                  context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, _context, print) {
                     task.topTask.print = print;
                     context.user.pendingCallback = null;
                     callback(null, _inRaw, inNLP, task, false);
@@ -121,7 +121,7 @@ function executeTask(task, context, successCallback, errorCallback) {
               } else
                 callback(null, inRaw, inNLP, inDoc, matched);
             } else if(paramDef.required) {
-              context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, print) {
+              context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, _context, print) {
                 task.topTask.print = print;
                 context.user.pendingCallback = null;
                 typeCheck(_inRaw, _inNLP, task, typeCheckCallback);
@@ -153,7 +153,7 @@ function executeTask(task, context, successCallback, errorCallback) {
 
                   callback(null, inRaw, inNLP, inDoc, true);
                 } else {
-                  context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, print) {
+                  context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, _context, print) {
                     task.topTask.print = print;
                     context.user.pendingCallback = null;
                     multiMatchedSelect(null, _inRaw, inNLP, task, multiMatchedSelectCallback);
@@ -162,7 +162,7 @@ function executeTask(task, context, successCallback, errorCallback) {
                   task.topTask.print('번호를 입력해 주세요.');
                 }
               } catch (e) {
-                context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, print) {
+                context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, _context, print) {
                   task.topTask.print = print;
                   context.user.pendingCallback = null;
                   multiMatchedSelect(null, _inRaw, inNLP, task, multiMatchedSelectCallback);
@@ -193,7 +193,7 @@ function executeTask(task, context, successCallback, errorCallback) {
 
           var additionalCheck =  function(inRaw, inNLP, inDoc, matched, callback) {
             if(inDoc.requiredOut) {
-              context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, print) {
+              context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, _context, print) {
                 task.topTask.print = print;
                 context.user.pendingCallback = null;
                 customCheck(_inRaw, _inNLP, task, true, customCheckCallback);
@@ -410,7 +410,7 @@ function _executeTask(task, context, successCallback, errorCallback) {
           if(paramDef.default == undefined && paramDef.isDisplay != false) {
             logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + ' paramDefs pending for user input ' + paramDef.name);
 
-            context.user.pendingCallback = function(inText, _inText, inDoc) {
+            context.user.pendingCallback = function(inText, _inText, inDoc, _context) {
               task = utils.merge(task, inDoc);
               task.in = inText;
               task.inRaw = _inText;

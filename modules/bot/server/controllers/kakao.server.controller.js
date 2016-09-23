@@ -5,7 +5,7 @@ var chat = require('./bot.server.controller');
 exports.keyboard = function (req, res) {
   console.log("kakao keyboard");
 
-  var context = chat.getContext(req.params.bot, req.params.user_key);
+  var context = chat.getContext(req.params.bot, 'kakao', req.params.user_key);
 
   var sendMsg = context.bot.kakao.keyboard;
   if(sendMsg == undefined) sendMsg = { type: 'text'};
@@ -33,7 +33,7 @@ exports.message = function (req, res) {
     var type = req.body.type;
     var text = req.body.content;
 
-    chat.write(from, req.params.bot, text, function (serverText, json) {
+    chat.write('kakao', from, req.params.bot, text, function (serverText, json) {
       respondMessage(res, serverText, json)
     });
   }
@@ -54,7 +54,7 @@ exports.deleteFriend = function (req, res) {
 exports.deleteChatRoom = function (req, res) {
   console.log("kakao delete chatroom: " + req.params.user_key + "," + req.params.bot);
 
-  chat.write(req.params.user_key, req.params.bot, ":reset user", function (serverText, json) {
+  chat.write('kakao', req.params.user_key, req.params.bot, ":reset user", function (serverText, json) {
     // respondMessage(res, serverText, json)
   });
 

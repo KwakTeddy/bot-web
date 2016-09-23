@@ -12,7 +12,7 @@ var chat = require('./bot.server.controller');
 
 
 exports.messageGet =  function(req, res) {
-  var context = chat.getContext(req.params.bot, null);
+  var context = chat.getContext(req.params.bot, 'facebook', null);
 
   console.log(req.query['hub.mode'] + ', ' + req.query['hub.verify_token'] + ',' + context.bot.VALIDATION_TOKEN );
   if (req.query['hub.mode'] === 'subscribe' &&
@@ -41,7 +41,7 @@ exports.message = function (req, res) {
       // Iterate over each messaging event
       pageEntry.messaging.forEach(function(messagingEvent) {
         messagingEvent.botId = req.params.bot;
-        console.log('message: ' + req.params.bot + ',' + messagingEvent.botId);
+
         if (messagingEvent.optin) {
           receivedAuthentication(messagingEvent);
         } else if (messagingEvent.message) {
@@ -76,8 +76,7 @@ function respondMessage(to, text, botId, task) {
     }
   };
 
-  var context = chat.getContext(botId, to);
-  console.log('respondMessage:' + botId + ',' + to + ' ,' + context.bot.PAGE_ACCESS_TOKEN + ',' + JSON.stringify(context.bot));
+  var context = chat.getContext(botId, 'facebook', to);
   callSendAPI(messageData, context.bot.facebook.PAGE_ACCESS_TOKEN);
 
   // if (text) {
@@ -201,9 +200,7 @@ function receivedMessage(event) {
   var messageText = message.text;
   var messageAttachments = message.attachments;
 
-  console.log('receiveMessage:' + event.botId);
-  chat.write(senderID, event.botId, messageText, function (retText, task) {
-      console.log('receiveMessage2:' + event.botId);
+  chat.write('facebook', senderID, event.botId, messageText, function (retText, task) {
       respondMessage(senderID, retText, event.botId, task);
   });
 }
@@ -454,9 +451,6 @@ function sendReceiptMessage(recipientId) {
  *
  */
 function callSendAPI(messageData, PAGE_ACCESS_TOKEN) {
-  console.log('token:' + PAGE_ACCESS_TOKEN);
-  console.log(messageData);
-
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: PAGE_ACCESS_TOKEN },
@@ -472,7 +466,7 @@ function callSendAPI(messageData, PAGE_ACCESS_TOKEN) {
         messageId, recipientId);
     } else {
       console.error("Unable to send message.");
-      // console.error(response);
+      console.error(JSON.stringify(response.body.error));
       console.error(error);
     }
   });

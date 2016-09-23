@@ -4,7 +4,8 @@ var async = require('async');
 var mongoose = require('mongoose');
 var utils = require(path.resolve('./modules/bot/action/common/utils'));
 var type = require(path.resolve('./modules/bot/action/common/type'));
-var facebook = require(path.resolve('./modules/bot/server/controllers/facebook.server.controller.js'))
+var manager = require(path.resolve('./custom_modules/order/manager'));
+
 var restaurantCategory = [
   {category: '치킨', alias: '치킨 통닭 닭 chicken'},
   {category: '중국집', alias: '중국 중국집 중식 짱깨 짱께 중식당 chinese'},
@@ -306,11 +307,8 @@ var deliverOrder = {
       postCallback: function(task, context, callback) {
         var re = new RegExp(context.global.messages.yesRegExp, 'g');
         if(task.complete.search(re) != -1) {
-          facebook.respondMessage('1094114534004265', '배달 주문이 접수 되었습니다.' +
-          '주소: ' + task.topTask.address.address + '\n' +
-          '음식점: ' + task.topTask.restaurant.name + '\n'+
-          '메뉴: ' + task.topTask.menu.name + ' ' + task.topTask.menu.price + '\n' +
-          '전화: ' + task.topTask.restaurant.phone, context.bot.botName );
+
+          manager.checkOrder(task, context, null);
 
           var model = mongoose.model('DeliveryOrder');
 

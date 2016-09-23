@@ -29,7 +29,7 @@ exports.receive = function (req, res) {
     var from = req.body.result[0].content.from;
     var text = req.body.result[0].content.text;
 
-    chat.write(from, req.params.bot, text, function (retText, url) {
+    chat.write('line', from, req.params.bot, text, function (retText, url) {
       //moneybot.receivedMoneyBot(from, serverText, function(retText, url) {
         respondMessage(from, retText, url)
       //});

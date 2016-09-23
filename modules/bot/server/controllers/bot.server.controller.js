@@ -12,17 +12,16 @@ var chatSocketConfig = {port: 1024, host: 'localhost', allowHalfOpen: true};
 var mongoose = require('mongoose'),
   BotUser = mongoose.model('BotUser');
 
-exports.write = function(from, to, text, successCallback, errorCallback, endCallback) {
-
-    botProc(to, from, text, successCallback, chatSocketConfig);
-
+exports.write = write;
+function write(channel, from, to, text, successCallback, errorCallback, endCallback) {
+    botProc(to, channel, from, text, successCallback, chatSocketConfig);
 };
 
 exports.botProc = botProc;
 
-function botProc(botName, user, inTextRaw, outCallback, chatServerConfig) {
+function botProc(botName, channel, user, inTextRaw, outCallback, chatServerConfig) {
 
-  var context = getContext(botName, user);
+  var context = getContext(botName, channel, user);
 
   logger.verbose("사용자 입력>> " + inTextRaw);
 
@@ -48,7 +47,7 @@ function botProc(botName, user, inTextRaw, outCallback, chatServerConfig) {
         context.user.pendingType = null;
 
       } else {
-        context.user.pendingCallback(inTextRaw, inTextNLP, inDoc, print, print);
+        context.user.pendingCallback(inTextRaw, inTextNLP, inDoc, context, print, print);
         return;
       }
     }
@@ -78,20 +77,24 @@ function botProc(botName, user, inTextRaw, outCallback, chatServerConfig) {
 }
 
 exports.getContext = getContext;
-function getContext(botName, user) {
+function getContext(botName, channel, user) {
   if(!global._context) global._context = {};
   if(!global._bots) global._bots = [];
   if(!global._bots[botName]) global._bots[botName] = {};
+  if(!global._channels) global._channels = {};
+  if(!global._channels[channel]) global._channels[channel] = {};
   if(!global._users) global._users = [];
   if(!global._users[user]) global._users[user] = {};
 
   var context = {
     global: global._context,
     bot: global._bots[botName],
+    channel: global._channels[channel],
     user: global._users[user]
   };
 
   context.bot.botName = botName;
+  context.channel.name = channel;
   context.user.userId = user;
 
   if(!context.user.cookie) context.user.cookie = new tough.CookieJar();
@@ -100,6 +103,7 @@ function getContext(botName, user) {
 
   context.user.mobile = '010-6316-5683';
 
+  logger.debug('context: ' + JSON.stringify( context.bot.kakao.keyboard));
   return context;
 }
 
@@ -113,7 +117,12 @@ global._bots = {
       APP_SECRET :  "eb2974959255583150013648e7ac5da4",
       PAGE_ACCESS_TOKEN :  "EAAJGZBCFjFukBAE63miCdcKFwqTEmbbhSbm6jIr6ws5I7fKnWSMUqIzGfHZBDTqmW0wra5xZBZCLWg2O9miPcc6WdVQRyfHdDCYuhLjIbng0njUHqOdbasHcSZAs2WEO7zG72wgmciNsF138QCq1vLnzMHR3XYIP0VnV1iZBsZAngZDZD",
       VALIDATION_TOKEN : "moneybrain_token"
-    }
+    },
+    managers: [
+      // {platform: 'facebook', userId: '1094114534004265', name: '장세영'},
+      {platform: 'facebook', userId: '1006864529411088', name: '테스트'}
+      //100013440439602
+    ]
   },
   moneybot: {
     kakao: {
