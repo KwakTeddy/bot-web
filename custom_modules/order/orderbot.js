@@ -310,7 +310,7 @@ var deliverOrder = {
           '주소: ' + task.topTask.address.address + '\n' +
           '음식점: ' + task.topTask.restaurant.name + '\n'+
           '메뉴: ' + task.topTask.menu.name + ' ' + task.topTask.menu.price + '\n' +
-          '전화: ' + task.topTask.restaurant.phone );
+          '전화: ' + task.topTask.restaurant.phone, context.bot.botName );
 
           var model = mongoose.model('DeliveryOrder');
 

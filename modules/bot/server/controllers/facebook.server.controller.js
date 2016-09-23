@@ -41,7 +41,7 @@ exports.message = function (req, res) {
       // Iterate over each messaging event
       pageEntry.messaging.forEach(function(messagingEvent) {
         messagingEvent.botId = req.params.bot;
-
+        console.log('message: ' + req.params.bot + ',' + messagingEvent.botId);
         if (messagingEvent.optin) {
           receivedAuthentication(messagingEvent);
         } else if (messagingEvent.message) {
@@ -77,7 +77,8 @@ function respondMessage(to, text, botId, task) {
   };
 
   var context = chat.getContext(botId, to);
-  callSendAPI(messageData, context.bot.PAGE_ACCESS_TOKEN);
+  console.log('respondMessage:' + botId + ',' + to + ' ,' + context.bot.PAGE_ACCESS_TOKEN + ',' + JSON.stringify(context.bot));
+  callSendAPI(messageData, context.bot.facebook.PAGE_ACCESS_TOKEN);
 
   // if (text) {
   //   // If we receive a text message, check to see if it matches any special
@@ -200,7 +201,9 @@ function receivedMessage(event) {
   var messageText = message.text;
   var messageAttachments = message.attachments;
 
+  console.log('receiveMessage:' + event.botId);
   chat.write(senderID, event.botId, messageText, function (retText, task) {
+      console.log('receiveMessage2:' + event.botId);
       respondMessage(senderID, retText, event.botId, task);
   });
 }
@@ -451,6 +454,9 @@ function sendReceiptMessage(recipientId) {
  *
  */
 function callSendAPI(messageData, PAGE_ACCESS_TOKEN) {
+  console.log('token:' + PAGE_ACCESS_TOKEN);
+  console.log(messageData);
+
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: PAGE_ACCESS_TOKEN },
