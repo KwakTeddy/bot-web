@@ -114,14 +114,17 @@ global._bots = {
       keyboard: { type :"buttons", buttons:["배달주문하기", "배달내역보기"]}
     },
     facebook: {
+      id: '1006864529411088',
       APP_SECRET :  "eb2974959255583150013648e7ac5da4",
       PAGE_ACCESS_TOKEN :  "EAAJGZBCFjFukBAE63miCdcKFwqTEmbbhSbm6jIr6ws5I7fKnWSMUqIzGfHZBDTqmW0wra5xZBZCLWg2O9miPcc6WdVQRyfHdDCYuhLjIbng0njUHqOdbasHcSZAs2WEO7zG72wgmciNsF138QCq1vLnzMHR3XYIP0VnV1iZBsZAngZDZD",
       VALIDATION_TOKEN : "moneybrain_token"
     },
     managers: [
       // {platform: 'facebook', userId: '1094114534004265', name: '장세영'},
-      {platform: 'facebook', userId: '1006864529411088', name: '테스트'}
+      {platform: 'facebook', userId: '997804450331458', name: '테스트'}
       //100013440439602
+
+      //10068645294110881006864529411088
     ]
   },
   moneybot: {
@@ -137,6 +140,8 @@ global._bots = {
 
 };
 
+//1094114534004265 장세영
+//1006864529411088 배달봇
 
 var messages = {
   // typeExit: '\n처음으로 돌아가기: \'ㄱ\'',

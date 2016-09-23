@@ -190,19 +190,21 @@ function receivedMessage(event) {
   var timeOfMessage = event.timestamp;
   var message = event.message;
 
-  // console.log("Received message for user %d and page %d at %d with message:",
-  //   senderID, recipientID, timeOfMessage);
-  // console.log(JSON.stringify(message));
+  if(recipientID == '1006864529411088') {
+    // console.log("Received message for user %d and page %d at %d with message:",
+    //   senderID, recipientID, timeOfMessage);
+    // console.log(JSON.stringify(message));
 
-  var messageId = message.mid;
+    var messageId = message.mid;
 
-  // You may get a text or attachment but not both
-  var messageText = message.text;
-  var messageAttachments = message.attachments;
+    // You may get a text or attachment but not both
+    var messageText = message.text;
+    var messageAttachments = message.attachments;
 
-  chat.write('facebook', senderID, event.botId, messageText, function (retText, task) {
+    chat.write('facebook', senderID, event.botId, messageText, function (retText, task) {
       respondMessage(senderID, retText, event.botId, task);
-  });
+    });
+  }
 }
 
 
