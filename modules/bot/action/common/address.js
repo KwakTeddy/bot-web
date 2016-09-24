@@ -6,13 +6,17 @@ var fs = require('fs');
 var async = require('async');
 var logger = require(path.resolve('./config/lib/logger'));
 
+var ADDRESS_DIR = process.env.ADDRESS_DIR;
+var ADDRESS_MATCH_DIR = process.env.ADDRESS_MATCH_DIR;
+var ADDRESS_SPACE_DIR = process.env.ADDRESS_SPACE_DIR;
+
 function insertAddress(task, context, callback) {
   async.waterfall([
     function (cb) {
       task.modelName = '도로명코드';
       task.schema = 도로명코드스키마;
       task.pk = ['시군구코드', '도로명번호', '읍면동일련번호'];
-      task.dir = '/Users/com2best/Documents/MoneyBrain/Dev/외부모듈/주소/201608전체주소(도로명코드)_전체분/';
+      task.dir = ADDRESS_DIR;
       task.fileFilter = function(file) { return file.startsWith('road_code'); };
 
       updateAddressDir(task, context, function(_task, _context) {
@@ -24,7 +28,7 @@ function insertAddress(task, context, callback) {
       task.modelName = '건물정보';
       task.schema = 건물정보스키마;
       task.pk = ['건물관리번호'];
-      task.dir = '/Users/com2best/Documents/MoneyBrain/Dev/외부모듈/주소/201608전체주소(도로명코드)_전체분/';
+      task.dir = ADDRESS_DIR;
       task.fileFilter = function(file) { return file.startsWith('build'); };
 
       updateAddressDir(task, context, function(_task, _context) {
@@ -36,7 +40,7 @@ function insertAddress(task, context, callback) {
       task.modelName = '관련지번';
       task.schema = 관련지번스키마;
       task.pk = ['도로명코드', '지하여부', '건물본번', '건물부번', '지번일련번호'];
-      task.dir = '/Users/com2best/Documents/MoneyBrain/Dev/외부모듈/주소/201608전체주소(도로명코드)_전체분/';
+      task.dir = ADDRESS_DIR;
       task.fileFilter = function(file) { return file.startsWith('jibun'); };
 
       updateAddressDir(task, context, function(_task, _context) {
@@ -48,7 +52,7 @@ function insertAddress(task, context, callback) {
       task.modelName = '개선도로명코드';
       task.schema = 개선도로명코드스키마;
       task.pk = ['도로명코드', '읍면동일련번호'];
-      task.dir = '/Users/com2best/Documents/MoneyBrain/Dev/외부모듈/주소/201608매칭데이터(도로명코드)_전체분/';
+      task.dir = ADDRESS_MATCH_DIR;
       task.fileFilter = function(file) { return file.startsWith('개선_도로명코드'); };
 
       updateAddressDir(task, context, function(_task, _context) {
@@ -60,7 +64,7 @@ function insertAddress(task, context, callback) {
       task.modelName = '도로명주소';
       task.schema = 도로명주소스키마;
       task.pk = ['관리번호', '도로명코드', '읍면동일련번호'];
-      task.dir = '/Users/com2best/Documents/MoneyBrain/Dev/외부모듈/주소/201608매칭데이터(도로명코드)_전체분/';
+      task.dir = ADDRESS_MATCH_DIR;
       task.fileFilter = function(file) { return file.startsWith('주소'); };
 
       updateAddressDir(task, context, function(_task, _context) {
@@ -72,7 +76,7 @@ function insertAddress(task, context, callback) {
       task.modelName = '지번주소';
       task.schema = 지번주소스키마;
       task.pk = ['관리번호', '일련번호'];
-      task.dir = '/Users/com2best/Documents/MoneyBrain/Dev/외부모듈/주소/201608매칭데이터(도로명코드)_전체분/';
+      task.dir = ADDRESS_MATCH_DIR;
       task.fileFilter = function(file) { return file.startsWith('지번'); };
 
       updateAddressDir(task, context, function(_task, _context) {
@@ -84,7 +88,7 @@ function insertAddress(task, context, callback) {
       task.modelName = '부가정보';
       task.schema = 부가정보스키마;
       task.pk = ['관리번호'];
-      task.dir = '/Users/com2best/Documents/MoneyBrain/Dev/외부모듈/주소/201608매칭데이터(도로명코드)_전체분/';
+      task.dir = ADDRESS_MATCH_DIR;
       task.fileFilter = function(file) { return file.startsWith('부가정보'); };
 
       updateAddressDir(task, context, function(_task, _context) {
@@ -96,7 +100,7 @@ function insertAddress(task, context, callback) {
       task.modelName = '위치정보요약';
       task.schema = 위치정보요약스키마;
       task.pk = ['시도명', '시군구명', '읍면동명', '도로명', '지하여부', '건물본번', '건물부번'];
-      task.dir = '/Users/com2best/Documents/MoneyBrain/Dev/외부모듈/주소/공간정보요약DB_8월분/';
+      task.dir = ADDRESS_SPACE_DIR;
       task.fileFilter = function(file) { return file.startsWith('entrc'); };
 
       updateAddressDir(task, context, function(_task, _context) {
