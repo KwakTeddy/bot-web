@@ -191,6 +191,7 @@ function receivedMessage(event) {
 
   var context = chat.getContext(event.botId, 'facebook', senderID);
 
+  console.log('receivedMessage: ', event);
   if(recipientID == context.bot.facebook.id) {
     // console.log("Received message for user %d and page %d at %d with message:",
     //   senderID, recipientID, timeOfMessage);
@@ -454,6 +455,9 @@ function sendReceiptMessage(recipientId) {
  *
  */
 function callSendAPI(messageData, PAGE_ACCESS_TOKEN) {
+
+  console.log('callSendAPI: ', messageData);
+
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: PAGE_ACCESS_TOKEN },

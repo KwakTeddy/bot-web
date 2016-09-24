@@ -148,7 +148,7 @@ var messages = {
   typeExit: '',
   typeAddress: '주소 형식이 틀렸습니다.',
   typeAddressCheck1: '입력하신 주소가 없습니다.',
-  yesRegExp: "응|그래|네|그렇다|오케이|예스|ㅇㅋ|ㅇㅇ|OK|ok|Ok|YES|yes|Yes",
+  yesRegExp: "응|그래|네|그렇다|오케이|예스|ㅇㅋ|ㅇㅇ|OK|ok|Ok|YES|yes|Yes|sp|SP",
   noRegExp: "아니다|싫다|않다|노|NO|no|No"
 
 };
