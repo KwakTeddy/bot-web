@@ -103,7 +103,6 @@ function getContext(botName, channel, user) {
 
   context.user.mobile = '010-6316-5683';
 
-  logger.debug('context: ' + JSON.stringify( context.bot.kakao.keyboard));
   return context;
 }
 
