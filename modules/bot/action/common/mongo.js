@@ -244,3 +244,17 @@ function execute(task, context, successCallback, errorCallback) {
   }
 };
 
+
+function getModel(modelName, schema) {
+  var model;
+  if (mongoose.models[modelName]) {
+    model = mongoose.model(modelName);
+  } else {
+    model = mongoose.model(modelName, new mongoose.Schema(schema));
+  }
+
+  return model;
+}
+
+exports.getModel = getModel;
+

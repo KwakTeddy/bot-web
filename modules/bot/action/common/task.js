@@ -697,3 +697,15 @@ function findModule(task, context) {
 
   return taskModule;
 }
+
+function execTask(task, context, callback) {
+  var words = task.inRaw.split(' ');
+  task.module = words[1];
+  task.action = words[2];
+
+  executeTask(task, context, function(task, context) {
+    callback(task, context);
+  });
+};
+
+exports.execTask = execTask;
