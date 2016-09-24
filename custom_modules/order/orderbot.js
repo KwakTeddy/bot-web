@@ -308,8 +308,6 @@ var deliverOrder = {
         var re = new RegExp(context.global.messages.yesRegExp, 'g');
         if(task.complete.search(re) != -1) {
 
-          manager.checkOrder(task, context, null);
-
           var model = mongoose.model('DeliveryOrder');
 
           logger.debug(task.topTask.address);
@@ -349,6 +347,9 @@ var deliverOrder = {
               throw err;
             } else {
             }
+
+            task.deliveryOrderId = _docs._id;
+            manager.checkOrder(task, context, null);
 
             task.isComplete = true;
             callback(task, context);

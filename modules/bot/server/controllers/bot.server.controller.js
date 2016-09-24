@@ -120,7 +120,7 @@ global._bots = {
       VALIDATION_TOKEN : "moneybrain_token"
     },
     managers: [
-      // {platform: 'facebook', userId: '1094114534004265', name: '장세영'},
+      {platform: 'facebook', userId: '1094114534004265', name: '장세영'},
       {platform: 'facebook', userId: '997804450331458', name: '테스트'}
       //100013440439602
 
@@ -142,6 +142,7 @@ global._bots = {
 
 //1094114534004265 장세영
 //1006864529411088 배달봇
+//997804450331458  장세영 테스트
 
 var messages = {
   // typeExit: '\n처음으로 돌아가기: \'ㄱ\'',
