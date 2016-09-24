@@ -31,6 +31,7 @@ function checkOrder(task, context, successCallback, errorCallback) {
 
   for(var i in context.bot.managers) {
     var manager = context.bot.managers[i];
+    if(global._users[manager.userId] == undefined) global._users[manager.userId] = {};
     global._users[manager.userId].pendingCallback = pendingCallback;
   }
 
