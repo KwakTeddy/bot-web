@@ -305,6 +305,13 @@ var deliverOrder = {
         }}
       ],
       postCallback: function(task, context, callback) {
+        var ides = ["aaa", "bbb", "ccc"];
+        for (var i = 0; i < ides.length; i++) {
+          var ide = ides[i];
+          console.log(ide);
+
+        }
+
         var re = new RegExp(context.global.messages.yesRegExp, 'g');
         if(task.complete.search(re) != -1) {
 

@@ -50,7 +50,7 @@ exports.message = function (req, res) {
         } else if (messagingEvent.postback) {
           receivedPostback(messagingEvent);
         } else {
-          console.log("Webhook received unknown messagingEvent: ", messagingEvent);
+          // console.log("Webhook received unknown messagingEvent: ", messagingEvent);
         }
       });
     });
@@ -191,7 +191,7 @@ function receivedMessage(event) {
 
   var context = chat.getContext(event.botId, 'facebook', senderID);
 
-  console.log('receivedMessage: ', event);
+  // console.log('receivedMessage: ', event);
   if(recipientID == context.bot.facebook.id) {
     // console.log("Received message for user %d and page %d at %d with message:",
     //   senderID, recipientID, timeOfMessage);
@@ -227,12 +227,12 @@ function receivedDeliveryConfirmation(event) {
 
   if (messageIDs) {
     messageIDs.forEach(function(messageID) {
-      console.log("Received delivery confirmation for message ID: %s",
-        messageID);
+      // console.log("Received delivery confirmation for message ID: %s",
+      //   messageID);
     });
   }
 
-  console.log("All message before %d were delivered.", watermark);
+  // console.log("All message before %d were delivered.", watermark);
 }
 
 
@@ -456,7 +456,7 @@ function sendReceiptMessage(recipientId) {
  */
 function callSendAPI(messageData, PAGE_ACCESS_TOKEN) {
 
-  console.log('callSendAPI: ', messageData);
+  // console.log('callSendAPI: ', messageData);
 
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
