@@ -20,7 +20,7 @@ function checkOrder(task, context, successCallback, errorCallback) {
         var manager = _context.bot.managers[i];
 
         if(_context.user.userId != manager.userId)
-          facebook.respondMessage(manager.user, managerName + '님이 접수하셨습니다.', _context.bot.botName);
+          facebook.respondMessage(manager.userId, managerName + '님이 접수하셨습니다.', _context.bot.botName);
         else {
           print('[접수완료] 수고하셨습니다!');
 
