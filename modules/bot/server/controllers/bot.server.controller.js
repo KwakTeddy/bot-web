@@ -119,9 +119,10 @@ function getContext(botName, channel, user, callback) {
 
     if(context.bot) context.bot.botName = botName;
     if(context.channel) context.channel.name = channel;
-    if(context.user) context.user.userId = user;
-
-    if(!context.user.cookie) context.user.cookie = new tough.CookieJar();
+    if(context.user) {
+      context.user.userId = user;
+      if(!context.user.cookie) context.user.cookie = new tough.CookieJar();
+    }
 
     context.global.messages = messages;
 
