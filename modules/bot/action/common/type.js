@@ -729,7 +729,7 @@ function mongoDbTypeCheck(text, format, inDoc, context, callback) {
 
 var commonTypes = [
   // amountType,
-  mobileType
+  // mobileType,
   // phoneType,
   // dateType,
   // timeType,
