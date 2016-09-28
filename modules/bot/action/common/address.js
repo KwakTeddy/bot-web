@@ -1,54 +1,347 @@
 var mongoose = require('mongoose');
+var ObjectId = mongoose.Types.ObjectId;
 var Schema = mongoose.Schema;
 var path = require('path');
-var mongo = require(path.resolve('./modules/bot/action/common/mongo.js'));
+var mongo = require(path.resolve('./modules/bot/action/common/mongo'));
 var fs = require('fs');
+
 var async = require('async');
 var logger = require(path.resolve('./config/lib/logger'));
+var utils = require(path.resolve('./modules/bot/action/common/utils'));
 
 var ADDRESS_DIR = process.env.ADDRESS_DIR;
 var ADDRESS_MATCH_DIR = process.env.ADDRESS_MATCH_DIR;
 var ADDRESS_SPACE_DIR = process.env.ADDRESS_SPACE_DIR;
 
+function addressTypeCheck(text, type, task, context, callback) {
+  var address = {};
+  address.inRaw = text;
+  searchAddress(address, context, function() {
+    if(address.doc == undefined) {
+      logger.debug('nodata: ' + address.inRaw);
+
+      callback(text, task, false);
+    } else if(Array.isArray(address.doc)) {
+      for (var i = 0; i < address.doc.length; i++) {
+        logger.debug('multi: ' + address.inRaw + ' / ' + address.doc[i].지번주소 + ' / ' + address.doc[i].도로명주소);
+      }
+      task[type.name] = address.doc[0];
+      callback(text, task, true);
+    } else if(address.doc) {
+      logger.debug(address.inRaw + ' / ' + address.doc.지번주소 + ' / ' + address.doc.도로명주소);
+      task[type.name] = address.doc;
+      callback(text, task, true);
+    }
+
+  });
+}
+
+exports.addressTypeCheck = addressTypeCheck;
+
+function updateRestaurantAddress(task, context, callback) {
+
+  var model = mongoose.model('Restaurant');
+
+  model.find({})./*limit(1000).*/exec(function(err, docs) {
+    async.eachSeries(docs, function(doc, cb) {
+      var address;
+      if(doc._doc.address1 != undefined && doc._doc.address1 != '') address = {inRaw: doc._doc.address1};
+      else if(doc._doc.address2 != undefined && doc._doc.address2 != '') address = {inRaw: doc._doc.address2};
+
+      if(address == undefined) {
+        logger.debug('noaddress: ' + doc._doc.address1 + ',' + doc._doc.address2);
+        cb(null);
+      } else {
+        searchAddress(address, context, function(_task, _context) {
+          if(address.doc == undefined) {
+            logger.debug('nodata: ' + address.inRaw);
+            cb(null);
+          } else if(Array.isArray(address.doc)) {
+            for (var i = 0; i < address.doc.length; i++) {
+              // logger.debug('multi: ' + address.inRaw + ' / ' + address.doc[i].지번주소 + ' / ' + address.doc[i].행정동명 + ' / ' + address.doc[i].도로명주소);
+            }
+
+            model.update({_id: ObjectId(doc._doc._id)}, {address: address.doc[0]}, {multi: true}, function(err, num) {
+              cb(null);
+            });
+
+          } else if(address.doc) {
+            // logger.debug(address.inRaw + ' / ' + address.doc.지번주소 + ' / ' + address.doc.행정동명 + ' / ' + address.doc.도로명주소 + ',' + doc._doc._id);
+
+            model.update({_id: ObjectId(doc._doc._id)}, {address: address.doc}, {multi: true}, function(err, num) {
+              cb(null);
+            });
+          }
+        });
+      }
+    }, function(err) {
+      callback(task, context);
+    })
+  });
+}
+
+exports.updateRestaurantAddress = updateRestaurantAddress;
+
+
+function searchAddress(task, context, callback) {
+
+  var model = mongo.getModel('건물정보', 건물정보스키마);
+
+  var query = {};
+  var 시도명, 시군구명, 읍면동명, 행정동명, 도로명, 리명, 본번, 부번, 상세주소, 도로명상세주소;
+
+  var 지번Re = /(?:(경기|경기도|강원|강원도|충북|충청북도|충남|충청남도|전북|전라북도|전남|전라남도|경북|경상북도|경남|경상남도|제주|제주도|제주특별자치도|서울|서울시|서울특별시|인천|인천시|인천광역시|대전|대전시|대전광역시|대구|대구시|대구광역시|광주|광주시|광주광역시|부산|부산시|부산광역시|울산|울산시|울산광역시|세종|세종시|세종특별시|세종특별자치시)\s*)?(?:([가-힣]+시|[가-힣]+군|[가-힣]+구)\s*)?(?:[가-힣]+구\s*)?(?:(?:([가-힣]+읍|[가-힣]+면|[가-힣]+동|[가-힣]+[\s0-9]+가)|([가-힣]+\d+읍|[가-힣]+\d+면|[가-힣]+\d+동))|(?:(?:[가-힣]+읍\s+|[가-힣]+면\s+)?([가-힣]+[\s0-9]*번?로[\s0-9]*번?[가나다라마바사아자차카타파하]?길|[가-힣]+[\s0-9]*번?[가나다라마바사아자차카타파하]?길|[가-힣]+[\s0-9]*번?로)))\s*([가-힣]+\d*리)?\s*(\d+)(?:-\s*(\d+))?(?:(?:\s*,?\s*|\s+)([^\\(]*))?(?:\s*\(([^,\s]+)(?:\s*,?\s*([^\\)]*))?\))?/i;
+  var matched = task.inRaw.match(지번Re);
+  if(matched != null) {
+    if (matched[1] != null) {
+      if (matched[1] == '경기') 시도명 = '경기도';
+      else if (matched[1] == '강원') 시도명 = '강원도';
+      else if (matched[1] == '충북') 시도명 = '충청북도';
+      else if (matched[1] == '충남') 시도명 = '충청남도';
+      else if (matched[1] == '전북') 시도명 = '전라북도';
+      else if (matched[1] == '전남') 시도명 = '전라남도';
+      else if (matched[1] == '경북') 시도명 = '경상북도';
+      else if (matched[1] == '경남') 시도명 = '경상남도';
+      else if (matched[1] == '제주') 시도명 = '제주특별자치도';
+      else if (matched[1] == '제주도') 시도명 = '제주특별자치도';
+      else if (matched[1] == '서울') 시도명 = '서울특별시';
+      else if (matched[1] == '서울시') 시도명 = '서울특별시';
+      else if (matched[1] == '인천') 시도명 = '인천광역시';
+      else if (matched[1] == '인천시') 시도명 = '인천광역시';
+      else if (matched[1] == '대전') 시도명 = '대전광역시';
+      else if (matched[1] == '대전시') 시도명 = '대전광역시';
+      else if (matched[1] == '대구') 시도명 = '대구광역시';
+      else if (matched[1] == '대구시') 시도명 = '대구광역시';
+      else if (matched[1] == '광주') 시도명 = '광주광역시';
+      else if (matched[1] == '광주시') 시도명 = '광주광역시';
+      else if (matched[1] == '부산') 시도명 = '부산광역시';
+      else if (matched[1] == '부산시') 시도명 = '부산광역시';
+      else if (matched[1] == '울산') 시도명 = '울산광역시';
+      else if (matched[1] == '울산시') 시도명 = '울산광역시';
+      else if (matched[1] == '세종') 시도명 = '세종특별자치시';
+      else if (matched[1] == '세종시') 시도명 = '세종특별자치시';
+      else 시도명 = matched[1];
+    } else {
+      시도명 = matched[1];
+    }
+
+    시군구명 = matched[2];
+    읍면동명 = matched[3];
+    행정동명 = matched[4];
+    도로명 = matched[5];
+    리명 = matched[6];
+    본번 = matched[7];
+    부번 = matched[8];
+    상세주소 = matched[9] ? matched[9].trim() : matched[9];
+
+    if(도로명) {
+      도로명 = 도로명.replace(/\s/, '');
+      query.도로명 = 도로명;
+      query.건물본번 = 본번;
+      if(부번) query.건물부번 = 부번;
+      else query.건물부번 = '0';
+    } else if(읍면동명) {
+      query.법정읍면동명 = 읍면동명;
+      if(리명) query.법정리명 = 리명;
+      else query.법정리명 = '';
+      query.지번본번 = 본번;
+      if(부번) query.지번부번 = 부번;
+      else query.지번부번 = '0';
+    } else if(행정동명) {
+      행정동명 = 행정동명.replace(/\s/, '');
+      query.행정동명 = 행정동명;
+      query.지번본번 = 본번;
+      if(부번) query.지번부번 = 부번;
+      else query.지번부번 = '0';
+    }
+
+    if(시도명) query.시도명 = 시도명;
+    if(시군구명) query.시군구명 = new RegExp(시군구명, 'i');
+
+  } else {
+    var 건물명Re = /\B(?:[a-zA-Z가-힣]+\s*\d+차[a-zA-Z가-힣]*|[0-9a-zA-Z가-힣]+)(?:\s|$)/g;
+    var 건물명예외Re = /^(경기|경기도|강원|강원도|충북|충청북도|충남|충청남도|전북|전라북도|전남|전라남도|경북|경상북도|경남|경상남도|제주|제주도|제주특별자치도|서울|서울시|서울특별시|인천|인천시|인천광역시|대전|대전시|대전광역시|대구|대구시|대구광역시|광주|광주시|광주광역시|부산|부산시|부산광역시|울산|울산시|울산광역시|세종|세종시|세종특별시|세종특별자치시|[가-힣]+시|[가-힣]+군|[가-힣]+구|[가-힣]+읍|[0-9가-힣]+면|[0-9가-힣]+동|[0-9가-힣]+리|아파트|상가|건물|주택)$/i;
+    matched = task.inRaw.match(건물명Re);
+    if(matched != null && matched instanceof Array) {
+      if(matched.length > 1) {
+        query = {$or: []};
+        for (var i = 0; i < matched.length; i++) {
+          var match = matched[i].trim();
+
+          // logger.debug('건물명예외Re:' +match + ',' +  건물명예외Re + ','  + match.search(건물명예외Re));
+          if(match.search(건물명예외Re) == -1)
+            query.$or.push({시군구용건물명: match});
+        }
+      } else {
+        if(matched[0].trim().search(건물명예외Re) == -1)
+          query = {시군구용건물명: matched[0].trim()};
+      }
+
+      var last = matched[matched.length-1];
+      var lastRe = new RegExp(last+'\\s+(.*)', 'i');
+      matched = task.inRaw.match(lastRe);
+      if(matched != null) {
+        상세주소 = matched[1];
+      } else {
+        상세주소 = undefined;
+      }
+    }
+  }
+
+  task.doc = null;
+
+  // logger.debug(JSON.stringify(query));
+
+  if(query == {}) {
+    callback(task, context);
+  } else {
+    model.aggregate([
+      {$match: query},
+      {$group: {
+        _id: '$도로명코드',
+        시도명: {$first: '$시도명'},
+        시군구명: {$first: '$시군구명'},
+        법정읍면동명: {$first: '$법정읍면동명'},
+        법정리명: {$first: '$법정리명'},
+        행정동명: {$first: '$행정동명'},
+        지번본번: {$first: '$지번본번'},
+        지번부번: {$first: '$지번부번'},
+        도로명: {$first: '$도로명'},
+        건물본번: {$first: '$건물본번'},
+        건물부번: {$first: '$건물부번'},
+        시군구용건물명: {$first: '$시군구용건물명'},
+        도로명코드: {$first: '$도로명코드'},
+        읍면동일련번호: {$first: '$읍면동일련번호'}
+      }},
+      {$limit: 10}
+    ], function(err, docs) {
+      if(err) {
+        logger.debug('searchAddress : ' + task.inRaw + ' ' + err);
+      } else {
+        // if(docs.length == 0) logger.debug('searchAddress: ' + task.inRaw + ' / count: ' + docs.length);
+
+        var 시군구Re = /(?:(경기|경기도|강원|강원도|충북|충청북도|충남|충청남도|전북|전라북도|전남|전라남도|경북|경상북도|경남|경상남도|제주|제주도|제주특별자치도|서울|서울시|서울특별시|인천|인천시|인천광역시|대전|대전시|대전광역시|대구|대구시|대구광역시|광주|광주시|광주광역시|부산|부산시|부산광역시|울산|울산시|울산광역시|세종|세종시|세종특별시|세종특별자치시)\s*)?(?:([가-힣]+시|[가-힣]+군|[가-힣]+구)\s*)?(?:[가-힣]+구\s*)?/g;
+        if(docs.length > 1) {
+          matched = task.inRaw.match(시군구Re);
+          if (matched != null) {
+            if (matched[1] != null) {
+              if (matched[1] == '경기') 시도명 = '경기도';
+              else if (matched[1] == '강원') 시도명 = '강원도';
+              else if (matched[1] == '충북') 시도명 = '충청북도';
+              else if (matched[1] == '충남') 시도명 = '충청남도';
+              else if (matched[1] == '전북') 시도명 = '전라북도';
+              else if (matched[1] == '전남') 시도명 = '전라남도';
+              else if (matched[1] == '경북') 시도명 = '경상북도';
+              else if (matched[1] == '경남') 시도명 = '경상남도';
+              else if (matched[1] == '제주') 시도명 = '제주특별자치도';
+              else if (matched[1] == '제주도') 시도명 = '제주특별자치도';
+              else if (matched[1] == '서울') 시도명 = '서울특별시';
+              else if (matched[1] == '서울시') 시도명 = '서울특별시';
+              else if (matched[1] == '인천') 시도명 = '인천광역시';
+              else if (matched[1] == '인천시') 시도명 = '인천광역시';
+              else if (matched[1] == '대전') 시도명 = '대전광역시';
+              else if (matched[1] == '대전시') 시도명 = '대전광역시';
+              else if (matched[1] == '대구') 시도명 = '대구광역시';
+              else if (matched[1] == '대구시') 시도명 = '대구광역시';
+              else if (matched[1] == '광주') 시도명 = '광주광역시';
+              else if (matched[1] == '광주시') 시도명 = '광주광역시';
+              else if (matched[1] == '부산') 시도명 = '부산광역시';
+              else if (matched[1] == '부산시') 시도명 = '부산광역시';
+              else if (matched[1] == '울산') 시도명 = '울산광역시';
+              else if (matched[1] == '울산시') 시도명 = '울산광역시';
+              else if (matched[1] == '세종') 시도명 = '세종특별자치시';
+              else if (matched[1] == '세종시') 시도명 = '세종특별자치시';
+              else 시도명 = matched[1];
+            } else {
+              시도명 = matched[1];
+            }
+
+            시군구명 = matched[2];
+          }
+        }
+
+        for (var i = 0; i < docs.length && i < 10; i++) {
+          var doc = docs[i];
+
+          if(docs.length > 1) {
+            if(!(시도명 && 시도명 == doc.시도명 && 시군구명 && doc.시군구명)) continue;
+          }
+
+          var 상세주소Re = new RegExp(doc.시군구용건물명 + '\\s+', 'i');
+          if(상세주소 && doc.시군구용건물명 != '') 도로명상세주소 = 상세주소.replace(상세주소Re, '');
+
+          var _doc = {
+            시도명: doc.시도명,
+            시군구명: doc.시군구명,
+            법정읍면동명: doc.법정읍면동명,
+            법정리명: doc.법정리명,
+            행정동명: doc.행정동명,
+            지번본번: doc.지번본번,
+            지번부번: doc.지번부번,
+            도로명: doc.도로명,
+            건물본번: doc.건물본번,
+            건물부번: doc.건물부번,
+            시군구용건물명: doc.시군구용건물명,
+            도로명코드: doc.도로명코드,
+            읍면동일련번호: doc.읍면동일련번호
+          };
+
+          _doc.지번주소 = doc.시도명 + ' ' + doc.시군구명 + ' ' + doc.법정읍면동명 + ' ' + (doc.법정리명 != '' ? doc.법정리명 + ' ': '') +
+            doc.지번본번 + (doc.지번부번 != '0' ? '-' + doc.지번부번 : '') + (상세주소 != undefined ? ' ' + 상세주소 : '');
+
+          _doc.도로명주소 = doc.시도명 + ' ' + doc.시군구명 + ' ' + doc.도로명 + ' ' + doc.건물본번 + (doc.건물부번 != '0' ? '-' + doc.건물부번: '') +
+            (도로명상세주소 != undefined ? ', ' + 도로명상세주소 : '') + ' (' + doc.법정읍면동명 + (doc.시군구용건물명 != '' ? ', ' + doc.시군구용건물명 : '') + ')';
+
+          _doc.in = task.inRaw;
+
+          if(Array.isArray(task.doc)) task.doc.push(_doc);
+          else if(task.doc) task.doc = [task.doc, _doc];
+          else task.doc = utils.clone(_doc);
+
+          // logger.debug('searchAddress: ' +
+          //   task.inRaw + ' / ' +
+          //   doc.시도명 + ' ' + doc.시군구명 + ' ' + doc.법정읍면동명 + ' ' + (doc.법정리명 != '' ? doc.법정리명 + ' ': '') +
+          //   doc.지번본번 + (doc.지번부번 != '0' ? '-' + doc.지번부번 : '') + (상세주소 != undefined ? ' ' + 상세주소 : '') + ' / ' + doc.행정동명 + ' / ' +
+          //   doc.시도명 + ' ' + doc.시군구명 + ' ' + doc.도로명 + ' ' + doc.건물본번 + (doc.건물부번 != '0' ? '-' + doc.건물부번: '') +
+          //   (도로명상세주소 != undefined ? ', ' + 도로명상세주소 : '') + ' (' + doc.법정읍면동명 + (doc.시군구용건물명 != '' ? ', ' + doc.시군구용건물명 : '') + ')');
+
+          // + doc.상세건물명 + ' ' + doc.도로명코드 + ',' + doc.읍면동일련번호 + ', ' + doc.건물관리번호
+        }
+      }
+      callback(task, context);
+
+    })
+  }
+}
+
+exports.searchAddress = searchAddress;
+
+function insertTest(task, context, callback) {
+  task.updateMethod = 'insert';
+  task.modelName = '도로명코드';
+  task.schema = 도로명코드스키마;
+  task.pk = ['시군구코드', '도로명번호', '읍면동일련번호'];
+  task.file = '/Users/com2best/Documents/MoneyBrain/Dev/외부모듈/주소/road_code_total.txt';
+
+  // task.updateMethod = 'insert';
+  // task.modelName = '개선도로명코드';
+  // task.schema = 개선도로명코드스키마;
+  // task.pk = ['도로명코드', '읍면동일련번호'];
+  // task.file = '/Users/com2best/Documents/MoneyBrain/Dev/외부모듈/주소/201608매칭데이터_도로명코드__전체분/개선_도로명코드_전체분.txt';
+
+  updateAddressFile(task, context, function(_task, _context) {
+    callback(task, context);
+  });
+}
+
+exports.insertTest = insertTest;
+
+//TODO 도로명주소, 위치정보요약위치정보요약 인덱스 생성하다 오류
+
 function insertAddress(task, context, callback) {
   async.waterfall([
-    function (cb) {
-      task.modelName = '도로명코드';
-      task.schema = 도로명코드스키마;
-      task.pk = ['시군구코드', '도로명번호', '읍면동일련번호'];
-      task.dir = ADDRESS_DIR;
-      task.fileFilter = function(file) { return file.startsWith('road_code'); };
-
-      updateAddressDir(task, context, function(_task, _context) {
-        cb(null);
-      });
-    },
-
     function(cb) {
-      task.modelName = '건물정보';
-      task.schema = 건물정보스키마;
-      task.pk = ['건물관리번호'];
-      task.dir = ADDRESS_DIR;
-      task.fileFilter = function(file) { return file.startsWith('build'); };
-
-      updateAddressDir(task, context, function(_task, _context) {
-        cb(null);
-      });
-    },
-
-    function(cb) {
-      task.modelName = '관련지번';
-      task.schema = 관련지번스키마;
-      task.pk = ['도로명코드', '지하여부', '건물본번', '건물부번', '지번일련번호'];
-      task.dir = ADDRESS_DIR;
-      task.fileFilter = function(file) { return file.startsWith('jibun'); };
-
-      updateAddressDir(task, context, function(_task, _context) {
-        cb(null);
-      });
-    },
-
-    function(cb) {
+      task.updateMethod = 'insert';
       task.modelName = '개선도로명코드';
       task.schema = 개선도로명코드스키마;
       task.pk = ['도로명코드', '읍면동일련번호'];
@@ -106,7 +399,44 @@ function insertAddress(task, context, callback) {
       updateAddressDir(task, context, function(_task, _context) {
         cb(null);
       });
+    },
+
+    function (cb) {
+      task.modelName = '도로명코드';
+      task.schema = 도로명코드스키마;
+      task.pk = ['시군구코드', '도로명번호', '읍면동일련번호'];
+      task.dir = ADDRESS_DIR;
+      task.fileFilter = function(file) { return file.startsWith('road_code'); };
+
+      updateAddressDir(task, context, function(_task, _context) {
+        cb(null);
+      });
+    },
+
+    function(cb) {
+      task.modelName = '건물정보';
+      task.schema = 건물정보스키마;
+      task.pk = ['건물관리번호'];
+      task.dir = ADDRESS_DIR;
+      task.fileFilter = function(file) { return file.startsWith('build'); };
+
+      updateAddressDir(task, context, function(_task, _context) {
+        cb(null);
+      });
+    },
+
+    function(cb) {
+      task.modelName = '관련지번';
+      task.schema = 관련지번스키마;
+      task.pk = ['도로명코드', '지하여부', '건물본번', '건물부번', '지번일련번호'];
+      task.dir = ADDRESS_DIR;
+      task.fileFilter = function(file) { return file.startsWith('jibun'); };
+
+      updateAddressDir(task, context, function(_task, _context) {
+        cb(null);
+      });
     }
+
 
   ], function(err) {
     callback(task, context);
@@ -117,8 +447,21 @@ exports.insertAddress = insertAddress;
 
 
 function updateAddressDir(task, context, callback) {
-  var files = fs.readdirSync(task.dir);
-  files = files.filter(task.fileFilter);
+  var files;
+  try {
+    files = fs.readdirSync(task.dir);
+    for (var i = 0; i < files.length; i++) {
+      var file = files[i];
+      if(file != file.normalize('NFC')) {
+        files[i] = file.normalize('NFC');
+      }
+    }
+    files = files.filter(task.fileFilter);
+  } catch(e) {
+      logger.info(task.modelName + ' ' + task.dir + ' 경로 없음');
+      callback(task, context);
+      return;
+  }
 
   logger.info(task.modelName + ' 업데이트 시작');
 
@@ -126,7 +469,6 @@ function updateAddressDir(task, context, callback) {
     task.file = task.dir + file;
 
     updateAddressFile(task, context, function() {
-      logger.info(task.modelName + ' 업데이트: ' + task.file);
       cb(null);
     });
   }, function(err) {
@@ -141,38 +483,101 @@ exports.updateAddressDir = updateAddressDir;
 function updateAddressFile(task, context, callback) {
   var model = mongo.getModel(task.modelName, task.schema);
 
-  var text = fs.readFileSync(task.file);
+  if(task.updateMethod == 'insert') {
+    var lineByLine = require('n-readlines');
+    var liner = new lineByLine(task.file);
 
-  var encoding = 'euc-kr';
-  var Iconv  = require('iconv').Iconv;
-  var iconv = new Iconv(encoding.toUpperCase(), 'UTF-8//TRANSLIT//IGNORE');
-  text = iconv.convert(new Buffer(text, 'binary')).toString('UTF-8');
+    var count = 0;
+    var line;
+    async.whilst(
+      function() { return line = liner.next(); },
+      function(cb) {
+        var lines = [];
+        do {
+          line = utils.convertEncoding('euc-kr', 'UTF-8', line);
+          lines.push(line);
+        } while(lines.length < 10000 && (line = liner.next()));
 
-  var lines = text.split('\n');
+        var updates = [];
+        for (var i = 0; i < lines.length; i++) {
+          var _line = lines[i];
+          var val = _line.split('|');
+          var update = {};
 
-  async.eachSeries(lines, function(line, cb) {
-    var val = line.split('|');
-    var update = {};
+          var j = 0;
+          for (var key in task.schema) {
+            if(j >= val.length) break;
+            update[key] = val[j++];
+          }
 
-    var i = 0;
-    for (var key in task.schema) {
-      if(i >= val.length) break;
-      update[key] = val[i++];
-    }
+          updates.push(update);
+        }
 
-    var query = {};
-    for (var j = 0; j < task.pk.length; j++) {
-      var pk = task.pk[j];
-      query[pk] = update[pk];
-    }
+        model.collection.insert(updates, function(err, docs) {
+          if(err) {
+            logger.info('updateAddressFile: ' + err + ' ' + task.file);
+          } else {
+            count += docs.result.n;
+            logger.info('updateAddressFile: ' + count + ' ' + task.file);
+          }
 
-    model.update(query, update, {upsert: true}, function(err, num){
-      cb(null);
+          lines = null;
+          updates = null;
+          cb(null);
+
+        });
+      },
+      function(err) {
+        logger.info(task.modelName + ' 업데이트: ' + count + ' ' + task.file);
+        callback(task, context);
+      }
+    );
+
+  } else {
+    // 너무 큰파일은 안됨 200M
+    var text = fs.readFileSync(task.file);
+    text =utils.convertEncoding('euc-kr', 'UTF-8', text);
+
+    var count = 0;
+    var lines = text.split('|');
+    async.eachSeries(lines, function(line,cb) {
+      var val = line.split('|');
+      var update = {};
+
+      var i = 0;
+      for (var key in task.schema) {
+        if(i >= val.length) break;
+        update[key] = val[i++];
+      }
+
+      var query = {};
+      for (var j = 0; j < task.pk.length; j++) {
+        var pk = task.pk[j];
+        query[pk] = update[pk];
+      }
+
+      if(task.updateMethod == 'create') {
+        model.create(update, function(err){
+          count++;
+          if(count % 1000 == 0) logger.info('updateAddressFile: ' + count + ' ' + task.file);
+          cb(null);
+        });
+      } else {
+        model.update(query, update, {upsert: true}, function(err, num){
+          count++;
+          if(count % 1000 == 0) logger.info('updateAddressFile: ' + count + ' ' + task.file);
+          cb(null);
+        });
+      }
+    },
+    function(err) {
+      text = null;
+      lines = null;
+      logger.info(task.modelName + ' 업데이트: ' + count + ' ' + task.file);
+      callback(task, context);
     });
-  }, function(err) {
-    callback(task, context);
-  });
-};
+  }
+}
 
 exports.updateAddressFile = updateAddressFile;
 
@@ -206,13 +611,13 @@ var 건물정보스키마 = {
   법정읍면동명: String,
   법정리명: String,
   산여부: String,
-  지번본번: Number,
-  지번부번: Number,
+  지번본번: String,
+  지번부번: String,
   도로명코드: String,
   도로명: String,
   지하여부: String,
-  건물본번: Number,
-  건물부번: Number,
+  건물본번: String,
+  건물부번: String,
   건축물대장건물명: String,
   상세건물명: String,
   건물관리번호: String,
@@ -240,12 +645,12 @@ var 관련지번스키마 = {
   법정읍면동명: String,
   법정리명: String,
   산여부: String,
-  지번본번: Number,
-  지번부번: Number,
+  지번본번: String,
+  지번부번: String,
   도로명코드: String,
   지하여부: String,
-  건물본번: Number,
-  건물부번: Number,
+  건물본번: String,
+  건물부번: String,
   지번일련번호: String,
   이동사유코드: String
 };
@@ -275,8 +680,8 @@ var 도로명주소스키마 = {
   도로명코드: String,
   읍면동일련번호: String,
   지하여부: String,
-  건물본번: Number,
-  건물부번: Number,
+  건물본번: String,
+  건물부번: String,
   기초구역번호: String,
   변경사유코드: String,
   고시일자: String,
@@ -293,9 +698,9 @@ var 지번주소스키마 = {
   법정읍면동명: String,
   법정리명: String,
   산여부: String,
-  지번본번: Number,
-  지번부번: Number,
-  대표여부: Number
+  지번본번: String,
+  지번부번: String,
+  대표여부: String
 };
 
 var 부가정보스키마 = {
@@ -310,7 +715,7 @@ var 부가정보스키마 = {
   공동주택여부: String
 };
 
-var 위치정보요약 = {
+var 위치정보요약스키마 = {
   시군구코드: String,
   출입구일련번호: String,
   법정동코드: String,
@@ -320,16 +725,166 @@ var 위치정보요약 = {
   도로명코드: String,
   도로명: String,
   지하여부: String,
-  건물본번: Number,
-  건물부번: Number,
+  건물본번: String,
+  건물부번: String,
   건물명: String,
   우편번호: String,
   건물용도분류: String,
   건물군여부: String,
   관할행정동: String,
-  X좌표: Number,
-  Y좌표: Number,
+  X좌표: String,
+  Y좌표: String,
   이동사유코드: String
 };
 
+
+function addressTestOne(task, context, callback) {
+  var address = {};
+  address.inRaw = '경기 가평군 상면 임초리 417-4';
+  searchAddress(address, context, function() {
+    if(address.doc == undefined) {
+      logger.debug('nodata: ' + address.inRaw);
+    } else if(Array.isArray(address.doc)) {
+      for (var i = 0; i < address.doc.length; i++) {
+        logger.debug('multi: ' + address.inRaw + ' / ' + address.doc[i].지번주소 + ' / ' + address.doc[i].도로명주소);
+      }
+    } else if(address.doc) {
+      // logger.debug(address.inRaw + ' / ' + address.doc.지번주소 + ' / ' + address.doc.도로명주소);
+    }
+
+    callback(task, context);
+  });
+
+}
+
+exports.addressTestOne = addressTestOne;
+
+function searchTest(task, context, callback) {
+  async.waterfall([
+    function(cb) {
+      task.inRaw = '서울 강남구 청담동 35-47';
+      searchAddress(task, context, function() {
+        cb(null);
+      });
+    },
+    function(cb) {
+      task.inRaw = '청담동 35-47';
+      searchAddress(task, context, function() {
+        cb(null);
+      });
+    },
+    function(cb) {
+      task.inRaw = '서울 강남구 삼성로135길 47';
+      searchAddress(task, context, function() {
+        cb(null);
+      });
+    },
+    function(cb) {
+      task.inRaw = '삼성로135길 47';
+      searchAddress(task, context, function() {
+        cb(null);
+      });
+    },
+    function(cb) {
+      task.inRaw = '한신오페라하우스 101동 502호';
+      searchAddress(task, context, function() {
+        cb(null);
+      });
+    },
+    function(cb) {
+      task.inRaw = '경기도 부천시 원미구 중동 1106 103-3302';
+      searchAddress(task, context, function() {
+        cb(null);
+      });
+    },
+    function(cb) {
+      task.inRaw = '경기도 부천시 중동 1106 위브더스테이트 103동 3302호';
+      searchAddress(task, context, function() {
+        cb(null);
+      });
+    },
+    function(cb) {
+      task.inRaw = '경기 부천시 원미구 중2동 1106 위브더스테이트 103-3302';
+      searchAddress(task, context, function() {
+        cb(null);
+      });
+    },
+    function(cb) {
+      task.inRaw = '중동 1106 130-3302';
+      searchAddress(task, context, function() {
+        cb(null);
+      });
+    },
+    function(cb) {
+      task.inRaw = '부천시 신흥로 190, 103-3302 (중동, 위브더스테이트)';
+      searchAddress(task, context, function() {
+        cb(null);
+      });
+    },
+    function(cb) {
+      task.inRaw = '디지털로9길 68';
+      searchAddress(task, context, function() {
+        cb(null);
+      });
+    },
+    function(cb) {
+      task.inRaw = '디지털로 9길 68';
+      searchAddress(task, context, function() {
+        cb(null);
+      });
+    },
+    function(cb) {
+      task.inRaw = '서울 금천구 디지털로9길 68, 1006호 (가산동, 대륭포스트타워5차)';
+      searchAddress(task, context, function() {
+        cb(null);
+      });
+    },
+    function(cb) {
+      task.inRaw = '대륭포스트타워 5차 1606호';
+      searchAddress(task, context, function() {
+        cb(null);
+      });
+    },
+    function(cb) {
+      task.inRaw = '대륭포스트타워5차';
+      searchAddress(task, context, function() {
+        cb(null);
+      });
+    },
+    function(cb) {
+      task.inRaw = '서울 금천구 가산동 60-3 대륭포스트타워 5차 1606';
+      searchAddress(task, context, function() {
+        cb(null);
+      });
+    },
+    function(cb) {
+      task.inRaw = '가산동 60-3 1606';
+      searchAddress(task, context, function() {
+        cb(null);
+      });
+    },
+    function(cb) {
+      task.inRaw = '전라북도 정읍시 소성면 소성로 100';
+      searchAddress(task, context, function() {
+        cb(null);
+      });
+    },
+    function(cb) {
+      task.inRaw = '소성로 100';
+      searchAddress(task, context, function() {
+        cb(null);
+      });
+    },
+    function(cb) {
+      task.inRaw = '전라북도 정읍시 소성면 보화리 106-12 희망주유소';
+      searchAddress(task, context, function() {
+        cb(null);
+      });
+    }
+  ], function(err) {
+    callback(task, context);
+  });
+}
+
+exports.searchTest = searchTest;
 

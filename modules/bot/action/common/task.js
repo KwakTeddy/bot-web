@@ -3,6 +3,7 @@ var logger = require(path.resolve('./config/lib/logger'));
 var utils = require('./utils');
 var async = require('async');
 var ifAsync = require('if-async');
+var botUser = require(path.resolve('./modules/bot-users/server/controllers/bot-users.server.controller'));
 
 const MAX_ACTION = 100;
 
@@ -35,194 +36,217 @@ function executeTask(task, context, successCallback, errorCallback) {
         logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + '.paramDefs.' + paramDef.name + ': ' + task[paramDef.name] + ' each start ');
 
         if(task[paramDef.name] == undefined) {
-          var paramType;
-          if(typeof paramDef.type === 'string' || paramDef.type instanceof String) paramType = type[paramDef.type+'Type'];
-          else paramType = paramDef.type;
+          if(paramDef.context && context.user[paramDef.name] != undefined) {
+            task[paramDef.name] = context.user[paramDef.name];
+            callbackEach();
+          } else {
+            var paramType;
+            if(typeof paramDef.type === 'string' || paramDef.type instanceof String) paramType = type[paramDef.type+'Type'];
+            else paramType = paramDef.type;
 
-          paramType.name = paramDef.name;
+            paramType.name = paramDef.name;
 
-          var printRequired = function(text, inDoc, paramDef, paramType) {
-            if(inDoc.requiredOut) {
-              task.topTask.print(inDoc.requiredOut + context.global.messages.typeExit, inDoc);
-            } else {
-              task.topTask.print((paramDef.question instanceof Function ? paramDef.question(inDoc, context) : paramDef.question) +
-                context.global.messages.typeExit, inDoc);
-            }
-          };
+            var printRequired = function(text, inDoc, paramDef, paramType) {
+              if(inDoc.requiredOut) {
+                task.topTask.print(inDoc.requiredOut + context.global.messages.typeExit, inDoc);
+              } else {
+                task.topTask.print((paramDef.question instanceof Function ? paramDef.question(inDoc, context) : paramDef.question) +
+                  context.global.messages.typeExit, inDoc);
+              }
+            };
 
-          var preType = function(callback) {
-            if(paramDef.preType) {
-              paramDef.preType(task, context, paramType, paramDef, function (_task, _context) {
+            var preType = function(callback) {
+              if(paramDef.preType) {
+                paramDef.preType(task, context, paramType, paramDef, function (_task, _context) {
+                  callback(null);
+                });
+              } else {
                 callback(null);
-              });
-            } else {
-              callback(null);
-            }
-          };
+              }
+            };
 
-          var typeText;
-          var matchedCheck = function(callback) {
+            var typeInRaw, typeIn;
+            var matchedCheck = function(callback) {
 
-            if(task.in && (paramDef.match == undefined || paramDef.match)) {
-              typeText = task.in;
-            } else {
-              // 디폴트 값 user context 에서 가져오기
-              if(context.user[paramDef.name] && typeof context.user[paramDef.name] == 'string') typeText = context.user[paramDef.name];
-              else if(paramDef.default && typeof paramDef.default == 'string') typeText = paramDef.default;
-            }
-
-            if(typeText) {
-              callback(null, typeText, typeText, task);
-            } else if(paramDef.required) {
-              context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, _context, print) {
-                task.topTask.print = print;
-                context.user.pendingCallback = null;
-                callback(null, _inRaw, _inNLP, task)
-              };
-
-              printRequired(null, task, paramDef, paramType);
-            } else {
-              callback(true, null, null, task, false);
-            }
-          };
-
-          var typeCheckCallback;
-          var typeCheck = function(inRaw, inNLP, inDoc, callback) {
-            if(!typeCheckCallback) typeCheckCallback = callback;
-
-            if(paramType.typeCheck) {
-              paramType.typeCheck(inNLP, paramType, inDoc, context, function (_text, _inDoc, matched) {
-                callback(null, _text, _text, _inDoc, matched);
-              });
-            } else {
-              callback(true, inRaw, inNLP, inDoc, false);
-            }
-          };
-
-          var multiMatched = function(inRaw, inNLP, inDoc, matched, callback) {
-            if (matched) {
-              if(inDoc[paramDef.name] instanceof Array) {
-
-                if(inDoc[paramDef.name].length == 1) {
-                  inDoc[paramDef.name] = inDoc[paramDef.name][0];
-                  callback(null, inRaw, inNLP, inDoc, matched);
-                } else {
-                  context.user.doc = inDoc[paramDef.name];
-                  context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, _context, print) {
-                    task.topTask.print = print;
-                    context.user.pendingCallback = null;
-                    callback(null, _inRaw, inNLP, task, false);
-                  };
-
-                  // task.print(type.processOutput(inDoc, context, '다음 중 원하시는 것을 선택해주세요.\n#'+paramDef.name+'#+index+. +name+\n#'));
-                  task.topTask.print(type.processOutput(inDoc, context, paramType.out));
+              if(task.in && (paramDef.match == undefined || paramDef.match)) {
+                typeInRaw = task.inRaw;
+                typeIn = task.in;
+              } else {
+                // 디폴트 값 user context 에서 가져오기
+                if(context.user[paramDef.name] && typeof context.user[paramDef.name] == 'string') {
+                  typeInRaw = context.user[paramDef.name + 'Raw'];
+                  typeIn = context.user[paramDef.name];
+                } else if(paramDef.default && typeof paramDef.default == 'string') {
+                  typeInRaw = paramDef.default + 'Raw';
+                  typeIn = paramDef.default;
                 }
+              }
 
-              } else
-                callback(null, inRaw, inNLP, inDoc, matched);
-            } else if(paramDef.required) {
-              context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, _context, print) {
-                task.topTask.print = print;
-                context.user.pendingCallback = null;
-                typeCheck(_inRaw, _inNLP, task, typeCheckCallback);
-              };
+              if(typeIn) {
+                callback(null, typeInRaw, typeIn, task);
+              } else if(paramDef.required) {
+                context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, _context, print) {
+                  task.topTask.print = print;
+                  context.user.pendingCallback = null;
+                  callback(null, _inRaw, _inNLP, task)
+                };
 
-              printRequired(inRaw, inDoc, paramDef, paramType);
-            } else {
-              callback(true, inRaw, inNLP, inDoc, false);
-            }
-          };
+                printRequired(null, task, paramDef, paramType);
+              } else {
+                callback(true, null, null, task, false);
+              }
+            };
 
-          var multiMatchedSelectCallback;
-          var multiMatchedSelect = function(inRaw, inNLP, inDoc, matched, callback) {
-            if(!multiMatchedSelectCallback) multiMatchedSelectCallback = callback;
+            var typeCheckCallback;
+            var typeCheck = function(inRaw, inNLP, inDoc, callback) {
+              if(!typeCheckCallback) typeCheckCallback = callback;
 
-            if(matched) {
-              callback(null, inRaw, inNLP, inDoc, matched);
-            } else {
-              try {
-                var num = Number(inRaw);
-                if (num >= 1 && num <= context.user.doc.length) {
-                  task[paramDef.name] = context.user.doc[num-1];
-                  context.user.doc = null;
+              if(paramType.typeCheck) {
+                paramType.typeCheck((paramDef.raw ? inRaw : inNLP), paramType, inDoc, context, function (_text, _inDoc, matched) {
+                  callback(null, inRaw, inNLP, _inDoc, matched);
+                });
+              } else {
+                callback(true, inRaw, inNLP, inDoc, false);
+              }
+            };
 
-                  if(task.in && task[paramDef.name]['matchOriginal']) {
-                    task.in = task.in.replace(task[paramDef.name]['matchOriginal'], type.IN_TAG_START + paramDef.name + type.IN_TAG_END);
-                    task[paramDef.name+'Original'] = task[paramDef.name]['matchOriginal'];
+            var multiMatched = function(inRaw, inNLP, inDoc, matched, callback) {
+              if (matched) {
+                if(inDoc[paramDef.name] instanceof Array) {
+
+                  if(inDoc[paramDef.name].length == 1) {
+                    inDoc[paramDef.name] = inDoc[paramDef.name][0];
+                    callback(null, inRaw, inNLP, inDoc, matched);
+                  } else {
+                    context.user.doc = inDoc[paramDef.name];
+                    context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, _context, print) {
+                      task.topTask.print = print;
+                      context.user.pendingCallback = null;
+                      callback(null, _inRaw, _inNLP, task, false);
+                    };
+
+                    // task.print(type.processOutput(inDoc, context, '다음 중 원하시는 것을 선택해주세요.\n#'+paramDef.name+'#+index+. +name+\n#'));
+                    task.topTask.print(type.processOutput(inDoc, context, paramType.out));
                   }
 
-                  callback(null, inRaw, inNLP, inDoc, true);
-                } else {
+                } else
+                  callback(null, inRaw, inNLP, inDoc, matched);
+              } else if(paramDef.required) {
+                context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, _context, print) {
+                  task.topTask.print = print;
+                  context.user.pendingCallback = null;
+                  typeCheck(_inRaw, _inNLP, task, typeCheckCallback);
+                };
+
+                printRequired(inRaw, inDoc, paramDef, paramType);
+              } else {
+                callback(true, inRaw, inNLP, inDoc, false);
+              }
+            };
+
+            var multiMatchedSelectCallback;
+            var multiMatchedSelect = function(inRaw, inNLP, inDoc, matched, callback) {
+              if(!multiMatchedSelectCallback) multiMatchedSelectCallback = callback;
+
+              if(matched) {
+                callback(null, inRaw, inNLP, inDoc, matched);
+              } else {
+                try {
+                  var num = Number(inRaw);
+                  if (num >= 1 && num <= context.user.doc.length) {
+                    task[paramDef.name] = context.user.doc[num-1];
+                    context.user.doc = null;
+
+                    if(task.in && task[paramDef.name]['matchOriginal']) {
+                      task.in = task.in.replace(task[paramDef.name]['matchOriginal'], type.IN_TAG_START + paramDef.name + type.IN_TAG_END);
+                      task[paramDef.name+'Original'] = task[paramDef.name]['matchOriginal'];
+                    }
+
+                    callback(null, inRaw, inNLP, inDoc, true);
+                  } else {
+                    context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, _context, print) {
+                      task.topTask.print = print;
+                      context.user.pendingCallback = null;
+                      multiMatchedSelect(null, _inRaw, _inNLP, task, multiMatchedSelectCallback);
+                    };
+
+                    task.topTask.print('번호를 입력해 주세요.');
+                  }
+                } catch (e) {
                   context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, _context, print) {
                     task.topTask.print = print;
                     context.user.pendingCallback = null;
-                    multiMatchedSelect(null, _inRaw, inNLP, task, multiMatchedSelectCallback);
+                    multiMatchedSelect(null, _inRaw, _inNLP, task, multiMatchedSelectCallback);
                   };
 
                   task.topTask.print('번호를 입력해 주세요.');
                 }
-              } catch (e) {
+              }
+            };
+
+            var customCheckCallback;
+            var customCheck = function(inRaw, inNLP, inDoc, matched, callback) {
+              if(!customCheckCallback) customCheckCallback = callback;
+
+              if (matched) {
+                if (paramDef.customCheck) {
+                  paramDef.customCheck((paramType.raw ? inRaw : inNLP), paramType, inDoc, context, function (_text, _inDoc, _matched) {
+                    callback(null, inRaw, inNLP, _inDoc, _matched)
+                  });
+                } else {
+                  callback(null, inRaw, inNLP, inDoc, matched);
+                }
+
+              } else {
+                callback(true, inRaw, inNLP, inDoc, false);
+              }
+            };
+
+            var additionalCheck =  function(inRaw, inNLP, inDoc, matched, callback) {
+              if(inDoc.requiredOut) {
                 context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, _context, print) {
                   task.topTask.print = print;
                   context.user.pendingCallback = null;
-                  multiMatchedSelect(null, _inRaw, inNLP, task, multiMatchedSelectCallback);
+                  customCheck(_inRaw, _inNLP, task, true, customCheckCallback);
                 };
 
-                task.topTask.print('번호를 입력해 주세요.');
-              }
-            }
-          };
-
-          var customCheckCallback;
-          var customCheck = function(inRaw, inNLP, inDoc, matched, callback) {
-            if(!customCheckCallback) customCheckCallback = callback;
-
-            if (matched) {
-              if (paramDef.customCheck) {
-                paramDef.customCheck(inNLP, paramType, inDoc, context, function (_text, _inDoc, _matched) {
-                  callback(null, _text, inNLP, _inDoc, _matched)
-                });
+                printRequired(inRaw, inDoc, paramDef, paramType);
               } else {
-                callback(null, inRaw, inNLP, inDoc, matched);
+
+                if(paramDef.context && matched) {
+                  context.user[paramDef.name] = task[paramDef.name];
+                  // context.user.updates = [paramDef.name];
+                  // botUser.updateUserContext(context.user, context, function(){
+                  //   context.user.updates = null;
+                    callback(null, inRaw, inNLP, inDoc, matched);
+                  // });
+                } else {
+                  callback(null, inRaw, inNLP, inDoc, matched);
+                }
               }
+            };
 
-            } else {
-              callback(true, inRaw, inNLP, inDoc, false);
-            }
-          };
+            async.waterfall([
+                preType,
+                matchedCheck,
+                typeCheck,
+                multiMatched,
+                multiMatchedSelect,
+                customCheck,
+                additionalCheck
+              ],
 
-          var additionalCheck =  function(inRaw, inNLP, inDoc, matched, callback) {
-            if(inDoc.requiredOut) {
-              context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, _context, print) {
-                task.topTask.print = print;
-                context.user.pendingCallback = null;
-                customCheck(_inRaw, _inNLP, task, true, customCheckCallback);
-              };
+              function(err, _inRaw, _inNLP, _task, _matched) {
+                logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + '.paramDefs.' + paramDef.name + ': ' + (_matched ? 'matched': 'not matched'));
 
-              printRequired(inRaw, inDoc, paramDef, paramType);
-            } else {
-              callback(null, inRaw, inNLP, inDoc, matched);
-            }
-          };
+                // logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + '.paramDefs.' + paramDef.name + ': ' + 'each callback');
+                callbackEach();
+              }
+            );
 
-
-          async.waterfall([
-            preType,
-            matchedCheck,
-            typeCheck,
-            multiMatched,
-            multiMatchedSelect,
-            customCheck,
-            additionalCheck
-            ],
-
-            function(err, _inRaw, _inNLP, _task, _matched) {
-              logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + '.paramDefs.' + paramDef.name + ': ' + (_matched ? 'matched': 'not matched'));
-
-              // logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + '.paramDefs.' + paramDef.name + ': ' + 'each callback');
-              callbackEach();
-            }
-          );
+          }
+        } else {
+          callbackEach();
         }
 
       }, function(err) {
@@ -654,7 +678,6 @@ function findModule(task, context) {
 
   try {
     modulePath = '../../../../custom_modules/' + botName + '/' + (task.module ? task.module : botName);
-    console.log('findModule: ' + modulePath);
     delete require.cache[require.resolve(modulePath)];
     templateModule = require(modulePath);
 
@@ -669,7 +692,6 @@ function findModule(task, context) {
         task.template = template;
 
         modulePath = '../../action/common/' + task.module;
-        console.log('findModule1: ' + modulePath);
         delete require.cache[require.resolve(modulePath)];
         taskModule = require(modulePath);
 
@@ -686,7 +708,6 @@ function findModule(task, context) {
   if(!taskModule) {
     try {
       modulePath = '../../action/common/' + task.module;
-      console.log('findModule2: ' + modulePath);
       delete require.cache[require.resolve(modulePath)];
       taskModule = require(modulePath);
     } catch(err) {

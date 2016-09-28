@@ -1,6 +1,7 @@
 var path = require('path');
 var mongoose = require('mongoose');
 var utils = require(path.resolve('./modules/bot/action/common/utils'));
+var logger = require(path.resolve('./config/lib/logger'));
 
 const DOC_NAME = 'doc';
 
@@ -243,6 +244,164 @@ function execute(task, context, successCallback, errorCallback) {
     else console.log("[common.action: mongo." + task.action + "] error: " + e);
   }
 };
+
+
+function mongoTypeCheck(task, context, callback) {
+
+  var text = task.raw ? task.inRaw : task.in;
+  var docName = task.name ? task.name : 'doc';
+
+  logger.debug('');
+  try {
+    logger.debug('mongo.js:mongoTypeCheck: START ' + docName + ' "' + text + '" task: ' + JSON.stringify(task));
+  } catch(e) {
+    logger.debug('mongo.js:mongoTypeCheck: START ' + docName + ' "' + text + '"');
+  }
+
+  var model;
+  if (mongoose.models[task.mongo.model]) {
+    model = mongoose.model(task.mongo.model);
+  } else {
+    model = mongoose.model(task.mongo.model, new mongoose.Schema(task.mongo.schema));
+  }
+
+  var matchedWord = '';
+  var matchedDoc = [];
+  var words = text.split(' '), wordsCount = 0;
+  for(var i = 0 ; i < words.length; i++) {
+    var word = words[i];
+
+    var query = {};
+    for(var j = 0; j < task.mongo.queryFields.length; j++) {
+      try {
+        query[task.mongo.queryFields[j]] = new RegExp(word, 'i');
+      } catch(e) {}
+    }
+
+    var _query = model.find(query, task.mongo.fields, task.mongo.options);
+    if(task.mongo.sort) _query.sort(task.mongo.sort);
+    if(task.mongo.limit) _query.limit(task.mongo.limit);
+
+    _query.lean().exec(function (err, docs) {
+      wordsCount++;
+
+      if (err || !docs || docs.length <= 0) {
+        //callback(text, task);
+      } else {
+
+        for(var k = 0; k < docs.length; k++) {
+          var doc = docs[k];
+
+          var matchCount = 0;
+          matchedWord = '';
+          var matchIndex = -1, matchMin = -1, matchMax = -1;
+          for(var l = 0; l < task.mongo.queryFields.length; l++) {
+            for(var m = 0; m < words.length; m++) {
+              matchIndex = doc[task.mongo.queryFields[l]].search(new RegExp(words[m], 'i'));
+
+              if(matchIndex != -1) {
+                matchCount++;
+                matchedWord += words[m];
+
+                var matchOrgIndex = text.search(new RegExp(words[m], 'i'));
+                if(matchOrgIndex != -1 && (matchMin == -1 || matchOrgIndex < matchMin)) matchMin = matchOrgIndex;
+                if(matchOrgIndex != -1 && (matchMax == -1 || matchOrgIndex + words[m].length> matchMax)) matchMax = matchOrgIndex + words[m].length;
+              }
+            }
+          }
+
+          if(matchCount >= task.mongo.minMatch) {
+            var bExist = false;
+            for(var l = 0; l < matchedDoc.length; l++) {
+              if(matchedDoc[l]._id.id == doc._id.id) {
+                bExist = true;
+                break;
+              }
+            }
+
+            if(!bExist) {
+              doc.matchWord = matchedWord;
+              doc.matchCount = matchCount;
+              doc.matchMin = matchMin;
+              doc.matchMax = matchMax;
+
+              matchedDoc.push(doc);
+            }
+          }
+        }
+      }
+
+      if(wordsCount >= words.length) {
+
+        if (task.mongo.taskSort && task.mongo.taskSort instanceof Function) {
+          matchedDoc.sort(task.mongo.taskSort);
+        } else {
+          matchedDoc.sort(function (a, b) {
+            return b.matchCount - a.matchCount;
+          });
+        }
+
+        if (matchedDoc.length > 0) {
+
+          task[docName] = [];
+          for (var _l = 0; _l < matchedDoc.length; _l++) {
+            var matchDoc = matchedDoc[_l];
+
+            var matchText = '';
+            for (var l = 0; l < task.mongo.queryFields.length; l++) {
+              var _text = matchDoc[task.mongo.queryFields[l]]
+              if (matchText == '') matchText = matchText.concat(_text);
+              else matchText = matchText.concat(' ', _text);
+            }
+            matchDoc['matchText'] = matchText;
+
+            var matchOriginal = text.substring(matchDoc.matchMin, matchDoc.matchMax);
+            matchDoc['matchOriginal'] = matchOriginal;
+
+            if (task.mongo.taskFields) {
+              var addDoc = {};
+              for (var l = 0; task.mongo.taskFields && l < task.mongo.taskFields.length; l++) {
+                addDoc[task.mongo.taskFields[l]] = matchDoc[task.mongo.taskFields[l]];
+              }
+              task[docName].push(addDoc);
+            } else {
+              task[docName].push(matchDoc);
+            }
+
+            if(matchDoc.matchWord.replace(/ /i, '') == matchDoc[task.mongo.queryFields[0]].replace(/ /i, ''))
+              break;
+            if (task[docName].length >= task.limit) break;
+          }
+
+          if(task[docName].length == 1) {
+            task[docName] = task[docName][0];
+
+            text = text.replace(task[docName]['matchOriginal'], type.IN_TAG_START + docName + type.IN_TAG_END);
+            task[docName+'Original'] = task[docName]['matchOriginal'];
+          }
+
+          try {
+            logger.debug('mongo.js:mongoTypeCheck: MATCHED ' + docName + ' "' + text + '" task: ' + JSON.stringify(task));
+          } catch (e) {
+            logger.debug('mongo.js:mongoTypeCheck: MATCHED ' + docName + ' "' + text + '" task.' + docName + ': ' + task[docName] + ' task.typeDoc: ' + JSON.stringify(task.typeDoc));
+          }
+
+          task.match = true;
+          callback(task, context);
+        } else {
+          try {
+            logger.debug('mongo.js:mongoTypeCheck: NOT MATCHED ' + docName + ' "' + text + '" task: ' + JSON.stringify(task));
+          } catch (e) {
+            logger.debug('mongo.js:mongoTypeCheck: NOT MATCHED ' + docName + ' "' + text + '" task.' + docName + ': ' + task[docName] + ' task.typeDoc: ' + JSON.stringify(task.typeDoc));
+          }
+
+          task.match = false;
+          callback(task, context);
+        }
+      }
+    });
+  }
+}
 
 
 function getModel(modelName, schema) {

@@ -163,3 +163,34 @@ exports.botUserByUserKey = function (req, res, next, userKey) {
     next();
   });
 };
+
+
+function getUserContext(task, context, callback) {
+  BotUser.findOne({userKey: task.userId}, function(err, doc) {
+    if(doc == undefined) {
+      BotUser.create({userKey: task.userId, channel: task.channel, creaated: Date.now()}, function(err, _doc) {
+        task.doc = _doc;
+        callback(task, context);
+      });
+    } else {
+      task.doc = doc;
+      callback(task, context);
+    }
+  });
+}
+
+exports.getUserContext = getUserContext;
+
+function updateUserContext(task, context, callback) {
+  var update = {};
+  for (var i = 0; i < task.updates.length; i++) {
+    var key = task.updates[i];
+    update[key] = task[key];
+  }
+
+  BotUser.update({userKey: task.userId}, update, function(err, num) {
+    callback(task, context);
+  });
+}
+
+exports.updateUserContext = updateUserContext;

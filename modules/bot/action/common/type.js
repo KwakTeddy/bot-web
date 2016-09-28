@@ -4,7 +4,7 @@ var nlp = require('../../engine/nlp/processor');
 var utils = require('./utils');
 var path = require('path');
 var logger = require(path.resolve('./config/lib/logger'));
-
+var address = require(path.resolve('./modules/bot/action/common/address'));
 
 const TAG_START = '\\+';
 const TAG_END = '\\+';
@@ -23,9 +23,9 @@ exports.IN_TAG_END = IN_TAG_END;
 exports.DOC_NAME = DOC_NAME;
 
 
-exports.processInput = function(context, inText, callback) {
-  if(inText.startsWith(":")) {
-    callback(inText, null);
+exports.processInput = function(context, inRaw, callback) {
+  if(inRaw.startsWith(":")) {
+    callback(inRaw, null);
     return;
   }
 
@@ -37,122 +37,17 @@ exports.processInput = function(context, inText, callback) {
     spamfilter: true     // (optional default: false)
   });
 
-  checkTypes(inText, commonTypes, doc, context, function(inText, inDoc) {
-    nlpKo.tokenizeToStrings(inText, function(err, result) {
-      var nlpText =result.join(' ');
+  checkTypes(inRaw, commonTypes, doc, context, function(_inRaw, inDoc) {
+    nlpKo.tokenizeToStrings(_inRaw, function(err, result) {
+      var inNLP = result.join(' ');
 
-      nlpText = nlpText.replace(/(?:\{ | \})/g, '+');
+      inNLP = inNLP.replace(/(?:\{ | \})/g, '+');
 
-      callback(nlpText, inDoc);
+      callback(inNLP, inDoc);
     }) // async
 
   });
-
-  //commonFormat(inText, doc, function(inText, inDoc) {
-  //  mongoDbTypeCheck(inText, productType, inDoc, context, function(inText, inDoc) {
-  //
-  //    nlpKo.tokenizeToStrings(inText, function(err, result) {
-  //      var nlpText =result.join(' ');
-  //
-  //      nlpText = nlpText.replace(/(?:\{ | \})/g, '+');
-  //
-  //      callback(nlpText, inDoc);
-  //    }) // async
-  //
-  //  });
-  //})
-}
-
-
-function commonFormat(text, json, callback) {
-  text = text.replace(/([\d,]+[십백천만억원]+)/g, function(match, p1, offset, string) {
-    if(json.amount) {
-      if(Array.isArray(json.amout)) json.amount.push(p1);
-      else json.amount = [json.amout];
-    } else {
-      json.amount = p1;
-    }
-
-    return IN_TAG_START + 'amount' + IN_TAG_END;
-  });
-
-  text = text.replace(/\b((?:010-\d{4}|01[1|6|7|8|9][-.]?\d{3,4})[-.]?\d{4})\b/g, function(match, p1, offset, string) {
-    if(json.$mobile) {
-      if(Array.isArray(json.$mobile)) json.$mobile.push(p1);
-      else json.$mobile = [json.$mobile, p1];
-    } else {
-      json.$mobile = p1;
-    }
-
-    return IN_TAG_START + 'mobile' + IN_TAG_END;
-  });
-
-  text = text.replace(/\b((?:0(?:2|3[0-3]|4[1-4]|5[0-5]|6[0-4]|70|80))[-.]?\d{3,4}[-.]?\d{4})\b/g, function(match, p1, offset, string) {
-    if(json.phone) {
-      if(Array.isArray(json.phone)) json.phone.push(p1);
-      else json.phone = [json.phone, p1];
-    } else {
-      json.phone = p1;
-    }
-
-    return IN_TAG_START + 'phone' + IN_TAG_END;
-  });
-
-
-//text = text.replace(/(\b\d{3}[-.]?\d{4}[-.]?\d{4}\b)/g, function(match, p1, offset, string) {
-//	json.phone = p1;
-//	return IN_TAG_START + $phone + IN_TAG_END;
-//});
-
-
-  text = text.replace(/(\d{4}[-/.년][ ]?(?:0[1-9]|1[012]|[1-9])[-/.월][ ]?(?:0[1-9]|[12][0-9]|3[0-1]|[1-9])[일]?)/g, function(match, p1, offset, string) {
-    if(json.date) {
-      if(Array.isArray(json.date)) json.date.push(p1);
-      else json.date = [json.date];
-    } else {
-      json.date = p1;
-    }
-
-    return IN_TAG_START + 'date' + IN_TAG_END;
-  });
-
-
-  text = text.replace(/((?:[01][0-9]|2[0-3]|[1-9])[:시][ ]?(?:[0-5][0-9]|[1-9])[분]?)/g, function(match, p1, offset, string) {
-    if(json.time) {
-      if(Array.isArray(json.time)) json.time.push(p1);
-      else json.time = [json.time];
-    } else {
-      json.time = p1;
-    }
-
-    return IN_TAG_START + 'time' + IN_TAG_END;
-  });
-
-
-  text = text.replace(/(\b[\d-]+-[\d-]+\b)/g, function(match, p1, offset, string) {
-    if(json.account) {
-      if(Array.isArray(json.account)) json.account.push(p1);
-      else json.account = [json.account];
-    } else {
-      json.account = p1;
-    }
-
-    return IN_TAG_START + 'account' + IN_TAG_END;
-  });
-
-  //text = text.replace(/(\b[\d]+\b)/g, function(match, p1, offset, string) {
-  //  if(json.account) {
-  //    if(Array.isArray(json.account)) json.account.push(p1);
-  //    else json.account = [json.account];
-  //  } else {
-  //    json.account = p1;
-  //  }
-  //
-  //  return IN_TAG_START + 'number' + IN_TAG_END;
-  //});
-
-  callback(text, json);
-}
+};
 
 exports.processOutput = processOutput;
 
@@ -834,7 +729,7 @@ function mongoDbTypeCheck(text, format, inDoc, context, callback) {
 
 var commonTypes = [
   // amountType,
-  // mobileType,
+  mobileType
   // phoneType,
   // dateType,
   // timeType,
@@ -869,13 +764,6 @@ function executeType(text, type, inDoc, context, successCallback) {
     successCallback(text, inDoc);
   }
 
-  //var typeModule = findType(type, context);
-  //
-  //if(typeModule) {
-  //  typeModule[type.typeCheck](text, type, inDoc, context, successCallback);
-  //} else {
-  //  successCallback(text, inDoc);
-  //}
 }
 
 
@@ -936,8 +824,8 @@ function findType(type, context) {
 
 var addressType = {
   name: 'address',
-  typeCheck: addressTypeCheck
-}
+  typeCheck: address.addressTypeCheck
+};
 
 exports.addressType= addressType;
 

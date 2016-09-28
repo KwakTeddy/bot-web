@@ -85,3 +85,11 @@ function requireNoCache(filePath) {
   delete require.cache[require.resolve(filePath)];
   return require(filePath);
 }
+
+
+function convertEncoding(from, to, str) {
+  var Iconv  = require('iconv').Iconv;
+  var iconv = new Iconv(from.toUpperCase(), to + '//TRANSLIT//IGNORE');
+  return iconv.convert(new Buffer(str, 'binary')).toString(to);
+}
+exports.convertEncoding = convertEncoding;

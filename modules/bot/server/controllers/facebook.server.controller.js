@@ -12,17 +12,17 @@ var chat = require('./bot.server.controller');
 
 
 exports.messageGet =  function(req, res) {
-  var context = chat.getContext(req.params.bot, 'facebook', null);
-
-  console.log(req.query['hub.mode'] + ', ' + req.query['hub.verify_token'] + ',' + context.bot.VALIDATION_TOKEN );
-  if (req.query['hub.mode'] === 'subscribe' &&
-    req.query['hub.verify_token'] === context.bot.VALIDATION_TOKEN) {
-    console.log("Validating webhook");
-    res.status(200).send(req.query['hub.challenge']);
-  } else {
-    console.error("Failed validation. Make sure the validation tokens match.");
-    res.sendStatus(403);
-  }
+  chat.getContext(req.params.bot, 'facebook', null, function(context) {
+    console.log(req.query['hub.mode'] + ', ' + req.query['hub.verify_token'] + ',' + context.bot.VALIDATION_TOKEN );
+    if (req.query['hub.mode'] === 'subscribe' &&
+      req.query['hub.verify_token'] === context.bot.VALIDATION_TOKEN) {
+      console.log("Validating webhook");
+      res.status(200).send(req.query['hub.challenge']);
+    } else {
+      console.error("Failed validation. Make sure the validation tokens match.");
+      res.sendStatus(403);
+    }
+  });
 };
 
 
@@ -75,8 +75,10 @@ function respondMessage(to, text, botId, task) {
     }
   };
 
-  var context = chat.getContext(botId, 'facebook', to);
-  callSendAPI(messageData, context.bot.facebook.PAGE_ACCESS_TOKEN);
+  chat.getContext(botId, 'facebook', to, function(context) {
+    callSendAPI(messageData, context.bot.facebook.PAGE_ACCESS_TOKEN);
+  });
+
 
   // if (text) {
   //   // If we receive a text message, check to see if it matches any special
@@ -189,24 +191,25 @@ function receivedMessage(event) {
   var timeOfMessage = event.timestamp;
   var message = event.message;
 
-  var context = chat.getContext(event.botId, 'facebook', senderID);
+  chat.getContext(event.botId, 'facebook', senderID, function(context) {
+    // console.log('receivedMessage: ', event);
+    if(recipientID == context.bot.facebook.id) {
+      // console.log("Received message for user %d and page %d at %d with message:",
+      //   senderID, recipientID, timeOfMessage);
+      // console.log(JSON.stringify(message));
 
-  // console.log('receivedMessage: ', event);
-  if(recipientID == context.bot.facebook.id) {
-    // console.log("Received message for user %d and page %d at %d with message:",
-    //   senderID, recipientID, timeOfMessage);
-    // console.log(JSON.stringify(message));
+      var messageId = message.mid;
 
-    var messageId = message.mid;
+      // You may get a text or attachment but not both
+      var messageText = message.text;
+      var messageAttachments = message.attachments;
 
-    // You may get a text or attachment but not both
-    var messageText = message.text;
-    var messageAttachments = message.attachments;
+      chat.write('facebook', senderID, event.botId, messageText, function (retText, task) {
+        respondMessage(senderID, retText, event.botId, task);
+      });
+    }
+  });
 
-    chat.write('facebook', senderID, event.botId, messageText, function (retText, task) {
-      respondMessage(senderID, retText, event.botId, task);
-    });
-  }
 }
 
 

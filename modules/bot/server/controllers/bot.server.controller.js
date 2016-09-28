@@ -7,6 +7,8 @@ var utils = require(path.resolve('./modules/bot/action/common/utils'));
 var config = require(path.resolve('./config/config'));
 var logger = require(path.resolve('./config/lib/logger'));
 
+var async = require('async');
+
 var chatSocketConfig = {port: 1024, host: 'localhost', allowHalfOpen: true};
 
 var mongoose = require('mongoose'),
@@ -21,89 +23,113 @@ exports.botProc = botProc;
 
 function botProc(botName, channel, user, inTextRaw, outCallback, chatServerConfig) {
 
-  var context = getContext(botName, channel, user);
+  getContext(botName, channel, user, function(_context) {
+    var context = _context;
 
-  logger.verbose("사용자 입력>> " + inTextRaw);
+    logger.verbose("사용자 입력>> " + inTextRaw);
 
-  var type = utils.requireNoCache(path.resolve('./modules/bot/action/common/type'));
+    var type = utils.requireNoCache(path.resolve('./modules/bot/action/common/type'));
 
-  type.processInput(context, inTextRaw, function(inTextNLP, inDoc) {
-    logger.verbose("자연어 처리>> " + inTextNLP);
+    type.processInput(context, inTextRaw, function(inTextNLP, inDoc) {
+      logger.verbose("자연어 처리>> " + inTextNLP);
 
-    var print = function(_out, _task) {
-      logger.verbose("사용자 출력>> " + _out + "\n");
+      var print = function(_out, _task) {
+        logger.verbose("사용자 출력>> " + _out + "\n");
 
-      if(_task && _task.photoUrl && !_task.photoUrl.startsWith('http')) {
-        //_task.photoUrl = config.host + (config.port ? ':' + config.port : '') + _task.photoUrl;
-        _task.photoUrl = (process.env.HTTP_HOST ? process.env.HTTP_HOST : '') + _task.photoUrl;
+        if(_task && _task.photoUrl && !_task.photoUrl.startsWith('http')) {
+          //_task.photoUrl = config.host + (config.port ? ':' + config.port : '') + _task.photoUrl;
+          _task.photoUrl = (process.env.HTTP_HOST ? process.env.HTTP_HOST : '') + _task.photoUrl;
+        }
+
+        outCallback(_out, _task);
+      };
+
+      if(context.user.pendingCallback) {
+        if(inTextRaw.search(/(처음|메뉴)/g) != -1 || inTextRaw.startsWith(':')) {
+          context.user.pendingCallback = null;
+          context.user.pendingType = null;
+
+        } else {
+          context.user.pendingCallback(inTextRaw, inTextNLP, inDoc, context, print, print);
+          return;
+        }
       }
 
-      outCallback(_out, _task);
-    };
+      var chatscriptSocket = net.createConnection(chatServerConfig, function(){
+        chatscriptSocket.write(user+'\x00'+ /*botName*/ '' +'\x00'+inTextNLP+'\x00');
+      });
 
-    if(context.user.pendingCallback) {
-      if(inTextRaw.search(/(처음|메뉴)/g) != -1 || inTextRaw.startsWith(':')) {
-        context.user.pendingCallback = null;
-        context.user.pendingType = null;
+      chatscriptSocket.on('data', function(data) {    // on receive data from chatscriptSocket
+        var chatserverOut = data.toString();
 
-      } else {
-        context.user.pendingCallback(inTextRaw, inTextNLP, inDoc, context, print, print);
-        return;
-      }
-    }
+        logger.verbose("챗서버 답변>> " + chatserverOut);
 
-    var chatscriptSocket = net.createConnection(chatServerConfig, function(){
-      chatscriptSocket.write(user+'\x00'+ /*botName*/ '' +'\x00'+inTextNLP+'\x00');
-    });
+        botProcess.processChatserverOut(context, chatserverOut, inTextNLP, inTextRaw, inDoc, print, print)
+      });
 
-    chatscriptSocket.on('data', function(data) {    // on receive data from chatscriptSocket
-      var chatserverOut = data.toString();
+      chatscriptSocket.on('end', function() {       // on end from chatscriptSocket
+        console.log('disconnected from server');
+      });
 
-      logger.verbose("챗서버 답변>> " + chatserverOut);
+      chatscriptSocket.on('error', function(err) {  // on error from chatscriptSocket
+        console.log('error from server ' + err +' '+ chatscriptSocket.address()[1]);
+      });
 
-      botProcess.processChatserverOut(context, chatserverOut, inTextNLP, inTextRaw, inDoc, print, print)
-    });
-
-    chatscriptSocket.on('end', function() {       // on end from chatscriptSocket
-      console.log('disconnected from server');
-    });
-
-    chatscriptSocket.on('error', function(err) {  // on error from chatscriptSocket
-      console.log('error from server ' + err +' '+ chatscriptSocket.address()[1]);
-    });
-
-  })
-
+    })
+  });
 }
 
 exports.getContext = getContext;
-function getContext(botName, channel, user) {
+function getContext(botName, channel, user, callback) {
   if(!global._context) global._context = {};
-  if(!global._bots) global._bots = [];
-  if(!global._bots[botName]) global._bots[botName] = {};
+  if(!global._bots) global._bots = {};
   if(!global._channels) global._channels = {};
-  if(!global._channels[channel]) global._channels[channel] = {};
-  if(!global._users) global._users = [];
-  if(!global._users[user]) global._users[user] = {};
+  if(!global._users) global._users = {};
 
-  var context = {
-    global: global._context,
-    bot: global._bots[botName],
-    channel: global._channels[channel],
-    user: global._users[user]
-  };
+  var userContext;
 
-  context.bot.botName = botName;
-  context.channel.name = channel;
-  context.user.userId = user;
+  async.waterfall([
+    function(cb) {
+      if(!global._bots[botName]) global._bots[botName] = {};
+      if(!global._channels[channel]) global._channels[channel] = {};
 
-  if(!context.user.cookie) context.user.cookie = new tough.CookieJar();
+      if(user == undefined) {
+        cb(null);
+      } else if(!global._users[user]) {
+        var botUser = require(path.resolve('./modules/bot-users/server/controllers/bot-users.server.controller'));
+        var _user =  {userId: user, channel: channel, bot: botName};
+        botUser.getUserContext(_user, null, function(_user, _context) {
+          userContext = {userId: user, channel: channel, bot: botName};
+          userContext = utils.merge(userContext, _user.doc._doc);
+          global._users[user] = userContext;
+          cb(null);
+        });
+      } else {
+        userContext = global._users[user];
+        cb(null);
+      }
+    }
+  ], function(err) {
+    var context = {
+      global: global._context,
+      bot: global._bots[botName],
+      channel: global._channels[channel],
+      user: userContext
+    };
 
-  context.global.messages = messages;
+    context.bot.botName = botName;
+    context.channel.name = channel;
+    context.user.userId = user;
 
-  context.user.mobile = '010-6316-5683';
+    if(!context.user.cookie) context.user.cookie = new tough.CookieJar();
 
-  return context;
+    context.global.messages = messages;
+
+    // context.user.mobile = '010-6316-5683';
+
+    callback(context);
+  });
+
 }
 
 
@@ -124,7 +150,12 @@ global._bots = {
       //100013440439602
 
       //10068645294110881006864529411088
-    ]
+    ],
+
+    messages: {
+      manager:  false,
+      orderCall: false
+    }
   },
   moneybot: {
     kakao: {

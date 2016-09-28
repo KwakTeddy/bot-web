@@ -28,6 +28,7 @@ var BotUserSchema = new Schema({
   name: {
     type: String
   },
+  mobile: String,
   phone: {
     type: String
   },
@@ -37,6 +38,8 @@ var BotUserSchema = new Schema({
   isOn: {
     type: Boolean
   },
+
+  address: Object,
 
   created: {
     type: Date,

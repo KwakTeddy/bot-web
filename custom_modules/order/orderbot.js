@@ -1,10 +1,11 @@
 var path = require('path');
-var logger = require(path.resolve('./config/lib/logger'));
 var async = require('async');
 var mongoose = require('mongoose');
-var utils = require(path.resolve('./modules/bot/action/common/utils'));
-var type = require(path.resolve('./modules/bot/action/common/type'));
-var manager = require(path.resolve('./custom_modules/order/manager'));
+var logger = require(path.resolve('config/lib/logger'));
+var utils = require(path.resolve('modules/bot/action/common/utils'));
+var type = require(path.resolve('modules/bot/action/common/type'));
+var manager = require(path.resolve('custom_modules/order/manager'));
+var messages = require(path.resolve('modules/messages/server/controllers/messages.server.controller'))
 
 var restaurantCategory = [
   {category: '치킨', alias: '치킨 통닭 닭 chicken'},
@@ -62,11 +63,12 @@ var deliverOrder = {
   module: 'task',
   action: 'sequence',
   paramDefs: [
-    {type: 'address', name: 'address', display: '주소', match: false, required: true, question: '주소를 말씀해 주세요.'
-      ,default: '경기도 부천시 원미구 중동 1106 위브더스테이트 103-3302'
+    {type: 'address', name: 'address', display: '주소', match: false, required: true, context: true, raw: true, question: '주소를 말씀해 주세요. (최초 한번만 입력)'
+      // ,default: '경기도 부천시 원미구 중동 1106 위브더스테이트 103-3302'
       // ,default: '서울시 영등포구 국제금융로 20 율촌빌딩 11'
       // , default: '서울특별시 금천구 가산동 60-3 대륭포스트타워5차 1606호'
     },
+    {type: 'mobile', name: 'mobile', required: true, context: true, raw: true, question: '휴대폰 번호를 말씀해 주세요. (최초 한번만 입력)'},
     {type: restaurantType, name: 'restaurant', required: true, question: '음식점을 말씀해 주세요.'}
     // {type: menuType, name: 'menu', required: false, question: '메뉴를 입력해주세요'},
     // {type: 'count', name: 'orderCount', required: false, question: '주문개수를 입력해주세요'}
@@ -296,29 +298,23 @@ var deliverOrder = {
       paramDefs: [
         {type: 'string', name: 'complete', required: true, question: function(task, context) {
           var q = '다음과 같이 주문을 요청합니다. \n';
-          q += '주소: ' + task.topTask.address.address + '\n';
+          q += '배달주소: ' + task.topTask.address.도로명주소 + '\n';
+          q += '주문자휴대폰: ' + task.topTask.mobile + '\n';
           q += '음식점: ' + task.topTask.restaurant.name + '\n';
           q += '메뉴: ' + task.topTask.menu.name + ' ' + task.topTask.menu.price + '\n';
+          q += '전화: ' + task.topTask.restaurant.phone + '\n';
           q += '주문을 요청하시겠습니까?';
 
           return q;
         }}
       ],
       postCallback: function(task, context, callback) {
-        var ides = ["aaa", "bbb", "ccc"];
-        for (var i = 0; i < ides.length; i++) {
-          var ide = ides[i];
-          console.log(ide);
-
-        }
-
         var re = new RegExp(context.global.messages.yesRegExp, 'g');
         if(task.complete.search(re) != -1) {
 
           var model = mongoose.model('DeliveryOrder');
 
           logger.debug(task.topTask.address);
-          logger.debug(task.topTask.address2);
 
           task.topTask.totalPrice = 0;
           if(task.topTask.menus == undefined) {
@@ -336,7 +332,6 @@ var deliverOrder = {
               {menu: task.topTask.menu._id, name: task.topTask.menu.name, price: task.topTask.menu.price}
             ],
             address: task.topTask.address != undefined ? task.topTask.address.address : undefined,
-            address2: task.topTask.address2 != undefined ? task.topTask.address2.address : undefined,
             totalPrice: task.topTask.totalPrice,
             status: ['요청'],
             memo: '',
@@ -356,7 +351,18 @@ var deliverOrder = {
             }
 
             task.deliveryOrderId = _docs._id;
-            manager.checkOrder(task, context, null);
+            if(context.bot.messages.manager == true)
+              manager.checkOrder(task, context, null);
+
+            var vmsMessage = "카카오톡에서 배달봇 양얌 주문입니다. " +
+              task.topTask.menu.name + ' ' + '1개' + ' 배달해 주세요.' +
+              '주소는 ' + task.topTask.address.지번주소 + ' 입니다.' +
+              '전화번호는 ' + task.topTask.mobile + ' 입니다.' +
+              '이 주문은 배달을 대행하는 카카오톡 얌얌 서비스의 배달대행 주문입니다.';
+
+            messages.sendVMS({callbackPhone: '028585683', phone: context.user.mobile.replace(/,/g, ''), message: vmsMessage},
+              context, function(_task, _context) {
+              });
 
             task.isComplete = true;
             callback(task, context);
@@ -396,7 +402,6 @@ function orderHistory(task, context, successCallback, errorCallback) {
     successCallback(task, context);
   });
 }
-;
 
 
 function mongoTypeCheck(text, format, inDoc, context, callback) {
@@ -582,20 +587,24 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
           } catch(e) {}
         }
 
-        var sigungu, sigungu2;
-        if(inDoc.address.sigungu.split(' ').length > 1) sigungu = inDoc.address.sigungu.split(' ')[0];
-        else sigungu = inDoc.address.sigungu;
+        query['address.시도명'] = inDoc.address.시도명;
+        query['address.시군구명'] = inDoc.address.시군구명;
+        query['address.행정동명'] = inDoc.address.행정동명;
 
-        if(inDoc.addressJibun.sigungu.split(' ').length > 1) sigungu2 = inDoc.addressJibun.sigungu.split(' ')[0];
-        else sigungu2 = inDoc.addressJibun.sigungu;
-
-        query = {
-          $and : [
-            {$or: [{$and: [{address: new RegExp(sigungu, 'i')}, {address: new RegExp(inDoc.address.road, 'i')}]} ,
-              {$and: [{address2: new RegExp(sigungu2, 'i')}, {address2: new RegExp(inDoc.addressJibun.dong, 'i')}]}]},
-            query
-          ]
-        };
+        // var sigungu, sigungu2;
+        // if(inDoc.address.sigungu.split(' ').length > 1) sigungu = inDoc.address.sigungu.split(' ')[0];
+        // else sigungu = inDoc.address.sigungu;
+        //
+        // if(inDoc.addressJibun.sigungu.split(' ').length > 1) sigungu2 = inDoc.addressJibun.sigungu.split(' ')[0];
+        // else sigungu2 = inDoc.addressJibun.sigungu;
+        //
+        // query = {
+        //   $and : [
+        //     {$or: [{$and: [{address: new RegExp(sigungu, 'i')}, {address: new RegExp(inDoc.address.road, 'i')}]} ,
+        //       {$and: [{address2: new RegExp(sigungu2, 'i')}, {address2: new RegExp(inDoc.addressJibun.dong, 'i')}]}]},
+        //     query
+        //   ]
+        // };
 
         var _query = model.find(query, format.mongo.fields, format.mongo.options);
         if(format.mongo.sort) _query.sort(format.mongo.sort);
@@ -1033,6 +1042,10 @@ exports.nMapDetail = {
 };
 
 
+function testVMS(task, context, callback) {
+  messages.sendVMS({callbackPhone: '028585683', phone: '01063165683', message: '전화테스트입니다.'}, context, function() {
+    callback(task, context);
+  });
+}
 
-
-
+exports.testVMS = testVMS;

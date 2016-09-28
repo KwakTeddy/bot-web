@@ -5,23 +5,14 @@ var chat = require('./bot.server.controller');
 exports.keyboard = function (req, res) {
   console.log("kakao keyboard");
 
-  var context = chat.getContext(req.params.bot, 'kakao', req.params.user_key);
+  chat.getContext(req.params.bot, 'kakao', req.params.user_key, function(context) {
+    var sendMsg = context.bot.kakao.keyboard;
+    if(sendMsg == undefined) sendMsg = { type: 'text'};
 
-  var sendMsg = context.bot.kakao.keyboard;
-  if(sendMsg == undefined) sendMsg = { type: 'text'};
+    res.write(JSON.stringify(sendMsg));
+    res.end();
 
-  // {
-    // type: 'text'
-    // "type": "buttons",
-    // "buttons": ["잔액조회", "상품추천", "고객상담"]
-    // "type": "buttons",
-    // "buttons": ["상품안내", "이벤트안내", "이용시간안내", "FAQ", "올원뱅크연결"]
-    // "type": "buttons",
-    // "buttons": ["배달주문하기", "배달내역보기"]
-  // };
-
-  res.write(JSON.stringify(sendMsg));
-  res.end();
+  });
 };
 
 exports.message = function (req, res) {

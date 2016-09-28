@@ -171,3 +171,69 @@ exports.sendKakao = function (req, res) {
 
   res.end();
 };
+
+
+function sendSMS(task, context, callback) {
+  console.log('sendSMS');
+  var callbackPhone = task.callbackPhone;
+  var phone = task.phone;
+  var message = task.message;
+
+  mySqlPool.getConnection(function (err, connection) {
+    console.log(err);
+    var query = 'INSERT INTO SDK_SMS_SEND ' +
+      '( USER_ID, SUBJECT, SMS_MSG, CALLBACK_URL, NOW_DATE, SEND_DATE, CALLBACK,DEST_INFO,CDR_ID) VALUES ' +
+      '("moneybrain1", "", "' + message + '", "" , "' + dateformat(new Date() + 9 * 60 * 60, 'yyyymmddHHMMss') + '", "' +
+      dateformat(new Date() + 9 * 60 * 60, 'yyyymmddHHMMss') + '","' + callbackPhone + '","test^' + phone + '","");';
+
+    connection.query(query
+      , function (err, rows) {
+        if (err) {
+          connection.release();
+          throw err;
+        }
+
+        connection.release();
+        callback(task, context);
+      });
+
+    console.log(query);
+  })
+
+}
+
+exports.sendSMS = sendSMS;
+
+function sendVMS(task, context, callback) {
+  console.log('sendVMS');
+  var callbackPhone = task.callbackPhone;
+  var phone = task.phone;
+  var message = task.message;
+
+  mySqlPool.getConnection(function (err, connection) {
+    console.log(err);
+        var query = 'INSERT INTO SDK_VMS_SEND ' +
+      '(USER_ID, MSG_SUBTYPE, SCHEDULE_TYPE, DEST_TYPE, MENT_TYPE, VOICE_TYPE, ' +
+      'SUBJECT, NOW_DATE,SEND_DATE,CALLBACK,REPLY_TYPE,REPLY_COUNT,COUNSELOR_DTMF, ' +
+      'COUNSELOR_NUMBER, RELISTEN_COUNT,CDR_ID, TTS_MSG, DEST_COUNT, DEST_INFO) VALUES ' +
+      '("moneybrain1", 30, 0, 0, 0, 0, 1, "' + dateformat(new Date() + 9 * 60 * 60, 'yyyymmddHHMMss') + '", ' +
+      '"' + dateformat(new Date() + 9 * 60 * 60, 'yyyymmddHHMMss') + '", ' +
+      '"' + callbackPhone + '", 0, 0, 9, "' + callbackPhone + '", 1, "", "' + message + '", 1, "test^"' + phone + ')';
+
+    connection.query(query
+      , function (err, rows) {
+        if (err) {
+          connection.release();
+          throw err;
+        }
+
+        connection.release();
+        callback(task, context);
+      });
+
+    console.log(query);
+  })
+
+}
+
+exports.sendVMS = sendVMS;

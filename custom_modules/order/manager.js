@@ -47,7 +47,8 @@ function checkOrder(task, context, successCallback, errorCallback) {
     manager.deliveryOrderId = task.deliveryOrderId;
 
     facebook.respondMessage(manager.userId, '배달 주문이 접수 되었습니다.\n' +
-      '주소: ' + task.topTask.address.address + '\n' +
+      '배달주소: ' + task.topTask.address.도로명주소 + '\n' +
+      '배달자휴대폰: ' + task.topTask.mobile + '\n' +
       '음식점: ' + task.topTask.restaurant.name + '\n'+
       '메뉴: ' + task.topTask.menu.name + ' ' + task.topTask.menu.price + '\n' +
       '전화: ' + task.topTask.restaurant.phone + '\n\n' +
