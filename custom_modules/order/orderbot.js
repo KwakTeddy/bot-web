@@ -6,6 +6,7 @@ var utils = require(path.resolve('modules/bot/action/common/utils'));
 var type = require(path.resolve('modules/bot/action/common/type'));
 var manager = require(path.resolve('custom_modules/order/manager'));
 var messages = require(path.resolve('modules/messages/server/controllers/messages.server.controller'))
+var dateformat = require('dateformat');
 
 var restaurantCategory = [
   {category: '치킨', alias: '치킨 통닭 닭 chicken'},
@@ -63,11 +64,7 @@ var deliverOrder = {
   module: 'task',
   action: 'sequence',
   paramDefs: [
-    {type: 'address', name: 'address', display: '주소', match: false, required: true, context: true, raw: true, question: '주소를 말씀해 주세요. (최초 한번만 입력)'
-      // ,default: '경기도 부천시 원미구 중동 1106 위브더스테이트 103-3302'
-      // ,default: '서울시 영등포구 국제금융로 20 율촌빌딩 11'
-      // , default: '서울특별시 금천구 가산동 60-3 대륭포스트타워5차 1606호'
-    },
+    {type: 'address', name: 'address', display: '주소', match: false, required: true, context: true, raw: true, question: '주소를 말씀해 주세요. (최초 한번만 입력)'},
     {type: 'mobile', name: 'mobile', required: true, context: true, raw: true, question: '휴대폰 번호를 말씀해 주세요. (최초 한번만 입력)'},
     {type: restaurantType, name: 'restaurant', required: true, question: '음식점을 말씀해 주세요.'}
     // {type: menuType, name: 'menu', required: false, question: '메뉴를 입력해주세요'},
@@ -385,15 +382,16 @@ function orderHistory(task, context, successCallback, errorCallback) {
   var model = mongoose.model('DeliveryOrder');
 
   model.find({user: context.user.userId}).
-  limit(10).
-  sort({create: -1}).
+  limit(5).
+  sort({created: -1}).
   exec(function(err, docs) {
 
     task.doc = [];
     var _doc;
     for(var i in docs) {
       _doc = docs[i]._doc;
-      _doc.orderDate = _doc.created.getMonth() + '/' + _doc.created.getDate();
+      _doc.orderDate = dateformat(_doc.created + 9 * 60 * 60, 'yyyy.mm.dd HH:MM');
+      //_doc.created.getMonth() + '/' + _doc.created.getDate();
       _doc.menu = _doc.menus[0].name;
       if(_doc.menus.length > 1) _doc.menu += '등';
       task.doc.push(_doc);
@@ -684,20 +682,25 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
 
       if(category) {
         var query = {category: category};
-        var sigungu, sigungu2;
-        if(inDoc.address.sigungu.split(' ').length > 1) sigungu = inDoc.address.sigungu.split(' ')[0];
-        else sigungu = inDoc.address.sigungu;
 
-        if(inDoc.addressJibun.sigungu.split(' ').length > 1) sigungu2 = inDoc.addressJibun.sigungu.split(' ')[0];
-        else sigungu2 = inDoc.addressJibun.sigungu;
+        query['address.시도명'] = inDoc.address.시도명;
+        query['address.시군구명'] = inDoc.address.시군구명;
+        query['address.행정동명'] = inDoc.address.행정동명;
 
-        query = {
-          $and : [
-            {$or: [{$and: [{address: new RegExp(sigungu, 'i')}, {address: new RegExp(inDoc.address.road, 'i')}]} ,
-              {$and: [{address2: new RegExp(sigungu2, 'i')}, {address2: new RegExp(inDoc.addressJibun.dong, 'i')}]}]},
-            query
-          ]
-        };
+        // var sigungu, sigungu2;
+        // if(inDoc.address.sigungu.split(' ').length > 1) sigungu = inDoc.address.sigungu.split(' ')[0];
+        // else sigungu = inDoc.address.sigungu;
+        //
+        // if(inDoc.addressJibun.sigungu.split(' ').length > 1) sigungu2 = inDoc.addressJibun.sigungu.split(' ')[0];
+        // else sigungu2 = inDoc.addressJibun.sigungu;
+        //
+        // query = {
+        //   $and : [
+        //     {$or: [{$and: [{address: new RegExp(sigungu, 'i')}, {address: new RegExp(inDoc.address.road, 'i')}]} ,
+        //       {$and: [{address2: new RegExp(sigungu2, 'i')}, {address2: new RegExp(inDoc.addressJibun.dong, 'i')}]}]},
+        //     query
+        //   ]
+        // };
 
         var _query = model.find(query, format.mongo.fields, format.mongo.options);
         if(format.mongo.sort) _query.sort(format.mongo.sort);
@@ -734,20 +737,24 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
       if(category) {
         var query = {category: category};
 
-        var sigungu, sigungu2;
-        if(inDoc.address.sigungu.split(' ').length > 1) sigungu = inDoc.address.sigungu.split(' ')[0];
-        else sigungu = inDoc.address.sigungu;
+        query['address.시도명'] = inDoc.address.시도명;
+        query['address.시군구명'] = inDoc.address.시군구명;
+        query['address.행정동명'] = inDoc.address.행정동명;
 
-        if(inDoc.addressJibun.sigungu.split(' ').length > 1) sigungu2 = inDoc.addressJibun.sigungu.split(' ')[0];
-        else sigungu2 = inDoc.addressJibun.sigungu;
-
-        query = {
-          $and : [
-            {$or: [{$and: [{address: new RegExp(sigungu, 'i')}, {address: new RegExp(inDoc.address.road, 'i')}]} ,
-              {$and: [{address2: new RegExp(sigungu2, 'i')}, {address2: new RegExp(inDoc.addressJibun.dong, 'i')}]}]},
-            query
-          ]
-        };
+        // var sigungu, sigungu2;
+        // if(inDoc.address.sigungu.split(' ').length > 1) sigungu = inDoc.address.sigungu.split(' ')[0];
+        // else sigungu = inDoc.address.sigungu;
+        //
+        // if(inDoc.addressJibun.sigungu.split(' ').length > 1) sigungu2 = inDoc.addressJibun.sigungu.split(' ')[0];
+        // else sigungu2 = inDoc.addressJibun.sigungu;
+        //
+        // query = {
+        //   $and : [
+        //     {$or: [{$and: [{address: new RegExp(sigungu, 'i')}, {address: new RegExp(inDoc.address.road, 'i')}]} ,
+        //       {$and: [{address2: new RegExp(sigungu2, 'i')}, {address2: new RegExp(inDoc.addressJibun.dong, 'i')}]}]},
+        //     query
+        //   ]
+        // };
 
         var _query = model.find(query, format.mongo.fields, format.mongo.options);
         if(format.mongo.sort) _query.sort(format.mongo.sort);
