@@ -260,7 +260,7 @@ var deliverOrder = {
 
                 task.topTask._ended = true;
                 task.topTask.out = null;
-                task.topTask.print('해당 음식점의 메뉴판 정보가 입력되지 않아 전화주문이 가능합니다. 전화로 주문해주세요.', task);
+                task.topTask.print('해당 음식점의 메뉴판 정보가 입력되지 않아 전화주문이 가능합니다.\n\n전화로 주문해주세요.', task);
                 callback(task, context);
               }
             },
@@ -355,7 +355,7 @@ var deliverOrder = {
               task.topTask.menu.name + ' ' + '1개' + ' 배달해 주세요.' +
               '주소는 ' + task.topTask.address.지번주소 + ' 입니다.' +
               '전화번호는 ' + task.topTask.mobile + ' 입니다.' +
-              '이 주문은 배달을 대행하는 카카오톡 얌얌 서비스의 배달대행 주문입니다.';
+              '이 주문은 얌얌 서비스의 카카오톡에서 배달대행 주문입니다.';
 
             messages.sendVMS({callbackPhone: '028585683', phone: context.user.mobile.replace(/,/g, ''), message: vmsMessage},
               context, function(_task, _context) {

@@ -137,7 +137,7 @@ function getContext(botName, channel, user, callback) {
 global._bots = {
   order: {
     kakao: {
-      keyboard: { type :"buttons", buttons:["배달주문하기", "배달내역보기"]}
+      keyboard: { type :"buttons", buttons:["배달주문시작", "배달내역보기"]}
     },
     facebook: {
       id: '1006864529411088',
