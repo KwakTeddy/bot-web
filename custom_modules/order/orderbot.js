@@ -64,8 +64,8 @@ var deliverOrder = {
   module: 'task',
   action: 'sequence',
   paramDefs: [
-    {type: 'address', name: 'address', display: '주소', match: false, required: true, context: true, raw: true, question: '주소를 말씀해 주세요. (최초 한번만 입력)'},
-    {type: 'mobile', name: 'mobile', required: true, context: true, raw: true, question: '휴대폰 번호를 말씀해 주세요. (최초 한번만 입력)'},
+    {type: 'address', name: 'address', display: '주소', match: false, required: true, context: true, raw: true, question: '주소를 말씀해 주세요.\n(최초 한번만 입력, 테스트중에는 서버재시작시 초기화)'},
+    {type: 'mobile', name: 'mobile', required: true, context: true, raw: true, question: '휴대폰 번호를 말씀해 주세요.\n(최초 한번만 입력, 테스트중에는 서버재시작시 초기화)'},
     {type: restaurantType, name: 'restaurant', required: true, question: '음식점을 말씀해 주세요.'}
     // {type: menuType, name: 'menu', required: false, question: '메뉴를 입력해주세요'},
     // {type: 'count', name: 'orderCount', required: false, question: '주문개수를 입력해주세요'}
@@ -294,12 +294,12 @@ var deliverOrder = {
       },
       paramDefs: [
         {type: 'string', name: 'complete', required: true, question: function(task, context) {
-          var q = '다음과 같이 주문을 요청합니다. \n';
+          var q = '다음과 같이 주문을 요청합니다. \n\n';
           q += '배달주소: ' + task.topTask.address.도로명주소 + '\n';
-          q += '주문자휴대폰: ' + task.topTask.mobile + '\n';
+          q += '주문자휴대폰: ' + task.topTask.mobile + '\n\n';
           q += '음식점: ' + task.topTask.restaurant.name + '\n';
           q += '메뉴: ' + task.topTask.menu.name + ' ' + task.topTask.menu.price + '\n';
-          q += '전화: ' + task.topTask.restaurant.phone + '\n';
+          q += '전화: ' + task.topTask.restaurant.phone + '\n\n';
           q += '주문을 요청하시겠습니까?';
 
           return q;
@@ -355,7 +355,7 @@ var deliverOrder = {
               task.topTask.menu.name + ' ' + '1개' + ' 배달해 주세요.' +
               '주소는 ' + task.topTask.address.지번주소 + ' 입니다.' +
               '전화번호는 ' + task.topTask.mobile + ' 입니다.' +
-              '이 주문은 얌얌 서비스의 카카오톡에서 배달대행 주문입니다.';
+              '이 주문은 인공지능 배달봇 얌얌의 카카오톡에서 배달대행 주문입니다.';
 
             messages.sendVMS({callbackPhone: '028585683', phone: context.user.mobile.replace(/,/g, ''), message: vmsMessage},
               context, function(_task, _context) {
