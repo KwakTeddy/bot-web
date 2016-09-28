@@ -57,7 +57,7 @@ var menuType = {
     limit: 5,
     minMatch: 1
   }
-}
+};
 
 
 var deliverOrder = {
@@ -100,10 +100,11 @@ var deliverOrder = {
                       limit: 5,
                       minMatch: 1
                     },
-                    out: '다음 중 원하시는 것을 선택해주세요.\n#menu#+index+. +name+ +price+\n#'
+                    out: '다음 중 원하시는 메뉴를 선택해주세요.\n#menu#+index+. +name+ +price+\n#'
                   },
                   preType: function(task, context, type, paramDef, callback) {
                     task.in = task.topTask.in;
+                    task.inRaw = task.topTask.inRaw;
                     callback(task, context);
                   },
                   name: 'menu', display: '메뉴', required: true, question: '주문할 메뉴를 말씀해 주세요.'}
@@ -272,8 +273,14 @@ var deliverOrder = {
                 return !(task.topTask['menu'] == undefined || task.topTask['menu'].length == 0);
               },
               paramDefs: [
-                {type: {typeCheck: nMenuTypeCheck, out: '다음 중 원하시는 것을 선택해주세요.\n#menu#+index+. +name+ +price+\n#'},
-                  name: 'menu', display: '메뉴', required: true, question: '주문할 메뉴를 말씀해 주세요.'}
+                {
+                  type: {typeCheck: nMenuTypeCheck, out: '다음 중 원하시는 메뉴를 선택해주세요.\n#menu#+index+. +name+ +price+\n#'},
+                  preType: function(task, context, type, paramDef, callback) {
+                    task.in = task.topTask.in;
+                    task.inRaw = task.topTask.inRaw;
+                    callback(task, context);
+                  },
+                  name: 'menu', display: '메뉴', match: true, required: true, question: '주문할 메뉴를 말씀해 주세요.'}
               ],
               postCallback: function(task, context, callback) {
                 task.topTask.menu = task.menu;
@@ -366,6 +373,7 @@ var deliverOrder = {
           });
 
         } else {
+          task.topTask.out = '배달이 취소 되었습니다.';
           task.isComplete = false;
           callback(task, context);
         }
