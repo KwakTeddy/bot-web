@@ -1043,7 +1043,7 @@ exports.nMapDetail = {
 
 
 function testVMS(task, context, callback) {
-  messages.sendVMS({callbackPhone: '028585683', phone: '01063165683', message: '전화테스트입니다.'}, context, function() {
+  messages.sendSMS({callbackPhone: '028585683', phone: '01063165683', message: '주문전화테스트'}, context, function() {
     callback(task, context);
   });
 }

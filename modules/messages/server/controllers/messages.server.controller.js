@@ -17,7 +17,9 @@ var mySqlPool = mysql.createPool({
   port: '3306',
   user: 'root',
   password: 'Make01mb!',
-  database: 'kakao_agent',
+  charset : 'utf8mb4',
+  //database: 'kakao_agent',
+  database: 'kt_mcs_agent',
   connectionLimit: 20,
   waitForConnections: false
 });
@@ -218,7 +220,7 @@ function sendVMS(task, context, callback) {
       'COUNSELOR_NUMBER, RELISTEN_COUNT,CDR_ID, TTS_MSG, DEST_COUNT, DEST_INFO) VALUES ' +
       '("moneybrain1", 30, 0, 0, 0, 0, 1, "' + dateformat(new Date() + 9 * 60 * 60, 'yyyymmddHHMMss') + '", ' +
       '"' + dateformat(new Date() + 9 * 60 * 60, 'yyyymmddHHMMss') + '", ' +
-      '"' + callbackPhone + '", 0, 0, 9, "' + callbackPhone + '", 1, "", "' + message + '", 1, "test^"' + phone + ')';
+      '"' + callbackPhone + '", 0, 0, 9, "' + callbackPhone + '", 1, "", "' + message + '", 1, "test^' + phone + '")';
 
     connection.query(query
       , function (err, rows) {
