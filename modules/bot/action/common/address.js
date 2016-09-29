@@ -192,7 +192,7 @@ function searchAddress(task, context, callback) {
 
   // logger.debug(JSON.stringify(query));
 
-  if(query == {}) {
+  if(Object.keys(query).length == 0) {
     callback(task, context);
   } else {
     model.aggregate([
