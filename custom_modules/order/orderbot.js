@@ -64,7 +64,7 @@ var deliverOrder = {
   module: 'task',
   action: 'sequence',
   paramDefs: [
-    {type: 'address', name: 'address', display: '주소', match: false, required: true, context: true, raw: true, question: '주소를 말씀해 주세요.\n(최초 한번만 입력, 테스트중에는 서버재시작시 초기화)'},
+    {type: 'address', name: 'address', display: '주소', match: false, required: true, raw: true, question: '주소를 말씀해 주세요.\n(최초 한번만 입력, 테스트중에는 서버재시작시 초기화)'},
     {type: 'mobile', name: 'mobile', required: true, context: true, raw: true, question: '휴대폰 번호를 말씀해 주세요.\n(최초 한번만 입력, 테스트중에는 서버재시작시 초기화)'},
     {type: restaurantType, name: 'restaurant', required: true, question: '음식점을 말씀해 주세요.'}
     // {type: menuType, name: 'menu', required: false, question: '메뉴를 입력해주세요'},
