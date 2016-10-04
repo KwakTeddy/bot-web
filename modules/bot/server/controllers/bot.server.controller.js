@@ -6,7 +6,7 @@ var _ = require('lodash');
 var utils = require(path.resolve('./modules/bot/action/common/utils'));
 var config = require(path.resolve('./config/config'));
 var logger = require(path.resolve('./config/lib/logger'));
-
+var dialog = require(path.resolve('modules/bot/action/common/dialog'));
 var async = require('async');
 
 var chatSocketConfig = {port: 1024, host: 'localhost', allowHalfOpen: true};
@@ -23,60 +23,92 @@ exports.botProc = botProc;
 
 function botProc(botName, channel, user, inTextRaw, outCallback, chatServerConfig) {
 
-  getContext(botName, channel, user, function(_context) {
-    var context = _context;
+  // TODO 개발용
+  dialog = utils.requireNoCache(path.resolve('modules/bot/action/common/dialog'));
 
-    logger.verbose("사용자 입력>> " + inTextRaw);
+  var print = function(_out, _task) {
+    logger.verbose("사용자 출력>> " + _out + "\n");
 
-    var type = utils.requireNoCache(path.resolve('./modules/bot/action/common/type'));
+    if(_task && _task.photoUrl && !_task.photoUrl.startsWith('http')) {
+      _task.photoUrl = (process.env.HTTP_HOST ? process.env.HTTP_HOST : '') + _task.photoUrl;
+    }
 
-    type.processInput(context, inTextRaw, function(inTextNLP, inDoc) {
-      logger.verbose("자연어 처리>> " + inTextNLP);
+    outCallback(_out, _task);
+  };
 
-      var print = function(_out, _task) {
-        logger.verbose("사용자 출력>> " + _out + "\n");
+  var context, inTextNLP, inDoc;
+  async.waterfall([
 
-        if(_task && _task.photoUrl && !_task.photoUrl.startsWith('http')) {
-          //_task.photoUrl = config.host + (config.port ? ':' + config.port : '') + _task.photoUrl;
-          _task.photoUrl = (process.env.HTTP_HOST ? process.env.HTTP_HOST : '') + _task.photoUrl;
-        }
+    function(cb) {
+      getContext(botName, channel, user, function(_context) {
+        context = _context;
+        cb(null);
+      });
+    },
 
-        outCallback(_out, _task);
-      };
+    function(cb) {
+      logger.verbose("사용자 입력>> " + inTextRaw);
+      var type = utils.requireNoCache(path.resolve('./modules/bot/action/common/type'));
 
+      type.processInput(context, inTextRaw, function(_inTextNLP, _inDoc) {
+        logger.verbose("자연어 처리>> " + _inTextNLP);
+        inTextNLP = _inTextNLP;
+        inDoc = _inDoc;
+        cb(null);
+      });
+    },
+
+    function(cb) {
       if(context.user.pendingCallback) {
-        if(inTextRaw.search(/(처음|메뉴)/g) != -1 || inTextRaw.startsWith(':')) {
+        if(context.bot.dialogServer && context.bot.dialogServer.chatScript == true && 
+          inTextRaw.search(/(처음|메뉴)/g) != -1 || inTextRaw.startsWith(':')) {
           context.user.pendingCallback = null;
           context.user.pendingType = null;
-
+          cb(null);
         } else {
           context.user.pendingCallback(inTextRaw, inTextNLP, inDoc, context, print, print);
-          return;
+          cb(true);
         }
+      } else if(context.bot.dialogs) {
+        context.botUser.dialog = {};
+
+        dialog.matchGlobalDialogs(inTextRaw, inTextNLP, context.bot.dialogs, context, print, function(matched) {
+          if(matched) cb(true);
+          else cb(null);
+        })
+      } else {
+        cb(null);
       }
+    },
 
-      var chatscriptSocket = net.createConnection(chatServerConfig, function(){
-        chatscriptSocket.write(user+'\x00'+ /*botName*/ '' +'\x00'+inTextNLP+'\x00');
-      });
+    function(cb) {
+      if(context.bot.dialogServer && context.bot.dialogServer.chatScript == true) {
+        var chatscriptSocket = net.createConnection(chatServerConfig, function(){
+          chatscriptSocket.write(user+'\x00'+ /*botName*/ '' +'\x00'+inTextNLP+'\x00');
+        });
 
-      chatscriptSocket.on('data', function(data) {    // on receive data from chatscriptSocket
-        var chatserverOut = data.toString();
+        chatscriptSocket.on('data', function(data) {    // on receive data from chatscriptSocket
+          var chatserverOut = data.toString();
 
-        logger.verbose("챗서버 답변>> " + chatserverOut);
+          logger.verbose("챗서버 답변>> " + chatserverOut);
 
-        botProcess.processChatserverOut(context, chatserverOut, inTextNLP, inTextRaw, inDoc, print, print)
-      });
+          botProcess.processChatserverOut(context, chatserverOut, inTextNLP, inTextRaw, inDoc, print, print)
+        });
 
-      chatscriptSocket.on('end', function() {       // on end from chatscriptSocket
-        console.log('disconnected from server');
-      });
+        chatscriptSocket.on('end', function() {       // on end from chatscriptSocket
+          console.log('disconnected from server');
+        });
 
-      chatscriptSocket.on('error', function(err) {  // on error from chatscriptSocket
-        console.log('error from server ' + err +' '+ chatscriptSocket.address()[1]);
-      });
+        chatscriptSocket.on('error', function(err) {  // on error from chatscriptSocket
+          console.log('error from server ' + err +' '+ chatscriptSocket.address()[1]);
+        });
 
-    })
-  });
+        cb(null);
+      } else {
+        cb(null);
+      }
+    }
+  ]);
 }
 
 exports.getContext = getContext;
@@ -85,8 +117,9 @@ function getContext(botName, channel, user, callback) {
   if(!global._bots) global._bots = {};
   if(!global._channels) global._channels = {};
   if(!global._users) global._users = {};
+  if(!global._botusers) global._botusers = {};
 
-  var userContext;
+  var userContext, botUserContext;
 
   async.waterfall([
     function(cb) {
@@ -108,13 +141,22 @@ function getContext(botName, channel, user, callback) {
         userContext = global._users[user];
         cb(null);
       }
+    }, function(cb) {
+      if(user != undefined) {
+        var botUserName;
+        botUserName = botName + '_' + user;
+        if(!global._botusers[botUserName]) global._botusers[botUserName] = {};
+        botUserContext = global._botusers[botUserName];
+      }
+      cb(null);
     }
   ], function(err) {
     var context = {
       global: global._context,
       bot: global._bots[botName],
       channel: global._channels[channel],
-      user: userContext
+      user: userContext,
+      botUser: botUserContext
     };
 
     if(context.bot) context.bot.botName = botName;
@@ -123,6 +165,10 @@ function getContext(botName, channel, user, callback) {
       context.user.userId = user;
       if(!context.user.cookie) context.user.cookie = new tough.CookieJar();
     }
+
+
+    context.bot.startDialog = dialog.findGlobalDialog(null, context, dialog.START_DIALOG_NAME);
+    context.bot.noDialog = dialog.findGlobalDialog(null, context, dialog.NO_DIALOG_NAME);
 
     context.global.messages = messages;
 
@@ -134,8 +180,20 @@ function getContext(botName, channel, user, callback) {
 }
 
 
+var orderbot = require(path.resolve('custom_modules/order/orderDialogs'));
+var sample = require(path.resolve('custom_modules/sample/sampleDialogs'));
 global._bots = {
+
+  sample: {
+    module: 'sampleDialogs',
+    dialogs: sample.dialogs
+  },
+  
   order: {
+    module: 'orderDialogs',
+    globalDialogs: orderbot.globalDialogs,
+    dialogs: orderbot.dialogs,
+    dialogServer: {chatScript: false},
     kakao: {
       keyboard: { type :"buttons", buttons:["배달주문시작", "배달내역보기"]}
     },
@@ -148,16 +206,18 @@ global._bots = {
     managers: [
       {platform: 'facebook', userId: '1094114534004265', name: '장세영'},
       {platform: 'facebook', userId: '997804450331458', name: '테스트'}
-      //100013440439602
-
-      //10068645294110881006864529411088
     ],
 
     messages: {
       manager:  false,
       orderCall: false
+    },
+
+    concepts: {
+      '배달': ['주문', '시키다', '보내다']
     }
   },
+  
   moneybot: {
     kakao: {
       keyboard: { type :"buttons", buttons:["잔액조회", "상품추천", "고객상담"]}
@@ -167,6 +227,10 @@ global._bots = {
       PAGE_ACCESS_TOKEN :  "EAAYwPrsj1ZA0BAORAoGhxvLLs5eRZADJ8BheTdjOXu8lT0X2tVFwZAZCEJiWFenFHCVqSuctfONET6dhbPDBnlivq5sXEvBABTnRlYpX8hLxZAnO2lywRiA6sVlbYAvG1n1EpQwkVhZAdrmq1p9PlQRUu327O1ohcZBwVLYZCn3beQZDZD",
       VALIDATION_TOKEN : "my_voice_is_my_password_verify_me"
     }
+  },
+
+  nh: {
+    dialogServer: {chatScript: true}
   }
 
 };
@@ -184,6 +248,8 @@ var messages = {
   noRegExp: "아니다|싫다|않다|노|NO|no|No"
 
 };
+
+exports.messages = messages;
 
 //var RiveScript = require(path.resolve('./external_modules/rivescript/rivescript'));
 //
@@ -209,3 +275,12 @@ var messages = {
 //}
 //
 //
+
+global._context = {
+  concepts: {
+    '네': ['응', '그래', '네', '그렇다', '오케이', '예스', 'ㅇㅋ', 'ㅇㅇ', 'OK', 'ok', 'Ok', 'YES', 'yes', 'Yes', 'sp', 'SP'],
+    '아니요': ['아니다', '싫다', '않다', '노', 'NO', 'no', 'No'],
+    '변경' : ['바꾸다', '틀리다'],
+    '시작' : ['처음', ':reset user']
+  }
+};

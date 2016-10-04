@@ -29,6 +29,7 @@ exports.text = function (task, context, successCallback, errorCallback) {
 };
 
 var restaurantType = {
+  name: 'restaurant',
   typeCheck: restaurantTypeCheck,
   limit: 5,
   mongo: {
@@ -43,6 +44,9 @@ var restaurantType = {
   },
   out: '다음 중 원하시는 것을 선택해주세요.\n#restaurant#+index+. +name+\n#'
 };
+
+exports.restaurantType = restaurantType;
+
 
 var menuType = {
   typeCheck: restaurantTypeCheck,
@@ -59,12 +63,11 @@ var menuType = {
   }
 };
 
-
 var deliverOrder = {
   module: 'task',
   action: 'sequence',
   paramDefs: [
-    {type: 'address', name: 'address', display: '주소', match: false, required: true, raw: true, question: '주소를 말씀해 주세요.\n(최초 한번만 입력, 테스트중에는 서버재시작시 초기화)'},
+    {type: 'address', name: 'address', display: '주소', match: false, required: true, context: true, raw: true, question: '주소를 말씀해 주세요.\n(최초 한번만 입력, 테스트중에는 서버재시작시 초기화)'},
     {type: 'mobile', name: 'mobile', required: true, context: true, raw: true, question: '휴대폰 번호를 말씀해 주세요.\n(최초 한번만 입력, 테스트중에는 서버재시작시 초기화)'},
     {type: restaurantType, name: 'restaurant', required: true, question: '음식점을 말씀해 주세요.'}
     // {type: menuType, name: 'menu', required: false, question: '메뉴를 입력해주세요'},
@@ -87,6 +90,37 @@ var deliverOrder = {
             return task.topTask.restaurant.franchise != undefined;
           },
           actions: [
+            // {
+            //   module: 'task',
+            //   paramDefs: [
+            //     {
+            //       preType: function (task, context, type, paramDef, callback) {
+            //         task.in = task.topTask.in;
+            //         task.inRaw = task.topTask.inRaw;
+            //         callback(task, context);
+            //       },
+            //       type: {
+            //         typeCheck: mongoTypeCheck,
+            //         mongo: {
+            //           model: 'franchiseMenus',
+            //           queryFields: ['name'],
+            //           limit: 5,
+            //           minMatch: 1
+            //         },
+            //         out: '다음 중 원하시는 메뉴를 선택해주세요.\n#menu#+index+. +name+ +price+\n#'
+            //       },
+            //       name: 'menu', display: '메뉴', required: false, question: '주문할 메뉴를 말씀해 주세요.'
+            //     }
+            //   ],
+            //   action: function (task, context, callback) {
+            //     if(task.menu == undefined) {
+            //       task.topTask.pendingCallback = function (inRaw, inNLP, inDoc, context, print) {
+            //
+            //       };
+            //       task.print('주문할 메뉴를 말씀해 주세요.');
+            //     }
+            //   }
+            // },
             {
               module: 'task',
               action: 'question',
@@ -593,21 +627,23 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
           } catch(e) {}
         }
 
-        query['address.시도명'] = inDoc.address.시도명;
-        query['address.시군구명'] = inDoc.address.시군구명;
-        query['address.행정동명'] = inDoc.address.행정동명;
+        logger.debug(JSON.stringify(context.botUser.dialog));
+
+        query['address.시도명'] = context.botUser.dialog.address.시도명;
+        query['address.시군구명'] = context.botUser.dialog.address.시군구명;
+        query['address.행정동명'] = context.botUser.dialog.address.행정동명;
 
         // var sigungu, sigungu2;
-        // if(inDoc.address.sigungu.split(' ').length > 1) sigungu = inDoc.address.sigungu.split(' ')[0];
-        // else sigungu = inDoc.address.sigungu;
+        // if(context.botUser.dialog.address.sigungu.split(' ').length > 1) sigungu = context.botUser.dialog.address.sigungu.split(' ')[0];
+        // else sigungu = context.botUser.dialog.address.sigungu;
         //
-        // if(inDoc.addressJibun.sigungu.split(' ').length > 1) sigungu2 = inDoc.addressJibun.sigungu.split(' ')[0];
-        // else sigungu2 = inDoc.addressJibun.sigungu;
+        // if(context.botUser.dialog.addressJibun.sigungu.split(' ').length > 1) sigungu2 = context.botUser.dialog.addressJibun.sigungu.split(' ')[0];
+        // else sigungu2 = context.botUser.dialog.addressJibun.sigungu;
         //
         // query = {
         //   $and : [
-        //     {$or: [{$and: [{address: new RegExp(sigungu, 'i')}, {address: new RegExp(inDoc.address.road, 'i')}]} ,
-        //       {$and: [{address2: new RegExp(sigungu2, 'i')}, {address2: new RegExp(inDoc.addressJibun.dong, 'i')}]}]},
+        //     {$or: [{$and: [{address: new RegExp(sigungu, 'i')}, {address: new RegExp(context.botUser.dialog.address.road, 'i')}]} ,
+        //       {$and: [{address2: new RegExp(sigungu2, 'i')}, {address2: new RegExp(context.botUser.dialog.addressJibun.dong, 'i')}]}]},
         //     query
         //   ]
         // };
@@ -691,21 +727,21 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
       if(category) {
         var query = {category: category};
 
-        query['address.시도명'] = inDoc.address.시도명;
-        query['address.시군구명'] = inDoc.address.시군구명;
-        query['address.행정동명'] = inDoc.address.행정동명;
+        query['address.시도명'] = context.botUser.dialog.address.시도명;
+        query['address.시군구명'] = context.botUser.dialog.address.시군구명;
+        query['address.행정동명'] = context.botUser.dialog.address.행정동명;
 
         // var sigungu, sigungu2;
-        // if(inDoc.address.sigungu.split(' ').length > 1) sigungu = inDoc.address.sigungu.split(' ')[0];
-        // else sigungu = inDoc.address.sigungu;
+        // if(context.botUser.dialog.address.sigungu.split(' ').length > 1) sigungu = context.botUser.dialog.address.sigungu.split(' ')[0];
+        // else sigungu = context.botUser.dialog.address.sigungu;
         //
-        // if(inDoc.addressJibun.sigungu.split(' ').length > 1) sigungu2 = inDoc.addressJibun.sigungu.split(' ')[0];
-        // else sigungu2 = inDoc.addressJibun.sigungu;
+        // if(context.botUser.dialog.addressJibun.sigungu.split(' ').length > 1) sigungu2 = context.botUser.dialog.addressJibun.sigungu.split(' ')[0];
+        // else sigungu2 = context.botUser.dialog.addressJibun.sigungu;
         //
         // query = {
         //   $and : [
-        //     {$or: [{$and: [{address: new RegExp(sigungu, 'i')}, {address: new RegExp(inDoc.address.road, 'i')}]} ,
-        //       {$and: [{address2: new RegExp(sigungu2, 'i')}, {address2: new RegExp(inDoc.addressJibun.dong, 'i')}]}]},
+        //     {$or: [{$and: [{address: new RegExp(sigungu, 'i')}, {address: new RegExp(context.botUser.dialog.address.road, 'i')}]} ,
+        //       {$and: [{address2: new RegExp(sigungu2, 'i')}, {address2: new RegExp(context.botUser.dialog.addressJibun.dong, 'i')}]}]},
         //     query
         //   ]
         // };
@@ -745,21 +781,21 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
       if(category) {
         var query = {category: category};
 
-        query['address.시도명'] = inDoc.address.시도명;
-        query['address.시군구명'] = inDoc.address.시군구명;
-        query['address.행정동명'] = inDoc.address.행정동명;
+        query['address.시도명'] = context.botUser.dialog.address.시도명;
+        query['address.시군구명'] = context.botUser.dialog.address.시군구명;
+        query['address.행정동명'] = context.botUser.dialog.address.행정동명;
 
         // var sigungu, sigungu2;
-        // if(inDoc.address.sigungu.split(' ').length > 1) sigungu = inDoc.address.sigungu.split(' ')[0];
-        // else sigungu = inDoc.address.sigungu;
+        // if(context.botUser.dialog.address.sigungu.split(' ').length > 1) sigungu = context.botUser.dialog.address.sigungu.split(' ')[0];
+        // else sigungu = context.botUser.dialog.address.sigungu;
         //
-        // if(inDoc.addressJibun.sigungu.split(' ').length > 1) sigungu2 = inDoc.addressJibun.sigungu.split(' ')[0];
-        // else sigungu2 = inDoc.addressJibun.sigungu;
+        // if(context.botUser.dialog.addressJibun.sigungu.split(' ').length > 1) sigungu2 = context.botUser.dialog.addressJibun.sigungu.split(' ')[0];
+        // else sigungu2 = context.botUser.dialog.addressJibun.sigungu;
         //
         // query = {
         //   $and : [
-        //     {$or: [{$and: [{address: new RegExp(sigungu, 'i')}, {address: new RegExp(inDoc.address.road, 'i')}]} ,
-        //       {$and: [{address2: new RegExp(sigungu2, 'i')}, {address2: new RegExp(inDoc.addressJibun.dong, 'i')}]}]},
+        //     {$or: [{$and: [{address: new RegExp(sigungu, 'i')}, {address: new RegExp(context.botUser.dialog.address.road, 'i')}]} ,
+        //       {$and: [{address2: new RegExp(sigungu2, 'i')}, {address2: new RegExp(context.botUser.dialog.addressJibun.dong, 'i')}]}]},
         //     query
         //   ]
         // };

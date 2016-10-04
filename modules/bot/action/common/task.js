@@ -2,9 +2,7 @@ var path = require('path');
 var logger = require(path.resolve('./config/lib/logger'));
 var utils = require('./utils');
 var async = require('async');
-var ifAsync = require('if-async');
-var botUser = require(path.resolve('./modules/bot-users/server/controllers/bot-users.server.controller'));
-
+var dialogModule = require(path.resolve('modules/bot/action/common/dialog'));
 const MAX_ACTION = 100;
 
 function executeTask(task, context, successCallback, errorCallback) {
@@ -12,10 +10,13 @@ function executeTask(task, context, successCallback, errorCallback) {
   if(context == undefined) throw new Error('task.js:executeTask: Wrong arguments. context undefined ' + task.module + '.' + task.action);
   if(successCallback == undefined) throw new Error('task.js:executeTask: Wrong arguments. successCallback undefined ' + task.module + '.' + task.action);
 
-  logger.debug('');
-  logger.debug('task.js:executeTask: ' + task.module + '.' + task.action);
+  var taskModule;
+  if(task.module == undefined) taskModule = task;
+  else taskModule = findModule(task, context);
 
-  var taskModule = findModule(task, context);
+  var logPrefix = 'task.js:executeTask: ' + (task.module == undefined ? '' : task.module) + '.' + (task.action instanceof Function ? 'inline' : task.action);
+  logger.debug('');
+  logger.debug(logPrefix);
 
   if(!task.topTask) {
     task.topTask = task;
@@ -27,13 +28,13 @@ function executeTask(task, context, successCallback, errorCallback) {
 
     if(!fCondition) {
 
-      logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + '.paramDefs: CHECK START.');
+      logger.debug(logPrefix + '.paramDefs: CHECK START.');
 
       var type = utils.requireNoCache('./type');
 
       // paramDef 체크
       async.eachSeries(task.paramDefs, function(paramDef, callbackEach) {
-        logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + '.paramDefs.' + paramDef.name + ': ' + task[paramDef.name] + ' each start ');
+        logger.debug(logPrefix + '.paramDefs.' + paramDef.name + ': ' + task[paramDef.name] + ' each start ');
 
         if(task[paramDef.name] == undefined) {
           if(paramDef.context && context.user[paramDef.name] != undefined) {
@@ -84,6 +85,8 @@ function executeTask(task, context, successCallback, errorCallback) {
 
               if(typeIn) {
                 callback(null, typeInRaw, typeIn, task);
+              // } else if(paramDef.dialog){
+              //   callback(null, _inRaw, _inNLP, task)
               } else if(paramDef.required) {
                 context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, _context, print) {
                   task.topTask.print = print;
@@ -101,7 +104,11 @@ function executeTask(task, context, successCallback, errorCallback) {
             var typeCheck = function(inRaw, inNLP, inDoc, callback) {
               if(!typeCheckCallback) typeCheckCallback = callback;
 
-              if(paramType.typeCheck) {
+              /*if(paramDef.dialog) {
+                dialog.executeDialog(paramDef.dialog, context, null, task.topTask.print, function(matched) {
+                  if(matched) callback(null, inRaw, inNLP, inDoc, matched);
+                });
+              } else */if(paramType.typeCheck) {
                 paramType.typeCheck((paramDef.raw ? inRaw : inNLP), paramType, inDoc, context, function (_text, _inDoc, matched) {
                   callback(null, inRaw, inNLP, _inDoc, matched);
                 });
@@ -237,9 +244,9 @@ function executeTask(task, context, successCallback, errorCallback) {
               ],
 
               function(err, _inRaw, _inNLP, _task, _matched) {
-                logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + '.paramDefs.' + paramDef.name + ': ' + (_matched ? 'matched': 'not matched'));
+                logger.debug(logPrefix + '.paramDefs.' + paramDef.name + ': ' + (_matched ? 'matched': 'not matched'));
 
-                // logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + '.paramDefs.' + paramDef.name + ': ' + 'each callback');
+                // logger.debug(logPrefix + '.paramDefs.' + paramDef.name + ': ' + 'each callback');
                 callbackEach();
               }
             );
@@ -252,18 +259,18 @@ function executeTask(task, context, successCallback, errorCallback) {
       }, function(err) {
 
         if(err) {
-          logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + '.paramDefs end with pending');
+          logger.debug(logPrefix + '.paramDefs end with pending');
         } else {
-          logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + '.paramDefs end');
+          logger.debug(logPrefix + '.paramDefs end');
 
           // task 비동기 실행
           async.waterfall([
               function(callback) {
                 if(task.preCallback) {
-                  logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + ' preCallback start');
+                  logger.debug(logPrefix + ' preCallback start');
 
                   task.preCallback(task, context, function(_task, _context) {
-                    logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + ' preCallback end');
+                    logger.debug(logPrefix + ' preCallback end');
                     callback(null, _task, _context);
                   });
                 } else {
@@ -273,7 +280,11 @@ function executeTask(task, context, successCallback, errorCallback) {
 
               function(_task, _context, callback) {
                 if(!fCondition) {
-                  if(taskModule[task.action] instanceof Function) {
+                  if(taskModule.action instanceof Function) {
+                    taskModule.action(_task, _context, function (_task, _context) {
+                      callback(null, _task, _context);
+                    });
+                  } else if(taskModule[task.action] instanceof Function) {
                     taskModule[task.action](_task, _context, function(_task, _context) {
                       callback(null, _task, _context);
                     });
@@ -282,7 +293,11 @@ function executeTask(task, context, successCallback, errorCallback) {
                       callback(null, _task, _context);
                     });
                   } else {
-                    errorCallback(new Error('task.js:executeTask: Function not exist ' + task.module + '.' + task.action), task, context);
+                    logger.error(logPrefix + ' Function not exist.');
+                    task.err = new Error(logPrefix + ' Function not exist.');
+                    successCallback(task, context);
+
+                    // errorCallback(new Error('task.js:executeTask: Function not exist ' + task.module + '.' + task.action), task, context);
                   }
                 } else {
                   callback(null, _task, _context);
@@ -291,9 +306,9 @@ function executeTask(task, context, successCallback, errorCallback) {
 
               function(_task, _context, callback) {
                 if(task.postCallback) {
-                  logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + ' postCallback end');
+                  logger.debug(logPrefix + ' postCallback end');
                   task.postCallback(_task, _context, function(_task, _context) {
-                    logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + ' postCallback end');
+                    logger.debug(logPrefix + ' postCallback end');
                     callback(null, _task, _context);
                   });
                 } else {
@@ -303,9 +318,13 @@ function executeTask(task, context, successCallback, errorCallback) {
             
             ],
             function(err, _task, _context) {
-              logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + ' end');
+              logger.debug(logPrefix + ' end');
 
-              if(!_task || !_context) throw new Error('task.js:executeTask: wrong postCallback. In ' + task.module + '.' + task.action + ', Check callback(task, context)');
+              if(!_task || !_context) {
+                logger.error(logPrefix + ' Wrong postCallback. Check callback(task, context)');
+                task.err = new Error(logPrefix + ' Wrong postCallback. Check callback(task, context)');
+                successCallback(task, context);
+              }
 
               if(_task.taskOut) {
                 var type = utils.requireNoCache('./type');
@@ -319,14 +338,16 @@ function executeTask(task, context, successCallback, errorCallback) {
       });
 
     } else {
-      logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + ' PASSED condition false');
+      logger.debug(logPrefix + ' PASSED condition false');
 
       successCallback(task, context);
     }
 
 
   } else {
-    errorCallback(new Error('task.js:executeTask: Module not exist. ' + task.module + '.' + task.action), task, context);
+    logger.error(logPrefix + ' Module not exist.');
+    task.err = new Error(logPrefix + ' Module not exist.');
+    successCallback(task, context);
     return false;
   }
 }
@@ -730,3 +751,28 @@ function execTask(task, context, callback) {
 };
 
 exports.execTask = execTask;
+
+function paramDefType(paramDef){
+  if(paramDef.type == undefined || paramDef.typeCheck) return paramDef;
+
+  var _type;
+  if(paramDef.type.constructor == String) _type = type[paramDef.type + 'Type'];
+  else _type = paramDef.type;
+
+  var merged = Object.assign({}, _type);
+  var source1 = _type;
+  var source2 = paramDef;
+
+  for (var attrname in source2) {
+    if( attrname == 'type') continue;
+    else if ( source2[attrname]!=null && source2[attrname].constructor==Object ) {
+      merged[attrname] = utils.mergeWithClone(source1[attrname], source2[attrname]);
+    } else {
+      merged[attrname] = source2[attrname];
+    }
+  }
+
+  return merged;
+};
+
+exports.paramDefType = paramDefType;

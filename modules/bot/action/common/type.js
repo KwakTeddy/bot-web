@@ -247,6 +247,7 @@ var amountType = {
 
 var mobileType = {
   name: 'mobile',
+  raw: true,
   typeCheck: regexpTypeCheck,
   regexp: /\b((?:010-\d{4}|01[1|6|7|8|9][-.]?\d{3,4})[-.]?\d{4})\b/g,
   checkRequired: function(text, type, inDoc, context) {
@@ -858,3 +859,6 @@ function numberTypeCheck(text, type, task, context, callback) {
     callback(text, task, false);
   }
 }
+
+
+
