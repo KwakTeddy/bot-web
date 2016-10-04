@@ -16,7 +16,7 @@ function stress(cb) {
       count++;
 
       request.post({
-        url: 'http://bot-dev.moneybrain.ai:3000/kakao/nh/message',
+        url: 'http://bot.moneybrain.ai:3000/kakao/nh/message',
         headers: {
           'Accept': '*/*',
           'Cache-Control': 'no-cache',
@@ -28,7 +28,7 @@ function stress(cb) {
         else console.log('req 1 ' + (total++)); //console.log(body);
 
         request.post({
-          url: 'http://bot-dev.moneybrain.ai:3000/kakao/nh/message',
+          url: 'http://bot.moneybrain.ai:3000/kakao/nh/message',
           headers: {
             'Accept': '*/*',
             'Cache-Control': 'no-cache',
@@ -40,7 +40,7 @@ function stress(cb) {
           else console.log('req 2 ' + (total++)); //console.log(body);
 
           request.post({
-            url: 'http://bot-dev.moneybrain.ai:3000/kakao/nh/message',
+            url: 'http://bot.moneybrain.ai:3000/kakao/nh/message',
             headers: {
               'Accept': '*/*',
               'Cache-Control': 'no-cache',
@@ -66,18 +66,18 @@ function stress(cb) {
 
 
 async.parallel([
-    function(cb) {
-      stress(cb);
-    },
-    function(cb) {
-      stress(cb);
-    },
-    function(cb) {
-      stress(cb);
-    },
-    function(cb) {
-      stress(cb);
-    },
+    // function(cb) {
+    //   stress(cb);
+    // },
+    // function(cb) {
+    //   stress(cb);
+    // },
+    // function(cb) {
+    //   stress(cb);
+    // },
+    // function(cb) {
+    //   stress(cb);
+    // },
     function(cb) {
       stress(cb);
     }

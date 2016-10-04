@@ -230,6 +230,12 @@ global._bots = {
   },
 
   nh: {
+    kakao: {
+      keyboard: {
+        type: "buttons",
+        buttons: ["상품안내", "FAQ (자주 묻는 질문)", "이벤트안내", "이용시간안내", "올원뱅크 바로가기"]
+      }
+    },
     dialogServer: {chatScript: true}
   }
 

@@ -82,7 +82,8 @@ function clone(obj) {
 
 exports.requireNoCache = requireNoCache;
 function requireNoCache(filePath) {
-  delete require.cache[require.resolve(filePath)];
+  if(process.env.NODE_ENV == 'development')
+    delete require.cache[require.resolve(filePath)];
   return require(filePath);
 }
 
