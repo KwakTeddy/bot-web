@@ -24,6 +24,7 @@ exports.message = function (req, res) {
     var type = req.body.type;
     var text = req.body.content;
 
+   console.log(JSON.stringify(req.params));
     chat.write('kakao', from, req.params.bot, text, function (serverText, json) {
       respondMessage(res, serverText, json)
     });
