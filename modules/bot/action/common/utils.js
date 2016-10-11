@@ -82,7 +82,8 @@ function clone(obj) {
 
 exports.requireNoCache = requireNoCache;
 function requireNoCache(filePath) {
-  delete require.cache[require.resolve(filePath)];
+  if(process.env.NODE_ENV == 'development')
+    delete require.cache[require.resolve(filePath)];
   return require(filePath);
 }
 
@@ -93,3 +94,99 @@ function convertEncoding(from, to, str) {
   return iconv.convert(new Buffer(str, 'binary')).toString(to);
 }
 exports.convertEncoding = convertEncoding;
+
+function findConcepts(context, name) {
+  var concepts;
+  if ((concepts = context.bot.concepts)) {
+    if(concepts[name] && Array.isArray(concepts[name])) {
+      return [name].concat(concepts[name]);
+    }
+  }
+
+  if ((concepts = context.global.concepts)) {
+    if(concepts[name] && Array.isArray(concepts[name])) {
+      return [name].concat(concepts[name]);
+    }
+  }
+
+  return name;
+}
+
+exports.findConcepts = findConcepts;
+
+function conceptsString(context, name) {
+  var concepts;
+  if ((concepts = context.bot.concepts)) {
+    if(concepts[name] && Array.isArray(concepts[name])) {
+      return name + '|' + concepts[name].join('|');
+    }
+  }
+
+  if ((concepts = context.global.concepts)) {
+    if(concepts[name] && Array.isArray(concepts[name])) {
+      return name + '|' + concepts[name].join('|');
+    }
+  }
+
+  return name;
+}
+
+exports.conceptsString = conceptsString;
+
+
+function conceptRegExp(context, regexp) {
+  if(regexp == undefined) return regexp;
+
+  var match = regexp.toString().match(new RegExp('^/(.*?)/([gimy]*)$'));
+  var str = match[1];
+
+  str = str.replace(/~([0-9a-zA-Z가-힣]+)/g, function(match, p1) {
+    return '(?:' + conceptsString(context, p1) + ')';
+  });
+
+  return new RegExp(str, regexp.flags);
+}
+
+exports.concepRegExp = conceptRegExp;
+
+
+function toDialogString(object) {
+  if(object == undefined)
+    return 'undefined';
+  else if(object instanceof RegExp)
+    return object.toString();
+  else if(object instanceof Function)
+    return 'function ' + object.name;
+  else if(typeof object == 'string') {
+    var idx = object.indexOf('\n');
+    if(idx != -1) return object.substring(0, idx);
+    else return object;
+  } else if(Array.isArray(object)) {
+    var strs = [];
+    for (var i = 0; i < object.length; i++) {
+      var obj = object[i];
+      strs.push(toDialogString(obj));
+    }
+
+    return '[' + strs.join(', ') + ']';
+  } else if (object.key == 'children') {
+    return 'children';
+  } else if(typeof object == 'object') {
+    if (object.typeCheck) {
+      return object.name + 'Type';
+    } else {
+      var strs = [];
+
+      for (var key in object) {
+        if(key=='output' && Array.isArray(object[key])) strs.push(key + ': outputs');
+        else strs.push(key + ': ' + toDialogString(object[key]));
+      }
+
+      return '{' + strs.join(', ') + '}';
+    }
+  } else {
+    return object.toString();
+  }
+}
+
+exports.toDialogString = toDialogString;
