@@ -150,7 +150,7 @@ function conceptRegExp(context, regexp) {
 exports.concepRegExp = conceptRegExp;
 
 
-function toString(object) {
+function toDialogString(object) {
   if(object == undefined)
     return 'undefined';
   else if(object instanceof RegExp)
@@ -165,7 +165,7 @@ function toString(object) {
     var strs = [];
     for (var i = 0; i < object.length; i++) {
       var obj = object[i];
-      strs.push(toString(obj));
+      strs.push(toDialogString(obj));
     }
 
     return '[' + strs.join(', ') + ']';
@@ -178,7 +178,8 @@ function toString(object) {
       var strs = [];
 
       for (var key in object) {
-        strs.push(key + ': ' + toString(object[key]));
+        if(key=='output' && Array.isArray(object[key])) strs.push(key + ': outputs');
+        else strs.push(key + ': ' + toDialogString(object[key]));
       }
 
       return '{' + strs.join(', ') + '}';
@@ -188,4 +189,4 @@ function toString(object) {
   }
 }
 
-exports.toString = toString;
+exports.toDialogString = toDialogString;

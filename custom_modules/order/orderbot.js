@@ -48,20 +48,43 @@ var restaurantType = {
 exports.restaurantType = restaurantType;
 
 
-var menuType = {
-  typeCheck: restaurantTypeCheck,
-  limit: 5,
-  mongo: {
-    model: 'franchisemenu',
-    queryFields: ['name'],
-    // fields: 'title sort price' ,
-    // taskFields: ['_id', 'title', 'sort', 'price'],
-    //query: {},
-    //sort: "-rate1",
-    limit: 5,
-    minMatch: 1
-  }
+// var menuType = {
+//   typeCheck: restaurantTypeCheck,
+//   limit: 5,
+//   mongo: {
+//     model: 'franchisemenu',
+//     queryFields: ['name'],
+//     // fields: 'title sort price' ,
+//     // taskFields: ['_id', 'title', 'sort', 'price'],
+//     //query: {},
+//     //sort: "-rate1",
+//     limit: 5,
+//     minMatch: 1
+//   }
+// };
+
+var menuType =
+{
+  name: 'menu',
+  type: {
+    typeCheck: mongoTypeCheck,
+      mongo: {
+      model: 'franchiseMenus',
+        queryFields: ['name'],
+        limit: 5,
+        minMatch: 1
+    },
+    out: '다음 중 원하시는 메뉴를 선택해주세요.\n#menu#+index+. +name+ +price+\n#'
+  },
+  preType: function(task, context, type, callback) {
+    // task.in = task.topTask.in;
+    // task.inRaw = task.topTask.inRaw;
+    callback(task, context);
+  },
+  display: '메뉴', required: true, question: '주문할 메뉴를 말씀해 주세요.'
 };
+
+exports.menuType = menuType;
 
 var deliverOrder = {
   module: 'task',
@@ -597,7 +620,6 @@ function mongoTypeCheck(text, format, inDoc, context, callback) {
 
 
 function restaurantTypeCheck(text, format, inDoc, context, callback) {
-  logger.debug('');
   try {
     logger.debug('type.js:restaurantTypeCheck: START ' + format.name + ' "' + text + '" inDoc: ' + JSON.stringify(inDoc));
   } catch(e) {
@@ -627,26 +649,10 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
           } catch(e) {}
         }
 
-        logger.debug(JSON.stringify(context.botUser.dialog));
-
-        query['address.시도명'] = context.botUser.dialog.address.시도명;
-        query['address.시군구명'] = context.botUser.dialog.address.시군구명;
-        query['address.행정동명'] = context.botUser.dialog.address.행정동명;
-
-        // var sigungu, sigungu2;
-        // if(context.botUser.dialog.address.sigungu.split(' ').length > 1) sigungu = context.botUser.dialog.address.sigungu.split(' ')[0];
-        // else sigungu = context.botUser.dialog.address.sigungu;
-        //
-        // if(context.botUser.dialog.addressJibun.sigungu.split(' ').length > 1) sigungu2 = context.botUser.dialog.addressJibun.sigungu.split(' ')[0];
-        // else sigungu2 = context.botUser.dialog.addressJibun.sigungu;
-        //
-        // query = {
-        //   $and : [
-        //     {$or: [{$and: [{address: new RegExp(sigungu, 'i')}, {address: new RegExp(context.botUser.dialog.address.road, 'i')}]} ,
-        //       {$and: [{address2: new RegExp(sigungu2, 'i')}, {address2: new RegExp(context.botUser.dialog.addressJibun.dong, 'i')}]}]},
-        //     query
-        //   ]
-        // };
+        query['address.시도명'] = context.dialog.address.시도명;
+        query['address.시군구명'] = context.dialog.address.시군구명;
+        // query['address.행정동명'] = context.dialog.address.행정동명;
+        query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
 
         var _query = model.find(query, format.mongo.fields, format.mongo.options);
         if(format.mongo.sort) _query.sort(format.mongo.sort);
@@ -727,24 +733,9 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
       if(category) {
         var query = {category: category};
 
-        query['address.시도명'] = context.botUser.dialog.address.시도명;
-        query['address.시군구명'] = context.botUser.dialog.address.시군구명;
-        query['address.행정동명'] = context.botUser.dialog.address.행정동명;
-
-        // var sigungu, sigungu2;
-        // if(context.botUser.dialog.address.sigungu.split(' ').length > 1) sigungu = context.botUser.dialog.address.sigungu.split(' ')[0];
-        // else sigungu = context.botUser.dialog.address.sigungu;
-        //
-        // if(context.botUser.dialog.addressJibun.sigungu.split(' ').length > 1) sigungu2 = context.botUser.dialog.addressJibun.sigungu.split(' ')[0];
-        // else sigungu2 = context.botUser.dialog.addressJibun.sigungu;
-        //
-        // query = {
-        //   $and : [
-        //     {$or: [{$and: [{address: new RegExp(sigungu, 'i')}, {address: new RegExp(context.botUser.dialog.address.road, 'i')}]} ,
-        //       {$and: [{address2: new RegExp(sigungu2, 'i')}, {address2: new RegExp(context.botUser.dialog.addressJibun.dong, 'i')}]}]},
-        //     query
-        //   ]
-        // };
+        query['address.시도명'] = context.dialog.address.시도명;
+        query['address.시군구명'] = context.dialog.address.시군구명;
+        query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
 
         var _query = model.find(query, format.mongo.fields, format.mongo.options);
         if(format.mongo.sort) _query.sort(format.mongo.sort);
@@ -781,24 +772,9 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
       if(category) {
         var query = {category: category};
 
-        query['address.시도명'] = context.botUser.dialog.address.시도명;
-        query['address.시군구명'] = context.botUser.dialog.address.시군구명;
-        query['address.행정동명'] = context.botUser.dialog.address.행정동명;
-
-        // var sigungu, sigungu2;
-        // if(context.botUser.dialog.address.sigungu.split(' ').length > 1) sigungu = context.botUser.dialog.address.sigungu.split(' ')[0];
-        // else sigungu = context.botUser.dialog.address.sigungu;
-        //
-        // if(context.botUser.dialog.addressJibun.sigungu.split(' ').length > 1) sigungu2 = context.botUser.dialog.addressJibun.sigungu.split(' ')[0];
-        // else sigungu2 = context.botUser.dialog.addressJibun.sigungu;
-        //
-        // query = {
-        //   $and : [
-        //     {$or: [{$and: [{address: new RegExp(sigungu, 'i')}, {address: new RegExp(context.botUser.dialog.address.road, 'i')}]} ,
-        //       {$and: [{address2: new RegExp(sigungu2, 'i')}, {address2: new RegExp(context.botUser.dialog.addressJibun.dong, 'i')}]}]},
-        //     query
-        //   ]
-        // };
+        query['address.시도명'] = context.dialog.address.시도명;
+        query['address.시군구명'] = context.dialog.address.시군구명;
+        query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
 
         var _query = model.find(query, format.mongo.fields, format.mongo.options);
         if(format.mongo.sort) _query.sort(format.mongo.sort);

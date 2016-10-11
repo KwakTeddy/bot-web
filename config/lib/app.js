@@ -46,6 +46,9 @@ module.exports.init = function init(callback) {
 module.exports.start = function start(callback) {
   var _this = this;
 
+  var bot = require('./bot');
+  bot.loadBots();
+
   _this.init(function (app, db, config) {
 
     // Start the app by listening on <port>

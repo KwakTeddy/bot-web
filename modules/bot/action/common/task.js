@@ -11,10 +11,11 @@ function executeTask(task, context, successCallback, errorCallback) {
   if(successCallback == undefined) throw new Error('task.js:executeTask: Wrong arguments. successCallback undefined ' + task.module + '.' + task.action);
 
   var taskModule;
-  if(task.module == undefined) taskModule = task;
-  else taskModule = findModule(task, context);
+  // if(task.module == undefined) taskModule = task;
+  // else taskModule = findModule(task, context);
+  if(task.module != undefined) taskModule = findModule(task, context);
 
-  var logPrefix = 'task.js:executeTask: ' + (task.module == undefined ? '' : task.module) + '.' + (task.action instanceof Function ? 'inline' : task.action);
+  var logPrefix = 'task.js:executeTask: ' + (task.module == undefined ? '' : task.module) + '.' + (task.action instanceof Function ? task.action.name : task.action);
   logger.debug('');
   logger.debug(logPrefix);
 
@@ -22,7 +23,7 @@ function executeTask(task, context, successCallback, errorCallback) {
     task.topTask = task;
   }
 
-  if(taskModule) {
+  if(taskModule || task.action) {
     var fCondition = (typeof task.condition == 'string' && !eval(task.condition)) ||
       (task.condition instanceof Function && !task.condition(task, context));
 
@@ -280,21 +281,21 @@ function executeTask(task, context, successCallback, errorCallback) {
 
               function(_task, _context, callback) {
                 if(!fCondition) {
-                  if(taskModule.action instanceof Function) {
-                    taskModule.action(_task, _context, function (_task, _context) {
+                  if(task.action instanceof Function) {
+                    task.action(_task, _context, function (_task, _context) {
                       callback(null, _task, _context);
                     });
-                  } else if(taskModule[task.action] instanceof Function) {
+                  } else if(taskModule && taskModule[task.action] instanceof Function) {
                     taskModule[task.action](_task, _context, function(_task, _context) {
                       callback(null, _task, _context);
                     });
-                  } else if(taskModule.execute instanceof Function) {
+                  } else if(taskModule && taskModule.execute instanceof Function) {
                     taskModule.execute(_task, _context, function(_task, _context) {
                       callback(null, _task, _context);
                     });
                   } else {
-                    logger.error(logPrefix + ' Function not exist.');
-                    task.err = new Error(logPrefix + ' Function not exist.');
+                    logger.error(logPrefix + ' action not exist.');
+                    task.err = new Error(logPrefix + ' action not exist.');
                     successCallback(task, context);
 
                     // errorCallback(new Error('task.js:executeTask: Function not exist ' + task.module + '.' + task.action), task, context);

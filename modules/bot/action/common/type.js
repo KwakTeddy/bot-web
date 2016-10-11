@@ -5,6 +5,7 @@ var utils = require('./utils');
 var path = require('path');
 var logger = require(path.resolve('./config/lib/logger'));
 var address = require(path.resolve('./modules/bot/action/common/address'));
+var _ = require('lodash');
 
 const TAG_START = '\\+';
 const TAG_END = '\\+';
@@ -13,6 +14,7 @@ const ARRAY_TAG_END = '#';
 const IN_TAG_START = '{';
 const IN_TAG_END = '}';
 const DOC_NAME = 'doc';
+const REG_ESCAPE = /[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/;
 
 exports.TAG_START = TAG_START;
 exports.TAG_END = TAG_END;
@@ -53,14 +55,16 @@ exports.processOutput = processOutput;
 
 function processOutput(task, context, out) {
   try {
-    if (task.preText) out = task.preText + "\r\n" + out;
-    else if (task.pretext) out = task.pretext + "\r\n" + out;
+    if(task) {
+      if (task.preText) out = task.preText + "\r\n" + out;
+      else if (task.pretext) out = task.pretext + "\r\n" + out;
 
-    if (task.postText) out = out + "\r\n" + task.postText;
-    else if (task.posttext) out = out + "\r\n" + task.posttext;
+      if (task.postText) out = out + "\r\n" + task.postText;
+      else if (task.posttext) out = out + "\r\n" + task.posttext;
+    }
 
-    var re = new RegExp(ARRAY_TAG_START + "([\\w\\d-_\\.]*)" + ARRAY_TAG_START + "([^" + ARRAY_TAG_END + "]*)" + ARRAY_TAG_END, "g");
-    var re2 = new RegExp(TAG_START + "([\\w\\d-_\\.]+)" + TAG_END, "g");
+    var re = new RegExp(ARRAY_TAG_START + "([\\w가-힣\\d-_\\.]*)" + ARRAY_TAG_START + "([^" + ARRAY_TAG_END + "]*)" + ARRAY_TAG_END, "g");
+    var re2 = new RegExp(TAG_START + "([\\w가-힣\\d-_\\.]+)" + TAG_END, "g");
 
     //text = text.replace(/\\#/g, "%23");
 
@@ -68,9 +72,13 @@ function processOutput(task, context, out) {
       var val;
       if (task && task[DOC_NAME]) {
         if(p1 == '') val = task[DOC_NAME];
-        else  val = eval('(' + 'task.' + DOC_NAME + '.' + p1 + ')');
+        else  val = _.get(task[DOC_NAME], p1);
       }
-      if (!val && task) val = eval('(' + 'task.' + p1 + ')');
+      if (!val && task) val = _.get(task, p1);
+      if (!val && context.dialog && context.dialog[DOC_NAME]) val = _.get(context.dialog[DOC_NAME], p1);
+      if (!val && context.dialog) val = _.get(context.dialog, p1);
+      if (!val && context.user && context.user[DOC_NAME]) val = _.get(context.user[DOC_NAME], p1);
+      if (!val && context.user) val = _.get(context.user, p1);
 
       if (val && Array.isArray(val)) {
         var formatArray = [];
@@ -81,12 +89,13 @@ function processOutput(task, context, out) {
           for (var i = 0; i < val.length; i++) {
             var val1 = val[i][p11];
 
+            if (!(formatArray[i])) formatArray[i] = string1;
             if (val1) {
-              if (!(formatArray[i])) formatArray[i] = string1;
-              formatArray[i] = formatArray[i].replace(match1, val1);
+              formatArray[i] = formatArray[i].replace(match1, (val1? val1: ''));
             } else if(p11 == 'index') {
-              if (!(formatArray[i])) formatArray[i] = string1;
               formatArray[i] = formatArray[i].replace(match1, (i+1));
+            } else {
+              formatArray[i] = formatArray[i].replace(match1, '');
             }
           }
 
@@ -94,19 +103,26 @@ function processOutput(task, context, out) {
         });
 
         return formatArray.join('');
+      } else {
+        return '';
       }
 
-      return p1;
+      // return p1;
     });
 
-    out = out.replace(re2, function replacer(match, p1, offset, string) {
+    out = out.replace(re2, function replacer(match, p1) {
       var val;
-      if (task && task[DOC_NAME]) val = eval('(' + 'task.' + DOC_NAME + '.' + p1 + ')');
-      if (!val && task) val = eval('(' + 'task.' + p1 + ')');
+      if (task && task[DOC_NAME]) val = _.get(task[DOC_NAME], p1);
+      if (!val && task) val = _.get(task, p1);
+      if (!val && context.dialog && context.dialog[DOC_NAME]) val = _.get(context.dialog[DOC_NAME], p1);
+      if (!val && context.dialog) val = _.get(context.dialog, p1);
+      if (!val && context.user && context.user[DOC_NAME]) val = _.get(context.user[DOC_NAME], p1);
+      if (!val && context.user) val = _.get(context.user, p1);
 
       if (val) return val;
+      else return '';
 
-      return p1;
+      // return p1;
     });
 
   } catch(e) {
@@ -539,10 +555,15 @@ function mongoDbTypeCheck(text, format, inDoc, context, callback) {
   for(var i = 0 ; i < words.length; i++) {
     var word = words[i];
 
+    if(word.search(REG_ESCAPE) != -1) {
+      wordsCount++;
+      continue;
+    }
+
     var query = {};
     for(var j = 0; j < format.mongo.queryFields.length; j++) {
       try {
-        query[format.mongo.queryFields[j]] = new RegExp(word, 'i');
+        query[format.mongo.queryFields[j]] = new RegExp((word), 'i');
       } catch(e) {}
     }
 
@@ -564,6 +585,8 @@ function mongoDbTypeCheck(text, format, inDoc, context, callback) {
           var matchIndex = -1, matchMin = -1, matchMax = -1;
           for(var l = 0; l < format.mongo.queryFields.length; l++) {
             for(var m = 0; m < words.length; m++) {
+              if(words[m].search(REG_ESCAPE) != -1) continue;
+
               // matchIndex = doc[format.mongo.queryFields[l]].toLowerCase().indexOf(words[m].toLowerCase());
               matchIndex = doc[format.mongo.queryFields[l]].search(new RegExp(words[m], 'i'));
 
@@ -859,6 +882,5 @@ function numberTypeCheck(text, type, task, context, callback) {
     callback(text, task, false);
   }
 }
-
 
 
