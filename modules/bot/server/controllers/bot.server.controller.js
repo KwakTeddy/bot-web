@@ -172,8 +172,8 @@ function getContext(botName, channel, user, callback) {
       channel: global._channels[channel],
       user: userContext,
       botUser: botUserContext,
-      dialog: botUserContext._dialog,
-      task: botUserContext._task
+      dialog: (botUserContext ? botUserContext._dialog : undefined),
+      task: (botUserContext ? botUserContext._task : undefined)
     };
 
     if(context.bot) context.bot.botName = botName;
