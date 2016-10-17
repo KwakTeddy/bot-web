@@ -80,6 +80,50 @@ function clone(obj) {
   throw new Error("Unable to copy obj! Its type isn't supported.");
 };
 
+exports.cloneWithParent = cloneWithParent;
+
+function cloneWithParent(obj) {
+  var copy;
+
+  // Handle the 3 simple types, and null or undefined
+  if (null == obj || "object" != typeof obj) return obj;
+
+  // Handle Date
+  if (obj instanceof Date) {
+    copy = new Date();
+    copy.setTime(obj.getTime());
+    return copy;
+  }
+
+  // Handle RegExp
+  if (obj instanceof RegExp) {
+    return obj;
+  }
+
+  // Handle Array
+  if (obj instanceof Array) {
+    copy = [];
+    for (var i = 0, len = obj.length; i < len; i++) {
+      copy[i] = clone(obj[i]);
+    }
+    return copy;
+  }
+
+  // Handle Object
+  if (obj instanceof Object) {
+    copy = {};
+    for (var attr in obj) {
+      if (obj.hasOwnProperty(attr)) {
+        if(attr.startsWith('parent') || attr.startsWith('top')) copy[attr] = obj[attr];
+        else copy[attr] = clone(obj[attr]);
+      }
+    }
+    return copy;
+  }
+
+  throw new Error("Unable to copy obj! Its type isn't supported.");
+};
+
 exports.requireNoCache = requireNoCache;
 function requireNoCache(filePath) {
   if(process.env.NODE_ENV == 'development')
@@ -190,3 +234,8 @@ function toDialogString(object) {
 }
 
 exports.toDialogString = toDialogString;
+
+
+RegExp.escape = function(text) {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};

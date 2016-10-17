@@ -5,15 +5,12 @@ var async = require('async');
 var dialogModule = require(path.resolve('modules/bot/action/common/dialog'));
 const MAX_ACTION = 100;
 
-function executeTask(task, context, successCallback, errorCallback) {
+function executeTask(task, context, callback) {
   if(task == undefined) throw new Error('task.js:executeTask: Wrong arguments. task undefined');
   if(context == undefined) throw new Error('task.js:executeTask: Wrong arguments. context undefined ' + task.module + '.' + task.action);
-  if(successCallback == undefined) throw new Error('task.js:executeTask: Wrong arguments. successCallback undefined ' + task.module + '.' + task.action);
+  if(callback == undefined) throw new Error('task.js:executeTask: Wrong arguments. callback undefined ' + task.module + '.' + task.action);
 
-  var taskModule;
-  // if(task.module == undefined) taskModule = task;
-  // else taskModule = findModule(task, context);
-  if(task.module != undefined) taskModule = findModule(task, context);
+  if(task.baseTask) task = taskForBase(task, context);
 
   var logPrefix = 'task.js:executeTask: ' + (task.module == undefined ? '' : task.module) + '.' + (task.action instanceof Function ? task.action.name : task.action);
   logger.debug('');
@@ -23,7 +20,7 @@ function executeTask(task, context, successCallback, errorCallback) {
     task.topTask = task;
   }
 
-  if(taskModule || task.action) {
+  if(task.action) {
     var fCondition = (typeof task.condition == 'string' && !eval(task.condition)) ||
       (task.condition instanceof Function && !task.condition(task, context));
 
@@ -110,6 +107,16 @@ function executeTask(task, context, successCallback, errorCallback) {
                   if(matched) callback(null, inRaw, inNLP, inDoc, matched);
                 });
               } else */if(paramType.typeCheck) {
+
+                if(typeof paramType.typeCheck == 'string') {
+                  var _typeCheck = context.bot.typeChecks[paramType.typeCheck];
+                  if(_typeCheck) paramType.typeCheck = _typeCheck;
+                  else {
+                    _typeCheck = context.global.typeChecks[paramType.typeCheck];
+                    if(_typeCheck) paramType.typeCheck = _typeCheck;
+                  }
+                }
+
                 paramType.typeCheck((paramDef.raw ? inRaw : inNLP), paramType, inDoc, context, function (_text, _inDoc, matched) {
                   callback(null, inRaw, inNLP, _inDoc, matched);
                 });
@@ -281,22 +288,34 @@ function executeTask(task, context, successCallback, errorCallback) {
 
               function(_task, _context, callback) {
                 if(!fCondition) {
+                  if(task.actionModule) {
+                    var actionModule = findActionModule(task, context);
+                    if(actionModule[task.action]) task.action = actionModule[task.action];
+                  } else if(typeof task.action == 'string') {
+                    var _action = context.bot.actions[task.action];
+                    if(_action) task.action = _action;
+                    else {
+                      _action = context.global.actions[task.action];
+                      if(_action) task.action = _action;
+                    }
+                  }
+
                   if(task.action instanceof Function) {
                     task.action(_task, _context, function (_task, _context) {
                       callback(null, _task, _context);
                     });
-                  } else if(taskModule && taskModule[task.action] instanceof Function) {
-                    taskModule[task.action](_task, _context, function(_task, _context) {
-                      callback(null, _task, _context);
-                    });
-                  } else if(taskModule && taskModule.execute instanceof Function) {
-                    taskModule.execute(_task, _context, function(_task, _context) {
-                      callback(null, _task, _context);
-                    });
+                  // } else if(taskModule && taskModule[task.action] instanceof Function) {
+                  //   taskModule[task.action](_task, _context, function(_task, _context) {
+                  //     callback(null, _task, _context);
+                  //   });
+                  // } else if(taskModule && taskModule.execute instanceof Function) {
+                  //   taskModule.execute(_task, _context, function(_task, _context) {
+                  //     callback(null, _task, _context);
+                  //   });
                   } else {
                     logger.error(logPrefix + ' action not exist.');
                     task.err = new Error(logPrefix + ' action not exist.');
-                    successCallback(task, context);
+                    callback(task, context);
 
                     // errorCallback(new Error('task.js:executeTask: Function not exist ' + task.module + '.' + task.action), task, context);
                   }
@@ -324,7 +343,7 @@ function executeTask(task, context, successCallback, errorCallback) {
               if(!_task || !_context) {
                 logger.error(logPrefix + ' Wrong postCallback. Check callback(task, context)');
                 task.err = new Error(logPrefix + ' Wrong postCallback. Check callback(task, context)');
-                successCallback(task, context);
+                callback(task, context);
               }
 
               if(_task.taskOut) {
@@ -332,7 +351,7 @@ function executeTask(task, context, successCallback, errorCallback) {
                 _task.topTask.print(type.processOutput(_task, _context, _task.taskOut));
               }
 
-              if(successCallback) successCallback(_task, _context);
+              if(callback) callback(_task, _context);
             });
 
         }
@@ -341,215 +360,20 @@ function executeTask(task, context, successCallback, errorCallback) {
     } else {
       logger.debug(logPrefix + ' PASSED condition false');
 
-      successCallback(task, context);
+      callback(task, context);
     }
 
 
   } else {
     logger.error(logPrefix + ' Module not exist.');
     task.err = new Error(logPrefix + ' Module not exist.');
-    successCallback(task, context);
+    callback(task, context);
     return false;
   }
 }
 
 exports.executeTask = executeTask;
 
-function _executeTask(task, context, successCallback, errorCallback) {
-  if(task == undefined) throw new Error('task.js:executeTask: Wrong arguments. task undefined');
-  if(context == undefined) throw new Error('task.js:executeTask: Wrong arguments. context undefined ' + task.module + '.' + task.action);
-  if(successCallback == undefined) throw new Error('task.js:executeTask: Wrong arguments. successCallback undefined ' + task.module + '.' + task.action);
-
-  logger.debug('');
-  logger.debug('task.js:executeTask: ' + task.module + '.' + task.action);
-
-  var taskModule = findModule(task, context);
-
-  if(!task.topTask) task.topTask = task;
-
-  if(taskModule) {
-    // condition false 면 bypass
-    var fCondition = (typeof task.condition == 'string' && !eval(task.condition)) ||
-        (task.condition instanceof Function && !task.condition(task, context));
-
-    var _successCallback = function(task, context) {
-      if(task.postCallback) {
-        logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + ' postCallback start');
-
-        task.postCallback(task, context, function(_task, _context) {
-          logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + ' postCallback end');
-
-          if(!_task || !_context) throw new Error('task.js:executeTask: wrong postCallback. In ' + task.module + '.' + task.action + ', Check callback(task, context)');
-
-          if(_task.taskOut) {
-            var type = utils.requireNoCache('./type');
-            _task.topTask.print(type.processOutput(_task, _context, _task.taskOut));
-          }
-
-          if(successCallback) successCallback(_task, _context);
-        });
-      } else {
-        if(task.taskOut) {
-          var type = utils.requireNoCache('./type');
-          task.topTask.print(type.processOutput(task, _context, task.taskOut));
-        }
-
-        logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + ' end');
-
-        if(successCallback) successCallback(task, context);
-      }
-    };
-
-    // console.log('executeTask: ' + task.module + '.' + task.action);
-
-    var _call = function() {
-      if(task.preCallback) {
-        logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + ' preCallback start');
-
-        task.preCallback(task, context, function(_task, _context) {
-          logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + ' preCallback end');
-
-          if(!_task || !_context) throw new Error('task.js:executeTask: wrong preCallback. In ' + task.module + '.' + task.action + ', Check callback(task, context)');
-
-          if(fCondition) {
-            _successCallback(task, context);
-          } else if(taskModule[task.action] instanceof Function) {
-            taskModule[task.action](_task, _context, _successCallback, errorCallback);
-          } else if(taskModule.execute instanceof Function) {
-            taskModule.execute(_task, _context, _successCallback, errorCallback);
-          } else {
-            errorCallback(new Error('task.js:executeTask: Function not exist ' + task.module + '.' + task.action), task, context);
-          }
-        });
-      } else {
-        if(fCondition) {
-          _successCallback(task, context);
-        } else if(taskModule[task.action] instanceof Function) {
-          taskModule[task.action](task, context, _successCallback, errorCallback);
-        } else if(taskModule.execute instanceof Function) {
-          taskModule.execute(task, context, _successCallback, errorCallback);
-        } else {
-          errorCallback(new Error('task.js:executeTask: Function not exist ' + task.module + '.' + task.action), task, context);
-
-        }
-      }
-    };
-
-    if(task.paramDefs && !fCondition) {
-      logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + ' paramDefs check start.');
-
-      var type = utils.requireNoCache('./type');
-
-      for(var i = 0; i < task.paramDefs.length; i++) {
-        var paramDef = task.paramDefs[i];
-
-        logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + ' paramDefs check ' + JSON.stringify(paramDef));
-
-        if(task[paramDef.name] == undefined) {
-          logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + ' paramDefs task.' + paramDef.name + '=' + task[paramDef.name]);
-
-          // 디폴트 값 user context 에서 가져오기
-          if(context.user[paramDef.name]) {
-            paramDef.default = context.user[paramDef.name];
-          }
-
-          if(paramDef.default == undefined && paramDef.isDisplay != false) {
-            logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + ' paramDefs pending for user input ' + paramDef.name);
-
-            context.user.pendingCallback = function(inText, _inText, inDoc, _context) {
-              task = utils.merge(task, inDoc);
-              task.in = inText;
-              task.inRaw = _inText;
-
-              if(task[paramDef.name] == undefined) task[paramDef.name] = _inText;
-
-              context.user.pendingCallback = null;
-              context.user.pendingType = null;
-              context.user.pendingParamDef = null;
-
-              executeTask(task, context, successCallback, errorCallback);
-            };
-
-            context.user.pendingType = paramDef.type;
-            context.user.pendingParamDef = paramDef;
-
-            if(paramDef.isDisplay == undefined || paramDef.isDisplay == true) {
-              if(task.print) task.print((paramDef.question instanceof Function ? paramDef.question(task, context) : paramDef.question));
-              else if(task.topTask.print) task.topTask.print((paramDef.question instanceof Function ? paramDef.question(task, context) : paramDef.question));
-            }
-
-            return;
-          } else {
-            logger.debug('task.js:executeTask: ' + task.module + '.' + task.action + ' paramDefs no pending, use default: ' + paramDef.default);
-
-            var paramType = type[paramDef.type+'Type'];
-            if(paramType && paramType.typeCheck) {
-
-              var typeText = paramDef.default ? paramDef.default : task.in;
-              paramType.name = paramDef.name;
-              paramType.typeCheck(typeText, paramType, task, context, function (_text, _task, matched) {
-                paramType.name = paramDef.type;
-
-                if(matched) {
-                  if(paramDef.customCheck) {
-                    paramDef.customCheck(typeText, paramType, task, context, function (__text, __task, _matched) {
-                      if(_matched) {
-                        _call();
-                        // return executeTask(__task, context, successCallback, errorCallback);
-                      } else {
-                        if(paramType.checkRequired) {
-                          task.topTask.print(paramType.checkRequired(__text) +
-                            context.global.messages.typeExit);
-                        } else {
-                          task.topTask.print((paramDef.question instanceof Function ? paramDef.question(_task, context) : paramDef.question) +
-                            context.global.messages.typeExit, (paramDef.buttons ? {buttons: paramDef.buttons}: null));
-                        }
-                      }
-                    });
-                  } else {
-                    _call();
-                    // return executeTask(_task, context, successCallback, errorCallback);
-                  }
-                } else {
-                  if(paramType.checkRequired) {
-                    task.topTask.print(paramType.checkRequired(_text) +
-                      context.global.messages.typeExit);
-                  } else {
-                    task.topTask.print((paramDef.question instanceof Function ? paramDef.question(_task, context) : paramDef.question) +
-                      context.global.messages.typeExit, (paramDef.buttons ? {buttons: paramDef.buttons}: null));
-                  }
-                }
-
-              });
-
-              // return;
-            } else {
-              if(paramType) {
-                errorCallback(new Error('task.js:executeTask: ' + task.module + '.' + task.action + ' paramDefs type not found. type: ' +
-                  paramDef.type + ' name: ' + paramDef.name), task, context);
-              } else {
-                errorCallback(new Error('task.js:executeTask: ' + task.module + '.' + task.action + ' paramDefs type typeCheck funtion not found. type: ' +
-                  paramDef.type + ' name: ' + paramDef.name), task, context);
-              }
-
-              return false;
-            }
-          }
-        }
-      }
-    }
-
-     _call();
-
-    return true;
-  } else {
-    errorCallback(new Error('task.js:executeTask: Module not exist. ' + task.module + '.' + task.action), task, context);
-    return false;
-  }
-}
-
-
-exports.execute = execute;
 
 function execute(task, context, successCallback, errorCallback) {
   logger.debug('');
@@ -616,7 +440,7 @@ function execute(task, context, successCallback, errorCallback) {
 
         if(task.taskCounter != 0) preTask = curTask;
         curTask = utils.clone(task.actions[taskNum]);
-        curTask.parent =  task;
+        curTask.parentTask =  task;
         curTask.topTask = task.topTask;
         curTask.print = task.topTask.print;
         curTask.preTask = preTask;
@@ -688,6 +512,8 @@ function execute(task, context, successCallback, errorCallback) {
   }
 }
 
+exports.execute = execute;
+
 exports.findModule = findModule;
 
 function findModule(task, context) {
@@ -740,6 +566,53 @@ function findModule(task, context) {
 
   return taskModule;
 }
+
+function findActionModule(task, context) {
+  var actionModule;
+  var botName = context.bot.botName;
+
+  //template action
+  var modulePath;
+  try {
+    modulePath = 'custom_modules/' + botName + '/' + (task.actionModule ? task.actionModule : botName);
+    delete require.cache[require.resolve(modulePath)];
+    actionModule = require(modulePath);
+
+  } catch(err) {
+    // console.log("error loading custom module: " + botName + "/" + task.module + '/' + task.action);
+    // console.log(err);
+  }
+
+  // common action
+  if(!actionModule) {
+    try {
+      modulePath = 'modules/bot/action/common/' + task.module;
+      delete require.cache[require.resolve(modulePath)];
+      actionModule = require(modulePath);
+    } catch(err) {
+      // console.log("error loading common module: " + task.module);
+      // console.log(err);
+    }
+  }
+
+  return actionModule;
+}
+
+function taskForBase(task, context) {
+  var baseTask;
+  if(typeof task.baseTask == 'string') {
+    baseTask = context.bot.tasks[task.baseTask];
+  } else {
+    baseTask = task.baseTask;
+  }
+
+  if(baseTask.baseTask) baseTask = taskForBase(baseTask, context);
+
+  task = utils.merge(task, baseTask);
+
+  return task;
+}
+
 
 function execTask(task, context, callback) {
   var words = task.inRaw.split(' ');

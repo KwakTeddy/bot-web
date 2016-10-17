@@ -6,6 +6,7 @@ var path = require('path');
 var logger = require(path.resolve('./config/lib/logger'));
 var address = require(path.resolve('./modules/bot/action/common/address'));
 var _ = require('lodash');
+var botlib = require(path.resolve('config/lib/bot'));
 
 const TAG_START = '\\+';
 const TAG_END = '\\+';
@@ -274,6 +275,7 @@ var mobileType = {
 };
 
 exports.mobileType = mobileType;
+botlib.setGlobalType('mobileType', mobileType);
 
 var phoneType = {
   name: 'phone',
@@ -281,11 +283,15 @@ var phoneType = {
   regexp: /\b((?:0(?:2|3[0-3]|4[1-4]|5[0-5]|6[0-4]|70|80))[-.]?\d{3,4}[-.]?\d{4})\b/g
 };
 
+botlib.setGlobalType('phoneType', phoneType);
+
 var dateType = {
   name: 'date',
   typeCheck: regexpTypeCheck,
   regexp: /(\d{4}[-/.년][ ]?(?:0[1-9]|1[012]|[1-9])[-/.월][ ]?(?:0[1-9]|[12][0-9]|3[0-1]|[1-9])[일]?)/g
 };
+
+botlib.setGlobalType('dateType', dateType);
 
 var timeType = {
   name: 'time',
@@ -293,11 +299,15 @@ var timeType = {
   regexp: /((?:[01][0-9]|2[0-3]|[1-9])[:시][ ]?(?:[0-5][0-9]|[1-9])[분]?)/g
 };
 
+botlib.setGlobalType('timeType', timeType);
+
 var accountType = {
   name: 'account',
   typeCheck: regexpTypeCheck,
   regexp: /(\b[\d-]+-[\d-]+\b)/g
 };
+
+botlib.setGlobalType('accountType', accountType);
 
 var countType = {
   name: 'count',
@@ -305,7 +315,7 @@ var countType = {
   regexp: /(\d)\s?(?:개)/g
 };
 
-exports.countType = countType;
+botlib.setGlobalType('countType', countType);
 
 var productType = {
   name: 'product',
@@ -372,6 +382,7 @@ var faqType = {
 }
 
 exports.faqType = faqType;
+botlib.setGlobalType('faqType', faqType);
 
 
 var mongoose = require('mongoose');
@@ -749,6 +760,7 @@ function mongoDbTypeCheck(text, format, inDoc, context, callback) {
   }
 }
 
+botlib.setGlobalTypeCheck('mongoDbTypeCheck', mongoDbTypeCheck);
 
 
 var commonTypes = [

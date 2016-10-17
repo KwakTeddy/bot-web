@@ -42,7 +42,7 @@ exports.faqQuestion =     {
 //         {type: 'faq', name: 'faq질문', isDisplay: false, question: '궁금한 질문을 입력해주세요.'}
 //       ],
 //       preCallback: function(task, context, callback) {
-//         task.in = task.parent.in;
+//         task.in = task.parentTaskin;
 //         callback(task, context);
 //       },
 //       postCallback: function(task, context, callback) {

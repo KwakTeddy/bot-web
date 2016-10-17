@@ -7,9 +7,9 @@ var type = require(path.resolve('modules/bot/action/common/type'));
 var orderTasks = utils.requireNoCache(path.resolve('custom_modules/order/order.task'));
 var orderTypes = utils.requireNoCache(path.resolve('custom_modules/order/order.type'));
 var mongoose = require('mongoose');
-var bot = require(path.resolve('config/lib/bot'));
+var bot = require(path.resolve('config/lib/bot')).getBot('order');
 
-var globalDialogs = [
+var commonDialogs = [
   { name: '시작',
     input: {regexp: /(처음|시작|:reset user)/g},
     output: function(dialog, context, print, callback) {
@@ -28,7 +28,7 @@ var globalDialogs = [
   { name: dialogModule.NO_DIALOG_NAME, output: '무슨 말인지 모르겠습니다.^^\n 다른 말로 말씀해주세요.'}
 ];
 
-exports.globalDialogs = globalDialogs;
+exports.commonDialogs = commonDialogs;
 
 var dialogs = [
   {
@@ -119,7 +119,7 @@ var dialogs = [
                     name: '음식점목록',
                     output: '말씀하신 곳과 가장 유사한 매장입니다.\n#restaurant#+index+. +name+\n#\n목록에서 번호를 선택하거나 음식점명을 입력해주세요.',
                     children: [
-                      { input: {types: [{name: 'restaurant', typeCheck: orderTypes.listTypeCheck}]},
+                      { input: {types: [{name: 'restaurant', typeCheck: 'listTypeCheck'}]},
                         output: {call: '메뉴선택', upCallback: orderTasks.upMenu1Callback}},
                       {input: {types: [orderTask.restaurantType]},output: {repeat: 1}},
                       {output: {repeat: 1}}
@@ -134,7 +134,7 @@ var dialogs = [
                     task: orderTasks.categoryRestaurants,
                     output: '[+category+]\n##+index+. +name+\n#\n목록에서 번호를 선택하거나 음식점명을 입력해주세요.',
                     children: [
-                      { input: {types: [{name: 'restaurant', typeCheck: orderTypes.listTypeCheck}]},
+                      { input: {types: [{name: 'restaurant', typeCheck: 'listTypeCheck'}]},
                         output: {call: '메뉴선택'}},
                       {input: {types: [orderTask.restaurantType]},output: {call: '메뉴선택'}},
                       {output: {repeat: 1}}
@@ -209,7 +209,7 @@ var dialogs = [
               { name: '메뉴목록', input: {types: [orderTasks.franchiseMenuType], if: 'Array.isArray(context.dialog.menu)'},
                 output: '+restaurant.name+에서 말씀하신 것과 가장 유사한 메뉴입니다.\n#menu#+index+. +name+ +price+\n#\n목록에서 번호를 선택하거나 메뉴명을 입력해주세요.',
                 children: [
-                  { input: {types: [{name: 'menu', typeCheck: orderTypes.listTypeCheck}]},
+                  { input: {types: [{name: 'menu', typeCheck: 'listTypeCheck'}]},
                     task: {action: orderTasks.menuAddAction},
                     output: {call: '메뉴추가확인1'}},
                   {input: {types: [orderTask.menuType]},output: {call: '메뉴추가확인1'}},
@@ -223,11 +223,11 @@ var dialogs = [
                 '[메뉴판]\n##+index+. +name+\n#9. 이전단계\n0. 처음으로\n\n' +
                 '메뉴판에서 번호를 선택하거나 메뉴명을 입력해주세요.',
                 children: [
-                  { input: {types: [{name: 'category', typeCheck: orderTypes.listTypeCheck}]},
+                  { input: {types: [{name: 'category', typeCheck: 'listTypeCheck'}]},
                     task: {action: orderTasks.franchiseMenuAction},
                     output: '[+category.name+]\n##+index+. +name+ +price+\n#9. 이전단계\n0. 처음으로\n\n메뉴판에서에서 번호를 선택하거나 메뉴명을 입력해주세요.',
                     children: [
-                      { input: {types: [{name: 'menu', typeCheck: orderTypes.listTypeCheck}]},
+                      { input: {types: [{name: 'menu', typeCheck: 'listTypeCheck'}]},
                         task: {action: orderTasks.menuAddAction},
                         output: {call: '메뉴추가확인1'}},
                       {input: {types: [orderTask.menuType]},output: {call: '메뉴추가확인1'}},
@@ -309,5 +309,5 @@ var dialogs = [
 
 exports.dialogs = dialogs;
 
-bot.setDialogs('order', dialogs);
-bot.setGlobalDialogs('order', globalDialogs);
+bot.setDialogs(dialogs);
+bot.setCommonDialogs(commonDialogs);
