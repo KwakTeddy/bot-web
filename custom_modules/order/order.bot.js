@@ -1,10 +1,6 @@
-
 var path = require('path');
 
 var orderBot = {
-  module: 'order.dialog',
-  // globalDialogs: orderbot.globalDialogs,
-  // dialogs: orderbot.dialogs,
   dialogServer: {chatScript: false},
   kakao: {
     keyboard: { type :"buttons", buttons:["배달주문시작", "배달내역보기"]}
@@ -26,10 +22,11 @@ var orderBot = {
   },
 
   concepts: {
-    '배달': ['주문', '시키다', '보내다']
+    '배달': ['주문', '시키다', '보내다'],
+    '내역': ['내 역'],
+    '추천': ['좋다']
   }
 };
 
-var bot = require(path.resolve('config/lib/bot'));
-bot.setBot('order', orderBot);
-
+var botlib = require(path.resolve('config/lib/bot'));
+botlib.makeBot('order', orderBot);

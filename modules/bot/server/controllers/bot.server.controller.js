@@ -126,11 +126,11 @@ function botProc(botName, channel, user, inTextRaw, outCallback, chatServerConfi
 
 exports.getContext = getContext;
 function getContext(botName, channel, user, callback) {
-  if(!global._context) global._context = {};
-  if(!global._bots) global._bots = {};
-  if(!global._channels) global._channels = {};
-  if(!global._users) global._users = {};
-  if(!global._botusers) global._botusers = {};
+  // if(!global._context) global._context = {};
+  // if(!global._bots) global._bots = {};
+  // if(!global._channels) global._channels = {};
+  // if(!global._users) global._users = {};
+  // if(!global._botusers) global._botusers = {};
 
   var userContext, botUserContext;
 
@@ -187,7 +187,7 @@ function getContext(botName, channel, user, callback) {
     context.bot.startDialog = dialog.findGlobalDialog(null, context, dialog.START_DIALOG_NAME);
     context.bot.noDialog = dialog.findGlobalDialog(null, context, dialog.NO_DIALOG_NAME);
 
-    context.global.messages = messages;
+    // context.global.messages = messages;
 
     // context.user.mobile = '010-6316-5683';
 
@@ -208,7 +208,7 @@ function getContext(botName, channel, user, callback) {
 //
 //   order: {
 //     module: 'order.dialog',
-//     globalDialogs: orderbot.globalDialogs,
+//     commonDialogs: orderbot.commonDialogs,
 //     dialogs: orderbot.dialogs,
 //     dialogServer: {chatScript: false},
 //     kakao: {
@@ -262,17 +262,17 @@ function getContext(botName, channel, user, callback) {
 //1006864529411088 배달봇
 //997804450331458  장세영 테스트
 
-var messages = {
-  // typeExit: '\n처음으로 돌아가기: \'ㄱ\'',
-  typeExit: '',
-  typeAddress: '주소 형식이 틀렸습니다.',
-  typeAddressCheck1: '입력하신 주소가 없습니다.',
-  yesRegExp: "응|그래|네|그렇다|오케이|예스|ㅇㅋ|ㅇㅇ|OK|ok|Ok|YES|yes|Yes|sp|SP",
-  noRegExp: "아니다|싫다|않다|노|NO|no|No",
-  userError: '일시적 오류가 발생하였습니다.\n\n불편을 드려 죄송합니다.\n\n"시작"을 입력하여 처음부터 다시 시작해 주세요'
-};
-
-exports.messages = messages;
+// var messages = {
+//   // typeExit: '\n처음으로 돌아가기: \'ㄱ\'',
+//   typeExit: '',
+//   typeAddress: '주소 형식이 틀렸습니다.',
+//   typeAddressCheck1: '입력하신 주소가 없습니다.',
+//   yesRegExp: "응|그래|네|그렇다|오케이|예스|ㅇㅋ|ㅇㅇ|OK|ok|Ok|YES|yes|Yes|sp|SP",
+//   noRegExp: "아니다|싫다|않다|노|NO|no|No",
+//   userError: '일시적 오류가 발생하였습니다.\n\n불편을 드려 죄송합니다.\n\n"시작"을 입력하여 처음부터 다시 시작해 주세요'
+// };
+//
+// exports.messages = messages;
 
 //var RiveScript = require(path.resolve('./external_modules/rivescript/rivescript'));
 //
@@ -299,13 +299,11 @@ exports.messages = messages;
 //
 //
 
-global._context = {
-  concepts: {
-    '네': ['응', '그래', '네', '그렇다', '오케이', '예스', 'ㅇㅋ', 'ㅇㅇ', 'OK', 'ok', 'Ok', 'YES', 'yes', 'Yes', 'sp', 'SP'],
-    '아니요': ['아니다', '싫다', '않다', '노', 'ㄴㄴ', 'NO', 'no', 'No'],
-    '변경' : ['바꾸다', '틀리다'],
-    '시작' : ['처음', ':reset user']
-  }
-};
-
-
+// global._context = {
+//   concepts: {
+//     '네': ['응', '그래', '네', '그렇다', '오케이', '예스', 'ㅇㅋ', 'ㅇㅇ', 'OK', 'ok', 'Ok', 'YES', 'yes', 'Yes', 'sp', 'SP'],
+//     '아니요': ['아니다', '싫다', '않다', '노', 'ㄴㄴ', 'NO', 'no', 'No'],
+//     '변경' : ['바꾸다', '틀리다'],
+//     '시작' : ['처음', ':reset user']
+//   }
+// };

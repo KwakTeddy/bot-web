@@ -47,6 +47,7 @@ module.exports.start = function start(callback) {
   var _this = this;
 
   var bot = require('./bot');
+  bot.initGlobals();
   bot.loadBots();
 
   _this.init(function (app, db, config) {

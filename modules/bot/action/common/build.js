@@ -27,15 +27,18 @@ function botBuild(bot) {
     var file = files[i];
     var dlgPath = path.join(botDir, file);
     var info = path.parse(dlgPath);
-    var jsPath = path.join(info.dir, info.name + '.dialog.js');
+    // var jsPath = path.join(info.dir, info.name + '.js');
+    var dialogPath = path.join(info.dir, info.name + '.dialog.js');
 
-    if(fs.statSync(dlgPath).mtime <= fs.statSync(jsPath).mtime) {
-      logger.info('botBuild: SKIP ' + file);
+    if(fs.existsSync(dialogPath) &&
+      fs.statSync(dlgPath).mtime <= fs.statSync(dialogPath).mtime /*&&
+      (!fs.existsSync(jsPath) || (fs.existsSync(jsPath) && fs.statSync(jsPath).mtime <= fs.statSync(dialogPath).mtime))*/) {
+      logger.info('\t building dlg file: ' + file + ' [SKIP]');
 
       continue;
     }
 
-    logger.info('botBuild: ' + file);
+    logger.info('\t building dlg file: ' + file + ' -> ' + info.name + '.dialog.js');
 
     var text = fs.readFileSync(dlgPath, 'utf8');
     // console.log(text);
@@ -43,22 +46,17 @@ function botBuild(bot) {
 
     js = '\n' + js + '\n\n' + build(text, true);
 
-    try {
-      var include = fs.readFileSync(path.join(info.dir, 'include.js'), 'utf8');
-      if(include) js = include + js;
-    } catch(e) {}
+    // try {
+    //   var include = fs.readFileSync(path.join(info.dir, info.name + '.js'), 'utf8');
+    //   if(include) js = include + js;
+    // } catch(e) {}
 
-    try {
-      var include = fs.readFileSync(path.join(info.dir, info.name + '.include.js'), 'utf8');
-      if(include) js = include + js;
-    } catch(e) {}
-
-
-    var tail = '\nvar bot = require(path.resolve("config/lib/bot"));\nbot.setDialogs("' + bot + '", dialogs);';
-    tail += '\nbot.setGlobalDialogs("' + bot + '", globalDialogs);\n';
+    var tail = '\nvar _bot = require(require(\'path\').resolve("config/lib/bot")).getBot(\'' + bot + '\');' +
+      '\n_bot.setDialogs(dialogs);' +
+      '\n_bot.setCommonDialogs(commonDialogs);\n';
     js = js + tail;
 
-    fs.writeFileSync(jsPath, js, 'utf8');
+    fs.writeFileSync(dialogPath, js, 'utf8');
   }
 }
 exports.botBuild = botBuild;
@@ -235,7 +233,7 @@ function build(text, isCommon) {
   };
 
   if(isCommon) {
-    output = 'var globalDialogs = [\n' + parseDialog('') + '\n];\n\n';
+    output = 'var commonDialogs = [\n' + parseDialog('') + '\n];\n\n';
   } else {
     output = 'var dialogs = [\n' + parseDialog('') + '\n];\n\n';
   }
@@ -248,5 +246,5 @@ function build(text, isCommon) {
 //var str = fs.readFileSync(path.resolve('custom_modules/sample/sample.dlg'), 'utf8');
 //build(str);
 
-botBuild('sample');
+// botBuild('sample');
 

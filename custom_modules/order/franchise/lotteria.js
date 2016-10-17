@@ -306,7 +306,7 @@ exports.order = {
           ],
           postCallback: function(task, context, callback) {
             var re = new RegExp(context.global.messages.yesRegExp, 'g');
-            if(!task.parent.isRepeat && task.addOrderCheck.search(re) != -1) {
+            if(!task.parentTaskisRepeat && task.addOrderCheck.search(re) != -1) {
               task.isRepeat = true;
             } else {
               task.isRepeat = false;
@@ -512,7 +512,7 @@ exports.order = {
             }
           },
           preCallback: function(task, context, callback) {
-            task.param.dong = task.parent.addressJibun.dong;
+            task.param.dong = task.parentTaskaddressJibun.dong;
             callback(task, context);
           },
           postCallback: function(task, context, callback) {
@@ -520,9 +520,9 @@ exports.order = {
             var list = JSON.parse(jsonStr).Articles;
 
             for(var i = 0; i < list.length; i++) {
-              if(task.parent.addressJibun.sido == list[i].sido &&
-                task.parent.addressJibun.sigungu == list[i].sigugun &&
-                task.parent.addressJibun.dong == list[i].dong) {
+              if(task.parentTaskaddressJibun.sido == list[i].sido &&
+                task.parentTaskaddressJibun.sigungu == list[i].sigugun &&
+                task.parentTaskaddressJibun.dong == list[i].dong) {
 
                 task.addrPart = list[i].sido + ' ' + list[i].sigugun + ' ' + list[i].dong;
 
@@ -560,8 +560,8 @@ exports.order = {
           },
           preCallback: function(task, context, callback) {
             task.param.checkAddr = task.preTask.addrPart;
-            task.param.checkAddrDetail =  task.parent.addressJibun.bungi + ' ' + task.parent.addressJibun.building + ' ' +
-              task.parent.addressJibun.detail;
+            task.param.checkAddrDetail =  task.parentTaskaddressJibun.bungi + ' ' + task.parentTaskaddressJibun.building + ' ' +
+              task.parentTaskaddressJibun.detail;
             task.param.checkAddrDesc = '';
 
             // console.log(JSON.stringify(task.param));

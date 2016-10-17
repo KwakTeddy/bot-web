@@ -645,6 +645,7 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
         var query = {};
         for(var j = 0; j < format.mongo.queryFields.length; j++) {
           try {
+            word = RegExp.escape(word);
             query[format.mongo.queryFields[j]] = new RegExp(word, 'i');
           } catch(e) {}
         }
@@ -673,15 +674,17 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
               var matchIndex = -1, matchMin = -1, matchMax = -1;
               for(var l = 0; l < format.mongo.queryFields.length; l++) {
                 for(var m = 0; m < words.length; m++) {
-                  matchIndex = doc[format.mongo.queryFields[l]].search(new RegExp(words[m], 'i'));
+                  var _word = words[m];
+                  _word = RegExp.escape(_word);
+                  matchIndex = doc[format.mongo.queryFields[l]].search(new RegExp(_word, 'i'));
 
                   if(matchIndex != -1) {
                     matchCount++;
-                    matchedWord += words[m];
+                    matchedWord += _word;
 
-                    var matchOrgIndex = text.search(new RegExp(words[m], 'i'));
+                    var matchOrgIndex = text.search(new RegExp(_word, 'i'));
                     if(matchOrgIndex != -1 && (matchMin == -1 || matchOrgIndex < matchMin)) matchMin = matchOrgIndex;
-                    if(matchOrgIndex != -1 && (matchMax == -1 || matchOrgIndex + words[m].length> matchMax)) matchMax = matchOrgIndex + words[m].length;
+                    if(matchOrgIndex != -1 && (matchMax == -1 || matchOrgIndex + _word.length> matchMax)) matchMax = matchOrgIndex + _word.length;
                   }
                 }
               }
@@ -723,6 +726,8 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
         if(category) break;
         for(var j in restaurantCategory) {
           rCategory = restaurantCategory[j];
+
+          word = RegExp.escape(word);
           if(rCategory.alias.search(new RegExp(word, 'i')) != -1) {
             category = rCategory.category;
             break;
@@ -762,6 +767,8 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
         if(category) break;
         for(var j in menuCategory) {
           mCategory = menuCategory[j];
+
+          word = RegExp.escape(word);
           if(mCategory.menu.search(new RegExp(word, 'i')) != -1) {
             category = mCategory.category;
             break;

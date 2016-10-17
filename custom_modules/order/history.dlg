@@ -1,0 +1,12 @@
+
+< ~무엇 ~배달
+< ~배달 ~내역
+< {regexp: /(무엇|~배달|~내역)/, types: [{name: 'date', typeCheck: 'dateRangeTypeCheck'}]}
+'orderHistoryTask'
+> 배달 주문한 내역 알려드릴께요.\n##+index+. +orderDate+\n+restaurantName+\n+menu+ +totalPrice+원\n\n#
+    <{regexp: /~배달/, types: [{name: 'history', typeCheck: 'listTypeCheck'}]}
+    'historyToOrderTask'
+    > {call: '주문확인'}
+
+< {types: [{name: 'date', typeCheck: 'dateRangeTypeCheck'}]}
+>  +from+ 부터 +to+ 까지

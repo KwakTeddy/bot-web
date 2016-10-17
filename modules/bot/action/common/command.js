@@ -4,7 +4,7 @@ var dialog = require(path.resolve('modules/bot/action/common/dialog'));
 
 function command(inTextRaw, inTextNLP, context, print, callback) {
   var cmd = inTextRaw.trim();
-  var message = '';
+  var startDialog;
   if(cmd.startsWith(':build')) {
     bot.buildBot(context.bot.botName);
     // message = 'build ' + context.bot.botName + ' completed!\n';
@@ -12,9 +12,19 @@ function command(inTextRaw, inTextNLP, context, print, callback) {
     bot.loadBot(context.bot.botName);
     // message += 'load ' + context.bot.botName + ' completed!\n';
 
-    dialog.executeDialog(dialog.findDialog(null, context, dialog.START_DIALOG_NAME), context, print, callback);
+    startDialog= dialog.findDialog(null, context, dialog.START_DIALOG_NAME);
+
+    if(!startDialog)
+      print('시작 Dialog가 없습니다.');
+    else
+      dialog.executeDialog(startDialog, context, print, callback);
   } else if(cmd == ':reset user') {
-    dialog.executeDialog(dialog.findDialog(null, context, dialog.START_DIALOG_NAME), context, print, callback);
+    startDialog= dialog.findDialog(null, context, dialog.START_DIALOG_NAME);
+
+    if(!startDialog)
+      print('시작 Dialog가 없습니다.');
+    else
+      dialog.executeDialog(startDialog, context, print, callback);
   }
 }
 
