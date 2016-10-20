@@ -37,7 +37,7 @@ function loadBots() {
   for (var i = 0; i < files.length; i++) {
     var dir = files[i];
 
-    // buildBot(dir);
+    buildBot(dir);
     loadBot(dir);
   }
 
