@@ -104,7 +104,7 @@ function cloneWithParent(obj) {
   if (obj instanceof Array) {
     copy = [];
     for (var i = 0, len = obj.length; i < len; i++) {
-      copy[i] = clone(obj[i]);
+      copy[i] = cloneWithParent(obj[i]);
     }
     return copy;
   }
@@ -115,7 +115,7 @@ function cloneWithParent(obj) {
     for (var attr in obj) {
       if (obj.hasOwnProperty(attr)) {
         if(attr.startsWith('parent') || attr.startsWith('top')) copy[attr] = obj[attr];
-        else copy[attr] = clone(obj[attr]);
+        else copy[attr] = cloneWithParent(obj[attr]);
       }
     }
     return copy;

@@ -20,13 +20,8 @@ function orderHistory(task, context, successCallback, errorCallback) {
     if(task.from) query.created.$gte = task.from;
     if(task.to) query.created.$lte = task.to;
 
-    console.log(task.from);
-    console.log(task.to);
+    console.log('orderHistory: ' + task.from + '~' + task.to);
   }
-
-
-  // query = {'created' : {"$gte": new Date(2016, 9, 1)}};
-  // query.created = {"$gte": new Date(new Date(2016, 10, 1).toISOString()), "$lte": new Date(new Date(2016, 10, 10).toISOString())};
 
   model.find(query).
   populate('restaurant').
@@ -51,7 +46,7 @@ function orderHistory(task, context, successCallback, errorCallback) {
 
     context.dialog['history'] = task.doc;
 
-      successCallback(task, context);
+    successCallback(task, context);
   });
 }
 

@@ -652,8 +652,8 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
 
         query['address.시도명'] = context.dialog.address.시도명;
         query['address.시군구명'] = context.dialog.address.시군구명;
-        // query['address.행정동명'] = context.dialog.address.행정동명;
-        query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
+        query['address.행정동명'] = context.dialog.address.행정동명;
+        // query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
 
         var _query = model.find(query, format.mongo.fields, format.mongo.options);
         if(format.mongo.sort) _query.sort(format.mongo.sort);
@@ -740,7 +740,8 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
 
         query['address.시도명'] = context.dialog.address.시도명;
         query['address.시군구명'] = context.dialog.address.시군구명;
-        query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
+        query['address.행정동명'] = context.dialog.address.행정동명;
+        // query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
 
         var _query = model.find(query, format.mongo.fields, format.mongo.options);
         if(format.mongo.sort) _query.sort(format.mongo.sort);
@@ -781,7 +782,8 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
 
         query['address.시도명'] = context.dialog.address.시도명;
         query['address.시군구명'] = context.dialog.address.시군구명;
-        query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
+        query['address.행정동명'] = context.dialog.address.행정동명;
+        // query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
 
         var _query = model.find(query, format.mongo.fields, format.mongo.options);
         if(format.mongo.sort) _query.sort(format.mongo.sort);
@@ -926,7 +928,6 @@ function nMenuTypeCheck(text, format, inDoc, context, callback) {
           }
         }
       }
-
     }
   }
 
@@ -1083,3 +1084,68 @@ function testVMS(task, context, callback) {
 }
 
 exports.testVMS = testVMS;
+
+
+function orderableTypeCheck(text, format, inDoc, context, callback) {
+
+  var matched = false;
+  var words = text.split(' ');
+
+  async.waterfall([
+
+    // 음식점 종류 검색
+    function(_cb) {
+      var category, word, rCategory;
+      for(var i in words) {
+        word = words[i];
+        if(category) break;
+        for(var j in restaurantCategory) {
+          rCategory = restaurantCategory[j];
+
+          word = RegExp.escape(word);
+          if(rCategory.alias.search(new RegExp(word, 'i')) != -1) {
+            category = rCategory.category;
+            break;
+          }
+        }
+      }
+
+      if(category) {
+        matched = true;
+        _cb(true);
+      } else {
+        _cb(null);
+      }
+    },
+
+    // 메뉴 종류 검색
+    function(_cb) {
+      var category, word, mCategory;
+      for(var i in words) {
+        word = words[i];
+        if(category) break;
+        for(var j in menuCategory) {
+          mCategory = menuCategory[j];
+
+          word = RegExp.escape(word);
+          if(mCategory.menu.search(new RegExp(word, 'i')) != -1) {
+            category = mCategory.category;
+            break;
+          }
+        }
+      }
+
+      if(category) {
+        matched = true;
+        _cb(true);
+      } else {
+        _cb(null);
+      }
+    }
+
+  ], function(err) {
+    callback(text, inDoc, matched);
+  });
+}
+
+exports.orderableTypeCheck = orderableTypeCheck;

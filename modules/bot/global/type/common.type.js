@@ -35,6 +35,10 @@ function listTypeCheck(text, type, task, context, callback) {
 
     var num = Number(word);
 
+    if(!num) {
+      num = Number(typelib.parseNumber(word));
+    }
+
     if (task[type.name] && num >= 1 && num <= task[type.name].length) {
       context.dialog[type.name] = task[type.name] = task[type.name][num - 1];
 
@@ -47,6 +51,8 @@ function listTypeCheck(text, type, task, context, callback) {
       return;
     }
   }
+
+
 
   // list word match
   var maxIndex = -1, maxCount = 0;

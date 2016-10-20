@@ -30,13 +30,16 @@ function botBuild(bot) {
     // var jsPath = path.join(info.dir, info.name + '.js');
     var dialogPath = path.join(info.dir, info.name + '.dialog.js');
 
+/*
+
     if(fs.existsSync(dialogPath) &&
-      fs.statSync(dlgPath).mtime <= fs.statSync(dialogPath).mtime /*&&
-      (!fs.existsSync(jsPath) || (fs.existsSync(jsPath) && fs.statSync(jsPath).mtime <= fs.statSync(dialogPath).mtime))*/) {
+      fs.statSync(dlgPath).mtime <= fs.statSync(dialogPath).mtime /!*&&
+      (!fs.existsSync(jsPath) || (fs.existsSync(jsPath) && fs.statSync(jsPath).mtime <= fs.statSync(dialogPath).mtime))*!/) {
       logger.info('\t building dlg file: ' + file + ' [SKIP]');
 
       continue;
     }
+*/
 
     logger.info('\t building dlg file: ' + file + ' -> ' + info.name + '.dialog.js');
 
@@ -82,10 +85,17 @@ function build(text, isCommon) {
     for (; i < lines.length; i++) {
       var line = lines[i];
       var inc = false;
+      //console.log(step + (i+1) + ' start parseDialog');
 
       while (line.search(/^\s*$/) != -1 || line.search(/^\s*\/\/(.*)$/) != -1) {
         if(i + 1 < lines.length) {line = line = lines[++i];inc = true;}
         else break;
+      }
+
+      if(!line.startsWith(step)) {
+        i--;
+        //console.log(step + (i+1) + ' end parseDialog 3');
+        return dialogs.join(',\n');
       }
 
       if (line.startsWith(step + (isCommon && (step === '')? 'c<':'<')) || line.search(new RegExp('^'+step + '[^<>]*\s*:')) != -1) {
@@ -134,7 +144,7 @@ function build(text, isCommon) {
               return textEscape(p1);
             }));
 
-            if(i + 1 < lines.length) {line = line = lines[++i];inc = true;}
+            if(i + 1 < lines.length) {line = lines[++i];inc = true;}
             else break;
 
             _initMatched = true;
@@ -145,38 +155,57 @@ function build(text, isCommon) {
           while (line.search(/^\s*>/) == -1) {
             tasks.push(tab + line);
 
-            if(i + 1 < lines.length) {line = line = lines[++i];inc = true;}
+            if(i + 1 < lines.length) {line = lines[++i];inc = true;}
             else break;
           }
 
-          while (line.search(/^\s*>/) != -1) {
+          while (line.startsWith(step + '>') /*line.search(/^\s*>/) != -1*/) {
+            //console.log(step + (i+1) + ' outputs parseDialog');
+
             outputs.push(line.replace(/^\s*>\s*(.*)\s*$/g, function (match, p1) {
               p1 = textEscape(p1);
               var _m = p1.match(/if\s*\(\s*(.*)\s*\)\s*(.*)+/);
+
               if(_m) {
-                return '{if: ' + textEscape(_m[1]) + ', output: ' + textEscape(_m[2]) + '}';
+                var str;
+                str = 'if: ' + textEscape(_m[1]) + ', output: ' + textEscape(_m[2]);
+
+                if((match = lines[i+1].match(new RegExp('^(' + step + '\\s+)<'))) != undefined) {
+                  if(i + 1 < lines.length) {line = lines[++i];inc = true;}
+                  // else break;
+
+                  //console.log(step + (i+1) + ' before parseDialog 1');
+                  children = parseDialog(match[1]);
+                  //console.log(step + (i+1) + ' after parseDialog 1');
+                  if(children) str += ', \n' + step + tab + tab + 'children: [\n' + children + '\n' + step + tab + ']';
+                }
+
+                str = '\n' + step + tab + '{' + str + '}';
+                return str;
+
               } else return p1;
             }));
 
-            if(i + 1 < lines.length) {line = line = lines[++i];inc = true;}
+            if(i + 1 < lines.length) {line = lines[++i];inc = true;}
             else break;
           }
         }
 
         while (line.search(/^\s*$/) != -1 || line.search(/^\s*\/\/(.*)$/) != -1) {
-          if(i + 1 < lines.length) {line = line = lines[++i];inc = true;}
+          if(i + 1 < lines.length) {line = lines[++i];inc = true;}
           else break;
         }
 
         if((match = line.match(new RegExp('^(' + step + '\\s+)<'))) != undefined) {
-          // if(inc) i--;
+          //console.log(step + (i+1) + ' before parseDialog 2');
           children = parseDialog(match[1]);
+          //console.log(step + (i+1) + ' after parseDialog 2');
         } else {
           children = null;
         }
 
         while (line.search(/^\s*$/) != -1 || line.search(/^\s*\/\/(.*)$/) != -1) {
-          if(i + 1 < lines.length) {line = line = lines[++i];inc = true;}
+          if(i + 1 < lines.length) {line = lines[++i];inc = true;}
           else break;
         }
 
@@ -223,10 +252,12 @@ function build(text, isCommon) {
 
       if(!line.startsWith(step)) {
         if(inc) i--;
+        //console.log(step + (i+1) + ' end parseDialog 1');
         return dialogs.join(',\n');
       }
 
       if(inc) i--;
+      //console.log(step + (i+1) + ' end parseDialog 2');
     }
 
     return dialogs.join(',\n');

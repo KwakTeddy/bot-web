@@ -1,12 +1,13 @@
 var config = require('../config'),
   path = require('path'),
   fs = require('fs'),
-  utils = require(path.resolve('modules/bot/action/common/utils'));
+  utils = require(path.resolve('modules/bot/action/common/utils')),
+  _ = require('lodash');
 
 function buildBot(botName) {
   console.log('Building Bot: ' + botName);
 
-  var build = require(path.resolve('modules/bot/action/common/build.js'));
+  var build = utils.requireNoCache(path.resolve('modules/bot/action/common/build'));
   build.botBuild(botName);
 }
 
@@ -74,7 +75,27 @@ function loadBot(botName) {
   }
 
 
-  fileFilter = function(file) { return file.endsWith('.dialog.js'); };
+  var bot = getBot(botName);
+  if(bot && bot.dialogFiles) {
+    for (var i = 0; i < bot.dialogFiles.length; i++) {
+      var file = bot.dialogFiles[i];
+      var filePath = path.join(botDir, file);
+
+      try {
+        console.log('\tloading file: ' + file);
+
+        utils.requireNoCache(filePath);
+      } catch(e) {
+        console.log('\tloading file: ' + file + ' not found');
+        // console.error(e);
+      }
+    }
+  }
+
+  fileFilter = function(file) {
+    if(bot && bot.dialogFiles && _.includes(bot.dialogFiles, file)) return false;
+    else return file.endsWith('.dialog.js');
+  };
 
   try {
     files = fs.readdirSync(botDir);
@@ -105,7 +126,9 @@ function loadBot(botName) {
 
 
   fileFilter = function(file) {
-    if(file.endsWith('.js') && !file.endsWith('.dialog.js') && !file.endsWith('.bot.js')) {
+    if(bot && bot.dialogFiles && _.includes(bot.dialogFiles, file)) return false;
+
+    else if(file.endsWith('.js') && !file.endsWith('.dialog.js') && !file.endsWith('.bot.js')) {
       // var jsPath = path.resolve('custom_modules/' + botName + '/' + file);
       // var info = path.parse(jsPath);
       // var dlgPath = path.resolve('custom_modules/' + botName + '/' + info.name + '.dlg');
@@ -113,7 +136,10 @@ function loadBot(botName) {
       // if(fs.existsSync(dlgPath)) return false;
       // else
         return true;
+    } else {
+      return false;
     }
+
   };
 
   try {

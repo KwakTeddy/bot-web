@@ -8,6 +8,27 @@ var utils = require(path.resolve('modules/bot/action/common/utils'));
 var type = require(path.resolve('modules/bot/action/common/type'));
 var _ = require('lodash');
 
+// var checkTask = {
+//
+// }
+//
+// function orderCheckActoin(task, context, callback) {
+//
+//   var _menus = [], _menuStr = '';
+//   context.dialog.totalPrice = 0;
+//   if(context.dialog.menus == undefined) {
+//     context.dialog.totalPrice = context.dialog.menu.price;
+//   } else {
+//     for(var i in context.dialog.menus) {
+//       _menus.push({menu: context.dialog.menus[i]._id, name: context.dialog.menus[i].name, price: context.dialog.menus[i].price});
+//       _menuStr += context.dialog.menus[i].name + ' ' + '1개';
+//       context.dialog.totalPrice += context.dialog.menus[i].price;
+//     }
+//   }
+//
+//   callback(task, context, callback);
+// }
+
 var orderTask = {
   action: function(task, context, callback) {
     var model = mongoose.model('DeliveryOrder');
@@ -83,7 +104,7 @@ var categoryRestaurants = {
     query['address.시군구명'] = context.dialog.address.시군구명;
     query['address.행정동명'] = context.dialog.address.행정동명;
 
-    model.find(query).limit(10).lean().exec(function(err, docs) {
+    model.find(query).limit(8).lean().exec(function(err, docs) {
       task.doc = docs;
       context.dialog.restaurant = docs;
       callback(task, context);
@@ -120,6 +141,11 @@ function mongoQueryTypeCheck(text, format, inDoc, context, callback) {
     logger.debug('order.task.js:mongoQueryTypeCheck: START ' + format.name + ' "' + text + '"');
   }
 
+  if(text == null) {
+    callback(text, inDoc, false);
+    return;
+  }
+
   var model;
   if (mongoose.models[format.mongo.model]) {
     model = mongoose.model(format.mongo.model);
@@ -139,6 +165,7 @@ function mongoQueryTypeCheck(text, format, inDoc, context, callback) {
         var query = {};
         for(var j = 0; j < format.mongo.queryFields.length; j++) {
           try {
+            word = RegExp.escape(word);
             query[format.mongo.queryFields[j]] = new RegExp(word, 'i');
           } catch(e) {}
         }
@@ -164,6 +191,7 @@ function mongoQueryTypeCheck(text, format, inDoc, context, callback) {
               var matchIndex = -1, matchMin = -1, matchMax = -1;
               for(var l = 0; l < format.mongo.queryFields.length; l++) {
                 for(var m = 0; m < words.length; m++) {
+                  words[m] = RegExp.escape(words[m]);
                   matchIndex = doc[format.mongo.queryFields[l]].search(new RegExp(words[m], 'i'));
 
                   if(matchIndex != -1) {
@@ -329,8 +357,6 @@ function franchiseMenuAction(task, context, callback) {
     context.dialog.menu = docs;
     callback(task, context);
   });
-
-  callback(task, context);
 }
 
 exports.franchiseMenuAction = franchiseMenuAction;
@@ -458,14 +484,33 @@ exports.nMapTask = nMapTask;
 
 function menuAddAction(task, context, callback) {
   if(!context.dialog.menus) context.dialog.menus = [];
-  if((task && task.menu) || context.dialog.menu) context.dialog.menus.push(task.menu || context.dialog.menu);
+
+  if((task && task.menu) || context.dialog.menu) {
+    var _menu = task.menu || context.dialog.menu;
+    if(context.dialog.option) {
+      _menu.name += ' ' + context.dialog.option.name;
+      _menu.price = context.dialog.option.price;
+    }
+
+    context.dialog.menus.push(_menu);
+  }
   context.dialog.menu = undefined;
 
   callback(task, context);
 }
 
 exports.menuAddAction = menuAddAction;
- 
+
+function optionAddAction(task, context, callback) {
+  if(!context.dialog.options) context.dialog.options = [];
+  if((task && task.option) || context.dialog.option) context.dialog.options.push(task.option || context.dialog.option);
+  context.dialog.option = undefined;
+  callback(task, context);
+}
+
+exports.optionAddAction = optionAddAction;
+
+
 function upMenu1Callback(dialog, context, callback) {
   context.dialog.restaurant = context.dialog.restaurants;
   callback(null);
@@ -489,3 +534,5 @@ function menuResetAction(task, context, callback) {
 }
 
 exports.menuResetAtion = menuResetAction;
+
+
