@@ -272,7 +272,7 @@ var mobileType = {
   name: 'mobile',
   raw: true,
   typeCheck: regexpTypeCheck,
-  regexp: /\b((?:010-\d{4}|01[1|6|7|8|9][-.]?\d{3,4})[-.]?\d{4})\b/g,
+  regexp: /\b((?:010[-.]?\d{4}|01[1|6|7|8|9][-.]?\d{3,4})[-.]?\d{4})\b/g,
   checkRequired: function(text, type, inDoc, context) {
     if(text.search(/[^\d-]/g) != -1) return '숫자와 - 기호만 사용할 수 있습니다';
     else if(text.length < 13) return '자리수가 맞지 않습니다';
@@ -281,7 +281,7 @@ var mobileType = {
 };
 
 exports.mobileType = mobileType;
-botlib.setGlobalType('mobileType', mobileType);
+botlib.setGlobalType('mobile', mobileType);
 
 var phoneType = {
   name: 'phone',
@@ -289,7 +289,7 @@ var phoneType = {
   regexp: /\b((?:0(?:2|3[0-3]|4[1-4]|5[0-5]|6[0-4]|70|80))[-.]?\d{3,4}[-.]?\d{4})\b/g
 };
 
-botlib.setGlobalType('phoneType', phoneType);
+botlib.setGlobalType('phone', phoneType);
 
 var dateType = {
   name: 'date',
@@ -297,7 +297,7 @@ var dateType = {
   regexp: /(\d{4}[-/.년][ ]?(?:0[1-9]|1[012]|[1-9])[-/.월][ ]?(?:0[1-9]|[12][0-9]|3[0-1]|[1-9])[일]?)/g
 };
 
-botlib.setGlobalType('dateType', dateType);
+botlib.setGlobalType('date', dateType);
 
 var timeType = {
   name: 'time',
@@ -313,7 +313,7 @@ var accountType = {
   regexp: /(\b[\d-]+-[\d-]+\b)/g
 };
 
-botlib.setGlobalType('accountType', accountType);
+botlib.setGlobalType('account', accountType);
 
 var countType = {
   name: 'count',
@@ -321,7 +321,7 @@ var countType = {
   regexp: /(\d)\s?(?:개)/g
 };
 
-botlib.setGlobalType('countType', countType);
+botlib.setGlobalType('count', countType);
 
 var productType = {
   name: 'product',
