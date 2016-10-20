@@ -74,15 +74,18 @@ var orderTask = {
       if(context.bot.messages.manager == true)
         manager.checkOrder(task, context, null);
 
-      var vmsMessage = "카카오톡에서 배달봇 양얌 주문입니다. " +
-        _menuStr + ' 배달해 주세요.' +
-        '주소는 ' + context.dialog.address.지번주소 + ' 입니다.' +
-        '전화번호는 ' + context.dialog.mobile + ' 입니다.' +
-        '이 주문은 인공지능 배달봇 얌얌의 카카오톡에서 배달대행 주문입니다.';
+      if(context.bot.call) {
+        var vmsMessage = "카카오톡에서 배달봇 양얌 주문입니다. " +
+          _menuStr + ' 배달해 주세요.' +
+          '주소는 ' + context.dialog.address.지번주소 + ' 입니다.' +
+          '전화번호는 ' + context.dialog.mobile + ' 입니다.' +
+          '이 주문은 인공지능 배달봇 얌얌의 카카오톡에서 배달대행 주문입니다.';
 
-      messages.sendVMS({callbackPhone: '028585683', phone: context.user.mobile.replace(/,/g, ''), message: vmsMessage},
-        context, function(_task, _context) {
-        });
+        messages.sendVMS({callbackPhone: '028585683', phone: context.user.mobile.replace(/,/g, ''), message: vmsMessage},
+          context, function(_task, _context) {
+          });
+
+      }
 
       task.isComplete = true;
       callback(task, context);

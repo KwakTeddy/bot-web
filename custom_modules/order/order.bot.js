@@ -2,6 +2,7 @@ var path = require('path');
 
 var orderBot = {
   dialogServer: {chatScript: false},
+  call: false,      // 배달 시 주문 전화 여부
   kakao: {
     keyboard: { type :"buttons", buttons:["배달주문시작", "배달내역보기"]}
   },
