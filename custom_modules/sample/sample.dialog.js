@@ -40,12 +40,12 @@ var dialogs = [
 },
 {
   input: '외부 Task',
-  task:   'helloworldTask2',
+  task:   helloworldTask2,
   output: '+text+\n task에서 저장한 내용 표시'
 },
 {
   input: 'Task 리스트',
-  task:   'sampleListTask',
+  task:   sampleListTask,
   output: '#doc#+index+. +title+\n# task에서 저장한 내용 표시'
 },
 {
@@ -185,12 +185,12 @@ var dialogs = [
 },
 {
   input: 'moneybrain',
-  task:   'moneybrainTask',
+  task:   moneybrainTask,
   output: '+text+\n task에서 저장한 내용 표시'
 },
 {
   input: 'sample 3',
-  task:   'sampleTask3',
+  task:   sampleTask3,
   output: '+text+\n task에서 저장한 내용 표시'
 },
 {
