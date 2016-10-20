@@ -1099,6 +1099,8 @@ function orderableTypeCheck(text, format, inDoc, context, callback) {
       for(var i in words) {
         word = words[i];
         if(category) break;
+
+        if(word.length == 1) continue;
         for(var j in restaurantCategory) {
           rCategory = restaurantCategory[j];
 
@@ -1124,6 +1126,8 @@ function orderableTypeCheck(text, format, inDoc, context, callback) {
       for(var i in words) {
         word = words[i];
         if(category) break;
+        if(word.length == 1) continue;
+
         for(var j in menuCategory) {
           mCategory = menuCategory[j];
 
