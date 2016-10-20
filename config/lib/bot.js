@@ -37,7 +37,7 @@ function loadBots() {
   for (var i = 0; i < files.length; i++) {
     var dir = files[i];
 
-    buildBot(dir);
+    // buildBot(dir);
     loadBot(dir);
   }
 
@@ -86,8 +86,8 @@ function loadBot(botName) {
 
         utils.requireNoCache(filePath);
       } catch(e) {
-        console.log('\tloading file: ' + file + ' not found');
-        // console.error(e);
+        console.log('\tloading file: ' + file + ' error or not found');
+        console.error(e);
       }
     }
   }

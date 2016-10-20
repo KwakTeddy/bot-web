@@ -13,7 +13,7 @@ var commonDialogs = [
   { name: '시작',
     input: {regexp: /(처음|시작|:reset user)/g},
     output: function(dialog, context, print, callback) {
-      print('인공지능 배달봇 얌얌 입니다.\n원하시는 배달을 말씀해 주세요~\n예시) 비비큐 후라이드 배달, 짜장면 배달');
+      print('인공지능 배달봇 얌얌 입니다.\n무엇을 배달을 배달해 드릴까요?');
       context.botUser.currentDialog = null;
       context.user.pendingCallback = null;
     }
@@ -33,7 +33,10 @@ exports.commonDialogs = commonDialogs;
 var dialogs = [
   {
     name: '배달주문',
-    input: /~배달/,
+    input: [
+      /~배달/,
+      {types: [{name: 'orderble', typeCheck: orderTask.orderableTypeCheck}]}
+    ],
     output: {call: '주소입력'},
     children: [
       { name: '주소입력', input: false,
