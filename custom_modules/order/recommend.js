@@ -2,8 +2,9 @@ var path = require('path');
 var utils = require(path.resolve('modules/bot/action/common/utils'));
 var mongoose = require('mongoose');
 var bot = require(path.resolve('config/lib/bot')).getBot('order');
+var _ = require('lodash');
 
-var menuConcept = [
+var menuConcepts = [
   {menu: '치킨', concept: '기르다 느끼다'},
   {menu: '후라이드', concept: '바삭'},
   {menu: '간장치킨', concept: '짭쪼름 짠'},
@@ -37,6 +38,25 @@ var menuCategory = [
   {category: '패스트푸드', 'menu': '햄버거 버거 burger'}
 ];
 
+var menus = {
+  '치킨': {desc: '언제나 진리'},
+  '짜장면': {desc: '빨리되는'},
+  '피자': {desc: '고소한치즈와 빵의 조화'},
+  '족발': {desc: '야들야들한'},
+  '햄버거': {desc: '고기패티와 함께'},
+  '후라이드': {desc: '고소하게 맛있는'},
+  '간장치킨': {desc: '짭쪼름한 깔끔한맛'},
+  '허니치킨': {desc: '누구나 좋아하는 달콤한'},
+  '양념치킨': {desc: '매콤한게 제일'},
+  '짬뽕': {desc: '시원한 국물의'},
+  '볶음밥': {desc: '밥이 좋아'},
+  '탕수육': {desc: '그래도 요리지'},
+  '짬짜면': {desc: '고민할 필요없이'},
+  '탕짜면': {desc: '요리와 식사'},
+  '깐풍기': {desc: '술안주로 제격'},
+  '보쌈': {desc: '돼지고기의 대표'}
+};
+
 var recommendTask = {
   action: recommendAction
 }
@@ -46,19 +66,49 @@ exports.recommendTask = recommendTask;
 bot.setTask('recommendTask', recommendTask);
 
 function recommendAction(task, context, callback) {
+  var _doc = [];
+  var words = context.dialog.inNLP.split(' ');
 
-  // var words = task.inNLP.split(' ');
+  for (var i = 0; i < words.length; i++) {
+    var word = words[i];
+    if(word.length == 1) continue;
+    
+    for (var j = 0; j < menuConcepts.length; j++) {
+      var menuConcept = menuConcepts[j];
 
-  // context.dialog.recommMenu = {adj: '언제나 진리', name:'치킨'};
+      if(menuConcept.concept.search(word) != -1) {
+        if(!_.includes(_doc, menuConcept.menu)) {
+          _doc.push(menuConcept.menu);
+        }
+      }
+    }
+  }
 
-  context.dialog.recommMenu = [
-    {adj: '언제나 진리', name:'치킨'},
-    {adj: '빨리되는', name:'짜장면'},
-    {adj: '고소한 치즈와 빵의 조화', name:'피자'},
-    {adj: '야들야들한', name:'족발'},
-    {adj: '고기패티와 함께', name:'햄버거'}
-  ];
+  if(!_doc || _doc.length == 0) {
+    context.dialog.recommMenu = [
+      {desc: '언제나 진리', name:'치킨'},
+      {desc: '빨리되는', name:'짜장면'},
+      {desc: '고소한 치즈와 빵의 조화', name:'피자'},
+      {desc: '야들야들한', name:'족발'},
+      {desc: '고기패티와 함께', name:'햄버거'}
+    ];
+  } else {
+    var recommMenu = [];
+    for (var i = 0; i < _doc.length; i++) {
+      var doc = _doc[i];
+      if(menus[doc]) {
+        recommMenu.push({name: doc, desc: menus[doc].desc});
+      } else {
+        recommMenu.push({name: doc, desc: ''});
+      }
+    }
 
+    context.dialog.recommMenu = recommMenu;
+  }
+
+  if(context.dialog.recommMenu.length == 1) {
+    context.dialog.recommMenu = context.dialog.recommMenu[0];
+  }
   callback(task, context);
 }
 
@@ -78,6 +128,7 @@ function orderableTypeCheck(text, format, inDoc, context, callback) {
       for(var i in words) {
         word = words[i];
         if(category) break;
+        if(word.length == 1) continue;
         for(var j in restaurantCategory) {
           rCategory = restaurantCategory[j];
 
@@ -107,6 +158,7 @@ function orderableTypeCheck(text, format, inDoc, context, callback) {
           mCategory = menuCategory[j];
 
           word = RegExp.escape(word);
+          if(word.length == 1) continue;
           if(mCategory.menu.search(new RegExp(word, 'i')) != -1) {
             category = mCategory.category;
             break;
@@ -128,3 +180,19 @@ function orderableTypeCheck(text, format, inDoc, context, callback) {
 }
 
 exports.orderableTypeCheck = orderableTypeCheck;
+
+var recommendToOrderTask = {
+  action: recommToOrder
+}
+
+bot.setTask('recommendToOrderTask', recommendToOrderTask);
+
+
+function recommToOrder(task, context, callback) {
+  context.dialog.inNLP = context.dialog.recommMenu.name;
+  context.dialog.inRaw = context.dialog.recommMenu.name;
+  callback(task, context);
+}
+
+exports.recommToOrder = recommToOrder;
+
