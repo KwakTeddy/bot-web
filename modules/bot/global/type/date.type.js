@@ -15,6 +15,15 @@ function dateRangeTypeCheck(text, type, task, context, callback) {
         task['from'] = task['date'][0];
         task['to'] = task['date'][1];
 
+        if(task['date'][1].unit == 'y') {
+          task['to'].setMonth(11);
+        }
+
+        if(task['date'][1].unit == 'y' || task['date'][1].unit == 'm') {
+          task['to'].setMonth(task['to'].getMonth() + 1);
+          task['to'].setDate(0);
+        }
+
         matched = true;
         return match;
       });
@@ -24,8 +33,17 @@ function dateRangeTypeCheck(text, type, task, context, callback) {
         re = new RegExp(reText, 'g');
 
         text.replace(re, function(match, p1, p2) {
-          task['from'] = task['date'][0];
-          task['to'] = task['date'][0];
+          task['from'] = task['date'];
+          task['to'] = utils.clone(task['date']);
+
+          if(task['date'].unit == 'y') {
+            task['to'].setMonth(11);
+          }
+
+          if(task['date'].unit == 'y' || task['date'].unit == 'm') {
+            task['to'].setMonth(task['to'].getMonth() + 1);
+            task['to'].setDate(0);
+          }
 
           matched = true;
           return match;
@@ -49,7 +67,38 @@ function dateRangeTypeCheck(text, type, task, context, callback) {
         re = new RegExp(reText, 'g');
 
         text.replace(re, function(match, p1, p2) {
-          task['to'] = task['date'][0];
+          task['to'] = task['date'];
+
+          if(task['date'].unit == 'y') {
+            task['to'].setMonth(11);
+          }
+
+          if(task['date'].unit == 'y' || task['date'].unit == 'm') {
+            task['to'].setMonth(task['to'].getMonth() + 1);
+            task['to'].setDate(0);
+          }
+
+          matched = true;
+          return match;
+        });
+      }
+
+      if(!matched) {
+        reText = _dateType;
+        re = new RegExp(reText, 'g');
+
+        text.replace(re, function(match, p1) {
+          task['from'] = task['date'];
+          task['to'] = utils.clone(task['date']);
+
+          if(task['date'].unit == 'y') {
+            task['to'].setMonth(11);
+          }
+
+          if(task['date'].unit == 'y' || task['date'].unit == 'm') {
+            task['to'].setMonth(task['to'].getMonth() + 1);
+            task['to'].setDate(0);
+          }
 
           matched = true;
           return match;
@@ -65,7 +114,7 @@ botlib.setGlobalTypeCheck('dateRangeTypeCheck', dateRangeTypeCheck);
 
 function dateTypeCheck(text, type, task, context, callback) {
   var name = 'date';
-  var re = /(?:(올해|이번년|작년|내년|\d{4}\s*[-/.년])?\s?(이번달|저번달|다음달|(?:0[1-9]|1[012]|[1-9])\s*[-/.월])\s?(오늘|어제|내일|(?:0[1-9]|[12][0-9]|3[0-1]|[1-9])\s*[일]?)|(올해|이번년|작년|내년|\d{4}\s*[-/.년])?\s?(이번달|저번달|다음달|(?:0[1-9]|1[012]|[1-9])\s*월)|(이번주|저번주|다음주)|(오늘|어제|내일|(?:0[1-9]|[12][0-9]|3[0-1]|[1-9])\s*일))|(?:(?:([0-9a-zA-Z가-힣]*)\s*[년해]|([0-9a-zA-Z가-힣]*)\s*달|([0-9a-zA-Z가-힣]*)\s*주[일]?|(하루|이틀|며칠|[0-9a-zA-Z가-힣]*\s*일))\s*(전|후)?)/g;
+  var re = /(?:(올해|이번 년|작년|내년|\d{4}\s*[-/.년])?\s?(이번 달|저번 달|다음 달|(?:0[1-9]|1[012]|[1-9])\s*[-/.월])\s?(오늘|어제|내일|(?:0[1-9]|[12][0-9]|3[0-1]|[1-9])\s*[일]?)|(올해|이번 년|작년|내년|\d{4}\s*[-/.년])?\s?(이번 달|저번 달|다음 달|(?:0[1-9]|1[012]|[1-9])\s*월)|(이번 주|저번 주|다음 주)|(오늘|어제|내일|(?:0[1-9]|[12][0-9]|3[0-1]|[1-9])\s*일))|(?:(?:((?:[0-9]+|일|이|삼|사|오|육|칠|팔|구|십))\s*[년해]|((?:[0-9]+|한|두|세|네|다섯|여섯|일곱|여덟|아홉|열|열한|열두))\s*달|((?:[0-9]+|일|이|삼|사|오|육|칠|팔|구|십))\s*주[일]?|(하루|이틀|며칠|(?:[0-9]+|삼|사|오|육|칠|팔|구|십)\s*일))\s*(전|후)?)/g;
   var matched = false;
   var date;
 
@@ -84,12 +133,12 @@ function dateTypeCheck(text, type, task, context, callback) {
     var _year;
     var _date = new Date();
 
-    if (_yearStr == '올해' || _yearStr == '이번년') {
+    if (_yearStr === '올해' || _yearStr === '이번 년') {
       _year = _date.getFullYear();
-    } else if (_yearStr == '작년') {
+    } else if (_yearStr === '작년') {
       _date.setYear(_date.getYear() - 1);
       _year = _date.getFullYear();
-    } else if (_yearStr == '내년') {
+    } else if (_yearStr === '내년') {
       _date.setYear(_date.getYear() + 1);
       _year = _date.getFullYear();
     } else {
@@ -104,12 +153,12 @@ function dateTypeCheck(text, type, task, context, callback) {
     var _month;
     var _date = new Date();
 
-    if (_monthStr == '이번달') {
+    if (_monthStr === '이번 달') {
       _month = _date.getMonth();
-    } else if (_monthStr == '저번달') {
+    } else if (_monthStr === '저번 달') {
       _date.setMonth(_date.getMonth() - 1);
       _month = _date.getMonth();
-    } else if (_monthStr == '다음달') {
+    } else if (_monthStr === '다음 달') {
       _date.setMonth(_date.getMonth() + 1);
       _month =  _date.getMonth();
     } else {
@@ -125,12 +174,12 @@ function dateTypeCheck(text, type, task, context, callback) {
     var _day;
     var _date = new Date();
 
-    if (_dayStr == '오늘') {
+    if (_dayStr === '오늘') {
       _day = _date.getDate();
-    } else if (_dayStr == '어제') {
+    } else if (_dayStr === '어제') {
       _date.setDate(_date.getDate() - 1);
       _day = _date.getDate();
-    } else if (_dayStr == '내일') {
+    } else if (_dayStr === '내일') {
       _date.setDate(_date.getDate() + 1);
       _day = _date.getDate();
     } else {
@@ -191,14 +240,14 @@ function dateTypeCheck(text, type, task, context, callback) {
       else day = today.getDate();
     }
 
+    if(!month) month = 0;
+    if(!day) day = 1;
+
     date = new Date(year, month, day);
     date.unit = unit;
 
     return matchDate(name, task, date);
   });
-
-
-  console.log(text + ',' + date);
 
   callback(text, task, matched);
 }

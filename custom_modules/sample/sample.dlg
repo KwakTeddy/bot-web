@@ -32,11 +32,11 @@ c< /여러/g
 > +text+\n task에서 저장한 내용 표시
 
 < 외부 Task
-helloworldTask2
+'helloworldTask2'
 > +text+\n task에서 저장한 내용 표시
 
 < Task 리스트
-sampleListTask
+'sampleListTask'
 > #doc#+index+. +title+\n# task에서 저장한 내용 표시
 
 호출1:< 호출대기
@@ -106,12 +106,12 @@ sampleListTask
 
 
 < moneybrain
-moneybrainTask
+'moneybrainTask'
 > +text+\n task에서 저장한 내용 표시
 
 
 < sample 3
-sampleTask3
+'sampleTask3'
 > +text+\n task에서 저장한 내용 표시
 
 < other task

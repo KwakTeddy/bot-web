@@ -173,7 +173,10 @@ var dialogs = [
 },
 {
   input: '조건',
-  output: [{if: 'context.bot.botName == \'sample\'', output: '첫번재 조건이 참인 경우입니다.'}, {if: function(dialog, context, callback) {callback(false);}, output: '두번째 조건이 참인 경우입니다.'}, {if: function(dialog, context, callback) {callback(true);}, output: '세번째 조건이 참인 경우입니다.'}]
+  output: [
+  {if: 'context.bot.botName == \'sample\'', output: '첫번재 조건이 참인 경우입니다.'}, 
+  {if: function(dialog, context, callback) {callback(false);}, output: '두번째 조건이 참인 경우입니다.'}, 
+  {if: function(dialog, context, callback) {callback(true);}, output: '세번째 조건이 참인 경우입니다.'}]
 },
 {
   name: '호출3',

@@ -42,7 +42,13 @@ exports.processInput = function(context, inRaw, callback) {
 
   checkTypes(inRaw, commonTypes, doc, context, function(_inRaw, inDoc) {
     nlpKo.tokenizeToStrings(_inRaw, function(err, result) {
-      var inNLP = result.join(' ');
+
+      var result2 = [];
+      for (var i = 0; i < result.length; i++) {
+        var word = result[i];
+        if(word.search(/^(이|가|을|를)$/) == -1) result2.push(word);
+      }
+      var inNLP = result2.join(' ');
 
       inNLP = inNLP.replace(/(?:\{ | \})/g, '+');
 

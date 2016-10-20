@@ -24,8 +24,17 @@ var orderBot = {
   concepts: {
     '배달': ['주문', '시키다', '보내다'],
     '내역': ['내 역'],
-    '추천': ['좋다']
-  }
+    '추천': ['좋다'],
+    '이전': ['9', '전 단계'],
+    '저번': ['저번', '지난번', '마지막']
+  },
+
+  dialogFiles: [
+    'recommend.dialog.js',
+    'history.dialog.js',
+    'order.dialog.js',
+    'etc.dialog.js'
+  ]
 };
 
 var botlib = require(path.resolve('config/lib/bot'));

@@ -123,6 +123,15 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback) {
         if(matched == true) {
           callback(matched);
         } else {
+          for (var i = 0; i < dialogs.length; i++) {
+            var dialog = dialogs[i];
+            if(dialog.input == undefined || dialog.name == NO_DIALOG_NAME ) {
+              executeDialog(dialog, context, print, callback, {current: context.botUser.currentDialog});
+              callback(true);
+              return;
+            }
+          }
+
           context.botUser.currentDialog = null;
           context.botUser._dialog = {};
           context.dialog = context.botUser._dialog;
@@ -134,15 +143,6 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback) {
             if(matched) {
               callback(matched);
             } else {
-              for (var i = 0; i < dialogs.length; i++) {
-                var dialog = dialogs[i];
-                if(dialog.input == undefined || dialog.name == NO_DIALOG_NAME ) {
-                  executeDialog(dialog, context, print, callback);
-                  callback(true);
-                  return;
-                }
-              }
-
               if(context.bot.noDialog) executeDialog(context.bot.noDialog, context, print, callback);
               callback(true);
             }

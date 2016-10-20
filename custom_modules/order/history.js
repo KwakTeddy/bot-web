@@ -20,26 +20,55 @@ function orderHistory(task, context, successCallback, errorCallback) {
     if(task.from) query.created.$gte = task.from;
     if(task.to) query.created.$lte = task.to;
 
-    console.log(task.from);
-    console.log(task.to);
+    console.log('orderHistory: ' + task.from + '~' + task.to);
   }
 
-
-  // query = {'created' : {"$gte": new Date(2016, 9, 1)}};
-  // query.created = {"$gte": new Date(new Date(2016, 10, 1).toISOString()), "$lte": new Date(new Date(2016, 10, 10).toISOString())};
+  if(!task.from) {
+    var today = new Date();
+    today.setYear(today.getYear() -1);
+    query.created = {$gte: today};
+  }
 
   model.find(query).
   populate('restaurant').
-  limit(5).
+  // limit(5).
   sort({created: -1}).
   lean().
   exec(function(err, docs) {
+    var _doc, _docs = [];
+
+    var words = context.dialog.inNLP.split(' ');
+    for (var i = 0; i < docs.length; i++) {
+      var _doc = docs[i];
+
+      for (var j = 0; j < words.length; j++) {
+        var word = words[j];
+        if(word.length == 1) continue;
+
+        if(_doc.restaurant.name.search(word) != -1) {
+          _docs.push(_doc);
+        } else {
+          for (var k = 0; k < _doc.menus.length; k++) {
+            var menu = _doc.menus[k];
+            if(menu.name.search(word) != -1) {
+              _docs.push(_doc);
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    if(!_docs || _docs.length == 0) _docs = docs;
+
+    if(context.dialog.inNLP.search(/저번|지난번|마지막/g) != -1) {
+      _docs = _docs.slice(0,1);
+    }
 
     task.doc = [];
-    var _doc;
-    for(var i in docs) {
+    for(var i = 0; i < _docs.length && i < 5; i++) {
       try {
-        _doc = docs[i];
+        _doc = _docs[i];
         _doc.orderDate = dateformat(_doc.created + 9 * 60 * 60, 'yyyy.mm.dd HH:MM');
         //_doc.created.getMonth() + '/' + _doc.created.getDate();
         _doc.menu = _doc.menus[0].name;
@@ -51,7 +80,7 @@ function orderHistory(task, context, successCallback, errorCallback) {
 
     context.dialog['history'] = task.doc;
 
-      successCallback(task, context);
+    successCallback(task, context);
   });
 }
 
