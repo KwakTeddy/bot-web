@@ -5,6 +5,7 @@ var async = require('async');
 var taskModule = require(path.resolve('modules/bot/action/common/task'));
 var type = require(path.resolve('modules/bot/action/common/type'));
 var botUser= require(path.resolve('modules/bot-users/server/controllers/bot-users.server.controller'))
+var userDilaog = require(path.resolve('modules/user-dialogs/server/controllers/user-dialogs.server.controller'));
 
 const START_DIALOG_NAME = '시작';
 exports.START_DIALOG_NAME = START_DIALOG_NAME;
@@ -84,6 +85,7 @@ exports.findUpDialog = findUpDialog;
 
 function matchGlobalDialogs(inRaw, inNLP, dialogs, context, print, callback) {
   context.dialog.typeMatches = {};
+  context.dialog.isFail = false;
 
   matchDialogs(inRaw, inNLP, context.bot.commonDialogs, context, print, function(matched) {
     if(matched) {
@@ -97,12 +99,16 @@ function matchGlobalDialogs(inRaw, inNLP, dialogs, context, print, callback) {
             var dialog = dialogs[i];
             if(dialog.input == undefined || dialog.name == NO_DIALOG_NAME ) {
               executeDialog(dialog, context, print, callback);
+              context.dialog.isFail = true;
               callback(true);
               return;
             }
           }
 
-          if(context.bot.noDialog) executeDialog(context.bot.noDialog, context, print, callback);
+          if(context.bot.noDialog) {
+            executeDialog(context.bot.noDialog, context, print, callback);
+            context.dialog.isFail = true;
+          }
           callback(true);
         }
       });
@@ -114,6 +120,7 @@ exports.matchGlobalDialogs = matchGlobalDialogs;
 
 function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback) {
   context.dialog.typeMatches = {};
+  context.dialog.isFail = false;
 
   matchDialogs(inRaw, inNLP, context.bot.commonDialogs, context, print, function(matched) {
     if(matched) {
@@ -127,6 +134,7 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback) {
             var dialog = dialogs[i];
             if(dialog.input == undefined || dialog.name == NO_DIALOG_NAME ) {
               executeDialog(dialog, context, print, callback, {current: context.botUser.currentDialog});
+              context.dialog.isFail = true;
               callback(true);
               return;
             }
@@ -143,7 +151,10 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback) {
             if(matched) {
               callback(matched);
             } else {
-              if(context.bot.noDialog) executeDialog(context.bot.noDialog, context, print, callback);
+              if(context.bot.noDialog) {
+                executeDialog(context.bot.noDialog, context, print, callback);
+                context.dialog.isFail = true;
+              }
               callback(true);
             }
           });
@@ -548,8 +559,13 @@ function executeDialog(dialog, context, print, callback, options) {
         if(dialog.task && dialog.task.urlMessage) dialog.task.urlMessage = type.processOutput(dialog.task, context, dialog.task.urlMessage);
         if(dialog.task && dialog.task.photo) dialog.task.photo = type.processOutput(dialog.task, context, dialog.task.photo);
 
-        print(type.processOutput(dialog.task, context, _output), dialog.task);
-        cb(null, _output);
+
+        var userOut = type.processOutput(dialog.task, context, _output);
+        print(userOut, dialog.task);
+
+        userDilaog.addDialog(context.dialog.inRaw, userOut, context.dialog.isFail, context, function() {
+          cb(null, _output);
+        });
       } else if (output.if) {
         cb(null, output);
       } else {

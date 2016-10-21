@@ -15,34 +15,34 @@ exports.invokeRolesPolicies = function () {
   acl.allow([{
     roles: ['admin'],
     allows: [{
-      resources: '/api/bot-users',
+      resources: '/api/user-dialogs',
       permissions: '*'
     }, {
-      resources: '/api/bot-users/:userDialogId',
+      resources: '/api/user-dialogs/:userDialogId',
       permissions: '*'
     }, {
-      resources: '/api/bot-users/by-key/:userKey',
+      resources: '/api/user-dialogs/by-key/:userKey',
       permissions: '*'
     }]
   }, {
     roles: ['user'],
     allows: [{
-      resources: '/api/bot-users',
+      resources: '/api/user-dialogs',
       permissions: '*'
     }, {
-      resources: '/api/bot-users/:userDialogId',
+      resources: '/api/user-dialogs/:userDialogId',
       permissions: '*'
     }, {
-      resources: '/api/bot-users/by-key/:userKey',
+      resources: '/api/user-dialogs/by-key/:userKey',
       permissions: '*'
     }]
   }, {
     roles: ['guest'],
     allows: [{
-      resources: '/api/bot-users',
+      resources: '/api/user-dialogs',
       permissions: ['get']
     }, {
-      resources: '/api/bot-users/:userDialogId',
+      resources: '/api/user-dialogs/:userDialogId',
       permissions: ['get']
     }]
   }]);

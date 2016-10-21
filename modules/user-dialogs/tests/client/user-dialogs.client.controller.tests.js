@@ -81,21 +81,21 @@
 
       it('should send a POST request with the form input values and then locate to new object URL', inject(function (UserDialogsService) {
         // Set POST response
-        $httpBackend.expectPOST('api/bot-users', sampleUserDialogPostData).respond(mockUserDialog);
+        $httpBackend.expectPOST('api/user-dialogs', sampleUserDialogPostData).respond(mockUserDialog);
 
         // Run controller functionality
         $scope.vm.save(true);
         $httpBackend.flush();
 
         // Test URL redirection after the Bot user was created
-        expect($state.go).toHaveBeenCalledWith('bot-users.view', {
+        expect($state.go).toHaveBeenCalledWith('user-dialogs.view', {
           userDialogId: mockUserDialog._id
         });
       }));
 
       it('should set $scope.vm.error if error', function () {
         var errorMessage = 'this is an error message';
-        $httpBackend.expectPOST('api/bot-users', sampleUserDialogPostData).respond(400, {
+        $httpBackend.expectPOST('api/user-dialogs', sampleUserDialogPostData).respond(400, {
           message: errorMessage
         });
 
@@ -114,21 +114,21 @@
 
       it('should update a valid Bot user', inject(function (UserDialogsService) {
         // Set PUT response
-        $httpBackend.expectPUT(/api\/bot-users\/([0-9a-fA-F]{24})$/).respond();
+        $httpBackend.expectPUT(/api\/user-dialogs\/([0-9a-fA-F]{24})$/).respond();
 
         // Run controller functionality
         $scope.vm.save(true);
         $httpBackend.flush();
 
         // Test URL location to new object
-        expect($state.go).toHaveBeenCalledWith('bot-users.view', {
+        expect($state.go).toHaveBeenCalledWith('user-dialogs.view', {
           userDialogId: mockUserDialog._id
         });
       }));
 
       it('should set $scope.vm.error if error', inject(function (UserDialogsService) {
         var errorMessage = 'error';
-        $httpBackend.expectPUT(/api\/bot-users\/([0-9a-fA-F]{24})$/).respond(400, {
+        $httpBackend.expectPUT(/api\/user-dialogs\/([0-9a-fA-F]{24})$/).respond(400, {
           message: errorMessage
         });
 
@@ -149,12 +149,12 @@
         //Return true on confirm message
         spyOn(window, 'confirm').and.returnValue(true);
 
-        $httpBackend.expectDELETE(/api\/bot-users\/([0-9a-fA-F]{24})$/).respond(204);
+        $httpBackend.expectDELETE(/api\/user-dialogs\/([0-9a-fA-F]{24})$/).respond(204);
 
         $scope.vm.remove();
         $httpBackend.flush();
 
-        expect($state.go).toHaveBeenCalledWith('bot-users.list');
+        expect($state.go).toHaveBeenCalledWith('user-dialogs.list');
       });
 
       it('should should not delete the Bot user and not redirect', function () {

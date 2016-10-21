@@ -22,11 +22,11 @@
       describe('Main Route', function () {
         var mainstate;
         beforeEach(inject(function ($state) {
-          mainstate = $state.get('bot-users');
+          mainstate = $state.get('user-dialogs');
         }));
 
         it('Should have the correct URL', function () {
-          expect(mainstate.url).toEqual('/bot-users');
+          expect(mainstate.url).toEqual('/user-dialogs');
         });
 
         it('Should be abstract', function () {
@@ -44,8 +44,8 @@
           mockUserDialog;
 
         beforeEach(inject(function ($controller, $state, $templateCache) {
-          viewstate = $state.get('bot-users.view');
-          $templateCache.put('modules/bot-users/client/views/view-bot-user.client.view.html', '');
+          viewstate = $state.get('user-dialogs.view');
+          $templateCache.put('modules/user-dialogs/client/views/view-user-dialog.client.view.html', '');
 
           // create mock Bot user
           mockUserDialog = new UserDialogsService({
@@ -72,7 +72,7 @@
         it('should respond to URL', inject(function ($state) {
           expect($state.href(viewstate, {
             userDialogId: 1
-          })).toEqual('/bot-users/1');
+          })).toEqual('/user-dialogs/1');
         }));
 
         it('should attach an Bot user to the controller scope', function () {
@@ -84,7 +84,7 @@
         });
 
         it('Should have templateUrl', function () {
-          expect(viewstate.templateUrl).toBe('modules/bot-users/client/views/view-bot-user.client.view.html');
+          expect(viewstate.templateUrl).toBe('modules/user-dialogs/client/views/view-user-dialog.client.view.html');
         });
       });
 
@@ -94,8 +94,8 @@
           mockUserDialog;
 
         beforeEach(inject(function ($controller, $state, $templateCache) {
-          createstate = $state.get('bot-users.create');
-          $templateCache.put('modules/bot-users/client/views/form-bot-user.client.view.html', '');
+          createstate = $state.get('user-dialogs.create');
+          $templateCache.put('modules/user-dialogs/client/views/form-user-dialog.client.view.html', '');
 
           // create mock Bot user
           mockUserDialog = new UserDialogsService();
@@ -117,7 +117,7 @@
         });
 
         it('should respond to URL', inject(function ($state) {
-          expect($state.href(createstate)).toEqual('/bot-users/create');
+          expect($state.href(createstate)).toEqual('/user-dialogs/create');
         }));
 
         it('should attach an Bot user to the controller scope', function () {
@@ -130,7 +130,7 @@
         });
 
         it('Should have templateUrl', function () {
-          expect(createstate.templateUrl).toBe('modules/bot-users/client/views/form-bot-user.client.view.html');
+          expect(createstate.templateUrl).toBe('modules/user-dialogs/client/views/form-user-dialog.client.view.html');
         });
       });
 
@@ -140,8 +140,8 @@
           mockUserDialog;
 
         beforeEach(inject(function ($controller, $state, $templateCache) {
-          editstate = $state.get('bot-users.edit');
-          $templateCache.put('modules/bot-users/client/views/form-bot-user.client.view.html', '');
+          editstate = $state.get('user-dialogs.edit');
+          $templateCache.put('modules/user-dialogs/client/views/form-user-dialog.client.view.html', '');
 
           // create mock Bot user
           mockUserDialog = new UserDialogsService({
@@ -168,7 +168,7 @@
         it('should respond to URL', inject(function ($state) {
           expect($state.href(editstate, {
             userDialogId: 1
-          })).toEqual('/bot-users/1/edit');
+          })).toEqual('/user-dialogs/1/edit');
         }));
 
         it('should attach an Bot user to the controller scope', function () {
@@ -180,7 +180,7 @@
         });
 
         it('Should have templateUrl', function () {
-          expect(editstate.templateUrl).toBe('modules/bot-users/client/views/form-userDialog.client.view.html');
+          expect(editstate.templateUrl).toBe('modules/user-dialogs/client/views/form-userDialog.client.view.html');
         });
 
         xit('Should go to unauthorized route', function () {

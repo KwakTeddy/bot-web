@@ -10,36 +10,25 @@ var mongoose = require('mongoose'),
  * Bot user Schema
  */
 var UserDialogSchema = new Schema({
-  userKey: {
-    type: String
-  },
-  channel: {
-    type: String,
-    default: '카카오톡'
-  },
-  currentBank: {
-    type: Schema.ObjectId,
-    ref: 'Bank'
-  },
-  currentAccount: {
+  userId: {
     type: String
   },
 
-  name: {
+  channel: {
     type: String
   },
-  mobile: String,
-  phone: {
-    type: String
-  },
-  email: {
-    type: String
-  },
-  isOn: {
+
+  inOut: {
     type: Boolean
   },
 
-  address: Object,
+  fail: {
+    type: Boolean
+  },
+
+  dialog: {
+    type: String
+  },
 
   created: {
     type: Date,

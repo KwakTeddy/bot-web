@@ -3,7 +3,7 @@
 
   // Bot users controller
   angular
-    .module('bot-users')
+    .module('user-dialogs')
     .controller('UserDialogsController', UserDialogsController);
 
   UserDialogsController.$inject = ['$scope', '$state', 'Authentication', 'UserDialogsService', 'userDialogResolve'];
@@ -29,7 +29,7 @@
     // Remove existing Bot user
     function remove() {
       if (confirm('Are you sure you want to delete?')) {
-        vm.userDialog.$remove($state.go('bot-users.list'));
+        vm.userDialog.$remove($state.go('user-dialogs.list'));
       }
     }
 
@@ -50,7 +50,7 @@
       function successCallback(res) {
         vm.error = '생성되었습니다 : ' + vm.userDialog.name;
         vm.userDialog = new UserDialogsService();
-        // $state.go('bot-users.list', {
+        // $state.go('user-dialogs.list', {
         //   userDialogId: res._id
         // }, {reload: true});
       }

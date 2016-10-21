@@ -3,13 +3,13 @@
   'use strict';
 
   angular
-    .module('bot-users')
+    .module('user-dialogs')
     .factory('UserDialogsService', UserDialogsService);
 
   UserDialogsService.$inject = ['$resource'];
 
   function UserDialogsService($resource) {
-    return $resource('api/bot-users/:userDialogId', {
+    return $resource('api/user-dialogs/:userDialogId', {
       userDialogId: '@_id'
     }, {
       update: {

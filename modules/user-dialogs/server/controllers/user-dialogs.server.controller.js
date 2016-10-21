@@ -165,6 +165,34 @@ exports.userDialogByUserKey = function (req, res, next, userKey) {
 };
 
 
+function addDialog(inText, outText, isFail, context, callback) {
+  var inQuery = {
+    userId : context.user.userKey,
+    channel: context.channel.name,
+    inOut: true,
+    fail: isFail,
+    dialog: inText
+  };
+
+  var outQuery = {
+    userId : context.user.userKey,
+    channel: context.channel.name,
+    inOut: false,
+    fail: isFail,
+    dialog: outText
+  };
+
+
+  UserDialog.create([inQuery, outQuery], function(err) {
+    if(err) {}
+    else {}
+
+    callback();
+  });
+}
+
+exports.addDialog = addDialog;
+
 function getUserContext(task, context, callback) {
   UserDialog.findOne({userKey: task.userId}, function(err, doc) {
     if(doc == undefined) {
@@ -194,3 +222,4 @@ function updateUserContext(task, context, callback) {
 }
 
 exports.updateUserContext = updateUserContext;
+

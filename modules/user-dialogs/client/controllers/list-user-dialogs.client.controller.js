@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('bot-users')
+    .module('user-dialogs')
     .controller('UserDialogsListController', UserDialogsListController);
 
   UserDialogsListController.$inject = ['userDialogsResolve'];

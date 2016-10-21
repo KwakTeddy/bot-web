@@ -2,21 +2,21 @@
   'use strict';
 
   angular
-    .module('bot-users')
+    .module('user-dialogs')
     .config(routeConfig);
 
   routeConfig.$inject = ['$stateProvider'];
 
   function routeConfig($stateProvider) {
     $stateProvider
-      .state('bot-users', {
+      .state('user-dialogs', {
         abstract: true,
-        url: '/bot-users',
+        url: '/user-dialogs',
         template: '<ui-view/>'
       })
-      .state('bot-users.list', {
+      .state('user-dialogs.list', {
         url: '',
-        templateUrl: 'modules/bot-users/client/views/list-bot-users.client.view.html',
+        templateUrl: 'modules/user-dialogs/client/views/list-user-dialogs.client.view.html',
         controller: 'UserDialogsListController',
         controllerAs: 'vm',
         resolve: {
@@ -27,9 +27,9 @@
           pageTitle: 'Bot users List'
         }
       })
-      .state('bot-users.create', {
+      .state('user-dialogs.create', {
         url: '/create',
-        templateUrl: 'modules/bot-users/client/views/form-bot-user.client.view.html',
+        templateUrl: 'modules/user-dialogs/client/views/form-user-dialog.client.view.html',
         controller: 'UserDialogsController',
         controllerAs: 'vm',
         resolve: {
@@ -40,9 +40,9 @@
           pageTitle : 'Bot users Create'
         }
       })
-      .state('bot-users.edit', {
+      .state('user-dialogs.edit', {
         url: '/:userDialogId/edit',
-        templateUrl: 'modules/bot-users/client/views/form-bot-user.client.view.html',
+        templateUrl: 'modules/user-dialogs/client/views/form-user-dialog.client.view.html',
         controller: 'UserDialogsController',
         controllerAs: 'vm',
         resolve: {
@@ -50,12 +50,12 @@
         },
         data: {
           roles: ['user', 'admin'],
-          pageTitle: 'Edit Bot user {{ bot-userResolve.name }}'
+          pageTitle: 'Edit Bot user {{ user-dialogResolve.name }}'
         }
       })
-      .state('bot-users.view', {
+      .state('user-dialogs.view', {
         url: '/:userDialogId',
-        templateUrl: 'modules/bot-users/client/views/view-bot-user.client.view.html',
+        templateUrl: 'modules/user-dialogs/client/views/view-user-dialog.client.view.html',
         controller: 'UserDialogsController',
         controllerAs: 'vm',
         resolve: {

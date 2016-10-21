@@ -75,7 +75,7 @@
 
       it('should send a GET request and return all Bot users', inject(function (UserDialogsService) {
         // Set POST response
-        $httpBackend.expectGET('api/bot-users').respond(mockUserDialogList);
+        $httpBackend.expectGET('api/user-dialogs').respond(mockUserDialogList);
 
 
         $httpBackend.flush();
