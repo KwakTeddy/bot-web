@@ -47,6 +47,12 @@ function loadBots() {
 exports.loadBots = loadBots;
 
 function loadBot(botName) {
+  // TODO 개발 시 node 재시작 안하려고 임시로
+  utils.requireNoCache(path.resolve('modules/bot/action/common/dialog'));
+  utils.requireNoCache(path.resolve('modules/bot/action/common/task'));
+  utils.requireNoCache(path.resolve('modules/bot/action/common/type'));
+  utils.requireNoCache(path.resolve('modules/bot/global/type/common.type'));
+
   console.log('Loading Bot: ' + botName);
   var botDir = path.resolve('custom_modules/' + botName);
   var fileFilter = function(file) { return file.endsWith('.bot.js'); };
