@@ -1,0 +1,47 @@
+<header class="page-header">
+  <h2>친구 목록</h2>
+
+  <div class="right-wrapper pull-right">
+    <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+  </div>
+</header>
+
+
+<!-- start: page -->
+<section class="panel">
+  <header class="panel-heading">
+    <h2 class="panel-title">친구 목록</h2>
+  </header>
+  <div class="panel-body">
+    <table datatable="ng" class="table table-bordered table-striped mb-none">
+      <thead>
+      <tr>
+        <th class="text-center">유저키</th>
+        <th class="text-center">채널</th>
+        <th class="text-center">이름</th>
+        <th class="text-center">전화번호</th>
+        <th class="text-center">이메일</th>
+        <th class="text-center">등록일</th>
+        <th class="text-center">접속</th>
+        <th class="text-center">메시지</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="userDialog in ::vm.userDialogs">
+        <td class="text-center">{{userDialog.userKey}}</td>
+        <td class="text-center">{{userDialog.channel}}</td>
+        <td class="text-center">{{userDialog.name}}</td>
+        <td class="text-center">{{userDialog.phone}}</td>
+        <td class="text-center">{{userDialog.email}}</td>
+        <td class="text-center">{{userDialog.created | date: 'yyyy-MM-dd'}}</td>
+        <td class="text-center">{{userDialog.isOn ? ' ON' : 'OFF'}}</td>
+        <td>
+          <a class="btn btn-primary" ui-sref="messages.send({userKey: userDialog.userKey, channel: userDialog.channel})">
+            <i class="glyphicon glyphicon-send"></i> 전송
+          </a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

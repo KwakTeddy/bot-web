@@ -45,7 +45,7 @@ var dialogs = [
           { if: '!context.user.address || dialog.returnDialog', output: '주소를 말씀해 주세요.',
             children: [
               // { input: {regexp: /주소/g}, output: {call: '휴대폰번호입력'} },
-              { input: {types: [{type: type.addressType, context: true}]}, output: {call: '휴대폰번호입력', return: 1} },
+              { input: {types: [{type: type.addressType, raw: true, context: true}]}, output: {call: '휴대폰번호입력', return: 1} },
               { name: '주문취소', input: '0', output: '주문을 취소하고 처음으로 가시겠습니까?',
                 children: [
                   { input: {regexp: /~네/g}, output: {callGlobal: '시작'} },
@@ -317,6 +317,14 @@ var dialogs = [
     children: [
       { input: {regexp: /~네/g}, output: {call: '배달주문'}  },
       { input: {regexp: /~아니요/g}, output: '다른 필요하신게 있으시면 말씀해주세요.' }
+    ]
+  },
+
+  { name: '주소변경', input: '주소',
+    output: '주소를 말씀해 주세요.',
+    children: [
+      { input: {types: [{type: type.addressType, raw: true, context: true}]}, output: '주소가 변경되었습니다.' },
+      { output: {repeat: 1, output: '정확한 주소를 찾을 수 없습니다. 주소를 정확히 입력해 주세요.'}}
     ]
   },
 
