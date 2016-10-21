@@ -349,6 +349,8 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback) {
 
             _dialog.task = utils.merge(_dialog.task, inDoc);
 
+            _dialog.inRaw = inRaw;
+            _dialog.inNLP = inNLP;
             executeDialog(_dialog, context, print, callback);
             eachMatched = true; _cb(true);
           } else {
@@ -392,6 +394,9 @@ function executeDialog(dialog, context, print, callback, options) {
   context.user.pendingCallback = null;
 
   if(options && options.current) {
+    dialog.inRaw = options.current.inRaw;
+    dialog.inNLP = options.current.inNLP;
+
     if(options.current.output.repeat !== 1 && options.current.output.up !== 1) {
       dialog.parent = options.current.parent;
 
@@ -501,6 +506,8 @@ function executeDialog(dialog, context, print, callback, options) {
                 if(output.task && dialog.task) output.task = utils.merge(output.task, dialog.task);
                 else if(!output.task && dialog.task) output.task = dialog.task;
 
+                output.inRaw = dialog.inRaw;
+                output.inNLP = dialog.inNLP;
                 executeDialog(output, context, print, callback, {current: dialog});
                 cb(true);
 
@@ -512,6 +519,8 @@ function executeDialog(dialog, context, print, callback, options) {
                   if(output.task && dialog.task) output.task = utils.merge(output.task, dialog.task);
                   else if(!output.task && dialog.task) output.task = dialog.task;
 
+                  output.inRaw = dialog.inRaw;
+                  output.inNLP = dialog.inNLP;
                   executeDialog(output, context, print, callback, {current: dialog});
                   cb(true);
                 } else cb2(null);
@@ -587,7 +596,7 @@ function executeDialog(dialog, context, print, callback, options) {
         var userOut = type.processOutput(dialog.task, context, _output);
         print(userOut, dialog.task);
 
-        userDilaog.addDialog(context.dialog.inRaw, userOut, context.dialog.isFail, context, function() {
+        userDilaog.addDialog(dialog.inRaw, userOut, context.dialog.isFail, context, function() {
           cb(null, _output);
         });
       } else if (output.if) {
