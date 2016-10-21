@@ -31,7 +31,7 @@ exports.text = function (task, context, successCallback, errorCallback) {
 var restaurantType = {
   name: 'restaurant',
   typeCheck: restaurantTypeCheck,
-  limit: 5,
+  // limit: 5,
   mongo: {
     model: 'restaurant',
     queryFields: ['name'],
@@ -39,7 +39,7 @@ var restaurantType = {
     // taskFields: ['_id', 'title', 'sort', 'price'],
     //query: {},
     //sort: "-rate1",
-    limit: 5,
+    // limit: 5,
     minMatch: 1
   },
   out: '다음 중 원하시는 것을 선택해주세요.\n#restaurant#+index+. +name+\n#'
@@ -657,7 +657,7 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
 
         var _query = model.find(query, format.mongo.fields, format.mongo.options);
         if(format.mongo.sort) _query.sort(format.mongo.sort);
-        if(format.mongo.limit) _query.limit(format.mongo.limit);
+        if(format.mongo.limit) _query.limit(format.mongo.limit || type.MAX_LIST);
 
         _query.lean().exec(function (err, docs) {
           wordsCount++;
@@ -745,7 +745,7 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
 
         var _query = model.find(query, format.mongo.fields, format.mongo.options);
         if(format.mongo.sort) _query.sort(format.mongo.sort);
-        if(format.mongo.limit) _query.limit(format.mongo.limit);
+        if(format.mongo.limit) _query.limit(format.mongo.limit || type.MAX_LIST);
 
         _query.lean().exec(function (err, _docs) {
           if(_docs && _docs.length > 0) {
@@ -787,7 +787,7 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
 
         var _query = model.find(query, format.mongo.fields, format.mongo.options);
         if(format.mongo.sort) _query.sort(format.mongo.sort);
-        if(format.mongo.limit) _query.limit(format.mongo.limit);
+        if(format.mongo.limit) _query.limit(format.mongo.limit || type.MAX_LIST);
 
         _query.lean().exec(function (err, _docs) {
           if(_docs && _docs.length > 0) {
@@ -843,7 +843,7 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
 
         if(matchDoc.matchWord && matchDoc.matchWord.replace(/ /i, '') == matchDoc[format.mongo.queryFields[0]].replace(/ /i, ''))
           break;
-        if (inDoc[format.name].length >= format.limit) break;
+        if (inDoc[format.name].length >= (format.limit || type.MAX_LIST)) break;
       }
 
       if(inDoc[format.name].length == 1) {

@@ -12,7 +12,7 @@
 
       <div class="form-group" ng-repeat="menu in vm.menus._menus" >
 
-        <div class="row">
+        <div class="row" ng-show="!menu._remove">
           <div class="col-sm-2">
             <input type="text" name="category" ng-model="menu.category" class="form-control valid" placeholder="분류">
           </div>
@@ -29,7 +29,7 @@
           </div>
         </div>
 
-        <div class="row" ng-show="menu.show">
+        <div class="row" ng-show="menu.show && !menu._remove">
           <div class="col-sm-6">
             <input type="text" name="photo" ng-model="menu.photo" class="form-control valid" placeholder="사진" >
           </div>
@@ -38,7 +38,7 @@
           </div>
         </div>
 
-        <div class="row" ng-show="menu.show">
+        <div class="row" ng-show="menu.show && !menu._remove">
           <div class="col-sm-6">
             <div ng-repeat="option in menu.options">
               <div class="row">

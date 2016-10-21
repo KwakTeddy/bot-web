@@ -33,30 +33,31 @@ function listTypeCheck(text, type, task, context, callback) {
   for (var i = 0; i < words.length; i++) {
     var word = words[i];
 
-    var num = Number(word);
+    var _num = Number(word);
 
-    if(!num) {
-      num = Number(typelib.parseNumber(word));
+    if(!_num) {
+      _num = Number(typelib.parseNumber(word));
     }
 
-    if (task[type.name] && num >= 1 && num <= task[type.name].length) {
-      context.dialog[type.name] = task[type.name] = task[type.name][num - 1];
+    var num;
+    if(context.dialog.page) {
+      num = (context.dialog.page - 1) * typelib.LIST_PER_PAGE + _num;
+    } else {
+      num = _num;
+    }
 
-      callback(text, task, true);
-      return;
-    } else if (context.dialog[type.name] && num >= 1 && num <= context.dialog[type.name].length) {
-      context.dialog[type.name] = task[type.name] = context.dialog[type.name][num - 1];
+    var list = (task[type.name] ? task[type.name] : context.dialog[type.name]);
+    if(list && num >= 1 && num <= list.length) {
+      context.dialog[type.name] = /*task[type.name] = */list[num - 1];
 
       callback(text, task, true);
       return;
     }
   }
 
-
-
   // list word match
   var maxIndex = -1, maxCount = 0;
-  var list = (task[type.name] ? task[type.name] : context.dialog[type.name]);
+  list = (task[type.name] ? task[type.name] : context.dialog[type.name]);
   for (var j = 0; j < list.length; j++) {
     var item;
     if(type.field) item = list[j][type.field];
@@ -82,7 +83,7 @@ function listTypeCheck(text, type, task, context, callback) {
   }
 
   if(maxIndex != -1) {
-    context.dialog[type.name] = task[type.name] = list[maxIndex];
+    context.dialog[type.name] = /*task[type.name] = */list[maxIndex];
     callback(text, task, true);
   } else
     callback(text, task, false);

@@ -16,6 +16,8 @@ const IN_TAG_START = '{';
 const IN_TAG_END = '}';
 const DOC_NAME = 'doc';
 const REG_ESCAPE = /[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/;
+const MAX_LIST = 1000;
+const LIST_PER_PAGE = 9;
 
 exports.TAG_START = TAG_START;
 exports.TAG_END = TAG_END;
@@ -24,7 +26,8 @@ exports.ARRAY_TAG_END = ARRAY_TAG_END;
 exports.IN_TAG_START = IN_TAG_START;
 exports.IN_TAG_END = IN_TAG_END;
 exports.DOC_NAME = DOC_NAME;
-
+exports.MAX_LIST= MAX_LIST;
+exports.LIST_PER_PAGE = LIST_PER_PAGE;
 
 exports.processInput = function(context, inRaw, callback) {
   if(inRaw.startsWith(":")) {
@@ -92,15 +95,29 @@ function processOutput(task, context, out) {
 
         p2 = p2.replace(/%23/g, "#");
 
+        var start, end;
+        if(context.dialog.page) {
+          start = (context.dialog.page-1) * LIST_PER_PAGE;
+          end = Math.min(val.length, start + LIST_PER_PAGE);
+        } else {
+          start = 0;
+          end = Math.min(val.length, LIST_PER_PAGE);
+
+          if(val.length > LIST_PER_PAGE) {
+            context.dialog.page = 1;
+            context.dialog.numOfPage = Math.ceil(val.length / LIST_PER_PAGE);
+          }
+        }
+
         p2.replace(re2, function (match1, p11, offset1, string1) {
-          for (var i = 0; i < val.length; i++) {
+          for (var i = start; i < end; i++) {
             var val1 = val[i][p11];
 
             if (!(formatArray[i])) formatArray[i] = string1;
             if (val1) {
               formatArray[i] = formatArray[i].replace(match1, (val1? val1: ''));
             } else if(p11 == 'index') {
-              formatArray[i] = formatArray[i].replace(match1, (i+1));
+              formatArray[i] = formatArray[i].replace(match1, (i - start +1));
             } else {
               formatArray[i] = formatArray[i].replace(match1, '');
             }
@@ -109,7 +126,14 @@ function processOutput(task, context, out) {
           return match1;
         });
 
-        return formatArray.join('');
+        var pageStr;
+        if(context.dialog.page && context.dialog.numOfPage > 1) {
+          pageStr =
+            (context.dialog.page && context.dialog.page != 1 ? '\n< 앞페이지': '') +
+            (context.dialog.page && context.dialog.page != context.dialog.numOfPage ? '\n> 뒤페이지': '');
+        }
+
+        return formatArray.join('') + (pageStr ? pageStr: '');
       } else {
         return '';
       }
