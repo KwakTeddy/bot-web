@@ -19,6 +19,8 @@
     vm.save = save;
 
     vm.faq.bankCode = '11';
+    vm.faq.category = '올원뱅크';
+    vm.faq.title = '[올원뱅크]';
 
     // Remove existing Faq
     function remove() {
