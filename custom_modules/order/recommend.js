@@ -4,6 +4,22 @@ var mongoose = require('mongoose');
 var bot = require(path.resolve('config/lib/bot')).getBot('order');
 var _ = require('lodash');
 
+var restaurantCategory = [
+  {category: '치킨', alias: '치킨 통닭 닭 chicken'},
+  {category: '중국집', alias: '중국 중국집 중식 짱깨 짱께 중식당 chinese'},
+  {category: '피자', alias: '피자 핏자 pizza'},
+  {category: '패스트푸드', alias: '햄버거 버거 burger'},
+  {category: '족발', alias: '족발 돼지발'},
+  {category: '보쌈', alias: '보쌈'}
+];
+
+var menuCategory = [
+  {category: '치킨', 'menu': '치킨 닭 후라이드 양념치킨 양념닭 chicken 바베큐 치맥'},
+  {category: '중국집', 'menu': '짜장 짜장면 간짜장 자장면 짬뽕 잠뽕 우동 볶음밥 짬뽕밥 짜장밥 잡채밥 마파두부 쟁반짜장 탕수육 깐풍 깐소 라조 유산슬 양장피 팔보채 고추잡채 난자완스 오향장육'},
+  {category: '피자', 'menu': '피자 핏자 pizza 스파케티 스파게리'},
+  {category: '패스트푸드', 'menu': '햄버거 버거 burger'}
+];
+
 var menuConcepts = [
   {menu: '치킨', concept: '기르다 느끼다'},
   {menu: '후라이드', concept: '바삭'},
@@ -20,22 +36,6 @@ var menuConcepts = [
   {menu: '피자', concept: '기르다 느끼다'},
   {menu: '족발', concept: '부드럽다 야들야들'},
   {menu: '보쌈', concept: '고기'}
-];
-
-var restaurantCategory = [
-  {category: '치킨', alias: '치킨 통닭 닭 chicken'},
-  {category: '중국집', alias: '중국 중국집 중식 짱깨 짱께 중식당 chinese'},
-  {category: '피자', alias: '피자 핏자 pizza'},
-  {category: '패스트푸드', alias: '햄버거 버거 burger'},
-  {category: '족발', alias: '족발 돼지발'},
-  {category: '보쌈', alias: '보쌈'}
-];
-
-var menuCategory = [
-  {category: '치킨', 'menu': '치킨 닭 후라이드 양념치킨 양념닭 chicken 바베큐 치맥'},
-  {category: '중국집', 'menu': '짜장 짜장면 간짜장 자장면 짬뽕 잠뽕 우동 볶음밥 짬뽕밥 짜장밥 잡채밥 마파두부 쟁반짜장 탕수육 깐풍 깐소 라조 유산슬 양장피 팔보채 고추잡채 난자완스 오향장육'},
-  {category: '피자', 'menu': '피자 핏자 pizza 스파케티 스파게리'},
-  {category: '패스트푸드', 'menu': '햄버거 버거 burger'}
 ];
 
 var menus = {
@@ -76,7 +76,7 @@ function recommendAction(task, context, callback) {
     for (var j = 0; j < menuConcepts.length; j++) {
       var menuConcept = menuConcepts[j];
 
-      if(menuConcept.concept.search(word) != -1) {
+      if(menuConcept.concept.search(word) != -1 || menuConcept.menu.search(word) != -1) {
         if(!_.includes(_doc, menuConcept.menu)) {
           _doc.push(menuConcept.menu);
         }
