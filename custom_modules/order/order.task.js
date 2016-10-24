@@ -74,15 +74,18 @@ var orderTask = {
       if(context.bot.messages.manager == true)
         manager.checkOrder(task, context, null);
 
-      var vmsMessage = "카카오톡에서 배달봇 양얌 주문입니다. " +
-        _menuStr + ' 배달해 주세요.' +
-        '주소는 ' + context.dialog.address.지번주소 + ' 입니다.' +
-        '전화번호는 ' + context.dialog.mobile + ' 입니다.' +
-        '이 주문은 인공지능 배달봇 얌얌의 카카오톡에서 배달대행 주문입니다.';
+      if(context.bot.call) {
+        var vmsMessage = "카카오톡에서 배달봇 양얌 주문입니다. " +
+          _menuStr + ' 배달해 주세요.' +
+          '주소는 ' + context.dialog.address.지번주소 + ' 입니다.' +
+          '전화번호는 ' + context.dialog.mobile + ' 입니다.' +
+          '이 주문은 인공지능 배달봇 얌얌의 카카오톡에서 배달대행 주문입니다.';
 
-      messages.sendVMS({callbackPhone: '028585683', phone: context.user.mobile.replace(/,/g, ''), message: vmsMessage},
-        context, function(_task, _context) {
-        });
+        messages.sendVMS({callbackPhone: '028585683', phone: context.user.mobile.replace(/,/g, ''), message: vmsMessage},
+          context, function(_task, _context) {
+          });
+
+      }
 
       task.isComplete = true;
       callback(task, context);
@@ -104,8 +107,9 @@ var categoryRestaurants = {
     query['address.시군구명'] = context.dialog.address.시군구명;
     query['address.행정동명'] = context.dialog.address.행정동명;
 
-    model.find(query).limit(8).lean().exec(function(err, docs) {
+    model.find(query).limit(type.MAX_LIST).lean().exec(function(err, docs) {
       task.doc = docs;
+      task.restaurant = docs;
       context.dialog.restaurant = docs;
       callback(task, context);
     });
@@ -121,7 +125,6 @@ var franchiseMenuType = {
   mongo: {
     model: 'franchiseMenus',
     queryFields: ['name'],
-    limit: 5,
     minMatch: 1
   },
   preType: function(task, context, type, callback) {
@@ -174,7 +177,7 @@ function mongoQueryTypeCheck(text, format, inDoc, context, callback) {
 
         var _query = model.find(query, format.mongo.fields, format.mongo.options);
         if(format.mongo.sort) _query.sort(format.mongo.sort);
-        if(format.mongo.limit) _query.limit(format.mongo.limit);
+        if(format.mongo.limit) _query.limit(format.mongo.limit || type.MAX_LIST);
 
         _query.lean().exec(function (err, docs) {
           wordsCount++;
@@ -275,7 +278,7 @@ function mongoQueryTypeCheck(text, format, inDoc, context, callback) {
 
         if(matchDoc.matchWord && matchDoc.matchWord.replace(/ /i, '') == matchDoc[format.mongo.queryFields[0]].replace(/ /i, ''))
           break;
-        if (inDoc[format.name].length >= format.limit) break;
+        if (inDoc[format.name].length >= (format.limit || type.MAX_LIST)) break;
       }
 
       if(inDoc[format.name].length == 1) {
@@ -352,7 +355,9 @@ function franchiseMenuAction(task, context, callback) {
   var query = {franchise: context.dialog.restaurant.franchise,
   category: context.dialog.category.name};
 
-  model.find(query).limit(10).lean().exec(function(err, docs) {
+  console.log(query);
+
+  model.find(query).limit(type.MAX_LIST).lean().exec(function(err, docs) {
     task.doc = docs;
     context.dialog.menu = docs;
     callback(task, context);
@@ -512,7 +517,8 @@ exports.optionAddAction = optionAddAction;
 
 
 function upMenu1Callback(dialog, context, callback) {
-  context.dialog.restaurant = context.dialog.restaurants;
+  if(context.dialog.restaurants != undefined)
+    context.dialog.restaurant = context.dialog.restaurants;
   callback(null);
 }
 
@@ -535,4 +541,24 @@ function menuResetAction(task, context, callback) {
 
 exports.menuResetAtion = menuResetAction;
 
+function saveMenuTask(task, context, callback) {
+  if(Array.isArray(context.dialog.menu))
+    context.dialog.menus = context.dialog.menu;
+  callback(task, context);
+}
+exports.saveMenuTask = saveMenuTask;
+
+function menuCallback(dialog, context, callback) {
+  // if(context.botUser.currentDialog.parent) {
+  //   var _dialog = context.botUser.currentDialog.parent;
+  //   context.dialog.menu = _dialog.task.menu;
+  // }
+
+  if(context.dialog.menus != undefined)
+    context.dialog.menu = context.dialog.menus;
+
+  callback(null);
+}
+
+exports.menuCallback = menuCallback;
 

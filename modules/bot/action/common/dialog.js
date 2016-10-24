@@ -5,6 +5,7 @@ var async = require('async');
 var taskModule = require(path.resolve('modules/bot/action/common/task'));
 var type = require(path.resolve('modules/bot/action/common/type'));
 var botUser= require(path.resolve('modules/bot-users/server/controllers/bot-users.server.controller'))
+var userDilaog = require(path.resolve('modules/user-dialogs/server/controllers/user-dialogs.server.controller'));
 
 const START_DIALOG_NAME = '시작';
 exports.START_DIALOG_NAME = START_DIALOG_NAME;
@@ -84,6 +85,7 @@ exports.findUpDialog = findUpDialog;
 
 function matchGlobalDialogs(inRaw, inNLP, dialogs, context, print, callback) {
   context.dialog.typeMatches = {};
+  context.dialog.isFail = false;
 
   matchDialogs(inRaw, inNLP, context.bot.commonDialogs, context, print, function(matched) {
     if(matched) {
@@ -97,12 +99,16 @@ function matchGlobalDialogs(inRaw, inNLP, dialogs, context, print, callback) {
             var dialog = dialogs[i];
             if(dialog.input == undefined || dialog.name == NO_DIALOG_NAME ) {
               executeDialog(dialog, context, print, callback);
+              context.dialog.isFail = true;
               callback(true);
               return;
             }
           }
 
-          if(context.bot.noDialog) executeDialog(context.bot.noDialog, context, print, callback);
+          if(context.bot.noDialog) {
+            executeDialog(context.bot.noDialog, context, print, callback);
+            context.dialog.isFail = true;
+          }
           callback(true);
         }
       });
@@ -114,6 +120,7 @@ exports.matchGlobalDialogs = matchGlobalDialogs;
 
 function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback) {
   context.dialog.typeMatches = {};
+  context.dialog.isFail = false;
 
   matchDialogs(inRaw, inNLP, context.bot.commonDialogs, context, print, function(matched) {
     if(matched) {
@@ -127,6 +134,7 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback) {
             var dialog = dialogs[i];
             if(dialog.input == undefined || dialog.name == NO_DIALOG_NAME ) {
               executeDialog(dialog, context, print, callback, {current: context.botUser.currentDialog});
+              context.dialog.isFail = true;
               callback(true);
               return;
             }
@@ -143,7 +151,10 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback) {
             if(matched) {
               callback(matched);
             } else {
-              if(context.bot.noDialog) executeDialog(context.bot.noDialog, context, print, callback);
+              if(context.bot.noDialog) {
+                executeDialog(context.bot.noDialog, context, print, callback);
+                context.dialog.isFail = true;
+              }
               callback(true);
             }
           });
@@ -320,7 +331,7 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback) {
 
             if(context.botUser.currentDialog) {
               dialog.top = context.botUser.currentDialog.top;
-              if(context.botUser.currentDialog.upCallback) dialog.upCallback = context.botUser.currentDialog.upCallback;
+              // if(context.botUser.currentDialog.upCallback) dialog.upCallback = context.botUser.currentDialog.upCallback;
               if(context.botUser.currentDialog.returnDialog) dialog.returnDialog = context.botUser.currentDialog.returnDialog;
             }
 
@@ -338,6 +349,8 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback) {
 
             _dialog.task = utils.merge(_dialog.task, inDoc);
 
+            _dialog.inRaw = inRaw;
+            _dialog.inNLP = inNLP;
             executeDialog(_dialog, context, print, callback);
             eachMatched = true; _cb(true);
           } else {
@@ -381,13 +394,20 @@ function executeDialog(dialog, context, print, callback, options) {
   context.user.pendingCallback = null;
 
   if(options && options.current) {
-    dialog.parent = options.current.parent;
+    dialog.inRaw = options.current.inRaw;
+    dialog.inNLP = options.current.inNLP;
 
-    if(options.current.top) dialog.top = options.current.top;
-    else dialog.top = options.current;
+    if(options.current.output.repeat !== 1 && options.current.output.up !== 1) {
+      dialog.parent = options.current.parent;
 
-    if(options.current.output.upCallback) dialog.upCallback = options.current.output.upCallback;
-    else if(options.current.upCallback) dialog.upCallback = options.current.upCallback;
+      if(options.current.top) dialog.top = options.current.top;
+      else dialog.top = options.current;
+    }
+
+    // if(options.current.output.upCallback) dialog.upCallback = options.current.output.upCallback;
+    // else if(options.current.upCallback) dialog.upCallback = options.current.upCallback;
+
+    if(options.current.output.upCallback) options.current.parent.upCallback = options.current.output.upCallback;
 
     if(options.current.returnDialog) dialog.returnDialog = options.current.returnDialog;
     else if(options.current.output.returnCall) dialog.returnDialog = options.current.parent;
@@ -439,6 +459,8 @@ function executeDialog(dialog, context, print, callback, options) {
         } else if (dialog.output.call) {
           _dialog = findDialog(null, context, dialog.output.call);
 
+          // if(dialog.output.upCallback) dialog.upCallback = dialog.output.upCallback;
+
           _execDialog(_dialog, 'call');
         } else if (dialog.output.callGlobal) {
           _dialog = findGlobalDialog(null, context, dialog.output.callGlobal);
@@ -449,8 +471,10 @@ function executeDialog(dialog, context, print, callback, options) {
 
           _execDialog(_dialog, 'returnCall');
         } else if (dialog.output.up) {
-          if(context.botUser.currentDialog && context.botUser.currentDialog.upCallback) {
-            context.botUser.currentDialog.upCallback(dialog, context, function(__dialog) {
+          _dialog = findUpDialog(dialog, context, print, callback);
+
+          if(_dialog.upCallback) {
+            _dialog.upCallback(dialog, context, function(__dialog) {
               if(__dialog) {
                 executeDialog(__dialog, context, print, callback, utils.merge(dialog.output.options, {current: dialog}));
                 cb(true);
@@ -458,10 +482,7 @@ function executeDialog(dialog, context, print, callback, options) {
                 _execDialog(_dialog, 'up');
               }
             });
-
           } else {
-            _dialog = findUpDialog(dialog, context, print, callback);
-
             _execDialog(_dialog, 'up');
           }
         } else if (dialog.output.back) {
@@ -482,6 +503,11 @@ function executeDialog(dialog, context, print, callback, options) {
             if(output.if.constructor == String) {
               if (eval(output.if)) {
 
+                if(output.task && dialog.task) output.task = utils.merge(output.task, dialog.task);
+                else if(!output.task && dialog.task) output.task = dialog.task;
+
+                output.inRaw = dialog.inRaw;
+                output.inNLP = dialog.inNLP;
                 executeDialog(output, context, print, callback, {current: dialog});
                 cb(true);
 
@@ -490,6 +516,11 @@ function executeDialog(dialog, context, print, callback, options) {
               output.if(dialog, context, function(matched) {
                 if(matched) {
 
+                  if(output.task && dialog.task) output.task = utils.merge(output.task, dialog.task);
+                  else if(!output.task && dialog.task) output.task = dialog.task;
+
+                  output.inRaw = dialog.inRaw;
+                  output.inNLP = dialog.inNLP;
                   executeDialog(output, context, print, callback, {current: dialog});
                   cb(true);
                 } else cb2(null);
@@ -530,8 +561,10 @@ function executeDialog(dialog, context, print, callback, options) {
 
         } else if (typeof output.text == 'string') {
           _output = output.text;
-          if (dialog.task) dialog.task = utils.merge(dialog.task, output);
-          else dialog.task = utils.clone(output);
+          if (dialog.task)
+            dialog.task = utils.merge(dialog.task, output);
+          else
+            dialog.task = utils.clone(output);
 
         } else if (typeof output.output == 'string') {
           _output = output.output;
@@ -548,8 +581,24 @@ function executeDialog(dialog, context, print, callback, options) {
         if(dialog.task && dialog.task.urlMessage) dialog.task.urlMessage = type.processOutput(dialog.task, context, dialog.task.urlMessage);
         if(dialog.task && dialog.task.photo) dialog.task.photo = type.processOutput(dialog.task, context, dialog.task.photo);
 
-        print(type.processOutput(dialog.task, context, _output), dialog.task);
-        cb(null, _output);
+        if(options && options.page) {
+          if(Number(options.page)) {
+            context.dialog.page = Number(options.page);
+          } else if(options.page === 'pre') {
+            if(context.dialog.page && context.dialog.page > 1)
+              context.dialog.page = context.dialog.page - 1;
+          } else if(options.page === 'next') {
+            if(context.dialog.page && context.dialog.numOfPage && context.dialog.page < context.dialog.numOfPage)
+              context.dialog.page = context.dialog.page + 1;
+          }
+        }
+
+        var userOut = type.processOutput(dialog.task, context, _output);
+        print(userOut, dialog.task);
+
+        userDilaog.addDialog(dialog.inRaw, userOut, context.dialog.isFail, context, function() {
+          cb(null, _output);
+        });
       } else if (output.if) {
         cb(null, output);
       } else {
@@ -667,8 +716,10 @@ function executeType(inRaw, inNLP, type, task, context, callback) {
           //   ' CHECK TYPE=' + type.name + ' ' + (_matched ? 'matched' : 'not matched'));
 
           if (_matched) {
-            context.dialog[type.name] = task[type.name];
-            context.dialog.typeMatches[type.name] = task[type.name];
+            if(task[type.name]) {
+              context.dialog[type.name] = task[type.name];
+              context.dialog.typeMatches[type.name] = task[type.name];
+            }
 
             if (type.context) {
               context.user[type.name] = task[type.name];

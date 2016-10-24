@@ -137,7 +137,12 @@ exports.updateMenus = function(req, res) {
     _update.franchise = req.body.franchise;
 
     if(_update._id == undefined) {
-      FranchiseMenu.create(_update, function(err, _doc) {
+      FranchiseMenu.create(_update, function (err, _doc) {
+        count++;
+        if (count >= req.body._menus.length) res.end();
+      });
+    } else if(_update._remove) {
+      FranchiseMenu.remove({_id: _update._id}, function(err) {
         count++;
         if(count >= req.body._menus.length) res.end();
       });
@@ -145,8 +150,7 @@ exports.updateMenus = function(req, res) {
       FranchiseMenu.update({_id: _update._id}, _update, {upsert: true}, function(err) {
         count++;
         if(count >= req.body._menus.length) res.end();
-      })
+      });
     }
-
   }
 };

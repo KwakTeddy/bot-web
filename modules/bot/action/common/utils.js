@@ -8,7 +8,7 @@ function merge(source1, source2){
   for (var attrname in source2) {
     if(!source1[attrname]) {
       if (source2[attrname].constructor==Object) {
-        source1[attrname] = clone(source2[attrname]);
+        source1[attrname] = cloneWithParent(source2[attrname]);
       } else {
         source1[attrname] = source2[attrname];
       }

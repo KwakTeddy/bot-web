@@ -29,7 +29,8 @@
       });
     };
     vm.removeMenu = function(index) {
-      vm.menus._menus.splice(index, 1);
+      // vm.menus._menus.splice(index, 1);
+      vm.menus._menus[index]._remove = true;
     };
     vm.addOptions = function(index) {
       vm.menus._menus[index].options.push({optionName: '', optionValues: [{name: '', price: ''}]});
