@@ -1,4 +1,6 @@
 
+
+
 var dialogs = [
 {
   input: '~저번 배달',
@@ -30,8 +32,6 @@ var dialogs = [
   {if: 'dialog.task.doc == undefined || dialog.task.doc.length == 0', output: '배달 내역이 없습니다.'}]
 }
 ];
-
-
 
 var commonDialogs = [
 

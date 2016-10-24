@@ -1,4 +1,6 @@
 
+
+
 var dialogs = [
 {
   input: '찾다',
@@ -49,16 +51,10 @@ var dialogs = [
   output: '#doc#+index+. +title+\n# task에서 저장한 내용 표시'
 },
 {
-  name: '호출1',
-  input: '호출대기',
-  output: '첫번째 다이얼로그가 호출되었을 때 출력됩니다.'
-},
-{
   input: '호출 하다 1',
   output: {call: '호출1'}
 },
 {
-  name: '호출2',
   input: false,
   output: '두번째 다이얼로그가 호출되었을 때 출력됩니다.'
 },
@@ -179,11 +175,11 @@ var dialogs = [
   {if: function(dialog, context, callback) {callback(true);}, output: '세번째 조건이 참인 경우입니다.'}]
 },
 {
-  name: '호출3',
   input: false,
   output: '호출되었을 때만 표시됩니다'
 },
 {
+  input: '',
   output: '매칭되는 문장이 없습니다.'
 },
 {
@@ -197,13 +193,15 @@ var dialogs = [
   output: '+text+\n task에서 저장한 내용 표시'
 },
 {
+  input: 'test',
+  output: ''
+},
+{
   input: 'other task',
   task:   'otherTask',
   output: '+text+\n task에서 저장한 내용 표시'
 }
 ];
-
-
 
 var commonDialogs = [
 {

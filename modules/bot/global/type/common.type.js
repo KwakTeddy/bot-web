@@ -2,6 +2,7 @@ var path = require('path');
 var utils = require(path.resolve('modules/bot/action/common/utils'));
 var botlib = require(path.resolve('config/lib/bot'));
 var typelib = require(path.resolve('modules/bot/action/common/type'));
+var logger = require(path.resolve('config/lib/logger'));
 
 function numberListTypeCheck(text, type, task, context, callback) {
   var num = Number(text);
