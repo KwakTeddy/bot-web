@@ -175,6 +175,31 @@ function loadBot(botName) {
       console.error(e);
     }
   }
+
+  // dialog pattern 처리
+  for (var i = 0; bot && i < bot.dialogs.length; i++) {
+    var dialog = bot.dialogs[i];
+
+    if(dialog.input && dialog.input.pattern) {
+      var patternDialog;
+      if('string' == typeof dialog.input.pattern) patternDialog = bot.patterns[dialog.input.pattern];
+      else patternDialog = dialog.input.pattern;
+
+      bot.dialogs[i] = changeDialogPattern(patternDialog, dialog.input.params);
+    }
+  }
+
+  for (var i = 0; bot && i < bot.commonDialogs.length; i++) {
+    var dialog = bot.commonDialogs[i];
+
+    if(dialog.input && dialog.input.pattern) {
+      var patternDialog;
+      if('string' == typeof dialog.input.pattern) patternDialog = bot.patterns[dialog.input.pattern];
+      else patternDialog = dialog.input.pattern;
+
+      bot.commonDialogs[i] = changeDialogPattern(patternDialog, dialog.input.params);
+    }
+  }
 }
 
 exports.loadBot = loadBot;
@@ -346,6 +371,7 @@ function Bot(schema) {
   this.typeChecks = this.typeChecks || {};
   this.concepts = this.concepts || {};
   this.messages = this.messages || {};
+  this.patterns = this.patterns || {};
 }
 
 exports.Bot = Bot;
@@ -388,6 +414,10 @@ Bot.prototype.setMessages = function(messages) {
   }
 };
 
+Bot.prototype.setDialogPattern = function(patternName, pattern) {
+  this.patterns[patternName] = pattern;
+};
+
 function makeBot(botName, schema) {
   var bot = new Bot(schema);
   global._bots[botName] = bot;
@@ -405,3 +435,38 @@ function getBot(botName) {
 
 exports.getBot = getBot;
 
+function changeDialogPattern(obj, params) {
+  if ('string' == typeof obj) {
+    var matched = obj.match(/^{(.*)}$/);
+    if (matched != null && params && params[matched[1]]) {
+      return params[matched[1]];
+    } else if(params) {
+      obj = obj.replace(/{(.*)}/g, function(match, p1) {
+        return params[p1];
+      });
+
+      return obj;
+    }
+  }
+
+  // Handle the 3 simple types, and null or undefined
+  if (null == obj || "object" != typeof obj) return obj;
+
+  // Handle Array
+  if (obj instanceof Array) {
+    for (var i = 0, len = obj.length; i < len; i++) {
+      obj[i] = changeDialogPattern(obj[i], params);
+    }
+    return obj;
+  }
+
+  // Handle Object
+  if (obj instanceof Object) {
+    for (var attr in obj) {
+      if (obj.hasOwnProperty(attr)) obj[attr] = changeDialogPattern(obj[attr], params);
+    }
+    return obj;
+  }
+
+  throw new Error("Unable to copy obj! Its type isn't supported.");
+}

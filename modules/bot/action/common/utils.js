@@ -153,7 +153,7 @@ function findConcepts(context, name) {
     }
   }
 
-  return name;
+  return [name];
 }
 
 exports.findConcepts = findConcepts;

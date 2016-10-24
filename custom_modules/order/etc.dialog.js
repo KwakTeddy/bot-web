@@ -1,4 +1,6 @@
 
+
+
 var dialogs = [
 {
   input: '안녕',
@@ -89,8 +91,6 @@ var dialogs = [
   output: '얌얌이는 아직 어려서 그런거 몰라요. 얌얌이가 주인님하고 얘기를 많이 하면서 더 똑똑해지면, 곧 알게 될 수도. 흐흐흐'
 }
 ];
-
-
 
 var commonDialogs = [
 

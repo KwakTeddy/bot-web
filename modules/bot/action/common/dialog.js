@@ -753,3 +753,50 @@ function executeType(inRaw, inNLP, type, task, context, callback) {
 }
 
 exports.executeType = executeType;
+
+
+function dialogPattern(pattern, params, context) {
+  var patternDialog;
+  if('string' == typeof pattern) patternDialog = context.bot.patterns[pattern];
+  else patternDialog = pattern;
+
+  return changeDialogPattern(patternDialog, params);
+}
+
+function changeDialogPattern(obj, params) {
+  if ('string' == typeof obj) {
+    var matched = obj.match(/^{(.*)}$/);
+    if (matched != null && params[matched[1]]) {
+      return params[matched[1]];
+    } else {
+      obj = obj.replace(/{(.*)}/g, function(match, p1) {
+        return params[p1];
+      });
+
+      return obj;
+    }
+  }
+
+  // Handle the 3 simple types, and null or undefined
+  if (null == obj || "object" != typeof obj) return obj;
+
+  // Handle Array
+  if (obj instanceof Array) {
+    for (var i = 0, len = obj.length; i < len; i++) {
+      obj[i] = changeDialogPattern(obj[i]);
+    }
+    return obj;
+  }
+
+  // Handle Object
+  if (obj instanceof Object) {
+    for (var attr in obj) {
+      if (obj.hasOwnProperty(attr)) obj[attr] = changeDialogPattern(obj[attr]);
+    }
+    return obj;
+  }
+
+  throw new Error("Unable to copy obj! Its type isn't supported.");
+}
+
+exports.changeDialogPattern = changeDialogPattern;

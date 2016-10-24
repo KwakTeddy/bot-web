@@ -73,11 +73,13 @@ function build(text, isCommon) {
   var i = 0;
   var textEscape = function(text) {
     text = text.replace(/\/\/(.*)/, '').trim();
-    if(text.startsWith('{') || text.startsWith('/') || text.startsWith('if')   || text.startsWith('function') || text === 'false' || text === 'undefined' || text === 'null' || text == '') return text;
+    if(text.startsWith('{') || text.startsWith('/') || text.startsWith('if')   || text.startsWith('function') || text === 'false' || text === 'undefined' || text === 'null'/* || text == ''*/) return text;
     else {
       return '\'' + text.replace(/'/g, '\\\'') + '\'';
     }
   };
+
+  var jsLines = [];
 
   var parseDialog = function (step) {
     var dialogs = [];
@@ -98,7 +100,7 @@ function build(text, isCommon) {
         return dialogs.join(',\n');
       }
 
-      if (line.startsWith(step + (isCommon && (step === '')? 'c<':'<')) || line.search(new RegExp('^'+step + '[^<>]*\s*:')) != -1) {
+      if (line.startsWith(step + (isCommon && (step === '')? 'c<':'<')) || line.search(new RegExp('^'+step + '[a-zA-Z가-힣]*:')) != -1) {
         var dialog = '';
         var name;
         var inputs = [];
@@ -107,7 +109,7 @@ function build(text, isCommon) {
         var children;
         var match;
 
-        if((match = line.match(new RegExp('^' + step + '([^<>]*)\s*:\s*(.*)'))) != undefined) {
+        if((match = line.match(new RegExp('^' + step + '([a-zA-Z가-힣]*):\s*(.*)'))) != undefined) {
           name = textEscape(match[1]);
 
           if(match[2] != undefined && match[2].trim() != '') {
@@ -256,6 +258,11 @@ function build(text, isCommon) {
         return dialogs.join(',\n');
       }
 
+      // if(!isCommon && !inc && dialogs.length == 0 && step === '' && !(line.startsWith(step + 'c<') || line.startsWith(step + '<') || line.search(new RegExp('^'+step + '[^<>]*\s*:')) != -1)) {
+      if(!isCommon && !inc && dialogs.length == 0 && step === '') {
+        jsLines.push(line);
+      }
+
       if(inc) i--;
       //console.log(step + (i+1) + ' end parseDialog 2');
     }
@@ -266,7 +273,8 @@ function build(text, isCommon) {
   if(isCommon) {
     output = 'var commonDialogs = [\n' + parseDialog('') + '\n];\n\n';
   } else {
-    output = 'var dialogs = [\n' + parseDialog('') + '\n];\n\n';
+    output = 'var dialogs = [\n' + parseDialog('') + '\n];';
+    output = jsLines.join('\n') + '\n\n' + output;
   }
 
   // console.log(output);
