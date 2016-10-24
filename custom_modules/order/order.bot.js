@@ -35,9 +35,9 @@ var orderBot = {
 
   dialogFiles: [
     'history.dialog.js',
+    'etc.dialog.js',
     'recommend.dialog.js',
-    'order.dialog.js',
-    'etc.dialog.js'
+    'order.dialog.js'
   ]
 };
 
