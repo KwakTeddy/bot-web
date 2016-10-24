@@ -38,7 +38,7 @@ exports.bhcSave = {
                 for(var i = 0; i < task.doc.length; i++) {
                     task.doc[i].sort = '간장/양념/순살'
                 }
-                callback(task, context);
+                callback(task, context);``
             }
         },
         {
