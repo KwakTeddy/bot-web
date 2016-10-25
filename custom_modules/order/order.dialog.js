@@ -16,6 +16,9 @@ var commonDialogs = [
       print('인공지능 배달봇 얌얌 입니다.\n무엇을 배달을 배달해 드릴까요?');
       context.botUser.currentDialog = null;
       context.user.pendingCallback = null;
+
+      context.dialog.restaurant = null;
+      context.dialog.menus = null;
     }
   },
 
@@ -123,32 +126,33 @@ var dialogs = [
               // }
             },
             output: '주문하실 음식점을 말씀해주세요.',
-            children: [              { input: {types: [orderTask.restaurantType]},
+            children: [
+              { input: {types: [orderTask.restaurantType]},
               // task: {action: orderTasks.saveRestaurantTask},
-              output: [
-                { if: '!Array.isArray(dialog.task.restaurant)',
-                  output: {call: '메뉴선택'}
-                },
-                { if: 'Array.isArray(dialog.task.restaurant)',
-                  name: '음식점목록',
-                  task: {action: function(task, context, callback) {
-                    if(task.restaurant) context.dialog.restaurant = task.restaurant;
-                    else if(!task.restaurant && context.dialog.restaurant) task.restaurant = context.dialog.restaurant;
-                    callback(task, context);
-                  }},
-                  output: '말씀하신 곳과 가장 유사한 매장입니다.\n#restaurant#+index+. +name+\n#\n목록에서 번호를 선택하거나 음식점명을 입력해주세요.',
-                  children: [
-                    { input: {types: [{name: 'restaurant', typeCheck: 'listTypeCheck'}]},
-                      // task: {action: function(task, context, callback) {context.dialog.restaurant = task.restaurant; callback(task, callback);}},
-                      output: {call: '메뉴선택'/*, upCallback: orderTasks.upMenu1Callback*/}},
-                    {input: {types: [orderTask.restaurantType]},output: {repeat: 1}},
-                    {output: {call: '음식점구분'}}
-                  ]}
-              ]
-            },
+                output: [
+                  { if: '!Array.isArray(dialog.task.restaurant)',
+                    output: {call: '메뉴선택'}
+                  },
+                  { if: 'Array.isArray(dialog.task.restaurant)',
+                    name: '음식점목록',
+                    // task: {action: function(task, context, callback) {
+                    //   if(task.restaurant) context.dialog.restaurant = task.restaurant;
+                    //   else if(!task.restaurant && context.dialog.restaurant) task.restaurant = context.dialog.restaurant;
+                    //   callback(task, context);
+                    // }},
+                    output: '말씀하신 곳과 가장 유사한 매장입니다.\n#restaurant#+index+. +name+\n#\n목록에서 번호를 선택하거나 음식점명을 입력해주세요.',
+                    children: [
+                      { input: {types: [{name: 'restaurant', typeCheck: 'listTypeCheck'}]},
+                        // task: {action: function(task, context, callback) {context.dialog.restaurant = task.restaurant; callback(task, callback);}},
+                        output: {call: '메뉴선택'/*, upCallback: orderTasks.upMenu1Callback*/}},
+                      {input: {types: [orderTask.restaurantType]},output: {repeat: 1}},
+                      {output: {call: '음식점구분'}}
+                    ]}
+                ]
+              },
 
               { name: '음식점구분',
-                output: //'입력된 주소 근처에서 해당 음식점을 찾을 수 없습니다.\n' +
+                output: '근처에서 해당 음식점을 찾을 수 없습니다.\n\n' +
                   '[음식점 종류 선택]\n1. 치킨\n2. 중국집\n3. 피자\n4. 족발/보쌈\n5. 패스트푸드\n\n' +
                   '목록에서 번호를 선택하거나 음식점명을 입력해주세요.',
                 children: [
@@ -357,11 +361,19 @@ var dialogs = [
     ]
   },
 
-  { name: '주소변경', input: '주소',
+  { name: '주소변경', input: ['주소 변경', '주소 바꾸다'],
     output: '주소를 말씀해 주세요.',
     children: [
       { input: {types: [{type: type.addressType, raw: true, context: true}]}, output: '주소가 변경되었습니다.' },
       { output: {repeat: 1, output: '정확한 주소를 찾을 수 없습니다. 주소를 정확히 입력해 주세요.'}}
+    ]
+  },
+
+  { name: '휴대폰변경', input: ['연락처 변경', '휴대폰 변경', '휴대폰 바꾸다'],
+    output: '휴대폰 번호를 말씀해 주세요.',
+    children: [
+      { input: {types: [{type: type.mobileType, raw: true, context: true}]}, output: '휴대폰 번호가 변경되었습니다.' },
+      { output: {repeat: 1, output: '휴대폰 번호 형식이 틀렸습니다 휴대폰 번호를 다시 입력해주세요.'}}
     ]
   },
 

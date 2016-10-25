@@ -14,12 +14,14 @@ name:추천하기
     <배달
     >배달 주문해 드릴까요?
         <~네>{call: '배달주문'}
-> if(context.dialog.recommMenu && Array.isArray(context.dialog.recommMenu)) 무엇을 좋아할지 몰라 여러게 골라 봤습니다 ^^\n\n#recommMenu#+index+.+desc+ "+name+"\n#\n원하시는 것을 말씀해주세요.
+> if(context.dialog.recommMenu && Array.isArray(context.dialog.recommMenu)) 고객님이 좋아하실 만한 것들로 골라봤어요~ 어때요?\n\n#recommMenu#+index+.+desc+ "+name+"\n#\n원하시는 것을 말씀해주세요.
     < {types: [{name: 'recommMenu', typeCheck: 'listTypeCheck'}]}
     'recommendToOrderTask'
     > {call: '배달주문'}
-> if(true) 어떤게 맛있을 지 잘 모르겠습니다 ㅜㅜ
+> if(true) 어떤게 맛있을 지 잘 모르겠어요 ㅜㅜ
 
 
 
-
+< 배민
+'baeminDetail'
+> ##+name+ +price+\n#

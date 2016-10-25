@@ -88,6 +88,8 @@ var orderTask = {
       }
 
       task.isComplete = true;
+      context.dialog.restaurant = null;
+      context.dialog.menus = null;
       callback(task, context);
     });
   }
@@ -121,7 +123,7 @@ exports.categoryRestaurants = categoryRestaurants;
 
 var franchiseMenuType = {
   name: 'menu',
-  typeCheck: mongoQueryTypeCheck,
+  typeCheck: type.mongoTypeCheck,
   mongo: {
     model: 'franchiseMenus',
     queryFields: ['name'],
