@@ -399,6 +399,12 @@ var dialogs = [
       }
     },
     output: '출력\n##+index+. +name+\n#'
+  },
+
+  {
+    input: 'menu update',
+    task: {action: 'updateFranchiseRestaurant'},
+    output: '업데이트 완료'
   }
 
 ];
