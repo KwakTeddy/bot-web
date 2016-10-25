@@ -3,7 +3,7 @@ var bot = require(path.resolve('config/lib/bot')).getBot('order');
 
 var concepts = {
   '배달': ['주문', '시키다', '보내다'],
-  '내역': ['내 역'],
+  '내역': ['내 역', '히스토리'],
   '이전': ['전 단계'],
   '처음': ['시작', '취소'],
   '전페이지': ['전', '앞'],
