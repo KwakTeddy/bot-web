@@ -347,7 +347,7 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback) {
               //   _dialog.task = utils.clone(_dialog.task);
             }
 
-            _dialog.task = utils.merge(_dialog.task, inDoc);
+            _dialog.task = utils.mergeWithClone(_dialog.task, inDoc);
 
             _dialog.inRaw = inRaw;
             _dialog.inNLP = inNLP;

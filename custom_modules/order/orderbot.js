@@ -675,10 +675,12 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
             } catch(e) {}
           }
 
-          query['address.시도명'] = context.dialog.address.시도명;
-          query['address.시군구명'] = context.dialog.address.시군구명;
-          // query['address.행정동명'] = context.dialog.address.행정동명;
-          query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
+          if(context.dialog.address) {
+            query['address.시도명'] = context.dialog.address.시도명;
+            query['address.시군구명'] = context.dialog.address.시군구명;
+            // query['address.행정동명'] = context.dialog.address.행정동명;
+            query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
+          }
 
           var _query = model.find(query, format.mongo.fields, format.mongo.options);
           if(format.mongo.sort) _query.sort(format.mongo.sort);
@@ -731,10 +733,12 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
           } catch(e) {}
         }
 
-        query['address.시도명'] = context.dialog.address.시도명;
-        query['address.시군구명'] = context.dialog.address.시군구명;
-        // query['address.행정동명'] = context.dialog.address.행정동명;
-        query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
+        if(context.dialog.address) {
+          query['address.시도명'] = context.dialog.address.시도명;
+          query['address.시군구명'] = context.dialog.address.시군구명;
+          // query['address.행정동명'] = context.dialog.address.행정동명;
+          query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
+        }
 
         var _query = model.find(query, format.mongo.fields, format.mongo.options);
         if(format.mongo.sort) _query.sort(format.mongo.sort);
@@ -821,10 +825,12 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
       if(category) {
         var query = {category: category};
 
-        query['address.시도명'] = context.dialog.address.시도명;
-        query['address.시군구명'] = context.dialog.address.시군구명;
-        // query['address.행정동명'] = context.dialog.address.행정동명;
-        query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
+        if(context.dialog.address) {
+          query['address.시도명'] = context.dialog.address.시도명;
+          query['address.시군구명'] = context.dialog.address.시군구명;
+          // query['address.행정동명'] = context.dialog.address.행정동명;
+          query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
+        }
 
         var _query = model.find(query, format.mongo.fields, format.mongo.options);
         if(format.mongo.sort) _query.sort(format.mongo.sort);
@@ -863,10 +869,12 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
       if(category) {
         var query = {category: category};
 
-        query['address.시도명'] = context.dialog.address.시도명;
-        query['address.시군구명'] = context.dialog.address.시군구명;
-        // query['address.행정동명'] = context.dialog.address.행정동명;
-        query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
+        if(context.dialog.address) {
+          query['address.시도명'] = context.dialog.address.시도명;
+          query['address.시군구명'] = context.dialog.address.시군구명;
+          // query['address.행정동명'] = context.dialog.address.행정동명;
+          query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
+        }
 
         var _query = model.find(query, format.mongo.fields, format.mongo.options);
         if(format.mongo.sort) _query.sort(format.mongo.sort);
@@ -929,10 +937,12 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
               } catch(e) {}
             }
 
-            query['address.시도명'] = context.dialog.address.시도명;
-            query['address.시군구명'] = context.dialog.address.시군구명;
-            // query['address.행정동명'] = context.dialog.address.행정동명;
-            query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
+            if(context.dialog.address) {
+              query['address.시도명'] = context.dialog.address.시도명;
+              query['address.시군구명'] = context.dialog.address.시군구명;
+              // query['address.행정동명'] = context.dialog.address.행정동명;
+              query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
+            }
 
             var _query = model.find(query, format.mongo.fields, format.mongo.options);
             if(format.mongo.sort) _query.sort(format.mongo.sort);
@@ -1318,6 +1328,70 @@ function orderableTypeCheck(text, format, inDoc, context, callback) {
         _cb(null);
       }
     }
+
+    // 프랜차이즈 메뉴 검색
+    // function(_cb) {
+    //   var matchConcepts = [];
+    //  var model = mongoose.model('FranchiseMenu');
+    //
+    //   async.eachSeries(words, function(word, _callback) {
+    //     try {
+    //       word = RegExp.escape(word);
+    //
+    //       var query1 = {};
+    //       query1['name'] = new RegExp(word, 'i');
+    //
+    //       var model1 = mongoose.model('FranchiseMenu');
+    //       var _query1 = model1.find(query1);
+    //       _query1.populate('franchise');
+    //
+    //       _query1.lean().exec(function (err, docs) {
+    //         if(!err) {
+    //           for (var i = 0; i < docs.length; i++) {
+    //             var doc = docs[i];
+    //
+    //             if(!_.includes(matchConcepts, doc.franchise.name)) matchConcepts.push(doc.franchise.name);
+    //           }
+    //         }
+    //         _callback(null);
+    //       });
+    //     } catch(e) {
+    //       _callback(null);
+    //     }
+    //
+    //   }, function(err) {
+    //     if(matchConcepts.length > 0) {
+    //       async.eachSeries(matchConcepts, function (word, _callback) {
+    //         var query = {};
+    //         query['name'] = new RegExp(word, 'i');
+    //
+    //         // query['address.시도명'] = context.dialog.address.시도명;
+    //         // query['address.시군구명'] = context.dialog.address.시군구명;
+    //         // // query['address.행정동명'] = context.dialog.address.행정동명;
+    //         // query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
+    //
+    //         var _query = model.find(query);
+    //
+    //         console.log(query);
+    //         _query.lean().exec(function (err, docs) {
+    //           if (err || !docs || docs.length <= 0) {
+    //             //callback(text, inDoc);
+    //           } else {
+    //             matched = true;
+    //           }
+    //
+    //           _callback(null);
+    //         });
+    //
+    //       }, function(err) {
+    //         if(matched) _cb(true);
+    //         else _cb(null);
+    //       })
+    //
+    //     } else _cb(null);
+    //
+    //   });
+    // }
 
   ], function(err) {
     callback(text, inDoc, matched);

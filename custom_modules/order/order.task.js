@@ -88,6 +88,8 @@ var orderTask = {
       }
 
       task.isComplete = true;
+      context.dialog.restaurant = null;
+      context.dialog.menus = null;
       callback(task, context);
     });
   }
