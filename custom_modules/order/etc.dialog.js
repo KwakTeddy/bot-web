@@ -92,7 +92,7 @@ var dialogs = [
 },
 {
   name: '말돌리기',
-  input: '',
+  input: false,
   output: '고객님~ 질문도 좋지만 얌얌이는 주문을 하고싶어요~'
 }
 ];
