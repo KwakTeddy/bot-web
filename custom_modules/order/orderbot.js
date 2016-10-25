@@ -675,18 +675,18 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
             } catch(e) {}
           }
 
-          if(context.dialog.address) {
+          // if(context.dialog.address) {
             query['address.시도명'] = context.dialog.address.시도명;
             query['address.시군구명'] = context.dialog.address.시군구명;
             // query['address.행정동명'] = context.dialog.address.행정동명;
             query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
-          }
+          // }
 
           var _query = model.find(query, format.mongo.fields, format.mongo.options);
           if(format.mongo.sort) _query.sort(format.mongo.sort);
           if(format.mongo.limit) _query.limit(format.mongo.limit || type.MAX_LIST);
 
-          console.log(query);
+          // console.log(query);
           _query.lean().exec(function (err, docs) {
             if (err || !docs || docs.length <= 0) {
               //callback(text, inDoc);
@@ -733,12 +733,12 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
           } catch(e) {}
         }
 
-        if(context.dialog.address) {
+        // if(context.dialog.address) {
           query['address.시도명'] = context.dialog.address.시도명;
           query['address.시군구명'] = context.dialog.address.시군구명;
           // query['address.행정동명'] = context.dialog.address.행정동명;
           query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
-        }
+        // }
 
         var _query = model.find(query, format.mongo.fields, format.mongo.options);
         if(format.mongo.sort) _query.sort(format.mongo.sort);
@@ -825,12 +825,12 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
       if(category) {
         var query = {category: category};
 
-        if(context.dialog.address) {
+        // if(context.dialog.address) {
           query['address.시도명'] = context.dialog.address.시도명;
           query['address.시군구명'] = context.dialog.address.시군구명;
           // query['address.행정동명'] = context.dialog.address.행정동명;
           query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
-        }
+        // }
 
         var _query = model.find(query, format.mongo.fields, format.mongo.options);
         if(format.mongo.sort) _query.sort(format.mongo.sort);
@@ -869,12 +869,12 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
       if(category) {
         var query = {category: category};
 
-        if(context.dialog.address) {
+        // if(context.dialog.address) {
           query['address.시도명'] = context.dialog.address.시도명;
           query['address.시군구명'] = context.dialog.address.시군구명;
           // query['address.행정동명'] = context.dialog.address.행정동명;
           query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
-        }
+        // }
 
         var _query = model.find(query, format.mongo.fields, format.mongo.options);
         if(format.mongo.sort) _query.sort(format.mongo.sort);
@@ -937,18 +937,18 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
               } catch(e) {}
             }
 
-            if(context.dialog.address) {
+            // if(context.dialog.address) {
               query['address.시도명'] = context.dialog.address.시도명;
               query['address.시군구명'] = context.dialog.address.시군구명;
               // query['address.행정동명'] = context.dialog.address.행정동명;
               query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
-            }
+            // }
 
             var _query = model.find(query, format.mongo.fields, format.mongo.options);
             if(format.mongo.sort) _query.sort(format.mongo.sort);
             if(format.mongo.limit) _query.limit(format.mongo.limit || type.MAX_LIST);
 
-            console.log(query);
+            // console.log(query);
             _query.lean().exec(function (err, docs) {
               if (err || !docs || docs.length <= 0) {
                 //callback(text, inDoc);

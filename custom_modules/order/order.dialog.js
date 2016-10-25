@@ -41,8 +41,7 @@ var dialogs = [
     name: '배달주문',
     input: [
       /~배달/,
-      {types: [{name: 'orderble', typeCheck: orderTask.orderableTypeCheck},
-      orderTask.restaurantType]}
+      {types: [{name: 'orderble', typeCheck: orderTask.orderableTypeCheck}]}
     ],
     output: {call: '주소입력'},
     children: [
@@ -354,7 +353,7 @@ var dialogs = [
   },
 
   {
-    input: {types: [{name: 'orderble', typeCheck: orderTask.orderableTypeCheck}, orderTask.restaurantType]},
+    input: {types: [{name: 'orderble', typeCheck: orderTask.orderableTypeCheck}]},
     output: '배달을 원하시나요?',
     children: [
       { input: {regexp: /~네/g}, output: {call: '배달주문'}  },
