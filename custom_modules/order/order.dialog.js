@@ -31,7 +31,16 @@ var commonDialogs = [
   { input: {if: orderTypes.orderDialogCondition, regexp: /^<$/}, output: {repeat: 1, options: {page: 'pre'}}},
   { input: {if: orderTypes.orderDialogCondition, regexp: /~다음페이지/}, output: {repeat: 1, options: {page: 'next'}}},
   { input: {if: orderTypes.orderDialogCondition, regexp: /^>$/}, output: {repeat: 1, options: {page: 'next'}}},
-  { name: dialogModule.NO_DIALOG_NAME, output: '무슨 말인지 모르겠습니다.^^\n 다른 말로 말씀해주세요.'}
+  { name: dialogModule.NO_DIALOG_NAME, output: '미안해요 무슨 말인지 모르겠어요 ㅠ\n얌얌이는 주문을 하고 싶어요! 도와드릴까요?',
+    children: [
+      {
+        input: '~네',
+        output: {call: '배달주문'}
+      },
+      {
+        output: {repeat: 1}
+      }
+    ]}
 ];
 
 exports.commonDialogs = commonDialogs;
