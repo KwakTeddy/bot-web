@@ -32,11 +32,11 @@ var dialogs = [
 },
 {
   input: '영화',
-  output: {call: '말돌리기', options: {prefix: '얌얌이는 미셸 공드리의 '무드 인디고'를 정말 좋아해요.\n'}}
+  output: {call: '말돌리기', options: {prefix: '얌얌이는 미셸 공드리의 \'무드 인디고\'를 정말 좋아해요.\n'}}
 },
 {
   input: ['음악', '노래', '가요'],
-  output: {call: '말돌리기', options: {prefix: '얌얌이는 요즘 레드벨벳의 '러시안 룰렛'을 즐겨 들어요.\n'}}
+  output: {call: '말돌리기', options: {prefix: '얌얌이는 요즘 레드벨벳의 \'러시안 룰렛\'을 즐겨 들어요.\n'}}
 },
 {
   input: ['꿈', '장래희망'],
