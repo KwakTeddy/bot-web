@@ -19,7 +19,7 @@ var dialogs = [
       ]
     }
   ]}, 
-  {if: 'context.dialog.recommMenu && Array.isArray(context.dialog.recommMenu)', output: '무엇을 좋아할지 몰라 여러게 골라 봤습니다 ^^\n\n#recommMenu#+index+.+desc+ "+name+"\n#\n원하시는 것을 말씀해주세요.', 
+  {if: 'context.dialog.recommMenu && Array.isArray(context.dialog.recommMenu)', output: '고객님이 좋아하실 만한 것들로 골라봤어요~ 어때요?\n\n#recommMenu#+index+.+desc+ "+name+"\n#\n원하시는 것을 말씀해주세요.', 
     children: [
     {
       input: {types: [{name: 'recommMenu', typeCheck: 'listTypeCheck'}]},
@@ -27,7 +27,7 @@ var dialogs = [
       output: {call: '배달주문'}
     }
   ]}, 
-  {if: 'true', output: '어떤게 맛있을 지 잘 모르겠습니다 ㅜㅜ'}]
+  {if: 'true', output: '어떤게 맛있을 지 잘 모르겠어요 ㅜㅜ'}]
 },
 {
   input: '배민',
