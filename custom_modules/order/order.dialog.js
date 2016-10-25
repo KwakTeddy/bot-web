@@ -37,9 +37,6 @@ var commonDialogs = [
         input: '~네',
         output: {call: '배달주문'}
       },
-      {
-        output: {repeat: 1}
-      }
     ]}
 ];
 
