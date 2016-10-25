@@ -121,7 +121,7 @@ exports.categoryRestaurants = categoryRestaurants;
 
 var franchiseMenuType = {
   name: 'menu',
-  typeCheck: mongoQueryTypeCheck,
+  typeCheck: type.mongoTypeCheck,
   mongo: {
     model: 'franchiseMenus',
     queryFields: ['name'],

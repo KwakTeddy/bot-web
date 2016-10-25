@@ -28,6 +28,11 @@ var dialogs = [
     }
   ]}, 
   {if: 'true', output: '어떤게 맛있을 지 잘 모르겠습니다 ㅜㅜ'}]
+},
+{
+  input: '배민',
+  task:   'baeminDetail',
+  output: '##+name+ +price+\n#'
 }
 ];
 

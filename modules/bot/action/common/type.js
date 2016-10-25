@@ -955,6 +955,80 @@ function mongoTypeCheck(text, format, inDoc, context, callback) {
 
   async.waterfall([
     function(_cb) {
+      var matchConcepts = [];
+      var bot = context.bot;
+      if(bot.concepts) {
+        for(var key in bot.concepts) {
+
+          for (var i = 0; i < words.length; i++) {
+            var word = words[i];
+            try {
+              word = RegExp.escape(word);
+
+              for (var j = 0; j < bot.concepts[key].length; j++) {
+                var val = bot.concepts[key][j];
+
+                if(val.search(word) != -1) {
+                  if(!_.includes(matchConcepts, key)) matchConcepts.push(key);
+                  break;
+                }
+              }
+
+            } catch(e) {}
+          }
+        }
+      }
+
+      if(matchConcepts.length > 0) {
+        async.eachSeries(matchConcepts, function (word, _callback) {
+          var query = {};
+          for(var j = 0; j < format.mongo.queryFields.length; j++) {
+            try {
+              word = RegExp.escape(word);
+              query[format.mongo.queryFields[j]] = new RegExp(word, 'i');
+            } catch(e) {}
+          }
+
+          var _query = model.find(query, format.mongo.fields, format.mongo.options);
+          if(format.mongo.sort) _query.sort(format.mongo.sort);
+          if(format.mongo.limit) _query.limit(format.mongo.limit || type.MAX_LIST);
+
+          console.log(query);
+          _query.lean().exec(function (err, docs) {
+            if (err || !docs || docs.length <= 0) {
+              //callback(text, inDoc);
+            } else {
+              for(var k = 0; k < docs.length; k++) {
+                var doc = docs[k];
+
+                var bExist = false;
+                for(var l = 0; l < matchedDoc.length; l++) {
+                  if(matchedDoc[l]._id.id == doc._id.id) {
+                    bExist = true;
+                    break;
+                  }
+                }
+
+                if(!bExist) {
+                  doc.matchRate = 1;
+                  matchedDoc.push(doc);
+                }
+              }
+            }
+
+            _callback(null);
+          });
+
+        }, function(err) {
+          if(matchedDoc.length > 0) _cb(true);
+          else _cb(null);
+        })
+
+      } else _cb(null);
+
+    },
+
+    function(_cb) {
       async.eachSeries(words, function (word, _callback){
         // var word = words[i];
 
@@ -1015,7 +1089,7 @@ function mongoTypeCheck(text, format, inDoc, context, callback) {
                   doc.matchCount = matchCount;
                   doc.matchMin = matchMin;
                   doc.matchMax = matchMax;
-
+                  doc.matchRate = matchCount / words.length;
                   matchedDoc.push(doc);
                 }
               }
@@ -1036,7 +1110,7 @@ function mongoTypeCheck(text, format, inDoc, context, callback) {
       matchedDoc.sort(format.mongo.taskSort);
     } else {
       matchedDoc.sort(function (a, b) {
-        return b.matchCount - a.matchCount;
+        return b.matchRate - a.matchRate;
       });
     }
 

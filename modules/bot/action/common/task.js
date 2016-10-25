@@ -289,7 +289,12 @@ function executeTask(task, context, callback) {
               function(_task, _context, callback) {
                 if(!fCondition) {
                   if(task.actionModule) {
-                    var actionModule = findActionModule(task, context);
+                    var actionModule;
+                    if('string' == typeof task.actionModule) {
+                      actionModule = findActionModule(task, context);
+                    } else {
+                      actionModule = task.actionModule;
+                    }
                     if(actionModule[task.action]) task.action = actionModule[task.action];
                   } else if(typeof task.action == 'string') {
                     var _action = context.bot.actions[task.action];
@@ -308,10 +313,10 @@ function executeTask(task, context, callback) {
                   //   taskModule[task.action](_task, _context, function(_task, _context) {
                   //     callback(null, _task, _context);
                   //   });
-                  // } else if(taskModule && taskModule.execute instanceof Function) {
-                  //   taskModule.execute(_task, _context, function(_task, _context) {
-                  //     callback(null, _task, _context);
-                  //   });
+                  } else if(actionModule && actionModule.execute instanceof Function) {
+                    actionModule.execute(_task, _context, function(_task, _context) {
+                      callback(null, _task, _context);
+                    });
                   } else {
                     logger.error(logPrefix + ' action not exist.');
                     task.err = new Error(logPrefix + ' action not exist.');
