@@ -4,6 +4,7 @@ var async = require('async');
 var mongoose = require('mongoose');
 var XLSX = require('xlsx');
 var utils = require(path.resolve('./modules/bot/action/common/utils'));
+var bot = require(path.resolve('config/lib/bot')).getBot('order');
 
 exports.dumpFolder = function(task, context, successCallback, errorCallback) {
   // var fs = require('fs');
@@ -920,12 +921,12 @@ exports.fssLotteria = {
   }
 };
 
-exports.updateFranchiseRestaurant = function(task, context, successCallback, errorCallback) {
+function updateFranchiseRestaurant(task, context, successCallback, errorCallback) {
   var modelFranchise = mongoose.model('Franchise');
 
   var modelRestaurant = mongoose.model('Restaurant');
 
-  modelFranchise.find({}, function(err, docs) {
+  modelFranchise.find({name: /교촌/}, function(err, docs) {
     async.eachSeries(docs, function (doc, callback) {
         modelRestaurant.update({name: new RegExp(doc._doc.name, 'i')}, {franchise: doc._id}, {upsert: true, multi: true}, function(_err, numberAffected) {
           logger.debug(doc._doc.name + ': ' + numberAffected.n + ', ' + numberAffected.nModified + ', ' + doc._id);
@@ -941,5 +942,8 @@ exports.updateFranchiseRestaurant = function(task, context, successCallback, err
         successCallback(task, context);
       });
   })
-};
+}
 
+exports.updateFranchiseRestaurant = updateFranchiseRestaurant;
+
+bot.setAction('updateFranchiseRestaurant', updateFranchiseRestaurant);
