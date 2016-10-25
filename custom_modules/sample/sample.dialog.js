@@ -200,6 +200,11 @@ var dialogs = [
   input: 'other task',
   task:   'otherTask',
   output: '+text+\n task에서 저장한 내용 표시'
+},
+{
+  input: 'menu update',
+  task:   '',
+  output: []
 }
 ];
 
