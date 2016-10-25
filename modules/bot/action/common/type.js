@@ -989,6 +989,7 @@ function mongoTypeCheck(text, format, inDoc, context, callback) {
             } catch(e) {}
           }
 
+          if(format.query) query = utils.merge(query, format.query);
           var _query = model.find(query, format.mongo.fields, format.mongo.options);
           if(format.mongo.sort) _query.sort(format.mongo.sort);
           if(format.mongo.limit) _query.limit(format.mongo.limit || type.MAX_LIST);
