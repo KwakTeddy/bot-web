@@ -3,7 +3,7 @@
 
 var dialogs = [
 {
-  input: ['~추천', '~찾다', '~알리다', '있다', '없다', '~무엇 먹다', '~맛있다 있다', '~맛있다 없다'],
+  input: ['추천', '~찾다', '~알리다', '있다', '없다', '~무엇 먹다', '~맛있다 있다', '~맛있다 없다'],
   task:   'recommendTask',
   output: [
   {if: 'context.dialog.recommMenu != undefined && !Array.isArray(context.dialog.recommMenu)', output: '+recommMenu.desc+ "+recommMenu.name+" 어떠세요?', 
