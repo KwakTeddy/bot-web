@@ -461,7 +461,7 @@ function insertTest(task, context, callback) {
   task.fileFilter = function(file) { return file.startsWith('build'); };
 
   updateAddressDir(task, context, function(_task, _context) {
-    cb(null);
+    callback(task, context);
   });
 
 }
@@ -1020,3 +1020,7 @@ function searchTest(task, context, callback) {
 
 exports.searchTest = searchTest;
 
+
+// insertTest({}, {}, function(t, c) {
+//   console.log('end');
+// });
