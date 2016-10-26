@@ -454,21 +454,16 @@ function addressGovTypeCheck(text, type, task, context, callback) {
 exports.addressGovTypeCheck = addressGovTypeCheck;
 
 function insertTest(task, context, callback) {
-  task.updateMethod = 'insert';
-  task.modelName = '도로명코드';
-  task.schema = 도로명코드스키마;
-  task.pk = ['시군구코드', '도로명번호', '읍면동일련번호'];
-  task.file = '/Users/com2best/Documents/MoneyBrain/Dev/외부모듈/주소/road_code_total.txt';
+  task.modelName = '건물정보';
+  task.schema = 건물정보스키마;
+  task.pk = ['건물관리번호'];
+  task.dir = ADDRESS_DIR;
+  task.fileFilter = function(file) { return file.startsWith('build'); };
 
-  // task.updateMethod = 'insert';
-  // task.modelName = '개선도로명코드';
-  // task.schema = 개선도로명코드스키마;
-  // task.pk = ['도로명코드', '읍면동일련번호'];
-  // task.file = '/Users/com2best/Documents/MoneyBrain/Dev/외부모듈/주소/201608매칭데이터_도로명코드__전체분/개선_도로명코드_전체분.txt';
-
-  updateAddressFile(task, context, function(_task, _context) {
-    callback(task, context);
+  updateAddressDir(task, context, function(_task, _context) {
+    cb(null);
   });
+
 }
 
 exports.insertTest = insertTest;

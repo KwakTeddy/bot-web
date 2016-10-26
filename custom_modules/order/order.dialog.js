@@ -399,9 +399,9 @@ var dialogs = [
   },
 
   {
-    input: 'menu update',
-    task: {action: 'updateFranchiseRestaurant'},
-    output: '업데이트 완료'
+    input: '실행',
+    task: 'baemin',
+    output: '완료'
   }
 
 ];
