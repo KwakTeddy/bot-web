@@ -32,7 +32,7 @@ function execute(task, context, successCallback, errorCallback) {
   var cookiejar = context.user.cookie;
   var type = utils.requireNoCache(path.resolve('./modules/bot/action/common/type'));
 
-  console.log('\n' + 'http.' + task.action + ': ' + (task.method ? task.method : '') + ' ' +
+  console.log('\n' + 'http.js:action ' +  + (task.method ? task.method : '') + ' ' +
       task.url + task.path);
   if(task.param) console.log('task.param: ' + JSON.stringify(task.param, null, 2));
 
@@ -456,3 +456,72 @@ function execute(task, context, successCallback, errorCallback) {
 }
 
 
+function _request(task, context, callback) {
+  var options;
+  var cookiejar = context.user.cookie;
+  var type = utils.requireNoCache(path.resolve('./modules/bot/action/common/type'));
+
+  console.log('\n' + 'http.js:request: ' + (task.method ? task.method : '') + ' ' +
+    task.url + task.path);
+
+  if(task.param) console.log('task.param: ' + JSON.stringify(task.param, null, 2));
+
+  options = {
+    method: task.method,
+    uri: task.url  + encodeURI(task.path),
+    headers: utils.merge(commonHeaders, task.headers),
+    followAllRedirects: true,
+    encoding: 'binary'
+  };
+
+  console.log(context.user.cookie.toJSON());
+
+  options.headers['Cookie'] = cookiejar.getCookieStringSync(options.uri);
+
+  // options.headers['Cookie'] = 'lat=37.5175678; lng=126.9345585; rgn1=11; rgn2=11560; rgn3=11560540; addr=%EC%84%9C%EC%9A%B8+%EC%98%81%EB%93%B1%ED%8F%AC%EA%B5%AC+%EC%97%AC%EC%9D%98%EB%8F%99; addr_st=%EC%84%9C%EC%9A%B8_%EC%97%AC%EC%9D%98%EB%8F%99; ';
+
+  if(task.method && task.method.toUpperCase() == "POST") {
+    options.form = task.param;
+  } else {
+    options.qs = task.param;
+    options.useQuerystring = true;
+  }
+
+  if(options.headers) console.log('task.headers: ' + JSON.stringify(options.headers, null, 2));
+
+  request(options, function (error, response, body) {
+    //console.log("status:" + response.statusCode);
+    //console.log(body);
+
+    if (!error && response.statusCode == 200) {
+      var encoding = charset(response.headers['content-type']);
+      if(encoding && encoding != 'UTF-8') {
+        // console.log('encoding:' + encoding);
+
+        var Iconv  = require('iconv').Iconv;
+        var iconv = new Iconv(encoding.toUpperCase(), 'UTF-8//TRANSLIT//IGNORE');
+
+        body = iconv.convert(new Buffer(body, 'binary')).toString('UTF-8');
+      }
+
+      task._text = body;
+
+      var cookieHeaders = response.headers['set-cookie'];
+      for(var i = 0; cookieHeaders && i < cookieHeaders.length; i++) {
+        var cookie = tough.Cookie.parse(cookieHeaders[i]);
+        cookiejar.setCookie(cookie, options.uri, function() {});
+      }
+
+      callback(task, context);
+
+    } else {
+      console.log("[http.js:request] error: " + error);
+
+      task.error = error;
+      callback(error, task, context);
+    }
+  });
+
+}
+
+exports.request = _request;

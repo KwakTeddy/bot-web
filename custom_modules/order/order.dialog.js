@@ -9,11 +9,13 @@ var orderTypes = utils.requireNoCache(path.resolve('custom_modules/order/order.t
 var mongoose = require('mongoose');
 var bot = require(path.resolve('config/lib/bot')).getBot('order');
 
+var address = require(path.resolve('modules/bot/action/common/address'));
+
 var commonDialogs = [
   { name: '시작',
     input: {regexp: /(처음|시작|:reset user)/g},
     output: function(dialog, context, print, callback) {
-      print('인공지능 배달봇 얌얌 입니다.\n무엇을 배달을 배달해 드릴까요?');
+      print('안녕하세요 인공지능 배달봇 얌얌이에요~ \n드시고 싶은 메뉴나 음식점명을 입력해주시면 도와드릴게요!');
       context.botUser.currentDialog = null;
       context.user.pendingCallback = null;
 
@@ -36,6 +38,10 @@ var commonDialogs = [
       {
         input: '~네',
         output: {call: '배달주문'}
+      },
+      {
+        input: '~아니요',
+        output: '언제든지 기다릴게요~ 필요하실 때 불러주세요~'
       },
     ]}
 ];
@@ -399,9 +405,15 @@ var dialogs = [
   },
 
   {
-    input: 'menu update',
-    task: {action: 'updateFranchiseRestaurant'},
-    output: '업데이트 완료'
+    input: '실행',
+    task: 'baemin',
+    output: '완료'
+  },
+
+  {
+    input: 'insert',
+    task: {action: address.insertTest},
+    output: '주소입력완료'
   }
 
 ];

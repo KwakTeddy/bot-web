@@ -1,8 +1,108 @@
 var path = require('path');
 var http = require(path.resolve('modules/bot/action/common/http'));
+var task = require(path.resolve('modules/bot/action/common/task'));
 var bot = require(path.resolve('config/lib/bot')).getBot('order');
 var xpath = require('xpath');
 var dom = require('xmldom').DOMParser;
+var tough = require('tough-cookie');
+
+// var execTask = {
+//   action: function(task, context, callback) {
+//     var words = context.dialog.inRaw.split(' ');
+//     var _task = bot.tasks[words[1]];
+//
+//     _task.action(_task, context, function(_task, _context) {
+//       callback(_task, _context);
+//     })
+//   }
+// };
+//
+// bot.setTask('execTask', execTask);
+
+
+var yoList = {
+  actionModule: http,
+  action: "request",
+  method: "GET",
+  url: "https://www.yogiyo.co.kr",
+//  path: '/list/%EC%A4%91%EA%B5%AD%EC%A7%91/%EC%84%9C%EC%9A%B8_%EA%B0%80%EC%82%B0%EB%8F%99',
+//   path: '/mobile',
+  path: '/api/v1/restaurants-geo/?category=%EC%B9%98%ED%82%A8&items=20&order=rank&page=0&search=&zip_code=135010',
+  postCallback: function(task, context, callback) {
+    var xml = task._text;
+
+    var re = /<div.*fn_mv_shopInfo\('(.*)','(.*)'\)/g;
+    //
+    // xml.replace(re, function(match, p1, p2) {
+    //   console.log(p1, p2);
+    // });
+  }
+};
+
+
+var baeminLocation = {
+  actionModule: http,
+  action: 'request',
+  method: "POST",
+  url: "http://www.baemin.com",
+  path: '/main/sch_addr',
+  param: {addr_kw: '가산동'},
+  postCallback: function(task, context, callback) {
+    var lat = task._text.match(/<input.*id="lat_\d*" value="([^<>]*)"/)[1];
+    var lng = task._text.match(/<input.*id="lng_\d*" value="([^<>]*)"/)[1];
+    var addr = task._text.match(/<input.*id="addr_\d*" value="([^<>]*)"/)[1];
+    var addr_st = task._text.match(/<input.*id="addr_st_\d*" value="([^<>]*)"/)[1];
+    var Rgn3 = task._text.match(/<input.*id="Rgn3_\d*" value="([^<>]*)"/)[1];
+
+    console.log(lat, lng, addr, addr_st, Rgn3);
+
+    context.user.cookie = new tough.CookieJar();
+
+    context.user.cookie.setCookie('lat=' + lat, this.url, function() {});
+    context.user.cookie.setCookie('lng=' + lng, this.url, function() {});
+    context.user.cookie.setCookie('rgn1=' + Rgn3.substring(0, 2), this.url, function() {});
+    context.user.cookie.setCookie('rgn3=' + Rgn3.substring(0, 5), this.url, function() {});
+    context.user.cookie.setCookie('rgn3=' + Rgn3, this.url, function() {});
+    context.user.cookie.setCookie('addr=' + encodeURIComponent(addr), this.url, function() {});
+    context.user.cookie.setCookie('addr_st=' + encodeURIComponent(addr_st), this.url, function() {});
+
+    console.log(context.user.cookie.toJSON());
+
+    callback(task, context);
+  }
+};
+
+var baeminList = {
+  actionModule: http,
+  action: "request",
+  method: "GET",
+  url: "http://www.baemin.com",
+//  path: '/list/%EC%A4%91%EA%B5%AD%EC%A7%91/%EC%84%9C%EC%9A%B8_%EA%B0%80%EC%82%B0%EB%8F%99',
+  path: '/list/중국집/서울_가산동',
+  postCallback: function(task, context, callback) {
+    var xml = task._text;
+
+    var re = /<div.*fn_mv_shopInfo\('(.*)','(.*)'\)/g;
+
+    xml.replace(re, function(match, p1, p2) {
+      console.log(p1, p2);
+    });
+  }
+};
+
+// bot.setTask('baeminList', baeminList);
+
+var baemin = {
+  actionModule: task,
+  action: 'sequence',
+  actions: [
+    yoList
+    // baeminLocation,
+    // baeminList
+  ]
+};
+
+bot.setTask('baemin', baemin);
 
 var baeminDetail = {
   actionModule: http,
@@ -98,7 +198,7 @@ var baeminDetail = {
 
 };
 
-bot.setTask('baeminDetail', baeminDetail);
+// bot.setTask('baeminDetail', baeminDetail);
 
 
 

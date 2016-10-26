@@ -382,7 +382,7 @@ exports.executeTask = executeTask;
 
 function execute(task, context, successCallback, errorCallback) {
   logger.debug('');
-  logger.debug('task.js:execute: ' + task.module + '.' + task.action + ' start');
+  logger.debug('task.js:execute: ' + task.module + '.' + (task.action instanceof Function ? task.action.name : task.action) + ' start');
 
   if(task.action == 'sequence' || task.action == 'repeat' || task.action == 'iteration') {
     task.taskCounter = 0;
@@ -391,7 +391,7 @@ function execute(task, context, successCallback, errorCallback) {
     var preTask;
 
     var _successCallback = function(_task, _context) {
-      logger.debug('task.js:execute: successCallback ' + _task.module + '.' + _task.action);
+      logger.debug('task.js:execute: successCallback ' + _task.module + '.' + (_task.action instanceof Function ? _task.action.name : _task.action));
 
       if(_task.reExecute) {
         _task.reExecute = false;
