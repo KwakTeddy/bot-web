@@ -454,6 +454,7 @@ function addressGovTypeCheck(text, type, task, context, callback) {
 exports.addressGovTypeCheck = addressGovTypeCheck;
 
 function insertTest(task, context, callback) {
+  task.updateMethod = 'insert';
   task.modelName = '건물정보';
   task.schema = 건물정보스키마;
   task.pk = ['건물관리번호'];

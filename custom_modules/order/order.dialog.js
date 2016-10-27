@@ -137,7 +137,7 @@ var dialogs = [
               //   callback(false);
               // }
             },
-            output: '주문하실 음식점을 말씀해주세요.',
+            output: '드시고싶은 메뉴나 찾으시는 음식점이름을 말씀해주세요~',
             children: [
               { input: {types: [orderTask.restaurantType]},
               // task: {action: orderTasks.saveRestaurantTask},
@@ -152,7 +152,7 @@ var dialogs = [
                     //   else if(!task.restaurant && context.dialog.restaurant) task.restaurant = context.dialog.restaurant;
                     //   callback(task, context);
                     // }},
-                    output: '말씀하신 곳과 가장 유사한 매장입니다.\n#restaurant#+index+. +name+\n#\n목록에서 번호를 선택하거나 음식점명을 입력해주세요.',
+                    output: '고객님이 원하시는 걸 찾아봤어요! \n#restaurant#+index+. +name+\n#\n 목록 중에서 번호를 선택하거나 음식점명을 입력해주세요',
                     children: [
                       { input: {types: [{name: 'restaurant', typeCheck: 'listTypeCheck'}]},
                         // task: {action: function(task, context, callback) {context.dialog.restaurant = task.restaurant; callback(task, callback);}},
@@ -164,13 +164,13 @@ var dialogs = [
               },
 
               { name: '음식점구분',
-                output: '근처에서 해당 음식점을 찾을 수 없습니다.\n\n' +
+                output: '근처에서 해당 음식점을 찾을 수 없어요 ㅠㅠ\n\n' +
                   '[음식점 종류 선택]\n1. 치킨\n2. 중국집\n3. 피자\n4. 족발/보쌈\n5. 패스트푸드\n\n' +
-                  '목록에서 번호를 선택하거나 음식점명을 입력해주세요.',
+                  '목록에서 번호를 선택하거나 음식점명을 입력해주세요~',
                 children: [
                   { input: orderTypes.menuCategoryCheck,
                     task: orderTasks.categoryRestaurants,
-                    output: '[+category+]\n##+index+. +name+\n#\n목록에서 번호를 선택하거나 음식점명을 입력해주세요.',
+                    output: '[+category+]\n##+index+. +name+\n#\n목록에서 번호를 선택하거나 음식점명을 입력해주세요~',
                     children: [
                       { input: {types: [{name: 'restaurant', typeCheck: 'listTypeCheck'}]},
                         output: {call: '메뉴선택'}},
@@ -198,7 +198,7 @@ var dialogs = [
 
       { name: '메뉴선택1', input: false,
         output: [
-          { if: 'context.dialog.menu != undefined', name: '메뉴추가확인1', output: '더 주문하실 메뉴가 있으신가요?',
+          { if: 'context.dialog.menu != undefined', name: '메뉴추가확인1', output: '더 주문하실 메뉴가 있으세요?',
             children: [
               { input: '~네', output: {call: '메뉴선택1'}},
               { input: '~아니요', output: {call: '주문확인', return: 1}},
@@ -250,7 +250,7 @@ var dialogs = [
             output: {call: '메뉴목록'}
           },
           { if: 'context.dialog.menu == undefined',
-            output: '"+restaurant.name+"에서 어떤 메뉴를 시키시겠습니까?',
+            output: '"+restaurant.name+"의 메뉴 중에 어떤 걸 시켜드릴까요?',
             children: [
               { name: '옵션추가확인', input: {types: [orderTasks.franchiseMenuType], if: 'context.dialog.menu && !Array.isArray(context.dialog.menu)'},
                 output: [
@@ -262,7 +262,7 @@ var dialogs = [
                       }
                       callback(_bool);
                     },
-                    output: '선택메뉴를 골라주세요. \n#option#+index+.+name+ +price+\n#',
+                    output: '선택메뉴를 골라주세요~ \n#option#+index+.+name+ +price+\n#',
                     children: [
                       { input: {types: [{name: 'option', typeCheck: 'listTypeCheck'}]},
                         task: {action: orderTasks.menuAddAction},
@@ -289,13 +289,13 @@ var dialogs = [
                   //{output: {repeat: 1, postfix: '\n\n메뉴에 원하시는 것이 없거나, 전화주문은 "전화"라고 입력해주세요.'}}
                 ]
               },
-              { input: '전화', name: '전화주문', output: {text: '음식점 정보를 확인하시고,\n전화로 주문해주세요.\n\n음식점명: +restaurant.name+\n주메뉴: +restaurant.category+\n전화번호: +restaurant.phone+', urlMessage: '전화하기', url: 'tel: +restaurant.phone+'}},
+              { input: '전화', name: '전화주문', output: {text: '음식점 정보를 확인하시고,\n전화로 주문해주세요\n\n음식점명: +restaurant.name+\n주메뉴: +restaurant.category+\n전화번호: +restaurant.phone+', urlMessage: '전화하기', url: 'tel: +restaurant.phone+'}},
               { input: /^\s*(취소|0)\s*$/g, output: {call: '주문취소'}  },
               { name: '메뉴판',
                 task: {action: orderTasks.frachiseMenuCategoryAction},
                 output: //'"+restaurant.name+"에서 그런 메뉴를 찾을 수 없습니다.\n' +
                 '[메뉴판]\n##+index+. +name+\n#\n' +
-                '메뉴판에서 번호를 선택하거나 메뉴명을 입력해주세요.',
+                '메뉴판에서 번호를 선택하거나 메뉴명을 입력해주세요~',
                 children: [
                   { input: {types: [{name: 'category', typeCheck: 'listTypeCheck'}]},
                     task: {action: orderTasks.franchiseMenuAction},
@@ -357,8 +357,8 @@ var dialogs = [
 
       { name: '배달주문요청', input: false,
         task: orderTasks.orderTask,
-        output: '배달 주문이 완료 되었습니다.\n인공지능 배달봇 "얌얌"을 이용해 주셔서 감사합니다.\n\n' +
-        '"얌얌"은 카카오톡, 라인, 페이스북에서 모두 사용이 가능합니다.\n' +
+        output: '배달 주문이 완료 되었어요.\n인공지능 배달봇 "얌얌"을 이용해 주셔서 감사합니다. ^^\n\n' +
+        '"얌얌"은 카카오톡, 라인, 페이스북에서 모두 사용이 가능해요.\n' +
         '친구 추가하실 때 "인공지능 배달봇 얌얌"을 기억해 주세요~ ^^'
       }
     ]
