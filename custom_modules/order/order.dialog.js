@@ -405,8 +405,14 @@ var dialogs = [
   },
 
   {
-    input: '실행',
+    input: 'baemin',
     task: 'baemin',
+    output: '완료'
+  },
+
+  {
+    input: 'yo',
+    task: {action: 'yo'},
     output: '완료'
   },
 

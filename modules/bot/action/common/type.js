@@ -968,7 +968,7 @@ function mongoTypeCheck(text, format, inDoc, context, callback) {
               for (var j = 0; j < bot.concepts[key].length; j++) {
                 var val = bot.concepts[key][j];
 
-                if(val.search(word) != -1) {
+                if(val.search(word) != -1 && !(format.exclude && _.includes(format.exclude, word))) {
                   if(!_.includes(matchConcepts, key)) matchConcepts.push(key);
                   break;
                 }
@@ -1030,14 +1030,28 @@ function mongoTypeCheck(text, format, inDoc, context, callback) {
     },
 
     function(_cb) {
-      async.eachSeries(words, function (word, _callback){
-        // var word = words[i];
+      var _words = [];
+      var excluded = [];
+      for (var i = 0; i < words.length; i++) {
+        var word = words[i];
+        word = RegExp.escape(word);
+        if(!(format.exclude && _.includes(format.exclude, word)))
+          _words.push(word);
+        else
+          excluded.push(word);
+      }
 
+      if(_words.length == 0) _words.concat(excluded);
+
+      async.eachSeries(_words, function (word, _callback){
+        // var word = words[i];
         var query = {};
         for(var j = 0; j < format.mongo.queryFields.length; j++) {
           try {
-            word = RegExp.escape(word);
-            query[format.mongo.queryFields[j]] = new RegExp(word, 'i');
+            if(!(format.exclude && _.includes(format.exclude, word)))
+              query[format.mongo.queryFields[j]] = new RegExp(word, 'i');
+            else
+              excluded.push(word);
           } catch(e) {}
         }
 
@@ -1061,9 +1075,8 @@ function mongoTypeCheck(text, format, inDoc, context, callback) {
               matchedWord = '';
               var matchIndex = -1, matchMin = -1, matchMax = -1;
               for(var l = 0; l < format.mongo.queryFields.length; l++) {
-                for(var m = 0; m < words.length; m++) {
-                  words[m] = RegExp.escape(words[m]);
-                  matchIndex = doc[format.mongo.queryFields[l]].search(new RegExp(words[m], 'i'));
+                for(var m = 0; m < _words.length; m++) {
+                  matchIndex = doc[format.mongo.queryFields[l]].search(new RegExp(_words[m], 'i'));
 
                   if(matchIndex != -1) {
                     matchCount++;
