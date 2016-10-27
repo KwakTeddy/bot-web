@@ -80,7 +80,8 @@
     "if-async": "^3.7.4",
     "xlsx": "^0.8.0",
     "tls": "^0.0.1",
-    "constants": "^0.0.2"
+    "constants": "^0.0.2",
+    "webdriverio": "^4.2.0"
   },
   "devDependencies": {
     "coveralls": "^2.11.4",

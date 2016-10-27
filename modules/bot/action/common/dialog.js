@@ -413,6 +413,10 @@ function executeDialog(dialog, context, print, callback, options) {
     else if(options.current.output.returnCall) dialog.returnDialog = options.current.parent;
   }
 
+  if(!(dialog.output.repeat && dialog.output.options && dialog.output.options.page) && !(options && options.page)) {
+    context.dialog.page = null; context.dialog.numOfPage  = null;
+  }
+
   async.waterfall([
     function(cb) {
       if (dialog.task) {

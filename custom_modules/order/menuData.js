@@ -6,6 +6,10 @@ var xpath = require('xpath');
 var dom = require('xmldom').DOMParser;
 var tough = require('tough-cookie');
 
+var async = require('async');
+var mongoose = require('mongoose');
+var webdriverio = require('webdriverio');
+
 // var execTask = {
 //   action: function(task, context, callback) {
 //     var words = context.dialog.inRaw.split(' ');
@@ -18,26 +22,6 @@ var tough = require('tough-cookie');
 // };
 //
 // bot.setTask('execTask', execTask);
-
-
-var yoList = {
-  actionModule: http,
-  action: "request",
-  method: "GET",
-  url: "https://www.yogiyo.co.kr",
-//  path: '/list/%EC%A4%91%EA%B5%AD%EC%A7%91/%EC%84%9C%EC%9A%B8_%EA%B0%80%EC%82%B0%EB%8F%99',
-//   path: '/mobile',
-  path: '/api/v1/restaurants-geo/?category=%EC%B9%98%ED%82%A8&items=20&order=rank&page=0&search=&zip_code=135010',
-  postCallback: function(task, context, callback) {
-    var xml = task._text;
-
-    var re = /<div.*fn_mv_shopInfo\('(.*)','(.*)'\)/g;
-    //
-    // xml.replace(re, function(match, p1, p2) {
-    //   console.log(p1, p2);
-    // });
-  }
-};
 
 
 var baeminLocation = {
@@ -202,3 +186,146 @@ var baeminDetail = {
 
 
 
+
+var options = {
+  desiredCapabilities: {
+    browserName: 'chrome',
+    logLevel: 'verbose'
+
+  }
+};
+
+var client;
+
+var count, i;
+function yoList(task, context, callback) {
+  console.log('yoList: ' + task.address);
+
+  client.setValue('#search  div  form  input', task.address)
+    .click('#button_search_address button.btn.btn-default.ico-pick')
+
+    .waitForEnabled('//div[@id="category"]/ul/li[5]', 5000)
+    .pause(1000)
+    .click('//div[@id="category"]/ul/li[5]')
+
+    .waitForEnabled('#content > div > div.restaurant-list > div:nth-child(2) > div', 5000)
+    .pause(500)
+    .elements("#content > div > div.restaurant-list > div > div").then(function(res) {
+    i = 1;
+    count = res.value.length;
+    count = 4;
+    console.log('item list: ' + count);
+    function next() {
+      if(i++ < count) {
+        return client
+          .waitForEnabled('#content > div > div.restaurant-list > div:nth-child(' + i + ') > div', 5000)
+          .pause(500)
+          .click('#content > div > div.restaurant-list > div:nth-child(' + i + ') > div')
+          .waitForExist('#menu > div > div:nth-child(1) > div.panel-collapse.collapse.in > div > ul > li:nth-child(1)', 5000)
+          .pause(500)
+          .getHTML('html').then(function(html) {
+            var task = {_text: html};
+            yoParse(task, {}, null);
+          })
+          .back()
+          .then(next);
+      } else {
+        return client;
+      }
+    }
+
+    return next();
+  })
+    .pause(2000)
+    .then(function() {
+      callback(task, context);
+    });
+}
+
+function yoParse(task, context, callback) {
+  console.log('yoParse');
+
+  var xmldomErrorHandler = {
+    warning: function(w) {},
+    error: function(e) {},
+    fatalError: function(e) {}
+  };
+
+  var DOC_NAME = 'doc';
+
+  //*[@id="menu"]/div/div[1]/div[1]/h4/a/span
+  //*[@id="menu"]/div/div[1]/div[2]
+  //*[@id="menu"]/div/div[1]/div[2]/div/ul/li[1]/span[1]
+  //*[@id="menu"]/div/div[1]/div[2]/div/ul/li[1]/span[2]
+  //*[@id="menu"]/div/div[1]/div[2]/div/ul/li[2]/span[1]
+
+  var xml = task._text;
+  var doc = new dom({errorHandler: xmldomErrorHandler}).parseFromString(xml);
+
+  task.name = xpath.select('//*[@id="content"]/div[2]/div[1]/div[1]/div[1]/span[1]/text()', doc).toString();
+  task.businessHourStr = xpath.select('//*[@id="content"]/div[2]/div[1]/div[1]/div[2]/ul/li[1]/span/text()', doc).toString();
+  task.address1 = xpath.select('//*[@id="content"]/div[2]/div[1]/div[1]/div[2]/ul/li[3]/span/text()', doc).toString();
+  task.minOrder = xpath.select('//*[@id="content"]/div[2]/div[1]/div[1]/div[2]/ul/li[3]/span/text()', doc).toString();
+  task.minOrder = task.minOrder.replace(/(,|원)/g, '');
+  task.payment = xpath.select('//*[@id="content"]/div[2]/div[1]/div[1]/div[2]/ul/li[4]/span/text()', doc).toString();
+
+  var nodes = xpath.select('//*[@id="menu"]/div/div', doc);
+
+  task[DOC_NAME] = [];
+  for (var j = 0; j < nodes.length; j++) {
+    var node = nodes[j];
+
+    var category = xpath.select('./div[1]/h4/a/span/text()', node).toString();
+
+    var menus = xpath.select('./div[2]/div/ul/li', node);
+    for (var k = 0; k < menus.length; k++) {
+      var menu = menus[k];
+
+      var name = xpath.select('./span[1]/text()', menu).toString();
+      var price = xpath.select('./span[2]/text()', menu).toString();
+
+      task[DOC_NAME].push({category: category, name: name, price: price});
+    }
+  }
+
+  console.log(JSON.stringify(task.doc));
+}
+
+function yoSave(task, context, callback) {
+  var model = mongoose.model('RestaurantDump');
+
+  callback(task, context);
+}
+
+exports.yoSave = yoSave;
+
+function yo(task, context, callback) {
+  client = webdriverio
+    .remote(options)
+    .init()
+    .url('https://www.yogiyo.co.kr/')
+    .pause(5000)
+    .getUrl().then(function(url) {
+      console.log(url);
+    });
+
+  var addresses = [
+    '서울 강남구 논현동',
+    '서울 강남구 청담동'
+  ];
+
+  async.eachSeries(addresses, function(address, cb) {
+    yoList({address: address}, null, function(_task, _context) {
+      cb(null);
+    });
+  }, function(err) {
+    client.end();
+    callback(task, context);
+  });
+}
+
+exports.yo = yo;
+
+bot.setAction('yo', yo);
+
+// yo({}, {}, function() {});
