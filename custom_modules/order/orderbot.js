@@ -995,6 +995,18 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
     }
 
     if (matchedDoc.length > 0) {
+      //중복 프랜차이즈는 하나만
+      var franchises = {}, noneFranchise = false;
+      for (var i = 0; i < matchedDoc.length; i++) {
+        var doc = matchedDoc[i];
+        if(doc.franchise) franchises[doc.franchise] = 1;
+        else {noneFranchise = true; break;}
+      }
+
+      if(noneFranchise == false && Object.keys(franchises).length == 1) {
+        matchedDoc = matchedDoc.splice(0, 1);
+      }
+
 
       inDoc[format.name] = [];
       for (var _l = 0; _l < matchedDoc.length; _l++) {

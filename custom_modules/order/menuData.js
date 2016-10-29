@@ -196,46 +196,152 @@ var options = {
 };
 
 var client;
-
 var count, i;
-function yoList(task, context, callback) {
-  console.log('yoList: ' + task.address);
+var scrollHeight, preScrollHeight;
 
-  client.setValue('#search  div  form  input', task.address)
+function loadingScroll() {
+  scrollHeight = 0; preScrollHeight = -1;
+
+  function next() {
+    if (scrollHeight != preScrollHeight) {
+      return client.execute(function() {
+        return document.body.scrollHeight;
+      }).then(function(ret) {
+        preScrollHeight = ret.value;
+      })
+        .execute(function (preScrollHeight) {
+          window.scrollTo(0,document.body.scrollHeight);
+        })
+        .pause(1000)
+        .execute(function() {
+          return document.body.scrollHeight;
+        }).then(function(ret) {
+          scrollHeight =ret.value;
+        })
+        .then(next);
+
+    } else {
+      return client.execute(function() {
+        window.scrollTo(0, 0);
+      });
+    }
+  }
+  // start the loop
+  return next();
+}
+
+function yoList(task, context, callback) {
+  console.log('yoList: ' + task.address + ', '+ task.category);
+  var _task;
+  var categoryNum;
+
+  if(task.category == '치킨') categoryNum = 3;
+  else if(task.category == '피자/양식') categoryNum = 4;
+  else if(task.category == '중국집') categoryNum = 5;
+  else if(task.category == '한식') categoryNum = 6;
+  else if(task.category == '일식/돈까스') categoryNum = 7;
+  else if(task.category == '족발/보쌈') categoryNum = 8;
+  else if(task.category == '야식') categoryNum = 9;
+  else if(task.category == '분식') categoryNum = 10;
+  else if(task.category == '프랜차이즈') categoryNum = 11;
+
+  client
+    .setValue('#search  div  form  input', task.address)
     .click('#button_search_address button.btn.btn-default.ico-pick')
 
-    .waitForEnabled('//div[@id="category"]/ul/li[5]', 5000)
+    .waitForEnabled('//div[@id="category"]/ul/li[' + categoryNum + ']', 5000)
     .pause(1000)
-    .click('//div[@id="category"]/ul/li[5]')
+    .click('//div[@id="category"]/ul/li[' + categoryNum + ']')
 
-    .waitForEnabled('#content > div > div.restaurant-list > div:nth-child(2) > div', 5000)
+    .waitForEnabled('#content > div > div.restaurant-list > div.col-sm-6:nth-child(2) > div', 5000)
+    .pause(500)
+    .then(loadingScroll)
     .pause(500)
     .elements("#content > div > div.restaurant-list > div > div").then(function(res) {
-    i = 1;
-    count = res.value.length;
-    count = 4;
-    console.log('item list: ' + count);
-    function next() {
-      if(i++ < count) {
-        return client
-          .waitForEnabled('#content > div > div.restaurant-list > div:nth-child(' + i + ') > div', 5000)
-          .pause(500)
-          .click('#content > div > div.restaurant-list > div:nth-child(' + i + ') > div')
-          .waitForExist('#menu > div > div:nth-child(1) > div.panel-collapse.collapse.in > div > ul > li:nth-child(1)', 5000)
-          .pause(500)
-          .getHTML('html').then(function(html) {
-            var task = {_text: html};
-            yoParse(task, {}, null);
-          })
-          .back()
-          .then(next);
-      } else {
-        return client;
-      }
-    }
+      i = 21;
+      count = res.value.length;
+      // count = 50;
+      console.log('item list: ' + count);
+      function next() {
+        if(i++ < count) {
+          try {
+            return client
+              .waitForEnabled('#content > div > div.restaurant-list > div.col-sm-6:nth-child(2) > div', 5000).then(function() {
+                return client.isExisting('#content > div > div.restaurant-list > div.col-sm-6:nth-child(' + i + ')').then(function (isExisting) {
+                  console.log('existing: ' + isExisting);
+                  if (isExisting) {
+                    console.log('existing return: ' + isExisting);
+                    return true;
+                  } else{
+                    console.log('existing return: ' + isExisting);
+                    return loadingScroll().then(function () {
+                      console.log('loadingScroll: ' + isExisting);
+                      return true;
+                    });
+                  }
+                })
+              })
 
-    return next();
-  })
+              // .waitUntil(function () {
+              //   return client.waitForExist('#content > div > div.restaurant-list > div.col-sm-6:nth-child(2) > div', 5000).then(function () {
+              //     return client.isExisting('#content > div > div.restaurant-list > div.col-sm-6:nth-child(' + i + ')').then(function (isExisting) {
+              //       console.log('existing2: ' + JSON.stringify(isExisting));
+              //       if (isExisting) {
+              //         return client.getAttribute('#content > div > div.restaurant-list > div.col-sm-6:nth-child(' + i + ')', 'id').then(function(attr) {
+              //           console.log('attr1: ' + attr);
+              //           if(attr === 'freetrial_mark') i++;
+              //           return true;
+              //         })
+              //       } else return loadingScroll().then(function () {
+              //         return client.getAttribute('#content > div > div.restaurant-list > div.col-sm-6:nth-child(' + i + ')', 'id').then(function(attr) {
+              //           console.log('attr2: ' + attr);
+              //           if(attr === 'freetrial_mark') i++;
+              //           return true;
+              //         })
+              //       });
+              //     })
+              //   });
+              // }, 5000)
+
+              // .isExisting('#content > div > div.restaurant-list > div:nth-child(' + i + ') > div').then(function(isExisting) {
+              //   console.log('existing: ' + JSON.stringify(isExisting));
+              //   if(!isExisting) return loadingScroll();
+              // })
+
+              // .waitForEnabled('#content > div > div.restaurant-list > div.col-sm-6:nth-child(' + i + ') > div', 5000)
+              .pause(2000)
+              .scroll('#content > div > div.restaurant-list > div.col-sm-6:nth-child(' + i + ') > div', 0, -100)
+              .pause(1000)
+              .element('#content > div > div.restaurant-list > div.col-sm-6:nth-child(' + i + ') > div').then(function (res) {
+                client.elementIdClick(res.value.ELEMENT);
+              })
+              // .click('#content > div > div.restaurant-list > div.col-sm-6:nth-child(' + i + ') > div')
+              .waitForExist('#menu > div > div:nth-child(1) > div.panel-collapse.collapse.in > div > ul > li:nth-child(1)', 5000)
+              .pause(500)
+              .getUrl().then(function (url) {
+                var matched = url.match(/\/(\d+)\/$/);
+
+                _task = {site: task.site, restaurantId: matched[1], category: [task.category]};
+              })
+              .getHTML('html').then(function (html) {
+                _task._text = html;
+                yoParse(_task, {}, function () {
+                });
+              })
+              // .then(function() {
+              //   yoSave(_task, {}, function() {});
+              // })
+              .back()
+              .then(next);
+          } catch(e) {
+            return next();
+          }
+        } else {
+          return client;
+        }
+      }
+      return next();
+    })
     .pause(2000)
     .then(function() {
       callback(task, context);
@@ -265,9 +371,15 @@ function yoParse(task, context, callback) {
   task.name = xpath.select('//*[@id="content"]/div[2]/div[1]/div[1]/div[1]/span[1]/text()', doc).toString();
   task.businessHourStr = xpath.select('//*[@id="content"]/div[2]/div[1]/div[1]/div[2]/ul/li[1]/span/text()', doc).toString();
   task.address1 = xpath.select('//*[@id="content"]/div[2]/div[1]/div[1]/div[2]/ul/li[3]/span/text()', doc).toString();
-  task.minOrder = xpath.select('//*[@id="content"]/div[2]/div[1]/div[1]/div[2]/ul/li[3]/span/text()', doc).toString();
-  task.minOrder = task.minOrder.replace(/(,|원)/g, '');
-  task.payment = xpath.select('//*[@id="content"]/div[2]/div[1]/div[1]/div[2]/ul/li[4]/span/text()', doc).toString();
+  task.minOrder = xpath.select('//*[@id="content"]/div[2]/div[1]/div[1]/div[2]/ul/li[2]/span/text()', doc).toString();
+  task.minOrder = task.minOrder.replace(/[,원]/g, '');
+  var payment = xpath.select('//*[@id="content"]/div[2]/div[1]/div[1]/div[2]/ul/li[4]/span/text()', doc).toString();
+  var pArray = payment.split(',');
+  task.payment = [];
+  for (var j = 0; j < pArray.length; j++) {
+    var p = pArray[j];
+    if(p.trim() != '') task.payment.push(p.trim());
+  }
 
   var nodes = xpath.select('//*[@id="menu"]/div/div', doc);
 
@@ -283,6 +395,7 @@ function yoParse(task, context, callback) {
 
       var name = xpath.select('./span[1]/text()', menu).toString();
       var price = xpath.select('./span[2]/text()', menu).toString();
+      price = price.replace(/[,원]/g, '');
 
       task[DOC_NAME].push({category: category, name: name, price: price});
     }
@@ -293,8 +406,23 @@ function yoParse(task, context, callback) {
 
 function yoSave(task, context, callback) {
   var model = mongoose.model('RestaurantDump');
+  var model2 = mongoose.model('MenuDump');
 
-  callback(task, context);
+  task._text = null;
+
+  model.collection.insert([task], function(err, docs) {
+    if(err) {
+
+    } else {
+      model2.collection.insert(task.doc, function(err, docs) {
+        if(err) {
+
+        }
+
+        callback(task, context);
+      });
+    }
+  });
 }
 
 exports.yoSave = yoSave;
@@ -304,6 +432,7 @@ function yo(task, context, callback) {
     .remote(options)
     .init()
     .url('https://www.yogiyo.co.kr/')
+    // .url('https://www.yogiyo.co.kr/mobile/#/%EC%84%9C%EC%9A%B8/135010/%ED%94%BC%EC%9E%90%EC%96%91%EC%8B%9D/')
     .pause(5000)
     .getUrl().then(function(url) {
       console.log(url);
@@ -315,7 +444,7 @@ function yo(task, context, callback) {
   ];
 
   async.eachSeries(addresses, function(address, cb) {
-    yoList({address: address}, null, function(_task, _context) {
+    yoList({address: address, category: '피자/양식', site: 'yo'}, null, function(_task, _context) {
       cb(null);
     });
   }, function(err) {
