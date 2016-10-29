@@ -269,15 +269,15 @@ var dialogs = [
                         output: {call: '메뉴추가확인1'}}
                     ]
                   },
-                  {if: 'true', task: {action: orderTasks.menuAddAction}, output: {call: '메뉴추가확인1'}}
+                  {if: 'true', task: {action: orderTasks.menuAddAction}, output: {call: '메뉴추가확인1', options: {prefix: '"+restaurant.name+"에서 "+addedMenu.name+" 를 장바구니에 담았습니다.\n\n'}}}
                 ]
               },
               { name: '메뉴목록', input: {types: [orderTasks.franchiseMenuType], if: 'Array.isArray(context.dialog.menu)'},
-                task: {action: function(task, context, callback) {
-                  if(task.menu) context.dialog.menu = task.menu;
-                  else if(!task.menu && context.dialog.menu) task.menu = context.dialog.menu;
-                  callback(task, context);
-                }},
+                // task: {action: function(task, context, callback) {
+                //   if(task.menu) context.dialog.menu = task.menu;
+                //   else if(!task.menu && context.dialog.menu) task.menu = context.dialog.menu;
+                //   callback(task, context);
+                // }},
                 output: '"+restaurant.name+"에서 아래 메뉴를 찾았습니다\n#menu#+index+. +name+ +price+\n#\n목록에서 번호를 선택하거나 메뉴명을 입력해주세요.\n모든 메뉴를 보려면 "메뉴판"이라고 얘기해주세요',
                 children: [
                   { input: {types: [{name: 'menu', typeCheck: 'listTypeCheck'}]},

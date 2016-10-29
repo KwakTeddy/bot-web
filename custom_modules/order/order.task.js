@@ -502,6 +502,9 @@ function menuAddAction(task, context, callback) {
 
     context.dialog.menus.push(_menu);
   }
+
+  context.dialog.addedMenu = utils.clone(context.dialog.menu);
+
   context.dialog.menu = undefined;
 
   callback(task, context);
