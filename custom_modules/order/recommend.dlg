@@ -8,6 +8,7 @@ name:추천하기
 <~무엇 먹다
 <~맛있다 있다
 <~맛있다 없다
+<먹다 싶다
 'recommendTask'
 > if(context.dialog.recommMenu != undefined && !Array.isArray(context.dialog.recommMenu)) +recommMenu.desc+ "+recommMenu.name+" 어떠세요?
     <~네

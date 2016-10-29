@@ -9,7 +9,7 @@ var mongoose = require('mongoose'),
 /**
  * Custom action Schema
  */
-var RestaurantDumpSchema = new Schema({
+var RestauranttmpSchema = new Schema({
   bot: {
     type: Schema.ObjectId,
     ref: 'Bot'
@@ -60,4 +60,4 @@ var RestaurantDumpSchema = new Schema({
   }
 });
 
-mongoose.model('RestaurantDump', RestaurantDumpSchema);
+mongoose.model('Restauranttmp', RestauranttmpSchema);

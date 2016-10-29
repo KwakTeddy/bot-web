@@ -10,6 +10,7 @@ var mongoose = require('mongoose');
 var bot = require(path.resolve('config/lib/bot')).getBot('order');
 
 var address = require(path.resolve('modules/bot/action/common/address'));
+var orderData = utils.requireNoCache(path.resolve('custom_modules/order/data'));
 
 var commonDialogs = [
   { name: '시작',
@@ -417,9 +418,9 @@ var dialogs = [
   },
 
   {
-    input: 'insert',
-    task: {action: address.insertTest},
-    output: '주소입력완료'
+    input: 'update',
+    task: {action: orderData.updateFranchiseRestaurantName},
+    output: 'update 완료'
   }
 
 ];
