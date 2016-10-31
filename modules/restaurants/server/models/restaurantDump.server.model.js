@@ -9,7 +9,7 @@ var mongoose = require('mongoose'),
 /**
  * Custom action Schema
  */
-var RestauranttmpSchema = new Schema({
+var RestaurantDumpSchema = new Schema({
   bot: {
     type: Schema.ObjectId,
     ref: 'Bot'
@@ -29,6 +29,9 @@ var RestauranttmpSchema = new Schema({
   photo: String,
   description: String,
   tag: String,
+
+  lat: Number,
+  lng: Number,
 
   isOpen: Boolean,
   minOrder: Number,
@@ -60,4 +63,4 @@ var RestauranttmpSchema = new Schema({
   }
 });
 
-mongoose.model('Restauranttmp', RestauranttmpSchema);
+mongoose.model('RestaurantDump', RestaurantDumpSchema);

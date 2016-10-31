@@ -413,7 +413,7 @@ var dialogs = [
 
   {
     input: 'yo',
-    task: {action: 'yo'},
+    task: {action: 'yoAddress'},
     output: '완료'
   },
 
