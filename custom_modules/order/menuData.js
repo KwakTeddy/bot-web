@@ -195,9 +195,9 @@ var baeminDetail = {
 // };
 
 var options = {
-  // host: '127.0.0.1',
-  // port: 9515,
-  // path: '/',
+  host: '127.0.0.1',
+  port: 9515,
+  path: '/',
   desiredCapabilities: {
     browserName: 'chrome',
     logLevel: 'verbose',
