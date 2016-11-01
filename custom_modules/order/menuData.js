@@ -832,7 +832,7 @@ bot.setAction('yoAddress', yoAddress);
 
 
 function google(task, context, callback) {
-  console.log('start');
+  console.log('start2');
   client = webdriverio
     .remote(options)
     .init()
