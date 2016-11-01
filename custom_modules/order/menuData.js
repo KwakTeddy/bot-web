@@ -82,9 +82,8 @@ var baemin = {
   actionModule: task,
   action: 'sequence',
   actions: [
-    // yoList
-    // baeminLocation,
-    // baeminList
+    baeminLocation,
+    baeminList
   ]
 };
 
@@ -187,6 +186,12 @@ var baeminDetail = {
 // bot.setTask('baeminDetail', baeminDetail);
 
 
+function baList(task, context, callback) {
+
+  callback(task, context);
+}
+
+exports.baList = baList;
 
 
 var options = {
@@ -769,6 +774,14 @@ function yoAddress(task, context, callback) {
     .remote(options)
     .init()
     .url('https://www.yogiyo.co.kr/')
+    // .windowHandleSize({width: 1200, height: 1000})
+    .getViewportSize().then(function(size) {
+      console.log(size);
+    })
+    .setViewportSize({width: 1200, height: 5000}, false)
+    .getViewportSize().then(function(size) {
+      console.log(size);
+    })
     .pause(5000)
     .then(function() {
       async.eachSeries(lines, function(line,cb) {
