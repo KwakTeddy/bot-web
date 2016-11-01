@@ -196,22 +196,22 @@ exports.baList = baList;
 
 // var options = {
 //   desiredCapabilities: {
-//     browserName: 'chrome',
+//     browserName: '',
 //     logLevel: 'verbose'
 //
 //   }
 // };
 
 var options = {
-  host: '127.0.0.1',
-  port: 9515,
-  path: '/',
+  // host: '127.0.0.1',
+  // port: 9515,
+  // path: '/',
   desiredCapabilities: {
     browserName: 'chrome',
     logLevel: 'verbose',
     chromeOptions: {
       "args": [
-        "window-size=1366,768",
+        "window-size=1280,1080",
         "no-proxy-server",
         "no-default-browser-check",
         "no-first-run",
