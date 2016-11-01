@@ -418,6 +418,12 @@ var dialogs = [
   },
 
   {
+    input: 'google',
+    task: {action: 'google'},
+    output: '완료'
+  },
+
+  {
     input: 'update',
     task: {action: orderData.updateFranchiseRestaurantName},
     output: 'update 완료'

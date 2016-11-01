@@ -808,3 +808,19 @@ function yoAddress(task, context, callback) {
 
 exports.yoAddress = yoAddress;
 bot.setAction('yoAddress', yoAddress);
+
+
+function google(task, context, callback) {
+  console.log('start');
+  client = webdriverio
+    .remote(options)
+    .init()
+    .url('https://www.google.com/')
+    .pause(5000)
+    .getUrl().then(function(url) {
+      console.log('title: ' + url);
+      callback(task, context);
+    });
+}
+
+bot.setAction('google', google);
