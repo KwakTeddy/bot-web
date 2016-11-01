@@ -195,9 +195,9 @@ var baeminDetail = {
 // };
 
 var options = {
-  host: '127.0.0.1',
-  port: 9515,
-  path: '/',
+  // host: '127.0.0.1',
+  // port: 9515,
+  // path: '/',
   desiredCapabilities: {
     browserName: 'chrome',
     logLevel: 'verbose',
@@ -412,6 +412,8 @@ function yoList(task, context, callback) {
 
             async.waterfall([
               function(cb3) {
+                // console.log('yoList: whilst 11');
+
                 client.waitUntil(function() {
                   return client.isExisting('#content > div > div.restaurant-list > div.col-sm-6:nth-child(' + i + ')').then(function (isExisting) {
                     if (isExisting) {
@@ -424,8 +426,10 @@ function yoList(task, context, callback) {
                   })
                 }, 5000)
                 .then(function() {
+                  // console.log('yoList: whilst 12');
 
                   client.waitUntil(function() {
+                    // console.log('yoList: whilst 121');
                     return client.getAttribute('#spinner', 'class', function(attr) {
                       if(attr == 'ng-hide') return true;
                       else return false;
@@ -433,9 +437,10 @@ function yoList(task, context, callback) {
                   }, 5000)
 
                   .isExisting('#content > div > div.restaurant-list > div.col-sm-6:nth-child(' + i + ') > div').then(function (isExisting) {
+                    // console.log('yoList: whilst 122');
                     if(isExisting) cb3(null);
                     else {
-                      console.log('element 미존재: ' + i + ', ' + restaurant_list[i-1].name);
+                      console.log('element 미존재: ' + i);
                       cb3(true);
                     }
                   });
@@ -735,14 +740,13 @@ function yoSave(task, context, callback) {
 exports.yoSave = yoSave;
 
 function yo(task, context, callback) {
-  var addresses = [
-    '서울 강남구 역삼동'
-    // '서울 강남구 청담동',
-    // '서울 금천구 가산동'
-    // '경기도 부천시 원미구 중2동'
-  ];
+  var inRaw = context.dialog.inRaw;
+  var words = inRaw.split(' ');
 
-  var category = '중국집';
+  // var category = '치킨';
+  var category = words[1];
+  var inputAddress = words.slice(2, words.length).join(' ');
+  var addresses = [inputAddress];
 
   client = webdriverio
     .remote(options)
@@ -755,7 +759,7 @@ function yo(task, context, callback) {
   .pause(3000)
   .then(function() {
     async.eachSeries(addresses, function(address, cb) {
-      yoList({address: address, category: '중국집', site: 'yo'}, null, function(_task, _context) {
+      yoList({address: address, category: category, site: 'yo'}, null, function(_task, _context) {
         cb(null);
       });
     }, function(err) {

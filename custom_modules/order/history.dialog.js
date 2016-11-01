@@ -33,6 +33,11 @@ var dialogs = [
 },
 {
   input: 'yo',
+  task:   {action: 'yoAddress'},
+  output: '완료'
+},
+{
+  input: 'yt',
   task:   {action: 'yo'},
   output: '완료'
 },
