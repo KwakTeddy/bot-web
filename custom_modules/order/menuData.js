@@ -208,6 +208,7 @@ var options = {
   path: '/',
   desiredCapabilities: {
     browserName: 'chrome',
+    logLevel: 'verbose',
     chromeOptions: {
       "args": [
         "window-size=1366,768",
@@ -841,7 +842,8 @@ function google(task, context, callback) {
     .getUrl().then(function(url) {
       console.log('title: ' + url);
       callback(task, context);
-    });
+    })
+    .end();
 }
 
 bot.setAction('google', google);
