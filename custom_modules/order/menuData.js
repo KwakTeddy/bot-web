@@ -194,11 +194,32 @@ function baList(task, context, callback) {
 exports.baList = baList;
 
 
+// var options = {
+//   desiredCapabilities: {
+//     browserName: 'chrome',
+//     logLevel: 'verbose'
+//
+//   }
+// };
+
 var options = {
+  host: '127.0.0.1',
+  port: 9515,
+  path: '/',
   desiredCapabilities: {
     browserName: 'chrome',
-    logLevel: 'verbose'
-
+    chromeOptions: {
+      "args": [
+        "window-size=1366,768",
+        "no-proxy-server",
+        "no-default-browser-check",
+        "no-first-run",
+        "disable-boot-animation",
+        "disable-default-apps",
+        "disable-extensions",
+        "disable-translate"
+      ]
+    }
   }
 };
 
