@@ -186,14 +186,6 @@ var baeminDetail = {
 // bot.setTask('baeminDetail', baeminDetail);
 
 
-function baList(task, context, callback) {
-
-  callback(task, context);
-}
-
-exports.baList = baList;
-
-
 // var options = {
 //   desiredCapabilities: {
 //     browserName: '',
@@ -293,6 +285,8 @@ function getScopeModelById(scopeId, name) {
     console.log(e);
   }
 }
+
+
 
 function yoList(task, context, callback) {
   var _task;
@@ -742,36 +736,34 @@ exports.yoSave = yoSave;
 
 function yo(task, context, callback) {
   var addresses = [
-    '서울 강남구 논현동'
+    '서울 강남구 역삼동'
     // '서울 강남구 청담동',
     // '서울 금천구 가산동'
     // '경기도 부천시 원미구 중2동'
   ];
 
-  // if(!client) {
-    client = webdriverio
-      .remote(options)
-      .init()
-  // }
+  var category = '중국집';
 
-    // .url('https://www.yogiyo.co.kr/')
-    // .url('https://www.yogiyo.co.kr/mobile/#/%EC%84%9C%EC%9A%B8/135010/%ED%94%BC%EC%9E%90%EC%96%91%EC%8B%9D/')
-    .url('https://www.yogiyo.co.kr/mobile/#/%EC%84%9C%EC%9A%B8/153023/%EC%A4%91%EC%8B%9D/')
-    .getUrl().then(function(url) {
-      console.log(url);
-    })
-    .pause(3000)
-    .then(function() {
-      async.eachSeries(addresses, function(address, cb) {
-        yoList({address: address, category: '치킨', site: 'yo'}, null, function(_task, _context) {
-          cb(null);
-        });
-      }, function(err) {
-        console.log('client end');
-        client.end();
-        callback(task, context);
+  client = webdriverio
+    .remote(options)
+    .init()
+
+  .url('https://www.yogiyo.co.kr/')
+  .getUrl().then(function(url) {
+    console.log(url);
+  })
+  .pause(3000)
+  .then(function() {
+    async.eachSeries(addresses, function(address, cb) {
+      yoList({address: address, category: '중국집', site: 'yo'}, null, function(_task, _context) {
+        cb(null);
       });
+    }, function(err) {
+      console.log('client end');
+      client.end();
+      callback(task, context);
     });
+  });
 }
 
 exports.yo = yo;
@@ -847,3 +839,100 @@ function google(task, context, callback) {
 }
 
 bot.setAction('google', google);
+
+
+function baeList(task, context, callback) {
+
+  async.waterfall([
+    function(cb) {
+      client.isExisting('#locText').then(function(isExisting) {
+        if(isExisting) cb(null);
+        else {
+          console.log('yo input 없음: ');
+          cb(true);
+        }
+      })
+    },
+
+    function(cb) {
+      var _addr = task.address.split(' ');
+      var dong = _addr[_addr.length - 1];
+
+      client.setValue('#sch_addr', dong)
+        .pause(2000)
+        .getText('#addrlist > ul > li > strong').then(function(text) {
+        if(text.search('관련된 동이름을 찾을 수 없습니다.') != -1) {
+          cb(true);
+        } else {
+          cb(null);
+        }
+      })
+    }
+  ], function(err) {
+    callback(task, context);
+  });
+}
+
+exports.baeList = baeList;
+
+
+function bae(task, context, callback) {
+  // var inRaw = context.dialog.inRaw;
+  // var words = inRaw.split(' ');
+  //
+  // // var category = '치킨';
+  // var category = words[1];
+  // var inputAddress = words.slice(2, words.length).join(' ');
+  //
+  // // 너무 큰파일은 안됨 200M
+  // var text = fs.readFileSync(path.resolve('dump/address_dong.txt'));
+  // text =utils.convertEncoding('euc-kr', 'UTF-8', text);
+  //
+  // var lines = text.split('\r\n');
+
+  var category = '중국집';
+  var address = '서울특별시 강남구 청담동';
+
+  client = webdriverio
+    .remote(options)
+    .init()
+    .url('http://www.baemin.com/')
+    // .windowHandleSize({width: 1200, height: 1000})
+    .getViewportSize().then(function(size) {
+      console.log(size);
+    })
+    .setViewportSize({width: 1200, height: 5000}, false)
+    .getViewportSize().then(function(size) {
+      console.log(size);
+    })
+    .pause(5000)
+    .then(function() {
+      baeList({address: address, category: category, site: 'bae'}, null, function (_task, _context) {
+        callback(task, context);
+
+        // async.eachSeries(lines, function(line,cb) {
+        //   var val = line.split('\t');
+        //
+        //   var address = val.slice(1, val.length - 1).join(' ');
+        //
+        //   if(address.search(inputAddress) != -1 && address != inputAddress && val[val.length -1].trim() == '존재') {
+        //     baList({address: address, category: category, site: 'yo'}, null, function(_task, _context) {
+        //       cb(null);
+        //     });
+        //   } else {
+        //     cb(null);
+        //   }
+        // },
+        // function(err) {
+        //   console.log('ba end');
+        //
+        //   client.end();
+        //   callback(task, context);
+        // });
+      });
+    });
+}
+
+exports.bae = bae;
+
+bot.setAction('bae', bae);

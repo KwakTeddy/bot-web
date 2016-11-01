@@ -25,3 +25,10 @@
 {action: 'yoAddress'}
 > 완료
 
+< yt
+{action: 'yo'}
+> 완료
+
+< bae
+{action: 'bae'}
+> 완료
