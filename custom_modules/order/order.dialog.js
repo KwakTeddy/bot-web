@@ -378,7 +378,13 @@ var dialogs = [
   { name: '주소변경', input: ['주소 변경', '주소 바꾸다'],
     output: '주소를 말씀해 주세요.',
     children: [
-      { input: {types: [{type: type.addressType, raw: true, context: true}]}, output: '주소가 변경되었습니다.' },
+      { input: {types: [{type: type.addressType, raw: true, context: true}]},
+        task: {action: function(task, context, callback) {
+          context.user.addressCompact = context.user.address.도로명주소.replace(/^([가-힣]+\s*)/, function(matched, p1) { return ''});
+          context.user.addressCompact = context.user.addressCompact.replace(/(\s+\(.*\))/, function(matched, p1) {return ''});
+          callback(task, context);
+        }},
+        output: '주소가 변경되었습니다.' },
       { output: {repeat: 1, output: '정확한 주소를 찾을 수 없습니다. 주소를 정확히 입력해 주세요.'}}
     ]
   },
