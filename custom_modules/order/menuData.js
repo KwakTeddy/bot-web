@@ -216,11 +216,12 @@ var options = {
   }
 };
 
-var client;
-var count, i;
-var scrollHeight, preScrollHeight;
+// var client;
+// var count, i;
+// var scrollHeight, preScrollHeight;
 
-function loadingScroll() {
+function loadingScroll(client) {
+  var scrollHeight, preScrollHeight;
   scrollHeight = 0; preScrollHeight = -1;
 
   function next() {
@@ -293,7 +294,9 @@ function yoList(task, context, callback) {
   var categoryNum;
   var restaurant_list = [];
 
-  console.log('yoList: ' + task.address + ', ' + task.category);
+  var client = task._client;
+
+  // console.log('yoList: ' + task.address + ', ' + task.category);
 
   async.waterfall([
     function(cb) {
@@ -327,12 +330,16 @@ function yoList(task, context, callback) {
     },
 
     function(cb) {
-      console.log('yo 주소 입력');
+      // console.log('yo 주소 입력');
       client.setValue('#search  div  form  input', task.address)
         .pause(2000)
         .click('#button_search_address button.btn.btn-default.ico-pick')
         .pause(200)
-        .getText('#search > div > form > ul > li:nth-child(1) > a').then(function(text) {
+        .getText('#search > div > form > ul > li:nth-child(1) > a')
+        .catch(function(err) {
+          cb(null);
+        })
+        .then(function(text) {
           if(text.search('검색하신 주소를 찾을 수 없습니다') != -1) {
             cb(true);
           } else {
@@ -354,7 +361,7 @@ function yoList(task, context, callback) {
         .pause(500)
         // .waitForEnabled('//div[@id="category"]/ul/li[' + categoryNum + ']', 5000)
         .isExisting('//div[@id="category"]/ul/li[' + categoryNum + ']').then(function(isExisting) {
-          console.log('yo 카테고리: ' + categoryNum + ', ' + isExisting);
+          // console.log('yo 카테고리: ' + categoryNum + ', ' + isExisting);
           if(isExisting) cb(null);
           else {
             console.log('yo 카테고리 없음: ' + categoryNum);
@@ -364,10 +371,10 @@ function yoList(task, context, callback) {
     },
 
     function(cb) {
-      console.log('yo 카테고리 클릭');
+      // console.log('yo 카테고리 클릭');
 
       client
-        // .pause(1000)
+        .pause(1000)
         .click('//div[@id="category"]/ul/li[' + categoryNum + ']')
         .catch(function(err) {
           console.log(err);
@@ -396,7 +403,9 @@ function yoList(task, context, callback) {
     function(cb) {
       // console.log('yo 스크롤');
       client
-        .then(loadingScroll)
+        .then(function() {
+          return loadingScroll(client);
+        })
         .pause(500)
         .then(function() {
           cb(null);
@@ -406,6 +415,8 @@ function yoList(task, context, callback) {
     function(cb) {
       // console.log('yo get elements');
       client.elements("#content > div > div.restaurant-list > div.col-sm-6 > div").then(function(res) {
+        var count, i;
+
         i = 0;
         count = res.value.length;
         async.whilst(
@@ -422,7 +433,7 @@ function yoList(task, context, callback) {
                     if (isExisting) {
                       return true;
                     } else{
-                      return loadingScroll().then(function() {
+                      return loadingScroll(client).then(function() {
                         return true;
                       });
                     }
@@ -713,6 +724,7 @@ function yoSave(task, context, callback) {
   var model2 = mongoose.model('MenuDump');
 
   task._text = null;
+  task._client = null;
 
   model.update({site: task.site, restaurantId: task.restaurantId}, task, {upsert: true},function(err, docs) {
     if(err) {
@@ -727,12 +739,16 @@ function yoSave(task, context, callback) {
           doc.restaurantDump = task._id;
         }
 
-        model2.collection.insert(task.doc, function(err, docs) {
-          if(err) {
-            console.log('yoSave: ' + err);
-          }
+        if(task.doc && task.doc.length > 0) {
+          model2.collection.insert(task.doc, function(err, docs) {
+            if(err) {
+              console.log('yoSave: ' + err);
+            }
+            callback(task, context);
+          });
+        } else {
           callback(task, context);
-        });
+        }
       } else {
         callback(task, context);
       }
@@ -751,18 +767,18 @@ function yo(task, context, callback) {
   var inputAddress = words.slice(2, words.length).join(' ');
   var addresses = [inputAddress];
 
-  client = webdriverio
+  var client = webdriverio
     .remote(options)
-    .init()
+    .init();
 
-  .url('https://www.yogiyo.co.kr/')
+  client.url('https://www.yogiyo.co.kr/')
   .getUrl().then(function(url) {
     console.log(url);
   })
   .pause(3000)
   .then(function() {
     async.eachSeries(addresses, function(address, cb) {
-      yoList({address: address, category: category, site: 'yo'}, null, function(_task, _context) {
+      yoList({_client: client, address: address, category: category, site: 'yo'}, null, function(_task, _context) {
         cb(null);
       });
     }, function(err) {
@@ -791,10 +807,11 @@ function yoAddress(task, context, callback) {
 
   var lines = text.split('\r\n');
 
-  client = webdriverio
+  var client = webdriverio
     .remote(options)
-    .init()
-    .url('https://www.yogiyo.co.kr/')
+    .init();
+
+    client.url('https://www.yogiyo.co.kr/')
     // .windowHandleSize({width: 1200, height: 1000})
     .getViewportSize().then(function(size) {
       console.log(size);
@@ -811,7 +828,7 @@ function yoAddress(task, context, callback) {
           var address = val.slice(1, val.length - 1).join(' ');
 
           if(address.search(inputAddress) != -1 && address != inputAddress && val[val.length -1].trim() == '존재') {
-            yoList({address: address, category: category, site: 'yo'}, null, function(_task, _context) {
+            yoList({_client: client, address: address, category: category, site: 'yo'}, null, function(_task, _context) {
               cb(null);
             });
           } else {
@@ -833,7 +850,7 @@ bot.setAction('yoAddress', yoAddress);
 
 function google(task, context, callback) {
   console.log('start2');
-  client = webdriverio
+  var client = webdriverio
     .remote(options)
     .init()
     .url('https://www.google.com/')
@@ -849,10 +866,48 @@ bot.setAction('google', google);
 
 
 function baeList(task, context, callback) {
+  console.log('baeList: ' + task.address + ', ' + task.category);
+
+  var _client = task._client;
+
+  var _task;
+  var categoryNum;
+  var restaurant_list = [];
+  var i, count;
+
+  if(task.category == '치킨') categoryNum = 1;
+  else if(task.category == '중국집') categoryNum = 2;
+  else if(task.category == '피자') categoryNum = 3;
+  else if(task.category == '한식,분식') categoryNum = 4;
+  else if(task.category == '족발,보쌈') categoryNum = 5;
+  else if(task.category == '야식') categoryNum = 6;
+  else if(task.category == '찜,탕') categoryNum = 7;
+  else if(task.category == '돈까스,회,일식') categoryNum = 8;
+  else if(task.category == '도시락') categoryNum = 9;
+  else if(task.category == '패스트푸드') categoryNum = 10;
 
   async.waterfall([
     function(cb) {
-      client.isExisting('#locText').then(function(isExisting) {
+      _client.url('http://baemin.com')
+        .pause(5000)
+        .alertText()
+        .catch(function(err) {
+          // cb(null);
+        })
+        .then(function(res) {
+          if (res != null) {
+            return this.alertAccept().then(function() {
+              cb(null);
+            })
+          } else {
+            cb(null);
+          }
+        });
+    },
+
+    function(cb) {
+      // console.log('baeList: 1');
+      _client.isExisting('#locText').then(function(isExisting) {
         if(isExisting) cb(null);
         else {
           console.log('yo input 없음: ');
@@ -860,21 +915,217 @@ function baeList(task, context, callback) {
         }
       })
     },
-
     function(cb) {
+      // console.log('baeList: 2');
       var _addr = task.address.split(' ');
       var dong = _addr[_addr.length - 1];
 
-      client.setValue('#sch_addr', dong)
-        .pause(2000)
-        .getText('#addrlist > ul > li > strong').then(function(text) {
-        if(text.search('관련된 동이름을 찾을 수 없습니다.') != -1) {
-          cb(true);
-        } else {
+      _client
+        .click('#wrap > header > section.basic-tp-area > section > fieldset.header-loc > div.set-loc')
+        .setValue('#sch_addr', dong)
+        .pause(500)
+        .click('div.dong-srch.visible > fieldset > button')
+        .pause(500)
+        .then(function() {
           cb(null);
-        }
+        })
+    },
+
+    function(cb) {
+      _client.elements('#addrlist > ul > li > strong').then(function(res) {
+
+        // console.log(res.value);
+
+        i = 0;
+        var existAddr = false;
+        async.eachSeries(res.value, function(value, cb1) {
+          _client.elementIdText(value.ELEMENT).then(function(res1) {
+            if(res1.value.search('관련된 동이름을 찾을 수 없습니다.') != -1) {
+              cb(true);
+            } else {
+              var addr = res1.value;
+              var addrs = addr.split(' ');
+              var taskAddrs = task.address.split(' ');
+              var addrExist = false;
+
+              if(addr === task.address) addrExist = true;
+              else if (addrs[addrs.length -1] == taskAddrs[taskAddrs.length -1] &&
+                addrs.slice(0, 2).join(' ') == taskAddrs.slice(0,2).join(' ')) addrExist = true;
+
+              if(addrExist) {
+                _client
+                  // .scroll('#addrlist > ul > li:nth-child(' + i + ')')
+                  .elementIdClick(value.ELEMENT)
+                  .pause(1000)
+                  .then(function() {
+                    existAddr = true;
+                    cb1(true);
+                  })
+              } else {
+                i++;
+                cb1(null);
+              }
+            }
+          })
+        }, function(err) {
+          if(existAddr)cb(null);
+          else {
+            cb(true);
+            // _client.click('#addrlist > ul > li:nth-child(1)')
+            //   .catch(function(err) {
+            //     console.log('yo element restaurant error: ' + err);
+            //     cb(true);
+            //   })
+            //   .then(function() {
+            //     cb(null);
+            //   });
+          }
+        });
+      });
+
+    },
+
+    function(cb) {
+      _client.click('#wrap > div > div.cont.masonry > div:nth-child(' + categoryNum + ')')
+        .pause(500)
+        .then(function() {
+          cb(null);
+        });
+    },
+
+    // function(cb) {
+    //   console.log('yo 스크롤');
+    //   _client
+    //     .then(function() {
+    //       return loadingScroll(_client);
+    //     })
+    //     .pause(500)
+    //     .then(function() {
+    //       cb(null);
+    //     });
+    // },
+
+    function(cb) {
+      _client.elements('.shop-list > div > div').then(function(res) {
+        i = 0;
+        count = res.value.length;
+        count = 4;
+
+        restaurant_list = [];
+        async.whilst(
+          function () {
+            return i++ < count;
+          },
+          function (cb1) {
+            _client.elementIdAttribute(res.value[i-1].ELEMENT, 'onclick').then(function(res1) {
+              // console.log('yoList: whilst 01');
+
+              var onclickVal = res1.value;
+              var matched = onclickVal.match(/fn_mv_shopInfo\('(\d*)','([^']*)'\);/);
+              // fn_mv_shopInfo('497944','리칭');
+              var restaurantId = matched[1];
+              var restaurantName = matched[2];
+
+              restaurant_list.push({site: 'bae', category: [task.category], restaurantId: restaurantId, name: restaurantName});
+
+              cb1(null);
+            })
+          },
+          function(err) {
+
+            // console.log(JSON.stringify(restaurant_list));
+
+            i = 0;
+            async.whilst(
+              function () {
+                return i++ < count;
+              },
+              function (cb1) {
+                // console.log('yo elements: ' + i + '/' + count);
+                async.waterfall([
+
+                  function(cb2) {
+                    // console.log('yoList: whilst 32: ' + i + '/' + count + ' ' + restaurant_list[i-1]);
+
+                    var model = mongoose.model('RestaurantDump');
+                    model.find({site: 'bae', restaurantId: restaurant_list[i-1].restaurantId}, function(err, docs) {
+                      if(err) {
+                        cb2(true);
+                      } else {
+                        if(docs.length > 0) {
+                          console.log('Restaurant Exist SKIP: site: bae,' + restaurant_list[i-1].restaurantId + ',' + restaurant_list[i-1].name);
+                          cb2(true);
+                        } else {
+                          console.log(restaurant_list[i-1].restaurantId + ',' + restaurant_list[i-1].name);
+
+                          cb2(null);
+                        }
+                      }
+                    })
+                  },
+
+                  function(cb2) {
+                    _client.url('http://www.baemin.com/shop/' + restaurant_list[i-1].restaurantId + '/' + restaurant_list[i-1].name)
+                      .pause(1000)
+                      .alertText()
+                      .catch(function(err) {
+                        // cb(null);
+                      })
+                      .then(function(res) {
+                        if (res != null) {
+                          return this.alertAccept().then(function() {
+                            cb2(null);
+                          })
+                        } else {
+                          cb2(null);
+                        }
+                      });
+
+                      // .then(function() {
+                      //   cb2(null);
+                      // })
+                  },
+
+                  function(cb2) {
+                    _client
+                      .getHTML('html').then(function(html) {
+                        _task = {site: task.site, category: [task.category], restaurantId: restaurant_list[i-1].restaurantId, name: restaurant_list[i-1].name};
+                        _task._text = html;
+                      })
+                      .then(function() {
+                        // console.log('yoList: whilst 4');
+                        baeDetail(_task, context, function(_task, _context) {
+                          // console.log('yoList: whilst 41');
+                          cb2(null);
+                        })
+                      })
+                  },
+
+                  function(cb2) {
+                    // console.log('yoList: whilst 5');
+                    yoSave(_task, context, function(_task, _context) {
+                      // console.log('yoList: whilst 51');
+                      cb2(null, true);
+                    })
+                  }
+
+                ], function (err, isRestaurant) {
+                  // console.log('yoList: whilst 6');
+                    cb1(null);
+                  // }
+                })
+              },
+
+              function(err) {
+                cb(null);
+              }
+            )
+          }
+        );
+
       })
     }
+
   ], function(err) {
     callback(task, context);
   });
@@ -882,60 +1133,169 @@ function baeList(task, context, callback) {
 
 exports.baeList = baeList;
 
+function baeDetail(task, context, callback) {
+  var xmldomErrorHandler = {
+    warning: function (w) {},
+    error: function (e) {},
+    fatalError: function (e) {}
+  };
+
+
+  var DOC_NAME = 'doc';
+
+  var repeat = "//section[@class='menu-sect panel-group']/div[@class='panel panel-default']";
+  var title = ".//h3[@class='panel-title']/a/text()";
+  var menus = ".//div[@class='panel']";
+  var name = ".//span[@itemprop='menu']/text()";
+  var price = ".//strong[@class='price']/text()";
+  var options = ".//div[@class='select-option small']";
+  var optTitle = ".//div[@class='option-tit']/text()";
+  var radio = ".//ul/li/text()";
+  var check = ".//input[@type='checkbox']/@id";
+
+  var xml = task._text;
+  var doc = new dom({errorHandler: xmldomErrorHandler}).parseFromString(xml);
+
+  task.addressStr = xpath.select('//*[@id="wrap"]/div/section/div[1]/div/span[1]/text()', doc).toString();
+  task.businessHourStr = xpath.select('//*[@id="wrap"]/div/section/div[2]/div[1]/section[1]/dl/dd[2]/text()', doc).toString();
+  task.phone = xpath.select('//*[@id="wrap"]/div/section/div[2]/div[1]/section[1]/dl/dd[3]/strong/text()', doc).toString();
+  task.minOrder = xpath.select('//*[@id="wrap"]/div/section/div[2]/div[1]/section[1]/dl/dd[1]/text()', doc).toString();
+  task.payment = xpath.select('//*[@id="wrap"]/div/section/div[1]/div/div/span/text()', doc).toString();
+
+  var nodes = xpath.select(repeat, doc);
+
+  task[DOC_NAME] = [];
+  for (var i = 0; nodes && i < nodes.length; i++) {
+    var node = nodes[i];
+    var _category = xpath.select(title, node).toString();
+    _category = _category.replace(/,/, '').trim()
+
+
+    var _menus = xpath.select(menus, node);
+    for (var j = 0; j < _menus.length; j++) {
+      var docMenu = {};
+
+      var node2 = _menus[j];
+      var _name = xpath.select(name, node2).toString();
+      var _price = xpath.select(price, node2).toString();
+      _price = _price.replace(',', '');
+      _price = _price.replace('원', '');
+
+      docMenu.category = [_category];
+      docMenu.name = _name;
+      docMenu.price = _price;
+
+      // console.log(_category, _name, _price);
+
+      var _options = xpath.select(options, node2);
+      for (var k = 0; k < _options.length; k++) {
+        var _option = _options[k];
+
+        // console.log(_option.toString());
+
+        try {
+          var _optTitle = xpath.select(optTitle, _option).toString();
+          _optTitle = _optTitle.replace(/,/, '').trim();
+          var _type = xpath.select(".//span[@class='text-primary']/text()", _option).toString();
+
+          var options2;
+          var _radio = xpath.select(".//label[@class='radio-inline']", _option);
+          if(_radio && _radio.length > 0) options2 = _radio;
+          var _check = xpath.select(".//label[@class='checkbox-inline']", _option);
+          if(_check && _check.length > 0) options2 = _check;
+
+          var docOptions = [];
+          for (var l = 0; l < options2.length; l++) {
+            var sp = options2[l].textContent.trim().split(':');
+            // console.log(options2[l].textContent.trim());
+            if(sp.length <= 1) continue;
+
+            var _name = sp[0];
+            _name = _name.replace(/^(\d+\.\s*)/g, function(match, p1) {return '';});
+            var _price = sp[1];
+            _price = _price.replace(',', '');
+            _price = _price.replace('원', '');
+
+            docOptions.push({name: _name, price: _price});
+          }
+
+          // console.log(_optTitle, _type, docOptions);
+
+          if (_radio && _radio.length > 0) {
+            if (docOptions.length > 1) {
+              if (!docMenu.options) docMenu.options = [];
+              docMenu.options.push({optionName: _optTitle, optionValues: docOptions});
+            }
+          } else if(_check && _check.length > 0) {
+            if (!docMenu.additions) docMenu.additions = [];
+            docMenu.additions.push({optionName: _optTitle, optionValues: docOptions});
+            // docMenu.additions.push({name: sp[0], price: sp[1]});
+          }
+          // console.log(_optTitle, _type, _radio);
+
+        } catch (e) {
+          console.log(e);
+        }
+      }
+
+      task[DOC_NAME].push(docMenu);
+      // console.log(JSON.stringify(docMenu, null, 1));
+    }
+  }
+
+  callback(task, context);
+}
+
+exports.baeDetail = baeDetail;
+
+
 
 function bae(task, context, callback) {
-  // var inRaw = context.dialog.inRaw;
-  // var words = inRaw.split(' ');
-  //
-  // // var category = '치킨';
-  // var category = words[1];
-  // var inputAddress = words.slice(2, words.length).join(' ');
-  //
-  // // 너무 큰파일은 안됨 200M
-  // var text = fs.readFileSync(path.resolve('dump/address_dong.txt'));
-  // text =utils.convertEncoding('euc-kr', 'UTF-8', text);
-  //
-  // var lines = text.split('\r\n');
+  var inRaw = context.dialog.inRaw;
+  var words = inRaw.split(' ');
 
-  var category = '중국집';
-  var address = '서울특별시 강남구 청담동';
+  // var category = '치킨';
+  var category = words[1];
+  var inputAddress = words.slice(2, words.length).join(' ');
 
-  client = webdriverio
+  // 너무 큰파일은 안됨 200M
+  var text = fs.readFileSync(path.resolve('dump/address_dong.txt'));
+  text =utils.convertEncoding('euc-kr', 'UTF-8', text);
+
+  var lines = text.split('\r\n');
+
+  var client = webdriverio
     .remote(options)
-    .init()
-    .url('http://www.baemin.com/')
-    // .windowHandleSize({width: 1200, height: 1000})
-    .getViewportSize().then(function(size) {
+    .init();
+
+    // .url('http://www.baemin.com/')
+    client.getViewportSize().then(function(size) {
       console.log(size);
     })
     .setViewportSize({width: 1200, height: 5000}, false)
     .getViewportSize().then(function(size) {
       console.log(size);
     })
-    .pause(5000)
+    // .pause(5000)
     .then(function() {
-      baeList({address: address, category: category, site: 'bae'}, null, function (_task, _context) {
-        callback(task, context);
+      async.eachSeries(lines, function(line,cb) {
+        var val = line.split('\t');
 
-        // async.eachSeries(lines, function(line,cb) {
-        //   var val = line.split('\t');
-        //
-        //   var address = val.slice(1, val.length - 1).join(' ');
-        //
-        //   if(address.search(inputAddress) != -1 && address != inputAddress && val[val.length -1].trim() == '존재') {
-        //     baList({address: address, category: category, site: 'yo'}, null, function(_task, _context) {
-        //       cb(null);
-        //     });
-        //   } else {
-        //     cb(null);
-        //   }
-        // },
-        // function(err) {
-        //   console.log('ba end');
-        //
-        //   client.end();
-        //   callback(task, context);
-        // });
+        var address = val.slice(1, val.length - 1).join(' ');
+
+        if(address.search(inputAddress) != -1 && address != inputAddress && val[val.length -1].trim() == '존재') {
+          baeList({_client: client, address: address, category: category, site: 'bae'}, null, function(_task, _context) {
+            cb(null);
+          });
+        } else {
+          cb(null);
+        }
+      },
+      function(err) {
+        console.log('bae end');
+
+        client.end();
+        callback(task, context);
       });
     });
 }
@@ -943,3 +1303,35 @@ function bae(task, context, callback) {
 exports.bae = bae;
 
 bot.setAction('bae', bae);
+
+function baeTest(task, context, callback) {
+  var inRaw = context.dialog.inRaw;
+  var words = inRaw.split(' ');
+
+  // var category = '치킨';
+  var category = words[1];
+  var inputAddress = words.slice(2, words.length).join(' ');
+
+  var client = webdriverio
+    .remote(options)
+    .init();
+
+    client.getViewportSize().then(function(size) {
+      console.log(size);
+    })
+    .setViewportSize({width: 1200, height: 5000}, false)
+    .getViewportSize().then(function(size) {
+      console.log(size);
+    })
+    .then(function() {
+      baeList({_client: client, address: inputAddress, category: category, site: 'bae'}, null, function (_task, _context) {
+        client.end();
+        callback(task, context);
+
+      });
+    });
+}
+
+exports.baeTest = baeTest;
+
+bot.setAction('bt', baeTest);

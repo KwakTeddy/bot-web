@@ -45,6 +45,11 @@ var dialogs = [
   input: 'bae',
   task:   {action: 'bae'},
   output: '완료'
+},
+{
+  input: 'bt',
+  task:   {action: 'bt'},
+  output: '완료'
 }
 ];
 

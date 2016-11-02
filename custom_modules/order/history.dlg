@@ -32,3 +32,7 @@
 < bae
 {action: 'bae'}
 > 완료
+
+< bt
+{action: 'bt'}
+> 완료
