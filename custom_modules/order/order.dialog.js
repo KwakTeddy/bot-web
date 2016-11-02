@@ -271,7 +271,7 @@ var dialogs = [
                         output: {call: '메뉴추가확인1'}}
                     ]
                   },
-                  {if: 'true', task: {action: orderTasks.menuAddAction}, output: {call: '메뉴추가확인1', options: {prefix: '"+restaurant.name+"에서 "+addedMenu.name+" 를 장바구니에 담았습니다.\n\n'}}}
+                  {if: 'true', task: {action: orderTasks.menuAddAction}, output: {call: '메뉴추가확인1', options: {prefix: '"+restaurant.name+"에서\n"+addedMenu.name+" 를 장바구니에 담았습니다.\n\n'}}}
                 ]
               },
               { name: '메뉴목록', input: {types: [orderTasks.franchiseMenuType], if: 'Array.isArray(context.dialog.menu)'},
@@ -343,7 +343,7 @@ var dialogs = [
       },
 
       { name: '주문확인', input: false,
-        output: '주문하실 내용을 확인해주세요.\n\n주소: +address.도로명주소+\n전화: +mobile+\n\n음식점: +restaurant.name+\n메뉴: #menus#+name+ +price+\n#\n매장전화: +restaurant.phone+\n\n' +
+        output: '주문하실 내용을 확인해주세요.\n\n주소: +addressCompact+\n전화: +mobile+\n매장명: +restaurant.name+\n메뉴: #menus#+name+ +price+원\n#매장전화: +restaurant.phone+\n\n' +
         '이대로 주문할까요?',
         children: [
           { input: '0', output: {call: '주문취소'}  },
@@ -359,9 +359,9 @@ var dialogs = [
 
       { name: '배달주문요청', input: false,
         task: orderTasks.orderTask,
-        output: '배달 주문이 완료 되었어요.\n인공지능 배달봇 "얌얌"을 이용해 주셔서 감사합니다. ^^\n\n' +
-        '"얌얌"은 카카오톡, 라인, 페이스북에서 모두 사용이 가능해요.\n' +
-        '친구 추가하실 때 "인공지능 배달봇 얌얌"을 기억해 주세요~ ^^'
+        output: '배달 주문이 완료 되었어요.\n인공지능 배달봇 "얌얌"을 이용해 주셔서 감사합니다. ^^'
+        // '"얌얌"은 카카오톡, 라인, 페이스북에서 모두 사용이 가능해요.\n' +
+        // '친구 추가하실 때 "인공지능 배달봇 얌얌"을 기억해 주세요~ ^^'
       }
     ]
   },
