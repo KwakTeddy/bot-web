@@ -20,3 +20,19 @@
     > {call: '주문확인'}
 > if(dialog.task.doc == undefined || dialog.task.doc.length == 0) 배달 내역이 없습니다.
 
+
+< yo
+{action: 'yoAddress'}
+> 완료
+
+< yt
+{action: 'yo'}
+> 완료
+
+< bae
+{action: 'bae'}
+> 완료
+
+< bt
+{action: 'bt'}
+> 완료

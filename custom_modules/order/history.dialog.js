@@ -30,6 +30,26 @@ var dialogs = [
     }
   ]}, 
   {if: 'dialog.task.doc == undefined || dialog.task.doc.length == 0', output: '배달 내역이 없습니다.'}]
+},
+{
+  input: 'yo',
+  task:   {action: 'yoAddress'},
+  output: '완료'
+},
+{
+  input: 'yt',
+  task:   {action: 'yo'},
+  output: '완료'
+},
+{
+  input: 'bae',
+  task:   {action: 'bae'},
+  output: '완료'
+},
+{
+  input: 'bt',
+  task:   {action: 'bt'},
+  output: '완료'
 }
 ];
 
