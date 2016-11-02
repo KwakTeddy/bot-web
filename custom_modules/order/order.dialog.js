@@ -203,6 +203,7 @@ var dialogs = [
             children: [
               { input: '~네', output: {call: '메뉴선택1'}},
               { input: '~아니요', output: {call: '주문확인', return: 1}},
+              { input: '없다', output: {call: '주문확인', return: 1}},
               { output: {repeat: 1}}
             ]
           },
@@ -343,7 +344,7 @@ var dialogs = [
 
       { name: '주문확인', input: false,
         output: '주문하실 내용을 확인해주세요.\n\n주소: +address.도로명주소+\n전화: +mobile+\n\n음식점: +restaurant.name+\n메뉴: #menus#+name+ +price+\n#\n매장전화: +restaurant.phone+\n\n' +
-        '주문 하시겠습니까?',
+        '이대로 주문할까요?',
         children: [
           { input: '0', output: {call: '주문취소'}  },
           { input: {regexp: /~네/g}, output: {call: '배달주문요청'}  },

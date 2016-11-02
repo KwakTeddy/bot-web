@@ -327,9 +327,11 @@ function yoList(task, context, callback) {
     },
 
     function(cb) {
-      // console.log('yo 주소 입력');
+      console.log('yo 주소 입력');
       client.setValue('#search  div  form  input', task.address)
         .pause(2000)
+        .click('#button_search_address button.btn.btn-default.ico-pick')
+        .pause(200)
         .getText('#search > div > form > ul > li:nth-child(1) > a').then(function(text) {
           if(text.search('검색하신 주소를 찾을 수 없습니다') != -1) {
             cb(true);
@@ -340,8 +342,9 @@ function yoList(task, context, callback) {
     },
 
     function(cb) {
-      client.click('#button_search_address button.btn.btn-default.ico-pick')
-        .pause(200)
+      client
+        //   .click('#button_search_address button.btn.btn-default.ico-pick')
+        // .pause(200)
         .waitUntil(function() {
           return client.getAttribute('#spinner', 'class', function(attr) {
             if(attr == 'ng-hide') return true;
@@ -351,7 +354,7 @@ function yoList(task, context, callback) {
         .pause(500)
         // .waitForEnabled('//div[@id="category"]/ul/li[' + categoryNum + ']', 5000)
         .isExisting('//div[@id="category"]/ul/li[' + categoryNum + ']').then(function(isExisting) {
-          // console.log('yo 카테고리: ' + categoryNum + ', ' + isExisting);
+          console.log('yo 카테고리: ' + categoryNum + ', ' + isExisting);
           if(isExisting) cb(null);
           else {
             console.log('yo 카테고리 없음: ' + categoryNum);
@@ -361,7 +364,7 @@ function yoList(task, context, callback) {
     },
 
     function(cb) {
-      // console.log('yo 카테고리 클릭');
+      console.log('yo 카테고리 클릭');
 
       client
         // .pause(1000)
@@ -764,7 +767,7 @@ function yo(task, context, callback) {
       });
     }, function(err) {
       console.log('client end');
-      client.end();
+      // client.end();
       callback(task, context);
     });
   });

@@ -25,24 +25,27 @@ var menuConcepts = [
   {menu: '후라이드', concept: '바삭'},
   {menu: '간장치킨', concept: '짭쪼름 짠'},
   {menu: '허니치킨', concept: '달달 달콤하다 아이'},
-  {menu: '양념치킨', concept: '맵다 매콤'},
-  {menu: '짜장면', concept: '느끼다'},
-  {menu: '짬뽕', concept: '맵다 매콤 해장'},
-  {menu: '볶음밥', concept: '밥'},
+  {menu: '양념치킨', concept: '맵다 매콤 달달'},
+  {menu: '간짜장', concept: '느끼다 깔끔하다'},
+  {menu: '짜장면', concept: '느끼다 기르다'},
+  {menu: '짬뽕', concept: '맵다 매콤 해장 시원 칼칼'},
+  {menu: '볶음밥', concept: '밥 담백 개운'},
   {menu: '탕수육', concept: '바삭'},
-  {menu: '짬짜면', concept: '골고루 같이'},
+  {menu: '짬짜면', concept: '골고루 칼칼 시원 같이'},
   {menu: '탕짜면', concept: '골고루 같이'},
   {menu: '깐풍기', concept: '맵다 매콤'},
   {menu: '피자', concept: '기르다 느끼다'},
-  {menu: '족발', concept: '부드럽다 야들야들'},
-  {menu: '보쌈', concept: '고기'}
+  {menu: '족발', concept: '부드럽다 쫄깃쫄깃'},
+  {menu: '보쌈', concept: '고기 담백 부드럽다'},
+  {menu: '햄버거', concept: '든든하다 고기 간편하다 간단하다'}
 ];
 
 var menus = {
   '치킨': {desc: '언제나 진리'},
-  '짜장면': {desc: '빨리되는'},
-  '피자': {desc: '고소한치즈와 빵의 조화'},
-  '족발': {desc: '야들야들한'},
+  '짜장면': {desc: '국민음식'},
+  '간짜장': {desc: '간편한 국민음식'},
+  '피자': {desc: '고소한 치즈와 쫄깃한 도우의 조화'},
+  '족발': {desc: '부드럽고 쫄깃한'},
   '햄버거': {desc: '두껍고 육즙이 가득한 고기패티'},
   '후라이드': {desc: '고소하게 맛있는'},
   '간장치킨': {desc: '짭쪼름한 깔끔한맛'},
@@ -54,7 +57,8 @@ var menus = {
   '짬짜면': {desc: '고민할 필요없이'},
   '탕짜면': {desc: '요리와 식사'},
   '깐풍기': {desc: '술안주로 제격'},
-  '보쌈': {desc: '돼지고기의 대표'}
+  '보쌈': {desc: '돼지고기의 대표'},
+  '햄버거': {desc: '참깨빵 위에 순쇠고기 패티 두장~'}
 };
 
 var recommendTask = {
