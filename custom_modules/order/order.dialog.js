@@ -380,8 +380,8 @@ var dialogs = [
     children: [
       { input: {types: [{type: type.addressType, raw: true, context: true}]},
         task: {action: function(task, context, callback) {
-          context.user.addressCompact = context.user.address.도로명주소.replace(/^([가-힣]+\s*)/, function(matched, p1) { return ''});
-          context.user.addressCompact = context.user.addressCompact.replace(/(\s+\(.*\))/, function(matched, p1) {return ''});
+          context.user.addressCompact = context.user.address.지번주소.replace(/^([가-힣]+\s*)/, function(matched, p1) { return ''});
+          // context.user.addressCompact = context.user.addressCompact.replace(/(\s+\(.*\))/, function(matched, p1) {return ''});
           callback(task, context);
         }},
         output: '주소가 변경되었습니다.' },
