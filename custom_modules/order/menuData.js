@@ -791,7 +791,7 @@ function yo(task, context, callback) {
       });
     }, function(err) {
       console.log('client end');
-      // client.end();
+      client.end();
       callback(task, context);
     });
   });

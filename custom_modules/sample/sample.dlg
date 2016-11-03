@@ -101,6 +101,12 @@ c< /여러/g
 < false
 > 호출되었을 때만 표시됩니다
 
+< naver
+{action: 'naverTest'}
+> 네이버
+
+
+
 <> 매칭되는 문장이 없습니다.                                     // input이 없으면 순서가 오면 무조건 표시 gambit 역활
 
 
@@ -120,5 +126,3 @@ c< /여러/g
 'otherTask'
 > +text+\n task에서 저장한 내용 표시
 
-< menu update
-''
