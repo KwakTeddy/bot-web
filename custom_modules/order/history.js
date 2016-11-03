@@ -66,10 +66,10 @@ function orderHistory(task, context, successCallback, errorCallback) {
     }
 
     task.doc = [];
-    for(var i = 0; i < _docs.length && i < 5; i++) {
+    for(var i = 0; i < _docs.length; i++) {
       try {
         _doc = _docs[i];
-        _doc.orderDate = dateformat(_doc.created + 9 * 60 * 60, 'yyyy.mm.dd HH:MM');
+        _doc.orderDate = dateformat(_doc.created + 9 * 60 * 60, 'mm월dd일');
         //_doc.created.getMonth() + '/' + _doc.created.getDate();
         _doc.menu = _doc.menus[0].name;
         if (_doc.menus.length > 1) _doc.menu += '등';
@@ -97,3 +97,58 @@ var historyToOrderTask = {
 };
 
 bot.setTask('historyToOrderTask', historyToOrderTask);
+
+
+var currentOrderTask = {
+  action: currentOrderAction
+};
+
+bot.setTask('currentOrderTask', currentOrderTask);
+
+function currentOrderAction(task, context, callback) {
+  var model = mongoose.model('DeliveryOrder');
+  var query = {user: context.user.userId};
+  query.status = {$in: ['요청', '접수']};
+
+  model.find(query).
+  populate('restaurant').
+  sort({created: -1}).
+  lean().
+  exec(function(err, docs) {
+    var _doc;
+    task.doc = [];
+    for(var i = 0; i < docs.length; i++) {
+      try {
+        _doc = docs[i];
+        _doc.orderDate = dateformat(_doc.created + 9 * 60 * 60, 'mm월dd일');
+        _doc.menu = _doc.menus[0].name;
+        if (_doc.menus.length > 1) _doc.menu += '등';
+        task.doc.push(_doc);
+
+      } catch(e) {}
+    }
+
+    context.dialog['history'] = task.doc;
+
+    callback(task, context);
+  })
+}
+
+exports.currentOrderAction = currentOrderAction;
+
+
+var orderCancel = {
+  name: 'orderCancel',
+  action: function(task, context, callback) {
+    if(context.dialog['history']) {
+
+      var model = mongoose.model('DeliveryOrder');
+      model.update({_id: context.dialog['history']._id}, {status: '취소'}, function (err) {
+      });
+    }
+    callback(task, context);
+  }
+};
+
+bot.setTask('orderCancel', orderCancel);
+

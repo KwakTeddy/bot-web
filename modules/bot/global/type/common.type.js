@@ -30,6 +30,23 @@ exports.numberListTypeCheck = numberListTypeCheck;
 botlib.setGlobalTypeCheck('numberListTypeCheck', numberListTypeCheck);
 
 function listTypeCheck(text, type, task, context, callback) {
+  var inRawText = text.replace(/\s/g, '');
+  var list = (task[type.name] ? task[type.name] : context.dialog[type.name]);
+  for (var j = 0; j < list.length; j++) {
+    var item;
+    if(type.field) item = list[j][type.field];
+    else if(list[j]['name']) item = list[j]['name'];
+    else if(typeof list[j] == 'string') item = list[j];
+    else continue;
+
+    if(item.replace(' ', '') === inRawText) {
+      context.dialog[type.name] = /*task[type.name] = */list[j];
+
+      callback(text, task, true);
+      return;
+    }
+  }
+
   var words = text.split(' ');
   for (var i = 0; i < words.length; i++) {
     var word = words[i];
@@ -47,7 +64,7 @@ function listTypeCheck(text, type, task, context, callback) {
       num = _num;
     }
 
-    var list = (task[type.name] ? task[type.name] : context.dialog[type.name]);
+    list = (task[type.name] ? task[type.name] : context.dialog[type.name]);
     if(list && num >= 1 && num <= list.length) {
       context.dialog[type.name] = /*task[type.name] = */list[num - 1];
 
@@ -57,6 +74,7 @@ function listTypeCheck(text, type, task, context, callback) {
   }
 
   // list word match
+  var maxEqual = false;
   var maxIndex = -1, maxCount = 0;
   list = (task[type.name] ? task[type.name] : context.dialog[type.name]);
   for (var j = 0; j < list.length; j++) {
@@ -71,19 +89,22 @@ function listTypeCheck(text, type, task, context, callback) {
       for (var i = 0; i < words.length; i++) {
         var word = words[i];
 
+        if(word.length == 1) continue;
         word = RegExp.escape(word);
-        console.log(item);
+        // console.log(item);
         if(item.search(word) != -1) matchCount++;
       }
 
       if(matchCount > maxCount) {
         maxCount = matchCount;
         maxIndex = j;
+      } else if(matchCount > 0 && matchCount == maxCount) {
+        maxEqual = true;
       }
     }
   }
 
-  if(maxIndex != -1) {
+  if(maxIndex != -1 && !maxEqual) {
     context.dialog[type.name] = /*task[type.name] = */list[maxIndex];
     callback(text, task, true);
   } else

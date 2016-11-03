@@ -13,7 +13,7 @@ var restaurantCategory = [
   {category: '치킨', alias: '치킨 통닭 닭 chicken'},
   {category: '중국집', alias: '중국 중국집 중식 짱깨 짱께 중식당 chinese'},
   {category: '피자', alias: '피자 핏자 pizza'},
-  {category: '패스트푸드', alias: '햄버거 버거 burger'},
+  {category: '패스트푸드', alias: '패스트푸드 햄버거 버거 burger'},
   {category: '족발', alias: '족발 돼지발'},
   {category: '보쌈', alias: '보쌈'}
 ];
@@ -627,6 +627,9 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
     logger.debug('type.js:restaurantTypeCheck: START ' + format.name + ' "' + text + '"');
   }
 
+  var address = context.dialog.address;
+  if(!address) address = context.user.address;
+
   var model;
   if (mongoose.models[format.mongo.model]) {
     model = mongoose.model(format.mongo.model);
@@ -676,10 +679,10 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
           }
 
           // if(context.dialog.address) {
-            query['address.시도명'] = context.dialog.address.시도명;
-            query['address.시군구명'] = context.dialog.address.시군구명;
-            // query['address.행정동명'] = context.dialog.address.행정동명;
-            query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
+            query['address.시도명'] = address.시도명;
+            query['address.시군구명'] = address.시군구명;
+            // query['address.행정동명'] = address.행정동명;
+            query['address.법정읍면동명'] = address.법정읍면동명;
           // }
 
           var _query = model.find(query, format.mongo.fields, format.mongo.options);
@@ -734,10 +737,10 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
         }
 
         // if(context.dialog.address) {
-          query['address.시도명'] = context.dialog.address.시도명;
-          query['address.시군구명'] = context.dialog.address.시군구명;
-          // query['address.행정동명'] = context.dialog.address.행정동명;
-          query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
+          query['address.시도명'] = address.시도명;
+          query['address.시군구명'] = address.시군구명;
+          // query['address.행정동명'] = address.행정동명;
+          query['address.법정읍면동명'] = address.법정읍면동명;
         // }
 
         var _query = model.find(query, format.mongo.fields, format.mongo.options);
@@ -826,10 +829,10 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
         var query = {category: category};
 
         // if(context.dialog.address) {
-          query['address.시도명'] = context.dialog.address.시도명;
-          query['address.시군구명'] = context.dialog.address.시군구명;
-          // query['address.행정동명'] = context.dialog.address.행정동명;
-          query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
+          query['address.시도명'] = address.시도명;
+          query['address.시군구명'] = address.시군구명;
+          // query['address.행정동명'] = address.행정동명;
+          query['address.법정읍면동명'] = address.법정읍면동명;
         // }
 
         var _query = model.find(query, format.mongo.fields, format.mongo.options);
@@ -870,10 +873,10 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
         var query = {category: category};
 
         // if(context.dialog.address) {
-          query['address.시도명'] = context.dialog.address.시도명;
-          query['address.시군구명'] = context.dialog.address.시군구명;
-          // query['address.행정동명'] = context.dialog.address.행정동명;
-          query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
+          query['address.시도명'] = address.시도명;
+          query['address.시군구명'] = address.시군구명;
+          // query['address.행정동명'] = address.행정동명;
+          query['address.법정읍면동명'] = address.법정읍면동명;
         // }
 
         var _query = model.find(query, format.mongo.fields, format.mongo.options);
@@ -938,10 +941,10 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
             }
 
             // if(context.dialog.address) {
-              query['address.시도명'] = context.dialog.address.시도명;
-              query['address.시군구명'] = context.dialog.address.시군구명;
-              // query['address.행정동명'] = context.dialog.address.행정동명;
-              query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
+              query['address.시도명'] = address.시도명;
+              query['address.시군구명'] = address.시군구명;
+              // query['address.행정동명'] = address.행정동명;
+              query['address.법정읍면동명'] = address.법정읍면동명;
             // }
 
             var _query = model.find(query, format.mongo.fields, format.mongo.options);
@@ -1069,6 +1072,8 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
   });
   
 }
+
+exports.restaurantTypeCheck = restaurantTypeCheck;
 
 function nMenuTypeCheck(text, format, inDoc, context, callback) {
 

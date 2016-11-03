@@ -130,8 +130,8 @@ function processOutput(task, context, out) {
         var pageStr;
         if(context.dialog.page && context.dialog.numOfPage > 1) {
           pageStr =
-            (context.dialog.page && context.dialog.page != 1 ? '\n< 앞페이지': '') +
-            (context.dialog.page && context.dialog.page != context.dialog.numOfPage ? '\n> 뒤페이지': '');
+            (context.dialog.page && context.dialog.page != 1 ? '<. 이전페이지\n': '') +
+            (context.dialog.page && context.dialog.page != context.dialog.numOfPage ? '\>. 다음페이지\n': '');
         }
 
         return formatArray.join('') + (pageStr ? pageStr: '');
@@ -963,6 +963,7 @@ function mongoTypeCheck(text, format, inDoc, context, callback) {
           for (var i = 0; i < words.length; i++) {
             var word = words[i];
             try {
+              if(word.length <= 1) continue;
               word = RegExp.escape(word);
 
               for (var j = 0; j < bot.concepts[key].length; j++) {
@@ -981,45 +982,48 @@ function mongoTypeCheck(text, format, inDoc, context, callback) {
 
       if(matchConcepts.length > 0) {
         async.eachSeries(matchConcepts, function (word, _callback) {
-          var query = {};
-          for(var j = 0; j < format.mongo.queryFields.length; j++) {
-            try {
-              word = RegExp.escape(word);
-              query[format.mongo.queryFields[j]] = new RegExp(word, 'i');
-            } catch(e) {}
-          }
-
-          if(format.query) query = utils.merge(query, format.query);
-          var _query = model.find(query, format.mongo.fields, format.mongo.options);
-          if(format.mongo.sort) _query.sort(format.mongo.sort);
-          if(format.mongo.limit) _query.limit(format.mongo.limit || type.MAX_LIST);
-
-          console.log(query);
-          _query.lean().exec(function (err, docs) {
-            if (err || !docs || docs.length <= 0) {
-              //callback(text, inDoc);
-            } else {
-              for(var k = 0; k < docs.length; k++) {
-                var doc = docs[k];
-
-                var bExist = false;
-                for(var l = 0; l < matchedDoc.length; l++) {
-                  if(matchedDoc[l]._id.id == doc._id.id) {
-                    bExist = true;
-                    break;
-                  }
-                }
-
-                if(!bExist) {
-                  doc.matchRate = 1;
-                  matchedDoc.push(doc);
-                }
-              }
+          if(word.length <= 1) {
+            _callback(null);
+          } else {
+            var query = {};
+            for(var j = 0; j < format.mongo.queryFields.length; j++) {
+              try {
+                word = RegExp.escape(word);
+                query[format.mongo.queryFields[j]] = new RegExp(word, 'i');
+              } catch(e) {}
             }
 
-            _callback(null);
-          });
+            if(format.query) query = utils.merge(query, format.query);
+            var _query = model.find(query, format.mongo.fields, format.mongo.options);
+            if(format.mongo.sort) _query.sort(format.mongo.sort);
+            if(format.mongo.limit) _query.limit(format.mongo.limit || type.MAX_LIST);
 
+            console.log(query);
+            _query.lean().exec(function (err, docs) {
+              if (err || !docs || docs.length <= 0) {
+                //callback(text, inDoc);
+              } else {
+                for(var k = 0; k < docs.length; k++) {
+                  var doc = docs[k];
+
+                  var bExist = false;
+                  for(var l = 0; l < matchedDoc.length; l++) {
+                    if(matchedDoc[l]._id.id == doc._id.id) {
+                      bExist = true;
+                      break;
+                    }
+                  }
+
+                  if(!bExist) {
+                    doc.matchRate = 1;
+                    matchedDoc.push(doc);
+                  }
+                }
+              }
+
+              _callback(null);
+            });
+          }
         }, function(err) {
           if(matchedDoc.length > 0) _cb(true);
           else _cb(null);
@@ -1034,6 +1038,7 @@ function mongoTypeCheck(text, format, inDoc, context, callback) {
       var excluded = [];
       for (var i = 0; i < words.length; i++) {
         var word = words[i];
+        if(word.length <= 1) continue;
         word = RegExp.escape(word);
         if(!(format.exclude && _.includes(format.exclude, word)))
           _words.push(word);
@@ -1044,74 +1049,79 @@ function mongoTypeCheck(text, format, inDoc, context, callback) {
       if(_words.length == 0) _words.concat(excluded);
 
       async.eachSeries(_words, function (word, _callback){
-        // var word = words[i];
-        var query = {};
-        for(var j = 0; j < format.mongo.queryFields.length; j++) {
-          try {
-            if(!(format.exclude && _.includes(format.exclude, word)))
-              query[format.mongo.queryFields[j]] = new RegExp(word, 'i');
-            else
-              excluded.push(word);
-          } catch(e) {}
-        }
 
-        if(format.query) query = utils.merge(query, format.query);
+        if(word.length <= 1) {
+          _callback(null);
+        } else {
+          var query = {};
+          for(var j = 0; j < format.mongo.queryFields.length; j++) {
+            try {
+              if(!(format.exclude && _.includes(format.exclude, word)))
+                query[format.mongo.queryFields[j]] = new RegExp(word, 'i');
+              else
+                excluded.push(word);
+            } catch(e) {}
+          }
 
-        var _query = model.find(query, format.mongo.fields, format.mongo.options);
-        if(format.mongo.sort) _query.sort(format.mongo.sort);
-        if(format.mongo.limit) _query.limit(format.mongo.limit || type.MAX_LIST);
+          if(format.query) query = utils.merge(query, format.query);
 
-        _query.lean().exec(function (err, docs) {
-          wordsCount++;
+          var _query = model.find(query, format.mongo.fields, format.mongo.options);
+          if(format.mongo.sort) _query.sort(format.mongo.sort);
+          if(format.mongo.limit) _query.limit(format.mongo.limit || type.MAX_LIST);
 
-          if (err || !docs || docs.length <= 0) {
-            //callback(text, inDoc);
-          } else {
+          _query.lean().exec(function (err, docs) {
+            wordsCount++;
 
-            for(var k = 0; k < docs.length; k++) {
-              var doc = docs[k];
+            if (err || !docs || docs.length <= 0) {
+              //callback(text, inDoc);
+            } else {
 
-              var matchCount = 0;
-              matchedWord = '';
-              var matchIndex = -1, matchMin = -1, matchMax = -1;
-              for(var l = 0; l < format.mongo.queryFields.length; l++) {
-                for(var m = 0; m < _words.length; m++) {
-                  matchIndex = doc[format.mongo.queryFields[l]].search(new RegExp(_words[m], 'i'));
+              for(var k = 0; k < docs.length; k++) {
+                var doc = docs[k];
 
-                  if(matchIndex != -1) {
-                    matchCount++;
-                    matchedWord += words[m];
+                var matchCount = 0;
+                matchedWord = '';
+                var matchIndex = -1, matchMin = -1, matchMax = -1;
+                for(var l = 0; l < format.mongo.queryFields.length; l++) {
+                  for(var m = 0; m < _words.length; m++) {
+                    matchIndex = doc[format.mongo.queryFields[l]].search(new RegExp(_words[m], 'i'));
 
-                    var matchOrgIndex = text.search(new RegExp(words[m], 'i'));
-                    if(matchOrgIndex != -1 && (matchMin == -1 || matchOrgIndex < matchMin)) matchMin = matchOrgIndex;
-                    if(matchOrgIndex != -1 && (matchMax == -1 || matchOrgIndex + words[m].length> matchMax)) matchMax = matchOrgIndex + words[m].length;
-                  }
-                }
-              }
+                    if(matchIndex != -1) {
+                      matchCount++;
+                      matchedWord += words[m];
 
-              if(!format.mongo.minMatch || matchCount >= format.mongo.minMatch) {
-                var bExist = false;
-                for(var l = 0; l < matchedDoc.length; l++) {
-                  if(matchedDoc[l]._id.id == doc._id.id) {
-                    bExist = true;
-                    break;
+                      var matchOrgIndex = text.search(new RegExp(words[m], 'i'));
+                      if(matchOrgIndex != -1 && (matchMin == -1 || matchOrgIndex < matchMin)) matchMin = matchOrgIndex;
+                      if(matchOrgIndex != -1 && (matchMax == -1 || matchOrgIndex + words[m].length> matchMax)) matchMax = matchOrgIndex + words[m].length;
+                    }
                   }
                 }
 
-                if(!bExist) {
-                  doc.matchWord = matchedWord;
-                  doc.matchCount = matchCount;
-                  doc.matchMin = matchMin;
-                  doc.matchMax = matchMax;
-                  doc.matchRate = matchCount / words.length;
-                  matchedDoc.push(doc);
+                if(!format.mongo.minMatch || matchCount >= format.mongo.minMatch) {
+                  var bExist = false;
+                  for(var l = 0; l < matchedDoc.length; l++) {
+                    if(matchedDoc[l]._id.id == doc._id.id) {
+                      bExist = true;
+                      break;
+                    }
+                  }
+
+                  if(!bExist) {
+                    doc.matchWord = matchedWord;
+                    doc.matchCount = matchCount;
+                    doc.matchMin = matchMin;
+                    doc.matchMax = matchMax;
+                    doc.matchRate = matchCount / words.length;
+                    matchedDoc.push(doc);
+                  }
                 }
               }
             }
-          }
 
-          _callback(null);
-        });
+            _callback(null);
+          });
+        }
+        // var word = words[i];
       }, function(err) {
         if(matchedDoc.length > 0) _cb(true);
         else _cb(null);
