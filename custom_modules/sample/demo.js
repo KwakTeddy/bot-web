@@ -58,16 +58,16 @@ function naverTest(task, context, callback) {
                     console.log(text);
                 })
                 .then(function(){
-                    var messages = require(path.resolve('modules/messages/server/controllers/messages.server.controller'));
-                    var vmsMessage = "안녕하세요 카카오톡 예약봇 양얌입니다. " +
-                        _menuStr + ' 배달해 주세요.' +
-                        '주소는 ' + context.dialog.address + ' 입니다.' +
-                        '전화번호는 ' + context.dialog.mobile + ' 입니다.' +
-                        '이 전화은 인공지능 배달봇 얌얌의 카카오톡에서 예약 대행 서비스입니다.';
-                        messages.sendVMS({callbackPhone: '028585683', phone: '01066624995', message: vmsMessage}, context,
-                            function(_task, _context) {
+                    // var messages = require(path.resolve('modules/messages/server/controllers/messages.server.controller'));
+                    // var vmsMessage = "안녕하세요 카카오톡 예약봇 양얌입니다. " +
+                    //     _menuStr + ' 배달해 주세요.' +
+                    //     '주소는 ' + context.dialog.address + ' 입니다.' +
+                    //     '전화번호는 ' + context.dialog.mobile + ' 입니다.' +
+                    //     '이 전화은 인공지능 배달봇 얌얌의 카카오톡에서 예약 대행 서비스입니다.';
+                    //     messages.sendVMS({callbackPhone: '028585683', phone: '01066624995', message: vmsMessage}, context,
+                    //         function(_task, _context) {
                                 callback(task, context);
-                            });
+                            // });
                 })
         })
 };
