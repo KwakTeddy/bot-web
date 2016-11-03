@@ -12,6 +12,8 @@ var webdriverio = require('webdriverio');
 var fs = require('fs');
 var utils = require(path.resolve('modules/bot/action/common/utils'));
 
+var client;
+
 // var execTask = {
 //   action: function(task, context, callback) {
 //     var words = context.dialog.inRaw.split(' ');
@@ -767,7 +769,13 @@ function yo(task, context, callback) {
   var inputAddress = words.slice(2, words.length).join(' ');
   var addresses = [inputAddress];
 
-  var client = webdriverio
+  if(client) {
+    try {
+      client.end();
+    } catch(e) {}
+  }
+
+  client = webdriverio
     .remote(options)
     .init();
 
@@ -783,7 +791,7 @@ function yo(task, context, callback) {
       });
     }, function(err) {
       console.log('client end');
-      // client.end();
+      client.end();
       callback(task, context);
     });
   });
@@ -807,7 +815,13 @@ function yoAddress(task, context, callback) {
 
   var lines = text.split('\r\n');
 
-  var client = webdriverio
+  if(client) {
+    try {
+      client.end();
+    } catch(e) {}
+  }
+
+    client = webdriverio
     .remote(options)
     .init();
 
@@ -1264,7 +1278,13 @@ function bae(task, context, callback) {
 
   var lines = text.split('\r\n');
 
-  var client = webdriverio
+  if(client) {
+    try {
+      client.end();
+    } catch(e) {}
+  }
+
+  client = webdriverio
     .remote(options)
     .init();
 
@@ -1312,7 +1332,13 @@ function baeTest(task, context, callback) {
   var category = words[1];
   var inputAddress = words.slice(2, words.length).join(' ');
 
-  var client = webdriverio
+  if(client) {
+    try {
+      client.end();
+    } catch(e) {}
+  }
+
+  client = webdriverio
     .remote(options)
     .init();
 

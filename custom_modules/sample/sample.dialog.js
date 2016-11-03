@@ -179,6 +179,11 @@ var dialogs = [
   output: '호출되었을 때만 표시됩니다'
 },
 {
+  input: 'naver',
+  task:   {action: 'naverTest'},
+  output: '네이버'
+},
+{
   input: '',
   output: '매칭되는 문장이 없습니다.'
 },
@@ -200,11 +205,6 @@ var dialogs = [
   input: 'other task',
   task:   'otherTask',
   output: '+text+\n task에서 저장한 내용 표시'
-},
-{
-  input: 'menu update',
-  task:   '',
-  output: []
 }
 ];
 
