@@ -12,6 +12,21 @@ function menuCategoryCheck(inRaw, inNLP, dialog, context, callback) {
     else if(num == 5) context.dialog.restaurantCategory = '패스트푸드';
 
     callback(true);
+  } else if(inRaw.trim() === '치킨') {
+    context.dialog.restaurantCategory = '치킨';
+    callback(true);
+  } else if(inRaw.trim() === '중국집') {
+    context.dialog.restaurantCategory = '중국집';
+    callback(true);
+  } else if(inRaw.trim() === '피자') {
+    context.dialog.restaurantCategory = '피자';
+    callback(true);
+  } else if(inRaw.trim() === '족발') {
+    context.dialog.restaurantCategory = '족발';
+    callback(true);
+  } else if(inRaw.trim() === '패스트푸드') {
+    context.dialog.restaurantCategory = '패스트푸드';
+    callback(true);
   } else {
     callback(false);
   }

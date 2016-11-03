@@ -696,7 +696,6 @@ function toDialogString(dialog) {
   }
 
   return str;
-
 }
 
 
@@ -721,7 +720,7 @@ function executeType(inRaw, inNLP, type, task, context, callback) {
 
           if (_matched) {
             if(task[type.name]) {
-              context.dialog[type.name] = task[type.name];
+              if(type.save == undefined || type.save == true) context.dialog[type.name] = task[type.name];
               context.dialog.typeMatches[type.name] = task[type.name];
             }
 
@@ -743,7 +742,7 @@ function executeType(inRaw, inNLP, type, task, context, callback) {
           }
         });
       } else if (context.dialog.typeMatches[type.name] != undefined) {
-        task[type.name] = context.dialog.typeMatches[type.name];
+        if(type.save == undefined || type.save == true) task[type.name] = context.dialog.typeMatches[type.name];
         cb4(null, true);
       } else {
         cb4(null);
