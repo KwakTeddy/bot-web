@@ -33,6 +33,12 @@ var options = {
 };
 
 function naverTest(task, context, callback) {
+
+  var inRaw = context.dialog.inRaw;
+  var matched = inRaw.match(/네이버[^\s]*\s*(.*)검색/);
+  query = matched[1];
+  if(query) query.trim();
+
   var client = webdriverio
     .remote(options)
     .init()
@@ -40,7 +46,7 @@ function naverTest(task, context, callback) {
       // client.end();
       client.url('http://www.naver.com')
         .pause(500)
-        .setValue('#query', '강남 스테이크 맛집')
+        .setValue('#query', query)
         .click('#search_btn')
         .pause(1000)
         .scroll('#lcs_greenmap')
@@ -78,6 +84,8 @@ function naverTest(task, context, callback) {
             }
           );
         })
+        .pause(5000)
+        .end();
     })
 }
 

@@ -179,7 +179,7 @@ var dialogs = [
   output: '호출되었을 때만 표시됩니다'
 },
 {
-  input: 'naver',
+  input: '네이버',
   task:   {action: 'naverTest'},
   output: '네이버'
 },
