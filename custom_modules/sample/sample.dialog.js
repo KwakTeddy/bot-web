@@ -179,34 +179,39 @@ var dialogs = [
   output: '호출되었을 때만 표시됩니다'
 },
 {
-  input: '네이버',
+  input: '네이버 예약',
   task:   {action: 'naverTest'},
-  output: '네이버'
+  output: '바이킹뷔페 오크우드호텔점 예약 완료되었습니다.'
 },
 {
-  input: 'samsung',
+  input: '네이버',
+  task:   {action: 'naversearch'},
+  output: '삼성동 코엑스 맛집 검색결과입니다.\n1. 바이킹뷔페 오크우드호텔점\n2. 그랜츠 키친\n3. 케르반 코엑스몰점\n4. 브래서리\n5. 오리옥스 코엑스점\n6. 온더보더 코엑스점'
+},
+{
+  input: '삼성',
   task:   {action: 'samsung'},
-  output: '삼성'
+  output: '삼성카드 VIP카드 조회 결과입니다.\n1. RAUME O(포인트,스카이패스,아시아나)\n2. THE O(포인트,스카이패스,아시아나)\n3. THE 1(포인트,스카이패스,BIZ)\n4. The Platinum Card\n5. Amex Gold Card'
 },
 {
-  input: 'hyundai',
+  input: '현대',
   task:   {action: 'hyundai'},
   output: '현대'
 },
 {
-  input: 'shinhan',
+  input: '신한',
   task:   {action: 'shinhan'},
   output: '신한'
 },
 {
-  input: 'lotte',
+  input: '롯데',
   task:   {action: 'lotte'},
   output: '롯데'
 },
 {
-  input: '모든 카드',
+  input: '모든',
   task:   {action: 'allCard'},
-  output: '모든 카드를 조회했습니다.'
+  output: '모든 신용카드 조회 결과입니다.\n\n삼성카드\n1. RAUME O(포인트,스카이패스,아시아나)\n2. THE O(포인트,스카이패스,아시아나)\n3. THE 1(포인트,스카이패스,BIZ)\n4. The Platinum Card\n5. Amex Gold Card\n\n신한카드\n1. The PREMIER\n2. The Ace\n3. The BEST-T\n4. The BEST-F\n5. The LADY BEST\n6. The BEST\n7. The Lady CLASSIC\n8. The CLASSIC+\n9. INFINITE\n10. Super Triple\n\n롯데카드\n1. VEEX 플래티넘 카드\n2. 샤롯데 플래티넘 카드\n3. 플래티넘 스타 카드\n4. SKYPASS 플래티넘 카드\n5. 비엔 플래티넘카드\n6. OPTIN 플래티넘 카드\n7. 위버스카이 카드\n8. DC플러스 플래티넘카드\n\n현대카드\n1. the Black\n2. the Red\n3. the Purple'
 },
 {
   input: '',
