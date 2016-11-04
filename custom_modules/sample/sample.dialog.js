@@ -184,6 +184,21 @@ var dialogs = [
   output: '네이버'
 },
 {
+  input: 'samsung',
+  task:   {action: 'samsung'},
+  output: '삼성'
+},
+{
+  input: 'hyundai',
+  task:   {action: 'hyundai'},
+  output: '현대'
+},
+{
+  input: 'shinhan',
+  task:   {action: 'shinhan'},
+  output: '신한'
+},
+{
   input: '',
   output: '매칭되는 문장이 없습니다.'
 },

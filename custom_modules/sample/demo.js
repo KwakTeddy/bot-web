@@ -72,9 +72,126 @@ function naverTest(task, context, callback) {
         })
 };
 
+function samsung(task, context, callback) {
+    var client = webdriverio
+        .remote(options)
+        .init()
+        .then(function() {
+            // client.end();
+            client.url('https://www.samsungcard.com')
+                .pause(1000)
+                .click('#gnb > div.htop_l > div.btn_sec > div > button')
+                .pause(1000)
+                .click('#gnb > div.htop_l > div.btn_sec.open > section > nav > ul.gnb > li.depth01.on > a > span')
+                .click('#gnb > div.htop_l > div.btn_sec.open > section > nav > ul.gnb > li.depth01.on > div > div.sub_menu01.clfix.group_on > ul:nth-child(1) > li:nth-child(4) > a')
+                .pause(1000)
+                .click('#contents > div > div.card_box.raume.ui_premium_card.premium_card_list03 > div > div > div.box696_premium > a')
+                .pause(2000)
+                .click('#contents > div > div.card_box.raume.ui_premium_card.premium_card_list03.open.on > div > div > div.box696_premium > a')
+                .pause(2000)
+                .click('#contents > div > div.card_box.the0.ui_premium_card.premium_card_list03 > div > div > div.box696_premium > a')
+                .pause(2000)
+                .click('#contents > div > div.card_box.the0.ui_premium_card.premium_card_list03.open.on > div > div > div.box696_premium > a')
+                .pause(2000)
+                .click('#contents > div > div.card_box.the1.ui_premium_card.premium_card_list03 > div > div > div.box696_premium > a')
+                .pause(2000)
+                .click('#contents > div > div.card_box.the1.ui_premium_card.premium_card_list03.open.on > div > div > div.box696_premium > a')
+                .pause(2000)
+                .click('#contents > div > div.card_box.platinum.ui_premium_card > div > div > div.box696_premium > a')
+                .pause(2000)
+                .click('#contents > div > div.card_box.platinum.ui_premium_card.open.on > div > div > div.box696_premium > a')
+                .pause(2000)
+                .click('#contents > div > div.card_box.amex.ui_premium_card > div > div > div.box696_premium > a')
+                .pause(2000)
+                .click('#contents > div > div.card_box.amex.ui_premium_card.open.on > div > div > div.box696_premium > a')
+            callback(task,context);
+        })
+};
 
+function hyundai(task, context, callback) {
+    var client = webdriverio
+        .remote(options)
+        .init()
+        .then(function() {
+            // client.end();
+            client.url('https://www.hyundaicard.com')
+                .pause(1000)
+                .click('#localMenu > ul > li.cards > a')
+                .pause(1000)
+                .click('#container > aside > div > div.box_card_side > ul.link_card_side > li:nth-child(1) > a')
+                .pause(2000)
+                .scroll('#premiumCard > div:nth-child(2) > div.box_tooltip.tooltip_fee > p > a > span')
+                .pause(2000)
+                .scroll('#premiumCard > div:nth-child(3) > div.box_tooltip.tooltip_fee > p > a > span')
+            callback(task,context);
+        })
+};
 
+function shinhan(task, context, callback) {
+    var client = webdriverio
+        .remote(options)
+        .init()
+        .then(function() {
+            // client.end();
+            client.url('https://www.shinhancard.com')
+                .pause(1000)
+                .click('#shcGnb > li:nth-child(2) > a')
+                .pause(1000)
+                .click('#gnb2 > div > div > div.area02 > div > ul > li:nth-child(1) > a')
+                .pause(1000)
+                .click('#gnb2 > div > div > div.area02 > div > ul > li:nth-child(1) > ul > li:nth-child(1) > a')
+                .pause(1000)
+                .scroll('#pbContent > div:nth-child(4)')
+                .pause(1000)
+                .scroll('#pbContent > div:nth-child(5)')
+                .pause(1000)
+                .scroll('#pbContent > div:nth-child(6)')
+                .pause(1000)
+                .scroll('#pbContent > div:nth-child(7)')
+                .pause(1000)
+                .scroll('#pbContent > div:nth-child(8)')
+                .pause(1000)
+                .scroll('#pbContent > div:nth-child(9)')
+                .pause(1000)
+                .scroll('#pbContent > div:nth-child(10)')
+                .pause(1000)
+                .scroll('#pbContent > div:nth-child(11)')
+                .pause(1000)
+                .scroll('#pbContent > div:nth-child(12)')
+                .pause(1000)
+                .scroll('#pbContent > div:nth-child(13)')
+                .pause(1000)
+                .click('#pbContent > div.btnWrap > a > span')
+                .pause(1000)
+                .scroll('#pbContent > div.cardListMore > div:nth-child(1)')
+                .pause(1000)
+                .scroll('#pbContent > div.cardListMore > div:nth-child(2)')
+                .pause(1000)
+                .scroll('#pbContent > div.cardListMore > div:nth-child(3)')
+                .pause(1000)
+                .scroll('#pbContent > div.cardListMore > div:nth-child(4)')
+            callback(task,context);
+        })
+};
 
+function lotte(task, context, callback) {
+    var client = webdriverio
+        .remote(options)
+        .init()
+        .then(function() {
+            // client.end();
+            client.url('https://www.lottecard.co.kr')
+                .pause(1000)
+                .click('#localMenu > ul > li.cards > a')
+                .pause(1000)
+                .click('#container > aside > div > div.box_card_side > ul.link_card_side > li:nth-child(1) > a')
+                .pause(2000)
+                .scroll('#premiumCard > div:nth-child(2) > div.box_tooltip.tooltip_fee > p > a > span')
+                .pause(2000)
+                .scroll('#premiumCard > div:nth-child(3) > div.box_tooltip.tooltip_fee > p > a > span')
+            callback(task,context);
+        })
+};
 
 // var messages = require(path.resolve('modules/messages/server/controllers/messages.server.controller'));
 //
@@ -91,7 +208,22 @@ function naverTest(task, context, callback) {
 
 
 
-
 exports.naverTest = naverTest;
 
 bot.setAction('naverTest', naverTest);
+
+exports.samsung = samsung();
+
+bot.setAction('samsung', samsung);
+
+exports.hyundai = hyundai();
+
+bot.setAction('hyundai', hyundai);
+
+exports.shinhan = shinhan();
+
+bot.setAction('shinhan', shinhan);
+
+exports.lotte = lotte();
+
+bot.setAction('lotte', lotte);
