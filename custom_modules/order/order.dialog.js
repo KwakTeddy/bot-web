@@ -349,7 +349,7 @@ var dialogs = [
       },
 
       { name: '주문확인', input: false,
-        task: {action: function(task, context) {
+        task: {action: function(task, context, callback) {
           if(context.user.address) context.user.addressCompact = context.user.address.지번주소.replace(/^([가-힣]+\s*)/, function(matched, p1) { return ''});
           callback(task, context);
         }},
