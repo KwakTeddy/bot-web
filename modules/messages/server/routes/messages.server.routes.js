@@ -20,6 +20,9 @@ module.exports = function(app) {
   app.route('/api/messages/talk/kakao')
     .post(messages.sendKakao);
 
+  app.route('/api/messages/vms/send')
+    .post(messages.sendVMSReq);
+
   // Finish by binding the Custom action middleware
   app.param('messageId', messages.messageByID);
 };

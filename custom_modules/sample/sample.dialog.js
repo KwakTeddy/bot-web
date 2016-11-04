@@ -184,6 +184,31 @@ var dialogs = [
   output: '네이버'
 },
 {
+  input: 'samsung',
+  task:   {action: 'samsung'},
+  output: '삼성'
+},
+{
+  input: 'hyundai',
+  task:   {action: 'hyundai'},
+  output: '현대'
+},
+{
+  input: 'shinhan',
+  task:   {action: 'shinhan'},
+  output: '신한'
+},
+{
+  input: 'lotte',
+  task:   {action: 'lotte'},
+  output: '롯데'
+},
+{
+  input: '모든 카드',
+  task:   {action: 'allCard'},
+  output: '모든 카드를 조회했습니다.'
+},
+{
   input: '',
   output: '매칭되는 문장이 없습니다.'
 },

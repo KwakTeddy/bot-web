@@ -105,11 +105,27 @@ c< /여러/g
 {action: 'naverTest'}
 > 네이버
 
+< samsung
+{action: 'samsung'}
+> 삼성
 
+< hyundai
+{action: 'hyundai'}
+> 현대
+
+< shinhan
+{action: 'shinhan'}
+> 신한
+
+< lotte
+{action: 'lotte'}
+> 롯데
+
+< 모든 카드
+{action: 'allCard'}
+> 모든 카드를 조회했습니다.
 
 <> 매칭되는 문장이 없습니다.                                     // input이 없으면 순서가 오면 무조건 표시 gambit 역활
-
-
 
 < moneybrain
 'moneybrainTask'
