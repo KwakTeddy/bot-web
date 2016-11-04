@@ -349,6 +349,10 @@ var dialogs = [
       },
 
       { name: '주문확인', input: false,
+        task: {action: function(task, context, callback) {
+          if(context.user.address) context.user.addressCompact = context.user.address.지번주소.replace(/^([가-힣]+\s*)/, function(matched, p1) { return ''});
+          callback(task, context);
+        }},
         output: '주문하실 내용을 확인해주세요.\n\n주소: +addressCompact+\n전화: +mobile+\n매장명: +restaurant.name+\n메뉴: #menus#+name+ +price+원\n#매장전화: +restaurant.phone+\n\n' +
         '이대로 주문할까요?',
         children: [
