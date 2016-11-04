@@ -101,7 +101,7 @@ c< /여러/g
 < false
 > 호출되었을 때만 표시됩니다
 
-< naver
+< 네이버
 {action: 'naverTest'}
 > 네이버
 

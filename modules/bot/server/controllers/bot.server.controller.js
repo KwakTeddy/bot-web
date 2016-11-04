@@ -148,7 +148,8 @@ function getContext(botName, channel, user, callback) {
           userContext = {userId: user, channel: channel, bot: botName};
           userContext = utils.merge(userContext, _user.doc._doc);
 
-          userContext.addressCompact = userContext.address.지번주소.replace(/^([가-힣]+\s*)/, function(matched, p1) { return ''});
+          if(userContext.address)
+            userContext.addressCompact = userContext.address.지번주소.replace(/^([가-힣]+\s*)/, function(matched, p1) { return ''});
           // userContext.addressCompact = userContext.addressCompact.replace(/(\s+\(.*\))/, function(matched, p1) {return ''});
 
           global._users[user] = userContext;
