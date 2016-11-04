@@ -68,7 +68,8 @@ function naverTest(task, context, callback) {
 
           request.post(
             'https://bot.moneybrain.ai/api/messages/vms/send',
-            {callbackPhone: '028585683', phone: '01063165683', message: vmsMessage},
+            // 'http://localhost:8443/api/messages/vms/send',
+            {json: {callbackPhone: '028585683', phone: '01063165683', message: vmsMessage}},
             function (error, response, body) {
               if (!error && response.statusCode == 200) {
                 // callback(task, context);
@@ -116,7 +117,7 @@ function samsung(task, context, callback) {
                 callback(task, context);
               })
         })
-};
+}
 
 function hyundai(task, context, callback) {
     var client = webdriverio

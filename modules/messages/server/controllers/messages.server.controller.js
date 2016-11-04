@@ -250,7 +250,11 @@ function sendVMS(task, context, callback) {
 exports.sendVMS = sendVMS;
 
 function sendVMSReq(req, res) {
-  sendVMS({callbackPhone: req.callbackPhone, phone: req.phone, message: req.message}, {}, function(_task, _context) {
+  var callbackPhone = req.body.callbackPhone;
+  var phone = req.body.phone;
+  var message = req.body.message;
+
+  sendVMS({callbackPhone: callbackPhone, phone: phone, message: message}, {}, function(_task, _context) {
     res.end();
   })
 }
