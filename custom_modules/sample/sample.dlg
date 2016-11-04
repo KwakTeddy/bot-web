@@ -103,7 +103,7 @@ c< /여러/g
 
 < 네이버 예약
 {action: 'naverTest'}
-> 바이킹뷔페 오크우드호텔점 예약 완료되었습니다.
+> +name+ 예약 완료되었습니다.
 
 < 네이버
 {action: 'naversearch'}
