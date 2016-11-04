@@ -104,7 +104,9 @@ function samsung(task, context, callback) {
                 .click('#contents > div > div.card_box.amex.ui_premium_card > div > div > div.box696_premium > a')
                 .pause(2000)
                 .click('#contents > div > div.card_box.amex.ui_premium_card.open.on > div > div > div.box696_premium > a')
-            callback(task,context);
+              .then(function () {
+                callback(task, context);
+              })
         })
 };
 
@@ -123,7 +125,9 @@ function hyundai(task, context, callback) {
                 .scroll('#premiumCard > div:nth-child(2) > div.box_tooltip.tooltip_fee > p > a > span')
                 .pause(2000)
                 .scroll('#premiumCard > div:nth-child(3) > div.box_tooltip.tooltip_fee > p > a > span')
-            callback(task,context);
+              .then(function () {
+                callback(task, context);
+              })
         })
 };
 
@@ -170,7 +174,9 @@ function shinhan(task, context, callback) {
                 .scroll('#pbContent > div.cardListMore > div:nth-child(3)')
                 .pause(1000)
                 .scroll('#pbContent > div.cardListMore > div:nth-child(4)')
-            callback(task,context);
+              .then(function () {
+                callback(task, context);
+              })
         })
 };
 
@@ -189,7 +195,9 @@ function lotte(task, context, callback) {
                 .scroll('#premiumCard > div:nth-child(2) > div.box_tooltip.tooltip_fee > p > a > span')
                 .pause(2000)
                 .scroll('#premiumCard > div:nth-child(3) > div.box_tooltip.tooltip_fee > p > a > span')
-            callback(task,context);
+              .then(function () {
+                callback(task, context);
+              })
         })
 };
 
@@ -206,24 +214,68 @@ function lotte(task, context, callback) {
 //     });
 
 
-
-
 exports.naverTest = naverTest;
 
 bot.setAction('naverTest', naverTest);
 
-exports.samsung = samsung();
+exports.samsung = samsung;
 
 bot.setAction('samsung', samsung);
 
-exports.hyundai = hyundai();
+exports.hyundai = hyundai;
 
 bot.setAction('hyundai', hyundai);
 
-exports.shinhan = shinhan();
+exports.shinhan = shinhan;
 
 bot.setAction('shinhan', shinhan);
 
-exports.lotte = lotte();
+exports.lotte = lotte;
 
 bot.setAction('lotte', lotte);
+
+
+function allCard(task, context, callback) {
+  console.log('allCard');
+
+  async.parallel([
+    function(cb) {
+      hyundai(task, context, function(task, context) {
+        cb(null);
+      })
+    },
+
+    function (cb) {
+      setTimeout(function () {
+        samsung(task, context, function (task, context) {
+          cb(null);
+        })
+      }, 500)
+    },
+
+    function(cb) {
+      setTimeout(function() {
+        shinhan(task, context, function(task, context) {
+          cb(null);
+        })
+      }, 1000)
+    },
+
+    function(cb) {
+      setTimeout(function() {
+        lotte(task, context, function(task, context) {
+          cb(null);
+        })
+      }, 1500)
+    }
+  ],
+
+  function(err, results) {
+
+    callback(task, context);
+  })
+}
+
+exports.allCard = allCard;
+
+bot.setAction('allCard', allCard);

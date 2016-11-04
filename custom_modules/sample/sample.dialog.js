@@ -199,6 +199,16 @@ var dialogs = [
   output: '신한'
 },
 {
+  input: 'lotte',
+  task:   {action: 'lotte'},
+  output: '롯데'
+},
+{
+  input: '모든 카드',
+  task:   {action: 'allCard'},
+  output: '모든 카드를 조회했습니다.'
+},
+{
   input: '',
   output: '매칭되는 문장이 없습니다.'
 },
