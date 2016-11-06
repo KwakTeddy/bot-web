@@ -1169,7 +1169,7 @@ function baeDetail(task, context, callback) {
   var xml = task._text;
   var doc = new dom({errorHandler: xmldomErrorHandler}).parseFromString(xml);
 
-  task.addressStr = xpath.select('//div/section/div[1]/div/span[1]/text()', doc).toString();
+  task.address1 = xpath.select('//div/section/div[1]/div/span[1]/text()', doc).toString();
   task.businessHourStr = xpath.select('//div/section/div[2]/div[1]/section[1]/dl/dd[2]/text()', doc).toString();
   var phoneElem = xpath.select('//div/section/div[2]/div[1]/section[1]/dl/dd[3]', doc)[0].firstChild.textContent;
   var matched = phoneElem.match('content="([^"]*)">(.*)');
