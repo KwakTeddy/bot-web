@@ -432,24 +432,6 @@ var dialogs = [
   },
 
   {
-    input: 'baemin',
-    task: 'baemin',
-    output: '완료'
-  },
-
-  {
-    input: 'yo',
-    task: {action: 'yoAddress'},
-    output: '완료'
-  },
-
-  {
-    input: 'google',
-    task: {action: 'google'},
-    output: '완료'
-  },
-
-  {
     input: 'update',
     task: {action: orderData.updateFranchiseRestaurantName},
     output: 'update 완료'

@@ -25,6 +25,7 @@ var RestaurantDumpSchema = new Schema({
   address1: String,
   address2: String,
   phone: String,
+  phone1: String,
   homepage: String,
   photo: String,
   description: String,

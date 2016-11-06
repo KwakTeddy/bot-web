@@ -106,6 +106,11 @@ var dialogs = [
   input: 'bt',
   task:   {action: 'bt'},
   output: '완료'
+},
+{
+  input: 'update dump',
+  task:   {action: 'updateDump'},
+  output: '완료'
 }
 ];
 

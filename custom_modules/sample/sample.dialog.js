@@ -181,7 +181,7 @@ var dialogs = [
 {
   input: '네이버 예약',
   task:   {action: 'naverTest'},
-  output: '바이킹뷔페 오크우드호텔점 예약 완료되었습니다.'
+  output: '+name+ 예약 완료되었습니다.'
 },
 {
   input: '네이버',

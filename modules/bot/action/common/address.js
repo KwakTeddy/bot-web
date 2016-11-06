@@ -1025,3 +1025,59 @@ exports.searchTest = searchTest;
 // insertTest({}, {}, function(t, c) {
 //   console.log('end');
 // });
+
+function 시도명변경(str) {
+  if (str == '경기') return'경기도';
+  else if (str == '강원') return'강원도';
+  else if (str == '충북') return'충청북도';
+  else if (str == '충남') return'충청남도';
+  else if (str == '전북') return'전라북도';
+  else if (str == '전남') return'전라남도';
+  else if (str == '경북') return'경상북도';
+  else if (str == '경남') return'경상남도';
+  else if (str == '제주') return'제주특별자치도';
+  else if (str == '제주도') return'제주특별자치도';
+  else if (str == '서울') return'서울특별시';
+  else if (str == '서울시') return'서울특별시';
+  else if (str == '인천') return'인천광역시';
+  else if (str == '인천시') return'인천광역시';
+  else if (str == '대전') return'대전광역시';
+  else if (str == '대전시') return'대전광역시';
+  else if (str == '대구') return'대구광역시';
+  else if (str == '대구시') return'대구광역시';
+  else if (str == '광주') return'광주광역시';
+  else if (str == '광주시') return'광주광역시';
+  else if (str == '부산') return'부산광역시';
+  else if (str == '부산시') return'부산광역시';
+  else if (str == '울산') return'울산광역시';
+  else if (str == '울산시') return'울산광역시';
+  else if (str == '세종') return'세종특별자치시';
+  else if (str == '세종시') return'세종특별자치시';
+  else return str;
+}
+
+exports.시도명변경 = 시도명변경;
+
+
+function 시도명역변경(str) {
+  if (str == '경기도') return '경기';
+  else if (str == '강원도') return '강원';
+  else if (str == '충청북도') return '충북';
+  else if (str == '충청남도') return '충남';
+  else if (str == '전라북도') return '전북';
+  else if (str == '전라남도') return '전남';
+  else if (str == '경상북도') return '경북';
+  else if (str == '경상남도') return '경남';
+  else if (str == '제주특별자치도') return '제주';
+  else if (str == '서울특별시') return '서울';
+  else if (str == '인천광역시') return '인천';
+  else if (str == '대전광역시') return '대전';
+  else if (str == '대구광역시') return '대구';
+  else if (str == '광주광역시') return '광주';
+  else if (str == '부산광역시') return '부산';
+  else if (str == '울산광역시') return '울산';
+  else if (str == '세종특별자치시') return '세종';
+  else return str;
+}
+
+exports.시도명역변경 = 시도명역변경;

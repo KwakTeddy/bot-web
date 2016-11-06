@@ -53,7 +53,8 @@ var RestaurantSchema = new Schema({
   franchise: {
     type: Schema.ObjectId,
     ref: 'Franchise'
-  }
+  },
+  deliverable: Boolean
 });
 
 mongoose.model('Restaurant', RestaurantSchema);
