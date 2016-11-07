@@ -1,6 +1,9 @@
 var path = require('path');
 
 var orderBot = {
+  serviceName: '얌얌',
+  serviceNick: '인공지능 배달봇',
+
   dialogServer: {chatScript: false},
   call: false,      // 배달 시 주문 전화 여부
   kakao: {

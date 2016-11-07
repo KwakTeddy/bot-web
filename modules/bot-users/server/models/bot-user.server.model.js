@@ -44,7 +44,9 @@ var BotUserSchema = new Schema({
   created: {
     type: Date,
     default: Date.now
-  }
+  },
+
+  confirmTerms: Boolean
 });
 
 mongoose.model('BotUser', BotUserSchema);

@@ -47,6 +47,16 @@ var orderTask = {
       }
     }
 
+    if(!context.user.confirmTerms) {
+      var botUser= require(path.resolve('modules/bot-users/server/controllers/bot-users.server.controller'))
+
+      context.user.confirmTerms = true;
+      context.user.updates = ['confirmTerms'];
+      botUser.updateUserContext(context.user, context, function () {
+        context.user.updates = null;
+      });
+    }
+
     var doc = {
       restaurant: context.dialog.restaurant._id,
       restaurantName: context.dialog.restaurant.name,

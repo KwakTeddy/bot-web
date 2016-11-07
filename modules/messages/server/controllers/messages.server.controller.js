@@ -282,7 +282,7 @@ function sendSMSAuth(task, context, callback) {
   randomNum += '' + Math.floor(Math.random() * 10);
   randomNum += '' + Math.floor(Math.random() * 10);
 
-  var message = '[' + context.bot.serviceName + ']' + '인증번호 : ' + randomNum;
+  var message = '[' + context.bot.serviceNick + ' ' + context.bot.serviceName + ']' + ' 인증번호 : ' + randomNum;
 
   request.post(
     'https://bot.moneybrain.ai/api/messages/sms/send',
