@@ -11,7 +11,7 @@ var mongoose = require('mongoose');
 var webdriverio = require('webdriverio');
 var fs = require('fs');
 var utils = require(path.resolve('modules/bot/action/common/utils'));
-
+var addressModule = require(path.resolve('modules/bot/action/common/address'));
 var client;
 
 // var execTask = {
@@ -734,23 +734,23 @@ function yoSave(task, context, callback) {
     } else {
       if(docs.upserted && docs.upserted.length > 0) {
         task._id = docs.upserted[0]._id;
-        model2.remove({restaurantDump: docs.upserted[0]._id});
+        model2.remove({restaurantDump: docs.upserted[0]._id}, function(err) {
+          for (var j = 0; j < task.doc.length; j++) {
+            var doc = task.doc[j];
+            doc.restaurantDump = task._id;
+          }
 
-        for (var j = 0; j < task.doc.length; j++) {
-          var doc = task.doc[j];
-          doc.restaurantDump = task._id;
-        }
-
-        if(task.doc && task.doc.length > 0) {
-          model2.collection.insert(task.doc, function(err, docs) {
-            if(err) {
-              console.log('yoSave: ' + err);
-            }
+          if(task.doc && task.doc.length > 0) {
+            model2.collection.insert(task.doc, function(err, docs) {
+              if(err) {
+                console.log('yoSave: ' + err);
+              }
+              callback(task, context);
+            });
+          } else {
             callback(task, context);
-          });
-        } else {
-          callback(task, context);
-        }
+          }
+        });
       } else {
         callback(task, context);
       }
@@ -1023,7 +1023,6 @@ function baeList(task, context, callback) {
       _client.elements('.shop-list > div > div').then(function(res) {
         i = 0;
         count = res.value.length;
-        count = 4;
 
         restaurant_list = [];
         async.whilst(
@@ -1170,11 +1169,21 @@ function baeDetail(task, context, callback) {
   var xml = task._text;
   var doc = new dom({errorHandler: xmldomErrorHandler}).parseFromString(xml);
 
-  task.addressStr = xpath.select('//*[@id="wrap"]/div/section/div[1]/div/span[1]/text()', doc).toString();
-  task.businessHourStr = xpath.select('//*[@id="wrap"]/div/section/div[2]/div[1]/section[1]/dl/dd[2]/text()', doc).toString();
-  task.phone = xpath.select('//*[@id="wrap"]/div/section/div[2]/div[1]/section[1]/dl/dd[3]/strong/text()', doc).toString();
-  task.minOrder = xpath.select('//*[@id="wrap"]/div/section/div[2]/div[1]/section[1]/dl/dd[1]/text()', doc).toString();
-  task.payment = xpath.select('//*[@id="wrap"]/div/section/div[1]/div/div/span/text()', doc).toString();
+  task.address1 = xpath.select('//div/section/div[1]/div/span[1]/text()', doc).toString();
+  task.businessHourStr = xpath.select('//div/section/div[2]/div[1]/section[1]/dl/dd[2]/text()', doc).toString();
+  var phoneElem = xpath.select('//div/section/div[2]/div[1]/section[1]/dl/dd[3]', doc)[0].firstChild.textContent;
+  var matched = phoneElem.match('content="([^"]*)">(.*)');
+  task.phone1 = matched[1];
+  task.phone = matched[2];
+  task.payment = [];
+  var paymentElem = xpath.select('//div/section/div[1]/div/div/span', doc);
+  for (var i = 0; i < paymentElem.length; i++) {
+    var obj = paymentElem[i].textContent;
+    task.payment.push(obj.toString());
+  }
+  task.minOrder = xpath.select('//div/section/div[2]/div[1]/section[1]/dl/dd[1]/text()', doc).toString();
+  task.minOrder = task.minOrder.replace(',', '');
+  task.minOrder.replace(/(\d+)/, function(match, p1) { task.minOrder = p1; return p1});
 
   var nodes = xpath.select(repeat, doc);
 
@@ -1219,7 +1228,7 @@ function baeDetail(task, context, callback) {
           if(_check && _check.length > 0) options2 = _check;
 
           var docOptions = [];
-          for (var l = 0; l < options2.length; l++) {
+          for (var l = 0; options2 && l < options2.length; l++) {
             var sp = options2[l].textContent.trim().split(':');
             // console.log(options2[l].textContent.trim());
             if(sp.length <= 1) continue;
@@ -1361,3 +1370,144 @@ function baeTest(task, context, callback) {
 exports.baeTest = baeTest;
 
 bot.setAction('bt', baeTest);
+
+
+function updateDump(task, context, callback) {
+
+  var restaurant = mongoose.model('Restaurant');
+  var menu = mongoose.model('Menu');
+  var restaurantdump = mongoose.model('RestaurantDump');
+  var menudump = mongoose.model('MenuDump');
+
+  var query = {category: '중국집', 'address.시도명': '서울특별시'};
+  var query2;
+  restaurant.find(query, function(err, docs) {
+    if(err) {
+      console.log(err);
+      callback(task, context);
+    } else {
+      console.log(docs.length);
+
+      async.eachSeries(docs, function(_restaurant, cb) {
+          query2 = {name: _restaurant.name};
+
+          restaurantdump.find(query2).exec(function(err2, docs2) {
+            if(err2) {
+              cb(null);
+            } else {
+              var target = {};
+
+              for (var i = 0; i < docs2.length; i++) {
+                var doc = docs2[i];
+                var addr;
+                if(doc.address1) addr = doc.address1.split(' ');
+                // console.log(_restaurant.name, addr, _restaurant.address.시도명, addressModule.시도명역변경(_restaurant.address.시도명), _restaurant.address.시군구명, _restaurant.address.법정읍면동명);
+                if(addr &&
+                  (addr[0] == _restaurant.address.시도명 || addr && addr[0] == addressModule.시도명역변경(_restaurant.address.시도명)) &&
+                  addr[1] == _restaurant.address.시군구명 &&
+                  (addr[2] == _restaurant.address.법정읍면동명 || addr[2] == _restaurant.address.행정동명)) {
+                  target[doc.site] = doc;
+                }
+              }
+
+              if(target['yo'] || target['bae']) {
+                var _restauranttarget;
+                if(target['yo']) _restauranttarget = target['yo'];
+                else if(target['bae']) _restauranttarget = target['bae'];
+
+                console.log(_restaurant.name + ' ' + _restauranttarget.site + ' ' + _restaurant._id);
+
+                _restaurant.deliverable = true;
+                _restaurant.save();
+
+                menudump.find({restaurantDump: _restauranttarget._id}).lean().exec(function(err3, docs3) {
+                  if(err3) {
+                    cb(null);
+                  } else {
+                    if(docs3.length > 0) {
+                      menu.remove({restaurant: _restaurant._id}, function(err, removed) {
+                        if(err) {
+                          console.log('remove: ' + err);
+                          cb(null);
+                        } else {
+                          // console.log('removed: ' + removed);
+
+                          for (var j = 0; j < docs3.length; j++) {
+                            docs3[j]._id = undefined;
+                            docs3[j].restaurantDump = undefined;
+                            docs3[j].restaurant = _restaurant._id;
+                          }
+
+                          menu.collection.insert(docs3, function(err, docs4) {
+                            if(err) {
+                              console.log('updateDump: ' + err);
+                            }
+                            // console.log('menu inserted ' +  docs4.insertedCount);
+
+                            cb(null);
+                          });
+                        }
+                      });
+                    } else {
+                      cb(null);
+                    }
+                  }
+                });
+              } else {
+                // console.log(_restaurant.name + ' not exist');
+                cb(null);
+              }
+            }
+
+          });
+        },
+        function(err) {
+          callback(task, context);
+        })
+    }
+  });
+}
+
+exports.updateDump = updateDump;
+bot.setAction('updateDump', updateDump);
+
+
+function checkRestaurantAddress(task, context, callback) {
+
+  var restaurantModel = mongoose.model('Restaurant');
+
+  var q = {$where: function() {
+    var address, s1, s2, 시군구명1, 시군구명2;
+    address = this.address1;
+    if(!address || address === '') address = this.address2;
+    if(address) s1 = address.split(' ');
+    if(s1 && s1.length > 1) 시군구명1 = s1[1];
+    if(this.address) {
+      if (this.address.시군구명.search(' ') != -1) {
+        s2 = this.address.시군구명.split(' ');
+        if (s2 && s2.length > 1) 시군구명2 = s2[0];
+      } else {
+        시군구명2 = this.address.시군구명;
+      }
+    }
+
+    if(!this.address) return false;
+    else if(!address || !this.address || !시군구명1 || !시군구명2 || 시군구명1 != 시군구명2) return true;
+    else return false;
+  }};
+
+  restaurantModel.find(q).lean().exec(function(err, docs) {
+    if(err) {
+      console.log(err);
+    } else {
+      for (var i = 0; i < docs.length; i++) {
+        var doc = docs[i];
+        console.log(doc.name + ', ' + doc.address1 + ', ' + doc.address2 + ', ' + (doc.address ? doc.address.시군구명: 'no 시군구명') + ', ' + (doc.address ? doc.address.지번주소: 'no address'));
+      }
+    }
+  });
+  callback(task, context);
+}
+
+exports.checkRestaurantAddress = checkRestaurantAddress;
+

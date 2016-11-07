@@ -59,3 +59,7 @@
 < bt
 {action: 'bt'}
 > 완료
+
+< update dump
+{action: 'updateDump'}
+> 완료
