@@ -210,6 +210,18 @@ function sendSMS(task, context, callback) {
 
 exports.sendSMS = sendSMS;
 
+function sendSMSReq(req, res) {
+  var callbackPhone = req.body.callbackPhone;
+  var phone = req.body.phone;
+  var message = req.body.message;
+
+  sendSMS({callbackPhone: callbackPhone, phone: phone, message: message}, {}, function(_task, _context) {
+    res.end();
+  })
+}
+
+exports.sendSMSReq = sendSMSReq;
+
 function sendVMS(task, context, callback) {
   console.log('sendVMS');
   var callbackPhone = task.callbackPhone;
@@ -260,3 +272,30 @@ function sendVMSReq(req, res) {
 }
 
 exports.sendVMSReq = sendVMSReq;
+
+function sendSMSAuth(task, context, callback) {
+  var request = require('request');
+
+  var randomNum = '';
+  randomNum += '' + Math.floor(Math.random() * 10);
+  randomNum += '' + Math.floor(Math.random() * 10);
+  randomNum += '' + Math.floor(Math.random() * 10);
+  randomNum += '' + Math.floor(Math.random() * 10);
+
+  var message = '[' + context.bot.serviceName + ']' + '인증번호 : ' + randomNum;
+
+  request.post(
+    'https://bot.moneybrain.ai/api/messages/sms/send',
+    {json: {callbackPhone: '028585683', phone: context.user.mobile, message: message}},
+    function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+      }
+
+      context.dialog.smsAuth = randomNum;
+      callback(task, context);
+    }
+  );
+}
+
+exports.sendSMSAuth = sendSMSAuth;
+
