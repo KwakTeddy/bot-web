@@ -23,4 +23,8 @@ module.exports = function(app) {
 
   // Finish by binding the Custom action middleware
   app.param('deliveryOrderId', deliveryOrders.deliveryOrderByID);
+
+  app.route('/terms')
+    .get(deliveryOrders.linkTerms);
+
 };

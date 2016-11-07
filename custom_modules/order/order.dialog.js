@@ -81,28 +81,86 @@ var dialogs = [
         ]
       },
 
+      { name: '휴대폰변경', input: ['연락처 변경', '휴대폰 변경', '휴대폰 바꾸다'],
+        output: '휴대폰 번호를 말씀해 주세요.',
+        children: [
+          { input: {types: [{type : type.mobileType, context: true}]},
+            task: {action: messages.sendSMSAuth},
+            output: {call: 'SMS인증'}
+          },
+          {
+            name: 'SMS인증',
+            input: false,
+            output: '문자메세지(SMS)로 발송된 인증번호를 입력해주세요.',
+            children: [
+              { input: /\d{4}/,
+                output: [
+                  { if: function(dialog, context, callback) {
+                    callback(dialog.inRaw.trim() == context.dialog.smsAuth);
+                  },
+                    task: {action: function(task, context, callback) {
+                      context.dialog.smsAuth == null;
+                      callback(task, context);
+                    }},
+                    output: {call: '음식점선택', return: 1}},
+                  {if: 'true', output: {call: 'SMS인증', options: {prefix: '인증번호가 틀렸습니다.\n', postfix: '\n0. 이전 !. 처음'}}}
+                ]},
+              {output: {repeat: 1, options: {prefix: '인증번호가 틀렸습니다.\n', postfix: '\n0. 이전 !. 처음'}}}
+            ]
+          },
+          { output: {repeat: 1, options: {prefix: '휴대폰 번호 형식이 틀렸습니다.\n', postfix: '\n0. 이전 !. 처음'}} }
+        ]
+      },
+
       { name: '휴대폰번호입력', input: false,
         output: [
           { if: 'context.user.mobile && !dialog.returnDialog', output: {call: '음식점선택'}},
           { if: '!context.user.mobile || dialog.returnDialog', output: '휴대폰번호를 말씀해주세요.',
             children: [
               { input: {types: [{type : type.mobileType, context: true}]},
+                task: {action: messages.sendSMSAuth},
+                output: {call: 'SMS인증'}
+              },
+              {
                 name: 'SMS인증',
-                task: {action: 'SMSAuth'},
+                input: false,
                 output: '문자메세지(SMS)로 발송된 인증번호를 입력해주세요.',
                 children: [
                   { name: 'SMS재인증',
                     input: /\d{4}/,
                     output: [
-                      { if: 'context.dialog.inRaw == context.dialog.smsAuth',
-                        task: {action: function(task, context, callback) {context.dialog.smsAuth == null;callback(task, context);}},
+                      { if: function(dialog, context, callback) {
+                        callback(dialog.inRaw.trim() == context.dialog.smsAuth);
+                      },
+                        task: {action: function(task, context, callback) {
+                          context.dialog.smsAuth == null;
+                          callback(task, context);
+                        }},
                         output: {call: '음식점선택', return: 1}},
-                      {output: {call: 'SMS재인증', options: {prefix: '인증번호가 틀렸습니다. 다시 입력해주세요.'}}}
+                      {output: {call: 'SMS인증', options: {prefix: '인증번호가 틀렸습니다.\n', postfix: '\n0. 이전 !. 처음'}}}
                     ]},
-                  {output: {call: 'SMS재인증', options: {prefix: '인증번호가 틀렸습니다. 다시 입력해주세요.'}}}
+                  {output: {repeat: 1, options: {prefix: '인증번호가 틀렸습니다.\n', postfix: '\n0. 이전 !. 처음'}}}
                 ]
               },
-              { output: {repeat: 1, output: '휴대폰 번호를 다시 입력해주세요.\n이전.이전단계 처음. 처음으로'} }
+              { output: {repeat: 1, options: {prefix: '휴대폰 번호 형식이 틀렸습니다.\n', postfix: '\n0. 이전 !. 처음'}} }
+
+              // { input: {types: [{type : type.mobileType, context: true}]},
+              //   // name: 'SMS인증',
+              //   task: {action: 'SMSAuth'},
+              //   output: '문자메세지(SMS)로 발송된 인증번호를 입력해주세요.',
+              //   children: [
+              //     { //name: 'SMS재인증',
+              //       input: /\d{4}/,
+              //       output: [
+              //         { if: 'context.dialog.inRaw == context.dialog.smsAuth',
+              //           task: {action: function(task, context, callback) {context.dialog.smsAuth == null;callback(task, context);}},
+              //           output: {call: '음식점선택', return: 1}},
+              //         {output: {call: 'SMS재인증', options: {prefix: '인증번호가 틀렸습니다. 다시 입력해주세요.'}}}
+              //       ]},
+              //     {output: {call: 'SMS재인증', options: {prefix: '인증번호가 틀렸습니다. 다시 입력해주세요.'}}}
+              //   ]
+              // },
+              // { output: {repeat: 1, output: '휴대폰 번호를 다시 입력해주세요.\n이전.이전단계 처음. 처음으로'} }
             ]
           }
         ]
@@ -368,10 +426,12 @@ var dialogs = [
       { name: '주문확인', input: false,
         task: {action: function(task, context, callback) {
           if(context.user.address) context.user.addressCompact = context.user.address.지번주소.replace(/^([가-힣]+\s*)/, function(matched, p1) { return ''});
+          if(!context.user.confirmTerms) task.confirmTermText = '최초 주문 시에는 약관을 확인해 주세요. 주문을 진행하시면 약관에 동의한 것으로 간주됩니다.\n약관: https://bot.moneybrain.ai/terms\n\n';
+          else task.confirmTermText = '';
           callback(task, context);
         }},
         output: '주문하실 내용을 확인해주세요.\n\n주소: +addressCompact+\n전화: +mobile+\n매장명: +restaurant.name+\n메뉴: #menus#+name+ +price+원\n#매장전화: +restaurant.phone+\n\n' +
-        '이대로 주문할까요?',
+        '+confirmTermText+'+'이대로 주문할까요?',
         children: [
           { input: '0', output: {call: '주문취소'}  },
           { input: {regexp: /~네/g}, output: {call: '배달주문요청'}  },
@@ -420,22 +480,34 @@ var dialogs = [
     output: '휴대폰 번호를 말씀해 주세요.',
     children: [
       { input: {types: [{type : type.mobileType, context: true}]},
-        name: 'SMS인증',
         task: {action: messages.sendSMSAuth},
+        output: {call: 'SMS인증2'}
+      },
+      {
+        name: 'SMS인증2',
+        input: false,
         output: '문자메세지(SMS)로 발송된 인증번호를 입력해주세요.',
         children: [
-          { name: 'SMS재인증',
-            input: /\d{4}/,
+          { input: /\d{4}/,
             output: [
-              { if: 'context.dialog.inRaw == context.dialog.smsAuth',
-                task: {action: function(task, context, callback) {context.dialog.smsAuth == null;callback(task, context);}},
-                output: {call: '음식점선택', return: 1}},
-              {output: {call: 'SMS재인증', options: {prefix: '인증번호가 틀렸습니다. 다시 입력해주세요.'}}}
+              {
+                if: function (dialog, context, callback) {
+                  callback(dialog.inRaw.trim() == context.dialog.smsAuth);
+                },
+                task: {
+                  action: function (task, context, callback) {
+                    context.dialog.smsAuth == null;
+                    callback(task, context);
+                  }
+                },
+                output: '휴대폰 번호가 변경 되었습니다.'
+              },
+              {if: 'true', output: {call: 'SMS인증2', options: {prefix: '인증번호가 틀렸습니다.\n'}}}
             ]},
-          {output: {call: 'SMS재인증', options: {prefix: '인증번호가 틀렸습니다. 다시 입력해주세요.'}}}
+          {output: {repeat: 1, options: {prefix: '인증번호가 틀렸습니다.\n'}}}
         ]
       },
-      { output: {repeat: 1, output: '휴대폰 번호를 다시 입력해주세요.\n이전.이전단계 처음. 처음으로'} }
+      { output: {repeat: 1, options: {prefix: '휴대폰 번호 형식이 틀렸습니다.\n'}} }
     ]
   },
 
