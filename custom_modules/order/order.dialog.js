@@ -250,7 +250,7 @@ var dialogs = [
                     task: orderTasks.categoryRestaurants,
                     output: [
                       {if: 'dialog.task.restaurant.length > 0',
-                        output: '[+category+]\n##+index+. +name+\n#0. 이전 !. 처음(주문취소)\n\n목록에서 번호나 음식점명을 입력해주세요~',
+                        output: '[+category+]\n##+index+. +name+ +openStatus+\n#0. 이전 !. 처음(주문취소)\n\n목록에서 번호나 음식점명을 입력해주세요~',
                         children: [
                           { input: {types: [{name: 'restaurant', typeCheck: 'listTypeCheck'}]},
                             output: {call: '메뉴선택'}},

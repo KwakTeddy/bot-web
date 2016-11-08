@@ -120,12 +120,34 @@ var categoryRestaurants = {
     query['address.행정동명'] = context.dialog.address.행정동명;
 
     model.find(query).limit(type.MAX_LIST).lean().exec(function(err, docs) {
+      var hhmm = new Date().toString().split(' ')[4].substring(0, 5);
+      var defaultStart = '12:00', defautEnd = '24:00';
+      for (var i = 0; i < docs.length; i++) {
+        var doc = docs[i];
+        if(doc.businessHours && doc.businessHours.length > 0) {
+          if((doc.businessHours[0].end > doc.businessHours[0].start && (hhmm < doc.businessHours[0].start || hhmm > doc.businessHours[0].end)) ||
+            (doc.businessHours[0].end < doc.businessHours[0].start && (hhmm < doc.businessHours[0].start && hhmm > doc.businessHours[0].end))) {
+            docs[i].openStatus = '(금일 영업종료)';
+            docs[i].isOpen = false;
+          } else {
+            docs[i].isOpen = true;
+          }
+        } else {
+          var doc = docs[i];
+          if (hhmm < defaultStart || hhmm > defautEnd) {
+            docs[i].openStatus = '(금일 영업종료)';
+            docs[i].isOpen = false;
+          } else {
+            docs[i].isOpen = true;
+          }
+        }
+      }
+
       task.doc = docs;
       task.restaurant = docs;
       context.dialog.restaurant = docs;
       callback(task, context);
     });
-
   }
 };
 
