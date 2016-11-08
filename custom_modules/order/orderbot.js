@@ -683,6 +683,7 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
             query['address.시군구명'] = address.시군구명;
             // query['address.행정동명'] = address.행정동명;
             query['address.법정읍면동명'] = address.법정읍면동명;
+            query.deliverable = true;
           // }
 
           var _query = model.find(query, format.mongo.fields, format.mongo.options);
@@ -741,6 +742,7 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
           query['address.시군구명'] = address.시군구명;
           // query['address.행정동명'] = address.행정동명;
           query['address.법정읍면동명'] = address.법정읍면동명;
+          query.deliverable = true;
         // }
 
         var _query = model.find(query, format.mongo.fields, format.mongo.options);
@@ -833,6 +835,7 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
           query['address.시군구명'] = address.시군구명;
           // query['address.행정동명'] = address.행정동명;
           query['address.법정읍면동명'] = address.법정읍면동명;
+          query.deliverable = true;
         // }
 
         var _query = model.find(query, format.mongo.fields, format.mongo.options);
@@ -877,6 +880,7 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
           query['address.시군구명'] = address.시군구명;
           // query['address.행정동명'] = address.행정동명;
           query['address.법정읍면동명'] = address.법정읍면동명;
+          query.deliverable = true;
         // }
 
         var _query = model.find(query, format.mongo.fields, format.mongo.options);
@@ -945,6 +949,7 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
               query['address.시군구명'] = address.시군구명;
               // query['address.행정동명'] = address.행정동명;
               query['address.법정읍면동명'] = address.법정읍면동명;
+              query.deliverable = true;
             // }
 
             var _query = model.find(query, format.mongo.fields, format.mongo.options);

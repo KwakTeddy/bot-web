@@ -204,5 +204,3 @@ var countType = {
 };
 
 botlib.setGlobalType('countType', countType);
-
-

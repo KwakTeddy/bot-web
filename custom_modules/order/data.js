@@ -926,17 +926,19 @@ function updateFranchiseRestaurant(task, context, successCallback, errorCallback
 
   var modelRestaurant = mongoose.model('Restaurant');
 
-  modelFranchise.find({name: /교촌/}, function(err, docs) {
+  modelFranchise.find({}, function(err, docs) {
     async.eachSeries(docs, function (doc, callback) {
-        modelRestaurant.update({name: new RegExp(doc._doc.name, 'i')}, {franchise: doc._id}, {upsert: true, multi: true}, function(_err, numberAffected) {
-          logger.debug(doc._doc.name + ': ' + numberAffected.n + ', ' + numberAffected.nModified + ', ' + doc._id);
-          callback(null);
-        });
-
-        // modelRestaurant.find({name: new RegExp(doc._doc.name, 'i')}, function(_err, _docs) {
-        //   logger.debug(doc._doc.name + ': ' + _docs.length + ', ' + doc._id);
-        //   callback(null);
-        // })
+        if(doc._doc.name.search('부어치킨') != -1 || doc._doc.name.search('피자나라치킨공주') != -1 || doc._doc.name.search('훌랄라참숮바베큐') != -1) {
+          modelRestaurant.update({name: new RegExp(doc._doc.name, 'i')}, {franchise: doc._id, deliverable: false}, {upsert: true, multi: true}, function (_err, numberAffected) {
+            logger.debug(doc._doc.name + ': ' + numberAffected.n + ', ' + numberAffected.nModified + ', ' + doc._id);
+            callback(null);
+          });
+        } else {
+          modelRestaurant.update({name: new RegExp(doc._doc.name, 'i')}, {franchise: doc._id, deliverable: true}, {upsert: true, multi: true}, function(_err, numberAffected) {
+            logger.debug(doc._doc.name + ': ' + numberAffected.n + ', ' + numberAffected.nModified + ', ' + doc._id);
+            callback(null);
+          });
+        }
       },
       function(err) {
         successCallback(task, context);

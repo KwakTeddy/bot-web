@@ -1400,12 +1400,15 @@ function updateDump(task, context, callback) {
               for (var i = 0; i < docs2.length; i++) {
                 var doc = docs2[i];
                 var addr;
-                if(doc.address1) addr = doc.address1.split(' ');
+                if(doc.address1) addr = doc.address1.trim().split(' ');
+
                 // console.log(_restaurant.name, addr, _restaurant.address.시도명, addressModule.시도명역변경(_restaurant.address.시도명), _restaurant.address.시군구명, _restaurant.address.법정읍면동명);
+
                 if(addr &&
                   (addr[0] == _restaurant.address.시도명 || addr && addr[0] == addressModule.시도명역변경(_restaurant.address.시도명)) &&
                   addr[1] == _restaurant.address.시군구명 &&
                   (addr[2] == _restaurant.address.법정읍면동명 || addr[2] == _restaurant.address.행정동명)) {
+                  console.log(_restaurant.name, doc.site);
                   target[doc.site] = doc;
                 }
               }
@@ -1417,6 +1420,7 @@ function updateDump(task, context, callback) {
 
                 console.log(_restaurant.name + ' ' + _restauranttarget.site + ' ' + _restaurant._id);
 
+                _restaurant.minOrder = _restauranttarget.minOrder;
                 _restaurant.deliverable = true;
                 _restaurant.save();
 
@@ -1458,7 +1462,6 @@ function updateDump(task, context, callback) {
                 cb(null);
               }
             }
-
           });
         },
         function(err) {
