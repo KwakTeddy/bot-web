@@ -1400,12 +1400,15 @@ function updateDump(task, context, callback) {
               for (var i = 0; i < docs2.length; i++) {
                 var doc = docs2[i];
                 var addr;
-                if(doc.address1) addr = doc.address1.split(' ');
+                if(doc.address1) addr = doc.address1.trim().split(' ');
+
                 // console.log(_restaurant.name, addr, _restaurant.address.시도명, addressModule.시도명역변경(_restaurant.address.시도명), _restaurant.address.시군구명, _restaurant.address.법정읍면동명);
+
                 if(addr &&
                   (addr[0] == _restaurant.address.시도명 || addr && addr[0] == addressModule.시도명역변경(_restaurant.address.시도명)) &&
                   addr[1] == _restaurant.address.시군구명 &&
                   (addr[2] == _restaurant.address.법정읍면동명 || addr[2] == _restaurant.address.행정동명)) {
+                  // console.log(_restaurant.name, doc.site);
                   target[doc.site] = doc;
                 }
               }
@@ -1415,10 +1418,65 @@ function updateDump(task, context, callback) {
                 if(target['yo']) _restauranttarget = target['yo'];
                 else if(target['bae']) _restauranttarget = target['bae'];
 
-                console.log(_restaurant.name + ' ' + _restauranttarget.site + ' ' + _restaurant._id);
+                if(_restauranttarget.site == 'yo') {
+                  var matched = _restauranttarget.businessHourStr.match(/([\d:]+) - ([\d:]+)/);
+                  var start, end;
+                  if(matched) {
+                    start = matched[1];
+                    end = matched[2];
 
+                    // console.log(_restauranttarget.site + ' 영업시간:' + start + '-' + end);
+                    _restaurant.businessHours = [
+                      {
+                        day: '', start: start, end: end
+                      }
+                    ];
+                  }
+
+                } else if(_restauranttarget.site == 'bae') {
+                  var matched = _restauranttarget.businessHourStr.match(/([가-힣]+) ([\d:]+) ~ ([가-힣]+) ([\d:]+)/);
+                  var start, start0, start1, end, end0, end1;
+                  if(matched) {
+                    start0 = matched[1];
+                    start1 = matched[2];
+                    end0 = matched[3];
+                    end1 = matched[4];
+
+                    if(start0 == '오후') {
+                      var sp = start1.split(':');
+                      start = (Number(sp[0]) + 12) + ':' + sp[1];
+                    } else {
+                      start = start1;
+                    }
+
+                    if(end0 == '오후') {
+                      var sp = end1.split(':');
+                      end = (Number(sp[0]) + 12) + ':' + sp[1];
+                    } else {
+                      end = end1;
+                    }
+
+                    // console.log(_restauranttarget.site + ' 영업시간:' + start + '-' + end);
+                    _restaurant.businessHours = [
+                      {
+                        day: '', start: start, end: end
+                      }
+                    ];
+                  } else if(_restauranttarget.businessHourStr == '24시간 운영') {
+                    _restaurant.businessHours = [
+                      {
+                        day: '', start: '00:00', end: '24:00'
+                      }
+                    ];
+                  }
+                }
+
+                _restaurant.minOrder = _restauranttarget.minOrder;
                 _restaurant.deliverable = true;
                 _restaurant.save();
+
+                console.log(_restaurant.name + ' ' + _restauranttarget.site + ' ' + _restaurant._id + ' '
+                  + _restaurant.minOrder + ' ' + (_restaurant.businessHours ? _restaurant.businessHours[0].start + '-' + _restaurant.businessHours[0].end: ''));
 
                 menudump.find({restaurantDump: _restauranttarget._id}).lean().exec(function(err3, docs3) {
                   if(err3) {
@@ -1458,7 +1516,6 @@ function updateDump(task, context, callback) {
                 cb(null);
               }
             }
-
           });
         },
         function(err) {

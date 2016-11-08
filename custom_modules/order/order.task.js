@@ -41,9 +41,9 @@ var orderTask = {
       context.dialog.totalPrice = context.dialog.menu.price;
     } else {
       for(var i in context.dialog.menus) {
-        _menus.push({menu: context.dialog.menus[i]._id, name: context.dialog.menus[i].name, price: context.dialog.menus[i].price});
-        _menuStr += context.dialog.menus[i].name + ' ' + '1개';
-        context.dialog.totalPrice += context.dialog.menus[i].price;
+        _menus.push({menu: context.dialog.menus[i]._id, name: context.dialog.menus[i].name, price: context.dialog.menus[i].price, count: context.dialog.menus[i].count});
+        _menuStr += context.dialog.menus[i].name + ' ' + context.dialog.menus[i].count + '개';
+        context.dialog.totalPrice += context.dialog.menus[i].price * context.dialog.menus[i].count;
       }
     }
 
@@ -114,24 +114,46 @@ var categoryRestaurants = {
     var category = context.dialog.restaurantCategory;
     task.category = category;
 
-    var query = {category: category};
+    var query = {category: category, deliverable: true};
     query['address.시도명'] = context.dialog.address.시도명;
     query['address.시군구명'] = context.dialog.address.시군구명;
     query['address.행정동명'] = context.dialog.address.행정동명;
 
     model.find(query).limit(type.MAX_LIST).lean().exec(function(err, docs) {
+      var hhmm = new Date().toString().split(' ')[4].substring(0, 5);
+      var defaultStart = '12:00', defautEnd = '24:00';
+      for (var i = 0; i < docs.length; i++) {
+        var doc = docs[i];
+        if(doc.businessHours && doc.businessHours.length > 0) {
+          if((doc.businessHours[0].end > doc.businessHours[0].start && (hhmm < doc.businessHours[0].start || hhmm > doc.businessHours[0].end)) ||
+            (doc.businessHours[0].end < doc.businessHours[0].start && (hhmm < doc.businessHours[0].start && hhmm > doc.businessHours[0].end))) {
+            docs[i].openStatus = '(금일 영업종료)';
+            docs[i].isOpen = false;
+          } else {
+            docs[i].isOpen = true;
+          }
+        } else {
+          var doc = docs[i];
+          if (hhmm < defaultStart || hhmm > defautEnd) {
+            docs[i].openStatus = '(금일 영업종료)';
+            docs[i].isOpen = false;
+          } else {
+            docs[i].isOpen = true;
+          }
+        }
+      }
+
       task.doc = docs;
       task.restaurant = docs;
       context.dialog.restaurant = docs;
       callback(task, context);
     });
-
   }
 };
 
 exports.categoryRestaurants = categoryRestaurants;
 
-var franchiseMenuType = {
+var menuType = {
   name: 'menu',
   typeCheck: type.mongoTypeCheck,
   mongo: {
@@ -141,12 +163,18 @@ var franchiseMenuType = {
   },
   exclude: ['치킨', '피자', '버거', '햄버거'],
   preType: function(task, context, type, callback) {
-    type.query = {franchise: context.dialog.restaurant.franchise};
+    if(context.dialog.restaurant.franchise) {
+      type.query = {franchise: context.dialog.restaurant.franchise};
+      type.mongo.model = 'franchiseMenus';
+    } else {
+      type.query = {restaurant: context.dialog.restaurant._id};
+      type.mongo.model = 'menus';
+    }
     callback(task, context);
   }
 };
 
-exports.franchiseMenuType = franchiseMenuType;
+exports.menuType = menuType;
 
 
 function mongoQueryTypeCheck(text, format, inDoc, context, callback) {
@@ -326,10 +354,15 @@ function mongoQueryTypeCheck(text, format, inDoc, context, callback) {
 exports.mongoQueryTypeCheck = mongoQueryTypeCheck;
 
 
-function frachiseMenuCategoryAction(task, context, callback) {
-  var model = mongoose.model('FranchiseMenu');
-
-  var query = {franchise: context.dialog.restaurant.franchise};
+function menuCategoryAction(task, context, callback) {
+  var model, query;
+  if(context.dialog.restaurant.franchise) {
+    model = mongoose.model('FranchiseMenu');
+    query = {franchise: context.dialog.restaurant.franchise};
+  } else {
+    model = mongoose.model('Menu');
+    query = {restaurant: context.dialog.restaurant._id};
+  }
 
   model.aggregate([
     {$match: query},
@@ -360,15 +393,21 @@ function frachiseMenuCategoryAction(task, context, callback) {
   });
 }
 
-exports.frachiseMenuCategoryAction = frachiseMenuCategoryAction;
+exports.menuCategoryAction = menuCategoryAction;
 
-function franchiseMenuAction(task, context, callback) {
-  var model = mongoose.model('FranchiseMenu');
+function menuAction(task, context, callback) {
+  var model, query;
+  if(context.dialog.restaurant.franchise) {
+    model = mongoose.model('FranchiseMenu');
+    query = {franchise: context.dialog.restaurant.franchise,
+      category: context.dialog.category.name};
+  } else {
+    model = mongoose.model('Menu');
+    query = {restaurant: context.dialog.restaurant._id,
+      category: context.dialog.category.name};
+  }
 
-  var query = {franchise: context.dialog.restaurant.franchise,
-  category: context.dialog.category.name};
-
-  console.log(query);
+  // console.log(query);
 
   model.find(query).limit(type.MAX_LIST).lean().exec(function(err, docs) {
     task.doc = docs;
@@ -377,7 +416,8 @@ function franchiseMenuAction(task, context, callback) {
   });
 }
 
-exports.franchiseMenuAction = franchiseMenuAction;
+exports.menuAction = menuAction;
+
 
 
 var nMapTask = {
@@ -509,6 +549,7 @@ function menuAddAction(task, context, callback) {
       _menu.name += ' ' + context.dialog.option.name;
       _menu.price = context.dialog.option.price;
     }
+    _menu.count = context.dialog.count;
 
     context.dialog.menus.push(_menu);
   }

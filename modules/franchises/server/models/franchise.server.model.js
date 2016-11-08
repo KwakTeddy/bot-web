@@ -29,13 +29,13 @@ var FranchiseSchema = new Schema({
   isOpen: Boolean,
   minOrder: Number,
   payment: [String],
-  businessHours: {
-    day: String,
-    hours: {
-      from: Date,
-      to: Date
+  businessHours: [
+    {
+      day: String,
+      start: String,
+      end: String
     }
-  },
+  ],
 
   updated: {
     type: Date,
