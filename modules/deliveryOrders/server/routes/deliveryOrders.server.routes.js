@@ -27,4 +27,6 @@ module.exports = function(app) {
   app.route('/terms')
     .get(deliveryOrders.linkTerms);
 
+  app.route('/privacy')
+      .get(deliveryOrders.linkPrivacy);
 };

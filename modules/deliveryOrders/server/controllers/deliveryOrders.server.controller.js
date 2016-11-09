@@ -155,3 +155,8 @@ exports.updateMenus = function(req, res) {
 exports.linkTerms = function (req, res) {
   res.render('modules/deliveryOrders/server/views/terms', {});
 };
+
+
+exports.linkPrivacy = function (req, res) {
+  res.render('modules/deliveryOrders/server/views/privacy', {});
+};
