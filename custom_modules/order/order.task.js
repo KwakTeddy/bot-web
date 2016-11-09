@@ -135,12 +135,12 @@ var categoryRestaurants = {
             docs[i].isOpen = true;
           }
         } else {
-          // if (hhmm < defaultStart || hhmm > defautEnd) {
-          //   docs[i].openStatus = '(금일 영업종료)';
-          //   docs[i].isOpen = false;
-          // } else {
+          if (hhmm < defaultStart || hhmm > defautEnd) {
+            docs[i].openStatus = '(금일 영업종료)';
+            docs[i].isOpen = false;
+          } else {
             docs[i].isOpen = true;
-          // }
+          }
         }
 
         if(!docs[i].minOrder && docs[i].minOrder == 0) docs[i].minOrder = 10000;
