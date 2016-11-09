@@ -335,7 +335,6 @@ var dialogs = [
                     output: '"+menu.name+"의 선택메뉴를 골라주세요~ \n#option#+index+.+name+ +price+\n#',
                     children: [
                       { input: {types: [{name: 'option', typeCheck: 'listTypeCheck'}]},
-                        task: {action: orderTasks.menuAddAction},
                         output: [
                           { if: 'context.dialog.totalPrice + context.dialog.option.price * context.dialog.count < context.dialog.restaurant.minOrder',
                             task: {action: orderTasks.menuAddAction},
