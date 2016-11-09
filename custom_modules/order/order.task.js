@@ -35,14 +35,15 @@ var orderTask = {
 
     logger.debug(context.dialog.address);
 
-    var _menus = [], _menuStr = '';
+    var _menus = [];
+    context.dialog.menuStr = '';
     context.dialog.totalPrice = 0;
     if(context.dialog.menus == undefined) {
       context.dialog.totalPrice = context.dialog.menu.price;
     } else {
       for(var i in context.dialog.menus) {
         _menus.push({menu: context.dialog.menus[i]._id, name: context.dialog.menus[i].name, price: context.dialog.menus[i].price, count: context.dialog.menus[i].count});
-        _menuStr += context.dialog.menus[i].name + ' ' + context.dialog.menus[i].count + '개';
+        context.dialog.menuStr += context.dialog.menus[i].name + ' ' + context.dialog.menus[i].count + '개\n';
         context.dialog.totalPrice += context.dialog.menus[i].price * context.dialog.menus[i].count;
       }
     }
@@ -85,16 +86,26 @@ var orderTask = {
         manager.checkOrder(task, context, null);
 
       if(context.bot.call) {
+
+        var request = require('request');
+
         var vmsMessage = "카카오톡에서 배달봇 양얌 주문입니다. " +
-          _menuStr + ' 배달해 주세요.' +
+          context.dialog.menuStr + ' 배달해 주세요.' +
           '주소는 ' + context.dialog.address.지번주소 + ' 입니다.' +
           '전화번호는 ' + context.dialog.mobile + ' 입니다.' +
           '이 주문은 인공지능 배달봇 얌얌의 카카오톡에서 배달대행 주문입니다.';
 
-        messages.sendVMS({callbackPhone: '028585683', phone: context.user.mobile.replace(/,/g, ''), message: vmsMessage},
-          context, function(_task, _context) {
-          });
-
+        request.post(
+          'https://bot.moneybrain.ai/api/messages/vms/send',
+          // 'http://localhost:8443/api/messages/vms/send',
+          {json: {callbackPhone: '028585683', phone: context.user.mobile.replace(/,/g, ''), message: vmsMessage}},
+          function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+              // callback(task, context);
+            }
+            callback(task, context);
+          }
+        );
       }
 
       task.isComplete = true;
@@ -109,6 +120,7 @@ exports.orderTask = orderTask;
 
 var categoryRestaurants = {
   action: function(task, context, callback) {
+    console.log('categoryRestaurant');
     var model = mongoose.model('Restaurant');
 
     var category = context.dialog.restaurantCategory;
@@ -121,6 +133,7 @@ var categoryRestaurants = {
 
     model.find(query).limit(type.MAX_LIST).lean().exec(function(err, docs) {
       var hhmm = new Date().toString().split(' ')[4].substring(0, 5);
+      // hhmm = '03:00';
       var defaultStart = '12:00', defautEnd = '24:00';
       for (var i = 0; i < docs.length; i++) {
         var doc = docs[i];
@@ -133,7 +146,6 @@ var categoryRestaurants = {
             docs[i].isOpen = true;
           }
         } else {
-          var doc = docs[i];
           if (hhmm < defaultStart || hhmm > defautEnd) {
             docs[i].openStatus = '(금일 영업종료)';
             docs[i].isOpen = false;
@@ -141,6 +153,8 @@ var categoryRestaurants = {
             docs[i].isOpen = true;
           }
         }
+
+        if(!docs[i].minOrder && docs[i].minOrder == 0) docs[i].minOrder = 10000;
       }
 
       task.doc = docs;
@@ -552,6 +566,11 @@ function menuAddAction(task, context, callback) {
     _menu.count = context.dialog.count;
 
     context.dialog.menus.push(_menu);
+  }
+
+  context.dialog.totalPrice = 0;
+  for(var i in context.dialog.menus) {
+    context.dialog.totalPrice += context.dialog.menus[i].price * context.dialog.menus[i].count;
   }
 
   context.dialog.addedMenu = utils.clone(context.dialog.menu);

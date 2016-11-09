@@ -1055,6 +1055,7 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
 
       // 영업 종료 표시
       var hhmm = new Date().toString().split(' ')[4].substring(0, 5);
+      // hhmm = '03:00';
       var defaultStart = '12:00', defautEnd = '24:00';
       for (var i = 0; i < inDoc[format.name].length; i++) {
         var doc = inDoc[format.name][i];
@@ -1068,12 +1069,14 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
           }
         } else {
           if (hhmm < defaultStart || hhmm > defautEnd) {
-            docs[i].openStatus = '(금일 영업종료)';
-            docs[i].isOpen = false;
+            inDoc[format.name][i].openStatus = '(금일 영업종료)';
+            inDoc[format.name][i].isOpen = false;
           } else {
-            docs[i].isOpen = true;
+            inDoc[format.name][i].isOpen = true;
           }
         }
+
+        if(!inDoc[format.name][i].minOrder && inDoc[format.name][i].minOrder == 0) inDoc[format.name][i].minOrder = 10000;
       }
 
       if(inDoc[format.name].length == 1) {
