@@ -1076,7 +1076,7 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
           }
         }
 
-        if(!docs[i].minOrder && docs[i].minOrder == 0) docs[i].minOrder = 10000;
+        if(!inDoc[format.name][i].minOrder && inDoc[format.name][i].minOrder == 0) inDoc[format.name][i].minOrder = 10000;
       }
 
       if(inDoc[format.name].length == 1) {
