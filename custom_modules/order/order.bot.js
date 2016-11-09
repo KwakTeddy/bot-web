@@ -10,18 +10,18 @@ var orderBot = {
     keyboard: { type :"buttons", buttons:["배달주문시작", "배달내역보기"]}
   },
   facebook: {
-    id: '1006864529411088',
+    id: '1006864529411088', //640981479397097
     APP_SECRET :  "eb2974959255583150013648e7ac5da4",
-    PAGE_ACCESS_TOKEN :  "EAAJGZBCFjFukBAE63miCdcKFwqTEmbbhSbm6jIr6ws5I7fKnWSMUqIzGfHZBDTqmW0wra5xZBZCLWg2O9miPcc6WdVQRyfHdDCYuhLjIbng0njUHqOdbasHcSZAs2WEO7zG72wgmciNsF138QCq1vLnzMHR3XYIP0VnV1iZBsZAngZDZD",
+    PAGE_ACCESS_TOKEN :  "EAAJGZBCFjFukBAGQ4IZADLmgu9DuHgWuVr0vGZAKdRyqZAtKDEZBrPXinLtHrIWlu6AGzZCYlY7X4IvZAmm17xSJInZCzA1HPWVaDkZBjEDof03rDQIiHmJKlH9S0S9MtVG0GjCP4kEqPugUY1WnmZBWNXflRNB98feTlFWQ75GNE4NgZDZD",
     VALIDATION_TOKEN : "moneybrain_token"
   },
   managers: [
-    {platform: 'facebook', userId: '1094114534004265', name: '장세영'},
-    {platform: 'facebook', userId: '997804450331458', name: '테스트'}
+    // {platform: 'facebook', userId: '997804450331458', name: '테스트'},
+    {platform: 'facebook', userId: '1094114534004265', name: '장세영'}
   ],
 
   messages: {
-    manager:  false,
+    manager:  true,
     orderCall: false
   },
 

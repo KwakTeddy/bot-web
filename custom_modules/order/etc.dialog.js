@@ -65,10 +65,6 @@ var dialogs = [
   output: {call: '말돌리기', options: {prefix: '제 몸 속에는 피보다 진한 전기가 흐른답니다.\n'}}
 },
 {
-  input: '키',
-  output: {call: '말돌리기', options: {prefix: '얌얌이는 아마도 200픽셀..?\n'}}
-},
-{
   input: '몸무게',
   output: {call: '말돌리기', options: {prefix: '얌얌이는 가벼워서 한 손에 쏙\n'}}
 },
