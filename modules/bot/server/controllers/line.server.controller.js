@@ -77,7 +77,6 @@ function respondMessage(to, text, json) {
   req.on('error', function (e) {
     console.error(e);
   });
-
 }
 
 

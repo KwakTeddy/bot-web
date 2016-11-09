@@ -109,6 +109,7 @@ exports.orderTask = orderTask;
 
 var categoryRestaurants = {
   action: function(task, context, callback) {
+    console.log('categoryRestaurant');
     var model = mongoose.model('Restaurant');
 
     var category = context.dialog.restaurantCategory;
@@ -121,6 +122,7 @@ var categoryRestaurants = {
 
     model.find(query).limit(type.MAX_LIST).lean().exec(function(err, docs) {
       var hhmm = new Date().toString().split(' ')[4].substring(0, 5);
+      // hhmm = '03:00';
       var defaultStart = '12:00', defautEnd = '24:00';
       for (var i = 0; i < docs.length; i++) {
         var doc = docs[i];
@@ -133,14 +135,15 @@ var categoryRestaurants = {
             docs[i].isOpen = true;
           }
         } else {
-          var doc = docs[i];
-          if (hhmm < defaultStart || hhmm > defautEnd) {
-            docs[i].openStatus = '(금일 영업종료)';
-            docs[i].isOpen = false;
-          } else {
+          // if (hhmm < defaultStart || hhmm > defautEnd) {
+          //   docs[i].openStatus = '(금일 영업종료)';
+          //   docs[i].isOpen = false;
+          // } else {
             docs[i].isOpen = true;
-          }
+          // }
         }
+
+        if(!docs[i].minOrder && docs[i].minOrder == 0) docs[i].minOrder = 10000;
       }
 
       task.doc = docs;
@@ -552,6 +555,11 @@ function menuAddAction(task, context, callback) {
     _menu.count = context.dialog.count;
 
     context.dialog.menus.push(_menu);
+  }
+
+  context.dialog.totalPrice = 0;
+  for(var i in context.dialog.menus) {
+    context.dialog.totalPrice += context.dialog.menus[i].price * context.dialog.menus[i].count;
   }
 
   context.dialog.addedMenu = utils.clone(context.dialog.menu);
