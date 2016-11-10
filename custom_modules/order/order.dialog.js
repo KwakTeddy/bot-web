@@ -174,7 +174,7 @@ var dialogs = [
             output: {call: '음식점목록'}
           },
           { if: 'context.dialog.orderble != undefined',
-            output: {call: '음식점입력', options: {output: '"+address.법정읍면동명+ +address.지번본번+-+address.지번부번+" 근처에서 말씀하신 메뉴나 음식점명으로 등록된 음식점이 없습니다\n(주문가능 매장은 확대 중입니다.)\n\n다른 메뉴나 음식점을 말씀해 주세요.\n근처 음식점을 모두 보시려면 "전단지"라고 입력해 주세요.'}}
+            output: {call: '음식점입력', options: {output: '"+address.법정읍면동명+ +address.지번본번+-+address.지번부번+" 근처에서 말씀하신 메뉴나 음식점명으로 등록된 음식점이 없습니다\n(주문가능 매장은 확대 중입니다.)\n\n다른 메뉴나 음식점을 말씀해 주세요.\n모두 보려면 "전단지"라고 입력해 주세요.'}}
           },
           { if: function(dialog, context, callback) {
               // if(context.dialog.restaurant == undefined) {
@@ -261,7 +261,7 @@ var dialogs = [
                 ]
               },
 
-              { output: {repeat: 1, options: {output: '"+address.법정읍면동명+ +address.지번본번+-+address.지번부번+" 근처에서 말씀하신 메뉴나 음식점명으로 등록된 음식점이 없습니다\n(주문가능 매장은 확대 중입니다.)\n\n다른 메뉴나 음식점을 말씀해 주세요.\n근처 음식점을 모두 보시려면 "전단지"라고 입력해 주세요.'}}}
+              { output: {repeat: 1, options: {output: '"+address.법정읍면동명+ +address.지번본번+-+address.지번부번+" 근처에서 말씀하신 메뉴나 음식점명으로 등록된 음식점이 없습니다\n(주문가능 매장은 확대 중입니다.)\n\n다른 메뉴나 음식점을 말씀해 주세요.\n모두 보려면 "전단지"라고 입력해 주세요.'}}}
               // { output: {call: '음식점구분', options: {prefix: '말씀하신 음식점을 찾을 수 없어, 근처 음식점을 안내합니다.\n\n'}}}
             ]
           }
