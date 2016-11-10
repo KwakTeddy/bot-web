@@ -12,7 +12,7 @@ exports.receiveNew = function (req, res) {
     var text = req.body.events[0].message.text;
     var replyToken = req.body.events[0].replyToken;
 
-    console.log(from, text, replyToken, req.params.bot);
+    // console.log(from, text, replyToken, req.params.bot);
 
     chat.write('line', from, req.params.bot, text, function (retText, json) {
       chat.getContext(req.params.bot, 'line', from , function(context) {
@@ -48,6 +48,8 @@ function respondMessageNew(channelToken, replyToken, text, json) {
     method: 'POST',
     headers: sendHeader
   };
+
+  console.log(JSON.stringify(options));
 
   var req = https.request(options, function (res) {
     console.log('statusCode: ', res.statusCode);
