@@ -119,7 +119,7 @@ var orderTask = {
       },
 
       function(cb) {
-        var message = "[인공지능 배달봇 얌얌]\n " +
+        var message = "[인공지능 배달봇 얌얌]\n" +
             context.dialog.restaurant.name + '/주문 요청/50분 이내 배달 예정\n(테스트중,실제배달안함)';
 
         request.post(
