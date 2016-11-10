@@ -1379,7 +1379,7 @@ function updateDump(task, context, callback) {
   var restaurantdump = mongoose.model('RestaurantDump');
   var menudump = mongoose.model('MenuDump');
 
-  var query = {category: '프랜차이즈', 'address.시도명': '서울특별시'};
+  var query = {category: '중국집', 'address.시도명': '서울특별시'};
   var query2;
   restaurant.find(query, function(err, docs) {
     if(err) {

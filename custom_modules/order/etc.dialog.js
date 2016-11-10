@@ -117,6 +117,20 @@ var dialogs = [
   output: '02-858-5683으로 연락해주세요~'
 },
 {
+  input: '배고프다',
+  output: '배고플땐 배달음식이죠! 주문을 도와드릴까요?',
+  children: [
+    {
+      input: '~네',
+      output: {call:'배달주문'}
+    },
+    {
+      input: '~아니요',
+      output: '언제든지 기다릴게요~ 필요하실 때 불러주세요~'
+    }
+  ]
+},
+{
   name: '말돌리기',
   input: false,
   output: '고객님~ 질문도 좋지만 얌얌이는 주문을 하고싶어요~'
