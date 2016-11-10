@@ -10,11 +10,13 @@ exports.receiveNew = function (req, res) {
   if(req.body && req.body.events && req.body.events[0].message.text) {
     var from = req.body.events[0].source.userId;
     var text = req.body.events[0].message.text;
-    var replayToken = req.body.events[0].replyToken;
+    var replyToken = req.body.events[0].replyToken;
+
+    console.log(from, text, replyToken, req.params.bot);
 
     chat.write('line', from, req.params.bot, text, function (retText, json) {
       chat.getContext(req.params.bot, 'line', from , function(context) {
-        respondMessageNew(context.line.CHANNEL_ACCESS_TOKEN, replayToken, retText, json)
+        respondMessageNew(context.bot.CHANNEL_ACCESS_TOKEN, replyToken, retText, json)
       });
     });
   }
