@@ -49,24 +49,38 @@ function respondMessageNew(channelToken, replyToken, text, json) {
     headers: sendHeader
   };
 
-  console.log(JSON.stringify(options));
+  // console.log(JSON.stringify(options));
 
-  var req = https.request(options, function (res) {
-    console.log('statusCode: ', res.statusCode);
-    console.log('headers: ', res.headers);
-
-    res.on('data', function (d) {
-      console.log(d.toString());
-      //process.stdout.write(d);
-    });
+  request.post({
+    url: 'https://api.line.me/v2/bot/message/reply',
+    headers: {
+      'Content-Type' : 'application/json',
+      'Authorization': channelToken
+    },
+    body: JSON.stringify(sendMsg)
+  }, function (error, response, body) {
+    if (error) {console.log(error);}
+    else {
+      console.log('response ' + body);
+    }
   });
 
-  req.write(JSON.stringify(sendMsg));
-  req.end();
-
-  req.on('error', function (e) {
-    console.error(e);
-  });
+  // var req = https.request(options, function (res) {
+  //   console.log('statusCode: ', res.statusCode);
+  //   console.log('headers: ', res.headers);
+  //
+  //   res.on('data', function (d) {
+  //     console.log(d.toString());
+  //     //process.stdout.write(d);
+  //   });
+  // });
+  //
+  // req.write(JSON.stringify(sendMsg));
+  // req.end();
+  //
+  // req.on('error', function (e) {
+  //   console.error(e);
+  // });
 }
 
 
