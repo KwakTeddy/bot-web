@@ -129,7 +129,8 @@ var categoryRestaurants = {
     var query = {category: category, deliverable: true};
     query['address.시도명'] = context.dialog.address.시도명;
     query['address.시군구명'] = context.dialog.address.시군구명;
-    query['address.행정동명'] = context.dialog.address.행정동명;
+    // query['address.행정동명'] = context.dialog.address.행정동명;
+    query['address.법정읍면동명'] = context.dialog.address.법정읍면동명;
 
     model.find(query).limit(type.MAX_LIST).lean().exec(function(err, docs) {
       var hhmm = new Date().toString().split(' ')[4].substring(0, 5);
