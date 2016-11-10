@@ -16,8 +16,8 @@ module.exports = function (app) {
   app.route('/kakao/:bot/chat_room/:user_key').delete(kakao.deleteChatRoom);
 
   // 라인
-  app.route('/line/:bot/receive').get(line.receiveGet);
-  app.route('/line/:bot/receive').post(line.receive);
+  // app.route('/line/:bot/receive').get(line.receiveGet);
+  app.route('/line/:bot/receive').post(line.receiveNew);
 
   // 페이스북
   app.route('/facebook/:bot/webhook').get(facebook.messageGet);
