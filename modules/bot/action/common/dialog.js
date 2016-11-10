@@ -400,7 +400,8 @@ function executeDialog(dialog, context, print, callback, options) {
     if(options.current.output.repeat !== 1 && options.current.output.up !== 1) {
       dialog.parent = options.current.parent;
 
-      if(options.current.top) dialog.top = options.current.top;
+      if(options.top) dialog.top = findDialog(null, context, options.top);
+      else if(options.current.top) dialog.top = options.current.top;
       else dialog.top = options.current;
     }
 

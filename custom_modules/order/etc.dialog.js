@@ -8,7 +8,7 @@ var dialogs = [
   children: [
     {
       input: '~네',
-      output: {call:'배달주문'}
+      output: {call:'배달주문', options: {top: '배달주문'}}
     },
     {
       input: '~아니요',
@@ -115,6 +115,20 @@ var dialogs = [
 {
   input: ['고객센터', '센터'],
   output: '02-858-5683으로 연락해주세요~'
+},
+{
+  input: '배고프다',
+  output: '배고플땐 배달음식이죠! 주문을 도와드릴까요?',
+  children: [
+    {
+      input: '~네',
+      output: {call:'배달주문', options: {top: '배달주문'}}
+    },
+    {
+      input: '~아니요',
+      output: '언제든지 기다릴게요~ 필요하실 때 불러주세요~'
+    }
+  ]
 },
 {
   name: '말돌리기',

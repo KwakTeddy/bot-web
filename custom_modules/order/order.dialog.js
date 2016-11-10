@@ -40,7 +40,11 @@ var commonDialogs = [
     children: [
       {
         input: '~네',
-        output: {call: '배달주문'}
+        // task: {action: function(task, context, callback) {
+        //   context.botUser.currentDialog.top = dialogModule.findDialog(null, context, '배달주문');
+        //   callback(task, context);
+        // }},
+        output: {call: '배달주문', options: {top: '배달주문'}}
       },
       {
         input: '~아니요',
@@ -215,8 +219,6 @@ var dialogs = [
                           { if: 'true', output: {call: '메뉴선택'}}
                         ]
                       },
-                      { input:  [/~이전/, /^0$/], output: {up : 1}},
-                      { input: [/~처음/, /^!$/], output: {call: '주문취소'}},
                       // {input: {types: [orderTask.restaurantType]},output: {repeat: 1}},
                       {output: {repeat: 1, options: {prefix: '목록에 있는 번호나 음식점을 입력해 주세요!\n\n'}}}
                     ]}
