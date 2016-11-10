@@ -111,9 +111,9 @@ function respondMessageNew(channelToken, replyToken, text, json) {
 
 //===============================================================
 // Bot Trial API (Old API)
-// const CHANNEL_ID = 1469815524;
-// const CHANNEL_SECRET = 'b3250f6b4b68374c2c9d70314980b814';
-// const MID = 'uf4867e86aa4c0e064754b0555d52a98f';
+const CHANNEL_ID = 1469815524;
+const CHANNEL_SECRET = 'b3250f6b4b68374c2c9d70314980b814';
+const MID = 'uf4867e86aa4c0e064754b0555d52a98f';
 
 const sendHeader = {
   Host: 'trialbot-api.line.me',
