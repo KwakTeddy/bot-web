@@ -120,8 +120,7 @@ var orderTask = {
 
       function(cb) {
         var message = "[인공지능 배달봇 얌얌]\n " +
-            context.dialog.restaurant.name + ' 주문 요청 되었습니다.' +
-            '\n50분 내에 배달 예정\n(베타 테스트 중이라 실제 배달은 되지 않습니다.)';
+            context.dialog.restaurant.name + '/주문 요청/50분 이내 배달 예정\n(테스트중,실제배달안함)';
 
         request.post(
           'https://bot.moneybrain.ai/api/messages/sms/send',
