@@ -621,11 +621,11 @@ function mongoTypeCheck(text, format, inDoc, context, callback) {
 
 
 function restaurantTypeCheck(text, format, inDoc, context, callback) {
-  try {
-    logger.debug('type.js:restaurantTypeCheck: START ' + format.name + ' "' + text + '" inDoc: ' + JSON.stringify(inDoc));
-  } catch(e) {
-    logger.debug('type.js:restaurantTypeCheck: START ' + format.name + ' "' + text + '"');
-  }
+  // try {
+  //   logger.debug('type.js:restaurantTypeCheck: START ' + format.name + ' "' + text + '" inDoc: ' + JSON.stringify(inDoc));
+  // } catch(e) {
+  //   logger.debug('type.js:restaurantTypeCheck: START ' + format.name + ' "' + text + '"');
+  // }
 
   var address;
   if(format.address == undefined || format.address == true) {
@@ -659,6 +659,8 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
 
           for (var i = 0; i < words.length; i++) {
             var word = words[i];
+            if(word.length <= 1) continue;
+
             try {
               word = RegExp.escape(word);
 
@@ -725,8 +727,11 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
           });
 
         }, function(err) {
-          if(matchedDoc.length > 0) _cb(true);
-          else _cb(null);
+          if(matchedDoc.length > 0) {
+            logger.debug('type.js:restaurantTypeCheck: 상점별명');
+
+            _cb(true);
+          } else _cb(null);
         })
 
       } else _cb(null);
@@ -734,86 +739,92 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
     },
 
     function(_cb) {
-      async.eachSeries(words, function (word, _callback){
+      async.eachSeries(words, function (word, _callback) {
         // var word = words[i];
 
-        var query = {};
-        for(var j = 0; j < format.mongo.queryFields.length; j++) {
-          try {
-            word = RegExp.escape(word);
-            query[format.mongo.queryFields[j]] = new RegExp(word, 'i');
-          } catch(e) {}
-        }
-
-        if(address) {
-          query['address.시도명'] = address.시도명;
-          query['address.시군구명'] = address.시군구명;
-          // query['address.행정동명'] = address.행정동명;
-          query['address.법정읍면동명'] = address.법정읍면동명;
-          query.deliverable = true;
-        }
-
-        var _query = model.find(query, format.mongo.fields, format.mongo.options);
-        if(format.mongo.sort) _query.sort(format.mongo.sort);
-        if(format.mongo.limit) _query.limit(format.mongo.limit || type.MAX_LIST);
-
-        _query.lean().exec(function (err, docs) {
-          wordsCount++;
-
-          if (err || !docs || docs.length <= 0) {
-            //callback(text, inDoc);
-          } else {
-
-            for(var k = 0; k < docs.length; k++) {
-              var doc = docs[k];
-
-              var matchCount = 0;
-              matchedWord = '';
-              var matchIndex = -1, matchMin = -1, matchMax = -1;
-              for(var l = 0; l < format.mongo.queryFields.length; l++) {
-                for(var m = 0; m < words.length; m++) {
-                  var _word = words[m];
-                  _word = RegExp.escape(_word);
-                  matchIndex = doc[format.mongo.queryFields[l]].search(new RegExp(_word, 'i'));
-
-                  if(matchIndex != -1) {
-                    matchCount++;
-                    matchedWord += _word;
-
-                    var matchOrgIndex = text.search(new RegExp(_word, 'i'));
-                    if(matchOrgIndex != -1 && (matchMin == -1 || matchOrgIndex < matchMin)) matchMin = matchOrgIndex;
-                    if(matchOrgIndex != -1 && (matchMax == -1 || matchOrgIndex + _word.length> matchMax)) matchMax = matchOrgIndex + _word.length;
-                  }
-                }
-              }
-
-              if(matchCount >= format.mongo.minMatch) {
-                var bExist = false;
-                for(var l = 0; l < matchedDoc.length; l++) {
-                  if(matchedDoc[l]._id.id == doc._id.id) {
-                    bExist = true;
-                    break;
-                  }
-                }
-
-                if(!bExist) {
-                  doc.matchWord = matchedWord;
-                  doc.matchCount = matchCount;
-                  doc.matchMin = matchMin;
-                  doc.matchMax = matchMax;
-                  doc.matchRate = matchCount / words.length;
-
-                  matchedDoc.push(doc);
-                }
-              }
+        if(word.length <= 1) _callback(null);
+        else {
+          var query = {};
+          for (var j = 0; j < format.mongo.queryFields.length; j++) {
+            try {
+              word = RegExp.escape(word);
+              query[format.mongo.queryFields[j]] = new RegExp(word, 'i');
+            } catch (e) {
             }
           }
 
-          _callback(null);
-        });
+          if (address) {
+            query['address.시도명'] = address.시도명;
+            query['address.시군구명'] = address.시군구명;
+            // query['address.행정동명'] = address.행정동명;
+            query['address.법정읍면동명'] = address.법정읍면동명;
+            query.deliverable = true;
+          }
+
+          var _query = model.find(query, format.mongo.fields, format.mongo.options);
+          if (format.mongo.sort) _query.sort(format.mongo.sort);
+          if (format.mongo.limit) _query.limit(format.mongo.limit || type.MAX_LIST);
+
+          _query.lean().exec(function (err, docs) {
+            wordsCount++;
+
+            if (err || !docs || docs.length <= 0) {
+              //callback(text, inDoc);
+            } else {
+
+              for (var k = 0; k < docs.length; k++) {
+                var doc = docs[k];
+
+                var matchCount = 0;
+                matchedWord = '';
+                var matchIndex = -1, matchMin = -1, matchMax = -1;
+                for (var l = 0; l < format.mongo.queryFields.length; l++) {
+                  for (var m = 0; m < words.length; m++) {
+                    var _word = words[m];
+                    _word = RegExp.escape(_word);
+                    matchIndex = doc[format.mongo.queryFields[l]].search(new RegExp(_word, 'i'));
+
+                    if (matchIndex != -1) {
+                      matchCount++;
+                      matchedWord += _word;
+
+                      var matchOrgIndex = text.search(new RegExp(_word, 'i'));
+                      if (matchOrgIndex != -1 && (matchMin == -1 || matchOrgIndex < matchMin)) matchMin = matchOrgIndex;
+                      if (matchOrgIndex != -1 && (matchMax == -1 || matchOrgIndex + _word.length > matchMax)) matchMax = matchOrgIndex + _word.length;
+                    }
+                  }
+                }
+
+                if (matchCount >= format.mongo.minMatch) {
+                  var bExist = false;
+                  for (var l = 0; l < matchedDoc.length; l++) {
+                    if (matchedDoc[l]._id.id == doc._id.id) {
+                      bExist = true;
+                      break;
+                    }
+                  }
+
+                  if (!bExist) {
+                    doc.matchWord = matchedWord;
+                    doc.matchCount = matchCount;
+                    doc.matchMin = matchMin;
+                    doc.matchMax = matchMax;
+                    doc.matchRate = matchCount / words.length;
+
+                    matchedDoc.push(doc);
+                  }
+                }
+              }
+            }
+
+            _callback(null);
+          });
+        }
       }, function(err) {
-        if(matchedDoc.length > 0) _cb(true);
-        else _cb(null);
+        if(matchedDoc.length > 0) {
+          logger.debug('type.js:restaurantTypeCheck: 상점명');
+          _cb(true);
+        } else _cb(null);
       })
     },
 
@@ -823,6 +834,8 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
       var category, word, rCategory;
       for(var i in words) {
         word = words[i];
+        if(word.length <= 1) continue;
+
         if(category) break;
         for(var j in restaurantCategory) {
           rCategory = restaurantCategory[j];
@@ -853,6 +866,7 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
         _query.lean().exec(function (err, _docs) {
           if(_docs && _docs.length > 0) {
             matchedDoc = _docs;
+            logger.debug('type.js:restaurantTypeCheck: 음식점종류');
             _cb(true);
           } else {
             _cb(null);
@@ -868,6 +882,8 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
       var category, word, mCategory;
       for(var i in words) {
         word = words[i];
+        if(word.length <= 1) continue;
+
         if(category) break;
         for(var j in menuCategory) {
           mCategory = menuCategory[j];
@@ -898,6 +914,7 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
         _query.lean().exec(function (err, _docs) {
           if(_docs && _docs.length > 0) {
             matchedDoc = _docs;
+            logger.debug('type.js:restaurantTypeCheck: 메뉴종류');
             _cb(true);
           } else {
             _cb(null);
@@ -914,33 +931,35 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
 
       async.eachSeries(words, function(word, _callback) {
         try {
-          word = RegExp.escape(word);
+          if(word.length <= 1) _callback(null);
+          else {
+            word = RegExp.escape(word);
 
-          var query1 = {};
-          for(var j = 0; j < format.mongo.queryFields.length; j++) {
-            try {
-              query1[format.mongo.queryFields[j]] = new RegExp(word, 'i');
-            } catch(e) {}
-          }
-
-          var model1 = mongoose.model('FranchiseMenu');
-          var _query1 = model1.find(query1, format.mongo.fields, format.mongo.options);
-          _query1.populate('franchise');
-
-          _query1.lean().exec(function (err, docs) {
-            if(!err) {
-              for (var i = 0; i < docs.length; i++) {
-                var doc = docs[i];
-
-                if(!_.includes(matchConcepts, doc.franchise.name)) matchConcepts.push(doc.franchise.name);
-              }
+            var query1 = {};
+            for(var j = 0; j < format.mongo.queryFields.length; j++) {
+              try {
+                query1[format.mongo.queryFields[j]] = new RegExp(word, 'i');
+              } catch(e) {}
             }
-            _callback(null);
-          });
+
+            var model1 = mongoose.model('FranchiseMenu');
+            var _query1 = model1.find(query1, format.mongo.fields, format.mongo.options);
+            _query1.populate('franchise');
+
+            _query1.lean().exec(function (err, docs) {
+              if(!err) {
+                for (var i = 0; i < docs.length; i++) {
+                  var doc = docs[i];
+
+                  if(!_.includes(matchConcepts, doc.franchise.name)) matchConcepts.push(doc.franchise.name);
+                }
+              }
+              _callback(null);
+            });
+          }
         } catch(e) {
           _callback(null);
         }
-
       }, function(err) {
         if(matchConcepts.length > 0) {
           async.eachSeries(matchConcepts, function (word, _callback) {
@@ -991,8 +1010,10 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
             });
 
           }, function(err) {
-            if(matchedDoc.length > 0) _cb(true);
-            else _cb(null);
+            if(matchedDoc.length > 0) {
+              logger.debug('type.js:restaurantTypeCheck: 프랜차이즈 메뉴');
+              _cb(true);
+            } else _cb(null);
           })
 
         } else _cb(null);
@@ -1092,18 +1113,18 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
       }
 
       try {
-        logger.debug('type.js:restaurantTypeCheck: MATCHED ' + format.name + ' "' + text + '" inDoc: ' + JSON.stringify(inDoc));
+        logger.debug('type.js:restaurantTypeCheck: MATCHED ' + format.name + ' "' + text/* + '" inDoc: ' + JSON.stringify(inDoc)*/);
       } catch (e) {
-        logger.debug('type.js:restaurantTypeCheck: MATCHED ' + format.name + ' "' + text + '" inDoc.' + format.name + ': ' + inDoc[format.name] + ' inDoc.typeDoc: ' + JSON.stringify(inDoc.typeDoc));
+        logger.debug('type.js:restaurantTypeCheck: MATCHED ' + format.name + ' "' + text/* + '" inDoc.' + format.name + ': ' + inDoc[format.name] + ' inDoc.typeDoc: ' + JSON.stringify(inDoc.typeDoc)*/);
       }
 
       callback(text, inDoc, true);
     } else {
 
       try {
-        logger.debug('type.js:restaurantTypeCheck: NOT MATCHED ' + format.name + ' "' + text + '" inDoc: ' + JSON.stringify(inDoc));
+        logger.debug('type.js:restaurantTypeCheck: NOT MATCHED ' + format.name + ' "' + text/* + '" inDoc: ' + JSON.stringify(inDoc)*/);
       } catch (e) {
-        logger.debug('type.js:restaurantTypeCheck: NOT MATCHED ' + format.name + ' "' + text + '" inDoc.' + format.name + ': ' + inDoc[format.name] + ' inDoc.typeDoc: ' + JSON.stringify(inDoc.typeDoc));
+        logger.debug('type.js:restaurantTypeCheck: NOT MATCHED ' + format.name + ' "' + text/* + '" inDoc.' + format.name + ': ' + inDoc[format.name] + ' inDoc.typeDoc: ' + JSON.stringify(inDoc.typeDoc)*/);
       }
 
       callback(text, inDoc, false);
