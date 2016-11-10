@@ -26,11 +26,6 @@ exports.receiveNew = function (req, res) {
 
 
 function respondMessageNew(channelToken, replyToken, text, json) {
-  var sendHeader = {
-    'Content-Type' : 'application/json',
-    'Authorization': 'Bearer ' + channelToken
-  };
-
   var sendMsg = {
     "replyToken": replyToken,
     "messages":[
@@ -41,91 +36,20 @@ function respondMessageNew(channelToken, replyToken, text, json) {
     ]
   };
 
-  var options = {
-    hostname: 'api.line.me',
-    port: 443,
-    path: '/v2/bot/message/reply',
-    method: 'POST',
-    headers: sendHeader
-  };
-
-  console.log(JSON.stringify(options));
-
   request.post({
     url: 'https://api.line.me/v2/bot/message/reply',
     headers: {
       'Content-Type' : 'application/json',
       'Authorization': 'Bearer ' + channelToken
     },
-    headers: sendHeader,
     body: JSON.stringify(sendMsg)
   }, function (error, response, body) {
     if (error) {console.log(error);}
     else {
-      console.log('response ' + body);
+      // console.log('response ' + body);
     }
   });
-
-  // var req = https.request(options, function (res) {
-  //   console.log('statusCode: ', res.statusCode);
-  //   console.log('headers: ', res.headers);
-  //
-  //   res.on('data', function (d) {
-  //     console.log(d.toString());
-  //     //process.stdout.write(d);
-  //   });
-  // });
-  //
-  // req.write(JSON.stringify(sendMsg));
-  // req.end();
-  //
-  // req.on('error', function (e) {
-  //   console.error(e);
-  // });
 }
-
-
-// {
-//   "events": [
-//   {
-//     "replyToken": "nHuyWiB7yP5Zw52FIkcQobQuGDXCTA",
-//     "type": "message",
-//     "timestamp": 1462629479859,
-//     "source": {
-//       "type": "user",
-//       "userId": "U206d25c2ea6bd87c17655609a1c37cb8"
-//     },
-//     "message": {
-//       "id": "325708",
-//       "type": "text",
-//       "text": "Hello, world"
-//     }
-//   }
-// ]
-// }
-
-
-// curl -X POST \
-// -H 'Content-Type:application/json' \
-// -H 'Authorization: Bearer {ENTER_ACCESS_TOKEN}' \
-// -d '{
-// "replyToken":"nHuyWiB7yP5Zw52FIkcQobQuGDXCTA",
-//   "messages":[
-//   {
-//     "type":"text",
-//     "text":"Hello, user"
-//   },
-//   {
-//     "type":"text",
-//     "text":"May I help you?"
-//   }
-// ]
-// }' https://api.line.me/v2/bot/message/reply
-
-// chat.getContext(botId, 'facebook', to, function(context) {
-//   callSendAPI(messageData, context.bot.facebook.PAGE_ACCESS_TOKEN);
-// });
-//
 
 
 //===============================================================
