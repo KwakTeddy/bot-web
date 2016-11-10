@@ -185,7 +185,6 @@ var dialogs = [
           },
           { if: function(dialog, context, callback) {
               // if(context.dialog.restaurant == undefined) {
-                context.dialog.restaurants = null;
                 context.dialog.address = context.user.address;
                 callback(true);
               // } else {
@@ -215,18 +214,18 @@ var dialogs = [
                   },
                   { if: 'Array.isArray(dialog.task.restaurant)',
                     name: '음식점목록',
-                    task: {action: function(task, context, callback) {
-                      if(context.dialog.restaurants) context.dialog.restaurant = context.dialog.restaurants;
-                      else if(!context.dialog.restaurants && context.dialog.restaurant) context.dialog.restaurants = context.dialog.restaurant;
-                      callback(task, context);
-                    }},
-                    output: '가장 적합한 음식점들을 찾았습니다.\n#restaurant#+index+. +name+ +openStatus+\n#0. 이전 !. 처음(주문취소)\n\n목록에서 번호나 음식점명을 입력해주세요',
+                    // task: {action: function(task, context, callback) {
+                    //   if(task.restaurant) context.dialog.restaurant = task.restaurant;
+                    //   else if(!task.restaurant && context.dialog.restaurant) task.restaurant = context.dialog.restaurant;
+                    //   callback(task, context);
+                    // }},
+                    output: '말씀하신 것과 가장 유사한 음식점입니다. \n#restaurant#+index+. +name+ +openStatus+\n#0. 이전 !. 처음(주문취소)\n\n목록에서 번호나 음식점명을 입력해주세요',
                     children: [
                       {
                         input: {types: [{name: 'restaurant', typeCheck: 'listTypeCheck'}]},
                         // task: {action: function(task, context, callback) {context.dialog.restaurant = task.restaurant; callback(task, callback);}},
                         output: [
-                          { if: 'context.dialog.restaurant.isOpen == false', output: '현재 영업 시간이 아닙니다.\n0. 이전 !. 처음(주문취소)',
+                          { if: 'context.dialog.restaurant.isOpen == false', output: '현재 영업 시간이 아닙니다.\n0. 이전 \n!. 처음(주문취소)',
                             children: [
                               { input: [/~이전/, /^0$/], output: {up : 1}},
                               { input: [/~처음/, /^!$/], output: {call: '주문취소'}}
@@ -254,7 +253,7 @@ var dialogs = [
                         children: [
                           { input: {types: [{name: 'restaurant', typeCheck: 'listTypeCheck'}]},
                             output: [
-                              {if: 'context.dialog.restaurant.isOpen == false', output: '현재 영업 시간이 아닙니다.\n0. 이전 !. 처음(주문취소)',
+                              {if: 'context.dialog.restaurant.isOpen == false', output: '현재 영업 시간이 아닙니다.\n0. 이전 \n!. 처음(주문취소)',
                                 children: [
                                   { input:  [/~이전/, /^0$/], output: {up : 1}},
                                   { input: [/~처음/, /^!$/], output: {call: '주문취소'}}
@@ -267,7 +266,7 @@ var dialogs = [
                           {output: {repeat: 1, options: {prefix: '목록에 있는 번호나 음식점을 입력해 주세요!\n\n'}}}
                         ]
                       },
-                      {if: 'true', output: '[+category+]\n현 주소 근처에서 음식점을 찾지 못했습니다\n0. 이전 !. 처음(주문취소)',
+                      {if: 'true', output: '[+category+]\n현 주소 근처에서 음식점을 찾지 못했습니다\n0. 이전 \n!. 처음(주문취소)',
                       children: [
                         { input:  [/~이전/, /^0$/], output: {up : 1}},
                         { input: [/~처음/, /^!$/], output: {call: '주문취소'}}
@@ -350,7 +349,7 @@ var dialogs = [
           },
           { if: 'context.dialog.menu == undefined',
             name: '메뉴입력',
-            output: '"+restaurant.name+"에서 주문할 메뉴를 말씀해 주세요.\n모든 메뉴를 보려면 "메뉴판"이라고 얘기해주세요',
+            output: '"+restaurant.name+"에서 원하시는 메뉴를 말씀해 주세요.\n모든 메뉴를 보려면 "메뉴판"이라고 얘기해주세요',
             children: [
               { name: '옵션추가확인', input: {types: [orderTasks.menuType], if: 'context.dialog.menu && !Array.isArray(context.dialog.menu)'},
                 output: [
@@ -381,7 +380,7 @@ var dialogs = [
                         output: [
                           { if: 'context.dialog.totalPrice + context.dialog.option.price * context.dialog.count < context.dialog.restaurant.minOrder',
                             task: {action: orderTasks.menuAddAction},
-                            output: {call: '메뉴입력', options: {prefix: '"+restaurant.name+"에서\n"+addedMenu.name+" +count+개를\n배달 목록에 추가했습니다.\n\n최초 주문 금액은 +restaurant.minOrder+원이고, 현재까지 주문금액은 +totalPrice+원 입니다.\n\n'}
+                            output: {call: '메뉴입력', options: {prefix: '"+restaurant.name+"에서\n"+addedMenu.name+" +count+개를\n배달 목록에 추가했습니다.\n\n최소 주문 금액은 +restaurant.minOrder+원이고, 현재까지 주문금액은 +totalPrice+원 입니다.\n\n'}
                             }
                           },
                           { if: 'true',
@@ -396,7 +395,7 @@ var dialogs = [
                   },
                   { if: 'context.dialog.totalPrice + context.dialog.menu.price * context.dialog.count < context.dialog.restaurant.minOrder',
                     task: {action: orderTasks.menuAddAction},
-                    output: {call: '메뉴입력', options: {prefix: '"+restaurant.name+"에서\n"+addedMenu.name+" +count+개를\n배달 목록에 추가했습니다.\n\n최초 주문 금액은 +restaurant.minOrder+원이고, 현재까지 주문금액은 +totalPrice+원 입니다.\n\n'}}
+                    output: {call: '메뉴입력', options: {prefix: '"+restaurant.name+"에서\n"+addedMenu.name+" +count+개를\n배달 목록에 추가했습니다.\n\n최소 주문 금액은 +restaurant.minOrder+원이고, 현재까지 주문금액은 +totalPrice+원 입니다.\n\n'}}
                   },
                   { if: 'true',
                     task: {action: orderTasks.menuAddAction},
