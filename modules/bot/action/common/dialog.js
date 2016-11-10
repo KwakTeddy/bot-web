@@ -740,6 +740,7 @@ function executeType(inRaw, inNLP, type, task, context, callback) {
             }
 
           } else {
+            context.dialog[type.name] = null;
             eachMatched2 = false;
             cb4(true, false);
           }

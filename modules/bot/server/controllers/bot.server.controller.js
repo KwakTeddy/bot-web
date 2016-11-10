@@ -61,6 +61,9 @@ function botProc(botName, channel, user, inTextRaw, outCallback, chatServerConfi
     },
 
     function(cb) {
+      context.dialog.inCurRaw = inTextRaw;
+      context.dialog.inCurNLP = inTextNLP;
+
       if(inTextRaw.startsWith(':')) {
         command.command(inTextRaw, inTextNLP, context, print, function(matched) {
           if(matched) cb(true);
