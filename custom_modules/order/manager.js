@@ -6,8 +6,7 @@ exports.checkOrder = checkOrder;
 function checkOrder(task, context, successCallback, errorCallback) {
   var pendingCallback = function(_inRaw, _inNLP, _inDoc, _context, print) {
     // context.user.pendingCallback = null;
-    var re = new RegExp('접수', 'g');
-    if(_inRaw.search(re) != -1) {
+    if(_inRaw.search(/접수/) != -1) {
 
       var managerName;
       for(var i in _context.bot.managers) {
@@ -32,6 +31,32 @@ function checkOrder(task, context, successCallback, errorCallback) {
         global._users[manager.userId].pendingCallback = null;
         manager.deliveryOrderId = null;
       }
+    } else if(_inRaw.search(/취소/) != -1) {
+      var managerName;
+      for(var i in _context.bot.managers) {
+        var manager = _context.bot.managers[i];
+        if(manager.userId == _context.user.userId) managerName = manager.name;
+      }
+      if(managerName == undefined) managerName = _context.user.userId;
+
+      for(var i in _context.bot.managers) {
+        var manager = _context.bot.managers[i];
+
+        if(_context.user.userId != manager.userId)
+          facebook.respondMessage(manager.userId, managerName + '님이 취소하셨습니다.', _context.bot.botName);
+        else {
+          print('[취소완료] 수고하셨습니다!');
+
+          var model = mongoose.model('DeliveryOrder');
+          model.update({_id: manager.deliveryOrderId}, {status: '취소'}, function (err) {
+          });
+        }
+
+        global._users[manager.userId].pendingCallback = null;
+        manager.deliveryOrderId = null;
+      }
+    } else {
+      print('접수 또는 취소만 가능합니다!');
     }
   };
 

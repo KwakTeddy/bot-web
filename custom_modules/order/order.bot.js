@@ -11,9 +11,7 @@ var orderBot = {
   },
   facebook: {
     id: '1166917363364364',
-//    id: '1006864529411088',
     APP_SECRET :  "eb2974959255583150013648e7ac5da4",
-//    PAGE_ACCESS_TOKEN :  "EAAJGZBCFjFukBAE63miCdcKFwqTEmbbhSbm6jIr6ws5I7fKnWSMUqIzGfHZBDTqmW0wra5xZBZCLWg2O9miPcc6WdVQRyfHdDCYuhLjIbng0njUHqOdbasHcSZAs2WEO7zG72wgmciNsF138QCq1vLnzMHR3XYIP0VnV1iZBsZAngZDZD",
     PAGE_ACCESS_TOKEN :  "EAAJGZBCFjFukBAOhykfl9BfZBcLoDsT2G6oC7NVdhyWDSw45p3W9U8WKOKlbvunqnAFdZC2L8HPa2kkNi33fpj0v5bHZAm55WIMJlniy9ZBDaXkFZC6OBo5zU4cV7CZCq7kXrXnIEDQh9aWQbZASmiPlIAWb8fwuneaQfLqZBJpZAV4QZDZD",
     VALIDATION_TOKEN : "moneybrain_token"
   },
@@ -23,34 +21,14 @@ var orderBot = {
     CHANNEL_ACCESS_TOKEN: 'qEZFTLvs+VZc261MqfjfTWAdNPqqJA7Xwvrnbfmc8NWNJWXqoGCozNa174yDjm7gJM7/WNjcVIR2sqxFYF4LJNIDe1tdLe7ru04K53JzJYQopy3rjq872G2WLrcN/tI3CBaER6OotAv401QQnI57qgdB04t89/1O/w1cDnyilFU='
   },
   managers: [
-    // {platform: 'facebook', userId: '997804450331458', name: '테스트'},
-    {platform: 'facebook', userId: '1094114534004265', name: '장세영'}
+    // {platform: 'facebook', userId: '1240743695984292', name: '전용원'},
+    {platform: 'facebook', userId: '1314256105273043', name: '장세영'}
   ],
 
   messages: {
     manager:  true,
     orderCall: false
   },
-
-  // concepts: {
-  //   '배달': ['주문', '시키다', '보내다'],
-  //   '내역': ['내 역'],
-  //   '이전': ['전 단계'],
-  //   '처음': ['시작', '취소'],
-  //   '전페이지': ['전', '앞'],
-  //   '다음페이지': ['뒤', '다음'],
-  //   '저번': ['저번', '지난번', '마지막'],
-  //   '맛있다': ['맛나'],
-  //   'BBQ': ['비비큐'],
-  //   'BHC': ['비에이치씨'],
-  //   '굽네치킨': ['goobne'],
-  //   '네네치킨': ['nene'],
-  //   '도미노피자': ['domino'],
-  //   '롯데리아': ['lotteria'],
-  //   '맘스터치': ['momstouch'],
-  //   '맥도날드': ['mcdonald'],
-  //   '멕시카나치킨': ['mexicana']
-  // },
 
   dialogFiles: [
     'history.dialog.js',

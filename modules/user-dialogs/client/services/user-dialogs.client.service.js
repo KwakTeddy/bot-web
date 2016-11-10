@@ -9,12 +9,8 @@
   UserDialogsService.$inject = ['$resource'];
 
   function UserDialogsService($resource) {
-    return $resource('api/user-dialogs/:userDialogId', {
-      userDialogId: '@_id'
-    }, {
-      update: {
-        method: 'PUT'
-      }
-    });
+    return $resource('api/user-dialogs/:userKey', {
+      userKey: '@_id'
+    }, {});
   }
 })();
