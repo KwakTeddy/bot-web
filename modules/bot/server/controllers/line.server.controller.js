@@ -28,7 +28,7 @@ exports.receiveNew = function (req, res) {
 function respondMessageNew(channelToken, replyToken, text, json) {
   var sendHeader = {
     'Content-Type' : 'application/json',
-    'Authorization': channelToken
+    'Authorization': 'Bearer ' + channelToken
   };
 
   var sendMsg = {
@@ -49,14 +49,15 @@ function respondMessageNew(channelToken, replyToken, text, json) {
     headers: sendHeader
   };
 
-  // console.log(JSON.stringify(options));
+  console.log(JSON.stringify(options));
 
   request.post({
     url: 'https://api.line.me/v2/bot/message/reply',
     headers: {
       'Content-Type' : 'application/json',
-      'Authorization': channelToken
+      'Authorization': 'Bearer ' + channelToken
     },
+    headers: sendHeader,
     body: JSON.stringify(sendMsg)
   }, function (error, response, body) {
     if (error) {console.log(error);}
