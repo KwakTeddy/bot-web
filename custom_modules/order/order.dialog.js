@@ -185,6 +185,7 @@ var dialogs = [
           },
           { if: function(dialog, context, callback) {
               // if(context.dialog.restaurant == undefined) {
+                context.dialog.restaurants = null;
                 context.dialog.address = context.user.address;
                 callback(true);
               // } else {
@@ -214,11 +215,11 @@ var dialogs = [
                   },
                   { if: 'Array.isArray(dialog.task.restaurant)',
                     name: '음식점목록',
-                    // task: {action: function(task, context, callback) {
-                    //   if(task.restaurant) context.dialog.restaurant = task.restaurant;
-                    //   else if(!task.restaurant && context.dialog.restaurant) task.restaurant = context.dialog.restaurant;
-                    //   callback(task, context);
-                    // }},
+                    task: {action: function(task, context, callback) {
+                      if(context.dialog.restaurants) context.dialog.restaurant = context.dialog.restaurants;
+                      else if(!context.dialog.restaurants && context.dialog.restaurant) context.dialog.restaurants = context.dialog.restaurant;
+                      callback(task, context);
+                    }},
                     output: '말씀하신 것과 가장 유사한 음식점입니다. \n#restaurant#+index+. +name+ +openStatus+\n#0. 이전 !. 처음(주문취소)\n\n목록에서 번호나 음식점명을 입력해주세요',
                     children: [
                       {
