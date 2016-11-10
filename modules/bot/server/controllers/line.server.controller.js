@@ -4,8 +4,8 @@ var request = require('request');
 var chat = require('./bot.server.controller');
 
 exports.receiveNew = function (req, res) {
-  console.log("receive receive");
-  console.log(JSON.stringify(req.body));
+  // console.log("receive receive");
+  // console.log(JSON.stringify(req.body));
 
   if(req.body && req.body.events && req.body.events[0].message.text) {
     var from = req.body.events[0].source.userId;
