@@ -930,12 +930,12 @@ function numberTypeCheck(text, type, task, context, callback) {
 
 
 function mongoTypeCheck(text, format, inDoc, context, callback) {
-  logger.debug('');
-  try {
-    logger.debug('type.js:mongoTypeCheck: START ' + format.name + ' "' + text + '" inDoc: ' + JSON.stringify(inDoc));
-  } catch(e) {
-    logger.debug('type.js:mongoTypeCheck: START ' + format.name + ' "' + text + '"');
-  }
+  // logger.debug('');
+  // try {
+  //   logger.debug('type.js:mongoTypeCheck: START ' + format.name + ' "' + text + '" inDoc: ' + JSON.stringify(inDoc));
+  // } catch(e) {
+  //   logger.debug('type.js:mongoTypeCheck: START ' + format.name + ' "' + text + '"');
+  // }
 
   if(text == null) {
     callback(text, inDoc, false);
@@ -1182,9 +1182,9 @@ function mongoTypeCheck(text, format, inDoc, context, callback) {
       }
 
       try {
-        logger.debug('type.js:mongoTypeCheck: MATCHED ' + format.name + ' "' + text + '" inDoc: ' + JSON.stringify(inDoc));
+        logger.debug('type.js:mongoTypeCheck: MATCHED ' + format.name + ' "' + text/* + '" inDoc: ' + JSON.stringify(inDoc)*/);
       } catch (e) {
-        logger.debug('type.js:mongoTypeCheck: MATCHED ' + format.name + ' "' + text + '" inDoc.' + format.name + ': ' + inDoc[format.name] + ' inDoc.typeDoc: ' + JSON.stringify(inDoc.typeDoc));
+        logger.debug('type.js:mongoTypeCheck: MATCHED ' + format.name + ' "' + text/* + '" inDoc.' + format.name + ': ' + inDoc[format.name] + ' inDoc.typeDoc: ' + JSON.stringify(inDoc.typeDoc)*/);
       }
 
       callback(text, inDoc, true);
