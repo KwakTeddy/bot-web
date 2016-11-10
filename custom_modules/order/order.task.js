@@ -176,7 +176,7 @@ var menuType = {
     queryFields: ['name'],
     minMatch: 1
   },
-  exclude: ['치킨', '피자', '버거', '햄버거'],
+  // exclude: ['치킨', '피자', '버거', '햄버거'],
   preType: function(task, context, type, callback) {
     if(context.dialog.restaurant.franchise) {
       type.query = {franchise: context.dialog.restaurant.franchise};
