@@ -36,7 +36,11 @@ var commonDialogs = [
   { input: {if: orderTypes.orderDialogCondition, regexp: /^<$/}, output: {repeat: 1, options: {page: 'pre'}}},              // TODO 이전페이지, 다음페이지 구현
   { input: {if: orderTypes.orderDialogCondition, regexp: /~다음페이지/}, output: {repeat: 1, options: {page: 'next'}}},
   { input: {if: orderTypes.orderDialogCondition, regexp: /^>$/}, output: {repeat: 1, options: {page: 'next'}}},
-  { name: dialogModule.NO_DIALOG_NAME, output: '미안하지만, 무슨 말인지 모르겠어요.\n얌얌이는 주문에 필요한 대화를 중심으로 학습되었습니다.\n배달 주문을 도와드릴까요?',
+  { name: dialogModule.NO_DIALOG_NAME, output: [
+      '죄송해요. 아직 안 배운 말이예요..\n배달 주문을 도와드릴까요?\n\n(얌얌이는 주문을 위주로 대화를 학습하었습니다.)',
+      '죄송해요. 무슨 말인지 모르겠어요..\n배달 주문을 도와드릴까요?\n\n(얌얌이는 주문에 필요한 대화를 중심으로 학습되었습니다.)'
+      // '미안하지만, 무슨 말인지 모르겠어요.\n(얌얌이는 주문에 필요한 대화를 중심으로 학습되었습니다.)\n배달 주문을 도와드릴까요?'
+    ],
     children: [
       {
         input: '~네',
@@ -181,7 +185,7 @@ var dialogs = [
             output: {call: '음식점목록'}
           },
           { if: 'context.dialog.orderble != undefined',
-            output: {call: '음식점입력', options: {output: '"+address.법정읍면동명+ +address.지번본번+-+address.지번부번+" 근처에서 말씀하신 메뉴나 음식점명으로 등록된 음식점이 없습니다\n(주문가능 매장은 확대 중입니다.)\n\n다른 메뉴나 음식점을 말씀해 주세요.\n모두 보려면 "전단지"라고 입력해 주세요.'}}
+            output: {call: '음식점입력', options: {output: '"+address.법정읍면동명+ +address.지번본번+-+address.지번부번+" 근처에서 말씀하신 메뉴나 음식점명으로 등록된 음식점이 없는 것 같아요...\n(주문가능 매장은 확대 중입니다.)\n\n다른 메뉴나 음식점을 말씀해 주세요.\n모두 보려면 "전단지"라고 입력해 주세요~'}}
           },
           { if: function(dialog, context, callback) {
               // if(context.dialog.restaurant == undefined) {
@@ -279,7 +283,7 @@ var dialogs = [
                 ]
               },
 
-              { output: {repeat: 1, options: {output: '"+address.법정읍면동명+ +address.지번본번+-+address.지번부번+" 근처에서 말씀하신 메뉴나 음식점명으로 등록된 음식점이 없습니다\n(주문가능 매장은 확대 중입니다.)\n\n다른 메뉴나 음식점을 말씀해 주세요.\n모두 보려면 "전단지"라고 입력해 주세요.'}}}
+              { output: {repeat: 1, options: {output: '"+address.법정읍면동명+ +address.지번본번+-+address.지번부번+" 근처에서 말씀하신 메뉴나 음식점명으로 등록된 음식점이 없는 것 같아요.\n(주문가능 매장은 확대 중입니다.)\n\n다른 메뉴나 음식점을 말씀해 주세요.\n모두 보려면 "전단지"라고 입력해 주세요~'}}}
               // { output: {call: '음식점구분', options: {prefix: '말씀하신 음식점을 찾을 수 없어, 근처 음식점을 안내합니다.\n\n'}}}
             ]
           }
@@ -410,7 +414,7 @@ var dialogs = [
                 //   else if(!task.menu && context.dialog.menu) task.menu = context.dialog.menu;
                 //   callback(task, context);
                 // }},
-                output: '"+restaurant.name+"에서 아래 메뉴를 찾았습니다.\n#menu#+index+. +name+ +price+\n#0. 이전\n!. 처음(주문취소)\n\n목록에서 번호를 선택하거나 메뉴명을 입력해주세요.\n모든 메뉴를 보려면 "메뉴판"이라고 얘기해주세요',
+                output: '"+restaurant.name+"에서 적합한 메뉴를 찾았습니다.\n#menu#+index+. +name+ +price+\n#0. 이전\n!. 처음(주문취소)\n\n목록에서 번호를 선택하거나 메뉴명을 입력해주세요.\n모든 메뉴를 보려면 "메뉴판"이라고 얘기해주세요',
                 children: [
                   { input: {types: [{name: 'menu', typeCheck: 'listTypeCheck'}]},
                     // task: {action: orderTasks.menuAddAction},
