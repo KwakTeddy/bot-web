@@ -1086,15 +1086,17 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
         if(doc.businessHours && doc.businessHours.length > 0) {
           if((doc.businessHours[0].end > doc.businessHours[0].start && (hhmm < doc.businessHours[0].start || hhmm > doc.businessHours[0].end)) ||
             (doc.businessHours[0].end < doc.businessHours[0].start && (hhmm < doc.businessHours[0].start && hhmm > doc.businessHours[0].end))) {
-            inDoc[format.name][i].openStatus = '(금일 영업종료)';
-            inDoc[format.name][i].isOpen = false;
+            // inDoc[format.name][i].openStatus = '(금일 영업종료)';
+            // inDoc[format.name][i].isOpen = false;
+            inDoc[format.name][i].isOpen = true;
           } else {
             inDoc[format.name][i].isOpen = true;
           }
         } else {
           if (hhmm < defaultStart || hhmm > defautEnd) {
-            inDoc[format.name][i].openStatus = '(금일 영업종료)';
-            inDoc[format.name][i].isOpen = false;
+            // inDoc[format.name][i].openStatus = '(금일 영업종료)';
+            // inDoc[format.name][i].isOpen = false;
+            inDoc[format.name][i].isOpen = true;
           } else {
             inDoc[format.name][i].isOpen = true;
           }

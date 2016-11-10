@@ -7,6 +7,7 @@ var async = require('async');
 var utils = require(path.resolve('modules/bot/action/common/utils'));
 var type = require(path.resolve('modules/bot/action/common/type'));
 var _ = require('lodash');
+var request = require('request');
 
 // var checkTask = {
 //
@@ -31,88 +32,197 @@ var _ = require('lodash');
 
 var orderTask = {
   action: function(task, context, callback) {
-    var model = mongoose.model('DeliveryOrder');
+    async.waterfall([
+      function(cb) {
+        if(!context.user.confirmTerms) {
+          var botUser= require(path.resolve('modules/bot-users/server/controllers/bot-users.server.controller'))
+          context.user.confirmTerms = true;
+          context.user.updates = ['confirmTerms'];
+          botUser.updateUserContext(context.user, context, function () {
+            context.user.updates = null;
+            cb(null);
+          });
+        } else {
+          cb(null);
+        }
+      },
 
-    logger.debug(context.dialog.address);
+      function(cb) {
+        var model = mongoose.model('DeliveryOrder');
 
-    var _menus = [];
-    context.dialog.menuStr = '';
-    context.dialog.totalPrice = 0;
-    if(context.dialog.menus == undefined) {
-      context.dialog.totalPrice = context.dialog.menu.price;
-    } else {
-      for(var i in context.dialog.menus) {
-        _menus.push({menu: context.dialog.menus[i]._id, name: context.dialog.menus[i].name, price: context.dialog.menus[i].price, count: context.dialog.menus[i].count});
-        context.dialog.menuStr += context.dialog.menus[i].name + ' ' + context.dialog.menus[i].count + '개\n';
-        context.dialog.totalPrice += context.dialog.menus[i].price * context.dialog.menus[i].count;
-      }
-    }
+        var _menus = [];
+        context.dialog.menuStr = '';
+        context.dialog.totalPrice = 0;
+        if(context.dialog.menus == undefined) {
+          context.dialog.totalPrice = context.dialog.menu.price;
+        } else {
+          for(var i in context.dialog.menus) {
+            _menus.push({menu: context.dialog.menus[i]._id, name: context.dialog.menus[i].name, price: context.dialog.menus[i].price, count: context.dialog.menus[i].count});
+            context.dialog.menuStr += context.dialog.menus[i].name + ' ' + context.dialog.menus[i].count + '개\n';
+            context.dialog.totalPrice += context.dialog.menus[i].price * context.dialog.menus[i].count;
+          }
+        }
 
-    if(!context.user.confirmTerms) {
-      var botUser= require(path.resolve('modules/bot-users/server/controllers/bot-users.server.controller'))
+        var doc = {
+          restaurant: context.dialog.restaurant._id,
+          restaurantName: context.dialog.restaurant.name,
+          menus: _menus,
+          address: context.dialog.address != undefined ? context.dialog.address.address : undefined,
+          totalPrice: context.dialog.totalPrice,
+          status: ['요청'],
+          memo: '',
+          times: [
+            {status: '요청', time: Date.now()}
+          ],
+          intervals: [
+          ],
+          manager: null,
+          user: context.user.userId
+        };
 
-      context.user.confirmTerms = true;
-      context.user.updates = ['confirmTerms'];
-      botUser.updateUserContext(context.user, context, function () {
-        context.user.updates = null;
-      });
-    }
+        model.create(doc, function(err, _docs) {
+          if (err) {
+            cb(true);
+            throw err;
+          } else {
+            cb(null, _docs._id);
+          }
+        });
+      },
 
-    var doc = {
-      restaurant: context.dialog.restaurant._id,
-      restaurantName: context.dialog.restaurant.name,
-      menus: _menus,
-      address: context.dialog.address != undefined ? context.dialog.address.address : undefined,
-      totalPrice: context.dialog.totalPrice,
-      status: ['요청'],
-      memo: '',
-      times: [
-        {status: '요청', time: Date.now()}
-      ],
-      intervals: [
-      ],
-      manager: null,
-      user: context.user.userId
-    };
+      function(orderId, cb) {
+        task.deliveryOrderId = orderId;
+        if(context.bot.messages.manager == true)
+          manager.checkOrder(task, context, null);
 
-    model.create(doc, function(err, _docs) {
-      if (err) {
-        throw err;
-      } else {
-      }
+        if(context.bot.call) {
+          var message = "카카오톡에서 배달봇 얌얌 주문입니다. " +
+            context.dialog.menuStr + ' 배달해 주세요.' +
+            '주소는 ' + context.dialog.address.지번주소 + ' 입니다.' +
+            '전화번호는 ' + context.dialog.mobile + ' 입니다.' +
+            '이 주문은 인공지능 배달봇 얌얌의 카카오톡에서 배달대행 주문입니다.';
 
-      task.deliveryOrderId = _docs._id;
-      if(context.bot.messages.manager == true)
-        manager.checkOrder(task, context, null);
+          request.post(
+            'https://bot.moneybrain.ai/api/messages/vms/send',
+            // 'http://localhost:8443/api/messages/vms/send',
+            {json: {callbackPhone: '028585683', phone: context.user.mobile.replace(/,/g, ''), message: message}},
+            function (error, response, body) {
+              if (!error && response.statusCode == 200) {
+                // callback(task, context);
+              }
+              cb(null);
+            }
+          );
+        } else {
+          cb(null);
+        }
+      },
 
-      if(context.bot.call) {
-
-        var request = require('request');
-
-        var vmsMessage = "카카오톡에서 배달봇 양얌 주문입니다. " +
-          context.dialog.menuStr + ' 배달해 주세요.' +
-          '주소는 ' + context.dialog.address.지번주소 + ' 입니다.' +
-          '전화번호는 ' + context.dialog.mobile + ' 입니다.' +
-          '이 주문은 인공지능 배달봇 얌얌의 카카오톡에서 배달대행 주문입니다.';
+      function(cb) {
+        var message = "[인공지능 배달봇 얌얌] " +
+            context.dialog.restaurant.name + '\n주문 요청 되었습니다.' +
+            '\n50분 내에 배달 예정';
 
         request.post(
-          'https://bot.moneybrain.ai/api/messages/vms/send',
-          // 'http://localhost:8443/api/messages/vms/send',
-          {json: {callbackPhone: '028585683', phone: context.user.mobile.replace(/,/g, ''), message: vmsMessage}},
+          'https://bot.moneybrain.ai/api/messages/sms/send',
+          {json: {callbackPhone: '028585683', phone: context.user.mobile.replace(/,/g, ''), message: message}},
           function (error, response, body) {
             if (!error && response.statusCode == 200) {
               // callback(task, context);
             }
-            callback(task, context);
+            cb(null);
           }
         );
       }
 
+    ], function(err) {
       task.isComplete = true;
       context.dialog.restaurant = null;
       context.dialog.menus = null;
+
       callback(task, context);
     });
+
+  //   var model = mongoose.model('DeliveryOrder');
+  //
+  //   var _menus = [];
+  //   context.dialog.menuStr = '';
+  //   context.dialog.totalPrice = 0;
+  //   if(context.dialog.menus == undefined) {
+  //     context.dialog.totalPrice = context.dialog.menu.price;
+  //   } else {
+  //     for(var i in context.dialog.menus) {
+  //       _menus.push({menu: context.dialog.menus[i]._id, name: context.dialog.menus[i].name, price: context.dialog.menus[i].price, count: context.dialog.menus[i].count});
+  //       context.dialog.menuStr += context.dialog.menus[i].name + ' ' + context.dialog.menus[i].count + '개\n';
+  //       context.dialog.totalPrice += context.dialog.menus[i].price * context.dialog.menus[i].count;
+  //     }
+  //   }
+  //
+  //   if(!context.user.confirmTerms) {
+  //     var botUser= require(path.resolve('modules/bot-users/server/controllers/bot-users.server.controller'))
+  //
+  //     context.user.confirmTerms = true;
+  //     context.user.updates = ['confirmTerms'];
+  //     botUser.updateUserContext(context.user, context, function () {
+  //       context.user.updates = null;
+  //     });
+  //   }
+  //
+  //   var doc = {
+  //     restaurant: context.dialog.restaurant._id,
+  //     restaurantName: context.dialog.restaurant.name,
+  //     menus: _menus,
+  //     address: context.dialog.address != undefined ? context.dialog.address.address : undefined,
+  //     totalPrice: context.dialog.totalPrice,
+  //     status: ['요청'],
+  //     memo: '',
+  //     times: [
+  //       {status: '요청', time: Date.now()}
+  //     ],
+  //     intervals: [
+  //     ],
+  //     manager: null,
+  //     user: context.user.userId
+  //   };
+  //
+  //   model.create(doc, function(err, _docs) {
+  //     if (err) {
+  //       throw err;
+  //     } else {
+  //     }
+  //
+  //     task.deliveryOrderId = _docs._id;
+  //     if(context.bot.messages.manager == true)
+  //       manager.checkOrder(task, context, null);
+  //
+  //     if(context.bot.call) {
+  //
+  //       var request = require('request');
+  //
+  //       var vmsMessage = "카카오톡에서 배달봇 양얌 주문입니다. " +
+  //         context.dialog.menuStr + ' 배달해 주세요.' +
+  //         '주소는 ' + context.dialog.address.지번주소 + ' 입니다.' +
+  //         '전화번호는 ' + context.dialog.mobile + ' 입니다.' +
+  //         '이 주문은 인공지능 배달봇 얌얌의 카카오톡에서 배달대행 주문입니다.';
+  //
+  //       request.post(
+  //         'https://bot.moneybrain.ai/api/messages/vms/send',
+  //         // 'http://localhost:8443/api/messages/vms/send',
+  //         {json: {callbackPhone: '028585683', phone: context.user.mobile.replace(/,/g, ''), message: vmsMessage}},
+  //         function (error, response, body) {
+  //           if (!error && response.statusCode == 200) {
+  //             // callback(task, context);
+  //           }
+  //           callback(task, context);
+  //         }
+  //       );
+  //     }
+  //
+  //     task.isComplete = true;
+  //     context.dialog.restaurant = null;
+  //     context.dialog.menus = null;
+  //     callback(task, context);
+  //   });
   }
 };
 
@@ -176,7 +286,7 @@ var menuType = {
     queryFields: ['name'],
     minMatch: 1
   },
-  // exclude: ['치킨', '피자', '버거', '햄버거'],
+  exclude: ['치킨', '피자', '버거', '햄버거'],
   preType: function(task, context, type, callback) {
     if(context.dialog.restaurant.franchise) {
       type.query = {franchise: context.dialog.restaurant.franchise};
