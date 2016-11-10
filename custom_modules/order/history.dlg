@@ -63,3 +63,8 @@
 < update dump
 {action: 'updateDump'}
 > 완료
+
+< fran update
+{action: 'updateFranchiseRestaurant'}
+> update 완료
+

@@ -529,41 +529,6 @@ var dialogs = [
     ]
   },
 
-  {
-    name: '주문취소',
-    input: /취소/,
-    task: 'currentOrderTask',
-    output: [
-
-    ]
-  },
-
-  {
-    input: '프랜 메뉴',
-    task: {
-      preCallback: function(task, context, callback) {
-        var async = require('async');
-        var model = mongoose.model('Restaurant');
-        model.find({franchise: {$exists: true}}, function(err, docs) {
-          async.eachSeries(docs, function(doc, cb) {
-            doc.deliverable = true;
-            doc.save();
-            cb(null);
-          }, function(err) {
-            callback(task, context);
-          })
-        })
-      }
-    },
-    output: '출력\n##+index+. +name+\n#'
-  },
-
-  {
-    input: 'fran update',
-    task: {action: orderData.updateFranchiseRestaurant},
-    output: 'update 완료'
-  }
-
 ];
 
 exports.dialogs = dialogs;
