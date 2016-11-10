@@ -18,7 +18,7 @@ var commonDialogs = [
   { name: '시작',
     input: {regexp: /(처음|시작|:reset user)/g},
     output: function(dialog, context, print, callback) {
-    print("안녕하세요. 인공지능 배달봇 얌얌이에요~ \n주문할 메뉴나 음식점을 말씀해 주세요!\n\n(현재 베타 서비스 중입니다.)\n(서울지역 치킨/중식/피자/햄버거 배달가능)");
+    print("안녕하세요.\n인공지능 배달봇 얌얌이에요~ \n주문할 메뉴나 음식점을 말씀해 주세요!\n\n(현재 베타 서비스 중입니다.)\n(서울지역 치킨/중식/피자/햄버거 배달가능)");
       context.botUser.currentDialog = null;
       context.user.pendingCallback = null;
 
