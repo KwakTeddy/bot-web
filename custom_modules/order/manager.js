@@ -35,7 +35,6 @@ function checkOrder(task, context, successCallback, errorCallback) {
     }
   };
 
-
   for(var i in context.bot.managers) {
     var manager = context.bot.managers[i];
     if(global._users[manager.userId] == undefined) global._users[manager.userId] = {};
@@ -47,7 +46,7 @@ function checkOrder(task, context, successCallback, errorCallback) {
     manager.deliveryOrderId = task.deliveryOrderId;
 
     facebook.respondMessage(manager.userId, '배달 주문이 접수 되었습니다.\n' +
-      '배달주소: ' + context.dialog.address.도로명주소 + '\n' +
+      '배달주소: ' + context.user.address.지번주소 + '\n' +
       '배달자휴대폰: ' + context.user.mobile + '\n' +
       '매장명: ' + context.dialog.restaurant.name + '\n'+
       '메뉴: ' + context.dialog.menuStr + '\n' +

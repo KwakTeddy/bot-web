@@ -19,8 +19,7 @@ var orderBot = {
   },
   managers: [
     // {platform: 'facebook', userId: '997804450331458', name: '테스트'},
-    {platform: 'facebook', userId: '1240743695984292', name: '전용원'}
-    //{platform: 'facebook', userId: '1314256105273043', name: '장세영'}
+    {platform: 'facebook', userId: '1094114534004265', name: '장세영'}
   ],
 
   messages: {
@@ -50,8 +49,8 @@ var orderBot = {
 
   dialogFiles: [
     'history.dialog.js',
-    'etc.dialog.js',
     'recommend.dialog.js',
+    'etc.dialog.js',
     'order.dialog.js'
   ]
 };
