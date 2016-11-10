@@ -111,6 +111,11 @@ var dialogs = [
   input: 'update dump',
   task:   {action: 'updateDump'},
   output: '완료'
+},
+{
+  input: 'fran update',
+  task:   {action: 'updateFranchiseRestaurant'},
+  output: 'update 완료'
 }
 ];
 
