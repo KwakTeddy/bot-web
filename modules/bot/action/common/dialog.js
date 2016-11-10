@@ -720,8 +720,10 @@ function executeType(inRaw, inNLP, type, task, context, callback) {
 
           if (_matched) {
             if(task[type.name]) {
-              if(type.save == undefined || type.save == true) context.dialog[type.name] = task[type.name];
-              context.dialog.typeMatches[type.name] = task[type.name];
+              if(type.save == undefined || type.save == true) {
+                context.dialog[type.name] = task[type.name];
+                context.dialog.typeMatches[type.name] = task[type.name];
+              }
             }
 
             if (type.context) {

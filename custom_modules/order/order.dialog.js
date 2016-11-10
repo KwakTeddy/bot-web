@@ -18,7 +18,7 @@ var commonDialogs = [
   { name: '시작',
     input: {regexp: /(처음|시작|:reset user)/g},
     output: function(dialog, context, print, callback) {
-      print("안녕하세요 인공지능 배달봇 얌얌이에요~ \n드시고 싶은 메뉴나 음식점명을 입력해주시면 도와드릴게요! \n도움말을 보고싶으시면 도와줘라고 입력해주세요");
+    print("안녕하세요. 인공지능 배달봇 얌얌이에요~ \n주문할 메뉴나 음식점을 말씀해 주세요!\n\n(현재 베타 서비스 중입니다.)\n(서울지역 치킨/중식/피자/햄버거 배달가능)");
       context.botUser.currentDialog = null;
       context.user.pendingCallback = null;
 
@@ -29,10 +29,14 @@ var commonDialogs = [
 
   { input: {if: orderTypes.orderDialogCondition, regexp: /전화/}, output: {call: '전화주문'}},
   { input: {if: orderTypes.orderDialogCondition, regexp: /~이전/}, output: {up : 1}},
+  { input: {if: orderTypes.orderDialogCondition, regexp: /^0$/}, output: {up : 1}},
   { input: {if: orderTypes.orderDialogCondition, regexp: /~처음/}, output: {call: '주문취소'}},
+  { input: {if: orderTypes.orderDialogCondition, regexp: /^!$/}, output: {call: '주문취소'}},
   { input: {if: orderTypes.orderDialogCondition, regexp: /~전페이지/}, output: {repeat: 1, options: {page: 'pre'}}},              // TODO 이전페이지, 다음페이지 구현
+  { input: {if: orderTypes.orderDialogCondition, regexp: /^<$/}, output: {repeat: 1, options: {page: 'pre'}}},              // TODO 이전페이지, 다음페이지 구현
   { input: {if: orderTypes.orderDialogCondition, regexp: /~다음페이지/}, output: {repeat: 1, options: {page: 'next'}}},
-  { name: dialogModule.NO_DIALOG_NAME, output: '미안해요 무슨 말인지 모르겠어요 ㅠ\n얌얌이는 주문을 하고 싶어요! 도와드릴까요?',
+  { input: {if: orderTypes.orderDialogCondition, regexp: /^>$/}, output: {repeat: 1, options: {page: 'next'}}},
+  { name: dialogModule.NO_DIALOG_NAME, output: '미안하지만, 무슨 말인지 모르겠어요.\n얌얌이는 주문에 필요한 대화를 중심으로 학습되었습니다.\n배달 주문을 도와드릴까요?',
     children: [
       {
         input: '~네',
@@ -48,12 +52,26 @@ var commonDialogs = [
 exports.commonDialogs = commonDialogs;
 
 var dialogs = [
+  { name: '주소변경', input: ['주소 변경', '주소 바꾸다'],
+    output: '주소를 말씀해 주세요.',
+    children: [
+      { input: {types: [{type: type.addressType, raw: true, context: true}]},
+        task: {action: function(task, context, callback) {
+          context.user.addressCompact = context.user.address.지번주소.replace(/^([가-힣]+\s*)/, function(matched, p1) { return ''});
+          // context.user.addressCompact = context.user.addressCompact.replace(/(\s+\(.*\))/, function(matched, p1) {return ''});
+          callback(task, context);
+        }},
+        output: '주소가 변경되었습니다.' },
+      { output: {repeat: 1, options: {output: '지번 또는 도로명을 포함한 상세주소를 말씀해주세요.\n예시) 강남구 삼성동 16-1 101동 101호\n예시) 강남구 학동로 426 101동 101호\n\n주소를 정확히 입력해 주세요.\n0.이전단계 !. 처음으로'}}}
+    ]
+  },
+
   {
     name: '배달주문',
     input: [
       /~배달/,
       {types: [{name: 'orderble', typeCheck: orderTask.orderableTypeCheck}]},
-      {types: [{name: 'restaurant', typeCheck: orderTask.restaurantTypeCheck, save: false, mongo: {model: 'restaurant', queryFields: ['name'], minMatch: 1}}]}
+      {types: [{name: 'orderble', typeCheck: orderTask.restaurantTypeCheck, address: false, mongo: {model: 'restaurant', queryFields: ['name'], minMatch: 1}}]}
     ],
     output: {call: '주소입력'},
     children: [
@@ -64,14 +82,14 @@ var dialogs = [
             children: [
               // { input: {regexp: /주소/g}, output: {call: '휴대폰번호입력'} },
               { input: {types: [{type: type.addressType, raw: true, context: true}]}, output: {call: '휴대폰번호입력', return: 1} },
-              { name: '주문취소', input: '0', output: '주문을 취소하고 처음으로 가시겠습니까?',
+              { name: '주문취소', input: /^0$/, output: '주문을 취소하고 처음으로 가시겠습니까?',
                 children: [
                   { input: {regexp: /~네/g}, output: {callGlobal: '시작'} },
                   { input: {regexp: /~아니요/g}, output: {call: '주소입력'} },
                   { output: {repeat: 1, output: '주문을 취소 하시려는지 아닌지 모르겠습니다.\n주문을 취소하시려면 "네",\n취소하지 않으시려면 "아니요"" 라고 말씀해주세요.'}}
                 ]
               },
-              { output: {repeat: 1, output: '정확한 주소를 찾을 수 없습니다. 주소를 정확히 입력해 주세요.\n이전.이전단계 처음. 처음으로'}}
+              { output: {repeat: 1, options: {output: '지번 또는 도로명을 포함한 상세주소를 말씀해주세요.\n예시) 강남구 삼성동 16-1 101동 101호\n예시) 강남구 학동로 426 101동 101호\n\n주소를 정확히 입력해 주세요.\n0.이전단계 !. 처음으로'}}}
             ]
           }
         ]
@@ -134,7 +152,8 @@ var dialogs = [
                 } else callback(false);
               });
             },
-            output: {call: '메뉴선택'}
+            output: {call: '메뉴선택', options: {prefix: '말씀하신 것과 가장 유사한 매장을 찾았습니다'}
+            }
           },
           { if: function(dialog, context, callback) {
               context.dialog.address = context.user.address;
@@ -154,6 +173,9 @@ var dialogs = [
             },
             output: {call: '음식점목록'}
           },
+          { if: 'context.dialog.orderble != undefined',
+            output: {call: '음식점입력', options: {output: '"+address.법정읍면동명+ +address.지번본번+-+address.지번부번+" 근처에서 말씀하신 메뉴나 음식점명으로 등록된 음식점이 없습니다\n(주문가능 매장은 확대 중입니다.)\n\n다른 메뉴나 음식점을 말씀해 주세요.\n근처 음식점을 모두 보시려면 "전단지"라고 입력해 주세요.'}}
+          },
           { if: function(dialog, context, callback) {
               // if(context.dialog.restaurant == undefined) {
                 context.dialog.address = context.user.address;
@@ -163,7 +185,7 @@ var dialogs = [
               // }
             },
             name: '음식점입력',
-            output: '원하시는 메뉴나 음식점을 말씀해 주세요~',
+            output: '주문할 메뉴나 음식점을 말씀해 주세요~',
             children: [
               { input: {types: [orderTask.restaurantType]},
               // task: {action: orderTasks.saveRestaurantTask},
@@ -178,7 +200,7 @@ var dialogs = [
                     //   else if(!task.restaurant && context.dialog.restaurant) task.restaurant = context.dialog.restaurant;
                     //   callback(task, context);
                     // }},
-                    output: '고객님이 원하시는 걸 찾아봤어요! \n#restaurant#+index+. +name+ +openStatus+\n#0. 이전 !. 처음(주문취소)\n\n목록에서 번호나 음식점명을 입력해주세요',
+                    output: '말씀하신 것과 가장 유사한 음식점입니다. \n#restaurant#+index+. +name+ +openStatus+\n#0. 이전 !. 처음(주문취소)\n\n목록에서 번호나 음식점명을 입력해주세요',
                     children: [
                       {
                         input: {types: [{name: 'restaurant', typeCheck: 'listTypeCheck'}]},
@@ -186,13 +208,15 @@ var dialogs = [
                         output: [
                           { if: 'context.dialog.restaurant.isOpen == false', output: '현재 영업 시간이 아닙니다.\n0. 이전 !. 처음(주문취소)',
                             children: [
-                              { input:  /~이전/, output: {up : 1}},
-                              { input: /~처음/, output: {call: '주문취소'}}
+                              { input: [/~이전/, /^0$/], output: {up : 1}},
+                              { input: [/~처음/, /^!$/], output: {call: '주문취소'}}
                             ]
                           },
                           { if: 'true', output: {call: '메뉴선택'}}
                         ]
                       },
+                      { input:  [/~이전/, /^0$/], output: {up : 1}},
+                      { input: [/~처음/, /^!$/], output: {call: '주문취소'}},
                       // {input: {types: [orderTask.restaurantType]},output: {repeat: 1}},
                       {output: {repeat: 1, options: {prefix: '목록에 있는 번호나 음식점을 입력해 주세요!\n\n'}}}
                     ]}
@@ -200,9 +224,9 @@ var dialogs = [
               },
 
               { name: '음식점구분',
-                input: false,
+                input: /전단지/,
                 output:
-                  '1. 치킨\n2. 중국집\n3. 피자\n4. 족발/보쌈\n5. 패스트푸드\n0. 이전\n!. 처음(주문취소)\n\n목록에서 번호를 입력해주세요~',
+                  '[음식점구분]\n1. 치킨\n2. 중국집\n3. 피자\n4. 족발/보쌈\n5. 패스트푸드\n0. 이전\n!. 처음(주문취소)\n\n목록에서 번호를 입력해주세요~',
                 children: [
                   { input: orderTypes.menuCategoryCheck,
                     task: orderTasks.categoryRestaurants,
@@ -214,8 +238,8 @@ var dialogs = [
                             output: [
                               {if: 'context.dialog.restaurant.isOpen == false', output: '현재 영업 시간이 아닙니다.\n0. 이전 !. 처음(주문취소)',
                                 children: [
-                                  { input:  /~이전/, output: {up : 1}},
-                                  { input: /~처음/, output: {call: '주문취소'}}
+                                  { input:  [/~이전/, /^0$/], output: {up : 1}},
+                                  { input: [/~처음/, /^!$/], output: {call: '주문취소'}}
                                 ]
                               },
                               {if: 'true', output: {call: '메뉴선택'}}
@@ -227,8 +251,8 @@ var dialogs = [
                       },
                       {if: 'true', output: '[+category+]\n현 주소 근처에서 음식점을 찾지 못했습니다\n0. 이전 !. 처음(주문취소)',
                       children: [
-                        { input:  /~이전/, output: {up : 1}},
-                        { input: /~처음/, output: {call: '주문취소'}}
+                        { input:  [/~이전/, /^0$/], output: {up : 1}},
+                        { input: [/~처음/, /^!$/], output: {call: '주문취소'}}
                       ]}
                     ]
                   },
@@ -237,7 +261,8 @@ var dialogs = [
                 ]
               },
 
-              { output: {call: '음식점구분', options: {prefix: '말씀하신 음식점을 찾을 수 없어, 근처 음식점을 안내합니다.\n\n'}}}
+              { output: {repeat: 1, options: {output: '"+address.법정읍면동명+ +address.지번본번+-+address.지번부번+" 근처에서 말씀하신 메뉴나 음식점명으로 등록된 음식점이 없습니다\n(주문가능 매장은 확대 중입니다.)\n\n다른 메뉴나 음식점을 말씀해 주세요.\n근처 음식점을 모두 보시려면 "전단지"라고 입력해 주세요.'}}}
+              // { output: {call: '음식점구분', options: {prefix: '말씀하신 음식점을 찾을 수 없어, 근처 음식점을 안내합니다.\n\n'}}}
             ]
           }
         ]
@@ -466,20 +491,6 @@ var dialogs = [
     children: [
       { input: {regexp: /~네/g}, output: {call: '배달주문'}  },
       { input: {regexp: /~아니요/g}, output: '다른 필요하신게 있으시면 말씀해주세요.' }
-    ]
-  },
-
-  { name: '주소변경', input: ['주소 변경', '주소 바꾸다'],
-    output: '주소를 말씀해 주세요.',
-    children: [
-      { input: {types: [{type: type.addressType, raw: true, context: true}]},
-        task: {action: function(task, context, callback) {
-          context.user.addressCompact = context.user.address.지번주소.replace(/^([가-힣]+\s*)/, function(matched, p1) { return ''});
-          // context.user.addressCompact = context.user.addressCompact.replace(/(\s+\(.*\))/, function(matched, p1) {return ''});
-          callback(task, context);
-        }},
-        output: '주소가 변경되었습니다.' },
-      { output: {repeat: 1, output: '정확한 주소를 찾을 수 없습니다. 주소를 정확히 입력해 주세요.'}}
     ]
   },
 
