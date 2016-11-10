@@ -138,13 +138,16 @@ var dialogs = [
 
       { name: '음식점선택', input: false,
         output: [
-          { if: 'context.dialog.restaurant && !dialog.returnDialog', output: {call: '메뉴선택'}},
+          // { if: 'context.dialog.restaurant && !Array.isArray(dialog.task.restaurant) && !dialog.returnDialog', output: {call: '음식점단일'}},
+          // { if: 'context.dialog.restaurant && Array.isArray(dialog.task.restaurant) && dialog.task.restaurant.length > 0 && !dialog.returnDialog', output: {call: '음식점목록'}},
           { if: function(dialog, context, callback) {
               context.dialog.address = context.user.address;
               if(!dialog.task) dialog.task = {};
 
+              context.dialog.restaurants = null;
+              var inRaw = context.dialog.inRawExt || context.dialog.inRaw;
               var restaurantType = orderTask.restaurantType;
-              restaurantType.typeCheck(context.dialog.inRaw, restaurantType, dialog.task, context, function(_inRaw, inDoc, matched) {
+              restaurantType.typeCheck(inRaw, restaurantType, dialog.task, context, function(_inRaw, inDoc, matched) {
                 if(matched && dialog.task.restaurant && !Array.isArray(dialog.task.restaurant)) {
                   context.dialog.restaurant = dialog.task.restaurant;
 
@@ -156,15 +159,15 @@ var dialogs = [
                 } else callback(false);
               });
             },
-            output: {call: '메뉴선택', options: {prefix: '말씀하신 것과 가장 유사한 매장을 찾았습니다'}
-            }
+            output: {call: '음식점단일'}
           },
           { if: function(dialog, context, callback) {
               context.dialog.address = context.user.address;
               if(!dialog.task) dialog.task = {};
 
+              var inRaw = context.dialog.inRawExt || context.dialog.inRaw;
               var restaurantType = orderTask.restaurantType;
-              restaurantType.typeCheck(context.dialog.inRaw, restaurantType, dialog.task, context, function(_inRaw, inDoc, matched) {
+              restaurantType.typeCheck(inRaw, restaurantType, dialog.task, context, function(_inRaw, inDoc, matched) {
                 if(matched && Array.isArray(dialog.task.restaurant)) {
                   context.dialog.restaurant = dialog.task.restaurant;
 
@@ -182,6 +185,7 @@ var dialogs = [
           },
           { if: function(dialog, context, callback) {
               // if(context.dialog.restaurant == undefined) {
+                context.dialog.restaurants = null;
                 context.dialog.address = context.user.address;
                 callback(true);
               // } else {
@@ -195,16 +199,28 @@ var dialogs = [
               // task: {action: orderTasks.saveRestaurantTask},
                 output: [
                   { if: '!Array.isArray(dialog.task.restaurant)',
-                    output: {call: '메뉴선택'}
+                    name: '음식점단일',
+                    output: '가장 적합한 음식점으로 "+restaurant.name+"를 찾았습니다.\n원하시는 음식점이 맞나요?\n\n아니시면 다른 음식점을 말씀해주세요.',
+                    children: [
+                      {input: /~네/, output: {call: '메뉴선택'}},
+                      // {input: {types: [orderTask.restaurantType]}, output: {call: '음식점선택'}},
+                      { task: {action: function(task, context, callback) {
+                          context.dialog.inRawExt = context.dialog.inCurRaw;
+                          callback(task, context);
+                        }},
+                        output: {call: '음식점선택'}
+                      }
+                    ]
+                    // output: {call: '메뉴선택'}
                   },
                   { if: 'Array.isArray(dialog.task.restaurant)',
                     name: '음식점목록',
-                    // task: {action: function(task, context, callback) {
-                    //   if(task.restaurant) context.dialog.restaurant = task.restaurant;
-                    //   else if(!task.restaurant && context.dialog.restaurant) task.restaurant = context.dialog.restaurant;
-                    //   callback(task, context);
-                    // }},
-                    output: '말씀하신 것과 가장 유사한 음식점입니다. \n#restaurant#+index+. +name+ +openStatus+\n#0. 이전 !. 처음(주문취소)\n\n목록에서 번호나 음식점명을 입력해주세요',
+                    task: {action: function(task, context, callback) {
+                      if(context.dialog.restaurants) context.dialog.restaurant = context.dialog.restaurants;
+                      else if(!context.dialog.restaurants && context.dialog.restaurant) context.dialog.restaurants = context.dialog.restaurant;
+                      callback(task, context);
+                    }},
+                    output: '가장 적합한 음식점들을 찾았습니다.\n#restaurant#+index+. +name+ +openStatus+\n#0. 이전 !. 처음(주문취소)\n\n목록에서 번호나 음식점명을 입력해주세요',
                     children: [
                       {
                         input: {types: [{name: 'restaurant', typeCheck: 'listTypeCheck'}]},
@@ -334,7 +350,7 @@ var dialogs = [
           },
           { if: 'context.dialog.menu == undefined',
             name: '메뉴입력',
-            output: '"+restaurant.name+"에서 원하시는 메뉴를 말씀해 주세요.\n모든 메뉴를 보려면 "메뉴판"이라고 얘기해주세요',
+            output: '"+restaurant.name+"에서 주문할 메뉴를 말씀해 주세요.\n모든 메뉴를 보려면 "메뉴판"이라고 얘기해주세요',
             children: [
               { name: '옵션추가확인', input: {types: [orderTasks.menuType], if: 'context.dialog.menu && !Array.isArray(context.dialog.menu)'},
                 output: [
