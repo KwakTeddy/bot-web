@@ -76,6 +76,7 @@ function listTypeCheck(text, type, task, context, callback) {
   // list word match
   var maxEqual = false;
   var maxIndex = -1, maxCount = 0;
+  var matchedList = [];
   list = (task[type.name] ? task[type.name] : context.dialog[type.name]);
   for (var j = 0; j < list.length; j++) {
     var item;
@@ -99,6 +100,7 @@ function listTypeCheck(text, type, task, context, callback) {
         maxCount = matchCount;
         maxIndex = j;
       } else if(matchCount > 0 && matchCount == maxCount) {
+        matchedList.push(list[j]);
         maxEqual = true;
       }
     }
@@ -107,6 +109,9 @@ function listTypeCheck(text, type, task, context, callback) {
   if(maxIndex != -1 && !maxEqual) {
     context.dialog[type.name] = /*task[type.name] = */list[maxIndex];
     callback(text, task, true);
+  } else if(maxIndex != -1 && maxEqual) {
+    context.dialog[type.name] = matchedList;
+    callback(text, task, false);
   } else
     callback(text, task, false);
 }
