@@ -8,7 +8,7 @@ var dialogs = [
   children: [
     {
       input: '~네',
-      output: {call:'배달주문'}
+      output: {call:'배달주문', options: {top: '배달주문'}}
     },
     {
       input: '~아니요',
@@ -122,7 +122,7 @@ var dialogs = [
   children: [
     {
       input: '~네',
-      output: {call:'배달주문'}
+      output: {call:'배달주문', options: {top: '배달주문'}}
     },
     {
       input: '~아니요',
