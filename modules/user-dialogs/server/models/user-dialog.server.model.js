@@ -10,6 +10,10 @@ var mongoose = require('mongoose'),
  * Bot user Schema
  */
 var UserDialogSchema = new Schema({
+  botId: {
+    type: String
+  },
+
   userId: {
     type: String
   },

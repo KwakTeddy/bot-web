@@ -14,7 +14,12 @@ var path = require('path'),
  * List of Bot users
  */
 exports.list = function (req, res) {
-  UserDialog.find({userId: req.params.userKey}).sort('+created').exec(function (err, userDialogs) {
+  var query = {};
+  if(req.params.botName && req.params.botName != '') query.botId = req.params.botName;
+  if(req.params.botName && req.params.botName == '') query.botId = 'order';
+  query.userId = req.params.userKey;
+
+  UserDialog.find(query).sort('+created').exec(function (err, userDialogs) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -24,4 +29,34 @@ exports.list = function (req, res) {
     }
   });
 };
+
+function addDialog(inText, outText, isFail, context, callback) {
+  var inQuery = {
+    botId: context.bot.botName,
+    userId : context.user.userKey,
+    channel: context.channel.name,
+    inOut: true,
+    fail: isFail,
+    dialog: inText
+  };
+
+  var outQuery = {
+    botId: context.bot.botName,
+    userId : context.user.userKey,
+    channel: context.channel.name,
+    inOut: false,
+    fail: isFail,
+    dialog: outText
+  };
+
+
+  UserDialog.create([inQuery, outQuery], function(err) {
+    if(err) {}
+    else {}
+
+    callback();
+  });
+}
+
+exports.addDialog = addDialog;
 

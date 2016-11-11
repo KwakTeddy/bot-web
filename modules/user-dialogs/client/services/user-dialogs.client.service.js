@@ -9,7 +9,7 @@
   UserDialogsService.$inject = ['$resource'];
 
   function UserDialogsService($resource) {
-    return $resource('api/user-dialogs/:userKey', {
+    return $resource('api/user-dialogs/:botId/:userKey', {
       userKey: '@_id'
     }, {});
   }

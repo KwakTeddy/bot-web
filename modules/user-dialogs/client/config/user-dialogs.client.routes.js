@@ -16,7 +16,7 @@
       })
       .state('user-dialogs.list', {
         // url: '',
-        url: '/:userKey',
+        url: '/:botId/:userKey',
         templateUrl: 'modules/user-dialogs/client/views/list-user-dialogs.client.view.html',
         controller: 'UserDialogsListController',
         controllerAs: 'vm',
@@ -33,7 +33,7 @@
 
   getUserDialogs.$inject = ['$stateParams', 'UserDialogsService'];
   function getUserDialogs($stateParams, UserDialogsService) {
-    return UserDialogsService.query({userKey: $stateParams.userKey}).$promise;
+    return UserDialogsService.query({botId: $stateParams.botId, userKey: $stateParams.userKey}).$promise;
   }
 
 })();

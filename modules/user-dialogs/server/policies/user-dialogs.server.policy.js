@@ -15,13 +15,13 @@ exports.invokeRolesPolicies = function () {
   acl.allow([{
     roles: ['admin'],
     allows: [{
-      resources: '/api/user-dialogs/:userKey',
+      resources: '/api/user-dialogs/:botName/:userKey',
       permissions: '*'
     }]
   }, {
     roles: ['user'],
     allows: [{
-      resources: '/api/user-dialogs/:userKey',
+      resources: '/api/user-dialogs/:botName/:userKey',
       permissions: '*'
     }]
   }, {

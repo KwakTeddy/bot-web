@@ -36,7 +36,7 @@
         <td class="text-center">{{botUser.created | date: 'yyyy-MM-dd'}}</td>
         <td class="text-center">{{botUser.isOn ? ' ON' : 'OFF'}}</td>
         <td>
-          <a class="btn btn-primary" ui-sref="user-dialogs.list({userKey: botUser.userKey})">
+          <a class="btn btn-primary" ui-sref="user-dialogs.list({botId: 'order', userKey: botUser.userKey})">
             대화내역
           </a>
           <a class="btn btn-primary" ui-sref="messages.send({userKey: botUser.userKey, channel: botUser.channel})">
