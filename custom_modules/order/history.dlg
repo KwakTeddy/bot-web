@@ -68,6 +68,10 @@
 {action: 'updateFranchiseRestaurant'}
 > update 완료
 
+< franmenu update
+{action: 'updateFranchiseRestaurantName'}
+> update 완료
+
 < menu exist
 {action: 'updateMenuExist'}
 > menu exist 완료

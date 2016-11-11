@@ -118,6 +118,11 @@ var dialogs = [
   output: 'update 완료'
 },
 {
+  input: 'franmenu update',
+  task:   {action: 'updateFranchiseRestaurantName'},
+  output: 'update 완료'
+},
+{
   input: 'menu exist',
   task:   {action: 'updateMenuExist'},
   output: 'menu exist 완료'

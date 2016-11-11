@@ -1389,7 +1389,8 @@ function updateDump(task, context, callback) {
       console.log(docs.length);
 
       async.eachSeries(docs, function(_restaurant, cb) {
-          query2 = {name: _restaurant.name};
+          // query2 = {name: _restaurant.name};
+          query2 = {name: _restaurant.name.replace(' ', '-')};
 
           restaurantdump.find(query2).exec(function(err2, docs2) {
             if(err2) {

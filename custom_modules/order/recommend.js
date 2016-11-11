@@ -28,7 +28,7 @@ var menuConcepts = [
   {menu: '양념치킨', concept: '맵다 매콤 달달'},
   {menu: '간짜장', concept: '느끼다 깔끔하다'},
   {menu: '짜장면', concept: '느끼다 기르다'},
-  {menu: '짬뽕', concept: '맵다 매콤 해장 시원 칼칼'},
+  {menu: '짬뽕', concept: '맵다 매콤 해장 시원 칼칼 비 비올 비다'},
   {menu: '볶음밥', concept: '밥 담백 개운'},
   {menu: '탕수육', concept: '바삭'},
   {menu: '짬짜면', concept: '골고루 칼칼 시원 같이'},
