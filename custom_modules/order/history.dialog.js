@@ -113,13 +113,13 @@ var dialogs = [
   output: '완료'
 },
 {
-  input: 'fran update',
-  task:   {action: 'updateFranchiseRestaurant'},
+  input: 'franmenu update',
+  task:   {action: 'updateFranchiseRestaurantName'},
   output: 'update 완료'
 },
 {
-  input: 'franmenu update',
-  task:   {action: 'updateFranchiseRestaurantName'},
+  input: 'fran update',
+  task:   {action: 'updateFranchiseRestaurant'},
   output: 'update 완료'
 },
 {

@@ -954,9 +954,9 @@ bot.setAction('updateFranchiseRestaurant', updateFranchiseRestaurant);
 function updateFranchiseRestaurantName(task, context, successCallback, errorCallback) {
   var modelRestaurant = mongoose.model('Restaurant');
 
-  modelRestaurant.find({name: /네네치킨 네네치킨/}, function(err, docs) {
+  modelRestaurant.find({name: /교촌치킨 교촌치킨/}, function(err, docs) {
     async.eachSeries(docs, function (doc, callback) {
-        doc.name = doc._doc.name.replace('네네치킨 네네치킨', '네네치킨');
+        doc.name = doc._doc.name.replace('교촌치킨 교촌치킨', '교촌치킨');
         doc.save();
 
         logger.debug(doc.name + ': ');

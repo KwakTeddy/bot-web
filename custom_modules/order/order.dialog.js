@@ -224,7 +224,7 @@ var dialogs = [
                       else if(!context.dialog.restaurants && context.dialog.restaurant) context.dialog.restaurants = context.dialog.restaurant;
                       callback(task, context);
                     }},
-                    output: '가장 적합한 음식점들을 찾았습니다. \n#restaurant#+index+. +name+ +openStatus+\n#0. 이전 !. 처음(주문취소)\n\n목록에서 번호나 음식점명을 입력해주세요',
+                    output: '가장 적합한 음식점들을 찾았습니다. \n#restaurant#+index+. +name+ +openStatus+\n#0. 이전 \n!. 처음(주문취소)\n\n목록에서 번호나 음식점명을 입력해주세요',
                     children: [
                       {
                         input: {types: [{name: 'restaurant', typeCheck: 'listTypeCheck'}]},
