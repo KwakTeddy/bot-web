@@ -7,39 +7,45 @@
 
 <section class="panel">
   <header class="panel-heading">
-    <div class="panel-actions">
-      <button id="addToTable" class="btn btn-primary" ui-sref="deliveryOrders.create"><i class="fa fa-plus"></i> 신규등록</button>
-    </div>
+    <!--<div class="panel-actions">-->
+      <!--<button id="addToTable" class="btn btn-primary" ui-sref="deliveryOrders.create"><i class="fa fa-plus"></i> 신규등록</button>-->
+    <!--</div>-->
 
-    <h2 class="panel-title">프랜차이즈</h2>
+    <h2 class="panel-title">주문관리</h2>
   </header>
   <div class="panel-body">
-    <table datatable="ng" class="table table-bordered table-striped mb-none">
+    <table id="dt" datatable="ng" class="table table-bordered table-striped mb-none">
       <thead>
       <tr>
         <!--<th class="text-center">봇아이디</th>-->
-        <th class="text-center">프랜차이즈명</th>
-        <th class="text-center">구분</th>
-        <th class="text-center">작성자</th>
-        <th class="text-center">수정일</th>
         <th class="text-center">등록일</th>
+        <th class="text-center">매장명</th>
+        <th class="text-center">매장전화</th>
+        <th class="text-center">매뉴</th>
+        <th class="text-center">주소</th>
+        <th class="text-center">채널</th>
+        <th class="text-center">휴대폰</th>
+        <th class="text-center">상태</th>
         <th class="text-center">관리</th>
       </tr>
       </thead>
       <tbody>
       <tr ng-repeat="deliveryOrder in vm.deliveryOrders">
-        <!--<td class="text-center">{{deliveryOrder.bot.id}}</td>-->
-        <td class="text-center">{{deliveryOrder.name}}</td>
-        <td class="text-center">{{deliveryOrder.category}}</td>
-        <td class="text-center">{{deliveryOrder.user ? deliveryOrder.user.displayName : '장세영'}}</td>
-        <td class="text-center">{{deliveryOrder.updated | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
         <td class="text-center">{{deliveryOrder.created | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+        <td class="text-center">{{deliveryOrder.restaurantName}}</td>
+        <td class="text-center">{{deliveryOrder.restaurant.phone}}</td>
+        <td class="text-center"><span ng-repeat="menu in deliveryOrder.menus">{{menu.name}} {{menu.price}}원 </span></td>
+        <td class="text-center">{{deliveryOrder.address}}</td>
+        <td class="text-center">{{deliveryOrder.botUser.channel}}</td>
+        <td class="text-center">{{deliveryOrder.botUser.mobile}}</td>
+        <td class="text-center">{{deliveryOrder.status}}</td>
         <td>
-          <a class="btn btn-primary" ui-sref="deliveryOrders.edit({deliveryOrderId: deliveryOrder._id})">
-            <i class="glyphicon glyphicon-edit"></i> 수정
+          <a class="btn btn-primary" ng-click="vm.updateStatus(deliveryOrder, '접수', '')" ng-show="deliveryOrder.status == '요청'">
+
+            <i class="glyphicon glyphicon-edit"></i> 접수
           </a>
-          <a class="btn btn-primary" ui-sref="deliveryOrders.menus({deliveryOrderId: deliveryOrder._id})">
-            <i class="glyphicon glyphicon-edit"></i> 메뉴
+          <a class="btn btn-primary" ng-click="vm.updateStatus(deliveryOrder, '취소', '')" ng-show="deliveryOrder.status == '요청'">
+            <i class="glyphicon glyphicon-edit"></i> 취소
           </a>
         </td>
       </tr>

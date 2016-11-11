@@ -12,14 +12,14 @@ module.exports = function(app) {
     .get(deliveryOrders.list)
     .post(deliveryOrders.create);
 
+  app.route('/api/deliveryOrders/status/:deliveryOrderId')//.all(deliveryOrdersPolicy.isAllowed)
+    .post(deliveryOrders.updateStatus)
+
   app.route('/api/deliveryOrders/:deliveryOrderId')//.all(deliveryOrdersPolicy.isAllowed)
     .get(deliveryOrders.read)
     .put(deliveryOrders.update)
     .delete(deliveryOrders.delete);
 
-  app.route('/api/deliveryOrders/:deliveryOrderId/menus')//.all(deliveryOrdersPolicy.isAllowed)
-    .get(deliveryOrders.readMenus)
-    .put(deliveryOrders.updateMenus);
 
   // Finish by binding the Custom action middleware
   app.param('deliveryOrderId', deliveryOrders.deliveryOrderByID);

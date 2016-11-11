@@ -67,7 +67,7 @@ var orderTask = {
           restaurant: context.dialog.restaurant._id,
           restaurantName: context.dialog.restaurant.name,
           menus: _menus,
-          address: context.dialog.address != undefined ? context.dialog.address.address : undefined,
+          address: context.dialog.address.지번주소,
           totalPrice: context.dialog.totalPrice,
           status: ['요청'],
           memo: '',
@@ -77,7 +77,8 @@ var orderTask = {
           intervals: [
           ],
           manager: null,
-          user: context.user.userId
+          user: context.user.userId,
+          botUser: context.user._id
         };
 
         model.create(doc, function(err, _docs) {
@@ -480,17 +481,21 @@ exports.mongoQueryTypeCheck = mongoQueryTypeCheck;
 
 
 function menuCategoryAction(task, context, callback) {
-  var model, query;
-  if(context.dialog.restaurant.franchise) {
+  var model, query, sort;
+  if(context.dialog.restaurant.franchise &&
+    (context.dialog.restaurant.isMenuExist !== true)) {
     model = mongoose.model('FranchiseMenu');
     query = {franchise: context.dialog.restaurant.franchise};
+    sort = {'created': -1};
   } else {
     model = mongoose.model('Menu');
     query = {restaurant: context.dialog.restaurant._id};
+    sort = {'_id': -1};
   }
 
   model.aggregate([
     {$match: query},
+    {$sort: sort},
     {$group: {
       _id: '$category',
       category: {$first: '$category'}
@@ -521,20 +526,23 @@ function menuCategoryAction(task, context, callback) {
 exports.menuCategoryAction = menuCategoryAction;
 
 function menuAction(task, context, callback) {
-  var model, query;
-  if(context.dialog.restaurant.franchise) {
+  var model, query, sort;
+  if(context.dialog.restaurant.franchise &&
+    (context.dialog.restaurant.isMenuExist !== true)) {
     model = mongoose.model('FranchiseMenu');
     query = {franchise: context.dialog.restaurant.franchise,
       category: context.dialog.category.name};
+    sort = {'created': +1};
   } else {
     model = mongoose.model('Menu');
     query = {restaurant: context.dialog.restaurant._id,
       category: context.dialog.category.name};
+    sort = {'_id': +1};
   }
 
   // console.log(query);
 
-  model.find(query).limit(type.MAX_LIST).lean().exec(function(err, docs) {
+  model.find(query).limit(type.MAX_LIST).sort(sort).lean().exec(function(err, docs) {
     task.doc = docs;
     context.dialog.menu = docs;
     callback(task, context);

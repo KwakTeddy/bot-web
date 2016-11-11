@@ -76,6 +76,7 @@ function checkOrder(task, context, successCallback, errorCallback) {
       '매장명: ' + context.dialog.restaurant.name + '\n'+
       '메뉴: ' + context.dialog.menuStr + '\n' +
       '전화: ' + context.dialog.restaurant.phone + '\n\n' +
-      '전화주문 후 "접수"라고 얘기해주세요.', context.bot.botName);
+      '전화주문 후 관리자에서 "접수" 또는 "취소" 처리 해주세요.\n\n' +
+      'https://bot.moneybrain.ai/deliveryDialogs', context.bot.botName);
   }
 }
