@@ -116,6 +116,16 @@ var dialogs = [
   input: 'fran update',
   task:   {action: 'updateFranchiseRestaurant'},
   output: 'update 완료'
+},
+{
+  input: 'check category',
+  task:   {action: 'checkDumpCategory'},
+  output: 'category check 완료'
+},
+{
+  input: 'update category',
+  task:   {action: 'updateDumpCategory'},
+  output: 'category update 완료'
 }
 ];
 

@@ -287,7 +287,8 @@ var menuType = {
   },
   exclude: ['치킨', '피자', '버거', '햄버거'],
   preType: function(task, context, type, callback) {
-    if(context.dialog.restaurant.franchise) {
+    if(context.dialog.restaurant.franchise && 
+      (context.dialog.restaurant.isMenuExist !== true)) {
       type.query = {franchise: context.dialog.restaurant.franchise};
       type.mongo.model = 'franchiseMenus';
     } else {

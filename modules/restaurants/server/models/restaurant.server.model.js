@@ -54,7 +54,11 @@ var RestaurantSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'Franchise'
   },
-  deliverable: Boolean
+  deliverable: Boolean,
+  isMenuExist: {
+    type: Boolean,
+    default: false
+  }
 });
 
 mongoose.model('Restaurant', RestaurantSchema);

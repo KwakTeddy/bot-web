@@ -972,3 +972,76 @@ function updateFranchiseRestaurantName(task, context, successCallback, errorCall
 exports.updateFranchiseRestaurantName = updateFranchiseRestaurantName;
 
 bot.setAction('updateFranchiseRestaurantName', updateFranchiseRestaurantName);
+
+
+function updateMenuExist(task, context, callback) {
+  var modelRestaurant = mongoose.model('Restaurant');
+
+
+  callback(task, context);
+}
+
+exports.updateMenuExist = updateMenuExist;
+
+
+function checkDumpCategory(task, context, callback) {
+  var model = mongoose.model('Menu');
+
+  model.aggregate(
+    [
+      {
+        "$unwind" : "$category"
+      },
+      {
+        "$group" : {
+          "_id" : {
+            'category': '$category'
+          },
+          "category1" : {
+            "$first" : "$category"
+          }
+        }
+      }
+    ], function(err, docs) {
+
+      if(err) console.log(err);
+      else {
+        for (var i = 0; i < docs.length; i++) {
+          var doc = docs[i];
+          console.log(doc.category1);
+        }
+      }
+      callback(task, context);
+    });
+}
+
+exports.checkDumpCategory = checkDumpCategory;
+bot.setAction('checkDumpCategory', checkDumpCategory);
+
+
+var categoryNames = [
+  {ori: 'Top 10', to: '추천메뉴'},
+  {ori: '혼자먹고싶은 세트', to: '혼밥족 세트'}
+];
+
+function updateDumpCategory(task, context, callback) {
+  var model = mongoose.model('Menu');
+
+  async.eachSeries(categoryNames, function(ct, cb) {
+    // model.count({'category': ct.ori}, function(err, res) {
+    //   console.log(res);
+    // });
+
+    model.update({'category': ct.ori}, {'$set': {'category.$': ct.to}}, {multi: true}, function(err, res) {
+      if(err) console.log(err);
+      else console.log(ct.ori, ct.to, res.nModified);
+      cb(null);
+    });
+  }, function(err) {
+    callback(task, context);
+  });
+}
+
+exports.updateDumpCategory = updateDumpCategory;
+bot.setAction('updateDumpCategory', updateDumpCategory);
+

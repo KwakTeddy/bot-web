@@ -68,3 +68,10 @@
 {action: 'updateFranchiseRestaurant'}
 > update 완료
 
+< check category
+{action: 'checkDumpCategory'}
+> category check 완료
+
+< update category
+{action: 'updateDumpCategory'}
+> category update 완료
