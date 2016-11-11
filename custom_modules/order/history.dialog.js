@@ -118,6 +118,11 @@ var dialogs = [
   output: 'update 완료'
 },
 {
+  input: 'menu exist',
+  task:   {action: 'updateMenuExist'},
+  output: 'menu exist 완료'
+},
+{
   input: 'check category',
   task:   {action: 'checkDumpCategory'},
   output: 'category check 완료'

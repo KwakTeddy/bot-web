@@ -976,13 +976,30 @@ bot.setAction('updateFranchiseRestaurantName', updateFranchiseRestaurantName);
 
 function updateMenuExist(task, context, callback) {
   var modelRestaurant = mongoose.model('Restaurant');
+  var modelMenu = mongoose.model('Menu');
 
-
-  callback(task, context);
+  modelRestaurant.find({'address.시도명': '서울특별시'}, function(err, docs) {
+    async.eachSeries(docs, function (doc, cb) {
+      modelMenu.count({restaurant: doc._id}, function(err, cnt) {
+        if(cnt > 0) {
+          doc.isMenuExist = true;
+          logger.debug(doc.name, cnt);
+          doc.save();
+        } else {
+          doc.isMenuExist = false;
+          doc.save();
+        }
+        cb(null);
+      });
+    },
+    function(err) {
+      callback(task, context);
+    });
+  })
 }
 
 exports.updateMenuExist = updateMenuExist;
-
+bot.setAction('updateMenuExist', updateMenuExist);
 
 function checkDumpCategory(task, context, callback) {
   var model = mongoose.model('Menu');
@@ -1028,10 +1045,6 @@ function updateDumpCategory(task, context, callback) {
   var model = mongoose.model('Menu');
 
   async.eachSeries(categoryNames, function(ct, cb) {
-    // model.count({'category': ct.ori}, function(err, res) {
-    //   console.log(res);
-    // });
-
     model.update({'category': ct.ori}, {'$set': {'category.$': ct.to}}, {multi: true}, function(err, res) {
       if(err) console.log(err);
       else console.log(ct.ori, ct.to, res.nModified);
