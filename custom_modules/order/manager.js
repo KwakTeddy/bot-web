@@ -1,64 +1,79 @@
 var path = require('path');
 var facebook = require(path.resolve('./modules/bot/server/controllers/facebook.server.controller.js'));
 var mongoose = require('mongoose');
+var deliveryOrdersModule = require(path.resolve('modules/deliveryOrders/server/controllers/deliveryOrders.server.controller.js'));
 
 exports.checkOrder = checkOrder;
 function checkOrder(task, context, successCallback, errorCallback) {
   var pendingCallback = function(_inRaw, _inNLP, _inDoc, _context, print) {
     // context.user.pendingCallback = null;
+
     if(_inRaw.search(/접수/) != -1) {
+      if(_context.bot.managers && _context.bot.managers.length > 0)
+        deliveryOrdersModule.updateStatus(_context.bot.managers[0].deliveryOrderId, '접수')
 
-      var managerName;
-      for(var i in _context.bot.managers) {
-        var manager = _context.bot.managers[i];
-        if(manager.userId == _context.user.userId) managerName = manager.name;
-      }
-      if(managerName == undefined) managerName = _context.user.userId;
-
-      for(var i in _context.bot.managers) {
-        var manager = _context.bot.managers[i];
-
-        if(_context.user.userId != manager.userId)
-          facebook.respondMessage(manager.userId, managerName + '님이 접수하셨습니다.', _context.bot.botName);
-        else {
-          print('[접수완료] 수고하셨습니다!');
-
-          var model = mongoose.model('DeliveryOrder');
-          model.update({_id: manager.deliveryOrderId}, {status: '접수'}, function (err) {
-            console.log(err);
-          });
-        }
-
-        global._users[manager.userId].pendingCallback = null;
-        manager.deliveryOrderId = null;
-      }
     } else if(_inRaw.search(/취소/) != -1) {
-      var managerName;
-      for(var i in _context.bot.managers) {
-        var manager = _context.bot.managers[i];
-        if(manager.userId == _context.user.userId) managerName = manager.name;
-      }
-      if(managerName == undefined) managerName = _context.user.userId;
+      if(_context.bot.managers && _context.bot.managers.length > 0)
+      deliveryOrdersModule.updateStatus(_context.bot.managers[0].deliveryOrderId, '취소')
 
-      for(var i in _context.bot.managers) {
-        var manager = _context.bot.managers[i];
-
-        if(_context.user.userId != manager.userId)
-          facebook.respondMessage(manager.userId, managerName + '님이 취소하셨습니다.', _context.bot.botName);
-        else {
-          print('[취소완료] 수고하셨습니다!');
-
-          var model = mongoose.model('DeliveryOrder');
-          model.update({_id: manager.deliveryOrderId}, {status: '취소'}, function (err) {
-          });
-        }
-
-        global._users[manager.userId].pendingCallback = null;
-        manager.deliveryOrderId = null;
-      }
     } else {
       print('접수 또는 취소만 가능합니다!');
     }
+
+    // if(_inRaw.search(/접수/) != -1) {
+    //
+    //   var managerName;
+    //   for(var i in _context.bot.managers) {
+    //     var manager = _context.bot.managers[i];
+    //     if(manager.userId == _context.user.userId) managerName = manager.name;
+    //   }
+    //   if(managerName == undefined) managerName = _context.user.userId;
+    //
+    //   for(var i in _context.bot.managers) {
+    //     var manager = _context.bot.managers[i];
+    //
+    //     if(_context.user.userId != manager.userId)
+    //       facebook.respondMessage(manager.userId, managerName + '님이 접수하셨습니다.', _context.bot.botName);
+    //     else {
+    //       print('[접수완료] 수고하셨습니다!');
+    //
+    //       var model = mongoose.model('DeliveryOrder');
+    //       model.update({_id: manager.deliveryOrderId}, {status: '접수'}, function (err) {
+    //         console.log(err);
+    //       });
+    //     }
+    //
+    //     global._users[manager.userId].pendingCallback = null;
+    //     manager.deliveryOrderId = null;
+    //   }
+    // } else if(_inRaw.search(/취소/) != -1) {
+    //   var managerName;
+    //   for(var i in _context.bot.managers) {
+    //     var manager = _context.bot.managers[i];
+    //     if(manager.userId == _context.user.userId) managerName = manager.name;
+    //   }
+    //   if(managerName == undefined) managerName = _context.user.userId;
+    //
+    //   for(var i in _context.bot.managers) {
+    //     var manager = _context.bot.managers[i];
+    //
+    //     if(_context.user.userId != manager.userId)
+    //       facebook.respondMessage(manager.userId, managerName + '님이 취소하셨습니다.', _context.bot.botName);
+    //     else {
+    //       print('[취소완료] 수고하셨습니다!');
+    //
+    //       var model = mongoose.model('DeliveryOrder');
+    //       model.update({_id: manager.deliveryOrderId}, {status: '취소'}, function (err) {
+    //         console.log(err);
+    //       });
+    //     }
+    //
+    //     global._users[manager.userId].pendingCallback = null;
+    //     manager.deliveryOrderId = null;
+    //   }
+    // } else {
+    //   print('접수 또는 취소만 가능합니다!');
+    // }
   };
 
   for(var i in context.bot.managers) {

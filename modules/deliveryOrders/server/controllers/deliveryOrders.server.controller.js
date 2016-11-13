@@ -103,23 +103,22 @@ exports.list = function(req, res) {
   });
 };
 
-exports.updateStatus = function(req, res) {
-  var deliveryOrder = req.deliveryOrder ;
-  deliveryOrder.status = req.params.status;
-  // deliveryOrder = _.extend(deliveryOrder , req.body);
+exports.updateStatus = function(deliveryOrderId, status) {
+  DeliveryOrder.findOne({_id: deliveryOrderId}, function(err, doc) {
 
-  deliveryOrder.save(function(err) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.jsonp(deliveryOrder);
-    }
+    doc.status = status;
+    doc.save(function(err) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        if(status != doc.status && (status == '접수' || status == '취소')) {
+          changeOrderStatus(doc);
+        }
+      }
+    });
   });
-
-  // DeliveryOrder.update({_id: manager.deliveryOrderId}, {status: '접수'}, function (err) {
-  // });
 };
 
 /**
@@ -156,7 +155,6 @@ exports.linkPrivacy = function (req, res) {
   res.render('modules/deliveryOrders/server/views/privacy', {});
 };
 
-
 var facebook = require(path.resolve('./modules/bot/server/controllers/facebook.server.controller.js'));
 
 function changeOrderStatus(deliveryOrder) {
@@ -186,5 +184,4 @@ function changeOrderStatus(deliveryOrder) {
       }
     );
   }
-
 }
