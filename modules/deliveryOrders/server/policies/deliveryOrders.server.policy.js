@@ -34,10 +34,10 @@ exports.invokeRolesPolicies = function () {
     roles: ['guest'],
     allows: [{
       resources: '/api/deliveryOrders',
-      permissions: ['get']
+      permissions: '*'
     }, {
       resources: '/api/deliveryOrders/:deliveryOrderId',
-      permissions: ['get']
+      permissions: '*'
     }]
   }]);
 };
