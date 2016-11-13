@@ -11,6 +11,7 @@ var path = require('path'),
   mysql = require('mysql'),
   fs = require('fs'),
   dateformat = require('dateformat');
+var config = require(path.resolve('./config/config'));
 
 var mySqlPool = mysql.createPool({
   host: 'localhost',
@@ -286,7 +287,7 @@ function sendSMSAuth(task, context, callback) {
 
   request.post(
     'https://bot.moneybrain.ai/api/messages/sms/send',
-    {json: {callbackPhone: '028585683', phone: context.user.mobile, message: message}},
+    {json: {callbackPhone: config.callcenter, phone: context.user.mobile, message: message}},
     function (error, response, body) {
       if (!error && response.statusCode == 200) {
       }

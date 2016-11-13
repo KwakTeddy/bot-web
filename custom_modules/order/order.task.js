@@ -8,6 +8,7 @@ var utils = require(path.resolve('modules/bot/action/common/utils'));
 var type = require(path.resolve('modules/bot/action/common/type'));
 var _ = require('lodash');
 var request = require('request');
+var config = require(path.resolve('./config/config'));
 
 // var checkTask = {
 //
@@ -106,7 +107,7 @@ var orderTask = {
           request.post(
             'https://bot.moneybrain.ai/api/messages/vms/send',
             // 'http://localhost:8443/api/messages/vms/send',
-            {json: {callbackPhone: '028585683', phone: context.user.mobile.replace(/,/g, ''), message: message}},
+            {json: {callbackPhone: confog.callcenter, phone: context.user.mobile.replace(/,/g, ''), message: message}},
             function (error, response, body) {
               if (!error && response.statusCode == 200) {
                 // callback(task, context);
@@ -125,7 +126,7 @@ var orderTask = {
 
         request.post(
           'https://bot.moneybrain.ai/api/messages/sms/send',
-          {json: {callbackPhone: '028585683', phone: context.user.mobile.replace(/,/g, ''), message: message}},
+          {json: {callbackPhone: config.callcenter, phone: context.user.mobile.replace(/,/g, ''), message: message}},
           function (error, response, body) {
             if (!error && response.statusCode == 200) {
               // callback(task, context);

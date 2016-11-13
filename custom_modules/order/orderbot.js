@@ -8,6 +8,7 @@ var manager = require(path.resolve('custom_modules/order/manager'));
 var messages = require(path.resolve('modules/messages/server/controllers/messages.server.controller'))
 var dateformat = require('dateformat');
 var _ = require('lodash');
+var config = require(path.resolve('./config/config'));
 
 var restaurantCategory = [
   {category: '치킨', alias: '치킨 통닭 닭 chicken'},
@@ -422,7 +423,7 @@ var deliverOrder = {
               '전화번호는 ' + task.topTask.mobile + ' 입니다.' +
               '이 주문은 인공지능 배달봇 얌얌의 카카오톡에서 배달대행 주문입니다.';
 
-            messages.sendVMS({callbackPhone: '028585683', phone: context.user.mobile.replace(/,/g, ''), message: vmsMessage},
+            messages.sendVMS({callbackPhone: config.callcenter, phone: context.user.mobile.replace(/,/g, ''), message: vmsMessage},
               context, function(_task, _context) {
               });
 
@@ -1339,7 +1340,7 @@ exports.nMapDetail = {
 
 
 function testVMS(task, context, callback) {
-  messages.sendSMS({callbackPhone: '028585683', phone: '01063165683', message: '주문전화테스트'}, context, function() {
+  messages.sendSMS({callbackPhone: config.callcenter, phone: '01063165683', message: '주문전화테스트'}, context, function() {
     callback(task, context);
   });
 }

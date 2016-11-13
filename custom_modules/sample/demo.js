@@ -9,6 +9,7 @@ var tough = require('tough-cookie');
 var async = require('async');
 var webdriverio = require('webdriverio');
 var utils = require(path.resolve('modules/bot/action/common/utils'));
+var config = require(path.resolve('./config/config'));
 
 var options = {
     host: '127.0.0.1',
@@ -133,7 +134,7 @@ function naverTest(task, context, callback) {
           request.post(
             'https://bot.moneybrain.ai/api/messages/vms/send',
             // 'http://localhost:8443/api/messages/vms/send',
-            {json: {callbackPhone: '028585683', phone: '01063165683', message: vmsMessage}},
+            {json: {callbackPhone: config.callcenter, phone: '01063165683', message: vmsMessage}},
             function (error, response, body) {
               if (!error && response.statusCode == 200) {
                 // callback(task, context);

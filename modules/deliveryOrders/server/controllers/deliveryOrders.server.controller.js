@@ -9,6 +9,7 @@ var path = require('path'),
   DeliveryOrderMenu = mongoose.model('DeliveryOrderMenu'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
+var config = require(path.resolve('./config/config'));
 
 /**
  * Create a Custom action
@@ -180,7 +181,7 @@ function changeOrderStatus(deliveryOrder) {
 
     request.post(
       'https://bot.moneybrain.ai/api/messages/sms/send',
-      {json: {callbackPhone: '028585683', phone: deliveryOrder.botUser.mobile.replace(/,/g, ''), message: message}},
+      {json: {callbackPhone: config.callcenter, phone: deliveryOrder.botUser.mobile.replace(/,/g, ''), message: message}},
       function (error, response, body) {
         if (!error && response.statusCode == 200) {
           // callback(task, context);
