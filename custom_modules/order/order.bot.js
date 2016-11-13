@@ -22,6 +22,7 @@ var orderBot = {
   },
   managers: [
     // {platform: 'facebook', userId: '1240743695984292', name: '전용원'},
+    // {platform: 'facebook', userId: '1033474390107986', name: '박유진'},
     {platform: 'facebook', userId: '1314256105273043', name: '장세영'}
   ],
 

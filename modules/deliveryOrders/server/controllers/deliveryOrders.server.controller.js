@@ -183,7 +183,6 @@ function changeOrderStatus(deliveryOrder) {
         if (!error && response.statusCode == 200) {
           // callback(task, context);
         }
-        cb(null);
       }
     );
   }

@@ -191,28 +191,23 @@ function receivedMessage(event) {
   var timeOfMessage = event.timestamp;
   var message = event.message;
 
-  chat.getContext(event.botId, 'facebook', senderID, function(context) {
-    console.log('senderID: ' + senderID + ', recipientID: ' + recipientID);
-    //console.log('receivedMessage: ', event);
-    if(recipientID == context.bot.facebook.id) {
-      console.log('2 senderID: ' + senderID + ', recipientID: ' + recipientID);
+  if(recipientID == global._bots[event.botId].facebook.id) {
+    chat.getContext(event.botId, 'facebook', senderID, function(context) {
+      console.log('senderID: ' + senderID + ', recipientID: ' + recipientID);
+      //console.log('receivedMessage: ', event);
+      if(recipientID == context.bot.facebook.id) {
+        console.log('2 senderID: ' + senderID + ', recipientID: ' + recipientID);
 
-      // console.log("Received message for user %d and page %d at %d with message:",
-      //   senderID, recipientID, timeOfMessage);
-      // console.log(JSON.stringify(message));
+        var messageId = message.mid;
+        var messageText = message.text;
+        var messageAttachments = message.attachments;
 
-      var messageId = message.mid;
-
-      // You may get a text or attachment but not both
-      var messageText = message.text;
-      var messageAttachments = message.attachments;
-
-      chat.write('facebook', senderID, event.botId, messageText, function (retText, task) {
-        respondMessage(senderID, retText, event.botId, task);
-      });
-    }
-  });
-
+        chat.write('facebook', senderID, event.botId, messageText, function (retText, task) {
+          respondMessage(senderID, retText, event.botId, task);
+        });
+      }
+    });
+  }
 }
 
 
