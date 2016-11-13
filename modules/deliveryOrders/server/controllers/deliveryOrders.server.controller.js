@@ -104,7 +104,9 @@ exports.list = function(req, res) {
 };
 
 exports.updateStatus = function(deliveryOrderId, status) {
-  DeliveryOrder.findOne({_id: deliveryOrderId}, function(err, doc) {
+  DeliveryOrder.findById(deliveryOrderId).exec(function(err, doc) {
+
+    console.log(err, doc);
 
     doc.status = status;
     doc.save(function(err) {
