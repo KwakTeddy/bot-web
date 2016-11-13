@@ -7,14 +7,38 @@ exports.checkOrder = checkOrder;
 function checkOrder(task, context, successCallback, errorCallback) {
   var pendingCallback = function(_inRaw, _inNLP, _inDoc, _context, print) {
     // context.user.pendingCallback = null;
+    console.log('pendingCallback: ' + _inRaw);
 
     if(_inRaw.search(/접수/) != -1) {
-      if(_context.bot.managers && _context.bot.managers.length > 0)
-        deliveryOrdersModule.updateStatus(_context.bot.managers[0].deliveryOrderId, '접수')
+      var deliveryOrderId;
+      for(var i in _context.bot.managers) {
+        var manager = _context.bot.managers[i];
+        deliveryOrderId = manager.deliveryOrderId;
+      }
 
+      console.log(deliveryOrderId, '접수')
+      deliveryOrdersModule.updateStatus(deliveryOrderId, '접수')
+
+      for(var i in _context.bot.managers) {
+        var manager = _context.bot.managers[i];
+        global._users[manager.userId].pendingCallback = null;
+        manager.deliveryOrderId = null;
+      }
     } else if(_inRaw.search(/취소/) != -1) {
-      if(_context.bot.managers && _context.bot.managers.length > 0)
-      deliveryOrdersModule.updateStatus(_context.bot.managers[0].deliveryOrderId, '취소')
+      var deliveryOrderId;
+      for(var i in _context.bot.managers) {
+        var manager = _context.bot.managers[i];
+        deliveryOrderId = manager.deliveryOrderId;
+      }
+
+      console.log(deliveryOrderId, '취소')
+      deliveryOrdersModule.updateStatus(deliveryOrderId, '취소')
+
+      for(var i in _context.bot.managers) {
+        var manager = _context.bot.managers[i];
+        global._users[manager.userId].pendingCallback = null;
+        manager.deliveryOrderId = null;
+      }
 
     } else {
       print('접수 또는 취소만 가능합니다!');
