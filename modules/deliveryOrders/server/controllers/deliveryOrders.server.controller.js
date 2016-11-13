@@ -115,7 +115,7 @@ exports.updateStatus = function(deliveryOrderId, status) {
           message: errorHandler.getErrorMessage(err)
         });
       } else {
-        if(status != doc.status && (status == '접수' || status == '취소')) {
+        if((status == '접수' || status == '취소')) {
           changeOrderStatus(doc);
         }
       }
