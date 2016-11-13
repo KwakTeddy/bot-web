@@ -104,9 +104,7 @@ exports.list = function(req, res) {
 };
 
 exports.updateStatus = function(deliveryOrderId, status) {
-  DeliveryOrder.findById(deliveryOrderId).exec(function(err, doc) {
-
-    console.log(err, doc);
+  DeliveryOrder.findById(deliveryOrderId).populate('restaurant botUser').exec(function(err, doc) {
 
     doc.status = status;
     doc.save(function(err) {

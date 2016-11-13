@@ -7,7 +7,6 @@ exports.checkOrder = checkOrder;
 function checkOrder(task, context, successCallback, errorCallback) {
   var pendingCallback = function(_inRaw, _inNLP, _inDoc, _context, print) {
     // context.user.pendingCallback = null;
-    console.log('pendingCallback: ' + _inRaw);
 
     if(_inRaw.search(/접수/) != -1) {
       var deliveryOrderId;
@@ -16,7 +15,7 @@ function checkOrder(task, context, successCallback, errorCallback) {
         deliveryOrderId = manager.deliveryOrderId;
       }
 
-      console.log(deliveryOrderId, '접수')
+      // console.log(deliveryOrderId, '접수')
       deliveryOrdersModule.updateStatus(deliveryOrderId, '접수')
 
       for(var i in _context.bot.managers) {
@@ -31,7 +30,7 @@ function checkOrder(task, context, successCallback, errorCallback) {
         deliveryOrderId = manager.deliveryOrderId;
       }
 
-      console.log(deliveryOrderId, '취소')
+      // console.log(deliveryOrderId, '취소')
       deliveryOrdersModule.updateStatus(deliveryOrderId, '취소')
 
       for(var i in _context.bot.managers) {
