@@ -162,10 +162,14 @@ function changeOrderStatus(deliveryOrder) {
   for(var i = 0; i <  bot.managers.length; i++) {
     var manager = bot.managers[i];
 
+
     facebook.respondMessage(manager.userId,
       '[' + deliveryOrder.status + '완료]\n' +
       '배달주소: ' + deliveryOrder.address + '\n' +
       '매장명:' + deliveryOrder.restaurantName, bot.botName);
+
+    global._users[manager.userId].pendingCallback = null;
+    manager.deliveryOrderId = null;
   }
 
   if(deliveryOrder.status == '취소' &&  deliveryOrder.botUser && deliveryOrder.botUser.mobile) {
