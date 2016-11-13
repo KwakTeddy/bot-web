@@ -14,30 +14,17 @@ function checkOrder(task, context, successCallback, errorCallback) {
         var manager = _context.bot.managers[i];
         deliveryOrderId = manager.deliveryOrderId;
       }
-
       // console.log(deliveryOrderId, '접수')
       deliveryOrdersModule.updateStatus(deliveryOrderId, '접수')
 
-      for(var i in _context.bot.managers) {
-        var manager = _context.bot.managers[i];
-        global._users[manager.userId].pendingCallback = null;
-        manager.deliveryOrderId = null;
-      }
     } else if(_inRaw.search(/취소/) != -1) {
       var deliveryOrderId;
       for(var i in _context.bot.managers) {
         var manager = _context.bot.managers[i];
         deliveryOrderId = manager.deliveryOrderId;
       }
-
       // console.log(deliveryOrderId, '취소')
       deliveryOrdersModule.updateStatus(deliveryOrderId, '취소')
-
-      for(var i in _context.bot.managers) {
-        var manager = _context.bot.managers[i];
-        global._users[manager.userId].pendingCallback = null;
-        manager.deliveryOrderId = null;
-      }
 
     } else {
       print('접수 또는 취소만 가능합니다!');
