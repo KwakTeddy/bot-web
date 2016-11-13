@@ -25,6 +25,7 @@ function checkOrder(task, context, successCallback, errorCallback) {
 
           var model = mongoose.model('DeliveryOrder');
           model.update({_id: manager.deliveryOrderId}, {status: '접수'}, function (err) {
+            console.log(err);
           });
         }
 
@@ -76,7 +77,8 @@ function checkOrder(task, context, successCallback, errorCallback) {
       '매장명: ' + context.dialog.restaurant.name + '\n'+
       '메뉴: ' + context.dialog.menuStr + '\n' +
       '전화: ' + context.dialog.restaurant.phone + '\n\n' +
-      '전화주문 후 관리자에서 "접수" 또는 "취소" 처리 해주세요.\n\n' +
-      'https://bot.moneybrain.ai/deliveryDialogs', context.bot.botName);
+      '전화주문 후 "접수" 또는 "취소" 라고 말해주세요.\n\n' +
+      '여러 주문을 처리할 때는 주문관리자에서 해주세요.' +
+      'https://bot.moneybrain.ai/deliveryOrders', context.bot.botName);
   }
 }

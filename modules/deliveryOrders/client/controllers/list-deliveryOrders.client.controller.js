@@ -5,13 +5,13 @@
     .module('deliveryOrders')
     .controller('DeliveryOrdersListController', DeliveryOrdersListController);
 
-  DeliveryOrdersListController.$inject = ['$scope', 'deliveryOrdersResolve', 'DTOptionsBuilder'];
+  DeliveryOrdersListController.$inject = ['$scope', 'deliveryOrdersResolve', 'DTOptionsBuilder', 'DTColumnDefBuilder'];
 
-  function DeliveryOrdersListController($scope, deliveryOrders, DTOptionsBuilder) {
+  function DeliveryOrdersListController($scope, deliveryOrders, DTOptionsBuilder, DTColumnDefBuilder) {
     var vm = this;
 
-    // $scope.dtOptions = DTOptionsBuilder.newOptions() .withOption('order', [1, 'desc']);
-    // $scope.dtOptions = DTOptionsBuilder.newOptions() .withOption('aaSorting', [[3, 'desc']]);
+    vm.dtOptions = DTOptionsBuilder.newOptions() .withOption('order', [0
+      , 'desc']);
 
     vm.deliveryOrders = deliveryOrders;
 

@@ -195,6 +195,8 @@ function receivedMessage(event) {
     console.log('senderID: ' + senderID + ', recipientID: ' + recipientID);
     //console.log('receivedMessage: ', event);
     if(recipientID == context.bot.facebook.id) {
+      console.log('2 senderID: ' + senderID + ', recipientID: ' + recipientID);
+
       // console.log("Received message for user %d and page %d at %d with message:",
       //   senderID, recipientID, timeOfMessage);
       // console.log(JSON.stringify(message));

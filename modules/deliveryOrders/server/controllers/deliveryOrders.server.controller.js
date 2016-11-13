@@ -92,7 +92,7 @@ exports.delete = function(req, res) {
  * List of Custom actions
  */
 exports.list = function(req, res) { 
-  DeliveryOrder.find().sort({created: 'desc'}).populate('restaurant botUser').exec(function(err, deliveryOrders) {
+  DeliveryOrder.find({status: '요청'}).sort({created: 'desc'}).populate('restaurant botUser').exec(function(err, deliveryOrders) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)

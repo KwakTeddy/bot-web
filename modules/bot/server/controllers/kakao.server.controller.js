@@ -73,7 +73,7 @@ function respondMessage(res, text, json) {
 
   if(json && json.url) {
     sendMsg.message.message_button =
-    {
+
       "label": (json.urlMessage ? json.urlMessage : "상세정보보기"),
       "url": json.url
     };
