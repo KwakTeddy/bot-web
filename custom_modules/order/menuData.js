@@ -1572,7 +1572,8 @@ exports.checkRestaurantAddress = checkRestaurantAddress;
 function restaurantGeocode(task, context, callback) {
   var restaurant = mongoose.model('Restaurant');
 
-  var query = {'address.시도명': '서울특별시', lng: {$exists: false}};
+  // var query = {'address.시도명': '서울특별시', lng: {$exists: false}};
+  var query = {franchise: {$exists: true}, lng: {$exists: false}};
 
   restaurant.find(query, function(err, docs) {
     if(err) {
