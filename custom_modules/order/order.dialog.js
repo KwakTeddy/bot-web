@@ -50,7 +50,7 @@ var commonDialogs = [
     ],
     children: [
       {
-        input: '~네',
+        input: /~네/,
         output: {call: '배달주문', options: {top: '배달주문'}}
       },
       {
