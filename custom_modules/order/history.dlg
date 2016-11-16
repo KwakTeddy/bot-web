@@ -83,3 +83,14 @@
 < update category
 {action: 'updateDumpCategory'}
 > category update 완료
+
+// 매장 위치정보 업데이트, 거리파악용 (신규 매장 정보도 업데이트 필요)
+< update geocode
+{action: 'restaurantGeocode'}
+> update geocode 완료
+
+// 기존사용자 위치정보 업데이트, 거리파악용(신규사용자는 불필요
+< user geocode
+{action: 'botuserGeocode'}
+> user geocode 완료
+

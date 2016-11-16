@@ -1569,3 +1569,75 @@ function checkRestaurantAddress(task, context, callback) {
 
 exports.checkRestaurantAddress = checkRestaurantAddress;
 
+function restaurantGeocode(task, context, callback) {
+  var restaurant = mongoose.model('Restaurant');
+
+  var query = {'address.시도명': '서울특별시', lng: {$exists: false}};
+
+  restaurant.find(query, function(err, docs) {
+    if(err) {
+      console.log(err);
+      callback(task, context);
+    } else {
+      async.eachSeries(docs, function(doc, cb) {
+        if(doc.address) {
+          addressModule.naverGeocode(doc, context, function(doc, context) {
+            if(doc.lng && doc.lat) {
+              doc.save(function (err) {
+                if(err) console.log(err);
+                console.log(doc.name + ': ' + doc.lng + ', ' + doc.lat);
+                cb(null);
+              });
+            } else {
+              console.log(doc.name + ': ');
+              cb(null);
+            }
+          })
+        } else {
+          cb(null);
+        }
+      }, function(err) {
+        callback(task, context);
+      });
+    }
+  });
+}
+
+exports.restaurantGeocode = restaurantGeocode;
+bot.setAction('restaurantGeocode', restaurantGeocode);
+
+
+function botuserGeocode(task, context, callback) {
+  var BotUser = mongoose.model('BotUser');
+
+  BotUser.find({}, function(err, docs) {
+    if(err) {
+      console.log(err);
+      callback(task, context);
+    } else {
+      async.eachSeries(docs, function(doc, cb) {
+        if(doc.address) {
+          addressModule.naverGeocode(doc, context, function(doc, context) {
+            if(doc.lng && doc.lat) {
+              doc.save(function (err) {
+                if(err) console.log(err);
+                console.log(doc.userKey + ': ' + doc.lng + ', ' + doc.lat);
+                cb(null);
+              });
+            } else {
+              console.log(doc.userKey + ': ');
+              cb(null);
+            }
+          })
+        } else {
+          cb(null);
+        }
+      }, function(err) {
+        callback(task, context);
+      });
+    }
+  });
+}
+
+exports.botuserGeocode = botuserGeocode;
+bot.setAction('botuserGeocode', botuserGeocode);

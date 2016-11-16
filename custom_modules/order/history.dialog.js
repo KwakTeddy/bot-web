@@ -136,6 +136,16 @@ var dialogs = [
   input: 'update category',
   task:   {action: 'updateDumpCategory'},
   output: 'category update 완료'
+},
+{
+  input: 'update geocode',
+  task:   {action: 'restaurantGeocode'},
+  output: 'update geocode 완료'
+},
+{
+  input: 'user geocode',
+  task:   {action: 'botuserGeocode'},
+  output: 'user geocode 완료'
 }
 ];
 

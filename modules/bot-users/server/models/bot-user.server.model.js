@@ -40,6 +40,8 @@ var BotUserSchema = new Schema({
   },
 
   address: Object,
+  lng: Number,
+  lat: Number,
 
   created: {
     type: Date,
