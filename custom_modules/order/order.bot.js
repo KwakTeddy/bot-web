@@ -5,7 +5,6 @@ var orderBot = {
   serviceNick: '인공지능 배달봇',
 
   dialogServer: {chatScript: false},
-  call: false,      // 배달 시 주문 전화 여부
   kakao: {
     keyboard: { type :"buttons", buttons:["배달주문시작", "배달내역보기"]}
   },
@@ -21,15 +20,17 @@ var orderBot = {
     CHANNEL_ACCESS_TOKEN: 'qEZFTLvs+VZc261MqfjfTWAdNPqqJA7Xwvrnbfmc8NWNJWXqoGCozNa174yDjm7gJM7/WNjcVIR2sqxFYF4LJNIDe1tdLe7ru04K53JzJYQopy3rjq872G2WLrcN/tI3CBaER6OotAv401QQnI57qgdB04t89/1O/w1cDnyilFU='
   },
   managers: [
-    {platform: 'facebook', userId: '1240743695984292', name: '전용원'},
-    {platform: 'facebook', userId: '1033474390107986', name: '박유진'},
+    // {platform: 'facebook', userId: '1240743695984292', name: '전용원'},
+    // {platform: 'facebook', userId: '1033474390107986', name: '박유진'},
     {platform: 'facebook', userId: '1314256105273043', name: '장세영'}
   ],
 
   messages: {
-    manager:  true,
-    orderCall: false
+    manager: false,
+    sms: false,
+    call: false
   },
+  // call: false,      // 배달 시 주문 전화 여부
 
   dialogFiles: [
     'history.dialog.js',

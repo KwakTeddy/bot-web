@@ -33,6 +33,7 @@ exports.text = function (task, context, successCallback, errorCallback) {
 var restaurantType = {
   name: 'restaurant',
   typeCheck: restaurantTypeCheck,
+  // dialog: true,
   // limit: 5,
   mongo: {
     model: 'restaurant',
@@ -1087,17 +1088,17 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
         if(doc.businessHours && doc.businessHours.length > 0) {
           if((doc.businessHours[0].end > doc.businessHours[0].start && (hhmm < doc.businessHours[0].start || hhmm > doc.businessHours[0].end)) ||
             (doc.businessHours[0].end < doc.businessHours[0].start && (hhmm < doc.businessHours[0].start && hhmm > doc.businessHours[0].end))) {
-            inDoc[format.name][i].openStatus = '(금일 영업종료)';
-            inDoc[format.name][i].isOpen = false;
-            // inDoc[format.name][i].isOpen = true;
+            // inDoc[format.name][i].openStatus = '(금일 영업종료)';
+            // inDoc[format.name][i].isOpen = false;
+            inDoc[format.name][i].isOpen = true;
           } else {
             inDoc[format.name][i].isOpen = true;
           }
         } else {
           if (hhmm < defaultStart || hhmm > defautEnd) {
-            inDoc[format.name][i].openStatus = '(금일 영업종료)';
-            inDoc[format.name][i].isOpen = false;
-            // inDoc[format.name][i].isOpen = true;
+            // inDoc[format.name][i].openStatus = '(금일 영업종료)';
+            // inDoc[format.name][i].isOpen = false;
+            inDoc[format.name][i].isOpen = true;
           } else {
             inDoc[format.name][i].isOpen = true;
           }
@@ -1116,9 +1117,9 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
       }
 
       try {
-        logger.debug('type.js:restaurantTypeCheck: MATCHED ' + format.name + ' "' + text/* + '" inDoc: ' + JSON.stringify(inDoc)*/);
+        logger.debug('type.js:restaurantTypeCheck: MATCHED ' + format.name + ' "' + text + ' isArray: ' + Array.isArray(inDoc[format.name]) /* + '" inDoc: ' + JSON.stringify(inDoc)*/);
       } catch (e) {
-        logger.debug('type.js:restaurantTypeCheck: MATCHED ' + format.name + ' "' + text/* + '" inDoc.' + format.name + ': ' + inDoc[format.name] + ' inDoc.typeDoc: ' + JSON.stringify(inDoc.typeDoc)*/);
+        logger.debug('type.js:restaurantTypeCheck: MATCHED ' + format.name + ' "' + text + ' isArray: ' + Array.isArray(inDoc[format.name]) /* + '" inDoc.' + format.name + ': ' + inDoc[format.name] + ' inDoc.typeDoc: ' + JSON.stringify(inDoc.typeDoc)*/);
       }
 
       callback(text, inDoc, true);

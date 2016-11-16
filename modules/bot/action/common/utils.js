@@ -1,13 +1,19 @@
 exports.merge = merge;
 
-function merge(source1, source2){
+function merge(source1, source2, overwrite){
   if(!source1 && !source2) return undefined;
   else if(!source1 && source2) return source2;
   else if(source1 && !source2) return source1;
 
   for (var attrname in source2) {
-    if(!source1[attrname]) {
-      if (source2[attrname].constructor==Object) {
+    if(overwrite) {
+      if (source2[attrname] && source2[attrname].constructor==Object) {
+        source1[attrname] = cloneWithParent(source2[attrname]);
+      } else {
+        source1[attrname] = source2[attrname];
+      }
+    } else if(!source1[attrname]) {
+      if (source2[attrname] && source2[attrname].constructor==Object) {
         source1[attrname] = cloneWithParent(source2[attrname]);
       } else {
         source1[attrname] = source2[attrname];
@@ -16,11 +22,10 @@ function merge(source1, source2){
   }
 
   return source1;
-};
+}
 
 
 exports.mergeWithClone = mergeWithClone;
-
 function mergeWithClone(source1, source2){
   if(!source1 && !source2) return undefined;
   else if(!source1 && source2) return source2;
@@ -37,7 +42,7 @@ function mergeWithClone(source1, source2){
   }
 
   return merged;
-};
+}
 
 exports.clone = clone;
 
@@ -78,7 +83,7 @@ function clone(obj) {
   }
 
   throw new Error("Unable to copy obj! Its type isn't supported.");
-};
+}
 
 exports.cloneWithParent = cloneWithParent;
 

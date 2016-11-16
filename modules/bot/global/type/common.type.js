@@ -31,7 +31,12 @@ botlib.setGlobalTypeCheck('numberListTypeCheck', numberListTypeCheck);
 
 function listTypeCheck(text, type, task, context, callback) {
   var inRawText = text.replace(/\s/g, '');
-  var list = (task[type.name] ? task[type.name] : context.dialog[type.name]);
+
+  var listName;
+  if(type.listName) listName = type.listName;
+  else listName= type.name;
+  var list = (task[listName] ? task[listName] : context.dialog[listName]);
+
   for (var j = 0; j < list.length; j++) {
     var item;
     if(type.field) item = list[j][type.field];
@@ -64,7 +69,7 @@ function listTypeCheck(text, type, task, context, callback) {
       num = _num;
     }
 
-    list = (task[type.name] ? task[type.name] : context.dialog[type.name]);
+    list = (task[listName] ? task[listName] : context.dialog[listName]);
     if(list && num >= 1 && num <= list.length) {
       context.dialog[type.name] = /*task[type.name] = */list[num - 1];
 
@@ -77,7 +82,7 @@ function listTypeCheck(text, type, task, context, callback) {
   var maxEqual = false;
   var maxIndex = -1, maxCount = 0;
   var matchedList = [];
-  list = (task[type.name] ? task[type.name] : context.dialog[type.name]);
+  list = (task[listName] ? task[listName] : context.dialog[listName]);
   for (var j = 0; j < list.length; j++) {
     var item;
     if(type.field) item = list[j][type.field];
