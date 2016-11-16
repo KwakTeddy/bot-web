@@ -160,20 +160,22 @@ var facebook = require(path.resolve('./modules/bot/server/controllers/facebook.s
 
 function changeOrderStatus(deliveryOrder) {
   var bot = global._bots['order'];
-  for(var i = 0; i <  bot.managers.length; i++) {
-    var manager = bot.managers[i];
 
+  if(bot.messages.manager === true) {
+    for(var i = 0; i <  bot.managers.length; i++) {
+      var manager = bot.managers[i];
 
-    facebook.respondMessage(manager.userId,
-      '[' + deliveryOrder.status + '완료]\n' +
-      '배달주소: ' + deliveryOrder.address + '\n' +
-      '매장명:' + deliveryOrder.restaurantName, bot.botName);
+      facebook.respondMessage(manager.userId,
+        '[' + deliveryOrder.status + '완료]\n' +
+        '배달주소: ' + deliveryOrder.address + '\n' +
+        '매장명:' + deliveryOrder.restaurantName, bot.botName);
 
-    global._users[manager.userId].pendingCallback = null;
-    manager.deliveryOrderId = null;
+      if(global._users[manager.userId]) global._users[manager.userId].pendingCallback = null;
+      manager.deliveryOrderId = null;
+    }
   }
 
-  if(deliveryOrder.status == '취소' &&  deliveryOrder.botUser && deliveryOrder.botUser.mobile) {
+  if(bot.messages.sms === true && deliveryOrder.status == '취소' &&  deliveryOrder.botUser && deliveryOrder.botUser.mobile) {
     var request = require('request');
 
     var message = "[인공지능 배달봇 얌얌]\n" +
