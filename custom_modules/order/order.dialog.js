@@ -266,7 +266,13 @@ var dialogs = [
       { name: '메뉴입력',
         output: '"+orderRestaurant.name+"에서 원하시는 메뉴를 말씀해 주세요.\n모든 메뉴를 보려면 "메뉴판"(ㅁㄴㅍ) 이라고 얘기해주세요',
         children: [
-          { input: {if: 'context.dialog.menus && context.dialog.menus.length > 0', regexp: /~네/}, output: {call: '주문확인', return: 1}},
+          { input: {if: 'context.dialog.menus && context.dialog.menus.length > 0', regexp: /~네/},
+            output: [
+              { if: 'context.dialog.totalPrice < context.dialog.orderRestaurant.minOrder',
+                output: {call: '메뉴입력', options: {output: '최소 주문 금액은 +orderRestaurant.minOrder+원이고, 현재까지 주문금액은 +totalPrice+원 입니다.\n\n추가로 주문할 메뉴를 말씀해 주세요.'}}},
+              { if: 'true', output: {call: '주문확인', return: 1}}
+            ]
+          },
           { input: {if: 'context.dialog.menus && context.dialog.menus.length > 0', regexp: /~아니요/}, output: {repeat: 1}},
           { input: {types: [{type: orderTasks.menuType, init: true}], if: 'context.dialog.menu && !Array.isArray(context.dialog.menu)'},
             task: {action: function(task, context, callback) {context.dialog.orderMenu = context.dialog.menu; callback(task, context);}},
