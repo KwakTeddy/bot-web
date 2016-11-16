@@ -90,7 +90,7 @@ var historyToOrderTask = {
   action: function(task, context, callback) {
     if(context.dialog['history']) {
       context.dialog['address'] = context.user.address;
-      context.dialog['restaurant'] = context.dialog['history']['restaurant'];
+      context.dialog['orderRestaurant'] = context.dialog['history']['restaurant'];
       context.dialog['menus'] = context.dialog['history']['menus'];
     }
     callback(task, context);

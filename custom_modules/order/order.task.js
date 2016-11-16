@@ -68,7 +68,7 @@ var orderTask = {
           restaurant: context.dialog.orderRestaurant._id,
           restaurantName: context.dialog.orderRestaurant.name,
           menus: _menus,
-          address: context.dialog.address.지번주소,
+          address: (context.dialog.address ? context.dialog.address.지번주소 : context.user.address.지번주소),
           totalPrice: context.dialog.totalPrice,
           status: ['요청'],
           memo: '',
@@ -107,7 +107,7 @@ var orderTask = {
           request.post(
             'https://bot.moneybrain.ai/api/messages/vms/send',
             // 'http://localhost:8443/api/messages/vms/send',
-            {json: {callbackPhone: confog.callcenter, phone: context.user.mobile.replace(/,/g, ''), message: message}},
+            {json: {callbackPhone: config.callcenter, phone: context.user.mobile.replace(/,/g, ''), message: message}},
             function (error, response, body) {
               if (!error && response.statusCode == 200) {
                 // callback(task, context);
@@ -123,7 +123,7 @@ var orderTask = {
       function(cb) {
         if(context.bot.messages.sms === true) {
           var message = "[인공지능 배달봇 얌얌]\n" +
-            context.dialog.restaurant.name + '/주문 요청/50분 이내 배달 예정';
+            context.dialog.orderRestaurant.name + '/주문 요청/50분 이내 배달 예정';
 
           request.post(
             'https://bot.moneybrain.ai/api/messages/sms/send',
