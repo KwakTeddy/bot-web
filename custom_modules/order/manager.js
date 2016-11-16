@@ -99,9 +99,9 @@ function checkOrder(task, context, successCallback, errorCallback) {
     facebook.respondMessage(manager.userId, '배달 주문이 접수 되었습니다.\n' +
       '배달주소: ' + context.user.address.지번주소 + '\n' +
       '배달자휴대폰: ' + context.user.mobile + '\n' +
-      '매장명: ' + context.dialog.restaurant.name + '\n'+
+      '매장명: ' + context.dialog.orderRestaurant.name + '\n'+
       '메뉴: ' + context.dialog.menuStr + '\n' +
-      '전화: ' + context.dialog.restaurant.phone + '\n\n' +
+      '전화: ' + context.dialog.rorderRestaurant.phone + '\n\n' +
       '전화주문 후 "접수" 또는 "취소" 라고 말해주세요.\n\n' +
       '여러 주문을 처리할 때는 주문관리자에서 해주세요.' +
       'https://bot.moneybrain.ai/deliveryOrders', context.bot.botName);

@@ -192,7 +192,7 @@ var dialogs = [
                 children: [
                   { input: {types: [{name: 'orderRestaurant', listName: 'restaurant', typeCheck: 'listTypeCheck'}]},
                     output: [
-                      { if: 'context.dialog.restaurant.isOpen == false', output: '현재 영업 시간이 아닙니다.\n0. 이전 \n!. 처음(주문취소)',
+                      { if: 'context.dialog.orderRestaurant.isOpen == false', output: '현재 영업 시간이 아닙니다.\n0. 이전 \n!. 처음(주문취소)',
                         children: [
                           { input: [/~이전/, /^0$/], output: {up : 1}},
                           { input: [/~처음/, /^!$/], output: {call: '주문취소'}}
@@ -221,7 +221,7 @@ var dialogs = [
                     children: [
                       { input: {types: [{name: 'orderRestaurant', listName: 'restaurant', typeCheck: 'listTypeCheck'}]},
                         output: [
-                          {if: 'context.dialog.restaurant.isOpen == false', output: '현재 영업 시간이 아닙니다.\n0. 이전 \n!. 처음(주문취소)',
+                          {if: 'context.dialog.orderRestaurant.isOpen == false', output: '현재 영업 시간이 아닙니다.\n0. 이전 \n!. 처음(주문취소)',
                             children: [
                               { input:  [/~이전/, /^0$/], output: {up : 1}},
                               { input: [/~처음/, /^!$/], output: {call: '주문취소'}}
