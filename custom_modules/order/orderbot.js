@@ -1149,7 +1149,7 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
         if(!dist && doc.category && doc.category.length > 0) dist = categoryDist[doc.category[0]];
 
         doc.distance = addressModule.getDistanceFromGeocode(lat, lng, doc.lat, doc.lng);
-        console.log(doc.name, doc.distance, JSON.stringify(dist));
+        // console.log(doc.name, doc.distance, JSON.stringify(dist));
         if(dist) {
 
           if (dist.dist && dist.법정동) {
@@ -1220,10 +1220,8 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
       for (var i = 0; Object.keys(franchises).length > 0 && i < inDoc[format.name].length; i++) {
         var doc = inDoc[format.name][i];
         if (franchises[doc.franchise] === true) {
-          console.log('first' ,i, doc.name, franchises[doc.franchise]);
           franchises[doc.franchise] = false;
         } else if (franchises[doc.franchise] === false) {
-          console.log('del' ,i, doc.name, franchises[doc.franchise]);
           inDoc[format.name].splice(i, 1);
           i--;
         }
