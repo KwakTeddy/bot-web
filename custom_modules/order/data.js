@@ -978,7 +978,7 @@ function updateMenuExist(task, context, callback) {
   var modelRestaurant = mongoose.model('Restaurant');
   var modelMenu = mongoose.model('Menu');
 
-  modelRestaurant.find({'address.시도명': '서울특별시'}, function(err, docs) {
+  modelRestaurant.find({"franchise" : mongoose.Types.ObjectId("582d4975477f9a6f66cf953e")}, function(err, docs) {
     async.eachSeries(docs, function (doc, cb) {
       modelMenu.count({restaurant: doc._id}, function(err, cnt) {
         if(cnt > 0) {
