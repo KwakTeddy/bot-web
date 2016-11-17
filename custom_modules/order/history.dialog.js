@@ -108,6 +108,16 @@ var dialogs = [
   output: '완료'
 },
 {
+  input: 'lotteriaList',
+  task:   {action: 'lotteriaList'},
+  output: '완료'
+},
+{
+  input: 'McList',
+  task:   {action: 'McList'},
+  output: '완료'
+},
+{
   input: 'update dump',
   task:   {action: 'updateDump'},
   output: '완료'

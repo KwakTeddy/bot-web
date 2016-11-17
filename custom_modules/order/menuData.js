@@ -879,6 +879,7 @@ function google(task, context, callback) {
 bot.setAction('google', google);
 
 
+
 function baeList(task, context, callback) {
   console.log('baeList: ' + task.address + ', ' + task.category);
 
@@ -1145,6 +1146,254 @@ function baeList(task, context, callback) {
 }
 
 exports.baeList = baeList;
+
+function lotteriaList(task, context, callback) {
+  var xmldomErrorHandler = {
+    warning: function (w) {
+      console.log(w);
+    },
+    error: function (e) {
+      console.log(e);
+    },
+    fatalError: function (e) {
+      console.log(e);
+    }
+  };
+  var list = [];
+
+  var client = webdriverio
+      .remote(options)
+      .init()
+      .then(function () {
+        client.url('http://www.lotteria.com/Shop/Shop_List.asp#devCallShopList')
+            .pause(2000)
+            .click('#content > div > div.bx_flex.bx_list_02.clfix > div.searchStoreWrap.hidden > ul > li:nth-child(4) > a')
+            .pause(2000)
+            .getHTML('//*[@id="devCallShopList"]/div[1]/div[2]').then(function (html) {
+                  i = 0;
+                  count = 14;
+                  async.whilst(
+                      function () {
+                        return i++ < count;
+                      },
+                      function (cb1) {
+                        var j = 2;
+                        var pages = 12;
+                        async.whilst(
+                            function () {
+                              return j++ < pages;
+                            },
+                            function (cb2) {
+                              client.pause(4000)
+                                .click('#devCallShopList > div.paging_basic > span > a:nth-child(' + j + ')')
+                                  .catch(function(err) {
+                                      console.log(err);
+                                  })
+                                .pause(3000)
+                                .getHTML('//*[@id="devCallShopList"]/div[1]/div[2]').then(function (html) {
+                                  var DOC_NAME = 'doc';
+                                  task[DOC_NAME] = [];
+                                  var name = ".//td[1]/a/text()";
+                                  var phone = ".//td[3]/text()"
+                                  var xml = html;
+                                  var doc = new dom({errorHandler: xmldomErrorHandler}).parseFromString(xml);
+                                  var nodes = xpath.select("//tr", doc)
+                                  console.log(nodes[0]);
+                                  for (var i = 1; nodes && i < nodes.length; i++) {
+                                    var node = nodes[i];
+                                    var restaurantname = xpath.select(name, node).toString();
+                                    console.log(restaurantname);
+                                    var restaurantphone = xpath.select(phone, node).toString();
+                                    console.log(restaurantphone);
+                                    list.push({name: restaurantname, phone: restaurantphone});
+                                  }}).then(function() {
+                                cb2(true);
+                                console.log('종료')
+                              })
+
+                            }, function(err) {
+                              client.click('#devCallShopList > div.paging_basic > span > a.go.next > img')
+                                  .then(function() {
+                                    console.log('하위 while 종료');
+                                    cb1(true);
+                                  });
+                            }
+                        )
+                      }, function(err) {
+                        console.log('상위 while 종료');
+                        console.log(list.length);
+                        var cnt = 0;
+                        async.eachSeries(list, function(item, cb) {
+                          // console.log(item.name, item.phone);
+
+                          item.name = item.name.trim();
+                          // item.name = item.name.replace(', ', '');
+                          // item.name = item.name.replace(' ', '');
+                          item.name = '롯데리아 ' + item.name;
+                          // if(item.name.endsWith('점')) item.name = item.name.substring(0, item.name.length -1);
+                          var Restaurant = mongoose.model('Restaurant');
+
+                          Restaurant.find({name: new RegExp('^' + item.name, 'i')}, function(err, docs) {
+                            for(var k = 0; docs && k < docs.length ; k++) {
+                              console.log((cnt++) + ':' + docs[k].name);
+                            }
+
+                            cb(null);
+                          });
+
+                          // Restaurant.update({name: new RegExp('^' + item.name, 'i')}, {$set: {deliverable: true}}, {multi: 1}, function(err, res) {
+                          //   console.log(item.name + ',' + JSON.stringify(res));
+                          //   cb(null);
+                          // });
+
+                        }, function(err) {
+                          callback(task, context);
+                        });
+            }
+        )
+      })
+})};
+
+exports.lotteriaList = lotteriaList;
+bot.setAction('lotteriaList', lotteriaList);
+
+function McList(task, context, callback) {
+  var xmldomErrorHandler = {
+    warning: function (w) {
+      console.log(w);
+    },
+    error: function (e) {
+      console.log(e);
+    },
+    fatalError: function (e) {
+      console.log(e);
+    }
+  };
+
+  var list = [];
+
+  var client = webdriverio
+      .remote(options)
+      .init()
+      .then(function () {
+        client.url('http://www.mcdonalds.co.kr/www/kor/findus/district.do?sSearch_yn=Y&skey=2&skeyword=%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C&sflag4=-4-')
+            .pause(2000)
+            .getHTML('//*[@id="print_div"]/div[2]').then(function (html) {
+          i = 0;
+          count = 4;
+          async.whilst(
+              function () {
+                return i++ < count;
+              },
+              function (cb1) {
+                var j = 2;
+                var pages = 7;
+                async.whilst(
+                    function () {
+                      return j++ < pages;
+                    },
+                    function (cb2) {
+                      client.pause(4000)
+                          .click('#print_div > div.searchResult > div > a:nth-child(' + j + ')')
+                          .catch(function(err) {
+                            console.log(err);
+                          })
+                          .pause(3000)
+                          .getHTML('//*[@id="print_div"]/div[2]').then(function (html) {
+                        var DOC_NAME = 'doc';
+                        task[DOC_NAME] = [];
+                        var name = ".//div[@class='detail']/dl[@class='clearFix']/dt/a/text()";
+                        var phone = ".//div[@class='detail']/dl[@class='clearFix']/dd[1]/text()"
+                        var xml = html;
+                        var doc = new dom({errorHandler: xmldomErrorHandler}).parseFromString(xml);
+                        var nodes = xpath.select(".//ul[@class='resultList']/li", doc)
+                        console.log(nodes[0]);
+                        for (var i = 0; nodes && i < nodes.length; i++) {
+                          var node = nodes[i];
+                          var restaurantname = xpath.select(name, node).toString();
+                          console.log(restaurantname);
+                          var restaurantphone = xpath.select(phone, node).toString();
+                          console.log(restaurantphone);
+
+                          list.push({name: restaurantname, phone: restaurantphone});
+                        }}).then(function() {
+                        cb2(null);
+                        // cb2(true);
+                        console.log('종료')
+                      })
+
+                    }, function(err) {
+                      client.click('#print_div > div.searchResult > div > a.btn_next > img')
+                          .pause(4000)
+                          .then(function() {
+                            console.log('하위 while 종료');
+                            cb1(null);
+                            // cb1(true);
+                          });
+                    }
+                )
+              }, function(err) {
+                console.log('상위 while 종료');
+                  console.log(list.length);
+                  var cnt = 0;
+                  async.eachSeries(list, function(item, cb) {
+                    // console.log(item.name, item.phone);
+
+                    item.name = item.name.trim();
+                    item.name = item.name.replace(', ', '');
+                    item.name = item.name.replace(' ', '');
+                    item.name = '맥도날드 ' + item.name;
+                    if(item.name.endsWith('점')) item.name = item.name.substring(0, item.name.length -1);
+                    var Restaurant = mongoose.model('Restaurant');
+
+                    // Restaurant.find({name: new RegExp('^' + item.name, 'i')}, function(err, docs) {
+                    //   for(var k = 0; docs && k < docs.length ; k++) {
+                    //     console.log((cnt++) + ':' + docs[k].name);
+                    //   }
+                    //
+                    //   cb(null);
+                    // });
+
+                    Restaurant.update({name: new RegExp('^' + item.name, 'i')}, {$set: {deliverable: true}}, {multi: 1}, function(err, res) {
+                      console.log(item.name + ',' + JSON.stringify(res));
+                        cb(null);
+                    });
+
+                }, function(err) {
+                    callback(task, context);
+                  });
+
+                // for(var i = 0; i < list.length; i++) {
+                //   var item = list[i];
+                //   console.log(item.name, item.phone);
+                //
+                //   item.name = item.name.trim();
+                //   item.name = item.replace(', ', '');
+                //   item.name = '맥도날드 ' + item.name;
+                //
+                //   var Restaurant = mongoose.model('Restaurant');
+                //
+                //   Restaurant.find({name: item.name}, function(err, docs) {
+                //     for(var k = 0; docs && k < docs.length ; k++) {
+                //       console.log(k + ':' + docs[k].name);
+                //     }
+                //   });
+                //
+                //   // Restaurant.update({name: item.name}, {$set: {deliverable: true}}, {multi: 1}, function(err, res) {
+                //   //   console.log(item.name + ',' + JSON.stringify(res));
+                //   // });
+                // }
+                //
+                // callback(task, context);
+              }
+          )
+        })
+      });
+};
+
+
+exports.McList = McList;
+bot.setAction('McList', McList);
 
 function baeDetail(task, context, callback) {
   var xmldomErrorHandler = {

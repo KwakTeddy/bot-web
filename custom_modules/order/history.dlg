@@ -62,6 +62,15 @@ var address = require('../../modules/bot/action/common/address');
 {action: 'bt'}
 > 완료
 
+< lotteriaList
+{action: 'lotteriaList'}
+> 완료
+
+< McList
+{action: 'McList'}
+> 완료
+
+
 < update dump
 {action: 'updateDump'}
 > 완료
