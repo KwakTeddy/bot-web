@@ -1,5 +1,5 @@
 
-
+var address = require('../../modules/bot/action/common/address');
 
 var dialogs = [
 {
@@ -136,6 +136,33 @@ var dialogs = [
   input: 'update category',
   task:   {action: 'updateDumpCategory'},
   output: 'category update 완료'
+},
+{
+  input: 'update geocode',
+  task:   {action: 'restaurantGeocode'},
+  output: 'update geocode 완료'
+},
+{
+  input: 'user geocode',
+  task:   {action: 'botuserGeocode'},
+  output: 'user geocode 완료'
+},
+{
+  input: 'geocode test',
+  task:   {action: function(task, context) {
+      var LAT_DIST = 0.7/1.85/60.0;   // 간격 0.5km
+      var LNG_DIST = 0.7/1.48/60.0;   // 간격 0.5km
+  
+      var t = {address: {지번주소: '서울특별시 중구 순화동 151'}};
+      address.naverGeocode(t, context, function(t, context) {
+          t.lat += LAT_DIST;
+          t.lng += LNG_DIST;
+          address.naverReverseGeocode(t, context, function(t, context) {
+              console.log(t.address);
+          })
+      })
+  }},
+  output: 'user geocode 완료'
 }
 ];
 

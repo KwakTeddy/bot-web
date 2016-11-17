@@ -19,6 +19,11 @@ var orderBot = {
     CHANNEL_SECRET: 'bb522efdeb637a4583807377a93ab527',
     CHANNEL_ACCESS_TOKEN: 'qEZFTLvs+VZc261MqfjfTWAdNPqqJA7Xwvrnbfmc8NWNJWXqoGCozNa174yDjm7gJM7/WNjcVIR2sqxFYF4LJNIDe1tdLe7ru04K53JzJYQopy3rjq872G2WLrcN/tI3CBaER6OotAv401QQnI57qgdB04t89/1O/w1cDnyilFU='
   },
+  naver: {
+    clientId: 'c7VNVyIG3s95N4q2LWZQ',
+    clientSecret: 'HXWvXdrKi7'
+  },
+
   managers: [
     {platform: 'facebook', userId: '1240743695984292', name: '전용원'},
     {platform: 'facebook', userId: '1033474390107986', name: '박유진'},

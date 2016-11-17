@@ -9,6 +9,8 @@ var type = require(path.resolve('modules/bot/action/common/type'));
 var _ = require('lodash');
 var request = require('request');
 var config = require(path.resolve('./config/config'));
+var orderbot = require(path.resolve('custom_modules/order/orderbot'));
+var addressModule = require(path.resolve('modules/bot/action/common/address'));
 
 // var checkTask = {
 //
@@ -246,24 +248,69 @@ var categoryRestaurants = {
     var category = context.dialog.restaurantCategory;
     task.category = category;
 
-    var address;
-    if(address == undefined || address == true) {
+    // var address;
+    // if(address == undefined || address == true) {
+    //   address = context.dialog.address;
+    //   if (!address) address = context.user.address;
+    // }
+
+    var address, lng, lat;
+    if(context.dialog.address) {
       address = context.dialog.address;
-      if (!address) address = context.user.address;
+      lng = context.dialog.lng;
+      lat = context.dialog.lat;
+    } else if(context.user.address) {
+      address = context.user.address;
+      lng = context.user.lng;
+      lat = context.user.lat;
     }
 
     var query = {category: category, deliverable: true};
-    query['address.시도명'] = address.시도명;
-    query['address.시군구명'] = address.시군구명;
-    // query['address.행정동명'] = address.행정동명;
-    query['address.법정읍면동명'] = address.법정읍면동명;
+    query['$or'] = [
+      {'address.시도명': address.시도명, 'address.시군구명': address.시군구명, 'address.법정읍면동명': address.법정읍면동명},
+      {lat: {$gt: lat - orderbot.LAT_DIST, $lt: lat + orderbot.LAT_DIST}, lng: {$gt: lng - orderbot.LNG_DIST, $lt: lng + orderbot.LNG_DIST}}
+    ];
+    // query['address.시도명'] = address.시도명;
+    // query['address.시군구명'] = address.시군구명;
+    // // query['address.행정동명'] = address.행정동명;
+    // query['address.법정읍면동명'] = address.법정읍면동명;
+    // query.lat = {$gt: lat - orderbot.LAT_DIST, $lt: lat + orderbot.LAT_DIST};
+    // query.lng = {$gt: lng - orderbot.LNG_DIST, $lt: lng + orderbot.LNG_DIST};
 
     model.find(query).limit(type.MAX_LIST).lean().exec(function(err, docs) {
       var hhmm = new Date().toString().split(' ')[4].substring(0, 5);
       // hhmm = '03:00';
       var defaultStart = '12:00', defautEnd = '24:00';
-      for (var i = 0; i < docs.length; i++) {
+      for (var i = 0; docs && i < docs.length; i++) {
         var doc = docs[i];
+
+        var dist;
+        if(doc.franchise) dist = orderbot.franchiseDist[doc.franchise.toString()];
+        if(!dist && doc.category && doc.category.length > 0) dist = orderbot.categoryDist[doc.category[0]];
+
+        if(dist) {
+          var distance = addressModule.getDistanceFromGeocode(lat, lng, doc.lat, doc.lng);
+          // console.log(doc.name, distance, JSON.stringify(dist));
+
+          if (dist.dist && dist.법정동) {
+            if (dist.dist < distance && doc.address.법정읍면동명 != address.법정읍면동명) {
+              docs.splice(i, 1);
+              i--;
+              continue;
+            }
+          } else if (dist.dist) {
+            if(dist.dist < distance) {
+              docs.splice(i, 1); i--;
+              continue;
+            }
+          } else if (dist.법정동 === 1) {
+            if(doc.address.법정읍면동명 != address.법정읍면동명) {
+              docs.splice(i, 1); i--;
+              continue;
+            }
+          }
+        }
+
         if(doc.businessHours && doc.businessHours.length > 0) {
           if((doc.businessHours[0].end > doc.businessHours[0].start && (hhmm < doc.businessHours[0].start || hhmm > doc.businessHours[0].end)) ||
             (doc.businessHours[0].end < doc.businessHours[0].start && (hhmm < doc.businessHours[0].start && hhmm > doc.businessHours[0].end))) {
@@ -282,6 +329,26 @@ var categoryRestaurants = {
         }
 
         if(!docs[i].minOrder && docs[i].minOrder == 0) docs[i].minOrder = 10000;
+
+      }
+
+      // 프랜차이즈 중복 없애기
+      var franchises = {};
+      for (var i = 0; i < docs.length; i++) {
+        var doc = docs[i];
+        if(doc.franchise) franchises[doc.franchise] = true;
+      }
+
+      for (var i = 0; Object.keys(franchises).length > 0 && i < docs.length; i++) {
+        var doc = docs[i];
+        if (franchises[doc.franchise] === true) {
+          console.log('first' ,i, doc.name, franchises[doc.franchise]);
+          franchises[doc.franchise] = false;
+        } else if (franchises[doc.franchise] === false) {
+          console.log('del' ,i, doc.name, franchises[doc.franchise]);
+          docs.splice(i, 1);
+          i--;
+        }
       }
 
       if(docs) {
@@ -289,6 +356,7 @@ var categoryRestaurants = {
         task.restaurant = docs;
         context.dialog.restaurant = docs;
       }
+
       callback(task, context);
     });
   }

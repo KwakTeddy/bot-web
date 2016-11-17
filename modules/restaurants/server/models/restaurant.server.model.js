@@ -21,6 +21,8 @@ var RestaurantSchema = new Schema({
   address: Object,
   address1: String,
   address2: String,
+  lng: Number,
+  lat: Number,
   phone: String,
   homepage: String,
   photo: String,
