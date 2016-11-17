@@ -1106,10 +1106,58 @@ function naverGeocode(task, context, callback) {
       var doc = JSON.parse(body);
       task.lng=doc.result.items[0].point.x;
       task.lat=doc.result.items[0].point.y;
-      // console.log('lat: ' + task.lat + ', lng: ' + task.lng);
+      console.log('lat: ' + task.lat + ', lng: ' + task.lng);
     }
     callback(task, context);
   });
 }
 
 exports.naverGeocode = naverGeocode;
+
+
+function naverReverseGeocode(task, context, callback) {
+  // var query = {query: task.address.법정읍면동명 + ' ' + task.address.지번본번 + ' ' + task.address.지번부번};
+
+  var query = {query: task.lng+','+task.lat};
+  var request = require('request');
+
+  request({
+    url: 'https://openapi.naver.com/v1/map/reversegeocode?encoding=utf-8&coord=latlng&output=json',
+    method: 'GET',
+    qs: query,
+    headers: {
+      'Host': 'openapi.naver.com',
+      'Accept': '*/*',
+      'Content-Type': 'application/json',
+      'X-Naver-Client-Id': context.bot.naver.clientId,
+      'X-Naver-Client-Secret': context.bot.naver.clientSecret
+    }
+  }, function(error, response, body) {
+    if (!error && response.statusCode == 200) {
+      // console.log(body);
+      var doc = JSON.parse(body);
+      task.address=doc.result.items[0].address;
+      console.log('address: ' + task.address);
+    }
+    callback(task, context);
+  });
+}
+
+exports.naverReverseGeocode = naverReverseGeocode;
+
+
+function getDistanceFromGeocode(lat1,lng1,lat2,lng2) {
+  function deg2rad(deg) {
+    return deg * (Math.PI/180)
+  }
+
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2-lat1);  // deg2rad below
+  var dLon = deg2rad(lng2-lng1);
+  var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  var d = R * c; // Distance in km
+  return d;
+}
+
+exports.getDistanceFromGeocode = getDistanceFromGeocode;

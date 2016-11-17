@@ -23,6 +23,7 @@ var commonDialogs = [
       context.user.pendingCallback = null;
       context.dialog.initTypes = {};
 
+      context.dialog.orderble = null;
       context.dialog.orderRestaurant = null;
       context.dialog.orderMenu = null;
       context.dialog.orderOption = null;
@@ -69,7 +70,7 @@ var dialogs = [
       { input: {types: [{type: type.addressType, raw: true, context: true}]},
         task: {action: function(task, context, callback) {
           context.user.addressCompact = context.user.address.지번주소.replace(/^([가-힣]+\s*)/, function(matched, p1) { return ''});
-          address.naverGeocode(task, context, function(task, context) {callback(task, context);});
+          address.naverGeocode(task, context, function(task, context) {context.dialog.lat = task.lat; context.dialog.lng = task.lng; callback(task, context);});
         }},
         output: '주소가 변경되었습니다.' },
       { output: {repeat: 1, options: {output: '지번 또는 도로명을 포함한 상세주소를 말씀해주세요.\n예시) 강남구 삼성동 16-1 101동 101호\n예시) 강남구 학동로 426 101동 101호\n\n주소를 정확히 입력해 주세요.\n0.이전단계 !. 처음으로'}}}
@@ -90,8 +91,8 @@ var dialogs = [
         output: [
           { if: 'context.user.address && !dialog.returnDialog',
             task: {action: function(task, context, callback) {
-              context.dialog.address = context.user.address;
-              address.naverGeocode(task, context, function(task, context) {callback(task, context);});
+              task.address = context.dialog.address = context.user.address;
+              address.naverGeocode(task, context, function(task, context) {context.dialog.lat = task.lat; context.dialog.lng = task.lng; callback(task, context);});
             }},
             output: {call: '휴대폰번호입력'}},
           { if: '!context.user.address || dialog.returnDialog', output: '주소를 말씀해 주세요.',
