@@ -143,9 +143,12 @@ var orderCancel = {
   action: function(task, context, callback) {
     if(context.dialog['history']) {
 
-      var model = mongoose.model('DeliveryOrder');
-      model.update({_id: context.dialog['history']._id}, {status: '취소'}, function (err) {
-      });
+      var deliveryOrdersModule = require(path.resolve('modules/deliveryOrders/server/controllers/deliveryOrders.server.controller.js'));
+      deliveryOrdersModule.updateStatus(context.dialog['history']._id, '취소')
+
+      // var model = mongoose.model('DeliveryOrder');
+      // model.update({_id: context.dialog['history']._id}, {status: '취소'}, function (err) {
+      // });
     }
     callback(task, context);
   }

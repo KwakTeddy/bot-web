@@ -38,5 +38,5 @@ module.exports = {
     }
   },
   chatServer: '../bot-server/',
-  callcenter: '028585683'
+  callcenter: '15777314'
 };
