@@ -99,7 +99,10 @@ var dialogs = [
             children: [
               // { input: {regexp: /주소/g}, output: {call: '휴대폰번호입력'} },
               { input: {types: [{type: type.addressType, raw: true, context: true}]},
-                task: {action: function(task, context, callback) {context.dialog.address = context.user.address;callback(task, context);}},
+                task: {action: function(task, context, callback) {
+                  task.address = context.dialog.address = context.user.address;
+                  address.naverGeocode(task, context, function(task, context) {context.dialog.lat = task.lat; context.dialog.lng = task.lng; callback(task, context);});
+              }},
                 output: {call: '휴대폰번호입력', return: 1} },
               { name: '주문취소', input: /^0$/, output: '주문을 취소하고 처음으로 가시겠습니까?',
                 children: [
@@ -219,7 +222,7 @@ var dialogs = [
               { input: orderTypes.menuCategoryCheck,
                 task: orderTasks.categoryRestaurants,
                 output: [
-                  {if: 'dialog.task.restaurant.length > 0',
+                  {if: 'dialog.task.restaurant && dialog.task.restaurant.length > 0',
                     output: '[+category+]\n##+index+. +name+ +openStatus+\n#0. 이전\n!. 처음(주문취소)\n\n목록에서 번호나 음식점명을 입력해주세요~',
                     children: [
                       { input: {types: [{name: 'orderRestaurant', listName: 'restaurant', typeCheck: 'listTypeCheck'}]},

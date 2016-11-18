@@ -37,7 +37,7 @@ function listTypeCheck(text, type, task, context, callback) {
   else listName= type.name;
   var list = (task[listName] ? task[listName] : context.dialog[listName]);
 
-  for (var j = 0; j < list.length; j++) {
+  for (var j = 0; list && j < list.length; j++) {
     var item;
     if(type.field) item = list[j][type.field];
     else if(list[j]['name']) item = list[j]['name'];
@@ -83,7 +83,7 @@ function listTypeCheck(text, type, task, context, callback) {
   var maxIndex = -1, maxCount = 0;
   var matchedList = [];
   list = (task[listName] ? task[listName] : context.dialog[listName]);
-  for (var j = 0; j < list.length; j++) {
+  for (var j = 0; list && j < list.length; j++) {
     var item;
     if(type.field) item = list[j][type.field];
     else if(list[j]['name']) item = list[j]['name'];

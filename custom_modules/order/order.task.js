@@ -278,6 +278,8 @@ var categoryRestaurants = {
     // query.lng = {$gt: lng - orderbot.LNG_DIST, $lt: lng + orderbot.LNG_DIST};
 
     model.find(query).limit(type.MAX_LIST).lean().exec(function(err, docs) {
+      console.log(err);
+      console.log(docs);
       var hhmm = new Date().toString().split(' ')[4].substring(0, 5);
       // hhmm = '03:00';
       var defaultStart = '12:00', defautEnd = '24:00';
@@ -334,7 +336,7 @@ var categoryRestaurants = {
 
       // 프랜차이즈 중복 없애기
       var franchises = {};
-      for (var i = 0; i < docs.length; i++) {
+      for (var i = 0; docs && i < docs.length; i++) {
         var doc = docs[i];
         if(doc.franchise) franchises[doc.franchise] = true;
       }
