@@ -36,7 +36,7 @@ var commonDialogs = [
   { input: {if: orderTypes.orderDialogCondition, regexp: /전화/}, output: {call: '전화주문'}},
   { input: {if: orderTypes.orderDialogCondition, regexp: /~이전/}, output: {up : 1}},
   { input: {if: orderTypes.orderDialogCondition, regexp: /^0$/}, output: {up : 1}},
-  { input: {if: orderTypes.orderDialogCondition, regexp: /~처음/}, output: {call: '주문취소'}},
+  { input: {if: orderTypes.orderDialogCondition, regexp: /~처음/}, output: {returnCall: '주문취소'}},
   { input: {if: orderTypes.orderDialogCondition, regexp: /^!$/}, output: {call: '주문취소'}},
   { input: {if: orderTypes.orderDialogCondition, regexp: /~전페이지/}, output: {repeat: 1, options: {page: 'pre'}}},              // TODO 이전페이지, 다음페이지 구현
   { input: {if: orderTypes.orderDialogCondition, regexp: /^<$/}, output: {repeat: 1, options: {page: 'pre'}}},              // TODO 이전페이지, 다음페이지 구현
@@ -107,7 +107,7 @@ var dialogs = [
               { name: '주문취소', input: /^0$/, output: '주문을 취소하고 처음으로 가시겠습니까?',
                 children: [
                   { input: {regexp: /~네/g}, output: {callGlobal: '시작'} },
-                  { input: {regexp: /~아니요/g}, output: {call: '주소입력'} },
+                  { input: {regexp: /~아니요/g}, output: {call: '주소입력', return: 1} },
                   { output: {repeat: 1, output: '주문을 취소 하시려는지 아닌지 모르겠습니다.\n주문을 취소하시려면 "네",\n취소하지 않으시려면 "아니요"" 라고 말씀해주세요.'}}
                 ]
               },
