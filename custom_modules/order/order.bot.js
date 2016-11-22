@@ -31,7 +31,7 @@ var orderBot = {
   ],
 
   messages: {
-    manager: true,
+    manager: false,
     sms: true,
     call: false
   },

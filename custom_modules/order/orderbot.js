@@ -775,8 +775,8 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
       }, function(err) {
         if(matchedDoc.length > 0) {
           logger.debug('type.js:restaurantTypeCheck: 상점명');
-          // _cb(true);
-          _cb(null);
+          _cb(true);
+          // _cb(null);
         } else _cb(null);
       })
     },
@@ -867,8 +867,8 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
           if(matchedDoc.length > 0) {
             logger.debug('type.js:restaurantTypeCheck: 상점별명');
 
-            // _cb(true);
-            _cb(null);
+            _cb(true);
+            // _cb(null);
           } else _cb(null);
         })
 
@@ -976,8 +976,8 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
           if(_docs && _docs.length > 0) {
             matchedDoc = _docs;
             logger.debug('type.js:restaurantTypeCheck: 메뉴종류');
-            _cb(true);
-            // _cb(null);
+            // _cb(true);
+            _cb(null);
           } else {
             _cb(null);
           }
