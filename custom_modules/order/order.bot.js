@@ -6,7 +6,7 @@ var orderBot = {
 
   dialogServer: {chatScript: false},
   kakao: {
-    keyboard: { type :"buttons", buttons:["배달주문시작", "배달내역보기"]}
+    keyboard: { type :"buttons", buttons:["배달주문시작", "배달내역보기", "도움말"]}
   },
   facebook: {
     id: '1166917363364364',
