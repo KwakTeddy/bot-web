@@ -1171,14 +1171,14 @@ function lotteriaList(task, context, callback) {
             .pause(2000)
             .getHTML('//*[@id="devCallShopList"]/div[1]/div[2]').then(function (html) {
                   i = 0;
-                  count = 14;
+                  count = 10;
                   async.whilst(
                       function () {
                         return i++ < count;
                       },
                       function (cb1) {
                         var j = 2;
-                        var pages = 12;
+                        var pages = 13;
                         async.whilst(
                             function () {
                               return j++ < pages;
@@ -1207,7 +1207,7 @@ function lotteriaList(task, context, callback) {
                                     console.log(restaurantphone);
                                     list.push({name: restaurantname, phone: restaurantphone});
                                   }}).then(function() {
-                                cb2(true);
+                                cb2(null);
                                 console.log('종료')
                               })
 
@@ -1215,7 +1215,7 @@ function lotteriaList(task, context, callback) {
                               client.click('#devCallShopList > div.paging_basic > span > a.go.next > img')
                                   .then(function() {
                                     console.log('하위 while 종료');
-                                    cb1(true);
+                                    cb1(null);
                                   });
                             }
                         )
@@ -1229,22 +1229,22 @@ function lotteriaList(task, context, callback) {
                           item.name = item.name.trim();
                           // item.name = item.name.replace(', ', '');
                           // item.name = item.name.replace(' ', '');
-                          item.name = '롯데리아 ' + item.name;
+                          item.name = '롯데리아' + item.name;
                           // if(item.name.endsWith('점')) item.name = item.name.substring(0, item.name.length -1);
                           var Restaurant = mongoose.model('Restaurant');
 
-                          Restaurant.find({name: new RegExp('^' + item.name, 'i')}, function(err, docs) {
-                            for(var k = 0; docs && k < docs.length ; k++) {
-                              console.log((cnt++) + ':' + docs[k].name);
-                            }
-
-                            cb(null);
-                          });
-
-                          // Restaurant.update({name: new RegExp('^' + item.name, 'i')}, {$set: {deliverable: true}}, {multi: 1}, function(err, res) {
-                          //   console.log(item.name + ',' + JSON.stringify(res));
+                          // Restaurant.find({name: new RegExp('^' + item.name, 'i')}, function(err, docs) {
+                          //   for(var k = 0; docs && k < docs.length ; k++) {
+                          //     console.log((cnt++) + ':' + docs[k].name);
+                          //   }
+                          //
                           //   cb(null);
                           // });
+
+                          Restaurant.update({name: new RegExp('^' + item.name, 'i')}, {$set: {deliverable: true}}, {multi: 1}, function(err, res) {
+                            console.log(item.name + ',' + JSON.stringify(res));
+                            cb(null);
+                          });
 
                         }, function(err) {
                           callback(task, context);
