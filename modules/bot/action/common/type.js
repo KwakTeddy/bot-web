@@ -47,6 +47,7 @@ exports.processInput = function(context, inRaw, callback) {
   checkTypes(inRaw, commonTypes, doc, context, function(_inRaw, inDoc) {
     nlpKo.tokenizeToStrings(_inRaw, function(err, result) {
 
+      if(!result) result = inRaw;
       var result2 = [];
       for (var i = 0; i < result.length; i++) {
         var word = result[i];

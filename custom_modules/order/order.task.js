@@ -318,6 +318,7 @@ var categoryRestaurants = {
             (doc.businessHours[0].end < doc.businessHours[0].start && (hhmm < doc.businessHours[0].start && hhmm > doc.businessHours[0].end))) {
             docs[i].openStatus = '(금일 영업종료)';
             docs[i].isOpen = false;
+            // docs[i].isOpen = true;
           } else {
             docs[i].isOpen = true;
           }
@@ -325,6 +326,7 @@ var categoryRestaurants = {
           if (hhmm < defaultStart || hhmm > defautEnd) {
             docs[i].openStatus = '(금일 영업종료)';
             docs[i].isOpen = false;
+            // docs[i].isOpen = true;
           } else {
             docs[i].isOpen = true;
           }

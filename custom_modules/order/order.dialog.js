@@ -208,7 +208,7 @@ var dialogs = [
                     ]
                   },
                   { input: {types: [orderTask.restaurantType]}, output: {callChild: '음식점입력'}},
-                  { input: [/전단지/, /^ㅈㄷㅈ$/], output: {call: '음식점구분'}},
+                  { input: [/전단지/, /전단/, /^ㅈㄷㅈ$/], output: {call: '음식점구분'}},
                   { output: {repeat: 1, options: {prefix: '목록에 있는 번호나 음식점을 입력해 주세요!\n\n'}}}
                 ]
               }
@@ -216,7 +216,7 @@ var dialogs = [
           },
 
           { name: '음식점구분',
-            input: [/전단지/, /^ㅈㄷㅈ$/],
+            input: [/전단지/, /전단/, /^ㅈㄷㅈ$/],
             output: '[음식점구분]\n1. 치킨\n2. 중국집\n3. 피자\n4. 족발/보쌈\n5. 패스트푸드\n0. 이전\n!. 처음(주문취소)\n\n목록에서 번호를 입력해주세요~',
             children: [
               { input: orderTypes.menuCategoryCheck,
