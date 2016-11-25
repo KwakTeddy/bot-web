@@ -90,7 +90,7 @@ function searchAddress(task, context, callback) {
   var query = {};
   var 시도명, 시군구명, 읍면동명, 행정동명, 도로명, 리명, 본번, 부번, 상세주소, 도로명상세주소;
 
-  var 지번Re = /(?:(경기도|경기|강원도|강원|충청북도|충북|충청남도|충남|전라북도|전북|전라남도|전남|경상북도|경북|경상남도|경남|제주특별자치도|제주도|제주|서울특별시|서울시|서울|인천광역시|인천시|인천|대전광역시|대전시|대전|대구광역시|대구시|대구|광주광역시|광주시|광주|부산광역시|부산시|부산|울산광역시|울산시|울산|세종특별자치시|세종특별시|세종시|세종)\s*)?(?:([가-힣]+시|[가-힣]+군|[가-힣]+구)\s*)?(?:[가-힣]+구\s*)?(?:(?:([가-힣]+읍|[가-힣]+면|[가-힣]+동|[가-힣]+[\s0-9]+가)|([가-힣]+\d+읍|[가-힣]+\d+면|[가-힣]+\d+동))|(?:(?:[가-힣]+읍\s+|[가-힣]+면\s+)?([가-힣]+[\s0-9]*번?로[\s0-9]*번?[가나다라마바사아자차카타파하]?길|[가-힣]+[\s0-9]*번?[가나다라마바사아자차카타파하]?길|[가-힣]+[\s0-9]*번?로)))\s*([가-힣]+\d*리)?\s*(\d+)(?:\s*-\s*(\d+))?(?:(?:\s*,?\s*|\s+)([^\\(]*))?(?:\s*\(([^,\s]+)(?:\s*,?\s*([^\\)]*))?\))?/i;
+  var 지번Re = /(?:(경기도|경기|강원도|강원|충청북도|충북|충청남도|충남|전라북도|전북|전라남도|전남|경상북도|경북|경상남도|경남|제주특별자치도|제주도|제주|서울특별시|서울시|서울|인천광역시|인천시|인천|대전광역시|대전시|대전|대구광역시|대구시|대구|광주광역시|광주시|광주|부산광역시|부산시|부산|울산광역시|울산시|울산|세종특별자치시|세종특별시|세종시|세종)\s*)?(?:([가-힣]+시|[가-힣]+군|[가-힣]+구)\s*)?(?:[가-힣]+구\s*)?(?:(?:([가-힣]+읍|[가-힣]+면|[가-힣]+동|[가-힣]+[\s0-9]+가)|([가-힣]+\d+읍|[가-힣]+\d+면|[가-힣]+\d+동))|(?:(?:[가-힣]+읍\s+|[가-힣]+면\s+)?([가-힣]+[\s0-9]*번?로[\s0-9]*번?[가나다라마바사아자차카타파하]?길|[가-힣]+[\s0-9]*번?[가나다라마바사아자차카타파하]?길|[가-힣]+[\s0-9]*번?로)))\s*([가-힣]+\d*리)?\s*(\d+)?(?:\s*-\s*(\d+))?(?:(?:\s*,?\s*|\s+)([^\\(]*))?(?:\s*\(([^,\s]+)(?:\s*,?\s*([^\\)]*))?\))?/i;
   var matched = task.inRaw.match(지번Re);
   if(matched != null) {
     if (matched[1] != null) {
@@ -137,22 +137,22 @@ function searchAddress(task, context, callback) {
     if(도로명) {
       도로명 = 도로명.replace(/\s/, '');
       query.도로명 = 도로명;
-      query.건물본번 = 본번;
+      if(본번) query.건물본번 = 본번;
       if(부번) query.건물부번 = 부번;
-      else query.건물부번 = '0';
+      else if(본번) query.건물부번 = '0';
     } else if(읍면동명) {
       query.법정읍면동명 = 읍면동명;
       if(리명) query.법정리명 = 리명;
-      else query.법정리명 = '';
-      query.지번본번 = 본번;
+      // else query.법정리명 = '';
+      if(본번) query.지번본번 = 본번;
       if(부번) query.지번부번 = 부번;
-      else query.지번부번 = '0';
+      else if(본번) query.지번부번 = '0';
     } else if(행정동명) {
       행정동명 = 행정동명.replace(/\s/, '');
       query.행정동명 = 행정동명;
-      query.지번본번 = 본번;
+      if(본번) query.지번본번 = 본번;
       if(부번) query.지번부번 = 부번;
-      else query.지번부번 = '0';
+      else if(본번) query.지번부번 = '0';
     }
 
     if(시도명) query.시도명 = 시도명;
@@ -220,6 +220,7 @@ function searchAddress(task, context, callback) {
       } else {
         // if(docs.length == 0)
         //   logger.debug('searchAddress: ' + task.inRaw + ' / count: ' + docs.length);
+        console.log(docs.length);
 
         var 시군구Re = /(?:(경기|경기도|강원|강원도|충북|충청북도|충남|충청남도|전북|전라북도|전남|전라남도|경북|경상북도|경남|경상남도|제주|제주도|제주특별자치도|서울|서울시|서울특별시|인천|인천시|인천광역시|대전|대전시|대전광역시|대구|대구시|대구광역시|광주|광주시|광주광역시|부산|부산시|부산광역시|울산|울산시|울산광역시|세종|세종시|세종특별시|세종특별자치시)\s*)?(?:([가-힣]+시|[가-힣]+군|[가-힣]+구)\s*)?(?:[가-힣]+구\s*)?/g;
         if(docs.length > 1) {
@@ -264,40 +265,64 @@ function searchAddress(task, context, callback) {
         for (var i = 0; i < docs.length && i < 10; i++) {
           var doc = docs[i];
 
-          if(docs.length > 1) {
-            if(!(시도명 && 시도명 == doc.시도명 && 시군구명 && doc.시군구명)) continue;
+          if(본번) {
+            if(docs.length > 1) {
+              if(!(시도명 && 시도명 == doc.시도명 && 시군구명 && doc.시군구명)) continue;
+            }
+            var 상세주소Re = new RegExp(doc.시군구용건물명 + '\\s+', 'i');
+            if(상세주소 && doc.시군구용건물명 != '') 도로명상세주소 = 상세주소.replace(상세주소Re, '');
+
+            var _doc = {
+              시도명: doc.시도명,
+              시군구명: doc.시군구명,
+              법정읍면동명: doc.법정읍면동명,
+              법정리명: doc.법정리명,
+              행정동명: doc.행정동명,
+              지번본번: doc.지번본번,
+              지번부번: doc.지번부번,
+              도로명: doc.도로명,
+              건물본번: doc.건물본번,
+              건물부번: doc.건물부번,
+              시군구용건물명: doc.시군구용건물명,
+              도로명코드: doc.도로명코드,
+              읍면동일련번호: doc.읍면동일련번호
+            };
+
+            _doc.지번주소 = doc.시도명 + ' ' + doc.시군구명 + ' ' + doc.법정읍면동명 + ' ' + (doc.법정리명 != '' ? doc.법정리명 + ' ': '') +
+              doc.지번본번 + (doc.지번부번 != '0' ? '-' + doc.지번부번 : '') + (상세주소 != undefined ? ' ' + 상세주소 : '');
+
+            _doc.도로명주소 = doc.시도명 + ' ' + doc.시군구명 + ' ' + doc.도로명 + ' ' + doc.건물본번 + (doc.건물부번 != '0' ? '-' + doc.건물부번: '') +
+              (도로명상세주소 != undefined ? ', ' + 도로명상세주소 : '') + ' (' + doc.법정읍면동명 + (doc.시군구용건물명 != '' ? ', ' + doc.시군구용건물명 : '') + ')';
+
+            _doc.상세주소 = 상세주소;
+
+            _doc.in = task.inRaw;
+
+            if(Array.isArray(task.doc)) task.doc.push(_doc);
+            else if(task.doc) task.doc = [task.doc, _doc];
+            else task.doc = utils.clone(_doc);
+
+          } else {
+            if(읍면동명) {
+              var _doc = {
+                시도명: doc.시도명,
+                시군구명: doc.시군구명,
+                법정읍면동명: doc.법정읍면동명,
+                법정리명: doc.법정리명,
+                행정동명: doc.행정동명
+              };
+
+              _doc.지번주소 = doc.시도명 + ' ' + doc.시군구명 + ' ' + doc.법정읍면동명 + ' ' + (doc.법정리명 != '' ? doc.법정리명 + ' ': '');
+
+              _doc.in = task.inRaw;
+
+              if(Array.isArray(task.doc)) task.doc.push(_doc);
+              else if(task.doc) task.doc = [task.doc, _doc];
+              else task.doc = utils.clone(_doc);
+
+              break;
+            }
           }
-
-          var 상세주소Re = new RegExp(doc.시군구용건물명 + '\\s+', 'i');
-          if(상세주소 && doc.시군구용건물명 != '') 도로명상세주소 = 상세주소.replace(상세주소Re, '');
-
-          var _doc = {
-            시도명: doc.시도명,
-            시군구명: doc.시군구명,
-            법정읍면동명: doc.법정읍면동명,
-            법정리명: doc.법정리명,
-            행정동명: doc.행정동명,
-            지번본번: doc.지번본번,
-            지번부번: doc.지번부번,
-            도로명: doc.도로명,
-            건물본번: doc.건물본번,
-            건물부번: doc.건물부번,
-            시군구용건물명: doc.시군구용건물명,
-            도로명코드: doc.도로명코드,
-            읍면동일련번호: doc.읍면동일련번호
-          };
-
-          _doc.지번주소 = doc.시도명 + ' ' + doc.시군구명 + ' ' + doc.법정읍면동명 + ' ' + (doc.법정리명 != '' ? doc.법정리명 + ' ': '') +
-            doc.지번본번 + (doc.지번부번 != '0' ? '-' + doc.지번부번 : '') + (상세주소 != undefined ? ' ' + 상세주소 : '');
-
-          _doc.도로명주소 = doc.시도명 + ' ' + doc.시군구명 + ' ' + doc.도로명 + ' ' + doc.건물본번 + (doc.건물부번 != '0' ? '-' + doc.건물부번: '') +
-            (도로명상세주소 != undefined ? ', ' + 도로명상세주소 : '') + ' (' + doc.법정읍면동명 + (doc.시군구용건물명 != '' ? ', ' + doc.시군구용건물명 : '') + ')';
-
-          _doc.in = task.inRaw;
-
-          if(Array.isArray(task.doc)) task.doc.push(_doc);
-          else if(task.doc) task.doc = [task.doc, _doc];
-          else task.doc = utils.clone(_doc);
 
           // logger.debug('searchAddress: ' +
           //   task.inRaw + ' / ' +
@@ -309,6 +334,8 @@ function searchAddress(task, context, callback) {
           // + doc.상세건물명 + ' ' + doc.도로명코드 + ',' + doc.읍면동일련번호 + ', ' + doc.건물관리번호
         }
       }
+
+      // console.log(task.doc);
       callback(task, context);
 
     })

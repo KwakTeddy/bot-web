@@ -13,6 +13,7 @@ var address = require(path.resolve('modules/bot/action/common/address'));
 var orderData = utils.requireNoCache(path.resolve('custom_modules/order/data'));
 
 var messages = require(path.resolve('modules/messages/server/controllers/messages.server.controller'));
+var botUser= require(path.resolve('modules/bot-users/server/controllers/bot-users.server.controller'))
 
 var commonDialogs = [
   { name: '시작',
@@ -34,16 +35,21 @@ var commonDialogs = [
   },
 
   { input: {if: orderTypes.orderDialogCondition, regexp: /전화/}, output: {call: '전화주문'}},
-  { input: {if: orderTypes.orderDialogCondition, regexp: /~이전/}, output: {up : 1}},
-  { input: {if: orderTypes.orderDialogCondition, regexp: /^0$/}, output: {up : 1}},
-  { input: {if: orderTypes.orderDialogCondition, regexp: /~처음/}, output: {returnCall: '주문취소'}},
-  { input: {if: orderTypes.orderDialogCondition, regexp: /^!$/}, output: {call: '주문취소'}},
-  { input: {if: orderTypes.orderDialogCondition, regexp: /~전페이지/}, output: {repeat: 1, options: {page: 'pre'}}},              // TODO 이전페이지, 다음페이지 구현
-  { input: {if: orderTypes.orderDialogCondition, regexp: /^<$/}, output: {repeat: 1, options: {page: 'pre'}}},              // TODO 이전페이지, 다음페이지 구현
-  { input: {if: orderTypes.orderDialogCondition, regexp: /~다음페이지/}, output: {repeat: 1, options: {page: 'next'}}},
-  { input: {if: orderTypes.orderDialogCondition, regexp: /^>$/}, output: {repeat: 1, options: {page: 'next'}}},
-  { input: {if: orderTypes.orderDialogCondition, regexp: /(?:빼다|삭제)/, types: [orderTasks.cartType]},output: {returnCall: '메뉴삭제1'} },
-  // { input: {if: orderTypes.orderDialogCondition, regexp: /주소.*~변경/g}, output: {returnCall: '주소입력'}  },
+  { input: {if: orderTypes.orderDialogCondition, regexp: /(?:~이전|^0$)/}, output: {up : 1}},
+  { input: {if: orderTypes.orderDialogCondition, regexp: /(?:~전페이지|^<$)/}, output: {repeat: 1, options: {page: 'pre'}}},              // TODO 이전페이지, 다음페이지 구현
+  { input: {if: orderTypes.orderDialogCondition, regexp: /(?:~다음|^>$)/}, output: {repeat: 1, options: {page: 'next'}}},
+  { input: {if: orderTypes.orderDialogCondition, regexp: /(?:빼다|삭제|취소|~변경)/, types: [orderTasks.cartType]},output: {returnCall: '메뉴삭제1'} },
+  // { input: {if: orderTypes.orderDialogCondition, regexp: /추가/g, types: [orderTasks.menuType]}, output: {returnCallChild: '메뉴입력', options: {commonCallChild: 1}}  },
+  { input: {if: orderTypes.orderDialogCondition, regexp: /추가/g, types: [orderTasks.menuType]}, output: [
+    {if: 'dialog.parent && dialog.parent.name == "메뉴입력"', output: {returnCallChild: '메뉴입력', options: {commonCallChild: 1, returnDialog: '주문주소확인'}}  },
+    {output: {returnCallChild: '메뉴입력', options: {commonCallChild: 1}}  }
+    ]
+  },
+  { input: {if: orderTypes.orderDialogCondition, regexp: /(?:(?:(?:음식점|가게|매장).*~변경)|(?:(?:다른\s*곳|다른\s*데|다른\s*대).*~배달))/g}, output: {returnCall: '음식점입력'}  },
+  { input: {if: orderTypes.orderDialogCondition, regexp: /주소.*~변경/g}, output: {returnCall: '주소등록'}},
+  { input: {if: orderTypes.orderDialogCondition, regexp: /~휴대폰.*~변경/g}, output: {returnCall: '휴대폰번호등록'}  },
+  // { input: {if: orderTypes.orderDialogCondition, regexp: /(?:여기|그만).*~배달/}, output: {returnCall: '주문확인'}},
+  { input: {if: orderTypes.orderDialogCondition, regexp: /(?:~처음|^!$|취소)/}, output: {returnCall: '주문취소'}},
   { name: dialogModule.NO_DIALOG_NAME, output: [
       '죄송해요. 아직 안 배운 말이예요..\n배달 주문을 도와드릴까요?\n\n(얌얌이는 주문을 위주로 대화를 학습하었습니다.)',
       '죄송해요. 무슨 말인지 모르겠어요..\n배달 주문을 도와드릴까요?\n\n(얌얌이는 주문에 필요한 대화를 중심으로 학습되었습니다.)'
@@ -64,17 +70,114 @@ var commonDialogs = [
 exports.commonDialogs = commonDialogs;
 
 var dialogs = [
-  { name: '주소변경', input: ['주소 변경', '주소 바꾸다'],
-    output: '주소를 말씀해 주세요.',
+  { name: '주소등록', input: {regexp: /주소.*~변경/g},
+    output: '지번 또는 도로명을 포함한 상세주소를 말씀해주세요.',
     children: [
       { input: {types: [{type: type.addressType, raw: true, context: true}]},
+        output: [
+          { if: 'context.dialog.address.지번본번 == undefined && context.dialog.forceAddress != true',
+            output: '주문을 위해서는 번지수 및 동호수를 포함한 상세한 주소가 필요합니다.\n\n주소를 정확히 입력해 주세요.\n그냥 근처의 음식점을 먼저 검색하고 싶으면 "계속"이라고 말씀해주세요.',
+            children: [
+              {input: '계속', output: {call: '주소변경완료'}},
+              {output: {callChild: '주소등록'}}
+            ]},
+          { if: 'context.dialog.address.지번본번 == undefined && context.dialog.forceAddress == true', output: {repeat: 1, options: {output: '지번 또는 도로명을 포함한 상세주소를 말씀해주세요.\n예시) 강남구 삼성동 16-1 101동 101호\n예시) 강남구 학동로 426 101동 101호\n\n주소를 정확히 입력해 주세요.\n0.이전 !. 처음'}}},
+          { if: 'context.dialog.address.상세주소 == undefined', output: '동호수나 몇층인지 까지 말씀해주세요.\n 있으면 말씀해주시고, 이게 전부이면 "거기까지"라고 얘기해주세요.',
+            children: [
+              {input: '거기까지', output: {call: '주소변경완료'}},
+              { task: { action: function(task, context, callback) {
+                  console.log('주소변경' + task.inRaw);
+                  context.user.address.상세주소 = context.dialog.address.상세주소 = task.inRaw;
+                  callback(task, context);
+                }},
+                output: {call: '주소변경완료'}}
+          ]},
+          {if: 'true', output: {call: '주소변경완료'}}
+        ]
+      },
+      { input: false,
+        name: '주소변경완료',
         task: {action: function(task, context, callback) {
+          task.address = context.dialog.address;
           context.user.addressCompact = context.user.address.지번주소.replace(/^([가-힣]+\s*)/, function(matched, p1) { return ''});
-          address.naverGeocode(task, context, function(task, context) {context.dialog.lat = task.lat; context.dialog.lng = task.lng; callback(task, context);});
+          context.user.updates = ['address'];
+          botUser.updateUserContext(context.user, context, function () {
+            context.user.updates = null;
+            address.naverGeocode(task, context, function(task, context) {
+              context.dialog.lat = task.lat; context.dialog.lng = task.lng;
+
+              if(context.botUser.returnCall &&
+                context.botUser.currentDialog && context.botUser.currentDialog.top && context.botUser.currentDialog.top.name == '배달주문') {
+
+                if(context.dialog.orderRestaurant) {
+                  if(!orderTasks.isRestaurantIndistance(context, context.dialog.orderRestaurant)) {
+                    // context.dialog.orderble = null;
+                    context.dialog.orderRestaurant = null;
+                    context.dialog.orderMenu = null;
+                    context.dialog.orderOption = null;
+                    context.dialog.restaurant = null;
+                    context.dialog.menu = null;
+                    context.dialog.menus = null;
+
+                    context.dialog.typeInits['restaurant'] = null;
+                    context.dialog.typeInits['menu'] = null;
+                    context.dialog.음식점입력최초 == true;
+
+                    context.botUser.returnCall.returnPrefix = '주소가 변경되어 음식점을 다시 검색해야 해요.\n';
+                    context.botUser.returnCall.returnDialog = dialogModule.findDialog(null, context, '음식점입력');
+                    context.botUser.returnCall.returnMethod = 'callChild';
+                    context.botUser.returnCall.returnMethod = null;
+                  }
+                }
+              }
+
+              callback(task, context);
+            });
+          });
         }},
-        output: '주소가 변경되었습니다.' },
-      { output: {repeat: 1, options: {output: '지번 또는 도로명을 포함한 상세주소를 말씀해주세요.\n예시) 강남구 삼성동 16-1 101동 101호\n예시) 강남구 학동로 426 101동 101호\n\n주소를 정확히 입력해 주세요.\n0.이전단계 !. 처음으로'}}}
+        output: {output: '주소가 등록되었습니다.', return: 1/*, options: {prefix: '주소가 바뀌어서 주문을 다시 할께요.\n'}*/}},
+      { output: {repeat: 1, options: {output: '번지수 및 동호수를 포함한 상세주소를 말씀해주세요.\n예시) 강남구 삼성동 16-1 101동 101호\n예시) 강남구 학동로 426 101동 101호\n\n주소를 정확히 입력해 주세요.\n0.이전 !. 처음'}}}
     ]
+  },
+
+  // { if: function(dialog, context, callback) {
+  //   callback(dialog.inRaw.trim() == context.dialog.smsAuth);
+  //   },
+  //   output: {call: '음식점입력', options: {prefix: '처음에 입력한 동까지의 주소와 실제 배달을 위한 상세주소가 달라서 배달이 가능한 거리가 아니게 됐어요.\n 다시 주문을 진행해 주세요.\n'}}
+  // },
+
+  { name: '휴대폰번호등록', input: {regexp: /~휴대폰.*~변경/g},
+    output: '휴대폰번호를 말씀해주세요.',
+      children: [
+        { input: {types: [{type : type.mobileType, context: true}]},
+          task: {action: messages.sendSMSAuth},
+          output: [
+            {if: 'false' /*'task.result != "2"'*/, output: {repeat: 1, options: {output: '문자 발송이 안되는데, 휴대폰 번호를 다시 말씀해주세요.'}}},
+            {output: {call: 'SMS인증'}}   // TODO output에 1개 목록 있을 때 task 두번 호출되는 현상
+          ]
+        },
+        { name: 'SMS인증',
+          input: false,
+          output: '문자메세지(SMS)로 발송된 인증번호를 입력해주세요.',
+          children: [
+            { name: 'SMS재인증',
+              input: /\d{4}/,
+              output: [
+                { if: function(dialog, context, callback) {
+                    callback(dialog.inRaw.trim() == context.dialog.smsAuth);
+                  },
+                  task: {action: function(task, context, callback) {
+                    context.dialog.smsAuth == null;
+                    callback(task, context);
+                  }},
+                  output: {output: '휴대폰 번호가 등록 되었습니다.', return: 1}},
+                {output: {call: 'SMS인증', options: {prefix: '인증번호가 틀렸습니다.\n', postfix: '\n0. 이전\n!. 처음'}}}
+              ]},
+            {output: {repeat: 1, options: {prefix: '인증번호가 틀렸습니다.\n', postfix: '\n0. 이전\n!. 처음'}}}
+          ]
+        },
+        { output: {repeat: 1, options: {prefix: '휴대폰 번호 형식이 틀렸습니다.\n', postfix: '\n0. 이전\n!. 처음'}} }
+      ]
   },
 
   {
@@ -84,73 +187,56 @@ var dialogs = [
       {types: [{name: 'orderble', typeCheck: orderTask.orderableTypeCheck}]},
       {types: [{name: 'orderble', typeCheck: orderTask.restaurantTypeCheck, address: false, mongo: {model: 'restaurant', queryFields: ['name'], minMatch: 1}}]}
     ],
-    task: {action: function(task, context, callback) {context.dialog.음식점입력최초 = true; context.dialog.메뉴입력최초 = true;callback(task, context);}},
+    task: {action: function(task, context, callback) {
+      context.dialog.음식점입력최초 = true; context.dialog.메뉴입력최초 = true;callback(task, context);
+    }},
     output: {call: '주소입력'},
     children: [
+      { name: '주문취소', input: false, output: '주문을 취소하고 처음으로 가시겠습니까?',
+        children: [
+          { input: {regexp: /~네/g}, output: {callGlobal: '시작'} },
+          { input: {regexp: /~아니요/g}, output: {output: '주문을 계속 하겠습니다', return: 1} },
+          { output: {repeat: 1, output: '주문을 취소 하시려는지 아닌지 모르겠습니다.\n주문을 취소하시려면 "네",\n취소하지 않으시려면 "아니요"" 라고 말씀해주세요.'}}
+        ]
+      },
+
       { name: '주소입력', input: false,
         output: [
-          { if: 'context.user.address && !dialog.returnDialog',
+          { if: 'context.user.address',
             task: {action: function(task, context, callback) {
               task.address = context.dialog.address = context.user.address;
               address.naverGeocode(task, context, function(task, context) {context.dialog.lat = task.lat; context.dialog.lng = task.lng; callback(task, context);});
             }},
             output: {call: '휴대폰번호입력'}},
-          { if: '!context.user.address || dialog.returnDialog', output: '주소를 말씀해 주세요.',
-            children: [
-              // { input: {regexp: /주소/g}, output: {call: '휴대폰번호입력'} },
-              { input: {types: [{type: type.addressType, raw: true, context: true}]},
-                task: {action: function(task, context, callback) {
-                  task.address = context.dialog.address = context.user.address;
-                  address.naverGeocode(task, context, function(task, context) {context.dialog.lat = task.lat; context.dialog.lng = task.lng; callback(task, context);});
-              }},
-                output: {call: '휴대폰번호입력', return: 1} },
-              { name: '주문취소', input: /^0$/, output: '주문을 취소하고 처음으로 가시겠습니까?',
-                children: [
-                  { input: {regexp: /~네/g}, output: {callGlobal: '시작'} },
-                  { input: {regexp: /~아니요/g}, output: {call: '주소입력', return: 1} },
-                  { output: {repeat: 1, output: '주문을 취소 하시려는지 아닌지 모르겠습니다.\n주문을 취소하시려면 "네",\n취소하지 않으시려면 "아니요"" 라고 말씀해주세요.'}}
-                ]
-              },
-              { output: {repeat: 1, options: {output: '지번 또는 도로명을 포함한 상세주소를 말씀해주세요.\n예시) 강남구 삼성동 16-1 101동 101호\n예시) 강남구 학동로 426 101동 101호\n\n주소를 정확히 입력해 주세요.\n0.이전단계 !. 처음으로'}}}
-            ]
-          }
+          { output: {returnCall: '주소등록', options: {returnDialog: '휴대폰번호입력'}}}
         ]
       },
 
       { name: '휴대폰번호입력', input: false,
         output: [
-          { if: 'context.user.mobile && !dialog.returnDialog', output: {callChild: '음식점입력'}},
-          { if: '!context.user.mobile || dialog.returnDialog', output: '휴대폰번호를 말씀해주세요.',
-            children: [
-              { input: {types: [{type : type.mobileType, context: true}]},
-                task: {action: messages.sendSMSAuth},
-                output: {call: 'SMS인증'}
-              },
-              {
-                name: 'SMS인증',
-                input: false,
-                output: '문자메세지(SMS)로 발송된 인증번호를 입력해주세요.',
-                children: [
-                  { name: 'SMS재인증',
-                    input: /\d{4}/,
-                    output: [
-                      { if: function(dialog, context, callback) {
-                          callback(dialog.inRaw.trim() == context.dialog.smsAuth);
-                        },
-                        task: {action: function(task, context, callback) {
-                          context.dialog.smsAuth == null;
-                          callback(task, context);
-                        }},
-                        // output: {call: '음식점선택', return: 1}},
-                        output: {callChild: '음식점입력', return: 1}},
-                      {output: {call: 'SMS인증', options: {prefix: '인증번호가 틀렸습니다.\n', postfix: '\n0. 이전\n!. 처음'}}}
-                    ]},
-                  {output: {repeat: 1, options: {prefix: '인증번호가 틀렸습니다.\n', postfix: '\n0. 이전\n!. 처음'}}}
-                ]
-              },
-              { output: {repeat: 1, options: {prefix: '휴대폰 번호 형식이 틀렸습니다.\n', postfix: '\n0. 이전\n!. 처음'}} }
-            ]
-          }
+          { if: 'context.user.mobile', output: {call: '영업시간체크'}},
+          { output: {returnCall: '휴대폰번호등록', options: {returnDialog: '영업시간체크'}}}
+        ]
+      },
+
+      { name: '영업시간체크', input: false,
+        output: [
+          {if: function(dialog, context, callback) {
+              if(context.bot.testMode) {
+                callback(false);
+              } else {
+                var hhmm = new Date().toString().split(' ')[4].substring(0, 5);
+                hhmm = '19:00';
+
+                if(hhmm >= '02:00' && hhmm <= '11:30') {
+                  callback(true);
+                } else {
+                  callback(false);
+                }
+              }
+            },
+            output: '배달봇 얌얌은 오전 11:30~새벽 2:00까지 배달하고 있습니다. 주문 가능한 시간에 사용해 주세요~'},
+          {if: 'true', output: {callChild: '음식점입력'}}
         ]
       },
 
@@ -207,7 +293,7 @@ var dialogs = [
                       { if: 'true', output: {call: '메뉴선택'}}
                     ]
                   },
-                  { input: {types: [orderTask.restaurantType]}, output: {callChild: '음식점입력'}},
+                  { input: {types: [{type: orderTask.restaurantType, failSave: false}]}, output: {callChild: '음식점입력'}},
                   { input: [/전단지/, /전단/, /^ㅈㄷㅈ$/], output: {call: '음식점구분'}},
                   { output: {repeat: 1, options: {prefix: '목록에 있는 번호나 음식점을 입력해 주세요!\n\n'}}}
                 ]
@@ -236,7 +322,7 @@ var dialogs = [
                           {if: 'true', output: {call: '메뉴선택'}}
                         ]
                       },
-                      { input: {types: [orderTask.restaurantType]}, output: {callChild: '음식점입력'}},
+                      { input: {types: [{type: orderTask.restaurantType, failSave: false}]}, output: {callChild: '음식점입력'}},
                       {output: {repeat: 1, options: {prefix: '목록에 있는 번호나 음식점을 입력해 주세요!\n\n'}}}
                     ]
                   },
@@ -247,13 +333,15 @@ var dialogs = [
                     ]}
                 ]
               },
-              { input: {types: [orderTask.restaurantType]}, output: {callChild: '음식점입력'}},
+              { input: {types: [{type: orderTask.restaurantType, failSave: false}]}, output: {callChild: '음식점입력'}},
               {output: {repeat: 1, options: {prefix: '목록에 있는 번호나 음식점을 입력해 주세요!\n\n'}}}
             ]
           },
 
           { input: {if: 'context.dialog.orderble == undefined && context.dialog.음식점입력최초 == true'},
-            task: {action: function(task, context, callback) {context.dialog.음식점입력최초 = false; callback(task, context);}},
+            task: {action: function(task, context, callback) {
+            context.dialog.음식점입력최초 = false; callback(task, context);
+          }},
             output: {call: '음식점입력'}
           },
 
@@ -274,9 +362,9 @@ var dialogs = [
         children: [
           { input: {if: 'context.dialog.menus && context.dialog.menus.length > 0', regexp: /~네/},
             output: [
-              { if: 'context.dialog.totalPrice < context.dialog.orderRestaurant.minOrder',
+              { if: 'context.dialog.orderRestaurant && context.dialog.totalPrice < context.dialog.orderRestaurant.minOrder',
                 output: {call: '메뉴입력', options: {output: '최소 주문 금액은 +orderRestaurant.minOrder+원이고, 현재까지 주문금액은 +totalPrice+원 입니다.\n\n추가로 주문할 메뉴를 말씀해 주세요.'}}},
-              { if: 'true', output: {call: '주문확인', return: 1}}
+              { if: 'true', output: {call: '주문주소확인', return: 1}}
             ]
           },
           { input: {if: 'context.dialog.menus && context.dialog.menus.length > 0', regexp: /~아니요/}, output: {repeat: 1}},
@@ -292,7 +380,7 @@ var dialogs = [
                 output: {call: '메뉴추가확인'}},
               { input: [/메뉴판/, /^ㅁㄴㅍ$/, /^ㅁㄴ$/],
                 output: {call: '메뉴판'}},
-              { input: {types: [orderTasks.menuType]}, output: {callChild: '메뉴입력'}},
+              { input: {types: [{type: orderTasks.menuType, failSave: false}]}, output: {callChild: '메뉴입력'}},
               { output: {repeat: 1, options: {prefix: '목록에 있는 번호나 메뉴를 입력해 주세요!\n\n', postfix: '\n전화로 주문하시려면 "전화"라고 입력해주세요.'}}}
             ]
           },
@@ -300,7 +388,7 @@ var dialogs = [
           { name: '메뉴추가확인',
             input: false,
             task: {action: function(task, context, callback) {
-              if(context.dialog.orderMenu.options && context.dialog.orderMenu.options.length > 0 && context.dialog.orderMenu.options[0].optionName != "")
+              if(context.dialog.orderMenu && context.dialog.orderMenu.options && context.dialog.orderMenu.options.length > 0 && context.dialog.orderMenu.options[0].optionName != "")
                 context.dialog['option'] = context.dialog.orderMenu.options[0].optionValues;
 
                 context.dialog.orderOption = null;
@@ -317,7 +405,7 @@ var dialogs = [
                   });
               }},
             output: [
-              { if: 'context.dialog.orderMenu.options && context.dialog.orderMenu.options.length > 0 && context.dialog.orderMenu.options[0].optionName != ""',
+              { if: 'context.dialog.orderMenu && context.dialog.orderMenu.options && context.dialog.orderMenu.options.length > 0 && context.dialog.orderMenu.options[0].optionName != ""',
                 output: {call: '옵션추가확인'}
               },
 
@@ -364,11 +452,11 @@ var dialogs = [
                 children: [
                   { input: {types: [{name: 'orderMenu', listName: 'menu', typeCheck: 'listTypeCheck'}]},
                     output: {call: '메뉴추가확인'}},
-                  { input: {types: [orderTasks.menuType]}, output: {callChild: '메뉴입력'}},
+                  { input: {types: [{type: orderTasks.menuType, failSave: false}]}, output: {callChild: '메뉴입력'}},
                   {output: {repeat: 1, options: {prefix: '목록에 있는 번호나 메뉴를 입력해 주세요!\n\n', postfix: '\n전화로 주문하시려면 "전화"라고 입력해주세요.'}}}
                 ]
               },
-              { input: {types: [orderTasks.menuType]}, output: {callChild: '메뉴입력'}},
+              { input: {types: [{type: orderTasks.menuType, failSave: false}]}, output: {callChild: '메뉴입력'}},
               {output: {repeat: 1, options: {prefix: '목록에 있는 번호를 입력해 주세요!\n\n', postfix: '\n전화로 주문하시려면 "전화"라고 입력해주세요.'}}}
             ]
           },
@@ -415,27 +503,59 @@ var dialogs = [
             task: {action: function(task, context, callback) {
               for (var i = 0; i < context.dialog.menus.length; i++) {
                 var menu = context.dialog.menus[i];
+                console.log(context.dialog.delMenu.name, menu.name);
 
                 if(context.dialog.delMenu && Array.isArray(context.dialog.delMenu)) {
                   for (var j = 0; j < context.dialog.delMenu.length; j++) {
                     var _delMenu = context.dialog.delMenu[j];
                     if(_delMenu.name == menu.name)
-                      context.dialog.menus.splice(i, 1);
+                      context.dialog.menu.splice(i, 1);
                   }
-                } else {
-                  if(context.dialog.delMenu.name == menu.name)
+                } else if(context.dialog.delMenu) {
+                  if(context.dialog.delMenu.name == menu.name) {
+                    console.log('DEL ' + context.dialog.delMenu.name, menu.name);
                     context.dialog.menus.splice(i, 1);
+                  }
+                }
+
+                context.dialog.totalPrice = 0;
+                for(var j in context.dialog.menus) {
+                  context.dialog.totalPrice += context.dialog.menus[j].price * context.dialog.menus[j].count;
                 }
               }
-
               callback(task, context);
             }},
-            output: {return: 1, options: {prefix: '+delMenu.name+를 주문 목록에서 삭제 하였습니다.\n\n'}}
+            output: [
+              { if: 'context.dialog.menus && context.dialog.menus.length > 0',
+                task: {action: function(task, context, callback) {
+                  callback(task, context);
+                }},
+                output: {return: 1, options: {prefix: '+delMenu.name+를 주문 목록에서 삭제 하였습니다.\n\n'}}},
+              { if: '!context.dialog.menus || context.dialog.menus.length == 0',
+                task: {action: function(task, context, callback) {
+                  context.botUser.returnCall = null;
+
+                  callback(task, context);
+                }},
+                output: {call: '메뉴입력', options: {prefix: '+delMenu.name+를 주문 목록에서 삭제 하였습니다.\n\n'}}}
+            ]
           },
           { input: /~아니요/,
             output: {return: 1, options: {prefix: '+delMenu.name+ 삭제를 취소했습니다.\n\n'}}
           },
           { output: {repeat: 1, options: {output: '네 또는 아니요로 말씀해주세요.'}}}
+        ]
+      },
+
+      { name: '주문주소확인', input: false,
+        output: [
+          { if: 'context.dialog.address.지번본번 == undefined',
+            task: {action: function(task, context, callback) {
+              context.dialog.forceAddress = true;     // 상세주소까지 입력하도록 강제
+              callback(task, context);
+            }},
+            output: {returnCall: '주소등록', options: {returnDialog: '주문확인', output: '배달을 위한 상세주소 입력이 필요합니다.\n예시) 강남구 삼성동 16-1 ㅇㅇ아파트 101동 101호\n예시) 강남구 학동로 426 ㅇㅇ아파트 101동 101호\n\n번지수 및 동호수를 포함한 주소를 말씀해주세요.'}}},
+          { output: {call: '주문확인'}}
         ]
       },
 
@@ -449,15 +569,10 @@ var dialogs = [
         output: '주문하실 내용을 확인해주세요.\n\n주소: +addressCompact+\n전화: +mobile+\n매장명: +orderRestaurant.name+\n메뉴: #menus#+name+ +price+원 +count+개\n#매장전화: +orderRestaurant.phone+\n\n' +
         '+confirmTermText+'+'이대로 주문할까요?',
         children: [
-          { input: '0', output: {call: '주문취소'}  },
           { input: {regexp: /~네/g}, output: {call: '배달주문요청'}  },
           { input: {regexp: /~아니요/g}, output: {call: '주문취소'}  },
-          { input: {regexp: /주소.*~변경/g}, output: {returnCall: '주소입력'}  },
-          { input: {regexp: /(?:전화|휴대폰).*~변경/g}, output: {returnCall: '휴대폰번호입력'}  },
-          { input: {regexp: /음식점.*~변경/g}, output: {returnCall: '음식점선택'}  },
-          { input: {regexp: /메뉴.*~변경/g}, output: {returnCall: '메뉴선택'}  },
-          { input: {regexp: /메뉴.*~추가/g}, output: {returnCall: '메뉴입력'}  },
-          { input: {regexp: /(?:빼다|삭제)/, types: [orderTasks.cartType]},output: {returnCall: '메뉴삭제'} }
+          // { input: {regexp: /(?:~변경|빼다|삭제|취소)/, types: [orderTasks.cartType]},output: {returnCall: '메뉴삭제1'} },
+          { output: {repeat: 1, options: {postfix: '\n취소하시려면 "취소"라고 얘기해주세요.'}}}
         ]
       },
 
@@ -475,42 +590,8 @@ var dialogs = [
       { input: {regexp: /~네/g}, output: {call: '배달주문'}  },
       { input: {regexp: /~아니요/g}, output: '다른 필요하신게 있으시면 말씀해주세요.' }
     ]
-  },
+  }
 
-  { name: '휴대폰변경', input: ['연락처 변경', '휴대폰 변경', '휴대폰 바꾸다'],
-    output: '휴대폰 번호를 말씀해 주세요.',
-    children: [
-      { input: {types: [{type : type.mobileType, context: true}]},
-        task: {action: messages.sendSMSAuth},
-        output: {call: 'SMS인증2'}
-      },
-      {
-        name: 'SMS인증2',
-        input: false,
-        output: '문자메세지(SMS)로 발송된 인증번호를 입력해주세요.',
-        children: [
-          { input: /\d{4}/,
-            output: [
-              {
-                if: function (dialog, context, callback) {
-                  callback(dialog.inRaw.trim() == context.dialog.smsAuth);
-                },
-                task: {
-                  action: function (task, context, callback) {
-                    context.dialog.smsAuth == null;
-                    callback(task, context);
-                  }
-                },
-                output: '휴대폰 번호가 변경 되었습니다.'
-              },
-              {if: 'true', output: {call: 'SMS인증2', options: {prefix: '인증번호가 틀렸습니다.\n'}}}
-            ]},
-          {output: {repeat: 1, options: {prefix: '인증번호가 틀렸습니다.\n'}}}
-        ]
-      },
-      { output: {repeat: 1, options: {prefix: '휴대폰 번호 형식이 틀렸습니다.\n'}} }
-    ]
-  },
 
 ];
 

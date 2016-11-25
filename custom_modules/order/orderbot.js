@@ -1101,8 +1101,15 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
     }
 
     if(!address) {
-      logger.debug('type.js:restaurantTypeCheck: MATCHED ' + format.name + ' "' + text + ' isArray: ' + Array.isArray(inDoc[format.name]) /* + '" inDoc: ' + JSON.stringify(inDoc)*/);
-      callback(text, inDoc, true);
+      if(matchedDoc && matchedDoc.length > 0) {
+        inDoc[format.name] = [];
+        inDoc[format.name] = inDoc[format.name].concat(matchedDoc);
+        // console.log(matchedDoc);
+        logger.debug('type.js:restaurantTypeCheck: MATCHED ' + format.name + ' "' + text + '" isArray: ' + Array.isArray(inDoc[format.name]) /* + '" inDoc: ' + JSON.stringify(inDoc)*/);
+        callback(text, inDoc, true);
+      } else {
+        callback(text, inDoc, false);
+      }
     } else if (matchedDoc.length > 0) {
 
       inDoc[format.name] = [];
@@ -1171,24 +1178,28 @@ function restaurantTypeCheck(text, format, inDoc, context, callback) {
           }
         }
 
-        if(doc.businessHours && doc.businessHours.length > 0) {
-          if((doc.businessHours[0].end > doc.businessHours[0].start && (hhmm < doc.businessHours[0].start || hhmm > doc.businessHours[0].end)) ||
-            (doc.businessHours[0].end < doc.businessHours[0].start && (hhmm < doc.businessHours[0].start && hhmm > doc.businessHours[0].end))) {
-            inDoc[format.name][i].openStatus = '(금일 영업종료)';
-            inDoc[format.name][i].isOpen = false;
-            // inDoc[format.name][i].isOpen = true;
-          } else {
-            inDoc[format.name][i].isOpen = true;
-          }
+        if(context.bot.testMode) {
+          inDoc[format.name][i].isOpen = true;
         } else {
-          if (hhmm < defaultStart || hhmm > defautEnd) {
-            inDoc[format.name][i].openStatus = '(금일 영업종료)';
-            inDoc[format.name][i].isOpen = false;
-            // inDoc[format.name][i].isOpen = true;
+          if(doc.businessHours && doc.businessHours.length > 0) {
+            if((doc.businessHours[0].end > doc.businessHours[0].start && (hhmm < doc.businessHours[0].start || hhmm > doc.businessHours[0].end)) ||
+              (doc.businessHours[0].end < doc.businessHours[0].start && (hhmm < doc.businessHours[0].start && hhmm > doc.businessHours[0].end))) {
+              inDoc[format.name][i].openStatus = '(배달 준비중)';
+              inDoc[format.name][i].isOpen = false;
+            } else {
+              inDoc[format.name][i].isOpen = true;
+            }
           } else {
-            inDoc[format.name][i].isOpen = true;
+            if (hhmm < defaultStart || hhmm > defautEnd) {
+              inDoc[format.name][i].openStatus = '(배달 준비중)';
+              inDoc[format.name][i].isOpen = false;
+            } else {
+              inDoc[format.name][i].isOpen = true;
+            }
           }
         }
+
+
 
         if(!inDoc[format.name][i].minOrder && inDoc[format.name][i].minOrder == 0) inDoc[format.name][i].minOrder = 10000;
       }
