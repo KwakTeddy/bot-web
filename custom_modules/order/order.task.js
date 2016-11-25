@@ -279,7 +279,7 @@ var categoryRestaurants = {
 
     model.find(query).limit(type.MAX_LIST).lean().exec(function(err, docs) {
       console.log(err);
-      console.log(docs);
+      // console.log(docs);
       var hhmm = new Date().toString().split(' ')[4].substring(0, 5);
       // hhmm = '03:00';
       var defaultStart = '12:00', defautEnd = '24:00';
@@ -360,6 +360,8 @@ var categoryRestaurants = {
         task.restaurant = docs;
         context.dialog.restaurant = docs;
       }
+
+      // console.log(docs);
 
       callback(task, context);
     });

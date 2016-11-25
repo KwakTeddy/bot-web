@@ -70,6 +70,8 @@ var commonDialogs = [
 exports.commonDialogs = commonDialogs;
 
 var dialogs = [
+  { name: '주소확인', input: /주소.*(?:확인|무엇|뭐|알다)/, output: '현재 주소는 +address.지번주소+ 입니다.'},
+
   { name: '주소등록', input: {regexp: /주소.*~변경/g},
     output: '지번 또는 도로명을 포함한 상세주소를 말씀해주세요.',
     children: [
@@ -88,6 +90,8 @@ var dialogs = [
               { task: { action: function(task, context, callback) {
                   console.log('주소변경' + task.inRaw);
                   context.user.address.상세주소 = context.dialog.address.상세주소 = task.inRaw;
+                  context.user.address.지번주소  = context.dialog.address.지번주소 = context.user.address.지번주소 + ' ' + task.inRaw;
+                  context.user.address.도로명주소  = context.dialog.address.도로명주소 = context.user.address.도로명주소 + ' ' + task.inRaw;
                   callback(task, context);
                 }},
                 output: {call: '주소변경완료'}}
@@ -146,6 +150,8 @@ var dialogs = [
   //   output: {call: '음식점입력', options: {prefix: '처음에 입력한 동까지의 주소와 실제 배달을 위한 상세주소가 달라서 배달이 가능한 거리가 아니게 됐어요.\n 다시 주문을 진행해 주세요.\n'}}
   // },
 
+  { name: '휴대폰확인', input: /휴대폰.*(?:확인|무엇|뭐|알다)/, output: '현재 휴대폰번호는 +mobile+ 입니다.'},
+
   { name: '휴대폰번호등록', input: {regexp: /~휴대폰.*~변경/g},
     output: '휴대폰번호를 말씀해주세요.',
       children: [
@@ -194,7 +200,12 @@ var dialogs = [
     children: [
       { name: '주문취소', input: false, output: '주문을 취소하고 처음으로 가시겠습니까?',
         children: [
-          { input: {regexp: /~네/g}, output: {callGlobal: '시작'} },
+          { input: {regexp: /~네/g}, 
+            task: {action: function(task, context, callback) {
+              context.botUser.returnCall = null;
+              callback(task, context);}
+            },
+            output: {callGlobal: '시작'} },
           { input: {regexp: /~아니요/g}, output: {output: '주문을 계속 하겠습니다', return: 1} },
           { output: {repeat: 1, output: '주문을 취소 하시려는지 아닌지 모르겠습니다.\n주문을 취소하시려면 "네",\n취소하지 않으시려면 "아니요"" 라고 말씀해주세요.'}}
         ]
@@ -570,7 +581,7 @@ var dialogs = [
         '+confirmTermText+'+'이대로 주문할까요?',
         children: [
           { input: {regexp: /~네/g}, output: {call: '배달주문요청'}  },
-          { input: {regexp: /~아니요/g}, output: {call: '주문취소'}  },
+          { input: {regexp: /~아니요/g}, output: {returnCall: '주문취소'}  },
           // { input: {regexp: /(?:~변경|빼다|삭제|취소)/, types: [orderTasks.cartType]},output: {returnCall: '메뉴삭제1'} },
           { output: {repeat: 1, options: {postfix: '\n취소하시려면 "취소"라고 얘기해주세요.'}}}
         ]
