@@ -26,6 +26,25 @@ var cscenter = require('./cscenter');
 <예금
 >예금 안내해 드리겠습니다. url: https://spot.wooribank.com/pot/Dream?withyou=PODEP0001
 
+<펀드
+>펀드 안내해 드리겠습니다. url: https://spot.wooribank.com/pot/Dream?withyou=fn
+
+<외환
+>외환 안내해 드리겠습니다. url: https://spot.wooribank.com/pot/Dream?withyou=fx
+
+<보험
+>보험 안내해 드리겠습니다. url: https://spot.wooribank.com/pot/Dream?withyou=is
+
+<신탁
+>신탁 안내해 드리겠습니다. url: https://spot.wooribank.com/pot/Dream?withyou=POTRT0001
+
+<ISA
+>ISA 안내해 드리겠습니다. url: https://spot.wooribank.com/pot/Dream?withyou=IMISA0044
+
+<자주 하다 질문
+<FAQ
+>FAQ 안내해 드리겠습니다. url: https://spot.wooribank.com/pot/Dream?withyou=CQCCS0002
+
 <콜센터 전화번호
 >어떤 은행 전화번호 찾으시나요?
     <{types: [{name: 'phone', typeCheck: 'financialCompanyCheck'}]}
