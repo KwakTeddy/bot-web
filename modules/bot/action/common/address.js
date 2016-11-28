@@ -1188,3 +1188,37 @@ function getDistanceFromGeocode(lat1,lng1,lat2,lng2) {
 }
 
 exports.getDistanceFromGeocode = getDistanceFromGeocode;
+
+
+function naverGeoSearch(task, context, callback) {
+  // var query = {query: task.address.법정읍면동명 + ' ' + task.address.지번본번 + ' ' + task.address.지번부번};
+  console.log('naverGeoSearch');
+
+  var query = {query: task.query};
+  var request = require('request');
+
+  console.log('naverGeoSearch: query=' + task.query);
+
+  request({
+    url: 'https://openapi.naver.com/v1/search/local.json?&display=10&start=1&sort=random',
+    method: 'GET',
+    qs: query,
+    headers: {
+      'Host': 'openapi.naver.com',
+      'Accept': '*/*',
+      'Content-Type': 'application/json',
+      'X-Naver-Client-Id': context.bot.naver.clientId,
+      'X-Naver-Client-Secret': context.bot.naver.clientSecret
+    }
+  }, function(error, response, body) {
+    if (!error && response.statusCode == 200) {
+      // console.log(body);
+      var doc = JSON.parse(body);
+      task.doc = doc.items;
+      console.log('naverGeoSearch: doc=' + body);
+    }
+    callback(task, context);
+  });
+}
+
+exports.naverGeoSearch = naverGeoSearch;

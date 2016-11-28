@@ -133,6 +133,10 @@ angular.module('core').controller('HomeController', ['$scope', '$document', 'Aut
     $scope.$on('$destroy', function () {
       Socket.removeListener('send_msg');
     });
+
+    vm.bot = 'demo';
+    vm.userId = 'com2best';
+    vm.connect();
   }
 ]);
 

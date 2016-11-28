@@ -722,7 +722,6 @@ function executeDialog(dialog, context, print, callback, options) {
 
         var userOut = type.processOutput(dialog.task, context, _output);
         print(userOut, dialog.task);
-        console.log('10: ' + dialog.output.options);
 
         userDilaog.addDialog(dialog.inRaw, userOut, context.dialog.isFail, context, function() {
           cb(null, _output);
