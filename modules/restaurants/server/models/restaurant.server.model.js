@@ -21,6 +21,8 @@ var RestaurantSchema = new Schema({
   address: Object,
   address1: String,
   address2: String,
+  lng: Number,
+  lat: Number,
   phone: String,
   homepage: String,
   photo: String,
@@ -30,13 +32,13 @@ var RestaurantSchema = new Schema({
   isOpen: Boolean,
   minOrder: Number,
   payment: [String],
-  businessHours: {
-    day: String,
-    hours: {
-      from: Date,
-      to: Date
+  businessHours: [
+    {
+      day: String,
+      start: String,
+      end: String
     }
-  },
+  ],
 
   updated: {
     type: Date,
@@ -53,6 +55,11 @@ var RestaurantSchema = new Schema({
   franchise: {
     type: Schema.ObjectId,
     ref: 'Franchise'
+  },
+  deliverable: Boolean,
+  isMenuExist: {
+    type: Boolean,
+    default: false
   }
 });
 

@@ -926,17 +926,19 @@ function updateFranchiseRestaurant(task, context, successCallback, errorCallback
 
   var modelRestaurant = mongoose.model('Restaurant');
 
-  modelFranchise.find({name: /교촌/}, function(err, docs) {
+  modelFranchise.find({}, function(err, docs) {
     async.eachSeries(docs, function (doc, callback) {
-        modelRestaurant.update({name: new RegExp(doc._doc.name, 'i')}, {franchise: doc._id}, {upsert: true, multi: true}, function(_err, numberAffected) {
-          logger.debug(doc._doc.name + ': ' + numberAffected.n + ', ' + numberAffected.nModified + ', ' + doc._id);
-          callback(null);
-        });
-
-        // modelRestaurant.find({name: new RegExp(doc._doc.name, 'i')}, function(_err, _docs) {
-        //   logger.debug(doc._doc.name + ': ' + _docs.length + ', ' + doc._id);
-        //   callback(null);
-        // })
+        if(doc._doc.name.search('부어치킨') != -1 || doc._doc.name.search('피자나라치킨공주') != -1 || doc._doc.name.search('훌랄라참숮바베큐') != -1) {
+          modelRestaurant.update({name: new RegExp(doc._doc.name, 'i')}, {franchise: doc._id, deliverable: false}, {upsert: true, multi: true}, function (_err, numberAffected) {
+            logger.debug(doc._doc.name + ': ' + numberAffected.n + ', ' + numberAffected.nModified + ', ' + doc._id);
+            callback(null);
+          });
+        } else {
+          modelRestaurant.update({name: new RegExp(doc._doc.name, 'i')}, {franchise: doc._id, deliverable: true}, {upsert: true, multi: true}, function(_err, numberAffected) {
+            logger.debug(doc._doc.name + ': ' + numberAffected.n + ', ' + numberAffected.nModified + ', ' + doc._id);
+            callback(null);
+          });
+        }
       },
       function(err) {
         successCallback(task, context);
@@ -970,3 +972,312 @@ function updateFranchiseRestaurantName(task, context, successCallback, errorCall
 exports.updateFranchiseRestaurantName = updateFranchiseRestaurantName;
 
 bot.setAction('updateFranchiseRestaurantName', updateFranchiseRestaurantName);
+
+
+function updateMenuExist(task, context, callback) {
+  var modelRestaurant = mongoose.model('Restaurant');
+  var modelMenu = mongoose.model('Menu');
+
+  modelRestaurant.find({"franchise" : mongoose.Types.ObjectId("582d4975477f9a6f66cf953e")}, function(err, docs) {
+    async.eachSeries(docs, function (doc, cb) {
+      modelMenu.count({restaurant: doc._id}, function(err, cnt) {
+        if(cnt > 0) {
+          doc.isMenuExist = true;
+          logger.debug(doc.name, cnt);
+          doc.save();
+        } else {
+          doc.isMenuExist = false;
+          doc.save();
+        }
+        cb(null);
+      });
+    },
+    function(err) {
+      callback(task, context);
+    });
+  })
+}
+
+exports.updateMenuExist = updateMenuExist;
+bot.setAction('updateMenuExist', updateMenuExist);
+
+function checkDumpCategory(task, context, callback) {
+  var model = mongoose.model('Menu');
+
+  model.aggregate(
+    [
+      {
+        "$unwind" : "$category"
+      },
+      {
+        "$group" : {
+          "_id" : {
+            'category': '$category'
+          },
+          "category1" : {
+            "$first" : "$category"
+          }
+        }
+      }
+    ], function(err, docs) {
+
+      if(err) console.log(err);
+      else {
+        for (var i = 0; i < docs.length; i++) {
+          var doc = docs[i];
+          console.log(doc.category1);
+        }
+      }
+      callback(task, context);
+    });
+}
+
+exports.checkDumpCategory = checkDumpCategory;
+bot.setAction('checkDumpCategory', checkDumpCategory);
+
+
+var categoryNames = [
+  {ori: "이벤트3", to: "이벤트메뉴"},
+  {ori: "정갈하고 맛있는 요리", to: "담백한 요리"},
+  {ori: "추천짬뽕메뉴", to: "추천짬뽕"},
+  {ori: "한그릇 두가지맛!", to: "두가지맛"},
+  {ori: "불타는 매운요리", to: "매운요리"},
+  {ori: "원플러스원", to: "1+1"},
+  {ori: "한그릇에 두가지맛 메뉴", to: "두가지맛"},
+  {ori: "뜨끈뜨끈 짬뽕", to: "짬뽕"},
+  {ori: "새로운 맛 메뉴", to: "신메뉴"},
+  {ori: "추천 알뜰메뉴", to: "알뜰메뉴"},
+  {ori: "세트메트", to: "세트메뉴"},
+  {ori: "Set Menu", to: "세트메뉴"},
+  {ori: "두가지 맛 메뉴", to: "두가지맛"},
+  {ori: "한그릇에 두가지 메뉴", to: "두가지맛"},
+  {ori: "추천 히트메뉴", to: "인기메뉴"},
+  {ori: "한그릇에두가지를먹는즐거움!", to: "두가지맛"},
+  {ori: "화끈화끈 불메뉴", to: "불메뉴"},
+  {ori: "빅히트 코스요리", to: "인기코스요리"},
+  {ori: "강력추천 셋트메뉴", to: "추천세트메뉴"},
+  {ori: "한그룻두가지맛", to: "두가지맛"},
+  {ori: "청누리 여름 스페셜", to: "여름메뉴"},
+  {ori: "한그릇두가지맛", to: "두가지맛"},
+  {ori: "뭐 시킬지 고민 뚝! 일석이조", to: "두가지맛"},
+  {ori: "두가지맛!", to: "두가지맛"},
+  {ori: "하절기 특선 메뉴", to: "여름메뉴"},
+  {ori: "떳다 알뜰셋트", to: "알뜰세트"},
+  {ori: "한 그릇에 두가지맛", to: "두가지맛"},
+  {ori: "강추 할인 세트", to: "할인세트메뉴"},
+  {ori: "강추메뉴", to: "인기메뉴"},
+  {ori: "한그릇에두가지맛", to: "두가지맛"},
+  {ori: "여름의 진수", to: "여름메뉴"},
+  {ori: "강력 추천셋트", to: "추천세트메뉴"},
+  {ori: "New", to: "신메뉴"},
+  {ori: "한번에 두가지의 맛!!!", to: "두가지맛"},
+  {ori: "더욱알찬 중화명가셋트메뉴", to: "중화명가세트메뉴"},
+  {ori: "짬뽕들의 행진", to: "짬뽕"},
+  {ori: "최고급 건강요리류", to: "건강요리류"},
+  {ori: "한그릇에 3가지 맛", to: "세가지맛"},
+  {ori: "두가지 맛을 한 그릇에", to: "두가지맛"},
+  {ori: "맛보면 기절하는 짬뽕", to: "짬뽕"},
+  {ori: "직장인을 위한 최고 인기메뉴", to: "인기메뉴"},
+  {ori: "한그릇에 두가지맛!", to: "두가지맛"},
+  {ori: "금용세트트메뉴", to: "금용세트메뉴"},
+  {ori: "<버거바이트（30% 할인중）>", to: "버거바이트"},
+  {ori: "두가지 맛을 한번에", to: "두가지맛"},
+  {ori: "두가지맛을 한번에!!", to: "두가지맛"},
+  {ori: "매운맛 불타는메뉴", to: "매운메뉴"},
+  {ori: "프린스 프리미엄 골드 피자 BIG 7", to: "BIG 7"},
+  {ori: "한그릇에 두가지메뉴", to: "두가지맛"},
+  {ori: "한그릇에 두가지를 먹는  즐거움!!", to: "두가지맛"},
+  {ori: "짬뽕의 달인", to: "짬뽕"},
+  {ori: "한그릇 두가지 맛!", to: "두가지맛"},
+  {ori: "한그릇에 두가지 맛", to: "두가지맛"},
+  {ori: "중식과 한식의 콤비", to: "퓨전요리"},
+  {ori: "만리장성 추천 스페샬메뉴", to: "추천메뉴"},
+  {ori: "전국 5대짬뽕", to: "짬뽕"},
+  {ori: "<치즈롤 크러스트 패밀리（F）>", to: "치즈롤 크러스트 패밀리"},
+  {ori: "기막힌 후라이드 순살 치킨", to: "후라이드 순살"},
+  {ori: "한그릇 두가지맛", to: "두가지맛"},
+  {ori: "<달인피자（R）>", to: "달인피자 ( R )"},
+  {ori: "<오리지널 크러스트 레귤러（R）>", to: "오리지널 크러스트 ( R )"},
+  {ori: "기획할인셋트", to: "할인세트"},
+  {ori: "차칸메뉴 RICE", to: "착한메뉴"},
+  {ori: "한그릇에 두가지 맛을 즐기세요", to: "두가지맛"},
+  {ori: "<기타>", to: "기타"},
+  {ori: "한그릇에 두가지를 먹는 즐거움!!", to: "두가지맛"},
+  {ori: "한그릇에 두가지맛", to: "두가지맛"},
+  {ori: "강력추천메뉴", to: "추천메뉴"},
+  {ori: "<굽네 고추 바사삭 시리즈>", to: "굽네 고추 바사삭"},
+  {ori: "<오리지널 크러스트 라지（L）>", to: "오리지널 크러스트 ( L )"},
+  {ori: "4가지맛을한번에", to: "네가지맛"},
+  {ori: "기막힌양념메뉴", to: "양념메뉴"},
+  {ori: "기막힌 뼈강정 메뉴", to: "뼈강정 메뉴"},
+  {ori: "<트리플박스>", to: "트리플박스"},
+  {ori: "<구이치킨>", to: "구이치킨"},
+  {ori: "한그릇에 세가지맛!", to: "세가지맛"},
+  {ori: "스페셜피자L ★음료별도★", to: "스페셜피자 L"},
+  {ori: "레알 수제치즈버거 메뉴", to: "수제치즈버거"},
+  {ori: "짬뽕하우스", to: "짬뽕"},
+  {ori: "<굽네 후르츄 소이갈릭 시리즈>", to: "굽네 후르츄 소이갈릭"},
+  {ori: "NOODLE 메뉴", to: "면 류"},
+  {ori: "<후라이드>", to: "후라이드 순살"},
+  {ori: "Hit 메뉴", to: "인기메뉴"},
+  {ori: "실속있는 세트메뉴", to: "실속세트"},
+  {ori: "한 그릇에 두가지 맛", to: "두가지맛"},
+  {ori: "<명품세트（L）>", to: "명품세트 ( L )"},
+  {ori: "한그릇에 두메뉴", to: "두가지맛"},
+  {ori: "기막힌 후라이드 뼈 치킨 메뉴", to: "후라이드 뼈 치킨 메뉴"},
+  {ori: "강추세트", to: "추천메뉴"},
+  {ori: "<사이드>", to: "사이드"},
+  {ori: "<콜라／무／소스>", to: "콜라/무/소스"},
+  {ori: "한그릇 두가지 메뉴", to: "두가지맛"},
+  {ori: "기막힌 순살강정 메뉴", to: "순살강정 메뉴"},
+  {ori: "<프리미엄 피자（1＋1）>", to: "프리미엄 피자 ( 1 + 1 )"},
+  {ori: "각종모임 및 집들이 코스요리", to: "코스요리"},
+  {ori: "피자 두판 세트 출시!", to: "피자 두판 세트"},
+  {ori: "<명품세트（R）>", to: "명품세트 ( R )"},
+  {ori: "한그릇에 두가지를 먹는 즐거움", to: "두가지맛"},
+  {ori: "특별한식사", to: "특별메뉴"},
+  {ori: "<음료 메뉴>", to: "음료"},
+  {ori: "（大）샐러드>>사이즈업", to: "샐러드 사이즈업"},
+  {ori: "한그릇에두가지 메뉴", to: "두가지맛"},
+  {ori: "스페셜피자XXL★음료별도★", to: "스페셜피자XXL"},
+  {ori: "스페셜피자 L 메뉴", to: "스페셜피자L"},
+  {ori: "스페셜피자R★음료별도★", to: "스페셜피자R"},
+  {ori: "고스트피자R★음료별도★", to: "고스트피자R"},
+  {ori: "핫딜 싱글메카 할인세트（M）", to: "할인세트 ( M )"},
+  {ori: "일반피자L★음료별도★", to: "일반피자L"},
+  {ori: "<스페셜 피자（한판）>", to: "스페셜피자"},
+  {ori: "일반피자R★음료별도★", to: "일반피자R"},
+  {ori: "<굽네 볼케이노 시리즈>", to: "굽네 볼케이노"},
+  {ori: "일반피자XXL★음료별도★", to: "일반피자XXL"},
+  {ori: "<오리지날 치킨>", to: "오리지날 치킨"},
+  {ori: "한번에 두가지맛", to: "두가지맛"},
+  {ori: "<클래식 피자（한판）>", to: "클래식 피자"},
+  {ori: "<리치골드피자 （30%할인중）>", to: "리치골드피자"},
+  {ori: "<올리브치도락>", to: "올리브치도락"},
+  {ori: "<치즈롤 크러스트 파티（P）>", to: "치즈롤 크러스트 ( P )"},
+  {ori: "한그릇에 두가지 맛을 즐기세요!!", to: "두가지맛"},
+  {ori: "<뿌링클>", to: "뿌링클"},
+  {ori: "고스트피자XXL★음료별도★", to: "고스트피자XXL"},
+  {ori: "기막힌후라이드메뉴", to: "후라이드메뉴"},
+  {ori: "<콜팝>", to: "콜팝"},
+  {ori: "2판 피자★음료별도★", to: "2판 피자"},
+  {ori: "프리미엄피자L★음료별도★", to: "프리미엄피자L"},
+  {ori: "<웰빙피자（L）>", to: "웰빙피자 ( L )"},
+  {ori: "<순살치킨>", to: "순살치킨"},
+  {ori: "<장인세트（L）>", to: "장인세트 ( L )"},
+  {ori: "<골드링 씬 크러스트 패밀리（F）>", to: "골드링 씬 크러스트 ( F )"},
+  {ori: "<골드링 크러스트 파티（P）>", to: "골드링 크러스트 ( P )"},
+  {ori: "핫딜 더블메카 할인세트（M）", to: "할인세트 ( M )"},
+  {ori: "<하프앤하프 피자（L）>", to: "하프앤하프 피자 ( L )"},
+  {ori: "<명품피자（R）>", to: "명품피자 ( R )"},
+  {ori: "<치즈크러스트피자 （30%할인중>", to: "치즈크러스트피자"},
+  {ori: "Top 10", to: "인기메뉴"},
+  {ori: "순한맛과 건강한 어린이를 위한 메뉴", to: "어린이 메뉴"},
+  {ori: "개화 특선 개발메뉴", to: "신메뉴"},
+  {ori: "숙취해소를 잡는 짬뽕쌍둥이 메뉴", to: "짬뽕"},
+  {ori: "고스트피자L★음료별도★", to: "고스트피자L"},
+  {ori: "<굽네 양념 시리즈>", to: "굽네 양념"},
+  {ori: "<스페셜 피자（1＋1）>", to: "스페셜 피자 1+1"},
+  {ori: "시즌 '모듬수프' 특별세일", to: "모듬수프"},
+  {ori: "한그릇에 세가지맛", to: "세가지맛"},
+  {ori: "<히트박스 메뉴>", to: "히트박스"},
+  {ori: "순살만 골라만든 메뉴", to: "순살 메뉴"},
+  {ori: "원플러스원 피자메뉴", to: "1 + 1 피자"},
+  {ori: "일석이조 두가지맛", to: "두가지맛"},
+  {ori: "강력추천 히트메뉴", to: "추천메뉴"},
+  {ori: "<스폐셜 치킨>", to: "스페셜 치킨"},
+  {ori: "★고스트 추천메뉴★", to: "고스트 추천메뉴"},
+  {ori: "이벤트 3", to: "이벤트"},
+  {ori: "한그릇에 두가지를 먹는 즐거움!", to: "두가지맛"},
+  {ori: "<정통세트（L）>", to: "정통세트 ( L )"},
+  {ori: "<클래식 피자（1＋1）>", to: "클래식 피자 ( 1 + 1 )"},
+  {ori: "<사이드&음료 메뉴>", to: "사이드&음료"},
+  {ori: "<굽네 오리지널 시리즈>", to: "굽네 오리지널"},
+  {ori: "<오리지널 크러스트 파티（P）>", to: "오리지널 크러스트 (P)"},
+  {ori: "<굽네 볼케이노 쌀떡볶이 시리즈>", to: "굽네 볼케이노 쌀떡볶이"},
+  {ori: "<토핑치킨>", to: "토핑치킨"},
+  {ori: "두가지맛을 한번에!", to: "두가지맛"},
+  {ori: "<달인피자（L）>", to: "달인피자 ( L )"},
+  {ori: "<간장／구이>", to: "간장 / 구이"},
+  {ori: "VEGETABLE CURRY 야채 커리", to: "야채 커리"},
+  {ori: "프리미엄피자R★음료별도★", to: "프리미엄피자 R"},
+  {ori: "한 그릇에 두 가지를 먹는 즐거움", to: "두가지맛"},
+  {ori: "<맛초킹>", to: "맛초킹"},
+  {ori: "<세트메뉴>", to: "세트메뉴"},
+  {ori: "<색다른 메뉴>", to: "색다른 메뉴"},
+  {ori: "<맵스터>", to: "맵스터"},
+  {ori: "<웰빙피자（R）>", to: "웰빙피자 ( R )"},
+  {ori: "해물홍합짬봉의 진수", to: "해물홍합짬뽕"},
+  {ori: "우리식당자랑거리", to: "추천메뉴"},
+  {ori: "한그릇에 두가지 맛을 즐기세요~", to: "두가지맛"},
+  {ori: "<반반치킨>", to: "반반치킨"},
+  {ori: "한 그릇에 세가지맛", to: "세가지맛"},
+  {ori: "<스넥류>", to: "스낵류"},
+  {ori: "<정통피자（R）>", to: "정통피자 ( R )"},
+  {ori: "중국성 강추메뉴", to: "중국성 추천메뉴"},
+  {ori: "한 그릇 두 가지 맛", to: "두가지맛"},
+  {ori: "한그릇두가지메뉴", to: "두가지맛"},
+  {ori: "<팬피자>", to: "팬피자"},
+  {ori: "한번에 두가지 맛", to: "두가지맛"},
+  {ori: "한그릇에 두가지 맛!", to: "두가지맛"},
+  {ori: "<하니퐁듀 피자（한판）>", to: "허니퐁듀 피자"},
+  {ori: "<골드링 크러스트 패밀리（F）>", to: "골드링 크러스트 ( F )"},
+  {ori: "<굽네 볼케이노 모짜렐라 시리즈>", to: "굽네 볼케이노 모짜렐라"},
+  {ori: "<양념／순살>", to: "양념 / 순살"},
+  {ori: "<신제품세트>", to: "신제품 세트"},
+  {ori: "<하프앤하프 피자（R）>", to: "하프앤하프 피자 ( R )"},
+  {ori: "<씬 크러스트 패밀리（F）>", to: "씬 크러스트 ( F )"},
+  {ori: "핫딜 더블메카 할인세트（L）", to: "할인세트 ( L )"},
+  {ori: "<굽네 오리지널 콤보 세트>", to: "굽네 오리지널 콤보"},
+  {ori: "<명품피자（L）>", to: "명품피자 ( L )"},
+  {ori: "<굽네 반반 시리즈>", to: "굽네 반반"},
+  {ori: "<사이드 메뉴>", to: "사이드"},
+  {ori: "<옵션>", to: "옵션"},
+  {ori: "<음료>", to: "음료"},
+  {ori: "<이탈리안 피자（1＋1）>", to: "이탈리안 피자 1 + 1"},
+  {ori: "<프리미엄 피자（한판）>", to: "프리미엄 피자"},
+  {ori: "VIP를 위한 특선메뉴", to: "특선메뉴"},
+  {ori: "강력추천 매운불맛 메뉴", to: "매운메뉴"},
+  {ori: "<장인피자 （R）>", to: "장인피자 ( R )"},
+  {ori: "<하트 씬 크러스트 패밀리（F）>", to: "하트 씬 크러스트 ( F )"},
+  {ori: "<정통피자（L）>", to: "정통피자 ( L )"},
+  {ori: "이벤트 2", to: "이벤트"},
+  {ori: "<웰빙세트（R）>", to: "웰빙세트 ( R )"},
+  {ori: "<커리퀸>", to: "커리퀸"},
+  {ori: "<달인세트（L）>", to: "달인세트 ( L )"},
+  {ori: "프리미엄엄피자XXL★음료별도★", to: "프리미엄 피자 XXL"},
+  {ori: "<장인세트（R）>", to: "장인세트 ( R )"},
+  {ori: "<추가 메뉴>", to: "추가 메뉴"},
+  {ori: "<하니퐁듀 피자（1＋1）>", to: "허니퐁듀 피자 1 + 1"},
+  {ori: "<키즈피자 세트>", to: "키즈피자 세트"},
+  {ori: "<굽네 딥치즈 시리즈>", to: "굽네 딥치즈"},
+  {ori: "[ NEW신메뉴 ] 나폴리 피자", to: "나폴리 피자"},
+  {ori: "<더 맛있는 피자 시즌2>", to: "더 마있는 피자"},
+  {ori: "<양념치킨>", to: "양념치킨"},
+  {ori: "정직한 셋트메뉴", to: "세트메뉴"},
+  {ori: "<파스타&리조또 메뉴>", to: "파스타&리조또"},
+  {ori: "<추가 사이드 & 음료 메뉴>", to: "사이드&음료"},
+  {ori: "<오리지널 크러스트 패밀리（F）>", to: "오리지널 크러스트 ( F )"},
+  {ori: "<치즈롤 크러스트 라지（L）>", to: "치즈롤 크러스트 ( L )"},
+  {ori: "<골드링 크러스트 라지（L）>", to: "골드링 크러스트 ( L )"}
+
+
+];
+
+function updateDumpCategory(task, context, callback) {
+  var model = mongoose.model('Menu');
+
+  async.eachSeries(categoryNames, function(ct, cb) {
+    model.update({'category': ct.ori}, {'$set': {'category.$': ct.to}}, {multi: true}, function(err, res) {
+      if(err) console.log(err);
+      else console.log(ct.ori, ct.to, res.nModified);
+      cb(null);
+    });
+  }, function(err) {
+    callback(task, context);
+  });
+}
+
+exports.updateDumpCategory = updateDumpCategory;
+bot.setAction('updateDumpCategory', updateDumpCategory);
+

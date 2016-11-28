@@ -12,10 +12,10 @@
       .state('deliveryOrders', {
         abstract: true,
         url: '/deliveryOrders',
-        template: '<ui-view/>',
-        data: {
-          roles: ['user', 'admin']
-        }
+        template: '<ui-view/>'
+        // data: {
+        //   roles: ['user', 'admin']
+        // }
       })
       .state('deliveryOrders.list', {
         url: '',

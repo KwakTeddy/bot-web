@@ -56,7 +56,7 @@ var dialogs = [
 },
 {
   input: false,
-  output: '두번째 다이얼로그가 호출되었을 때 출력됩니다.'
+  output: '두번째 다이얼로그가 호출되었을 때 출력됩니다.      // 사용자 입력에 대한 match 없이 호출에만 사용됨'
 },
 {
   input: '호출 하다 2',
@@ -64,19 +64,19 @@ var dialogs = [
 },
 {
   input: '재시',
-  output: {start: 1}
+  output: {start: 1}     // 시작
 },
 {
   input: '이전',
-  output: {up: 1}
+  output: {up: 1}        // 상위 (대부분은 이전에 사용됨)
 },
 {
   input: '뒤로',
-  output: {back: 1}
+  output: {back: 1}      // 뒤로 숫자 만큼
 },
 {
   input: '다시',
-  output: {repeat: 1}
+  output: {repeat: 1}    // 재질문
 },
 {
   input: 'custom',
@@ -100,7 +100,7 @@ var dialogs = [
   children: [
     {
       input: '추가',
-      output: {returnCall: '반환'}
+      output: {returnCall: '반환'}                      // return와 같이 쓰면 다음으로 가지않고 호출한 곳으로 돌아감
     },
     {
       input: '네',
@@ -115,12 +115,12 @@ var dialogs = [
   children: [
     {
       input: '호출 반환',
-      output: {call: '호출1', return: 1}
+      output: {call: '호출1', return: 1}            // return: 1이 있으면 returnCall로 불린경우 호출된 곳으로 돌아가고, 아니면 원래데로 call 등 output 처리
     }
   ]
 },
 {
-  input: '하위 질문',
+  input: '하위 질문 ',
   output: '1.메뉴1\n2.메뉴2\n3.메뉴3',
   children: [
     {
@@ -179,8 +179,43 @@ var dialogs = [
   output: '호출되었을 때만 표시됩니다'
 },
 {
+  input: '네이버 예약',
+  task:   {action: 'naverTest'},
+  output: '+name+ 예약 완료되었습니다.'
+},
+{
+  input: '네이버',
+  task:   {action: 'naversearch'},
+  output: '삼성동 코엑스 맛집 검색결과입니다.\n1. 바이킹뷔페 오크우드호텔점\n2. 그랜츠 키친\n3. 케르반 코엑스몰점\n4. 브래서리\n5. 오리옥스 코엑스점\n6. 온더보더 코엑스점'
+},
+{
+  input: '삼성',
+  task:   {action: 'samsung'},
+  output: '삼성카드 VIP카드 조회 결과입니다.\n1. RAUME O(포인트,스카이패스,아시아나)\n2. THE O(포인트,스카이패스,아시아나)\n3. THE 1(포인트,스카이패스,BIZ)\n4. The Platinum Card\n5. Amex Gold Card'
+},
+{
+  input: '현대',
+  task:   {action: 'hyundai'},
+  output: '현대'
+},
+{
+  input: '신한',
+  task:   {action: 'shinhan'},
+  output: '신한'
+},
+{
+  input: '롯데',
+  task:   {action: 'lotte'},
+  output: '롯데'
+},
+{
+  input: '모든',
+  task:   {action: 'allCard'},
+  output: '모든 신용카드 조회 결과입니다.\n\n삼성카드\n1. RAUME O(포인트,스카이패스,아시아나)\n2. THE O(포인트,스카이패스,아시아나)\n3. THE 1(포인트,스카이패스,BIZ)\n4. The Platinum Card\n5. Amex Gold Card\n\n신한카드\n1. The PREMIER\n2. The Ace\n3. The BEST-T\n4. The BEST-F\n5. The LADY BEST\n6. The BEST\n7. The Lady CLASSIC\n8. The CLASSIC+\n9. INFINITE\n10. Super Triple\n\n롯데카드\n1. VEEX 플래티넘 카드\n2. 샤롯데 플래티넘 카드\n3. 플래티넘 스타 카드\n4. SKYPASS 플래티넘 카드\n5. 비엔 플래티넘카드\n6. OPTIN 플래티넘 카드\n7. 위버스카이 카드\n8. DC플러스 플래티넘카드\n\n현대카드\n1. the Black\n2. the Red\n3. the Purple'
+},
+{
   input: '',
-  output: '매칭되는 문장이 없습니다.'
+  output: '매칭되는 문장이 없습니다.                                     // input이 없으면 순서가 오면 무조건 표시 gambit 역활'
 },
 {
   input: 'moneybrain',
@@ -193,18 +228,13 @@ var dialogs = [
   output: '+text+\n task에서 저장한 내용 표시'
 },
 {
-  input: 'test',
+  input: 'test ',
   output: ''
 },
 {
   input: 'other task',
   task:   'otherTask',
   output: '+text+\n task에서 저장한 내용 표시'
-},
-{
-  input: 'menu update',
-  task:   '',
-  output: []
 }
 ];
 

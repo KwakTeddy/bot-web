@@ -61,6 +61,9 @@ function botProc(botName, channel, user, inTextRaw, outCallback, chatServerConfi
     },
 
     function(cb) {
+      context.dialog.inCurRaw = inTextRaw;
+      context.dialog.inCurNLP = inTextNLP;
+
       if(inTextRaw.startsWith(':')) {
         command.command(inTextRaw, inTextNLP, context, print, function(matched) {
           if(matched) cb(true);
@@ -147,6 +150,11 @@ function getContext(botName, channel, user, callback) {
         botUser.getUserContext(_user, null, function(_user, _context) {
           userContext = {userId: user, channel: channel, bot: botName};
           userContext = utils.merge(userContext, _user.doc._doc);
+
+          if(userContext.address)
+            userContext.addressCompact = userContext.address.지번주소.replace(/^([가-힣]+\s*)/, function(matched, p1) { return ''});
+          // userContext.addressCompact = userContext.addressCompact.replace(/(\s+\(.*\))/, function(matched, p1) {return ''});
+
           global._users[user] = userContext;
           cb(null);
         });

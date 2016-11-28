@@ -40,11 +40,15 @@ var BotUserSchema = new Schema({
   },
 
   address: Object,
+  lng: Number,
+  lat: Number,
 
   created: {
     type: Date,
     default: Date.now
-  }
+  },
+
+  confirmTerms: Boolean
 });
 
 mongoose.model('BotUser', BotUserSchema);

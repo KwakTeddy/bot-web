@@ -9,6 +9,7 @@ var path = require('path'),
   DeliveryOrderMenu = mongoose.model('DeliveryOrderMenu'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
+var config = require(path.resolve('./config/config'));
 
 /**
  * Create a Custom action
@@ -48,7 +49,14 @@ exports.read = function(req, res) {
 exports.update = function(req, res) {
   var deliveryOrder = req.deliveryOrder ;
 
+  var isChange = false;
+  var changeStatus = deliveryOrder.status;
+
   deliveryOrder = _.extend(deliveryOrder , req.body);
+
+  if(changeStatus != deliveryOrder.status) {
+    isChange = true;
+  }
 
   deliveryOrder.save(function(err) {
     if (err) {
@@ -57,6 +65,9 @@ exports.update = function(req, res) {
       });
     } else {
       res.jsonp(deliveryOrder);
+      if(isChange && (deliveryOrder.status == '접수' || deliveryOrder.status == '취소')) {
+        changeOrderStatus(deliveryOrder);
+      }
     }
   });
 };
@@ -82,7 +93,7 @@ exports.delete = function(req, res) {
  * List of Custom actions
  */
 exports.list = function(req, res) { 
-  DeliveryOrder.find().sort('-created').populate('user', 'displayName').exec(function(err, deliveryOrders) {
+  DeliveryOrder.find({status: '요청'}).sort({created: 'desc'}).populate('restaurant botUser').exec(function(err, deliveryOrders) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -90,6 +101,24 @@ exports.list = function(req, res) {
     } else {
       res.jsonp(deliveryOrders);
     }
+  });
+};
+
+exports.updateStatus = function(deliveryOrderId, status) {
+  DeliveryOrder.findById(deliveryOrderId).populate('restaurant botUser').exec(function(err, doc) {
+
+    doc.status = status;
+    doc.save(function(err) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        if((status == '접수' || status == '취소')) {
+          changeOrderStatus(doc);
+        }
+      }
+    });
   });
 };
 
@@ -104,7 +133,7 @@ exports.deliveryOrderByID = function(req, res, next, id) {
     });
   }
 
-  DeliveryOrder.findById(id).populate('user', 'displayName').exec(function (err, deliveryOrder) {
+  DeliveryOrder.findById(id).populate('restaurant botUser').exec(function (err, deliveryOrder) {
     if (err) {
       return next(err);
     } else if (!deliveryOrder) {
@@ -117,36 +146,49 @@ exports.deliveryOrderByID = function(req, res, next, id) {
   });
 };
 
-exports.readMenus = function(req, res) {
-  DeliveryOrderMenu.find({deliveryOrder: req.params.deliveryOrderId}).sort('-created').exec(function(err, menus) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.jsonp({deliveryOrder: req.params.deliveryOrderId, _menus: menus});
-    }
-  });
+
+exports.linkTerms = function (req, res) {
+  res.render('modules/deliveryOrders/server/views/terms', {});
 };
 
-exports.updateMenus = function(req, res) {
-  var count = 0;
-  for(var i = 0; i < req.body._menus.length; i++) {
-    var _update = req.body._menus[i];
-    if(_update.name == undefined || _update.name == '') continue;
-    _update.deliveryOrder = req.body.deliveryOrder;
 
-    if(_update._id == undefined) {
-      DeliveryOrderMenu.create(_update, function(err, _doc) {
-        count++;
-        if(count >= req.body._menus.length) res.end();
-      });
-    } else {
-      DeliveryOrderMenu.update({_id: _update._id}, _update, {upsert: true}, function(err) {
-        count++;
-        if(count >= req.body._menus.length) res.end();
-      })
+exports.linkPrivacy = function (req, res) {
+  res.render('modules/deliveryOrders/server/views/privacy', {});
+};
+
+var facebook = require(path.resolve('./modules/bot/server/controllers/facebook.server.controller.js'));
+
+function changeOrderStatus(deliveryOrder) {
+  var bot = global._bots['order'];
+
+  if(bot.messages.manager === true) {
+    for(var i = 0; i <  bot.managers.length; i++) {
+      var manager = bot.managers[i];
+
+      facebook.respondMessage(manager.userId,
+        '[' + deliveryOrder.status + '완료]\n' +
+        '배달주소: ' + deliveryOrder.address + '\n' +
+        '매장명:' + deliveryOrder.restaurantName, bot.botName);
+
+      if(global._users[manager.userId]) global._users[manager.userId].pendingCallback = null;
+      manager.deliveryOrderId = null;
     }
-
   }
-};
+
+  if(bot.messages.sms === true && deliveryOrder.status == '취소' &&  deliveryOrder.botUser && deliveryOrder.botUser.mobile) {
+    var request = require('request');
+
+    var message = "[인공지능 배달봇 얌얌]\n" +
+      deliveryOrder.restaurantName + '/주문 취소/매장이 바쁘거나 영업 중이 아닙니다.';
+
+    request.post(
+      'https://bot.moneybrain.ai/api/messages/sms/send',
+      {json: {callbackPhone: config.callcenter, phone: deliveryOrder.botUser.mobile.replace(/,/g, ''), message: message}},
+      function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+          // callback(task, context);
+        }
+      }
+    );
+  }
+}

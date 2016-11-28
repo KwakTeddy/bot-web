@@ -25,19 +25,6 @@ var MenuSchema = new Schema({
   options: Object,
   additions: Object,
 
-  // options:
-  //   {
-  //     key: {
-  //       name: String,
-  //       price: Number
-  //     }
-  // },
-  //
-  // additions: {
-  //   name: String,
-  //   price: Number
-  // },
-
   updated: {
     type: Date,
     default: Date.now

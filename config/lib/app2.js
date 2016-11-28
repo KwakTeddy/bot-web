@@ -41,5 +41,6 @@ module.exports.start = function() {
   // app 실행하기
   app.route('/bot/app/:androidUrl/:androidStore/:iosUrl/:iosStore')
     .get(action.appExec);
+
 }
 

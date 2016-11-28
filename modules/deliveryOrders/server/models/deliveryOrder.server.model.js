@@ -15,6 +15,12 @@ var DeliveryOrderSchema = new Schema({
     ref: 'Bot'
   },
 
+  user: String,
+  botUser: {
+    type: Schema.ObjectId,
+    ref: 'BotUser'
+  },
+
   restaurant: {
     type: Schema.ObjectId,
     ref: 'Restaurant'
@@ -45,12 +51,8 @@ var DeliveryOrderSchema = new Schema({
   created: {
     type: Date,
     default: Date.now
-  },
-  user: String
-  // user: {
-  //   type: Schema.ObjectId,
-  //   ref: 'User'
-  // }
+  }
+
 });
 
 mongoose.model('DeliveryOrder', DeliveryOrderSchema);

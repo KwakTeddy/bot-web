@@ -7,6 +7,10 @@ var async = require('async');
 var utils = require(path.resolve('modules/bot/action/common/utils'));
 var type = require(path.resolve('modules/bot/action/common/type'));
 var _ = require('lodash');
+var request = require('request');
+var config = require(path.resolve('./config/config'));
+var orderbot = require(path.resolve('custom_modules/order/orderbot'));
+var addressModule = require(path.resolve('modules/bot/action/common/address'));
 
 // var checkTask = {
 //
@@ -31,67 +35,206 @@ var _ = require('lodash');
 
 var orderTask = {
   action: function(task, context, callback) {
-    var model = mongoose.model('DeliveryOrder');
-
-    logger.debug(context.dialog.address);
-
-    var _menus = [], _menuStr = '';
-    context.dialog.totalPrice = 0;
-    if(context.dialog.menus == undefined) {
-      context.dialog.totalPrice = context.dialog.menu.price;
-    } else {
-      for(var i in context.dialog.menus) {
-        _menus.push({menu: context.dialog.menus[i]._id, name: context.dialog.menus[i].name, price: context.dialog.menus[i].price});
-        _menuStr += context.dialog.menus[i].name + ' ' + '1개';
-        context.dialog.totalPrice += context.dialog.menus[i].price;
-      }
-    }
-
-    var doc = {
-      restaurant: context.dialog.restaurant._id,
-      restaurantName: context.dialog.restaurant.name,
-      menus: _menus,
-      address: context.dialog.address != undefined ? context.dialog.address.address : undefined,
-      totalPrice: context.dialog.totalPrice,
-      status: ['요청'],
-      memo: '',
-      times: [
-        {status: '요청', time: Date.now()}
-      ],
-      intervals: [
-      ],
-      manager: null,
-      user: context.user.userId
-    };
-
-    model.create(doc, function(err, _docs) {
-      if (err) {
-        throw err;
-      } else {
-      }
-
-      task.deliveryOrderId = _docs._id;
-      if(context.bot.messages.manager == true)
-        manager.checkOrder(task, context, null);
-
-      if(context.bot.call) {
-        var vmsMessage = "카카오톡에서 배달봇 양얌 주문입니다. " +
-          _menuStr + ' 배달해 주세요.' +
-          '주소는 ' + context.dialog.address.지번주소 + ' 입니다.' +
-          '전화번호는 ' + context.dialog.mobile + ' 입니다.' +
-          '이 주문은 인공지능 배달봇 얌얌의 카카오톡에서 배달대행 주문입니다.';
-
-        messages.sendVMS({callbackPhone: '028585683', phone: context.user.mobile.replace(/,/g, ''), message: vmsMessage},
-          context, function(_task, _context) {
+    async.waterfall([
+      function(cb) {
+        if(!context.user.confirmTerms) {
+          var botUser= require(path.resolve('modules/bot-users/server/controllers/bot-users.server.controller'))
+          context.user.confirmTerms = true;
+          context.user.updates = ['confirmTerms'];
+          botUser.updateUserContext(context.user, context, function () {
+            context.user.updates = null;
+            cb(null);
           });
+        } else {
+          cb(null);
+        }
+      },
 
+      function(cb) {
+        var model = mongoose.model('DeliveryOrder');
+
+        var _menus = [];
+        context.dialog.menuStr = '';
+        context.dialog.totalPrice = 0;
+        if(context.dialog.menus == undefined) {
+          context.dialog.totalPrice = context.dialog.menu.price;
+        } else {
+          for(var i in context.dialog.menus) {
+            _menus.push({menu: context.dialog.menus[i]._id, name: context.dialog.menus[i].name, price: context.dialog.menus[i].price, count: context.dialog.menus[i].count});
+            context.dialog.menuStr += context.dialog.menus[i].name + ' ' + context.dialog.menus[i].count + '개\n';
+            context.dialog.totalPrice += context.dialog.menus[i].price * context.dialog.menus[i].count;
+          }
+        }
+
+        var doc = {
+          restaurant: context.dialog.orderRestaurant._id,
+          restaurantName: context.dialog.orderRestaurant.name,
+          menus: _menus,
+          address: (context.dialog.address ? context.dialog.address.지번주소 : context.user.address.지번주소),
+          totalPrice: context.dialog.totalPrice,
+          status: ['요청'],
+          memo: '',
+          times: [
+            {status: '요청', time: Date.now()}
+          ],
+          intervals: [
+          ],
+          manager: null,
+          user: context.user.userId,
+          botUser: context.user._id
+        };
+
+        model.create(doc, function(err, _docs) {
+          if (err) {
+            cb(true);
+            throw err;
+          } else {
+            cb(null, _docs._id);
+          }
+        });
+      },
+
+      function(orderId, cb) {
+        task.deliveryOrderId = orderId;
+        if(!context.bot.testMode && context.bot.messages.manager === true)
+          manager.checkOrder(task, context, null);
+
+        if(!context.bot.testMode && context.bot.messages.call === true) {
+          var message = "카카오톡에서 배달봇 얌얌 주문입니다. " +
+            context.dialog.menuStr + ' 배달해 주세요.' +
+            '주소는 ' + context.dialog.address.지번주소 + ' 입니다.' +
+            '전화번호는 ' + context.dialog.mobile + ' 입니다.' +
+            '이 주문은 인공지능 배달봇 얌얌의 카카오톡에서 배달대행 주문입니다.';
+
+          request.post(
+            'https://bot.moneybrain.ai/api/messages/vms/send',
+            // 'http://localhost:8443/api/messages/vms/send',
+            {json: {callbackPhone: config.callcenter, phone: context.user.mobile.replace(/,/g, ''), message: message}},
+            function (error, response, body) {
+              if (!error && response.statusCode == 200) {
+                // callback(task, context);
+              }
+              cb(null);
+            }
+          );
+        } else {
+          cb(null);
+        }
+      },
+
+      function(cb) {
+        if(!context.bot.testMode && context.bot.messages.sms === true) {
+          var message = "[인공지능 배달봇 얌얌]\n" +
+            context.dialog.orderRestaurant.name + '/주문 요청/50분 이내 배달 예정';
+
+          request.post(
+            'https://bot.moneybrain.ai/api/messages/sms/send',
+            {json: {callbackPhone: config.callcenter, phone: context.user.mobile.replace(/,/g, ''), message: message}},
+            function (error, response, body) {
+              if (!error && response.statusCode == 200) {
+                // callback(task, context);
+              }
+              cb(null);
+            }
+          );
+        } else {
+          cb(null);
+        }
       }
 
+    ], function(err) {
       task.isComplete = true;
+
+      context.dialog.orderRestaurant = null;
+      context.dialog.orderMenu = null;
+      context.dialog.orderOption = null;
       context.dialog.restaurant = null;
+      context.dialog.menu = null;
       context.dialog.menus = null;
+
       callback(task, context);
     });
+
+  //   var model = mongoose.model('DeliveryOrder');
+  //
+  //   var _menus = [];
+  //   context.dialog.menuStr = '';
+  //   context.dialog.totalPrice = 0;
+  //   if(context.dialog.menus == undefined) {
+  //     context.dialog.totalPrice = context.dialog.menu.price;
+  //   } else {
+  //     for(var i in context.dialog.menus) {
+  //       _menus.push({menu: context.dialog.menus[i]._id, name: context.dialog.menus[i].name, price: context.dialog.menus[i].price, count: context.dialog.menus[i].count});
+  //       context.dialog.menuStr += context.dialog.menus[i].name + ' ' + context.dialog.menus[i].count + '개\n';
+  //       context.dialog.totalPrice += context.dialog.menus[i].price * context.dialog.menus[i].count;
+  //     }
+  //   }
+  //
+  //   if(!context.user.confirmTerms) {
+  //     var botUser= require(path.resolve('modules/bot-users/server/controllers/bot-users.server.controller'))
+  //
+  //     context.user.confirmTerms = true;
+  //     context.user.updates = ['confirmTerms'];
+  //     botUser.updateUserContext(context.user, context, function () {
+  //       context.user.updates = null;
+  //     });
+  //   }
+  //
+  //   var doc = {
+  //     restaurant: context.dialog.restaurant._id,
+  //     restaurantName: context.dialog.restaurant.name,
+  //     menus: _menus,
+  //     address: context.dialog.address != undefined ? context.dialog.address.address : undefined,
+  //     totalPrice: context.dialog.totalPrice,
+  //     status: ['요청'],
+  //     memo: '',
+  //     times: [
+  //       {status: '요청', time: Date.now()}
+  //     ],
+  //     intervals: [
+  //     ],
+  //     manager: null,
+  //     user: context.user.userId
+  //   };
+  //
+  //   model.create(doc, function(err, _docs) {
+  //     if (err) {
+  //       throw err;
+  //     } else {
+  //     }
+  //
+  //     task.deliveryOrderId = _docs._id;
+  //     if(context.bot.messages.manager == true)
+  //       manager.checkOrder(task, context, null);
+  //
+  //     if(context.bot.call) {
+  //
+  //       var request = require('request');
+  //
+  //       var vmsMessage = "카카오톡에서 배달봇 양얌 주문입니다. " +
+  //         context.dialog.menuStr + ' 배달해 주세요.' +
+  //         '주소는 ' + context.dialog.address.지번주소 + ' 입니다.' +
+  //         '전화번호는 ' + context.dialog.mobile + ' 입니다.' +
+  //         '이 주문은 인공지능 배달봇 얌얌의 카카오톡에서 배달대행 주문입니다.';
+  //
+  //       request.post(
+  //         'https://bot.moneybrain.ai/api/messages/vms/send',
+  //         // 'http://localhost:8443/api/messages/vms/send',
+  //         {json: {callbackPhone: '028585683', phone: context.user.mobile.replace(/,/g, ''), message: vmsMessage}},
+  //         function (error, response, body) {
+  //           if (!error && response.statusCode == 200) {
+  //             // callback(task, context);
+  //           }
+  //           callback(task, context);
+  //         }
+  //       );
+  //     }
+  //
+  //     task.isComplete = true;
+  //     context.dialog.restaurant = null;
+  //     context.dialog.menus = null;
+  //     callback(task, context);
+  //   });
   }
 };
 
@@ -99,31 +242,138 @@ exports.orderTask = orderTask;
 
 var categoryRestaurants = {
   action: function(task, context, callback) {
+    // console.log('categoryRestaurant');
     var model = mongoose.model('Restaurant');
 
     var category = context.dialog.restaurantCategory;
     task.category = category;
 
-    var query = {category: category};
-    query['address.시도명'] = context.dialog.address.시도명;
-    query['address.시군구명'] = context.dialog.address.시군구명;
-    query['address.행정동명'] = context.dialog.address.행정동명;
+    // var address;
+    // if(address == undefined || address == true) {
+    //   address = context.dialog.address;
+    //   if (!address) address = context.user.address;
+    // }
+
+    var address, lng, lat;
+    if(context.dialog.address) {
+      address = context.dialog.address;
+      lng = context.dialog.lng;
+      lat = context.dialog.lat;
+    } else if(context.user.address) {
+      address = context.user.address;
+      lng = context.user.lng;
+      lat = context.user.lat;
+    }
+
+    var query = {category: category, deliverable: true};
+    query['$or'] = [
+      {'address.시도명': address.시도명, 'address.시군구명': address.시군구명, 'address.법정읍면동명': address.법정읍면동명},
+      {lat: {$gt: lat - orderbot.LAT_DIST, $lt: lat + orderbot.LAT_DIST}, lng: {$gt: lng - orderbot.LNG_DIST, $lt: lng + orderbot.LNG_DIST}}
+    ];
+    // query['address.시도명'] = address.시도명;
+    // query['address.시군구명'] = address.시군구명;
+    // // query['address.행정동명'] = address.행정동명;
+    // query['address.법정읍면동명'] = address.법정읍면동명;
+    // query.lat = {$gt: lat - orderbot.LAT_DIST, $lt: lat + orderbot.LAT_DIST};
+    // query.lng = {$gt: lng - orderbot.LNG_DIST, $lt: lng + orderbot.LNG_DIST};
 
     model.find(query).limit(type.MAX_LIST).lean().exec(function(err, docs) {
-      task.doc = docs;
-      task.restaurant = docs;
-      context.dialog.restaurant = docs;
+      console.log(err);
+      // console.log(docs);
+      var hhmm = new Date().toString().split(' ')[4].substring(0, 5);
+      // hhmm = '03:00';
+      var defaultStart = '12:00', defautEnd = '24:00';
+      for (var i = 0; docs && i < docs.length; i++) {
+        var doc = docs[i];
+
+        var dist;
+        if(doc.franchise) dist = orderbot.franchiseDist[doc.franchise.toString()];
+        if(!dist && doc.category && doc.category.length > 0) dist = orderbot.categoryDist[doc.category[0]];
+
+        if(dist) {
+          var distance = addressModule.getDistanceFromGeocode(lat, lng, doc.lat, doc.lng);
+          // console.log(doc.name, distance, JSON.stringify(dist));
+
+          if (dist.dist && dist.법정동) {
+            if (dist.dist < distance && doc.address.법정읍면동명 != address.법정읍면동명) {
+              docs.splice(i, 1);
+              i--;
+              continue;
+            }
+          } else if (dist.dist) {
+            if(dist.dist < distance) {
+              docs.splice(i, 1); i--;
+              continue;
+            }
+          } else if (dist.법정동 === 1) {
+            if(doc.address.법정읍면동명 != address.법정읍면동명) {
+              docs.splice(i, 1); i--;
+              continue;
+            }
+          }
+        }
+
+        if(doc.businessHours && doc.businessHours.length > 0) {
+          if((doc.businessHours[0].end > doc.businessHours[0].start && (hhmm < doc.businessHours[0].start || hhmm > doc.businessHours[0].end)) ||
+            (doc.businessHours[0].end < doc.businessHours[0].start && (hhmm < doc.businessHours[0].start && hhmm > doc.businessHours[0].end))) {
+            docs[i].openStatus = '(배달 준비중)';
+            docs[i].isOpen = false;
+            // docs[i].isOpen = true;
+          } else {
+            docs[i].isOpen = true;
+          }
+        } else {
+          if (hhmm < defaultStart || hhmm > defautEnd) {
+            docs[i].openStatus = '(배달 준비중)';
+            docs[i].isOpen = false;
+            // docs[i].isOpen = true;
+          } else {
+            docs[i].isOpen = true;
+          }
+        }
+
+        if(!docs[i].minOrder && docs[i].minOrder == 0) docs[i].minOrder = 10000;
+
+      }
+
+      // 프랜차이즈 중복 없애기
+      var franchises = {};
+      for (var i = 0; docs && i < docs.length; i++) {
+        var doc = docs[i];
+        if(doc.franchise) franchises[doc.franchise] = true;
+      }
+
+      for (var i = 0; Object.keys(franchises).length > 0 && i < docs.length; i++) {
+        var doc = docs[i];
+        if (franchises[doc.franchise] === true) {
+          console.log('first' ,i, doc.name, franchises[doc.franchise]);
+          franchises[doc.franchise] = false;
+        } else if (franchises[doc.franchise] === false) {
+          console.log('del' ,i, doc.name, franchises[doc.franchise]);
+          docs.splice(i, 1);
+          i--;
+        }
+      }
+
+      if(docs) {
+        task.doc = docs;
+        task.restaurant = docs;
+        context.dialog.restaurant = docs;
+      }
+
+      // console.log(docs);
+
       callback(task, context);
     });
-
   }
 };
 
 exports.categoryRestaurants = categoryRestaurants;
 
-var franchiseMenuType = {
+var menuType = {
   name: 'menu',
   typeCheck: type.mongoTypeCheck,
+  // dialog: true,
   mongo: {
     model: 'franchiseMenus',
     queryFields: ['name'],
@@ -131,13 +381,38 @@ var franchiseMenuType = {
   },
   exclude: ['치킨', '피자', '버거', '햄버거'],
   preType: function(task, context, type, callback) {
-    type.query = {franchise: context.dialog.restaurant.franchise};
+    var restaurant;
+
+    if(context.dialog.orderRestaurant) restaurant = context.dialog.orderRestaurant;
+    else restaurant = context.dialog.restaurant;
+
+    if(restaurant.franchise &&
+      (restaurant.isMenuExist !== true)) {
+      type.query = {franchise: restaurant.franchise};
+      type.mongo.model = 'franchiseMenus';
+    } else {
+      type.query = {restaurant: restaurant._id};
+      type.mongo.model = 'menus';
+    }
+
     callback(task, context);
   }
 };
 
-exports.franchiseMenuType = franchiseMenuType;
+exports.menuType = menuType;
 
+
+var cartType = {
+  name: 'delMenu',
+  typeCheck: type.contextListCheck,
+  list: 'menus',
+  mongo: {
+    queryFields: ['name'],
+    minMatch: 1
+  }
+};
+
+exports.cartType = cartType;
 
 function mongoQueryTypeCheck(text, format, inDoc, context, callback) {
   logger.debug('');
@@ -316,13 +591,22 @@ function mongoQueryTypeCheck(text, format, inDoc, context, callback) {
 exports.mongoQueryTypeCheck = mongoQueryTypeCheck;
 
 
-function frachiseMenuCategoryAction(task, context, callback) {
-  var model = mongoose.model('FranchiseMenu');
-
-  var query = {franchise: context.dialog.restaurant.franchise};
+function menuCategoryAction(task, context, callback) {
+  var model, query, sort;
+  if(context.dialog.orderRestaurant.franchise &&
+    (context.dialog.orderRestaurant.isMenuExist !== true)) {
+    model = mongoose.model('FranchiseMenu');
+    query = {franchise: context.dialog.orderRestaurant.franchise};
+    sort = {'created': -1};
+  } else {
+    model = mongoose.model('Menu');
+    query = {restaurant: context.dialog.orderRestaurant._id};
+    sort = {'_id': -1};
+  }
 
   model.aggregate([
     {$match: query},
+    {$sort: sort},
     {$group: {
       _id: '$category',
       category: {$first: '$category'}
@@ -350,24 +634,34 @@ function frachiseMenuCategoryAction(task, context, callback) {
   });
 }
 
-exports.frachiseMenuCategoryAction = frachiseMenuCategoryAction;
+exports.menuCategoryAction = menuCategoryAction;
 
-function franchiseMenuAction(task, context, callback) {
-  var model = mongoose.model('FranchiseMenu');
+function menuAction(task, context, callback) {
+  var model, query, sort;
+  if(context.dialog.orderRestaurant.franchise &&
+    (context.dialog.orderRestaurant.isMenuExist !== true)) {
+    model = mongoose.model('FranchiseMenu');
+    query = {franchise: context.dialog.orderRestaurant.franchise,
+      category: context.dialog.category.name};
+    sort = {'created': +1};
+  } else {
+    model = mongoose.model('Menu');
+    query = {restaurant: context.dialog.orderRestaurant._id,
+      category: context.dialog.category.name};
+    sort = {'_id': +1};
+  }
 
-  var query = {franchise: context.dialog.restaurant.franchise,
-  category: context.dialog.category.name};
+  // console.log(query);
 
-  console.log(query);
-
-  model.find(query).limit(type.MAX_LIST).lean().exec(function(err, docs) {
+  model.find(query).limit(type.MAX_LIST).sort(sort).lean().exec(function(err, docs) {
     task.doc = docs;
     context.dialog.menu = docs;
     callback(task, context);
   });
 }
 
-exports.franchiseMenuAction = franchiseMenuAction;
+exports.menuAction = menuAction;
+
 
 
 var nMapTask = {
@@ -491,21 +785,28 @@ var nMapTask = {
 exports.nMapTask = nMapTask;
 
 function menuAddAction(task, context, callback) {
-  if(!context.dialog.menus) context.dialog.menus = [];
+  // if(!context.dialog.menus) context.dialog.menus = [];
 
-  if((task && task.menu) || context.dialog.menu) {
-    var _menu = task.menu || context.dialog.menu;
-    if(context.dialog.option) {
-      _menu.name += ' ' + context.dialog.option.name;
-      _menu.price = context.dialog.option.price;
+  if(/*(task && task.menu) || */context.dialog.orderMenu) {
+    var _menu = /*task.menu || */context.dialog.orderMenu;
+    if(context.dialog.orderOption) {
+      _menu.name += ' ' + context.dialog.orderOption.name;
+      _menu.price = context.dialog.orderOption.price;
     }
+    _menu.count = context.dialog.count;
 
     context.dialog.menus.push(_menu);
   }
 
-  context.dialog.addedMenu = utils.clone(context.dialog.menu);
+  context.dialog.totalPrice = 0;
+  for(var i in context.dialog.menus) {
+    context.dialog.totalPrice += context.dialog.menus[i].price * context.dialog.menus[i].count;
+  }
 
-  context.dialog.menu = undefined;
+  // context.dialog.addedMenu = utils.clone(context.dialog.menu);
+
+  // context.dialog.menu = undefined;
+  // context.dialog.option = undefined;
 
   callback(task, context);
 }
@@ -539,8 +840,10 @@ function saveRestaurantTask(task, context, callback) {
 exports.saveRestaurantTask = saveRestaurantTask;
 
 function menuResetAction(task, context, callback) {
-  context.dialog.menus = undefined;
+  context.dialog.menus = [];
+  // context.dialog.menus = undefined;
   context.dialog.menu = undefined;
+  context.dialog.totalPrice = 0;
 
   callback(task, context);
 }
@@ -568,3 +871,43 @@ function menuCallback(dialog, context, callback) {
 
 exports.menuCallback = menuCallback;
 
+function isRestaurantIndistance(context, restaurant) {
+    var lng, lat;
+    if(context.dialog.address) {
+      lng = context.dialog.lng;
+      lat = context.dialog.lat;
+    } else if(context.user.address) {
+      lng = context.user.lng;
+      lat = context.user.lat;
+    }
+
+    var dist;
+    var doc = restaurant;
+    if(doc.franchise) dist = orderbot.franchiseDist[doc.franchise.toString()];
+    if(!dist && doc.category && doc.category.length > 0) dist = orderbot.categoryDist[doc.category[0]];
+
+    if(dist) {
+      var distance = addressModule.getDistanceFromGeocode(lat, lng, doc.lat, doc.lng);
+
+      console.log(lat, lng, doc.lat, doc.lng, dist.dist, distance);
+
+      if (dist.dist && dist.법정동) {
+        if (dist.dist < distance && doc.address.법정읍면동명 != addressModule.법정읍면동명) {
+          return false;
+        }
+      } else if (dist.dist) {
+        if(dist.dist < distance) {
+          return false;
+        }
+      } else if (dist.법정동 === 1) {
+        if(doc.address.법정읍면동명 != addressModule.법정읍면동명) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+}
+
+
+exports.isRestaurantIndistance = isRestaurantIndistance;

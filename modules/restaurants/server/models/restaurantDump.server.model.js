@@ -25,6 +25,7 @@ var RestaurantDumpSchema = new Schema({
   address1: String,
   address2: String,
   phone: String,
+  phone1: String,
   homepage: String,
   photo: String,
   description: String,
@@ -36,13 +37,13 @@ var RestaurantDumpSchema = new Schema({
   isOpen: Boolean,
   minOrder: Number,
   payment: [String],
-  businessHours: {
-    day: String,
-    hours: {
-      from: Date,
-      to: Date
+  businessHours: [
+    {
+      day: String,
+      start: String,
+      end: String
     }
-  },
+  ],
   businessHourStr: String,
 
   updated: {

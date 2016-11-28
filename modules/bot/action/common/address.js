@@ -90,7 +90,7 @@ function searchAddress(task, context, callback) {
   var query = {};
   var 시도명, 시군구명, 읍면동명, 행정동명, 도로명, 리명, 본번, 부번, 상세주소, 도로명상세주소;
 
-  var 지번Re = /(?:(경기|경기도|강원|강원도|충북|충청북도|충남|충청남도|전북|전라북도|전남|전라남도|경북|경상북도|경남|경상남도|제주|제주도|제주특별자치도|서울|서울시|서울특별시|인천|인천시|인천광역시|대전|대전시|대전광역시|대구|대구시|대구광역시|광주|광주시|광주광역시|부산|부산시|부산광역시|울산|울산시|울산광역시|세종|세종시|세종특별시|세종특별자치시)\s*)?(?:([가-힣]+시|[가-힣]+군|[가-힣]+구)\s*)?(?:[가-힣]+구\s*)?(?:(?:([가-힣]+읍|[가-힣]+면|[가-힣]+동|[가-힣]+[\s0-9]+가)|([가-힣]+\d+읍|[가-힣]+\d+면|[가-힣]+\d+동))|(?:(?:[가-힣]+읍\s+|[가-힣]+면\s+)?([가-힣]+[\s0-9]*번?로[\s0-9]*번?[가나다라마바사아자차카타파하]?길|[가-힣]+[\s0-9]*번?[가나다라마바사아자차카타파하]?길|[가-힣]+[\s0-9]*번?로)))\s*([가-힣]+\d*리)?\s*(\d+)(?:-\s*(\d+))?(?:(?:\s*,?\s*|\s+)([^\\(]*))?(?:\s*\(([^,\s]+)(?:\s*,?\s*([^\\)]*))?\))?/i;
+  var 지번Re = /(?:(경기도|경기|강원도|강원|충청북도|충북|충청남도|충남|전라북도|전북|전라남도|전남|경상북도|경북|경상남도|경남|제주특별자치도|제주도|제주|서울특별시|서울시|서울|인천광역시|인천시|인천|대전광역시|대전시|대전|대구광역시|대구시|대구|광주광역시|광주시|광주|부산광역시|부산시|부산|울산광역시|울산시|울산|세종특별자치시|세종특별시|세종시|세종)\s*)?(?:([가-힣]+시|[가-힣]+군|[가-힣]+구)\s*)?(?:[가-힣]+구\s*)?(?:(?:([가-힣]+읍|[가-힣]+면|[가-힣]+동|[가-힣]+[\s0-9]+가)|([가-힣]+\d+읍|[가-힣]+\d+면|[가-힣]+\d+동))|(?:(?:[가-힣]+읍\s+|[가-힣]+면\s+)?([가-힣]+[\s0-9]*번?로[\s0-9]*번?[가나다라마바사아자차카타파하]?길|[가-힣]+[\s0-9]*번?[가나다라마바사아자차카타파하]?길|[가-힣]+[\s0-9]*번?로)))\s*([가-힣]+\d*리)?\s*(\d+)?(?:\s*-\s*(\d+))?(?:(?:\s*,?\s*|\s+)([^\\(]*))?(?:\s*\(([^,\s]+)(?:\s*,?\s*([^\\)]*))?\))?/i;
   var matched = task.inRaw.match(지번Re);
   if(matched != null) {
     if (matched[1] != null) {
@@ -137,22 +137,22 @@ function searchAddress(task, context, callback) {
     if(도로명) {
       도로명 = 도로명.replace(/\s/, '');
       query.도로명 = 도로명;
-      query.건물본번 = 본번;
+      if(본번) query.건물본번 = 본번;
       if(부번) query.건물부번 = 부번;
-      else query.건물부번 = '0';
+      else if(본번) query.건물부번 = '0';
     } else if(읍면동명) {
       query.법정읍면동명 = 읍면동명;
       if(리명) query.법정리명 = 리명;
-      else query.법정리명 = '';
-      query.지번본번 = 본번;
+      // else query.법정리명 = '';
+      if(본번) query.지번본번 = 본번;
       if(부번) query.지번부번 = 부번;
-      else query.지번부번 = '0';
+      else if(본번) query.지번부번 = '0';
     } else if(행정동명) {
       행정동명 = 행정동명.replace(/\s/, '');
       query.행정동명 = 행정동명;
-      query.지번본번 = 본번;
+      if(본번) query.지번본번 = 본번;
       if(부번) query.지번부번 = 부번;
-      else query.지번부번 = '0';
+      else if(본번) query.지번부번 = '0';
     }
 
     if(시도명) query.시도명 = 시도명;
@@ -190,7 +190,7 @@ function searchAddress(task, context, callback) {
 
   task.doc = null;
 
-  // logger.debug(JSON.stringify(query));
+  // console.log(JSON.stringify(query));
 
   if(Object.keys(query).length == 0) {
     callback(task, context);
@@ -218,7 +218,9 @@ function searchAddress(task, context, callback) {
       if(err) {
         logger.debug('searchAddress : ' + task.inRaw + ' ' + err);
       } else {
-        // if(docs.length == 0) logger.debug('searchAddress: ' + task.inRaw + ' / count: ' + docs.length);
+        // if(docs.length == 0)
+        //   logger.debug('searchAddress: ' + task.inRaw + ' / count: ' + docs.length);
+        console.log(docs.length);
 
         var 시군구Re = /(?:(경기|경기도|강원|강원도|충북|충청북도|충남|충청남도|전북|전라북도|전남|전라남도|경북|경상북도|경남|경상남도|제주|제주도|제주특별자치도|서울|서울시|서울특별시|인천|인천시|인천광역시|대전|대전시|대전광역시|대구|대구시|대구광역시|광주|광주시|광주광역시|부산|부산시|부산광역시|울산|울산시|울산광역시|세종|세종시|세종특별시|세종특별자치시)\s*)?(?:([가-힣]+시|[가-힣]+군|[가-힣]+구)\s*)?(?:[가-힣]+구\s*)?/g;
         if(docs.length > 1) {
@@ -263,40 +265,64 @@ function searchAddress(task, context, callback) {
         for (var i = 0; i < docs.length && i < 10; i++) {
           var doc = docs[i];
 
-          if(docs.length > 1) {
-            if(!(시도명 && 시도명 == doc.시도명 && 시군구명 && doc.시군구명)) continue;
+          if(본번) {
+            if(docs.length > 1) {
+              if(!(시도명 && 시도명 == doc.시도명 && 시군구명 && doc.시군구명)) continue;
+            }
+            var 상세주소Re = new RegExp(doc.시군구용건물명 + '\\s+', 'i');
+            if(상세주소 && doc.시군구용건물명 != '') 도로명상세주소 = 상세주소.replace(상세주소Re, '');
+
+            var _doc = {
+              시도명: doc.시도명,
+              시군구명: doc.시군구명,
+              법정읍면동명: doc.법정읍면동명,
+              법정리명: doc.법정리명,
+              행정동명: doc.행정동명,
+              지번본번: doc.지번본번,
+              지번부번: doc.지번부번,
+              도로명: doc.도로명,
+              건물본번: doc.건물본번,
+              건물부번: doc.건물부번,
+              시군구용건물명: doc.시군구용건물명,
+              도로명코드: doc.도로명코드,
+              읍면동일련번호: doc.읍면동일련번호
+            };
+
+            _doc.지번주소 = doc.시도명 + ' ' + doc.시군구명 + ' ' + doc.법정읍면동명 + ' ' + (doc.법정리명 != '' ? doc.법정리명 + ' ': '') +
+              doc.지번본번 + (doc.지번부번 != '0' ? '-' + doc.지번부번 : '') + (상세주소 != undefined ? ' ' + 상세주소 : '');
+
+            _doc.도로명주소 = doc.시도명 + ' ' + doc.시군구명 + ' ' + doc.도로명 + ' ' + doc.건물본번 + (doc.건물부번 != '0' ? '-' + doc.건물부번: '') +
+              (도로명상세주소 != undefined ? ', ' + 도로명상세주소 : '') + ' (' + doc.법정읍면동명 + (doc.시군구용건물명 != '' ? ', ' + doc.시군구용건물명 : '') + ')';
+
+            _doc.상세주소 = 상세주소;
+
+            _doc.in = task.inRaw;
+
+            if(Array.isArray(task.doc)) task.doc.push(_doc);
+            else if(task.doc) task.doc = [task.doc, _doc];
+            else task.doc = utils.clone(_doc);
+
+          } else {
+            if(읍면동명) {
+              var _doc = {
+                시도명: doc.시도명,
+                시군구명: doc.시군구명,
+                법정읍면동명: doc.법정읍면동명,
+                법정리명: doc.법정리명,
+                행정동명: doc.행정동명
+              };
+
+              _doc.지번주소 = doc.시도명 + ' ' + doc.시군구명 + ' ' + doc.법정읍면동명 + ' ' + (doc.법정리명 != '' ? doc.법정리명 + ' ': '');
+
+              _doc.in = task.inRaw;
+
+              if(Array.isArray(task.doc)) task.doc.push(_doc);
+              else if(task.doc) task.doc = [task.doc, _doc];
+              else task.doc = utils.clone(_doc);
+
+              break;
+            }
           }
-
-          var 상세주소Re = new RegExp(doc.시군구용건물명 + '\\s+', 'i');
-          if(상세주소 && doc.시군구용건물명 != '') 도로명상세주소 = 상세주소.replace(상세주소Re, '');
-
-          var _doc = {
-            시도명: doc.시도명,
-            시군구명: doc.시군구명,
-            법정읍면동명: doc.법정읍면동명,
-            법정리명: doc.법정리명,
-            행정동명: doc.행정동명,
-            지번본번: doc.지번본번,
-            지번부번: doc.지번부번,
-            도로명: doc.도로명,
-            건물본번: doc.건물본번,
-            건물부번: doc.건물부번,
-            시군구용건물명: doc.시군구용건물명,
-            도로명코드: doc.도로명코드,
-            읍면동일련번호: doc.읍면동일련번호
-          };
-
-          _doc.지번주소 = doc.시도명 + ' ' + doc.시군구명 + ' ' + doc.법정읍면동명 + ' ' + (doc.법정리명 != '' ? doc.법정리명 + ' ': '') +
-            doc.지번본번 + (doc.지번부번 != '0' ? '-' + doc.지번부번 : '') + (상세주소 != undefined ? ' ' + 상세주소 : '');
-
-          _doc.도로명주소 = doc.시도명 + ' ' + doc.시군구명 + ' ' + doc.도로명 + ' ' + doc.건물본번 + (doc.건물부번 != '0' ? '-' + doc.건물부번: '') +
-            (도로명상세주소 != undefined ? ', ' + 도로명상세주소 : '') + ' (' + doc.법정읍면동명 + (doc.시군구용건물명 != '' ? ', ' + doc.시군구용건물명 : '') + ')';
-
-          _doc.in = task.inRaw;
-
-          if(Array.isArray(task.doc)) task.doc.push(_doc);
-          else if(task.doc) task.doc = [task.doc, _doc];
-          else task.doc = utils.clone(_doc);
 
           // logger.debug('searchAddress: ' +
           //   task.inRaw + ' / ' +
@@ -308,6 +334,8 @@ function searchAddress(task, context, callback) {
           // + doc.상세건물명 + ' ' + doc.도로명코드 + ',' + doc.읍면동일련번호 + ', ' + doc.건물관리번호
         }
       }
+
+      // console.log(task.doc);
       callback(task, context);
 
     })
@@ -1025,3 +1053,172 @@ exports.searchTest = searchTest;
 // insertTest({}, {}, function(t, c) {
 //   console.log('end');
 // });
+
+function 시도명변경(str) {
+  if (str == '경기') return'경기도';
+  else if (str == '강원') return'강원도';
+  else if (str == '충북') return'충청북도';
+  else if (str == '충남') return'충청남도';
+  else if (str == '전북') return'전라북도';
+  else if (str == '전남') return'전라남도';
+  else if (str == '경북') return'경상북도';
+  else if (str == '경남') return'경상남도';
+  else if (str == '제주') return'제주특별자치도';
+  else if (str == '제주도') return'제주특별자치도';
+  else if (str == '서울') return'서울특별시';
+  else if (str == '서울시') return'서울특별시';
+  else if (str == '인천') return'인천광역시';
+  else if (str == '인천시') return'인천광역시';
+  else if (str == '대전') return'대전광역시';
+  else if (str == '대전시') return'대전광역시';
+  else if (str == '대구') return'대구광역시';
+  else if (str == '대구시') return'대구광역시';
+  else if (str == '광주') return'광주광역시';
+  else if (str == '광주시') return'광주광역시';
+  else if (str == '부산') return'부산광역시';
+  else if (str == '부산시') return'부산광역시';
+  else if (str == '울산') return'울산광역시';
+  else if (str == '울산시') return'울산광역시';
+  else if (str == '세종') return'세종특별자치시';
+  else if (str == '세종시') return'세종특별자치시';
+  else return str;
+}
+
+exports.시도명변경 = 시도명변경;
+
+
+function 시도명역변경(str) {
+  if (str == '경기도') return '경기';
+  else if (str == '강원도') return '강원';
+  else if (str == '충청북도') return '충북';
+  else if (str == '충청남도') return '충남';
+  else if (str == '전라북도') return '전북';
+  else if (str == '전라남도') return '전남';
+  else if (str == '경상북도') return '경북';
+  else if (str == '경상남도') return '경남';
+  else if (str == '제주특별자치도') return '제주';
+  else if (str == '서울특별시') return '서울';
+  else if (str == '인천광역시') return '인천';
+  else if (str == '대전광역시') return '대전';
+  else if (str == '대구광역시') return '대구';
+  else if (str == '광주광역시') return '광주';
+  else if (str == '부산광역시') return '부산';
+  else if (str == '울산광역시') return '울산';
+  else if (str == '세종특별자치시') return '세종';
+  else return str;
+}
+
+exports.시도명역변경 = 시도명역변경;
+
+function naverGeocode(task, context, callback) {
+  // var query = {query: task.address.법정읍면동명 + ' ' + task.address.지번본번 + ' ' + task.address.지번부번};
+
+  var query = {query: task.address.지번주소};
+  var request = require('request');
+
+  request({
+    url: 'https://openapi.naver.com/v1/map/geocode?encoding=utf-8&coord=latlng&output=json',
+    method: 'GET',
+    qs: query,
+    headers: {
+      'Host': 'openapi.naver.com',
+      'Accept': '*/*',
+      'Content-Type': 'application/json',
+      'X-Naver-Client-Id': context.bot.naver.clientId,
+      'X-Naver-Client-Secret': context.bot.naver.clientSecret
+    }
+  }, function(error, response, body) {
+    if (!error && response.statusCode == 200) {
+      // console.log(body);
+      var doc = JSON.parse(body);
+      task.lng=doc.result.items[0].point.x;
+      task.lat=doc.result.items[0].point.y;
+      console.log('lat: ' + task.lat + ', lng: ' + task.lng);
+    }
+    callback(task, context);
+  });
+}
+
+exports.naverGeocode = naverGeocode;
+
+
+function naverReverseGeocode(task, context, callback) {
+  // var query = {query: task.address.법정읍면동명 + ' ' + task.address.지번본번 + ' ' + task.address.지번부번};
+
+  var query = {query: task.lng+','+task.lat};
+  var request = require('request');
+
+  request({
+    url: 'https://openapi.naver.com/v1/map/reversegeocode?encoding=utf-8&coord=latlng&output=json',
+    method: 'GET',
+    qs: query,
+    headers: {
+      'Host': 'openapi.naver.com',
+      'Accept': '*/*',
+      'Content-Type': 'application/json',
+      'X-Naver-Client-Id': context.bot.naver.clientId,
+      'X-Naver-Client-Secret': context.bot.naver.clientSecret
+    }
+  }, function(error, response, body) {
+    if (!error && response.statusCode == 200) {
+      // console.log(body);
+      var doc = JSON.parse(body);
+      task.address=doc.result.items[0].address;
+      console.log('address: ' + task.address);
+    }
+    callback(task, context);
+  });
+}
+
+exports.naverReverseGeocode = naverReverseGeocode;
+
+
+function getDistanceFromGeocode(lat1,lng1,lat2,lng2) {
+  function deg2rad(deg) {
+    return deg * (Math.PI/180)
+  }
+
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2-lat1);  // deg2rad below
+  var dLon = deg2rad(lng2-lng1);
+  var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  var d = R * c; // Distance in km
+  return d;
+}
+
+exports.getDistanceFromGeocode = getDistanceFromGeocode;
+
+
+function naverGeoSearch(task, context, callback) {
+  // var query = {query: task.address.법정읍면동명 + ' ' + task.address.지번본번 + ' ' + task.address.지번부번};
+  console.log('naverGeoSearch');
+
+  var query = {query: task.query};
+  var request = require('request');
+
+  console.log('naverGeoSearch: query=' + task.query);
+
+  request({
+    url: 'https://openapi.naver.com/v1/search/local.json?&display=10&start=1&sort=random',
+    method: 'GET',
+    qs: query,
+    headers: {
+      'Host': 'openapi.naver.com',
+      'Accept': '*/*',
+      'Content-Type': 'application/json',
+      'X-Naver-Client-Id': context.bot.naver.clientId,
+      'X-Naver-Client-Secret': context.bot.naver.clientSecret
+    }
+  }, function(error, response, body) {
+    if (!error && response.statusCode == 200) {
+      // console.log(body);
+      var doc = JSON.parse(body);
+      task.doc = doc.items;
+      console.log('naverGeoSearch: doc=' + body);
+    }
+    callback(task, context);
+  });
+}
+
+exports.naverGeoSearch = naverGeoSearch;

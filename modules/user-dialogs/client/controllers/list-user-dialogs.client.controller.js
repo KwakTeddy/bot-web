@@ -13,3 +13,4 @@
     vm.userDialogs = userDialogs;
   }
 })();
+

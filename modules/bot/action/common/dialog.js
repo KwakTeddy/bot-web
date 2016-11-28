@@ -85,6 +85,7 @@ exports.findUpDialog = findUpDialog;
 
 function matchGlobalDialogs(inRaw, inNLP, dialogs, context, print, callback) {
   context.dialog.typeMatches = {};
+  context.dialog.typeInits = {};
   context.dialog.isFail = false;
 
   matchDialogs(inRaw, inNLP, context.bot.commonDialogs, context, print, function(matched) {
@@ -118,11 +119,15 @@ function matchGlobalDialogs(inRaw, inNLP, dialogs, context, print, callback) {
 
 exports.matchGlobalDialogs = matchGlobalDialogs;
 
-function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback) {
+function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback, options) {
   context.dialog.typeMatches = {};
+  // context.dialog.typeInits = {};
   context.dialog.isFail = false;
 
+  if(options && options.commonCallChild == 1) {options.commonCallChild = null; options.dontMatch = 1;}
   matchDialogs(inRaw, inNLP, context.bot.commonDialogs, context, print, function(matched) {
+    if(options && options.dontMatch) options.dontMatch = null;
+
     if(matched) {
       callback(true);
     } else {
@@ -133,7 +138,24 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback) {
           for (var i = 0; i < dialogs.length; i++) {
             var dialog = dialogs[i];
             if(dialog.input == undefined || dialog.name == NO_DIALOG_NAME ) {
-              executeDialog(dialog, context, print, callback, {current: context.botUser.currentDialog});
+              // TODO  TASK.inRaw  추가
+              dialog.inRaw = inRaw;
+              dialog.inNLP = inNLP;
+
+              if(dialog.task) {
+                dialog.task.inRaw = inRaw;
+                dialog.task.inNLP = inNLP;
+              }
+              if(context.botUser.currentDialog) {
+                context.botUser.currentDialog.inRaw = null;
+                context.botUser.currentDialog.inNLP = null;
+              }
+
+              var nextOptions;
+              if(options) nextOptions = utils.merge(options, {current: context.botUser.currentDialog}, true);
+              else nextOptions = {current: context.botUser.currentDialog};
+
+              executeDialog(dialog, context, print, callback, nextOptions);
               context.dialog.isFail = true;
               callback(true);
               return;
@@ -146,6 +168,7 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback) {
           context.dialog.inRaw = inRaw;
           context.dialog.inNLP = inNLP;
           context.dialog.typeMatches = {};
+          context.dialog.typeInits = {};
 
           matchDialogs(inRaw, inNLP, context.bot.dialogs, context, print, function(matched) {
             if(matched) {
@@ -157,14 +180,16 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback) {
               }
               callback(true);
             }
-          });
+          }, options);
         }
-      });
+      }, options);
     }
-  });
+  }, options);
 }
 
-function matchDialogs(inRaw, inNLP, dialogs, context, print, callback) {
+function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) {
+  if(options && options.dontMatch == 1) {callback(false);return;}
+
   if(Array.isArray(dialogs)) {
     var eachMatched = false;
     var inDoc = {};
@@ -323,8 +348,11 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback) {
             // }
 
             if(dialog.output.up) {
-              if(context.botUser.currentDialog.parent)
+              if (context.botUser.currentDialog.parent)
                 dialog.parent = context.botUser.currentDialog.parent.parent;
+            } else if(context.botUser.currentDialog && (dialog.output.call == context.botUser.currentDialog.name ||
+              dialog.output.callChild == context.botUser.currentDialog.name)) {
+              dialog.parent = context.botUser.currentDialog.parent;
             } else { // TODO 자기 자신으로 parent 참조하기 막기
               dialog.parent = context.botUser.currentDialog;
             }
@@ -332,7 +360,15 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback) {
             if(context.botUser.currentDialog) {
               dialog.top = context.botUser.currentDialog.top;
               // if(context.botUser.currentDialog.upCallback) dialog.upCallback = context.botUser.currentDialog.upCallback;
-              if(context.botUser.currentDialog.returnDialog) dialog.returnDialog = context.botUser.currentDialog.returnDialog;
+              // if(context.botUser.currentDialog.returnDialog) dialog.returnDialog = context.botUser.currentDialog.returnDialog;
+            }
+
+            var nextOptions;
+            if(options && (options.prefix || options.output || options.postfix)) {
+              nextOptions = {};
+              if(options.prefix) nextOptions.prefix = options.prefix;
+              if(options.post) nextOptions.post = options.postfix;
+              if(options.output) nextOptions.output = options.output;
             }
 
             var _dialog = utils.cloneWithParent(dialog);
@@ -349,9 +385,10 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback) {
 
             _dialog.task = utils.mergeWithClone(_dialog.task, inDoc);
 
-            _dialog.inRaw = inRaw;
-            _dialog.inNLP = inNLP;
-            executeDialog(_dialog, context, print, callback);
+            _dialog.inRaw = _dialog.task.inRaw = inRaw;
+            _dialog.inNLP = _dialog.task.inNLP = inNLP;
+            // executeDialog(_dialog, context, print, callback, nextOptions);
+            executeDialog(_dialog, context, print, callback, nextOptions);
             eachMatched = true; _cb(true);
           } else {
             eachMatched = false; _cb(null);
@@ -385,22 +422,29 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback) {
 exports.matchDialogs = matchDialogs;
 
 
-
 function executeDialog(dialog, context, print, callback, options) {
-  if(dialog.name || dialog.input) logger.debug('executeDialog: ' + toDialogString(dialog));
-
+  if(dialog.name || dialog.input) logger.debug('executeDialog: ' + toDialogString(dialog) + ' ========== ' + (options?options.prefix: ''));
 
   // context.botUser.currentDialog = null;
   context.user.pendingCallback = null;
 
   if(options && options.current) {
-    dialog.inRaw = options.current.inRaw;
-    dialog.inNLP = options.current.inNLP;
+    if(options.current.inRaw) dialog.inRaw = options.current.inRaw;
+    if(options.current.inRaw) dialog.inNLP = options.current.inNLP;
 
     if(options.current.output.repeat !== 1 && options.current.output.up !== 1) {
-      dialog.parent = options.current.parent;
+      // if(options.callChild && options.current.parent && options.current.parent.parent)
+      //   dialog.parent = options.current.parent.parent;
 
-      if(options.current.top) dialog.top = options.current.top;
+      if(options.current.parent && options.current.parent.parent && dialog == options.current.parent.parent)
+        dialog.parent = options.current.parent.parent.parent;
+      else if(options.current.parent && dialog == options.current.parent)
+        dialog.parent = options.current.parent.parent;
+      else
+        dialog.parent = options.current.parent;
+
+      if(options.top) dialog.top = findDialog(null, context, options.top);
+      else if(options.current.top) dialog.top = options.current.top;
       else dialog.top = options.current;
     }
 
@@ -409,8 +453,20 @@ function executeDialog(dialog, context, print, callback, options) {
 
     if(options.current.output.upCallback) options.current.parent.upCallback = options.current.output.upCallback;
 
-    if(options.current.returnDialog) dialog.returnDialog = options.current.returnDialog;
-    else if(options.current.output.returnCall) dialog.returnDialog = options.current.parent;
+    // if(options.current.returnDialog) context.botUser.returnDialog = options.current.returnDialog;
+    if(options.current.output.returnCall || options.current.output.returnCallChild) {
+      context.botUser.returnCall = {};
+      if(options.returnDialog) {
+        var _dialog = findDialog(null, context, options.returnDialog);
+        if(_dialog) context.botUser.returnCall.returnDialog = _dialog;
+        else context.botUser.returnCall.returnDialog = options.current.parent;
+      } else context.botUser.returnCall.returnDialog = options.current.parent;
+
+      if(options.returnMethod) context.botUser.returnCall.returnMethod = options.returnMethod;
+      if(options.returnPrefix) context.botUser.returnCall.returnPrefix = options.returnPrefix;
+      if(options.returnPostfix) context.botUser.returnCall.returnPostfix = options.returnPostfix;
+      if(options.returnOutput) context.botUser.returnCall.returnOutput = options.returnOutput;
+    }
   }
 
   if(!(dialog.output.repeat && dialog.output.options && dialog.output.options.page) && !(options && options.page)) {
@@ -425,7 +481,7 @@ function executeDialog(dialog, context, print, callback, options) {
             cb(null);
           });
         } else {
-          logger.debug('Task action 함수가 없습니다.');
+          // logger.debug('Task action 함수가 없습니다.');
           cb(null);
         }
       } else {
@@ -434,7 +490,25 @@ function executeDialog(dialog, context, print, callback, options) {
     },
 
     function(cb) {
-      if(dialog.output instanceof Function) {
+      var nextOptions = {};
+      if(options && (options.prefix || options.output || options.postfix || options.commonCallChild)) {
+        // if(dialog.output.constructor == String) dialog.output = {output: dialog.output, options: {}};
+        // else if(!nextOptions) nextOptions = {};
+
+        // if(!nextOptions) nextOptions = {};
+        if((!dialog.output.options || !dialog.output.options.prefix) && options.prefix) nextOptions.prefix = options.prefix;
+        if((!dialog.output.options || !dialog.output.options.postfix) && options.post) nextOptions.post = options.postfix;
+        if((!dialog.output.options || !dialog.output.options.output) && options.output) nextOptions.output = options.output;
+        if(options.commonCallChild) nextOptions.commonCallChild = options.commonCallChild;
+      }
+
+      if(options && options.callChild === 1) {
+        context.botUser.currentDialog = dialog;
+
+        matchChildDialogs(dialog.inRaw, dialog.inNLP, dialog.children, context, print, callback, nextOptions);
+        cb(true);
+
+      } else if(dialog.output instanceof Function) {
         dialog.output(dialog, context, print, callback);
         cb(true);
 
@@ -443,8 +517,10 @@ function executeDialog(dialog, context, print, callback, options) {
 
         var _execDialog = function(_dialog, outputName) {
           if(_dialog) {
-            executeDialog(_dialog, context, print, callback, utils.merge(dialog.output.options, {current: dialog}));
+            if(dialog.output.options) nextOptions = utils.mergeWithClone(dialog.output.options, nextOptions);
+            // else if(dialog.output.options) nextOptions = utils.clone(dialog.output.options);
 
+            executeDialog(_dialog, context, print, callback, utils.merge(nextOptions, {current: dialog}, true));
             cb(true);
           } else {
             logger.debug(outputName + ': ' + dialog.output.call + ' Dialog를 찾을 수 없습니다.');
@@ -456,9 +532,17 @@ function executeDialog(dialog, context, print, callback, options) {
           }
         }
 
-        if(dialog.output.return === 1 && dialog.returnDialog) {
-          _dialog = dialog.returnDialog;
-          dialog.returnDialog = null;
+        if(dialog.output.return === 1 && context.botUser.returnCall) {
+          _dialog = context.botUser.returnCall.returnDialog;
+
+          if(!nextOptions) nextOptions = {};
+          if(context.botUser.returnCall.returnMethod == 'callChild') nextOptions.callChild = 1;
+          if(context.botUser.returnCall.returnPrefix) nextOptions.prefix = context.botUser.returnCall.returnPrefix;
+          if(context.botUser.returnCall.returnPostfix) nextOptions.postfix = context.botUser.returnCall.returnPostfix;
+          if(context.botUser.returnCall.returnOutput) nextOptions.output = context.botUser.returnCall.returnOutput;
+
+          context.botUser.returnCall = null;
+
           _execDialog(_dialog, 'return');
         } else if (dialog.output.call) {
           _dialog = findDialog(null, context, dialog.output.call);
@@ -466,6 +550,13 @@ function executeDialog(dialog, context, print, callback, options) {
           // if(dialog.output.upCallback) dialog.upCallback = dialog.output.upCallback;
 
           _execDialog(_dialog, 'call');
+        } else if (dialog.output.callChild) {
+          _dialog = findDialog(null, context, dialog.output.callChild);
+
+          // if(dialog.output.upCallback) dialog.upCallback = dialog.output.upCallback;
+          if(!dialog.output.options) dialog.output.options = {};
+          dialog.output.options.callChild = 1;
+          _execDialog(_dialog, 'callChild');
         } else if (dialog.output.callGlobal) {
           _dialog = findGlobalDialog(null, context, dialog.output.callGlobal);
 
@@ -474,6 +565,12 @@ function executeDialog(dialog, context, print, callback, options) {
           _dialog = findDialog(null, context, dialog.output.returnCall);
 
           _execDialog(_dialog, 'returnCall');
+        } else if (dialog.output.returnCallChild) {
+          _dialog = findDialog(null, context, dialog.output.returnCallChild);
+
+          if(!dialog.output.options) dialog.output.options = {};
+          dialog.output.options.callChild = 1;
+          _execDialog(_dialog, 'returnCallChild');
         } else if (dialog.output.up) {
           _dialog = findUpDialog(dialog, context, print, callback);
 
@@ -497,52 +594,78 @@ function executeDialog(dialog, context, print, callback, options) {
 
           _execDialog(_dialog, 'repeat');
         } else {
-          _dialog = dialog.output;
+          cb(null, dialog.output);
+          // _dialog = dialog.output;
         }
 
       } else if (Array.isArray(dialog.output)) {
-        var ifMatch = undefined, outputs = [];
+        var matchedOutput = undefined, outputs = [];
         async.eachSeries(dialog.output, function(output, cb2) {
           if(output.if) {
             if(output.if.constructor == String) {
               if (eval(output.if)) {
-
-                if(output.task && dialog.task) output.task = utils.merge(output.task, dialog.task);
-                else if(!output.task && dialog.task) output.task = dialog.task;
-
-                output.inRaw = dialog.inRaw;
-                output.inNLP = dialog.inNLP;
-                executeDialog(output, context, print, callback, {current: dialog});
-                cb(true);
+                matchedOutput = output;
+                cb2(true);
+                // if(output.task && dialog.task) output.task = utils.merge(output.task, dialog.task);
+                // // else if(!output.task && dialog.task) output.task = dialog.task;
+                //
+                // output.inRaw = dialog.inRaw;
+                // output.inNLP = dialog.inNLP;
+                // executeDialog(output, context, print, callback, {current: dialog});
+                // cb(true);
 
               } else cb2(null);
             } else if(output.if instanceof Function) {
               output.if(dialog, context, function(matched) {
                 if(matched) {
+                  matchedOutput = output;
+                  cb2(true);
 
-                  if(output.task && dialog.task) output.task = utils.merge(output.task, dialog.task);
-                  else if(!output.task && dialog.task) output.task = dialog.task;
-
-                  output.inRaw = dialog.inRaw;
-                  output.inNLP = dialog.inNLP;
-                  executeDialog(output, context, print, callback, {current: dialog});
-                  cb(true);
+                  // if(output.task && dialog.task) output.task = utils.merge(output.task, dialog.task);
+                  // // else if(!output.task && dialog.task) output.task = dialog.task;
+                  //
+                  // output.inRaw = dialog.inRaw;
+                  // output.inNLP = dialog.inNLP;
+                  // executeDialog(output, context, print, callback, {current: dialog});
+                  // cb(true);
                 } else cb2(null);
               })
             } else {
               cb2(null);
             }
           } else {
-            outputs.push(output);
-            cb2(null);
+            if(output.constructor == String) {
+              outputs.push(output);
+              cb2(null);
+            } else if(output != undefined) {
+              matchedOutput = output;
+              cb2(true);
+            } else {
+              cb2(null);
+            }
           }
         }, function(err) {
-          if(ifMatch) {
-            cb(null, ifMatch);
+          if(matchedOutput) {
+            var output = matchedOutput;
+            if(output.task && dialog.task) output.task = utils.merge(output.task, dialog.task);
+            else if(!output.task && dialog.task) output.task = dialog.task;
+
+            output.inRaw = dialog.inRaw;
+            output.inNLP = dialog.inNLP;
+
+            if(output.task) {
+              output.task.inRaw = dialog.inRaw;
+              output.task.inNLP = dialog.inNLP
+            }
+            if(output.options) nextOptions = utils.mergeWithClone(output.options, nextOptions);
+            // else if(output.options) nextOptions = utils.clone(output.options);
+            executeDialog(output, context, print, callback, utils.merge(nextOptions, {current: dialog}));
+            cb(true);
+            // cb(null, ifMatch);
           } else {
             if(outputs.length > 0) {
-              // executeDialog(outputs[Math.floor(Math.random() * outputs.length)], context, print, callback);
-              cb(null, outputs[Math.floor(Math.random() * outputs.length)]);
+              var index = Math.floor(Math.random() * outputs.length);
+              cb(null, outputs[index]);
             } else {
               cb(null, dialog.output);                                          // 매칭된 if이 없거나 outputs len이 0인 경우
             }
@@ -617,20 +740,17 @@ function executeDialog(dialog, context, print, callback, options) {
         else
           print(context.global.messages.userError);
       } else {
+        // dialog.output.options = null;
         context.botUser.currentDialog = dialog;
+
+        // dialog.inRaw = null;
+        // dialog.inNLP = null;
 
         var _dialog = dialog;
 
         // logger.debug('PendingDialog: ' + toDialogString(_dialog));
 
         if(Array.isArray(_dialog.children)) {
-          // for (var i = 0; i < _dialog.children.length; i++) {
-          //   _dialog.children[i].parent = _dialog;
-          //
-          //   if(_dialog.top) _dialog.children[i].top = _dialog.top;
-          //   else _dialog.children[i].top = _dialog;
-          // }
-
           context.user.pendingCallback = function(inRaw, inNLP, inDoc, context, print) {
             matchChildDialogs(inRaw, inNLP, _dialog.children, context, print, callback);
           }
@@ -688,7 +808,12 @@ function toDialogString(dialog) {
       if(dialog.output.name) str += 'output=' + dialog.output.name + ' ';
       else str += 'output=function ';
     }
-    else if(dialog.output instanceof Object) str += 'output=' + JSON.stringify(dialog.output) + ' ';
+    else if(dialog.output instanceof Object) {
+      try {
+        str += 'output=' + JSON.stringify(dialog.output) + ' ';
+      } catch(error) {
+      }
+    }
   }
   
   if(dialog.children) {
@@ -696,7 +821,6 @@ function toDialogString(dialog) {
   }
 
   return str;
-
 }
 
 
@@ -714,15 +838,28 @@ function executeType(inRaw, inNLP, type, task, context, callback) {
 
     function(cb4) {
       if (context.dialog.typeMatches[type.name] == undefined) {
-        type.typeCheck(type.raw ? inRaw : inNLP, type, task, context, function (inNLP, task, _matched) {
+        var inText;
+
+        if(type.init === true && context.dialog.typeInits[type.name] !== true) {
+          inText = (type.raw) ? context.dialog.inRaw : context.dialog.inNLP;
+          context.dialog.typeInits[type.name] = true;
+        // } else if(type.dialog === true) {
+        //   inText = (type.raw) ? (inRaw || context.dialog.inRaw) : (inNLP || context.dialog.inNLP);
+        } else {
+          inText = (type.raw) ? inRaw : inNLP;
+        }
+
+        type.typeCheck(inText, type, task, context, function (inNLP, task, _matched) {
 
           // logger.debug('matchDialogs: [TYPE] ' + toDialogString(dialog) +
           //   ' CHECK TYPE=' + type.name + ' ' + (_matched ? 'matched' : 'not matched'));
 
           if (_matched) {
             if(task[type.name]) {
-              context.dialog[type.name] = task[type.name];
-              context.dialog.typeMatches[type.name] = task[type.name];
+              if(type.save == undefined || type.save == true) {
+                context.dialog[type.name] = task[type.name];
+                context.dialog.typeMatches[type.name] = task[type.name];
+              }
             }
 
             if (type.context) {
@@ -734,16 +871,18 @@ function executeType(inRaw, inNLP, type, task, context, callback) {
               });
             } else {
               cb4(null, true);
-
             }
 
           } else {
+            if(type.failSave == undefined || type.failSave == true) {
+              context.dialog[type.name] = null;
+            }
             eachMatched2 = false;
             cb4(true, false);
           }
         });
       } else if (context.dialog.typeMatches[type.name] != undefined) {
-        task[type.name] = context.dialog.typeMatches[type.name];
+        if(type.save == undefined || type.save == true) task[type.name] = context.dialog.typeMatches[type.name];
         cb4(null, true);
       } else {
         cb4(null);
