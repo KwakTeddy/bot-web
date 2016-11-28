@@ -37,6 +37,30 @@ var dialogs = [
   output: '예금 안내해 드리겠습니다. url: https://spot.wooribank.com/pot/Dream?withyou=PODEP0001'
 },
 {
+  input: '펀드',
+  output: '펀드 안내해 드리겠습니다. url: https://spot.wooribank.com/pot/Dream?withyou=fn'
+},
+{
+  input: '외환',
+  output: '외환 안내해 드리겠습니다. url: https://spot.wooribank.com/pot/Dream?withyou=fx'
+},
+{
+  input: '보험',
+  output: '보험 안내해 드리겠습니다. url: https://spot.wooribank.com/pot/Dream?withyou=is'
+},
+{
+  input: '신탁',
+  output: '신탁 안내해 드리겠습니다. url: https://spot.wooribank.com/pot/Dream?withyou=POTRT0001'
+},
+{
+  input: 'ISA',
+  output: 'ISA 안내해 드리겠습니다. url: https://spot.wooribank.com/pot/Dream?withyou=IMISA0044'
+},
+{
+  input: ['자주 하다 질문', 'FAQ'],
+  output: 'FAQ 안내해 드리겠습니다. url: https://spot.wooribank.com/pot/Dream?withyou=CQCCS0002'
+},
+{
   input: '콜센터 전화번호',
   output: '어떤 은행 전화번호 찾으시나요?',
   children: [
