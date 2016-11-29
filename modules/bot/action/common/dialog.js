@@ -648,7 +648,11 @@ function executeDialog(dialog, context, print, callback, options) {
           if(matchedOutput) {
             var output = matchedOutput;
             if(output.task && dialog.task) output.task = utils.merge(output.task, dialog.task);
-            else if(!output.task && dialog.task) output.task = dialog.task;
+            else if(!output.task && dialog.task) {
+              output.task = utils.cloneWithParent(dialog.task);
+              output.task.action = null;
+            }
+
 
             output.inRaw = dialog.inRaw;
             output.inNLP = dialog.inNLP;
