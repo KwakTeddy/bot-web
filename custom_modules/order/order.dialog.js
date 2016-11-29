@@ -155,10 +155,10 @@ var dialogs = [
   { name: '휴대폰번호등록', input: {regexp: /~휴대폰.*~변경/g},
     output: '휴대폰번호를 말씀해주세요.',
       children: [
-        { input: {types: [{type : type.mobileType, context: true}]},
+        { input: {types: [{type : type.mobileType, context: false}]},
           task: {action: messages.sendSMSAuth},
           output: [
-            {if: 'false' /*'task.result != "2"'*/, output: {repeat: 1, options: {output: '문자 발송이 안되는데, 휴대폰 번호를 다시 말씀해주세요.'}}},
+            {if: 'dialog.task.result != "SUCCESS"', output: {repeat: 1, options: {output: '문자 발송이 안되는데, 휴대폰 번호를 다시 말씀해주세요.'}}},
             {output: {call: 'SMS인증'}}   // TODO output에 1개 목록 있을 때 task 두번 호출되는 현상
           ]
         },
@@ -173,8 +173,14 @@ var dialogs = [
                     callback(dialog.inRaw.trim() == context.dialog.smsAuth);
                   },
                   task: {action: function(task, context, callback) {
-                    context.dialog.smsAuth == null;
-                    callback(task, context);
+                    context.user['mobile'] = context.dialog['mobile'];
+                    context.user.updates = ['mobile'];
+                    botUser.updateUserContext(context.user, context, function () {
+                      context.user.updates = null;
+
+                      context.dialog.smsAuth == null;
+                      callback(task, context);
+                    });
                   }},
                   output: {output: '휴대폰 번호가 등록 되었습니다.', return: 1}},
                 {output: {call: 'SMS인증', options: {prefix: '인증번호가 틀렸습니다.\n', postfix: '\n0. 이전\n!. 처음'}}}
