@@ -153,6 +153,8 @@ angular.module('core').controller('WebcsController', ['$scope', '$document', 'Au
     var recognizing = false;
     var ignore_onend;
     var start_timestamp;
+    var finalFinish = false, timeoutFinish = false;
+    var regcognitionTimer;
     if (!('webkitSpeechRecognition' in window)) {
       console.log('upgrade');
     } else {
@@ -161,12 +163,15 @@ angular.module('core').controller('WebcsController', ['$scope', '$document', 'Au
       recognition.interimResults = true;
 
       recognition.onstart = function() {
+        console.log('recognition.onstart');
+
         final_transcript = '';
         recognizing = true;
-        console.log('info_speak_now');
       };
 
       recognition.onerror = function(event) {
+        console.log('recognition.onerror');
+
         if (event.error == 'no-speech') {
           console.log('info_no_speech');
           ignore_onend = true;
@@ -186,6 +191,12 @@ angular.module('core').controller('WebcsController', ['$scope', '$document', 'Au
       };
 
       recognition.onend = function() {
+        console.log('recognition.onend');
+
+        recognition.start();
+
+        // recognizeStart();
+
         recognizing = false;
         if (ignore_onend) {
           return;
@@ -194,16 +205,23 @@ angular.module('core').controller('WebcsController', ['$scope', '$document', 'Au
           console.log('info_start');
           return;
         }
-        console.log('');
-        if (window.getSelection) {
-          window.getSelection().removeAllRanges();
-          var range = document.createRange();
-          range.selectNode(document.getElementById('final_span'));
-          window.getSelection().addRange(range);
-        }
+        console.log('on End: ' + final_transcript);
+
+        // vm.sendMsg(final_transcript);
+
+        // if (window.getSelection) {
+        //   window.getSelection().removeAllRanges();
+        //   var range = document.createRange();
+        //   range.selectNode(document.getElementById('final_span'));
+        //   window.getSelection().addRange(range);
+        // }
       };
 
       recognition.onresult = function(event) {
+        console.log(event);
+
+        // ignore_onend = false;
+
         var isFinal = false;
         var interim_transcript = '';
         for (var i = event.resultIndex; i < event.results.length; ++i) {
@@ -216,17 +234,42 @@ angular.module('core').controller('WebcsController', ['$scope', '$document', 'Au
           //   final_transcript += event.results[i][0].transcript;
           //   isFinal = true;
           // } else {
-            interim_transcript += event.results[i][0].transcript;
+          interim_transcript += event.results[i][0].transcript;
           // }
         }
+
+        final_transcript = interim_transcript;
 
         if (final_transcript || interim_transcript) {
           console.log('transcript:' + interim_transcript);
         }
 
         if(isFinal) {
+          console.log('isFinal:' + finalFinish + ',' + timeoutFinish);
+          if(timeoutFinish) {
+            finalFinish = false; timeoutFinish = false;
+            return;
+          }
+          finalFinish = true;
           console.log('isFinal:' + interim_transcript);
           vm.sendMsg(interim_transcript);
+        } else {
+
+          if(regcognitionTimer) clearTimeout(regcognitionTimer);
+          regcognitionTimer = setTimeout(function() {
+            console.log('timeout:' + finalFinish + ',' + timeoutFinish);
+            if(finalFinish) {
+              finalFinish = false; timeoutFinish = false;
+              return;
+            } else if(timeoutFinish) return;
+
+            timeoutFinish = true;
+            console.log('timeout: ' + interim_transcript);
+            if(interim_transcript != undefined && interim_transcript != '') {
+              ignore_onend = true;
+              vm.sendMsg(final_transcript);
+            }
+          }, 2000);
         }
       };
     }
