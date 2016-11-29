@@ -298,7 +298,7 @@ var mobileType = {
   name: 'mobile',
   raw: true,
   typeCheck: regexpTypeCheck,
-  regexp: /\b((?:010[-.]?\d{4}|01[1|6|7|8|9][-.]?\d{3,4})[-.]?\d{4})\b/g,
+  regexp: /\b((?:010[-. ]?\d{4}|01[1|6|7|8|9][-. ]?\d{3,4})[-. ]?\d{4})\b/g,
   checkRequired: function(text, type, inDoc, context) {
     if(text.search(/[^\d-]/g) != -1) return '숫자와 - 기호만 사용할 수 있습니다';
     else if(text.length < 13) return '자리수가 맞지 않습니다';
@@ -1249,28 +1249,69 @@ function contextListCheck(text, format, inDoc, context, callback) {
       }
 
       if(matchConcepts.length > 0) {
-        for (var i = 0; i < matchConcepts.length; i++) {
-          var word = matchConcepts[i];
+        for(var k = 0; context.dialog[format.list] && k < context.dialog[format.list].length; k++) {
+          var doc = context.dialog[format.list][k];
 
-          if(word.length > 1) {
-            for(var k = 0; k < context.dialog[format.list].length; k++) {
-              var doc = context.dialog[format.list][k];
+          var matchCount = 0;
+          matchedWord = '';
+          var matchIndex = -1, matchMin = -1, matchMax = -1;
+          for(var l = 0; l < format.mongo.queryFields.length; l++) {
+            for(var m = 0; m < matchConcepts.length; m++) {
+              var word = matchConcepts[m];
+              matchIndex = doc[format.mongo.queryFields[l]].search(new RegExp(word, 'i'));
 
-              var bExist = false;
-              for(var l = 0; l < matchedDoc.length; l++) {
-                if(matchedDoc[l]._id.id == doc._id.id) {
-                  bExist = true;
-                  break;
-                }
-              }
+              if(matchIndex != -1) {
+                matchCount++;
+                matchedWord += word;
 
-              if(!bExist) {
-                doc.matchRate = 1;
-                matchedDoc.push(doc);
+                var matchOrgIndex = text.search(new RegExp(word, 'i'));
+                if(matchOrgIndex != -1 && (matchMin == -1 || matchOrgIndex < matchMin)) matchMin = matchOrgIndex;
+                if(matchOrgIndex != -1 && (matchMax == -1 || matchOrgIndex + word.length> matchMax)) matchMax = matchOrgIndex + word.length;
               }
             }
           }
+
+          if(!format.mongo.minMatch || matchCount >= format.mongo.minMatch) {
+            var bExist = false;
+            for(var l = 0; l < matchedDoc.length; l++) {
+              if(matchedDoc[l]._id.id == doc._id.id) {
+                bExist = true;
+                break;
+              }
+            }
+
+            if(!bExist) {
+              doc.matchWord = matchedWord;
+              doc.matchCount = matchCount;
+              doc.matchMin = matchMin;
+              doc.matchMax = matchMax;
+              doc.matchRate = matchCount / matchConcepts.length;
+              matchedDoc.push(doc);
+            }
+          }
         }
+
+        // for (var i = 0; i < matchConcepts.length; i++) {
+        //   var word = matchConcepts[i];
+        //
+        //   if(word.length > 1) {
+        //     for(var k = 0; context.dialog[format.list] && k < context.dialog[format.list].length; k++) {
+        //       var doc = context.dialog[format.list][k];
+        //       var bExist = false;
+        //       for(var l = 0; l < matchedDoc.length; l++) {
+        //         if(matchedDoc[l]._id.id == doc._id.id) {
+        //           bExist = true;
+        //           break;
+        //         }
+        //       }
+        //
+        //       if(!bExist) {
+        //         doc.matchRate = 1;
+        //         matchedDoc.push(doc);
+        //       }
+        //     }
+        //   }
+        // }
 
         if(matchedDoc.length > 0) _cb(true);
         else _cb(null);
@@ -1293,7 +1334,7 @@ function contextListCheck(text, format, inDoc, context, callback) {
 
       if(_words.length == 0) _words.concat(excluded);
 
-      for(var k = 0; k < context.dialog[format.list].length; k++) {
+      for(var k = 0; context.dialog[format.list] && k < context.dialog[format.list].length; k++) {
         var doc = context.dialog[format.list][k];
 
         var matchCount = 0;

@@ -4,9 +4,15 @@
  * Render the main application page
  */
 exports.renderIndex = function (req, res) {
-  res.render('modules/core/server/views/index', {
-    user: req.user || null
-  });
+  if(req.query['_p'] == 'nomenu') {  // 모바일 화면
+    res.render('modules/core/server/views/nomenu-index', {
+      user: req.user
+    });
+  } else {
+    res.render('modules/core/server/views/index', {
+      user: req.user || null
+    });
+  }
 };
 
 /**

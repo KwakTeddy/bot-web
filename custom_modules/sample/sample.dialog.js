@@ -56,7 +56,7 @@ var dialogs = [
 },
 {
   input: false,
-  output: '두번째 다이얼로그가 호출되었을 때 출력됩니다.'
+  output: '두번째 다이얼로그가 호출되었을 때 출력됩니다.      // 사용자 입력에 대한 match 없이 호출에만 사용됨'
 },
 {
   input: '호출 하다 2',
@@ -64,19 +64,19 @@ var dialogs = [
 },
 {
   input: '재시',
-  output: {start: 1}
+  output: {start: 1}     // 시작
 },
 {
   input: '이전',
-  output: {up: 1}
+  output: {up: 1}        // 상위 (대부분은 이전에 사용됨)
 },
 {
   input: '뒤로',
-  output: {back: 1}
+  output: {back: 1}      // 뒤로 숫자 만큼
 },
 {
   input: '다시',
-  output: {repeat: 1}
+  output: {repeat: 1}    // 재질문
 },
 {
   input: 'custom',
@@ -100,7 +100,7 @@ var dialogs = [
   children: [
     {
       input: '추가',
-      output: {returnCall: '반환'}
+      output: {returnCall: '반환'}                      // return와 같이 쓰면 다음으로 가지않고 호출한 곳으로 돌아감
     },
     {
       input: '네',
@@ -115,12 +115,12 @@ var dialogs = [
   children: [
     {
       input: '호출 반환',
-      output: {call: '호출1', return: 1}
+      output: {call: '호출1', return: 1}            // return: 1이 있으면 returnCall로 불린경우 호출된 곳으로 돌아가고, 아니면 원래데로 call 등 output 처리
     }
   ]
 },
 {
-  input: '하위 질문',
+  input: '하위 질문 ',
   output: '1.메뉴1\n2.메뉴2\n3.메뉴3',
   children: [
     {
@@ -215,7 +215,7 @@ var dialogs = [
 },
 {
   input: '',
-  output: '매칭되는 문장이 없습니다.'
+  output: '매칭되는 문장이 없습니다.                                     // input이 없으면 순서가 오면 무조건 표시 gambit 역활'
 },
 {
   input: 'moneybrain',
@@ -228,7 +228,7 @@ var dialogs = [
   output: '+text+\n task에서 저장한 내용 표시'
 },
 {
-  input: 'test',
+  input: 'test ',
   output: ''
 },
 {

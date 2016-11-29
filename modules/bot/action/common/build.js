@@ -72,7 +72,7 @@ function build(text, isCommon) {
   var lines = text.split('\n');
   var i = 0;
   var textEscape = function(text) {
-    text = text.replace(/\/\/(.*)/, '').trim();
+    // text = text.replace(/\/\/(.*)/, '').trim();
     if(text.startsWith('{') || text.startsWith('/') || text.startsWith('if')   || text.startsWith('function') || text === 'false' || text === 'undefined' || text === 'null'/* || text == ''*/) return text;
     else {
       return '\'' + text.replace(/'/g, '\\\'') + '\'';

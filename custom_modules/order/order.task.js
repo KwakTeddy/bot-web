@@ -96,10 +96,10 @@ var orderTask = {
 
       function(orderId, cb) {
         task.deliveryOrderId = orderId;
-        if(context.bot.messages.manager === true)
+        if(!context.bot.testMode && context.bot.messages.manager === true)
           manager.checkOrder(task, context, null);
 
-        if(context.bot.messages.call === true) {
+        if(!context.bot.testMode && context.bot.messages.call === true) {
           var message = "카카오톡에서 배달봇 얌얌 주문입니다. " +
             context.dialog.menuStr + ' 배달해 주세요.' +
             '주소는 ' + context.dialog.address.지번주소 + ' 입니다.' +
@@ -123,7 +123,7 @@ var orderTask = {
       },
 
       function(cb) {
-        if(context.bot.messages.sms === true) {
+        if(!context.bot.testMode && context.bot.messages.sms === true) {
           var message = "[인공지능 배달봇 얌얌]\n" +
             context.dialog.orderRestaurant.name + '/주문 요청/50분 이내 배달 예정';
 
@@ -279,7 +279,7 @@ var categoryRestaurants = {
 
     model.find(query).limit(type.MAX_LIST).lean().exec(function(err, docs) {
       console.log(err);
-      console.log(docs);
+      // console.log(docs);
       var hhmm = new Date().toString().split(' ')[4].substring(0, 5);
       // hhmm = '03:00';
       var defaultStart = '12:00', defautEnd = '24:00';
@@ -316,7 +316,7 @@ var categoryRestaurants = {
         if(doc.businessHours && doc.businessHours.length > 0) {
           if((doc.businessHours[0].end > doc.businessHours[0].start && (hhmm < doc.businessHours[0].start || hhmm > doc.businessHours[0].end)) ||
             (doc.businessHours[0].end < doc.businessHours[0].start && (hhmm < doc.businessHours[0].start && hhmm > doc.businessHours[0].end))) {
-            docs[i].openStatus = '(금일 영업종료)';
+            docs[i].openStatus = '(배달 준비중)';
             docs[i].isOpen = false;
             // docs[i].isOpen = true;
           } else {
@@ -324,7 +324,7 @@ var categoryRestaurants = {
           }
         } else {
           if (hhmm < defaultStart || hhmm > defautEnd) {
-            docs[i].openStatus = '(금일 영업종료)';
+            docs[i].openStatus = '(배달 준비중)';
             docs[i].isOpen = false;
             // docs[i].isOpen = true;
           } else {
@@ -360,6 +360,8 @@ var categoryRestaurants = {
         task.restaurant = docs;
         context.dialog.restaurant = docs;
       }
+
+      // console.log(docs);
 
       callback(task, context);
     });
@@ -869,3 +871,43 @@ function menuCallback(dialog, context, callback) {
 
 exports.menuCallback = menuCallback;
 
+function isRestaurantIndistance(context, restaurant) {
+    var lng, lat;
+    if(context.dialog.address) {
+      lng = context.dialog.lng;
+      lat = context.dialog.lat;
+    } else if(context.user.address) {
+      lng = context.user.lng;
+      lat = context.user.lat;
+    }
+
+    var dist;
+    var doc = restaurant;
+    if(doc.franchise) dist = orderbot.franchiseDist[doc.franchise.toString()];
+    if(!dist && doc.category && doc.category.length > 0) dist = orderbot.categoryDist[doc.category[0]];
+
+    if(dist) {
+      var distance = addressModule.getDistanceFromGeocode(lat, lng, doc.lat, doc.lng);
+
+      console.log(lat, lng, doc.lat, doc.lng, dist.dist, distance);
+
+      if (dist.dist && dist.법정동) {
+        if (dist.dist < distance && doc.address.법정읍면동명 != addressModule.법정읍면동명) {
+          return false;
+        }
+      } else if (dist.dist) {
+        if(dist.dist < distance) {
+          return false;
+        }
+      } else if (dist.법정동 === 1) {
+        if(doc.address.법정읍면동명 != addressModule.법정읍면동명) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+}
+
+
+exports.isRestaurantIndistance = isRestaurantIndistance;

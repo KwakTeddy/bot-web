@@ -1,6 +1,7 @@
 var path = require('path');
 
 var orderBot = {
+  testMode: false,
   serviceName: '얌얌',
   serviceNick: '인공지능 배달봇',
 

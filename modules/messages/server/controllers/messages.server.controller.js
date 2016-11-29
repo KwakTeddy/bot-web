@@ -182,6 +182,10 @@ function sendSMS(task, context, callback) {
   var phone = task.phone;
   var message = task.message;
 
+  phone = phone.replace('-', '');
+  phone = phone.replace('.', '');
+  phone = phone.replace(' ', '');
+
   mySqlPool.getConnection(function (err, connection) {
     if(err) {
       console.log(err);
@@ -196,12 +200,34 @@ function sendSMS(task, context, callback) {
       connection.query(query
         , function (err, rows) {
           if (err) {
+            task.result = 'FAIL';
+            task.resultMessage = 'DBMS ERROR';
             connection.release();
-            throw err;
-          }
+            callback(task, context);
+          } else {
+            query = 'SELECT * FROM SDK_SMS_REPORT_DETAIL WHERE PHONE_NUMBER="' + phone + '" ORDER BY REPORT_RES_DATE DESC;';
 
-          connection.release();
-          callback(task, context);
+            connection.query(query
+              , function (err, rows) {
+                if (err) {
+                  task.result = 'FAIL';
+                  task.resultMessage = 'DBMS ERROR';
+
+                  connection.release();
+                  callback(task, context);
+                } else {
+                  if(rows.length > 0 && rows[0]['RESULT'] == 2) {
+                    task.result = 'SUCCESS';
+                  } else {
+                    task.result = 'FAIL';
+                    task.resultMessage = rows[0]['RESULT'];
+                  }
+
+                  connection.release();
+                  callback(task, context);
+                }
+              });
+          }
         });
 
       console.log(query);
@@ -217,7 +243,8 @@ function sendSMSReq(req, res) {
   var message = req.body.message;
 
   sendSMS({callbackPhone: callbackPhone, phone: phone, message: message}, {}, function(_task, _context) {
-    res.end();
+    res.writeHead(200, {"Content-Type": "application/json"});
+    res.end({result: task.result, resultMessage: task.resultMessage});
   })
 }
 
@@ -290,6 +317,11 @@ function sendSMSAuth(task, context, callback) {
     {json: {callbackPhone: config.callcenter, phone: context.user.mobile, message: message}},
     function (error, response, body) {
       if (!error && response.statusCode == 200) {
+        task.result = response.result;
+        task.resultMessage = response.resultMessage;
+      } else {
+        task.result = 'FAIL';
+        task.resultMessage = 'HTTP ERROR';
       }
 
       context.dialog.smsAuth = randomNum;
