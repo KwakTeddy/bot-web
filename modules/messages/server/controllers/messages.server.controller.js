@@ -243,8 +243,9 @@ function sendSMSReq(req, res) {
   var message = req.body.message;
 
   sendSMS({callbackPhone: callbackPhone, phone: phone, message: message}, {}, function(_task, _context) {
-    res.writeHead(200, {"Content-Type": "application/json"});
-    res.end({result: _task.result, resultMessage: _task.resultMessage});
+    // res.writeHead(200, {"Content-Type": "application/json"});
+    res.json({result: _task.result, resultMessage: _task.resultMessage});
+    res.end();
   })
 }
 
