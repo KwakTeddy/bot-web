@@ -29,6 +29,14 @@ var dialogs = [
   output: '은행 영업 시간은 오전 9시 부터 오후 4시 30분까지 입니다.'
 },
 {
+  input: '신용',
+  output: '신용대출 안내해 드리겠습니다. url: https://spot.wooribank.com/pot/Dream?withyou=POLON0060'
+},
+{
+  input: '위비 모바일',
+  output: '상품 안내해 드리겠습니다. url: https://spot.wooribank.com/pot/Dream?withyou=POLON0060&cc=c010528:c010531;c012425:c012399&PRD_CD=201108501&HOST_PRD_CD=201108501'
+},
+{
   input: '대출',
   output: '대출 안내해 드리겠습니다. url: https://spot.wooribank.com/pot/Dream?withyou=ln'
 },
@@ -62,10 +70,14 @@ var dialogs = [
 },
 {
   input: '민원',
-  output: '전자민원접수 안내해 드리겠습니다. https://spot.wooribank.com/pot/Dream?withyou=CQCSD0001'
+  output: '전자민원접수 안내해 드리겠습니다. url: https://spot.wooribank.com/pot/Dream?withyou=CQCSD0001'
 },
 {
-  input: ['자주 하다 질문', 'FAQ'],
+  input: '사고',
+  output: '사고신고 안내해 드리겠습니다. url: https://spot.wooribank.com/pot/Dream?withyou=CQACR0001'
+},
+{
+  input: ['질문', 'FAQ'],
   output: 'FAQ 안내해 드리겠습니다. url: https://spot.wooribank.com/pot/Dream?withyou=CQCCS0002'
 },
 {
