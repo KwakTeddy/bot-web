@@ -57,6 +57,14 @@ var dialogs = [
   output: 'ISA 안내해 드리겠습니다. url: https://spot.wooribank.com/pot/Dream?withyou=IMISA0044'
 },
 {
+  input: '카드',
+  output: '카드 안내해 드리겠습니다. url: https://sccd.wooribank.com/ccd/Dream?withyou=cd'
+},
+{
+  input: '민원',
+  output: '전자민원접수 안내해 드리겠습니다. https://spot.wooribank.com/pot/Dream?withyou=CQCSD0001'
+},
+{
   input: ['자주 하다 질문', 'FAQ'],
   output: 'FAQ 안내해 드리겠습니다. url: https://spot.wooribank.com/pot/Dream?withyou=CQCCS0002'
 },
@@ -91,6 +99,10 @@ var dialogs = [
       output: '모임계좌개설은 구성원명부, 회칙 등 모임 입증 서류를 가지고 지점을 방문하시면 됩니다.'
     }
   ]
+},
+{
+  input: '상품',
+  output: '금융상품 안내해드리겠습니다. url: https://spot.wooribank.com/pot/Dream?withyou=po'
 },
 {
   input: '',

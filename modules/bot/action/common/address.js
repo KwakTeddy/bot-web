@@ -190,7 +190,7 @@ function searchAddress(task, context, callback) {
 
   task.doc = null;
 
-  // console.log(JSON.stringify(query));
+  console.log(JSON.stringify(query));
 
   if(Object.keys(query).length == 0) {
     callback(task, context);
@@ -220,7 +220,7 @@ function searchAddress(task, context, callback) {
       } else {
         // if(docs.length == 0)
         //   logger.debug('searchAddress: ' + task.inRaw + ' / count: ' + docs.length);
-        console.log(docs.length);
+        console.log(docs);
 
         var 시군구Re = /(?:(경기|경기도|강원|강원도|충북|충청북도|충남|충청남도|전북|전라북도|전남|전라남도|경북|경상북도|경남|경상남도|제주|제주도|제주특별자치도|서울|서울시|서울특별시|인천|인천시|인천광역시|대전|대전시|대전광역시|대구|대구시|대구광역시|광주|광주시|광주광역시|부산|부산시|부산광역시|울산|울산시|울산광역시|세종|세종시|세종특별시|세종특별자치시)\s*)?(?:([가-힣]+시|[가-힣]+군|[가-힣]+구)\s*)?(?:[가-힣]+구\s*)?/g;
         if(docs.length > 1) {
