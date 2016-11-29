@@ -193,7 +193,7 @@ angular.module('core').controller('WebcsController', ['$scope', '$document', 'Au
       recognition.onend = function() {
         console.log('recognition.onend');
 
-        recognition.start();
+        // recognition.start();
 
         // recognizeStart();
 
