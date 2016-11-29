@@ -127,7 +127,7 @@ angular.module('core').controller('WebcsController', ['$scope', '$document', 'Au
       }
 
       addBotBubble(message);
-      // synthesize(message);
+      synthesize(message);
 
       var snd = new Audio('/images/doorbell-6.mp3');
       snd.play();
@@ -193,7 +193,7 @@ angular.module('core').controller('WebcsController', ['$scope', '$document', 'Au
       recognition.onend = function() {
         console.log('recognition.onend');
 
-        // recognition.start();
+        recognition.start();
 
         // recognizeStart();
 
@@ -292,8 +292,10 @@ angular.module('core').controller('WebcsController', ['$scope', '$document', 'Au
     vm.userId = 'com2best';
     vm.connect();
 
-    // synthesize('안녕하세요');
     recognizeStart();
+    recognition.stop();
+
+    // synthesize('안녕하세요');
   }
 ]);
 
@@ -337,7 +339,7 @@ function synthesize(message) {
   };
   utterance.onend = function(event) {
     console.log('synthesize end');
-    // recognizeStart();
+    // recognition.start();
   };
   window.speechSynthesis.speak(utterance);
 }

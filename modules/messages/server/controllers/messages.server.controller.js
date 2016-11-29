@@ -315,11 +315,11 @@ function sendSMSAuth(task, context, callback) {
 
   request.post(
     'https://bot.moneybrain.ai/api/messages/sms/send',
-    {json: {callbackPhone: config.callcenter, phone: context.user.mobile, message: message}},
+    {json: {callbackPhone: config.callcenter, phone: task.mobile, message: message}},
     function (error, response, body) {
       if (!error && response.statusCode == 200) {
-        task.result = response.result;
-        task.resultMessage = response.resultMessage;
+        task.result = body.result;
+        task.resultMessage = body.resultMessage;
       } else {
         task.result = 'FAIL';
         task.resultMessage = 'HTTP ERROR';
