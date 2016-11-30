@@ -230,7 +230,7 @@ function sendSMS(task, context, callback) {
                       if(rows.length > 0) {
                         console.log('sendSMS: query result' + rows[0]['RESULT']);
 
-                        if(rows[0]['RESULT'] == 2) {
+                        if(rows[0]['RESULT'] == 38) {
                           task.result = 'SUCCESS';
                           cb(true);
                         } else {
