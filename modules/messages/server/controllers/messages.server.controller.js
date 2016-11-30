@@ -220,7 +220,7 @@ function sendSMS(task, context, callback) {
                     task.result = 'SUCCESS';
                   } else {
                     task.result = 'FAIL';
-                    task.resultMessage = rows[0]['RESULT'];
+                    // task.resultMessage = rows[0]['RESULT'];
                   }
 
                   connection.release();
