@@ -14,7 +14,8 @@ var path = require('path'),
 var config = require(path.resolve('./config/config'));
 
 var mySqlPool = mysql.createPool({
-  host: 'localhost',
+//  host: 'bot.moneybrain.ai',
+  host: '172.31.15.9',
   port: '3306',
   user: 'root',
   password: 'Make01mb!',
