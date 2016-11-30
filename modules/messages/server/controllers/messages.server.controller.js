@@ -207,6 +207,8 @@ function sendSMS(task, context, callback) {
             callback(task, context);
           } else {
             var count = 0;
+            task.result = 'FAIL';
+
             async.whilst(
               function() {
                 console.log('sendSMS: ' + count);
@@ -214,36 +216,39 @@ function sendSMS(task, context, callback) {
               },
 
               function(cb) {
-                query = 'SELECT * FROM SDK_SMS_REPORT_DETAIL WHERE PHONE_NUMBER="' + phone + '" ORDER BY REPORT_RES_DATE DESC;';
+                count++;
+                query = 'SELECT * FROM SDK_SMS_REPORT_DETAIL WHERE PHONE_NUMBER="' + phone + '" ORDER BY REPORT_RES_DATE DESC LIMIT 1;';
 
                 connection.query(query
                   , function (err, rows) {
                     if (err) {
                       task.result = 'FAIL';
                       task.resultMessage = 'DBMS ERROR';
-
-                      connection.release();
-                      callback(task, context);
+                      cb(true);
                     } else {
                       console.log('sendSMS: query result' + rows);
 
-                      if(rows.length > 0 && rows[0]['RESULT'] == 2) {
-                        task.result = 'SUCCESS';
-                        connection.release();
-                        callback(task, context);
+                      if(rows.length > 0) {
+                        if(rows[0]['RESULT'] == 2) {
+                          task.result = 'SUCCESS';
+                          cb(true);
+                        } else {
+                          setTimeout(function() {
+                            console.log('sendSMS: timeout');
+                            cb(null);
+                          }, 500);
+                          // task.resultMessage = rows[0]['RESULT'];
+                        }
                       } else {
                         setTimeout(function() {
                           console.log('sendSMS: timeout');
                           cb(null);
                         }, 500);
-                        // task.resultMessage = rows[0]['RESULT'];
                       }
-
                     }
                   });
               },
               function(err, n) {
-                task.result = 'FAIL';
                 connection.release();
                 callback(task, context);
               }
