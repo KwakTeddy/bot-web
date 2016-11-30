@@ -15,8 +15,8 @@ var config = require(path.resolve('./config/config'));
 var async = require('async');
 
 var mySqlPool = mysql.createPool({
-//  host: 'bot.moneybrain.ai',
-  host: '172.31.15.9',
+ host: 'localhost',
+//   host: '172.31.15.9',
   port: '3306',
   user: 'root',
   password: 'Make01mb!',
@@ -211,7 +211,6 @@ function sendSMS(task, context, callback) {
 
             async.whilst(
               function() {
-                console.log('sendSMS: ' + count);
                 return count < 3;
               },
 
@@ -230,19 +229,17 @@ function sendSMS(task, context, callback) {
                       if(rows.length > 0) {
                         console.log('sendSMS: query result' + rows[0]['RESULT']);
 
-                        if(rows[0]['RESULT'] == 38) {
+                        if(rows[0]['RESULT'] == 2) {
                           task.result = 'SUCCESS';
                           cb(true);
                         } else {
                           setTimeout(function() {
-                            console.log('sendSMS: timeout');
                             cb(null);
                           }, 500);
                           // task.resultMessage = rows[0]['RESULT'];
                         }
                       } else {
                         setTimeout(function() {
-                          console.log('sendSMS: timeout');
                           cb(null);
                         }, 500);
                       }
@@ -254,29 +251,6 @@ function sendSMS(task, context, callback) {
                 callback(task, context);
               }
             );
-
-            // query = 'SELECT * FROM SDK_SMS_REPORT_DETAIL WHERE PHONE_NUMBER="' + phone + '" ORDER BY REPORT_RES_DATE DESC;';
-            //
-            // connection.query(query
-            //   , function (err, rows) {
-            //     if (err) {
-            //       task.result = 'FAIL';
-            //       task.resultMessage = 'DBMS ERROR';
-            //
-            //       connection.release();
-            //       callback(task, context);
-            //     } else {
-            //       // if(rows.length > 0 && rows[0]['RESULT'] == 2) {
-            //         task.result = 'SUCCESS';
-            //       // } else {
-            //       //   task.result = 'FAIL';
-            //       //   // task.resultMessage = rows[0]['RESULT'];
-            //       // }
-            //
-            //       connection.release();
-            //       callback(task, context);
-            //     }
-            //   });
           }
         });
 
@@ -364,8 +338,8 @@ function sendSMSAuth(task, context, callback) {
   var message = '[' + context.bot.serviceNick + ' ' + context.bot.serviceName + ']' + ' 인증번호 : ' + randomNum;
 
   request.post(
-    // 'https://bot.moneybrain.ai/api/messages/sms/send',
-    'http://dev.moneybrain.ai:8443/api/messages/sms/send',
+    'https://bot.moneybrain.ai/api/messages/sms/send',
+    // 'http://dev.moneybrain.ai:8443/api/messages/sms/send',
     {json: {callbackPhone: config.callcenter, phone: task.mobile, message: message}},
     function (error, response, body) {
       if (!error && response.statusCode == 200) {
