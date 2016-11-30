@@ -226,9 +226,10 @@ function sendSMS(task, context, callback) {
                       task.resultMessage = 'DBMS ERROR';
                       cb(true);
                     } else {
-                      console.log('sendSMS: query result' + rows);
 
                       if(rows.length > 0) {
+                        console.log('sendSMS: query result' + rows[0]['RESULT']);
+
                         if(rows[0]['RESULT'] == 2) {
                           task.result = 'SUCCESS';
                           cb(true);
