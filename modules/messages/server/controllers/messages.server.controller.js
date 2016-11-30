@@ -354,8 +354,8 @@ function sendSMSAuth(task, context, callback) {
   var message = '[' + context.bot.serviceNick + ' ' + context.bot.serviceName + ']' + ' 인증번호 : ' + randomNum;
 
   request.post(
-    // 'https://bot.moneybrain.ai/api/messages/sms/send',
-    'http://dev.moneybrain.ai:8443/api/messages/sms/send',
+    'https://bot.moneybrain.ai/api/messages/sms/send',
+    // 'http://dev.moneybrain.ai:8443/api/messages/sms/send',
     {json: {callbackPhone: config.callcenter, phone: task.mobile, message: message}},
     function (error, response, body) {
       if (!error && response.statusCode == 200) {
