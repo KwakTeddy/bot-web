@@ -205,69 +205,68 @@ function sendSMS(task, context, callback) {
             connection.release();
             callback(task, context);
           } else {
-            var count = 0;
-            async.whilst(
-              function() {
-                console.log('sendSMS: ' + count);
-                return count < 3;
-              },
-
-              function(cb) {
-                query = 'SELECT * FROM SDK_SMS_REPORT_DETAIL WHERE PHONE_NUMBER="' + phone + '" ORDER BY REPORT_RES_DATE DESC;';
-
-                connection.query(query
-                  , function (err, rows) {
-                    if (err) {
-                      task.result = 'FAIL';
-                      task.resultMessage = 'DBMS ERROR';
-
-                      connection.release();
-                      callback(task, context);
-                    } else {
-                      if(rows.length > 0 && rows[0]['RESULT'] == 2) {
-                        task.result = 'SUCCESS';
-                        connection.release();
-                        callback(task, context);
-                      } else {
-                        setTimeout(function() {
-                          cb(null);
-                        }, 500);
-                        // task.resultMessage = rows[0]['RESULT'];
-                      }
-
-                    }
-                  });
-
-              },
-              function(err, n) {
-                task.result = 'FAIL';
-                connection.release();
-                callback(task, context);
-              }
-            );
-
-            // query = 'SELECT * FROM SDK_SMS_REPORT_DETAIL WHERE PHONE_NUMBER="' + phone + '" ORDER BY REPORT_RES_DATE DESC;';
+            // var count = 0;
+            // async.whilst(
+            //   function() {
+            //     console.log('sendSMS: ' + count);
+            //     return count < 3;
+            //   },
             //
-            // connection.query(query
-            //   , function (err, rows) {
-            //     if (err) {
-            //       task.result = 'FAIL';
-            //       task.resultMessage = 'DBMS ERROR';
+            //   function(cb) {
+            //     query = 'SELECT * FROM SDK_SMS_REPORT_DETAIL WHERE PHONE_NUMBER="' + phone + '" ORDER BY REPORT_RES_DATE DESC;';
             //
-            //       connection.release();
-            //       callback(task, context);
-            //     } else {
-            //       if(rows.length > 0 && rows[0]['RESULT'] == 2) {
-            //         task.result = 'SUCCESS';
-            //       } else {
-            //         task.result = 'FAIL';
-            //         // task.resultMessage = rows[0]['RESULT'];
-            //       }
+            //     connection.query(query
+            //       , function (err, rows) {
+            //         if (err) {
+            //           task.result = 'FAIL';
+            //           task.resultMessage = 'DBMS ERROR';
             //
-            //       connection.release();
-            //       callback(task, context);
-            //     }
-            //   });
+            //           connection.release();
+            //           callback(task, context);
+            //         } else {
+            //           if(rows.length > 0 && rows[0]['RESULT'] == 2) {
+            //             task.result = 'SUCCESS';
+            //             connection.release();
+            //             callback(task, context);
+            //           } else {
+            //             setTimeout(function() {
+            //               cb(null);
+            //             }, 500);
+            //             // task.resultMessage = rows[0]['RESULT'];
+            //           }
+            //
+            //         }
+            //       });
+            //   },
+            //   function(err, n) {
+            //     task.result = 'FAIL';
+            //     connection.release();
+            //     callback(task, context);
+            //   }
+            // );
+
+            query = 'SELECT * FROM SDK_SMS_REPORT_DETAIL WHERE PHONE_NUMBER="' + phone + '" ORDER BY REPORT_RES_DATE DESC;';
+
+            connection.query(query
+              , function (err, rows) {
+                if (err) {
+                  task.result = 'FAIL';
+                  task.resultMessage = 'DBMS ERROR';
+
+                  connection.release();
+                  callback(task, context);
+                } else {
+                  // if(rows.length > 0 && rows[0]['RESULT'] == 2) {
+                    task.result = 'SUCCESS';
+                  // } else {
+                  //   task.result = 'FAIL';
+                  //   // task.resultMessage = rows[0]['RESULT'];
+                  // }
+
+                  connection.release();
+                  callback(task, context);
+                }
+              });
           }
         });
 
@@ -356,7 +355,7 @@ function sendSMSAuth(task, context, callback) {
 
   request.post(
     // 'https://bot.moneybrain.ai/api/messages/sms/send',
-    'http://dev.moneybrain.ai:8000/api/messages/sms/send',
+    'http://dev.moneybrain.ai:8443/api/messages/sms/send',
     {json: {callbackPhone: config.callcenter, phone: task.mobile, message: message}},
     function (error, response, body) {
       if (!error && response.statusCode == 200) {
