@@ -158,7 +158,7 @@ var dialogs = [
         { input: {types: [{type : type.mobileType, context: false}]},
           task: {action: messages.sendSMSAuth},
           output: [
-            {if: true /*'dialog.task.result != "SUCCESS"'*/, output: {repeat: 1, options: {output: '문자 발송이 안되는데, 휴대폰 번호를 다시 말씀해주세요.'}}},
+            {if: false /*'dialog.task.result != "SUCCESS"'*/, output: {repeat: 1, options: {output: '문자 발송이 안되는데, 휴대폰 번호를 다시 말씀해주세요.'}}},
             {output: {call: 'SMS인증'}}   // TODO output에 1개 목록 있을 때 task 두번 호출되는 현상
           ]
         },
@@ -170,7 +170,7 @@ var dialogs = [
               input: /\d{4}/,
               output: [
                 { if: function(dialog, context, callback) {
-                    callback(dialog.inRaw.trim() == context.dialog.smsAuth);
+                    callback(dialog.inRaw.replace(/\s/, '') == context.dialog.smsAuth);
                   },
                   task: {action: function(task, context, callback) {
                     context.user['mobile'] = context.dialog['mobile'];
