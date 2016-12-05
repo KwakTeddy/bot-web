@@ -170,7 +170,7 @@ var dialogs = [
               input: /\d{4}/,
               output: [
                 { if: function(dialog, context, callback) {
-                    callback(dialog.inRaw.trim() == context.dialog.smsAuth);
+                    callback(dialog.inRaw.replace(/\s/, '') == context.dialog.smsAuth);
                   },
                   task: {action: function(task, context, callback) {
                     context.user['mobile'] = context.dialog['mobile'];
