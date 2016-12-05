@@ -243,8 +243,6 @@ var dialogs = [
                 callback(false);
               } else {
                 var hhmm = new Date().toString().split(' ')[4].substring(0, 5);
-                hhmm = '19:00';
-
                 if(hhmm >= '02:00' && hhmm <= '11:30') {
                   callback(true);
                 } else {
@@ -263,7 +261,7 @@ var dialogs = [
         children: [
           { name: '음식점메뉴단일',
             input: {types: [{type: orderTask.restaurantType, init: true}, orderTasks.menuType],
-            if: 'context.dialog.restaurant && context.dialog.menu && !Array.isArray(context.dialog.restaurant) && !Array.isArray(context.dialog.menu)'},
+              if: 'context.dialog.restaurant && context.dialog.menu && !Array.isArray(context.dialog.restaurant) && !Array.isArray(context.dialog.menu)'},
             output: '가장 적합한 것으로 "+restaurant.name+"에서 "+menu.name+"를 찾았습니다.\n원하시는 것이 맞나요?\n\n아니시면 다른 음식점을 말씀해주세요.',
             children: [
               { input: /~네/,
@@ -357,8 +355,8 @@ var dialogs = [
 
           { input: {if: 'context.dialog.orderble == undefined && context.dialog.음식점입력최초 == true'},
             task: {action: function(task, context, callback) {
-            context.dialog.음식점입력최초 = false; callback(task, context);
-          }},
+              context.dialog.음식점입력최초 = false; callback(task, context);
+            }},
             output: {call: '음식점입력'}
           },
 
