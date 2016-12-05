@@ -5,7 +5,7 @@ var chat = require('./bot.server.controller');
 
 exports.receiveNew = function (req, res) {
   // console.log("receive receive");
-  // console.log(JSON.stringify(req.body));
+  console.log(JSON.stringify(req.body));
 
   if(req.body && req.body.events && req.body.events[0].message.text) {
     var from = req.body.events[0].source.userId;
@@ -46,7 +46,7 @@ function respondMessageNew(channelToken, replyToken, text, json) {
   }, function (error, response, body) {
     if (error) {console.log(error);}
     else {
-      // console.log('response ' + body);
+      console.log('response ' + body);
     }
   });
 }
