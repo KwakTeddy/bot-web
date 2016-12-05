@@ -243,8 +243,6 @@ var dialogs = [
                 callback(false);
               } else {
                 var hhmm = new Date().toString().split(' ')[4].substring(0, 5);
-                hhmm = '19:00';
-
                 if(hhmm >= '02:00' && hhmm <= '11:30') {
                   callback(true);
                 } else {
