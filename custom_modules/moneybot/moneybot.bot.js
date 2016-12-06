@@ -1,13 +1,13 @@
 var path = require('path');
 
 var orderBot = {
-  testMode: true,
-  serviceName: '얌얌',
-  serviceNick: '인공지능 배달봇',
+  testMode: false,
+  serviceName: '머니봇',
+  serviceNick: '인공지능 금융비서',
 
   dialogServer: {chatScript: false},
   kakao: {
-    keyboard: { type :"buttons", buttons:["배달주문시작", "배달내역보기", "도움말"]}
+    keyboard: { type :"buttons", buttons:["계좌조회", "대출상담", "자동차보험상담", "도움말"]}
   },
   facebook: {
     id: '1166917363364364',
@@ -27,7 +27,6 @@ var orderBot = {
 
   managers: [
     {platform: 'facebook', userId: '1240743695984292', name: '전용원'},
-    {platform: 'facebook', userId: '1033474390107986', name: '박유진'},
     {platform: 'facebook', userId: '1314256105273043', name: '장세영'}
   ],
 
@@ -39,12 +38,8 @@ var orderBot = {
   // call: false,      // 배달 시 주문 전화 여부
 
   dialogFiles: [
-    'history.dialog.js',
-    'recommend.dialog.js',
-    'etc.dialog.js',
-    'order.dialog.js'
   ]
 };
 
 var botlib = require(path.resolve('config/lib/bot'));
-botlib.makeBot('order', orderBot);
+botlib.makeBot('moneybot', orderBot);

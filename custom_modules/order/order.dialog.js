@@ -140,7 +140,7 @@ var dialogs = [
           });
         }},
         output: {output: '주소가 등록되었습니다.', return: 1/*, options: {prefix: '주소가 바뀌어서 주문을 다시 할께요.\n'}*/}},
-      { output: {repeat: 1, options: {output: '번지수 및 동호수를 포함한 상세주소를 말씀해주세요.\n예시) 강남구 삼성동 16-1 101동 101호\n예시) 강남구 학동로 426 101동 101호\n\n주소를 정확히 입력해 주세요.\n0.이전 !. 처음'}}}
+      { output: {repeat: 1, options: {output: '번지수 및 동호수를 포함한 상세주소를 말씀해주세요.\n예시) 강남구 삼성동 16-1 101동 101호\n예시) 강남구 학동로 426 101동 101호\n\n주소를 정확히 입력해 주세요.\n0.이전 !. 처음 | 상세주소를 말씀해주세요'}}}
     ]
   },
 
@@ -430,7 +430,7 @@ var dialogs = [
 
           { name: '옵션추가확인',
             input: false,
-            output: '"+orderMenu.name+"의 선택메뉴를 골라주세요~ \n#option#+index+.+name+ +price+\n#',
+            output: '"+orderMenu.name+"의 선택메뉴를 골라주세요~ \n#option#+index+.+name+ +price+\n# | 선택메뉴를 골라주세요',
             children: [
               { input: {types: [{name: 'orderOption', listName: 'option', typeCheck: 'listTypeCheck'}]},
                 output: {call: '메뉴추가확인3'}
