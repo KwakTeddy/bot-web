@@ -51,7 +51,7 @@ var dialogs = [
   input: /취소/,
   task:   'currentOrderTask',
   output: [
-  {if: 'dialog.task.doc != undefined && dialog.task.doc.length > 0', output: '배달 중인 목록 입니다.\n#history#+index+. [+status+] +orderDate+ +restaurantName+에서 +menu+ +totalPrice+원\n#\n"요청" 중인 주문만 취소할 수 있습니다.\n취소하시려는 주문의 번호를 말씀해주세요.', 
+  {if: 'dialog.task.doc != undefined && dialog.task.doc.length > 0', output: '배달 중인 목록 입니다.\n#history#+index+. [+status+] +orderDate+ +restaurantName+에서 +menu+ +totalPrice+원\n#\n"요청" 중인 주문만 취소할 수 있습니다.\n취소하시려는 주문의 번호를 말씀해주세요. | 취소할 주문의 번호를 말씀해 주세요', 
     children: [
     {
       input: { regexp: /~전페이지/} ,

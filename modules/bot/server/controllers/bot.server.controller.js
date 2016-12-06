@@ -35,7 +35,15 @@ function botProc(botName, channel, user, inTextRaw, outCallback, chatServerConfi
       _task.photoUrl = (process.env.HTTP_HOST ? process.env.HTTP_HOST : '') + _task.photoUrl;
     }
 
-    outCallback(_out, _task);
+    if(channel == 'ios' || channel == 'android') {
+      outCallback(_out, _task);
+    } else {
+      if(_out.indexOf('|') == -1) outCallback(_out, _task);
+      else {
+        var arr = _out.split('|');
+        outCallback(arr[0], _task);
+      }
+    }
   };
 
   var context, inTextNLP, inDoc;

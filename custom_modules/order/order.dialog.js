@@ -19,7 +19,7 @@ var commonDialogs = [
   { name: '시작',
     input: {regexp: /(처음|시작|:reset user)/g},
     output: function(dialog, context, print, callback) {
-    print("안녕하세요.\n인공지능 배달봇 얌얌이에요~ \n주문할 메뉴나 음식점을 말씀해 주세요!\n\n(현재 베타 서비스 중입니다.)\n(서울지역 치킨/중식/피자/햄버거 배달가능)");
+    print("안녕하세요.\n인공지능 배달봇 얌얌이에요~ \n주문할 메뉴나 음식점을 말씀해 주세요!\n\n(현재 베타 서비스 중입니다.)\n(서울지역 치킨/중식/피자/햄버거 배달가능)|주문을 말씀해 주세요");
       context.botUser.currentDialog = null;
       context.user.pendingCallback = null;
       context.dialog.initTypes = {};
@@ -140,7 +140,7 @@ var dialogs = [
           });
         }},
         output: {output: '주소가 등록되었습니다.', return: 1/*, options: {prefix: '주소가 바뀌어서 주문을 다시 할께요.\n'}*/}},
-      { output: {repeat: 1, options: {output: '번지수 및 동호수를 포함한 상세주소를 말씀해주세요.\n예시) 강남구 삼성동 16-1 101동 101호\n예시) 강남구 학동로 426 101동 101호\n\n주소를 정확히 입력해 주세요.\n0.이전 !. 처음'}}}
+      { output: {repeat: 1, options: {output: '번지수 및 동호수를 포함한 상세주소를 말씀해주세요.\n예시) 강남구 삼성동 16-1 101동 101호\n예시) 강남구 학동로 426 101동 101호\n\n주소를 정확히 입력해 주세요.\n0.이전 !. 처음 | 상세주소를 말씀해주세요'}}}
     ]
   },
 
@@ -158,7 +158,7 @@ var dialogs = [
         { input: {types: [{type : type.mobileType, context: false}]},
           task: {action: messages.sendSMSAuth},
           output: [
-            {if: 'dialog.task.result != "SUCCESS"', output: {repeat: 1, options: {output: '문자 발송이 안되는데, 휴대폰 번호를 다시 말씀해주세요.'}}},
+            {if: 'false' /*'dialog.task.result != "SUCCESS"'*/, output: {repeat: 1, options: {output: '문자 발송이 안되는데, 휴대폰 번호를 다시 말씀해주세요.'}}},
             {output: {call: 'SMS인증'}}   // TODO output에 1개 목록 있을 때 task 두번 호출되는 현상
           ]
         },
@@ -167,10 +167,10 @@ var dialogs = [
           output: '문자메세지(SMS)로 발송된 인증번호를 입력해주세요.',
           children: [
             { name: 'SMS재인증',
-              input: /\d{4}/,
+              input: /[\d\s]+/,
               output: [
                 { if: function(dialog, context, callback) {
-                    callback(dialog.inRaw.trim() == context.dialog.smsAuth);
+                    callback(dialog.inRaw.replace(/\s*/g, '') == context.dialog.smsAuth);
                   },
                   task: {action: function(task, context, callback) {
                     context.user['mobile'] = context.dialog['mobile'];
@@ -243,8 +243,6 @@ var dialogs = [
                 callback(false);
               } else {
                 var hhmm = new Date().toString().split(' ')[4].substring(0, 5);
-                // hhmm = '19:00';
-
                 if(hhmm >= '02:00' && hhmm <= '11:30') {
                   callback(true);
                 } else {
@@ -264,7 +262,7 @@ var dialogs = [
           { name: '음식점메뉴단일',
             input: {types: [{type: orderTask.restaurantType, init: true}, orderTasks.menuType],
               if: 'context.dialog.restaurant && context.dialog.menu && !Array.isArray(context.dialog.restaurant) && !Array.isArray(context.dialog.menu)'},
-            output: '가장 적합한 것으로 "+restaurant.name+"에서 "+menu.name+"를 찾았습니다.\n원하시는 것이 맞나요?\n\n아니시면 다른 음식점을 말씀해주세요.',
+            output: '가장 적합한 것으로 "+restaurant.name+"에서 "+menu.name+"를 찾았습니다.\n원하시는 것이 맞나요?\n\n아니시면 다른 음식점을 말씀해주세요.|+restaurant.name+에서 +menu.name+를 찾았습니다.\n원하시는 것이 맞나요',
             children: [
               { input: /~네/,
                 task: {
@@ -285,7 +283,7 @@ var dialogs = [
             output: [
               { if: '!Array.isArray(dialog.task.restaurant)',
                 name: '음식점단일',
-                output: '가장 적합한 음식점으로 "+restaurant.name+"를 찾았습니다.\n원하시는 음식점이 맞나요?\n\n아니시면 다른 음식점을 말씀해주세요.',
+                output: '가장 적합한 음식점으로 "+restaurant.name+"를 찾았습니다.\n원하시는 음식점이 맞나요?\n\n아니시면 다른 음식점을 말씀해주세요.|+restaurant.name+를 찾았습니다.\n원하시는 음식점이 맞나요',
                 children: [
                   { input: /~네/,
                     task: {action: function(task, context, callback) {context.dialog.orderRestaurant = context.dialog.restaurant; callback(task, context);}},
@@ -297,7 +295,7 @@ var dialogs = [
 
               { if: 'Array.isArray(dialog.task.restaurant)',
                 name: '음식점목록',
-                output: '가장 적합한 음식점들을 찾았습니다. \n#restaurant#+index+. +name+ +openStatus+\n#0. 이전 \n!. 처음(주문취소)\n\n목록에서 번호나 음식점명을 입력해주세요',
+                output: '가장 적합한 음식점들을 찾았습니다. \n#restaurant#+index+. +name+ +openStatus+\n#0. 이전 \n!. 처음(주문취소)\n\n목록에서 번호나 음식점명을 입력해주세요|목록에서 선택해 주세요',
                 children: [
                   { input: {types: [{name: 'orderRestaurant', listName: 'restaurant', typeCheck: 'listTypeCheck'}]},
                     output: [
@@ -320,13 +318,13 @@ var dialogs = [
 
           { name: '음식점구분',
             input: [/전단지/, /전단/, /^ㅈㄷㅈ$/],
-            output: '[음식점구분]\n1. 치킨\n2. 중국집\n3. 피자\n4. 족발/보쌈\n5. 패스트푸드\n0. 이전\n!. 처음(주문취소)\n\n목록에서 번호를 입력해주세요~',
+            output: '[음식점구분]\n1. 치킨\n2. 중국집\n3. 피자\n4. 족발/보쌈\n5. 패스트푸드\n0. 이전\n!. 처음(주문취소)\n\n목록에서 번호를 입력해주세요~|목록에서 선택해 주세요',
             children: [
               { input: orderTypes.menuCategoryCheck,
                 task: orderTasks.categoryRestaurants,
                 output: [
                   {if: 'dialog.task.restaurant && dialog.task.restaurant.length > 0',
-                    output: '[+category+]\n##+index+. +name+ +openStatus+\n#0. 이전\n!. 처음(주문취소)\n\n목록에서 번호나 음식점명을 입력해주세요~',
+                    output: '[+category+]\n##+index+. +name+ +openStatus+\n#0. 이전\n!. 처음(주문취소)\n\n목록에서 번호나 음식점명을 입력해주세요~|목록에서 선택해주세요',
                     children: [
                       { input: {types: [{name: 'orderRestaurant', listName: 'restaurant', typeCheck: 'listTypeCheck'}]},
                         output: [
@@ -362,7 +360,7 @@ var dialogs = [
             output: {call: '음식점입력'}
           },
 
-          { output: {call: '음식점입력', options: {output: '"+address.법정읍면동명+ +address.지번본번+-+address.지번부번+" 근처에서 말씀하신 메뉴나 음식점명으로 등록된 음식점이 없는 것 같아요.\n(주문가능 매장은 확대 중입니다.)\n\n다른 메뉴나 음식점을 말씀해 주세요.\n모두 보려면 "전단지"(ㅈㄷㅈ)라고 입력해 주세요~'}}}
+          { output: {call: '음식점입력', options: {output: '"+address.법정읍면동명+ +address.지번본번+-+address.지번부번+" 근처에서 말씀하신 메뉴나 음식점명으로 등록된 음식점이 없는 것 같아요.\n(주문가능 매장은 확대 중입니다.)\n\n다른 메뉴나 음식점을 말씀해 주세요.\n모두 보려면 "전단지"(ㅈㄷㅈ)라고 입력해 주세요~|근처에서 말씀하신걸 못찾았어요. 다른 걸 말씀해주세요.'}}}
         ]
       },
 
@@ -375,12 +373,12 @@ var dialogs = [
       },
 
       { name: '메뉴입력',
-        output: '"+orderRestaurant.name+"에서 원하시는 메뉴를 말씀해 주세요.\n모든 메뉴를 보려면 "메뉴판"(ㅁㄴㅍ) 이라고 얘기해주세요',
+        output: '"+orderRestaurant.name+"에서 원하시는 메뉴를 말씀해 주세요.\n모든 메뉴를 보려면 "메뉴판"(ㅁㄴㅍ) 이라고 얘기해주세요|메뉴를 말씀해 주세요',
         children: [
           { input: {if: 'context.dialog.menus && context.dialog.menus.length > 0', regexp: /~네/},
             output: [
               { if: 'context.dialog.orderRestaurant && context.dialog.totalPrice < context.dialog.orderRestaurant.minOrder',
-                output: {call: '메뉴입력', options: {output: '최소 주문 금액은 +orderRestaurant.minOrder+원이고, 현재까지 주문금액은 +totalPrice+원 입니다.\n\n추가로 주문할 메뉴를 말씀해 주세요.'}}},
+                output: {call: '메뉴입력', options: {output: '최소 주문 금액은 +orderRestaurant.minOrder+원이고, 현재까지 주문금액은 +totalPrice+원 입니다.\n\n추가로 주문할 메뉴를 말씀해 주세요.|추가로 주문할 메뉴를 말씀해주세요'}}},
               { if: 'true', output: {call: '주문주소확인', return: 1}}
             ]
           },
@@ -391,7 +389,7 @@ var dialogs = [
           },
 
           { name: '메뉴목록', input: {types: [orderTasks.menuType], if: 'Array.isArray(context.dialog.menu)'},
-            output: '"+orderRestaurant.name+"에서 적합한 메뉴를 찾았습니다.\n#menu#+index+. +name+ +price+\n#0. 이전\n!. 처음(주문취소)\n\n목록에서 번호를 선택하거나 메뉴명을 입력해주세요.\n모든 메뉴를 보려면 "메뉴판"(ㅁㄴㅍ) 이라고 얘기해주세요',
+            output: '"+orderRestaurant.name+"에서 적합한 메뉴를 찾았습니다.\n#menu#+index+. +name+ +price+\n#0. 이전\n!. 처음(주문취소)\n\n목록에서 번호를 선택하거나 메뉴명을 입력해주세요.\n모든 메뉴를 보려면 "메뉴판"(ㅁㄴㅍ) 이라고 얘기해주세요|목록에서 선택해주세요',
             children: [
               { input: {types: [{name: 'orderMenu', listName: 'menu', typeCheck: 'listTypeCheck'}]},
                 output: {call: '메뉴추가확인'}},
@@ -432,7 +430,7 @@ var dialogs = [
 
           { name: '옵션추가확인',
             input: false,
-            output: '"+orderMenu.name+"의 선택메뉴를 골라주세요~ \n#option#+index+.+name+ +price+\n#',
+            output: '"+orderMenu.name+"의 선택메뉴를 골라주세요~ \n#option#+index+.+name+ +price+\n# | 선택메뉴를 골라주세요',
             children: [
               { input: {types: [{name: 'orderOption', listName: 'option', typeCheck: 'listTypeCheck'}]},
                 output: {call: '메뉴추가확인3'}
@@ -447,12 +445,12 @@ var dialogs = [
               { if: 'context.dialog.totalPrice + (context.dialog.orderMenu.price || context.dialog.orderOption.price)  * context.dialog.count < context.dialog.orderRestaurant.minOrder',
                 task: {action: orderTasks.menuAddAction},
                 output: {call: '메뉴입력', options: {prefix: '"+orderRestaurant.name+"에서\n"+orderMenu.name+" +count+개를\n배달 목록에 추가했습니다.\n\n최소 주문 금액은 +orderRestaurant.minOrder+원이고, 현재까지 주문금액은 +totalPrice+원 입니다.\n\n',
-                  output: '추가로 주문할 메뉴를 말씀해 주세요.'}}
+                  output: '추가로 주문할 메뉴를 말씀해 주세요.|추가로 주문할 메뉴를 말씀해주세요'}}
               },
               { if: 'true',
                 task: {action: orderTasks.menuAddAction},
                 output: { call: '메뉴입력', options: {prefix: '"+orderRestaurant.name+"에서\n"+orderMenu.name+" +count+개를\n배달 목록에 추가했습니다.\n\n',
-                  output: '추가로 주문할 것이 있으면 말씀해 주세요.\n더 주문할 것이 없으시면, 여기까지 주문을 확인해 드릴까요?'}}
+                  output: '추가로 주문할 것이 있으면 말씀해 주세요.\n더 주문할 것이 없으시면, 여기까지 주문을 확인해 드릴까요?|여기까지 주문할까요'}}
               }
             ]
           },
@@ -461,11 +459,11 @@ var dialogs = [
           { name: '메뉴판',
             input: [/메뉴판/, /^ㅁㄴㅍ$/, /^ㅁㄴ$/],
             task: {action: orderTasks.menuCategoryAction},
-            output: '[메뉴판]\n##+index+. +name+\n#0. 이전\n!. 처음(주문취소)\n\n목록에서 번호를 입력해주세요.',
+            output: '[메뉴판]\n##+index+. +name+\n#0. 이전\n!. 처음(주문취소)\n\n목록에서 번호를 입력해주세요.|목록에서 선택해주세요',
             children: [
               { input: {types: [{name: 'category', typeCheck: 'listTypeCheck'}]},
                 task: {action: orderTasks.menuAction},
-                output: '[+category.name+]\n##+index+. +name+ +price+\n#0. 이전\n!. 처음(주문취소)\n\n목록에서 번호나 메뉴명을 입력해주세요.',
+                output: '[+category.name+]\n##+index+. +name+ +price+\n#0. 이전\n!. 처음(주문취소)\n\n목록에서 번호나 메뉴명을 입력해주세요.|목록에서 선택해주세요',
                 children: [
                   { input: {types: [{name: 'orderMenu', listName: 'menu', typeCheck: 'listTypeCheck'}]},
                     output: {call: '메뉴추가확인'}},
@@ -584,7 +582,7 @@ var dialogs = [
           callback(task, context);
         }},
         output: '주문하실 내용을 확인해주세요.\n\n주소: +addressCompact+\n전화: +mobile+\n매장명: +orderRestaurant.name+\n메뉴: #menus#+name+ +price+원 +count+개\n#매장전화: +orderRestaurant.phone+\n\n' +
-        '+confirmTermText+'+'이대로 주문할까요?',
+        '+confirmTermText+'+'이대로 주문할까요?|주문을 확인해주세요. 주문할까요',
         children: [
           { input: {regexp: /~네/g}, output: {call: '배달주문요청'}  },
           { input: {regexp: /~아니요/g}, output: {returnCall: '주문취소'}  },

@@ -24,7 +24,7 @@ module.exports = function (io, socket) {
 
   socket.on('send_msg', function(msg) {
 
-    bot.botProc(msg.bot, 'socket', msg.user, msg.msg, function(_out, _task) {
+    bot.botProc(msg.bot, msg.channel || 'socket', msg.user, msg.msg, function(_out, _task) {
       socket.emit('send_msg', _out +
         (_task && _task.photoUrl ? "\nphoto: " + _task.photoUrl : "") + " " +
         (_task && _task.photoWidth ? "\nwidth: " + _task.photoWidth : "") + " " +

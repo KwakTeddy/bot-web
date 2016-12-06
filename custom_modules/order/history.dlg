@@ -29,7 +29,7 @@ var address = require('../../modules/bot/action/common/address');
 
 < /취소/
 'currentOrderTask'
-> if(dialog.task.doc != undefined && dialog.task.doc.length > 0) 배달 중인 목록 입니다.\n#history#+index+. [+status+] +orderDate+ +restaurantName+에서 +menu+ +totalPrice+원\n#\n"요청" 중인 주문만 취소할 수 있습니다.\n취소하시려는 주문의 번호를 말씀해주세요.
+> if(dialog.task.doc != undefined && dialog.task.doc.length > 0) 배달 중인 목록 입니다.\n#history#+index+. [+status+] +orderDate+ +restaurantName+에서 +menu+ +totalPrice+원\n#\n"요청" 중인 주문만 취소할 수 있습니다.\n취소하시려는 주문의 번호를 말씀해주세요. | 취소할 주문의 번호를 말씀해 주세요
     <{ regexp: /~전페이지/} > {repeat: 1, options: {page: 'pre'}}
     < {regexp: /^<$/} > {repeat: 1, options: {page: 'pre'}}
     < {regexp: /~다음페이지/} > {repeat: 1, options: {page: 'next'}}
@@ -37,7 +37,7 @@ var address = require('../../modules/bot/action/common/address');
 
 //    <{regexp: /~배달/, types: [{name: 'history', typeCheck: 'listTypeCheck'}]}
     <{types: [{name: 'history', typeCheck: 'listTypeCheck'}]}
-    > 정말 주문을 취소하시겠습니다?
+    > 정말 주문을 취소하시겠습니까?
         <~네
         'orderCancel'
         >주문이 취소 되었습니다.
