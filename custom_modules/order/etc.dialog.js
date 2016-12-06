@@ -126,6 +126,20 @@ var dialogs = [
   name: '말돌리기',
   input: false,
   output: '고객님~ 질문도 좋지만 얌얌이는 주문을 하고싶어요~'
+},
+{
+  input: ['아 재', '아 재개'],
+  output: '삼월에 대학생이 강한 이유는?',
+  children: [
+    {
+      input: '개강',
+      output: '제법인데~'
+    },
+    {
+      input: '',
+      output: '개강해서 ㅋㅋㅋ'
+    }
+  ]
 }
 ];
 
