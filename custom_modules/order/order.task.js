@@ -61,7 +61,7 @@ var orderTask = {
         } else {
           for(var i in context.dialog.menus) {
             _menus.push({menu: context.dialog.menus[i]._id, name: context.dialog.menus[i].name, price: context.dialog.menus[i].price, count: context.dialog.menus[i].count});
-            context.dialog.menuStr += context.dialog.menus[i].name + ' ' + context.dialog.menus[i].count + '개\n';
+            context.dialog.menuStr += context.dialog.menus[i].name + ' ' + context.dialog.menus[i].price + ' ' + context.dialog.menus[i].count + '개\n';
             context.dialog.totalPrice += context.dialog.menus[i].price * context.dialog.menus[i].count;
           }
         }

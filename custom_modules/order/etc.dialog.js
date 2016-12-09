@@ -137,7 +137,7 @@ var dialogs = [
     },
     {
       input: '',
-      output: '개강해서 ㅋㅋㅋ'
+      output: '개강해서 ㅋㅋㅋㅋ'
     }
   ]
 }

@@ -36,7 +36,7 @@ var dialogs = [
       output: {repeat: 1, options: {page: 'next'}}
     },
     {
-      input: {regexp: /^>$/} ,
+      Finput: {regexp: /^>$/} ,
       output: {repeat: 1, options: {page: 'next'}}
     },
     {
@@ -71,7 +71,7 @@ var dialogs = [
     },
     {
       input: {types: [{name: 'history', typeCheck: 'listTypeCheck'}]},
-      output: '정말 주문을 취소하시겠습니다?',
+      output: '정말 주문을 취소하시겠습니까?',
       children: [
         {
           input: '~네',
