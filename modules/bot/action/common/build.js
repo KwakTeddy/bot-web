@@ -10,7 +10,7 @@ function botBuild(bot) {
 
   var files;
   try {
-    files = fs.readdirSync(botDir);
+    files = utils.readdirRecursive(botDir);
     for (var i = 0; i < files.length; i++) {
       var file = files[i];
       if(file != file.normalize('NFC')) {
@@ -25,25 +25,21 @@ function botBuild(bot) {
 
   for (var i = 0; i < files.length; i++) {
     var file = files[i];
-    var dlgPath = path.join(botDir, file);
-    var info = path.parse(dlgPath);
+    // var dlgPath = path.join(botDir, file);
+    var info = path.parse(file);
     // var jsPath = path.join(info.dir, info.name + '.js');
     var dialogPath = path.join(info.dir, info.name + '.dialog.js');
 
-/*
-
     if(fs.existsSync(dialogPath) &&
-      fs.statSync(dlgPath).mtime <= fs.statSync(dialogPath).mtime /!*&&
-      (!fs.existsSync(jsPath) || (fs.existsSync(jsPath) && fs.statSync(jsPath).mtime <= fs.statSync(dialogPath).mtime))*!/) {
+      fs.statSync(file).mtime <= fs.statSync(dialogPath).mtime) {
       logger.info('\t building dlg file: ' + file + ' [SKIP]');
 
       continue;
     }
-*/
 
     logger.info('\t building dlg file: ' + file + ' -> ' + info.name + '.dialog.js');
 
-    var text = fs.readFileSync(dlgPath, 'utf8');
+    var text = fs.readFileSync(file, 'utf8');
     // console.log(text);
     var js = build(text, false);
 
@@ -172,7 +168,7 @@ function build(text, isCommon) {
                 var str;
                 str = 'if: ' + textEscape(_m[1]) + ', output: ' + textEscape(_m[2]);
 
-                if((match = lines[i+1].match(new RegExp('^(' + step + '\\s+)<'))) != undefined) {
+                if(lines[i+1] && (match = lines[i+1].match(new RegExp('^(' + step + '\\s+)<'))) != undefined) {
                   if(i + 1 < lines.length) {line = lines[++i];inc = true;}
                   // else break;
 

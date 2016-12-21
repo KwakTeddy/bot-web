@@ -137,7 +137,7 @@ var deliverOrder = {
         {
           module: 'task',
           action: 'sequence',
-          condition: function(task, context) {
+          if: function(task, context) {
             return task.topTask.restaurant.franchise != undefined;
           },
           actions: [
@@ -203,7 +203,7 @@ var deliverOrder = {
             {
               module: 'task',
               action: 'question',
-              condition: function(task, context) {
+              if: function(task, context) {
                 return task.topTask['menu'] == undefined || task.topTask['menu'].length == 0;
               },
               postCallback: function(task, context, callback) {
@@ -224,7 +224,7 @@ var deliverOrder = {
         {
           module: 'task',
           action: 'sequence',
-          condition: function(task, context) {
+          if: function(task, context) {
             return task.topTask.restaurant.franchise == undefined;
           },
           actions: [
@@ -291,7 +291,7 @@ var deliverOrder = {
                   url: /var url = "(.*)";/g
                 }
               },
-              condition: function(task, context) {
+              if: function(task, context) {
                 return task.topTask.code;
               },
               preCallback: function(task, context, callback) {
@@ -319,7 +319,7 @@ var deliverOrder = {
                   price: '/em/strong/text()'
                 }
               },
-              condition: function(task, context) {
+              if: function(task, context) {
                 return task.topTask.code;
               },
               preCallback: function(task, context, callback) {
@@ -337,7 +337,7 @@ var deliverOrder = {
             {
               module: 'task',
               action: 'question',
-              condition: function(task, context) {
+              if: function(task, context) {
                 return task.topTask['menu'] == undefined || task.topTask['menu'].length == 0;
               },
               postCallback: function(task, context, callback) {
@@ -354,7 +354,7 @@ var deliverOrder = {
             {
               module: 'task',
               action: 'question',
-              condition: function(task, context) {
+              if: function(task, context) {
                 return !(task.topTask['menu'] == undefined || task.topTask['menu'].length == 0);
               },
               paramDefs: [
@@ -381,7 +381,7 @@ var deliverOrder = {
     {
       module: 'task',
       action: 'question',
-      condition: function(task, context) {
+      if: function(task, context) {
         return !(task.topTask['menu'] == undefined || task.topTask['menu'].length == 0);
       },
       paramDefs: [

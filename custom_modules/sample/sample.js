@@ -68,7 +68,7 @@ var googleTask = {
 
 var moneybrainTask = {
   name: 'moneybrainTask',
-  baseTask: googleTask,
+  template: googleTask,
   param: {
     q: 'moneybrain.ai'
   }
@@ -79,7 +79,7 @@ bot.setTask('moneybrainTask', moneybrainTask);
 var sampleTask3 =
 {
   name: 'sample3',
-  actionModule: 'other',
+  module: 'other',
   action: 'otherAction'
 };
 

@@ -730,7 +730,7 @@ var nMapTask = {
           url: /var url = "(.*)";/g
         }
       },
-      condition: function(task, context) {
+      if: function(task, context) {
         return context.dialog.code;
       },
       preCallback: function(task, context, callback) {
@@ -758,7 +758,7 @@ var nMapTask = {
           price: '/em/strong/text()'
         }
       },
-      condition: function(task, context) {
+      if: function(task, context) {
         return context.dialog.code;
       },
       preCallback: function(task, context, callback) {

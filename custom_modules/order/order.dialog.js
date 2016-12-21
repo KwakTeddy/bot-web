@@ -489,7 +489,7 @@ var dialogs = [
             ]
           },
 
-          { input: '전화', name: '전화주문', output: {text: '음식점 정보를 확인하시고,\n전화로 주문해주세요\n\n음식점명: +orderRestaurant.name+\n주메뉴: +orderRestaurant.category+\n전화번호: +orderRestaurant.phone+', urlMessage: '전화하기', url: 'tel: +orderRestaurant.phone+'}},
+          { input: '전화', name: '전화주문', output: {text: '음식점 정보를 확인하시고,\n전화로 주문해주세요\n\n음식점명: +orderRestaurant.name+\n주메뉴: +orderRestaurant.category+\n전화번호: +orderRestaurant.phone+', urlMessage: '전화하기', url: 'tel: +orderRestaurant.phone+|전화를 확인하고 주문해주세요'}},
           { input: /^\s*(취소|0)\s*$/g, output: {call: '주문취소'}  },
 
           { input: {if: 'context.dialog.메뉴입력최초 == true'},

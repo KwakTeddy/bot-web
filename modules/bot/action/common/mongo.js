@@ -2,8 +2,161 @@ var path = require('path');
 var mongoose = require('mongoose');
 var utils = require(path.resolve('./modules/bot/action/common/utils'));
 var logger = require(path.resolve('./config/lib/logger'));
+var async = require('async');
 
 const DOC_NAME = 'doc';
+
+function save(task, context, callback) {
+  var model = getModel(task.mongo.model, task.mongo.schema);
+
+  if(Array.isArray(task.doc)) {
+    async.eachSeries(task.doc, function(_doc, cb) {
+        model.create(_doc, function(err, _docs) {
+          if (err) {
+            task.err = err;
+          }
+          cb(null);
+        });
+    },
+    function(err) {
+      callback(task, context);
+    });
+
+  } else {
+    var item = new model(task.doc);
+    item.save(function (err) {
+      if (err) {
+        task.err = err;
+      }
+      callback(task, context);
+    });
+  }
+}
+
+exports.save = save;
+
+
+function remove(task, context, callback) {
+  var model = getModel(task.mongo.model, task.mongo.schema);
+
+  model.remove(task.mongo.query, function (err) {
+    if (err) {
+      throw err;
+    } else {
+      callback(task, context);
+    }
+  });
+}
+
+exports.remove = remove;
+
+
+function update(task, context, callback) {
+  var model = getModel(task.mongo.model, task.mongo.schema);
+
+  if(Array.isArray(task.doc)) {
+    async.eachSeries(task.doc, function(_doc, cb) {
+        for(var key in task.mongo.query)
+          if(_doc[key]) task.mongo.query[key] = _doc[key];
+
+        var _update = {};
+        if(task.mongo.update) {
+          for (var key in task.mongo.update)
+            if (task.mongo.update[key]) _update[key] = _doc[key];
+        } else _update = utils.clone(_doc);
+
+        model.update(task.mongo.query, _update, task.mongo.options, function (err, numAffected) {
+          if (err) {
+            task.err = err;
+          }
+          cb(null);
+        });
+
+      },
+      function(err) {
+        callback(task, context);
+      });
+
+  } else {
+    var _doc = task.doc;
+
+    for(var key in task.mongo.query.keys)
+      if(_doc[key]) task.mongo.query[key] = _doc[key];
+
+    if(task.mongo.update) {
+      for(var key in task.mongo.update.keys)
+        if(task.mongo.update[key]) task.mongo.update[key] = _doc[key];
+    } else task.mongo.update = _doc;
+
+    model.update(task.mongo.query, task.mongo.update, task.mongo.options, function (err) {
+      if (err) {
+        throw err;
+      } else {
+        callback(task, context);
+      }
+    });
+  }
+}
+
+exports.update = update;
+
+function findById(task, context, callback) {
+  var model = getModel(task.mongo.model, task.mongo.schema);
+
+  model.findById(task.mongo._id).lean().exec(function (err, doc) {
+    if (err || !doc) {
+      task.error = err;
+    } else {
+      task[DOC_NAME] = doc._doc;
+      console.log("mongo:findById>> " + JSON.stringify(doc._doc));
+    }
+
+    callback(task, context);
+  });
+}
+
+exports.findById = findById;
+
+function findOne(task, context, callback) {
+  var model = getModel(task.mongo.model, task.mongo.schema);
+
+  model.findOne(task.mongo.query).lean().exec(function (err, doc) {
+    if (err || !doc) {
+      task.error = task.errMsg.nodata;
+    } else {
+      task[DOC_NAME] = doc;
+    }
+
+    console.log("mongo:findOne>> " + JSON.stringify(doc));
+    callback(task, context);
+  });
+}
+
+exports.findOne = findOne;
+
+function find(task, context, callback) {
+  var model = getModel(task.mongo.model, task.mongo.schema);
+
+  var _query = model.find(task.mongo.query, task.mongo.fields, task.mongo.options);
+  if(task.mongo.sort) _query.sort(task.mongo.sort);
+  if(task.mongo.limit) _query.limit(task.mongo.limit);
+
+  _query.lean().exec(function (err, docs) {
+    if (err || !docs || docs.length <= 0) {
+      task.error = err;
+    } else {
+      task[DOC_NAME] = docs;
+
+      if(task.save) context.user[DOC_NAME] = docs;
+    }
+
+    console.log("mongo:find>> " + JSON.stringify(docs));
+    callback(task, context);
+  });
+}
+
+exports.find = find;
+
 
 exports.execute = execute;
 
@@ -404,12 +557,23 @@ function mongoTypeCheck(task, context, callback) {
 }
 
 
-function getModel(modelName, schema) {
+function getModel(modelName, schema, options) {
   var model;
+  var _schema;
+  if(schema === undefined) {
+    _schema = {any: {}};
+    if(options === undefined) options = {};
+    options.strict = false;
+  } else {
+    _schema = schema;
+  }
+
   if (mongoose.models[modelName]) {
     model = mongoose.model(modelName);
+  } else if(options !== undefined) {
+    model = mongoose.model(modelName, new mongoose.Schema(_schema, options));
   } else {
-    model = mongoose.model(modelName, new mongoose.Schema(schema));
+    model = mongoose.model(modelName, new mongoose.Schema(_schema));
   }
 
   return model;

@@ -29,8 +29,8 @@ var client;
 
 
 var baeminLocation = {
-  actionModule: http,
-  action: 'request',
+  module: 'http',
+  action: 'simpleRequest',
   method: "POST",
   url: "http://www.baemin.com",
   path: '/main/sch_addr',
@@ -61,7 +61,7 @@ var baeminLocation = {
 };
 
 var baeminList = {
-  actionModule: http,
+  module: http,
   action: "request",
   method: "GET",
   url: "http://www.baemin.com",
@@ -81,7 +81,7 @@ var baeminList = {
 // bot.setTask('baeminList', baeminList);
 
 var baemin = {
-  actionModule: task,
+  module: task,
   action: 'sequence',
   actions: [
     baeminLocation,
@@ -92,7 +92,7 @@ var baemin = {
 bot.setTask('baemin', baemin);
 
 var baeminDetail = {
-  actionModule: http,
+  module: http,
   action: "xpath",
   method: "GET",
   url: "http://www.baemin.com",

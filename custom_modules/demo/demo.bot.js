@@ -2,6 +2,8 @@ var path = require('path');
 var botlib = require(path.resolve('config/lib/bot'));
 
 var demoBot = {
+  use: false,
+
   serviceName: '고객센터 Demo',
   serviceNick: '고객센터 Demo',
 

@@ -1,3 +1,6 @@
+var path = require('path');
+var fs = require('fs');
+
 exports.merge = merge;
 
 function merge(source1, source2, overwrite){
@@ -23,6 +26,7 @@ function merge(source1, source2, overwrite){
 
   return source1;
 }
+
 
 
 exports.mergeWithClone = mergeWithClone;
@@ -244,3 +248,18 @@ exports.toDialogString = toDialogString;
 RegExp.escape = function(text) {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 };
+
+
+function readdirRecursive (dir) {
+  var results = [];
+  var list = fs.readdirSync(dir);
+  list.forEach(function(file) {
+    file = path.join(dir, file);
+    var stat = fs.statSync(file);
+    if (stat && stat.isDirectory()) results = results.concat(readdirRecursive(file))
+    else results.push(file)
+  });
+  return results
+}
+
+exports.readdirRecursive = readdirRecursive;

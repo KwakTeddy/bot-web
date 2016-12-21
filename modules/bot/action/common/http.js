@@ -5,6 +5,7 @@ var xpath = require('xpath')
 var utils = require('./utils');
 var tough = require('tough-cookie');
 var charset = require('charset');
+var _ = require('lodash');
 
 var commonHeaders = {"Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
   // "Accept-Encoding":"gzip, deflate, sdch",
@@ -12,10 +13,12 @@ var commonHeaders = {"Accept":"text/html,application/xhtml+xml,application/xml;q
   "Cache-Control":"max-age=0",
   "Connection":"keep-alive",
   "User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
-  //"Host":"movie.naver.com",
-  //"Referer":"http://movie.naver.com/movie/running/current.nhn?view=list&tab=normal&order=point",
-  //Cookie":"NNB=Z7A7YI6K3C6VM; npic=2TFxXS5uGkucf441SoaWOjWGt3xlQOLQXA6gAj2ULyfoCYarS/JNdMu0RemSeCWJCA==; nx_ssl=2; nid_inf=508472080; BMR=s=1469622178956&r=http%3A%2F%2Ftvcast.naver.com%2Fspecial%2Flive%2F478%2F&r2=http%3A%2F%2Fwww.naver.com%2F; nid_iplevel=-1; page_uid=SHWcBdoRR1RssZhbNKssssssss8-160896; _naver_usersession_=U8hcxq8beczPhgYOWTWwyQ==
-  //"Upgrade-Insecure-Requests":"1",
+};
+
+var xmldomErrorHandler = {
+  warning: function(w) {},
+  error: function(e) {},
+  fatalError: function(e) {}
 };
 
 const DOC_NAME = 'doc';
@@ -25,7 +28,6 @@ exports.DOC_NAME = DOC_NAME;
 exports.PAGES_NAME = PAGES_NAME;
 exports.CURRENTPAGE_NAME = CURRENT_PAGE_NAME;
 
-exports.execute = execute;
 
 function execute(task, context, successCallback, errorCallback) {
   var options;
@@ -196,7 +198,6 @@ function execute(task, context, successCallback, errorCallback) {
 
       request(options, function (error, response, body) {
         //console.log("status:" + response.statusCode);
-        //console.log(body);
 
         if (!error && response.statusCode == 200) {
           var encoding = charset(response.headers['content-type']);
@@ -208,6 +209,8 @@ function execute(task, context, successCallback, errorCallback) {
 
             body = iconv.convert(new Buffer(body, 'binary')).toString('UTF-8');
           }
+
+          console.log(body);
 
           task._text = body;
 
@@ -455,9 +458,9 @@ function execute(task, context, successCallback, errorCallback) {
 
 }
 
+exports.execute = execute;
 
-function _request(task, context, callback) {
-  var options;
+function simpleRequest(task, context, callback) {
   var cookiejar = context.user.cookie;
   var type = utils.requireNoCache(path.resolve('./modules/bot/action/common/type'));
 
@@ -466,19 +469,16 @@ function _request(task, context, callback) {
 
   if(task.param) console.log('task.param: ' + JSON.stringify(task.param, null, 2));
 
-  options = {
+  var options = {
     method: task.method,
-    uri: task.url  + encodeURI(task.path),
+    uri: task.uri || (task.url  + encodeURI(task.path)),
     headers: utils.merge(commonHeaders, task.headers),
     followAllRedirects: true,
     encoding: 'binary'
   };
 
-  console.log(context.user.cookie.toJSON());
-
+  // console.log(context.user.cookie.toJSON());
   options.headers['Cookie'] = cookiejar.getCookieStringSync(options.uri);
-
-  // options.headers['Cookie'] = 'lat=37.5175678; lng=126.9345585; rgn1=11; rgn2=11560; rgn3=11560540; addr=%EC%84%9C%EC%9A%B8+%EC%98%81%EB%93%B1%ED%8F%AC%EA%B5%AC+%EC%97%AC%EC%9D%98%EB%8F%99; addr_st=%EC%84%9C%EC%9A%B8_%EC%97%AC%EC%9D%98%EB%8F%99; ';
 
   if(task.method && task.method.toUpperCase() == "POST") {
     options.form = task.param;
@@ -506,6 +506,48 @@ function _request(task, context, callback) {
 
       task._text = body;
 
+      if(response.headers['content-type'] && response.headers['content-type'].startsWith('application/json')) {
+        try {
+          task[DOC_NAME] = JSON.parse(body);
+        } catch (exception) {
+          // result = body;
+        }
+      } else if(task.json) {
+        try {
+          task[DOC_NAME] = _.get(task, JSON.parse(body));
+        } catch (exception) {
+          // result = body;
+        }
+      } else if(task.xpath) {
+        var doc = new dom({errorHandler: xmldomErrorHandler}).parseFromString(body);
+        var nodes = xpath.select(task.xpath._repeat, doc)
+
+        task[DOC_NAME] = [];
+        var xpathSel;
+        for(var i = 0; nodes && i < nodes.length; i++) {
+          var node = nodes[i];
+          if(task.xpath.limit && i >= task.xpath.limit) break;
+          task[DOC_NAME][i] = {};
+          // task[DOC_NAME][i]["index"] = (i+1);
+
+          for(var key in task.xpath){
+            if(key === '_repeat') continue;
+            var val = task.xpath[key];
+
+            if(val.search(/\/@[\w-_]*$/g) != -1) { // @attribute
+              xpathSel = xpath.select1(val, node);
+              if(xpathSel) task[DOC_NAME][i][key] = xpathSel.value;
+            } else if(val.search(/\/text\(\)$/g) != -1) {
+              xpathSel = xpath.select(val, node);
+              if(xpathSel) task[DOC_NAME][i][key] =  xpathSel.toString();
+            } else {
+              xpathSel = xpath.select(val, node);
+              if(xpathSel) task[DOC_NAME][i][key] =  xpathSel;
+            }
+          }
+        }
+      }
+
       var cookieHeaders = response.headers['set-cookie'];
       for(var i = 0; cookieHeaders && i < cookieHeaders.length; i++) {
         var cookie = tough.Cookie.parse(cookieHeaders[i]);
@@ -521,7 +563,6 @@ function _request(task, context, callback) {
       callback(error, task, context);
     }
   });
-
 }
 
-exports.request = _request;
+exports.simpleRequest = simpleRequest;

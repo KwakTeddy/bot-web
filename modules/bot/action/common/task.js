@@ -10,7 +10,9 @@ function executeTask(task, context, callback) {
   if(context == undefined) throw new Error('task.js:executeTask: Wrong arguments. context undefined ' + task.module + '.' + task.action);
   if(callback == undefined) throw new Error('task.js:executeTask: Wrong arguments. callback undefined ' + task.module + '.' + task.action);
 
-  if(task.baseTask) task = taskForBase(task, context);
+  if(task.template) {
+    task = templateTask(task, context);
+  }
 
   var logPrefix = 'task.js:executeTask: ' + (task.module == undefined ? '' : task.module) + '.' + (task.action instanceof Function ? task.action.name : task.action);
   logger.debug('');
@@ -21,8 +23,8 @@ function executeTask(task, context, callback) {
   }
 
   if(task.action) {
-    var fCondition = (typeof task.condition == 'string' && !eval(task.condition)) ||
-      (task.condition instanceof Function && !task.condition(task, context));
+    var fCondition = (typeof task.if == 'string' && !eval(task.if)) ||
+      (task.if instanceof Function && !task.if(task, context));
 
     if(!fCondition) {
 
@@ -288,14 +290,14 @@ function executeTask(task, context, callback) {
 
               function(_task, _context, callback) {
                 if(!fCondition) {
-                  if(task.actionModule) {
-                    var actionModule;
-                    if('string' == typeof task.actionModule) {
-                      actionModule = findActionModule(task, context);
+                  if(task.module) {
+                    var module;
+                    if('string' == typeof task.module) {
+                      module = findActionModule(task, context);
                     } else {
-                      actionModule = task.actionModule;
+                      module = task.module;
                     }
-                    if(actionModule[task.action]) task.action = actionModule[task.action];
+                    if(module[task.action]) task.action = module[task.action];
                   } else if(typeof task.action == 'string') {
                     var _action = context.bot.actions[task.action];
                     if(_action) task.action = _action;
@@ -313,8 +315,8 @@ function executeTask(task, context, callback) {
                   //   taskModule[task.action](_task, _context, function(_task, _context) {
                   //     callback(null, _task, _context);
                   //   });
-                  } else if(actionModule && actionModule.execute instanceof Function) {
-                    actionModule.execute(_task, _context, function(_task, _context) {
+                  } else if(module && module.execute instanceof Function) {
+                    module.execute(_task, _context, function(_task, _context) {
                       callback(null, _task, _context);
                     });
                   } else {
@@ -384,7 +386,7 @@ function execute(task, context, successCallback, errorCallback) {
   logger.debug('');
   logger.debug('task.js:execute: ' + task.module + '.' + (task.action instanceof Function ? task.action.name : task.action) + ' start');
 
-  if(task.action == 'sequence' || task.action == 'repeat' || task.action == 'iteration') {
+  if(task.action == 'sequence' || task.action == 'while' || task.action == 'for') {
     task.taskCounter = 0;
     var taskNum = 0;
     var curTask = task.actions[taskNum];
@@ -424,24 +426,24 @@ function execute(task, context, successCallback, errorCallback) {
         logger.debug('task.js:execute: ' + task.module + '.' + task.action + ' sequence end');
 
         successCallback(task, context);
-      } else if (task.action == 'repeat' &&
-        ((typeof _task.condition == 'string' && !eval(_task.condition)) ||
-        (_task.condition instanceof Function && !_task.condition(_task, _context)) ||
-        task.taskCounter >= task.taskLimit || task.taskCounter >= MAX_ACTION)) {
+      } else if (task.action == 'while' &&
+        ((typeof task.whileIf == 'string' && !eval(task.whileIf)) ||
+        (task.whileIf instanceof Function && !task.whileIf(task, _context)) ||
+        task.taskCounter >= MAX_ACTION)) {
 
         logger.debug('task.js:execute: ' + task.module + '.' + task.action + ' repeat end');
 
         successCallback(task, context);
-      } else if (task.action == 'iteration' &&
-        ((typeof task.condition == 'string' && !eval(task.condition)) ||
-        (task.condition instanceof Function && !task.condition(_task, _context)) ||
+      } else if (task.action == 'for' &&
+        ((typeof task.forIf == 'string' && !eval(task.forIf)) ||
+        (task.forIf instanceof Function && !task.forIf(task, _context)) ||
         task.taskCounter >= task.taskLimit || task.taskCounter >= MAX_ACTION)) {
 
         logger.debug('task.js:execute: ' + task.module + '.' + task.action + ' iteration end');
 
         successCallback(task, context);
       } else {
-        if(task.action == 'iteration') taskNum = task.taskCounter % task.actions.length;
+        if(task.action == 'for') taskNum = task.taskCounter % task.actions.length;
 
         if(task.taskCounter != 0) preTask = curTask;
         curTask = utils.clone(task.actions[taskNum]);
@@ -467,25 +469,6 @@ function execute(task, context, successCallback, errorCallback) {
     };
 
     _executeTask(curTask, context, _successCallback, errorCallback);
-
-  } else if(task.action == 'if') {
-
-    for(var i =0; i < task.actions.length; i++) {
-      var curTask = task.actions[i];
-      curTask.parent =  task;
-      curTask.topTask = task.topTask;
-
-      if(curTask.condition) {
-        if((typeof curTask.condition == 'string' && eval(curTask.condition)) ||
-          (curTask.condition instanceof Function && curTask.condition(curTask, context)))
-        {
-          executeTask(curTask, context, successCallback, errorCallback);
-          return;
-        }
-      }
-    }
-
-    successCallback(task, context);
 
   } else if(task.action == 'synchronous') {
     task.taskCounter = 0;
@@ -573,15 +556,16 @@ function findModule(task, context) {
 }
 
 function findActionModule(task, context) {
-  var actionModule;
+  var module;
   var botName = context.bot.botName;
 
   //template action
   var modulePath;
   try {
-    modulePath = 'custom_modules/' + botName + '/' + (task.actionModule ? task.actionModule : botName);
-    delete require.cache[require.resolve(modulePath)];
-    actionModule = require(modulePath);
+    modulePath = './custom_modules/' + botName + '/' + (task.module ? task.module : botName);
+    var path1 = path.resolve(modulePath);
+    delete require.cache[require.resolve(path1)];
+    module = require(path1);
 
   } catch(err) {
     // console.log("error loading custom module: " + botName + "/" + task.module + '/' + task.action);
@@ -589,33 +573,76 @@ function findActionModule(task, context) {
   }
 
   // common action
-  if(!actionModule) {
+  if(!module) {
     try {
-      modulePath = 'modules/bot/action/common/' + task.module;
-      delete require.cache[require.resolve(modulePath)];
-      actionModule = require(modulePath);
+      modulePath = './modules/bot/action/common/' + task.module;
+      var path1 = path.resolve(modulePath);
+      // delete require.cache[require.resolve(modulePath)];
+      delete require.cache[require.resolve(path1)];
+      module = require(path1);
     } catch(err) {
       // console.log("error loading common module: " + task.module);
       // console.log(err);
     }
   }
 
-  return actionModule;
+  return module;
 }
 
-function taskForBase(task, context) {
-  var baseTask;
-  if(typeof task.baseTask == 'string') {
-    baseTask = context.bot.tasks[task.baseTask];
+function templateTask(task, context) {
+  var template;
+  if(typeof task.template == 'string') {
+    template = context.bot.tasks[task.template];
   } else {
-    baseTask = task.baseTask;
+    template = task.template;
   }
 
-  if(baseTask.baseTask) baseTask = taskForBase(baseTask, context);
-
-  task = utils.merge(task, baseTask);
+  task = mergeTemplate(template, task, context);
 
   return task;
+}
+
+
+function mergeTemplate(source1, source2, context){
+  if(!source1 && !source2) return undefined;
+  else if(!source1 && source2) return source2;
+  else if(source1 && !source2) return source1;
+
+  if(source1.template) {
+    source1 = templateTask(source1, context);
+  }
+
+  var merged;
+  if(source2.constructor==Object) {
+    merged = Object.assign({}, source1);
+    for (var attrname in source2) {
+      if( attrname == 'template') {
+
+      } else if( attrname == 'parent' || attrname == 'top') {
+        merged[attrname] = source2[attrname];
+      } else if ( source2[attrname]!=null && (source2[attrname].constructor==Object || source2[attrname].constructor==Array)) {
+        merged[attrname] = mergeTemplate(source1[attrname], source2[attrname], context);
+      } else {
+        merged[attrname] = source2[attrname];
+      }
+    }
+  } else if(source2.constructor==Array) {
+    merged = Object.assign({}, source1);
+
+    for (var i = 0, len = source2.length; i < len; i++) {
+      if(source1[i] && source2[i]) {
+        if ( (source2[i].constructor==Object || source2[i].constructor==Array)) {
+          merged[i] = mergeTemplate(source1[i], source2[i], context);
+        } else {
+          merged[i] = source2[i];
+        }
+      }
+    }
+  } else {
+    merged = source2;
+  }
+
+  return merged;
 }
 
 

@@ -17,7 +17,7 @@ exports.control = {
       action: 'if',
       actions: [
         {
-          condition: "(task.topTask.action == 'sequence')",
+          if: "(task.topTask.action == 'sequence')",
           module: 'template',
           action: 'movies',
           preCallback: function(task, context, callback) {
@@ -25,7 +25,7 @@ exports.control = {
           }
         },
         {
-          condition: function(task, context) {
+          if: function(task, context) {
             return task.topTask.doc;
           },
           module: 'template',
@@ -60,7 +60,7 @@ exports.repeat = {
     {
       module: 'mongo',
       action: 'find',
-      condition: function(task, context) {
+      if: function(task, context) {
         if(! task.currentPage) task.currentPage = 1;
         else task.currentPage++;
         task.totalPage = 4;
@@ -86,7 +86,7 @@ exports.if = {
   actions: [
     {
 
-      condition: "(task.topTask.action == 'sequence')",
+      if: "(task.topTask.action == 'sequence')",
       module: 'template',
       action: 'movies',
       preCallback: function(task, context, callback) {
@@ -94,7 +94,7 @@ exports.if = {
       }
     },
     {
-      condition: function(task, context) {
+      if: function(task, context) {
         return task.topTask.doc;
       },
       module: 'template',

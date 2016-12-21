@@ -476,8 +476,9 @@ function executeDialog(dialog, context, print, callback, options) {
   async.waterfall([
     function(cb) {
       if (dialog.task) {
-        if (dialog.task.baseTask || dialog.task.action) {
+        if (dialog.task.template || dialog.task.action) {
             taskModule.executeTask(dialog.task, context, function (_task, context) {
+              dialog.task = _task;
             cb(null);
           });
         } else {
@@ -647,12 +648,22 @@ function executeDialog(dialog, context, print, callback, options) {
         }, function(err) {
           if(matchedOutput) {
             var output = matchedOutput;
-            if(output.task && dialog.task) output.task = utils.merge(output.task, dialog.task);
-            else if(!output.task && dialog.task) {
-              output.task = utils.cloneWithParent(dialog.task);
-              output.task.action = null;
+
+            var isAction = false, isPreCallback = false, isPostCallback = false;
+            if(output.task !== undefined) {
+              isAction = output.task.action != undefined;
+              isPreCallback = output.task.preCallback != undefined;
+              isPostCallback = output.task.postCallback != undefined;
             }
 
+            if(output.task && dialog.task) output.task = utils.merge(output.task, dialog.task);
+            else if(!output.task && dialog.task) output.task = utils.cloneWithParent(dialog.task);
+
+            if(output.task !== undefined) {
+              if(!isAction) output.task.action = undefined;
+              if(!isPreCallback) output.task.preCallback = undefined;
+              if(!isPostCallback) output.task.postCallback = undefined;
+            }
 
             output.inRaw = dialog.inRaw;
             output.inNLP = dialog.inNLP;

@@ -18,19 +18,19 @@ exports.order = {
     // 메뉴 선택
     {
       module: 'task',
-      action: 'iteration',
+      action: 'for',
       preCallback: function(task, context, callback) {
         // task.topTask.pId = task.topTask.menu._id.id;
         callback(task, context);
       },
-      condition: function(task, context) {
+      if: function(task, context) {
         return task.isRepeat == undefined || task.isRepeat;
       },
       actions: [
         {
           module: 'task',
           action: 'question',
-          condition: function(task, context) {
+          if: function(task, context) {
             if(task.topTask.pId) return false;
             return true;
           },
@@ -106,7 +106,7 @@ exports.order = {
         {
           module: 'task',
           action: 'question',
-          condition: function(task, context) {
+          if: function(task, context) {
             if(task.topTask.pId) return false;
             return true;
           },
@@ -141,7 +141,7 @@ exports.order = {
         {
           module: 'http',
           action: 'xpathRepeat',
-          condition: function(task, context) {
+          if: function(task, context) {
             if(task.topTask.pId) return false;
             return true;
           },
@@ -196,7 +196,7 @@ exports.order = {
         {
           module: 'task',
           action: 'question',
-          condition: function(task, context) {
+          if: function(task, context) {
             if(task.topTask.pId) return false;
             return true;
           },
@@ -228,7 +228,7 @@ exports.order = {
         {
           module: 'task',
           action: 'question',
-          condition: function(task, context) {
+          if: function(task, context) {
             if(!task.topTask.pId && task.topTask.selectMenu.options && task.topTask.selectMenu.options.length > 0) return true;
             return false;
           },

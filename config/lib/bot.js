@@ -82,10 +82,13 @@ function loadBot(botName) {
 
 
   var bot = getBot(botName);
+  if(bot && bot.use === false) return;
+
   if(bot && bot.dialogFiles) {
     for (var i = 0; i < bot.dialogFiles.length; i++) {
       var file = bot.dialogFiles[i];
       var filePath = path.join(botDir, file);
+      bot.dialogFiles[i] = filePath;
 
       try {
         console.log('\tloading file: ' + file);
@@ -104,7 +107,7 @@ function loadBot(botName) {
   };
 
   try {
-    files = fs.readdirSync(botDir);
+    files = utils.readdirRecursive(botDir);
     for (var i = 0; i < files.length; i++) {
       var file = files[i];
       if(file != file.normalize('NFC')) {
@@ -119,12 +122,12 @@ function loadBot(botName) {
 
   for (var i = 0; i < files.length; i++) {
     var file = files[i];
-    var filePath = path.join(botDir, file);
+    // var filePath = path.join(botDir, file);
 
     try {
       console.log('\tloading file: ' + file);
 
-      utils.requireNoCache(filePath);
+      utils.requireNoCache(file);
     } catch(e) {
       console.error(e);
     }
@@ -145,11 +148,10 @@ function loadBot(botName) {
     } else {
       return false;
     }
-
   };
 
   try {
-    files = fs.readdirSync(botDir);
+    files = utils.readdirRecursive(botDir);
     for (var i = 0; i < files.length; i++) {
       var file = files[i];
       if(file != file.normalize('NFC')) {
@@ -165,12 +167,12 @@ function loadBot(botName) {
 
   for (var i = 0; i < files.length; i++) {
     var file = files[i];
-    var filePath = path.join(botDir, file);
+    // var filePath = path.join(botDir, file);
 
     try {
       console.log('\tloading file: ' + file);
 
-      utils.requireNoCache(filePath);
+      utils.requireNoCache(file);
     } catch(e) {
       console.error(e);
     }
