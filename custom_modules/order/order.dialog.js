@@ -34,6 +34,7 @@ var commonDialogs = [
     }
   },
 
+  { input: {if: 'context.dialog.menus && context.dialog.menus.length > 0', regexp: /(?:여기|까지|주문)/}, output: {call: '주문확인'}},
   { input: {if: orderTypes.orderDialogCondition, regexp: /전화/}, output: {call: '전화주문'}},
   { input: {if: orderTypes.orderDialogCondition, regexp: /(?:~이전|^0$)/}, output: {up : 1}},
   { input: {if: orderTypes.orderDialogCondition, regexp: /(?:~전페이지|^<$)/}, output: {repeat: 1, options: {page: 'pre'}}},              // TODO 이전페이지, 다음페이지 구현
@@ -80,13 +81,13 @@ var dialogs = [
           { if: 'context.dialog.address.지번본번 == undefined && context.dialog.forceAddress != true',
             output: '주문을 위해서는 번지수 및 동호수를 포함한 상세한 주소가 필요합니다.\n\n주소를 정확히 입력해 주세요.\n그냥 근처의 음식점을 먼저 검색하고 싶으면 "계속"이라고 말씀해주세요.',
             children: [
-              {input: '계속', output: {call: '주소변경완료'}},
+              {input: '계속', output: {call: '주소등록확인'}},
               {output: {callChild: '주소등록'}}
             ]},
           { if: 'context.dialog.address.지번본번 == undefined && context.dialog.forceAddress == true', output: {repeat: 1, options: {output: '지번 또는 도로명을 포함한 상세주소를 말씀해주세요.\n예시) 강남구 삼성동 16-1 101동 101호\n예시) 강남구 학동로 426 101동 101호\n\n주소를 정확히 입력해 주세요.\n0.이전 !. 처음'}}},
           { if: 'context.dialog.address.상세주소 == undefined', output: '동호수나 몇층인지 까지 말씀해주세요.\n 있으면 말씀해주시고, 이게 전부이면 "거기까지"라고 얘기해주세요.',
             children: [
-              {input: '거기까지', output: {call: '주소변경완료'}},
+              {input: '거기까지', output: {call: '주소등록확인'}},
               { task: { action: function(task, context, callback) {
                   console.log('주소변경' + task.inRaw);
                   context.user.address.상세주소 = context.dialog.address.상세주소 = task.inRaw;
@@ -94,8 +95,22 @@ var dialogs = [
                   context.user.address.도로명주소  = context.dialog.address.도로명주소 = context.user.address.도로명주소 + ' ' + task.inRaw;
                   callback(task, context);
                 }},
-                output: {call: '주소변경완료'}}
+                output: {call: '주소등록확인'}}
           ]},
+          {if: 'true', output: {call: '주소등록확인'}}
+        ]
+      },
+      { name: '주소등록확인',
+        input: false,
+        output: [
+          {
+            // if : "context.bot.channel == 'ios'|context.bot.channel == 'android'",
+            output: '입력하신 주소는 +address.지번주소+ 입니다. 이 주소가 맞으신가요?',
+            children: [
+              {input: /~네/, output: {call: '주소변경완료'}},
+              {input: /~아니요/, output: {call: '주소등록'}},
+              {output: {repeat: 1, options: {prefix: '네 혹은 아니오로 대답해주세요.\n'}} }
+            ]},
           {if: 'true', output: {call: '주소변경완료'}}
         ]
       },
