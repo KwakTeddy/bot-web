@@ -36,7 +36,7 @@ var dialogs = [
       output: {repeat: 1, options: {page: 'next'}}
     },
     {
-      Finput: {regexp: /^>$/} ,
+      input: {regexp: /^>$/} ,
       output: {repeat: 1, options: {page: 'next'}}
     },
     {

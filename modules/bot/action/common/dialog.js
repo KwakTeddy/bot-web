@@ -423,7 +423,7 @@ exports.matchDialogs = matchDialogs;
 
 
 function executeDialog(dialog, context, print, callback, options) {
-  if(dialog.name || dialog.input) logger.debug('executeDialog: ' + toDialogString(dialog) + ' ========== ' + (options?options.prefix: ''));
+  if(dialog.name || dialog.input) logger.debug('executeDialog: ' + toDialogString(dialog) + ' options= ' + (options?options.prefix: ''));
 
   // context.botUser.currentDialog = null;
   context.user.pendingCallback = null;
