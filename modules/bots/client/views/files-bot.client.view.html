@@ -41,7 +41,7 @@
       <tr ng-repeat="file in vm.files track by $index">
         <td name="fileName" class="text-center">
           <div ng-show="!file.edit">
-            {{file.name}}.top
+            {{file.name}}
           </div>
           <input type="text" class="form-control input-block" ng-model="file.renameFileName" ng-show="file.edit"/>
         </td>

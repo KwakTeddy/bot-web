@@ -1,3 +1,10 @@
+<style>
+  .content-body {padding: 0px}
+  .panel-body {padding: 0px}
+  .CodeMirror {height: auto;}
+
+</style>
+
 <header class="page-header">
   <h2>에디터</h2>
 
@@ -10,7 +17,7 @@
       </li>
       <li><span>봇 관리</span></li>
       <li><span>{{vm.botName}}</span></li>
-      <li><span>{{vm.name}}.top</span></li>
+      <li><span>{{vm.name}}</span></li>
     </ol>
 
     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
@@ -24,11 +31,11 @@
       <header class="panel-heading"  style="padding: 10px 15px;">
         <div class="row">
           <div class="col-sm-6 pull-left">
-            <h2 class="panel-title">{{vm.name}}.top</h2>
+            <h2 class="panel-title">{{vm.name}}</h2>
           </div>
 
           <div class="col-sm-6 text-right">
-            <a class="btn btn-primary" ng-click="vm.save()">
+            <a class="btn btn-primary" ng-click="vm.buildBot()">
               Save & Build (F5)
             </a>
           </div>

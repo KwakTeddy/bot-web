@@ -175,7 +175,7 @@ exports.listFile = function (req, res) {
 exports.createFile = function (req, res) {
   var bot = req.bot;
   var botFolder = generateBotFolder(bot.id);
-  fs.writeFile(botFolder + req.body.fileName + '.top', '# Created By ...', {flag: 'wx'}, function(err) {
+  fs.writeFile(botFolder + req.body.fileName, '# Created By ...', {flag: 'wx'}, function(err) {
     console.log('writeFile Result: ' + err);
     var botFile = new BotFile();
     botFile.bot = bot;
@@ -220,7 +220,7 @@ exports.createFile = function (req, res) {
 exports.removeFile = function (req, res) {
   var file = req.file;
   var botFolder = generateBotFolder(file.bot.id);
-  fs.unlink(botFolder + file.name + '.top', function (err) {
+  fs.unlink(botFolder + file.name, function (err) {
     file.remove(function (err) {
       if (err) {
         return res.status(400).send({
@@ -251,7 +251,7 @@ exports.removeFile = function (req, res) {
 exports.renameFile = function (req, res) {
   var file = req.file;
   var botFolder = generateBotFolder(file.bot.id);
-  fs.rename(botFolder + file.name + '.top', botFolder + req.body.renameFileName + '.top', function (err) {
+  fs.rename(botFolder + file.name, botFolder + req.body.renameFileName, function (err) {
     if(err) {
       res.status(400).send({
         message: 'Rename File Failed'
@@ -275,7 +275,7 @@ exports.readFile = function (req, res) {
   var bot = req.bot;
   var file = req.file;
   var botFolder = generateBotFolder(file.bot.id);
-  fs.readFile(botFolder + file.name + '.top', function (err, data) {
+  fs.readFile(botFolder + file.name, function (err, data) {
     if(err) {
       console.log(err.toString());
       res.status(400).send({
@@ -290,7 +290,7 @@ exports.readFile = function (req, res) {
 exports.editFile = function (req, res) {
   var file = req.file;
   var botFolder = generateBotFolder(file.bot.id);
-  fs.writeFile(botFolder + file.name + '.top', req.body.fileData, {flag: 'w'}, function(err) {
+  fs.writeFile(botFolder + file.name, req.body.fileData, {flag: 'w'}, function(err) {
     console.log('writeFile Result: ' + err);
     if(err) {
       res.status(400).send({
@@ -302,7 +302,8 @@ exports.editFile = function (req, res) {
 };
 
 function generateBotFolder(botId) {
-  return config.chatServer + 'RAWDATA/' + botId + '/';
+  // return config.chatServer + 'RAWDATA/' + botId + '/';
+  return './custom_modules/' + botId + '/';
 }
 function deleteFolderRecursive(path) {
   var files = [];
