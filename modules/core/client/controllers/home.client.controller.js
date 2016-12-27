@@ -118,8 +118,7 @@ angular.module('core').controller('HomeController', ['$scope', '$document', 'Aut
 
         if(message.startsWith(':log')) {
           vm.log += message.substring(message.indexOf('\n')+1);
-          // var div = document.getElementById('logDiv');
-          // div.scrollTop = div.scrollHeight - div.clientHeight;
+          logScrollBottom();
         } else addBotBubble(message);
       });
 
@@ -145,6 +144,17 @@ angular.module('core').controller('HomeController', ['$scope', '$document', 'Aut
 
   }
 ]);
+
+var logScrollTimer = -1;
+function logScrollBottom() {
+  if(logScrollTimer > -1) clearTimeout(logScrollTimer);
+
+  logScrollTimer = setTimeout(function() {
+    var logDiv = document.getElementById('logDiv');
+    logDiv.scrollTop = logDiv.scrollHeight - logDiv.clientHeight;
+    logScrollTimer = -1;
+  }, 300);
+}
 
 function clearBubble() {
   var main = document.getElementById('chat_main');
