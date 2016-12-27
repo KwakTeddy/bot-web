@@ -34,8 +34,8 @@ console.log = function(out) {
 }
 
 console.error = function(out) {
-  process.stderr.write((out.stack? out.stack : out)+'\n');
-  if(botSocket) botSocket.emit('send_msg', ":log \n" + (out.stack? out.stack : out) +"\n");
+  process.stderr.write((out.stack ? out.stack : out) +'\n');
+  if(botSocket) botSocket.emit('send_msg', ":log \n" + (out.stack ? out.stack : out) +"\n");
 }
 
 // console.trace = function(out, t) {

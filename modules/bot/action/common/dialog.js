@@ -98,7 +98,7 @@ function matchGlobalDialogs(inRaw, inNLP, dialogs, context, print, callback) {
         } else {
           for (var i = 0; i < dialogs.length; i++) {
             var dialog = dialogs[i];
-            if(dialog.input == undefined || dialog.name == NO_DIALOG_NAME ) {
+            if(dialog.input == undefined || dialog.input === '' || dialog.name == NO_DIALOG_NAME ) {
               executeDialog(dialog, context, print, callback);
               context.dialog.isFail = true;
               callback(true);
@@ -200,7 +200,7 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
 
         async.waterfall([
           function(cb2) {
-            if(input === undefined || input === false || dialog.name == NO_DIALOG_NAME ) {
+            if(input === undefined || input === false || input === '' || dialog.name == NO_DIALOG_NAME ) {
               cb2(true, false);
             } else if(input instanceof Function) {
               input(inRaw, inNLP, dialog, context, function(matched) {
