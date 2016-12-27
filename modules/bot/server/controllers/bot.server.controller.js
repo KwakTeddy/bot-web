@@ -23,8 +23,27 @@ function write(channel, from, to, text, successCallback, errorCallback, endCallb
 
 exports.botProc = botProc;
 
-function botProc(botName, channel, user, inTextRaw, outCallback, chatServerConfig) {
+var botSocket;
 
+exports.setBotSocket = function(socket) {botSocket = socket};
+
+// console = {};
+console.log = function(out) {
+  process.stdout.write(out+'\n');
+  if(botSocket) botSocket.emit('send_msg', ":log \n" + out +"\n");
+}
+
+console.error = function(out) {
+  process.stderr.write((out.stack? out.stack : out)+'\n');
+  if(botSocket) botSocket.emit('send_msg', ":log \n" + (out.stack? out.stack : out) +"\n");
+}
+
+// console.trace = function(out, t) {
+//   process.stderr.write(out+'\n');
+//   if(botSocket) botSocket.emit('send_msg', ":log \n" + out +"\n");
+// }
+
+function botProc(botName, channel, user, inTextRaw, outCallback, chatServerConfig) {
   // TODO 개발용
   dialog = utils.requireNoCache(path.resolve('modules/bot/action/common/dialog'));
 

@@ -17,13 +17,13 @@ var mongoose = require('mongoose'),
 // Create the chat configuration
 module.exports = function (io, socket) {
   console.log('user connected');
+  bot.setBotSocket(socket);
 
   socket.on('disconnect', function() {
     console.log('user disconnected')
   });
 
   socket.on('send_msg', function(msg) {
-
     bot.botProc(msg.bot, msg.channel || 'socket', msg.user, msg.msg, function(_out, _task) {
       socket.emit('send_msg', _out +
         (_task && _task.photoUrl ? "\nphoto: " + _task.photoUrl : "") + " " +

@@ -35,7 +35,6 @@
     </div>
   </div>
 
-
   <header class="panel-heading">
     <h2 class="panel-title">{{vm.isConnected ? vm.bot : '접속해주세요'}}</h2>
   </header>
@@ -73,5 +72,13 @@
       <button class="col-sm-3 btn btn-info" ng-click="vm.resetBot()">초기화 (ESC)</button>
     </div>
   </div>
+
+  <br/>
+  <div class="row">
+    <div class="col-md-12">
+      <div  id="logDiv" ng-bind="vm.log" style="white-space:pre; line-height: 17px;  width: 100%; height: 200px;overflow: scroll" class="form-control"></div>
+    </div>
+  </div>
+
 </section>
 

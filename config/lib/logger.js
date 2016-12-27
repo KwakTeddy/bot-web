@@ -12,12 +12,11 @@ var winston = require('winston');
 // logger.info('Log Level: ' + logger.level);
 
 var logger = {
-  verbose: function(text) {console.log(text);},
-  info: function(text) {console.log(text);},
-  debug: function(text) {console.log(text);},
-  error: function(text) {console.error(text);}
+verbose: function(text) {console.log(text);},
+info: function(text) {console.log(text);},
+debug: function(text) {console.log(text);},
+error: function(text) {console.error(text);}
 };
 
 module.exports = logger;
-
 

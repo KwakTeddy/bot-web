@@ -94,39 +94,43 @@ angular.module('core').controller('HomeController', ['$scope', '$document', 'Aut
     //   } else if(keyCode == 27) {
     //     vm.resetBot();
     //   }
-    // };
+      // };
 
-    function build() {
-      clearBubble();
-      addBotBubble('머니봇 [' + vm.bot + '] 접속 (' + vm.server.split(':')[0] + ':' + vm.server.split(':')[1] + ' as ' + vm.userId + ')');
-      emitMsg(':build ' + vm.bot + ' reset');
-    }
+      function build() {
+        clearBubble();
+        addBotBubble('머니봇 [' + vm.bot + '] 접속 (' + vm.server.split(':')[0] + ':' + vm.server.split(':')[1] + ' as ' + vm.userId + ')');
+        emitMsg(':build ' + vm.bot + ' reset');
+      }
 
-    function init() {
-      clearBubble();
-      addBotBubble('머니봇 [' + vm.bot + '] 접속 (' + vm.server.split(':')[0] + ':' + vm.server.split(':')[1] + ' as ' + vm.userId + ')');
-      emitMsg(':reset user');
+      function init() {
+        clearBubble();
+        addBotBubble('머니봇 [' + vm.bot + '] 접속 (' + vm.server.split(':')[0] + ':' + vm.server.split(':')[1] + ' as ' + vm.userId + ')');
+        emitMsg(':reset user');
 
-      setTimeout(function() {
-        console.log('init: ' + vm.initMsg);
-        if(vm.initMsg != undefined && vm.initMsg != null && vm.initMsg != '') emitMsg(vm.initMsg);
-      }, 200);
+        setTimeout(function() {
+          console.log('init: ' + vm.initMsg);
+          if(vm.initMsg != undefined && vm.initMsg != null && vm.initMsg != '') emitMsg(vm.initMsg);
+        }, 200);
+      }
 
-    }
+      Socket.on('send_msg', function (message) {
+        console.log('out:' + message);
 
-    Socket.on('send_msg', function (message) {
-      console.log('out:' + message);
-      addBotBubble(message);
-    });
-
-    function emitMsg(msg) {
-      Socket.emit('send_msg', {
-        host: vm.server.split(':')[0],
-        port: vm.server.split(':')[1],
-        bot: vm.bot,
-        user: vm.userId,
-        msg: msg
+        if(message.startsWith(':log')) {
+          vm.log += message.substring(message.indexOf('\n')+1);
+          var div = document.getElementById('logDiv');
+          div.scrollTop = div.scrollHeight - div.clientHeight;
+        } else addBotBubble(message);
       });
+
+      function emitMsg(msg) {
+        Socket.emit('send_msg', {
+          host: vm.server.split(':')[0],
+          port: vm.server.split(':')[1],
+          bot: vm.bot,
+          user: vm.userId,
+          msg: msg
+        });
     }
 
 
@@ -134,9 +138,11 @@ angular.module('core').controller('HomeController', ['$scope', '$document', 'Aut
       Socket.removeListener('send_msg');
     });
 
+    vm.log = '';
     vm.bot = 'demo';
     vm.userId = 'com2best';
     vm.connect();
+
   }
 ]);
 
