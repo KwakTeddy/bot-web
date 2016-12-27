@@ -118,8 +118,8 @@ angular.module('core').controller('HomeController', ['$scope', '$document', 'Aut
 
         if(message.startsWith(':log')) {
           vm.log += message.substring(message.indexOf('\n')+1);
-          var div = document.getElementById('logDiv');
-          div.scrollTop = div.scrollHeight - div.clientHeight;
+          // var div = document.getElementById('logDiv');
+          // div.scrollTop = div.scrollHeight - div.clientHeight;
         } else addBotBubble(message);
       });
 

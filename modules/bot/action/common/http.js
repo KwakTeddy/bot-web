@@ -465,7 +465,7 @@ function simpleRequest(task, context, callback) {
   var type = utils.requireNoCache(path.resolve('./modules/bot/action/common/type'));
 
   console.log('\n' + 'http.js:request: ' + (task.method ? task.method : '') + ' ' +
-    task.url + task.path);
+    (task.uri ? task.uri : task.url + task.path));
 
   if(task.param) console.log('task.param: ' + JSON.stringify(task.param, null, 2));
 
@@ -520,29 +520,51 @@ function simpleRequest(task, context, callback) {
         }
       } else if(task.xpath) {
         var doc = new dom({errorHandler: xmldomErrorHandler}).parseFromString(body);
-        var nodes = xpath.select(task.xpath._repeat, doc)
+        
+        if(task.xpath._repeat) {
+          var nodes = xpath.select(task.xpath._repeat, doc)
 
-        task[DOC_NAME] = [];
-        var xpathSel;
-        for(var i = 0; nodes && i < nodes.length; i++) {
-          var node = nodes[i];
-          if(task.xpath.limit && i >= task.xpath.limit) break;
-          task[DOC_NAME][i] = {};
-          // task[DOC_NAME][i]["index"] = (i+1);
+          task[DOC_NAME] = [];
+          var xpathSel;
+          for(var i = 0; nodes && i < nodes.length; i++) {
+            var node = nodes[i];
+            if(task.xpath.limit && i >= task.xpath.limit) break;
+            task[DOC_NAME][i] = {};
+            // task[DOC_NAME][i]["index"] = (i+1);
+
+            for(var key in task.xpath){
+              if(key === '_repeat') continue;
+              var val = task.xpath[key];
+
+              if(val.search(/\/@[\w-_]*$/g) != -1) { // @attribute
+                xpathSel = xpath.select1(val, node);
+                if(xpathSel) task[DOC_NAME][i][key] = xpathSel.value;
+              } else if(val.search(/\/text\(\)$/g) != -1) {
+                xpathSel = xpath.select(val, node);
+                if(xpathSel) task[DOC_NAME][i][key] =  xpathSel.toString();
+              } else {
+                xpathSel = xpath.select(val, node);
+                if(xpathSel) task[DOC_NAME][i][key] =  xpathSel;
+              }
+            }
+          }
+        } else {
+          task[DOC_NAME] = {};
+          var xpathSel;
 
           for(var key in task.xpath){
             if(key === '_repeat') continue;
             var val = task.xpath[key];
 
             if(val.search(/\/@[\w-_]*$/g) != -1) { // @attribute
-              xpathSel = xpath.select1(val, node);
-              if(xpathSel) task[DOC_NAME][i][key] = xpathSel.value;
+              xpathSel = xpath.select1(val, doc);
+              if(xpathSel) task[DOC_NAME][key] = xpathSel.value;
             } else if(val.search(/\/text\(\)$/g) != -1) {
-              xpathSel = xpath.select(val, node);
-              if(xpathSel) task[DOC_NAME][i][key] =  xpathSel.toString();
+              xpathSel = xpath.select(val, doc);
+              if(xpathSel) task[DOC_NAME][key] =  xpathSel.toString();
             } else {
-              xpathSel = xpath.select(val, node);
-              if(xpathSel) task[DOC_NAME][i][key] =  xpathSel;
+              xpathSel = xpath.select(val, doc);
+              if(xpathSel) task[DOC_NAME][key] =  xpathSel;
             }
           }
         }
