@@ -520,54 +520,62 @@ function simpleRequest(task, context, callback) {
         }
       } else if(task.xpath) {
         var doc = new dom({errorHandler: xmldomErrorHandler}).parseFromString(body);
-        
-        if(task.xpath._repeat) {
-          var nodes = xpath.select(task.xpath._repeat, doc)
 
-          task[DOC_NAME] = [];
-          var xpathSel;
-          for(var i = 0; nodes && i < nodes.length; i++) {
-            var node = nodes[i];
-            if(task.xpath.limit && i >= task.xpath.limit) break;
-            task[DOC_NAME][i] = {};
-            // task[DOC_NAME][i]["index"] = (i+1);
+        // task[DOC_NAME] = xpathAction(doc, task.xpath);
 
-            for(var key in task.xpath){
-              if(key === '_repeat') continue;
-              var val = task.xpath[key];
-
-              if(val.search(/\/@[\w-_]*$/g) != -1) { // @attribute
-                xpathSel = xpath.select1(val, node);
-                if(xpathSel) task[DOC_NAME][i][key] = xpathSel.value;
-              } else if(val.search(/\/text\(\)$/g) != -1) {
-                xpathSel = xpath.select(val, node);
-                if(xpathSel) task[DOC_NAME][i][key] =  xpathSel.toString();
-              } else {
-                xpathSel = xpath.select(val, node);
-                if(xpathSel) task[DOC_NAME][i][key] =  xpathSel;
-              }
-            }
-          }
+        if(task.xpath.doc === undefined) {
+          task.doc = xpathAction(doc, task.xpath);
         } else {
-          task[DOC_NAME] = {};
-          var xpathSel;
-
-          for(var key in task.xpath){
-            if(key === '_repeat') continue;
-            var val = task.xpath[key];
-
-            if(val.search(/\/@[\w-_]*$/g) != -1) { // @attribute
-              xpathSel = xpath.select1(val, doc);
-              if(xpathSel) task[DOC_NAME][key] = xpathSel.value;
-            } else if(val.search(/\/text\(\)$/g) != -1) {
-              xpathSel = xpath.select(val, doc);
-              if(xpathSel) task[DOC_NAME][key] =  xpathSel.toString();
-            } else {
-              xpathSel = xpath.select(val, doc);
-              if(xpathSel) task[DOC_NAME][key] =  xpathSel;
-            }
-          }
+          utils.merge(task, xpathAction(doc, task.xpath), true);
         }
+
+        // if(task.xpath._repeat) {
+        //   var nodes = xpath.select(task.xpath._repeat, doc)
+        //
+        //   task[DOC_NAME] = [];
+        //   var xpathSel;
+        //   for(var i = 0; nodes && i < nodes.length; i++) {
+        //     var node = nodes[i];
+        //     if(task.xpath.limit && i >= task.xpath.limit) break;
+        //     task[DOC_NAME][i] = {};
+        //     // task[DOC_NAME][i]["index"] = (i+1);
+        //
+        //     for(var key in task.xpath){
+        //       if(key === '_repeat') continue;
+        //       var val = task.xpath[key];
+        //
+        //       if(val.search(/\/@[\w-_]*$/g) != -1) { // @attribute
+        //         xpathSel = xpath.select1(val, node);
+        //         if(xpathSel) task[DOC_NAME][i][key] = xpathSel.value;
+        //       } else if(val.search(/\/text\(\)$/g) != -1) {
+        //         xpathSel = xpath.select(val, node);
+        //         if(xpathSel) task[DOC_NAME][i][key] =  xpathSel.toString();
+        //       } else {
+        //         xpathSel = xpath.select(val, node);
+        //         if(xpathSel) task[DOC_NAME][i][key] =  xpathSel;
+        //       }
+        //     }
+        //   }
+        // } else {
+        //   task[DOC_NAME] = {};
+        //   var xpathSel;
+        //
+        //   for(var key in task.xpath){
+        //     if(key === '_repeat') continue;
+        //     var val = task.xpath[key];
+        //
+        //     if(val.search(/\/@[\w-_]*$/g) != -1) { // @attribute
+        //       xpathSel = xpath.select1(val, doc);
+        //       if(xpathSel) task[DOC_NAME][key] = xpathSel.value;
+        //     } else if(val.search(/\/text\(\)$/g) != -1) {
+        //       xpathSel = xpath.select(val, doc);
+        //       if(xpathSel) task[DOC_NAME][key] =  xpathSel.toString();
+        //     } else {
+        //       xpathSel = xpath.select(val, doc);
+        //       if(xpathSel) task[DOC_NAME][key] =  xpathSel;
+        //     }
+        //   }
+        // }
       }
 
       var cookieHeaders = response.headers['set-cookie'];
@@ -577,7 +585,6 @@ function simpleRequest(task, context, callback) {
       }
 
       callback(task, context);
-
     } else {
       console.log("[http.js:request] error: " + error);
 
@@ -588,3 +595,53 @@ function simpleRequest(task, context, callback) {
 }
 
 exports.simpleRequest = simpleRequest;
+
+function xpathAction(doc, path, isRepeat) {
+  if(path._repeat && isRepeat !== true) {
+    var json = [];
+
+    var nodes = xpath.select(path._repeat, doc);
+    for(var i = 0; nodes && i < nodes.length; i++) {
+      var node = nodes[i];
+      if(path._limit && i >= path._limit) break;
+
+      json.push(xpathAction(node, path, true));
+    }
+
+    return json;
+  } else {
+    var json = {};
+    var xpathSel;
+
+    var postXpath;
+    for(var key in path){
+      if(key === '_repeat') continue;
+      if(key === '_postXpath') {
+        postXpath = path[key];
+        continue;
+      }
+      var val = path[key];
+
+      if(typeof val === 'string') {
+        if(val.search(/\/@[\w-_]*$/g) != -1) { // @attribute
+          xpathSel = xpath.select1(val, doc);
+          if(xpathSel) json[key] = xpathSel.value;
+        } else if(val.search(/\/text\(\)$/g) != -1) {
+          xpathSel = xpath.select(val, doc);
+          if(xpathSel) json[key] =  xpathSel.toString();
+        } else {
+          xpathSel = xpath.select(val, doc);
+          if(xpathSel) json[key] =  xpathSel;
+        }
+      } else if (typeof val === 'object') {
+        json[key] = xpathAction(doc, val);
+      }
+    }
+
+    if(postXpath) {
+      json = postXpath(json, doc);
+    }
+
+    return json;
+  }
+}

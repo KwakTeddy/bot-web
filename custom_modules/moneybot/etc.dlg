@@ -33,4 +33,4 @@ bot.setAction('executeAction', executeAction);
 
 <실행
 {action: 'executeAction'}
->실행완료\n ##+title+\n#
+>실행완료\n ##+company+ +title+\n#
