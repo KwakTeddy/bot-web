@@ -66,7 +66,7 @@ function searchCenter (task,                                 context, callback) 
             return a.distance - b.distance;
           });
         }
-        context.dialog.item = docs[0];
+        context.dialog.item = docs;
         callback(task,context)
       }
     });
@@ -199,9 +199,9 @@ function updateTime(task, context, callback) {
     async.eachSeries(docs, function(doc, cb) {
       var weekopen, weekclose, satopen, satclose;
       weekopen = doc.winter_week.substring(0,5);
-      weekclose = doc.winter_week.substring(6,11);
+      weekclose = doc.winter_week.substring(5,10);
       satopen = doc.winter_sat.substring(0,5);
-      satclose = doc.winter_sat.substring(6,11);
+      satclose = doc.winter_sat.substring(5,10);
 
       center.update({_id: doc._id}, {winter_week_open: weekopen,winter_week_close:weekclose,winter_sat_open:satopen,winter_sat_close:satclose}, function (err,num) {
         cb(null);
@@ -246,10 +246,21 @@ function checkTime(task, context, callback) {
       context.dialog.check = false;
     } else {
       var hhmm = new Date().toString().split(' ')[4].substring(0, 5);
-      if (hhmm >= docs[0].winter_week_close && hhmm <= docs[0].winter_week_open) {
-        context.dialog.check = true;
+      var day = new Date().getDay();
+      if (day <= 5) {
+        if (hhmm <= docs[0].winter_week_close && hhmm >= docs[0].winter_week_open) {
+          context.dialog.check = false;
+        } else {
+          context.dialog.check = true;
+        }
+      } else if (day == 6) {
+        if (hhmm <= docs[0].winter_sat_close && hhmm >= docs[0].winter_sat_open) {
+          context.dialog.check = false;
+        } else {
+          context.dialog.check = true;
+        }
       } else {
-        context.dialog.check = false;
+        context.dialog.check = true;
       }
       callback(task, context);
     }
