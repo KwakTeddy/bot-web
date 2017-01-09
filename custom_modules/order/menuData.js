@@ -728,7 +728,7 @@ function yoSave(task, context, callback) {
   task._text = null;
   task._client = null;
 
-  model.update({site: task.site, restaurantId: task.restaurantId}, task, {upsert: true},function(err, docs) {
+  model.     ({site: task.site, restaurantId: task.restaurantId}, task, {upsert: true},function(err, docs) {
     if(err) {
       console.log('yoSave: ' + err);
     } else {

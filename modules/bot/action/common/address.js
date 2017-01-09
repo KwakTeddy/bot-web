@@ -1141,37 +1141,6 @@ function naverGeocode(task, context, callback) {
 
 exports.naverGeocode = naverGeocode;
 
-function lgGeocode(task, context, callback) {
-  // var query = {query: task.address.법정읍면동명 + ' ' + task.address.지번본번 + ' ' + task.address.지번부번};
-
-  var query = {query: task.address3};
-  var request = require('request');
-
-  request({
-    url: 'https://openapi.naver.com/v1/map/geocode?encoding=utf-8&coord=latlng&output=json',
-    method: 'GET',
-    qs: query,
-    headers: {
-      'Host': 'openapi.naver.com',
-      'Accept': '*/*',
-      'Content-Type': 'application/json',
-      'X-Naver-Client-Id': context.bot.naver.clientId,
-      'X-Naver-Client-Secret': context.bot.naver.clientSecret
-    }
-  }, function(error, response, body) {
-    if (!error && response.statusCode == 200) {
-      // console.log(body);
-      var doc = JSON.parse(body);
-      task.lng=doc.result.items[0].point.x;
-      task.lat=doc.result.items[0].point.y;
-      console.log('lat: ' + task.lat + ', lng: ' + task.lng);
-    }
-    callback(task, context);
-  });
-}
-
-exports.lgGeocode = lgGeocode;
-
 function naverReverseGeocode(task, context, callback) {
   // var query = {query: task.address.법정읍면동명 + ' ' + task.address.지번본번 + ' ' + task.address.지번부번};
 

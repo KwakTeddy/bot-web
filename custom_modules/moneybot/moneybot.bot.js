@@ -1,6 +1,7 @@
 var path = require('path');
 
 var orderBot = {
+  use: false,
   testMode: false,
   serviceName: '머니봇',
   serviceNick: '인공지능 금융비서',

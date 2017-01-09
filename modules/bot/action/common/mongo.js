@@ -579,5 +579,5 @@ function getModel(modelName, schema, options) {
   return model;
 }
 
-exports.getModel = getModel;
+ exports.getModel = getModel;
 

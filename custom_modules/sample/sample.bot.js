@@ -3,7 +3,7 @@ var botlib = require(path.resolve('config/lib/bot'));
 var typelib = require(path.resolve('modules/bot/action/common/type'));
 
 var sampleBot = {
-  use: true
+  use: false
 };
 
 // bot.setBot('sample', sampleBot);

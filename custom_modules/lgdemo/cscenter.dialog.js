@@ -30,9 +30,47 @@ var dialogs = [
   ]
 },
 {
+  input: ['센터 ~찾다', '센터 안내'],
+  output: '어디에 계신가요?',
+  children: [
+    {
+      input: {types: [{name: 'address', typeCheck: address.addressTypeCheck}]},
+      task:       { action: cscenter.searchCenter,
+        postCallback: function(task, context, callback) {
+          console.log("cscenter post" + context.dialog.item);
+          callback(task, context);
+        }
+      },
+      output: '주변의 서비스 센터 중 가까운 곳은 "+item.svc_center_name+" 입니다.\n주소: +item.address3+\n연락처: +item.phone+\n영업시간(평일): +item.winter_week+\n영업시간(토): +item.winter_sat+'
+    }
+  ]
+},
+{
+  input: '시간 체크',
+  task:   {action: cscenter.checkTime},
+  output: [
+  {if: 'context.dialog.check == true', output: '영업시간이 아닙니다.'}, 
+  {if: 'context.dialog.check == false', output: '영업시간입니다.'}]
+},
+{
+  input: 'update address',
+  task:   {action: cscenter.updateCenterAddress},
+  output: 'update address 완료'
+},
+{
   input: 'update geocode',
   task:   {action: 'centerGeocode'},
   output: 'update geocode 완료'
+},
+{
+  input: 'update time',
+  task:   {action: 'updateTime'},
+  output: 'update time 완료'
+},
+{
+  input: 'pre time',
+  task:   {action: 'preupdateTime'},
+  output: 'preupdate time 완료'
 },
 {
   input: '영업 시간',
