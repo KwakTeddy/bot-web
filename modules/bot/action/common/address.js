@@ -88,10 +88,11 @@ function searchAddress(task, context, callback) {
   var model = mongo.getModel('건물정보', 건물정보스키마);
 
   var query = {};
-  var 시도명, 시군구명, 읍면동명, 행정동명, 도로명, 리명, 본번, 부번, 상세주소, 도로명상세주소;
+  var 시도명, 시군구명, 읍면동명, 행정동명, 도로명, 리명, 본번, 부번, 상세주소, 도로명상세주소, 건물명;
 
   var 지번Re = /(?:(경기도|경기|강원도|강원|충청북도|충북|충청남도|충남|전라북도|전북|전라남도|전남|경상북도|경북|경상남도|경남|제주특별자치도|제주도|제주|서울특별시|서울시|서울|인천광역시|인천시|인천|대전광역시|대전시|대전|대구광역시|대구시|대구|광주광역시|광주시|광주|부산광역시|부산시|부산|울산광역시|울산시|울산|세종특별자치시|세종특별시|세종시|세종)\s*)?(?:([가-힣]+시|[가-힣]+군|[가-힣]+구)\s*)?(?:[가-힣]+구\s*)?(?:(?:([가-힣]+읍|[가-힣]+면|[가-힣]+동|[가-힣]+[\s0-9]+가)|([가-힣]+\d+읍|[가-힣]+\d+면|[가-힣]+\d+동))|(?:(?:[가-힣]+읍\s+|[가-힣]+면\s+)?([가-힣]+[\s0-9]*번?로[\s0-9]*번?[가나다라마바사아자차카타파하]?길|[가-힣]+[\s0-9]*번?[가나다라마바사아자차카타파하]?길|[가-힣]+[\s0-9]*번?로)))\s*([가-힣]+\d*리)?\s*(\d+)?(?:\s*-\s*(\d+))?(?:(?:\s*,?\s*|\s+)([^\\(]*))?(?:\s*\(([^,\s]+)(?:\s*,?\s*([^\\)]*))?\))?/i;
   var matched = task.inRaw.match(지번Re);
+  console.log('matched: ' + matched);
   if(matched != null) {
     if (matched[1] != null) {
       if (matched[1] == '경기') 시도명 = '경기도';
@@ -162,12 +163,16 @@ function searchAddress(task, context, callback) {
     var 건물명Re = /\B(?:[a-zA-Z가-힣]+\s*\d+차[a-zA-Z가-힣]*|[0-9a-zA-Z가-힣]+)(?:\s|$)/g;
     var 건물명예외Re = /^(경기|경기도|강원|강원도|충북|충청북도|충남|충청남도|전북|전라북도|전남|전라남도|경북|경상북도|경남|경상남도|제주|제주도|제주특별자치도|서울|서울시|서울특별시|인천|인천시|인천광역시|대전|대전시|대전광역시|대구|대구시|대구광역시|광주|광주시|광주광역시|부산|부산시|부산광역시|울산|울산시|울산광역시|세종|세종시|세종특별시|세종특별자치시|[가-힣]+시|[가-힣]+군|[가-힣]+구|[가-힣]+읍|[0-9가-힣]+면|[0-9가-힣]+동|[0-9가-힣]+리|아파트|상가|건물|주택)$/i;
     matched = task.inRaw.match(건물명Re);
+    건물명 = matched[0];
+    console.log('건물명1: '+건물명)
+    // console.log('inRaw: ' + task.inRaw);
+    // console.log('matched: ' + matched);
     if(matched != null && matched instanceof Array) {
       if(matched.length > 1) {
         query = {$or: []};
         for (var i = 0; i < matched.length; i++) {
           var match = matched[i].trim();
-
+          // console.log(match);
           // logger.debug('건물명예외Re:' +match + ',' +  건물명예외Re + ','  + match.search(건물명예외Re));
           if(match.search(건물명예외Re) == -1)
             query.$or.push({시군구용건물명: match});
@@ -175,11 +180,14 @@ function searchAddress(task, context, callback) {
       } else {
         if(matched[0].trim().search(건물명예외Re) == -1)
           query = {시군구용건물명: matched[0].trim()};
+          // console.log('-------------------')
+          // console.log(JSON.stringify(query));
       }
 
       var last = matched[matched.length-1];
       var lastRe = new RegExp(last+'\\s+(.*)', 'i');
       matched = task.inRaw.match(lastRe);
+      console.log('matched: ' + matched);
       if(matched != null) {
         상세주소 = matched[1];
       } else {
@@ -190,7 +198,7 @@ function searchAddress(task, context, callback) {
 
   task.doc = null;
 
-  console.log(JSON.stringify(query));
+  // console.log(JSON.stringify(query));
 
   if(Object.keys(query).length == 0) {
     callback(task, context);
@@ -220,11 +228,12 @@ function searchAddress(task, context, callback) {
       } else {
         // if(docs.length == 0)
         //   logger.debug('searchAddress: ' + task.inRaw + ' / count: ' + docs.length);
-        console.log(docs);
+        console.log(JSON.stringify(docs));
 
         var 시군구Re = /(?:(경기|경기도|강원|강원도|충북|충청북도|충남|충청남도|전북|전라북도|전남|전라남도|경북|경상북도|경남|경상남도|제주|제주도|제주특별자치도|서울|서울시|서울특별시|인천|인천시|인천광역시|대전|대전시|대전광역시|대구|대구시|대구광역시|광주|광주시|광주광역시|부산|부산시|부산광역시|울산|울산시|울산광역시|세종|세종시|세종특별시|세종특별자치시)\s*)?(?:([가-힣]+시|[가-힣]+군|[가-힣]+구)\s*)?(?:[가-힣]+구\s*)?/g;
         if(docs.length > 1) {
           matched = task.inRaw.match(시군구Re);
+          // console.log('시군구Re: '+matched);
           if (matched != null) {
             if (matched[1] != null) {
               if (matched[1] == '경기') 시도명 = '경기도';
@@ -264,14 +273,20 @@ function searchAddress(task, context, callback) {
 
         for (var i = 0; i < docs.length && i < 10; i++) {
           var doc = docs[i];
-
-          if(본번) {
-            if(docs.length > 1) {
+          // console.log(!(시도명 && 시도명 == doc.시도명 && 시군구명 && doc.시군구명))
+          // console.log('건물명2: '+건물명);
+          // console.log('시도명: '+시도명);
+          // console.log('독시도명: '+doc.시도명);
+          // console.log('시군구명: ' +시군구명);
+          // console.log('독시군구명: '+doc.시군구명);
+          if(본번||건물명) {
+            if(docs.length > 1 && !건물명) {
               if(!(시도명 && 시도명 == doc.시도명 && 시군구명 && doc.시군구명)) continue;
             }
             var 상세주소Re = new RegExp(doc.시군구용건물명 + '\\s+', 'i');
+            console.log('----------');
             if(상세주소 && doc.시군구용건물명 != '') 도로명상세주소 = 상세주소.replace(상세주소Re, '');
-
+            console.log(1);
             var _doc = {
               시도명: doc.시도명,
               시군구명: doc.시군구명,
@@ -288,6 +303,7 @@ function searchAddress(task, context, callback) {
               읍면동일련번호: doc.읍면동일련번호
             };
 
+            console.log(2);
             _doc.지번주소 = doc.시도명 + ' ' + doc.시군구명 + ' ' + doc.법정읍면동명 + ' ' + (doc.법정리명 != '' ? doc.법정리명 + ' ': '') +
               doc.지번본번 + (doc.지번부번 != '0' ? '-' + doc.지번부번 : '') + (상세주소 != undefined ? ' ' + 상세주소 : '');
 

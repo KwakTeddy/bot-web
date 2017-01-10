@@ -34,14 +34,14 @@ var dialogs = [
   output: '어디에 계신가요?',
   children: [
     {
-      input: {types: [{name: 'address', typeCheck: address.addressTypeCheck}]},
+      input: {types: [{name: 'address', typeCheck: address.addressTypeCheck, raw: true}]},
       task:       { action: cscenter.searchCenter,
         postCallback: function(task, context, callback) {
           console.log("cscenter post" + context.dialog.item);
           callback(task, context);
         }
       },
-      output: '주변의 서비스 센터 중 가까운 곳은 "+item.svc_center_name+" 입니다.\n주소: +item.address3+\n연락처: +item.phone+\n영업시간(평일): +item.winter_week+\n영업시간(토): +item.winter_sat+'
+      output: '가장 적합한 곳을 찾았습니다.\n#item#+index+. +svc_center_name+" 입니다.\n주소: +address3+\n연락처: +phone+\n#'
     }
   ]
 },
