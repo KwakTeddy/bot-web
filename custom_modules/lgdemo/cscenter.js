@@ -33,13 +33,13 @@ function searchBranch(task, context, callback) {
 
 exports.searchBranch = searchBranch;
 
-function searchCenter (task,                                 context, callback) {
-  var center = mongo.getModel('lgcenter', undefined);
-  var address, lng, lat;
-  task.address = context.dialog.address;
+function searchCenter (task, context, callback) {
+  var center = mongo.getModel('lgcenter', undefined);  var address, lng, lat;
+  task.address = context.user.address = context.dialog.address;
 
   addressModule.naverGeocode(task, context, function(task, context) {
-    context.dialog.lat = task.lat; context.dialog.lng = task.lng;
+    context.user.lat = context.dialog.lat = task.lat;
+    context.user.lng = context.dialog.lng = task.lng;
 
     if(context.dialog.address) {
       address = context.dialog.address;
@@ -59,17 +59,20 @@ function searchCenter (task,                                 context, callback) 
         for (var i = 0; i < docs.length; i++) {
           var doc = docs[i];
           doc.distance = addressModule.getDistanceFromGeocode(lat, lng, doc.lat, doc.lng);
+          doc.distance = doc.distance.toPrecision(2);
           // console.log(doc.name, doc.distance, JSON.stringify(dist));
         }
-        if (i == docs.length) {
+        // if (i == docs.length) {
           docs.sort(function (a, b) {
             return a.distance - b.distance;
           });
-        }
+        // }
         context.dialog.item = docs;
+
         callback(task,context)
       }
     });
+
   })
 }
 
@@ -247,6 +250,7 @@ function checkTime(task, context, callback) {
     } else {
       var hhmm = new Date().toString().split(' ')[4].substring(0, 5);
       var day = new Date().getDay();
+
       if (day <= 5) {
         if (hhmm <= docs[0].winter_week_close && hhmm >= docs[0].winter_week_open) {
           context.dialog.check = false;

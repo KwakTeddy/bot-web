@@ -44,7 +44,7 @@ function listTypeCheck(text, type, task, context, callback) {
     else if(typeof list[j] == 'string') item = list[j];
     else continue;
 
-    if(item.replace(' ', '') === inRawText) {
+    if(item && item.replace(' ', '') === inRawText) {
       context.dialog[type.name] = /*task[type.name] = */list[j];
 
       callback(text, task, true);
