@@ -177,11 +177,7 @@ var dialogs = [
 ];
 
 var commonDialogs = [
-{
-  name: '시작',
-  input: '~시작',
-  output: '안녕하세요. 고객센터 데모 입니다.'
-}
+
 ];
 
 

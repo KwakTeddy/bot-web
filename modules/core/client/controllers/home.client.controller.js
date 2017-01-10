@@ -103,6 +103,8 @@ angular.module('core').controller('HomeController', ['$scope', '$document', 'Aut
       }
 
       function init() {
+        vm.log = '';
+
         clearBubble();
         addBotBubble('머니봇 [' + vm.bot + '] 접속 (' + vm.server.split(':')[0] + ':' + vm.server.split(':')[1] + ' as ' + vm.userId + ')');
         emitMsg(':reset user');
@@ -147,13 +149,13 @@ angular.module('core').controller('HomeController', ['$scope', '$document', 'Aut
 
 var logScrollTimer = -1;
 function logScrollBottom() {
-  if(logScrollTimer > -1) clearTimeout(logScrollTimer);
+  // if(logScrollTimer > -1) clearTimeout(logScrollTimer);
 
-  logScrollTimer = setTimeout(function() {
+  // logScrollTimer = setTimeout(function() {
     var logDiv = document.getElementById('logDiv');
     logDiv.scrollTop = logDiv.scrollHeight - logDiv.clientHeight;
-    logScrollTimer = -1;
-  }, 300);
+    // logScrollTimer = -1;
+  // }, 300);
 }
 
 function clearBubble() {

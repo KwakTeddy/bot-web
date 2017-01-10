@@ -1,4 +1,7 @@
 시작:c<~시작> 안녕하세요. 인공지능 금융비서 머니봇 입니다. 무엇을 도와드릴까요?
+상위:c<상위>{up : 1}
+이전페이지:c<이전>{repeat: 1, options: {page: 'pre'}}
+다음페이지:c<다음>{repeat: 1, options: {page: 'next'}}
 
 주민등록번호_입력:
 <주민등록번호입력
@@ -15,90 +18,71 @@
     >{output: '휴대폰번호가 입력되었습니다', return: 1}
     <> 형식이 틀렸습니다.
 
-상담원
-<상담원 연결
->네 상담원을 연결해 드리겠습니다
-
-<금융상품
->금융상품 안내해 드리겠습니다. 1. 대출 2. 예적금 3. 자동차보험
+<금융 상품
+>금융상품 안내해 드리겠습니다. 1. 신용대출 2. 아파트담보대출 3. 전세대출 4. 정기예금 5. 적금 6. 연금 7. 자동차보험
     <1
-    >대출 종류를 선택해주세요. 1. 신용대출 2. 아파트대출
-        <1
-        >{call: '신용대출'}
-        <2
-        >{call: '아파트대출'}
+    >{call: '신용대출'}
     <2
-    >예적금 종류를 선택해주세요. 1. 예금 2. 적금
-        <1
-        >{call: '예금'}
-        <2
-        >{call: '적금'}
+    >{call: '아파트담보대출'}
     <3
+    >{call: '전세대출'}
+    <4
+    >{call: '예금'}
+    <5
+    >{call: '적금'}
+    <6
+    >{call: '연금'}
+    <7
     >{call: '자동차보험'}
-
-//< 상품
-//> 다음 금융상품 종류를 선택해주세요.\n1.예금 \n2.펀드 \n3.대출 \n4.외환 \n5.골드 \n6.신탁 \n7.보험 \n8.퇴직연금 \n9.ISA
-//
-//< 예금
-//< 1
-//< 일번
-//< 일
-//> 예금 Best 상품을 찾았습니다.\n1.iTouch우리예금\n2.위비 꿀마켓 예금\n3.우리e-알찬정기예금\n4.우리로모아정기예금\n5.위비톡 예금 이 있습니다.\n목록에서 선택해 주세요.
-//    <2
-//    <이번
-//    <이
-//    <꿀 마켓
-//    >"위비 꿀마켓 예금" 상품안내입니다.\n상품종류:목돈굴리기상품\n가입대상:실명의 개인(1인 1계좌)\n가입기간:12개월\n가입금액:1백만원~2천만원\n기본금리:연 1.4%
-
 
 적금:
 <적금
 'fssSavingQuery'
->금리순 적금 상품 입니다.\n##+index+. +kor_co_nm+ +fin_prdt_nm+ 세전 +intr_rate2+%\n# 번호를 선택해주세요.
-    <선택
-    >{call: '금융상품_가입'}
+>금리순 적금 상품 입니다.\n#savings#+index+. +kor_co_nm+ +fin_prdt_nm+ 세전 +intr_rate2+%\n# 번호를 선택해주세요.
+    <{types: [{name: 'saving', listName: 'savings', typeCheck: 'listTypeCheck'}]}
+    >[+saving.fin_prdt_nm+ - +saving.kor_co_nm+]\n금리: +saving.intr_rate_type_nm+ +saving.intr_rate+% ~ +saving.intr_rate2+% (+saving.save_trm+개월 기준)\n최고한도: +saving.max_limit+원\n가입방법: +saving.join_way+\n
 
 예금:
 <예금
 'fssDepositQuery'
 >금리순 예금 상품 입니다.\n##+index+. +kor_co_nm+ +fin_prdt_nm+ 세전 +intr_rate2+%\n# 번호를 선택해주세요.
-    <선택
-    >{call: '금융상품_가입'}
+    <{types: [{name: 'deposit', listName: 'deposits', typeCheck: 'listTypeCheck'}]}
+    >[+deposit.fin_prdt_nm+ - +deposit.kor_co_nm+]\n금리: +deposit.intr_rate_type_nm+ +deposit.intr_rate+% ~ +deposit.intr_rate2+% (+deposit.save_trm+개월 기준)\n최고한도: +deposit.max_limit+원\n가입방법: +deposit.join_way+\n
 
 연금:
 <연금
 'fssAnnuitySavingQuery'
->금리순 예금 상품 입니다.\n##+index+. +kor_co_nm+ +fin_prdt_nm+ 연평균수익률 +avg_prft_rate+%\n# 번호를 선택해주세요.
-    <선택
-    >{call: '금융상품_가입'}
+>금리순 예금 상품 입니다.\n#annuitysavings#+index+. +kor_co_nm+ +fin_prdt_nm+ 연평균수익률 +avg_prft_rate+%\n# 번호를 선택해주세요.
+    <{types: [{name: 'annuitysaving', listName: 'annuitysavings', typeCheck: 'listTypeCheck'}]}
+    >[+annuitysaving.fin_prdt_nm+ - +annuitysaving.kor_co_nm+]\n종류:+annuitysaving.pnsn_kind_nm+ +annuitysaving.prdt_type_nm+\n수익률: +annuitysaving.avg_prft_rate+\n가입방법: +annuitysaving.join_way+\n연금납입: +annuitysaving.paym_prd_nm+ +annuitysaving.mon_paym_atm_nm+\n연금수령: +annuitysaving.pnsn_strt_age_nm+ +annuitysaving.pnsn_recp_trm_nm+ +annuitysaving.pnsn_recp_amt+
 
-아파트대출:
+아파트담보대출:
 <주택 대출
 <아파트 대출
 'fssMortgageLoanQuery'
->금리순 대출 상품 입니다.\n##+index+. +kor_co_nm+ +fin_prdt_nm+ +lend_rate_min+%\n# 번호를 선택해주세요.
-    <선택
-    >{call: '금융상품_가입'}
+>금리순 대출 상품 입니다.\n#mortgageloans#+index+. +kor_co_nm+ +fin_prdt_nm+ +lend_rate_min+%\n# 번호를 선택해주세요.
+    <{types: [{name: 'mortgageloan', listName: 'mortgageloans', typeCheck: 'listTypeCheck'}]}
+    >[+mortgageloan.fin_prdt_nm+ - +mortgageloan.kor_co_nm+]\n금리: +mortgageloan.rpay_type_nm+ +mortgageloan.lend_rate_min+% ~ +mortgageloan.lend_rate_max+%\n연체이자율: +mortgageloan.dly_rate+\n중도상환수수료: +mortgageloan.erly_rpay_fee+\n대출한도: +mortgageloan.loan_lmt+ 원\n가입방법: +mortgageloan.join_way+
 
 전세대출:
 <전세 대출
 'fssRentHouseLoanQuery'
->금리순 대출 상품 입니다.\n##+index+. +kor_co_nm+ +fin_prdt_nm+ +lend_rate_min+%\n# 번호를 선택해주세요.
-    <선택
-    >{call: '금융상품_가입'}
+>금리순 대출 상품 입니다.\n#renthouseloans#+index+. +kor_co_nm+ +fin_prdt_nm+ +lend_rate_min+%\n# 번호를 선택해주세요.
+    <{types: [{name: 'renthouseloan', listName: 'renthouseloans', typeCheck: 'listTypeCheck'}]}
+    >[+renthouseloan.fin_prdt_nm+ - +renthouseloan.kor_co_nm+]\n금리: +renthouseloan.rpay_type_nm+ +renthouseloan.lend_rate_min+% ~ +renthouseloan.lend_rate_max+%\n연체이자율: +renthouseloan.dly_rate+\n중도상환수수료: +renthouseloan.erly_rpay_fee+\n대출한도: +renthouseloan.loan_lmt+ 원\n가입방법: +renthouseloan.join_way+
 
 신용대출:
 <신용 대출
 'fssCreditLoanQuery'
->금리순 대출 상품 입니다.\n##+index+. +kor_co_nm+ +fin_prdt_nm+ +crdt_grad_avg+%\n# 번호를 선택해주세요.
-    <선택
-    >{call: '금융상품_가입'}
+>금리순 신용 대출 상품 입니다.\n#creditloans#+index+. +kor_co_nm+ +fin_prdt_nm+ +crdt_grad_avg+%\n# 번호를 선택해주세요.
+    <{types: [{name: 'creditloan', listName: 'creditloans', typeCheck: 'listTypeCheck'}]}
+    >[+creditloan.fin_prdt_nm+ - +creditloan.kor_co_nm+]\n종류: +creditloan.crdt_prdt_type_nm+\n평균금리: +creditloan.crdt_lend_rate_type_nm+ +creditloan.crdt_grad_avg+ %\n가입방법: +creditloan.join_way+
 
 자동차보험:
 <자동차 보험 추천
 >최저가순 자동차보험 상품 입니다. ##+index+. +name+ +rate+\n# 번호를 선택해주세요.
-    <선택
-    >{call: '금융상품_가입'}
+    <{types: [{name: 'saving', listName: 'savings', typeCheck: 'listTypeCheck'}]}
+    >[+saving.fin_prdt_nm+ - +saving.kor_co_nm+]\n금리: +saving.intr_rate_type_nm+ +saving.intr_rate+% ~ +saving.intr_rate2+% (+saving.save_trm+개월 기준)\n최고한도: +saving.max_limit+원\n가입방법: +saving.join_way+\n
 
 금융상품_가입:
 <금융상품 가입
@@ -187,7 +171,7 @@
 //				$money=null $period=null
 //				^poptopic()
 
-<> 알아듣지 못하는 말입니다.\n고객센터로 연결해드릴까요?
+답변없음:c<> 알아듣지 못하는 말입니다.\n고객센터로 연결해드릴까요?
     < ~네
     > 고객센터 번호는 1577-7314입니다.
 

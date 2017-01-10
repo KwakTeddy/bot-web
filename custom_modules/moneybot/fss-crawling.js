@@ -420,6 +420,10 @@ var fssDepositQuery = {
     model: 'fssProduct',
     query: {'prdt_div': 'D', 'save_trm': '12'},
     sort: {'intr_rate2': -1}
+  },
+  postCallback: function (task, context, callback) {
+    context.dialog['deposits'] = task.doc;
+    callback(task, context);
   }
 };
 
@@ -433,6 +437,10 @@ var fssSavingQuery = {
     model: 'fssProduct',
     query: {'prdt_div': 'S', 'save_trm': '12'},
     sort: {'intr_rate2': -1}
+  },
+  postCallback: function (task, context, callback) {
+    context.dialog['savings'] = task.doc;
+    callback(task, context);
   }
 };
 bot.setTask('fssSavingQuery', fssSavingQuery);
@@ -444,6 +452,10 @@ var fssAnnuitySavingQuery = {
     model: 'fssProduct',
     query: {'prdt_div': 'P'},
     sort: {'avg_prft_rate': -1}
+  },
+  postCallback: function (task, context, callback) {
+    context.dialog['annuitysavings'] = task.doc;
+    callback(task, context);
   }
 };
 
@@ -456,6 +468,10 @@ var fssMortgageLoanQuery = {
     model: 'fssProduct',
     query: {'prdt_div': 'M'},
     sort: {'lend_rate_min': +1}
+  },
+  postCallback: function (task, context, callback) {
+    context.dialog['mortgageloans'] = task.doc;
+    callback(task, context);
   }
 };
 
@@ -468,6 +484,10 @@ var fssRentHouseLoanQuery = {
     model: 'fssProduct',
     query: {'prdt_div': 'R'},
     sort: {'lend_rate_min': +1}
+  },
+  postCallback: function (task, context, callback) {
+    context.dialog['renthouseloans'] = task.doc;
+    callback(task, context);
   }
 };
 
@@ -480,6 +500,10 @@ var fssCreditLoanQuery = {
     model: 'fssProduct',
     query: {'prdt_div': 'C'},
     sort: {'crdt_grad_avg': +1}
+  },
+  postCallback: function (task, context, callback) {
+    context.dialog['creditloans'] = task.doc;
+    callback(task, context);
   }
 };
 

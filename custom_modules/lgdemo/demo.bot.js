@@ -24,7 +24,11 @@ var lgdemoBot = {
   naver: {
     clientId: 'c7VNVyIG3s95N4q2LWZQ',
     clientSecret: 'HXWvXdrKi7'
-  }
+  },
+  dialogFiles: [
+    'lgdemo.dialog.js',
+    'cscenter.dialog.js'
+  ]
 };
 
 botlib.makeBot('lgdemo', lgdemoBot);

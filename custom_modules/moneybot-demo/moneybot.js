@@ -1,3 +1,5 @@
+var mongoose = require('mongoose');
+
 var Product = mongoose.model('Product');
 
 function fin_product(task, context, callback) {

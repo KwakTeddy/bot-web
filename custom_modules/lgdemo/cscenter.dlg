@@ -2,8 +2,6 @@ var path = require('path');
 var address = require(path.resolve('./modules/bot/action/common/address'));
 var cscenter = require('./cscenter');
 
-시작:c<~시작> 안녕하세요. 고객센터 데모 입니다.
-
 <네이버
 {action: address.naverGeoSearch}
 >네이버 결과 입니다
