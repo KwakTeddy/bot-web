@@ -34,7 +34,7 @@ var cscenter = require('./cscenter');
 
 <시간 체크
 {action: cscenter.checkTime}
->if(context.dialog.check == true) 영업시간이 아닙니다.
+>if(context.dialog.check == true) 영업시간이 아닙니다.!
 >if(context.dialog.check == false) 영업시간입니다.
 
 <update address
