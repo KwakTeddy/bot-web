@@ -190,7 +190,7 @@ var fssFAQ = {
     task.doc.content = task.doc.content.trim();
     task.doc.content = task.doc.content.replace(/&amp;nbsp;/g, ' ');
 
-    // console.log(JSON.stringify(task.doc));
+    console.log(JSON.stringify(task.doc));
 
     task.doc.company = task.topTask.company;
     task.doc.originalId = task.param.bltnId;

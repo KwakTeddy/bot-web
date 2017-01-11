@@ -1,6 +1,6 @@
 시작:c<~시작> 초기화 메세지 입니다
 
-<찾다> 텍스트 내용을 출력합니다.
+<찾다> 텍스트 내용을 출력합니다.2
 </정규식/g> RegExp 매치 되면 내용 출력합니다.
 < {if: function(inRaw, inNLP, dialog, context, callback) { if(inRaw == '함수')callback(true);else callback(false); }}
 > 조건이 true이면 내용을 출력합니다
