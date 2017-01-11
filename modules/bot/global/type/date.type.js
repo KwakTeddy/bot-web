@@ -251,5 +251,56 @@ function dateTypeCheck(text, type, task, context, callback) {
 
   callback(text, task, matched);
 }
-
+exports.dateTypeCheck = dateTypeCheck;
 botlib.setGlobalTypeCheck('dateTypeCheck', dateTypeCheck);
+
+function timeTypeCheck(text, type, task, context, callback) {
+  var name = 'time';
+  var re = /(?:(오전|오후))\s*(?:(\d{1,2})\s*시)|(?:(am|pm|a.m|p.m))\s*(?:(\d{1,2})\s*시)|(?:(\d{1,2})\s*시)/g;
+  var matched = false;
+
+
+  text = text.replace(re, function(match, p1, p2, p3, p4, p5){
+    matched = true;
+    var time;
+    var timeform = ':00';
+
+    var matchTime = function(_name, _task, _time) {
+      if(_task[_name]) {
+        if(Array.isArray(_task[_name])) _task[_name].push(_time);
+        else _task[_name] = [_task[_name], _time];
+      } else {
+        _task[_name] = _time;
+      }
+    };
+
+    if (p5) {
+      if (p5 >= 13) {
+        time = p5.toString() + timeform;
+        // console.log(time);
+      } else {
+        time = 're';
+      }
+    }
+    if (p1 == '오전') {
+      time = p2.toString() + timeform;
+    } else if (p1 == '오후') {
+      var p6 = p2*1 + 12;
+      time = p6.toString() + timeform;
+    }
+    if (p3 == 'am' || p3 == 'a.m') {
+      time = p4.toString() + timeform;
+    } else if (p3 == 'pm' || p3 == 'p.m') {
+      var p6 = p4*1 + 12;
+      time = p6.toString() + timeform;
+    }
+
+
+
+    return matchTime(name, task, time);
+  });
+
+  callback(text, task, matched);
+}
+exports.timeTypeCheck = timeTypeCheck;
+botlib.setGlobalTypeCheck('timeTypeCheck', timeTypeCheck);

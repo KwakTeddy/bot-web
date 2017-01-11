@@ -85,18 +85,21 @@ function checkTime(task, context, callback) {
     if (context.bot.testMode) {
       context.dialog.check = false;
     } else {
-      var hhmm = new Date().toString().split(' ')[4].substring(0, 5);
       var day = new Date().getDay();
 
       if (day <= 5) {
-        if (hhmm <= docs[0].winter_week_close && hhmm >= docs[0].winter_week_open) {
+        if (context.dialog.time <= docs[0].winter_week_close && context.dialog.time >= docs[0].winter_week_open) {
           context.dialog.check = false;
+        } else if (context.dialog.time == 're'){
+          context.dialog.check = 're';
         } else {
           context.dialog.check = true;
         }
       } else if (day == 6) {
-        if (hhmm <= docs[0].winter_sat_close && hhmm >= docs[0].winter_sat_open) {
+        if (context.dialog.time <= docs[0].winter_sat_close && context.dialog.time >= docs[0].winter_sat_open) {
           context.dialog.check = false;
+        } else if (context.dialog.time == 're'){
+          context.dialog.check = 're';
         } else {
           context.dialog.check = true;
         }
@@ -110,12 +113,15 @@ function checkTime(task, context, callback) {
 
 exports.checkTime = checkTime;
 
-function timeDateType(text, type, task, context, callback) {
+function checkDate(task, context, callback) {
+  var day = context.dialog.date.getDay();
 
-  // task.time 에 설정
-  // task.date 에 설정
-
-  callback(text, task, true);
+  if (day <=5) {
+    context.dialog.check = false;
+  } else if (day >= 6) {
+    context.dialog.check = true;
+  }
+  callback(task, context);
 }
-exports.timeDateType = timeDateType;
 
+exports.checkDate = checkDate;
