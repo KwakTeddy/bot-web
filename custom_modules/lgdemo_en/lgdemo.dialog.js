@@ -2,7 +2,7 @@
 var path = require('path');
 var address = require(path.resolve('./modules/bot/action/common/address'));
 var cscenter = require('./cscenter');
-var lgdemo = require('./lgdemo');
+var lgdemo = require('./lgdemo_en');
 
 var dialogs = [
 {
@@ -12,7 +12,7 @@ var dialogs = [
 },
 {
   input: {types: [{name: 'address', typeCheck: address.addressTypeCheck, raw: true}], regexp: /~서비스센터/},
-  output: {callChild: '위치찾기'}
+  output: {call: '위치찾기'}
 },
 {
   input: '다른 ~서비스센터',
@@ -21,12 +21,12 @@ var dialogs = [
 {
   name: '위치찾기',
   input: false,
-  output: '현재 계신 지역을 말씀해 주세요.',
-  children: [
+  output: '현재 계신 지역을 말씀해 주세요.', 
+    children: [
     {
       input: {types: [{name: 'address', typeCheck: address.addressTypeCheck, raw: true}]},
-      output: {if: '!Array.isArray(context.user.address)', output: '+address.시군구명+ +address.법정읍면동명+ 맞나요?'},
-      children: [
+      output: [{if: '!Array.isArray(context.user.address)', output: '+address.시군구명+ +address.법정읍면동명+ 맞나요?'}, 
+        children: [
         {
           input: '네',
           output: {call: '서비스센터정보'}
@@ -35,7 +35,18 @@ var dialogs = [
           input: {if: 'true'},
           output: {up: 1}
         }
-      ]
+      ], 
+      {output: {if: 'Array.isArray(context.dialog.address)', output: '다음 중 어떤 지역이신가요?'}, 
+        children: [
+        {
+          input: {name: 'userAddress', listName: 'address', typeCheck: 'listTypeCheck'},
+          output: {call: '서비스센터정보'}
+        },
+        {
+          input: {if: 'true'},
+          output: {up: 1}
+        }
+      ]}]
     },
     {
       input: {if: 'true'},
@@ -47,13 +58,13 @@ var dialogs = [
   name: '서비스센터정보',
   input: false,
   task:   lgdemo.searchCenterTask,
-  output: '가장 가까운 서비스센터는 +item.0.svc_center_name+ +item.0.distance+km 입니다.\n인근의 다른 서비스센터로 +item.1.svc_center_name+ +item.1.distance+km 가 있습니다.\n어디로 안내해 드릴까요?',
-  children: [
+  output: '가장 가까운 서비스센터는 +item.0.svc_center_name+ +item.0.distance+km 입니다.\n인근의 다른 서비스센터로 +item.1.svc_center_name+ +item.1.distance+km 가 있습니다.\n어디로 안내해 드릴까요?', 
+    children: [
     {
       input: {types: [{name: 'center', listName: 'item', field: 'svc_center_name', typeCheck: 'listTypeCheck'}]},
       task:       {action: function(task, context, callback) {context.user.center = context.dialog.center;callback(task, context);}},
-      output: {output: '+center.svc_center_name+\n주소: +center.address3+\n전화번호: +center.phone+', return : 1},
-      children: [
+      output: {output: '+center.svc_center_name+\n주소: +center.address3+\n전화번호: +center.phone+', return : 1}, 
+        children: [
         {
           input: '~영업 시간',
           output: {call: '영업시간'}
@@ -93,8 +104,9 @@ var dialogs = [
 {
   name: '방문경로',
   input: '어떻다 찾다',
-  output: [{if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '방문경로'}}}, '어떻게 방문하실 계획인가요?\n 1. 지하철\n 2. 버스\n 3. 자가용 \n4. 경로안내'],
-  children: [
+  output: [{if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '방문경로'}}}, 
+  {output: '어떻게 방문하실 계획인가요?\n 1. 지하철\n 2. 버스\n 3. 자가용 \n4. 경로안내', 
+    children: [
     {
       input: ['1', '지하철'],
       output: '+center.lms_subway+'
@@ -111,7 +123,7 @@ var dialogs = [
       input: ['4', '경로'],
       output: '경로안내입니다'
     }
-  ]
+  ]}]
 },
 {
   name: '수리가능제품',
@@ -122,6 +134,11 @@ var dialogs = [
   name: '전화번호안내',
   input: '전화 번호',
   output: [{if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '전화번호안내'}}}, '센터 전화번호입니다.\n +center.phone+, +center.phone2+']
+},
+{
+  name: 'c',
+  input: '이전',
+  output: {up:1}
 },
 {
   name: 'c',
@@ -144,7 +161,7 @@ var dialogs = [
    },
    {
      input: {if: 'true'},
-     output: {repeat: 1}
+     output: {repeat: 1}.
    }
   ]
 }
@@ -156,10 +173,6 @@ var commonDialogs = [
   input: '~시작',
   task:   {action: 'startAction'},
   output: '안녕하세요. LG전자 고객센터 데모 입니다.'
-},
-{
-  input: '이전',
-  output: {up:1}
 }
 ];
 

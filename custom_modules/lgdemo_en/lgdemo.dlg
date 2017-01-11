@@ -1,7 +1,7 @@
 var path = require('path');
 var address = require(path.resolve('./modules/bot/action/common/address'));
 var cscenter = require('./cscenter');
-var lgdemo = require('./lgdemo');
+var lgdemo = require('./lgdemo_en');
 
 //> 근처의 서비스센터 입니다.\n#item#+index+. +svc_center_name+\n#
 
@@ -11,7 +11,7 @@ var lgdemo = require('./lgdemo');
 >{output: {call: '위치찾기'}}
 
 < {types: [{name: 'address', typeCheck: address.addressTypeCheck, raw: true}], regexp: /~서비스센터/}
-> {callChild: '위치찾기'}
+> {call: '위치찾기'}
 
 <다른 ~서비스센터
 >{call: '위치찾기'}
@@ -83,13 +83,13 @@ lgdemo.searchCenterTask
 < 전화 번호
 > {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '전화번호안내'}}}
 > 센터 전화번호입니다.\n +center.phone+, +center.phone2+
-
+  
 시작:
 c<~시작
 {action: 'startAction'}
 > 안녕하세요. LG전자 고객센터 데모 입니다.
 
-c<이전
+c:<이전
 > {up:1}
 
 c:<<
@@ -104,4 +104,4 @@ c:콜센터
 답변없음:
 <>알아듣지 못하는 말입니다.\n고객센터로 연결해드릴까요?
    <~네> 고객센터 번호는 1577-7314입니다.
-   <{if: 'true'}>{repeat: 1}
+   <{if: 'true'}>{repeat: 1}.
