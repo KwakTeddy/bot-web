@@ -1,5 +1,4 @@
 
-/*
 var path = require('path');
 var address = require(path.resolve('./modules/bot/action/common/address'));
 var cscenter = require('./cscenter');
@@ -182,6 +181,6 @@ var commonDialogs = [
 ];
 
 
-var _bot = require(require('path').resolve("config/lib/bot")).getBot('lgdemo');
+var _bot = require(require('path').resolve("config/lib/bot")).getBot('lgdemo_en');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

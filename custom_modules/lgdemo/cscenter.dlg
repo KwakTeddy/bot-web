@@ -1,3 +1,4 @@
+/*
 var path = require('path');
 var address = require(path.resolve('./modules/bot/action/common/address'));
 var cscenter = require('./cscenter');
@@ -115,4 +116,4 @@ var cscenter = require('./cscenter');
     < ~네
     > 고객센터 번호는 1577-7314입니다.
 
-
+*/

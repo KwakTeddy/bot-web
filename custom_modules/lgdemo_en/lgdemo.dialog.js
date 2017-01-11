@@ -7,7 +7,7 @@ var lgdemo = require('./lgdemo');
 var dialogs = [
 {
   name: '서비스센터찾기',
-  input: ['~서비스센터', '~서비스센터 ~어디', '~서비스센터 ~찾다'],
+  input: '~서비스센터 ~찾다',
   output: [{if: lgdemo.locationExists, output: {call: '서비스센터정보'}}, {output: {call: '위치찾기'}}]
 },
 {
@@ -164,6 +164,6 @@ var commonDialogs = [
 ];
 
 
-var _bot = require(require('path').resolve("config/lib/bot")).getBot('lgdemo');
+var _bot = require(require('path').resolve("config/lib/bot")).getBot('lgdemo_en');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

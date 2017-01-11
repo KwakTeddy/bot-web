@@ -554,6 +554,7 @@ function executeDialog(dialog, context, print, callback, options) {
 
           // if(dialog.output.upCallback) dialog.upCallback = dialog.output.upCallback;
 
+          // TODO call에서 하위 dialog.task 가 string 인경우 잘 안됨
           _execDialog(_dialog, 'call');
         } else if (dialog.output.callChild) {
           _dialog = findDialog(null, context, dialog.output.callChild);

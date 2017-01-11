@@ -6,8 +6,6 @@ var lgdemo = require('./lgdemo');
 //> 근처의 서비스센터 입니다.\n#item#+index+. +svc_center_name+\n#
 
 서비스센터찾기:
-< ~서비스센터
-< ~서비스센터 ~어디
 < ~서비스센터 ~찾다
 >{if: lgdemo.locationExists, output: {call: '서비스센터정보'}}
 >{output: {call: '위치찾기'}}

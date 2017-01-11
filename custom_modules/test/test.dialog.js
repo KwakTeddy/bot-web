@@ -1,8 +1,46 @@
 
 var path = require('path');
 var bot = require(path.resolve('config/lib/bot')).getBot('test');
-function naverGeocode(task, context, callback) {
-  var query = {query: task.address.지번주소};
+function daumGeocode(task, context, callback) {
+  var request = require('request');
+  var query = {q: "서울특별시 금천구 가산동 464-2", output: "json"};
+  request({
+    url: 'https://apis.daum.net/local/geo/addr2coord?apikey=1b44a3a00ebe0e33eece579e1bc5c6d2',
+    method: 'GET',
+    qs: query
+  }, function(error,response, body) {
+    if(!error && response.statusCode == 200) {
+      var doc = JSON.parse(body);
+      task._doc.lng = doc.channel.item[0].lng;
+      task._doc.lat = doc.channel.item[0].lat;
+      task._doc.link_find = 'http://map.daum.net/link/to/' + query.q + ',' + task._doc.lat + ',' + task._doc.lng;
+      task._doc.link_map = 'http://map.daum.net/link/map/' + task._doc.lat + ',' + task._doc.lng;
+      console.log('lat: ' + task._doc.lat + ', lng: ' + task._doc.lng);
+      console.log('link: ' + task._doc.link_find);
+      console.log('link: ' + task._doc.link_map);
+    }
+    callback(task,context);
+  });
+}
+function findMap(task,context,callback) {
+  var request = require('request');
+  request({
+    url: 'http://map.daum.net',
+    method: 'GET',
+    qs: query
+  }, function(error, response, body) {
+    if(!error && response.statusCode == 200) {
+      console.log(body);
+      var doc = JSON.parse(body);
+    }
+    else {
+      console.log('wrong');
+    }
+    callback(task,context);
+  });
+}
+function lgGeocode(task, context, callback) {
+  var query = {query: "서울특별시 금천구 가산동 464-2"};
   var request = require('request');
   request({
     url: 'https://openapi.naver.com/v1/map/geocode?encoding=utf-8&coord=latlng&output=json',
@@ -19,58 +57,44 @@ function naverGeocode(task, context, callback) {
     if (!error && response.statusCode == 200) {
       console.log(body);
       var doc = JSON.parse(body);
-      task.lng=doc.result.items[0].point.x;
-      task.lat=doc.result.items[0].point.y;
-      console.log('lat: ' + task.lat + ', lng: ' + task.lng);
+      task._doc.lng=doc.result.items[0].point.x;
+      task._doc.lat=result.items[0].point.y;
+      console.log('lat: ' + task._doc.lat + ', lng: ' + task._doc.lng);
     }
     callback(task, context);
   });
-};
-exports.naverGeocode = naverGeocode;
-function searchCenter (task,                                 context, callback) {
-  var center = mongo.getModel('lgcenter', undefined);
-  var address, lng, lat;
-  task.address = context.dialog.address;
-  addressModule.naverGeocode(task, context, function(task, context) {
-    context.dialog.lat = task.lat; context.dialog.lng = task.lng;
-    if(context.dialog.address) {
-      address = context.dialog.address;
-      lng = context.dialog.lng;
-      lat = context.dialog.lat;
-    } else if(context.user.address) {
-      address = context.user.address;
-      lng = context.user.lng;
-      lat = context.user.lat;
-    }
-    center.find({}).lean().exec(function(err, docs) {
-      if(err) {
-        console.log(err);
-        callback(task, context);
-      } else {
-        for (var i = 0; i < docs.length; i++) {
-          var doc = docs[i];
-          doc.distance = addressModule.getDistanceFromGeocode(lat, lng, doc.lat, doc.lng);
-        }
-        if (i == docs.length) {
-          docs.sort(function (a, b) {
-            return a.distance - b.distance;
-          });
-        }
-        context.dialog.item = docs;
-        callback(task,context)
-      }
-    });
-  })
 }
 var test = {
-  name: 'test',
-  action: naverGeocode
+  action: lgGeocode,
+  _doc: {
+  lng: '',
+  lat: ''
+}
 };
+var mama = {
+  action: daumGeocode,
+  _doc: {
+  lng: '',
+  lat: '',
+  link_find: '',
+  link_map: ''
+}
+}
 
 var dialogs = [
 {
   input: 'naver',
   task:   test,
+  output: '완료'
+},
+{
+  input: 'daum',
+  task:   mama,
+  output: '완료'
+},
+{
+  input: 'map',
+  task:   findMap,
   output: '완료'
 },
 {
