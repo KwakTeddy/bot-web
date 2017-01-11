@@ -162,26 +162,64 @@ function build(text, isCommon) {
 
             outputs.push(line.replace(/^\s*>\s*(.*)\s*$/g, function (match, p1) {
               p1 = textEscape(p1);
-              var _m = p1.match(/if\s*\(\s*(.*)\s*\)\s*(.*)+/);
+              var _m;
 
-              if(_m) {
+              if((_m = p1.match(/if\s*\(\s*(.*)\s*\)\s*(.*)+/))) {
                 var str;
                 str = 'if: ' + textEscape(_m[1]) + ', output: ' + textEscape(_m[2]);
 
+                if (lines[i + 1] && (match = lines[i + 1].match(new RegExp('^(' + step + '\\s+)<'))) != undefined) {
+                  if (i + 1 < lines.length) {
+                    line = lines[++i];
+                    inc = true;
+                  }
+                  // else break;
+
+                  //console.log(step + (i+1) + ' before parseDialog 1');
+                  children = parseDialog(match[1]);
+                  //console.log(step + (i+1) + ' after parseDialog 1');
+                  if (children) str += ', \n' + step + tab + tab + 'children: [\n' + children + '\n' + step + tab + ']';
+                }
+
+                str = '\n' + step + tab + '{' + str + '}';
+                return str;
+              } else if(_m = p1.match(/iff\s*\(\s*(.*)\s*\)\s*(.*)+/)) {
+                var str;
+                str = 'if: ' + _m[1] + ', output: ' + textEscape(_m[2]);
+
+                if (lines[i + 1] && (match = lines[i + 1].match(new RegExp('^(' + step + '\\s+)<'))) != undefined) {
+                  if (i + 1 < lines.length) {
+                    line = lines[++i];
+                    inc = true;
+                  }
+                  // else break;
+
+                  //console.log(step + (i+1) + ' before parseDialog 1');
+                  children = parseDialog(match[1]);
+                  //console.log(step + (i+1) + ' after parseDialog 1');
+                  if (children) str += ', \n' + step + tab + tab + 'children: [\n' + children + '\n' + step + tab + ']';
+                }
+
+                str = '\n' + step + tab + '{' + str + '}';
+                return str;
+              } else {
                 if(lines[i+1] && (match = lines[i+1].match(new RegExp('^(' + step + '\\s+)<'))) != undefined) {
+                  var str = p1;
                   if(i + 1 < lines.length) {line = lines[++i];inc = true;}
                   // else break;
 
                   //console.log(step + (i+1) + ' before parseDialog 1');
                   children = parseDialog(match[1]);
                   //console.log(step + (i+1) + ' after parseDialog 1');
-                  if(children) str += ', \n' + step + tab + tab + 'children: [\n' + children + '\n' + step + tab + ']';
-                }
+                  if(children) {
+                    // str = 'output: ' + str;
+                    str += ', \n' + step + tab + tab + 'children: [\n' + children + '\n' + step + tab + ']';
+                  }
 
-                str = '\n' + step + tab + '{' + str + '}';
-                return str;
-
-              } else return p1;
+                  if(outputs.length >= 1) return '\n' + step + tab + '{' + 'output: ' + str + '}';
+                  else return str;
+                } else return p1;
+              }
             }));
 
             if(i + 1 < lines.length) {line = lines[++i];inc = true;}
