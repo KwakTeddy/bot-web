@@ -4,7 +4,7 @@
 var dialogs = [
 {
   input: '찾다',
-  output: '텍스트 내용을 출력합니다.'
+  output: '텍스트 내용을 출력합니다.2'
 },
 {
   input: /정규식/g,

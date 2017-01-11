@@ -1,5 +1,4 @@
 
-/*
 var path = require('path');
 var address = require(path.resolve('./modules/bot/action/common/address'));
 var cscenter = require('./cscenter');
@@ -29,49 +28,6 @@ var dialogs = [
       {if: 'dialog.task.count == 0', output: '주변에 지점을 찾을 수 없습니다.'}]
     }
   ]
-},
-{
-  input: ['센터 ~찾다', '센터 안내'],
-  output: '어디에 계신가요?',
-  children: [
-    {
-      input: {types: [{name: 'address', typeCheck: address.addressTypeCheck, raw: true}]},
-      task:       { action: cscenter.searchCenter,
-        postCallback: function(task, context, callback) {
-          console.log("cscenter post" + context.dialog.item);
-          callback(task, context);
-        }
-      },
-      output: '가장 적합한 곳을 찾았습니다.\n#item#+index+. +svc_center_name+\n주소: +address3+\n연락처: +phone+\n#'
-    }
-  ]
-},
-{
-  input: '시간 체크',
-  task:   {action: cscenter.checkTime},
-  output: [
-  {if: 'context.dialog.check == true', output: '영업시간이 아닙니다.'}, 
-  {if: 'context.dialog.check == false', output: '영업시간입니다.'}]
-},
-{
-  input: 'update address',
-  task:   {action: cscenter.updateCenterAddress},
-  output: 'update address 완료'
-},
-{
-  input: 'update geocode',
-  task:   {action: 'centerGeocode'},
-  output: 'update geocode 완료'
-},
-{
-  input: 'update time',
-  task:   {action: 'updateTime'},
-  output: 'update time 완료'
-},
-{
-  input: 'pre time',
-  task:   {action: 'preupdateTime'},
-  output: 'preupdate time 완료'
 },
 {
   input: '영업 시간',
@@ -178,10 +134,14 @@ var dialogs = [
 ];
 
 var commonDialogs = [
-
+{
+  name: '시작',
+  input: '~시작',
+  output: '안녕하세요. 고객센터 데모 입니다.'
+}
 ];
 
 
-var _bot = require(require('path').resolve("config/lib/bot")).getBot('lgdemo');
+var _bot = require(require('path').resolve("config/lib/bot")).getBot('demo');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);
