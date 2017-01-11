@@ -15,6 +15,7 @@ var lgdemo = require('./lgdemo');
 < {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}], regexp: /~서비스센터/}
 > {callChild: '위치찾기'}
 
+<여기 말고
 <다른 ~서비스센터
 >{call: '위치찾기'}
 
@@ -39,34 +40,41 @@ lgdemo.searchCenterTask
     <{types: [{name: 'center', listName: 'item', field: 'svc_center_name', typeCheck: 'listTypeCheck'}]}
     {action: function(task, context, callback) {context.user.center = context.dialog.center;callback(task, context);}}
     >{output: '+center.svc_center_name+\n주소: +center.address3+\n전화번호: +center.phone+', return : 1}
-        < ~영업 시간
+        < ~영업 ~시간
+        < ~언제 ~영업
         > {call: '영업시간'}
         < 어떻다 찾다
+        < 어떻다 ~가다
         > {call: '방문경로'}
-        < 수리 가능
+        < ~수리 ~가능
+        < ~뭐 ~하다
         > {call: '수리가능제품'}
-        < 전화 번호
+        < ~번호
         > {call: '전화번호안내'}
-        <{types: [{name: 'time', typeCheck: 'timeTypeCheck', raw: true}], regexp: /~영업/}
-        {action: lgdemo.checkTime}
-        >if(context.dialog.check == true) 죄송합니다. \n근무 시간이 아닙니다. \n근무시간은 평일 오전 9시부터 오후 6시까지, 토요일 오전 9시부터 오후 1시까지 입니다.
-        >if(context.dialog.check == false) 네 서비스 받으실 수 있는 시간 입니다.
-        >if(context.dialog.check == 're') {repeat: 1, options: {output: '오후 / 오전을 붙여서 이야기 해주세요.\n예시: 오후 2시 영업해?, 14시 영업해?'}}
-        <{types: [{name: 'date', typeCheck: 'dateTypeCheck', raw: true}], regexp: /~영업/}
-        {action: lgdemo.checkDate}
-        >if(context.dialog.check == true) 죄송합니다.\n근무일이 아닙니다.\n근무시간은 평일 오전 9시부터 오후 6시까지, 토요일 오전 9시부터 오후 1시까지 이며, 공휴일은 휴무입니다.
-        >if(context.dialog.check == false) 네 근무일입니다.\n근무시간은 평일 오전 9시부터 오후 6시까지, 토요일 오전 9시부터 오후 1시까지 이며, 공휴일은 휴무입니다.
-        < ~공휴일 ~영업
-        > 죄송합니다.\n근무일이 아닙니다.\n근무시간은 평일 오전 9시부터 오후 6시까지, 토요일 오전 9시부터 오후 1시까지 이며, 공휴일은 휴무입니다.
     <{if: 'true'}> {repeat: 1, options: {output: '목록에서 선택해주세요.\n'}}
 
+<{types: [{name: 'time', typeCheck: 'timeTypeCheck', raw: true}], regexp: /~영업/}
+{action: lgdemo.checkTime}
+>if(context.dialog.check == true) 죄송합니다. \n근무 시간이 아닙니다. \n근무시간은 평일 오전 9시부터 오후 6시까지, 토요일 오전 9시부터 오후 1시까지 입니다.
+>if(context.dialog.check == false) 네 서비스 받으실 수 있는 시간 입니다.
+>if(context.dialog.check == 're') 오후 / 오전을 붙여서 이야기 해주세요.\n예시: 오후 2시 영업해?, 14시 영업해?
+
+<{types: [{name: 'date', typeCheck: 'dateTypeCheck', raw: true}], regexp: /~영업/}
+{action: lgdemo.checkDate}
+>if(context.dialog.check == true) 죄송합니다.\n근무일이 아닙니다.\n근무시간은 평일 오전 9시부터 오후 6시까지, 토요일 오전 9시부터 오후 1시까지 이며, 공휴일은 휴무입니다.
+>if(context.dialog.check == false) 네 근무일입니다.\n근무시간은 평일 오전 9시부터 오후 6시까지, 토요일 오전 9시부터 오후 1시까지 이며, 공휴일은 휴무입니다.
+
+< ~공휴일 ~영업
+> 죄송합니다.\n근무일이 아닙니다.\n근무시간은 평일 오전 9시부터 오후 6시까지, 토요일 오전 9시부터 오후 1시까지 이며, 공휴일은 휴무입니다.
+
 영업시간:
-<~영업 시간
+<~영업 ~시간
 > iff(lgdemo.locationNotExists)  {returnCall: '서비스센터찾기', options: {returnDialog: '영업시간'}}
 > 해당 서비스 센터의 영업시간은\n평일 +center.winter_week+ \n토요일 +center.winter_sat+ 입니다.
 
 방문경로:
 < 어떻다 찾다
+< 어떻다 ~가다
 > iff(lgdemo.locationNotExists) {returnCall: '서비스센터찾기', options: {returnDialog: '방문경로'}}
 > 어떻게 방문하실 계획인가요?\n 1. 지하철\n 2. 버스\n 3. 자가용 \n4. 경로안내
     <1
@@ -83,12 +91,12 @@ lgdemo.searchCenterTask
     > 경로안내입니다
 
 수리가능제품:
-< 수리 가능
+< ~수리 ~가능
 > iff(lgdemo.locationNotExists) {returnCall: '서비스센터찾기', options: {returnDialog: '수리가능제품'}}
 > +center.product+
 
 전화번호안내:
-< 전화 번호
+< ~번호
 > iff(lgdemo.locationNotExists)  {returnCall: '서비스센터찾기', options: {returnDialog: '전화번호안내'}}
 > 센터 전화번호입니다.\n +center.phone+, +center.phone2+
 

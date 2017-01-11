@@ -172,10 +172,11 @@ exports.listFile = function (req, res) {
     }
   });
 };
+
 exports.createFile = function (req, res) {
   var bot = req.bot;
   var botFolder = generateBotFolder(bot.id);
-  fs.writeFile(botFolder + req.body.fileName, '# Created By ...', {flag: 'wx'}, function(err) {
+  fs.writeFile(botFolder + req.body.fileName, '', {flag: 'wx'}, function(err) {
     console.log('writeFile Result: ' + err);
     var botFile = new BotFile();
     botFile.bot = bot;
