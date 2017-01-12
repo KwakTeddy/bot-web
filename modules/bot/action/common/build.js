@@ -61,6 +61,17 @@ function botBuild(bot) {
 exports.botBuild = botBuild;
 
 function build(text, isCommon) {
+
+  // 라인 주석
+  text = text.replace(/\s*\/\/(.*)\n|\s*\/\/(.*)$/g, function (match, p1) {
+    return '\n';
+  });
+
+  // 영역 주석
+  text = text.replace(/\/\*(\*(?!\/)|[^*])*\*\//g, function (match, p1) {
+    return '';
+  });
+
   // var step = '';
   var output;
   var tab = '  ';

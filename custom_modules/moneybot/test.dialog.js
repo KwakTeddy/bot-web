@@ -1,5 +1,5 @@
 
-# Created By ...
+
 
 var dialogs = [
 

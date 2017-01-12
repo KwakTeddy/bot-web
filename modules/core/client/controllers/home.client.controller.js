@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('core').controller('HomeController', ['$scope', '$document', 'Authentication', 'Socket',
-  function ($scope, $document, Authentication, Socket) {
+angular.module('core').controller('HomeController', ['$scope', '$document', '$cookies', 'Authentication', 'Socket',
+  function ($scope, $document, $cookies, Authentication, Socket) {
     var vm = this;
 
     // if (!Socket.socket) {
@@ -31,6 +31,8 @@ angular.module('core').controller('HomeController', ['$scope', '$document', 'Aut
       if (!Socket.socket) {
         Socket.connect();
       }
+
+      $cookies.put('default_bot', vm.bot);
 
       vm.isConnected = true;
       init();
@@ -140,10 +142,12 @@ angular.module('core').controller('HomeController', ['$scope', '$document', 'Aut
     });
 
     vm.log = '';
-    vm.bot = 'demo';
+
+    vm.bot = $cookies.get('default_bot');
     vm.userId = 'com2best';
     vm.connect();
 
+    angular.element('#inputbox').focus();
   }
 ]);
 
