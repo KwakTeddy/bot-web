@@ -8,6 +8,6 @@ var concepts = {
   '시간': ['타임', '때'], 
   '대중교통': ['지하철', '버스'],
   '자가용': ['자동차', '차']
-  'service center' : ['center', 'service', 'customer']
+  'center' : ['center', 'service', 'customer']
   
 };

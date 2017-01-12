@@ -26,8 +26,7 @@ var lgdemoBot = {
     clientSecret: 'HXWvXdrKi7'
   },
   dialogFiles: [
-    'lgdemo.dialog.js',
-    'cscenter.dialog.js'
+    'lgdemo.dialog.js'
   ]
 };
 

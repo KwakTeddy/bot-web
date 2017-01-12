@@ -5,18 +5,12 @@ var lgdemo = require('./lgdemo');
 
 var dialogs = [
 {
-  name: '서비스센터찾기',
-  input: ['~서비스센터', '~서비스센터 ~어디', '~서비스센터 ~찾다'],
-  output: [
-  {if: lgdemo.locationExists, output: {call: '서비스센터정보'}}, {output: {call: '위치찾기'}}]
-},
-{
   input: {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}], regexp: /~서비스센터/},
   output: {callChild: '위치찾기'}
 },
 {
   name: '위치찾기',
-  input: false,
+  input: '~서비스센터',
   output: '현재 계신 지역을 말씀해 주세요.', 
     children: [
     {
@@ -60,34 +54,12 @@ var dialogs = [
     {
       input: {types: [{name: 'center', listName: 'item', field: 'svc_center_name', typeCheck: 'listTypeCheck'}]},
       task:       {action: function(task, context, callback) {context.user.center = context.dialog.center;callback(task, context);}},
-      output: {output: '+center.svc_center_name+\n주소: +center.address3+\n전화번호: +center.phone+', return : 1}, 
-        children: [
-        {
-          input: '~언제',
-          task:   		< ~시간
-  		< ~영업,
-          output: {call: '영업시간'}
-        },
-        {
-          input: ['어떻다 찾다', '어떻다 ~가다'],
-          output: {call: '방문경로'}
-        },
-        {
-          input: ['~수리 ~가능', '~뭐 ~하다'],
-          output: {call: '수리가능제품'}
-        },
-        {
-          input: '~번호',
-          output: {call: '전화번호안내'}
-        }
-      ]
+      output: {output: '+center.svc_center_name+\n주소: +center.address3+\n전화번호: +center.phone+', return : 1}
+    },
+    {
+      input: {if: 'true'},
+      output: {repeat: 1, options: {output: '목록에서 선택해주세요.\n'}}
     }
-  ],
-  children: [
-		{
-		  input: ['여기 말고', '다른 ~서비스센터'],
-		  output: {call: '위치찾기'}
-		}
   ]
 },
 {
@@ -95,7 +67,7 @@ var dialogs = [
   input: {types: [{name: 'time', typeCheck: 'timeTypeCheck', raw: true}], regexp: /~영업/},
   task:   {action: lgdemo.checkTime},
   output: [
-  {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '시간체크'}}}, 
+  {if: lgdemo.locationNotExists, output: {returnCall: '위치찾기', options: {returnDialog: '시간체크'}}}, 
   {if: 'context.dialog.check == true', output: '죄송합니다. 영업 시간이 아닙니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.'}, 
   {if: 'context.dialog.check == false', output: '네 서비스 받으실 수 있는 시간 입니다.'}, 
   {if: 'context.dialog.check == \'re\'', output: '오후 / 오전을 붙여서 이야기 해주세요.\n예시: 오후 2시 영업해?, 14시 영업해?'}]
@@ -105,7 +77,7 @@ var dialogs = [
   input: {types: [{name: 'date', typeCheck: 'dateTypeCheck', raw: true}], regexp: /~영업/},
   task:   {action: lgdemo.checkDate},
   output: [
-  {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '날짜체크'}}}, 
+  {if: lgdemo.locationNotExists, output: {returnCall: '위치찾기', options: {returnDialog: '날짜체크'}}}, 
   {if: 'context.dialog.check == true', output: '죄송합니다. 영업일이 아닙니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.'}, 
   {if: 'context.dialog.check == false', output: '네 영업일입니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.'}]
 },
@@ -113,25 +85,25 @@ var dialogs = [
   name: '토요일영업',
   input: ['~월요일', '~화요일', '~수요일', '~목요일', '~금요일', '~토요일'],
   output: [
-  {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '토요일영업'}}}, '네 영업일입니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.']
+  {if: lgdemo.locationNotExists, output: {returnCall: '위치찾기', options: {returnDialog: '토요일영업'}}}, '네 영업일입니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.']
 },
 {
   name: '공휴일영업',
   input: ['~공휴일', '일요일'],
   output: [
-  {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '공휴일영업'}}}, '죄송합니다. 영업일이 아닙니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.']
+  {if: lgdemo.locationNotExists, output: {returnCall: '위치찾기', options: {returnDialog: '공휴일영업'}}}, '죄송합니다. 영업일이 아닙니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.']
 },
 {
   name: '영업시간',
-  input: ['~언제', '~시간', '~영업'],
+  input: '~영업 ~시간',
   output: [
-  {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '영업시간'}}}, '해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.']
+  {if: lgdemo.locationNotExists, output: {returnCall: '위치찾기', options: {returnDialog: '영업시간'}}}, '해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.']
 },
 {
   name: '방문경로',
   input: ['어떻다 찾다', '어떻다 ~가다'],
   output: [
-  {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '방문경로'}}}, 
+  {if: lgdemo.locationNotExists, output: {returnCall: '위치찾기', options: {returnDialog: '방문경로'}}}, 
   {output: '어떻게 방문하실 계획인가요?\n 1. 지하철\n 2. 버스\n 3. 자가용 \n4. 경로안내', 
     children: [
     {
@@ -156,13 +128,13 @@ var dialogs = [
   name: '수리가능제품',
   input: '~수리 ~가능',
   output: [
-  {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '수리가능제품'}}}, '+center.product+']
+  {if: lgdemo.locationNotExists, output: {returnCall: '위치찾기', options: {returnDialog: '수리가능제품'}}}, '+center.product+']
 },
 {
   name: '전화번호안내',
   input: '~번호',
   output: [
-  {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '전화번호안내'}}}, '+center.svc_center_name+ 전화번호입니다.\n +center.phone+']
+  {if: lgdemo.locationNotExists, output: {returnCall: '위치찾기', options: {returnDialog: '전화번호안내'}}}, '+center.svc_center_name+ 전화번호입니다.\n +center.phone+']
 },
 {
   name: '답변없음',
@@ -174,8 +146,8 @@ var dialogs = [
      output: '고객센터 번호는 1577-7314입니다.'
    },
    {
-     input: {if: 'true'},
-     output: {repeat: 1}
+     input: '~아니요',
+     output: '이용해주셔서 감사합니다.'
    }
   ]
 }
@@ -199,6 +171,10 @@ var commonDialogs = [
 {
   input: '다음페이지',
   output: {repeat: 1, options: {page: 'next'}}
+},
+{
+  input: '콜센터',
+  output: '고객센터 번호는 1577-7314입니다.'
 }
 ];
 

@@ -23,6 +23,23 @@ var ang = {
 };
 exports.ang = ang;
 
+var gimothee = {
+  action: googleGeocode,
+  preCallback: function(task,context,callback) {
+    task._doc.address = '2011 Ft. Dale Road, Greenville, AL';
+    console.log(JSON.stringify(task._doc.address));
+    callback(task,context);
+  },
+  _doc: {
+    lng: '',
+    lat: '',
+    link: '',
+    address: ''
+  }
+};
+exports.gimothee = gimothee;
+
+
 function startAction(task, context, callback) {
   context.user.address = null;
   callback(task, context);
@@ -30,30 +47,27 @@ function startAction(task, context, callback) {
 
 bot.setAction("startAction", startAction);
 
-function daumGeocode(task, context, callback) {
+function googleGeocode(task, context, callback) {
   var request = require('request');
-  var query = {q: "서울특별시 금천구 가산동 464-2", output: "json"};
+  var query = {address: task._doc.address, key: "AIzaSyBjZ2tk2sW3w7QEZQCTSQNCNba35kWqBjc"};
   request({
-    url: 'https://apis.daum.net/local/geo/addr2coord?apikey=1b44a3a00ebe0e33eece579e1bc5c6d2',
+    url: 'https:\/\/maps.googleapis.com/maps/api/geocode/json',
     method: 'GET',
     qs: query
-  }, function(error,response, body) {
+  }, function(error,response,body) {
     if(!error && response.statusCode == 200) {
-      // console.log(body);
+      console.log(body);
       var doc = JSON.parse(body);
-      task._doc.lng = doc.channel.item[0].lng;
-      task._doc.lat = doc.channel.item[0].lat;
-      task._doc.link_find = 'http://map.daum.net/link/to/' + query.q + ',' + task._doc.lat + ',' + task._doc.lng;
-      task._doc.link_map = 'http://map.daum.net/link/map/' + task._doc.lat + ',' + task._doc.lng;
-      console.log('lat: ' + task._doc.lat + ', lng: ' + task._doc.lng);
-      console.log('link: ' + task._doc.link_find);
-      console.log('link: ' + task._doc.link_map);
-      
+      task._doc.lng = doc.results[0].geometry.location.lng;
+      task._doc.lat = doc.results[0].geometry.location.lat;
+      task._doc.link = 'https:\/\/www.google.co.kr/maps/place/' + query.address + '/' + task._doc.lat + ',' + task._doc.lng;
+      console.log(task._doc.lat);
+      console.log(task._doc.link);
     }
     callback(task,context);
   });
 }
-exports.daumGeocode = daumGeocode;
+exports.googleGeocode = googleGeocode;
 
 function geoCode(task, context, callback) {
   var request = require('request');
@@ -73,7 +87,7 @@ function geoCode(task, context, callback) {
       console.log('lat: ' + task._doc.lat + ', lng: ' + task._doc.lng);
       console.log('link: ' + task._doc.link_find);
       console.log('link: ' + task._doc.link_map);
-      
+
     }
     callback(task,context);
   });
@@ -134,6 +148,7 @@ function searchUsaCenter (task, context, callback) {
       });
       // }
       context.dialog.item = docs;
+      context.dialog.item = docs.slice(0, 2);
 
       callback(task,context)
     }
@@ -225,11 +240,3 @@ function checkTime(task, context, callback) {
 
 exports.checkTime = checkTime;
 
-function timeDateType(text, type, task, context, callback) {
-
-  // task.time 에 설정
-  // task.date 에 설정
-
-  callback(text, task, true);
-}
-exports.timeDateType = timeDateType;

@@ -3,36 +3,13 @@ var address = require(path.resolve('./modules/bot/action/common/address'));
 var lgdemo = require('./lgdemo');
 
 //> 근처의 서비스센터 입니다.\n#item#+index+. +svc_center_name+\n#
-<미국
->주소를 말씀해주세요
-    < {types: [{name: 'address', typeCheck: address.usaTypeCheck, raw: true}]}
-    > {call: '미국서비스센터정보'}
-    <{if: 'true'}> {up: 1}
-
-서비스센터찾기:
-< ~서비스센터
-< ~서비스센터 ~어디
-< ~서비스센터 ~찾다
-< ~service center find
-< ~service center where
-< where ~service center
-< find ~service center
->iff(lgdemo.locationExists) {call: '서비스센터정보'}
->{output: {call: '위치찾기'}}
-
-< {types: [{name: 'address', typeCheck: address.usaTypeCheck, raw: true}]}, regexp: /~서비스센터/}
-> {callChild: '위치찾기'}
-
-<여기 말고
-<다른 ~서비스센터
->{call: '위치찾기'}
 
 위치찾기:
-<false
+<~center
 >Please tell me the region you are in
-    < {types: [{name: 'address', typeCheck: address.usaTypeCheck, raw: true}]}, regexp: /~서비스센터/}
+    < {types: [{name: 'address', typeCheck: address.usaTypeCheck, raw: true}]}
     > {call: '서비스센터정보'}
-    <{if: 'true'}> {repeat: 1, options: {output: 'District not found. Please tell me the region you are in'}}
+    < {if: 'true'}> {up: 1}
 
 서비스센터정보:
 <false
@@ -40,52 +17,10 @@ lgdemo.searchUsaCenterTask
 > The closest service center is +item.0.SVC_CENTER_NAME+ +item.0.distance+km away.\nOther nearby service center is +item.1.SVC_CENTER_NAME+ +item.1.distance+km away.\nWhich service center do you prefer?
     <{types: [{name: 'center', listName: 'item', field: 'SVC_CENTER_NAME', typeCheck: 'listTypeCheck'}]}
     {action: function(task, context, callback) {context.user.center = context.dialog.center;callback(task, context);}}
-    >{output: '+center.SVC_CENTER_NAME+\nAddress: +center.STREET+, +center.CITY+, +center.ASC_PROVINCE_NAME+\nPhone number: +center.TEL_NO+', return : 1}
-        < ~영업 ~시간
-        < ~언제 ~영업
-        < ~when ~open
-        < ~when ~work
-        < ~opening ~hours
-        < ~what ~time
-        > {call: '영업시간'}
-        < 어떻다 찾다
-        < 어떻다 ~가다
-        < ~how ~go
-        < ~how ~get
-        > {call: '방문경로'}
-        < ~수리 ~가능
-        < ~뭐 ~하다
-        < ~repair ~possible
-        < ~what ~do
-        < ~what ~repair
-        > {call: '수리가능제품'}
-        < ~번호
-		// < ~number
-        > {call: '전화번호안내'}
+    >{output: '+center.SVC_CENTER_NAME+\nAddress: +center.STREET+, +center.CITY+, +center.ASC_PROVINCE_NAME+\nTel: +center.TEL_NO+', return : 1}
     <{if: 'true'}> {repeat: 1, options: {output: 'Choose from the list.\n'}}
 
-시간체크:
-<{types: [{name: 'time', typeCheck: 'timeTypeCheck', raw: true}], regexp: /~영업/}
-{action: lgdemo.checkTime}
->iff(lgdemo.locationNotExists) {returnCall: '서비스센터찾기', options: {returnDialog: '시간체크'}}
->if(context.dialog.check == true) Sorry. It is not working hours.\nWorking hours are\n +center.winter_week_open+ to +center.winter_week_close+ in weekdays \n +center.winter_sat_open+to +center.winter_sat_close+on Saturdays,\n Closed at holidays.
->if(context.dialog.check == false) Yes. Service center is open.
->if(context.dialog.check == 're') 오후 / 오전을 붙여서 이야기 해주세요.\n예시: 오후 2시 영업해?, 14시 영업해?
-
-날짜체크:
-<{types: [{name: 'date', typeCheck: 'dateTypeCheck', raw: true}], regexp: /~영업/}
-{action: lgdemo.checkDate}
->iff(lgdemo.locationNotExists) {returnCall: '서비스센터찾기', options: {returnDialog: '날짜체크'}}
->if(context.dialog.check == true) Sorry. Service center is closed on that day. \nWorking days of that service center is\n +center.winter_week_open+ to +center.winter_week_close+ on weekdays,\n  +center.winter_sat_open+to +center.winter_sat_close+ on Saturdays,\n Closed at holidays.
->if(context.dialog.check == false) Service center is open on that day. \nWorking hours of the service center is \n +center.winter_week_open+to +center.winter_week_close+on weekdays,\n  +center.winter_sat_open+to +center.winter_sat_close+on Saturdays and,\n closed on holidays.
-
 토요일영업:
-< 월요일 ~영업
-< 화요일 ~영업
-< 수요일 ~영업
-< 목요일 ~영업
-< 금요일 ~영업
-< 토요일 ~영업
 < Monday ~open
 < Monday ~work
 < Tuesday ~open
@@ -98,23 +33,25 @@ lgdemo.searchUsaCenterTask
 < Friday ~work
 < Saturday ~open
 < Saturday ~work
->iff(lgdemo.locationNotExists) {returnCall: '서비스센터찾기', options: {returnDialog: '토요일영업'}}
-> Service center is open on that day.\nWorking hours of the service center is\n +center.winter_week_open+to +center.winter_week_close+ on weekdays,\n +center.winter_sat_open+ to +center.winter_sat_close+ on Saturdays,\n closed on holidays.
+>iff(lgdemo.locationNotExists) {returnCall: '위치찾기', options: {returnDialog: '토요일영업'}}
+> Service center is open on that day.\nWorking hours of the service center is \n 09:00 to 18:00 on weekdays,\n 09:00 to 13:00 on Saturdays and,\n closed on holidays.
 
 공휴일영업:
 < ~공휴일 ~영업
 < ~holiday ~work
 < ~holiday ~open
->iff(lgdemo.locationNotExists) {returnCall: '서비스센터찾기', options: {returnDialog: '공휴일영업'}}
-> Sorry. Service center is closed on that day\nWorking hours of the service center is \n +center.winter_week_open+ to +center.winter_week_close+ on weekdays,\n +center.winter_sat_open+ to +center.winter_sat_close+ on Saturdays,\n closed on holidays.
+>iff(lgdemo.locationNotExists) {returnCall: '위치찾기', options: {returnDialog: '공휴일영업'}}
+> Sorry. Service center is closed on that day\nWorking hours of the service center is \n 09:00 to 18:00 on weekdays,\n 09:00 to 13:00 on Saturdays and,\n closed on holidays.
 
 영업시간:
-<~영업 ~시간
+< ~when ~work
+< ~opening ~hours
+< ~what ~time
 <~work ~hours
 <~open
 <~when ~open
-> iff(lgdemo.locationNotExists)  {returnCall: '서비스센터찾기', options: {returnDialog: '영업시간'}}
-> Working hours are\n+center.winter_week_open+ to +center.winter_week_close+ on weekdays,\n +center.winter_sat_open+ to +center.winter_sat_close+ on Saturdays,\n Closed at holidays.
+> iff(lgdemo.locationNotExists)  {returnCall: '위치찾기', options: {returnDialog: '영업시간'}}
+> Working hours of the service center is \n 09:00 to 18:00 on weekdays,\n 09:00 to 13:00 on Saturdays and,\n closed on holidays.
 
 방문경로:
 < 어떻다 찾다
@@ -122,33 +59,16 @@ lgdemo.searchUsaCenterTask
 < How find
 < How ~get
 < How ~go
-> iff(lgdemo.locationNotExists) {returnCall: '서비스센터찾기', options: {returnDialog: '방문경로'}}
-> How are you planning to visit?\n 1. Subday\n 2. Bus\n 3. Car \n4. Navigation
-    <1
-    <Subway
-    >+center.lms_subway+
-    <2
-    <Bus
-    >+center.lms_bus+
-    <3
-    <Car
-    >+center.owner+
-    <4
-    <Navigation
-    lgdemo.ang
-    > Navigation \n Map link: +_doc.link_map+ \n Navigation link: +_doc.link_find+
-
-수리가능제품:
-< ~수리 ~가능
-< ~what ~do
-< ~what ~repair
-> iff(lgdemo.locationNotExists) {returnCall: '서비스센터찾기', options: {returnDialog: '수리가능제품'}}
-> +center.product+
+lgdemo.gimothee
+> iff(lgdemo.locationNotExists) {returnCall: '위치찾기', options: {returnDialog: '방문경로'}}
+> Navigation \n Map link: +_doc.link+
 
 전화번호안내:
-< ~번호
-> iff(lgdemo.locationNotExists)  {returnCall: '서비스센터찾기', options: {returnDialog: '전화번호안내'}}
-> Phone number is +center.svc_center_name+ \n +center.phone+
+< ~tel
+< ~phone
+< ~telephone
+> iff(lgdemo.locationNotExists)  {returnCall: '위치찾기', options: {returnDialog: '전화번호안내'}}
+> Phone number is +center.SVC_CENTER_NAME+ \n +center.TEL_NO+
 
 시작:
 c<~시작
@@ -156,19 +76,24 @@ c<~시작
 // > 안녕하세요. LG전자 고객센터 데모 입니다.
 > Hello. This is LG Electronics Customer Service Demo. How can I help you?
 
-c<이전
+c<previous
 > {up:1}
 
-c<전페이지
+c<previous page
 >{repeat: 1, options: {page: 'pre'}}
 
-c<다음페이지
+c<next page
 >{repeat: 1, options: {page: 'next'}}
 
-c:콜센터
->Service center number is 1577-7314.
+c<call center
+>Service center number is 800 243-0000.
+
+c< Thanks
+> Your welcome, thanks.
+
 
 답변없음:
-<>I do not understand you.\nWould you like to connect to service center?
-   <~yes> Service center number is 1577-7314.
-   <{if: 'true'}>{repeat: 1}
+<>I do not understand you.\nWould you like to connect to service call center?
+   <~yes> Service center number is 800 243-0000.
+   <~no> Okay. please call me anytime.
+
