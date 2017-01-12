@@ -114,7 +114,7 @@ function searchCenter (task, context, callback) {
           return a.distance - b.distance;
         });
         // }
-        context.dialog.item = docs;
+        context.dialog.item = docs.slice(0, 2);
 
         callback(task,context)
       }

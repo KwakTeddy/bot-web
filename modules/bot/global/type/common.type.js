@@ -44,11 +44,16 @@ function listTypeCheck(text, type, task, context, callback) {
     else if(typeof list[j] == 'string') item = list[j];
     else continue;
 
-    if(item && item.replace(' ', '') === inRawText) {
-      context.dialog[type.name] = /*task[type.name] = */list[j];
+    if(item) {
+      item = item.replace(' ', '');
 
-      callback(text, task, true);
-      return;
+      var re = new RegExp(inRawText, 'i');
+      if(item.search(re) != -1) {
+        context.dialog[type.name] = /*task[type.name] = */list[j];
+
+        callback(text, task, true);
+        return;
+      }
     }
   }
 
@@ -98,7 +103,10 @@ function listTypeCheck(text, type, task, context, callback) {
         if(word.length == 1) continue;
         word = RegExp.escape(word);
         // console.log(item);
-        if(item.search(word) != -1) matchCount++;
+
+        var re = new RegExp(word, 'i');
+        if(item.search(re) != -1) matchCount++;
+        // if(item.search(word) != -1) matchCount++;
       }
 
       if(matchCount > maxCount) {
