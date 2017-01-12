@@ -1,7 +1,6 @@
 
 var path = require('path');
 var address = require(path.resolve('./modules/bot/action/common/address'));
-var cscenter = require('./cscenter');
 var lgdemo = require('./lgdemo');
 
 var dialogs = [

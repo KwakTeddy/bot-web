@@ -21,8 +21,8 @@ var dialogs = [
 },
 {
   input: '계좌 개설 서류',
-  output: '개인 이세요? 법인 이세요?',
-  children: [
+  output: '개인 이세요? 법인 이세요?', 
+    children: [
     {
       input: '개인',
       output: '개인 계좌 개설은 신분증을 지참하시고, 재직증명서/급여명세서/원천징수영수증 중에 하나를 가지고 지점을 방문하시면 됩니다.'
@@ -43,8 +43,8 @@ var dialogs = [
 },
 {
   input: false,
-  output: '어떤 금융 기관을 알고 싶으신가요?',
-  children: [
+  output: '어떤 금융 기관을 알고 싶으신가요?', 
+    children: [
     {
       input: '금융기관매칭',
       output: {ouput: 'XX 금융기관을 선택하셨습니다', return: 1}
@@ -57,8 +57,8 @@ var dialogs = [
 },
 {
   input: '직원',
-  output: '담당 직원을 찾겠습니다. 연락처를 입력해주세요.',
-  children: [
+  output: '담당 직원을 찾겠습니다. 연락처를 입력해주세요.', 
+    children: [
     {
       input: '',
       output: '고객님의 담당 직원을 안내해드리겠습니다.\n이름:김 지원\n직통번호:02-828-5683'
@@ -67,20 +67,20 @@ var dialogs = [
 },
 {
   input: '사고',
-  output: '어떤 사고를 신고하실건가요?\n1.보이스피싱 사기 및 계좌해지\n2.카드분실사고\n3.분실사고상태확인',
-  children: [
+  output: '어떤 사고를 신고하실건가요?\n1.보이스피싱 사기 및 계좌해지\n2.카드분실사고\n3.분실사고상태확인', 
+    children: [
     {
       input: ['2', '이번', '이', '분실'],
-      output: '주민등록번호 13자리를 입력해주세요',
-      children: [
+      output: '주민등록번호 13자리를 입력해주세요', 
+        children: [
         {
           input: '',
-          output: '카드 비밀번호를 입력해주세요',
-          children: [
+          output: '카드 비밀번호를 입력해주세요', 
+            children: [
             {
               input: '',
-              output: '4670-0850-7161-9839\n이 카드를 정지할까요?',
-              children: [
+              output: '4670-0850-7161-9839\n이 카드를 정지할까요?', 
+                children: [
                 {
                   input: '~네',
                   output: '분실신고 완료되었 습니다.'
