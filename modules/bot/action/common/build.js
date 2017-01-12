@@ -72,6 +72,10 @@ function build(text, isCommon) {
     return '';
   });
 
+  // 공백줄 삭제
+  text = text.replace(/(?:\s*[\n])+/g, function (match, p1) {
+    return '\n';
+  });
   // var step = '';
   var output;
   var tab = '  ';
@@ -96,10 +100,10 @@ function build(text, isCommon) {
       var inc = false;
       //console.log(step + (i+1) + ' start parseDialog');
 
-      while (line.search(/^\s*$/) != -1 || line.search(/^\s*\/\/(.*)$/) != -1) {
-        if(i + 1 < lines.length) {line = line = lines[++i];inc = true;}
-        else break;
-      }
+      // while (line.search(/^\s*$/) != -1 || line.search(/^\s*\/\/(.*)$/) != -1) {
+      //   if(i + 1 < lines.length) {line = line = lines[++i];inc = true;}
+      //   else break;
+      // }
 
       if(!line.startsWith(step)) {
         i--;
@@ -238,10 +242,10 @@ function build(text, isCommon) {
           }
         }
 
-        while (line.search(/^\s*$/) != -1 || line.search(/^\s*\/\/(.*)$/) != -1) {
-          if(i + 1 < lines.length) {line = lines[++i];inc = true;}
-          else break;
-        }
+        // while (line.search(/^\s*$/) != -1 || line.search(/^\s*\/\/(.*)$/) != -1) {
+        //   if(i + 1 < lines.length) {line = lines[++i];inc = true;}
+        //   else break;
+        // }
 
         if((match = line.match(new RegExp('^(' + step + '\\s+)<'))) != undefined) {
           //console.log(step + (i+1) + ' before parseDialog 2');
@@ -251,10 +255,10 @@ function build(text, isCommon) {
           children = null;
         }
 
-        while (line.search(/^\s*$/) != -1 || line.search(/^\s*\/\/(.*)$/) != -1) {
-          if(i + 1 < lines.length) {line = lines[++i];inc = true;}
-          else break;
-        }
+        // while (line.search(/^\s*$/) != -1 || line.search(/^\s*\/\/(.*)$/) != -1) {
+        //   if(i + 1 < lines.length) {line = lines[++i];inc = true;}
+        //   else break;
+        // }
 
         dialog += step + '{';
 
@@ -304,7 +308,7 @@ function build(text, isCommon) {
       }
 
       // if(!isCommon && !inc && dialogs.length == 0 && step === '' && !(line.startsWith(step + 'c<') || line.startsWith(step + '<') || line.search(new RegExp('^'+step + '[^<>]*\s*:')) != -1)) {
-      if(!isCommon && !inc && dialogs.length == 0 && step === '') {
+      if(!isCommon && !inc && dialogs.length == 0 && step === '' && !line.startsWith('>')) {
         jsLines.push(line);
       }
 

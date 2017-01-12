@@ -10,6 +10,7 @@ var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   config = require(path.resolve('./config/config')),
   _ = require('lodash'),
+  botLib = require(path.resolve('config/lib/bot')),
   fs = require('fs');
 
 /**
@@ -32,16 +33,45 @@ exports.create = function (req, res) {
     }
   }
 
+  var botFile = fs.readFileSync('./custom_modules/global/default.bot.js.template', 'utf8');
+  botFile = botFile.replace(/__bot__/g, bot.id);
+  fs.writeFileSync(botFolder + bot.id + '.bot.js', botFile,  {flag: 'wx'});
+  createFile(bot.id + '.bot.js', bot.user, bot);
+
+  var dlgFile = fs.readFileSync('./custom_modules/global/default.dlg.template', 'utf8');
+  dlgFile = dlgFile.replace(/__bot__/g, bot.name);
+  fs.writeFileSync(botFolder + 'default.dlg', dlgFile,  {flag: 'wx'});
+  createFile('default.dlg', bot.user, bot);
+
   bot.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
+      botLib.buildBot(bot.id);
+      botLib.loadBot(bot.id);
       res.json(bot);
     }
   });
+
+
 };
+
+function createFile(fileName, user, bot) {
+  var botFile = new BotFile();
+  botFile.bot = bot;
+  botFile.name = fileName;
+  botFile.user = user;
+  console.log('botFile: ' + botFile.name);
+  botFile.save(function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+    }
+  });
+}
+
 
 /**
  * Show the current bot
@@ -321,3 +351,6 @@ function deleteFolderRecursive(path) {
     fs.rmdirSync(path);
   }
 };
+
+
+

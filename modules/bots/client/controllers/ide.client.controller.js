@@ -4,8 +4,8 @@
 'use strict';
 
 // Bots controller
-angular.module('bots').controller('IDEController', ['$scope', '$stateParams', 'fileResolve', 'BotFilesService', 'Socket', 'CoreUtils',
-  function ($scope, $stateParams, file, BotFilesService, Socket, CoreUtils) {
+angular.module('bots').controller('IDEController', ['$scope', '$timeout', '$stateParams', 'fileResolve', 'BotFilesService', 'Socket', 'CoreUtils',
+  function ($scope, $timeout, $stateParams, file, BotFilesService, Socket, CoreUtils) {
     var vm = this;
     vm.codemirrorOpts = {
       lineWrapping: true,
@@ -67,6 +67,12 @@ angular.module('bots').controller('IDEController', ['$scope', '$stateParams', 'f
     vm.botName = file.botName;
     vm.name = file.name;
     vm.data = file.data;
+
+    $scope.refreshCodemirror = true;
+    $timeout(function () {
+      $scope.refreshCodemirror = false;
+    }, 100);
+
     vm.buildBot = function () {
       new BotFilesService({botId: $stateParams.botId, _id: $stateParams.fileId, fileData: vm.data}).$save(function (botFile) {
         // if (!Socket.socket) {
@@ -140,9 +146,13 @@ angular.module('bots').controller('IDEController', ['$scope', '$stateParams', 'f
     });
     vm.userId = 'com2best';
     vm.connect();
+
     // $scope.$on('$destroy', function () {
     //   Socket.removeListener('send_msg');
     // });
+
+
+
 
 }]
 );

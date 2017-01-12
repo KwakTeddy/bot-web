@@ -36,7 +36,7 @@
 
           <div class="col-sm-6 text-right">
             <a class="btn btn-primary" ng-click="vm.buildBot()">
-              Save & Build (F5)
+              Save & Build (Ctrl+B)
             </a>
           </div>
         </div>
@@ -53,7 +53,7 @@
             <div class="col-md-12">
 						<!--<textarea class="form-control" rows="20" id="codemirror_js_code" name="code_js" data-plugin-codemirror data-plugin-options='{ "mode": "text/javascript" }'>-->
             <!--</textarea>-->
-              <ui-codemirror ui-codemirror-opts="vm.codemirrorOpts" ng-model="vm.data"></ui-codemirror>
+              <ui-codemirror ui-codemirror-opts="vm.codemirrorOpts" ng-model="vm.data" ui-refresh='refreshCodemirror'></ui-codemirror>
             </div>
         </form>
       </div>
