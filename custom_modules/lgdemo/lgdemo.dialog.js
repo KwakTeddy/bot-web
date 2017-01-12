@@ -156,7 +156,7 @@ var dialogs = [
 var commonDialogs = [
 {
   name: '시작',
-  input: '~시작',
+  input: '~시',
   task:   {action: 'startAction'},
   output: '안녕하세요. LG전자 고객센터 데모 입니다.'
 },

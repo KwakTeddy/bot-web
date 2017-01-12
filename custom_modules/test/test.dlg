@@ -47,7 +47,7 @@ var sampleType = {
 google
 > complete
 
-< {types: [type.sampleType]}
+< {types: [sampleType]}
 > +yolo+
 
 <> 모르겠어

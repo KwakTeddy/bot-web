@@ -45,7 +45,7 @@ var dialogs = [
   output: 'complete'
 },
 {
-  input: {types: [type.sampleType]},
+  input: {types: [sampleType]},
   output: '+yolo+'
 },
 {
