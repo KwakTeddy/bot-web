@@ -1,7 +1,6 @@
 
 var path = require('path');
 var address = require(path.resolve('./modules/bot/action/common/address'));
-var cscenter = require('./cscenter');
 var lgdemo = require('./lgdemo');
 
 var dialogs = [
@@ -22,7 +21,7 @@ var dialogs = [
 {
   name: '위치찾기',
   input: false,
-  output: ['현재 계신 지역을 말씀해 주세요.', 
+  output: '현재 계신 지역을 말씀해 주세요.', 
     children: [
     {
       input: {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}]},
@@ -34,8 +33,8 @@ var dialogs = [
           output: {call: '서비스센터정보'}
         },
         {
-          input: {if: 'true'}> {up: 1},
-          output: []
+          input: {if: 'true'},
+          output: {up: 1}
         }
       ]}, 
       {if: 'Array.isArray(context.dialog.address)', output: '다음 중 어떤 지역이신가요?\n#address#+index+. +지번주소+ +시군구용건물명+\n#', 
@@ -45,17 +44,22 @@ var dialogs = [
           output: {call: '서비스센터정보'}
         },
         {
-          input: {if: 'true'}> {up: 1},
-          task:       <{if: 'true'}> {repeat: 1, options: {output: '지역을 찾을 수 없습니다. 동명을 말씀해주세요.'}}
-  서비스센터정보:
-  <false
-  lgdemo.searchCenterTask,
-          output: []
+          input: {if: 'true'},
+          output: {up: 1}
         }
       ]}]
+    },
+    {
+      input: {if: 'true'},
+      output: {repeat: 1, options: {output: '지역을 찾을 수 없습니다. 동명을 말씀해주세요.'}}
     }
-  ], 
-  {output: '가장 가까운 서비스센터는 +item.0.svc_center_name+ +item.0.distance+km 입니다.\n인근의 다른 서비스센터로 +item.1.svc_center_name+ +item.1.distance+km 가 있습니다.\n어디로 안내해 드릴까요?', 
+  ]
+},
+{
+  name: '서비스센터정보',
+  input: false,
+  task:   lgdemo.searchCenterTask,
+  output: '가장 가까운 서비스센터는 +item.0.svc_center_name+ +item.0.distance+km 입니다.\n인근의 다른 서비스센터로 +item.1.svc_center_name+ +item.1.distance+km 가 있습니다.\n어디로 안내해 드릴까요?', 
     children: [
     {
       input: {types: [{name: 'center', listName: 'item', field: 'svc_center_name', typeCheck: 'listTypeCheck'}]},
@@ -81,32 +85,47 @@ var dialogs = [
       ]
     },
     {
-      input: {if: 'true'}> {repeat: 1, options: {output: '목록에서 선택해주세요.\n'}},
-      task:   <{types: [{name: 'time', typeCheck: 'timeTypeCheck', raw: true}], regexp: /~영업/}
-  {action: lgdemo.checkTime},
-      output: []
+      input: {if: 'true'},
+      output: {repeat: 1, options: {output: '목록에서 선택해주세요.\n'}}
     }
-  ]}, 
-  {if: 'context.dialog.check == true', output: '죄송합니다. \n근무 시간이 아닙니다. \n근무시간은 평일 오전 9시부터 오후 6시까지, 토요일 오전 9시부터 오후 1시까지 입니다.'}, 
+  ]
+},
+{
+  name: '시간체크',
+  input: {types: [{name: 'time', typeCheck: 'timeTypeCheck', raw: true}], regexp: /~영업/},
+  task:   {action: lgdemo.checkTime},
+  output: [
+  {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '시간체크'}}}, 
+  {if: 'context.dialog.check == true', output: '죄송합니다. 영업 시간이 아닙니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.'}, 
   {if: 'context.dialog.check == false', output: '네 서비스 받으실 수 있는 시간 입니다.'}, 
   {if: 'context.dialog.check == \'re\'', output: '오후 / 오전을 붙여서 이야기 해주세요.\n예시: 오후 2시 영업해?, 14시 영업해?'}]
 },
 {
+  name: '날짜체크',
   input: {types: [{name: 'date', typeCheck: 'dateTypeCheck', raw: true}], regexp: /~영업/},
   task:   {action: lgdemo.checkDate},
   output: [
-  {if: 'context.dialog.check == true', output: '죄송합니다.\n근무일이 아닙니다.\n근무시간은 평일 오전 9시부터 오후 6시까지, 토요일 오전 9시부터 오후 1시까지 이며, 공휴일은 휴무입니다.'}, 
-  {if: 'context.dialog.check == false', output: '네 근무일입니다.\n근무시간은 평일 오전 9시부터 오후 6시까지, 토요일 오전 9시부터 오후 1시까지 이며, 공휴일은 휴무입니다.'}]
+  {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '날짜체크'}}}, 
+  {if: 'context.dialog.check == true', output: '죄송합니다. 영업일이 아닙니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.'}, 
+  {if: 'context.dialog.check == false', output: '네 영업일입니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.'}]
 },
 {
+  name: '토요일영업',
+  input: ['월요일 ~영업', '화요일 ~영업', '수요일 ~영업', '목요일 ~영업', '금요일 ~영업', '토요일 ~영업'],
+  output: [
+  {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '토요일영업'}}}, '네 영업일입니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.']
+},
+{
+  name: '공휴일영업',
   input: '~공휴일 ~영업',
-  output: '죄송합니다.\n근무일이 아닙니다.\n근무시간은 평일 오전 9시부터 오후 6시까지, 토요일 오전 9시부터 오후 1시까지 이며, 공휴일은 휴무입니다.'
+  output: [
+  {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '공휴일영업'}}}, '죄송합니다. 영업일이 아닙니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.']
 },
 {
   name: '영업시간',
   input: '~영업 ~시간',
   output: [
-  {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '영업시간'}}}, '해당 서비스 센터의 영업시간은\n평일 +center.winter_week+ \n토요일 +center.winter_sat+ 입니다.']
+  {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '영업시간'}}}, '해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.']
 },
 {
   name: '방문경로',
@@ -143,15 +162,22 @@ var dialogs = [
   name: '전화번호안내',
   input: '~번호',
   output: [
-  {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '전화번호안내'}}}, '센터 전화번호입니다.\n +center.phone+, +center.phone2+']
+  {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '전화번호안내'}}}, '+center.svc_center_name+ 전화번호입니다.\n +center.phone+']
 },
 {
   name: '답변없음',
-  input: '>알아듣지 못하는 말입니다.\n고객센터로 연결해드릴까요?',
-  task:      <~네> 고객센터 번호는 1577-7314입니다.
-     <{if: 'true'}>{repeat: 1}
-  ,
-  output: []
+  input: '',
+  output: '알아듣지 못하는 말입니다.\n고객센터로 연결해드릴까요?',
+  children: [
+   {
+     input: '~네',
+     output: '고객센터 번호는 1577-7314입니다.'
+   },
+   {
+     input: {if: 'true'},
+     output: {repeat: 1}
+   }
+  ]
 }
 ];
 
