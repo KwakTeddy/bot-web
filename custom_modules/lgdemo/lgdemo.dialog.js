@@ -15,10 +15,6 @@ var dialogs = [
   output: {callChild: '위치찾기'}
 },
 {
-  input: ['여기 말고', '다른 ~서비스센터'],
-  output: {call: '위치찾기'}
-},
-{
   name: '위치찾기',
   input: false,
   output: '현재 계신 지역을 말씀해 주세요.', 
@@ -67,7 +63,9 @@ var dialogs = [
       output: {output: '+center.svc_center_name+\n주소: +center.address3+\n전화번호: +center.phone+', return : 1}, 
         children: [
         {
-          input: ['~영업 ~시간', '~언제 ~영업'],
+          input: '~언제',
+          task:   		< ~시간
+  		< ~영업,
           output: {call: '영업시간'}
         },
         {
@@ -83,11 +81,13 @@ var dialogs = [
           output: {call: '전화번호안내'}
         }
       ]
-    },
-    {
-      input: {if: 'true'},
-      output: {repeat: 1, options: {output: '목록에서 선택해주세요.\n'}}
     }
+  ],
+  children: [
+		{
+		  input: ['여기 말고', '다른 ~서비스센터'],
+		  output: {call: '위치찾기'}
+		}
   ]
 },
 {
@@ -123,7 +123,7 @@ var dialogs = [
 },
 {
   name: '영업시간',
-  input: '~영업 ~시간',
+  input: ['~언제', '~시간', '~영업'],
   output: [
   {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '영업시간'}}}, '해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.']
 },
