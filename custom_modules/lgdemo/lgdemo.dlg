@@ -3,7 +3,7 @@ var address = require(path.resolve('./modules/bot/action/common/address'));
 var lgdemo = require('./lgdemo');
 
 //> 근처의 서비스센터 입니다.\n#item#+index+. +svc_center_name+\n#
-   
+
 서비스센터찾기:
 < ~서비스센터
 < ~서비스센터 ~어디
