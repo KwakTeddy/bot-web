@@ -94,6 +94,52 @@ function locationExists(dialog, context, callback) {
 }
 exports.locationExists = locationExists;
 
+var searchUsaCenterTask = {
+  action: searchUsaCenter,
+  postCallback: function(task, context, callback) {
+    callback(task, context);
+  }
+};
+
+exports.searchUsaCenterTask = searchUsaCenterTask;
+
+function searchUsaCenter (task, context, callback) {
+  var center = mongo.getModel('lgcenter_usa', undefined);
+  var lng, lat;
+
+  task.address = context.user.address = context.dialog.address;
+
+  if(context.dialog.address) {
+    lng = context.dialog.address.lng;
+    lat = context.dialog.address.lat;
+  } else if(context.user.address) {
+    lng = context.user.address.lng;
+    lat = context.user.address.lat;
+  }
+
+  center.find({}).lean().exec(function(err, docs) {
+    if(err) {
+      console.log(err);
+      callback(task, context);
+    } else {
+      for (var i = 0; i < docs.length; i++) {
+        var doc = docs[i];
+        doc.distance = addressModule.getDistanceFromGeocode(lat, lng, doc.LATITUDE, doc.LONGITUDE);
+        doc.distance = doc.distance.toPrecision(2);
+        // console.log(doc.name, doc.distance, JSON.stringify(dist));
+      }
+      // if (i == docs.length) {
+      docs.sort(function (a, b) {
+        return a.distance - b.distance;
+      });
+      // }
+      context.dialog.item = docs;
+
+      callback(task,context)
+    }
+  });
+}
+exports.searchUsaCenter = searchUsaCenter;
 
 var searchCenterTask = {
   action: searchCenter,

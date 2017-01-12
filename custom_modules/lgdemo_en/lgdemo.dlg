@@ -3,6 +3,11 @@ var address = require(path.resolve('./modules/bot/action/common/address'));
 var lgdemo = require('./lgdemo');
 
 //> 근처의 서비스센터 입니다.\n#item#+index+. +svc_center_name+\n#
+<미국
+>주소를 말씀해주세요
+    < {types: [{name: 'address', typeCheck: address.usaTypeCheck, raw: true}]}
+    > {call: '미국서비스센터정보'}
+    <{if: 'true'}> {up: 1}
 
 서비스센터찾기:
 < ~서비스센터
@@ -15,7 +20,7 @@ var lgdemo = require('./lgdemo');
 >iff(lgdemo.locationExists) {call: '서비스센터정보'}
 >{output: {call: '위치찾기'}}
 
-< {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}], regexp: /~서비스센터/}
+< {types: [{name: 'address', typeCheck: address.usaTypeCheck, raw: true}]}, regexp: /~서비스센터/}
 > {callChild: '위치찾기'}
 
 <여기 말고
@@ -25,25 +30,17 @@ var lgdemo = require('./lgdemo');
 위치찾기:
 <false
 >Please tell me the region you are in
-    < {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}]}
-    > if(!Array.isArray(context.dialog.address)) Is +address.시군구명+ +address.법정읍면동명+ correct?
-        < ~네
-        < ~yes
-        >{call: '서비스센터정보'}
-        <{if: 'true'}> {up: 1}
-    > if(Array.isArray(context.dialog.address))Which of the following regions are you at??\n#address#+index+. +지번주소+ +시군구용건물명+\n#
-        <{types: [{name: 'address', listName: 'address', typeCheck: 'listTypeCheck'}]}
-        >{call: '서비스센터정보'}
-        <{if: 'true'}> {up: 1}
+    < {types: [{name: 'address', typeCheck: address.usaTypeCheck, raw: true}]}, regexp: /~서비스센터/}
+    > {call: '서비스센터정보'}
     <{if: 'true'}> {repeat: 1, options: {output: 'District not found. Please tell me the region you are in'}}
 
 서비스센터정보:
 <false
-lgdemo.searchCenterTask
-> The closest service center is +item.0.svc_center_name+ +item.0.distance+km away.\nOther nearby service center is +item.1.svc_center_name+ +item.1.distance+km away.\nWhich service center do you prefer?
-    <{types: [{name: 'center', listName: 'item', field: 'svc_center_name', typeCheck: 'listTypeCheck'}]}
+lgdemo.searchUsaCenterTask
+> The closest service center is +item.0.SVC_CENTER_NAME+ +item.0.distance+km away.\nOther nearby service center is +item.1.SVC_CENTER_NAME+ +item.1.distance+km away.\nWhich service center do you prefer?
+    <{types: [{name: 'center', listName: 'item', field: 'SVC_CENTER_NAME', typeCheck: 'listTypeCheck'}]}
     {action: function(task, context, callback) {context.user.center = context.dialog.center;callback(task, context);}}
-    >{output: '+center.svc_center_name+\nAddress: +center.address3+\nPhone number: +center.phone+', return : 1}
+    >{output: '+center.SVC_CENTER_NAME+\nAddress: +center.STREET+, +center.CITY+, +center.ASC_PROVINCE_NAME+\nPhone number: +center.TEL_NO+', return : 1}
         < ~영업 ~시간
         < ~언제 ~영업
         < ~when ~open

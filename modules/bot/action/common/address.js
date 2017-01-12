@@ -62,6 +62,52 @@ function addressTypeCheck2(text, type, task, context, callback) {
 
 exports.addressTypeCheck2 = addressTypeCheck2;
 
+function usaTypeCheck(text, type, task, context, callback) {
+  var address = {address: text};
+  var name = 'address';
+  var request = require('request');
+
+  var matchaddress = function(_name, _task, _time) {
+    if(_task[_name]) {
+      if(Array.isArray(_task[_name])) _task[_name].push(_time);
+      else _task[_name] = [_task[_name], _time];
+    } else {
+      _task[_name] = _time;
+    }
+  };
+
+  request({
+    url: 'https://maps.googleapis.com/maps/api/geocode/json?&key=AIzaSyB4oxVGxao3AL7tt2txXW3P2zUTcehiO_k',
+    method: 'GET',
+    qs: address
+  }, function(error, response, body) {
+    if (!error) {
+      // console.log(body);
+      task.doc = null;
+      var doc = JSON.parse(body);
+      console.log(JSON.stringify(doc));
+      var _doc = {
+        lat:doc.results[0].geometry.location.lat,
+        lng:doc.results[0].geometry.location.lng
+      };
+      // console.log('lat: ' + task._doc.lat + ', lng: ' + task._doc.lng);
+    }
+
+    // return matchaddress(name, task, _doc);
+
+    if(task[name]) {
+      if(Array.isArray(task[name])) task[name].push(_doc);
+      else task[name] = [task[name], _doc];
+    } else {
+      task[name] = _doc;
+    }
+
+    callback(text, task, true);
+
+  });
+}
+
+exports.usaTypeCheck = usaTypeCheck;
 
 function updateRestaurantAddress(task, context, callback) {
 
