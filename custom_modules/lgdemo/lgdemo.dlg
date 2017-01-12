@@ -30,13 +30,13 @@ var lgdemo = require('./lgdemo');
         <{types: [{name: 'address', listName: 'address', typeCheck: 'listTypeCheck'}]}
         >{call: '서비스센터정보'}
         <{if: 'true'}> {up: 1}
-    <{if: 'true'}> {repeat: 1, options: {output: '지역을 찾을 수 없습니다. 동명을 말씀해주세요.'}}
+    <{if: 'true'}> {repeat: 1, options: {output: '지역을 찾을 수 없습니다. 동명을 말씀해주세요.'}} //~동 까지 말 안 해도 인식되었으면 좋겠어요
 
 서비스센터정보:
 <false
 lgdemo.searchCenterTask
 > 가장 가까운 서비스센터는 +item.0.svc_center_name+ +item.0.distance+km 입니다.\n인근의 다른 서비스센터로 +item.1.svc_center_name+ +item.1.distance+km 가 있습니다.\n어디로 안내해 드릴까요?
-    <{types: [{name: 'center', listName: 'item', field: 'svc_center_name', typeCheck: 'listTypeCheck'}]}
+    <{types: [{name: 'center', listName: 'item', field: 'svc_center_name', typeCheck: 'listTypeCheck'}]} //전자후자 위에꺼아래꺼 가장가까운거 등으로도 답변 가능했으면 좋겠어요
     {action: function(task, context, callback) {context.user.center = context.dialog.center;callback(task, context);}}
     >{output: '+center.svc_center_name+\n주소: +center.address3+\n전화번호: +center.phone+', return : 1}
         < ~영업 ~시간
@@ -46,7 +46,7 @@ lgdemo.searchCenterTask
         < 어떻다 ~가다
         > {call: '방문경로'}
         < ~수리 ~가능
-        < ~뭐 ~하다
+        < ~뭐 ~하다 //수리가능제품 리스트 필요해
         > {call: '수리가능제품'}
         < ~번호
         > {call: '전화번호안내'}
@@ -68,17 +68,18 @@ lgdemo.searchCenterTask
 >if(context.dialog.check == false) 네 영업일입니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.
 
 토요일영업:
-< 월요일 ~영업
-< 화요일 ~영업
-< 수요일 ~영업
-< 목요일 ~영업
-< 금요일 ~영업
-< 토요일 ~영업
+< ~월요일
+< ~화요일
+< ~수요일
+< ~목요일
+< ~금요일
+< ~토요일
 >iff(lgdemo.locationNotExists) {returnCall: '서비스센터찾기', options: {returnDialog: '토요일영업'}}
 > 네 영업일입니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.
 
 공휴일영업:
-< ~공휴일 ~영업
+< ~공휴일
+< 일요일
 >iff(lgdemo.locationNotExists) {returnCall: '서비스센터찾기', options: {returnDialog: '공휴일영업'}}
 > 죄송합니다. 영업일이 아닙니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.
 

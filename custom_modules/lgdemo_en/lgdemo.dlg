@@ -8,6 +8,10 @@ var lgdemo = require('./lgdemo');
 < ~서비스센터
 < ~서비스센터 ~어디
 < ~서비스센터 ~찾다
+< ~service center find
+< ~service center where
+< where ~service center
+< find ~service center
 >iff(lgdemo.locationExists) {call: '서비스센터정보'}
 >{output: {call: '위치찾기'}}
 
@@ -20,52 +24,63 @@ var lgdemo = require('./lgdemo');
 
 위치찾기:
 <false
->현재 계신 지역을 말씀해 주세요.
+>Please tell me the region you are in
     < {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}]}
-    > if(!Array.isArray(context.dialog.address)) +address.시군구명+ +address.법정읍면동명+ 맞나요?
+    > if(!Array.isArray(context.dialog.address)) Is +address.시군구명+ +address.법정읍면동명+ correct?
         < ~네
+        < ~yes
         >{call: '서비스센터정보'}
         <{if: 'true'}> {up: 1}
-    > if(Array.isArray(context.dialog.address))다음 중 어떤 지역이신가요?\n#address#+index+. +지번주소+ +시군구용건물명+\n#
+    > if(Array.isArray(context.dialog.address))Which of the following regions are you at??\n#address#+index+. +지번주소+ +시군구용건물명+\n#
         <{types: [{name: 'address', listName: 'address', typeCheck: 'listTypeCheck'}]}
         >{call: '서비스센터정보'}
         <{if: 'true'}> {up: 1}
-    <{if: 'true'}> {repeat: 1, options: {output: '지역을 찾을 수 없습니다. 동명을 말씀해주세요.'}}
+    <{if: 'true'}> {repeat: 1, options: {output: 'District not found. Please tell me the region you are in'}}
 
 서비스센터정보:
 <false
 lgdemo.searchCenterTask
-> 가장 가까운 서비스센터는 +item.0.svc_center_name+ +item.0.distance+km 입니다.\n인근의 다른 서비스센터로 +item.1.svc_center_name+ +item.1.distance+km 가 있습니다.\n어디로 안내해 드릴까요?
+> The closest service center is +item.0.svc_center_name+ +item.0.distance+km away.\nOther nearby service center is +item.1.svc_center_name+ +item.1.distance+km away.\nWhich service center do you prefer?
     <{types: [{name: 'center', listName: 'item', field: 'svc_center_name', typeCheck: 'listTypeCheck'}]}
     {action: function(task, context, callback) {context.user.center = context.dialog.center;callback(task, context);}}
-    >{output: '+center.svc_center_name+\n주소: +center.address3+\n전화번호: +center.phone+', return : 1}
+    >{output: '+center.svc_center_name+\nAddress: +center.address3+\nPhone number: +center.phone+', return : 1}
         < ~영업 ~시간
         < ~언제 ~영업
+        < ~when ~open
+        < ~when ~work
+        < ~opening ~hours
+        < ~what ~time
         > {call: '영업시간'}
         < 어떻다 찾다
         < 어떻다 ~가다
+        < ~how ~go
+        < ~how ~get
         > {call: '방문경로'}
         < ~수리 ~가능
         < ~뭐 ~하다
+        < ~repair ~possible
+        < ~what ~do
+        < ~what ~repair
         > {call: '수리가능제품'}
         < ~번호
+		// < ~number
         > {call: '전화번호안내'}
-    <{if: 'true'}> {repeat: 1, options: {output: '목록에서 선택해주세요.\n'}}
+    <{if: 'true'}> {repeat: 1, options: {output: 'Choose from the list.\n'}}
 
 시간체크:
 <{types: [{name: 'time', typeCheck: 'timeTypeCheck', raw: true}], regexp: /~영업/}
 {action: lgdemo.checkTime}
 >iff(lgdemo.locationNotExists) {returnCall: '서비스센터찾기', options: {returnDialog: '시간체크'}}
->if(context.dialog.check == true) 죄송합니다. 영업 시간이 아닙니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.
->if(context.dialog.check == false) 네 서비스 받으실 수 있는 시간 입니다.
+>if(context.dialog.check == true) Sorry. It is not working hours.\nWorking hours are\n +center.winter_week_open+ to +center.winter_week_close+ in weekdays \n +center.winter_sat_open+to +center.winter_sat_close+on Saturdays,\n Closed at holidays.
+>if(context.dialog.check == false) Yes. Service center is open.
 >if(context.dialog.check == 're') 오후 / 오전을 붙여서 이야기 해주세요.\n예시: 오후 2시 영업해?, 14시 영업해?
 
 날짜체크:
 <{types: [{name: 'date', typeCheck: 'dateTypeCheck', raw: true}], regexp: /~영업/}
 {action: lgdemo.checkDate}
 >iff(lgdemo.locationNotExists) {returnCall: '서비스센터찾기', options: {returnDialog: '날짜체크'}}
->if(context.dialog.check == true) 죄송합니다. 영업일이 아닙니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.
->if(context.dialog.check == false) 네 영업일입니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.
+>if(context.dialog.check == true) Sorry. Service center is closed on that day. \nWorking days of that service center is\n +center.winter_week_open+ to +center.winter_week_close+ on weekdays,\n  +center.winter_sat_open+to +center.winter_sat_close+ on Saturdays,\n Closed at holidays.
+>if(context.dialog.check == false) Service center is open on that day. \nWorking hours of the service center is \n +center.winter_week_open+to +center.winter_week_close+on weekdays,\n  +center.winter_sat_open+to +center.winter_sat_close+on Saturdays and,\n closed on holidays.
 
 토요일영업:
 < 월요일 ~영업
@@ -74,51 +89,75 @@ lgdemo.searchCenterTask
 < 목요일 ~영업
 < 금요일 ~영업
 < 토요일 ~영업
+< Monday ~open
+< Monday ~work
+< Tuesday ~open
+< Tuesday ~work
+< Wednesday ~open
+< Wednesday ~work
+< Thursday ~open
+< Thursday ~work
+< Fridady ~open
+< Friday ~work
+< Saturday ~open
+< Saturday ~work
 >iff(lgdemo.locationNotExists) {returnCall: '서비스센터찾기', options: {returnDialog: '토요일영업'}}
-> 네 영업일입니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.
+> Service center is open on that day.\nWorking hours of the service center is\n +center.winter_week_open+to +center.winter_week_close+ on weekdays,\n +center.winter_sat_open+ to +center.winter_sat_close+ on Saturdays,\n closed on holidays.
 
 공휴일영업:
 < ~공휴일 ~영업
+< ~holiday ~work
+< ~holiday ~open
 >iff(lgdemo.locationNotExists) {returnCall: '서비스센터찾기', options: {returnDialog: '공휴일영업'}}
-> 죄송합니다. 영업일이 아닙니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.
+> Sorry. Service center is closed on that day\nWorking hours of the service center is \n +center.winter_week_open+ to +center.winter_week_close+ on weekdays,\n +center.winter_sat_open+ to +center.winter_sat_close+ on Saturdays,\n closed on holidays.
 
 영업시간:
 <~영업 ~시간
+<~work ~hours
+<~open
+<~when ~open
 > iff(lgdemo.locationNotExists)  {returnCall: '서비스센터찾기', options: {returnDialog: '영업시간'}}
-> 해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.
+> Working hours are\n+center.winter_week_open+ to +center.winter_week_close+ on weekdays,\n +center.winter_sat_open+ to +center.winter_sat_close+ on Saturdays,\n Closed at holidays.
 
 방문경로:
 < 어떻다 찾다
 < 어떻다 ~가다
+< How find
+< How ~get
+< How ~go
 > iff(lgdemo.locationNotExists) {returnCall: '서비스센터찾기', options: {returnDialog: '방문경로'}}
-> 어떻게 방문하실 계획인가요?\n 1. 지하철\n 2. 버스\n 3. 자가용 \n4. 경로안내
+> How are you planning to visit?\n 1. Subday\n 2. Bus\n 3. Car \n4. Navigation
     <1
-    <지하철
+    <Subway
     >+center.lms_subway+
     <2
-    <버스
+    <Bus
     >+center.lms_bus+
     <3
-    <자가용
+    <Car
     >+center.owner+
     <4
-    <경로
-    > 경로안내입니다
+    <Navigation
+    lgdemo.ang
+    > Navigation \n Map link: +_doc.link_map+ \n Navigation link: +_doc.link_find+
 
 수리가능제품:
 < ~수리 ~가능
+< ~what ~do
+< ~what ~repair
 > iff(lgdemo.locationNotExists) {returnCall: '서비스센터찾기', options: {returnDialog: '수리가능제품'}}
 > +center.product+
 
 전화번호안내:
 < ~번호
 > iff(lgdemo.locationNotExists)  {returnCall: '서비스센터찾기', options: {returnDialog: '전화번호안내'}}
-> +center.svc_center_name+ 전화번호입니다.\n +center.phone+
+> Phone number is +center.svc_center_name+ \n +center.phone+
 
 시작:
 c<~시작
 {action: 'startAction'}
-> 안녕하세요. LG전자 고객센터 데모 입니다.
+// > 안녕하세요. LG전자 고객센터 데모 입니다.
+> Hello. This is LG Electronics Customer Service Demo. How can I help you?
 
 c<이전
 > {up:1}
@@ -130,9 +169,9 @@ c<다음페이지
 >{repeat: 1, options: {page: 'next'}}
 
 c:콜센터
->고객센터 번호는 1577-7314입니다.
+>Service center number is 1577-7314.
 
 답변없음:
-<>알아듣지 못하는 말입니다.\n고객센터로 연결해드릴까요?
-   <~네> 고객센터 번호는 1577-7314입니다.
+<>I do not understand you.\nWould you like to connect to service center?
+   <~yes> Service center number is 1577-7314.
    <{if: 'true'}>{repeat: 1}

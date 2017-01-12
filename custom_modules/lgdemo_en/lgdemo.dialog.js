@@ -6,7 +6,7 @@ var lgdemo = require('./lgdemo');
 var dialogs = [
 {
   name: '서비스센터찾기',
-  input: ['~서비스센터', '~서비스센터 ~어디', '~서비스센터 ~찾다'],
+  input: ['~서비스센터', '~서비스센터 ~어디', '~서비스센터 ~찾다', '~service center find', '~service center where', 'where ~service center', 'find ~service center'],
   output: [
   {if: lgdemo.locationExists, output: {call: '서비스센터정보'}}, {output: {call: '위치찾기'}}]
 },
@@ -21,15 +21,15 @@ var dialogs = [
 {
   name: '위치찾기',
   input: false,
-  output: '현재 계신 지역을 말씀해 주세요.', 
+  output: 'Please tell me the region you are in', 
     children: [
     {
       input: {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}]},
       output: [
-      {if: '!Array.isArray(context.dialog.address)', output: '+address.시군구명+ +address.법정읍면동명+ 맞나요?', 
+      {if: '!Array.isArray(context.dialog.address)', output: 'Is +address.시군구명+ +address.법정읍면동명+ correct?', 
         children: [
         {
-          input: '~네',
+          input: ['~네', '~yes'],
           output: {call: '서비스센터정보'}
         },
         {
@@ -37,7 +37,7 @@ var dialogs = [
           output: {up: 1}
         }
       ]}, 
-      {if: 'Array.isArray(context.dialog.address)', output: '다음 중 어떤 지역이신가요?\n#address#+index+. +지번주소+ +시군구용건물명+\n#', 
+      {if: 'Array.isArray(context.dialog.address)', output: 'Which of the following regions are you at??\n#address#+index+. +지번주소+ +시군구용건물명+\n#', 
         children: [
         {
           input: {types: [{name: 'address', listName: 'address', typeCheck: 'listTypeCheck'}]},
@@ -51,7 +51,7 @@ var dialogs = [
     },
     {
       input: {if: 'true'},
-      output: {repeat: 1, options: {output: '지역을 찾을 수 없습니다. 동명을 말씀해주세요.'}}
+      output: {repeat: 1, options: {output: 'District not found. Please tell me the region you are in'}}
     }
   ]
 },
@@ -59,23 +59,23 @@ var dialogs = [
   name: '서비스센터정보',
   input: false,
   task:   lgdemo.searchCenterTask,
-  output: '가장 가까운 서비스센터는 +item.0.svc_center_name+ +item.0.distance+km 입니다.\n인근의 다른 서비스센터로 +item.1.svc_center_name+ +item.1.distance+km 가 있습니다.\n어디로 안내해 드릴까요?', 
+  output: 'The closest service center is +item.0.svc_center_name+ +item.0.distance+km away.\nOther nearby service center is +item.1.svc_center_name+ +item.1.distance+km away.\nWhich service center do you prefer?', 
     children: [
     {
       input: {types: [{name: 'center', listName: 'item', field: 'svc_center_name', typeCheck: 'listTypeCheck'}]},
       task:       {action: function(task, context, callback) {context.user.center = context.dialog.center;callback(task, context);}},
-      output: {output: '+center.svc_center_name+\n주소: +center.address3+\n전화번호: +center.phone+', return : 1}, 
+      output: {output: '+center.svc_center_name+\nAddress: +center.address3+\nPhone number: +center.phone+', return : 1}, 
         children: [
         {
-          input: ['~영업 ~시간', '~언제 ~영업'],
+          input: ['~영업 ~시간', '~언제 ~영업', '~when ~open', '~when ~work', '~opening ~hours', '~what ~time'],
           output: {call: '영업시간'}
         },
         {
-          input: ['어떻다 찾다', '어떻다 ~가다'],
+          input: ['어떻다 찾다', '어떻다 ~가다', '~how ~go', '~how ~get'],
           output: {call: '방문경로'}
         },
         {
-          input: ['~수리 ~가능', '~뭐 ~하다'],
+          input: ['~수리 ~가능', '~뭐 ~하다', '~repair ~possible', '~what ~do', '~what ~repair'],
           output: {call: '수리가능제품'}
         },
         {
@@ -86,7 +86,7 @@ var dialogs = [
     },
     {
       input: {if: 'true'},
-      output: {repeat: 1, options: {output: '목록에서 선택해주세요.\n'}}
+      output: {repeat: 1, options: {output: 'Choose from the list.\n'}}
     }
   ]
 },
@@ -96,8 +96,8 @@ var dialogs = [
   task:   {action: lgdemo.checkTime},
   output: [
   {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '시간체크'}}}, 
-  {if: 'context.dialog.check == true', output: '죄송합니다. 영업 시간이 아닙니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.'}, 
-  {if: 'context.dialog.check == false', output: '네 서비스 받으실 수 있는 시간 입니다.'}, 
+  {if: 'context.dialog.check == true', output: 'Sorry. It is not working hours.\nWorking hours are\n +center.winter_week_open+ to +center.winter_week_close+ in weekdays \n +center.winter_sat_open+to +center.winter_sat_close+on Saturdays,\n Closed at holidays.'}, 
+  {if: 'context.dialog.check == false', output: 'Yes. Service center is open.'}, 
   {if: 'context.dialog.check == \'re\'', output: '오후 / 오전을 붙여서 이야기 해주세요.\n예시: 오후 2시 영업해?, 14시 영업해?'}]
 },
 {
@@ -106,55 +106,56 @@ var dialogs = [
   task:   {action: lgdemo.checkDate},
   output: [
   {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '날짜체크'}}}, 
-  {if: 'context.dialog.check == true', output: '죄송합니다. 영업일이 아닙니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.'}, 
-  {if: 'context.dialog.check == false', output: '네 영업일입니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.'}]
+  {if: 'context.dialog.check == true', output: 'Sorry. Service center is closed on that day. \nWorking days of that service center is\n +center.winter_week_open+ to +center.winter_week_close+ on weekdays,\n  +center.winter_sat_open+to +center.winter_sat_close+ on Saturdays,\n Closed at holidays.'}, 
+  {if: 'context.dialog.check == false', output: 'Service center is open on that day. \nWorking hours of the service center is \n +center.winter_week_open+to +center.winter_week_close+on weekdays,\n  +center.winter_sat_open+to +center.winter_sat_close+on Saturdays and,\n closed on holidays.'}]
 },
 {
   name: '토요일영업',
-  input: ['월요일 ~영업', '화요일 ~영업', '수요일 ~영업', '목요일 ~영업', '금요일 ~영업', '토요일 ~영업'],
+  input: ['월요일 ~영업', '화요일 ~영업', '수요일 ~영업', '목요일 ~영업', '금요일 ~영업', '토요일 ~영업', 'Monday ~open', 'Monday ~work', 'Tuesday ~open', 'Tuesday ~work', 'Wednesday ~open', 'Wednesday ~work', 'Thursday ~open', 'Thursday ~work', 'Fridady ~open', 'Friday ~work', 'Saturday ~open', 'Saturday ~work'],
   output: [
-  {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '토요일영업'}}}, '네 영업일입니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.']
+  {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '토요일영업'}}}, 'Service center is open on that day.\nWorking hours of the service center is\n +center.winter_week_open+to +center.winter_week_close+ on weekdays,\n +center.winter_sat_open+ to +center.winter_sat_close+ on Saturdays,\n closed on holidays.']
 },
 {
   name: '공휴일영업',
-  input: '~공휴일 ~영업',
+  input: ['~공휴일 ~영업', '~holiday ~work', '~holiday ~open'],
   output: [
-  {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '공휴일영업'}}}, '죄송합니다. 영업일이 아닙니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.']
+  {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '공휴일영업'}}}, 'Sorry. Service center is closed on that day\nWorking hours of the service center is \n +center.winter_week_open+ to +center.winter_week_close+ on weekdays,\n +center.winter_sat_open+ to +center.winter_sat_close+ on Saturdays,\n closed on holidays.']
 },
 {
   name: '영업시간',
-  input: '~영업 ~시간',
+  input: ['~영업 ~시간', '~work ~hours', '~open', '~when ~open'],
   output: [
-  {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '영업시간'}}}, '해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.']
+  {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '영업시간'}}}, 'Working hours are\n+center.winter_week_open+ to +center.winter_week_close+ on weekdays,\n +center.winter_sat_open+ to +center.winter_sat_close+ on Saturdays,\n Closed at holidays.']
 },
 {
   name: '방문경로',
-  input: ['어떻다 찾다', '어떻다 ~가다'],
+  input: ['어떻다 찾다', '어떻다 ~가다', 'How find', 'How ~get', 'How ~go'],
   output: [
   {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '방문경로'}}}, 
-  {output: '어떻게 방문하실 계획인가요?\n 1. 지하철\n 2. 버스\n 3. 자가용 \n4. 경로안내', 
+  {output: 'How are you planning to visit?\n 1. Subday\n 2. Bus\n 3. Car \n4. Navigation', 
     children: [
     {
-      input: ['1', '지하철'],
+      input: ['1', 'Subway'],
       output: '+center.lms_subway+'
     },
     {
-      input: ['2', '버스'],
+      input: ['2', 'Bus'],
       output: '+center.lms_bus+'
     },
     {
-      input: ['3', '자가용'],
+      input: ['3', 'Car'],
       output: '+center.owner+'
     },
     {
-      input: ['4', '경로'],
-      output: '경로안내입니다'
+      input: ['4', 'Navigation'],
+      task:       lgdemo.ang,
+      output: 'Navigation \n Map link: +_doc.link_map+ \n Navigation link: +_doc.link_find+'
     }
   ]}]
 },
 {
   name: '수리가능제품',
-  input: '~수리 ~가능',
+  input: ['~수리 ~가능', '~what ~do', '~what ~repair'],
   output: [
   {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '수리가능제품'}}}, '+center.product+']
 },
@@ -162,16 +163,16 @@ var dialogs = [
   name: '전화번호안내',
   input: '~번호',
   output: [
-  {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '전화번호안내'}}}, '+center.svc_center_name+ 전화번호입니다.\n +center.phone+']
+  {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '전화번호안내'}}}, 'Phone number is +center.svc_center_name+ \n +center.phone+']
 },
 {
   name: '답변없음',
   input: '',
-  output: '알아듣지 못하는 말입니다.\n고객센터로 연결해드릴까요?',
+  output: 'I do not understand you.\nWould you like to connect to service center?',
   children: [
    {
-     input: '~네',
-     output: '고객센터 번호는 1577-7314입니다.'
+     input: '~yes',
+     output: 'Service center number is 1577-7314.'
    },
    {
      input: {if: 'true'},
@@ -186,7 +187,7 @@ var commonDialogs = [
   name: '시작',
   input: '~시작',
   task:   {action: 'startAction'},
-  output: '안녕하세요. LG전자 고객센터 데모 입니다.'
+  output: 'Hello. This is LG Electronics Customer Service Demo. How can I help you?'
 },
 {
   input: '이전',

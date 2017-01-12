@@ -111,13 +111,13 @@ var dialogs = [
 },
 {
   name: '토요일영업',
-  input: ['월요일 ~영업', '화요일 ~영업', '수요일 ~영업', '목요일 ~영업', '금요일 ~영업', '토요일 ~영업'],
+  input: ['~월요일', '~화요일', '~수요일', '~목요일', '~금요일', '~토요일'],
   output: [
   {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '토요일영업'}}}, '네 영업일입니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.']
 },
 {
   name: '공휴일영업',
-  input: '~공휴일 ~영업',
+  input: ['~공휴일', '일요일'],
   output: [
   {if: lgdemo.locationNotExists, output: {returnCall: '서비스센터찾기', options: {returnDialog: '공휴일영업'}}}, '죄송합니다. 영업일이 아닙니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.']
 },
