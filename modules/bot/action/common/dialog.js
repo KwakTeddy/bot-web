@@ -110,6 +110,8 @@ function matchGlobalDialogs(inRaw, inNLP, dialogs, context, print, callback) {
             executeDialog(context.bot.noDialog, context, print, callback);
             context.dialog.isFail = true;
           } else {
+            context.dialog.isFail = true;
+            print('I do not understand you.');
             console.error('NO_DIALOG(답변없음)가 없습니다. 아래와 같이 설정바랍니다.\n답변없음:c<> 알아듣지 못하는 말입니다.');
           }
           callback(true);
@@ -181,6 +183,8 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback, opti
                 context.dialog.isFail = true;
               } else {
                 console.error('NO_DIALOG(답변없음)가 없습니다. 아래와 같이 설정바랍니다.\n답변없음:c<> 알아듣지 못하는 말입니다.');
+                context.dialog.isFail = true;
+                print('I do not understand you.');
               }
               callback(true);
             }

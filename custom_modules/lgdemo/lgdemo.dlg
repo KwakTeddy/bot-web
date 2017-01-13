@@ -96,7 +96,7 @@ lgdemo.searchCenterTask
 > +center.svc_center_name+ 전화번호입니다.\n +center.phone+
 
 시작:
-c<~시작
+c<시작
 {action: 'startAction'}
 > 안녕하세요. LG전자 고객센터 데모 입니다.
 
