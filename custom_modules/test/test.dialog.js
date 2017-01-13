@@ -4,17 +4,16 @@ var bot = require(path.resolve('config/lib/bot')).getBot('test');
 var testFAQ = {
   module: 'http',
   action: "simpleRequest",
-  uri: 'https:\/\/www.koreaeasyloan.com/customer/oftenQuestion.ke',
+  uri: 'https://www.koreaeasyloan.com/customer/oftenQuestion.ke',
   method: 'GET',
   param: {
     page: '1'
   },
   xpath: {
-    tag: '
-    title: '
-    date: '
-    content: '
-    content: ''
+    tag: '//*[@id="tbl_list"]/tbody/tr[1]/td[1]/text()',
+    title: '//*[@id="tbl_list"]/tbody/tr[1]/td[2]/a/text()',
+    date: '//*[@id="tbl_list"]/tbody/tr[1]/td[3]/text()',
+    content: '//*[@id="tbl_list"]/tbody/tr[2]/td/text()'
   },
   postCallback: function (task, context, callback) {
     console.log(JSON.stringify(task.doc));
@@ -25,7 +24,7 @@ function googleGeocode(task, context, callback) {
   var request = require('request');
   var query = {address: "4250 WIBLE ROAD, BAKERSFIELD, CA", key: "AIzaSyBjZ2tk2sW3w7QEZQCTSQNCNba35kWqBjc"};
   request({
-    url: 'https:\/\/maps.googleapis.com/maps/api/geocode/json',
+    url: 'https://maps.googleapis.com/maps/api/geocode/json',
     method: 'GET',
     qs: query
   }, function(error,response,body) {
@@ -34,7 +33,7 @@ function googleGeocode(task, context, callback) {
       var doc = JSON.parse(body);
       task._doc.lng = doc.results[0].geometry.location.lng;
       task._doc.lat = doc.results[0].geometry.location.lat;
-      task._doc.link = 'https:\/\/www.google.co.kr/maps/place/' + query.address + '/' + task._doc.lat + ',' + task._doc.lng;
+      task._doc.link = 'https://www.google.co.kr/maps/place/' + query.address + '/' + task._doc.lat + ',' + task._doc.lng;
       console.log(task._doc.lat);
       console.log(task._doc.link);
     }
@@ -48,7 +47,7 @@ var google = {
     lat: '',
     link: ''
   }
-}
+};
 
 var dialogs = [
 {

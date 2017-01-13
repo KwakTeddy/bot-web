@@ -5,7 +5,7 @@ var testFAQ = {
   module: 'http',
   action: "simpleRequest",
   // uri: 'http:\/\/www.kofia.or.kr/brd/m_114/list.do',
-  uri: 'https:\/\/www.koreaeasyloan.com/customer/oftenQuestion.ke',
+  uri: 'https://www.koreaeasyloan.com/customer/oftenQuestion.ke',
   method: 'GET',
   param: {
     page: '1'
@@ -15,8 +15,6 @@ var testFAQ = {
     title: '//*[@id="tbl_list"]/tbody/tr[1]/td[2]/a/text()',
     date: '//*[@id="tbl_list"]/tbody/tr[1]/td[3]/text()',
     content: '//*[@id="tbl_list"]/tbody/tr[2]/td/text()'
-    content: ''
-    
   },
   postCallback: function (task, context, callback) {
     // console.log(task._text);
@@ -39,7 +37,7 @@ function googleGeocode(task, context, callback) {
   var request = require('request');
   var query = {address: "4250 WIBLE ROAD, BAKERSFIELD, CA", key: "AIzaSyBjZ2tk2sW3w7QEZQCTSQNCNba35kWqBjc"};
   request({
-    url: 'https:\/\/maps.googleapis.com/maps/api/geocode/json',
+    url: 'https://maps.googleapis.com/maps/api/geocode/json',
     method: 'GET',
     qs: query
   }, function(error,response,body) {
@@ -63,7 +61,7 @@ var google = {
     lat: '',
     link: ''
   }
-}
+};
 
 시작:c<~시작> 안녕하세요. 야근 테스트
 
