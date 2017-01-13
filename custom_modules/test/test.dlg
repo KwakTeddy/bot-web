@@ -5,7 +5,7 @@ var testFAQ = {
   module: 'http',
   action: "simpleRequest",
   // uri: 'http:\/\/www.kofia.or.kr/brd/m_114/list.do',
-  uri: 'https:\/\/www.koreaeasyloan.com/customer/oftenQuestion.ke',
+  uri: 'https://www.koreaeasyloan.com/customer/oftenQuestion.ke',
   method: 'GET',
   param: {
     page: '1'
@@ -15,7 +15,6 @@ var testFAQ = {
     title: '//*[@id="tbl_list"]/tbody/tr[1]/td[2]/a/text()',
     date: '//*[@id="tbl_list"]/tbody/tr[1]/td[3]/text()',
     content: '//*[@id="tbl_list"]/tbody/tr[2]/td/text()'
-    content: ''
     
   },
   postCallback: function (task, context, callback) {
