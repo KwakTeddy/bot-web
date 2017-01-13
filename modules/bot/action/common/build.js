@@ -62,6 +62,11 @@ exports.botBuild = botBuild;
 
 function build(text, isCommon) {
 
+  // 주석 escape
+  text = text.replace(/["'][^"']*\/\/[^"']*["']/g, function (match, p1, p2, p3, p4) {
+    return match.replace('//', '\\/\\/');
+  });
+
   // 라인 주석
   text = text.replace(/\s*\/\/(.*)\n|\s*\/\/(.*)$/g, function (match, p1) {
     return '\n';
@@ -72,10 +77,21 @@ function build(text, isCommon) {
     return '';
   });
 
+  // tab 공백으로 바꾸기
+  text = text.replace(/\t/g, function (match, p1) {
+    return '    ';
+  });
+
+  // 주석 escape 복원
+  text = text.replace(/["'][^"']*(\\\/\\\/)[^"']*["']/g, function (match, p1) {
+    return match.replace('\\/\\/', '//');
+  });
+
   // 공백줄 삭제
   text = text.replace(/(?:\s*[\n])+/g, function (match, p1) {
     return '\n';
   });
+
   // var step = '';
   var output;
   var tab = '  ';
