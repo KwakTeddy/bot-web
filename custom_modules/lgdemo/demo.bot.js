@@ -8,7 +8,7 @@ var lgdemoBot = {
   serviceNick: 'LG Demo',
 
   kakao: {
-    keyboard: { type :"buttons", buttons:["고객센터"]}
+    keyboard: { type :"buttons", buttons:["시작"]}
   },
   facebook: {
     id: '1166917363364364',

@@ -1,6 +1,26 @@
 
 var path = require('path');
 var bot = require(path.resolve('config/lib/bot')).getBot('test');
+var testFAQ = {
+  module: 'http',
+  action: "simpleRequest",
+  uri: 'https:\/\/www.koreaeasyloan.com/customer/oftenQuestion.ke',
+  method: 'GET',
+  param: {
+    page: '1'
+  },
+  xpath: {
+    tag: '
+    title: '
+    date: '
+    content: '
+    content: ''
+  },
+  postCallback: function (task, context, callback) {
+    console.log(JSON.stringify(task.doc));
+    callback(task, context);
+  }
+};
 function googleGeocode(task, context, callback) {
   var request = require('request');
   var query = {address: "4250 WIBLE ROAD, BAKERSFIELD, CA", key: "AIzaSyBjZ2tk2sW3w7QEZQCTSQNCNba35kWqBjc"};
@@ -29,14 +49,6 @@ var google = {
     link: ''
   }
 }
-var sampleType = {
-  name: 'sampleType',
-  typeCheck: function(text,type,task,context,callback) {
-    var matched = true;
-    var yolo = 'gimothee';
-    callback(text,task,matched);
-  }
-}
 
 var dialogs = [
 {
@@ -45,8 +57,9 @@ var dialogs = [
   output: 'complete'
 },
 {
-  input: {types: [sampleType]},
-  output: '+yolo+'
+  input: 'test',
+  task:   testFAQ,
+  output: 'complete'
 },
 {
   input: '',

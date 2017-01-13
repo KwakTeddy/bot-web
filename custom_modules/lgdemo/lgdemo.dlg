@@ -7,7 +7,7 @@ var lgdemo = require('./lgdemo');
 < {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}], regexp: /~서비스센터/}
 > {callChild: '위치찾기'}
 
-
+ 
 위치찾기:
 <~서비스센터
 >현재 계신 지역을 말씀해 주세요.
@@ -97,7 +97,7 @@ lgdemo.searchCenterTask
 > +center.svc_center_name+ 전화번호입니다.\n +center.phone+
 
 시작:
-c<~시작
+c<시작
 {action: 'startAction'}
 > 안녕하세요. LG전자 고객센터 데모 입니다.
 

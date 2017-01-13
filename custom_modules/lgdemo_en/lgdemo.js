@@ -7,9 +7,10 @@ var bot = require(path.resolve('config/lib/bot')).getBot('lgdemo');
 var ang = {
   action: geoCode,
   preCallback: function(task,context,callback) {
-    task._doc.address = context.dialog.address.시도명 + ' ' + context.dialog.address.시군구명 + ' ' + context.dialog.address.행정동명;
+    // task._doc.address = context.dialog.address.시도명 + ' ' + context.dialog.address.시군구명 + ' ' + context.dialog.address.행정동명;
     console.log(JSON.stringify(context.dialog.address));
-    console.log(JSON.stringify(context.dialog.address.시도명));
+    console.log(JSON.stringify(context.user.center.address3));
+    // console.log(JSON.stringify(context.dialog.address.시도명));
     console.log(task._doc.address);
     callback(task, context);
   },
