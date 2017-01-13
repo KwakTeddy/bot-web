@@ -4,6 +4,50 @@ var addressModule = require(path.resolve('modules/bot/action/common/address'));
 
 var bot = require(path.resolve('config/lib/bot')).getBot('lgdemo');
 
+var ang = {
+  action: geoCode,
+  preCallback: function(task,context,callback) {
+    task._doc.address = context.dialog.address.시도명 + ' ' + context.dialog.address.시군구명 + ' ' + context.dialog.address.행정동명;
+    console.log(JSON.stringify(context.dialog.address));
+    console.log(JSON.stringify(context.dialog.address.시도명));
+    console.log(task._doc.address);
+    callback(task, context);
+  },
+  _doc: {
+    lng: '',
+    lat: '',
+    link_find: '',
+    link_map: '',
+    address: ''
+  }
+};
+exports.ang = ang;
+
+function geoCode(task, context, callback) {
+  var request = require('request');
+  var query = {q: task._doc.address, output: "json"};
+  request({
+    url: 'https://apis.daum.net/local/geo/addr2coord?apikey=1b44a3a00ebe0e33eece579e1bc5c6d2',
+    method: 'GET',
+    qs: query
+  }, function(error,response, body) {
+    if(!error && response.statusCode == 200) {
+      // console.log(body);
+      var doc = JSON.parse(body);
+      task._doc.lng = doc.channel.item[0].lng;
+      task._doc.lat = doc.channel.item[0].lat;
+      task._doc.link_find = 'http://map.daum.net/link/to/' + query.q + ',' + task._doc.lat + ',' + task._doc.lng;
+      task._doc.link_map = 'http://map.daum.net/link/map/' + task._doc.lat + ',' + task._doc.lng;
+      console.log('lat: ' + task._doc.lat + ', lng: ' + task._doc.lng);
+      console.log('link: ' + task._doc.link_find);
+      console.log('link: ' + task._doc.link_map);
+
+    }
+    callback(task,context);
+  });
+}
+exports.geoCode = geoCode
+
 function startAction(task, context, callback) {
   context.user.address = null;
   callback(task, context);

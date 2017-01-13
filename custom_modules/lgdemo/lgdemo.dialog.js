@@ -120,7 +120,8 @@ var dialogs = [
     },
     {
       input: ['4', '경로'],
-      output: '경로안내입니다'
+      task:       lgdemo.ang,
+      output: '경로안내입니다 \n +_docs.link_find+'
     }
   ]}]
 },
@@ -156,7 +157,7 @@ var dialogs = [
 var commonDialogs = [
 {
   name: '시작',
-  input: '~시',
+  input: '~시작',
   task:   {action: 'startAction'},
   output: '안녕하세요. LG전자 고객센터 데모 입니다.'
 },

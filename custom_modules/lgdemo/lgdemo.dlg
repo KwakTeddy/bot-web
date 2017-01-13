@@ -83,7 +83,8 @@ lgdemo.searchCenterTask
     >+center.owner+
     <4
     <경로
-    > 경로안내입니다
+    lgdemo.ang
+    > 경로안내입니다 \n +_docs.link_find+
 
 수리가능제품:
 < ~수리 ~가능
