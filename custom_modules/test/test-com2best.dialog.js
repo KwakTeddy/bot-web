@@ -4,22 +4,12 @@
 var dialogs = [
 {
   input: 'test',
-  task:   {action: 'http://www.naver.com'},
-  output: 'test', 
-    children: [
-    {
-      input: 'aaa',
-      output: 'bbb'
-    },
-    {
-      input: 'bbb',
-      output: 'ccc'
-    },
-    {
-      input: 'ccc',
-      output: 'ddd'
-    }
-  ]
+  task:   {  postCallback: function (task, context, callback) {
+       console.log(JSON.stringify(task.doc));
+       callback(task, context);
+     }
+  },
+  output: 'test'
 }
 ];
 

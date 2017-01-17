@@ -63,7 +63,7 @@ exports.botBuild = botBuild;
 function build(text, isCommon) {
 
   // 주석 escape
-  text = text.replace(/["'][^"']*\/\/[^"']*["']/g, function (match, p1, p2, p3, p4) {
+  text = text.replace(/['][^'\n]*\/\/[^'\n]*[']|["][^"\n]*\/\/[^"\n]*["]/g, function (match, p1, p2, p3, p4) {
     return match.replace('//', '\\/\\/');
   });
 
@@ -83,7 +83,7 @@ function build(text, isCommon) {
   });
 
   // 주석 escape 복원
-  text = text.replace(/["'][^"']*(\\\/\\\/)[^"']*["']/g, function (match, p1) {
+  text = text.replace(/['][^'\n]*(\\\/\\\/)[^'\n]*[']|["][^"\n]*(\\\/\\\/)[^"\n]*["]/g, function (match, p1) {
     return match.replace('\\/\\/', '//');
   });
 
