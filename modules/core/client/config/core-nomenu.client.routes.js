@@ -8,6 +8,12 @@ angular.module('core')
         controller: 'WebcsController',
         controllerAs: 'vm'
       })
+      .state('user-home', {
+        url: '/user',
+        templateUrl: 'modules/core/client/views/user-home.client.view.html',
+        controller: 'UserHomeController',
+        controllerAs: 'vm'
+      })
 
       .state('mobile', {
         abstract: true,
