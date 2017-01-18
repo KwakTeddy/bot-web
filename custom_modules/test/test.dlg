@@ -31,4 +31,8 @@ test.FAQTest
 test.FAQTestAll
 > complete
 
+< one
+test.One
+> complete
+
 <> 모르겠어

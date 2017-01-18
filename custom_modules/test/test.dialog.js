@@ -39,6 +39,11 @@ var dialogs = [
   output: 'complete'
 },
 {
+  input: 'one',
+  task:   test.One,
+  output: 'complete'
+},
+{
   input: '',
   output: '모르겠어'
 }

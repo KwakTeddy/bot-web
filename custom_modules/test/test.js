@@ -2,6 +2,67 @@ var path = require('path');
 var mongo = require(path.resolve('./modules/bot/action/common/mongo'));
 var bot = require(path.resolve('config/lib/bot')).getBot('test');
 
+var FAQ = {
+  module: 'http',
+  action: "simpleRequest",
+  uri: 'http://www.knia.or.kr/consumer/counsel/counsel02/',
+  method: 'POST',
+  param: {
+    page: '1'
+  },
+  xpath: {
+    tag: '/html/body/div/div[3]/div/div[2]/div[2]/table/tbody/tr[11]/th/text()',
+    title: '/html/body/div/div[3]/div/div[2]/div[2]/table/tbody/tr[11]/td/text()',
+    date: '/html/body/div/div[3]/div/div[2]/div[2]/table/tbody/tr[12]/th/text()',
+    content: '/html/body/div/div[3]/div/div[2]/div[2]/table/tbody/tr[12]/td/text()'
+  },
+  postCallback: function (task, context, callback) {
+    console.log(task._text);
+
+    task.doc.date = task.doc.date.trim();
+    task.doc.content = task.doc.content.trim();
+    task.doc.content = task.doc.content.replace(/&amp;nbsp;/g, ' ');
+
+    console.log(JSON.stringify(task.doc));
+
+    task.doc.company = '손해보험협회';
+    task.doc.originalId = task.doc.company;
+    // task.topTask.doc[task.topTask.index] = task.doc;
+    callback(task, context);
+  }
+};
+
+bot.setTask('FAQ', FAQ);
+exports.FAQ = FAQ;
+
+var One = {
+  module:'task',
+  action: 'sequence',
+  preCallbck: function(task,context,callback) {
+    task.topTask.company = '손해보험협회'
+  },
+  actions: [
+    {
+      template: FAQ
+    },
+    {
+      module: 'mongo',
+      action: 'update',
+      mongo: {
+        model: 'fnfaq',
+        query: {'company': '손해보험협회', 'originalId': ''},
+        options: {upsert: true}
+      },
+      preCallback: function (task, context, callback) {
+        task.doc = task.topTask.doc;
+        callback(task, context);
+      }
+    }
+  ]
+}
+bot.setTask('One', One);
+exports.One = One;
+
 var FAQTotalList = {
   module: 'http',
   action: "simpleRequest",
@@ -42,7 +103,6 @@ var FAQTotalList = {
 bot.setTask('FAQTotalList', FAQTotalList);
 exports.FAQTotalList = FAQTotalList;
 
-
 var FAQList = {
   module: 'http',
   action: "simpleRequest",
@@ -80,39 +140,6 @@ var FAQList = {
 
 bot.setTask('FAQList', FAQList);
 exports.FAQList = FAQList;
-
-var FAQ = {
-  module: 'http',
-  action: "simpleRequest",
-  uri: 'http://www.knia.or.kr/consumer/counsel/counsel02/',
-  method: 'POST',
-  param: {
-    page: '1'
-  },
-  xpath: {
-    tag: '/html/body/div/div[3]/div/div[2]/div[2]/table/tbody/tr[1]/th/text()',
-    title: '/html/body/div/div[3]/div/div[2]/div[2]/table/tbody/tr[1]/td/text()',
-    date: '/html/body/div/div[3]/div/div[2]/div[2]/table/tbody/tr[2]/th/text()',
-    content: '/html/body/div/div[3]/div/div[2]/div[2]/table/tbody/tr[2]/td/text()'
-  },
-  postCallback: function (task, context, callback) {
-    console.log(task._text);
-
-    task.doc.date = task.doc.date.trim();
-    task.doc.content = task.doc.content.trim();
-    task.doc.content = task.doc.content.replace(/&amp;nbsp;/g, ' ');
-
-    console.log(JSON.stringify(task.doc));
-
-    // task.doc.company = task.topTask.company;
-    // task.doc.originalId = task.param.bltnId;
-    // task.topTask.doc[task.topTask.index] = task.doc;
-    callback(task, context);
-  }
-};
-
-bot.setTask('FAQ', FAQ);
-exports.FAQ = FAQ;
 
 // 금감원 금융상품통합비교공시 FAQ Crawling Sample
 // http://finlife.fss.or.kr/board/selectArticleList.do?bltbId=BM000000000000000003&menuId=2000112

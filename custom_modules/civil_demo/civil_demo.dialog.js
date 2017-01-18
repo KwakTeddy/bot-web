@@ -10,13 +10,34 @@ var dialogs = [
 },
 {
   name: '위치찾기',
-  input: '~주민센터',
+  input: '~센터',
   output: '현재 계신 지역을 말씀해주세요.', 
     children: [
     {
       input: {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}]},
-      output: 
-      {if: '!Array.isArray(context.dialog.address)', output: '+address.시군구명+ +address.법정읍면동명+ 맞나요?'}
+      output: [
+      {if: '!Array.isArray(context.dialog.address)', output: '+address.시군구명+ +address.법정읍면동명+ 맞나요?', 
+        children: [
+      {
+        input: '~네',
+        output: {call: '주민센터정보'}
+      },
+      {
+        input: {if: 'true'},
+        output: {up: 1}
+      }
+      ]}, 
+      {if: 'Array.isArray(context.dialog.address)', output: '다음 중 어떤 지역이신가요?\n#address#+index+. +지번주소+ +시군구용건물명+\n#', 
+        children: [
+        {
+          input: {types: [{name: 'address', listName: 'address', typeCheck: 'listTypeCheck'}]},
+          output: {call: '서비스센터정보'}
+        },
+        {
+          input: {if: 'true'},
+          output: {up: 1}
+        }
+      ]}]
     },
     {
       input: {if: 'true'},
@@ -25,19 +46,120 @@ var dialogs = [
   ]
 },
 {
-  input: '~주민',
-  output: '현재 계신 지역을 말씀해주세요.', 
+  name: '주민등록표등본',
+  input: '~등본',
+  output: '주민등록등(초)본은 가까운 주민센터 또는 인터넷에서 발급 받으실 수 있습니다. \n구비서류는 \n1. 주민등록증 등의 신분증\n2. 주민등록표 열람 또는 등,초본 교부신청 위임장 \n3. 정당한 이해관계를 입증할 수 있는 서류\n입니다. \n민원24 인터넷 링크: www.minwon.go.kr \n가까운 주민센터 위치를 안내해드릴까요?', 
     children: [
     {
-      input: {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}]},
-      output: 
-      {if: '!Array.isArray(context.dialog.address)', output: '+address.시군구명+ +address.법정읍면동명+ 맞나요?'}
+      input: ['~어디', '~네'],
+      output: {call: '위치찾기'}
+    },
+    {
+      input: '~금액',
+      output: {call: '금액정보'}
+    },
+    {
+      input: '~걸리다',
+      output: {call: '발급시간'}
+    },
+    {
+      input: '~영업',
+      output: {call: '시간체크'}
     }
   ]
 },
 {
+  name: '전입신고',
+  input: '~전입',
+  output: '전입신고는 가까운 주민센터 또는 인터넷에서 신청/처리하실 수 있습니다. \n구비서류는\n1.주민등록증\n입니다.\n민원24 인터넷 링크: www.minwon.go.kr \n가까운 주민센터 위치를 안내해드릴까요?', 
+    children: [
+  {
+    input: ['~어디', '~네'],
+    output: {call: '위치찾기'}
+  },
+  {
+    input: '~금액',
+    output: {call: '금액정보'}
+  },
+  {
+    input: '~걸리다',
+    output: {call: '발급시간'}
+  },
+  {
+    input: '~영업',
+    output: {call: '시간체크'}
+  }
+  ]
+},
+{
+  name: '금액정보',
+  input: [false, '~금액'],
+  output: '주민등록등(초)본은 인터넷 발급 시 무료, 주민센터 방문시 400원의 민원발급 수수료가 부가됩니다.', 
+    children: [
+    {
+      input: '~마무리',
+      output: {call: '마무리'}
+    }
+  ]
+},
+{
+  name: '발급시간',
+  input: [false, '~걸리다'],
+  output: '주민등록등(초)본은 발급 신청 시 즉시 처리되어 근무시간 내 3시간 안에 발급이 완료됩니다.', 
+    children: [
+    {
+      input: '~마무리',
+      output: {call: '마무리'}
+    }
+  ]
+},
+{
+  name: '주민센터정보',
+  input: false,
+  task:   civil_demo.searchCenterTask,
+  output: '가장 가까운 주민센터는 +_doc.address+ 주민센터입니다.\n길찾기 링크: +_doc.link+', 
+    children: [
+  {
+    input: '~등본',
+    output: {call: '주민등록표등본'}
+  },
+  {
+    input: '~전입',
+    output: {call: '전입신고'}
+  },
+  {
+    input: '~영업',
+    output: {call: '시간체크'}
+  },
+  {
+    input: '~마무리',
+    output: {call: '마무리'}
+  }
+  ]
+},
+{
+  name: '시간체크',
+  input: [false, '~영업'],
+  output: '주민센터 평일 업무시간은 09:00시 부터 18:00시까지이며, 토요일, 일요일 및 공휴일에는 열지 않습니다.', 
+    children: [
+  {
+    input: '~등본',
+    output: {call: '주민등록표등본'}
+  },
+  {
+    input: '~마무리',
+    output: {call: '마무리'}
+  }
+  ]
+},
+{
+  name: '마무리',
+  input: '~마무리',
+  output: '이용해주셔서 감사합니다. 안녕히 가세요.'
+},
+{
   input: '안녕',
-  output: '안녕하세요'
+  output: '안녕하세요. 무엇을 도와드릴까요?'
 }
 ];
 
