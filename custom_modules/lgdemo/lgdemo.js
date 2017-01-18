@@ -1,8 +1,17 @@
 var path = require('path');
 var mongo = require(path.resolve('./modules/bot/action/common/mongo'));
 var addressModule = require(path.resolve('modules/bot/action/common/address'));
-
 var bot = require(path.resolve('config/lib/bot')).getBot('lgdemo');
+var async = require('async');
+
+var asCategory = [
+    {category: '휴대폰', alias: '스마트폰 핸드폰 폰 휴대폰'},
+    {category: '에어컨', alias: '에어컨 에어콘'},
+    {category: '텔레비전', alias: '텔레비전 TV 텔레비젼 티비'},
+    {category: 'PC', alias: '모니터 컴퓨터 PC'},
+    {category: '가전제품', alias: '가전전제품 에어컨 에어콘 세탁기 티비 텔레비전 TV 티비 텔레비젼 오븐 식기세척기 정수기 냉장고 청소기 안마의자 프린터'},
+    {category: '소형가전', alias: '오븐 식기세척기 정수기 청소기 컴퓨터 PC 모니터 스마트폰 핸드폰 폰 휴대폰 프린터'}
+];
 
 var ang = {
   action: geoCode,
@@ -63,10 +72,24 @@ function locationNotExists(dialog, context, callback) {
 exports.locationNotExists = locationNotExists;
 
 function locationExists(dialog, context, callback) {
-  if(context.user.address != undefined) callback(true);
+  if(context.user != undefined && context.user.address != undefined) callback(true);
   else callback(false);
 }
 exports.locationExists = locationExists;
+
+function locationExistsIN(inRaw, inNLP, dialog, context, callback) {
+  if(context.user != undefined && context.user.address != undefined) callback(true);
+  else callback(false);
+}
+exports.locationExistsIN = locationExistsIN;
+
+function locationNotExistsIN(inRaw, inNLP, dialog, context, callback) {
+  if(context.user.address == undefined) callback(true);
+  else callback(false);
+}
+exports.locationNotExistsIN = locationNotExistsIN;
+
+
 
 
 var searchCenterTask = {
@@ -215,3 +238,86 @@ function checkDate(task, context, callback) {
 }
 
 exports.checkDate = checkDate;
+
+function repairableCheck(task, context, callback) {
+
+  if (context.user.center == undefined) {
+    callback(false);
+  } else {
+    async.waterfall([
+      function (_cb) {
+        var category, word, rCategory;
+
+        word = context.dialog.ascategory;
+
+        for (var j in context.user.center.product) {
+          rCategory = context.user.center.product[j];
+
+          word = RegExp.escape(word);
+          if (rCategory.alias.search(new RegExp(word, 'i')) != -1) {
+            category = rCategory.category;
+            break;
+          }
+        }
+
+        if (category) {
+          context.dialog.repairable = true;
+          _cb(true);
+        } else {
+          context.dialog.repairable = false;
+          _cb(null);
+        }
+      }
+
+    ], function (err) {
+      callback(task,context,callback);
+    })
+  };
+}
+
+exports.repairableCheck = repairableCheck;
+
+function repairableTypecheck(text, format, inDoc, context, callback) {
+
+  var matched = false;
+  var words = text.split(' ');
+  if (context.user.center == undefined) {
+    callback(text, inDoc, false)
+  } else {
+    async.waterfall([
+
+      function (_cb) {
+        var category, word, rCategory;
+        for (var i in words) {
+          word = words[i];
+          if (category) break;
+
+          if (word.length == 1) continue;
+          for (var j in asCategory) {
+            rCategory = asCategory[j];
+
+            word = RegExp.escape(word);
+            if (rCategory.alias.search(new RegExp(word, 'i')) != -1) {
+              category = rCategory.category;
+              break;
+            }
+          }
+        }
+
+        if (category) {
+          inDoc['repairable'] = true;
+          context.dialog.ascategory = category;
+          matched = true;
+          _cb(true);
+        } else {
+          _cb(null);
+        }
+      }
+
+    ], function (err) {
+      callback(text, inDoc, matched);
+    });
+  }
+}
+
+exports.repairableTypecheck = repairableTypecheck;
