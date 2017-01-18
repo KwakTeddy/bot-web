@@ -138,8 +138,8 @@ botClient.controller('UserHomeController', ['$scope', '$document', 'Socket',
       addBotBubble(message);
       // synthesize(message);
 
-      var snd = new Audio('/images/doorbell-6.mp3');
-      snd.play();
+      // var snd = new Audio('/images/doorbell-6.mp3');
+      // snd.play();
     });
 
     function emitMsg(msg) {
