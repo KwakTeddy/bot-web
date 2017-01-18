@@ -1,0 +1,31 @@
+var path = require('path');
+var address = require(path.resolve('./modules/bot/action/common/address'));
+var civil_demo = require('./civil_demo');
+
+시작:
+c<시작
+>안녕하세요. 민원24 고객 응답 서비스 데모입니다. 무엇을 도와드릴까요?
+
+< {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw:true}], regexp: /~주민센터/}
+> {callChild: '위치찾기'}
+  
+위치찾기:
+<~주민센터
+>현재 계신 지역을 말씀해주세요.
+    < {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}]}
+    > if(!Array.isArray(context.dialog.address)) +address.시군구명+ +address.법정읍면동명+ 맞나요?
+    <{if: 'true'}>{repeat: 1, options: {output: '지역을 찾을 수 없습니다. 동명을 말씀해주세요.'}}
+
+      
+<~주민
+>현재 계신 지역을 말씀해주세요.
+    < {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}]}
+    > if(!Array.isArray(context.dialog.address)) +address.시군구명+ +address.법정읍면동명+ 맞나요?      
+  
+답변없음:
+c<> 알아듣지 못했습니다
+
+<안녕
+>안녕하세요
+
+
