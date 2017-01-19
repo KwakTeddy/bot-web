@@ -264,6 +264,7 @@ function repairableCheck(task, context, callback) {
         }
 
         if (category) {
+          context.user.category = category;
           context.dialog.repairable = true;
           _cb(true);
         } else {
