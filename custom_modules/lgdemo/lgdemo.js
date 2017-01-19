@@ -16,10 +16,11 @@ var asCategory = [
 var ang = {
   action: geoCode,
   preCallback: function(task,context,callback) {
-    task._doc.address = context.dialog.address.시도명 + ' ' + context.dialog.address.시군구명 + ' ' + context.dialog.address.행정동명;
-    console.log(JSON.stringify(context.dialog.address));
-    console.log(JSON.stringify(context.dialog.address.시도명));
-    console.log(task._doc.address);
+    // console.log(context.user.address);
+    task._doc.address = context.user.address.시도명 + ' ' + context.user.address.시군구명 + ' ' + context.user.address.행정동명;
+    // console.log(JSON.stringify(context.dialog.address));
+    // console.log(JSON.stringify(context.dialog.address.시도명));
+    // console.log(task._doc.address);
     callback(task, context);
   },
   _doc: {
@@ -51,6 +52,8 @@ function geoCode(task, context, callback) {
       console.log('link: ' + task._doc.link_find);
       console.log('link: ' + task._doc.link_map);
 
+      task.url = task._doc.link_map;
+      task.urlMessage = '경로보기';
     }
     callback(task,context);
   });
