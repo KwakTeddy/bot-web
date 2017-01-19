@@ -318,7 +318,16 @@ function addBotBubble(msg) {
   var main = document.getElementById('chat_main');
   var bubble = document.createElement('div');
   bubble.setAttribute('class', 'bubble');
-  bubble.innerText = msg;
+  if(msg.startsWith('{')) {
+    var json = JSON.parse(msg);
+    bubble.innerText = json.text;
+    if(json.url) {
+      if(json.urlMessage) bubble.innerHTML += '\n<br/><a href="' + json.url + '" target="_blank">' + json.urlMessage +'</a>';
+      else bubble.innerHTML += '\n<br/><a href="' + json.url + '" target="_blank">' + json.url +'</a>';
+    }
+  } else {
+    bubble.innerText = msg;
+  }
   main.appendChild(bubble);
 
   main.scrollTop = main.scrollHeight - main.clientHeight;
