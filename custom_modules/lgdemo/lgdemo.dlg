@@ -87,7 +87,7 @@ lgdemo.searchCenterTask
 <{types: [{name: 'repairable', typeCheck: lgdemo.repairableTypecheck, raw: true}]}
 {action: lgdemo.repairableCheck}
 >iff(lgdemo.locationNotExists) {returnCall: '위치찾기', options: {returnDialog: '수리가능'}}
->if(context.dialog.repairable == true) 네 ""+category+" 상품은 현 지점에서 수리 가능합니다.\n더 필요하신 게 있으신가요?
+>if(context.dialog.repairable == true) 네 "+category+" 상품은 현 지점에서 수리 가능합니다.\n더 필요하신 게 있으신가요?
     <~네> 궁금하신 걸 말씀해주세요~
     <~아니요> LG전자에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
         <~네> 좋은 하루 보내세요.\n감사합니다.
