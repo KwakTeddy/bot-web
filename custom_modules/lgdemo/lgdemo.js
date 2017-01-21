@@ -5,12 +5,31 @@ var bot = require(path.resolve('config/lib/bot')).getBot('lgdemo');
 var async = require('async');
 
 var asCategory = [
-    {category: '휴대폰', alias: '스마트폰 핸드폰 폰 휴대폰'},
-    {category: '에어컨', alias: '에어컨 에어콘'},
-    {category: '텔레비전', alias: '텔레비전 TV 텔레비젼 티비'},
-    {category: 'PC', alias: '모니터 컴퓨터 PC'},
-    {category: '가전제품', alias: '가전전제품 에어컨 에어콘 세탁기 티비 텔레비전 TV 티비 텔레비젼 오븐 식기세척기 정수기 냉장고 청소기 안마의자 프린터'},
-    {category: '소형가전', alias: '오븐 식기세척기 정수기 청소기 컴퓨터 PC 모니터 스마트폰 핸드폰 폰 휴대폰 프린터'}
+  {category: '휴대폰', alias: '스마트폰 핸드폰 폰 휴대폰'},
+  {category: 'PC', alias: '노트북 컴퓨터 PC 데스크탑'},
+  {category: '스마트워치', alias: '스마트워치 스마트와치 워치 와치 Watch'},
+  {category: 'Friends', alias: 'Friends'},
+  {category: '패드', alias: '패드 PAD 태블릿 탭북'},
+  {category: '헤드셋', alias: '헤드셋 이어폰 헤드폰 블루투스헤드셋'},
+  {category: '청소기', alias: '청소기 스팀청소기 로봇청소기 로보킹 무선청소기'},
+  {category: '컴퓨터주변기기', alias: '컴퓨터주변기기 모니터 프린터'},
+  {category: '프로젝터', alias: '빔프로젝터 프로젝터 빔'},
+  {category: '전자레인지', alias: '전자레인지 전자렌지'},
+  {category: '블루레이', alias: '블루레이 DVD Bluray'},
+  {category: '가습기', alias: '가습기'},
+  {category: '제습기', alias: '제습기'},
+
+  {category: '에어컨', alias: '온풍기 시스템에어컨 에어컨 에어콘'},
+  {category: '텔레비전', alias: '텔레비전 TV 텔레비젼 티비'},
+  {category: '냉장고', alias: '냉장고 냉동고 김채낭장고 와인셀러 업소용냉장고'},
+  {category: '가스레인지', alias: '가스레인지 가스렌지 가스오븐레인지 가스오브렌지 오븐'},
+  {category: '세탁기', alias: '세탁기 건조기 의류건조기 스타일러'},
+  {category: '식기세척기', alias: '식기세척기'},
+  {category: '정수기', alias: '정수기 온수기 냉온수기 이온수기'},
+  {category: '안마의자', alias: '안마의자'},
+  {category: '홈시어터', alias: '홈시어터 사운드바'},
+
+  {category: '불가물품', alias: '불가물품 키폰 홈오토메이션 UP3 마우스 하이패스'}
 ];
 
 var ang = {
@@ -263,11 +282,15 @@ function repairableCheck(task, context, callback) {
           }
         }
 
-        if (category) {
+        if (category == "에어컨"|category == "텔레비전"|category == "냉장고"|category == "가스레인지"|category == "세탁기"|category == "식기세척기"|category == "정수기"|category == "안마의자"|category == "홈시어터") {
           context.user.category = category;
-          context.dialog.repairable = true;
+          context.dialog.repairable = 'remote';
           _cb(true);
-        } else {
+        } else if (category == "휴대폰"|category == "PC"|category == "스마트워치"|category == "Friends"|category == "헤드셋"|category == "청소기"|category == "컴퓨터주변기기"|category == "프로젝터"|category == "전자레인지"|category == "블루레이"|category == "가습기"|category == "제습기") {
+          context.user.category = category;
+          context.dialog.repariable = true;
+          _cb(true);
+        } else{
           context.dialog.repairable = false;
           _cb(null);
         }

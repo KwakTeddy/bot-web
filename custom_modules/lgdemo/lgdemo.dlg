@@ -27,7 +27,7 @@ lgdemo.searchCenterTask
 > 가장 가까운 서비스센터는 +item.0.svc_center_name+ +item.0.distance+km 입니다.\n인근의 다른 서비스센터로 +item.1.svc_center_name+ +item.1.distance+km 가 있습니다.\n어디로 안내해 드릴까요?
     <{types: [{name: 'center', listName: 'item', field: 'svc_center_name', typeCheck: 'listTypeCheck'}]} //전자후자 위에꺼아래꺼 가장가까운거 등으로도 답변 가능했으면 좋겠어요
     {action: function(task, context, callback) {context.user.center = context.dialog.center;callback(task, context);}}
-    >{output: '+center.svc_center_name+\n주소: +center.address3+\n영업시간\n평일: +center.winter_week_open+ ~ +center.winter_week_close+\n토요일: +center.winter_sat_open+ ~ +center.winter_sat_close+\n전화번호: +center.phone+\n경로를 안내해드릴까요?', return : 1}
+    >{output: '+center.svc_center_name+\n주소: +center.address3+\n영업시간\n평일: +center.winter_week_open+ ~ +center.winter_week_close+\n토요일: +center.winter_sat_open+ ~ +center.winter_sat_close+\n전화번호: +center.phone+\n+center.parking+\n경로를 안내해드릴까요?', return : 1}
         <~네> {call:'방문경로'}
         <~아니요> LG전자에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
             <~네> 좋은 하루 보내세요.\n감사합니다.
@@ -87,7 +87,12 @@ lgdemo.searchCenterTask
 <{types: [{name: 'repairable', typeCheck: lgdemo.repairableTypecheck, raw: true}]}
 {action: lgdemo.repairableCheck}
 >iff(lgdemo.locationNotExists) {returnCall: '위치찾기', options: {returnDialog: '수리가능'}}
->if(context.dialog.repairable == true) 네 "+category+" 상품은 현 지점에서 수리 가능합니다.\n더 필요하신 게 있으신가요?
+>if(context.dialog.repairable == true) 네 +category+ 상품은 현 지점에서 현장 수리 가능합니다.\n더 필요하신 게 있으신가요?
+    <~네> 궁금하신 걸 말씀해주세요~
+    <~아니요> LG전자에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
+        <~네> 좋은 하루 보내세요.\n감사합니다.
+        <~아니요> Chatbot을 통해 만족스러운 답변을 드리지 못해 죄송합니다.\nLG전자 콜센터 번호는 1544-7777입니다.\nLG전자에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.
+>if(context.dialog.repairable == 'remote') +category+ 상품은 출장 수리가 필요합니다.\n출장수리 신청은 아래 LG전자 서비스 홈페이지에서 가능합니다.\nwww.lgservice.co.kr/reserve/selectBusinessTrip.do\nLG전자에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n 좋은 하루 보내세요. 감사합니다.\n더 필요하신 게 있으신가요?
     <~네> 궁금하신 걸 말씀해주세요~
     <~아니요> LG전자에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
         <~네> 좋은 하루 보내세요.\n감사합니다.
@@ -101,11 +106,13 @@ lgdemo.searchCenterTask
 수리가능품목:
 < ~수리 ~가능
 > iff(lgdemo.locationNotExists) {returnCall: '위치찾기', options: {returnDialog: '수리가능품목'}}
-> 해당 서비스센터의 수리 가능 품목은 #center.product#+index+.+category+ # 입니다.\n더 필요하신 게 있으신가요?
+> 해당 서비스센터의 수리 가능 품목은 #center.product#+category+ # 입니다.\n더 필요하신 게 있으신가요?
     <~네> 궁금하신 걸 말씀해주세요~
     <~아니요> LG전자에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
         <~네> 좋은 하루 보내세요.\n감사합니다.
         <~아니요> Chatbot을 통해 만족스러운 답변을 드리지 못해 죄송합니다.\nLG전자 콜센터 번호는 1544-7777입니다.\nLG전자에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.
+
+
 
 공휴일영업:
 < ~공휴일
@@ -175,8 +182,17 @@ lgdemo.searchCenterTask
 
 전화번호안내:
 < ~번호
-> iff(lgdemo.locationNotExistsIN)  {returnCall: '위치찾기', options: {returnDialog: '전화번호안내'}}
+> iff(lgdemo.locationNotExists)  {returnCall: '위치찾기', options: {returnDialog: '전화번호안내'}}
 > +center.svc_center_name+ 전화번호입니다.\n +center.phone+\n더 필요하신 게 있으신가요?
+    <~네> 궁금하신 걸 말씀해주세요~
+    <~아니요> LG전자에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
+        <~네> 좋은 하루 보내세요.\n감사합니다.
+        <~아니요> Chatbot을 통해 만족스러운 답변을 드리지 못해 죄송합니다.\nLG전자 콜센터 번호는 1544-7777입니다.\nLG전자에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.
+
+주차안내:
+< ~주차
+> iff(lgdemo.locationNotExists)  {returnCall: '위치찾기', options: {returnDialog: '주차안내'}}
+> +center.owner+\n더 필요하신 게 있으신가요?
     <~네> 궁금하신 걸 말씀해주세요~
     <~아니요> LG전자에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
         <~네> 좋은 하루 보내세요.\n감사합니다.
