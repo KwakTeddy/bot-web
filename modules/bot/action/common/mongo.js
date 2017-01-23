@@ -80,20 +80,22 @@ function update(task, context, callback) {
   } else {
     var _doc = task.doc;
 
-    for(var key in task.mongo.query.keys)
+    for(var key in task.mongo.query)
       if(_doc[key]) task.mongo.query[key] = _doc[key];
 
+    var _update = {};
     if(task.mongo.update) {
-      for(var key in task.mongo.update.keys)
-        if(task.mongo.update[key]) task.mongo.update[key] = _doc[key];
-    } else task.mongo.update = _doc;
+      for (var key in task.mongo.update)
+        if (task.mongo.update[key]) _update[key] = _doc[key];
+    } else _update = utils.clone(_doc);
 
-    model.update(task.mongo.query, task.mongo.update, task.mongo.options, function (err) {
+    model.update(task.mongo.query, _update, task.mongo.options, function (err, numAffected) {
       if (err) {
-        throw err;
-      } else {
-        callback(task, context);
+        console.log(err);
+        task.err = err;
       }
+      
+      callback(task, context);
     });
   }
 }

@@ -149,7 +149,7 @@ function build(text, isCommon) {
         }
 
         if (line.indexOf('>') != -1 &&
-          ((isCommon && line.indexOf('c<') != -1) || (!isCommon && line.indexOf('c<') == -1))) {
+          (((isCommon && step === '') && line.indexOf('c<') != -1) || (!(isCommon && step === '') && line.indexOf('c<') == -1))) {
           var re;
           if(isCommon && (step == '')) re = /^\s*c<\s*(.*)\s*>\s*(.*)/g;
           else re = /^\s*<\s*(.*)\s*>\s*(.*)/g;
@@ -324,7 +324,7 @@ function build(text, isCommon) {
       }
 
       // if(!isCommon && !inc && dialogs.length == 0 && step === '' && !(line.startsWith(step + 'c<') || line.startsWith(step + '<') || line.search(new RegExp('^'+step + '[^<>]*\s*:')) != -1)) {
-      if(!isCommon && !inc && dialogs.length == 0 && step === '' && !line.startsWith('>')) {
+      if(!isCommon && !inc && dialogs.length == 0 && step === '' && line.search(/\s+</) == -1 && !line.startsWith('>')) {
         jsLines.push(line);
       }
 

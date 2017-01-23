@@ -1,0 +1,48 @@
+var path = require('path');
+var type = require(path.resolve('modules/bot/action/common/type'));
+
+var faqType = {
+  typeCheck: type.mongoDbTypeCheck,
+  preType: function(task, context, type, callback) {
+    type.mongo.queryStatic.dialogset = context.user.userKey + '_dlg';
+    callback(task, context);
+  },
+  limit: 5,
+  mongo: {
+    model: 'DialogSet',
+    queryStatic: {dialogset: 'Talk_2017.1.22 18:14-1_dlg'},
+    queryFields: ['input'],
+    fields: 'input output' ,
+    taskFields: ['input', 'output'],
+    taskSort: function(a, b) {
+      if(b.matchCount > a.matchCount) return 1;
+      else if(b.matchCount < a.matchCount) return -1;
+      else {
+        return 0;
+      }
+    },
+    //query: {},
+    // sort: "-created",
+    // limit: 5,
+    minMatch: 1,
+    checkRequired: function(text, type, inDoc, context) {
+      return '학습되어 있지 않은 질문 입니다.';
+    }
+  }
+}
+
+<{types: [faqType]}
+{
+    action: function(task, context, callback) {
+//        console.log(task.doc);
+
+        if(Array.isArray(task.typeDoc[0].output)) {
+            task._output = task.typeDoc[0].output[0];
+        } else {
+            task._output = task.typeDoc[0].output;
+        }
+
+        callback(task, context);
+    }
+}
+> +_output+

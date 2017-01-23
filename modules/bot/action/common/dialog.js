@@ -324,14 +324,14 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
                   for (var j = 0; j < concepts.length; j++) {
                     var concept = concepts[j];
                     concept = RegExp.escape(concept);
-                    if(inNLP.search(new RegExp(concept, 'i')) != -1) {
+                    if(inNLP.search(new RegExp('(?:^|\\b|\\s)' + concept + '(?:$|\\b|\\s)', 'i')) != -1) {  // 포함이 아닌 정확히 매치로 수정 by com2best
                       _matched = true;
                       break;
                     }
                   }
 
                   if(!_matched) break;
-                } else if(inNLP.search(new RegExp(word, 'i')) == -1) {
+                } else if(inNLP.search(new RegExp('(?:^|\\b|\\s)' + word + '(?:$|\\b|\\s)', 'i')) == -1) {  // 포함이 아닌 정확히 매치로 수정 by com2best
                   _matched = false;
                   break;
                 }
@@ -354,6 +354,8 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
             //     context.bot.dialogs = module.dialogs;
             //   }
             // }
+
+            // context.botUser.dialog = dialog;
 
             if(dialog.output.up) {
               if (context.botUser.currentDialog.parent)
@@ -399,6 +401,8 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
             executeDialog(_dialog, context, print, callback, nextOptions);
             eachMatched = true; _cb(true);
           } else {
+            // context.botUser.dialog = null;
+
             eachMatched = false; _cb(null);
           }
         });

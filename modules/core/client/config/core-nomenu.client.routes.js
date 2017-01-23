@@ -14,6 +14,12 @@ angular.module('core')
         controller: 'UserHomeController',
         controllerAs: 'vm'
       })
+      .state('private-bot', {
+        url: '/private',
+        templateUrl: 'modules/core/client/views/private-bot.client.view.html',
+        controller: 'PrivateBotController',
+        controllerAs: 'vm'
+      })
 
       .state('mobile', {
         abstract: true,

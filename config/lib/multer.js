@@ -6,3 +6,10 @@ module.exports.profileUploadFileFilter = function (req, file, cb) {
   }
   cb(null, true);
 };
+
+module.exports.dialogUploadFileFilter = function (req, file, cb) {
+  if (file.mimetype !== 'text/plain' && file.mimetype !== 'text/csv') {
+    return cb(new Error('Only txt/csv files are allowed!'), false);
+  }
+  cb(null, true);
+};

@@ -604,6 +604,9 @@ function mongoDbTypeCheck(text, format, inDoc, context, callback) {
     }
 
     var query = {};
+    if(format.mongo.queryStatic) query = format.mongo.queryStatic;
+    else query = {};
+
     for(var j = 0; j < format.mongo.queryFields.length; j++) {
       try {
         query[format.mongo.queryFields[j]] = new RegExp((word), 'i');

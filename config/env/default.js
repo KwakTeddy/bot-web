@@ -35,6 +35,12 @@ module.exports = {
       limits: {
         fileSize: 1*1024*1024 // Max file size in bytes (1 MB)
       }
+    },
+    dialogUpload: {
+      dest: './custom_modules/private_bot/_data/ko/kakao/',
+      limits: {
+        fileSize: 100*1024*1024 // Max file size in bytes (1 MB)
+      }
     }
   },
   chatServer: '../bot-server/',
