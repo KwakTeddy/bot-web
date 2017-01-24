@@ -125,8 +125,9 @@ lgdemo.searchCenterTask
 
 수리가능품목:
 < ~수리 ~가능
+{action: lgdemo.repairableList}
 > iff(lgdemo.locationNotExists) {returnCall: '위치찾기', options: {returnDialog: '수리가능품목'}}
-> 해당 서비스센터의 수리 가능 품목은 #center.product#+category+ # 입니다.\n센터 정보를 알려드릴까요?
+> 해당 서비스센터의 수리 가능 품목은 +center.productlist+ 입니다.\n센터 정보를 알려드릴까요?
     <~네> +center.svc_center_name+\n주소: +center.address3+\n영업시간\n평일: +center.winter_week_open+ ~ +center.winter_week_close+\n토요일: +center.winter_sat_open+ ~ +center.winter_sat_close+\n전화번호: +center.phone+\n+center.parking+\n경로를 안내해드릴까요?
         <~네> {call:'방문경로'}
         <~아니요> LG전자에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
