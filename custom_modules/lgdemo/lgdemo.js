@@ -261,6 +261,20 @@ function checkDate(task, context, callback) {
 
 exports.checkDate = checkDate;
 
+function repairableList(task, context, callback) {
+
+  if (context.user.center == undefined) {
+    callback(false);
+  } else {
+    context.user.center.productlist = context.user.center.product.map ( function(elem){
+      return elem.category;
+    }).join(", ");
+  }
+  callback(task,context);
+}
+
+exports.repairableList = repairableList;
+
 function repairableCheck(task, context, callback) {
 
   if (context.user.center == undefined) {
