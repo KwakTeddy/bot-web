@@ -4,19 +4,11 @@ var botClient = angular.module('botClient', []);
 botClient.controller('UserHomeController', ['$scope', '$document', 'Socket',
   function ($scope, $document, Socket) {
     var vm = this;
-
     $scope.vm = vm;
-    $scope.test = 'test1';
 
-    vm.servers = ['localhost:1024'];
-    vm.bots = ['lgedemo'];
-
-    vm.server = vm.servers[0];
-    vm.bot = vm.bots[0];
+    vm.bot = 'lgdemo';
     vm.userId = '';
-
     vm.msg = '';
-
     vm.isConnected = false;
 
     vm.connect = function () {
@@ -96,7 +88,7 @@ botClient.controller('UserHomeController', ['$scope', '$document', 'Socket',
       }
 
       addBotBubble(message);
-      // synthesize(message);
+      synthesize(message);
 
       // var snd = new Audio('/images/doorbell-6.mp3');
       // snd.play();
@@ -106,8 +98,6 @@ botClient.controller('UserHomeController', ['$scope', '$document', 'Socket',
       console.log();
 
       var _msg = {
-        host: vm.server.split(':')[0],
-        port: vm.server.split(':')[1],
         bot: vm.bot,
         user: vm.userId,
         msg: msg
@@ -177,37 +167,16 @@ botClient.controller('UserHomeController', ['$scope', '$document', 'Socket',
       };
 
       recognition.onend = function() {
-        // console.log('recognition.onend');
-
         recognition.start();
-
-        // recognizeStart();
-
         recognizing = false;
-        if (ignore_onend) {
-          return;
-        }
-        if (!final_transcript) {
-          // console.log('info_start');
-          return;
-        }
-        // console.log('on End: ' + final_transcript);
+
+        if (ignore_onend) return;
+        if (!final_transcript) return;
 
         vm.sendMsg(final_transcript);
-
-        // if (window.getSelection) {
-        //   window.getSelection().removeAllRanges();
-        //   var range = document.createRange();
-        //   range.selectNode(document.getElementById('final_span'));
-        //   window.getSelection().addRange(range);
-        // }
       };
 
       recognition.onresult = function(event) {
-        // console.log(event);
-
-        // ignore_onend = false;
-
         var isFinal = false;
         var interim_transcript = '';
         for (var i = event.resultIndex; i < event.results.length; ++i) {
@@ -278,8 +247,8 @@ botClient.controller('UserHomeController', ['$scope', '$document', 'Socket',
     vm.userId = 'com2best';
     vm.connect();
 
-    // recognizeStart();
-    // recognition.stop();
+    recognizeStart();
+    recognition.stop();
 
     // synthesize('안녕하세요');
   }
@@ -334,6 +303,7 @@ function synthesize(message) {
 
   var utterance = new SpeechSynthesisUtterance(message);
   utterance.lang = 'ko-KR';
+
   utterance.onstart = function(event) {
     // console.log('synthesize start');
   };
@@ -344,6 +314,7 @@ function synthesize(message) {
     // console.log('synthesize end');
     // recognition.start();
   };
+
   window.speechSynthesis.speak(utterance);
 }
 

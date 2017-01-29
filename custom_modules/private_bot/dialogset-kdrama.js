@@ -3,7 +3,27 @@ var path = require('path');
 var async = require('async');
 var fileutil = require(path.resolve('modules/bot/action/common/fileutil.js'));
 
-var baseDir = '/Users/com2best/Workspace/bot-data/data/ko/drama/';
+var baseDir = path.resolve('custom_modules/private_bot/_data/');
+
+function convertDialogset(filename, callback) {
+  var dir = path.resolve('custom_modules/private_bot/_data/');
+  var info = path.parse(path.join(dir, filename));
+  var csvname = info.name + '.csv';
+  var dlgname = info.name + '_dlg.csv';
+
+  convertFile(path.join(dir, filename), path.join(dir, csvname),
+    function(result) {
+      convertConversation(path.join(dir,csvname), path.join(dir, dlgname),
+        function() {
+          insertDatasetFile(path.join(dir, dlgname),
+            function(result) {
+              callback();
+            });
+        });
+    });
+}
+
+exports.convertDialogset = convertDialogset;
 
 function convertFile(infile, outfile, callback) {
   var bStart = false, lineNum = 0;
@@ -157,3 +177,65 @@ function convertConversation(file, outfile, callback) {
 //   function() {});
 //
 // process.stdin.resume();
+
+function insertDatasetFile(infile, callback) {
+  var info = path.parse(infile);
+
+  fileutil.streamLineSequence(infile, function(result, line, cb) {
+    if(isNaN(result) == false) {
+      // console.log(line);
+
+      var re = /"([^"]*)","([^"]*)"/g;
+      var array = re.exec(line);
+      var input = "", output = "", input_trans = '', output_trans = '';
+      if(array !== null) {
+        input = array[1].trim();
+        output = array[2].trim();
+
+        console.log(input + ' '+ output);
+
+        // if(array[3] == '강지윤') {
+        var outputs = [];
+        var re2 = /\[([^\]]*)\]/g;
+        output.replace(re2, function(match, p1) {
+          outputs.push(p1);
+        });
+
+        processInput(null, input, function(_input, _json) {
+          console.log("자연어 처리>> " + _input);
+
+          var task = {
+            doc:{
+              dialogset: info.name,
+              id: result.toString(),
+              tag: [],
+              input: _input,
+              output: (outputs.length > 0 ? outputs: output)
+              // output: output
+            },
+            mongo: {
+              model: 'DialogSet',
+              query: {dialogset: '', id: ''},
+              options: {upsert: true}
+            }
+          };
+
+          mongoModule.update(task, null, function(_task, _context) {
+            console.log('after mongo:' + _task + ' ' + _context);
+            cb();
+          })
+        });
+        // } else {
+        //   cb();
+        // }
+
+      } else {
+        cb();
+      }
+    } else {
+      console.log(infile + ' 완료');
+      callback(result);
+      // console.log(result);
+    }
+  });
+}

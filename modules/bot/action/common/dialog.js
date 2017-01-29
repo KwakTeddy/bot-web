@@ -221,14 +221,25 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
           },
 
           function(matched, cb2) {
+            var array = null;
             if(input && input.regexp) {
-              if (inNLP.search(utils.concepRegExp(context, input.regexp)) != -1) {
+              if ((array = inNLP.match(utils.concepRegExp(context, input.regexp))) != null) {
+                if(array.length > 1) {
+                  for(var i = 1; i < array.length; i++) {
+                    inDoc[i.toString()] = array[i];
+                  }
+                }
                 cb2(null, true);
               } else {
                 cb2(true, false);
               }
             } else if(input && input instanceof RegExp) {
-              if (inNLP.search(utils.concepRegExp(context, input)) != -1) {
+              if ((array = inNLP.match(utils.concepRegExp(context, input))) != null) {
+                if(array.length > 1) {
+                  for(var i = 1; i < array.length; i++) {
+                    inDoc[i.toString()] = array[i];
+                  }
+                }
                 cb2(null, true);
               } else {
                 cb2(true, false);

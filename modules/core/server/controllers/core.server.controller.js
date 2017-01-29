@@ -4,7 +4,7 @@ var   path = require('path'),
   multer = require('multer'),
   config = require(path.resolve('./config/config'));
 
-var private_bot = require(path.resolve('custom_modules/private_bot/kakao-restore'));
+var private_bot = require(path.resolve('custom_modules/private_bot/dialogset'));
 /**
  * Render the main application page
  */
@@ -57,7 +57,7 @@ exports.uploadFile = function (req, res) {
 
   var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, './custom_modules/private_bot/_data/ko/kakao/')
+      cb(null, './custom_modules/private_bot/_data/')
     },
     filename: function (req, file, cb) {
       cb(null, req.params.filename + path.parse(file.originalname).ext);
@@ -93,35 +93,36 @@ exports.uploadFile = function (req, res) {
 
 
 exports.convertFile = function (req, res) {
-
-  var dir = path.resolve('custom_modules/private_bot/_data/ko/kakao/');
+  // var dir = path.resolve('custom_modules/private_bot/_data/');
   var filename = req.body.filename;
-  var info = path.parse(path.join(dir, filename));
-  var csvname = info.name + '.csv';
-  var dlgname = info.name + '_dlg.csv';
 
-  if(info.ext == '.txt') {
-    private_bot.convertFile(path.join(dir, filename), path.join(dir, csvname),
-      function(result) {
-        private_bot.convertConversation(path.join(dir,csvname), path.join(dir, dlgname),
-          function() {
-            private_bot.insertDatasetFile(path.join(dir, dlgname),
-              function(result) {
-                console.log('convertFile: ' + filename);
-                res.json({result: 'ok'});
-              });
-          });
-      });
+  private_bot.convertDialogset(filename, function(result) {
+    res.json({result: 'ok'});
+  });
 
-  } else if(info.ext == '.csv') {
-    private_bot.convertConversation(path.join(dir,csvname), path.join(dir, dlgname),
-      function() {
-        private_bot.insertDatasetFile(path.join(dir, dlgname),
-          function(result) {
-            console.log('convertFile: ' + filename);
-            res.json({result: 'ok'});
-          });
-      });
-  }
+
+  // if(info.ext == '.txt') {
+  //   private_bot.convertFile(path.join(dir, filename), path.join(dir, csvname),
+  //     function(result) {
+  //       private_bot.convertConversation(path.join(dir,csvname), path.join(dir, dlgname),
+  //         function() {
+  //           private_bot.insertDatasetFile(path.join(dir, dlgname),
+  //             function(result) {
+  //               console.log('convertFile: ' + filename);
+  //               res.json({result: 'ok'});
+  //             });
+  //         });
+  //     });
+  //
+  // } else if(info.ext == '.csv') {
+  //   private_bot.convertConversation(path.join(dir,csvname), path.join(dir, dlgname),
+  //     function() {
+  //       private_bot.insertDatasetFile(path.join(dir, dlgname),
+  //         function(result) {
+  //           console.log('convertFile: ' + filename);
+  //           res.json({result: 'ok'});
+  //         });
+  //     });
+  // }
 
 }

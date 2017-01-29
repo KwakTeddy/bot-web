@@ -1,82 +1,67 @@
 var fs = require('fs');
 var path = require('path');
 var async = require('async');
-var fileutil = require(path.resolve('modules/bot/action/common/fileutil.js'));
-var mongoModule = require(path.resolve('modules/bot/action/common/mongo.js'));
+var fileutil = require(path.resolve('modules/bot/action/common/fileutil'));
+var mongoModule = require(path.resolve('modules/bot/action/common/mongo'));
+var utils = require(path.resolve('modules/bot/action/common/utils'));
 
 var bot = require(path.resolve('config/lib/bot')).getBot('private_bot');
 
-var baseDir = '/Users/com2best/Workspace/bot-data/data/ko/kakao/';
+var baseDir = path.resolve('custom_modules/private_bot/_data/');
+
+function convertDialogset(filename, callback) {
+  var dir = path.resolve('custom_modules/private_bot/_data/');
+  var info = path.parse(path.join(dir, filename));
+  var csvname = info.name + '.csv';
+  var dlgname = info.name + '_dlg.csv';
+
+  convertFile(path.join(dir, filename), path.join(dir, csvname),
+    function(result) {
+      convertConversation(path.join(dir,csvname), path.join(dir, dlgname),
+        function() {
+          insertDatasetFile(path.join(dir, dlgname),
+            function(result) {
+              callback();
+            });
+        });
+    });
+}
+
+exports.convertDialogset = convertDialogset;
 
 function convertFile(infile, outfile, callback) {
   if(fs.existsSync(outfile)) fs.truncateSync(outfile, 0);
   else fs.writeFileSync(outfile, '',  {flag: 'wx'});
 
   var lineNum = 0;
-  var datetime = "", character = "", sentence = "";
+  var sentence = "";
 
-  var addDialog = function() {
-    if(character != "" && sentence != "") {
-      var str = '"' + datetime.replace(/"/g, "\"\"") + '","' + character.replace(/"/g, "\"\"") + '","' + sentence.replace(/"/g, "\"\"") + '"\n';
-      fs.appendFileSync(outfile, str, 'utf8');
-      lineNum++;
-      datetime = ''; character = ''; sentence = '';
-    }
-  };
+  var str = utils.convertEncoding('euc-kr', 'utf-8', fs.readFileSync(infile));
+  str = str.replace(/<[^>]*>/g, '').replace(/- /g,'&nbsp;').replace(/(\r\n)+/g, '\r\n');
+  // console.log(str);
 
-  fileutil.streamLineSequence(infile, function(result, line, cb) {
-    if(isNaN(result) == false) {
-      // console.log(line);
+  var lines = str.split('&nbsp;');
+  for(var i in lines) {
+    if(lines[i].trim() == '') continue;
+    var str = '"' + lines[i].replace(/\r\n/g, ' ').replace(/"/g, "\"\"").trim() + '"\n';
+    fs.appendFileSync(outfile, str, 'utf8');
+    lineNum++;
+  }
 
-      var re = /^(\d{4}\. \d+. \d+. (?:오전|오후) \d+:\d+), (.+) : (.*)$/g;
-      var array = re.exec(line);
-
-      if(array != null || line.trim() == '') addDialog();
-
-      if(array !== null) {
-        datetime = array[1].trim();
-        character = array[2].trim();
-        sentence = array[3].trim();
-
-        sentence = sentence.replace(/\([^)]*\)/g, '').replace(/\s+/g, ' ').trim();
-
-        if(sentence == '' ||
-          sentence == '사진' ||
-          sentence == '동영상' ||
-          sentence == '페이스톡 해요' ||
-          sentence == '취소' ||
-          sentence == '부재중' ||
-          sentence == '응답 없음' ||
-          sentence == '(이모티콘)' ||
-          sentence.startsWith('http'))
-        {
-          datetime = ''; character = ''; sentence = '';
-        }
-
-      } else if(character != "") {
-        sentence += line.trim().replace(/\([^)]*\)/g, '').replace(/\s+/g, ' ').trim();
-      }
-
-      cb();
-    } else {
-      addDialog();
-
-      callback(result);
-    }
-  });
+  callback();
 }
 
 exports.convertFile = convertFile;
 
-var kakaoConvertFileTask = {
+var smiConvertFileTask = {
   action: function (task, context, callback) {
-    convertFile('/Users/com2best/Workspace/bot-web/custom_modules/private_bot/_data/ko/kakao/Talk_2017.1.22 18:14-1.txt',
-      '/Users/com2best/Workspace/bot-web/custom_modules/private_bot/_data/ko/kakao/Talk_2017.1.22 18:14-1.csv',
+    convertFile('/Users/com2best/Workspace/bot-web/custom_modules/private_bot/_data/ko/movie/Love.Actually.2003.720p.BluRay.x264-SiNNERS.smi',
+      '/Users/com2best/Workspace/bot-web/custom_modules/private_bot/_data/ko/movie/Love.Actually.2003.720p.BluRay.x264-SiNNERS.csv',
       function(result) {
-        convertConversation('/Users/com2best/Workspace/bot-web/custom_modules/private_bot/_data/ko/kakao/Talk_2017.1.22 18:14-1.csv',
-          '/Users/com2best/Workspace/bot-web/custom_modules/private_bot/_data/ko/kakao/Talk_2017.1.22 18:14-1_dlg.csv',
+        convertConversation('/Users/com2best/Workspace/bot-web/custom_modules/private_bot/_data/ko/movie/Love.Actually.2003.720p.BluRay.x264-SiNNERS.csv',
+          '/Users/com2best/Workspace/bot-web/custom_modules/private_bot/_data/ko/movie/Love.Actually.2003.720p.BluRay.x264-SiNNERS_dlg.csv',
           function() {
-            insertDatasetFile('/Users/com2best/Workspace/bot-web/custom_modules/private_bot/_data/ko/kakao/Talk_2017.1.22 18:14-1_dlg.csv',
+            insertDatasetFile('/Users/com2best/Workspace/bot-web/custom_modules/private_bot/_data/ko/movie/Love.Actually.2003.720p.BluRay.x264-SiNNERS_dlg.csv',
               function(result) {
                 callback(task, context);
               });
@@ -85,7 +70,7 @@ var kakaoConvertFileTask = {
   }
 };
 
-bot.setTask('kakaoConvertFileTask', kakaoConvertFileTask);
+bot.setTask('smiConvertFileTask', smiConvertFileTask);
 
 
 function convertDir(dir, callback) {
@@ -141,27 +126,27 @@ function convertConversation(file, outfile, callback) {
     if(isNaN(result) == false) {
       // console.log(line);
 
-      var re = /"([^"]*)","([^"]*)","([^"]*)"/g;
+      var re = /"([^"]*)"/g;
       var array = re.exec(line);
 
       if(array !== null) {
-        if(dialogs.length > 0 && dialogs[dialogs.length - 1].character == array[2]) {
-          if(multiline <= 2) {
-            multiline++;
-            dialogs[dialogs.length - 1].sentence += ' ' + array[3];
-          }
-        } else {
+        // if(dialogs.length > 0 && dialogs[dialogs.length - 1].character == array[2]) {
+        //   if(multiline <= 2) {
+        //     multiline++;
+        //     dialogs[dialogs.length - 1].sentence += ' ' + array[3];
+        //   }
+        // } else {
           if(dialogs.length > 1) {
             var str =
-              '"' + dialogs[dialogs.length - 2].character + '","' + dialogs[dialogs.length - 2].sentence +
-              '","' + dialogs[dialogs.length - 1].character + '","' + dialogs[dialogs.length - 1].sentence +
+              '"' + dialogs[dialogs.length - 2].sentence +
+              '","' + dialogs[dialogs.length - 1].sentence +
               '"\n';
             fs.appendFileSync(outfile, str, 'utf8');
             multiline = 0;
           }
 
-          dialogs.push({character: array[2], sentence: array[3]});
-        }
+          dialogs.push({sentence: array[1]});
+        // }
 
         if(dialogs.length > 10) dialogs.shift();
       }
@@ -181,16 +166,18 @@ function insertDatasetFile(infile, callback) {
 
   fileutil.streamLineSequence(infile, function(result, line, cb) {
     if(isNaN(result) == false) {
-      // console.log(line);
+      console.log(line);
 
-      var re = /"([^"]*)","([^"]*)","([^"]*)","([^"]*)"/g;
+      var re = /"([^"]*)","([^"]*)"/g;
       var array = re.exec(line);
       var input = "", output = "", input_trans = '', output_trans = '';
       if(array !== null) {
-        input = array[2].trim();
-        output = array[4].trim();
+        input = array[1].trim();
+        output = array[2].trim();
 
-        if(array[3] == '강지윤') {
+        console.log(input + ' '+ output);
+
+        // if(array[3] == '강지윤') {
           var outputs = [];
           var re2 = /\[([^\]]*)\]/g;
           output.replace(re2, function(match, p1) {
@@ -198,7 +185,7 @@ function insertDatasetFile(infile, callback) {
           });
 
           processInput(null, input, function(_input, _json) {
-            // console.log("자연어 처리>> " + _input);
+            console.log("자연어 처리>> " + _input);
 
             var task = {
               doc:{
@@ -217,12 +204,13 @@ function insertDatasetFile(infile, callback) {
             };
 
             mongoModule.update(task, null, function(_task, _context) {
+              console.log('after mongo:' + _task + ' ' + _context);
               cb();
             })
           });
-        } else {
-          cb();
-        }
+        // } else {
+        //   cb();
+        // }
 
       } else {
         cb();

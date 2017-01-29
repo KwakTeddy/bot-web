@@ -1,5 +1,7 @@
 var path = require('path');
 var type = require(path.resolve('modules/bot/action/common/type'));
+var glosbe = require('./glosbe');
+var wikipedia = require('./wikipedia');
 
 var faqType = {
   typeCheck: type.mongoDbTypeCheck,
@@ -30,6 +32,55 @@ var faqType = {
     }
   }
 }
+
+var calculateAction = function(task, context, callback) {
+    var first = task['1'];
+    var second = task['3'];
+    var operator = task['2'];
+
+
+    if(operator == '+' || operator == '더하기') task.result = Number(first) + Number(second);
+    else if(operator == '-' || operator == '빼기') task.result = Number(first) - Number(second);
+    else if(operator == '*' || operator == '곱하기') task.result = Number(first) * Number(second);
+    else if(operator == '/' || operator == '나누기') task.result = Number(first) / Number(second);
+    else task.result = '??';
+
+    console.log(first + ' ' + operator + ' ' + second + ' ' + task.result)
+    callback(task, context);
+}
+
+</([^\b\s]*)(?:\b|\s).*(영어).*뭐/
+</([^\b\s]*)(?:\b|\s).*(영어).*무엇/
+</([^\b\s]*)(?:\b|\s).*(영어).*알다/
+</([^\b\s]*)(?:\b|\s).*(영어).*알/
+</([^\b\s]*)(?:\b|\s).*(한글|한국어).*뭐/
+</([^\b\s]*)(?:\b|\s).*(한글|한국어).*무엇/
+</([^\b\s]*)(?:\b|\s).*(한글|한국어).*알다/
+</([^\b\s]*)(?:\b|\s).*(한글|한국어).*알/
+{action: glosbe.dicAction}
+>+1+는 +2+로 +result+입니다.
+
+</(\d)\s*(\+|더하기)\s*(\d)/
+</(\d)\s*(\-|빼기)\s*(\d)/
+</(\d)\s*(\*|곱하기)\s*(\d)/
+</(\d)\s*(\/|나누기)\s*(\d)/
+{action: calculateAction}
+>+1+ +2+ +3+ 은 +result+ 입니다
+
+</([^\b\s]*)(?:\b|\s).*뭐/
+</([^\b\s]*)(?:\b|\s).*무엇/
+</([^\b\s]*)(?:\b|\s).*누구/
+</([^\b\s]*)(?:\b|\s).*알다/
+</([^\b\s]*)(?:\b|\s).*알/
+{
+    preCallback: function(task, context, callback) {
+        task.query = task['1'];
+        console.log('wiki: ' + task['1']);
+        callback(task, context);
+    },
+    action: wikipedia.wikiAction
+}
+>+doc+
 
 <{types: [faqType]}
 {
