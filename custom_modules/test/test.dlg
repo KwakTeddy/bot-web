@@ -4,31 +4,12 @@ var test = require('./test');
 
 시작:c<~시작> 안녕하세요. 야근 테스트
 
-< start
-> end
+<exec
+{action: 'executeAction'}
+> 실행완료
 
 < FAQ
 test.FAQ
-> complete
-
-< List
-test.FAQList
-> complete
-
-< all
-test.FAQAll
-> complete
-
-< total
-test.FAQTotal
-> complete
-
-< try
-test.FAQTest
-> complete
-
-< olleh
-test.FAQTestAll
 > complete
 
 < one

@@ -6,7 +6,7 @@ var bot = require(path.resolve('config/lib/bot')).getBot('civil_demo');
 var searchCenterTask = {
   action: searchCenter,
   preCallback: function(task,context,callback) {
-    task._doc.address = context.dialog.address.행정동명;
+    task._doc.address = context.dialog.address.법정읍면동명;
     callback(task,context);
   },
   _doc: {
@@ -16,6 +16,32 @@ var searchCenterTask = {
   }
 };
 exports.searchCenterTask = searchCenterTask;
+
+var locationTask = {
+  action: locationNotExists,
+  postCallback: function(task,context,callback) {
+    console.log(task);
+    console.log(context.user.address);
+    callback(task,context);
+  }
+}
+exports.locationTask = locationTask;
+
+function locationNotExists(dialog,context,callback) {
+  if(context.user.address == undefined) {
+    callback(true);
+  }
+  else {
+    callback(false);
+  }
+}
+exports.locationNotExists = locationNotExists;
+
+function locationExists(dialog,context,callback) {
+  if(context.user != undefined && context.user.address != undefined) callback(true);
+  else callback(false);
+}
+exports.locationExists = locationExists;
 
 function searchCenter (task,context,callback) {
   // var center = mongo.getModel('lgcenter',undefined);
