@@ -371,7 +371,7 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
             if(dialog.output.up) {
               if (context.botUser.currentDialog.parent)
                 dialog.parent = context.botUser.currentDialog.parent.parent;
-            } else if(context.botUser.currentDialog && (dialog.output.call == context.botUser.currentDialog.name ||
+            } else if(context.botUser.currentDialog && context.botUser.currentDialog.name != undefined && (dialog.output.call == context.botUser.currentDialog.name ||
               dialog.output.callChild == context.botUser.currentDialog.name)) {
               dialog.parent = context.botUser.currentDialog.parent;
             } else { // TODO 자기 자신으로 parent 참조하기 막기
