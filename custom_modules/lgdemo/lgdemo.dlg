@@ -309,7 +309,7 @@ lgdemo.searchCenterTask
 주차안내:
 < ~주차
 > iff(lgdemo.locationNotExists)  {returnCall: '위치찾기', options: {returnDialog: '주차안내', output: '고객님 근처의 서비스 센터를 파악한 후에 주차가능여부를 안내해드려도 될까요?'}}
-> +center.owner+\n더 필요하신 게 있으신가요?
+> +center.parking+합니다.\n더 필요하신 게 있으신가요?
     <~네> 고객님, 어떤 부분이 궁금하신가요?
     <~아니요> LG전자에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
         <~네> 더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.
