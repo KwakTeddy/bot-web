@@ -93,7 +93,7 @@ function geoCode(task, context, callback) {
     callback(task,context);
   });
 }
-exports.geoCode = geoCode
+exports.geoCode = geoCode;
 
 
 // 위치정보를 context.dialog.location 에 저정하기로 한다. location.lat location.lng

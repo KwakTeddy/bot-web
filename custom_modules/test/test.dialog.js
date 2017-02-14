@@ -1,61 +1,17 @@
 
 var path = require('path');
-var bot = require(path.resolve('config/lib/bot')).getBot('test');
-function daumGeocode(task, context, callback) {
-  var request = require('request');
-  var query = {q: "서울특별시 금천구 가산동 464-2", output: "json"};
-  request({
-    url: 'https:',
-    method: 'GET',
-    qs: query
-  }, function(error,response, body) {
-    if(!error && response.statusCode == 200) {
-      var doc = JSON.parse(body);
-      task._doc.lng = doc.channel.item[0].lng;
-      task._doc.lat = doc.channel.item[0].lat;
-      task._doc.link_find = 'http:';
-      task._doc.link_map = 'http:';
-      console.log('lat: ' + task._doc.lat + ', lng: ' + task._doc.lng);
-      console.log('link: ' + task._doc.link_find);
-      console.log('link: ' + task._doc.link_map);
-    }
-    callback(task,context);
-  });
-}
+var address = require(path.resolve('./modules/bot/action/common/address'));
+var test = require('./test');
 
 var dialogs = [
 {
-  input: 'start',
-  output: 'end'
+  input: 'exec',
+  task:   {action: 'executeAction'},
+  output: '실행완료'
 },
 {
   input: 'FAQ',
   task:   test.FAQ,
-  output: 'complete'
-},
-{
-  input: 'List',
-  task:   test.FAQList,
-  output: 'complete'
-},
-{
-  input: 'all',
-  task:   test.FAQAll,
-  output: 'complete'
-},
-{
-  input: 'total',
-  task:   test.FAQTotal,
-  output: 'complete'
-},
-{
-  input: 'try',
-  task:   test.FAQTest,
-  output: 'complete'
-},
-{
-  input: 'olleh',
-  task:   test.FAQTestAll,
   output: 'complete'
 },
 {
