@@ -113,9 +113,9 @@ lgdemo.searchCenterTask
 출장수리예약:
 <false
 > 출장 수리 예약을 하기 위하여, 간단한 정보 몇가지를 수집하도록 하겠습니다. \n 수리가 필요한 제품의 증상을 입력해 주세요.
-    <{regexp: /[가-힣]/g}
+    < {regexp: /[가-힣]/g}
     > 출장 방문시 안내를 받으실 분의 성함을 입력해 주세요.
-        <{regexp: /[가-힣]{3}/g}
+        < {regexp: /[가-힣]/g}
         > 저희 기사님께서 출장 방문시 연락드릴 휴대폰 번호를 입력해주세요.
             < {types: [{type : type.mobileType, context: false}]}
             > 출장 방문을 하기 위해서는 고객님의 정확한 주소가 필요합니다.\n 지번 또는 도로명을 포함한 상세주소를 입력 부탁드리겠습니다.
@@ -201,7 +201,7 @@ lgdemo.searchCenterTask
 <~영업 ~시간
 <몇 시
 > iff(lgdemo.locationNotExists)  {returnCall: '위치찾기', options: {returnDialog: '영업시간', output: '고객님 근처의 서비스 센터를 파악한 후에 영업시간을 안내해드려도 될까요?'}}
-> 해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.\n더 필요하신 게 있으신가요|영업시간은 다음과 같습니다.더 필요한 게 있으신가요?
+> 해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.\n더 필요하신 게 있으신가요
     <~네> 고객님, 어떤 부분이 궁금하신가요?
     <~아니요> LG전자에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
         <~네> 더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.
@@ -225,7 +225,7 @@ lgdemo.searchCenterTask
 예약:
 <false
 > if(context.dialog.repairable == true) 네 +category+ 상품은 현 지점에서 현장 수리 가능합니다.\n성함을 말씀해주세요
-    <{regexp: /[가-힣]{3}/g}
+    < {regexp: /[가-힣]/g}
     > 휴대폰 번호를 말씀해주세요.
         < {types: [{type : type.mobileType, context: false}]}
         > 원하시는 방문날짜를 입력해주세요
@@ -266,7 +266,7 @@ lgdemo.searchCenterTask
                     <~아니요> 고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 LG전자가 되겠습니다.\nLG전자 콜센터 번호는 1544-7777입니다.\nLG전자에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.
         > iff(lgdemo.locationNotExists) {returnCall: '위치찾기', options: {returnDialog: '예약', output: '고객님 근처의 서비스 센터를 파악한 후에 방문예약을 도와드려도 될까요?'}}
         > if(context.dialog.repairable == true) 네 +category+ 상품은 현 지점에서 현장 수리 가능합니다.\n성함을 말씀해주세요
-            <{regexp: /[가-힣]{3}/g}
+            < {regexp: /[가-힣]/g}
             > 휴대폰 번호를 말씀해주세요.
                 < {types: [{type : type.mobileType, context: false}]}
                 > 원하시는 방문날짜를 입력해주세요
