@@ -52,7 +52,7 @@ lgdemo.searchCenterTask
 > 현재 고객님께서 계신 위치해서 가장 가까운 서비스센터는 +item.0.svc_center_name+ +item.0.distance+km 입니다.\n 인근의 가까운 다른 서비스센터로 +item.1.svc_center_name+ +item.1.distance+km 가 있습니다.\n 어떤 서비스 센터 정보를 안내해드릴까요?|어떤 서비스 센터 정보를 안내해드릴까요?
     <{types: [{name: 'center', listName: 'item', field: 'svc_center_name', typeCheck: 'listTypeCheck'}]} //전자후자 위에꺼아래꺼 가장가까운거 등으로도 답변 가능했으면 좋겠어요
     {action: function(task, context, callback) {context.user.center = context.dialog.center;callback(task, context);}}
-    >{output: '[+center.svc_center_name+]\n- 주소: +center.address3+\n- 영업시간 : 평일: +center.winter_week_open+ ~ +center.winter_week_close+, 토요일: +center.winter_sat_open+ ~ +center.winter_sat_close+\n- 전화번호: +center.phone+\n- +center.parking+\n서비스 센터의 위치를 지도에서 확인하시겠습니까?', return : 1}
+    >{output: '[+center.svc_center_name+]\n- 주소: +center.address3+\n- 영업시간 : 평일: +center.winter_week_open+ ~ +center.winter_week_close+, 토요일: +center.winter_sat_open+ ~ +center.winter_sat_close+\n- 전화번호: +center.phone+\n- +center.parking+\n서비스 센터의 위치를 지도에서 확인하시겠습니까?|서비스센터 정보는 다음과 같습니다. 위치를 지도에서 확인하시겠습니까?', return : 1}
         <~네> {call:'방문경로'}
         <~아니요> 고객님, 추가적으로 궁금하신 사항이 있으신지요?
             <~네> 네, 필요하신 사항이 있으시면 말씀해주세요.
