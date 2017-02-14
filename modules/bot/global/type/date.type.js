@@ -256,11 +256,11 @@ botlib.setGlobalTypeCheck('dateTypeCheck', dateTypeCheck);
 
 function timeTypeCheck(text, type, task, context, callback) {
   var name = 'time';
-  var re = /(?:(오전|오후))\s*(?:(\d{1,2})\s*시)|(?:(am|pm|a.m|p.m))\s*(?:(\d{1,2})\s*시)|(?:(\d{1,2})\s*시)/g;
+  var re = /(?:(오전|오후))\s*(?:(\d{1,2})\s*시)|(?:(am|pm|a.m|p.m))\s*(?:(\d{1,2})\s*시)|(?:(\d{1,2})\s*시)|(?:(\d{2}:\d{2}))/g;
   var matched = false;
 
 
-  text = text.replace(re, function(match, p1, p2, p3, p4, p5){
+  text = text.replace(re, function(match, p1, p2, p3, p4, p5, p6){
     matched = true;
     var time;
     var timeform = ':00';
@@ -274,6 +274,9 @@ function timeTypeCheck(text, type, task, context, callback) {
       }
     };
 
+    if (p6) {
+      time = p6.toString();
+    }
     if (p5) {
       if (p5 >= 13) {
         time = p5.toString() + timeform;

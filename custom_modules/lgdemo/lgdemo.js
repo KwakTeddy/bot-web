@@ -33,7 +33,7 @@ var asCategory = [
 ];
 
 var ang = {
-  action: geoCode,
+  action: daumgeoCode,
   preCallback: function(task,context,callback) {
     // console.log(context.user.address);
     task._doc.address = context.user.address.시도명 + ' ' + context.user.address.시군구명 + ' ' + context.user.address.행정동명;
@@ -52,32 +52,44 @@ var ang = {
 };
 exports.ang = ang;
 
-function geoCode(task, context, callback) {
-  var request = require('request');
-  var query = {q: task._doc.address, output: "json"};
-  request({
-    url: 'https://apis.daum.net/local/geo/addr2coord?apikey=1b44a3a00ebe0e33eece579e1bc5c6d2',
-    method: 'GET',
-    qs: query
-  }, function(error,response, body) {
-    if(!error && response.statusCode == 200) {
-      // console.log(body);
-      var doc = JSON.parse(body);
-      task._doc.lng = doc.channel.item[0].lng;
-      task._doc.lat = doc.channel.item[0].lat;
-      task._doc.link_find = 'http://map.daum.net/link/to/' + query.q + ',' + task._doc.lat + ',' + task._doc.lng;
-      task._doc.link_map = 'http://map.daum.net/link/map/' + task._doc.lat + ',' + task._doc.lng;
-      console.log('lat: ' + task._doc.lat + ', lng: ' + task._doc.lng);
-      console.log('link: ' + task._doc.link_find);
-      console.log('link: ' + task._doc.link_map);
+function daumgeoCode (task, context, callback) {
+  if (context.user.center == undefined) {
+    callback(false);
+  } else {
+    var request = require('request');
+    var query = {q: context.user.center.address3, output: "json"};
+    task._doc = {
+      lng: '',
+          lat: '',
+          link_find: '',
+          link_map: '',
+          address: ''
+    };
+    request({
+      url: 'https://apis.daum.net/local/geo/addr2coord?apikey=1b44a3a00ebe0e33eece579e1bc5c6d2',
+      method: 'GET',
+      qs: query
+    }, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        // console.log(body);
+        var doc = JSON.parse(body);
+        // task._doc.lng = doc.channel.item[0].lng;
+        // task._doc.lat = doc.channel.item[0].lat;
+        // task._doc.link_find = 'http://map.daum.net/link/to/' + query.q + ',' + task._doc.lat + ',' + task._doc.lng;
+        task._doc.link_map = 'http://map.daum.net/link/map/' + context.user.center.svc_center_name + ',' + context.user.center.lat + ',' + context.user.center.lng;
+        // console.log('lat: ' + task._doc.lat + ', lng: ' + task._doc.lng);
+        // console.log('link: ' + task._doc.link_find);
+        // console.log('link: ' + task._doc.link_map);
 
-      task.url = task._doc.link_map;
-      task.urlMessage = '경로보기';
-    }
-    callback(task,context);
-  });
+        task.url = task._doc.link_map;
+        task.urlMessage = '경로보기';
+      }
+      callback(task, context);
+
+    });
+  }
 }
-exports.geoCode = geoCode
+exports.daumgeoCode = daumgeoCode;
 
 function startAction(task, context, callback) {
   context.user.address = null;
@@ -214,6 +226,33 @@ function searchCenter (task, context, callback) {
 
 exports.searchCenter = searchCenter;
 
+function searchNaver(task, context, callback) {
+  task.query=context.dialog.inCurRaw;
+
+  addressModule.naverGeoSearch(task, context, function(task, context) {
+    for(var i = 0; i < task.doc.length; i++) {
+      var item = task.doc[i];
+      item.title = item.title.replace(/<[^>]+>/, '');
+      item.title = item.title.replace(/<\/[^>]+>/, '');
+    }
+
+    if(task.doc && task.doc.length > 0) task.count = task.doc.length;
+    else task.count = 0;
+
+    context.dialog.item = task.doc[0];
+    if (context.dialog.item) {
+      context.dialog.address = context.dialog.item.address.replace(' ', '');
+      callback(task,context);
+    } else {
+      context.dialog.check = 're';
+      callback(task, context);
+    }
+  });
+
+}
+
+exports.searchNaver = searchNaver;
+
 function checkTime(task, context, callback) {
   var center = mongo.getModel('lgcenter', undefined);
   center.find({}).lean().exec(function(err,docs) {
@@ -277,14 +316,19 @@ exports.repairableList = repairableList;
 
 function repairableCheck(task, context, callback) {
 
-  if (context.user.center == undefined) {
-    callback(false);
-  } else {
-    async.waterfall([
-      function (_cb) {
-        var category, word, rCategory;
+  async.waterfall([
+    function (_cb) {
+      var category, word, rCategory;
 
-        word = context.dialog.ascategory;
+      word = context.dialog.ascategory;
+
+      if (word == "에어컨" | word == "텔레비전" | word == "냉장고" | word == "가스레인지" | word == "세탁기" | word == "식기세척기" | word == "정수기" | word == "안마의자" | word == "홈시어터") {
+        context.user.category = word;
+        context.dialog.repairable = 'remote';
+        _cb(true);
+      } else if (context.user.center == undefined) {
+        callback(false);
+      } else {
 
         for (var j in context.user.center.product) {
           rCategory = context.user.center.product[j];
@@ -296,69 +340,60 @@ function repairableCheck(task, context, callback) {
           }
         }
 
-        if (category == "에어컨"|category == "텔레비전"|category == "냉장고"|category == "가스레인지"|category == "세탁기"|category == "식기세척기"|category == "정수기"|category == "안마의자"|category == "홈시어터") {
-          context.user.category = category;
-          context.dialog.repairable = 'remote';
-          _cb(true);
-        } else if (category == "휴대폰"|category == "PC"|category == "스마트워치"|category == "Friends"|category == "헤드셋"|category == "청소기"|category == "컴퓨터주변기기"|category == "프로젝터"|category == "전자레인지"|category == "블루레이"|category == "가습기"|category == "제습기") {
+        if (category == "휴대폰" | category == "PC" | category == "스마트워치" | category == "Friends" | category == "헤드셋" | category == "청소기" | category == "컴퓨터주변기기" | category == "프로젝터" | category == "전자레인지" | category == "블루레이" | category == "가습기" | category == "제습기") {
           context.user.category = category;
           context.dialog.repariable = true;
           _cb(true);
-        } else{
+        } else {
           context.dialog.repairable = false;
           _cb(null);
         }
       }
+    }
 
-    ], function (err) {
-      callback(task,context,callback);
-    })
-  };
+  ], function (err) {
+    callback(task,context,callback);
+  })
 }
 
 exports.repairableCheck = repairableCheck;
 
-function repairableTypecheck(text, format, inDoc, context, callback) {
+function repairableTypecheck(inRaw, inNLP, inDoc, context, callback) {
 
   var matched = false;
-  var words = text.split(' ');
-  if (context.user.center == undefined) {
-    callback(text, inDoc, false)
-  } else {
-    async.waterfall([
+  var words = context.dialog.inNLP.split(' ');
+  async.waterfall([
+    function (_cb) {
+      var category, word, rCategory;
+      for (var i in words) {
+        word = words[i];
+        if (category) break;
 
-      function (_cb) {
-        var category, word, rCategory;
-        for (var i in words) {
-          word = words[i];
-          if (category) break;
+        if (word.length == 1) continue;
+        for (var j in asCategory) {
+          rCategory = asCategory[j];
 
-          if (word.length == 1) continue;
-          for (var j in asCategory) {
-            rCategory = asCategory[j];
-
-            word = RegExp.escape(word);
-            if (rCategory.alias.search(new RegExp(word, 'i')) != -1) {
-              category = rCategory.category;
-              break;
-            }
+          word = RegExp.escape(word);
+          if (rCategory.alias.search(new RegExp(word, 'i')) != -1) {
+            category = rCategory.category;
+            break;
           }
-        }
-
-        if (category) {
-          inDoc['repairable'] = true;
-          context.dialog.ascategory = category;
-          matched = true;
-          _cb(true);
-        } else {
-          _cb(null);
         }
       }
 
-    ], function (err) {
-      callback(text, inDoc, matched);
-    });
-  }
+      if (category) {
+        inDoc['repairable'] = true;
+        context.dialog.ascategory = category;
+        matched = true;
+        _cb(true);
+      } else {
+        _cb(null);
+      }
+    }
+
+  ], function (err) {
+    callback(inRaw, inDoc, matched);
+  });
 }
 
 exports.repairableTypecheck = repairableTypecheck;
