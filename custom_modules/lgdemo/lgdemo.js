@@ -82,7 +82,7 @@ function daumgeoCode (task, context, callback) {
         // console.log('link: ' + task._doc.link_map);
 
         task.url = task._doc.link_map;
-        task.urlMessage = '경로보기';
+        task.urlMessage = '지도에서 위치보기';
       }
       callback(task, context);
 
