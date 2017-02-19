@@ -21,7 +21,8 @@
     "angular-sanitize": "^1.5.7",
     "angular-ui-select": "^0.18.1",
     "dropzone": "^4.3.0",
-    "angular-dropzone": "^0.1.2"
+    "angular-dropzone": "^0.1.2",
+    "d3": "^4.5.0"
   },
   "resolutions": {
     "angular": "~1.3"
