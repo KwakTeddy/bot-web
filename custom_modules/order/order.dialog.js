@@ -270,12 +270,13 @@ var dialogs = [
               if(context.bot.testMode) {
                 callback(false);
               } else {
-                var hhmm = new Date().toString().split(' ')[4].substring(0, 5);
-                if(hhmm >= '02:00' && hhmm <= '11:30') {
-                  callback(true);
-                } else {
-                  callback(false);
-                }
+                // var hhmm = new Date().toString().split(' ')[4].substring(0, 5);
+                // if(hhmm >= '02:00' && hhmm <= '11:30') {
+                //   callback(true);
+                // } else {
+                //   callback(false);
+                // }
+                callback(false);
               }
             },
             output: '배달봇 얌얌은 오전 11:30~새벽 2:00까지 배달하고 있습니다. 주문 가능한 시간에 사용해 주세요~'},

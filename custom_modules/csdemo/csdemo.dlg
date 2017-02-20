@@ -390,7 +390,7 @@ csdemo.searchCenterTask
 c<시작
 c<처음
 {action: 'startAction'}
-> 안녕하세요. 머니브레인 고객센터 데모 입니다.
+> 안녕하세요. 머니브레인 고객센터입니다.
 
 c<이전
 > {up:1}
