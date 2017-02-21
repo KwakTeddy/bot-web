@@ -24,14 +24,15 @@ var handleDialog = function(dialog)
     dialog.name = dialog.name || (dialog.name = "dialog#" + ++num);
     nodes[dialog.name] = nodes[dialog.name] || (nodes[dialog.name] = { name: dialog.name });
     nodes[dialog.name].input  = dialog.input;
-    nodes[dialog.name].ouput = dialog.output;
+    nodes[dialog.name].output = dialog.output;
+    nodes[dialog.name].dialog = dialog;
 
     if (dialog.children) {
         dialog.children.forEach(function(child) {
             handleDialog(child);
         });
     }
-}
+};
 
 var handleOutput = function(dialog, output)
 {
@@ -53,7 +54,7 @@ var handleOutput = function(dialog, output)
     if (output.returnCall) {
         links.push({ source: nodes[dialog.name], target: nodes[output.returnCall], type: "returnCall" });
     }
-}
+};
 
 var handleLink = function(dialog)
 {
@@ -70,7 +71,7 @@ var handleLink = function(dialog)
     } else {
         handleOutput(dialog, dialog.output);
     }
-}
+};
 
 dialogs.forEach(handleDialog); // for-loop is 10 times faster
 dialogs.forEach(handleLink);
@@ -86,14 +87,14 @@ links.forEach(function(link) {
 */
 
 var width = 1500,
-    height = 1000;
+    height = 700;
 
 var force = d3.layout.force()
     .nodes(d3.values(nodes))
     .links(links)
     .size([width, height])
     .linkDistance(100)
-    .charge(-1000)
+    .charge(-700)
     .on("tick", tick)
     .start();
 
@@ -111,6 +112,31 @@ var svg = d3.select("body")
     .attr("viewBox", "0 0 " + width + " " + height)
     //class to make it responsive
     .classed("svg-content-responsive", true);
+
+var input_box = svg.append("text")
+    .attr("x", 12)
+    .attr("dy", "1.35em")
+    .style("fill", "steelblue")
+    .style("font", "10px sans-serif")
+;
+var output_box = svg.append("text")
+    .attr("x", 12)
+    .attr("dy", "2.35em")
+    .style("fill", "steelblue")
+    .style("font", "10px sans-serif")
+;
+
+//tooltip
+var tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset([-10, 0])
+    .html(function(d) {
+        var input = (typeof d.input == 'string' ? d.input.replace(/(?:\r\n|\r|\n)/g, '<br />') : d.input);
+        var output = (typeof d.output == 'string' ? d.output.replace(/(?:\r\n|\r|\n)/g, '<br />') : d.output);
+        return "<strong>Input:</strong><br/><span style='color:cornflowerblue'>" + input + "</span><br/><br/>" +
+            "<strong>Output:</strong><br/><span style='color:cornflowerblue'>" + output + "</span>";
+    })
+svg.call(tip);
 
 // Per-type markers, as they don't inherit styles.
 svg.append("defs").selectAll("marker")
@@ -139,10 +165,12 @@ var node = svg.selectAll(".node")
     .attr("class", "node")
     .on("click", click)
     .on("dblclick", dblclick)
+    .on('mouseover', tip.show)
+    .on('mouseout', tip.hide)
     .call(force.drag);
 
 // add the nodes
-var circle =node.append("circle")
+var circle = node.append("circle")
     .attr("r", 5);
 
 // add the text 
@@ -208,18 +236,9 @@ function transform(d) {
   return "translate(" + d.x + "," + d.y + ")";
 }
 
-function click() {
-    /*
-    d3.select(this)
-        .append("text")
-        .attr("x", 12)
-        .attr("dy", "1.35em")
-        .text(this.input)
-    ;
-    console.log(this);
-    console.log(this.input);
-    console.log(this.output);
-    */
+function click(d) {
+    input_box.text(JSON.stringify(d.dialog));
+    console.log(d.dialog);
 
     d3.select(this).selectAll("text").transition()
         .duration(750)
@@ -232,7 +251,10 @@ function click() {
         .style("fill", "steelblue");
 }
 
-function dblclick() {
+function dblclick(d) {
+    input_box.text("");
+    output_box.text("");
+
     d3.select(this).select("circle").transition()
         .duration(750)
         .attr("r", 6)
