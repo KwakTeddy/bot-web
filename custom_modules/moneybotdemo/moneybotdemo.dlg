@@ -1,7 +1,7 @@
 var path = require('path');
 var address = require(path.resolve('./modules/bot/action/common/address'));
 var type = require(path.resolve('./modules/bot/action/common/type'));
-var newsdemo = require('./newsdemo');
+var moneybotdemo = require('./moneybotdemo');
 
 var pre = /(?:~이전|^<$)/;
 var next = /(?:~다음|^>$)/;
@@ -11,7 +11,7 @@ var next = /(?:~다음|^>$)/;
     <조선
     >검색어를 말씀해주세요
         < {regexp: /[가-힣]/g}
-        {action: newsdemo.searchNaver}
+        {action: moneybotdemo.searchNaver}
         > if(context.dialog.item.length != 0) #item#+index+. +title+\n#
             < {types: [{name: 'news', listName: 'item', field: 'title', typeCheck: 'listTypeCheck'}]}
             > +news.title+\n+news.description+\n+news.originallink+
@@ -20,7 +20,7 @@ var next = /(?:~다음|^>$)/;
     <전체
     >검색어를 말씀해주세요
         < {regexp: /[가-힣]/g}
-        {action: newsdemo.searchallNaver}
+        {action: moneybotdemo.searchallNaver}
         > if(context.dialog.item.length != 0) #item#+index+. +title+\n#
             < {types: [{name: 'news', listName: 'item', field: 'title', typeCheck: 'listTypeCheck'}]}
             > +news.title+\n+news.description+\n+news.originallink+

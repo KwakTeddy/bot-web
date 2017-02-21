@@ -9,7 +9,7 @@ botClient.controller('UserHomeController', ['$scope', '$document', 'Socket',
     $scope.test = 'test1';
 
     vm.servers = ['localhost:1024'];
-    vm.bots = ['lgedemo'];
+    vm.bots = ['newsdemo'];
 
     vm.server = vm.servers[0];
     vm.bot = vm.bots[0];
@@ -274,7 +274,7 @@ botClient.controller('UserHomeController', ['$scope', '$document', 'Socket',
     }
     /** 음성인식 소스 끝 */
 
-    vm.bot = 'lgdemo';
+    vm.bot = 'newsdemo';
     vm.userId = 'com2best';
     vm.connect();
 
