@@ -715,15 +715,15 @@ c<콜센터
 자주묻는질문:
 <{types: [{type : type.faqType, raw: true, context: true}]}
 >아래 중에 궁금하신 내용이 있나요?\n#typeDoc#+index+. +title+\n#번호를 입력하면 상세 내용을 보여드립니다.\n0. 이전\n!. 처음
+    <0
+    <!
+    >{up:1}
     <{types: [{name: 'faq', listName: 'faqDoc', typeCheck: 'listTypeCheck'}]}
     >[+faq.title+]\n+faq.content+\n더 필요하신 게 있으시면 말씀해주세요~\n0. 이전\n!. 처음
         <0
         >{up:1}
         <!
         >{call:'시작'}
-    <0
-    <!
-    >{up:1}
 
 답변없음:
 c<>고객님, 불편을 끼쳐드려 죄송합니다. 현재 고객님께서 무슨 말씀을 하시는지 이해를 못하였습니다.\n머니봇은 계좌잔액조회, 계좌내역조회, 금융상품추천, 고객상담 업무를 도와드리고있습니다.\n필요하신 걸 말씀해주세요.
