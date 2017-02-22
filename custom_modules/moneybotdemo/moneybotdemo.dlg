@@ -697,7 +697,6 @@ moneybotdemo.fssCreditLoanQuery
 
 시작:
 c<{regexp: first}
-{action: 'startAction'}
 >안녕하세요. 머니브레인 머니봇입니다.\n머니봇은 계좌잔액조회, 계좌내역조회, 금융상품추천, 고객상담 업무를 도와드리고있습니다.\n필요하신 걸 말씀해주세요.
 
 c<{regexp: up}
