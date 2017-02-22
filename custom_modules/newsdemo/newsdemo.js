@@ -18,9 +18,11 @@ function searchNaver(task, context, callback) {
         item.title = item.title.replace(/<[^>]+>/g, '');
         item.title = item.title.replace(/<\/[^>]+>/g, '');
         item.title = item.title.replace(/&quot;/g, '\"');
+        item.title = item.title.replace(/\|/g, ' ');
         item.description = item.description.replace(/<[^>]+>/g, '');
         item.description = item.description.replace(/<\/[^>]+>/g, '');
         item.description = item.description.replace(/&quot;/g, '\"');
+        item.description = item.description.replace(/\|/g, ' ');
         context.dialog.item.push(task.doc[i]);
       }
     }
@@ -44,9 +46,11 @@ function searchallNaver(task, context, callback) {
       item.title = item.title.replace(/<[^>]+>/g, '');
       item.title = item.title.replace(/<\/[^>]+>/g, '');
       item.title = item.title.replace(/&quot;/g, '\"');
+      item.title = item.title.replace(/\|/g, ' ');
       item.description = item.description.replace(/<[^>]+>/g, '');
       item.description = item.description.replace(/<\/[^>]+>/g, '');
       item.description = item.description.replace(/&quot;/g, '\"');
+      item.description = item.description.replace(/\|/g, ' ');
       context.dialog.item.push(task.doc[i]);
     }
 
