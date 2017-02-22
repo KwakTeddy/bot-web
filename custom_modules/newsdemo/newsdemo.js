@@ -27,7 +27,6 @@ function searchNaver(task, context, callback) {
 
     if(task.doc && task.doc.length > 0) task.count = task.doc.length;
     else task.count = 0;
-    console.log('최순실'+context.dialog.item.length);
     callback(task,context);
   });
 
