@@ -778,7 +778,7 @@ function mongoDbTypeCheck(text, format, inDoc, context, callback) {
           } catch(e) {
             logger.debug('type.js:mongoDbTypeCheck: MATCHED ' + format.name + ' "' + text + '" inDoc.' + format.name + ': ' + inDoc[format.name] + ' inDoc.typeDoc: ' + JSON.stringify(inDoc.typeDoc));
           }
-
+          context.dialog.faqDoc = inDoc.typeDoc;
           callback(text, inDoc, true);
         } else {
           try {
