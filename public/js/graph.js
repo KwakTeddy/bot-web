@@ -93,8 +93,8 @@ var force = d3.layout.force()
     .nodes(d3.values(nodes))
     .links(links)
     .size([width, height])
-    .linkDistance(100)
-    .charge(-700)
+    .linkDistance(500)
+    .charge(-2000)
     .on("tick", tick)
     .start();
 
@@ -170,8 +170,18 @@ var node = svg.selectAll(".node")
     .call(force.drag);
 
 // add the nodes
+/*
 var circle = node.append("circle")
     .attr("r", 5);
+*/
+var w = 150, h = 100;
+var rect = node.append("rect")
+    .attr("width", w)
+    .attr("height", h)
+    .attr("rx", 5)
+    .attr("ry", 5)
+    .style("fill", function(d) { return "white"; })
+    .style("stroke", function(d) { return d3.rgb("#e6653e").darker(); })
 
 // add the text 
 var text = node.append("text")
@@ -182,15 +192,15 @@ var text = node.append("text")
 // Use elliptical arc path segments to doubly-encode directionality.
 function tick() {
   path.attr("d", linkArc);
-  circle.attr("transform", transform);
+  rect.attr("transform", transform);
   text.attr("transform", transform);
 }
 
 function linkArc(d) {
-    var x1 = d.source.x,
-        y1 = d.source.y,
-        x2 = d.target.x,
-        y2 = d.target.y,
+    var x1 = d.source.x + w/2,
+        y1 = d.source.y + h/2,
+        x2 = d.target.x + w/2,
+        y2 = d.target.y + h/2,
         dx = x2 - x1,
         dy = y2 - y1,
         dr = Math.sqrt(dx * dx + dy * dy),
@@ -226,7 +236,39 @@ function linkArc(d) {
         return "M" + x1 + "," + y1 + "A" + drx + "," + dry + " " + xRotation + "," + largeArc + "," + sweep + " " + x2 + "," + y2;
     } 
     else {
-        return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+        //return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+        
+        // straight line
+        var startx,starty,endx,endy;
+        if (x1 < x2) {
+            startx = x1 + w/2;
+            endx = x2 - w/2;
+        } else {
+            startx = x1 - w/2;
+            endx = x2 + w/2;
+        }
+        if (y1 < y2) {
+            starty = y1 + h/2;
+            endy = y2 - h/2;
+        } else {
+            starty = y1 - h/2;
+            endy = y2 + h/2;
+        }
+        //return "M" + startx + "," + starty + "L" + endx + "," + endy;
+        return "M" + x1 + "," + y1 + "L" + x2 + "," + y2;
+        //return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + "," + d.target.y;
+
+        // bezier-connected edges
+        /*
+        var dx = d.target.x - d.source.x,
+            dy = d.target.y - d.source.y;
+        var qx = dy /  1 * 1, //linknum is defined above
+            qy = -dx / 1 * 1;
+        var qx1 = (d.source.x + (dx / 2)) + qx,
+            qy1 = (d.source.y + (dy / 2)) + qy;
+        return "M"+d.source.x+" "+d.source.y+" C" + d.source.x + " " + d.source.y + " " + qx1 + " " + qy1 + " " + d.target.x + " " + d.target.y;
+        */
+
     }
 
 
@@ -245,7 +287,7 @@ function click(d) {
         .attr("x", 22)
         .style("fill", "steelblue")
         .style("font", "20px sans-serif");
-    d3.select(this).select("circle").transition()
+    d3.select(this).select("rect").transition()
         .duration(750)
         .attr("r", 16)
         .style("fill", "steelblue");
@@ -255,7 +297,7 @@ function dblclick(d) {
     input_box.text("");
     output_box.text("");
 
-    d3.select(this).select("circle").transition()
+    d3.select(this).select("rect").transition()
         .duration(750)
         .attr("r", 6)
         .style("fill", "#ccc");
