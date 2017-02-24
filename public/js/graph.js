@@ -86,23 +86,22 @@ links.forEach(function(link) {
 });
 */
 
-var width = 1500,
-    height = 700;
+var width = 1900,
+    height = 900;
 
 var force = d3.layout.force()
     .nodes(d3.values(nodes))
     .links(links)
     .size([width, height])
-    .linkDistance(500)
-    .charge(-2000)
+    .linkDistance(300)
+    .charge(-2400)
     .on("tick", tick)
     .start();
 
-/*
 var svg = d3.select("body").append("svg")
     .attr("width", width)
     .attr("height", height);
-*/
+/*
 var svg = d3.select("body")
     .append("div")
     .classed("svg-container", true) //container class to make it responsive
@@ -112,6 +111,7 @@ var svg = d3.select("body")
     .attr("viewBox", "0 0 " + width + " " + height)
     //class to make it responsive
     .classed("svg-content-responsive", true);
+*/
 
 var input_box = svg.append("text")
     .attr("x", 12)
@@ -174,7 +174,7 @@ var node = svg.selectAll(".node")
 var circle = node.append("circle")
     .attr("r", 5);
 */
-var w = 150, h = 100;
+var w = 200, h = 80;
 var rect = node.append("rect")
     .attr("width", w)
     .attr("height", h)
@@ -189,11 +189,25 @@ var text = node.append("text")
     .attr("dy", ".35em")
     .text(function(d) { return d.name; });
 
+var text2 = node.append("text")
+    .attr("x", 7)
+    .attr("dy", "1.5em")
+    .text(function(d) { return "In: " + d.input; });
+
+var text3 = node.append("text")
+    .attr("x", 7)
+    .attr("dy", "3em")
+    .text(function(d) { return "Out: " + d.output; })
+    .call(wrap, w);
+
+
 // Use elliptical arc path segments to doubly-encode directionality.
 function tick() {
   path.attr("d", linkArc);
   rect.attr("transform", transform);
   text.attr("transform", transform);
+  text2.attr("transform", transform);
+  text3.attr("transform", transform);
 }
 
 function linkArc(d) {
@@ -285,11 +299,12 @@ function click(d) {
     d3.select(this).selectAll("text").transition()
         .duration(750)
         .attr("x", 22)
-        .style("fill", "steelblue")
+        //.style("fill", "steelblue")
         .style("font", "20px sans-serif");
     d3.select(this).select("rect").transition()
         .duration(750)
-        .attr("r", 16)
+        .attr("width", w*2)
+        .attr("height", h*2)
         .style("fill", "steelblue");
 }
 
@@ -299,8 +314,9 @@ function dblclick(d) {
 
     d3.select(this).select("rect").transition()
         .duration(750)
-        .attr("r", 6)
-        .style("fill", "#ccc");
+        .attr("width", w)
+        .attr("height", h)
+        .style("fill", "white");
     d3.select(this).selectAll("text").transition()
         .duration(750)
         .attr("x", 12)
@@ -308,3 +324,26 @@ function dblclick(d) {
         .style("font", "10px sans-serif");
 }
 
+function wrap(text, width) {
+    text.each(function() {
+        var text = d3.select(this),
+            words = text.text().split(/\s+/).reverse(),
+            word,
+            line = [],
+            lineNumber = 0,
+            lineHeight = 1.1, // ems
+            y = text.attr("y"),
+            dy = parseFloat(text.attr("dy")),
+            tspan = text.text(null).append("tspan").attr("x", 5).attr("dy", dy + "em");
+        while (word = words.pop()) {
+            line.push(word);
+            tspan.text(line.join(" "));
+            if (tspan.node().getComputedTextLength() > width) {
+                line.pop();
+                tspan.text(line.join(" "));
+                line = [word];
+                tspan = text.append("tspan").attr("x", 5).attr("dy", lineHeight + "em").text(word);
+            }
+        }
+    });
+}
