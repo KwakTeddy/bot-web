@@ -37,7 +37,10 @@ var UserSchema = new Schema({
     unique: true,
     lowercase: true,
     trim: true,
-    default: '',
+    // default: function () {
+    //     return Date.now + Math.random();
+    // },
+    default: '123',
     validate: [validateLocalStrategyEmail, 'Please fill a valid email address']
   },
   username: {
@@ -103,17 +106,19 @@ UserSchema.pre('save', function (next) {
 /**
  * Hook a pre validate method to test the local password
  */
-UserSchema.pre('validate', function (next) {
-  if (this.provider === 'local' && this.password && this.isModified('password')) {
-    var result = owasp.test(this.password);
-    if (result.errors.length) {
-      var error = result.errors.join(' ');
-      this.invalidate('password', error);
-    }
-  }
 
-  next();
-});
+//disabled for the convenient password by junha park
+// UserSchema.pre('validate', function (next) {
+//   if (this.provider === 'local' && this.password && this.isModified('password')) {
+//     var result = owasp.test(this.password);
+//     if (result.errors.length) {
+//       var error = result.errors.join(' ');
+//       this.invalidate('password', error);
+//     }
+//   }
+//
+//   next();
+// });
 
 /**
  * Create instance method for hashing a password
