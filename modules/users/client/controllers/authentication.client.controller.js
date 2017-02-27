@@ -14,7 +14,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
     }
 
     $scope.signup = function (isValid) {
-      $scope.error = null;
+      $scope.error = {};
+      $scope.submitted = true;
 
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'userForm');
@@ -29,7 +30,12 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         // And redirect to the previous or home page
         $state.go($state.previous.state.name || 'home', $state.previous.params);
       }).error(function (response) {
-        $scope.error = response.message;
+        console.log(response);
+        if(response.message.match('email')){
+            $scope.error.email = 'email already exist';
+        } else if(response.message.match('username')) {
+            $scope.error.username = 'username already exist';
+        }
       });
     };
 
@@ -43,8 +49,9 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
     $scope.signin = function (isValid) {
       $scope.error = null;
+      $scope.submitted = true;
 
-      if (!isValid) {
+        if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'userForm');
 
         return false;

@@ -4,8 +4,8 @@ var botlib = require(path.resolve('config/lib/bot'));
 var moneybotdemoBot = {
   use: true,
 
-  serviceName: 'Moneybot Demo',
-  serviceNick: 'Moneybot Demo',
+  serviceName: '머니봇',
+  serviceNick: '인공지능금융봇',
 
   kakao: {
     keyboard: { type :"buttons", buttons:["시작"]}

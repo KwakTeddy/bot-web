@@ -18,16 +18,17 @@ function searchNaver(task, context, callback) {
         item.title = item.title.replace(/<[^>]+>/g, '');
         item.title = item.title.replace(/<\/[^>]+>/g, '');
         item.title = item.title.replace(/&quot;/g, '\"');
+        item.title = item.title.replace(/\|/g, ' ');
         item.description = item.description.replace(/<[^>]+>/g, '');
         item.description = item.description.replace(/<\/[^>]+>/g, '');
         item.description = item.description.replace(/&quot;/g, '\"');
+        item.description = item.description.replace(/\|/g, ' ');
         context.dialog.item.push(task.doc[i]);
       }
     }
 
     if(task.doc && task.doc.length > 0) task.count = task.doc.length;
     else task.count = 0;
-    console.log('최순실'+context.dialog.item.length);
     callback(task,context);
   });
 
@@ -45,9 +46,11 @@ function searchallNaver(task, context, callback) {
       item.title = item.title.replace(/<[^>]+>/g, '');
       item.title = item.title.replace(/<\/[^>]+>/g, '');
       item.title = item.title.replace(/&quot;/g, '\"');
+      item.title = item.title.replace(/\|/g, ' ');
       item.description = item.description.replace(/<[^>]+>/g, '');
       item.description = item.description.replace(/<\/[^>]+>/g, '');
       item.description = item.description.replace(/&quot;/g, '\"');
+      item.description = item.description.replace(/\|/g, ' ');
       context.dialog.item.push(task.doc[i]);
     }
 
