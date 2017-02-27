@@ -32,6 +32,7 @@ angular.module('user-bots').controller('UserBotListController', ['$scope', '$roo
 
     vm.userBotChat = function(userBot) {
       // $scope.$emit('setUserBot', userBot);
+      console.log('vm.userBotChat');
       $rootScope.$broadcast('setUserBot', userBot);
     };
 

@@ -272,7 +272,7 @@
                 </ul>
               </li>
 
-              <li class="nav-parent">
+              <li class="nav-parent" ng-show="false">
                 <a>
                   <i class="fa fa-align-left" aria-hidden="true"></i>
                   <span>배달봇</span>
@@ -286,6 +286,22 @@
                   </li>
                   <li>
                     <a ui-sref="deliveryOrders.list">주문관리</a>
+                  </li>
+                </ul>
+              </li>
+
+
+              <li class="nav-parent">
+                <a>
+                  <i class="fa fa-align-left" aria-hidden="true"></i>
+                  <span>분석</span>
+                </a>
+                <ul class="nav nav-children">
+                  <li>
+                    <a ui-sref="user-bots.context-analytics">Context 분석</a>
+                  </li>
+                  <li>
+                    <a ui-sref="user-bots.context-learning">Context 학습</a>
                   </li>
                 </ul>
               </li>

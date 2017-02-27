@@ -21,6 +21,12 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
       vm.type= type;
     };
 
+    vm.userBotChat = function(userBot) {
+      // $scope.$emit('setUserBot', userBot);
+      console.log('vm.userBotChat');
+      $rootScope.$broadcast('setUserBot', vm.userBot);
+    };
+
     // Create new UserBot
     vm.create = function (isValid) {
       $scope.error = null;
