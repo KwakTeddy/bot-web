@@ -35,32 +35,33 @@
     </div>
   </div>
 
-  <header class="panel-heading">
-    <h2 class="panel-title">{{vm.isConnected ? vm.bot : '접속해주세요'}}</h2>
-  </header>
+  <!--<header class="panel-heading">-->
+    <!--<h2 class="panel-title">{{vm.isConnected ? vm.bot : '접속해주세요'}}</h2>-->
+  <!--</header>-->
 
-  <div class="panel-body " style="background-color: #ddd;">
+  <!--<div class="panel-body " style="background-color: #ddd;">-->
 
-    <div id="chat_main" class="chat_main">
+    <!--<div id="chat_main" class="chat_main">-->
 
-    </div>
+    <!--</div>-->
 
-  </div>
-  <footer class="panel-footer" style="height: 34px;padding: 0 15px;">
-    <form name="chatForm" class="form-horizontal form-bordered" novalidate="novalidate"
-          ng-submit="vm.sendMsg()">
-      <div class="row">
-        <div class="input-group mb-md">
-          <input type="text" class="form-control" name="inputbox" id="inputbox"
-                 ng-model="vm.msg" />
-          <span class="input-group-btn">
-            <button class="btn btn-primary" type="submit">SEND</button>
-          </span>
-        </div>
-      </div>
-    </form>
-  </footer>
-  <br/>
+  <!--</div>-->
+  <!--<footer class="panel-footer" style="height: 34px;padding: 0 15px;">-->
+    <!--<form name="chatForm" class="form-horizontal form-bordered" novalidate="novalidate"-->
+          <!--ng-submit="vm.sendMsg()">-->
+      <!--<div class="row">-->
+        <!--<div class="input-group mb-md">-->
+          <!--<input type="text" class="form-control" name="inputbox" id="inputbox"-->
+                 <!--ng-model="vm.msg" />-->
+          <!--<span class="input-group-btn">-->
+            <!--<button class="btn btn-primary" type="submit">SEND</button>-->
+          <!--</span>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</form>-->
+  <!--</footer>-->
+
+  <!--<br/>-->
   <div class="row">
     <div class="col-md-6">
       <input type="text" class="form-control" id="initMsg" name="initMsg"
@@ -76,7 +77,7 @@
   <br/>
   <div class="row">
     <div class="col-md-12">
-      <div  id="logDiv" ng-bind="vm.log" style="white-space:pre; line-height: 17px;  width: 100%; height: 200px;overflow: scroll" class="form-control"></div>
+      <div  id="logDiv" ng-bind="vm.log" style="white-space:pre; line-height: 17px;  width: 100%; height: 500px;overflow: scroll" class="form-control"></div>
     </div>
   </div>
 

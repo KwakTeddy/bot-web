@@ -60,6 +60,24 @@
   <!-- Head Libs -->
   <script src="/vendor/modernizr/modernizr.js"></script>
 
+  <script>
+    var mobileKeyWords = new Array('iPhone', 'iPod', 'BlackBerry', 'Android', 'Windows CE', 'LG', 'MOT', 'SAMSUNG', 'SonyEricsson');
+    for (var word in mobileKeyWords){
+      if (navigator.userAgent.match(mobileKeyWords[word]) != null){
+        location.href = '/?_p=m';
+        break;
+      }
+    }
+    var _platform = "web";
+    var _os = '';
+    var _facebookAppId = "{{facebookAppId}}";
+    var _kakaoJSId = "{{kakaoJSAppId}}";
+    var _ogTitle = "{{title}}";
+    var _ogDescription = "{{description}}";
+    var _ogUrl = "{{url}}";
+    var _ogLogo = "{{logo}}";
+  </script>
+
 </head>
 <body>
 <section class="body">
@@ -296,6 +314,9 @@
     <section role="main" class="content-body">
       {% block content %}{% endblock %}
     </section>
+
+    <section id="chat-include" ng-include="'/modules/bots/client/views/chat-user-bot.client.view.html'"></section>
+
   </div>
 </section>
 

@@ -1,5 +1,6 @@
 var config = require('../config'),
   path = require('path'),
+  mongoose = require('mongoose'),
   fs = require('fs'),
   utils = require(path.resolve('modules/bot/action/common/utils')),
   _ = require('lodash');
@@ -206,6 +207,101 @@ function loadBot(botName) {
 
 exports.loadBot = loadBot;
 
+function loadUserBot(botName, callback) {
+  var UserBot = mongoose.model('UserBot');
+  UserBot.findOne({id: botName}, function(err, doc) {
+    if(doc != undefined) {
+      var dialogs = [];
+
+      var userBot = new UserBot(doc);
+
+      var faqType2 = {
+        name: 'typeDoc',
+        typeCheck: global._context.typeChecks['dialogTypeCheck'], //type.mongoDbTypeCheck,
+        preType: function(task, context, type, callback) {
+          type.mongo.queryStatic.userBot = doc._doc;
+          callback(task, context);
+        },
+        limit: 5,
+        mongo: {
+          model: 'UserBotDialog',
+          queryStatic: {userBot: undefined},
+          queryFields: ['input'],
+          fields: 'input output' ,
+          taskFields: ['input', 'output', 'matchRate'],
+          minMatch: 1
+        }
+      };
+
+      var dialog2 = {
+        input: {types: [faqType2]},
+        task: {
+          action: function(task, context, callback) {
+            if(Array.isArray(task.typeDoc)) {
+              if(task.typeDoc.length > 1) task._output = task.typeDoc[1].output;
+              else task._output = task.typeDoc[0].output;
+            } else {
+              task._output = task.typeDoc.output;
+            }
+            callback(task, context);
+          }
+        },
+        output: '+_output+'
+      };
+
+      dialogs.push(dialog2);
+
+
+      var bot = new Bot(doc);
+      var faqType = {
+        name: 'typeDoc',
+        typeCheck: global._context.typeChecks['dialogTypeCheck'], //type.mongoDbTypeCheck,
+        preType: function(task, context, type, callback) {
+          type.mongo.queryStatic.dialogset = bot.dialogset;
+          callback(task, context);
+        },
+        limit: 5,
+        mongo: {
+          model: 'DialogSet',
+          queryStatic: {dialogset: ''},
+          queryFields: ['input'],
+          fields: 'input output' ,
+          taskFields: ['input', 'output', 'matchRate'],
+          minMatch: 1
+        }
+      };
+
+      var dialog = {
+        input: {types: [faqType]},
+        task:   {
+          action: function(task, context, callback) {
+            console.log(JSON.stringify(task.typeDoc));
+            if(Array.isArray(task.typeDoc)) {
+              if(task.typeDoc.length > 1) task._output = task.typeDoc[1].output;
+              else task._output = task.typeDoc[0].output;
+            } else {
+              task._output = task.typeDoc.output;
+            }
+            callback(task, context);
+          }
+        },
+        output: '+_output+'
+      };
+
+      dialogs.push(dialog);
+
+      bot.setDialogs(dialogs);
+
+      global._userbots[botName] = bot;
+
+      callback(bot);
+    } else {
+      callback(null);
+    }
+  })
+}
+exports.loadUserBot = loadUserBot;
+
 
 // function setBot(botName, bot) {
 //   if(!global._bots) global._bots = {};
@@ -259,6 +355,7 @@ exports.initGlobals = function() {
 
   if(!global._context) global._context = {};
   if(!global._bots) global._bots = {};
+  if(!global._userbots) global._userbots = {};
   if(!global._channels) global._channels = {};
   if(!global._users) global._users = {};
   if(!global._botusers) global._botusers = {};

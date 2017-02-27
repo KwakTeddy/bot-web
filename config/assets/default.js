@@ -43,10 +43,68 @@ module.exports = {
     js: [
       'modules/core/client/app/config.js',
       'modules/core/client/app/init.js',
-      'modules/*/client/*.js',
-      'modules/*/client/**/*.js'
+      'modules/*/client/*client*.js',
+      'modules/*/client/**/*client*.js',
+      'modules/*/client/*admin*.js',
+      'modules/*/client/**/*admin*.js'
     ],
     views: ['modules/*/client/views/**/*.html'],
+    templates: ['build/templates.js']
+  },
+  mobile: {
+    lib: {
+      css: [
+        'public/lib/ionic/css/ionic.app.css'
+      ],
+      js: [
+        'public/lib/ionic/js/ionic.bundle.min.js',
+        'public/lib/ngCordova/dist/ng-cordova.min.js',
+        'public/lib/angular-resource/angular-resource.js',
+        //'public/lib/angular-animate/angular-animate.js',
+        'public/lib/angular-messages/angular-messages.js',
+        'public/lib/angular-ui-router/release/angular-ui-router.js',
+        'public/lib/angular-ui-utils/ui-utils.js',
+        'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
+        'public/lib/angular-cookies/angular-cookies.min.js',
+        // 'public/lib/angular-file-upload/angular-file-upload.js',
+        // 'public/lib/ng-file-upload/ng-file-upload-shim.js',
+        // 'public/lib/ng-file-upload/ng-file-upload.js',
+
+        // 'http://dmaps.daum.net/map_js_init/postcode.v2.js',
+        // 'https://www.youtube.com/iframe_api',
+        // 'https://developers.kakao.com/sdk/js/kakao.min.js',
+        // 'public/lib/angular-update-meta/dist/update-meta.min.js'
+      ],
+      tests: ['public/lib/angular-mocks/angular-mocks.js']
+    },
+    css: [
+      'modules/*/mobile/css/*.css',
+      'public/css/custom_mobile.css'
+    ],
+    less: [
+      'modules/*/mobile/less/*.less'
+    ],
+    sass: [
+      'modules/*/mobile/scss/*.scss'
+    ],
+    js: [
+      'modules/core/client/app/config.js',
+      'modules/core/client/app/init.js',
+      'modules/*/client/*.js',
+      'modules/*/client/config/*mobile*.js',
+      'modules/*/client/constants/*.js',
+      'modules/*/client/controllers/*.js',
+      'modules/*/client/services/*.js',
+      'modules/*/client/directives/*.js',
+      'modules/*/client/*/*/*.js'
+    ],
+    img: [
+      'modules/**/*/img/**/*.jpg',
+      'modules/**/*/img/**/*.png',
+      'modules/**/*/img/**/*.gif',
+      'modules/**/*/img/**/*.svg'
+    ],
+    views: ['modules/*/mobile/views/**/*mobile*.html'],
     templates: ['build/templates.js']
   },
   server: {

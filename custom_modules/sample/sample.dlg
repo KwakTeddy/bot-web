@@ -145,4 +145,63 @@ c< /여러/g
 'otherTask'
 > +text+\n task에서 저장한 내용 표시
 
+
+< button
+{
+    action: function(task, context, callback) {
+        task.result = {
+            title: '제목테스트',
+            text: '링크 테스트 입니다. 링크 테스트 입니다. 링크 테스트 입니다. 링크 테스트 입니다. 링크 테스트 입니다. ',
+            buttons: [
+                {text: '상세보기', url: 'http://www.google.com'},
+                {text: '상세보기', url: 'http://www.google.com'},
+                {text: '상세보기', url: 'http://www.google.com'}
+            ],
+            smartReply: ['버튼1', '버튼2', '버튼3']
+        };
+
+        callback(task, context);
+    }
+}
+>button 결과
+
+< items
+{
+    action: function(task, context, callback) {
+        task.result = {
+            items: [
+                {
+//                    title: '대통령측 "탄핵심판 최종변론 3월 2∼3일로 미뤄달라"',
+                    text: '박근혜 대통령 측이 이달 24일로 예정된 탄핵심판의 최종 변론기일을 3월 초로 연기해달라고 헌법재판소에 공식 요청한 것으로 확인됐다',
+                    imageUrl: '/images/news_image.jpg',
+                    buttons: [
+                        {text: '상세보기', url: 'http://www.google.com'},
+                    ]
+                },
+                {
+//                    title: '대통령측 "탄핵심판 최종변론 3월 2∼3일로 미뤄달라"',
+                    text: '박근혜 대통령 측이 이달 24일로 예정된 탄핵심판의 최종 변론기일을 3월 초로 연기해달라고 헌법재판소에 공식 요청한 것으로 확인됐다',
+                    imageUrl: '/images/news_image.jpg',
+                    buttons: [
+                        {text: '상세보기', url: 'http://www.google.com'},
+                    ]
+                },
+                {
+//                    title: '대통령측 "탄핵심판 최종변론 3월 2∼3일로 미뤄달라"',
+                    text: '박근혜 대통령 측이 이달 24일로 예정된 탄핵심판의 최종 변론기일을 3월 초로 연기해달라고 헌법재판소에 공식 요청한 것으로 확인됐다',
+                    imageUrl: '/images/news_image.jpg',
+                    buttons: [
+                        {text: '상세보기', url: 'http://www.google.com'},
+                    ]
+                }
+            ],
+            smartReply: ['버튼1', '버튼2', '버튼3']
+        };
+
+        callback(task, context);
+    }
+}
+>items 결과
+
+
 <> 매칭되는 문장이 없습니다.                                     // input이 없으면 순서가 오면 무조건 표시 gambit 역활

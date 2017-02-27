@@ -20,34 +20,6 @@ angular.module('core')
         controller: 'PrivateBotController',
         controllerAs: 'vm'
       })
-
-      .state('mobile', {
-        abstract: true,
-        // views: {
-        //   'menuContent@': {
-        //     template: '<ion-nav-view name="mobileRoot" class="view-container"></ion-nav-view>'
-        //   }
-        // }
-      })
-
-      .state('mobile.design', {
-        abstract: true,
-        url: '/design',
-        // views: {
-        //   'menuContent@': {
-        //     template: '<ion-nav-view name="menuContent" class="view-container"></ion-nav-view>'
-        //   }
-        // }
-      })
-
-      .state('mobile.design.test24', {
-        url: '/test23',
-        views: {
-          'menuContent@': {
-            templateUrl: 'modules/_design/client/views/view-invest04.mobile.view.html'
-          }
-        }
-      })
     ;
   });
 

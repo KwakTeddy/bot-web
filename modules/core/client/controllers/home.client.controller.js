@@ -4,6 +4,7 @@ angular.module('core').controller('HomeController', ['$scope', '$document', '$co
   function ($scope, $document, $cookies, Authentication, Socket) {
     var vm = this;
 
+
     // if (!Socket.socket) {
     //   Socket.connect();
     // }
@@ -148,53 +149,55 @@ angular.module('core').controller('HomeController', ['$scope', '$document', '$co
     vm.connect();
 
     angular.element('#inputbox').focus();
+
+    var logScrollTimer = -1;
+    function logScrollBottom() {
+      // if(logScrollTimer > -1) clearTimeout(logScrollTimer);
+
+      // logScrollTimer = setTimeout(function() {
+      var logDiv = document.getElementById('logDiv');
+      logDiv.scrollTop = logDiv.scrollHeight - logDiv.clientHeight;
+      // logScrollTimer = -1;
+      // }, 300);
+    }
+
+    function clearBubble() {
+      var main = document.getElementById('chat_main');
+      main.innerText = '';
+      document.chatForm.inputbox.value = '';
+    }
+
+    function addBotBubble(msg) {
+      var main = document.getElementById('chat_main');
+      var bubble = document.createElement('div');
+      bubble.setAttribute('class', 'bubble');
+
+      if(msg.startsWith('{')) {
+        var json = JSON.parse(msg);
+        bubble.innerText = json.text;
+        if(json.url) {
+          if(json.urlMessage) bubble.innerHTML += '\n<br/><a href="' + json.url + '" target="_blank">' + json.urlMessage +'</a>';
+          else bubble.innerHTML += '\n<br/><a href="' + json.url + '" target="_blank">' + json.url +'</a>';
+        }
+      } else {
+        bubble.innerText = msg;
+      }
+
+      main.appendChild(bubble);
+
+      main.scrollTop = main.scrollHeight - main.clientHeight;
+    }
+    function addUserBubble(msg) {
+      var main = document.getElementById('chat_main');
+      var bubble = document.createElement('div');
+      bubble.setAttribute('class', 'bubble bubble--alt');
+      bubble.innerText = msg;
+      main.appendChild(bubble);
+
+      document.chatForm.inputbox.value = '';
+      main.scrollTop = main.scrollHeight - main.clientHeight;
+    }
+
   }
 ]);
 
-var logScrollTimer = -1;
-function logScrollBottom() {
-  // if(logScrollTimer > -1) clearTimeout(logScrollTimer);
-
-  // logScrollTimer = setTimeout(function() {
-    var logDiv = document.getElementById('logDiv');
-    logDiv.scrollTop = logDiv.scrollHeight - logDiv.clientHeight;
-    // logScrollTimer = -1;
-  // }, 300);
-}
-
-function clearBubble() {
-  var main = document.getElementById('chat_main');
-  main.innerText = '';
-  document.chatForm.inputbox.value = '';
-}
-
-function addBotBubble(msg) {
-  var main = document.getElementById('chat_main');
-  var bubble = document.createElement('div');
-  bubble.setAttribute('class', 'bubble');
-
-  if(msg.startsWith('{')) {
-    var json = JSON.parse(msg);
-    bubble.innerText = json.text;
-    if(json.url) {
-      if(json.urlMessage) bubble.innerHTML += '\n<br/><a href="' + json.url + '" target="_blank">' + json.urlMessage +'</a>';
-      else bubble.innerHTML += '\n<br/><a href="' + json.url + '" target="_blank">' + json.url +'</a>';
-    }
-  } else {
-    bubble.innerText = msg;
-  }
-
-  main.appendChild(bubble);
-
-  main.scrollTop = main.scrollHeight - main.clientHeight;
-}
-function addUserBubble(msg) {
-  var main = document.getElementById('chat_main');
-  var bubble = document.createElement('div');
-  bubble.setAttribute('class', 'bubble bubble--alt');
-  bubble.innerText = msg;
-  main.appendChild(bubble);
-
-  document.chatForm.inputbox.value = '';
-  main.scrollTop = main.scrollHeight - main.clientHeight;
-}

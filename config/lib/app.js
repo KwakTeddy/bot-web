@@ -48,7 +48,8 @@ module.exports.start = function start(callback) {
 
   var bot = require('./bot');
   bot.initGlobals();
-  bot.loadBots();
+  // bot.loadBots();
+  // bot.loadBot('athena');
 
   _this.init(function (app, db, config) {
 

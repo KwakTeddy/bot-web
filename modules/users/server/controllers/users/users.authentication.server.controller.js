@@ -80,7 +80,9 @@ exports.signin = function (req, res, next) {
  */
 exports.signout = function (req, res) {
   req.logout();
-  res.redirect('/');
+
+  if(req.query['path']) res.redirect(req.query['path']);
+  else res.redirect('/');
 };
 
 /**
