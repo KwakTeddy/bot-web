@@ -25,24 +25,32 @@ module.exports = function (io, socket) {
 
   socket.on('send_msg', function(msg) {
     bot.botProc(msg.bot, msg.channel || 'socket', msg.user, msg.msg, function(_out, _task) {
-      if(_task == undefined || _task.url == undefined ) {
-        socket.emit('send_msg', _out +
-          (_task && _task.photoUrl ? "\nphoto: " + _task.photoUrl : "") + " " +
-          (_task && _task.photoWidth ? "\nwidth: " + _task.photoWidth : "") + " " +
-          (_task && _task.photoHeight ? "\nheight: " + _task.photoHeight : "") + " " +
-          (_task && _task.urlMessage ? "\nurlMessage: " + _task.urlMessage : "") + " " +
-          (_task && _task.url ? "\nurl: " + _task.url : "") + " " +
-          (_task && _task.buttons ? "\nbuttons: " + _task.buttons: ""));
+      // if(_task == undefined || _task.url == undefined ) {
+      //   socket.emit('send_msg', _out +
+      //     (_task && _task.photoUrl ? "\nphoto: " + _task.photoUrl : "") + " " +
+      //     (_task && _task.photoWidth ? "\nwidth: " + _task.photoWidth : "") + " " +
+      //     (_task && _task.photoHeight ? "\nheight: " + _task.photoHeight : "") + " " +
+      //     (_task && _task.urlMessage ? "\nurlMessage: " + _task.urlMessage : "") + " " +
+      //     (_task && _task.url ? "\nurl: " + _task.url : "") + " " +
+      //     (_task && _task.buttons ? "\nbuttons: " + _task.buttons: ""));
+      // } else {
+      //   var json = {text: _out};
+      //   if(_task.photoUrl) json.photoUrl = _task.photoUrl;
+      //   if(_task.photoWidth) json.photoWidth = _task.photoWidth;
+      //   if(_task.photoHeight) json.photoHeight = _task.photoHeight;
+      //   if(_task.urlMessage) json.urlMessage = _task.urlMessage;
+      //   if(_task.url) json.url = _task.url;
+      //   if(_task.buttons) json.buttons = _task.buttons;
+      //   socket.emit('send_msg', JSON.stringify(json));
+      // }
+
+      if(_task == undefined || _task.result == undefined ) {
+        socket.emit('send_msg', _out);
       } else {
-        var json = {text: _out};
-        if(_task.photoUrl) json.photoUrl = _task.photoUrl;
-        if(_task.photoWidth) json.photoWidth = _task.photoWidth;
-        if(_task.photoHeight) json.photoHeight = _task.photoHeight;
-        if(_task.urlMessage) json.urlMessage = _task.urlMessage;
-        if(_task.url) json.url = _task.url;
-        if(_task.buttons) json.buttons = _task.buttons;
-        socket.emit('send_msg', JSON.stringify(json));
+        if(_task.result.text == undefined) _task.result.text = _out;
+        socket.emit('send_msg', JSON.stringify(_task.result));
       }
+
 
 
     }, _.assign(chatscriptConfig, {host: msg.host, port: msg.port}));

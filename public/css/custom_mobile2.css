@@ -1,0 +1,33 @@
+.me {
+    text-align: right;
+}
+
+.icon-tail-me{
+    position: absolute;
+    top: 0;
+    right: -5px;
+    width: 0;
+    height: 0;
+    border-top: 8px solid #33c1d7;
+    border-right: 8px solid transparent;
+    border-top-right-radius: 3px;
+}
+
+.item-avatar-right {
+    padding-right: 22px;
+}
+
+.bubble .content {
+    white-space: pre !important;
+}
+
+#search i {
+    float: left;
+    height: 34px;
+    min-height: 34px;
+    color: gray;
+    font-size: 20px;
+    margin: auto;
+    padding: 8px 10px 0 10px;
+}
+

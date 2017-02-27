@@ -1,14 +1,36 @@
 'use strict';
-var botClient = angular.module('botClient', ['angularFileUpload', 'ngResource', 'ngCookies']);
+// var botClient = angular.module('botClient', ['angularFileUpload', 'ngResource', 'ngCookies', 'user-bots']);
+ApplicationConfiguration.registerModule('botClient', ['angularFileUpload', 'ngResource', 'ngCookies', 'user-bots'])
 
-botClient.controller('PrivateBotController', ['$scope', '$document', '$timeout', '$window', '$resource', '$cookies', 'Socket', 'FileUploader',
-  function ($scope, $document, $timeout, $window, $resource, $cookies, Socket, FileUploader) {
+var botClient = angular.module('botClient');
+botClient.controller('PrivateBotController', ['$scope', '$document', '$timeout', '$window', '$resource', '$cookies', 'Socket',
+  'FileUploader', 'UserBotsService', 'UserBotsFollowService',
+  function ($scope, $document, $timeout, $window, $resource, $cookies, Socket, FileUploader, UserBotsService, UserBotsFollowService) {
     var vm = this;
 
     $scope.vm = vm;
     $scope.test = 'test1';
 
+    vm.userBots = UserBotsService.query({}, function(docs) {
+      console.log(docs[0].name);
+    });
 
+    vm.userBot = new UserBotsService();
+    vm.create = function (isValid) {
+      $scope.error = null;
+      if (!isValid) {
+        $scope.$broadcast('show-errors-check-validity', 'userBotForm');
+        return false;
+      }
+
+      vm.userBot.$save(function (response) {
+        console.log(response);
+        // $state.go('user-bots.list');
+        // $location.path('userBots/' + response._id);
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
 
     // if (!Socket.socket) {
     //   Socket.connect();
@@ -86,11 +108,11 @@ botClient.controller('PrivateBotController', ['$scope', '$document', '$timeout',
     $document.bind("keydown", function(event) {
       // console.debug('keydown:' + event.keyCode)
 
-        if(event.keyCode == 116) {    // F5
-          vm.buildBot();
-        } else if(event.keyCode == 27) {
-          vm.resetBot();
-        }
+      if(event.keyCode == 116) {    // F5
+        vm.buildBot();
+      } else if(event.keyCode == 27) {
+        vm.resetBot();
+      }
     });
 
     // vm.onKeyPress = function (keyCode) {

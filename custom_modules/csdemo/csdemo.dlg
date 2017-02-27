@@ -389,7 +389,12 @@ csdemo.searchCenterTask
 시작:
 c<시작
 c<처음
-{action: 'startAction'}
+{action: 'startAction',
+    postCallback: function(task, context, callback) {
+        task.result = {smartReply: ['서비스센터찾기', '영업시간', '수리가능품목']}
+        callback(task, context);
+    }
+}
 > 안녕하세요. 머니브레인 고객센터입니다.
 
 c<이전
