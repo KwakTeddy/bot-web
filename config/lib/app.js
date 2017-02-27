@@ -48,8 +48,8 @@ module.exports.start = function start(callback) {
 
   var bot = require('./bot');
   bot.initGlobals();
-  bot.loadBots();
-  // bot.loadBot('athena');
+  // bot.loadBots();
+  bot.loadBot('csdemo');
 
   _this.init(function (app, db, config) {
 
