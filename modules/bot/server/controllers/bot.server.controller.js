@@ -10,6 +10,7 @@ var dialog = require(path.resolve('modules/bot/action/common/dialog'));
 var async = require('async');
 var fs = require('fs');
 var command = require(path.resolve('modules/bot/action/common/command'));
+var botModule = require(path.resolve('./config/lib/bot'));
 
 var chatSocketConfig = {port: 1024, host: 'localhost', allowHalfOpen: true};
 
@@ -163,23 +164,25 @@ function getContext(botName, channel, user, callback) {
   // if(!global._botusers) global._botusers = {};
 
   var userContext, botUserContext;
-
+  var botContext;
   async.waterfall([
     function(cb) {
-      if(!global._bots[botName]) global._bots[botName] = {};
-      if(!global._channels[channel]) global._channels[channel] = {};
+      // if (!global._bots[botName]) global._bots[botName] = {};
+      if (!global._channels[channel]) global._channels[channel] = {};
 
-      if(user == undefined) {
+      if (user == undefined) {
         cb(null);
-      } else if(!global._users[user]) {
+      } else if (!global._users[user]) {
         var botUser = require(path.resolve('./modules/bot-users/server/controllers/bot-users.server.controller'));
-        var _user =  {userId: user, channel: channel, bot: botName};
-        botUser.getUserContext(_user, null, function(_user, _context) {
+        var _user = {userId: user, channel: channel, bot: botName};
+        botUser.getUserContext(_user, null, function (_user, _context) {
           userContext = {userId: user, channel: channel, bot: botName};
           userContext = utils.merge(userContext, _user.doc._doc);
 
-          if(userContext.address)
-            userContext.addressCompact = userContext.address.지번주소.replace(/^([가-힣]+\s*)/, function(matched, p1) { return ''});
+          if (userContext.address)
+            userContext.addressCompact = userContext.address.지번주소.replace(/^([가-힣]+\s*)/, function (matched, p1) {
+              return ''
+            });
           // userContext.addressCompact = userContext.addressCompact.replace(/(\s+\(.*\))/, function(matched, p1) {return ''});
 
           global._users[user] = userContext;
@@ -188,6 +191,24 @@ function getContext(botName, channel, user, callback) {
       } else {
         userContext = global._users[user];
         cb(null);
+      }
+    }, function(cb) {
+      if(global._bots[botName]) {
+        botContext = global._bots[botName];
+        cb(null);
+      } else if(global._userbots[botName]) {
+        botContext = global._userbots[botName];
+        cb(null);
+      } else {
+        botModule.loadUserBot(botName, function(_userBot) {
+          if(_userBot) {
+            botContext = _userBot;
+          } else {
+            botContext = {};
+          }
+
+          cb(null);
+        })
       }
     }, function(cb) {
       if(user != undefined) {
@@ -203,7 +224,7 @@ function getContext(botName, channel, user, callback) {
   ], function(err) {
     var context = {
       global: global._context,
-      bot: global._bots[botName],
+      bot: botContext,
       channel: global._channels[channel],
       user: userContext,
       botUser: botUserContext,

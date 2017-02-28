@@ -56,7 +56,7 @@ var dialogs = [
 },
 {
   input: false,
-  output: '두번째 다이얼로그가 호출되었을 때 출력됩니다.      // 사용자 입력에 대한 match 없이 호출에만 사용됨'
+  output: '두번째 다이얼로그가 호출되었을 때 출력됩니다.'
 },
 {
   input: '호출 하다 2',
@@ -64,19 +64,19 @@ var dialogs = [
 },
 {
   input: '재시',
-  output: {start: 1}     // 시작
+  output: {start: 1}
 },
 {
   input: '이전',
-  output: {up: 1}        // 상위 (대부분은 이전에 사용됨)
+  output: {up: 1}
 },
 {
   input: '뒤로',
-  output: {back: 1}      // 뒤로 숫자 만큼
+  output: {back: 1}
 },
 {
   input: '다시',
-  output: {repeat: 1}    // 재질문
+  output: {repeat: 1}
 },
 {
   input: 'custom',
@@ -96,11 +96,11 @@ var dialogs = [
 },
 {
   input: '완료 확인',
-  output: '다음 내용으로 처리하시겠습니가? 추가할 일이 있으면 "추가"라고 말씀해주세요,',
-  children: [
+  output: '다음 내용으로 처리하시겠습니가? 추가할 일이 있으면 "추가"라고 말씀해주세요,', 
+    children: [
     {
       input: '추가',
-      output: {returnCall: '반환'}                      // return와 같이 쓰면 다음으로 가지않고 호출한 곳으로 돌아감
+      output: {returnCall: '반환'}
     },
     {
       input: '네',
@@ -111,18 +111,18 @@ var dialogs = [
 {
   name: '반환',
   input: '반환,',
-  output: '추가할 내용을 말씀해주세요.,',
-  children: [
+  output: '추가할 내용을 말씀해주세요.,', 
+    children: [
     {
       input: '호출 반환',
-      output: {call: '호출1', return: 1}            // return: 1이 있으면 returnCall로 불린경우 호출된 곳으로 돌아가고, 아니면 원래데로 call 등 output 처리
+      output: {call: '호출1', return: 1}
     }
   ]
 },
 {
-  input: '하위 질문 ',
-  output: '1.메뉴1\n2.메뉴2\n3.메뉴3',
-  children: [
+  input: '하위 질문',
+  output: '1.메뉴1\n2.메뉴2\n3.메뉴3', 
+    children: [
     {
       input: '1',
       output: '메뉴1 내용입니다.'
@@ -233,8 +233,62 @@ var dialogs = [
   output: '+text+\n task에서 저장한 내용 표시'
 },
 {
+  input: 'button',
+  task:   {
+      action: function(task, context, callback) {
+          task.result = {
+              title: '제목테스트',
+              text: '링크 테스트 입니다. 링크 테스트 입니다. 링크 테스트 입니다. 링크 테스트 입니다. 링크 테스트 입니다. ',
+              buttons: [
+                  {text: '상세보기', url: 'http://www.google.com'},
+                  {text: '상세보기', url: 'http://www.google.com'},
+                  {text: '상세보기', url: 'http://www.google.com'}
+              ],
+              smartReply: ['버튼1', '버튼2', '버튼3']
+          };
+          callback(task, context);
+      }
+  },
+  output: 'button 결과'
+},
+{
+  input: 'items',
+  task:   {
+      action: function(task, context, callback) {
+          task.result = {
+              items: [
+                  {
+                      text: '박근혜 대통령 측이 이달 24일로 예정된 탄핵심판의 최종 변론기일을 3월 초로 연기해달라고 헌법재판소에 공식 요청한 것으로 확인됐다',
+                      imageUrl: '/images/news_image.jpg',
+                      buttons: [
+                          {text: '상세보기', url: 'http://www.google.com'},
+                      ]
+                  },
+                  {
+                      text: '박근혜 대통령 측이 이달 24일로 예정된 탄핵심판의 최종 변론기일을 3월 초로 연기해달라고 헌법재판소에 공식 요청한 것으로 확인됐다',
+                      imageUrl: '/images/news_image.jpg',
+                      buttons: [
+                          {text: '상세보기', url: 'http://www.google.com'},
+                      ]
+                  },
+                  {
+                      text: '박근혜 대통령 측이 이달 24일로 예정된 탄핵심판의 최종 변론기일을 3월 초로 연기해달라고 헌법재판소에 공식 요청한 것으로 확인됐다',
+                      imageUrl: '/images/news_image.jpg',
+                      buttons: [
+                          {text: '상세보기', url: 'http://www.google.com'},
+                      ]
+                  }
+              ],
+              smartReply: ['버튼1', '버튼2', '버튼3']
+          };
+          callback(task, context);
+      }
+  },
+  output: 'items 결과'
+},
+{
   input: '',
-  output: '매칭되는 문장이 없습니다.                                     // input이 없으면 순서가 오면 무조건 표시 gambit 역활'
+  output: '매칭되는 문장이 없습니다.'
 }
 ];
 

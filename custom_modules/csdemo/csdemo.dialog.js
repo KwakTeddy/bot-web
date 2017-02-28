@@ -1148,7 +1148,12 @@ var commonDialogs = [
 {
   name: '시작',
   input: ['시작', '처음'],
-  task:   {action: 'startAction'},
+  task:   {action: 'startAction',
+      postCallback: function(task, context, callback) {
+          task.result = {smartReply: ['서비스센터찾기', '영업시간', '수리가능품목']}
+          callback(task, context);
+      }
+  },
   output: '안녕하세요. 머니브레인 고객센터입니다.'
 },
 {

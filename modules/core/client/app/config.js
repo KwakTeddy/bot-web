@@ -4,7 +4,14 @@
 var ApplicationConfiguration = (function () {
   // Init module configuration options
   var applicationModuleName = 'mean';
-  var applicationModuleVendorDependencies = ['ngResource', 'ngAnimate', 'ngMessages', 'ngCookies', 'ui.router', 'ui.bootstrap', 'ui.utils', 'angularFileUpload', 'datatables', 'ui.codemirror', 'ui.select', 'ngSanitize', 'ngDropzone'];
+
+  var applicationModuleVendorDependencies;
+
+  if(_platform == 'mobile') {
+    applicationModuleVendorDependencies = ['ng', 'ngResource', 'ngAnimate', 'ngMessages', 'ngCookies', 'ui.router', 'ui.bootstrap', 'ui.bootstrap.modal', 'ui.utils', 'ionic'];
+  } else {
+    applicationModuleVendorDependencies = ['ngResource', 'ngAnimate', 'ngMessages', 'ngCookies', 'ui.router', 'ui.bootstrap', 'ui.utils', 'angularFileUpload', 'datatables', 'ui.codemirror', 'ui.select', 'ngSanitize', 'ngDropzone'];
+  }
 
   // Add a new vertical module
   var registerModule = function (moduleName, dependencies) {

@@ -6,6 +6,7 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   UserDialog = mongoose.model('UserDialog'),
+  UserDialogLog = mongoose.model('UserDialogLog'),
   Bank = mongoose.model('Bank'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
@@ -49,14 +50,28 @@ function addDialog(inText, outText, isFail, context, callback) {
     dialog: outText
   };
 
-
   UserDialog.create([inQuery, outQuery], function(err) {
     if(err) {}
     else {}
 
-    callback();
+    var query = {
+      botId: context.bot.botName,
+      userId : context.user.userKey,
+      channel: context.channel.name,
+      year: (new Date()).getYear() + 1900,
+      month: (new Date()).getMonth() + 1,
+      date: (new Date()).getDate()
+    };
+
+    UserDialogLog.update(query, query, {upsert: true}, function(err) {
+      if(err) {}
+      else {}
+
+      callback();
+    });
+
+    // callback();
   });
 }
 
 exports.addDialog = addDialog;
-

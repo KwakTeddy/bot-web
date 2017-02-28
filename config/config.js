@@ -116,7 +116,8 @@ var initGlobalConfigFolders = function (config, assets) {
   // Appending files
   config.folders = {
     server: {},
-    client: {}
+    client: {},
+    mobile: {}
   };
 
   // Setting globbed client paths
@@ -130,7 +131,8 @@ var initGlobalConfigFiles = function (config, assets) {
   // Appending files
   config.files = {
     server: {},
-    client: {}
+    client: {},
+    mobile: {}
   };
 
   // Setting Globbed model files
@@ -153,6 +155,12 @@ var initGlobalConfigFiles = function (config, assets) {
 
   // Setting Globbed css files
   config.files.client.css = getGlobbedPaths(assets.client.lib.css, 'public/').concat(getGlobbedPaths(assets.client.css, ['public/']));
+
+  // Setting Globbed js files
+  config.files.mobile.js = getGlobbedPaths(assets.mobile.lib.js, 'public/').concat(getGlobbedPaths(assets.mobile.js, ['public/']));
+
+  // Setting Globbed css files
+  config.files.mobile.css = getGlobbedPaths(assets.mobile.lib.css, 'public/').concat(getGlobbedPaths(assets.mobile.css, ['public/']));
 
   // Setting Globbed test files
   config.files.client.tests = getGlobbedPaths(assets.client.tests);

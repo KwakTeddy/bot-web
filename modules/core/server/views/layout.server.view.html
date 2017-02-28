@@ -60,6 +60,24 @@
   <!-- Head Libs -->
   <script src="/vendor/modernizr/modernizr.js"></script>
 
+  <script>
+    var mobileKeyWords = new Array('iPhone', 'iPod', 'BlackBerry', 'Android', 'Windows CE', 'LG', 'MOT', 'SAMSUNG', 'SonyEricsson');
+    for (var word in mobileKeyWords){
+      if (navigator.userAgent.match(mobileKeyWords[word]) != null){
+        location.href = '/?_p=m';
+        break;
+      }
+    }
+    var _platform = "web";
+    var _os = '';
+    var _facebookAppId = "{{facebookAppId}}";
+    var _kakaoJSId = "{{kakaoJSAppId}}";
+    var _ogTitle = "{{title}}";
+    var _ogDescription = "{{description}}";
+    var _ogUrl = "{{url}}";
+    var _ogLogo = "{{logo}}";
+  </script>
+
 </head>
 <body>
 <section class="body">
@@ -254,7 +272,7 @@
                 </ul>
               </li>
 
-              <li class="nav-parent">
+              <li class="nav-parent" ng-show="false">
                 <a>
                   <i class="fa fa-align-left" aria-hidden="true"></i>
                   <span>배달봇</span>
@@ -268,6 +286,22 @@
                   </li>
                   <li>
                     <a ui-sref="deliveryOrders.list">주문관리</a>
+                  </li>
+                </ul>
+              </li>
+
+
+              <li class="nav-parent">
+                <a>
+                  <i class="fa fa-align-left" aria-hidden="true"></i>
+                  <span>분석</span>
+                </a>
+                <ul class="nav nav-children">
+                  <li>
+                    <a ui-sref="user-bots.context-analytics">Context 분석</a>
+                  </li>
+                  <li>
+                    <a ui-sref="user-bots.context-learning">Context 학습</a>
                   </li>
                 </ul>
               </li>
@@ -296,6 +330,9 @@
     <section role="main" class="content-body">
       {% block content %}{% endblock %}
     </section>
+
+    <section id="chat-include" ng-include="'/modules/bots/client/views/chat-user-bot.client.view.html'"></section>
+
   </div>
 </section>
 
