@@ -123,6 +123,7 @@
 
 .page-header {
     padding-right: 400px;
+
 }
 
 
@@ -166,6 +167,8 @@
 .chat_main {
     height: 444px !important;
     padding: 10px 0 0 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .chat-items .thumbnail {

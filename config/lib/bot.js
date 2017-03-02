@@ -256,14 +256,14 @@ function loadUserBot(botName, callback) {
       var faqType = {
         name: 'typeDoc',
         typeCheck: global._context.typeChecks['dialogTypeCheck'], //type.mongoDbTypeCheck,
-        preType: function(task, context, type, callback) {
-          type.mongo.queryStatic.dialogset = bot.dialogset;
-          callback(task, context);
-        },
+        // preType: function(task, context, type, callback) {
+        //   type.mongo.queryStatic.dialogset = bot.dialogset;
+        //   callback(task, context);
+        // },
         limit: 5,
         mongo: {
           model: 'DialogSet',
-          queryStatic: {dialogset: ''},
+          // queryStatic: {dialogset: ''},
           queryFields: ['input'],
           fields: 'input output' ,
           taskFields: ['input', 'output', 'matchRate'],

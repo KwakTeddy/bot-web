@@ -57,6 +57,12 @@ module.exports = function (app) {
     .put(userBots.updateDialog)
     .delete(userBots.deleteDialog);
 
+  app.route('/api/user-bots-analytics/context')
+    .get(userBots.contextAnalytics);
+
+  app.route('/api/user-bots-analytics/learning')
+    .post(userBots.contextLearning);
+
   // Finish by binding the userBot middleware
   app.param('userBotId', userBots.userBotByID);
   app.param('fileId', userBots.fileByID);

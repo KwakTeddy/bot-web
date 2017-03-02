@@ -1241,7 +1241,8 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
     function(_cb) {
       var matchConcepts = [];
       var bot = context.bot;
-      if(bot.concepts) {
+      if(bot
+          .concepts) {
         for(var key in bot.concepts) {
 
           for (var i = 0; i < words.length; i++) {

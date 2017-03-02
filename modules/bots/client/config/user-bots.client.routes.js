@@ -59,6 +59,20 @@ angular.module('user-bots').config(['$stateProvider',
           userBotFilesResolve: getUserBotFiles
         }
       })
+      .state('user-bots.context-analytics', {
+        url: '/context-analytics',
+        templateUrl: 'modules/bots/client/views/context-analytics.client.view.html',
+        controller: 'AnalyticsController',
+        controllerAs: 'vm'
+      })
+
+      .state('user-bots.context-learning', {
+        url: '/context-learning',
+        templateUrl: 'modules/bots/client/views/context-learning.client.view.html',
+        controller: 'AnalyticsController',
+        controllerAs: 'vm'
+      })
+
     ;
   }
 ]);

@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('user-bots').controller('UserBotChatController', ['$state', '$scope', '$stateParams', '$document', '$timeout', '$window', '$compile', '$resource', '$cookies', 'Socket',
+angular.module('user-bots').controller('UserBotChatController', ['$state', '$rootScope', '$scope', '$stateParams', '$document', '$timeout', '$window', '$compile', '$resource', '$cookies', 'Socket',
   'UserBotsService',
-  function ($state, $scope, $stateParams, $document, $timeout, $window, $compile, $resource, $cookies, Socket, UserBotsService) {
+  function ($state, $rootScope, $scope, $stateParams, $document, $timeout, $window, $compile, $resource, $cookies, Socket, UserBotsService) {
     var vm = this;
     $scope.vm = vm;
 
@@ -155,9 +155,9 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$sco
 
     // 전체화면 이벤트로 전환
     $document.bind("keydown", function(event) {
-      // console.debug('keydown:' + event.keyCode)
+      $rootScope.$broadcast('keyinput', vm.msg);
 
-        if(event.keyCode == 116) {    // F5
+      if(event.keyCode == 116) {    // F5
           vm.buildBot();
         } else if(event.keyCode == 27) {
           vm.resetBot();

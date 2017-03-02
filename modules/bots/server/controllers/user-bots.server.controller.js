@@ -718,3 +718,85 @@ exports.userBotDialogByID = function (req, res, next, id) {
     next();
   });
 };
+
+/********************** analytics ****************************/
+
+var type = require(path.resolve('./modules/bot/action/common/type'));
+exports.contextAnalytics = function (req, res) {
+
+  var faqType = {
+    name: 'result',
+    typeCheck: type.dialogTypeCheck,
+    // preType: function(task, context, type, callback) {
+    //   type.mongo.queryStatic.dialogset = bot.dialogset;
+    //   callback(task, context);
+    // },
+    limit: 10,
+    mongo: {
+      model: 'DialogSet',
+      // queryStatic: {dialogset: '기본대화1'},
+      queryFields: ['input'],
+      fields: 'input output' ,
+      taskFields: ['input', 'output', 'matchRate'],
+      minMatch: 1
+    }
+  };
+
+  dialogset.processInput(null, req.query.input, function(_input) {
+    type.executeType(_input, faqType, {}, {bot: {}}, function(_text, _result) {
+      res.json(_result);
+    });
+  });
+
+
+  // var dialog = {
+  //   input: {types: [faqType]},
+  //   task:   {
+  //     action: function(task, context, callback) {
+  //       console.log(JSON.stringify(task.typeDoc));
+  //       if(Array.isArray(task.typeDoc)) {
+  //         if(task.typeDoc.length > 1) task._output = task.typeDoc[1].output;
+  //         else task._output = task.typeDoc[0].output;
+  //       } else {
+  //         task._output = task.typeDoc.output;
+  //       }
+  //       callback(task, context);
+  //     }
+  //   },
+  //   output: '+_output+'
+  // };
+  //
+  // var sort = req.query.sort || '-created';
+  //
+  // var query = {};
+  // if(req.params.userBotId) query['userBot'] =  req.userBot;
+  //
+  // UserBotDialog.find(query).sort(sort).populate('user').exec(function (err, dialogs) {
+  //   if (err) {
+  //     return res.status(400).send({
+  //       message: errorHandler.getErrorMessage(err)
+  //     });
+  //   } else {
+  //     res.json(dialogs);
+  //   }
+  // });
+};
+
+
+exports.contextLearning = function (req, res) {
+  var sort = req.query.sort || '-created';
+
+  var query = {};
+  if(req.params.userBotId) query['userBot'] =  req.userBot;
+
+  UserBotDialog.find(query).sort(sort).populate('user').exec(function (err, dialogs) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json(dialogs);
+    }
+  });
+};
+
