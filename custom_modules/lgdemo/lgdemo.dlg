@@ -14,6 +14,28 @@ var lgdemo = require('./lgdemo');
             <~네> 더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.
             <~아니요> 고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 LG전자가 되겠습니다.\nLG전자 콜센터 번호는 1544-7777입니다.\nLG전자에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.
 
+센터및수리:
+< {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true},{name: 'repairable', typeCheck: lgdemo.repairableTypecheck, raw: true}]}
+{action: lgdemo.repairableCheck}
+> if(context.dialog.repairable == 'remote') +category+ 상품은 서비스 센터에서 수리를 받으시는 것보다 출장 수리를 예약하여, 기사님을 통하여 서비스를 받으시면 더욱 편리합니다.\n서비스 기사님의 출장수리 예약을 도와드릴까요?|서비스 기사님의 출장 수리 예약을 도와드릴까요?
+    <~네> {call:'출장수리예약'}
+    <~아니요> 더 필요하신 게 있으신가요?
+        <~네> 고객님, 어떤 부분이 궁금하신가요?
+        <~아니요>LG전자에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
+            <~네> 더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.
+            <~아니요> 고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 LG전자가 되겠습니다.\nLG전자 콜센터 번호는 1544-7777입니다.\nLG전자에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.
+> if((context.dialog.address.시군구명||context.dialog.address.시도명) && context.dialog.address.법정읍면동명 == undefined && context.dialog.address.도로명 == undefined && context.dialog.address.건물본번 == undefined) {repeat: 1, options: {output: '고객님, 정확한 안내를 드리기 위하여 +address.시도명+ +address.시군구명+의 하위 상세주소를 입력 부탁드립니다.'}}
+> if(!Array.isArray(context.dialog.address)) +address.시군구명+ +address.법정읍면동명+ 맞나요?|이 주소가 맞나요?
+    < ~네
+    lgdemo.searchCenterTask
+    >{call: '수리가능'}
+    <{if: 'true'}> {up: 1}
+> if(Array.isArray(context.dialog.address)) 다음 중 어떤 지역이신가요?\n#address#+index+. +지번주소+ +시군구용건물명+\n#|다음 중 어떤 지역이신가요?
+    <{types: [{name: 'address', listName: 'address', typeCheck: 'listTypeCheck'}]}
+    lgdemo.searchCenterTask
+    >{call: '수리가능'}
+    <{if: 'true'}> {up: 1}
+
 처음에서위치찾기:
 < {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}], regexp: /~서비스센터/}
 > if((context.dialog.address.시군구명||context.dialog.address.시도명) && context.dialog.address.법정읍면동명 == undefined && context.dialog.address.도로명 == undefined && context.dialog.address.건물본번 == undefined) {repeat: 1, options: {output: '고객님, 정확한 안내를 드리기 위하여 +address.시도명+ +address.시군구명+의 하위 상세주소를 입력 부탁드립니다.'}}
