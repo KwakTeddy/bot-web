@@ -17,8 +17,6 @@ var path = require('path'),
   multer = require('multer'),
   fs = require('fs');
 
-  var dialogset = require('./dialogset');
-
 /**
  * Create a userBot
  */
@@ -181,10 +179,6 @@ exports.list = function (req, res) {
       res.json(userBots);
     }
   });
-
-  dialogset.nlpTest(function() {
-    console.log('end analyze');
-  })
 };
 
 
