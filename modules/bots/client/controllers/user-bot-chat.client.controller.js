@@ -378,7 +378,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     }
 
     // if(vm.bot) vm.connect();
-    angular.element('#inputbox').focus();
+    if(_platform == 'web') angular.element('#inputbox').focus();
 
     if(_platform != 'mobile')
       document.getElementById("chat-header").innerText = vm.bot;

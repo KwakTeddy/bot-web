@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('messengers')
+    .module('user-bots')
     .config(routeConfig);
 
   routeConfig.$inject = ['$stateProvider'];
