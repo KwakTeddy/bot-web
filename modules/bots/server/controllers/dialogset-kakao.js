@@ -181,25 +181,25 @@ function convertConversation(file, outfile, callback) {
 
         for(var i in exceptline) {
           if(array[3].search(exceptline[i]) != -1) {
-            console.log('array 3: ' + array[3]);
+            // console.log('array 3: ' + array[3]);
             array[3] = '';
           }
         }
 
-        // if(array[3] == '' ||
-        //   array[3] == '사진' ||
-        //   array[3] == '동영상' ||
-        //   array[3] == '페이스톡 해요' ||
-        //   array[3] == '취소' ||
-        //   array[3] == '부재중' ||
-        //   array[3] == '응답 없음' ||
-        //   array[3] == '(이모티콘)' ||
-        //   array[3].search(/^\(.*\)\s*$/) != -1 ||
-        //   array[3].startsWith('http'))
-        // {
-        //   console.log('array 3: ' + array[3]);
-        //   array[3] = '';
-        // }
+        if(array[3] == '' ||
+          array[3] == '사진' ||
+          array[3] == '동영상' ||
+          array[3] == '페이스톡 해요' ||
+          array[3] == '취소' ||
+          array[3] == '부재중' ||
+          array[3] == '응답 없음' ||
+          array[3] == '(이모티콘)' ||
+          array[3].search(/^\(.*\)\s*$/) != -1 ||
+          array[3].startsWith('http'))
+        {
+          // console.log('array 3: ' + array[3]);
+          array[3] = '';
+        }
 
         if(array[3] != '') {
           if(dialogs.length > 0 && dialogs[dialogs.length - 1].character == array[2]) {
@@ -257,13 +257,14 @@ function insertDatasetFile(infile, callback) {
           });
 
           processInput(null, input, function(_input, _json) {
-            // console.log("자연어 처리>> " + _input);
+            // console.log(input + '\n' + _input);
 
             var task = {
               doc:{
                 dialogset: info.name,
                 id: result.toString(),
                 tag: [],
+                inputRaw: input,
                 input: _input,
                 output: (outputs.length > 0 ? outputs: output)
                 // output: output
@@ -299,9 +300,6 @@ exports.insertDatasetFile = insertDatasetFile;
 var nlp = require(path.resolve('modules/bot/engine/nlp/processor'));
 
 function processInput(context, inRaw, callback) {
-  console.log(inRaw);
-
-  // var inRaw = '장세영에게 010-6316-5683으로 전화해줘.';
   var nlpKo = new nlp({
     stemmer: true,      // (optional default: true)
     normalizer: true,   // (optional default: true)
@@ -335,10 +333,6 @@ function processInput(context, inRaw, callback) {
 
     if(_sentenceType === '') _sentenceType = 'declarative';
 
-    // console.log(JSON.stringify(result));
-    console.log(inRaw + ' ' + JSON.stringify(_nlpRaw));
-    // console.log(_in);
-    // console.log(_sentenceType);
     callback(_in, {_nlp: _nlpRaw});
   });
 }

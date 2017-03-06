@@ -3,6 +3,8 @@ var config = require('../config'),
   mongoose = require('mongoose'),
   fs = require('fs'),
   utils = require(path.resolve('modules/bot/action/common/utils')),
+  tone = require(path.resolve('modules/bot/action/common/tone')),
+  globals = require(path.resolve('custom_modules/global/dialogs')),
   _ = require('lodash');
 
 function buildBot(botName) {
@@ -215,6 +217,8 @@ function loadUserBot(botName, callback) {
 
       var userBot = new UserBot(doc);
 
+      dialogs = dialogs.concat(globals.globalDialogs);
+
       var faqType2 = {
         name: 'typeDoc',
         typeCheck: global._context.typeChecks['dialogTypeCheck'], //type.mongoDbTypeCheck,
@@ -256,14 +260,14 @@ function loadUserBot(botName, callback) {
       var faqType = {
         name: 'typeDoc',
         typeCheck: global._context.typeChecks['dialogTypeCheck'], //type.mongoDbTypeCheck,
-        // preType: function(task, context, type, callback) {
-        //   type.mongo.queryStatic.dialogset = bot.dialogset;
-        //   callback(task, context);
-        // },
+        preType: function(task, context, type, callback) {
+          type.mongo.queryStatic.dialogset = bot.dialogset;
+          callback(task, context);
+        },
         limit: 5,
         mongo: {
           model: 'DialogSet',
-          // queryStatic: {dialogset: ''},
+          queryStatic: {dialogset: ''},
           queryFields: ['input'],
           fields: 'input output' ,
           taskFields: ['input', 'output', 'matchRate'],
@@ -284,6 +288,15 @@ function loadUserBot(botName, callback) {
             }
             callback(task, context);
           }
+          // postCallback: function(task, context, callback) {
+          //   var toneType = context.botUser.tone;
+          //   if(toneType == undefined) toneType = '해요체';
+          //
+          //   tone.toneSentence(task._output, toneType, function(_output) {
+          //     task._output = _output;
+          //     callback(task, context);
+          //   });
+          // }
         },
         output: '+_output+'
       };

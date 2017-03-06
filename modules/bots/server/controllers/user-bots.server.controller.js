@@ -181,11 +181,19 @@ exports.list = function (req, res) {
       res.json(userBots);
     }
   });
+
+  dialogset.nlpTest(function() {
+    console.log('end analyze');
+  })
 };
 
 
 exports.followList = function (req, res) {
-  UserBotFollow.find({botUserId: req.body.botUserId}).sort('-created').populate('userBot').exec(function (err, follows) {
+  var query = {};
+  if(req.body.userBot) query['userBot'] = req.body.userBot;
+  if(req.body.botUserId) query['botUserId'] = req.body.botUserId;
+
+  UserBotFollow.find(query).sort('-created').populate('userBot').exec(function (err, follows) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -204,13 +212,16 @@ exports.followList = function (req, res) {
 
 exports.followBot = function(req, res) {
   var userBotFollow = new UserBotFollow(req.body);
-
   userBotFollow.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
+      if(userBotFollow.userBot.followed) userBotFollow.userBot.followed++;
+      else userBotFollow.userBot.followed = 1;
+      userBotFollow.userBot.$save();
+
       res.json(userBotFollow);
     }
   });

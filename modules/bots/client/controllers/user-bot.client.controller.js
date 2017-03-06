@@ -2,13 +2,21 @@
 
 // UserBots controller
 angular.module('user-bots').controller('UserBotController', ['$scope', '$rootScope', '$state', '$window','$timeout', '$stateParams',
-  'Authentication', 'userBotResolve', 'FileUploader', 'UserBotsService', 'UserBotCommentService', 'UserBotDialogService',
-  function ($scope, $rootScope, $state, $window, $timeout, $stateParams, Authentication, userBot, FileUploader, UserBotsService, UserBotCommentService, UserBotDialogService) {
+  'Authentication', 'userBotResolve', 'FileUploader', 'UserBotsService', 'UserBotCommentService', 'UserBotDialogService', 'UserBotsFollowService',
+  function ($scope, $rootScope, $state, $window, $timeout, $stateParams, Authentication, userBot, FileUploader, UserBotsService, UserBotCommentService, UserBotDialogService, UserBotsFollowService) {
     var vm = this;
     vm.user = Authentication.user;
     vm.userBot = userBot;
     vm.userBot.public = true;
+    vm.userId = $rootScope.userId;
 
+    vm.userBot.userFollow = UserBotsFollowService.list({userBot: vm.userBot, botUserId: vm.userId}, function(res) {
+      if(res.length > 0) vm.userBot.userFollow = true;
+      else vm.userBot.userFollow = undefined;
+      // console.log(res);
+    });
+
+    // UserBotsFollowService.get()
     // if(vm.userBot && vm.userBot._id)
     //   $rootScope.$broadcast('setUserBot', vm.userBot);
 
@@ -21,10 +29,24 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
       vm.type= type;
     };
 
+    vm.followBot = function(userBot) {
+      UserBotsFollowService.follow({botUserId: vm.userId, userBot: userBot._id}, function(err, result) {
+        vm.userBot.userFollow = true;
+        // alert('친구로 추가 되었습니다.')
+      });
+    };
+
+    vm.unfollowBot = function(userBot) {
+      UserBotsFollowService.unfollow({botUserId: vm.userId, userBot: userBot._id}, function(err, result) {
+        vm.userBot.userFollow = undefined;
+        // alert('친구를 취소하였습니다.')
+      });
+    };
+
     vm.userBotChat = function(userBot) {
       // $scope.$emit('setUserBot', userBot);
       console.log('vm.userBotChat');
-      $rootScope.$broadcast('setUserBot', vm.userBot);
+      $rootScope.$broadcast('setUserBot', userBot);
     };
 
     // Create new UserBot

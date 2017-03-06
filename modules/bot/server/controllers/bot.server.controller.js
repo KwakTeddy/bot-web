@@ -11,6 +11,8 @@ var async = require('async');
 var fs = require('fs');
 var command = require(path.resolve('modules/bot/action/common/command'));
 var botModule = require(path.resolve('./config/lib/bot'));
+var factModule = require(path.resolve('modules/bot/action/common/facts'));
+var toneModule = require(path.resolve('modules/bot/action/common/tone'));
 
 var chatSocketConfig = {port: 1024, host: 'localhost', allowHalfOpen: true};
 
@@ -51,19 +53,23 @@ function botProc(botName, channel, user, inTextRaw, outCallback, chatServerConfi
   var print = function(_out, _task) {
     logger.debug("사용자 출력>> " + _out + "\n");
 
-    if(_task && _task.photoUrl && !_task.photoUrl.startsWith('http')) {
-      _task.photoUrl = (process.env.HTTP_HOST ? process.env.HTTP_HOST : '') + _task.photoUrl;
-    }
+    toneModule.toneSentence(_out, context.botUser.tone || '해요체', function(out) {
+      _out = out;
 
-    if(channel == 'ios' || channel == 'android') {
-      outCallback(_out, _task);
-    } else {
-      if(_out.indexOf('|') == -1) outCallback(_out, _task);
-      else {
-        var arr = _out.split('|');
-        outCallback(arr[0], _task);
+      if(_task && _task.photoUrl && !_task.photoUrl.startsWith('http')) {
+        _task.photoUrl = (process.env.HTTP_HOST ? process.env.HTTP_HOST : '') + _task.photoUrl;
       }
-    }
+
+      if(channel == 'ios' || channel == 'android') {
+        outCallback(_out, _task);
+      } else {
+        if(_out.indexOf('|') == -1) outCallback(_out, _task);
+        else {
+          var arr = _out.split('|');
+          outCallback(arr[0], _task);
+        }
+      }
+    });
   };
 
   var context, inTextNLP, inDoc;
@@ -86,6 +92,16 @@ function botProc(botName, channel, user, inTextRaw, outCallback, chatServerConfi
         inDoc = _inDoc;
         cb(null);
       });
+    },
+
+    function(cb) {
+      if (context.botUser.nlp) {
+        context.botUser.sentenceInfo = toneModule.analyzeSentence(inTextRaw, null, context.botUser.nlp);
+
+        factModule.memoryFacts(inTextRaw, context, function (_task, _context) {
+          cb(null);
+        });
+      }
     },
 
     function(cb) {

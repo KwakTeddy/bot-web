@@ -371,8 +371,10 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     if($cookies.get('userId') == undefined) {
       vm.userId = generateUUID();
       $cookies.put('userId', vm.userId);
+      $rootScope.userId = vm.userId;
     } else {
       vm.userId = $cookies.get('userId');
+      $rootScope.userId = vm.userId;
     }
 
     // if(vm.bot) vm.connect();

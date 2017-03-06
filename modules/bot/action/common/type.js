@@ -45,17 +45,19 @@ exports.processInput = function(context, inRaw, callback) {
   });
 
   checkTypes(inRaw, commonTypes, doc, context, function(_inRaw, inDoc) {
-    nlpKo.tokenizeToStrings(_inRaw, function(err, result) {
+    nlpKo.tokenize/*ToStrings*/(_inRaw, function(err, result) {
 
       if(!result) result = inRaw;
       var result2 = [];
       for (var i = 0; i < result.length; i++) {
-        var word = result[i];
-        if(word.search(/^(이|가|을|를)$/) == -1) result2.push(word);
+        var word = result[i].text;
+        if(word.search(/^(은|는|이|가|을|를)$/) == -1) result2.push(word);
       }
       var inNLP = result2.join(' ');
 
       inNLP = inNLP.replace(/(?:\{ | \})/g, '+');
+
+      context.botUser.nlp = result;
 
       callback(inNLP, inDoc);
     }) // async
@@ -1337,6 +1339,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
       if(_words.length == 0) _words.concat(excluded);
 
       async.eachSeries(_words, function (word, _callback){
+        word = RegExp.escape(word);
 
         if(word.length <= 1) {
           _callback(null);
@@ -1375,14 +1378,19 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                 var matchIndex = -1, matchMin = -1, matchMax = -1;
                 for(var l = 0; l < format.mongo.queryFields.length; l++) {
                   for(var m = 0; m < _words.length; m++) {
-                    matchIndex = doc[format.mongo.queryFields[l]].search(new RegExp(_words[m], 'i'));
+                    var _word = _words[m];
+                    _word = RegExp.escape(_word);
+                    matchIndex = doc[format.mongo.queryFields[l]].search(new RegExp(_word, 'i'));
 
                     if(matchIndex != -1) {
                       matchCount++;
                       matchTotal += doc[format.mongo.queryFields[l]].split(' ').length;
                       matchedWord += words[m];
 
-                      var matchOrgIndex = text.search(new RegExp(words[m], 'i'));
+                      var __word = words[m];
+                      __word = RegExp.escape(__word);
+
+                      var matchOrgIndex = text.search(new RegExp(__word, 'i'));
                       if(matchOrgIndex != -1 && (matchMin == -1 || matchOrgIndex < matchMin)) matchMin = matchOrgIndex;
                       if(matchOrgIndex != -1 && (matchMax == -1 || matchOrgIndex + words[m].length> matchMax)) matchMax = matchOrgIndex + words[m].length;
                     }
