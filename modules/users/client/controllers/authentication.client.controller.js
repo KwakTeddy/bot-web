@@ -46,6 +46,13 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
       document.getElementById('mainHeader').style.display = 'none';
       document.getElementById('container-chat').style.display = 'none';
     }
+    // userbot 비밀번호 변경시 테두리 없애기
+    var userbotHeader =  document.getElementById('mainHeader');
+    var userbotChat =  document.getElementById('container-chat');
+    if(userbotHeader && userbotChat) {
+        document.getElementById('mainHeader').style.display = 'none';
+        document.getElementById('container-chat').style.display = 'none';
+    }
 
     $scope.signin = function (isValid) {
       $scope.error = null;

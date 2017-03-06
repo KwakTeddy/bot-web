@@ -35,7 +35,6 @@ angular.module('users').controller('PasswordController', ['$scope', '$stateParam
     // Change user password
     $scope.resetUserPassword = function (isValid) {
       $scope.success = $scope.error = null;
-
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'resetPasswordForm');
 
@@ -52,6 +51,7 @@ angular.module('users').controller('PasswordController', ['$scope', '$stateParam
         // And redirect to the index page
         $location.path('/password/reset/success');
       }).error(function (response) {
+        console.log(response);
         $scope.error = response.message;
       });
     };

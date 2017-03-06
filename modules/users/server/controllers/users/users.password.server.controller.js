@@ -123,7 +123,7 @@ exports.reset = function (req, res, next) {
   // Init Variables
   var passwordDetails = req.body;
   var message = null;
-
+  console.log(123123);
   async.waterfall([
 
     function (done) {

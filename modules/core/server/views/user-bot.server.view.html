@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-<head>
+<head ng-controller="UserBotHeaderController">
     <base href="/">
     <meta charset="utf-8">
-    <meta property="og:url"           content="http://dev.moneybrain.ai:8443/userbot/home" />
+    <meta property="og:url"           content="currentUrl" />
     <meta property="og:type"          content="website" />
     <meta property="og:title"         content="Your Website Title" />
     <meta property="og:description"   content="Your description" />
@@ -32,6 +32,8 @@
         var _platform = 'web';
         var _os = '';
     </script>
+
+  <!--<script src="//scdn.line-apps.com/n/line_it/thirdparty/loader.min.js" async="async"　defer="defer"></script>-->
 </head>
 
 <body>
@@ -91,7 +93,7 @@
                             <ul class="list-unstyled">
                                 <li class="divider"></li>
                                 <li>
-                                    <a role="menuitem" tabindex="-1" href="#"><i class="fa fa-user"></i> 비밀번호 변경</a>
+                                    <a role="menuitem" tabindex="-1" ng-click="$state.go('settings.password')"><i class="fa fa-user"></i> 비밀번호 변경</a>
                                 </li>
                                 <li>
                                     <a role="menuitem" tabindex="-1" href="/api/auth/signout?path=/userbot" target="_self"><i class="fa fa-power-off"></i> 로그아웃</a>
@@ -148,22 +150,23 @@
                 </div>
                 <div class="col-sm-4 intro-messengers">
                     <!--메신져에서 친구 추가해서 사용하세요.<br/>-->
-                  <a href="">
+                  <a href="#">
                     <img src="/bot-client/images/kakaotalk-icon1.png" height="50"/>
                   </a>
-                  <a href="">
-                    <img src="/bot-client/images/line-messenger-vector-logo.png" height="50"/>
+                  <a href="#">
+                    <img src="/bot-client/images/line-messenger-vector-logo.png" height="50" alt="LINE it!" />
                   </a>
-                  <a id="shareBtnFb">
+                  <a href="">
                     <img src="/bot-client/images/facebook-messenger-android.png" height="50" style="border-radius: 8px;"/>
                   </a>
+
+                  <!--<div class="line-it-button" data-lang="en" data-type="share-d" data-url="http://localhost:8443/userbot/home" style="display: none;"></div>-->
 
                 </div>
             </div>
         </div>
     </div>
 </header>
-
 
 
 <div ui-view></div>
@@ -290,6 +293,7 @@
     chatPosition();
 </script>
 
+<!--facebook-->
 <!--<div id="fb-root"></div>-->
 <script src="http://connect.facebook.net/en_US/all.js"></script>
 <script>
@@ -301,22 +305,16 @@
     });
 //    FB.AppEvents.logPageView();
   };
-  console.log(FB);
-//
-//  (function(d, s, id){
-//    var js, fjs = d.getElementsByTagName(s)[0];
-//    if (d.getElementById(id)) {return;}
-//    js = d.createElement(s); js.id = id;
-//    js.src = "//connect.facebook.net/en_US/sdk.js";
-//    fjs.parentNode.insertBefore(js, fjs);
-//  }(document, 'script', 'facebook-jssdk'));
-
-
+  (function(d, s, id){
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {return;}
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
 </script>
-
 <script>
-  document.getElementById('shareBtnFb').onclick = function() {
-      console.log(FB);
+  function shareFb() {
     FB.ui({
       method: 'share',
       display: 'popup',
@@ -324,6 +322,39 @@
     }, function(response){});
   }
 </script>
+
+<!--kakao-->
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+<script type='text/javascript'>
+  //<![CDATA[
+  // // 사용할 앱의 JavaScript 키를 설정해 주세요.
+  Kakao.init('f1eb73f3491e5c1e1178b3b8c12b10e5');
+  // // 카카오링크 버튼을 생성합니다. 처음 한번만 호출하면 됩니다.
+//  Kakao.Link.createTalkLinkButton({
+//    container: '#kakao-link-btn',
+//    label: '안녕하세요 머니브레인입니다.',
+//    image: {
+//      src: 'http://dev.moneybrain.ai:8443/userbot/home',
+//      width: '300',
+//      height: '200'
+//    },
+//    webButton: {
+//      text: '카카오 디벨로퍼스',
+//      url: 'http://dev.moneybrain.ai:8443/userbot/home' // 앱 설정의 웹 플랫폼에 등록한 도메인의 URL이어야 합니다.
+//    }
+//  });
+  function shareStory() {
+    Kakao.Story.share({
+      url: 'https://dev.kakao.com',
+      text: '머니 브레인'
+    });
+  }
+  //]]>
+</script>
+
+<!--line-->
+<script src="https://d.line-scdn.net/r/web/social-plugin/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
+
 
 </body>
 </html>
