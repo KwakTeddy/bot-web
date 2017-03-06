@@ -28,7 +28,7 @@ module.exports = function (app) {
     .get(userBots.listFile)
     .post(userBots.createFile);
 
-  app.route('/api/user-bots/files/:userBotId/:fileId')
+  app.route('/api/user-bots/files/:userBotId/:userBotFileId')
     .get(userBots.readFile)
     .post(userBots.editFile)
     .delete(userBots.removeFile)
@@ -65,7 +65,7 @@ module.exports = function (app) {
 
   // Finish by binding the userBot middleware
   app.param('userBotId', userBots.userBotByID);
-  app.param('fileId', userBots.fileByID);
+  app.param('userBotFileId', userBots.fileByID);
   app.param('userBotCommentId', userBots.userBotCommentByID);
   app.param('userBotDialogId', userBots.userBotDialogByID);
 
