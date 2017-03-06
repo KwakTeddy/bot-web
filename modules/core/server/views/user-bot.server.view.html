@@ -3,7 +3,14 @@
 <head>
     <base href="/">
     <meta charset="utf-8">
-    <title>머니브레인 아테나 챗봇 - MoneyBrian ATHENA</title>
+    <meta property="og:url"           content="http://dev.moneybrain.ai:8443/userbot/home" />
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="Your Website Title" />
+    <meta property="og:description"   content="Your description" />
+    <meta property="og:image"         content="http://dev.moneybrain.ai:8443/userbot/home/image.jpg" />
+
+
+  <title>머니브레인 아테나 챗봇 - MoneyBrian ATHENA</title>
 
     <link href="/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="/vendor/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css">
@@ -28,7 +35,6 @@
 </head>
 
 <body>
-
 <nav id="mainNav" class="navbar navbar-default navbar-fixed-top affix-top" ng-controller="UserBotHeaderController">
     <div class="container">
         <div class="navbar-header page-scroll">
@@ -142,9 +148,16 @@
                 </div>
                 <div class="col-sm-4 intro-messengers">
                     <!--메신져에서 친구 추가해서 사용하세요.<br/>-->
+                  <a href="">
                     <img src="/bot-client/images/kakaotalk-icon1.png" height="50"/>
+                  </a>
+                  <a href="">
                     <img src="/bot-client/images/line-messenger-vector-logo.png" height="50"/>
+                  </a>
+                  <a id="shareBtnFb">
                     <img src="/bot-client/images/facebook-messenger-android.png" height="50" style="border-radius: 8px;"/>
+                  </a>
+
                 </div>
             </div>
         </div>
@@ -277,6 +290,40 @@
     chatPosition();
 </script>
 
+<!--<div id="fb-root"></div>-->
+<script src="http://connect.facebook.net/en_US/all.js"></script>
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '240853479709635',
+      xfbml      : true,
+      version    : 'v2.8'
+    });
+//    FB.AppEvents.logPageView();
+  };
+  console.log(FB);
+//
+//  (function(d, s, id){
+//    var js, fjs = d.getElementsByTagName(s)[0];
+//    if (d.getElementById(id)) {return;}
+//    js = d.createElement(s); js.id = id;
+//    js.src = "//connect.facebook.net/en_US/sdk.js";
+//    fjs.parentNode.insertBefore(js, fjs);
+//  }(document, 'script', 'facebook-jssdk'));
+
+
+</script>
+
+<script>
+  document.getElementById('shareBtnFb').onclick = function() {
+      console.log(FB);
+    FB.ui({
+      method: 'share',
+      display: 'popup',
+      href: 'http://dev.moneybrain.ai:8443/userbot/home'
+    }, function(response){});
+  }
+</script>
 
 </body>
 </html>
