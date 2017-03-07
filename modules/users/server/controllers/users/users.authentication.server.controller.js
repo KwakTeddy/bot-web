@@ -7,7 +7,13 @@ var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   mongoose = require('mongoose'),
   passport = require('passport'),
-  User = mongoose.model('User');
+  User = mongoose.model('User'),
+    nodemailer = require('nodemailer'),
+    async = require('async'),
+    crypto = require('crypto'),
+    config = require(path.resolve('./config/config'));
+
+var smtpTransport = nodemailer.createTransport(config.mailer.options);
 
 // URLs for which user can't be redirected on signin
 var noReturnUrls = [
@@ -40,74 +46,112 @@ exports.signup = function (req, res) {
         if (err) {
             return err;
         } else {
-            if (!result) {
-                // Then save the user
-                user.save(function (err) {
-                    if (err) {
-                        return res.status(400).send({
-                            message: errorHandler.getErrorMessage(err)
-                        });
-                    } else {
-                        // Remove sensitive data before login
-                        user.password = undefined;
-                        user.salt = undefined;
-
-                        req.login(user, function (err) {
-                            if (err) {
-                                res.status(400).send(err);
-                            } else {
-                                res.json(user);
-                            }
-                        });
-                    }
-                });
-            } else {
-                // Check if user exists, is not signed in using this provider, and doesn't have that provider data already configured
-                if (result.provider !== user.provider && (!result.additionalProvidersData || !result.additionalProvidersData[user.provider])) {
-                    // Add the provider data to the additional provider data field
-                    if (!result.additionalProvidersData) {
-                        result.additionalProvidersData = {};
-                    }
-
-                    result.password = user.password;
-
-                    user.password = undefined;
-                    user.roles = undefined;
-                    result.additionalProvidersData[user.provider] = user;
-
-                    // Then tell mongoose that we've updated the additionalProvidersData field
-                    result.markModified('additionalProvidersData');
-
-                    // And save the result
-                    result.save(function (err) {
-                        if (err) {
-                            return res.status(400).send({
-                                message: errorHandler.getErrorMessage(err)
-                            });
-                        } else {
-                            // Remove sensitive data before login
-                            result.password = undefined;
-                            result.salt = undefined;
-
-                            req.login(result, function (err) {
+            if (result && result.emailConfirmed) {
+                return null;
+            }
+            if (result && (result.provider == user.provider)){
+                return null;
+            }
+            async.waterfall([
+                // Generate random token
+                function (done) {
+                    crypto.randomBytes(20, function (err, buffer) {
+                        var token = buffer.toString('hex');
+                        user.localEmailConfirmToken = token;
+                        user.localEmailConfirmExpires = Date.now() + 3600000; // 1 hour
+                        if (!result) {
+                            // Then save the user
+                            user.save(function (err) {
                                 if (err) {
-                                    res.status(400).send(err);
+                                    return res.status(400).send({
+                                        message: errorHandler.getErrorMessage(err)
+                                    });
                                 } else {
-                                    res.json(result);
+                                    // Remove sensitive data before login
+                                    user.password = undefined;
+                                    user.salt = undefined;
+                                    return res.status(200).redirect('');
+                                }
+                            });
+                        } else if (result.provider !== user.provider && (!result.additionalProvidersData || !result.additionalProvidersData[user.provider])) {
+                            // Add the provider data to the additional provider data field
+                            if (!result.additionalProvidersData) {
+                                result.additionalProvidersData = {};
+                            }
+
+                            result.password = JSON.parse(JSON.stringify(user.password));
+                            result['localEmailConfirmToken'] = JSON.parse(JSON.stringify(user.localEmailConfirmToken));
+                            result['localEmailConfirmExpires'] = JSON.parse(JSON.stringify(user.localEmailConfirmExpires));
+
+                            user.password = undefined;
+                            user.roles = undefined;
+                            user.localEmailConfirmToken = undefined;
+                            user.localEmailConfirmExpires = undefined;
+                            result.additionalProvidersData[user.provider] = user;
+
+                            // Then tell mongoose that we've updated the additionalProvidersData field
+                            result.markModified('additionalProvidersData');
+
+                            // And save the result
+                            result.save(function (err) {
+                                if (err) {
+                                    return res.status(400).send({
+                                        message: errorHandler.getErrorMessage(err)
+                                    });
+                                } else {
+                                    // Remove sensitive data before login
+                                    result.password = undefined;
+                                    result.salt = undefined;
+
                                 }
                             });
                         }
+                        done(err, token, user);
                     });
-                } else {
-                  return res.status(400).send({
-                      message: 'email already exist'
-                  });
+                },
+                function (token, user, done) {
+
+                    var httpTransport = 'http://';
+                    if (config.secure && config.secure.ssl === true) {
+                        httpTransport = 'https://';
+                    }
+                    res.render(path.resolve('modules/users/server/templates/email-confirm'), {
+                        name: user.displayName,
+                        appName: config.app.title,
+                        url: httpTransport + req.headers.host + '/api/auth/emailconfirm/' + token
+                    }, function (err, emailHTML) {
+                        done(err, emailHTML, user);
+                    });
+                },
+                // If valid email, send reset email using service
+                function (emailHTML, user, done) {
+                    var mailOptions = {
+                        to: user.email,
+                        from: config.mailer.from,
+                        subject: 'Confirm Email',
+                        html: emailHTML
+                    };
+                    smtpTransport.sendMail(mailOptions, function (err) {
+                        if (!err) {
+                            res.send({
+                                message: 'An email has been sent to the provided email with further instructions.'
+                            });
+                        } else {
+                            return res.status(400).send({
+                                message: 'Failure sending email'
+                            });
+                        }
+
+                        done(err);
+                    });
                 }
-            }
+            ], function (err) {
+                if (err) {
+                    return next(err);
+                }
+            });
         }
     });
-
-
 };
 
 /**
@@ -178,8 +222,9 @@ exports.oauthCallback = function (strategy, scope) {
         if (err) {
           return res.redirect('/authentication/signin');
         }
-        return res.redirect('/');
-        // return res.redirect(redirectURL || sessionRedirectURL || '/');
+        console.log(redirectURL.redirect_to);
+        console.log(sessionRedirectURL);
+        return res.redirect(redirectURL.redirect_to || sessionRedirectURL || '/');
       });
     })(req, res, next);
   };
@@ -324,4 +369,34 @@ exports.removeOAuthProvider = function (req, res, next) {
       });
     }
   });
+};
+
+/**
+ * Email Confirm GET from email token
+ */
+exports.validateEmailConfirmToken = function (req, res) {
+
+    //Define email search query
+    var emailConfirmQuery = {};
+    emailConfirmQuery['localEmailConfirmToken'] = req.params.token;
+    emailConfirmQuery['localEmailConfirmExpires'] = {
+        $gt: Date.now()
+    };
+
+    User.findOne(emailConfirmQuery, function (err, user) {
+        if (!user) {
+            return res.redirect('/userbot/emailconfirm/invalid');
+        }
+        user.localEmailConfirmed = true;
+        user.localEmailConfirmToken = undefined;
+        user.localEmailConfirmExpires = undefined;
+
+        user.save(function (err) {
+            if (err){
+                console.log(err);
+            }else {
+                res.redirect('/userbot');
+            }
+        });
+    });
 };

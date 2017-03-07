@@ -67,7 +67,7 @@
                     <a class="page-scroll" href="/userbot/create#editBot">봇만들기</a>
                 </li>
                 <li class="" ng-hide="authentication && authentication.user">
-                    <a role="menuitem" tabindex="-1" href="" ng-click="$state.go('authentication.signin')" target="_self"><i class="fa fa-power-off"></i> Login</a>
+                    <a role="menuitem" tabindex="-1" href="" ng-click="$state.go('user-bots-web.authentication.signin')" target="_self"><i class="fa fa-power-off"></i> Login</a>
                 </li>
                 <!--<li class="" ng-show="authentication && authentication.user">-->
                     <!--<a role="menuitem" tabindex="-1" href="/api/auth/signout?path=/userbot" target="_self"><i class="fa fa-power-off"></i> Logout</a>-->
@@ -93,7 +93,7 @@
                             <ul class="list-unstyled">
                                 <li class="divider"></li>
                                 <li>
-                                    <a role="menuitem" tabindex="-1" ng-click="$state.go('settings.password')"><i class="fa fa-user"></i> 비밀번호 변경</a>
+                                    <a role="menuitem" tabindex="-1" ng-click="$state.go('user-bots-web.settings.password')"><i class="fa fa-user"></i> 비밀번호 변경</a>
                                 </li>
                                 <li>
                                     <a role="menuitem" tabindex="-1" href="/api/auth/signout?path=/userbot" target="_self"><i class="fa fa-power-off"></i> 로그아웃</a>

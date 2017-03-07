@@ -78,14 +78,14 @@ module.exports = {
     sandbox: false
   },
   mailer: {
-    from: process.env.MAILER_FROM || 'MAILER_FROM',
-    options: {
-      service: process.env.MAILER_SERVICE_PROVIDER || 'MAILER_SERVICE_PROVIDER',
-      auth: {
-        user: process.env.MAILER_EMAIL_ID || 'MAILER_EMAIL_ID',
-        pass: process.env.MAILER_PASSWORD || 'MAILER_PASSWORD'
+      from: process.env.MAILER_FROM || 'PlayChat',
+      options: {
+          service: process.env.MAILER_SERVICE_PROVIDER || 'GMAIL',
+          auth: {
+              user: process.env.MAILER_EMAIL_ID || '',
+              pass: process.env.MAILER_PASSWORD || ''
+          }
       }
-    }
   },
   seedDB: {
     seed: process.env.MONGO_SEED === 'true' ? true : false,

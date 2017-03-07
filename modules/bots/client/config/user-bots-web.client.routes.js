@@ -64,7 +64,91 @@ angular.module('user-bots').config(['$stateProvider',
           roles: ['guest','user', 'admin']
         }
       })
-    ;
+      .state('user-bots-web.settings', {
+          abstract: true,
+          url: '/settings',
+          templateUrl: 'modules/users/client/views/settings/settings.client.view.html',
+          data: {
+              roles: ['user', 'admin']
+          }
+      })
+      .state('user-bots-web.settings.profile', {
+          url: '/profile',
+          templateUrl: 'modules/users/client/views/settings/edit-profile.client.view.html'
+      })
+      .state('user-bots-web.settings.password', {
+          url: '/password',
+          templateUrl: 'modules/users/client/views/settings/change-password.client.view.html'
+      })
+      .state('user-bots-web.settings.accounts', {
+          url: '/accounts',
+          templateUrl: 'modules/users/client/views/settings/manage-social-accounts.client.view.html'
+      })
+      .state('user-bots-web.settings.picture', {
+          url: '/picture',
+          templateUrl: 'modules/users/client/views/settings/change-profile-picture.client.view.html'
+      })
+      .state('user-bots-web.authentication', {
+          abstract: true,
+          url: '/authentication',
+          templateUrl: '/modules/users/client/views/authentication/authentication.client.view.html',
+          controller: 'AuthenticationController'
+      })
+      .state('user-bots-web.authentication.signup', {
+          url: '/signup',
+          templateUrl: 'modules/users/client/views/authentication/signup.client.view.html'
+      })
+      .state('user-bots-web.authentication.signin', {
+          url: '/signin?err',
+          templateUrl: 'modules/users/client/views/authentication/signin.client.view.html'
+      })
+      .state('user-bots-web.password', {
+          abstract: true,
+          url: '/password',
+          template: '<ui-view/>'
+      })
+      .state('user-bots-web.password.forgot', {
+          url: '/forgot',
+          templateUrl: 'modules/users/client/views/password/forgot-password.client.view.html'
+      })
+      .state('user-bots-web.password.reset', {
+          abstract: true,
+          url: '/reset',
+          template: '<ui-view/>'
+      })
+      .state('user-bots-web.password.reset.invalid', {
+          url: '/invalid',
+          templateUrl: 'modules/users/client/views/password/reset-password-invalid.client.view.html'
+      })
+      .state('user-bots-web.password.reset.success', {
+          url: '/success',
+          templateUrl: 'modules/users/client/views/password/reset-password-success.client.view.html',
+      })
+      .state('user-bots-web.password.reset.form', {
+          url: '/:token',
+          templateUrl: 'modules/users/client/views/password/reset-password.client.view.html'
+      })
+      .state('user-bots-web.not-found', {
+          url: '/not-found',
+          templateUrl: 'modules/core/client/views/404.client.view.html',
+          data: {
+              ignoreState: true
+          }
+      })
+      .state('user-bots-web.bad-request', {
+          url: '/bad-request',
+          templateUrl: 'modules/core/client/views/400.client.view.html',
+          data: {
+              ignoreState: true
+          }
+      })
+      .state('user-bots-web.forbidden', {
+          url: '/forbidden',
+          templateUrl: 'modules/core/client/views/403.client.view.html',
+          data: {
+              ignoreState: true
+          }
+      });
   }
 ]);
 

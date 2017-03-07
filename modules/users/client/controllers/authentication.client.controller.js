@@ -8,15 +8,33 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
     // Get an eventual error defined in the URL query string:
     $scope.error = $location.search().err;
 
+    //routing
+    var stingParser = $state.current.name;
+    var parsedString = stingParser.split('.');
+    if (parsedString[0] == 'user-bots-web') {
+      $scope.passwordForgot = 'user-bots-web.password.forgot';
+      $scope.authenticationSignup = 'user-bots-web.authentication.signup';
+      $scope.authenticationSignin = 'user-bots-web.authentication.signin';
+
+    } else {
+      $scope.passwordForgot = 'password.forgot';
+      $scope.authenticationSignup = 'authentication.signup';
+      $scope.authenticationSignin = 'authentication.signin';
+    }
+
     // If user is signed in then redirect back home
     if ($scope.authentication.user) {
-      $location.path('/');
+      if (parsedString[0] == 'user-bots-web') {
+          $state.go('user-bots-home');
+      } else {
+          $state.go('home')
+      }
     }
 
     $scope.signup = function (isValid) {
       $scope.error = {};
       $scope.submitted = true;
-
+      console.log(isValid);
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'userForm');
 
@@ -42,16 +60,12 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
     // userbot 로그인시 테두리 없애기
     var userbotHeader =  document.getElementById('mainHeader');
     var userbotChat =  document.getElementById('container-chat');
+    var stingParser = $state.current.name;
+    var parsedString = stingParser.split('.');
+
     if(userbotHeader && userbotChat) {
       document.getElementById('mainHeader').style.display = 'none';
       document.getElementById('container-chat').style.display = 'none';
-    }
-    // userbot 비밀번호 변경시 테두리 없애기
-    var userbotHeader =  document.getElementById('mainHeader');
-    var userbotChat =  document.getElementById('container-chat');
-    if(userbotHeader && userbotChat) {
-        document.getElementById('mainHeader').style.display = 'none';
-        document.getElementById('container-chat').style.display = 'none';
     }
 
     $scope.signin = function (isValid) {

@@ -13,11 +13,11 @@
 
           <div class="form-group mb-lg" ng-class="{ 'has-success': userForm.name.$valid && submitted,
                                             'has-error': (error.username || userForm.name.$invalid) && submitted }">
-            <label>Name</label>
+            <label>이름</label>
 
             <input type="text" name="name" class="form-control input-lg" ng-model="credentials.username" required/>
             <p class="help-block" ng-show="userForm.name.$error.required && submitted">
-              A name is required
+              이름을 입력하세요
             </p>
             <p class="help-block" ng-show="error.username">
               {{ error.username }}
@@ -26,17 +26,17 @@
 
           <div class="form-group mb-lg" ng-class="{ 'has-success': userForm.email.$valid && submitted,
                                             'has-error': (error.email || userForm.email.$invalid) && submitted }">
-            <label>E-mail Address</label>
+            <label>E-mail</label>
 
             <input type="email" name="email" class="form-control input-lg" ng-model="credentials.email"
                    ng-pattern="/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i"
                    required
                    mongoose-error/>
             <p class="help-block" ng-show="(userForm.email.$error.email || userForm.email.$error.pattern) && submitted">
-              Doesn't look like a valid email.
+              E-mail 주소가 아닌 것 같아요
             </p>
             <p class="help-block" ng-show="userForm.email.$error.required && submitted">
-              What's your email address?
+              E-mail을 입력하세요
             </p>
             <p class="help-block" ng-show="error.email">
               {{ error.email }}
@@ -46,7 +46,7 @@
 
           <div class="form-group mb-lg" ng-class="{ 'has-success': userForm.pwd.$valid && submitted,
                                             'has-error': userForm.pwd.$invalid && submitted }">
-            <label>Password</label>
+            <label>비밀번호</label>
 
             <input type="password" name="pwd" class="form-control input-lg" ng-model="credentials.password"
                    ng-minlength="6"
@@ -54,7 +54,8 @@
                    mongoose-error/>
             <p class="help-block"
                ng-show="(userForm.pwd.$error.minlength || userForm.pwd.$error.required) && submitted">
-              Password must be at least 6 characters.
+              비밀번호 조건은 다음과 같아요:
+              최소 6글자
               <!--ng-pattern = '/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{6,16}$/'-->
             </p>
             <p class="help-block" ng-show="userForm.pwd.$error.mongoose">
@@ -74,20 +75,21 @@
           <!--</p>-->
           <!--</div>-->
 
-            <div class="row">
+            <div class="row form-group mb-lg" ng-class="{ 'has-success': userForm.agreeterms.$valid && submitted,
+                                            'has-error': userForm.agreeterms.$invalid && submitted }">
               <div class="col-sm-8">
                 <div class="checkbox-custom checkbox-default">
-                  <input id="AgreeTerms" name="agreeterms" type="checkbox"/>
-                  <label for="AgreeTerms">I agree with <a href="#">terms of use</a></label>
+                  <input id="AgreeTerms" name="agreeterms" type="checkbox" ng-model="credentials.agreeterms" required/>
+                  <label for="AgreeTerms"><a href="#">약관</a>에 동의해요</label>
                 </div>
               </div>
               <div class="col-sm-4 text-right">
-                <button type="submit" class="btn btn-primary hidden-xs">Sign Up</button>
-                <button type="submit" class="btn btn-primary btn-block btn-lg visible-xs mt-lg">Sign Up</button>
+                <button type="submit" class="btn btn-primary hidden-xs">가입</button>
+                <button type="submit" class="btn btn-primary btn-block btn-lg visible-xs mt-lg">가입</button>
               </div>
             </div>
 
-            <p class="text-center">Already have an account? <a ui-sref="authentication.signin">Sign In!</a></p>
+            <p class="text-center">이미 가입 했나요? <a ui-sref="{{authenticationSignin}}">로그인해요!</a></p>
 
           </form>
       </div>

@@ -88,6 +88,16 @@ var UserSchema = new Schema({
   },
   resetPasswordExpires: {
     type: Date
+  },
+  localEmailConfirmToken: {
+    type: String
+  },
+  localEmailConfirmExpires: {
+    type: Date
+  },
+  localEmailConfirmed: {
+    type: Boolean,
+    default: false
   }
 });
 

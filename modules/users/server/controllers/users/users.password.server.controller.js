@@ -26,19 +26,19 @@ exports.forgot = function (req, res, next) {
         done(err, token);
       });
     },
-    // Lookup user by username
+    // Lookup user by email
     function (token, done) {
-      if (req.body.username) {
+      if (req.body.email) {
         User.findOne({
-          username: req.body.username.toLowerCase()
+          email: req.body.email.toLowerCase()
         }, '-salt -password', function (err, user) {
           if (!user) {
             return res.status(400).send({
-              message: 'No account with that username has been found'
+              message: '회원가입 되지 않은 E-mail이에요!'
             });
-          } else if (user.provider !== 'local') {
+          } else if ((user.provider !== 'local') && (!user.additionalProvidersData || !user.additionalProvidersData.local)) {
             return res.status(400).send({
-              message: 'It seems like you signed up using your ' + user.provider + ' account'
+              message: 'SNS 계정(' + user.provider + ')으로 가입되었네요'
             });
           } else {
             user.resetPasswordToken = token;
@@ -51,7 +51,7 @@ exports.forgot = function (req, res, next) {
         });
       } else {
         return res.status(400).send({
-          message: 'Username field must not be blank'
+          message: 'E-mail을 입력 안 하셨네요'
         });
       }
     },
@@ -61,10 +61,11 @@ exports.forgot = function (req, res, next) {
       if (config.secure && config.secure.ssl === true) {
         httpTransport = 'https://';
       }
+
       res.render(path.resolve('modules/users/server/templates/reset-password-email'), {
         name: user.displayName,
         appName: config.app.title,
-        url: httpTransport + req.headers.host + '/api/auth/reset/' + token
+        url: httpTransport + req.headers.host + '/api/auth/reset/' + token + '/' + req.body.from
       }, function (err, emailHTML) {
         done(err, emailHTML, user);
       });
@@ -80,11 +81,11 @@ exports.forgot = function (req, res, next) {
       smtpTransport.sendMail(mailOptions, function (err) {
         if (!err) {
           res.send({
-            message: 'An email has been sent to the provided email with further instructions.'
+            message: '비밀번호 재설정을 위해 E-mail을 보냈습니다. 확인해주세요'
           });
         } else {
           return res.status(400).send({
-            message: 'Failure sending email'
+            message: 'E-mail 보내기에 실패했습니다'
           });
         }
 
@@ -111,8 +112,12 @@ exports.validateResetToken = function (req, res) {
     if (!user) {
       return res.redirect('/password/reset/invalid');
     }
-
-    res.redirect('/password/reset/' + req.params.token);
+    console.log(req.params.from);
+      if (req.params.from == "user-bots-web"){
+      res.redirect('/userbot/password/reset/' + req.params.token);
+    }else {
+      res.redirect('/password/reset/' + req.params.token);
+    }
   });
 };
 
@@ -123,7 +128,6 @@ exports.reset = function (req, res, next) {
   // Init Variables
   var passwordDetails = req.body;
   var message = null;
-  console.log(123123);
   async.waterfall([
 
     function (done) {
@@ -162,12 +166,12 @@ exports.reset = function (req, res, next) {
             });
           } else {
             return res.status(400).send({
-              message: 'Passwords do not match'
+              message: '비밀번호가 일치하지 않아요'
             });
           }
         } else {
           return res.status(400).send({
-            message: 'Password reset token is invalid or has expired.'
+            message: '비밀번호 변경 URL의 제한시간(1시간)이 지났어요'
           });
         }
       });
@@ -185,7 +189,7 @@ exports.reset = function (req, res, next) {
       var mailOptions = {
         to: user.email,
         from: config.mailer.from,
-        subject: 'Your password has been changed',
+        subject: '비밀번호가 변경되었습니다.',
         html: emailHTML
       };
 
@@ -227,7 +231,7 @@ exports.changePassword = function (req, res, next) {
                       res.status(400).send(err);
                     } else {
                       res.send({
-                        message: 'Password changed successfully'
+                        message: '비밀번호가 성공적으로 변경되었어요'
                       });
                     }
                   });
@@ -235,28 +239,28 @@ exports.changePassword = function (req, res, next) {
               });
             } else {
               res.status(400).send({
-                message: 'Passwords do not match'
+                message: '비밀번호가 일치하지 않네요'
               });
             }
           } else {
             res.status(400).send({
-              message: 'Current password is incorrect'
+              message: '현재 비밀번호가 틀렸습니다'
             });
           }
         } else {
           res.status(400).send({
-            message: 'User is not found'
+            message: '사용자를 찾지 못하겠어요'
           });
         }
       });
     } else {
       res.status(400).send({
-        message: 'Please provide a new password'
+        message: '새로운 비밀번호를 입력하세요'
       });
     }
   } else {
     res.status(400).send({
-      message: 'User is not signed in'
+      message: '로그인이 되지 않았네요!'
     });
   }
 };

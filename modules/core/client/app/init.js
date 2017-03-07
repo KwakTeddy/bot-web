@@ -183,12 +183,25 @@ function appRun($rootScope, $state, Authentication) {
 
       if (!allowed) {
         event.preventDefault();
+        var stingParser = $state.current.name;
+        var parsedString = stingParser.split('.');
+
         if (Authentication.user !== undefined && typeof Authentication.user === 'object') {
-          $state.go('forbidden');
+          if (parsedString[0] == 'user-bots-web') {
+            $state.go('user-bots-web.forbidden');
+          } else {
+            $state.go('forbidden');
+          }
         } else {
-          $state.go('authentication.signin').then(function () {
-            storePreviousState(toState, toParams);
-          });
+          if (parsedString[0] == 'user-bots-web') {
+            $state.go('user-bots-web.authentication.signin').then(function () {
+                storePreviousState(toState, toParams);
+            });
+          } else {
+            $state.go('authentication.signin').then(function () {
+                storePreviousState(toState, toParams);
+            });
+          }
         }
       }
     }
