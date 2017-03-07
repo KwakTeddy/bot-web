@@ -37,11 +37,12 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
 
         var resetNodes = function()
         {
-            for (var i=0; i < nodes.length; ++i) {
-                nodes[i].isHighlighted = false;
-                nodes[i].isMain = false;
+            for (var key in nodes) {
+                nodes[key].isHighlighted = false;
+                nodes[key].isMain = false;
             }
-        }
+        };
+
         $resource('/api/factLinks/find/:factUserID', {}).query({factUserID: vm.userId}, function(res) {
             for(var i = 0; i < res.length; i++) {
                 addLink(res[i]);
@@ -73,12 +74,11 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
                 if(res.result && res.result.length > 0) vm.best = res.result[0];
                 else vm.best = undefined;
 
-                // console.log(res.result);
+                resetNodes();
                 if(vm.best != undefined) {
                     var highLightedNodes = vm.best.input.split(' ');
                     // 이 노드 값들을 반짝이게 함
                     if (highLightedNodes != undefined) {
-                        resetNodes();
                         console.log(highLightedNodes);
                         for (var i=0; i < highLightedNodes.length; ++i) {
                             if (nodes[highLightedNodes[i]] != undefined) {
@@ -86,9 +86,10 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
                                 console.log(JSON.stringify(nodes[highLightedNodes[i]]));
                             }
                         }
-                        update();
                     }
                 }
+                update();
+                setTimeout(function() { resetNodes(); update(); }, 5000);
             })
         });
 
@@ -112,6 +113,7 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
                 }
             });
             update();
+            setTimeout(function() { resetNodes(); update(); }, 5000);
         });
 
         var width = document.getElementById('canvas').clientWidth;
@@ -164,6 +166,7 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
         var radius = 30;
 
         var diagonal = d3.svg.diagonal()
+            /*
             .source(function(d) {
                 if (d.source.isMain) {
                     return {"x": width /2, "y": height/2 };
@@ -176,6 +179,7 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
                 }
                 return {"x": d.target.x, "y": d.target.y };
             })
+            */
             .projection(function(d) { return [d.x, d.y]; });
 
 
@@ -201,10 +205,12 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
         }
 
         function click(d) {
+            /*
             d.isHighlighted = !d.isHighlighted;
             console.log(d);
 
             update();
+            */
         }
 
         var mainColor = "lightblue";
