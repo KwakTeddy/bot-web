@@ -18,7 +18,7 @@ function toneSentence(text, toneType, callback) {
     }
 
     _in = _nlp.join(' ');
-    console.log(JSON.stringify(result));
+    // console.log(JSON.stringify(result));
 
     var info = analyzeSentence(text, null, result);
     var _text = makeTone(text, null, result, info, toneType);
@@ -261,7 +261,7 @@ function analyzeSentence(text, result1, result2) {
 
   var info = {sentenceType: sentenceType, toneType: toneType, verbType: verbType, tense: tense, aspect: aspect,
     verbPos: verbPos, verbEomi: verbEomi, verbToken: verbToken};
-  console.log(JSON.stringify(info));
+  // console.log(JSON.stringify(info));
 
   return info;
 }

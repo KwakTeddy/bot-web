@@ -67,31 +67,75 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
             update();
         });
 
-        $scope.$on('keyinput', function(event, arg0) {
+      var timer = null, timer2 = null;
+      $scope.$on('keyinput', function(event, arg0) {
+        if(timer == null) {
+          timer = setTimeout(function () {
             var input = arg0;
-            $resource('/api/user-bots-analytics/context', {}).get({input: input}, function(res) {
-                vm.best;
-                if(res.result && res.result.length > 0) vm.best = res.result[0];
-                else vm.best = undefined;
+            $resource('/api/user-bots-analytics/nlp', {}).get({input: input}, function (res) {
+              // if(res.result) {
+              //   vm.best = res.result;
+              //   console.log(vm.best);
 
                 resetNodes();
-                if(vm.best != undefined) {
-                    var highLightedNodes = vm.best.input.split(' ');
-                    // 이 노드 값들을 반짝이게 함
-                    if (highLightedNodes != undefined) {
-                        console.log(highLightedNodes);
-                        for (var i=0; i < highLightedNodes.length; ++i) {
-                            if (nodes[highLightedNodes[i]] != undefined) {
-                                nodes[highLightedNodes[i]].isHighlighted = true;
-                                console.log(JSON.stringify(nodes[highLightedNodes[i]]));
-                            }
-                        }
+                if (res.result != undefined) {
+                  var highLightedNodes = res.result.split(' ');
+                  // 이 노드 값들을 반짝이게 함
+                  if (highLightedNodes != undefined) {
+                    console.log(highLightedNodes);
+                    for (var i = 0; i < highLightedNodes.length; ++i) {
+                      if (nodes[highLightedNodes[i]] != undefined) {
+                        nodes[highLightedNodes[i]].isHighlighted = true;
+                        console.log(JSON.stringify(nodes[highLightedNodes[i]]));
+                      }
                     }
+                  }
                 }
                 update();
-                setTimeout(function() { resetNodes(); update(); }, 5000);
+
+                if(timer2 == null) {
+                  timer2 = setTimeout(function () {
+                    resetNodes();
+                    update();
+                    timer2 = null;
+                  }, 3000);
+                }
+              // }
+
+              //  vm.best;
+              // if (res.result && res.result.length > 0) vm.best = res.result[0];
+              // else vm.best = undefined;
+              //
+              // console.log(vm.best);
+              //
+              // resetNodes();
+              // if (vm.best != undefined) {
+              //   var highLightedNodes = vm.best.input.split(' ');
+              //   // 이 노드 값들을 반짝이게 함
+              //   if (highLightedNodes != undefined) {
+              //     console.log(highLightedNodes);
+              //     for (var i = 0; i < highLightedNodes.length; ++i) {
+              //       if (nodes[highLightedNodes[i]] != undefined) {
+              //         nodes[highLightedNodes[i]].isHighlighted = true;
+              //         console.log(JSON.stringify(nodes[highLightedNodes[i]]));
+              //       }
+              //     }
+              //   }
+              // }
+              // update();
+              //
+              // if(timer2 == null) {
+              //   timer2 = setTimeout(function () {
+              //     resetNodes();
+              //     update();
+              //   }, 3000);
+              // }
+
+              timer = null;
             })
-        });
+          }, 300);
+        }
+      });
 
         $scope.$on('onmsg', function(event, arg0) {
             var input = arg0.message;
@@ -108,6 +152,7 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
                                 nodes[centeredNodes[i]].y = height / 2;
                                 console.log(JSON.stringify(nodes[centeredNodes[i]]));
                             }
+                          break;
                         }
                     }
                 }

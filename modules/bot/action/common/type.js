@@ -1400,6 +1400,11 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                 if(!format.mongo.minMatch || matchCount >= format.mongo.minMatch) {
                   var bExist = false;
                   for(var l = 0; l < matchedDoc.length; l++) {
+                    if(matchedDoc[l].input == doc.input && String(matchedDoc[l]._id) != String(doc._id)) {
+                      console.log(String(matchedDoc[l]._id) + ', ' + String(doc._id));
+                      console.log(matchedDoc[l].input);
+                    }
+
                     if(matchedDoc[l]._id.id == doc._id.id) {
                       bExist = true;
                       break;
