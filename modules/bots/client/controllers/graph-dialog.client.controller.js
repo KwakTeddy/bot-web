@@ -65,9 +65,9 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$timeout'
       }
     };
 
-    var width = 1900,
-      height = 900,
-      force, zoom, svg, tip, path, node, rect;
+      var width = document.getElementById('canvas').clientWidth;
+      var height = document.getElementById('sidebar-left').clientHeight;
+      var force, zoom, svg, tip, path, node, rect;
 
     var w = 200, h = 120;
 
@@ -309,8 +309,12 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$timeout'
     }
 
     function click(d) {
-      console.log(d.dialog);
-      console.log(JSON.stringify((d.dialog)));
+        d3.event.stopPropagation();
+        var dcx = (window.innerWidth/2-d.x*zoom.scale());
+        var dcy = (window.innerHeight/2-d.y*zoom.scale());
+        zoom.translate([dcx,dcy]);
+        svg.transition().duration(700)
+            .attr("transform", "translate("+ dcx + "," + dcy  + ")scale(" + zoom.scale() + ")");
 
     }
 
