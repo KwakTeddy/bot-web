@@ -75,10 +75,11 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
 
                 // console.log(res.result);
                 if(vm.best != undefined) {
-                    var highLightedNodes = vm.best.output.split(' ');
+                    var highLightedNodes = vm.best.input.split(' ');
                     // 이 노드 값들을 반짝이게 함
                     if (highLightedNodes != undefined) {
                         resetNodes();
+                        console.log(highLightedNodes);
                         for (var i=0; i < highLightedNodes.length; ++i) {
                             if (nodes[highLightedNodes[i]] != undefined) {
                                 nodes[highLightedNodes[i]].isHighlighted = true;
@@ -93,12 +94,12 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
 
         $scope.$on('onmsg', function(event, arg0) {
             var input = arg0.message;
+            resetNodes();
             $resource('/api/user-bots-analytics/nlp', {}).get({input: input}, function(res) {
                 if(res.result) {
                     var centeredNodes = res.result.split(' ');
                     // 이 노드 값들 가운데로 이동함
                     if (centeredNodes != undefined) {
-                        resetNodes();
                         for (var i=0; i < centeredNodes.length; ++i) {
                             if (nodes[centeredNodes[i]] != undefined) {
                                 nodes[centeredNodes[i]].isMain = true;
@@ -107,10 +108,10 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
                                 console.log(JSON.stringify(nodes[centeredNodes[i]]));
                             }
                         }
-                        update();
                     }
                 }
-            })
+            });
+            update();
         });
 
         var width = document.getElementById('canvas').clientWidth;
@@ -206,6 +207,9 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
             update();
         }
 
+        var mainColor = "lightblue";
+        var highlightedColor = "pink";
+
         function update()
         {
             path = path.data(links);
@@ -230,9 +234,15 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
 
             // update existing nodes
             circle.selectAll('circle')
-                .classed('highlighted', function(d) { return d.isHighlighted;})
                 .transition().duration(700)
-                .style("opacity", function(d) { return d.isMain ? 1 : .9;})
+                .style("fill", function(d) {
+                    if (d.isMain) {
+                        return mainColor;
+                    }
+                    else if (d.isHighlighted) {
+                        return highlightedColor;
+                    }
+                });
 
             var g = circle.enter().append('svg:g');
 
@@ -242,9 +252,15 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
             g.append("circle")
                 .attr("r", radius)
                 .attr("class", "node")
-                .classed('highlighted', function(d) { return d.isHighlighted;})
                 .transition().duration(700)
-                .style("opacity", function(d) { return d.isMain ? 1 : .9;})
+                .style("fill", function(d) {
+                    if (d.isMain) {
+                        return mainColor;
+                    }
+                    else if (d.isHighlighted) {
+                        return highlightedColor;
+                    }
+                });
 
 
             g.append("text")
