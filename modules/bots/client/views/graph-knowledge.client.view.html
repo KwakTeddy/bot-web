@@ -1,24 +1,20 @@
 <style>
 
   .link {
-    fill: none;
-    stroke: #666;
-    stroke-width: 2px;
+    stroke: #999;
+    stroke-opacity: .6;
   }
 
   #child{
-    fill: green;
   }
 
   .link.child {
-    stroke: green;
   }
 
   circle {
-    fill: white;
-    stroke: #333;
-    stroke-width: 1.5px;
     cursor: pointer;
+    stroke: #fff;
+    stroke-width: 2px;
   }
 
   circle.node.highlighted {
@@ -29,12 +25,16 @@
 
   text {
     font: 12px 돋음체;
+    font-weight: bold;
   }
 
   .edgelabel {
-
+    pointer-events: none;
+    font-weight: bold;
+    font-size: 10px;
+    text-anchor: middle;
+    alignment-baseline: middle;
   }
-
 
 </style>
 
