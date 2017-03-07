@@ -24,15 +24,7 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
         console.log('KnowledgeGrpah Controller');
 
         var nodes = [];
-        nodes['나이'] = {name: '나이', isMain: true, isHighlighted: true};
-        nodes['20살'] = {name: '20살', isMain: false, isHighlighted: true};
-        nodes['취미'] = {name: '취미', isMain: false, isHighlighted: false};
-        nodes['농구'] = {name: '농구', isMain: false, isHighlighted: false};
-
-        var links = [
-            {source: nodes['나이'], target: nodes['20살'], type:'child', kind:'이다'},
-            {source: nodes['취미'], target: nodes['농구'], type:'child', kind:'이다'},
-        ];
+        var links = [];
 
         var addLink = function(r) {
             if(nodes[r.node1] == undefined) nodes[r.node1] = {name: r.node1, isMain: false, isHighlighted: false};
@@ -43,6 +35,13 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
             console.log(JSON.stringify({source: nodes[r.node1], target: nodes[r.node2], type:'child', kind: r.link}));
         };
 
+        var resetNodes = function()
+        {
+            for (var i=0; i < nodes.length; ++i) {
+                nodes[i].isHighlighted = false;
+                nodes[i].isMain = false;
+            }
+        }
         $resource('/api/factLinks/find/:factUserID', {}).query({factUserID: vm.userId}, function(res) {
             for(var i = 0; i < res.length; i++) {
                 addLink(res[i]);
@@ -64,8 +63,6 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
                     console.log(e);
                 }
             }
-            console.log(nodes);
-            console.log(links);
             update();
         });
 
@@ -78,17 +75,19 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
 
                 // console.log(res.result);
                 if(vm.best != undefined) {
-                    var highLightedNodes = vm.best.split(' ');
+                    var highLightedNodes = vm.best.output.split(' ');
                     // 이 노드 값들을 반짝이게 함
-                    resetNodes();
-                    for (var i=0; i < highLightedNodes.length; ++i)
-                    {
-                        nodes[highLightedNodes[i]].isHighlighted = true;
+                    if (highLightedNodes != undefined) {
+                        resetNodes();
+                        for (var i=0; i < highLightedNodes.length; ++i) {
+                            if (nodes[highLightedNodes[i]] != undefined) {
+                                nodes[highLightedNodes[i]].isHighlighted = true;
+                                console.log(JSON.stringify(nodes[highLightedNodes[i]]));
+                            }
+                        }
+                        update();
                     }
                 }
-                console.log(nodes);
-                console.log(links);
-                update();
             })
         });
 
@@ -98,23 +97,24 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
                 if(res.result) {
                     var centeredNodes = res.result.split(' ');
                     // 이 노드 값들 가운데로 이동함
+                    if (centeredNodes != undefined) {
+                        resetNodes();
+                        for (var i=0; i < centeredNodes.length; ++i) {
+                            if (nodes[centeredNodes[i]] != undefined) {
+                                nodes[centeredNodes[i]].isMain = true;
+                                nodes[centeredNodes[i]].x = width / 2;
+                                nodes[centeredNodes[i]].y = height / 2;
+                                console.log(JSON.stringify(nodes[centeredNodes[i]]));
+                            }
+                        }
+                        update();
+                    }
                 }
-                console.log(nodes);
-                console.log(links);
-                update();
             })
         });
 
-        /*
-         // Compute the distinct nodes from the links.
-         links.forEach(function(link) {
-         link.source = nodes[link.source] || (nodes[link.source] = {name: link.source});
-         link.target = nodes[link.target] || (nodes[link.target] = {name: link.target});
-         });
-         */
-
-        var width = 1900,
-            height = 900;
+        var width = document.getElementById('canvas').clientWidth;
+        var height = document.getElementById('sidebar-left').clientHeight;
 
         var force = d3.layout.force()
             .nodes(d3.values(nodes))
@@ -264,48 +264,6 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
                 .links(links)
                 .start();
         }
-
-        // only respond once per keydown
-        var lastKeyDown = -1;
-
-        function keydown() {
-            d3.event.preventDefault();
-
-            if(lastKeyDown !== -1) return;
-            lastKeyDown = d3.event.keyCode;
-
-            switch(d3.event.keyCode) {
-                case 8: // backspace
-
-                    //test
-                    var node = {name: '누구냐', isMain: false, isHighlighted: false};
-                    node.x = 30;
-                    node.y = 40;
-                    nodes[node.name] = node;
-
-                    break;
-                case 46: // delete
-                    nodes["나이"].isMain = !nodes["나이"].isMain;
-                    break;
-
-                case 66: // B
-                    delete nodes["누구냐"];
-                    break;
-                case 76: // L
-                    break;
-                case 82: // R
-                    break;
-            }
-            update();
-        }
-
-        function keyup() {
-            lastKeyDown = -1;
-        }
-
-        d3.select(window)
-            .on('keydown', keydown)
-            .on('keyup', keyup);
         update();
 
     }]
