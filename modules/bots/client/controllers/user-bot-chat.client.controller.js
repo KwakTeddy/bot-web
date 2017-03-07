@@ -45,9 +45,14 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       // if(message.startsWith(':log') && !$state.is('home')) return;
 
       if(message.startsWith(':log')) {
-        if(!$state.is('home')) return;
-        vm.log += message.substring(message.indexOf('\n')+1);
-        logScrollBottom();
+        if(!$state.is('home') && !$state.is('user-bots.context-analytics') &&
+          !$state.is('bots.graph-knowledge')) return;
+        // vm.log += message.substring(message.indexOf('\n')+1);
+        // logScrollBottom();
+
+        $rootScope.logUpdated = message.substring(message.indexOf('\n')+1);
+        $rootScope.$broadcast('updateLog');
+
         return;
       }
 
@@ -87,6 +92,8 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
         synthesize(voice);
       }
+
+      $rootScope.$broadcast('onmsg', {message: message});
 
       // var snd = new Audio('/images/doorbell-6.mp3');
       // snd.play();
@@ -135,7 +142,12 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       }
 
       if(msg == ':build') { build(); return false;}
-      if (msg == ':init') { init(); return false; }
+      if(msg == ':init') { init(); return false; }
+      if(msg.startsWith(':connect')) {
+        var args = msg.split(/\s/);
+        if(args.length > 1) vm.connectUserBot(msg);
+        return false;
+      }
 
       addUserBubble(msg);
       emitMsg(msg);
@@ -151,6 +163,25 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
     vm.resetBot = function () {
       vm.sendMsg(':init');
+    };
+
+    vm.connectUserBot = function(botId) {
+      clearBubble();
+
+      $resource('/api/user-bots/byNameId/:botNameId', {botNameId:'@id'}).
+      get({botNameId: botId}, function(data) {
+        console.log(data);
+
+        vm.bot = botId;
+        vm.userBot = data;
+        document.getElementById("chat-header").innerText = vm.bot;
+        vm.connect();
+      }, function(err) {
+        vm.bot = botId;
+        vm.userBot = {id: vm.bot, name: vm.bot};
+        document.getElementById("chat-header").innerText = vm.bot;
+        vm.connect();
+      });
     };
 
     // 전체화면 이벤트로 전환
@@ -389,6 +420,10 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       vm.userBot = userBot;
       document.getElementById("chat-header").innerText = vm.bot;
       vm.connect();
+    });
+
+    $scope.$on('connectUserBot', function(event, arg0) {
+      vm.connectUserBot(arg0.id);
     });
 
     /*********************** 채팅 UI ***********************/

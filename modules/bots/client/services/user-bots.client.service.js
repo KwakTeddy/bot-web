@@ -11,7 +11,7 @@ angular.module('user-bots').factory('UserBotsService', ['$resource',
       }
     });
   }
-])
+  ])
   .factory('UserBotsFollowService', ['$resource',
     function ($resource) {
       return $resource('api/user-bots/follow', null, {

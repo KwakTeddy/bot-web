@@ -94,7 +94,9 @@ function update(task, context, callback) {
         console.log(err);
         task.err = err;
       }
-      
+
+      task.numAffected = numAffected;
+
       callback(task, context);
     });
   }

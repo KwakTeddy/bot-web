@@ -17,6 +17,8 @@ var path = require('path'),
   multer = require('multer'),
   fs = require('fs');
 
+  var dialogset = require('./dialogset');
+
 /**
  * Create a userBot
  */
@@ -246,6 +248,21 @@ exports.userBotByID = function (req, res, next, id) {
   }
 
   UserBot.findById(id).populate('user').exec(function (err, userBot) {
+    if (err) {
+      return next(err);
+    } else if (!userBot) {
+      return res.status(404).send({
+        message: 'No userBot with that identifier has been found'
+      });
+    }
+    req.userBot = userBot;
+    next();
+  });
+};
+
+exports.userBotByNameID = function (req, res, next, id) {
+
+  UserBot.findOne({id: id}).populate('user').exec(function (err, userBot) {
     if (err) {
       return next(err);
     } else if (!userBot) {
@@ -805,3 +822,10 @@ exports.contextLearning = function (req, res) {
   });
 };
 
+
+exports.nlp = function (req, res) {
+
+  dialogset.processInput(null, req.query.input, function(_input) {
+    res.json({result: _input});
+  });
+};

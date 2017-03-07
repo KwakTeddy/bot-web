@@ -982,3 +982,11 @@ function changeDialogPattern(obj, params) {
 }
 
 exports.changeDialogPattern = changeDialogPattern;
+
+
+function sympathize(inRaw, inNLP, context, print, callback) {
+  print('응');
+  callback();
+}
+
+exports.sympathize = sympathize;
