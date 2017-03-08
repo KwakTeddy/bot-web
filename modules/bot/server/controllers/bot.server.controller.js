@@ -53,8 +53,8 @@ function botProc(botName, channel, user, inTextRaw, outCallback, chatServerConfi
   var print = function(_out, _task) {
     logger.debug("사용자 출력>> " + _out + "\n");
 
-    toneModule.toneSentence(_out, context.botUser.tone || '해요체', function(out) {
-      _out = out;
+    // toneModule.toneSentence(_out, context.botUser.tone || '해요체', function(out) {
+    //   _out = out;
 
       if(_task && _task.photoUrl && !_task.photoUrl.startsWith('http')) {
         _task.photoUrl = (process.env.HTTP_HOST ? process.env.HTTP_HOST : '') + _task.photoUrl;
@@ -69,7 +69,7 @@ function botProc(botName, channel, user, inTextRaw, outCallback, chatServerConfi
           outCallback(arr[0], _task);
         }
       }
-    });
+    // });
   };
 
   var context, inTextNLP, inDoc;
@@ -99,7 +99,14 @@ function botProc(botName, channel, user, inTextRaw, outCallback, chatServerConfi
         context.botUser.sentenceInfo = toneModule.analyzeSentence(inTextRaw, null, context.botUser.nlp);
 
         factModule.memoryFacts(inTextRaw, context, function (_task, _context) {
-          if(_task && _task.numAffected && _task.numAffected.upserted) console.log('[FACT_ADD]' + JSON.stringify(_task.doc));
+          if(_task && _task.numAffected && _task.numAffected.upserted) {
+            console.log('[FACT_ADD]' + JSON.stringify(_task.doc));
+            if(botName == 'athena') {
+              print('말씀하신 내용을 학습했어요.');
+              cb(true);
+              return;
+            }
+          }
           cb(null);
         });
       } else {
@@ -141,8 +148,11 @@ function botProc(botName, channel, user, inTextRaw, outCallback, chatServerConfi
             cb(true);
           })
         } else {
-          dialog.matchGlobalDialogs(inTextRaw, inTextNLP, context.bot.dialogs, context, print, function(matched) {
-            if(matched) cb(true);
+          dialog.matchGlobalDialogs(inTextRaw, inTextNLP, context.bot.dialogs, context, print, function(matched, _dialog) {
+            if(matched) {
+              if(_dialog) console.log('[DIALOG_SEL]' + JSON.stringify({id: _dialog.id, name: _dialog.name, input: _dialog.input}));
+              cb(true);
+            }
             else cb(null);
           })
         }

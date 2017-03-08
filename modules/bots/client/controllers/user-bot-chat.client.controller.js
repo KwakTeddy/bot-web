@@ -46,7 +46,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
       if(message.startsWith(':log')) {
         if(!$state.is('home') && !$state.is('user-bots.context-analytics') &&
-          !$state.is('bots.graph-knowledge')) return;
+          !$state.is('bots.graph-knowledge') && !$state.is('bots.graph-dialog')) return;
         // vm.log += message.substring(message.indexOf('\n')+1);
         // logScrollBottom();
 

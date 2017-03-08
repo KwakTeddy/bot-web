@@ -88,20 +88,20 @@ function matchGlobalDialogs(inRaw, inNLP, dialogs, context, print, callback) {
   context.dialog.typeInits = {};
   context.dialog.isFail = false;
 
-  matchDialogs(inRaw, inNLP, context.bot.commonDialogs, context, print, function(matched) {
+  matchDialogs(inRaw, inNLP, context.bot.commonDialogs, context, print, function(matched, _dialog) {
     if(matched) {
-      callback(true);
+      callback(true, _dialog);
     } else {
-      matchDialogs(inRaw, inNLP, dialogs, context, print, function(matched) {
+      matchDialogs(inRaw, inNLP, dialogs, context, print, function(matched, _dialog) {
         if(matched == true) {
-          callback(matched);
+          callback(matched, _dialog);
         } else {
           for (var i = 0; i < dialogs.length; i++) {
             var dialog = dialogs[i];
             if(dialog.input == undefined || dialog.input === '' || dialog.name == NO_DIALOG_NAME ) {
               executeDialog(dialog, context, print, callback);
               context.dialog.isFail = true;
-              callback(true);
+              callback(true, dialog);
               return;
             }
           }
@@ -111,10 +111,10 @@ function matchGlobalDialogs(inRaw, inNLP, dialogs, context, print, callback) {
             context.dialog.isFail = true;
           } else {
             context.dialog.isFail = true;
-            print('I do not understand you.');
+            print('학습되어 있지 않은 대화 입니다.');
             console.error('NO_DIALOG(답변없음)가 없습니다. 아래와 같이 설정바랍니다.\n답변없음:c<> 알아듣지 못하는 말입니다.');
           }
-          callback(true);
+          callback(true, context.bot.noDialog);
         }
       });
     }
@@ -129,15 +129,15 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback, opti
   context.dialog.isFail = false;
 
   if(options && options.commonCallChild == 1) {options.commonCallChild = null; options.dontMatch = 1;}
-  matchDialogs(inRaw, inNLP, context.bot.commonDialogs, context, print, function(matched) {
+  matchDialogs(inRaw, inNLP, context.bot.commonDialogs, context, print, function(matched, _dialog) {
     if(options && options.dontMatch) options.dontMatch = null;
 
     if(matched) {
-      callback(true);
+      callback(true, _dialog);
     } else {
-      matchDialogs(inRaw, inNLP, dialogs, context, print, function(matched) {
+      matchDialogs(inRaw, inNLP, dialogs, context, print, function(matched, _dialog) {
         if(matched == true) {
-          callback(matched);
+          callback(matched, _dialog);
         } else {
           for (var i = 0; i < dialogs.length; i++) {
             var dialog = dialogs[i];
@@ -161,7 +161,7 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback, opti
 
               executeDialog(dialog, context, print, callback, nextOptions);
               context.dialog.isFail = true;
-              callback(true);
+              callback(true, dialog);
               return;
             }
           }
@@ -174,9 +174,9 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback, opti
           context.dialog.typeMatches = {};
           context.dialog.typeInits = {};
 
-          matchDialogs(inRaw, inNLP, context.bot.dialogs, context, print, function(matched) {
+          matchDialogs(inRaw, inNLP, context.bot.dialogs, context, print, function(matched, _dialog) {
             if(matched) {
-              callback(matched);
+              callback(matched, _dialog);
             } else {
               if(context.bot.noDialog) {
                 executeDialog(context.bot.noDialog, context, print, callback);
@@ -184,9 +184,9 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback, opti
               } else {
                 console.error('NO_DIALOG(답변없음)가 없습니다. 아래와 같이 설정바랍니다.\n답변없음:c<> 알아듣지 못하는 말입니다.');
                 context.dialog.isFail = true;
-                print('I do not understand you.');
+                print('학습되어 있지 않은 대화 입니다.');
               }
-              callback(true);
+              callback(true, context.bot.noDialog);
             }
           }, options);
         }
@@ -410,7 +410,7 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
             _dialog.inNLP = _dialog.task.inNLP = inNLP;
             // executeDialog(_dialog, context, print, callback, nextOptions);
             executeDialog(_dialog, context, print, callback, nextOptions);
-            eachMatched = true; _cb(true);
+            eachMatched = true; _cb(_dialog);
           } else {
             // context.botUser.dialog = null;
 
@@ -423,18 +423,18 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
       if(Array.isArray(dialog.input)) {
         async.eachSeries(dialog.input, function(input, cb3) {
           matchInput(input, function() {
-            if(eachMatched) cb(true);
+            if(eachMatched) cb(dialog);
             else cb3(null);
           });
         }, function(err) {
-          cb(null);
+          cb(null, dialog);
         })
       } else {
         matchInput(dialog.input, cb);
       }
 
     }, function(err){
-      if(eachMatched) callback(true);
+      if(eachMatched) callback(true, err);
       else callback(false)
     });
   } else {

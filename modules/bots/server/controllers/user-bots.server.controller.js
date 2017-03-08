@@ -754,6 +754,7 @@ exports.contextAnalytics = function (req, res) {
     //   callback(task, context);
     // },
     limit: 10,
+    matchRate: 0,
     mongo: {
       model: 'DialogSet',
       // queryStatic: {dialogset: '기본대화1'},

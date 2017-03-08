@@ -2,7 +2,7 @@ var path = require('path');
 var address = require(path.resolve('./modules/bot/action/common/address'));
 var type = require(path.resolve('./modules/bot/action/common/type'));
 var csdemo = require('./csdemo');
- 
+  
 < 일산 휴대폰 내일 4
 >고객님 근처의 서비스 센터를 파악한 후에 수리가능여부를 안내해드려도 될까요?
     <~네> 현재 고객님께서 계신 위치해서 가장 가까운 서비스센터는 화정서비스센터 5.7km 입니다.\n인근의 가까운 다른 서비스센터로 김포서비스센터 7.9km 가 있습니다.\n어떤 서비스 센터 정보를 안내해드릴까요?
@@ -389,12 +389,12 @@ csdemo.searchCenterTask
 시작:
 c<시작
 c<처음
-{action: 'startAction',
-    postCallback: function(task, context, callback) {
-        task.result = {smartReply: ['서비스센터찾기', '영업시간', '수리가능품목']}
-        callback(task, context);
-    }
-}
+//{action: 'startAction',
+//    postCallback: function(task, context, callback) {
+//        task.result = {smartReply: ['서비스센터찾기', '영업시간', '수리가능품목']}
+//        callback(task, context);
+//    }
+//}
 > 안녕하세요. 머니브레인 고객센터입니다.
 
 c<이전

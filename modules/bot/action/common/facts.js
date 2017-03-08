@@ -41,7 +41,8 @@ function memoryFacts(inRaw, context, callback) {
         botUser: context.user.userKey,
         node1: node1,
         node2: node2,
-        link: link
+        link: link,
+        created: new Date()
       },
       mongo: {
         model: 'FactLink',

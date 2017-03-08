@@ -27,10 +27,13 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
         var links = [];
 
         var addLink = function(r) {
-            if(nodes[r.node1] == undefined) nodes[r.node1] = {name: r.node1, isMain: false, isHighlighted: false};
-            if(nodes[r.node2] == undefined) nodes[r.node2] = {name: r.node2, isMain: false, isHighlighted: false};
+            if(nodes[r.node1] == undefined) nodes[r.node1] = {name: r.node1, isMain: false, isHighlighted: false, count: 0};
+            if(nodes[r.node2] == undefined) nodes[r.node2] = {name: r.node2, isMain: false, isHighlighted: false, count: 0};
 
             links.push({source: nodes[r.node1], target: nodes[r.node2], type:'child', kind: r.link});
+
+            nodes[r.node1].count++;
+            nodes[r.node2].count++;
 
             console.log(JSON.stringify({source: nodes[r.node1], target: nodes[r.node2], type:'child', kind: r.link}));
         };
@@ -100,7 +103,7 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
 
               timer = null;
             })
-          }, 300);
+          }, 100);
         }
       });
 
@@ -137,8 +140,10 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
             .nodes(d3.values(nodes))
             .links(links)
             .size([width, height])
-            .linkDistance(300)
-            .charge(-700)
+            .linkDistance(100)
+            .charge(-300)
+          // .linkDistance(300)
+          // .charge(-700)
             .on("tick", tick)
 
         var zoom = d3.behavior.zoom()
@@ -216,7 +221,7 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
         var mainColor = "lightblue";
         var highlightedColor = "pink";
 
-        var colors = d3.scale.category20(d3.range(0,20));
+        var colors = d3.scale.category20c(d3.range(0,20));
         function fillCircle(d)
         {
             if (d.isMain) {
@@ -225,11 +230,27 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
             else if (d.isHighlighted) {
                 return highlightedColor;
             }
-            else
-                return colors(2);
+            else {
+              var len = d.name.length;
+              return colors(len % 5);
+            }
         }
 
-        function update()
+      function radiusCircle(d)
+      {
+        if (d.isMain) {
+          return radius*3;
+        }
+        else if (d.isHighlighted) {
+          return radius*2;
+        }
+        else {
+          if(d.count < 10) return 10.0 + radius * (d.count/10.0);
+          else return radius;
+        }
+      }
+
+      function update()
         {
             path = path.data(links);
 
@@ -240,6 +261,7 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
             // remove old links
             path.exit().remove();
 
+/*
             edgelabels = edgelabels.data(links);
             // add new edge labels;
             edgelabels.enter().append('text')
@@ -248,12 +270,14 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
 
             // remove old edge labels;
             edgelabels.exit().remove();
+*/
 
             circle = circle.data(d3.values(nodes));
 
             // update existing nodes
             circle.selectAll('circle')
                 .transition().duration(700)
+                .attr("r", radiusCircle)
                 .style("fill", fillCircle);
 
             var g = circle.enter().append('svg:g');
@@ -262,7 +286,7 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
                 .call(force.drag);
 
             g.append("circle")
-                .attr("r", radius)
+                .attr("r", radiusCircle)
                 .attr("class", "node")
                 .transition().duration(700)
                 .style("fill", fillCircle);

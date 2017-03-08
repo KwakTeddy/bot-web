@@ -1,22 +1,80 @@
 'use strict';
 
 // Bots controller
-angular.module('bots').controller('GraphDialogController', ['$scope', '$timeout', '$stateParams', 'fileResolve', 'BotFilesService',
-  function ($scope, $timeout, $stateParams, file, BotFilesService) {
+angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScope', '$timeout', '$stateParams', 'fileResolve', 'BotFilesService',
+  function ($scope, $rootScope, $timeout, $stateParams, file, BotFilesService) {
     var vm = this;
     // $scope.authentication = Authentication;
 
-// make nodes and links from dialogs
     var nodes = [];
     var links = [];
+
+    // var currentDialog;
+    var currentNode;
+    $scope.$on('updateLog', function(event, arg0) {
+      var index = $rootScope.logUpdated.indexOf('[DIALOG_SEL]');
+
+      if(index != -1) {
+        var json = $rootScope.logUpdated.substring('[DIALOG_SEL]'.length);
+
+        console.log(json);
+        currentNode = null;
+        try {
+          var dialog = JSON.parse(json);
+          for(var i in nodes) {
+            if(nodes[i].id == dialog.id) {
+              currentNode = nodes[i];
+              break;
+            }
+          }
+
+          if(currentNode) {
+            console.log(JSON.stringify(currentNode));
+            update();
+          }
+        } catch(e) {
+          console.log(e);
+        }
+      }
+    });
+
+// make nodes and links from dialogs
+
+    var handleInput = function(input) {
+      if(typeof input == 'String') return input;
+      else if(input.types && input.types[0].name) {
+        return '[타입] ' + input.types[0].name;
+      } else if(input.if) {
+        return '[조건] ' + input.if;
+      } else {
+        return input;
+      }
+    }
+
+    var handlePrintOutput = function(output) {
+      if (typeof output == 'String') return output;
+      else if(Array.isArray(output)) {
+        var _output = '';
+        for(var i = 0; i < output.length; i++) {
+          if(i != 0) _output += ', ';
+          _output += handlePrintOutput(output[i]);
+        }
+        return _output;
+      } else if(output.if) {
+        return '[조건] ' + output.if;
+      } else {
+        return output;
+      }
+    }
 
     var num = 0;
     var handleDialog = function(dialog)
     {
-      dialog.name = dialog.name || (dialog.name = "dialog#" + ++num);
+      dialog.name = dialog.name || (dialog.name = "dialog" + ++num);
       nodes[dialog.name] = nodes[dialog.name] || (nodes[dialog.name] = { name: dialog.name });
-      nodes[dialog.name].input  = dialog.input;
-      nodes[dialog.name].output = dialog.output;
+      nodes[dialog.name].id  = dialog.id;
+      nodes[dialog.name].input  = handleInput(dialog.input);
+      nodes[dialog.name].output = handlePrintOutput(dialog.output);
       nodes[dialog.name].dialog = dialog;
 
       if (dialog.children) {
@@ -65,15 +123,18 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$timeout'
       }
     };
 
-      var width = document.getElementById('canvas').clientWidth;
-      var height = document.getElementById('sidebar-left').clientHeight;
-      var force, zoom, svg, tip, path, node, rect;
+    var width = document.getElementById('canvas').clientWidth;
+    var height = document.getElementById('sidebar-left').clientHeight;
 
-    var w = 200, h = 120;
+    // var width = 1900,
+    //   height = 900,
+    var  force, zoom, svg, tip, path, node, rect;
+
+    var w = 200, h = 70;
 
     var text, line, text2, text3, line2, edgelabels;
 
-    d3.json("/js/dialog.json", function(data) {
+    d3.json("/js/dialog.json2", function(data) {
       var dialogs = [];
       console.log(data);
       dialogs = data;
@@ -87,7 +148,7 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$timeout'
         .nodes(d3.values(nodes))
         .links(links)
         .size([width, height])
-        .linkDistance(1000)
+        .linkDistance(400)
         .charge(-2500)
         .on("tick", tick)
         .start();
@@ -157,6 +218,7 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$timeout'
         .attr("height", h)
         .attr("rx", 5)
         .attr("ry", 5)
+        .style('fill', '#DADAEB')
         .on('mouseover', tip.show)
         .on('mouseout', tip.hide)
 
@@ -174,22 +236,22 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$timeout'
         .attr("y1", "18")
         .attr("x2", w)
         .attr("y2", "18")
-        .attr("stroke-width", 1.2)
-        .style("stroke", function(d) { return d3.rgb("blue").darker(); });
+        // .attr("stroke-width", 1.2)
+        .style("stroke", function(d) { return d3.rgb("#7CA4C0").darker(); });
 
       text2 = node.append("text")
         .style("pointer-events", "none")
         .attr("x", 7)
         .attr("dy", "3em")
         .text(function(d) { return "In: " + d.input; })
-        .call(wrap, w-30, 2);
+        .call(wrap, w-30, 1);
 
       line2 = node.append("line")
         .style("pointer-events", "none")
         .attr("x1", 0)
-        .attr("y1", "50")
+        .attr("y1", "37")
         .attr("x2", w)
-        .attr("y2", "50")
+        .attr("y2", "37")
         .attr("stroke-width", 1)
         .attr("stroke-dasharray", "0,2 1")
         .attr("stroke", "gray");
@@ -197,9 +259,9 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$timeout'
       text3 = node.append("text")
         .style("pointer-events", "none")
         .attr("x", 7)
-        .attr("dy", "6.5em")
+        .attr("dy", "5em")
         .text(function(d) { return "Out: " + d.output; })
-        .call(wrap, w-25, 5);
+        .call(wrap, w-25, 2);
 
     });
 
@@ -336,6 +398,7 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$timeout'
           tspan.text(line.join(" "));
           if (tspan.node().getComputedTextLength() > width) {
             if (++linenum > maxLine) {
+              line.pop();
               tspan.text(line.join(" ") + "...");
               return;
             }
@@ -347,5 +410,33 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$timeout'
         }
       });
     }
+
+    function update()
+    {
+      if(currentNode) {
+        // d3.event.stopPropagation();
+        var dcx = (width/2-currentNode.x*zoom.scale());
+        var dcy = (height/2-(currentNode.y-h)*zoom.scale());
+        zoom.translate([dcx,dcy]);
+        svg.transition().duration(500)
+          .attr("transform", "translate("+ dcx + "," + dcy  + ")scale(" + zoom.scale() + ")");
+
+        svg.append("rect")
+          .attr("id", currentNode.name)
+          .attr("x", currentNode.x)
+          .attr("y", currentNode.y)
+          .attr("width", w)
+          .attr("height", h)
+          .attr("rx", 5)
+          .attr("ry", 5)
+          .style('fill', 'black')
+          .style('opacity', '0.3')
+
+        setTimeout(function() {
+          d3.select("#" + currentNode.name).remove();
+        }, 1300);
+      }
+    }
+
   }]
 );
