@@ -15,7 +15,6 @@ angular.module('analytics').config(['$stateProvider',
         controllerAs: 'vm',
         data: {
           roles: ['user', 'admin'],
-          pageTitle: 'User Count'
         }
       })
       .state('analytics.dialog-usage', {
@@ -25,7 +24,33 @@ angular.module('analytics').config(['$stateProvider',
         controllerAs: 'vm',
         data: {
           roles: ['user', 'admin'],
-          pageTitle: 'User Count'
+        }
+      })
+      .state('analytics.dialog-success', {
+        url: '',
+        templateUrl: 'modules/analytics/client/views/dialog-success.client.view.html',
+        controller: 'AnalyticsListController',
+        controllerAs: 'vm',
+        data: {
+          roles: ['user', 'admin'],
+        }
+      })
+      .state('analytics.dialog-failure', {
+        url: '',
+        templateUrl: 'modules/analytics/client/views/dialog-failure.client.view.html',
+        controller: 'AnalyticsListController',
+        controllerAs: 'vm',
+        data: {
+          roles: ['user', 'admin'],
+        }
+      })
+      .state('analytics.session-success', {
+        url: '',
+        templateUrl: 'modules/analytics/client/views/session-success.client.view.html',
+        controller: 'AnalyticsListController',
+        controllerAs: 'vm',
+        data: {
+          roles: ['user', 'admin'],
         }
       });
   }
