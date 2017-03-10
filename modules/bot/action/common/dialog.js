@@ -762,7 +762,7 @@ function executeDialog(dialog, context, print, callback, options) {
         var userOut = type.processOutput(dialog.task, context, _output);
         print(userOut, dialog.task);
 
-        userDilaog.addDialog(dialog.inRaw, userOut, context.dialog.isFail, context, function() {
+         userDilaog.addDialog(dialog.inRaw, userOut, context.dialog.isFail, dialog, context, function() {
           cb(null, _output);
         });
       } else if (output.if) {
@@ -781,6 +781,7 @@ function executeDialog(dialog, context, print, callback, options) {
       } else {
         // dialog.output.options = null;
         context.botUser.currentDialog = dialog;
+        context.botUser.lastDialog = dialog;
 
         // dialog.inRaw = null;
         // dialog.inNLP = null;
