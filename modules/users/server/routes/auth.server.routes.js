@@ -4,6 +4,7 @@
  * Module dependencies.
  */
 var passport = require('passport');
+const util = require('util');
 
 module.exports = function (app) {
   // User Routes

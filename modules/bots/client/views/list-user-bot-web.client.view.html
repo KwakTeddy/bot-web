@@ -59,8 +59,13 @@
                 </div>
             </div>
 
+          <div infinite-scroll="vm.paging()"
+               infinite-scroll-distance="0"
+               infinite-scroll-disabled = "vm.pagingEnd"
+               infinite-scroll-use-document-bottom = true>
+          </div>
 
-            <!--<div class="bot-list2-header">-->
+          <!--<div class="bot-list2-header">-->
                 <!--<ul class="nav nav-pills">-->
                     <!--<li role="presentation"><a href="#">인기봇</a></li>-->
                     <!--<li role="presentation" class="active"><a href="#">최신봇</a></li>-->

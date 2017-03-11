@@ -25,7 +25,8 @@ module.exports = {
         'public/lib/angular-ui-select/dist/select.js',
         'public/lib/angular-sanitize/angular-sanitize.js',
         'public/lib/dropzone/downloads/dropzone.js',
-        'public/lib/angular-dropzone/lib/angular-dropzone.js'
+        'public/lib/angular-dropzone/lib/angular-dropzone.js',
+        'public/lib/ngInfiniteScroll/build/ng-infinite-scroll.js'
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
     },

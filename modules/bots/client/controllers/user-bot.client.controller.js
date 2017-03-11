@@ -30,14 +30,15 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
     };
 
     vm.followBot = function(userBot) {
-      UserBotsFollowService.follow({botUserId: vm.userId, userBot: userBot._id}, function(err, result) {
+      console.log($rootScope);
+      UserBotsFollowService.follow({botUserId: vm.user._id, userBot: userBot._id}, function(err, result) {
         vm.userBot.userFollow = true;
         // alert('친구로 추가 되었습니다.')
       });
     };
 
     vm.unfollowBot = function(userBot) {
-      UserBotsFollowService.unfollow({botUserId: vm.userId, userBot: userBot._id}, function(err, result) {
+      UserBotsFollowService.unfollow({botUserId: vm.user._id, userBot: userBot._id}, function(err, result) {
         vm.userBot.userFollow = undefined;
         // alert('친구를 취소하였습니다.')
       });

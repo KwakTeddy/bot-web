@@ -118,13 +118,21 @@ mongoose.model('UserBotDialogFile', UserBotDialogFileSchema);
 
 
 var UserBotFollowSchema = new Schema({
-
-  botUserId: {
-    type: String
-  },
   userBot: {
-    type: Schema.ObjectId,
-    ref: 'UserBot'
+      type: Schema.ObjectId,
+      ref: 'UserBot'
+  },
+  botUser: [{
+      id: {
+          type: String
+      },
+      friend: {
+          type: Boolean,
+          default: false
+      }
+  }],
+  followed: {
+    type: String
   },
   created: {
     type: Date,
