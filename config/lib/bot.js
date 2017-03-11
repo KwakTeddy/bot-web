@@ -242,7 +242,7 @@ function loadUserBot(botName, callback) {
         task: {
           action: function(task, context, callback) {
             if(Array.isArray(task.typeDoc)) {
-              if(task.typeDoc.length > 1) task._output = task.typeDoc[1].output;
+              if(task.typeDoc.length > 1) task._output = task.typeDoc[0].output;
               else task._output = task.typeDoc[0].output;
             } else {
               task._output = task.typeDoc.output;
@@ -260,14 +260,15 @@ function loadUserBot(botName, callback) {
       var faqType = {
         name: 'typeDoc',
         typeCheck: global._context.typeChecks['dialogTypeCheck'], //type.mongoDbTypeCheck,
-        preType: function(task, context, type, callback) {
-          type.mongo.queryStatic.dialogset = bot.dialogset;
-          callback(task, context);
-        },
+        // preType: function(task, context, type, callback) {
+        //   type.mongo.queryStatic.dialogset = bot.dialogset;
+        //   callback(task, context);
+        // },
         limit: 5,
+        matchRate: 0.5,
         mongo: {
           model: 'DialogSet',
-          queryStatic: {dialogset: ''},
+          // queryStatic: {dialogset: ''},
           queryFields: ['input'],
           fields: 'input output' ,
           taskFields: ['input', 'output', 'matchRate'],
@@ -281,7 +282,7 @@ function loadUserBot(botName, callback) {
           action: function(task, context, callback) {
             console.log(JSON.stringify(task.typeDoc));
             if(Array.isArray(task.typeDoc)) {
-              if(task.typeDoc.length > 1) task._output = task.typeDoc[1].output;
+              if(task.typeDoc.length > 1) task._output = task.typeDoc[0].output;
               else task._output = task.typeDoc[0].output;
             } else {
               task._output = task.typeDoc.output;

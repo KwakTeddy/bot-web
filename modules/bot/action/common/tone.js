@@ -18,7 +18,7 @@ function toneSentence(text, toneType, callback) {
     }
 
     _in = _nlp.join(' ');
-    console.log(JSON.stringify(result));
+    // console.log(JSON.stringify(result));
 
     var info = analyzeSentence(text, null, result);
     var _text = makeTone(text, null, result, info, toneType);
@@ -261,7 +261,7 @@ function analyzeSentence(text, result1, result2) {
 
   var info = {sentenceType: sentenceType, toneType: toneType, verbType: verbType, tense: tense, aspect: aspect,
     verbPos: verbPos, verbEomi: verbEomi, verbToken: verbToken};
-  console.log(JSON.stringify(info));
+  // console.log(JSON.stringify(info));
 
   return info;
 }
@@ -335,11 +335,11 @@ function makeTone(text, result1, result2, info, toneType) {
     }
   } else if(toneType == '해요체') {
     if(info.verbType == 0) {
-      if(info.sentenceType == 0) eomi = '이예요';
+      if(info.sentenceType == 0) eomi = '예요';
       else if(info.sentenceType == 1) eomi = '인가요';
       else if(info.sentenceType == 2) eomi = '이요';
       else if(info.sentenceType == 3) eomi = '이요';
-      else eomi = '이예요';
+      else eomi = '예요';
     } else if(info.verbType == 1) {
       if(info.sentenceType == 0) eomi = '해요';
       else if(info.sentenceType == 1) eomi = '하나요';

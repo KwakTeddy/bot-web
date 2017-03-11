@@ -34,6 +34,22 @@ var UserDialogSchema = new Schema({
     type: String
   },
 
+  dialogId: {
+    type: Number
+  },
+
+  dialogName: {
+    type: String
+  },
+
+  preDialogId: {
+    type: Number
+  },
+
+  preDialogName: {
+    type: String
+  },
+
   created: {
     type: Date,
     default: Date.now

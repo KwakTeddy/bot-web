@@ -27,6 +27,9 @@ module.exports = {
         'public/lib/dropzone/downloads/dropzone.js',
         'public/lib/angular-dropzone/lib/angular-dropzone.js',
         'public/lib/ngInfiniteScroll/build/ng-infinite-scroll.js'
+        'public/lib/angular-dropzone/lib/angular-dropzone.js',
+        'http://d3js.org/d3.v3.min.js',
+        'http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js'
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
     },

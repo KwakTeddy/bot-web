@@ -20,7 +20,11 @@ function convertDialogset(original, callback) {
   else if(info.ext == '.smi') {dialogType = 'smi';}
 
   var dir = path.resolve('public/files/');
-  insertDatasetFile(path.join(dir, original), callback);
+  // insertDatasetFile(path.join(dir, original), function() {
+  //   callback();
+  // });
+
+  analyzeKnowledge('quibble', callback);
 
   // nlpTest(path.join(dir, original), callback);
 
@@ -54,13 +58,13 @@ function insertDatasetFile(infile, callback) {
         // if(array[4] && array[4] != '') output = array[4].trim();
 
         var outputs = [];
-        var re2 = /\[([^\]]*)\]/g;
-        output.replace(re2, function(match, p1) {
-          outputs.push(p1);
-        });
+        // var re2 = /\[([^\]]*)\]/g;
+        // output.replace(re2, function(match, p1) {
+        //   outputs.push(p1);
+        // });
 
         processInput(null, input, function(_input, _json) {
-          // console.log(">> " + input + '\t' + _input);
+          console.log(result + ">> " + input + ' || ' + _input + ' || ' + (outputs.length > 0 ? outputs: output));
 
           var task = {
             doc:{
@@ -80,12 +84,14 @@ function insertDatasetFile(infile, callback) {
           };
 
           mongoModule.update(task, null, function(_task, _context) {
-            cb();
+            setTimeout(function(){cb();}, 10);
+            // cb();
           })
         });
 
       } else {
-        cb();
+        setTimeout(function(){cb();}, 10);
+        // cb();
       }
     } else {
       console.log(infile + ' 완료');
@@ -96,6 +102,70 @@ function insertDatasetFile(infile, callback) {
 }
 
 exports.insertDatasetFile = insertDatasetFile;
+
+
+function analyzeKnowledge(dialogset, callback) {
+  var model = mongoModule.getModel('DialogSet');
+
+  model.find({dialogset: dialogset}, function(err, docs) {
+    async.eachSeries(docs, function(doc, cb) {
+      processInput(null, doc._doc.input, function(_input, _json) {
+        console.log(">> " + doc._doc.input);
+
+        var nlp = _json._nlp;
+        var node1, node2, link;
+        for(var i = 0; i < nlp.length; i++) {
+          if(nlp[i].pos == 'Noun') {
+            node1 = nlp[i].text;
+            break;
+          }
+        }
+
+        if(node1) {
+          for(var i = nlp.length -1 ; i >= 0; i--) {
+            if(node2 && link) break;
+            if(nlp[i].pos == 'Noun' && nlp[i].text != node1) {
+              node2 = nlp[i].text;
+            } else if(nlp[i].pos == 'Verb' || nlp[i].pos == 'Adjective') {
+              link = nlp[i].text;
+            }
+          }
+        }
+
+        console.log(">> " + node1 + ', ' + node2 + ' ' + link);
+
+        if(node1 && node2 && link) {
+          var task = {
+            doc:{
+              botUser: null,
+              node1: node1,
+              node2: node2,
+              link: link
+            },
+
+            mongo: {
+              model: 'FactLink',
+              query: {node1: '', node2: '', link: ''},
+              options: {upsert: true}
+            }
+          };
+
+          mongoModule.update(task, null, function(_task, _context) {
+            cb();
+          })
+        } else {
+          cb();
+        }
+
+      })
+    }, function(err) {
+      callback();
+    });
+  });
+}
+
+exports.analyzeKnowledge = analyzeKnowledge;
+
 
 // var insertDatasetTask = {
 //   action: function (task, context, callback) {
@@ -167,10 +237,57 @@ exports.insertDatasetDir = insertDatasetDir;
 
 
 function processInput(context, inRaw, callback) {
-  console.log(inRaw);
+  // console.log(inRaw);
 
-  var nlpKo1 = new nlp({
-    stemmer: false,      // (optional default: true)
+  // var nlpKo1 = new nlp({
+  //   stemmer: false,      // (optional default: true)
+  //   normalizer: true,   // (optional default: true)
+  //   spamfilter: false     // (optional default: false)
+  // });
+  //
+  // var _in = '';
+  // var _nlpRaw = [];
+  // var _nlp = [];
+  // nlpKo1.tokenize(inRaw, function(err, result) {
+  //   for(var i in result) {
+  //     if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _nlpRaw.push(result[i]);
+  //     /*if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation')*/ _nlp.push(result[i].text);
+  //   }
+  //
+  //   _in = _nlp.join(' ');
+  //
+  //   // console.log(_in);
+  //
+  //   var nlpKo = new nlp({
+  //     stemmer: true,      // (optional default: true)
+  //     normalizer: true,   // (optional default: true)
+  //     spamfilter: false     // (optional default: false)
+  //   });
+  //
+  //   _in = '';
+  //   _nlpRaw = [];
+  //   _nlp = [];
+  //   nlpKo1.tokenize(inRaw, function(err, result) {
+  //     for (var i in result) {
+  //       if (result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _nlpRaw.push(result[i]);
+  //       /*if (result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation')*/ _nlp.push(result[i].text);
+  //     }
+  //
+  //     _in = _nlp.join(' ');
+  //
+  //     // console.log(_in);
+  //     // console.log('');
+  //
+  //     callback(_in, {_nlp: _nlpRaw});
+  //   });
+  // });
+
+
+
+  // console.log(inRaw);
+
+  var nlpKo = new nlp({
+    stemmer: true,      // (optional default: true)
     normalizer: true,   // (optional default: true)
     spamfilter: false     // (optional default: false)
   });
@@ -178,84 +295,16 @@ function processInput(context, inRaw, callback) {
   var _in = '';
   var _nlpRaw = [];
   var _nlp = [];
-  nlpKo1.tokenize(inRaw, function(err, result) {
+  nlpKo.tokenize(inRaw, function(err, result) {
     for(var i in result) {
       if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _nlpRaw.push(result[i]);
-      /*if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation')*/ _nlp.push(result[i].text);
+      if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _nlp.push(result[i].text);
     }
 
     _in = _nlp.join(' ');
 
-    console.log(_in);
-
-    var nlpKo = new nlp({
-      stemmer: true,      // (optional default: true)
-      normalizer: true,   // (optional default: true)
-      spamfilter: false     // (optional default: false)
-    });
-
-    _in = '';
-    _nlpRaw = [];
-    _nlp = [];
-    nlpKo1.tokenize(inRaw, function(err, result) {
-      for (var i in result) {
-        if (result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _nlpRaw.push(result[i]);
-        /*if (result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation')*/ _nlp.push(result[i].text);
-      }
-
-      _in = _nlp.join(' ');
-
-      console.log(_in);
-      console.log('');
-
-      callback(_in, {_nlp: _nlpRaw});
-    });
+    callback(_in, {_nlp: _nlpRaw});
   });
-
-
-  //
-  // console.log(inRaw);
-  //
-  // // var inRaw = '장세영에게 010-6316-5683으로 전화해줘.';
-  // var nlpKo = new nlp({
-  //   stemmer: true,      // (optional default: true)
-  //   normalizer: true,   // (optional default: true)
-  //   spamfilter: false     // (optional default: false)
-  // });
-  //
-  // var sentenceType = [
-  //   'declarative',    // 평서문
-  //   'imperative',     // 명령
-  //   'exclamatory',    // 감탄
-  //   'interrogative'   // 질문
-  // ];
-  //
-  // var _sentenceType = '';
-  // var _in = '';
-  // var _nlpRaw = [];
-  // var _nlp = [];
-  // nlpKo.tokenize(inRaw, function(err, result) {
-  //   for(var i in result) {
-  //     // console.log(result[i].text);
-  //     if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _nlpRaw.push(result[i]);
-  //     if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _nlp.push(result[i].text);
-  //   }
-  //
-  //   _in = _nlp.join(' ');
-  //
-  //   for(var i in result) {
-  //     if(result[i].text === '?') _sentenceType = 'interrogative';
-  //     // else if(result[i].text === '!') _sentenceType = 'exclamatory';
-  //   }
-  //
-  //   if(_sentenceType === '') _sentenceType = 'declarative';
-  //
-  //   // console.log(JSON.stringify(result));
-  //   // console.log(JSON.stringify(_nlpRaw));
-  //   // console.log(_in);
-  //   // console.log(_sentenceType);
-  //   callback(_in, {_nlp: _nlpRaw});
-  // });
 }
 
 exports.processInput = processInput;
@@ -697,11 +746,11 @@ function makeTone(text, result1, result2, info, toneType) {
     }
   } else if(toneType == '해요체') {
     if(info.verbType == 0) {
-      if(info.sentenceType == 0) eomi = '이예요';
+      if(info.sentenceType == 0) eomi = '예요';
       else if(info.sentenceType == 1) eomi = '인가요';
       else if(info.sentenceType == 2) eomi = '이요';
       else if(info.sentenceType == 3) eomi = '이요';
-      else eomi = '이예요';
+      else eomi = '예요';
     } else if(info.verbType == 1) {
       if(info.sentenceType == 0) eomi = '해요';
       else if(info.sentenceType == 1) eomi = '하나요';
@@ -804,3 +853,5 @@ var samples = [
 '왜 할꺼야?', 
 '얼마나 할꺼야?'
 ];
+
+

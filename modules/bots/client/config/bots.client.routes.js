@@ -58,7 +58,26 @@ angular.module('bots').config(['$stateProvider',
           botResolve: getBot,
           botFilesResolve: getBotFiles
         }
-      });
+      })
+      .state('bots.graph-dialog', {
+        url: '/graph-dialog/:botId/:fileId',
+        templateUrl: 'modules/bots/client/views/graph-dialog.client.view.html',
+        controller: 'GraphDialogController',
+        controllerAs: 'vm',
+        resolve: {
+          fileResolve: readBotFile
+        }
+      })
+      .state('bots.graph-knowledge', {
+        url: '/graph-knowledge/:botId',
+        templateUrl: 'modules/bots/client/views/graph-knowledge.client.view.html',
+        controller: 'GraphKnowledgeController',
+        controllerAs: 'vm'
+        // resolve: {
+        //   fileResolve: readBotFile
+        // }
+      })
+    ;
   }
 ]);
 

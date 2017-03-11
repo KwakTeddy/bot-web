@@ -1298,7 +1298,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
 
                   var bExist = false;
                   for(var l = 0; l < matchedDoc.length; l++) {
-                    if(matchedDoc[l]._id.id == doc._id.id) {
+                    if(matchedDoc[l].input == doc.input) {
                       bExist = true;
                       break;
                     }
@@ -1400,13 +1400,13 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                 if(!format.mongo.minMatch || matchCount >= format.mongo.minMatch) {
                   var bExist = false;
                   for(var l = 0; l < matchedDoc.length; l++) {
-                    if(matchedDoc[l]._id.id == doc._id.id) {
+                    if(matchedDoc[l].input == doc.input) {
                       bExist = true;
                       break;
                     }
                   }
 
-                  if(!bExist) {
+                  if(!bExist && matchCount / words.length > format.matchRate) {
                     doc.matchWord = matchedWord;
                     doc.matchCount = matchCount;
                     doc.matchMin = matchMin;

@@ -2,6 +2,7 @@ var path = require('path');
 var mongoose = require('mongoose');
 var mongoModule = require(path.resolve('modules/bot/action/common/mongo'));
 // var typelib = require(path.resolve('modules/bot/action/common/type'));
+var toneModule = require(path.resolve('modules/bot/action/common/tone'));
 
 function factsTypeCheck(text, format, inDoc, context, callback) {
   if(context.botUser.sentenceInfo.sentenceType != 1 || context.botUser.sentenceInfo.verbToken == undefined) {
@@ -9,17 +10,32 @@ function factsTypeCheck(text, format, inDoc, context, callback) {
     return;
   }
 
+  var node1;
+  for (var j = 0; j < context.botUser.nlp.length; j++) {
+    var token1 = context.botUser.nlp[j];
+    if(token1.pos == 'Noun') {
+      node1  = token1.text;
+      break;
+    }
+  }
+
   var edge = context.botUser.sentenceInfo.verbToken.text;
 
-  var model = mongoModule.getModel('fact', undefined);
-  model.find({edge: edge}, null, {sort: {created: -1}}, function(err, docs) {
+  var model = mongoModule.getModel('factlink', undefined);
+  model.find({link: edge, botUser: {$ne: null}}, null, {sort: {created: -1}}, function(err, docs) {
     if(docs && docs.length > 0) {
-      var node1 = docs[0]._doc.node1;
-      var node2 = docs[0]._doc.node2;
-      var edge = docs[0]._doc.edge;
+      var _node1 = docs[0]._doc.node1;
+      var _node2 = docs[0]._doc.node2;
+      var _link = docs[0]._doc.link;
 
-      inDoc._output = node1 + ' ' + node2 + ' ' + edge;
-      callback(text, inDoc, true);
+      inDoc._output = _node1 + ' ' + _node2 + ' ' + _link;
+
+      toneModule.toneSentence(inDoc._output, context.botUser.tone || '해요체', function(out) {
+        inDoc._output = out;
+
+        callback(text, inDoc, true);
+      });
+
     } else {
       callback(text, inDoc, false);
     }

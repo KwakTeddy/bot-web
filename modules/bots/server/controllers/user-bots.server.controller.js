@@ -17,6 +17,8 @@ var path = require('path'),
   multer = require('multer'),
   fs = require('fs');
 
+  var dialogset = require('./dialogset');
+
 //temporary
 const util = require('util');
 
@@ -195,8 +197,6 @@ exports.followList = function (req, res) {
   var query = {};
   if(req.body.userBot) query['userBot'] = req.body.userBot;
   if(req.body.botUserId) query['botUserId'] = req.body.botUserId;
-  // console.log(req.body.botUserId);
-  // console.log(req.body.userBot);
 
   UserBotFollow.find(query).sort('-created').populate('userBot').exec(function (err, follows) {
     if (err) {
@@ -298,6 +298,21 @@ exports.userBotByID = function (req, res, next, id) {
   }
 
   UserBot.findById(id).populate('user').exec(function (err, userBot) {
+    if (err) {
+      return next(err);
+    } else if (!userBot) {
+      return res.status(404).send({
+        message: 'No userBot with that identifier has been found'
+      });
+    }
+    req.userBot = userBot;
+    next();
+  });
+};
+
+exports.userBotByNameID = function (req, res, next, id) {
+
+  UserBot.findOne({id: id}).populate('user').exec(function (err, userBot) {
     if (err) {
       return next(err);
     } else if (!userBot) {
@@ -789,6 +804,7 @@ exports.contextAnalytics = function (req, res) {
     //   callback(task, context);
     // },
     limit: 10,
+    matchRate: 0,
     mongo: {
       model: 'DialogSet',
       // queryStatic: {dialogset: '기본대화1'},
@@ -857,3 +873,10 @@ exports.contextLearning = function (req, res) {
   });
 };
 
+
+exports.nlp = function (req, res) {
+
+  dialogset.processInput(null, req.query.input, function(_input) {
+    res.json({result: _input});
+  });
+};
