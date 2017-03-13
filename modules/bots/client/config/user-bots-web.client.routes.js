@@ -152,13 +152,13 @@ angular.module('user-bots').config(['$stateProvider',
   }
 ]);
 
-getUserBotsWeb.$inject = ['UserBotsService', 'UserBotsFollowService', '$stateParams', '$rootScope'];
-function getUserBotsWeb(UserBotsService, UserBotsFollowService, $stateParams, $rootScope) {
+getUserBotsWeb.$inject = ['UserBotsService', 'UserBotsFollowService', '$stateParams', '$rootScope', 'Authentication'];
+function getUserBotsWeb(UserBotsService, UserBotsFollowService, $stateParams, $rootScope, Authentication) {
   if($stateParams['query']) {
     return UserBotsService.query({query: $stateParams['query']}).$promise;
   } else if($stateParams['listType']) {
     if($stateParams['listType'] == 'popular') return UserBotsService.query({sort: '-followed'}).$promise;
-    else if($stateParams['listType'] == 'followed') return UserBotsFollowService.list({botUserId: $rootScope['userId']}).$promise;
+    else if($stateParams['listType'] == 'followed') return UserBotsFollowService.list({botUserId: Authentication.user._id}).$promise;
     else if($stateParams['listType'] == 'my') return UserBotsService.query({my: '1'}).$promise;
     else return UserBotsService.query().$promise;
   } else {
