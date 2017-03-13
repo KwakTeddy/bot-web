@@ -25,7 +25,7 @@ module.exports = function () {
           message: '가입되지 않은 E-mail이거나 비밀번호가 잘못되었습니다 '
         });
       }
-      // if (!user.emailConfirmed && (user.provider == 'local')){
+      // if (!user.localEmailConfirmed && (user.provider == 'local')){
       //   return done(null, false, {
       //     message: 'E-mail 확인절차를 거치지 않았습니다'
       //   })
