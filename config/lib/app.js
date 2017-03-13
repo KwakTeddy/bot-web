@@ -47,9 +47,15 @@ module.exports.start = function start(callback) {
   var _this = this;
 
   var bot = require('./bot');
-  bot.initGlobals();
+  var globals = require(path.resolve('modules/bot/engine/common/globals'));
+  globals.initGlobals();
+
+  var autoCorrection = require(path.resolve('modules/bot/engine/nlp/autoCorrection'));
+  autoCorrection.loadWordCorrections();
+
   bot.loadBots();
   // bot.loadBot('csdemo');
+  // bot.loadBot('athena');
 
   _this.init(function (app, db, config) {
 

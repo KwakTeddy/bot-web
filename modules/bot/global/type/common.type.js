@@ -1,8 +1,9 @@
 var path = require('path');
 var utils = require(path.resolve('modules/bot/action/common/utils'));
-var botlib = require(path.resolve('config/lib/bot'));
+var globals = require(path.resolve('modules/bot/engine/common/globals'));
 var typelib = require(path.resolve('modules/bot/action/common/type'));
 var logger = require(path.resolve('config/lib/logger'));
+var globals = require(path.resolve('modules/bot/engine/common/globals'));
 
 function numberListTypeCheck(text, type, task, context, callback) {
   var num = Number(text);
@@ -27,7 +28,7 @@ function numberListTypeCheck(text, type, task, context, callback) {
 }
 
 exports.numberListTypeCheck = numberListTypeCheck;
-botlib.setGlobalTypeCheck('numberListTypeCheck', numberListTypeCheck);
+globals.setGlobalTypeCheck('numberListTypeCheck', numberListTypeCheck);
 
 function listTypeCheck(text, type, task, context, callback) {
   var inRawText = text.replace(/\s/g, '');
@@ -130,7 +131,7 @@ function listTypeCheck(text, type, task, context, callback) {
 }
 
 exports.listTypeCheck = listTypeCheck;
-botlib.setGlobalTypeCheck('listTypeCheck', listTypeCheck);
+globals.setGlobalTypeCheck('listTypeCheck', listTypeCheck);
 
 
 function regexpTypeCheck(text, type, task, context, callback) {
@@ -159,7 +160,7 @@ function regexpTypeCheck(text, type, task, context, callback) {
   callback(text, task, matched);
 }
 
-botlib.setGlobalTypeCheck('regexpTypeCheck', regexpTypeCheck);
+globals.setGlobalTypeCheck('regexpTypeCheck', regexpTypeCheck);
 
 var amountType = {
   name: 'account',
@@ -167,7 +168,7 @@ var amountType = {
   regexp: /([\d,]+[십백천만억원]+)/g
 };
 
-botlib.setGlobalType('amountType', amountType);
+globals.setGlobalType('amountType', amountType);
 
 var mobileType = {
   name: 'mobile',
@@ -181,7 +182,7 @@ var mobileType = {
   }
 };
 
-botlib.setGlobalType('mobileType', mobileType);
+globals.setGlobalType('mobileType', mobileType);
 
 var phoneType = {
   name: 'phone',
@@ -189,7 +190,7 @@ var phoneType = {
   regexp: /\b((?:0(?:2|3[0-3]|4[1-4]|5[0-5]|6[0-4]|70|80))[-.]?\d{3,4}[-.]?\d{4})\b/g
 };
 
-botlib.setGlobalType('phoneType', phoneType);
+globals.setGlobalType('phoneType', phoneType);
 
 var dateType = {
   name: 'date',
@@ -197,7 +198,7 @@ var dateType = {
   regexp: /(\d{4}[-/.년][ ]?(?:0[1-9]|1[012]|[1-9])[-/.월][ ]?(?:0[1-9]|[12][0-9]|3[0-1]|[1-9])[일]?)/g
 };
 
-botlib.setGlobalType('dateType', dateType);
+globals.setGlobalType('dateType', dateType);
 
 var timeType = {
   name: 'time',
@@ -205,7 +206,7 @@ var timeType = {
   regexp: /((?:[01][0-9]|2[0-3]|[1-9])[:시][ ]?(?:[0-5][0-9]|[1-9])[분]?)/g
 };
 
-botlib.setGlobalType('timeType', timeType);
+globals.setGlobalType('timeType', timeType);
 
 var accountType = {
   name: 'account',
@@ -213,7 +214,7 @@ var accountType = {
   regexp: /(\b[\d-]+-[\d-]+\b)/g
 };
 
-botlib.setGlobalType('accountType', accountType);
+globals.setGlobalType('accountType', accountType);
 
 var countType = {
   name: 'count',
@@ -221,4 +222,4 @@ var countType = {
   regexp: /(\d)\s?(?:개)/g
 };
 
-botlib.setGlobalType('countType', countType);
+globals.setGlobalType('countType', countType);

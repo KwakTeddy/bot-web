@@ -4,12 +4,32 @@ var path = require('path');
 var fileutil = require(path.resolve('modules/bot/action/common/fileutil.js'));
 var mongoModule = require(path.resolve('modules/bot/action/common/mongo.js'));
 var type = require(path.resolve('modules/bot/action/common/type'));
+var mongoose = require('mongoose');
 
-var bot = require(path.resolve('config/lib/bot')).getBot('private_bot');
 
+// var bot = require(path.resolve('config/lib/bot')).getBot('private_bot');
 var dialogsetKakao = require('./dialogset-kakao');
 var dialogsetSmi = require('./dialogset-smi');
 var dialogsetKdrama = require('./dialogset-kdrama');
+
+var DialogsetDialog = mongoose.model('DialogsetDialog');
+
+
+function convertDialogset1(dialogset, callback) {
+  var dialogType = 'kakao';
+
+  var info = path.parse(dialogset.filename);
+  if(info.ext == '.txt') {dialogType = 'kakao';}
+  else if(info.ext == '.csv') {dialogType = 'kakao';}
+  else if(info.ext == '.smi') {dialogType = 'smi';}
+
+  var dir = path.resolve('public/files/');
+  insertDatasetFile1(path.join(dir, dialogset.filename), function() {
+    callback();
+  }, dialogset);
+}
+
+exports.convertDialogset1 = convertDialogset1;
 
 function convertDialogset(original, callback) {
   var dialogType = 'kakao';
@@ -35,9 +55,57 @@ function convertDialogset(original, callback) {
 
 exports.convertDialogset = convertDialogset;
 
-function insertDatasetFile(infile, callback) {
-  var info = path.parse(infile);
-  var input, output;
+function insertDailogsetDialog(dialogset, countId, input, output, callback) {
+
+  if(Array.isArray(input)) {
+    var inputRaw = [];
+    async.eachSeries(input, function(i, cb) {
+      processInput(null, i, function(_input, _json) {
+        inputRaw.push(_input);
+        cb(null);
+      });
+    }, function(err) {
+      console.log(countId + ">> " + input + ' || ' + inputRaw + ' || ' + output);
+
+      var dialogsetDialog = new DialogsetDialog({
+        dialogset: dialogset,
+        id: countId,
+        tag: [],
+        inputRaw: input,
+        input: inputRaw,
+        output: output
+      });
+
+      dialogsetDialog.save(function(err) {
+        if (err) console.log(err);
+        callback();
+      });
+    });
+  } else {
+    processInput(null, input, function(_input, _json) {
+      console.log(countId + ">> " + input + ' || ' + _input + ' || ' + output);
+
+      var dialogsetDialog = new DialogsetDialog({
+        dialogset: dialogset,
+        id: countId,
+        tag: [],
+        inputRaw: input,
+        input: _input,
+        output: output
+      });
+
+      dialogsetDialog.save(function(err) {
+        if (err) console.log(err);
+        callback();
+      });
+    });
+  }
+
+}
+
+function insertDatasetFile1(infile, callback, dialogset) {
+  var input, output, count = 0;
+
   fileutil.streamLineSequence(infile, function(result, line, cb) {
     if(isNaN(result) == false) {
       // console.log(line);
@@ -51,6 +119,86 @@ function insertDatasetFile(infile, callback) {
       }
 
       if(array !== null) {
+        var next = function() {
+          if(array[1] && array[1] != '') {
+            if(input == null) input = array[1];
+            else if(Array.isArray(input)) input.push(array[1]);
+            else input = [input, array[1]];
+          }
+          if(array[2] && array[2] != '') {
+            if(output == null) output = array[2];
+            else if(Array.isArray(output)) output.push(array[2]);
+            else output = [output, array[2]];
+          }
+
+          // if(array[2] && array[2] != '') input = array[2].trim();
+          // if(array[4] && array[4] != '') output = array[4].trim();
+
+          setTimeout(function(){cb();}, 10);
+        }
+
+        if(input != null && output != null && array[1] != '' &&
+          ((Array.isArray(input) && input[input.length-1] != array[1]) || input != array[1])
+          && ((Array.isArray(output) && output[output.length-1] != array[2]) || output != array[2])) {
+          count++;
+          insertDailogsetDialog(dialogset, count.toString(), input, output, function() {
+            input = null; output = null;
+            next();
+          });
+        } else {
+          next();
+        }
+
+      } else {
+        var next = function() {
+          if(line != '') {
+            line = line.replace(/^"/, '');
+            if(input == null) input = line;
+            else if(Array.isArray(input)) input.push(line);
+            else input = [input, line];
+          }
+
+          setTimeout(function(){cb();}, 10);
+        };
+
+        if(input != null && output != null && line != '') {
+          count++;
+          insertDailogsetDialog(dialogset, count.toString(), input, output, function() {
+            input = null; output = null;
+            next();
+          });
+        } else {
+          next();
+        }
+      }
+    } else {
+      console.log(infile + ' 완료');
+      callback(result);
+      // console.log(result);
+    }
+  });
+}
+
+exports.insertDatasetFile1 = insertDatasetFile1;
+
+
+function insertDatasetFile(infile, callback, dialogset) {
+  var info = path.parse(infile);
+  var input, output, count = 0;
+  fileutil.streamLineSequence(infile, function(result, line, cb) {
+    if(isNaN(result) == false) {
+      // console.log(line);
+
+      var re = /"([^"]*)","([^"]*)"/g;
+      var array = re.exec(line);
+
+      if(array == null) {
+        var re2 = /([^,]*),([^,]*)/g;
+        array = re2.exec(line);
+      }
+
+      if(array !== null) {
+        count++;
         if(array[1] && array[1] != '') input = array[1].trim();
         if(array[2] && array[2] != '') output = array[2].trim();
 
@@ -64,29 +212,21 @@ function insertDatasetFile(infile, callback) {
         // });
 
         processInput(null, input, function(_input, _json) {
-          console.log(result + ">> " + input + ' || ' + _input + ' || ' + (outputs.length > 0 ? outputs: output));
+          console.log(count + ">> " + input + ' || ' + _input + ' || ' + (outputs.length > 0 ? outputs: output));
 
-          var task = {
-            doc:{
-              dialogset: info.name,
-              id: result.toString(),
-              tag: [],
-              inputRaw: input,
-              input: _input,
-              output: (outputs.length > 0 ? outputs: output)
-              // output: output
-            },
-            mongo: {
-              model: 'DialogsetDialog',
-              query: {dialogset: '', id: ''},
-              options: {upsert: true}
-            }
-          };
+          var dialogsetDialog = new DialogsetDialog({
+            dialogset: dialogset,
+            id: count.toString(),
+            tag: [],
+            inputRaw: input,
+            input: _input,
+            output: (outputs.length > 0 ? outputs: output)
+          });
 
-          mongoModule.update(task, null, function(_task, _context) {
+          dialogsetDialog.save(function(err) {
+            if (err) console.log(err);
             setTimeout(function(){cb();}, 10);
-            // cb();
-          })
+          });
         });
 
       } else {
@@ -102,7 +242,6 @@ function insertDatasetFile(infile, callback) {
 }
 
 exports.insertDatasetFile = insertDatasetFile;
-
 
 function analyzeKnowledge(dialogset, callback) {
   var model = mongoModule.getModel('DialogsetDialog');
@@ -806,3 +945,49 @@ var samples = [
 ];
 
 
+var faqType = {
+  name: 'typeDoc',
+  typeCheck: type.dialogTypeCheck, //type.mongoDbTypeCheck,
+  // preType: function(task, context, type, callback) {
+  //   type.mongo.queryStatic.dialogset = bot.dialogset;
+  //   callback(task, context);
+  // },
+  limit: 5,
+  matchRate: 0.5,
+  mongo: {
+    model: 'dialogsetdialogs',
+    // queryStatic: {dialogset: ''},
+    queryFields: ['input'],
+    fields: 'input output' ,
+    taskFields: ['input', 'output', 'matchRate'],
+    minMatch: 1
+  }
+};
+
+var faqDialog = {
+  input: {types: [faqType]},
+  task:   {
+    action: function(task, context, callback) {
+      console.log(JSON.stringify(task.typeDoc));
+      if(Array.isArray(task.typeDoc)) {
+        if(task.typeDoc.length > 1) task._output = task.typeDoc[0].output;
+        else task._output = task.typeDoc[0].output;
+      } else {
+        task._output = task.typeDoc.output;
+      }
+      callback(task, context);
+    }
+    // postCallback: function(task, context, callback) {
+    //   var toneType = context.botUser.tone;
+    //   if(toneType == undefined) toneType = '해요체';
+    //
+    //   tone.toneSentence(task._output, toneType, function(_output) {
+    //     task._output = _output;
+    //     callback(task, context);
+    //   });
+    // }
+  },
+  output: '+_output+'
+};
+
+exports.faqDialog = faqDialog;

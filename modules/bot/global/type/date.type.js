@@ -1,7 +1,7 @@
 var path = require('path');
 var utils = require(path.resolve('modules/bot/action/common/utils'));
-var botlib = require(path.resolve('config/lib/bot'));
 var typelib = require(path.resolve('modules/bot/action/common/type'));
+var globals = require(path.resolve('modules/bot/engine/common/globals'));
 
 function dateRangeTypeCheck(text, type, task, context, callback) {
   dateTypeCheck(text, type, task, context, function(text, task, _matched) {
@@ -110,7 +110,7 @@ function dateRangeTypeCheck(text, type, task, context, callback) {
   });
 }
 
-botlib.setGlobalTypeCheck('dateRangeTypeCheck', dateRangeTypeCheck);
+globals.setGlobalTypeCheck('dateRangeTypeCheck', dateRangeTypeCheck);
 
 function dateTypeCheck(text, type, task, context, callback) {
   var name = 'date';
@@ -252,7 +252,7 @@ function dateTypeCheck(text, type, task, context, callback) {
   callback(text, task, matched);
 }
 exports.dateTypeCheck = dateTypeCheck;
-botlib.setGlobalTypeCheck('dateTypeCheck', dateTypeCheck);
+globals.setGlobalTypeCheck('dateTypeCheck', dateTypeCheck);
 
 function timeTypeCheck(text, type, task, context, callback) {
   var name = 'time';
@@ -306,4 +306,4 @@ function timeTypeCheck(text, type, task, context, callback) {
   callback(text, task, matched);
 }
 exports.timeTypeCheck = timeTypeCheck;
-botlib.setGlobalTypeCheck('timeTypeCheck', timeTypeCheck);
+globals.setGlobalTypeCheck('timeTypeCheck', timeTypeCheck);

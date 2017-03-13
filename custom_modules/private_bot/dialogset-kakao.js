@@ -269,7 +269,7 @@ function insertDatasetFile(infile, callback) {
                 // output: output
               },
               mongo: {
-                model: 'DialogSet',
+                model: 'DialogsetDialog',
                 query: {dialogset: '', id: ''},
                 options: {upsert: true}
               }

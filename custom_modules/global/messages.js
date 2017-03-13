@@ -1,5 +1,5 @@
 var path = require('path');
-var botlib = require(path.resolve('config/lib/bot'));
+var globals = require(path.resolve('modules/bot/engine/common/globals'));
 
 var messages = {
   // typeExit: '\n처음으로 돌아가기: \'ㄱ\'',
@@ -11,4 +11,4 @@ var messages = {
   userError: '일시적 오류가 발생하였습니다.\n\n불편을 드려 죄송합니다.\n\n"시작"을 입력하여 처음부터 다시 시작해 주세요'
 };
 
-botlib.setGlobalMessages(messages);
+globals.setGlobalMessages(messages);

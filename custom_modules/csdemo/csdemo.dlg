@@ -114,7 +114,7 @@ csdemo.searchCenterTask
                         <{if: 'true'}> {repeat: 1, options: {output: '지번 또는 도로명을 포함한 상세주소를 말씀해주세요.\n예시) 강남구 삼성동 16-1 101동 101호\n예시) 강남구 학동로 426 101동 101호\n\n주소를 정확히 입력해 주세요.|지번 또는 도로명을 포함한 상세주소를 말씀해주세요.'}}
                     <{if: 'true'}> {repeat: 1, options: {output: '휴대폰 번호를 말씀해주세요.'}}
                 <{if: 'true'}> {repeat: 1, options: {output: '성함을 말씀해주세요.'}}
-    <{if: 'true'}> {repeat: 1, options: {output: '목록에서 선택해주세요.\n'}}
+    <{if: 'true && context.botUser.wordCorrection'}> {repeat: 1, options: {output: '목록에서 선택해주세요.\n'}}
 
 시간체크:
 <{types: [{name: 'time', typeCheck: 'timeTypeCheck', raw: true}], regexp: /~영업/}

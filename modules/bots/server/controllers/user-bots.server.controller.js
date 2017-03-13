@@ -806,10 +806,10 @@ exports.contextAnalytics = function (req, res) {
     limit: 10,
     matchRate: 0,
     mongo: {
-      model: 'DialogSet',
+      model: 'DialogsetDialog',
       // queryStatic: {dialogset: '기본대화1'},
       queryFields: ['input'],
-      fields: 'input output' ,
+      fields: 'dialogset input output' ,
       taskFields: ['input', 'output', 'matchRate'],
       minMatch: 1
     }
@@ -873,10 +873,28 @@ exports.contextLearning = function (req, res) {
   });
 };
 
-
 exports.nlp = function (req, res) {
-
   dialogset.processInput(null, req.query.input, function(_input) {
     res.json({result: _input});
   });
+};
+
+var autoCorrection = require(path.resolve('modules/bot/engine/nlp/autoCOrrection'));
+
+exports.autoCorrection = function (req, res) {
+
+  // autoCorrection.batchCorrectionDB(function() {
+  //   autoCorrection.spellerTest('서바스 센터 차다줘');
+  //   autoCorrection.spellerTest('영압시간 어떻게 되지?');
+  //
+  //   res.json({});
+  // });
+  //
+
+  autoCorrection.loadWordCorrections(function() {
+    autoCorrection.correction('서바스 센터 차다줘');
+    autoCorrection.correction('영압시간 어떻게 되지?');
+
+    res.json({});
+  })
 };

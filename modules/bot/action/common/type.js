@@ -6,7 +6,7 @@ var path = require('path');
 var logger = require(path.resolve('./config/lib/logger'));
 var address = require(path.resolve('./modules/bot/action/common/address'));
 var _ = require('lodash');
-var botlib = require(path.resolve('config/lib/bot'));
+var globals = require(path.resolve('./modules/bot/engine/common/globals'));
 var async = require('async');
 
 const TAG_START = '\\+';
@@ -37,7 +37,6 @@ exports.processInput = function(context, inRaw, callback) {
   }
 
   var doc = {}
-
   var nlpKo = new nlp({
     stemmer: true,      // (optional default: true)
     normalizer: true,   // (optional default: true)
@@ -47,20 +46,26 @@ exports.processInput = function(context, inRaw, callback) {
   checkTypes(inRaw, commonTypes, doc, context, function(_inRaw, inDoc) {
     nlpKo.tokenize/*ToStrings*/(_inRaw, function(err, result) {
 
+      var _nlp = [], _inNLP = [], _in;
       if(!result) result = inRaw;
-      var result2 = [];
       for (var i = 0; i < result.length; i++) {
-        var word = result[i].text;
-        if(word.search(/^(은|는|이|가|을|를)$/) == -1) result2.push(word);
+        // var word = result[i].text;
+        // if(word.search(/^(은|는|이|가|을|를)$/) == -1) result2.push(word);
+
+        if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _nlp.push(result[i]);
+        if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _inNLP.push(result[i].text);
       }
-      var inNLP = result2.join(' ');
 
-      inNLP = inNLP.replace(/(?:\{ | \})/g, '+');
+      _in = _inNLP.join(' ');
+      _in = _in.replace(/(?:\{ | \})/g, '+');
 
-      context.botUser.nlp = result;
+      context.botUser.nlp = _nlp;
+      context.botUser.nlpCorrection = undefined;
+      context.botUser.inRawCorrection = undefined;
+      context.botUser.wordCorrection = undefined;
 
-      callback(inNLP, inDoc);
-    }) // async
+      callback(_in, inDoc);
+    });
 
   });
 };
@@ -309,7 +314,7 @@ var mobileType = {
 };
 
 exports.mobileType = mobileType;
-botlib.setGlobalType('mobile', mobileType);
+globals.setGlobalType('mobile', mobileType);
 
 var phoneType = {
   name: 'phone',
@@ -317,7 +322,7 @@ var phoneType = {
   regexp: /\b((?:0(?:2|3[0-3]|4[1-4]|5[0-5]|6[0-4]|70|80))[-.]?\d{3,4}[-.]?\d{4})\b/g
 };
 
-botlib.setGlobalType('phone', phoneType);
+globals.setGlobalType('phone', phoneType);
 
 var dateType = {
   name: 'date',
@@ -325,7 +330,7 @@ var dateType = {
   regexp: /(\d{4}[-/.년][ ]?(?:0[1-9]|1[012]|[1-9])[-/.월][ ]?(?:0[1-9]|[12][0-9]|3[0-1]|[1-9])[일]?)/g
 };
 
-botlib.setGlobalType('date', dateType);
+globals.setGlobalType('date', dateType);
 
 var timeType = {
   name: 'time',
@@ -333,7 +338,7 @@ var timeType = {
   regexp: /((?:[01][0-9]|2[0-3]|[1-9])[:시][ ]?(?:[0-5][0-9]|[1-9])[분]?)/g
 };
 
-botlib.setGlobalType('timeType', timeType);
+globals.setGlobalType('timeType', timeType);
 
 var accountType = {
   name: 'account',
@@ -341,7 +346,7 @@ var accountType = {
   regexp: /(\b[\d-]+-[\d-]+\b)/g
 };
 
-botlib.setGlobalType('account', accountType);
+globals.setGlobalType('account', accountType);
 
 var countType = {
   name: 'count',
@@ -349,7 +354,7 @@ var countType = {
   regexp: /(\d)\s?(?:개)/g
 };
 
-botlib.setGlobalType('count', countType);
+globals.setGlobalType('count', countType);
 
 var productType = {
   name: 'product',
@@ -416,7 +421,7 @@ var faqType = {
 }
 
 exports.faqType = faqType;
-botlib.setGlobalType('faqType', faqType);
+globals.setGlobalType('faqType', faqType);
 
 
 var mongoose = require('mongoose');
@@ -797,7 +802,7 @@ function mongoDbTypeCheck(text, format, inDoc, context, callback) {
   }
 }
 
-botlib.setGlobalTypeCheck('mongoDbTypeCheck', mongoDbTypeCheck);
+globals.setGlobalTypeCheck('mongoDbTypeCheck', mongoDbTypeCheck);
 exports.mongoDbTypeCheck = mongoDbTypeCheck;
 
 var commonTypes = [
@@ -1212,7 +1217,7 @@ function mongoTypeCheck(text, format, inDoc, context, callback) {
 }
 
 exports.mongoTypeCheck = mongoTypeCheck;
-botlib.setGlobalTypeCheck('mongoTypeCheck', mongoTypeCheck);
+globals.setGlobalTypeCheck('mongoTypeCheck', mongoTypeCheck);
 
 
 function dialogTypeCheck(text, format, inDoc, context, callback) {
@@ -1222,6 +1227,8 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
   // } catch(e) {
   //   logger.debug('type.js:dialogTypeCheck: START ' + format.name + ' "' + text + '"');
   // }
+
+  var t0 = new Date();
 
   if(text == null) {
     callback(text, inDoc, false);
@@ -1298,7 +1305,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
 
                   var bExist = false;
                   for(var l = 0; l < matchedDoc.length; l++) {
-                    if(matchedDoc[l].input == doc.input) {
+                    if(matchedDoc[l].dialogset == doc.dialogset) {
                       bExist = true;
                       break;
                     }
@@ -1376,23 +1383,71 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                 var matchCount = 0, matchTotal = 0;
                 matchedWord = '';
                 var matchIndex = -1, matchMin = -1, matchMax = -1;
+
+                var _matchCount = [], _matchTotal = [];
+                var _matchedWord = [];
+                var _matchIndex = [], _matchMin = [], _matchMax = [], _matchOrgIndex = [];
+                if(Array.isArray(doc['input'])) {
+                  for (var n = 0; n < doc['input'].length; n++) {
+                    _matchCount[n] = 0; _matchTotal[n] = 0; _matchedWord[n] = '';
+                    _matchIndex[n] = -1; _matchMin[n] = -1; _matchMax[n] = -1;
+                  }
+                }
+
                 for(var l = 0; l < format.mongo.queryFields.length; l++) {
                   for(var m = 0; m < _words.length; m++) {
                     var _word = _words[m];
                     _word = RegExp.escape(_word);
-                    matchIndex = doc[format.mongo.queryFields[l]].search(new RegExp(_word, 'i'));
 
-                    if(matchIndex != -1) {
-                      matchCount++;
-                      matchTotal += doc[format.mongo.queryFields[l]].split(' ').length;
-                      matchedWord += words[m];
+                    if(Array.isArray(doc[format.mongo.queryFields[l]])) {
 
-                      var __word = words[m];
-                      __word = RegExp.escape(__word);
+                      for(var n = 0; n < doc[format.mongo.queryFields[l]].length; n++) {
+                        _matchIndex[n] = doc[format.mongo.queryFields[l]][n].search(new RegExp(_word, 'i'));
 
-                      var matchOrgIndex = text.search(new RegExp(__word, 'i'));
-                      if(matchOrgIndex != -1 && (matchMin == -1 || matchOrgIndex < matchMin)) matchMin = matchOrgIndex;
-                      if(matchOrgIndex != -1 && (matchMax == -1 || matchOrgIndex + words[m].length> matchMax)) matchMax = matchOrgIndex + words[m].length;
+                        if(_matchIndex[n] != -1) {
+                          _matchCount[n]++;
+                          _matchTotal[n] += doc[format.mongo.queryFields[l]][n].split(' ').length;
+                          _matchedWord[n] += words[m];
+
+                          var __word = words[m];
+                          __word = RegExp.escape(__word);
+
+                          _matchOrgIndex[n] = text.search(new RegExp(__word, 'i'));
+                          if(_matchOrgIndex[n] != -1 && (_matchMin[n] == -1 || _matchOrgIndex[n] < _matchMin[n])) _matchMin[n] = _matchOrgIndex[n];
+                          if(_matchOrgIndex[n] != -1 && (_matchMax[n] == -1 || _matchOrgIndex[n] + words[m].length> _matchMax[n])) _matchMax[n] = _matchOrgIndex[n] + words[m].length;
+                        }
+                      }
+
+                      var maxMatchIndex = 0, maxMatchedCount = 0;
+                      for(var n = 0; n < doc[format.mongo.queryFields[l]].length; n++) {
+                        if(_matchCount[n] > maxMatchedCount) {
+                          maxMatchIndex = n;
+                          maxMatchedCount = _matchCount[n];
+                        }
+                      }
+
+                      matchCount = _matchCount[maxMatchIndex];
+                      matchTotal= _matchTotal[maxMatchIndex];
+                      matchedWord = _matchedWord[maxMatchIndex];
+                      matchIndex = _matchIndex[maxMatchIndex];
+                      matchMin = _matchMin[maxMatchIndex];
+                      matchMax = _matchMax[maxMatchIndex];
+
+                    } else {
+                      matchIndex = doc[format.mongo.queryFields[l]].search(new RegExp(_word, 'i'));
+
+                      if(matchIndex != -1) {
+                        matchCount++;
+                        matchTotal += doc[format.mongo.queryFields[l]].split(' ').length;
+                        matchedWord += words[m];
+
+                        var __word = words[m];
+                        __word = RegExp.escape(__word);
+
+                        var matchOrgIndex = text.search(new RegExp(__word, 'i'));
+                        if(matchOrgIndex != -1 && (matchMin == -1 || matchOrgIndex < matchMin)) matchMin = matchOrgIndex;
+                        if(matchOrgIndex != -1 && (matchMax == -1 || matchOrgIndex + words[m].length> matchMax)) matchMax = matchOrgIndex + words[m].length;
+                      }
                     }
                   }
                 }
@@ -1400,19 +1455,23 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                 if(!format.mongo.minMatch || matchCount >= format.mongo.minMatch) {
                   var bExist = false;
                   for(var l = 0; l < matchedDoc.length; l++) {
-                    if(matchedDoc[l].input == doc.input) {
+                    if((Array.isArray(doc.input) && doc.input[maxMatchIndex] == matchedDoc[l].input) ||
+                      (doc.input == matchedDoc[l].input)) {
                       bExist = true;
                       break;
                     }
                   }
 
                   if(!bExist && matchCount / words.length > format.matchRate) {
+                    if(Array.isArray(doc.input)) doc.input = doc.input[maxMatchIndex];
+                    doc.inputLen = doc.input.split(' ').length;
                     doc.matchWord = matchedWord;
                     doc.matchCount = matchCount;
                     doc.matchMin = matchMin;
                     doc.matchMax = matchMax;
                     doc.matchRate = matchCount / words.length;
                     // doc.matchRate = matchCount / matchTotal;
+
                     matchedDoc.push(doc);
                   }
                 }
@@ -1435,7 +1494,8 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
       matchedDoc.sort(format.mongo.taskSort);
     } else {
       matchedDoc.sort(function (a, b) {
-        return b.matchRate - a.matchRate;
+        if(b.matchRate == a.matchRate) return a.inputLen - b.inputLen;
+        else return b.matchRate - a.matchRate;
       });
     }
 
@@ -1468,8 +1528,8 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
           inDoc[format.name].push(matchDoc);
         }
 
-        if(matchDoc.matchWord && matchDoc.matchWord.replace(/ /i, '') == matchDoc[format.mongo.queryFields[0]].replace(/ /i, ''))
-          break;
+        // if(matchDoc.matchWord && matchDoc.matchWord.replace(/ /i, '') == matchDoc[format.mongo.queryFields[0]].replace(/ /i, ''))
+        //   break;
         if (inDoc[format.name].length >= (format.limit || MAX_LIST)) break;
       }
 
@@ -1482,19 +1542,21 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
         }
       }
 
+      var t1 = new Date();
       try {
-        logger.debug('type.js:dialogTypeCheck: MATCHED ' + format.name + ' "' + text + ' isArray: ' + Array.isArray(inDoc[format.name]) /* + '" inDoc: ' + JSON.stringify(inDoc)*/);
+        logger.debug('type.js:dialogTypeCheck: MATCHED ' + (t1 - t0) + ' ms ' + format.name + ' "' + text + ' isArray: ' + Array.isArray(inDoc[format.name]) /* + '" inDoc: ' + JSON.stringify(inDoc)*/);
       } catch (e) {
-        logger.debug('type.js:dialogTypeCheck: MATCHED ' + format.name + ' "' + text + ' isArray: ' + Array.isArray(inDoc[format.name]) /* + '" inDoc.' + format.name + ': ' + inDoc[format.name] + ' inDoc.typeDoc: ' + JSON.stringify(inDoc.typeDoc)*/);
+        logger.debug('type.js:dialogTypeCheck: MATCHED ' + (t1 - t0) + ' ms ' + format.name + ' "' + text + ' isArray: ' + Array.isArray(inDoc[format.name]) /* + '" inDoc.' + format.name + ': ' + inDoc[format.name] + ' inDoc.typeDoc: ' + JSON.stringify(inDoc.typeDoc)*/);
       }
 
       callback(text, inDoc, true);
     } else {
 
+      var t1 = new Date();
       try {
-        logger.debug('type.js:dialogTypeCheck: NOT MATCHED ' + format.name + ' "' + text + '" inDoc: ' + JSON.stringify(inDoc));
+        logger.debug('type.js:dialogTypeCheck: NOT MATCHED ' + (t1 - t0) + ' ms ' + format.name + ' "' + text + '" inDoc: ' + JSON.stringify(inDoc));
       } catch (e) {
-        logger.debug('type.js:dialogTypeCheck: NOT MATCHED ' + format.name + ' "' + text + '" inDoc.' + format.name + ': ' + inDoc[format.name] + ' inDoc.typeDoc: ' + JSON.stringify(inDoc.typeDoc));
+        logger.debug('type.js:dialogTypeCheck: NOT MATCHED ' + (t1 - t0) + ' ms ' + format.name + ' "' + text + '" inDoc.' + format.name + ': ' + inDoc[format.name] + ' inDoc.typeDoc: ' + JSON.stringify(inDoc.typeDoc));
       }
 
       callback(text, inDoc, false);
@@ -1503,7 +1565,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
 }
 
 exports.dialogTypeCheck = dialogTypeCheck;
-botlib.setGlobalTypeCheck('dialogTypeCheck', dialogTypeCheck);
+globals.setGlobalTypeCheck('dialogTypeCheck', dialogTypeCheck);
 
 function contextListCheck(text, format, inDoc, context, callback) {
   // logger.debug('');

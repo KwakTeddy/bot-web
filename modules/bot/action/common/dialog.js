@@ -6,6 +6,7 @@ var taskModule = require(path.resolve('modules/bot/action/common/task'));
 var type = require(path.resolve('modules/bot/action/common/type'));
 var botUser= require(path.resolve('modules/bot-users/server/controllers/bot-users.server.controller'))
 var userDilaog = require(path.resolve('modules/user-dialogs/server/controllers/user-dialogs.server.controller'));
+var autoCorrection = require(path.resolve('modules/bot/engine/nlp/autoCorrection'));
 
 const START_DIALOG_NAME = '시작';
 exports.START_DIALOG_NAME = START_DIALOG_NAME;
@@ -83,10 +84,11 @@ function findUpDialog(dialog, context, print, callback) {
 
 exports.findUpDialog = findUpDialog;
 
-function matchGlobalDialogs(inRaw, inNLP, dialogs, context, print, callback) {
+function matchGlobalDialogs(inRaw, inNLP, dialogs, context, print, callback, wordCorrection) {
   context.dialog.typeMatches = {};
   context.dialog.typeInits = {};
   context.dialog.isFail = false;
+  context.botUser.wordCorrection = wordCorrection;
 
   matchDialogs(inRaw, inNLP, context.bot.commonDialogs, context, print, function(matched, _dialog) {
     if(matched) {
@@ -95,6 +97,13 @@ function matchGlobalDialogs(inRaw, inNLP, dialogs, context, print, callback) {
       matchDialogs(inRaw, inNLP, dialogs, context, print, function(matched, _dialog) {
         if(matched == true) {
           callback(matched, _dialog);
+        } else if(!wordCorrection) {
+          var _inRaw = autoCorrection.correction(inRaw);
+          type.processInput(context, _inRaw, function(_inNLP, _inDoc) {
+            context.botUser.nlpCorrection = _inNLP;
+            context.botUser.inRawCorrection = _inRaw;
+            matchGlobalDialogs(_inRaw, _inNLP, dialogs, context, print, callback, true);
+          });
         } else {
           for (var i = 0; i < dialogs.length; i++) {
             var dialog = dialogs[i];
@@ -123,10 +132,21 @@ function matchGlobalDialogs(inRaw, inNLP, dialogs, context, print, callback) {
 
 exports.matchGlobalDialogs = matchGlobalDialogs;
 
-function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback, options) {
+function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback, options, wordCorrection) {
   context.dialog.typeMatches = {};
   // context.dialog.typeInits = {};
   context.dialog.isFail = false;
+  context.botUser.wordCorrection = wordCorrection;
+
+  if(wordCorrection) {  // 오타수정 적용 후 처리
+    context.botUser.currentDialog= context.botUser.wordCorrection_context_botUser_currentDialog;
+    context.botUser._dialog= context.botUser.wordCorrection_context_botUser__dialog;
+    context.dialog = context.botUser.wordCorrection_context_dialog;
+
+    context.botUser.wordCorrection_context_botUser_currentDialog = null;
+    context.botUser.wordCorrection_context_botUser__dialog = null;
+    context.botUser.wordCorrection_context_dialog = null;
+  }
 
   if(options && options.commonCallChild == 1) {options.commonCallChild = null; options.dontMatch = 1;}
   matchDialogs(inRaw, inNLP, context.bot.commonDialogs, context, print, function(matched, _dialog) {
@@ -139,31 +159,39 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback, opti
         if(matched == true) {
           callback(matched, _dialog);
         } else {
-          for (var i = 0; i < dialogs.length; i++) {
-            var dialog = dialogs[i];
-            if(dialog.input == undefined || dialog.name == NO_DIALOG_NAME ) {
-              // TODO  TASK.inRaw  추가
-              dialog.inRaw = inRaw;
-              dialog.inNLP = inNLP;
+          if(wordCorrection) {
+            for (var i = 0; i < dialogs.length; i++) {
+              var dialog = dialogs[i];
+              if (dialog.input == undefined || dialog.name == NO_DIALOG_NAME) {
+                // TODO  TASK.inRaw  추가
+                dialog.inRaw = inRaw;
+                dialog.inNLP = inNLP;
 
-              if(dialog.task) {
-                dialog.task.inRaw = inRaw;
-                dialog.task.inNLP = inNLP;
+                if (dialog.task) {
+                  dialog.task.inRaw = inRaw;
+                  dialog.task.inNLP = inNLP;
+                }
+                if (context.botUser.currentDialog) {
+                  context.botUser.currentDialog.inRaw = null;
+                  context.botUser.currentDialog.inNLP = null;
+                }
+
+                var nextOptions;
+                if (options) nextOptions = utils.merge(options, {current: context.botUser.currentDialog}, true);
+                else nextOptions = {current: context.botUser.currentDialog};
+
+                executeDialog(dialog, context, print, callback, nextOptions);
+                context.dialog.isFail = true;
+                callback(true, dialog);
+                return;
               }
-              if(context.botUser.currentDialog) {
-                context.botUser.currentDialog.inRaw = null;
-                context.botUser.currentDialog.inNLP = null;
-              }
-
-              var nextOptions;
-              if(options) nextOptions = utils.merge(options, {current: context.botUser.currentDialog}, true);
-              else nextOptions = {current: context.botUser.currentDialog};
-
-              executeDialog(dialog, context, print, callback, nextOptions);
-              context.dialog.isFail = true;
-              callback(true, dialog);
-              return;
             }
+          }
+
+          if(!wordCorrection) {
+            context.botUser.wordCorrection_context_botUser_currentDialog = context.botUser.currentDialog;
+            context.botUser.wordCorrection_context_botUser__dialog = context.botUser._dialog;
+            context.botUser.wordCorrection_context_dialog = context.dialog;
           }
 
           context.botUser.currentDialog = null;
@@ -177,6 +205,13 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback, opti
           matchDialogs(inRaw, inNLP, context.bot.dialogs, context, print, function(matched, _dialog) {
             if(matched) {
               callback(matched, _dialog);
+            } else if(!wordCorrection) {
+              var _inRaw = autoCorrection.correction(inRaw);
+              type.processInput(context, _inRaw, function(_inNLP, _inDoc) {
+                context.botUser.nlpCorrection = _inNLP;
+                context.botUser.inRawCorrection = _inRaw;
+                matchChildDialogs(_inRaw, _inNLP, dialogs, context, print, callback, options, true);
+              });
             } else {
               if(context.bot.noDialog) {
                 executeDialog(context.bot.noDialog, context, print, callback);
@@ -435,7 +470,22 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
 
     }, function(err){
       if(eachMatched) callback(true, err);
-      else callback(false)
+      else callback(false);
+      // else {
+      //   if(wordCorrection == true) callback(false);
+      //   else {
+      //     if(context.botUser.nlpCorrection) {
+      //       matchDialogs(context.botUser.inRawCorrection, context.botUser.nlpCorrection, dialogs, context, print, callback, options, true);
+      //     } else {
+      //       var _inRaw = autoCorrection.correction(inRaw);
+      //       type.processInput(context, _inRaw, function(_inNLP, _inDoc) {
+      //         context.botUser.nlpCorrection = _inNLP;
+      //         context.botUser.inRawCorrection = _inRaw;
+      //         matchDialogs(_inRaw, _inNLP, dialogs, context, print, callback, options, true);
+      //       });
+      //     }
+      //   }
+      // }
     });
   } else {
     callback(false);

@@ -154,7 +154,7 @@ function find(task, context, callback) {
       if(task.save) context.user[DOC_NAME] = docs;
     }
 
-    console.log("mongo:find>> " + JSON.stringify(docs));
+    // console.log("mongo:find>> " + JSON.stringify(docs));
     callback(task, context);
   });
 }

@@ -11,7 +11,7 @@ var faqType = {
   },
   limit: 5,
   mongo: {
-    model: 'DialogSet',
+    model: 'DialogsetDialog',
     queryStatic: {dialogset: 'Talk_2017.1.22 18:14-1_dlg'},
     queryFields: ['input'],
     fields: 'input output' ,
