@@ -8,6 +8,15 @@ angular.module('analytics').config(['$stateProvider',
         url: '/analytics',
         template: '<ui-view/>'
       })
+      .state('analytics.dashboard', {
+        url: '',
+        templateUrl: 'modules/analytics/client/views/dashboard.client.view.html',
+        controller: 'AnalyticsListController',
+        controllerAs: 'vm',
+        data: {
+          roles: ['user', 'admin'],
+        }
+      })
       .state('analytics.user-count', {
         url: '',
         templateUrl: 'modules/analytics/client/views/user-count.client.view.html',

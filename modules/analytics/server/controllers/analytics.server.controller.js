@@ -30,7 +30,7 @@ exports.list = function (req, res) {
     [
       {$match: cond},
       {$group: {_id: {year: '$year', month: '$month', date: '$date'}, date: {$first: '$date'}, count: {$sum: 1}}},
-      {$sort: {date: 1}},
+      {$sort: {_id:1,  date: 1}},
     ]
   ).exec(function (err, userCounts) {
     if (err) {
@@ -38,7 +38,6 @@ exports.list = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      console.log(userCounts);
       res.jsonp(userCounts);
     }
   });
@@ -67,7 +66,6 @@ exports.dialogList = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      console.log(userCounts);
       res.jsonp(userCounts);
     }
   });
@@ -90,7 +88,7 @@ exports.dialogSuccessList = function (req, res) {
           {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" }, inOut: '$inOut', dialog: '$dialog'}},
           {$match: cond},
           {$group: {_id: {year: '$year', month: '$month', date: '$day'}, date: {$first: '$date'}, count: {$sum: 1}}},
-          {$sort: {count: -1}}
+          {$sort: {_id:1, date: 1}}
         ]
       ).exec(function (err, userCounts) {
         if (err) {
@@ -98,7 +96,6 @@ exports.dialogSuccessList = function (req, res) {
             message: errorHandler.getErrorMessage(err)
           });
         } else {
-          console.log(userCounts);
           cb(null, userCounts);
         }
       });
@@ -110,7 +107,7 @@ exports.dialogSuccessList = function (req, res) {
           {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" }, inOut: '$inOut', dialog: '$dialog', fail:'$fail'}},
           {$match: cond},
           {$group: {_id: {year: '$year', month: '$month', date: '$day'}, date: {$first: '$date'}, count: {$sum: 1}}},
-          {$sort: {count: -1}}
+          {$sort: {_id:1, date: 1}}
         ]
       ).exec(function(err, failCounts) {
         if (err) {
@@ -118,7 +115,6 @@ exports.dialogSuccessList = function (req, res) {
             message: errorHandler.getErrorMessage(err)
           });
         } else {
-          console.log(failCounts);
           var result = [];
           for (var i = 0; i < userCounts.length; ++i)
           {
@@ -166,7 +162,6 @@ exports.sessionSuccessList = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      console.log(userCounts);
       res.jsonp(userCounts);
     }
   });
@@ -185,9 +180,11 @@ exports.dialogFailureList = function (req, res) {
   cond.fail = true;
   UserDialog.aggregate(
     [
-      {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" }, inOut: '$inOut', dialog: '$dialog', fail:'$fail'}},
+      {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" },
+        inOut: '$inOut', dialog: '$dialog', fail:'$fail', preDialogId:'$preDialogId', preDialogName:'$preDialogName'}},
       {$match: cond},
-      {$group: {_id: '$dialog', count: {$sum: 1}}},
+      //{$match:{ preDialogId: { $exists:true, $ne: null } } },
+      {$group: {_id: {dialog:'$dialog', preDialogId: '$preDialogId'}, count: {$sum: 1}}},
       {$sort: {count: -1}}
     ]
   ).exec(function (err, userCounts) {
@@ -196,7 +193,6 @@ exports.dialogFailureList = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      console.log(userCounts);
       res.jsonp(userCounts);
     }
   });

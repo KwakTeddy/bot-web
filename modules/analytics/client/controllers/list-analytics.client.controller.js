@@ -1,23 +1,12 @@
 'use strict';
 
-function callback(json)
-{
-  console.log(json);
-};
-
 // Analytics controller
-angular.module('analytics').controller('AnalyticsListController', ['$scope', '$stateParams', '$location', 'DTColumnDefBuilder','Authentication', 'AnalyticsService', 'DialogUsageService', 'DialogSuccessService', 'SessionSuccessService', 'DialogFailureService',
-  function ($scope, $stateParams, $location, DTColumnDefBuilder, Authentication, AnalyticsService, DialogUsageService, DialogSuccessService, SessionSuccessService, DialogFailureService) {
+angular.module('analytics').controller('AnalyticsListController', ['$scope', '$stateParams', '$location', 'Authentication', 'AnalyticsService', 'DialogUsageService', 'DialogSuccessService', 'SessionSuccessService', 'DialogFailureService',
+  function ($scope, $stateParams, $location, Authentication, AnalyticsService, DialogUsageService, DialogSuccessService, SessionSuccessService, DialogFailureService) {
     $scope.authentication = Authentication;
     $scope.kind = "all";
     $scope.year = new Date().getFullYear();
     $scope.ym = new Date();
-
-    $scope.dtColumnDefs = [
-      DTColumnDefBuilder.newColumnDef(0).notSortable(),
-      DTColumnDefBuilder.newColumnDef(1).notSortable(),
-      DTColumnDefBuilder.newColumnDef(2).notSortable()
-    ];
 
     // Find a list of UserCount
     $scope.find = function () {
@@ -92,6 +81,10 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$s
         });
     };
 
+    $scope.edit = function(preDialogId) {
+      window.alert(preDialogId);
+    };
+
     // Find a list of dialog fail
     $scope.find_dialog_failure = function () {
       var arg = 'empty';
@@ -104,6 +97,7 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$s
           kind: $scope.kind,
           arg: arg
         }, function() {
+          console.log(dialogFailure);
           $scope.dialogFailure = dialogFailure;
         }, function(err) {
           console.log(err);
