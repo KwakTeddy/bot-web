@@ -13,12 +13,12 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 //    $scope.authentication = Authentication;
 
     vm.server = 'localhost:1024';
-    vm.bot = 'athena';
-    // vm.userBot = {};
-    vm.userBot = UserBotsService.get({userBotId: ($stateParams.userBotId || '58a33a58dd6b0db01f496a36')}, function(userBot) {
-      if(userBot.id) vm.bot = userBot.id;
-      vm.connect();
-    });
+    vm.bot = $cookies.get('default_bot') || 'athena';
+    vm.userBot = {};
+    // vm.userBot = UserBotsService.get({userBotId: ($stateParams.userBotId || '58a33a58dd6b0db01f496a36')}, function(userBot) {
+    //   if(userBot.id) vm.bot = userBot.id;
+    //   vm.connect();
+    // });
     vm.userId = '';
     vm.msg = '';
     vm.isConnected = false;
@@ -34,6 +34,8 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       if (!Socket.socket) {
         Socket.connect();
       }
+
+      $cookies.put('default_bot', vm.bot);
 
       vm.isConnected = true;
       init();
@@ -174,11 +176,13 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
         vm.bot = botId;
         vm.userBot = data;
+        $rootScope.userBot = vm.userBot;
         document.getElementById("chat-header").innerText = vm.bot;
         vm.connect();
       }, function(err) {
         vm.bot = botId;
         vm.userBot = {id: vm.bot, name: vm.bot};
+        $rootScope.userBot = vm.userBot;
         document.getElementById("chat-header").innerText = vm.bot;
         vm.connect();
       });
@@ -228,6 +232,8 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     $scope.$on('$destroy', function () {
       Socket.removeListener('send_msg');
     });
+
+    vm.connectUserBot(vm.bot);
 
     /*********************** voice **********************************/
     var recognition;
@@ -418,8 +424,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       var userBot = arg0;
       vm.bot = userBot.id;
       vm.userBot = userBot;
-      document.getElementById("chat-header").innerText = vm.bot;
-      vm.connect();
+      vm.connectUserBot(vm.bot);
     });
 
     $scope.$on('connectUserBot', function(event, arg0) {

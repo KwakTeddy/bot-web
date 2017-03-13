@@ -53,9 +53,7 @@ module.exports.start = function start(callback) {
   var autoCorrection = require(path.resolve('modules/bot/engine/nlp/autoCorrection'));
   autoCorrection.loadWordCorrections();
 
-  bot.loadBots();
-  // bot.loadBot('csdemo');
-  // bot.loadBot('athena');
+  // bot.loadBots();
 
   _this.init(function (app, db, config) {
 

@@ -799,10 +799,6 @@ exports.contextAnalytics = function (req, res) {
   var faqType = {
     name: 'result',
     typeCheck: type.dialogTypeCheck,
-    // preType: function(task, context, type, callback) {
-    //   type.mongo.queryStatic.dialogset = bot.dialogset;
-    //   callback(task, context);
-    // },
     limit: 10,
     matchRate: 0,
     mongo: {
@@ -814,6 +810,17 @@ exports.contextAnalytics = function (req, res) {
       minMatch: 1
     }
   };
+
+  if(req.query.dialogsets) {
+    var dialogsetIds = undefined;
+    if(Array.isArray(req.query.dialogsets)) dialogsetIds = req.query.dialogsets;
+    else dialogsetIds = [req.query.dialogsets];
+
+    faqType.mongo.queryStatic = {$or: []};
+    for(var i = 0; i < dialogsetIds.length; i++) {
+      faqType.mongo.queryStatic.$or.push({dialogset: dialogsetIds[i]});
+    }
+  }
 
   dialogset.processInput(null, req.query.input, function(_input) {
     type.executeType(_input, faqType, {}, {bot: {}}, function(_text, _result) {

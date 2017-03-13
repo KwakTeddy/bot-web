@@ -239,15 +239,23 @@ function getContext(botName, channel, user, callback) {
         botContext = global._userbots[botName];
         cb(null);
       } else {
-        botModule.loadUserBot(botName, function(_userBot) {
-          if(_userBot) {
-            botContext = _userBot;
-          } else {
-            botContext = {};
-          }
-
+        botModule.loadBot(botName);
+        botContext = global._bots[botName];
+        if(botContext) {
           cb(null);
-        })
+        } else {
+          botModule.loadUserBot(botName, function(_userBot) {
+            if(_userBot) {
+              botContext = _userBot;
+            } else {
+              botModule.loadBot(botName);
+              botContext = global._bots[botName];
+              if(botContext == undefined) botContext = {};
+            }
+
+            cb(null);
+          })
+        }
       }
     }, function(cb) {
       if(user != undefined) {

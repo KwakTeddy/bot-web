@@ -264,9 +264,11 @@ function loadUserBot(botName, callback) {
         name: 'typeDoc',
         typeCheck: global._context.typeChecks['dialogTypeCheck'], //type.mongoDbTypeCheck,
         preType: function(task, context, type, callback) {
-          type.mongo.queryStatic = {$or: []};
-          for(var i = 0; i < bot.dialogsets.length; i++) {
-            type.mongo.queryStatic.$or.push({dialogset: bot.dialogsets[i]});
+          if(bot.dialogsets) {
+            type.mongo.queryStatic = {$or: []};
+            for(var i = 0; i < bot.dialogsets.length; i++) {
+              type.mongo.queryStatic.$or.push({dialogset: bot.dialogsets[i]});
+            }
           }
           callback(task, context);
         },
@@ -274,7 +276,7 @@ function loadUserBot(botName, callback) {
         matchRate: 0.5,
         mongo: {
           model: 'dialogsetdialogs',
-          queryStatic: {dialogset: ''},
+          // queryStatic: {dialogset: ''},
           queryFields: ['input'],
           fields: 'dialogset input output' ,
           taskFields: ['input', 'output', 'matchRate'],
