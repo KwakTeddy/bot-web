@@ -879,7 +879,7 @@ exports.nlp = function (req, res) {
   });
 };
 
-var autoCorrection = require(path.resolve('modules/bot/engine/nlp/autoCOrrection'));
+var autoCorrection = require(path.resolve('modules/bot/engine/nlp/autoCorrection'));
 
 exports.autoCorrection = function (req, res) {
 
