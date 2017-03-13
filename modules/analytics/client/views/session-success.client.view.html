@@ -6,24 +6,41 @@
   </div>
 </header>
 
+<script>
+  function changeFunc(selectBox) {
+    document.getElementById("year").style.display = "none";
+    document.getElementById("ym").style.display = "none";
+    switch (selectBox.selectedIndex) {
+      case 1:
+        document.getElementById("year").style.display = "inline";
+        break;
+      case 2:
+        document.getElementById("ym").style.display = "inline";
+        break;
+    }
+  }
+</script>
 
 <!-- start: page -->
 <section class="panel" ng-controller="AnalyticsListController" ng-init="find_session_success()">
   <header class="panel-heading">
-    <h2 class="panel-title">대화(세션) 성공률</h2>
-  </header>
-  <div class="panel-body">
-    <table><tr><td>
-      <form name="form"  ng-submit="search(form.$valid)" novalidate="novalidate">
-        <select name="kind" ng-model="vm.kind" class="form-control valid">
-          <option value="all">전체</option>
+    <form name="form" novalidate="novalidate">
+      <table width="100%"><tr><td>
+        <h2 class="panel-title">대화(세션) 성공률</h2>
+      </td><td align="right">
+        <select name="kind" ng-model="kind"  onchange="changeFunc(this)">
+          <option selected="selected" value="all">전체</option>
           <option value="year">연도별</option>
           <option value="month">월별</option>
         </select>
-        <input type="month" name="ym" ng-model="vm.ym" class="form-control valid">
-        <button class="btn btn-primary col-sm-offset-3 col-sm-6" ng-click="search(form.$valid)">검색</button>
-      </form>
-    </td></tr></table>
+        <input type="number" id="year" ng-model="year" min="1999" max="2100" value='2017' style="display:none">
+        <input type="month" id="ym" ng-model="ym" style="display:none" value="2017-03">
+        <button class="btn btn-primary" ng-click="find_session_success()">검색</button>
+      </td></tr></table>
+    </form>
+  </header>
+
+  <div class="panel-body">
     <table datatable="ng" class="table table-bordered table-striped mb-none">
       <thead>
       <tr>

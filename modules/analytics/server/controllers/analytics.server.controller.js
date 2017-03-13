@@ -17,9 +17,18 @@ var async = require('async');
  * List of User count
  */
 exports.list = function (req, res) {
+  var kind = req.params.kind;
+  var arg = req.params.arg;
+
+  var cond = {};
+  if (kind == 'year')
+    cond = {year: parseInt(arg)};
+  else if (kind == 'month')
+    cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth()+1 }
+  console.log(JSON.stringify(cond));
   UserDialogLog.aggregate(
     [
-      {$match: {year: 2017, month: 3}},
+      {$match: cond},
       {$group: {_id: {year: '$year', month: '$month', date: '$date'}, date: {$first: '$date'}, count: {$sum: 1}}},
       {$sort: {date: 1}},
     ]
@@ -36,10 +45,19 @@ exports.list = function (req, res) {
 };
 
 exports.dialogList = function (req, res) {
+  var kind = req.params.kind;
+  var arg = req.params.arg;
+
+  var cond = { inOut: true};
+  if (kind == 'year')
+    cond = {year: parseInt(arg), inOut: true};
+  else if (kind == 'month')
+    cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth()+1, inOut: true}
+  console.log(JSON.stringify(cond));
   UserDialog.aggregate(
     [
       {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" }, inOut: '$inOut', dialog: '$dialog'}},
-      {$match: {year:  2017, month: 3, inOut: true}},
+      {$match: cond},
       {$group: {_id: '$dialog', count: {$sum: 1}}},
       {$sort: {count: -1}}
     ]
@@ -56,12 +74,21 @@ exports.dialogList = function (req, res) {
 };
 
 exports.dialogSuccessList = function (req, res) {
+  var kind = req.params.kind;
+  var arg = req.params.arg;
+
+  var cond = { inOut: true};
+  if (kind == 'year')
+    cond = {year: parseInt(arg), inOut: true};
+  else if (kind == 'month')
+    cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth()+1, inOut: true}
+  console.log(JSON.stringify(cond));
   async.waterfall([
     function(cb) {
       UserDialog.aggregate(
         [
           {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" }, inOut: '$inOut', dialog: '$dialog'}},
-          {$match: {year:  2017,  inOut: true}},
+          {$match: cond},
           {$group: {_id: {year: '$year', month: '$month', date: '$day'}, date: {$first: '$date'}, count: {$sum: 1}}},
           {$sort: {count: -1}}
         ]
@@ -77,10 +104,11 @@ exports.dialogSuccessList = function (req, res) {
       });
     },
     function(userCounts, cb) {
+      cond.fail = true;
       UserDialog.aggregate(
         [
           {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" }, inOut: '$inOut', dialog: '$dialog', fail:'$fail'}},
-          {$match: {year:  2017, inOut: true, fail: true}},
+          {$match: cond},
           {$group: {_id: {year: '$year', month: '$month', date: '$day'}, date: {$first: '$date'}, count: {$sum: 1}}},
           {$sort: {count: -1}}
         ]
@@ -116,10 +144,19 @@ exports.dialogSuccessList = function (req, res) {
 };
 
 exports.sessionSuccessList = function (req, res) {
+  var kind = req.params.kind;
+  var arg = req.params.arg;
+
+  var cond = { inOut: true};
+  if (kind == 'year')
+    cond = {year: parseInt(arg), inOut: true};
+  else if (kind == 'month')
+    cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth()+1, inOut: true}
+  console.log(JSON.stringify(cond));
   UserDialog.aggregate(
     [
-      {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" }, inOut: '$inOut', dialog: '$dialog'}},
-      {$match: {year:  2017, month: 3, inOut: true}},
+      {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" }, inOut: '$inOut', dialog: '$dialog', fail:'$fail'}},
+      {$match: cond},
       {$group: {_id: '$dialog', count: {$sum: 1}}},
       {$sort: {count: -1}}
     ]
@@ -136,10 +173,20 @@ exports.sessionSuccessList = function (req, res) {
 };
 
 exports.dialogFailureList = function (req, res) {
+  var kind = req.params.kind;
+  var arg = req.params.arg;
+
+  var cond = { inOut: true};
+  if (kind == 'year')
+    cond = {year: parseInt(arg), inOut: true};
+  else if (kind == 'month')
+    cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth()+1, inOut: true}
+  console.log(JSON.stringify(cond));
+  cond.fail = true;
   UserDialog.aggregate(
     [
-      {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" }, inOut: '$inOut', dialog: '$dialog'}},
-      {$match: {year:  2017, month: 3, inOut: true}},
+      {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" }, inOut: '$inOut', dialog: '$dialog', fail:'$fail'}},
+      {$match: cond},
       {$group: {_id: '$dialog', count: {$sum: 1}}},
       {$sort: {count: -1}}
     ]
