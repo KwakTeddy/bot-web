@@ -4,11 +4,11 @@
  * Module dependencies.
  */
 var passport = require('passport');
-
+const util = require('util'); //temporary
 module.exports = function (app) {
   // User Routes
   var users = require('../controllers/users.server.controller');
-
+  var googletask = require('../../../../custom_modules/athena/googletask');
   // Setting up the users password api
   app.route('/api/auth/forgot').post(users.forgot);
   app.route('/api/auth/reset/:token').get(users.validateResetToken);
@@ -42,6 +42,30 @@ module.exports = function (app) {
     ]
   }));
   app.route('/api/auth/google/:callback').get(users.oauthCallback('google'));
+
+  app.route('/api/auth/gmail/callback').get(function (err, data){
+    console.log(123);
+    googletask.api(data);
+  });
+  // function (err, data) {
+  //   console.log(util.inspect(data.req.query.code));
+  //   return data.req.query.code;
+  //   var authCode = data.req.query.code;
+  //   var data1 = {
+  //     code : authCode,
+  //   client_id : '567723322080-uopbt6mrcntsqn79hr8j260t5sbsui8n.apps.googleusercontent.com',
+  //   client_secret :'6MOFtpKbkGeKLFdLUf0Ffwtp',
+  //   redirect_uri : 'http://localhost:8443/api/auth/gmail/anothercallback',
+  //   grant_type : 'authorization_code'
+  //   };
+  //
+  // })
+  app.route('/api/auth/gmail/anothercallback').get(function (err, data) {
+    console.log(err);
+    console.log(util.inspect(data));
+    return data
+  });
+  // https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A%2F%2Fmail.google.com&state=state_parameter_passthrough_value&redirect_uri=http%3A%2F%2Flocalhost%3A8443%2Fapi%2Fauth%2Fgmail%2Fcallback&access_type=offline&response_type=code&client_id=567723322080-uopbt6mrcntsqn79hr8j260t5sbsui8n.apps.googleusercontent.com
 
   // Setting the linkedin oauth routes
   app.route('/api/auth/linkedin').get(users.oauthCall('linkedin', {

@@ -1,0 +1,27 @@
+var path = require('path');
+var type = require(path.resolve('modules/bot/action/common/type'));
+var address = require(path.resolve('./modules/bot/action/common/address'));
+var navertask = require('./navertask');
+var publictask = require('./publictask');
+var googletask = require('./googletask');
+var quickstart = require('./quickstart');
+
+현재날씨:
+<{types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}], regexp: /날씨/}
+{action: publictask.currentweather}
+>+weather+ +temp+ +humidity+ +wind+
+
+예보:
+<{types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}], regexp: /예/}
+{action: publictask.forecastweather}
+>+weather+ +temp+ +humidity+ +wind+
+
+뉴스:
+<뉴스
+navertask.newscrawl
+>이응
+
+메일:
+<메일
+{action: googletask.gmailapi}
+>완료

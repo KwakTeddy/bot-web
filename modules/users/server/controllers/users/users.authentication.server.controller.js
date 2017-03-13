@@ -163,6 +163,7 @@ exports.oauthCall = function (strategy, scope) {
  */
 exports.oauthCallback = function (strategy, scope) {
   return function (req, res, next) {
+      console.log(req);
     // Pop redirect URL from session
     var sessionRedirectURL = req.session.redirect_to;
     delete req.session.redirect_to;
@@ -184,6 +185,16 @@ exports.oauthCallback = function (strategy, scope) {
     })(req, res, next);
   };
 };
+
+// Gmail Oauth
+exports.gmailOauth = function (strategy, scope) {
+    return function (req, res, next) {
+        console.log(req);
+
+
+    }
+
+}
 
 /**
  * Helper function to save or update a OAuth user profile

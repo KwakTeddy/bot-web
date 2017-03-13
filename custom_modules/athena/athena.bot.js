@@ -6,7 +6,10 @@ var athena = {
   naver: {
     clientId: 'c7VNVyIG3s95N4q2LWZQ',
     clientSecret: 'HXWvXdrKi7'
-  }
+  },
+  dialogFiles: [
+    'test.dialog.js'
+  ]
 };
 
 botlib.makeBot('athena', athena);
