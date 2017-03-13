@@ -13,12 +13,12 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 //    $scope.authentication = Authentication;
 
     vm.server = 'localhost:1024';
-    vm.bot = 'athena';
-    // vm.userBot = {};
-    vm.userBot = UserBotsService.get({userBotId: ($stateParams.userBotId || '58a33a58dd6b0db01f496a36')}, function(userBot) {
-      if(userBot.id) vm.bot = userBot.id;
-      vm.connect();
-    });
+    vm.bot = $cookies.get('default_bot') || 'athena';
+    vm.userBot = {};
+    // vm.userBot = UserBotsService.get({userBotId: ($stateParams.userBotId || '58a33a58dd6b0db01f496a36')}, function(userBot) {
+    //   if(userBot.id) vm.bot = userBot.id;
+    //   vm.connect();
+    // });
     vm.userId = '';
     vm.msg = '';
     vm.isConnected = false;
@@ -35,6 +35,8 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         Socket.connect();
       }
 
+      $cookies.put('default_bot', vm.bot);
+
       vm.isConnected = true;
       init();
     };
@@ -45,9 +47,14 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       // if(message.startsWith(':log') && !$state.is('home')) return;
 
       if(message.startsWith(':log')) {
-        if(!$state.is('home')) return;
-        vm.log += message.substring(message.indexOf('\n')+1);
-        logScrollBottom();
+        if(!$state.is('home') && !$state.is('user-bots.context-analytics') &&
+          !$state.is('bots.graph-knowledge') && !$state.is('bots.graph-dialog')) return;
+        // vm.log += message.substring(message.indexOf('\n')+1);
+        // logScrollBottom();
+
+        $rootScope.logUpdated = message.substring(message.indexOf('\n')+1);
+        $rootScope.$broadcast('updateLog');
+
         return;
       }
 
@@ -87,6 +94,8 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
         synthesize(voice);
       }
+
+      $rootScope.$broadcast('onmsg', {message: message});
 
       // var snd = new Audio('/images/doorbell-6.mp3');
       // snd.play();
@@ -135,7 +144,12 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       }
 
       if(msg == ':build') { build(); return false;}
-      if (msg == ':init') { init(); return false; }
+      if(msg == ':init') { init(); return false; }
+      if(msg.startsWith(':connect')) {
+        var args = msg.split(/\s/);
+        if(args.length > 1) vm.connectUserBot(msg);
+        return false;
+      }
 
       addUserBubble(msg);
       emitMsg(msg);
@@ -151,6 +165,27 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
     vm.resetBot = function () {
       vm.sendMsg(':init');
+    };
+
+    vm.connectUserBot = function(botId) {
+      clearBubble();
+
+      $resource('/api/user-bots/byNameId/:botNameId', {botNameId:'@id'}).
+      get({botNameId: botId}, function(data) {
+        console.log(data);
+
+        vm.bot = botId;
+        vm.userBot = data;
+        $rootScope.userBot = vm.userBot;
+        document.getElementById("chat-header").innerText = vm.bot;
+        vm.connect();
+      }, function(err) {
+        vm.bot = botId;
+        vm.userBot = {id: vm.bot, name: vm.bot};
+        $rootScope.userBot = vm.userBot;
+        document.getElementById("chat-header").innerText = vm.bot;
+        vm.connect();
+      });
     };
 
     // 전체화면 이벤트로 전환
@@ -197,6 +232,8 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     $scope.$on('$destroy', function () {
       Socket.removeListener('send_msg');
     });
+
+    vm.connectUserBot(vm.bot);
 
     /*********************** voice **********************************/
     var recognition;
@@ -371,12 +408,14 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     if($cookies.get('userId') == undefined) {
       vm.userId = generateUUID();
       $cookies.put('userId', vm.userId);
+      $rootScope.userId = vm.userId;
     } else {
       vm.userId = $cookies.get('userId');
+      $rootScope.userId = vm.userId;
     }
 
     // if(vm.bot) vm.connect();
-    angular.element('#inputbox').focus();
+    if(_platform == 'web') angular.element('#inputbox').focus();
 
     if(_platform != 'mobile')
       document.getElementById("chat-header").innerText = vm.bot;
@@ -385,8 +424,11 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       var userBot = arg0;
       vm.bot = userBot.id;
       vm.userBot = userBot;
-      document.getElementById("chat-header").innerText = vm.bot;
-      vm.connect();
+      vm.connectUserBot(vm.bot);
+    });
+
+    $scope.$on('connectUserBot', function(event, arg0) {
+      vm.connectUserBot(arg0.id);
     });
 
     /*********************** 채팅 UI ***********************/

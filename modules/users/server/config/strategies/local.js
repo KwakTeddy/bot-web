@@ -10,21 +10,26 @@ var passport = require('passport'),
 module.exports = function () {
   // Use local strategy
   passport.use(new LocalStrategy({
-    usernameField: 'username',
+    usernameField: 'email',
     passwordField: 'password'
   },
-  function (username, password, done) {
+  function (email, password, done) {
     User.findOne({
-      username: username.toLowerCase()
+      email: email.toLowerCase()
     }, function (err, user) {
       if (err) {
         return done(err);
       }
       if (!user || !user.authenticate(password)) {
         return done(null, false, {
-          message: 'Invalid username or password'
+          message: '가입되지 않은 E-mail이거나 비밀번호가 잘못되었습니다 '
         });
       }
+      // if (!user.localEmailConfirmed && (user.provider == 'local')){
+      //   return done(null, false, {
+      //     message: 'E-mail 확인절차를 거치지 않았습니다'
+      //   })
+      // }
 
       return done(null, user);
     });

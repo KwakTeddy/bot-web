@@ -108,3 +108,11 @@ var commonDialogs = [
 var _bot = require(require('path').resolve("config/lib/bot")).getBot('moneybot');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);
+
+// TEST
+var json = JSON.stringify(dialogs);
+console.log(json);
+var fs = require('fs');
+fs.writeFile(require('path').resolve("public/js") + "/dialog.json", json, function(err) {
+if(err) { return console.log(err); }
+console.log("dialog.json was saved!"); });

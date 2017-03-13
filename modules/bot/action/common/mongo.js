@@ -94,7 +94,9 @@ function update(task, context, callback) {
         console.log(err);
         task.err = err;
       }
-      
+
+      task.numAffected = numAffected;
+
       callback(task, context);
     });
   }
@@ -152,7 +154,7 @@ function find(task, context, callback) {
       if(task.save) context.user[DOC_NAME] = docs;
     }
 
-    console.log("mongo:find>> " + JSON.stringify(docs));
+    // console.log("mongo:find>> " + JSON.stringify(docs));
     callback(task, context);
   });
 }

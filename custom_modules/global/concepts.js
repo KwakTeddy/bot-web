@@ -10,4 +10,4 @@ var concepts =  {
   '무엇' : ['뭐']
 };
 
-botlib.setGlobalConcepts(concepts);
+globals.setGlobalConcepts(concepts);

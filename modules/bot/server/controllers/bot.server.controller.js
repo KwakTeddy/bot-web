@@ -11,6 +11,8 @@ var async = require('async');
 var fs = require('fs');
 var command = require(path.resolve('modules/bot/action/common/command'));
 var botModule = require(path.resolve('./config/lib/bot'));
+var factModule = require(path.resolve('modules/bot/action/common/facts'));
+var toneModule = require(path.resolve('modules/bot/action/common/tone'));
 
 var chatSocketConfig = {port: 1024, host: 'localhost', allowHalfOpen: true};
 
@@ -48,22 +50,28 @@ function botProc(botName, channel, user, inTextRaw, outCallback, chatServerConfi
   // TODO 개발용
   dialog = utils.requireNoCache(path.resolve('modules/bot/action/common/dialog'));
 
+  var startTime = new Date();
   var print = function(_out, _task) {
-    logger.debug("사용자 출력>> " + _out + "\n");
+    var endTime = new Date();
+    logger.debug("사용자 출력 (" + (endTime-startTime) + 'ms)>> ' + _out + "\n");
 
-    if(_task && _task.photoUrl && !_task.photoUrl.startsWith('http')) {
-      _task.photoUrl = (process.env.HTTP_HOST ? process.env.HTTP_HOST : '') + _task.photoUrl;
-    }
+    // toneModule.toneSentence(_out, context.botUser.tone || '해요체', function(out) {
+    //   _out = out;
 
-    if(channel == 'ios' || channel == 'android') {
-      outCallback(_out, _task);
-    } else {
-      if(_out.indexOf('|') == -1) outCallback(_out, _task);
-      else {
-        var arr = _out.split('|');
-        outCallback(arr[0], _task);
+      if(_task && _task.photoUrl && !_task.photoUrl.startsWith('http')) {
+        _task.photoUrl = (process.env.HTTP_HOST ? process.env.HTTP_HOST : '') + _task.photoUrl;
       }
-    }
+
+      if(channel == 'ios' || channel == 'android') {
+        outCallback(_out, _task);
+      } else {
+        if(_out.indexOf('|') == -1) outCallback(_out, _task);
+        else {
+          var arr = _out.split('|');
+          outCallback(arr[0], _task);
+        }
+      }
+    // });
   };
 
   var context, inTextNLP, inDoc;
@@ -86,6 +94,26 @@ function botProc(botName, channel, user, inTextRaw, outCallback, chatServerConfi
         inDoc = _inDoc;
         cb(null);
       });
+    },
+
+    function(cb) {
+      if (context.botUser.nlp) {
+        context.botUser.sentenceInfo = toneModule.analyzeSentence(inTextRaw, null, context.botUser.nlp);
+
+        factModule.memoryFacts(inTextRaw, context, function (_task, _context) {
+          if(_task && _task.numAffected && _task.numAffected.upserted) {
+            console.log('[FACT_ADD]' + JSON.stringify(_task.doc));
+            // if(botName == 'athena') {
+            //   print('말씀하신 내용을 학습했어요.');
+            //   cb(true);
+            //   return;
+            // }
+          }
+          cb(null);
+        });
+      } else {
+        cb(null);
+      }
     },
 
     function(cb) {
@@ -116,10 +144,21 @@ function botProc(botName, channel, user, inTextRaw, outCallback, chatServerConfi
         context.dialog.inRaw = inTextRaw;
         context.dialog.inNLP = inTextNLP;
 
-        dialog.matchGlobalDialogs(inTextRaw, inTextNLP, context.bot.dialogs, context, print, function(matched) {
-          if(matched) cb(true);
-          else cb(null);
-        })
+        if(context.bot.bMultiSentence &&
+          !(context.botUser.sentenceInfo.sentenceType == 1 || context.botUser.sentenceInfo.sentenceType == 2 ||context.botUser.sentenceInfo.sentenceType == 3)) {
+          dialog.sympathize(inTextRaw, inTextNLP, context, print, function() {
+            cb(true);
+          })
+        } else {
+          dialog.matchGlobalDialogs(inTextRaw, inTextNLP, context.bot.dialogs, context, print, function(matched, _dialog) {
+            if(matched) {
+              if(_dialog) console.log('[DIALOG_SEL]' + JSON.stringify({id: _dialog.id, name: _dialog.name, input: _dialog.input}));
+              cb(true);
+            }
+            else cb(null);
+          })
+        }
+
       } else {
         cb(null);
       }
@@ -200,15 +239,23 @@ function getContext(botName, channel, user, callback) {
         botContext = global._userbots[botName];
         cb(null);
       } else {
-        botModule.loadUserBot(botName, function(_userBot) {
-          if(_userBot) {
-            botContext = _userBot;
-          } else {
-            botContext = {};
-          }
-
+        botModule.loadBot(botName);
+        botContext = global._bots[botName];
+        if(botContext) {
           cb(null);
-        })
+        } else {
+          botModule.loadUserBot(botName, function(_userBot) {
+            if(_userBot) {
+              botContext = _userBot;
+            } else {
+              botModule.loadBot(botName);
+              botContext = global._bots[botName];
+              if(botContext == undefined) botContext = {};
+            }
+
+            cb(null);
+          })
+        }
       }
     }, function(cb) {
       if(user != undefined) {
@@ -252,114 +299,3 @@ function getContext(botName, channel, user, callback) {
 
 }
 
-
-// var orderbot = require(path.resolve('custom_modules/order/order.dialog'));
-// var sample = require(path.resolve('custom_modules/sample/sample.dialog'));
-// global._bots = {
-//
-//   sample: {
-//     module: 'sample.dialog',
-//     dialogs: sample.dialogs
-//   },
-//
-//   order: {
-//     module: 'order.dialog',
-//     commonDialogs: orderbot.commonDialogs,
-//     dialogs: orderbot.dialogs,
-//     dialogServer: {chatScript: false},
-//     kakao: {
-//       keyboard: { type :"buttons", buttons:["배달주문시작", "배달내역보기"]}
-//     },
-//     facebook: {
-//       id: '1006864529411088',
-//       APP_SECRET :  "eb2974959255583150013648e7ac5da4",
-//       PAGE_ACCESS_TOKEN :  "EAAJGZBCFjFukBAE63miCdcKFwqTEmbbhSbm6jIr6ws5I7fKnWSMUqIzGfHZBDTqmW0wra5xZBZCLWg2O9miPcc6WdVQRyfHdDCYuhLjIbng0njUHqOdbasHcSZAs2WEO7zG72wgmciNsF138QCq1vLnzMHR3XYIP0VnV1iZBsZAngZDZD",
-//       VALIDATION_TOKEN : "moneybrain_token"
-//     },
-//     managers: [
-//       {platform: 'facebook', userId: '1094114534004265', name: '장세영'},
-//       {platform: 'facebook', userId: '997804450331458', name: '테스트'}
-//     ],
-//
-//     messages: {
-//       manager:  false,
-//       orderCall: false
-//     },
-//
-//     concepts: {
-//       '배달': ['주문', '시키다', '보내다']
-//     }
-//   },
-//
-//   moneybot: {
-//     kakao: {
-//       keyboard: { type :"buttons", buttons:["잔액조회", "상품추천", "고객상담"]}
-//     },
-//     facebook: {
-//       APP_SECRET :  "174b2a851e3811c3f2c267d46708d212",
-//       PAGE_ACCESS_TOKEN :  "EAAYwPrsj1ZA0BAORAoGhxvLLs5eRZADJ8BheTdjOXu8lT0X2tVFwZAZCEJiWFenFHCVqSuctfONET6dhbPDBnlivq5sXEvBABTnRlYpX8hLxZAnO2lywRiA6sVlbYAvG1n1EpQwkVhZAdrmq1p9PlQRUu327O1ohcZBwVLYZCn3beQZDZD",
-//       VALIDATION_TOKEN : "my_voice_is_my_password_verify_me"
-//     }
-//   },
-//
-//   nh: {
-//     kakao: {
-//       keyboard: {
-//         type: "buttons",
-//         buttons: ["상품안내", "FAQ (자주 묻는 질문)", "이벤트안내", "이용시간안내", "올원뱅크 바로가기"]
-//       }
-//     },
-//     dialogServer: {chatScript: true}
-//   }
-//
-// };
-
-//1094114534004265 장세영
-//1006864529411088 배달봇
-//997804450331458  장세영 테스트
-
-// var messages = {
-//   // typeExit: '\n처음으로 돌아가기: \'ㄱ\'',
-//   typeExit: '',
-//   typeAddress: '주소 형식이 틀렸습니다.',
-//   typeAddressCheck1: '입력하신 주소가 없습니다.',
-//   yesRegExp: "응|그래|네|그렇다|오케이|예스|ㅇㅋ|ㅇㅇ|OK|ok|Ok|YES|yes|Yes|sp|SP",
-//   noRegExp: "아니다|싫다|않다|노|NO|no|No",
-//   userError: '일시적 오류가 발생하였습니다.\n\n불편을 드려 죄송합니다.\n\n"시작"을 입력하여 처음부터 다시 시작해 주세요'
-// };
-//
-// exports.messages = messages;
-
-//var RiveScript = require(path.resolve('./external_modules/rivescript/rivescript'));
-//
-//var botPath = path.resolve('./custom_modules/testbot/brain');
-//
-//var bot = new RiveScript({
-//  debug: true,
-//  utf8:  true
-//});
-//
-//bot.loadDirectory(botPath, loading_done, loading_error);
-//
-//function loading_done(batch_num) {
-//  bot.sortReplies();
-//
-//  console.log("Bot Loaded: " + botPath);
-//
-//  //var reply = bot.reply("localuser", cmd);
-//}
-//
-//function loading_error(error, loadBatch) {
-//  console.error("Loading error: " + error);
-//}
-//
-//
-
-// global._context = {
-//   concepts: {
-//     '네': ['응', '그래', '네', '그렇다', '오케이', '예스', 'ㅇㅋ', 'ㅇㅇ', 'OK', 'ok', 'Ok', 'YES', 'yes', 'Yes', 'sp', 'SP'],
-//     '아니요': ['아니다', '싫다', '않다', '노', 'ㄴㄴ', 'NO', 'no', 'No'],
-//     '변경' : ['바꾸다', '틀리다'],
-//     '시작' : ['처음', ':reset user']
-//   }
-// };

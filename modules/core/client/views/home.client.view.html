@@ -7,34 +7,6 @@
 </header>
 
 <section class="panel" ng-keyup="vm.onKeyPress($event.keyCode)">
-  <div class="form-group">
-    <div class="col-md-4">
-      <select class="form-control mb-md" id="selectServer" name="selectServer"
-              ng-options="option for option in vm.servers"
-              ng-model="vm.server">
-      </select>
-    </div>
-    <div class="col-md-4">
-      <!--<select class="form-control mb-md" id="selectBot" name="selectBot"-->
-              <!--ng-options="option for option in vm.bots"-->
-              <!--ng-model="vm.bot">-->
-      <!--</select>-->
-      <input type="text" class="form-control" id="selectBot" name="selectBot"
-             ng-model="vm.bot"
-             placeholder="봇 이름"/>
-    </div>
-    <div class="col-md-4">
-      <div class="input-group mb-md">
-        <input type="text" class="form-control" id="userName" name="userName"
-               ng-model="vm.userId"
-               placeholder="유저명"/>
-        <span class="input-group-btn">
-          <button class="btn btn-success" type="button" ng-click="vm.connect()">CONNECT</button>
-        </span>
-      </div>
-    </div>
-  </div>
-
   <!--<header class="panel-heading">-->
     <!--<h2 class="panel-title">{{vm.isConnected ? vm.bot : '접속해주세요'}}</h2>-->
   <!--</header>-->
@@ -63,15 +35,27 @@
 
   <!--<br/>-->
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
       <input type="text" class="form-control" id="initMsg" name="initMsg"
              ng-model="vm.initMsg"
              placeholder="시작 메세지"/>
     </div>
-    <div class="col-md-6" >
-      <button class="col-sm-offset-6 col-sm-3 btn btn-danger" ng-click="vm.buildBot()">빌드 (F5)</button>
-      <button class="col-sm-3 btn btn-info" ng-click="vm.resetBot()">초기화 (ESC)</button>
+    <div class="col-md-4" >
+      <button class="btn btn-danger" ng-click="vm.buildBot()">빌드 (F5)</button>
+      <button class="btn btn-info" ng-click="vm.resetBot()">초기화 (ESC)</button>
     </div>
+
+    <!--<div class="col-md-4">-->
+      <!--<div class="input-group mb-md">-->
+        <!--<input type="text" class="form-control" id="selectBot" name="selectBot"-->
+               <!--ng-model="vm.bot"-->
+               <!--placeholder="봇 이름"/>-->
+        <!--<span class="input-group-btn">-->
+          <!--<button class="btn btn-success" type="button" ng-click="alert('test');vm.connectBot();">CONNECT</button>-->
+        <!--</span>-->
+      <!--</div>-->
+    <!--</div>-->
+
   </div>
 
   <br/>

@@ -52,6 +52,11 @@ angular.module('bots').controller('IDEController', ['$scope', '$timeout', '$stat
         return false;
       }
 
+      if (msg == ':viewGraph') {
+          viewGraph();
+          return false;
+      }
+
       if (msg == ':init') {
         init();
         return false;
@@ -72,6 +77,26 @@ angular.module('bots').controller('IDEController', ['$scope', '$timeout', '$stat
     $timeout(function () {
       $scope.refreshCodemirror = false;
     }, 100);
+
+      vm.viewGraph= function () {
+          new BotFilesService({botId: $stateParams.botId, _id: $stateParams.fileId, fileData: vm.data}).$save(function (botFile) {
+              // if (!Socket.socket) {
+              //   Socket.connect();
+              // }
+              // Socket.emit('send_msg', {
+              //   host: vm.server.split(':')[0],
+              //   port: vm.server.split(':')[1],
+              //   bot: vm.bot,
+              //   user: vm.userId,
+              //   msg: msg
+              // });
+              // vm.sendMsg(':build');
+
+              vm.sendMsg(':viewGraph');
+          }, function (err) {
+              CoreUtils.showConfirmAlert(err.data.message);
+          });
+      };
 
     vm.buildBot = function () {
       new BotFilesService({botId: $stateParams.botId, _id: $stateParams.fileId, fileData: vm.data}).$save(function (botFile) {
@@ -115,6 +140,11 @@ angular.module('bots').controller('IDEController', ['$scope', '$timeout', '$stat
       // console.log(vm.botName);
       emitMsg(':build ' + vm.botName + ' reset');
     }
+
+      function viewGraph() {
+          // console.log(vm.botName);
+          emitMsg(':viewGraph ' + vm.botName);
+      }
 
     function init() {
       emitMsg(':reset user');

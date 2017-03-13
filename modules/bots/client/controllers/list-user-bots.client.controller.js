@@ -5,9 +5,10 @@
 
 // UserBots controller
 angular.module('user-bots').controller('UserBotListController', ['$scope', '$rootScope', '$stateParams', '$state', 'userBotsResolve',
-  'UserBotsService', 'UserBotsFollowService',
-  function ($scope, $rootScope, $stateParams, $state, userBots, UserBotsService, UserBotsFollowService) {
+  'UserBotsService', 'UserBotsFollowService', '$http', 'Authentication',
+  function ($scope, $rootScope, $stateParams, $state, userBots, UserBotsService, UserBotsFollowService, $http, Authentication) {
     var vm = this;
+    vm.authentication = Authentication;
     vm.userBots = userBots;
 
     // if(_platform == 'mobile') {
@@ -19,6 +20,23 @@ angular.module('user-bots').controller('UserBotListController', ['$scope', '$roo
 
     vm.listType = $stateParams['listType'];
     // if(vm.listType == undefined) vm.listType = 'recent';
+    vm.currentPage = 1;
+    vm.perPage = 6;
+    vm.paging = function () {
+      $http.post('/api/user-bots/list', {currentPage : vm.currentPage, perPage : vm.perPage, listType : vm.listType, userId : vm.authentication.user._id}).success(function (response) {
+          vm.currentPage = vm.currentPage + 1;
+          if(!response.length) {
+              vm.pagingEnd = true;
+          } else {
+              vm.userBots.push.apply(vm.userBots, response);
+          }
+          console.log(response);
+          console.log(vm.userBots);
+      }).error(function (reponse) {
+
+      })
+    };
+
 
     vm.followBot = function(userBot) {
       UserBotsFollowService.follow({botUserId: vm.userId, userBot: userBot._id}, function(err, result) {

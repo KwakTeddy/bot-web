@@ -1,0 +1,132 @@
+<style>
+  .svg-container {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%; /* aspect ratio */
+    vertical-align: top;
+    overflow: hidden;
+  }
+  .svg-content-responsive {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 0;
+  }
+
+  .link {
+    fill: none;
+    stroke: #666;
+    stroke-width: 1.5px;
+  }
+
+  #call{
+    fill: #E6550D;
+  }
+
+  .link.call{
+    stroke: #E6550D;
+  }
+
+  #callChild{
+    fill: #E6550D;
+  }
+
+  .link.callChild{
+    stroke: #E6550D;
+  }
+
+  #returnDialog{
+    fill: #5C96BC;
+  }
+
+  .link.returnDialog{
+    stroke: #5C96BC;
+  }
+
+  #returnCall{
+    fill:#5C96BC;
+  }
+
+  .link.returnCall{
+    stroke: #5C96BC;
+  }
+
+  #child{
+    fill: #74C476;
+  }
+
+  .link.child {
+    stroke: #74C476;
+  }
+
+  rect {
+    fill: aliceblue;
+    /*stroke: blue;*/
+    stroke: #7CA4C0;
+  }
+
+  text {
+    font: 10px 돋음체;
+  }
+  .d3-tip {
+    line-height: 1;
+    font-weight: bold;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 2px;
+  }
+
+  /* Creates a small triangle extender for the tooltip */
+  .d3-tip:after {
+    box-sizing: border-box;
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.8);
+    content: "\25BC";
+    position: absolute;
+    text-align: center;
+  }
+
+  .d3-tip.n:after {
+    margin: -1px 0 0 0;
+    top: 100%;
+    left: 0;
+  }
+
+  .edgelabel {
+    pointer-events: none;
+    font-weight: bold;
+    font-size: 10px;
+    text-anchor: middle;
+    alignment-baseline: middle;
+  }
+
+</style>
+
+<header class="page-header">
+  <h2>Bots</h2>
+
+  <div class="right-wrapper pull-right">
+    <ol class="breadcrumbs">
+      <li>
+        <a ui-sref="home">
+          <i class="fa fa-home"></i>
+        </a>
+      </li>
+      <li><span>Graph</span></li>
+    </ol>
+
+    <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+  </div>
+</header>
+
+
+<!--<div class="col-md-6">-->
+<section id="canvas" class="panel" >
+
+</section>
+<!--</div>-->

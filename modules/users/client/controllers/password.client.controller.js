@@ -1,25 +1,45 @@
 'use strict';
 
-angular.module('users').controller('PasswordController', ['$scope', '$stateParams', '$http', '$location', 'Authentication', 'PasswordValidator',
-  function ($scope, $stateParams, $http, $location, Authentication, PasswordValidator) {
+angular.module('users').controller('PasswordController', ['$scope', '$stateParams', '$http', '$location', 'Authentication', 'PasswordValidator', '$state',
+  function ($scope, $stateParams, $http, $location, Authentication, PasswordValidator, $state) {
     $scope.authentication = Authentication;
     $scope.popoverMsg = PasswordValidator.getPopoverMsg();
 
-    //If user is signed in then redirect back home
-    if ($scope.authentication.user) {
-      $location.path('/');
+    //routing
+    var stingParser = $state.current.name;
+    var parsedString = stingParser.split('.');
+    if (parsedString[0] == 'user-bots-web') {
+        $scope.transition = 'user-bots-home';
+        $scope.passwordForgot = 'user-bots-web.password.forgot';
+
+    } else {
+        $scope.passwordForgot = 'password.forgot';
     }
 
-    // Submit forgotten password account id
+    // If user is signed in then redirect back home
+    if ($scope.authentication.user) {
+        if (parsedString[0] == 'user-bots-web') {
+            $state.go('user-bots-home');
+        } else {
+            $state.go('home')
+        }
+    }
+
+
+      // Submit forgotten password account id
     $scope.askForPasswordReset = function (isValid) {
       $scope.success = $scope.error = null;
+      $scope.submitted = true;
+      console.log($scope.forgotPasswordForm);
 
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'forgotPasswordForm');
 
         return false;
       }
-
+      var stingParser = $state.current.name;
+      var parsedString = stingParser.split('.');
+      $scope.credentials['from'] = parsedString[0];
       $http.post('/api/auth/forgot', $scope.credentials).success(function (response) {
         // Show user success message and clear form
         $scope.credentials = null;
@@ -35,8 +55,8 @@ angular.module('users').controller('PasswordController', ['$scope', '$stateParam
     // Change user password
     $scope.resetUserPassword = function (isValid) {
       $scope.success = $scope.error = null;
-
-      if (!isValid) {
+      $scope.submitted = true;
+        if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'resetPasswordForm');
 
         return false;
@@ -50,8 +70,15 @@ angular.module('users').controller('PasswordController', ['$scope', '$stateParam
         Authentication.user = response;
 
         // And redirect to the index page
-        $location.path('/password/reset/success');
+        var stingParser = $state.current.name;
+        var parsedString = stingParser.split('.');
+        if (parsedString[0] == 'user-bots-web'){
+          $state.go('user-bots-web.password.reset.success');
+        } else {
+          $state.go('password.reset.success')
+        }
       }).error(function (response) {
+        console.log(response);
         $scope.error = response.message;
       });
     };

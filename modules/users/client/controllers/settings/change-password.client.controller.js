@@ -5,9 +5,10 @@ angular.module('users').controller('ChangePasswordController', ['$scope', '$http
     $scope.user = Authentication.user;
     $scope.popoverMsg = PasswordValidator.getPopoverMsg();
 
-    // Change user password
+      // Change user password
     $scope.changeUserPassword = function (isValid) {
       $scope.success = $scope.error = null;
+      $scope.submitted = true;
 
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'passwordForm');

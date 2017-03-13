@@ -113,22 +113,22 @@
                   <span>봇 관리</span>
                 </a>
               </li>
+
               <li class="nav">
                 <a ui-sref="bot-users.list">
                   <i class="fa fa-users" aria-hidden="true"></i>
                   <span>친구 목록</span>
                 </a>
               </li>
-
-              <li class="nav-parent" ng-if="false">
+              <li class="nav-parent">
                 <a>
                   <i class="fa fa-copy" aria-hidden="true"></i>
-                  <span>주제/대화 관리</span>
+                  <span>대화 관리</span>
                 </a>
                 <ul class="nav nav-children">
                   <li>
-                    <a href="pages-signup.html">
-                      질의응답 관리
+                    <a ui-sref="dialogsets.list">
+                      대화Set 관리
                     </a>
                   </li>
                   <li>
@@ -303,6 +303,23 @@
                   <li>
                     <a ui-sref="user-bots.context-learning">Context 학습</a>
                   </li>
+                  <li>
+                    <a ui-sref="analytics.user-count">사용자수 분석</a>
+                  </li>
+                  <li>
+                    <a ui-sref="analytics.dialog-usage">대화별 사용량</a>
+                  </li>
+<!--
+                  <li>
+                    <a ui-sref="analytics.session-success">대화(세션) 성공률</a>
+                  </li>
+-->
+                  <li>
+                    <a ui-sref="analytics.dialog-success">문장 성공률</a>
+                  </li>
+                  <li>
+                    <a ui-sref="analytics.dialog-failure">대화실패 분석</a>
+                  </li>
                 </ul>
               </li>
 
@@ -384,7 +401,6 @@
 <!--Livereload script rendered -->
 <script type="text/javascript" src="{{host}}:35729/livereload.js"></script>
 {% endif %}
-
 
 </body>
 </html>

@@ -54,6 +54,7 @@ function streamLineSequence(filename, callback) {
         // process line here and call s.resume() when rdy
         // function below was for logging memory usage
         callback(lineNr, line, function() {
+          // console.log('streamLineSequence: ' + lineNr);
           s.resume();
         });
 

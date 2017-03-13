@@ -19,6 +19,9 @@ var path = require('path'),
 
   var dialogset = require('./dialogset');
 
+//temporary
+const util = require('util');
+
 /**
  * Create a userBot
  */
@@ -167,12 +170,18 @@ exports.delete = function (req, res) {
  */
 exports.list = function (req, res) {
   var sort = req.query.sort || '-created';
-
+  var perPage = req.body.perPage || 6;
+  if (req.body.listType == 'popular'){
+    sort = '-followed'
+  }
   var query = {};
-  if(req.query.my) query['user'] =  req.user;
+  if(req.query.my) query['user'] =  req.user._id;
+  if(req.body.listType == 'my') query['user'] = req.body.userId;
   if(req.query.query) query['name'] = new RegExp(req.query.query, 'i');
 
-  UserBot.find(query).sort(sort).populate('user').exec(function (err, userBots) {
+  console.log(util.inspect(query));
+  console.log(util.inspect(req.body));
+  UserBot.find(query).sort(sort).populate('user').skip(req.body.currentPage * perPage).limit(perPage).exec(function (err, userBots) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -185,7 +194,11 @@ exports.list = function (req, res) {
 
 
 exports.followList = function (req, res) {
-  UserBotFollow.find({botUserId: req.body.botUserId}).sort('-created').populate('userBot').exec(function (err, follows) {
+  var query = {};
+  if(req.body.userBot) query['userBot'] = req.body.userBot;
+  if(req.body.botUserId) query['botUserId'] = req.body.botUserId;
+
+  UserBotFollow.find(query).sort('-created').populate('userBot').exec(function (err, follows) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -203,31 +216,75 @@ exports.followList = function (req, res) {
 };
 
 exports.followBot = function(req, res) {
-  var userBotFollow = new UserBotFollow(req.body);
-
-  userBotFollow.save(function (err) {
-    if (err) {
+  var query = {};
+  query['botUser'] = {'$in' : [{'id' : req.body.botUserId}]};
+  query['userBot'] = req.body.userBot;
+  UserBotFollow.findOne(query).exec(function (err, follows) {
+    if (err){
+      console.log(err);
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
-    } else {
-      res.json(userBotFollow);
+    }else {
+      if (!follows){
+        UserBotFollow.findOne({userBot : req.body.userBot}).exec(function (err, result) {
+          if (!result){
+            var userBotFollow = {};
+            userBotFollow = new UserBotFollow(req.body);
+            userBotFollow.botUser.id = req.body.botUserId;
+            userBotFollow.botUser.friend = true;
+            if(!userBotFollow.followed) {
+                userBotFollow.followed = '1';
+            }else {
+                Number(userBotFollow.followed);
+                userBotFollow.followed++;
+                String(userBotFollow.followed)
+            }
+            userBotFollow.save(function (err) {
+                if (err) {
+                    console.log(err);
+                    return res.status(400).send({
+                        message: errorHandler.getErrorMessage(err)
+                    });
+                } else {
+                    res.json(userBotFollow);
+                }
+            });
+          }else {
+
+
+          }
+        });
+      }else {
+        follows.botUser.friend = true;
+        follows.save();
+        return res.end();
+      }
     }
   });
-}
+};
 
 exports.unfollowBot = function(req, res) {
-
-  UserBotFollow.remove({userBot: req.query.userBot, botUserId: req.query.botUserId}, function (err) {
+  UserBotFollow.findOne({userBot: req.query.userBot, 'botUser.id': req.query.botUserId}).exec(function (err, result) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
-    } else {
-      res.json({userBotId: req.body.userBotId, botUserId: req.body.botUserId});
+    }else {
+      result.botUser.friend = false;
+      result.save(function (err) {
+        if (err){
+          console.log(err);
+          return res.status(400).send({
+              message: errorHandler.getErrorMessage(err)
+          });
+        }else {
+          res.end();
+        }
+      });
     }
   });
-}
+};
 
 
 /**
@@ -241,6 +298,21 @@ exports.userBotByID = function (req, res, next, id) {
   }
 
   UserBot.findById(id).populate('user').exec(function (err, userBot) {
+    if (err) {
+      return next(err);
+    } else if (!userBot) {
+      return res.status(404).send({
+        message: 'No userBot with that identifier has been found'
+      });
+    }
+    req.userBot = userBot;
+    next();
+  });
+};
+
+exports.userBotByNameID = function (req, res, next, id) {
+
+  UserBot.findOne({id: id}).populate('user').exec(function (err, userBot) {
     if (err) {
       return next(err);
     } else if (!userBot) {
@@ -727,20 +799,28 @@ exports.contextAnalytics = function (req, res) {
   var faqType = {
     name: 'result',
     typeCheck: type.dialogTypeCheck,
-    // preType: function(task, context, type, callback) {
-    //   type.mongo.queryStatic.dialogset = bot.dialogset;
-    //   callback(task, context);
-    // },
     limit: 10,
+    matchRate: 0,
     mongo: {
-      model: 'DialogSet',
+      model: 'DialogsetDialog',
       // queryStatic: {dialogset: '기본대화1'},
       queryFields: ['input'],
-      fields: 'input output' ,
+      fields: 'dialogset input output' ,
       taskFields: ['input', 'output', 'matchRate'],
       minMatch: 1
     }
   };
+
+  if(req.query.dialogsets) {
+    var dialogsetIds = undefined;
+    if(Array.isArray(req.query.dialogsets)) dialogsetIds = req.query.dialogsets;
+    else dialogsetIds = [req.query.dialogsets];
+
+    faqType.mongo.queryStatic = {$or: []};
+    for(var i = 0; i < dialogsetIds.length; i++) {
+      faqType.mongo.queryStatic.$or.push({dialogset: dialogsetIds[i]});
+    }
+  }
 
   dialogset.processInput(null, req.query.input, function(_input) {
     type.executeType(_input, faqType, {}, {bot: {}}, function(_text, _result) {
@@ -800,3 +880,28 @@ exports.contextLearning = function (req, res) {
   });
 };
 
+exports.nlp = function (req, res) {
+  dialogset.processInput(null, req.query.input, function(_input) {
+    res.json({result: _input});
+  });
+};
+
+var autoCorrection = require(path.resolve('modules/bot/engine/nlp/autoCorrection'));
+
+exports.autoCorrection = function (req, res) {
+
+  // autoCorrection.batchCorrectionDB(function() {
+  //   autoCorrection.spellerTest('서바스 센터 차다줘');
+  //   autoCorrection.spellerTest('영압시간 어떻게 되지?');
+  //
+  //   res.json({});
+  // });
+  //
+
+  autoCorrection.loadWordCorrections(function() {
+    autoCorrection.correction('서바스 센터 차다줘');
+    autoCorrection.correction('영압시간 어떻게 되지?');
+
+    res.json({});
+  })
+};

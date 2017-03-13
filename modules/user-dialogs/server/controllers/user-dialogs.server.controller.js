@@ -31,14 +31,30 @@ exports.list = function (req, res) {
   });
 };
 
-function addDialog(inText, outText, isFail, context, callback) {
+function addDialog(inText, outText, isFail, dialog, context, callback) {
+  var dialogId, dialogName, preDialogId, preDialogName;
+
+  if(dialog != undefined) {
+    dialogId = dialog.id;
+    dialogName = dialog.name;
+
+    if(context.botUser.lastDialog != undefined) {
+      preDialogId = context.botUser.lastDialog.id;
+      preDialogName = context.botUser.lastDialog.name;
+    }
+  }
+
   var inQuery = {
     botId: context.bot.botName,
     userId : context.user.userKey,
     channel: context.channel.name,
     inOut: true,
     fail: isFail,
-    dialog: inText
+    dialog: inText,
+    dialogId: dialogId,
+    dialogName: dialogName,
+    preDialogId: preDialogId,
+    preDialogName: preDialogName
   };
 
   var outQuery = {
@@ -47,7 +63,11 @@ function addDialog(inText, outText, isFail, context, callback) {
     channel: context.channel.name,
     inOut: false,
     fail: isFail,
-    dialog: outText
+    dialog: outText,
+    dialogId: dialogId,
+    dialogName: dialogName,
+    preDialogId: preDialogId,
+    preDialogName: preDialogName
   };
 
   UserDialog.create([inQuery, outQuery], function(err) {

@@ -12,6 +12,9 @@ module.exports = function (app) {
     .get(userBots.list)
     .post(userBots.create);
 
+  app.route('/api/user-bots/list')
+    .post(userBots.list);
+
   app.route('/api/user-bots/follow')
     .post(userBots.followList)
     .put(userBots.followBot)
@@ -24,11 +27,14 @@ module.exports = function (app) {
     .put(userBots.update)
     .delete(userBots.delete);
 
+  app.route('/api/user-bots/byNameId/:botNameId')
+    .get(userBots.read);
+
   app.route('/api/user-bots/files/:userBotId')
     .get(userBots.listFile)
     .post(userBots.createFile);
 
-  app.route('/api/user-bots/files/:userBotId/:fileId')
+  app.route('/api/user-bots/files/:userBotId/:userBotFileId')
     .get(userBots.readFile)
     .post(userBots.editFile)
     .delete(userBots.removeFile)
@@ -63,9 +69,16 @@ module.exports = function (app) {
   app.route('/api/user-bots-analytics/learning')
     .post(userBots.contextLearning);
 
+  app.route('/api/user-bots-analytics/nlp')
+    .get(userBots.nlp);
+
+  app.route('/api/user-bots-analytics/auto-correction')
+    .get(userBots.autoCorrection);
+
   // Finish by binding the userBot middleware
   app.param('userBotId', userBots.userBotByID);
-  app.param('fileId', userBots.fileByID);
+  app.param('botNameId', userBots.userBotByNameID);
+  app.param('userBotFileId', userBots.fileByID);
   app.param('userBotCommentId', userBots.userBotCommentByID);
   app.param('userBotDialogId', userBots.userBotDialogByID);
 

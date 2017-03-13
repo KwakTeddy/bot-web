@@ -43,10 +43,142 @@ var dialogs = [
   ]}]
 },
 {
+  name: '센터및수리',
+  input: {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true},{name: 'repairable', typeCheck: lgdemo.repairableTypecheck, raw: true}]},
+  task:   {action: lgdemo.repairableCheck},
+  output: [
+  {if: 'context.dialog.repairable == \'remote\'', output: '+category+ 상품은 서비스 센터에서 수리를 받으시는 것보다 출장 수리를 예약하여, 기사님을 통하여 서비스를 받으시면 더욱 편리합니다.\n서비스 기사님의 출장수리 예약을 도와드릴까요?|서비스 기사님의 출장 수리 예약을 도와드릴까요?', 
+    children: [
+    {
+      input: '~네',
+      output: {call:'출장수리예약'}
+    },
+    {
+      input: '~아니요',
+      output: '더 필요하신 게 있으신가요?',
+      children: [
+        {
+          input: '~네',
+          output: '고객님, 어떤 부분이 궁금하신가요?'
+        },
+        {
+          input: '~아니요',
+          output: 'LG전자에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
+          children: [
+            {
+              input: '~네',
+              output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
+            },
+            {
+              input: '~아니요',
+              output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 LG전자가 되겠습니다.\nLG전자 콜센터 번호는 1544-7777입니다.\nLG전자에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
+            }
+          ]
+        }
+      ]
+    }
+  ]}, 
+  {if: '(context.dialog.address.시군구명||context.dialog.address.시도명) && context.dialog.address.법정읍면동명 == undefined && context.dialog.address.도로명 == undefined && context.dialog.address.건물본번 == undefined', output: '고객님, 정확한 안내를 드리기 위하여 +address.시도명+ +address.시군구명+의 하위 상세주소를 입력 부탁드립니다.', 
+    children: [
+    {
+      input: {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}]},
+      output: [
+      {if: '(context.dialog.address.시군구명||context.dialog.address.시도명) && context.dialog.address.법정읍면동명 == undefined && context.dialog.address.도로명 == undefined && context.dialog.address.건물본번 == undefined', output: {repeat: 1, options: {output: '고객님, 정확한 안내를 드리기 위하여 +address.시도명+ +address.시군구명+의 하위 상세주소를 입력 부탁드립니다.'}}}, 
+      {if: '!Array.isArray(context.dialog.address)', output: '+address.시군구명+ +address.법정읍면동명+ 맞나요?|이 주소가 맞나요?', 
+        children: [
+        {
+          input: '~네',
+          task:           lgdemo.searchCenterTask,
+          output: {returnCall: '서비스센터정보', options: {returnDialog: '수리가능'}}
+        },
+        {
+          input: {if: 'true'},
+          output: {up: 1}
+        }
+      ]}, 
+      {if: 'Array.isArray(context.dialog.address)', output: '다음 중 어떤 지역이신가요?\n#address#+index+. +지번주소+ +시군구용건물명+\n#|다음 중 어떤 지역이신가요?', 
+        children: [
+        {
+          input: {types: [{name: 'address', listName: 'address', typeCheck: 'listTypeCheck'}]},
+          task:           lgdemo.searchCenterTask,
+          output: {returnCall: '서비스센터정보', options: {returnDialog: '수리가능'}}
+        },
+        {
+          input: {if: 'true'},
+          output: {up: 1}
+        }
+      ]}]
+    },
+    {
+      input: {if: 'true'},
+      output: '죄송합니다. 지금 입력하신 주소는 찾을수 없는 주소입니다.\n 아래 예시와 같이 다시 말씀해주세요.\n1.동명: 가산동, 구로동\n2.지번주소: 금천구 가산동 60-3\n3.도로명주소: 금천구 디지털로9길 68\n4.건물명: 여의도 트윈타워\n5.지하철역: 여의도역|죄송합니다. 지금 입력하신 주소는 찾을수 없는 주소입니다.아래 예시와 같이 다시 말씀해주세요.'
+    }
+  ]}, 
+  {if: '!Array.isArray(context.dialog.address)', output: '+address.시군구명+ +address.법정읍면동명+ 맞나요?|이 주소가 맞나요?', 
+    children: [
+    {
+      input: '~네',
+      task:       lgdemo.searchCenterTask,
+      output: {returnCall: '서비스센터정보', options: {returnDialog: '수리가능'}}
+    },
+    {
+      input: {if: 'true'},
+      output: {up: 1}
+    }
+  ]}, 
+  {if: 'Array.isArray(context.dialog.address)', output: '다음 중 어떤 지역이신가요?\n#address#+index+. +지번주소+ +시군구용건물명+\n#|다음 중 어떤 지역이신가요?', 
+    children: [
+    {
+      input: {types: [{name: 'address', listName: 'address', typeCheck: 'listTypeCheck'}]},
+      task:       lgdemo.searchCenterTask,
+      output: {returnCall: '서비스센터정보', options: {returnDialog: '수리가능'}}
+    },
+    {
+      input: {if: 'true'},
+      output: {up: 1}
+    }
+  ]}]
+},
+{
   name: '처음에서위치찾기',
   input: {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}], regexp: /~서비스센터/},
   output: [
-  {if: '(context.dialog.address.시군구명||context.dialog.address.시도명) && context.dialog.address.법정읍면동명 == undefined && context.dialog.address.도로명 == undefined && context.dialog.address.건물본번 == undefined', output: {repeat: 1, options: {output: '고객님, 정확한 안내를 드리기 위하여 +address.시도명+ +address.시군구명+의 하위 상세주소를 입력 부탁드립니다.'}}}, 
+  {if: '(context.dialog.address.시군구명||context.dialog.address.시도명) && context.dialog.address.법정읍면동명 == undefined && context.dialog.address.도로명 == undefined && context.dialog.address.건물본번 == undefined', output: '고객님, 정확한 안내를 드리기 위하여 +address.시도명+ +address.시군구명+의 하위 상세주소를 입력 부탁드립니다.', 
+    children: [
+    {
+      input: {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}]},
+      output: [
+      {if: '(context.dialog.address.시군구명||context.dialog.address.시도명) && context.dialog.address.법정읍면동명 == undefined && context.dialog.address.도로명 == undefined && context.dialog.address.건물본번 == undefined', output: {repeat: 1, options: {output: '고객님, 정확한 안내를 드리기 위하여 +address.시도명+ +address.시군구명+의 하위 상세주소를 입력 부탁드립니다.'}}}, 
+      {if: '!Array.isArray(context.dialog.address)', output: '+address.시군구명+ +address.법정읍면동명+ 맞나요?|이 주소가 맞나요?', 
+        children: [
+        {
+          input: '~네',
+          task:           lgdemo.searchCenterTask,
+          output: {call: '서비스센터정보'}
+        },
+        {
+          input: {if: 'true'},
+          output: {up: 1}
+        }
+      ]}, 
+      {if: 'Array.isArray(context.dialog.address)', output: '다음 중 어떤 지역이신가요?\n#address#+index+. +지번주소+ +시군구용건물명+\n#|다음 중 어떤 지역이신가요?', 
+        children: [
+        {
+          input: {types: [{name: 'address', listName: 'address', typeCheck: 'listTypeCheck'}]},
+          task:           lgdemo.searchCenterTask,
+          output: {call: '서비스센터정보'}
+        },
+        {
+          input: {if: 'true'},
+          output: {up: 1}
+        }
+      ]}]
+    },
+    {
+      input: {if: 'true'},
+      output: '죄송합니다. 지금 입력하신 주소는 찾을수 없는 주소입니다.\n 아래 예시와 같이 다시 말씀해주세요.\n1.동명: 가산동, 구로동\n2.지번주소: 금천구 가산동 60-3\n3.도로명주소: 금천구 디지털로9길 68\n4.건물명: 여의도 트윈타워\n5.지하철역: 여의도역|죄송합니다. 지금 입력하신 주소는 찾을수 없는 주소입니다.아래 예시와 같이 다시 말씀해주세요.'
+    }
+  ]}, 
   {if: '!Array.isArray(context.dialog.address)', output: '+address.시군구명+ +address.법정읍면동명+ 맞나요?|이 주소가 맞나요?', 
     children: [
     {
@@ -1066,3 +1198,11 @@ var commonDialogs = [
 var _bot = require(require('path').resolve("config/lib/bot")).getBot('lgdemo');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);
+
+// TEST
+var json = JSON.stringify(dialogs);
+console.log(json);
+var fs = require('fs');
+fs.writeFile(require('path').resolve("public/js") + "/dialog.json", json, function(err) {
+if(err) { return console.log(err); }
+console.log("dialog.json was saved!"); });

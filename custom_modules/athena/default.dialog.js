@@ -12,7 +12,7 @@ var faqType = {
   },
   limit: 5,
   mongo: {
-    model: 'DialogSet',
+    model: 'DialogsetDialog',
     queryStatic: {dialogset: 'Talk_2017.1.22 18:14-1_dlg'},
     queryFields: ['input'],
     fields: 'input output' ,
@@ -126,3 +126,11 @@ var commonDialogs = [
 var _bot = require(require('path').resolve("config/lib/bot")).getBot('athena');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);
+
+// TEST
+var json = JSON.stringify(dialogs);
+console.log(json);
+var fs = require('fs');
+fs.writeFile(require('path').resolve("public/js") + "/dialog.json", json, function(err) {
+if(err) { return console.log(err); }
+console.log("dialog.json was saved!"); });

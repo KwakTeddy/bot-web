@@ -33,15 +33,24 @@
                             </div>
                             <div  style="clear: both;border-top: 1px solid lightgray; margin-top: 15px;padding-top: 5px;">
                                 <div style="font-weight: bold;">공유하기</div>
+                              <a href="javascript:shareFb()">
                                 <img src="/images/sns/social-facebook-icon.png" height="35" style="border-radius: 8px;"/>
+                              </a>
+                              <a href="javascript:shareStory()">
+                                <img src="/images/sns/kakaostory-icon.png" height="35" style="border-radius: 8px;"/>
+                              </a>
+                              <a class="twitter-share-button"
+                                 data-size="large"
+                                 onclick="javascript:window.open('https://twitter.com/intent/tweet?text=Hello%20world', 'popup', 'width=600, height=400')">
                                 <img src="/images/sns/social-twitter-icon.png" height="35"/>
-                                <img src="/images/sns/kakaotalk-icon1.png" height="35"/>userBotChat
+                              </a>
+                              <!--<div class="line-it-button" style="display: none;" data-type="share-c" data-lang="en"></div>-->
                             </div>
                             <div style="border-top: 1px solid lightgray; margin-top: 5px;padding-top: 5px;">
-                                <a class="btn btn-default" ng-show="vm.listType != 'followed'" ng-click="vm.followBot(userBot);">친구추가</a>
-                                <a class="btn btn-default" ng-show="vm.listType == 'followed'" ng-click="vm.unfollowBot(userBot);">친구삭제</a>
+                                <a class="btn btn-default" ng-show="!vm.userBot.userFollow" ng-click="vm.followBot(vm.userBot);">친구추가</a>
+                                <a class="btn btn-default" ng-show="vm.userBot.userFollow" ng-click="vm.unfollowBot(vm.userBot);">친구삭제</a>
                                 <!--<a class="btn btn-default" ng-click="">대화 가르치기</a>-->
-                                <a class="btn btn-primary" ng-click="vm.userBotChat(userBot);">대화하기</a>
+                                <a class="btn btn-primary" ng-click="vm.userBotChat(vm.userBot);">대화하기</a>
                             </div>
 
                         </div>

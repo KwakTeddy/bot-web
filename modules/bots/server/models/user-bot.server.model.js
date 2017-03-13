@@ -48,9 +48,8 @@ var UserBotSchema = new Schema({
   dialogFile: {
     type:String
   },
-  dialogset: {
-    type:String
-  },
+  dialogsets: Schema.Types.Mixed,
+
   followed: {
     type: Number,
     default: 0
@@ -118,13 +117,21 @@ mongoose.model('UserBotDialogFile', UserBotDialogFileSchema);
 
 
 var UserBotFollowSchema = new Schema({
-
-  botUserId: {
-    type: String
-  },
   userBot: {
-    type: Schema.ObjectId,
-    ref: 'UserBot'
+      type: Schema.ObjectId,
+      ref: 'UserBot'
+  },
+  botUser: [{
+      id: {
+          type: String
+      },
+      friend: {
+          type: Boolean,
+          default: false
+      }
+  }],
+  followed: {
+    type: String
   },
   created: {
     type: Date,
