@@ -26,11 +26,13 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$s
         arg = $scope.year;
       else if ($scope.kind == 'month')
         arg = $scope.ym;
-      $scope.userCounts = AnalyticsService.query(
+      var userCounts = AnalyticsService.query(
         {
           kind: $scope.kind,
           arg: arg
         }, function() {
+          console.log(userCounts);
+          $scope.userCounts = userCounts;
         }, function(err) {
           console.log(err);
         });
@@ -43,14 +45,15 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$s
         arg = $scope.year;
       else if ($scope.kind == 'month')
         arg = $scope.ym;
-      $scope.dialogUsages = DialogUsageService.query(
+      var dialogUsages = DialogUsageService.query(
         {
           kind: $scope.kind,
           arg: arg
         }, function() {
-      }, function(err) {
-        console.log(err);
-      });
+          $scope.dialogUsages = dialogUsages;
+        }, function(err) {
+          console.log(err);
+        });
     };
 
     // Find a list of dialog success rate
@@ -60,11 +63,12 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$s
         arg = $scope.year;
       else if ($scope.kind == 'month')
         arg = $scope.ym;
-      $scope.dialogSuccess= DialogSuccessService.query(
+      var dialogSuccess = DialogSuccessService.query(
         {
           kind: $scope.kind,
           arg: arg
         }, function() {
+          $scope.dialogSuccess = dialogSuccess;
         }, function(err) {
           console.log(err);
         });
@@ -77,14 +81,15 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$s
         arg = $scope.year;
       else if ($scope.kind == 'month')
         arg = $scope.ym;
-      $scope.sessionSuccess = SessionSuccessService.query(
+      var sessionSuccess = SessionSuccessService.query(
         {
           kind: $scope.kind,
           arg: arg
         }, function() {
+          $scope.sessionSuccess = sessionSuccess;
         }, function(err) {
-        console.log(err);
-      });
+          console.log(err);
+        });
     };
 
     // Find a list of dialog fail
@@ -94,11 +99,12 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$s
         arg = $scope.year;
       else if ($scope.kind == 'month')
         arg = $scope.ym;
-      $scope.dialogFailure = DialogFailureService.query(
+      var dialogFailure = DialogFailureService.query(
         {
           kind: $scope.kind,
           arg: arg
         }, function() {
+          $scope.dialogFailure = dialogFailure;
         }, function(err) {
           console.log(err);
         });
