@@ -50,8 +50,10 @@ function botProc(botName, channel, user, inTextRaw, outCallback, chatServerConfi
   // TODO 개발용
   dialog = utils.requireNoCache(path.resolve('modules/bot/action/common/dialog'));
 
+  var startTime = new Date();
   var print = function(_out, _task) {
-    logger.debug("사용자 출력>> " + _out + "\n");
+    var endTime = new Date();
+    logger.debug("사용자 출력 (" + (endTime-startTime) + 'ms)>> ' + _out + "\n");
 
     // toneModule.toneSentence(_out, context.botUser.tone || '해요체', function(out) {
     //   _out = out;
@@ -101,11 +103,11 @@ function botProc(botName, channel, user, inTextRaw, outCallback, chatServerConfi
         factModule.memoryFacts(inTextRaw, context, function (_task, _context) {
           if(_task && _task.numAffected && _task.numAffected.upserted) {
             console.log('[FACT_ADD]' + JSON.stringify(_task.doc));
-            if(botName == 'athena') {
-              print('말씀하신 내용을 학습했어요.');
-              cb(true);
-              return;
-            }
+            // if(botName == 'athena') {
+            //   print('말씀하신 내용을 학습했어요.');
+            //   cb(true);
+            //   return;
+            // }
           }
           cb(null);
         });
@@ -237,15 +239,23 @@ function getContext(botName, channel, user, callback) {
         botContext = global._userbots[botName];
         cb(null);
       } else {
-        botModule.loadUserBot(botName, function(_userBot) {
-          if(_userBot) {
-            botContext = _userBot;
-          } else {
-            botContext = {};
-          }
-
+        botModule.loadBot(botName);
+        botContext = global._bots[botName];
+        if(botContext) {
           cb(null);
-        })
+        } else {
+          botModule.loadUserBot(botName, function(_userBot) {
+            if(_userBot) {
+              botContext = _userBot;
+            } else {
+              botModule.loadBot(botName);
+              botContext = global._bots[botName];
+              if(botContext == undefined) botContext = {};
+            }
+
+            cb(null);
+          })
+        }
       }
     }, function(cb) {
       if(user != undefined) {

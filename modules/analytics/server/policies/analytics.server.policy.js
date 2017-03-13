@@ -15,20 +15,20 @@ exports.invokeRolesPolicies = function () {
   acl.allow([{
     roles: ['admin'],
     allows: [{
-      resources: ['/api/user-count','/api/dialog-usage', '/api/dialog-success', '/api/session-success', '/api/dialog-failure'],
+      resources: ['/api/user-count/:kind/:arg','/api/dialog-usage/:kind/:arg', '/api/dialog-success/:kind/:arg', '/api/session-success/:kind/:arg', '/api/dialog-failure/:kind/:arg'],
       permissions: '*'
     }]
   }, {
     roles: ['user'],
     allows: [{
-      resources: ['/api/user-count','/api/dialog-usage', '/api/dialog-success', '/api/session-success', '/api/dialog-failure'],
+      resources: ['/api/user-count/:kind/:arg','/api/dialog-usage/:kind/:arg', '/api/dialog-success/:kind/:arg', '/api/session-success/:kind/:arg', '/api/dialog-failure/:kind/:arg'],
       permissions: '*'
     }]
   }, {
     roles: ['guest'],
     allows: [{
-      resources: ['/api/user-count','/api/dialog-usage', '/api/dialog-success', '/api/session-success', '/api/dialog-failure'],
-      permissions: ['get']
+      resources: ['/api/user-count/:kind/:arg','/api/dialog-usage/:kind/:arg', '/api/dialog-success/:kind/:arg', '/api/session-success/:kind/:arg', '/api/dialog-failure/:kind/:arg'],
+      permissions: []
     }]
   }]);
 };

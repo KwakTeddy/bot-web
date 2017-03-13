@@ -808,21 +808,28 @@ exports.contextAnalytics = function (req, res) {
   var faqType = {
     name: 'result',
     typeCheck: type.dialogTypeCheck,
-    // preType: function(task, context, type, callback) {
-    //   type.mongo.queryStatic.dialogset = bot.dialogset;
-    //   callback(task, context);
-    // },
     limit: 10,
     matchRate: 0,
     mongo: {
-      model: 'DialogSet',
+      model: 'DialogsetDialog',
       // queryStatic: {dialogset: '기본대화1'},
       queryFields: ['input'],
-      fields: 'input output' ,
+      fields: 'dialogset input output' ,
       taskFields: ['input', 'output', 'matchRate'],
       minMatch: 1
     }
   };
+
+  if(req.query.dialogsets) {
+    var dialogsetIds = undefined;
+    if(Array.isArray(req.query.dialogsets)) dialogsetIds = req.query.dialogsets;
+    else dialogsetIds = [req.query.dialogsets];
+
+    faqType.mongo.queryStatic = {$or: []};
+    for(var i = 0; i < dialogsetIds.length; i++) {
+      faqType.mongo.queryStatic.$or.push({dialogset: dialogsetIds[i]});
+    }
+  }
 
   dialogset.processInput(null, req.query.input, function(_input) {
     type.executeType(_input, faqType, {}, {bot: {}}, function(_text, _result) {
@@ -882,10 +889,28 @@ exports.contextLearning = function (req, res) {
   });
 };
 
-
 exports.nlp = function (req, res) {
-
   dialogset.processInput(null, req.query.input, function(_input) {
     res.json({result: _input});
   });
+};
+
+var autoCorrection = require(path.resolve('modules/bot/engine/nlp/autoCorrection'));
+
+exports.autoCorrection = function (req, res) {
+
+  // autoCorrection.batchCorrectionDB(function() {
+  //   autoCorrection.spellerTest('서바스 센터 차다줘');
+  //   autoCorrection.spellerTest('영압시간 어떻게 되지?');
+  //
+  //   res.json({});
+  // });
+  //
+
+  autoCorrection.loadWordCorrections(function() {
+    autoCorrection.correction('서바스 센터 차다줘');
+    autoCorrection.correction('영압시간 어떻게 되지?');
+
+    res.json({});
+  })
 };

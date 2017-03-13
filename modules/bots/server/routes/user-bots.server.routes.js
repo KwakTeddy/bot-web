@@ -72,6 +72,9 @@ module.exports = function (app) {
   app.route('/api/user-bots-analytics/nlp')
     .get(userBots.nlp);
 
+  app.route('/api/user-bots-analytics/auto-correction')
+    .get(userBots.autoCorrection);
+
   // Finish by binding the userBot middleware
   app.param('userBotId', userBots.userBotByID);
   app.param('botNameId', userBots.userBotByNameID);

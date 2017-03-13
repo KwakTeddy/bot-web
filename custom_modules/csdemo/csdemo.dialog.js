@@ -363,7 +363,7 @@ var dialogs = [
     },
     {
       id: 56,
-      input: {if: 'true'},
+      input: {if: 'true && context.botUser.wordCorrection'},
       output: {repeat: 1, options: {output: '목록에서 선택해주세요.\n'}}
     }
   ]

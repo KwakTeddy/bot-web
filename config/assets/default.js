@@ -27,7 +27,7 @@ module.exports = {
         'public/lib/dropzone/downloads/dropzone.js',
         'public/lib/angular-dropzone/lib/angular-dropzone.js',
         'public/lib/ngInfiniteScroll/build/ng-infinite-scroll.js',
-        // 'public/lib/ionic/release/js/ionic.bundle.min.js',
+        'public/lib/angular-dropzone/lib/angular-dropzone.js',
         'http://d3js.org/d3.v3.min.js',
         'http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js'
       ],
@@ -61,10 +61,10 @@ module.exports = {
         'public/lib/ionic/css/ionic.app.css'
       ],
       js: [
-        'public/lib/ionic/release/js/ionic.bundle.min.js',
+        'public/lib/ionic/js/ionic.bundle.min.js',
         'public/lib/ngCordova/dist/ng-cordova.min.js',
         'public/lib/angular-resource/angular-resource.js',
-          //'public/lib/angular-animate/angular-animate.js',
+        //'public/lib/angular-animate/angular-animate.js',
         'public/lib/angular-messages/angular-messages.js',
         'public/lib/angular-ui-router/release/angular-ui-router.js',
         'public/lib/angular-ui-utils/ui-utils.js',

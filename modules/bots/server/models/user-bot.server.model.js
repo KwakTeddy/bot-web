@@ -48,9 +48,8 @@ var UserBotSchema = new Schema({
   dialogFile: {
     type:String
   },
-  dialogset: {
-    type:String
-  },
+  dialogsets: Schema.Types.Mixed,
+
   followed: {
     type: Number,
     default: 0

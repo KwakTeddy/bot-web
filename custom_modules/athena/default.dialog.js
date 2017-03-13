@@ -12,7 +12,7 @@ var faqType = {
   },
   limit: 5,
   mongo: {
-    model: 'DialogSet',
+    model: 'DialogsetDialog',
     queryStatic: {dialogset: 'Talk_2017.1.22 18:14-1_dlg'},
     queryFields: ['input'],
     fields: 'input output' ,
@@ -123,7 +123,7 @@ var commonDialogs = [
 ];
 
 
-var _bot = require(require('path').resolve("config/lib/bot")).getBot('Athena');
+var _bot = require(require('path').resolve("config/lib/bot")).getBot('athena');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);
 

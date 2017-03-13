@@ -1,7 +1,6 @@
 <div id="container-chat" class="chat-container" ng-controller="UserBotChatController"
      ng-keyup="vm.onKeyPress($event.keyCode)">
 
-
     <div id="chat-header" class="chat-header">
     </div>
     <div class="chat-body" >
@@ -25,4 +24,15 @@
         </form>
     </div>
     <br/>
+
+    <div class="input-group" style="margin-top: 70px;">
+        <input type="text" class="form-control" id="selectBot" name="selectBot"
+               ng-model="vm.bot"
+               placeholder="봇 이름"/>
+        <span class="input-group-btn">
+          <button class="btn btn-success" type="button" ng-click="vm.connectUserBot(vm.bot);">CONNECT</button>
+        </span>
+    </div>
+
+
 </div>

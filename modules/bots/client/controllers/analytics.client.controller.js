@@ -22,7 +22,8 @@ angular.module('user-bots').controller('AnalyticsController', ['$scope', '$rootS
       if(timer == null) {
         timer = setTimeout(function() {
           var input = arg0;
-          $resource('/api/user-bots-analytics/context', {}).get({input: input}, function (res) {
+
+          $resource('/api/user-bots-analytics/context', {}).get({input: input, dialogsets: $rootScope.userBot.dialogsets}, function (res) {
             vm.dialogs = res.result;
             if (res.result && res.result.length > 0) vm.best = res.result[0];
             else vm.best = undefined;

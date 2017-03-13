@@ -20,11 +20,11 @@ function convertDialogset(original, callback) {
   else if(info.ext == '.smi') {dialogType = 'smi';}
 
   var dir = path.resolve('public/files/');
-  // insertDatasetFile(path.join(dir, original), function() {
-  //   callback();
-  // });
+  insertDatasetFile(path.join(dir, original), function() {
+    callback();
+  });
 
-  analyzeKnowledge('quibble', callback);
+  // analyzeKnowledge('quibble', callback);
 
   // nlpTest(path.join(dir, original), callback);
 
@@ -77,7 +77,7 @@ function insertDatasetFile(infile, callback) {
               // output: output
             },
             mongo: {
-              model: 'DialogSet',
+              model: 'DialogsetDialog',
               query: {dialogset: '', id: ''},
               options: {upsert: true}
             }
@@ -105,7 +105,7 @@ exports.insertDatasetFile = insertDatasetFile;
 
 
 function analyzeKnowledge(dialogset, callback) {
-  var model = mongoModule.getModel('DialogSet');
+  var model = mongoModule.getModel('DialogsetDialog');
 
   model.find({dialogset: dialogset}, function(err, docs) {
     async.eachSeries(docs, function(doc, cb) {
@@ -237,55 +237,6 @@ exports.insertDatasetDir = insertDatasetDir;
 
 
 function processInput(context, inRaw, callback) {
-  // console.log(inRaw);
-
-  // var nlpKo1 = new nlp({
-  //   stemmer: false,      // (optional default: true)
-  //   normalizer: true,   // (optional default: true)
-  //   spamfilter: false     // (optional default: false)
-  // });
-  //
-  // var _in = '';
-  // var _nlpRaw = [];
-  // var _nlp = [];
-  // nlpKo1.tokenize(inRaw, function(err, result) {
-  //   for(var i in result) {
-  //     if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _nlpRaw.push(result[i]);
-  //     /*if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation')*/ _nlp.push(result[i].text);
-  //   }
-  //
-  //   _in = _nlp.join(' ');
-  //
-  //   // console.log(_in);
-  //
-  //   var nlpKo = new nlp({
-  //     stemmer: true,      // (optional default: true)
-  //     normalizer: true,   // (optional default: true)
-  //     spamfilter: false     // (optional default: false)
-  //   });
-  //
-  //   _in = '';
-  //   _nlpRaw = [];
-  //   _nlp = [];
-  //   nlpKo1.tokenize(inRaw, function(err, result) {
-  //     for (var i in result) {
-  //       if (result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _nlpRaw.push(result[i]);
-  //       /*if (result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation')*/ _nlp.push(result[i].text);
-  //     }
-  //
-  //     _in = _nlp.join(' ');
-  //
-  //     // console.log(_in);
-  //     // console.log('');
-  //
-  //     callback(_in, {_nlp: _nlpRaw});
-  //   });
-  // });
-
-
-
-  // console.log(inRaw);
-
   var nlpKo = new nlp({
     stemmer: true,      // (optional default: true)
     normalizer: true,   // (optional default: true)
@@ -364,7 +315,7 @@ exports.processInput = processInput;
 
 
 function nlpTest(callback) {
-  // var model = mongoModule.getModel('DialogSet');
+  // var model = mongoModule.getModel('DialogsetDialog');
   //
   // model.find({}, function(err, docs) {
   //   if(docs != null) {
