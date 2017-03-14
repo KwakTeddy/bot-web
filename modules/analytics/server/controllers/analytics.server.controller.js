@@ -30,7 +30,7 @@ exports.list = function (req, res) {
     [
       {$match: cond},
       {$group: {_id: {year: '$year', month: '$month', date: '$date'}, date: {$first: '$date'}, count: {$sum: 1}}},
-      {$sort: {_id:1,  date: 1}},
+      {$sort: {_id:-1,  date: -1}},
     ]
   ).exec(function (err, userCounts) {
     if (err) {
@@ -58,7 +58,8 @@ exports.dialogList = function (req, res) {
       {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" }, inOut: '$inOut', dialog: '$dialog'}},
       {$match: cond},
       {$group: {_id: '$dialog', count: {$sum: 1}}},
-      {$sort: {count: -1}}
+      {$sort: {count: -1}},
+      {$limit: 300}
     ]
   ).exec(function (err, userCounts) {
     if (err) {
@@ -88,7 +89,7 @@ exports.dialogSuccessList = function (req, res) {
           {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" }, inOut: '$inOut', dialog: '$dialog'}},
           {$match: cond},
           {$group: {_id: {year: '$year', month: '$month', date: '$day'}, date: {$first: '$date'}, count: {$sum: 1}}},
-          {$sort: {_id:1, date: 1}}
+          {$sort: {_id:-1, date: -1}}
         ]
       ).exec(function (err, userCounts) {
         if (err) {
@@ -107,7 +108,7 @@ exports.dialogSuccessList = function (req, res) {
           {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" }, inOut: '$inOut', dialog: '$dialog', fail:'$fail'}},
           {$match: cond},
           {$group: {_id: {year: '$year', month: '$month', date: '$day'}, date: {$first: '$date'}, count: {$sum: 1}}},
-          {$sort: {_id:1, date: 1}}
+          {$sort: {_id:1, date: -1}}
         ]
       ).exec(function(err, failCounts) {
         if (err) {
@@ -119,7 +120,9 @@ exports.dialogSuccessList = function (req, res) {
           for (var i = 0; i < userCounts.length; ++i)
           {
             result.push(userCounts[i]);
-            result[i].count = "100";
+            result[i].rate = 100.0;
+            result[i].fail_count = 0;
+            result[i].success_count =  userCounts[i].count;
             for (var j=0; j < failCounts.length; ++j)
             {
               if (
@@ -128,7 +131,8 @@ exports.dialogSuccessList = function (req, res) {
                 userCounts[i]._id.date == failCounts[j]._id.date
                 )
               {
-                result[i].count = (100.0 - failCounts[j].count / userCounts[i].count);
+                result[i].fail_count = failCounts[j].count;
+                result[i].rate = ((userCounts[i].count - failCounts[j].count) / userCounts[i].count * 100.0);
               }
             }
           }
@@ -185,7 +189,8 @@ exports.dialogFailureList = function (req, res) {
       {$match: cond},
       //{$match:{ preDialogId: { $exists:true, $ne: null } } },
       {$group: {_id: {dialog:'$dialog', preDialogId: '$preDialogId'}, count: {$sum: 1}}},
-      {$sort: {count: -1}}
+      {$sort: {count: -1}},
+      {$limit: 300}
     ]
   ).exec(function (err, userCounts) {
     if (err) {
