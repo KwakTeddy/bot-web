@@ -93,6 +93,8 @@
       vm.dialogset.filename = response.filename;
       vm.dialogset.originalFilename = response.originalFilename;
 
+      vm.dialogset.fileuploaded = true;
+
       // Clear upload buttons
       $scope.cancelUpload();
     };

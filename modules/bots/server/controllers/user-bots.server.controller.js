@@ -17,7 +17,7 @@ var path = require('path'),
   multer = require('multer'),
   fs = require('fs');
 
-  var dialogset = require('./dialogset');
+  var dialogsetModule = require(path.resolve('modules/bot/engine/dialogset/dialogset.js'));
 
 //temporary
 const util = require('util');
@@ -29,46 +29,22 @@ exports.create = function (req, res) {
   var userBot = new UserBot(req.body);
   userBot.user = req.user;
 
-  // var userBotFolder = generateUserBotFolder(userBot.id);
-  // try {
-  //   fs.statSync(userBotFolder);
-  // } catch(e) {
-  //   try {
-  //     fs.mkdirSync(userBotFolder);
-  //   } catch(e) {
-  //     return res.status(400).send({
-  //       message: 'Create Directory Failed: ' + userBotFolder
-  //     });
-  //   }
-  // }
-  //
-  // var userBotFile = fs.readFileSync('./custom_modules/global/default.bot.js.template', 'utf8');
-  // userBotFile = userBotFile.replace(/__userBot__/g, userBot.id);
-  // fs.writeFileSync(userBotFolder + userBot.id + '.bot.js', userBotFile,  {flag: 'wx'});
-  // createFile(userBot.id + '.bot.js', userBot.user, userBot);
-  //
-  // var dlgFile = fs.readFileSync('./custom_modules/global/default.dlg.template', 'utf8');
-  // dlgFile = dlgFile.replace(/__userBot__/g, userBot.name);
-  // fs.writeFileSync(userBotFolder + 'default.dlg', dlgFile,  {flag: 'wx'});
-  // createFile('default.dlg', userBot.user, userBot);
+  userBot.save(function (err) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json(userBot);
 
-  dialogset.convertDialogset(userBot.dialogFile, function(result) {
-    // res.json({result: 'ok'});
-    userBot.dialogset = result;
-
-    userBot.save(function (err) {
-      if (err) {
-        return res.status(400).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      } else {
-        // userBotLib.buildUserBot(userBot.id);
-        // userBotLib.loadUserBot(userBot.id);
-        res.json(userBot);
-      }
-    });
+      dialogsetModule.convertDialogset(userBot.dialogFile, function(result) {
+        userBot.dialogset = result;
+        userBot.save(function(err) {
+          if(console.log(err));
+        })
+      });
+    }
   });
-
 };
 
 function createFile(fileName, user, userBot) {
@@ -102,32 +78,40 @@ exports.update = function (req, res) {
 
   userBot.user = req.user;
 
-  dialogset.convertDialogset(userBot.dialogFile, function(result) {
-    // res.json({result: 'ok'});
-    userBot.dialogset = result;
+  userBot.save(function (err) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json(userBot);
 
-    userBot.save(function (err) {
-      if (err) {
-        return res.status(400).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      } else {
-        // userBotLib.buildUserBot(userBot.id);
-        // userBotLib.loadUserBot(userBot.id);
-        res.json(userBot);
-      }
-    });
+      dialogsetModule .convertDialogset(userBot.dialogFile, function(result) {
+        userBot.dialogset = result;
+        userBot.save(function(err) {
+          if(console.log(err));
+        })
+      });
+    }
   });
 
-  // userBot.save(function (err) {
-  //   if (err) {
-  //     return res.status(400).send({
-  //       message: errorHandler.getErrorMessage(err)
-  //     });
-  //   } else {
-  //     res.json(userBot);
-  //   }
+  // dialogset.convertDialogset(userBot.dialogFile, function(result) {
+  //   // res.json({result: 'ok'});
+  //   userBot.dialogset = result;
+  //
+  //   userBot.save(function (err) {
+  //     if (err) {
+  //       return res.status(400).send({
+  //         message: errorHandler.getErrorMessage(err)
+  //       });
+  //     } else {
+  //       // userBotLib.buildUserBot(userBot.id);
+  //       // userBotLib.loadUserBot(userBot.id);
+  //       res.json(userBot);
+  //     }
+  //   });
   // });
+
 };
 
 /**
@@ -822,7 +806,7 @@ exports.contextAnalytics = function (req, res) {
     }
   }
 
-  dialogset.processInput(null, req.query.input, function(_input) {
+  dialogsetModule.processInput(null, req.query.input, function(_input) {
     type.executeType(_input, faqType, {}, {bot: {}}, function(_text, _result) {
       res.json(_result);
     });
@@ -881,7 +865,7 @@ exports.contextLearning = function (req, res) {
 };
 
 exports.nlp = function (req, res) {
-  dialogset.processInput(null, req.query.input, function(_input) {
+  dialogsetModule.processInput(null, req.query.input, function(_input) {
     res.json({result: _input});
   });
 };
