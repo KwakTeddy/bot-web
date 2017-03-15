@@ -24,7 +24,7 @@ exports.list = function (req, res) {
   if (kind == 'year')
     cond = {year: parseInt(arg)};
   else if (kind == 'month')
-    cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth()+1 }
+    cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth()+1 };
   console.log(JSON.stringify(cond));
   UserDialogLog.aggregate(
     [
@@ -88,7 +88,7 @@ exports.dialogSuccessList = function (req, res) {
   if (kind == 'year')
     cond = {year: parseInt(arg), inOut: true};
   else if (kind == 'month')
-    cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth()+1, inOut: true}
+    cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth()+1, inOut: true};
   console.log(JSON.stringify(cond));
   async.waterfall([
     function(cb) {
@@ -159,7 +159,7 @@ exports.sessionSuccessList = function (req, res) {
   if (kind == 'year')
     cond = {year: parseInt(arg), inOut: true};
   else if (kind == 'month')
-    cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth()+1, inOut: true}
+    cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth()+1, inOut: true};
   console.log(JSON.stringify(cond));
   UserDialog.aggregate(
     [
@@ -214,77 +214,76 @@ exports.dialogFailureList = function (req, res) {
   });
 };
 
-var find_dialog = function(dialogs, dialogId, action, res) {
+var searchDialog = function(dialogs, dialogId, action, res, data) {
   dialogs.forEach(function(obj) {
     if (obj.id == dialogId) {
-      action(obj, res);
+      action(obj, res, data);
     }
     else if (obj.children) {
-      find_dialog(obj.children, dialogId, action, res);
+      searchDialog(obj.children, dialogId, action, res, data);
     }
   });
 };
 
-var gogo = function(o, res) {
+var findOne = function(o, res, data) {
   var dialog = {};
   dialog.name = o.name != undefined ? o.name : "dialog" + o.id;
   dialog.inputs = (o.input);
   dialog.outputs = (o.output);
+
   console.log(JSON.stringify(dialog));
   res.jsonp(dialog);
+};
+
+var findChildren = function(o, res, data) {
+  var dialogChildren = [];
+
+  obj.children.forEach(function() {
+    var dialog = {};
+    dialog.dialogId = obj.id;
+    dialog.name = obj.name != undefined ? obj.name : "dialog"+obj.id;
+    dialog.inputs = (obj.input);
+    dialog.outputs = (obj.output);
+    dialogChildren.push(dialog);
+  });
+
+  console.log(JSON.stringify(dialogChildren));
+  res.jsonp(dialogChildren);
+};
+
+var save = function(o, res, data) {
+  console.log(JSON.stringify(data));
+  o.input = data.inputs;
+  //o.output = data.outputs;
 };
 
 exports.dialog = function (req, res) {
   var botId = req.params.bId;
   var dialogId = req.params.dialogId;
-
   var dialogs_data = global._bots[botId].dialogs;
+  var data = {};
 
-  console.log(botId+","+dialogId);
-  find_dialog(dialogs_data, dialogId, gogo, res);
+  console.log("dialog:" + botId+","+dialogId);
+  searchDialog(dialogs_data, dialogId, findOne, res, data);
 
 };
 
 exports.dialogChildren = function (req, res) {
   var botId = req.params.bId;
   var dialogId = req.params.dialogId;
+  var dialogs_data = global._bots[botId].dialogs;
+  var data = {};
 
-  var dialogs = global._bots[botId].dialogs;
-
-  var dialogChildren = [];
-
-  console.log(botId+","+dialogId);
-  dialogs.forEach(function(obj) {
-    if (obj.id == dialogId) {
-      obj.children.forEach(function() {
-        var dialog = {};
-        dialog .botId = botId;
-        dialog.dialogId = obj.id;
-        dialog.name = obj.name != undefined ? obj.name : "dialog"+obj.id;
-        dialog.inputs = (obj.input);
-        dialog.outputs = (obj.output);
-        dialogChildren.push(dialog);
-      });
-
-      console.log(JSON.stringify(dialogChildren));
-
-      res.jsonp(dialogChildren);
-    }
-  });
+  console.log("dialogChildren: " + botId+","+dialogId);
+  searchDialog(dialogs_data, dialogId, findChildren, res, data);
 };
 
 exports.save_dialog = function(req, res) {
   var botId = req.body.botId;
   var dialogId = req.body.dialogId;
   var dialog = {inputs: req.body.inputs, outputs: req.body.outputs};
+  var dialogs_data = global._bots[botId].dialogs;
 
-  var dialogs = global._bots[botId].dialogs;
-  dialogs.forEach(function(obj) {
-    if (obj.id == dialogId) {
-      obj.input = dialog.inputs;
-      //obj.output = dialog.outputs;
-    }
-  });
-
-  console.log(JSON.stringify(dialog));
+  console.log("save: " + botId+","+dialogId);
+  searchDialog(dialogs_data, dialogId, save, res, dialog);
 };
