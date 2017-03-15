@@ -50,7 +50,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         if(!$state.is('home') && !$state.is('user-bots.context-analytics') &&
           !$state.is('bots.graph-knowledge') && !$state.is('bots.graph-dialog')) return;
         // vm.log += message.substring(message.indexOf('\n')+1);
-        // logScrollBottom();
+        // logScrollBottom()
 
         $rootScope.logUpdated = message.substring(message.indexOf('\n')+1);
         $rootScope.$broadcast('updateLog');
@@ -176,12 +176,14 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
         vm.bot = botId;
         vm.userBot = data;
+        $rootScope.botId = botId;
         $rootScope.userBot = vm.userBot;
         document.getElementById("chat-header").innerText = vm.bot;
         vm.connect();
       }, function(err) {
         vm.bot = botId;
         vm.userBot = {id: vm.bot, name: vm.bot};
+        $rootScope.botId = botId;
         $rootScope.userBot = vm.userBot;
         document.getElementById("chat-header").innerText = vm.bot;
         vm.connect();

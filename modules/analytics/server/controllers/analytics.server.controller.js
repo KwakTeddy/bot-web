@@ -48,10 +48,13 @@ exports.dialogList = function (req, res) {
   var arg = req.params.arg;
 
   var cond = { inOut: true};
-  if (kind == 'year')
+  if (kind == 'year') {
     cond = {year: parseInt(arg), inOut: true};
-  else if (kind == 'month')
-    cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth()+1, inOut: true}
+  } else if (kind == 'month') {
+    cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth() + 1, inOut: true}
+  }
+  cond.dialog = {$ne: null};
+
   console.log(JSON.stringify(cond));
   UserDialog.aggregate(
     [
@@ -67,6 +70,11 @@ exports.dialogList = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
+      // replace ";reset user" to 시작
+      userCounts.forEach(function(item) {
+        if (item._id == ":reset user")
+          item._id = "시작";
+      });
       res.jsonp(userCounts);
     }
   });
@@ -132,7 +140,7 @@ exports.dialogSuccessList = function (req, res) {
                 )
               {
                 result[i].fail_count = failCounts[j].count;
-                result[i].rate = ((userCounts[i].count - failCounts[j].count) / userCounts[i].count * 100.0);
+                result[i].rate = ((userCounts[i].count - failCounts[j].count) / userCounts[i].count * 100.0).toFixed(2);
               }
             }
           }
@@ -180,8 +188,11 @@ exports.dialogFailureList = function (req, res) {
     cond = {year: parseInt(arg), inOut: true};
   else if (kind == 'month')
     cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth()+1, inOut: true}
-  console.log(JSON.stringify(cond));
   cond.fail = true;
+  cond.dialog = {$ne: null};
+
+  console.log(JSON.stringify(cond));
+
   UserDialog.aggregate(
     [
       {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" },
