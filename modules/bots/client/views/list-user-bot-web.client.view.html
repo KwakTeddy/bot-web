@@ -10,20 +10,20 @@
 
         <div class="row text-left">
 
-            <div class="bot-list-header">
-                <ul class="nav nav-pills">
-                    <li role="presentation" ng-class="{active: vm.listType == 'popular'}"><a ui-sref="user-bots-web.list({listType: 'popular', query: ''})">인기봇</a></li>
-                    <li role="presentation" ng-class="{active: vm.listType == 'recent'}"><a ui-sref="user-bots-web.list({listType: 'recent', query: ''})">최신봇</a></li>
-                    <li role="presentation" ng-class="{active: vm.listType == 'followed'}"><a ui-sref="user-bots-web.list({listType: 'followed', query: ''})">친구봇</a></li>
-                    <li role="presentation" ng-class="{active: vm.listType == 'my'}"><a ui-sref="user-bots-web.list({listType: 'my', query: ''})">마이봇</a></li>
-                </ul>
-                <form class="form-inline" ng-submit="vm.paging('find');">
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="query" ng-model="vm.query" placeholder="찾을 봇 이름">
-                    </div>
-                    <button type="submit" class="btn btn-default">검색</button>
-                </form>
-            </div>
+            <!--<div class="bot-list-header">-->
+                <!--<ul class="nav nav-pills">-->
+                    <!--<li role="presentation" ng-class="{active: vm.listType == 'popular'}"><a ui-sref="user-bots-web.list({listType: 'popular', query: ''})">인기봇</a></li>-->
+                    <!--<li role="presentation" ng-class="{active: vm.listType == 'recent'}"><a ui-sref="user-bots-web.list({listType: 'recent', query: ''})">최신봇</a></li>-->
+                    <!--<li role="presentation" ng-class="{active: vm.listType == 'followed'}"><a ui-sref="user-bots-web.list({listType: 'followed', query: ''})">친구봇</a></li>-->
+                    <!--<li role="presentation" ng-class="{active: vm.listType == 'my'}"><a ui-sref="user-bots-web.list({listType: 'my', query: ''})">마이봇</a></li>-->
+                <!--</ul>-->
+                <!--<form class="form-inline" ng-submit="vm.paging('find');">-->
+                    <!--<div class="form-group">-->
+                        <!--<input type="text" class="form-control" id="query" ng-model="vm.query" placeholder="찾을 봇 이름">-->
+                    <!--</div>-->
+                    <!--<button type="submit" class="btn btn-default">검색</button>-->
+                <!--</form>-->
+            <!--</div>-->
 
             <div id="popularBots" class="row bot-list">
 
