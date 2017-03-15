@@ -352,7 +352,7 @@ section .create {
     margin-top: 20px;
     margin-bottom: 20px;
     /*padding: 10px;*/
-    width: 620px;
+    width: 720px;
     /* padding: 10px; */
     /*background: white;*/
     /*border: 1px solid lightgray;*/
@@ -454,83 +454,15 @@ section .create {
     font-size: 14px;
 }
 
-.bot-list2-header {
-    width: 620px;
-    padding: 0px;
-    margin-left: -12px;
-}
-
-.bot-list2-header .nav {display: inline-block;}
-.bot-list2-header .form-inline {float: right;}
-.bot-list2-header .nav a {
-    color: #777;
-    font-size: 16px;
-    padding-left: 20px;
-    padding-right: 20px;
-}
-
-.bot-list2{
-    margin-top: 5px;
+.bot-content {
+    margin-top: 20px;
     margin-bottom: 20px;
-    padding: 10px;
-    width: 620px;
+    /*padding: 10px;*/
+    width: 720px;
     /* padding: 10px; */
-    background: white;
-    border: 1px solid lightgray;
-    border-radius: 10px;
-}
-
-.bot-list2 .thumbnail {
-    border: 0px;
-    background: none;
-}
-
-.bot-list2 .thumbnail img {
-    max-height: 80px;
-    max-width: 80px;
-    border-radius: 50%;
-    height: 150px;
-    display: block;
-}
-
-.bot-list2 .caption{
-    text-align: center;
-}
-
-.bot-list2 .col-md-3 {
-    width: 25%;
-    float: left;
-}
-
-.bot-list2 .col-md-3 {
-    padding-right: 5px;
-    padding-left: 5px;
-}
-
-.bot-list2 .bot-title {
-    margin: 2px 0 2px;
-    padding-bottom: 2px;
-    display: inline-block;
-    font-size: 16px;
-    font-weight: 500;
-    text-align: center;
-}
-
-.bot-list2 .bot-desc{
-    height: 60px;
-    line-height: 1.1;
-    /*white-space: pre-line;*/
-
-    /*white-space: nowrap;*/
-    overflow: hidden;
-    /*text-overflow: ellipsis;*/
-
-    color: #777;
-    text-align: left;
-}
-
-.bot-list2 .bot-buttons {
-    margin: 0px;
+    /*background: white;*/
+    /*border: 1px solid lightgray;*/
+    /*border-radius: 10px;*/
 }
 
 
