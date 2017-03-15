@@ -269,6 +269,8 @@ function loadUserBot(botName, callback) {
             for(var i = 0; i < bot.dialogsets.length; i++) {
               type.mongo.queryStatic.$or.push({dialogset: bot.dialogsets[i]});
             }
+          } else {
+            type.mongo.queryStatic = {dialogset: ''};
           }
           callback(task, context);
         },

@@ -52,8 +52,9 @@ exports.processInput = function(context, inRaw, callback) {
         // var word = result[i].text;
         // if(word.search(/^(은|는|이|가|을|를)$/) == -1) result2.push(word);
 
-        if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _nlp.push(result[i]);
-        if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _inNLP.push(result[i].text);
+        /*if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') */_nlp.push(result[i]);
+        // if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _inNLP.push(result[i].text);
+        if(result[i].text.search(/^(은|는|이|가|을|를)$/) == -1) _inNLP.push(result[i].text);
       }
 
       _in = _inNLP.join(' ');

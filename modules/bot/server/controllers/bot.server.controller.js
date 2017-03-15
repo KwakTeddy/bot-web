@@ -103,11 +103,11 @@ function botProc(botName, channel, user, inTextRaw, outCallback, chatServerConfi
         factModule.memoryFacts(inTextRaw, context, function (_task, _context) {
           if(_task && _task.numAffected && _task.numAffected.upserted) {
             console.log('[FACT_ADD]' + JSON.stringify(_task.doc));
-            // if(botName == 'athena') {
-            //   print('말씀하신 내용을 학습했어요.');
-            //   cb(true);
-            //   return;
-            // }
+            if(botName == 'girlfriend') {
+              print('말씀하신 내용을 학습했어요.');
+              cb(true);
+              return;
+            }
           }
           cb(null);
         });

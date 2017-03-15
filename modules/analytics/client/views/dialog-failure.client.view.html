@@ -1,11 +1,3 @@
-<header class="page-header">
-  <h2>대화 실패 분석</h2>
-
-  <div class="right-wrapper pull-right">
-    <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
-  </div>
-</header>
-
 <script>
   function changeFunc(selectBox) {
     document.getElementById("year").style.display = "none";
@@ -19,7 +11,25 @@
         break;
     }
   }
+  $.extend( true, $.fn.dataTable.defaults, {
+    "order": [],
+    "columnDefs": [
+      {"orderable": false, "targets": [0,2] }
+    ]
+  } );
+
+  $(document).ready(function() {
+    $('#dt').DataTable();
+  } );
+
 </script>
+<header class="page-header">
+  <h2>대화 실패 분석</h2>
+
+  <div class="right-wrapper pull-right">
+    <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+  </div>
+</header>
 
 <!-- start: page -->
 <section class="panel" ng-controller="AnalyticsListController" ng-init="find_dialog_failure()">
@@ -41,17 +51,21 @@
   </header>
 
   <div class="panel-body">
-    <table datatable="ng" class="table table-bordered table-striped mb-none">
+    <table datatable="ng" id="dt" class="table table-bordered table-striped mb-none">
       <thead>
       <tr>
         <th class="text-center">대화</th>
         <th class="text-center">실패빈도</th>
+        <th class="text-center"></th>
       </tr>
       </thead>
       <tbody>
       <tr ng-repeat="dialogUsage in dialogFailure">
-        <td class="text-center">{{dialogUsage._id}}</td>
+        <td class="text-center">{{dialogUsage._id.dialog}}</td>
         <td class="text-center">{{dialogUsage.count}}</td>
+        <td class="text-right">
+            <button class="btn btn-primary btn-sm" ng-click="edit(dialogUsage._id.preDialogId);">대화수정</button>
+        </td>
       </tr>
       </tbody>
     </table>
