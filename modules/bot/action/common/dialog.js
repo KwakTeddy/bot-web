@@ -7,6 +7,7 @@ var type = require(path.resolve('modules/bot/action/common/type'));
 var botUser= require(path.resolve('modules/bot-users/server/controllers/bot-users.server.controller'))
 var userDilaog = require(path.resolve('modules/user-dialogs/server/controllers/user-dialogs.server.controller'));
 var autoCorrection = require(path.resolve('modules/bot/engine/nlp/autoCorrection'));
+var quibble = require(path.resolve('modules/bot/engine/dialog/quibble'));
 
 const START_DIALOG_NAME = '시작';
 exports.START_DIALOG_NAME = START_DIALOG_NAME;
@@ -115,7 +116,10 @@ function matchGlobalDialogs(inRaw, inNLP, dialogs, context, print, callback, wor
             }
           }
 
-          if(context.bot.noDialog) {
+          if(context.bot.useQuibble) {
+            context.dialog.isFail = true;
+            print(quibble.quibble(context));
+          } else if(context.bot.noDialog) {
             executeDialog(context.bot.noDialog, context, print, callback);
             context.dialog.isFail = true;
           } else {
@@ -213,7 +217,10 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback, opti
                 matchChildDialogs(_inRaw, _inNLP, dialogs, context, print, callback, options, true);
               });
             } else {
-              if(context.bot.noDialog) {
+              if(context.bot.useQuibble) {
+                context.dialog.isFail = true;
+                print(quibble.quibble(context));
+              } else if(context.bot.noDialog) {
                 executeDialog(context.bot.noDialog, context, print, callback);
                 context.dialog.isFail = true;
               } else {
@@ -812,7 +819,7 @@ function executeDialog(dialog, context, print, callback, options) {
         var userOut = type.processOutput(dialog.task, context, _output);
         print(userOut, dialog.task);
 
-         userDilaog.addDialog(dialog.inRaw, userOut, context.dialog.isFail, dialog, context, function() {
+         userDilaog.addDialog(dialog.inRaw || context.dialog.inCurRaw || context.dialog.inRaw, userOut, context.dialog.isFail, dialog, context, function() {
           cb(null, _output);
         });
       } else if (output.if) {
