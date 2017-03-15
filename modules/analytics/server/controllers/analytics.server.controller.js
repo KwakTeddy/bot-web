@@ -53,12 +53,13 @@ exports.dialogList = function (req, res) {
   } else if (kind == 'month') {
     cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth() + 1, inOut: true}
   }
-  cond.dialog = {$ne: null};
+  cond.dialog = {$ne: null, $nin: [":reset user", ":build csdemo reset"]};
+  cond.botId = "csdemo";
 
   console.log(JSON.stringify(cond));
   UserDialog.aggregate(
     [
-      {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" }, inOut: '$inOut', dialog: '$dialog'}},
+      {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" }, inOut: '$inOut', dialog: '$dialog', botId: '$botId'}},
       {$match: cond},
       {$group: {_id: '$dialog', count: {$sum: 1}}},
       {$sort: {count: -1}},
