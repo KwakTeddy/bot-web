@@ -3,11 +3,10 @@
 <head ng-controller="UserBotHeaderController">
     <base href="/">
     <meta charset="utf-8">
-    <meta property="og:url"           content="currentUrl" />
     <meta property="og:type"          content="website" />
     <meta property="og:title"         content="Your Website Title" />
     <meta property="og:description"   content="Your description" />
-    <meta property="og:image"         content="http://dev.moneybrain.ai:8443/userbot/home/image.jp" />
+    <meta property="og:url"   content= $scope.wow/>
 
 
   <title>머니브레인 아테나 챗봇 - MoneyBrian ATHENA</title>
@@ -279,6 +278,7 @@
 {% endfor %}
 
 <script>
+
     function chatPosition() {
         var windowWidth = document.body.offsetWidth;
         if(windowWidth > 1200) {
@@ -293,8 +293,10 @@
     window.onresize = function() {
         chatPosition();
     };
+    window.onload = function () {
+      chatPosition();
+    };
 
-    chatPosition();
 </script>
 
 <!--facebook-->

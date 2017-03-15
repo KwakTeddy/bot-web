@@ -45,8 +45,9 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       // console.log('out:' + message);
 
       // if(message.startsWith(':log') && !$state.is('home')) return;
+        console.log(message.lastIndexOf(':log'));
 
-      if(message.startsWith(':log')) {
+      if(message.lastIndexOf(':log') == 0) {
         if(!$state.is('home') && !$state.is('user-bots.context-analytics') &&
           !$state.is('bots.graph-knowledge') && !$state.is('bots.graph-dialog')) return;
         // vm.log += message.substring(message.indexOf('\n')+1);
@@ -145,7 +146,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
       if(msg == ':build') { build(); return false;}
       if(msg == ':init') { init(); return false; }
-      if(msg.startsWith(':connect')) {
+      if(msg.lastIndexOf(':connect') == 0) {
         var args = msg.split(/\s/);
         if(args.length > 1) vm.connectUserBot(msg);
         return false;
