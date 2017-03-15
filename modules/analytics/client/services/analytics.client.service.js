@@ -44,3 +44,17 @@ angular.module('analytics').factory('DialogFailureService', ['$resource',
     }, {});
   }
 ]);
+
+angular.module('analytics').factory('Dialogs', ['$resource',
+  function ($resource) {
+    return $resource('api/dialog/:botId/:dialogId', {
+      botId: '@botId',
+      dialogId: '@dialogId'
+    }, {
+      update: {
+        method: 'PUT'
+      }
+    });
+  }
+]);
+
