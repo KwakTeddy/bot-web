@@ -28,7 +28,7 @@ module.exports = function (app) {
     scope: [
         'pages_show_list',
         'pages_messaging',
-        'manage_pages',
+        'manage_pages'
   ]}));
   app.route('/api/auth/facebook/:callback').get(users.oauthCallback('facebook'));
 
