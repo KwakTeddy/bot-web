@@ -65,7 +65,7 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
       } else {
         return output;
       }
-    }
+    };
 
     var num = 0;
     var handleDialog = function(dialog)

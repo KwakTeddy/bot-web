@@ -50,16 +50,16 @@ a.active {
     width: 1000px;
 }
 #mainNav {
-	background-color: #0c1532;	
+	background-color: white;
 	padding: 10px 0;
     border-bottom: 0px;
 }
 
 #mainNav a{
-	color: white;	
+	/*color: white;	*/
 	font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
     text-transform: uppercase;
-    font-weight: 400;
+    font-weight: bold;
     letter-spacing: 1px;
     text-transform: none;
 }
@@ -95,7 +95,9 @@ a.active {
 }
 
 .navbar-brand {
-	padding: 10px 15px 15px 15px;
+	padding: 0px 15px 0px 15px;
+    margin-top: -8px;
+
 }
 
 
