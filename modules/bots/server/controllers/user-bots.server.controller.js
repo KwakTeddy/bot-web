@@ -194,12 +194,14 @@ exports.list = function (req, res) {
 
 exports.followList = function (req, res) {
   var query = {};
+  var search = {};
   var perPage = req.body.perPage || 6;
   query['followed'] = true;
   if(req.body.botUserId) query['botUserId'] = req.body.botUserId;
   if(req.body.userBot) query['userBot'] = req.body.userBot._id;
-  if(req.body.query) query['name'] = new RegExp(req.body.query, 'i');
-  UserBotFollow.find(query).populate('userBot').sort('-created').skip(req.body.currentPage * perPage).limit(perPage).exec(function (err, follows) {
+  if(req.body.query) search['name'] = new RegExp(req.body.query, 'i');
+
+  UserBotFollow.find(query).populate('userBot', null, search).sort('-created').skip(req.body.currentPage * perPage).limit(perPage).exec(function (err, follows) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -207,9 +209,10 @@ exports.followList = function (req, res) {
     } else {
       var userBots = [];
       for(var i in follows) {
-        userBots.push(follows[i].userBot);
+        if(follows[i].userBot){
+          userBots.push(follows[i].userBot);
+        }
       }
-
       res.json(userBots);
       // res.json(follows);
     }

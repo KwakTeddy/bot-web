@@ -10,6 +10,7 @@ angular.module('user-bots').controller('UserBotListController', ['$scope', '$roo
     var vm = this;
     vm.authentication = Authentication;
     vm.userBots = userBots;
+    console.log(userBots);
     // vm.userBots = userBots;
 
     // if(_platform == 'mobile') {
@@ -40,13 +41,10 @@ angular.module('user-bots').controller('UserBotListController', ['$scope', '$roo
           if(!response.length) {
               vm.pagingEnd = true;
           } else {
-            console.log(response);
             vm.userBots.push.apply(vm.userBots, response);
-            console.log(response);
           }
       }).error(function (reponse) {
         console.log(reponse);
-
       })
     };
 

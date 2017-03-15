@@ -54,7 +54,6 @@ var UserBotSchema = new Schema({
     type: Number,
     default: 0
   },
-
   user: {
     type: Schema.ObjectId,
     ref: 'User'

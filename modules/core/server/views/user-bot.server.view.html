@@ -321,6 +321,15 @@
       href: 'http://dev.moneybrain.ai:8443/userbot/home'
     }, function(response){});
   }
+  function connectFb() {
+    FB.api('/me/accounts?fields=picture,name,link,access_token', function(response) {
+      console.log(JSON.stringify(response.data[0].access_token));
+      document.getElementById('fbPage').append(response.data[0].name);
+      FB.api('/me/subscribed_apps?access_token='+ response.data[0].access_token, function (res) {
+      console.log(JSON.stringify(res));
+      })
+    });
+  }
 </script>
 
 <!--kakao-->

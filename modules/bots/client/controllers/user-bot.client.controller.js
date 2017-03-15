@@ -2,8 +2,8 @@
 
 // UserBots controller
 angular.module('user-bots').controller('UserBotController', ['$scope', '$rootScope', '$state', '$window','$timeout', '$stateParams',
-  'Authentication', 'userBotResolve', 'FileUploader', 'UserBotsService', 'UserBotCommentService', 'UserBotDialogService', 'UserBotsFollowService',
-  function ($scope, $rootScope, $state, $window, $timeout, $stateParams, Authentication, userBot, FileUploader, UserBotsService, UserBotCommentService, UserBotDialogService, UserBotsFollowService) {
+  'Authentication', 'userBotResolve', 'FileUploader', 'UserBotsService', 'UserBotCommentService', 'UserBotDialogService', 'UserBotsFollowService', '$http',
+  function ($scope, $rootScope, $state, $window, $timeout, $stateParams, Authentication, userBot, FileUploader, UserBotsService, UserBotCommentService, UserBotDialogService, UserBotsFollowService, $http) {
     var vm = this;
     vm.user = Authentication.user;
     vm.userBot = userBot;
@@ -49,8 +49,15 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
       $rootScope.$broadcast('setUserBot', userBot);
     };
 
+    vm.connectFb = function () {
+      $http.get('http://graph.facebook.com/v2.5/me', function (err, data) {
+          console.log(data);
+      })
+    };
+
     // Create new UserBot
     vm.create = function (isValid) {
+      console.log(vm.userBot);
       $scope.error = null;
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'userBotForm');
@@ -58,6 +65,7 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
       }
 
       vm.userBot.$save(function (response) {
+        console.log(56);
         if($state.is('user-bots-web.create') || $state.is('user-bots-web.edit')) {
           $rootScope.$broadcast('setUserBot', vm.userBot);
 
