@@ -198,7 +198,7 @@ exports.dialogFailureList = function (req, res) {
       {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" },
         inOut: '$inOut', dialog: '$dialog', fail:'$fail', preDialogId:'$preDialogId', preDialogName:'$preDialogName'}},
       {$match: cond},
-      //{$match:{ preDialogId: { $exists:true, $ne: null } } },
+      {$match:{ preDialogId: { $exists:true, $ne: null } } },
       {$group: {_id: {dialog:'$dialog', preDialogId: '$preDialogId'}, count: {$sum: 1}}},
       {$sort: {count: -1}},
       {$limit: 300}
@@ -213,28 +213,78 @@ exports.dialogFailureList = function (req, res) {
     }
   });
 };
-/**
- * Analytics middleware
- */
-exports.botUserByID = function (req, res, next, id) {
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).send({
-      message: 'Bot user is invalid'
-    });
-  }
-
-  BotUser.findById(id).populate('currentBank').exec(function (err, botUser) {
-    if (err) {
-      return next(err);
-    } else if (!botUser) {
-      return res.status(404).send({
-        message: 'No Bot user with that identifier has been found'
-      });
+var find_dialog = function(dialogs, dialogId, action, res) {
+  dialogs.forEach(function(obj) {
+    if (obj.id == dialogId) {
+      action(obj, res);
     }
-    req.botUser = botUser;
-    next();
+    else if (obj.children) {
+      find_dialog(obj.children, dialogId, action, res);
+    }
   });
 };
 
+var gogo = function(o, res) {
+  var dialog = {};
+  dialog.name = o.name != undefined ? o.name : "dialog" + o.id;
+  dialog.inputs = (o.input);
+  dialog.outputs = (o.output);
+  console.log(JSON.stringify(dialog));
+  res.jsonp(dialog);
+};
 
+exports.dialog = function (req, res) {
+  var botId = req.params.bId;
+  var dialogId = req.params.dialogId;
+
+  var dialogs_data = global._bots[botId].dialogs;
+
+  console.log(botId+","+dialogId);
+  find_dialog(dialogs_data, dialogId, gogo, res);
+
+};
+
+exports.dialogChildren = function (req, res) {
+  var botId = req.params.bId;
+  var dialogId = req.params.dialogId;
+
+  var dialogs = global._bots[botId].dialogs;
+
+  var dialogChildren = [];
+
+  console.log(botId+","+dialogId);
+  dialogs.forEach(function(obj) {
+    if (obj.id == dialogId) {
+      obj.children.forEach(function() {
+        var dialog = {};
+        dialog .botId = botId;
+        dialog.dialogId = obj.id;
+        dialog.name = obj.name != undefined ? obj.name : "dialog"+obj.id;
+        dialog.inputs = (obj.input);
+        dialog.outputs = (obj.output);
+        dialogChildren.push(dialog);
+      });
+
+      console.log(JSON.stringify(dialogChildren));
+
+      res.jsonp(dialogChildren);
+    }
+  });
+};
+
+exports.save_dialog = function(req, res) {
+  var botId = req.body.botId;
+  var dialogId = req.body.dialogId;
+  var dialog = {inputs: req.body.inputs, outputs: req.body.outputs};
+
+  var dialogs = global._bots[botId].dialogs;
+  dialogs.forEach(function(obj) {
+    if (obj.id == dialogId) {
+      obj.input = dialog.inputs;
+      //obj.output = dialog.outputs;
+    }
+  });
+
+  console.log(JSON.stringify(dialog));
+};

@@ -1,8 +1,8 @@
 'use strict';
 
 // Bots controller
-angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScope', '$timeout', '$stateParams', 'fileResolve', 'BotFilesService',
-  function ($scope, $rootScope, $timeout, $stateParams, file, BotFilesService) {
+angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScope', '$timeout', '$stateParams', 'Dialogs',
+  function ($scope, $rootScope, $timeout, $stateParams, Dialogs) {
     var vm = this;
     // $scope.authentication = Authentication;
 
@@ -37,6 +37,56 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
         }
       }
     });
+
+    // dialog editing
+    $scope.addInput = function() {
+      $scope.dialog.inputs.push({str:""});
+    };
+    $scope.addOutput= function() {
+      $scope.dialog.outputs.push({str:""});
+    };
+
+    var makeStr = function(obj) {
+      if (Array.isArray(obj)) {
+        return obj.map(function (o) { return {str: o}; });
+      }
+      return [{str: obj}];
+    };
+
+    var unMake = function(obj) {
+      if (Array.isArray(obj)) {
+        return obj.map(function (o) { return o['str']; });
+      }
+    };
+
+    $scope.findOne = function (dialogId) {
+      var botId = $rootScope.botId;
+      $scope.dialog = { botId: botId, dialogId: dialogId };
+
+      var dialog = Dialogs.get({
+        botId: botId,
+        dialogId: dialogId
+      }, function() {
+        $scope.dialog.name = dialog.name;
+        $scope.dialog.inputs = makeStr(dialog.inputs);
+        $scope.dialog.outputs = makeStr(dialog.outputs);
+        $('.modal-with-form').click();
+      });
+    };
+
+    $scope.update = function (isValid) {
+      $scope.error = null;
+      if (!isValid) {
+        $scope.$broadcast('show-errors-check-validity', 'dialogForm');
+        return false;
+      }
+      var dialog = $scope.dialog;
+      dialog.inputs = unMake($scope.dialog.inputs);
+      dialog.outputs = unMake($scope.dialog.outputs);
+      console.log(JSON.stringify((dialog)));
+
+      Dialogs.update(dialog);
+    };
 
 // make nodes and links from dialogs
 
@@ -362,9 +412,11 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
     }
 
     function click(d) {
-        //d3.event.stopPropagation();
-        currentNode = d;
-        update();
+      //d3.event.stopPropagation();
+      currentNode = d;
+      update();
+      angular.element(document.getElementById('control')).scope().findOne(d.id);
+      $('.modal-with-form').click();
     }
 
     function wrap(text, width, maxLine) {

@@ -23,6 +23,10 @@ module.exports = function(app) {
   app.route('/api/dialog-failure/:kind/:arg').all(analyticsPolicy.isAllowed)
     .get(analytics.dialogFailureList);
 
-  // Finish by binding the Bot user middleware
-  app.param('botUserId', analytics.botUserByID);
+  app.route('/api/dialog/:bId/:dialogId').all(analyticsPolicy.isAllowed)
+    .get(analytics.dialog)
+    .put(analytics.save_dialog);
+
+  app.route('/api/dialogchildren/:bId/:dialogId').all(analyticsPolicy.isAllowed)
+    .get(analytics.dialogChildren);
 };

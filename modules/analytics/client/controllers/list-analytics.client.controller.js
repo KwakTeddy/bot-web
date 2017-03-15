@@ -1,8 +1,8 @@
 'use strict';
 
 // Analytics controller
-angular.module('analytics').controller('AnalyticsListController', ['$scope', '$stateParams', '$location', 'Authentication', 'AnalyticsService', 'DialogUsageService', 'DialogSuccessService', 'SessionSuccessService', 'DialogFailureService',
-  function ($scope, $stateParams, $location, Authentication, AnalyticsService, DialogUsageService, DialogSuccessService, SessionSuccessService, DialogFailureService) {
+angular.module('analytics').controller('AnalyticsListController', ['$scope', '$rootScope', '$stateParams', '$location', '$window', 'Authentication', 'AnalyticsService', 'DialogUsageService', 'DialogSuccessService', 'SessionSuccessService', 'DialogFailureService', 'Dialogs',
+  function ($scope, $rootScope, $stateParams, $location, $window, Authentication, AnalyticsService, DialogUsageService, DialogSuccessService, SessionSuccessService, DialogFailureService, Dialogs) {
     $scope.authentication = Authentication;
     $scope.kind = "all";
     $scope.year = new Date().getFullYear();
@@ -82,12 +82,60 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$s
         });
     };
 
-    $scope.edit = function(preDialogId) {
-      window.alert(preDialogId);
+    // dialog editing
+    $scope.addInput = function() {
+      $scope.dialog.inputs.push({str:""});
+    };
+    $scope.addOutput= function() {
+      $scope.dialog.outputs.push({str:""});
+    };
+
+    var makeStr = function(obj) {
+      if (Array.isArray(obj)) {
+        return obj.map(function (o) { return {str: o}; });
+      }
+      return [{str: obj}];
+    };
+
+    var unMake = function(obj) {
+      if (Array.isArray(obj)) {
+        return obj.map(function (o) { return o['str']; });
+      }
+    };
+
+    $scope.findOne = function (dialogId, newDialog) {
+      var botId = $rootScope.botId;
+      $scope.dialog = { botId: botId, dialogId: dialogId };
+
+      var dialog = Dialogs.get({
+        botId: botId,
+        dialogId: dialogId
+      }, function() {
+        $scope.dialog.name = dialog.name;
+        $scope.dialog.inputs = makeStr(dialog.inputs);
+        $scope.dialog.outputs = makeStr(dialog.outputs);
+        $scope.dialog.inputs.push({str:newDialog});
+        $('.modal-with-form').click();
+      });
+    };
+
+    $scope.update = function (isValid) {
+      $scope.error = null;
+      if (!isValid) {
+        $scope.$broadcast('show-errors-check-validity', 'dialogForm');
+        return false;
+      }
+      var dialog = $scope.dialog;
+      dialog.inputs = unMake($scope.dialog.inputs);
+      dialog.outputs = unMake($scope.dialog.outputs);
+      console.log(JSON.stringify((dialog)));
+
+      Dialogs.update(dialog);
     };
 
     // Find a list of dialog fail
     $scope.find_dialog_failure = function () {
+
       var arg = 'empty';
       if ($scope.kind == 'year')
         arg = $scope.year;
