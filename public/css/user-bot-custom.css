@@ -47,7 +47,7 @@ a.active {
 
 
 .container {
-    width: 1000px;
+    width: 1100px;
 }
 #mainNav {
 	background-color: white;
@@ -56,7 +56,7 @@ a.active {
 }
 
 #mainNav a{
-	/*color: white;	*/
+	color: #555;
 	font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
     text-transform: uppercase;
     font-weight: bold;
@@ -68,25 +68,25 @@ a.active {
 #mainNav .profile-info {margin-right: 8px;}
 
 #mainNav .open a {
-    color: #7d7d7d;
+    color: #555;
 }
 
 #mainNav .profile-info span {
-    color: white;
+    color: #555;
     text-transform: none;
 }
 
 #mainNav .open .profile-info span {
-    color: black;
+    color: #555;
     text-transform: none;
 }
 
-#mainNav .custom-caret {color: white};
-#mainNav .open .custom-caret {color: black};
+#mainNav .custom-caret {color: #555}
+#mainNav .open .custom-caret {color: #555}
 
 
 #mainNav .userbox .open .dropdown-menu a {
-    color: #7d7d7d;
+    color: #555;
 }
 
 .navbar-default .navbar-nav>.active>a {
@@ -102,8 +102,14 @@ a.active {
 
 
 header {
-    background-image: url('/images/star.jpg');
+    background-image: url('/images/star1.png');
+    background-color: rgba(104,174,224, 0.30);
+    background-blend-mode: overlay;
 }
+/*
+background-color: rgba(0,0,0, 0.50);
+*/
+/*background-color: hsla(0,0%,100%,0.70);*/
 
 
 header .intro-text {
@@ -160,10 +166,10 @@ header .intro-text .intro-in {
  * */
 .footer-3 {
   font-size: 14px;
-  padding-top: 65px;
-  padding-bottom: 65px;
-  background: #0c1532;
-  color: #bdc3c7;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background: #032147;          /*#003b59 #595657 #5CB7E7 #0088CC*/
+  color: white;
 }
 .footer-3.v-center,
 .footer-3 .v-center {
@@ -276,7 +282,7 @@ header .intro-text .intro-in {
 }
 
 section {
-  padding: 50px 0 20px 0;
+  padding: 50px 0 50px 0;
 }
 
 .section-subheading {
@@ -290,6 +296,15 @@ section .create {
     padding-top: 0px;
 }
 
+.feature-icon {
+  vertical-align: top;
+    margin-top: 10px;
+
+}
+
+.feature-text {
+    display: inline-block;
+}
 
 
 .container .userbot {
@@ -399,6 +414,7 @@ section .create {
     font-size: 16px;
     font-weight: 500;
     text-align: left;
+    color: #555;
 }
 
 .bot-list .bot-desc{
@@ -416,7 +432,7 @@ section .create {
 
 .bot-list .bot-info {
     font-size: 13px;
-    color: #777;
+    color: #666;
 }
 .bot-list .bot-info span {
     font-weight: bold;
@@ -554,7 +570,7 @@ section .create {
 
 .chat-container-add {
     position: absolute;
-    top: 1400px;
+    top: 1000px;
 }
 
 .chat-body {
@@ -818,4 +834,59 @@ section#screenshot {
 
 #editBot .panel-body {
     min-height: 500px;
+}
+
+
+.sign-in-facebook {
+    background: url('/modules/users/client/img/buttons/facebook.png') #f2f2f2;
+    background-position: -5px -5px;
+    background-repeat: no-repeat;
+    background-size: 50px 50px;
+    padding-left: 50px;
+    color: #000;
+}
+
+.sign-in-facebook:hover {
+    background: url('/modules/users/client/img/buttons/facebook.png') #e0e0e0;
+    background-position: -5px -5px;
+    background-repeat: no-repeat;
+    background-size: 50px 50px;
+    padding-left: 50px;
+    color: #000;
+}
+
+
+.sign-in-google {
+    background: url('/modules/users/client/img/buttons/google.png') #f2f2f2;
+    background-position: -5px -5px;
+    background-repeat: no-repeat;
+    background-size: 50px 50px;
+    padding-left: 50px;
+    color: #000;
+}
+.sign-in-google:hover {
+    background: url('/modules/users/client/img/buttons/google.png') #e0e0e0;
+    background-position: -5px -5px;
+    background-repeat: no-repeat;
+    background-size: 50px 50px;
+    padding-left: 50px;
+    color: #000;
+}
+
+.sign-in-kakao {
+    background: url('/modules/users/client/img/buttons/kakao.png') #f2f2f2;
+    background-position: -5px -5px;
+    background-repeat: no-repeat;
+    background-size: 50px 50px;
+    padding-left: 50px;
+    color: #000;
+}
+
+.sign-in-kakao:hover {
+    background: url('/modules/users/client/img/buttons/kakao.png') #e0e0e0;
+    background-position: -5px -5px;
+    background-repeat: no-repeat;
+    background-size: 50px 50px;
+    padding-left: 50px;
+    color: #000;
 }

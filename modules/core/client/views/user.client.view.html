@@ -39,7 +39,7 @@
                             <!--<a href="#" class="btn btn-default" ng-click="vm.userBotChat(userBot)">대화하기</a>-->
                             <!--</p>-->
                             <p class="bot-info" ng-show="vm.listType != 'my'">
-                                <i class="fa fa-users" aria-hidden="true" style="color: #337ab7;"></i><span>친구</span> 300k
+                                <i class="fa fa-users" aria-hidden="true" style="color: #337ab7;"></i><span>친구</span> {{userBot.followed}}명
                                 <i class="fa fa-comments-o" aria-hidden="true" style="color: #337ab7;"></i><span>대화</span> 10억
 
                                 <!--<a class="btn btn-primary" ng-show="vm.listType != 'followed'" ng-click="vm.followBot(userBot);">친구추가</a>-->
@@ -77,7 +77,7 @@
                 <div class="feature-list">
                     <div class="single-feature">
                             <span class="feature-icon fa-stack fa-2x">
-                                <i class="fa fa-circle fa-stack-2x text-muted"></i>
+                                <i class="fa fa-circle fa-stack-2x text-muted" style="color: #5CB7E7 !important;"></i>
                                 <i class="fa fa-comments fa-stack-1x fa-inverse"></i>
                             </span>
                         <div class="feature-text">
@@ -88,7 +88,7 @@
                     </div>
                     <div class="single-feature">
                             <span class="feature-icon fa-stack fa-2x">
-                                <i class="fa fa-circle fa-stack-2x text-muted"></i>
+                                <i class="fa fa-circle fa-stack-2x text-muted" style="color: #5CB7E7 !important;"></i>
                                 <i class="fa fa-cogs fa-stack-1x fa-inverse"></i>
                             </span>
                         <div class="feature-text">
@@ -99,7 +99,7 @@
                     </div>
                     <div class="single-feature">
                             <span class="feature-icon fa-stack fa-2x">
-                                <i class="fa fa-circle fa-stack-2x text-muted"></i>
+                                <i class="fa fa-circle fa-stack-2x text-muted" style="color: #5CB7E7 !important;"></i>
                                 <i class="fa fa-server fa-stack-1x fa-inverse"></i>
                             </span>
                         <div class="feature-text">
@@ -110,7 +110,7 @@
                     </div>
                     <div class="single-feature">
                             <span class="feature-icon fa-stack fa-2x">
-                                <i class="fa fa-circle fa-stack-2x text-muted"></i>
+                                <i class="fa fa-circle fa-stack-2x text-muted" style="color: #5CB7E7 !important;"></i>
                                 <i class="fa fa-share-alt fa-stack-1x fa-inverse"></i>
                             </span>
                         <div class="feature-text">
@@ -188,7 +188,7 @@ $("#owl-demo").owlCarousel({
 });
 
 $(window).scroll(function(event){
-    if($(document).scrollTop() > 1300)
+    if($(document).scrollTop() > 900)
         $('#container-chat').addClass('chat-container-add');
     else
         $('#container-chat').removeClass('chat-container-add');
