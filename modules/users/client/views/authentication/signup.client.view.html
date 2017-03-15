@@ -80,12 +80,17 @@
               <div class="col-sm-8">
                 <div class="checkbox-custom checkbox-default">
                   <input id="AgreeTerms" name="agreeterms" type="checkbox" ng-model="credentials.agreeterms" required/>
-                  <label for="AgreeTerms"><a href="#">약관</a>에 동의해요</label>
+                  <label for="AgreeTerms"><a onclick="window.open('privacy', 'privacy', 'left=50,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;">약관</a>에 동의해요</label>
                 </div>
               </div>
               <div class="col-sm-4 text-right">
                 <button type="submit" class="btn btn-primary hidden-xs">가입</button>
                 <button type="submit" class="btn btn-primary btn-block btn-lg visible-xs mt-lg">가입</button>
+              </div>
+              <div class="col-sm-8">
+                <p class="help-block" ng-show="userForm.agreeterms.$invalid && submitted">
+                  약관에 동의해주세요
+                </p>
               </div>
             </div>
 

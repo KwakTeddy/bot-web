@@ -39,6 +39,13 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
       data: {
         ignoreState: true
       }
-    });
+    })
+    .state('privacy', {
+        url: '/privacy',
+        templateUrl: 'modules/users/client/views/authentication/signup.client.privacy.view.html',
+        data: {
+            ignoreState: true
+        }
+    })
   }
 ]);
