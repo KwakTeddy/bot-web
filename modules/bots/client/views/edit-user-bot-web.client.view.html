@@ -90,7 +90,14 @@
                       novalidate="novalidate">
                     <div class="panel-body">
 
-                        <div class="bot-list-header" ng-show="vm.state=='create' || vm.state=='edit'" style="border-bottom: 1px solid lightgray;">
+                        <div class="bot-list-header" ng-show="vm.state=='create'" style="border-bottom: 1px solid lightgray;">
+                            <ul class="nav nav-tabs">
+                                <li role="presentation" ng-class="{active: vm.type == 'edit'}"><a ng-click="vm.changeType('edit');">챗봇정보</a></li>
+                                <!--<li role="presentation" ng-class="{active: vm.type == 'connect'}"><a ng-click="vm.changeType('connect');">연결하기</a></li>-->
+                            </ul>
+                        </div>
+
+                        <div class="bot-list-header" ng-show="vm.state=='edit'" style="border-bottom: 1px solid lightgray;">
                             <ul class="nav nav-tabs">
                                 <li role="presentation" ng-class="{active: vm.type == 'edit'}"><a ng-click="vm.changeType('edit');">챗봇정보</a></li>
                                 <li role="presentation" ng-class="{active: vm.type == 'learn'}"><a ng-click="vm.changeType('learn');">대화학습시키기</a></li>
@@ -216,15 +223,13 @@
 
                             </div>
                         </div>
-
-
                     </div>
                     <footer class="panel-footer">
                         <div class="row">
                             <div class="col-sm-12 text-center" ng-hide="vm.userBot && vm.userBot._id">
                                 <!--<button type="button" class="btn btn-primary" ng-click="vm.create(userBotForm.$valid)">생성</button>-->
-                                <button type="button" class="btn btn-primary" ng-click="vm.type='learn'">다음</button>
-                                <button type="button" class="btn btn-default" ui-sref="user-bots.list">취소</button>
+                                <button type="button" class="btn btn-primary" ng-click="vm.create(userBotForm.$valid)">만들기</button>
+                                <button type="button" class="btn btn-default" onclick="javascript:history.back();" >취소</button>
                             </div>
                             <div class="col-sm-12 text-center" ng-show="vm.userBot && vm.userBot._id">
                                 <a class="btn btn-primary" ng-click="vm.update(userBotForm.$valid)">
@@ -233,6 +238,7 @@
                                 <a class="btn btn-danger" ng-click="vm.remove()">
                                     <i class="glyphicon glyphicon-trash"></i> 삭제
                                 </a>
+                                <button type="button" class="btn btn-default" onclick="javascript:history.back();" >취소</button>
                             </div>
                         </div>
                     </footer>
@@ -250,7 +256,14 @@
                       novalidate="novalidate">
                     <div class="panel-body">
 
-                        <div class="bot-list-header" ng-show="vm.state=='create' || vm.state=='edit'"  style="border-bottom: 1px solid lightgray;">
+                        <div class="bot-list-header" ng-show="vm.state=='create'"  style="border-bottom: 1px solid lightgray;">
+                            <ul class="nav nav-tabs">
+                                <li role="presentation" ng-class="{active: vm.type == 'edit'}"><a ng-click="vm.changeType('edit');">챗봇정보</a></li>
+                                <li role="presentation" ng-class="{active: vm.type == 'connect'}"><a ng-click="vm.changeType('connect');">연결하기</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="bot-list-header" ng-show="vm.state=='edit'"  style="border-bottom: 1px solid lightgray;">
                             <ul class="nav nav-tabs">
                                 <li role="presentation" ng-class="{active: vm.type == 'edit'}"><a ng-click="vm.changeType('edit');">챗봇정보</a></li>
                                 <li role="presentation" ng-class="{active: vm.type == 'learn'}"><a ng-click="vm.changeType('learn');">대화학습시키기</a></li>
@@ -290,11 +303,11 @@
                     </div>
                     <footer class="panel-footer" ng-show="vm.state=='edit'" >
                         <div class="row">
-                            <div class="col-sm-12 text-center" ng-hide="vm.userBot && vm.userBot._id">
-                                <button type="button" class="btn btn-default" ng-click="vm.type='edit'">이전</button>
-                                <button type="button" class="btn btn-primary" ng-click="vm.create(userBotForm.$valid)">만들기</button>
-                                <button type="button" class="btn btn-default" ui-sref="user-bots.list">취소</button>
-                            </div>
+                            <!--<div class="col-sm-12 text-center" ng-hide="vm.userBot && vm.userBot._id">-->
+                                <!--<button type="button" class="btn btn-default" ng-click="vm.type='edit'">이전</button>-->
+                                <!--<button type="button" class="btn btn-primary" ng-click="vm.create(userBotForm.$valid)">만들기</button>-->
+                                <!--<button type="button" class="btn btn-default" onclick="javascript:history.back();" >취소</button>-->
+                            <!--</div>-->
                             <div class="col-sm-12 text-center" ng-show="vm.userBot && vm.userBot._id">
                                 <a class="btn btn-primary" ng-click="vm.update(userBotForm.$valid)">
                                     <i class="glyphicon glyphicon-edit"></i> 수정
@@ -302,6 +315,7 @@
                                 <a class="btn btn-danger" ng-click="vm.remove()">
                                     <i class="glyphicon glyphicon-trash"></i> 삭제
                                 </a>
+                                <button type="button" class="btn btn-default" onclick="javascript:history.back();" >취소</button>
                             </div>
                         </div>
                     </footer>
@@ -317,7 +331,13 @@
                 <form name="userBotForm" class="form-horizontal form-bordered"
                       novalidate="novalidate">
                     <div class="panel-body">
-                        <div class="bot-list-header" ng-show="vm.state=='create' || vm.state=='edit'" style="border-bottom: 1px solid lightgray;">
+                        <div class="bot-list-header" ng-show="vm.state=='create'" style="border-bottom: 1px solid lightgray;">
+                            <ul class="nav nav-tabs">
+                                <li role="presentation" ng-class="{active: vm.type == 'edit'}"><a ng-click="vm.changeType('edit');">챗봇정보</a></li>
+                                <li role="presentation" ng-class="{active: vm.type == 'connect'}"><a ng-click="vm.changeType('connect');">연결하기</a></li>
+                            </ul>
+                        </div>
+                        <div class="bot-list-header" ng-show="vm.state=='edit'" style="border-bottom: 1px solid lightgray;">
                             <ul class="nav nav-tabs">
                                 <li role="presentation" ng-class="{active: vm.type == 'edit'}"><a ng-click="vm.changeType('edit');">챗봇정보</a></li>
                                 <li role="presentation" ng-class="{active: vm.type == 'learn'}"><a ng-click="vm.changeType('learn');">대화학습시키기</a></li>
@@ -414,12 +434,12 @@
                         </div>
 
                     </div>
-                    <footer class="panel-footer">
+                    <footer class="panel-footer" ng-show="vm.state=='edit'" >
                         <div class="row">
-                            <div class="col-sm-12 text-center" ng-hide="vm.userBot && vm.userBot._id">
-                                <button type="button" class="btn btn-primary" ng-click="vm.userBotChat(vm.userBot)">대화하기</button>
-                                <button type="button" class="btn btn-danger" ui-sref="user-bots.list({listType: 'my'})">챗봇목록</button>
-                            </div>
+                            <!--<div class="col-sm-12 text-center" ng-hide="vm.userBot && vm.userBot._id">-->
+                                <!--<button type="button" class="btn btn-primary" ng-click="vm.userBotChat(vm.userBot)">대화하기</button>-->
+                                <!--<button type="button" class="btn btn-danger" ui-sref="user-bots.list({listType: 'my'})">챗봇목록</button>-->
+                            <!--</div>-->
                             <div class="col-sm-12 text-center" ng-show="vm.userBot && vm.userBot._id">
                                 <a class="btn btn-primary" ng-click="vm.update(userBotForm.$valid)">
                                     <i class="glyphicon glyphicon-edit"></i> 수정
@@ -427,7 +447,7 @@
                                 <a class="btn btn-danger" ng-click="vm.remove()">
                                     <i class="glyphicon glyphicon-trash"></i> 삭제
                                 </a>
-                                <button type="button" class="btn btn-default" ui-sref="user-bots-web.list({listType: 'my', query: ''});">취소</button>
+                                <button type="button" class="btn btn-default" onclick="javascript:history.back();" >취소</button>
                             </div>
                         </div>
                     </footer>

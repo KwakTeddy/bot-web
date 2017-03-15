@@ -256,7 +256,29 @@ var findChildren = function(object, res, data) {
 
 var save = function(o, res, data) {
   console.log(JSON.stringify(data));
-  o.input = data.inputs;
+
+  var nlp = require(path.resolve('modules/bot/engine/nlp/processor'));
+  var nlpKo = new nlp({
+    stemmer: true,      // (optional default: true)
+    normalizer: true,   // (optional default: true)
+    spamfilter: true     // (optional default: false)
+  });
+
+  nlpKo.tokenize/*ToStrings*/(data.inputs[data.inputs.length-1], function(err, result) {
+
+    var _nlp = [], _in;
+    for (var i = 0; i < result.length; i++) {
+
+      if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _nlp.push(result[i].text);
+    }
+
+    _in = _nlp.join(' ');
+
+    data.inputs[data.inputs.length - 1] = _in;
+
+    o.input = data.inputs;
+  });
+
   //o.output = data.outputs;
 };
 

@@ -137,6 +137,8 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
         $scope.selected = $scope.dialogs[0];
 
         $('.modal-with-form').click();
+      }, function(err) {
+        console.log(err);
       });
     };
 

@@ -17,6 +17,7 @@ var path = require('path'),
   multer = require('multer'),
   fs = require('fs');
 
+  var Dialogset = mongoose.model('Dialogset');
   var dialogsetModule = require(path.resolve('modules/bot/engine/dialogset/dialogset.js'));
 
 //temporary
@@ -26,6 +27,7 @@ const util = require('util');
  * Create a userBot
  */
 exports.create = function (req, res) {
+
   var userBot = new UserBot(req.body);
   userBot.user = req.user;
 
@@ -37,12 +39,40 @@ exports.create = function (req, res) {
     } else {
       res.json(userBot);
 
-      dialogsetModule.convertDialogset(userBot.dialogFile, function(result) {
-        userBot.dialogset = result;
-        userBot.save(function(err) {
-          if(console.log(err));
-        })
+      var dialogset = new Dialogset({
+        title: userBot.originalFilename,
+        type: userBot.type,
+        path: userBot.path,
+        filename: userBot.filename,
+        originalFilename: userBot.originalFilename,
+        language: 'en',
+        content: ''
       });
+
+      dialogset.user = user;
+
+      dialogset.save(function(err) {
+        if (err) {
+          callback(err);
+        } else {
+          dialogsetModule.convertDialogset1(dialogset, function(result) {
+            userBot.dialogset = result;
+            userBot.save(function(err) {
+              if(console.log(err));
+            })
+
+            console.log(dialogset.filename + ' converted');
+          })
+        }
+      });
+
+
+      // dialogsetModule.convertDialogset(userBot.dialogFile, function(result) {
+      //   userBot.dialogset = result;
+      //   userBot.save(function(err) {
+      //     if(console.log(err));
+      //   })
+      // });
     }
   });
 };

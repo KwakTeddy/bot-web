@@ -65,7 +65,6 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
       }
 
       vm.userBot.$save(function (response) {
-        console.log(56);
         if($state.is('user-bots-web.create') || $state.is('user-bots-web.edit')) {
           $rootScope.$broadcast('setUserBot', vm.userBot);
 
@@ -252,7 +251,8 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
 
     // Create file uploader instance
     $scope.uploader = new FileUploader({
-      url: '/api/user-bots/dataset-files',
+      // url: '/api/user-bots/dataset-files',
+      url: '/api/dialogsets/uploadfile',
       alias: 'uploadFile',
       autoUpload: true
     });
@@ -286,13 +286,13 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
       // Show success message
       $scope.success = true;
 
-      vm.userBot.dialogFile = response.filename;
+      // vm.userBot.dialogFile = response.filename;
 
-      // var Convert = $resource('/api/user-bots/convert', null, {});
-      // var _convert = new Convert({filename: response.filename});
-      // _convert.$save(function() {
-      //   $scope.successConvert = true;
-      // });
+      vm.userBot.path = response.path;
+      vm.userBot.filename = response.filename;
+      vm.userBot.originalFilename = response.originalFilename;
+
+      vm.userBot.fileuploaded = true;
 
       // Clear upload buttons
       $scope.cancelUpload();
