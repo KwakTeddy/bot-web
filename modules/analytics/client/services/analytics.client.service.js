@@ -58,3 +58,11 @@ angular.module('analytics').factory('Dialogs', ['$resource',
   }
 ]);
 
+angular.module('analytics').factory('DialogChildren', ['$resource',
+  function ($resource) {
+    return $resource('api/dialogchildren/:botId/:dialogId', {
+      botId: '@botId',
+      dialogId: '@dialogId'
+    }, {});
+  }
+]);

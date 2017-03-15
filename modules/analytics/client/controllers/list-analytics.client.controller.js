@@ -1,8 +1,8 @@
 'use strict';
 
 // Analytics controller
-angular.module('analytics').controller('AnalyticsListController', ['$scope', '$rootScope', '$stateParams', '$location', '$window', 'Authentication', 'AnalyticsService', 'DialogUsageService', 'DialogSuccessService', 'SessionSuccessService', 'DialogFailureService', 'Dialogs',
-  function ($scope, $rootScope, $stateParams, $location, $window, Authentication, AnalyticsService, DialogUsageService, DialogSuccessService, SessionSuccessService, DialogFailureService, Dialogs) {
+angular.module('analytics').controller('AnalyticsListController', ['$scope', '$rootScope', '$stateParams', '$location', '$window', 'Authentication', 'AnalyticsService', 'DialogUsageService', 'DialogSuccessService', 'SessionSuccessService', 'DialogFailureService', 'Dialogs','DialogChildren',
+  function ($scope, $rootScope, $stateParams, $location, $window, Authentication, AnalyticsService, DialogUsageService, DialogSuccessService, SessionSuccessService, DialogFailureService, Dialogs, DialogChildren) {
     $scope.authentication = Authentication;
     $scope.kind = "all";
     $scope.year = new Date().getFullYear();
@@ -119,15 +119,37 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
       });
     };
 
+    $scope.findChildren = function (dialogId, newDialog) {
+      var botId = $rootScope.botId;
+
+      var dialogs = DialogChildren.query({
+        botId: botId,
+        dialogId: dialogId
+      }, function() {
+        console.log(dialogs);
+        dialogs.forEach(function(obj, i) {
+          obj.idx = i;
+          obj.inputs = makeStr(obj.inputs);
+          obj.outputs = makeStr(obj.outputs);
+          obj.inputs.push({str:newDialog});
+        });
+        $scope.dialogs = dialogs;
+        $scope.selected = $scope.dialogs[0];
+
+        $('.modal-with-form').click();
+      });
+    };
+
     $scope.update = function (isValid) {
       $scope.error = null;
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'dialogForm');
         return false;
       }
-      var dialog = $scope.dialog;
-      dialog.inputs = unMake($scope.dialog.inputs);
-      dialog.outputs = unMake($scope.dialog.outputs);
+      var dialog = $scope.selected;
+      dialog.botId = $rootScope.botId;
+      dialog.inputs = unMake(dialog.inputs);
+      dialog.outputs = unMake(dialog.outputs);
       console.log(JSON.stringify((dialog)));
 
       Dialogs.update(dialog);

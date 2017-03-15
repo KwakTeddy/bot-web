@@ -189,7 +189,9 @@ exports.dialogFailureList = function (req, res) {
   else if (kind == 'month')
     cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth()+1, inOut: true}
   cond.fail = true;
-  cond.dialog = {$ne: null};
+  //TODO: change this to regexp
+  cond.dialog = {$ne: null, $nin: [":reset user", ":build csdemo reset"]};
+  cond.preDialogId = {$ne: 0};
 
   console.log(JSON.stringify(cond));
 
@@ -228,22 +230,22 @@ var searchDialog = function(dialogs, dialogId, action, res, data) {
 var findOne = function(o, res, data) {
   var dialog = {};
   dialog.name = o.name != undefined ? o.name : "dialog" + o.id;
-  dialog.inputs = (o.input);
-  dialog.outputs = (o.output);
+  dialog.inputs = o.input;
+  dialog.outputs = o.output;
 
   console.log(JSON.stringify(dialog));
   res.jsonp(dialog);
 };
 
-var findChildren = function(o, res, data) {
+var findChildren = function(object, res, data) {
   var dialogChildren = [];
 
-  obj.children.forEach(function() {
+  object.children.forEach(function(obj) {
     var dialog = {};
     dialog.dialogId = obj.id;
     dialog.name = obj.name != undefined ? obj.name : "dialog"+obj.id;
-    dialog.inputs = (obj.input);
-    dialog.outputs = (obj.output);
+    dialog.inputs = obj.input;
+    dialog.outputs = obj.output;
     dialogChildren.push(dialog);
   });
 
