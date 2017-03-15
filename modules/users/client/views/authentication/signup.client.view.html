@@ -63,17 +63,17 @@
             </p>
           </div>
 
-          <!--<div class="form-group mb-lg" ng-class="{ 'has-success': userForm.confirmPassword.$valid && submitted,-->
-          <!--'has-error': userForm.confirmPassword.$invalid && submitted }">-->
-          <!--<label>Confirm Password</label>-->
-          <!--<input type="password" name="confirmPassword" class="form-control input-lg" ng-model="credentials.confirmPassword"-->
-          <!--match="userForm.pwd"-->
-          <!--required/>-->
-          <!--<p class="help-block"-->
-          <!--ng-show="userForm.confirmPassword.$error.match && submitted">-->
-          <!--Passwords must match.-->
-          <!--</p>-->
-          <!--</div>-->
+          <div class="form-group mb-lg" ng-class="{ 'has-success': userForm.confirmPassword.$valid && submitted,
+          'has-error': userForm.confirmPassword.$invalid && submitted }">
+            <label>비밀번호 확인</label>
+            <input type="password" name="confirmPassword" class="form-control input-lg" ng-model="credentials.confirmPassword"
+              match="userForm.pwd"
+              required/>
+            <p class="help-block"
+              ng-show="userForm.confirmPassword.$error.match && submitted">
+              비밀번호가 일치하지 않았네요
+            </p>
+          </div>
 
             <div class="row form-group mb-lg" ng-class="{ 'has-success': userForm.agreeterms.$valid && submitted,
                                             'has-error': userForm.agreeterms.$invalid && submitted }">
