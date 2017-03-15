@@ -282,9 +282,10 @@ section {
   padding: 100px 0;
 }
 section h2.section-heading {
-  font-size: 40px;
+  font-size: 30px;
   margin-top: 0;
   margin-bottom: 15px;
+  font-weight: normal;
 }
 section h3.section-subheading {
   font-size: 16px;
@@ -741,7 +742,7 @@ body {
   webkit-tap-highlight-color: #fed136;
 }
 
-.section-heading {color: #333;}
-.service-heading {color: #333;}
-.section-subheading {color: #777777;}
-.text-muted {color: #777777;}
+.section-heading {color: #555;}
+.service-heading {color: #555;}
+.section-subheading {color: #777 !important;}
+.text-muted {color: #777 !important;}

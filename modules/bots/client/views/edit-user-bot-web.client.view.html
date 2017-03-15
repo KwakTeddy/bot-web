@@ -1,7 +1,7 @@
 <!--<section id="feature">-->
     <div id="editBot" class="container">
 
-        <div class="row text-left">
+        <div class="row text-left" style="margin-bottom: 100px;">
             <div class="bot-list" ng-show="vm.type == 'view'">
                 <div class="panel-body" >
 
@@ -18,21 +18,21 @@
                         </div>
                         <div style="width: 70%;display: block; float: left">
                             <div>
-                                <h4 style="float: left;">{{vm.userBot.name}} ({{vm.userBot.id}})</h4>
-                                <div style="float: right; padding-top: 8px">{{vm.userBot.user.username}} </div>
+                                <h4 style="float: left;color: #555;">{{vm.userBot.name}} ({{vm.userBot.id}})</h4>
+                                <div style="color: #888;float: right; padding-top: 8px">{{vm.userBot.user.username}} </div>
                             </div>
 
                             <div style="clear: both;">
                                 <div style="float: left;margin-bottom: 10px">
                                     <i class="fa fa-users" aria-hidden="true" style="color: #337ab7;margin-right: 3px;"></i><span>친구</span> {{vm.userBot.followed}}명
-                                    <i class="fa fa-comments-o" aria-hidden="true" style="color: #337ab7;margin-right: 5px;"></i><span>대화</span> 10억
+                                    <!--<i class="fa fa-comments-o" aria-hidden="true" style="color: #337ab7;margin-right: 5px;"></i><span>대화</span> 10억-->
                                 </div>
-                                <div style="float: right">
+                                <div style="color: #888; float: right">
                                     {{vm.userBot.created | date: 'yyyy-MM-dd'}}
                                 </div>
                             </div>
                             <div  style="clear: both;border-top: 1px solid lightgray; margin-top: 15px;padding-top: 5px;">
-                                <div style="font-weight: bold;">공유하기</div>
+                                <div style="color: #555;font-weight: bold;">공유하기</div>
                               <a href="javascript:shareFb()">
                                 <img src="/images/sns/social-facebook-icon.png" height="35" style="border-radius: 8px;"/>
                               </a>
@@ -71,10 +71,10 @@
                             <li  ng-repeat="comment in vm.comments" ng-show="comment['deleted'] == undefined"
                                 style="list-style: none; padding: 0px; margin: 0px;">
                                 <div>
-                                    <span style="font-size: 13px; font-weight: bold;">{{comment.user.username}}</span>
-                                    <span style="font-size: 13px; ">{{comment.user.created | date: 'medium'}}</span>
+                                    <span style="color: #777;font-size: 13px; font-weight: bold;">{{comment.user.username}}</span>
+                                    <span style="color: #888;font-size: 12px; ">{{comment.user.created | date: 'medium'}}</span>
                                 </div>
-                                <div style="color: #111;font-size: 14px;float:left;margin-right: 10px">{{comment.text}} </div>
+                                <div style="color: #555;font-size: 14px;float:left;margin-right: 10px">{{comment.text}} </div>
                                 <button class="btn btn-default btn-xs " ng-click="vm.removeComment(comment);">삭제</button>
                             </li>
                         </ul>
