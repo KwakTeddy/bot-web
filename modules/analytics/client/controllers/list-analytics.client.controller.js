@@ -152,12 +152,11 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$s
 
       var calcRate = function(list)
       {
-        var success = 0;
-        var fail = 0;
-        for (var i=0; i < list.length ; ++i) {
-          success += list[i].success_count;
-          fail += list[i].fail_count;
-        }
+        var success = 0, fail = 0;
+        list.forEach(function(obj) {
+          success += obj.success_count;
+          fail += obj.fail_count;
+        });
         return (success-fail) / success * 100.0;
       };
 
@@ -230,6 +229,7 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$s
         });
       }).apply(this, [jQuery]);
     };
+
     var drawLiquid = function(name, value, color)
     {
       $(name)[0].value = parseInt(value ,10);

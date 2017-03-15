@@ -25,8 +25,11 @@ module.exports = function (app) {
 
   // Setting the facebook oauth routes
   app.route('/api/auth/facebook').get(users.oauthCall('facebook', {
-    scope: ['email']
-  }));
+    scope: [
+        'pages_show_list',
+        'pages_messaging',
+        'manage_pages',
+  ]}));
   app.route('/api/auth/facebook/:callback').get(users.oauthCallback('facebook'));
 
   // Setting the twitter oauth routes

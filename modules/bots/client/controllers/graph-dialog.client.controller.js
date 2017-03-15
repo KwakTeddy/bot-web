@@ -41,7 +41,7 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
 // make nodes and links from dialogs
 
     var handleInput = function(input) {
-      if(typeof input == 'String') return input;
+      if(typeof input == 'string') return input;
       else if(input.types && input.types[0].name) {
         return '[타입] ' + input.types[0].name;
       } else if(input.if) {
@@ -49,10 +49,10 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
       } else {
         return input;
       }
-    }
+    };
 
     var handlePrintOutput = function(output) {
-      if (typeof output == 'String') return output;
+      if (typeof output == 'string') return output;
       else if(Array.isArray(output)) {
         var _output = '';
         for(var i = 0; i < output.length; i++) {
@@ -135,9 +135,8 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
     var text, line, text2, text3, line2, edgelabels;
 
     d3.json("/js/dialog.json2", function(data) {
-      var dialogs = [];
       console.log(data);
-      dialogs = data;
+      var dialogs = data;
 
       dialogs.forEach(handleDialog); // for-loop is 10 times faster
       dialogs.forEach(handleLink);
@@ -176,7 +175,7 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
           var output = (typeof d.output == 'string' ? d.output.replace(/(?:\r\n|\r|\n)/g, '<br />') : d.output);
           return "<strong>Input:</strong><br/><span style='color:cornflowerblue'>" + input + "</span><br/><br/>" +
             "<strong>Output:</strong><br/><span style='color:cornflowerblue'>" + output + "</span>";
-        })
+        });
       svg.call(tip);
 
 // Per-type markers, as they don't inherit styles.
@@ -220,7 +219,7 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
         .attr("ry", 5)
         .style('fill', '#DADAEB')
         .on('mouseover', tip.show)
-        .on('mouseout', tip.hide)
+        .on('mouseout', tip.hide);
 
 // add the text
       text = node.append("text")
@@ -315,20 +314,16 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
               if (Math.abs(y2-y1) < h+ h/2) {
                   if (x1 < x2) {
                       startx += w/2;
-                      endx -= w/2;
                   } else {
                       startx -= w/2;
-                      endx += w/2;
                   }
               }
               else
               {
                   if (y1 < y2) {
                       starty += h/2;
-                      endy -= h/2;
                   } else {
                       starty -= h/2;
-                      endy += h/2;
                   }
               }
               return {"x": startx, "y": starty };
@@ -344,20 +339,16 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
                   endy = y2;
               if (Math.abs(y2-y1) < h+ h/2) {
                   if (x1 < x2) {
-                      startx += w/2;
                       endx -= w/2;
                   } else {
-                      startx -= w/2;
                       endx += w/2;
                   }
               }
               else
               {
                   if (y1 < y2) {
-                      starty += h/2;
                       endy -= h/2;
                   } else {
-                      starty -= h/2;
                       endy += h/2;
                   }
               }
@@ -371,13 +362,9 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
     }
 
     function click(d) {
-        d3.event.stopPropagation();
-        var dcx = (window.innerWidth/2-d.x*zoom.scale());
-        var dcy = (window.innerHeight/2-d.y*zoom.scale());
-        zoom.translate([dcx,dcy]);
-        svg.transition().duration(700)
-            .attr("transform", "translate("+ dcx + "," + dcy  + ")scale(" + zoom.scale() + ")");
-
+        //d3.event.stopPropagation();
+        currentNode = d;
+        update();
     }
 
     function wrap(text, width, maxLine) {
@@ -430,7 +417,7 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
           .attr("rx", 5)
           .attr("ry", 5)
           .style('fill', 'black')
-          .style('opacity', '0.3')
+          .style('opacity', '0.3');
 
         setTimeout(function() {
           d3.select("#" + currentNode.name).remove();

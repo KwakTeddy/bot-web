@@ -17,7 +17,7 @@
                     <li role="presentation" ng-class="{active: vm.listType == 'followed'}"><a ui-sref="user-bots-web.list({listType: 'followed', query: ''})">친구봇</a></li>
                     <li role="presentation" ng-class="{active: vm.listType == 'my'}"><a ui-sref="user-bots-web.list({listType: 'my', query: ''})">마이봇</a></li>
                 </ul>
-                <form class="form-inline" ng-submit="vm.goFind();">
+                <form class="form-inline" ng-submit="vm.paging('find');">
                     <div class="form-group">
                         <input type="text" class="form-control" id="query" ng-model="vm.query" placeholder="찾을 봇 이름">
                     </div>

@@ -2,15 +2,15 @@
 
 // UserBots controller
 angular.module('user-bots').controller('UserBotController', ['$scope', '$rootScope', '$state', '$window','$timeout', '$stateParams',
-  'Authentication', 'userBotResolve', 'FileUploader', 'UserBotsService', 'UserBotCommentService', 'UserBotDialogService', 'UserBotsFollowService',
-  function ($scope, $rootScope, $state, $window, $timeout, $stateParams, Authentication, userBot, FileUploader, UserBotsService, UserBotCommentService, UserBotDialogService, UserBotsFollowService) {
+  'Authentication', 'userBotResolve', 'FileUploader', 'UserBotsService', 'UserBotCommentService', 'UserBotDialogService', 'UserBotsFollowService', '$http',
+  function ($scope, $rootScope, $state, $window, $timeout, $stateParams, Authentication, userBot, FileUploader, UserBotsService, UserBotCommentService, UserBotDialogService, UserBotsFollowService, $http) {
     var vm = this;
     vm.user = Authentication.user;
     vm.userBot = userBot;
     vm.userBot.public = true;
     vm.userId = $rootScope.userId;
 
-    vm.userBot.userFollow = UserBotsFollowService.list({userBot: vm.userBot, botUserId: vm.userId}, function(res) {
+    vm.userBot.userFollow = UserBotsFollowService.list({userBot: vm.userBot, botUserId: vm.user._id}, function(res) {
       if(res.length > 0) vm.userBot.userFollow = true;
       else vm.userBot.userFollow = undefined;
       // console.log(res);
@@ -30,7 +30,6 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
     };
 
     vm.followBot = function(userBot) {
-      console.log($rootScope);
       UserBotsFollowService.follow({botUserId: vm.user._id, userBot: userBot._id}, function(err, result) {
         vm.userBot.userFollow = true;
         // alert('친구로 추가 되었습니다.')
@@ -50,8 +49,15 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
       $rootScope.$broadcast('setUserBot', userBot);
     };
 
+    vm.connectFb = function () {
+      $http.get('http://graph.facebook.com/v2.5/me', function (err, data) {
+          console.log(data);
+      })
+    };
+
     // Create new UserBot
     vm.create = function (isValid) {
+      console.log(vm.userBot);
       $scope.error = null;
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'userBotForm');
@@ -59,6 +65,7 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
       }
 
       vm.userBot.$save(function (response) {
+        console.log(56);
         if($state.is('user-bots-web.create') || $state.is('user-bots-web.edit')) {
           $rootScope.$broadcast('setUserBot', vm.userBot);
 

@@ -54,7 +54,6 @@ var UserBotSchema = new Schema({
     type: Number,
     default: 0
   },
-
   user: {
     type: Schema.ObjectId,
     ref: 'User'
@@ -121,17 +120,12 @@ var UserBotFollowSchema = new Schema({
       type: Schema.ObjectId,
       ref: 'UserBot'
   },
-  botUser: [{
-      id: {
-          type: String
-      },
-      friend: {
-          type: Boolean,
-          default: false
-      }
-  }],
-  followed: {
+  botUserId: {
     type: String
+  },
+  followed: {
+    type: Boolean,
+    default: false
   },
   created: {
     type: Date,
