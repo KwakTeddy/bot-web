@@ -15,7 +15,7 @@ exports.messageGet =  function(req, res) {
   chat.getContext(req.params.bot, 'facebook', null, function(context) {
     console.log(req.query['hub.mode'] + ', ' + req.query['hub.verify_token'] + ',' + context.bot.facebook.VALIDATION_TOKEN );
     if (req.query['hub.mode'] === 'subscribe' &&
-      req.query['hub.verify_token'] === context.bot.VALIDATION_TOKEN) {
+      req.query['hub.verify_token'] === context.bot.facebook.VALIDATION_TOKEN) {
       console.log("Validating webhook");
       res.status(200).send(req.query['hub.challenge']);
     } else {

@@ -14,7 +14,7 @@ var path = require('path'),
     config = require(path.resolve('./config/config'));
 
 var smtpTransport = nodemailer.createTransport(config.mailer.options);
-
+var util = require('util'); //temporary
 // URLs for which user can't be redirected on signin
 var noReturnUrls = [
   '/authentication/signin',
@@ -197,6 +197,7 @@ exports.oauthCall = function (strategy, scope) {
     if (noReturnUrls.indexOf(req.query.redirect_to) === -1) {
       req.session.redirect_to = req.query.redirect_to;
     }
+    console.log(123132);
     // Authenticate
     passport.authenticate(strategy, scope)(req, res, next);
   };
@@ -207,6 +208,8 @@ exports.oauthCall = function (strategy, scope) {
  */
 exports.oauthCallback = function (strategy, scope) {
   return function (req, res, next) {
+      // console.log(util.inspect(req));
+      console.log(util.inspect(req));
     // Pop redirect URL from session
     var sessionRedirectURL = req.session.redirect_to;
     delete req.session.redirect_to;
