@@ -50,6 +50,7 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
     };
 
     vm.fbShare = function () {
+      console.log(vm.userBot);
       $scope.location = location.href;
       FB.ui({
           method: 'share',
@@ -57,7 +58,7 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
           href: $scope.location,
           title: vm.userBot.name,
           description: vm.userBot.description,
-          image: vm.userBot.imageFile,
+          image: location.protocol+'//'+location.hostname+'/'+vm.userBot.imageFile,
       }, function(response){
         console.log(response);
       });
