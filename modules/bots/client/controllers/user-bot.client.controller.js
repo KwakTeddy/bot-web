@@ -50,10 +50,11 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
     };
 
     vm.fbShare = function () {
+      $scope.location = location.href;
       FB.ui({
           method: 'share',
           display: 'popup',
-          href: 'https://dev.moneybrain.ai/userbot'
+          href: $scope.location
       }, function(response){
         console.log(response);
       });
