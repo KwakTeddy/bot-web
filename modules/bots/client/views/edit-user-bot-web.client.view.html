@@ -87,7 +87,7 @@
             <div class="bot-content" ng-show="vm.type == 'edit'">
 
                 <form name="userBotForm" class="form-horizontal form-bordered"
-                      novalidate="novalidate">
+                      novalidate="novalidate" ng-submit="vm.create(userBotForm.$valid)">
                     <div class="panel-body">
 
                         <div class="bot-list-header" ng-show="vm.state=='create'" style="border-bottom: 1px solid lightgray;">
@@ -112,11 +112,11 @@
                                        placeholder="영어(대문자)와 _의 조합, 추후 변경 불가"
                                        required
                                        aria-required="true" aria-invalid="false"
-                                       ng-disabled="vm.userBot._id">
+                                       ng-disabled="vm.userBot._id" >
                             </div>
-                            <!--<div ng-messages="userBotForm.id.$error" role="alert" class="col-sm-offset-3 col-sm-9">-->
-                                <!--<p class="help-block error-text" ng-message="required">아이디를 입력해주세요</p>-->
-                            <!--</div>-->
+                            <div ng-messages="userBotForm.id.$error" role="alert" class="col-sm-offset-3 col-sm-9">
+                                <p class="help-block error-text" ng-message="required">아이디를 입력해주세요</p>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">봇이름 <span class="required" aria-required="true">*</span></label>
@@ -125,13 +125,13 @@
                                        required=""
                                        aria-required="true" aria-invalid="false">
                             </div>
-                            <!--<div ng-messages="userBotForm.name.$error" role="alert" class="col-sm-offset-3 col-sm-9">-->
-                                <!--<p class="help-block error-text" ng-message="required">이름을 입력해주세요</p>-->
-                            <!--</div>-->
+                            <div ng-messages="userBotForm.name.$error" role="alert" class="col-sm-offset-3 col-sm-9">
+                                <p class="help-block error-text" ng-message="required">이름을 입력해주세요</p>
+                            </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">이미지 <span class="required" aria-required="true">*</span></label>
+                            <label class="col-sm-3 control-label">이미지</label>
                             <div class="col-sm-9">
                                 <img ng-src="{{imageURL}}" class="img-thumbnail user-profile-picture" style="display: none;">
                                 <div class="text-left" ng-hide="imageUploader.queue.length">
@@ -156,25 +156,28 @@
 
                                 <div class="radio" style="float:left; margin-right: 10px;">
                                     <label>
-                                        <input type="radio" name="type" id="type1" value="csv" checked="" ng-model="vm.userBot.type" >
+                                        <input type="radio" name="type" id="type1" value="csv" checked="" ng-model="vm.userBot.type" required>
                                         엑셀파일(csv)
                                     </label>
                                 </div>
                                 <div class="radio" style="float:left; margin-right: 10px;">
                                     <label>
-                                        <input type="radio" name="type" id="type2" value="kakao" ng-model="vm.userBot.type" >
+                                        <input type="radio" name="type" id="type2" value="kakao" ng-model="vm.userBot.type" required>
                                         카카오톡 파일
                                     </label>
                                 </div>
 
                                 <div class="radio" style="float:left; margin-right: 10px;">
                                     <label>
-                                        <input type="radio" name="type" id="type3" value="smi" ng-model="vm.userBot.type" >
+                                        <input type="radio" name="type" id="type3" value="smi" ng-model="vm.userBot.type" required>
                                         자막파일 (smi)
                                     </label>
                                 </div>
 
-                                <!--<input type="text" id="type" name="type" ng-model="vm.dialogset.type" class="form-control valid" required="" aria-required="true" aria-invalid="false">-->
+                                <!--<div ng-messages="userBotForm.type.$error" role="alert" class="col-sm-offset-3 col-sm-9">-->
+                                    <!--<p class="help-block error-text" ng-message="required">파일종류를 선택해주세요</p>-->
+                                <!--</div>-->
+
                             </div>
                         </div>
 
@@ -185,7 +188,7 @@
 
                                 <div class="text-left" ng-hide="uploader.queue.length" style="display: inline;">
                                       <span class="btn btn-default btn-file">
-                                          <input type="file" nv-file-select uploader="uploader" style="width:200px;">
+                                          <input type="file" nv-file-select uploader="uploader" style="width:200px;" required>
                                       </span>
                                 </div>
                                 <div class="text-center form-group" ng-show="false">
@@ -202,13 +205,10 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">설명 <span class="required" aria-required="true">*</span></label>
+                            <label class="col-sm-3 control-label">설명 </label>
                             <div class="col-sm-9">
                                 <textarea name="description" ng-model="vm.userBot.description" id="description" rows="5" class="form-control"
                                     placeholder="내용을 입력해주세요" aria-invalid="true"></textarea>
-                            </div>
-                            <div ng-messages="userBotForm.description.$error" role="alert" class="col-sm-offset-3 col-sm-9">
-                                <p class="help-block error-text" ng-message="required">설명을 입력해주세요</p>
                             </div>
                         </div>
 
@@ -256,7 +256,7 @@
                         <div class="row">
                             <div class="col-sm-12 text-center" ng-hide="vm.userBot && vm.userBot._id">
                                 <!--<button type="button" class="btn btn-primary" ng-click="vm.create(userBotForm.$valid)">생성</button>-->
-                                <button type="button" class="btn btn-primary" ng-click="vm.create(userBotForm.$valid)">만들기</button>
+                                <button type="submit" class="btn btn-primary" >만들기</button>
                                 <button type="button" class="btn btn-default" onclick="javascript:history.back();" >취소</button>
                             </div>
                             <div class="col-sm-12 text-center" ng-show="vm.userBot && vm.userBot._id">
@@ -280,7 +280,7 @@
 
             <div class="bot-content" ng-show="vm.type == 'learn'">
 
-                <form name="userBotForm" class="form-horizontal form-bordered"
+                <form name="userBotForm1" class="form-horizontal form-bordered"
                       novalidate="novalidate">
                     <div class="panel-body">
 
@@ -337,7 +337,7 @@
                                 <!--<button type="button" class="btn btn-default" onclick="javascript:history.back();" >취소</button>-->
                             <!--</div>-->
                             <div class="col-sm-12 text-center" ng-show="vm.userBot && vm.userBot._id">
-                                <a class="btn btn-primary" ng-click="vm.update(userBotForm.$valid)">
+                                <a class="btn btn-primary" ng-click="vm.update(userBotForm1.$valid)">
                                     <i class="glyphicon glyphicon-edit"></i> 수정
                                 </a>
                                 <a class="btn btn-danger" ng-click="vm.remove()">
@@ -356,7 +356,7 @@
 
             <div class="bot-content" ng-show="vm.type == 'connect'">
 
-                <form name="userBotForm" class="form-horizontal form-bordered"
+                <form name="userBotForm2" class="form-horizontal form-bordered"
                       novalidate="novalidate">
                     <div class="panel-body">
                         <div class="bot-list-header" ng-show="vm.state=='create'" style="border-bottom: 1px solid lightgray;">
@@ -469,7 +469,7 @@
                                 <!--<button type="button" class="btn btn-danger" ui-sref="user-bots.list({listType: 'my'})">챗봇목록</button>-->
                             <!--</div>-->
                             <div class="col-sm-12 text-center" ng-show="vm.userBot && vm.userBot._id">
-                                <a class="btn btn-primary" ng-click="vm.update(userBotForm.$valid)">
+                                <a class="btn btn-primary" ng-click="vm.update(userBotForm2.$valid)">
                                     <i class="glyphicon glyphicon-edit"></i> 수정
                                 </a>
                                 <a class="btn btn-danger" ng-click="vm.remove()">
