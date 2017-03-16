@@ -94,7 +94,8 @@
     "xlsx": "^0.8.0",
     "xml2js": "^0.4.17",
     "xmldom": "^0.1.22",
-    "xpath": "^0.0.23"
+    "xpath": "^0.0.23",
+    "yahoo-finance": "^0.2.16"
   },
   "devDependencies": {
     "coveralls": "^2.11.4",
