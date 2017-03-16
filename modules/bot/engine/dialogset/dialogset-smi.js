@@ -5,19 +5,17 @@ var fileutil = require(path.resolve('modules/bot/action/common/fileutil'));
 var mongoModule = require(path.resolve('modules/bot/action/common/mongo'));
 var utils = require(path.resolve('modules/bot/action/common/utils'));
 
-var baseDir = path.resolve('public/files/');
 
-function convertDialogset(filename, callback) {
-  var dir = baseDir;
-  var info = path.parse(path.join(dir, filename));
+function convertDialogset(filepath, dialogset, callback) {
+  var info = path.parse(filepath);
   var csvname = info.name + '.csv';
   var dlgname = info.name + '_dlg.csv';
 
-  convertFile(path.join(dir, filename), path.join(dir, csvname),
+  convertFile(filepath, path.join(info.dir, csvname),
     function(result) {
-      convertConversation(path.join(dir,csvname), path.join(dir, dlgname),
+      convertConversation(path.join(info.dir,csvname), path.join(info.dir, dlgname),
         function() {
-          insertDatasetFile(path.join(dir, dlgname),
+          insertDatasetFile(path.join(info.dir, dlgname), dialogset,
             function(result) {
               callback();
             });
@@ -159,7 +157,7 @@ function convertConversation(file, outfile, callback) {
 
 exports.convertConversation = convertConversation;
 
-function insertDatasetFile(infile, callback) {
+function insertDatasetFile(infile, dialogset, callback) {
   var info = path.parse(infile);
 
   fileutil.streamLineSequence(infile, function(result, line, cb) {
@@ -187,7 +185,7 @@ function insertDatasetFile(infile, callback) {
 
             var task = {
               doc:{
-                dialogset: info.name,
+                dialogset: dialogset,
                 id: result.toString(),
                 tag: [],
                 input: _input,

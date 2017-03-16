@@ -1,10 +1,8 @@
 var path = require('path');
 var mongo = require(path.resolve('./modules/bot/action/common/mongo'));
 var bot = require(path.resolve('config/lib/bot')).getBot('athena');
-var google = require('googleapis');
 var util = require('util');
 var async = require('async');
-const base64url = require('base64url');
 // var googleAuth = require('google-auth-library');
 
 function api (data) {

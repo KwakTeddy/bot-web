@@ -16,17 +16,21 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
 
 
 function convertDialogset1(dialogset, callback) {
-  var dialogType = 'kakao';
+  var dialogType = dialogset.type;
 
-  var info = path.parse(dialogset.filename);
-  if(info.ext == '.txt') {dialogType = 'kakao';}
-  else if(info.ext == '.csv') {dialogType = 'kakao';}
-  else if(info.ext == '.smi') {dialogType = 'smi';}
+  if(!dialogType) {
+    var info = path.parse(dialogset.originalFilename);
+    if(info.ext == '.csv') {dialogType = 'csv';}
+    else if(info.ext == '.smi') {dialogType = 'smi';}
+  }
 
   var dir = path.resolve('public/files/');
-  insertDatasetFile1(path.join(dir, dialogset.filename), function() {
-    callback();
-  }, dialogset);
+  var filepath = path.join(dir, dialogset.filename);
+  if(dialogType == 'csv') insertDatasetFile1(filepath, dialogset, callback);
+  if(dialogType == 'kakao') dialogsetKakao.convertDialogset(filepath, dialogset, callback);
+  else if(dialogType == 'smi') dialogsetSmi.convertDialogset(filepath, dialogset, callback);
+  // else if(dialogType == 'kdrama') dialogsetKdrama.convertDialogset(original, callback);
+
 }
 
 exports.convertDialogset1 = convertDialogset1;
@@ -103,7 +107,7 @@ function insertDailogsetDialog(dialogset, countId, input, output, callback) {
 
 }
 
-function insertDatasetFile1(infile, callback, dialogset) {
+function insertDatasetFile1(infile, dialogset, callback) {
   var input, output, count = 0;
 
   fileutil.streamLineSequence(infile, function(result, line, cb) {

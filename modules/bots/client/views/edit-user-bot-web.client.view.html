@@ -151,6 +151,34 @@
 
 
                         <div class="form-group">
+                            <label class="col-sm-3 control-label">Type <span class="required" aria-required="true">*</span></label>
+                            <div class="col-sm-9">
+
+                                <div class="radio" style="float:left; margin-right: 10px;">
+                                    <label>
+                                        <input type="radio" name="type" id="type1" value="csv" checked="" ng-model="vm.userBot.type" >
+                                        엑셀파일(csv)
+                                    </label>
+                                </div>
+                                <div class="radio" style="float:left; margin-right: 10px;">
+                                    <label>
+                                        <input type="radio" name="type" id="type2" value="kakao" ng-model="vm.userBot.type" >
+                                        카카오톡 파일
+                                    </label>
+                                </div>
+
+                                <div class="radio" style="float:left; margin-right: 10px;">
+                                    <label>
+                                        <input type="radio" name="type" id="type3" value="smi" ng-model="vm.userBot.type" >
+                                        자막파일 (smi)
+                                    </label>
+                                </div>
+
+                                <!--<input type="text" id="type" name="type" ng-model="vm.dialogset.type" class="form-control valid" required="" aria-required="true" aria-invalid="false">-->
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label class="col-sm-3 control-label">대화파일 <span class="required" aria-required="true">*</span></label>
 
                             <div class="col-sm-9">

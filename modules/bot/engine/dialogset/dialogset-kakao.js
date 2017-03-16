@@ -8,18 +8,17 @@ var mongoModule = require(path.resolve('modules/bot/action/common/mongo.js'));
 
 var baseDir = path.resolve('public/files/');
 
-function convertDialogset(filename, callback) {
-  var dir = baseDir;
-  var info = path.parse(path.join(dir, filename));
+function convertDialogset(filepath, dialogset, callback) {
+  var info = path.parse(filepath);
   var csvname = info.name + '.csv';
   var dlgname = info.name + '_dlg.csv';
 
   if(info.ext == '.txt') {
-    convertFile(path.join(dir, filename), path.join(dir, csvname),
+    convertFile(filepath, path.join(info.dir, csvname),
       function(result) {
         convertConversation(path.join(dir,csvname), path.join(dir, dlgname),
           function() {
-            insertDatasetFile(path.join(dir, dlgname),
+            insertDatasetFile(path.join(dir, dlgname), dialogset,
               function(result) {
                 callback(info.name + '_dlg');
               });
@@ -27,9 +26,9 @@ function convertDialogset(filename, callback) {
       });
 
   } else if(info.ext == '.csv') {
-    convertConversation(path.join(dir,csvname), path.join(dir, dlgname),
+    convertConversation(filepath, path.join(info.dir, dlgname),
       function() {
-        insertDatasetFile(path.join(dir, dlgname),
+        insertDatasetFile(path.join(info.dir, dlgname), dialogset,
           function(result) {
             // console.log('convertFile: ' + filename);
             callback(info.name + '_dlg');
@@ -235,7 +234,7 @@ function convertConversation(file, outfile, callback) {
 
 exports.convertConversation = convertConversation;
 
-function insertDatasetFile(infile, callback) {
+function insertDatasetFile(infile, dialogset, callback) {
   var info = path.parse(infile);
 
   fileutil.streamLineSequence(infile, function(result, line, cb) {
@@ -261,7 +260,7 @@ function insertDatasetFile(infile, callback) {
 
             var task = {
               doc:{
-                dialogset: info.name,
+                dialogset: dialogset,
                 id: result.toString(),
                 tag: [],
                 inputRaw: input,
