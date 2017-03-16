@@ -27,7 +27,7 @@ function convertDialogset1(dialogset, callback) {
   var dir = path.resolve('public/files/');
   var filepath = path.join(dir, dialogset.filename);
   if(dialogType == 'csv') insertDatasetFile1(filepath, dialogset, callback);
-  if(dialogType == 'kakao') dialogsetKakao.convertDialogset(filepath, dialogset, callback);
+  else if(dialogType == 'kakao') dialogsetKakao.convertDialogset(filepath, dialogset, callback);
   else if(dialogType == 'smi') dialogsetSmi.convertDialogset(filepath, dialogset, callback);
   // else if(dialogType == 'kdrama') dialogsetKdrama.convertDialogset(original, callback);
 
@@ -106,6 +106,8 @@ function insertDailogsetDialog(dialogset, countId, input, output, callback) {
   }
 
 }
+
+exports.insertDailogsetDialog = insertDailogsetDialog;
 
 function insertDatasetFile1(infile, dialogset, callback) {
   var input, output, count = 0;
