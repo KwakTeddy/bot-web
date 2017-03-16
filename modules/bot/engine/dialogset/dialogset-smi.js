@@ -173,7 +173,7 @@ function insertDatasetFile(infile, dialogset, callback) {
 
         console.log(input + ' '+ output);
 
-        // if(array[3] == '강지윤') {
+        // if(/*array[3] == '강지윤'*/ true) {
           var outputs = [];
           var re2 = /\[([^\]]*)\]/g;
           output.replace(re2, function(match, p1) {

@@ -17,9 +17,9 @@ function convertDialogset(filepath, dialogset, callback) {
   if(info.ext == '.txt') {
     convertFile(filepath, path.join(info.dir, csvname),
       function(result) {
-        convertConversation(path.join(dir,csvname), path.join(dir, dlgname),
+        convertConversation(path.join(info.dir,csvname), path.join(info.dir, dlgname),
           function() {
-            insertDatasetFile(path.join(dir, dlgname), dialogset,
+            insertDatasetFile(path.join(info.dir, dlgname), dialogset,
               function(result) {
                 callback(info.name + '_dlg');
               });
@@ -48,7 +48,7 @@ function convertFile(infile, outfile, callback) {
   var datetime = "", character = "", sentence = "";
 
   var addDialog = function() {
-    if(character != "" && sentence != "") {
+    if(character != "" && sentence != "" && sentence.length < 200) {
       var str = '"' + datetime.replace(/"/g, "\"\"") + '","' + character.replace(/"/g, "\"\"") + '","' + sentence.replace(/"/g, "\"\"") + '"\n';
       fs.appendFileSync(outfile, str, 'utf8');
       lineNum++;
@@ -249,7 +249,7 @@ function insertDatasetFile(infile, dialogset, callback) {
         input = array[2].trim();
         output = array[4].trim();
 
-        if(array[3] == '강지윤') {
+        if(/*array[3] == '강지윤'*/ true) {
           var outputs = [];
           var re2 = /\[([^\]]*)\]/g;
           output.replace(re2, function(match, p1) {

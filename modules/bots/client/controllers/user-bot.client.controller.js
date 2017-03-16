@@ -287,7 +287,7 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
       name: 'fileFilter',
       fn: function (item, options) {
         var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
-        return '|txt|csv|'.indexOf(type) !== -1;
+        return '|plain|txt|csv|'.indexOf(type) !== -1;
       }
     });
 
