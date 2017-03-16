@@ -48,30 +48,25 @@ exports.create = function (req, res) {
       });
 
       dialogset.user = req.user;
-
       dialogset.save(function(err) {
         if (err) {
           callback(err);
         } else {
-          dialogsetModule.convertDialogset1(dialogset, function(result) {
-            userBot.dialogsets = [dialogset];
-            userBot.save(function(err) {
-              if(console.log(err));
-            })
+          // global._userbots[userBot.id].dialogsets = [dialogset._id];
 
-            console.log(dialogset.filename + ' converted');
-          })
+          userBot.dialogsets = [dialogset._id];
+          userBot.save(function(err) {
+            if(console.log(err));
+            dialogsetModule.convertDialogset1(dialogset, function(result) {
+              console.log(dialogset.filename + ' converted');
+            })
+          });
         }
+
+        res.json(userBot);
       });
 
-      res.json(userBot);
 
-      // dialogsetModule.convertDialogset(userBot.dialogFile, function(result) {
-      //   userBot.dialogset = result;
-      //   userBot.save(function(err) {
-      //     if(console.log(err));
-      //   })
-      // });
     }
   });
 };
@@ -102,10 +97,9 @@ exports.read = function (req, res) {
  * Update a userBot
  */
 exports.update = function (req, res) {
+
   var userBot = req.userBot;
   userBot = _.extend(userBot , req.body);
-
-  userBot.user = req.user;
 
   userBot.save(function (err) {
     if (err) {
@@ -113,32 +107,65 @@ exports.update = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(userBot);
 
-      dialogsetModule .convertDialogset(userBot.dialogFile, function(result) {
-        userBot.dialogset = result;
-        userBot.save(function(err) {
-          if(console.log(err));
-        })
-      });
+      if(req.body.fileuploaded) {
+        var dialogset = new Dialogset({
+          title: req.body.originalFilename,
+          type: req.body.type,
+          path: req.body.path,
+          filename: req.body.filename,
+          originalFilename: req.body.originalFilename,
+          language: 'en',
+          content: ''
+        });
+
+        dialogset.user = req.user;
+
+        dialogset.save(function(err) {
+          if (err) {
+            callback(err);
+          } else {
+            if(global._userbots[userBot.id])
+              global._userbots[userBot.id].dialogsets = [dialogset._id];
+
+            userBot.save(function(err) {
+              if(console.log(err));
+              dialogsetModule.convertDialogset1(dialogset, function(result) {
+                console.log(dialogset.filename + ' converted');
+              });
+            })
+
+          }
+
+          res.json(userBot);
+        });
+      } else {
+        res.json(userBot);
+      }
     }
   });
 
-  // dialogset.convertDialogset(userBot.dialogFile, function(result) {
-  //   // res.json({result: 'ok'});
-  //   userBot.dialogset = result;
+
+  // var userBot = req.userBot;
+  // userBot = _.extend(userBot , req.body);
   //
-  //   userBot.save(function (err) {
-  //     if (err) {
-  //       return res.status(400).send({
-  //         message: errorHandler.getErrorMessage(err)
-  //       });
-  //     } else {
-  //       // userBotLib.buildUserBot(userBot.id);
-  //       // userBotLib.loadUserBot(userBot.id);
-  //       res.json(userBot);
-  //     }
-  //   });
+  // userBot.user = req.user;
+  //
+  // userBot.save(function (err) {
+  //   if (err) {
+  //     return res.status(400).send({
+  //       message: errorHandler.getErrorMessage(err)
+  //     });
+  //   } else {
+  //     res.json(userBot);
+  //
+  //     dialogsetModule .convertDialogset(userBot.dialogFile, function(result) {
+  //       userBot.dialogset = result;
+  //       userBot.save(function(err) {
+  //         if(console.log(err));
+  //       })
+  //     });
+  //   }
   // });
 
 };
