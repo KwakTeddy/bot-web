@@ -4,12 +4,11 @@
  * Module dependencies.
  */
 var passport = require('passport');
-const util = require('util');
-
+const util = require('util'); //temporary
 module.exports = function (app) {
   // User Routes
   var users = require('../controllers/users.server.controller');
-
+  var googletask = require('../../../../custom_modules/athena/googletask');
   // Setting up the users password api
   app.route('/api/auth/forgot').post(users.forgot);
   app.route('/api/auth/reset/:token/:from').get(users.validateResetToken);
@@ -45,10 +44,39 @@ module.exports = function (app) {
     scope: [
       'https://www.googleapis.com/auth/userinfo.profile',
       'https://www.googleapis.com/auth/userinfo.email',
-      'https://www.googleapis.com/auth/plus.login'
+      'https://www.googleapis.com/auth/plus.login',
+      'https://mail.google.com'
     ]
   }));
   app.route('/api/auth/google/:callback').get(users.oauthCallback('google'));
+
+  app.route('/api/auth/gmail/callback').get(function (err, data){
+    // console.log(util.inspect(data));
+    googletask.api(data);
+  });
+  // app.route('/api/auth/gmail').get(users.oauthCall('google', {
+  //   scope: [
+  //     'https://www.googleapis.com/auth/userinfo.profile',
+  //     'https://www.googleapis.com/auth/userinfo.email',
+  //     'https://mail.google.com'
+  //   ]
+  // }));
+  // app.route('/api/auth/gmail/callback').get(users.oauthCallback('google'));
+
+  // function (err, data) {
+  //   console.log(util.inspect(data.req.query.code));
+  //   return data.req.query.code;
+  //   var authCode = data.req.query.code;
+  //   var data1 = {
+  //     code : authCode,
+  //   client_id : '567723322080-uopbt6mrcntsqn79hr8j260t5sbsui8n.apps.googleusercontent.com',
+  //   client_secret :'6MOFtpKbkGeKLFdLUf0Ffwtp',
+  //   redirect_uri : 'http://localhost:8443/api/auth/gmail/anothercallback',
+  //   grant_type : 'authorization_code'
+  //   };
+  //
+  // })
+  // https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A%2F%2Fmail.google.com&state=state_parameter_passthrough_value&redirect_uri=http%3A%2F%2Flocalhost%3A8443%2Fapi%2Fauth%2Fgmail%2Fcallback&access_type=offline&response_type=code&client_id=567723322080-uopbt6mrcntsqn79hr8j260t5sbsui8n.apps.googleusercontent.com
 
   // Setting the linkedin oauth routes
   app.route('/api/auth/linkedin').get(users.oauthCall('linkedin', {

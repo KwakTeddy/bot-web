@@ -28,24 +28,14 @@
 
   <!--kakao DIY-->
   <div name='kakao' ng-show="(channel == 'kakao') && (method !== 'easy')">
-    <p>DIY</p>
-    <p>Create and teach a conversational bot for 카카오 Messenger.</p>
-    <p>After you design and test your API.AI agent, you can launch your Messenger bot</p>
-    <p>After you design and test your API.AI agent, you can launch your Messenger bot</p>
-    <p>After you design and test your API.AI agent, you can launch your Messenger bot</p>
-    <p>After you design and test your API.AI agent, you can launch your Messenger bot</p>
-    <p>After you design and test your API.AI agent, you can launch your Messenger bot</p>
+    <p>1. 카카오 옐로아이디를 만들어요(<a href="https://yellowid.kakao.com/login">https://yellowid.kakao.com/login</a>)!</p>
+    <p>2. 옐로아이디 프로필을 만들고 심사를 기다려요(5일 이내 소요)!</p>
+    <p>3. 심사된 프로필로 옐로아이디 페이지 자동응답 탭으로 들어가요</p>
+    <p>4. API 자동응답 설정하기로 들어가요</p>
+    <p>5. 앱 이름, URL, 설명, 전화번호를 설정해요. 이 때 URL을 아래의 URL로 설정해야돼요!</p>
     <div class="form-group mb-lg">
-      <label>Callback URL</label>
-      <input type="text" class="form-control input-lg">
-    </div>
-    <div class="form-group mb-lg">
-      <label>인증 토큰</label>
-      <input type="text" class="form-control input-lg">
-    </div>
-    <div class="form-group mb-lg">
-      <label>Page Access Token</label>
-      <input type="text" class="form-control input-lg">
+      <label>Webhook URL</label>
+      <input type="text" class="form-control input-lg" ng-disabled= 1 placeholder="https://bot.moneybrain.ai/kakao/{{userBotId}}">
     </div>
   </div>
 
@@ -74,16 +64,21 @@
 
   <!--facebook DIY-->
   <div name='facebook' ng-show="(channel == 'facebook') && (method !== 'easy')">
-    <div id = 'FbConnect'>
-
-    </div>
-    <p>DIY</p>
-    <p>Create and teach a conversational bot for Facebook Messenger.</p>
-    <p>After you design and test your API.AI agent, you can launch your Messenger bot</p>
-    <p>After you design and test your API.AI agent, you can launch your Messenger bot</p>
-    <p>After you design and test your API.AI agent, you can launch your Messenger bot</p>
-    <p>After you design and test your API.AI agent, you can launch your Messenger bot</p>
-    <p>After you design and test your API.AI agent, you can launch your Messenger bot</p>
+    <table class="table table-hover">
+      <tr ng-repeat = "pageList in pageList">
+        <td>
+          <a href="{{pageList.link}}" target="_blank">
+            <img src="{{pageList.picture.data.url}}" alt="facebook page img">
+            {{pageList.name}}
+          </a>
+          <span>
+            <button class="btn btn-primary pull-right" ng-click="connect(pageList.access_token)">
+              연결해요
+            </button>
+          </span>
+        </td>
+      </tr>
+    </table>
   </div>
 
   <!--line-->
@@ -111,28 +106,35 @@
 
   <!--line DIY-->
   <div name='line' ng-show="(channel == 'line') && (method !== 'easy')">
-    <p>DIY</p>
-    <p>Create and teach a conversational bot for 라 Messenger.</p>
-    <p>After you design and test your API.AI agent, you can launch your Messenger bot</p>
-    <p>After you design and test your API.AI agent, you can launch your Messenger bot</p>
-    <p>After you design and test your API.AI agent, you can launch your Messenger bot</p>
-    <p>After you design and test your API.AI agent, you can launch your Messenger bot</p>
-    <p>After you design and test your API.AI agent, you can launch your Messenger bot</p>
+    <p>LINE회원이어야해요 LINE 앱 또는 웹으로 회원가입해요</p>
+    <p>가입이 됐다면 <a href="https://business.line.me/ko/">LINE Business Center</a>에서 사용할 이메일을 등록해요</p>
+    <p>서비스 탭에서 Messaging API 시작하기 버튼을 누르고 정보를 입력해요</p>
+    <p><a href="https://admin-official.line.me/">LINE Manager</a>에서 API 켜기 버튼을 누르고 Webhook 사용을 허용하고 저장해요</p>
+    <p><a href="https://business.line.me/ko/">LINE Business Center</a>에서 계정 목록 탭으로 이동해요</p>
+    <p>Messaging API에 있는 LINE Developers 버튼을 눌러요</p>
+    <p>Channel ID와 Channel Secret을 복사해 아래 빈칸에 넣어요</p>
+    <p>ISSUE 버튼을 눌러 Channel access token을 발급받고 아래 빈칸에 넣어요</p>
+    <p>EDIT 버튼을 눌러 Webhook URL을 아래의 Webhook URL을 복사해 넣고 저장 및 확인해요</p>
+    <p>다 끝났습니다! 연결해요 버튼을 눌러줘요</p>
+    <!--<div class="form-group mb-lg">-->
+      <!--<label>Channel ID</label>-->
+      <!--<input type="text" class="form-control input-lg">-->
+    <!--</div>-->
+    <!--<div class="form-group mb-lg">-->
+      <!--<label>Channel Secret</label>-->
+      <!--<input type="text" class="form-control input-lg">-->
+    <!--</div>-->
+    <!--<div class="form-group mb-lg">-->
+      <!--<label>Channel Access Token</label>-->
+      <!--<input type="text" class="form-control input-lg">-->
+    <!--</div>-->
     <div class="form-group mb-lg">
-      <label>Callback URL</label>
-      <input type="text" class="form-control input-lg">
-    </div>
-    <div class="form-group mb-lg">
-      <label>인증 토큰</label>
-      <input type="text" class="form-control input-lg">
-    </div>
-    <div class="form-group mb-lg">
-      <label>Page Access Token</label>
-      <input type="text" class="form-control input-lg">
+      <label>Webhook URL</label>
+      <input type="text" class="form-control input-lg" ng-disabled= 1 placeholder="https://bot.moneybrain.ai/line/{{userBotId}}">
     </div>
   </div>
 </div>
 <div class="modal-footer">
-  <button class = "btn btn-primary" ng-click="connect()" >연결해요</button>
+  <button class = "btn btn-primary" ng-click="connect()" ng-hide="(channel == 'facebook') && (method !== 'easy')">연결해요</button>
   <button class = "btn btn-primary" ng-click="close()" >취소할게요</button>
 </div>

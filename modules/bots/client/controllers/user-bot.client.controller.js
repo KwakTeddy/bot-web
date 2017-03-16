@@ -49,10 +49,14 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
       $rootScope.$broadcast('setUserBot', userBot);
     };
 
-    vm.connectFb = function () {
-      $http.get('http://graph.facebook.com/v2.5/me', function (err, data) {
-          console.log(data);
-      })
+    vm.fbShare = function () {
+      FB.ui({
+          method: 'share',
+          display: 'popup',
+          href: 'https://dev.moneybrain.ai/userbot'
+      }, function(response){
+        console.log(response);
+      });
     };
 
     // Create new UserBot
@@ -85,7 +89,7 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
     vm.remove = function () {
       if (vm.userBot && vm.userBot._id) {
         vm.userBot.$remove(function () {
-          $state.go('user-bots.list');
+          $state.go('user-bots-web.list', {listType: 'my'});
         }, function (errorResponse) {
           $scope.error = errorResponse.data.message;
         });
@@ -102,7 +106,7 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
 
       if(vm.userBot && vm.userBot._id) {
         vm.userBot.$update(function () {
-          $state.go('user-bots.list');
+          $state.go('user-bots-web.list', {listType: 'my'});
         }, function (errorResponse) {
           $scope.error = errorResponse.data.message;
         });
@@ -113,17 +117,24 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
     vm.modal = function (channel, method) {
       $scope.channel = channel;
       $scope.method = method;
-      $scope.close = function () {
-        modalInstance.dismiss();
-      };
+      $scope.userBotId = vm.userBot._id
+
       if ((channel == 'facebook') && (method !== 'easy')){
-        $http.get('https://graph.facebook.com/me/', function (response) {
-        // $http.get('https://graph.facebook.com/me/accounts?fields=picture,name,link,access_token', function (response) {
+        FB.api('/me/accounts?fields=picture,name,link,access_token', function(response) {
           console.log(response);
+          $scope.pageList = [];
+          $scope.pageList = response.data;
         });
       }
-      $scope.connect = function () {
-
+      $scope.close = function () {
+          modalInstance.dismiss();
+      };
+      $scope.connect = function (page) {
+        modalInstance.dismiss();
+        console.log(page);
+        FB.api('me/subscribed_apps?access_token='+ page, 'post', function (response) {
+            console.log(response)
+        })
       };
       var modalInstance = $uibModal.open({
           templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',
@@ -287,7 +298,7 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
       name: 'fileFilter',
       fn: function (item, options) {
         var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
-        return '|txt|csv|'.indexOf(type) !== -1;
+        return '|plain|txt|csv|'.indexOf(type) !== -1;
       }
     });
 

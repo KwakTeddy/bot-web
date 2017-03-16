@@ -1,15 +1,19 @@
 <!doctype html>
 <html lang="en">
 <head ng-controller="UserBotHeaderController">
+    <title>플레이챗 PlayChat - 1분만에 만드는 인공지능 챗봇 머니브레인 MoneyBrain Inc</title>
+
+    <meta name="keywords" content="챗봇 Chatbot 봇 Bot 인공지능 AI 딥러닝 Deep Learning"/>
+    <meta name="description" content="카카오톡 KakaoTalk 페이스북 Facebook 라인 Line Messenger NLP 자연어처리 NLU 자연어 이해 대화관리 Dialog Management 딥러닝 Deep Learning 인텐트 Intent 엔터티 Entity">
+    <meta name="author" content="머니브레인 MoneyBrain">
+
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="플레이챗 PlayChat" />
+    <meta property="og:description"   content="1분만에 만드는 인공지능 챗봇 머니브레인 MoneyBrain Inc" />
+    <meta property="og:url"   content= "www.playchat.ai"/>
+
     <base href="/">
     <meta charset="utf-8">
-    <meta property="og:type"          content="website" />
-    <meta property="og:title"         content="Your Website Title" />
-    <meta property="og:description"   content="Your description" />
-    <meta property="og:url"   content= $scope.wow/>
-
-
-  <title>머니브레인 아테나 챗봇 - MoneyBrian ATHENA</title>
 
     <link href="/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="/vendor/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css">
@@ -319,25 +323,6 @@
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
 </script>
-<script>
-  function shareFb() {
-    FB.ui({
-      method: 'share',
-      display: 'popup',
-      href: 'https://dev.moneybrain.ai'
-    }, function(response){});
-  }
-  function connectFb() {
-    FB.api('/me/accounts?fields=picture,name,link,access_token', function(response) {
-      document.getElementById('FbConnect').append(response.data[0].name);
-
-//      FB.api('/me/subscribed_apps?access_token='+ response.data[0].access_token, function (res) {
-//      console.log(JSON.stringify(res));
-//      })
-    });
-  }
-</script>
-
 <!--kakao-->
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script type='text/javascript'>

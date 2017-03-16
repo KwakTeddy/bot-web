@@ -197,7 +197,6 @@ exports.oauthCall = function (strategy, scope) {
     if (noReturnUrls.indexOf(req.query.redirect_to) === -1) {
       req.session.redirect_to = req.query.redirect_to;
     }
-    console.log(123132);
     // Authenticate
     passport.authenticate(strategy, scope)(req, res, next);
   };
@@ -208,8 +207,6 @@ exports.oauthCall = function (strategy, scope) {
  */
 exports.oauthCallback = function (strategy, scope) {
   return function (req, res, next) {
-      // console.log(util.inspect(req));
-      console.log(util.inspect(req));
     // Pop redirect URL from session
     var sessionRedirectURL = req.session.redirect_to;
     delete req.session.redirect_to;
@@ -227,7 +224,7 @@ exports.oauthCallback = function (strategy, scope) {
         }
         console.log(redirectURL.redirect_to);
         console.log(sessionRedirectURL);
-        return res.redirect(redirectURL.redirect_to || sessionRedirectURL || '/');
+        return res.redirect(redirectURL.redirect_to || sessionRedirectURL || '/userbot');
       });
     })(req, res, next);
   };

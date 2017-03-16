@@ -197,11 +197,12 @@ function appRun($rootScope, $state, Authentication) {
             $state.go('user-bots-web.authentication.signin').then(function () {
                 storePreviousState(toState, toParams);
             });
-          } else {
-            $state.go('authentication.signin').then(function () {
-                storePreviousState(toState, toParams);
-            });
           }
+          // else {
+          //   $state.go('authentication.signin').then(function () {
+          //       storePreviousState(toState, toParams);
+          //   });
+          // }
         }
       }
     }
