@@ -319,25 +319,6 @@
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
 </script>
-<script>
-  function shareFb() {
-    FB.ui({
-      method: 'share',
-      display: 'popup',
-      href: 'https://dev.moneybrain.ai'
-    }, function(response){});
-  }
-  function connectFb() {
-    FB.api('/me/accounts?fields=picture,name,link,access_token', function(response) {
-      document.getElementById('FbConnect').append(response.data[0].name);
-
-//      FB.api('/me/subscribed_apps?access_token='+ response.data[0].access_token, function (res) {
-//      console.log(JSON.stringify(res));
-//      })
-    });
-  }
-</script>
-
 <!--kakao-->
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script type='text/javascript'>

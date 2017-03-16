@@ -18,7 +18,7 @@
                         </div>
                         <div style="width: 70%;display: block; float: left">
                             <div>
-                                <h4 style="float: left;color: #555;">{{vm.userBot.name}} ({{vm.userBot.id}})</h4>
+                                <h4 style="float: left;color: #555;">{{vm.userBot.name}} ({{vm.userBot._id}})</h4>
                                 <div style="color: #888;float: right; padding-top: 8px">{{vm.userBot.user.username}} </div>
                             </div>
 
@@ -33,7 +33,7 @@
                             </div>
                             <div  style="clear: both;border-top: 1px solid lightgray; margin-top: 15px;padding-top: 5px;">
                                 <div style="color: #555;font-weight: bold;display: inline-block;">공유하기</div>
-                              <a href="javascript:shareFb()">
+                              <a href="javascript:shareFb()" ng-click="vm.fbShare()">
                                 <img src="/images/sns/social-facebook-icon.png" height="35" style="border-radius: 8px;"/>
                               </a>
                               <a href="javascript:shareStory()">
@@ -415,7 +415,6 @@
                                         <div class="caption">
                                             <p style="text-align: center;">페이스북 메신져</p>
                                             <p><a href="#" class="btn btn-default" role="button" ng-click="vm.modal('facebook')">메신져봇 생성</a></p>
-                                            <!--<p><a href="#" class="btn btn-default" role="button" ng-click="vm.modal('facebook')" onclick="javascript:connectFb();">메신져봇 생성</a></p>-->
                                         </div>
                                     </div>
                                 </div>

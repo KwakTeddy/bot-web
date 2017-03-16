@@ -227,7 +227,7 @@ exports.oauthCallback = function (strategy, scope) {
         }
         console.log(redirectURL.redirect_to);
         console.log(sessionRedirectURL);
-        return res.redirect(redirectURL.redirect_to || sessionRedirectURL || '/');
+        return res.redirect(redirectURL.redirect_to || sessionRedirectURL || '/userbot');
       });
     })(req, res, next);
   };
