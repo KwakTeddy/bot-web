@@ -2,8 +2,8 @@
 
 // UserBots controller
 angular.module('user-bots').controller('UserBotController', ['$scope', '$rootScope', '$state', '$window','$timeout', '$stateParams',
-  'Authentication', 'userBotResolve', 'FileUploader', 'UserBotsService', 'UserBotCommentService', 'UserBotDialogService', 'UserBotsFollowService', '$http',
-  function ($scope, $rootScope, $state, $window, $timeout, $stateParams, Authentication, userBot, FileUploader, UserBotsService, UserBotCommentService, UserBotDialogService, UserBotsFollowService, $http) {
+  'Authentication', 'userBotResolve', 'FileUploader', 'UserBotsService', 'UserBotCommentService', 'UserBotDialogService', 'UserBotsFollowService', '$http', '$uibModal',
+  function ($scope, $rootScope, $state, $window, $timeout, $stateParams, Authentication, userBot, FileUploader, UserBotsService, UserBotCommentService, UserBotDialogService, UserBotsFollowService, $http, $uibModal) {
     var vm = this;
     vm.user = Authentication.user;
     vm.userBot = userBot;
@@ -58,6 +58,7 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
     // Create new UserBot
     vm.create = function (isValid) {
       console.log(vm.userBot);
+      console.log(isValid);
       $scope.error = null;
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'userBotForm');
@@ -106,6 +107,31 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
           $scope.error = errorResponse.data.message;
         });
       }
+    };
+
+    // Connect UserBot Dialogue
+    vm.modal = function (channel, method) {
+      $scope.channel = channel;
+      $scope.method = method;
+      $scope.close = function () {
+        modalInstance.dismiss();
+      };
+      if ((channel == 'facebook') && (method !== 'easy')){
+        $http.get('https://graph.facebook.com/me/', function (response) {
+        // $http.get('https://graph.facebook.com/me/accounts?fields=picture,name,link,access_token', function (response) {
+          console.log(response);
+        });
+      }
+      $scope.connect = function () {
+
+      };
+      var modalInstance = $uibModal.open({
+          templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',
+          scope: $scope
+      });
+      modalInstance.result.then(function (response) {
+        console.log(response);
+      })
     };
 
     /********************* dialog *********************/
