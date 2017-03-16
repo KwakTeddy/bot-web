@@ -45,7 +45,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       // console.log('out:' + message);
 
       // if(message.startsWith(':log') && !$state.is('home')) return;
-        console.log(message.lastIndexOf(':log'));
+      //   console.log(message.lastIndexOf(':log'));
 
       if(message.lastIndexOf(':log') == 0) {
         if(!$state.is('home') && !$state.is('user-bots.context-analytics') &&
