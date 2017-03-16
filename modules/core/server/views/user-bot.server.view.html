@@ -96,7 +96,7 @@
                             <ul class="list-unstyled">
                                 <li class="divider"></li>
                                 <li>
-                                    <a role="menuitem" tabindex="-1" ng-click="$state.go('user-bots-web.settings.password')"><i class="fa fa-user"></i> 비밀번호 변경</a>
+                                    <a role="menuitem" tabindex="-1" href="#" ng-click="$state.go('user-bots-web.settings.password')"><i class="fa fa-user"></i> 비밀번호 변경</a>
                                 </li>
                                 <li>
                                     <a role="menuitem" tabindex="-1" href="/api/auth/signout?path=/userbot" target="_self"><i class="fa fa-power-off"></i> 로그아웃</a>
@@ -329,11 +329,11 @@
   }
   function connectFb() {
     FB.api('/me/accounts?fields=picture,name,link,access_token', function(response) {
-      console.log(JSON.stringify(response.data[0].access_token));
-      document.getElementById('fbPage').append(response.data[0].name);
-      FB.api('/me/subscribed_apps?access_token='+ response.data[0].access_token, function (res) {
-      console.log(JSON.stringify(res));
-      })
+      document.getElementById('FbConnect').append(response.data[0].name);
+
+//      FB.api('/me/subscribed_apps?access_token='+ response.data[0].access_token, function (res) {
+//      console.log(JSON.stringify(res));
+//      })
     });
   }
 </script>
