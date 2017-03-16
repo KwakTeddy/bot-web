@@ -59,6 +59,7 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
           title: vm.userBot.name,
           description: vm.userBot.description,
           image: location.protocol+'//'+location.hostname+'/'+vm.userBot.imageFile,
+          picture: location.protocol+'//'+location.hostname+'/'+ vm.userBot.imageFile,
       }, function(response){
         console.log(response);
       });
