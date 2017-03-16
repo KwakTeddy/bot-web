@@ -24,4 +24,20 @@ navertask.newscrawl
 메일:
 <메일
 {action: googletask.gmailapi}
->완료
+>if(!(context.user.google_accesstoken)) {call:'등록'}
+>if(context.user.google_accesstoken) #item#+index+. +sendman+\n+title+\n#
+    <{types: [{name: 'mail', listName: 'item', typeCheck: 'listTypeCheck'}]}
+    > +mail.sendman+\n\n+mail.title+\n\n+mail.snippet+
+
+등록:
+<false
+>아래 링크에서 액세스를 수락해주세요.\nhttps:\/\/accounts.google.com\/o\/oauth2\/v2\/auth?scope=https%3A%2F%2Fmail.google.com%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&state=+userId+&redirect_uri=http%3A%2F%2Flocalhost%3A8443%2Fapi%2Fauth%2Fgmail%2Fcallback&access_type=offline&response_type=code&client_id=567723322080-uopbt6mrcntsqn79hr8j260t5sbsui8n.apps.googleusercontent.com
+
+캘린더:
+<일정
+{action: googletask.calendarapi}
+>if(!(context.user.google_accesstoken)) {call:'등록'}
+>if(context.user.google_accesstoken) #item#+index+. +summary+\n#
+    <{types: [{name: 'calendar', listName: 'item', typeCheck: 'listTypeCheck'}]}
+    {action: googletask.eventapi}
+    >완료

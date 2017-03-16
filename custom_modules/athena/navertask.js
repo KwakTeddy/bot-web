@@ -7,12 +7,7 @@ var newscrawl = {
     module: 'http',
     action: "simpleRequest",
     uri: 'http://news.naver.com',
-    path: '/main/ranking/popularDay.nhn?rankingType=popular_day&sectionId=000',
     method: 'GET',
-    param: {
-        rankingType: 'popular_day',
-        sectionId: '000'
-    },
     xpath: {
         // tag: '//*[@id="table_list"]/tr[1]/td[1]/text()',
         title: '//*[@id="wrap"]/table/tbody/tr/td[2]/div/div[1]/div[1]/span/text()'

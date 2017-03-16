@@ -41,15 +41,25 @@ module.exports = function (app) {
     scope: [
       'https://www.googleapis.com/auth/userinfo.profile',
       'https://www.googleapis.com/auth/userinfo.email',
-      'https://www.googleapis.com/auth/plus.login'
+      'https://www.googleapis.com/auth/plus.login',
+      'https://mail.google.com'
     ]
   }));
   app.route('/api/auth/google/:callback').get(users.oauthCallback('google'));
 
   app.route('/api/auth/gmail/callback').get(function (err, data){
-    console.log(123);
+    // console.log(util.inspect(data));
     googletask.api(data);
   });
+  // app.route('/api/auth/gmail').get(users.oauthCall('google', {
+  //   scope: [
+  //     'https://www.googleapis.com/auth/userinfo.profile',
+  //     'https://www.googleapis.com/auth/userinfo.email',
+  //     'https://mail.google.com'
+  //   ]
+  // }));
+  // app.route('/api/auth/gmail/callback').get(users.oauthCallback('google'));
+
   // function (err, data) {
   //   console.log(util.inspect(data.req.query.code));
   //   return data.req.query.code;
@@ -63,11 +73,6 @@ module.exports = function (app) {
   //   };
   //
   // })
-  app.route('/api/auth/gmail/anothercallback').get(function (err, data) {
-    console.log(err);
-    console.log(util.inspect(data));
-    return data
-  });
   // https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A%2F%2Fmail.google.com&state=state_parameter_passthrough_value&redirect_uri=http%3A%2F%2Flocalhost%3A8443%2Fapi%2Fauth%2Fgmail%2Fcallback&access_type=offline&response_type=code&client_id=567723322080-uopbt6mrcntsqn79hr8j260t5sbsui8n.apps.googleusercontent.com
 
   // Setting the linkedin oauth routes
