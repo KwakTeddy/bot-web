@@ -20,14 +20,28 @@ function factsTypeCheck(text, format, inDoc, context, callback) {
   }
 
   var edge = context.botUser.sentenceInfo.verbToken.text;
+  var edges = [{link: edge}];
+  if(edge == '지' || edge == '야') edges.push({link: '이다'});
+
+  var query = {botUser: {$ne: null}};
+  if(edges.length == 1) query = edges[0];
+  else {
+    query = {$or: []};
+    for(var i = 0; i < edges.length; i++) {
+      query.$or.push(edges[i]);
+    }
+  }
+
+  query['botUser'] = {$ne: null};
 
   var model = mongoModule.getModel('factlink', undefined);
-  model.find({link: edge, botUser: {$ne: null}}, null, {sort: {created: -1}}, function(err, docs) {
+  model.find(query, null, {sort: {created: -1}}, function(err, docs) {
     if(docs && docs.length > 0) {
       var _node1 = docs[0]._doc.node1;
       var _node2 = docs[0]._doc.node2;
       var _link = docs[0]._doc.link;
 
+      if(_node1 == '나' || _node1 == '내') _node1 = '고객님은';
       inDoc._output = _node1 + ' ' + _node2 + ' ' + _link;
 
       toneModule.toneSentence(inDoc._output, context.botUser.tone || '해요체', function(out) {

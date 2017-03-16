@@ -23,3 +23,16 @@ angular.module('bots').factory('BotsService', ['$resource',
         }
       });
     }]);
+
+angular.module('bots').factory('Dialogs', ['$resource',
+  function ($resource) {
+    return $resource('api/dialog/:botId/:dialogId', {
+      botId: '@botId',
+      dialogId: '@dialogId'
+    }, {
+      update: {
+        method: 'PUT'
+      }
+    });
+  }
+]);

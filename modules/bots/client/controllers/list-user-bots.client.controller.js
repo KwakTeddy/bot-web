@@ -10,6 +10,9 @@ angular.module('user-bots').controller('UserBotListController', ['$scope', '$roo
     var vm = this;
     vm.authentication = Authentication;
     vm.userBots = userBots;
+    console.log(userBots);
+    console.log(vm.userBots.length);
+    // vm.userBots = userBots;
 
     // if(_platform == 'mobile') {
     //   if($stateParams['listType'] == 'popular') vm.listTypeName = '최신봇';
@@ -22,18 +25,27 @@ angular.module('user-bots').controller('UserBotListController', ['$scope', '$roo
     // if(vm.listType == undefined) vm.listType = 'recent';
     vm.currentPage = 1;
     vm.perPage = 6;
-    vm.paging = function () {
-      $http.post('/api/user-bots/list', {currentPage : vm.currentPage, perPage : vm.perPage, listType : vm.listType, userId : vm.authentication.user._id}).success(function (response) {
+    vm.paging = function (find) {
+      if(find){
+        vm.userBots = [];
+        vm.currentPage = 0;
+        console.log('find');
+      }
+      var url = '';
+      if(vm.listType == 'followed') {
+        url = '/api/user-bots/follow';
+      }else {
+        url = '/api/user-bots/list';
+      }
+      $http.post(url, {currentPage : vm.currentPage, perPage : vm.perPage, listType : vm.listType, botUserId : vm.authentication.user._id, query : vm.query}).success(function (response) {
           vm.currentPage = vm.currentPage + 1;
           if(!response.length) {
               vm.pagingEnd = true;
           } else {
-              vm.userBots.push.apply(vm.userBots, response);
+            vm.userBots.push.apply(vm.userBots, response);
           }
-          console.log(response);
-          console.log(vm.userBots);
       }).error(function (reponse) {
-
+        console.log(reponse);
       })
     };
 
@@ -55,7 +67,13 @@ angular.module('user-bots').controller('UserBotListController', ['$scope', '$roo
     };
 
     vm.goFind = function() {
-      $state.go('user-bots-web.list', {query: vm.query, listType: ''});
+      var url = '';
+      if(vm.listType == 'followed') {
+          url = '/api/user-bots/follow';
+      }else {
+          url = '/api/user-bots/list';
+      }
+      $state.go('user-bots-web.list', {query: vm.query, listType: vm.listType});
     };
 
     angular.forEach(vm.userBots, function (userBot) {

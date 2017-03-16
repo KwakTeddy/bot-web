@@ -2,15 +2,15 @@
 
 // UserBots controller
 angular.module('user-bots').controller('UserBotController', ['$scope', '$rootScope', '$state', '$window','$timeout', '$stateParams',
-  'Authentication', 'userBotResolve', 'FileUploader', 'UserBotsService', 'UserBotCommentService', 'UserBotDialogService', 'UserBotsFollowService',
-  function ($scope, $rootScope, $state, $window, $timeout, $stateParams, Authentication, userBot, FileUploader, UserBotsService, UserBotCommentService, UserBotDialogService, UserBotsFollowService) {
+  'Authentication', 'userBotResolve', 'FileUploader', 'UserBotsService', 'UserBotCommentService', 'UserBotDialogService', 'UserBotsFollowService', '$http', '$uibModal',
+  function ($scope, $rootScope, $state, $window, $timeout, $stateParams, Authentication, userBot, FileUploader, UserBotsService, UserBotCommentService, UserBotDialogService, UserBotsFollowService, $http, $uibModal) {
     var vm = this;
     vm.user = Authentication.user;
     vm.userBot = userBot;
     vm.userBot.public = true;
     vm.userId = $rootScope.userId;
 
-    vm.userBot.userFollow = UserBotsFollowService.list({userBot: vm.userBot, botUserId: vm.userId}, function(res) {
+    vm.userBot.userFollow = UserBotsFollowService.list({userBot: vm.userBot, botUserId: vm.user._id}, function(res) {
       if(res.length > 0) vm.userBot.userFollow = true;
       else vm.userBot.userFollow = undefined;
       // console.log(res);
@@ -30,7 +30,6 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
     };
 
     vm.followBot = function(userBot) {
-      console.log($rootScope);
       UserBotsFollowService.follow({botUserId: vm.user._id, userBot: userBot._id}, function(err, result) {
         vm.userBot.userFollow = true;
         // alert('친구로 추가 되었습니다.')
@@ -50,8 +49,16 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
       $rootScope.$broadcast('setUserBot', userBot);
     };
 
+    vm.connectFb = function () {
+      $http.get('http://graph.facebook.com/v2.5/me', function (err, data) {
+          console.log(data);
+      })
+    };
+
     // Create new UserBot
     vm.create = function (isValid) {
+      console.log(vm.userBot);
+      console.log(isValid);
       $scope.error = null;
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'userBotForm');
@@ -100,6 +107,31 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
           $scope.error = errorResponse.data.message;
         });
       }
+    };
+
+    // Connect UserBot Dialogue
+    vm.modal = function (channel, method) {
+      $scope.channel = channel;
+      $scope.method = method;
+      $scope.close = function () {
+        modalInstance.dismiss();
+      };
+      if ((channel == 'facebook') && (method !== 'easy')){
+        $http.get('https://graph.facebook.com/me/', function (response) {
+        // $http.get('https://graph.facebook.com/me/accounts?fields=picture,name,link,access_token', function (response) {
+          console.log(response);
+        });
+      }
+      $scope.connect = function () {
+
+      };
+      var modalInstance = $uibModal.open({
+          templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',
+          scope: $scope
+      });
+      modalInstance.result.then(function (response) {
+        console.log(response);
+      })
     };
 
     /********************* dialog *********************/
@@ -245,7 +277,8 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
 
     // Create file uploader instance
     $scope.uploader = new FileUploader({
-      url: '/api/user-bots/dataset-files',
+      // url: '/api/user-bots/dataset-files',
+      url: '/api/dialogsets/uploadfile',
       alias: 'uploadFile',
       autoUpload: true
     });
@@ -279,13 +312,13 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
       // Show success message
       $scope.success = true;
 
-      vm.userBot.dialogFile = response.filename;
+      // vm.userBot.dialogFile = response.filename;
 
-      // var Convert = $resource('/api/user-bots/convert', null, {});
-      // var _convert = new Convert({filename: response.filename});
-      // _convert.$save(function() {
-      //   $scope.successConvert = true;
-      // });
+      vm.userBot.path = response.path;
+      vm.userBot.filename = response.filename;
+      vm.userBot.originalFilename = response.originalFilename;
+
+      vm.userBot.fileuploaded = true;
 
       // Clear upload buttons
       $scope.cancelUpload();

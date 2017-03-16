@@ -116,7 +116,7 @@ angular.module('core').controller('UserHomeController', ['$scope', '$document', 
     Socket.on('send_msg', function (message) {
       console.log('out:' + message);
 
-      if(message.startsWith(':log')) return;
+      if(!message.lastIndexOf(':log')) return;
 
       var idx = message.indexOf('url: ');
       var url;

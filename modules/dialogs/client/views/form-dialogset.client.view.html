@@ -103,9 +103,9 @@
           <button type="button" class="btn btn-danger" ui-sref="dialogsets.list">취소</button>
         </div>
         <div class="col-sm-12 text-center" ng-show="vm.dialogset && vm.dialogset._id">
-          <a class="btn btn-primary" ng-click="vm.save(form.$valid)">
+          <button class="btn btn-primary" type="submit" >
             <i class="glyphicon glyphicon-edit"></i> 수정
-          </a>
+          </button>
           <a class="btn btn-danger" ng-click="vm.remove()">
             <i class="glyphicon glyphicon-trash"></i> 삭제
           </a>

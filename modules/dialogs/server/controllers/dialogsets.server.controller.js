@@ -66,6 +66,20 @@ exports.update = function(req, res) {
       });
     } else {
       res.jsonp(dialogset);
+
+      if(dialogset.fileuploaded) {
+        // DialogsetDialog.remove({dialogset: dialogset._id}, function(err, num) {
+        // fs.unlink(path.join(dialogset.path, dialogset.filename), function (err) {
+        //   if (err) throw err;
+
+            dialogsetModule.convertDialogset1(dialogset, function(result) {
+              console.log(dialogset.filename + ' converted');
+            });
+
+            console.log('successfully deleted: ' + dialogset.filename);
+        //   });
+        // });
+      }
     }
   });
 };

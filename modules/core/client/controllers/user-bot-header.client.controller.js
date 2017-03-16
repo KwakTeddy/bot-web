@@ -6,6 +6,8 @@ angular.module('core').controller('UserBotHeaderController', ['$scope', '$state'
     $scope.$state = $state;
     $scope.authentication = Authentication;
     $scope.currentUrl = $location.absUrl();
+    $scope.wow = 123;
+    console.log($scope.wow);
 
   }
 ]);

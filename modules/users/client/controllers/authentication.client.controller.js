@@ -82,7 +82,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         // If successful we assign the response to the global user model
         $scope.authentication.user = response;
 
-        if($state.previous && $state.previous.href && $state.previous.href.startsWith('/userbot')) {
+        if($state.previous && $state.previous.href && !$state.previous.href.lastIndexOf('/userbot')) {
           userbotHeader.style.display = 'block';
           userbotChat.style.display = 'block';
         }

@@ -15,19 +15,19 @@ exports.invokeRolesPolicies = function () {
   acl.allow([{
     roles: ['admin'],
     allows: [{
-      resources: ['/api/user-count/:kind/:arg','/api/dialog-usage/:kind/:arg', '/api/dialog-success/:kind/:arg', '/api/session-success/:kind/:arg', '/api/dialog-failure/:kind/:arg'],
+      resources: ['/api/user-count/:kind/:arg','/api/dialog-usage/:kind/:arg', '/api/dialog-success/:kind/:arg', '/api/session-success/:kind/:arg', '/api/dialog-failure/:kind/:arg', '/api/dialog/:bId/:dialogId', '/api/dialogchildren/:bId/:dialogId'],
       permissions: '*'
     }]
   }, {
     roles: ['user'],
     allows: [{
-      resources: ['/api/user-count/:kind/:arg','/api/dialog-usage/:kind/:arg', '/api/dialog-success/:kind/:arg', '/api/session-success/:kind/:arg', '/api/dialog-failure/:kind/:arg'],
+      resources: ['/api/user-count/:kind/:arg','/api/dialog-usage/:kind/:arg', '/api/dialog-success/:kind/:arg', '/api/session-success/:kind/:arg', '/api/dialog-failure/:kind/:arg', '/api/dialog/:bId/:dialogId', '/api/dialogchildren/:bId/:dialogId'],
       permissions: '*'
     }]
   }, {
     roles: ['guest'],
     allows: [{
-      resources: ['/api/user-count/:kind/:arg','/api/dialog-usage/:kind/:arg', '/api/dialog-success/:kind/:arg', '/api/session-success/:kind/:arg', '/api/dialog-failure/:kind/:arg'],
+      resources: ['/api/user-count/:kind/:arg','/api/dialog-usage/:kind/:arg', '/api/dialog-success/:kind/:arg', '/api/session-success/:kind/:arg', '/api/dialog-failure/:kind/:arg', '/api/dialog/:bId/:dialogId', '/api/dialogchildren/:bId/:dialogId'],
       permissions: []
     }]
   }]);

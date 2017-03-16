@@ -14,7 +14,7 @@ var path = require('path'),
     config = require(path.resolve('./config/config'));
 
 var smtpTransport = nodemailer.createTransport(config.mailer.options);
-
+var util = require('util'); //temporary
 // URLs for which user can't be redirected on signin
 var noReturnUrls = [
   '/authentication/signin',
@@ -207,14 +207,12 @@ exports.oauthCall = function (strategy, scope) {
  */
 exports.oauthCallback = function (strategy, scope) {
   return function (req, res, next) {
-      console.log(req);
     // Pop redirect URL from session
     var sessionRedirectURL = req.session.redirect_to;
     delete req.session.redirect_to;
 
     passport.authenticate(strategy, scope, function (err, user, redirectURL) {
       if (err) {
-          console.log(err);
         return res.redirect('/authentication/signin?err=' + encodeURIComponent(errorHandler.getErrorMessage(err)));
       }
       if (!user) {
@@ -231,16 +229,6 @@ exports.oauthCallback = function (strategy, scope) {
     })(req, res, next);
   };
 };
-
-// Gmail Oauth
-exports.gmailOauth = function (strategy, scope) {
-    return function (req, res, next) {
-        console.log(req);
-
-
-    }
-
-}
 
 /**
  * Helper function to save or update a OAuth user profile

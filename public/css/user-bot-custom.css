@@ -47,19 +47,19 @@ a.active {
 
 
 .container {
-    width: 1000px;
+    width: 1100px;
 }
 #mainNav {
-	background-color: #0c1532;	
+	background-color: white;
 	padding: 10px 0;
     border-bottom: 0px;
 }
 
 #mainNav a{
-	color: white;	
+	color: #555;
 	font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
     text-transform: uppercase;
-    font-weight: 400;
+    font-weight: bold;
     letter-spacing: 1px;
     text-transform: none;
 }
@@ -68,25 +68,25 @@ a.active {
 #mainNav .profile-info {margin-right: 8px;}
 
 #mainNav .open a {
-    color: #7d7d7d;
+    color: #555;
 }
 
 #mainNav .profile-info span {
-    color: white;
+    color: #555;
     text-transform: none;
 }
 
 #mainNav .open .profile-info span {
-    color: black;
+    color: #555;
     text-transform: none;
 }
 
-#mainNav .custom-caret {color: white};
-#mainNav .open .custom-caret {color: black};
+#mainNav .custom-caret {color: #555}
+#mainNav .open .custom-caret {color: #555}
 
 
 #mainNav .userbox .open .dropdown-menu a {
-    color: #7d7d7d;
+    color: #555;
 }
 
 .navbar-default .navbar-nav>.active>a {
@@ -95,13 +95,21 @@ a.active {
 }
 
 .navbar-brand {
-	padding: 10px 15px 15px 15px;
+	padding: 0px 15px 0px 15px;
+    margin-top: -8px;
+
 }
 
 
 header {
-    background-image: url('/images/star.jpg');
+    background-image: url('/images/star1.png');
+    background-color: rgba(104,174,224, 0.30);
+    background-blend-mode: overlay;
 }
+/*
+background-color: rgba(0,0,0, 0.50);
+*/
+/*background-color: hsla(0,0%,100%,0.70);*/
 
 
 header .intro-text {
@@ -158,10 +166,10 @@ header .intro-text .intro-in {
  * */
 .footer-3 {
   font-size: 14px;
-  padding-top: 65px;
-  padding-bottom: 65px;
-  background: #0c1532;
-  color: #bdc3c7;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background: #032147;          /*#003b59 #595657 #5CB7E7 #0088CC*/
+  color: white;
 }
 .footer-3.v-center,
 .footer-3 .v-center {
@@ -274,7 +282,7 @@ header .intro-text .intro-in {
 }
 
 section {
-  padding: 50px 0 20px 0;
+  padding: 50px 0 50px 0;
 }
 
 .section-subheading {
@@ -288,6 +296,15 @@ section .create {
     padding-top: 0px;
 }
 
+.feature-icon {
+  vertical-align: top;
+    margin-top: 10px;
+
+}
+
+.feature-text {
+    display: inline-block;
+}
 
 
 .container .userbot {
@@ -335,7 +352,7 @@ section .create {
     margin-top: 20px;
     margin-bottom: 20px;
     /*padding: 10px;*/
-    width: 620px;
+    width: 720px;
     /* padding: 10px; */
     /*background: white;*/
     /*border: 1px solid lightgray;*/
@@ -397,6 +414,7 @@ section .create {
     font-size: 16px;
     font-weight: 500;
     text-align: left;
+    color: #555;
 }
 
 .bot-list .bot-desc{
@@ -414,7 +432,7 @@ section .create {
 
 .bot-list .bot-info {
     font-size: 13px;
-    color: #777;
+    color: #666;
 }
 .bot-list .bot-info span {
     font-weight: bold;
@@ -436,83 +454,15 @@ section .create {
     font-size: 14px;
 }
 
-.bot-list2-header {
-    width: 620px;
-    padding: 0px;
-    margin-left: -12px;
-}
-
-.bot-list2-header .nav {display: inline-block;}
-.bot-list2-header .form-inline {float: right;}
-.bot-list2-header .nav a {
-    color: #777;
-    font-size: 16px;
-    padding-left: 20px;
-    padding-right: 20px;
-}
-
-.bot-list2{
-    margin-top: 5px;
+.bot-content {
+    margin-top: 20px;
     margin-bottom: 20px;
-    padding: 10px;
-    width: 620px;
+    /*padding: 10px;*/
+    width: 720px;
     /* padding: 10px; */
-    background: white;
-    border: 1px solid lightgray;
-    border-radius: 10px;
-}
-
-.bot-list2 .thumbnail {
-    border: 0px;
-    background: none;
-}
-
-.bot-list2 .thumbnail img {
-    max-height: 80px;
-    max-width: 80px;
-    border-radius: 50%;
-    height: 150px;
-    display: block;
-}
-
-.bot-list2 .caption{
-    text-align: center;
-}
-
-.bot-list2 .col-md-3 {
-    width: 25%;
-    float: left;
-}
-
-.bot-list2 .col-md-3 {
-    padding-right: 5px;
-    padding-left: 5px;
-}
-
-.bot-list2 .bot-title {
-    margin: 2px 0 2px;
-    padding-bottom: 2px;
-    display: inline-block;
-    font-size: 16px;
-    font-weight: 500;
-    text-align: center;
-}
-
-.bot-list2 .bot-desc{
-    height: 60px;
-    line-height: 1.1;
-    /*white-space: pre-line;*/
-
-    /*white-space: nowrap;*/
-    overflow: hidden;
-    /*text-overflow: ellipsis;*/
-
-    color: #777;
-    text-align: left;
-}
-
-.bot-list2 .bot-buttons {
-    margin: 0px;
+    /*background: white;*/
+    /*border: 1px solid lightgray;*/
+    /*border-radius: 10px;*/
 }
 
 
@@ -552,7 +502,7 @@ section .create {
 
 .chat-container-add {
     position: absolute;
-    top: 1400px;
+    top: 1000px;
 }
 
 .chat-body {
@@ -816,4 +766,59 @@ section#screenshot {
 
 #editBot .panel-body {
     min-height: 500px;
+}
+
+
+.sign-in-facebook {
+    background: url('/modules/users/client/img/buttons/facebook.png') #f2f2f2;
+    background-position: -5px -5px;
+    background-repeat: no-repeat;
+    background-size: 50px 50px;
+    padding-left: 50px;
+    color: #000;
+}
+
+.sign-in-facebook:hover {
+    background: url('/modules/users/client/img/buttons/facebook.png') #e0e0e0;
+    background-position: -5px -5px;
+    background-repeat: no-repeat;
+    background-size: 50px 50px;
+    padding-left: 50px;
+    color: #000;
+}
+
+
+.sign-in-google {
+    background: url('/modules/users/client/img/buttons/google.png') #f2f2f2;
+    background-position: -5px -5px;
+    background-repeat: no-repeat;
+    background-size: 50px 50px;
+    padding-left: 50px;
+    color: #000;
+}
+.sign-in-google:hover {
+    background: url('/modules/users/client/img/buttons/google.png') #e0e0e0;
+    background-position: -5px -5px;
+    background-repeat: no-repeat;
+    background-size: 50px 50px;
+    padding-left: 50px;
+    color: #000;
+}
+
+.sign-in-kakao {
+    background: url('/modules/users/client/img/buttons/kakao.png') #f2f2f2;
+    background-position: -5px -5px;
+    background-repeat: no-repeat;
+    background-size: 50px 50px;
+    padding-left: 50px;
+    color: #000;
+}
+
+.sign-in-kakao:hover {
+    background: url('/modules/users/client/img/buttons/kakao.png') #e0e0e0;
+    background-position: -5px -5px;
+    background-repeat: no-repeat;
+    background-size: 50px 50px;
+    padding-left: 50px;
+    color: #000;
 }

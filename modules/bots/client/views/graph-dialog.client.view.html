@@ -125,8 +125,57 @@
 </header>
 
 
-<!--<div class="col-md-6">-->
-<section id="canvas" class="panel" >
+<div id="control" ng-controller="GraphDialogController" class="test-body">
+  <a class="modal-with-form btn btn-default" style="display:none" href="#modalForm">Open Form</a>
 
-</section>
-<!--</div>-->
+  <!-- Modal Form -->
+  <div id="modalForm" class="modal-block modal-block-primary mfp-hide">
+    <section class="panel">
+      <header class="panel-heading">
+        <h2 class="panel-title">다이얼로그 수정</h2>
+      </header>
+      <form name="dialogForm" class="form-horizontal" novalidate="novalidate">
+        <div class="panel-body">
+          <div class="form-group">
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-9">
+              <p>{{dialog.name}}</p>
+            </div>
+            <label class="col-sm-2 control-label">질문 <span class="required" aria-required="true">*</span></label>
+            <div class="col-sm-9">
+              <div class="input-group input-group-icon" ng-repeat="input in dialog.inputs">
+                <input type="text" class="form-control mb-xs" ng-model="input.str" placeholder="질문을 입력해주세요">
+              </div>
+              <button type="button" ng-click="addInput()" class="mb-xs mr-xs btn btn-sm btn-info"><i class="glyphicon glyphicon-plus"></i> 질문추가</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">답변 <span class="required" aria-required="true">*</span></label>
+            <div class="col-sm-9">
+              <div class="input-group input-group-icon" ng-repeat="output in dialog.outputs">
+                <input type="text" id="output" name="output" ng-model="output.str" class="form-control valid mb-xs" placeholder="답변을 입력해주세요" required="" aria-required="true" aria-invalid="false">
+              </div>
+              <button type="button" ng-click="addOutput()" class="mb-xs mr-xs btn btn-sm btn-info"><i class="glyphicon glyphicon-plus"></i> 답변추가</button>
+            </div>
+          </div>
+        </div>
+        <footer class="panel-footer">
+          <div class="row">
+            <div class="col-md-12 text-right">
+              <button class="btn btn-primary modal-confirm" ng-click="update(dialogForm.$valid)" >저장</button>
+              <button class="btn btn-default modal-dismiss">취소</button>
+            </div>
+          </div>
+        </footer>
+      </form>
+    </section>
+  </div>
+  <!--<div class="col-md-6">-->
+  <section id="canvas" class="panel" >
+
+  </section>
+  <!--</div>-->
+</div>
+
+<script src="/vendor/pnotify/pnotify.custom.js"></script>
+<script src="/js/ui-elements/examples.modals.js"></script>
