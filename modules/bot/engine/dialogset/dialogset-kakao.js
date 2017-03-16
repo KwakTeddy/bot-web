@@ -3,23 +3,23 @@ var path = require('path');
 var async = require('async');
 var fileutil = require(path.resolve('modules/bot/action/common/fileutil.js'));
 var mongoModule = require(path.resolve('modules/bot/action/common/mongo.js'));
+var dialogsetModule = require('./dialogset');
 
 // var bot = require(path.resolve('config/lib/bot')).getBot('private_bot');
 
-var baseDir = path.resolve('public/files/');
+// var baseDir = path.resolve('public/files/');
 
-function convertDialogset(filename, callback) {
-  var dir = baseDir;
-  var info = path.parse(path.join(dir, filename));
+function convertDialogset(filepath, dialogset, callback) {
+  var info = path.parse(filepath);
   var csvname = info.name + '.csv';
   var dlgname = info.name + '_dlg.csv';
 
   if(info.ext == '.txt') {
-    convertFile(path.join(dir, filename), path.join(dir, csvname),
+    convertFile(filepath, path.join(info.dir, csvname),
       function(result) {
-        convertConversation(path.join(dir,csvname), path.join(dir, dlgname),
+        convertConversation(path.join(info.dir,csvname), path.join(info.dir, dlgname),
           function() {
-            insertDatasetFile(path.join(dir, dlgname),
+            insertDatasetFile(path.join(info.dir, dlgname), dialogset,
               function(result) {
                 callback(info.name + '_dlg');
               });
@@ -27,9 +27,9 @@ function convertDialogset(filename, callback) {
       });
 
   } else if(info.ext == '.csv') {
-    convertConversation(path.join(dir,csvname), path.join(dir, dlgname),
+    convertConversation(filepath, path.join(info.dir, dlgname),
       function() {
-        insertDatasetFile(path.join(dir, dlgname),
+        insertDatasetFile(path.join(info.dir, dlgname), dialogset,
           function(result) {
             // console.log('convertFile: ' + filename);
             callback(info.name + '_dlg');
@@ -48,7 +48,7 @@ function convertFile(infile, outfile, callback) {
   var datetime = "", character = "", sentence = "";
 
   var addDialog = function() {
-    if(character != "" && sentence != "") {
+    if(character != "" && sentence != "" && sentence.length < 200) {
       var str = '"' + datetime.replace(/"/g, "\"\"") + '","' + character.replace(/"/g, "\"\"") + '","' + sentence.replace(/"/g, "\"\"") + '"\n';
       fs.appendFileSync(outfile, str, 'utf8');
       lineNum++;
@@ -235,8 +235,8 @@ function convertConversation(file, outfile, callback) {
 
 exports.convertConversation = convertConversation;
 
-function insertDatasetFile(infile, callback) {
-  var info = path.parse(infile);
+function insertDatasetFile(infile, dialogset, callback) {
+  var info = path.parse(infile), count = 0;
 
   fileutil.streamLineSequence(infile, function(result, line, cb) {
     if(isNaN(result) == false) {
@@ -249,37 +249,42 @@ function insertDatasetFile(infile, callback) {
         input = array[2].trim();
         output = array[4].trim();
 
-        if(array[3] == '강지윤') {
+        if(/*array[3] == '강지윤'*/ true) {
           var outputs = [];
           var re2 = /\[([^\]]*)\]/g;
           output.replace(re2, function(match, p1) {
             outputs.push(p1);
           });
 
-          processInput(null, input, function(_input, _json) {
-            // console.log(input + '\n' + _input);
-
-            var task = {
-              doc:{
-                dialogset: info.name,
-                id: result.toString(),
-                tag: [],
-                inputRaw: input,
-                input: _input,
-                output: (outputs.length > 0 ? outputs: output)
-                // output: output
-              },
-              mongo: {
-                model: 'DialogsetDialog',
-                query: {dialogset: '', id: ''},
-                options: {upsert: true}
-              }
-            };
-
-            mongoModule.update(task, null, function(_task, _context) {
-              cb();
-            })
+          count++;
+          dialogsetModule.insertDailogsetDialog(dialogset, count.toString(), input, output, function() {
+            cb();
           });
+
+          // processInput(null, input, function(_input, _json) {
+          //   // console.log(input + '\n' + _input);
+          //
+          //   var task = {
+          //     doc:{
+          //       dialogset: dialogset._id,
+          //       id: result.toString(),
+          //       tag: [],
+          //       inputRaw: input,
+          //       input: _input,
+          //       output: (outputs.length > 0 ? outputs: output)
+          //       // output: output
+          //     },
+          //     mongo: {
+          //       model: 'DialogsetDialog',
+          //       query: {dialogset: '', id: ''},
+          //       options: {upsert: true}
+          //     }
+          //   };
+          //
+          //   mongoModule.update(task, null, function(_task, _context) {
+          //     cb();
+          //   })
+          // });
         } else {
           cb();
         }

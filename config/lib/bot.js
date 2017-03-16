@@ -264,10 +264,10 @@ function loadUserBot(botName, callback) {
         name: 'typeDoc',
         typeCheck: global._context.typeChecks['dialogTypeCheck'], //type.mongoDbTypeCheck,
         preType: function(task, context, type, callback) {
-          if(bot.dialogsets) {
+          if(context.bot.dialogsets) {
             type.mongo.queryStatic = {$or: []};
-            for(var i = 0; i < bot.dialogsets.length; i++) {
-              type.mongo.queryStatic.$or.push({dialogset: bot.dialogsets[i]});
+            for(var i = 0; i < context.bot.dialogsets.length; i++) {
+              type.mongo.queryStatic.$or.push({dialogset: context.bot.dialogsets[i]});
             }
           } else {
             type.mongo.queryStatic = {dialogset: ''};
@@ -390,6 +390,7 @@ function Bot(schema) {
   this.concepts = this.concepts || {};
   this.messages = this.messages || {};
   this.patterns = this.patterns || {};
+  this.dialogsets = this.dialogsets || {};
 }
 
 exports.Bot = Bot;

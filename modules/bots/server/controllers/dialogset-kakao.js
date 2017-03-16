@@ -249,7 +249,7 @@ function insertDatasetFile(infile, callback) {
         input = array[2].trim();
         output = array[4].trim();
 
-        if(array[3] == '강지윤') {
+        if(/*array[3] == '강지윤'*/ true) {
           var outputs = [];
           var re2 = /\[([^\]]*)\]/g;
           output.replace(re2, function(match, p1) {

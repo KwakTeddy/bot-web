@@ -89,7 +89,7 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
     vm.remove = function () {
       if (vm.userBot && vm.userBot._id) {
         vm.userBot.$remove(function () {
-          $state.go('user-bots.list');
+          $state.go('user-bots-web.list', {listType: 'my'});
         }, function (errorResponse) {
           $scope.error = errorResponse.data.message;
         });
@@ -106,7 +106,7 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
 
       if(vm.userBot && vm.userBot._id) {
         vm.userBot.$update(function () {
-          $state.go('user-bots.list');
+          $state.go('user-bots-web.list', {listType: 'my'});
         }, function (errorResponse) {
           $scope.error = errorResponse.data.message;
         });
@@ -298,7 +298,7 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
       name: 'fileFilter',
       fn: function (item, options) {
         var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
-        return '|txt|csv|'.indexOf(type) !== -1;
+        return '|plain|txt|csv|'.indexOf(type) !== -1;
       }
     });
 
