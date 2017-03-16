@@ -37,26 +37,24 @@ exports.create = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(userBot);
-
       var dialogset = new Dialogset({
-        title: userBot.originalFilename,
-        type: userBot.type,
-        path: userBot.path,
-        filename: userBot.filename,
-        originalFilename: userBot.originalFilename,
+        title: req.body.originalFilename,
+        type: req.body.type,
+        path: req.body.path,
+        filename: req.body.filename,
+        originalFilename: req.body.originalFilename,
         language: 'en',
         content: ''
       });
 
-      dialogset.user = user;
+      dialogset.user = req.user;
 
       dialogset.save(function(err) {
         if (err) {
           callback(err);
         } else {
           dialogsetModule.convertDialogset1(dialogset, function(result) {
-            userBot.dialogset = result;
+            userBot.dialogsets = [dialogset];
             userBot.save(function(err) {
               if(console.log(err));
             })
@@ -66,6 +64,7 @@ exports.create = function (req, res) {
         }
       });
 
+      res.json(userBot);
 
       // dialogsetModule.convertDialogset(userBot.dialogFile, function(result) {
       //   userBot.dialogset = result;
