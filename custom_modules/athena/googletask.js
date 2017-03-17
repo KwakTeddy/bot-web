@@ -3,7 +3,10 @@ var mongo = require(path.resolve('./modules/bot/action/common/mongo'));
 var bot = require(path.resolve('config/lib/bot')).getBot('athena');
 var util = require('util');
 var async = require('async');
-// var googleAuth = require('google-auth-library');
+var nodemailer = require('nodemailer');
+var crypto = require('crypto');
+var config = require(path.resolve('./config/config'));
+var mongoose = require('mongoose');
 
 function api (data) {
     var request = require('request');
@@ -201,8 +204,19 @@ function eventapi(task, context, callback) {
         var request = require('request');
         var access_token = context.user.google_accesstoken;
         var calendarId = context.dialog.calendar.id;
+        var currenttime = new Date();
+        // if (currenttime.getMonth() == 11) {
+        //     var nextmonth = new Date(currenttime.getFullYear() + 1, 0, 1);
+        // } else {
+        //     var nextmonth = new Date(currenttime.getFullYear(), (currenttime.getMonth()+1)%12 + 1, 1);
+        // }
+        var mintime = new Date(currenttime.getFullYear(), currenttime.getMonth(), currenttime.getDate(), 0, 0, 0);
+        var maxtime = new Date(currenttime.getFullYear(), currenttime.getMonth(), currenttime.getDate(), 23, 59, 59);
+        mintime = mintime.toISOString();
+        maxtime = maxtime.toISOString();
+        // nextmonth = nextmonth.toISOString();
         request({
-            url: 'https://www.googleapis.com/calendar/v3/calendars/' + calendarId + '/events?access_token=' + access_token,
+            url: 'https://www.googleapis.com/calendar/v3/calendars/' + calendarId + '/events?access_token=' + access_token + '&timeMin=' + mintime + '&timeMax=' + maxtime +'&orderBy=startTime&singleEvents=true',
             method: 'GET'
             // headers: {
             //     'Authorization': 'Bearer oauth2-token'
@@ -214,7 +228,18 @@ function eventapi(task, context, callback) {
             } else if (!error && response.statusCode == 200) {
                 console.log(response.statusCode, body);
                 var doc = JSON.parse(body);
-
+                var events = doc.items;
+                for (var i = 0; i < events.length; i++) {
+                    var event = events[i];
+                    if(event.start.date) {
+                        var date = event.start.date;
+                        event.dateTime = date.replace(/-/g, "/")
+                    } else {
+                        event.start.dateTime = new Date((event.start.dateTime || "").replace(/-/g, "/").replace(/[TZ]/g, " "));
+                        event.dateTime = event.start.dateTime.getFullYear() + '/' + (event.start.dateTime.getMonth() + 1) + '/' + event.start.dateTime.getDate() + ' ' + event.start.dateTime.getHours() + '시';
+                    }
+                }
+                context.dialog.event = events;
                 callback(task,context);
                 // if(error) {
                 //     console.log(error);

@@ -50,7 +50,7 @@ var calculateAction = function(task, context, callback) {
     callback(task, context);
 }
 
-<뉴스
+<false
 {
     action: function(task, context, callback) {
         var result = [
@@ -123,7 +123,7 @@ var calculateAction = function(task, context, callback) {
 }
 >+doc+
 
-<{types: [faqType]}
+<false
 {
     action: function(task, context, callback) {
 //        console.log(task.doc);
@@ -138,14 +138,3 @@ var calculateAction = function(task, context, callback) {
     }
 }
 > +_output+
-
-시작:
-c<시작
->안녕하세요. Athena 입니다.
-
-답변없음:
-c<> 알아듣지 못했습니다
-
-<안녕
->안녕하세요
-

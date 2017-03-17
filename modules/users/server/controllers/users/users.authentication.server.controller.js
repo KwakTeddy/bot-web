@@ -14,7 +14,7 @@ var path = require('path'),
     config = require(path.resolve('./config/config'));
 
 var smtpTransport = nodemailer.createTransport(config.mailer.options);
-var util = require('util'); //temporary
+
 // URLs for which user can't be redirected on signin
 var noReturnUrls = [
   '/authentication/signin',
