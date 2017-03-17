@@ -5,7 +5,7 @@ angular.module('analytics').config(['$stateProvider',
     $stateProvider
       .state('analytics', {
         abstract: true,
-        url: '/analytics',
+        url: '/developer/analytics',
         template: '<ui-view/>'
       })
       .state('analytics.dashboard', {
@@ -59,7 +59,7 @@ angular.module('analytics').config(['$stateProvider',
         controller: 'AnalyticsListController',
         controllerAs: 'vm',
         data: {
-          roles: ['user', 'admin'],
+          roles: ['user', 'admin']
         }
       });
   }

@@ -11,7 +11,7 @@
     $stateProvider
       .state('custom-actions', {
         abstract: true,
-        url: '/custom-actions',
+        url: '/developer/custom-actions',
         template: '<ui-view/>',
         data: {
           roles: ['user', 'admin']

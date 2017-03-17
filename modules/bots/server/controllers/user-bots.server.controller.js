@@ -55,8 +55,8 @@ exports.create = function (req, res) {
         } else {
           dialogsetModule.convertDialogset1(dialogset, function(result) {
             userBot.dialogsets = [dialogset];
+            if(console.log(err));
             userBot.save(function(err) {
-              if(console.log(err));
             })
 
             console.log(dialogset.filename + ' converted');

@@ -11,7 +11,7 @@
     $stateProvider
       .state('dialogsets', {
         abstract: true,
-        url: '/dialogsets',
+        url: '/developer/dialogsets',
         template: '<ui-view/>',
         data: {
           roles: ['user', 'admin']

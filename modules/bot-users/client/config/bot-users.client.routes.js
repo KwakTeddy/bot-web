@@ -11,7 +11,7 @@
     $stateProvider
       .state('bot-users', {
         abstract: true,
-        url: '/bot-users',
+        url: '/developer/bot-users',
         template: '<ui-view/>'
       })
       .state('bot-users.list', {

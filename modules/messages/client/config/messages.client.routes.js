@@ -11,7 +11,7 @@
     $stateProvider
       .state('messages', {
         abstract: true,
-        url: '/messages',
+        url: '/developer/messages',
         template: '<ui-view/>',
         data: {
           roles: ['user', 'admin']

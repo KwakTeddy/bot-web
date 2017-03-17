@@ -7,11 +7,11 @@ angular.module('user-bots').config(['$stateProvider',
     $stateProvider
       .state('user-bots-web', {
         abstract: true,
-        url: '/userbot',
+        url: '',
         template: '<ui-view/>'
       })
-      .state('user-bots-home', {
-        url: '/userbot/home',
+      .state('home', {
+        url: '/',
         templateUrl: 'modules/core/client/views/user.client.view.html',
         controller: 'UserBotListController',
         controllerAs: 'vm',
@@ -20,7 +20,7 @@ angular.module('user-bots').config(['$stateProvider',
         }
       })
       .state('user-bots-web.list', {
-        url: '?listType&query',
+        url: '/list?listType&query',
         templateUrl: 'modules/bots/client/views/list-user-bot-web.client.view.html',
         controller: 'UserBotListController',
         controllerAs: 'vm',
@@ -88,20 +88,20 @@ angular.module('user-bots').config(['$stateProvider',
           url: '/picture',
           templateUrl: 'modules/users/client/views/settings/change-profile-picture.client.view.html'
       })
-      .state('user-bots-web.authentication', {
-          abstract: true,
-          url: '/authentication',
-          templateUrl: '/modules/users/client/views/authentication/authentication.client.view.html',
-          controller: 'AuthenticationController'
-      })
-      .state('user-bots-web.authentication.signup', {
-          url: '/signup',
-          templateUrl: 'modules/users/client/views/authentication/signup.client.view.html'
-      })
-      .state('user-bots-web.authentication.signin', {
-          url: '/signin?err',
-          templateUrl: 'modules/users/client/views/authentication/signin.client.view.html'
-      })
+      // .state('user-bots-web.authentication', {
+      //     abstract: true,
+      //     url: '/authentication',
+      //     templateUrl: '/modules/users/client/views/authentication/authentication.client.view.html',
+      //     controller: 'AuthenticationController'
+      // })
+      // .state('user-bots-web.authentication.signup', {
+      //     url: '/signup',
+      //     templateUrl: 'modules/users/client/views/authentication/signup.client.view.html'
+      // })
+      // .state('user-bots-web.authentication.signin', {
+      //     url: '/signin?err',
+      //     templateUrl: 'modules/users/client/views/authentication/signin.client.view.html'
+      // })
       .state('user-bots-web.password', {
           abstract: true,
           url: '/password',

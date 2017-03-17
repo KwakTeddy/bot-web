@@ -228,7 +228,7 @@ exports.oauthCallback = function (strategy, scope) {
         }
         console.log(redirectURL.redirect_to);
         console.log(sessionRedirectURL);
-        return res.redirect(redirectURL.redirect_to || sessionRedirectURL || '/userbot');
+        return res.redirect(redirectURL.redirect_to || sessionRedirectURL || '/');
       });
     })(req, res, next);
   };
@@ -389,7 +389,7 @@ exports.validateEmailConfirmToken = function (req, res) {
 
     User.findOne(emailConfirmQuery, function (err, user) {
         if (!user) {
-            return res.redirect('/userbot/emailconfirm/invalid');
+            return res.redirect('/emailconfirm/invalid');
         }
         user.localEmailConfirmed = true;
         user.localEmailConfirmToken = undefined;
@@ -399,7 +399,7 @@ exports.validateEmailConfirmToken = function (req, res) {
             if (err){
                 console.log(err);
             }else {
-                res.redirect('/userbot');
+                res.redirect('/');
             }
         });
     });

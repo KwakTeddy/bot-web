@@ -193,19 +193,35 @@ function appRun($rootScope, $state, Authentication) {
             $state.go('forbidden');
           }
         } else {
-          if (parsedString[0] == 'user-bots-web') {
-            $state.go('user-bots-web.authentication.signin').then(function () {
-                storePreviousState(toState, toParams);
-            });
-          }
-          // else {
-          //   $state.go('authentication.signin').then(function () {
+          // if (parsedString[0] == 'user-bots-web') {
+          //   $state.go('user-bots-web.authentication.signin').then(function () {
           //       storePreviousState(toState, toParams);
           //   });
+          // } else {
+            $state.go('authentication.signin').then(function () {
+                storePreviousState(toState, toParams);
+            });
           // }
         }
       }
     }
+
+    if(toState.name.indexOf('authentication') != -1 || toState.name.indexOf('password') != -1) {
+      var userbotHeader =  document.getElementById('mainHeader');
+      var userbotChat =  document.getElementById('container-chat');
+      if(userbotHeader && userbotChat) {
+        document.getElementById('mainHeader').style.display = 'none';
+        document.getElementById('container-chat').style.display = 'none';
+      }
+    } else {
+      var userbotHeader =  document.getElementById('mainHeader');
+      var userbotChat =  document.getElementById('container-chat');
+      if(userbotHeader && userbotChat) {
+        document.getElementById('mainHeader').style.display = 'block';
+        document.getElementById('container-chat').style.display = 'block';
+      }
+    }
+
   });
 
   // Record previous state
