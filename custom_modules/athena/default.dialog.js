@@ -44,6 +44,7 @@ var calculateAction = function(task, context, callback) {
 
 var dialogs = [
 {
+  id: 0,
   input: '뉴스',
   task:   {
       action: function(task, context, callback) {
@@ -68,16 +69,19 @@ var dialogs = [
   output: '뉴스를 말씀드리겠습니다.'
 },
 {
+  id: 1,
   input: [/([^\b\s]*)(?:\b|\s).*(영어).*뭐/, /([^\b\s]*)(?:\b|\s).*(영어).*무엇/, /([^\b\s]*)(?:\b|\s).*(영어).*알다/, /([^\b\s]*)(?:\b|\s).*(영어).*알/, /([^\b\s]*)(?:\b|\s).*(한글|한국어).*뭐/, /([^\b\s]*)(?:\b|\s).*(한글|한국어).*무엇/, /([^\b\s]*)(?:\b|\s).*(한글|한국어).*알다/, /([^\b\s]*)(?:\b|\s).*(한글|한국어).*알/],
   task:   {action: glosbe.dicAction},
   output: '+1+는 +2+로 +_result+입니다.'
 },
 {
+  id: 2,
   input: [/(\d)\s*(\+|더하기)\s*(\d)/, /(\d)\s*(\-|빼기)\s*(\d)/, /(\d)\s*(\*|곱하기)\s*(\d)/, /(\d)\s*(\/|나누기)\s*(\d)/],
   task:   {action: calculateAction},
   output: '+1+ +2+ +3+ 은 +_result+ 입니다'
 },
 {
+  id: 3,
   input: [/([^\b\s]*)(?:\b|\s).*뭐/, /([^\b\s]*)(?:\b|\s).*무엇/, /([^\b\s]*)(?:\b|\s).*누구/, /([^\b\s]*)(?:\b|\s).*알다/, /([^\b\s]*)(?:\b|\s).*알/],
   task:   {
       preCallback: function(task, context, callback) {
@@ -90,6 +94,7 @@ var dialogs = [
   output: '+doc+'
 },
 {
+  id: 4,
   input: {types: [faqType]},
   task:   {
       action: function(task, context, callback) {
@@ -104,6 +109,7 @@ var dialogs = [
   output: '+_output+'
 },
 {
+  id: 5,
   input: '안녕',
   output: '안녕하세요'
 }
@@ -111,11 +117,13 @@ var dialogs = [
 
 var commonDialogs = [
 {
+  id: 0,
   name: '시작',
   input: '시작',
   output: '안녕하세요. Athena 입니다.'
 },
 {
+  id: 1,
   name: '답변없음',
   input: '',
   output: '알아듣지 못했습니다'

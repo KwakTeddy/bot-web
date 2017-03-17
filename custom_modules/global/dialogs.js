@@ -56,7 +56,21 @@ function factsTypeCheck(text, format, inDoc, context, callback) {
   });
 }
 
+
 var globalDialogs = [
+  {
+    input: [/([^\b\s]*)(?:\b|\s).*불러줘/, /([^\b\s]*)(?:\b|\s).*부르다/, /([^\b\s]*)(?:\b|\s).*불다/],
+    task:   {
+      action: function(task, context, callback) {
+        task.botName = task['1'];
+        var command = require(path.resolve('./modules/bot/action/common/command'));
+        command.changeBot(task, context, function(_task, _callback) {
+          callback(context, context);
+        });
+      }
+    },
+    output: '봇이 변경 되었습니다'
+  },
   {
     input: /(^.*체).*바꾸다/,
     task: {

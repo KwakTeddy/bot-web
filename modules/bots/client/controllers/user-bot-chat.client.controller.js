@@ -115,40 +115,40 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       if(!msg || msg.length <= 0) { msg = vm.msg; useInput = true;}
       if(!msg || msg.length <= 0) return false;
 
-      var matched = msg.match(/불러/g);
-      if(matched != null) {
-
-        UserBotsService.query({}, function(userBots) {
-          console.log(userBots);
-          
-          var _userBot;
-          if(msg.search(/박\s*근\s*혜/) != -1) _userBot = userBots[4];
-          else if(msg.indexOf('여자친구') != -1) _userBot = userBots[6];
-          else if(msg.indexOf('아테나') != -1) _userBot = userBots[7];
-          else if(msg.indexOf('배달') != -1) _userBot = userBots[2];
-          else if(msg.indexOf('레스토랑') != -1) _userBot = userBots[3];
-          else if(msg.indexOf('센터') != -1) _userBot = userBots[1];
-
-          if(_userBot) {
-            vm.bot = _userBot.id;
-            vm.userBot = _userBot;
-            document.getElementById("chat-header").innerText = vm.bot;
-            vm.connect();
-          } else {
-            addBotBubble('그런 봇을 찾을 수 없습니다.');
-            if(vm.isVoice) synthesize('그런 봇을 찾을 수 없습니다.');
-          }
-        });
-
-
-        return false;
-      }
+      // var matched = msg.match(/불러/g);
+      // if(matched != null) {
+      //
+      //   UserBotsService.query({}, function(userBots) {
+      //     console.log(userBots);
+      //
+      //     var _userBot;
+      //     if(msg.search(/박\s*근\s*혜/) != -1) _userBot = userBots[4];
+      //     else if(msg.indexOf('여자친구') != -1) _userBot = userBots[6];
+      //     else if(msg.indexOf('아테나') != -1) _userBot = userBots[7];
+      //     else if(msg.indexOf('배달') != -1) _userBot = userBots[2];
+      //     else if(msg.indexOf('레스토랑') != -1) _userBot = userBots[3];
+      //     else if(msg.indexOf('센터') != -1) _userBot = userBots[1];
+      //
+      //     if(_userBot) {
+      //       vm.bot = _userBot.id;
+      //       vm.userBot = _userBot;
+      //       document.getElementById("chat-header").innerText = vm.bot;
+      //       vm.connect();
+      //     } else {
+      //       addBotBubble('그런 봇을 찾을 수 없습니다.');
+      //       if(vm.isVoice) synthesize('그런 봇을 찾을 수 없습니다.');
+      //     }
+      //   });
+      //
+      //
+      //   return false;
+      // }
 
       if(msg == ':build') { build(); return false;}
       if(msg == ':init') { init(); return false; }
       if(msg.lastIndexOf(':connect') == 0) {
         var args = msg.split(/\s/);
-        if(args.length > 1) vm.connectUserBot(msg);
+        if(args.length > 1) vm.connectUserBot(args[1]);
         return false;
       }
 
