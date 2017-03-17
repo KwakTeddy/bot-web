@@ -217,9 +217,6 @@ exports.list = function (req, res) {
   if(req.body.listType == 'my') query['user'] = req.body.botUserId;
   if(req.query.my) query['user'] =  req.user._id;
   if(req.body.query) query['name'] = new RegExp(req.body.query, 'i');
-  console.log(util.inspect(query));
-  console.log(util.inspect(req.body));
-  console.log(123);
   UserBot.find(query).sort(sort).populate('user').skip(req.body.currentPage * perPage).limit(perPage).exec(function (err, userBots) {
     if (err) {
       return res.status(400).send({
@@ -288,16 +285,35 @@ exports.followBot = function(req, res) {
       }else {
         follows.followed = true;
         follows.save(function (err) {
-          if (err) {
-            console.log(err);
-            return res.status(400).send({
-                message: errorHandler.getErrorMessage(err)
-            });
-          }else {
-            return res.end();
-          }
+            if (err) {
+                console.log(err);
+                return res.status(400).send({
+                    message: errorHandler.getErrorMessage(err)
+                });
+            }
         });
       }
+      UserBot.findOne({_id: req.body.userBot}).exec(function (err, result) {
+          if (err){
+              console.log(err);
+          }else {
+              UserBotFollow.count({userBot : req.body.userBot, followed: true}).exec(function (err, followNum) {
+                  console.log(followNum);
+                  if (err){
+                      console.log(err);
+                  }else {
+                      result.followed = followNum;
+                      result.save(function (err) {
+                          if (err){
+                              console.log(err);
+                          }else {
+                            return res.end();
+                          }
+                      });
+                  }
+              })
+          }
+      });
     }
   });
 };
@@ -334,6 +350,27 @@ exports.unfollowBot = function(req, res) {
           }
         });
       }
+      UserBot.findOne({_id: req.query.userBot}).exec(function (err, result) {
+          if (err){
+              console.log(err);
+          }else {
+              UserBotFollow.count({userBot : req.query.userBot, followed: true}).exec(function (err, followNum) {
+                  console.log(followNum);
+                  if (err){
+                      console.log(err);
+                  }else {
+                      result.followed = followNum;
+                      result.save(function (err) {
+                          if (err){
+                              console.log(err);
+                          }else {
+                              return res.end();
+                          }
+                      });
+                  }
+              })
+          }
+      });
     }
   });
 };
