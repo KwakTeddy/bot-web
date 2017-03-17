@@ -98,7 +98,9 @@ var UserSchema = new Schema({
   localEmailConfirmed: {
     type: Boolean,
     default: false
-  }
+  },
+  messengerIds: Schema.Types.Mixed
+
 });
 
 /**

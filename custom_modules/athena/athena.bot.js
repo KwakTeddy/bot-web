@@ -3,6 +3,13 @@ var botlib = require(path.resolve('config/lib/bot'));
 
 var athena = {
   use: true,
+
+  serviceName: '아테나',
+  serviceNick: '인공지능',
+
+  kakao: {
+    keyboard: { type :"buttons", buttons:["시작"]}
+  },
   naver: {
     clientId: 'c7VNVyIG3s95N4q2LWZQ',
     clientSecret: 'HXWvXdrKi7'
