@@ -69,7 +69,7 @@ var globalDialogs = [
         });
       }
     },
-    output: '봇이 변경 되었습니다'
+    output: '+output+'
   },
   {
     input: /(^.*체).*바꾸다/,

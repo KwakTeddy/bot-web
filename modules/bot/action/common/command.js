@@ -92,7 +92,12 @@ function changeBot(task, context, callback) {
 
     var startDialog= dialog.findDialog(null, context, dialog.START_DIALOG_NAME);
 
-    task.output = startDialog.output;
+
+    if(!startDialog)
+      task.output = '안녕하세요.' + context.bot.name + '입니다.';
+    else
+      task.output = startDialog.output;
+
     callback(task, context);
   });
 }
