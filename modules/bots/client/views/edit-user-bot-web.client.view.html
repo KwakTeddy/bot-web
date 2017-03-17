@@ -196,7 +196,7 @@
                                     <button class="btn btn-default" ng-click="cancelUpload();">Cancel</button>
                                 </div>
                                 <div ng-show="success" class="text-center text-success">
-                                    <strong>파일이 업로드 되었습니</strong>
+                                    <strong>파일이 업로드 되었습니다</strong>
                                 </div>
                                 <div ng-show="error" class="text-center text-danger">
                                     <strong ng-bind="error"></strong>
@@ -244,7 +244,7 @@
                                     <input type="checkbox" id="public" ng-model="vm.userBot.public">
                                     <label for="using">공개</label>
                                 </div>
-                                <div class="checkbox-custom checkbox-default" style="float: left;margin-left: 10px;"">
+                                <div class="checkbox-custom checkbox-default" style="float: left;margin-left: 10px;">
                                     <input type="checkbox" id="public" ng-model="vm.userBot.learn">
                                     <label for="using">대화학습허용</label>
                                 </div>
@@ -259,14 +259,18 @@
                                 <button type="submit" class="btn btn-primary" >만들기</button>
                                 <button type="button" class="btn btn-default" onclick="javascript:history.back();" >취소</button>
                             </div>
-                            <div class="col-sm-12 text-center" ng-show="vm.userBot && vm.userBot._id">
-                                <a class="btn btn-primary" ng-click="vm.update(userBotForm.$valid)">
+                            <div class="col-sm-9 col-sm-offset-3 text-center" ng-show="vm.userBot && vm.userBot._id">
+                              <a ng-click="vm.remove()">
+                                <button type="button" class="btn btn-danger pull-left">
+                                  <i class="glyphicon glyphicon-trash"></i> 삭제
+                                </button>
+                              </a>
+                              <button type="button" class="btn btn-default pull-right" onclick="javascript:history.back();" >취소</button>
+                              <a ng-click="vm.update(userBotForm.$valid)">
+                                <button type="button" class="btn btn-primary pull-right">
                                     <i class="glyphicon glyphicon-edit"></i> 수정
-                                </a>
-                                <a class="btn btn-danger" ng-click="vm.remove()">
-                                    <i class="glyphicon glyphicon-trash"></i> 삭제
-                                </a>
-                                <button type="button" class="btn btn-default" onclick="javascript:history.back();" >취소</button>
+                                </button>
+                              </a>
                             </div>
                         </div>
                     </footer>

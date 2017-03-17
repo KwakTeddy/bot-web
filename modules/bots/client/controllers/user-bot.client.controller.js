@@ -90,12 +90,21 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
 
     // Remove existing UserBot
     vm.remove = function () {
-      if (vm.userBot && vm.userBot._id) {
-        vm.userBot.$remove(function () {
-          $state.go('user-bots-web.list', {listType: 'my'});
-        }, function (errorResponse) {
-          $scope.error = errorResponse.data.message;
-        });
+      var modalInstance = $uibModal.open({
+          templateUrl: 'modules/bots/client/views/modal-user-bots.client.remove.html',
+          scope: $scope
+      });
+      $scope.delete = function () {
+        if (vm.userBot && vm.userBot._id) {
+            vm.userBot.$remove(function () {
+                $state.go('user-bots-web.list', {listType: 'my'});
+            }, function (errorResponse) {
+                $scope.error = errorResponse.data.message;
+            });
+        }
+      };
+      $scope.close = function () {
+          modalInstance.dismiss();
       }
     };
 
@@ -123,8 +132,6 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
       $scope.userBotId = vm.userBot.id;
 
       if ((channel == 'facebook') && (method !== 'easy')){
-
-
         FB.api('/me/accounts?fields=picture,name,link,access_token', function(response) {
           console.log(response);
           if (response.error.code == 2500){

@@ -212,11 +212,19 @@ exports.list = function (req, res) {
   var sort = req.query.sort || '-created';
   var perPage = req.body.perPage || 6;
   var query = {};
+  query['public'] = true;
 
   if (req.body.listType == 'popular') sort = '-followed';
-  if(req.body.listType == 'my') query['user'] = req.body.botUserId;
-  if(req.query.my) query['user'] =  req.user._id;
+  if(req.body.listType == 'my') {
+    delete query.public;
+    query['user'] = req.body.botUserId;
+  }
+  if(req.query.my) {
+    delete query.public;
+    query['user'] =  req.user._id;
+  }
   if(req.body.query) query['name'] = new RegExp(req.body.query, 'i');
+  console.log(util.inspect(query));
   UserBot.find(query).sort(sort).populate('user').skip(req.body.currentPage * perPage).limit(perPage).exec(function (err, userBots) {
     if (err) {
       return res.status(400).send({
@@ -237,6 +245,7 @@ exports.followList = function (req, res) {
   if(req.body.botUserId) query['botUserId'] = req.body.botUserId;
   if(req.body.userBot) query['userBot'] = req.body.userBot._id;
   if(req.body.query) search['name'] = new RegExp(req.body.query, 'i');
+  var populateQuery = [];
 
   UserBotFollow.find(query).populate('userBot', null, search).sort('-created').skip(req.body.currentPage * perPage).limit(perPage).exec(function (err, follows) {
     if (err) {
@@ -246,7 +255,7 @@ exports.followList = function (req, res) {
     } else {
       var userBots = [];
       for(var i in follows) {
-        if(follows[i].userBot){
+        if(follows[i].userBot && (follows[i].userBot.public == true)){
           userBots.push(follows[i].userBot);
         }
       }
