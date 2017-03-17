@@ -35,6 +35,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         Socket.connect();
       }
 
+      console.log('connect: ' + vm.bot);
       $cookies.put('default_bot', vm.bot);
 
       vm.isConnected = true;
@@ -59,19 +60,15 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         return;
       }
 
-      // var idx = message.indexOf('url: ');
-      // var url;
-      // if(idx != -1) {
-      //   url = message.substring(idx + 5, message.length);
-      //   message = message.substring(0, idx );
-      //
-      //   console.log('url:' + url);
-      //   document.getElementById('webframe').src = url;
-      // }
-
       try {
         message = JSON.parse(message);
-      } catch(e) {}
+      } catch(e) {
+        // console.log(e);
+      }
+
+      if(message.bot != undefined) {
+        vm.changeBotInfo(message.bot);
+      }
 
       if(message.smartReply) addButtons(message.smartReply);
 
@@ -115,40 +112,11 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       if(!msg || msg.length <= 0) { msg = vm.msg; useInput = true;}
       if(!msg || msg.length <= 0) return false;
 
-      var matched = msg.match(/불러/g);
-      if(matched != null) {
-
-        UserBotsService.query({}, function(userBots) {
-          console.log(userBots);
-          
-          var _userBot;
-          if(msg.search(/박\s*근\s*혜/) != -1) _userBot = userBots[4];
-          else if(msg.indexOf('여자친구') != -1) _userBot = userBots[6];
-          else if(msg.indexOf('아테나') != -1) _userBot = userBots[7];
-          else if(msg.indexOf('배달') != -1) _userBot = userBots[2];
-          else if(msg.indexOf('레스토랑') != -1) _userBot = userBots[3];
-          else if(msg.indexOf('센터') != -1) _userBot = userBots[1];
-
-          if(_userBot) {
-            vm.bot = _userBot.id;
-            vm.userBot = _userBot;
-            document.getElementById("chat-header").innerText = vm.bot;
-            vm.connect();
-          } else {
-            addBotBubble('그런 봇을 찾을 수 없습니다.');
-            if(vm.isVoice) synthesize('그런 봇을 찾을 수 없습니다.');
-          }
-        });
-
-
-        return false;
-      }
-
       if(msg == ':build') { build(); return false;}
       if(msg == ':init') { init(); return false; }
       if(msg.lastIndexOf(':connect') == 0) {
         var args = msg.split(/\s/);
-        if(args.length > 1) vm.connectUserBot(msg);
+        if(args.length > 1) vm.connectUserBot(args[1]);
         return false;
       }
 
@@ -168,6 +136,17 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       vm.sendMsg(':init');
     };
 
+    vm.changeBotInfo = function(userBot) {
+      vm.bot = userBot.id;
+      $cookies.put('default_bot', vm.bot);
+
+      vm.userBot = userBot;
+      $rootScope.botId = userBot.id;
+      $rootScope.userBot = vm.userBot;
+
+      document.getElementById("chat-header").innerText = vm.bot;
+    };
+
     vm.connectUserBot = function(botId) {
       clearBubble();
 
@@ -175,18 +154,10 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       get({botNameId: botId}, function(data) {
         console.log(data);
 
-        vm.bot = botId;
-        vm.userBot = data;
-        $rootScope.botId = botId;
-        $rootScope.userBot = vm.userBot;
-        document.getElementById("chat-header").innerText = vm.bot;
+        vm.changeBotInfo(data);
         vm.connect();
       }, function(err) {
-        vm.bot = botId;
-        vm.userBot = {id: vm.bot, name: vm.bot};
-        $rootScope.botId = botId;
-        $rootScope.userBot = vm.userBot;
-        document.getElementById("chat-header").innerText = vm.bot;
+        vm.changeBotInfo({id: vm.bot, name: vm.bot});
         vm.connect();
       });
     };

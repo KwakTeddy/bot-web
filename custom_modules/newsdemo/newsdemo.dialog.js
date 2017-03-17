@@ -11,11 +11,11 @@ var dialogs = [
 {
   id: 1,
   input: '환율',
-  output: '환율코드(ex) USDKRW)?', 
+  output: '환율코드를 알려주세요 ex) USD or 달러?', 
     children: [
     {
       id: 0,
-      input: {regexp: /[A-Z]/g},
+      input: {regexp: /[A-Z|a-z|가-힣]/g},
       task:       {action: newsdemo.exchangerate},
       output: 
       {if: 'context.dialog.item.length != 0', output: '+date+ 현재 환율은 +rate+입니다.'}
@@ -25,11 +25,11 @@ var dialogs = [
 {
   id: 3,
   input: '주가',
-  output: '회사코드(ex) AAPL)?', 
+  output: '회사코드나 이름을 알려주세요 AAPL or 삼성전자?', 
     children: [
     {
       id: 2,
-      input: {regexp: /[A-Z]/g},
+      input: {regexp: /[A-Z|a-z|가-힣]/g},
       task:       {action: newsdemo.stockprice},
       output: 
       {if: 'context.dialog.item.length != 0', output: '+name+의 +lastTradeDate+ 종가는 +lastTradePriceOnly+입니다.'}

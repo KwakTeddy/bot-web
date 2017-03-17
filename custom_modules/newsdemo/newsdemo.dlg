@@ -8,16 +8,17 @@ var next = /(?:~다음|^>$)/;
 var up = /(?:^0$)/
 
 <환율
->환율코드(ex) USDKRW)?
-    <{regexp: /[A-Z]/g}
+>환율코드를 알려주세요 ex) USD or 달러?
+    <{regexp: /[A-Z|a-z|가-힣]/g}
     {action: newsdemo.exchangerate}
     > if(context.dialog.item.length != 0) +date+ 현재 환율은 +rate+입니다.
 
 <주가
->회사코드(ex) AAPL)?
-    <{regexp: /[A-Z]/g}
+>회사코드나 이름을 알려주세요 AAPL or 삼성전자?
+    <{regexp: /[A-Z|a-z|가-힣]/g}
     {action: newsdemo.stockprice}
     > if(context.dialog.item.length != 0) +name+의 +lastTradeDate+ 종가는 +lastTradePriceOnly+입니다.
+
 
 <뉴스
 >조선일보 뉴스를 검색할까요? 아니면 전체 언론사 뉴스를 검색할까요?
