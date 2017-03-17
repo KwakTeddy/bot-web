@@ -11,7 +11,7 @@
     $stateProvider
       .state('canonicals', {
         abstract: true,
-        url: '/canonicals',
+        url: '/developer/canonicals',
         template: '<ui-view/>',
         data: {
           roles: ['user', 'admin']

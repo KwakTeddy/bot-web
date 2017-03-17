@@ -11,7 +11,7 @@
     $stateProvider
       .state('products', {
         abstract: true,
-        url: '/products',
+        url: '/developer/products',
         template: '<ui-view/>',
         data: {
           roles: ['user', 'admin']

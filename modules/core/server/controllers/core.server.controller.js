@@ -19,18 +19,18 @@ exports.renderIndex = function (req, res) {
     res.render('modules/core/server/views/mobile-index2', {
       user: req.user
     });
-  } else if(path[1] == 'userbot') {
-    res.render('modules/core/server/views/user-bot', {
-      user: req.user
-    });
   } else if(req.query['_p'] == 'nomenu') {
     res.render('modules/core/server/views/nomenu-index', {
       user: req.user
     });
-  } else {
+  } else if(path[1] == 'developer') {
     req.session._platform = "web";
     res.render('modules/core/server/views/index', {
       user: req.user || null
+    });
+  } else {
+    res.render('modules/core/server/views/user-bot', {
+      user: req.user
     });
   }
 };

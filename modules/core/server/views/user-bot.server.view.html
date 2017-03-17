@@ -46,7 +46,7 @@
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                 <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
             </button>
-            <a class="navbar-brand page-scroll" href="/userbot/home"><img src="/images/playchat/playchat_logo.png" height="60"></a>
+            <a class="navbar-brand page-scroll" href="/"><img src="/images/playchat/playchat_logo.png" height="60"></a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -61,20 +61,20 @@
 
 
               <li class="">
-                    <a class="page-scroll" href="/userbot?listType=popular">인기봇</a>
+                    <a class="page-scroll" href="/list?listType=popular">인기봇</a>
                 </li>
                 <li class="">
-                    <a class="page-scroll" href="/userbot?listType=recent">최신봇</a>
+                    <a class="page-scroll" href="/list?listType=recent">최신봇</a>
                 </li>
                 <li class="">
-                    <a class="page-scroll" href="/userbot?listType=followed">친구봇</a>
+                    <a class="page-scroll" href="/list?listType=followed">친구봇</a>
                 </li>
                 <li class="">
-                    <a class="page-scroll" href="/userbot?listType=my">마이봇</a>
+                    <a class="page-scroll" href="/list?listType=my">마이봇</a>
                 </li>
 
                 <li class="" ng-hide="authentication && authentication.user">
-                    <a role="menuitem" tabindex="-1" href="" ng-click="$state.go('user-bots-web.authentication.signin')" target="_self"><i class="fa fa-power-off"></i> 로그인</a>
+                    <a role="menuitem" tabindex="-1" href="" ng-click="$state.go('authentication.signin')" target="_self"><i class="fa fa-power-off"></i> 로그인</a>
                 </li>
                 <!--<li class="" ng-show="authentication && authentication.user">-->
                     <!--<a role="menuitem" tabindex="-1" href="/api/auth/signout?path=/userbot" target="_self"><i class="fa fa-power-off"></i> Logout</a>-->
@@ -103,7 +103,7 @@
                                     <a role="menuitem" tabindex="-1" href="#" ng-click="$state.go('user-bots-web.settings.password')"><i class="fa fa-user"></i> 비밀번호 변경</a>
                                 </li>
                                 <li>
-                                    <a role="menuitem" tabindex="-1" href="/api/auth/signout?path=/userbot" target="_self"><i class="fa fa-power-off"></i> 로그아웃</a>
+                                    <a role="menuitem" tabindex="-1" href="/api/auth/signout?path=/" target="_self"><i class="fa fa-power-off"></i> 로그아웃</a>
                                 </li>
                             </ul>
                         </div>

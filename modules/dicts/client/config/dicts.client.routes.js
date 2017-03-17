@@ -11,7 +11,7 @@
     $stateProvider
       .state('dicts', {
         abstract: true,
-        url: '/dicts',
+        url: '/developer/dicts',
         template: '<ui-view/>',
         data: {
           roles: ['user', 'admin']

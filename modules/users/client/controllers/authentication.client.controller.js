@@ -11,16 +11,16 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
     //routing
     var stingParser = $state.current.name;
     var parsedString = stingParser.split('.');
-    if (parsedString[0] == 'user-bots-web') {
-      $scope.passwordForgot = 'user-bots-web.password.forgot';
-      $scope.authenticationSignup = 'user-bots-web.authentication.signup';
-      $scope.authenticationSignin = 'user-bots-web.authentication.signin';
-
-    } else {
+    // if (parsedString[0] == 'user-bots-web') {
+    //   $scope.passwordForgot = 'user-bots-web.password.forgot';
+    //   $scope.authenticationSignup = 'user-bots-web.authentication.signup';
+    //   $scope.authenticationSignin = 'user-bots-web.authentication.signin';
+    //
+    // } else {
       $scope.passwordForgot = 'password.forgot';
       $scope.authenticationSignup = 'authentication.signup';
       $scope.authenticationSignin = 'authentication.signin';
-    }
+    // }
 
     // If user is signed in then redirect back home
     if ($scope.authentication.user) {
@@ -63,16 +63,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
       });
     };
 
-    // userbot 로그인시 테두리 없애기
-    var userbotHeader =  document.getElementById('mainHeader');
-    var userbotChat =  document.getElementById('container-chat');
     var stingParser = $state.current.name;
     var parsedString = stingParser.split('.');
-
-    if(userbotHeader && userbotChat) {
-      document.getElementById('mainHeader').style.display = 'none';
-      document.getElementById('container-chat').style.display = 'none';
-    }
 
     $scope.privacy = function () {
       var modalInstance = $uibModal.open({
@@ -100,11 +92,6 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
       $http.post('/api/auth/signin', $scope.credentials).success(function (response) {
         // If successful we assign the response to the global user model
         $scope.authentication.user = response;
-
-        if($state.previous && $state.previous.href && !$state.previous.href.lastIndexOf('/userbot')) {
-          userbotHeader.style.display = 'block';
-          userbotChat.style.display = 'block';
-        }
 
         // And redirect to the previous or home page
         $state.go($state.previous.state.name || 'home', $state.previous.params);

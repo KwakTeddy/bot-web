@@ -11,7 +11,7 @@
     $stateProvider
       .state('user-dialogs', {
         abstract: true,
-        url: '/user-dialogs',
+        url: '/developer/user-dialogs',
         template: '<ui-view/>'
       })
       .state('user-dialogs.list', {

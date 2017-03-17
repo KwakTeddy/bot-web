@@ -11,7 +11,7 @@
     $stateProvider
       .state('common-actions', {
         abstract: true,
-        url: '/common-actions',
+        url: '/developer/common-actions',
         template: '<ui-view/>',
         data: {
           roles: ['user', 'admin']

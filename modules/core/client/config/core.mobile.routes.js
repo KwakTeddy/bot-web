@@ -15,7 +15,7 @@ angular.module('core')
       })
     ;
 
-    $urlRouterProvider.otherwise('/userbot');
+    $urlRouterProvider.otherwise('/');
   });
 
 getMyInvestments.$inject = ['InvestmentsMyService'];

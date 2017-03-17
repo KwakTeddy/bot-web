@@ -11,7 +11,7 @@
     $stateProvider
       .state('user-bots', {
         abstract: true,
-        url: '/userbot'
+        url: '/'
       })
       .state('user-bots.list', {
         url: '?listType&botUserId',

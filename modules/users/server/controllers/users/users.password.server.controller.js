@@ -113,10 +113,10 @@ exports.validateResetToken = function (req, res) {
       return res.redirect('/password/reset/invalid');
     }
     console.log(req.params.from);
-      if (req.params.from == "user-bots-web"){
-      res.redirect('/userbot/password/reset/' + req.params.token);
-    }else {
-      res.redirect('/password/reset/' + req.params.token);
+    if (req.params.from == "user-bots-web"){
+      res.redirect('//password/reset/' + req.params.token);
+    } else {
+      res.redirect('/developer/password/reset/' + req.params.token);
     }
   });
 };
