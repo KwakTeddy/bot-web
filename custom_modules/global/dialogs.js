@@ -64,8 +64,8 @@ var globalDialogs = [
       action: function(task, context, callback) {
         task.botName = task['1'];
         var command = require(path.resolve('./modules/bot/action/common/command'));
-        command.changeBot(task, context, function(_task, _callback) {
-          callback(context, context);
+        command.changeBot(task, context, function(_task, _context) {
+          callback(_task, _context);
         });
       }
     },
