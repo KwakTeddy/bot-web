@@ -104,8 +104,19 @@ exports.exchangerate = function(task, context, callback)
   var request = require('request');
   context.dialog.item = [];
 
+  var currency = {
+    "유로":"EUR",
+    "달러":"USD",
+    "위안화":"CNY",
+    "엔화":"JPY"
+  };
+
+  var cur = query;
+  if (currency[query])
+    cur = currency[query];
+
   request({
-    url: 'http://finance.yahoo.com/d/quotes.csv?e=.csv&f=sl1d1t1&s='+ query + '=X',
+    url: 'http://finance.yahoo.com/d/quotes.csv?e=.csv&f=sl1d1t1&s='+ cur+"KRW" + '=X',
     method: 'get'
   }, function(error, response, body) {
     if (!error) {
@@ -126,14 +137,37 @@ exports.stockprice = function(task, context, callback)
   var query = task.inRaw;
   context.dialog.item = [];
 
+  var codes = context.bot.codes;
+
+  var cur = query;
+  if (codes[query])
+    cur = codes[query];
+
   yahooFinance.snapshot({
-    symbol: query,
+    symbol: cur,
     fields: ['s', 'n', 'd1', 'l1', 'y', 'r']
   }).then(function(snapshot) {
-    task.doc = snapshot;
-    context.dialog.item.push(task.doc);
-    task.count = 1;
+    if (snapshot.lastTradePriceOnly != null) {
+      task.doc = snapshot;
+      context.dialog.item.push(task.doc);
+      task.count = 1;
+    } else {
+      task.count = 0;
+    }
     console.log(JSON.stringify(snapshot, null, 2));
     callback(task,context);
   });
 };
+
+var csvFile = path.resolve("custom_modules/newsdemo/codes.csv");
+const csv = require('csvtojson');
+global._bots['newsdemo'].codes = {};
+
+csv({noheader:true})
+  .fromFile(csvFile)
+  .on('csv',  function(csvRow) {
+    global._bots['newsdemo'].codes[csvRow[0]] = csvRow[1] + ".KS";
+  })
+  .on('done', function(error) {
+  });
+
