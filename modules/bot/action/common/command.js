@@ -16,7 +16,7 @@ function command(inTextRaw, inTextNLP, context, print, callback) {
       startDialog = dialog.findDialog(null, context, dialog.START_DIALOG_NAME);
 
     if(!startDialog)
-      print('안녕하세요.' + context.bot.name + '입니다.');
+      print('안녕하세요.' + (context.bot.name || context.botUser.curBotName) + '입니다.');
       // print('시작 Dialog가 없습니다.');
     else
       dialog.executeDialog(startDialog, context, print, callback);
@@ -37,30 +37,30 @@ function command(inTextRaw, inTextNLP, context, print, callback) {
 
   } else if(cmd == ':reset user') {
     startDialog= dialog.findDialog(null, context, dialog.START_DIALOG_NAME);
-
     if(!startDialog)
-      print('안녕하세요.' + context.bot.name + '입니다.');
+      print('안녕하세요.' + (context.bot.name || context.botUser.curBotName) + '입니다.');
       // print('시작 Dialog가 없습니다.');
     else
       dialog.executeDialog(startDialog, context, print, callback);
-  } else if(cmd.indexOf(':change') == 0) {
-    var commands = cmd.split(' ');
-    if(commands.length > 1) {
-      context.botUser.curBotName = commands[1];
 
-      contextModule.getBotContext(context.botUser.curBotName, function(_botContext) {
-        context.bot = _botContext;
-
-        startDialog= dialog.findDialog(null, context, dialog.START_DIALOG_NAME);
-
-        if(!startDialog)
-          print('안녕하세요.' + context.bot.name + '입니다.');
-        else
-          print(startDialog.output);
-      });
-    } else {
-      print('봇을 찾을 수 없습니다.');
-    }
+  // } else if(cmd.indexOf(':change') == 0) {
+  //   var commands = cmd.split(' ');
+  //   if(commands.length > 1) {
+  //     context.botUser.curBotName = commands[1];
+  //
+  //     contextModule.getBotContext(context.botUser.curBotName, function(_botContext) {
+  //       context.bot = _botContext;
+  //
+  //       startDialog= dialog.findDialog(null, context, dialog.START_DIALOG_NAME);
+  //
+  //       if(!startDialog)
+  //         print('안녕하세요.' + (context.bot.name || context.botUser.curBotName) + '입니다.');
+  //       else
+  //         print(startDialog.output);
+  //     });
+  //   } else {
+  //     print('봇을 찾을 수 없습니다.');
+  //   }
   }
 }
 
@@ -84,20 +84,34 @@ exports.resetUser = resetUser;
 
 exports.changeBot = changeBot;
 
+var mongoose = require('mongoose');
+var UserBot = mongoose.model('UserBot');
 function changeBot(task, context, callback) {
-  context.botUser.curBotName = task.botName;
+  // if(context.channel.name != 'socket') context.botUser.curBotName = task.botName;
 
-  contextModule.getBotContext(context.botUser.curBotName, function(_botContext) {
+  var botName = task.botName;
+
+  console.log('changeBot: ' + botName);
+  contextModule.getBotContext(botName, function(_botContext) {
     context.bot = _botContext;
 
     var startDialog= dialog.findDialog(null, context, dialog.START_DIALOG_NAME);
 
-
     if(!startDialog)
-      task.output = '안녕하세요.' + context.bot.name + '입니다.';
+      task.output = '안녕하세요.' + (context.bot.name || botName) + '입니다.';
     else
       task.output = startDialog.output;
 
-    callback(task, context);
+    UserBot.findOne({id: botName}).lean().exec(function (err, userBot) {
+      if (err) {
+        console.log(err)
+      } else if (userBot) {
+        var json = {text: task.output, bot: userBot};
+        task.output = JSON.stringify(json);
+      }
+
+      callback(task, context);
+    });
+
   });
 }
