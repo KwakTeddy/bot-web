@@ -8,6 +8,7 @@ var crypto = require('crypto');
 var config = require(path.resolve('./config/config'));
 var mongoose = require('mongoose');
 var smtpTransport = nodemailer.createTransport(config.mailer.options);
+var command = require(path.resolve('./modules/bot/action/common/command'));
 
 function userCheck (task, context, callback) {
     var channel = context.user.channel;
@@ -40,7 +41,6 @@ function emailTypeCheck(text, type, task, context, callback) {
         User.find({'email': email}).lean().exec(function(err,docs) {
             if (docs.length != 0) {
                 matched = true;
-                context.user.playchatId = docs[0]._id;
                 context.dialog.emailcheck = email;
                 context.dialog.emailusercheck = true;
                 callback(text, task, context, matched)
@@ -134,8 +134,11 @@ function authcode (task, context, callback) {
         _doc[channel] = {};
         _doc[channel].userId = userKey;
         User.update({'email': email}, {messengerIds : _doc}, function (err) {
+        });
+        User.find({'email': email}).exec(function (err, docs) {
+            context.user.playchatId = docs[0]._id;
             callback(task,context);
-        })
+        });
     } else {
         context.dialog.codecheck = false;
         callback(task,context);
@@ -202,3 +205,13 @@ function followbotlist (task,context,callback) {
 }
 
 exports.followbotlist = followbotlist;
+
+function connectBot (task,context,callback) {
+    task.botName = context.dialog.selectbot.id;
+    command.changeBot(task, context, function(_task, _context) {
+        callback(_task, _context);
+    });
+    callback(task,context);
+}
+
+exports.connectBot = connectBot;
