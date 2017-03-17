@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('users').controller('AuthenticationController', ['$scope', '$state', '$http', '$location', '$window', 'Authentication', 'PasswordValidator',
-  function ($scope, $state, $http, $location, $window, Authentication, PasswordValidator) {
+angular.module('users').controller('AuthenticationController', ['$scope', '$state', '$http', '$location', '$window', 'Authentication', 'PasswordValidator', '$uibModal',
+  function ($scope, $state, $http, $location, $window, Authentication, PasswordValidator, $uibModal) {
     $scope.authentication = Authentication;
     $scope.popoverMsg = PasswordValidator.getPopoverMsg();
 
@@ -67,6 +67,19 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
       document.getElementById('mainHeader').style.display = 'none';
       document.getElementById('container-chat').style.display = 'none';
     }
+
+    $scope.privacy = function () {
+      var modalInstance = $uibModal.open({
+          templateUrl: 'modules/users/client/views/authentication/signup.client.privacy.view.html',
+          scope: $scope
+      });
+      modalInstance.result.then(function (response) {
+          console.log(response);
+      });
+      $scope.close = function () {
+        modalInstance.dismiss();
+      }
+    };
 
     $scope.signin = function (isValid) {
       $scope.error = null;

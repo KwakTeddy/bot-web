@@ -125,8 +125,13 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
       $scope.userBotId = vm.userBot.id;
 
       if ((channel == 'facebook') && (method !== 'easy')){
+
+
         FB.api('/me/accounts?fields=picture,name,link,access_token', function(response) {
           console.log(response);
+          if (response.error.code == 2500){
+
+          }
           $scope.pageList = [];
           $scope.pageList = response.data;
         });

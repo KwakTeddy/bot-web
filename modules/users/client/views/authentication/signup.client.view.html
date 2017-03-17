@@ -67,10 +67,10 @@
           'has-error': userForm.confirmPassword.$invalid && submitted }">
             <label>비밀번호 확인</label>
             <input type="password" name="confirmPassword" class="form-control input-lg" ng-model="credentials.confirmPassword"
-              match="userForm.pwd"
+              password-verify="credentials.password"
               required/>
             <p class="help-block"
-              ng-show="userForm.confirmPassword.$error.match && submitted">
+              ng-show="userForm.confirmPassword.$error.passwordVerify && submitted">
               비밀번호가 일치하지 않았네요
             </p>
           </div>
@@ -80,7 +80,7 @@
               <div class="col-sm-8">
                 <div class="checkbox-custom checkbox-default">
                   <input id="AgreeTerms" name="agreeterms" type="checkbox" ng-model="credentials.agreeterms" required/>
-                  <label for="AgreeTerms"><a onclick="window.open('privacy', 'privacy', 'left=50,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;">약관</a>에 동의해요</label>
+                  <label for="AgreeTerms"><a ng-click="privacy()">약관</a>에 동의해요</label>
                 </div>
               </div>
               <div class="col-sm-4 text-right">

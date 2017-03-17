@@ -117,7 +117,7 @@ exports.signup = function (req, res) {
                     }
                     res.render(path.resolve('modules/users/server/templates/email-confirm'), {
                         name: user.displayName,
-                        appName: config.app.title,
+                        appName: 'Play Chat',
                         url: httpTransport + req.headers.host + '/api/auth/emailconfirm/' + token
                     }, function (err, emailHTML) {
                         done(err, emailHTML, user);
