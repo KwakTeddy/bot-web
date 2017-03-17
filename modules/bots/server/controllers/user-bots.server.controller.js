@@ -593,7 +593,7 @@ exports.uploadImageFile = function (req, res) {
   // var user = req.user;
   var upload = multer({storage: storage}).single('uploadImageFile');
 
-  // Filtering to upload only images
+    // Filtering to upload only images
   upload.fileFilter = function (req, file, cb) {
     if (file.mimetype !== 'image/png' && file.mimetype !== 'image/jpg' && file.mimetype !== 'image/jpeg' && file.mimetype !== 'image/gif') {
       return cb(new Error('Only image files are allowed!'), false);

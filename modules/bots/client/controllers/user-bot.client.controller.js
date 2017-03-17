@@ -71,6 +71,10 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
         $scope.$broadcast('show-errors-check-validity', 'userBotForm');
         return false;
       }
+      console.log(vm.userBot);
+      if(!vm.userBot.imageFile){
+        vm.userBot.imageFile = "/files/default.png"
+      }
 
       vm.userBot.$save(function (response) {
         if($state.is('user-bots-web.create') || $state.is('user-bots-web.edit')) {
@@ -110,16 +114,18 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
 
     // Update existing UserBot
     vm.update = function (isValid) {
+      console.log(isValid);
       $scope.error = null;
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'userBotForm');
         return false;
       }
-
+      console.log(vm.userBot._id);
       if(vm.userBot && vm.userBot._id) {
         vm.userBot.$update(function () {
           $state.go('user-bots-web.list', {listType: 'my'});
         }, function (errorResponse) {
+          console.log(errorResponse);
           $scope.error = errorResponse.data.message;
         });
       }
@@ -241,6 +247,8 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
 
     /********************* image *********************/
     $scope.imageURL = undefined;
+    $scope.error = {};
+    $scope.success = {};
 
     // Create file imageUploader instance
     $scope.imageUploader = new FileUploader({
@@ -253,6 +261,12 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
       name: 'imageFilter',
       fn: function (item, options) {
         var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+        if('|jpg|png|jpeg|bmp|gif|'.indexOf(type) == -1){
+          $scope.success.image = null;
+          $scope.error['image'] = '이미지 파일이 아니에요'
+        }else {
+          $scope.error.image = null;
+        }
         return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
       }
     });
@@ -274,7 +288,7 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
     // Called after the user has successfully uploaded a new picture
     $scope.imageUploader.onSuccessItem = function (fileItem, response, status, headers) {
       // Show success message
-      $scope.success = true;
+      $scope.success['image'] = true;
 
       vm.userBot.imageFile = '/files/' + response.filename;
       // Clear upload buttons
@@ -319,7 +333,13 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
       name: 'fileFilter',
       fn: function (item, options) {
         var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
-        return '|plain|txt|csv|'.indexOf(type) !== -1;
+        if('|plain|txt|csv|'.indexOf(type) == -1){
+            $scope.success.file = null;
+            $scope.error['file'] = '대화 파일이 아니에요'
+        }else {
+            $scope.error.file = null;
+        }
+        return '|plain|txt|csv|smi|'.indexOf(type) !== -1;
       }
     });
 
@@ -331,7 +351,6 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
 
         fileReader.onload = function (fileReaderEvent) {
           $timeout(function () {
-            $scope.imageURL = fileReaderEvent.target.result;
           }, 0);
         };
       }
@@ -342,7 +361,7 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
     // Called after the user has successfully uploaded a new picture
     $scope.uploader.onSuccessItem = function (fileItem, response, status, headers) {
       // Show success message
-      $scope.success = true;
+      $scope.success['file'] = true;
 
       // vm.userBot.dialogFile = response.filename;
 

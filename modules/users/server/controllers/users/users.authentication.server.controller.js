@@ -47,10 +47,14 @@ exports.signup = function (req, res) {
             return err;
         } else {
             if (result && result.emailConfirmed) {
-                return null;
+                return res.status(400).send({
+                    message: '가입되어 있는 E-mail이네요'
+                });
             }
             if (result && (result.provider == user.provider)){
-                return null;
+                return res.status(400).send({
+                    message: '가입되어 있는 E-mail이네요'
+                });
             }
             async.waterfall([
                 // Generate random token
@@ -70,7 +74,6 @@ exports.signup = function (req, res) {
                                     // Remove sensitive data before login
                                     user.password = undefined;
                                     user.salt = undefined;
-                                    return res.status(200).redirect('');
                                 }
                             });
                         } else if (result.provider !== user.provider && (!result.additionalProvidersData || !result.additionalProvidersData[user.provider])) {
@@ -132,6 +135,7 @@ exports.signup = function (req, res) {
                         html: emailHTML
                     };
                     smtpTransport.sendMail(mailOptions, function (err) {
+                        console.log(err);
                         if (!err) {
                             res.send({
                                 message: 'An email has been sent to the provided email with further instructions.'

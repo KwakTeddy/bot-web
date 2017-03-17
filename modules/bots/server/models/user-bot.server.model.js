@@ -41,6 +41,11 @@ var UserBotSchema = new Schema({
     default: true
   },
 
+  learn: {
+    type: Boolean,
+    default: false
+  },
+
   imageFile: {
     type: String
   },

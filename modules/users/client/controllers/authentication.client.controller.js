@@ -34,23 +34,29 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
     $scope.signup = function (isValid) {
       $scope.error = {};
       $scope.submitted = true;
-      console.log(isValid);
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'userForm');
-
         return false;
       }
 
       $http.post('/api/auth/signup', $scope.credentials).success(function (response) {
-        // If successful we assign the response to the global user model
-        $scope.authentication.user = response;
+        console.log(response);
+        var modalInstance = $uibModal.open({
+            templateUrl: 'modules/users/client/views/authentication/email.confirm.modal.html',
+            scope: $scope
+        });
+        $scope.close = function () {
+            modalInstance.dismiss();
+            $state.go('user-bots-home');
+        };
+        modalInstance.result.then(function (response) {
+            console.log(response);
+        });
 
-        // And redirect to the previous or home page
-        $state.go($state.previous.state.name || 'home', $state.previous.params);
       }).error(function (response) {
         console.log(response);
-        if(response.message.match('email')){
-            $scope.error.email = 'email already exist';
+        if(response.message.match('E-mail')){
+            $scope.error.email = '이미 존재하는 E-mail이네요';
         } else if(response.message.match('username')) {
             $scope.error.username = 'username already exist';
         }
