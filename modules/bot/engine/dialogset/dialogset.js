@@ -14,6 +14,7 @@ var dialogsetKdrama = require('./dialogset-kdrama');
 
 var DialogsetDialog = mongoose.model('DialogsetDialog');
 
+var util = require('util'); //temporary
 
 function convertDialogset1(dialogset, callback) {
   var dialogType = dialogset.type;
@@ -23,6 +24,7 @@ function convertDialogset1(dialogset, callback) {
     if(info.ext == '.csv') {dialogType = 'csv';}
     else if(info.ext == '.smi') {dialogType = 'smi';}
   }
+  console.log(dialogType);
 
   var dir = path.resolve('public/files/');
   var filepath = path.join(dir, dialogset.filename);

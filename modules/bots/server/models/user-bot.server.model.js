@@ -66,6 +66,10 @@ var UserBotSchema = new Schema({
   created: {
     type: Date,
     default: Date.now
+  },
+  learning: {
+    type: Boolean,
+    default: false
   }
 });
 

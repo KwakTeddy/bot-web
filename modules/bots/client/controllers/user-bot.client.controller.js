@@ -16,6 +16,10 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
       // console.log(res);
     });
 
+    $scope.$watch(vm.userBot.learning, function () {
+       console.log('chagadfchange')
+    });
+
     // UserBotsFollowService.get()
     // if(vm.userBot && vm.userBot._id)
     //   $rootScope.$broadcast('setUserBot', vm.userBot);
@@ -68,15 +72,14 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
     // Create new UserBot
     vm.create = function (isValid) {
       $scope.error = null;
+      $scope.submitted = true;
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'userBotForm');
         return false;
       }
-      console.log(vm.userBot);
       if(!vm.userBot.imageFile){
         vm.userBot.imageFile = "/files/default.png"
       }
-
       vm.userBot.$save(function (response) {
         if($state.is('user-bots-web.create') || $state.is('user-bots-web.edit')) {
           $rootScope.$broadcast('setUserBot', vm.userBot);
@@ -117,6 +120,7 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
     vm.update = function (isValid) {
       console.log(isValid);
       $scope.error = null;
+      $scope.submitted = true;
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'userBotForm');
         return false;

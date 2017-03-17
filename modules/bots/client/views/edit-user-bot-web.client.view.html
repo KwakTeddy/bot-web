@@ -108,33 +108,68 @@
 
                         <div class="form-group" >
                             <label class="col-sm-3 control-label">봇아이디 <span class="required" aria-required="true">*</span></label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-7">
                                 <input type="text" name="id" ng-model="vm.userBot.id" class="form-control valid"
                                        placeholder="영어(대문자)와 _의 조합, 추후 변경 불가"
                                        required
                                        aria-required="true" aria-invalid="false"
                                        ng-disabled="vm.userBot._id" >
                             </div>
-                            <div ng-messages="userBotForm.id.$error" role="alert" class="col-sm-offset-3 col-sm-9">
-                                <p class="help-block error-text" ng-message="required">아이디를 입력해주세요</p>
+                            <div ng-messages="userBotForm.id.$error" role="alert" class="col-sm-offset-3 col-sm-9" ng-show = "userBotForm.id.$error && submitted">
+                                <p class="help-block error-text text-danger" ng-message="required">아이디를 입력해야죠</p>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">봇이름 <span class="required" aria-required="true">*</span></label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-7">
                                 <input type="text" name="name" ng-model="vm.userBot.name" class="form-control valid" placeholder="자유롭게 입력해주세요"
                                        required
                                        aria-required="true" aria-invalid="false">
                             </div>
-                            <div ng-messages="userBotForm.name.$error" role="alert" class="col-sm-offset-3 col-sm-9">
-                                <p class="help-block error-text" ng-message="required">이름을 입력해주세요</p>
+                            <div ng-messages="userBotForm.name.$error" role="alert" class="col-sm-offset-3 col-sm-9" ng-show = "userBotForm.name.$error && submitted">
+                                <p class="help-block error-text text-danger" ng-message="required">이름을 입력해야죠</p>
                             </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="col-sm-3 control-label">설명 <span class="required" aria-required="true">*</span></label>
+                          <div class="col-sm-7">
+                                  <textarea name="description" ng-model="vm.userBot.description" id="description" rows="5" class="form-control"
+                                            placeholder="내용을 입력해주세요" aria-invalid="true" required></textarea>
+                          </div>
+                          <div ng-messages="userBotForm.description.$error" role="alert" class="col-sm-offset-3 col-sm-9" ng-show = "userBotForm.description.$error && submitted">
+                            <p class="help-block error-text text-danger" ng-message="required">설명해줘요</p>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="col-sm-3 control-label">대화파일 <span class="required" aria-required="true"></span></label>
+
+                          <div class="col-sm-9">
+
+                            <div class="text-left" ng-hide="uploader.queue.length" style="display: inline;">
+                                        <span class="btn btn-default btn-file">
+                                            <input type="file" nv-file-select uploader="uploader" style="width:200px;" required>
+                                        </span>
+                              <span ng-show="success.file" class="text-center text-success">
+                                          <strong>대화 파일이 업로드 되었네요</strong>
+                                        </span>
+                              <span ng-show="error.file" class="text-center text-danger">
+                                          <strong ng-bind="error.file"></strong>
+                                        </span>
+                            </div>
+                            <div class="text-center form-group" ng-show="false">
+                              <button class="btn btn-primary" ng-click="uploadDialogFiles();">Upload</button>
+                              <button class="btn btn-default" ng-click="cancelUpload();">Cancel</button>
+                            </div>
+                          </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-sm-3 control-label">이미지</label>
                             <div class="col-sm-9">
-                                <img ng-src="{{imageURL}}" class="img-thumbnail user-profile-picture" style="width:200px; height: 200px;text-align:center;line-height: 200px;" alt="이미지를 업로드해요">
+                                <img ng-src="{{imageURL}}" class="img-thumbnail user-profile-picture" style="width:150px; height: 150px;text-align:center;line-height: 150px;" alt="이미지를 업로드해요">
+                                <p></p>
                                 <div class="text-left" ng-hide="imageUploader.queue.length">
                                   <span class="btn btn-default btn-file">
                                       <input type="file" nv-file-select uploader="imageUploader" style="width:200px;">
@@ -153,67 +188,36 @@
                         </div>
 
 
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">파일종류 <span class="required" aria-required="true"></span></label>
-                            <div class="col-sm-9">
+                        <!--<div class="form-group">-->
+                            <!--<label class="col-sm-3 control-label">파일종류 <span class="required" aria-required="true"></span></label>-->
+                            <!--<div class="col-sm-9">-->
 
-                                <div class="radio" style="float:left; margin-right: 10px;">
-                                    <label>
-                                        <input type="radio" name="type" id="type1" value="csv" checked="" ng-model="vm.userBot.type">
-                                        엑셀파일(csv)
-                                    </label>
-                                </div>
-                                <div class="radio" style="float:left; margin-right: 10px;">
-                                    <label>
-                                        <input type="radio" name="type" id="type2" value="kakao" ng-model="vm.userBot.type">
-                                        카카오톡 파일
-                                    </label>
-                                </div>
-
-                                <div class="radio" style="float:left; margin-right: 10px;">
-                                    <label>
-                                        <input type="radio" name="type" id="type3" value="smi" ng-model="vm.userBot.type">
-                                        자막파일 (smi)
-                                    </label>
-                                </div>
-
-                                <!--<div ng-messages="userBotForm.type.$error" role="alert" class="col-sm-offset-3 col-sm-9">-->
-                                    <!--<p class="help-block error-text" ng-message="required">파일종류를 선택해주세요</p>-->
+                                <!--<div class="radio" style="float:left; margin-right: 10px;">-->
+                                    <!--<label>-->
+                                        <!--<input type="radio" name="type" id="type1" value="csv" checked="" ng-model="vm.userBot.type">-->
+                                        <!--엑셀파일(csv)-->
+                                    <!--</label>-->
+                                <!--</div>-->
+                                <!--<div class="radio" style="float:left; margin-right: 10px;">-->
+                                    <!--<label>-->
+                                        <!--<input type="radio" name="type" id="type2" value="kakao" ng-model="vm.userBot.type">-->
+                                        <!--카카오톡 파일-->
+                                    <!--</label>-->
                                 <!--</div>-->
 
-                            </div>
-                        </div>
+                                <!--<div class="radio" style="float:left; margin-right: 10px;">-->
+                                    <!--<label>-->
+                                        <!--<input type="radio" name="type" id="type3" value="smi" ng-model="vm.userBot.type">-->
+                                        <!--자막파일 (smi)-->
+                                    <!--</label>-->
+                                <!--</div>-->
 
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">대화파일 <span class="required" aria-required="true"></span></label>
+                                <!--&lt;!&ndash;<div ng-messages="userBotForm.type.$error" role="alert" class="col-sm-offset-3 col-sm-9">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<p class="help-block error-text" ng-message="required">파일종류를 선택해주세요</p>&ndash;&gt;-->
+                                <!--&lt;!&ndash;</div>&ndash;&gt;-->
 
-                            <div class="col-sm-9">
-
-                                <div class="text-left" ng-hide="uploader.queue.length" style="display: inline;">
-                                      <span class="btn btn-default btn-file">
-                                          <input type="file" nv-file-select uploader="uploader" style="width:200px;" required>
-                                      </span>
-                                      <span ng-show="success.file" class="text-center text-success">
-                                        <strong>대화 파일이 업로드 되었네요</strong>
-                                      </span>
-                                      <span ng-show="error.file" class="text-center text-danger">
-                                        <strong ng-bind="error.file"></strong>
-                                      </span>
-                                </div>
-                                <div class="text-center form-group" ng-show="false">
-                                    <button class="btn btn-primary" ng-click="uploadDialogFiles();">Upload</button>
-                                    <button class="btn btn-default" ng-click="cancelUpload();">Cancel</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">설명 </label>
-                            <div class="col-sm-9">
-                                <textarea name="description" ng-model="vm.userBot.description" id="description" rows="5" class="form-control"
-                                    placeholder="내용을 입력해주세요" aria-invalid="true"></textarea>
-                            </div>
-                        </div>
+                            <!--</div>-->
+                        <!--</div>-->
 
                         <!--<div class="form-group">-->
                             <!--<label class="col-sm-3 control-label">채널 <span class="required" aria-required="true">*</span></label>-->

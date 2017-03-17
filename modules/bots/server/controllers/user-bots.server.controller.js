@@ -30,6 +30,7 @@ exports.create = function (req, res) {
 
   var userBot = new UserBot(req.body);
   userBot.user = req.user;
+  userBot['learning'] = true;
 
   userBot.save(function (err) {
     if (err) {
@@ -54,17 +55,19 @@ exports.create = function (req, res) {
           callback(err);
         } else {
           dialogsetModule.convertDialogset1(dialogset, function(result) {
+            userBot['learning'] = false;
             userBot.dialogsets = [dialogset];
             userBot.save(function(err) {
               if(console.log(err));
-            })
+              res.json(userBot);
+            });
 
             console.log(dialogset.filename + ' converted');
           })
         }
       });
 
-      res.json(userBot);
+      // res.json(userBot);
 
       // dialogsetModule.convertDialogset(userBot.dialogFile, function(result) {
       //   userBot.dialogset = result;
