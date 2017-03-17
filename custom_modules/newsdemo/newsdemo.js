@@ -2,6 +2,7 @@ var path = require('path');
 var mongo = require(path.resolve('./modules/bot/action/common/mongo'));
 var bot = require(path.resolve('config/lib/bot')).getBot('csdemo');
 var async = require('async');
+var yahooFinance = require('yahoo-finance');
 
 
 
@@ -75,24 +76,64 @@ function naverNewsSearch(task, context, callback) {
 
   request({
     url: 'https://openapi.naver.com/v1/search/news.json?&display=100&start=1',
-    method: 'GET',
+    method: 'get',
     qs: query,
     headers: {
-      'Host': 'openapi.naver.com',
-      'Accept': '*/*',
-      'Content-Type': 'application/json',
-      'X-Naver-Client-Id': context.bot.naver.clientId,
-      'X-Naver-Client-Secret': context.bot.naver.clientSecret
+      'host': 'openapi.naver.com',
+      'accept': '*/*',
+      'content-type': 'application/json',
+      'x-naver-client-id': context.bot.naver.clientid,
+      'x-naver-client-secret': context.bot.naver.clientsecret
     }
   }, function(error, response, body) {
-    if (!error && response.statusCode == 200) {
+    if (!error && response.statuscode == 200) {
       // console.log(body);
-      var doc = JSON.parse(body);
+      var doc = json.parse(body);
       task.doc = doc.items;
-      // console.log('naverNewsSearch: doc=' + body);
+      // console.log('navernewssearch: doc=' + body);
     }
     callback(task, context);
   });
 }
 
 exports.naverNewsSearch = naverNewsSearch;
+
+exports.exchangerate = function(task, context, callback)
+{
+  var query = task.inRaw;
+  var request = require('request');
+  context.dialog.item = [];
+
+  request({
+    url: 'http://finance.yahoo.com/d/quotes.csv?e=.csv&f=sl1d1t1&s='+ query + '=X',
+    method: 'get'
+  }, function(error, response, body) {
+    if (!error) {
+      console.log(body);
+      var items = body.split(',');
+      task.doc = {rate: items[1], date: (items[2]+" "+items[3]).replace(/['"]+/g, '')};
+      context.dialog.item.push(task.doc);
+      task.count = 1;
+    } else {
+      task.count = 0;
+    }
+    callback(task,context);
+  });
+};
+
+exports.stockprice = function(task, context, callback)
+{
+  var query = task.inRaw;
+  context.dialog.item = [];
+
+  yahooFinance.snapshot({
+    symbol: query,
+    fields: ['s', 'n', 'd1', 'l1', 'y', 'r']
+  }).then(function(snapshot) {
+    task.doc = snapshot;
+    context.dialog.item.push(task.doc);
+    task.count = 1;
+    console.log(JSON.stringify(snapshot, null, 2));
+    callback(task,context);
+  });
+};

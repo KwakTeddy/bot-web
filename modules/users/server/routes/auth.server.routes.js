@@ -23,12 +23,14 @@ module.exports = function (app) {
   app.route('/api/auth/signout').get(users.signout);
 
   // Setting the facebook oauth routes
-  app.route('/api/auth/facebook').get(users.oauthCall('facebook', {
+  app.route('/api/auth/facebook').get(users.oauthCall('facebook'));
+  app.route('/api/auth/facebook/').get(users.oauthCall('facebook', {
     scope: [
         'pages_show_list',
         'pages_messaging',
         'manage_pages'
   ]}));
+
   app.route('/api/auth/facebook/:callback').get(users.oauthCallback('facebook'));
 
   // Setting the twitter oauth routes

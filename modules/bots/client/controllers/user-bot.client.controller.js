@@ -50,10 +50,15 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
     };
 
     vm.fbShare = function () {
+      console.log(vm.userBot);
+      $scope.location = location.href;
       FB.ui({
           method: 'share',
           display: 'popup',
-          href: 'https://dev.moneybrain.ai/userbot'
+          href: $scope.location,
+          title: vm.userBot.name,
+          description: vm.userBot.description,
+          image: location.protocol+'//'+location.hostname+'/'+vm.userBot.imageFile,
       }, function(response){
         console.log(response);
       });
@@ -115,11 +120,16 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
     vm.modal = function (channel, method) {
       $scope.channel = channel;
       $scope.method = method;
-      $scope.userBotId = vm.userBot._id
+      $scope.userBotId = vm.userBot.id;
 
       if ((channel == 'facebook') && (method !== 'easy')){
+
+
         FB.api('/me/accounts?fields=picture,name,link,access_token', function(response) {
           console.log(response);
+          if (response.error.code == 2500){
+
+          }
           $scope.pageList = [];
           $scope.pageList = response.data;
         });

@@ -54,25 +54,7 @@ module.exports = function (app, db) {
         '!SRP',
         '!CAMELLIA'
       ].join(':'),
-      honorCipherOrder: true,
-      SNICallback: function(servername, cb) {
-        var certificates = {
-          "bot.moneybrain.ai": [privateKey, certificate]
-        };
-        if (certificates[servername]) {
-          var ctx = tls.createSecureContext({
-            key: certificates[servername][0],
-            cert: certificates[servername][1]
-            // passphrase: passphrase
-          });
-          // Compatibility with old versions of node
-          if (cb) {
-            cb(null, ctx);
-          } else {
-            return ctx;
-          }
-        }
-      }
+      honorCipherOrder: true
     };
 
     // Create new HTTPS Server
