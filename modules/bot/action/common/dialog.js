@@ -116,7 +116,7 @@ function matchGlobalDialogs(inRaw, inNLP, dialogs, context, print, callback, wor
             }
           }
 
-          if(context.bot.useQuibble) {
+          if(/*context.bot.useQuibble*/ true) {
             context.dialog.isFail = true;
             print(quibble.quibble(context));
           } else if(context.bot.noDialog) {
@@ -217,7 +217,7 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback, opti
                 matchChildDialogs(_inRaw, _inNLP, dialogs, context, print, callback, options, true);
               });
             } else {
-              if(context.bot.useQuibble) {
+              if(/*context.bot.useQuibble*/ true) {
                 context.dialog.isFail = true;
                 print(quibble.quibble(context));
               } else if(context.bot.noDialog) {

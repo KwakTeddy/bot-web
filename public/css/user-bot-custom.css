@@ -52,7 +52,7 @@ a.active {
 #mainNav {
 	background-color: white;
 	padding: 10px 0;
-    border-bottom: 0px;
+    border-bottom: 0px solid #ddd;
 }
 
 #mainNav a{
@@ -102,9 +102,9 @@ a.active {
 
 
 header {
-    background-image: url('/images/star1.png');
-    background-color: rgba(104,174,224, 0.30);
-    background-blend-mode: overlay;
+    background-image: url('/images/star.jpg');
+    /*background-color: rgba(104,174,224, 0.30);*/
+    /*background-blend-mode: overlay;*/
 }
 /*
 background-color: rgba(0,0,0, 0.50);
@@ -168,7 +168,7 @@ header .intro-text .intro-in {
   font-size: 14px;
   padding-top: 40px;
   padding-bottom: 40px;
-  background: #032147;          /*#003b59 #595657 #5CB7E7 #0088CC*/
+  background: #13ADEA;          /*#003b59 #595657 #5CB7E7 #0088CC*/
   color: white;
 }
 .footer-3.v-center,
