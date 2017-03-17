@@ -66,8 +66,6 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
 
     // Create new UserBot
     vm.create = function (isValid) {
-      console.log(vm.userBot);
-      console.log(isValid);
       $scope.error = null;
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'userBotForm');
