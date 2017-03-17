@@ -24,7 +24,7 @@ module.exports = function (app) {
 
   // Setting the facebook oauth routes
   app.route('/api/auth/facebook').get(users.oauthCall('facebook'));
-  app.route('/api/auth/facebook/').get(users.oauthCall('facebook', {
+  app.route('/api/auth/facebook/page').get(users.oauthCall('facebook', {
     scope: [
         'pages_show_list',
         'pages_messaging',

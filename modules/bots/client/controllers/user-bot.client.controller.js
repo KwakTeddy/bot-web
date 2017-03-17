@@ -128,7 +128,13 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
         FB.api('/me/accounts?fields=picture,name,link,access_token', function(response) {
           console.log(response);
           if (response.error.code == 2500){
-
+            var url = '/api/auth/facebook/page';
+            if ($state.previous && $state.previous.href) {
+                url += '?redirect_to=' + encodeURIComponent($state.previous.href);
+            }
+            // Effectively call OAuth authentication route:
+              console.log(url);
+            $window.location.href = url;
           }
           $scope.pageList = [];
           $scope.pageList = response.data;
