@@ -173,7 +173,7 @@ global._bots['athena'].codes = {};
 csv({noheader:true})
   .fromFile(csvFile)
   .on('csv',  function(csvRow) {
-    global._bots['ahtena'].codes[csvRow[0]] = csvRow[1] + ".KS";
+    global._bots['athena'].codes[csvRow[0]] = csvRow[1] + ".KS";
   })
   .on('done', function(error) {
   });
