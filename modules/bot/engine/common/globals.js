@@ -22,6 +22,7 @@ exports.initGlobals = function() {
   if(!global._context.messages) global._context.messages = {};
 
   loadGlobals(path.resolve('modules/bot/global'));
+  loadGlobals(path.resolve('custom_modules/global'));
   console.log('Load Global: [END]');
 };
 
