@@ -2,6 +2,8 @@ var path = require('path');
 var mongo = require(path.resolve('./modules/bot/action/common/mongo'));
 var bot = require(path.resolve('config/lib/bot')).getBot('athena');
 var async = require('async');
+var address = require(path.resolve('modules/bot/action/common/address'));
+
 
 var newscrawl = {
     module: 'http',
@@ -32,3 +34,31 @@ var newscrawl = {
 
 bot.setTask('newscrawl', newscrawl);
 exports.newscrawl = newscrawl;
+
+function searchNaver(task, context, callback) {
+    task.query=context.dialog.inRaw;
+
+    address.naverGeoSearch(task, context, function(task, context) {
+        for(var i = 0; i < task.doc.length; i++) {
+            var item = task.doc[i];
+            item.title = item.title.replace(/<[^>]+>/, '');
+            item.title = item.title.replace(/<\/[^>]+>/, '');
+        }
+
+        if(task.doc && task.doc.length > 0) task.count = task.doc.length;
+        else task.count = 0;
+
+        context.dialog.item = task.doc;
+        if (context.dialog.item.length != 0) {
+            callback(task,context);
+        } else {
+            context.dialog.check = 're';
+            callback(task, context);
+        }
+    });
+
+}
+
+exports.searchNaver = searchNaver;
+
+
