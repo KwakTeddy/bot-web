@@ -9,75 +9,47 @@ var up = /(?:^0$)/
 
 var dialogs = [
 {
-  id: 1,
-  input: '환율',
-  output: '환율코드를 알려주세요 ex) USD or 달러?', 
-    children: [
-    {
-      id: 0,
-      input: {regexp: /[A-Z|a-z|가-힣]/g},
-      task:       {action: newsdemo.exchangerate},
-      output: 
-      {if: 'context.dialog.item.length != 0', output: '+date+ 현재 환율은 +rate+입니다.'}
-    }
-  ]
-},
-{
-  id: 3,
-  input: '주가',
-  output: '회사코드나 이름을 알려주세요 AAPL or 삼성전자?', 
-    children: [
-    {
-      id: 2,
-      input: {regexp: /[A-Z|a-z|가-힣]/g},
-      task:       {action: newsdemo.stockprice},
-      output: 
-      {if: 'context.dialog.item.length != 0', output: '+name+의 +lastTradeDate+ 종가는 +lastTradePriceOnly+입니다.'}
-    }
-  ]
-},
-{
-  id: 6,
+  id: 2,
   input: '뉴스',
   output: '조선일보 뉴스를 검색할까요? 아니면 전체 언론사 뉴스를 검색할까요?', 
     children: [
     {
-      id: 4,
+      id: 0,
       input: ['조선', '조선일보'],
       output: {call:'조선'}
     },
     {
-      id: 5,
+      id: 1,
       input: '전체',
       output: {call:'전체'}
     }
   ]
 },
 {
-  id: 12,
+  id: 8,
   name: '조선',
   input: false,
   output: '검색어를 말씀해주세요', 
     children: [
     {
-      id: 11,
+      id: 7,
       input: {regexp: /[가-힣]/g},
       task:       {action: newsdemo.searchNaver},
       output: [
       {if: 'context.dialog.item.length != 0', output: '#item#+index+. +title+\n#0.이전\n!.다른뉴스검색', 
         children: [
         {
-          id: 7,
+          id: 3,
           input: ['!', '다른'],
           output: {call:'조선'}
         },
         {
-          id: 9,
+          id: 5,
           input: {types: [{name: 'news', listName: 'item', field: 'title', typeCheck: 'listTypeCheck'}]},
           output: '+news.title+\n+news.description+\n+news.originallink+\n0.이전\n!.다른뉴스검색', 
             children: [
             {
-              id: 8,
+              id: 4,
               input: ['!', '다른'],
               output: {call:'조선'}
             }
@@ -87,7 +59,7 @@ var dialogs = [
       {if: 'context.dialog.item.length == 0', output: {repeat: 1, options : {output: '죄송합니다. 관련된 기사를 찾을 수 없습니다. 다른 검색어를 말씀해주세요\n0.이전\n!.다른뉴스검색'}}, 
         children: [
         {
-          id: 10,
+          id: 6,
           input: '!',
           output: {call:'조선'}
         }
@@ -96,30 +68,30 @@ var dialogs = [
   ]
 },
 {
-  id: 18,
+  id: 14,
   name: '전체',
   input: false,
   output: '검색어를 말씀해주세요', 
     children: [
     {
-      id: 17,
+      id: 13,
       input: {regexp: /[가-힣]/g},
       task:       {action: newsdemo.searchallNaver},
       output: [
       {if: 'context.dialog.item.length != 0', output: '#item#+index+. +title+\n#0.이전\n!.다른뉴스검색', 
         children: [
         {
-          id: 13,
+          id: 9,
           input: ['!', '다른'],
           output: {call:'전체'}
         },
         {
-          id: 15,
+          id: 11,
           input: {types: [{name: 'news', listName: 'item', field: 'title', typeCheck: 'listTypeCheck'}]},
           output: '+news.title+\n+news.description+\n+news.originallink+\n0.이전\n!.다른뉴스검색', 
             children: [
             {
-              id: 14,
+              id: 10,
               input: ['!', '다른'],
               output: {call:'전체'}
             }
@@ -129,7 +101,7 @@ var dialogs = [
       {if: 'context.dialog.item.length == 0', output: {repeat: 1, options : {output: '죄송합니다. 관련된 기사를 찾을 수 없습니다. 다른 검색어를 말씀해주세요\n0.이전\n!.다른뉴스검색'}}, 
         children: [
             {
-              id: 16,
+              id: 12,
               input: '!',
               output: {call:'전체'}
             }
