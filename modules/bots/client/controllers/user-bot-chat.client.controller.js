@@ -49,7 +49,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       //   console.log(message.lastIndexOf(':log'));
 
       if(message.lastIndexOf(':log') == 0) {
-        if(!$state.is('home') && !$state.is('user-bots.context-analytics') &&
+        if(!$state.is('developer-home') && !$state.is('user-bots.context-analytics') &&
           !$state.is('bots.graph-knowledge') && !$state.is('bots.graph-dialog')) return;
         // vm.log += message.substring(message.indexOf('\n')+1);
         // logScrollBottom()
