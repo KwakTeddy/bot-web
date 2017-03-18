@@ -59,9 +59,6 @@ angular.module('user-bots').config(['$stateProvider',
         controllerAs: 'vm',
         resolve: {
           userBotResolve: getUserBot
-        },
-        data: {
-          roles: ['guest','user', 'admin']
         }
       })
       .state('user-bots-web.settings', {
