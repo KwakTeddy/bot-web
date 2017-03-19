@@ -35,7 +35,6 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         Socket.connect();
       }
 
-      console.log('connect: ' + vm.bot);
       $cookies.put('default_bot', vm.bot);
 
       vm.isConnected = true;
@@ -153,7 +152,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
       $resource('/api/user-bots/byNameId/:botNameId', {botNameId:'@id'}).
       get({botNameId: botId}, function(data) {
-        console.log(data);
+        // console.log(data);
 
         vm.changeBotInfo(data);
         vm.connect();
