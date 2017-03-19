@@ -79,7 +79,7 @@
                                     <span style="color: #888;font-size: 12px; ">{{comment.user.created | date: 'medium'}}</span>
                                 </div>
                                 <div style="color: #555;font-size: 14px;float:left;margin-right: 10px">{{comment.text}} </div>
-                                <button class="btn btn-default btn-xs " ng-click="vm.removeComment(comment);">삭제</button>
+                                <button class="btn btn-default btn-xs " ng-show="comment.user.username == vm.user.username" ng-click="vm.removeComment(comment);">삭제</button>
                             </li>
                         </ul>
                     </div>
