@@ -111,16 +111,9 @@ exports.exchangerate = function(task, context, callback)
   var request = require('request');
   context.dialog.item = [];
 
-  var currency = {
-    "유로":"EUR",
-    "달러":"USD",
-    "위안화":"CNY",
-    "엔화":"JPY"
-  };
-
   var cur = query;
-  if (currency[query])
-    cur = currency[query];
+  if (context.bot.currency[query])
+    cur = context.bot.currency[query];
 
   request({
     url: 'http://finance.yahoo.com/d/quotes.csv?e=.csv&f=sl1d1t1&s='+ cur+"KRW" + '=X',
@@ -166,8 +159,17 @@ exports.stockprice = function(task, context, callback)
   });
 };
 
-var csvFile = path.resolve("custom_modules/athena/codes.csv");
+// initialize dictionaries
 const csv = require('csvtojson');
+
+global._bots["athena"].currency = {
+  "유로":"EUR",
+  "달러":"USD",
+  "위안화":"CNY",
+  "엔화":"JPY"
+};
+
+var csvFile = path.resolve("custom_modules/athena/codes.csv");
 global._bots['athena'].codes = {};
 
 csv({noheader:true})
