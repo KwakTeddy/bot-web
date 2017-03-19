@@ -9,7 +9,7 @@
                     <div class="bot-list-header" ng-show="vm.state=='view'" style="border-bottom: 1px solid lightgray;">
                         <ul class="nav nav-tabs">
                             <li role="presentation" ng-class="{active: vm.type == 'view'}"><a ng-click="vm.changeType('view');">챗봇정보</a></li>
-                            <li role="presentation" ng-class="{active: vm.type == 'learn'}"><a ng-click="vm.changeType('learn');">대화학습</a></li>
+                            <li role="presentation" ng-if="vm.isLearnable" ng-class="{active: vm.type == 'learn'}"><a ng-click="vm.changeType('learn');">대화학습</a></li>
                         </ul>
                     </div>
 
@@ -354,9 +354,9 @@
                             </div>
                         </div>
                     </footer>
-                    <div ng-show="error" class="text-danger">
-                        <strong ng-bind="error"></strong>
-                    </div>
+                    <!--<div ng-show="error" class="text-danger">-->
+                        <!--<strong ng-bind="error"></strong>-->
+                    <!--</div>-->
                 </form>
 
             </div>

@@ -7,7 +7,7 @@ angular.module('bots').config(['$stateProvider',
     $stateProvider
       .state('bots', {
         abstract: true,
-        url: '/bots',
+        url: '/developer/bots',
         template: '<ui-view/>',
         data: {
           roles: ['user', 'admin']

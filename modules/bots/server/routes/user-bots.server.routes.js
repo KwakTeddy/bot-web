@@ -54,11 +54,11 @@ module.exports = function (app) {
     .put(userBots.updateComment)
     .delete(userBots.deleteComment);
 
-  app.route('/api/user-bots-dialog/:userBotId')
+  app.route('/api/user-bots-dialog/:dBotId')
     .get(userBots.listDialog)
     .post(userBots.createDialog);
 
-  app.route('/api/user-bots-dialog/:userBotId/:userBotDialogId')
+  app.route('/api/user-bots-dialog/:dBotId/:userBotDialogId')
     .get(userBots.readDialog)
     .put(userBots.updateDialog)
     .delete(userBots.deleteDialog);

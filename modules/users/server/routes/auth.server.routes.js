@@ -8,7 +8,6 @@ const util = require('util'); //temporary
 module.exports = function (app) {
   // User Routes
   var users = require('../controllers/users.server.controller');
-  var googletask = require('../../../../custom_modules/athena/googletask');
   // Setting up the users password api
   app.route('/api/auth/forgot').post(users.forgot);
   app.route('/api/auth/reset/:token/:from').get(users.validateResetToken);

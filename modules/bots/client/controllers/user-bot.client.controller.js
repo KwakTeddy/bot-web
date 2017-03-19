@@ -10,6 +10,8 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
     vm.userBot.public = true;
     vm.userId = $rootScope.userId;
 
+    vm.isLearnable = (vm.userBot.learn || vm.user === vm.userBot.user);
+
     vm.userBot.userFollow = UserBotsFollowService.list({userBot: vm.userBot, botUserId: vm.user._id}, function(res) {
       if(res.length > 0) vm.userBot.userFollow = true;
       else vm.userBot.userFollow = undefined;
@@ -187,29 +189,29 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
     };
 
     /********************* dialog *********************/
-    vm.dialog = new UserBotDialogService({user: vm.user, userBot: vm.userBot, userBotId: vm.userBot._id});
-    vm.dialogs = UserBotDialogService.query({userBotId: vm.userBot._id});
+    vm.dialog = new UserBotDialogService({user: vm.user, userBot: vm.userBot, botId: vm.userBot.id});
+    vm.dialogs = UserBotDialogService.query({botId: vm.userBot.id});
 
     vm.createDialog = function() {
       vm.dialog.$save(function (response) {
         vm.dialogs.push(response);
 
-        vm.dialog = new UserBotDialogService({user: vm.user, userBot: vm.userBot, userBotId: vm.userBot._id});
+        vm.dialog = new UserBotDialogService({user: vm.user, userBot: vm.userBot, botId: vm.userBot.id});
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
-        vm.dialog = new UserBotDialogService({user: vm.user, userBot: vm.userBot, userBotId: vm.userBot._id});
+        vm.dialog = new UserBotDialogService({user: vm.user, userBot: vm.userBot, botId: vm.userBot.id});
       })
     };
 
     vm.updateDialog = function (dialog) {
-      dialog.userBotId = vm.userBot._id;
+      dialog.userBotId = vm.userBot.id;
       dialog.$update(function(response) {
         console.log(response);
       });
     };
 
     vm.removeDialog = function(dialog) {
-      dialog.userBotId = vm.userBot._id;
+      dialog.userBotId = vm.userBot.id;
       dialog.$remove(function(response) {
         console.log(response);
         dialog.deleted = 'true';

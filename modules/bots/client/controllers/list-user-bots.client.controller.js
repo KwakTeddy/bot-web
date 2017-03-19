@@ -12,12 +12,12 @@ angular.module('user-bots').controller('UserBotListController', ['$scope', '$roo
     vm.userBots = userBots;
     // vm.userBots = userBots;
 
-    // if(_platform == 'mobile') {
-    //   if($stateParams['listType'] == 'popular') vm.listTypeName = '최신봇';
-    //   else if($stateParams['listType'] == 'followed') vm.listTypeName = '친구봇';
-    //   else if($stateParams['listType'] == 'my') vm.listTypeName = '마이봇';
-    //   else vm.listTypeName = '인기봇';
-    // }
+      if(_platform == 'mobile') {
+          if($stateParams['listType'] == 'popular') vm.listTypeName = '최신봇';
+          else if($stateParams['listType'] == 'followed') vm.listTypeName = '친구봇';
+          else if($stateParams['listType'] == 'my') vm.listTypeName = '마이봇';
+          else vm.listTypeName = '인기봇';
+      }
 
     vm.listType = $stateParams['listType'];
     // if(vm.listType == undefined) vm.listType = 'recent';

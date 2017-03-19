@@ -13,7 +13,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 //    $scope.authentication = Authentication;
 
     vm.server = 'localhost:1024';
-    vm.bot = $cookies.get('default_bot') || 'athena';
+    vm.bot = $stateParams.userBotId || $cookies.get('default_bot') || 'athena';
     vm.userBot = {};
     // vm.userBot = UserBotsService.get({userBotId: ($stateParams.userBotId || '58a33a58dd6b0db01f496a36')}, function(userBot) {
     //   if(userBot.id) vm.bot = userBot.id;
@@ -35,7 +35,6 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         Socket.connect();
       }
 
-      console.log('connect: ' + vm.bot);
       $cookies.put('default_bot', vm.bot);
 
       vm.isConnected = true;
@@ -49,7 +48,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       //   console.log(message.lastIndexOf(':log'));
 
       if(message.lastIndexOf(':log') == 0) {
-        if(!$state.is('home') && !$state.is('user-bots.context-analytics') &&
+        if(!$state.is('developer-home') && !$state.is('user-bots.context-analytics') &&
           !$state.is('bots.graph-knowledge') && !$state.is('bots.graph-dialog')) return;
         // vm.log += message.substring(message.indexOf('\n')+1);
         // logScrollBottom()
@@ -144,7 +143,8 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       $rootScope.botId = userBot.id;
       $rootScope.userBot = vm.userBot;
 
-      document.getElementById("chat-header").innerText = vm.bot;
+      var header = document.getElementById("chat-header");
+      if(header) header.innerText = vm.bot;
     };
 
     vm.connectUserBot = function(botId) {
@@ -152,7 +152,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
       $resource('/api/user-bots/byNameId/:botNameId', {botNameId:'@id'}).
       get({botNameId: botId}, function(data) {
-        console.log(data);
+        // console.log(data);
 
         vm.changeBotInfo(data);
         vm.connect();

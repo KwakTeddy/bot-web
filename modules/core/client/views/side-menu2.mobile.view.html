@@ -14,14 +14,14 @@
 
     <ion-side-menu side="left">
         <ion-header-bar class="bar-stable">
-            <h1 class="title">아테나</h1>
+            <h1 class="title">플래이쳇</h1>
         </ion-header-bar>
         <ion-content>
             <ion-list>
-                <ion-item menu-close href="/mobile#/">
+                <ion-item menu-close href="/mobile#/list?listType=popular">
                     인기봇
                 </ion-item>
-                <ion-item menu-close href="/mobile#/list?listType=popular">
+                <ion-item menu-close href="/mobile#/list?listType=recent">
                     최신봇
                 </ion-item>
                 <ion-item menu-close href="/mobile#/list?listType=followed">
@@ -30,9 +30,9 @@
                 <ion-item menu-close href="/mobile#/list?listType=my">
                     마이봇
                 </ion-item>
-                <ion-item menu-close ng-click="login()">
-                    Login
-                </ion-item>
+                <!--<ion-item menu-close ng-click="login()">-->
+                    <!--Login-->
+                <!--</ion-item>-->
             </ion-list>
         </ion-content>
     </ion-side-menu>

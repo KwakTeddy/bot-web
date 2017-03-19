@@ -7,6 +7,8 @@ var nodemailer = require('nodemailer');
 var crypto = require('crypto');
 var config = require(path.resolve('./config/config'));
 var mongoose = require('mongoose');
+var taskmodule = require(path.resolve('./modules/bot/action/common/task'));
+
 
 function api (data) {
     var request = require('request');
@@ -255,3 +257,61 @@ function eventapi(task, context, callback) {
 
 
 exports.eventapi = eventapi;
+
+function googlesearch(task, context, callback) {
+    task.query = task['1'];
+    taskmodule.executeTask(googlesearchtask, context, function(task, context) {
+        callback(task, context);
+    });
+    callback(task,context);
+};
+
+exports.googlesearch = googlesearch;
+
+var googlesearchtask = {
+    module: 'http',
+    action: "simpleRequest",
+    uri: 'https://www.google.co.kr/search',
+    method: 'GET',
+    param: {
+        // q: task.query,
+        // oq: task.query,
+        aqs:'chrome..69i57j69i60j0l4.62443j0j4',
+        sourceid:'chrome',
+        ie:'UTF-8'
+    },
+    xpath: {
+        _repeat: '//div[@class="_NId"]/div[@class="srg"]/div',
+        title: './/div/h3/a/text()',
+        body: './/div/div/span/node()',
+        url: './/div/h3/a/@href'
+    },
+    preCallback: function (task,context,callback) {
+        task.query = task['1'];
+        callback(task,context,callback);
+    },
+    postCallback: function (task, context, callback) {
+        async.eachSeries(task.doc, function(doc, cb) {
+            var snippet = '';
+            async.eachSeries(doc.body, function(source, cb) {
+                if (source.data) {
+                    snippet = snippet + source.data;
+                } else {
+                    snippet = snippet + source.firstChild.data;
+                }
+                cb(null)
+            }, function (err) {
+                doc.title = doc.title.replace(/\|/g,'');
+                doc.snippet = snippet;
+                cb(null)
+            });
+        }, function (err) {
+            context.dialog.result = task.doc;
+            callback(task,context);
+        });
+    }
+};
+
+exports.googlesearchtask = googlesearchtask;
+bot.setTask('googlesearchtask', googlesearchtask);
+

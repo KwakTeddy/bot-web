@@ -100,6 +100,7 @@ function matchGlobalDialogs(inRaw, inNLP, dialogs, context, print, callback, wor
           callback(matched, _dialog);
         } else if(!wordCorrection) {
           var _inRaw = autoCorrection.correction(inRaw);
+          context.botUser.orgNlp = context.botUser.nlp;
           type.processInput(context, _inRaw, function(_inNLP, _inDoc) {
             context.botUser.nlpCorrection = _inNLP;
             context.botUser.inRawCorrection = _inRaw;
@@ -116,7 +117,10 @@ function matchGlobalDialogs(inRaw, inNLP, dialogs, context, print, callback, wor
             }
           }
 
-          if(context.bot.useQuibble) {
+          context.botUser.nlp = context.botUser.orgNlp;
+          context.botUser.orgNlp = null;
+
+          if(/*context.bot.useQuibble*/ true) {
             context.dialog.isFail = true;
             print(quibble.quibble(context));
           } else if(context.bot.noDialog) {
@@ -217,7 +221,7 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback, opti
                 matchChildDialogs(_inRaw, _inNLP, dialogs, context, print, callback, options, true);
               });
             } else {
-              if(context.bot.useQuibble) {
+              if(/*context.bot.useQuibble*/ true) {
                 context.dialog.isFail = true;
                 print(quibble.quibble(context));
               } else if(context.bot.noDialog) {

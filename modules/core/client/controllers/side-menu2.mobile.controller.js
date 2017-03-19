@@ -9,7 +9,7 @@ angular.module('core').controller('SideMenu2Controller', ['$rootScope', '$scope'
     $scope.$state = $state;
     $scope.authentication = Authentication;
 
-    console.log('side menu2');
+    // console.log('side menu2');
 
     $scope.onMenu = function (state, params) {
       $state.go(state, params);

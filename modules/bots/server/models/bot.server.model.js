@@ -36,7 +36,7 @@ var BotSchema = new Schema({
     default: false
   },
 
-  dialogsets: [Schema.ObjectId],
+  dialogsets: Schema.Types.Mixed,
 
   user: {
     type: Schema.ObjectId,

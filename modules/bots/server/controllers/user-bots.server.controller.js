@@ -776,7 +776,7 @@ exports.createDialog = function (req, res) {
   var dialog = new UserBotDialog(req.body);
   dialog.user = req.user;
 
-  dialogset.processInput(null, dialog.inputRaw, function(_input) {
+  dialogsetModule.processInput(null, dialog.inputRaw, function(_input) {
     dialog.input = _input;
 
     console.log('createDialog:' + dialog.userBot);
@@ -801,15 +801,30 @@ exports.updateDialog = function (req, res) {
   dialog = _.extend(dialog, req.body);
 
   dialog.user = req.user;
-  dialog.save(function (err) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.json(dialog);
-    }
+
+  dialogsetModule.processInput(null, dialog.inputRaw, function(_input) {
+    dialog.input = _input;
+
+    dialog.save(function (err) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.json(dialog);
+      }
+    });
   });
+
+  // dialog.save(function (err) {
+  //   if (err) {
+  //     return res.status(400).send({
+  //       message: errorHandler.getErrorMessage(err)
+  //     });
+  //   } else {
+  //     res.json(dialog);
+  //   }
+  // });
 };
 
 exports.deleteDialog = function (req, res) {
@@ -830,7 +845,7 @@ exports.listDialog = function (req, res) {
   var sort = req.query.sort || '-created';
 
   var query = {};
-  if(req.params.userBotId) query['userBot'] =  req.userBot;
+  if(req.params.dBotId) query['botId'] =  req.params.dBotId;
 
   UserBotDialog.find(query).sort(sort).populate('user').exec(function (err, dialogs) {
     if (err) {
@@ -894,8 +909,8 @@ exports.contextAnalytics = function (req, res) {
     }
   }
 
-  dialogsetModule.processInput(null, req.query.input, function(_input) {
-    type.executeType(_input, faqType, {}, {bot: {}}, function(_text, _result) {
+  dialogsetModule.processInput(null, req.query.input, function(_input, json) {
+    type.executeType(_input, faqType, {}, {bot: {}, botUser: {nlp: json._nlp}}, function(_text, _result) {
       res.json(_result);
     });
   });

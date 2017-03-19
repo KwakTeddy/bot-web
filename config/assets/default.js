@@ -61,7 +61,7 @@ module.exports = {
         'public/lib/ionic/css/ionic.app.css'
       ],
       js: [
-        'public/lib/ionic/js/ionic.bundle.min.js',
+        'public/lib/ionic/js/ionic.bundle.js',
         'public/lib/ngCordova/dist/ng-cordova.min.js',
         'public/lib/angular-resource/angular-resource.js',
         //'public/lib/angular-animate/angular-animate.js',
@@ -70,6 +70,7 @@ module.exports = {
         'public/lib/angular-ui-utils/ui-utils.js',
         'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
         'public/lib/angular-cookies/angular-cookies.min.js',
+        'public/lib/ngInfiniteScroll/build/ng-infinite-scroll.js',
         // 'public/lib/angular-file-upload/angular-file-upload.js',
         // 'public/lib/ng-file-upload/ng-file-upload-shim.js',
         // 'public/lib/ng-file-upload/ng-file-upload.js',

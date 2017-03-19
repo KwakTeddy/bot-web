@@ -2,6 +2,7 @@ var path = require('path');
 var bot = require(path.resolve('config/lib/bot'));
 var dialog = require(path.resolve('modules/bot/action/common/dialog'));
 var contextModule = require(path.resolve('modules/bot/engine/common/context'));
+var utils = require(path.resolve('modules/bot/action/common/utils'));
 
 function command(inTextRaw, inTextNLP, context, print, callback) {
   var cmd = inTextRaw.trim();
@@ -36,7 +37,13 @@ function command(inTextRaw, inTextNLP, context, print, callback) {
       dialog.executeDialog(startDialog, context, print, callback);
 
   } else if(cmd == ':reset user') {
-    startDialog= dialog.findDialog(null, context, dialog.START_DIALOG_NAME);
+    //TODO 디버깅 시에 서버 재시작 안하고 로딩
+    utils.requireNoCache(path.resolve('modules/bot/engine/common/globals')).initGlobals();
+    utils.requireNoCache(path.resolve('modules/bot/action/common/dialog'));
+    utils.requireNoCache(path.resolve('modules/bot/action/common/task'));
+    utils.requireNoCache(path.resolve('modules/bot/action/common/type'));
+
+      startDialog= dialog.findDialog(null, context, dialog.START_DIALOG_NAME);
     if(!startDialog)
       print('안녕하세요.' + (context.bot.name || context.botUser.curBotName) + '입니다.');
       // print('시작 Dialog가 없습니다.');
