@@ -172,6 +172,7 @@ if (_platform == "mobile") {
 function appRun($rootScope, $state, Authentication) {
   // Check authentication before changing state
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+
     if (toState.data && toState.data.roles && toState.data.roles.length > 0) {
       var allowed = false;
       toState.data.roles.forEach(function (role) {

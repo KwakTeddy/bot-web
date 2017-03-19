@@ -12,10 +12,8 @@ angular.module('core')
         //     template: '<ion-nav-view name="mobileRoot" class="view-container"></ion-nav-view>'
         //   }
         // }
-      })
-    ;
-
-    $urlRouterProvider.otherwise('/');
+      });
+      $urlRouterProvider.otherwise('/');
   });
 
 getMyInvestments.$inject = ['InvestmentsMyService'];

@@ -51,7 +51,6 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
     };
 
     vm.fbShare = function () {
-      console.log(vm.userBot);
       $scope.location = location.href;
       FB.ui({
           method: 'share',
@@ -59,11 +58,19 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
           href: $scope.location,
           title: vm.userBot.name,
           description: vm.userBot.description,
-          image: location.protocol+'//'+location.hostname+'/'+vm.userBot.imageFile,
           picture: location.protocol+'//'+location.hostname+'/'+ vm.userBot.imageFile,
       }, function(response){
         console.log(response);
       });
+    };
+
+    vm.kakaoShare = function () {
+      $scope.location = location.href;
+      console.log(vm.userBot.description);
+        Kakao.Story.share({
+          url: $scope.location,
+          text: vm.userBot.name+'-'+ vm.userBot.description,
+        });
     };
 
     // Create new UserBot

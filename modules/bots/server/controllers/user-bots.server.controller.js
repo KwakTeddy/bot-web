@@ -184,7 +184,7 @@ exports.delete = function (req, res) {
  */
 exports.list = function (req, res) {
   var sort = req.query.sort || '-created';
-  var perPage = req.body.perPage || 6;
+  var perPage = req.body.perPage || 10;
   var query = {};
   query['public'] = true;
 
@@ -195,16 +195,18 @@ exports.list = function (req, res) {
   }
   if(req.query.my) {
     delete query.public;
-    query['user'] =  req.user._id;
+    query['user'] =  req.query.botUserId;
   }
   if(req.body.query) query['name'] = new RegExp(req.body.query, 'i');
   console.log(util.inspect(query));
+  console.log(req.body.currentPage);
   UserBot.find(query).sort(sort).populate('user').skip(req.body.currentPage * perPage).limit(perPage).exec(function (err, userBots) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
+      console.log(userBots);
       res.json(userBots);
     }
   });
@@ -212,15 +214,21 @@ exports.list = function (req, res) {
 
 
 exports.followList = function (req, res) {
+
+  if (!req.query.botUserId) {
+    return res.json();
+  }
   var query = {};
   var search = {};
-  var perPage = req.body.perPage || 6;
+  var perPage = req.body.perPage || 10;
   query['followed'] = true;
   if(req.body.botUserId) query['botUserId'] = req.body.botUserId;
   if(req.body.userBot) query['userBot'] = req.body.userBot._id;
   if(req.body.query) search['name'] = new RegExp(req.body.query, 'i');
   var populateQuery = [];
 
+  console.log(util.inspect(query));
+  console.log(req.body.currentPage);
   UserBotFollow.find(query).populate('userBot', null, search).sort('-created').skip(req.body.currentPage * perPage).limit(perPage).exec(function (err, follows) {
     if (err) {
       return res.status(400).send({

@@ -51,5 +51,9 @@ angular.module('core').controller('SideMenu2Controller', ['$rootScope', '$scope'
         }
       });
     };
+
+    $scope.list = function (filter) {
+
+    }
   }
 ]);
