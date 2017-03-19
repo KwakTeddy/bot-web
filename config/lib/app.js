@@ -46,12 +46,13 @@ module.exports.init = function init(callback) {
 module.exports.start = function start(callback) {
   var _this = this;
 
-  var bot = require('./bot');
   var globals = require(path.resolve('modules/bot/engine/common/globals'));
   globals.initGlobals();
 
   var autoCorrection = require(path.resolve('modules/bot/engine/nlp/autoCorrection'));
   autoCorrection.loadWordCorrections();
+
+  var bot = require('./bot');
 
   // bot.loadBots();
 

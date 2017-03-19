@@ -56,8 +56,27 @@ function factsTypeCheck(text, format, inDoc, context, callback) {
   });
 }
 
+var userDialogType = {
+  name: 'typeDoc',
+  typeCheck: global._context.typeChecks['dialogTypeCheck'], //type.mongoDbTypeCheck,
+  preType: function(task, context, type, callback) {
+    type.mongo.queryStatic.botId = context.bot.botName;
+    callback(task, context);
+  },
+  limit: 5,
+  matchRate: 0.3,
+  mongo: {
+    model: 'UserBotDialog',
+    queryStatic: {botId: undefined},
+    queryFields: ['input'],
+    fields: 'input output' ,
+    taskFields: ['input', 'output', 'matchRate'],
+    minMatch: 1
+  }
+};
 
-var globalDialogs = [
+
+var globalStartDialogs = [
   {
     input: [/([^\b\s]*)(?:\b|\s).*불러줘/, /([^\b\s]*)(?:\b|\s).*부르다/, /([^\b\s]*)(?:\b|\s).*불다/],
     task:   {
@@ -71,24 +90,104 @@ var globalDialogs = [
     },
     output: '+output+'
   },
+  // {
+  //   input: /(^.*체).*바꾸다/,
+  //   task: {
+  //     action: function(task, context, callback) {
+  //       task['1'] = task['1'].replace(/ /g, '');
+  //       context.botUser.tone = task['1'];
+  //       callback(task, context);
+  //     }
+  //   },
+  //   output: '+1+로 변경되었습니다.'
+  // },
+  // {
+  //   input: {types: [{typeCheck: factsTypeCheck}]},
+  //   output: '+_output+'
+  // },
   {
-    input: /(^.*체).*바꾸다/,
+    input: {types: [userDialogType]},
     task: {
       action: function(task, context, callback) {
-        task['1'] = task['1'].replace(/ /g, '');
-        context.botUser.tone = task['1'];
+        if(Array.isArray(task.typeDoc)) {
+          if(task.typeDoc.length > 1) task._output = task.typeDoc[0].output;
+          else task._output = task.typeDoc[0].output;
+        } else {
+          task._output = task.typeDoc.output;
+        }
+
+        if(Array.isArray(task._output)) {
+          task._output = task._output[Math.floor(Math.random() * task._output.length)];
+        }
+
         callback(task, context);
       }
     },
-    output: '+1+로 변경되었습니다.'
-  },
-  {
-    input: {types: [{typeCheck: factsTypeCheck}]},
     output: '+_output+'
   }
 ];
 
-exports.globalDialogs = globalDialogs;
+exports.globalStartDialogs = globalStartDialogs;
+
+var dialogsType = {
+  name: 'typeDoc',
+  typeCheck: global._context.typeChecks['dialogTypeCheck'], //type.mongoDbTypeCheck,
+  preType: function(task, context, type, callback) {
+    if(context.bot.dialogsets) {
+      type.mongo.queryStatic = {$or: []};
+      for(var i = 0; i < context.bot.dialogsets.length; i++) {
+        type.mongo.queryStatic.$or.push({dialogset: context.bot.dialogsets[i]});
+      }
+    } else {
+      type.mongo.queryStatic = {dialogset: ''};
+    }
+    callback(task, context);
+  },
+  limit: 5,
+  matchRate: 0.3,
+  exclude: ['하다', '이다'],
+  mongo: {
+    model: 'dialogsetdialogs',
+    // queryStatic: {dialogset: ''},
+    queryFields: ['input'],
+    fields: 'dialogset input output' ,
+    taskFields: ['input', 'output', 'matchRate'],
+    minMatch: 1
+  }
+};
+
+var globalEndDialogs = [
+  {
+    input: {types: [dialogsType]},
+    task:   {
+      action: function(task, context, callback) {
+        if(Array.isArray(task.typeDoc)) {
+          if(task.typeDoc.length > 1) task._output = task.typeDoc[0].output;
+          else task._output = task.typeDoc[0].output;
+        } else {
+          task._output = task.typeDoc.output;
+        }
+
+        if(Array.isArray(task._output)) {
+          task._output = task._output[Math.floor(Math.random() * task._output.length)];
+        }
+        callback(task, context);
+      }
+      // postCallback: function(task, context, callback) {
+      //   var toneType = context.botUser.tone;
+      //   if(toneType == undefined) toneType = '해요체';
+      //
+      //   tone.toneSentence(task._output, toneType, function(_output) {
+      //     task._output = _output;
+      //     callback(task, context);
+      //   });
+      // }
+    },
+    output: '+_output+'
+  }
+];
+
+exports.globalEndDialogs = globalEndDialogs;
 
 // var listPattern =
 // { input: '+input+',

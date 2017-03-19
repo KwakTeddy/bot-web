@@ -167,9 +167,8 @@ mongoose.model('UserBotComment', UserBotCommentSchema);
 
 
 var UserBotDialogSchema = new Schema({
-  userBot: {
-    type: Schema.ObjectId,
-    ref: 'UserBot'
+  botId: {
+    type: String
   },
   id: {
     type: String

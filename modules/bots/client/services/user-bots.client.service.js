@@ -52,8 +52,8 @@ angular.module('user-bots').factory('UserBotsService', ['$resource',
     }])
   .factory('UserBotDialogService', ['$resource',
     function ($resource) {
-      return $resource('api/user-bots-dialog/:userBotId/:dialogId', {
-        userBotId: '@userBotId',
+      return $resource('api/user-bots-dialog/:botId/:dialogId', {
+        botId: '@botId',
         dialogId: '@_id'
       }, {
         update: {

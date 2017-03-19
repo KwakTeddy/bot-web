@@ -395,8 +395,10 @@ function processInput(context, inRaw, callback) {
   var _nlp = [];
   nlpKo.tokenize(inRaw, function(err, result) {
     for(var i in result) {
-      if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _nlpRaw.push(result[i]);
-      if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _nlp.push(result[i].text);
+      // if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _nlpRaw.push(result[i]);
+      // if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _nlp.push(result[i].text);
+      if(result[i].text.search(/^(은|는|이|가|을|를)$/) == -1 && result[i].pos !== 'Punctuation') _nlpRaw.push(result[i]);
+      if(result[i].text.search(/^(은|는|이|가|을|를)$/) == -1 && result[i].pos !== 'Punctuation') _nlp.push(result[i].text);
     }
 
     _in = _nlp.join(' ');

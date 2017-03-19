@@ -13,7 +13,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 //    $scope.authentication = Authentication;
 
     vm.server = 'localhost:1024';
-    vm.bot = $cookies.get('default_bot') || 'athena';
+    vm.bot = $stateParams.userBotId || $cookies.get('default_bot') || 'athena';
     vm.userBot = {};
     // vm.userBot = UserBotsService.get({userBotId: ($stateParams.userBotId || '58a33a58dd6b0db01f496a36')}, function(userBot) {
     //   if(userBot.id) vm.bot = userBot.id;
@@ -144,7 +144,8 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       $rootScope.botId = userBot.id;
       $rootScope.userBot = vm.userBot;
 
-      document.getElementById("chat-header").innerText = vm.bot;
+      var header = document.getElementById("chat-header");
+      if(header) header.innerText = vm.bot;
     };
 
     vm.connectUserBot = function(botId) {

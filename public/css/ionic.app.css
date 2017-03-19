@@ -10012,7 +10012,9 @@ html [segment], html segment {
 
 .chat-bubble .friend .bubble .content {
   background: #def5f8;
-  color: #000; }
+  color: #000;
+  white-space: pre-wrap !important;
+}
 
 .chat-bubble .friend .icon-tail {
   border-top: 7px solid #def5f8; }
