@@ -119,6 +119,16 @@ module.exports = function (grunt) {
         files: {
           'public/dist/application.js': defaultAssets.client.js
         }
+/*
+files: [
+{
+expand: true,
+src: defaultAssets.client.js,
+ext: '.annotated.js',
+extDot: 'last',
+}
+]
+*/
       }
     },
     uglify: {
