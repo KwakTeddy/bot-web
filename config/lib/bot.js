@@ -57,6 +57,7 @@ function loadBot(botName) {
   utils.requireNoCache(path.resolve('modules/bot/action/common/task'));
   utils.requireNoCache(path.resolve('modules/bot/action/common/type'));
   utils.requireNoCache(path.resolve('modules/bot/global/type/common.type'));
+  utils.requireNoCache(path.resolve('custom_modules/global/global-dialogs'));
 
   console.log('Loading Bot: ' + botName);
   var botDir = path.resolve('custom_modules/' + botName);

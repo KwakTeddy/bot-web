@@ -136,10 +136,12 @@ var dialogsType = {
     if(context.bot.dialogsets) {
       type.mongo.queryStatic = {$or: []};
       for(var i = 0; i < context.bot.dialogsets.length; i++) {
-        type.mongo.queryStatic.$or.push({dialogset: context.bot.dialogsets[i]});
+        if(context.bot.dialogsets[i]) type.mongo.queryStatic.$or.push({dialogsets: context.bot.dialogsets[i]});
       }
+
+      if(type.mongo.queryStatic.$or.length == 0) type.mongo.queryStatic = {dialogsets: ''};
     } else {
-      type.mongo.queryStatic = {dialogset: ''};
+      type.mongo.queryStatic = {dialogsets: ''};
     }
     callback(task, context);
   },
@@ -148,7 +150,7 @@ var dialogsType = {
   exclude: ['하다', '이다'],
   mongo: {
     model: 'dialogsetdialogs',
-    // queryStatic: {dialogset: ''},
+    queryStatic: {dialogsets: ''},
     queryFields: ['input'],
     fields: 'dialogset input output' ,
     taskFields: ['input', 'output', 'matchRate'],

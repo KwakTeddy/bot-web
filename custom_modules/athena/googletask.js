@@ -274,8 +274,8 @@ var googlesearchtask = {
     uri: 'https://www.google.co.kr/search',
     method: 'GET',
     param: {
-        q: task.query,
-        oq: task.query,
+        // q: task.query,
+        // oq: task.query,
         aqs:'chrome..69i57j69i60j0l4.62443j0j4',
         sourceid:'chrome',
         ie:'UTF-8'

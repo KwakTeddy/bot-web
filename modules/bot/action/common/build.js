@@ -56,12 +56,13 @@ function botBuild(bot) {
     js = js + tail;
 
     // graph view TEST
-      var tail2 = '\n// TEST' + '\nvar json = JSON.stringify(dialogs);' + '\nconsole.log(json);' +
-        '\nvar fs = require(\'fs\');' +
-          '\nfs.writeFile(require(\'path\').resolve("public/js") + "/dialog.json", json, function(err) {' +
-          '\nif(err) { return console.log(err); }' +
-          '\nconsole.log("dialog.json was saved!"); });'
-      js += tail2;
+    // TODO 파일별로 저장하기
+    //   var tail2 = '\n// TEST' + '\nvar json = JSON.stringify(dialogs);' + '\nconsole.log(json);' +
+    //     '\nvar fs = require(\'fs\');' +
+    //       '\nfs.writeFile(require(\'path\').resolve("public/js") + "/dialog.json", json, function(err) {' +
+    //       '\nif(err) { return console.log(err); }' +
+    //       '\nconsole.log("dialog.json was saved!"); });'
+    //   js += tail2;
 
     fs.writeFileSync(dialogPath, js, 'utf8');
 
