@@ -30,7 +30,6 @@ exports.create = function (req, res) {
 
   var userBot = new UserBot(req.body);
   userBot.user = req.user;
-  userBot['learning'] = true;
 
   userBot.save(function (err) {
     if (err) {
@@ -38,35 +37,34 @@ exports.create = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      var dialogset = new Dialogset({
-        title: req.body.originalFilename,
-        type: req.body.type,
-        path: req.body.path,
-        filename: req.body.filename,
-        originalFilename: req.body.originalFilename,
-        language: 'en',
-        content: ''
-      });
+      if (!req.body.originalFilename){
+        return res.json(userBot);
+      }else {
+        var dialogset = new Dialogset({
+            title: req.body.originalFilename,
+            type: req.body.type,
+            path: req.body.path,
+            filename: req.body.filename,
+            originalFilename: req.body.originalFilename,
+            language: 'en',
+            content: ''
+        });
+        dialogset.user = req.user;
+        dialogset.save(function(err) {
+            if (err) {
+                callback(err);
+            } else {
+                dialogsetModule.convertDialogset1(dialogset, function(result) {
+                    userBot.dialogsets = [dialogset];
+                    userBot.save(function(err) {
+                        res.json(userBot);
+                    });
 
-      dialogset.user = req.user;
-
-      dialogset.save(function(err) {
-        if (err) {
-          callback(err);
-        } else {
-          dialogsetModule.convertDialogset1(dialogset, function(result) {
-            userBot['learning'] = false;
-            userBot.dialogsets = [dialogset];
-            userBot.save(function(err) {
-              if(console.log(err));
-              res.json(userBot);
-            });
-
-            console.log(dialogset.filename + ' converted');
-          })
-        }
-      });
-
+                    console.log(dialogset.filename + ' converted');
+                })
+            }
+        });
+      }
       // res.json(userBot);
 
       // dialogsetModule.convertDialogset(userBot.dialogFile, function(result) {

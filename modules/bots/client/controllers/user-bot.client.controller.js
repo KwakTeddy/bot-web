@@ -15,11 +15,6 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
       else vm.userBot.userFollow = undefined;
       // console.log(res);
     });
-
-    $scope.$watch(vm.userBot.learning, function () {
-       console.log('chagadfchange')
-    });
-
     // UserBotsFollowService.get()
     // if(vm.userBot && vm.userBot._id)
     //   $rootScope.$broadcast('setUserBot', vm.userBot);
@@ -77,17 +72,31 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
         $scope.$broadcast('show-errors-check-validity', 'userBotForm');
         return false;
       }
+      vm.learning = true;
       if(!vm.userBot.imageFile){
         vm.userBot.imageFile = "/files/default.png"
       }
+      vm.type = 'connect';
       vm.userBot.$save(function (response) {
+        vm.learning = false;
+        $scope.close = function () {
+          modalInstance.dismiss();
+        };
+        var modalInstance = $uibModal.open({
+            templateUrl: 'modules/bots/client/views/modal-user-bots.client.learning.html',
+            scope: $scope
+        });
+        modalInstance.result.then(function (response) {
+            console.log(response);
+        });
+
         if($state.is('user-bots-web.create') || $state.is('user-bots-web.edit')) {
           $rootScope.$broadcast('setUserBot', vm.userBot);
 
-          vm.type = 'connect';
+          // vm.type = 'connect';
           // $state.go('user-bots-web.list', {'#': 'myBots'});
         } else {
-          vm.type = 'conenct';
+          // vm.type = 'conenct';
           // $state.go('user-bots.list');
         }
         // $location.path('userBots/' + response._id);

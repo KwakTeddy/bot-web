@@ -10,8 +10,6 @@ angular.module('user-bots').controller('UserBotListController', ['$scope', '$roo
     var vm = this;
     vm.authentication = Authentication;
     vm.userBots = userBots;
-    console.log(userBots);
-    console.log(vm.userBots.length);
     // vm.userBots = userBots;
 
     // if(_platform == 'mobile') {

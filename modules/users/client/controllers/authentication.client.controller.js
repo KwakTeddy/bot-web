@@ -24,15 +24,13 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
     // If user is signed in then redirect back home
     if ($scope.authentication.user) {
-      if (parsedString[0] == 'user-bots-web') {
-          $state.go('user-bots-home');
-      } else {
-          $state.go('home')
-      }
+          $state.go('home');
     }
 
     $scope.signup = function (isValid) {
-      $scope.error = {};
+        $state.go('home');
+
+        $scope.error = {};
       $scope.submitted = true;
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'userForm');
@@ -44,10 +42,10 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         var modalInstance = $uibModal.open({
             templateUrl: 'modules/users/client/views/authentication/email.confirm.modal.html',
             scope: $scope
-        });
+        });œœ
         $scope.close = function () {
             modalInstance.dismiss();
-            $state.go('user-bots-home');
+            $state.go('home');
         };
         modalInstance.result.then(function (response) {
             console.log(response);
@@ -58,7 +56,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         if(response.message.match('E-mail')){
             $scope.error.email = '이미 존재하는 E-mail이네요';
         } else if(response.message.match('username')) {
-            $scope.error.username = 'username already exist';
+            $scope.error.username = 'usernamœe already exist';
         }
       });
     };
