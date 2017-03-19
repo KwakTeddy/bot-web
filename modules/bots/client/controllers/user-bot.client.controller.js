@@ -10,7 +10,8 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
     vm.userBot.public = true;
     vm.userId = $rootScope.userId;
 
-    vm.isLearnable = (vm.userBot.learn || vm.user === vm.userBot.user);
+    vm.isMine = (vm.userBot.user != null && (vm.user.username === vm.userBot.user.username));
+    vm.isLearnable = (vm.userBot.learn || vm.isMine);
 
     vm.userBot.userFollow = UserBotsFollowService.list({userBot: vm.userBot, botUserId: vm.user._id}, function(res) {
       if(res.length > 0) vm.userBot.userFollow = true;

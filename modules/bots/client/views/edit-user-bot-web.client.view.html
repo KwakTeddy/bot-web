@@ -48,6 +48,8 @@
                               <!--<div class="line-it-button" style="display: none;" data-type="share-c" data-lang="en"></div>-->
                             </div>
                             <div style="border-top: 1px solid lightgray; margin-top: 5px;padding-top: 5px;text-align: right;">
+                                <a class="btn btn-primary" ng-show="vm.isMine" ui-sref="user-bots-web.edit({userBotId: vm.userBot._id})"
+                                   style="padding: 10px 20px 10px 20px;">수정하기</a>
                                 <a class="btn btn-default" ng-show="!vm.userBot.userFollow" ng-click="vm.followBot(vm.userBot);"
                                    style="padding: 10px 20px 10px 20px;">친구추가</a>
                                 <a class="btn btn-default" ng-show="vm.userBot.userFollow" ng-click="vm.unfollowBot(vm.userBot);"
