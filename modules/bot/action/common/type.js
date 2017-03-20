@@ -55,8 +55,8 @@ exports.processInput = function(context, inRaw, callback) {
         // /*if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') */_nlp.push(result[i]);
         // if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _inNLP.push(result[i].text);
         _nlpAll.push(result[i]);
-        if(result[i].text.search(/^(은|는|이|가|을|를)$/) == -1 && result[i].pos !== 'Punctuation') _nlp.push(result[i]);
-        if(result[i].text.search(/^(은|는|이|가|을|를)$/) == -1 && result[i].pos !== 'Punctuation') _inNLP.push(result[i].text);
+        if(result[i].text && result[i].text.search(/^(은|는|이|가|을|를)$/) == -1 && result[i].pos !== 'Punctuation') _nlp.push(result[i]);
+        if(result[i].text && result[i].text.search(/^(은|는|이|가|을|를)$/) == -1 && result[i].pos !== 'Punctuation') _inNLP.push(result[i].text);
       }
 
       _in = _inNLP.join(' ');
