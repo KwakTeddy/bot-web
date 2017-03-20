@@ -1,11 +1,11 @@
 var path = require('path');
 var botlib = require(path.resolve('config/lib/bot'));
 
-var athena = {
+var weather = {
   use: true,
 
-  name: '아테나',
-  serviceName: '아테나',
+  name: '날씨봇',
+  serviceName: '날씨봇',
   serviceNick: '인공지능',
 
   kakao: {
@@ -20,5 +20,5 @@ var athena = {
   ]
 };
 
-botlib.makeBot('athena', athena);
+botlib.makeBot('weather', weather);
 
