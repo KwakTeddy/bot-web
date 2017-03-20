@@ -849,8 +849,10 @@ exports.deleteDialog = function (req, res) {
 
 exports.listDialog = function (req, res) {
   var sort = req.query.sort || '-created';
-
+  var user = req.user;
   var query = {};
+  if (user)
+    query['user'] =  user;
   if(req.params.dBotId) query['botId'] =  req.params.dBotId;
 
   UserBotDialog.find(query).sort(sort).populate('user').exec(function (err, dialogs) {
