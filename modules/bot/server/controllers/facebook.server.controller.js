@@ -15,9 +15,11 @@ var contextModule = require(path.resolve('modules/bot/engine/common/context'));
 
 exports.messageGet =  function(req, res) {
   contextModule.getContext(req.params.bot, 'facebook', null, function(context) {
-    console.log(req.query['hub.mode'] + ', ' + req.query['hub.verify_token'] + ',' + context.bot.facebook.VALIDATION_TOKEN );
+    // console.log(req.query['hub.mode'] + ', ' + req.query['hub.verify_token'] + ',' + context.bot.facebook.VALIDATION_TOKEN );
+
+    var bot = context.botUser.orgBot || context.bot;
     if (req.query['hub.mode'] === 'subscribe' &&
-      req.query['hub.verify_token'] === context.bot.facebook.VALIDATION_TOKEN) {
+      req.query['hub.verify_token'] === bot.facebook.VALIDATION_TOKEN) {
       console.log("Validating webhook");
       res.status(200).send(req.query['hub.challenge']);
     } else {
@@ -80,7 +82,9 @@ function respondMessage(to, text, botId, task) {
   };
 
   contextModule.getContext(botId, 'facebook', to, function(context) {
-    callSendAPI(messageData, context.bot.facebook.PAGE_ACCESS_TOKEN);
+    var bot = context.botUser.orgBot || context.bot;
+
+    callSendAPI(messageData, bot.facebook.PAGE_ACCESS_TOKEN);
   });
 
 
@@ -194,20 +198,14 @@ function receivedMessage(event) {
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
   var message = event.message;
-  console.log('conmon');
-  console.log(message);
-  console.log(senderID);
-  console.log(recipientID);
-  console.log(event.botId);
-  console.log(global._bots[event.botId].facebook.id);
-
 
   if(recipientID == global._bots[event.botId].facebook.id) {
     console.log('ininininin')
     contextModule.getContext(event.botId, 'facebook', senderID, function(context) {
-      console.log('senderID: ' + senderID + ', recipientID: ' + recipientID);
       //console.log('receivedMessage: ', event);
-      if(recipientID == context.bot.facebook.id) {
+
+      var bot = context.botUser.orgBot || context.bot;
+      if(recipientID == bot.facebook.id) {
         console.log('2 senderID: ' + senderID + ', recipientID: ' + recipientID);
 
         var messageId = message.mid;
