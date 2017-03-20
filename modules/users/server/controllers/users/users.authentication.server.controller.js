@@ -202,6 +202,7 @@ exports.oauthCall = function (strategy, scope) {
         console.log('maybe' + req.query.redirect_to);
       req.session.redirect_to = req.query.redirect_to;
     }
+    console.log('oauthCall')
     // Authenticate
     passport.authenticate(strategy, scope)(req, res, next);
   };
