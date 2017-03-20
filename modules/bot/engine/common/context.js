@@ -49,6 +49,8 @@ function getContext(botName, channel, user, callback) {
         botUserName = botName + '_' + user;
         if(!global._botusers[botUserName]) global._botusers[botUserName] = {};
         botUserContext = global._botusers[botUserName];
+        
+        botUserContext.orgBot = global._bots[botName];
 
         if(!botUserContext._dialog) botUserContext._dialog = {};
         if(!botUserContext._task) botUserContext._task = {};
