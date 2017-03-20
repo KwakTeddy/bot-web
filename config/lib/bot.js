@@ -90,6 +90,8 @@ function loadBot(botName) {
   var bot = getBot(botName);
   if(bot && bot.use === false) return;
 
+  bot.setDialogs(globalDialogs.globalStartDialogs);
+
   if(bot && bot.dialogFiles) {
     for (var i = 0; i < bot.dialogFiles.length; i++) {
       var file = bot.dialogFiles[i];
