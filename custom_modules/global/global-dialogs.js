@@ -66,6 +66,7 @@ var userDialogType = {
   },
   limit: 5,
   matchRate: 0.3,
+  matchCount: 4,
   mongo: {
     model: 'UserBotDialog',
     queryStatic: {botId: undefined},
@@ -280,7 +281,8 @@ var dialogsType = {
     callback(task, context);
   },
   limit: 10,
-  matchRate: 0.5,
+  matchRate: 0.3,
+  matchCount: 3,
   exclude: ['하다', '이다'],
   mongo: {
     model: 'dialogsetdialogs',

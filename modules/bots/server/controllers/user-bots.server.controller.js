@@ -895,14 +895,14 @@ exports.contextAnalytics = function (req, res) {
     name: 'result',
     typeCheck: type.dialogTypeCheck,
     limit: 10,
-    matchRate: 0.5,
+    matchRate: 0,
     exclude: ['하다', '이다'],
     mongo: {
       model: 'DialogsetDialog',
       // queryStatic: {dialogset: '기본대화1'},
       queryFields: ['input'],
       fields: 'dialogset input output' ,
-      taskFields: ['input', 'output', 'matchRate'],
+      taskFields: ['input', 'output', 'matchRate', 'matchCount'],
       minMatch: 1
     }
   };
@@ -928,6 +928,7 @@ exports.contextAnalytics = function (req, res) {
     type.executeType(_input, faqType, {}, context, function(_text, _result) {
       _result.context = {botUser: {nlp: context.botUser.nlp, topic: context.botUser.topic}};
       res.json(_result);
+      console.log('context analytics: ');
     });
   });
 

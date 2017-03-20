@@ -1232,6 +1232,8 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
   //   logger.debug('type.js:dialogTypeCheck: START ' + format.name + ' "' + text + '"');
   // }
 
+  if(context.bot == undefined) callback(text, inDoc, false);
+
   var t0 = new Date();
 
   if(text == null) {
@@ -1266,8 +1268,6 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
       var bot = context.bot;
       if(bot && bot.concepts) {
         for(var key in bot.concepts) {
-
-
           for (var i = 0; i < nlps.length; i++) {
             var word = nlps[i].text;
             try {
@@ -1403,11 +1403,11 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
               for(var k = 0; k < docs.length; k++) {
                 var doc = docs[k];
 
-                var matchCount = 0, matchTotal = 0;
+                var matchCount = 0, matchCount1 = 0, matchTotal = 0;
                 matchedWord = '';
                 var matchIndex = -1, matchMin = -1, matchMax = -1;
 
-                var _matchCount = [], _matchTotal = [];
+                var _matchCount = [], _matchCount1 = [], _matchTotal = [];
                 var _matchedWord = [];
                 var _matchIndex = [], _matchMin = [], _matchMax = [], _matchOrgIndex = [];
                 if(Array.isArray(doc['input'])) {
@@ -1428,8 +1428,9 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                         _matchIndex[n] = doc[format.mongo.queryFields[l]][n].search(new RegExp(_word, 'i'));
 
                         if(_matchIndex[n] != -1) {
-                          if(_nlps[m].pos == 'Noun') _matchCount[n]+=2;
-                          else _matchCount[n]++;
+                          if(context.bot.topicKeywords && _.includes(context.bot.topicKeywords, _nlps[m].text)) {_matchCount[n]++; _matchCount1[n] +=3;}
+                          else if(_nlps[m].pos == 'Noun') {_matchCount[n]++;_matchCount1[n]+=2;}
+                          else {_matchCount[n]++;_matchCount1[n]++;}
 
                           // console.log(word + ' ' + _word + ' ' + doc[format.mongo.queryFields[l]][n] + ' ' +_matchCount[n]);
                           _matchTotal[n] += doc[format.mongo.queryFields[l]][n].split(' ').length;
@@ -1453,6 +1454,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                       }
 
                       matchCount = _matchCount[maxMatchIndex];
+                      matchCount1 = _matchCount1[maxMatchIndex];
                       matchTotal= _matchTotal[maxMatchIndex];
                       matchedWord = _matchedWord[maxMatchIndex];
                       matchIndex = _matchIndex[maxMatchIndex];
@@ -1463,8 +1465,9 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                       matchIndex = doc[format.mongo.queryFields[l]].search(new RegExp(_word, 'i'));
 
                       if(matchIndex != -1) {
-                        if(_nlps[m].pos == 'Noun') matchCount+=2;
-                        else matchCount++;
+                        if(context.bot.topicKeywords && _.includes(context.bot.topicKeywords, _nlps[m].text)) {matchCount++; matchCount1 +=3;}
+                        else if(_nlps[m].pos == 'Noun') {matchCount++; matchCount1+=2;}
+                        else {matchCount++; matchCount1++;}
                         // console.log(word + ' ' + _word + ' ' + doc[format.mongo.queryFields[l]] + ' ' +matchCount);
 
                         matchTotal += doc[format.mongo.queryFields[l]].split(' ').length;
@@ -1481,8 +1484,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                   }
                 }
 
-                if((!format.mongo.minMatch || matchCount >= format.mongo.minMatch) &&
-                  matchCount / nlpMatchLength > format.matchRate) {
+                if(!format.mongo.minMatch || matchCount >= format.mongo.minMatch) {
                   var bExist = false;
                   for(var l = 0; l < matchedDoc.length; l++) {
                     if((Array.isArray(doc.input) && doc.input[maxMatchIndex] == matchedDoc[l].input) ||
@@ -1492,11 +1494,13 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                     }
                   }
 
-                  if(!bExist) {
+                  if(!bExist &&
+                    (matchCount / nlpMatchLength >= format.matchRate ||
+                    matchCount1 >= format.matchCount)) {
                     if(Array.isArray(doc.input)) doc.input = doc.input[maxMatchIndex];
                     doc.inputLen = doc.input.split(' ').length;
                     doc.matchWord = matchedWord;
-                    doc.matchCount = matchCount;
+                    doc.matchCount = matchCount1;
                     doc.matchMin = matchMin;
                     doc.matchMax = matchMax;
                     doc.matchRate = matchCount / nlpMatchLength;
@@ -1524,8 +1528,12 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
       matchedDoc.sort(format.mongo.taskSort);
     } else {
       matchedDoc.sort(function (a, b) {
-        if(b.matchRate == a.matchRate) return a.inputLen - b.inputLen;
-        else return b.matchRate - a.matchRate;
+        if(b.matchCount == a.matchCount) {
+          if(b.matchRate == a.matchRate) return a.inputLen - b.inputLen;
+          else return b.matchRate - a.matchRate;
+        } else {
+          return b.matchCount - a.matchCount;
+        }
       });
     }
 
