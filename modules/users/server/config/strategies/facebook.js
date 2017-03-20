@@ -13,7 +13,7 @@ module.exports = function (config) {
     clientID: config.facebook.clientID,
     clientSecret: config.facebook.clientSecret,
     callbackURL: config.facebook.callbackURL,
-    profileFields: ['public_profile'],
+    // profileFields: ['email'],
     // profileFields: ['id', 'name', 'displayName', 'emails', 'photos'],
     passReqToCallback: true
   },
