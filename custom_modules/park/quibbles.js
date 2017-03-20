@@ -117,7 +117,7 @@ var sentenceQuibbles = [
     ]
   },
 
-  { condition: {sentenceType: 0, nlpLength: 6},
+  { condition: {sentenceType: 0, nlpLength: 4},
     sentences: [
       '혹시?',
       '괜찮은 생각이십니다.',

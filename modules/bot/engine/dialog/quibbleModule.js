@@ -68,17 +68,17 @@ function quibbleProcess(quibbleScope, context) {
               for(var k = 0; k < nlp.length; k++) {
                 if(text) break;
                 var token1 = nlp[k];
-                if((!q.condition.questionWord || q.condition.questionWord == token1.text) &&
-                  (!q.condition.tenseType || !sentenceInfo.tenseType || q.condition.tenseType == sentenceInfo.tenseType) &&
-                  (!q.condition.sentenceType || !sentenceInfo.sentenceType || q.condition.sentenceType == sentenceInfo.sentenceType)) {
+                if((q.condition.questionWord == undefined || q.condition.questionWord == token1.text) &&
+                  (q.condition.tenseType  == undefined || sentenceInfo.tenseType == undefined || q.condition.tenseType == sentenceInfo.tenseType) &&
+                  (q.condition.sentenceType  == undefined || sentenceInfo.sentenceType == undefined || q.condition.sentenceType == sentenceInfo.sentenceType)) {
                   text = randomQuibble(q.sentences);
                   console.log('quibble [동사]: ' + JSON.stringify(q, null, 2));
                   break;
                 }
               }
             } else {
-              if((!q.condition.tenseType || !sentenceInfo.tenseType ||  q.condition.tenseType == sentenceInfo.tenseType) &&
-                (!q.condition.sentenceType || !sentenceInfo.sentenceType || q.condition.sentenceType == sentenceInfo.sentenceType)) {
+              if((q.condition.tenseType == undefined || sentenceInfo.tenseType == undefined ||  q.condition.tenseType == sentenceInfo.tenseType) &&
+                (q.condition.sentenceType == undefined || sentenceInfo.sentenceType == undefined || q.condition.sentenceType == sentenceInfo.sentenceType)) {
                 text = randomQuibble(q.sentences);
                 console.log('quibble [동사]: ' + JSON.stringify(q, null, 2));
                 break;
@@ -98,10 +98,10 @@ function quibbleProcess(quibbleScope, context) {
       var token = nlp[i];
       for(var j = 0; j < quibbleScope.sentenceQuibbles.length; j++) {
         var q = quibbleScope.sentenceQuibbles[j];
-        if((!q.condition.questionWord || q.condition.questionWord == token.text) &&
-          (!q.condition.tenseType || !sentenceInfo.tenseType || q.condition.tenseType == sentenceInfo.tenseType) &&
-          (!q.condition.sentenceType || !sentenceInfo.sentenceType || q.condition.sentenceType == sentenceInfo.sentenceType) &&
-          (!q.condition.nlpLength ||  q.condition.nlpLength < nlp.length)) {
+        if((q.condition.questionWord == undefined || q.condition.questionWord == token.text) &&
+          (q.condition.tenseType == undefined || sentenceInfo.tenseType == undefined || q.condition.tenseType == sentenceInfo.tenseType) &&
+          (q.condition.sentenceType == undefined || sentenceInfo.sentenceType == undefined || q.condition.sentenceType == sentenceInfo.sentenceType) &&
+          (q.condition.nlpLength == undefined ||  q.condition.nlpLength < nlp.length)) {
           text = randomQuibble(q.sentences);
           console.log('quibble [문장]: ' + JSON.stringify(q, null, 2));
           break;
