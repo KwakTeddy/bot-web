@@ -13,7 +13,7 @@ var first = /(?:~시작|~처음|^!$|취소)/
 > 인기봇 리스트입니다.\n#popularbot#+index+. +name+\n#
     < {types: [{name: 'selectbot', listName: 'popularbot', typeCheck: 'listTypeCheck'}]}
     {action: core.connectBot}
-    > +outputtext+\n봇과 얘기하다가 다시 선택하고 싶으실때는 [목록]을 입력해주세요
+    > +outputtext+\n궁금하신걸 물어보세요.\n\(목록으로 돌아가기 : [목록] 또는 [플레이챗] 입력\)
 
 최신봇:
 <최신 봇
@@ -21,7 +21,7 @@ var first = /(?:~시작|~처음|^!$|취소)/
 > 최신봇 리스트입니다.\n#newbot#+index+. +name+\n#
     < {types: [{name: 'selectbot', listName: 'newbot', typeCheck: 'listTypeCheck'}]}
     {action: core.connectBot}
-    > +outputtext+\n봇과 얘기하다가 다시 선택하고 싶으실때는 [목록]을 입력해주세요
+    > +outputtext+\n궁금하신걸 물어보세요.\n\(목록으로 돌아가기 : [목록] 또는 [플레이챗] 입력\)
 
 친구봇:
 <친구 봇
@@ -45,7 +45,7 @@ var first = /(?:~시작|~처음|^!$|취소)/
 > 친구봇 리스트입니다.\n#followbot#+index+. +name+\n#
     < {types: [{name: 'selectbot', listName: 'followbot', typeCheck: 'listTypeCheck'}]}
     {action: core.connectBot}
-    > +outputtext+\n봇과 얘기하다가 다시 선택하고 싶으실때는 [목록]을 입력해주세요
+    > +outputtext+\n궁금하신걸 물어보세요.\n\(목록으로 돌아가기 : [목록] 또는 [플레이챗] 입력\)
 
 마이봇:
 <마이 봇
@@ -69,7 +69,7 @@ var first = /(?:~시작|~처음|^!$|취소)/
 > 마이봇 리스트입니다.\n#mybot#+index+. +name+\n#
     < {types: [{name: 'selectbot', listName: 'mybot', typeCheck: 'listTypeCheck'}]}
     {action: core.connectBot}
-    > +outputtext+\n봇과 얘기하다가 다시 선택하고 싶으실때는 [목록]을 입력해주세요
+    > +outputtext+\n궁금하신걸 물어보세요.\n\(목록으로 돌아가기 : [목록] 또는 [플레이챗] 입력\)
 
 시작:
 c< {regexp: first}

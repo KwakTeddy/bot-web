@@ -102,7 +102,7 @@ function changeBot(task, context, callback) {
     context.botUser.curBotName = task.botName;
   }
 
-  var botName = task.botName;
+  var botName = task.botId;
 
   console.log('changeBot: ' + botName);
   contextModule.getBotContext(botName, function(_botContext) {
