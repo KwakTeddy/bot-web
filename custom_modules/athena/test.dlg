@@ -119,12 +119,12 @@ var first = /(?:~시작|~처음|^!$|취소)/
     {action: publictask.stockprice}
     > if(context.dialog.item.length != 0) +lastTradeDate+\n+name+\n종가: +lastTradePriceOnly+
 
-뉴스:
-<뉴스
-navertask.newscrawl
-> if(context.dialog.item.length != 0) 오늘의 이슈입니다.\n#item#+index+. +title+\n#
-    <{types: [{name: 'news', listName: 'item', typeCheck: 'listTypeCheck'}]}
-    >+title+\n+link+
+//뉴스:
+//<뉴스
+//navertask.newscrawl
+//> if(context.dialog.item.length != 0) 오늘의 이슈입니다.\n#item#+index+. +title+\n#
+//    <{types: [{name: 'news', listName: 'item', typeCheck: 'listTypeCheck'}]}
+//    >+title+\n+link+
 
 //메일:
 //<메일
