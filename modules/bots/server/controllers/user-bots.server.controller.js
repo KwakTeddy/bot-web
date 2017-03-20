@@ -206,7 +206,6 @@ exports.list = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      console.log(userBots);
       res.json(userBots);
     }
   });
@@ -214,8 +213,7 @@ exports.list = function (req, res) {
 
 
 exports.followList = function (req, res) {
-
-  if (!req.query.botUserId) {
+  if (!req.body.botUserId) {
     return res.json();
   }
   var query = {};
@@ -249,7 +247,6 @@ exports.followList = function (req, res) {
 
 exports.followBot = function(req, res) {
   var query = {};
-  console.log(123321231);
   query['botUserId'] = req.body.botUserId;
   query['userBot'] = req.body.userBot;
   UserBotFollow.findOne(query).exec(function (err, follows) {
