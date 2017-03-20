@@ -96,7 +96,7 @@ exports.changeBot = changeBot;
 var mongoose = require('mongoose');
 var UserBot = mongoose.model('UserBot');
 function changeBot(task, context, callback) {
-  // if(context.channel.name != 'socket') context.botUser.curBotName = task.botName;
+  /*if(context.channel.name != 'socket') */context.botUser.curBotName = task.botName;
 
   var botName = task.botName;
 

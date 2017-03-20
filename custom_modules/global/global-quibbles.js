@@ -861,7 +861,7 @@ var verbQuibbles = [
       "진짜 궁금하면 나중에 또 물어봐 설명해줄께",
     ]
   },
-  { condition: {word: '되다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '되다', tenseType: 1, sentenceType: 1},
     sentences: [
       "당연하지~!",
       "그럼~ 당연히 되지",
@@ -896,7 +896,7 @@ var verbQuibbles = [
       "나 혼자야~",
     ]
   },
-  { condition: {word: '있다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '있다', tenseType: 1, sentenceType: 1},
     sentences: [
       "당연히 있지",
       "있고말고~",
@@ -905,7 +905,7 @@ var verbQuibbles = [
       "많아 지금~~ ㅋㅋ",
     ]
   },
-  { condition: {word: '있다', tenseType: 1, sentenceType: 1},
+  { condition: {word: '있다', tenseType: 1, sentenceType: 0},
     sentences: [
       "그래서?",
       "그래~",
@@ -913,7 +913,7 @@ var verbQuibbles = [
       "그렇구나",
     ]
   },
-  { condition: {word: '이다', tenseType: 2, questionWord: 'yesno'},
+  { condition: {word: '이다', tenseType: 2, sentenceType: 1},
     sentences: [
       "아니 전혀",
       "전혀 아니지",
@@ -921,14 +921,14 @@ var verbQuibbles = [
       "그건 아니었어..",
     ]
   },
-  { condition: {word: '이다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '이다', tenseType: 1, sentenceType: 1},
     sentences: [
       "응 맞아",
       "그렇다고 할수도 있고 아니라고 할 수도 있고..",
       "그렇지",
     ]
   },
-  { condition: {word: '이다', tenseType: 1, sentenceType: 1},
+  { condition: {word: '이다', tenseType: 1, sentenceType: 0},
     sentences: [
       "그래서?",
       "그렇구나",
@@ -936,7 +936,7 @@ var verbQuibbles = [
       "알았어~",
     ]
   },
-  { condition: {word: '아니다', tenseType: 2, questionWord: 'yesno'},
+  { condition: {word: '아니다', tenseType: 2, sentenceType: 1},
     sentences: [
       "응 아니지~",
       "아니라고 말했던 것 같은데..",
@@ -944,7 +944,7 @@ var verbQuibbles = [
       "노노 아닙니다~~",
     ]
   },
-  { condition: {word: '아니다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '아니다', tenseType: 1, sentenceType: 1},
     sentences: [
       "응 아니야",
       "아니라고 말해줬잖아~~",
@@ -952,7 +952,7 @@ var verbQuibbles = [
       "현재는 아니야",
     ]
   },
-  { condition: {word: '않다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '않다', tenseType: 1, sentenceType: 1},
     sentences: [
       "아닌 것 같은데..",
       "가끔 그런 거 같기도 해..",
@@ -960,7 +960,7 @@ var verbQuibbles = [
       "아닌듯..",
     ]
   },
-  { condition: {word: '않다', tenseType: 1, sentenceType: 1},
+  { condition: {word: '않다', tenseType: 1, sentenceType: 0},
     sentences: [
       "나도 동감이야",
       "그렇지..",
@@ -978,7 +978,7 @@ var verbQuibbles = [
       "이유야 많지만.. 그렇게 됐네..",
     ]
   },
-  { condition: {word: '없다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '없다', tenseType: 1, sentenceType: 1},
     sentences: [
       "응 없어~",
       "없다고 봐야지..",
@@ -986,7 +986,7 @@ var verbQuibbles = [
       "없다고 몇 번 말하냐..",
     ]
   },
-  { condition: {word: '없다', tenseType: 1, sentenceType: 1},
+  { condition: {word: '없다', tenseType: 1, sentenceType: 0},
     sentences: [
       "그렇구나..",
       "나도 그래..",
@@ -1019,7 +1019,7 @@ var verbQuibbles = [
       "좋은 이유야 백가지도 넘어",
     ]
   },
-  { condition: {word: '좋다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '좋다', tenseType: 1, sentenceType: 1},
     sentences: [
       "응 좋아해",
       "당연히 좋아하지",
@@ -1027,7 +1027,7 @@ var verbQuibbles = [
       "사랑하지!",
     ]
   },
-  { condition: {word: '좋다', tenseType: 1, sentenceType: 1},
+  { condition: {word: '좋다', tenseType: 1, sentenceType: 0},
     sentences: [
       "그렇구나",
       "그래서?",
@@ -1044,7 +1044,7 @@ var verbQuibbles = [
       "딱히 이유는 없어",
     ]
   },
-  { condition: {word: '싫다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '싫다', tenseType: 1, sentenceType: 1},
     sentences: [
       "응 싫어",
       "딱히 좋아하진 않아",
@@ -1052,7 +1052,7 @@ var verbQuibbles = [
       "그런 것 같아",
     ]
   },
-  { condition: {word: '싫다', tenseType: 1, sentenceType: 1},
+  { condition: {word: '싫다', tenseType: 1, sentenceType: 0},
     sentences: [
       "나도 그래",
       "공감이야",
@@ -1060,7 +1060,7 @@ var verbQuibbles = [
       "나랑 똑같다",
     ]
   },
-  { condition: {word: '크다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '크다', tenseType: 1, sentenceType: 1},
     sentences: [
       "크지",
       "엄청 커",
@@ -1068,7 +1068,7 @@ var verbQuibbles = [
       "크고말고",
     ]
   },
-  { condition: {word: '크다', tenseType: 1, sentenceType: 1},
+  { condition: {word: '크다', tenseType: 1, sentenceType: 0},
     sentences: [
       "크구나..",
       "그렇구나",
@@ -1077,14 +1077,14 @@ var verbQuibbles = [
       "크기는 중요하지 않아",
     ]
   },
-  { condition: {word: '작다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '작다', tenseType: 1, sentenceType: 1},
     sentences: [
       "아니 커 ㅎㅎ",
       "엄청 커",
       "너무 커서 문제야",
     ]
   },
-  { condition: {word: '작다', tenseType: 1, sentenceType: 1},
+  { condition: {word: '작다', tenseType: 1, sentenceType: 0},
     sentences: [
       "작구나..",
       "그렇구나..",
@@ -1093,7 +1093,7 @@ var verbQuibbles = [
       "크기는 중요한 게 아니야",
     ]
   },
-  { condition: {word: '어떻다', tenseType: 2, questionWord: 'yesno'},
+  { condition: {word: '어떻다', tenseType: 2, sentenceType: 1},
     sentences: [
       "나쁘지 않았어",
       "괜찮았어",
@@ -1101,21 +1101,21 @@ var verbQuibbles = [
       "좋았어~",
     ]
   },
-  { condition: {word: '어떻다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '어떻다', tenseType: 1, sentenceType: 1},
     sentences: [
       "나쁘지 않은데?",
       "괜찮은데?",
       "그럭저럭~",
     ]
   },
-  { condition: {word: '어떠하다', tenseType: 2, questionWord: 'yesno'},
+  { condition: {word: '어떠하다', tenseType: 2, sentenceType: 1},
     sentences: [
       "어떡하긴..뭘 어떡해~!",
       "어떻게 했더라.. 기억이 잘 아나네",
       "어떡했는지 기억이 잘 안나.",
     ]
   },
-  { condition: {word: '어떠하다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '어떠하다', tenseType: 1, sentenceType: 1},
     sentences: [
       "글쎄.. 어떻게 할지는 잘 모르겠는데..",
       "내 전문 분야가 아니라 잘 몰라..",
@@ -1129,14 +1129,14 @@ var verbQuibbles = [
       "뭐가 재밌었더라...",
     ]
   },
-  { condition: {word: '재미있다', tenseType: 2, questionWord: 'yesno'},
+  { condition: {word: '재미있다', tenseType: 2, sentenceType: 1},
     sentences: [
       "응 재밌었어",
       "재밌던데?",
       "완전 재밌었지",
     ]
   },
-  { condition: {word: '재미있다', tenseType: 2, sentenceType: 1},
+  { condition: {word: '재미있다', tenseType: 2, sentenceType: 0},
     sentences: [
       "응 맞아 ㅋㅋ",
       "엄청 재밌더라",
@@ -1150,27 +1150,27 @@ var verbQuibbles = [
       "재밌는거야 많지~",
     ]
   },
-  { condition: {word: '재미있다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '재미있다', tenseType: 1, sentenceType: 1},
     sentences: [
       "응 재밌더라",
       "나는 재밌던데",
       "엄청 재밌게 했어",
     ]
   },
-  { condition: {word: '재미있다', tenseType: 1, sentenceType: 1},
+  { condition: {word: '재미있다', tenseType: 1, sentenceType: 0},
     sentences: [
       "동감이야 ㅋㅋ",
       "진짜 재밌던데 ㅋㅋ",
       "정말 나도 ㅋㅋ",
     ]
   },
-  { condition: {word: '알다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '알다', tenseType: 1, sentenceType: 1},
     sentences: [
       "아니 잘 모르는데 알려줘",
       "그게 뭔데? 나도 알려줘",
     ]
   },
-  { condition: {word: '알다', tenseType: 1, sentenceType: 1},
+  { condition: {word: '알다', tenseType: 1, sentenceType: 0},
     sentences: [
       "그렇구나",
       "그래서?",
@@ -1178,7 +1178,7 @@ var verbQuibbles = [
       "아는 게 힘이지 ㅎㅎ",
     ]
   },
-  { condition: {word: '보다', tenseType: 2, questionWord: 'yesno'},
+  { condition: {word: '보다', tenseType: 2, sentenceType: 1},
     sentences: [
       "못 봤어 아직 ㅠㅠ",
       "못 봤는데..",
@@ -1201,7 +1201,7 @@ var verbQuibbles = [
       "아무데도 안 보고 있어",
     ]
   },
-  { condition: {word: '보다', tenseType: 3, questionWord: 'yesno'},
+  { condition: {word: '보다', tenseType: 3, sentenceType: 1},
     sentences: [
       "응 볼려구",
       "봐야지",
@@ -1229,14 +1229,14 @@ var verbQuibbles = [
       "이것 저것 써 ㅎㅎ",
     ]
   },
-  { condition: {word: '쓰다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '쓰다', tenseType: 1, sentenceType: 1},
     sentences: [
       "응 쓰지 당연히",
       "응 가끔씩 써",
       "자주는 아니고 종종 써",
     ]
   },
-  { condition: {word: '쓰다', tenseType: 1, sentenceType: 1},
+  { condition: {word: '쓰다', tenseType: 1, sentenceType: 0},
     sentences: [
       "나도 쓰는데!",
       "그렇구나",
@@ -1278,13 +1278,13 @@ var verbQuibbles = [
       "어떤 방식이든 좋아",
     ]
   },
-  { condition: {word: '싶다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '싶다', tenseType: 1, sentenceType: 1},
     sentences: [
       "아니.. 그러고 싶지 않아..",
       "아니요..",
     ]
   },
-  { condition: {word: '싶다', tenseType: 1, sentenceType: 1},
+  { condition: {word: '싶다', tenseType: 1, sentenceType: 0},
     sentences: [
       "그렇구나",
       "그래서?",
@@ -1298,28 +1298,28 @@ var verbQuibbles = [
       "주진 않았어",
     ]
   },
-  { condition: {word: '주다', tenseType: 2, questionWord: 'yesno'},
+  { condition: {word: '주다', tenseType: 2, sentenceType: 1},
     sentences: [
       "아니 안 줬어",
       "안 줬는데",
       "준 건 없어",
     ]
   },
-  { condition: {word: '주다', tenseType: 2, sentenceType: 1},
+  { condition: {word: '주다', tenseType: 2, sentenceType: 0},
     sentences: [
       "그랬구나",
       "그래서?",
       "오~~ 그랬어?",
     ]
   },
-  { condition: {word: '주다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '주다', tenseType: 1, sentenceType: 1},
     sentences: [
       "아니 안 줘",
       "주진 않아",
       "안주지~",
     ]
   },
-  { condition: {word: '주다', tenseType: 1, sentenceType: 1},
+  { condition: {word: '주다', tenseType: 1, sentenceType: 0},
     sentences: [
       "그렇구나",
       "그래서?",
@@ -1375,7 +1375,7 @@ var verbQuibbles = [
       "관악구에 살아~",
     ]
   },
-  { condition: {word: '살다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '살다', tenseType: 1, sentenceType: 1},
     sentences: [
       "응 거기에 살아",
       "한 때 거기 살았어",
@@ -1410,21 +1410,21 @@ var verbQuibbles = [
       "듣던 중 반가운 소리네",
     ]
   },
-  { condition: {word: '중요하다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '중요하다', tenseType: 1, sentenceType: 1},
     sentences: [
       "그럼 중요하지",
       "내 생각에는 중요해",
       "중요하다고 봐야지",
     ]
   },
-  { condition: {word: '중요하다', tenseType: 1, sentenceType: 1},
+  { condition: {word: '중요하다', tenseType: 1, sentenceType: 0},
     sentences: [
       "응 나도 그렇게 생각해",
       "동감이야",
       "맞아 중요할거야",
     ]
   },
-  { condition: {word: '생기다', tenseType: 2, questionWord: 'yesno'},
+  { condition: {word: '생기다', tenseType: 2, sentenceType: 1},
     sentences: [
       "그런 걸로 알고 있어",
       "그럴걸?",
@@ -1438,14 +1438,14 @@ var verbQuibbles = [
       "생긴 게 중요하지 않자나 ㅎㅎ",
     ]
   },
-  { condition: {word: '생기다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '생기다', tenseType: 1, sentenceType: 1},
     sentences: [
       "생길 것 같은데",
       "생길거야",
       "생긴다고 봐야지",
     ]
   },
-  { condition: {word: '생기다', tenseType: 1, sentenceType: 1},
+  { condition: {word: '생기다', tenseType: 1, sentenceType: 0},
     sentences: [
       "그렇구나",
       "그래서?",
@@ -1459,21 +1459,21 @@ var verbQuibbles = [
       "해보긴 했는데 기억이 안나네",
     ]
   },
-  { condition: {word: '하다 보다', tenseType: 2, questionWord: 'yesno'},
+  { condition: {word: '하다 보다', tenseType: 2, sentenceType: 1},
     sentences: [
       "응 해봤지",
       "해보고 말고",
       "해보긴 했어",
     ]
   },
-  { condition: {word: '하다 보다', tenseType: 1, sentenceType: 1},
+  { condition: {word: '하다 보다', tenseType: 1, sentenceType: 2},
     sentences: [
       "그렇구나",
       "그래서?",
       "나도야~",
     ]
   },
-  { condition: {word: '하다 보다', sentenceType: 2},
+  { condition: {word: '하다 보다', sentenceType: 1},
     sentences: [
       "그래 알았어",
       "한 번 해볼께",
@@ -1487,14 +1487,14 @@ var verbQuibbles = [
       "어떤 거든 할 수 있어",
     ]
   },
-  { condition: {word: '수 있다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '수 있다', tenseType: 1, sentenceType: 1},
     sentences: [
       "그럼 할 수 있지",
       "할 수 있을거야",
       "물론이지",
     ]
   },
-  { condition: {word: '수 있다', tenseType: 1, sentenceType: 1},
+  { condition: {word: '수 있다', tenseType: 1, sentenceType: 0},
     sentences: [
       "그렇구나",
       "그래서?",
@@ -1508,14 +1508,14 @@ var verbQuibbles = [
       "어떤 거든 상관없어",
     ]
   },
-  { condition: {word: '줄 알다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '줄 알다', tenseType: 1, sentenceType: 1},
     sentences: [
       "그럼 물론이지",
       "할 줄 알지",
       "당연하지",
     ]
   },
-  { condition: {word: '줄 알다', tenseType: 1, sentenceType: 1},
+  { condition: {word: '줄 알다', tenseType: 1, sentenceType: 0},
     sentences: [
       "정말?",
       "그렇구나",
@@ -1523,14 +1523,14 @@ var verbQuibbles = [
       "나도 그래",
     ]
   },
-  { condition: {word: '같다', tenseType: 2, sentenceType: 1},
+  { condition: {word: '같다', tenseType: 2, sentenceType: 0},
     sentences: [
       "그랬구나",
       "오~ 진짜?",
       "그래서?",
     ]
   },
-  { condition: {word: '같다', tenseType: 1, sentenceType: 1},
+  { condition: {word: '같다', tenseType: 1, sentenceType: 0},
     sentences: [
       "진짜?",
       "정말?",
@@ -1551,14 +1551,14 @@ var verbQuibbles = [
       "얼마 안됐어",
     ]
   },
-  { condition: {word: '먹다', tenseType: 2, questionWord: 'yesno'},
+  { condition: {word: '먹다', tenseType: 2, sentenceType: 1},
     sentences: [
       "응 먹었어",
       "당연히 먹었지",
       "물론이지 먹었다구",
     ]
   },
-  { condition: {word: '먹다', tenseType: 2, sentenceType: 1},
+  { condition: {word: '먹다', tenseType: 2, sentenceType: 0},
     sentences: [
       "그랬구나",
       "잘 먹었어?",
@@ -1572,21 +1572,21 @@ var verbQuibbles = [
       "먹을거야 곧",
     ]
   },
-  { condition: {word: '먹다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '먹다', tenseType: 1, sentenceType: 1},
     sentences: [
       "응 먹지",
       "당연히 먹지",
       "먹다마다",
     ]
   },
-  { condition: {word: '먹다', tenseType: 1, sentenceType: 1},
+  { condition: {word: '먹다', tenseType: 1, sentenceType: 0},
     sentences: [
       "그렇구나",
       "그래서?",
       "정말? 맛있게 먹어~",
     ]
   },
-  { condition: {word: '먹다', tenseType: 3, questionWord: 'yesno'},
+  { condition: {word: '먹다', tenseType: 3, sentenceType: 1},
     sentences: [
       "그럼 먹어야지",
       "먹기로 했잖아",
@@ -1607,14 +1607,14 @@ var verbQuibbles = [
       "혼자 마셨어",
     ]
   },
-  { condition: {word: '마시다', tenseType: 2, questionWord: 'yesno'},
+  { condition: {word: '마시다', tenseType: 2, sentenceType: 1},
     sentences: [
       "응 마셨지",
       "당연히 마셨지",
       "많이 마셨어",
     ]
   },
-  { condition: {word: '마시다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '마시다', tenseType: 1, sentenceType: 1},
     sentences: [
       "그럼 마시지",
       "당연히 마시지",
@@ -1628,7 +1628,7 @@ var verbQuibbles = [
       "마십시다~!",
     ]
   },
-  { condition: {word: '자다', tenseType: 2, questionWord: 'yesno'},
+  { condition: {word: '자다', tenseType: 2, sentenceType: 1},
     sentences: [
       "아까 잤어",
       "한참 전에 잤어",
@@ -1649,7 +1649,7 @@ var verbQuibbles = [
       "불 꺼",
     ]
   },
-  { condition: {word: '출근하다', tenseType: 2, questionWord: 'yesno'},
+  { condition: {word: '출근하다', tenseType: 2, sentenceType: 1},
     sentences: [
       "출근했지",
       "당연히 했지",
@@ -1663,27 +1663,27 @@ var verbQuibbles = [
       "출근 중이야~",
     ]
   },
-  { condition: {word: '출근하다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '출근하다', tenseType: 1, sentenceType: 1},
     sentences: [
       "출근은 안 해",
       "줄근 안 해",
       "출근 안하지"]
   },
-  { condition: {word: '덥다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '덥다', tenseType: 1, sentenceType: 1},
     sentences: [
       "응 더워 ㅠㅠ",
       "덥다 진짜",
       "더워 죽겠어",
     ]
   },
-  { condition: {word: '춥다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '춥다', tenseType: 1, sentenceType: 1},
     sentences: [
       "응 너무 춥다 ㅠㅠ",
       "춥다 진짜",
       "추워 죽겠어 ㅠㅠ",
     ]
   },
-  { condition: {word: '공부하다', tenseType: 2, questionWord: 'yesno'},
+  { condition: {word: '공부하다', tenseType: 2, sentenceType: 1},
     sentences: [
       "당연히 했지",
       "공부 빼면 시체야",
@@ -1704,14 +1704,14 @@ var verbQuibbles = [
       "닥치는데로 하고 있어",
     ]
   },
-  { condition: {word: '힘들다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '힘들다', tenseType: 1, sentenceType: 1},
     sentences: [
       "힘들어 죽겠어..",
       "힘들지 않다고 하면 뻥이지..",
       "힘들지만 괜찮아.",
     ]
   },
-  { condition: {word: '힘들다', tenseType: 1, sentenceType: 1},
+  { condition: {word: '힘들다', tenseType: 1, sentenceType: 0},
     sentences: [
       "그렇구나..",
       "그래서?",
@@ -1719,14 +1719,14 @@ var verbQuibbles = [
       "정말..?",
     ]
   },
-  { condition: {word: '우울하다', tenseType: 1, questionWord: 'yesno'},
+  { condition: {word: '우울하다', tenseType: 1, sentenceType: 1},
     sentences: [
       "조금..",
       "약간 그런 것 같아",
       "어느 정도는..",
     ]
   },
-  { condition: {word: '우울하다', tenseType: 1, sentenceType: 1},
+  { condition: {word: '우울하다', tenseType: 1, sentenceType: 0},
     sentences: [
       "그렇구나",
       "정말?",
@@ -1866,22 +1866,22 @@ var sentenceQuibbles = [
       "그냥 그럴 거 같아",
       "왜?",
     ]},
-  { condition: {tenseType: 2, questionWord: 'yesno'},
+  { condition: {tenseType: 2, sentenceType: 1},
     sentences: [
       "~했어?",
       "아마도?",
     ]},
-  { condition: {tenseType: 1, questionWord: 'yesno'},
+  { condition: {tenseType: 1, sentenceType: 1},
     sentences: [
       "~해?",
       "아마도?",
     ]},
-  { condition: {tenseType: 3, questionWord: 'yesno'},
+  { condition: {tenseType: 3, sentenceType: 1},
     sentences: [
       "~할 거야?",
       "아마도?",
     ]},
-  { condition: {sentenceType: 2, questionWord:'' },
+  { condition: {sentenceType: 1, questionWord:'' },
     sentences: [
       "~하자/~할래?/~해줘",
       "알았어",
