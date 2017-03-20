@@ -49,8 +49,9 @@
 
 <!--Application JavaScript Files-->
 {% for jsFile in mobileJsFiles %}<script type="text/javascript" src="{{jsFile}}"></script>{% endfor %}
+
 {% if env == 'production' %}
-<script type="text/javascript" src="dist/application.mobile.min.js?rel=ede1c2f011"></script>
+<script type="text/javascript" src="dist/application_mobile.min.js?rel=ede1c2f011"></script>
 {% endif %}
 
 <ng-include src="'/modules/core/client/views/side-menu2.mobile.view.html'" ></ng-include>
