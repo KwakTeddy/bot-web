@@ -188,13 +188,6 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
               console.log(url);
             $window.location.href = url;
           }
-          var modalInstance = $uibModal.open({
-              templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',
-              scope: $scope
-          });
-          modalInstance.result.then(function (response) {
-              console.log(response);
-          });
           $scope.pageList = [];
           $scope.pageList = response.data;
         });
@@ -209,6 +202,13 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
             console.log(response)
         })
       };
+      var modalInstance = $uibModal.open({
+          templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',
+          scope: $scope
+      });
+      modalInstance.result.then(function (response) {
+        console.log(response);
+      })
     };
 
     /********************* dialog *********************/
