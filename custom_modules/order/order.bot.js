@@ -12,7 +12,7 @@ var orderBot = {
     keyboard: { type :"buttons", buttons:["배달주문시작", "배달내역보기", "도움말"]}
   },
   facebook: {
-    id: '1753073741670229',
+    id: '1166917363364364',
     APP_SECRET :  "eb2974959255583150013648e7ac5da4",
     PAGE_ACCESS_TOKEN :  "EAAJGZBCFjFukBAOhykfl9BfZBcLoDsT2G6oC7NVdhyWDSw45p3W9U8WKOKlbvunqnAFdZC2L8HPa2kkNi33fpj0v5bHZAm55WIMJlniy9ZBDaXkFZC6OBo5zU4cV7CZCq7kXrXnIEDQh9aWQbZASmiPlIAWb8fwuneaQfLqZBJpZAV4QZDZD",
     VALIDATION_TOKEN : "moneybrain_token"

@@ -198,8 +198,7 @@ function receivedMessage(event) {
   console.log(message);
   console.log(senderID);
   console.log(recipientID);
-  console.log(event.botId);
-  console.log(util.inspect(global._bots));
+  console.log(global._bots[event.botId].facebook.id);
 
 
   if(recipientID == global._bots[event.botId].facebook.id) {
