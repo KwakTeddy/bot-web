@@ -20,6 +20,7 @@ function userCheck (task, context, callback) {
     User.find(query).lean().exec(function (err,docs) {
         console.log(docs);
         if (docs.length != 0) {
+            context.user.playchatId = docs[0]._id;
             context.user.check = true;
         } else {
             context.user.check = false;
@@ -211,7 +212,6 @@ function connectBot (task,context,callback) {
     command.changeBot(task, context, function(_task, _context) {
         callback(_task, _context);
     });
-    callback(task,context);
 }
 
 exports.connectBot = connectBot;

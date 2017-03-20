@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var mongoModule = require(path.resolve('modules/bot/action/common/mongo'));
 // var typelib = require(path.resolve('modules/bot/action/common/type'));
 var toneModule = require(path.resolve('modules/bot/action/common/tone'));
+var core = require(path.resolve('custom_modules/playchat/core'));
 
 function factsTypeCheck(text, format, inDoc, context, callback) {
   if(context.botUser.sentenceInfo.sentenceType != 1 || context.botUser.sentenceInfo.verbToken == undefined) {
@@ -78,6 +79,139 @@ var userDialogType = {
 
 var globalStartDialogs = [
   {
+    input: ['목록',/playchat/i,'플레이 챗','플레이챗'],
+    task: {
+      action: function (task, context, callback) {
+        task.botName = 'playchat';
+        var command = require(path.resolve('./modules/bot/action/common/command'));
+        command.changeBot(task, context, function (_task, _context) {
+          callback(_task, _context);
+        });
+      }
+    },
+    output: '안녕하세요 PlayChat입니다.\n인기봇, 최신봇, 친구봇, 마이봇 중 하나를 입력해주세요.',
+  },
+  {
+    name: '인기봇',
+    input: '인기 봇',
+    task:   {action: core.popularbotlist},
+    output: '인기봇 리스트입니다.\n#popularbot#+index+. +name+\n#',
+    children: [
+      {
+        input: {types: [{name: 'selectbot', listName: 'popularbot', typeCheck: 'listTypeCheck'}]},
+        task:       {action: core.connectBot},
+        output: '+outputtext+\n봇과 얘기하다가 다시 선택하고 싶으실때는 [목록]을 입력해주세요'
+      }
+    ]
+  },
+  {
+    name: '최신봇',
+    input: '최신 봇',
+    task:   {action: core.newbotlist},
+    output: '최신봇 리스트입니다.\n#newbot#+index+. +name+\n#',
+    children: [
+      {
+        input: {types: [{name: 'selectbot', listName: 'newbot', typeCheck: 'listTypeCheck'}]},
+        task:       {action: core.connectBot},
+        output: '+outputtext+\n봇과 얘기하다가 다시 선택하고 싶으실때는 [목록]을 입력해주세요'
+      }
+    ]
+  },
+  {
+    name: '친구봇',
+    input: '친구 봇',
+    task:   {action: core.userCheck},
+    output: [
+      {if: 'context.user.check == true', output: {call:'친구봇리스트'}},
+      {if: 'context.user.check == false', output: 'ID[이메일]를 입력해주세요',
+        children: [
+          {
+            input: {types: [{name: 'email', typeCheck: core.emailTypeCheck, raw: true}]},
+            task:       {action: core.authemail},
+            output: [
+              {if: 'context.dialog.emailusercheck == true', output: '고객님의 메일로 인증코드를 전송하였습니다.\n인증코드를 입력해주세요.',
+                children: [
+                  {
+                    input: {types: [{name: 'code', typeCheck: core.codeTypeCheck, raw: true}]},
+                    task:           {action: core.authcode},
+                    output: [
+                      {if: 'context.dialog.codecheck == true', output: {call:'친구봇리스트'}},
+                      {if: 'context.dialog.codecheck == false', output: {repeat: 1, options: {output: '인증코드가 잘못되었습니다.\n다시입력해주세요.'}}}]
+                  },
+                  {
+                    input: {if: 'true'},
+                    output: {repeat: 1, options: {output: '인증코드의 형식이 틀렸습니다.\n다시입력해주세요.'}}
+                  }
+                ]},
+              {if: 'context.dialog.emailusercheck == false', output: {repeat: 1, options: {output: '가입되지 않은 ID[이메일]입니다.\n아래 링크에서 가입 후 진행해주세요.'}}}]
+          },
+          {
+            input: {if: 'true'},
+            output: {repeat: 1, options: {output: 'ID[이메일] 형식이 틀렸습니다.\n다시입력해주세요.'}}
+          }
+        ]}]
+  },
+  {
+    name: '친구봇리스트',
+    input: '친구 봇',
+    task:   {action: core.followbotlist},
+    output: '친구봇 리스트입니다.\n#followbot#+index+. +name+\n#',
+    children: [
+      {
+        input: {types: [{name: 'selectbot', listName: 'followbot', typeCheck: 'listTypeCheck'}]},
+        task:       {action: core.connectBot},
+        output: '+outputtext+\n봇과 얘기하다가 다시 선택하고 싶으실때는 [목록]을 입력해주세요'
+      }
+    ]
+  },
+  {
+    name: '마이봇',
+    input: '마이 봇',
+    task:   {action: core.userCheck},
+    output: [
+      {if: 'context.user.check == true', output: {call:'마이봇리스트'}},
+      {if: 'context.user.check == false', output: 'ID[이메일]를 입력해주세요',
+        children: [
+          {
+            input: {types: [{name: 'email', typeCheck: core.emailTypeCheck, raw: true}]},
+            task:       {action: core.authemail},
+            output: [
+              {if: 'context.dialog.emailusercheck == true', output: '고객님의 메일로 인증코드를 전송하였습니다.\n인증코드를 입력해주세요.',
+                children: [
+                  {
+                    input: {types: [{name: 'code', typeCheck: core.codeTypeCheck, raw: true}]},
+                    task:           {action: core.authcode},
+                    output: [
+                      {if: 'context.dialog.codecheck == true', output: {call:'마이봇리스트'}},
+                      {if: 'context.dialog.codecheck == false', output: {repeat: 1, options: {output: '인증코드가 잘못되었습니다.\n다시입력해주세요.'}}}]
+                  },
+                  {
+                    input: {if: 'true'},
+                    output: {repeat: 1, options: {output: '인증코드의 형식이 틀렸습니다.\n다시입력해주세요.'}}
+                  }
+                ]},
+              {if: 'context.dialog.emailusercheck == false', output: {repeat: 1, options: {output: '가입되지 않은 ID[이메일]입니다.\n아래 링크에서 가입 후 진행해주세요.'}}}]
+          },
+          {
+            input: {if: 'true'},
+            output: {repeat: 1, options: {output: 'ID[이메일] 형식이 틀렸습니다.\n다시입력해주세요.'}}
+          }
+        ]}]
+  },
+  {
+    name: '마이봇리스트',
+    input: false,
+    task:   {action: core.mybotlist},
+    output: '마이봇 리스트입니다.\n#mybot#+index+. +name+\n#',
+    children: [
+      {
+        input: {types: [{name: 'selectbot', listName: 'mybot', typeCheck: 'listTypeCheck'}]},
+        task:       {action: core.connectBot},
+        output: '+outputtext+\n봇과 얘기하다가 다시 선택하고 싶으실때는 [목록]을 입력해주세요'
+      }
+    ]
+  },
+  {
     input: [/([^\b\s]*)(?:\b|\s).*불러줘/, /([^\b\s]*)(?:\b|\s).*부르다/, /([^\b\s]*)(?:\b|\s).*불다/],
     task:   {
       action: function(task, context, callback) {
@@ -88,7 +222,7 @@ var globalStartDialogs = [
         });
       }
     },
-    output: '+output+'
+    output: '+outputtext+\n봇과 얘기하다가 다시 선택하고 싶으실때는 [목록]을 입력해주세요'
   },
   // {
   //   input: /(^.*체).*바꾸다/,
