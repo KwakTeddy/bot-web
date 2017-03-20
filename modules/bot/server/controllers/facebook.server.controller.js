@@ -199,8 +199,11 @@ function receivedMessage(event) {
   console.log(senderID);
   console.log(recipientID);
   console.log(event.botId);
+  console.log(global._bots[event.botId].facebook.id);
+
 
   if(recipientID == global._bots[event.botId].facebook.id) {
+    console.log('ininininin')
     contextModule.getContext(event.botId, 'facebook', senderID, function(context) {
       console.log('senderID: ' + senderID + ', recipientID: ' + recipientID);
       //console.log('receivedMessage: ', event);
@@ -212,6 +215,7 @@ function receivedMessage(event) {
         var messageAttachments = message.attachments;
 
         chat.write('facebook', senderID, event.botId, messageText, function (retText, task) {
+          console.log('this is write')
           respondMessage(senderID, retText, event.botId, task);
         });
       }
