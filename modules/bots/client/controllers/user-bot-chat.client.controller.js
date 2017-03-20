@@ -228,16 +228,19 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       });
     };
 
-    // 전체화면 이벤트로 전환
-    $document.bind("keydown", function(event) {
-      $rootScope.$broadcast('keyinput', vm.msg);
+    // only in developer
+    if ($state.is('developer-home')) {
+      // 전체화면 이벤트로 전환
+      $document.bind("keydown", function (event) {
+        $rootScope.$broadcast('keyinput', vm.msg);
 
-      if(event.keyCode == 116) {    // F5
+        if (event.keyCode == 116) {    // F5
           vm.buildBot();
-        } else if(event.keyCode == 27) {
+        } else if (event.keyCode == 27) {
           vm.resetBot();
         }
-    });
+      });
+    }
 
     function build() {
       clearBubble();
