@@ -36,21 +36,22 @@
 
   <!--facebook DIY-->
   <div name='facebook' ng-show="(channel == 'facebook') && (method !== 'easy')">
-    <table class="table table-hover">
-      <tr ng-repeat = "pageList in pageList">
-        <td>
-          <a href="{{pageList.link}}" target="_blank">
-            <img src="{{pageList.picture.data.url}}" alt="facebook page img">
-            {{pageList.name}}
-          </a>
-          <span>
-            <button class="btn btn-primary pull-right" ng-click="connect(pageList)">
-              연결해요
-            </button>
-          </span>
-        </td>
-      </tr>
-    </table>
+    <h4>서비스 준비 중이에요</h4>
+    <!--<table class="table table-hover">-->
+      <!--<tr ng-repeat = "pageList in pageList">-->
+        <!--<td>-->
+          <!--<a href="{{pageList.link}}" target="_blank">-->
+            <!--<img src="{{pageList.picture.data.url}}" alt="facebook page img">-->
+            <!--{{pageList.name}}-->
+          <!--</a>-->
+          <!--<span>-->
+            <!--<button class="btn btn-primary pull-right" ng-click="connect(pageList)">-->
+              <!--연결해요-->
+            <!--</button>-->
+          <!--</span>-->
+        <!--</td>-->
+      <!--</tr>-->
+    <!--</table>-->
   </div>
 
   <!--line-->
