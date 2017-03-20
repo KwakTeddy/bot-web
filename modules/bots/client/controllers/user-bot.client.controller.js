@@ -373,13 +373,13 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
       name: 'fileFilter',
       fn: function (item, options) {
         var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
-        if('|plain|txt|csv|'.indexOf(type) == -1){
+        if('|plain|txt|csv|vnd.ms-excel|'.indexOf(type) == -1){
             $scope.success.file = null;
             $scope.error['file'] = '대화 파일이 아니에요'
         }else {
             $scope.error.file = null;
         }
-        return '|plain|txt|csv|smi|'.indexOf(type) !== -1;
+        return '|plain|txt|csv|smi|vnd.ms-excel|'.indexOf(type) !== -1;
       }
     });
 

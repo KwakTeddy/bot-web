@@ -64,7 +64,7 @@
       name: 'fileFilter',
       fn: function (item, options) {
         var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
-        return '|txt|csv|'.indexOf(type) !== -1;
+        return '|txt|csv|vnd.ms-excel|'.indexOf(type) !== -1;
       }
     });
 
