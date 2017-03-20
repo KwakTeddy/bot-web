@@ -97,9 +97,12 @@ var mongoose = require('mongoose');
 var UserBot = mongoose.model('UserBot');
 
 function changeBot(task, context, callback) {
-  /*if(context.channel.name != 'socket') */context.botUser.curBotName = task.botName;
+  /*if(context.channel.name != 'socket') */{
+    context.botUser.curBotId = task.botId;
+    context.botUser.curBotName = task.botName;
+  }
 
-  var botName = task.botName;
+  var botName = task.botId;
 
   console.log('changeBot: ' + botName);
   contextModule.getBotContext(botName, function(_botContext) {
@@ -107,17 +110,23 @@ function changeBot(task, context, callback) {
 
     var startDialog= dialog.findDialog(null, context, dialog.START_DIALOG_NAME);
 
-    if(!startDialog)
-      task.output = '안녕하세요.' + (context.bot.name || botName) + '입니다.';
-    else
+    if(!startDialog) {
+      task.output = '안녕하세요.' + context.bot.name + '입니다.';
+    } else if (typeof startDialog.output != 'string'){
+      task.output = '안녕하세요.' + context.bot.name + '입니다.';
+    } else {
       task.output = startDialog.output;
+    }
 
     UserBot.findOne({id: botName}).lean().exec(function (err, userBot) {
       if (err) {
         console.log(err)
       } else if (userBot) {
+        task.outputtext = task.output;
         var json = {text: task.output, bot: userBot};
         task.output = JSON.stringify(json);
+      } else {
+        task.outputtext = task.output;
       }
 
       callback(task, context);

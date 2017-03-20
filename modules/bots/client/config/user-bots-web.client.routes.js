@@ -34,7 +34,7 @@ angular.module('user-bots').config(['$stateProvider',
         controller: 'UserBotController',
         controllerAs: 'vm',
         resolve: {
-          userBotResolve: newUserBot
+          userBotResolve: newUserBotWeb
         },
         data: {
           roles: ['user', 'admin']
@@ -46,7 +46,7 @@ angular.module('user-bots').config(['$stateProvider',
         controller: 'UserBotController',
         controllerAs: 'vm',
         resolve: {
-          userBotResolve: getUserBot
+          userBotResolve: getUserBotWeb
         },
         data: {
           roles: ['user', 'admin']
@@ -58,7 +58,7 @@ angular.module('user-bots').config(['$stateProvider',
         controller: 'UserBotController',
         controllerAs: 'vm',
         resolve: {
-          userBotResolve: getUserBot
+          userBotResolve: getUserBotWeb
         }
       })
       .state('user-bots-web.settings', {
@@ -163,26 +163,26 @@ function getUserBotsWeb(UserBotsService, UserBotsFollowService, $stateParams, $r
   }
 }
 
-getUserBot.$inject = ['UserBotsService', '$stateParams'];
-function getUserBot(UserBotsService, $stateParams) {
+getUserBotWeb.$inject = ['UserBotsService', '$stateParams'];
+function getUserBotWeb(UserBotsService, $stateParams) {
   return UserBotsService.get({
     userBotId: $stateParams.userBotId
   }).$promise;
 }
 
-newUserBot.$inject = ['UserBotsService'];
-function newUserBot(UserBotsService) {
+newUserBotWeb.$inject = ['UserBotsService'];
+function newUserBotWeb(UserBotsService) {
   return new UserBotsService();
 }
 
-getUserBotFiles.$inject = ['UserBotFilesService', '$stateParams'];
-function getUserBotFiles(UserBotFilesService, $stateParams) {
+getUserBotFilesWeb.$inject = ['UserBotFilesService', '$stateParams'];
+function getUserBotFilesWeb(UserBotFilesService, $stateParams) {
   return UserBotFilesService.query({
     userBotId: $stateParams.userBotId
   }).$promise;
 }
-readUserBotFile.$inject = ['UserBotFilesService', '$stateParams'];
-function readUserBotFile(UserBotFilesService, $stateParams) {
+readUserBotFileWeb.$inject = ['UserBotFilesService', '$stateParams'];
+function readUserBotFileWeb(UserBotFilesService, $stateParams) {
   return UserBotFilesService.get({
     userBotId: $stateParams.userBotId,
     fileId: $stateParams.fileId

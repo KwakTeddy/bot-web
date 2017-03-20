@@ -114,21 +114,28 @@ module.exports = function (grunt) {
         src: defaultAssets.client.css
       }
     },
+    concat: {
+      options: {
+        stripBanners:  {
+          force: true,
+          all: true
+        }
+      },
+      web: {
+        src: defaultAssets.client.js,
+        dest: 'public/dist/application_concat.js'
+      },
+      mobile: {
+        src: defaultAssets.mobile.js,
+        dest: 'public/dist/application_mobile_concat.js'
+      }
+    },
     ngAnnotate: {
       production: {
         files: {
-          'public/dist/application.js': defaultAssets.client.js
+          'public/dist/application_mobile.js': 'public/dist/application_mobile_concat.js',
+          'public/dist/application.js': 'public/dist/application_concat.js'
         }
-/*
-files: [
-{
-expand: true,
-src: defaultAssets.client.js,
-ext: '.annotated.js',
-extDot: 'last',
-}
-]
-*/
       }
     },
     uglify: {
@@ -137,6 +144,7 @@ extDot: 'last',
           mangle: false
         },
         files: {
+          'public/dist/application_mobile.min.js': 'public/dist/application_mobile.js',
           'public/dist/application.min.js': 'public/dist/application.js'
         }
       }
@@ -144,6 +152,7 @@ extDot: 'last',
     cssmin: {
       combine: {
         files: {
+          'public/dist/application_mobile.min.css': defaultAssets.mobile.css,
           'public/dist/application.min.css': defaultAssets.client.css
         }
       }
@@ -206,11 +215,6 @@ extDot: 'last',
             statements: 40
           }
         }
-      }
-    },
-    karma: {
-      unit: {
-        configFile: 'karma.conf.js'
       }
     },
     protractor: {
@@ -310,15 +314,15 @@ extDot: 'last',
   grunt.registerTask('lint', ['sass', 'less', 'jshint', 'eslint', 'csslint']);
 
   // Lint project files and minify them into two production files.
-  grunt.registerTask('build', ['env:dev', 'ngAnnotate', 'uglify', 'cssmin']);
+  grunt.registerTask('build', ['env:dev', 'concat', 'ngAnnotate', 'uglify', 'cssmin']);
 
   // Run the project tests
-  grunt.registerTask('test', ['env:test', 'lint', 'mkdir:upload', 'copy:localConfig', 'server', 'mochaTest', 'karma:unit', 'protractor']);
+  grunt.registerTask('test', ['env:test', 'lint', 'mkdir:upload', 'copy:localConfig', 'server', 'mochaTest', 'protractor']);
   grunt.registerTask('test:server', ['env:test', 'lint', 'server', 'mochaTest']);
-  grunt.registerTask('test:client', ['env:test', 'lint', 'karma:unit']);
+  grunt.registerTask('test:client', ['env:test', 'lint']);
   grunt.registerTask('test:e2e', ['env:test', 'lint', 'dropdb', 'server', 'protractor']);
   // Run project coverage
-  grunt.registerTask('coverage', ['env:test', 'lint', 'mocha_istanbul:coverage', 'karma:unit']);
+  grunt.registerTask('coverage', ['env:test', 'lint', 'mocha_istanbul:coverage']);
 
   // Run the project in development mode
   grunt.registerTask('default', ['env:dev', 'lint', 'mkdir:upload', 'copy:localConfig', 'concurrent:default']);
@@ -327,5 +331,5 @@ extDot: 'last',
   grunt.registerTask('debug', ['env:dev', 'lint', 'mkdir:upload', 'copy:localConfig', 'concurrent:debug']);
 
   // Run the project in production mode
-  grunt.registerTask('prod', ['build', 'env:prod', 'mkdir:upload', 'copy:localConfig', 'concurrent:default']);
+  grunt.registerTask('prod', ['build', 'env:prod', 'mkdir:upload', 'copy:localConfig']);
 };

@@ -48,7 +48,7 @@
             controllerAs: 'vm',
             controller: 'UserBotChatController'
             // resolve: {
-            //   userBotResolve: getUserBot
+            //   userBotResolve: getUserBotWeb
             // }
           }
         }
