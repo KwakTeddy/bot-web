@@ -46,7 +46,7 @@ exports.signup = function (req, res) {
         if (err) {
             return err;
         } else {
-            if (result && result.emailConfirmed) {
+            if (result && result.localEmailConfirmed) {
                 return res.status(400).send({
                     message: '가입되어 있는 E-mail이네요'
                 });

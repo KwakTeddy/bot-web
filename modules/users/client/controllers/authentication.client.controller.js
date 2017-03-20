@@ -57,7 +57,9 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         if(response.message.match('E-mail')){
             $scope.error.email = '이미 존재하는 E-mail이네요';
         } else if(response.message.match('username')) {
-            $scope.error.username = 'usernamœe already exist';
+            $scope.error.username = 'username already exist';
+        } else if(response.message.match('Failure sending email')) {
+
         }
       });
     };

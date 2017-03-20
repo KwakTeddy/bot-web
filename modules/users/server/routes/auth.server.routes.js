@@ -22,7 +22,11 @@ module.exports = function (app) {
   app.route('/api/auth/signout').get(users.signout);
 
   // Setting the facebook oauth routes
-  app.route('/api/auth/facebook').get(users.oauthCall('facebook'));
+  app.route('/api/auth/facebook').get(users.oauthCall('facebook', {
+    scope: [
+        'email'
+    ]
+  }));
   app.route('/api/auth/facebook/page').get(users.oauthCall('facebook', {
     scope: [
         'pages_show_list',
