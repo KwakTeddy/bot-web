@@ -103,7 +103,7 @@ var first = /(?:~시작|~처음|^!$|취소)/
 <{types: [{name: 'exchange', typeCheck: publictask.exchangeTypecheck, raw: true}], regexp: /환율/}
 {action: publictask.exchangerate}
 >if(context.dialog.item.length != 0)+date+\n+currency+ to KRW\n환율은 +rate+원입니다.
-
+ 
 시작:
 c< {regexp: first}
 > 안녕하세요 날씨봇입니다.\n다음과 같이 말씀해주세요~\n[예시]\n구로동 날씨 알려줘\n내일 구로동 날씨\n3일 후 구로동 날씨\n이번주 구로동 날씨
