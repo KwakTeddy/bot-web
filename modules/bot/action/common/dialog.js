@@ -98,7 +98,7 @@ function matchGlobalDialogs(inRaw, inNLP, dialogs, context, print, callback, wor
       matchDialogs(inRaw, inNLP, dialogs, context, print, function(matched, _dialog) {
         if(matched == true) {
           callback(matched, _dialog);
-        } else if(!wordCorrection) {
+        } else if(context.bot.useAutoCorrection == true && !wordCorrection) {
           var _inRaw = autoCorrection.correction(inRaw);
           context.botUser.orgNlp = context.botUser.nlp;
           type.processInput(context, _inRaw, function(_inNLP, _inDoc) {
@@ -117,7 +117,7 @@ function matchGlobalDialogs(inRaw, inNLP, dialogs, context, print, callback, wor
             }
           }
 
-          context.botUser.nlp = context.botUser.orgNlp;
+          if(context.botUser.orgNlp) context.botUser.nlp = context.botUser.orgNlp;
           context.botUser.orgNlp = null;
 
           if(/*context.bot.useQuibble*/ true) {
@@ -167,7 +167,7 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback, opti
         if(matched == true) {
           callback(matched, _dialog);
         } else {
-          if(wordCorrection) {
+          if(context.bot.useAutoCorrection != true || wordCorrection) {
             for (var i = 0; i < dialogs.length; i++) {
               var dialog = dialogs[i];
               if (dialog.input == undefined || dialog.name == NO_DIALOG_NAME) {
@@ -196,7 +196,7 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback, opti
             }
           }
 
-          if(!wordCorrection) {
+          if(context.bot.useAutoCorrection == true && !wordCorrection) {
             context.botUser.wordCorrection_context_botUser_currentDialog = context.botUser.currentDialog;
             context.botUser.wordCorrection_context_botUser__dialog = context.botUser._dialog;
             context.botUser.wordCorrection_context_dialog = context.dialog;
@@ -213,7 +213,7 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback, opti
           matchDialogs(inRaw, inNLP, context.bot.dialogs, context, print, function(matched, _dialog) {
             if(matched) {
               callback(matched, _dialog);
-            } else if(!wordCorrection) {
+            } else if(context.bot.useAutoCorrection == true && !wordCorrection) {
               var _inRaw = autoCorrection.correction(inRaw);
               type.processInput(context, _inRaw, function(_inNLP, _inDoc) {
                 context.botUser.nlpCorrection = _inNLP;
