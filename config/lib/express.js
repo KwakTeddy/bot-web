@@ -41,12 +41,14 @@ module.exports.initLocalVariables = function (app) {
   app.locals.livereload = config.livereload;
   app.locals.logo = config.logo;
   app.locals.favicon = config.favicon;
-
   app.locals.env = process.env.NODE_ENV;
+  app.locals.app_version = '';
 
-  var stats = fs.statSync("public/dist/application.min.js");
-  var mtime = new Date(util.inspect(stats.mtime));
-  app.locals.app_version = mtime.getTime() + "";
+  if(process.env.NODE_ENV == 'production') {
+    var stats = fs.statSync("public/dist/application.min.js");
+    var mtime = new Date(util.inspect(stats.mtime));
+    app.locals.app_version = mtime.getTime() + "";
+  }
 
   // Passing the request url to environment locals
   app.use(function (req, res, next) {
