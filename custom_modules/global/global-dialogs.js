@@ -136,21 +136,21 @@ var dialogsType = {
     if(context.bot.dialogsets) {
       type.mongo.queryStatic = {$or: []};
       for(var i = 0; i < context.bot.dialogsets.length; i++) {
-        if(context.bot.dialogsets[i]) type.mongo.queryStatic.$or.push({dialogsets: context.bot.dialogsets[i]});
+        if(context.bot.dialogsets[i]) type.mongo.queryStatic.$or.push({dialogset: context.bot.dialogsets[i]});
       }
 
-      if(type.mongo.queryStatic.$or.length == 0) type.mongo.queryStatic = {dialogsets: ''};
+      if(type.mongo.queryStatic.$or.length == 0) type.mongo.queryStatic = {dialogset: ''};
     } else {
-      type.mongo.queryStatic = {dialogsets: ''};
+      type.mongo.queryStatic = {dialogset: ''};
     }
     callback(task, context);
   },
-  limit: 5,
-  matchRate: 0.3,
+  limit: 10,
+  matchRate: 0.25,
   exclude: ['하다', '이다'],
   mongo: {
     model: 'dialogsetdialogs',
-    queryStatic: {dialogsets: ''},
+    queryStatic: {dialogset: ''},
     queryFields: ['input'],
     fields: 'dialogset input output' ,
     taskFields: ['input', 'output', 'matchRate'],
@@ -163,6 +163,7 @@ var globalEndDialogs = [
     input: {types: [dialogsType]},
     task:   {
       action: function(task, context, callback) {
+        console.log(JSON.stringify(task.typeDoc, null, 2));
         if(Array.isArray(task.typeDoc)) {
           if(task.typeDoc.length > 1) task._output = task.typeDoc[0].output;
           else task._output = task.typeDoc[0].output;
@@ -173,6 +174,7 @@ var globalEndDialogs = [
         if(Array.isArray(task._output)) {
           task._output = task._output[Math.floor(Math.random() * task._output.length)];
         }
+
         callback(task, context);
       }
       // postCallback: function(task, context, callback) {
