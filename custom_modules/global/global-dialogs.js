@@ -146,7 +146,7 @@ var dialogsType = {
     callback(task, context);
   },
   limit: 10,
-  matchRate: 0.25,
+  matchRate: 0.5,
   exclude: ['하다', '이다'],
   mongo: {
     model: 'dialogsetdialogs',
@@ -163,7 +163,8 @@ var globalEndDialogs = [
     input: {types: [dialogsType]},
     task:   {
       action: function(task, context, callback) {
-        console.log(JSON.stringify(task.typeDoc, null, 2));
+        // console.log(JSON.stringify(task.typeDoc, null, 2));
+
         if(Array.isArray(task.typeDoc)) {
           if(task.typeDoc.length > 1) task._output = task.typeDoc[0].output;
           else task._output = task.typeDoc[0].output;

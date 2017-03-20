@@ -1,7 +1,9 @@
 var https = require('https');
 var net = require('net');
 var request = require('request');
-var chat = require('./bot.server.controller');
+var path = require('path');
+var chat = require(path.resolve('modules/bot/server/controllers/bot.server.controller'));
+var contextModule = require(path.resolve('modules/bot/engine/common/context'));
 
 exports.receiveNew = function (req, res) {
   // console.log("receive receive");
@@ -15,7 +17,7 @@ exports.receiveNew = function (req, res) {
     // console.log(from, text, replyToken, req.params.bot);
 
     chat.write('line', from, req.params.bot, text, function (retText, json) {
-      chat.getContext(req.params.bot, 'line', from , function(context) {
+      contextModule.getContext(req.params.bot, 'line', from , function(context) {
         respondMessageNew(context.bot.line.CHANNEL_ACCESS_TOKEN, replyToken, retText, json)
       });
     });

@@ -14,6 +14,7 @@ var botModule = require(path.resolve('./config/lib/bot'));
 var factModule = require(path.resolve('modules/bot/action/common/facts'));
 var toneModule = require(path.resolve('modules/bot/action/common/tone'));
 var contextModule = require(path.resolve('modules/bot/engine/common/context'));
+var dialogsetModule = require(path.resolve('modules/bot/engine/dialogset/dialogset'));
 
 var chatSocketConfig = {port: 1024, host: 'localhost', allowHalfOpen: true};
 
@@ -99,19 +100,23 @@ function botProc(botName, channel, user, inTextRaw, outCallback, chatServerConfi
 
     function(cb) {
       if (context.botUser.nlp) {
-        context.botUser.sentenceInfo = toneModule.analyzeSentence(inTextRaw, null, context.botUser.nlp);
+        context.botUser.sentenceInfo = dialogsetModule.analyzeSentence(inTextRaw, null, context.botUser.nlpAll);
 
-        factModule.memoryFacts(inTextRaw, context, function (_task, _context) {
-          if(_task && _task.numAffected && _task.numAffected.upserted) {
-            console.log('[FACT_ADD]' + JSON.stringify(_task.doc));
-            if(botName == 'girlfriend') {
-              print('말씀하신 내용을 학습했어요.');
-              cb(true);
-              return;
+        if(context.bot.useMemoryFacts) {
+          factModule.memoryFacts(inTextRaw, context, function (_task, _context) {
+            if(_task && _task.numAffected && _task.numAffected.upserted) {
+              console.log('[FACT_ADD]' + JSON.stringify(_task.doc));
+              if(botName == 'girlfriend') {
+                print('말씀하신 내용을 학습했어요.');
+                cb(true);
+                return;
+              }
             }
-          }
+            cb(null);
+          });
+        } else {
           cb(null);
-        });
+        }
       } else {
         cb(null);
       }

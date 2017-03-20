@@ -1,6 +1,8 @@
 var net = require('net');
 var request = require('request');
-var chat = require('./bot.server.controller');
+var path = require('path');
+var chat = require(path.resolve('modules/bot/server/controllers/bot.server.controller'));
+var contextModule = require(path.resolve('modules/bot/engine/common/context'));
 
 // var APP_SECRET =  "174b2a851e3811c3f2c267d46708d212";
 // var PAGE_ACCESS_TOKEN =  "EAAYwPrsj1ZA0BAORAoGhxvLLs5eRZADJ8BheTdjOXu8lT0X2tVFwZAZCEJiWFenFHCVqSuctfONET6dhbPDBnlivq5sXEvBABTnRlYpX8hLxZAnO2lywRiA6sVlbYAvG1n1EpQwkVhZAdrmq1p9PlQRUu327O1ohcZBwVLYZCn3beQZDZD";
@@ -12,7 +14,7 @@ var chat = require('./bot.server.controller');
 
 
 exports.messageGet =  function(req, res) {
-  chat.getContext(req.params.bot, 'facebook', null, function(context) {
+  contextModule.getContext(req.params.bot, 'facebook', null, function(context) {
     console.log(req.query['hub.mode'] + ', ' + req.query['hub.verify_token'] + ',' + context.bot.facebook.VALIDATION_TOKEN );
     if (req.query['hub.mode'] === 'subscribe' &&
       req.query['hub.verify_token'] === context.bot.facebook.VALIDATION_TOKEN) {
@@ -75,7 +77,7 @@ function respondMessage(to, text, botId, task) {
     }
   };
 
-  chat.getContext(botId, 'facebook', to, function(context) {
+  contextModule.getContext(botId, 'facebook', to, function(context) {
     callSendAPI(messageData, context.bot.facebook.PAGE_ACCESS_TOKEN);
   });
 
@@ -192,7 +194,7 @@ function receivedMessage(event) {
   var message = event.message;
 
   if(recipientID == global._bots[event.botId].facebook.id) {
-    chat.getContext(event.botId, 'facebook', senderID, function(context) {
+    contextModule.getContext(event.botId, 'facebook', senderID, function(context) {
       console.log('senderID: ' + senderID + ', recipientID: ' + recipientID);
       //console.log('receivedMessage: ', event);
       if(recipientID == context.bot.facebook.id) {
