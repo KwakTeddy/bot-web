@@ -1,10 +1,24 @@
 <ion-view view-title="{{vm.userBot.name}}" >
 
+  <script id="my-modal.html" type="text/ng-template">
+    <ion-modal-view>
+      <ion-header-bar>
+        <h1 class="title">챗봇을 공유해요</h1>
+        <button class="button button-clear button-primary" ng-click="modal.hide()">취소해요</button>
+      </ion-header-bar>
+      <ion-content class="padding">
+        <button class="button button-full button-positive" ng-click="vm.fbShare()">Facebook</button>
+        <button class="button button-full button-positive" ng-click="vm.kakaoTalkShare()">KakaoTalk</button>
+        <button class="button button-full button-positive" ng-click="vm.twitterShare()">Twitter</button>
+      </ion-content>
+    </ion-modal-view>
+  </script>
+
     <ion-nav-bar class="bar-light box-shadow">
         <ion-nav-back-button></ion-nav-back-button>
         <ion-nav-buttons side="secondary">
-            <!--<button class="button button-clear button-calm" ui-sref="contact.list"><i-->
-                    <!--class="icon ion-ios-information-outline font-bold"></i></button>-->
+            <button class="button button-clear button-calm" ng-click="vm.mobileModal()"><i
+                    class="icon ion-share font-bold"></i></button>
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content>

@@ -1,12 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <base href="/">
+    <title>플레이챗 PlayChat - 1분만에 만드는 인공지능 챗봇 머니브레인 MoneyBrain Inc</title>
+     <base href="/">
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title>Athena - Moneybrain Chatbot</title>
 
-    <!-- Web Fonts  -->
+    <meta name="keywords" content="챗봇 Chatbot 봇 Bot 인공지능 AI 딥러닝 Deep Learning"/>
+    <meta name="description" content="카카오톡 KakaoTalk 페이스북 Facebook 라인 Line Messenger NLP 자연어처리 NLU 자연어 이해 대화관리 Dialog Management 딥러닝 Deep Learning 인텐트 Intent 엔터티 Entity">
+    <meta name="author" content="머니브레인 MoneyBrain">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title"         content="플레이챗 PlayChat" />
+    <!--<meta property="og:title"         content="플레이챗 PlayChat" />-->
+    <meta property="og:description"   content="1분만에 만드는 인공지능 챗봇 머니브레인 MoneyBrain Inc" />
+    <meta property="og:url"   content= "www.playchat.ai"/>
+
+
+  <!-- Web Fonts  -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800%7CShadows+Into+Light" rel="stylesheet" type="text/css">
 
     <link rel="stylesheet" href="/css/ionic.app.css">
@@ -35,6 +46,52 @@
 
 <script type="text/javascript">
     var user = {{ user | json | safe }};
+</script>
+
+<!--facebook-->
+<!--<div id="fb-root"></div>-->
+<script src="http://connect.facebook.net/en_US/all.js"></script>
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+<script src="https://d.line-scdn.net/r/web/social-plugin/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
+
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '240853479709635',
+      xfbml      : true,
+      version    : 'v2.8'
+    });
+//    FB.AppEvents.logPageView();
+  };
+  (function(d, s, id){
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {return;}
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+<!--kakao-->
+<script type='text/javascript'>
+  //<![CDATA[
+  // // 사용할 앱의 JavaScript 키를 설정해 주세요.
+  Kakao.init('f1eb73f3491e5c1e1178b3b8c12b10e5');
+  // // 카카오링크 버튼을 생성합니다. 처음 한번만 호출하면 됩니다.
+  //  Kakao.Link.createTalkLinkButton({
+  //    container: '#kakao-link-btn',
+  //    label: '안녕하세요 머니브레인입니다.',
+  //    image: {
+  //      src: 'http://dev.moneybrain.ai:8443/userbot/home',
+  //      width: '300',
+  //      height: '200'
+  //    },
+  //    webButton: {
+  //      text: '카카오 디벨로퍼스',
+  //      url: 'http://dev.moneybrain.ai:8443/userbot/home' // 앱 설정의 웹 플랫폼에 등록한 도메인의 URL이어야 합니다.
+  //    }
+  //  });
+
+  //]]>
 </script>
 
 </body>
