@@ -18,7 +18,9 @@ function quibble(context) {
       for(var j = 0; j < globalQuibbles.nounQuibbles.length; j++) {
         var q = globalQuibbles.nounQuibbles[j];
         if(token.text == q.condition.word) {
-          text = randomQuibble(q.sentences); break;
+          text = randomQuibble(q.sentences);
+          console.log('quibble [명사]: ' + JSON.stringify(q, null, 2));
+          break;
         }
       }
     }
@@ -39,11 +41,19 @@ function quibble(context) {
               var token1 = nlp[k];
               if((!q.condition.question && q.condition.question == token1.text) &&
                 (!q.condition.time || q.condition.time == sentenceInfo.time) &&
-                (!q.condition.sentenceType || q.condition.sentenceType == sentenceInfo.sentenceType)) { text = randomQuibble(q.sentences); break;}
+                (!q.condition.sentenceType || q.condition.sentenceType == sentenceInfo.sentenceType)) {
+                text = randomQuibble(q.sentences);
+                console.log('quibble [동사]: ' + JSON.stringify(q, null, 2));
+                break;
+              }
             }
           } else {
             if((!q.condition.time || q.condition.time == sentenceInfo.time) &&
-              (!q.condition.sentenceType || q.condition.sentenceType == sentenceInfo.sentenceType)) {text = randomQuibble(q.sentences); break;}
+              (!q.condition.sentenceType || q.condition.sentenceType == sentenceInfo.sentenceType)) {
+              text = randomQuibble(q.sentences);
+              console.log('quibble [동사]: ' + JSON.stringify(q, null, 2));
+              break;
+            }
           }
         }
       }
@@ -59,11 +69,17 @@ function quibble(context) {
       var q = globalQuibbles.sentenceQuibbles[j];
       if((!q.condition.question && q.condition.question == token.text) &&
         (!q.condition.time || q.condition.time == sentenceInfo.time) &&
-        (!q.condition.sentenceType || q.condition.sentenceType == sentenceInfo.sentenceType)) { text = randomQuibble(q.sentences); break;}
+        (!q.condition.sentenceType || q.condition.sentenceType == sentenceInfo.sentenceType)) {
+        text = randomQuibble(q.sentences);
+        console.log('quibble [문장]: ' + JSON.stringify(q, null, 2));
+        break;
+      }
     }
   }
 
   if(text) return text;
+
+  console.log('quibble [최종]: ' + JSON.stringify(globalQuibbles.quibbles, null, 2));
 
   return randomQuibble(globalQuibbles.quibbles);
 }

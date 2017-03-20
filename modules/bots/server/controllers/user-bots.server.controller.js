@@ -889,7 +889,8 @@ exports.contextAnalytics = function (req, res) {
     name: 'result',
     typeCheck: type.dialogTypeCheck,
     limit: 10,
-    matchRate: 0,
+    matchRate: 0.25,
+    exclude: ['하다', '이다'],
     mongo: {
       model: 'DialogsetDialog',
       // queryStatic: {dialogset: '기본대화1'},
@@ -911,8 +912,14 @@ exports.contextAnalytics = function (req, res) {
     }
   }
 
+  var context = {bot: global._bots[req.query.botId], botUser: global._botusers[req.query.botUser]};
   dialogsetModule.processInput(null, req.query.input, function(_input, json) {
-    type.executeType(_input, faqType, {}, {bot: {}, botUser: {nlp: json._nlp}}, function(_text, _result) {
+    context.botUser.nlp = json._nlp;
+    context.botUser.analytics = true;
+    context.botUser.analytics2 = null;
+
+    type.executeType(_input, faqType, {}, context, function(_text, _result) {
+      _result.context = {botUser: {nlp: context.botUser.nlp, topic: context.botUser.topic}};
       res.json(_result);
     });
   });

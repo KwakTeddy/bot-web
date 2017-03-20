@@ -27,14 +27,34 @@
           <!--<p style="font-size: 14px;" class="form-control-static" >{{vm.final}}</p>-->
         <!--</div>-->
       <!--</div>-->
+
       <div class="form-group">
-        <label class="col-sm-3 control-label">Best <span class="required" aria-required="true">*</span></label>
+        <label class="col-sm-3 control-label">Context</label>
+        <div class="col-sm-9">
+          <p style="font-size: 14px;font-weight: bold;" class="form-control-static" >{{vm. topic}}</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label">NLU</label>
+        <div class="col-sm-9">
+          <p style="font-size: 14px;font-weight: bold;" class="form-control-static" >{{vm.nlp}}</p>
+        </div>
+      </div>
+
+    </div>
+
+    <br/>
+    <div class="panel-body">
+
+
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Best Sentence</label>
         <div class="col-sm-9">
           <p style="font-size: 14px;font-weight: bold;" class="form-control-static" ng-show="vm.best != undefined">{{vm.best.input}} ({{vm.best.matchRate | number: 2}})</p>
         </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-3 control-label">Context</label>
+        <label class="col-sm-3 control-label">Sentences Inputs</label>
         <div class="col-sm-9">
           <ul style="padding-left: 0px;">
             <li style="margin-bottom: 10px; font-size: 14px;list-style: none;" ng-repeat="dialog in vm.dialogs">{{dialog.input}} ({{dialog.matchRate | number: 2}})</li>
@@ -42,21 +62,25 @@
         </div>
       </div>
     </div>
-    <!--<footer class="panel-footer">-->
-      <!--<div class="row">-->
-        <!--<div class="col-sm-6 pull-left">-->
-          <!--<a class="btn btn-primary" ui-sref="bots.list">-->
-            <!--<i class="glyphicon glyphicon-edit"></i> 목록-->
-          <!--</a>-->
-        <!--</div>-->
 
-        <!--<div class="col-sm-6 text-right">-->
-          <!--<a class="btn btn-primary" ui-sref="bots.edit({botId: bot._id})">-->
-            <!--<i class="glyphicon glyphicon-edit"></i> 수정-->
-          <!--</a>-->
+    <!--<br/>-->
+    <!--<div class="panel-body">-->
+      <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">Best <span class="required" aria-required="true">*</span></label>-->
+        <!--<div class="col-sm-9">-->
+          <!--<p style="font-size: 14px;font-weight: bold;" class="form-control-static" ng-show="vm.best != undefined">{{vm.best.input}} ({{vm.best.matchRate | number: 2}})</p>-->
         <!--</div>-->
       <!--</div>-->
-    <!--</footer>-->
+      <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">Context</label>-->
+        <!--<div class="col-sm-9">-->
+          <!--<ul style="padding-left: 0px;">-->
+            <!--<li style="margin-bottom: 10px; font-size: 14px;list-style: none;" ng-repeat="dialog in vm.dialogs">{{dialog.input}} ({{dialog.matchRate | number: 2}})</li>-->
+          <!--</ul>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+
   </form>
 </section>
 <!--</div>-->

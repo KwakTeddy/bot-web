@@ -43,7 +43,9 @@ function command(inTextRaw, inTextNLP, context, print, callback) {
     utils.requireNoCache(path.resolve('modules/bot/action/common/task'));
     utils.requireNoCache(path.resolve('modules/bot/action/common/type'));
 
-      startDialog= dialog.findDialog(null, context, dialog.START_DIALOG_NAME);
+    context.botUser.topic = null;
+
+    startDialog= dialog.findDialog(null, context, dialog.START_DIALOG_NAME);
     if(!startDialog)
       print('안녕하세요.' + (context.bot.name || context.botUser.curBotName) + '입니다.');
       // print('시작 Dialog가 없습니다.');

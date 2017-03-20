@@ -1254,13 +1254,17 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
     if(nlps[i].pos == 'Noun') nlpMatchLength+=2;
     else nlpMatchLength += 1;
   }
-  
+
+  var topicKeywords = [];
+  if(!context.dialog) context.dialog = {};
+
   async.waterfall([
     function(_cb) {
       var matchConcepts = [];
       var bot = context.bot;
       if(bot.concepts) {
         for(var key in bot.concepts) {
+
 
           for (var i = 0; i < nlps.length; i++) {
             var word = nlps[i].text;
@@ -1303,7 +1307,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
             if(format.mongo.sort) _query.sort(format.mongo.sort);
             if(format.mongo.limit) _query.limit(format.mongo.limit || type.MAX_LIST);
 
-            console.log(query);
+            // console.log(query);
             _query.lean().exec(function (err, docs) {
               if (err || !docs || docs.length <= 0) {
                 //callback(text, inDoc);
@@ -1345,17 +1349,25 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
         var word = nlps[i].text;
         // if(word.length <= 1) continue;
         word = RegExp.escape(word);
+        if(context.bot.topicKeywords && _.includes(context.bot.topicKeywords, word)) {
+          topicKeywords.push(nlps[i]);
+        }
         if(!(format.exclude && _.includes(format.exclude, word)))
           _nlps.push(nlps[i]);
         else
           excluded.push(nlps[i]);
       }
 
+      // console.log('current Topic: ' + JSON.stringify(topicKeywords, null, 2) + '\ncontext Topic: ' + JSON.stringify(context.botUser.topic, null, 2));
+
+      // if(topicKeywords.length > 0) context.botUser.topic = topicKeywords;
+      if(topicKeywords.length == 0 && context.botUser.topic && context.botUser.topic.length > 0) topicKeywords = context.botUser.topic;
+
       if(_nlps.length == 0) _nlps.concat(excluded);
 
-      async.eachSeries(_nlps, function (word, _callback){
+      async.eachSeries((topicKeywords.length > 0 ? topicKeywords : _nlps), function (word, _callback){
         word = RegExp.escape(word.text);
-        console.log(word);
+        // console.log(word);
 
         if(word.length <= 1) {
           _callback(null);
@@ -1467,7 +1479,8 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                   }
                 }
 
-                if(!format.mongo.minMatch || matchCount >= format.mongo.minMatch) {
+                if((!format.mongo.minMatch || matchCount >= format.mongo.minMatch) ||
+                  matchCount / nlpMatchLength > format.matchRate) {
                   var bExist = false;
                   for(var l = 0; l < matchedDoc.length; l++) {
                     if((Array.isArray(doc.input) && doc.input[maxMatchIndex] == matchedDoc[l].input) ||
@@ -1477,7 +1490,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                     }
                   }
 
-                  if(!bExist && matchCount / nlpMatchLength > format.matchRate) {
+                  if(!bExist) {
                     if(Array.isArray(doc.input)) doc.input = doc.input[maxMatchIndex];
                     doc.inputLen = doc.input.split(' ').length;
                     doc.matchWord = matchedWord;
@@ -1520,7 +1533,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
       for (var _l = 0; _l < matchedDoc.length; _l++) {
         var matchDoc = matchedDoc[_l];
 
-        console.log(matchDoc.input + ' ' + matchDoc.matchCount);
+        // console.log(matchDoc.input + ' ' + matchDoc.matchCount);
 
         var matchText = '';
         for (var l = 0; l < format.mongo.queryFields.length; l++) {
@@ -1566,6 +1579,8 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
         logger.debug('type.js:dialogTypeCheck: MATCHED ' + (t1 - t0) + ' ms ' + format.name + ' "' + text + ' isArray: ' + Array.isArray(inDoc[format.name]) /* + '" inDoc.' + format.name + ': ' + inDoc[format.name] + ' inDoc.typeDoc: ' + JSON.stringify(inDoc.typeDoc)*/);
       }
 
+      if(topicKeywords && topicKeywords.length > 0) context.botUser.topic = topicKeywords;
+
       callback(text, inDoc, true);
     } else {
 
@@ -1576,7 +1591,17 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
         logger.debug('type.js:dialogTypeCheck: NOT MATCHED ' + (t1 - t0) + ' ms ' + format.name + ' "' + text + '" inDoc.' + format.name + ': ' + inDoc[format.name] + ' inDoc.typeDoc: ' + JSON.stringify(inDoc.typeDoc));
       }
 
-      callback(text, inDoc, false);
+      if(context.botUser.topic && context.botUser.topic.length > 0 &&
+          (context.botUser.analytics == null || context.botUser.analytics2 == null)) {
+        if(context.botUser.analytics == null) context.botUser.topic = null;
+        else context.botUser.analytics2 = true;
+        dialogTypeCheck(text, format, inDoc, context, callback);
+      } else {
+        if(topicKeywords && topicKeywords.length > 0) context.botUser.topic = topicKeywords;
+
+        callback(text, inDoc, false);
+      }
+
     }
   });
 }
