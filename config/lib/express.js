@@ -17,6 +17,8 @@ var config = require('../config'),
   helmet = require('helmet'),
   flash = require('connect-flash'),
   consolidate = require('consolidate'),
+  fs = require('fs'),
+  util = require('util'),
   path = require('path');
 
 /**
@@ -39,6 +41,10 @@ module.exports.initLocalVariables = function (app) {
   app.locals.livereload = config.livereload;
   app.locals.logo = config.logo;
   app.locals.favicon = config.favicon;
+
+  var stats = fs.statSync("public/dist/application.min.js");
+  var mtime = new Date(util.inspect(stats.mtime));
+  app.locals.app_version = mtime.getUTCMilliseconds() + "";
 
   // Passing the request url to environment locals
   app.use(function (req, res, next) {

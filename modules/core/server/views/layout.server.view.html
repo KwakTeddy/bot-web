@@ -416,7 +416,7 @@
 {% endfor %}
 
 {% if env == 'production' %}
-<script type="text/javascript" src="dist/application.min.js?rel=62d5340b4c"></script>
+<script type="text/javascript" src="dist/application.min.js?rel={{app_version}}"></script>
 {% endif %}
 
 {% if livereload %}
