@@ -46,16 +46,17 @@ exports.signup = function (req, res) {
         if (err) {
             return err;
         } else {
-            if (result && result.localEmailConfirmed) {
+            if (result && (result.provider == 'local')){
                 return res.status(400).send({
                     message: '가입되어 있는 E-mail이네요'
                 });
             }
-            if (result && (result.provider == user.provider)){
+            if (result && (result.provider !== 'local')){
                 return res.status(400).send({
-                    message: '가입되어 있는 E-mail이네요'
+                    message: 'SNS 계정(' + result.provider + ')으로 가입했네요'
                 });
             }
+
             async.waterfall([
                 // Generate random token
                 function (done) {
