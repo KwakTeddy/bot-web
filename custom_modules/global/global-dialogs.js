@@ -79,7 +79,7 @@ var userDialogType = {
 
 var globalStartDialogs = [
   {
-    input: ['목록',/playchat/i,'플레이 챗','플레이챗'],
+    input: ['목록',/playchat/i,'플레이 챗','플레이챗','플레이 쳇','플레이쳇','플래이챗','플래이 챗'],
     task: {
       action: function (task, context, callback) {
         task.botName = 'playchat';
@@ -100,7 +100,7 @@ var globalStartDialogs = [
       {
         input: {types: [{name: 'selectbot', listName: 'popularbot', typeCheck: 'listTypeCheck'}]},
         task:       {action: core.connectBot},
-        output: '+outputtext+\n봇과 얘기하다가 다시 선택하고 싶으실때는 [목록]을 입력해주세요'
+        output: '+outputtext+\n궁금하신걸 물어보세요.\n\(목록으로 돌아가기 : [목록] 또는 [플레이챗] 입력\)'
       }
     ]
   },
@@ -113,7 +113,7 @@ var globalStartDialogs = [
       {
         input: {types: [{name: 'selectbot', listName: 'newbot', typeCheck: 'listTypeCheck'}]},
         task:       {action: core.connectBot},
-        output: '+outputtext+\n봇과 얘기하다가 다시 선택하고 싶으실때는 [목록]을 입력해주세요'
+        output: '+outputtext+\n궁금하신걸 물어보세요.\n\(목록으로 돌아가기 : [목록] 또는 [플레이챗] 입력\)'
       }
     ]
   },
@@ -160,7 +160,7 @@ var globalStartDialogs = [
       {
         input: {types: [{name: 'selectbot', listName: 'followbot', typeCheck: 'listTypeCheck'}]},
         task:       {action: core.connectBot},
-        output: '+outputtext+\n봇과 얘기하다가 다시 선택하고 싶으실때는 [목록]을 입력해주세요'
+        output: '+outputtext+\n궁금하신걸 물어보세요.\n\(목록으로 돌아가기 : [목록] 또는 [플레이챗] 입력\)'
       }
     ]
   },
@@ -207,7 +207,7 @@ var globalStartDialogs = [
       {
         input: {types: [{name: 'selectbot', listName: 'mybot', typeCheck: 'listTypeCheck'}]},
         task:       {action: core.connectBot},
-        output: '+outputtext+\n봇과 얘기하다가 다시 선택하고 싶으실때는 [목록]을 입력해주세요'
+        output: '+outputtext+\n궁금하신걸 물어보세요.\n\(목록으로 돌아가기 : [목록] 또는 [플레이챗] 입력\)'
       }
     ]
   },
@@ -222,7 +222,7 @@ var globalStartDialogs = [
         });
       }
     },
-    output: '+outputtext+\n봇과 얘기하다가 다시 선택하고 싶으실때는 [목록]을 입력해주세요'
+    output: '+outputtext+\n궁금하신걸 물어보세요.\n\(목록으로 돌아가기 : [목록] 또는 [플레이챗] 입력\)'
   },
   // {
   //   input: /(^.*체).*바꾸다/,
