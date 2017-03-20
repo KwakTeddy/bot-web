@@ -42,7 +42,8 @@ module.exports.initLocalVariables = function (app) {
   app.locals.logo = config.logo;
   app.locals.favicon = config.favicon;
 
-  app.locals.env = process.env.NODE_ENV;
+  //TODO: to enable this, minified js file shoudn't be included in JsFiles
+  //app.locals.env = process.env.NODE_ENV;
 
   var stats = fs.statSync("public/dist/application.min.js");
   var mtime = new Date(util.inspect(stats.mtime));
