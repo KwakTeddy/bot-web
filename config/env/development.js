@@ -82,7 +82,7 @@ module.exports = {
       service: process.env.MAILER_SERVICE_PROVIDER || 'GMAIL',
       auth: {
         user: process.env.MAILER_EMAIL_ID || 'testmailreal@gmail.com',
-        pass: process.env.MAILER_PASSWORD || 'qkrwnsgk90'
+        pass: process.env.MAILER_PASSWORD || 'qkrwnsgk!90'
       }
     }
   },
