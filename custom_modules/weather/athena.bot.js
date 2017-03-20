@@ -3,7 +3,7 @@ var botlib = require(path.resolve('config/lib/bot'));
 
 var weather = {
   use: true,
-
+  useQuibble: false,
   name: '날씨봇',
   serviceName: '날씨봇',
   serviceNick: '인공지능',

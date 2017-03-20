@@ -75,18 +75,18 @@
         fileReader.readAsDataURL(fileItem._file);
 
         fileReader.onload = function (fileReaderEvent) {
-          $timeout(function () {
-            $scope.imageURL = fileReaderEvent.target.result;
-          }, 0);
+          // $timeout(function () {
+          //   $scope.imageURL = fileReaderEvent.target.result;
+          // }, 0);
         };
       }
     };
 
     // var User = $resource('/user/:userId', {userId:'@id'});
 
+    // Show success message
     // Called after the user has successfully uploaded a new picture
     $scope.uploader.onSuccessItem = function (fileItem, response, status, headers) {
-      // Show success message
       $scope.success = true;
 
       vm.dialogset.path = response.path;

@@ -2,7 +2,6 @@ var path = require('path');
 var type = require(path.resolve('modules/bot/action/common/type'));
 var address = require(path.resolve('./modules/bot/action/common/address'));
 var publictask = require('./publictask');
-var core = require('./core');
 
 var pre = /(?:~이전페이지|~앞|^<$)/;
 var next = /(?:~다음페이지|~뒤|^>$)/;
