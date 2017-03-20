@@ -8,7 +8,7 @@ var crypto = require('crypto');
 var config = require(path.resolve('./config/config'));
 var mongoose = require('mongoose');
 var taskmodule = require(path.resolve('./modules/bot/action/common/task'));
-
+var Entities = require('html-entities').AllHtmlEntities;
 
 function api (data) {
     var request = require('request');

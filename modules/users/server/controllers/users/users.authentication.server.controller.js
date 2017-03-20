@@ -46,7 +46,7 @@ exports.signup = function (req, res) {
         if (err) {
             return err;
         } else {
-            if (result && result.emailConfirmed) {
+            if (result && result.localEmailConfirmed) {
                 return res.status(400).send({
                     message: '가입되어 있는 E-mail이네요'
                 });
@@ -195,6 +195,7 @@ exports.signout = function (req, res) {
  * OAuth provider call
  */
 exports.oauthCall = function (strategy, scope) {
+    console.log('oauthCall first');
   return function (req, res, next) {
     // Set redirection path on session.
     // Do not redirect to a signin or signup page
@@ -202,7 +203,7 @@ exports.oauthCall = function (strategy, scope) {
         console.log('maybe' + req.query.redirect_to);
       req.session.redirect_to = req.query.redirect_to;
     }
-    console.log('oauthCall')
+    console.log('oauthCall');
     // Authenticate
     passport.authenticate(strategy, scope)(req, res, next);
   };

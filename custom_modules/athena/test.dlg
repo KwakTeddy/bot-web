@@ -6,21 +6,30 @@ var publictask = require('./publictask');
 var googletask = require('./googletask');
 var core = require('./core');
 
-var pre = /(?:~이전|~앞|^<$)/;
-var next = /(?:~다음|~뒤|^>$)/;
+var pre = /(?:~이전페이지|~앞|^<$)/;
+var next = /(?:~다음페이지|~뒤|^>$)/;
 var up = /(?:^0$)/
 var first = /(?:~시작|~처음|^!$|취소)/
 
+예보:
+<{types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true},{name: 'date', typeCheck: 'dateTypeCheck', raw: true}], regexp: /날씨/}
+{action: publictask.forecastweather}
+>if(context.dialog.forecastdatecheck == 'over') 죄송합니다. 현재 최대 10일간의 날씨정보를 제공하고 있습니다.
+>if(context.dialog.forecastdatecheck == 'below') 죄송합니다. 이전 기간의 날씨정보는 제공하지 않습니다.
+>if(context.dialog.range == '이번주' || context.dialog.range == '다음주' || context.dialog.range == '이번달') +range+의 날씨는 다음과 같습니다.\n#item#+month+/+day+\n날씨: +conditions+\n최저온도: +low+도\n최고온도: +high+도\n#
+>+item.date.month+/+item.date.day+의 날씨입니다.\n날씨: +item.conditions+\n최저온도: +item.low+도\n최고온도: +item.high+도
 
 현재날씨:
 <{types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}], regexp: /날씨/}
 {action: publictask.currentweather}
->안녕+weather+ +temp+ +humidity+ +wind+
+> if((context.dialog.address.시군구명||context.dialog.address.시도명) && context.dialog.address.법정읍면동명 == undefined && context.dialog.address.도로명 == undefined && context.dialog.address.건물본번 == undefined) {call: '현재날씨', options: {output: '고객님, 정확한 안내를 드리기 위하여 +address.시도명+ +address.시군구명+의 하위 상세주소를 입력 부탁드립니다.'}}
+>현재 날씨는 +weather+입니다.\n기온은 +temp+도 입니다.
 
-예보:
-<{types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}], regexp: /예/}
-{action: publictask.forecastweather}
->+weather+ +temp+ +humidity+ +wind+
+<현재 날씨
+>어느 지역의 날씨를 알려드릴까요?\n[예시]\n구로동\n구로구 구로동\n구로구 구로동 423-12
+    <{types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}]}
+    {action: publictask.currentweather}
+    >현재 날씨는 +weather+입니다.\n기온은 +temp+도 입니다.
 
 <환율
 >환율코드를 알려주세요 ex) USD or 달러?
@@ -124,27 +133,6 @@ navertask.newscrawl
     {action: core.connectBot}
     > 봇이 변경되었습니다.
 
-구글검색:
-</([^\b]*)(?:\b|\s).*(검색)/
-{action: googletask.googlesearch}
->#result#+index+. +title+\n#
-    <{types: [{name: 'result', listName: 'result', typeCheck: 'listTypeCheck'}]}
-    {action: function (task,context,callback) {
-        task.url = context.dialog.result.url;
-        task.urlMessage = '결과보기';
-        console.log('=======' + context.dialog.result.snippet);
-        callback(task,context);
-    }}
-    >+result.title+\n+result.snippet+\n+url+
-
-주변검색둘:
-< {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}]}
-{action: navertask.searchNaver}
->if(context.dialog.item.length == 0) 검색결과가 존재하지 않습니다.
->if(context.dialog.item.length != 0) #item#+index+. +title+\n#
-    <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
-    >+item.title+\n+item.roadAddress+\n+item.telephone+
-
 주변검색:
 <주변
 >말씀해주세요.
@@ -156,10 +144,54 @@ navertask.newscrawl
         >+item.title+\n+item.roadAddress+\n+item.telephone+
     <{if: 'true'}> {repeat: 1, options: {output: '주소와 함께 찾을 곳을 입력해주세요.\n[예시]\n방배동 주변 은행\n서울시 중구 레스토랑'}}
 
+<날짜
+>말씀해주세요.
+    <{types: [{name: 'date', typeCheck: 'dateTypeCheck', raw: true}]}
+    > 완료
+
+구글검색:
+</([^\b]*)(?:\b|\s).*(검색|찾다)/
+{action: googletask.googlesearch}
+>#result#+index+. +title+\n#
+    <{types: [{name: 'result', listName: 'result', typeCheck: 'listTypeCheck'}]}
+    {action: function (task,context,callback) {
+        task.url = context.dialog.result.url;
+        task.urlMessage = '결과보기';
+        console.log('=======' + context.dialog.result.snippet);
+        callback(task,context);
+    }}
+    >+result.title+\n+result.snippet+\n+url+
+
+쇼핑:
+</([^\b]*)(?:\b|\s).*(사다|필요하다|쇼핑)/
+{action: navertask.navershopping}
+>#item#+index+. +title+\n+lprice+\n#
+    <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
+    {
+        action: function(task, context, callback) {
+            var result = [
+                {
+                    title: context.dialog.item.title,
+                    imageUrl: context.dialog.item.image, buttons: [{url: context.dialog.item.link, text: '상세보기'}]
+                }
+            ]
+            task.result = {items: result};
+            callback(task, context);
+        }
+    }
+    >+item.title+\n+item.lprice+~+item.hprice+\n+item.link+
+
+주변검색둘:
+< {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}]}
+{action: navertask.searchNaver}
+>if(context.dialog.item.length == 0) 검색결과가 존재하지 않습니다.
+>if(context.dialog.item.length != 0) #item#+index+. +title+\n#
+    <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
+    >+item.title+\n+item.roadAddress+\n+item.telephone+
 
 시작:
-c<{regexp: first}
-> 인기봇, 최신봇, 친구봇, 마이봇 중에 어떤 것을 안내해드릴까요?
+c< {regexp: first}
+> 안녕하세요 PlayChat입니다.
 
 c<{regexp: up}
 >{up:1}

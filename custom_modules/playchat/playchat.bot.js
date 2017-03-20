@@ -1,11 +1,11 @@
 var path = require('path');
 var botlib = require(path.resolve('config/lib/bot'));
 
-var athena = {
+var playchat = {
   use: true,
 
-  serviceName: '아테나',
-  serviceNick: '인공지능',
+  serviceName: '플레이챗',
+  serviceNick: 'PlayChat',
 
   kakao: {
     keyboard: { type :"buttons", buttons:["인기봇","최신봇","친구봇","마이봇"]}
@@ -19,5 +19,5 @@ var athena = {
   ]
 };
 
-botlib.makeBot('athena', athena);
+botlib.makeBot('playchat', playchat);
 
