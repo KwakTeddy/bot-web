@@ -3,7 +3,7 @@ var request = require('request');
 var path = require('path');
 var chat = require(path.resolve('modules/bot/server/controllers/bot.server.controller'));
 var contextModule = require(path.resolve('modules/bot/engine/common/context'));
-
+var util =require('util'); //temporary
 // var APP_SECRET =  "174b2a851e3811c3f2c267d46708d212";
 // var PAGE_ACCESS_TOKEN =  "EAAYwPrsj1ZA0BAORAoGhxvLLs5eRZADJ8BheTdjOXu8lT0X2tVFwZAZCEJiWFenFHCVqSuctfONET6dhbPDBnlivq5sXEvBABTnRlYpX8hLxZAnO2lywRiA6sVlbYAvG1n1EpQwkVhZAdrmq1p9PlQRUu327O1ohcZBwVLYZCn3beQZDZD";
 // var VALIDATION_TOKEN = "my_voice_is_my_password_verify_me";
@@ -199,11 +199,11 @@ function receivedMessage(event) {
   console.log(senderID);
   console.log(recipientID);
   console.log(event.botId);
-  console.log(global._bots[event.botId].facebook.id);
+  console.log(util.inspect(global._bots));
 
 
   if(recipientID == global._bots[event.botId].facebook.id) {
-    console.log('ininininin')
+    console.log('ininininin');
     contextModule.getContext(event.botId, 'facebook', senderID, function(context) {
       console.log('senderID: ' + senderID + ', recipientID: ' + recipientID);
       //console.log('receivedMessage: ', event);
