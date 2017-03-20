@@ -46,7 +46,7 @@ exports.processInput = function(context, inRaw, callback) {
   checkTypes(inRaw, commonTypes, doc, context, function(_inRaw, inDoc) {
     nlpKo.tokenize/*ToStrings*/(_inRaw, function(err, result) {
 
-      var _nlp = [], _inNLP = [], _in;
+      var _nlp = [], _nlpAll = [],  _inNLP = [], _in;
       if(!result) result = inRaw;
       for (var i = 0; i < result.length; i++) {
         // var word = result[i].text;
@@ -54,6 +54,7 @@ exports.processInput = function(context, inRaw, callback) {
 
         // /*if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') */_nlp.push(result[i]);
         // if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _inNLP.push(result[i].text);
+        _nlpAll.push(result[i]);
         if(result[i].text.search(/^(은|는|이|가|을|를)$/) == -1 && result[i].pos !== 'Punctuation') _nlp.push(result[i]);
         if(result[i].text.search(/^(은|는|이|가|을|를)$/) == -1 && result[i].pos !== 'Punctuation') _inNLP.push(result[i].text);
       }
@@ -61,6 +62,7 @@ exports.processInput = function(context, inRaw, callback) {
       _in = _inNLP.join(' ');
       _in = _in.replace(/(?:\{ | \})/g, '+');
 
+      context.botUser.nlpAll = _nlpAll;
       context.botUser.nlp = _nlp;
       context.botUser.nlpCorrection = undefined;
       context.botUser.inRawCorrection = undefined;

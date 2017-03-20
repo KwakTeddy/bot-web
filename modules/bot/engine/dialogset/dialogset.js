@@ -603,18 +603,18 @@ function multiNLP(inRaw, callback) {
 
 
 function analyzeSentence(text, result1, result2) {
-  var sentenceType = -1;            // 0. 평서문 1. 의문문 2. 명령 3. 청유 4. 감탄
-  var toneType = undefined;         // 합쇼체 하오체 하게체 해라체 해요체 해체
-  var verbType = undefined;         // 0. 2형식 1. 3형식
-  var tense = undefined;            // 시제
-  var aspect = undefined;           // 완료형
+  var sentenceType = undefined;                // 0. 평서문 1. 의문문 2. 명령 3. 청유 4. 감탄
+  var toneType = undefined;             // 합쇼체 하오체 하게체 해라체 해요체 해체
+  var questionWord = undefined;         // 언제 어디 등 yesno
+  var verbType = undefined;             // 0. 2. 형식 1. 3형식
+  var tenseType = undefined;            // 1. 현재 2. 과거 3. 미래
+  var aspectType = undefined;           // 0. 1. 진행 2. 완료 3. 완료진행
   var verbPos = undefined;          // 동사 위치
   var verbEomi = undefined;         // 동사 어미
   var verbToken = undefined;        // 어미 변환이 필요한 동사 token
 
-
   for (var i = result2.length - 1; i >= 0; i--) {
-    if(sentenceType != -1 && verbToken != undefined) break;
+    if(sentenceType != undefined && verbToken != undefined) break;
 
     var token = result2[i];
     var textToken = '';
@@ -627,18 +627,22 @@ function analyzeSentence(text, result1, result2) {
 
     if (token.pos == 'Punctuation' && token.text == '?') {
       sentenceType = 1;
-    } else if(token.text == '누구' || token.text == '언제' || token.text == '어디서' ||
-      token.text == '어떻게' ||token.text == '왜' ||token.text == '얼마나') {
+      if(questionWord == undefined) questionWord = 'yesno';
+    } else if(token.text == '누구' || token.text == '언제' ||
+      token.text == '어디서' || token.text == '어디' ||
+      token.text == '무엇' ||
+      token.text == '어떻게' || token.text == '왜' || token.text == '얼마나') {
       sentenceType = 1;
+      questionWord = token.text;
     }
 
     if(textToken.endsWith('야') || textToken.endsWith('어') || textToken.endsWith('지') || textToken.endsWith('니') || textToken.endsWith('나')) {
       verbToken = token;
-      if(sentenceType != 1) sentenceType = 0;
+      if(sentenceType == undefined)  sentenceType = 0;
       toneType = '해체';
     } else if(textToken.endsWith('해') || textToken.endsWith('하지')) {
       verbToken = token;
-      sentenceType = 2;
+      if(sentenceType == undefined) sentenceType = 2;
       toneType = '해체';
     // } else if(textToken.endsWith('해') || textToken.endsWith('하지')) {
     //   verbToken = token;
@@ -647,12 +651,12 @@ function analyzeSentence(text, result1, result2) {
 
     } else if(textToken.endsWith('나요') || textToken.endsWith('해요') || textToken.endsWith('예요')) {
       verbToken = token;
-      if(sentenceType != 1) sentenceType = 0;
+      if(sentenceType == undefined)  sentenceType = 0;
       toneType = '해요체';
     } else if(textToken.endsWith('세요') || textToken.endsWith('셔요') ||textToken.endsWith('해요') ||
       textToken.endsWith('주세요')) {
       verbToken = token;
-      sentenceType = 2;
+      if(sentenceType == undefined) sentenceType = 2;
       toneType = '해요체';
     // } else if(textToken.endsWith('하세요') ||textToken.endsWith('하셔요') ||textToken.endsWith('해요')) {
     //   verbToken = token;
@@ -663,20 +667,20 @@ function analyzeSentence(text, result1, result2) {
       textToken.endsWith('니다') || textToken.endsWith('소서') ||
       textToken.endsWith('나이다') || textToken.endsWith('올시다')) {
       verbToken = token;
-      sentenceType = 0;
+      if(sentenceType == undefined) sentenceType = 0;
       toneType = '합쇼체';
 
     } else if(textToken.endsWith('니까')) {
       verbToken = token;
-      sentenceType = 1;
+      if(sentenceType == undefined) sentenceType = 1;
       toneType = '합쇼체';
     } else if(textToken.endsWith('십시오')) {
       verbToken = token;
-      sentenceType = 2;
+      if(sentenceType == undefined) sentenceType = 2;
       toneType = '합쇼체';
     } else if(textToken.endsWith('십시다') || textToken.endsWith('시지요')) {
       verbToken = token;
-      sentenceType = 3;
+      if(sentenceType == undefined) sentenceType = 3;
       toneType = '합쇼체';
     // } else if(textToken.endsWith('하시오') || textToken.endsWith('하오') || textToken.endsWith('이오') ||
     //   // textToken.endsWith('소') || textToken.endsWith('오') ||
@@ -694,44 +698,44 @@ function analyzeSentence(text, result1, result2) {
       // textToken.endsWith('시오')
       ) {
       verbToken = token;
-      sentenceType = 2;
+      if(sentenceType == undefined) sentenceType = 2;
       toneType = '하오체';
     } else if(textToken.endsWith('시다')) {
       verbToken = token;
-      sentenceType = 3;
+      if(sentenceType == undefined) sentenceType = 3;
       toneType = '하오체';
     } else if(textToken.endsWith('하네') || textToken.endsWith('이네')) {
       verbToken = token;
-      sentenceType = 0;
+      if(sentenceType == undefined) sentenceType = 0;
       toneType = '하게체';
     } else if(textToken.endsWith('하는가') || textToken.endsWith('하나') || textToken.endsWith('이나')) {
       verbToken = token;
-      sentenceType = 1;
+      if(sentenceType == undefined) sentenceType = 1;
       toneType = '하게체';
     } else if(textToken.endsWith('하게') || textToken.endsWith('하구려')) {
       verbToken = token;
-      sentenceType = 2;
+      if(sentenceType == undefined) sentenceType = 2;
       toneType = '하게체';
     } else if(textToken.endsWith('하세')) {
       verbToken = token;
-      sentenceType = 3;
+      if(sentenceType == undefined) sentenceType = 3;
       toneType = '하게체';
     } else if(textToken.endsWith('하다') || textToken.endsWith('한다') || textToken.endsWith('이다')) {
       verbToken = token;
-      sentenceType = 0;
+      if(sentenceType == undefined) sentenceType = 0;
       toneType = '해라체';
     } else if(textToken.endsWith('하느냐') || textToken.endsWith('하냐') || textToken.endsWith('하니') ||
       textToken.endsWith('이냐') || textToken.endsWith('이니')) {
       verbToken = token;
-      sentenceType = 1;
+      if(sentenceType == undefined) sentenceType = 1;
       toneType = '해라체';
     } else if(textToken.endsWith('해라') || textToken.endsWith('하려무나') || textToken.endsWith('하렴')) {
       verbToken = token;
-      sentenceType = 2;
+      if(sentenceType == undefined) sentenceType = 2;
       toneType = '해라체';
     } else if(textToken.endsWith('하자')) {
       verbToken = token;
-      sentenceType = 3;
+      if(sentenceType == undefined) sentenceType = 3;
       toneType = '해라체';
     } else if(token.pos == 'Verb' || token.pos == 'Adjective' ||
       token.text == '하다' || token.text == '이다' || token.text == '있다' ||
@@ -739,7 +743,6 @@ function analyzeSentence(text, result1, result2) {
       verbToken = token;
     }
   }
-
 
   if(verbToken) {
     var _text = text.substring(verbToken.offset);
@@ -777,13 +780,16 @@ function analyzeSentence(text, result1, result2) {
     }
   }
 
-  var info = {sentenceType: sentenceType, toneType: toneType, verbType: verbType, tense: tense, aspect: aspect,
+  var info = {sentenceType: sentenceType, toneType: toneType, questionWord: questionWord, verbType: verbType, tenseType: tenseType, aspectType: aspectType,
     verbPos: verbPos, verbEomi: verbEomi, verbToken: verbToken};
+
   console.log(JSON.stringify(info));
 
   return info;
 }
 
+
+exports.analyzeSentence = analyzeSentence;
 
 function makeTone(text, result1, result2, info, toneType) {
   var eomi = '';

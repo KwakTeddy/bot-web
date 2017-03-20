@@ -1,11 +1,13 @@
 var net = require('net');
 var request = require('request');
-var chat = require('./bot.server.controller');
+var path = require('path');
+var chat = require(path.resolve('modules/bot/server/controllers/bot.server.controller'));
+var contextModule = require(path.resolve('modules/bot/engine/common/context'));
 
 exports.keyboard = function (req, res) {
   console.log("kakao keyboard");
 
-  chat.getContext(req.params.bot, 'kakao', req.params.user_key, function(context) {
+  contextModule.getContext(req.params.bot, 'kakao', req.params.user_key, function(context) {
     var sendMsg = context.bot.kakao.keyboard;
     if(sendMsg == undefined) sendMsg = { type: 'text'};
 

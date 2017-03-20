@@ -35,11 +35,11 @@ function quibble(context) {
       for(var j = 0; j < globalQuibbles.verbQuibbles.length; j++) {
         var q = globalQuibbles.verbQuibbles[j];
         if(q.condition.word == token.text) {
-          if(q.condition.question) {
+          if(q.condition.questionWord) {
             for(var k = 0; k < nlp.length; k++) {
               if(text) break;
               var token1 = nlp[k];
-              if((!q.condition.question && q.condition.question == token1.text) &&
+              if((!q.condition.questionWord && q.condition.questionWord == token1.text) &&
                 (!q.condition.time || q.condition.time == sentenceInfo.time) &&
                 (!q.condition.sentenceType || q.condition.sentenceType == sentenceInfo.sentenceType)) {
                 text = randomQuibble(q.sentences);
@@ -67,7 +67,7 @@ function quibble(context) {
     var token = nlp[i];
     for(var j = 0; j < globalQuibbles.sentenceQuibbles.length; j++) {
       var q = globalQuibbles.sentenceQuibbles[j];
-      if((!q.condition.question && q.condition.question == token.text) &&
+      if((!q.condition.questionWord && q.condition.questionWord == token.text) &&
         (!q.condition.time || q.condition.time == sentenceInfo.time) &&
         (!q.condition.sentenceType || q.condition.sentenceType == sentenceInfo.sentenceType)) {
         text = randomQuibble(q.sentences);
