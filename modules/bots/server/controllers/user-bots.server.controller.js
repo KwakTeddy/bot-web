@@ -249,6 +249,7 @@ exports.followList = function (req, res) {
 
 exports.followBot = function(req, res) {
   var query = {};
+  console.log(123321231);
   query['botUserId'] = req.body.botUserId;
   query['userBot'] = req.body.userBot;
   UserBotFollow.findOne(query).exec(function (err, follows) {
