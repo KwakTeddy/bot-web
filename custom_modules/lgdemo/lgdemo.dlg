@@ -264,7 +264,7 @@ lgdemo.searchCenterTask
                     <~아니요> 고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 LG전자가 되겠습니다.\nLG전자 콜센터 번호는 1544-7777입니다.\nLG전자에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.
         > iff(lgdemo.locationNotExists) {returnCall: '위치찾기', options: {returnDialog: '예약', output: '고객님 근처의 서비스 센터를 파악한 후에 방문예약을 도와드려도 될까요?'}}
         > if(context.dialog.repairable == true) 네 +category+ 상품은 현 지점에서 현장 수리 가능합니다.\n성함을 말씀해주세요
-            < {regexp: /[가-힣/g}
+            < {regexp: /[가-힣]/g}
             > 휴대폰 번호를 말씀해주세요.
                 < {types: [{type : type.mobileType, context: false}]}
                 > 원하시는 방문날짜를 입력해주세요

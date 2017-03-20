@@ -8,7 +8,7 @@ var athena = {
   serviceNick: '인공지능',
 
   kakao: {
-    keyboard: { type :"buttons", buttons:["시작"]}
+    keyboard: { type :"buttons", buttons:["인기봇","최신봇","친구봇","마이봇"]}
   },
   naver: {
     clientId: 'c7VNVyIG3s95N4q2LWZQ',
