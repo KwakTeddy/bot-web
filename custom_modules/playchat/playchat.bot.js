@@ -6,7 +6,9 @@ var playchat = {
 
   serviceName: '플레이챗',
   serviceNick: 'PlayChat',
-
+  facebook: {
+      VALIDATION_TOKEN : "moneybrain_token"
+  },
   kakao: {
     keyboard: { type :"buttons", buttons:["인기봇","최신봇","친구봇","마이봇"]}
   },
