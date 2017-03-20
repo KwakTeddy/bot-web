@@ -29,7 +29,7 @@ function quibbleProcess(quibbleScope, context) {
       if(text) break;
       if(context.dialog.inRaw.indexOf(quibbleScope.slangQuibbles.condition.words[j]) != -1) {
         text = randomQuibble(quibbleScope.slangQuibbles.sentences);
-        console.log('quibble [욕설]: ' + JSON.stringify(quibbleScope.slangQuibbles, null, 2));
+        console.log('quibble [욕설]: ' + JSON.stringify(quibbleScope.slangQuibbles));
         break;
       }
     }
@@ -46,7 +46,7 @@ function quibbleProcess(quibbleScope, context) {
           var q = quibbleScope.nounQuibbles[j];
           if(token.text == q.condition.word) {
             text = randomQuibble(q.sentences);
-            console.log('quibble [명사]: ' + JSON.stringify(q, null, 2));
+            console.log('quibble [명사]: ' + JSON.stringify(q));
             break;
           }
         }
@@ -72,7 +72,7 @@ function quibbleProcess(quibbleScope, context) {
                   (q.condition.tenseType  == undefined || sentenceInfo.tenseType == undefined || q.condition.tenseType == sentenceInfo.tenseType) &&
                   (q.condition.sentenceType  == undefined || sentenceInfo.sentenceType == undefined || q.condition.sentenceType == sentenceInfo.sentenceType)) {
                   text = randomQuibble(q.sentences);
-                  console.log('quibble [동사]: ' + JSON.stringify(q, null, 2));
+                  console.log('quibble [동사]: ' + JSON.stringify(q));
                   break;
                 }
               }
@@ -80,7 +80,7 @@ function quibbleProcess(quibbleScope, context) {
               if((q.condition.tenseType == undefined || sentenceInfo.tenseType == undefined ||  q.condition.tenseType == sentenceInfo.tenseType) &&
                 (q.condition.sentenceType == undefined || sentenceInfo.sentenceType == undefined || q.condition.sentenceType == sentenceInfo.sentenceType)) {
                 text = randomQuibble(q.sentences);
-                console.log('quibble [동사]: ' + JSON.stringify(q, null, 2));
+                console.log('quibble [동사]: ' + JSON.stringify(q));
                 break;
               }
             }
@@ -103,7 +103,7 @@ function quibbleProcess(quibbleScope, context) {
           (q.condition.sentenceType == undefined || sentenceInfo.sentenceType == undefined || q.condition.sentenceType == sentenceInfo.sentenceType) &&
           (q.condition.nlpLength == undefined ||  q.condition.nlpLength < nlp.length)) {
           text = randomQuibble(q.sentences);
-          console.log('quibble [문장]: ' + JSON.stringify(q, null, 2));
+          console.log('quibble [문장]: ' + JSON.stringify(q));
           break;
         }
       }
