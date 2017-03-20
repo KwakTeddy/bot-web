@@ -76,15 +76,27 @@ module.exports = {
     callbackURL: '/api/auth/paypal/callback',
     sandbox: true
   },
+  // mailer: {
+  //   from: process.env.MAILER_FROM || 'PlayChat',
+  //   options: {
+  //       host: 'smtp.cafe24.com',
+  //       port: 465,
+  //       secure: true,
+  //       auth: {
+  //           user: process.env.MAILER_EMAIL_ID || 'info@moneybrain1.cafe24.com',
+  //           pass: process.env.MAILER_PASSWORD || 'Make01mb!'
+  //       }
+  //   }
+  // },
   mailer: {
-    from: process.env.MAILER_FROM || 'PlayChat',
-    options: {
-      service: process.env.MAILER_SERVICE_PROVIDER || 'GMAIL',
-      auth: {
-        user: process.env.MAILER_EMAIL_ID || 'testmailreal@gmail.com',
-        pass: process.env.MAILER_PASSWORD || 'qkrwnsgk!90'
+      from: process.env.MAILER_FROM || 'PlayChat',
+      options: {
+          service: process.env.MAILER_SERVICE_PROVIDER || 'GMAIL',
+          auth: {
+              user: process.env.MAILER_EMAIL_ID || 'playchatai@gmail.com',
+              pass: process.env.MAILER_PASSWORD || 'Make01mb!'
+          }
       }
-    }
   },
   livereload: false,
   seedDB: {
