@@ -67,21 +67,22 @@
                     <div style="border-top: 1px solid lightgray; margin-top: 5px;padding-top: 10px;">
                         <div>
                             <input type="text" ng-model="vm.comment.text" class="form-control valid" placeholder="댓글을 입력해주세요."
-                                   aria-invalid="false" style="width: 80%;float: left;margin-right: 10px">
-                            <button class="btn btn-default" ng-click="vm.createComment();">등록</button>
+                                   aria-invalid="false" style="width: 80%;float: left;margin-right: 10px" ng-disabeld = "!vm.user">
+                            <button class="btn btn-default" ng-click="vm.createComment();" ng-show="vm.user">등록</button>
+                            <button class="btn btn-default" ui-sref="authentication.signin" ng-show="!vm.user">로그인해요</button>
                         </div>
-
-                        <ul style="padding: 10px 0px 10px 5px;">
-                            <li  ng-repeat="comment in vm.comments" ng-show="comment['deleted'] == undefined"
-                                style="list-style: none; padding: 0px; margin: 0px;">
-                                <div>
-                                    <span style="color: #777;font-size: 13px; font-weight: bold;">{{comment.user.username}}</span>
-                                    <span style="color: #888;font-size: 12px; ">{{comment.user.created | date: 'medium'}}</span>
-                                </div>
+                        <div>
+                          <ul style="padding: 10px 0px 10px 5px;">
+                              <li ng-repeat="comment in vm.comments" ng-show="comment['deleted'] == undefined" style="list-style: none; padding: 0px; margin: 0px;">
                                 <div style="color: #555;font-size: 14px;float:left;margin-right: 10px">{{comment.text}} </div>
+                                <div>
+                                  <span style="color: #888;font-size: 12px; ">{{comment.user.created | date: 'medium'}}</span>
+                                  <span  style="color: #777;font-size: 13px; font-weight: bold;"> {{comment.user.username}}&emsp;</span>
+                                </div>
                                 <button class="btn btn-default btn-xs " ng-show="comment.user.username == vm.user.username" ng-click="vm.removeComment(comment);">삭제</button>
-                            </li>
-                        </ul>
+                              </li>
+                          </ul>
+                        </div>
                     </div>
 
                 </div>

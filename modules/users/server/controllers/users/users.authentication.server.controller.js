@@ -199,8 +199,10 @@ exports.oauthCall = function (strategy, scope) {
     // Set redirection path on session.
     // Do not redirect to a signin or signup page
     if (noReturnUrls.indexOf(req.query.redirect_to) === -1) {
+        console.log('maybe' + req.query.redirect_to);
       req.session.redirect_to = req.query.redirect_to;
     }
+    console.log('oauthCall')
     // Authenticate
     passport.authenticate(strategy, scope)(req, res, next);
   };

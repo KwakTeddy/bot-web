@@ -18,6 +18,8 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
       else vm.userBot.userFollow = undefined;
       // console.log(res);
     });
+    console.log(vm.user);
+
     // UserBotsFollowService.get()
     // if(vm.userBot && vm.userBot._id)
     //   $rootScope.$broadcast('setUserBot', vm.userBot);
@@ -75,7 +77,6 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
     };
 
     vm.twitterShare = function () {
-      console.log(123123);
       $scope.location = location.href;
       window.open('https://twitter.com/intent/tweet?text='+ vm.userBot.name+'-'+ vm.userBot.description + '&url=' + $scope.location, 'popup', 'width=600, height=400')
     };
@@ -239,6 +240,7 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
     vm.createComment = function() {
       vm.comment.$save(function (response) {
         vm.comments.push(response);
+        console.log(vm.comments);
 
         vm.comment = new UserBotCommentService({user: vm.user, userBot: vm.userBot, userBotId: vm.userBot._id});
       }, function (errorResponse) {

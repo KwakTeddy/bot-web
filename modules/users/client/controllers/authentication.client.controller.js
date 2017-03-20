@@ -28,9 +28,10 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
     }
 
     $scope.signup = function (isValid) {
-        $state.go('home');
-
-        $scope.error = {};
+      if ($scope.authentication.user) {
+          $state.go('home');
+      }
+      $scope.error = {};
       $scope.submitted = true;
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'userForm');
@@ -42,7 +43,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         var modalInstance = $uibModal.open({
             templateUrl: 'modules/users/client/views/authentication/email.confirm.modal.html',
             scope: $scope
-        });œœ
+        });
         $scope.close = function () {
             modalInstance.dismiss();
             $state.go('home');

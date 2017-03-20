@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('user-bots').controller('UserBotChatController', ['$state', '$rootScope', '$scope', '$stateParams', '$document', '$timeout', '$window', '$compile', '$resource', '$cookies', 'Socket',
-  'UserBotsService',
-  function ($state, $rootScope, $scope, $stateParams, $document, $timeout, $window, $compile, $resource, $cookies, Socket, UserBotsService) {
+  'UserBotsService', '$ionicModal',
+  function ($state, $rootScope, $scope, $stateParams, $document, $timeout, $window, $compile, $resource, $cookies, Socket, UserBotsService, $ionicModal) {
     var vm = this;
     $scope.vm = vm;
 
@@ -98,7 +98,73 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       // snd.play();
     });
 
-    vm.sendMsg = function (msg) {
+    vm.mobileModal = function () {
+      $ionicModal.fromTemplateUrl('my-modal.html', {
+      // $ionicModal.fromTemplateUrl('modules/bots/client/views/modal-user-bots.client.remove.html', {
+          scope: $scope,
+          animation: 'slide-in-up'
+      }).then(function(modal) {
+          $scope.modal = modal;
+          $scope.modal.show();
+      });
+      // $scope.openModal = function() {
+      //     $scope.modal.show();
+      // };
+      $scope.closeModal = function() {
+          $scope.modal.hide();
+      };
+      // Cleanup the modal when we're done with it!
+      $scope.$on('$destroy', function() {
+          $scope.modal.remove();
+      });
+      // Execute action on hide modal
+      $scope.$on('modal.hidden', function() {
+          // Execute action
+      });
+      // Execute action on remove modal
+      $scope.$on('modal.removed', function() {
+          // Execute action
+      });
+    };
+
+    vm.fbShare = function () {
+        $scope.location = location.href;
+        FB.ui({
+            method: 'share',
+            display: 'popup',
+            href: $scope.location,
+            title: vm.userBot.name,
+            description: vm.userBot.description,
+            picture: location.protocol+'//'+location.hostname+'/'+ vm.userBot.imageFile,
+        }, function(response){
+            console.log(response);
+        });
+    };
+
+    vm.kakaoShare = function () {
+        $scope.location = location.href;
+        console.log(vm.userBot.description);
+        Kakao.Story.share({
+            url: $scope.location,
+            text: vm.userBot.name+'-'+ vm.userBot.description
+        });
+    };
+    vm.kakaoTalkShare = function () {
+      $scope.location = location.href;
+      Kakao.Link.sendTalkLink({
+          label: vm.userBot.name+'-'+ vm.userBot.description,
+          image: {src: location.protocol+'//'+location.hostname+'/'+ vm.userBot.imageFile, width:80, height:80 },
+          webButton: {text : "플레이 챗으로 가요", url: $scope.location},
+      });
+    };
+
+    vm.twitterShare = function () {
+        $scope.location = location.href;
+        window.open('https://twitter.com/intent/tweet?text='+ vm.userBot.name+'-'+ vm.userBot.description + '&url=' + $scope.location, 'popup', 'width=600, height=400')
+    };
+
+
+      vm.sendMsg = function (msg) {
       if (!vm.isConnected) return false;
 
       var element = document.getElementById("smart_reply");

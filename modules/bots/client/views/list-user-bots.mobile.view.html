@@ -24,10 +24,15 @@
         <!--</ion-option-button>-->
       </ion-item>
     </ion-list>
-    <div infinite-scroll="vm.paging()"
-         infinite-scroll-distance="0"
-         infinite-scroll-disabled = "vm.pagingEnd"
-         infinite-scroll-use-document-bottom = true>
-    </div>
+    <!--<div infinite-scroll="vm.paging()"-->
+         <!--infinite-scroll-distance="0"-->
+         <!--infinite-scroll-disabled = "vm.pagingEnd"-->
+         <!--infinite-scroll-use-document-bottom = true>-->
+    <!--</div>-->
+    <ion-infinite-scroll
+      ng-if="!vm.pagingEnd"
+      on-infinite="vm.paging()"
+      distance="1%">
+    </ion-infinite-scroll>
   </ion-content>
 </ion-view>
