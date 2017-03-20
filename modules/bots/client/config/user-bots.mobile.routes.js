@@ -58,15 +58,13 @@
 
 getUserBots.$inject = ['UserBotsService', 'UserBotsFollowService', '$stateParams', '$location'];
 function getUserBots(UserBotsService, UserBotsFollowService, $stateParams, $location) {
-  console.log($stateParams);
   if($stateParams['listType']) {
     if($stateParams['listType'] == 'popular') return UserBotsService.query({sort: '-followed'}).$promise;
     else if($stateParams['listType'] == 'followed') return UserBotsFollowService.list({botUserId: $stateParams['botUserId']}).$promise;
     else if($stateParams['listType'] == 'my') return UserBotsService.query({my: '1'}).$promise;
     else return UserBotsService.query().$promise;
   } else {
-    return window.location('/list?listType=popular');
-    // return UserBotsService.query().$promise;
+    return UserBotsService.query().$promise;
   }
 }
 

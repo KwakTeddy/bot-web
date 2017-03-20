@@ -70,8 +70,14 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
       console.log(vm.userBot.description);
         Kakao.Story.share({
           url: $scope.location,
-          text: vm.userBot.name+'-'+ vm.userBot.description,
+          text: vm.userBot.name+'-'+ vm.userBot.description
         });
+    };
+
+    vm.twitterShare = function () {
+      console.log(123123);
+      $scope.location = location.href;
+      window.open('https://twitter.com/intent/tweet?text='+ vm.userBot.name+'-'+ vm.userBot.description + '&url=' + $scope.location, 'popup', 'width=600, height=400')
     };
 
     // Create new UserBot
