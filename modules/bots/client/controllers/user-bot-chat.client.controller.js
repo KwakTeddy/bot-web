@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('user-bots').controller('UserBotChatController', ['$state', '$rootScope', '$scope', '$stateParams', '$document', '$timeout', '$window', '$compile', '$resource', '$cookies', 'Socket',
-  'UserBotsService', '$ionicModal',
-  function ($state, $rootScope, $scope, $stateParams, $document, $timeout, $window, $compile, $resource, $cookies, Socket, UserBotsService, $ionicModal) {
+  'UserBotsService', '$ionicModal', '$ionicScrollDelegate',
+  function ($state, $rootScope, $scope, $stateParams, $document, $timeout, $window, $compile, $resource, $cookies, Socket, UserBotsService, $ionicModal, $ionicScrollDelegate) {
     var vm = this;
     $scope.vm = vm;
 
@@ -514,7 +514,8 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       var main = document.getElementById('chat_main');
       main.insertAdjacentHTML('beforeend', innerHTML);
 
-      main.scrollTop = main.scrollHeight - main.clientHeight;
+      if(_platform == 'mobile') $ionicScrollDelegate.scrollBottom();
+      else main.scrollTop = main.scrollHeight - main.clientHeight;
     }
 
     function addButtons(replies) {
