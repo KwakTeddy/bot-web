@@ -1264,7 +1264,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
     function(_cb) {
       var matchConcepts = [];
       var bot = context.bot;
-      if(bot.concepts) {
+      if(bot && bot.concepts) {
         for(var key in bot.concepts) {
 
 
@@ -1481,7 +1481,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                   }
                 }
 
-                if((!format.mongo.minMatch || matchCount >= format.mongo.minMatch) ||
+                if((!format.mongo.minMatch || matchCount >= format.mongo.minMatch) &&
                   matchCount / nlpMatchLength > format.matchRate) {
                   var bExist = false;
                   for(var l = 0; l < matchedDoc.length; l++) {

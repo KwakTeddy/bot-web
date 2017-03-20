@@ -24,6 +24,19 @@ function quibbleProcess(quibbleScope, context) {
 
   var text = undefined;
 
+  if(quibbleScope.slangQuibbles) {
+    for(var j = 0; j < quibbleScope.slangQuibbles.condition.words.length; j++) {
+      if(text) break;
+      if(context.dialog.inRaw.indexOf(quibbleScope.slangQuibbles.condition.words[j]) != -1) {
+        text = randomQuibble(quibbleScope.slangQuibbles.sentences);
+        console.log('quibble [욕설]: ' + JSON.stringify(quibbleScope.slangQuibbles, null, 2));
+        break;
+      }
+    }
+  }
+
+  if(text) return text;
+
   if(quibbleScope.nounQuibbles) {
     for(var i = 0; i < nlp.length; i++) {
       if(text) break;
@@ -87,29 +100,11 @@ function quibbleProcess(quibbleScope, context) {
         var q = quibbleScope.sentenceQuibbles[j];
         if((!q.condition.questionWord && q.condition.questionWord == token.text) &&
           (!q.condition.tenseType || !sentenceInfo.tenseType || q.condition.tenseType == sentenceInfo.tenseType) &&
-          (!q.condition.sentenceType || !sentenceInfo.sentenceType || q.condition.sentenceType == sentenceInfo.sentenceType)) {
+          (!q.condition.sentenceType || !sentenceInfo.sentenceType || q.condition.sentenceType == sentenceInfo.sentenceType) &&
+          (!q.condition.nlpLength ||  q.condition.nlpLength < nlp.length)) {
           text = randomQuibble(q.sentences);
           console.log('quibble [문장]: ' + JSON.stringify(q, null, 2));
           break;
-        }
-      }
-    }
-  }
-
-  if(text) return text;
-
-  if(quibbleScope.slangQuibbles) {
-    for(var i = 0; i < nlp.length; i++) {
-      if(text) break;
-      var token = nlp[i];
-      if(token.pos == 'Noun') {
-        for(var j = 0; j < quibbleScope.slangQuibbles.length; j++) {
-          var q = quibbleScope.slangQuibbles[j];
-          if(token.text == q.condition.word) {
-            text = randomQuibble(q.sentences);
-            console.log('quibble [욕설]: ' + JSON.stringify(q, null, 2));
-            break;
-          }
         }
       }
     }
