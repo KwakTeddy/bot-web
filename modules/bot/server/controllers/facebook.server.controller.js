@@ -485,9 +485,9 @@ function callSendAPI(messageData, PAGE_ACCESS_TOKEN) {
       console.log("Successfully sent generic message with id %s to recipient %s",
         messageId, recipientId);
     } else {
-      console.error("Unable to send message.");
-      console.error(JSON.stringify(response.body.error));
-      console.error(error);
+      console.log("Unable to send message.");
+      console.log(JSON.stringify(response.body.error));
+      console.log(error);
     }
   });
 }
