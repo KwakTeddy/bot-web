@@ -404,6 +404,10 @@
 <script type="text/javascript" src="{{jsFile}}"></script>
 {% endfor %}
 
+{% if env == 'production' %}
+<script type="text/javascript" src="dist/application.min.js?rel=62d5340b4c"></script>
+{% endif %}
+
 {% if livereload %}
 <!--Livereload script rendered -->
 <script type="text/javascript" src="{{host}}:35729/livereload.js"></script>
