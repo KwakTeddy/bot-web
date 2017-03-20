@@ -415,7 +415,7 @@
 <script type="text/javascript" src="{{jsFile}}"></script>
 {% endfor %}
 
-{% if env_type == 'production' %}
+{% if env == 'production' %}
 <script type="text/javascript" src="dist/application.min.js?rel={{app_version}}"></script>
 {% endif %}
 

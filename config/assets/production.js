@@ -1,5 +1,12 @@
 'use strict';
 
+var fs = require('fs'),
+  util = require('util');
+
+var stats = fs.statSync("public/dist/application.min.js");
+var mtime = new Date(util.inspect(stats.mtime));
+var app_version = mtime.getUTCMilliseconds() + "";
+
 module.exports = {
   client: {
     lib: {
@@ -35,6 +42,7 @@ module.exports = {
       tests: ['public/lib/angular-mocks/angular-mocks.js']
     },
     css: 'public/dist/application.min.css',
+    js: 'public/dist/application.min.js?rel=' + app_version
   },
   mobile: {
     lib: {
@@ -63,5 +71,6 @@ module.exports = {
       ]
     },
     css: 'public/dist/application_mobile.min.css',
+    js: 'public/dist/application_mobile.min.js?rel=' + app_version
   }
 };

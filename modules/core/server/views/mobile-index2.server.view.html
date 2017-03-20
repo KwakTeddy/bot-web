@@ -50,7 +50,7 @@
 <!--Application JavaScript Files-->
 {% for jsFile in mobileJsFiles %}<script type="text/javascript" src="{{jsFile}}"></script>{% endfor %}
 
-{% if env_type == 'production' %}
+{% if env == 'production' %}
 <script type="text/javascript" src="dist/application_mobile.min.js?rel={{app_version}}"></script>
 {% endif %}
 
