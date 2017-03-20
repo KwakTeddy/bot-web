@@ -55,11 +55,11 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
       }).error(function (response) {
         console.log(response);
         if(response.message.match('E-mail')){
-            $scope.error.email = '이미 존재하는 E-mail이네요';
-        } else if(response.message.match('username')) {
-            $scope.error.username = 'username already exist';
+            $scope.error.email = response.message;
+        } else if(response.message.match('SNS')) {
+            $scope.error.email = response.message;
         } else if(response.message.match('Failure sending email')) {
-
+          $scope.error.email = 'E-mail 보내기에 실패했어요. 관리자에게 문의해주세요.'
         }
       });
     };
