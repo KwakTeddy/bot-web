@@ -30,6 +30,8 @@ exports.messageGet =  function(req, res) {
 
 exports.message = function (req, res) {
   var data = req.body;
+  console.log('comeon');
+  console.log(data);
 
   // Make sure this is a page subscription
   if (data.object == 'page') {
@@ -192,6 +194,10 @@ function receivedMessage(event) {
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
   var message = event.message;
+  console.log('conmon');
+  console.log(message);
+  console.log(senderID);
+  console.log(recipientID);
 
   if(recipientID == global._bots[event.botId].facebook.id) {
     contextModule.getContext(event.botId, 'facebook', senderID, function(context) {
