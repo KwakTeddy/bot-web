@@ -198,6 +198,7 @@ function receivedMessage(event) {
   console.log(message);
   console.log(senderID);
   console.log(recipientID);
+  console.log(event.botId);
 
   if(recipientID == global._bots[event.botId].facebook.id) {
     contextModule.getContext(event.botId, 'facebook', senderID, function(context) {
