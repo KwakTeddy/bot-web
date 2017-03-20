@@ -212,19 +212,19 @@ var globalStartDialogs = [
       }
     ]
   },
-  {
-    input: [/([^\b\s]*)(?:\b|\s).*불러줘/, /([^\b\s]*)(?:\b|\s).*부르다/, /([^\b\s]*)(?:\b|\s).*불다/],
-    task:   {
-      action: function(task, context, callback) {
-        task.botName = task['1'];
-        var command = require(path.resolve('./modules/bot/action/common/command'));
-        command.changeBot(task, context, function(_task, _context) {
-          callback(_task, _context);
-        });
-      }
-    },
-    output: '+outputtext+\n궁금하신걸 물어보세요.\n\(목록으로 돌아가기 : [목록] 또는 [플레이챗] 입력\)'
-  },
+  // {
+  //   input: [/([^\b\s]*)(?:\b|\s).*불러줘/, /([^\b\s]*)(?:\b|\s).*부르다/, /([^\b\s]*)(?:\b|\s).*불다/],
+  //   task:   {
+  //     action: function(task, context, callback) {
+  //       task.botName = task['1'];
+  //       var command = require(path.resolve('./modules/bot/action/common/command'));
+  //       command.changeBot(task, context, function(_task, _context) {
+  //         callback(_task, _context);
+  //       });
+  //     }
+  //   },
+  //   output: '+outputtext+\n궁금하신걸 물어보세요.\n\(목록으로 돌아가기 : [목록] 또는 [플레이챗] 입력\)'
+  // },
   // {
   //   input: /(^.*체).*바꾸다/,
   //   task: {
