@@ -68,7 +68,7 @@ function quibbleProcess(quibbleScope, context) {
               for(var k = 0; k < nlp.length; k++) {
                 if(text) break;
                 var token1 = nlp[k];
-                if((!q.condition.questionWord && q.condition.questionWord == token1.text) &&
+                if((!q.condition.questionWord || q.condition.questionWord == token1.text) &&
                   (!q.condition.tenseType || !sentenceInfo.tenseType || q.condition.tenseType == sentenceInfo.tenseType) &&
                   (!q.condition.sentenceType || !sentenceInfo.sentenceType || q.condition.sentenceType == sentenceInfo.sentenceType)) {
                   text = randomQuibble(q.sentences);
@@ -98,7 +98,7 @@ function quibbleProcess(quibbleScope, context) {
       var token = nlp[i];
       for(var j = 0; j < quibbleScope.sentenceQuibbles.length; j++) {
         var q = quibbleScope.sentenceQuibbles[j];
-        if((!q.condition.questionWord && q.condition.questionWord == token.text) &&
+        if((!q.condition.questionWord || q.condition.questionWord == token.text) &&
           (!q.condition.tenseType || !sentenceInfo.tenseType || q.condition.tenseType == sentenceInfo.tenseType) &&
           (!q.condition.sentenceType || !sentenceInfo.sentenceType || q.condition.sentenceType == sentenceInfo.sentenceType) &&
           (!q.condition.nlpLength ||  q.condition.nlpLength < nlp.length)) {
