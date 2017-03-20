@@ -7,9 +7,9 @@ var playchat = {
   serviceName: '플레이챗',
   serviceNick: 'PlayChat',
   facebook: {
-      id: '240853479709635',
+      id: '1753073741670229',
       APP_SECRET :  "085c64a8566fefe3833ed3d983623a10",
-      PAGE_ACCESS_TOKEN :  "EAADbDhIZA28MBAMyYLZC1zPbmqaXg3CfqCSWbQ93ieIOOGeY2bIV74YokTtmhcSVoexSmxKGWfe6Be6WvPkxwOJmSkwG6l7oVGAf2v0khEzsu9pkQ7KO7zvDdv3wNEnJZBC92INwEDfvKT4ZAuBlfgNJYk12tshs6V8ctAf8ZCwZDZD",
+      PAGE_ACCESS_TOKEN :  "EAADbDhIZA28MBAJ2pXuAPqQZAPmYfFo84vq4BdAwYQaP3Xpwp4U1ywSzOcsf19ZBOzBZCmZAawmZB2ZAyipBMBLUwDrsQekBmF8W2LCZBcmni1DlWOb29tWzQTDaEMTTFAkhNRWg8mCtwXUPmWpjPqLZCN0GgH2U21aURlMjoLFHiIwZDZD",
       VALIDATION_TOKEN : "moneybrain_token"
   },
   kakao: {

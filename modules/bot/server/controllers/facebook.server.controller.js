@@ -3,7 +3,7 @@ var request = require('request');
 var path = require('path');
 var chat = require(path.resolve('modules/bot/server/controllers/bot.server.controller'));
 var contextModule = require(path.resolve('modules/bot/engine/common/context'));
-
+var util =require('util'); //temporary
 // var APP_SECRET =  "174b2a851e3811c3f2c267d46708d212";
 // var PAGE_ACCESS_TOKEN =  "EAAYwPrsj1ZA0BAORAoGhxvLLs5eRZADJ8BheTdjOXu8lT0X2tVFwZAZCEJiWFenFHCVqSuctfONET6dhbPDBnlivq5sXEvBABTnRlYpX8hLxZAnO2lywRiA6sVlbYAvG1n1EpQwkVhZAdrmq1p9PlQRUu327O1ohcZBwVLYZCn3beQZDZD";
 // var VALIDATION_TOKEN = "my_voice_is_my_password_verify_me";
@@ -32,9 +32,6 @@ exports.messageGet =  function(req, res) {
 
 exports.message = function (req, res) {
   var data = req.body;
-  console.log('comeon');
-  console.log(data);
-
   // Make sure this is a page subscription
   if (data.object == 'page') {
     // Iterate over each entry
@@ -200,7 +197,7 @@ function receivedMessage(event) {
   var message = event.message;
 
   if(recipientID == global._bots[event.botId].facebook.id) {
-    console.log('ininininin')
+    console.log('ininininin');
     contextModule.getContext(event.botId, 'facebook', senderID, function(context) {
       //console.log('receivedMessage: ', event);
 
@@ -484,9 +481,9 @@ function callSendAPI(messageData, PAGE_ACCESS_TOKEN) {
       console.log("Successfully sent generic message with id %s to recipient %s",
         messageId, recipientId);
     } else {
-      console.error("Unable to send message.");
-      console.error(JSON.stringify(response.body.error));
-      console.error(error);
+      console.log("Unable to send message.");
+      console.log(JSON.stringify(response.body.error));
+      console.log(error);
     }
   });
 }

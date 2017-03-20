@@ -61,5 +61,4 @@ angular.module('user-bots').factory('UserBotsService', ['$resource',
         }
       });
     }])
-
 ;

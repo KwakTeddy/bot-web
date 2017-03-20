@@ -9,10 +9,9 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
     vm.userBot = userBot;
     vm.userBot.public = true;
     vm.userId = $rootScope.userId;
-    console.log(userBot);
 
     vm.isMine = (vm.userBot.user != null && (vm.user.username === vm.userBot.user.username));
-    vm.isLearnable = (vm.userBot.learn || vm.isMine);
+    vm.isLearnable = (vm.userBot.user != null && (vm.userBot.learn || vm.isMine));
 
     vm.userBot.userFollow = UserBotsFollowService.list({userBot: vm.userBot, botUserId: vm.user._id}, function(res) {
       if(res.length > 0) vm.userBot.userFollow = true;
@@ -33,7 +32,6 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
     };
 
     vm.followBot = function(userBot) {
-      console.log(123);
       UserBotsFollowService.follow({botUserId: vm.user._id, userBot: userBot._id}, function(err, result) {
         vm.userBot.userFollow = true;
         // alert('친구로 추가 되었습니다.')
