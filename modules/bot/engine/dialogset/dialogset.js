@@ -630,7 +630,7 @@ function analyzeSentence(text, result1, result2) {
       if(questionWord == undefined) questionWord = 'yesno';
     } else if(token.text == '누구' || token.text == '언제' ||
       token.text == '어디서' || token.text == '어디' ||
-      token.text == '무엇' ||
+      token.text == '무엇' || token.text == '뭐' ||
       token.text == '어떻게' || token.text == '왜' || token.text == '얼마나') {
       sentenceType = 1;
       questionWord = token.text;

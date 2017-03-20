@@ -40,16 +40,16 @@ function quibble(context) {
               if(text) break;
               var token1 = nlp[k];
               if((!q.condition.questionWord && q.condition.questionWord == token1.text) &&
-                (!q.condition.time || q.condition.time == sentenceInfo.time) &&
-                (!q.condition.sentenceType || q.condition.sentenceType == sentenceInfo.sentenceType)) {
+                (!q.condition.tenseType || !sentenceInfo.tenseType || q.condition.tenseType == sentenceInfo.tenseType) &&
+                (!q.condition.sentenceType || !sentenceInfo.sentenceType || q.condition.sentenceType == sentenceInfo.sentenceType)) {
                 text = randomQuibble(q.sentences);
                 console.log('quibble [동사]: ' + JSON.stringify(q, null, 2));
                 break;
               }
             }
           } else {
-            if((!q.condition.time || q.condition.time == sentenceInfo.time) &&
-              (!q.condition.sentenceType || q.condition.sentenceType == sentenceInfo.sentenceType)) {
+            if((!q.condition.tenseType || !sentenceInfo.tenseType ||  q.condition.tenseType == sentenceInfo.tenseType) &&
+              (!q.condition.sentenceType || !sentenceInfo.sentenceType || q.condition.sentenceType == sentenceInfo.sentenceType)) {
               text = randomQuibble(q.sentences);
               console.log('quibble [동사]: ' + JSON.stringify(q, null, 2));
               break;
@@ -68,8 +68,8 @@ function quibble(context) {
     for(var j = 0; j < globalQuibbles.sentenceQuibbles.length; j++) {
       var q = globalQuibbles.sentenceQuibbles[j];
       if((!q.condition.questionWord && q.condition.questionWord == token.text) &&
-        (!q.condition.time || q.condition.time == sentenceInfo.time) &&
-        (!q.condition.sentenceType || q.condition.sentenceType == sentenceInfo.sentenceType)) {
+        (!q.condition.tenseType || !sentenceInfo.tenseType || q.condition.tenseType == sentenceInfo.tenseType) &&
+        (!q.condition.sentenceType || !sentenceInfo.sentenceType || q.condition.sentenceType == sentenceInfo.sentenceType)) {
         text = randomQuibble(q.sentences);
         console.log('quibble [문장]: ' + JSON.stringify(q, null, 2));
         break;

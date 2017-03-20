@@ -7,7 +7,7 @@ var type = require(path.resolve('modules/bot/action/common/type'));
 var botUser= require(path.resolve('modules/bot-users/server/controllers/bot-users.server.controller'))
 var userDilaog = require(path.resolve('modules/user-dialogs/server/controllers/user-dialogs.server.controller'));
 var autoCorrection = require(path.resolve('modules/bot/engine/nlp/autoCorrection'));
-var quibble = require(path.resolve('modules/bot/engine/dialog/quibble'));
+var quibble = require(path.resolve('modules/bot/engine/dialog/quibbleModule'));
 
 const START_DIALOG_NAME = '시작';
 exports.START_DIALOG_NAME = START_DIALOG_NAME;
