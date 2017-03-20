@@ -80,4 +80,54 @@ function searchNaver(task, context, callback) {
 
 exports.searchNaver = searchNaver;
 
+function navershopping(task, context, callback) {
 
+    var query = {query: task['1']};
+    var request = require('request');
+
+    request({
+        url: 'https://openapi.naver.com/v1/search/shop.json?start=1&display=30&sort=sim',
+        method: 'GET',
+        qs: query,
+        headers: {
+            'Host': 'openapi.naver.com',
+            'Accept': '*/*',
+            'Content-Type': 'application/json',
+            'X-Naver-Client-Id': context.bot.naver.clientId,
+            'X-Naver-Client-Secret': context.bot.naver.clientSecret
+        }
+    }, function(error, response, body) {
+        if (!error && response.statusCode == 200) {
+            var doc = JSON.parse(body);
+            // var result = [];
+            // async.eachSeries(doc.items, function(doc, cb) {
+            //     var _doc = {
+            //         title: doc.title,
+            //         text : doc.lprice + ' ~ ' + doc.hprice,
+            //         imageUrl : doc.image,
+            //         buttons: [{url: doc.url, text: '상세보기'}]
+            //     };
+            //     result.push(_doc);
+            //     cb(null)
+            // }, function (err) {
+            //     task.result = {items: result};
+            //     callback(task, context);
+            // });
+            context.dialog.item = doc.items;
+            callback(task,context);
+        }
+    });
+}
+
+exports.navershopping = navershopping;
+
+function dd (task, context, callback) {
+    var result = [
+        {
+            title: context.dialog.item.title,
+            imageUrl: context.dialog.item.image, buttons: [{url: context.dialog.item.link, text: '상세보기'}]
+        }
+    ]
+    task.result = {items: result};
+    callback(task, context);
+}

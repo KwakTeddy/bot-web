@@ -6,18 +6,23 @@ var async = require('async');
 var yahooFinance = require('yahoo-finance');
 
 function currentweather(task, context, callback) {
-    task.address = context.user.address = context.dialog.address;
-    addressModule.naverGeocode(task, context, function (task, context) {
-        context.user.lat = context.dialog.lat = task.lat;
-        context.user.lng = context.dialog.lng = task.lng;
-        currentweatherapi(task,context,function (task,context) {
-            context.dialog.weather = task.weather;
-            context.dialog.temp = task.temp;
-            context.dialog.humidity = task.humidity;
-            context.dialog.wind = task.wind;
+    if(context.dialog.address) {
+        if(context.dialog.address.법정읍면동명 == undefined) {
             callback(task,context);
-        })
-    })
+        } else {
+            addressModule.naverGeocode(task, context, function (task, context) {
+                context.user.lat = context.dialog.lat = task.lat;
+                context.user.lng = context.dialog.lng = task.lng;
+                currentweatherapi(task, context, function (task, context) {
+                    context.dialog.weather = task.weather;
+                    context.dialog.temp = task.temp;
+                    callback(task, context);
+                })
+            })
+        }
+    } else {
+        callback(task,context);
+    }
 }
 
 exports.currentweather = currentweather;
@@ -27,26 +32,19 @@ function currentweatherapi(task, context, callback) {
     var lon = context.dialog.lng;
     var request = require('request');
     request({
-        url: 'http://api.openweathermap.org/data/2.5/weather?APPID=6dab1e9de4ff0c0d49641cb8d4e1a2af&lat=' + lat + '&lon=' + lon,
-        method: 'GET',
-        headers: {
-            'Host': 'api.openweathermap.org'
-        }
+        url: 'http://api.wunderground.com/api/5ad031be7c5a72bb/conditions/lang:KR/q/' + lat + ',' + lon + '.json',
+        method: 'GET'
+        // headers: {
+        //     'Host': 'api.openweathermap.org'
+        // }
     }, function (error, response, body) {
         if (error) {
             console.log(error);
         } else if(!error && response.statusCode == 200) {
             console.log(response.statusCode, body);
             var doc = JSON.parse(body);
-            task.weather = doc.weather[0].main;
-            task.temp = doc.main.temp;
-            task.humidity = doc.main.humidity;
-            task.wind = doc.wind.speed;
-            // if(error) {
-            //     console.log(error);
-            // } else {
-            //     console.log(response.statusCode, body);
-            // }
+            task.weather = doc.current_observation.weather;
+            task.temp = doc.current_observation.temp_c;
             callback(task, context);
         }
     });
@@ -56,7 +54,7 @@ function currentweatherapi(task, context, callback) {
 exports.currentweatherapi = currentweatherapi;
 
 function forecastweather(task, context, callback) {
-    task.address = context.user.address = context.dialog.address;
+    task.address = context.user.address = context.dialog.address[0];
     addressModule.naverGeocode(task, context, function (task, context) {
         context.user.lat = context.dialog.lat = task.lat;
         context.user.lng = context.dialog.lng = task.lng;
@@ -77,27 +75,60 @@ function forecastweatherapi(task, context, callback) {
     var lon = context.dialog.lng;
     var request = require('request');
     request({
-        url: 'http://api.openweathermap.org/data/2.5/forecast?APPID=6dab1e9de4ff0c0d49641cb8d4e1a2af&lat=' + lat + '&lon=' + lon,
-        method: 'GET',
-        headers: {
-            'Host': 'api.openweathermap.org'
-        }
+        url: 'http://api.wunderground.com/api/5ad031be7c5a72bb/forecast10day/lang:KR/q/' + lat + ',' + lon + '.json',
+        method: 'GET'
+        // headers: {
+        //     'Host': 'api.openweathermap.org'
+        // }
     }, function (error, response, body) {
         if (error) {
             console.log(error);
         } else if(!error && response.statusCode == 200) {
             console.log(response.statusCode, body);
             var doc = JSON.parse(body);
-            // task.weather = doc.weather[0].main;
-            // task.temp = doc.main.temp;
-            // task.humidity = doc.main.humidity;
-            // task.wind = doc.wind.speed;
-            // if(error) {
-            //     console.log(error);
-            // } else {
-            //     console.log(response.statusCode, body);
-            // }
-            callback(task, context);
+            doc = doc.forecast.simpleforecast.forecastday;
+            for (var i in doc) {
+                doc[i].month = doc[i].date.month;
+                doc[i].day = doc[i].date.day;
+                doc[i].high = doc[i].high.celsius;
+                doc[i].low = doc[i].low.celsius;
+            }
+            var today = new Date();
+            var oneDay = 24*60*60*1000;
+            var secondDate = new Date(today.getFullYear(),today.getMonth(),today.getDate());
+            var firstDate = new Date(task.date.getFullYear(),task.date.getMonth(),task.date.getDate());
+            var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
+            if (task.range == '이번주') {
+                context.dialog.range = '이번주';
+                if (today.getDay() == 0) {
+                    context.dialog.item = doc[0];
+                    callback(task, context);
+                } else {
+                    var x = 8 - today.getDay();
+                    context.dialog.item = doc.splice(0,x);
+                    callback(task, context);
+                }
+            } else if (task.range == '다음주') {
+                var x = today.getDate() - today.getDay() + 7;
+                x = x - today.getDate();
+                doc.splice(0,x);
+                context.dialog.range = '다음주';
+                context.dialog.item = doc;
+                callback(task, context);
+            } else if (task.range == '이번달') {
+                context.dialog.range = '이번달';
+                context.dialog.item = doc;
+                callback(task, context);
+            } else if (diffDays > 9) {
+                context.dialog.forecastdatecheck = 'over';
+                callback(task, context);
+            } else if (diffDays < 0) {
+                context.dialog.forecastdatecheck = 'below';
+                callback(task, context);
+            } else {
+                context.dialog.item = doc[diffDays];
+                callback(task, context);
+            }
         }
     });
 }

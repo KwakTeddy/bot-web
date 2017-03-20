@@ -54,6 +54,7 @@
     "google-auth-library": "^0.10.0",
     "googleapis": "^17.1.0",
     "helmet": "~0.9.1",
+    "html-entities": "^1.2.0",
     "http-parser-js": "~0.4.2",
     "iconv": "^2.2.1",
     "if-async": "^3.7.4",
