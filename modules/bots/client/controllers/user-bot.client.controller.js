@@ -198,7 +198,10 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
       $scope.connect = function (page) {
         modalInstance.dismiss();
         console.log(page);
-        FB.api('me/subscribed_apps?access_token='+ page, 'post', function (response) {
+        FB.api('me/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
+            console.log(response)
+        });
+        FB.api('240853479709635/subscriptions', 'post', {object: page, callback_url: '/api/facebook/'+ '123' +'/webhook'}, function (response) {
             console.log(response)
         })
       };
