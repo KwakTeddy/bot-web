@@ -35,7 +35,7 @@ module.exports = {
       tests: ['public/lib/angular-mocks/angular-mocks.js']
     },
     css: 'public/dist/application.min.css',
-    js: 'public/dist/application.min.js'
+    js: 'public/js/dummy.js'
   },
   mobile: {
     lib: {
@@ -64,6 +64,6 @@ module.exports = {
       ]
     },
     css: 'public/dist/application_mobile.min.css',
-    js: 'public/dist/application_mobile.min.js'
+    js: 'public/js/dummy.js'
   }
 };
