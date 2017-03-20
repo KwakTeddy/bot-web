@@ -65,15 +65,15 @@ function botProc(botName, channel, user, inTextRaw, outCallback, chatServerConfi
       }
 
       var pre = (context.botUser.curBotId && context.botUser.curBotName && context.botUser.curBotId != botName ?
-        context.botUser.curBotName + ': ' : '');
+        context.botUser.curBotName + ': ' : undefined);
 
       if(channel == 'ios' || channel == 'android') {
         outCallback(_out, _task);
       } else {
-        if(_out.indexOf('|') == -1) outCallback(pre + _out, _task);
+        if(_out.indexOf('|') == -1) outCallback(pre == undefined ? _out : pre + '"' + _out + '"', _task);
         else {
           var arr = _out.split('|');
-          outCallback(pre + arr[0], _task);
+          outCallback(pre == undefined ? arr[0] : pre + '"' + arr[0] + '"', _task);
         }
       }
     // });
