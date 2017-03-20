@@ -10,18 +10,14 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
     vm.userBot.public = true;
     vm.userId = $rootScope.userId;
 
-    vm.isLearnable = (vm.userBot.learn || vm.user === vm.userBot.user);
+    vm.isMine = (vm.userBot.user != null && (vm.user.username === vm.userBot.user.username));
+    vm.isLearnable = (vm.userBot.learn || vm.isMine);
 
     vm.userBot.userFollow = UserBotsFollowService.list({userBot: vm.userBot, botUserId: vm.user._id}, function(res) {
       if(res.length > 0) vm.userBot.userFollow = true;
       else vm.userBot.userFollow = undefined;
       // console.log(res);
     });
-
-    $scope.$watch(vm.userBot.learning, function () {
-       console.log('chagadfchange')
-    });
-
     // UserBotsFollowService.get()
     // if(vm.userBot && vm.userBot._id)
     //   $rootScope.$broadcast('setUserBot', vm.userBot);
@@ -56,7 +52,6 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
     };
 
     vm.fbShare = function () {
-      console.log(vm.userBot);
       $scope.location = location.href;
       FB.ui({
           method: 'share',
@@ -64,11 +59,25 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
           href: $scope.location,
           title: vm.userBot.name,
           description: vm.userBot.description,
-          image: location.protocol+'//'+location.hostname+'/'+vm.userBot.imageFile,
           picture: location.protocol+'//'+location.hostname+'/'+ vm.userBot.imageFile,
       }, function(response){
         console.log(response);
       });
+    };
+
+    vm.kakaoShare = function () {
+      $scope.location = location.href;
+      console.log(vm.userBot.description);
+        Kakao.Story.share({
+          url: $scope.location,
+          text: vm.userBot.name+'-'+ vm.userBot.description
+        });
+    };
+
+    vm.twitterShare = function () {
+      console.log(123123);
+      $scope.location = location.href;
+      window.open('https://twitter.com/intent/tweet?text='+ vm.userBot.name+'-'+ vm.userBot.description + '&url=' + $scope.location, 'popup', 'width=600, height=400')
     };
 
     // Create new UserBot
@@ -79,17 +88,31 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
         $scope.$broadcast('show-errors-check-validity', 'userBotForm');
         return false;
       }
+      vm.learning = true;
       if(!vm.userBot.imageFile){
         vm.userBot.imageFile = "/files/default.png"
       }
+      vm.type = 'connect';
       vm.userBot.$save(function (response) {
+        vm.learning = false;
+        $scope.close = function () {
+          modalInstance.dismiss();
+        };
+        var modalInstance = $uibModal.open({
+            templateUrl: 'modules/bots/client/views/modal-user-bots.client.learning.html',
+            scope: $scope
+        });
+        modalInstance.result.then(function (response) {
+            console.log(response);
+        });
+
         if($state.is('user-bots-web.create') || $state.is('user-bots-web.edit')) {
           $rootScope.$broadcast('setUserBot', vm.userBot);
 
-          vm.type = 'connect';
+          // vm.type = 'connect';
           // $state.go('user-bots-web.list', {'#': 'myBots'});
         } else {
-          vm.type = 'conenct';
+          // vm.type = 'conenct';
           // $state.go('user-bots.list');
         }
         // $location.path('userBots/' + response._id);

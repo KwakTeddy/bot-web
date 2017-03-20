@@ -9,7 +9,7 @@ angular.module('users').controller('PasswordController', ['$scope', '$stateParam
     var stingParser = $state.current.name;
     var parsedString = stingParser.split('.');
     if (parsedString[0] == 'user-bots-web') {
-        $scope.transition = 'user-bots-home';
+        $scope.transition = 'home';
         $scope.passwordForgot = 'user-bots-web.password.forgot';
 
     } else {
@@ -18,11 +18,7 @@ angular.module('users').controller('PasswordController', ['$scope', '$stateParam
 
     // If user is signed in then redirect back home
     if ($scope.authentication.user) {
-        if (parsedString[0] == 'user-bots-web') {
-            $state.go('user-bots-home');
-        } else {
-            $state.go('home')
-        }
+            $state.go('home');
     }
 
 

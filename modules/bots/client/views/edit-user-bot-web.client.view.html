@@ -34,23 +34,25 @@
                             </div>
                             <div  style="clear: both;border-top: 1px solid lightgray; margin-top: 15px;padding-top: 5px;">
                                 <div style="color: #555;font-weight: bold;display: inline-block;">공유하기</div>
-                              <a href="javascript:shareFb()" ng-click="vm.fbShare()">
+                              <a href="#" ng-click="vm.fbShare()">
                                 <img src="/images/sns/social-facebook-icon.png" height="35" style="border-radius: 8px;"/>
                               </a>
-                              <a href="javascript:shareStory()">
+                              <a href="#"ng-click="vm.kakaoShare()">
                                 <img src="/images/sns/kakaostory-icon.png" height="35" style="border-radius: 8px;"/>
                               </a>
                               <a class="twitter-share-button"
                                  data-size="large"
-                                 onclick="javascript:window.open('https://twitter.com/intent/tweet?text=Hello%20world', 'popup', 'width=600, height=400')">
+                                 ng-click="vm.twitterShare()">
                                 <img src="/images/sns/social-twitter-icon.png" height="35"/>
                               </a>
                               <!--<div class="line-it-button" style="display: none;" data-type="share-c" data-lang="en"></div>-->
                             </div>
                             <div style="border-top: 1px solid lightgray; margin-top: 5px;padding-top: 5px;text-align: right;">
-                                <a class="btn btn-default" ng-show="!vm.userBot.userFollow" ng-click="vm.followBot(vm.userBot);"
+                                <a class="btn btn-primary" ng-show="vm.isMine" ui-sref="user-bots-web.edit({userBotId: vm.userBot._id})"
+                                   style="padding: 10px 20px 10px 20px;">수정하기</a>
+                                <a class="btn btn-default" ng-show="!vm.userBot.userFollow && vm.authentication.user" ng-click="vm.followBot(vm.userBot);"
                                    style="padding: 10px 20px 10px 20px;">친구추가</a>
-                                <a class="btn btn-default" ng-show="vm.userBot.userFollow" ng-click="vm.unfollowBot(vm.userBot);"
+                                <a class="btn btn-default" ng-show="vm.userBot.userFollow && vm.authentication.user" ng-click="vm.unfollowBot(vm.userBot);"
                                    style="padding: 10px 20px 10px 20px;">친구해제</a>
                                 <!--<a class="btn btn-default" ng-click="">대화 가르치기</a>-->
                                 <a class="btn btn-primary" ng-click="vm.userBotChat(vm.userBot);"
@@ -77,7 +79,7 @@
                                     <span style="color: #888;font-size: 12px; ">{{comment.user.created | date: 'medium'}}</span>
                                 </div>
                                 <div style="color: #555;font-size: 14px;float:left;margin-right: 10px">{{comment.text}} </div>
-                                <button class="btn btn-default btn-xs " ng-click="vm.removeComment(comment);">삭제</button>
+                                <button class="btn btn-default btn-xs " ng-show="comment.user.username == vm.user.username" ng-click="vm.removeComment(comment);">삭제</button>
                             </li>
                         </ul>
                     </div>
@@ -380,16 +382,16 @@
                             </ul>
                         </div>
 
-                        <div class="form-group">
-                            <div class="col-sm-6" style="text-align: left; padding-left: 20px;">
-                                챗봇이 만들기를 완료 했습니다.<br/>
-                                지금 바로 대화를 시작하세요~
+                        <div ng-show="vm.learning">
+                            <div class="col-sm-12" style="text-align: center; padding-left: 20px;">
+                              <h3>챗봇이 학습 중이에요 <br><br>
+                                조금만 기다려요</h3>
                             </div>
-                            <div class="col-sm-6" style="text-align: left; padding-left: 20px;">
-                                <button type="button" class="btn btn-primary"
-                                        style="width: 130px;height: 50px; font-size: 18px;"
-                                        ng-click="vm.userBotChat(vm.userBot)">대화하기</button>
-                            </div>
+                            <!--<div class="col-sm-6" style="text-align: left; padding-left: 20px;">-->
+                                <!--<button type="button" class="btn btn-primary"-->
+                                        <!--style="width: 130px;height: 50px; font-size: 18px;"-->
+                                        <!--ng-click="vm.userBotChat(vm.userBot)">대화하기</button>-->
+                            <!--</div>-->
                         </div>
 
                         <div style="clear: both; margin-bottom: 20px;">

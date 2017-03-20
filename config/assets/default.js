@@ -28,7 +28,6 @@ module.exports = {
         'public/lib/angular-dropzone/lib/angular-dropzone.js',
         'public/lib/ngInfiniteScroll/build/ng-infinite-scroll.js',
         'public/lib/angular-dropzone/lib/angular-dropzone.js',
-        'public/lib/bowser/src/bowser.js',
         'public/lib/d3/d3.min.js',
         'public/lib/d3-tip/index.js'
       ],

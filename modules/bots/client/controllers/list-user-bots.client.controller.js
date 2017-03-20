@@ -10,37 +10,37 @@ angular.module('user-bots').controller('UserBotListController', ['$scope', '$roo
     var vm = this;
     vm.authentication = Authentication;
     vm.userBots = userBots;
-    // console.log(userBots);
-    // console.log(vm.userBots.length);
 
-    if(_platform == 'mobile') {
-      if($stateParams['listType'] == 'popular') vm.listTypeName = '최신봇';
-      else if($stateParams['listType'] == 'followed') vm.listTypeName = '친구봇';
-      else if($stateParams['listType'] == 'my') vm.listTypeName = '마이봇';
-      else vm.listTypeName = '인기봇';
-    }
+      if(_platform == 'mobile') {
+          if($stateParams['listType'] == 'recent') vm.listTypeName = '최신봇';
+          else if($stateParams['listType'] == 'followed') vm.listTypeName = '친구봇';
+          else if($stateParams['listType'] == 'my') vm.listTypeName = '마이봇';
+          else vm.listTypeName = '인기봇';
+      }
 
     vm.listType = $stateParams['listType'];
     // if(vm.listType == undefined) vm.listType = 'recent';
     vm.currentPage = 1;
-    vm.perPage = 6;
+    vm.perPage = 10;
     vm.paging = function (find) {
       if(find){
         vm.userBots = [];
         vm.currentPage = 0;
         console.log('find');
       }
+      vm.currentPageCopy = angular.copy(vm.currentPage);
+      vm.currentPage = vm.currentPage + 1;
       var url = '';
       if(vm.listType == 'followed') {
         url = '/api/user-bots/follow';
       }else {
         url = '/api/user-bots/list';
       }
-      $http.post(url, {currentPage : vm.currentPage, perPage : vm.perPage, listType : vm.listType, botUserId : vm.authentication.user._id, query : vm.query}).success(function (response) {
-          vm.currentPage = vm.currentPage + 1;
+      $http.post(url, {currentPage : vm.currentPageCopy, perPage : vm.perPage, listType : vm.listType, botUserId : vm.authentication.user._id, query : vm.query}).success(function (response) {
           if(!response.length) {
               vm.pagingEnd = true;
           } else {
+            console.log(response);
             vm.userBots.push.apply(vm.userBots, response);
           }
       }).error(function (reponse) {

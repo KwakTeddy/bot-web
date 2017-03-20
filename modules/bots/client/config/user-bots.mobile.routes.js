@@ -11,10 +11,24 @@
     $stateProvider
       .state('user-bots', {
         abstract: true,
-        url: '/'
+        url: ''
+      })
+      .state('homeMobile', {
+        url: '/',
+          views: {
+              'menuContent@': {
+                  templateUrl: 'modules/bots/client/views/list-user-bots.mobile.view.html',
+                  controllerAs: 'vm',
+                  controller: 'UserBotListController',
+                  resolve: {
+                      userBotsResolve: getUserBots
+                  }
+              }
+          }
       })
       .state('user-bots.list', {
-        url: '?listType&botUserId',
+        // url: '?listType&botUserId',
+        url: '/list?listType&query',
         views: {
           'menuContent@': {
             templateUrl: 'modules/bots/client/views/list-user-bots.mobile.view.html',
@@ -42,8 +56,8 @@
   }
 })();
 
-getUserBots.$inject = ['UserBotsService', 'UserBotsFollowService', '$stateParams'];
-function getUserBots(UserBotsService, UserBotsFollowService, $stateParams) {
+getUserBots.$inject = ['UserBotsService', 'UserBotsFollowService', '$stateParams', '$location'];
+function getUserBots(UserBotsService, UserBotsFollowService, $stateParams, $location) {
   if($stateParams['listType']) {
     if($stateParams['listType'] == 'popular') return UserBotsService.query({sort: '-followed'}).$promise;
     else if($stateParams['listType'] == 'followed') return UserBotsFollowService.list({botUserId: $stateParams['botUserId']}).$promise;
