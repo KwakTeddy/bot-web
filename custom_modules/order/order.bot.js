@@ -3,6 +3,7 @@ var path = require('path');
 var orderBot = {
   use: true,
   testMode: true,
+  name: '배달봇얌얌',
   serviceName: '얌얌',
   serviceNick: '인공지능 배달봇',
 

@@ -107,17 +107,23 @@ function changeBot(task, context, callback) {
 
     var startDialog= dialog.findDialog(null, context, dialog.START_DIALOG_NAME);
 
-    if(!startDialog)
-      task.output = '안녕하세요.' + (context.bot.name || botName) + '입니다.';
-    else
+    if(!startDialog) {
+      task.output = '안녕하세요.' + context.bot.name + '입니다.';
+    } else if (typeof startDialog.output != 'string'){
+      task.output = '안녕하세요.' + context.bot.name + '입니다.';
+    } else {
       task.output = startDialog.output;
+    }
 
     UserBot.findOne({id: botName}).lean().exec(function (err, userBot) {
       if (err) {
         console.log(err)
       } else if (userBot) {
+        task.outputtext = task.output;
         var json = {text: task.output, bot: userBot};
         task.output = JSON.stringify(json);
+      } else {
+        task.outputtext = task.output;
       }
 
       callback(task, context);

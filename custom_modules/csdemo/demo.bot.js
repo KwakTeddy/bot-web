@@ -4,6 +4,7 @@ var botlib = require(path.resolve('config/lib/bot'));
 var csdemoBot = {
   use: true,
 
+  nmae: '고객센터봇',
   serviceName: 'CS Demo',
   serviceNick: 'CS Demo',
 

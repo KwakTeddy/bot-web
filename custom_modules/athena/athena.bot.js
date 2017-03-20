@@ -4,6 +4,7 @@ var botlib = require(path.resolve('config/lib/bot'));
 var athena = {
   use: true,
 
+  name: '아테나',
   serviceName: '아테나',
   serviceNick: '인공지능',
 

@@ -4,6 +4,7 @@ var botlib = require(path.resolve('config/lib/bot'));
 var lgdemoBot = {
   use: true,
 
+  name: 'LG 고객센터',
   serviceName: 'LG Demo',
   serviceNick: 'LG Demo',
 
