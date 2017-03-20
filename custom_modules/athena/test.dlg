@@ -191,7 +191,7 @@ navertask.newscrawl
 
 시작:
 c< {regexp: first}
-> 안녕하세요 PlayChat입니다.
+> 안녕하세요 아테나입니다.
 
 c<{regexp: up}
 >{up:1}
