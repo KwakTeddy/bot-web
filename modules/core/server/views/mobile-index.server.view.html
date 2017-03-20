@@ -110,8 +110,8 @@
 
 <!--Application JavaScript Files-->
 {% for jsFile in mobileJsFiles %}<script type="text/javascript" src="{{jsFile}}"></script>{% endfor %}
-{% if env == 'production' %}
-<script type="text/javascript" src="dist/application.mobile.min.js?rel=ede1c2f011"></script>
+{% if env_type == 'production' %}
+<script type="text/javascript" src="dist/application.mobile.min.js?rel={{app_version}}"></script>
 {% endif %}
 
 
