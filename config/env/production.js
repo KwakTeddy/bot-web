@@ -80,13 +80,24 @@ module.exports = {
   mailer: {
       from: process.env.MAILER_FROM || 'PlayChat',
       options: {
-          service: process.env.MAILER_SERVICE_PROVIDER || 'GMAIL',
+          host: 'smtp.cafe24.com',
+          port: 587,
           auth: {
-              user: process.env.MAILER_EMAIL_ID || 'testmailreal@gmail.com',
-              pass: process.env.MAILER_PASSWORD || 'qkrwnsgk!90'
+              user: process.env.MAILER_EMAIL_ID || 'info@moneybrain.ai',
+              pass: process.env.MAILER_PASSWORD || 'Make01mb!'
           }
       }
   },
+  // mailer: {
+  //     from: process.env.MAILER_FROM || 'PlayChat',
+  //     options: {
+  //         service: process.env.MAILER_SERVICE_PROVIDER || 'GMAIL',
+  //         auth: {
+  //             user: process.env.MAILER_EMAIL_ID || 'testmailreal@gmail.com',
+  //             pass: process.env.MAILER_PASSWORD || 'qkrwnsgk!90'
+  //         }
+  //     }
+  // },
   seedDB: {
     seed: process.env.MONGO_SEED === 'true' ? true : false,
     options: {

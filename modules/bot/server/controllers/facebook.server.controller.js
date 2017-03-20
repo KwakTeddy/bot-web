@@ -31,6 +31,8 @@ exports.messageGet =  function(req, res) {
 
 
 exports.message = function (req, res) {
+  console.log(util.inspect(res.body));
+  console.log(res.params.bot);
   var data = req.body;
   // Make sure this is a page subscription
   if (data.object == 'page') {
