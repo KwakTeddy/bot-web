@@ -2,13 +2,16 @@
 <html>
 <head>
     <title>플레이챗 PlayChat - 1분만에 만드는 인공지능 챗봇 머니브레인 MoneyBrain Inc</title>
-     <base href="/">
+    <base href="/">
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
 
     <meta name="keywords" content="챗봇 Chatbot 봇 Bot 인공지능 AI 딥러닝 Deep Learning"/>
     <meta name="description" content="카카오톡 KakaoTalk 페이스북 Facebook 라인 Line Messenger NLP 자연어처리 NLU 자연어 이해 대화관리 Dialog Management 딥러닝 Deep Learning 인텐트 Intent 엔터티 Entity">
     <meta name="author" content="머니브레인 MoneyBrain">
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
 
     <meta property="og:type" content="website">
     <meta property="og:title"         content="플레이챗 PlayChat" />
@@ -102,9 +105,16 @@
   //    }
   //  });
 
+  window.addEventListener('load', function() {
+      document.body.style.height = (document.documentElement.clientHeight + 5) + 'px';
+      setTimeout(scrollTo, 0, 0, 1);
+  }, false);
+
   //]]>
+
 </script>
 <script src="https://d.line-scdn.net/r/web/social-plugin/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
+
 
 </body>
 </html>
