@@ -210,7 +210,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       $rootScope.userBot = vm.userBot;
 
       var header = document.getElementById("chat-header");
-      if(header) header.innerText = vm.bot;
+      if(header) header.innerText = userBot.name;
     };
 
     vm.connectUserBot = function(botId) {
