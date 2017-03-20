@@ -54,12 +54,12 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
       }).error(function (response) {
         console.log(response);
-        if(response.message.match('E-mail')){
+        if(response.message.match('가입되어 있는 E-mail이네요')){
             $scope.error.email = response.message;
         } else if(response.message.match('SNS')) {
             $scope.error.email = response.message;
         } else if(response.message.match('Failure sending email')) {
-          $scope.error.email = 'E-mail 보내기에 실패했어요. 관리자에게 문의해주세요.'
+          $scope.error.email = '회원가입은 되었지만 E-mail 인증 메일 보내기에 실패했어요. 관리자에게 문의해주세요.'
         }
       });
     };
@@ -97,7 +97,38 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         // And redirect to the previous or home page
         $state.go($state.previous.state.name || 'home', $state.previous.params);
       }).error(function (response) {
+        console.log(response);
         $scope.error = response.message;
+        if (response.message.match('E-mail 확인절차')){
+          var modalInstance = $uibModal.open({
+              templateUrl: 'modules/users/client/views/authentication/email.confirm.modal.html',
+              scope: $scope
+          });
+          modalInstance.result.then(function (response) {
+              console.log(response);
+          });
+          $scope.close = function () {
+              modalInstance.dismiss();
+              $state.go('home');
+          };
+          $scope.resend = function () {
+              modalInstance.dismiss();
+              var modalInstanceSecond = $uibModal.open({
+                  templateUrl: 'modules/users/client/views/authentication/email.confirm.resend.modal.html',
+                  scope: $scope
+              });
+              $http.post('/api/auth/signin', {resendEmail: $scope.credentials.email}).success(function (response) {
+                  console.log(response);
+                  modalInstanceSecond.result.then(function (response) {
+                      console.log(response);
+                  });
+                  $state.go('home');
+
+              }).error(function (response) {
+                  console.log(response)
+              })
+          };
+        }
       });
     };
 

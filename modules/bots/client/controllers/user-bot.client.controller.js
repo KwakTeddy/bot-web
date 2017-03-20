@@ -18,8 +18,6 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
       else vm.userBot.userFollow = undefined;
       // console.log(res);
     });
-    console.log(vm.user);
-
     // UserBotsFollowService.get()
     // if(vm.userBot && vm.userBot._id)
     //   $rootScope.$broadcast('setUserBot', vm.userBot);
@@ -83,10 +81,20 @@ angular.module('user-bots').controller('UserBotController', ['$scope', '$rootSco
 
     // Create new UserBot
     vm.create = function (isValid) {
-      $scope.error = null;
+      // $scope.error = null;
       $scope.submitted = true;
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'userBotForm');
+        return false;
+      }
+      if ($scope.error.file || $scope.error.image){
+        var modalInstance = $uibModal.open({
+            templateUrl: 'modules/bots/client/views/modal-user-bots.client.error.html',
+            scope: $scope
+        });
+        modalInstance.result.then(function (response) {
+            console.log(response);
+        });
         return false;
       }
       vm.learning = true;

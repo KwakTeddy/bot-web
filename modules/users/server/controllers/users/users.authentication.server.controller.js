@@ -68,6 +68,8 @@ exports.signup = function (req, res) {
                             // Then save the user
                             user.save(function (err) {
                                 if (err) {
+                                    console.log(err);
+                                    console.log(123123123132132321);
                                     return res.status(400).send({
                                         message: errorHandler.getErrorMessage(err)
                                     });
@@ -163,23 +165,89 @@ exports.signup = function (req, res) {
  * Signin after passport authentication
  */
 exports.signin = function (req, res, next) {
-  passport.authenticate('local', function (err, user, info) {
-    if (err || !user) {
-      res.status(400).send(info);
-    } else {
-      // Remove sensitive data before login
-      user.password = undefined;
-      user.salt = undefined;
+    if (req.body.resendEmail){
+        User.findOne({email: req.body.resendEmail}, function (err, user) {
+            if(err){
+                console.log(err);
+                return err;
+            }
+            async.waterfall([
+                // Generate random token
+                function (done) {
+                    crypto.randomBytes(20, function (err, buffer) {
+                        var token = buffer.toString('hex');
+                        user.localEmailConfirmToken = token;
+                        user.localEmailConfirmExpires = Date.now() + 3600000; // 1 hour
+                            // Then save the user
+                            user.save(function (err) {
+                                if (err) {
+                                    return res.status(400).send({
+                                        message: errorHandler.getErrorMessage(err)
+                                    });
+                                } else {
+                                    // Remove sensitive data before login
+                                    user.password = undefined;
+                                    user.salt = undefined;
+                                    done(err, token, user);
+                                }
+                            });
+                    });
+                },
+                function (token, user, done) {
 
-      req.login(user, function (err) {
-        if (err) {
-          res.status(400).send(err);
-        } else {
-          res.json(user);
-        }
-      });
+                    var httpTransport = 'http://';
+                    if (config.secure && config.secure.ssl === true) {
+                        httpTransport = 'https://';
+                    }
+                    res.render(path.resolve('modules/users/server/templates/email-confirm'), {
+                        name: user.displayName,
+                        appName: 'Play Chat',
+                        url: httpTransport + req.headers.host + '/api/auth/emailconfirm/' + token
+                    }, function (err, emailHTML) {
+                        done(err, emailHTML, user);
+                    });
+                },
+                // If valid email, send reset email using service
+                function (emailHTML, user, done) {
+                    var mailOptions = {
+                        to: user.email,
+                        from: config.mailer.from,
+                        subject: 'Confirm Email',
+                        html: emailHTML
+                    };
+                    smtpTransport.sendMail(mailOptions, function (err) {
+                        if (!err) {
+                            return res.send({
+                                message: 'An email has been sent to the provided email with further instructions.'
+                            });
+                        } else {
+                            return res.status(400).send({
+                                message: 'Failure sending email'
+                            });
+                        }
+                    });
+                }
+            ]);
+        })
+    } else {
+        passport.authenticate('local', function (err, user, info) {
+            if (err || !user) {
+                res.status(400).send(info);
+            } else {
+                // Remove sensitive data before login
+                user.password = undefined;
+                user.salt = undefined;
+
+                req.login(user, function (err) {
+                    if (err) {
+                        res.status(400).send(err);
+                    } else {
+                        res.json(user);
+                    }
+                });
+            }
+        })(req, res, next);
     }
-  })(req, res, next);
 };
 
 /**
@@ -196,15 +264,12 @@ exports.signout = function (req, res) {
  * OAuth provider call
  */
 exports.oauthCall = function (strategy, scope) {
-    console.log('oauthCall first');
   return function (req, res, next) {
     // Set redirection path on session.
     // Do not redirect to a signin or signup page
     if (noReturnUrls.indexOf(req.query.redirect_to) === -1) {
-        console.log('maybe' + req.query.redirect_to);
       req.session.redirect_to = req.query.redirect_to;
     }
-    console.log('oauthCall');
     // Authenticate
     passport.authenticate(strategy, scope)(req, res, next);
   };
