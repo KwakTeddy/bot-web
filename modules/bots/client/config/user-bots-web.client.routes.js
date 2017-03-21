@@ -151,7 +151,6 @@ angular.module('user-bots').config(['$stateProvider',
 
 getUserBotsWeb.$inject = ['UserBotsService', 'UserBotsFollowService', '$stateParams', '$rootScope', 'Authentication'];
 function getUserBotsWeb(UserBotsService, UserBotsFollowService, $stateParams, $rootScope, Authentication) {
-    console.log(Authentication)
   if($stateParams['query']) {
     return UserBotsService.query({query: $stateParams['query']}).$promise;
   } else if($stateParams['listType']) {
