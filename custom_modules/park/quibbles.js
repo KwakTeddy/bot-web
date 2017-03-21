@@ -642,6 +642,8 @@ var nounQuibbles = [
     "지금 저랑 싸우자는 거에요?"]},
 ];
 
+exports.nounQuibbles = nounQuibbles;
+
 var verbQuibbles = [{ condition: {word: '되다', tenseType:2, questionWord: '언제'}, sentences: [
   "그게 언제라는 것이.. 또.. 기억과 .. 잘 나지 않을 수도 있다.. 하지만 날수도 있다.. 생각합니다..",
   "좀 오래돼서 이렇게.. 막상.. 시간이 좀 지나갔다.. 생각합니다.",
@@ -650,8 +652,8 @@ var verbQuibbles = [{ condition: {word: '되다', tenseType:2, questionWord: '�
   "한참돼었다는.. 그 또.. 오래돼었다는 것이..  생각할 시간도 없다.. 라고 생각합니다..",
   "바로 앞서 말한 오래된 것임에 틀림이 없다.. 라는것을 말할수 있다.. 라고.. 그.. 판단되는 바입니다.",
 ]},
-  { condition: {word: '되다', tenseType:2, questionWord: '어떻게'}, sentences: [
-    "힘들고.. 그런.. 피눈물이.. 나는 시간이었다.. 라고 생각합니다..",
+    { condition: {word: '되다', tenseType:2, questionWord: '어떻게'}, sentences: [
+      "힘들고.. 그런.. 피눈물이.. 나는 시간이었다.. 라고 생각합니다..",
     "그것은.. 아무래도.. 어떻게.. 된지 잘 모를수도 있다.. 라고 생각합니다..",
     "그런 부분에 있어서.. 오래걸리고.. 또.. 잘 성명을 해주려면.. 어려워지는 경우가 있고.. 그렇지 않습니까?",
     "그것은.. 여야가 잘 합의해서.. 문의하고.. 하면 된다 생각합니다..",
@@ -1295,6 +1297,8 @@ var verbQuibbles = [{ condition: {word: '되다', tenseType:2, questionWord: '�
   ]},
 ];
 
+exports.verbQuibbles = verbQuibbles;
+
 var sentenceQuibbles = [
   { condition: {sentenceType: 1},
     sentences: [
@@ -1521,6 +1525,8 @@ var sentenceQuibbles = [
   }
 ];
 
+exports.sentenceQuibbles = sentenceQuibbles;
+
 var slangQuibbles=
 { condition: {words: ['개새끼', '시발', '씨발', '개놈', '쌍', '쌍년', '씨발년', '좇', '졸라', '존나', '좆', '멍 청', '멍충', '바보', '병신']},
   sentences: [
@@ -1562,29 +1568,4 @@ var slangQuibbles=
     '지금 제게 임신공격 하셨나요?'
 ]};
 
-var quibbles = [
- "??  무슨…말인지… ???",
- "?? 제가 이해하기에는 너무 어려운 말이군요..",
- "음… 조금더 쉽게 이야기 해줄수 있을까요?",
- "몰르겠습니다. 다른 주제로.. 음.. 대화하는게 어떨까요.",
- "저는 이 주제에 대해서는 말할 수가 .. 없..습니다.",
- "초등학생 처럼 이런걸 가지고 따지는건 아니라고 생각합니다.",
- "글쎄요.. 이건 너무 힘든…이야기네요.",
- "….음… 이건 순실이 한테 물어봐야 할거 같은데요.",
- "이건 제 변호인한테 물어보고 대답해야할듯 합니다.",
- "내가 아는 걸 물어보면 좋을듯 한데요.",
- "대답을…해주고 싶은데… 최순실이 지금 연락이 안되는 상태라서..",
- "흐흐 좀 쉽게 이야기 해줘",
- "대본에 없는 질문이라서 막막하네..",
- "나는 이 질문에 대답할 의무가 없..어요.",
- "내가 대답을 해줘야..하는 질문인가요?",
- "이 질문은.. 민감한 사항이라서 관련자와 이야기를 좀 해보고 답해줄께요.",
- "이건 검찰에서 이야기 할꺼에요.",
- "나는 이 질문에 대한 지식이 부족합니다.",
-];
-
-exports.nounQuibbles = nounQuibbles;
-exports.verbQuibbles = verbQuibbles;
-exports.sentenceQuibbles = sentenceQuibbles;
 exports.slangQuibbles = slangQuibbles;
-exports.quibbles = quibbles;

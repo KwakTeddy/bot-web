@@ -780,10 +780,12 @@ function analyzeSentence(text, result1, result2) {
     }
   }
 
+  if(sentenceType == undefined) sentenceType = 0;
+
   var info = {sentenceType: sentenceType, toneType: toneType, questionWord: questionWord, verbType: verbType, tenseType: tenseType, aspectType: aspectType,
     verbPos: verbPos, verbEomi: verbEomi, verbToken: verbToken};
 
-  console.log(JSON.stringify(info));
+  console.log('analyzeSentence: ' + JSON.stringify(info));
 
   return info;
 }

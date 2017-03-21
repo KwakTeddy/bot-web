@@ -60,11 +60,11 @@ function quibbleProcess(quibbleScope, context) {
     for(var i = 0; i < nlp.length; i++) {
       if(text) break;
       var token = nlp[i];
-      if(token.pos == 'Verb') {
+      if(token.pos == 'Verb' || token.pos == 'Adjective') {
         for(var j = 0; j < quibbleScope.verbQuibbles.length; j++) {
           var q = quibbleScope.verbQuibbles[j];
           if(q.condition.word == token.text) {
-            if(q.condition.questionWord) {
+            if(q.condition.questionWord && q.condition.questionWord != 'yesno') {
               for(var k = 0; k < nlp.length; k++) {
                 if(text) break;
                 var token1 = nlp[k];
