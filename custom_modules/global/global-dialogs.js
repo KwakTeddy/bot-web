@@ -240,6 +240,7 @@ var globalStartDialogs = [
   //   input: {types: [{typeCheck: factsTypeCheck}]},
   //   output: '+_output+'
   // },
+
   {
     input: {types: [userDialogType]},
     task: {
