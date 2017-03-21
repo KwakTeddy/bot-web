@@ -122,16 +122,20 @@ function matchGlobalDialogs(inRaw, inNLP, dialogs, context, print, callback, wor
 
           if(context.bot.useQuibble !=  false) {
             context.dialog.isFail = true;
-            print(quibble.quibble(context));
+            // print(quibble.quibble(context));
+            var dialog = {id: -1, name: 'quibble', input: 'false', output: quibble.quibble(context)};
+            executeDialog(dialog, context, print, callback);
           } else if(context.bot.noDialog) {
-            executeDialog(context.bot.noDialog, context, print, callback);
             context.dialog.isFail = true;
+            executeDialog(context.bot.noDialog, context, print, callback);
           } else {
             context.dialog.isFail = true;
-            print('학습되어 있지 않은 대화 입니다.');
             console.error('NO_DIALOG(답변없음)가 없습니다. 아래와 같이 설정바랍니다.\n답변없음:c<> 알아듣지 못하는 말입니다.');
+            // print('학습되어 있지 않은 대화 입니다.');
+            // callback(true, context.bot.noDialog);
+            var dialog = {id: -1, name: 'no_dialog', input: 'false', output: '학습되어 있지 않은 대화 입니다.'};
+            executeDialog(dialog, context, print, callback);
           }
-          callback(true, context.bot.noDialog);
         }
       });
     }
@@ -223,16 +227,20 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback, opti
             } else {
               if(context.bot.useQuibble !=  false) {
                 context.dialog.isFail = true;
-                print(quibble.quibble(context));
+                // print(quibble.quibble(context));
+                var dialog = {id: -1, name: 'quibble', input: 'false', output: quibble.quibble(context)};
+                executeDialog(dialog, context, print, callback);
               } else if(context.bot.noDialog) {
-                executeDialog(context.bot.noDialog, context, print, callback);
                 context.dialog.isFail = true;
+                executeDialog(context.bot.noDialog, context, print, callback);
               } else {
                 console.error('NO_DIALOG(답변없음)가 없습니다. 아래와 같이 설정바랍니다.\n답변없음:c<> 알아듣지 못하는 말입니다.');
                 context.dialog.isFail = true;
-                print('학습되어 있지 않은 대화 입니다.');
+                // print('학습되어 있지 않은 대화 입니다.');
+                var dialog = {id: -1, name: 'no_dialog', input: 'false', output: '학습되어 있지 않은 대화 입니다.'};
+                executeDialog(dialog, context, print, callback);
               }
-              callback(true, context.bot.noDialog);
+              // callback(true, context.bot.noDialog);
             }
           }, options);
         }
