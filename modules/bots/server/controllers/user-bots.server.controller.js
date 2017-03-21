@@ -268,7 +268,13 @@ exports.followBot = function(req, res) {
                     message: errorHandler.getErrorMessage(err)
                 });
             } else {
-                res.json(userBotFollow);
+                UserBot.findOne({_id: req.body.userBot}).exec(function (err, result) {
+                    result.followed++;
+                    result.save(function (err) {
+                        console.log(err)
+                        res.json(userBotFollow);
+                    })
+                });
             }
         });
       }else {
@@ -280,29 +286,36 @@ exports.followBot = function(req, res) {
                     message: errorHandler.getErrorMessage(err)
                 });
             }
+            UserBot.findOne({_id: req.body.userBot}).exec(function (err, result) {
+                result.followed++;
+                result.save(function (err) {
+                    console.log(err)
+                    res.json(userBotFollow);
+                })
+            });
         });
       }
-      UserBot.findOne({_id: req.body.userBot}).exec(function (err, result) {
-          if (err){
-              console.log(err);
-          }else {
-              UserBotFollow.count({userBot : req.body.userBot, followed: true}).exec(function (err, followNum) {
-                  console.log(followNum);
-                  if (err){
-                      console.log(err);
-                  }else {
-                      result.followed = followNum;
-                      result.save(function (err) {
-                          if (err){
-                              console.log(err);
-                          }else {
-                            return res.end();
-                          }
-                      });
-                  }
-              })
-          }
-      });
+      // UserBot.findOne({_id: req.body.userBot}).exec(function (err, result) {
+      //     if (err){
+      //         console.log(err);
+      //     }else {
+      //         UserBotFollow.count({userBot : req.body.userBot, followed: true}).exec(function (err, followNum) {
+      //             console.log(followNum);
+      //             if (err){
+      //                 console.log(err);
+      //             }else {
+      //                 result.followed = followNum;
+      //                 result.save(function (err) {
+      //                     if (err){
+      //                         console.log(err);
+      //                     }else {
+      //                       return res.end();
+      //                     }
+      //                 });
+      //             }
+      //         })
+      //     }
+      // });
     }
   });
 };
@@ -323,7 +336,13 @@ exports.unfollowBot = function(req, res) {
                     message: errorHandler.getErrorMessage(err)
                 });
             } else {
-                res.json(userBotFollow);
+                UserBot.findOne({_id: req.query.userBot}).exec(function (err, result) {
+                    result.followed--;
+                    result.save(function (err) {
+                        console.log(err);
+                        res.json(userBotFollow);
+                    })
+                });
             }
         });
       }else {
@@ -335,31 +354,37 @@ exports.unfollowBot = function(req, res) {
                 message: errorHandler.getErrorMessage(err)
             });
           }else {
-            res.end();
+              UserBot.findOne({_id: req.query.userBot}).exec(function (err, result) {
+                  result.followed--;
+                  result.save(function (err) {
+                      console.log(err)
+                      res.end();
+                  })
+              });
           }
         });
       }
-      UserBot.findOne({_id: req.query.userBot}).exec(function (err, result) {
-          if (err){
-              console.log(err);
-          }else {
-              UserBotFollow.count({userBot : req.query.userBot, followed: true}).exec(function (err, followNum) {
-                  console.log(followNum);
-                  if (err){
-                      console.log(err);
-                  }else {
-                      result.followed = followNum;
-                      result.save(function (err) {
-                          if (err){
-                              console.log(err);
-                          }else {
-                              return res.end();
-                          }
-                      });
-                  }
-              })
-          }
-      });
+      // UserBot.findOne({_id: req.query.userBot}).exec(function (err, result) {
+      //     if (err){
+      //         console.log(err);
+      //     }else {
+      //         UserBotFollow.count({userBot : req.query.userBot, followed: true}).exec(function (err, followNum) {
+      //             console.log(followNum);
+      //             if (err){
+      //                 console.log(err);
+      //             }else {
+      //                 result.followed = followNum;
+      //                 result.save(function (err) {
+      //                     if (err){
+      //                         console.log(err);
+      //                     }else {
+      //                         return res.end();
+      //                     }
+      //                 });
+      //             }
+      //         })
+      //     }
+      // });
     }
   });
 };

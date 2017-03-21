@@ -77,27 +77,27 @@ module.exports = {
     callbackURL: '/api/auth/paypal/callback',
     sandbox: false
   },
+  // mailer: {
+  //     from: process.env.MAILER_FROM || 'PlayChat',
+  //     options: {
+  //         host: 'smtp.cafe24.com',
+  //         port: 587,
+  //         auth: {
+  //             user: process.env.MAILER_EMAIL_ID || 'info@moneybrain1.cafe24.com',
+  //             pass: process.env.MAILER_PASSWORD || 'Make01mb!'
+  //         }
+  //     }
+  // },
   mailer: {
       from: process.env.MAILER_FROM || 'PlayChat',
       options: {
-          host: 'smtp.cafe24.com',
-          port: 587,
+          service: process.env.MAILER_SERVICE_PROVIDER || 'GMAIL',
           auth: {
-              user: process.env.MAILER_EMAIL_ID || 'info@moneybrain.ai',
+              user: process.env.MAILER_EMAIL_ID || 'playchatai@gmail.com',
               pass: process.env.MAILER_PASSWORD || 'Make01mb!'
           }
       }
   },
-  // mailer: {
-  //     from: process.env.MAILER_FROM || 'PlayChat',
-  //     options: {
-  //         service: process.env.MAILER_SERVICE_PROVIDER || 'GMAIL',
-  //         auth: {
-  //             user: process.env.MAILER_EMAIL_ID || 'testmailreal@gmail.com',
-  //             pass: process.env.MAILER_PASSWORD || 'qkrwnsgk!90'
-  //         }
-  //     }
-  // },
   seedDB: {
     seed: process.env.MONGO_SEED === 'true' ? true : false,
     options: {
