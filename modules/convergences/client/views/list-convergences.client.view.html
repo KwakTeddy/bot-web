@@ -1,0 +1,36 @@
+
+<section class="row"id="videoSection">
+  <div class="col-md-12 animate-if" id="testvideo" ng-show = "vm.show == 1">
+    <video id="videoTag" controls autoplay=true loop>
+      <source id="videoSrc" src="https://cdn.theguardian.tv/mainwebsite/2015/07/20/150716YesMen_desk.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="col-md-12 animate-if" id="testvideo2" ng-show = "vm.show == -1" >
+    <video id="videoTag1" controls autoplay=true loop>
+      <source id='videoSrc1' src="http://0.s3.envato.com/h264-video-previews/80fad324-9db4-11e3-bf3d-0050569255a8/490527.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <button class="btn btn-default" ng-click="vm.noControl()">No Control</button>
+  <button class="btn btn-default" ng-click="vm.addControl()">Add Control</button>
+  <button class="btn btn-default" ng-click="vm.mute()">Mute</button>
+  <button class="btn btn-default" ng-click="vm.changeVideo()">Change Video</button>
+</section>
+
+<style>
+
+  /*#videoTag {*/
+/*position:absolute;*/
+    /*top: -150px;*/
+    /*left: -350px;*/
+    /*z-index: 5000;*/
+  /*}*/
+  /*#videoTag1 {*/
+    /*position:absolute;*/
+    /*top: -150px;*/
+    /*left: -350px;*/
+    /*z-index: 5000;*/
+
+  /*}*/
+
+</style>
