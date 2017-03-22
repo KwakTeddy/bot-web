@@ -72,6 +72,10 @@
 >그건 비밀이에요
 
 < 오늘 날씨 어떻다
+< 오늘 날씨 말 하다
+< 오늘 날씨 말 하다
+< 날씨 알다
+< 날씨 얘기 하다
 {
     action: function(task, context, callback) {
         var result = [{action: 'play-video-full', url: 'http://localhost:8443/videos/2-1날씨.mp4'} ];
