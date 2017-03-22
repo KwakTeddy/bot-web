@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="fixed">
+<html class="fixed" id="html">
 <head>
   <base href="/">
 
@@ -94,7 +94,7 @@
 
 </head>
 <body>
-<section class="body">
+<section id = 'developer-body' class="body" >
   <section ng-include="'/modules/core/client/views/header.client.view.html'"></section>
   <div class="inner-wrapper">
     <!--<section ng-include="'/modules/core/client/views/menu.client.view.html'"></section>-->
@@ -339,6 +339,14 @@
                   </li>
                 </ul>
               </li>
+
+              <li class="nav">
+                <a ui-sref="convergences.list">
+                  <i class="fa fa-plug" aria-hidden="true"></i>
+                  <span>컨버젼스</span>
+                </a>
+              </li>
+
 
             </ul>
           </nav>

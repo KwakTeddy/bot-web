@@ -3,6 +3,7 @@
 angular.module('core').controller('UserBotHeaderController', ['$scope', '$state', 'Authentication', '$location', '$rootScope', 'UserBotsService',
   function ($scope, $state, Authentication, $location, $rootScope, UserBotsService) {
     // Expose view variables
+      console.log(123);
     $scope.$state = $state;
     $scope.authentication = Authentication;
     $scope.currentUrl = $location.absUrl();
@@ -27,5 +28,9 @@ angular.module('core').controller('UserBotHeaderController', ['$scope', '$state'
             $rootScope.title = '플레이챗 PlayChat - 1분만에 만드는 인공지능 챗봇 머니브레인 MoneyBrain Inc';
         }
     });
+
+
+
+
   }
 ]);

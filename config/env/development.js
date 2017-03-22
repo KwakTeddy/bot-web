@@ -38,7 +38,7 @@ module.exports = {
     }
   },
   app: {
-    title: defaultEnvConfig.app.title + ' - Development Environment'
+    title: defaultEnvConfig.app.title + ' - Development Environment',
   },
   facebook: {
       clientID: process.env.FACEBOOK_ID || '240853479709635',
