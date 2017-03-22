@@ -56,9 +56,15 @@
         videoSrc.removeAttribute('controls');
       $scope.elm1.removeAttribute('controls');
     };
-    vm.addControl = function (cb) {
+    vm.addControl = function (file) {
         var videoSrc = document.getElementById('videoTag')
         videoSrc.setAttribute('controls', true);
+        console.log(videoSrc);
+
+        var fileReader = new FileReader();
+        console.log(fileReader);
+        var result = fileReader.readAsDataURL(videoSrc);
+        console.log(result);
     };
 
     vm.changeVideo = function (which) {
