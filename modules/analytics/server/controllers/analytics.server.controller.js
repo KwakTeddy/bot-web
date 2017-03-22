@@ -193,13 +193,14 @@ exports.dialogFailureList = function (req, res) {
   //TODO: change this to regexp
   cond.dialog = {$ne: null, $nin: [":reset user", ":build csdemo reset"]};
   cond.preDialogId = {$ne: 0};
+  cond.botId = "csdemo";
 
   console.log(JSON.stringify(cond));
 
   UserDialog.aggregate(
     [
       {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" },
-        inOut: '$inOut', dialog: '$dialog', fail:'$fail', preDialogId:'$preDialogId', preDialogName:'$preDialogName'}},
+        inOut: '$inOut', dialog: '$dialog', fail:'$fail', preDialogId:'$preDialogId', preDialogName:'$preDialogName', botId:'$botId'}},
       {$match: cond},
       {$match:{ preDialogId: { $exists:true, $ne: null } } },
       {$group: {_id: {dialog:'$dialog', preDialogId: '$preDialogId'}, count: {$sum: 1}}},

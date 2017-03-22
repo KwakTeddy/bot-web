@@ -1,10 +1,10 @@
 var path = require('path');
 var botlib = require(path.resolve('config/lib/bot'));
 
-var girlfriend = {
+var learn = {
   use: true,
-  useMemoryFacts: false
+  useMemoryFacts: true
 };
 
-botlib.makeBot('girlfriend', girlfriend);
+botlib.makeBot('learn', learn);
 
