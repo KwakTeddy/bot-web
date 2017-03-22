@@ -29,9 +29,9 @@
            var videoTarget = document.getElementById('videoSrc1');
            var target = document.getElementById('videoTag');
            var target1 = document.getElementById('videoTag1');
-           videoTarget.src = which;
-           target.pause();
-           target1.play();
+           // videoTarget.src = which;
+           // target.pause();
+           // target1.play();
 
            // target.style.height = height+'px';
            // target.style.width = width+'px';
@@ -40,11 +40,9 @@
            var videoTarget = document.getElementById('videoSrc');
            var target = document.getElementById('videoTag');
            var target1 = document.getElementById('videoTag1');
-           videoTarget.src = which;
-           target.play();
-           target1.pause();
-           // target.style.height = height+'px';
-           // target.style.width = width+'px';
+           // videoTarget.src = which;
+           // target.play();
+           // target1.pause();
            vm.show = vm.show*-1;
        }
 

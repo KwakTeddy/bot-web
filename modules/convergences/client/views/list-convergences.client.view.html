@@ -1,12 +1,12 @@
 
 <section class="row"id="videoSection">
-  <div class="col-md-12 animate-if" id="testvideo" ng-show = "vm.show == 1">
-    <video id="videoTag" controls autoplay=true loop>
+  <div class="col-md-12 animate-if" id="testvideo" ng-if = "vm.show == 1">
+    <video id="videoTag" autoplay=true loop class="video-inline">
       <source id="videoSrc" src="https://cdn.theguardian.tv/mainwebsite/2015/07/20/150716YesMen_desk.mp4" type="video/mp4">
     </video>
   </div>
-  <div class="col-md-12 animate-if" id="testvideo2" ng-show = "vm.show == -1" >
-    <video id="videoTag1" controls autoplay=true loop>
+  <div class="col-md-12 animate-if" id="testvideo2" ng-if = "vm.show == -1" >
+    <video id="videoTag1" autoplay=true loop class="video-inline">
       <source id='videoSrc1' src="http://0.s3.envato.com/h264-video-previews/80fad324-9db4-11e3-bf3d-0050569255a8/490527.mp4" type="video/mp4">
     </video>
   </div>
@@ -33,4 +33,41 @@
 
   /*}*/
 
+  .animate-if.ng-enter{
+    transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+
+  }
+
+  .animate-if.ng-leave {
+    transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+  }
+
+  .animate-if.ng-enter,
+  .animate-if.ng-leave.ng-leave-active {
+    opacity:0;
+  }
+
+  .animate-if.ng-leave,
+  .animate-if.ng-enter.ng-enter-active {
+    opacity:1;
+  }
+
+  .video-full {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+    background-color: black;
+  }
+
+  .video-inline {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 640px; height: 360px;
+    z-index: 2000;
+
+  }
 </style>

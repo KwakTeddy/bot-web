@@ -23,6 +23,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     vm.msg = '';
     vm.isConnected = false;
     vm.isVoice = false;
+
     var main = document.getElementById('chat_main');
 
     vm.connect = function () {
@@ -71,8 +72,12 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
       if(message.smartReply) addButtons(message.smartReply);
 
+      if(message.actions) execActions(message.actions);
+
       if(message.items) addItems(message.items);
       else addBotBubble(message);
+
+
 
       if(vm.isVoice) {
         var voice = message.voice || message.text || message;
@@ -648,6 +653,41 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     }
 
     if(vm.isVoice) recognizeStart();
+
+    vm.videoToggle = true;
+    vm.videoPlay = false;
+
+    function execActions(actions) {
+      for(var i = 0; i < actions.length; i++) {
+        var item = actions[i];
+        if(item.action == 'play-video-full') {
+
+          if(!vm.videoPlay) {
+            document.getElementById('videoSection').style.visibility = 'visible';
+            vm.videoPlay = true;
+          } else {
+            vm.videoToggle = !vm.videoToggle;
+
+          }
+
+          setTimeout(function() {
+            var playerName;
+            if(!vm.videoToggle) playerName = 'videoPlayer2';
+            else playerName = 'videoPlayer1';
+
+            var source = document.createElement('source');
+            source.setAttribute('src', item.url);
+            source.setAttribute('type', 'video/mp4');
+
+            var video = document.getElementById(playerName);
+            if(video.childNodes && video.childNodes.length > 0) {
+              video.replaceChild(source, video.childNodes[0]);
+            } else video.appendChild(source);
+          }, 100);
+
+        }
+      }
+    }
 
     // recognition.stop();
     // synthesize('안녕하세요');
