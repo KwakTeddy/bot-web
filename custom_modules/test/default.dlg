@@ -86,6 +86,11 @@
 >오늘 날씨는 영상 6도입니다.
 
 < 가장 가깝다 은행지점 어디
+<가장 가깝다 은행 어디 야
+<가장 가깝다 은행
+<여기 가장 가깝다 은행 어디
+<가깝다 은행 말 하다
+<근처 가장 가깝다 은행 말 하다
 {
     action: function(task, context, callback) {
         var result = [{action: 'play-video-full', url: 'http://localhost:8443/videos/2-2은행지점.mp4'} ];
@@ -95,7 +100,7 @@
 }
 >사당역에 은행입니다.
 
-< 나 고민 있
+< 나 고민 있다
 {
     action: function(task, context, callback) {
         var result = [{action: 'play-video-full', url: 'http://localhost:8443/videos/3-1고민.mp4'} ];
