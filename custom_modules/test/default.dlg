@@ -1,0 +1,32 @@
+< 1
+{
+    action: function(task, context, callback) {
+        var result = [{action: 'play-video-full', url: 'http://0.s3.envato.com/h264-video-previews/80fad324-9db4-11e3-bf3d-0050569255a8/490527.mp4'} ];
+        task.result = {actions: result};
+        callback(task, context);
+    }
+}
+>저는 장세영 입니다
+
+< 2
+{
+    action: function(task, context, callback) {
+        var result = [{action: 'play-video-full', url: 'https://cdn.theguardian.tv/mainwebsite/2015/07/20/150716YesMen_desk.mp4'} ];
+        task.result = {actions: result};
+        callback(task, context);
+    }
+}
+>저는 장세영 입니다
+
+
+시작:
+c<시작
+>{text: '안녕하세요', actions: [{action: 'play-video-full', url: 'http://0.s3.envato.com/h264-video-previews/80fad324-9db4-11e3-bf3d-0050569255a8/490527.mp4'} ]}
+
+답변없음:
+c<> 알아듣지 못했습니다
+
+<안녕
+>안녕하세요
+
+

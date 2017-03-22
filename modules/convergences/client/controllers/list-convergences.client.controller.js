@@ -8,6 +8,47 @@
 
   function ConvergencesListController(ConvergencesService, $scope, $timeout, $interval) {
     var vm = this;
+
+
+    vm.videoToggle = true;
+    vm.videoPlay = false;
+
+    function execActions(actions) {
+      for(var i = 0; i < actions.length; i++) {
+        var item = actions[i];
+        if(item.action == 'play-video-full') {
+
+          if(!vm.videoPlay) {
+            document.getElementById('videoSection').style.visibility = 'visible';
+            vm.videoPlay = true;
+          } else {
+            vm.videoToggle = !vm.videoToggle;
+
+          }
+
+          setTimeout(function() {
+            var playerName;
+            if(!vm.videoToggle) playerName = 'videoPlayer2';
+            else playerName = 'videoPlayer1';
+
+
+            var source = document.createElement('source');
+            source.setAttribute('src', item.url);
+            source.setAttribute('type', 'video/mp4');
+
+            var video = document.getElementById(playerName);
+            if(video.childNodes && video.childNodes.length > 0) {
+              video.replaceChild(source, video.childNodes[0]);
+            } else video.appendChild(source);
+          }, 100);
+
+        }
+      }
+    }
+
+
+
+
     vm.show = 1;
 
     vm.noControl = function (cb) {

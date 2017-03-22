@@ -675,6 +675,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
             if(!vm.videoToggle) playerName = 'videoPlayer2';
             else playerName = 'videoPlayer1';
 
+
             var source = document.createElement('source');
             source.setAttribute('src', item.url);
             source.setAttribute('type', 'video/mp4');
