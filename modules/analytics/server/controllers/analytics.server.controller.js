@@ -193,6 +193,7 @@ exports.dialogFailureList = function (req, res) {
   //TODO: change this to regexp
   cond.dialog = {$ne: null, $nin: [":reset user", ":build csdemo reset"]};
   cond.preDialogId = {$ne: 0};
+  cond.botId = "csdemo";
 
   console.log(JSON.stringify(cond));
 
