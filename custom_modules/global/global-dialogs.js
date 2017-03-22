@@ -6,7 +6,7 @@ var toneModule = require(path.resolve('modules/bot/action/common/tone'));
 var core = require(path.resolve('custom_modules/playchat/core'));
 
 function factsTypeCheck(text, format, inDoc, context, callback) {
-  if(context.botUser.sentenceInfo.sentenceType != 1 || context.botUser.sentenceInfo.verbToken == undefined) {
+  if(!context.bot.useMemoryFacts || context.botUser.sentenceInfo.sentenceType != 1 || context.botUser.sentenceInfo.verbToken == undefined) {
     callback(text, inDoc, false);
     return;
   }
@@ -33,7 +33,7 @@ function factsTypeCheck(text, format, inDoc, context, callback) {
     }
   }
 
-  query['botUser'] = {$ne: null};
+  query['botUser'] = context.user.userKey;
 
   var model = mongoModule.getModel('factlink', undefined);
   model.find(query, null, {sort: {created: -1}}, function(err, docs) {
@@ -236,11 +236,10 @@ var globalStartDialogs = [
   //   },
   //   output: '+1+로 변경되었습니다.'
   // },
-  // {
-  //   input: {types: [{typeCheck: factsTypeCheck}]},
-  //   output: '+_output+'
-  // },
-
+  {
+    input: {types: [{typeCheck: factsTypeCheck}]},
+    output: '+_output+'
+  },
   {
     input: {types: [userDialogType]},
     task: {
