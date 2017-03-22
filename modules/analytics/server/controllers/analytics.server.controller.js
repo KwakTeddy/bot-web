@@ -200,7 +200,7 @@ exports.dialogFailureList = function (req, res) {
   UserDialog.aggregate(
     [
       {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" },
-        inOut: '$inOut', dialog: '$dialog', fail:'$fail', preDialogId:'$preDialogId', preDialogName:'$preDialogName'}},
+        inOut: '$inOut', dialog: '$dialog', fail:'$fail', preDialogId:'$preDialogId', preDialogName:'$preDialogName', botId:'$botId'}},
       {$match: cond},
       {$match:{ preDialogId: { $exists:true, $ne: null } } },
       {$group: {_id: {dialog:'$dialog', preDialogId: '$preDialogId'}, count: {$sum: 1}}},
