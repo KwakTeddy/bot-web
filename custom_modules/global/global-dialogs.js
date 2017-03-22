@@ -240,6 +240,7 @@ var globalStartDialogs = [
   //   input: {types: [{typeCheck: factsTypeCheck}]},
   //   output: '+_output+'
   // },
+
   {
     input: {types: [userDialogType]},
     task: {
@@ -281,15 +282,15 @@ var dialogsType = {
     callback(task, context);
   },
   limit: 10,
-  matchRate: 0.3,
-  matchCount: 3,
+  matchRate: 0.4,
+  matchCount: 4,
   exclude: ['하다', '이다'],
   mongo: {
     model: 'dialogsetdialogs',
     queryStatic: {dialogset: ''},
     queryFields: ['input'],
-    fields: 'dialogset input output' ,
-    taskFields: ['input', 'output', 'matchRate'],
+    fields: 'dialogset input inputRaw output' ,
+    taskFields: ['input', 'inputRaw', 'output', 'matchCount', 'matchRate'],
     minMatch: 1
   }
 };
@@ -304,8 +305,11 @@ var globalEndDialogs = [
         if(Array.isArray(task.typeDoc)) {
           if(task.typeDoc.length > 1) task._output = task.typeDoc[0].output;
           else task._output = task.typeDoc[0].output;
+
+          console.log(task.typeDoc[0].inputRaw + ', ' + task.typeDoc[0].input + '(' + task.typeDoc[0].matchCount + ', ' + task.typeDoc[0].matchRate + ')');
         } else {
           task._output = task.typeDoc.output;
+          console.log(task.typeDoc.inputRaw + ', ' + task.typeDoc.input + '(' + task.typeDoc.matchCount + ', ' + task.typeDoc.matchRate + ')');
         }
 
         if(Array.isArray(task._output)) {

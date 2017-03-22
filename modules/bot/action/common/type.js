@@ -1604,7 +1604,8 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
       if(context.botUser.topic && context.botUser.topic.length > 0 &&
           (context.botUser.analytics == null || context.botUser.analytics2 == null)) {
         if(context.botUser.analytics == null) context.botUser.topic = null;
-        else context.botUser.analytics2 = true;
+        else context.botUser.analytics = null;
+        // else context.botUser.analytics2 = true;
         dialogTypeCheck(text, format, inDoc, context, callback);
       } else {
         if(topicKeywords && topicKeywords.length > 0) context.botUser.topic = topicKeywords;
