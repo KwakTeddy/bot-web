@@ -153,7 +153,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       $scope.location = location.href;
       Kakao.Link.sendTalkLink({
           label: vm.userBot.name+'-'+ vm.userBot.description,
-          image: {src: location.protocol+'//'+location.hostname+'/'+ vm.userBot.imageFile, width:80, height:80 },
+          image: {src: location.protocol+'//'+location.hostname+'/'+ vm.userBot.imageFile, width:90, height:90 },
           webButton: {text : "플레이 챗으로 가요", url: $scope.location},
       });
     };
