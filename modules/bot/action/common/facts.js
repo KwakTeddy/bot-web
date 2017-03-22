@@ -5,7 +5,7 @@ var mongoModule = require(path.resolve('modules/bot/action/common/mongo.js'));
 
 
 function memoryFacts(inRaw, context, callback) {
-  if(context.botUser.sentenceInfo.sentenceType == 1 || context.botUser.sentenceInfo.sentenceType == 2 ||context.botUser.sentenceInfo.sentenceType == 3) {
+  if(context.botUser.sentenceInfo.sentenceType == 1) {
     callback(null, context);
 
     return;
