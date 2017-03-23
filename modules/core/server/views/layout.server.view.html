@@ -64,7 +64,7 @@
   <script src="/vendor/modernizr/modernizr.js"></script>
 
   <script>
-//    var mobileKeyWords = new Array('iPhone', 'iPod', 'BlackBerry', 'Android', 'Windows CE', 'LG', 'MOT', 'SAMSUNG', 'SonyEricsson');
+    var mobileKeyWords = new Array('iPhone', 'iPod', 'BlackBerry', 'Android', 'Windows CE', 'LG', 'MOT', 'SAMSUNG', 'SonyEricsson');
 //    for (var word in mobileKeyWords){
 //      if (navigator.userAgent.match(mobileKeyWords[word]) != null){
 //        location.href = '/?_p=m';
@@ -99,7 +99,7 @@
   <div class="inner-wrapper">
     <!--<section ng-include="'/modules/core/client/views/menu.client.view.html'"></section>-->
 
-    <aside id="sidebar-left" class="sidebar-left">
+    <aside id="sidebar-left" class="sidebar-left" style="z-index: 0;">
 
       <div class="sidebar-header">
         <div class="sidebar-title">
@@ -369,7 +369,7 @@
 
     </aside>
 
-    <section role="main" class="content-body">
+    <section role="main" class="content-body" style="z-index: 0 !imrpotant;">
       {% block content %}{% endblock %}
     </section>
 

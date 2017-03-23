@@ -1,15 +1,15 @@
 
 <section class="row"id="videoSection">
   <div class="col-md-12 animate-if" id="testvideo" ng-if = "vm.show == 1">
-    <video id="videoTag" loop class="video-inline">
-      <source id="videoSrc" src="http://localhost:8443/videos/1-1인사.mp4" type="video/mp4">
+    <video id="videoTag" autoplay=true loop class="video-inline">
+      <source id="videoSrc" src="https://cdn.theguardian.tv/mainwebsite/2015/07/20/150716YesMen_desk.mp4" type="video/mp4">
     </video>
   </div>
-  <!--<div class="col-md-12 animate-if" id="testvideo2" ng-if = "vm.show == -1" >-->
-    <!--<video id="videoTag1" autoplay=true loop class="video-inline">-->
-      <!--<source id='videoSrc1' src="http://0.s3.envato.com/h264-video-previews/80fad324-9db4-11e3-bf3d-0050569255a8/490527.mp4" type="video/mp4">-->
-    <!--</video>-->
-  <!--</div>-->
+  <div class="col-md-12 animate-if" id="testvideo2" ng-if = "vm.show == -1" >
+    <video id="videoTag1" autoplay=true loop class="video-inline">
+      <source id='videoSrc1' src="http://0.s3.envato.com/h264-video-previews/80fad324-9db4-11e3-bf3d-0050569255a8/490527.mp4" type="video/mp4">
+    </video>
+  </div>
 
   <button class="btn btn-default" ng-click="vm.noControl()">No Control</button>
   <button class="btn btn-default" ng-click="vm.addControl()">Add Control</button>

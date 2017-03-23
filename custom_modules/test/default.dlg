@@ -1,19 +1,22 @@
 < 안녕하세요
+< 안녕하다
 < 안녕
 < 안뇽
 < 안늉
-< 안
 
 {
     action: function(task, context, callback) {
         var result = [{action: 'play-video-full', url: 'http://localhost:8443/videos/1-1인사.mp4'} ];
         task.result = {actions: result};
+        console.log(JSON.stringify(task.result));
         callback(task, context);
     }
 }
 > 안녕하세요 반갑습니다
 
 < 이름 뭐
+< 이름 뭔
+< 이름 뭔가
 < 이름 어떻다
 
 {
@@ -76,6 +79,7 @@
 < 오늘 날씨 말 하다
 < 날씨 알다
 < 날씨 얘기 하다
+<날씨
 {
     action: function(task, context, callback) {
         var result = [{action: 'play-video-full', url: 'http://localhost:8443/videos/2-1날씨.mp4'} ];
@@ -91,6 +95,7 @@
 <여기 가장 가깝다 은행 어디
 <가깝다 은행 말 하다
 <근처 가장 가깝다 은행 말 하다
+< 은행
 {
     action: function(task, context, callback) {
         var result = [{action: 'play-video-full', url: 'http://localhost:8443/videos/2-2은행지점.mp4'} ];
@@ -101,6 +106,7 @@
 >사당역에 은행입니다.
 
 < 나 고민 있다
+< 고민
 {
     action: function(task, context, callback) {
         var result = [{action: 'play-video-full', url: 'http://localhost:8443/videos/3-1고민.mp4'} ];
@@ -111,6 +117,9 @@
 >어떤 고민이에요?
 
 < 애기들 유치원 잘 안 가다
+< 아이 안
+< 유치원 안
+< 유치 안
 {
     action: function(task, context, callback) {
         var result = [{action: 'play-video-full', url: 'http://localhost:8443/videos/3-2아이들.mp4'} ];
@@ -121,6 +130,7 @@
 >애기들은 원래 다 그래요 너무 고민하지 마세요
 
 < 특히 유치원 옮기다 더 그렇다
+< 옮기다
 {
     action: function(task, context, callback) {
         var result = [{action: 'play-video-full', url: 'http://localhost:8443/videos/3-2아이들적응.mp4'} ];
@@ -131,6 +141,7 @@
 >애들도 적응하는데 시간이 필요하죠 좀 기다려보면 잘 해결 될 거에요
 
 <작년 어디 여행 가다
+< 여행
 {
     action: function(task, context, callback) {
         var result = [{action: 'play-video-full', url: 'http://localhost:8443/videos/4-1작년.mp4'} ];
@@ -141,6 +152,7 @@
 >작년 여름에 괌에 다녀 왔어요
 
 < 중학교 기억 남다
+< 중학
 {
     action: function(task, context, callback) {
         var result = [{action: 'play-video-full', url: 'http://localhost:8443/videos/4-3농구.mp4'} ];
@@ -149,26 +161,6 @@
     }
 }
 >특별한 것은 없고 영석이라는 친구와 농구를 자주 했던 게 기억이 나요
-
-< 왼손 들다
-{
-    action: function(task, context, callback) {
-        var result = [{action: 'play-video-full', url: 'http://localhost:8443/videos/5-1왼손.mp4'} ];
-        task.result = {actions: result};
-        callback(task, context);
-    }
-}
->왼손 들었습니다
-
-< 오른손 들다
-{
-    action: function(task, context, callback) {
-        var result = [{action: 'play-video-full', url: 'http://localhost:8443/videos/5-2오른손.mp4'} ];
-        task.result = {actions: result};
-        callback(task, context);
-    }
-}
->오른손 들었습니다
 
 < 왼손 들다 말다 오른손 들다
 < 왼손 들다 오른손 들다
@@ -192,7 +184,35 @@
 }
 >왼손 들었습니다
 
-< 물구나무 서다 보
+< 왼손 들다
+< 웬
+< 왼손
+< 맨손
+{
+    action: function(task, context, callback) {
+        var result = [{action: 'play-video-full', url: 'http://localhost:8443/videos/5-1왼손.mp4'} ];
+        task.result = {actions: result};
+        callback(task, context);
+    }
+}
+>왼손 들었습니다
+
+< 오른손 들다
+< 오늘
+< 오른손
+{
+    action: function(task, context, callback) {
+        var result = [{action: 'play-video-full', url: 'http://localhost:8443/videos/5-2오른손.mp4'} ];
+        task.result = {actions: result};
+        callback(task, context);
+    }
+}
+>오른손 들었습니다
+
+< 물구나무 서
+< 물구나무서기
+< 물구나무
+< 물구
 {
     action: function(task, context, callback) {
         var result = [{action: 'play-video-full', url: 'http://localhost:8443/videos/5-3물구나무.mp4'} ];
@@ -202,7 +222,18 @@
 }
 >물구나무 섰습니다
 
+< 이기다
+{
+    action: function(task, context, callback) {
+        var result = [{action: 'play-video-full', url: 'http://localhost:8443/videos/5-3물구나무.mp4'} ];
+        task.result = {actions: result};
+        callback(task, context);
+    }
+}
+> 감사합니다.
+
 < 수고 하다 다음 보다
+< 다음
 {
     action: function(task, context, callback) {
         var result = [{action: 'play-video-full', url: 'http://localhost:8443/videos/6-1감사합니다.mp4'} ];
@@ -213,6 +244,16 @@
 >알았어요 다음에 뵙겠습니다
 
 
+< 홀로그램
+< 홀로
+{
+    action: function(task, context, callback) {
+        var result = [{action: 'holo-start'} ];
+        task.result = {actions: result};
+        callback(task, context);
+    }
+}
+> 홀로그램 시작
 
 시작:
 c<시작

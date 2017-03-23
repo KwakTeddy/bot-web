@@ -22,7 +22,9 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     vm.userId = '';
     vm.msg = '';
     vm.isConnected = false;
-    vm.isVoice = false;
+    vm.isVoice = true;
+    vm.stt = false;
+    vm.tts = false;
 
     var main = document.getElementById('chat_main');
 
@@ -73,13 +75,14 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       if(message.smartReply) addButtons(message.smartReply);
 
       if(message.actions) execActions(message.actions);
+      else if(vm.isVoice) recognizeStart();
 
       if(message.items) addItems(message.items);
       else addBotBubble(message);
 
 
 
-      if(vm.isVoice) {
+      if(vm.tts) {
         var voice = message.voice || message.text || message;
         voice += ',';
 
@@ -170,7 +173,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     };
 
 
-      vm.sendMsg = function (msg) {
+    vm.sendMsg = function (msg) {
       if (!vm.isConnected) return false;
 
       var element = document.getElementById("smart_reply");
@@ -301,62 +304,51 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       recognition.interimResults = true;
 
       recognition.onstart = function() {
-        // console.log('recognition.onstart');
-
-        final_transcript = '';
-        recognizing = true;
+        console.log('recognition.onstart');
       };
 
       recognition.onerror = function(event) {
-        // console.log('recognition.onerror');
+        console.log('recognition.onerror' + event.error);
 
         if (event.error == 'no-speech') {
-          console.log('info_no_speech');
+          // console.log('info_no_speech');
           ignore_onend = true;
-        }
-        if (event.error == 'audio-capture') {
-          console.log('info_no_microphone');
+        } else if (event.error == 'audio-capture') {
+          // console.log('info_no_microphone');
           ignore_onend = true;
-        }
-        if (event.error == 'not-allowed') {
+        } else if (event.error == 'not-allowed') {
           if (event.timeStamp - start_timestamp < 100) {
-            console.log('info_blocked');
+            // console.log('info_blocked');
           } else {
-            console.log('info_denied');
+            // console.log('info_denied');
           }
           ignore_onend = true;
-        }
+        } else ignore_onend = true;
       };
 
       recognition.onend = function() {
-        // console.log('recognition.onend');
+        console.log('recognition.onend');
 
-        recognition.start();
-
-        // recognizeStart();
-
+        if(recognizing) recognizeStart();
         recognizing = false;
-        if (ignore_onend) {
-          return;
-        }
+        if (ignore_onend) return;
+
+
         if (!final_transcript) {
           // console.log('info_start');
           return;
         }
-        console.log('on End: ' + final_transcript);
+        console.log('recognition.onend: ' + final_transcript);
+
+        // recognizeStart();
 
         // vm.sendMsg(final_transcript);
-
-        // if (window.getSelection) {
-        //   window.getSelection().removeAllRanges();
-        //   var range = document.createRange();
-        //   range.selectNode(document.getElementById('final_span'));
-        //   window.getSelection().addRange(range);
-        // }
       };
 
       recognition.onresult = function(event) {
-        console.log(event);
+        console.log('recognition.onresult');
+
+        if (ignore_onend) return;
 
         // ignore_onend = false;
 
@@ -377,7 +369,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         }
 
         if(!vm.isVoice) {
-          recognition.stop();
+          recognizeStop();
           return;
         }
         document.getElementById('inputbox').value = interim_transcript;
@@ -389,19 +381,20 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         }
 
         if(isFinal) {
-          console.log('isFinal:' + finalFinish + ',' + timeoutFinish);
+          console.log('isFinal:' + 'final('+finalFinish + '),timeout(' + timeoutFinish + ')');
           if(timeoutFinish) {
             finalFinish = false; timeoutFinish = false;
             return;
           }
           finalFinish = true;
           console.log('isFinal:' + interim_transcript);
+          recognizeStop();
           vm.sendMsg(interim_transcript);
         } else {
 
           if(regcognitionTimer) clearTimeout(regcognitionTimer);
           regcognitionTimer = setTimeout(function() {
-            console.log('timeout:' + finalFinish + ',' + timeoutFinish);
+            console.log('timeout:' + 'final('+finalFinish + '),timeout(' + timeoutFinish + ')');
             if(finalFinish) {
               finalFinish = false; timeoutFinish = false;
               return;
@@ -411,6 +404,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
             console.log('timeout: ' + interim_transcript);
             if(interim_transcript != undefined && interim_transcript != '') {
               ignore_onend = true;
+              recognizeStop();
               vm.sendMsg(final_transcript);
             }
           }, 2000);
@@ -418,26 +412,37 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       };
     }
 
+    function recognizeStop() {
+      console.log('recognizeStop');
+
+      recognizing = false;
+      if (recognition != undefined) recognition.stop();
+    }
+
     function recognizeStart() {
-      if (recognizing) {
+      console.log('recognizeStart');
+      if (recognizing && recognition != undefined) {
         recognition.stop();
         return;
       }
 
-      final_transcript = '';
       recognition.lang = 'ko-KR';
       recognition.start();
+
+      final_transcript = '';
       ignore_onend = false;
+      finalFinish = false;
+      timeoutFinish = false;
+      recognizing = true;
 
-      start_timestamp = event.timeStamp;
-
+      // start_timestamp = event.timeStamp;
     }
 
     vm.toggleVoice = function() {
       if(vm.isVoice) {
         vm.isVoice = false;
         ignore_onend = true;
-        recognition.stop();
+        recognizeStop();
 
         document.getElementById('inputbox').placeholder = '대화를 입력해 주세요.';
         document.getElementById('voiceButton').style.fontWeight = '300';
@@ -626,7 +631,9 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     }
 
     function synthesize(message) {
-      // recognition.stop();
+      if(!vm.tts) return;
+
+      recognizeStop();
 
       var utterance = new SpeechSynthesisUtterance(message);
       utterance.lang = 'ko-KR';
@@ -636,10 +643,11 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       };
       utterance.onerror = function(event) {
         console.log('synthesize error');
+        recognizeStart();
       };
       utterance.onend = function(event) {
         console.log('synthesize end');
-        // recognition.start();
+        recognizeStart();
       };
       window.speechSynthesis.speak(utterance);
     }
@@ -659,42 +667,65 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       return uuid;
     }
 
-    if(vm.isVoice) recognizeStart();
-
-    vm.videoToggle = true;
+    /********************* 액션 처리 *********************/
+    var holoDefaultVideo = 'http://localhost:8443/videos/지속동영상.mp4';
+    vm.videoToggle = false;
     vm.videoPlay = false;
 
     function execActions(actions) {
       for(var i = 0; i < actions.length; i++) {
         var item = actions[i];
-        if(item.action == 'play-video-full') {
-
-          if(!vm.videoPlay) {
-            document.getElementById('videoSection').style.visibility = 'visible';
-            vm.videoPlay = true;
-          } else {
-            vm.videoToggle = !vm.videoToggle;
-
-          }
-
-          setTimeout(function() {
-            var playerName;
-            if(!vm.videoToggle) playerName = 'videoPlayer2';
-            else playerName = 'videoPlayer1';
-
-
-            var source = document.createElement('source');
-            source.setAttribute('src', item.url);
-            source.setAttribute('type', 'video/mp4');
-
-            var video = document.getElementById(playerName);
-            if(video.childNodes && video.childNodes.length > 0) {
-              video.replaceChild(source, video.childNodes[0]);
-            } else video.appendChild(source);
-          }, 100);
-
+        if(item.action == 'holo-start') {
+          recognizeStart();
+          playVideo(holoDefaultVideo, true, true, function() {
+            console.log('hole start play end');
+          });
+        } else if(item.action == 'play-video-full') {
+          recognizeStop();
+          playVideo(item.url, true, false, function() {
+            console.log('hole video play end');
+            recognizeStart();
+            // playVideo(holoDefaultVideo, true, true, function() {
+            //   console.log('hole video play end');
+            // });
+          });
         }
       }
+    }
+
+    function playVideo(videoUrl, isFull, isLoop, callback) {
+      console.log(videoUrl);
+
+      if(!vm.videoPlay) {
+        document.getElementById('videoSection').style.visibility = 'visible';
+        vm.videoPlay = true;
+      }
+
+      vm.videoToggle = !vm.videoToggle;
+
+      setTimeout(function() {
+        var playerName;
+        if(!vm.videoToggle) playerName = 'videoPlayer2';
+        else playerName = 'videoPlayer1';
+
+        var source = document.createElement('source');
+        source.setAttribute('src', videoUrl);
+        source.setAttribute('type', 'video/mp4');
+
+        var video = document.getElementById(playerName);
+        if(video) {
+          // if(isFull) video.className = 'video-full';
+          // else video.className = 'video-inline';
+          // video.muted = true;
+          if(isLoop) video.loop = true;
+          else video.loop = undefined;
+          video.onended = callback;
+
+          if(video.childNodes && video.childNodes.length > 0) {
+            video.replaceChild(source, video.childNodes[0]);
+          } else video.appendChild(source);
+        }
+      }, 100);
     }
 
     // recognition.stop();

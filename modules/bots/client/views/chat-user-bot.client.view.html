@@ -34,12 +34,15 @@
         </span>
     </div>
 
-    <section class="row" id="videoSection" style="visible: hidden">
+    <!--<source id='videoSrc1' src="http://localhost:8443/videos/지속동영상.mp4" type="video/mp4">-->
+
+    <div class="video-full" ></div>
+    <section class="row" id="videoSection" style="visible: hidden" >
         <div class="animate-if" ng-if = "vm.videoToggle">
-            <video id="videoPlayer1" autoplay=true class="video-inline"></video>
+            <video id="videoPlayer1" autoplay=true class="video-full"></video>
         </div>
         <div class="animate-if" ng-if = "!vm.videoToggle" >
-            <video id="videoPlayer2" autoplay=true class="video-inline"></video>
+            <video id="videoPlayer2" autoplay=true class="video-full"></video>
         </div>
     </section>
 </div>
@@ -63,11 +66,10 @@
 
     .animate-if.ng-enter{
         transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
-
     }
 
     .animate-if.ng-leave {
-        transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+        transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1s;
     }
 
     .animate-if.ng-enter,
@@ -86,16 +88,16 @@
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: 2000;
+        z-index: 2000 !important;
         background-color: black;
     }
 
     .video-inline {
         position: absolute;
-        /*top: -600px;*/
-        /*left: -700px;*/
-        width: 640px; height: 360px;
-        z-index: 2000;
-
+        top: 100px;
+        left: -700px;
+        width: 640px; height: 480px;
+        z-index: 2000 !important;
+        background-color: black;
     }
 </style>
