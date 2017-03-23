@@ -94,7 +94,8 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
           voice += '여기까지 입니다.'
         }
 
-        synthesize(voice);
+        //synthesize(voice);
+        speak(voice);
       }
 
       $rootScope.$broadcast('onmsg', {message: message});
@@ -629,6 +630,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
       var utterance = new SpeechSynthesisUtterance(message);
       utterance.lang = 'ko-KR';
+      console.log(JSON.stringify(utterance.getVoices()));
       utterance.onstart = function(event) {
         console.log('synthesize start');
       };
@@ -640,6 +642,11 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         // recognition.start();
       };
       window.speechSynthesis.speak(utterance);
+    }
+
+    function speak(message) {
+      var snd = new Audio('/api/speech/' + message);
+      snd.play();
     }
 
     function generateUUID() {

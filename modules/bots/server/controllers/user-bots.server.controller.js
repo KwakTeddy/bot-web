@@ -1033,3 +1033,24 @@ exports.autoCorrection = function (req, res) {
     res.json({});
   })
 };
+
+exports.speech = function (req, res) {
+  var client_id = 'c7VNVyIG3s95N4q2LWZQ';
+  var client_secret =  'HXWvXdrKi7';
+
+  var api_url = 'https://openapi.naver.com/v1/voice/tts.bin';
+  var request = require('request');
+
+  console.log(req.params.msg);
+  var options = {
+    url: api_url,
+    form: {'speaker':'jinho', 'speed':'0', 'text':req.params.msg},
+    headers: {
+      'Content-Type':'application/x-www-form-urlencoded', 'X-Naver-Client-Id':client_id, 'X-Naver-Client-Secret': client_secret}
+  };
+  var _req = request.post(options).on('response', function(response) {
+    console.log(response.statusCode);// 200
+    console.log(response.headers['content-type']);
+  });
+  _req.pipe(res); // 브라우저로 출력
+};

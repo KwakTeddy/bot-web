@@ -75,6 +75,9 @@ module.exports = function (app) {
   app.route('/api/user-bots-analytics/auto-correction')
     .get(userBots.autoCorrection);
 
+  app.route('/api/speech/:msg')
+    .get(userBots.speech)
+
   // Finish by binding the userBot middleware
   app.param('userBotId', userBots.userBotByID);
   app.param('botNameId', userBots.userBotByNameID);
