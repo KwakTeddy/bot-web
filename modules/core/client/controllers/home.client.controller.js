@@ -1,9 +1,13 @@
 'use strict';
 
-angular.module('core').controller('HomeController', ['$scope', '$rootScope', '$document', '$cookies', 'Authentication', 'Socket',
-  function ($scope, $rootScope, $document, $cookies, Authentication, Socket) {
+angular.module('core').controller('HomeController', ['$scope', '$rootScope', '$document', '$cookies', 'Authentication', 'Socket', '$resource',
+  function ($scope, $rootScope, $document, $cookies, Authentication, Socket, $resource) {
     var vm = this;
     $scope.authentication = Authentication;
+
+    vm.resetDB = function() {
+      $resource('/api/resetDB').delete();
+    };
 
     vm.connectBot = function() {
       console.log('connectBot');

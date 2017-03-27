@@ -27,6 +27,10 @@ module.exports = function(app) {
     .get(analytics.dialog)
     .put(analytics.save_dialog);
 
+  app.route('/api/resetDB').all(analyticsPolicy.isAllowed)
+    .delete(analytics.resetDB);
+
   app.route('/api/dialogchildren/:bId/:dialogId').all(analyticsPolicy.isAllowed)
     .get(analytics.dialogChildren);
+
 };
