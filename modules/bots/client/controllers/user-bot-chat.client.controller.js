@@ -233,7 +233,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
       // only in developer
       if ($state.is('developer-home')) {
-        if (event.keyCode == 116) {    // F5
+        if (event.keyCode == 118) {    // F7
           vm.buildBot();
         } else if (event.keyCode == 27) {
           vm.resetBot();
