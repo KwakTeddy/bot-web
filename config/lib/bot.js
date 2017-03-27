@@ -103,7 +103,7 @@ function loadBot(botName, callback) {
     },
 
     function(cb) {
-      if(bot.path) botDir = path.resolve(bot.path);
+      if(bot && bot.path) botDir = path.resolve(bot.path);
 
       if(fs.existsSync(botDir)) {
         var fileFilter = function(file) { return file.endsWith('.bot.js'); };
