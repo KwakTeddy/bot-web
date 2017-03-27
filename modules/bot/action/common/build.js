@@ -4,8 +4,11 @@ var logger = require(path.resolve('config/lib/logger'));
 var utils = require(path.resolve('modules/bot/action/common/utils'));
 
 
-function botBuild(bot) {
-  var botDir = path.resolve('custom_modules/' + bot);
+function botBuild(bot, botPath) {
+  var botDir;
+  if(botPath) botDir = path.resolve(botPath);
+  else botDir = path.resolve('custom_modules/' + bot);
+
   var fileFilter = function(file) { return file.endsWith('dlg'); };
 
   var files;

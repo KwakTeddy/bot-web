@@ -48,17 +48,17 @@
       <div class="form-group">
         <label class="col-sm-3 control-label">채널 <span class="required" aria-required="true">*</span></label>
         <div class="col-sm-9">
-          <div class="checkbox-custom checkbox-default">
+          <div class="checkbox-custom checkbox-default" style="float: left;margin-left: 10px;">
             <input type="checkbox" id="kakao" ng-model="vm.bot.kakao">
             <label for="kakao">카카오톡</label>
           </div>
 
-          <div class="checkbox-custom checkbox-default">
+          <div class="checkbox-custom checkbox-default" style="float: left;margin-left: 10px;">
             <input type="checkbox" id="line" ng-model="vm.bot.line">
             <label for="line">라인</label>
           </div>
 
-          <div class="checkbox-custom checkbox-default">
+          <div class="checkbox-custom checkbox-default" style="float: left;margin-left: 10px;">
             <input type="checkbox" id="facebook" ng-model="vm.bot.facebook">
             <label for="facebook">페이스북</label>
           </div>
@@ -68,9 +68,14 @@
       <div class="form-group">
         <label class="col-sm-3 control-label">사용여부 <span class="required" aria-required="true">*</span></label>
         <div class="col-sm-9">
-          <div class="checkbox-custom checkbox-default">
+          <div class="checkbox-custom checkbox-default" style="float: left;margin-left: 10px;">
             <input type="checkbox" id="using" ng-model="vm.bot.using">
             <label for="using">사용</label>
+          </div>
+          <div class="checkbox-custom checkbox-default" style="float: left;margin-left: 10px;">
+            <input type="checkbox" id="isMakeFile" ng-model="vm.bot.isMakeFile">
+            <label for="using">파일생성</label>
+
           </div>
         </div>
       </div>
@@ -84,6 +89,25 @@
           <p class="help-block error-text" ng-message="required">설명을 입력해주세요</p>
         </div>
       </div>
+
+
+      <div class="form-group">
+        <label class="col-sm-3 control-label">템플릿 <span class="required" aria-required="true">*</span></label>
+        <div class="col-sm-9">
+          <ul>
+            <li ng-repeat="template in vm.templates"><a ng-click="vm.selectTemplate(template)">{{template.name}}</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="form-group has-error" ng-show="vm.selectedTemplate != undefined">
+        <label class="col-sm-3 control-label">Content <span class="required" aria-required="true">*</span></label>
+        <div class="col-sm-9">
+          {{vm.selectedTemplate.dataSchema}}
+          <textarea name="content" ng-model="vm.bot.template.templateData" id="_content" rows="5" class="form-control" placeholder="내용을 입력해 주세요" required="" aria-required="true" aria-invalid="true"></textarea><label id="content-error" class="error" for="content">내용은 필수 입니다.</label>
+        </div>
+      </div>
+
     </div>
     <footer class="panel-footer">
       <div class="row">

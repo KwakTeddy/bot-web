@@ -38,6 +38,15 @@ var BotSchema = new Schema({
 
   dialogsets: Schema.Types.Mixed,
 
+  templateId: {
+    type: Schema.ObjectId,
+    ref: 'Template'
+  },
+  templateDataId: {
+    type: Schema.ObjectId,
+    ref: 'TemplateData'
+  },
+
   user: {
     type: Schema.ObjectId,
     ref: 'User'

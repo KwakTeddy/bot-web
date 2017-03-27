@@ -13,6 +13,9 @@ var path = require('path'),
   botLib = require(path.resolve('config/lib/bot')),
   fs = require('fs');
 
+  var templateDatas = require(path.resolve('./modules/templates/server/controllers/template-datas.server.controller'));
+  var async = require('async');
+
 /**
  * Create a bot
  */
@@ -20,41 +23,64 @@ exports.create = function (req, res) {
   var bot = new Bot(req.body);
   bot.user = req.user;
 
-  var botFolder = generateBotFolder(bot.id);
-  try {
-    fs.statSync(botFolder);
-  } catch(e) {
-    try {
-      fs.mkdirSync(botFolder);
-    } catch(e) {
-      return res.status(400).send({
-        message: 'Create Directory Failed: ' + botFolder
-      });
+  async.waterfall([
+    function(cb) {
+      if(req.body.isMakeFile) {
+        var botFolder = generateBotFolder(bot.id);
+        try {
+          fs.statSync(botFolder);
+        } catch (e) {
+          try {
+            fs.mkdirSync(botFolder);
+          } catch (e) {
+            return res.status(400).send({
+              message: 'Create Directory Failed: ' + botFolder
+            });
+          }
+        }
+
+        var botFile = fs.readFileSync('./custom_modules/global/default.bot.js.template', 'utf8');
+        botFile = botFile.replace(/__bot__/g, bot.id);
+        fs.writeFileSync(botFolder + bot.id + '.bot.js', botFile, {flag: 'wx'});
+        createFile(bot.id + '.bot.js', bot.user, bot);
+
+        var dlgFile = fs.readFileSync('./custom_modules/global/default.dlg.template', 'utf8');
+        dlgFile = dlgFile.replace(/__bot__/g, bot.name);
+        fs.writeFileSync(botFolder + 'default.dlg', dlgFile, {flag: 'wx'});
+        createFile('default.dlg', bot.user, bot);
+
+        cb(null);
+      } else {
+        cb(null);
+      }
+    }, 
+    
+    function(cb) {
+      if(req.body.template) {
+        templateDatas.createTemplateData(req.body.template, req.body.template.templateData, req.user, function(data, err) {
+          bot.templateId = req.body.template._id;
+          bot.templateDataId = data._id;
+
+          cb(null);
+        });
+      } else {
+        cb(null);
+      }
     }
-  }
 
-  var botFile = fs.readFileSync('./custom_modules/global/default.bot.js.template', 'utf8');
-  botFile = botFile.replace(/__bot__/g, bot.id);
-  fs.writeFileSync(botFolder + bot.id + '.bot.js', botFile,  {flag: 'wx'});
-  createFile(bot.id + '.bot.js', bot.user, bot);
-
-  var dlgFile = fs.readFileSync('./custom_modules/global/default.dlg.template', 'utf8');
-  dlgFile = dlgFile.replace(/__bot__/g, bot.name);
-  fs.writeFileSync(botFolder + 'default.dlg', dlgFile,  {flag: 'wx'});
-  createFile('default.dlg', bot.user, bot);
-
-  bot.save(function (err) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      botLib.buildBot(bot.id);
-      botLib.loadBot(bot.id);
-      res.json(bot);
-    }
-  });
-
+  ], function(err) {
+    bot.save(function (err) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        botLib.buildBot(bot.id);
+        botLib.loadBot(bot.id);
+        res.json(bot);
+      }
+    });
+  })
 
 };
 

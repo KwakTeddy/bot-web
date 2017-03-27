@@ -22,7 +22,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     vm.userId = '';
     vm.msg = '';
     vm.isConnected = false;
-    vm.isVoice = true;
+    vm.isVoice = false
     vm.stt = false;
     vm.tts = false;
 

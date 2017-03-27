@@ -8,34 +8,35 @@ function command(inTextRaw, inTextNLP, context, print, callback) {
   var cmd = inTextRaw.trim();
   var startDialog;
   if(cmd.startsWith(':build')) {
-      bot.buildBot(context.bot.botName);
+      bot.buildBot(context.bot.botName, context.bot.path);
       // message = 'build ' + context.bot.botName + ' completed!\n';
 
-      bot.loadBot(context.bot.botName);
-      // message += 'load ' + context.bot.botName + ' completed!\n';
+      bot.loadBot(context.bot.botName, function(_bot) {
+        // message += 'load ' + context.bot.botName + ' completed!\n';
 
-      startDialog = dialog.findDialog(null, context, dialog.START_DIALOG_NAME);
+        startDialog = dialog.findDialog(null, context, dialog.START_DIALOG_NAME);
 
-    if(!startDialog)
-      print('안녕하세요.' + (context.bot.name || context.botUser.curBotName) + '입니다.');
-      // print('시작 Dialog가 없습니다.');
-    else
-      dialog.executeDialog(startDialog, context, print, callback);
+        if(!startDialog)
+          print('안녕하세요.' + (context.bot.name || context.botUser.curBotName) + '입니다.');
+        // print('시작 Dialog가 없습니다.');
+        else
+          dialog.executeDialog(startDialog, context, print, callback);
+      });
   } else if(cmd.startsWith(':viewGraph')) {
-      bot.buildBot(context.bot.botName);
+      bot.buildBot(context.bot.botName, context.bot.path);
       // message = 'build ' + context.bot.botName + ' completed!\n';
 
-      bot.loadBot(context.bot.botName);
-      // message += 'load ' + context.bot.botName + ' completed!\n';
+      bot.loadBot(context.bot.botName, function(_bot) {
+        // message += 'load ' + context.bot.botName + ' completed!\n';
 
-      startDialog= dialog.findDialog(null, context, dialog.START_DIALOG_NAME);
+        startDialog= dialog.findDialog(null, context, dialog.START_DIALOG_NAME);
 
-    if(!startDialog)
-      print('안녕하세요.' + context.bot.name + '입니다.');
-      // print('시작 Dialog가 없습니다.');
-    else
-      dialog.executeDialog(startDialog, context, print, callback);
-
+        if(!startDialog)
+          print('안녕하세요.' + context.bot.name + '입니다.');
+        // print('시작 Dialog가 없습니다.');
+        else
+          dialog.executeDialog(startDialog, context, print, callback);
+      });
   } else if(cmd == ':reset user') {
     //TODO 디버깅 시에 서버 재시작 안하고 로딩
     utils.requireNoCache(path.resolve('modules/bot/engine/common/globals')).initGlobals();

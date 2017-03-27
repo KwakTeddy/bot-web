@@ -1,10 +1,12 @@
 'use strict';
 
 // Bots controller
-angular.module('bots').controller('BotController', ['$scope', '$state', '$stateParams', 'botResolve', 'BotsService',
-  function ($scope, $state, $stateParams, bot, BotsService) {
+angular.module('bots').controller('BotController', ['$scope', '$state', '$stateParams', 'botResolve', 'TemplatesService',
+  function ($scope, $state, $stateParams, bot, TemplatesService) {
     var vm = this;
     vm.bot = bot;
+
+    vm.templates = TemplatesService.query({});
 
     // Create new Bot
     vm.create = function (isValid) {
@@ -48,6 +50,11 @@ angular.module('bots').controller('BotController', ['$scope', '$state', '$stateP
           $scope.error = errorResponse.data.message;
         });
       }
+    };
+
+    vm.selectTemplate = function(template) {
+      vm.selectedTemplate = template;
+      vm.bot.template = template;
     };
 
     // // Find a list of Bots

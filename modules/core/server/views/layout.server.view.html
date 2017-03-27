@@ -121,11 +121,23 @@
                   <span>대화하기</span>
                 </a>
               </li>
-              <li class="nav">
-                <a ui-sref="bots.list">
+              <li class="nav-parent">
+                <a>
                   <i class="fa fa-cube" aria-hidden="true"></i>
                   <span>봇 관리</span>
                 </a>
+                <ul class="nav nav-children">
+                  <li>
+                    <a ui-sref="bots.list">
+                      봇 관리
+                    </a>
+                  </li>
+                  <li>
+                    <a ui-sref="templates.list">
+                      템플릿 관리
+                    </a>
+                  </li>
+                </ul>
               </li>
 
               <li class="nav">
@@ -148,24 +160,6 @@
                   <li>
                     <a href="pages-signin.html">
                       테스크 관리
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="nav-parent" ng-if="false">
-                <a>
-                  <i class="fa fa-tasks" aria-hidden="true"></i>
-                  <span>대화 템플릿 관리</span>
-                </a>
-                <ul class="nav nav-children">
-                  <li>
-                    <a href="ui-elements-typography.html">
-                      템플릿 Base 관리
-                    </a>
-                  </li>
-                  <li>
-                    <a href="ui-elements-tabs.html">
-                      사용자별 템플릿 관리
                     </a>
                   </li>
                 </ul>

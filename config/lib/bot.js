@@ -9,11 +9,14 @@ var config = require('../config'),
 
 // var dialogsetModule = require(path.resolve('modules/bot/engine/dialogset/dialogset.js'));
 
-function buildBot(botName) {
-  console.log('Building Bot: ' + botName);
+  var async = require('async');
+  var TemplateDataModule = require(path.resolve('modules/templates/server/controllers/template-datas.server.controller'));
+
+function buildBot(botName, botPath) {
+  console.log('Building Bot: ' + botName + botPath);
 
   var build = utils.requireNoCache(path.resolve('modules/bot/action/common/build'));
-  build.botBuild(botName);
+  build.botBuild(botName, botPath);
 }
 
 exports.buildBot = buildBot;
@@ -51,7 +54,7 @@ function loadBots() {
 
 exports.loadBots = loadBots;
 
-function loadBot(botName) {
+function loadBot(botName, callback) {
   // TODO 개발 시 node 재시작 안하려고 임시로
   utils.requireNoCache(path.resolve('modules/bot/action/common/dialog'));
   utils.requireNoCache(path.resolve('modules/bot/action/common/task'));
@@ -60,159 +63,378 @@ function loadBot(botName) {
   utils.requireNoCache(path.resolve('custom_modules/global/global-dialogs'));
 
   console.log('Loading Bot: ' + botName);
+
+  var bot;
   var botDir = path.resolve('custom_modules/' + botName);
-  var fileFilter = function(file) { return file.endsWith('.bot.js'); };
 
-  var files;
-  try {
-    files = fs.readdirSync(botDir);
-    for (var i = 0; i < files.length; i++) {
-      var file = files[i];
-      if(file != file.normalize('NFC')) {
-        files[i] = file.normalize('NFC');
+  async.waterfall([
+    function(cb) {
+      var BotModel = mongoose.model('Bot');
+      BotModel.findOne({id: botName}).lean().exec(function(err, doc) {
+        if(doc != undefined) {
+          bot = new Bot(doc);
+          // bot = doc;
+          global._bots[botName] = bot;
+          cb(null);
+        } else {
+          cb(null);
+        }
+      });
+    },
+
+    function(cb) {
+      if(bot && bot.templateId) {
+        var TemplateModel = mongoose.model('Template');
+        TemplateModel.findOne({_id: bot.templateId}).lean().exec(function(err, doc) {
+          if(doc) {
+            if(!bot.path) bot.path = 'templates/' + doc.id;
+            var templateDataModel = TemplateDataModule.getTemplateDataModel(doc.dataSchema);
+            templateDataModel.findOne({_id: bot.templateDataId}).lean().exec(function(err, doc1) {
+              utils.merge(bot, doc1);
+              cb(null);
+            });
+          } else {
+            cb(null);
+          }
+        });
+      } else {
+        cb(null);
       }
-    }
-    files = files.filter(fileFilter);
-  } catch(e) {
-    console.log('loadBot: ' + botDir + ' 경로 없음');
-    return;
-  }
+    },
 
-  for (var i = 0; i < files.length; i++) {
-    var file = files[i];
-    var filePath = path.join(botDir, file);
+    function(cb) {
+      if(bot.path) botDir = path.resolve(bot.path);
 
-    console.log('\tloading file: ' + file);
-    utils.requireNoCache(filePath);
-  }
+      if(fs.existsSync(botDir)) {
+        var fileFilter = function(file) { return file.endsWith('.bot.js'); };
 
+        var files;
+        try {
+          files = fs.readdirSync(botDir);
+          for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            if(file != file.normalize('NFC')) {
+              files[i] = file.normalize('NFC');
+            }
+          }
+          files = files.filter(fileFilter);
+        } catch(e) {
+          console.log('loadBot: ' + botDir + ' 경로 없음');
+          return;
+        }
 
-  var bot = getBot(botName);
-  if(bot && bot.use === false) return;
+        for (var i = 0; i < files.length; i++) {
+          var file = files[i];
+          var filePath = path.join(botDir, file);
 
-  bot.setDialogs(globalDialogs.globalStartDialogs);
-
-  if(bot && bot.dialogFiles) {
-    for (var i = 0; i < bot.dialogFiles.length; i++) {
-      var file = bot.dialogFiles[i];
-      var filePath = path.join(botDir, file);
-      bot.dialogFiles[i] = filePath;
-
-      try {
-        console.log('\tloading file: ' + file);
-
-        utils.requireNoCache(filePath);
-      } catch(e) {
-        console.log('\tloading file: ' + file + ' error or not found');
-        console.error(e);
+          console.log('\tloading file: ' + file);
+          utils.requireNoCache(filePath);
+        }
       }
-    }
-  }
 
-  fileFilter = function(file) {
-    if(bot && bot.dialogFiles && _.includes(bot.dialogFiles, file)) return false;
-    else return file.endsWith('.dialog.js');
-  };
+      cb(null);
+    },
 
-  try {
-    files = utils.readdirRecursive(botDir);
-    for (var i = 0; i < files.length; i++) {
-      var file = files[i];
-      if(file != file.normalize('NFC')) {
-        files[i] = file.normalize('NFC');
+    function(cb) {
+      bot = getBot(botName);
+      if(!bot || bot.use === false) cb(true);
+      else cb(null);
+    },
+
+    function(cb) {
+      bot.setDialogs(globalDialogs.globalStartDialogs);
+      cb(null);
+    },
+    
+    function(cb) {
+      var fileFilter;
+      var files;
+
+      if(fs.existsSync(botDir)) {
+        if(bot && bot.dialogFiles) {
+          for (var i = 0; i < bot.dialogFiles.length; i++) {
+            var file = bot.dialogFiles[i];
+            var filePath = path.join(botDir, file);
+            bot.dialogFiles[i] = filePath;
+
+            try {
+              console.log('\tloading file: ' + file);
+
+              utils.requireNoCache(filePath);
+            } catch(e) {
+              console.log('\tloading file: ' + file + ' error or not found');
+              console.error(e);
+            }
+          }
+        }
+
+        fileFilter = function(file) {
+          if(bot && bot.dialogFiles && _.includes(bot.dialogFiles, file)) return false;
+          else return file.endsWith('.dialog.js');
+        };
+
+        try {
+          files = utils.readdirRecursive(botDir);
+          for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            if(file != file.normalize('NFC')) {
+              files[i] = file.normalize('NFC');
+            }
+          }
+          files = files.filter(fileFilter);
+        } catch(e) {
+          console.log('loadBot: ' + botDir + ' 경로 없음');
+          return;
+        }
+
+        for (var i = 0; i < files.length; i++) {
+          var file = files[i];
+          // var filePath = path.join(botDir, file);
+
+          try {
+            console.log('\tloading file: ' + file);
+
+            utils.requireNoCache(file);
+          } catch(e) {
+            console.error(e);
+          }
+        }
+
+        // bot.setDialogs([dialogsetModule.faqDialog]);
+
+        fileFilter = function(file) {
+          if(bot && bot.dialogFiles && _.includes(bot.dialogFiles, file)) return false;
+
+          else if(file.endsWith('.js') && !file.endsWith('.dialog.js') && !file.endsWith('.bot.js')) {
+            // var jsPath = path.resolve('custom_modules/' + botName + '/' + file);
+            // var info = path.parse(jsPath);
+            // var dlgPath = path.resolve('custom_modules/' + botName + '/' + info.name + '.dlg');
+            //
+            // if(fs.existsSync(dlgPath)) return false;
+            // else
+            return true;
+          } else {
+            return false;
+          }
+        };
+
+        try {
+          files = utils.readdirRecursive(botDir);
+          for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            if(file != file.normalize('NFC')) {
+              files[i] = file.normalize('NFC');
+            }
+          }
+          files = files.filter(fileFilter);
+        } catch(e) {
+          console.log('loadBot: ' + botDir + ' 경로 없음');
+          console.log(e);
+          return;
+        }
+
+        for (var i = 0; i < files.length; i++) {
+          var file = files[i];
+          // var filePath = path.join(botDir, file);
+
+          try {
+            console.log('\tloading file: ' + file);
+
+            utils.requireNoCache(file);
+          } catch(e) {
+            console.error(e);
+          }
+        }
+
+        // dialog pattern 처리
+        for (var i = 0; bot && i < bot.dialogs.length; i++) {
+          var dialog = bot.dialogs[i];
+
+          if(dialog.input && dialog.input.pattern) {
+            var patternDialog;
+            if('string' == typeof dialog.input.pattern) patternDialog = bot.patterns[dialog.input.pattern];
+            else patternDialog = dialog.input.pattern;
+
+            bot.dialogs[i] = changeDialogPattern(patternDialog, dialog.input.params);
+          }
+        }
+
+        for (var i = 0; bot && i < bot.commonDialogs.length; i++) {
+          var dialog = bot.commonDialogs[i];
+
+          if(dialog.input && dialog.input.pattern) {
+            var patternDialog;
+            if('string' == typeof dialog.input.pattern) patternDialog = bot.patterns[dialog.input.pattern];
+            else patternDialog = dialog.input.pattern;
+
+            bot.commonDialogs[i] = changeDialogPattern(patternDialog, dialog.input.params);
+          }
+        }
       }
+
+      cb(null);
+    },
+
+    function(cb) {
+      bot.setDialogs(globalDialogs.globalEndDialogs);
+      cb(null);
     }
-    files = files.filter(fileFilter);
-  } catch(e) {
-    console.log('loadBot: ' + botDir + ' 경로 없음');
-    return;
-  }
 
-  for (var i = 0; i < files.length; i++) {
-    var file = files[i];
-    // var filePath = path.join(botDir, file);
+  ], function(err) {
+    if(callback) callback(bot);
+  });
 
-    try {
-      console.log('\tloading file: ' + file);
-
-      utils.requireNoCache(file);
-    } catch(e) {
-      console.error(e);
-    }
-  }
-
-  // bot.setDialogs([dialogsetModule.faqDialog]);
-
-  fileFilter = function(file) {
-    if(bot && bot.dialogFiles && _.includes(bot.dialogFiles, file)) return false;
-
-    else if(file.endsWith('.js') && !file.endsWith('.dialog.js') && !file.endsWith('.bot.js')) {
-      // var jsPath = path.resolve('custom_modules/' + botName + '/' + file);
-      // var info = path.parse(jsPath);
-      // var dlgPath = path.resolve('custom_modules/' + botName + '/' + info.name + '.dlg');
-      //
-      // if(fs.existsSync(dlgPath)) return false;
-      // else
-        return true;
-    } else {
-      return false;
-    }
-  };
-
-  try {
-    files = utils.readdirRecursive(botDir);
-    for (var i = 0; i < files.length; i++) {
-      var file = files[i];
-      if(file != file.normalize('NFC')) {
-        files[i] = file.normalize('NFC');
-      }
-    }
-    files = files.filter(fileFilter);
-  } catch(e) {
-    console.log('loadBot: ' + botDir + ' 경로 없음');
-    console.log(e);
-    return;
-  }
-
-  for (var i = 0; i < files.length; i++) {
-    var file = files[i];
-    // var filePath = path.join(botDir, file);
-
-    try {
-      console.log('\tloading file: ' + file);
-
-      utils.requireNoCache(file);
-    } catch(e) {
-      console.error(e);
-    }
-  }
-
-  // dialog pattern 처리
-  for (var i = 0; bot && i < bot.dialogs.length; i++) {
-    var dialog = bot.dialogs[i];
-
-    if(dialog.input && dialog.input.pattern) {
-      var patternDialog;
-      if('string' == typeof dialog.input.pattern) patternDialog = bot.patterns[dialog.input.pattern];
-      else patternDialog = dialog.input.pattern;
-
-      bot.dialogs[i] = changeDialogPattern(patternDialog, dialog.input.params);
-    }
-  }
-
-  for (var i = 0; bot && i < bot.commonDialogs.length; i++) {
-    var dialog = bot.commonDialogs[i];
-
-    if(dialog.input && dialog.input.pattern) {
-      var patternDialog;
-      if('string' == typeof dialog.input.pattern) patternDialog = bot.patterns[dialog.input.pattern];
-      else patternDialog = dialog.input.pattern;
-
-      bot.commonDialogs[i] = changeDialogPattern(patternDialog, dialog.input.params);
-    }
-  }
-
-  bot.setDialogs(globalDialogs.globalEndDialogs);
+  // var fileFilter = function(file) { return file.endsWith('.bot.js'); };
+  //
+  // var files;
+  // try {
+  //   files = fs.readdirSync(botDir);
+  //   for (var i = 0; i < files.length; i++) {
+  //     var file = files[i];
+  //     if(file != file.normalize('NFC')) {
+  //       files[i] = file.normalize('NFC');
+  //     }
+  //   }
+  //   files = files.filter(fileFilter);
+  // } catch(e) {
+  //   console.log('loadBot: ' + botDir + ' 경로 없음');
+  //   return;
+  // }
+  //
+  // for (var i = 0; i < files.length; i++) {
+  //   var file = files[i];
+  //   var filePath = path.join(botDir, file);
+  //
+  //   console.log('\tloading file: ' + file);
+  //   utils.requireNoCache(filePath);
+  // }
+  //
+  // var bot = getBot(botName);
+  // if(bot && bot.use === false) return;
+  //
+  // bot.setDialogs(globalDialogs.globalStartDialogs);
+  //
+  // if(bot && bot.dialogFiles) {
+  //   for (var i = 0; i < bot.dialogFiles.length; i++) {
+  //     var file = bot.dialogFiles[i];
+  //     var filePath = path.join(botDir, file);
+  //     bot.dialogFiles[i] = filePath;
+  //
+  //     try {
+  //       console.log('\tloading file: ' + file);
+  //
+  //       utils.requireNoCache(filePath);
+  //     } catch(e) {
+  //       console.log('\tloading file: ' + file + ' error or not found');
+  //       console.error(e);
+  //     }
+  //   }
+  // }
+  //
+  // fileFilter = function(file) {
+  //   if(bot && bot.dialogFiles && _.includes(bot.dialogFiles, file)) return false;
+  //   else return file.endsWith('.dialog.js');
+  // };
+  //
+  // try {
+  //   files = utils.readdirRecursive(botDir);
+  //   for (var i = 0; i < files.length; i++) {
+  //     var file = files[i];
+  //     if(file != file.normalize('NFC')) {
+  //       files[i] = file.normalize('NFC');
+  //     }
+  //   }
+  //   files = files.filter(fileFilter);
+  // } catch(e) {
+  //   console.log('loadBot: ' + botDir + ' 경로 없음');
+  //   return;
+  // }
+  //
+  // for (var i = 0; i < files.length; i++) {
+  //   var file = files[i];
+  //   // var filePath = path.join(botDir, file);
+  //
+  //   try {
+  //     console.log('\tloading file: ' + file);
+  //
+  //     utils.requireNoCache(file);
+  //   } catch(e) {
+  //     console.error(e);
+  //   }
+  // }
+  //
+  // // bot.setDialogs([dialogsetModule.faqDialog]);
+  //
+  // fileFilter = function(file) {
+  //   if(bot && bot.dialogFiles && _.includes(bot.dialogFiles, file)) return false;
+  //
+  //   else if(file.endsWith('.js') && !file.endsWith('.dialog.js') && !file.endsWith('.bot.js')) {
+  //     // var jsPath = path.resolve('custom_modules/' + botName + '/' + file);
+  //     // var info = path.parse(jsPath);
+  //     // var dlgPath = path.resolve('custom_modules/' + botName + '/' + info.name + '.dlg');
+  //     //
+  //     // if(fs.existsSync(dlgPath)) return false;
+  //     // else
+  //       return true;
+  //   } else {
+  //     return false;
+  //   }
+  // };
+  //
+  // try {
+  //   files = utils.readdirRecursive(botDir);
+  //   for (var i = 0; i < files.length; i++) {
+  //     var file = files[i];
+  //     if(file != file.normalize('NFC')) {
+  //       files[i] = file.normalize('NFC');
+  //     }
+  //   }
+  //   files = files.filter(fileFilter);
+  // } catch(e) {
+  //   console.log('loadBot: ' + botDir + ' 경로 없음');
+  //   console.log(e);
+  //   return;
+  // }
+  //
+  // for (var i = 0; i < files.length; i++) {
+  //   var file = files[i];
+  //   // var filePath = path.join(botDir, file);
+  //
+  //   try {
+  //     console.log('\tloading file: ' + file);
+  //
+  //     utils.requireNoCache(file);
+  //   } catch(e) {
+  //     console.error(e);
+  //   }
+  // }
+  //
+  // // dialog pattern 처리
+  // for (var i = 0; bot && i < bot.dialogs.length; i++) {
+  //   var dialog = bot.dialogs[i];
+  //
+  //   if(dialog.input && dialog.input.pattern) {
+  //     var patternDialog;
+  //     if('string' == typeof dialog.input.pattern) patternDialog = bot.patterns[dialog.input.pattern];
+  //     else patternDialog = dialog.input.pattern;
+  //
+  //     bot.dialogs[i] = changeDialogPattern(patternDialog, dialog.input.params);
+  //   }
+  // }
+  //
+  // for (var i = 0; bot && i < bot.commonDialogs.length; i++) {
+  //   var dialog = bot.commonDialogs[i];
+  //
+  //   if(dialog.input && dialog.input.pattern) {
+  //     var patternDialog;
+  //     if('string' == typeof dialog.input.pattern) patternDialog = bot.patterns[dialog.input.pattern];
+  //     else patternDialog = dialog.input.pattern;
+  //
+  //     bot.commonDialogs[i] = changeDialogPattern(patternDialog, dialog.input.params);
+  //   }
+  // }
+  //
+  // bot.setDialogs(globalDialogs.globalEndDialogs);
 }
 
 exports.loadBot = loadBot;
@@ -346,16 +568,35 @@ Bot.prototype.setDialogPattern = function(patternName, pattern) {
 };
 
 function makeBot(botName, schema) {
-  var bot = new Bot(schema);
-  var BotModel = mongoose.model('Bot');
-  BotModel.findOne({id: botName}).lean().exec(function(err, doc) {
-    if(doc != undefined) {
-      utils.merge(bot, doc);
-      bot.dialogsets = bot.dialogsets.concat(doc.dialogsets);
-    }
-  });
+  var bot = global._bots[botName];
+  if(bot == undefined) {
+    bot = new Bot(schema);
+    var BotModel = mongoose.model('Bot');
+    BotModel.findOne({id: botName}).lean().exec(function (err, doc) {
+      if (doc != undefined) {
+        utils.merge(bot, doc);
+        bot.dialogsets = bot.dialogsets.concat(doc.dialogsets);
 
-  global._bots[botName] = bot;
+        global._bots[botName] = bot;
+      }
+    });
+
+  } else {
+    var _bot = new Bot(schema);
+    utils.merge(bot, _bot);
+    global._bots[botName] = bot;
+  }
+
+  // var bot = new Bot(schema);
+  // var BotModel = mongoose.model('Bot');
+  // BotModel.findOne({id: botName}).lean().exec(function(err, doc) {
+  //   if(doc != undefined) {
+  //     utils.merge(bot, doc);
+  //     bot.dialogsets = bot.dialogsets.concat(doc.dialogsets);
+  //   }
+  // });
+  //
+  // global._bots[botName] = bot;
 
   // console.log('MakeBot: ' + botName);
 

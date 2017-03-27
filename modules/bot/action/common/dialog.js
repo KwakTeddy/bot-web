@@ -120,12 +120,12 @@ function matchGlobalDialogs(inRaw, inNLP, dialogs, context, print, callback, wor
           if(context.botUser.orgNlp) context.botUser.nlp = context.botUser.orgNlp;
           context.botUser.orgNlp = null;
 
-          if(context.bot.useQuibble !=  false) {
+/*          if(context.bot.useQuibble !=  false) {
             context.dialog.isFail = true;
             // print(quibble.quibble(context));
             var dialog = {id: -1, name: 'quibble', input: 'false', output: quibble.quibble(context)};
             executeDialog(dialog, context, print, callback);
-          } else if(context.bot.noDialog) {
+          } else */if(context.bot.noDialog) {
             context.dialog.isFail = true;
             executeDialog(context.bot.noDialog, context, print, callback);
           } else {
@@ -225,12 +225,12 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback, opti
                 matchChildDialogs(_inRaw, _inNLP, dialogs, context, print, callback, options, true);
               });
             } else {
-              if(context.bot.useQuibble !=  false) {
+/*              if(context.bot.useQuibble !=  false) {
                 context.dialog.isFail = true;
                 // print(quibble.quibble(context));
                 var dialog = {id: -1, name: 'quibble', input: 'false', output: quibble.quibble(context)};
                 executeDialog(dialog, context, print, callback);
-              } else if(context.bot.noDialog) {
+              } else */if(context.bot.noDialog) {
                 context.dialog.isFail = true;
                 executeDialog(context.bot.noDialog, context, print, callback);
               } else {

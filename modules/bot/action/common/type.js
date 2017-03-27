@@ -102,6 +102,8 @@ function processOutput(task, context, out) {
       if (!val && context.dialog) val = _.get(context.dialog, p1);
       if (!val && context.user && context.user[DOC_NAME]) val = _.get(context.user[DOC_NAME], p1);
       if (!val && context.user) val = _.get(context.user, p1);
+      if (!val && context.bot && context.bot[DOC_NAME]) val = _.get(context.bot[DOC_NAME], p1);
+      if (!val && context.bot) val = _.get(context.bot, p1);
 
       if (val && Array.isArray(val)) {
         var formatArray = [];
@@ -162,6 +164,8 @@ function processOutput(task, context, out) {
       if (!val && context.dialog) val = _.get(context.dialog, p1);
       if (!val && context.user && context.user[DOC_NAME]) val = _.get(context.user[DOC_NAME], p1);
       if (!val && context.user) val = _.get(context.user, p1);
+      if (!val && context.bot && context.bot[DOC_NAME]) val = _.get(context.bot[DOC_NAME], p1);
+      if (!val && context.bot) val = _.get(context.bot, p1);
 
       if (val) return val;
       else return '';

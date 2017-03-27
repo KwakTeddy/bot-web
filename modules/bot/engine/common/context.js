@@ -133,22 +133,37 @@ function getBotContext(botName, cb) {
     botContext = global._userbots[botName];
     cb(botContext);
   } else {
-    botModule.loadBot(botName);
-    botContext = global._bots[botName];
-    if(botContext) {
-      cb(botContext);
-    } else {
-      botModule.loadUserBot(botName, function(_userBot) {
-        if(_userBot) {
-          botContext = _userBot;
-        } else {
-          botModule.loadBot(botName);
-          botContext = global._bots[botName];
-          if(botContext == undefined) botContext = {};
-        }
-
+    botModule.loadBot(botName, function(_bot) {
+      if(_bot) {
+        botContext = _bot;
         cb(botContext);
-      })
-    }
+      } else {
+        botModule.loadUserBot(botName, function(_userBot) {
+          if(_userBot) {
+            botContext = _userBot;
+          } else if(botContext == undefined) botContext = {};
+
+          cb(botContext);
+        })
+      }
+    });
+
+    // botModule.loadBot(botName);
+    // botContext = global._bots[botName];
+    // if(botContext) {
+    //   cb(botContext);
+    // } else {
+    //   botModule.loadUserBot(botName, function(_userBot) {
+    //     if(_userBot) {
+    //       botContext = _userBot;
+    //     } else {
+    //       botModule.loadBot(botName);
+    //       botContext = global._bots[botName];
+    //       if(botContext == undefined) botContext = {};
+    //     }
+    //
+    //     cb(botContext);
+    //   })
+    // }
   }
 }
