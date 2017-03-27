@@ -150,12 +150,14 @@ function loadBot(botName, callback) {
       var fileFilter;
       var files;
 
+      var filePaths = [];
       if(fs.existsSync(botDir)) {
         if(bot && bot.dialogFiles) {
           for (var i = 0; i < bot.dialogFiles.length; i++) {
             var file = bot.dialogFiles[i];
             var filePath = path.join(botDir, file);
-            bot.dialogFiles[i] = filePath;
+            filePaths.push(filePath);
+            //bot.dialogFiles[i] = filePath;
 
             try {
               console.log('\tloading file: ' + file);
@@ -169,7 +171,7 @@ function loadBot(botName, callback) {
         }
 
         fileFilter = function(file) {
-          if(bot && bot.dialogFiles && _.includes(bot.dialogFiles, file)) return false;
+          if(bot && bot.dialogFiles && _.includes(filePaths, file)) return false;
           else return file.endsWith('.dialog.js');
         };
 
@@ -203,7 +205,7 @@ function loadBot(botName, callback) {
         // bot.setDialogs([dialogsetModule.faqDialog]);
 
         fileFilter = function(file) {
-          if(bot && bot.dialogFiles && _.includes(bot.dialogFiles, file)) return false;
+          if(bot && bot.dialogFiles && _.includes(filePaths, file)) return false;
 
           else if(file.endsWith('.js') && !file.endsWith('.dialog.js') && !file.endsWith('.bot.js')) {
             // var jsPath = path.resolve('custom_modules/' + botName + '/' + file);

@@ -8,6 +8,7 @@ var path = require('path'),
   BotUser = mongoose.model('BotUser'),
   UserDialogLog = mongoose.model('UserDialogLog'),
   UserDialog = mongoose.model('UserDialog'),
+  FactLink = mongoose.model('FactLink'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
 
@@ -302,6 +303,30 @@ exports.dialogChildren = function (req, res) {
 
   console.log("dialogChildren: " + botId+","+dialogId);
   searchDialog(dialogs_data, dialogId, findChildren, res, data);
+};
+
+exports.resetDB = function(req, res) {
+  console.log('resetDB');
+  var cond = { inOut: true};
+  cond.fail = true;
+  cond.botId = "csdemo";
+  UserDialog.find(cond).remove().exec(function(err, data) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      FactLink.find({botUser: {$ne: null}}).remove().exec(function(err, data) {
+        if (err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.status(200).send({message: 'done (factlinks and userdialogs)'});
+        }
+      });
+    }
+  });
 };
 
 exports.save_dialog = function(req, res) {

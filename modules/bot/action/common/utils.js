@@ -137,7 +137,7 @@ exports.requireNoCache = requireNoCache;
 function requireNoCache(filePath) {
   if(process.env.NODE_ENV == 'development')
     delete require.cache[require.resolve(filePath)];
-  return require(filePath);
+  return require(require.resolve(filePath));
 }
 
 
