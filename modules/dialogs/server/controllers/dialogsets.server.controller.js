@@ -14,6 +14,7 @@ var fs = require('fs');
 var multer = require('multer');
 var dialogsetModule = require(path.resolve('modules/bot/engine/dialogset/dialogset.js'));
 
+var utils = require(path.resolve('modules/bot/action/common/utils'));
 /**
  * Create a Custom action
  */
@@ -182,12 +183,28 @@ exports.uploadFile = function (req, res) {
   // if (user) {
   upload(req, res, function (uploadError) {
     if(uploadError) {
-      return res.status(400).send({
-        message: 'Error occurred while uploading file'
-      });
+      return res.status(400).send({ message: 'Error occurred while uploading file' });
     } else {
       console.log('uploadFile:' + req.file.filename);
-      res.json({result: 'ok', path: req.file.destination, filename: req.file.filename, originalFilename: req.file.originalname});
+
+      // check file
+      var info = path.parse(req.file.filename);
+      if (info.ext === ".csv") {
+        var filepath = req.file.destination + req.file.filename;
+        utils.readFirstLine(filepath).then(function(head) {
+          if (head === "Date,User,Message" || (head.match(/,/g) || []).length == 1) {
+            // kakao file or two column csv
+            console.log('kakao csv');
+            res.json({result: 'ok', path: req.file.destination, filename: req.file.filename, originalFilename: req.file.originalname});
+          }
+          return res.status(400).send({ message: '대화파일이 아닙니다' });
+        });
+      } else if (info.ext === ".xls" || info.ext === ".xlsx") {
+
+      } else {
+        //TODO: need to check other types
+        res.json({result: 'ok', path: req.file.destination, filename: req.file.filename, originalFilename: req.file.originalname});
+      }
     }
   });
   // } else {
