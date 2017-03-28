@@ -34,17 +34,9 @@
                             </div>
                             <div  style="clear: both;border-top: 1px solid lightgray; margin-top: 15px;padding-top: 5px;">
                                 <div style="color: #555;font-weight: bold;display: inline-block;">공유하기</div>
-                              <a href="#" ng-click="vm.fbShare()">
-                                <img src="/images/sns/social-facebook-icon.png" height="35" style="border-radius: 8px;"/>
-                              </a>
-                              <a href="#"ng-click="vm.kakaoShare()">
-                                <img src="/images/sns/kakaostory-icon.png" height="35" style="border-radius: 8px;"/>
-                              </a>
-                              <a class="twitter-share-button"
-                                 data-size="large"
-                                 ng-click="vm.twitterShare()">
-                                <img src="/images/sns/social-twitter-icon.png" height="35"/>
-                              </a>
+                                <img src="/images/sns/social-facebook-icon.png" height="35" style="border-radius: 8px; cursor:pointer;" ng-click="vm.fbShare()"/>
+                                <img src="/images/sns/kakaostory-icon.png" height="35" style="border-radius: 8px;cursor:pointer;" ng-click="vm.kakaoShare()"/>
+                                <img src="/images/sns/social-twitter-icon.png" height="35" style="cursor:pointer;" ng-click="vm.twitterShare()"/>
                               <!--<div class="line-it-button" style="display: none;" data-type="share-c" data-lang="en"></div>-->
                             </div>
                             <div style="border-top: 1px solid lightgray; margin-top: 5px;padding-top: 5px;text-align: right;">

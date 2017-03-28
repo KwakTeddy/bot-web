@@ -580,6 +580,10 @@ function makeBot(botName, schema) {
         bot.dialogsets = bot.dialogsets.concat(doc.dialogsets);
 
         global._bots[botName] = bot;
+      } else {
+        var _bot = new Bot(schema);
+        utils.merge(bot, _bot);
+        global._bots[botName] = bot;
       }
     });
 
