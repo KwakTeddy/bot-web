@@ -42,7 +42,7 @@ function createTemplateData(template, content, user, callback) {
 
   var _data;
   try {
-    _data = JSON.parse(content);
+    _data = content;
     _data.templateId = template._id;
   } catch(e) {
     console.log(e);
