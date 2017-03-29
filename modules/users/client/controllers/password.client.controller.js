@@ -1,9 +1,12 @@
 'use strict';
 
-angular.module('users').controller('PasswordController', ['$scope', '$stateParams', '$http', '$location', 'Authentication', 'PasswordValidator', '$state',
-  function ($scope, $stateParams, $http, $location, Authentication, PasswordValidator, $state) {
+angular.module('users').controller('PasswordController', ['$scope', '$stateParams', '$http', '$location', 'Authentication', 'PasswordValidator', '$state', '$ionicModal', '$ionicPopup',
+  function ($scope, $stateParams, $http, $location, Authentication, PasswordValidator, $state, $ionicModal, $ionicPopup) {
     $scope.authentication = Authentication;
     $scope.popoverMsg = PasswordValidator.getPopoverMsg();
+    $scope.forgotPasswordForm = {};
+    $scope.credentials = {};
+
 
     //routing
     var stingParser = $state.current.name;
@@ -18,7 +21,11 @@ angular.module('users').controller('PasswordController', ['$scope', '$stateParam
 
     // If user is signed in then redirect back home
     if ($scope.authentication.user) {
-            $state.go('home');
+      if (_platform == 'mobile'){
+        $state.go('mobileHome');
+      }else {
+        $state.go('home');
+      }
     }
 
 
@@ -37,10 +44,22 @@ angular.module('users').controller('PasswordController', ['$scope', '$stateParam
       var parsedString = stingParser.split('.');
       $scope.credentials['from'] = parsedString[0];
       $http.post('/api/auth/forgot', $scope.credentials).success(function (response) {
-        // Show user success message and clear form
-        $scope.credentials = null;
-        $scope.success = response.message;
+        if (_platform == 'mobile'){
+          var alertPopup = $ionicPopup.alert({
+              title: '비밀번호 재설정 요청',
+              template:'비밀번호 재설정을 위한 메일을 보냈어요<br>' + $scope.credentials.email + '에서 <br>비밀번호 재설정을 위한 절차를 진행해주세요'
+          });
 
+          alertPopup.then(function(res) {
+              console.log(res);
+              $state.go('homeMobile');
+          });
+        }else {
+            // Show user success message and clear form
+            $scope.credentials = null;
+            $scope.success = response.message;
+
+        }
       }).error(function (response) {
         // Show user error message and clear form
         $scope.credentials = null;
@@ -52,7 +71,8 @@ angular.module('users').controller('PasswordController', ['$scope', '$stateParam
     $scope.resetUserPassword = function (isValid) {
       $scope.success = $scope.error = null;
       $scope.submitted = true;
-        if (!isValid) {
+      console.log(isValid);
+      if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'resetPasswordForm');
 
         return false;
@@ -64,14 +84,26 @@ angular.module('users').controller('PasswordController', ['$scope', '$stateParam
 
         // Attach user profile
         Authentication.user = response;
+        if (_platform == 'mobile'){
+          // An alert dialog
+          var alertPopup = $ionicPopup.alert({
+              title: '비밀번호 재설정 성공',
+              template: '성공적으로 비밀번호를 재설정했어요'
+          });
 
-        // And redirect to the index page
-        var stingParser = $state.current.name;
-        var parsedString = stingParser.split('.');
-        if (parsedString[0] == 'user-bots-web'){
-          $state.go('user-bots-web.password.reset.success');
-        } else {
-          $state.go('password.reset.success')
+          alertPopup.then(function(res) {
+            console.log(res);
+            $state.go('homeMobile');
+          });
+        }else {
+          // And redirect to the index page
+          var stingParser = $state.current.name;
+          var parsedString = stingParser.split('.');
+          if (parsedString[0] == 'user-bots-web'){
+              $state.go('user-bots-web.password.reset.success');
+          } else {
+              $state.go('password.reset.success');
+          }
         }
       }).error(function (response) {
         console.log(response);

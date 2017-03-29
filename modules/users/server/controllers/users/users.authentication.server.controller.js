@@ -14,7 +14,7 @@ var path = require('path'),
     config = require(path.resolve('./config/config'));
 
 var smtpTransport = nodemailer.createTransport(config.mailer.options);
-
+var util = require('util');
 // URLs for which user can't be redirected on signin
 var noReturnUrls = [
   '/authentication/signin',
@@ -41,6 +41,8 @@ exports.signup = function (req, res) {
     //Define email search query
     var emailSearchQuery = {};
     emailSearchQuery['email'] = user.email;
+    console.log(util.inspect(emailSearchQuery));
+    console.log(util.inspect(req.body));
 
     User.findOne(emailSearchQuery, function (err, result) {
         if (err) {
@@ -69,7 +71,6 @@ exports.signup = function (req, res) {
                             user.save(function (err) {
                                 if (err) {
                                     console.log(err);
-                                    console.log(123123123132132321);
                                     return res.status(400).send({
                                         message: errorHandler.getErrorMessage(err)
                                     });
@@ -77,6 +78,7 @@ exports.signup = function (req, res) {
                                     // Remove sensitive data before login
                                     user.password = undefined;
                                     user.salt = undefined;
+                                    done(err, token, user);
                                 }
                             });
                         } else if (result.provider !== user.provider && (!result.additionalProvidersData || !result.additionalProvidersData[user.provider])) {
@@ -108,11 +110,10 @@ exports.signup = function (req, res) {
                                     // Remove sensitive data before login
                                     result.password = undefined;
                                     result.salt = undefined;
-
+                                    done(err, token, user);
                                 }
                             });
                         }
-                        done(err, token, user);
                     });
                 },
                 function (token, user, done) {
@@ -134,13 +135,13 @@ exports.signup = function (req, res) {
                     var mailOptions = {
                         to: user.email,
                         from: config.mailer.from,
-                        subject: 'Confirm Email',
+                        subject: 'E-mail 인증',
                         html: emailHTML
                     };
                     smtpTransport.sendMail(mailOptions, function (err) {
                         console.log(err);
                         if (!err) {
-                            res.send({
+                            return res.status(200).send({
                                 message: 'An email has been sent to the provided email with further instructions.'
                             });
                         } else {
@@ -212,7 +213,7 @@ exports.signin = function (req, res, next) {
                     var mailOptions = {
                         to: user.email,
                         from: config.mailer.from,
-                        subject: 'Confirm Email',
+                        subject: 'E-mail 인증',
                         html: emailHTML
                     };
                     smtpTransport.sendMail(mailOptions, function (err) {
@@ -357,6 +358,7 @@ exports.saveOAuthUserProfile = function (req, providerUserProfile, done) {
         } else {
           // Check if user exists, is not signed in using this provider, and doesn't have that provider data already configured
           if (user.provider !== providerUserProfile.provider && (!user.additionalProvidersData || !user.additionalProvidersData[providerUserProfile.provider])) {
+              console.log(45555);
               // Add the provider data to the additional provider data field
               if (!user.additionalProvidersData) {
                   user.additionalProvidersData = {};
@@ -468,7 +470,13 @@ exports.validateEmailConfirmToken = function (req, res) {
             if (err){
                 console.log(err);
             }else {
-                res.redirect('/');
+                req.login(user, function (err) {
+                    if (err) {
+                        res.status(400).send(err);
+                    } else {
+                        res.redirect('/');
+                    }
+                });
             }
         });
     });

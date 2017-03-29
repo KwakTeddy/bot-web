@@ -55,5 +55,63 @@ angular.module('core').controller('SideMenu2Controller', ['$rootScope', '$scope'
     $scope.list = function (filter) {
 
     }
+
+    /** Make Login Modal **/
+    $rootScope.signinModal = undefined;
+    $ionicModal.fromTemplateUrl('modules/users/client/views/authentication/signin.mobile.view.html', {
+        // scope: $scope
+    }).then(function (modal) {
+        $rootScope.signinModal = modal;
+    });
+    /** Make EmailConfirm Modal **/
+    $rootScope.emailConfirmModal = undefined;
+    $ionicModal.fromTemplateUrl('modules/users/client/views/authentication/confirm-email.mobile.view.html', {
+        // scope: $scope
+    }).then(function (modal) {
+        $rootScope.emailConfirmModal = modal;
+    });
+
+    $rootScope.showSigninModal = function () {
+        // $scope.credentials = {};
+        // $scope.onSubmit = false;
+        // $scope.policyCheck = false;
+        // $scope.privacyCheck = false;
+        // $scope.error = null;
+        // $ionicModal.fromTemplateUrl('modules/users/client/views/authentication/signin.mobile.view.html', {
+        //   scope: $scope
+        // }).then(function (modal) {
+        //   $rootScope.signinModal = modal;
+        //   $rootScope.signinModal.show();
+        // });
+        if ($rootScope.signinModal) {
+            $rootScope.signinModal.show();
+        }
+    };
+    $rootScope.closeSigninModal = function () {
+        if ($rootScope.signinModal) {
+            $rootScope.signinModal.hide().then(function () {
+                // if ($rootScope.signinModal) {
+                //   $rootScope.signinModal.remove();
+                // }
+            });
+        }
+        $ionicSideMenuDelegate.toggleLeft(false);
+    };
+    $rootScope.closeEmailConfirmModal = function () {
+        if ($rootScope.emailConfirmModal) {
+            $rootScope.emailConfirmModal.hide().then(function () {
+                // if ($rootScope.signinModal) {
+                //   $rootScope.signinModal.remove();
+                // }
+            });
+        }
+        $ionicSideMenuDelegate.toggleLeft(false);
+    };
+    $rootScope.showEmailConfirmModal = function () {
+        if ($rootScope.emailConfirmModal) {
+            $rootScope.emailConfirmModal.show();
+        }
+    };
+
   }
 ]);

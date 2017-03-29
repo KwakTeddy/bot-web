@@ -11,7 +11,7 @@ var path = require('path'),
   nodemailer = require('nodemailer'),
   async = require('async'),
   crypto = require('crypto');
-
+var util = require('util'); //temporary
 var smtpTransport = nodemailer.createTransport(config.mailer.options);
 
 /**
@@ -75,7 +75,7 @@ exports.forgot = function (req, res, next) {
       var mailOptions = {
         to: user.email,
         from: config.mailer.from,
-        subject: 'Password Reset',
+        subject: '비밀번호 재설정',
         html: emailHTML
       };
       smtpTransport.sendMail(mailOptions, function (err) {
@@ -112,9 +112,10 @@ exports.validateResetToken = function (req, res) {
     if (!user) {
       return res.redirect('/password/reset/invalid');
     }
-    console.log(req.params.from);
     if (req.params.from == "user-bots-web"){
       res.redirect('//password/reset/' + req.params.token);
+    } else if (req.params.from == "mobilePassword"){
+      res.redirect('/mobile#/password/reset/' + req.params.token);
     } else {
       res.redirect('/developer/password/reset/' + req.params.token);
     }

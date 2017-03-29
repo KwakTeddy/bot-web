@@ -45,15 +45,15 @@ if (_platform == "mobile") {
       }
       if (allowed && toState.name != 'mobile.companies.view'
         && toState.name != 'mobile.companies.list') {
-        $ionicLoading.show({
-          // template: 'Loading...'
-          noBackdrop: true
-        });
+        // $ionicLoading.show({
+        //   // template: 'Loading...'
+        //   noBackdrop: true
+        // });
       }
     });
-
     $rootScope.$on('$stateChangeSuccess', function () {
-      $ionicLoading.hide();
+
+        // $ionicLoading.hide();
     });
 
     appRun($rootScope, $state, Authentication);
@@ -172,10 +172,9 @@ if (_platform == "mobile") {
 function appRun($rootScope, $state, Authentication) {
   // Check authentication before changing state
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-
     if (toState.data && toState.data.roles && toState.data.roles.length > 0) {
       var allowed = false;
-      toState.data.roles.forEach(function (role) {
+          toState.data.roles.forEach(function (role) {
         if (Authentication.user.roles !== undefined && Authentication.user.roles.indexOf(role) !== -1) {
           allowed = true;
           return true;
@@ -199,9 +198,9 @@ function appRun($rootScope, $state, Authentication) {
           //       storePreviousState(toState, toParams);
           //   });
           // } else {
-            $state.go('authentication.signin').then(function () {
-                storePreviousState(toState, toParams);
-            });
+          $state.go('authentication.signin').then(function () {
+              storePreviousState(toState, toParams);
+          });
           // }
         }
       }

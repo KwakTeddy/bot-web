@@ -11,7 +11,8 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     // }
 
 //    $scope.authentication = Authentication;
-
+    vm.$stateParams = $stateParams;
+    console.log(vm.$stateParams);
     vm.server = 'localhost:1024';
     vm.bot = $stateParams.userBotId || $cookies.get('default_bot') || 'athena';
     vm.userBot = {};
@@ -427,6 +428,8 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       }
 
       recognition.lang = 'ko-KR';
+      console.log(recognition);
+      console.log(recognition.start());
       recognition.start();
 
       final_transcript = '';
@@ -671,6 +674,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     var holoDefaultVideo = 'http://localhost:8443/videos/지속동영상.mp4';
     vm.videoToggle = false;
     vm.videoPlay = false;
+    $rootScope.videoToggle = false;
 
     function execActions(actions) {
       for(var i = 0; i < actions.length; i++) {
@@ -702,6 +706,8 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       }
 
       vm.videoToggle = !vm.videoToggle;
+      $rootScope.$broadcast('videoToggle', vm.videoToggle);
+
 
       setTimeout(function() {
         var playerName;
@@ -713,6 +719,8 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         source.setAttribute('type', 'video/mp4');
 
         var video = document.getElementById(playerName);
+        console.log(video);
+        console.log(playerName);
         if(video) {
           // if(isFull) video.className = 'video-full';
           // else video.className = 'video-inline';

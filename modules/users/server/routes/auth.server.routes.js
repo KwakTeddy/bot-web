@@ -99,3 +99,4 @@ module.exports = function (app) {
   app.route('/api/auth/paypal').get(users.oauthCall('paypal'));
   app.route('/api/auth/paypal/callback').get(users.oauthCallback('paypal'));
 };
+

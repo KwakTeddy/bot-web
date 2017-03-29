@@ -40,7 +40,6 @@ var UserSchema = new Schema({
     // default: function () {
     //     return Date.now + Math.random();
     // },
-    default: '123',
     validate: [validateLocalStrategyEmail, 'Please fill a valid email address']
   },
   username: {

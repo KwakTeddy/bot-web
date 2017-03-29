@@ -1,0 +1,27 @@
+<ion-modal-view ng-controller="AuthenticationController">
+  <ion-header-bar align-title="center">
+    <h1 class="title">이메일인증</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeModal()">Close</button>
+    </div>
+  </ion-header-bar>
+  <div class="tab_line" style="position: fixed; top: 44px;"></div>
+  <ion-content header-shrink scroll-event-interval="5" style="position: fixed; top: 52px;" ng-cloak>
+    <show-alert></show-alert>
+    <div style="margin-top:0px; margin-bottom:0px; margin-left:5%; margin-right:5%;">
+      <div class="bg_grey t_center">
+        <div class="h30"></div>
+        <div class="signupcomp d_center2">메일함으로 가셔서 인증메일을 확인하세요.
+        </div>
+        <div class="h30"></div>
+
+        <div class="social fw700">{{emailAddress}}{{test}}</div>
+
+        <div class="h20"></div>
+        <button ng-click="resendEmail()" class="button button-light w100p h50" ng-show = "notEmailConfirmLogin"><b>인증메일 재발송</b></button>
+        <div class="social fw700" ng-show="emailSent" ng-show = "notEmailConfirmLogin">{{emailAddress}}</div>
+      </div>
+
+    </div>
+  </ion-content>
+</ion-modal-view>

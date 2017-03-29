@@ -5,12 +5,11 @@
 
 // UserBots controller
 angular.module('user-bots').controller('UserBotListController', ['$scope', '$rootScope', '$stateParams', '$state', 'userBotsResolve',
-  'UserBotsService', 'UserBotsFollowService', '$http', 'Authentication',
-  function ($scope, $rootScope, $stateParams, $state, userBots, UserBotsService, UserBotsFollowService, $http, Authentication) {
+  'UserBotsService', 'UserBotsFollowService', '$http', 'Authentication', '$ionicModal',
+  function ($scope, $rootScope, $stateParams, $state, userBots, UserBotsService, UserBotsFollowService, $http, Authentication, $ionicModal) {
     var vm = this;
     vm.authentication = Authentication;
     vm.userBots = userBots;
-
       if(_platform == 'mobile') {
           if($stateParams['listType'] == 'recent') vm.listTypeName = '최신봇';
           else if($stateParams['listType'] == 'followed') vm.listTypeName = '친구봇';
@@ -75,23 +74,23 @@ angular.module('user-bots').controller('UserBotListController', ['$scope', '$roo
       $state.go('user-bots-web.list', {query: vm.query, listType: vm.listType});
     };
 
-    angular.forEach(vm.userBots, function (userBot) {
-      userBot.channel = '';
-      if(userBot.kakao) {
-        userBot.channel += '카카오톡'
-      }
-      if(userBot.line) {
-        if(userBot.channel.length > 0) {
-          userBot.channel += ', ';
-        }
-        userBot.channel += '라인'
-      }
-      if(userBot.facebook) {
-        if(userBot.channel.length > 0) {
-          userBot.channel += ', ';
-        }
-        userBot.channel += '페이스북'
-      }
-    });
+    // angular.forEach(vm.userBots, function (userBot) {
+    //   userBot.channel = '';
+    //   if(userBot.kakao) {
+    //     userBot.channel += '카카오톡'
+    //   }
+    //   if(userBot.line) {
+    //     if(userBot.channel.length > 0) {
+    //       userBot.channel += ', ';
+    //     }
+    //     userBot.channel += '라인'
+    //   }
+    //   if(userBot.facebook) {
+    //     if(userBot.channel.length > 0) {
+    //       userBot.channel += ', ';
+    //     }
+    //     userBot.channel += '페이스북'
+    //   }
+    // });
   }
 ]);

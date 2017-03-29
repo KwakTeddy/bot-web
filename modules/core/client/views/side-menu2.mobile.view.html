@@ -9,7 +9,8 @@
                 </button>
             </ion-nav-buttons>
         </ion-nav-bar>
-        <ion-nav-view name="menuContent"></ion-nav-view>
+        <ion-nav-view name="menuContent">
+        </ion-nav-view>
     </ion-side-menu-content>
 
     <ion-side-menu side="left">
@@ -18,18 +19,31 @@
         </ion-header-bar>
         <ion-content>
             <ion-list>
-                <ion-item menu-close href="/mobile#/list?listType=popular">
+                <ion-item menu-close ui-sref="user-bots.list({listType: 'popular'})">
                     인기봇
                 </ion-item>
-                <ion-item menu-close href="/mobile#/list?listType=recent">
+                <ion-item menu-close ui-sref="user-bots.list({listType: 'recent'})">
                     최신봇
                 </ion-item>
-                <ion-item menu-close href="/mobile#/list?listType=followed">
+                <ion-item menu-close ui-sref="user-bots.list({listType: 'followed'})">
                     친구봇
                 </ion-item>
-                <ion-item menu-close href="/mobile#/list?listType=my">
+                <ion-item menu-close ui-sref="user-bots.list({listType: 'my'})">
                     마이봇
                 </ion-item>
+                <ion-item menu-close ui-sref="authenticationMobile.signup" ng-if="!authentication.user">
+                  회원가입
+                </ion-item>
+                <ion-item menu-close ng-click="showSigninModal()" ng-if="!authentication.user">
+                  로그인해요
+                </ion-item>
+                <ion-item menu-close ng-click="$state.go('mobileSettings.password')" ng-if="authentication.user">
+                  비밀번호 변경
+                </ion-item>
+                <ion-item menu-close href="/api/auth/signout?path=/" ng-if="authentication.user">
+                  로그아웃
+                </ion-item>
+
                 <!--<ion-item menu-close ng-click="login()">-->
                     <!--Login-->
                 <!--</ion-item>-->
