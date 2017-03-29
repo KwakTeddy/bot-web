@@ -96,6 +96,8 @@ function createFile(fileName, user, userBot) {
  * Show the current userBot
  */
 exports.read = function (req, res) {
+  console.log(req.userBot);
+  console.log('server-read');
   res.json(req.userBot);
 };
 
@@ -394,6 +396,7 @@ exports.unfollowBot = function(req, res) {
  * UserBot middleware
  */
 exports.userBotByID = function (req, res, next, id) {
+  console.log(123123);
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
       message: 'UserBot is invalid'

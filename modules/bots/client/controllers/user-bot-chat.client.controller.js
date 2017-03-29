@@ -110,7 +110,6 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
     vm.mobileModal = function () {
       $ionicModal.fromTemplateUrl('my-modal.html', {
-      // $ionicModal.fromTemplateUrl('modules/bots/client/views/modal-user-bots.client.remove.html', {
           scope: $scope,
           animation: 'slide-in-up'
       }).then(function(modal) {
@@ -122,6 +121,10 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       // };
       $scope.closeModal = function() {
           $scope.modal.hide();
+      };
+      $scope.userBotLearn = function () {
+          $scope.modal.hide();
+          $state.go('user-bots.edit', {userBotId: vm.userBot._id})
       };
       // Cleanup the modal when we're done with it!
       $scope.$on('$destroy', function() {

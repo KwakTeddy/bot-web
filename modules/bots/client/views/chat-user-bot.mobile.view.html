@@ -3,13 +3,14 @@
   <script id="my-modal.html" type="text/ng-template">
     <ion-modal-view>
       <ion-header-bar>
-        <h1 class="title">챗봇을 공유해요</h1>
+        <h1 class="title">공유 및 학습</h1>
         <button class="button button-clear button-primary" ng-click="modal.hide()">취소해요</button>
       </ion-header-bar>
       <ion-content class="padding">
         <button class="button button-full button-positive" ng-click="vm.fbShare()">Facebook</button>
         <button class="button button-full button-positive" ng-click="vm.kakaoTalkShare()">KakaoTalk</button>
         <button class="button button-full button-positive" ng-click="vm.twitterShare()">Twitter</button>
+        <button class="button button-block button-positive button-outline" ng-click="userBotLearn()">학습시키기</button>
       </ion-content>
     </ion-modal-view>
   </script>

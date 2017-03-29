@@ -53,6 +53,22 @@
           }
         }
       })
+      .state('user-bots.edit', {
+        url: '/:userBotId/edit',
+        views: {
+          'menuContent@': {
+            templateUrl: 'modules/bots/client/views/edit-user-bot.mobile.view.html',
+            controllerAs: 'vm',
+            controller: 'UserBotController',
+            resolve: {
+                userBotResolve: getUserBot
+            },
+            data: {
+                roles: ['user', 'admin']
+            }
+          }
+        }
+      })
       .state('authenticationMobile', {
           abstract: true,
           url: '/authentication'
@@ -170,4 +186,11 @@ function getUserBot(UserBotsService, $stateParams) {
 newUserBot.$inject = ['UserBotsService'];
 function newUserBot(UserBotsService) {
   return new UserBotsService();
+}
+
+getUserBotFiles.$inject = ['UserBotFilesService', '$stateParams'];
+function getUserBotFiles(UserBotFilesService, $stateParams) {
+    return UserBotFilesService.query({
+        userBotId: $stateParams.userBotId
+    }).$promise;
 }
