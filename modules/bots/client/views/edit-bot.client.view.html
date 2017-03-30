@@ -94,10 +94,12 @@
       <div class="form-group">
         <label class="col-sm-3 control-label">템플릿 <span class="required" aria-required="true">*</span></label>
         <div class="col-sm-9">
-          <ul>
-            <li><a ng-click="vm.unselectTemplate()">선택 안함</a></li>
-            <li ng-repeat="template in vm.templates"><a ng-click="vm.selectTemplate(template)">{{template.name}}</a></li>
-          </ul>
+            <button ng-click="vm.unselectTemplate()" style="float: left;margin-left: 10px;" class="mb-xs mt-xs mr-xs btn btn-sm btn-default"
+                    ng-class="{'btn-primary': vm.selectedTemplate == undefined}">선택 안함</button>
+          <div ng-repeat="template in vm.templates">
+            <button ng-click="vm.selectTemplate(template)" style="float: left;margin-left: 10px;" class="mb-xs mt-xs mr-xs btn btn-sm btn-default"
+                    ng-class="{'btn-primary': vm.selectedTemplate == template}">{{template.name}}</button>
+          </div>
         </div>
       </div>
 
