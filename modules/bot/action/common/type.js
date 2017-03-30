@@ -1536,6 +1536,9 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
           if(b.matchRate == a.matchRate) return a.inputLen - b.inputLen;
           else return b.matchRate - a.matchRate;
         } else {
+          if(!b.matchCount) b.matchCount = 0;
+          if(!a.matchCount) a.matchCount = 0;
+
           return b.matchCount - a.matchCount;
         }
       });
@@ -1594,6 +1597,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
       }
 
       if(topicKeywords && topicKeywords.length > 0) context.botUser.topic = topicKeywords;
+      console.log('topic1: '+ (context.botUser.topic ? context.botUser.topic[0].text : 'null')+ ',' + context.botUser.analytics + ',' + context.botUser.analytics2);
 
       callback(text, inDoc, true);
     } else {
@@ -1605,18 +1609,22 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
         logger.debug('type.js:dialogTypeCheck: NOT MATCHED ' + (t1 - t0) + ' ms ' + format.name + ' "' + text + '" inDoc.' + format.name + ': ' + inDoc[format.name] + ' inDoc.typeDoc: ' + JSON.stringify(inDoc.typeDoc));
       }
 
+
       if(context.botUser.topic && context.botUser.topic.length > 0 &&
           (context.botUser.analytics == null || context.botUser.analytics2 == null)) {
         if(context.botUser.analytics == null) context.botUser.topic = null;
-        else context.botUser.analytics = null;
-        // else context.botUser.analytics2 = true;
+        // else context.botUser.analytics = null;
+        else context.botUser.analytics2 = true;
+
+        console.log('topic20: '+ (context.botUser.topic ? context.botUser.topic[0].text : 'null') + ',' + context.botUser.analytics + ',' + context.botUser.analytics2);
+
         dialogTypeCheck(text, format, inDoc, context, callback);
       } else {
         if(topicKeywords && topicKeywords.length > 0) context.botUser.topic = topicKeywords;
 
+        console.log('topic21: '+ (context.botUser.topic ? context.botUser.topic[0].text : 'null') + ',' + context.botUser.analytics + ',' + context.botUser.analytics2);
         callback(text, inDoc, false);
       }
-
     }
   });
 }
