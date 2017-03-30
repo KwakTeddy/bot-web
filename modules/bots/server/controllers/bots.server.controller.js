@@ -57,7 +57,7 @@ exports.create = function (req, res) {
     
     function(cb) {
       if(req.body.template) {
-        templateDatas.createTemplateData(req.body.template, req.body.template.templateData, req.user, function(data, err) {
+        templateDatas.createTemplateData(req.body.template, 'null', req.body.template.templateData, req.user, function(data, err) {
           bot.templateId = req.body.template._id;
           bot.templateDataId = data._id;
 
@@ -120,7 +120,7 @@ exports.update = function (req, res) {
           bot.templateDataId = null;
           cb(null);
         } else {
-          templateDatas.createTemplateData(req.bot.template, req.bot.template.templateData, req.user, function(data, err) {
+          templateDatas.createTemplateData(req.bot.template, 'null', req.bot.template.templateData, req.user, function(data, err) {
             bot.templateId = req.bot.template._id;
             bot.templateDataId = data._id;
             cb(null);

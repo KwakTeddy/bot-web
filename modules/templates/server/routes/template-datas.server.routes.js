@@ -8,11 +8,11 @@ var templatesPolicy = require('../policies/templates.server.policy'),
 
 module.exports = function(app) {
   // Custom actions Routes
-  app.route('/api/template-datas/:templateId')//.all(templatesPolicy.isAllowed)
+  app.route('/api/template-datas/:templateId/:listName/:upTemplateId')//.all(templatesPolicy.isAllowed)
     .get(templateDatas.list)
     .post(templateDatas.create);
 
-  app.route('/api/template-datas/:templateId/:templateDataId')//.all(templatesPolicy.isAllowed)
+  app.route('/api/template-datas/:templateId/:listName/:upTemplateId/:templateDataId')//.all(templatesPolicy.isAllowed)
     .get(templateDatas.read)
     .put(templateDatas.update)
     .delete(templateDatas.delete);

@@ -11,7 +11,7 @@
     $stateProvider
       .state('template-datas', {
         abstract: true,
-        url: '/developer/templates/:templateId/template-datas',
+        url: '/developer/templates/:templateId/template-datas/:listName/:upTemplateId',
         template: '<ui-view/>',
         data: {
           roles: ['user', 'admin']
@@ -35,7 +35,8 @@
         controller: 'TemplateDatasController',
         controllerAs: 'vm',
         resolve: {
-          templateDataResolve: newTemplateData
+          templateDataResolve: newTemplateData,
+          templateResolve: getTemplate
         },
         data: {
           // roles: ['user', 'admin'],
@@ -48,7 +49,8 @@
         controller: 'TemplateDatasController',
         controllerAs: 'vm',
         resolve: {
-          templateDataResolve: getTemplateData
+          templateDataResolve: getTemplateData,
+          templateResolve: getTemplate
         },
         data: {
           // roles: ['user', 'admin'],
@@ -61,7 +63,8 @@
         controller: 'TemplateDatasController',
         controllerAs: 'vm',
         resolve: {
-          templateDataResolve: getTemplateData
+          templateDataResolve: getTemplateData,
+          templateResolve: getTemplate
         },
         data:{
           pageTitle: 'Custom action {{ articleResolve.name }}'
@@ -69,21 +72,38 @@
       });
   }
 
+  getTemplate.$inject = ['$stateParams', 'TemplatesService'];
+  function getTemplate($stateParams, TemplatesService) {
+    return TemplatesService.get({
+      templateId: $stateParams.templateId
+    }).$promise;
+  }
+
   getTemplateDatas.$inject = ['$stateParams', 'TemplateDatasService'];
   function getTemplateDatas($stateParams, TemplateDatasService) {
-    return TemplateDatasService.query({templateId: $stateParams.templateId}).$promise;
+    return TemplateDatasService.query({
+        templateId: $stateParams.templateId,
+        listName: $stateParams.listName,
+        upTemplateId: $stateParams.upTemplateId
+      }).$promise;
   }
 
   getTemplateData.$inject = ['$stateParams', 'TemplateDatasService'];
   function getTemplateData($stateParams, TemplateDatasService) {
     return TemplateDatasService.get({
       templateId: $stateParams.templateId,
+      listName: $stateParams.listName,
+      upTemplateId: $stateParams.upTemplateId,
       templateDataId: $stateParams.templateDataId
     }).$promise;
   }
 
   newTemplateData.$inject = ['$stateParams', 'TemplateDatasService'];
   function newTemplateData($stateParams, TemplateDatasService) {
-    return new TemplateDatasService({templateId: $stateParams.templateId});
+    return new TemplateDatasService({
+      templateId: $stateParams.templateId,
+      listName: $stateParams.listName,
+      upTemplateId: $stateParams.upTemplateId
+    });
   }
 })();

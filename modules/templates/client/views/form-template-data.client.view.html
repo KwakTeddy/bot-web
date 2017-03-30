@@ -17,6 +17,15 @@
         </div>
       </div>
 
+      <div class="form-group has-error" ng-show="vm.lists != undefined">
+        <label class="col-sm-3 control-label">Data List <span class="required" aria-required="true">*</span></label>
+        <div class="col-sm-9">
+          <ul>
+            <li ng-repeat="list in vm.lists"><a ui-sref="template-datas.list({templateId: vm.template._id, listName: list._key, upTemplateId: vm.templateData._id})">{{list.model}}</a></li>
+          </ul>
+        </div>
+      </div>
+
     </div>
     <footer class="panel-footer">
       <div class="row">

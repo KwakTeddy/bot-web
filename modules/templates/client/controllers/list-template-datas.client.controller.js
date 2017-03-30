@@ -5,9 +5,9 @@
     .module('templates')
     .controller('TemplateDatasListController', TemplateDatasListController);
 
-  TemplateDatasListController.$inject = ['templateDatasResolve'];
+  TemplateDatasListController.$inject = ['$state', '$stateParams', 'templateDatasResolve'];
 
-  function TemplateDatasListController(templateDatas) {
+  function TemplateDatasListController($state, $stateParams, templateDatas) {
     var vm = this;
 
     vm.templateDatas = templateDatas;

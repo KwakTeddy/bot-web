@@ -9,8 +9,10 @@
   TemplateDatasService.$inject = ['$resource'];
 
   function TemplateDatasService($resource) {
-    return $resource('api/template-datas/:templateId/:templateDataId', {
+    return $resource('api/template-datas/:templateId/:listName/:upTemplateId/:templateDataId/', {
       templateId: '@templateId',
+      listName: '@listName',
+      upTemplateId: '@upTemplateId',
       templateDataId: '@_id'
     }, {
       update: {
