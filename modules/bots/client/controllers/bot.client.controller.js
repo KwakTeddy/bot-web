@@ -1,8 +1,16 @@
 'use strict';
 
+var currentInput;
+var currentNode;
+
+var setInput = function(cur) {
+  currentInput = cur;
+  currentNode = cur.replace('_','.');
+};
+
 // Bots controller
-angular.module('bots').controller('BotController', ['$scope', '$state', '$stateParams', 'botResolve', 'TemplatesService',
-  function ($scope, $state, $stateParams, bot, TemplatesService) {
+angular.module('bots').controller('BotController', ['$scope', '$state', '$window', '$timeout', '$compile', '$stateParams', 'botResolve', 'TemplatesService', 'FileUploader',
+  function ($scope, $state, $window, $timeout, $compile, $stateParams, bot, TemplatesService, FileUploader) {
     var vm = this;
     vm.bot = bot;
 
@@ -96,7 +104,19 @@ angular.module('bots').controller('BotController', ['$scope', '$state', '$stateP
         "date" : {"type":"string", "format":"date"},
         "datetime" : {"type":"string", "format":"datetime"},
         "time" : {"type":"string", "format":"time"},
-        "image" : {"type":"string"},
+        "image" : {
+          "type":"string",
+          "format":"image",
+          /*
+          "readonly":"true",
+          "links": [
+            {
+              "href":"{{self}}",
+              "mediaType":"image",
+            }
+          ]
+          */
+        },
       };
 
       var schema = {};
@@ -127,6 +147,8 @@ angular.module('bots').controller('BotController', ['$scope', '$state', '$stateP
 
       // init json editor
       JSONEditor.defaults.options.theme = 'bootstrap3';
+      JSONEditor.defaults.options.iconlib= 'fontawesome4';
+
       JSONEditor.defaults.custom_validators.push(function(schema, value, path) {
         var errors = [];
         if (value === "") {
@@ -144,6 +166,7 @@ angular.module('bots').controller('BotController', ['$scope', '$state', '$stateP
         type: "object",
         title: template.name,
         properties: {},
+        //format: "grid",
       };
 
       var dataSchema;
@@ -168,6 +191,8 @@ angular.module('bots').controller('BotController', ['$scope', '$state', '$stateP
         disable_properties: true,
       });
 
+      $compile(document.getElementById('editor_holder'))($scope);
+
       if (vm.bot.templateId === template._id) {
         editor.setValue(vm.bot.templateData);
       }
@@ -185,5 +210,86 @@ angular.module('bots').controller('BotController', ['$scope', '$state', '$stateP
     //     botId: $stateParams.botId
     //   });
     // };
+
+    /********************* image *********************/
+    $scope.imageURL = undefined;
+    $scope.ierror = {};
+    $scope.isuccess = {};
+
+
+    // Create file imageUploader instance
+    $scope.jsonImageUploader = new FileUploader({
+      url: '/api/user-bots/image-files',
+      alias: 'uploadImageFile',
+      autoUpload: true
+    });
+
+    var setValue = function(value) {
+      //document.getElementById(currentInput).value = value;
+      editor.getEditor(currentNode).setValue(value);
+    };
+
+    $scope.jsonImageUploader.filters.push({
+      name: 'imageFilter',
+      fn: function (item, options) {
+        var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+        if('|jpg|png|jpeg|bmp|gif|'.indexOf(type) == -1) {
+          $scope.isuccess[currentInput] = null;
+          $scope.ierror[currentInput] = true;
+          setValue('');
+        }
+        return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+      }
+    });
+
+    // Called after the user selected a new picture file
+    $scope.jsonImageUploader.onAfterAddingFile = function (fileItem) {
+      if ($window.FileReader) {
+        var fileReader = new FileReader();
+        fileReader.readAsDataURL(fileItem._file);
+
+        fileReader.onload = function (fileReaderEvent) {
+          $timeout(function () {
+            $scope.imageURL = fileReaderEvent.target.result;
+          }, 0);
+        };
+      }
+    };
+
+    // Called after the user has successfully uploaded a new picture
+    $scope.jsonImageUploader.onSuccessItem = function (fileItem, response, status, headers) {
+      // Show success message
+      $scope.ierror[currentInput] = null;
+      $scope.isuccess[currentInput] = true;
+
+      setValue(response.filename);
+      // Clear upload buttons
+      $scope.cancelImageUpload();
+    };
+
+    // Called after the user has failed to uploaded a new picture
+    $scope.jsonImageUploader.onErrorItem = function (fileItem, response, status, headers) {
+      // Clear upload buttons
+      $scope.cancelImageUpload();
+      setValue('');
+
+      // Show error message
+      $scope.error = response.message;
+    };
+
+    // Change user profile picture
+    $scope.uploadImageFiles = function () {
+      // Clear messages
+      $scope.success = $scope.error = null;
+
+      // Start upload
+      $scope.jsonImageUploader.uploadAll();
+    };
+
+    // Cancel the upload process
+    $scope.cancelImageUpload = function () {
+      $scope.jsonImageUploader.clearQueue();
+      // $scope.imageURL = $scope.user.profileImageURL;
+    };
   }
 ]);

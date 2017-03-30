@@ -30,7 +30,7 @@ module.exports = {
         'public/lib/angular-dropzone/lib/angular-dropzone.js',
         'public/lib/d3/d3.min.js',
         'public/lib/d3-tip/index.js',
-        'public/lib/json-editor/dist/jsoneditor.js',
+        'public/js/jsoneditor.js',
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
     },
