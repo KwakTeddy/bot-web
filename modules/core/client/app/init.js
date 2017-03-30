@@ -170,6 +170,12 @@ if (_platform == "mobile") {
 
 
 function appRun($rootScope, $state, Authentication) {
+    var ogTitle = document.getElementById('ogTitle');
+    var ogDescription = document.getElementById('ogDescription');
+    var ogImage = document.getElementById('ogImage');
+    ogTitle.setAttribute('content', 'test');
+    ogDescription.setAttribute('content', 'itstest');
+    ogImage.setAttribute('content', 'doingtest');
   // Check authentication before changing state
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
     if (toState.data && toState.data.roles && toState.data.roles.length > 0) {

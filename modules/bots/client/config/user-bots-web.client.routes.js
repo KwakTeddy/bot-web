@@ -165,13 +165,6 @@ function getUserBotsWeb(UserBotsService, UserBotsFollowService, $stateParams, $r
 
 getUserBotWeb.$inject = ['UserBotsService', '$stateParams'];
 function getUserBotWeb(UserBotsService, $stateParams) {
-    console.log(88888);
-    var ogTitle = document.getElementById('ogTitle');
-    var ogDescription = document.getElementById('ogDescription');
-    var ogImage = document.getElementById('ogImage');
-    ogTitle.setAttribute('content', 'test');
-    ogDescription.setAttribute('content', 'itstest');
-    ogImage.setAttribute('content', 'doingtest');
   return UserBotsService.get({
     userBotId: $stateParams.userBotId
   }).$promise;
