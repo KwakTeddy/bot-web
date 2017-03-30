@@ -5,8 +5,9 @@ var currentNode;
 
 var setInput = function(cur) {
   currentInput = cur;
-  currentNode = cur.replace('_','.');
+  currentNode = cur.replace(/_/g,'.');
 };
+
 
 // Bots controller
 angular.module('bots').controller('BotController', ['$scope', '$state', '$window', '$timeout', '$compile', '$stateParams', 'botResolve', 'TemplatesService', 'FileUploader',
@@ -98,43 +99,56 @@ angular.module('bots').controller('BotController', ['$scope', '$state', '$window
         editor.destroy();
     };
 
+    var types = {
+      "string": {"type":"string"},
+      "date" : {"type":"string", "format":"date"},
+      "datetime" : {"type":"string", "format":"datetime"},
+      "time" : {"type":"string", "format":"time"},
+      "number" : {"type":"string", "format":"number"},
+      "image" : {
+        "type":"string",
+        "format":"image",
+        /*
+         "readonly":"true",
+         "links": [
+         {
+         "href":"{{self}}",
+         "mediaType":"image",
+         }
+         ]
+         */
+      },
+    };
+
     vm.parseSchema = function(dataSchema) {
-      var types = {
-        "string": {"type":"string"},
-        "date" : {"type":"string", "format":"date"},
-        "datetime" : {"type":"string", "format":"datetime"},
-        "time" : {"type":"string", "format":"time"},
-        "image" : {
-          "type":"string",
-          "format":"image",
-          /*
-          "readonly":"true",
-          "links": [
-            {
-              "href":"{{self}}",
-              "mediaType":"image",
-            }
-          ]
-          */
-        },
-      };
+      var jsonSchema;
+      try {
+        jsonSchema = JSON.parse(dataSchema);
+      } catch(e) {
+        alert("invalid schema" + e.message);
+        return;
+      }
+
+      console.log(jsonSchema);
 
       var schema = {};
 
-      Object.keys(dataSchema).forEach(function(key) {
-        var type = dataSchema[key].type.toLowerCase();
+      Object.keys(jsonSchema).forEach(function(key) {
+        //TODO
+        if (key === "reservations") return;
+        var type = jsonSchema[key].type.toLowerCase();
         if (types[type]) {
           schema[key] = types[type];
         } else {
           switch (type) {
             case "enum":
-              schema[key] = {type:"string", enum:dataSchema[key].data};
+              schema[key] = {type:"string", enum:jsonSchema[key].data};
               break;
             case "list":
-              //schema[key] = {type:"array", items:{ type:"object", "properties": vm.parseSchema(dataSchema[key].schema) }};
+              schema[key] = {type:"array", items:{ type:"object", "properties": vm.parseSchema(jsonSchema[key].schema) }};
               break;
             default:
-              console.log("unknown type: " + type + "in template schema:" + dataSchema);
+              console.log("unknown type: " + type + "in template schema:" + jsonSchema);
               break;
           }
         }
@@ -169,15 +183,7 @@ angular.module('bots').controller('BotController', ['$scope', '$state', '$window
         //format: "grid",
       };
 
-      var dataSchema;
-      try {
-        dataSchema = JSON.parse(template.dataSchema);
-      } catch(e) {
-        alert("invalid schema" + e.message);
-        return;
-      }
-
-      schema.properties = vm.parseSchema(dataSchema);
+      schema.properties = vm.parseSchema(template.dataSchema);
 
       console.log(schema);
 
@@ -192,11 +198,17 @@ angular.module('bots').controller('BotController', ['$scope', '$state', '$window
       });
 
       $compile(document.getElementById('editor_holder'))($scope);
-
       if (vm.bot.templateId === template._id) {
         editor.setValue(vm.bot.templateData);
       }
 
+      editor.on('change', function() {
+        console.log('xxx');
+        $compile(document.getElementById('editor_holder'))($scope);
+        $scope.ierror = {};
+        $scope.isuccess = {};
+
+      });
     };
 
     // // Find a list of Bots
@@ -213,9 +225,6 @@ angular.module('bots').controller('BotController', ['$scope', '$state', '$window
 
     /********************* image *********************/
     $scope.imageURL = undefined;
-    $scope.ierror = {};
-    $scope.isuccess = {};
-
 
     // Create file imageUploader instance
     $scope.jsonImageUploader = new FileUploader({
