@@ -57,9 +57,15 @@ exports.create = function (req, res) {
     
     function(cb) {
       if(req.body.template) {
-        templateDatas.createTemplateData(req.body.template, 'null', 'null', req.body.template.templateData, req.user, function(data, err) {
+        templateDatas.createTemplateData(req.body.template, 'null', 'null', JSON.stringify(req.body.template.templateData), req.user, function(data, err) {
           bot.templateId = req.body.template._id;
           bot.templateDataId = data._id;
+
+          async.eachSeries(req.body.template.templateData.menus, function(menu, cb) {
+            templateDatas.createTemplateData(req.body.template, 'menus', data._id, JSON.stringify(menu), req.user, function(res, err) {
+              cb(null);
+            });
+          });
 
           cb(null);
         });
@@ -120,9 +126,14 @@ exports.update = function (req, res) {
           bot.templateDataId = null;
           cb(null);
         } else {
-          templateDatas.createTemplateData(req.bot.template, 'null', 'null', req.bot.template.templateData, req.user, function(data, err) {
+          templateDatas.createTemplateData(req.bot.template, 'null', 'null', JSON.stringify(req.bot.template.templateData), req.user, function(data, err) {
             bot.templateId = req.bot.template._id;
             bot.templateDataId = data._id;
+            async.eachSeries(req.bot.template.templateData.menus, function(menu, cb) {
+              templateDatas.createTemplateData(req.bot.template, 'menus', data._id, JSON.stringify(menu), req.user, function(res, err) {
+                cb(null);
+              });
+            });
             cb(null);
           });
         }
