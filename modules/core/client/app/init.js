@@ -207,11 +207,16 @@ function appRun($rootScope, $state, Authentication) {
     }
 
     if(toState.name.indexOf('authentication') != -1 || toState.name.indexOf('password') != -1) {
-      var userbotHeader =  document.getElementById('mainHeader');
-      var userbotChat =  document.getElementById('container-chat');
-      if(userbotHeader && userbotChat) {
+      var userbotHeader = document.getElementById('mainHeader');
+      var userbotChat = document.getElementById('container-chat');
+      if (userbotHeader && userbotChat) {
         document.getElementById('mainHeader').style.display = 'none';
         document.getElementById('container-chat').style.display = 'none';
+      }
+    } else if (toState.name === 'user-bots-web.create' || toState.name === 'user-bots-web.edit') {
+      var userbotHeader = document.getElementById('mainHeader');
+      if (userbotHeader) {
+        userbotHeader.style.display = 'none';
       }
     } else {
       var userbotHeader =  document.getElementById('mainHeader');

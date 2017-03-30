@@ -879,9 +879,12 @@ exports.listDialog = function (req, res) {
   var sort = req.query.sort || '-created';
   var user = req.user;
   var query = {};
+
   if (user)
     query['user'] =  user;
   if(req.params.dBotId) query['botId'] =  req.params.dBotId;
+  query['input'] = {"$ne":""};
+  query['output'] = {"$ne":""};
 
   UserBotDialog.find(query).sort(sort).populate('user').exec(function (err, dialogs) {
     if (err) {

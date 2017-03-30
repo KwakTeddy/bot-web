@@ -112,16 +112,37 @@ exports.read = function (req, res) {
 exports.update = function (req, res) {
   var bot = req.bot;
   bot = _.extend(bot , req.body);
+  async.waterfall([
+    function(cb) {
+      if (req.bot.template) {
+        if (req.bot.template == null) {
+          bot.templateId = null;
+          bot.templateDataId = null;
+          cb(null);
+        } else {
+          templateDatas.createTemplateData(req.bot.template, req.bot.template.templateData, req.user, function(data, err) {
+            bot.templateId = req.bot.template._id;
+            bot.templateDataId = data._id;
+            cb(null);
+          });
+        }
+      } else {
+        cb(null);
+      }
+    }],
 
-  bot.save(function (err) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
+    function(err) {
+      bot.save(function (err) {
+        if (err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.json(bot);
+        }
       });
-    } else {
-      res.json(bot);
     }
-  });
+  );
 };
 
 /**
@@ -193,8 +214,35 @@ exports.botByID = function (req, res, next, id) {
       });
     }
     req.bot = bot;
-    next();
+
+    async.waterfall([
+      function(cb) {
+        if (bot.templateId) {
+          var TemplateModel = mongoose.model('Template');
+          TemplateModel.findOne({_id: bot.templateId}).lean().exec(function (err, doc) {
+            if (doc) {
+              var templateDataModel = templateDatas.getTemplateDataModel(doc.dataSchema);
+              templateDataModel.findOne({_id: bot.templateDataId}).lean().exec(function (err, doc1) {
+                doc1.__v = undefined;
+                doc1._id = undefined;
+                doc1.templateId = undefined;
+                req.bot._doc.templateData = doc1;
+
+                cb(null);
+              });
+            } else {
+              cb(null);
+            }
+          });
+        } else {
+          cb(null);
+        }
+      },
+      ], function(err) {
+        next();
+    });
   });
+
 };
 exports.fileByID = function (req, res, next, id) {
   if (!mongoose.Types.ObjectId.isValid(id)) {

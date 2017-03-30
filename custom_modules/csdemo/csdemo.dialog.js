@@ -202,7 +202,7 @@ var dialogs = [
   name: '서비스센터정보',
   input: false,
   task:   csdemo.searchCenterTask,
-  output: '현재 고객님께서 계신 위치해서 가장 가까운 서비스센터는 +item.0.svc_center_name+ +item.0.distance+km 입니다.\n 인근의 가까운 다른 서비스센터로 +item.1.svc_center_name+ +item.1.distance+km 가 있습니다.\n 어떤 서비스 센터 정보를 안내해드릴까요?|어떤 서비스 센터 정보를 안내해드릴까요?', 
+  output: '현재 고객님께서 계신 위치해서 가장 가까운 서비스센터는 +item.0.svc_center_name+ +item.0.distance+km 입니다.\n 인근의 가까운 다른 서비스센터로 +item.1.svc_center_name+ +item.1.distance+km 가 있습니다.\n 어떤 서비스 센터 정보를 안내해드릴까요?|어떤 서비스 센터 정보를 안내해드릴까요?',
     children: [
     {
       id: 38,

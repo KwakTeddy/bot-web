@@ -47,8 +47,8 @@
                                 <a class="btn btn-default" ng-show="vm.userBot.userFollow && vm.user" ng-click="vm.unfollowBot(vm.userBot);"
                                    style="padding: 10px 20px 10px 20px;">친구해제</a>
                                 <!--<a class="btn btn-default" ng-click="">대화 가르치기</a>-->
-                                <a class="btn btn-primary" ng-click="vm.userBotChat(vm.userBot);"
-                                   style="padding: 10px 20px 10px 20px;">대화하기</a>
+<!--                                <a class="btn btn-primary" ng-click="vm.userBotChat(vm.userBot);"
+                                   style="padding: 10px 20px 10px 20px;">대화하기</a>-->
                             </div>
 
                         </div>
@@ -58,10 +58,13 @@
                     </div>
                     <div style="border-top: 1px solid lightgray; margin-top: 5px;padding-top: 10px;">
                         <div>
+                            <form name="commentForm">
                             <input type="text" ng-model="vm.comment.text" class="form-control valid" placeholder="댓글을 입력해주세요."
-                                   aria-invalid="false" style="width: 80%;float: left;margin-right: 10px" ng-disabeld = "!vm.user">
-                            <button class="btn btn-default" ng-click="vm.createComment();" ng-show="vm.user">등록</button>
+                                   aria-invalid="false" style="width: 80%;float: left;margin-right: 10px" ng-disabeld = "!vm.user"
+                                   ng-required="true" ng-minlength="10">
+                            <button class="btn btn-default" ng-click="vm.createComment(commentForm.$valid);" ng-show="vm.user">등록</button>
                             <button class="btn btn-default" ui-sref="authentication.signin" ng-show="!vm.user">로그인해요</button>
+                            </form>
                         </div>
                         <div>
                           <ul style="padding: 10px 0px 10px 5px;">
@@ -130,7 +133,7 @@
                           <label class="col-sm-3 control-label">설명 <span class="required" aria-required="true">*</span></label>
                           <div class="col-sm-7">
                                   <textarea name="description" ng-model="vm.userBot.description" id="description" rows="5" class="form-control"
-                                            placeholder="내용을 입력해주세요" aria-invalid="true" required></textarea>
+                                            placeholder="내용을 입력해주세요" aria-invalid="true" required maxlength="255"></textarea>
                           </div>
                           <div ng-messages="userBotForm.description.$error" role="alert" class="col-sm-offset-3 col-sm-9" ng-show = "userBotForm.description.$error && submitted">
                             <p class="help-block error-text text-danger" ng-message="required">설명해줘요</p>
@@ -282,8 +285,6 @@
 
             <div class="bot-content" ng-show="vm.type == 'learn'">
 
-                <form name="userBotForm1" class="form-horizontal form-bordered"
-                      novalidate="novalidate">
                     <div class="panel-body">
 
                         <div class="bot-list-header" ng-show="vm.state=='create'"  style="border-bottom: 1px solid lightgray;">
@@ -311,13 +312,15 @@
                         <div>
                             <!--<div style="border-bottom: 1px solid lightgray; margin-bottom: 10px;padding-bottom: 5px;font-weight: bold;">대화입력</div>-->
                             <div style="margin-left: 10px; margin-bottom: 10px;">학습시킬 대화를 추가해 주세요.</div>
+                            <form name="learnForm" novalidate="novalidate">
                             <div style="margin-bottom: 15px;">
                                 <input type="text" id="question" name="question" ng-model="vm.dialog.inputRaw" class="form-control valid" placeholder="질문"
-                                       aria-invalid="false" style="width: 44%;float: left;margin-right: 5px">
+                                       aria-invalid="false" style="width: 44%;float: left;margin-right: 5px" required>
                                 <input type="text" id="answer" name="answer" ng-model="vm.dialog.output" class="form-control valid" placeholder="답변"
-                                       aria-invalid="false"  style="width: 44%;float: left;margin-right: 5px">
-                                <button class="btn btn-primary" ng-click="vm.createDialog();">추가</button>
+                                       aria-invalid="false"  style="width: 44%;float: left;margin-right: 5px" required>
+                                <button class="btn btn-primary" ng-click="vm.createDialog(learnForm.$valid);">추가</button>
                             </div>
+                            </form>
 
                             <div ng-repeat="dialog in vm.dialogs" ng-show="dialog.deleted == undefined" style="margin-bottom: 5px;">
                                 <input type="text" ng-model="dialog.inputRaw" class="form-control valid" placeholder="질문"
@@ -331,6 +334,8 @@
                         </div>
 
                     </div>
+                <form name="userBotForm1" class="form-horizontal form-bordered"
+                      novalidate="novalidate">
                     <footer class="panel-footer" ng-show="vm.state=='edit'" >
                         <div class="row">
                             <!--<div class="col-sm-12 text-center" ng-hide="vm.userBot && vm.userBot._id">-->

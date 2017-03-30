@@ -5,7 +5,7 @@ var fileutil = require(path.resolve('modules/bot/action/common/fileutil.js'));
 var mongoModule = require(path.resolve('modules/bot/action/common/mongo.js'));
 var type = require(path.resolve('modules/bot/action/common/type'));
 var mongoose = require('mongoose');
-
+var utils = require(path.resolve('modules/bot/action/common/utils'));
 
 // var bot = require(path.resolve('config/lib/bot')).getBot('private_bot');
 var dialogsetKakao = require('./dialogset-kakao');
@@ -14,52 +14,41 @@ var dialogsetKdrama = require('./dialogset-kdrama');
 
 var DialogsetDialog = mongoose.model('DialogsetDialog');
 
-var util = require('util'); //temporary
-
 function convertDialogset1(dialogset, callback) {
   var dialogType = dialogset.type;
+  var dir = path.resolve('public/files/');
+  var filepath = path.join(dir, dialogset.filename);
 
   if(!dialogType) {
     var info = path.parse(dialogset.originalFilename);
-    if(info.ext == '.csv') {dialogType = 'csv';}
-    else if(info.ext == '.smi') {dialogType = 'smi';}
+    if (info.ext == '.txt') {
+      dialogType = 'kakao';
+      dialogsetKakao.convertDialogset(filepath, dialogset, callback);
+    } else if (info.ext == '.csv') {
+      dialogType = "csv";
+      utils.readFirstLine(filepath).then(function(head) {
+        if (head === "Date,User,Message") {
+          dialogType = "kakao";
+          dialogsetKakao.convertDialogset(filepath, dialogset, callback);
+        } else {
+          insertDatasetFile1(filepath, dialogset, callback);
+        }
+      }, function(err) {
+        dialogType = 'csv';
+        insertDatasetFile1(filepath, dialogset, callback);
+      });
+    } else if(info.ext == '.smi') {
+      dialogType = 'smi';
+      dialogsetSmi.convertDialogset(filepath, dialogset, callback);
+    }
   }
   console.log(dialogType);
 
-  var dir = path.resolve('public/files/');
-  var filepath = path.join(dir, dialogset.filename);
-  if(dialogType == 'csv') insertDatasetFile1(filepath, dialogset, callback);
-  else if(dialogType == 'kakao') dialogsetKakao.convertDialogset(filepath, dialogset, callback);
-  else if(dialogType == 'smi') dialogsetSmi.convertDialogset(filepath, dialogset, callback);
   // else if(dialogType == 'kdrama') dialogsetKdrama.convertDialogset(original, callback);
 
 }
 
 exports.convertDialogset1 = convertDialogset1;
-
-function convertDialogset(original, callback) {
-  var dialogType = 'kakao';
-
-  var info = path.parse(original);
-  if(info.ext == '.txt') {dialogType = 'kakao';}
-  else if(info.ext == '.csv') {dialogType = 'kakao';}
-  else if(info.ext == '.smi') {dialogType = 'smi';}
-
-  var dir = path.resolve('public/files/');
-  insertDatasetFile(path.join(dir, original), function() {
-    callback();
-  });
-
-  // analyzeKnowledge('quibble', callback);
-
-  // nlpTest(path.join(dir, original), callback);
-
-  // if(dialogType == 'kakao') dialogsetKakao.convertDialogset(original, callback);
-  // else if(dialogType == 'smi') dialogsetSmi.convertDialogset(original, callback);
-  // else if(dialogType == 'kdrama') dialogsetKdrama.convertDialogset(original, callback);
-}
-
-exports.convertDialogset = convertDialogset;
 
 function insertDailogsetDialog(dialogset, countId, input, output, callback) {
 

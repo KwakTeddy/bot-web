@@ -482,9 +482,11 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
     $scope.$on('setUserBot', function(event, arg0) {
       var userBot = arg0;
-      vm.bot = userBot.id;
-      vm.userBot = userBot;
-      vm.connectUserBot(vm.bot);
+      if (vm.bot !== userBot.id) {
+        vm.bot = userBot.id;
+        vm.userBot = userBot;
+        vm.connectUserBot(vm.bot);
+      }
     });
 
     $scope.$on('connectUserBot', function(event, arg0) {

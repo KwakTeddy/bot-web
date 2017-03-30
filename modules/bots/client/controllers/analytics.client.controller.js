@@ -24,11 +24,11 @@ angular.module('user-bots').controller('AnalyticsController', ['$scope', '$rootS
         timer = setTimeout(function() {
           var input = arg0;
 
-          // if(event.keyCode == 13) {    // enter
-          //   vm.context.botUser.analytics = null;
-          // } else {
-          //   vm.context.botUser.analytics = true;
-          // }
+          if(event.keyCode == 13) {    // enter
+            vm.context.botUser.analytics = null;
+          } else {
+            vm.context.botUser.analytics = true;
+          }
 
           $resource('/api/user-bots-analytics/context', {}).get({input: input, botId: $rootScope.botId, botUser: $rootScope.botId + '_' + $rootScope.userId, dialogsets: $rootScope.userBot.dialogsets}, function (res) {
             if(Array.isArray(res.result)) vm.dialogs = res.result;
