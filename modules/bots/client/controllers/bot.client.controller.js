@@ -11,7 +11,7 @@ angular.module('bots').controller('BotController', ['$scope', '$state', '$stateP
     vm.templates = TemplatesService.query({}, function(templates){
       if (vm.bot.templateId) {
         for (var i=0; i < templates.length; ++i) {
-          if (templates[i]._id == vm.bot.templateId) {
+          if (templates[i]._id === vm.bot.templateId) {
             vm.selectTemplate(templates[i]);
           }
         }
@@ -90,6 +90,38 @@ angular.module('bots').controller('BotController', ['$scope', '$state', '$stateP
         editor.destroy();
     };
 
+    vm.parseSchema = function(dataSchema) {
+      var types = {
+        "string": {"type":"string"},
+        "date" : {"type":"string", "format":"date"},
+        "datetime" : {"type":"string", "format":"datetime"},
+        "time" : {"type":"string", "format":"time"},
+        "image" : {"type":"string"},
+      };
+
+      var schema = {};
+
+      Object.keys(dataSchema).forEach(function(key) {
+        var type = dataSchema[key].type.toLowerCase();
+        if (types[type]) {
+          schema[key] = types[type];
+        } else {
+          switch (type) {
+            case "enum":
+              schema[key] = {type:"string", enum:dataSchema[key].data};
+              break;
+            case "list":
+              //schema[key] = {type:"array", items:{ type:"object", "properties": vm.parseSchema(dataSchema[key].schema) }};
+              break;
+            default:
+              console.log("unknown type: " + type + "in template schema:" + dataSchema);
+              break;
+          }
+        }
+      });
+      return schema;
+    };
+
     vm.selectTemplate = function(template) {
       vm.selectedTemplate = template;
 
@@ -114,25 +146,15 @@ angular.module('bots').controller('BotController', ['$scope', '$state', '$stateP
         properties: {},
       };
 
-      var types = {
-        "string": {"type":"string"},
-        "date" : {"type":"string", "format":"date"},
-        "datetime" : {"type":"string", "format":"datetime"},
-        "time" : {"type":"string", "format":"time"},
-      };
-
       var dataSchema;
       try {
-        dataSchema = eval("dataSchema=" + template.dataSchema);
+        dataSchema = JSON.parse(template.dataSchema);
       } catch(e) {
         alert("invalid schema" + e.message);
         return;
       }
 
-      Object.keys(dataSchema).forEach(function(key) {
-        dataSchema[key] = types[dataSchema[key].name.toLowerCase()];
-      });
-      schema.properties = dataSchema;
+      schema.properties = vm.parseSchema(dataSchema);
 
       console.log(schema);
 
