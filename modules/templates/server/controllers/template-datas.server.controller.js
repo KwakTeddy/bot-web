@@ -13,22 +13,7 @@ var path = require('path'),
  * Create a Custom action
  */
 exports.create = function(req, res) {
-  var TemplateData = getTemplateDataModel(req.template.dataSchema, req.body.listName);
-  
-  var _data;
-  try {
-    _data = JSON.parse(req.body._content);
-
-    if(req.body.upTemplateId && req.body.upTemplateId != 'null') _data.upTemplateId = req.body.upTemplateId;
-    else _data.templateId = req.body.templateId;
-
-  } catch(e) {
-    console.log(e);
-  }
-  var templateData = new TemplateData(_data);
-  templateData.user = req.user;
-
-  templateData.save(function(err) {
+  createTemplateData(req.template, req.body.listName, req.body.upTemplateId, req.body._content, req.user, function(templateData, err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -40,13 +25,16 @@ exports.create = function(req, res) {
 };
 
 
-function createTemplateData(template, listName, content, user, callback) {
+function createTemplateData(template, listName, upTemplateId, content, user, callback) {
   var TemplateData = getTemplateDataModel(template.dataSchema, listName);
 
   var _data;
   try {
-    _data = content;
-    _data.templateId = template._id;
+    _data = JSON.parse(content);
+
+    if(upTemplateId && upTemplateId != 'null') _data.upTemplateId = upTemplateId;
+    else _data.templateId = template._id;
+
   } catch(e) {
     console.log(e);
   }
@@ -73,44 +61,52 @@ exports.read = function(req, res) {
   res.jsonp(templateData);
 };
 
-// exports.readTemplateData = function(templateDataId, dataSchema, dataModel, callback) {
-//   var TemplateData = getTemplateDataModel(dataSchema, dataModel);
-//
-//   TemplateData.findById(templateDataId).lean().populate('user').exec(function (err, templateData) {
-//     callback(templateData, err);
-//   });
-// };
+function readTemplateData(templateDataId, dataSchema, dataModel, callback) {
+  var TemplateData = getTemplateDataModel(dataSchema, dataModel);
+
+  TemplateData.findById(templateDataId).lean().populate('user').exec(function (err, templateData) {
+    callback(templateData, err);
+  });
+}
+
+exports.readTemplateData = readTemplateData;
 
 /**
  * Update a Custom action
  */
 exports.update = function(req, res) {
-  var templateData= req.templateData ;
+  updateTemplateData(req.templateData, req.body.templateId, req.body.listName, req.body.upTemplateId, req.body._content, req.user,
+    function(templateData, err) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(templateData);
+      }
+  });
+};
 
+function updateTemplateData(templateData, templateId, listName, upTemplateId, _content, user, callback) {
   var _data;
   try {
-    _data = JSON.parse(req.body._content);
+    _data = JSON.parse(_content);
 
-    if(req.body.upTemplateId && req.body.upTemplateId != 'null') _data.upTemplateId = req.body.upTemplateId;
-    else _data.templateId = req.body.templateId;
-
+    if(upTemplateId && upTemplateId != 'null') _data.upTemplateId = upTemplateId;
+    else _data.templateId = templateId;
   } catch(e) {
     console.log(e);
   }
 
   templateData = _.extend(templateData , _data);
+  templateData.user = user;
 
   templateData.save(function(err) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.jsonp(templateData);
-    }
+    callback(templateData, err);
   });
+}
 
-};
+exports.updateTemplateData = updateTemplateData;
 
 /**
  * Delete an Custom action
@@ -129,25 +125,19 @@ exports.delete = function(req, res) {
   });
 };
 
-// exports.deleteTemplateData = function(templateDataId, dataSchema, dataModel, callback) {
-//   var TemplateData = getTemplateDataModel(dataSchema, dataModel);
-//
-//   TemplateData.remove({_id: templateDataId}, function(err) {
-//     callback(err);
-//   });
-// };
+exports.deleteTemplateData = function(templateDataId, dataSchema, listName, callback) {
+  var TemplateData = getTemplateDataModel(dataSchema, listName);
+
+  TemplateData.remove({_id: templateDataId}, function(err) {
+    callback(err);
+  });
+};
 
 /**
  * List of Custom actions
  */
 exports.list = function(req, res) {
-  var TemplateData = getTemplateDataModel(req.template.dataSchema, req.params.listName);
-
-  var query = {};
-  if(req.params.upTemplateId && req.params.upTemplateId != 'null') query.upTemplateId = req.params.upTemplateId;
-  else query.templateId = req.template._id;
-
-  TemplateData.find(query).sort('-created').populate('user', 'displayName').exec(function(err, templateDatas) {
+  listTemplateData(req.template, req.params.listName, req.params.upTemplateId, function(templateDatas, err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -159,13 +149,19 @@ exports.list = function(req, res) {
 };
 
 
-// exports.listTemplateData = function(templateId, dataSchema, dataModel, callback) {
-//   var TemplateData = getTemplateDataModel(dataSchema, dataModel);
-//
-//   TemplateData.find({templateId: templateId}).lean().sort('-created').populate('user').exec(function(err, templateDatas) {
-//     callback(templateDatas, err);
-//   });
-// };
+function listTemplateData(template, listName, upTemplateId, callback) {
+  var TemplateData = getTemplateDataModel(template.dataSchema, listName);
+
+  var query = {};
+  if(upTemplateId && upTemplateId != 'null') query.upTemplateId = upTemplateId;
+  else query.templateId = template._id;
+
+  TemplateData.find(query).sort('-created').populate('user', 'displayName').exec(function(err, templateDatas) {
+    callback(templateDatas, err);
+  });
+};
+
+exports.listTemplateData = listTemplateData;
 
 /**
  * Custom action middleware
