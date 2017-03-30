@@ -152,6 +152,30 @@ function getTemplateDataModel(dataSchema) {
   var TemplateSchema;
   try {
     TemplateSchema= eval('TemplateSchema = '+ dataSchema);
+
+    var keys = Object.keys(TemplateSchema);
+    for(var i = 0; i < keys.length; i++) {
+      var key = keys[i];
+      var val = TemplateSchema[key];
+
+      var type;
+      if(val.type) type = val.type;
+      else type = val;
+
+      if(type == 'String') {
+        val.type = String;
+      } else if(type == 'Time') {
+        val.type = String;
+      } else if(type == 'Enum') {
+        val.type = mongoose.Schema.Types.Mixed;
+      } else if(type == 'Image') {
+        val.type = String;
+      } else if(type == 'List') {
+        delete TemplateSchema[key];
+        // TemplateSchema[key] == undefined;
+      }
+    }
+
     TemplateSchema.templateId = {type: mongoose.Schema.ObjectId, ref: 'Template'};
   } catch(e) {
     console.log(e);
