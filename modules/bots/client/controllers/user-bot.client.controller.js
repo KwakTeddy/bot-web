@@ -11,6 +11,13 @@ if (_platform !== 'mobile'){
             vm.userBot.public = true;
             vm.userId = $rootScope.userId;
 
+            var ogTitle = document.getElementById('ogTitle');
+            var ogDescription = document.getElementById('ogDescription');
+            var ogImage = document.getElementById('ogImage');
+            ogTitle.setAttribute('content', vm.userBot.name);
+            ogDescription.setAttribute('content', vm.userBot.description);
+            ogImage.setAttribute('content', location.protocol + '//' + location.hostname + vm.userBot.imageFile);
+
             vm.isMine = (vm.userBot.user != null && (vm.user.username === vm.userBot.user.username));
             vm.isLearnable = (vm.userBot.user != null && (vm.userBot.learn || vm.isMine));
 
