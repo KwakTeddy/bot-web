@@ -20,6 +20,8 @@ var noReturnUrls = [
   '/authentication/signin',
   '/authentication/signup'
 ];
+var request = require('request');
+
 
 /**
  * Signup
@@ -255,7 +257,9 @@ exports.signin = function (req, res, next) {
  * Signout
  */
 exports.signout = function (req, res) {
-  req.logout();
+  // req.logout();
+    console.log(123);
+  req.session.destroy();
 
   if(req.query['path']) res.redirect(req.query['path']);
   else res.redirect('/');
