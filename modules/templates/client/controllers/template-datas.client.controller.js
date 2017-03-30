@@ -81,8 +81,8 @@
 
       function successCallback(res) {
         $state.go('template-datas.list', {
-          templateId: vm.templateData.templateId,
-          listName : vm.templateData.listName,
+          templateId: template._id,
+          listName : $stateParams.listName,
           upTemplate: vm.templateData.upTemplateId
         }, {reload: true});
       }
