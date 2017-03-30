@@ -29,7 +29,7 @@ module.exports = {
         'public/lib/ngInfiniteScroll/build/ng-infinite-scroll.js',
         'public/lib/angular-dropzone/lib/angular-dropzone.js',
         'public/lib/d3/d3.min.js',
-        'public/lib/d3-tip/index.js',
+        'public/lib/d3-tip/index.js'
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
     },
