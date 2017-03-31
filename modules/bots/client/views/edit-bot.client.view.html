@@ -18,10 +18,10 @@
 
 
 <section class="panel">
-  <form name="botForm" class="form-horizontal form-bordered" ng-submit="vm.create(botForm.$valid)"
+  <form name="botForm" class="form-bordered" ng-submit="vm.create(botForm.$valid)"
         novalidate="novalidate">
     <div class="panel-body">
-      <div class="form-group">
+      <div class="form-horizontal form-group">
         <label class="col-sm-3 control-label">봇아이디 <span class="required" aria-required="true">*</span></label>
         <div class="col-sm-9">
           <input type="text" name="id" ng-model="vm.bot.id" class="form-control valid"
@@ -34,7 +34,7 @@
           <p class="help-block error-text" ng-message="required">아이디를 입력해주세요</p>
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-horizontal form-group">
         <label class="col-sm-3 control-label">봇이름 <span class="required" aria-required="true">*</span></label>
         <div class="col-sm-9">
           <input type="text" name="name" ng-model="vm.bot.name" class="form-control valid" placeholder="자유롭게 입력해주세요"
@@ -45,7 +45,7 @@
           <p class="help-block error-text" ng-message="required">이름을 입력해주세요</p>
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-horizontal form-group">
         <label class="col-sm-3 control-label">채널 <span class="required" aria-required="true">*</span></label>
         <div class="col-sm-9">
           <div class="checkbox-custom checkbox-default" style="float: left;margin-left: 10px;">
@@ -65,7 +65,7 @@
 
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-horizontal form-group">
         <label class="col-sm-3 control-label">사용여부 <span class="required" aria-required="true">*</span></label>
         <div class="col-sm-9">
           <div class="checkbox-custom checkbox-default" style="float: left;margin-left: 10px;">
@@ -79,7 +79,7 @@
           </div>
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-horizontal form-group">
         <label class="col-sm-3 control-label">설명 <span class="required" aria-required="true">*</span></label>
         <div class="col-sm-9">
           <textarea name="description" ng-model="vm.bot.description" id="description" rows="5" class="form-control"
@@ -90,7 +90,7 @@
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="form-horizontal form-group">
         <label class="col-sm-3 control-label">템플릿 <span class="required" aria-required="true">*</span></label>
         <div class="col-sm-9">
             <button ng-click="vm.unselectTemplate()" style="float: left;margin-left: 10px;" class="mb-xs mt-xs mr-xs btn btn-sm btn-default"
@@ -103,13 +103,13 @@
       </div>
 
       <div class="form-group" ng-show="vm.selectedTemplate != undefined">
-        <label class="col-sm-3 control-label">Content <span class="required" aria-required="true">*</span></label>
+        <label class="form-horizontal col-sm-3 control-label">Content <span class="required" aria-required="true">*</span></label>
         <!--<div class="col-sm-9">-->
           <!--<textarea name="content" ng-model="vm.bot.template.templateData" id="_content" rows="5" class="form-control" placeholder="내용을 입력해 주세요" required="" aria-required="true" aria-invalid="true"></textarea><label id="content-error" class="error" for="content">내용은 필수 입니다.</label>-->
         <!--</div>-->
         <div class="col-sm-9" id='editor_holder'>
         </div>
-        <label class="col-sm-3 control-label">Schema: </label>
+        <label class="form-horizontal col-sm-3 control-label">Schema: </label>
         <div class="col-sm-9">{{vm.selectedTemplate.dataSchema}}</div>
       </div>
 

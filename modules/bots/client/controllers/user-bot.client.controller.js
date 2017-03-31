@@ -12,10 +12,10 @@ if (_platform !== 'mobile'){
   // UserBots controller
   angular.module('user-bots').controller('UserBotController', ['$scope', '$rootScope', '$state', '$window','$timeout', '$stateParams',
     'Authentication', 'userBotResolve', 'FileUploader', 'UserBotsService', 'UserBotCommentService', 'UserBotDialogService',
-    'UserBotsFollowService', '$http', '$uibModal', 'TemplatesService',
+    'UserBotsFollowService', '$http', '$uibModal', 'TemplatesService', '$compile',
     function ($scope, $rootScope, $state, $window, $timeout, $stateParams, Authentication, userBot, FileUploader,
               UserBotsService, UserBotCommentService, UserBotDialogService, UserBotsFollowService, $http, $uibModal,
-              TemplatesService) {
+              TemplatesService, $compile) {
       var vm = this;
       vm.user = Authentication.user;
       vm.userBot = userBot;
@@ -156,6 +156,17 @@ if (_platform !== 'mobile'){
           vm.userBot.imageFile = "/files/default.png"
         }
         vm.type = 'connect';
+
+        if (vm.selectedTemplate) {
+          var errors = editor.validate();
+          if (errors.length) {
+            $scope.$broadcast('show-errors-check-validity', 'botForm');
+            return false;
+          }
+          vm.userBot.template = vm.selectedTemplate;
+          vm.userBot.template.templateData = editor.getValue();
+        }
+
         vm.userBot.$save(function (response) {
           vm.learning = false;
           $scope.close = function () {
@@ -193,6 +204,19 @@ if (_platform !== 'mobile'){
           $scope.$broadcast('show-errors-check-validity', 'userBotForm');
           return false;
         }
+
+        if (vm.selectedTemplate) {
+          var errors = editor.validate();
+          if (errors.length) {
+            $scope.$broadcast('show-errors-check-validity', 'botForm');
+            return false;
+          }
+          vm.userBot.template = vm.selectedTemplate;
+          vm.userBot.template.templateData = editor.getValue();
+        } else {
+          vm.userBot.template = null;
+        }
+
         console.log(vm.userBot._id);
         if(vm.userBot && vm.userBot._id) {
           vm.userBot.$update(function () {
@@ -262,8 +286,8 @@ if (_platform !== 'mobile'){
         "image" : {
           "type":"string",
           "format":"image",
-          /*
            "readonly":"true",
+           /*
            "links": [
            {
            "href":"{{self}}",
@@ -291,20 +315,26 @@ if (_platform !== 'mobile'){
           //TODO
           if (jsonSchema[key].hidden) return;
           var type = jsonSchema[key].type.toLowerCase();
-          if (types[type]) {
-            schema[key] = types[type];
-          } else {
+          if (!types[type]) {
             switch (type) {
               case "enum":
-                schema[key] = {type:"string", enum:jsonSchema[key].data};
+                schema[key] = {type: "string", enum: jsonSchema[key].data};
                 break;
               case "list":
-                schema[key] = {type:"array", items:{ type:"object", "properties": vm.parseSchema(jsonSchema[key].schema) }};
+                schema[key] = {
+                  type: "array",
+                  // format: "table",
+                  //title: "메뉴",
+                  uniqueItems: true,
+                  items: {type: "object", "properties": vm.parseSchema(jsonSchema[key].schema)}
+                };
                 break;
               default:
                 console.log("unknown type: " + type + "in template schema:" + jsonSchema);
                 break;
             }
+          } else {
+            schema[key] = types[type];
           }
         });
         return schema;
@@ -339,7 +369,7 @@ if (_platform !== 'mobile'){
 
         schema.properties = vm.parseSchema(template.dataSchema);
 
-        console.log(schema);
+        console.log("schema="+ JSON.stringify(schema));
 
         if (editor) {
           editor.destroy();
@@ -353,11 +383,12 @@ if (_platform !== 'mobile'){
 
         $compile(document.getElementById('editor_holder'))($scope);
         if (vm.userBot.templateId === template._id) {
+          console.log("given input=" + JSON.stringify(vm.userBot.templateData));
           editor.setValue(vm.userBot.templateData);
         }
 
         editor.on('change', function() {
-          console.log('xxx');
+          console.log('editor.onchange -> $compile editor');
           $compile(document.getElementById('editor_holder'))($scope);
           $scope.ierror = {};
           $scope.isuccess = {};
@@ -440,6 +471,7 @@ if (_platform !== 'mobile'){
       // Cancel the upload process
       $scope.cancelImageUpload = function () {
         $scope.jsonImageUploader.clearQueue();
+        setValue('');
         // $scope.imageURL = $scope.user.profileImageURL;
       };
 

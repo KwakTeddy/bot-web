@@ -5069,7 +5069,7 @@ JSONEditor.defaults.editors.select = JSONEditor.AbstractEditor.extend({
   postBuild: function() {
     this._super();
     this.theme.afterInputReady(this.input);
-    this.setupSelect2();
+    //this.setupSelect2();
   },
   onWatchedFieldChange: function() {
     var self = this, vars, j;
@@ -5173,7 +5173,7 @@ JSONEditor.defaults.editors.select = JSONEditor.AbstractEditor.extend({
         this.jsoneditor.notifyWatchers(this.path);
       }
       
-      this.setupSelect2();
+      //this.setupSelect2();
     }
 
     this._super();

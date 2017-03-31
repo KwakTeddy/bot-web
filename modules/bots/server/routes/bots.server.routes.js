@@ -13,6 +13,7 @@ module.exports = function (app) {
     .post(bots.create);
 
   app.route('/api/bots/list')
+    .post(bots.list)
     .get(bots.list);
 
   app.route('/api/bots/:botId')

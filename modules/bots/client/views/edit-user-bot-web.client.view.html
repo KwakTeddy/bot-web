@@ -85,7 +85,7 @@
 
             <div class="bot-content" ng-show="vm.type.startsWith('edit')" style="margin-top: 95px">
 
-                <form name="userBotForm" class="form-horizontal form-bordered"
+                <form name="userBotForm" class="form-bordered"
                       novalidate="novalidate">
                     <div class="panel-body">
 
@@ -125,7 +125,7 @@
                                         <div class="thumbnail" style="text-align: center;height: 190px;">
                                             <img src="/images/sns/facebook-messenger-android.png" style="height: 100px;">
                                             <div class="caption">
-                                                <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); selectTemplate(template);">{{template.name}}</a></p>
+                                                <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
                                             </div>
                                         </div>
                                     </div>
@@ -134,10 +134,10 @@
                             </div>
                         </div>
                         <div class="form-group" ng-show="vm.type == 'edit-detail' && vm.editType == 'template'">
-                            <div class="col-sm-9" id='editor_holder'>
+                            <div class="form-group" id='editor_holder'>
                             </div>
-                            <label class="col-sm-3 control-label">Schema: </label>
-                            <div class="col-sm-9">{{vm.selectedTemplate.dataSchema}}</div>
+                            <!--<label class="col-sm-3 control-label">Schema: </label>-->
+                            <!--<div class="col-sm-9">{{vm.selectedTemplate.dataSchema}}</div>-->
                         </div>
                         <div class="form-group" ng-show="vm.type == 'edit-detail' && vm.editType == 'file'">
                             <label class="col-sm-3 control-label">대화파일 <span class="required" aria-required="true"></span></label>
@@ -162,7 +162,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group" ng-show="vm.type == 'edit'">
+                        <div class="form-horizontal form-group" ng-show="vm.type == 'edit'">
                             <div class="form-group" >
                                 <label class="col-sm-3 control-label">봇아이디 <span class="required" aria-required="true">*</span></label>
                                 <div class="col-sm-7">
