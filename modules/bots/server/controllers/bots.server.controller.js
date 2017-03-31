@@ -422,7 +422,7 @@ exports.botByID = function (req, res, next, id) {
     });
   }
 
-  Bot.findById(id).populate('user', 'displayName').exec(function (err, bot) {
+  Bot.findById(id).populate('user').exec(function (err, bot) {
     if (err) {
       return next(err);
     } else if (!bot) {
