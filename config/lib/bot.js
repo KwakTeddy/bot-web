@@ -87,6 +87,7 @@ function loadBot(botName, callback) {
         var TemplateModel = mongoose.model('Template');
         TemplateModel.findOne({_id: bot.templateId}).lean().exec(function(err, doc) {
           if(doc) {
+            bot.template = doc;
             if(!bot.path) bot.path = 'templates/' + doc.id;
             var templateDataModel = TemplateDataModule.getTemplateDataModel(doc.dataSchema);
             templateDataModel.findOne({_id: bot.templateDataId}).lean().exec(function(err, doc1) {
@@ -610,6 +611,27 @@ function makeBot(botName, schema) {
 }
 
 exports.makeBot = makeBot;
+
+function makeTemplateBot(templateName, schema) {
+  if(global._templates == undefined) global._templates = {};
+
+  var templateBot;
+  if(global._templates[templateName] == undefined) {
+    templateBot = new Bot(schema);
+    global._templates[templateName] = templateBot;
+  } else {
+    templateBot = global._templates[templateName];
+  }
+
+  for(var key in global._bots) {
+    var bot = global._bots[key];
+    if(bot.template.id == templateName) {
+      utils.merge(bot, templateBot);
+    }
+  }
+}
+
+exports.makeTemplateBot = makeTemplateBot;
 
 function getBot(botName) {
   return global._bots[botName];

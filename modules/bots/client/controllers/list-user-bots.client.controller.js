@@ -31,9 +31,9 @@ angular.module('user-bots').controller('UserBotListController', ['$scope', '$roo
       vm.currentPage = vm.currentPage + 1;
       var url = '';
       if(vm.listType == 'followed') {
-        url = '/api/user-bots/follow';
+        url = '/api/bots/follow';
       }else {
-        url = '/api/user-bots/list';
+        url = '/api/bots/list';
       }
       $http.post(url, {currentPage : vm.currentPageCopy, perPage : vm.perPage, listType : vm.listType, botUserId : vm.authentication.user._id, query : vm.query}).success(function (response) {
           if(!response.length) {
@@ -67,9 +67,9 @@ angular.module('user-bots').controller('UserBotListController', ['$scope', '$roo
     vm.goFind = function() {
       var url = '';
       if(vm.listType == 'followed') {
-          url = '/api/user-bots/follow';
+          url = '/api/bots/follow';
       }else {
-          url = '/api/user-bots/list';
+          url = '/api/bots/list';
       }
       $state.go('user-bots-web.list', {query: vm.query, listType: vm.listType});
     };

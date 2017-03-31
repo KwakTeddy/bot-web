@@ -22,7 +22,47 @@ angular.module('bots').factory('BotsService', ['$resource',
           method: 'PUT'
         }
       });
-    }]);
+    }])
+  .factory('BotsFollowService', ['$resource',
+    function ($resource) {
+      return $resource('api/bots/follow', null, {
+        list: {
+          method: 'POST', isArray: true
+        },
+        follow: {
+          method: 'PUT'
+        },
+        unfollow: {
+          method: 'DELETE'
+        }
+      });
+    }
+  ])
+
+  .factory('BotCommentService', ['$resource',
+    function ($resource) {
+      return $resource('api/bots-comment/:botId/:commentId', {
+        botId: '@botId',
+        commentId: '@_id'
+      }, {
+        update: {
+          method: 'PUT'
+        }
+      });
+    }])
+  .factory('BotDialogService', ['$resource',
+    function ($resource) {
+      return $resource('api/bots-dialog/:botId/:dialogId', {
+        botId: '@botId',
+        dialogId: '@_id'
+      }, {
+        update: {
+          method: 'PUT'
+        }
+      });
+    }])
+
+;
 
 angular.module('bots').factory('Dialogs', ['$resource',
   function ($resource) {

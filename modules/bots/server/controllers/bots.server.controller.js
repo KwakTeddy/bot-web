@@ -6,15 +6,22 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   Bot = mongoose.model('Bot'),
+  BotComment = mongoose.model('BotComment'),
+  BotDialog = mongoose.model('BotDialog'),
   BotFile = mongoose.model('BotFile'),
+  BotFollow = mongoose.model('BotFollow'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   config = require(path.resolve('./config/config')),
   _ = require('lodash'),
   botLib = require(path.resolve('config/lib/bot')),
+  multer = require('multer'),
   fs = require('fs');
 
-  var templateDatas = require(path.resolve('./modules/templates/server/controllers/template-datas.server.controller'));
-  var async = require('async');
+var templateDatas = require(path.resolve('./modules/templates/server/controllers/template-datas.server.controller'));
+var async = require('async');
+
+var Dialogset = mongoose.model('Dialogset');
+var dialogsetModule = require(path.resolve('modules/bot/engine/dialogset/dialogset.js'));
 
 /**
  * Create a bot
@@ -72,22 +79,58 @@ exports.create = function (req, res) {
       } else {
         cb(null);
       }
-    }
+    },
 
-  ], function(err) {
-    bot.save(function (err) {
-      if (err) {
-        return res.status(400).send({
-          message: errorHandler.getErrorMessage(err)
+    function(cb) {
+      bot.save(function (err) {
+        if(err) cb(err);
+        else cb(null);
+      });
+    },
+
+    function(cb) {
+      if (!req.body.originalFilename){
+        cb(null);
+      }else {
+        var dialogset = new Dialogset({
+          title: req.body.originalFilename,
+          type: req.body.type,
+          path: req.body.path,
+          filename: req.body.filename,
+          originalFilename: req.body.originalFilename,
+          language: 'en',
+          content: ''
         });
-      } else {
-        botLib.buildBot(bot.id);
-        botLib.loadBot(bot.id);
-        res.json(bot);
-      }
-    });
-  })
+        dialogset.user = req.user;
 
+        dialogset.save(function(err) {
+          if (err) {
+            cb(err);
+          } else {
+            dialogsetModule.convertDialogset1(dialogset, function(result) {
+              bot.dialogsets = [dialogset];
+              bot.save(function(err) {
+                if(err) cb(err);
+                else cb(null);
+              });
+
+              console.log(dialogset.filename + ' converted');
+            })
+          }
+        });
+      }
+    }
+  ], function(err) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      botLib.buildBot(bot.id);
+      botLib.loadBot(bot.id);
+      res.json(bot);
+    }
+  });
 };
 
 function createFile(fileName, user, bot) {
@@ -103,7 +146,6 @@ function createFile(fileName, user, bot) {
     }
   });
 }
-
 
 /**
  * Show the current bot
@@ -140,7 +182,19 @@ exports.update = function (req, res) {
       } else {
         cb(null);
       }
-    }],
+    },
+    
+    function(cb) {
+      dialogsetModule .convertDialogset(bot.dialogFile, function(result) {
+        bot.dialogset = result;
+        bot.save(function(err) {
+          if(console.log(err));
+        })
+      });
+
+      cb(null);
+    }
+    ],
 
     function(err) {
       bot.save(function (err) {
@@ -195,13 +249,165 @@ exports.delete = function (req, res) {
  * List of Bots
  */
 exports.list = function (req, res) {
-  Bot.find().sort('-created').populate('user').exec(function (err, bots) {
+  // TODO 관리자에서는 모든 봇 목록 보이게
+  var sort = req.query.sort || '-created';
+  var perPage = req.body.perPage || 10;
+  var query = {};
+
+  if (req.body.listType == 'popular') {
+    query['public'] = true;
+    sort = '-followed';
+  } else if(req.body.listType == 'recent') {
+    query['public'] = true;
+  } else if(req.body.listType == 'my' || req.query.my) {
+    // query['user'] = req.body.botUserId;
+    query['user'] = req.user;
+  } else if(req.body.query) {
+    query['public'] = true;
+    query['name'] = new RegExp(req.body.query, 'i');
+  }
+
+  Bot.find(query).sort(sort).populate('user').skip(req.body.currentPage * perPage).limit(perPage).exec(function (err, bots) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
       res.json(bots);
+    }
+  });
+};
+
+
+exports.followList = function (req, res) {
+  if (!req.body.botUserId) {
+    return res.json();
+  }
+  var query = {};
+  var search = {};
+  var perPage = req.body.perPage || 10;
+  query['followed'] = true;
+  if(req.body.botUserId) query['botUserId'] = req.body.botUserId;
+  if(req.body.bot) query['bot'] = req.body.bot._id;
+  if(req.body.query) search['name'] = new RegExp(req.body.query, 'i');
+  var populateQuery = [];
+
+  BotFollow.find(query).populate('bot', null, search).sort('-created').skip(req.body.currentPage * perPage).limit(perPage).exec(function (err, follows) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      var bots = [];
+      for(var i in follows) {
+        if(follows[i].bot && (follows[i].bot.public == true)){
+          bots.push(follows[i].bot);
+        }
+      }
+      res.json(bots);
+      // res.json(follows);
+    }
+  });
+};
+
+exports.followBot = function(req, res) {
+  var query = {};
+  query['botUserId'] = req.body.botUserId;
+  query['bot'] = req.body.bot;
+  BotFollow.findOne(query).exec(function (err, follows) {
+    if (err){
+      console.log(err);
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    }else {
+      if (!follows){
+        var botFollow = new BotFollow(req.body);
+        if(!botFollow.followed) {
+          botFollow.followed = true;
+        }
+        botFollow.save(function (err) {
+          if (err) {
+            console.log(err);
+            return res.status(400).send({
+              message: errorHandler.getErrorMessage(err)
+            });
+          } else {
+            Bot.findOne({_id: req.body.bot}).exec(function (err, result) {
+              result.followed++;
+              result.save(function (err) {
+                console.log(err)
+                res.json(botFollow);
+              })
+            });
+          }
+        });
+      }else {
+        follows.followed = true;
+        follows.save(function (err) {
+          if (err) {
+            console.log(err);
+            return res.status(400).send({
+              message: errorHandler.getErrorMessage(err)
+            });
+          }
+          Bot.findOne({_id: req.body.bot}).exec(function (err, result) {
+            result.followed++;
+            result.save(function (err) {
+              console.log(err)
+              res.json(botFollow);
+            })
+          });
+        });
+      }
+    }
+  });
+};
+
+exports.unfollowBot = function(req, res) {
+  BotFollow.findOne({bot: req.query.bot, botUserId: req.query.botUserId}).exec(function (err, result) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    }else {
+      if (!result){
+        var botFollow = new BotFollow(req.query);
+        botFollow.save(function (err) {
+          if (err) {
+            console.log(err);
+            return res.status(400).send({
+              message: errorHandler.getErrorMessage(err)
+            });
+          } else {
+            Bot.findOne({_id: req.query.bot}).exec(function (err, result) {
+              result.followed--;
+              result.save(function (err) {
+                console.log(err);
+                res.json(botFollow);
+              })
+            });
+          }
+        });
+      }else {
+        result.followed = false;
+        result.save(function (err) {
+          if (err){
+            console.log(err);
+            return res.status(400).send({
+              message: errorHandler.getErrorMessage(err)
+            });
+          }else {
+            Bot.findOne({_id: req.query.bot}).exec(function (err, result) {
+              result.followed--;
+              result.save(function (err) {
+                console.log(err)
+                res.end();
+              })
+            });
+          }
+        });
+      }
     }
   });
 };
@@ -248,13 +454,29 @@ exports.botByID = function (req, res, next, id) {
         } else {
           cb(null);
         }
-      },
+      }
       ], function(err) {
         next();
     });
   });
-
 };
+
+
+exports.botByNameID = function (req, res, next, id) {
+
+  Bot.findOne({id: id}).populate('user').exec(function (err, bot) {
+    if (err) {
+      return next(err);
+    } else if (!bot) {
+      return res.status(404).send({
+        message: 'No bot with that identifier has been found'
+      });
+    }
+    req.bot = bot;
+    next();
+  });
+};
+
 exports.fileByID = function (req, res, next, id) {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
@@ -308,31 +530,10 @@ exports.createFile = function (req, res) {
         console.log('res.json');
       }
     });
-
-    // if(err) {
-    //   res.status(400).send({
-    //     message: 'File Already Exists'
-    //   });
-    // } else {
-    //   var botFile = new BotFile();
-    //   botFile.bot = bot;
-    //   botFile.name = req.body.fileName;
-    //   botFile.user = req.user;
-    //   console.log('botFile: ' + botFile.name);
-    //   botFile.save(function (err) {
-    //     if (err) {
-    //       return res.status(400).send({
-    //         message: errorHandler.getErrorMessage(err)
-    //       });
-    //     } else {
-    //       res.json(botFile);
-    //       console.log('res.json');
-    //     }
-    //   })
-    // }
   });
+}
 
-};
+
 exports.removeFile = function (req, res) {
   var file = req.file;
   var botFolder = generateBotFolder(file.bot.id);
@@ -346,24 +547,9 @@ exports.removeFile = function (req, res) {
         res.json(file);
       }
     });
-
-    // if(err) {
-    //   res.status(400).send({
-    //     message: 'Remove File Failed'
-    //   });
-    // } else {
-    //   file.remove(function (err) {
-    //     if (err) {
-    //       return res.status(400).send({
-    //         message: errorHandler.getErrorMessage(err)
-    //       });
-    //     } else {
-    //       res.json(file);
-    //     }
-    //   })
-    // }
   })
 };
+
 exports.renameFile = function (req, res) {
   var file = req.file;
   var botFolder = generateBotFolder(file.bot.id);
@@ -387,6 +573,7 @@ exports.renameFile = function (req, res) {
     }
   })
 };
+
 exports.readFile = function (req, res) {
   var bot = req.bot;
   var file = req.file;
@@ -403,6 +590,7 @@ exports.readFile = function (req, res) {
     }
   })
 };
+
 exports.editFile = function (req, res) {
   var file = req.file;
   var botFolder = generateBotFolder(file.bot.id);
@@ -421,6 +609,7 @@ function generateBotFolder(botId) {
   // return config.chatServer + 'RAWDATA/' + botId + '/';
   return './custom_modules/' + botId + '/';
 }
+
 function deleteFolderRecursive(path) {
   var files = [];
   if( fs.existsSync(path) ) {
@@ -438,4 +627,409 @@ function deleteFolderRecursive(path) {
 };
 
 
+exports.uploadImageFile = function (req, res) {
+  var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './public/files/')
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.originalname);
+      // cb(null, req.params.filename + path.parse(file.originalname).ext);
+    }
+  });
 
+  // var user = req.user;
+  var upload = multer({storage: storage}).single('uploadImageFile');
+
+  // Filtering to upload only images
+  upload.fileFilter = function (req, file, cb) {
+    if (file.mimetype !== 'image/png' && file.mimetype !== 'image/jpg' && file.mimetype !== 'image/jpeg' && file.mimetype !== 'image/gif') {
+      return cb(new Error('Only image files are allowed!'), false);
+    }
+    cb(null, true);
+  };
+
+  // if (user) {
+  upload(req, res, function (uploadError) {
+    if(uploadError) {
+      return res.status(400).send({
+        message: 'Error occurred while uploading file'
+      });
+    } else {
+      console.log('uploadFile:' + req.file.filename);
+      res.json({result: 'ok', filename: req.file.filename});
+    }
+  });
+  // } else {
+  //   res.status(400).send({
+  //     message: 'User is not signed in'
+  //   });
+  // }
+};
+
+
+exports.uploadFile = function (req, res) {
+  console.log('uploadFile:' );
+
+  var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './public/files/')
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.originalname);
+      // cb(null, req.params.filename + path.parse(file.originalname).ext);
+      // cb(null, req.params.filename)
+    }
+  });
+
+  // var user = req.user;
+  var message = null;
+  var upload = multer({storage: storage}).single('uploadFile');
+  // var dialogUploadFileFilter = require(path.resolve('./config/lib/multer')).dialogUploadFileFilter;
+
+  // Filtering to upload only images
+  upload.fileFilter = function (req, file, cb) {
+    if (file.mimetype !== 'text/plain' && file.mimetype !== 'text/csv') {
+      return cb(new Error('Only txt/csv files are allowed!'), false);
+    }
+    cb(null, true);
+  };
+
+  // if (user) {
+  upload(req, res, function (uploadError) {
+    if(uploadError) {
+      return res.status(400).send({
+        message: 'Error occurred while uploading file'
+      });
+    } else {
+      console.log('uploadFile:' + req.file.filename);
+      res.json({result: 'ok', filename: req.file.filename});
+    }
+  });
+  // } else {
+  //   res.status(400).send({
+  //     message: 'User is not signed in'
+  //   });
+  // }
+};
+
+
+exports.convertFile = function (req, res) {
+  // var dir = path.resolve('custom_modules/private_bot/_data/');
+  var filename = req.body.filename;
+
+  dialogset.convertDialogset(filename, function(result) {
+    res.json({result: 'ok'});
+  });
+
+}
+
+
+
+/********************** comment ****************************/
+
+exports.createComment = function (req, res) {
+  var comment = new BotComment(req.body);
+  comment.user = req.user;
+
+  comment.save(function (err) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      // botLib.buildBotComment(bot.id);
+      // botLib.loadBotComment(bot.id);
+      res.json(comment);
+    }
+  });
+
+};
+
+exports.readComment = function (req, res) {
+  res.json(req.comment);
+};
+
+exports.updateComment = function (req, res) {
+  var comment = req.comment;
+  comment = _.extend(comment, req.body);
+
+  comment.user = req.user;
+  comment.save(function (err) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json(comment);
+    }
+  });
+};
+
+exports.deleteComment = function (req, res) {
+  var comment = req.comment;
+
+  comment.remove(function (err) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json(comment);
+    }
+  });
+};
+
+exports.listComment = function (req, res) {
+  var sort = req.query.sort || '-created';
+
+  var query = {};
+  if(req.params.botId) query['bot'] =  req.bot;
+
+  BotComment.find(query).sort(sort).populate('user').exec(function (err, comments) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json(comments);
+    }
+  });
+};
+
+exports.botCommentByID = function (req, res, next, id) {
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).send({
+      message: 'Bot is invalid'
+    });
+  }
+
+  BotComment.findById(id).populate('user', 'displayName').exec(function (err, comment) {
+    if (err) {
+      return next(err);
+    } else if (!comment) {
+      return res.status(404).send({
+        message: 'No bot with that identifier has been found'
+      });
+    }
+    req.comment = comment;
+    next();
+  });
+};
+
+/********************** dialog ****************************/
+
+exports.createDialog = function (req, res) {
+  var dialog = new BotDialog(req.body);
+  dialog.user = req.user;
+
+  dialogsetModule.processInput(null, dialog.inputRaw, function(_input) {
+    dialog.input = _input;
+
+    console.log('createDialog:' + dialog.bot);
+    dialog.save(function (err) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.json(dialog);
+      }
+    });
+  });
+};
+
+exports.readDialog = function (req, res) {
+  res.json(req.dialog);
+};
+
+exports.updateDialog = function (req, res) {
+  var dialog = req.dialog;
+  dialog = _.extend(dialog, req.body);
+
+  dialog.user = req.user;
+
+  dialogsetModule.processInput(null, dialog.inputRaw, function(_input) {
+    dialog.input = _input;
+
+    dialog.save(function (err) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.json(dialog);
+      }
+    });
+  });
+
+  // dialog.save(function (err) {
+  //   if (err) {
+  //     return res.status(400).send({
+  //       message: errorHandler.getErrorMessage(err)
+  //     });
+  //   } else {
+  //     res.json(dialog);
+  //   }
+  // });
+};
+
+exports.deleteDialog = function (req, res) {
+  var dialog = req.dialog;
+
+  dialog.remove(function (err) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json(dialog);
+    }
+  });
+};
+
+exports.listDialog = function (req, res) {
+  var sort = req.query.sort || '-created';
+  var user = req.user;
+  var query = {};
+
+  if (user)
+    query['user'] =  user;
+  if(req.params.dBotId) query['botId'] =  req.params.dBotId;
+  query['input'] = {"$ne":""};
+  query['output'] = {"$ne":""};
+
+  BotDialog.find(query).sort(sort).populate('user').exec(function (err, dialogs) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json(dialogs);
+    }
+  });
+};
+
+exports.botDialogByID = function (req, res, next, id) {
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).send({
+      message: 'Bot is invalid'
+    });
+  }
+
+  BotDialog.findById(id).populate('user', 'displayName').exec(function (err, dialog) {
+    if (err) {
+      return next(err);
+    } else if (!dialog) {
+      return res.status(404).send({
+        message: 'No bot with that identifier has been found'
+      });
+    }
+    req.dialog = dialog;
+    next();
+  });
+};
+
+/********************** analytics ****************************/
+
+var type = require(path.resolve('./modules/bot/action/common/type'));
+exports.contextAnalytics = function (req, res) {
+
+  var faqType = {
+    name: 'result',
+    typeCheck: type.dialogTypeCheck,
+    limit: 10,
+    matchRate: 0,
+    exclude: ['하다', '이다'],
+    mongo: {
+      model: 'DialogsetDialog',
+      // queryStatic: {dialogset: '기본대화1'},
+      queryFields: ['input'],
+      fields: 'dialogset input output' ,
+      taskFields: ['input', 'output', 'matchRate', 'matchCount'],
+      minMatch: 1
+    }
+  };
+
+  if(req.query.dialogsets) {
+    var dialogsetIds = undefined;
+    if(Array.isArray(req.query.dialogsets)) dialogsetIds = req.query.dialogsets;
+    else dialogsetIds = [req.query.dialogsets];
+
+    faqType.mongo.queryStatic = {$or: []};
+    for(var i = 0; i < dialogsetIds.length; i++) {
+      faqType.mongo.queryStatic.$or.push({dialogset: dialogsetIds[i]});
+    }
+  }
+
+  var context = {bot: global._bots[req.query.botId], botUser: global._botusers[req.query.botUser]};
+  dialogsetModule.processInput(null, req.query.input, function(_input, json) {
+    if(context.botUser == undefined) context.botUser = {};
+    context.botUser.nlp = json._nlp;
+    context.botUser.analytics = true;
+    context.botUser.analytics2 = null;
+
+    type.executeType(_input, faqType, {}, context, function(_text, _result) {
+      _result.context = {botUser: {nlp: context.botUser.nlp, topic: context.botUser.topic}};
+      res.json(_result);
+      console.log('context analytics: ');
+    });
+  });
+
+};
+
+
+exports.contextLearning = function (req, res) {
+  var sort = req.query.sort || '-created';
+
+  var query = {};
+  if(req.params.botId) query['bot'] =  req.bot;
+
+  BotDialog.find(query).sort(sort).populate('user').exec(function (err, dialogs) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json(dialogs);
+    }
+  });
+};
+
+exports.nlp = function (req, res) {
+  dialogsetModule.processInput(null, req.query.input, function(_input) {
+    res.json({result: _input});
+  });
+};
+
+var autoCorrection = require(path.resolve('modules/bot/engine/nlp/autoCorrection'));
+
+exports.autoCorrection = function (req, res) {
+  autoCorrection.loadWordCorrections(function() {
+    autoCorrection.correction('서바스 센터 차다줘');
+    autoCorrection.correction('영압시간 어떻게 되지?');
+
+    res.json({});
+  })
+};
+
+exports.speech = function (req, res) {
+  var client_id = 'c7VNVyIG3s95N4q2LWZQ';
+  var client_secret =  'HXWvXdrKi7';
+
+  var api_url = 'https://openapi.naver.com/v1/voice/tts.bin';
+  var request = require('request');
+
+  console.log(req.params.msg);
+  var options = {
+    url: api_url,
+    form: {'speaker':'jinho', 'speed':'0', 'text':req.params.msg},
+    headers: {
+      'Content-Type':'application/x-www-form-urlencoded', 'X-Naver-Client-Id':client_id, 'X-Naver-Client-Secret': client_secret}
+  };
+  var _req = request.post(options).on('response', function(response) {
+    console.log(response.statusCode);// 200
+    console.log(response.headers['content-type']);
+  });
+  _req.pipe(res); // 브라우저로 출력
+};

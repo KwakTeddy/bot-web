@@ -229,7 +229,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     vm.connectUserBot = function(botId) {
       clearBubble();
 
-      $resource('/api/user-bots/byNameId/:botNameId', {botNameId:'@id'}).
+      $resource('/api/bots/byNameId/:botNameId', {botNameId:'@id'}).
       get({botNameId: botId}, function(data) {
         // console.log(data);
 
@@ -523,7 +523,11 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         '<div class="bubble"><i class="icon-tail"></i>' +
         '<div class="content"><div class="content-text">' + text + '</div>';
 
-        if(msg.buttons) {
+      if(msg.image) {
+        innerHTML += '<div ><img class="message-image" src="' + msg.image.url +'"/></div>';
+      }
+
+      if(msg.buttons) {
           for(var i in msg.buttons) {
             innerHTML += '<div class="bubble-button"><a href="' + msg.buttons[i].url + '" target="_blank">' + msg.buttons[i].text + '</a></div>';
           }

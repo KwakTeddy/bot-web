@@ -228,7 +228,7 @@ angular.module('bots').controller('BotController', ['$scope', '$state', '$window
 
     // Create file imageUploader instance
     $scope.jsonImageUploader = new FileUploader({
-      url: '/api/user-bots/image-files',
+      url: '/api/bots/image-files',
       alias: 'uploadImageFile',
       autoUpload: true
     });

@@ -3,7 +3,7 @@
 //UserBots service used for communicating with the userBots REST endpoints
 angular.module('user-bots').factory('UserBotsService', ['$resource',
   function ($resource) {
-    return $resource('api/user-bots/:userBotId', {
+    return $resource('api/bots/:userBotId', {
       userBotId: '@_id'
     }, {
       update: {
@@ -14,7 +14,7 @@ angular.module('user-bots').factory('UserBotsService', ['$resource',
   ])
   .factory('UserBotsFollowService', ['$resource',
     function ($resource) {
-      return $resource('api/user-bots/follow', null, {
+      return $resource('api/bots/follow', null, {
         list: {
           method: 'POST', isArray: true
         },
@@ -29,7 +29,7 @@ angular.module('user-bots').factory('UserBotsService', ['$resource',
   ])
   .factory('UserBotFilesService', ['$resource',
     function ($resource) {
-      return $resource('api/user-bots/files/:userBotId/:fileId', {
+      return $resource('api/bots/files/:userBotId/:fileId', {
         userBotId: '@userBotId',
         fileId: '@_id'
       }, {
@@ -41,7 +41,7 @@ angular.module('user-bots').factory('UserBotsService', ['$resource',
 
   .factory('UserBotCommentService', ['$resource',
     function ($resource) {
-      return $resource('api/user-bots-comment/:userBotId/:commentId', {
+      return $resource('api/bots-comment/:userBotId/:commentId', {
         userBotId: '@userBotId',
         commentId: '@_id'
       }, {
@@ -52,7 +52,7 @@ angular.module('user-bots').factory('UserBotsService', ['$resource',
     }])
   .factory('UserBotDialogService', ['$resource',
     function ($resource) {
-      return $resource('api/user-bots-dialog/:botId/:dialogId', {
+      return $resource('api/bots-dialog/:botId/:dialogId', {
         botId: '@botId',
         dialogId: '@_id'
       }, {
