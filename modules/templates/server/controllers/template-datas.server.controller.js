@@ -137,7 +137,7 @@ exports.deleteTemplateData = function(templateDataId, dataSchema, listName, call
  * List of Custom actions
  */
 exports.list = function(req, res) {
-  listTemplateData(req.template, req.params.listName, req.params.upTemplateId, function(templateDatas, err) {
+  listTemplateData(req.template, req.params.listName, mongoose.Types.ObjectId(req.params.upTemplateId), function(templateDatas, err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)

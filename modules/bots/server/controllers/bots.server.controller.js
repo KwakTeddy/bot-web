@@ -436,16 +436,38 @@ exports.botByID = function (req, res, next, id) {
       function(cb) {
         if (bot.templateId) {
           var TemplateModel = mongoose.model('Template');
-          TemplateModel.findOne({_id: bot.templateId}).lean().exec(function (err, doc) {
-            if (doc) {
-              var templateDataModel = templateDatas.getTemplateDataModel(doc.dataSchema);
-              templateDataModel.findOne({_id: bot.templateDataId}).lean().exec(function (err, doc1) {
-                doc1.__v = undefined;
-                doc1._id = undefined;
-                doc1.templateId = undefined;
-                req.bot._doc.templateData = doc1;
+          TemplateModel.findOne({_id: bot.templateId}).lean().exec(function (err, template) {
+            if (template) {
+              var schema = JSON.parse(template.dataSchema);
+              var lists = [];
+              Object.keys(schema).forEach(function(key,index) {
+                if(schema[key].type == 'List' && !schema[key].hidden) {
+                  schema[key]._key = key;
+                  lists.push(schema[key]);
+                }
+              });
+              var templateDataModel = templateDatas.getTemplateDataModel(template.dataSchema);
+              templateDataModel.findOne({_id: bot.templateDataId}).lean().exec(function (err, data) {
 
-                cb(null);
+                async.eachSeries(lists, function(list, cb1) {
+                  templateDatas.listTemplateData(template, list._key, bot.templateDataId, function(listData) {
+                    data[list._key] = [];
+                    listData.forEach(function(mod) {
+                      var elem = mod._doc;
+                      elem.__v = undefined;
+                      elem._id = undefined;
+                      elem.upTemplateId = undefined;
+                      data[list._key].push(elem)
+                    });
+                    cb1(null);
+                  });
+                }, function(err) {
+                  data.__v = undefined;
+                  data._id = undefined;
+                  data.templateId = undefined;
+                  req.bot._doc.templateData = data;
+                  cb(null);
+                });
               });
             } else {
               cb(null);
