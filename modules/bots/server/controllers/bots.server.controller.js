@@ -235,7 +235,7 @@ exports.botByID = function (req, res, next, id) {
               var schema = JSON.parse(template.dataSchema);
               var lists = [];
               Object.keys(schema).forEach(function(key,index) {
-                if(schema[key].type == 'List') {
+                if(schema[key].type == 'List' && !schema[key].hidden) {
                   schema[key]._key = key;
                   lists.push(schema[key]);
                 }

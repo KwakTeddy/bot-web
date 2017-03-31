@@ -135,7 +135,7 @@ angular.module('bots').controller('BotController', ['$scope', '$state', '$window
 
       Object.keys(jsonSchema).forEach(function(key) {
         //TODO
-        if (key === "reservations") return;
+        if (jsonSchema[key].hidden) return;
         var type = jsonSchema[key].type.toLowerCase();
         if (types[type]) {
           schema[key] = types[type];
