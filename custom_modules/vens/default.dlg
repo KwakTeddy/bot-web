@@ -62,11 +62,22 @@
 >김진우 대표로, 모델 에이전시, 인터넷 신문사 기자를 거쳐 bjN을 창간했습니다.
 >김진우 대표로 현재 명조채널 특별MC입니다.
 
+<멀다 브레인 대표
+{
+ action: function(task, context, callback) {
+   task.result = {
+     buttons: [
+       {text: '기사 보기', url: 'http://www.venturesquare.net/742966'}
+       ]
+   };
+   callback(task, context);
+ }
+}
+>장세영 대표입니다. 명조채널 머니브레인 장세영 대표 편은 기사에서 확인할 수 있습니다.
+
 <브레인
 >인공지능 챗봇 플랫폼 개발 스타트업입니다. 자연어 기반 서비스를 제공하며 인공지능 기술을 활용한 지속적인 대화학습이 가능합니다. 머니브레인의 챗봇으로는 배달 음식 주문 챗봇 얌얌, 비서봇 아테나, 흔남봇, ㄹ혜봇 등이 있습니다.
 >2015년 7월 출범한 인공지능 챗봇 플랫폼 개발 스타트업으로 대화형 업무 서비스, 상품추천, 고객응대가 가능한 학습형 챗봇을 개발하고 있습니다.
-<머니브레인 대표
->장세영 대표입니다. 명조채널 머니브레인 장세영 대표 편은 http://www.venturesquare.net/742966 기사에서 확인할 수 있습니다.
 
 <스퀘어
 >벤처스퀘어는 누구나 쉽게 쇼핑몰을 창업할 수 있도록 돕는 이커머스 토탈 올어라운드 컨설팅 사이트입니다. 2013년 사업을 시작한 이래 약 231개의 이커머스 업체가 벤처스퀘어의 컨설팅을 받았으나, 최근 경영상의 이유로 폐업했습니다.
@@ -80,17 +91,47 @@
 >우리나라의 가전 제품의 경우 공칭전압에 맞추어 통상적으로 220V이다. 이 정보가 맞습니까?
 
 <소울 부스터
+{
+ action: function(task, context, callback) {
+   task.result = {
+     buttons: [
+       {text: '기사 보기', url: 'http://www.venturesquare.net/745631'}
+       ]
+   };
+   callback(task, context);
+ }
+}
 >소울부스터는 여성 체형별 맞춤형 속옷 스타트업입니다.
->명조채널 소울부스터 편은 http://www.venturesquare.net/745631 에서 확인할 수 있습니다.
+>명조채널 소울부스터 편은 기사에서 확인할 수 있습니다.
 
 <렌딧
 <랜딧
+{
+ action: function(task, context, callback) {
+   task.result = {
+     buttons: [
+       {text: '기사 보기', url: 'http://www.venturesquare.net/741815'}
+       ]
+   };
+   callback(task, context);
+ }
+}
 >개인 맞춤형 금융 서비스, 투자성향에 맞는 투자포트폴리오를 제공하는 P2P 금융기업입니다.
->명조채널 16화 스.친.소 http://www.venturesquare.net/741815 에서 확인해보세요.
+>명조채널 16화 스.친.소 기사에서 확인해보세요.
 
 <트리 케어
+{
+ action: function(task, context, callback) {
+   task.result = {
+     buttons: [
+       {text: '기사 보기', url: 'http://www.venturesquare.net/745167'}
+       ]
+   };
+   callback(task, context);
+ }
+}
 >모바일헬스케어 전문기업으로, 스마트체온계 써모케어를 개발한 스타트업입니다.
->명조채널 24화 명조체험-http://www.venturesquare.net/745167 에서 확인해보세요.
+>명조채널 24화 명조체험 기사에서 확인해보세요.
 
 <승은
 >마을주민들은 척박한 땅을 개간해 농사를 짓기 시작했는데, 명승 제15호로 지정된 다랭이 논은 한 층 한 층 석축을 쌓아 만들어 색다른 남도여행을 느끼게 한다.
@@ -186,7 +227,17 @@ c<
 <정부 지원 받다
 <정부 지원 어떻다 받다
 <정 지원 받다
->벤처스퀘어의 '올해 공공기관 창업 지원 프로그램, 이렇게 바뀐다'(http://www.venturesquare.net/744890) 기사를 참고해보세요. :)
+{
+ action: function(task, context, callback) {
+   task.result = {
+     buttons: [
+       {text: '기사 보기', url: 'http://www.venturesquare.net/744890'}
+       ]
+   };
+   callback(task, context);
+ }
+}
+>벤처스퀘어의 '올해 공공기관 창업 지원 프로그램, 이렇게 바뀐다' 기사를 참고해보세요. :)
 
 <보다 엔젤스 뭐 하다 곳
 <보다 엔젤스
