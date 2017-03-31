@@ -15,18 +15,6 @@ angular.module('bots').controller('BotController', ['$scope', '$state', '$window
     var vm = this;
     vm.bot = bot;
 
-    var editor;
-
-    vm.templates = TemplatesService.query({}, function(templates){
-      if (vm.bot.templateId) {
-        for (var i=0; i < templates.length; ++i) {
-          if (templates[i]._id === vm.bot.templateId) {
-            vm.selectTemplate(templates[i]);
-          }
-        }
-      }
-    });
-
     // Create new Bot
     vm.create = function (isValid) {
       $scope.error = null;
@@ -92,6 +80,20 @@ angular.module('bots').controller('BotController', ['$scope', '$state', '$window
         });
       }
     };
+
+    /********************* template *********************/
+
+    var editor;
+
+    vm.templates = TemplatesService.query({}, function(templates){
+      if (vm.bot.templateId) {
+        for (var i=0; i < templates.length; ++i) {
+          if (templates[i]._id === vm.bot.templateId) {
+            vm.selectTemplate(templates[i]);
+          }
+        }
+      }
+    });
 
     vm.unselectTemplate = function() {
       vm.selectedTemplate = undefined;
@@ -211,20 +213,8 @@ angular.module('bots').controller('BotController', ['$scope', '$state', '$window
       });
     };
 
-    // // Find a list of Bots
-    // $scope.find = function () {
-    //   vm.bots = BotsService.query();
-    // };
-    //
-    // // Find existing Bot
-    // $scope.findOne = function () {
-    //   vm.bot = BotsService.get({
-    //     botId: $stateParams.botId
-    //   });
-    // };
-
     /********************* image *********************/
-    $scope.imageURL = undefined;
+    //$scope.imageURL = undefined;
 
     // Create file imageUploader instance
     $scope.jsonImageUploader = new FileUploader({
@@ -259,7 +249,7 @@ angular.module('bots').controller('BotController', ['$scope', '$state', '$window
 
         fileReader.onload = function (fileReaderEvent) {
           $timeout(function () {
-            $scope.imageURL = fileReaderEvent.target.result;
+            //$scope.imageURL = fileReaderEvent.target.result;
           }, 0);
         };
       }
