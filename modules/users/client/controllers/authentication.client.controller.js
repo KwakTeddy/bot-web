@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('users').controller('AuthenticationController', ['$scope', '$state', '$http', '$location', '$window', 'Authentication', 'PasswordValidator', '$uibModal',
-    '$ionicModal', '$rootScope', '$ionicSideMenuDelegate', '$stateParams', '$ionicPopup',
-  function ($scope, $state, $http, $location, $window, Authentication, PasswordValidator, $uibModal, $ionicModal, $rootScope, $ionicSideMenuDelegate, $stateParams, $ionicPopup) {
+    '$ionicModal', '$rootScope', '$ionicSideMenuDelegate', '$stateParams', '$ionicPopup', '$cookies',
+  function ($scope, $state, $http, $location, $window, Authentication, PasswordValidator, $uibModal, $ionicModal, $rootScope, $ionicSideMenuDelegate, $stateParams, $ionicPopup, $cookies) {
     $scope.authentication = Authentication;
     $scope.popoverMsg = PasswordValidator.getPopoverMsg();
     $scope.credentials = {};
@@ -121,7 +121,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
     };
 
     $scope.signin = function (isValid) {
-      $scope.error = null;
+        $cookies.put('email', $scope.credentials.email);
+        $scope.error = null;
       $scope.submitted = true;
 
       if (!isValid) {
@@ -133,10 +134,10 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
       $http.post('/api/auth/signin', $scope.credentials).success(function (response) {
         // If successful we assign the response to the global user model
         $scope.authentication.user = response;
-        $rootScope.closeSigninModal();
 
         // And redirect to the previous or home page
         if (_platform == 'mobile'){
+            $rootScope.closeSigninModal();
             $state.go($state.previous.state.name || 'homeMobile', $state.previous.params);
         }else {
             $state.go($state.previous.state.name || 'home', $state.previous.params);
