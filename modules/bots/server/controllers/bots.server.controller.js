@@ -67,6 +67,7 @@ exports.create = function (req, res) {
         templateDatas.createTemplateData(req.body.template, 'null', 'null', JSON.stringify(req.body.template.templateData), req.user, function(data, err) {
           bot.templateId = req.body.template._id;
           bot.templateDataId = data._id;
+          bot.path = 'templates/' + req.body.template.id;
 
           async.eachSeries(req.body.template.templateData.menus, function(menu, cb) {
             templateDatas.createTemplateData(req.body.template, 'menus', data._id, JSON.stringify(menu), req.user, function(res, err) {
@@ -126,7 +127,7 @@ exports.create = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      botLib.buildBot(bot.id);
+      botLib.buildBot(bot.id, bot.path);
       botLib.loadBot(bot.id);
       res.json(bot);
     }

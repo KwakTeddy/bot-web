@@ -11,6 +11,7 @@ exports.initGlobals = function() {
   if(!global._channels) global._channels = {};
   if(!global._users) global._users = {};
   if(!global._botusers) global._botusers = {};
+  if(!global._templates) global._templates = {};
 
   if(!global._context.dialogs) global._context.dialogs = {};
   if(!global._context.commonDialogs) global._context.commonDialogs = {};

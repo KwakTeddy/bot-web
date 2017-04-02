@@ -8,7 +8,11 @@ function command(inTextRaw, inTextNLP, context, print, callback) {
   var cmd = inTextRaw.trim();
   var startDialog;
   if(cmd.startsWith(':build')) {
+    if(context.bot.template && context.bot.template.id) {
+      bot.buildBot(context.bot.template.id, context.bot.path);
+    } else {
       bot.buildBot(context.bot.botName, context.bot.path);
+    }
       // message = 'build ' + context.bot.botName + ' completed!\n';
 
       bot.loadBot(context.bot.botName, function(_bot) {
@@ -23,7 +27,11 @@ function command(inTextRaw, inTextNLP, context, print, callback) {
           dialog.executeDialog(startDialog, context, print, callback);
       });
   } else if(cmd.startsWith(':viewGraph')) {
+    if(context.bot.template && context.bot.template.id) {
+      bot.buildBot(context.bot.template.id, context.bot.path);
+    } else {
       bot.buildBot(context.bot.botName, context.bot.path);
+    }
       // message = 'build ' + context.bot.botName + ' completed!\n';
 
       bot.loadBot(context.bot.botName, function(_bot) {

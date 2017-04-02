@@ -343,11 +343,11 @@ function sendSMSAuth(task, context, callback) {
     {json: {callbackPhone: config.callcenter, phone: task.mobile, message: message}},
     function (error, response, body) {
       if (!error && response.statusCode == 200) {
-        task.result = body.result;
-        task.resultMessage = body.resultMessage;
+        task._result = body.result;
+        task._resultMessage = body.resultMessage;
       } else {
-        task.result = 'FAIL';
-        task.resultMessage = 'HTTP ERROR';
+        task._result = 'FAIL';
+        task._resultMessage = 'HTTP ERROR';
       }
 
       context.dialog.smsAuth = randomNum;

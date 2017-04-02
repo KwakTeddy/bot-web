@@ -53,9 +53,16 @@ function botBuild(bot, botPath) {
     //   if(include) js = include + js;
     // } catch(e) {}
 
-    var tail = '\nvar _bot = require(require(\'path\').resolve("config/lib/bot")).getBot(\'' + bot + '\');' +
-      '\n_bot.setDialogs(dialogs);' +
-      '\n_bot.setCommonDialogs(commonDialogs);\n';
+    var tail;
+    if(botDir.indexOf('templates') != -1) {
+      tail = '\nvar _bot = require(require(\'path\').resolve("config/lib/bot")).getTemplateBot(\'' + bot + '\');' +
+        '\n_bot.setDialogs(dialogs);' +
+        '\n_bot.setCommonDialogs(commonDialogs);\n';
+    } else {
+      tail = '\nvar _bot = require(require(\'path\').resolve("config/lib/bot")).getBot(\'' + bot + '\');' +
+        '\n_bot.setDialogs(dialogs);' +
+        '\n_bot.setCommonDialogs(commonDialogs);\n';
+    }
     js = js + tail;
 
     // graph view TEST
@@ -69,6 +76,10 @@ function botBuild(bot, botPath) {
 
     fs.writeFileSync(dialogPath, js, 'utf8');
 
+  }
+
+  if(global._templates[bot]) {
+    global._templates[bot].loaded = undefined;
   }
 }
 exports.botBuild = botBuild;
@@ -213,7 +224,8 @@ function build(text, isCommon) {
                 var str;
                 str = 'if: ' + textEscape(_m[1]) + ', output: ' + textEscape(_m[2]);
 
-                if (lines[i + 1] && (match = lines[i + 1].match(new RegExp('^(' + step + '\\s+)<'))) != undefined) {
+                if (lines[i + 1] && ((match = lines[i + 1].match(new RegExp('^(' + step + '\\s+)<'))) != undefined ||
+                    (match = lines[i + 1].match(new RegExp('^(' + step + '\\s+)[a-zA-Z가-힣]*:'))) != undefined)) {
                   if (i + 1 < lines.length) {
                     line = lines[++i];
                     inc = true;
@@ -232,7 +244,8 @@ function build(text, isCommon) {
                 var str;
                 str = 'if: ' + _m[1] + ', output: ' + textEscape(_m[2]);
 
-                if (lines[i + 1] && (match = lines[i + 1].match(new RegExp('^(' + step + '\\s+)<'))) != undefined) {
+                if (lines[i + 1] && ((match = lines[i + 1].match(new RegExp('^(' + step + '\\s+)<'))) != undefined ||
+                  (match = lines[i + 1].match(new RegExp('^(' + step + '\\s+)[a-zA-Z가-힣]*:'))) != undefined)) {
                   if (i + 1 < lines.length) {
                     line = lines[++i];
                     inc = true;
@@ -248,7 +261,8 @@ function build(text, isCommon) {
                 str = '\n' + step + tab + '{' + str + '}';
                 return str;
               } else {
-                if(lines[i+1] && (match = lines[i+1].match(new RegExp('^(' + step + '\\s+)<'))) != undefined) {
+                if (lines[i + 1] && ((match = lines[i + 1].match(new RegExp('^(' + step + '\\s+)<'))) != undefined ||
+                  (match = lines[i + 1].match(new RegExp('^(' + step + '\\s+)[a-zA-Z가-힣]*:'))) != undefined)) {
                   var str = p1;
                   if(i + 1 < lines.length) {line = lines[++i];inc = true;}
                   // else break;
@@ -277,7 +291,9 @@ function build(text, isCommon) {
         //   else break;
         // }
 
-        if((match = line.match(new RegExp('^(' + step + '\\s+)<'))) != undefined) {
+
+        if((match = line.match(new RegExp('^(' + step + '\\s+)<'))) != undefined ||
+          (match = line.match(new RegExp('^(' + step + '\\s+)[a-zA-Z가-힣]*:'))) != undefined) {
           //console.log(step + (i+1) + ' before parseDialog 2');
           children = parseDialog(match[1]);
           //console.log(step + (i+1) + ' after parseDialog 2');

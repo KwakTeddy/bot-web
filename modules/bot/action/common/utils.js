@@ -156,8 +156,8 @@ function cloneWithParent(obj) {
 };
 
 exports.requireNoCache = requireNoCache;
-function requireNoCache(filePath) {
-  if(process.env.NODE_ENV == 'development')
+function requireNoCache(filePath, isForce) {
+  if(process.env.NODE_ENV == 'development' || isForce == true)
     delete require.cache[require.resolve(filePath)];
   return require(require.resolve(filePath));
 }
