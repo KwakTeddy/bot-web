@@ -768,8 +768,13 @@ if (_platform !== 'mobile'){
 
         vm.userBot.fileuploaded = true;
 
-        if (response.count && response.count > 100)
+        if (response.count && response.count > 100) {
           vm.isPublic = true;
+          vm.userBot.public = true;
+        } else {
+          vm.isPublic = false;
+          vm.userBot.public = false;
+        }
 
         // Clear upload buttons
         $scope.cancelUpload();
