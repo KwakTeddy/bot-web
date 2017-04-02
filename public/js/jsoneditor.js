@@ -1980,7 +1980,7 @@ JSONEditor.defaults.editors.string = JSONEditor.AbstractEditor.extend({
       else if (this.format === 'image') {
         this.input_type = 'text';
         this.input = this.theme.getFormInputField(this.input_type);
-        this.input.setAttribute("style", "width: 50%;");
+        //this.input.setAttribute("style", "width: 50%;");
         //this.input.style.display = "none";
       }
       // Source Code
@@ -2148,7 +2148,7 @@ JSONEditor.defaults.editors.string = JSONEditor.AbstractEditor.extend({
       var id = this.path.replace(/\./g,'_');
       this.input.setAttribute('id',id);
       this.input.disabled  = true;
-      this.control.getElementsByTagName("label")[0].insertAdjacentHTML("afterend",
+      this.control.getElementsByTagName("input")[0].insertAdjacentHTML("beforebegin",
         '<div name="mine" compiled="false"><span class="form-control btn btn-default btn-file"><input onClick="setInput(&quot;'+ id +
         '&quot;)" type="file" nv-file-select uploader="jsonImageUploader" style="width:200px;"></span>' +
         '<span ng-cloak ng-show="isuccess.'+id+'" class="text-center text-success"><strong>이미지가 업로드 되었네요</strong></span>' +

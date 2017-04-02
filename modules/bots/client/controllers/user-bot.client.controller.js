@@ -358,7 +358,7 @@ if (_platform !== 'mobile'){
               case "list":
                 schema[key] = {
                   type: "array",
-                  // format: "table",
+                  format: "table",
                   //title: "메뉴",
                   uniqueItems: true,
                   items: {type: "object", /*format:"grid",*/ "properties": vm.parseSchema(jsonSchema[key].schema)}
