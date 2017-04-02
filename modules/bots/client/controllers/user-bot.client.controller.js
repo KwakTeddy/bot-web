@@ -361,7 +361,7 @@ if (_platform !== 'mobile'){
                   uniqueItems: true,
                   items: {
                     type: "object",
-                    title: jsonSchema[key]['item_title'],
+                    title: jsonSchema[key]['item_title'] ? jsonSchema[key]['item_title'] : "항목",
                     /*format:"grid",*/
                     "properties": vm.parseSchema(jsonSchema[key].schema)}
                 };
