@@ -133,6 +133,24 @@ if (_platform !== 'mobile'){
         })
       };
 
+      vm.checkAndChangeType = function(isValid, type) {
+        $scope.submitted = true;
+        if (!isValid) {
+          $scope.$broadcast('show-errors-check-validity', 'userBotForm');
+          return false;
+        }
+        /*
+        if (vm.selectedTemplate) {
+          var errors = editor.validate();
+          if (errors.length) {
+            $scope.$broadcast('show-errors-check-validity', 'userBotForm');
+            return false;
+          }
+        }
+        */
+        vm.changeType(type);
+      };
+
       // Create new UserBot
       vm.create = function (isValid) {
         // $scope.error = null;
@@ -155,17 +173,18 @@ if (_platform !== 'mobile'){
         if(!vm.userBot.imageFile){
           vm.userBot.imageFile = "/files/default.png"
         }
-        vm.type = 'connect';
 
         if (vm.selectedTemplate) {
           var errors = editor.validate();
           if (errors.length) {
-            $scope.$broadcast('show-errors-check-validity', 'botForm');
+            $scope.$broadcast('show-errors-check-validity', 'userBotForm');
             return false;
           }
           vm.userBot.template = vm.selectedTemplate;
           vm.userBot.template.templateData = editor.getValue();
         }
+
+        vm.type = 'connect';
 
         vm.userBot.$save(function (response) {
           vm.learning = false;
@@ -190,6 +209,7 @@ if (_platform !== 'mobile'){
             // $state.go('user-bots.list');
           }
           // $location.path('userBots/' + response._id);
+          vm.saved = true;
         }, function (errorResponse) {
           $scope.error = errorResponse.data.message;
         });
@@ -346,6 +366,8 @@ if (_platform !== 'mobile'){
         // init json editor
         JSONEditor.defaults.options.theme = 'bootstrap3';
         JSONEditor.defaults.options.iconlib= 'fontawesome4';
+        JSONEditor.defaults.options.required_by_default = 'true';
+        //JSONEditor.defaults.options.show_erros = 'change';
 
         JSONEditor.defaults.custom_validators.push(function(schema, value, path) {
           var errors = [];
