@@ -317,7 +317,7 @@ if (_platform !== 'mobile'){
         "date" : {"type":"string", "format":"date"},
         "datetime" : {"type":"string", "format":"datetime"},
         "time" : {"type":"string", "format":"time"},
-        "number" : {"type":"string", "format":"number"},
+        "number" : {"type":"string", "format":"tel"},
         "image" : {
           "type":"string",
           "format":"image",
@@ -347,7 +347,6 @@ if (_platform !== 'mobile'){
         var schema = {};
 
         Object.keys(jsonSchema).forEach(function(key) {
-          //TODO
           if (jsonSchema[key].hidden) return;
           var type = jsonSchema[key].type.toLowerCase();
           if (!types[type]) {
@@ -359,7 +358,6 @@ if (_platform !== 'mobile'){
                 schema[key] = {
                   type: "array",
                   format: "table",
-                  //title: "메뉴",
                   uniqueItems: true,
                   items: {type: "object", /*format:"grid",*/ "properties": vm.parseSchema(jsonSchema[key].schema)}
                 };
@@ -369,8 +367,14 @@ if (_platform !== 'mobile'){
                 break;
             }
           } else {
-            schema[key] = types[type];
+            schema[key] = angular.copy(types[type]);
           }
+          var keys = Object.keys(jsonSchema[key]);
+          for (var i=0; i < keys.length; ++i) {
+            if (keys[i] != 'type' && keys[i] != 'enum')
+              schema[key][keys[i]] = jsonSchema[key][keys[i]];
+          }
+          console.log(schema);
         });
         return schema;
       };
@@ -416,7 +420,7 @@ if (_platform !== 'mobile'){
           type: "object",
           title: template.name,
           properties: {},
-          //format: "grid",
+          format: "grid",
         };
 
         schema.properties = vm.parseSchema(template.dataSchema);
@@ -432,6 +436,7 @@ if (_platform !== 'mobile'){
           disable_collapse: true,
           disable_properties: true,
           disable_edit_json: true,
+          grid_columns: 3,
         });
 
         $compile(document.getElementById('editor_holder'))($scope);

@@ -40,7 +40,6 @@ module.exports = function (app) {
     .delete(userBots.removeFile)
     .put(userBots.renameFile);
 
-  app.route('/api/user-bots/dataset-files').post(userBots.uploadFile);
   app.route('/api/user-bots/image-files').post(userBots.uploadImageFile);
   app.route('/api/user-bots/convert').post(userBots.convertFile);
 

@@ -654,53 +654,6 @@ exports.uploadImageFile = function (req, res) {
   // }
 };
 
-
-exports.uploadFile = function (req, res) {
-  console.log('uploadFile:' );
-
-  var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, './public/files/')
-    },
-    filename: function (req, file, cb) {
-      cb(null, file.originalname);
-      // cb(null, req.params.filename + path.parse(file.originalname).ext);
-      // cb(null, req.params.filename)
-    }
-  });
-
-  // var user = req.user;
-  var message = null;
-  var upload = multer({storage: storage}).single('uploadFile');
-  // var dialogUploadFileFilter = require(path.resolve('./config/lib/multer')).dialogUploadFileFilter;
-
-  // Filtering to upload only images
-  upload.fileFilter = function (req, file, cb) {
-    if (file.mimetype !== 'text/plain' && file.mimetype !== 'text/csv') {
-      return cb(new Error('Only txt/csv files are allowed!'), false);
-    }
-    cb(null, true);
-  };
-
-  // if (user) {
-  upload(req, res, function (uploadError) {
-    if(uploadError) {
-      return res.status(400).send({
-        message: 'Error occurred while uploading file'
-      });
-    } else {
-      console.log('uploadFile:' + req.file.filename);
-      res.json({result: 'ok', filename: req.file.filename});
-    }
-  });
-  // } else {
-  //   res.status(400).send({
-  //     message: 'User is not signed in'
-  //   });
-  // }
-};
-
-
 exports.convertFile = function (req, res) {
   // var dir = path.resolve('custom_modules/private_bot/_data/');
   var filename = req.body.filename;

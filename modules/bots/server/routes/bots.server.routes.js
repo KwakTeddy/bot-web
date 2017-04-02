@@ -40,7 +40,6 @@ module.exports = function (app) {
     .put(bots.followBot)
     .delete(bots.unfollowBot);
 
-  app.route('/api/bots/dataset-files').post(bots.uploadFile);
   app.route('/api/bots/image-files').post(bots.uploadImageFile);
   app.route('/api/bots/convert').post(bots.convertFile);
 
