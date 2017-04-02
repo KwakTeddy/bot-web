@@ -2149,10 +2149,10 @@ JSONEditor.defaults.editors.string = JSONEditor.AbstractEditor.extend({
       this.input.setAttribute('id',id);
       this.input.disabled  = true;
       this.control.getElementsByTagName("label")[0].insertAdjacentHTML("afterend",
-        '<span class="btn btn-default btn-file"><input onClick="setInput(&quot;'+ id +
+        '<div name="mine" compiled="false"><span class="form-control btn btn-default btn-file"><input onClick="setInput(&quot;'+ id +
         '&quot;)" type="file" nv-file-select uploader="jsonImageUploader" style="width:200px;"></span>' +
         '<span ng-cloak ng-show="isuccess.'+id+'" class="text-center text-success"><strong>이미지가 업로드 되었네요</strong></span>' +
-        '<span ng-cloak ng-show="ierror.'+id+'" class="text-center text-danger"><strong>이미지 파일이 아니예요</strong> </span>');
+        '<span ng-cloak ng-show="ierror.'+id+'" class="text-center text-danger"><strong>이미지 파일이 아니예요</strong> </span></div>');
     }
     this.container.appendChild(this.control);
 

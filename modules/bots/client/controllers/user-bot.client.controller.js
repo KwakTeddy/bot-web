@@ -151,6 +151,24 @@ if (_platform !== 'mobile'){
         vm.changeType(type);
       };
 
+      vm.checkTemplate = function() {
+        if (vm.selectedTemplate) {
+          var errors = editor.validate();
+          if (errors.length) {
+            editor.options.show_errors = "interactive";
+            editor.onChange();
+            return false;
+          }
+          vm.userBot.template = vm.selectedTemplate;
+          vm.userBot.template.templateData = editor.getValue();
+        } else {
+          if (vm.userBot.template) {
+            vm.userBot.template = null;
+          }
+        }
+        return true;
+      };
+
       // Create new UserBot
       vm.create = function (isValid) {
         // $scope.error = null;
@@ -174,15 +192,8 @@ if (_platform !== 'mobile'){
           vm.userBot.imageFile = "/files/default.png"
         }
 
-        if (vm.selectedTemplate) {
-          var errors = editor.validate();
-          if (errors.length) {
-            editor.options.show_errors = "interactive";
-            editor.onChange();
-            return false;
-          }
-          vm.userBot.template = vm.selectedTemplate;
-          vm.userBot.template.templateData = editor.getValue();
+        if (!vm.checkTemplate()) {
+          return false;
         }
 
         vm.type = 'connect';
@@ -226,16 +237,8 @@ if (_platform !== 'mobile'){
           return false;
         }
 
-        if (vm.selectedTemplate) {
-          var errors = editor.validate();
-          if (errors.length) {
-            editor.showValidationErrors(errors);
-            return false;
-          }
-          vm.userBot.template = vm.selectedTemplate;
-          vm.userBot.template.templateData = editor.getValue();
-        } else {
-          vm.userBot.template = null;
+        if (!vm.checkTemplate()) {
+          return false;
         }
 
         console.log(vm.userBot._id);
@@ -374,10 +377,17 @@ if (_platform !== 'mobile'){
           var errors = [];
           if (value === "") {
             // Errors must be an object with `path`, `property`, and `message`
+            var msg;
+            switch (schema.format) {
+              case 'date': msg = "날짜를 입력해주세요"; break;
+              case 'time': msg = "시각을 입력해주세요"; break;
+              case "image": msg = "이미지 파일을 선택해주세요"; break;
+              default: msg = "내용을 입력해주세요"; break;
+            }
             errors.push({
               path: path,
               property: 'format',
-              message: '내용을 입력해주세요'
+              message: msg
             });
           }
           return errors;
@@ -416,7 +426,19 @@ if (_platform !== 'mobile'){
 
         editor.on('change', function() {
           console.log('editor.onchange -> $compile editor');
-          $compile(document.getElementById('editor_holder'))($scope);
+          var inputList = document.getElementsByName("mine")
+          var compileList = [];
+          for (var idx=0; idx < inputList.length; ++idx) {
+            var input = inputList[idx];
+            if (input.getAttribute("compiled") && input.getAttribute("compiled") == "false") {
+              compileList.push(input);
+            }
+          }
+          $compile(compileList)($scope);
+          compileList.forEach(function(obj) {
+            obj.setAttribute("compiled", "true");
+          });
+
           $scope.ierror = {};
           $scope.isuccess = {};
 
@@ -484,13 +506,13 @@ if (_platform !== 'mobile'){
         setValue('');
 
         // Show error message
-        $scope.error = response.message;
+        $scope.ierror = response.message;
       };
 
       // Change user profile picture
       $scope.uploadImageFiles = function () {
         // Clear messages
-        $scope.success = $scope.error = null;
+        $scope.isuccess = $scope.ierror = null;
 
         // Start upload
         $scope.jsonImageUploader.uploadAll();

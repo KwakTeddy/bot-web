@@ -231,10 +231,31 @@ function getTemplateDataModel(dataSchema, TemplateDataModelName) {
   }
 
   if(TemplateDataModelName && TemplateDataModelName != 'null') {
-    return mongoModule.getModel(TemplateDataModelName, TemplateSchema);
+    return getModel(TemplateDataModelName, TemplateSchema);
   } else {
-    return mongoModule.getModel('TemplateData', TemplateSchema);
+    return getModel('TemplateData', TemplateSchema);
   }
 }
 
 exports.getTemplateDataModel = getTemplateDataModel;
+
+function getModel(modelName, schema, options) {
+  var model;
+  var _schema;
+  if(schema === undefined) {
+    _schema = {any: {}};
+    if(options === undefined) options = {};
+    options.strict = false;
+  } else {
+    _schema = schema;
+  }
+
+  if(options !== undefined) {
+    model = mongoose.model(modelName, new mongoose.Schema(_schema, options));
+  } else {
+    model = mongoose.model(modelName, new mongoose.Schema(_schema));
+  }
+
+  return model;
+}
+
