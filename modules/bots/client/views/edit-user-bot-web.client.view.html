@@ -138,26 +138,52 @@
                             </div>
                             <!--<label class="col-sm-3 control-label">Schema: </label>-->
                             <!--<div class="col-sm-9">{{vm.selectedTemplate.dataSchema}}</div>-->
-                        </div>
-                        <div class="form-group" ng-show="vm.type == 'edit-detail' && vm.editType == 'file'">
-                            <label class="col-sm-3 control-label">대화파일 <span class="required" aria-required="true"></span></label>
-
-                            <div class="col-sm-9">
-
-                                <div class="text-left" ng-hide="uploader.queue.length" style="display: inline;">
-                                        <span class="btn btn-default btn-file">
-                                            <input type="file" nv-file-select uploader="uploader" style="width:200px;" required>
-                                        </span>
-                                    <span ng-show="success.file" class="text-center text-success">
-                                          <strong>대화 파일이 업로드 되었네요</strong>
-                                        </span>
-                                    <span ng-show="error.file" class="text-center text-danger">
-                                          <strong ng-bind="error.file"></strong>
-                                        </span>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"></label>
+                                <div class="col-sm-9">
+                                    <div class="checkbox-custom checkbox-default" style="float: left;margin-left: 10px;">
+                                        <input type="checkbox" id="public" ng-model="vm.userBot.public">
+                                        <label for="public">공개</label>
+                                    </div>
+                                    <div class="checkbox-custom checkbox-default" style="float: left;margin-left: 10px;">
+                                        <input type="checkbox" id="learn" ng-model="vm.userBot.learn">
+                                        <label for="learn">대화 학습 허용</label>
+                                    </div>
                                 </div>
-                                <div class="text-center form-group" ng-show="false">
-                                    <button class="btn btn-primary" ng-click="uploadDialogFiles();">Upload</button>
-                                    <button class="btn btn-default" ng-click="cancelUpload();">Cancel</button>
+                            </div>
+                        </div>
+                        <div class="form-horizontal form-group" ng-show="vm.type == 'edit-detail' && vm.editType == 'file'">
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">대화파일 <span class="required" aria-required="true"></span></label>
+                                <div class="col-sm-9">
+                                    <div class="text-left" ng-hide="uploader.queue.length" style="display: inline;">
+                                            <span class="btn btn-default btn-file">
+                                                <input type="file" nv-file-select uploader="uploader" style="width:200px;" required>
+                                            </span>
+                                        <span ng-show="success.file" class="text-center text-success">
+                                              <strong>대화 파일이 업로드 되었네요</strong>
+                                            </span>
+                                        <span ng-show="error.file" class="text-center text-danger">
+                                              <strong ng-bind="error.file"></strong>
+                                            </span>
+                                    </div>
+                                    <div class="text-center form-group" ng-show="false">
+                                        <button class="btn btn-primary" ng-click="uploadDialogFiles();">Upload</button>
+                                        <button class="btn btn-default" ng-click="cancelUpload();">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"></label>
+                                <div class="col-sm-9">
+                                    <div class="checkbox-custom checkbox-default" style="float: left;margin-left: 10px;">
+                                        <input data-toggle="tooltip" title="대화셋이 100개 이상인 경우 공개가 가능합니다" ng-disabled="!vm.isPublic" type="checkbox" id="public" ng-model="vm.userBot.public">
+                                        <label for="public">공개</label>
+                                    </div>
+                                    <div class="checkbox-custom checkbox-default" style="float: left;margin-left: 10px;">
+                                        <input type="checkbox" id="learn" ng-model="vm.userBot.learn">
+                                        <label for="learn">대화 학습 허용</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -219,27 +245,6 @@
                                 <!--<div ng-messages="imageURL.$error" role="alert" class="col-sm-offset-3 col-sm-9">-->
                                     <!--<p class="help-block error-text" ng-message="required">이미지를 입력해주세요</p>-->
                                 <!--</div>-->
-                            </div>
-
-
-
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label"></label>
-                                <div class="col-sm-9">
-                                    <!--<div class="checkbox-custom checkbox-default" style="float: left;">-->
-                                        <!--<input type="checkbox" id="using" ng-model="vm.userBot.using">-->
-                                        <!--<label for="using">사용</label>-->
-                                    <!--</div>-->
-                                    <div class="checkbox-custom checkbox-default" style="float: left;margin-left: 10px;">
-                                        <input type="checkbox" id="public" ng-model="vm.userBot.public">
-                                        <label for="public">공개</label>
-                                    </div>
-                                    <div class="checkbox-custom checkbox-default" style="float: left;margin-left: 10px;">
-                                        <input type="checkbox" id="learn" ng-model="vm.userBot.learn">
-                                        <label for="learn">대화 학습 허용</label>
-                                    </div>
-
-                                </div>
                             </div>
                         </div>
 

@@ -9,6 +9,10 @@ var setInput = function(cur) {
 };
 
 if (_platform !== 'mobile'){
+  $(document).ready(function() {
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+
   // UserBots controller
   angular.module('user-bots').controller('UserBotController', ['$scope', '$rootScope', '$state', '$window','$timeout', '$stateParams',
     'Authentication', 'userBotResolve', 'FileUploader', 'UserBotsService', 'UserBotCommentService', 'UserBotDialogService',
@@ -19,7 +23,13 @@ if (_platform !== 'mobile'){
       var vm = this;
       vm.user = Authentication.user;
       vm.userBot = userBot;
-      vm.userBot.public = true;
+      vm.isPublic = false;
+      if (!userBot.public) {
+        vm.userBot.public = false;
+        vm.isPublic = false;
+      } else {
+        vm.isPublic = true;
+      }
       vm.userId = $rootScope.userId;
       vm.isMine = (vm.userBot.user != null && (vm.user.username === vm.userBot.user.username));
       vm.isLearnable = (vm.userBot.user != null && (vm.userBot.learn || vm.isMine));
@@ -296,6 +306,7 @@ if (_platform !== 'mobile'){
 
 
       vm.unselectTemplate = function() {
+        vm.userBot.public = false;
         vm.selectedTemplate = undefined;
         if (editor)
           editor.destroy();
@@ -366,6 +377,7 @@ if (_platform !== 'mobile'){
 
       vm.selectTemplate = function(template) {
         vm.selectedTemplate = template;
+        vm.userBot.public = true;
 
         // init json editor
         JSONEditor.defaults.options.theme = 'bootstrap3';
@@ -396,6 +408,9 @@ if (_platform !== 'mobile'){
         if (JSONEditor.defaults.custom_validators.length == 0) {
           JSONEditor.defaults.custom_validators.push(custom_validator);
         }
+
+        $scope.ierror = {};
+        $scope.isuccess = {};
 
         var schema = {
           type: "object",
@@ -439,10 +454,8 @@ if (_platform !== 'mobile'){
             obj.setAttribute("compiled", "true");
           });
 
-          $scope.ierror = {};
-          $scope.isuccess = {};
-
           editor.options.show_errors = undefined;
+          $scope.$apply();
         });
       };
 
@@ -735,6 +748,9 @@ if (_platform !== 'mobile'){
         vm.userBot.originalFilename = response.originalFilename;
 
         vm.userBot.fileuploaded = true;
+
+        if (response.count && response.count > 100)
+          vm.isPublic = true;
 
         // Clear upload buttons
         $scope.cancelUpload();
