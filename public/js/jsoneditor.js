@@ -7862,17 +7862,17 @@ JSONEditor.defaults.languages.en = {
     * Text on Delete Last buttons
     * @variable This key takes one variable: The title of object to delete
     */
-  button_delete_last: "Last {{0}}",
+  button_delete_last: "last {{0}}",
   /**
-    * Title on Delete Last buttons
-    * @variable This key takes one variable: The title of object to delete
+    * title on delete last buttons
+    * @variable this key takes one variable: the title of object to delete
     */
-  button_delete_last_title: "Delete Last {{0}}",
+  button_delete_last_title: "delete last {{0}}",
   /**
-    * Title on Add Row buttons
-    * @variable This key takes one variable: The title of object to add
+    * title on add row buttons
+    * @variable this key takes one variable: the title of object to add
     */
-  button_add_row_title: "Add {{0}}",
+  button_add_row_title: "add {{0}}",
   /**
     * Title on Move Down buttons
     */

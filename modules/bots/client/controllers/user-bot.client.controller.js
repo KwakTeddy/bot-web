@@ -316,8 +316,8 @@ if (_platform !== 'mobile'){
         "string": {"type":"string"},
         "date" : {"type":"string", "format":"date"},
         "datetime" : {"type":"string", "format":"datetime"},
-        "time" : {"type":"string", "format":"time"},
-        "number" : {"type":"string", "format":"tel"},
+        "time" : {"type":"string", "format":"time", "options": {"grid_columns":3}},
+        "number" : {"type":"string", "format":"number"},
         "image" : {
           "type":"string",
           "format":"image",
@@ -352,14 +352,18 @@ if (_platform !== 'mobile'){
           if (!types[type]) {
             switch (type) {
               case "enum":
-                schema[key] = {type: "string", enum: jsonSchema[key].data};
+                schema[key] = {type: "string", options:{grid_columns:3}, enum: jsonSchema[key].data};
                 break;
               case "list":
                 schema[key] = {
                   type: "array",
                   format: "table",
                   uniqueItems: true,
-                  items: {type: "object", /*format:"grid",*/ "properties": vm.parseSchema(jsonSchema[key].schema)}
+                  items: {
+                    type: "object",
+                    title: jsonSchema[key]['item_title'],
+                    /*format:"grid",*/
+                    "properties": vm.parseSchema(jsonSchema[key].schema)}
                 };
                 break;
               default:
@@ -373,8 +377,10 @@ if (_platform !== 'mobile'){
           for (var i=0; i < keys.length; ++i) {
             if (keys[i] != 'type' && keys[i] != 'enum')
               schema[key][keys[i]] = jsonSchema[key][keys[i]];
+            //TODO: move to template definition
+            if (key === 'address')
+              schema[key]["options"] = {grid_columns:12};
           }
-          console.log(schema);
         });
         return schema;
       };
@@ -387,6 +393,13 @@ if (_platform !== 'mobile'){
         JSONEditor.defaults.options.theme = 'bootstrap3';
         JSONEditor.defaults.options.iconlib= 'fontawesome4';
         JSONEditor.defaults.options.required_by_default = 'true';
+        JSONEditor.defaults.options.disable_array_delete_all_rows = 'true';
+        JSONEditor.defaults.options.disable_array_delete_last_row = 'true';
+        JSONEditor.defaults.language = "kr";
+        JSONEditor.defaults.languages.kr = {
+          error_uniqueItems: "리스트에 중복된 항목이 있습니다",
+          button_add_row_title: "{{0}} 추가",
+        };
         //JSONEditor.defaults.options.show_erros = 'change';
 
         var custom_validator = function(schema, value, path) {
@@ -477,7 +490,7 @@ if (_platform !== 'mobile'){
 
       var setValue = function(value) {
         //document.getElementById(currentInput).value = value;
-        editor.getEditor(currentNode).setValue(value);
+        editor.getEditor(currentNode).setValue('/files/' + value);
       };
 
       $scope.jsonImageUploader.filters.push({
