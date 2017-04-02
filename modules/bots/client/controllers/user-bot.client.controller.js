@@ -177,7 +177,8 @@ if (_platform !== 'mobile'){
         if (vm.selectedTemplate) {
           var errors = editor.validate();
           if (errors.length) {
-            $scope.$broadcast('show-errors-check-validity', 'userBotForm');
+            editor.options.show_errors = "interactive";
+            editor.onChange();
             return false;
           }
           vm.userBot.template = vm.selectedTemplate;
@@ -228,7 +229,7 @@ if (_platform !== 'mobile'){
         if (vm.selectedTemplate) {
           var errors = editor.validate();
           if (errors.length) {
-            $scope.$broadcast('show-errors-check-validity', 'botForm');
+            editor.showValidationErrors(errors);
             return false;
           }
           vm.userBot.template = vm.selectedTemplate;
@@ -369,18 +370,22 @@ if (_platform !== 'mobile'){
         JSONEditor.defaults.options.required_by_default = 'true';
         //JSONEditor.defaults.options.show_erros = 'change';
 
-        JSONEditor.defaults.custom_validators.push(function(schema, value, path) {
+        var custom_validator = function(schema, value, path) {
           var errors = [];
           if (value === "") {
             // Errors must be an object with `path`, `property`, and `message`
             errors.push({
               path: path,
               property: 'format',
-              message: 'empty value is not allowed'
+              message: '내용을 입력해주세요'
             });
           }
           return errors;
-        });
+        };
+
+        if (JSONEditor.defaults.custom_validators.length == 0) {
+          JSONEditor.defaults.custom_validators.push(custom_validator);
+        }
 
         var schema = {
           type: "object",
@@ -415,6 +420,7 @@ if (_platform !== 'mobile'){
           $scope.ierror = {};
           $scope.isuccess = {};
 
+          editor.options.show_errors = undefined;
         });
       };
 
