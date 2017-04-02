@@ -361,7 +361,7 @@ if (_platform !== 'mobile'){
                   // format: "table",
                   //title: "메뉴",
                   uniqueItems: true,
-                  items: {type: "object", "properties": vm.parseSchema(jsonSchema[key].schema)}
+                  items: {type: "object", /*format:"grid",*/ "properties": vm.parseSchema(jsonSchema[key].schema)}
                 };
                 break;
               default:
@@ -431,6 +431,7 @@ if (_platform !== 'mobile'){
           schema: schema,
           disable_collapse: true,
           disable_properties: true,
+          disable_edit_json: true,
         });
 
         $compile(document.getElementById('editor_holder'))($scope);
