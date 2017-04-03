@@ -164,18 +164,12 @@ if (_platform == "mobile") {
 } else {
   angular.module(ApplicationConfiguration.applicationModuleName).run(function ($rootScope, $state, Authentication) {
     appRun($rootScope, $state, Authentication);
-
   });
 }
 
 
 function appRun($rootScope, $state, Authentication) {
-    var ogTitle = document.getElementById('ogTitle');
-    var ogDescription = document.getElementById('ogDescription');
-    var ogImage = document.getElementById('ogImage');
-    // ogTitle.setAttribute('content', 'test');
-    // ogDescription.setAttribute('content', 'itstest');
-    // ogImage.setAttribute('content', 'doingtest');
+
   // Check authentication before changing state
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
     if (toState.data && toState.data.roles && toState.data.roles.length > 0) {
@@ -221,15 +215,21 @@ function appRun($rootScope, $state, Authentication) {
       }
     } else if (toState.name === 'user-bots-web.create' || toState.name === 'user-bots-web.edit' || toState.name === 'user-bots-web.view') {
       var userbotHeader = document.getElementById('mainHeader');
+
       if (userbotHeader) {
-        userbotHeader.style.display = 'none';
+        userbotHeader.style.backgroundPosition = 'bottom';
+        userbotHeader.getElementsByClassName('intro-text')[0].style.paddingBottom = 0 +'px';
+        userbotHeader.getElementsByClassName('intro-text-wrapper')[0].style.display = 'none';
       }
     } else {
       var userbotHeader =  document.getElementById('mainHeader');
       var userbotChat =  document.getElementById('container-chat');
       if(userbotHeader && userbotChat) {
-        document.getElementById('mainHeader').style.display = 'block';
-        document.getElementById('container-chat').style.display = 'block';
+          userbotHeader.style.display = 'block';
+          userbotHeader.style.backgroundPosition = 'center';
+          userbotHeader.getElementsByClassName('intro-text')[0].style.paddingBottom = 70 +'px';
+          userbotHeader.getElementsByClassName('intro-text-wrapper')[0].style.display = 'block';
+          document.getElementById('container-chat').style.display = 'block';
       }
     }
 
