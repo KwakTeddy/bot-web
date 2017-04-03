@@ -49,6 +49,9 @@ var FactLinkSchema = new Schema({
   user: {
     type: Schema.ObjectId,
     ref: 'User'
+  },
+  bot_id: {
+    type: String,
   }
 });
 

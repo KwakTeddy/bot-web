@@ -108,7 +108,7 @@ exports.create = function (req, res) {
           if (err) {
             cb(err);
           } else {
-            dialogsetModule.convertDialogset1(dialogset, function(result) {
+            dialogsetModule.convertDialogset1(dialogset, bot.id, function(result) {
               bot.dialogsets = [dialogset];
               bot.save(function(err) {
                 if(err) cb(err);

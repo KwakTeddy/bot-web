@@ -92,6 +92,19 @@ exports.list = function(req, res) {
   });
 };
 
+exports.findByBotId = function(req, res) {
+  var query = {bot_id:req.params.bot_id};
+  FactLink.find(query).limit(500).sort('-created').exec(function(err, factLinks) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.jsonp(factLinks);
+    }
+  });
+};
+
 exports.find = function(req, res) {
   FactLink.remove({botUser: req.params.factBotUserId}, function(err) {
     FactLink.find({}).limit(500).sort('-created').exec(function(err, factLinks) {

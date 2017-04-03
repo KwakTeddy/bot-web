@@ -1,12 +1,14 @@
 'use strict';
 
 // Bots controller
-angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope', '$rootScope', '$state', '$window','$timeout', '$stateParams', '$resource',
-    function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, Authentication) {
+angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope', '$rootScope', '$state', '$window',
+'$timeout', '$stateParams', '$resource', 'userBotResolve', 'UserBotsService',
+    function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, Authentication, userBot, UserBotsService) {
       var vm = this;
       //vm.user = Authentication.user;
       vm.userId = $rootScope.userId;
 
+      vm.userBot = userBot;
       // if(vm.userBot && vm.userBot._id)
       //   $rootScope.$broadcast('setUserBot', vm.userBot);
 
@@ -46,7 +48,8 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
         }
       };
 
-      $resource('/api/factLinks/find/:factUserID', {}).query({factUserID: vm.userId}, function(res) {
+      console.log(vm.userBot.id);
+      $resource('/api/factLinks/findByBotId/:factUserID/:bot_id', {}).query({factUserID: vm.userId, bot_id: vm.userBot.id}, function(res) {
         for(var i = 0; i < res.length; i++) {
           addLink(res[i]);
         }

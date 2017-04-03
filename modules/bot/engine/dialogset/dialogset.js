@@ -39,37 +39,51 @@ function convertDialogset(original, callback) {
 
 exports.convertDialogset = convertDialogset;
 
-function convertDialogset1(dialogset, callback) {
+
+function convertDialogset1(dialogset, bot_id, callback) {
   var dialogType = dialogset.type;
   var dir = path.resolve('public/files/');
   var filepath = path.join(dir, dialogset.filename);
+
+  var analysis = function(result) {
+     analyzeKnowledge(dialogset, bot_id, result, callback);
+  };
 
   if(!dialogType) {
     var info = path.parse(dialogset.originalFilename);
     if (info.ext == '.txt') {
       dialogType = 'kakao';
-      dialogsetKakao.convertDialogset(filepath, dialogset, callback);
+      dialogsetKakao.convertDialogset(filepath, dialogset, analysis);
     } else if (info.ext == '.csv') {
       dialogType = "csv";
-      utils.readFirstLine(filepath).then(function(head) {
-        if (head === "Date,User,Message") {
-          dialogType = "kakao";
-          dialogsetKakao.convertDialogset(filepath, dialogset, callback);
-        } else {
-          insertDatasetFile1(filepath, dialogset, callback);
+      async.waterfall([
+        function(cb) {
+          utils.readFirstLine(filepath).then(function(head) {
+            if (head === "Date,User,Message") {
+              dialogType = "kakao";
+            }
+            cb(null);
+          }, function(err) {
+            dialogType = 'csv';
+            cb(null);
+          });
+        },
+        function(cb) {
+          if (dialogType == "kakao") {
+            dialogsetKakao.convertDialogset(filepath, dialogset, analysis);
+          } else {
+            insertDatasetFile1(filepath, dialogset, analysis);
+          }
+          cb(null);
         }
-      }, function(err) {
-        dialogType = 'csv';
-        insertDatasetFile1(filepath, dialogset, callback);
-      });
+      ]);
     } else if(info.ext == '.smi') {
       dialogType = 'smi';
-      dialogsetSmi.convertDialogset(filepath, dialogset, callback);
+      dialogsetSmi.convertDialogset(filepath, dialogset, analysis);
     }
   }
   console.log(dialogType);
 
-  // analyzeKnowledge('quibble', callback);
 }
 
 exports.convertDialogset1 = convertDialogset1;
@@ -264,7 +278,7 @@ function insertDatasetFile(infile, callback, dialogset) {
 
 exports.insertDatasetFile = insertDatasetFile;
 
-function analyzeKnowledge(dialogset, callback) {
+function analyzeKnowledge(dialogset, bot_id, result, callback) {
   var model = mongoModule.getModel('DialogsetDialog');
 
   model.find({dialogset: dialogset}, function(err, docs) {
@@ -297,6 +311,7 @@ function analyzeKnowledge(dialogset, callback) {
         if(node1 && node2 && link) {
           var task = {
             doc:{
+              bot_id: bot_id,
               botUser: null,
               node1: node1,
               node2: node2,
@@ -319,7 +334,7 @@ function analyzeKnowledge(dialogset, callback) {
 
       })
     }, function(err) {
-      callback();
+      callback(result);
     });
   });
 }
