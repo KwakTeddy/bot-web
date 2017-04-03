@@ -213,7 +213,8 @@ function appRun($rootScope, $state, Authentication) {
         document.getElementById('mainHeader').style.display = 'none';
         document.getElementById('container-chat').style.display = 'none';
       }
-    } else if (toState.name === 'user-bots-web.create' || toState.name === 'user-bots-web.edit' || toState.name === 'user-bots-web.view') {
+    } else if (toState.name === 'user-bots-web.create' || toState.name === 'user-bots-web.edit' || toState.name === 'user-bots-web.view' ||
+    toState.name === 'user-bots-web.graph') {
       var userbotHeader = document.getElementById('mainHeader');
 
       if (userbotHeader) {

@@ -187,37 +187,39 @@ exports.uploadFile = function (req, res) {
       return res.status(400).send({ message: 'Error occurred while uploading file' });
     } else {
       console.log('uploadFile:' + req.file.filename);
-
       var count = 0;
       // check file
       var info = path.parse(req.file.filename);
       if (info.ext === ".csv") {
         var filepath = req.file.destination + req.file.filename;
-        utils.readFirstLine(filepath).then(function(head) {
-          if (head === "Date,User,Message" || (head.match(/,/g) || []).length == 1) {
-            // kakao file or two column csv
-            console.log('kakao csv');
-            async.waterfall( [
-              function(cb) {
-                fs.createReadStream(filepath)
-                  .on('data', function(chunk) {
-                    for (var i=0; i < chunk.length; ++i)
-                      if (chunk[i] = 10) ++count;
-                  })
-                  .on('end', function() {
-                    console.log(count);
-                    cb(null);
-                  });
-              },
-              function(cb) {
-                res.json({result: 'ok', count: count, path: req.file.destination, filename: req.file.filename, originalFilename: req.file.originalname});
+        async.waterfall( [
+          function(cb) {
+            utils.readFirstLine(filepath).then(function(head) {
+              if (head === "Date,User,Message" || (head.match(/,/g) || []).length == 1) {
+                // kakao file or two column csv
+                console.log('kakao csv');
                 cb(null);
+              } else {
+                return res.status(400).send({ message: '대화파일이 아닙니다' });
               }
-            ]);
-          } else {
-            return res.status(400).send({ message: '대화파일이 아닙니다' });
+            });
+          },
+          function(cb) {
+            fs.createReadStream(filepath)
+              .on('data', function(chunk) {
+                for (var i=0; i < chunk.length; ++i)
+                  if (chunk[i] = 10) ++count;
+              })
+              .on('end', function() {
+                console.log(count);
+                cb(null);
+              });
+          },
+          function(cb) {
+            res.json({result: 'ok', count: count, path: req.file.destination, filename: req.file.filename, originalFilename: req.file.originalname});
+            cb(null);
           }
-        });
+        ]);
       } else if (info.ext === ".xls" || info.ext === ".xlsx") {
 
       } else {
@@ -226,11 +228,6 @@ exports.uploadFile = function (req, res) {
       }
     }
   });
-  // } else {
-  //   res.status(400).send({
-  //     message: 'User is not signed in'
-  //   });
-  // }
 };
 
 

@@ -14,6 +14,31 @@ var dialogsetKdrama = require('./dialogset-kdrama');
 
 var DialogsetDialog = mongoose.model('DialogsetDialog');
 
+//TODO: should be replace with convertDialogset1
+function convertDialogset(original, callback) {
+  var dialogType = 'kakao';
+
+  var info = path.parse(original);
+  if(info.ext == '.txt') {dialogType = 'kakao';}
+  else if(info.ext == '.csv') {dialogType = 'kakao';}
+  else if(info.ext == '.smi') {dialogType = 'smi';}
+
+  var dir = path.resolve('public/files/');
+  insertDatasetFile(path.join(dir, original), function() {
+    callback();
+  });
+
+  // analyzeKnowledge('quibble', callback);
+
+  // nlpTest(path.join(dir, original), callback);
+
+  // if(dialogType == 'kakao') dialogsetKakao.convertDialogset(original, callback);
+  // else if(dialogType == 'smi') dialogsetSmi.convertDialogset(original, callback);
+  // else if(dialogType == 'kdrama') dialogsetKdrama.convertDialogset(original, callback);
+}
+
+exports.convertDialogset = convertDialogset;
+
 function convertDialogset1(dialogset, callback) {
   var dialogType = dialogset.type;
   var dir = path.resolve('public/files/');
@@ -44,8 +69,7 @@ function convertDialogset1(dialogset, callback) {
   }
   console.log(dialogType);
 
-  // else if(dialogType == 'kdrama') dialogsetKdrama.convertDialogset(original, callback);
-
+  // analyzeKnowledge('quibble', callback);
 }
 
 exports.convertDialogset1 = convertDialogset1;

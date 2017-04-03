@@ -3,7 +3,7 @@
 
         <div class="row text-left" style="margin-bottom: 100px;">
 
-            <div class="bot-content" ng-show="vm.type == 'view'" style="margin-top:95px;">
+            <div class="bot-content" ng-show="vm.type == 'view'" style="margin-top:30px;">
                 <div class="panel-body" >
 
                     <div class="bot-list-header" ng-show="vm.state=='view'" style="border-bottom: 1px solid lightgray;">
@@ -40,6 +40,8 @@
                               <!--<div class="line-it-button" style="display: none;" data-type="share-c" data-lang="en"></div>-->
                             </div>
                             <div style="border-top: 1px solid lightgray; margin-top: 5px;padding-top: 5px;text-align: right;">
+                                <a class="btn btn-primary" ui-sref="user-bots-web.graph({userBotId: vm.userBot._id})"
+                                   style="padding: 10px 20px 10px 20px;">지식그래프</a>
                                 <a class="btn btn-primary" ng-show="vm.isMine" ui-sref="user-bots-web.edit({userBotId: vm.userBot._id})"
                                    style="padding: 10px 20px 10px 20px;">수정하기</a>
                                 <a class="btn btn-default" ng-show="!vm.userBot.userFollow && vm.user" ng-click="vm.followBot(vm.userBot);"
@@ -83,7 +85,7 @@
                 </div>
             </div>
 
-            <div class="bot-content" ng-show="vm.type.startsWith('edit')" style="margin-top: 95px">
+            <div class="bot-content" ng-show="vm.type.startsWith('edit')" style="margin-top: 30px">
 
                 <form name="userBotForm" class="form-bordered"
                       novalidate="novalidate">
@@ -138,19 +140,6 @@
                             </div>
                             <!--<label class="col-sm-3 control-label">Schema: </label>-->
                             <!--<div class="col-sm-9">{{vm.selectedTemplate.dataSchema}}</div>-->
-                            <div class="row form-group">
-                                <label class="col-sm-3 control-label"></label>
-                                <div class="col-sm-9">
-                                    <div class="checkbox-custom checkbox-default" style="float: left;margin-left: 10px;">
-                                        <input type="checkbox" id="public" ng-model="vm.userBot.public">
-                                        <label for="public">공개</label>
-                                    </div>
-                                    <div class="checkbox-custom checkbox-default" style="float: left;margin-left: 10px;">
-                                        <input type="checkbox" id="learn" ng-model="vm.userBot.learn">
-                                        <label for="learn">대화 학습 허용</label>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         <div class="form-horizontal form-group" ng-show="vm.type == 'edit-detail' && vm.editType == 'file'">
                             <div class="row form-group">
@@ -170,19 +159,6 @@
                                     <div class="text-center form-group" ng-show="false">
                                         <button class="btn btn-primary" ng-click="uploadDialogFiles();">Upload</button>
                                         <button class="btn btn-default" ng-click="cancelUpload();">Cancel</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <label class="col-sm-3 control-label"></label>
-                                <div class="col-sm-9">
-                                    <div class="checkbox-custom checkbox-default" style="float: left;margin-left: 10px;">
-                                        <input data-toggle="tooltip" title="대화셋이 100개 이상인 경우 공개가 가능합니다" ng-disabled="!vm.isPublic" type="checkbox" id="public" ng-model="vm.userBot.public">
-                                        <label for="public">공개</label>
-                                    </div>
-                                    <div class="checkbox-custom checkbox-default" style="float: left;margin-left: 10px;">
-                                        <input type="checkbox" id="learn" ng-model="vm.userBot.learn">
-                                        <label for="learn">대화 학습 허용</label>
                                     </div>
                                 </div>
                             </div>
@@ -246,6 +222,19 @@
                                     <!--<p class="help-block error-text" ng-message="required">이미지를 입력해주세요</p>-->
                                 <!--</div>-->
                             </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"></label>
+                                <div class="col-sm-9">
+                                    <div class="checkbox-custom checkbox-default" style="float: left;margin-left: 10px;">
+                                        <input data-toggle="tooltip" title="대화셋이 100개 이상인 경우 공개가 가능합니다" ng-disabled="!vm.isPublic" type="checkbox" id="public" ng-model="vm.userBot.public">
+                                        <label for="public">공개</label>
+                                    </div>
+                                    <div class="checkbox-custom checkbox-default" style="float: left;margin-left: 10px;">
+                                        <input type="checkbox" id="learn" ng-model="vm.userBot.learn">
+                                        <label for="learn">대화 학습 허용</label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
@@ -286,7 +275,7 @@
 
             </div>
 
-            <div class="bot-content" ng-show="vm.type == 'learn'" style="margin-top:95px;">
+            <div class="bot-content" ng-show="vm.type == 'learn'" style="margin-top:30px;">
 
                     <div class="panel-body">
 
@@ -366,7 +355,7 @@
 
             </div>
 
-            <div class="bot-content" ng-show="vm.type == 'connect'" style="margin-top:95px;">
+            <div class="bot-content" ng-show="vm.type == 'connect'" style="margin-top:30px;">
 
                 <form name="userBotForm2" class="form-horizontal form-bordered"
                       novalidate="novalidate">
@@ -483,13 +472,13 @@
                                 <!--<button type="button" class="btn btn-danger" ui-sref="user-bots.list({listType: 'my'})">챗봇목록</button>-->
                             <!--</div>-->
                             <div class="col-sm-12 text-center" ng-show="vm.userBot && vm.userBot._id">
-                                <a class="btn btn-primary" ng-click="vm.update(userBotForm2.$valid)">
+                                <button type="button" class="btn btn-default pull-right" onclick="javascript:history.back();" >취소</button>
+                                <a class="btn btn-primary pull-right" ng-click="vm.update(userBotForm2.$valid)">
                                     <i class="glyphicon glyphicon-edit"></i> 수정
                                 </a>
-                                <a class="btn btn-danger" ng-click="vm.remove()">
+                                <a class="btn btn-danger pull-left" ng-click="vm.remove()">
                                     <i class="glyphicon glyphicon-trash"></i> 삭제
                                 </a>
-                                <button type="button" class="btn btn-default" onclick="javascript:history.back();" >취소</button>
                             </div>
                         </div>
                     </footer>

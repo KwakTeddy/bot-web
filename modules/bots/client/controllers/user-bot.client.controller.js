@@ -23,12 +23,11 @@ if (_platform !== 'mobile'){
       var vm = this;
       vm.user = Authentication.user;
       vm.userBot = userBot;
-      vm.isPublic = false;
-      if (!userBot.public) {
-        vm.userBot.public = false;
+      vm.isPublic = true;
+      if (userBot && userBot._id && !userBot.public) {
         vm.isPublic = false;
       } else {
-        vm.isPublic = true;
+        vm.userBot.public = true;
       }
       vm.userId = $rootScope.userId;
       vm.isMine = (vm.userBot.user != null && (vm.user.username === vm.userBot.user.username));

@@ -145,6 +145,18 @@ angular.module('user-bots').config(['$stateProvider',
           data: {
               ignoreState: true
           }
+      })
+      .state('user-bots-web.graph', {
+        url: '/:userBotId/graph',
+        templateUrl: 'modules/bots/client/views/bot-graph-knowledge.client.view.html',
+        controller: 'BotGraphKnowledgeController',
+        controllerAs: 'vm',
+        resolve: {
+          userBotResolve: getUserBotWeb
+        },
+        data: {
+          roles: ['user', 'admin']
+        }
       });
   }
 ]);
