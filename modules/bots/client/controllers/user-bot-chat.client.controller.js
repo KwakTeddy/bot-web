@@ -177,6 +177,10 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     };
 
 
+    $scope.$on('sendMsgFromFarAway', function(event, arg0) {
+      vm.sendMsg(arg0);
+    });
+
     vm.sendMsg = function (msg) {
       if (!vm.isConnected) return false;
 
@@ -241,8 +245,10 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       });
     };
 
-    $document.bind("keydown", function (event) {
-      $rootScope.$broadcast('keyinput', vm.msg);
+    vm.disableEvent = false;
+    var keydown = function(event) {
+      if (!vm.disableEvent)
+        $rootScope.$broadcast('keyinput', vm.msg);
 
       // only in developer
       if ($state.is('developer-home')) {
@@ -252,6 +258,12 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
           vm.resetBot();
         }
       }
+    };
+
+    $document.bind("keydown", keydown);
+
+    $scope.$on("stopKeyDown", function (event) {
+      vm.disableEvent = true;
     });
 
 
@@ -486,6 +498,13 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         vm.userBot = userBot;
         vm.connectUserBot(vm.bot);
       }
+    });
+
+    $scope.$on('setUserBotAlways', function(event, arg0) {
+      var userBot = arg0;
+      vm.bot = userBot.id;
+      vm.userBot = userBot;
+      vm.connectUserBot(vm.bot);
     });
 
     $scope.$on('connectUserBot', function(event, arg0) {
