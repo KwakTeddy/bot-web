@@ -106,7 +106,7 @@ if (_platform !== 'mobile'){
         $scope.userBotId = vm.userBot.id;
 
         if ((channel == 'facebook') && (method !== 'easy')){
-          FB.api('/me/accounts?fields=picture,name,link,access_token', function(response) {
+          FB.api('/me/accounts?fields=picture,name,link,access_token,perms', function(response) {
             console.log(response);
             if (response.error && (response.error.code == 2500)){
               var url = '/api/auth/facebook/page';
