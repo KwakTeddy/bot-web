@@ -4,7 +4,7 @@ var botlib = require(path.resolve('config/lib/bot'));
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
-var messageshop = {
+var massageshop = {
   reserveFields: [
     {name: 'memo', title: '서비스명'}
   ],
@@ -15,5 +15,5 @@ var messageshop = {
   }
 };
 
-botlib.makeTemplateBot('messageshop', messageshop);
+botlib.makeTemplateBot('massageshop', massageshop);
 
