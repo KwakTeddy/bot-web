@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
 
 var restaurant = {
   reserveFields: [
-    {name: 'numOfPersion', title: '인원수'}
+    {name: 'numOfPerson', title: '인원수'}
   ],
 
   naver: {

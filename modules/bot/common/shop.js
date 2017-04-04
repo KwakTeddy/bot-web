@@ -322,7 +322,7 @@ function reserveRequest(task, context, callback) {
             }
           }
 
-          message += '\n' + context.dialog.mobile + '\n' +
+          message += '\n' + (context.dialog.mobile || context.user.mobile) + '\n' +
           '예약접수(클릭) ' + shorturl;
 
           request.post(
@@ -423,7 +423,7 @@ var reserveCancel = {
             }
           }
 
-          message += '\n' + context.dialog.mobile + '\n' +
+          message += '\n' + context.dialog.reserve.mobile + '\n' +
             '예약취소';
 
           request.post(
