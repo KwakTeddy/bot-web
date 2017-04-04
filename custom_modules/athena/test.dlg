@@ -256,7 +256,7 @@ googletask.googlesearchtask
     {action: function (task,context,callback) {
         task.url = context.dialog.item.url;
         task.urlMessage = '결과보기';
-        console.log('=======' + context.dialog.result.snippet);
+        console.log('=======' + context.dialog.item.snippet);
         callback(task,context);
     }}
     >+item.title+\n+item.snippet+\n+url+
