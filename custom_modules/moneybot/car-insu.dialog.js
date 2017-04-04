@@ -1,5 +1,5 @@
 
-자동차보험_가입:
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 자동차보험_가입:
 
 var dialogs = [
 {
@@ -18,8 +18,8 @@ var dialogs = [
 },
 {
   input: '차량번호입력',
-  output: '차량번호를 전체를 말씀해 주세요.',
-  children: [
+  output: '차량번호를 전체를 말씀해 주세요.', 
+    children: [
     {
       input: '차량번호맞는경우',
       output: {returnCall: '주민번호입력', options: {returnDialog: '자동차보험_가입조회'}}
@@ -32,12 +32,12 @@ var dialogs = [
 },
 {
   input: '자동차보험가입조회',
-  output: '총 ㅇ개 보험사에서 가장 저렴한 보험을 찾았습니다.',
-  children: [
+  output: '총 ㅇ개 보험사에서 가장 저렴한 보험을 찾았습니다.', 
+    children: [
     {
       input: '선택',
-      output: 'ㅇㅇ보험사 보험료 내역입니다. 가입하시겠습니까? (이미지)',
-      children: [
+      output: 'ㅇㅇ보험사 보험료 내역입니다. 가입하시겠습니까? (이미지)', 
+        children: [
         {
           input: '선택',
           output: '청약서와 상품설명서 입니다. 서명하셔서 카톡, 이메일, 팩스로 발송 부탁드립니다'

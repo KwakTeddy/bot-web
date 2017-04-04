@@ -259,7 +259,7 @@ function eventapi(task, context, callback) {
 exports.eventapi = eventapi;
 
 function googlesearch(task, context, callback) {
-    task.query = task['1'];
+    context.dialog.query = task['1'];
     taskmodule.executeTask(googlesearchtask, context, function(task, context) {
         callback(task, context);
     });
@@ -287,7 +287,9 @@ var googlesearchtask = {
         url: './/div/h3/a/@href'
     },
     preCallback: function (task,context,callback) {
-        task.query = task['1'];
+        context.dialog.query = task['1'];
+        task.param.q = context.dialog.query;
+        task.param.oq = context.dialog.query;
         callback(task,context,callback);
     },
     postCallback: function (task, context, callback) {
@@ -296,7 +298,7 @@ var googlesearchtask = {
             async.eachSeries(doc.body, function(source, cb) {
                 if (source.data) {
                     snippet = snippet + source.data;
-                } else {
+                } else if (source.firstChild) {
                     snippet = snippet + source.firstChild.data;
                 }
                 cb(null)
@@ -307,11 +309,39 @@ var googlesearchtask = {
             });
         }, function (err) {
             context.dialog.result = task.doc;
-            callback(task,context);
+            var result = [];
+            async.eachSeries(context.dialog.result, function(doc, cb) {
+                var _doc = {
+                    title: doc.title,
+                    text : doc.snippet,
+                    buttons: [{url: doc.url, text: '상세보기'}]
+                };
+                result.push(_doc);
+                cb(null)
+            }, function (err) {
+                task.result = {items: result};
+                if (task.result.items.length == 0) {
+                    task.result = null;
+                }
+                callback(task, context);
+            });
         });
     }
 };
 
 exports.googlesearchtask = googlesearchtask;
 bot.setTask('googlesearchtask', googlesearchtask);
-
+//
+// function onegooglesearch (task,context,callback) {
+//     var result = [
+//         {
+//             title: context.dialog.item.title,
+//             text: context.dialog.item.snippet,
+//             buttons: [{url: context.dialog.item.url, text: '상세보기'}]
+//         }
+//     ];
+//     task.result = {items: result};
+//     callback(task,context);
+// }
+//
+// exports.onegooglesearch = onegooglesearch;

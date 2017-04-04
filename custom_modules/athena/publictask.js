@@ -9,11 +9,21 @@ function naverGeocode(task, context, callback) {
     // var query = {query: task.address.법정읍면동명 + ' ' + task.address.지번본번 + ' ' + task.address.지번부번};
     if (task.address) {
         var query = {query: task.address.지번주소};
-    } else if (context.dialog.address.지번주소) {
-        var query = {query: context.dialog.address.지번주소};
-    } else {
-        var query = {query: context.dialog.address};
+    } else if (context.dialog.address) {
+        if (context.dialog.address.지번주소) {
+            var query = {query: context.dialog.address.지번주소};
+        } else {
+            var query = {query: context.dialog.address};
+        }
+    } else if (context.user.address) {
+        if (context.user.address.지번주소) {
+            var query = {query: context.user.address.지번주소};
+        } else {
+            var query = {query: context.user.address};
+        }
     }
+    console.log('123123123' + JSON.stringify(query));
+
     var request = require('request');
 
     request({
@@ -42,19 +52,49 @@ function naverGeocode(task, context, callback) {
 exports.naverGeocode = naverGeocode;
 
 function currentweather(task, context, callback) {
-    if(context.dialog.address) {
-        if(context.dialog.address.법정읍면동명 == undefined) {
-            callback(task, context);
-        } else {
-            naverGeocode(task, context, function (task, context) {
-                context.user.lat = context.dialog.lat = task.lat;
-                context.user.lng = context.dialog.lng = task.lng;
-                currentweatherapi(task, context, function (task, context) {
-                    context.dialog.weather = task.weather;
-                    context.dialog.temp = task.temp;
+    if (context.dialog.address || context.user.address) {
+        if (context.dialog.address) {
+            if (!(Array.isArray(context.dialog.address))) {
+                if (context.dialog.address.법정읍면동명 == undefined) {
                     callback(task, context);
+                } else {
+                    naverGeocode(task, context, function (task, context) {
+                        context.user.lat = context.dialog.lat = task.lat;
+                        context.user.lng = context.dialog.lng = task.lng;
+                        if (context.dialog.address) {
+                            context.user.address = context.dialog.address;
+                        }
+                        currentweatherapi(task, context, function (task, context) {
+                            context.dialog.weather = task.weather;
+                            console.log('222');
+                            callback(task, context);
+                        })
+                    })
+                }
+            } else if (context.dialog.address) {
+                task.result = null;
+                callback(task, context);
+            }
+        } else if (context.user.address) {
+            if (context.user.address.법정읍면동명 == undefined) {
+                callback(task, context);
+            } else {
+                naverGeocode(task, context, function (task, context) {
+                    context.user.lat = context.dialog.lat = task.lat;
+                    context.user.lng = context.dialog.lng = task.lng;
+                    if (context.dialog.address) {
+                        context.user.address = context.dialog.address;
+                    }
+                    currentweatherapi(task, context, function (task, context) {
+                        context.dialog.weather = task.weather;
+                        console.log('333');
+                        callback(task, context);
+                    })
                 })
-            })
+            }
+        } else {
+            task.result = null;
+            callback(task, context);
         }
     } else {
         callback(task, context);
@@ -64,8 +104,9 @@ function currentweather(task, context, callback) {
 exports.currentweather = currentweather;
 
 function currentweatherapi(task, context, callback) {
-    var lat = context.dialog.lat;
-    var lon = context.dialog.lng;
+    var lat = context.user.lat;
+    var lon = context.user.lng;
+    console.log('weather: lat: '+lat+'lon: '+lon);
     var request = require('request');
     request({
         url: 'http://api.wunderground.com/api/5ad031be7c5a72bb/conditions/lang:KR/q/' + lat + ',' + lon + '.json',
@@ -81,6 +122,12 @@ function currentweatherapi(task, context, callback) {
             var doc = JSON.parse(body);
             task.weather = doc.current_observation.weather;
             task.temp = doc.current_observation.temp_c;
+            task.imgUrl = doc.current_observation.icon_url;
+            console.log('weather: '+task.weather+'temp: '+task.temp);
+            task.result = {
+                image: {url: task.imgUrl}
+            };
+            console.log(JSON.stringify(task.result));
             callback(task, context);
         }
     });
@@ -90,21 +137,89 @@ function currentweatherapi(task, context, callback) {
 exports.currentweatherapi = currentweatherapi;
 
 function forecastweather(task, context, callback) {
-    if(context.dialog.address) {
-        if(context.dialog.address.법정읍면동명 == undefined) {
-            callback(task, context);
-        } else {
-            naverGeocode(task, context, function (task, context) {
-                context.user.lat = context.dialog.lat = task.lat;
-                context.user.lng = context.dialog.lng = task.lng;
-                forecastweatherapi(task,context,function (task,context) {
-                    // context.dialog.weather = task.weather;
-                    // context.dialog.temp = task.temp;
-                    // context.dialog.humidity = task.humidity;
-                    // context.dialog.wind = task.wind;
-                    callback(task,context);
+    if (context.dialog.address || context.user.address) {
+        if (context.dialog.address) {
+            if (!(Array.isArray(context.dialog.address))) {
+                if (context.dialog.address.법정읍면동명 == undefined) {
+                    callback(task, context);
+                } else {
+                    naverGeocode(task, context, function (task, context) {
+                        context.user.lat = context.dialog.lat = task.lat;
+                        context.user.lng = context.dialog.lng = task.lng;
+                        if (context.dialog.address) {
+                            context.user.address = context.dialog.address;
+                        }
+                        forecastweatherapi(task, context, function (task, context) {
+                            var result = [];
+                            if (!(Array.isArray(context.dialog.item))) {
+                                context.dialog.item = [context.dialog.item]
+                            }
+                            async.eachSeries(context.dialog.item, function(doc, cb) {
+                                var _doc = {
+                                    title: doc.conditions + ' - ' +doc.low + '도 ~ ' + doc.high + '도',
+                                    text : doc.date.month + '월 ' + doc.date.day + '일 ' + context.user.address.법정읍면동명,
+                                    imageUrl : doc.icon_url
+                                };
+                                result.push(_doc);
+                                cb(null)
+                            }, function (err) {
+                                if (result.length == 1){
+                                    context.dialog.item = context.dialog.item[0];
+                                    task.result = {
+                                        image: {url: result[0].imageUrl}
+                                    }
+                                } else {
+                                    task.result = {items: result};
+                                }
+                                callback(task, context);
+                            });
+                        })
+                    })
+                }
+            } else if (context.dialog.address) {
+                task.result = null;
+                callback(task, context);
+            }
+        } else if (context.user.address) {
+            if (context.user.address.법정읍면동명 == undefined) {
+                callback(task, context);
+            } else {
+                naverGeocode(task, context, function (task, context) {
+                    context.user.lat = context.dialog.lat = task.lat;
+                    context.user.lng = context.dialog.lng = task.lng;
+                    if (context.dialog.address) {
+                        context.user.address = context.dialog.address;
+                    }
+                    forecastweatherapi(task, context, function (task, context) {
+                        var result = [];
+                        if (!(Array.isArray(context.dialog.item))) {
+                            context.dialog.item = [context.dialog.item]
+                        }
+                        async.eachSeries(context.dialog.item, function(doc, cb) {
+                            var _doc = {
+                                title: doc.conditions + ' - ' +doc.low + '도 ~ ' + doc.high + '도',
+                                text : doc.date.month + '월 ' + doc.date.day + '일 ' + context.user.address.법정읍면동명,
+                                imageUrl : doc.icon_url
+                            };
+                            result.push(_doc);
+                            cb(null)
+                        }, function (err) {
+                            if (result.length == 1){
+                                context.dialog.item = context.dialog.item[0];
+                                task.result = {
+                                    image: {url: result[0].imageUrl}
+                                }
+                            } else {
+                                task.result = {items: result};
+                            }
+                            callback(task, context);
+                        });
+                    })
                 })
-            })
+            }
+        } else {
+            task.result = null;
+            callback(task, context);
         }
     } else {
         callback(task, context);
@@ -114,8 +229,8 @@ function forecastweather(task, context, callback) {
 exports.forecastweather = forecastweather;
 
 function forecastweatherapi(task, context, callback) {
-    var lat = context.dialog.lat;
-    var lon = context.dialog.lng;
+    var lat = context.user.lat;
+    var lon = context.user.lng;
     var request = require('request');
     request({
         url: 'http://api.wunderground.com/api/5ad031be7c5a72bb/forecast10day/lang:KR/q/' + lat + ',' + lon + '.json',
@@ -139,11 +254,14 @@ function forecastweatherapi(task, context, callback) {
             if (context.dialog.date) {
                 task.date = context.dialog.date;
             }
+            if (Array.isArray(task.date) == true) {
+                task.date = task.date[task.date.length - 1];
+            }
             var today = new Date();
             var oneDay = 24*60*60*1000;
             var secondDate = new Date(today.getFullYear(),today.getMonth(),today.getDate());
             var firstDate = new Date(task.date.getFullYear(),task.date.getMonth(),task.date.getDate());
-            var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
+            var diffDays = Math.round((firstDate.getTime() - secondDate.getTime())/(oneDay));
             if (task.range == '이번주') {
                 context.dialog.range = '이번주';
                 if (today.getDay() == 0) {
@@ -187,25 +305,37 @@ exports.exchangeTypecheck = function (text, type, task, context, callback) {
         "유로":"EUR",
         "달러":"USD",
         "위안":"CNY",
-        "엔":"JPY"
+        "엔":"JPY",
+        "중국":"CNY",
+        "유럽":"EUR",
+        "일본":"JPY",
+        "미국":"USD",
+        "호주":"AUD",
+        "캐나다":"CAD",
+        "홍콩":"HKD",
+        "프랑스":"EUR",
+        "대만":"TWD",
+        "필리핀":"PHP",
+        "페소":"PHP",
+        "베트남":"VND",
+        "태국":"THB",
+        "싱가폴":"SGD",
+        "바트":"THB",
+        "이탈리아":"EUR"
     };
     var matched = false;
-    var re = /(달러|유로|위안|엔)/ig;
+    var re = /(달러|유로|위안|엔|미국|중국|유럽|일본|호주|캐나다|홍콩|프랑스|대만|필리핀|페소|베트남|태국|싱가폴|바트|이탈리아)|([A-Z]{3})/ig;
     text = text.replace(/화/g,'');
-    text = text.match(re);
-    var query = text;
-    if (text) {
-        if (currency[query]) {
-            matched = true;
-            context.dialog.currency = currency[query];
-            callback(text,task,matched);
-        } else {
-            callback(text,task,matched);
+    text = text.replace(re, function(match, p1, p2) {
+        matched = true;
+        if (p1) {
+            context.dialog.currency = currency[p1];
+        } else if (p2) {
+            context.dialog.currency = p2;
         }
-    } else {
         callback(text,task,matched);
-    }
-
+    });
+    callback(text,task,matched);
 };
 
 exports.exchangerate = function(task, context, callback) {
@@ -219,7 +349,8 @@ exports.exchangerate = function(task, context, callback) {
         if (!error) {
             console.log(body);
             var items = body.split(',');
-            task.doc = {rate: items[1], date: (items[2]+" "+items[3]).replace(/['"]+/g, '')};
+            var date = items[2].split('/');
+            task.doc = {rate: items[1], date: (date[2]+'년 '+date[1]+'월 '+date[0]+'일 '+items[3]).replace(/['"]+/g, '')};
             context.dialog.item.push(task.doc);
             task.count = 1;
         } else {
@@ -231,15 +362,26 @@ exports.exchangerate = function(task, context, callback) {
 
 exports.stockTypecheck = function (text, type, task, context, callback) {
     var matched = false;
-    var query = text;
     var codes = context.bot.codes;
-    if (codes[query]) {
+    var code = context.bot.codes;
+    codes = Object.keys(codes);
+    codes = codes.toString();
+    // codes = codes.replace(/\[/g, '');
+    // codes = codes.replace(/]/g, '');
+    // codes = codes.replace(/'/g, '');
+    codes = codes.replace(/,/g, '|');
+    codes = '(' + codes + ')';
+    var re = new RegExp(codes,"g");
+    console.log(re);
+    text = text.replace(re, function(match, p1) {
         matched = true;
-        context.dialog.stock = codes[query];
+        if (p1) {
+            context.dialog.stock = code[p1];
+            context.dialog.stockname = p1;
+        }
         callback(text,task,matched);
-    } else {
-        callback(text,task,matched);
-    }
+    });
+    callback(text,task,matched);
 };
 
 
@@ -252,7 +394,13 @@ exports.stockprice = function(task, context, callback) {
     }).then(function(snapshot) {
         if (snapshot.lastTradePriceOnly != null) {
             task.doc = snapshot;
-            context.dialog.item.push(task.doc);
+            var year = task.doc.lastTradeDate.getFullYear();
+            var month = task.doc.lastTradeDate.getMonth();
+            var date = task.doc.lastTradeDate.getDate();
+            var hour = task.doc.lastTradeDate.getHours();
+            task.doc.Date = year + '년 ' + (month + 1) + '월 ' + date + '일 ' + hour + '시';
+            context.dialog.item = task.doc;
+            context.dialog.item.stockname = context.dialog.stockname;
             task.count = 1;
         } else {
             task.count = 0;
