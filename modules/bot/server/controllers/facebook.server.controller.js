@@ -3,12 +3,13 @@ var request = require('request');
 var path = require('path');
 var chat = require(path.resolve('modules/bot/server/controllers/bot.server.controller'));
 var contextModule = require(path.resolve('modules/bot/engine/common/context'));
-var util =require('util'); //temporary
-var subscribe = ''; //temporary
-var subscribePageToken = ''; //temporary
+
+var subscribe = '';
+var subscribePageToken = '';
 var mongoose = require('mongoose');
 var UserBotFbPage = mongoose.model('UserBotFbPage');
 
+var util =require('util'); //temporary
 
 // var APP_SECRET =  "174b2a851e3811c3f2c267d46708d212";
 // var PAGE_ACCESS_TOKEN =  "EAAYwPrsj1ZA0BAORAoGhxvLLs5eRZADJ8BheTdjOXu8lT0X2tVFwZAZCEJiWFenFHCVqSuctfONET6dhbPDBnlivq5sXEvBABTnRlYpX8hLxZAnO2lywRiA6sVlbYAvG1n1EpQwkVhZAdrmq1p9PlQRUu327O1ohcZBwVLYZCn3beQZDZD";
@@ -20,108 +21,54 @@ var UserBotFbPage = mongoose.model('UserBotFbPage');
 
 
 exports.messageGet =  function(req, res) {
-  if (req.params.bot == 'subscribeBot'){
+  contextModule.getContext(req.params.bot, 'facebook', null, function(context) {
+      // console.log(req.query['hub.mode'] + ', ' + req.query['hub.verify_token'] + ',' + context.bot.facebook.VALIDATION_TOKEN );
+      var bot = context.botUser.orgBot || context.bot;
       if (req.query['hub.mode'] === 'subscribe' &&
-          req.query['hub.verify_token'] === 'moneybrain_token') {
+          req.query['hub.verify_token'] === bot.facebook.VALIDATION_TOKEN) {
           console.log("Validating webhook");
           res.status(200).send(req.query['hub.challenge']);
       } else {
           console.error("Failed validation. Make sure the validation tokens match.");
           res.sendStatus(403);
       }
-  }else {
-      contextModule.getContext(req.params.bot, 'facebook', null, function(context) {
-          // console.log(req.query['hub.mode'] + ', ' + req.query['hub.verify_token'] + ',' + context.bot.facebook.VALIDATION_TOKEN );
-
-          var bot = context.botUser.orgBot || context.bot;
-          if (req.query['hub.mode'] === 'subscribe' &&
-              req.query['hub.verify_token'] === bot.facebook.VALIDATION_TOKEN) {
-              console.log("Validating webhook");
-              res.status(200).send(req.query['hub.challenge']);
-          } else {
-              console.error("Failed validation. Make sure the validation tokens match.");
-              res.sendStatus(403);
-          }
-      });
-  }
+  });
 };
 
 
 exports.message = function (req, res) {
-  if (req.params.bot == "subscribeBot"){
-      console.log(util.inspect(res.body));
-      subscribe = true;
-      subscribePageToken = ''
-      var data = req.body;
-      // Make sure this is a page subscription
-      if (data.object == 'page') {
-          // Iterate over each entry
-          // There may be multiple if batched
-          data.entry.forEach(function(pageEntry) {
-            console.log(util.inspect(pageEntry));
-            console.log(util.inspect(pageEntry.messaging));
-              var pageID = pageEntry.id;
-              var timeOfEvent = pageEntry.time;
+  var data = req.body;
+  // Make sure this is a page subscription
+  if (data.object == 'page') {
+      // Iterate over each entry
+      // There may be multiple if batched
+      data.entry.forEach(function(pageEntry) {
+          var pageID = pageEntry.id;
+          var timeOfEvent = pageEntry.time;
 
-              // Iterate over each messaging event
-              pageEntry.messaging.forEach(function(messagingEvent) {
-                  messagingEvent.botId = req.params.bot;
+          // Iterate over each messaging event
+          pageEntry.messaging.forEach(function(messagingEvent) {
+              messagingEvent.botId = req.params.bot;
 
-                  if (messagingEvent.optin) {
-                      receivedAuthentication(messagingEvent);
-                  } else if (messagingEvent.message) {
-                      receivedMessage(messagingEvent);
-                  } else if (messagingEvent.delivery) {
-                      receivedDeliveryConfirmation(messagingEvent);
-                  } else if (messagingEvent.postback) {
-                      receivedPostback(messagingEvent);
-                  } else {
-                      // console.log("Webhook received unknown messagingEvent: ", messagingEvent);
-                  }
-              });
+              if (messagingEvent.optin) {
+                  receivedAuthentication(messagingEvent);
+              } else if (messagingEvent.message) {
+                  receivedMessage(messagingEvent);
+              } else if (messagingEvent.delivery) {
+                  receivedDeliveryConfirmation(messagingEvent);
+              } else if (messagingEvent.postback) {
+                  receivedPostback(messagingEvent);
+              } else {
+                  // console.log("Webhook received unknown messagingEvent: ", messagingEvent);
+              }
           });
+      });
 
-          // Assume all went well.
-          //
-          // You must send back a 200, within 20 seconds, to let us know you've
-          // successfully received the callback. Otherwise, the request will time out.
-          res.sendStatus(200);
-      }
-  }else {
-      console.log(util.inspect(res.body));
-      var data = req.body;
-      // Make sure this is a page subscription
-      if (data.object == 'page') {
-          // Iterate over each entry
-          // There may be multiple if batched
-          data.entry.forEach(function(pageEntry) {
-              var pageID = pageEntry.id;
-              var timeOfEvent = pageEntry.time;
-
-              // Iterate over each messaging event
-              pageEntry.messaging.forEach(function(messagingEvent) {
-                  messagingEvent.botId = req.params.bot;
-
-                  if (messagingEvent.optin) {
-                      receivedAuthentication(messagingEvent);
-                  } else if (messagingEvent.message) {
-                      receivedMessage(messagingEvent);
-                  } else if (messagingEvent.delivery) {
-                      receivedDeliveryConfirmation(messagingEvent);
-                  } else if (messagingEvent.postback) {
-                      receivedPostback(messagingEvent);
-                  } else {
-                      // console.log("Webhook received unknown messagingEvent: ", messagingEvent);
-                  }
-              });
-          });
-
-          // Assume all went well.
-          //
-          // You must send back a 200, within 20 seconds, to let us know you've
-          // successfully received the callback. Otherwise, the request will time out.
-          res.sendStatus(200);
-      }
+      // Assume all went well.
+      //
+      // You must send back a 200, within 20 seconds, to let us know you've
+      // successfully received the callback. Otherwise, the request will time out.
+      res.sendStatus(200);
   }
 };
 
@@ -258,23 +205,20 @@ function receivedMessage(event) {
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
   var message = event.message;
-  console.log(util.inspect(event));
-  console.log(util.inspect(event.message));
-  console.log(util.inspect(global._bots));
 
   if (event.botId == "subscribeBot"){
       UserBotFbPage.findOne({pageId: event.recipient.id}, function (err, data) {
           if (err){
               console.log(err);
           }else {
+              subscribe = true;
               subscribePageToken = data.accessToken;
               event.botId = data.userBotId;
               contextModule.getContext(event.botId, 'facebook', senderID, function(context) {
                   //console.log('receivedMessage: ', event);
 
                   var bot = context.botUser.orgBot || context.bot;
-                  if(true) {
-                      // if(recipientID == bot.facebook.id) {
+                  if(recipientID == data.pageId) {
                       console.log('2 senderID: ' + senderID + ', recipientID: ' + recipientID);
 
                       var messageId = message.mid;
@@ -291,7 +235,6 @@ function receivedMessage(event) {
       });
   }else {
       if(recipientID == global._bots[event.botId].facebook.id) {
-          console.log('ininininin');
           contextModule.getContext(event.botId, 'facebook', senderID, function(context) {
               //console.log('receivedMessage: ', event);
 
