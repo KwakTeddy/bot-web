@@ -211,7 +211,22 @@ function connectBot (task,context,callback) {
     command.changeBot(task, context, function(_task, _context) {
         callback(_task, _context);
     });
-    callback(task,context);
 }
 
 exports.connectBot = connectBot;
+
+function callBot (task, context, callback) {
+    var command = require(path.resolve('./modules/bot/action/common/command'));
+    var query = {};
+    var UserBot = mongoose.model('UserBot');
+    task.botName = task['1'];
+    UserBot.find(query).sort(sort).limit(5).lean().exec(function (err, docs) {
+        context.dialog.newbot = docs;
+        callback(task,context);
+    });
+    command.changeBot(task, context, function(_task, _context) {
+        callback(_task, _context);
+    });
+}
+
+exports.callBot = callBot;

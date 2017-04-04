@@ -11,6 +11,14 @@ var next = /(?:~다음페이지|~뒤|^>$)/;
 var up = /(?:^0$)/
 var first = /(?:~시작|~처음|^!$|취소)/
 
+
+</([^\b\s]*)(?:\b|\s).*불러줘/
+</([^\b\s]*)(?:\b|\s).*부르다/
+</([^\b\s]*)(?:\b|\s).*불다/
+{action: core.callBot}
+>+outputtext+\n궁금하신걸 물어보세요.\n\(목록으로 돌아가기 : [목록] 또는 [플레이챗] 입력\)
+
+
 예보:
 <{types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true},{name: 'date', typeCheck: 'dateTypeCheck', raw: true, context: true}], regexp: /날씨/}
 {action: publictask.forecastweather}
@@ -24,8 +32,8 @@ var first = /(?:~시작|~처음|^!$|취소)/
         <{if: 'true'}> {up: 1}
     >if(context.dialog.forecastdatecheck == 'over') 죄송합니다. 현재 최대 10일간의 날씨정보를 제공하고 있습니다.
     >if(context.dialog.forecastdatecheck == 'below') 죄송합니다. 이전 기간의 날씨정보는 제공하지 않습니다.
-    >if(context.dialog.range == '이번주' || context.dialog.range == '다음주' || context.dialog.range == '이번달') +range+의 날씨는 다음과 같습니다.\n#item#+month+/+day+\n날씨: +conditions+\n최저온도: +low+도\n최고온도: +high+도\n#
-    >if(context.dialog.item) +item.date.month+/+item.date.day+의 날씨입니다.\n날씨: +item.conditions+\n최저온도: +item.low+도\n최고온도: +item.high+도
+    >if(context.dialog.range == '이번주' || context.dialog.range == '다음주' || context.dialog.range == '이번달') +range+ +address.법정읍면동명+ 날씨는 다음과 같습니다.\n#item#+month+/+day+\n날씨: +conditions+\n최저온도: +low+도\n최고온도: +high+도\n#
+    >if(context.dialog.item) +item.date.month+월 +item.date.day+일 +address.법정읍면동명+ 날씨입니다.\n날씨: +item.conditions+\n최저온도: +item.low+도\n최고온도: +item.high+도
     <{if: 'true'}> {repeat: 1, options : {output: '죄송합니다. 지금 입력하신 주소는 찾을수 없는 주소입니다.\n 아래 예시와 같이 다시 말씀해주세요.\n[예시]\n구로동\n구로구 구로동\n구로구 구로동 423-12'}}
 > if(Array.isArray(context.dialog.address)) 다음 중 어떤 지역이신가요?\n#address#+index+. +지번주소+ +시군구용건물명+\n#|다음 중 어떤 지역이신가요?
     <{types: [{name: 'address', listName: 'address', typeCheck: 'listTypeCheck'}]}
@@ -33,12 +41,13 @@ var first = /(?:~시작|~처음|^!$|취소)/
     <{if: 'true'}> {up: 1}
 >if(context.dialog.forecastdatecheck == 'over') 죄송합니다. 현재 최대 10일간의 날씨정보를 제공하고 있습니다.
 >if(context.dialog.forecastdatecheck == 'below') 죄송합니다. 이전 기간의 날씨정보는 제공하지 않습니다.
->if(context.dialog.range == '이번주' || context.dialog.range == '다음주' || context.dialog.range == '이번달') +range+의 날씨는 다음과 같습니다.\n#item#+month+/+day+\n날씨: +conditions+\n최저온도: +low+도\n최고온도: +high+도\n#
->if(context.dialog.item) +item.date.month+/+item.date.day+의 날씨입니다.\n날씨: +item.conditions+\n최저온도: +item.low+도\n최고온도: +item.high+도
+>if(context.dialog.range == '이번주' || context.dialog.range == '다음주' || context.dialog.range == '이번달') +range+ +address.법정읍면동명+ 날씨는 다음과 같습니다.\n#item#+month+/+day+\n날씨: +conditions+\n최저온도: +low+도\n최고온도: +high+도\n#
+>if(context.dialog.item) +item.date.month+월 +item.date.day+일 +address.법정읍면동명+ 날씨입니다.\n날씨: +item.conditions+\n최저온도: +item.low+도\n최고온도: +item.high+도
 
 예보둘:
 <{types: [{name: 'date', typeCheck: 'dateTypeCheck', raw: true, context: true}], regexp: /날씨/}
->어느 지역의 날씨를 알려드릴까요?\n[예시]\n구로동\n구로구 구로동\n구로구 구로동 423-12
+{action: publictask.forecastweather}
+>if (context.user.lat == undefined) 어느 지역의 날씨를 알려드릴까요?\n[예시]\n구로동\n구로구 구로동\n구로구 구로동 423-12
     <{types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}]}
     {action: publictask.forecastweather}
     > if((context.dialog.address.시군구명||context.dialog.address.시도명) && context.dialog.address.법정읍면동명 == undefined && context.dialog.address.도로명 == undefined && context.dialog.address.건물본번 == undefined) 고객님, 정확한 안내를 드리기 위하여 +address.시도명+ +address.시군구명+의 하위 상세주소를 입력 부탁드립니다.
@@ -51,8 +60,8 @@ var first = /(?:~시작|~처음|^!$|취소)/
             <{if: 'true'}> {up: 1}
         >if(context.dialog.forecastdatecheck == 'over') 죄송합니다. 현재 최대 10일간의 날씨정보를 제공하고 있습니다.
         >if(context.dialog.forecastdatecheck == 'below') 죄송합니다. 이전 기간의 날씨정보는 제공하지 않습니다.
-        >if(context.dialog.range == '이번주' || context.dialog.range == '다음주' || context.dialog.range == '이번달') +range+의 날씨는 다음과 같습니다.\n#item#+month+/+day+\n날씨: +conditions+\n최저온도: +low+도\n최고온도: +high+도\n#
-        >if(context.dialog.item) +item.date.month+/+item.date.day+의 날씨입니다.\n날씨: +item.conditions+\n최저온도: +item.low+도\n최고온도: +item.high+도
+        >if(context.dialog.range == '이번주' || context.dialog.range == '다음주' || context.dialog.range == '이번달') +range+ +address.법정읍면동명+ 날씨는 다음과 같습니다.\n#item#+month+/+day+\n날씨: +conditions+\n최저온도: +low+도\n최고온도: +high+도\n#
+        >if(context.dialog.item) +item.date.month+월 +item.date.day+일 +address.법정읍면동명+ 날씨입니다.\n날씨: +item.conditions+\n최저온도: +item.low+도\n최고온도: +item.high+도
         <{if: 'true'}> {repeat: 1, options : {output: '죄송합니다. 지금 입력하신 주소는 찾을수 없는 주소입니다.\n 아래 예시와 같이 다시 말씀해주세요.\n[예시]\n구로동\n구로구 구로동\n구로구 구로동 423-12'}}
     > if(Array.isArray(context.dialog.address)) 다음 중 어떤 지역이신가요?\n#address#+index+. +지번주소+ +시군구용건물명+\n#|다음 중 어떤 지역이신가요?
         <{types: [{name: 'address', listName: 'address', typeCheck: 'listTypeCheck'}]}
@@ -60,8 +69,13 @@ var first = /(?:~시작|~처음|^!$|취소)/
         <{if: 'true'}> {up: 1}
     >if(context.dialog.forecastdatecheck == 'over') 죄송합니다. 현재 최대 10일간의 날씨정보를 제공하고 있습니다.
     >if(context.dialog.forecastdatecheck == 'below') 죄송합니다. 이전 기간의 날씨정보는 제공하지 않습니다.
-    >if(context.dialog.range == '이번주' || context.dialog.range == '다음주' || context.dialog.range == '이번달') +range+의 날씨는 다음과 같습니다.\n#item#+month+/+day+\n날씨: +conditions+\n최저온도: +low+도\n최고온도: +high+도\n#
-    >if(context.dialog.item) +item.date.month+/+item.date.day+의 날씨입니다.\n날씨: +item.conditions+\n최저온도: +item.low+도\n최고온도: +item.high+도
+    >if(context.dialog.range == '이번주' || context.dialog.range == '다음주' || context.dialog.range == '이번달') +range+ +address.법정읍면동명+ 날씨는 다음과 같습니다.\n#item#+month+/+day+\n날씨: +conditions+\n최저온도: +low+도\n최고온도: +high+도\n#
+    >if(context.dialog.item) +item.date.month+월 +item.date.day+일 +address.법정읍면동명+ 날씨입니다.\n날씨: +item.conditions+\n최저온도: +item.low+도\n최고온도: +item.high+도
+    <{if: 'true'}> {repeat: 1, options: {output: '주소가 올바르지 않습니다.\n아래와 같이 입력해주세요.\n[예시]\n구로동\n구로구 구로동\n구로구 구로동 423-12'}}
+>if(context.user.lat != undefined && context.dialog.forecastdatecheck == 'over') 죄송합니다. 현재 최대 10일간의 날씨정보를 제공하고 있습니다.
+>if(context.user.lat != undefined && context.dialog.forecastdatecheck == 'below') 죄송합니다. 이전 기간의 날씨정보는 제공하지 않습니다.
+>if(context.user.lat != undefined && context.dialog.range == '이번주' || context.dialog.range == '다음주' || context.dialog.range == '이번달') +range+ +address.법정읍면동명+ 날씨는 다음과 같습니다.\n#item#+month+/+day+\n날씨: +conditions+\n최저온도: +low+도\n최고온도: +high+도\n#
+>if(context.user.lat != undefined && context.dialog.item) +item.date.month+월 +item.date.day+일 +address.법정읍면동명+ 날씨입니다.\n날씨: +item.conditions+\n최저온도: +item.low+도\n최고온도: +item.high+도
 
 현재날씨:
 <{types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}], regexp: /날씨/}
@@ -74,17 +88,18 @@ var first = /(?:~시작|~처음|^!$|취소)/
         <{types: [{name: 'address', listName: 'address', typeCheck: 'listTypeCheck'}]}
         >{call: '현재날씨'}
         <{if: 'true'}> {up: 1}
-    > if(context.dialog.weather) 현재 날씨는 +weather+입니다.\n기온은 +temp+도 입니다.
+    > if(context.dialog.weather) 현재 +address.법정읍면동명+ 날씨는 +weather+입니다.\n기온은 +temp+도 입니다.
     <{if: 'true'}> {repeat: 1, options : {output: '죄송합니다. 지금 입력하신 주소는 찾을수 없는 주소입니다.\n 아래 예시와 같이 다시 말씀해주세요.\n[예시]\n구로동\n구로구 구로동\n구로구 구로동 423-12'}}
 > if(Array.isArray(context.dialog.address)) 다음 중 어떤 지역이신가요?\n#address#+index+. +지번주소+ +시군구용건물명+\n#|다음 중 어떤 지역이신가요?
     <{types: [{name: 'address', listName: 'address', typeCheck: 'listTypeCheck'}]}
     >{call: '현재날씨'}
     <{if: 'true'}> {up: 1}
-> if(context.dialog.weather) 현재 날씨는 +weather+입니다.\n기온은 +temp+도 입니다.
+> if(context.dialog.weather) 현재 +address.법정읍면동명+ 날씨는 +weather+입니다.\n기온은 +temp+도 입니다.
 
 현재날씨둘:
 <날씨
->어느 지역의 날씨를 알려드릴까요?\n[예시]\n구로동\n구로구 구로동\n구로구 구로동 423-12
+{action: publictask.currentweather}
+>if (context.user.lat == undefined) 어느 지역의 날씨를 알려드릴까요?\n[예시]\n구로동\n구로구 구로동\n구로구 구로동 423-12
     <{types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}]}
     {action: publictask.currentweather}
     > if((context.dialog.address.시군구명||context.dialog.address.시도명) && context.dialog.address.법정읍면동명 == undefined && context.dialog.address.도로명 == undefined && context.dialog.address.건물본번 == undefined) 고객님, 정확한 안내를 드리기 위하여 +address.시도명+ +address.시군구명+의 하위 상세주소를 입력 부탁드립니다.
@@ -95,57 +110,69 @@ var first = /(?:~시작|~처음|^!$|취소)/
             <{types: [{name: 'address', listName: 'address', typeCheck: 'listTypeCheck'}]}
             >{call: '현재날씨'}
             <{if: 'true'}> {up: 1}
-        > if(context.dialog.weather) 현재 날씨는 +weather+입니다.\n기온은 +temp+도 입니다.
+        > if(context.dialog.weather) 현재 +address.법정읍면동명+ 날씨는 +weather+입니다.\n기온은 +temp+도 입니다.
         <{if: 'true'}> {repeat: 1, options : {output: '죄송합니다. 지금 입력하신 주소는 찾을수 없는 주소입니다.\n 아래 예시와 같이 다시 말씀해주세요.\n[예시]\n구로동\n구로구 구로동\n구로구 구로동 423-12'}}
     > if(Array.isArray(context.dialog.address)) 다음 중 어떤 지역이신가요?\n#address#+index+. +지번주소+ +시군구용건물명+\n#|다음 중 어떤 지역이신가요?
         <{types: [{name: 'address', listName: 'address', typeCheck: 'listTypeCheck'}]}
         >{call: '현재날씨'}
         <{if: 'true'}> {up: 1}
-    > if(context.dialog.weather) 현재 날씨는 +weather+입니다.\n기온은 +temp+도 입니다.
+    > if(context.dialog.weather) 현재 +address.법정읍면동명+ 날씨는 +weather+입니다.\n기온은 +temp+도 입니다.
+    <{if: 'true'}> {repeat: 1, options: {output: '주소가 올바르지 않습니다.\n아래와 같이 입력해주세요.\n[예시]\n구로동\n구로구 구로동\n구로구 구로동 423-12'}}
+> if(context.user.lat != undefined && context.dialog.weather) 현재 +address.법정읍면동명+ 날씨는 +weather+입니다.\n기온은 +temp+도 입니다.
 
 <{types: [{name: 'exchange', typeCheck: publictask.exchangeTypecheck, raw: true}], regexp: /환율/}
 {action: publictask.exchangerate}
->if(context.dialog.item.length != 0)+date+\n+currency+ to KRW\n환율은 +rate+원입니다.
+>if(context.dialog.item[0].rate != 'N/A') +date+\n+currency+ to KRW\n환율은 +rate+원입니다.
+>if(context.dialog.item[0].rate == 'N/A') {call: '환율', options: {output: '환율 코드 혹은 통화명을 제대로 입력해주세요.'}}
 
+환율:
 <환율
 >환율코드나 통화를 입력해주세요\n ex\) USD or 달러
     <{types: [{name: 'exchange', typeCheck: publictask.exchangeTypecheck, raw: true}]}
     {action: publictask.exchangerate}
-    >if(context.dialog.item.length != 0)+date+\n+currency+ to KRW\n환율은 +rate+원입니다.
+    >if(context.dialog.item[0].rate != 'N/A') +date+\n+currency+ to KRW\n환율은 +rate+원입니다.
+    >if(context.dialog.item[0].rate == 'N/A') {repeat: 1, options: {output: '환율 코드 혹은 통화명을 제대로 입력해주세요.'}}
+    <{if: 'true'}> {repeat: 1, options: {output: '환율 코드 혹은 통화명을 제대로 입력해주세요.'}}
+
+<{types: [{name: 'stock', typeCheck: publictask.stockTypecheck, raw: true}],regexp: /주가|주식/}
+{action: publictask.stockprice}
+> if(context.dialog.item.length != 0) \[+stockname+\]\n+Date+\n\n종가: +lastTradePriceOnly+원
+
 
 <주가
+<주식
 >회사코드나 이름을 알려주세요 AAPL or 삼성전자?
     <{types: [{name: 'stock', typeCheck: publictask.stockTypecheck, raw: true}]}
     {action: publictask.stockprice}
-    > if(context.dialog.item.length != 0) +lastTradeDate+\n+name+\n종가: +lastTradePriceOnly+
+    > if(context.dialog.item.length != 0) \[+stockname+\]\n+Date+\n\n종가: +lastTradePriceOnly+원
+    <{if: 'true'}> 죄송합니다. 등록되지 않은 회사명입니다.
 
-//뉴스:
-//<뉴스
-//navertask.newscrawl
-//> if(context.dialog.item.length != 0) 오늘의 이슈입니다.\n#item#+index+. +title+\n#
-//    <{types: [{name: 'news', listName: 'item', typeCheck: 'listTypeCheck'}]}
-//    >+title+\n+link+
+뉴스:
+<뉴스
+<신문
+navertask.newscrawl
+>if(context.dialog.item.length != 0) 오늘의 이슈입니다.\n#item#+index+. +title+\n#
 
-//메일:
-//<메일
-//{action: googletask.gmailapi}
-//>if(!(context.user.google_accesstoken)) {call:'등록'}
-//>if(context.user.google_accesstoken) #item#+index+. +sendman+\n+title+\n#
-//    <{types: [{name: 'mail', listName: 'item', typeCheck: 'listTypeCheck'}]}
-//    > +mail.sendman+\n\n+mail.title+\n\n+mail.snippet+
+// 메일:
+// <메일
+// {action: googletask.gmailapi}
+// >if(!(context.user.google_accesstoken)) {call:'등록'}
+// >if(context.user.google_accesstoken) #item#+index+. +sendman+\n+title+\n#
+//     <{types: [{name: 'mail', listName: 'item', typeCheck: 'listTypeCheck'}]}
+//     > +mail.sendman+\n\n+mail.title+\n\n+mail.snippet+
 
-//등록:
-//<false
-//>아래 링크에서 액세스를 수락해주세요.\nhttps:\/\/accounts.google.com\/o\/oauth2\/v2\/auth?scope=https%3A%2F%2Fmail.google.com%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&state=+userId+&redirect_uri=https%3A%2F%2Fdev.moneybrain.ai%2Fapi%2Fauth%2Fgmail%2Fcallback&access_type=offline&response_type=code&client_id=567723322080-uopbt6mrcntsqn79hr8j260t5sbsui8n.apps.googleusercontent.com
+// 등록:
+// <false
+// >아래 링크에서 액세스를 수락해주세요.\nhttps:\/\/accounts.google.com\/o\/oauth2\/v2\/auth?scope=https%3A%2F%2Fmail.google.com%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&state=+userId+&redirect_uri=https%3A%2F%2Fdev.moneybrain.ai%2Fapi%2Fauth%2Fgmail%2Fcallback&access_type=offline&response_type=code&client_id=567723322080-uopbt6mrcntsqn79hr8j260t5sbsui8n.apps.googleusercontent.com
 
-//캘린더:
-//<일정
-//{action: googletask.calendarapi}
-//>if(!(context.user.google_accesstoken)) {call:'등록'}
-//>if(context.user.google_accesstoken) #item#+index+. +summary+\n#
-//    <{types: [{name: 'calendar', listName: 'item', typeCheck: 'listTypeCheck'}]}
-//    {action: googletask.eventapi}
-//    >#event#+index+. +summary+\n시간: +dateTime+\n#
+// 캘린더:
+// <일정
+// {action: googletask.calendarapi}
+// >if(!(context.user.google_accesstoken)) {call:'등록'}
+// >if(context.user.google_accesstoken) #item#+index+. +summary+\n#
+//     <{types: [{name: 'calendar', listName: 'item', typeCheck: 'listTypeCheck'}]}
+//     {action: googletask.eventapi}
+//     >#event#+index+. +summary+\n시간: +dateTime+\n#
 
 인기봇:
 <인기 봇
@@ -213,57 +240,28 @@ var first = /(?:~시작|~처음|^!$|취소)/
 
 주변검색:
 <주변
->말씀해주세요.
-    < {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}]}
-    {action: navertask.searchNaver}
-    >if(context.dialog.item.length == 0) {repeat: 1, options: {output: '검색결과가 존재하지 않습니다.'}}
-    >if(context.dialog.item.length != 0) #item#+index+. +title+\n#
-        <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
-        >+item.title+\n+item.roadAddress+\n+item.telephone+
-    <{if: 'true'}> {repeat: 1, options: {output: '주소와 함께 찾을 곳을 입력해주세요.\n[예시]\n방배동 주변 은행\n서울시 중구 레스토랑'}}
-
-<날짜
->말씀해주세요.
-    <{types: [{name: 'date', typeCheck: 'dateTypeCheck', raw: true}]}
-    > 완료
+<근처
+{action: navertask.searchNaver}
+>if(context.dialog.item.length == 0) 검색결과가 존재하지 않습니다.
+>if(context.dialog.item.length != 0) \"+inRaw+\"에 대한 주변 검색 결과입니다.\n#item#+index+. +title+\n#
+    <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
+    >+item.title+\n+item.roadAddress+\n+item.telephone+
 
 구글검색:
 </([^\b]*)(?:\b|\s).*(검색|찾다)/
-{action: googletask.googlesearch}
+googletask.googlesearchtask
 >#result#+index+. +title+\n#
-    <{types: [{name: 'result', listName: 'result', typeCheck: 'listTypeCheck'}]}
-    {action: function (task,context,callback) {
-        task.url = context.dialog.result.url;
-        task.urlMessage = '결과보기';
-        console.log('=======' + context.dialog.result.snippet);
-        callback(task,context);
-    }}
-    >+result.title+\n+result.snippet+\n+url+
 
 쇼핑:
-</([^\b]*)(?:\b|\s).*(사다|필요하다|쇼핑)/
+</([^\b]*)(?:\b|\s).*(사다|필요하다|쇼핑|얼마|가격)/
 {action: navertask.navershopping}
->#item#+index+. +title+\n+lprice+\n#
-    <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
-    {
-        action: function(task, context, callback) {
-            var result = [
-                {
-                    title: context.dialog.item.title,
-                    imageUrl: context.dialog.item.image, buttons: [{url: context.dialog.item.link, text: '상세보기'}]
-                }
-            ]
-            task.result = {items: result};
-            callback(task, context);
-        }
-    }
-    >+item.title+\n+item.lprice+~+item.hprice+\n+item.link+
+> 검색결과가 존재하지 않습니다.
 
 주변검색둘:
 < {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}]}
 {action: navertask.searchNaver}
 >if(context.dialog.item.length == 0) 검색결과가 존재하지 않습니다.
->if(context.dialog.item.length != 0) #item#+index+. +title+\n#
+>if(context.dialog.item.length != 0) \"+inRaw+\"에 대한 주변 검색 결과입니다.\n#item#+index+. +title+\n#
     <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
     >+item.title+\n+item.roadAddress+\n+item.telephone+
 
