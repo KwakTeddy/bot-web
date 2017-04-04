@@ -46,6 +46,7 @@ exports.messageGet =  function(req, res) {
 
 exports.message = function (req, res) {
   var data = req.body;
+  console.log(util.inspect(req.body))
   // Make sure this is a page subscription
   if (data.object == 'page') {
       // Iterate over each entry
