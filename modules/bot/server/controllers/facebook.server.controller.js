@@ -211,6 +211,7 @@ function receivedMessage(event) {
           if (err){
               console.log(err);
           }else {
+              console.info(util.inspect(data));
               subscribe = true;
               subscribePageToken = data.accessToken;
               event.botId = data.userBotId;
