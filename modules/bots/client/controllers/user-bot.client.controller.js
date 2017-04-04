@@ -271,9 +271,24 @@ if (_platform !== 'mobile'){
         }
 
         console.log(vm.userBot._id);
+        vm.type ='connect';
+        vm.learning = true;
         if(vm.userBot && vm.userBot._id) {
-          vm.userBot.$update(function () {
-            $state.go('user-bots-web.list', {listType: 'my'});
+          vm.userBot.$update(function (response) {
+            vm.learning = false;
+
+            var modalInstance = $uibModal.open({
+              templateUrl: 'modules/bots/client/views/modal-user-bots.client.learning.html',
+              scope: $scope
+            });
+            modalInstance.result.then(function (response) {
+              console.log(response);
+            });
+
+            if($state.is('user-bots-web.create') || $state.is('user-bots-web.edit')) {
+              $rootScope.$broadcast('setUserBot', vm.userBot);
+            }
+            //$state.go('user-bots-web.list', {listType: 'my'});
           }, function (errorResponse) {
             console.log(errorResponse);
             $scope.error = errorResponse.data.message;

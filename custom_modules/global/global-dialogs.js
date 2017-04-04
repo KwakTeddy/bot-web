@@ -68,7 +68,7 @@ var userDialogType = {
   matchRate: 0.3,
   matchCount: 4,
   mongo: {
-    model: 'UserBotDialog',
+    model: 'BotDialog',
     queryStatic: {botId: undefined},
     queryFields: ['input'],
     fields: 'input output' ,

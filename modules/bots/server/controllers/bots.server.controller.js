@@ -163,17 +163,17 @@ exports.update = function (req, res) {
   bot = _.extend(bot , req.body);
   async.waterfall([
       function(cb) {
-        if (req.bot.template) {
-          if (req.bot.template == null) {
+        if (bot.template) {
+          if (bot.template == null) {
             bot.templateId = null;
             bot.templateDataId = null;
             cb(null);
           } else {
-            templateDatas.createTemplateData(req.bot.template, 'null', 'null', JSON.stringify(req.bot.template.templateData), req.user, function(data, err) {
-              bot.templateId = req.bot.template._id;
+            templateDatas.createTemplateData(bot.template, 'null', 'null', JSON.stringify(req.bot.template.templateData), req.user, function(data, err) {
+              bot.templateId = bot.template._id;
               bot.templateDataId = data._id;
-              async.eachSeries(req.bot.template.templateData.menus, function(menu, cb) {
-                templateDatas.createTemplateData(req.bot.template, 'menus', data._id, JSON.stringify(menu), req.user, function(res, err) {
+              async.eachSeries(bot.template.templateData.menus, function(menu, cb) {
+                templateDatas.createTemplateData(bot.template, 'menus', data._id, JSON.stringify(menu), req.user, function(res, err) {
                   cb(null);
                 });
               });
@@ -186,30 +186,58 @@ exports.update = function (req, res) {
       },
 
       function(cb) {
-        if (!req.bot.originalFilename) {
-          cb(null);
-        } else {
-          dialogsetModule .convertDialogset(bot.dialogFile, function(result) {
-            bot.dialogset = result;
-            bot.save(function(err) {
-              if(console.log(err));
-            })
+        bot.save(function (err) {
+          if(err)
+            cb(err);
+          else
             cb(null);
+        });
+      },
+
+      function(cb) {
+        if (!bot.originalFilename) {
+          cb(null);
+        }else {
+          var dialogset = new Dialogset({
+            title: req.body.originalFilename,
+            type: req.body.type,
+            path: req.body.path,
+            filename: req.body.filename,
+            originalFilename: req.body.originalFilename,
+            language: 'en',
+            content: ''
+          });
+          dialogset.user = req.user;
+
+          dialogset.save(function(err) {
+            if (err) {
+              cb(err);
+            } else {
+              dialogsetModule.convertDialogset1(dialogset, bot.id, function(result) {
+                bot.dialogsets = [dialogset];
+                bot.save(function(err) {
+                  if(err) cb(err);
+                  else cb(null);
+                });
+
+                console.log(dialogset.filename + ' converted');
+              })
+            }
           });
         }
       }
     ],
 
     function(err) {
-      bot.save(function (err) {
-        if (err) {
-          return res.status(400).send({
-            message: errorHandler.getErrorMessage(err)
-          });
-        } else {
-          res.json(bot);
-        }
-      });
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        botLib.buildBot(bot.id, bot.path);
+        botLib.loadBot(bot.id);
+        res.json(bot);
+      }
     }
   );
 };
@@ -807,7 +835,7 @@ exports.createDialog = function (req, res) {
   dialogsetModule.processInput(null, dialog.inputRaw, function(_input) {
     dialog.input = _input;
 
-    console.log('createDialog:' + dialog.bot);
+    console.log('createDialog:' + dialog.botId);
     dialog.save(function (err) {
       if (err) {
         return res.status(400).send({
