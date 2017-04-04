@@ -106,14 +106,13 @@ if (_platform !== 'mobile'){
         $scope.userBotId = vm.userBot.id;
 
         if ((channel == 'facebook') && (method !== 'easy')){
-
-          FB.api('/me/accounts?fields=picture,name,link,access_token', function(response) {
+          FB.api('/me/accounts?fields=picture,name,link,access_token,perms', function(response) {
             console.log(response);
             if (response.error && (response.error.code == 2500)){
               var url = '/api/auth/facebook/page';
-              if ($state.previous && $state.previous.href) {
-                  url += '?redirect_to=' + encodeURIComponent($state.previous.href);
-              }
+              // if ($state.previous && $state.previous.href) {
+              //     url += '?redirect_to=' + encodeURIComponent($state.previous.href);
+              // }
 
               // Effectively call OAuth authentication route:
                 console.log(url);
@@ -129,16 +128,13 @@ if (_platform !== 'mobile'){
         };
         $scope.connect = function (page) {
           modalInstance.dismiss();
-          console.log(page);
           FB.api('me/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
-            console.log(response);
             if(response){
               var info = {};
               info['user'] = vm.user._id;
               info['userBot'] = vm.userBot._id;
               info['userBotId'] = vm.userBot.id;
               info['page'] = page;
-              console.log(info);
               $http.post('/api/auth/facebook/pageInfo', info, function (err) {
                   if(err) {
                       console.log(err)

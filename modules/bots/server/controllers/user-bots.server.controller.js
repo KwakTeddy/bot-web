@@ -410,6 +410,8 @@ exports.facebookPage = function (req, res) {
               data.save(function (err) {
                   if (err){
                     console.log(err);
+                  }else {
+                      return res.end();
                   }
               })
           }else {
@@ -427,6 +429,8 @@ exports.facebookPage = function (req, res) {
             userBotFbPage.save(function (err) {
                 if (err){
                   console.log(err);
+                }else {
+                    return res.end();
                 }
             })
 

@@ -339,8 +339,10 @@ exports.oauthCallback = function (strategy, scope) {
     // Pop redirect URL from session
     var sessionRedirectURL = req.session.redirect_to;
     delete req.session.redirect_to;
+    console.log('callback');
 
     passport.authenticate(strategy, scope, function (err, user, redirectURL) {
+        console.log(err);
       if (err) {
         return res.redirect('/authentication/signin?err=' + encodeURIComponent(errorHandler.getErrorMessage(err)));
       }
