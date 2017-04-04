@@ -117,7 +117,7 @@ if (_platform !== 'mobile'){
 
               // Effectively call OAuth authentication route:
                 console.log(url);
-              // $window.location.href = url;
+              $window.location.href = url;
             } else {
               $scope.pageLists = [];
               $scope.pageLists = response.data;
