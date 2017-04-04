@@ -464,10 +464,10 @@ var reserveOwnerCancel = {
           for(var i = 0; i < fields.length; i++) {
             var field = fields[i];
             if(field.name == 'numOfPerson') {
-              message += context.dialog[field.name] + '명/';
+              message += context.dialog.reserve[field.name] + '명/';
             } else {
-              message += context.dialog[field.name] + '/';
-            }
+              message += context.dialog.reserve[field.name] + '/';
+            }s
           }
 
           message += '\n예약취소: '+
@@ -514,14 +514,14 @@ var reserveOwnerConfirm = {
           for(var i = 0; i < fields.length; i++) {
             var field = fields[i];
             if(field.name == 'numOfPerson') {
-              message += context.dialog[field.name] + '명/';
+              message += context.dialog.reserve[field.name] + '명/';
             } else {
-              message += context.dialog[field.name] + '/';
+              message += context.dialog.reserve[field.name] + '/';
             }
           }
 
           message += '\n예약확정\n'+
-            '매장전화: ' + context.bot.phone;;
+            '매장전화: ' + context.bot.phone;
 
           request.post(
             'https://bot.moneybrain.ai/api/messages/sms/send',
