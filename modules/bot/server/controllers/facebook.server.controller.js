@@ -16,7 +16,7 @@ var util =require('util'); //temporary
 exports.messageGet =  function(req, res) {
   if (req.params.bot == 'subscribeBot'){
       if (req.query['hub.mode'] === 'subscribe' &&
-          req.query['hub.verify_token'] === bot.facebook.VALIDATION_TOKEN) {
+          req.query['hub.verify_token'] === 'moneybrain_token') {
           console.log("Validating webhook");
           res.status(200).send(req.query['hub.challenge']);
       } else {
