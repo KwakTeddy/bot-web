@@ -21,7 +21,7 @@ var util =require('util'); //temporary
 
 
 exports.messageGet =  function(req, res) {
-  contextModule.getContext(req.params.bot, 'facebook', null, function(context) {
+  contextModule.getContext(req.params.bot, 'facebook', null, null, function(context) {
       // console.log(req.query['hub.mode'] + ', ' + req.query['hub.verify_token'] + ',' + context.bot.facebook.VALIDATION_TOKEN );
       var bot = context.botUser.orgBot || context.bot;
       if (req.query['hub.mode'] === 'subscribe' &&
@@ -84,7 +84,7 @@ function respondMessage(to, text, botId, task) {
     }
   };
 
-  contextModule.getContext(botId, 'facebook', to, function(context) {
+  contextModule.getContext(botId, 'facebook', to, null, function(context) {
     var bot = context.botUser.orgBot || context.bot;
 
     if (subscribe){
@@ -214,7 +214,7 @@ function receivedMessage(event) {
               subscribe = true;
               subscribePageToken = data.accessToken;
               event.botId = data.userBotId;
-              contextModule.getContext(event.botId, 'facebook', senderID, function(context) {
+              contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
                   //console.log('receivedMessage: ', event);
 
                   var bot = context.botUser.orgBot || context.bot;
@@ -235,7 +235,7 @@ function receivedMessage(event) {
       });
   }else {
       if(recipientID == global._bots[event.botId].facebook.id) {
-          contextModule.getContext(event.botId, 'facebook', senderID, function(context) {
+          contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
               //console.log('receivedMessage: ', event);
 
               var bot = context.botUser.orgBot || context.bot;
