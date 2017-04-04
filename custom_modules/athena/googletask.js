@@ -308,9 +308,9 @@ var googlesearchtask = {
                 cb(null)
             });
         }, function (err) {
-            context.dialog.result = task.doc;
+            context.dialog.item = task.doc;
             var result = [];
-            async.eachSeries(context.dialog.result, function(doc, cb) {
+            async.eachSeries(context.dialog.item, function(doc, cb) {
                 var _doc = {
                     title: doc.title,
                     text : doc.snippet,

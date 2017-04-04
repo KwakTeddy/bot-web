@@ -251,15 +251,15 @@ var first = /(?:~시작|~처음|^!$|취소)/
 구글검색:
 </([^\b]*)(?:\b|\s).*(검색|찾다)/
 googletask.googlesearchtask
-> #result#+index+. +title+\n#
-    <{types: [{name: 'result', listName: 'result', typeCheck: 'listTypeCheck'}]}
+> #item#+index+. +title+\n#
+    <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
     {action: function (task,context,callback) {
-        task.url = context.dialog.result.url;
+        task.url = context.dialog.item.url;
         task.urlMessage = '결과보기';
-        console.log('=======' + context.dialog.result.snippet);
+        console.log('=======' + context.dialog.item.snippet);
         callback(task,context);
     }}
-    >+result.title+\n+result.snippet+\n+url+
+    >+item.title+\n+item.snippet+\n+url+
 
 쇼핑:
 </([^\b]*)(?:\b|\s).*(사다|필요하다|쇼핑|얼마|가격)/
