@@ -207,6 +207,7 @@ function receivedMessage(event) {
   var message = event.message;
 
   if (event.botId == "subscribeBot"){
+      console.log(util.inspect(event));
       UserBotFbPage.findOne({pageId: event.recipient.id}, function (err, data) {
           if (err){
               console.log(err);
