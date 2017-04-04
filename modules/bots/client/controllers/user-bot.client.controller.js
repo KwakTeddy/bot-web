@@ -16,10 +16,10 @@ if (_platform !== 'mobile'){
   // UserBots controller
   angular.module('user-bots').controller('UserBotController', ['$scope', '$rootScope', '$state', '$window','$timeout', '$stateParams',
     'Authentication', 'userBotResolve', 'FileUploader', 'UserBotsService', 'UserBotCommentService', 'UserBotDialogService',
-    'UserBotsFollowService', '$http', '$uibModal', 'TemplatesService', '$compile',
+    'UserBotsFollowService', '$http', '$uibModal', 'TemplatesService', '$compile', '$cookies',
     function ($scope, $rootScope, $state, $window, $timeout, $stateParams, Authentication, userBot, FileUploader,
               UserBotsService, UserBotCommentService, UserBotDialogService, UserBotsFollowService, $http, $uibModal,
-              TemplatesService, $compile) {
+              TemplatesService, $compile, $cookies) {
       var vm = this;
       vm.user = Authentication.user;
       vm.userBot = userBot;
@@ -52,7 +52,16 @@ if (_platform !== 'mobile'){
       vm.type = '';
       if($state.is('user-bots-web.create')) {vm.state = 'create'; vm.type = 'edit';}
       else if($state.is('user-bots-web.edit')) {vm.state = 'edit'; vm.type = 'edit';}
-      else if($state.is('user-bots-web.view')) {vm.state = 'view'; vm.type = 'view'; vm.userBotChat(vm.userBot); }
+      else if (!$state.is('user-bots-web.view')) {
+      } else {
+        vm.state = 'view';
+        vm.type = 'view';
+        if ($cookies.get("nograph") != undefined && !$rootScope.nograph) {
+          $state.go('user-bots-web.graph', {userBotId: vm.userBot._id});
+        } else {
+          vm.userBotChat(vm.userBot);
+        }
+      }
       vm.changeType = function(type) {
         vm.type= type;
       };

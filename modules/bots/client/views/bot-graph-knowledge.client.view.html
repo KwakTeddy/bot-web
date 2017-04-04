@@ -75,6 +75,16 @@
         color:white;
         z-index:2002;
     }
+
+    .input {
+        background-color: rgba(0,0,0,0.1);
+        color: white;
+        border-top-style: none;
+        border-right-style: none;
+        border-left-style: none;
+        font-size:20pt;
+        text-align:center;
+        padding:5px 5px 15px 5px;
     }
 </style>
 
@@ -84,26 +94,33 @@
     <div style="position:absolute; top:1%; width:100%;">
     <!--<img src="/images/playchat/playchat_logo.png" height="60">-->
     </div>
-    <div style="position:absolute; top:17%; left:18%; width:70%; ">
-        <span id="botName" style="display:inline-block;font-size:30px">ㄹ혜봇</span>
+    <div style="position:absolute; top:17%; left:13%; width:70%; ">
+        <span id="botName" style="display:inline-block;font-size:30px">{{vm.userBot.name}}</span>
     </div>
-    <div style="position:absolute; top:17%; left:18%; width:70%; text-align:right; ">
-        <span id="botDesc" style="display:inline-block;font-size:20px">ㄹ혜봇입니다.더 이상 긴말은 하지 않겠습니다.</span>
+    <div style="position:absolute; top:17%; left:70%; width:18%; height:10%">
+        <span id="botDesc" style="display:inline-block;font-size:16px">{{vm.userBot.description}}</span>
     </div>
     <div style="position:absolute; top:14%; width:100%; ">
         <center>
-            <img id="botImage" src="/files/default.png" data-holder-rendered="true"
+            <img id="botImage" src="{{vm.userBot.imageFile}}" data-holder-rendered="true"
                  style="max-width: 90px; border-radius: 50%; border: 5px solid white;">
         </center>
     </div>
-    <div style="position:absolute; top:35%; width:100%; text-align:center">
-        <span id="answer" style="display:inline-block;font-size:50px">박근혜봇입니다.</span>
+    <div style="position:absolute; top:35%; left:20%; width:60%; height:20%; text-align:center">
+        <p id="answer" style="display:inline-block;font-size:30px"></p>
     </div>
+    <form id="f"novalidate="novalidate" ng-submit="vm.sendMsg();">
     <div style="position:absolute; top:65%; width:100%; text-align:center">
-        <span id="question" style="display:inline-block;font-size:50px">탄핵되니까 어때?</span>
+        <input type="text" id="question" autocomplete="off" class="input" size="40" ng-model="vm.question"/>
     </div>
-    <div style="position:absolute; top:72%; width:100%; text-align:center">
-        <span  style="display:inline-block;font-size:20px">입력</span>
+    <div style="position:absolute; top:76%; width:100%; text-align:center">
+        <span  style="display:inline-block;font-size:15px" ng-click="vm.sendMsg()">입력</span>
+    </div>
+    </form>
+
+    <div style="position:absolute; top:2%; left:90%;">
+        <button class="btn btn-default btn-xs" ng-click="vm.noGraph()" ui-sref="user-bots-web.view({userBotId: vm.userBot._id})">다시보지 않기</button>
+        <button class="btn btn-default btn-xs" ng-click="vm.closeGraph()" ui-sref="user-bots-web.view({userBotId: vm.userBot._id})">닫기</button>
     </div>
 </section>
 <!--</div>--

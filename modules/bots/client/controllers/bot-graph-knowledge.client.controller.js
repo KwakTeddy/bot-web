@@ -2,27 +2,38 @@
 
 // Bots controller
 angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope', '$rootScope', '$state', '$window',
-'$timeout', '$stateParams', '$resource', 'Authentication', 'userBotResolve',
-    function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, Authentication, userBot) {
+'$timeout', '$stateParams', '$resource', '$document', '$cookies', 'Authentication', 'userBotResolve',
+    function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, $document, $cookies, Authentication, userBot) {
       var vm = this;
       //vm.user = Authentication.user;
       vm.userId = $rootScope.userId;
-
       vm.userBot = userBot;
-      // if(vm.userBot && vm.userBot._id)
-      //   $rootScope.$broadcast('setUserBot', vm.userBot);
 
-      /*
-       vm.type = '';
-       if($state.is('user-bots-web.create')) {vm.state = 'create'; vm.type = 'edit';}
-       else if($state.is('user-bots-web.edit')) {vm.state = 'edit'; vm.type = 'edit';}
-       else if($state.is('user-bots-web.view')) {vm.state = 'view'; vm.type = 'view';}
+      //test
+      vm.answer = "";
+      vm.question = "";
 
-       vm.changeType = function(type) {
-       vm.type= type;
-       };
-       */
+      $rootScope.$broadcast('setUserBotAlways', userBot);
 
+      vm.sendMsg = function() {
+        $rootScope.$broadcast('sendMsgFromFarAway', vm.question);
+        vm.question = '';
+      };
+
+      $rootScope.$broadcast('stopKeyDown');
+      $document.bind("keydown", function (event) {
+        $rootScope.$broadcast('keyinput', vm.question);
+      });
+
+      vm.closeGraph = function() {
+        $rootScope.nograph = true;
+      };
+
+      vm.noGraph = function() {
+        // need to set cookie
+        $cookies.put("nograph","true");
+        vm.closeGraph();
+      };
       console.log('KnowledgeGrpah Controller');
 
       var nodes = [];
@@ -110,8 +121,23 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
         }
       });
 
+      var textTimer = null;
+      var showText = function (target,message, index, interval) {
+        if (index < message.length) {
+          $(target).append(message[index++]);
+          textTimer = setTimeout(function () { showText(target,message, index, interval); }, interval);
+        } else {
+          textTimer = null;
+        }
+      };
+
       $scope.$on('onmsg', function(event, arg0) {
         var input = arg0.message;
+        $('#answer').text('');
+        if (textTimer != null)
+          clearTimeout(textTimer);
+        showText('#answer', input, 0, 70);
+
         resetNodes();
         $resource('/api/user-bots-analytics/nlp', {}).get({input: input}, function(res) {
           if(res.result) {
