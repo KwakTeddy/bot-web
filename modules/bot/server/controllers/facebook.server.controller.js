@@ -28,6 +28,10 @@ exports.messageGet =  function(req, res) {
       console.log(util.inspect(context.bot));
       // console.log(req.query['hub.mode'] + ', ' + req.query['hub.verify_token'] + ',' + context.bot.facebook.VALIDATION_TOKEN );
       var bot = context.botUser.orgBot || context.bot;
+      console.log(bot);
+      console.log(333);
+      console.info(context.botUser);
+
       if (req.query['hub.mode'] === 'subscribe' &&
           req.query['hub.verify_token'] === bot.facebook.VALIDATION_TOKEN) {
           console.log("Validating webhook");
