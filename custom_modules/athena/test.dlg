@@ -243,6 +243,7 @@ var first = /(?:~시작|~처음|^!$|취소)/
 <근처
 {action: navertask.searchNaver}
 >if(context.dialog.item.length == 0) 검색결과가 존재하지 않습니다.
+>if(context.dialog.item.length != 0 && context.user.channel == 'socket') 검색결과가 없습니다.
 >if(context.dialog.item.length != 0) \"+inRaw+\"에 대한 주변 검색 결과입니다.\n#item#+index+. +title+\n#
     <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
     >+item.title+\n+item.roadAddress+\n+item.telephone+
@@ -250,7 +251,7 @@ var first = /(?:~시작|~처음|^!$|취소)/
 구글검색:
 </([^\b]*)(?:\b|\s).*(검색|찾다)/
 googletask.googlesearchtask
->#result#+index+. +title+\n#
+> #result#+index+. +title+\n#
     <{types: [{name: 'result', listName: 'result', typeCheck: 'listTypeCheck'}]}
     {action: function (task,context,callback) {
         task.url = context.dialog.result.url;
@@ -263,15 +264,16 @@ googletask.googlesearchtask
 쇼핑:
 </([^\b]*)(?:\b|\s).*(사다|필요하다|쇼핑|얼마|가격)/
 {action: navertask.navershopping}
+>if (context.dialog.item.length !=0 && context.user.channel == 'socket') 검색결과가 없습니다.
 >if (context.dialog.item.length !=0) #item#+index+. +title+\n+lprice+\n#
     <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
     >+item.title+\n+item.lprice+ ~ +item.hprice+\n+item.link+
-> 검색결과가 없습니다.
 
 주변검색둘:
 < {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}]}
 {action: navertask.searchNaver}
 >if(context.dialog.item.length == 0) 검색결과가 존재하지 않습니다.
+>if(context.dialog.item.length != 0 && context.user.channel == 'socket') 검색결과가 없습니다.
 >if(context.dialog.item.length != 0) \"+inRaw+\"에 대한 주변 검색 결과입니다.\n#item#+index+. +title+\n#
     <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
     >+item.title+\n+item.roadAddress+\n+item.telephone+
