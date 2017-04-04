@@ -137,7 +137,7 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
       });
 
       var width = document.getElementById('canvas').clientWidth;
-      var height = 1024;
+      var height = document.getElementById('canvas').clientHeight;
       //var height = document.getElementById('sidebar-left').clientHeight;
 
       var force = d3.layout.force()
@@ -157,6 +157,7 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
       var svg = d3.select("#canvas").append("svg")
         .attr("width", width)
         .attr("height", height)
+        .attr("class", "graph-svg-component")
         .call(zoom)
         .append('svg:g');
 

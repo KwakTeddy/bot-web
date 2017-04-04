@@ -21,9 +21,17 @@ var util =require('util'); //temporary
 
 
 exports.messageGet =  function(req, res) {
+    console.info(req.params.bot);
   contextModule.getContext(req.params.bot, 'facebook', null, null, function(context) {
       // console.log(req.query['hub.mode'] + ', ' + req.query['hub.verify_token'] + ',' + context.bot.facebook.VALIDATION_TOKEN );
-      var bot = context.botUser.orgBot || context.bot;
+      var bot = '';
+      if (!context.botUser){
+          bot = context.bot
+      }else {
+          bot = context.botUser.orgBot
+      }
+      // var bot = context.botUser.orgBot || context.bot;
+
       if (req.query['hub.mode'] === 'subscribe' &&
           req.query['hub.verify_token'] === bot.facebook.VALIDATION_TOKEN) {
           console.log("Validating webhook");
@@ -38,6 +46,7 @@ exports.messageGet =  function(req, res) {
 
 exports.message = function (req, res) {
   var data = req.body;
+  console.log(util.inspect(req.body))
   // Make sure this is a page subscription
   if (data.object == 'page') {
       // Iterate over each entry
@@ -207,10 +216,12 @@ function receivedMessage(event) {
   var message = event.message;
 
   if (event.botId == "subscribeBot"){
+      console.log(util.inspect(event));
       UserBotFbPage.findOne({pageId: event.recipient.id}, function (err, data) {
           if (err){
               console.log(err);
           }else {
+              console.info(util.inspect(data));
               subscribe = true;
               subscribePageToken = data.accessToken;
               event.botId = data.userBotId;

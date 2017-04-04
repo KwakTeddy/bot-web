@@ -35,11 +35,75 @@
     text-anchor: middle;
     alignment-baseline: middle;
   }
+    .graph-svg-component {
+        background-color: black;
+    }
 
+    .overlay {
+        position:fixed;
+        top:0px;
+        left:0px;
+        width:100%;
+        height:100%;
+        box-sizing:border-box;
+        padding:0px;
+        z-index:2000;
+    }
+
+    .overlay_bg {
+        position:fixed;
+        top:0px;
+        left:0px;
+        width:100%;
+        height:100%;
+        box-sizing:border-box;
+        padding:0px;
+
+        background-color: black;
+        opacity:0.8;
+        z-index:2001;
+    }
+    .overlay_text {
+        position:fixed;
+        top:0px;
+        left:0px;
+        width:100%;
+        height:100%;
+        box-sizing:border-box;
+        padding:0px;
+
+        color:white;
+        z-index:2002;
+    }
+    }
 </style>
 
-<div>
-<!--<div class="col-md-6">-->
-<section id="canvas" class="panel" > </section>
-</div>
+<section id="canvas" class="overlay" > </section>
+<section id="bg" class="overlay_bg" ></section>
+<section id="text" class="overlay_text">
+    <div style="position:absolute; top:1%; width:100%;">
+    <!--<img src="/images/playchat/playchat_logo.png" height="60">-->
+    </div>
+    <div style="position:absolute; top:17%; left:18%; width:70%; ">
+        <span id="botName" style="display:inline-block;font-size:30px">ㄹ혜봇</span>
+    </div>
+    <div style="position:absolute; top:17%; left:18%; width:70%; text-align:right; ">
+        <span id="botDesc" style="display:inline-block;font-size:20px">ㄹ혜봇입니다.더 이상 긴말은 하지 않겠습니다.</span>
+    </div>
+    <div style="position:absolute; top:14%; width:100%; ">
+        <center>
+            <img id="botImage" src="/files/default.png" data-holder-rendered="true"
+                 style="max-width: 90px; border-radius: 50%; border: 5px solid white;">
+        </center>
+    </div>
+    <div style="position:absolute; top:35%; width:100%; text-align:center">
+        <span id="answer" style="display:inline-block;font-size:50px">박근혜봇입니다.</span>
+    </div>
+    <div style="position:absolute; top:65%; width:100%; text-align:center">
+        <span id="question" style="display:inline-block;font-size:50px">탄핵되니까 어때?</span>
+    </div>
+    <div style="position:absolute; top:72%; width:100%; text-align:center">
+        <span  style="display:inline-block;font-size:20px">입력</span>
+    </div>
+</section>
 <!--</div>--
