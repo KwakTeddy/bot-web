@@ -15,13 +15,22 @@ var restaurant = require('./restaurant');
 restaurant.mapTask
 >저희 매장의 주소는\n+address+\n입니다.
 
+
 // ****************** 메뉴 ****************** //
+<메뉴
+{action: restaurant.menuCategoryAction}
+>[메뉴판]\n##+index+. +name+\n#목록에서 번호를 선택해주세요.
+
 <메뉴
 <메뉴판
 <메뉴 알리다
 <메뉴 뭐
 restaurant.menuImageTask
 >메뉴판을 보여드리겠습니다.
+
+<{types: [restaurant.menuType]}
+'menuTask'
+>#typeDoc#+index+. +name+ +price+원\n#
 
 // ****************** 영업시간 ****************** //
 날짜체크:
@@ -45,17 +54,35 @@ restaurant.menuImageTask
 
 
 // ****************** 예약 ****************** //
+예약내역:
 <예약 취소
 <예약 확인
-<예약 내역
-'reserveCheck'
->if(context.dialog.reserves != undefined) 고객님의 예약 내역입니다.\n#reserves#+index+. +dateStr+ +time+ +numOfPerson+명\n#\n예약을 취소하시려면, 취소할 번호를 말씀해주세요.
+<예약 내
+restaurant.reserveCheck
+>if(context.botUser.isOwner && context.dialog.reserves != undefined) 미처리 예약내역입니다.\n#reserves#+index+. +name+ +dateStr+ +time+ +numOfPerson+명 [+status+]\n#\n처리할 예약번호를 말씀해주세요.
+    <{types: [{name: 'reserve', listName: 'reserves', typeCheck: 'listTypeCheck'}]}
+    {action: function(task, context, callback) { task.result = {smartReply: ['예약확정', '예약취소']}; callback(task, context);}}
+    >상세 예약내역입니다.\n상태: +reserve.status+\n예약자명: +reserve.name+\n일시: +reserve.dateStr+ +reserve.time+\n인원: +reserve.numOfPerson+명\n연락처: +reserve.mobile+\n\n"확정", "취소"를 선택해 주세요.
+        <~확정
+        'reserveOwnerConfirm'
+        >{call: '예약내역', options: {prefix: '예약이 확정 되었습니다. 고객님에게 문자가 발송되었습니다.\n\n'}}
+        <~취소
+        >취소 이유를 입력해주세요.
+            <{if: 'true'}
+            'reserveOwnerCancel'
+            >{call: '예약내역', options: {prefix: '예약이 취소 되었습니다.\n\n'}}
+        <{if: 'true'}
+        >{repeat: 1, options: {output: '"확정" 또는 "취소"라고 말씀해주세요.'}}
+    <{if: 'true'}
+    >{repeat: 1, options: {prefix: '목록에서 선택해주세요.\n'}}
+>if(context.botUser.isOwner && context.dialog.reserves == undefined) 미처리 예약내역이 없습니다.
+>if(context.dialog.reserves != undefined) 고객님의 예약 내역입니다.\n#reserves#+index+. +dateStr+ +time+ +numOfPerson+명 [+status+]\n#\n예약을 취소하시려면, 취소할 번호를 말씀해주세요.
     <{types: [{name: 'reserve', listName: 'reserves', typeCheck: 'listTypeCheck'}]}
     'reserveCancel'
     >예약이 취소되었습니다.
     <{if: 'true'}
     >{repeat: 1, options: {prefix: '목록에서 선택해주세요.\n'}}
->if(context.dialog.reserve != undefined) 고객님의 예약 내역입니다.\n일시: +reserve.dateStr+ +reserve.time+\n인원: +reserve.numOfPerson+명\n예약자명: +reserve.name+\n연락처: +reserve.mobile+\n\n예약을 취소하시려면 "취소"라고 말씀해주세요.
+>if(context.dialog.reserve != undefined) 고객님의 예약 내역입니다.\n상태: +reserve.status+\n일시: +reserve.dateStr+ +reserve.time+\n인원: +reserve.numOfPerson+명\n예약자명: +reserve.name+\n연락처: +reserve.mobile+\n\n예약을 취소하시려면 "취소"라고 말씀해주세요.
     <취소
     'reserveCancel'
     >예약이 취소되었습니다.
@@ -92,7 +119,7 @@ restaurant.menuImageTask
         < {types: [{type : type.mobileType, context: false}]}
         >{call: '예약내용확인'}
 //        < {types: [{type : type.mobileType, context: false}]}
-//        'smsAuth'
+//        'smsAuth's
 //        >문자메세지(SMS)로 발송된 인증번호를 입력해주세요.
 //            </[\d\s]+/
 //            >{if: restaurant.smsAuthValid, task: 'smsAuthTask', output: {call: '예약내용확인'}}
@@ -103,11 +130,13 @@ restaurant.menuImageTask
     {action: 'reserveConfirm'}
     > 예약내용을 확인해주세요.\n일시: +dateStr+ +time+\n인원: +numOfPerson+명\n연락처: +mobile+\n다음과 같이 예약신청하시겠습니까?
         <~네
-        {action: 'reserve'}
-        >예약을 요청하였습니다.\n\n아직 확정이 아닙니다.\n업주님이 좌석 확인 후 예약완료 문자를 받으시면 확정됩니다.
+        {action: 'reserveRequest'}
+        >예약을 요청하였습니다.\n\n아직 확정이 아닙니다.\n좌석 확인 후 예약완료 문자를 보내 드리겠습니다.
 
 시작:
 c<시작
+restaurant.startTask
+>{if: 'context.botUser.isOwner', output: {call: '예약내역', options: {prefix: '+name+ 인공지능 챗봇입니다.\n사장님께서 접속 하였습니다.\n\n'}}}
 >+name+ 인공지능 챗봇입니다.\n문의할 내용을 말씀해주세요.\n\n예시) 위치, 영업시간, 메뉴, 예약
 
 답변없음:

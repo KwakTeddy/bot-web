@@ -568,6 +568,15 @@ function executeDialog(dialog, context, print, callback, options) {
   async.waterfall([
     function(cb) {
       if (dialog.task) {
+        if(dialog.task && typeof dialog.task == 'string') {
+          var _task = context.bot.tasks[dialog.task];
+          if(_task) dialog.task = utils.clone(_task);
+          else {
+            _task = context.global.tasks[dialog.task];
+            if(_task) dialog.task = utils.clone(_task);
+          }
+        }
+
         if (dialog.task.template || dialog.task.action) {
             taskModule.executeTask(dialog.task, context, function (_task, context) {
               dialog.task = _task;

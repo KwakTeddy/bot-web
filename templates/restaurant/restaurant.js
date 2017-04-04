@@ -6,6 +6,29 @@ var messages = require(path.resolve('modules/messages/server/controllers/message
 var botUser= require(path.resolve('modules/bot-users/server/controllers/bot-users.server.controller'))
 var mongoModule = require(path.resolve('modules/bot/action/common/mongo'));
 var mongoose = require('mongoose');
+var request = require('request');
+var _ = require('lodash');
+
+var startTask = {
+  action: function (task, context, callback) {
+    if(context.bot.authKey != undefined && context.botUser.options && context.bot.authKey == context.botUser.options.authKey) {
+      context.botUser.isOwner = true;
+      // context.bot.authKey = null;
+    }
+
+    task.result = {smartReply: ['예약', '예약확인', '영업시간', '위치']};
+
+    if(context.botUser.isOwner) {
+      reserveCheck.action(task, context, function(_task, context) {
+        callback(task, context);
+      })
+    } else {
+      callback(task, context);
+    }
+  }
+};
+
+exports.startTask = startTask;
 
 exports.mapTask = {
   action: function(task, context, callback) {
@@ -158,6 +181,7 @@ function checkDate(task, context, callback) {
   } else {
     context.dialog.check = false;
   }
+
   callback(task, context);
 }
 
@@ -213,7 +237,7 @@ bot.setTask('smsAuthTask', smsAuthTask);
 /********************* 예약 *********************/
 
 function reserveConfirm(task, context, callback) {
-  task['dateStr'] = dateformat(context.dialog.date + 9 * 60 * 60, 'mm월dd일');
+  context.dialog['dateStr'] = dateformat(context.dialog.date + 9 * 60 * 60, 'mm월dd일');
 
   callback(task, context);
 }
@@ -221,31 +245,8 @@ function reserveConfirm(task, context, callback) {
 bot.setAction('reserveConfirm', reserveConfirm);
 
 
-function reserveSend(task, context, callback) {
+function reserveRequest(task, context, callback) {
 
-  if(!context.bot.testMode) {
-    var message = '[' + context.bot.name + ']\n' +
-        '예약자명: ' + context.dialog.name + '\n' +
-        '일시: ' + context.dialog.dateStr + '\n' +
-        '인원' + context.dialog.numOfPerson + '\n' +
-        '연락처:' + context.dialog.mobile + '\n' +
-        '예약을 확정하려면 링크를 클릭하여 확인해주세요.';
-
-    request.post(
-      'https://bot.moneybrain.ai/api/messages/sms/send',
-      {json: {callbackPhone: context.bot.phone, phone: context.bot.mobile.replace(/,/g, ''), message: message}},
-      function (error, response, body) {
-        callback(task, context);
-      }
-    );
-  } else {
-    callback(task, context);
-  }
-}
-
-bot.setAction('reserveSend', reserveSend);
-
-function reserve(task, context, callback) {
   var doc = {
     name: context.dialog.name,
     mobile: context.dialog.mobile,
@@ -261,23 +262,92 @@ function reserve(task, context, callback) {
   var templateReservation = new TemplateReservation(doc);
 
   templateReservation.save(function(err) {
+    if(!context.bot.testMode) {
+      var randomNum = '';
+      randomNum += '' + Math.floor(Math.random() * 10);
+      randomNum += '' + Math.floor(Math.random() * 10);
+      randomNum += '' + Math.floor(Math.random() * 10);
+      randomNum += '' + Math.floor(Math.random() * 10);
 
-    callback(task, context);
+      var url = 'http://192.168.1.78:8443/mobile#/chat/' + context.bot.id + '?authKey=' + randomNum;
+      context.bot.authKey = randomNum;
+
+      var query = {url: url};
+      var request = require('request');
+
+      request({
+        url: 'https://openapi.naver.com/v1/util/shorturl',
+        method: 'POST',
+        form: query,
+        headers: {
+          'Host': 'openapi.naver.com',
+          'Accept': '*/*',
+          'Content-Type': 'application/json',
+          'X-Naver-Client-Id': context.bot.naver.clientId,
+          'X-Naver-Client-Secret': context.bot.naver.clientSecret
+        }
+      }, function(error, response, body) {
+        if (!error && response.statusCode == 200) {
+          var shorturl;
+          try {shorturl = JSON.parse(body).result.url; } catch(e) {console.log(e);}
+          var message = '[플레이챗]' + '\n' +
+            context.dialog.name + '/' +
+            context.dialog.dateStr + '/' + context.dialog.time + '/' +
+            context.dialog.numOfPerson + '명\n' +
+            context.dialog.mobile + '\n' +
+            '예약접수: ' + shorturl;
+
+          request.post(
+            'https://bot.moneybrain.ai/api/messages/sms/send',
+            {json: {callbackPhone: context.bot.phone, phone: context.bot.mobile.replace(/,/g, ''), message: message}},
+            function (error, response, body) {
+              callback(task, context);
+            }
+          );
+        } else {
+          callback(task, context);
+        }
+      });
+    } else {
+      callback(task, context);
+    }
   });
+
 }
 
-bot.setAction('reserve', reserve);
+bot.setAction('reserveRequest', reserveRequest);
+
 
 var reserveCheck = {
   action: function (task, context, callback) {
 
-    var TemplateReservation = mongoModule.getModel('TemplateReservation');
-    TemplateReservation.find({
+    if(context.botUser.isOwner) {
+      var TemplateReservation = mongoModule.getModel('TemplateReservation');
+      TemplateReservation.find({
+        upTemplateId: context.bot.templateDataId,
+        status: '예약요청중',
+        date: {$gte: new Date()}
+      }).lean().sort({date: -1, time: -1}).exec(function(err, docs) {
+        if(docs && docs.length > 0) {
+          for(var i in docs) {
+            docs[i].dateStr = dateformat(docs[i].date + 9 * 60 * 60, 'mm월dd일');
+          }
+          context.dialog.reserves = docs;
+          context.dialog.reserve = undefined;
+        } else {
+          context.dialog.reserves = undefined;
+          context.dialog.reserve = undefined;
+        }
+        callback(task, context);
+      });
+    } else {
+      var TemplateReservation = mongoModule.getModel('TemplateReservation');
+      TemplateReservation.find({
         upTemplateId: context.bot.templateDataId,
         userKey: context.user.userKey,
-        status: {$ne: '취소됨'},
+        status: {$ne: '취소'},
         date: {$gte: new Date()}
-      }).lean().sort({date: -1}).exec(function(err, docs) {
+      }).lean().sort({date: -1, time: -1}).exec(function(err, docs) {
         if(docs && docs.length > 1) {
           for(var i in docs) {
             docs[i].dateStr = dateformat(docs[i].date + 9 * 60 * 60, 'mm월dd일');
@@ -293,18 +363,38 @@ var reserveCheck = {
           context.dialog.reserve = undefined;
         }
         callback(task, context);
-    })
+      })
+    }
   }
 };
 
-bot.setTask('reserveCheck', reserveCheck);
+// bot.setTask('reserveCheck', reserveCheck);
+exports.reserverCheck = reserveCheck;
 
 var reserveCancel = {
   action: function (task, context, callback) {
     if(context.dialog.reserve) {
       var TemplateReservation = mongoModule.getModel('TemplateReservation');
-      TemplateReservation.update({_id: context.dialog.reserve._id}, {$set: {status: '취소됨'}}, function (err) {
-        callback(task, context);
+      TemplateReservation.update({_id: context.dialog.reserve._id}, {$set: {status: '취소'}}, function (err) {
+
+        if(!context.bot.testMode) {
+          var message = '[' + context.bot.name + ']' + '\n' +
+            context.dialog.reserve.name + '/' +
+            context.dialog.reserve.dateStr + '/' + context.dialog.reserve.time + '/' +
+            context.dialog.reserve.numOfPerson + '명\n' +
+            context.dialog.reserve.mobile + '\n' +
+            '예약취소';
+
+          request.post(
+            'https://bot.moneybrain.ai/api/messages/sms/send',
+            {json: {callbackPhone: '02-858-5683' || context.bot.phone, phone: context.bot.mobile.replace(/,/g, ''), message: message}},
+            function (error, response, body) {
+              callback(task, context);
+            }
+          );
+        } else {
+          callback(task, context);
+        }
       });
     } else {
       callback(task, context);
@@ -313,6 +403,78 @@ var reserveCancel = {
 };
 
 bot.setTask('reserveCancel', reserveCancel);
+
+var reserveOwnerCancel = {
+  action: function (task, context, callback) {
+    if(context.dialog.reserve) {
+      var TemplateReservation = mongoModule.getModel('TemplateReservation');
+      TemplateReservation.update({_id: context.dialog.reserve._id}, {$set: {status: '업주취소'}}, function (err) {
+
+        if(!context.bot.testMode) {
+          var message = '[' + context.bot.name + ']' + '\n' +
+            context.dialog.reserve.name + '/' +
+            context.dialog.reserve.dateStr + '/' + context.dialog.reserve.time + '/' +
+            context.dialog.reserve.numOfPerson + '명\n' +
+            '예약취소: '+
+            task.inRaw + '\n' +
+            '매장전화: ' + context.bot.phone;
+
+          request.post(
+            'https://bot.moneybrain.ai/api/messages/sms/send',
+            {json: {callbackPhone: '02-858-5683' || context.bot.phone, phone: context.dialog.reserve.mobile.replace(/,/g, ''), message: message}},
+            function (error, response, body) {
+              reserveCheck.action(task, context, function(_task, context) {
+                callback(task, context);
+              });
+            }
+          );
+        } else {
+          callback(task, context);
+        }
+      });
+
+    } else {
+      callback(task, context);
+    }
+  }
+};
+
+bot.setTask('reserveOwnerCancel', reserveOwnerCancel);
+
+var reserveOwnerConfirm = {
+  action: function (task, context, callback) {
+    if(context.dialog.reserve) {
+      var TemplateReservation = mongoModule.getModel('TemplateReservation');
+      TemplateReservation.update({_id: context.dialog.reserve._id}, {$set: {status: '확정'}}, function (err) {
+
+        if(!context.bot.testMode) {
+          var message = '[' + context.bot.name + ']' + '\n' +
+            context.dialog.reserve.name + '/' +
+            context.dialog.reserve.dateStr + '/' + context.dialog.reserve.time + '/' +
+            context.dialog.reserve.numOfPerson + '명\n' +
+            '예약확정\n'+
+            '매장전화: ' + context.bot.phone;
+
+          request.post(
+            'https://bot.moneybrain.ai/api/messages/sms/send',
+            {json: {callbackPhone: '02-858-5683' || context.bot.phone, phone: context.dialog.reserve.mobile.replace(/,/g, ''), message: message}},
+            function (error, response, body) {
+              reserveCheck.action(task, context, function(_task, context) {
+                callback(task, context);
+              })
+            }
+          );
+        } else {
+          callback(task, context);
+        }
+      });
+    } else {
+      callback(task, context);
+    }
+  }
+};
+
+bot.setTask('reserveOwnerConfirm', reserveOwnerConfirm);
 
 
 var reserveNameTask = {
@@ -323,4 +485,97 @@ var reserveNameTask = {
 };
 
 bot.setTask('reserveNameTask', reserveNameTask);
+
+var menuType = {
+  name: 'menus',
+  typeCheck: type.mongoDbTypeCheck,
+  limit: 5,
+  mongo: {
+    model: 'templatemenu',
+    queryFields: ['name'],
+    fields: 'name price image' ,
+    taskFields: ['_id', 'name', 'price', 'image'],
+    taskSort: function(a, b) {
+      if(b.matchCount > a.matchCount) return 1;
+      else if(b.matchCount < a.matchCount) return -1;
+      else {
+        if(b.created.getTime() < a.created.getTime()) return 1;
+        else if(b.created.getTime() > a.created.getTime()) return -1;
+        else return 0;
+      }
+    },
+    //query: {},
+    // sort: "-created",
+    // limit: 5,
+    minMatch: 1
+  }
+};
+
+exports.menuType = menuType;
+
+var menuTask = {
+  action: function (task, context, callback) {
+    var menus = task.typeDoc;
+    var items = [];
+    for(var i = 0; i < menus.length; i++) {
+      items.push({
+        title: menus[i].name,
+        text: menus[i].price + '원',
+        imageUrl: menus[i].image, buttons: [{input: menus[i].name, text: '상세보기'}]
+      });
+    }
+
+    if(items.length > 0) task.result = {items: items};
+
+    callback(task, context);
+  }
+};
+
+bot.setTask('menuTask', menuTask);
+
+
+function menuCategoryAction(task, context, callback) {
+  var model, query, sort;
+
+  model = mongoose.model('TemplateMenu');
+  query = {upTemplateId: context.bot.templateDataId};
+  sort = {'_id': -1};
+
+
+  model.aggregate([
+    {$match: query},
+    {$sort: sort},
+    {$group: {
+      _id: '$category',
+      category: {$first: '$category'}
+    }}
+  ], function(err, docs) {
+    if(docs == undefined) {
+      callback(task, context);
+    } else {
+      var categorys = [];
+      for (var i = 0; i < docs.length; i++) {
+        var doc = docs[i];
+
+        var category = doc.category;
+        if(!_.includes(categorys, category)){
+          categorys.push({name: category});
+        }
+
+        // for (var j = 0; j < doc.category.length; j++) {
+        //   var category = doc.category[j];
+        //   if(!_.includes(categorys, category)){
+        //     categorys.push({name: category});
+        //   }
+        // }
+      }
+
+      task.doc = categorys;
+      context.dialog.category = categorys;
+      callback(task, context);
+    }
+  });
+}
+
+exports.menuCategoryAction = menuCategoryAction;
 

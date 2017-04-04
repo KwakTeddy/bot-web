@@ -31,3 +31,52 @@
     padding: 8px 10px 0 10px;
 }
 
+
+.smart_reply {
+    display: block !important;
+    clear: both;
+    text-align: center;
+    position: absolute;
+    bottom: 5px;
+    z-index: 100;
+
+    width: 100%;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.smart_reply .owl-stage-outer{
+    text-align: center;
+}
+
+.smart_reply .owl-stage {
+    display: inline-block;
+}
+
+.smart_reply .owl-stage {
+    display: inline-block;
+}
+
+.smart_reply .item {
+    display: inline;
+    margin: 0px;
+    border: 0;
+    /*overflow: hidden;*/
+    /*text-overflow: ellipsis;*/
+    /*white-space: normal;*/
+    background-color: transparent;
+    /*color: #444;*/
+    /*position: relative;*/
+    /*z-index: 2;*/
+    /*font-size: 16px;*/
+}
+
+.smart_reply button {
+    background-color: white;
+    color: #379dfc;
+    border: solid 1px #379dfc;
+    border-radius: 20px;
+    padding: 0 5px 0 5px;
+    margin: 0px;
+}
+

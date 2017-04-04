@@ -9,7 +9,8 @@ var bot = require('../controllers/bot.server.controller');
 var tough = require('tough-cookie');
 var utils = require(path.resolve('./modules/bot/action/common/utils'));
 
-var chatscriptConfig = {port: 0, host: '', allowHalfOpen: true};
+// var chatscriptConfig = {port: 0, host: '', allowHalfOpen: true};
+var defaultOptions = {};
 
 var mongoose = require('mongoose'),
   BotUser = mongoose.model('BotUser');
@@ -33,7 +34,7 @@ module.exports = function (io, socket) {
         socket.emit('send_msg', JSON.stringify(_task.result));
       }
 
-    }, _.assign(chatscriptConfig, {host: msg.host, port: msg.port}));
+    }, _.assign(defaultOptions, msg.options));
 
   })
 };

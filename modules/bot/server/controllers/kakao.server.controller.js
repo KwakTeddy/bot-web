@@ -7,7 +7,7 @@ var contextModule = require(path.resolve('modules/bot/engine/common/context'));
 exports.keyboard = function (req, res) {
   console.log("kakao keyboard");
 
-  contextModule.getContext(req.params.bot, 'kakao', req.params.user_key, function(context) {
+  contextModule.getContext(req.params.bot, 'kakao', req.params.user_key, null, function(context) {
     var sendMsg = context.bot.kakao.keyboard;
     if(sendMsg == undefined) sendMsg = { type: 'text'};
 

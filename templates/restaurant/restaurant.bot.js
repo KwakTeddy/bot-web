@@ -5,22 +5,11 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 var restaurant = {
-  use: true,
-  schema: {
-    name: {
-      type: String
-    },
-    startTime: {
-      type: Date
-    },
-    endTime: {
-      type: Date
-    },
-    address: {
-      type: String
-    }
+  naver: {
+    clientId: 'Aqi_RlMlLRlJnmJptMhD',
+    clientSecret: '0AKq2NoNgn'
   }
 };
 
-botlib.makeBot('restaurant', restaurant);
+botlib.makeTemplateBot('restaurant', restaurant);
 

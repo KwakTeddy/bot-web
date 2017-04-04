@@ -48,7 +48,7 @@ console.error = function(out) {
 //   if(botSocket) botSocket.emit('send_msg', ":log \n" + out +"\n");
 // }
 
-function botProc(botName, channel, user, inTextRaw, outCallback, chatServerConfig) {
+function botProc(botName, channel, user, inTextRaw, outCallback, options) {
   // TODO 개발용
   dialog = utils.requireNoCache(path.resolve('modules/bot/action/common/dialog'));
 
@@ -83,7 +83,7 @@ function botProc(botName, channel, user, inTextRaw, outCallback, chatServerConfi
   async.waterfall([
 
     function(cb) {
-      contextModule.getContext(botName, channel, user, function(_context) {
+      contextModule.getContext(botName, channel, user, options, function(_context) {
         context = _context;
         cb(null);
       });
@@ -173,7 +173,7 @@ function botProc(botName, channel, user, inTextRaw, outCallback, chatServerConfi
 
     function(cb) {
       if(context.bot.dialogServer && context.bot.dialogServer.chatScript == true) {
-        var chatscriptSocket = net.createConnection(chatServerConfig, function(){
+        var chatscriptSocket = net.createConnection(options.chatServerConfig, function(){
           chatscriptSocket.write(user+'\x00'+ /*botName*/ '' +'\x00'+inTextNLP+'\x00');
         });
 

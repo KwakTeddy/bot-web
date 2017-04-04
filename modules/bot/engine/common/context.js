@@ -7,7 +7,7 @@ var utils = require(path.resolve('./modules/bot/action/common/utils'));
 
 
 exports.getContext = getContext;
-function getContext(botName, channel, user, callback) {
+function getContext(botName, channel, user, options, callback) {
   // if(!global._context) global._context = {};
   // if(!global._bots) global._bots = {};
   // if(!global._channels) global._channels = {};
@@ -54,6 +54,8 @@ function getContext(botName, channel, user, callback) {
 
         if(!botUserContext._dialog) botUserContext._dialog = {};
         if(!botUserContext._task) botUserContext._task = {};
+
+        if(options) botUserContext.options = options;
 
         console.log('changeBot: '  + botUserContext.curBotId + ' ' + botUserContext.curBotName);
         if(botUserContext.curBotId) botName = botUserContext.curBotId;
@@ -129,22 +131,25 @@ function getBotContext(botName, cb) {
   if(global._bots[botName]) {
     botContext = global._bots[botName];
     cb(botContext);
-  } else if(global._userbots[botName]) {
-    botContext = global._userbots[botName];
-    cb(botContext);
+  // } else if(global._userbots[botName]) {
+  //   botContext = global._userbots[botName];
+  //   cb(botContext);
   } else {
     botModule.loadBot(botName, function(_bot) {
       if(_bot) {
         botContext = _bot;
         cb(botContext);
-      } else {
-        botModule.loadUserBot(botName, function(_userBot) {
-          if(_userBot) {
-            botContext = _userBot;
-          } else if(botContext == undefined) botContext = {};
-
-          cb(botContext);
-        })
+      } else if(botContext == undefined) {
+        botContext = {};
+        cb(botContext);
+      // } else {
+      //   botModule.loadUserBot(botName, function(_userBot) {
+      //     if(_userBot) {
+      //       botContext = _userBot;
+      //     } else if(botContext == undefined) botContext = {};
+      //
+      //     cb(botContext);
+      //   })
       }
     });
 

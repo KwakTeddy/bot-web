@@ -47,10 +47,10 @@ function command(inTextRaw, inTextNLP, context, print, callback) {
       });
   } else if(cmd == ':reset user') {
     //TODO 디버깅 시에 서버 재시작 안하고 로딩
-    utils.requireNoCache(path.resolve('modules/bot/engine/common/globals')).initGlobals();
-    utils.requireNoCache(path.resolve('modules/bot/action/common/dialog'));
-    utils.requireNoCache(path.resolve('modules/bot/action/common/task'));
-    utils.requireNoCache(path.resolve('modules/bot/action/common/type'));
+    // utils.requireNoCache(path.resolve('modules/bot/engine/common/globals')).initGlobals();
+    // utils.requireNoCache(path.resolve('modules/bot/action/common/dialog'));
+    // utils.requireNoCache(path.resolve('modules/bot/action/common/task'));
+    // utils.requireNoCache(path.resolve('modules/bot/action/common/type'));
 
     context.botUser.topic = null;
 

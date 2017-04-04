@@ -41,7 +41,7 @@
         }
       })
       .state('user-bots.chat', {
-        url: '/chat/:userBotId',
+        url: '/chat/:userBotId?authKey',
         views: {
           'menuContent@': {
             templateUrl: 'modules/bots/client/views/chat-user-bot.mobile.view.html',

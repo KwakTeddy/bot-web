@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('user-bots').controller('UserBotChatController', ['$state', '$rootScope', '$scope', '$stateParams', '$document', '$timeout', '$window', '$compile', '$resource', '$cookies', 'Socket',
+angular.module('user-bots').controller('UserBotChatController', ['$state', '$rootScope', '$scope', '$stateParams', '$document', '$location', '$compile', '$resource', '$cookies', 'Socket',
   'UserBotsService', '$ionicModal', '$ionicScrollDelegate',
-  function ($state, $rootScope, $scope, $stateParams, $document, $timeout, $window, $compile, $resource, $cookies, Socket, UserBotsService, $ionicModal, $ionicScrollDelegate) {
+  function ($state, $rootScope, $scope, $stateParams, $document, $location, $compile, $resource, $cookies, Socket, UserBotsService, $ionicModal, $ionicScrollDelegate) {
     var vm = this;
     $scope.vm = vm;
 
@@ -12,7 +12,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
 //    $scope.authentication = Authentication;
     vm.$stateParams = $stateParams;
-    console.log(vm.$stateParams);
+    vm.params = $location.search();
     vm.server = 'localhost:1024';
     vm.bot = $stateParams.userBotId || $cookies.get('default_bot') || 'athena';
     vm.userBot = {};
@@ -277,11 +277,10 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
     function emitMsg(msg) {
       Socket.emit('send_msg', {
-        host: vm.server.split(':')[0],
-        port: vm.server.split(':')[1],
         bot: vm.bot,
         user: vm.userId,
-        msg: msg
+        msg: msg,
+        options: vm.params
       });
     }
 
@@ -558,8 +557,14 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
       innerHTML += '</div>';
 
-      var main = document.getElementById('chat_main');
-      main.style.padding = '10px 0px 30px 0px';
+      var main;
+
+      if(_platform == 'mobile') {
+        main = document.getElementsByTagName('ion-content')[0];
+      } else {
+        main = document.getElementById('chat_main');
+        main.style.padding = '10px 0px 30px 0px';
+      }
 
       main.insertAdjacentHTML('beforeend', innerHTML);
 
@@ -569,6 +574,9 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         if(child && child.style) child.style.width = (child.offsetWidth + 5 ) + 'px';
       }
 
+      var element = angular.element(document.querySelector('#smart_reply'));
+      $compile(element.contents())($scope);
+
       $('.smart_reply').owlCarousel({
         loop:false,
         nav:false,
@@ -576,9 +584,6 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         margin: 3,
         autoWidth: true
       });
-
-      var element = angular.element(document.querySelector('#smart_reply'));
-      $compile(element.contents())($scope);
     }
 
     function addItems(items) {

@@ -17,7 +17,7 @@ exports.receiveNew = function (req, res) {
     // console.log(from, text, replyToken, req.params.bot);
 
     chat.write('line', from, req.params.bot, text, function (retText, json) {
-      contextModule.getContext(req.params.bot, 'line', from , function(context) {
+      contextModule.getContext(req.params.bot, 'line', from , null, function(context) {
         respondMessageNew(context.bot.line.CHANNEL_ACCESS_TOKEN, replyToken, retText, json)
       });
     });
