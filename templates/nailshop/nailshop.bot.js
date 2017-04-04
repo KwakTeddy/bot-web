@@ -4,9 +4,9 @@ var botlib = require(path.resolve('config/lib/bot'));
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
-var restaurant = {
+var nailshop = {
   reserveFields: [
-    {name: 'numOfPersion', title: '인원수'}
+    {name: 'memo', title: '서비스명'}
   ],
 
   naver: {
@@ -15,5 +15,5 @@ var restaurant = {
   }
 };
 
-botlib.makeTemplateBot('restaurant', restaurant);
+botlib.makeTemplateBot('nailshop', nailshop);
 

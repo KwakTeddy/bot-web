@@ -1,5 +1,5 @@
 var path = require('path');
-var bot = require(path.resolve('config/lib/bot')).getTemplateBot('restaurant');
+// var bot = require(path.resolve('config/lib/bot')).getTemplateBot('restaurant');
 var type = require(path.resolve('./modules/bot/action/common/type'));
 var dateformat = require('dateformat');
 var messages = require(path.resolve('modules/messages/server/controllers/messages.server.controller'));
@@ -8,6 +8,7 @@ var mongoModule = require(path.resolve('modules/bot/action/common/mongo'));
 var mongoose = require('mongoose');
 var request = require('request');
 var _ = require('lodash');
+var globals = require(path.resolve('modules/bot/engine/common/globals'));
 
 var startTask = {
   action: function (task, context, callback) {
@@ -56,7 +57,7 @@ exports.menuImageTask = {
       image: {url: context.bot.menuImage},
       buttons: [
         {text: '자세히보기', url: context.bot.menuImage}
-        ]
+      ]
     };
     callback(task, context);
   }
@@ -96,32 +97,32 @@ function daumgeoCode (task, context, callback) {
   // if (context.dialog.bank == undefined) {
   //   callback(false);
   // } else {
-    naverGeocode(task, context, function(task, context) {
-      var request = require('request');
-      var query = {q: task.address, output: "json"};
-      task._doc = {
-        lng: '',
-        lat: '',
-        link_find: '',
-        link_map: '',
-        address: ''
-      };
-      request({
-        url: 'https://apis.daum.net/local/geo/addr2coord?apikey=1b44a3a00ebe0e33eece579e1bc5c6d2',
-        method: 'GET',
-        qs: query
-      }, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-          // console.log(body);
-          var doc = JSON.parse(body);
-          task._doc.link_map = 'http://map.daum.net/link/map/' + task.name + ',' + task.lat + ',' + task.lng;
+  naverGeocode(task, context, function(task, context) {
+    var request = require('request');
+    var query = {q: task.address, output: "json"};
+    task._doc = {
+      lng: '',
+      lat: '',
+      link_find: '',
+      link_map: '',
+      address: ''
+    };
+    request({
+      url: 'https://apis.daum.net/local/geo/addr2coord?apikey=1b44a3a00ebe0e33eece579e1bc5c6d2',
+      method: 'GET',
+      qs: query
+    }, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        // console.log(body);
+        var doc = JSON.parse(body);
+        task._doc.link_map = 'http://map.daum.net/link/map/' + task.name + ',' + task.lat + ',' + task.lng;
 
-          task.url = task._doc.link_map;
-          task.urlMessage = '지도에서 위치보기';
-        }
-        callback(task, context);
-      });
-    })
+        task.url = task._doc.link_map;
+        task.urlMessage = '지도에서 위치보기';
+      }
+      callback(task, context);
+    });
+  })
   // }
 }
 exports.daumgeoCode = daumgeoCode;
@@ -156,7 +157,7 @@ function numOfPersonTypeCheck(inRaw, _type, inDoc, context, callback) {
   }
 }
 
-bot.setTypeCheck('numOfPersonTypeCheck', numOfPersonTypeCheck);
+globals.setGlobalTypeCheck('numOfPersonTypeCheck', numOfPersonTypeCheck);
 
 function checkTime(task, context, callback) {
   var day = new Date().getDay();
@@ -217,7 +218,7 @@ var smsAuth = {
   action: messages.sendSMSAuth
 };
 
-bot.setTask('smsAuth', smsAuth);
+globals.setGlobalTask('smsAuth', smsAuth);
 
 
 function smsAuthValid(dialog, context, callback) {
@@ -239,7 +240,7 @@ var smsAuthTask = {
   }
 };
 
-bot.setTask('smsAuthTask', smsAuthTask);
+globals.setGlobalTask('smsAuthTask', smsAuthTask);
 
 /********************* 예약 *********************/
 
@@ -249,21 +250,27 @@ function reserveConfirm(task, context, callback) {
   callback(task, context);
 }
 
-bot.setAction('reserveConfirm', reserveConfirm);
+globals.setGlobalAction('reserveConfirm', reserveConfirm);
 
 
 function reserveRequest(task, context, callback) {
 
   var doc = {
     name: context.dialog.name,
-    mobile: context.dialog.mobile,
+    mobile: context.dialog.mobile || context.user.mobile,
     date: context.dialog.date,
     time: context.dialog.time,
-    numOfPerson: context.dialog.numOfPerson,
+    // numOfPerson: context.dialog.numOfPerson,
     status: '예약요청중',
     upTemplateId: context.bot.templateDataId,
     userKey: context.user.userKey
   };
+
+  var fields = context.bot.reserveFields || [];
+  for(var i = 0; i < fields.length; i++) {
+    var field = fields[i];
+    doc[field.name] = context.dialog[field.name];
+  }
 
   var TemplateReservation = mongoModule.getModel('TemplateReservation');
   var templateReservation = new TemplateReservation(doc);
@@ -299,10 +306,20 @@ function reserveRequest(task, context, callback) {
           try {shorturl = JSON.parse(body).result.url; } catch(e) {console.log(e);}
           var message = '[플레이챗]' + '\n' +
             context.dialog.name + '/' +
-            context.dialog.dateStr + '/' + context.dialog.time + '/' +
-            context.dialog.numOfPerson + '명\n' +
-            context.dialog.mobile + '\n' +
-            '예약접수: ' + shorturl;
+            context.dialog.dateStr + '/' + context.dialog.time + '/';
+            // context.dialog.numOfPerson + '명\n' +
+
+          for(var i = 0; i < fields.length; i++) {
+            var field = fields[i];
+            if(field.name == 'numOfPerson') {
+              message +=  context.dialog[field.name] + '명/';
+            } else {
+              message += context.dialog[field.name] + '/';
+            }
+          }
+
+          message += '\n' + context.dialog.mobile + '\n' +
+          '예약접수(클릭) ' + shorturl;
 
           request.post(
             'https://bot.moneybrain.ai/api/messages/sms/send',
@@ -322,7 +339,7 @@ function reserveRequest(task, context, callback) {
 
 }
 
-bot.setAction('reserveRequest', reserveRequest);
+globals.setGlobalAction('reserveRequest', reserveRequest);
 
 
 var reserveCheck = {
@@ -387,9 +404,22 @@ var reserveCancel = {
         if(!context.bot.testMode) {
           var message = '[' + context.bot.name + ']' + '\n' +
             context.dialog.reserve.name + '/' +
-            context.dialog.reserve.dateStr + '/' + context.dialog.reserve.time + '/' +
-            context.dialog.reserve.numOfPerson + '명\n' +
-            context.dialog.reserve.mobile + '\n' +
+            context.dialog.reserve.dateStr + '/' + context.dialog.reserve.time + '/';
+            // context.dialog.reserve.numOfPerson + '명\n' +
+            // context.dialog.reserve.mobile + '\n' +
+            // '예약취소';
+
+          var fields = context.bot.reserveFields || [];
+          for(var i = 0; i < fields.length; i++) {
+            var field = fields[i];
+            if(field.name == 'numOfPerson') {
+              message +=  context.dialog[field.name] + '명/';
+            } else {
+              message += context.dialog[field.name] + '/';
+            }
+          }
+
+          message += '\n' + context.dialog.mobile + '\n' +
             '예약취소';
 
           request.post(
@@ -409,7 +439,7 @@ var reserveCancel = {
   }
 };
 
-bot.setTask('reserveCancel', reserveCancel);
+globals.setGlobalTask('reserveCancel', reserveCancel);
 
 var reserveOwnerCancel = {
   action: function (task, context, callback) {
@@ -420,9 +450,23 @@ var reserveOwnerCancel = {
         if(!context.bot.testMode) {
           var message = '[' + context.bot.name + ']' + '\n' +
             context.dialog.reserve.name + '/' +
-            context.dialog.reserve.dateStr + '/' + context.dialog.reserve.time + '/' +
-            context.dialog.reserve.numOfPerson + '명\n' +
-            '예약취소: '+
+            context.dialog.reserve.dateStr + '/' + context.dialog.reserve.time + '/';
+            // context.dialog.reserve.numOfPerson + '명\n' +
+            // '예약취소: '+
+            // task.inRaw + '\n' +
+            // '매장전화: ' + context.bot.phone;
+
+          var fields = context.bot.reserveFields || [];
+          for(var i = 0; i < fields.length; i++) {
+            var field = fields[i];
+            if(field.name == 'numOfPerson') {
+              message += context.dialog[field.name] + '명/';
+            } else {
+              message += context.dialog[field.name] + '/';
+            }
+          }
+
+          message += '\n예약취소: '+
             task.inRaw + '\n' +
             '매장전화: ' + context.bot.phone;
 
@@ -446,7 +490,7 @@ var reserveOwnerCancel = {
   }
 };
 
-bot.setTask('reserveOwnerCancel', reserveOwnerCancel);
+globals.setGlobalTask('reserveOwnerCancel', reserveOwnerCancel);
 
 var reserveOwnerConfirm = {
   action: function (task, context, callback) {
@@ -457,10 +501,23 @@ var reserveOwnerConfirm = {
         if(!context.bot.testMode) {
           var message = '[' + context.bot.name + ']' + '\n' +
             context.dialog.reserve.name + '/' +
-            context.dialog.reserve.dateStr + '/' + context.dialog.reserve.time + '/' +
-            context.dialog.reserve.numOfPerson + '명\n' +
-            '예약확정\n'+
-            '매장전화: ' + context.bot.phone;
+            context.dialog.reserve.dateStr + '/' + context.dialog.reserve.time + '/';
+            // context.dialog.reserve.numOfPerson + '명\n' +
+            // '예약확정\n'+
+            // '매장전화: ' + context.bot.phone;
+
+          var fields = context.bot.reserveFields || [];
+          for(var i = 0; i < fields.length; i++) {
+            var field = fields[i];
+            if(field.name == 'numOfPerson') {
+              message += context.dialog[field.name] + '명/';
+            } else {
+              message += context.dialog[field.name] + '/';
+            }
+          }
+
+          message += '\n예약확정\n'+
+            '매장전화: ' + context.bot.phone;;
 
           request.post(
             'https://bot.moneybrain.ai/api/messages/sms/send',
@@ -481,7 +538,7 @@ var reserveOwnerConfirm = {
   }
 };
 
-bot.setTask('reserveOwnerConfirm', reserveOwnerConfirm);
+globals.setGlobalTask('reserveOwnerConfirm', reserveOwnerConfirm);
 
 
 var reserveNameTask = {
@@ -491,7 +548,16 @@ var reserveNameTask = {
   }
 };
 
-bot.setTask('reserveNameTask', reserveNameTask);
+globals.setGlobalTask('reserveNameTask', reserveNameTask);
+
+var reserveMemoTask = {
+  action: function (task, context, callback) {
+    context.dialog.memo = task.inRaw;
+    callback(task, context);
+  }
+};
+
+globals.setGlobalTask('reserveMemoTask', reserveMemoTask);
 
 var menuType = {
   name: 'menus',
@@ -538,7 +604,7 @@ var menuTask = {
   }
 };
 
-bot.setTask('menuTask', menuTask);
+globals.setGlobalTask('menuTask', menuTask);
 
 
 function menuCategoryAction(task, context, callback) {
