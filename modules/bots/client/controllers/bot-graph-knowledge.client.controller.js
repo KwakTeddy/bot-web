@@ -2,8 +2,8 @@
 
 // Bots controller
 angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope', '$rootScope', '$state', '$window',
-'$timeout', '$stateParams', '$resource', 'userBotResolve', 'UserBotsService',
-    function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, Authentication, userBot, UserBotsService) {
+'$timeout', '$stateParams', '$resource', 'Authentication', 'userBotResolve',
+    function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, Authentication, userBot) {
       var vm = this;
       //vm.user = Authentication.user;
       vm.userId = $rootScope.userId;

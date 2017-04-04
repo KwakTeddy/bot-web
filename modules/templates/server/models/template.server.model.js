@@ -18,6 +18,9 @@ var TemplateSchema = new Schema({
     type: String,
     unique: true
   },
+  image: {
+    type: String,
+  },
   content: {
     type: String
   },

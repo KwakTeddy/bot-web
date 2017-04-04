@@ -29,6 +29,7 @@ if (_platform !== 'mobile'){
       } else {
         vm.userBot.public = true;
       }
+
       vm.userId = $rootScope.userId;
       vm.isMine = (vm.userBot.user != null && (vm.user.username === vm.userBot.user.username));
       vm.isLearnable = (vm.userBot.user != null && (vm.userBot.learn || vm.isMine));
@@ -161,6 +162,12 @@ if (_platform !== 'mobile'){
         }
         */
         vm.changeType(type);
+      };
+
+      vm.getImage = function(template) {
+        if (!template.image)
+          return "/images/sns/facebook-messenger-android.png";
+        return template.image;
       };
 
       vm.checkTemplate = function() {

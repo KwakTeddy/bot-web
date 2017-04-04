@@ -30,14 +30,24 @@
         </div>
       </div>
 
-      <div class="form-group has-error">
+      <div class="form-group">
+        <label class="col-sm-3 control-label">이미지 <span class="required" aria-required="true">*</span></label>
+        <div class="col-sm-9">
+          <input type="text" name="image" ng-model="vm.template.image" class="form-control valid"
+                 placeholder="이미지"
+                 required=""
+                 aria-required="true" aria-invalid="false">
+        </div>
+      </div>
+
+      <div class="form-group">
         <label class="col-sm-3 control-label">Content <span class="required" aria-required="true">*</span></label>
         <div class="col-sm-9">
           <textarea name="content" ng-model="vm.template.content" id="content" rows="5" class="form-control" placeholder="내용을 입력해 주세요" required="" aria-required="true" aria-invalid="true"></textarea><label id="content-error" class="error" for="content">내용은 필수 입니다.</label>
         </div>
       </div>
 
-      <div class="form-group has-error">
+      <div class="form-group">
         <label class="col-sm-3 control-label">Data JSON <span class="required" aria-required="true">*</span></label>
         <div class="col-sm-9">
           <textarea name="dataSchema" ng-model="vm.template.dataSchema" id="content" rows="5" class="form-control" placeholder="내용을 입력해 주세요" required="" aria-required="true" aria-invalid="true"></textarea><label id="content-error" class="error" for="content">내용은 필수 입니다.</label>
