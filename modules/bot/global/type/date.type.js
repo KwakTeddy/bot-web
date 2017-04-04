@@ -497,7 +497,7 @@ globals.setGlobalTypeCheck('dateTypeCheck', dateTypeCheck);
 
 function timeTypeCheck(text, type, task, context, callback) {
   var name = 'time';
-  var re = /(?:(오전|오후))\s*(?:(\d{1,2})\s*시)|(?:(am|pm|a.m|p.m))\s*(?:(\d{1,2})\s*시)|(?:(\d{1,2})\s*시)|(?:(\d{2}:\d{2}))/g;
+  var re = /(?:(오전|오후|새벽|아침|낮|저녁|밤))\s*(?:(\d{1,2})\s*시)|(?:(am|pm|a.m|p.m))\s*(?:(\d{1,2})\s*시)|(?:(\d{1,2})\s*시)|(?:(\d{2}:\d{2}))/g;
   var matched = false;
 
 
@@ -526,9 +526,9 @@ function timeTypeCheck(text, type, task, context, callback) {
         time = 're';
       }
     }
-    if (p1 == '오전') {
+    if (p1 == '오전' || p1 == '새벽' || p1 == '아침') {
       time = p2.toString() + timeform;
-    } else if (p1 == '오후') {
+    } else if (p1 == '오후' || p1 == '낮' || p1 == '저녁' || p1 == '밤') {
       var p6 = p2*1 + 12;
       time = p6.toString() + timeform;
     }

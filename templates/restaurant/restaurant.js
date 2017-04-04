@@ -16,7 +16,11 @@ var startTask = {
       // context.bot.authKey = null;
     }
 
-    task.result = {smartReply: ['예약', '예약확인', '영업시간', '위치']};
+    task.result = {smartReply: ['예약', '위치', '영업시간', '메뉴']};
+
+    context.dialog.날짜입력최초 = undefined;
+    context.dialog.시간입력최초 = undefined;
+    context.dialog.인원선택최초 = undefined;
 
     if(context.botUser.isOwner) {
       reserveCheck.action(task, context, function(_task, context) {
@@ -122,22 +126,25 @@ function daumgeoCode (task, context, callback) {
 }
 exports.daumgeoCode = daumgeoCode;
 
-function numOfPersonTypeCheck(inRaw, inNLP, inDoc, context, callback) {
-  var num = type.parseNumber(inRaw);
-  if(num != inRaw) {
+function numOfPersonTypeCheck(inRaw, _type, inDoc, context, callback) {
+  var re;
+  if(_type.init) re = /(\d)\s*명/g;
+  else re = /(\d)(?:\s*명)?/g;
+
+  var matched = inRaw.match(re);
+  if(matched != null) {
     try {
-      context.dialog.numOfPerson = parseInt(num);
+      context.dialog.numOfPerson = parseInt(matched[0]);
       callback(inRaw, inDoc, true);
     } catch(e) {
       console.log(e);
       callback(inRaw, inDoc, false);
     }
   } else {
-    var re = /(\d)/g;
-    var matched = inRaw.match(re);
-    if(matched != null) {
+    var num = type.parseNumber(inRaw);
+    if(num != inRaw) {
       try {
-        context.dialog.numOfPerson = parseInt(matched[0]);
+        context.dialog.numOfPerson = parseInt(num);
         callback(inRaw, inDoc, true);
       } catch(e) {
         console.log(e);
@@ -515,17 +522,17 @@ exports.menuType = menuType;
 
 var menuTask = {
   action: function (task, context, callback) {
-    var menus = task.typeDoc;
-    var items = [];
-    for(var i = 0; i < menus.length; i++) {
-      items.push({
-        title: menus[i].name,
-        text: menus[i].price + '원',
-        imageUrl: menus[i].image, buttons: [{input: menus[i].name, text: '상세보기'}]
-      });
-    }
-
-    if(items.length > 0) task.result = {items: items};
+    context.dialog.menus = task.typeDoc;
+    // var items = [];
+    // for(var i = 0; i < menus.length; i++) {
+    //   items.push({
+    //     title: menus[i].name,
+    //     text: menus[i].price + '원',
+    //     imageUrl: menus[i].image, buttons: [{input: menus[i].name, text: '상세보기'}]
+    //   });
+    // }
+    //
+    // if(items.length > 0) task.result = {items: items};
 
     callback(task, context);
   }
@@ -535,6 +542,14 @@ bot.setTask('menuTask', menuTask);
 
 
 function menuCategoryAction(task, context, callback) {
+  if(context.bot.menuImage) {
+    task.result = {
+      image: {url: context.bot.menuImage},
+      buttons: [
+        {text: '메뉴판 사진 보기', url: context.bot.menuImage}
+      ]
+    };
+  }
   var model, query, sort;
 
   model = mongoose.model('TemplateMenu');
@@ -571,11 +586,44 @@ function menuCategoryAction(task, context, callback) {
       }
 
       task.doc = categorys;
-      context.dialog.category = categorys;
+      context.dialog.categorys = categorys;
       callback(task, context);
     }
   });
 }
 
+
 exports.menuCategoryAction = menuCategoryAction;
 
+function menuAction(task, context, callback) {
+  var model, query, sort;
+
+  model = mongoose.model('TemplateMenu');
+  query = {upTemplateId: context.bot.templateDataId,
+    category: context.dialog.category.name};
+  sort = {'_id': +1};
+
+  model.find(query).limit(type.MAX_LIST).sort(sort).lean().exec(function(err, docs) {
+    task.doc = docs;
+    context.dialog.menus = docs;
+    callback(task, context);
+  });
+}
+
+exports.menuAction = menuAction;
+
+var menuDetailTask = {
+  action: function(task, context, callback) {
+    if(context.dialog.menu.image) {
+      task.result = {
+        image: {url: context.dialog.menu.image},
+        buttons: [
+          {text: '사진보기', url: context.dialog.menu.image}
+        ]
+      };
+    }
+    callback(task, context);
+  }
+};
+
+exports.menuDetailTask = menuDetailTask;
