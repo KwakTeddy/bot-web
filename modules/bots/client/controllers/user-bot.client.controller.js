@@ -113,10 +113,10 @@ if (_platform !== 'mobile'){
         $scope.channel = channel;
         $scope.method = method;
         $scope.userBotId = vm.userBot.id;
+        $scope.host = location.protocol + "//" + location.host;
 
         if ((channel == 'facebook') && (method !== 'easy')){
           FB.api('/me/accounts?fields=picture,name,link,access_token,perms', function(response) {
-            console.log(response);
             if (response.error && (response.error.code == 2500)){
               var url = '/api/auth/facebook/page';
               // if ($state.previous && $state.previous.href) {
