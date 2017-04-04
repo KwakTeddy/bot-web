@@ -10,6 +10,7 @@ var path = require('path'),
   UserBotDialog = mongoose.model('UserBotDialog'),
   UserBotFile = mongoose.model('UserBotFile'),
   UserBotFollow = mongoose.model('UserBotFollow'),
+  UserBotFbPage = mongoose.model('UserBotFbPage'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   config = require(path.resolve('./config/config')),
   _ = require('lodash'),
@@ -390,6 +391,51 @@ exports.unfollowBot = function(req, res) {
     }
   });
 };
+
+
+
+/**
+ * Facebook Subscribe Page Information
+ */
+exports.facebookPage = function (req, res) {
+  console.log(util.inspect(req.body))
+  UserBotFbPage.findOne({user : req.body.user, pageId : req.body.page.id}, function (err, data) {
+      if(err){
+          console.log(err);
+      }else {
+          if (data){
+              data.accessToken = req.body.page.access_token;
+              data.userBot = req.body.userBot;
+              data.userBotId = req.body.userBotId;
+              data.save(function (err) {
+                  if (err){
+                    console.log(err);
+                  }
+              })
+          }else {
+            var info = {};
+            info['picture'] = req.body.page.picture.data.url;
+            info['name'] = req.body.page.name;
+            info['link'] = req.body.page.link;
+            info['accessToken'] = req.body.page.access_token;
+            info['pageId'] = req.body.page.id;
+            info['user'] = req.body.user;
+            info['userBot'] = req.body.userBot;
+            info['userBotId'] = req.body.userBotId;
+            console.info(util.inspect(info));
+            var userBotFbPage = new UserBotFbPage(info);
+            userBotFbPage.save(function (err) {
+                if (err){
+                  console.log(err);
+                }
+            })
+
+          }
+      }
+
+  })
+};
+
 
 
 /**

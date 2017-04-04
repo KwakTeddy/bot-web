@@ -193,3 +193,4 @@ var UserBotDialogSchema = new Schema({
 });
 
 mongoose.model('UserBotDialog', UserBotDialogSchema);
+

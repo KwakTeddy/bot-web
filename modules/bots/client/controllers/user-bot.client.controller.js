@@ -117,10 +117,10 @@ if (_platform !== 'mobile'){
 
               // Effectively call OAuth authentication route:
                 console.log(url);
-              $window.location.href = url;
+              // $window.location.href = url;
             } else {
-              $scope.pageList = [];
-              $scope.pageList = response.data;
+              $scope.pageLists = [];
+              $scope.pageLists = response.data;
             }
           });
         }
@@ -131,11 +131,21 @@ if (_platform !== 'mobile'){
           modalInstance.dismiss();
           console.log(page);
           FB.api('me/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
-            console.log(response)
+            console.log(response);
+            if(response){
+              var info = {};
+              info['user'] = vm.user._id;
+              info['userBot'] = vm.userBot._id;
+              info['userBotId'] = vm.userBot.id;
+              info['page'] = page;
+              console.log(info);
+              $http.post('/api/auth/facebook/pageInfo', info, function (err) {
+                  if(err) {
+                      console.log(err)
+                  }
+              });
+            }
           });
-          // FB.api('240853479709635/subscriptions', 'post', {object: 'page', callback_url: '/api/facebook/'+ '123' +'/webhook', verify_token: 'moneybrain_token'}, function (response) {
-          //   console.log(response)
-          // })
         };
         var modalInstance = $uibModal.open({
           templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',

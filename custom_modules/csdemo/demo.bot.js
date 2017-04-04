@@ -5,7 +5,7 @@ var csdemoBot = {
   use: true,
   useAutoCorrection: true,
 
-  nmae: '고객센터봇',
+  name: '고객센터봇',
   serviceName: 'CS Demo',
   serviceNick: 'CS Demo',
 

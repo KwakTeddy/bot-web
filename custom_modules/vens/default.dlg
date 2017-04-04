@@ -63,6 +63,7 @@
 >김진우 대표로 현재 명조채널 특별MC입니다.
 
 <멀다 브레인 대표
+<브레인 대표
 {
  action: function(task, context, callback) {
    task.result = {

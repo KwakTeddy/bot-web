@@ -205,3 +205,38 @@ var BotDialogSchema = new Schema({
 });
 
 mongoose.model('BotDialog', BotDialogSchema);
+
+var UserBotFbPageSchema = new Schema({
+    userBot: {
+        type: Schema.ObjectId,
+        ref: 'UserBot'
+    },
+    userBotId: {
+        type: String
+    },
+    user: {
+        type: Schema.ObjectId,
+        ref: 'User'
+    },
+    pageId: {
+        type: String
+    },
+    accessToken: {
+        type: String
+    },
+    link: {
+        type: String
+    },
+    name: {
+        type: String
+    },
+    picture: {
+        type: String
+    },
+    created: {
+        type: Date,
+        default: Date.now
+    }
+});
+
+mongoose.model('UserBotFbPage', UserBotFbPageSchema);

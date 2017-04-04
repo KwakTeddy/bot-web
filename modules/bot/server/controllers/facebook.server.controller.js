@@ -4,6 +4,12 @@ var path = require('path');
 var chat = require(path.resolve('modules/bot/server/controllers/bot.server.controller'));
 var contextModule = require(path.resolve('modules/bot/engine/common/context'));
 var util =require('util'); //temporary
+var subscribe = ''; //temporary
+var subscribePageToken = ''; //temporary
+var mongoose = require('mongoose');
+var UserBotFbPage = mongoose.model('UserBotFbPage');
+
+
 // var APP_SECRET =  "174b2a851e3811c3f2c267d46708d212";
 // var PAGE_ACCESS_TOKEN =  "EAAYwPrsj1ZA0BAORAoGhxvLLs5eRZADJ8BheTdjOXu8lT0X2tVFwZAZCEJiWFenFHCVqSuctfONET6dhbPDBnlivq5sXEvBABTnRlYpX8hLxZAnO2lywRiA6sVlbYAvG1n1EpQwkVhZAdrmq1p9PlQRUu327O1ohcZBwVLYZCn3beQZDZD";
 // var VALIDATION_TOKEN = "my_voice_is_my_password_verify_me";
@@ -44,6 +50,8 @@ exports.messageGet =  function(req, res) {
 exports.message = function (req, res) {
   if (req.params.bot == "subscribeBot"){
       console.log(util.inspect(res.body));
+      subscribe = true;
+      subscribePageToken = ''
       var data = req.body;
       // Make sure this is a page subscription
       if (data.object == 'page') {
@@ -132,7 +140,11 @@ function respondMessage(to, text, botId, task) {
   contextModule.getContext(botId, 'facebook', to, function(context) {
     var bot = context.botUser.orgBot || context.bot;
 
-    callSendAPI(messageData, bot.facebook.PAGE_ACCESS_TOKEN);
+    if (subscribe){
+        callSendAPI(messageData, subscribePageToken);
+    }else {
+        callSendAPI(messageData, bot.facebook.PAGE_ACCESS_TOKEN);
+    }
   });
 
 
@@ -251,22 +263,29 @@ function receivedMessage(event) {
   console.log(util.inspect(global._bots));
 
   if (event.botId == "subscribeBot"){
-    event.botId = "order";
-      contextModule.getContext(event.botId, 'facebook', senderID, function(context) {
-          //console.log('receivedMessage: ', event);
+      UserBotFbPage.findOne({pageId: event.recipient.id}, function (err, data) {
+          if (err){
+              console.log(err);
+          }else {
+              subscribePageToken = data.accessToken;
+              event.botId = data.userBotId;
+              contextModule.getContext(event.botId, 'facebook', senderID, function(context) {
+                  //console.log('receivedMessage: ', event);
 
-          var bot = context.botUser.orgBot || context.bot;
-          if(true) {
-          // if(recipientID == bot.facebook.id) {
-              console.log('2 senderID: ' + senderID + ', recipientID: ' + recipientID);
+                  var bot = context.botUser.orgBot || context.bot;
+                  if(true) {
+                      // if(recipientID == bot.facebook.id) {
+                      console.log('2 senderID: ' + senderID + ', recipientID: ' + recipientID);
 
-              var messageId = message.mid;
-              var messageText = message.text;
-              var messageAttachments = message.attachments;
+                      var messageId = message.mid;
+                      var messageText = message.text;
+                      var messageAttachments = message.attachments;
 
-              chat.write('facebook', senderID, event.botId, messageText, function (retText, task) {
-                  console.log('this is write');
-                  respondMessage(senderID, retText, event.botId, task);
+                      chat.write('facebook', senderID, event.botId, messageText, function (retText, task) {
+                          console.log('this is write');
+                          respondMessage(senderID, retText, event.botId, task);
+                      });
+                  }
               });
           }
       });
