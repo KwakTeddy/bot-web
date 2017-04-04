@@ -42,39 +42,80 @@ exports.messageGet =  function(req, res) {
 
 
 exports.message = function (req, res) {
-  console.log(util.inspect(res.body));
-  var data = req.body;
-  // Make sure this is a page subscription
-  if (data.object == 'page') {
-    // Iterate over each entry
-    // There may be multiple if batched
-    data.entry.forEach(function(pageEntry) {
-      var pageID = pageEntry.id;
-      var timeOfEvent = pageEntry.time;
+  if (req.params.bot == "subscribeBot"){
+      console.log(util.inspect(res.body));
+      req.params.bot = 'athena';
+      var data = req.body;
+      // Make sure this is a page subscription
+      if (data.object == 'page') {
+          // Iterate over each entry
+          // There may be multiple if batched
+          data.entry.forEach(function(pageEntry) {
+            console.log(pageEntry.id);
+            console.log(pageEntry.time);
+            console.log(pageEntry.messaging);
+              var pageID = pageEntry.id;
+              var timeOfEvent = pageEntry.time;
 
-      // Iterate over each messaging event
-      pageEntry.messaging.forEach(function(messagingEvent) {
-        messagingEvent.botId = req.params.bot;
+              // Iterate over each messaging event
+              pageEntry.messaging.forEach(function(messagingEvent) {
+                  messagingEvent.botId = req.params.bot;
 
-        if (messagingEvent.optin) {
-          receivedAuthentication(messagingEvent);
-        } else if (messagingEvent.message) {
-          receivedMessage(messagingEvent);
-        } else if (messagingEvent.delivery) {
-          receivedDeliveryConfirmation(messagingEvent);
-        } else if (messagingEvent.postback) {
-          receivedPostback(messagingEvent);
-        } else {
-          // console.log("Webhook received unknown messagingEvent: ", messagingEvent);
-        }
-      });
-    });
+                  if (messagingEvent.optin) {
+                      receivedAuthentication(messagingEvent);
+                  } else if (messagingEvent.message) {
+                      receivedMessage(messagingEvent);
+                  } else if (messagingEvent.delivery) {
+                      receivedDeliveryConfirmation(messagingEvent);
+                  } else if (messagingEvent.postback) {
+                      receivedPostback(messagingEvent);
+                  } else {
+                      // console.log("Webhook received unknown messagingEvent: ", messagingEvent);
+                  }
+              });
+          });
 
-    // Assume all went well.
-    //
-    // You must send back a 200, within 20 seconds, to let us know you've
-    // successfully received the callback. Otherwise, the request will time out.
-    res.sendStatus(200);
+          // Assume all went well.
+          //
+          // You must send back a 200, within 20 seconds, to let us know you've
+          // successfully received the callback. Otherwise, the request will time out.
+          res.sendStatus(200);
+      }
+  }else {
+      console.log(util.inspect(res.body));
+      var data = req.body;
+      // Make sure this is a page subscription
+      if (data.object == 'page') {
+          // Iterate over each entry
+          // There may be multiple if batched
+          data.entry.forEach(function(pageEntry) {
+              var pageID = pageEntry.id;
+              var timeOfEvent = pageEntry.time;
+
+              // Iterate over each messaging event
+              pageEntry.messaging.forEach(function(messagingEvent) {
+                  messagingEvent.botId = req.params.bot;
+
+                  if (messagingEvent.optin) {
+                      receivedAuthentication(messagingEvent);
+                  } else if (messagingEvent.message) {
+                      receivedMessage(messagingEvent);
+                  } else if (messagingEvent.delivery) {
+                      receivedDeliveryConfirmation(messagingEvent);
+                  } else if (messagingEvent.postback) {
+                      receivedPostback(messagingEvent);
+                  } else {
+                      // console.log("Webhook received unknown messagingEvent: ", messagingEvent);
+                  }
+              });
+          });
+
+          // Assume all went well.
+          //
+          // You must send back a 200, within 20 seconds, to let us know you've
+          // successfully received the callback. Otherwise, the request will time out.
+          res.sendStatus(200);
+      }
   }
 };
 
