@@ -293,19 +293,31 @@ function loadBot(botName, callback) {
     },
 
     function(cb) {
-      bot.setDialogs(globalDialogs.globalEndDialogs);
+      if(bot && bot.template && global._templates[bot.template.id]) {
+        var template = global._templates[bot.template.id];
+        if(template.loaded == undefined) {
+          template.loaded = true;
+        }
+
+        utils.merge(bot, template);
+
+        bot.commonDialogs =bot.commonDialogs.concat(template.commonDialogs);
+        bot.dialogs = bot.dialogs.concat(template.dialogs);
+        utils.merge(bot.tasks, template.tasks);
+        utils.merge(bot.actions , template.actions );
+        utils.merge(bot.types, template.types);
+        utils.merge(bot.typeChecks, template.typeChecks);
+        utils.merge(bot.concepts, template.concepts);
+        utils.merge(bot.messages, template.messages);
+        utils.merge(bot.patterns, template.patterns);
+        bot.dialogsets = bot.dialogsets.concat(template.dialogsets);
+      }
+
       cb(null);
     },
 
     function(cb) {
-      if(bot && bot.template && global._templates[bot.template.id]) {
-        if(global._templates[bot.template.id].loaded == undefined) {
-          global._templates[bot.template.id].loaded = true;
-        }
-
-        utils.merge(bot, global._templates[bot.template.id], true);
-      }
-
+      bot.setDialogs(globalDialogs.globalEndDialogs);
       cb(null);
     }
 
