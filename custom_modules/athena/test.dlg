@@ -251,11 +251,21 @@ var first = /(?:~시작|~처음|^!$|취소)/
 </([^\b]*)(?:\b|\s).*(검색|찾다)/
 googletask.googlesearchtask
 >#result#+index+. +title+\n#
+    <{types: [{name: 'result', listName: 'result', typeCheck: 'listTypeCheck'}]}
+    {action: function (task,context,callback) {
+        task.url = context.dialog.result.url;
+        task.urlMessage = '결과보기';
+        console.log('=======' + context.dialog.result.snippet);
+        callback(task,context);
+    }}
+    >+result.title+\n+result.snippet+\n+url+
 
 쇼핑:
 </([^\b]*)(?:\b|\s).*(사다|필요하다|쇼핑|얼마|가격)/
 {action: navertask.navershopping}
-> 검색결과가 존재하지 않습니다.
+>#item#+index+. +title+\n+lprice+\n#
+    <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
+    >+item.title+\n+item.lprice+ ~ +item.hprice+\n+item.url+
 
 주변검색둘:
 < {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}]}
