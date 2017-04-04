@@ -245,6 +245,7 @@ function receivedMessage(event) {
           }
       });
   }else {
+      console.info('comein');
       if(recipientID == global._bots[event.botId].facebook.id) {
           contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
               //console.log('receivedMessage: ', event);
