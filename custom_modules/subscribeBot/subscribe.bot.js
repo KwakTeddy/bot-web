@@ -9,7 +9,7 @@ var subscribeBot = {
   serviceNick: '페이스북 페이지',
   facebook: {
       VALIDATION_TOKEN : "moneybrain_token"
-  },
+  }
 };
 
 botlib.makeBot('subscribeBot', subscribeBot);
