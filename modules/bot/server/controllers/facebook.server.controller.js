@@ -44,7 +44,10 @@ exports.messageGet =  function(req, res) {
 exports.message = function (req, res) {
   if (req.params.bot == "subscribeBot"){
       console.log(util.inspect(res.body));
-      req.params.bot = 'athena';
+
+      req.params.bot = 'order';
+
+
       var data = req.body;
       // Make sure this is a page subscription
       if (data.object == 'page') {
