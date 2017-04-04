@@ -9,6 +9,7 @@ var mongoose = require('mongoose');
 var request = require('request');
 var _ = require('lodash');
 var globals = require(path.resolve('modules/bot/engine/common/globals'));
+var config = require(path.resolve('./config/config'));
 
 var startTask = {
   action: function (task, context, callback) {
@@ -53,12 +54,15 @@ exports.mapTask = {
 
 exports.menuImageTask = {
   action: function(task, context, callback) {
-    task.result = {
-      image: {url: context.bot.menuImage},
-      buttons: [
-        {text: '자세히보기', url: context.bot.menuImage}
-      ]
-    };
+    if(context.bot.menuImage) {
+      var img = context.bot.menuImage.startsWith('http') ? context.bot.menuImage : config.host + context.bot.menuImage;
+      task.result = {
+        image: {url: img},
+        buttons: [
+          {text: '자세히보기', url: img}
+        ]
+      };
+    }
     callback(task, context);
   }
 };
@@ -283,7 +287,7 @@ function reserveRequest(task, context, callback) {
       randomNum += '' + Math.floor(Math.random() * 10);
       randomNum += '' + Math.floor(Math.random() * 10);
 
-      var url = 'http://192.168.1.78:8443/mobile#/chat/' + context.bot.id + '?authKey=' + randomNum;
+      var url = config.host + '/mobile#/chat/' + context.bot.id + '?authKey=' + randomNum;
       context.bot.authKey = randomNum;
 
       var query = {url: url};
@@ -609,10 +613,11 @@ globals.setGlobalTask('menuTask', menuTask);
 
 function menuCategoryAction(task, context, callback) {
   if(context.bot.menuImage) {
+    var img = context.bot.menuImage.startsWith('http') ? context.bot.menuImage : config.host + context.bot.menuImage;
     task.result = {
-      image: {url: context.bot.menuImage},
+      image: {url: img},
       buttons: [
-        {text: '메뉴판 사진 보기', url: context.bot.menuImage}
+        {text: '메뉴판 사진 보기', url: img}
       ]
     };
   }
@@ -684,7 +689,8 @@ var menuDetailTask = {
       task.result = {
         image: {url: context.dialog.menu.image},
         buttons: [
-          {text: '사진보기', url: context.dialog.menu.image}
+          {text: '사진보기',
+            url: context.dialog.menu.image.startsWith('http') ? context.dialog.menu.image : config.host + context.dialog.menu.image}
         ]
       };
     }
