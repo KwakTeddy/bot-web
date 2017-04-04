@@ -263,9 +263,10 @@ googletask.googlesearchtask
 쇼핑:
 </([^\b]*)(?:\b|\s).*(사다|필요하다|쇼핑|얼마|가격)/
 {action: navertask.navershopping}
->#item#+index+. +title+\n+lprice+\n#
+>if (context.dialog.item.length !=0) #item#+index+. +title+\n+lprice+\n#
     <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
     >+item.title+\n+item.lprice+ ~ +item.hprice+\n+item.url+
+> 검색결과가 없습니다.
 
 주변검색둘:
 < {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}]}
