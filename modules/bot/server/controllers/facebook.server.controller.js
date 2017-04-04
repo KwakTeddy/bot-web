@@ -23,6 +23,7 @@ var util =require('util'); //temporary
 exports.messageGet =  function(req, res) {
     console.info(req.params.bot);
   contextModule.getContext(req.params.bot, 'facebook', null, null, function(context) {
+      console.log(util.inspect(context));
       // console.log(req.query['hub.mode'] + ', ' + req.query['hub.verify_token'] + ',' + context.bot.facebook.VALIDATION_TOKEN );
       var bot = context.botUser.orgBot || context.bot;
       if (req.query['hub.mode'] === 'subscribe' &&
