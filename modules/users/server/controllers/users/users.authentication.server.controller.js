@@ -169,52 +169,54 @@ exports.signup = function (req, res) {
  */
 exports.signin = function (req, res, next) {
 
-    // var path = require('path');
-    // var java = require('java');
-    // var request = require('request');
-    // var util = require('util');
+    // var soap = require('soap');
+    // var parseString = require('xml2js').parseString;
     //
-    // java.classpath.push(path.resolve(__dirname, '../../../../../external_modules/hmac_sdk/commons-codec-1.10.jar'));
-    // java.classpath.push(path.resolve(__dirname, '../../../../../external_modules/hmac_sdk/openapi-hmac-sdk-1.0.jar'));
     //
-    // var Hmac = java.import("com.coupang.openapi.sdk.Hmac");
     //
-    // var accessKey = "179e9a30-3bc7-4e40-a066-5dd311b544d3";
-    // var secretKey = "ce09d7771155f54f81bf6f1c0df3803f70d1fe7b";
-    // var host = "https://api-gateway.coupang.com";
-    // var uri = "/api/v1/marketplace/seller-products/33541225";
-    // var method = "get";
     //
-    // var key = Hmac.generateSync(method, uri, secretKey, accessKey);
-    // console.log(key);
-    // console.log(11233);
-    //
-    // request({
-    //     url: 'https://api-gateway.coupang.com/targets/wing/seller_api/apis/api/v1/marketplace/seller-products/33541225',
-    //     method: 'GET',
-    //     headers: {
-    //         'Authorization': key.signature
+    // var url = 'http://api.auction.co.kr/APIv1/ShoppingService.asmx?WSDL';
+    // // var args =    { memberTicket: {
+    // //     Ticket: [ { _: 'd059cAnBM8CAttVPwnG8DGxUelcAHmK8O7e4gWEtyXvVxOEWwqHK6Y1VecEOK7NCZR+zNvTMc1+hSIZ3icRx+xjzbnuicwi6CS95md6w6tHUInd5soGzW9VV0STOjM75t1x7C4p5oO+2Si6jdhBVB6BeZJ/IyV4mKDt/UzHhFCnyIpyVLOu9I46oSkIa5qGADhSkw8NoN/Yp/OZyDDlrUhg=',
+    // //     '$': { xmlns: 'http://schema.auction.co.kr/Arche.APISvc.xsd' } } ]
+    // // }  };
+    // var args = {};
+    // args = {
+    //     "req": {
+    //         "_SeqNo": "long",
+    //         "_Value": 1,
+    //         "_SeqNo2": "long",
+    //         "_Value2": 22
     //     },
-    //     qs: {sellerProductId: '33541225'}
-    // }, function (error, response, body) {
-    //     console.log(error);
-    //     // console.log(util.inspect(response));
-    //     console.log(body);
-    //     if (!error && response.statusCode == 200) {
-    //         // console.log(body);
-    //         var doc = JSON.parse(body);
-    //         // task._doc.lng = doc.channel.item[0].lng;
-    //         // task._doc.lat = doc.channel.item[0].lat;
-    //         // task._doc.link_find = 'http://map.daum.net/link/to/' + query.q + ',' + task._doc.lat + ',' + task._doc.lng;
-    //         task._doc.link_map = 'http://map.daum.net/link/map/' + context.user.center.svc_center_name + ',' + context.user.center.lat + ',' + context.user.center.lng;
-    //         // console.log('lat: ' + task._doc.lat + ', lng: ' + task._doc.lng);
-    //         // console.log('link: ' + task._doc.link_find);
-    //         // console.log('link: ' + task._doc.link_map);
-    //
-    //         task.url = task._doc.link_map;
-    //         task.urlMessage = '지도에서 위치보기';
     //     }
     //
+    //     // var args = { req: { EncryptedTicket: { Value: 'd059cAnBM8CAttVPwnG8DGxUelcAHmK8O7e4gWEtyXvVxOEWwqHK6Y1VecEOK7NCZR+zNvTMc1+hSIZ3icRx+xjzbnuicwi6CS95md6w6tHUInd5soGzW9VV0STOjM75t1x7C4p5oO+2Si6jdhBVB6BeZJ/IyV4mKDt/UzHhFCnyIpyVLOu9I46oSkIa5qGADhSkw8NoN/Yp/OZyDDlrUhg='}}};
+    // // var args = '<req><MemberTicket xmlns="http://schema.auction.co.kr/Arche.APISvc.xsd"><Ticket>d2GjGEpFMpvg11Y6pi0j/ZfPk8DQlm/luURs8mAQTyocRWcJt83xMKeeokssVwxtIO6urCfjekPTH9CAqsgyu+2fTsW8gpGsSvR+wEDROS+SOUBZsJWxhj2c7BTSL1tGh4ddLEFSGVwvYt//rOutg7r70oL7CsWMkk2v8lPrDeQkUegdqL+WZ+m3ouIJVWwgjBrTd49GVurbWLNJ+Ydqi48=</Ticket></MemberTicket></req>';
+    // var soapHeader = '<EncryptedTicket xmlns="http://www.auction.co.kr/Security"><Value>d059cAnBM8CAttVPwnG8DGxUelcAHmK8O7e4gWEtyXvVxOEWwqHK6Y1VecEOK7NCZR+zNvTMc1+hSIZ3icRx+xjzbnuicwi6CS95md6w6tHUInd5soGzW9VV0STOjM75t1x7C4p5oO+2Si6jdhBVB6BeZJ/IyV4mKDt/UzHhFCnyIpyVLOu9I46oSkIa5qGADhSkw8NoN/Yp/OZyDDlrUhg=</Value></EncryptedTicket>';
+    // // var soapHeader = { EncryptedTicket:
+    // //         { '$': { xmlns: 'http://www.auction.co.kr/Security' },
+    // //             Value: [ 'd059cAnBM8CAttVPwnG8DGxUelcAHmK8O7e4gWEtyXvVxOEWwqHK6Y1VecEOK7NCZR+zNvTMc1+hSIZ3icRx+xjzbnuicwi6CS95md6w6tHUInd5soGzW9VV0STOjM75t1x7C4p5oO+2Si6jdhBVB6BeZJ/IyV4mKDt/UzHhFCnyIpyVLOu9I46oSkIa5qGADhSkw8NoN/Yp/OZyDDlrUhg=' ] } }
+    // // var soapHeader = {EncryptedTicket : { Value : 'd2GjGEpFMpvg11Y6pi0j/ZfPk8DQlm/luURs8mAQTyocRWcJt83xMKeeokssVwxtIO6urCfjekPTH9CAqsgyu+2fTsW8gpGsSvR+wEDROS+SOUBZsJWxhj2c7BTSL1tGh4ddLEFSGVwvYt//rOutg7r70oL7CsWMkk2v8lPrDeQkUegdqL+WZ+m3ouIJVWwgjBrTd49GVurbWLNJ+Ydqi48='}};
+    // // var test = '<EncryptedTicket xmlns="http://www.auction.co.kr/Security"><Value>d059cAnBM8CAttVPwnG8DGxUelcAHmK8O7e4gWEtyXvVxOEWwqHK6Y1VecEOK7NCZR+zNvTMc1+hSIZ3icRx+xjzbnuicwi6CS95md6w6tHUInd5soGzW9VV0STOjM75t1x7C4p5oO+2Si6jdhBVB6BeZJ/IyV4mKDt/UzHhFCnyIpyVLOu9I46oSkIa5qGADhSkw8NoN/Yp/OZyDDlrUhg=</Value></EncryptedTicket>'
+    // // var test = '<Content xmlns="http://schema.auction.co.kr/Arche.APISvc.xsd">string</Content>'
+    // // parseString(test, function (err, data) {
+    // //     console.log(util.inspect(data))
+    // //     console.log(util.inspect(data.req.Content))
+    // // })
+    //
+    // soap.createClient(url, function(err, client) {
+    //     // client.addSoapHeader(soapHeader, '', '', 'http://www.auction.co.kr/Security');
+    //     client.addSoapHeader(soapHeader);
+    //     // console.log(util.inspect(client.describe()));
+    //     // console.log(util.inspect(client.describe().AuctionService.AuctionServiceSoap.GetMyAccount));
+    //     // console.log(util.inspect(client.describe().AuctionService.AuctionServiceSoap.GetMyAccount.input.req.MemberTicket));
+    //     console.log(util.inspect(client.describe().ShoppingService.ShoppingServiceSoap.TestDTC1));
+    //     console.log(util.inspect(client.describe().ShoppingService.ShoppingServiceSoap.TestDTC1.input.req.Content));
+    //     client.ShoppingService.ShoppingServiceSoap.TestDTC1(args, function(err, result) {
+    //         // console.log(util.inspect(err))
+    //         console.log(util.inspect(result))
+    //         // console.log(util.inspect(result.GetMyAccountResult.MyAccount.attributes))
+    //     });
     // });
 
 
@@ -308,7 +310,6 @@ exports.signin = function (req, res, next) {
  */
 exports.signout = function (req, res) {
   // req.logout();
-    console.log(123);
   req.session.destroy();
 
   if(req.query['path']) res.redirect(req.query['path']);
@@ -412,7 +413,6 @@ exports.saveOAuthUserProfile = function (req, providerUserProfile, done) {
         } else {
           // Check if user exists, is not signed in using this provider, and doesn't have that provider data already configured
           if (user.provider !== providerUserProfile.provider && (!user.additionalProvidersData || !user.additionalProvidersData[providerUserProfile.provider])) {
-              console.log(45555);
               // Add the provider data to the additional provider data field
               if (!user.additionalProvidersData) {
                   user.additionalProvidersData = {};

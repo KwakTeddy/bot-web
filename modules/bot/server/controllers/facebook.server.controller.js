@@ -53,7 +53,7 @@ exports.message = function (req, res) {
           data.entry.forEach(function(pageEntry) {
             console.log(pageEntry.id);
             console.log(pageEntry.time);
-            console.log(pageEntry.messaging);
+            console.log(util.inspect(pageEntry.messaging));
               var pageID = pageEntry.id;
               var timeOfEvent = pageEntry.time;
 
@@ -248,6 +248,7 @@ function receivedMessage(event) {
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
   var message = event.message;
+  console.log(util.inspect(event.botId));
 
   if(recipientID == global._bots[event.botId].facebook.id) {
     console.log('ininininin');

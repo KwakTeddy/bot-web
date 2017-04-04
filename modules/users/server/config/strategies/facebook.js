@@ -18,6 +18,8 @@ module.exports = function (config) {
   },
   function (req, accessToken, refreshToken, profile, done) {
     // Set the provider data and include tokens
+      console.log(accessToken);
+      console.log(refreshToken);
     var providerData = profile._json;
     providerData.accessToken = accessToken;
     providerData.refreshToken = refreshToken;

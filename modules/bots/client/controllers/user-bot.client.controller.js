@@ -105,20 +105,23 @@ if (_platform !== 'mobile'){
         $scope.userBotId = vm.userBot.id;
 
         if ((channel == 'facebook') && (method !== 'easy')){
-          // FB.api('/me/accounts?fields=picture,name,link,access_token', function(response) {
-          //   console.log(response);
-          //   if (response.error && (response.error.code == 2500)){
-          //     var url = '/api/auth/facebook/page';
-          //     if ($state.previous && $state.previous.href) {
-          //         url += '?redirect_to=' + encodeURIComponent($state.previous.href);
-          //     }
-          //     // Effectively call OAuth authentication route:
-          //       console.log(url);
-          //     $window.location.href = url;
-          //   }
-          //   $scope.pageList = [];
-          //   $scope.pageList = response.data;
-          // });
+
+          FB.api('/me/accounts?fields=picture,name,link,access_token', function(response) {
+            console.log(response);
+            if (response.error && (response.error.code == 2500)){
+              var url = '/api/auth/facebook/page';
+              if ($state.previous && $state.previous.href) {
+                  url += '?redirect_to=' + encodeURIComponent($state.previous.href);
+              }
+
+              // Effectively call OAuth authentication route:
+                console.log(url);
+              $window.location.href = url;
+            } else {
+              $scope.pageList = [];
+              $scope.pageList = response.data;
+            }
+          });
         }
         $scope.close = function () {
           modalInstance.dismiss();
@@ -129,9 +132,9 @@ if (_platform !== 'mobile'){
           FB.api('me/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
             console.log(response)
           });
-          FB.api('240853479709635/subscriptions', 'post', {object: 'page', callback_url: '/api/facebook/'+ '123' +'/webhook', verify_token: 'moneybrain_token'}, function (response) {
-            console.log(response)
-          })
+          // FB.api('240853479709635/subscriptions', 'post', {object: 'page', callback_url: '/api/facebook/'+ '123' +'/webhook', verify_token: 'moneybrain_token'}, function (response) {
+          //   console.log(response)
+          // })
         };
         var modalInstance = $uibModal.open({
           templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',

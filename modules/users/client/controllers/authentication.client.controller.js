@@ -121,7 +121,6 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
     };
 
     $scope.signin = function (isValid) {
-        $cookies.put('email', $scope.credentials.email);
         $scope.error = null;
       $scope.submitted = true;
 
