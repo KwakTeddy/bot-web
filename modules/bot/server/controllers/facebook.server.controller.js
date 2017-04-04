@@ -251,7 +251,7 @@ function receivedMessage(event) {
   console.log(util.inspect(global._bots));
 
   if (event.botId == "subscribeBot"){
-    event.botId == "order";
+    event.botId = "order";
       contextModule.getContext(event.botId, 'facebook', senderID, function(context) {
           //console.log('receivedMessage: ', event);
 
@@ -265,7 +265,7 @@ function receivedMessage(event) {
               var messageAttachments = message.attachments;
 
               chat.write('facebook', senderID, event.botId, messageText, function (retText, task) {
-                  console.log('this is write')
+                  console.log('this is write');
                   respondMessage(senderID, retText, event.botId, task);
               });
           }
