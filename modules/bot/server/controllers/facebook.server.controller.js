@@ -14,25 +14,35 @@ var util =require('util'); //temporary
 
 
 exports.messageGet =  function(req, res) {
-  contextModule.getContext(req.params.bot, 'facebook', null, function(context) {
-    // console.log(req.query['hub.mode'] + ', ' + req.query['hub.verify_token'] + ',' + context.bot.facebook.VALIDATION_TOKEN );
+  if (req.params.bot == 'subscribeBot'){
+      if (req.query['hub.mode'] === 'subscribe' &&
+          req.query['hub.verify_token'] === bot.facebook.VALIDATION_TOKEN) {
+          console.log("Validating webhook");
+          res.status(200).send(req.query['hub.challenge']);
+      } else {
+          console.error("Failed validation. Make sure the validation tokens match.");
+          res.sendStatus(403);
+      }
+  }else {
+      contextModule.getContext(req.params.bot, 'facebook', null, function(context) {
+          // console.log(req.query['hub.mode'] + ', ' + req.query['hub.verify_token'] + ',' + context.bot.facebook.VALIDATION_TOKEN );
 
-    var bot = context.botUser.orgBot || context.bot;
-    if (req.query['hub.mode'] === 'subscribe' &&
-      req.query['hub.verify_token'] === bot.facebook.VALIDATION_TOKEN) {
-      console.log("Validating webhook");
-      res.status(200).send(req.query['hub.challenge']);
-    } else {
-      console.error("Failed validation. Make sure the validation tokens match.");
-      res.sendStatus(403);
-    }
-  });
+          var bot = context.botUser.orgBot || context.bot;
+          if (req.query['hub.mode'] === 'subscribe' &&
+              req.query['hub.verify_token'] === bot.facebook.VALIDATION_TOKEN) {
+              console.log("Validating webhook");
+              res.status(200).send(req.query['hub.challenge']);
+          } else {
+              console.error("Failed validation. Make sure the validation tokens match.");
+              res.sendStatus(403);
+          }
+      });
+  }
 };
 
 
 exports.message = function (req, res) {
   console.log(util.inspect(res.body));
-  console.log(res.params.bot);
   var data = req.body;
   // Make sure this is a page subscription
   if (data.object == 'page') {
