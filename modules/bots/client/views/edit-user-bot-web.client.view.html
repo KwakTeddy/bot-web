@@ -337,13 +337,14 @@
                                 <!--<button type="button" class="btn btn-default" onclick="javascript:history.back();" >취소</button>-->
                             <!--</div>-->
                             <div class="col-sm-12 text-center" ng-show="vm.userBot && vm.userBot._id">
-                                <a class="btn btn-primary" ng-click="vm.update(userBotForm1.$valid)">
-                                    <i class="glyphicon glyphicon-edit"></i> 수정
-                                </a>
-                                <a class="btn btn-danger" ng-click="vm.remove()">
-                                    <i class="glyphicon glyphicon-trash"></i> 삭제
-                                </a>
-                                <button type="button" class="btn btn-default" onclick="javascript:history.back();" >취소</button>
+                                <button type="button" class="btn btn-default pull-right" ui-sref="user-bots-web.list({listType: 'my'})" >돌아가기</button>
+                                <!--<a class="btn btn-primary" ng-click="vm.update(userBotForm1.$valid)">-->
+                                    <!--<i class="glyphicon glyphicon-edit"></i> 수정-->
+                                <!--</a>-->
+                                <!--<a class="btn btn-danger" ng-click="vm.remove()">-->
+                                    <!--<i class="glyphicon glyphicon-trash"></i> 삭제-->
+                                <!--</a>-->
+                                <!--<button type="button" class="btn btn-default" onclick="javascript:history.back();" >취소</button>-->
                             </div>
                         </div>
                     </footer>
@@ -464,21 +465,24 @@
                         </div>
 
                     </div>
-                    <footer class="panel-footer" ng-show="vm.state=='edit'" >
+                    <footer class="panel-footer" ng-show="vm.state=='edit' || vm.state=='create'" >
                         <div class="row">
                             <!--<div class="col-sm-12 text-center" ng-hide="vm.userBot && vm.userBot._id">-->
                                 <!--<button type="button" class="btn btn-primary" ng-click="vm.userBotChat(vm.userBot)">대화하기</button>-->
                                 <!--<button type="button" class="btn btn-danger" ui-sref="user-bots.list({listType: 'my'})">챗봇목록</button>-->
                             <!--</div>-->
-                            <div class="col-sm-12 text-center" ng-show="vm.userBot && vm.userBot._id">
-                                <button type="button" class="btn btn-default pull-right" onclick="javascript:history.back();" >취소</button>
-                                <a class="btn btn-primary pull-right" ng-click="vm.update(userBotForm2.$valid)">
-                                    <i class="glyphicon glyphicon-edit"></i> 수정
-                                </a>
-                                <a class="btn btn-danger pull-left" ng-click="vm.remove()">
-                                    <i class="glyphicon glyphicon-trash"></i> 삭제
-                                </a>
+                            <div class="col-sm-12 text-center" >
+                                <button type="button" class="btn btn-default pull-right" ui-sref="user-bots-web.list({listType: 'my'})" >돌아가기</button>
                             </div>
+                            <!--<div class="col-sm-12 text-center" ng-show="vm.userBot && vm.userBot._id">-->
+                                <!--<button type="button" class="btn btn-default pull-right" onclick="javascript:history.back();" >취소</button>-->
+                                <!--<a class="btn btn-primary pull-right" ng-click="vm.update(userBotForm2.$valid)">-->
+                                    <!--<i class="glyphicon glyphicon-edit"></i> 수정-->
+                                <!--</a>-->
+                                <!--<a class="btn btn-danger pull-left" ng-click="vm.remove()">-->
+                                    <!--<i class="glyphicon glyphicon-trash"></i> 삭제-->
+                                <!--</a>-->
+                            <!--</div>-->
                         </div>
                     </footer>
                     <!--<div ng-show="error" class="text-danger">-->

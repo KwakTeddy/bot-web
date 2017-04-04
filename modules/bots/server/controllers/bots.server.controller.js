@@ -163,17 +163,17 @@ exports.update = function (req, res) {
   bot = _.extend(bot , req.body);
   async.waterfall([
       function(cb) {
-        if (req.bot.template) {
-          if (req.bot.template == null) {
+        if (bot.template) {
+          if (bot.template == null) {
             bot.templateId = null;
             bot.templateDataId = null;
             cb(null);
           } else {
-            templateDatas.createTemplateData(req.bot.template, 'null', 'null', JSON.stringify(req.bot.template.templateData), req.user, function(data, err) {
-              bot.templateId = req.bot.template._id;
+            templateDatas.createTemplateData(bot.template, 'null', 'null', JSON.stringify(req.bot.template.templateData), req.user, function(data, err) {
+              bot.templateId = bot.template._id;
               bot.templateDataId = data._id;
-              async.eachSeries(req.bot.template.templateData.menus, function(menu, cb) {
-                templateDatas.createTemplateData(req.bot.template, 'menus', data._id, JSON.stringify(menu), req.user, function(res, err) {
+              async.eachSeries(bot.template.templateData.menus, function(menu, cb) {
+                templateDatas.createTemplateData(bot.template, 'menus', data._id, JSON.stringify(menu), req.user, function(res, err) {
                   cb(null);
                 });
               });
@@ -186,7 +186,16 @@ exports.update = function (req, res) {
       },
 
       function(cb) {
-        if (!req.bot.originalFilename) {
+        bot.save(function (err) {
+          if(err)
+            cb(err);
+          else
+            cb(null);
+        });
+      },
+
+      function(cb) {
+        if (!bot.originalFilename) {
           cb(null);
         }else {
           var dialogset = new Dialogset({
@@ -826,7 +835,7 @@ exports.createDialog = function (req, res) {
   dialogsetModule.processInput(null, dialog.inputRaw, function(_input) {
     dialog.input = _input;
 
-    console.log('createDialog:' + dialog.bot);
+    console.log('createDialog:' + dialog.botId);
     dialog.save(function (err) {
       if (err) {
         return res.status(400).send({
