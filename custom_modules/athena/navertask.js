@@ -229,6 +229,9 @@ function navershopping(task, context, callback) {
         if (!error && response.statusCode == 200) {
             var doc = JSON.parse(body);
             context.dialog.item = doc.items;
+            context.dialog.item.forEach(function (a) {
+                a.title = a.title.replace(/<b>|<\/b>/g, '');
+            });
             var result = [];
             async.eachSeries(doc.items, function(doc, cb) {
                 if (doc.hprice != 0) {
