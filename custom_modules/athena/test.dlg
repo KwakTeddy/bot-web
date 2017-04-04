@@ -265,7 +265,7 @@ googletask.googlesearchtask
 {action: navertask.navershopping}
 >if (context.dialog.item.length !=0) #item#+index+. +title+\n+lprice+\n#
     <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
-    >+item.title+\n+item.lprice+ ~ +item.hprice+\n+item.url+
+    >+item.title+\n+item.lprice+ ~ +item.hprice+\n+item.link+
 > 검색결과가 없습니다.
 
 주변검색둘:
