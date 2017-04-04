@@ -294,23 +294,24 @@ function loadBot(botName, callback) {
 
     function(cb) {
       if(bot && bot.template && global._templates[bot.template.id]) {
-        var template = global._templates[bot.template.id];
-        if(template.loaded == undefined) {
-          template.loaded = true;
+        utils.merge(bot.template, global._templates[bot.template.id]);
+        // var template = global._templates[bot.template.id];
+        if(bot.template.loaded == undefined) {
+          bot.template.loaded = true;
         }
 
-        utils.merge(bot, template);
+        utils.merge(bot, bot.template);
 
-        bot.commonDialogs =bot.commonDialogs.concat(template.commonDialogs);
-        bot.dialogs = bot.dialogs.concat(template.dialogs);
-        utils.merge(bot.tasks, template.tasks);
-        utils.merge(bot.actions , template.actions );
-        utils.merge(bot.types, template.types);
-        utils.merge(bot.typeChecks, template.typeChecks);
-        utils.merge(bot.concepts, template.concepts);
-        utils.merge(bot.messages, template.messages);
-        utils.merge(bot.patterns, template.patterns);
-        bot.dialogsets = bot.dialogsets.concat(template.dialogsets);
+        bot.commonDialogs =bot.commonDialogs.concat(bot.template.commonDialogs);
+        bot.dialogs = bot.dialogs.concat(bot.template.dialogs);
+        utils.merge(bot.tasks, bot.template.tasks);
+        utils.merge(bot.actions , bot.template.actions );
+        utils.merge(bot.types, bot.template.types);
+        utils.merge(bot.typeChecks, bot.template.typeChecks);
+        utils.merge(bot.concepts, bot.template.concepts);
+        utils.merge(bot.messages, bot.template.messages);
+        utils.merge(bot.patterns, bot.template.patterns);
+        bot.dialogsets = bot.dialogsets.concat(bot.template.dialogsets);
       }
 
       cb(null);
