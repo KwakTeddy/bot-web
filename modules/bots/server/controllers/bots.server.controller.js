@@ -129,6 +129,7 @@ exports.create = function (req, res) {
     } else {
       botLib.buildBot(bot.id, bot.path);
       botLib.loadBot(bot.id);
+      //anal bot.dialogs
       res.json(bot);
     }
   });
