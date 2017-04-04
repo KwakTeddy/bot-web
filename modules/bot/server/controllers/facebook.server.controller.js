@@ -51,8 +51,7 @@ exports.message = function (req, res) {
           // Iterate over each entry
           // There may be multiple if batched
           data.entry.forEach(function(pageEntry) {
-            console.log(pageEntry.id);
-            console.log(pageEntry.time);
+            console.log(util.inspect(pageEntry));
             console.log(util.inspect(pageEntry.messaging));
               var pageID = pageEntry.id;
               var timeOfEvent = pageEntry.time;
@@ -248,7 +247,9 @@ function receivedMessage(event) {
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
   var message = event.message;
-  console.log(util.inspect(event.botId));
+  console.log(util.inspect(event));
+  console.log(util.inspect(event.message));
+  console.log(util.inspect(global._bots));
 
   if(recipientID == global._bots[event.botId].facebook.id) {
     console.log('ininininin');
