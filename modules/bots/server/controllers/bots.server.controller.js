@@ -188,28 +188,47 @@ exports.update = function (req, res) {
       function(cb) {
         if (!req.bot.originalFilename) {
           cb(null);
-        } else {
-          dialogsetModule .convertDialogset(bot.dialogFile, function(result) {
-            bot.dialogset = result;
-            bot.save(function(err) {
-              if(console.log(err));
-            })
-            cb(null);
+        }else {
+          var dialogset = new Dialogset({
+            title: req.body.originalFilename,
+            type: req.body.type,
+            path: req.body.path,
+            filename: req.body.filename,
+            originalFilename: req.body.originalFilename,
+            language: 'en',
+            content: ''
+          });
+          dialogset.user = req.user;
+
+          dialogset.save(function(err) {
+            if (err) {
+              cb(err);
+            } else {
+              dialogsetModule.convertDialogset1(dialogset, bot.id, function(result) {
+                bot.dialogsets = [dialogset];
+                bot.save(function(err) {
+                  if(err) cb(err);
+                  else cb(null);
+                });
+
+                console.log(dialogset.filename + ' converted');
+              })
+            }
           });
         }
       }
     ],
 
     function(err) {
-      bot.save(function (err) {
-        if (err) {
-          return res.status(400).send({
-            message: errorHandler.getErrorMessage(err)
-          });
-        } else {
-          res.json(bot);
-        }
-      });
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        botLib.buildBot(bot.id, bot.path);
+        botLib.loadBot(bot.id);
+        res.json(bot);
+      }
     }
   );
 };
