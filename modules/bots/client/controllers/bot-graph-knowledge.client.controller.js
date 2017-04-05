@@ -134,7 +134,7 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
         }
       };
 
-      var main = document.getElementById('chat_main');
+      var main = document.getElementById('chat-main');
       var addItems = function(items) {
         var innerHTML =
           '<div class="chat-items owl-carousel owl-theme" style="clear: both">';
@@ -159,23 +159,52 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
 
         innerHTML += '</div>';
 
-        main.innerHTML = '';
-        main.innerHTML =  innerHTML;
+        while (main.hasChildNodes()) {
+          main.removeChild(main.firstChild);
+        }
+        main.insertAdjacentHTML("afterbegin",innerHTML);
 
-        $('.chat-items').owlCarousel({
+        var owl = $('.chat-items').owlCarousel({
           loop:false,
           nav:false,
           margin: 0,
-          items: 2
+          items: 2,
         });
 
         main.scrollTop = main.scrollHeight - main.clientHeight;
+
+      };
+
+      var resetOwl = function() {
+        while (main.hasChildNodes()) {
+          main.removeChild(main.firstChild);
+        }
       };
 
       $scope.$on('onmsg', function(event, arg0) {
         if (arg0.message.items) {
           vm.isAnswer = false;
           addItems(arg0.message.items);
+          return;
+        }
+
+        if (!vm.isAnswer)
+          resetOwl();
+
+        if (arg0.message.image) {
+          vm.isAnswer = false;
+
+          var msg = arg0.message;
+          var innerHTML = '<div class="content"><div class="content-text">' + msg.text + '</div>';
+          innerHTML += '<div ><img class="message-image" src="' + msg.image.url +'"/></div>';
+          if(msg.buttons) {
+            for(var i in msg.buttons) {
+              innerHTML += '<div class="bubble-button" style="border-top:none"><a href="' + msg.buttons[i].url + '" target="_blank">' + msg.buttons[i].text + '</a></div>';
+            }
+          }
+          innerHTML += '</div></div>';
+          main.insertAdjacentHTML("afterbegin",innerHTML);
+
           return;
         }
 
