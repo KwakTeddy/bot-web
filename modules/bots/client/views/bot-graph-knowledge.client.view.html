@@ -106,10 +106,12 @@
                  style="max-width: 90px; border-radius: 50%; border: 5px solid white;">
         </center>
     </div>
-    <div style="position:absolute; top:30%; left:25%; width:50%; height:35%; text-align:center">
+    <div ng-show="vm.isAnswer" id='answer-div' style="position:absolute; top:30%; left:25%; width:50%; height:35%; text-align:center">
         <p id="answer" style="display:inline-block;font-size:30px"></p>
     </div>
-    <form id="f"novalidate="novalidate" ng-submit="vm.sendMsg();">
+    <div ng=show="!vm.isAnswer" id="chat-main" style="position:absolute; top:30%; left:25%; width:50%; height:35%; text-align:center">
+    </div>
+    <form id="f" novalidate="novalidate" ng-submit="vm.sendMsg();">
     <div style="position:absolute; top:70%; width:100%; text-align:center">
         <input type="text" id="question" autocomplete="off" class="input" size="40" ng-model="vm.question"/>
     </div>

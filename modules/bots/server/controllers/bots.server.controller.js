@@ -128,9 +128,28 @@ exports.create = function (req, res) {
       });
     } else {
       botLib.buildBot(bot.id, bot.path);
-      botLib.loadBot(bot.id);
-      //anal bot.dialogs
-      res.json(bot);
+      botLib.loadBot(bot.id, function (realbot) {
+        var result = "";
+        async.waterfall([
+          function (cb) {
+            async.eachSeries(realbot.dialogsets, function(dialogset, cb2) {
+              dialogsetModule.analyzeKnowledge(dialogset, bot.id, result, function () {
+                cb2();
+              });
+            }, function(err) {
+              cb(null);
+            });
+          },
+          function (cb) {
+            // dialogsetModule.analyzeKnowledge_dialog(realbot.dialogs, bot.id, result, function() {
+            //   cb(null);
+            // });
+            cb(null);
+          },
+        ], function (err) {
+          res.json(bot);
+        });
+      });
     }
   });
 };

@@ -134,13 +134,60 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
         }
       };
 
+      var main = document.getElementById('chat_main');
+      var addItems = function(items) {
+        var innerHTML =
+          '<div class="chat-items owl-carousel owl-theme" style="clear: both">';
+
+        for(var i in items) {
+          innerHTML += '<div class="item" >' +
+            '<div class="thumbnail">';
+          if(items[i].imageUrl) innerHTML += '<img src="' + items[i].imageUrl + '" >';
+          innerHTML += '<div class="caption">';
+          if(items[i].title) innerHTML += '<h3>' + items[i].title + '</h3>';
+          if(items[i].text) innerHTML += '<p>' + items[i].text + '</p>';
+          innerHTML += '</div>';
+
+          if(items[i].buttons) {
+            for(var j in items[i].buttons) {
+              innerHTML += '<div class="chat-item-button"><a href="' + items[i].buttons[j].url + '" target="_blank">' + items[i].buttons[j].text + '</a></div>';
+            }
+          }
+
+          innerHTML += '</div></div>';
+        }
+
+        innerHTML += '</div>';
+
+        main.innerHTML = '';
+        main.innerHTML =  innerHTML;
+
+        $('.chat-items').owlCarousel({
+          loop:false,
+          nav:false,
+          margin: 0,
+          items: 2
+        });
+
+        main.scrollTop = main.scrollHeight - main.clientHeight;
+      };
+
       $scope.$on('onmsg', function(event, arg0) {
+        if (arg0.message.items) {
+          vm.isAnswer = false;
+          addItems(arg0.message.items);
+          return;
+        }
+
+        vm.isAnswer = true;
         var input='';
         if (typeof arg0.message === 'string')
           input = arg0.message;
         else {
           input = arg0.message.text;
         }
+
+
         $('#answer').text('');
         if (textTimer != null)
           clearTimeout(textTimer);
