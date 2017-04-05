@@ -443,6 +443,10 @@ if (_platform !== 'mobile'){
             //TODO: move to template definition
             if (key === 'address')
               schema[key]["options"] = {grid_columns:12};
+            if (key === 'startTime')
+              schema[key]["default"] = '09:00';
+            if (key === 'endTime')
+              schema[key]["default"] = '18:00';
           }
         });
         return schema;
