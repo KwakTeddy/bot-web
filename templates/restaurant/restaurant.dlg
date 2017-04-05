@@ -4,7 +4,6 @@ var type = require(path.resolve('./modules/bot/action/common/type'));
 var shop = require(path.resolve('./modules/bot/common/shop'));
 var start = require('./start');
 
-
 <전화
 <전화번호
 >전화번호는 +phone+ 입니다.
