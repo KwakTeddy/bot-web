@@ -156,6 +156,15 @@ navertask.newscrawl
     < {types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
     > \[+item.company+\] +item.title+\n+item.body+\n+item.link+
 
+영화:
+<영화
+navertask.moviecrawl
+>if(context.dialog.item.length != 0 && context.user.channel == 'socket') 검색결과가 없습니다.
+>if(context.dialog.item.length != 0) 박스오피스 순위입니다.\n#item#+index+. +title+\n#
+    < {types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
+    > \[+item.title+\]\n평점+item.rate+ +item.reserverate+\n+item.link+
+
+
 // 메일:
 // <메일
 // {action: googletask.gmailapi}

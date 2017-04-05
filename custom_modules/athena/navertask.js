@@ -116,6 +116,48 @@ var newscrawl = {
 bot.setTask("newscrawl", newscrawl);
 exports.newscrawl = newscrawl;
 
+var moviecrawl = {
+    module: 'http',
+    action: "simpleRequest",
+    uri: 'http://ticket2.movie.daum.net/Movie/MovieRankList.aspx',
+    method: 'GET',
+    xpath: {
+        _repeat: '//*[@id="mArticle"]/div/div[2]/div[1]/div/ul/li',
+        link: './/div/strong/a/@href',
+        rate: './/div/div/em/text()',
+        title: './/div/strong/a/text()',
+        imageUrl: './/a/img/@src',
+        reserverate: './/div/dl/dd[2]/text()[1]'
+    },
+    postCallback: function (task, context, callback) {
+        task.doc.forEach(function(d) {
+            d.reserverate = d.reserverate[0].data;
+            d.reserverate = d.reserverate.replace(/ \(/g, '');
+            d.rate = d.rate.replace(/ /g,'')
+        });
+        context.dialog.item = task.doc;
+        task.count = task.doc.length;
+        var result = [];
+        async.eachSeries(context.dialog.item, function(doc, cb) {
+            var _doc = {
+                title: doc.title,
+                text : '평점' + doc.rate + ' ' + doc.reserverate,
+                imageUrl : doc.imageUrl,
+                buttons: [{url: doc.link, text: '상세보기'}]
+            };
+            result.push(_doc);
+            cb(null)
+        }, function (err) {
+            task.result = {items: result};
+            callback(task, context);
+        });
+    }
+};
+
+bot.setTask("moviecrawl", moviecrawl);
+exports.moviecrawl = moviecrawl;
+
+
 // var newsonecrawl = {
 //     module: 'http',
 //     action: "simpleRequest",
