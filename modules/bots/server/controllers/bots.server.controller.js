@@ -464,6 +464,18 @@ exports.unfollowBot = function(req, res) {
   });
 };
 
+exports.botExist = function(req, res) {
+  Bot.findOne({
+    id: req.query.bot_id,
+  }, function (err, bot) {
+    if (bot) {
+      res.json(bot);
+    } else {
+      res.status(404).send({message: 'No Bot exists'});
+    }
+  });
+};
+
 /**
  * Bot middleware
  */

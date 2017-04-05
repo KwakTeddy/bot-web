@@ -76,6 +76,9 @@ module.exports = function (app) {
   app.route('/api/speech/:msg')
     .get(bots.speech);
 
+  app.route('/api/bot-exist')
+    .get(bots.botExist);
+
   // Finish by binding the bot middleware
   app.param('botId', bots.botByID);
   app.param('botNameId', bots.botByNameID);

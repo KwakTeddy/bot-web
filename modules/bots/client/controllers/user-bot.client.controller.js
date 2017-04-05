@@ -16,10 +16,10 @@ if (_platform !== 'mobile'){
   // UserBots controller
   angular.module('user-bots').controller('UserBotController', ['$scope', '$rootScope', '$state', '$window','$timeout', '$stateParams',
     'Authentication', 'userBotResolve', 'FileUploader', 'UserBotsService', 'UserBotCommentService', 'UserBotDialogService',
-    'UserBotsFollowService', '$http', '$uibModal', 'TemplatesService', '$compile', '$cookies',
+    'UserBotsFollowService', '$http', '$uibModal', 'TemplatesService', '$compile', '$cookies', '$resource',
     function ($scope, $rootScope, $state, $window, $timeout, $stateParams, Authentication, userBot, FileUploader,
               UserBotsService, UserBotCommentService, UserBotDialogService, UserBotsFollowService, $http, $uibModal,
-              TemplatesService, $compile, $cookies) {
+              TemplatesService, $compile, $cookies, $resource) {
       var vm = this;
       vm.user = Authentication.user;
       vm.userBot = userBot;
@@ -164,12 +164,26 @@ if (_platform !== 'mobile'){
         })
       };
 
+      $scope.$watch('vm.userBot.id', function() {
+        $resource('/api/bot-exist', {}).get({bot_id: vm.userBot.id}, function(res) {
+          if (res) {
+            $scope.error.id = "같은 아이디가 존재합니다";
+            return false;
+          }
+        }, function(err) {
+          $scope.error.id = null;
+        });
+      });
+
       vm.checkAndChangeType = function(isValid, type) {
         $scope.submitted = true;
         if (!isValid) {
           $scope.$broadcast('show-errors-check-validity', 'userBotForm');
           return false;
         }
+
+        if ($scope.error.id)
+          return false;
         /*
         if (vm.selectedTemplate) {
           var errors = editor.validate();
@@ -179,6 +193,7 @@ if (_platform !== 'mobile'){
           }
         }
         */
+
         vm.changeType(type);
       };
 
@@ -214,6 +229,10 @@ if (_platform !== 'mobile'){
           $scope.$broadcast('show-errors-check-validity', 'userBotForm');
           return false;
         }
+
+        if ($scope.error.id)
+          return false;
+
         if ($scope.error.file || $scope.error.image){
           var modalInstance = $uibModal.open({
             templateUrl: 'modules/bots/client/views/modal-user-bots.client.error.html',

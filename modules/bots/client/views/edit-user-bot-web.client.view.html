@@ -175,7 +175,7 @@
                         <div class="form-horizontal form-group" ng-show="vm.type == 'edit'">
                             <div class="form-group" >
                                 <label class="col-sm-3 control-label">봇아이디 <span class="required" aria-required="true">*</span></label>
-                                <div class="col-sm-7">
+                                <div class="col-sm-7" ng-class="{'has-error':(error.id)}">
                                     <input type="text" name="id" ng-model="vm.userBot.id" class="form-control valid"
                                            placeholder="영어(대문자)와 _의 조합, 추후 변경 불가"
                                            required
@@ -184,6 +184,9 @@
                                 </div>
                                 <div ng-messages="userBotForm.id.$error" role="alert" class="col-sm-offset-3 col-sm-9" ng-show = "userBotForm.id.$error && submitted">
                                     <p class="help-block error-text text-danger" ng-message="required">아이디를 입력해야죠</p>
+                                </div>
+                                <div ng-show="error.id" role="alert" class="col-sm-offset-3 col-sm-9">
+                                <span class="error-text text-center text-danger"> <strong ng-bind="error.id"></strong> </span>
                                 </div>
                             </div>
                             <div class="form-group">

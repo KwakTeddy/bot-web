@@ -10,8 +10,9 @@ var setInput = function(cur) {
 
 
 // Bots controller
-angular.module('bots').controller('BotController', ['$scope', '$state', '$window', '$timeout', '$compile', '$stateParams', 'botResolve', 'TemplatesService', 'FileUploader',
-  function ($scope, $state, $window, $timeout, $compile, $stateParams, bot, TemplatesService, FileUploader) {
+angular.module('bots').controller('BotController', [
+  '$resource', '$scope', '$state', '$window', '$timeout', '$compile', '$stateParams', 'botResolve', 'TemplatesService', 'FileUploader',
+  function ($resource, $scope, $state, $window, $timeout, $compile, $stateParams, bot, TemplatesService, FileUploader) {
     var vm = this;
     vm.bot = bot;
 
