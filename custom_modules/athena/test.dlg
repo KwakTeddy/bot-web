@@ -147,11 +147,13 @@ var first = /(?:~시작|~처음|^!$|취소)/
     > if(context.dialog.item.length != 0) \[+stockname+\]\n+Date+\n\n종가: +lastTradePriceOnly+원
     <{if: 'true'}> 죄송합니다. 등록되지 않은 회사명입니다.
 
-// 뉴스:
-// <뉴스
-// <신문
-// navertask.newscrawl
-// >if(context.dialog.item.length != 0) 오늘의 이슈입니다.\n#item#+index+. +title+\n#
+뉴스:
+<뉴스
+<신문
+navertask.newscrawl
+>if(context.dialog.item.length != 0) 오늘의 이슈입니다.\n#item#+index+. +title+\n#
+    < {types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
+    > [+item.company+] +item.title+\n+item.body+\n+item.link+
 
 // 메일:
 // <메일

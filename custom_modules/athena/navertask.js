@@ -77,27 +77,30 @@ exports.naverGeocode = naverGeocode;
 var newscrawl = {
     module: 'http',
     action: "simpleRequest",
-    uri: 'http://news.naver.com',
+    uri: 'http://media.daum.net/ranking/popular',
     method: 'GET',
     xpath: {
-        _repeat: '//*[@id="main_content"]/div',
-        link: './/div[3]/dl/dd/a/@href',
-        category: './/div[1]/h4/a/text()',
-        title: './/div[3]/dl/dd/a/text()',
-        imageUrl: './/div[3]/dl/dt/a/img/@src'
+        _repeat: '//*[@id="mArticle"]/div[2]/ul[3]/li',
+        link: './/div[2]/strong/a/@href',
+        company: './/div[2]/strong/span/text()',
+        title: './/div[2]/strong/a/text()',
+        imageUrl: './/a/img/@src',
+        body: './/div[2]/div/span/text()'
     },
     postCallback: function (task, context, callback) {
         task.doc.forEach(function(d) {
-            d.title = d.title.replace(/,/g, '');
+            d.title = d.title.replace(/"/g, '\"');
+            d.body = d.body.replace(/"/g, '\"');
+            d.body = d.body.replace(/\\n/g, '');
+            d.body = d.body.replace(/  /g, '');
         });
-        task.doc = task.doc.splice(3,6);
         context.dialog.item = task.doc;
         task.count = task.doc.length;
         var result = [];
         async.eachSeries(context.dialog.item, function(doc, cb) {
             var _doc = {
-                title: doc.category,
-                text : doc.title,
+                title: doc.title,
+                text : doc.body,
                 imageUrl : doc.imageUrl,
                 buttons: [{url: doc.link, text: '상세보기'}]
             };
