@@ -113,8 +113,9 @@
     <div style="position:absolute; top:65%; width:100%; text-align:center">
         <input type="text" id="question" autocomplete="off" class="input" size="40" ng-model="vm.question"/>
     </div>
-    <div style="position:absolute; top:76%; width:100%; text-align:center">
-        <span  style="display:inline-block;font-size:15px" ng-click="vm.sendMsg()">입력</span>
+    <div style="position:absolute; top:74%; width:100%; text-align:center">
+        <span onmouseover="this.style.color='red'" onmouseout="this.style.color='white'"
+              style="display:inline-block;font-size:15px; cursor:pointer;" ng-click="vm.sendMsg()">입력</span>
     </div>
     </form>
 
