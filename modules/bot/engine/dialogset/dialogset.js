@@ -46,41 +46,43 @@ function convertDialogset1(dialogset, bot_id, callback) {
   var filepath = path.join(dir, dialogset.filename);
 
   var analysis = function(result) {
-     analyzeKnowledge(dialogset, bot_id, result, callback);
+    if (bot_id != null) {
+      analyzeKnowledge(dialogset, bot_id, result, callback);
+    } else {
+      callback(result);
+    }
   };
 
-  if(!dialogType) {
-    var info = path.parse(dialogset.originalFilename);
-    if (info.ext == '.txt') {
-      dialogType = 'kakao';
-      dialogsetKakao.convertDialogset(filepath, dialogset, analysis);
-    } else if (info.ext == '.csv') {
-      dialogType = "csv";
-      async.waterfall([
-        function(cb) {
-          utils.readFirstLine(filepath).then(function(head) {
-            if (head === "Date,User,Message") {
-              dialogType = "kakao";
-            }
-            cb(null);
-          }, function(err) {
-            dialogType = 'csv';
-            cb(null);
-          });
-        },
-        function(cb) {
-          if (dialogType == "kakao") {
-            dialogsetKakao.convertDialogset(filepath, dialogset, analysis);
-          } else {
-            insertDatasetFile1(filepath, dialogset, analysis);
+  var info = path.parse(dialogset.originalFilename);
+  if (info.ext == '.txt') {
+    dialogType = 'kakao';
+    dialogsetKakao.convertDialogset(filepath, dialogset, analysis);
+  } else if (info.ext == '.csv') {
+    dialogType = "csv";
+    async.waterfall([
+      function(cb) {
+        utils.readFirstLine(filepath).then(function(head) {
+          if (head === "Date,User,Message") {
+            dialogType = "kakao";
           }
           cb(null);
+        }, function(err) {
+          dialogType = 'csv';
+          cb(null);
+        });
+      },
+      function(cb) {
+        if (dialogType == "kakao") {
+          dialogsetKakao.convertDialogset(filepath, dialogset, analysis);
+        } else {
+          insertDatasetFile1(filepath, dialogset, analysis);
         }
-      ]);
-    } else if(info.ext == '.smi') {
-      dialogType = 'smi';
-      dialogsetSmi.convertDialogset(filepath, dialogset, analysis);
-    }
+        cb(null);
+      }
+    ]);
+  } else if(info.ext == '.smi') {
+    dialogType = 'smi';
+    dialogsetSmi.convertDialogset(filepath, dialogset, analysis);
   }
   console.log(dialogType);
 
