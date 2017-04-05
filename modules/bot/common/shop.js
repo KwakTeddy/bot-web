@@ -656,8 +656,11 @@ function menuCategoryAction(task, context, callback) {
         // }
       }
 
-      task.doc = categorys;
-      context.dialog.categorys = categorys;
+      if(categorys.length > 0) {
+        task.doc = categorys;
+        context.dialog.categorys = categorys;
+      }
+
       callback(task, context);
     }
   });
