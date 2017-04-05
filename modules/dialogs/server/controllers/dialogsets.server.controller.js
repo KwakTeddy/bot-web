@@ -202,7 +202,7 @@ exports.uploadFile = function (req, res) {
               } else {
                 //FIXME: sample inputs are not in the correct format
                 return res.status(400).send({ message: '대화파일이 아닙니다' });
-                cb(null);
+                //cb(null);
               }
             });
           },
