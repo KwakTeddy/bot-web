@@ -25,7 +25,10 @@ if (_platform !== 'mobile'){
       vm.userBot = userBot;
       vm.isPublic = true;
       if (userBot && userBot._id && !userBot.public) {
-        vm.isPublic = false;
+        if (userBot.templateData)
+          vm.isPublic = true;
+        else
+          vm.isPublic = false;
       } else {
         vm.userBot.public = true;
       }
@@ -426,7 +429,10 @@ if (_platform !== 'mobile'){
 
       vm.selectTemplate = function(template) {
         vm.selectedTemplate = template;
-        vm.userBot.public = true;
+
+        // default public:true for template bot
+        if (vm.userBot && !vm.userBot._id)
+          vm.userBot.public = true;
 
         // init json editor
         JSONEditor.defaults.options.theme = 'bootstrap3';
