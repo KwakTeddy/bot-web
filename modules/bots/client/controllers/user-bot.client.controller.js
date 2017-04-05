@@ -164,16 +164,18 @@ if (_platform !== 'mobile'){
         })
       };
 
-      $scope.$watch('vm.userBot.id', function() {
-        $resource('/api/bot-exist', {}).get({bot_id: vm.userBot.id}, function(res) {
-          if (res) {
-            $scope.error.id = "같은 아이디가 존재합니다";
-            return false;
-          }
-        }, function(err) {
-          $scope.error.id = null;
+      if (!vm.userBot || !vm.userBot._id) {
+        $scope.$watch('vm.userBot.id', function () {
+          $resource('/api/bot-exist', {}).get({bot_id: vm.userBot.id}, function (res) {
+            if (res) {
+              $scope.error.id = "같은 아이디가 존재합니다";
+              return false;
+            }
+          }, function (err) {
+            $scope.error.id = null;
+          });
         });
-      });
+      }
 
       vm.checkAndChangeType = function(isValid, type) {
         $scope.submitted = true;
