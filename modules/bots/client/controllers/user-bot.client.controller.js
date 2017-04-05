@@ -8,6 +8,16 @@ var setInput = function(cur) {
   currentNode = cur.replace(/_/g,'.');
 };
 
+var findAddress = function() {
+  new daum.Postcode({
+    oncomplete: function(data) {
+      // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+      // 예제를 참고하여 다양한 활용법을 확인해 보세요.
+      document.getElementsByName("root[address]")[0].value = data.address;
+    }
+  }).open();
+};
+
 if (_platform !== 'mobile'){
   $(document).ready(function() {
     $('[data-toggle="tooltip"]').tooltip();
@@ -441,8 +451,13 @@ if (_platform !== 'mobile'){
             if (keys[i] != 'type' && keys[i] != 'enum')
               schema[key][keys[i]] = jsonSchema[key][keys[i]];
             //TODO: move to template definition
-            if (key === 'address')
-              schema[key]["options"] = {grid_columns:12};
+            if (key === 'address') {
+              schema[key]["options"] = {grid_columns: 12};
+            }
+            if (key === 'startTime')
+              schema[key]["default"] = '09:00';
+            if (key === 'endTime')
+              schema[key]["default"] = '18:00';
           }
         });
         return schema;
@@ -470,6 +485,29 @@ if (_platform !== 'mobile'){
 
         var custom_validator = function(schema, value, path) {
           var errors = [];
+
+          if (path === "root.phone") {
+            var regExp = /^\d{2,3}-\d{3,4}-\d{4}$/;
+            if (!regExp.test(value))
+              errors.push({
+                path: path,
+                property: 'format',
+                message: "전화번호를 입력해주세요"
+              });
+            return errors;
+          }
+
+          if (path === "root.mobile") {
+            var regExp = /^\d{3}-\d{3,4}-\d{4}$/;
+            if (!regExp.test(value))
+              errors.push({
+                path: path,
+                property: 'format',
+                message: "휴대폰 번호를 입력해주세요"
+              });
+            return errors;
+          }
+
           if (schema.format !== "image" && value === "") {
             // Errors must be an object with `path`, `property`, and `message`
             var msg;
@@ -518,6 +556,10 @@ if (_platform !== 'mobile'){
           grid_columns: 3,
         });
 
+        if (document.getElementsByName("root[address]").length == 1) {
+          var innerHTML = '&nbsp;&nbsp;&nbsp;<button class="btn btn-default" onClick="javascript:findAddress()" >주소검색</button>';
+          document.getElementsByName("root[address]")[0].insertAdjacentHTML("beforebegin", innerHTML);
+        }
         $compile(document.getElementById('editor_holder'))($scope);
         if (vm.userBot.templateId === template._id) {
           console.log("given input=" + JSON.stringify(vm.userBot.templateData));
