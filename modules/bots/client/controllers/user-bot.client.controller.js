@@ -474,6 +474,29 @@ if (_platform !== 'mobile'){
 
         var custom_validator = function(schema, value, path) {
           var errors = [];
+
+          if (path === "root.phone") {
+            var regExp = /^\d{2,3}-\d{3,4}-\d{4}$/;
+            if (!regExp.test(value))
+              errors.push({
+                path: path,
+                property: 'format',
+                message: "전화번호를 입력해주세요"
+              });
+            return errors;
+          }
+
+          if (path === "root.mobile") {
+            var regExp = /^\d{3}-\d{3,4}-\d{4}$/;
+            if (!regExp.test(value))
+              errors.push({
+                path: path,
+                property: 'format',
+                message: "휴대폰 번호를 입력해주세요"
+              });
+            return errors;
+          }
+
           if (schema.format !== "image" && value === "") {
             // Errors must be an object with `path`, `property`, and `message`
             var msg;
