@@ -124,7 +124,10 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
       var textTimer = null;
       var showText = function (target,message, index, interval) {
         if (index < message.length) {
-          $(target).append(message[index++]);
+          var char = message[index++];
+          if (char == '\n')
+            char = "<br>";
+          $(target).append(char);
           textTimer = setTimeout(function () { showText(target,message, index, interval); }, interval);
         } else {
           textTimer = null;
@@ -132,7 +135,12 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
       };
 
       $scope.$on('onmsg', function(event, arg0) {
-        var input = arg0.message;
+        var input='';
+        if (typeof arg0.message === 'string')
+          input = arg0.message;
+        else {
+          input = arg0.message.text;
+        }
         $('#answer').text('');
         if (textTimer != null)
           clearTimeout(textTimer);
