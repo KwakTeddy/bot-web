@@ -443,7 +443,7 @@ if (_platform !== 'mobile'){
 
         var custom_validator = function(schema, value, path) {
           var errors = [];
-          if (value === "") {
+          if (schema.format !== "image" && value === "") {
             // Errors must be an object with `path`, `property`, and `message`
             var msg;
             switch (schema.format) {
