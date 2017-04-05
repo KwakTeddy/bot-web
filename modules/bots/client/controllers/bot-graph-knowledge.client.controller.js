@@ -141,9 +141,9 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
 
         for(var i in items) {
           innerHTML += '<div class="item" >' +
-            '<div class="thumbnail">';
+            '<div class="thumbnail" style="background-color:black">';
           if(items[i].imageUrl) innerHTML += '<img src="' + items[i].imageUrl + '" >';
-          innerHTML += '<div class="caption">';
+          innerHTML += '<div class="caption" style="color:white">';
           if(items[i].title) innerHTML += '<h3>' + items[i].title + '</h3>';
           if(items[i].text) innerHTML += '<p>' + items[i].text + '</p>';
           innerHTML += '</div>';
@@ -168,7 +168,7 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
           loop:false,
           nav:false,
           margin: 0,
-          items: 2,
+          items: 3,
         });
 
         main.scrollTop = main.scrollHeight - main.clientHeight;
@@ -195,8 +195,8 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
           vm.isAnswer = false;
 
           var msg = arg0.message;
-          var innerHTML = '<div class="content"><div class="content-text">' + msg.text + '</div>';
-          innerHTML += '<div ><img class="message-image" src="' + msg.image.url +'"/></div>';
+          var innerHTML = '<div class="content" style="><div class="content-text">' + msg.text + '</div>';
+          innerHTML += '<div><img class="message-image" width="35%" height="35%" src="' + msg.image.url +'"/></div>';
           if(msg.buttons) {
             for(var i in msg.buttons) {
               innerHTML += '<div class="bubble-button" style="border-top:none"><a href="' + msg.buttons[i].url + '" target="_blank">' + msg.buttons[i].text + '</a></div>';
