@@ -4,7 +4,9 @@
  * Module dependencies.
  */
 var userBotsPolicy = require('../policies/user-bots.server.policy'),
-  userBots = require('../controllers/user-bots.server.controller');
+  userBots = require('../controllers/user-bots.server.controller'),
+  bots = require('../controllers/bots.server.controller');
+
 
 module.exports = function (app) {
   // UserBots collection routes
@@ -19,6 +21,7 @@ module.exports = function (app) {
     .post(userBots.followList)
     .put(userBots.followBot)
     .delete(userBots.unfollowBot);
+
 
   app.route('/api/auth/facebook/pageInfo').post(userBots.facebookPage);
 

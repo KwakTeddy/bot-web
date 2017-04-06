@@ -17,6 +17,8 @@ var path = require('path'),
   multer = require('multer'),
   fs = require('fs');
 
+var util = require("util"); //temporary
+
 var templateDatas = require(path.resolve('./modules/templates/server/controllers/template-datas.server.controller'));
 var async = require('async');
 
@@ -296,39 +298,74 @@ exports.delete = function (req, res) {
     }
   });
 };
+//
+// /**
+//  * List of Bots
+//  */
+// exports.list = function (req, res) {
+//   // TODO 관리자에서는 모든 봇 목록 보이게
+//   var sort = req.query.sort || '-created';
+//   var perPage = req.body.perPage || 10;
+//   var query = {};
+//
+//   if (req.body.listType == 'popular') {
+//     query['public'] = true;
+//     sort = '-followed';
+//   } else if(req.body.listType == 'recent') {
+//     query['public'] = true;
+//   } else if(req.body.listType == 'my' || req.query.my) {
+//     // query['user'] = req.body.botUserId;
+//     query['user'] = req.user;
+//   } else if(req.body.query) {
+//     query['public'] = true;
+//     query['name'] = new RegExp(req.body.query, 'i');
+//   }
+//   console.log(util.inspect(query))
+//   Bot.find(query).sort(sort).populate('user').skip(req.body.currentPage * perPage).limit(perPage).exec(function (err, bots) {
+//     if (err) {
+//       return res.status(400).send({
+//         message: errorHandler.getErrorMessage(err)
+//       });
+//     } else {
+//       res.json(bots);
+//     }
+//   });
+// };
+
 
 /**
- * List of Bots
+ * List of UserBots
  */
 exports.list = function (req, res) {
-  // TODO 관리자에서는 모든 봇 목록 보이게
-  var sort = req.query.sort || '-created';
-  var perPage = req.body.perPage || 10;
-  var query = {};
+    var sort = req.query.sort || '-created';
+    var perPage = req.body.perPage || 10;
+    var query = {};
+    query['public'] = true;
 
-  if (req.body.listType == 'popular') {
-    query['public'] = true;
-    sort = '-followed';
-  } else if(req.body.listType == 'recent') {
-    query['public'] = true;
-  } else if(req.body.listType == 'my' || req.query.my) {
-    // query['user'] = req.body.botUserId;
-    query['user'] = req.user;
-  } else if(req.body.query) {
-    query['public'] = true;
-    query['name'] = new RegExp(req.body.query, 'i');
-  }
-
-  Bot.find(query).sort(sort).populate('user').skip(req.body.currentPage * perPage).limit(perPage).exec(function (err, bots) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.json(bots);
+    if (req.body.listType == 'popular') sort = '-followed';
+    if(req.body.listType == 'my') {
+        delete query.public;
+        query['user'] = req.body.botUserId;
     }
-  });
+    if(req.query.my) {
+        delete query.public;
+        query['user'] =  req.query.botUserId;
+    }
+    if(req.body.query) query['name'] = new RegExp(req.body.query, 'i');
+    console.log(util.inspect(query));
+    console.log(req.body.currentPage);
+    Bot.find(query).sort(sort).populate('user').skip(req.body.currentPage * perPage).limit(perPage).exec(function (err, bots) {
+        if (err) {
+            return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            res.json(bots);
+        }
+    });
 };
+
+
 
 
 exports.followList = function (req, res) {
@@ -363,6 +400,7 @@ exports.followList = function (req, res) {
 };
 
 exports.followBot = function(req, res) {
+  console.log(3333);
   var query = {};
   query['botUserId'] = req.body.botUserId;
   query['bot'] = req.body.bot;
@@ -488,6 +526,7 @@ exports.botByID = function (req, res, next, id) {
 
   Bot.findById(id).populate('user').exec(function (err, bot) {
     if (err) {
+      console.log(err);
       return next(err);
     } else if (!bot) {
       return res.status(404).send({

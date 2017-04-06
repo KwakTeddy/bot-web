@@ -249,6 +249,7 @@ exports.followList = function (req, res) {
 };
 
 exports.followBot = function(req, res) {
+    console.log(1188);
   var query = {};
   query['botUserId'] = req.body.botUserId;
   query['userBot'] = req.body.userBot;

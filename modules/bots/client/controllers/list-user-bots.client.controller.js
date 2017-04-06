@@ -10,6 +10,7 @@ angular.module('user-bots').controller('UserBotListController', ['$scope', '$roo
     var vm = this;
     vm.authentication = Authentication;
     vm.userBots = userBots;
+    console.log(vm.userBots);
       if(_platform == 'mobile') {
           if($stateParams['listType'] == 'recent') vm.listTypeName = '최신봇';
           else if($stateParams['listType'] == 'followed') vm.listTypeName = '친구봇';
