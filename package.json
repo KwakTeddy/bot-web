@@ -58,6 +58,7 @@
     "http-parser-js": "~0.4.2",
     "iconv": "^2.2.1",
     "if-async": "^3.7.4",
+    "itunes-api-search": "^1.1.0",
     "jasmine-core": "^2.3.4",
     "java": "^0.8.0",
     "json-editor": "^0.7.28",
@@ -97,7 +98,8 @@
     "xml2js": "^0.4.17",
     "xmldom": "^0.1.22",
     "xpath": "^0.0.23",
-    "yahoo-finance": "^0.2.16"
+    "yahoo-finance": "^0.2.16",
+    "youtube-search": "^1.0.9"
   },
   "devDependencies": {
     "coveralls": "^2.11.4",

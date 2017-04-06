@@ -109,6 +109,9 @@ var newscrawl = {
             cb(null)
         }, function (err) {
             task.result = {items: result};
+            if (task.result.items.length == 0) {
+                task.result = null;
+            }
             callback(task, context);
         });
     }
@@ -150,6 +153,9 @@ var moviecrawl = {
             cb(null)
         }, function (err) {
             task.result = {items: result};
+            if (task.result.items.length == 0) {
+                task.result = null;
+            }
             callback(task, context);
         });
     }
@@ -241,6 +247,9 @@ function searchNaver(task, context, callback) {
                 });
             }, function (err) {
                 task.result = {items: result};
+                if (task.result.items.length == 0) {
+                    task.result = null;
+                }
                 callback(task, context);
             });
         } else {

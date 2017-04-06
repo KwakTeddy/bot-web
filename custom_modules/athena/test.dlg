@@ -284,6 +284,30 @@ googletask.googlesearchtask
     <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
     >+item.title+\n+item.roadAddress+\n+item.telephone+
 
+음악:
+</([^\b]*)(?:\b|\s).*(음악|노래)/
+{action: publictask.itunesmusic}
+>if (context.dialog.item.length !=0 && context.user.channel == 'socket') 검색결과가 없습니다.
+>if (context.dialog.item.length !=0) #item#+index+. +artistName+ - +doc.trackName+\n#
+    <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
+    >+item.artistName+ - +item.trackName+\n+item.collectionName+\n+item.previewUrl+
+
+동영상:
+</([^\b]*)(?:\b|\s).*(동영상|영상|비디오)/
+{action: publictask.youtube}
+>if (context.dialog.item.length !=0 && context.user.channel == 'socket') 검색결과가 없습니다.
+>if (context.dialog.item.length !=0) #item#+index+. +title+\n+lprice+\n#
+    <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
+    >+item.title+\n+item.lprice+ ~ +item.hprice+\n+item.link+
+
+</([^\b]*)(?:\b|\s).*(들려주다|틀어주다|듣다)/
+{action: publictask.itunesmusic}
+>if (context.dialog.item.length !=0 && context.user.channel == 'socket') 검색결과가 없습니다.
+>if (context.dialog.item.length !=0) #item#+index+. +artistName+ - +doc.trackName+\n#
+    <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
+    >+item.artistName+ - +item.trackName+\n+item.collectionName+\n+item.previewUrl+
+
+
 시작:
 c< {regexp: first}
 > 안녕하세요 아테나입니다.

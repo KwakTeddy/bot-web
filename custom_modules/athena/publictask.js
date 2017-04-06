@@ -424,3 +424,74 @@ csv({noheader:true})
     .on('done', function(error) {
     });
 
+function itunesmusic(task, context, callback) {
+    var query = task['1'];
+    var itunesApiSearch = require('itunes-api-search');
+    itunesApiSearch.search( query,{
+        media: 'music',
+        limit: 20, // max 200
+        country: 'US'
+    }, function (err, res) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        context.dialog.item = res.results;
+        var result = [];
+        async.eachSeries(context.dialog.item, function(doc, cb) {
+            var _doc = {
+                title: doc.artistName + ' - ' + doc.trackName,
+                text : doc.collectionName,
+                imageUrl : doc.artworkUrl100,
+                buttons: [{url: doc.previewUrl, text: '30초 듣기'}]
+            };
+            result.push(_doc);
+            cb(null)
+        }, function (err) {
+            task.result = {items: result};
+            if (task.result.items.length == 0) {
+                task.result = null;
+            }
+            callback(task, context);
+        });
+    });
+}
+
+
+exports.itunesmusic = itunesmusic;
+
+function youtube(task, context, callback) {
+    var query = task['1'];
+    var search = require('youtube-search');
+    var opts = {
+        maxResults: 20,
+        key: 'AIzaSyDFfCi-x6iMRxdN_V7U2pSCQFzGseNzSBM'
+    };
+
+    search(query, opts, function(err, res) {
+        if(err) {
+            return console.log(err);
+        }
+        context.dialog.item = res;
+        var result = [];
+        async.eachSeries(context.dialog.item, function(doc, cb) {
+            var _doc = {
+                title: doc.title,
+                text : doc.channelTitle,
+                imageUrl : doc.thumbnails.medium.url,
+                buttons: [{url: doc.link, text: '상세보기'}]
+            };
+            result.push(_doc);
+            cb(null)
+        }, function (err) {
+            task.result = {items: result};
+            if (task.result.items.length == 0) {
+                task.result = null;
+            }
+            callback(task, context);
+        });
+    });
+}
+
+
+exports.youtube = youtube;
