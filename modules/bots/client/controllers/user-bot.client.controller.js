@@ -26,10 +26,27 @@ if (_platform !== 'mobile'){
       console.log(userBot);
       vm.isPublic = true;
       if (userBot && userBot._id && !userBot.public) {
-        if (userBot.templateData)
+        if (userBot.templateData){
           vm.isPublic = true;
-        else
-          vm.isPublic = false;
+        }else {
+          if (vm.userBot.dialogsets.length){
+
+            $resource('/api/dialogueNum/:dialogsets', {}).get({dialogsets: vm.userBot.dialogsets[0]}, function (res) {
+              if (res) {
+                if (res.count > 100){
+                  vm.isPublic = true;
+                }else {
+                  vm.isPublic = false;
+                }
+              }
+            }, function (err) {
+              console.log(err)
+            });
+
+          }else {
+            vm.isPublic = false;
+          }
+        }
       } else {
         vm.userBot.public = true;
       }

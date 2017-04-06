@@ -11,6 +11,7 @@ var path = require('path'),
   UserBotFile = mongoose.model('UserBotFile'),
   UserBotFollow = mongoose.model('UserBotFollow'),
   UserBotFbPage = mongoose.model('UserBotFbPage'),
+  DialogsetDialog = mongoose.model('DialogsetDialog'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   config = require(path.resolve('./config/config')),
   _ = require('lodash'),
@@ -440,6 +441,21 @@ exports.facebookPage = function (req, res) {
   })
 };
 
+
+/**
+ * dailogue Num
+ */
+exports.dialogueNum = function (req, res) {
+ DialogsetDialog.count({dialogset: req.params.dialogsets}).exec(function (err, result) {
+   if(err){
+     console.log(err)
+   }else {
+     console.log(result);
+     var count = { count : result};
+     return res.json(count);
+   }
+ })
+};
 
 
 /**

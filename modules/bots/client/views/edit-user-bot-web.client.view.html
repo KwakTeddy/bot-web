@@ -10,6 +10,7 @@
                         <ul class="nav nav-tabs">
                             <li role="presentation" ng-class="{active: vm.type == 'view'}"><a href="#" ng-click="vm.changeType('view');">챗봇정보</a></li>
                             <li role="presentation" ng-if="vm.isLearnable" ng-class="{active: vm.type == 'learn'}"><a href="#" ng-click="vm.changeType('learn');">대화학습</a></li>
+                            <!--<li role="presentation" ><a href="#" ng-click="vm.changeType('connect');">연결하기</a></li>-->
                         </ul>
                     </div>
 
@@ -82,6 +83,8 @@
                         </div>
                     </div>
 
+                  </div>
+
                 </div>
             </div>
 
@@ -116,7 +119,7 @@
                                 <div class="row">
                                     <div class="col-sm-6 col-md-4">
                                         <div class="thumbnail" style="text-align: center;height: 190px;">
-                                            <img src="/images/sns/kakaotalk-icon1.png" style="height: 100px;margin-top: 5px;">
+                                            <img src="/images/Playchat_logo_small.png" style="height: 100px;margin-top: 5px;">
                                             <div class="caption">
                                                 <p><a href="#" class="btn btn-default" role="button" ng-click="vm.userBot.public = false; vm.create(userBotForm.$valid);">대화파일 없이 만들기</a></p>
                                             </div>
@@ -125,7 +128,7 @@
 
                                     <div class="col-sm-6 col-md-4">
                                         <div class="thumbnail" style="text-align: center;height: 190px;">
-                                            <img src="/images/sns/kakaotalk-icon1.png" style="height: 100px;margin-top: 5px;">
+                                            <img src="/images/Playchat_logo_small.png" style="height: 100px;margin-top: 5px;">
                                             <div class="caption">
                                                 <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('file'); vm.changeType('edit-detail'); vm.unselectTemplate(); ">대화파일 올리기</a></p>
                                             </div>

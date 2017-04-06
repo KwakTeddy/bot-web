@@ -80,7 +80,10 @@ module.exports = function (app) {
     .get(userBots.autoCorrection);
 
   app.route('/api/speech/:msg')
-    .get(userBots.speech)
+    .get(userBots.speech);
+
+  app.route('/api/dialogueNum/:dialogsets')
+    .get(userBots.dialogueNum);
 
   // Finish by binding the userBot middleware
   app.param('userBotId', userBots.userBotByID);
