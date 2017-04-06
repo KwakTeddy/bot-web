@@ -280,61 +280,89 @@ function insertDatasetFile(infile, callback, dialogset) {
 
 exports.insertDatasetFile = insertDatasetFile;
 
+function analysisDoc(doc, bot_id, cb) {
+  processInput(null, doc.input, function(_input, _json) {
+    console.log(">> " + doc.input);
+
+    var nlp = _json._nlp;
+    var node1, node2, link;
+    for(var i = 0; i < nlp.length; i++) {
+      if(nlp[i].pos == 'Noun') {
+        node1 = nlp[i].text;
+        break;
+      }
+    }
+
+    if(node1) {
+      for(var i = nlp.length -1 ; i >= 0; i--) {
+        if(node2 && link) break;
+        if(nlp[i].pos == 'Noun' && nlp[i].text != node1) {
+          node2 = nlp[i].text;
+        } else if(nlp[i].pos == 'Verb' || nlp[i].pos == 'Adjective') {
+          link = nlp[i].text;
+        }
+      }
+    }
+
+    console.log(">> " + node1 + ', ' + node2 + ' ' + link);
+
+    if(node1 && node2 && link) {
+      var task = {
+        doc:{
+          bot_id: bot_id,
+          botUser: null,
+          node1: node1,
+          node2: node2,
+          link: link
+        },
+
+        mongo: {
+          model: 'FactLink',
+          query: {node1: '', node2: '', link: ''},
+          options: {upsert: true}
+        }
+      };
+
+      mongoModule.update(task, null, function(_task, _context) {
+        cb();
+      })
+    } else {
+      cb();
+    }
+
+  })
+}
+
+function analyzeKnowledgeDialog(dialogs, bot_id, result, callback) {
+  var model = mongoModule.getModel('DialogsetDialog');
+  var docs = [];
+  for (var i=0; i < dialogs.length; ++i) {
+    if (typeof dialogs[i].input == "string") {
+      docs.push({input: dialogs[i].input});
+    }
+    else if (Array.isArray(dialogs[i].input)) {
+      for (var j=0; j < dialogs[i].input.length; ++j) {
+        if (typeof dialogs[i].input[j] == "string") {
+          docs.push({input: dialogs[i].input[j]});
+        }
+      }
+    }
+  }
+
+  async.eachSeries(docs, function(doc, cb) {
+    analysisDoc(doc,bot_id, cb);
+  } , function(err) {
+    callback(result);
+  });
+}
+exports.analyzeKnowledgeDialog = analyzeKnowledgeDialog;
+
 function analyzeKnowledge(dialogset, bot_id, result, callback) {
   var model = mongoModule.getModel('DialogsetDialog');
 
-  model.find({dialogset: dialogset}, function(err, docs) {
-    async.eachSeries(docs, function(doc, cb) {
-      processInput(null, doc._doc.input, function(_input, _json) {
-        console.log(">> " + doc._doc.input);
-
-        var nlp = _json._nlp;
-        var node1, node2, link;
-        for(var i = 0; i < nlp.length; i++) {
-          if(nlp[i].pos == 'Noun') {
-            node1 = nlp[i].text;
-            break;
-          }
-        }
-
-        if(node1) {
-          for(var i = nlp.length -1 ; i >= 0; i--) {
-            if(node2 && link) break;
-            if(nlp[i].pos == 'Noun' && nlp[i].text != node1) {
-              node2 = nlp[i].text;
-            } else if(nlp[i].pos == 'Verb' || nlp[i].pos == 'Adjective') {
-              link = nlp[i].text;
-            }
-          }
-        }
-
-        console.log(">> " + node1 + ', ' + node2 + ' ' + link);
-
-        if(node1 && node2 && link) {
-          var task = {
-            doc:{
-              bot_id: bot_id,
-              botUser: null,
-              node1: node1,
-              node2: node2,
-              link: link
-            },
-
-            mongo: {
-              model: 'FactLink',
-              query: {node1: '', node2: '', link: ''},
-              options: {upsert: true}
-            }
-          };
-
-          mongoModule.update(task, null, function(_task, _context) {
-            cb();
-          })
-        } else {
-          cb();
-        }
-
-      })
+  model.find({dialogset: dialogset}).lean().exec(function(err, docs) {
+    async.eachSeries(docs, function(doc,cb) {
+      analysisDoc(doc, bot_id, cb);
     }, function(err) {
       callback(result);
     });
