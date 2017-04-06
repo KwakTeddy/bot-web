@@ -143,10 +143,9 @@ exports.create = function (req, res) {
             });
           },
           function (cb) {
-            // dialogsetModule.analyzeKnowledge_dialog(realbot.dialogs, bot.id, result, function() {
-            //   cb(null);
-            // });
-            cb(null);
+            dialogsetModule.analyzeKnowledgeDialog(realbot.dialogs, bot.id, result, function() {
+               cb(null);
+            });
           },
         ], function (err) {
           res.json(bot);
