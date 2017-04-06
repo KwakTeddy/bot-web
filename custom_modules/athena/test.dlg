@@ -263,16 +263,7 @@ navertask.moviecrawl
 구글검색:
 </([^\b]*)(?:\b|\s).*(검색|찾다)/
 googletask.googlesearchtask
->if (context.dialog.item.length !=0 && context.user.channel == 'socket') 검색결과가 없습니다.
->if (context.dialog.item.length !=0) #item#+index+. +title+\n#
-    <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
-    {action: function (task,context,callback) {
-        task.url = context.dialog.item.url;
-        task.urlMessage = '결과보기';
-        console.log('=======' + context.dialog.item.snippet);
-        callback(task,context);
-    }}
-    >+item.title+\n+item.snippet+\n+url+
+> #item#+index+. +title+\n#
 
 쇼핑:
 </([^\b]*)(?:\b|\s).*(사다|필요하다|쇼핑|얼마|가격)/
