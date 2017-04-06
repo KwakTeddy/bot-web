@@ -182,6 +182,9 @@ exports.read = function (req, res) {
 exports.update = function (req, res) {
   var bot = req.bot;
   bot = _.extend(bot , req.body);
+  for (var i=0; i < bot.dialogsets.length; ++i) {
+    bot.dialogsets[i] = mongoose.Types.ObjectId(bot.dialogsets[i]);
+  }
   async.waterfall([
       function(cb) {
         if (bot.template) {
