@@ -29,8 +29,7 @@ if (_platform !== 'mobile'){
         if (userBot.templateData){
           vm.isPublic = true;
         }else {
-          if (vm.userBot.dialogsets.length){
-
+          if (vm.userBot.dialogsets){
             $resource('/api/dialogueNum/:dialogsets', {}).get({dialogsets: vm.userBot.dialogsets[0]}, function (res) {
               if (res) {
                 if (res.count > 100){
