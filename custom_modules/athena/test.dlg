@@ -288,7 +288,7 @@ googletask.googlesearchtask
 </([^\b]*)(?:\b|\s).*(음악|노래)/
 {action: publictask.itunesmusic}
 >if (context.dialog.item.length !=0 && context.user.channel == 'socket') 검색결과가 없습니다.
->if (context.dialog.item.length !=0) #item#+index+. +artistName+ - +doc.trackName+\n#
+>if (context.dialog.item.length !=0) #item#+index+. +artistName+ - +item.trackName+\n#
     <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
     >+item.artistName+ - +item.trackName+\n+item.collectionName+\n+item.previewUrl+
 
