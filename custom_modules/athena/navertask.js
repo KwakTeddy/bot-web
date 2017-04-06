@@ -95,6 +95,7 @@ var newscrawl = {
             d.body = d.body.replace(/  /g, '');
         });
         context.dialog.item = task.doc;
+        context.dialog.item = context.dialog.item.splice(0,20);
         task.count = task.doc.length;
         var result = [];
         async.eachSeries(context.dialog.item, function(doc, cb) {
