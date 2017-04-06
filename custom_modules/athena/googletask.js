@@ -308,9 +308,9 @@ var googlesearchtask = {
                 cb(null)
             });
         }, function (err) {
-            context.dialog.item = task.doc;
+            context.dialog.search = task.doc;
             var result = [];
-            async.eachSeries(context.dialog.item, function(doc, cb) {
+            async.eachSeries(context.dialog.search, function(doc, cb) {
                 var _doc = {
                     title: doc.title,
                     text : doc.snippet,
@@ -320,7 +320,7 @@ var googlesearchtask = {
                 cb(null)
             }, function (err) {
                 task.result = {items: result};
-                if (task.result.items.length == 0) {
+                if (task.result.items.length == 0 || context.user.channel != 'socket') {
                     task.result = null;
                 }
                 callback(task, context);

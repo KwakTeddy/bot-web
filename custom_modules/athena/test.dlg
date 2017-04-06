@@ -263,7 +263,9 @@ navertask.moviecrawl
 구글검색:
 </([^\b]*)(?:\b|\s).*(검색|찾다)/
 googletask.googlesearchtask
-> #item#+index+. +title+\n#
+>if (context.dialog.search.length !=0) #search#+index+. +title+\n#
+    <{types: [{name: 'search', listName: 'search', typeCheck: 'listTypeCheck'}]}
+    >+search.title+\n+search.snippet+\n+search.url+
 
 쇼핑:
 </([^\b]*)(?:\b|\s).*(사다|필요하다|쇼핑|얼마|가격)/
