@@ -23,6 +23,7 @@ if (_platform !== 'mobile'){
       var vm = this;
       vm.user = Authentication.user;
       vm.userBot = userBot;
+      console.log(userBot);
       vm.isPublic = true;
       if (userBot && userBot._id && !userBot.public) {
         if (userBot.templateData)
@@ -50,7 +51,7 @@ if (_platform !== 'mobile'){
       vm.isMine = (vm.userBot.user != null && (vm.user.username === vm.userBot.user.username));
       vm.isLearnable = (vm.userBot.user != null && (vm.userBot.learn || vm.isMine));
 
-      vm.userBot.userFollow = UserBotsFollowService.list({userBot: vm.userBot, botUserId: vm.user._id}, function(res) {
+      vm.userBot.userFollow = UserBotsFollowService.list({userBot: vm.userBot, botUserId: vm.user._id, check: true}, function(res) {
         if(res.length > 0) vm.userBot.userFollow = true;
         else vm.userBot.userFollow = undefined;
         // console.log(res);
@@ -83,10 +84,7 @@ if (_platform !== 'mobile'){
       };
 
       vm.followBot = function(userBot) {
-        console.log(vm.userBot);
         UserBotsFollowService.follow({botUserId: vm.user._id, userBot: userBot._id}, function(err, result) {
-          console.log(err);
-          console.log(result);
           vm.userBot.userFollow = true;
           // alert('친구로 추가 되었습니다.')
         });

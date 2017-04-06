@@ -446,7 +446,6 @@ exports.facebookPage = function (req, res) {
  * UserBot middleware
  */
 exports.userBotByID = function (req, res, next, id) {
-  console.log(123123);
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
       message: 'UserBot is invalid'

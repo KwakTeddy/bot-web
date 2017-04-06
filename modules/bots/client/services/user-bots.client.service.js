@@ -14,7 +14,7 @@ angular.module('user-bots').factory('UserBotsService', ['$resource',
   ])
   .factory('UserBotsFollowService', ['$resource',
     function ($resource) {
-      return $resource('api/bots/follow', null, {
+      return $resource('api/follow', null, {
         list: {
           method: 'POST', isArray: true
         },

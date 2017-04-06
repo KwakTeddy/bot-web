@@ -3,7 +3,6 @@
 angular.module('core').controller('UserBotHeaderController', ['$scope', '$state', 'Authentication', '$location', '$rootScope', 'UserBotsService',
   function ($scope, $state, Authentication, $location, $rootScope, UserBotsService) {
     // Expose view variables
-      console.log(123);
     $scope.$state = $state;
     $scope.authentication = Authentication;
     $scope.currentUrl = $location.absUrl();
