@@ -377,7 +377,7 @@ exports.followList = function (req, res) {
   var perPage = req.body.perPage || 10;
   query['followed'] = true;
   if(req.body.botUserId) query['botUserId'] = req.body.botUserId;
-  if(req.body.bot) query['bot'] = req.body.bot._id;
+  if(req.body.userBot) query['bot'] = req.body.userBot._id;
   if(req.body.query) search['name'] = new RegExp(req.body.query, 'i');
   var populateQuery = [];
 
@@ -392,6 +392,9 @@ exports.followList = function (req, res) {
         if(follows[i].bot && (follows[i].bot.public == true)){
           bots.push(follows[i].bot);
         }
+        if(req.body.check){
+          bots.push(follows[i].bot);
+        }
       }
       res.json(bots);
       // res.json(follows);
@@ -400,10 +403,9 @@ exports.followList = function (req, res) {
 };
 
 exports.followBot = function(req, res) {
-  console.log(3333);
   var query = {};
   query['botUserId'] = req.body.botUserId;
-  query['bot'] = req.body.bot;
+  query['bot'] = req.body.userBot;
   BotFollow.findOne(query).exec(function (err, follows) {
     if (err){
       console.log(err);
@@ -412,7 +414,12 @@ exports.followBot = function(req, res) {
       });
     }else {
       if (!follows){
-        var botFollow = new BotFollow(req.body);
+        var changer = {};
+        changer = req.body;
+        Object.defineProperty(changer, 'bot', Object.getOwnPropertyDescriptor(changer, 'userBot'));
+        delete changer['userBot'];
+
+        var botFollow = new BotFollow(changer);
         if(!botFollow.followed) {
           botFollow.followed = true;
         }
@@ -423,7 +430,7 @@ exports.followBot = function(req, res) {
               message: errorHandler.getErrorMessage(err)
             });
           } else {
-            Bot.findOne({_id: req.body.bot}).exec(function (err, result) {
+            Bot.findOne({_id: req.body.userBot}).exec(function (err, result) {
               result.followed++;
               result.save(function (err) {
                 console.log(err)
@@ -433,6 +440,9 @@ exports.followBot = function(req, res) {
           }
         });
       }else {
+        if (follows.followed == true){
+          return res.end();
+        }
         follows.followed = true;
         follows.save(function (err) {
           if (err) {
@@ -441,11 +451,11 @@ exports.followBot = function(req, res) {
               message: errorHandler.getErrorMessage(err)
             });
           }
-          Bot.findOne({_id: req.body.bot}).exec(function (err, result) {
+          Bot.findOne({_id: req.body.userBot}).exec(function (err, result) {
             result.followed++;
             result.save(function (err) {
               console.log(err)
-              res.json(botFollow);
+              res.end();
             })
           });
         });
@@ -455,14 +465,19 @@ exports.followBot = function(req, res) {
 };
 
 exports.unfollowBot = function(req, res) {
-  BotFollow.findOne({bot: req.query.bot, botUserId: req.query.botUserId}).exec(function (err, result) {
+  BotFollow.findOne({bot: req.query.userBot, botUserId: req.query.botUserId}).exec(function (err, result) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     }else {
       if (!result){
-        var botFollow = new BotFollow(req.query);
+        var changer = {};
+        changer = req.query;
+        Object.defineProperty(changer, 'bot', Object.getOwnPropertyDescriptor(changer, 'userBot'));
+        delete changer['userBot'];
+
+        var botFollow = new BotFollow(changer);
         botFollow.save(function (err) {
           if (err) {
             console.log(err);
@@ -470,7 +485,7 @@ exports.unfollowBot = function(req, res) {
               message: errorHandler.getErrorMessage(err)
             });
           } else {
-            Bot.findOne({_id: req.query.bot}).exec(function (err, result) {
+            Bot.findOne({_id: req.query.userBot}).exec(function (err, result) {
               result.followed--;
               result.save(function (err) {
                 console.log(err);
@@ -480,6 +495,9 @@ exports.unfollowBot = function(req, res) {
           }
         });
       }else {
+        if (result.followed == false){
+          return res.end();
+        }
         result.followed = false;
         result.save(function (err) {
           if (err){
@@ -488,7 +506,7 @@ exports.unfollowBot = function(req, res) {
               message: errorHandler.getErrorMessage(err)
             });
           }else {
-            Bot.findOne({_id: req.query.bot}).exec(function (err, result) {
+            Bot.findOne({_id: req.query.userBot}).exec(function (err, result) {
               result.followed--;
               result.save(function (err) {
                 console.log(err)
@@ -518,11 +536,12 @@ exports.botExist = function(req, res) {
  * Bot middleware
  */
 exports.botByID = function (req, res, next, id) {
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).send({
-      message: 'Bot is invalid'
-    });
-  }
+  console.log(id);
+  // if (!mongoose.Types.ObjectId.isValid(id)) {
+  //   return res.status(400).send({
+  //     message: 'Bot is invalid'
+  //   });
+  // }
 
   Bot.findById(id).populate('user').exec(function (err, bot) {
     if (err) {

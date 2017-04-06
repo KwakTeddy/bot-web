@@ -35,7 +35,7 @@ module.exports = function (app) {
   app.route('/api/bots/byNameId/:botNameId')
     .get(bots.read);
 
-  app.route('/api/bots/follow')
+  app.route('/api/follow')
     .post(bots.followList)
     .put(bots.followBot)
     .delete(bots.unfollowBot);

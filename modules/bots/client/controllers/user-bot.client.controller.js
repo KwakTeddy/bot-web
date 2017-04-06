@@ -8,16 +8,6 @@ var setInput = function(cur) {
   currentNode = cur.replace(/_/g,'.');
 };
 
-var findAddress = function() {
-  new daum.Postcode({
-    oncomplete: function(data) {
-      // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
-      // 예제를 참고하여 다양한 활용법을 확인해 보세요.
-      document.getElementsByName("root[address]")[0].value = data.address;
-    }
-  }).open();
-};
-
 if (_platform !== 'mobile'){
   $(document).ready(function() {
     $('[data-toggle="tooltip"]').tooltip();
@@ -33,6 +23,7 @@ if (_platform !== 'mobile'){
       var vm = this;
       vm.user = Authentication.user;
       vm.userBot = userBot;
+      console.log(userBot);
       vm.isPublic = true;
       if (userBot && userBot._id && !userBot.public) {
         if (userBot.templateData)
@@ -43,11 +34,24 @@ if (_platform !== 'mobile'){
         vm.userBot.public = true;
       }
 
+      vm.findAddress = function() {
+        new daum.Postcode({
+          oncomplete: function(data) {
+            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+            // 예제를 참고하여 다양한 활용법을 확인해 보세요.
+            //document.getElementsByName("address1")[0].value = data.address;
+            $scope.$apply(function () {
+              vm.address1 = data.address;
+            });
+          }
+        }).open();
+      };
+
       vm.userId = $rootScope.userId;
       vm.isMine = (vm.userBot.user != null && (vm.user.username === vm.userBot.user.username));
       vm.isLearnable = (vm.userBot.user != null && (vm.userBot.learn || vm.isMine));
 
-      vm.userBot.userFollow = UserBotsFollowService.list({userBot: vm.userBot, botUserId: vm.user._id}, function(res) {
+      vm.userBot.userFollow = UserBotsFollowService.list({userBot: vm.userBot, botUserId: vm.user._id, check: true}, function(res) {
         if(res.length > 0) vm.userBot.userFollow = true;
         else vm.userBot.userFollow = undefined;
         // console.log(res);
@@ -80,10 +84,7 @@ if (_platform !== 'mobile'){
       };
 
       vm.followBot = function(userBot) {
-        console.log(vm.userBot);
         UserBotsFollowService.follow({botUserId: vm.user._id, userBot: userBot._id}, function(err, result) {
-          console.log(err);
-          console.log(result);
           vm.userBot.userFollow = true;
           // alert('친구로 추가 되었습니다.')
         });
@@ -456,6 +457,7 @@ if (_platform !== 'mobile'){
             //TODO: move to template definition
             if (key === 'address') {
               schema[key]["options"] = {grid_columns: 12};
+              schema[key]["readonly"] = true;
             }
             if (key === 'startTime')
               schema[key]["default"] = '09:00';
@@ -511,6 +513,17 @@ if (_platform !== 'mobile'){
             return errors;
           }
 
+          if (path === "root.address") {
+            if (value === "") {
+              errors.push({
+                path: path,
+                property: 'format',
+                message: schema.title + "를 입력해주세요"
+              });
+              return errors;
+            }
+          }
+
           if (schema.format !== "image" && value === "") {
             // Errors must be an object with `path`, `property`, and `message`
             var msg;
@@ -559,14 +572,37 @@ if (_platform !== 'mobile'){
           grid_columns: 3,
         });
 
+        // special handling for address
         if (document.getElementsByName("root[address]").length == 1) {
-          var innerHTML = '&nbsp;&nbsp;&nbsp;<button class="btn btn-default" onClick="javascript:findAddress()" >주소검색</button>';
+          var innerHTML = '&nbsp;&nbsp;&nbsp;<button class="btn btn-default" ng-click="vm.findAddress()" >주소검색</button>';
           document.getElementsByName("root[address]")[0].insertAdjacentHTML("beforebegin", innerHTML);
+          innerHTML = '<div name="mine" class="row" style="padding-top:10px">';
+          innerHTML += '<div class="col-md-7"><input ng-model="vm.address1" type="text" class="form-control" name="address1" disabled></div>';
+          innerHTML += '<div class="col-md-5"><input ng-model="vm.address2" ng-disabled="!vm.address1" type="text" class="form-control" name="address2"></div>';
+          innerHTML += "</div>";
+          document.getElementsByName("root[address]")[0].insertAdjacentHTML("beforebegin", innerHTML);
+          document.getElementsByName("root[address]")[0].style.display = "none";
         }
         $compile(document.getElementById('editor_holder'))($scope);
         if (vm.userBot.templateId === template._id) {
           console.log("given input=" + JSON.stringify(vm.userBot.templateData));
           editor.setValue(vm.userBot.templateData);
+        }
+
+        vm.address1 = "";
+        vm.address2 = "";
+
+        $scope.$watch('vm.address2', function () {
+          if (vm.address2 && vm.address2 != "")
+            editor.getEditor("root.address").setValue(vm.address1 + ", " + vm.address2);
+          else
+            editor.getEditor("root.address").setValue("");
+        });
+
+        if (vm.userBot.templateData && vm.userBot.templateData.address) {
+          var addrs = vm.userBot.templateData.address.split(',');
+          vm.address1 = addrs[0];
+          vm.address2 = addrs[1];
         }
 
         editor.on('change', function() {
