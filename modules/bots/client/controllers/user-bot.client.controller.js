@@ -80,7 +80,10 @@ if (_platform !== 'mobile'){
       };
 
       vm.followBot = function(userBot) {
+        console.log(vm.userBot);
         UserBotsFollowService.follow({botUserId: vm.user._id, userBot: userBot._id}, function(err, result) {
+          console.log(err);
+          console.log(result);
           vm.userBot.userFollow = true;
           // alert('친구로 추가 되었습니다.')
         });

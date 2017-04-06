@@ -19,6 +19,7 @@ angular.module('user-bots').config(['$stateProvider',
         controller: 'UserBotListController',
         controllerAs: 'vm',
         resolve: {
+          botResolve: getBot,
           userBotsResolve: getUserBots
         }
       })
@@ -55,7 +56,6 @@ angular.module('user-bots').config(['$stateProvider',
         controller: 'UserBotFilesController',
         controllerAs: 'vm',
         resolve: {
-          userBotResolve: getUserBot,
           userBotFilesResolve: getUserBotFiles
         }
       })
@@ -84,7 +84,7 @@ function getUserBots(UserBotsService, $stateParams) {
 
 getUserBot.$inject = ['UserBotsService', '$stateParams'];
 function getUserBot(UserBotsService, $stateParams) {
-  console.log($stateParams.userBotId)
+  console.log($stateParams.userBotId);
   return UserBotsService.get({
     userBotId: $stateParams.userBotId
   }).$promise;
@@ -108,3 +108,36 @@ function readUserBotFile(UserBotFilesService, $stateParams) {
     fileId: $stateParams.fileId
   }).$promise;
 }
+
+//
+// getBots.$inject = ['BotsService'];
+// function getBots(BotsService) {
+//     return BotsService.query().$promise;
+// }
+//
+// getBot.$inject = ['BotsService', '$stateParams'];
+// function getBot(BotsService, $stateParams) {
+//   console.log(34512);
+//     return BotsService.get({
+//         botId: $stateParams.botId
+//     }).$promise;
+// }
+//
+// newBot.$inject = ['BotsService'];
+// function newBot(BotsService) {
+//     return new BotsService();
+// }
+//
+// getBotFiles.$inject = ['BotFilesService', '$stateParams'];
+// function getBotFiles(BotFilesService, $stateParams) {
+//     return BotFilesService.query({
+//         botId: $stateParams.botId
+//     }).$promise;
+// }
+// readBotFile.$inject = ['BotFilesService', '$stateParams'];
+// function readBotFile(BotFilesService, $stateParams) {
+//     return BotFilesService.get({
+//         botId: $stateParams.botId,
+//         fileId: $stateParams.fileId
+//     }).$promise;
+// }
