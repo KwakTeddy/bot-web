@@ -108,6 +108,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
     var parsedString = stingParser.split('.');
 
     $scope.privacy = function () {
+      console.log(123);
       var modalInstance = $uibModal.open({
           templateUrl: 'modules/users/client/views/authentication/signup.client.privacy.view.html',
           scope: $scope
