@@ -270,7 +270,7 @@ function navershopping(task, context, callback) {
     var request = require('request');
 
     request({
-        url: 'https://openapi.naver.com/v1/search/shop.json?start=1&display=30&sort=sim',
+        url: 'https://openapi.naver.com/v1/search/shop.json?start=1&display=10&sort=sim',
         method: 'GET',
         qs: query,
         headers: {
