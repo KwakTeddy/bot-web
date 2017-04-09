@@ -268,6 +268,13 @@ navertask.moviecrawl
     <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
     >+item.title+\n+item.roadAddress+\n+item.telephone+
 
+구글검색:
+</([^\b]*)(?:\b|\s).*(검색|찾다)/
+googletask.googlesearchtask
+>if (context.dialog.search.length !=0) #search#+index+. +title+\n#
+    <{types: [{name: 'search', listName: 'search', typeCheck: 'listTypeCheck'}]}
+    >+search.title+\n+search.snippet+\n+search.url+
+
 <검색
 >어떤 것을 찾으시나요?\n검색어를 입력해주세요.
     </([^\b]*)/
@@ -276,12 +283,14 @@ navertask.moviecrawl
         <{types: [{name: 'search', listName: 'search', typeCheck: 'listTypeCheck'}]}
         >+search.title+\n+search.snippet+\n+search.url+
 
-구글검색:
-</([^\b]*)(?:\b|\s).*(검색|찾다)/
-googletask.googlesearchtask
->if (context.dialog.search.length !=0) #search#+index+. +title+\n#
-    <{types: [{name: 'search', listName: 'search', typeCheck: 'listTypeCheck'}]}
-    >+search.title+\n+search.snippet+\n+search.url+
+쇼핑:
+</([^\b]*)(?:\b|\s).*(사다|필요하다|쇼핑|얼마|가격)/
+{action: navertask.navershopping}
+>if (context.dialog.item.length !=0 && context.user.channel == 'socket') 검색결과가 없습니다.
+>if (context.dialog.item.length !=0) #item#+index+. +title+\n+lprice+\n#
+    <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
+    >+item.title+\n+item.lprice+ ~ +item.hprice+\n+item.link+
+>if (context.dialog.item.length ==0) 검색결과가 없습니다.
 
 <쇼핑
 <가격
@@ -294,15 +303,6 @@ googletask.googlesearchtask
         >+item.title+\n+item.lprice+ ~ +item.hprice+\n+item.link+
     >if (context.dialog.item.length ==0) 검색결과가 없습니다.
 
-쇼핑:
-</([^\b]*)(?:\b|\s).*(사다|필요하다|쇼핑|얼마|가격)/
-{action: navertask.navershopping}
->if (context.dialog.item.length !=0 && context.user.channel == 'socket') 검색결과가 없습니다.
->if (context.dialog.item.length !=0) #item#+index+. +title+\n+lprice+\n#
-    <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
-    >+item.title+\n+item.lprice+ ~ +item.hprice+\n+item.link+
->if (context.dialog.item.length ==0) 검색결과가 없습니다.
-
 주변검색둘:
 < {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}]}
 {action: navertask.searchNaver}
@@ -311,6 +311,15 @@ googletask.googlesearchtask
 >if(context.dialog.item.length != 0) \"+inRaw+\"에 대한 주변 검색 결과입니다.\n#item#+index+. +title+\n#
     <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
     >+item.title+\n+item.roadAddress+\n+item.telephone+
+
+음악:
+</([^\b]*)(?:\b|\s).*(음악|노래)/
+{action: publictask.itunesmusic}
+>if (context.dialog.item.length !=0 && context.user.channel == 'socket') 검색결과가 없습니다.
+>if (context.dialog.item.length !=0) #item#+index+. +artistName+ - +item.trackName+\n#
+    <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
+    >+item.artistName+ - +item.trackName+\n+item.collectionName+\n+item.previewUrl+
+>if (context.dialog.item.length ==0) 검색결과가 없습니다.
 
 <음악
 >어떤 음악을 찾아드릴까요?\n가수명 혹은 곡명을 입력해주세요.
@@ -322,13 +331,13 @@ googletask.googlesearchtask
         >+item.artistName+ - +item.trackName+\n+item.collectionName+\n+item.previewUrl+
     >if (context.dialog.item.length ==0) 검색결과가 없습니다.
 
-음악:
-</([^\b]*)(?:\b|\s).*(음악|노래)/
-{action: publictask.itunesmusic}
+동영상:
+</([^\b]*)(?:\b|\s).*(동영상|영상|비디오)/
+{action: publictask.youtube}
 >if (context.dialog.item.length !=0 && context.user.channel == 'socket') 검색결과가 없습니다.
->if (context.dialog.item.length !=0) #item#+index+. +artistName+ - +item.trackName+\n#
+>if (context.dialog.item.length !=0) #item#+index+. +title+\n+lprice+\n#
     <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
-    >+item.artistName+ - +item.trackName+\n+item.collectionName+\n+item.previewUrl+
+    >+item.title+\n+item.lprice+ ~ +item.hprice+\n+item.link+
 >if (context.dialog.item.length ==0) 검색결과가 없습니다.
 
 <동영상
@@ -340,15 +349,6 @@ googletask.googlesearchtask
         <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
         >+item.title+\n+item.lprice+ ~ +item.hprice+\n+item.link+
     >if (context.dialog.item.length ==0) 검색결과가 없습니다.
-
-동영상:
-</([^\b]*)(?:\b|\s).*(동영상|영상|비디오)/
-{action: publictask.youtube}
->if (context.dialog.item.length !=0 && context.user.channel == 'socket') 검색결과가 없습니다.
->if (context.dialog.item.length !=0) #item#+index+. +title+\n+lprice+\n#
-    <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
-    >+item.title+\n+item.lprice+ ~ +item.hprice+\n+item.link+
->if (context.dialog.item.length ==0) 검색결과가 없습니다.
 
 </([^\b]*)(?:\b|\s).*(들려주다|틀어주다|듣다)/
 {action: publictask.itunesmusic}
