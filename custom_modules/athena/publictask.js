@@ -475,12 +475,20 @@ function youtube(task, context, callback) {
         context.dialog.item = res;
         var result = [];
         async.eachSeries(context.dialog.item, function(doc, cb) {
-            var _doc = {
-                title: doc.title,
-                text : doc.channelTitle,
-                imageUrl : doc.thumbnails.medium.url,
-                buttons: [{url: doc.link, text: '상세보기'}]
-            };
+            if (doc.thumbnails) {
+                var _doc = {
+                    title: doc.title,
+                    text: doc.channelTitle,
+                    imageUrl: doc.thumbnails.medium.url,
+                    buttons: [{url: doc.link, text: '상세보기'}]
+                };
+            } else {
+                var _doc = {
+                    title: doc.title,
+                    text: doc.channelTitle,
+                    buttons: [{url: doc.link, text: '상세보기'}]
+                };
+            }
             result.push(_doc);
             cb(null)
         }, function (err) {
