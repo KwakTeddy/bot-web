@@ -29,7 +29,6 @@ exports.messageGet =  function(req, res) {
       }else {
           bot = context.botUser.orgBot
       }
-      console.log(util.inspect(bot));
       // var bot = context.botUser.orgBot || context.bot;
 
       if (req.query['hub.mode'] === 'subscribe' &&
