@@ -444,6 +444,7 @@ exports.followBot = function(req, res) {
               message: errorHandler.getErrorMessage(err)
             });
           } else {
+            console.log(req.body.userBot);
             Bot.findOne({_id: req.body.userBot}).exec(function (err, result) {
               result.followed++;
               result.save(function (err) {

@@ -171,7 +171,8 @@ function getUserBotsWeb(UserBotsService, UserBotsFollowService, $stateParams, $r
     else if($stateParams['listType'] == 'my') return UserBotsService.query({my: '1', botUserId: Authentication.user._id }).$promise;
     else return UserBotsService.query().$promise;
   } else {
-    return UserBotsService.query().$promise;
+    return UserBotsService.query({sort: '-followed'}).$promise;
+    // return UserBotsService.query().$promise;
   }
 }
 
