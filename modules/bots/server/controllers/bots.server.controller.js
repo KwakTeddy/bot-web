@@ -499,13 +499,7 @@ exports.unfollowBot = function(req, res) {
               message: errorHandler.getErrorMessage(err)
             });
           } else {
-            Bot.findOne({_id: req.query.userBot}).exec(function (err, result) {
-              result.followed--;
-              result.save(function (err) {
-                console.log(err);
-                res.json(botFollow);
-              })
-            });
+            res.json(botFollow);
           }
         });
       }else {
@@ -521,9 +515,13 @@ exports.unfollowBot = function(req, res) {
             });
           }else {
             Bot.findOne({_id: req.query.userBot}).exec(function (err, result) {
-              result.followed--;
+              if (result.followed <= 0){
+                result.followed = 0;
+              }else {
+                result.followed--;
+              }
               result.save(function (err) {
-                console.log(err)
+                console.log(err);
                 res.end();
               })
             });

@@ -8,10 +8,6 @@ angular.module('core').controller('UserBotHeaderController', ['$scope', '$state'
     $scope.currentUrl = $location.absUrl();
 
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-      console.log(toState);
-      console.log(toParams);
-
-
       if (toState.name == 'home'){
           $scope.title = '플레이챗 PlayChat - 1분만에 만드는 인공지능 챗봇 머니브레인 MoneyBrain Inc';
       } else if (toState.name == 'user-bots-web.list'){
