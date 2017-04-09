@@ -139,7 +139,7 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
         var innerHTML =
           '<div class="chat-items owl-carousel owl-theme" style="clear: both">';
 
-        var numOfItems = 3;
+        var numOfItems = 5;
         for(var i in items) {
           innerHTML += '<div class="item" >' +
             '<div class="thumbnail" style="background-color:black">';
@@ -175,7 +175,7 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
           items: numOfItems,
         });
 
-        main.scrollTop = main.scrollHeight - main.clientHeight;
+        //main.scrollTop = main.scrollHeight - main.clientHeight;
 
       };
 

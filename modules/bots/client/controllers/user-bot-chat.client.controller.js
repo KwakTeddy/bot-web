@@ -645,7 +645,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         items: 2
       });
 
-      main.scrollTop = main.scrollHeight - main.clientHeight;
+      main.scrollTop = main.scrollHeight;
     }
 
     function addUserBubble(msg) {
