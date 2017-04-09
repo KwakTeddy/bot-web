@@ -23,7 +23,6 @@ if (_platform !== 'mobile'){
       var vm = this;
       vm.user = Authentication.user;
       vm.userBot = userBot;
-      console.log(userBot);
       vm.isPublic = true;
       if (userBot && userBot._id && !userBot.public) {
         if (userBot.templateData){

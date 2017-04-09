@@ -21,7 +21,7 @@
                 <div class="text-center" ng-show = "!vm.userBots.length">
                     <h2>해당하는 챗봇을 찾을 수 없네요</h2>
                 </div>
-                <div class="col-md-3" ng-repeat="userBot in vm.userBots">
+                <div class="col-md-3" ng-repeat="userBot in vm.userBots | orderBy: '-followed'">
                     <!--<div class="thumbnail" ng-click="vm.userBotChat(userBot)">-->
 
                     <div class="thumbnail">
