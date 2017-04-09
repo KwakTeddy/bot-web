@@ -61,6 +61,7 @@ exports.processInput = function(context, inRaw, callback) {
 
       _in = _inNLP.join(' ');
       _in = _in.replace(/(?:\{ | \})/g, '+');
+      if(_in == '') _in = inRaw;
 
       context.botUser.nlpAll = _nlpAll;
       context.botUser.nlp = _nlp;
