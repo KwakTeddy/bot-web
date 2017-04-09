@@ -30,11 +30,11 @@
 
                 <div class="col-md-3" ng-repeat="userBot in vm.userBots | orderBy: '-followed'">
                     <!--<div class="thumbnail" ng-click="vm.userBotChat(userBot)">-->
-                  <a href="#" ui-sref="user-bots-web.view({userBotId: userBot._id, noGraph:false})">
+                  <a href="#" ui-sref="user-bots-web.view({userBotId: userBot._id})">
                     <div class="thumbnail">
-                        <img src="{{userBot.imageFile}}" ui-sref="user-bots-web.view({userBotId: userBot._id, noGraph:false})" style="background-color: #ccc;">
+                        <img src="{{userBot.imageFile}}" ui-sref="user-bots-web.view({userBotId: userBot._id})" style="background-color: #ccc;">
                         <div class="caption">
-                            <h3 class="bot-title" ui-sref="user-bots-web.view({userBotId: userBot._id, noGraph:false})">{{userBot.name}}</h3>
+                            <h3 class="bot-title" ui-sref="user-bots-web.view({userBotId: userBot._id})">{{userBot.name}}</h3>
                             <p class="bot-desc">{{userBot.description}}</p>
                             <!--<p class="bot-buttons">-->
                             <!--<a href="#" class="btn btn-primary" role="button" ng-click="vm.followBot(userBot);">친구추가</a>-->
