@@ -9,7 +9,7 @@
                         <ul class="nav nav-tabs">
                             <li role="presentation" ng-class="{active: vm.type == 'view'}"><a href="#" ng-click="vm.changeType('view');">챗봇정보</a></li>
                             <li role="presentation" ng-if="vm.isLearnable" ng-class="{active: vm.type == 'learn'}"><a href="#" ng-click="vm.changeType('learn');">대화학습</a></li>
-                            <!--<li role="presentation" ><a href="#" ng-click="vm.changeType('connect');">연결하기</a></li>-->
+                            <li role="presentation" ng-class="{active: vm.type == 'connect'}"><a href="#" ng-click="vm.changeType('connect');">연결하기</a></li>
                         </ul>
                     </div>
                     <div class="bot-list-header" ng-show="vm.state=='create'" style="border-bottom: 1px solid lightgray;">
@@ -330,6 +330,7 @@
                             <ul class="nav nav-tabs">
                                 <li role="presentation" ng-class="{active: vm.type == 'view'}"><a href="#" ng-click="vm.changeType('view');">챗봇정보</a></li>
                                 <li role="presentation" ng-class="{active: vm.type == 'learn'}"><a href="#" ng-click="vm.changeType('learn');">대화학습</a></li>
+                                <li role="presentation" ng-class="{active: vm.type == 'connect'}"><a href="#" ng-click="vm.changeType('connect');">연결하기</a></li>
                             </ul>
                         </div>
 
@@ -405,6 +406,13 @@
                                 <li role="presentation" ng-class="{active: vm.type == 'learn'}"><a href="#" ng-click="vm.changeType('learn');">대화학습</a></li>
                                 <li role="presentation" ng-class="{active: vm.type == 'connect'}"><a href="#" ng-click="vm.changeType('connect');">연결하기</a></li>
                             </ul>
+                        </div>
+                        <div class="bot-list-header" ng-show="vm.state=='view'" style="border-bottom: 1px solid lightgray;">
+                          <ul class="nav nav-tabs">
+                            <li role="presentation" ng-class="{active: vm.type == 'view'}"><a href="#" ng-click="vm.changeType('view');">챗봇정보</a></li>
+                            <li role="presentation" ng-class="{active: vm.type == 'learn'}"><a href="#" ng-click="vm.changeType('learn');">대화학습</a></li>
+                            <li role="presentation" ng-class="{active: vm.type == 'connect'}"><a href="#" ng-click="vm.changeType('connect');">연결하기</a></li>
+                          </ul>
                         </div>
 
                         <div ng-show="vm.learning">
