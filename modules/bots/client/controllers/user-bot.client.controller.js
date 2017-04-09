@@ -129,7 +129,8 @@ if (_platform !== 'mobile'){
 
       vm.kakaoShare = function () {
         $scope.location = location.href;
-        console.log(vm.userBot.description);
+        console.log(vm.userBot);
+        console.log($scope.location);
         Kakao.Story.share({
           url: $scope.location,
           text: vm.userBot.name+'-'+ vm.userBot.description
