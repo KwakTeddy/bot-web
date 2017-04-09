@@ -572,6 +572,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     function addButtons(replies) {
       if(replies == undefined) return;
 
+
       var innerHTML = '';
       innerHTML = '<div id="smart_reply" class="smart_reply owl-carousel owl-theme" >';
 
@@ -590,6 +591,11 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       } else {
         main = document.getElementById('chat_main');
         main.style.padding = '10px 0px 30px 0px';
+
+        // reset owl
+        while (main.hasChildNodes()) {
+          main.removeChild(main.firstChild);
+        }
       }
 
       main.insertAdjacentHTML('beforeend', innerHTML);
@@ -645,7 +651,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         items: 2
       });
 
-      main.scrollTop = main.scrollHeight;
+      main.scrollTop = main.scrollHeight - main.clientHeight;
     }
 
     function addUserBubble(msg) {

@@ -2,8 +2,9 @@
 
 // Bots controller
 angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope', '$rootScope', '$state', '$window',
-'$timeout', '$stateParams', '$resource', '$document', '$cookies', 'Authentication', 'userBotResolve',
-    function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, $document, $cookies, Authentication, userBot) {
+'$timeout', '$stateParams', '$resource', '$document', '$cookies', '$compile', 'Authentication', 'userBotResolve',
+    function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, $document, $cookies, $compile,
+              Authentication, userBot) {
       var vm = this;
       //vm.user = Authentication.user;
       vm.userId = $rootScope.userId;
@@ -15,8 +16,9 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
 
       $rootScope.$broadcast('setUserBotAlways', userBot);
 
-      vm.sendMsg = function() {
-        $rootScope.$broadcast('sendMsgFromFarAway', vm.question);
+      vm.sendMsg = function(msg) {
+        var q = msg ? msg : vm.question;
+        $rootScope.$broadcast('sendMsgFromFarAway', q);
         vm.question = '';
       };
 
@@ -174,10 +176,44 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
           margin: 0,
           items: numOfItems,
         });
-
-        //main.scrollTop = main.scrollHeight - main.clientHeight;
-
       };
+
+      var buttons = document.getElementById('buttons');
+      function addButtons(replies) {
+        if(replies == undefined) return;
+
+        var innerHTML = '';
+        innerHTML = '<div id="smart_reply" class="smart_reply owl-carousel owl-theme my_smart" >';
+
+        for(var i in replies) {
+          innerHTML += '<div class="item">' +
+            '<button ng-click="vm.sendMsg(\'' + replies[i] + '\')" style="width: auto;" >' + replies[i] + '</button>' +
+            '</div>';
+        }
+
+        innerHTML += '</div>';
+
+        buttons.style.padding = '10px 0px 30px 0px';
+
+        buttons.insertAdjacentHTML('beforeend', innerHTML);
+
+        var replies = document.getElementById('smart_reply').childNodes;
+        for(var i in replies) {
+          var child = replies[i].firstChild;
+          if(child && child.style) child.style.width = (child.offsetWidth + 5 ) + 'px';
+        }
+
+        var element = angular.element(document.querySelector('#smart_reply'));
+        $compile(element.contents())($scope);
+
+        $('.smart_reply').owlCarousel({
+          loop:false,
+          nav:false,
+          dots: false,
+          margin: 3,
+          autoWidth: true
+        });
+      }
 
       var resetOwl = function() {
         while (main.hasChildNodes()) {
@@ -185,15 +221,29 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
         }
       };
 
+      var resetButtons = function() {
+        while (buttons.hasChildNodes()) {
+          buttons.removeChild(buttons.firstChild);
+        }
+      };
+
       $scope.$on('onmsg', function(event, arg0) {
+        if (!vm.isAnswer) {
+          resetOwl();
+        }
+
+        resetButtons();
+
         if (arg0.message.items) {
           vm.isAnswer = false;
           addItems(arg0.message.items);
           return;
         }
 
-        if (!vm.isAnswer)
-          resetOwl();
+        if(arg0.message.smartReply) {
+          vm.isAnswer = true;
+          addButtons(arg0.message.smartReply);
+        }
 
         if (arg0.message.image) {
           vm.isAnswer = false;

@@ -1,40 +1,40 @@
 <style>
 
-  .link {
-    stroke: #999;
-    stroke-opacity: .6;
-  }
+    .link {
+        stroke: #999;
+        stroke-opacity: .6;
+    }
 
-  #child{
-  }
+    #child{
+    }
 
-  .link.child {
-  }
+    .link.child {
+    }
 
-  circle {
-    cursor: pointer;
-    stroke: #fff;
-    stroke-width: 2px;
-  }
+    circle {
+        cursor: pointer;
+        stroke: #fff;
+        stroke-width: 2px;
+    }
 
-  circle.node.highlighted {
-    fill: lightblue;
-    stroke: important;
-    stroke-width: 3px;
-  }
+    circle.node.highlighted {
+        fill: lightblue;
+        stroke: important;
+        stroke-width: 3px;
+    }
 
-  text {
-    font: 12px 돋음체;
-    font-weight: bold;
-  }
+    text {
+        font: 12px 돋음체;
+        font-weight: bold;
+    }
 
-  .edgelabel {
-    pointer-events: none;
-    font-weight: bold;
-    font-size: 10px;
-    text-anchor: middle;
-    alignment-baseline: middle;
-  }
+    .edgelabel {
+        pointer-events: none;
+        font-weight: bold;
+        font-size: 10px;
+        text-anchor: middle;
+        alignment-baseline: middle;
+    }
     .graph-svg-component {
         background-color: black;
     }
@@ -87,6 +87,10 @@
         padding:5px 5px 15px 5px;
     }
 
+    .my_smart {
+        width: 100%;
+        bottom: 50%;
+    }
     .imageType {
         height: 150px !important;
         width: auto !important;
@@ -119,6 +123,8 @@
     </div>
     <div id="chat-main" style="position:absolute; top:30%; left:20%; width:60%; height:35%; text-align:center">
     </div>
+    <div id="buttons" style="position:absolute; top:65%; left:35%; width:30%; height:10%; text-align:center">
+    </div>
     <form id="f" novalidate="novalidate" ng-submit="vm.sendMsg();">
     <div style="position:absolute; top:70%; width:100%; text-align:center">
         <input type="text" id="question" autocomplete="off" class="input" size="40" ng-model="vm.question"/>
@@ -128,12 +134,12 @@
     </div>
     </form>
 
-    <div style="position:absolute; top:2%; left:90%;">
-        <a class="btn-xs" style="color:white" ng-click="vm.noGraph()" ui-sref="user-bots-web.view({userBotId: vm.userBot._id, noGraph:'t'})">
-            다시보지 않기
-        </a>
-        <a class="btn btn-danger btn-xs" ng-click="vm.closeGraph()" ui-sref="user-bots-web.view({userBotId: vm.userBot._id, noGraph:'t'})">
+    <div style="position:absolute; top:2%; width:95%;">
+        <a class="btn btn-danger btn-xs pull-right" ng-click="vm.closeGraph()" ui-sref="user-bots-web.view({userBotId: vm.userBot._id, noGraph:'t'})">
             <i class="fa fa-close"></i>
+        </a>
+        <a class="btn-xs pull-right" style="color:white" ng-click="vm.noGraph()" ui-sref="user-bots-web.view({userBotId: vm.userBot._id, noGraph:'t'})">
+            다시보지 않기
         </a>
     </div>
 </section>
