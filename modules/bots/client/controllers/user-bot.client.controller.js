@@ -99,15 +99,22 @@ if (_platform !== 'mobile'){
       };
 
       vm.followBot = function(userBot) {
-        UserBotsFollowService.follow({botUserId: vm.user._id, userBot: userBot._id}, function(err, result) {
+        UserBotsFollowService.follow({botUserId: vm.user._id, userBot: userBot._id}, function(result) {
+          vm.userBot = result;
+          vm.userBot.user = {};
+          vm.userBot.user['username'] = vm.user.username;
           vm.userBot.userFollow = true;
           // alert('친구로 추가 되었습니다.')
         });
       };
 
       vm.unfollowBot = function(userBot) {
-        UserBotsFollowService.unfollow({botUserId: vm.user._id, userBot: userBot._id}, function(err, result) {
+        UserBotsFollowService.unfollow({botUserId: vm.user._id, userBot: userBot._id}, function(result) {
+          vm.userBot = result;
+          vm.userBot.user = {};
+          vm.userBot.user['username'] = vm.user.username;
           vm.userBot.userFollow = undefined;
+          console.log(result);
           // alert('친구를 취소하였습니다.')
         });
       };
