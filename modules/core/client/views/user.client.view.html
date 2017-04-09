@@ -28,7 +28,7 @@
 
             <div id="popularBots" class="row bot-list">
 
-                <div class="col-md-3" ng-repeat="userBot in vm.userBots">
+                <div class="col-md-3" ng-repeat="userBot in vm.userBots | orderBy: '-followed'">
                     <!--<div class="thumbnail" ng-click="vm.userBotChat(userBot)">-->
                   <a href="#" ui-sref="user-bots-web.view({userBotId: userBot._id})">
                     <div class="thumbnail">
