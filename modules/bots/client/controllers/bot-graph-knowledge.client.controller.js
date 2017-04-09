@@ -26,7 +26,7 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
       });
 
       vm.closeGraph = function() {
-        $rootScope.nograph = true;
+        //$rootScope.nograph = true;
       };
 
       vm.noGraph = function() {
@@ -139,10 +139,14 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
         var innerHTML =
           '<div class="chat-items owl-carousel owl-theme" style="clear: both">';
 
+        var numOfItems = 3;
         for(var i in items) {
           innerHTML += '<div class="item" >' +
             '<div class="thumbnail" style="background-color:black">';
-          if(items[i].imageUrl) innerHTML += '<img src="' + items[i].imageUrl + '" >';
+          if(items[i].imageUrl) {
+            numOfItems = 5;
+            innerHTML += '<img class="imageType" src="' + items[i].imageUrl + '" >';
+          }
           innerHTML += '<div class="caption" style="color:white">';
           if(items[i].title) innerHTML += '<h3>' + items[i].title + '</h3>';
           if(items[i].text) innerHTML += '<p>' + items[i].text + '</p>';
@@ -168,7 +172,7 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
           loop:false,
           nav:false,
           margin: 0,
-          items: 3,
+          items: numOfItems,
         });
 
         main.scrollTop = main.scrollHeight - main.clientHeight;

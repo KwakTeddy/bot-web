@@ -81,21 +81,29 @@ if (_platform !== 'mobile'){
         $rootScope.$broadcast('setUserBot', userBot);
       };
 
-      vm.type = '';
-      if($state.is('user-bots-web.create')) {vm.state = 'create'; vm.type = 'edit';}
-      else if($state.is('user-bots-web.edit')) {vm.state = 'edit'; vm.type = 'edit';}
-      else if (!$state.is('user-bots-web.view')) {
-      } else {
-        vm.state = 'view';
-        vm.type = 'view';
-        if ($cookies.get("nograph") != undefined && !$rootScope.nograph) {
+      if ($stateParams.noGraph)
+        $scope.nograph = true;
+      vm.startChat = function() {
+        if ($cookies.get("nograph") == undefined && !$scope.nograph) {
           $state.go('user-bots-web.graph', {userBotId: vm.userBot._id});
         } else {
           vm.userBotChat(vm.userBot);
         }
+      };
+
+      vm.type = '';
+      if($state.is('user-bots-web.create')) {vm.state = 'create'; vm.type = 'edit';}
+      else if($state.is('user-bots-web.edit')) {vm.state = 'edit'; vm.type = 'edit';}
+      else if ($state.is('user-bots-web.view')) {
+        vm.state = 'view';
+        vm.type = 'view';
+        vm.startChat();
       }
+
       vm.changeType = function(type) {
         vm.type= type;
+        if (vm.type == 'view' && vm.state == 'create')
+          vm.startChat();
       };
 
       vm.followBot = function(userBot) {
@@ -352,7 +360,7 @@ if (_platform !== 'mobile'){
             });
 
             if($state.is('user-bots-web.create') || $state.is('user-bots-web.edit')) {
-              $rootScope.$broadcast('setUserBot', vm.userBot);
+              $rootScope.$broadcast('resetUserBot', vm.userBot);
             }
             //$state.go('user-bots-web.list', {listType: 'my'});
           }, function (errorResponse) {
@@ -957,7 +965,7 @@ if (_platform !== 'mobile'){
 
         // Show error message
         $scope.success.file = null;
-        $scope.error['file'] = '대화 파일이 아니에요'
+        $scope.error['file'] = response.message;
       };
 
       // Change user profile picture

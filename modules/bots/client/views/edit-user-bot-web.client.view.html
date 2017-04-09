@@ -12,6 +12,12 @@
                             <!--<li role="presentation" ><a href="#" ng-click="vm.changeType('connect');">연결하기</a></li>-->
                         </ul>
                     </div>
+                    <div class="bot-list-header" ng-show="vm.state=='create'" style="border-bottom: 1px solid lightgray;">
+                        <ul class="nav nav-tabs">
+                            <li role="presentation" ng-class="{active: vm.type == 'view'}"><a href="#" ng-click="vm.changeType('view');">챗봇정보</a></li>
+                            <li role="presentation" ng-class="{active: vm.type == 'connect'}"><a href="#" ng-click="vm.changeType('connect');">연결하기</a></li>
+                        </ul>
+                    </div>
 
                     <div style="clear: both; ">
                         <div style="width: 30%;display: block; float: left; text-align: center;">
@@ -171,6 +177,17 @@
                                     </div>
                                 </div>
                             </div>
+                            <div ng-show="vm.userBot && vm.userBot._id && vm.userBot.filename" class="row form-group">
+                                <label class="col-sm-3 control-label">사용중인 대화파일</label>
+                                <div class="col-sm-9">
+                                    <div class="text-center form-group">
+                                        <label class="col-sm-3 control-label">{{vm.userBot.filename}}</label>
+                                        <a class="btn btn-primary" target="_self"
+                                           ng-href="{{'/files/' + vm.userBot.filename}}"
+                                           download="{{vm.userBot.filename}}">Download</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-horizontal form-group" ng-show="vm.type == 'edit'">
@@ -294,7 +311,7 @@
 
                         <div class="bot-list-header" ng-show="vm.state=='create'"  style="border-bottom: 1px solid lightgray;">
                             <ul class="nav nav-tabs">
-                                <li role="presentation" ng-class="{active: vm.type == 'edit'}"><a ng-click="vm.changeType('view');">챗봇정보</a></li>
+                                <li role="presentation" ng-class="{active: vm.type == 'view'}"><a ng-click="vm.changeType('view');">챗봇정보</a></li>
                                 <!--<li role="presentation" ng-class="{active: vm.type == 'edit-detail'}"><a href="#" ng-click="vm.changeType('edit-detail');">상세정보</a></li>-->
                                 <li role="presentation" ng-class="{active: vm.type == 'connect'}"><a ng-click="vm.changeType('connect');">연결하기</a></li>
                             </ul>

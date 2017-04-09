@@ -491,6 +491,13 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     if(_platform != 'mobile')
       document.getElementById("chat-header").innerText = vm.bot;
 
+    $scope.$on('resetUserBot', function(event, arg0) {
+      var userBot = arg0;
+      vm.bot = userBot.id;
+      vm.userBot = userBot;
+      vm.connectUserBot(vm.bot);
+    });
+
     $scope.$on('setUserBot', function(event, arg0) {
       var userBot = arg0;
       if (vm.bot !== userBot.id) {

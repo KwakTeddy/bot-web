@@ -579,6 +579,16 @@ exports.botByID = function (req, res, next, id) {
 
     async.waterfall([
       function(cb) {
+        if (bot.dialogsets) {
+          Dialogset.findOne({_id: bot.dialogsets[0]}).lean().exec(function(err, doc) {
+            req.bot._doc.filename = doc.filename;
+            cb(null);
+          })
+        } else {
+          cb(null);
+        }
+      },
+      function(cb) {
         if (bot.templateId) {
           var TemplateModel = mongoose.model('Template');
           TemplateModel.findOne({_id: bot.templateId}).lean().exec(function (err, template) {
@@ -700,7 +710,7 @@ exports.createFile = function (req, res) {
       }
     });
   });
-}
+};
 
 
 exports.removeFile = function (req, res) {

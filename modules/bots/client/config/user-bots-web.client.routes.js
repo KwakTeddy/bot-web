@@ -53,7 +53,7 @@ angular.module('user-bots').config(['$stateProvider',
         }
       })
       .state('user-bots-web.view', {
-        url: '/:userBotId/view?authKey',
+        url: '/:userBotId/:noGraph/view?authKey',
         templateUrl: 'modules/bots/client/views/edit-user-bot-web.client.view.html',
         controller: 'UserBotController',
         controllerAs: 'vm',
