@@ -393,16 +393,19 @@ exports.followList = function (req, res) {
   if(req.body.botUserId) query['botUserId'] = req.body.botUserId;
   if(req.body.userBot) query['bot'] = req.body.userBot._id;
   if(req.body.query) search['name'] = new RegExp(req.body.query, 'i');
+  search['public'] = true;
   var populateQuery = [];
 
-  BotFollow.find(query).populate('bot', null, search).sort('-created').skip(req.body.currentPage * perPage).limit(perPage).exec(function (err, follows) {
+  BotFollow.find(query).populate({path: 'bot', match: {public: 'true'}}).sort('-created').exec(function (err, follows) {
+  // BotFollow.find(query).populate('bot', null, search).sort('-created').skip(req.body.currentPage * perPage).limit(perPage).exec(function (err, follows) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
       var bots = [];
-      for(var i in follows) {
+
+      for(var i = 0; i < follows.length; i++) {
         if(follows[i].bot && (follows[i].bot.public == true)){
           bots.push(follows[i].bot);
         }
