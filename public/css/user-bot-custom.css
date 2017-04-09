@@ -1,3 +1,7 @@
+html, body {
+    height: 100%;
+}
+
 a {
     color: #0c1532;
 }
@@ -145,6 +149,14 @@ header .intro-text .intro-in {
     }
 
 /*}*/
+
+.ui-view-class {
+    min-height: 100%;
+    margin-top: -180px;
+    padding-top: 180px;
+    padding-bottom: 173px;
+    margin-bottom: -173px;
+}
 
 .intro-messengers img {
     margin-right: 10px;
