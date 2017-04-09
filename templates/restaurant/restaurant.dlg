@@ -54,9 +54,9 @@ shop.mapTask
 시간체크:
 <{types: [{name: 'time', typeCheck: 'timeTypeCheck', raw: true}], regexp: /~영업/}
 {action: shop.checkTime}
+>if(context.dialog.check == 're') 오후 / 오전을 붙여서 이야기 해주세요.\n예시: 오후 2시 영업해?, 14시 영업해?
 >if(context.dialog.check == true) 죄송합니다. 영업시간이 아닙니다.\n영업시간은 +startTime+부터\n+endTime+까지이며,\n+holiday+은 휴무입니다.
 >if(context.dialog.check == false) 네 영업시간 입니다. \n영업시간은 +startTime+부터\n+endTime+까지이며,\n+holiday+은 휴무입니다.
->if(context.dialog.check == 're') 오후 / 오전을 붙여서 이야기 해주세요.\n예시: 오후 2시 영업해?, 14시 영업해?
 
 <영업 시간
 <몇 시
@@ -118,7 +118,9 @@ shop.reserveCheck
     시간선택:<false
     >예약하실 시간을 말씀해 주세요.
         <{types: [{name: 'time', typeCheck: 'timeTypeCheck'}]}
-        >{callChild: '인원선택'}
+        {action: shop.checkTime}
+        >if(context.dialog.check == 're') {call : '시간선택', options: {prefix: '시간은 오전/오후를 붙여서 이야기 해주세요.\n예시: 오후 2시, 14시\n\n'}}
+        >if(true) {callChild: '인원선택'}
         <{if: 'context.dialog.시간입력최초 == undefined'}
         {
           action: function(task, context, callback) {

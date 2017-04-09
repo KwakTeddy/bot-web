@@ -170,10 +170,10 @@ function checkTime(task, context, callback) {
   if (day == holiday) {
     context.dialog.check = true;
   } else {
-    if (context.dialog.time > context.bot.endTime || context.dialog.time < context.bot.startTime) {
-      context.dialog.check = true;
-    } else if (context.dialog.time == 're'){
+    if (context.dialog.time == 're') {
       context.dialog.check = 're';
+    } else if (context.dialog.time > context.bot.endTime || context.dialog.time < context.bot.startTime) {
+      context.dialog.check = true;
     } else {
       context.dialog.check = false;
     }

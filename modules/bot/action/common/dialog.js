@@ -561,7 +561,7 @@ function executeDialog(dialog, context, print, callback, options) {
     }
   }
 
-  if(!(dialog.output.repeat && dialog.output.options && dialog.output.options.page) && !(options && options.page)) {
+  if(!(dialog.output && dialog.output.repeat && dialog.output.options && dialog.output.options.page) && !(options && options.page)) {
     context.dialog.page = null; context.dialog.numOfPage  = null;
   }
 

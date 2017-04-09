@@ -129,7 +129,12 @@ exports.create = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      botLib.buildBot(bot.id, bot.path);
+      if(bot.templateId) {
+        botLib.buildBot(req.body.template.id, bot.path);
+      } else {
+        botLib.buildBot(bot.id, bot.path);
+      }
+
       botLib.loadBot(bot.id, function (realbot) {
         var result = "";
         async.waterfall([
@@ -260,7 +265,12 @@ exports.update = function (req, res) {
           message: errorHandler.getErrorMessage(err)
         });
       } else {
-        botLib.buildBot(bot.id, bot.path);
+        if(bot.templateId) {
+          botLib.buildBot(bot.template.id, bot.path);
+        } else {
+          botLib.buildBot(bot.id, bot.path);
+        }
+
         botLib.loadBot(bot.id);
         res.json(bot);
       }
