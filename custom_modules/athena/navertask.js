@@ -262,6 +262,53 @@ function searchNaver(task, context, callback) {
 
 exports.searchNaver = searchNaver;
 
+function searchNews(task, context, callback) {
+
+    var query = {query: task['1']};
+    var request = require('request');
+
+    request({
+        url: 'https://openapi.naver.com/v1/search/news.json?&display=10&start=1&sort=sim',
+        method: 'GET',
+        qs: query,
+        headers: {
+            'Host': 'openapi.naver.com',
+            'Accept': '*/*',
+            'Content-Type': 'application/json',
+            'X-Naver-Client-Id': context.bot.naver.clientId,
+            'X-Naver-Client-Secret': context.bot.naver.clientSecret
+        }
+    }, function(error, response, body) {
+        if (!error && response.statusCode == 200) {
+            // console.log(body);
+            var doc = JSON.parse(body);
+            context.dialog.item = doc.items;
+            context.dialog.item.forEach(function (a) {
+                a.title = a.title.replace(/<b>|<\/b>/g, '');
+                a.description = a.description.replace(/<b>|<\/b>/g, '');
+            });
+            var result = [];
+            async.eachSeries(doc.items, function(doc, cb) {
+                    var _doc = {
+                        title: doc.title,
+                        text: doc.description,
+                        buttons: [{url: doc.link, text: '상세보기'}]
+                    };
+                    result.push(_doc);
+                cb(null)
+            }, function (err) {
+                task.result = {items: result};
+                if (task.result.items.length == 0) {
+                    task.result = null;
+                }
+                callback(task, context);
+            });
+        }
+    });
+}
+
+
+exports.searchNews = searchNews;
 
 
 function navershopping(task, context, callback) {

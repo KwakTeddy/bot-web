@@ -147,6 +147,14 @@ var first = /(?:~시작|~처음|^!$|취소)/
     > if(context.dialog.item.length != 0) \[+stockname+\]\n+Date+\n\n종가: +lastTradePriceOnly+원
     <{if: 'true'}> 죄송합니다. 등록되지 않은 회사명입니다.
 
+</([^\b]*)(?:\b|\s).*(뉴스).(찾다|검색)/
+{action: navertask.searchNews}
+>if(context.dialog.item.length != 0 && context.user.channel == 'socket') 검색결과가 없습니다.
+>if(context.dialog.item.length != 0) 뉴스 검색결과입니다.\n#item#+index+. +title+\n#
+    < {types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
+    > \[+item.company+\] +item.title+\n+item.body+\n+item.link+
+>if (context.dialog.item.length ==0) 검색결과가 없습니다.
+
 뉴스:
 <뉴스
 <신문
@@ -260,12 +268,31 @@ navertask.moviecrawl
     <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
     >+item.title+\n+item.roadAddress+\n+item.telephone+
 
+<검색
+>어떤 것을 찾으시나요?\n검색어를 입력해주세요.
+    </([^\b]*)/
+    googletask.googlesearchtask
+    >if (context.dialog.search.length !=0) #search#+index+. +title+\n#
+        <{types: [{name: 'search', listName: 'search', typeCheck: 'listTypeCheck'}]}
+        >+search.title+\n+search.snippet+\n+search.url+
+
 구글검색:
 </([^\b]*)(?:\b|\s).*(검색|찾다)/
 googletask.googlesearchtask
 >if (context.dialog.search.length !=0) #search#+index+. +title+\n#
     <{types: [{name: 'search', listName: 'search', typeCheck: 'listTypeCheck'}]}
     >+search.title+\n+search.snippet+\n+search.url+
+
+<쇼핑
+<가격
+>어떤 것을 찾으시나요?\n검색어를 입력해주세요.
+    </([^\b]*)/
+    {action: navertask.navershopping}
+    >if (context.dialog.item.length !=0 && context.user.channel == 'socket') 검색결과가 없습니다.
+    >if (context.dialog.item.length !=0) #item#+index+. +title+\n+lprice+\n#
+        <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
+        >+item.title+\n+item.lprice+ ~ +item.hprice+\n+item.link+
+    >if (context.dialog.item.length ==0) 검색결과가 없습니다.
 
 쇼핑:
 </([^\b]*)(?:\b|\s).*(사다|필요하다|쇼핑|얼마|가격)/
@@ -274,6 +301,7 @@ googletask.googlesearchtask
 >if (context.dialog.item.length !=0) #item#+index+. +title+\n+lprice+\n#
     <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
     >+item.title+\n+item.lprice+ ~ +item.hprice+\n+item.link+
+>if (context.dialog.item.length ==0) 검색결과가 없습니다.
 
 주변검색둘:
 < {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}]}
@@ -284,6 +312,16 @@ googletask.googlesearchtask
     <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
     >+item.title+\n+item.roadAddress+\n+item.telephone+
 
+<음악
+>어떤 음악을 찾아드릴까요?\n가수명 혹은 곡명을 입력해주세요.
+    </([^\b]*)/
+    {action: publictask.itunesmusic}
+    >if (context.dialog.item.length !=0 && context.user.channel == 'socket') 검색결과가 없습니다.
+    >if (context.dialog.item.length !=0) #item#+index+. +artistName+ - +item.trackName+\n#
+        <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
+        >+item.artistName+ - +item.trackName+\n+item.collectionName+\n+item.previewUrl+
+    >if (context.dialog.item.length ==0) 검색결과가 없습니다.
+
 음악:
 </([^\b]*)(?:\b|\s).*(음악|노래)/
 {action: publictask.itunesmusic}
@@ -291,6 +329,17 @@ googletask.googlesearchtask
 >if (context.dialog.item.length !=0) #item#+index+. +artistName+ - +item.trackName+\n#
     <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
     >+item.artistName+ - +item.trackName+\n+item.collectionName+\n+item.previewUrl+
+>if (context.dialog.item.length ==0) 검색결과가 없습니다.
+
+<동영상
+>어떤 동영상을 찾아드릴까요?\n검색어를 입력해주세요.
+    </([^\b]*)/
+    {action: publictask.youtube}
+    >if (context.dialog.item.length !=0 && context.user.channel == 'socket') 검색결과가 없습니다.
+    >if (context.dialog.item.length !=0) #item#+index+. +title+\n+lprice+\n#
+        <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
+        >+item.title+\n+item.lprice+ ~ +item.hprice+\n+item.link+
+    >if (context.dialog.item.length ==0) 검색결과가 없습니다.
 
 동영상:
 </([^\b]*)(?:\b|\s).*(동영상|영상|비디오)/
@@ -299,6 +348,7 @@ googletask.googlesearchtask
 >if (context.dialog.item.length !=0) #item#+index+. +title+\n+lprice+\n#
     <{types: [{name: 'item', listName: 'item', typeCheck: 'listTypeCheck'}]}
     >+item.title+\n+item.lprice+ ~ +item.hprice+\n+item.link+
+>if (context.dialog.item.length ==0) 검색결과가 없습니다.
 
 </([^\b]*)(?:\b|\s).*(들려주다|틀어주다|듣다)/
 {action: publictask.itunesmusic}
@@ -310,7 +360,7 @@ googletask.googlesearchtask
 
 시작:
 c< {regexp: first}
-> 안녕하세요 아테나입니다.
+> 안녕하세요 아테나입니다.\n저는 아래와 같은 정보들을 알려드립니다.\n\n예시) 날씨, 뉴스, 가격비교, 음악, 동영상, 검색, 환율, 주가
 
 c<{regexp: up}
 >{up:1}

@@ -13,7 +13,7 @@ var playchat = {
       VALIDATION_TOKEN : "moneybrain_token"
   },
   kakao: {
-    keyboard: { type :"buttons", buttons:["인기봇","최신봇","마이봇","친구봇"]}
+    keyboard: { type :"buttons", buttons:["인기봇","최신봇","마이봇"]}
   },
   naver: {
     clientId: 'c7VNVyIG3s95N4q2LWZQ',
