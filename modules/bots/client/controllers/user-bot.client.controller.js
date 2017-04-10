@@ -176,23 +176,23 @@ if (_platform !== 'mobile'){
         $scope.userBotId = vm.userBot.id;
         $scope.host = location.protocol + "//" + location.host;
 
-        if ((channel == 'facebook') && (method !== 'easy')){
-          FB.api('/me/accounts?fields=picture,name,link,access_token,perms', function(response) {
-            if (response.error && (response.error.code == 2500)){
-              var url = '/api/auth/facebook/page';
-              // if ($state.previous && $state.previous.href) {
-              //     url += '?redirect_to=' + encodeURIComponent($state.previous.href);
-              // }
-
-              // Effectively call OAuth authentication route:
-                console.log(url);
-              $window.location.href = url;
-            } else {
-              $scope.pageLists = [];
-              $scope.pageLists = response.data;
-            }
-          });
-        }
+        // if ((channel == 'facebook') && (method !== 'easy')){
+        //   FB.api('/me/accounts?fields=picture,name,link,access_token,perms', function(response) {
+        //     if (response.error && (response.error.code == 2500)){
+        //       var url = '/api/auth/facebook/page';
+        //       // if ($state.previous && $state.previous.href) {
+        //       //     url += '?redirect_to=' + encodeURIComponent($state.previous.href);
+        //       // }
+        //
+        //       // Effectively call OAuth authentication route:
+        //         console.log(url);
+        //       $window.location.href = url;
+        //     } else {
+        //       $scope.pageLists = [];
+        //       $scope.pageLists = response.data;
+        //     }
+        //   });
+        // }
         $scope.close = function () {
           modalInstance.dismiss();
         };

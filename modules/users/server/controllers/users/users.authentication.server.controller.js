@@ -168,58 +168,6 @@ exports.signup = function (req, res) {
  * Signin after passport authentication
  */
 exports.signin = function (req, res, next) {
-
-    // var soap = require('soap');
-    // var parseString = require('xml2js').parseString;
-    //
-    //
-    //
-    //
-    // var url = 'http://api.auction.co.kr/APIv1/ShoppingService.asmx?WSDL';
-    // // var args =    { memberTicket: {
-    // //     Ticket: [ { _: 'd059cAnBM8CAttVPwnG8DGxUelcAHmK8O7e4gWEtyXvVxOEWwqHK6Y1VecEOK7NCZR+zNvTMc1+hSIZ3icRx+xjzbnuicwi6CS95md6w6tHUInd5soGzW9VV0STOjM75t1x7C4p5oO+2Si6jdhBVB6BeZJ/IyV4mKDt/UzHhFCnyIpyVLOu9I46oSkIa5qGADhSkw8NoN/Yp/OZyDDlrUhg=',
-    // //     '$': { xmlns: 'http://schema.auction.co.kr/Arche.APISvc.xsd' } } ]
-    // // }  };
-    // var args = {};
-    // args = {
-    //     "req": {
-    //         "_SeqNo": "long",
-    //         "_Value": 1,
-    //         "_SeqNo2": "long",
-    //         "_Value2": 22
-    //     },
-    //     }
-    //
-    //     // var args = { req: { EncryptedTicket: { Value: 'd059cAnBM8CAttVPwnG8DGxUelcAHmK8O7e4gWEtyXvVxOEWwqHK6Y1VecEOK7NCZR+zNvTMc1+hSIZ3icRx+xjzbnuicwi6CS95md6w6tHUInd5soGzW9VV0STOjM75t1x7C4p5oO+2Si6jdhBVB6BeZJ/IyV4mKDt/UzHhFCnyIpyVLOu9I46oSkIa5qGADhSkw8NoN/Yp/OZyDDlrUhg='}}};
-    // // var args = '<req><MemberTicket xmlns="http://schema.auction.co.kr/Arche.APISvc.xsd"><Ticket>d2GjGEpFMpvg11Y6pi0j/ZfPk8DQlm/luURs8mAQTyocRWcJt83xMKeeokssVwxtIO6urCfjekPTH9CAqsgyu+2fTsW8gpGsSvR+wEDROS+SOUBZsJWxhj2c7BTSL1tGh4ddLEFSGVwvYt//rOutg7r70oL7CsWMkk2v8lPrDeQkUegdqL+WZ+m3ouIJVWwgjBrTd49GVurbWLNJ+Ydqi48=</Ticket></MemberTicket></req>';
-    // var soapHeader = '<EncryptedTicket xmlns="http://www.auction.co.kr/Security"><Value>d059cAnBM8CAttVPwnG8DGxUelcAHmK8O7e4gWEtyXvVxOEWwqHK6Y1VecEOK7NCZR+zNvTMc1+hSIZ3icRx+xjzbnuicwi6CS95md6w6tHUInd5soGzW9VV0STOjM75t1x7C4p5oO+2Si6jdhBVB6BeZJ/IyV4mKDt/UzHhFCnyIpyVLOu9I46oSkIa5qGADhSkw8NoN/Yp/OZyDDlrUhg=</Value></EncryptedTicket>';
-    // // var soapHeader = { EncryptedTicket:
-    // //         { '$': { xmlns: 'http://www.auction.co.kr/Security' },
-    // //             Value: [ 'd059cAnBM8CAttVPwnG8DGxUelcAHmK8O7e4gWEtyXvVxOEWwqHK6Y1VecEOK7NCZR+zNvTMc1+hSIZ3icRx+xjzbnuicwi6CS95md6w6tHUInd5soGzW9VV0STOjM75t1x7C4p5oO+2Si6jdhBVB6BeZJ/IyV4mKDt/UzHhFCnyIpyVLOu9I46oSkIa5qGADhSkw8NoN/Yp/OZyDDlrUhg=' ] } }
-    // // var soapHeader = {EncryptedTicket : { Value : 'd2GjGEpFMpvg11Y6pi0j/ZfPk8DQlm/luURs8mAQTyocRWcJt83xMKeeokssVwxtIO6urCfjekPTH9CAqsgyu+2fTsW8gpGsSvR+wEDROS+SOUBZsJWxhj2c7BTSL1tGh4ddLEFSGVwvYt//rOutg7r70oL7CsWMkk2v8lPrDeQkUegdqL+WZ+m3ouIJVWwgjBrTd49GVurbWLNJ+Ydqi48='}};
-    // // var test = '<EncryptedTicket xmlns="http://www.auction.co.kr/Security"><Value>d059cAnBM8CAttVPwnG8DGxUelcAHmK8O7e4gWEtyXvVxOEWwqHK6Y1VecEOK7NCZR+zNvTMc1+hSIZ3icRx+xjzbnuicwi6CS95md6w6tHUInd5soGzW9VV0STOjM75t1x7C4p5oO+2Si6jdhBVB6BeZJ/IyV4mKDt/UzHhFCnyIpyVLOu9I46oSkIa5qGADhSkw8NoN/Yp/OZyDDlrUhg=</Value></EncryptedTicket>'
-    // // var test = '<Content xmlns="http://schema.auction.co.kr/Arche.APISvc.xsd">string</Content>'
-    // // parseString(test, function (err, data) {
-    // //     console.log(util.inspect(data))
-    // //     console.log(util.inspect(data.req.Content))
-    // // })
-    //
-    // soap.createClient(url, function(err, client) {
-    //     // client.addSoapHeader(soapHeader, '', '', 'http://www.auction.co.kr/Security');
-    //     client.addSoapHeader(soapHeader);
-    //     // console.log(util.inspect(client.describe()));
-    //     // console.log(util.inspect(client.describe().AuctionService.AuctionServiceSoap.GetMyAccount));
-    //     // console.log(util.inspect(client.describe().AuctionService.AuctionServiceSoap.GetMyAccount.input.req.MemberTicket));
-    //     console.log(util.inspect(client.describe().ShoppingService.ShoppingServiceSoap.TestDTC1));
-    //     console.log(util.inspect(client.describe().ShoppingService.ShoppingServiceSoap.TestDTC1.input.req.Content));
-    //     client.ShoppingService.ShoppingServiceSoap.TestDTC1(args, function(err, result) {
-    //         // console.log(util.inspect(err))
-    //         console.log(util.inspect(result))
-    //         // console.log(util.inspect(result.GetMyAccountResult.MyAccount.attributes))
-    //     });
-    // });
-
-
     if (req.body.resendEmail){
         User.findOne({email: req.body.resendEmail}, function (err, user) {
             if(err){
