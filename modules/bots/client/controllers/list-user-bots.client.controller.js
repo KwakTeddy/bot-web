@@ -10,13 +10,12 @@ angular.module('user-bots').controller('UserBotListController', ['$scope', '$roo
     var vm = this;
     vm.authentication = Authentication;
     vm.userBots = userBots;
-    console.log(vm.userBots);
-      if(_platform == 'mobile') {
-          if($stateParams['listType'] == 'recent') vm.listTypeName = '최신봇';
-          else if($stateParams['listType'] == 'followed') vm.listTypeName = '친구봇';
-          else if($stateParams['listType'] == 'my') vm.listTypeName = '마이봇';
-          else vm.listTypeName = '인기봇';
-      }
+    if(_platform == 'mobile') {
+        if($stateParams['listType'] == 'recent') vm.listTypeName = '최신봇';
+        else if($stateParams['listType'] == 'followed') vm.listTypeName = '친구봇';
+        else if($stateParams['listType'] == 'my') vm.listTypeName = '마이봇';
+        else vm.listTypeName = '인기봇';
+    }
 
     vm.listType = $stateParams['listType'];
     // if(vm.listType == undefined) vm.listType = 'recent';
@@ -40,11 +39,10 @@ angular.module('user-bots').controller('UserBotListController', ['$scope', '$roo
           if(!response.length) {
               vm.pagingEnd = true;
           } else {
-            console.log(response);
             vm.userBots.push.apply(vm.userBots, response);
           }
-      }).error(function (reponse) {
-        console.log(reponse);
+      }).error(function (response) {
+        console.log(response);
       })
     };
 

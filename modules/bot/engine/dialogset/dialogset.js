@@ -347,6 +347,16 @@ function analyzeKnowledgeDialog(dialogs, bot_id, result, callback) {
         }
       }
     }
+    if (typeof dialogs[i].output == "string") {
+      docs.push({input: dialogs[i].output});
+    }
+    else if (Array.isArray(dialogs[i].output)) {
+      for (var j=0; j < dialogs[i].output.length; ++j) {
+        if (typeof dialogs[i].output[j] == "string") {
+          docs.push({input: dialogs[i].output[j]});
+        }
+      }
+    }
   }
 
   async.eachSeries(docs, function(doc, cb) {

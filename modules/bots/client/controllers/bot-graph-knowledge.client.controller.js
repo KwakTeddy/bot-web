@@ -2,8 +2,9 @@
 
 // Bots controller
 angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope', '$rootScope', '$state', '$window',
-'$timeout', '$stateParams', '$resource', '$document', '$cookies', 'Authentication', 'userBotResolve',
-    function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, $document, $cookies, Authentication, userBot) {
+'$timeout', '$stateParams', '$resource', '$document', '$cookies', '$compile', 'Authentication', 'userBotResolve',
+    function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, $document, $cookies, $compile,
+              Authentication, userBot) {
       var vm = this;
       //vm.user = Authentication.user;
       vm.userId = $rootScope.userId;
@@ -15,8 +16,9 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
 
       $rootScope.$broadcast('setUserBotAlways', userBot);
 
-      vm.sendMsg = function() {
-        $rootScope.$broadcast('sendMsgFromFarAway', vm.question);
+      vm.sendMsg = function(msg) {
+        var q = msg ? msg : vm.question;
+        $rootScope.$broadcast('sendMsgFromFarAway', q);
         vm.question = '';
       };
 
@@ -26,7 +28,7 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
       });
 
       vm.closeGraph = function() {
-        $rootScope.nograph = true;
+        //$rootScope.nograph = true;
       };
 
       vm.noGraph = function() {
@@ -139,10 +141,14 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
         var innerHTML =
           '<div class="chat-items owl-carousel owl-theme" style="clear: both">';
 
+        var numOfItems = 5;
         for(var i in items) {
           innerHTML += '<div class="item" >' +
             '<div class="thumbnail" style="background-color:black">';
-          if(items[i].imageUrl) innerHTML += '<img src="' + items[i].imageUrl + '" >';
+          if(items[i].imageUrl) {
+            numOfItems = 5;
+            innerHTML += '<img class="imageType" src="' + items[i].imageUrl + '" >';
+          }
           innerHTML += '<div class="caption" style="color:white">';
           if(items[i].title) innerHTML += '<h3>' + items[i].title + '</h3>';
           if(items[i].text) innerHTML += '<p>' + items[i].text + '</p>';
@@ -168,12 +174,46 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
           loop:false,
           nav:false,
           margin: 0,
-          items: 3,
+          items: numOfItems,
         });
-
-        main.scrollTop = main.scrollHeight - main.clientHeight;
-
       };
+
+      var buttons = document.getElementById('buttons');
+      function addButtons(replies) {
+        if(replies == undefined) return;
+
+        var innerHTML = '';
+        innerHTML = '<div id="smart_reply" class="smart_reply owl-carousel owl-theme my_smart" >';
+
+        for(var i in replies) {
+          innerHTML += '<div class="item">' +
+            '<button ng-click="vm.sendMsg(\'' + replies[i] + '\')" style="width: auto;" >' + replies[i] + '</button>' +
+            '</div>';
+        }
+
+        innerHTML += '</div>';
+
+        buttons.style.padding = '10px 0px 30px 0px';
+
+        buttons.insertAdjacentHTML('beforeend', innerHTML);
+
+        var replies = document.getElementById('smart_reply').childNodes;
+        for(var i in replies) {
+          var child = replies[i].firstChild;
+          if(child && child.style) child.style.width = (child.offsetWidth + 5 ) + 'px';
+        }
+
+        var element = angular.element(document.querySelector('#smart_reply'));
+        $compile(element.contents())($scope);
+
+        $('.smart_reply').owlCarousel({
+          loop:false,
+          nav:false,
+          dots: false,
+          margin: 3,
+          autoWidth: true
+        });
+      }
 
       var resetOwl = function() {
         while (main.hasChildNodes()) {
@@ -181,15 +221,29 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
         }
       };
 
+      var resetButtons = function() {
+        while (buttons.hasChildNodes()) {
+          buttons.removeChild(buttons.firstChild);
+        }
+      };
+
       $scope.$on('onmsg', function(event, arg0) {
+        if (!vm.isAnswer) {
+          resetOwl();
+        }
+
+        resetButtons();
+
         if (arg0.message.items) {
           vm.isAnswer = false;
           addItems(arg0.message.items);
           return;
         }
 
-        if (!vm.isAnswer)
-          resetOwl();
+        if(arg0.message.smartReply) {
+          vm.isAnswer = true;
+          addButtons(arg0.message.smartReply);
+        }
 
         if (arg0.message.image) {
           vm.isAnswer = false;
