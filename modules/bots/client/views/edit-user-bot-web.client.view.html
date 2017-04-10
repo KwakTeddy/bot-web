@@ -46,6 +46,9 @@
                               <!--<div class="line-it-button" style="display: none;" data-type="share-c" data-lang="en"></div>-->
                             </div>
                             <div style="border-top: 1px solid lightgray; margin-top: 5px;padding-top: 5px;text-align: right;">
+                                <button type="button" class="btn btn-danger" ng-show="vm.isAdmin()" ng-click="vm.graph()">
+                                    <i class="glyphicon glyphicon-edit"></i> 지식그래프 생성
+                                </button>
                                 <a class="btn btn-primary" ui-sref="user-bots-web.graph({userBotId: vm.userBot._id})"
                                    style="padding: 10px 20px 10px 20px;">지식그래프</a>
                                 <a class="btn btn-primary" ng-show="vm.isMine" ui-sref="user-bots-web.edit({userBotId: vm.userBot._id})"
@@ -295,9 +298,6 @@
                               <button type="button" class="btn btn-default pull-right" onclick="javascript:history.back();" >취소</button>
                                 <button type="button" class="btn btn-primary pull-right" ng-click="vm.update(userBotForm.$valid)">
                                     <i class="glyphicon glyphicon-edit"></i> 수정
-                                </button>
-                                <button type="button" class="btn btn-primary pull-right" ng-show="vm.isAdmin()" ng-click="vm.graph()">
-                                    <i class="glyphicon glyphicon-edit"></i> 지식그래프 생성
                                 </button>
                             </div>
                         </div>
