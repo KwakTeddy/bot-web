@@ -293,11 +293,12 @@
                                 </button>
                               </a>
                               <button type="button" class="btn btn-default pull-right" onclick="javascript:history.back();" >취소</button>
-                              <a>
                                 <button type="button" class="btn btn-primary pull-right" ng-click="vm.update(userBotForm.$valid)">
                                     <i class="glyphicon glyphicon-edit"></i> 수정
                                 </button>
-                              </a>
+                                <button type="button" class="btn btn-primary pull-right" ng-show="vm.isAdmin()" ng-click="vm.graph()">
+                                    <i class="glyphicon glyphicon-edit"></i> 지식그래프 생성
+                                </button>
                             </div>
                         </div>
                     </footer>
