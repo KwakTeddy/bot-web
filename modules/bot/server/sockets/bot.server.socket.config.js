@@ -34,7 +34,7 @@ module.exports = function (io, socket) {
         socket.emit('send_msg', JSON.stringify(_task.result));
       }
 
-    }, _.assign(defaultOptions, msg.options));
+    }, msg.options);
 
   })
 };
