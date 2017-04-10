@@ -12,6 +12,16 @@ angular.module('user-bots').factory('UserBotsService', ['$resource',
     });
   }
   ])
+  .factory('UserBotsGraphService', ['$resource',
+    function ($resource) {
+      return $resource('api/graph/:userBotId', {
+        userBotId: '@userBotId',
+      }, {
+        update: {
+          method: 'PUT'
+        }
+      });
+    }])
   .factory('UserBotsFollowService', ['$resource',
     function ($resource) {
       return $resource('api/follow', null, {

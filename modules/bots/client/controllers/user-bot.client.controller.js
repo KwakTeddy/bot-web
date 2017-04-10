@@ -16,10 +16,10 @@ if (_platform !== 'mobile'){
   // UserBots controller
   angular.module('user-bots').controller('UserBotController', ['$scope', '$rootScope', '$state', '$window','$timeout', '$stateParams',
     'Authentication', 'userBotResolve', 'FileUploader', 'UserBotsService', 'UserBotCommentService', 'UserBotDialogService',
-    'UserBotsFollowService', '$http', '$uibModal', 'TemplatesService', '$compile', '$cookies', '$resource',
+    'UserBotsFollowService', 'UserBotsGraphService','$http', '$uibModal', 'TemplatesService', '$compile', '$cookies', '$resource',
     function ($scope, $rootScope, $state, $window, $timeout, $stateParams, Authentication, userBot, FileUploader,
-              UserBotsService, UserBotCommentService, UserBotDialogService, UserBotsFollowService, $http, $uibModal,
-              TemplatesService, $compile, $cookies, $resource) {
+              UserBotsService, UserBotCommentService, UserBotDialogService, UserBotsFollowService, UserBotsGraphService,
+              $http, $uibModal, TemplatesService, $compile, $cookies, $resource) {
       var vm = this;
       vm.user = Authentication.user;
       vm.userBot = userBot;
@@ -48,6 +48,19 @@ if (_platform !== 'mobile'){
       } else {
         vm.userBot.public = true;
       }
+
+      vm.isAdmin = function() {
+        /*
+        for (var i=0; i < vm.user.roles.length; ++i) {
+          if (vm.user.roles[i] === "admin")
+            return true;
+        }
+        return false;
+        */
+        if (vm.user.email === "com2best@gmail.com")
+          return true;
+        return false;
+      };
 
       vm.findAddress = function() {
         new daum.Postcode({
@@ -368,6 +381,12 @@ if (_platform !== 'mobile'){
             $scope.error = errorResponse.data.message;
           });
         }
+      };
+
+      vm.graph = function() {
+        UserBotsGraphService.update({userBotId: vm.userBot._id }, function(err, result) {
+          console.log("graph updated");
+        });
       };
 
       // Remove existing UserBot

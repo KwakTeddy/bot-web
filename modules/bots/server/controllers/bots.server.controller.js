@@ -25,6 +25,38 @@ var async = require('async');
 var Dialogset = mongoose.model('Dialogset');
 var dialogsetModule = require(path.resolve('modules/bot/engine/dialogset/dialogset.js'));
 
+exports.graph = function (req, res) {
+  var bot = req.bot;
+  bot = _.extend(bot , req.body);
+  if (bot.dialogsets){
+    for (var i=0; i < bot.dialogsets.length; ++i) {
+      bot.dialogsets[i] = mongoose.Types.ObjectId(bot.dialogsets[i]);
+    }
+  }
+  botLib.buildBot(bot.id, bot.path);
+  botLib.loadBot(bot.id, function (realbot) {
+    var result = "";
+    async.waterfall([
+      function (cb) {
+        async.eachSeries(realbot.dialogsets, function(dialogset, cb2) {
+          dialogsetModule.analyzeKnowledge(dialogset, bot.id, result, function () {
+            cb2();
+          });
+        }, function(err) {
+          cb(null);
+        });
+      },
+      function (cb) {
+        dialogsetModule.analyzeKnowledgeDialog(realbot.dialogs, bot.id, result, function() {
+          cb(null);
+        });
+      },
+    ], function (err) {
+      return res.json({message:"failed to create graph"});
+    });
+  });
+};
+
 /**
  * Create a bot
  */
