@@ -576,9 +576,12 @@ var menuType = {
       if(b.matchCount > a.matchCount) return 1;
       else if(b.matchCount < a.matchCount) return -1;
       else {
-        if(b.created.getTime() < a.created.getTime()) return 1;
-        else if(b.created.getTime() > a.created.getTime()) return -1;
-        else return 0;
+        if(a.created && b.created) {
+          if(b.created.getTime() < a.created.getTime()) return 1;
+          else if(b.created.getTime() > a.created.getTime()) return -1;
+        }
+
+        return 0;
       }
     },
     //query: {},
