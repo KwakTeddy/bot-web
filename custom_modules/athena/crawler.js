@@ -283,28 +283,34 @@ var lgcrawl = {
                               },
                               actions: [
                                 {
-                                  preCallback: function(task, context, callback) {
-                                    var curItem = task.topTask.list[task.topTask.cur];
-                                    task.param.gubun = curItem.gubun.replace(/['"]+/g, '');
-                                    task.param.type = "keyword";
-                                    task.param.seq = curItem.seq.replace(/['"]+/g, '');
-                                    task.param.itemId = curItem.itemId.replace(/['"]+/g, '');
-                                    callback(task,context);
-                                  },
-                                  template:lgitem
-                                },
-                                {
-                                  module: 'mongo',
-                                  action: 'update',
-                                  mongo: {
-                                    model: 'lgfaqs',
-                                    query: {cate1:'', cate2:'', keyword:'', title: '', body: ''},
-                                    options: {upsert: true}
-                                  },
-                                  preCallback: function (task, context, callback) {
-                                    task.doc = task.topTask.doc[task.topTask.doc.length-1];
-                                    callback(task, context);
-                                  }
+                                  module: 'task',
+                                  action: 'sequence',
+                                  actions: [
+                                    {
+                                      preCallback: function(task, context, callback) {
+                                        var curItem = task.topTask.list[task.topTask.cur];
+                                        task.param.gubun = curItem.gubun.replace(/['"]+/g, '');
+                                        task.param.type = "keyword";
+                                        task.param.seq = curItem.seq.replace(/['"]+/g, '');
+                                        task.param.itemId = curItem.itemId.replace(/['"]+/g, '');
+                                        callback(task,context);
+                                      },
+                                      template:lgitem
+                                    },
+                                    {
+                                      module: 'mongo',
+                                      action: 'update',
+                                      mongo: {
+                                        model: 'lgfaqs',
+                                        query: {cate1:'', cate2:'', keyword:'', title: '', body: ''},
+                                        options: {upsert: true}
+                                      },
+                                      preCallback: function (task, context, callback) {
+                                        task.doc = task.topTask.doc[task.topTask.doc.length-1];
+                                        callback(task, context);
+                                      }
+                                    }
+                                  ]
                                 }
                               ]
                             }
