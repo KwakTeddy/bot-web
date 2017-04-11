@@ -306,7 +306,7 @@ var lgcrawl = {
                                         options: {upsert: true}
                                       },
                                       preCallback: function (task, context, callback) {
-                                        task.doc = task.topTask.doc[task.topTask.doc.length-1];
+                                        task.doc = task.topTask.data[task.topTask.data.length-1];
                                         callback(task, context);
                                       }
                                     }
