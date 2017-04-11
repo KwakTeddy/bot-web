@@ -491,6 +491,13 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     if(_platform != 'mobile')
       document.getElementById("chat-header").innerText = vm.bot;
 
+    $scope.$on('resetUserBot', function(event, arg0) {
+      var userBot = arg0;
+      vm.bot = userBot.id;
+      vm.userBot = userBot;
+      vm.connectUserBot(vm.bot);
+    });
+
     $scope.$on('setUserBot', function(event, arg0) {
       var userBot = arg0;
       if (vm.bot !== userBot.id) {
@@ -531,6 +538,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
     function addBotBubble(msg) {
       var text = (msg && msg.text) ? msg.text : msg;
+      console.log(vm.userBot);
 
       var d = new Date();
       var datetext = d.getHours() + ':' + d.getMinutes();
@@ -565,6 +573,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     function addButtons(replies) {
       if(replies == undefined) return;
 
+
       var innerHTML = '';
       innerHTML = '<div id="smart_reply" class="smart_reply owl-carousel owl-theme" >';
 
@@ -583,6 +592,11 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       } else {
         main = document.getElementById('chat_main');
         main.style.padding = '10px 0px 30px 0px';
+
+        // reset owl
+        while (main.hasChildNodes()) {
+          main.removeChild(main.firstChild);
+        }
       }
 
       main.insertAdjacentHTML('beforeend', innerHTML);

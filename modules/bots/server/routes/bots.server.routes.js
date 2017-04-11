@@ -21,6 +21,9 @@ module.exports = function (app) {
     .put(bots.update)
     .delete(bots.delete);
 
+  app.route('/api/graph/:botId')
+    .put(bots.graph);
+
   app.route('/api/bots/files/:botId')
     .get(bots.listFile)
     .post(bots.createFile);

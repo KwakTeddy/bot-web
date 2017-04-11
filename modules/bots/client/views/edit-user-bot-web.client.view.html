@@ -9,7 +9,13 @@
                         <ul class="nav nav-tabs">
                             <li role="presentation" ng-class="{active: vm.type == 'view'}"><a href="#" ng-click="vm.changeType('view');">챗봇정보</a></li>
                             <li role="presentation" ng-if="vm.isLearnable" ng-class="{active: vm.type == 'learn'}"><a href="#" ng-click="vm.changeType('learn');">대화학습</a></li>
-                            <!--<li role="presentation" ><a href="#" ng-click="vm.changeType('connect');">연결하기</a></li>-->
+                            <li role="presentation" ng-class="{active: vm.type == 'connect'}"><a href="#" ng-click="vm.changeType('connect');">연결하기</a></li>
+                        </ul>
+                    </div>
+                    <div class="bot-list-header" ng-show="vm.state=='create'" style="border-bottom: 1px solid lightgray;">
+                        <ul class="nav nav-tabs">
+                            <li role="presentation" ng-class="{active: vm.type == 'view'}"><a href="#" ng-click="vm.changeType('view');">챗봇정보</a></li>
+                            <li role="presentation" ng-class="{active: vm.type == 'connect'}"><a href="#" ng-click="vm.changeType('connect');">연결하기</a></li>
                         </ul>
                     </div>
 
@@ -40,6 +46,9 @@
                               <!--<div class="line-it-button" style="display: none;" data-type="share-c" data-lang="en"></div>-->
                             </div>
                             <div style="border-top: 1px solid lightgray; margin-top: 5px;padding-top: 5px;text-align: right;">
+                                <button type="button" class="btn btn-danger" ng-show="vm.isAdmin()" ng-click="vm.graph()">
+                                    <i class="glyphicon glyphicon-edit"></i> 지식그래프 생성
+                                </button>
                                 <a class="btn btn-primary" ui-sref="user-bots-web.graph({userBotId: vm.userBot._id})"
                                    style="padding: 10px 20px 10px 20px;">지식그래프</a>
                                 <a class="btn btn-primary" ng-show="vm.isMine" ui-sref="user-bots-web.edit({userBotId: vm.userBot._id})"
@@ -171,6 +180,17 @@
                                     </div>
                                 </div>
                             </div>
+                            <div ng-show="vm.userBot && vm.userBot._id && vm.userBot.filename" class="row form-group">
+                                <label class="col-sm-3 control-label">사용중인 대화파일</label>
+                                <div class="col-sm-9">
+                                    <div class="text-center form-group">
+                                        <label class="col-sm-3 control-label">{{vm.userBot.filename}}</label>
+                                        <a class="btn btn-primary" target="_self"
+                                           ng-href="{{'/files/' + vm.userBot.filename}}"
+                                           download="{{vm.userBot.filename}}">Download</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-horizontal form-group" ng-show="vm.type == 'edit'">
@@ -276,11 +296,9 @@
                                 </button>
                               </a>
                               <button type="button" class="btn btn-default pull-right" onclick="javascript:history.back();" >취소</button>
-                              <a>
                                 <button type="button" class="btn btn-primary pull-right" ng-click="vm.update(userBotForm.$valid)">
                                     <i class="glyphicon glyphicon-edit"></i> 수정
                                 </button>
-                              </a>
                             </div>
                         </div>
                     </footer>
@@ -294,7 +312,7 @@
 
                         <div class="bot-list-header" ng-show="vm.state=='create'"  style="border-bottom: 1px solid lightgray;">
                             <ul class="nav nav-tabs">
-                                <li role="presentation" ng-class="{active: vm.type == 'edit'}"><a ng-click="vm.changeType('view');">챗봇정보</a></li>
+                                <li role="presentation" ng-class="{active: vm.type == 'view'}"><a ng-click="vm.changeType('view');">챗봇정보</a></li>
                                 <!--<li role="presentation" ng-class="{active: vm.type == 'edit-detail'}"><a href="#" ng-click="vm.changeType('edit-detail');">상세정보</a></li>-->
                                 <li role="presentation" ng-class="{active: vm.type == 'connect'}"><a ng-click="vm.changeType('connect');">연결하기</a></li>
                             </ul>
@@ -313,6 +331,7 @@
                             <ul class="nav nav-tabs">
                                 <li role="presentation" ng-class="{active: vm.type == 'view'}"><a href="#" ng-click="vm.changeType('view');">챗봇정보</a></li>
                                 <li role="presentation" ng-class="{active: vm.type == 'learn'}"><a href="#" ng-click="vm.changeType('learn');">대화학습</a></li>
+                                <li role="presentation" ng-class="{active: vm.type == 'connect'}"><a href="#" ng-click="vm.changeType('connect');">연결하기</a></li>
                             </ul>
                         </div>
 
@@ -388,6 +407,13 @@
                                 <li role="presentation" ng-class="{active: vm.type == 'learn'}"><a href="#" ng-click="vm.changeType('learn');">대화학습</a></li>
                                 <li role="presentation" ng-class="{active: vm.type == 'connect'}"><a href="#" ng-click="vm.changeType('connect');">연결하기</a></li>
                             </ul>
+                        </div>
+                        <div class="bot-list-header" ng-show="vm.state=='view'" style="border-bottom: 1px solid lightgray;">
+                          <ul class="nav nav-tabs">
+                            <li role="presentation" ng-class="{active: vm.type == 'view'}"><a href="#" ng-click="vm.changeType('view');">챗봇정보</a></li>
+                            <li role="presentation" ng-class="{active: vm.type == 'learn'}" ng-if="vm.isLearnable"><a href="#" ng-click="vm.changeType('learn');">대화학습</a></li>
+                            <li role="presentation" ng-class="{active: vm.type == 'connect'}"><a href="#" ng-click="vm.changeType('connect');">연결하기</a></li>
+                          </ul>
                         </div>
 
                         <div ng-show="vm.learning">

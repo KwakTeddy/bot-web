@@ -28,7 +28,7 @@
 
             <div id="popularBots" class="row bot-list">
 
-                <div class="col-md-3" ng-repeat="userBot in vm.userBots">
+                <div class="col-md-3" ng-repeat="userBot in vm.userBots | orderBy: '-followed'">
                     <!--<div class="thumbnail" ng-click="vm.userBotChat(userBot)">-->
                   <a href="#" ui-sref="user-bots-web.view({userBotId: userBot._id})">
                     <div class="thumbnail">
@@ -84,9 +84,9 @@
                                 <i class="fa fa-comments fa-stack-1x fa-inverse"></i>
                             </span>
                         <div class="feature-text">
-                            <h4 class="service-heading">카카오톡 대화로 바로 챗봇 만들기</h4>
-                            <p class="text-muted">카카오톡에서 친구와 나누었던 대화를 내려받기 해서 챗봇을 만들 수 있습니다.<br>
-                                여자친구, 직장상사, 그리운 사람들의 가상봇을 만들어서 언제든지 대화를 나누세요.</p>
+                            <h4 class="service-heading">업종별 자동응대 챗봇 제공</h4>
+                            <p class="text-muted">미리 만들어 진 챗봇을 간단히 설정하여 사용하세요. <br>
+                                요식업, 쇼핑, 교육, 의료, 건강 등 다양한 분야의 챗봇을 서비스할 수 있습니다.</p>
                         </div>
                     </div>
                     <div class="single-feature">

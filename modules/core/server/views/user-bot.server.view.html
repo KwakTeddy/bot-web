@@ -77,16 +77,16 @@
 
 
               <li class="">
-                    <a class="page-scroll" href="/list?listType=popular">인기봇</a>
+                    <a class="page-scroll" id = "header_popular" style="font-size:130%" href="/list?listType=popular">인기봇</a>
                 </li>
                 <li class="">
-                    <a class="page-scroll" href="/list?listType=recent">최신봇</a>
+                    <a class="page-scroll" id = "header_recent" href="/list?listType=recent">최신봇</a>
                 </li>
                 <li class="">
-                    <a class="page-scroll" href="/list?listType=followed">친구봇</a>
+                    <a class="page-scroll" id = "header_follow" href="/list?listType=followed">친구봇</a>
                 </li>
                 <li class="">
-                    <a class="page-scroll" href="/list?listType=my">마이봇</a>
+                    <a class="page-scroll" id = "header_my" href="/list?listType=my">마이봇</a>
                 </li>
 
                 <li class="" ng-hide="authentication && authentication.user">
@@ -153,11 +153,14 @@
                 <div class="btn-group" role="group">
                 </div>
             </div>
-            <div class="intro-heading">인공지능 챗봇 플랫폼 - 플레이 챗</div>
+            <div class="intro-heading">인공지능 챗봇 플랫폼 - 플레이챗</div>
             <div class="intro-lead-in">1분만에 쉽게 나만의 챗봇을 만드세요.</div>
             <div class="row">
             <div class="intro-in">
+챗봇, 이제 개발하지 말고 간단한 정보의 입력만으로 나만의 챗봇을 만들어 바로 사용할 수 있습니다. 음식점, 혜어샵, 네일샵, 교육, 의료 등 각 업종별 미리 만들어진 챗봇을 선택하기만 하면 됩니다. 기존 플러스친구, 페이스북에도 바로 연결할 수 있습니다.
+<!--
 카카오톡에서 여자친구와 대화했던 내용으로 여자친구봇을 만들어 대화를 나눌 수 있습니다. 자막파일로 챗봇을 만들어 영화 속 주인공과 대화를 나누세요. 연예인, 정치인, 유명인의 대화를 모아서 챗봇을 만들고 공개하여 다른 사람도 이용하게 해보세요.
+-->
             </div>
             <div class="col-sm-4">
             <!--<a ui-sref="vm.create()" class="page-scroll btn btn-xl">챗봇 만들기</a>-->
@@ -174,13 +177,13 @@
                 <!--</div>-->
                 <div class="col-sm-4 intro-messengers">
                     <!--메신져에서 친구 추가해서 사용하세요.<br/>-->
-                  <a href="http://plus.kakao.com/home/@playchat" target="_blank">
+                  <a style="text-decoration: none;" href="http://plus.kakao.com/home/@playchat" target="_blank">
                     <img src="/bot-client/images/kakaotalk-icon1.png" height="50"/>
                   </a>
-                  <!--<a href="https://line.me/R/ti/p/%40utw0596x" target="_blank">-->
-                    <!--<img src="/bot-client/images/line-messenger-vector-logo.png" height="50" alt="LINE it!" />-->
-                  <!--</a>-->
-                  <a href="https://www.messenger.com/t/1753073741670229" target="_blank">
+                  <a style="text-decoration: none;" href="https://line.me/R/ti/p/%40utw0596x" target="_blank">
+                    <img src="/bot-client/images/line-messenger-vector-logo.png" height="50" alt="LINE it!" />
+                  </a>
+                  <a style="text-decoration: none;" href="https://www.messenger.com/t/1753073741670229" target="_blank">
                     <img src="/bot-client/images/facebook-messenger-android.png" height="50" style="border-radius: 8px;"/>
                   </a>
 
@@ -332,8 +335,7 @@
 <script>
   window.fbAsyncInit = function() {
     FB.init({
-      appId      : '1164643496966534', //devTest
-//      appId      : '240853479709635',
+      appId      : '1557169960967403',
       xfbml      : true,
       version    : 'v2.8'
     });

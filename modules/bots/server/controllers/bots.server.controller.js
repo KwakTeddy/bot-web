@@ -25,6 +25,38 @@ var async = require('async');
 var Dialogset = mongoose.model('Dialogset');
 var dialogsetModule = require(path.resolve('modules/bot/engine/dialogset/dialogset.js'));
 
+exports.graph = function (req, res) {
+  var bot = req.bot;
+  bot = _.extend(bot , req.body);
+  if (bot.dialogsets){
+    for (var i=0; i < bot.dialogsets.length; ++i) {
+      bot.dialogsets[i] = mongoose.Types.ObjectId(bot.dialogsets[i]);
+    }
+  }
+  botLib.buildBot(bot.id, bot.path);
+  botLib.loadBot(bot.id, function (realbot) {
+    var result = "";
+    async.waterfall([
+      function (cb) {
+        async.eachSeries(realbot.dialogsets, function(dialogset, cb2) {
+          dialogsetModule.analyzeKnowledge(dialogset, bot.id, result, function () {
+            cb2();
+          });
+        }, function(err) {
+          cb(null);
+        });
+      },
+      function (cb) {
+        dialogsetModule.analyzeKnowledgeDialog(realbot.dialogs, bot.id, result, function() {
+          cb(null);
+        });
+      },
+    ], function (err) {
+      return res.json({message:"failed to create graph"});
+    });
+  });
+};
+
 /**
  * Create a bot
  */
@@ -393,16 +425,19 @@ exports.followList = function (req, res) {
   if(req.body.botUserId) query['botUserId'] = req.body.botUserId;
   if(req.body.userBot) query['bot'] = req.body.userBot._id;
   if(req.body.query) search['name'] = new RegExp(req.body.query, 'i');
+  search['public'] = true;
   var populateQuery = [];
 
-  BotFollow.find(query).populate('bot', null, search).sort('-created').skip(req.body.currentPage * perPage).limit(perPage).exec(function (err, follows) {
+  BotFollow.find(query).populate({path: 'bot', match: {public: 'true'}}).sort('-created').exec(function (err, follows) {
+  // BotFollow.find(query).populate('bot', null, search).sort('-created').skip(req.body.currentPage * perPage).limit(perPage).exec(function (err, follows) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
       var bots = [];
-      for(var i in follows) {
+
+      for(var i = 0; i < follows.length; i++) {
         if(follows[i].bot && (follows[i].bot.public == true)){
           bots.push(follows[i].bot);
         }
@@ -444,11 +479,11 @@ exports.followBot = function(req, res) {
               message: errorHandler.getErrorMessage(err)
             });
           } else {
-            Bot.findOne({_id: req.body.userBot}).exec(function (err, result) {
+            Bot.findOne({_id: req.body.bot}).exec(function (err, result) {
               result.followed++;
-              result.save(function (err) {
+              result.save(function (err, data) {
                 console.log(err)
-                res.json(botFollow);
+                res.json(data);
               })
             });
           }
@@ -467,9 +502,9 @@ exports.followBot = function(req, res) {
           }
           Bot.findOne({_id: req.body.userBot}).exec(function (err, result) {
             result.followed++;
-            result.save(function (err) {
-              console.log(err)
-              res.end();
+            result.save(function (err, data) {
+              console.log(err);
+              res.json(data);
             })
           });
         });
@@ -499,13 +534,18 @@ exports.unfollowBot = function(req, res) {
               message: errorHandler.getErrorMessage(err)
             });
           } else {
-            Bot.findOne({_id: req.query.userBot}).exec(function (err, result) {
-              result.followed--;
-              result.save(function (err) {
+            Bot.findOne({_id: req.query.bot}).exec(function (err, result) {
+              if (result.followed <= 0){
+                result.followed = 0;
+              }else {
+                result.followed--;
+              }
+              result.save(function (err, data) {
                 console.log(err);
-                res.json(botFollow);
+                res.json(data);
               })
             });
+
           }
         });
       }else {
@@ -521,10 +561,14 @@ exports.unfollowBot = function(req, res) {
             });
           }else {
             Bot.findOne({_id: req.query.userBot}).exec(function (err, result) {
-              result.followed--;
-              result.save(function (err) {
-                console.log(err)
-                res.end();
+              if (result.followed <= 0){
+                result.followed = 0;
+              }else {
+                result.followed--;
+              }
+              result.save(function (err, data) {
+                console.log(err);
+                res.json(data);
               })
             });
           }
@@ -569,6 +613,16 @@ exports.botByID = function (req, res, next, id) {
     req.bot = bot;
 
     async.waterfall([
+      function(cb) {
+        if (bot.dialogsets) {
+          Dialogset.findOne({_id: bot.dialogsets[0]}).lean().exec(function(err, doc) {
+            req.bot._doc.filename = doc.filename;
+            cb(null);
+          })
+        } else {
+          cb(null);
+        }
+      },
       function(cb) {
         if (bot.templateId) {
           var TemplateModel = mongoose.model('Template');
@@ -691,7 +745,7 @@ exports.createFile = function (req, res) {
       }
     });
   });
-}
+};
 
 
 exports.removeFile = function (req, res) {

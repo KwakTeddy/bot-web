@@ -16,14 +16,13 @@ if (_platform !== 'mobile'){
   // UserBots controller
   angular.module('user-bots').controller('UserBotController', ['$scope', '$rootScope', '$state', '$window','$timeout', '$stateParams',
     'Authentication', 'userBotResolve', 'FileUploader', 'UserBotsService', 'UserBotCommentService', 'UserBotDialogService',
-    'UserBotsFollowService', '$http', '$uibModal', 'TemplatesService', '$compile', '$cookies', '$resource',
+    'UserBotsFollowService', 'UserBotsGraphService','$http', '$uibModal', 'TemplatesService', '$compile', '$cookies', '$resource',
     function ($scope, $rootScope, $state, $window, $timeout, $stateParams, Authentication, userBot, FileUploader,
-              UserBotsService, UserBotCommentService, UserBotDialogService, UserBotsFollowService, $http, $uibModal,
-              TemplatesService, $compile, $cookies, $resource) {
+              UserBotsService, UserBotCommentService, UserBotDialogService, UserBotsFollowService, UserBotsGraphService,
+              $http, $uibModal, TemplatesService, $compile, $cookies, $resource) {
       var vm = this;
       vm.user = Authentication.user;
       vm.userBot = userBot;
-      console.log(userBot);
       vm.isPublic = true;
       if (userBot && userBot._id && !userBot.public) {
         if (userBot.templateData){
@@ -49,6 +48,19 @@ if (_platform !== 'mobile'){
       } else {
         vm.userBot.public = true;
       }
+
+      vm.isAdmin = function() {
+        /*
+        for (var i=0; i < vm.user.roles.length; ++i) {
+          if (vm.user.roles[i] === "admin")
+            return true;
+        }
+        return false;
+        */
+        if (vm.user.email === "com2best@gmail.com")
+          return true;
+        return false;
+      };
 
       vm.findAddress = function() {
         new daum.Postcode({
@@ -82,33 +94,48 @@ if (_platform !== 'mobile'){
         $rootScope.$broadcast('setUserBot', userBot);
       };
 
-      vm.type = '';
-      if($state.is('user-bots-web.create')) {vm.state = 'create'; vm.type = 'edit';}
-      else if($state.is('user-bots-web.edit')) {vm.state = 'edit'; vm.type = 'edit';}
-      else if (!$state.is('user-bots-web.view')) {
-      } else {
-        vm.state = 'view';
-        vm.type = 'view';
-        if ($cookies.get("nograph") != undefined && !$rootScope.nograph) {
+      if ($stateParams.noGraph)
+        $scope.nograph = true;
+      vm.startChat = function() {
+        if ($cookies.get("nograph") == undefined && !$scope.nograph) {
           $state.go('user-bots-web.graph', {userBotId: vm.userBot._id});
         } else {
           vm.userBotChat(vm.userBot);
         }
+      };
+
+      vm.type = '';
+      if($state.is('user-bots-web.create')) {vm.state = 'create'; vm.type = 'edit';}
+      else if($state.is('user-bots-web.edit')) {vm.state = 'edit'; vm.type = 'edit';}
+      else if ($state.is('user-bots-web.view')) {
+        vm.state = 'view';
+        vm.type = 'view';
+        vm.startChat();
       }
+
       vm.changeType = function(type) {
         vm.type= type;
+        if (vm.type == 'view' && vm.state == 'create')
+          vm.startChat();
       };
 
       vm.followBot = function(userBot) {
-        UserBotsFollowService.follow({botUserId: vm.user._id, userBot: userBot._id}, function(err, result) {
+        UserBotsFollowService.follow({botUserId: vm.user._id, userBot: userBot._id}, function(result) {
+          vm.userBot = result;
+          vm.userBot.user = {};
+          vm.userBot.user['username'] = vm.user.username;
           vm.userBot.userFollow = true;
           // alert('친구로 추가 되었습니다.')
         });
       };
 
       vm.unfollowBot = function(userBot) {
-        UserBotsFollowService.unfollow({botUserId: vm.user._id, userBot: userBot._id}, function(err, result) {
+        UserBotsFollowService.unfollow({botUserId: vm.user._id, userBot: userBot._id}, function(result) {
+          vm.userBot = result;
+          vm.userBot.user = {};
+          vm.userBot.user['username'] = vm.user.username;
           vm.userBot.userFollow = undefined;
+          console.log(result);
           // alert('친구를 취소하였습니다.')
         });
       };
@@ -346,7 +373,7 @@ if (_platform !== 'mobile'){
             });
 
             if($state.is('user-bots-web.create') || $state.is('user-bots-web.edit')) {
-              $rootScope.$broadcast('setUserBot', vm.userBot);
+              $rootScope.$broadcast('resetUserBot', vm.userBot);
             }
             //$state.go('user-bots-web.list', {listType: 'my'});
           }, function (errorResponse) {
@@ -354,6 +381,12 @@ if (_platform !== 'mobile'){
             $scope.error = errorResponse.data.message;
           });
         }
+      };
+
+      vm.graph = function() {
+        UserBotsGraphService.update({userBotId: vm.userBot._id }, function(err, result) {
+          console.log("graph updated");
+        });
       };
 
       // Remove existing UserBot
@@ -951,7 +984,7 @@ if (_platform !== 'mobile'){
 
         // Show error message
         $scope.success.file = null;
-        $scope.error['file'] = '대화 파일이 아니에요'
+        $scope.error['file'] = response.message;
       };
 
       // Change user profile picture
@@ -1149,20 +1182,20 @@ if (_platform !== 'mobile'){
                 $scope.userBotId = vm.userBot.id;
 
                 if ((channel == 'facebook') && (method !== 'easy')){
-                    // FB.api('/me/accounts?fields=picture,name,link,access_token', function(response) {
-                    //   console.log(response);
-                    //   if (response.error && (response.error.code == 2500)){
-                    //     var url = '/api/auth/facebook/page';
-                    //     if ($state.previous && $state.previous.href) {
-                    //         url += '?redirect_to=' + encodeURIComponent($state.previous.href);
-                    //     }
-                    //     // Effectively call OAuth authentication route:
-                    //       console.log(url);
-                    //     $window.location.href = url;
-                    //   }
-                    //   $scope.pageList = [];
-                    //   $scope.pageList = response.data;
-                    // });
+                    FB.api('/me/accounts?fields=picture,name,link,access_token', function(response) {
+                      console.log(response);
+                      if (response.error && (response.error.code == 2500)){
+                        var url = '/api/auth/facebook/page';
+                        if ($state.previous && $state.previous.href) {
+                            url += '?redirect_to=' + encodeURIComponent($state.previous.href);
+                        }
+                        // Effectively call OAuth authentication route:
+                          console.log(url);
+                        $window.location.href = url;
+                      }
+                      $scope.pageList = [];
+                      $scope.pageList = response.data;
+                    });
                 }
                 $scope.close = function () {
                     modalInstance.dismiss();
@@ -1173,9 +1206,9 @@ if (_platform !== 'mobile'){
                     FB.api('me/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
                         console.log(response)
                     });
-                    FB.api('240853479709635/subscriptions', 'post', {object: 'page', callback_url: '/api/facebook/'+ '123' +'/webhook', verify_token: 'moneybrain_token'}, function (response) {
-                        console.log(response)
-                    })
+                    // FB.api('1557169960967403/subscriptions', 'post', {object: 'page', callback_url: '/api/facebook/'+ '123' +'/webhook', verify_token: 'moneybrain_token'}, function (response) {
+                    //     console.log(response)
+                    // })
                 };
                 var modalInstance = $uibModal.open({
                     templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',
