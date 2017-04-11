@@ -1206,9 +1206,9 @@ if (_platform !== 'mobile'){
                     FB.api('me/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
                         console.log(response)
                     });
-                    FB.api('240853479709635/subscriptions', 'post', {object: 'page', callback_url: '/api/facebook/'+ '123' +'/webhook', verify_token: 'moneybrain_token'}, function (response) {
-                        console.log(response)
-                    })
+                    // FB.api('1557169960967403/subscriptions', 'post', {object: 'page', callback_url: '/api/facebook/'+ '123' +'/webhook', verify_token: 'moneybrain_token'}, function (response) {
+                    //     console.log(response)
+                    // })
                 };
                 var modalInstance = $uibModal.open({
                     templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',

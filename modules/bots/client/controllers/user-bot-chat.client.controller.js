@@ -538,6 +538,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
     function addBotBubble(msg) {
       var text = (msg && msg.text) ? msg.text : msg;
+      console.log(vm.userBot);
 
       var d = new Date();
       var datetext = d.getHours() + ':' + d.getMinutes();
