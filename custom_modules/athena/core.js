@@ -163,7 +163,7 @@ function mybotlist (task,context,callback) {
 exports.mybotlist = mybotlist;
 
 function popularbotlist (task,context,callback) {
-    var query = {};
+    var query = {public:true};
     var sort = '-followed';
     var UserBot = mongoose.model('Bot');
     UserBot.find(query).sort(sort).limit(5).lean().exec(function (err, docs) {
@@ -175,7 +175,7 @@ function popularbotlist (task,context,callback) {
 exports.popularbotlist = popularbotlist;
 
 function newbotlist (task,context,callback) {
-    var query = {};
+    var query = {public:true};
     var sort = '-created';
     var UserBot = mongoose.model('Bot');
     UserBot.find(query).sort(sort).limit(5).lean().exec(function (err, docs) {
@@ -188,10 +188,10 @@ exports.newbotlist = newbotlist;
 
 function followbotlist (task,context,callback) {
     var query = {};
-    var UserBotFollow = mongoose.model('UserBotFollow');
+    var UserBotFollow = mongoose.model('BotFollow');
     query['botUserId'] = context.user.playchatId;
     query['followed'] = true;
-    UserBotFollow.find(query).populate('userBot').sort('-created').lean().exec(function (err, docs) {
+    UserBotFollow.find(query).populate('Bot').sort('-created').lean().exec(function (err, docs) {
         console.log(docs);
         context.dialog.followbot = [];
         for (var i in docs) {
