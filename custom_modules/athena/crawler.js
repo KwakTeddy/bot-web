@@ -70,7 +70,7 @@ var lglist = {
     "selectKeyWord": "기구/HW",
     "category1" : 1018,
     "category2" : "C000136",
-    "currentPage" : 1,
+    "currentPageNo" : 1,
   },
   xpath: {
     num: '//*[@id="listCmp"]/em/text()',
@@ -233,7 +233,7 @@ var lgcrawl = {
                         task.topTask.param.selectKeyWord = task.topTask.c2.keyword;
                         task.topTask.param.category1 = task.topTask.c1.parentcatecode;
                         task.topTask.param.category2 = task.topTask.c1.catecode;
-                        task.topTask.param.currentPage = 1;
+                        task.topTask.param.currentPageNo = 1;
 
                         task.param = task.topTask.param;
 
@@ -264,7 +264,7 @@ var lgcrawl = {
                               template: lglist,
                               preCallback: function (task, context, callback) {
                                 task.param =  task.topTask.param;
-                                task.param.currentPage = task.topTask.curPage;
+                                task.param.currentPageNo = task.topTask.curPage;
                                 callback(task, context);
                               }
                             },
