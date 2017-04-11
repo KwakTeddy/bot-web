@@ -1,7 +1,6 @@
 var path = require('path');
 var mongo = require(path.resolve('./modules/bot/action/common/mongo'));
 var bot = require(path.resolve('config/lib/bot')).getBot('athena');
-var addressModule = require(path.resolve('modules/bot/action/common/address'));
 var async = require('async');
 
 var lgcate1= {
