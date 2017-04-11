@@ -466,3 +466,38 @@ exports.auctiontest = {
     callback(task, context);
   }
 };
+
+exports.naver = {
+  action: function(task, context, callback) {
+    var body = {};
+    body = {
+      "event":"send",
+      "sender":"partner",
+      "user":"d176c7180f5b1e0245ff5cd1841e1d62",
+      "partner":"wc8bu4",
+      "textContent":{"text":"hello world"}
+    };
+
+    request({
+      url: "https://dev.apis.naver.com/talk-partner/talk-bot/event",
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        "X-Naver-Client-Id": "c7VNVyIG3s95N4q2LWZQ",
+        "X-Naver-Client-Secret": "HXWvXdrKi7"
+      },
+      json: true,
+      body: body
+    }, function (error, response, body) {
+      console.log(util.inspect(body));
+      console.log(error);
+      // console.log(util.inspect(response));
+      if (!error && response.statusCode == 200) {
+
+      }
+      callback(task, context);
+    });
+
+    callback(task, context);
+  }
+};
