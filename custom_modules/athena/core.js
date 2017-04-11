@@ -152,7 +152,7 @@ exports.authcode = authcode;
 function mybotlist (task,context,callback) {
     var query = {};
     var sort = '-created';
-    var UserBot = mongoose.model('UserBot');
+    var UserBot = mongoose.model('Bot');
     query['user'] = context.user.playchatId;
     UserBot.find(query).sort(sort).populate('user').lean().exec(function (err, docs) {
         context.dialog.mybot = docs;
@@ -165,7 +165,7 @@ exports.mybotlist = mybotlist;
 function popularbotlist (task,context,callback) {
     var query = {};
     var sort = '-followed';
-    var UserBot = mongoose.model('UserBot');
+    var UserBot = mongoose.model('Bot');
     UserBot.find(query).sort(sort).limit(5).lean().exec(function (err, docs) {
         context.dialog.popularbot = docs;
         callback(task,context);
@@ -177,7 +177,7 @@ exports.popularbotlist = popularbotlist;
 function newbotlist (task,context,callback) {
     var query = {};
     var sort = '-created';
-    var UserBot = mongoose.model('UserBot');
+    var UserBot = mongoose.model('Bot');
     UserBot.find(query).sort(sort).limit(5).lean().exec(function (err, docs) {
         context.dialog.newbot = docs;
         callback(task,context);
@@ -218,7 +218,7 @@ exports.connectBot = connectBot;
 function callBot (task, context, callback) {
     var command = require(path.resolve('./modules/bot/action/common/command'));
     var query = {};
-    var UserBot = mongoose.model('UserBot');
+    var UserBot = mongoose.model('Bot');
     task.botName = task['1'];
     UserBot.find(query).sort(sort).limit(5).lean().exec(function (err, docs) {
         context.dialog.newbot = docs;
