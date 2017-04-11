@@ -15,9 +15,34 @@ exports.message =  function(req, res) {
     var text = req.body.text;
 
     console.log(JSON.stringify(req.params));
-    chat.write('navertalk', from, req.params.bot, text, function (serverText, json) {
-      respondMessage(res, serverText, json)
-    });
+    // var response = {
+    //   success: true,
+    //   request: {
+    //     event: "send", /* send message */
+    //     sender: "partner", /* 파트너가 보내는 메시지 */
+    //     user: req.body.user, /* 유저 식별값 */
+    //     partner: req.body.partner, /* 파트너 식별값 wc1234 */
+    //     textContent: {
+    //       text: '123'
+    //     }
+    //   }
+    // };
+    var response = {
+      success: true,
+      request: {
+        event: "send", /* send message */
+        sender: "partner", /* 파트너가 보내는 메시지 */
+        user: '8rz5G', /* 유저 식별값 */
+        partner: 'wcc1y9', /* 파트너 식별값 wc1234 */
+        textContent: {
+          text: '123'
+        }
+      }
+    };
+    res.json(response);
+    // chat.write('navertalk', from, req.params.bot, text, function (serverText, json) {
+    //   respondMessage(res, serverText, json)
+    // });
   }
 };
 
