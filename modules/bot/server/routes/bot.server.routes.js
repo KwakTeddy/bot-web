@@ -6,6 +6,7 @@
 var kakao = require('../controllers/kakao.server.controller');
 var line = require('../controllers/line.server.controller');
 var facebook = require('../controllers/facebook.server.controller');
+var navertalk = require('../controllers/navertalk.server.controller');
 
 module.exports = function (app) {
   // 카카오톡
@@ -22,5 +23,8 @@ module.exports = function (app) {
   // 페이스북
   app.route('/facebook/:bot/webhook').get(facebook.messageGet);
   app.route('/facebook/:bot/webhook').post(facebook.message);
+
+  // 네이버 톡톡
+  app.route('/navertalk/:bot/webhook').post(navertalk.message);
 
 };

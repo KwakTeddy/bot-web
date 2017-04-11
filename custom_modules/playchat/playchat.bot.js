@@ -16,8 +16,8 @@ var playchat = {
     keyboard: { type :"buttons", buttons:["인기봇","최신봇","마이봇"]}
   },
   naver: {
-    clientId: 'c7VNVyIG3s95N4q2LWZQ',
-    clientSecret: 'HXWvXdrKi7'
+    clientId: 'ovPuA5tCM5RJCopfeo6k',
+    clientSecret: 'thTBSDMd9c'
   },
   dialogFiles: [
     'test.dialog.js'

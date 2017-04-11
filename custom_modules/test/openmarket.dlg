@@ -45,9 +45,14 @@ openmarket.coupangCsStoC
 <그렇다
 >그래
 
-<옥션
-openmarket.auctiontest
->옥션
+<옥션 내 계좌
+openmarket.auctionGetMyAccount
+>옥션 내 계좌
+
+<옥션 구매 자 쪽지
+openmarket.auctionBuyerNoteList
+>옥션 구매자 쪽지
+
 
 <네이버
 openmarket.naver
