@@ -102,7 +102,7 @@ var lgitem = {
   method: 'GET',
   xpath: {
     title: '//*[@id="container"]/div[2]/div[1]/div[1]/div[1]/h3/text()',
-    body: '//*[@id="container"]/div[2]/div[1]/div[1]/div[2]/p/text()',
+    content: '//*[@id="container"]/div[2]/div[1]/div[1]/div[2]',
   },
   // param: {
   //   "gubun": "SCS",
@@ -116,58 +116,62 @@ var lgitem = {
   //   "itemId": "1308377241130",
   //   "type": "keyword",
   // },
+  // param: {
+  //   "gubun": "SCS",
+  //   "seq" : 9418,
+  //   "itemId": "20150138004197",
+  //   "type": "keyword",
+  // },
+  // param: {
+  //   "gubun": "SCS",
+  //   "seq" : 6201,
+  //   "itemId": "1778886",
+  //   "type": "keyword",
+  // },
   param: {
     "gubun": "SCS",
-    "seq" : 9418,
-    "itemId": "20150138004197",
+    "seq" : 26829,
+    "itemId": "_0371ZTRX1YDCB",
     "type": "keyword",
   },
   postCallback: function (task, context, callback) {
-    task.doc.title = task.doc.title.trim();
-    task.doc.body = task.doc.body.trim();
-    task.doc.body = task.doc.body.replace(/&amp;nbsp;/g, ' ');
-    task.doc.cate1 = task.topTask.c1.parentcatename;
-    task.doc.cate2 = task.topTask.c1.catename;
-    task.doc.keyword = task.topTask.c2.keyword;
+    var item = {};
+    item.title = task.doc.title.trim();
 
-    console.log(JSON.stringify(task.doc));
+    var collector = "";
+    var handleChildren = function(node) {
+      if (node.data) {
+        collector += node.data;
+      }
+      if (node.childNodes) {
+        for (var i=0; i < node.childNodes.length; ++i) {
+          handleChildren(node.childNodes[i], collector);
+        }
+      }
+    };
 
-    task.topTask.data.push(task.doc);
+    if (task.doc.content) {
+      task.doc.content.forEach(function (c) {
+        handleChildren(c);
+      });
+      item.body = collector;
+    } else {
+      item.body = "";
+    }
+    item.body = item.body.trim();
+    item.body = item.body.replace(/&amp;nbsp;|&nbsp;|\t|\r\n|\r|\n/g, ' ');
+    item.body = item.body.replace(/<br>/g, ' ');
+
+    item.cate1 = task.topTask.c1.parentcatename;
+    item.cate2 = task.topTask.c1.catename;
+    item.keyword = task.topTask.c2.keyword;
+
+    task.topTask.data.push(item);
     callback(task, context);
   }
 };
 bot.setTask("lgitem", lgitem);
 exports.lgitem = lgitem;
-
-var lgitem_save = {
-  module: 'task',
-  action: 'sequence',
-  preCallback: function(task, context, callback) {
-    task.topTask.doc = [];
-    callback(task, context);
-  },
-  actions: [
-    {
-      template: lgitem,
-    },
-    {
-      module: 'mongo',
-      action: 'update',
-      mongo: {
-        model: 'lgfaq',
-        query: {cate1:'', cate2:'', keyword:'', title: '', body: ''},
-        options: {upsert: true}
-      },
-      preCallback: function (task, context, callback) {
-        task.doc = task.topTask.data;
-        callback(task, context);
-      }
-    }
-  ]
-};
-
-bot.setTask("lgitem_save", lgitem_save);
-exports.lgitem_save = lgitem_save;
 
 var lgcrawl = {
   module: 'task',
@@ -306,6 +310,7 @@ var lgcrawl = {
                                       },
                                       preCallback: function (task, context, callback) {
                                         task.doc = task.topTask.data[task.topTask.data.length-1];
+                                        console.log("SAVED:" + JSON.stringify(task.doc));
                                         callback(task, context);
                                       }
                                     }
