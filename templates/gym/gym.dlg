@@ -73,12 +73,12 @@ shop.mapTask
 예약내역:
 <예약 취소
 <예약 확인
-<예약 내
+<예약 내역
 shop.reserveCheck
 >if(context.botUser.isOwner && context.dialog.reserves != undefined) 미처리 예약내역입니다.\n#reserves#+index+. +name+ +dateStr+ +time+ +memo+ [+status+]\n#\n처리할 예약번호를 말씀해주세요.
     <{types: [{name: 'reserve', listName: 'reserves', typeCheck: 'listTypeCheck'}]}
     {action: function(task, context, callback) { task.result = {smartReply: ['예약확정', '예약취소']}; callback(task, context);}}
-    >상세 예약내역입니다.\n상태: +reserve.status+\n예약자명: +reserve.name+\n일시: +reserve.dateStr+ +reserve.time+\n테이블: +reserve.memo+\n연락처: +reserve.mobile+\n\n"확정", "취소"를 선택해 주세요.
+    >상세 예약내역입니다.\n상태: +reserve.status+\n예약자명: +reserve.name+\n일시: +reserve.dateStr+ +reserve.time+\n서비스: +reserve.memo+\n연락처: +reserve.mobile+\n\n"확정", "취소"를 선택해 주세요.
         <~확정
         'reserveOwnerConfirm'
         >{call: '예약내역', options: {prefix: '예약이 확정 되었습니다. 고객님에게 문자가 발송되었습니다.\n\n'}}
@@ -98,7 +98,7 @@ shop.reserveCheck
     >예약이 취소되었습니다.
     <{if: 'true'}
     >{repeat: 1, options: {prefix: '목록에서 선택해주세요.\n'}}
->if(context.dialog.reserve != undefined) 고객님의 예약 내역입니다.\n상태: +reserve.status+\n일시: +reserve.dateStr+ +reserve.time+\n테이블: +reserve.memo+\n예약자명: +reserve.name+\n연락처: +reserve.mobile+\n\n예약을 취소하시려면 "취소"라고 말씀해주세요.
+>if(context.dialog.reserve != undefined) 고객님의 예약 내역입니다.\n상태: +reserve.status+\n일시: +reserve.dateStr+ +reserve.time+\n서비스: +reserve.memo+\n예약자명: +reserve.name+\n연락처: +reserve.mobile+\n\n예약을 취소하시려면 "취소"라고 말씀해주세요.
     <취소
     'reserveCancel'
     >예약이 취소되었습니다.
@@ -123,7 +123,7 @@ shop.reserveCheck
     시간선택:<false
     >예약하실 시간을 말씀해 주세요.
         <{types: [{name: 'time', typeCheck: 'timeTypeCheck'}]}
-        >{call: '서비스선택'}
+        >{call: '예약자명'}
         <{if: 'context.dialog.시간입력최초 == undefined'}
         {
           action: function(task, context, callback) {
@@ -133,11 +133,6 @@ shop.reserveCheck
         >{call: '시간선택'}
         <{if: 'true'}
         >{repeat: 1, options: {prefix: '시간이 아닙니다.\n', postfix: '\n\n예약 진행을 취소하시려면\n"시작"이라고 말씀해주세요.'}}
-    서비스선택:<false
-    >테이블종류를 선택해주세요.\n(테이블, 부스, VIP룸)
-        <{if: 'true'}
-        'reserveMemoTask'
-        >{call: '예약자명'}
     예약자명:<false
     >예약하실 이름을 입력해주세요.
         <{if: 'true'}
@@ -158,7 +153,7 @@ shop.reserveCheck
         >{repeat: 1, options: {prefix: '휴대폰 번호가 아닙니다.\n', postfix: '\n\n예약 진행을 취소하시려면\n"시작"이라고 말씀해주세요.'}}
     예약내용확인:<false
     {action: 'reserveConfirm'}
-    > 예약내용을 확인해주세요.\n일시: +dateStr+ +time+\n테이블: +memo+\n연락처: +mobile+\n다음과 같이 예약신청하시겠습니까?
+    > 예약내용을 확인해주세요.\n일시: +dateStr+ +time+\n서비스: +memo+\n연락처: +mobile+\n다음과 같이 예약신청하시겠습니까?
         <~네
         {action: 'reserveRequest'}
         >예약을 요청하였습니다.\n\n아직 확정이 아닙니다.\n좌석 확인 후 예약완료 문자를 보내 드리겠습니다.

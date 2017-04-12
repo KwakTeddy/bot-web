@@ -310,8 +310,11 @@ function reserveRequest(task, context, callback) {
           try {shorturl = JSON.parse(body).result.url; } catch(e) {console.log(e);}
           var message = '[플레이챗]' + '\n' +
             context.dialog.name + '/' +
-            context.dialog.dateStr + '/' + context.dialog.time + '/';
+            context.dialog.dateStr + '/';
             // context.dialog.numOfPerson + '명\n' +
+          if (context.dialog.time) {
+            messages += context.dialog.time + '/';
+          }
 
           for(var i = 0; i < fields.length; i++) {
             var field = fields[i];
@@ -562,6 +565,15 @@ var reserveMemoTask = {
 };
 
 globals.setGlobalTask('reserveMemoTask', reserveMemoTask);
+
+var reservePeriodTask = {
+  action: function (task, context, callback) {
+    context.dialog.period = task.inRaw;
+    callback(task, context);
+  }
+};
+
+globals.setGlobalTask('reservePeriodTask', reservePeriodTask);
 
 var menuType = {
   name: 'menus',

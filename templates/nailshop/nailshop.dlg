@@ -24,6 +24,9 @@ shop.mapTask
 <메뉴판
 <메뉴 알리다
 <메뉴 뭐
+<가격
+<얼마
+<비용
 {action: shop.menuCategoryAction}
 > if(context.dialog.categorys == undefined && context.bot.menuImage == undefined) 아직 메뉴를 등록하지 않았습니다.
 > {if: 'context.dialog.categorys == undefined && context.bot.menuImage != undefined', task: shop.menuImageTask, output: '[메뉴판보기]'}
@@ -70,7 +73,7 @@ shop.mapTask
 예약내역:
 <예약 취소
 <예약 확인
-<예약 내
+<예약 내역
 shop.reserveCheck
 >if(context.botUser.isOwner && context.dialog.reserves != undefined) 미처리 예약내역입니다.\n#reserves#+index+. +name+ +dateStr+ +time+ +memo+ [+status+]\n#\n처리할 예약번호를 말씀해주세요.
     <{types: [{name: 'reserve', listName: 'reserves', typeCheck: 'listTypeCheck'}]}

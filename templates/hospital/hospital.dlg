@@ -15,40 +15,6 @@ var shop = require(path.resolve('./modules/bot/common/shop'));
 shop.mapTask
 >저희 매장의 주소는\n+address+\n입니다.
 
-// ****************** 메뉴 ****************** //
-<무엇 서비스
-<서비스 알리다
-<서비스
-<메뉴
-<메뉴
-<메뉴판
-<메뉴 알리다
-<메뉴 뭐
-<가격
-<얼마
-<비용
-{action: shop.menuCategoryAction}
-> if(context.dialog.categorys == undefined && context.bot.menuImage == undefined) 아직 메뉴를 등록하지 않았습니다.
-> {if: 'context.dialog.categorys == undefined && context.bot.menuImage != undefined', task: shop.menuImageTask, output: '[메뉴판보기]'}
->[메뉴판]\n##+index+. +name+\n#번호를 선택해주세요.
-    <{types: [{name: 'category', listName: 'categorys', typeCheck: 'listTypeCheck'}]}
-    {action: shop.menuAction}
-    >[+category.name+]\n##+index+. +name+ +price+원\n#\n번호나 메뉴명을 입력해주세요.
-        <{types: [{name: 'menu', listName: 'menus', typeCheck: 'listTypeCheck'}]}
-        shop.menuDetailTask
-        >+menu.name+ +menu.price+원
-        <{if:'true'}>{repeat: 1, options: {postfix: '\n처음으로 가려면\n "시작"이라고 입력해주세요.'}}
-    <{if:'true'}>{repeat: 1, options: {postfix: '\n처음으로 가려면\n "시작"이라고 입력해주세요.'}}
-
-
-<{types: [shop.menuType]}
-'menuTask'
->[메뉴검색]\n#typeDoc#+index+. +name+ +price+원\n#\n번호나 메뉴명을 입력해주세요.
-    <{types: [{name: 'menu', listName: 'menus', typeCheck: 'listTypeCheck'}]}
-    shop.menuDetailTask
-    >[+menu.name+]\n+menu.price+원\n+menu.description+
-    <{if:'true'}>{repeat: 1, options: {postfix: '\n처음으로 가려면\n "시작"이라고 입력해주세요.'}}
-
 // ****************** 영업시간 ****************** //
 날짜체크:
 <{types: [{name: 'date', typeCheck: 'dateTypeCheck', raw: true}], regexp: /~영업/}
@@ -73,12 +39,12 @@ shop.mapTask
 예약내역:
 <예약 취소
 <예약 확인
-<예약 내
+<예약 내역
 shop.reserveCheck
 >if(context.botUser.isOwner && context.dialog.reserves != undefined) 미처리 예약내역입니다.\n#reserves#+index+. +name+ +dateStr+ +time+ +memo+ [+status+]\n#\n처리할 예약번호를 말씀해주세요.
     <{types: [{name: 'reserve', listName: 'reserves', typeCheck: 'listTypeCheck'}]}
     {action: function(task, context, callback) { task.result = {smartReply: ['예약확정', '예약취소']}; callback(task, context);}}
-    >상세 예약내역입니다.\n상태: +reserve.status+\n예약자명: +reserve.name+\n일시: +reserve.dateStr+ +reserve.time+\n테이블: +reserve.memo+\n연락처: +reserve.mobile+\n\n"확정", "취소"를 선택해 주세요.
+    >상세 예약내역입니다.\n상태: +reserve.status+\n예약자명: +reserve.name+\n일시: +reserve.dateStr+ +reserve.time+\n서비스: +reserve.memo+\n연락처: +reserve.mobile+\n\n"확정", "취소"를 선택해 주세요.
         <~확정
         'reserveOwnerConfirm'
         >{call: '예약내역', options: {prefix: '예약이 확정 되었습니다. 고객님에게 문자가 발송되었습니다.\n\n'}}
@@ -98,7 +64,7 @@ shop.reserveCheck
     >예약이 취소되었습니다.
     <{if: 'true'}
     >{repeat: 1, options: {prefix: '목록에서 선택해주세요.\n'}}
->if(context.dialog.reserve != undefined) 고객님의 예약 내역입니다.\n상태: +reserve.status+\n일시: +reserve.dateStr+ +reserve.time+\n테이블: +reserve.memo+\n예약자명: +reserve.name+\n연락처: +reserve.mobile+\n\n예약을 취소하시려면 "취소"라고 말씀해주세요.
+>if(context.dialog.reserve != undefined) 고객님의 예약 내역입니다.\n상태: +reserve.status+\n일시: +reserve.dateStr+ +reserve.time+\n서비스: +reserve.memo+\n예약자명: +reserve.name+\n연락처: +reserve.mobile+\n\n예약을 취소하시려면 "취소"라고 말씀해주세요.
     <취소
     'reserveCancel'
     >예약이 취소되었습니다.
@@ -134,7 +100,7 @@ shop.reserveCheck
         <{if: 'true'}
         >{repeat: 1, options: {prefix: '시간이 아닙니다.\n', postfix: '\n\n예약 진행을 취소하시려면\n"시작"이라고 말씀해주세요.'}}
     서비스선택:<false
-    >테이블종류를 선택해주세요.\n(테이블, 부스, VIP룸)
+    >받고싶으신 시술 혹은 증상을 말씀해주세요.
         <{if: 'true'}
         'reserveMemoTask'
         >{call: '예약자명'}
@@ -158,7 +124,7 @@ shop.reserveCheck
         >{repeat: 1, options: {prefix: '휴대폰 번호가 아닙니다.\n', postfix: '\n\n예약 진행을 취소하시려면\n"시작"이라고 말씀해주세요.'}}
     예약내용확인:<false
     {action: 'reserveConfirm'}
-    > 예약내용을 확인해주세요.\n일시: +dateStr+ +time+\n테이블: +memo+\n연락처: +mobile+\n다음과 같이 예약신청하시겠습니까?
+    > 예약내용을 확인해주세요.\n일시: +dateStr+ +time+\n서비스: +memo+\n연락처: +mobile+\n다음과 같이 예약신청하시겠습니까?
         <~네
         {action: 'reserveRequest'}
         >예약을 요청하였습니다.\n\n아직 확정이 아닙니다.\n좌석 확인 후 예약완료 문자를 보내 드리겠습니다.
@@ -167,7 +133,7 @@ shop.reserveCheck
 c<시작
 shop.startTask
 >{if: 'context.botUser.isOwner', output: {call: '예약내역', options: {prefix: '+name+ 인공지능 챗봇입니다.\n사장님께서 접속 하였습니다.\n\n'}}}
->+name+ 인공지능 챗봇입니다.\n문의할 내용을 말씀해주세요.\n\n예시) 위치, 영업시간, 메뉴\n예시) 내일 저녁 7시에 예약
+>+name+ 인공지능 챗봇입니다.\n문의할 내용을 말씀해주세요.\n\n예시) 위치, 영업시간, 예약\n예시) 내일 저녁 7시에 예약
 
 답변없음:
 c<> 불편을 끼쳐드려 죄송합니다. 현재 고객님께서 무슨 말씀을 하시는지 이해를 못하였습니다.\n 매장으로 전화하여 안내받으시겠습니까?
