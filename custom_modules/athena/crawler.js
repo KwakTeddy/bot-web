@@ -173,6 +173,8 @@ var lgitem = {
 bot.setTask("lgitem", lgitem);
 exports.lgitem = lgitem;
 
+var categoryOnly = true;
+
 var lgcrawl = {
   module: 'task',
   action: 'sequence',
@@ -208,11 +210,88 @@ var lgcrawl = {
               template:lgcate2,
               preCallback: function (task, context, callback) {
                 task.topTask.cate2_idx = -1;
+                task.topTask.cate2_idx_cate = -1;
 
                 task.topTask.c1 = task.topTask.cate1[task.topTask.cate1_idx];
                 task.param =  task.topTask.c1;
                 callback(task, context);
               }
+            },
+            // store cate1 parentcatename
+            {
+              module: 'mongo',
+              action: 'update',
+              mongo: {
+                model: 'concepts',
+                query: {parent:'', name:''},
+                options: {upsert: true}
+              },
+              preCallback: function (task, context, callback) {
+                task.doc = {};
+                task.doc.name = task.topTask.c1.parentcatename;
+                task.doc.parent = null;
+                callback(task, context);
+              },
+              postCallback: function(task, context, callback) {
+                task.topTask.parentId = task.numAffected.upserted[0]._id;
+                callback(task, context);
+              }
+            },
+            // store cate1 catename
+            {
+              module: 'mongo',
+              action: 'update',
+              mongo: {
+                model: 'concepts',
+                query: {parent:'', name:''},
+                options: {upsert: true}
+              },
+              preCallback: function (task, context, callback) {
+                task.doc = {};
+                task.doc.parent = '';
+                task.doc.parent = task.topTask.parentId;
+                task.doc.name = task.topTask.c1.catename;
+                callback(task, context);
+              },
+              postCallback: function(task, context, callback) {
+                task.topTask.parentId = task.numAffected.upserted[0]._id;
+                callback(task, context);
+              }
+            },
+            {
+              module: 'task',
+              action: 'while',
+              whileIf: function(task, context) {
+                if (!categoryOnly)
+                  return false;
+                if (++task.topTask.cate2_idx_cate < task.topTask.cate2.length) {
+                  return true;
+                }
+                return false;
+              },
+              actions: [
+                //store cate2 keyword
+                {
+                  module: 'mongo',
+                  action: 'update',
+                  mongo: {
+                    model: 'concepts',
+                    query: {parent:'', name:''},
+                    options: {upsert: true}
+                  },
+                  preCallback: function (task, context, callback) {
+                    task.doc = {};
+                    task.topTask.c2 = task.topTask.cate2[task.topTask.cate2_idx_cate];
+                    task.doc.parent = task.topTask.parentId;
+                    task.doc.name = task.topTask.c2.keyword;
+                    callback(task, context);
+                  },
+                  postCallback: function (task, context, callback) {
+                    task.topTask.c2._id = task.numAffected.upserted[0]._id;
+                    callback(task, context);
+                  }
+                }
+              ]
             },
             {
               module: 'task',
@@ -305,11 +384,12 @@ var lgcrawl = {
                                       action: 'update',
                                       mongo: {
                                         model: 'lgfaqs',
-                                        query: {cate1:'', cate2:'', keyword:'', title: '', body: ''},
+                                        query: {cate1:'', cate2:'', keyword:'', title: '', body: '', conceptId: ''},
                                         options: {upsert: true}
                                       },
                                       preCallback: function (task, context, callback) {
                                         task.doc = task.topTask.data[task.topTask.data.length-1];
+                                        task.doc.conceptId = task.topTask.c2._id;
                                         console.log("SAVED:" + JSON.stringify(task.doc));
                                         callback(task, context);
                                       }
