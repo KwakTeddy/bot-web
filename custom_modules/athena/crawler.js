@@ -222,7 +222,7 @@ var lgcrawl = {
               module: 'mongo',
               action: 'update',
               mongo: {
-                model: 'concepts',
+                model: 'conceptlist',
                 query: {parent:'', name:''},
                 options: {upsert: true}
               },
@@ -233,7 +233,9 @@ var lgcrawl = {
                 callback(task, context);
               },
               postCallback: function(task, context, callback) {
-                task.topTask.parentId = task.numAffected.upserted[0]._id;
+                if (task.numAffected.upserted)
+                  task.topTask.topId = task.numAffected.upserted[0]._id;
+
                 callback(task, context);
               }
             },
@@ -242,14 +244,14 @@ var lgcrawl = {
               module: 'mongo',
               action: 'update',
               mongo: {
-                model: 'concepts',
+                model: 'conceptlist',
                 query: {parent:'', name:''},
                 options: {upsert: true}
               },
               preCallback: function (task, context, callback) {
                 task.doc = {};
                 task.doc.parent = '';
-                task.doc.parent = task.topTask.parentId;
+                task.doc.parent = task.topTask.topId;
                 task.doc.name = task.topTask.c1.catename;
                 callback(task, context);
               },
@@ -275,7 +277,7 @@ var lgcrawl = {
                   module: 'mongo',
                   action: 'update',
                   mongo: {
-                    model: 'concepts',
+                    model: 'conceptlist',
                     query: {parent:'', name:''},
                     options: {upsert: true}
                   },
