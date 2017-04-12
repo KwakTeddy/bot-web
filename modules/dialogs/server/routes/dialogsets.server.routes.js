@@ -30,6 +30,12 @@ module.exports = function(app) {
     .put(dialogsetDialogs.update)
     .delete(dialogsetDialogs.delete);
 
+  app.route('/api/conceptlist')
+    .get(dialogsetDialogs.concepts);
+
+  app.route('/api/lgfaq')
+    .get(dialogsetDialogs.lgfaq);
+
   // Finish by binding the Custom action middleware
   app.param('dialogsetId', dialogsets.dialogsetByID);
   app.param('dialogsetDialogId', dialogsetDialogs.dialogsetDialogByID);

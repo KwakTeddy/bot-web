@@ -93,4 +93,13 @@ var lgfaqSchema = new Schema({
 });
 mongoose.model('lgfaq', lgfaqSchema);
 
-
+var conceptlists = new Schema({
+  parent: {
+    type: Schema.ObjectId,
+    ref: 'conceptlists'
+  },
+  name: {
+    type: String
+  },
+});
+mongoose.model('conceptlists', conceptlists);

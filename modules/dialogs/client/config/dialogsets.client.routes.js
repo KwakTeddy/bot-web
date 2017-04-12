@@ -29,6 +29,12 @@
           pageTitle: 'Custom actions List'
         }
       })
+      .state('dialogsets.concepts', {
+        url: '/concept_tree',
+        templateUrl: 'modules/dialogs/client/views/concept-tree.client.view.html',
+        controller: 'ConceptTreeController',
+        controllerAs: 'vm',
+      })
       .state('dialogsets.create', {
         url: '/create',
         templateUrl: 'modules/dialogs/client/views/form-dialogset.client.view.html',

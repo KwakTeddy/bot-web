@@ -10,10 +10,25 @@ var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
 
+var mongoModule = require(path.resolve('modules/bot/action/common/mongo.js'));
 var fs = require('fs');
 var multer = require('multer');
 var dialogsetModule = require(path.resolve('modules/bot/engine/dialogset/dialogset.js'));
 
+
+exports.lgfaq = function(req, res) {
+  var model = mongoModule.getModel('lgfaqs');
+  model.find({}).lean().exec(function(err, docs) {
+    res.json(docs);
+  });
+};
+
+exports.concepts = function(req, res) {
+  var model = mongoModule.getModel('conceptlists');
+  model.find({}).lean().exec(function(err, docs) {
+    res.json(docs);
+  });
+};
 
 exports.create = function (req, res) {
   var dialog = new DialogsetDialog(req.body);
