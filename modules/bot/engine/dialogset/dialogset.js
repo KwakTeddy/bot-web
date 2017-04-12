@@ -75,7 +75,8 @@ function convertDialogset1(dialogset, bot_id, callback) {
         if (dialogType == "kakao") {
           dialogsetKakao.convertDialogset(filepath, dialogset, analysis);
         } else {
-          insertDatasetFile1(filepath, dialogset, analysis);
+          //insertDatasetFile1(filepath, dialogset, analysis);
+          insertDatasetLg(filepath, dialogset, analysis);
         }
         cb(null);
       }
@@ -139,6 +140,25 @@ function insertDailogsetDialog(dialogset, countId, input, output, callback) {
 }
 
 exports.insertDailogsetDialog = insertDailogsetDialog;
+
+function insertDatasetLg(infile, dialogset, callback) {
+  var input, output, count = 0;
+
+  var model = mongoModule.getModel('lgfaqs');
+  var count = 0;
+  model.find({}).lean().exec(function(err, docs) {
+    docs.forEach(function(doc) {
+      var input = doc.title;
+      var output = doc.body;
+      ++count;
+      insertDailogsetDialog(dialogset, count.toString(), input, output, function() {});
+    });
+    console.log(' 완료');
+    callback("OK");
+  });
+}
+
+exports.insertDatasetLg = insertDatasetLg;
 
 function insertDatasetFile1(infile, dialogset, callback) {
   var input, output, count = 0;

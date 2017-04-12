@@ -68,7 +68,29 @@ var DialogsetDialogSchema = new Schema({
 });
 
 mongoose.model('DialogsetDialog', DialogsetDialogSchema);
-
 DialogsetDialogSchema.index({dialogset: 1, input: 1});
+
+var lgfaqSchema = new Schema({
+  conceptId: {
+    type: Schema.ObjectId,
+    ref: 'conceptlists'
+  },
+  body: {
+    type: String
+  },
+  cate1: {
+    type: String
+  },
+  cate2: {
+    type: String
+  },
+  keyword: {
+    type: String
+  },
+  title: {
+    type: String
+  },
+});
+mongoose.model('lgfaq', lgfaqSchema);
 
 
