@@ -85,7 +85,7 @@ angular.module('bots').controller('BotController', [
     /********************* template *********************/
 
     var editor;
-    TemplatesService.query({}, function(templates){
+    vm.templates = TemplatesService.query({}, function(templates){
       if (vm.bot.templateId) {
         for (var i=0; i < templates.length; ++i) {
           if (templates[i]._id === vm.bot.templateId) {

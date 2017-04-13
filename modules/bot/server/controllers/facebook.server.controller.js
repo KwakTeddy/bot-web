@@ -8,6 +8,8 @@ var subscribe = '';
 var subscribePageToken = '';
 var mongoose = require('mongoose');
 var UserBotFbPage = mongoose.model('UserBotFbPage');
+var botLib = require(path.resolve('config/lib/bot'));
+
 
 var util =require('util'); //temporary
 
@@ -241,24 +243,48 @@ function receivedMessage(event) {
           }
       });
   }else {
-      if(recipientID == global._bots[event.botId].facebook.id) {
-          contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
+      if (!global._bots[event.botId]){
+        botLib.loadBot(bot.id, function (realbot) {
+          if(recipientID == global._bots[event.botId].facebook.id) {
+            contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
               //console.log('receivedMessage: ', event);
 
               var bot = context.botUser.orgBot || context.bot;
               if(recipientID == bot.facebook.id) {
-                  console.log('2 senderID: ' + senderID + ', recipientID: ' + recipientID);
+                console.log('2 senderID: ' + senderID + ', recipientID: ' + recipientID);
 
-                  var messageId = message.mid;
-                  var messageText = message.text;
-                  var messageAttachments = message.attachments;
+                var messageId = message.mid;
+                var messageText = message.text;
+                var messageAttachments = message.attachments;
 
-                  chat.write('facebook', senderID, event.botId, messageText, function (retText, task) {
-                      console.log('this is write')
-                      respondMessage(senderID, retText, event.botId, task);
-                  });
+                chat.write('facebook', senderID, event.botId, messageText, function (retText, task) {
+                  console.log('this is write')
+                  respondMessage(senderID, retText, event.botId, task);
+                });
               }
+            });
+          }
+        });
+      }else {
+        if(recipientID == global._bots[event.botId].facebook.id) {
+          contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
+            //console.log('receivedMessage: ', event);
+
+            var bot = context.botUser.orgBot || context.bot;
+            if(recipientID == bot.facebook.id) {
+              console.log('2 senderID: ' + senderID + ', recipientID: ' + recipientID);
+
+              var messageId = message.mid;
+              var messageText = message.text;
+              var messageAttachments = message.attachments;
+
+              chat.write('facebook', senderID, event.botId, messageText, function (retText, task) {
+                console.log('this is write')
+                respondMessage(senderID, retText, event.botId, task);
+              });
+            }
           });
+        }
       }
   }
 }

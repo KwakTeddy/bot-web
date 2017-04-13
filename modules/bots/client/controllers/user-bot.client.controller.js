@@ -425,14 +425,12 @@ if (_platform !== 'mobile'){
       vm.setEditType = function(type) { vm.editType = type; };
 
       var editor;
-      vm.templates = [];
-
-      TemplatesService.query({}, function(templates){
-        for (var i=0; i < templates.length; ++i) {
-          if(templates[i].id == 'restaurant'){
-            vm.templates.push(templates[i]);
-          }
-        }
+      vm.templates = TemplatesService.query({}, function(templates){
+        // for (var i=0; i < templates.length; ++i) {
+        //   if(templates[i].id == 'restaurant'){
+        //     vm.templates.push(templates[i]);
+        //   }
+        // }
         if (vm.userBot.templateId) {
           for (var i=0; i < templates.length; ++i) {
             if (templates[i]._id === vm.userBot.templateId) {
