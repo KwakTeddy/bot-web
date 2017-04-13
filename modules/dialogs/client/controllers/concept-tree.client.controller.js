@@ -11,34 +11,38 @@ angular.module('dialogsets').controller('ConceptTreeController', ['$scope', '$ro
     var treeData = { name:'test', children: [{name:'test2'},{name:"test3"} ]};
 
     var nodes = {};
-    treeData = {name: 'head', children: []};
-    $resource('/api/conceptlist', {}).query({}, function(res) {
-      for(var i = 0; i < res.length; i++) {
-        nodes[res[i]._id] = {name: res[i].name};
-        if (res[i].parent == null) {
-          if (!nodes[res[i].name]) {
-            nodes[res[i].name] = nodes[res[i]._id];
-            (treeData.children = treeData.children || []).push(nodes[res[i]._id]);
+
+    if ($stateParams.kind == 'general') {
+    } else {
+      treeData = {name: 'head', children: []};
+      $resource('/api/conceptlist', {}).query({}, function (res) {
+        for (var i = 0; i < res.length; i++) {
+          nodes[res[i]._id] = {name: res[i].name};
+          if (res[i].parent == null) {
+            if (!nodes[res[i].name]) {
+              nodes[res[i].name] = nodes[res[i]._id];
+              (treeData.children = treeData.children || []).push(nodes[res[i]._id]);
+            } else {
+              nodes[res[i]._id] = nodes[res[i].name];
+            }
           } else {
-            nodes[res[i]._id] = nodes[res[i].name];
+            (nodes[res[i].parent].children = nodes[res[i].parent].children || []).push(nodes[res[i]._id]);
           }
-        } else {
-          (nodes[res[i].parent].children = nodes[res[i].parent].children || []).push(nodes[res[i]._id]);
         }
-      }
-      $resource('/api/lgfaq', {}).query({}, function(res) {
-        for(var i = 0; i < res.length; i++) {
-          if (!nodes[res[i].conceptId].children || nodes[res[i].conceptId].children.length < 7)
-            (nodes[res[i].conceptId].children = nodes[res[i].conceptId].children || []).push({name: res[i].title});
-        }
-        treeData.children.forEach(function (d) {
-          d.children.forEach(function(e) {
-            collapse(e);
+        $resource('/api/lgfaq', {}).query({}, function (res) {
+          for (var i = 0; i < res.length; i++) {
+            if (!nodes[res[i].conceptId].children || nodes[res[i].conceptId].children.length < 7)
+              (nodes[res[i].conceptId].children = nodes[res[i].conceptId].children || []).push({name: res[i].title});
+          }
+          treeData.children.forEach(function (d) {
+            d.children.forEach(function (e) {
+              collapse(e);
+            });
           });
+          init();
         });
-        init();
       });
-    });
+    }
 
     // height for one node
     var itemHeight = 25;
@@ -95,7 +99,7 @@ angular.module('dialogsets').controller('ConceptTreeController', ['$scope', '$ro
     var baseSvg = d3.select("#tree-container").append("svg")
       .attr("width", viewerWidth)
       .attr("height", viewerHeight)
-      .attr("class", "overlay")
+      .attr("class", "overlay graph-svg-component")
       .call(zoomListener);
 
     // Append a group which holds all nodes and which the zoom Listener can act upon.

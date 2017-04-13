@@ -315,7 +315,7 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
         .charge(-300)
         // .linkDistance(300)
         // .charge(-700)
-        .on("tick", tick)
+        .on("tick", tick);
 
       var zoom = d3.behavior.zoom()
         .scaleExtent([0.3, 10])
