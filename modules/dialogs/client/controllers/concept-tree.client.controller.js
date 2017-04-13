@@ -13,8 +13,9 @@ angular.module('dialogsets').controller('ConceptTreeController', ['$scope', '$ro
     var nodes = {};
 
     if ($stateParams.kind == 'general') {
+      treeData = {name: '', children: []};
     } else {
-      treeData = {name: 'head', children: []};
+      treeData = {name: '', children: []};
       $resource('/api/conceptlist', {}).query({}, function (res) {
         for (var i = 0; i < res.length; i++) {
           nodes[res[i]._id] = {name: res[i].name};

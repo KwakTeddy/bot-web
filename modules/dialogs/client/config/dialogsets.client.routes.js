@@ -30,7 +30,7 @@
         }
       })
       .state('dialogsets.concepts', {
-        url: '/concept_tree',
+        url: '/concept_tree?kind',
         templateUrl: 'modules/dialogs/client/views/concept-tree.client.view.html',
         controller: 'ConceptTreeController',
         controllerAs: 'vm',
