@@ -48,7 +48,9 @@ module.exports.start = function start(callback) {
 
   var globals = require(path.resolve('modules/bot/engine/common/globals'));
   globals.initGlobals();
-
+  var concept = require(path.resolve('modules/bot/engine/concept/concept'));
+  // concept.loadConcept();
+  // concept.batchConcept('ddbot');
   var autoCorrection = require(path.resolve('modules/bot/engine/nlp/autoCorrection'));
   autoCorrection.loadWordCorrections();
 

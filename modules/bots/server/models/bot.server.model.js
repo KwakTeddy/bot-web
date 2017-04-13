@@ -75,6 +75,8 @@ var BotSchema = new Schema({
     ref: 'TemplateData'
   },
 
+  topicKeywords: Schema.Types.Mixed,
+
   user: {
     type: Schema.ObjectId,
     ref: 'User'

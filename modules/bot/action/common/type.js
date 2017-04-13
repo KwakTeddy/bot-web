@@ -8,6 +8,7 @@ var address = require(path.resolve('./modules/bot/action/common/address'));
 var _ = require('lodash');
 var globals = require(path.resolve('./modules/bot/engine/common/globals'));
 var async = require('async');
+var concept = require(path.resolve('modules/bot/engine/concept/concept.js'));
 
 const TAG_START = '\\+';
 const TAG_END = '\\+';
@@ -68,6 +69,11 @@ exports.processInput = function(context, inRaw, callback) {
       context.botUser.nlpCorrection = undefined;
       context.botUser.inRawCorrection = undefined;
       context.botUser.wordCorrection = undefined;
+
+      // concept.processConcept(inRaw, _in, _nlp, function(inRaw, _in2, _nlp2) {
+      //   context.botUser.nlp = _nlp2;
+      //   callback(_in2, inDoc);
+      // });
 
       callback(_in, inDoc);
     });

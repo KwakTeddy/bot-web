@@ -5,11 +5,13 @@
     .module('bot-users')
     .controller('BotUsersListController', BotUsersListController);
 
-  BotUsersListController.$inject = ['botUsersResolve'];
+  BotUsersListController.$inject = ['$rootScope', '$scope', 'botUsersResolve'];
 
-  function BotUsersListController(botUsers) {
+  function BotUsersListController($rootScope, $scope, botUsers) {
     var vm = this;
 
     vm.botUsers = botUsers;
+
+    $scope.botId = $rootScope.botId || 'athena';
   }
 })();

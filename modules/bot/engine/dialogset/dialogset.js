@@ -141,6 +141,52 @@ function insertDailogsetDialog(dialogset, countId, input, output, callback) {
 
 exports.insertDailogsetDialog = insertDailogsetDialog;
 
+function insertDatasetCSVFile(infile, dialogset, callback) {
+  const csv = require('csvtojson');
+
+  var csvFile = infile;
+  var input, output, count = 0, saveInput, saveOutput, saveCount;
+
+  csv({noheader:true})
+    .fromFile(csvFile)
+    .on('csv',  function(csvRow) {
+      var next = function() {
+        if(csvRow[0] && csvRow[0] != '') {
+          if(input == null) input = csvRow[0];
+          else if(Array.isArray(input)) input.push(csvRow[0]);
+          else input = [input, csvRow[0]];
+        }
+        if(csvRow[1] && csvRow[1] != '') {
+          if(output == null) output = csvRow[1];
+          else if(Array.isArray(output)) output.push(csvRow[1]);
+          else output = [output, csvRow[1]];
+        }
+      };
+
+      if(input != null && output != null && csvRow[1] != '' &&
+        ((Array.isArray(input) && input[input.length-1] != csvRow[0]) || input != csvRow[0])
+        && ((Array.isArray(output) && output[output.length-1] != csvRow[1]) || output != csvRow[1])) {
+
+        saveCount = count++;
+        saveInput = input;
+        saveOutput = output;
+        input = null; output = null;
+
+        insertDailogsetDialog(dialogset, saveCount.toString(), saveInput, saveOutput, function() {
+          // input = null; output = null;
+        });
+        next();
+      } else {
+        next();
+      }
+    })
+    .on('done', function(error) {
+    });
+}
+
+
+exports.insertDatasetCSVFile = insertDatasetCSVFile;
+
 function insertDatasetLg(infile, dialogset, callback) {
   var input, output, count = 0;
 
