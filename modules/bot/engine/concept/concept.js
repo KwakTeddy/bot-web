@@ -17,7 +17,10 @@ function removeParent(c) {
   if (c.children)
     c.children.forEach(removeParent);
 }
+
+var forTree = false;
 exports.getConcepts = function(req, res) {
+  forTree = true;
   loadConcept(function () {
     var keys = Object.keys(concepts);
     for (var i=0; i < keys.length; ++i) {
@@ -61,19 +64,27 @@ function loadConcept(callback) {
         for(var i in docs) {
           var word = docs[i];
 
-          word.concept = concepts[word.kortermnum];
-          if(word.concept) {
-            if(word.concept.words == undefined) {
-              word.concept.words = [word];
-            } else {
-              word.concept.words.push(word);
+          if (forTree) {
+            var con = concepts[word.kortermnum];
+            if (con) {
+              if (!con.words || con.words.length < 10)
+              (con.words = con.words || []).push(word);
             }
           }
-
-          if(words[word.korean] == undefined) {
-            words[word.korean] = [word];
-          } else {
-            words[word.korean].push(word);
+          else {
+            word.concept = concepts[word.kortermnum];
+            if(word.concept) {
+              if(word.concept.words == undefined) {
+                word.concept.words = [word];
+              } else {
+                word.concept.words.push(word);
+              }
+            }
+            if(words[word.korean] == undefined) {
+              words[word.korean] = [word];
+            } else {
+              words[word.korean].push(word);
+            }
           }
         }
 
@@ -82,6 +93,8 @@ function loadConcept(callback) {
     },
 
     function(cb) {
+    if (forTree)
+      cb(null);
       var VerbFrame = mongoModule.getModel('koverbframe');
 
       VerbFrame.find({}).lean().exec(function(err, docs) {
@@ -105,6 +118,8 @@ function loadConcept(callback) {
     },
 
     function(cb) {
+      if (forTree)
+        cb(null);
       var AdjFrame = mongoModule.getModel('koadjframe');
 
       AdjFrame.find({}).lean().exec(function(err, docs) {

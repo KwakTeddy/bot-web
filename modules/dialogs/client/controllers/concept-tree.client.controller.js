@@ -21,7 +21,7 @@ angular.module('dialogsets').controller('ConceptTreeController', ['$scope', '$ro
         function addNode(parent,children) {
           if (children) {
             children.forEach(function (d) {
-              var node = {name: d.kornttname};
+              var node = {name: d.kornttname, words: d.words};
               (parent.children = parent.children || []).push(node);
               if (d.children) {
                 addNode(node, d.children);
@@ -131,6 +131,21 @@ angular.module('dialogsets').controller('ConceptTreeController', ['$scope', '$ro
       .attr("class", "overlay graph-svg-component")
       .call(zoomListener);
 
+    var tip = d3.tip()
+      .attr('class', 'd3-tip')
+      .offset([-10, 0])
+      .html(function(d) {
+        var input = "";
+        if (d.words) {
+          d.words.forEach(function(w) {
+            input += w.korean + ',';
+          });
+          return "<strong>Words:</strong><br/><br/><span style='color:cornflowerblue'>" + input.substring(0,input.length-1) + "</span><br/><br/>";
+        }
+        return "";
+      });
+
+    baseSvg.call(tip);
     // Append a group which holds all nodes and which the zoom Listener can act upon.
     var svgGroup = baseSvg.append("g");
 
@@ -191,6 +206,7 @@ angular.module('dialogsets').controller('ConceptTreeController', ['$scope', '$ro
       update(d);
       centerNode(d);
     }
+
 
     // Function to center node when clicked/dropped so node doesn't get lost when collapsing/moving with large amount of children.
     function centerNode(source) {
@@ -256,6 +272,14 @@ angular.module('dialogsets').controller('ConceptTreeController', ['$scope', '$ro
       nodeEnter.append("circle")
         .attr('class', 'nodeCircle')
         .attr("r", 0)
+        .on('mouseover', function(d) {
+          if (d.words && d.words.length > 0)
+            tip.show(d);
+        })
+        .on('mouseout', function(d) {
+          if (d.words && d.words.length > 0)
+            tip.hide(d);
+        })
         .style("fill", function (d) {
           return d._children ? "lightsteelblue" : "#fff";
         });
