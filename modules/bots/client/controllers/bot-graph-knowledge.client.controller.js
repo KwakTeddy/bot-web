@@ -63,6 +63,7 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
 
       console.log(vm.userBot.id);
       $resource('/api/factLinks/findByBotId/:factUserID/:bot_id', {}).query({factUserID: vm.userId, bot_id: vm.userBot.id}, function(res) {
+        if (res.length < 50) return;
         for(var i = 0; i < res.length; i++) {
           addLink(res[i]);
         }
@@ -274,7 +275,9 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
         $('#answer').text('');
         if (textTimer != null)
           clearTimeout(textTimer);
-        showText('#answer', input, 0, 70);
+        var interval = 40;
+
+        showText('#answer', input, 0, interval);
 
         resetNodes();
         $resource('/api/user-bots-analytics/nlp', {}).get({input: input}, function(res) {
