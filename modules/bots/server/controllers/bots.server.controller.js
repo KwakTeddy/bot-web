@@ -463,8 +463,7 @@ exports.followBot = function(req, res) {
       });
     }else {
       if (!follows){
-        var changer = {};
-        changer = req.body;
+        var changer = req.body;
         Object.defineProperty(changer, 'bot', Object.getOwnPropertyDescriptor(changer, 'userBot'));
         delete changer['userBot'];
 
@@ -838,7 +837,7 @@ function deleteFolderRecursive(path) {
     });
     fs.rmdirSync(path);
   }
-};
+}
 
 
 exports.uploadImageFile = function (req, res) {
@@ -889,7 +888,7 @@ exports.convertFile = function (req, res) {
     res.json({result: 'ok'});
   });
 
-}
+};
 
 
 

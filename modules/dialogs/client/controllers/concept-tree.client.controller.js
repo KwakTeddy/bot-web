@@ -68,8 +68,8 @@ angular.module('dialogsets').controller('ConceptTreeController', ['$scope', '$ro
     var root;
 
     // size of the diagram
-    var viewerWidth = $(document).width()-800;
-    var viewerHeight = $(document).height();
+    var viewerWidth = document.getElementById('tree-container').clientWidth;
+    var viewerHeight = document.getElementById('sidebar-left').clientHeight;
 
     var tree = d3.layout.tree()
       .size([viewerHeight, viewerWidth]);
