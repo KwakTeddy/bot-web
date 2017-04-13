@@ -77,3 +77,4 @@ mongod
 config/sslcerts/
 *.dialog.js
 public/js/dialog.json
+public/files
