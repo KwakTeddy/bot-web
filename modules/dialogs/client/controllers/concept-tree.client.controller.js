@@ -9,14 +9,37 @@ angular.module('dialogsets').controller('ConceptTreeController', ['$scope', '$ro
     console.log('Tree Controller');
 
     var treeData = { name:'test', children: [{name:'test2'},{name:"test3"} ]};
-
+    var labelWidth = 250;
 
     if ($stateParams.kind == 'general') {
+      labelWidth = 150;
       treeData = {name: '', children: []};
       $resource('/api/generalconcepts', {}).query({}, function (res) {
-        for (var i = 0; i < res.length; i++) {
-          console.log(JSON.stringify(res));
+        var concepts = res[0];
+        var keys = Object.keys(concepts);
+
+        function addNode(parent,children) {
+          if (children) {
+            children.forEach(function (d) {
+              var node = {name: d.kornttname};
+              (parent.children = parent.children || []).push(node);
+              if (d.children) {
+                addNode(node, d.children);
+              }
+            });
+          }
         }
+        for (var i=0; i < keys.length; ++i) {
+          var node = {name: concepts[keys[i]].kornttname, children:[]};
+          treeData.children.push(node);
+          addNode(node, concepts[keys[i]].children);
+        }
+        treeData.children.forEach(function (d) {
+          d.children.forEach(function (e) {
+            collapse(e);
+          });
+        });
+        init();
       });
     } else {
       var nodes = {};
@@ -210,7 +233,7 @@ angular.module('dialogsets').controller('ConceptTreeController', ['$scope', '$ro
       // Set widths between levels based on maxLabelLength.
       nodes.forEach(function (d) {
         //d.y = (d.depth * (maxLabelLength * 10)); //maxLabelLength * 10px
-        d.y = (d.depth * 250); //maxLabelLength * 10px
+        d.y = (d.depth * labelWidth); //maxLabelLength * 10px
         // alternatively to keep a fixed scale one can set a fixed depth per level
         // Normalize for fixed-depth by commenting out below line
         // d.y = (d.depth * 500); //500px per level.

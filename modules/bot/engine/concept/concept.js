@@ -11,8 +11,18 @@ var words = {};
 var verbFrames = {};
 var adjFrames = {};
 
+exports.removeParent = removeParent;
+function removeParent(c) {
+  c.parent = undefined;
+  if (c.children)
+    c.children.forEach(removeParent);
+}
 exports.getConcepts = function(req, res) {
   loadConcept(function () {
+    var keys = Object.keys(concepts);
+    for (var i=0; i < keys.length; ++i) {
+      removeParent(concepts[keys[i]]);
+    }
     res.json([concepts]);
   });
 };
