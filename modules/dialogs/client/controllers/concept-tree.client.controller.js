@@ -23,9 +23,11 @@ angular.module('dialogsets').controller('ConceptTreeController', ['$scope', '$ro
             nodes[res[i]._id] = nodes[res[i].name];
           }
         } else {
-          if (nodes[nodes[res[i].parent].name]) {
-            nodes[res[i].parent].children.push(nodes[res[i]._id]);
-          } else {
+          // if (nodes[nodes[res[i].parent].name]) {
+          //   nodes[res[i].parent].children.push(nodes[res[i]._id]);
+          // }
+          // else
+          {
             if (nodes[res[i].parent]._children == null) {
               nodes[res[i].parent].children = null;
               nodes[res[i].parent]._children = [];
