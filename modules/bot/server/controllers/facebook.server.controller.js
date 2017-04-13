@@ -243,7 +243,10 @@ function receivedMessage(event) {
           }
       });
   }else {
+    console.log('heretest');
+    console.log(!global._bots[event.botId]);
       if (!global._bots[event.botId]){
+        console.log('ininininini')
         botLib.loadBot(bot.id, function (realbot) {
           if(recipientID == global._bots[event.botId].facebook.id) {
             contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
