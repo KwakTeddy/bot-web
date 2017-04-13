@@ -10,11 +10,16 @@ angular.module('dialogsets').controller('ConceptTreeController', ['$scope', '$ro
 
     var treeData = { name:'test', children: [{name:'test2'},{name:"test3"} ]};
 
-    var nodes = {};
 
     if ($stateParams.kind == 'general') {
       treeData = {name: '', children: []};
+      $resource('/api/generalconcepts', {}).query({}, function (res) {
+        for (var i = 0; i < res.length; i++) {
+          console.log(JSON.stringify(res));
+        }
+      });
     } else {
+      var nodes = {};
       treeData = {name: '', children: []};
       $resource('/api/conceptlist', {}).query({}, function (res) {
         for (var i = 0; i < res.length; i++) {

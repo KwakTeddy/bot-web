@@ -7,6 +7,8 @@ var dialogsetsPolicy = require('../policies/dialogsets.server.policy'),
   dialogsets = require('../controllers/dialogsets.server.controller'),
   dialogsetDialogs = require('../controllers/dialogsetDialogs.server.controller');
 
+var concept = require('../../../bot/engine/concept/concept.js');
+
 module.exports = function(app) {
   // Custom actions Routes
   app.route('/api/dialogsets')//.all(dialogsetsPolicy.isAllowed)
@@ -35,6 +37,9 @@ module.exports = function(app) {
 
   app.route('/api/lgfaq')
     .get(dialogsetDialogs.lgfaq);
+
+  app.route('/api/generalconcepts')
+    .get(concept.getConcepts);
 
   // Finish by binding the Custom action middleware
   app.param('dialogsetId', dialogsets.dialogsetByID);

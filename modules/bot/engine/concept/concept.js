@@ -11,6 +11,12 @@ var words = {};
 var verbFrames = {};
 var adjFrames = {};
 
+exports.getConcepts = function(req, res) {
+  loadConcept(function () {
+    res.json([concepts]);
+  });
+};
+
 function loadConcept(callback) {
   async.waterfall([
     function(cb) {
