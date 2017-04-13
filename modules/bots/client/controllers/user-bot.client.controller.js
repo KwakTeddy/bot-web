@@ -24,6 +24,11 @@ if (_platform !== 'mobile'){
       vm.user = Authentication.user;
       vm.userBot = userBot;
       vm.isPublic = true;
+      vm.sample = false;
+      if ((vm.userBot.id == 'restaurantbot') || (vm.userBot.id == 'athena') || (vm.userBot.id == 'hairshopbot') || (vm.userBot.id == 'massagebot')){
+        vm.sample = true;
+        vm.videoSrc = '/videos/'+ vm.userBot.id+'.mov'
+      }
       if (userBot && userBot._id && !userBot.public) {
         if (userBot.templateData){
           vm.isPublic = true;
@@ -519,7 +524,22 @@ if (_platform !== 'mobile'){
       };
 
       vm.selectTemplate = function(template) {
-        vm.selectedTemplate = template;
+        console.log(template);
+
+        // vm.selectedTemplate = template
+
+        vm.selectedTemplate = {
+          "_id" : ObjectId("58e8e5c1853418312174e50f"),
+          "user" : ObjectId("578e5cdc06c7dc1d3e86649a"),
+          "id" : "restaurant",
+          "name" : "음식점",
+          "image" : "/files/cooker-icon.png",
+          "content" : "음식점을 운영하는 분들을 위한 봇입니다.",
+          "dataSchema" : "{\n\"phone\": {\n  \"type\": \"String\",\n  \"title\": \"전화번호\"\n},\n\"mobile\": {\n  \"type\": \"String\",\n  \"title\": \"휴대폰\"\n},\n\"startTime\": {\n  \"type\": \"Time\",\n  \"title\": \"시작\"\n},\n\"endTime\": {\n  \"type\": \"Time\",\n  \"title\": \"종료\"\n},\n\"holiday\": {\n  \"type\": \"Enum\",\n  \"title\": \"휴일\",\n  \"data\": [\n    \"일요일\",\n    \"월요일\",\n    \"화요일\",\n    \"수요일\",\n    \"목요일\",\n    \"금요일\",\n    \"토요일\",\n    \"휴일없음\"\n  ]\n},\n\"menuImage\": {\n  \"type\": \"Image\",\n  \"title\": \"메뉴이미지\"\n},\n\"address\": {\n  \"type\": \"String\",\n  \"title\": \"주소\"\n},\n\"menus\": {\n  \"type\": \"List\",\n  \"title\": \"메뉴정보 (선택)\",\n  \"item_title\":\"메뉴\",\n  \"schema\": \"{\\\"category\\\": {\\\"type\\\": \\\"String\\\",\\\"title\\\":\\\"분류\\\"}, \\\"name\\\": {\\\"type\\\": \\\"String\\\",\\\"title\\\":\\\"이름\\\"}, \\\"price\\\": {\\\"type\\\": \\\"Number\\\",\\\"title\\\":\\\"가격\\\"}, \\\"image\\\": {\\\"type\\\": \\\"Image\\\",\\\"title\\\":\\\"이미지\\\"}}\",\n  \"model\": \"templatemenu\"\n},\n\"revervations\": {\n  \"hidden\": \"true\",\n  \"type\": \"List\",\n  \"schema\": \"{\\\"name\\\": {\\\"type\\\": \\\"String\\\"}, \\\"tel\\\": {\\\"type\\\": \\\"String\\\"}, \\\"numOfman\\\": {\\\"type\\\": \\\"Number\\\"}, \\\"date\\\": {\\\"type\\\": \\\"Date\\\"}, \\\"time\\\": {\\\"type\\\": \\\"Time\\\"}}\",\n  \"model\": \"templatereservation\"\n}\n}",
+          "created" : ISODate("2017-04-08T13:29:37.127Z"),
+          "updated" : ISODate("2017-04-08T13:29:37.127Z"),
+          "__v" : 0
+        }
 
         // default public:true for template bot
         if (vm.userBot && !vm.userBot._id)
