@@ -75,8 +75,8 @@ function convertDialogset1(dialogset, bot_id, callback) {
         if (dialogType == "kakao") {
           dialogsetKakao.convertDialogset(filepath, dialogset, analysis);
         } else {
-          //insertDatasetFile1(filepath, dialogset, analysis);
-          insertDatasetLg(filepath, dialogset, analysis);
+          insertDatasetFile1(filepath, dialogset, analysis);
+          //insertDatasetLg(filepath, dialogset, analysis);
         }
         cb(null);
       }

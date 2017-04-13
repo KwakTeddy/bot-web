@@ -14,7 +14,7 @@ angular.module('dialogsets').controller('ConceptTreeController', ['$scope', '$ro
     treeData = {name: 'head', children: []};
     $resource('/api/conceptlist', {}).query({}, function(res) {
       for(var i = 0; i < res.length; i++) {
-        nodes[res[i]._id] = {name: res[i].name, children:[]};
+        nodes[res[i]._id] = {name: res[i].name, children:[], _children:null};
         if (res[i].parent == null) {
           if (!nodes[res[i].name]) {
             nodes[res[i].name] = nodes[res[i]._id];
@@ -23,25 +23,33 @@ angular.module('dialogsets').controller('ConceptTreeController', ['$scope', '$ro
             nodes[res[i]._id] = nodes[res[i].name];
           }
         } else {
-          nodes[res[i].parent].children.push(nodes[res[i]._id]);
+          // if (nodes[nodes[res[i].parent].name]) {
+          //   nodes[res[i].parent].children.push(nodes[res[i]._id]);
+          // }
+          // else
+          {
+            if (nodes[res[i].parent]._children == null) {
+              nodes[res[i].parent].children = null;
+              nodes[res[i].parent]._children = [];
+            }
+            nodes[res[i].parent]._children.push(nodes[res[i]._id]);
+          }
         }
       }
       $resource('/api/lgfaq', {}).query({}, function(res) {
         for(var i = 0; i < res.length; i++) {
-          if (nodes[res[i].conceptId].children.length < 10)
-            nodes[res[i].conceptId].children.push({input:res[i].title});
+          if (nodes[res[i].conceptId]._children == null) {
+            nodes[res[i].conceptId]._children = [];
+            nodes[res[i].conceptId]._children.push({input: '', count: 0});
+          }
+          if (nodes[res[i].conceptId]._children[0].count++ < 7)
+            nodes[res[i].conceptId]._children[0].input += '\n' + res[i].title;
         }
         init();
       });
     });
 
 
-    /*
-    var width = document.getElementById('canvas').clientWidth;
-    var height = document.getElementById('sidebar-left').clientHeight;
-    */
-    var width =1024;
-    var height = 768;
 
     var dragStarted;
 
@@ -60,7 +68,7 @@ angular.module('dialogsets').controller('ConceptTreeController', ['$scope', '$ro
     var root;
 
     // size of the diagram
-    var viewerWidth = $(document).width();
+    var viewerWidth = $(document).width()-800;
     var viewerHeight = $(document).height();
 
     var tree = d3.layout.tree()
@@ -447,13 +455,16 @@ angular.module('dialogsets').controller('ConceptTreeController', ['$scope', '$ro
         })
         .style("fill-opacity", 0);
 
-      nodeEnter.append('text')
+      nodeEnter.append("text")
+        .style("pointer-events", "none")
         .attr('x', 10)
         .attr("dy", "1.5em")
         .text(function (d) {
-          if (d.input != undefined && typeof d.input === 'string')
-            return "in:" + (d.input.length > 50 ? d.input.substring(0, 50) + "..." : d.input);
-        });
+          if (d.input != undefined)
+            return d.input;
+        })
+        .call(wrap, 100, 1);
+
       nodeEnter.append('text')
         .attr('x', 10)
         .attr("dy", "2.7em")
@@ -492,20 +503,6 @@ angular.module('dialogsets').controller('ConceptTreeController', ['$scope', '$ro
        })
        */
       ;
-      node.append('text')
-        .attr('x', 10)
-        .attr("dy", "1.5em")
-        .text(function (d) {
-          if (d.input != undefined && typeof d.input === 'string')
-            return "in:" + (d.input.length > 50 ? d.input.substring(0, 50) + "..." : d.input);
-        });
-      node.append('text')
-        .attr('x', 10)
-        .attr("dy", "2.7em")
-        .text(function (d) {
-          if (d.output != undefined && typeof d.output === 'string')
-            return "out:" + (d.output.length > 50 ? d.output.substring(0, 50) + "..." : d.output);
-        });
 
       // Change the circle fill depending on whether it has children and is collapsed
       node.select("circle.nodeCircle")
@@ -586,6 +583,25 @@ angular.module('dialogsets').controller('ConceptTreeController', ['$scope', '$ro
       });
     }
 
+    function wrap(text, width, maxLine) {
+      text.each(function() {
+        var text = d3.select(this),
+          line,
+          lineNumber = 0,
+          lineHeight = 1.2, // ems
+          y = text.attr("y"),
+          dy = parseFloat(text.attr("dy"));
+
+        if (!text.text())
+          return;
+        var lines = text.text().split(/\n/);
+        var tspan = text.text(null).append("tspan").attr("x", 5).attr("dy", dy + "em");
+        var linenum = 1;
+        while (line = lines.pop()) {
+          tspan = text.append("tspan").attr("x", 5).attr("dy", lineHeight + "em").text(line);
+        }
+      });
+    }
     // Append a group which holds all nodes and which the zoom Listener can act upon.
     var svgGroup = baseSvg.append("g");
 

@@ -15,6 +15,22 @@ var shop = require(path.resolve('./modules/bot/common/shop'));
 shop.mapTask
 >저희 매장의 주소는\n+address+\n입니다.
 
+// ****************** 시설 ****************** //
+<시설
+<장비
+<기구
+{action:shopPreviewAction}
+> if(context.dialog.categorys == undefined) 아직 시설 정보를 등록하지 않았습니다.
+>[시설정보]\n##+index+. +name+\n#번호를 선택해주세요.
+    <{types: [{name: 'category', listName: 'categorys', typeCheck: 'listTypeCheck'}]}
+    {action: shop.previewAction}
+    >[+category.name+]\n##+index+. +name+ +price+원\n#\n번호나 메뉴명을 입력해주세요.
+        <{types: [{name: 'menu', listName: 'menus', typeCheck: 'listTypeCheck'}]}
+        shop.menuDetailTask
+        >+menu.name+ +menu.price+원
+        <{if:'true'}>{repeat: 1, options: {postfix: '\n처음으로 가려면\n "시작"이라고 입력해주세요.'}}
+    <{if:'true'}>{repeat: 1, options: {postfix: '\n처음으로 가려면\n "시작"이라고 입력해주세요.'}}
+
 // ****************** 메뉴 ****************** //
 <무엇 서비스
 <서비스 알리다
