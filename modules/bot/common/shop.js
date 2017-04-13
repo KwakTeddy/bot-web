@@ -625,6 +625,71 @@ var menuTask = {
 
 globals.setGlobalTask('menuTask', menuTask);
 
+function menuPreviewAction(task, context, callback) {
+  var model, query, sort;
+
+  model = mongoose.model('TemplatePreview');
+  query = {upTemplateId: context.bot.templateDataId};
+  sort = {'_id': -1};
+
+
+  model.aggregate([
+    {$match: query},
+    {$sort: sort},
+    {$group: {
+      _id: '$category',
+      category: {$first: '$category'}
+    }}
+  ], function(err, docs) {
+    if(docs == undefined) {
+      callback(task, context);
+    } else {
+      var categorys = [];
+      for (var i = 0; i < docs.length; i++) {
+        var doc = docs[i];
+
+        var category = doc.category;
+        if(!_.includes(categorys, category)){
+          categorys.push({name: category});
+        }
+
+        // for (var j = 0; j < doc.category.length; j++) {
+        //   var category = doc.category[j];
+        //   if(!_.includes(categorys, category)){
+        //     categorys.push({name: category});
+        //   }
+        // }
+      }
+
+      if(categorys.length > 0) {
+        task.doc = categorys;
+        context.dialog.categorys = categorys;
+      }
+
+      callback(task, context);
+    }
+  });
+}
+
+
+exports.menuPreviewAction = menuPreviewAction;
+
+function previewAction(task, context, callback) {
+  var model, query, sort;
+
+  model = mongoose.model('TemplateMenu');
+  query = {upTemplateId: context.bot.templateDataId,
+    category: context.dialog.category.name};
+  sort = {'_id': +1};
+
+  model.find(query).limit(type.MAX_LIST).sort(sort).lean().exec(function(err, docs) {
+    task.doc = docs;
+    context.dialog.menus = docs;
+    callback(task, context);
+  });
+}
+
+exports.previewAction = previewAction;
 
 function menuCategoryAction(task, context, callback) {
   if(context.bot.menuImage) {
