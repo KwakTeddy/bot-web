@@ -14,22 +14,22 @@ angular.module('dialogsets').controller('ConceptTreeController', ['$scope', '$ro
     treeData = {name: 'head', children: []};
     $resource('/api/conceptlist', {}).query({}, function(res) {
       for(var i = 0; i < res.length; i++) {
-        nodes[res[i]._id] = {name: res[i].name, children:[]};
+        nodes[res[i]._id] = {name: res[i].name};
         if (res[i].parent == null) {
           if (!nodes[res[i].name]) {
             nodes[res[i].name] = nodes[res[i]._id];
-            treeData.children.push(nodes[res[i]._id]);
+            (treeData.children = treeData.children || []).push(nodes[res[i]._id]);
           } else {
             nodes[res[i]._id] = nodes[res[i].name];
           }
         } else {
-          nodes[res[i].parent].children.push(nodes[res[i]._id]);
+          (nodes[res[i].parent].children = nodes[res[i].parent].children || []).push(nodes[res[i]._id]);
         }
       }
       $resource('/api/lgfaq', {}).query({}, function(res) {
         for(var i = 0; i < res.length; i++) {
-          if (nodes[res[i].conceptId].children.length < 7)
-            nodes[res[i].conceptId].children.push({name: res[i].title});
+          if (!nodes[res[i].conceptId].children || nodes[res[i].conceptId].children.length < 7)
+            (nodes[res[i].conceptId].children = nodes[res[i].conceptId].children || []).push({name: res[i].title});
         }
         treeData.children.forEach(function (d) {
           d.children.forEach(function(e) {
@@ -163,7 +163,7 @@ angular.module('dialogsets').controller('ConceptTreeController', ['$scope', '$ro
     function centerNode(source) {
       var scale = zoomListener.scale();
       var x = -source.y0;
-      var y = -source.x0;
+      var y = -source.x0 - 200;
       x = x * scale + viewerWidth / 2;
       y = y * scale + viewerHeight / 2;
       d3.select('g').transition()
