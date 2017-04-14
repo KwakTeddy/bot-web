@@ -4,7 +4,7 @@ var botlib = require(path.resolve('config/lib/bot'));
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
-var gym = {
+var academy = {
   reserveFields: [
   ],
 
@@ -14,5 +14,5 @@ var gym = {
   }
 };
 
-botlib.makeTemplateBot('gym', gym);
+botlib.makeTemplateBot('academy', academy);
 

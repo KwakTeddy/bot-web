@@ -272,6 +272,7 @@ navertask.moviecrawl
 구글검색:
 </([^\b]*)(?:\b|\s).*(검색|찾다)/
 googletask.googlesearchtask
+>if (context.dialog.item.length !=0 && context.user.channel == 'socket') 검색결과가 없습니다.
 >if (context.dialog.search.length !=0) #search#+index+. +title+\n#
     <{types: [{name: 'search', listName: 'search', typeCheck: 'listTypeCheck'}]}
     >+search.title+\n+search.snippet+\n+search.url+
@@ -280,6 +281,7 @@ googletask.googlesearchtask
 >어떤 것을 찾으시나요?\n검색어를 입력해주세요.
     </([^\b]*)/
     googletask.googlesearchtask
+    >if (context.dialog.item.length !=0 && context.user.channel == 'socket') 검색결과가 없습니다.
     >if (context.dialog.search.length !=0) #search#+index+. +title+\n#
         <{types: [{name: 'search', listName: 'search', typeCheck: 'listTypeCheck'}]}
         >+search.title+\n+search.snippet+\n+search.url+
