@@ -239,11 +239,16 @@ exports.update = function (req, res) {
             templateDatas.createTemplateData(bot.template, 'null', 'null', JSON.stringify(req.bot.template.templateData), req.user, function(data, err) {
               bot.templateId = bot.template._id;
               bot.templateDataId = data._id;
-              async.eachSeries(bot.template.templateData.menus, function(menu, cb) {
-                templateDatas.createTemplateData(bot.template, 'menus', data._id, JSON.stringify(menu), req.user, function(res, err) {
-                  cb(null);
+              var lists = templateDatas.getTemplateLists(req.body.template.dataSchema);
+              if (lists) {
+                lists.forEach(function(list) {
+                  async.eachSeries(req.body.template.templateData[list], function(item, cb) {
+                    templateDatas.createTemplateData(req.body.template, list, data._id, JSON.stringify(item), req.user, function(res, err) {
+                      cb(null);
+                    });
+                  });
                 });
-              });
+              }
               cb(null);
             });
           }
