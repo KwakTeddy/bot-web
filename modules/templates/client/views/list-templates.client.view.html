@@ -20,6 +20,7 @@
         <!--<th class="text-center">봇아이디</th>-->
         <th class="text-center">아이디</th>
         <th class="text-center">이름</th>
+        <th class="text-center">카테고리</th>
         <th class="text-center">작성자</th>
         <th class="text-center">수정일</th>
         <th class="text-center">등록일</th>
@@ -31,6 +32,7 @@
         <!--<td class="text-center">{{template.bot.id}}</td>-->
         <td class="text-center">{{template.id}}</td>
         <td class="text-center">{{template.name}}</td>
+        <td class="text-center">{{template.category.name}}</td>
         <td class="text-center">{{template.user ? template.user.displayName : '장세영'}}</td>
         <td class="text-center">{{template.updated | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
         <td class="text-center">{{template.created | date: 'yyyy-MM-dd HH:mm:ss'}}</td>

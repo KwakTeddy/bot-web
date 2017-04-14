@@ -41,6 +41,21 @@
       </div>
 
       <div class="form-group">
+        <label class="col-sm-3 control-label">카테고리 <span class="required" aria-required="true">*</span></label>
+        <div class="col-sm-9 dropdwon">
+          <!--<input type="text" name="image" ng-model="vm.template.category" class="form-control valid"-->
+                 <!--placeholder="카테고리"-->
+                 <!--required=""-->
+                 <!--aria-required="true" aria-invalid="false">-->
+          <button class="btn btn-default btn-block dropdown-toggle" ng-model="vm.template.category.name" type="button" data-toggle="dropdown">{{vm.template.category.name}}
+            <span class="caret"></span></button>
+          <ul class="dropdown-menu btn-block">
+            <li class="text-center" ng-repeat = "category in vm.categorys"><a href="#" ng-click="vm.template.category.name = category">{{category}}</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="form-group">
         <label class="col-sm-3 control-label">Content <span class="required" aria-required="true">*</span></label>
         <div class="col-sm-9">
           <textarea name="content" ng-model="vm.template.content" id="content" rows="5" class="form-control" placeholder="내용을 입력해 주세요" required="" aria-required="true" aria-invalid="true"></textarea><label id="content-error" class="error" for="content">내용은 필수 입니다.</label>

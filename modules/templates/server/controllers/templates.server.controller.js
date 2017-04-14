@@ -6,6 +6,7 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   Template = mongoose.model('Template'),
+  TemplateCategory = mongoose.model('TemplateCategory'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
 
@@ -15,14 +16,36 @@ var path = require('path'),
 exports.create = function(req, res) {
   var template = new Template(req.body);
   template.user = req.user;
-
-  template.save(function(err) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
+  TemplateCategory.findOne({name: req.body.category.name}, function (err, data) {
+    if (!data){
+      var templateCategory = new TemplateCategory({name: req.body.category.name});
+      templateCategory.save(function (err) {
+        if (err){
+          console.log(err)
+        }else {
+          template.category = templateCategory;
+          template.save(function(err) {
+            if (err) {
+              return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            } else {
+              res.jsonp(template);
+            }
+          });
+        }
+      })
+    }else {
+      template.category = data;
+      template.save(function(err) {
+        if (err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.jsonp(template);
+        }
       });
-    } else {
-      res.jsonp(template);
     }
   });
 };
@@ -46,18 +69,88 @@ exports.read = function(req, res) {
  */
 exports.update = function(req, res) {
   var template = req.template ;
+  if (!req.template.category){
+    TemplateCategory.findOne({name: req.body.category.name}, function (err, data) {
+      if(err){
+        console.log(err)
+      }else {
+        if(!data){
+          var templateCategory = new TemplateCategory({name: req.body.category.name});
+          templateCategory.save(function (err) {
+            if (err){
+              console.log(err)
+            }else {
+              req.template.category = templateCategory;
+              req.body.category = templateCategory;
+              template = _.extend(template , req.body);
+              template.save(function(err) {
+                if (err) {
+                  return res.status(400).send({
+                    message: errorHandler.getErrorMessage(err)
+                  });
+                } else {
+                  res.jsonp(template);
+                }
+              });
+            }
+          })
+        }else {
+          req.template.category = data;
+          req.body.category = data;
+          template = _.extend(template , req.body);
+          template.save(function(err) {
+            if (err) {
+              return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            } else {
+              res.jsonp(template);
+            }
+          });
+        }
+      }
+    })
 
-  template = _.extend(template , req.body);
-
-  template.save(function(err) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.jsonp(template);
-    }
-  });
+  }else {
+    TemplateCategory.findOne({name: req.body.category.name}, function (err, data) {
+      if(err){
+        console.log(err)
+      }else {
+        if(!data){
+          var templateCategory = new TemplateCategory({name: req.body.category.name});
+          templateCategory.save(function (err) {
+            if (err){
+              console.log(err)
+            }else {
+              req.body.category = templateCategory;
+              template = _.extend(template , req.body);
+              template.save(function(err) {
+                if (err) {
+                  return res.status(400).send({
+                    message: errorHandler.getErrorMessage(err)
+                  });
+                } else {
+                  res.jsonp(template);
+                }
+              });
+            }
+          })
+        }else {
+          req.body.category = data;
+          template = _.extend(template , req.body);
+          template.save(function(err) {
+            if (err) {
+              return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            } else {
+              res.jsonp(template);
+            }
+          });
+        }
+      }
+    })
+  }
 };
 
 /**
@@ -81,7 +174,7 @@ exports.delete = function(req, res) {
  * List of Custom actions
  */
 exports.list = function(req, res) { 
-  Template.find().sort('-created').populate('user', 'displayName').exec(function(err, templates) {
+  Template.find().sort('-created').populate('user', 'displayName').populate('category').exec(function(err, templates) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -103,7 +196,7 @@ exports.templateByID = function(req, res, next, id) {
     });
   }
 
-  Template.findById(id).populate('user', 'displayName').exec(function (err, template) {
+  Template.findById(id).populate('user', 'displayName').populate('category').exec(function (err, template) {
     if (err) {
       return next(err);
     } else if (!template) {

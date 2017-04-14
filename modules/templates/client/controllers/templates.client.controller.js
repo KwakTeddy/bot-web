@@ -17,6 +17,9 @@
     vm.form = {};
     vm.remove = remove;
     vm.save = save;
+    vm.categorys = [
+      '요식업', '숙박여행', '의료건강', '교육', '뷰', '온라인쇼핑', '오픈마켓', '비지니스'
+    ];
 
     // Remove existing Custom action
     function remove() {

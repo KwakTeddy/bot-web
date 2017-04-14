@@ -155,18 +155,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!--<div ng-repeat="template in vm.templates" class="col-sm-6 col-md-4" >-->
-                                      <!--<div class="thumbnail" style="text-align: center;height: 190px;">-->
-                                        <!--<img src={{vm.getImage(template)}} style="height: 100px;">-->
-                                        <!--<div class="caption">-->
-                                          <!--<p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>-->
-                                        <!--</div>-->
-                                      <!--</div>-->
-                                    <!--</div>-->
 
-
-                                    <h3 class="col-sm-12 col-md-12 " >요식업</h3>
-                                    <div ng-repeat="template in vm.templates" class="col-sm-6 col-md-4" >
+                                    <h3 class="col-sm-12 col-md-12 " ng-if="vm.restaurantBusinessTemplates.length" >요식업</h3>
+                                    <div ng-repeat="template in vm.restaurantBusinessTemplates" class="col-sm-6 col-md-4" >
                                       <div class="thumbnail" style="text-align: center;height: 190px;">
                                         <img src={{vm.getImage(template)}} style="height: 100px;">
                                         <div class="caption">
@@ -174,308 +165,81 @@
                                         </div>
                                       </div>
                                     </div>
-                                    <div class="col-sm-6 col-md-4" >
-                                      <div class="thumbnail" style="text-align: center;height: 190px;">
-                                        <img src="/files/008-beer.png" style="height: 100px;">
-                                        <div class="caption">
-                                          <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">술집</a></p>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div class="col-sm-6 col-md-4" >
-                                      <div class="thumbnail" style="text-align: center;height: 190px;">
-                                        <img src="/files/013-coffee-cup.png" style="height: 100px;">
-                                        <div class="caption">
-                                          <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">커피</a></p>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div class="col-sm-6 col-md-4" >
-                                      <div class="thumbnail" style="text-align: center;height: 190px;">
-                                        <img src="/files/010-ice-cream.png" style="height: 100px;">
-                                        <div class="caption">
-                                          <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">디저트</a></p>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div class="col-sm-6 col-md-4" >
-                                      <div class="thumbnail" style="text-align: center;height: 190px;">
-                                        <img src="/files/012-chicken-leg.png" style="height: 100px;">
-                                        <div class="caption">
-                                          <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">배달음식</a></p>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div class="col-sm-6 col-md-4" >
-                                      <div class="thumbnail" style="text-align: center;height: 190px;">
-                                        <img src="/files/014-food.png" style="height: 100px;">
-                                        <div class="caption">
-                                          <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">바</a></p>
-                                        </div>
-                                      </div>
-                                    </div>
 
-
-
-                                    <h3 class="col-sm-12 col-md-12">온라인쇼핑</h3>
-                                  <div class="col-sm-6 col-md-4" >
+                                    <h3 class="col-sm-12 col-md-12" ng-if="vm.onlineShoppingTemplates.length">온라인쇼핑</h3>
+                                  <div ng-repeat="template in vm.onlineShoppingTemplates" class="col-sm-6 col-md-4" >
                                     <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/017-clothes.png" style="height: 100px;">
+                                      <img src={{vm.getImage(template)}} style="height: 100px;">
                                       <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">의류/잡화</a></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-6 col-md-4" >
-                                    <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/016-cosmetics.png" style="height: 100px;">
-                                      <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">뷰티/건강</a></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-6 col-md-4" >
-                                    <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/015-computer.png" style="height: 100px;">
-                                      <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">가전</a></p>
+                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
                                       </div>
                                     </div>
                                   </div>
 
-                                    <h3 class="col-sm-12 col-md-12">오픈마켓</h3>
-                                  <div class="col-sm-6 col-md-4" >
+
+                                    <h3 class="col-sm-12 col-md-12" ng-if="vm.openMarketTemplates.length">오픈마켓</h3>
+                                  <div ng-repeat="template in vm.openMarketTemplates" class="col-sm-6 col-md-4" >
                                     <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/cupang.png" style="height: 100px;">
+                                      <img src={{vm.getImage(template)}} style="height: 100px;">
                                       <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">쿠팡</a></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-6 col-md-4" >
-                                    <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/11street.png" style="height: 100px;">
-                                      <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">11번가</a></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-6 col-md-4" >
-                                    <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/auction.png" style="height: 100px;">
-                                      <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">옥션</a></p>
+                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
                                       </div>
                                     </div>
                                   </div>
 
-                                    <h3 class="col-sm-12 col-md-12">숙박여행</h3>
-                                  <div class="col-sm-6 col-md-4" >
+
+                                    <h3 class="col-sm-12 col-md-12" ng-if="vm.accommodationTemplates.length">숙박여행</h3>
+                                  <div ng-repeat="template in vm.accommodationTemplates" class="col-sm-6 col-md-4" >
                                     <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/007-house.png" style="height: 100px;">
+                                      <img src={{vm.getImage(template)}} style="height: 100px;">
                                       <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">펜션</a></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-6 col-md-4" >
-                                    <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/005-bed.png" style="height: 100px;">
-                                      <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">모텔</a></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-6 col-md-4" >
-                                    <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/006-hotel.png" style="height: 100px;">
-                                      <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">호텔/리조트</a></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-6 col-md-4" >
-                                    <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/002-camping.png" style="height: 100px;">
-                                      <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">캠핑장</a></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-6 col-md-4" >
-                                    <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/003-construction.png" style="height: 100px;">
-                                      <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">게스트하우스</a></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-6 col-md-4" >
-                                    <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/004-room.png" style="height: 100px;">
-                                      <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">룸공유</a></p>
+                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
                                       </div>
                                     </div>
                                   </div>
 
-                                    <h3 class="col-sm-12 col-md-12">교육</h3>
-                                  <div class="col-sm-6 col-md-4" >
+
+                                    <h3 class="col-sm-12 col-md-12" ng-if="vm.eduTemplates.length">교육</h3>
+                                  <div ng-repeat="template in vm.eduTemplates" class="col-sm-6 col-md-4" >
                                     <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/022-kindergarten.png" style="height: 100px;">
+                                      <img src={{vm.getImage(template)}} style="height: 100px;">
                                       <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">유치원</a></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-6 col-md-4" >
-                                    <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/021-piano.png" style="height: 100px;">
-                                      <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">예체능</a></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-6 col-md-4" >
-                                    <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/020-pencil-case.png" style="height: 100px;">
-                                      <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">보습학원</a></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-6 col-md-4" >
-                                    <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/019-school.png" style="height: 100px;">
-                                      <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">단과/입시학원</a></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-6 col-md-4" >
-                                    <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/017-chat.png" style="height: 100px;">
-                                      <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">외국어</a></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-6 col-md-4" >
-                                    <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/018-school-1.png" style="height: 100px;">
-                                      <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">학교</a></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                    <h3 class="col-sm-12 col-md-12">의료건강</h3>
-                                  <div class="col-sm-6 col-md-4" >
-                                    <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/016-head.png" style="height: 100px;">
-                                      <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">성형외과</a></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-6 col-md-4" >
-                                    <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/015-pimples.png" style="height: 100px;">
-                                      <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">피부과</a></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-6 col-md-4" >
-                                    <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/013-tooth.png" style="height: 100px;">
-                                      <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">치과</a></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-6 col-md-4" >
-                                    <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/011-eye.png" style="height: 100px;">
-                                      <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">안과</a></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-6 col-md-4" >
-                                    <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/012-femur.png" style="height: 100px;">
-                                      <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">정형외과</a></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-6 col-md-4" >
-                                    <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/014-fetus.png" style="height: 100px;">
-                                      <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">산부인과</a></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                    <h3 class="col-sm-12 col-md-12">뷰티</h3>
-                                  <div class="col-sm-6 col-md-4" >
-                                    <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/007-manicure.png" style="height: 100px;">
-                                      <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">네일샵</a></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-6 col-md-4" >
-                                    <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/008-hairdresser.png" style="height: 100px;">
-                                      <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">헤어샵</a></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-6 col-md-4" >
-                                    <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/006-face-mask.png" style="height: 100px;">
-                                      <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">스킨케어</a></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-6 col-md-4" >
-                                    <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/005-makeup.png" style="height: 100px;">
-                                      <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">메이크업</a></p>
+                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
                                       </div>
                                     </div>
                                   </div>
 
-                                    <h3 class="col-sm-12 col-md-12">비지니스</h3>
-                                  <div class="col-sm-6 col-md-4" >
+                                    <h3 class="col-sm-12 col-md-12" ng-if="vm.medicalTemplates.length">의료건강</h3>
+                                  <div ng-repeat="template in vm.medicalTemplates" class="col-sm-6 col-md-4" >
                                     <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/004-balance.png" style="height: 100px;">
+                                      <img src={{vm.getImage(template)}} style="height: 100px;">
                                       <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">변호사</a></p>
+                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
                                       </div>
                                     </div>
                                   </div>
-                                  <div class="col-sm-6 col-md-4" >
+
+                                    <h3 class="col-sm-12 col-md-12" ng-if="vm.beautyTemplates.length">뷰티</h3>
+                                  <div ng-repeat="template in vm.beautyTemplates" class="col-sm-6 col-md-4" >
                                     <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/003-business.png" style="height: 100px;">
+                                      <img src={{vm.getImage(template)}} style="height: 100px;">
                                       <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">회계사</a></p>
+                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
                                       </div>
                                     </div>
                                   </div>
-                                  <div class="col-sm-6 col-md-4" >
+
+
+                                    <h3 class="col-sm-12 col-md-12" ng-if="vm.businessTemplates.length">비지니스</h3>
+                                  <div ng-repeat="template in vm.businessTemplates" class="col-sm-6 col-md-4" >
                                     <div class="thumbnail" style="text-align: center;height: 190px;">
-                                      <img src="/files/002-interior-design.png" style="height: 100px;">
+                                      <img src={{vm.getImage(template)}} style="height: 100px;">
                                       <div class="caption">
-                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">인테리어</a></p>
+                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
                                       </div>
                                     </div>
                                   </div>
+
                                 </div>
                             </div>
                         </div>

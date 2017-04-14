@@ -25,7 +25,7 @@ if (_platform !== 'mobile'){
       vm.userBot = userBot;
       vm.isPublic = true;
       vm.sample = false;
-      if ((vm.userBot.id == 'restaurantbot') || (vm.userBot.id == 'athena') || (vm.userBot.id == 'hairshopbot') || (vm.userBot.id == 'massagebot')){
+      if ((vm.userBot.id == 'restaurantbot') || (vm.userBot.id == 'athena') || (vm.userBot.id == 'hairshopbot') || (vm.userBot.id == 'massagebot') || (vm.userBot.id == 'nailbot') || (vm.userBot.id == 'order')){
         vm.sample = true;
         vm.videoSrc = '/videos/'+ vm.userBot.id+'.mov'
       }
@@ -424,14 +424,52 @@ if (_platform !== 'mobile'){
         }
       }
       vm.setEditType = function(type) { vm.editType = type; };
-      vm.templates = [];
       var editor;
+      vm.restaurantBusinessTemplates = [];
+      vm.accommodationTemplates = [];
+      vm.medicalTemplates = [];
+      vm.eduTemplates = [];
+      vm.beautyTemplates = [];
+      vm.onlineShoppingTemplates = [];
+      vm.openMarketTemplates = [];
+      vm.businessTemplates = [];
       TemplatesService.query({}, function(templates){
-        for (var i=0; i < templates.length; ++i) {
-          if(templates[i].id == 'restaurant'){
-            vm.templates.push(templates[i]);
+        for(var i = 0; i < templates.length; i++){
+          if (templates[i].category && templates[i].category.name == '요식업') {
+            vm.restaurantBusinessTemplates.push(templates[i]);
+            continue;
+          }
+          if (templates[i].category && templates[i].category.name == '숙박') {
+            vm.accommodationTemplates.push(templates[i]);
+            continue;
+          }
+          if (templates[i].category && templates[i].category.name == '의료건강') {
+            vm.medicalTemplates.push(templates[i]);
+            continue;
+          }
+          if (templates[i].category && templates[i].category.name == '교육') {
+            vm.eduTemplates.push(templates[i]);
+            continue;
+          }
+          if (templates[i].category && templates[i].category.name == '뷰티') {
+            vm.beautyTemplates.push(templates[i]);
+            continue;
+          }
+          if (templates[i].category && templates[i].category.name == '온라인쇼핑') {
+            vm.onlineShoppingTemplates.push(templates[i]);
+            continue;
+          }
+          if (templates[i].category && templates[i].category.name == '오픈마켓') {
+            vm.openMarketTemplates.push(templates[i]);
+            continue;
+          }
+          if (templates[i].category && templates[i].category.name == '비지니스') {
+            vm.businessTemplates.push(templates[i]);
+            continue;
           }
         }
+
+
         if (vm.userBot.templateId) {
           for (var i=0; i < templates.length; ++i) {
             if (templates[i]._id === vm.userBot.templateId) {

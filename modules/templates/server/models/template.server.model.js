@@ -38,7 +38,25 @@ var TemplateSchema = new Schema({
   user: {
     type: Schema.ObjectId,
     ref: 'User'
+  },
+  category: {
+    type: Schema.ObjectId,
+    ref: 'TemplateCategory'
   }
 });
 
 mongoose.model('Template', TemplateSchema);
+
+/**
+ * Custom action Schema
+ */
+var TemplateCategorySchema = new Schema({
+  name: {
+    type: String
+  },
+  created: {
+    type: Date,
+    default: Date.now
+  }
+});
+mongoose.model('TemplateCategory', TemplateCategorySchema);
