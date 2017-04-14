@@ -278,6 +278,7 @@ if (_platform !== 'mobile'){
           }
           vm.userBot.template = vm.selectedTemplate;
           vm.userBot.template.templateData = editor.getValue();
+          console.log(JSON.stringify(vm.userBot.template.templateData));
         } else {
           if (vm.userBot.template) {
             vm.userBot.template = null;
@@ -668,7 +669,7 @@ if (_platform !== 'mobile'){
 
         editor.on('change', function() {
           console.log('editor.onchange -> $compile editor');
-          var inputList = document.getElementsByName("mine")
+          var inputList = document.getElementsByName("mine");
           var compileList = [];
           for (var idx=0; idx < inputList.length; ++idx) {
             var input = inputList[idx];

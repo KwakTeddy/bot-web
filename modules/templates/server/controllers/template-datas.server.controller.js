@@ -188,6 +188,31 @@ exports.templateDataByID = function(req, res, next, id) {
   });
 };
 
+function getTemplateLists(dataSchema) {
+  var TemplateSchema;
+  try {
+    TemplateSchema= eval('TemplateSchema = '+ dataSchema);
+    var keys = Object.keys(TemplateSchema);
+    var lists = [];
+    for(var i = 0; i < keys.length; i++) {
+      var key = keys[i];
+      var val = TemplateSchema[key];
+
+      var type;
+      if (val.type) type = val.type;
+      else type = val;
+
+      if (type == 'List') {
+        lists.push(key);
+      }
+    }
+  } catch(e) {
+    console.log(e);
+  }
+  return lists;
+}
+
+exports.getTemplateLists = getTemplateLists;
 
 function getTemplateDataModel(dataSchema, TemplateDataModelName) {
   var TemplateSchema;
