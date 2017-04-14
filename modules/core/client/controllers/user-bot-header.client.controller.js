@@ -32,8 +32,10 @@ angular.module('core').controller('UserBotHeaderController', ['$scope', '$state'
             document.getElementById('header_my').style.fontSize = 120 + '%'
           }
       }else if (toState.name == 'user-bots-web.create'){
-          $scope.title = '챗봇 만들기 - 플레이챗 PlayChat';
-      }else if (toState.name == 'user-bots-web.view'){
+        $scope.title = '챗봇 만들기 - 플레이챗 PlayChat';
+      }else if (toState.name == 'user-bots-web.edit'){
+        $scope.title = '챗봇 수정하기 - 플레이챗 PlayChat';
+      }else if (toState.name === 'user-bots-web.view' || toState.name === 'user-bots-web.graph'){
           UserBotsService.get({
               userBotId: toParams.userBotId
           }, function (response) {
