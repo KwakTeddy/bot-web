@@ -535,9 +535,8 @@ function sendReceiptMessage(recipientId) {
  *
  */
 function callSendAPI(messageData, PAGE_ACCESS_TOKEN) {
-
+  console.log(PAGE_ACCESS_TOKEN);
   // console.log('callSendAPI: ', messageData);
-
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: PAGE_ACCESS_TOKEN },
@@ -555,6 +554,7 @@ function callSendAPI(messageData, PAGE_ACCESS_TOKEN) {
       console.log("Unable to send message.");
       console.log(JSON.stringify(response.body.error));
       console.log(error);
+
     }
   });
 }
