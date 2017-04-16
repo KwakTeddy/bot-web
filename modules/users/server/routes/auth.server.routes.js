@@ -31,7 +31,7 @@ module.exports = function (app) {
     scope: [
       'manage_pages',
       'pages_show_list',
-      'pages_messaging'
+      // 'pages_messaging'
 
   ]}));
 
