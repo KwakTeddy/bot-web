@@ -9,7 +9,7 @@ var startTask = {
             // context.bot.authKey = null;
         }
 
-        task.result = {smartReply: ['예약', '위치', '영업시간', '의료진']};
+        task.result = {smartReply: ['예약', '시술가격', '영업시간', '의료진']};
 
         context.dialog.날짜입력최초 = undefined;
         context.dialog.시간입력최초 = undefined;

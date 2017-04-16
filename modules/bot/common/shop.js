@@ -56,7 +56,7 @@ exports.mapTask = {
 exports.menuImageTask = {
   action: function(task, context, callback) {
     if(context.bot.menuImage) {
-      var img = context.bot.menuImage.startsWith('http') ? context.bot.menuImage : config.host + context.bot.menuImage;
+      var img = context.bot.menuImage.startsWith('http') ? context.bot.menuImage : config.host + '/files/' + context.bot.menuImage;
       task.result = {
         image: {url: img},
         buttons: [
@@ -134,7 +134,7 @@ exports.daumgeoCode = daumgeoCode;
 
 function numOfPersonTypeCheck(inRaw, _type, inDoc, context, callback) {
   var re;
-  if(_type.init) re = /(\d)\s*명/g;
+  if(_type.init) re = /(\d)\s*명?/g;
   else re = /(\d)(?:\s*명)?/g;
 
   var matched = inRaw.match(re);
