@@ -105,7 +105,7 @@ if (_platform !== 'mobile'){
         $scope.nograph = true;
       vm.startChat = function() {
         if ($cookies.get("nograph") == undefined && !$scope.nograph) {
-          $state.go('user-bots-web.graph', {userBotId: vm.userBot._id});
+          $state.go('user-bots-web.graph', {userBotId: vm.userBot._id}, {location:'replace'});
         } else {
           vm.userBotChat(vm.userBot);
         }
@@ -541,6 +541,7 @@ if (_platform !== 'mobile'){
                   type: "array",
                   format: "table",
                   uniqueItems: true,
+                  options: {grid_columns:12},
                   items: {
                     type: "object",
                     title: jsonSchema[key]['item_title'] ? jsonSchema[key]['item_title'] : "항목",
