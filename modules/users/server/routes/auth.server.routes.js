@@ -30,8 +30,8 @@ module.exports = function (app) {
   app.route('/api/auth/facebook/page').get(users.oauthCall('facebook', {
     scope: [
       'manage_pages',
-      // 'pages_show_list',
-      // 'pages_messaging'
+      'pages_show_list',
+      'pages_messaging'
   ]}));
 
   app.route('/api/auth/facebook/:callback').get(users.oauthCallback('facebook'));

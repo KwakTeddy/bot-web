@@ -298,7 +298,6 @@ exports.oauthCall = function (strategy, scope) {
       req.session.redirect_to = req.query.redirect_to;
     }
     // Authenticate
-    console.log(util.inspect(scope));
     passport.authenticate(strategy, scope)(req, res, next);
   };
 };

@@ -185,6 +185,7 @@ if (_platform !== 'mobile'){
 
         if ((channel == 'facebook') && (method !== 'easy')){
           $scope.fbLoading = true;
+          $scope.noPage = false;
           FB.api('/me/accounts?fields=picture,name,link,access_token,perms', function(response) {
             console.log(response);
             if (response.error){
@@ -200,6 +201,9 @@ if (_platform !== 'mobile'){
               $scope.fbLoading = false;
               $scope.pageLists = [];
               $scope.pageLists = response.data;
+              if (!response.data.length){
+                $scope.noPage = true;
+              }
             }
           });
         }
