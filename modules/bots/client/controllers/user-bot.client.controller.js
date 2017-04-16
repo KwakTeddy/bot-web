@@ -738,6 +738,7 @@ if (_platform !== 'mobile'){
           disable_collapse: true,
           disable_properties: true,
           disable_edit_json: true,
+          disable_array_reorder: true,
           grid_columns: 3,
         });
 
