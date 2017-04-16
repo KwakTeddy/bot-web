@@ -29,7 +29,8 @@ module.exports = function (app) {
   }));
   app.route('/api/auth/facebook/page').get(users.oauthCall('facebook', {
     scope: [
-      'manage_pages',
+      'publish_pages',
+      'pages_show_list',
       'pages_messaging'
   ]}));
 
