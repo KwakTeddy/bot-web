@@ -204,6 +204,28 @@ if (_platform !== 'mobile'){
               if (!response.data.length){
                 $scope.noPage = true;
               }
+              $scope.close = function () {
+                modalInstance.dismiss();
+              };
+              $scope.connect = function (page) {
+                modalInstance.dismiss();
+                console.log(page);
+                FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
+                  console.log(response);
+                  if(response){
+                    var info = {};
+                    info['user'] = vm.user._id;
+                    info['userBot'] = vm.userBot._id;
+                    info['userBotId'] = vm.userBot.id;
+                    info['page'] = page;
+                    $http.post('/api/auth/facebook/pageInfo', info, function (err) {
+                      if(err) {
+                        console.log(err)
+                      }
+                    });
+                  }
+                });
+              };
               var modalInstance = $uibModal.open({
                 templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',
                 scope: $scope
