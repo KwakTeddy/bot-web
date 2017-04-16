@@ -185,7 +185,6 @@ if (_platform !== 'mobile'){
 
         if ((channel == 'facebook') && (method !== 'easy')){
           $scope.fbLoading = true;
-          console.log(333);
           FB.api('/me/accounts?fields=picture,name,link,access_token,perms', function(response) {
             if (response.error){
               var url = '/api/auth/facebook/page';
@@ -207,7 +206,7 @@ if (_platform !== 'mobile'){
         };
         $scope.connect = function (page) {
           modalInstance.dismiss();
-          FB.api('me/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
+          FB.api('/1557169960967403/subscriptions?access_token='+ page.access_token, 'post', function (response) {
             if(response){
               var info = {};
               info['user'] = vm.user._id;
