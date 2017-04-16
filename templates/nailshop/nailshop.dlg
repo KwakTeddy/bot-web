@@ -223,13 +223,13 @@ shop.reserveCheck
 시작:
 c<시작
 start.startTask
->{if: 'context.botUser.isOwner', output: {call: '예약내역', options: {prefix: '+context.bot.name+ 인공지능 챗봇입니다.\n사장님께서 접속 하였습니다.\n\n'}}}
->+context.bot.name+ 인공지능 챗봇입니다.\n문의할 내용을 말씀해주세요.\n\n예시) 위치, 영업시간, 메뉴\n예시) 내일 저녁 7시에 예약
+>{if: 'context.botUser.isOwner', output: {call: '예약내역', options: {prefix: '+name+ 인공지능 챗봇입니다.\n사장님께서 접속 하였습니다.\n\n'}}}
+>+name+ 인공지능 챗봇입니다.\n문의할 내용을 말씀해주세요.\n\n예시) 위치, 영업시간, 메뉴\n예시) 내일 저녁 7시에 예약
 
 답변없음:
 c<> 불편을 끼쳐드려 죄송합니다. 현재 고객님께서 무슨 말씀을 하시는지 이해를 못하였습니다.\n 매장으로 전화하여 안내받으시겠습니까?
    <~네> 매장 전화번호는 +phone+ 입니다.
-   <~아니요> +context.bot.name+에서는 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.
+   <~아니요> +name+에서는 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.
 
 <안녕
 >안녕하세요.
