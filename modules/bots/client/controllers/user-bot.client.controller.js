@@ -186,6 +186,7 @@ if (_platform !== 'mobile'){
         if ((channel == 'facebook') && (method !== 'easy')){
           $scope.fbLoading = true;
           FB.api('/me/accounts?fields=picture,name,link,access_token,perms', function(response) {
+            console.log(response);
             if (response.error){
               var url = '/api/auth/facebook/page';
               // if ($state.previous && $state.previous.href) {
@@ -193,6 +194,7 @@ if (_platform !== 'mobile'){
               // }
               // Effectively call OAuth authentication route:
                 console.log(url);
+              $scope.fbLoading = false;
               $window.location.href = url;
             } else {
               $scope.fbLoading = false;
