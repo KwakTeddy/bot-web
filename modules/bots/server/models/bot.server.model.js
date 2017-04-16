@@ -209,9 +209,9 @@ var BotDialogSchema = new Schema({
 mongoose.model('BotDialog', BotDialogSchema);
 
 var UserBotFbPageSchema = new Schema({
-    userBot: {
+    bot: {
         type: Schema.ObjectId,
-        ref: 'UserBot'
+        ref: 'Bot'
     },
     userBotId: {
         type: String
@@ -238,6 +238,9 @@ var UserBotFbPageSchema = new Schema({
     created: {
         type: Date,
         default: Date.now
+    },
+    connect: {
+      type: Boolean
     }
 });
 
