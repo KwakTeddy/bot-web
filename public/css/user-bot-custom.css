@@ -865,3 +865,7 @@ section#screenshot {
 .well-sm h3{
     font-size: 18px;
 }
+
+.pull-right {
+    margin-left: 5px;
+}
