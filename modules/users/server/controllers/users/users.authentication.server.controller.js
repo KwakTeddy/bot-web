@@ -428,7 +428,18 @@ exports.saveOAuthUserProfile = function (req, providerUserProfile, done) {
         return done(err, user, '/settings/accounts');
       });
     } else {
-      return done(new Error('User is already connected using this provider'), user);
+      console.log(util.inspect(providerUserProfile.providerData.accessToken));
+      User.findOne({_id: user.id}, function (err, data) {
+        if (data.provider == 'facebook'){
+          data.providerData.accessToken = providerUserProfile.providerData.accessToken;
+        }else {
+          data.additionalProvidersData.facebook.accessToken = providerUserProfile.providerData.accessToken;
+        }
+        data.save(function (err) {
+          if (err) console.log(err);
+          return done(new Error('User is already connected using this provider'), user);
+        })
+      })
     }
   }
 };

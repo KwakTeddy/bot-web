@@ -10,6 +10,7 @@ var request = require('request');
 var _ = require('lodash');
 var globals = require(path.resolve('modules/bot/engine/common/globals'));
 var config = require(path.resolve('./config/config'));
+var async = require('async');
 
 var startTask = {
   action: function (task, context, callback) {
@@ -625,10 +626,10 @@ var menuTask = {
 
 globals.setGlobalTask('menuTask', menuTask);
 
-function menuPreviewAction(task, context, callback) {
+function eventCategoryAction(task, context, callback) {
   var model, query, sort;
 
-  model = mongoose.model('TemplatePreview');
+  model = mongoModule.getModel('templateevent');
   query = {upTemplateId: context.bot.templateDataId};
   sort = {'_id': -1};
 
@@ -661,23 +662,32 @@ function menuPreviewAction(task, context, callback) {
         // }
       }
 
-      if(categorys.length > 0) {
+      if (categorys.length == 1) {
         task.doc = categorys;
         context.dialog.categorys = categorys;
+        eventAction(task,context, function(task,context) {
+          callback(task,context);
+        });
+      } else if (categorys.length > 1) {
+        task.doc = categorys;
+        context.dialog.categorys = categorys;
+        callback(task,context);
+      } else {
+        callback(task,context);
       }
-
-      callback(task, context);
     }
   });
 }
 
 
-exports.menuPreviewAction = menuPreviewAction;
+exports.eventCategoryAction = eventCategoryAction;
 
-function previewAction(task, context, callback) {
+function eventAction(task, context, callback) {
   var model, query, sort;
-
-  model = mongoose.model('TemplateMenu');
+  if (context.dialog.categorys.length == 1) {
+    context.dialog.category = context.dialog.categorys[0];
+  }
+  model = mongoModule.getModel('templateevent');
   query = {upTemplateId: context.bot.templateDataId,
     category: context.dialog.category.name};
   sort = {'_id': +1};
@@ -685,7 +695,226 @@ function previewAction(task, context, callback) {
   model.find(query).limit(type.MAX_LIST).sort(sort).lean().exec(function(err, docs) {
     task.doc = docs;
     context.dialog.menus = docs;
-    callback(task, context);
+    var result = [];
+    async.eachSeries(task.doc, function(doc, cb) {
+      var _doc = {};
+      if (doc.name) {
+        _doc.title = doc.name;
+      }
+      if (doc.description) {
+        _doc.text = doc.description;
+      }
+      if (doc.price) {
+        _doc.text = _doc.text + ' ' + doc.title + '원';
+      }
+      if (doc.image) {
+        _doc.imageUrl = doc.image;
+      }
+      result.push(_doc);
+      cb(null)
+    }, function (err) {
+      task.result = {items: result};
+      if (task.result.items.length == 0) {
+        task.result = null;
+      }
+      callback(task, context);
+    });
+  });
+}
+
+exports.eventAction = eventAction;
+
+
+function peopleCategoryAction(task, context, callback) {
+  var model, query, sort;
+
+  model = mongoModule.getModel('templatepeople');
+  query = {upTemplateId: context.bot.templateDataId};
+  sort = {'_id': -1};
+
+
+  model.aggregate([
+    {$match: query},
+    {$sort: sort},
+    {$group: {
+      _id: '$category',
+      category: {$first: '$category'}
+    }}
+  ], function(err, docs) {
+    if(docs == undefined) {
+      callback(task, context);
+    } else {
+      var categorys = [];
+      for (var i = 0; i < docs.length; i++) {
+        var doc = docs[i];
+
+        var category = doc.category;
+        if(!_.includes(categorys, category)){
+          categorys.push({name: category});
+        }
+
+        // for (var j = 0; j < doc.category.length; j++) {
+        //   var category = doc.category[j];
+        //   if(!_.includes(categorys, category)){
+        //     categorys.push({name: category});
+        //   }
+        // }
+      }
+
+      if (categorys.length == 1) {
+        task.doc = categorys;
+        context.dialog.categorys = categorys;
+        peopleAction(task,context, function(task,context) {
+          callback(task,context);
+        });
+      } else if (categorys.length > 1) {
+        task.doc = categorys;
+        context.dialog.categorys = categorys;
+        callback(task,context);
+      } else {
+        callback(task,context);
+      }
+    }
+  });
+}
+
+
+exports.peopleCategoryAction = peopleCategoryAction;
+
+function peopleAction(task, context, callback) {
+  var model, query, sort;
+  if (context.dialog.categorys.length == 1) {
+    context.dialog.category = context.dialog.categorys[0];
+  }
+  model = mongoModule.getModel('templatepeople');
+  query = {upTemplateId: context.bot.templateDataId,
+    category: context.dialog.category.name};
+  sort = {'_id': +1};
+
+  model.find(query).limit(type.MAX_LIST).sort(sort).lean().exec(function(err, docs) {
+    task.doc = docs;
+    context.dialog.menus = docs;
+    var result = [];
+    async.eachSeries(task.doc, function(doc, cb) {
+      var _doc = {};
+      if (doc.name) {
+        _doc.title = doc.name;
+      }
+      if (doc.description) {
+        _doc.text = doc.description;
+      }
+      if (doc.price) {
+        _doc.text = _doc.text + ' ' + doc.title + '원';
+      }
+      if (doc.image) {
+        _doc.imageUrl = doc.image;
+      }
+      result.push(_doc);
+      cb(null)
+    }, function (err) {
+      task.result = {items: result};
+      if (task.result.items.length == 0) {
+        task.result = null;
+      }
+      callback(task, context);
+    });
+  });
+}
+
+exports.peopleAction = peopleAction;
+
+function previewCategoryAction(task, context, callback) {
+  var model, query, sort;
+
+  model = mongoModule.getModel('templatepreview');
+  query = {upTemplateId: context.bot.templateDataId};
+  sort = {'_id': -1};
+
+
+  model.aggregate([
+    {$match: query},
+    {$sort: sort},
+    {$group: {
+      _id: '$category',
+      category: {$first: '$category'}
+    }}
+  ], function(err, docs) {
+    if(docs == undefined) {
+      callback(task, context);
+    } else {
+      var categorys = [];
+      for (var i = 0; i < docs.length; i++) {
+        var doc = docs[i];
+
+        var category = doc.category;
+        if(!_.includes(categorys, category)){
+          categorys.push({name: category});
+        }
+
+        // for (var j = 0; j < doc.category.length; j++) {
+        //   var category = doc.category[j];
+        //   if(!_.includes(categorys, category)){
+        //     categorys.push({name: category});
+        //   }
+        // }
+      }
+      if (categorys.length == 1) {
+        task.doc = categorys;
+        context.dialog.categorys = categorys;
+        previewAction(task,context, function(task,context) {
+          callback(task,context);
+        });
+      } else if (categorys.length > 1) {
+        task.doc = categorys;
+        context.dialog.categorys = categorys;
+        callback(task,context);
+      } else {
+        callback(task,context);
+      }
+    }
+  });
+}
+
+
+exports.previewCategoryAction = previewCategoryAction;
+
+function previewAction(task, context, callback) {
+  var model, query, sort;
+  if (context.dialog.categorys.length == 1) {
+    context.dialog.category = context.dialog.categorys[0];
+  }
+  model = mongoModule.getModel('templatepreview');
+  query = {upTemplateId: context.bot.templateDataId,
+    category: context.dialog.category.name};
+  sort = {'_id': +1};
+
+  model.find(query).limit(type.MAX_LIST).sort(sort).lean().exec(function(err, docs) {
+    task.doc = docs;
+    context.dialog.menus = docs;
+    var result = [];
+    async.eachSeries(task.doc, function(doc, cb) {
+      var _doc = {};
+      if (doc.name) {
+        _doc.title = doc.name;
+      }
+      if (doc.description) {
+        _doc.text = doc.description;
+      }
+      if (doc.price) {
+        _doc.text = _doc.text + ' ' + doc.title + '원';
+      }
+      if (doc.image) {
+        _doc.imageUrl = doc.image;
+      }
+      result.push(_doc);
+      cb(null)
+    }, function (err) {
+      task.result = {items: result};
+      if (task.result.items.length == 0) {
+        task.result = null;
+      }
+      callback(task, context);
+    });
   });
 }
 
@@ -736,12 +965,19 @@ function menuCategoryAction(task, context, callback) {
         // }
       }
 
-      if(categorys.length > 0) {
+      if (categorys.length == 1) {
         task.doc = categorys;
         context.dialog.categorys = categorys;
+        menuAction(task,context, function(task,context) {
+          callback(task,context);
+        });
+      } else if (categorys.length > 1) {
+        task.doc = categorys;
+        context.dialog.categorys = categorys;
+        callback(task,context);
+      } else {
+        callback(task,context);
       }
-
-      callback(task, context);
     }
   });
 }
@@ -751,7 +987,9 @@ exports.menuCategoryAction = menuCategoryAction;
 
 function menuAction(task, context, callback) {
   var model, query, sort;
-
+  if (context.dialog.categorys.length == 1) {
+    context.dialog.category = context.dialog.categorys[0];
+  }
   model = mongoose.model('TemplateMenu');
   query = {upTemplateId: context.bot.templateDataId,
     category: context.dialog.category.name};
@@ -760,7 +998,32 @@ function menuAction(task, context, callback) {
   model.find(query).limit(type.MAX_LIST).sort(sort).lean().exec(function(err, docs) {
     task.doc = docs;
     context.dialog.menus = docs;
-    callback(task, context);
+    var result = [];
+    async.eachSeries(task.doc, function(doc, cb) {
+      var _doc = {};
+      if (doc.name) {
+        _doc.title = doc.name;
+      }
+      if (doc.description) {
+        _doc.text = doc.description;
+      } else {
+        _doc.text = '';
+      }
+      if (doc.price) {
+        _doc.text = _doc.text + ' ' + doc.price + '원';
+      }
+      if (doc.image) {
+        _doc.imageUrl = doc.image;
+      }
+      result.push(_doc);
+      cb(null)
+    }, function (err) {
+      task.result = {items: result};
+      if (task.result.items.length == 0) {
+        task.result = null;
+      }
+      callback(task, context);
+    });
   });
 }
 

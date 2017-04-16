@@ -2,6 +2,7 @@ var path = require('path')
 var address = require(path.resolve('./modules/bot/action/common/address'));
 var type = require(path.resolve('./modules/bot/action/common/type'));
 var shop = require(path.resolve('./modules/bot/common/shop'));
+var start = require('./start');
 
 <전화
 <전화번호
@@ -15,6 +16,55 @@ var shop = require(path.resolve('./modules/bot/common/shop'));
 shop.mapTask
 >저희 매장의 주소는\n+address+\n입니다.
 
+// ****************** 이벤트 ****************** //
+<세일
+<행사
+<이벤트
+{action:shop.eventCategoryAction}
+> if(context.dialog.categorys == undefined) 아직 이벤트 정보를 등록하지 않았습니다.
+> if(context.dialog.categorys.length != 1) [이벤트]\n##+index+. +name+\n#번호를 선택해주세요.
+    <{types: [{name: 'category', listName: 'categorys', typeCheck: 'listTypeCheck'}]}
+    {action: shop.eventAction}
+    > if(context.user.channel == 'socket') 정보가 등록되지 않았습니다.
+    >[+category.name+]\n##+index+. +name+\n#\n번호나 메뉴명을 입력해주세요.
+        <{types: [{name: 'menu', listName: 'menus', typeCheck: 'listTypeCheck'}]}
+        shop.menuDetailTask
+        >+menu.name+ +menu.subject+\n+menu.description+
+        <{if:'true'}>{repeat: 1, options: {postfix: '\n처음으로 가려면\n "시작"이라고 입력해주세요.'}}
+    <{if:'true'}>{repeat: 1, options: {postfix: '\n처음으로 가려면\n "시작"이라고 입력해주세요.'}}
+> if(context.dialog.categorys.length == 1 && context.user.channel == 'socket') 정보가 등록되지 않았습니다.
+> if(context.dialog.categorys.length == 1) ##+index+. +name+\n#\n번호나 메뉴명을 입력해주세요.
+    <{types: [{name: 'menu', listName: 'menus', typeCheck: 'listTypeCheck'}]}
+    shop.menuDetailTask
+    >+menu.name+ +menu.subject+\n+menu.description+
+    <{if:'true'}>{repeat: 1, options: {postfix: '\n처음으로 가려면\n "시작"이라고 입력해주세요.'}}
+
+
+// ****************** 시설 ****************** //
+<시설
+<장비
+<기구
+<매장 사진
+{action:shop.previewCategoryAction}
+> if(context.dialog.categorys == undefined) 아직 시설 정보를 등록하지 않았습니다.
+> if(context.dialog.categorys.length != 1) [시설정보]\n##+index+. +name+\n#번호를 선택해주세요.
+    <{types: [{name: 'category', listName: 'categorys', typeCheck: 'listTypeCheck'}]}
+    {action: shop.previewAction}
+    > if(context.user.channel == 'socket') 정보가 등록되지 않았습니다.
+    >[+category.name+]\n##+index+. +name+\n#\n번호나 메뉴명을 입력해주세요.
+        <{types: [{name: 'menu', listName: 'menus', typeCheck: 'listTypeCheck'}]}
+        shop.menuDetailTask
+        >+menu.name+ +menu.description+
+        <{if:'true'}>{repeat: 1, options: {postfix: '\n처음으로 가려면\n "시작"이라고 입력해주세요.'}}
+    <{if:'true'}>{repeat: 1, options: {postfix: '\n처음으로 가려면\n "시작"이라고 입력해주세요.'}}
+> if(context.dialog.categorys.length == 1 && context.user.channel == 'socket') 정보가 등록되지 않았습니다.
+> if(context.dialog.categorys.length == 1) ##+index+. +name+\n#\n번호나 메뉴명을 입력해주세요.
+    <{types: [{name: 'menu', listName: 'menus', typeCheck: 'listTypeCheck'}]}
+    shop.menuDetailTask
+    >+menu.name+ +menu.description+
+    <{if:'true'}>{repeat: 1, options: {postfix: '\n처음으로 가려면\n "시작"이라고 입력해주세요.'}}
+
+
 // ****************** 메뉴 ****************** //
 <무엇 서비스
 <서비스 알리다
@@ -25,21 +75,28 @@ shop.mapTask
 <메뉴 알리다
 <메뉴 뭐
 <가격
+<가격표
 <얼마
 <비용
 {action: shop.menuCategoryAction}
 > if(context.dialog.categorys == undefined && context.bot.menuImage == undefined) 아직 메뉴를 등록하지 않았습니다.
 > {if: 'context.dialog.categorys == undefined && context.bot.menuImage != undefined', task: shop.menuImageTask, output: '[메뉴판보기]'}
->[메뉴판]\n##+index+. +name+\n#번호를 선택해주세요.
+> if(context.dialog.categorys.length != 1) [가격표]\n##+index+. +name+\n#번호를 선택해주세요.
     <{types: [{name: 'category', listName: 'categorys', typeCheck: 'listTypeCheck'}]}
     {action: shop.menuAction}
+    > if(context.user.channel == 'socket') 정보가 등록되지 않았습니다.
     >[+category.name+]\n##+index+. +name+ +price+원\n#\n번호나 메뉴명을 입력해주세요.
         <{types: [{name: 'menu', listName: 'menus', typeCheck: 'listTypeCheck'}]}
         shop.menuDetailTask
         >+menu.name+ +menu.price+원
         <{if:'true'}>{repeat: 1, options: {postfix: '\n처음으로 가려면\n "시작"이라고 입력해주세요.'}}
     <{if:'true'}>{repeat: 1, options: {postfix: '\n처음으로 가려면\n "시작"이라고 입력해주세요.'}}
-
+> if(context.dialog.categorys.length == 1 && context.user.channel == 'socket') 정보가 등록되지 않았습니다.
+>if(context.dialog.categorys.length == 1)##+index+. +name+ +price+원\n#\n번호나 메뉴명을 입력해주세요.
+    <{types: [{name: 'menu', listName: 'menus', typeCheck: 'listTypeCheck'}]}
+    shop.menuDetailTask
+    >+menu.name+ +menu.price+원\n+menu.description+
+    <{if:'true'}>{repeat: 1, options: {postfix: '\n처음으로 가려면\n "시작"이라고 입력해주세요.'}}
 
 <{types: [shop.menuType]}
 'menuTask'
@@ -165,7 +222,7 @@ shop.reserveCheck
 
 시작:
 c<시작
-shop.startTask
+start.startTask
 >{if: 'context.botUser.isOwner', output: {call: '예약내역', options: {prefix: '+name+ 인공지능 챗봇입니다.\n사장님께서 접속 하였습니다.\n\n'}}}
 >+name+ 인공지능 챗봇입니다.\n문의할 내용을 말씀해주세요.\n\n예시) 위치, 영업시간, 메뉴\n예시) 내일 저녁 7시에 예약
 

@@ -185,7 +185,6 @@ if (_platform !== 'mobile'){
 
         if ((channel == 'facebook') && (method !== 'easy')){
           $scope.fbLoading = true;
-          console.log(333);
           FB.api('/me/accounts?fields=picture,name,link,access_token,perms', function(response) {
             if (response.error){
               var url = '/api/auth/facebook/page';
@@ -207,7 +206,9 @@ if (_platform !== 'mobile'){
         };
         $scope.connect = function (page) {
           modalInstance.dismiss();
-          FB.api('me/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
+          console.log(page);
+          FB.api('/'+page.id +'/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
+            console.log(response);
             if(response){
               var info = {};
               info['user'] = vm.user._id;
@@ -443,7 +444,7 @@ if (_platform !== 'mobile'){
             vm.restaurantBusinessTemplates.push(templates[i]);
             continue;
           }
-          if (templates[i].category && templates[i].category.name == '숙박') {
+          if (templates[i].category && templates[i].category.name == '숙박여행') {
             vm.accommodationTemplates.push(templates[i]);
             continue;
           }
