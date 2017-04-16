@@ -186,7 +186,7 @@ if (_platform !== 'mobile'){
         if ((channel == 'facebook') && (method !== 'easy')){
           $scope.fbLoading = true;
           $scope.noPage = false;
-          FB.api('/me/accounts?fields=picture,name,link,access_token,perms', function(response) {
+         return FB.api('/me/accounts?fields=picture,name,link,access_token,perms', function(response) {
             console.log(response);
             if (response.error){
               var url = '/api/auth/facebook/page';
@@ -204,6 +204,13 @@ if (_platform !== 'mobile'){
               if (!response.data.length){
                 $scope.noPage = true;
               }
+              var modalInstance = $uibModal.open({
+                templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',
+                scope: $scope
+              });
+              modalInstance.result.then(function (response) {
+                console.log(response);
+              })
             }
           });
         }
