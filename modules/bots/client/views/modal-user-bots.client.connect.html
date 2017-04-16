@@ -53,11 +53,11 @@
             <button class="btn btn-default pull-right" ng-if="!pageList.connected" ng-click="connect(pageList)">
               연결해요
             </button>
-            <button class="btn btn-primary pull-right" ng-if="pageList.connected" ng-click="connect(pageList)">
-              대화해봐요
-            </button>
-            <button class="btn btn-danger pull-right" ng-if="pageList.connected" ng-click="connect(pageList)">
+             <button class="btn btn-danger pull-right" ng-if="pageList.connected" ng-click="disconnect(pageList)">
               연결끊기
+            </button>
+            <button class="btn btn-primary pull-right" ng-if="pageList.connected">
+              <a href="https://www.facebook.com/pages/create/?ref_type=pages_browser" target="_blank">대화해봐요</a>
             </button>
           </span>
         </td>

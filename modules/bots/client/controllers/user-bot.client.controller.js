@@ -229,6 +229,13 @@ if (_platform !== 'mobile'){
                   }
                 });
               };
+              $scope.disconnect = function (page) {
+                // modalInstance.dismiss();
+                console.log(page);
+                FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'delete', function (response) {
+                  console.log(response);
+                });
+              };
               var modalInstance = $uibModal.open({
                 templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',
                 scope: $scope
