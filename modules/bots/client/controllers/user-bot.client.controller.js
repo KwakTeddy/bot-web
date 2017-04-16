@@ -207,7 +207,7 @@ if (_platform !== 'mobile'){
         $scope.connect = function (page) {
           modalInstance.dismiss();
           console.log(page);
-          FB.api('/'+page.id +'/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
+          FB.api('/'+page.id +'/subscribed_apps?access_token='+ 'EAAWIPOJg3OsBANXIEBavV3gk3Skr0UtSIqIU5hxGUCMjZA3szbDlJ2l9pEc1AdVZB3ijCdNTNfgnIM0aGPZAQmCG9kGzuc1YXoTY33fWH97Qv4PnNf0lgoWLr1bbVfOYolE0jHzR2fcZAnNVHIDpFPk7ZC6ZCvmA3ExqxtK6OreQZDZD', 'post', function (response) {
             console.log(response);
             if(response){
               var info = {};
