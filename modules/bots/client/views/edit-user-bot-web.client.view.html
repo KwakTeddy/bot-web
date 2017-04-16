@@ -331,10 +331,10 @@
 
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">이미지</label>
-                                <div class="col-sm-9">
-                                    <img ng-src="{{imageURL}}" class="img-thumbnail user-profile-picture" style="width:150px; height: 150px;text-align:center;line-height: 150px;" alt="이미지를 업로드해요">
+                                <div class="col-sm-9" style="vertical-align: top;">
+                                    <img ng-src="{{imageURL}}" class="img-thumbnail user-profile-picture" style="border: 0;width:150px; height: 150px;text-align:center;line-height: 150px;" alt="이미지를 업로드해요">
                                     <p></p>
-                                    <div class="text-left" ng-hide="imageUploader.queue.length">
+                                    <div class="text-left" ng-hide="imageUploader.queue.length" style="display: inline-block;left: 180px;top: 10px;position: absolute;">
                                       <span class="btn btn-default btn-file">
                                           <input type="file" nv-file-select uploader="imageUploader" style="width:200px;">
                                       </span>
