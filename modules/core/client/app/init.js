@@ -221,11 +221,17 @@ function appRun($rootScope, $state, Authentication) {
     } else if (toState.name === 'user-bots-web.create' || toState.name === 'user-bots-web.edit' || toState.name === 'user-bots-web.view' ||
     toState.name === 'user-bots-web.graph') {
       var userbotHeader = document.getElementById('mainHeader');
-
+      var userbotChat = document.getElementById('container-chat');
       if (userbotHeader) {
         userbotHeader.style.backgroundPosition = 'bottom';
         userbotHeader.getElementsByClassName('intro-text')[0].style.paddingBottom = 0 +'px';
         userbotHeader.getElementsByClassName('intro-text-wrapper')[0].style.display = 'none';
+      }
+      if (fromState.name.indexOf('authentication') != -1) {
+        if (userbotHeader)
+          userbotHeader.style.display = 'block';
+        if (userbotChat)
+          userbotChat.style.display = 'block';
       }
     } else {
       var userbotHeader =  document.getElementById('mainHeader');

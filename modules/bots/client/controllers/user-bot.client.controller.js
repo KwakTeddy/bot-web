@@ -105,7 +105,7 @@ if (_platform !== 'mobile'){
         $scope.nograph = true;
       vm.startChat = function() {
         if ($cookies.get("nograph") == undefined && !$scope.nograph) {
-          $state.go('user-bots-web.graph', {userBotId: vm.userBot._id});
+          $state.go('user-bots-web.graph', {userBotId: vm.userBot._id}, {location:'replace'});
         } else {
           vm.userBotChat(vm.userBot);
         }
@@ -185,7 +185,9 @@ if (_platform !== 'mobile'){
 
         if ((channel == 'facebook') && (method !== 'easy')){
           $scope.fbLoading = true;
-          FB.api('/me/accounts?fields=picture,name,link,access_token,perms', function(response) {
+          $scope.noPage = false;
+         return FB.api('/me/accounts?fields=picture,name,link,access_token,perms', function(response) {
+            console.log(response);
             if (response.error){
               var url = '/api/auth/facebook/page';
               // if ($state.previous && $state.previous.href) {
@@ -193,36 +195,81 @@ if (_platform !== 'mobile'){
               // }
               // Effectively call OAuth authentication route:
                 console.log(url);
+              $scope.fbLoading = false;
               $window.location.href = url;
             } else {
               $scope.fbLoading = false;
               $scope.pageLists = [];
               $scope.pageLists = response.data;
+              if (!response.data.length){
+                $scope.noPage = true;
+              }
+              $scope.close = function () {
+                modalInstance.dismiss();
+              };
+              $scope.connect = function (page) {
+                // modalInstance.dismiss();
+                console.log(page);
+                FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
+                  console.log(response);
+                  if(response){
+                    var info = {};
+                    info['user'] = vm.user._id;
+                    info['userBot'] = vm.userBot._id;
+                    info['userBotId'] = vm.userBot.id;
+                    info['page'] = page;
+                    page['connected'] = true;
+                    $http.post('/api/auth/facebook/pageInfo', info, function (err) {
+                      if(err) {
+                        console.log(err)
+                      }else {
+
+                      }
+                    });
+                  }
+                });
+              };
+              $scope.disconnect = function (page) {
+                // modalInstance.dismiss();
+                console.log(page);
+                page['connected'] = false;
+                FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'delete', function (response) {
+                  console.log(response);
+                  page['connected'] = false;
+                });
+              };
+              var modalInstance = $uibModal.open({
+                templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',
+                scope: $scope
+              });
+              modalInstance.result.then(function (response) {
+                console.log(response);
+              })
             }
           });
         }
         $scope.close = function () {
           modalInstance.dismiss();
         };
-        $scope.connect = function (page) {
-          modalInstance.dismiss();
-          console.log(page);
-          FB.api('/'+page.id +'/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
-            console.log(response);
-            if(response){
-              var info = {};
-              info['user'] = vm.user._id;
-              info['userBot'] = vm.userBot._id;
-              info['userBotId'] = vm.userBot.id;
-              info['page'] = page;
-              $http.post('/api/auth/facebook/pageInfo', info, function (err) {
-                  if(err) {
-                      console.log(err)
-                  }
-              });
-            }
-          });
-        };
+        // $scope.connect = function (page) {
+        //   modalInstance.dismiss();
+        //   console.log(page);
+        //   FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
+        //     console.log(response);
+        //     if(response){
+        //       var info = {};
+        //       info['user'] = vm.user._id;
+        //       info['userBot'] = vm.userBot._id;
+        //       info['userBotId'] = vm.userBot.id;
+        //       info['page'] = page;
+        //       $http.post('/api/auth/facebook/pageInfo', info, function (err) {
+        //           if(err) {
+        //               console.log(err)
+        //           }
+        //       });
+        //     }
+        //   });
+        // };
         var modalInstance = $uibModal.open({
           templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',
           scope: $scope
@@ -539,6 +586,7 @@ if (_platform !== 'mobile'){
                   type: "array",
                   format: "table",
                   uniqueItems: true,
+                  options: {grid_columns:12},
                   items: {
                     type: "object",
                     title: jsonSchema[key]['item_title'] ? jsonSchema[key]['item_title'] : "항목",
