@@ -207,7 +207,7 @@ if (_platform !== 'mobile'){
         $scope.connect = function (page) {
           modalInstance.dismiss();
           console.log(page);
-          FB.api('/'+page.id +'/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
+          FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
             console.log(response);
             if(response){
               var info = {};
