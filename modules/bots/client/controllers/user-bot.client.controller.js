@@ -232,6 +232,7 @@ if (_platform !== 'mobile'){
               $scope.disconnect = function (page) {
                 // modalInstance.dismiss();
                 console.log(page);
+                page['connected'] = false;
                 FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'delete', function (response) {
                   console.log(response);
                 });
