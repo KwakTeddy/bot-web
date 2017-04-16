@@ -8,7 +8,7 @@ var path = require('path'),
   mongoose = require('mongoose'),
   passport = require('passport'),
   User = mongoose.model('User'),
-  UserbotFbPage = mongoose.model('UserbotFbPage'),
+  // UserbotFbPage = mongoose.model('UserbotFbPage'),
     nodemailer = require('nodemailer'),
     async = require('async'),
     crypto = require('crypto'),
@@ -526,11 +526,11 @@ exports.validateEmailConfirmToken = function (req, res) {
  * Facebook Page Connect State
  */
 exports.fbPageConnect = function (req, res) {
-  UserbotFbPage.find({user : req.body.user._id}).populate('userBot').exec(function (err, data) {
-    if (err){
-      return console.log(err)
-    }
-    res.json(data)
-
-  })
+  // UserbotFbPage.find({user : req.body.user._id}).populate('userBot').exec(function (err, data) {
+  //   if (err){
+  //     return console.log(err)
+  //   }
+  //   res.json(data)
+  //
+  // })
 };
