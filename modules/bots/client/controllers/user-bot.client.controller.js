@@ -206,7 +206,8 @@ if (_platform !== 'mobile'){
         };
         $scope.connect = function (page) {
           modalInstance.dismiss();
-          $http.get('/1557169960967403/subscriptions?access_token='+ page.access_token, function (response) {
+          console.log(page);
+          FB.api('/'+page.id +'/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
             console.log(response);
             if(response){
               var info = {};
