@@ -6,7 +6,7 @@
 var passport = require('passport'),
   FacebookStrategy = require('passport-facebook').Strategy,
   users = require('../../controllers/users.server.controller');
-
+var util = require('util');
 module.exports = function (config) {
   // Use facebook strategy
   passport.use(new FacebookStrategy({
@@ -18,6 +18,7 @@ module.exports = function (config) {
   },
   function (req, accessToken, refreshToken, profile, done) {
     // Set the provider data and include tokens
+    console.log(util.inspect(accessToken));
     var providerData = profile._json;
     providerData.accessToken = accessToken;
     providerData.refreshToken = refreshToken;
