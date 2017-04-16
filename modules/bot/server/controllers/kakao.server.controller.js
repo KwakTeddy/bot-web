@@ -76,9 +76,17 @@ function respondMessage(res, text, json) {
   if(json && json.result && json.result.image) {
     sendMsg.message.photo = {
       "url": json.result.image.url,
-      "width": json.result.image.width || 480,
-      "height":json.result.image.height || 640
+      "width": json.result.image.width || 640,
+      "height":json.result.image.height || 480
     };
+
+    if(!json.url) {
+      sendMsg.message.message_button =
+        {
+          "label": (json.urlMessage ? json.urlMessage : "이미지보기"),
+          "url": json.result.image.url
+        };
+    }
   }
 
   if(json && json.url) {
