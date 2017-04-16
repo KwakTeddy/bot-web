@@ -207,6 +207,7 @@ if (_platform !== 'mobile'){
         $scope.connect = function (page) {
           modalInstance.dismiss();
           FB.api('/1557169960967403/subscriptions?access_token='+ page.access_token, 'post', function (response) {
+            console.log(response);
             if(response){
               var info = {};
               info['user'] = vm.user._id;
