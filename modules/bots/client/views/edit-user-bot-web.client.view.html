@@ -9,7 +9,7 @@
                         <ul class="nav nav-tabs">
                             <li role="presentation" ng-class="{active: vm.type == 'view'}"><a href="#" ng-click="vm.changeType('view');">챗봇정보</a></li>
                             <li role="presentation" ng-if="vm.isLearnable" ng-class="{active: vm.type == 'learn'}"><a href="#" ng-click="vm.changeType('learn');">대화학습</a></li>
-                            <li role="presentation" ng-class="{active: vm.type == 'connect'}"><a href="#" ng-click="vm.changeType('connect');">연결하기</a></li>
+                            <li role="presentation" ng-if="vm.user._id == vm.userBot.user._id" ng-class="{active: vm.type == 'connect'}"><a href="#" ng-click="vm.changeType('connect');">연결하기</a></li>
                         </ul>
                     </div>
                     <div class="bot-list-header" ng-show="vm.state=='create'" style="border-bottom: 1px solid lightgray;">
@@ -65,11 +65,11 @@
                         </div>
                     </div>
 
-                    <div style="clear: both;padding: 20px 10px 10px 10px;" ng-hide="vm.sample">
+                    <div style="clear: both;padding: 20px 10px 10px 10px;" ng-hide="vm.sample && (vm.userBot.id !== 'athena' && vm.userBot.id !== 'order')">
                       {{vm.userBot.description}}
                     </div>
 
-                    <div style="clear: both;padding: 20px 10px 10px 10px;" ng-if="vm.sample">
+                    <div style="clear: both;padding: 20px 10px 10px 10px;" ng-if="vm.sample && (vm.userBot.id !== 'athena' && vm.userBot.id !== 'order')">
                       <div style="width: 50%;display: block; float: left; text-align: left;margin-top: 5%; margin-left: 2%;font-size: 140%; line-height: 200%">
                         샘플로 제공되는 {{vm.userBot.name}}이에요.<br> 손쉽게 화면과 같은 챗봇을 만들 수 있어요! <br> <b>카카오톡, 라인, 페이스북</b>에서 제공하려면 <br> 챗봇만들기를 클릭해서 시작하세요.
                       </div>
@@ -78,6 +78,12 @@
                           <source src="{{vm.videoSrc}}"></source>
                         </video>
                       </div>
+                    </div>
+
+                    <div style="clear: both;padding: 20px 10px 10px 10px;" ng-if="vm.sample && (vm.userBot.id == 'athena' || vm.userBot.id == 'order')">
+                        <video autoplay loop controls="controls" style="width: 100%;height: 100%">
+                          <source src="{{vm.videoSrc}}"></source>
+                        </video>
                     </div>
 
 

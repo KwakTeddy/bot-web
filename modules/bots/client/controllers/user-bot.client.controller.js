@@ -23,6 +23,8 @@ if (_platform !== 'mobile'){
       var vm = this;
       vm.user = Authentication.user;
       vm.userBot = userBot;
+      console.log(vm.user);
+      console.log(vm.userBot);
       vm.isPublic = true;
       vm.sample = false;
       if ((vm.userBot.id == 'restaurantbot') || (vm.userBot.id == 'athena') || (vm.userBot.id == 'hairshopbot') || (vm.userBot.id == 'massagebot') || (vm.userBot.id == 'nailbot') || (vm.userBot.id == 'order')){
@@ -182,17 +184,19 @@ if (_platform !== 'mobile'){
         $scope.host = location.protocol + "//" + location.host;
 
         if ((channel == 'facebook') && (method !== 'easy')){
+          $scope.fbLoading = true;
+          console.log(333);
           FB.api('/me/accounts?fields=picture,name,link,access_token,perms', function(response) {
-            if (response.error && (response.error.code == 2500)){
+            if (response.error){
               var url = '/api/auth/facebook/page';
               // if ($state.previous && $state.previous.href) {
               //     url += '?redirect_to=' + encodeURIComponent($state.previous.href);
               // }
-
               // Effectively call OAuth authentication route:
                 console.log(url);
               $window.location.href = url;
             } else {
+              $scope.fbLoading = false;
               $scope.pageLists = [];
               $scope.pageLists = response.data;
             }
