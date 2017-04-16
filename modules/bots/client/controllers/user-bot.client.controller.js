@@ -235,6 +235,7 @@ if (_platform !== 'mobile'){
                 page['connected'] = false;
                 FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'delete', function (response) {
                   console.log(response);
+                  page['connected'] = false;
                 });
               };
               var modalInstance = $uibModal.open({
