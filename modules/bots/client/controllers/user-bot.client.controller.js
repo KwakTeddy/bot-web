@@ -442,7 +442,7 @@ if (_platform !== 'mobile'){
             vm.restaurantBusinessTemplates.push(templates[i]);
             continue;
           }
-          if (templates[i].category && templates[i].category.name == '숙박') {
+          if (templates[i].category && templates[i].category.name == '숙박여행') {
             vm.accommodationTemplates.push(templates[i]);
             continue;
           }
