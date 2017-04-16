@@ -73,6 +73,15 @@ function respondMessage(res, text, json) {
     }
   }
 
+  if(json && json.result && json.result.image) {
+    sendMsg.message.photo = {
+      "url": json.result.image.url
+    };
+
+    if(json.result.image.height) sendMsg.message.photo.height = json.result.image.height;
+    if(json.result.image.width) sendMsg.message.photo.width = json.result.image.width;
+  }
+
   if(json && json.url) {
     sendMsg.message.message_button =
     {
