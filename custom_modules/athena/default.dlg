@@ -56,7 +56,7 @@ var calculateAction = function(task, context, callback) {
         var result = [
             {
                 title: '헌재 "사법권 독립·재판 신뢰 훼손 시도 매우 우려"', text: '“심판정에서 재판 진행 방해 행위 절대 삼가해야”김평우 변호사 돌발행동·헌재 주변 ‘태극기집회’ 지적한 듯20일 오전 서울 북촌로 헌법재판소에서 이정미 헌법재판소장 권한대행 주재로 박근혜 대통령 탄핵심판 15차 변론이 …',
-                imageUrl: 'http://imgnews.naver.net/image/origin/028/2017/02/22/2354317.jpg?type=nf208_123', buttons: [{url: 'http://news.naver.com/main/hotissue/read.nhn?mid=hot&sid1=100&cid=1055281&iid=1910427&oid=028&aid=0002354317&ptype=052', text: '상세보기'}]
+                imageUrl: 'http://imgnews.naver.net/image/origin/028/2017/02/22/2354317.jpg?type=nf208_123', buttons: [{text: '상세보기'}]
             },
             {
                 title: '탄핵심판 오늘 증인신문 끝…朴대통령 출석·최후변론 담판"', text: '“종착점을 향해 달려가는 헌법재판소의 탄핵심판 사건에서 박근혜 대통령의 직접 출석 여부와 최종변론일이 22일 확정된다. ',

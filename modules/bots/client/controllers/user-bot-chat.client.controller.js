@@ -619,9 +619,10 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       });
     }
 
+    var itemsCnt = 0;
     function addItems(items) {
       var innerHTML =
-      '<div class="chat-items owl-carousel owl-theme" style="clear: both">';
+      '<div id="items' + (++itemsCnt) + '" class="chat-items owl-carousel owl-theme" style="clear: both">';
 
       for(var i in items) {
         innerHTML += '<div class="item" >' +
@@ -634,7 +635,11 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
         if(items[i].buttons) {
           for(var j in items[i].buttons) {
-            innerHTML += '<div class="chat-item-button"><a href="' + items[i].buttons[j].url + '" target="_blank">' + items[i].buttons[j].text + '</a></div>';
+            if(items[i].buttons[j].url) {
+              innerHTML += '<div class="chat-item-button"><a href="' + items[i].buttons[j].url + '" target="_blank">' + items[i].buttons[j].text + '</a></div>';
+            } else {
+              innerHTML += '<div class="chat-item-button"><a ng-click="vm.sendMsg(\'' + items[i].buttons[j].text + '\')">' + items[i].buttons[j].text + '</a></div>';
+            }
           }
         }
 
@@ -644,6 +649,9 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       innerHTML += '</div>';
 
       main.insertAdjacentHTML('beforeend', innerHTML);
+
+      var element = angular.element(document.querySelector('#items' + itemsCnt));
+      $compile(element.contents())($scope);
 
       $('.chat-items').owlCarousel({
         loop:false,

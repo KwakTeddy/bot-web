@@ -43,4 +43,4 @@ var dbListPattern =
   ]
 };
 
-botlib.getBot('sample').setDialogPattern('dbListPattern', dbListPattern);
+// botlib.getBot('sample').setDialogPattern('dbListPattern', dbListPattern);
