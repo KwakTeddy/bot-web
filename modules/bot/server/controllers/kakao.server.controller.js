@@ -27,7 +27,7 @@ exports.message = function (req, res) {
     var text = req.body.content;
 
    console.log(JSON.stringify(req.params));
-    chat.write('kakao', from, req.params.bot, text, function (serverText, json) {
+    chat.write('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
       respondMessage(res, serverText, json)
     });
   }
@@ -48,7 +48,7 @@ exports.deleteFriend = function (req, res) {
 exports.deleteChatRoom = function (req, res) {
   console.log("kakao delete chatroom: " + req.params.user_key + "," + req.params.bot);
 
-  chat.write('kakao', req.params.user_key, req.params.bot, ":reset user", function (serverText, json) {
+  chat.write('kakao', req.params.user_key, req.params.bot, ":reset user", null, function (serverText, json) {
     // respondMessage(res, serverText, json)
   });
 
@@ -75,11 +75,10 @@ function respondMessage(res, text, json) {
 
   if(json && json.result && json.result.image) {
     sendMsg.message.photo = {
-      "url": json.result.image.url
+      "url": json.result.image.url,
+      "width": json.result.image.width || 480,
+      "height":json.result.image.height || 640
     };
-
-    if(json.result.image.height) sendMsg.message.photo.height = json.result.image.height;
-    if(json.result.image.width) sendMsg.message.photo.width = json.result.image.width;
   }
 
   if(json && json.url) {

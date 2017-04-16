@@ -16,7 +16,7 @@ exports.receiveNew = function (req, res) {
 
     // console.log(from, text, replyToken, req.params.bot);
 
-    chat.write('line', from, req.params.bot, text, function (retText, json) {
+    chat.write('line', from, req.params.bot, text, req.body.events[0].message, function (retText, json) {
       contextModule.getContext(req.params.bot, 'line', from , null, function(context) {
         respondMessageNew(context.bot.line.CHANNEL_ACCESS_TOKEN, replyToken, retText, json)
       });
@@ -82,7 +82,7 @@ exports.receive = function (req, res) {
     var from = req.body.result[0].content.from;
     var text = req.body.result[0].content.text;
 
-    chat.write('line', from, req.params.bot, text, function (retText, url) {
+    chat.write('line', from, req.params.bot, text, req.body.result[0].content, function (retText, url) {
       //moneybot.receivedMoneyBot(from, serverText, function(retText, url) {
         respondMessage(from, retText, url)
       //});

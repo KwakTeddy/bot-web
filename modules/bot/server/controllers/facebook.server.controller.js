@@ -234,7 +234,7 @@ function receivedMessage(event) {
                       var messageText = message.text;
                       var messageAttachments = message.attachments;
 
-                      chat.write('facebook', senderID, event.botId, messageText, function (retText, task) {
+                      chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
                           console.log('this is write');
                           respondMessage(senderID, retText, event.botId, task);
                       });
@@ -257,7 +257,7 @@ function receivedMessage(event) {
                 var messageText = message.text;
                 var messageAttachments = message.attachments;
 
-                chat.write('facebook', senderID, event.botId, messageText, function (retText, task) {
+                chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
                   console.log('this is write')
                   respondMessage(senderID, retText, event.botId, task);
                 });
@@ -278,7 +278,7 @@ function receivedMessage(event) {
               var messageText = message.text;
               var messageAttachments = message.attachments;
 
-              chat.write('facebook', senderID, event.botId, messageText, function (retText, task) {
+              chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
                 console.log('this is write')
                 respondMessage(senderID, retText, event.botId, task);
               });

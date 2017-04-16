@@ -22,8 +22,8 @@ var mongoose = require('mongoose'),
   BotUser = mongoose.model('BotUser');
 
 exports.write = write;
-function write(channel, from, to, text, successCallback, errorCallback, endCallback) {
-    botProc(to, channel, from, text, successCallback, chatSocketConfig);
+function write(channel, from, to, text, json, successCallback, errorCallback, endCallback) {
+    botProc(to, channel, from, text, json, successCallback, chatSocketConfig);
 };
 
 exports.botProc = botProc;
@@ -48,7 +48,7 @@ console.error = function(out) {
 //   if(botSocket) botSocket.emit('send_msg', ":log \n" + out +"\n");
 // }
 
-function botProc(botName, channel, user, inTextRaw, outCallback, options) {
+function botProc(botName, channel, user, inTextRaw, json, outCallback, options) {
   // TODO 개발용
   dialog = utils.requireNoCache(path.resolve('modules/bot/action/common/dialog'));
 
