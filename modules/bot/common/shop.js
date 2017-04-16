@@ -56,7 +56,7 @@ exports.mapTask = {
 exports.menuImageTask = {
   action: function(task, context, callback) {
     if(context.bot.menuImage) {
-      var img = config.host + '/files/' + context.bot.menuImage;
+      var img = context.bot.menuImage.startsWith('http') ? context.bot.menuImage : config.host + context.bot.menuImage;
       task.result = {
         image: {url: img},
         buttons: [
@@ -922,7 +922,7 @@ exports.previewAction = previewAction;
 
 function menuCategoryAction(task, context, callback) {
   if(context.bot.menuImage) {
-    var img = config.host + context.bot.menuImage;
+    var img = context.bot.menuImage.startsWith('http') ? context.bot.menuImage : config.host + context.bot.menuImage;
     task.result = {
       image: {url: img},
       buttons: [
