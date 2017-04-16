@@ -408,6 +408,7 @@ exports.facebookPage = function (req, res) {
               data.accessToken = req.body.page.access_token;
               data.userBot = req.body.userBot;
               data.userBotId = req.body.userBotId;
+              data.connect = true;
               data.save(function (err) {
                   if (err){
                     console.log(err);
@@ -425,6 +426,7 @@ exports.facebookPage = function (req, res) {
             info['user'] = req.body.user;
             info['userBot'] = req.body.userBot;
             info['userBotId'] = req.body.userBotId;
+            info['connect'] = true;
             console.info(util.inspect(info));
             var userBotFbPage = new UserBotFbPage(info);
             userBotFbPage.save(function (err) {
