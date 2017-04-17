@@ -4,12 +4,9 @@ var path = require('path');
 var chat = require(path.resolve('modules/bot/server/controllers/bot.server.controller'));
 var contextModule = require(path.resolve('modules/bot/engine/common/context'));
 
-var util =require('util'); //temporary
-
 exports.message =  function(req, res) {
   console.log("navertalk message");
   console.log(JSON.stringify(req.body));
-
 
     // default response
     var response = {
@@ -24,14 +21,25 @@ exports.message =  function(req, res) {
         }
       }
     };
+    var from = req.body.user;
+    var type = req.body.type;
+    var text = req.body.textContent.text;
 
     switch(req.body.event) {
       // 메시지 전송 이벤트 처리
       case 'send' :
         if(req.body.sender == 'user' && req.body.textContent) {
           // 유저가 보내는 메시지에 대해 echo로 전송
+
+          chat.write('navertalk', from, req.params.bot, text, req.body, function (serverText, json) {
+            // respondMessage(res, serverText, json)
+            JSON.stringify(serverText);
+            response.request.textContent.text = serverText;
+            res.json(response);
+          });
+
+
           response.request.textContent.text = 'echo: ' + req.body.textContent.text;
-          res.json(response);
 
         } else {
           // 그외의 경우는 무반응
@@ -78,21 +86,9 @@ exports.message =  function(req, res) {
         res.json({ success: true });
     }
 
-    // var response = {
-    //   success: true,
-    //   request: {
-    //     event: "send", /* send message */
-    //     sender: "partner", /* 파트너가 보내는 메시지 */
-    //     user: '8rz5G', /* 유저 식별값 */
-    //     partner: 'wcc1y9', /* 파트너 식별값 wc1234 */
-    //     textContent: {
-    //       text: '123'
-    //     }
-    //   }
-    // };
-    // chat.write('navertalk', from, req.params.bot, text, function (serverText, json) {
-    //   respondMessage(res, serverText, json)
-    // });
+    chat.write('navertalk', from, req.params.bot, text, function (serverText, json) {
+      respondMessage(res, serverText, json)
+    });
 };
 
 function respondMessage(res, text, json) {
@@ -108,6 +104,22 @@ function respondMessage(res, text, json) {
       "url": json.photoUrl,
       "width": json.photoWidth,
       "height":json.photoHeight
+    }
+  }
+
+  if(json && json.result && json.result.image) {
+    sendMsg.message.photo = {
+      "url": json.result.image.url,
+      "width": json.result.image.width || 640,
+      "height":json.result.image.height || 480
+    };
+
+    if(!json.url) {
+      sendMsg.message.message_button =
+        {
+          "label": (json.urlMessage ? json.urlMessage : "이미지보기"),
+          "url": json.result.image.url
+        };
     }
   }
 
