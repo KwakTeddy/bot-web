@@ -90,7 +90,6 @@ exports.message =  function(req, res) {
     //     }
     //   }
     // };
-    res.json(response);
     // chat.write('navertalk', from, req.params.bot, text, function (serverText, json) {
     //   respondMessage(res, serverText, json)
     // });
