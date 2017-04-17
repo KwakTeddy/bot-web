@@ -29,11 +29,11 @@ exports.message =  function(req, res) {
       // 메시지 전송 이벤트 처리
       case 'send' :
         if(req.body.sender == 'user' && req.body.textContent) {
-          // 유저가 보내는 메시지에 대해 echo로 전송
-
+          //
           chat.write('navertalk', from, req.params.bot, text, req.body, function (serverText, json) {
             // respondMessage(res, serverText, json)
             JSON.stringify(serverText);
+            console.log(2133123);
             response.request.textContent.text = serverText;
             res.json(response);
           });
@@ -85,10 +85,6 @@ exports.message =  function(req, res) {
       default:
         res.json({ success: true });
     }
-
-    chat.write('navertalk', from, req.params.bot, text, function (serverText, json) {
-      respondMessage(res, serverText, json)
-    });
 };
 
 function respondMessage(res, text, json) {
