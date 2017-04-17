@@ -2148,11 +2148,18 @@ JSONEditor.defaults.editors.string = JSONEditor.AbstractEditor.extend({
       var id = this.path.replace(/\./g,'_');
       this.input.setAttribute('id',id);
       this.input.disabled  = true;
+      this.input.style.display = 'none';
+      // this.control.getElementsByTagName("input")[0].insertAdjacentHTML("beforebegin",
+      //   '<div name="mine" compiled="false"><span class="form-control btn btn-default btn-file"><input onClick="setInput(&quot;'+ id +
+      //   '&quot;)" type="file" nv-file-select uploader="jsonImageUploader" style="width:200px;"></span>' +
+      //   '<span ng-cloak ng-show="isuccess.'+id+'" class="text-center text-success"><strong>이미지가 업로드 되었네요</strong></span>' +
+      //   '<span ng-cloak ng-show="ierror.'+id+'" class="text-center text-danger"><strong>이미지 파일이 아니예요</strong> </span></div>');
+
       this.control.getElementsByTagName("input")[0].insertAdjacentHTML("beforebegin",
-        '<div name="mine" compiled="false"><span class="form-control btn btn-default btn-file"><input onClick="setInput(&quot;'+ id +
-        '&quot;)" type="file" nv-file-select uploader="jsonImageUploader" style="width:200px;"></span>' +
-        '<span ng-cloak ng-show="isuccess.'+id+'" class="text-center text-success"><strong>이미지가 업로드 되었네요</strong></span>' +
-        '<span ng-cloak ng-show="ierror.'+id+'" class="text-center text-danger"><strong>이미지 파일이 아니예요</strong> </span></div>');
+        '<div name="mine" compiled="false" ><span class="form-control btn btn-default btn-file"><input onClick="setInput(&quot;'+ id +
+        '&quot;)" type="file" nv-file-select uploader="jsonImageUploader" style="width:200px;">' +
+        '<i ng-cloak ng-show="isuccess.'+id+' || vm.files.'+id+'" class="fa fa-check-square fa-2x pull-right" style="margin-top: -26px;margin-right: -8px;" aria-hidden="true"></i></span></div>');
+
     }
     this.container.appendChild(this.control);
 

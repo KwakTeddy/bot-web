@@ -191,7 +191,7 @@ if (_platform !== 'mobile'){
          //    if (response.error){
          //      var url = '/api/auth/facebook/page';
          //      // if ($state.previous && $state.previous.href) {
-         //      //     url += '?redirect_to=' + encodeURIComponent($state.previous.href);
+         //      //     url += '?redirect_to=' + encodeURIComponent($state.previous.h`ref);
          //      // }
          //      // Effectively call OAuth authentication route:
          //        console.log(url);
@@ -738,6 +738,7 @@ if (_platform !== 'mobile'){
           disable_collapse: true,
           disable_properties: true,
           disable_edit_json: true,
+          disable_array_reorder: true,
           grid_columns: 3,
         });
 
