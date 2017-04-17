@@ -22,18 +22,13 @@ exports.message =  function(req, res) {
       }
     };
     var from = req.body.user;
-    var type = req.body.type;
-    var text = req.body.textContent.text;
 
     switch(req.body.event) {
       // 메시지 전송 이벤트 처리
       case 'send' :
         if(req.body.sender == 'user' && req.body.textContent) {
           //
-          chat.write('navertalk', from, req.params.bot, text, req.body, function (serverText, json) {
-            // respondMessage(res, serverText, json)
-            JSON.stringify(serverText);
-            console.log(2133123);
+          chat.write('navertalk', from, req.params.bot, req.body.textContent.text, req.body, function (serverText, json) {
             response.request.textContent.text = serverText;
             res.json(response);
           });
@@ -86,56 +81,3 @@ exports.message =  function(req, res) {
         res.json({ success: true });
     }
 };
-
-function respondMessage(res, text, json) {
-  var sendMsg =
-    {
-      "message": {
-        "text": text
-      }
-    };
-
-  if(json && json.photoUrl) {
-    sendMsg.message.photo = {
-      "url": json.photoUrl,
-      "width": json.photoWidth,
-      "height":json.photoHeight
-    }
-  }
-
-  if(json && json.result && json.result.image) {
-    sendMsg.message.photo = {
-      "url": json.result.image.url,
-      "width": json.result.image.width || 640,
-      "height":json.result.image.height || 480
-    };
-
-    if(!json.url) {
-      sendMsg.message.message_button =
-        {
-          "label": (json.urlMessage ? json.urlMessage : "이미지보기"),
-          "url": json.result.image.url
-        };
-    }
-  }
-
-  if(json && json.url) {
-    sendMsg.message.message_button =
-      {
-        "label": (json.urlMessage ? json.urlMessage : "상세정보보기"),
-        "url": json.url
-      };
-  }
-
-  if(json && json.buttons) {
-    sendMsg.keyboard =
-      {
-        "type": "buttons",
-        "buttons": json.buttons
-      };
-  }
-
-  console.log(JSON.stringify(sendMsg));
-  res.write(JSON.stringify(sendMsg));
-  res.end();
-}
