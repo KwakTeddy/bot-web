@@ -232,7 +232,7 @@ shop.reserveCheck
         >문자메세지(SMS)로 발송된 인증번호를 입력해주세요.
             </[\d\s]+/
             >{if: shop.smsAuthValid, task: 'smsAuthTask', output: {call: '예약내용확인'}}
-            >{if: 'true', output: {call: 'SMS인증', options: {prefix: '인증번호가 틀렸습니다.\n', postfix: '\n\n처음으로 가려면\n "시작"이라고 입력해주세요.'}}}
+            <{if: 'true'}>{repeat: 1, options: {output:'인증번호가 틀렸습니다.\n제대로 된 인증번호를 입력해주세요.\n0. 이전\n!. 처음'}}
         <{if: 'true'}
         >{repeat: 1, options: {prefix: '휴대폰 번호가 아닙니다.\n', postfix: '\n\n예약 진행을 취소하시려면\n"시작"이라고 말씀해주세요.'}}
     예약내용확인:<false
