@@ -47,13 +47,13 @@ exports.message =  function(req, res) {
         switch(req.body.options.inflow) {
           // 채팅리스트로부터 인입되었을때
           case 'list' :
-            response.request.textContent.text = '안녕하세요 PlayChat입니다. 인기봇, 최신봇, 친구봇, 마이봇 중 하나를 입력해주세요.';
+            response.request.textContent.text = '안녕하세요 PlayChat입니다. 인기봇, 최신봇, 친구봇, 마이봇 중 하나를 입력해주세요. 되돌아가시려면 목록을 입력해주세요';
             res.json(response);
             break;
 
           // 유입경로가 없거나 화면을 갱신하였을때
           case 'none' :
-            response.request.textContent.text = '안녕하세요 PlayChat입니다. 인기봇, 최신봇, 친구봇, 마이봇 중 하나를 입력해주세요.';
+            response.request.textContent.text = '안녕하세요 PlayChat입니다. 인기봇, 최신봇, 친구봇, 마이봇 중 하나를 입력해주세요. 되돌아가시려면 목록을 입력해주세요';
             res.json(response);
             break;
 

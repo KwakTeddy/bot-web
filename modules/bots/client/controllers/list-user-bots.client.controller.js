@@ -36,8 +36,9 @@ angular.module('user-bots').controller('UserBotListController', ['$scope', '$roo
         url = '/api/bots/list';
       }
       $http.post(url, {currentPage : vm.currentPageCopy, perPage : vm.perPage, listType : vm.listType, botUserId : vm.authentication.user._id, query : vm.query}).success(function (response) {
-          if(!response.length) {
-              vm.pagingEnd = true;
+          if(response.length < 10) {
+            vm.userBots.push.apply(vm.userBots, response);
+            vm.pagingEnd = true;
           } else {
             vm.userBots.push.apply(vm.userBots, response);
           }
