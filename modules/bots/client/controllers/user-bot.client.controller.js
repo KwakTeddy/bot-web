@@ -199,12 +199,8 @@ if (_platform !== 'mobile'){
               $window.location.href = url;
             } else {
               console.log(vm.user);
-              $http.post('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true}, function (err, response) {
-                if(err) {
-                  console.log(err)
-                }else {
-                  console.log(response)
-                }
+              $http.post('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true}, function (response) {
+                console.log(response);
               });
 
               $scope.fbLoading = false;
