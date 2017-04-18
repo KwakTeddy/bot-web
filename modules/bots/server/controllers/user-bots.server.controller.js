@@ -400,47 +400,60 @@ exports.unfollowBot = function(req, res) {
  * Facebook Subscribe Page Information
  */
 exports.facebookPage = function (req, res) {
-  UserBotFbPage.findOne({user : req.body.user, pageId : req.body.page.id}, function (err, data) {
+  console.log(JSON.stringify(req.body));
+  if (!req.body.list){
+    UserBotFbPage.findOne({user : req.body.user, pageId : req.body.page.id}, function (err, data) {
       if(err){
-          console.log(err);
+        console.log(err);
       }else {
-          if (data){
-              data.accessToken = req.body.page.access_token;
-              data.userBot = req.body.userBot;
-              data.userBotId = req.body.userBotId;
-              data.connect = req.body.connect;
-              data.save(function (err) {
-                  if (err){
-                    console.log(err);
-                  }else {
-                      return res.end();
-                  }
-              })
-          }else {
-            var info = {};
-            info['picture'] = req.body.page.picture.data.url;
-            info['name'] = req.body.page.name;
-            info['link'] = req.body.page.link;
-            info['accessToken'] = req.body.page.access_token;
-            info['pageId'] = req.body.page.id;
-            info['user'] = req.body.user;
-            info['userBot'] = req.body.userBot;
-            info['userBotId'] = req.body.userBotId;
-            info['connect'] = req.body.connect;
-            console.info(util.inspect(info));
-            var userBotFbPage = new UserBotFbPage(info);
-            userBotFbPage.save(function (err) {
-                if (err){
-                  console.log(err);
-                }else {
-                    return res.end();
-                }
-            })
+        if (data){
+          data.accessToken = req.body.page.access_token;
+          data.userBot = req.body.userBot;
+          data.userBotId = req.body.userBotId;
+          data.connect = req.body.connect;
+          data.save(function (err) {
+            if (err){
+              console.log(err);
+            }else {
+              return res.end();
+            }
+          })
+        }else {
+          var info = {};
+          info['picture'] = req.body.page.picture.data.url;
+          info['name'] = req.body.page.name;
+          info['link'] = req.body.page.link;
+          info['accessToken'] = req.body.page.access_token;
+          info['pageId'] = req.body.page.id;
+          info['user'] = req.body.user;
+          info['userBot'] = req.body.userBot;
+          info['userBotId'] = req.body.userBotId;
+          info['connect'] = req.body.connect;
+          console.info(util.inspect(info));
+          var userBotFbPage = new UserBotFbPage(info);
+          userBotFbPage.save(function (err) {
+            if (err){
+              console.log(err);
+            }else {
+              return res.end();
+            }
+          })
 
-          }
+        }
       }
 
-  })
+    })
+  }else {
+    UserBotFbPage.find({user : req.body.user}, function (err, data) {
+      if(err){
+        console.log(err);
+      }else {
+        return res.json(data);
+      }
+
+    })
+  }
+
 };
 
 
