@@ -82,7 +82,7 @@ shop.mapTask
 <얼마
 <비용
 {action: shop.menuCategoryAction}
-> if(context.dialog.categorys == undefined && context.bot.menuImage == undefined) 아직 메뉴를 등록하지 않았습니다.
+> if(context.dialog.categorys == undefined && (context.bot.menuImage == undefined || context.bot.menuImage == "")) 아직 메뉴를 등록하지 않았습니다.
 > {if: 'context.dialog.categorys == undefined && context.bot.menuImage != undefined', task: shop.menuImageTask, output: '[메뉴판보기]'}
 > if(context.dialog.categorys.length != 1) [시술가격표]\n##+index+. +name+\n#번호를 선택해주세요.
     <{types: [{name: 'category', listName: 'categorys', typeCheck: 'listTypeCheck'}]}
