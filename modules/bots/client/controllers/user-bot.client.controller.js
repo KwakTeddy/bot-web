@@ -198,14 +198,13 @@ if (_platform !== 'mobile'){
               $scope.fbLoading = false;
               $window.location.href = url;
             } else {
-              console.log(vm.user);
               $http.post('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true}).then(function (res) {
                 console.log(res);
 
                 for(var i = 0; i < res.data.length; i++){
                   for(var j = 0; j < response.data.length; j++){
                     if (res.data[i].pageId = response.data[j].id){
-                      response.data[j]['connected'] = res.data[i].userBot;
+                      response.data[j]['connected'] = res.data[i].bot;
                       continue;
                     }else {
                       response.data[j]['connected'] = false;
