@@ -329,49 +329,35 @@
 </script>
 
 <!--facebook-->
-<!--<div id="fb-root"></div>-->
 <script src="https://connect.facebook.net/en_US/all.js"></script>
 <!--<script src="https://connect.facebook.net/en_US/sdk.js"></script>-->
-<script>
-  window.fbAsyncInit = function() {
-    FB.init({
+<script type="text/javascript">
+  $.get('/config', function (facebookID) {
+    window.fbAsyncInit = function() {
+      FB.init({
 //      appId      : '240853479709635',
-      appId      : '1557169960967403',
-      xfbml      : true,
-      version    : 'v2.8'
-    });
+//        appId      : '1557169960967403',
+        appId      : facebookID,
+        xfbml      : true,
+        version    : 'v2.8'
+      });
 //    FB.AppEvents.logPageView();
-  };
-  (function(d, s, id){
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) {return;}
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
+    };
+    (function(d, s, id){
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {return;}
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+  });
 </script>
+
 <!--kakao-->
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script type='text/javascript'>
-  //<![CDATA[
   // // 사용할 앱의 JavaScript 키를 설정해 주세요.
   Kakao.init('f1eb73f3491e5c1e1178b3b8c12b10e5');
-  // // 카카오링크 버튼을 생성합니다. 처음 한번만 호출하면 됩니다.
-//  Kakao.Link.createTalkLinkButton({
-//    container: '#kakao-link-btn',
-//    label: '안녕하세요 머니브레인입니다.',
-//    image: {
-//      src: 'http://dev.moneybrain.ai:8443/userbot/home',
-//      width: '300',
-//      height: '200'
-//    },
-//    webButton: {
-//      text: '카카오 디벨로퍼스',
-//      url: 'http://dev.moneybrain.ai:8443/userbot/home' // 앱 설정의 웹 플랫폼에 등록한 도메인의 URL이어야 합니다.
-//    }
-//  });
-
-  //]]>
 </script>
 
 <!--line-->
