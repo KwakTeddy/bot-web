@@ -408,7 +408,7 @@ exports.facebookPage = function (req, res) {
       }else {
         if (data){
           data.accessToken = req.body.page.access_token;
-          data.userBot = req.body.userBot;
+          data.bot = req.body.userBot;
           data.userBotId = req.body.userBotId;
           data.connect = req.body.connect;
           data.save(function (err) {
@@ -426,7 +426,7 @@ exports.facebookPage = function (req, res) {
           info['accessToken'] = req.body.page.access_token;
           info['pageId'] = req.body.page.id;
           info['user'] = req.body.user;
-          info['userBot'] = req.body.userBot;
+          info['bot'] = req.body.userBot;
           info['userBotId'] = req.body.userBotId;
           info['connect'] = req.body.connect;
           console.info(util.inspect(info));
@@ -444,7 +444,7 @@ exports.facebookPage = function (req, res) {
 
     })
   }else {
-    UserBotFbPage.find({user : req.body.user}).populate('userBot').exec(function (err, data) {
+    UserBotFbPage.find({user : req.body.user}).populate('bot').exec(function (err, data) {
       if(err){
         console.log(err);
       }else {
@@ -454,7 +454,6 @@ exports.facebookPage = function (req, res) {
 
     })
   }
-
 };
 
 
