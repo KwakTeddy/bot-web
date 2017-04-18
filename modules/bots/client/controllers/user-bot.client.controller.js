@@ -198,6 +198,7 @@ if (_platform !== 'mobile'){
               $scope.fbLoading = false;
               $window.location.href = url;
             } else {
+              console.log(response);
               $http.post('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true, pageInfo: response.data}).then(function (res) {
                 for(var i = 0; i < res.data.length; i++){
                   for(var j = 0; j < response.data.length; j++){
