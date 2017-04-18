@@ -199,7 +199,7 @@ if (_platform !== 'mobile'){
               $window.location.href = url;
             } else {
               console.log(vm.user);
-              $http.post('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true}, function (response) {
+              $http.post('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true}, {'post' : {method : 'POST'}},function (response) {
                 console.log(response);
               });
 
