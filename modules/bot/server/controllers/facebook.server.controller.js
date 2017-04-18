@@ -215,6 +215,7 @@ function receivedMessage(event) {
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
   var message = event.message;
+  console.log(event.botId);
 
   if (event.botId == "subscribeBot"){
       UserBotFbPage.findOne({pageId: event.recipient.id}, function (err, data) {
@@ -244,6 +245,7 @@ function receivedMessage(event) {
           }
       });
   }else {
+    console.log(!global._bots[event.botId]);
       if (!global._bots[event.botId]){
         botLib.loadBot(event.botId, function (realbot) {
           if(recipientID == global._bots[event.botId].facebook.id) {
