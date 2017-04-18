@@ -520,17 +520,3 @@ exports.validateEmailConfirmToken = function (req, res) {
         });
     });
 };
-
-
-/**
- * Facebook Page Connect State
- */
-exports.fbPageConnect = function (req, res) {
-  // UserbotFbPage.find({user : req.body.user._id}).populate('userBot').exec(function (err, data) {
-  //   if (err){
-  //     return console.log(err)
-  //   }
-  //   res.json(data)
-  //
-  // })
-};
