@@ -203,7 +203,7 @@ if (_platform !== 'mobile'){
               //   console.log(response);
               // });
               //
-              $resource('/api/auth/facebook/pageInfo', {}).save({}, {user: vm.user._id, list: true},function (res) {
+              $resource('/api/auth/facebook/pageInfo', {}).save({user: vm.user._id, list: true}, {user: vm.user._id, list: true},function (res) {
                 console.log(res)
               }, function (err) {
                 console.log(err)
