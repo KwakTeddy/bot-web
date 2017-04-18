@@ -443,7 +443,7 @@ exports.facebookPage = function (req, res) {
 
     })
   }else {
-    UserBotFbPage.update({user : req.body.user}).populate('bot').exec(function (err, data) {
+    UserBotFbPage.find({user : req.body.user}).populate('bot').exec(function (err, data) {
       if(err){
         console.log(err);
       }else {
