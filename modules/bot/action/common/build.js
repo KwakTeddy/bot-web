@@ -44,9 +44,9 @@ function botBuild(bot, botPath) {
 
     var text = fs.readFileSync(file, 'utf8');
     // console.log(text);
-    var js = build(text, false);
+    var js = build(text, false, info.name);
 
-    js = '\n' + js + '\n\n' + build(text, true);
+    js = '\n' + js + '\n\n' + build(text, true, info.name + "common");
 
     // try {
     //   var include = fs.readFileSync(path.join(info.dir, info.name + '.js'), 'utf8');
@@ -84,9 +84,8 @@ function botBuild(bot, botPath) {
 }
 exports.botBuild = botBuild;
 
-function build(text, isCommon) {
-  var number = 0;
-
+function build(text, isCommon, filename) {
+  var id = 0;
   // 주석 escape
   text = text.replace(/['][^'\n]*\/\/[^'\n]*[']|["][^"\n]*\/\/[^"\n]*["]/g, function (match, p1, p2, p3, p4) {
     return match.replace('//', '\\/\\/');
@@ -310,7 +309,9 @@ function build(text, isCommon) {
 
         var add = false;
         if(add) {dialog += ','; } add = true;
-        dialog += '\n' + step + tab + 'id: ' + (number++);
+        dialog += '\n' + step + tab + 'id: \'' + filename+ (id++) + "\'";
+        if(add) {dialog += ','; } add = true;
+        dialog += '\n' + step + tab + 'filename: \'' + filename + "\'";
 
         if(name) {
           if(add) {dialog += ','; } add = true;

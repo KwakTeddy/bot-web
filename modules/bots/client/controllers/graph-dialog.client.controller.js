@@ -2,12 +2,17 @@
 
 // Bots controller
 angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScope', '$timeout', '$stateParams', 'Dialogs',
-  function ($scope, $rootScope, $timeout, $stateParams, Dialogs) {
+  '$resource',
+  function ($scope, $rootScope, $timeout, $stateParams, Dialogs, $resource) {
     var vm = this;
+    vm.bot_id = $stateParams.botId;
+    vm.file_id = $stateParams.fileId;
+
     // $scope.authentication = Authentication;
 
     var nodes = [];
     var links = [];
+    var dialogs = {};
 
     // var currentDialog;
     var currentNode;
@@ -46,6 +51,22 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
       $scope.dialog.outputs.push({str:""});
     };
 
+    $scope.searchNode = function() {
+      //find the node
+      var selectedVal = document.getElementById('search').value;
+      var node = svg.selectAll(".node");
+      if (selectedVal != "") {
+        var selected = node.filter(function (d, i) {
+          return d.name === selectedVal;
+        });
+        if(selected && selected.length == 1) {
+          currentNode = selected[0][0].__data__;
+          console.log(JSON.stringify(currentNode));
+          update();
+        }
+      }
+    };
+
     var makeStr = function(obj) {
       if (Array.isArray(obj)) {
         return obj.map(function (o) { return {str: o}; });
@@ -59,12 +80,12 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
       }
     };
 
+
     $scope.findOne = function (dialogId) {
-      var botId = $rootScope.botId;
-      $scope.dialog = { botId: botId, dialogId: dialogId };
+      $scope.dialog = { botId: vm.botId, dialogId: dialogId };
 
       var dialog = Dialogs.get({
-        botId: botId,
+        botId: vm.botId,
         dialogId: dialogId
       }, function() {
         $scope.dialog.name = dialog.name;
@@ -88,8 +109,7 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
       Dialogs.update(dialog);
     };
 
-// make nodes and links from dialogs
-
+    // make nodes and links from dialogs
     var handleInput = function(input) {
       if(typeof input == 'string') return input;
       else if(input.types && input.types[0].name) {
@@ -106,7 +126,7 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
       else if(Array.isArray(output)) {
         var _output = '';
         for(var i = 0; i < output.length; i++) {
-          if(i != 0) _output += ', ';
+          if(i !== 0) _output += ', ';
           _output += handlePrintOutput(output[i]);
         }
         return _output;
@@ -120,7 +140,7 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
     var num = 0;
     var handleDialog = function(dialog)
     {
-      dialog.name = dialog.name || (dialog.name = "dialog" + ++num);
+      dialog.name = dialog.name || (dialog.name = "dialog" + dialog.id);
       nodes[dialog.name] = nodes[dialog.name] || (nodes[dialog.name] = { name: dialog.name });
       nodes[dialog.name].id  = dialog.id;
       nodes[dialog.name].input  = handleInput(dialog.input);
@@ -134,25 +154,36 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
       }
     };
 
-    var handleOutput = function(dialog, output)
-    {
+    var handleOutput = function(dialog, output) {
       if (output.output) {
         handleOutput(dialog, output.output);
       }
       if (output.options) {
         if (output.options.returnDialog) {
-          links.push({ source: nodes[dialog.name], target: nodes[output.options.returnDialog], type: "returnDialog" });
+          links.push({source: nodes[dialog.name], target: nodes[output.options.returnDialog], type: "returnDialog"});
         }
       }
 
       if (output.call) {
-        links.push({ source: nodes[dialog.name], target: nodes[output.call], type: "call" });
+        if (nodes[output.call]) {
+          links.push({source: nodes[dialog.name], target: nodes[output.call], type: "call"});
+        } else {
+          console.log("undefined=" + dialog.name + ".call=" + output.call);
+        }
       }
       if (output.callChild) {
-        links.push({ source: nodes[dialog.name], target: nodes[output.callChild], type: "callChild" });
+        if (nodes[output.callChild]) {
+          links.push({source: nodes[dialog.name], target: nodes[output.callChild], type: "callChild"});
+        } else {
+          console.log("undefined=" + dialog.name + ".call=" + output.callChild);
+        }
       }
       if (output.returnCall) {
-        links.push({ source: nodes[dialog.name], target: nodes[output.returnCall], type: "returnCall" });
+        if (nodes[output.returnCall]) {
+          links.push({source: nodes[dialog.name], target: nodes[output.returnCall], type: "returnCall"});
+        } else {
+          console.log("undefined=" + dialog.name + ".call=" + output.returnCall);
+        }
       }
     };
 
@@ -161,7 +192,10 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
       if (dialog.children) {
         dialog.children.forEach(function(child) {
           handleLink(child);
-          links.push({ source: nodes[dialog.name], target: nodes[child.name], type: "child" });
+          if (nodes[child.name] )
+            links.push({ source: nodes[dialog.name], target: nodes[child.name], type: "child" });
+          else
+            console.log("undefined=" + dialog.name + ".child=" + output.call);
         });
       }
       if (Array.isArray(dialog.output)) {
@@ -176,17 +210,18 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
     var width = document.getElementById('canvas').clientWidth;
     var height = document.getElementById('sidebar-left').clientHeight;
 
-    // var width = 1900,
-    //   height = 900,
     var  force, zoom, svg, tip, path, node, rect;
 
     var w = 200, h = 70;
 
     var text, line, text2, text3, line2, edgelabels;
 
-    d3.json("/js/dialog.json2", function(data) {
-      console.log(data);
-      var dialogs = data;
+    // d3.json("/js/dialog.json2", function(data) {
+    $resource('/api/dialogs/:bot_id/:file_id', {}).get({bot_id: vm.bot_id, file_id: vm.file_id}, function(res) {
+      console.log(res);
+      dialogs = res.data;
+      vm.botId = res.botId;
+      vm.fileName = res.fileName;
 
       dialogs.forEach(handleDialog); // for-loop is 10 times faster
       dialogs.forEach(handleLink);
@@ -199,7 +234,9 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
         .size([width, height])
         .linkDistance(400)
         .charge(-2500)
-        .on("tick", tick)
+        //.friction(0.5)
+        //.on("tick", tick)
+        .on("start", start)
         .start();
 
       zoom = d3.behavior.zoom()
@@ -212,11 +249,11 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
         .call(zoom)
         .append('svg:g');
 
-      force.drag().on("dragstart", function () {
-        d3.event.sourceEvent.stopPropagation();
-      });
+       force.drag().on("dragstart", function () {
+         d3.event.sourceEvent.stopPropagation();
+       });
 
-//tooltip
+      //tooltip
       tip = d3.tip()
         .attr('class', 'd3-tip')
         .offset([-10, 0])
@@ -228,7 +265,7 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
         });
       svg.call(tip);
 
-// Per-type markers, as they don't inherit styles.
+      // Per-type markers, as they don't inherit styles.
       svg.append("defs").selectAll("marker")
         .data(["call","callChild", "returnCall", "returnDialog", "child"])
         .enter().append("marker")
@@ -253,15 +290,15 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
           .enter().append('text')
           .text(function(d) { return d.type; });
 
-// define the nodes
+      // define the nodes
       node = svg.selectAll(".node")
         .data(force.nodes())
         .enter().append("g")
         .attr("class", "node")
         .on("click", click)
-        .call(force.drag);
+        //.call(force.drag);
 
-// add the nodes
+      // add the nodes
       rect = node.append("rect")
         .attr("width", w)
         .attr("height", h)
@@ -271,7 +308,7 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
         .on('mouseover', tip.show)
         .on('mouseout', tip.hide);
 
-// add the text
+      // add the text
       text = node.append("text")
         .style("pointer-events", "none")
         .attr("x", 20)
@@ -312,143 +349,151 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
         .text(function(d) { return "Out: " + d.output; })
         .call(wrap, w-25, 2);
 
-    });
+      function zoomed() {
+        svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+      }
 
-    function zoomed() {
-      svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-    }
+      // function dragstarted(d) {
+      //   d3.event.sourceEvent.stopPropagation();
+      //   d3.select(this).classed("dragging", true);
+      //   force.start();
+      // }
+      //
+      // function dragged(d) {
+      //   d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
+      // }
+      //
+      // function dragended(d) {
+      //   d3.select(this).classed("dragging", false);
+      // }
 
-    function dragstarted(d) {
-      d3.event.sourceEvent.stopPropagation();
-      d3.select(this).classed("dragging", true);
-      force.start();
-    }
-
-    function dragged(d) {
-      d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
-    }
-
-    function dragended(d) {
-      d3.select(this).classed("dragging", false);
-    }
-
-
-// Use elliptical arc path segments to doubly-encode directionality.
-    function tick() {
-      path.attr("d", diagonal);
-        edgelabels
+      // Use elliptical arc path segments to doubly-encode directionality.
+      function start() {
+        var ticksPerRender = 2;
+        requestAnimationFrame(function render() {
+          for (var i = 0; i < ticksPerRender; i++) {
+            force.tick();
+          }
+          path.attr("d", diagonal);
+          edgelabels
             .attr("x", function(d) {
-                return ((d.source.x + w/2 + d.target.x + w/2 )/2);
+              return ((d.source.x + w/2 + d.target.x + w/2 )/2);
             })
             .attr("y", function(d) {
-                return ((d.source.y + h/2 + d.target.y + h/2 )/2);
+              return ((d.source.y + h/2 + d.target.y + h/2 )/2);
             });
-      rect.attr("transform", transform);
-      line.attr("transform", transform);
-      line2.attr("transform", transform);
-      text.attr("transform", transform);
-      text2.attr("transform", transform);
-      text3.attr("transform", transform);
-    }
+          rect.attr("transform", transform);
+          line.attr("transform", transform);
+          line2.attr("transform", transform);
+          text.attr("transform", transform);
+          text2.attr("transform", transform);
+          text3.attr("transform", transform);
+
+          if (force.alpha() > 0) {
+            requestAnimationFrame(render);
+          }
+        })
+      }
 
       var diagonal = d3.svg.diagonal()
-          .source(function(d) {
-              var x1 = d.source.x + w/2,
-                  y1 = d.source.y + h/2,
-                  x2 = d.target.x + w/2,
-                  y2 = d.target.y + h/2;
-              var startx = x1,
-                  starty = y1,
-                  endx = x2,
-                  endy = y2;
-              if (Math.abs(y2-y1) < h+ h/2) {
-                  if (x1 < x2) {
-                      startx += w/2;
-                  } else {
-                      startx -= w/2;
-                  }
-              }
-              else
-              {
-                  if (y1 < y2) {
-                      starty += h/2;
-                  } else {
-                      starty -= h/2;
-                  }
-              }
-              return {"x": startx, "y": starty };
-          })
-          .target(function(d) {
-              var x1 = d.source.x + w/2,
-                  y1 = d.source.y + h/2,
-                  x2 = d.target.x + w/2,
-                  y2 = d.target.y + h/2;
-              var startx = x1,
-                  starty = y1,
-                  endx = x2,
-                  endy = y2;
-              if (Math.abs(y2-y1) < h+ h/2) {
-                  if (x1 < x2) {
-                      endx -= w/2;
-                  } else {
-                      endx += w/2;
-                  }
-              }
-              else
-              {
-                  if (y1 < y2) {
-                      endy -= h/2;
-                  } else {
-                      endy += h/2;
-                  }
-              }
-              return {"x": endx, "y": endy};
-          })
-          .projection(function(d) { return [d.x, d.y]; });
-
-
-    function transform(d) {
-      return "translate(" + d.x + "," + d.y + ")";
-    }
-
-    function click(d) {
-      //d3.event.stopPropagation();
-      currentNode = d;
-      update();
-      angular.element(document.getElementById('control')).scope().findOne(d.id);
-      $('.modal-with-form').click();
-    }
-
-    function wrap(text, width, maxLine) {
-      text.each(function() {
-        var text = d3.select(this),
-          words = text.text().split(/\s+/).reverse(),
-          word,
-          line = [],
-          lineNumber = 0,
-          lineHeight = 1.1, // ems
-          y = text.attr("y"),
-          dy = parseFloat(text.attr("dy")),
-          tspan = text.text(null).append("tspan").attr("x", 5).attr("dy", dy + "em");
-
-        var linenum = 1;
-        while (word = words.pop()) {
-          line.push(word);
-          tspan.text(line.join(" "));
-          if (tspan.node().getComputedTextLength() > width) {
-            if (++linenum > maxLine) {
-              line.pop();
-              tspan.text(line.join(" ") + "...");
-              return;
+        .source(function(d) {
+          var x1 = d.source.x + w/2,
+            y1 = d.source.y + h/2,
+            x2 = d.target.x + w/2,
+            y2 = d.target.y + h/2;
+          var startx = x1,
+            starty = y1,
+            endx = x2,
+            endy = y2;
+          if (Math.abs(y2-y1) < h+ h/2) {
+            if (x1 < x2) {
+              startx += w/2;
+            } else {
+              startx -= w/2;
             }
-            line.pop();
-            tspan.text(line.join(" "));
-            line = [word];
-            tspan = text.append("tspan").attr("x", 5).attr("dy", lineHeight + "em").text(word);
           }
-        }
-      });
-    }
+          else
+          {
+            if (y1 < y2) {
+              starty += h/2;
+            } else {
+              starty -= h/2;
+            }
+          }
+          return {"x": startx, "y": starty };
+        })
+        .target(function(d) {
+          var x1 = d.source.x + w/2,
+            y1 = d.source.y + h/2,
+            x2 = d.target.x + w/2,
+            y2 = d.target.y + h/2;
+          var startx = x1,
+            starty = y1,
+            endx = x2,
+            endy = y2;
+          if (Math.abs(y2-y1) < h+ h/2) {
+            if (x1 < x2) {
+              endx -= w/2;
+            } else {
+              endx += w/2;
+            }
+          }
+          else
+          {
+            if (y1 < y2) {
+              endy -= h/2;
+            } else {
+              endy += h/2;
+            }
+          }
+          return {"x": endx, "y": endy};
+        })
+        .projection(function(d) { return [d.x, d.y]; });
+
+
+      function transform(d) {
+        return "translate(" + d.x + "," + d.y + ")";
+      }
+
+      function click(d) {
+        //d3.event.stopPropagation();
+        currentNode = d;
+        update();
+        angular.element(document.getElementById('control')).scope().findOne(d.id);
+        $('.modal-with-form').click();
+      }
+
+      function wrap(text, width, maxLine) {
+        text.each(function() {
+          var text = d3.select(this),
+            words = text.text().split(/\s+/).reverse(),
+            word,
+            line = [],
+            lineNumber = 0,
+            lineHeight = 1.1, // ems
+            y = text.attr("y"),
+            dy = parseFloat(text.attr("dy")),
+            tspan = text.text(null).append("tspan").attr("x", 5).attr("dy", dy + "em");
+
+          var linenum = 1;
+          while (word = words.pop()) {
+            line.push(word);
+            tspan.text(line.join(" "));
+            if (tspan.node().getComputedTextLength() > width) {
+              if (++linenum > maxLine) {
+                line.pop();
+                tspan.text(line.join(" ") + "...");
+                return;
+              }
+              line.pop();
+              tspan.text(line.join(" "));
+              line = [word];
+              tspan = text.append("tspan").attr("x", 5).attr("dy", lineHeight + "em").text(word);
+            }
+          }
+        });
+      }
+    });
 
     function update()
     {
@@ -476,6 +521,5 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
         }, 1300);
       }
     }
-
   }]
 );

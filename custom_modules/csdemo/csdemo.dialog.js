@@ -6,62 +6,139 @@ var csdemo = require('./csdemo');
 
 var dialogs = [
 {
-  id: 8,
-  input: '일산 휴대폰 내일 4',
-  output: '고객님 근처의 서비스 센터를 파악한 후에 수리가능여부를 안내해드려도 될까요?', 
+  id: 'csdemo16',
+  filename: 'csdemo',
+  name: '센터및수리',
+  input: {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true},{name: 'repairable', typeCheck: csdemo.repairableTypecheck, raw: true}]},
+  task:   {action: csdemo.repairableCheck},
+  output: [
+  {if: 'context.dialog.repairable == \'remote\'', output: '+category+ 상품은 서비스 센터에서 수리를 받으시는 것보다 출장 수리를 예약하여, 기사님을 통하여 서비스를 받으시면 더욱 편리합니다.\n서비스 기사님의 출장수리 예약을 도와드릴까요?|서비스 기사님의 출장 수리 예약을 도와드릴까요?', 
     children: [
     {
-      id: 7,
+      id: 'csdemo0',
+      filename: 'csdemo',
       input: '~네',
-      output: '현재 고객님께서 계신 위치해서 가장 가까운 서비스센터는 화정서비스센터 5.7km 입니다.\n인근의 가까운 다른 서비스센터로 김포서비스센터 7.9km 가 있습니다.\n어떤 서비스 센터 정보를 안내해드릴까요?',
+      output: {call:'출장수리예약'}
+    },
+    {
+      id: 'csdemo5',
+      filename: 'csdemo',
+      input: '~아니요',
+      output: '더 필요하신 게 있으신가요?',
       children: [
         {
-          id: 6,
-          input: ['화정', '김포'],
-          output: '네 휴대폰 상품은 내일 오후 4시 서비스 센터에서 현장 수리 가능합니다.\n 서비스 센터 방문 전 예약을 미리 하시면 대기시간 없이 서비스를 받아 보실 수 있습니다. 서비스 센터 방문예약을 도와드릴까요?|+category+ 상품은 현재 서비스 센터에서 현장 수리 가능합니다.서비스 센터 방문 예약을 도와드릴까요?', 
-            children: [
+          id: 'csdemo1',
+          filename: 'csdemo',
+          input: '~네',
+          output: '고객님, 어떤 부분이 궁금하신가요?'
+        },
+        {
+          id: 'csdemo4',
+          filename: 'csdemo',
+          input: '~아니요',
+          output: 'LG전자에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
+          children: [
             {
-              id: 0,
+              id: 'csdemo2',
+              filename: 'csdemo',
               input: '~네',
-              output: {call:'방문예약'}
+              output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
             },
             {
-              id: 5,
+              id: 'csdemo3',
+              filename: 'csdemo',
               input: '~아니요',
-              output: '더 필요하신 게 있으신가요?',
-              children: [
-                {
-                  id: 1,
-                  input: '~네',
-                  output: '고객님, 어떤 부분이 궁금하신가요?'
-                },
-                {
-                  id: 4,
-                  input: '~아니요',
-                  output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
-                  children: [
-                    {
-                      id: 2,
-                      input: '~네',
-                      output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
-                    },
-                    {
-                      id: 3,
-                      input: '~아니요',
-                      output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
-                    }
-                  ]
-                }
-              ]
+              output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 LG전자가 되겠습니다.\nLG전자 콜센터 번호는 1544-7777입니다.\nLG전자에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
             }
           ]
         }
       ]
     }
-  ]
+  ]}, 
+  {if: '(context.dialog.address.시군구명||context.dialog.address.시도명) && context.dialog.address.법정읍면동명 == undefined && context.dialog.address.도로명 == undefined && context.dialog.address.건물본번 == undefined', output: '고객님, 정확한 안내를 드리기 위하여 +address.시도명+ +address.시군구명+의 하위 상세주소를 입력 부탁드립니다.', 
+    children: [
+    {
+      id: 'csdemo10',
+      filename: 'csdemo',
+      input: {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}]},
+      output: [
+      {if: '(context.dialog.address.시군구명||context.dialog.address.시도명) && context.dialog.address.법정읍면동명 == undefined && context.dialog.address.도로명 == undefined && context.dialog.address.건물본번 == undefined', output: {repeat: 1, options: {output: '고객님, 정확한 안내를 드리기 위하여 +address.시도명+ +address.시군구명+의 하위 상세주소를 입력 부탁드립니다.'}}}, 
+      {if: '!Array.isArray(context.dialog.address)', output: '+address.시군구명+ +address.법정읍면동명+ 맞나요?|이 주소가 맞나요?', 
+        children: [
+        {
+          id: 'csdemo6',
+          filename: 'csdemo',
+          input: '~네',
+          task:           csdemo.searchCenterTask,
+          output: {returnCall: '서비스센터정보', options: {returnDialog: '수리가능'}}
+        },
+        {
+          id: 'csdemo7',
+          filename: 'csdemo',
+          input: {if: 'true'},
+          output: {up: 1}
+        }
+      ]}, 
+      {if: 'Array.isArray(context.dialog.address)', output: '다음 중 어떤 지역이신가요?\n#address#+index+. +지번주소+ +시군구용건물명+\n#|다음 중 어떤 지역이신가요?', 
+        children: [
+        {
+          id: 'csdemo8',
+          filename: 'csdemo',
+          input: {types: [{name: 'address', listName: 'address', typeCheck: 'listTypeCheck'}]},
+          task:           csdemo.searchCenterTask,
+          output: {returnCall: '서비스센터정보', options: {returnDialog: '수리가능'}}
+        },
+        {
+          id: 'csdemo9',
+          filename: 'csdemo',
+          input: {if: 'true'},
+          output: {up: 1}
+        }
+      ]}]
+    },
+    {
+      id: 'csdemo11',
+      filename: 'csdemo',
+      input: {if: 'true'},
+      output: '죄송합니다. 지금 입력하신 주소는 찾을수 없는 주소입니다.\n 아래 예시와 같이 다시 말씀해주세요.\n1.동명: 가산동, 구로동\n2.지번주소: 금천구 가산동 60-3\n3.도로명주소: 금천구 디지털로9길 68\n4.건물명: 여의도 트윈타워\n5.지하철역: 여의도역|죄송합니다. 지금 입력하신 주소는 찾을수 없는 주소입니다.아래 예시와 같이 다시 말씀해주세요.'
+    }
+  ]}, 
+  {if: '!Array.isArray(context.dialog.address)', output: '+address.시군구명+ +address.법정읍면동명+ 맞나요?|이 주소가 맞나요?', 
+    children: [
+    {
+      id: 'csdemo12',
+      filename: 'csdemo',
+      input: '~네',
+      task:       csdemo.searchCenterTask,
+      output: {returnCall: '서비스센터정보', options: {returnDialog: '수리가능'}}
+    },
+    {
+      id: 'csdemo13',
+      filename: 'csdemo',
+      input: {if: 'true'},
+      output: {up: 1}
+    }
+  ]}, 
+  {if: 'Array.isArray(context.dialog.address)', output: '다음 중 어떤 지역이신가요?\n#address#+index+. +지번주소+ +시군구용건물명+\n#|다음 중 어떤 지역이신가요?', 
+    children: [
+    {
+      id: 'csdemo14',
+      filename: 'csdemo',
+      input: {types: [{name: 'address', listName: 'address', typeCheck: 'listTypeCheck'}]},
+      task:       csdemo.searchCenterTask,
+      output: {returnCall: '서비스센터정보', options: {returnDialog: '수리가능'}}
+    },
+    {
+      id: 'csdemo15',
+      filename: 'csdemo',
+      input: {if: 'true'},
+      output: {up: 1}
+    }
+  ]}]
 },
 {
-  id: 15,
+  id: 'csdemo23',
+  filename: 'csdemo',
   name: '센터정보',
   input: '센터 정보',
   output: [
@@ -69,32 +146,38 @@ var dialogs = [
   {output: '[+center.svc_center_name+]\n- 주소: +center.address3+\n- 영업시간 : 평일: +center.winter_week_open+ ~ +center.winter_week_close+, 토요일: +center.winter_sat_open+ ~ +center.winter_sat_close+\n- 전화번호: +center.phone+\n- +center.parking+\n서비스 센터의 위치를 지도에서 확인하시겠습니까?|센터 정보는 다음과 같습니다.위치를 지도에서 확인하시겠습니까?', 
     children: [
     {
-      id: 9,
+      id: 'csdemo17',
+      filename: 'csdemo',
       input: '~네',
       output: {call:'방문경로'}
     },
     {
-      id: 14,
+      id: 'csdemo22',
+      filename: 'csdemo',
       input: '~아니요',
       output: '고객님, 추가적으로 궁금하신 사항이 있으신지요?',
       children: [
         {
-          id: 10,
+          id: 'csdemo18',
+          filename: 'csdemo',
           input: '~네',
           output: '네, 필요하신 사항이 있으시면 말씀해주세요.'
         },
         {
-          id: 13,
+          id: 'csdemo21',
+          filename: 'csdemo',
           input: '~아니요',
           output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
           children: [
             {
-              id: 11,
+              id: 'csdemo19',
+              filename: 'csdemo',
               input: '~네',
               output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
             },
             {
-              id: 12,
+              id: 'csdemo20',
+              filename: 'csdemo',
               input: '~아니요',
               output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
             }
@@ -105,7 +188,8 @@ var dialogs = [
   ]}]
 },
 {
-  id: 20,
+  id: 'csdemo28',
+  filename: 'csdemo',
   name: '처음에서위치찾기',
   input: {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}], regexp: /~서비스센터/},
   output: [
@@ -113,12 +197,14 @@ var dialogs = [
   {if: '!Array.isArray(context.dialog.address)', output: '+address.시군구명+ +address.법정읍면동명+ 맞나요?|이 주소가 맞나요?', 
     children: [
     {
-      id: 16,
+      id: 'csdemo24',
+      filename: 'csdemo',
       input: '~네',
       output: {call: '서비스센터정보'}
     },
     {
-      id: 17,
+      id: 'csdemo25',
+      filename: 'csdemo',
       input: {if: 'true'},
       output: {up: 1}
     }
@@ -126,42 +212,49 @@ var dialogs = [
   {if: 'Array.isArray(context.dialog.address)', output: '다음 중 어떤 지역이신가요?\n#address#+index+. +지번주소+ +시군구용건물명+\n#|다음 중 어떤 지역이신가요?', 
     children: [
     {
-      id: 18,
+      id: 'csdemo26',
+      filename: 'csdemo',
       input: {types: [{name: 'address', listName: 'address', typeCheck: 'listTypeCheck'}]},
       output: {call: '서비스센터정보'}
     },
     {
-      id: 19,
+      id: 'csdemo27',
+      filename: 'csdemo',
       input: {if: 'true'},
       output: {up: 1}
     }
   ]}]
 },
 {
-  id: 29,
+  id: 'csdemo37',
+  filename: 'csdemo',
   name: '위치찾기',
   input: '~서비스센터',
   output: '고객님, 현재 고객님께서 계신 근처의 서비스 센터를 안내해 드릴까요?', 
     children: [
     {
-      id: 27,
+      id: 'csdemo35',
+      filename: 'csdemo',
       input: '~네',
       output: '현재 계신 지역을 말씀해 주세요.|현재 계신 지역을 말씀해주세요.',
       children: [
         {
-          id: 25,
+          id: 'csdemo33',
+          filename: 'csdemo',
           input: {types: [{name: 'address', typeCheck: address.addressTypeCheck2, raw: true}]},
           output: [
           {if: '(context.dialog.address.시군구명||context.dialog.address.시도명) && context.dialog.address.법정읍면동명 == undefined && context.dialog.address.도로명 == undefined && context.dialog.address.건물본번 == undefined', output: {repeat: 1, options: {output: '고객님, 정확한 안내를 드리기 위하여 +address.시도명+ +address.시군구명+의 하위 상세주소를 입력 부탁드립니다.'}}}, 
           {if: '!Array.isArray(context.dialog.address)', output: '+address.시군구명+ +address.법정읍면동명+ 맞나요?|이 주소가 맞나요?', 
             children: [
             {
-              id: 21,
+              id: 'csdemo29',
+              filename: 'csdemo',
               input: '~네',
               output: {call: '서비스센터정보'}
             },
             {
-              id: 22,
+              id: 'csdemo30',
+              filename: 'csdemo',
               input: {if: 'true'},
               output: {up: 1}
             }
@@ -169,19 +262,22 @@ var dialogs = [
           {if: 'Array.isArray(context.dialog.address)', output: '다음 중 어떤 지역이신가요?\n#address#+index+. +지번주소+ +시군구용건물명+\n#|다음 중 어떤 지역이신가요?', 
             children: [
             {
-              id: 23,
+              id: 'csdemo31',
+              filename: 'csdemo',
               input: {types: [{name: 'address', listName: 'address', typeCheck: 'listTypeCheck'}]},
               output: {call: '서비스센터정보'}
             },
             {
-              id: 24,
+              id: 'csdemo32',
+              filename: 'csdemo',
               input: {if: 'true'},
               output: {up: 1}
             }
           ]}]
         },
         {
-          id: 26,
+          id: 'csdemo34',
+          filename: 'csdemo',
           input: {if: 'true'},
           task:           {action: csdemo.searchNaver},
           output: [
@@ -191,59 +287,69 @@ var dialogs = [
       ]
     },
     {
-      id: 28,
+      id: 'csdemo36',
+      filename: 'csdemo',
       input: '~아니요',
       output: '만족스러운 응대가 되지 못하여 죄송합니다.\n 더욱 원활한 상담을 위하여 전문 상담원을 연결들 도와 드리겠습니다. 잠시만 기다려주세요.|상담원을 연결 해 드리겠습니다. 잠시만 기다려 주세요.'
     }
   ]
 },
 {
-  id: 57,
+  id: 'csdemo65',
+  filename: 'csdemo',
   name: '서비스센터정보',
   input: false,
   task:   csdemo.searchCenterTask,
-  output: '현재 고객님께서 계신 위치해서 가장 가까운 서비스센터는 +item.0.svc_center_name+ +item.0.distance+km 입니다.\n 인근의 가까운 다른 서비스센터로 +item.1.svc_center_name+ +item.1.distance+km 가 있습니다.\n 어떤 서비스 센터 정보를 안내해드릴까요?|어떤 서비스 센터 정보를 안내해드릴까요?',
+  output: '현재 고객님께서 계신 위치해서 가장 가까운 서비스센터는 +item.0.svc_center_name+ +item.0.distance+km 입니다.\n 인근의 가까운 다른 서비스센터로 +item.1.svc_center_name+ +item.1.distance+km 가 있습니다.\n 어떤 서비스 센터 정보를 안내해드릴까요?|어떤 서비스 센터 정보를 안내해드릴까요?', 
     children: [
     {
-      id: 38,
+      id: 'csdemo46',
+      filename: 'csdemo',
       input: {types: [{name: 'center', listName: 'item', field: 'svc_center_name', typeCheck: 'listTypeCheck'}]},
       task:       {action: function(task, context, callback) {context.user.center = context.dialog.center;callback(task, context);}},
       output: {output: '[+center.svc_center_name+]\n- 주소: +center.address3+\n- 영업시간 : 평일: +center.winter_week_open+ ~ +center.winter_week_close+, 토요일: +center.winter_sat_open+ ~ +center.winter_sat_close+\n- 전화번호: +center.phone+\n- +center.parking+\n서비스 센터의 위치를 지도에서 확인하시겠습니까?|서비스센터 정보는 다음과 같습니다. 위치를 지도에서 확인하시겠습니까?', return : 1}, 
         children: [
         {
-          id: 30,
+          id: 'csdemo38',
+          filename: 'csdemo',
           input: '~네',
           output: {call:'방문경로'}
         },
         {
-          id: 36,
+          id: 'csdemo44',
+          filename: 'csdemo',
           input: '~아니요',
           output: '고객님, 추가적으로 궁금하신 사항이 있으신지요?',
           children: [
             {
-              id: 32,
+              id: 'csdemo40',
+              filename: 'csdemo',
               input: '~네',
               output: '네, 필요하신 사항이 있으시면 말씀해주세요.',
               children: [
                 {
-                  id: 31,
+                  id: 'csdemo39',
+                  filename: 'csdemo',
                   input: ['어떻다 찾다', '어떻다 ~가다', '경로', '가는 방법', '위치'],
                   output: {call:'방문경로'}
                 }
               ]
             },
             {
-              id: 35,
+              id: 'csdemo43',
+              filename: 'csdemo',
               input: '~아니요',
               output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
               children: [
                 {
-                  id: 33,
+                  id: 'csdemo41',
+                  filename: 'csdemo',
                   input: '~네',
                   output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
                 },
                 {
-                  id: 34,
+                  id: 'csdemo42',
+                  filename: 'csdemo',
                   input: '~아니요',
                   output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
                 }
@@ -252,69 +358,82 @@ var dialogs = [
           ]
         },
         {
-          id: 37,
+          id: 'csdemo45',
+          filename: 'csdemo',
           input: ['어떻다 찾다', '어떻다 ~가다', '경로', '가는 방법', '위치'],
           output: {call:'방문경로'}
         }
       ]
     },
     {
-      id: 55,
+      id: 'csdemo63',
+      filename: 'csdemo',
       input: '세탁기',
       output: '세탁기 상품은 서비스 센터에서 수리를 받으시는 것보다 출장 수리를 예약하여, 기사님을 통하여 서비스를 받으시면 더욱 편리합니다.\n서비스 기사님의 출장수리 예약을 도와드릴까요?|서비스 기사님의 출장 수리 예약을 도와드릴까요?', 
         children: [
         {
-          id: 54,
+          id: 'csdemo62',
+          filename: 'csdemo',
           input: '~네',
           output: '출장 수리 예약을 하기 위하여, 간단한 정보 몇가지를 수집하도록 하겠습니다. \n 수리가 필요한 제품의 증상을 입력해 주세요.', 
             children: [
             {
-              id: 53,
+              id: 'csdemo61',
+              filename: 'csdemo',
               input: {regexp: /[가-힣]/g},
               output: '출장 방문시 안내를 받으실 분의 성함을 입력해 주세요.', 
                 children: [
                 {
-                  id: 51,
+                  id: 'csdemo59',
+                  filename: 'csdemo',
                   input: {regexp: /[가-힣]/g},
                   output: '저희 기사님께서 출장 방문시 연락드릴 휴대폰 번호를 입력해주세요.', 
                     children: [
                     {
-                      id: 49,
+                      id: 'csdemo57',
+                      filename: 'csdemo',
                       input: {types: [{type : type.mobileType, context: false}]},
                       output: '출장 방문을 하기 위해서는 고객님의 정확한 주소가 필요합니다.\n 지번 또는 도로명을 포함한 상세주소를 입력 부탁드리겠습니다.', 
                         children: [
                         {
-                          id: 47,
+                          id: 'csdemo55',
+                          filename: 'csdemo',
                           input: {types: [{name: 'address', typeCheck: address.addressTypeCheck, raw: true}]},
                           output: '출장 수리를 받고 싶으신 날짜를 입력해주세요', 
                             children: [
                             {
-                              id: 45,
+                              id: 'csdemo53',
+                              filename: 'csdemo',
                               input: ['월', '일', '내일', '모레', '오늘', {regexp: /\d{1,2} \/ \d{1,2}/g}],
                               output: '고객님께서 지정하신 날짜에 출장 수리 예약이 가능한 시간 목록입니다. 원하시는 시간을 선택해주세요\n오전\n09:00 09:30 09:50\n10:10 10:30 11:00\n11:20 11:30 11:50\n오후\n12:00 12:30 12:50\n13:00 13:20 13:40\n15:00 15:10 15:50\n 16:10 16:20 16:50\n17:00 17:20 17:40|원하시는 시간을 말씀해주세요.', 
                                 children: [
                                 {
-                                  id: 43,
+                                  id: 'csdemo51',
+                                  filename: 'csdemo',
                                   input: {types: [{name: 'time', typeCheck: 'timeTypeCheck', raw: true}]},
                                   output: '출장수리 예약이 완료되었습니다. \n더 필요하신 게 있으신가요?', 
                                     children: [
                                     {
-                                      id: 39,
+                                      id: 'csdemo47',
+                                      filename: 'csdemo',
                                       input: '~네',
                                       output: '고객님, 어떤 부분이 궁금하신가요?'
                                     },
                                     {
-                                      id: 42,
+                                      id: 'csdemo50',
+                                      filename: 'csdemo',
                                       input: '~아니요',
                                       output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
                                       children: [
                                         {
-                                          id: 40,
+                                          id: 'csdemo48',
+                                          filename: 'csdemo',
                                           input: '~네',
                                           output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
                                         },
                                         {
-                                          id: 41,
+                                          id: 'csdemo49',
+                                          filename: 'csdemo',
                                           input: '~아니요',
                                           output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
                                         }
@@ -323,35 +442,40 @@ var dialogs = [
                                   ]
                                 },
                                 {
-                                  id: 44,
+                                  id: 'csdemo52',
+                                  filename: 'csdemo',
                                   input: {if: 'true'},
                                   output: {repeat: 1, options: {output: '시간을 말씀해주세요.\n예시)14시, 오후 2시, 04:00'}}
                                 }
                               ]
                             },
                             {
-                              id: 46,
+                              id: 'csdemo54',
+                              filename: 'csdemo',
                               input: {if: 'true'},
                               output: {repeat: 1, options: {output: '방문 날짜를 말씀해주세요.'}}
                             }
                           ]
                         },
                         {
-                          id: 48,
+                          id: 'csdemo56',
+                          filename: 'csdemo',
                           input: {if: 'true'},
                           output: {repeat: 1, options: {output: '지번 또는 도로명을 포함한 상세주소를 말씀해주세요.\n예시) 강남구 삼성동 16-1 101동 101호\n예시) 강남구 학동로 426 101동 101호\n\n주소를 정확히 입력해 주세요.|지번 또는 도로명을 포함한 상세주소를 말씀해주세요.'}}
                         }
                       ]
                     },
                     {
-                      id: 50,
+                      id: 'csdemo58',
+                      filename: 'csdemo',
                       input: {if: 'true'},
                       output: {repeat: 1, options: {output: '휴대폰 번호를 말씀해주세요.'}}
                     }
                   ]
                 },
                 {
-                  id: 52,
+                  id: 'csdemo60',
+                  filename: 'csdemo',
                   input: {if: 'true'},
                   output: {repeat: 1, options: {output: '성함을 말씀해주세요.'}}
                 }
@@ -362,14 +486,16 @@ var dialogs = [
       ]
     },
     {
-      id: 56,
+      id: 'csdemo64',
+      filename: 'csdemo',
       input: {if: 'true && context.botUser.wordCorrection'},
       output: {repeat: 1, options: {output: '목록에서 선택해주세요.\n'}}
     }
   ]
 },
 {
-  id: 70,
+  id: 'csdemo78',
+  filename: 'csdemo',
   name: '시간체크',
   input: {types: [{name: 'time', typeCheck: 'timeTypeCheck', raw: true}], regexp: /~영업/},
   task:   {action: csdemo.checkTime},
@@ -378,22 +504,26 @@ var dialogs = [
   {if: 'context.dialog.check == true', output: '죄송합니다. 영업 시간이 아닙니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.\n더 필요하신 게 있으신가요?', 
     children: [
     {
-      id: 58,
+      id: 'csdemo66',
+      filename: 'csdemo',
       input: '~네',
       output: '고객님, 추가적으로 궁금하신 사항이 있으시면 말씀해주세요~~'
     },
     {
-      id: 61,
+      id: 'csdemo69',
+      filename: 'csdemo',
       input: '~아니요',
       output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
       children: [
         {
-          id: 59,
+          id: 'csdemo67',
+          filename: 'csdemo',
           input: '~네',
           output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
         },
         {
-          id: 60,
+          id: 'csdemo68',
+          filename: 'csdemo',
           input: '~아니요',
           output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
         }
@@ -403,22 +533,26 @@ var dialogs = [
   {if: 'context.dialog.check == false', output: '네 서비스 받으실 수 있는 시간 입니다.\n더 필요하신 게 있으신가요?', 
     children: [
     {
-      id: 62,
+      id: 'csdemo70',
+      filename: 'csdemo',
       input: '~네',
       output: '고객님, 추가적으로 궁금하신 사항이 있으신지요?'
     },
     {
-      id: 65,
+      id: 'csdemo73',
+      filename: 'csdemo',
       input: '~아니요',
       output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
       children: [
         {
-          id: 63,
+          id: 'csdemo71',
+          filename: 'csdemo',
           input: '~네',
           output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
         },
         {
-          id: 64,
+          id: 'csdemo72',
+          filename: 'csdemo',
           input: '~아니요',
           output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
         }
@@ -428,22 +562,26 @@ var dialogs = [
   {if: 'context.dialog.check == \'re\'', output: '오후 / 오전을 붙여서 이야기 해주세요.\n예시: 오후 2시 영업해?, 14시 영업해?\n더 필요하신 게 있으신가요?', 
     children: [
     {
-      id: 66,
+      id: 'csdemo74',
+      filename: 'csdemo',
       input: '~네',
       output: '고객님, 어떤 부분이 궁금하신가요?'
     },
     {
-      id: 69,
+      id: 'csdemo77',
+      filename: 'csdemo',
       input: '~아니요',
       output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
       children: [
         {
-          id: 67,
+          id: 'csdemo75',
+          filename: 'csdemo',
           input: '~네',
           output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
         },
         {
-          id: 68,
+          id: 'csdemo76',
+          filename: 'csdemo',
           input: '~아니요',
           output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
         }
@@ -452,7 +590,8 @@ var dialogs = [
   ]}]
 },
 {
-  id: 79,
+  id: 'csdemo87',
+  filename: 'csdemo',
   name: '날짜체크',
   input: {types: [{name: 'date', typeCheck: 'dateTypeCheck', raw: true}], regexp: /~영업/},
   task:   {action: csdemo.checkDate},
@@ -461,22 +600,26 @@ var dialogs = [
   {if: 'context.dialog.check == true', output: '죄송합니다. 해당 일자는 서비스센터 영업일이 아닙니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.\n더 필요하신 게 있으신가요?', 
     children: [
     {
-      id: 71,
+      id: 'csdemo79',
+      filename: 'csdemo',
       input: '~네',
       output: '고객님, 어떤 부분이 궁금하신가요?'
     },
     {
-      id: 74,
+      id: 'csdemo82',
+      filename: 'csdemo',
       input: '~아니요',
       output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
       children: [
         {
-          id: 72,
+          id: 'csdemo80',
+          filename: 'csdemo',
           input: '~네',
           output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
         },
         {
-          id: 73,
+          id: 'csdemo81',
+          filename: 'csdemo',
           input: '~아니요',
           output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
         }
@@ -486,22 +629,26 @@ var dialogs = [
   {if: 'context.dialog.check == false', output: '네 영업일입니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.\n더 필요하신 게 있으신가요?', 
     children: [
     {
-      id: 75,
+      id: 'csdemo83',
+      filename: 'csdemo',
       input: '~네',
       output: '고객님, 추가적으로 궁금하신 사항이 있으시면 말씀해주세요~~'
     },
     {
-      id: 78,
+      id: 'csdemo86',
+      filename: 'csdemo',
       input: '~아니요',
       output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
       children: [
         {
-          id: 76,
+          id: 'csdemo84',
+          filename: 'csdemo',
           input: '~네',
           output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
         },
         {
-          id: 77,
+          id: 'csdemo85',
+          filename: 'csdemo',
           input: '~아니요',
           output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
         }
@@ -510,7 +657,8 @@ var dialogs = [
   ]}]
 },
 {
-  id: 84,
+  id: 'csdemo92',
+  filename: 'csdemo',
   name: '토요일영업',
   input: ['~월요일', '~화요일', '~수요일', '~목요일', '~금요일', '~토요일'],
   output: [
@@ -518,22 +666,26 @@ var dialogs = [
   {output: '네 영업일입니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.\n더 필요하신 게 있으신가요?', 
     children: [
     {
-      id: 80,
+      id: 'csdemo88',
+      filename: 'csdemo',
       input: '~네',
       output: '고객님, 추가적으로 궁금하신 사항이 있으시면 말씀해주세요~~'
     },
     {
-      id: 83,
+      id: 'csdemo91',
+      filename: 'csdemo',
       input: '~아니요',
       output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
       children: [
         {
-          id: 81,
+          id: 'csdemo89',
+          filename: 'csdemo',
           input: '~네',
           output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
         },
         {
-          id: 82,
+          id: 'csdemo90',
+          filename: 'csdemo',
           input: '~아니요',
           output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
         }
@@ -542,7 +694,8 @@ var dialogs = [
   ]}]
 },
 {
-  id: 89,
+  id: 'csdemo97',
+  filename: 'csdemo',
   name: '공휴일영업',
   input: ['~공휴일', '일요일'],
   output: [
@@ -550,22 +703,26 @@ var dialogs = [
   {output: '죄송합니다. 영업일이 아닙니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.\n더 필요하신 게 있으신가요?', 
     children: [
     {
-      id: 85,
+      id: 'csdemo93',
+      filename: 'csdemo',
       input: '~네',
       output: '고객님, 어떤 부분이 궁금하신가요?'
     },
     {
-      id: 88,
+      id: 'csdemo96',
+      filename: 'csdemo',
       input: '~아니요',
       output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
       children: [
         {
-          id: 86,
+          id: 'csdemo94',
+          filename: 'csdemo',
           input: '~네',
           output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
         },
         {
-          id: 87,
+          id: 'csdemo95',
+          filename: 'csdemo',
           input: '~아니요',
           output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
         }
@@ -574,7 +731,8 @@ var dialogs = [
   ]}]
 },
 {
-  id: 94,
+  id: 'csdemo102',
+  filename: 'csdemo',
   name: '영업시간',
   input: ['~영업 ~시간', '몇 시'],
   output: [
@@ -582,22 +740,26 @@ var dialogs = [
   {output: '해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.\n더 필요하신 게 있으신가요', 
     children: [
     {
-      id: 90,
+      id: 'csdemo98',
+      filename: 'csdemo',
       input: '~네',
       output: '고객님, 어떤 부분이 궁금하신가요?'
     },
     {
-      id: 93,
+      id: 'csdemo101',
+      filename: 'csdemo',
       input: '~아니요',
       output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
       children: [
         {
-          id: 91,
+          id: 'csdemo99',
+          filename: 'csdemo',
           input: '~네',
           output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
         },
         {
-          id: 92,
+          id: 'csdemo100',
+          filename: 'csdemo',
           input: '~아니요',
           output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
         }
@@ -606,7 +768,8 @@ var dialogs = [
   ]}]
 },
 {
-  id: 101,
+  id: 'csdemo109',
+  filename: 'csdemo',
   name: '방문경로둘',
   input: ['어떻다 찾다', '어떻다 ~가다', '경로', '가는 방법', '위치'],
   task:   {action: csdemo.daumgeoCode},
@@ -615,32 +778,38 @@ var dialogs = [
   {output: '+center.svc_center_name+의 위치정보입니다\n- 주소: +center.address3+\n- 영업시간 : 평일: +center.winter_week_open+ ~ +center.winter_week_close+, 토요일: +center.winter_sat_open+ ~ +center.winter_sat_close+\n- 전화번호: +center.phone+\n- +center.parking+\n+_docs.link_find+해당 서비스 센터의 방문 예약을 하시겠습니까?|위치정보는 다음과 같습니다. 방문예약을 하시겠습니까?', 
     children: [
         {
-          id: 95,
+          id: 'csdemo103',
+          filename: 'csdemo',
           input: '~네',
           output: {call:'방문예약'}
         },
         {
-          id: 100,
+          id: 'csdemo108',
+          filename: 'csdemo',
           input: '~아니요',
           output: '더 필요하신 게 있으신가요?',
           children: [
             {
-              id: 96,
+              id: 'csdemo104',
+              filename: 'csdemo',
               input: '~네',
               output: '고객님, 어떤 부분이 궁금하신가요?'
             },
             {
-              id: 99,
+              id: 'csdemo107',
+              filename: 'csdemo',
               input: '~아니요',
               output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
               children: [
                 {
-                  id: 97,
+                  id: 'csdemo105',
+                  filename: 'csdemo',
                   input: '~네',
                   output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
                 },
                 {
-                  id: 98,
+                  id: 'csdemo106',
+                  filename: 'csdemo',
                   input: '~아니요',
                   output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
                 }
@@ -651,7 +820,8 @@ var dialogs = [
   ]}]
 },
 {
-  id: 108,
+  id: 'csdemo116',
+  filename: 'csdemo',
   name: '방문경로',
   input: false,
   task:   {action: csdemo.daumgeoCode},
@@ -660,32 +830,38 @@ var dialogs = [
   {output: '+center.svc_center_name+의 위치정보입니다\n+_docs.link_find+해당 서비스 센터의 방문 예약을 하시겠습니까?', 
     children: [
         {
-          id: 102,
+          id: 'csdemo110',
+          filename: 'csdemo',
           input: '~네',
           output: {call:'방문예약'}
         },
         {
-          id: 107,
+          id: 'csdemo115',
+          filename: 'csdemo',
           input: '~아니요',
           output: '더 필요하신 게 있으신가요?',
           children: [
             {
-              id: 103,
+              id: 'csdemo111',
+              filename: 'csdemo',
               input: '~네',
               output: '고객님, 어떤 부분이 궁금하신가요?'
             },
             {
-              id: 106,
+              id: 'csdemo114',
+              filename: 'csdemo',
               input: '~아니요',
               output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
               children: [
                 {
-                  id: 104,
+                  id: 'csdemo112',
+                  filename: 'csdemo',
                   input: '~네',
                   output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
                 },
                 {
-                  id: 105,
+                  id: 'csdemo113',
+                  filename: 'csdemo',
                   input: '~아니요',
                   output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
                 }
@@ -696,49 +872,58 @@ var dialogs = [
   ]}]
 },
 {
-  id: 125,
+  id: 'csdemo133',
+  filename: 'csdemo',
   name: '예약',
   input: false,
   output: [
   {if: 'context.dialog.repairable == true', output: '네 +category+ 상품은 현 지점에서 현장 수리 가능합니다.\n성함을 말씀해주세요', 
     children: [
     {
-      id: 119,
+      id: 'csdemo127',
+      filename: 'csdemo',
       input: {regexp: /[가-힣]/g},
       output: '휴대폰 번호를 말씀해주세요.', 
         children: [
         {
-          id: 117,
+          id: 'csdemo125',
+          filename: 'csdemo',
           input: {types: [{type : type.mobileType, context: false}]},
           output: '원하시는 방문날짜를 입력해주세요', 
             children: [
             {
-              id: 115,
+              id: 'csdemo123',
+              filename: 'csdemo',
               input: ['월', '일', '내일', '오늘', '모레', {regexp: /\d{1,2} \/ \d{1,2}/g}],
               output: '시간을 선택해주세요\n오전\n09:00 09:30 09:50\n10:10 10:30 11:00\n11:20 11:30 11:50\n오후\n12:00 12:30 12:50\n13:00 13:20 13:40\n15:00 15:10 15:50\n 16:10 16:20 16:50\n17:00 17:20 17:40|원하시는 시간을 말씀해주세요.', 
                 children: [
                 {
-                  id: 113,
+                  id: 'csdemo121',
+                  filename: 'csdemo',
                   input: {types: [{name: 'time', typeCheck: 'timeTypeCheck', raw: true}]},
                   output: '센터방문 예약이 완료되었습니다.\n더 필요하신 게 있으신가요?', 
                     children: [
                     {
-                      id: 109,
+                      id: 'csdemo117',
+                      filename: 'csdemo',
                       input: '~네',
                       output: '고객님, 어떤 부분이 궁금하신가요?'
                     },
                     {
-                      id: 112,
+                      id: 'csdemo120',
+                      filename: 'csdemo',
                       input: '~아니요',
                       output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
                       children: [
                         {
-                          id: 110,
+                          id: 'csdemo118',
+                          filename: 'csdemo',
                           input: '~네',
                           output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
                         },
                         {
-                          id: 111,
+                          id: 'csdemo119',
+                          filename: 'csdemo',
                           input: '~아니요',
                           output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
                         }
@@ -747,28 +932,32 @@ var dialogs = [
                   ]
                 },
                 {
-                  id: 114,
+                  id: 'csdemo122',
+                  filename: 'csdemo',
                   input: {if: 'true'},
                   output: {repeat: 1, options: {output: '시간을 말씀해주세요.\n예시)14시, 오후 2시, 04:00'}}
                 }
               ]
             },
             {
-              id: 116,
+              id: 'csdemo124',
+              filename: 'csdemo',
               input: {if: 'true'},
               output: {repeat: 1, options: {output: '방문 날짜를 말씀해주세요.'}}
             }
           ]
         },
         {
-          id: 118,
+          id: 'csdemo126',
+          filename: 'csdemo',
           input: {if: 'true'},
           output: {repeat: 1, options: {output: '휴대폰 번호를 말씀해주세요.'}}
         }
       ]
     },
     {
-      id: 120,
+      id: 'csdemo128',
+      filename: 'csdemo',
       input: {if: 'true'},
       output: {repeat: 1, options: {output: '성함을 말씀해주세요.'}}
     }
@@ -776,22 +965,26 @@ var dialogs = [
   {if: 'context.dialog.repairable == false', output: '죄송합니다. 이 영업점에서는 취급하지 않는 품목입니다.\n더 필요한 것이 있으신가요?', 
     children: [
     {
-      id: 121,
+      id: 'csdemo129',
+      filename: 'csdemo',
       input: '~네',
       output: '고객님, 어떤 부분이 궁금하신가요?'
     },
     {
-      id: 124,
+      id: 'csdemo132',
+      filename: 'csdemo',
       input: '~아니요',
       output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
       children: [
         {
-          id: 122,
+          id: 'csdemo130',
+          filename: 'csdemo',
           input: '~네',
           output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
         },
         {
-          id: 123,
+          id: 'csdemo131',
+          filename: 'csdemo',
           input: '~아니요',
           output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
         }
@@ -800,50 +993,59 @@ var dialogs = [
   ]}]
 },
 {
-  id: 155,
+  id: 'csdemo163',
+  filename: 'csdemo',
   name: '방문예약',
   input: '예약',
   output: '서비스 센터 방문 예약을 도와드릴까요?', 
     children: [
     {
-      id: 149,
+      id: 'csdemo157',
+      filename: 'csdemo',
       input: '~네',
       output: '서비스를 받고 싶으신 제품을 말씀해주세요.',
       children: [
         {
-          id: 148,
+          id: 'csdemo156',
+          filename: 'csdemo',
           input: {types: [{name: 'repairable', typeCheck: csdemo.repairableTypecheck, raw: true}]},
           task:           {action: csdemo.repairableCheck},
           output: [
           {if: 'context.dialog.repairable == \'remote\'', output: '+category+ 상품은 서비스 센터에서 수리를 받으시는 것보다 출장 수리를 예약하여, 기사님을 통하여 서비스를 받으시면 더욱 편리합니다.\n서비스 기사님의 출장수리 예약을 도와드릴까요?|서비스 기사님의 출장수리 예약을 도와드릴까요?', 
             children: [
             {
-              id: 126,
+              id: 'csdemo134',
+              filename: 'csdemo',
               input: '~네',
               output: {call:'출장수리예약'}
             },
             {
-              id: 131,
+              id: 'csdemo139',
+              filename: 'csdemo',
               input: '~아니요',
               output: '더 필요하신 게 있으신가요?',
               children: [
                 {
-                  id: 127,
+                  id: 'csdemo135',
+                  filename: 'csdemo',
                   input: '~네',
                   output: '고객님, 어떤 부분이 궁금하신가요?'
                 },
                 {
-                  id: 130,
+                  id: 'csdemo138',
+                  filename: 'csdemo',
                   input: '~아니요',
                   output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
                   children: [
                     {
-                      id: 128,
+                      id: 'csdemo136',
+                      filename: 'csdemo',
                       input: '~네',
                       output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
                     },
                     {
-                      id: 129,
+                      id: 'csdemo137',
+                      filename: 'csdemo',
                       input: '~아니요',
                       output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
                     }
@@ -856,42 +1058,50 @@ var dialogs = [
           {if: 'context.dialog.repairable == true', output: '네 +category+ 상품은 현 지점에서 현장 수리 가능합니다.\n성함을 말씀해주세요', 
             children: [
             {
-              id: 142,
+              id: 'csdemo150',
+              filename: 'csdemo',
               input: {regexp: /[가-힣]/g},
               output: '휴대폰 번호를 말씀해주세요.', 
                 children: [
                 {
-                  id: 140,
+                  id: 'csdemo148',
+                  filename: 'csdemo',
                   input: {types: [{type : type.mobileType, context: false}]},
                   output: '원하시는 방문날짜를 입력해주세요', 
                     children: [
                     {
-                      id: 138,
+                      id: 'csdemo146',
+                      filename: 'csdemo',
                       input: ['월', '일', '내일', '오늘', '모레', {regexp: /\d{1,2} \/ \d{1,2}/g}],
                       output: '시간을 선택해주세요\n오전\n09:00 09:30 09:50\n10:10 10:30 11:00\n11:20 11:30 11:50\n오후\n12:00 12:30 12:50\n13:00 13:20 13:40\n15:00 15:10 15:50\n 16:10 16:20 16:50\n17:00 17:20 17:40|원하시는 시간을 말씀해주세요.', 
                         children: [
                         {
-                          id: 136,
+                          id: 'csdemo144',
+                          filename: 'csdemo',
                           input: {types: [{name: 'time', typeCheck: 'timeTypeCheck', raw: true}]},
                           output: '센터방문 예약이 완료되었습니다.\n더 필요하신 게 있으신가요?', 
                             children: [
                             {
-                              id: 132,
+                              id: 'csdemo140',
+                              filename: 'csdemo',
                               input: '~네',
                               output: '고객님, 어떤 부분이 궁금하신가요?'
                             },
                             {
-                              id: 135,
+                              id: 'csdemo143',
+                              filename: 'csdemo',
                               input: '~아니요',
                               output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
                               children: [
                                 {
-                                  id: 133,
+                                  id: 'csdemo141',
+                                  filename: 'csdemo',
                                   input: '~네',
                                   output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
                                 },
                                 {
-                                  id: 134,
+                                  id: 'csdemo142',
+                                  filename: 'csdemo',
                                   input: '~아니요',
                                   output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
                                 }
@@ -900,28 +1110,32 @@ var dialogs = [
                           ]
                         },
                         {
-                          id: 137,
+                          id: 'csdemo145',
+                          filename: 'csdemo',
                           input: {if: 'true'},
                           output: {repeat: 1, options: {output: '시간을 말씀해주세요.\n예시)14시, 오후 2시, 04:00'}}
                         }
                       ]
                     },
                     {
-                      id: 139,
+                      id: 'csdemo147',
+                      filename: 'csdemo',
                       input: {if: 'true'},
                       output: {repeat: 1, options: {output: '방문 날짜를 말씀해주세요.'}}
                     }
                   ]
                 },
                 {
-                  id: 141,
+                  id: 'csdemo149',
+                  filename: 'csdemo',
                   input: {if: 'true'},
                   output: {repeat: 1, options: {output: '휴대폰 번호를 말씀해주세요.'}}
                 }
               ]
             },
             {
-              id: 143,
+              id: 'csdemo151',
+              filename: 'csdemo',
               input: {if: 'true'},
               output: {repeat: 1, options: {output: '성함을 말씀해주세요.'}}
             }
@@ -929,22 +1143,26 @@ var dialogs = [
           {if: 'context.dialog.repairable == false', output: '죄송합니다. 이 영업점에서는 취급하지 않는 품목입니다.\n더 필요한 것이 있으신가요?', 
             children: [
             {
-              id: 144,
+              id: 'csdemo152',
+              filename: 'csdemo',
               input: '~네',
               output: '고객님, 어떤 부분이 궁금하신가요?'
             },
             {
-              id: 147,
+              id: 'csdemo155',
+              filename: 'csdemo',
               input: '~아니요',
               output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
               children: [
                 {
-                  id: 145,
+                  id: 'csdemo153',
+                  filename: 'csdemo',
                   input: '~네',
                   output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
                 },
                 {
-                  id: 146,
+                  id: 'csdemo154',
+                  filename: 'csdemo',
                   input: '~아니요',
                   output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
                 }
@@ -955,27 +1173,32 @@ var dialogs = [
       ]
     },
     {
-      id: 154,
+      id: 'csdemo162',
+      filename: 'csdemo',
       input: '~아니요',
       output: '더 필요하신 게 있으신가요?',
       children: [
         {
-          id: 150,
+          id: 'csdemo158',
+          filename: 'csdemo',
           input: '~네',
           output: '고객님, 어떤 부분이 궁금하신가요?'
         },
         {
-          id: 153,
+          id: 'csdemo161',
+          filename: 'csdemo',
           input: '~아니요',
           output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
           children: [
             {
-              id: 151,
+              id: 'csdemo159',
+              filename: 'csdemo',
               input: '~네',
               output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
             },
             {
-              id: 152,
+              id: 'csdemo160',
+              filename: 'csdemo',
               input: '~아니요',
               output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
             }
@@ -986,58 +1209,69 @@ var dialogs = [
   ]
 },
 {
-  id: 171,
+  id: 'csdemo179',
+  filename: 'csdemo',
   name: '출장수리예약',
   input: false,
   output: '출장 수리 예약을 하기 위하여, 간단한 정보 몇가지를 수집하도록 하겠습니다. \n 수리가 필요한 제품의 증상을 입력해 주세요.', 
     children: [
     {
-      id: 170,
+      id: 'csdemo178',
+      filename: 'csdemo',
       input: {regexp: /[가-힣]/g},
       output: '출장 방문시 안내를 받으실 분의 성함을 입력해 주세요.', 
         children: [
         {
-          id: 168,
+          id: 'csdemo176',
+          filename: 'csdemo',
           input: {regexp: /[가-힣]/g},
           output: '저희 기사님께서 출장 방문시 연락드릴 휴대폰 번호를 입력해주세요.', 
             children: [
             {
-              id: 166,
+              id: 'csdemo174',
+              filename: 'csdemo',
               input: {types: [{type : type.mobileType, context: false}]},
               output: '출장 방문을 하기 위해서는 고객님의 정확한 주소가 필요합니다.\n 지번 또는 도로명을 포함한 상세주소를 입력 부탁드리겠습니다.', 
                 children: [
                 {
-                  id: 164,
+                  id: 'csdemo172',
+                  filename: 'csdemo',
                   input: {types: [{name: 'address', typeCheck: address.addressTypeCheck, raw: true}]},
                   output: '출장 수리를 받고 싶으신 날짜를 입력해주세요', 
                     children: [
                     {
-                      id: 162,
+                      id: 'csdemo170',
+                      filename: 'csdemo',
                       input: ['월', '일', '내일', '모레', '오늘', {regexp: /\d{1,2} \/ \d{1,2}/g}],
                       output: '고객님께서 지정하신 날짜에 출장 수리 예약이 가능한 시간 목록입니다. 원하시는 시간을 선택해주세요\n오전\n09:00 09:30 09:50\n10:10 10:30 11:00\n11:20 11:30 11:50\n오후\n12:00 12:30 12:50\n13:00 13:20 13:40\n15:00 15:10 15:50\n 16:10 16:20 16:50\n17:00 17:20 17:40|원하시는 시간을 말씀해주세요.', 
                         children: [
                         {
-                          id: 160,
+                          id: 'csdemo168',
+                          filename: 'csdemo',
                           input: {types: [{name: 'time', typeCheck: 'timeTypeCheck', raw: true}]},
                           output: '출장수리 예약이 완료되었습니다. \n더 필요하신 게 있으신가요?', 
                             children: [
                             {
-                              id: 156,
+                              id: 'csdemo164',
+                              filename: 'csdemo',
                               input: '~네',
                               output: '고객님, 어떤 부분이 궁금하신가요?'
                             },
                             {
-                              id: 159,
+                              id: 'csdemo167',
+                              filename: 'csdemo',
                               input: '~아니요',
                               output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
                               children: [
                                 {
-                                  id: 157,
+                                  id: 'csdemo165',
+                                  filename: 'csdemo',
                                   input: '~네',
                                   output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
                                 },
                                 {
-                                  id: 158,
+                                  id: 'csdemo166',
+                                  filename: 'csdemo',
                                   input: '~아니요',
                                   output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
                                 }
@@ -1046,35 +1280,40 @@ var dialogs = [
                           ]
                         },
                         {
-                          id: 161,
+                          id: 'csdemo169',
+                          filename: 'csdemo',
                           input: {if: 'true'},
                           output: {repeat: 1, options: {output: '시간을 말씀해주세요.\n예시)14시, 오후 2시, 04:00'}}
                         }
                       ]
                     },
                     {
-                      id: 163,
+                      id: 'csdemo171',
+                      filename: 'csdemo',
                       input: {if: 'true'},
                       output: {repeat: 1, options: {output: '방문 날짜를 말씀해주세요.'}}
                     }
                   ]
                 },
                 {
-                  id: 165,
+                  id: 'csdemo173',
+                  filename: 'csdemo',
                   input: {if: 'true'},
                   output: {repeat: 1, options: {output: '지번 또는 도로명을 포함한 상세주소를 말씀해주세요.\n예시) 강남구 삼성동 16-1 101동 101호\n예시) 강남구 학동로 426 101동 101호\n\n주소를 정확히 입력해 주세요.|지번 또는 도로명을 포함한 상세주소를 말씀해주세요.'}}
                 }
               ]
             },
             {
-              id: 167,
+              id: 'csdemo175',
+              filename: 'csdemo',
               input: {if: 'true'},
               output: {repeat: 1, options: {output: '휴대폰 번호를 말씀해주세요.'}}
             }
           ]
         },
         {
-          id: 169,
+          id: 'csdemo177',
+          filename: 'csdemo',
           input: {if: 'true'},
           output: {repeat: 1, options: {output: '성함을 말씀해주세요.'}}
         }
@@ -1083,7 +1322,8 @@ var dialogs = [
   ]
 },
 {
-  id: 194,
+  id: 'csdemo202',
+  filename: 'csdemo',
   name: '수리가능',
   input: {types: [{name: 'repairable', typeCheck: csdemo.repairableTypecheck, raw: true}]},
   task:   {action: csdemo.repairableCheck},
@@ -1091,32 +1331,38 @@ var dialogs = [
   {if: 'context.dialog.repairable == \'remote\'', output: '+category+ 상품은 서비스 센터에서 수리를 받으시는 것보다 출장 수리를 예약하여, 기사님을 통하여 서비스를 받으시면 더욱 편리합니다.\n서비스 기사님의 출장수리 예약을 도와드릴까요?|서비스 기사님의 출장 수리 예약을 도와드릴까요?', 
     children: [
     {
-      id: 172,
+      id: 'csdemo180',
+      filename: 'csdemo',
       input: '~네',
       output: {call:'출장수리예약'}
     },
     {
-      id: 177,
+      id: 'csdemo185',
+      filename: 'csdemo',
       input: '~아니요',
       output: '더 필요하신 게 있으신가요?',
       children: [
         {
-          id: 173,
+          id: 'csdemo181',
+          filename: 'csdemo',
           input: '~네',
           output: '고객님, 어떤 부분이 궁금하신가요?'
         },
         {
-          id: 176,
+          id: 'csdemo184',
+          filename: 'csdemo',
           input: '~아니요',
           output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
           children: [
             {
-              id: 174,
+              id: 'csdemo182',
+              filename: 'csdemo',
               input: '~네',
               output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
             },
             {
-              id: 175,
+              id: 'csdemo183',
+              filename: 'csdemo',
               input: '~아니요',
               output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
             }
@@ -1129,32 +1375,38 @@ var dialogs = [
   {if: 'context.dialog.repairable == true', output: '네 +category+ 상품은 현재 서비스 센터에서 현장 수리 가능합니다.\n 서비스 센터 방문 전 예약을 미리 하시면 대기시간 없이 서비스를 받아 보실 수 있습니다. 서비스 센터 방문예약을 도와드릴까요?|+category+ 상품은 현재 서비스 센터에서 현장 수리 가능합니다.서비스 센터 방문 예약을 도와드릴까요?', 
     children: [
     {
-      id: 178,
+      id: 'csdemo186',
+      filename: 'csdemo',
       input: '~네',
       output: {call:'예약', options: {output: '성함을 말씀해주세요.'}}
     },
     {
-      id: 183,
+      id: 'csdemo191',
+      filename: 'csdemo',
       input: '~아니요',
       output: '더 필요하신 게 있으신가요?',
       children: [
         {
-          id: 179,
+          id: 'csdemo187',
+          filename: 'csdemo',
           input: '~네',
           output: '고객님, 어떤 부분이 궁금하신가요?'
         },
         {
-          id: 182,
+          id: 'csdemo190',
+          filename: 'csdemo',
           input: '~아니요',
           output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
           children: [
             {
-              id: 180,
+              id: 'csdemo188',
+              filename: 'csdemo',
               input: '~네',
               output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
             },
             {
-              id: 181,
+              id: 'csdemo189',
+              filename: 'csdemo',
               input: '~아니요',
               output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
             }
@@ -1166,27 +1418,32 @@ var dialogs = [
   {if: 'context.dialog.repairable == false', output: '죄송합니다. 이 영업점에서는 취급하지 않는 품목입니다.\n센터 정보를 알려드릴까요?', 
     children: [
     {
-      id: 188,
+      id: 'csdemo196',
+      filename: 'csdemo',
       input: '~네',
       output: '[+center.svc_center_name+]\n- 주소: +center.address3+\n- 영업시간 : 평일: +center.winter_week_open+ ~ +center.winter_week_close+, 토요일: +center.winter_sat_open+ ~ +center.winter_sat_close+\n- 전화번호: +center.phone+\n- +center.parking+\n서비스 센터의 위치를 지도에서 확인하시겠습니까?|센터 정보는 다음과 같습니다.위치를 지도에서 확인하시겠습니까?',
       children: [
         {
-          id: 184,
+          id: 'csdemo192',
+          filename: 'csdemo',
           input: '~네',
           output: {call:'방문경로'}
         },
         {
-          id: 187,
+          id: 'csdemo195',
+          filename: 'csdemo',
           input: '~아니요',
           output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
           children: [
             {
-              id: 185,
+              id: 'csdemo193',
+              filename: 'csdemo',
               input: '~네',
               output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
             },
             {
-              id: 186,
+              id: 'csdemo194',
+              filename: 'csdemo',
               input: '~아니요',
               output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
             }
@@ -1195,27 +1452,32 @@ var dialogs = [
       ]
     },
     {
-      id: 193,
+      id: 'csdemo201',
+      filename: 'csdemo',
       input: '~아니요',
       output: '더 필요하신 게 있으신가요?',
       children: [
         {
-          id: 189,
+          id: 'csdemo197',
+          filename: 'csdemo',
           input: '~네',
           output: '고객님, 어떤 부분이 궁금하신가요?'
         },
         {
-          id: 192,
+          id: 'csdemo200',
+          filename: 'csdemo',
           input: '~아니요',
           output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
           children: [
             {
-              id: 190,
+              id: 'csdemo198',
+              filename: 'csdemo',
               input: '~네',
               output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
             },
             {
-              id: 191,
+              id: 'csdemo199',
+              filename: 'csdemo',
               input: '~아니요',
               output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
             }
@@ -1226,7 +1488,8 @@ var dialogs = [
   ]}]
 },
 {
-  id: 205,
+  id: 'csdemo213',
+  filename: 'csdemo',
   name: '수리가능품목',
   input: '~수리 ~가능',
   task:   {action: csdemo.repairableList},
@@ -1235,27 +1498,32 @@ var dialogs = [
   {output: '문의 주신 서비스센터의 수리 가능 품목은 +center.productlist+ 입니다.\n 해당 서비스 센터 정보를 알려드릴까요?', 
     children: [
     {
-      id: 199,
+      id: 'csdemo207',
+      filename: 'csdemo',
       input: '~네',
       output: '[+center.svc_center_name+]\n- 주소: +center.address3+\n- 영업시간 : 평일: +center.winter_week_open+ ~ +center.winter_week_close+, 토요일: +center.winter_sat_open+ ~ +center.winter_sat_close+\n- 전화번호: +center.phone+\n- +center.parking+\n서비스 센터의 위치를 지도에서 확인하시겠습니까?|센터 정보는 다음과 같습니다.위치를 지도에서 확인하시겠습니까?',
       children: [
         {
-          id: 195,
+          id: 'csdemo203',
+          filename: 'csdemo',
           input: '~네',
           output: {call:'방문경로'}
         },
         {
-          id: 198,
+          id: 'csdemo206',
+          filename: 'csdemo',
           input: '~아니요',
           output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
           children: [
             {
-              id: 196,
+              id: 'csdemo204',
+              filename: 'csdemo',
               input: '~네',
               output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
             },
             {
-              id: 197,
+              id: 'csdemo205',
+              filename: 'csdemo',
               input: '~아니요',
               output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
             }
@@ -1264,27 +1532,32 @@ var dialogs = [
       ]
     },
     {
-      id: 204,
+      id: 'csdemo212',
+      filename: 'csdemo',
       input: '~아니요',
       output: '더 필요하신 게 있으신가요?',
       children: [
         {
-          id: 200,
+          id: 'csdemo208',
+          filename: 'csdemo',
           input: '~네',
           output: '고객님, 어떤 부분이 궁금하신가요?'
         },
         {
-          id: 203,
+          id: 'csdemo211',
+          filename: 'csdemo',
           input: '~아니요',
           output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
           children: [
             {
-              id: 201,
+              id: 'csdemo209',
+              filename: 'csdemo',
               input: '~네',
               output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
             },
             {
-              id: 202,
+              id: 'csdemo210',
+              filename: 'csdemo',
               input: '~아니요',
               output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
             }
@@ -1295,7 +1568,8 @@ var dialogs = [
   ]}]
 },
 {
-  id: 210,
+  id: 'csdemo218',
+  filename: 'csdemo',
   name: '전화번호안내',
   input: '~번호',
   output: [
@@ -1303,22 +1577,26 @@ var dialogs = [
   {output: '+center.svc_center_name+ 전화번호입니다.\n +center.phone+\n더 필요하신 게 있으신가요?', 
     children: [
     {
-      id: 206,
+      id: 'csdemo214',
+      filename: 'csdemo',
       input: '~네',
       output: '고객님, 어떤 부분이 궁금하신가요?'
     },
     {
-      id: 209,
+      id: 'csdemo217',
+      filename: 'csdemo',
       input: '~아니요',
       output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
       children: [
         {
-          id: 207,
+          id: 'csdemo215',
+          filename: 'csdemo',
           input: '~네',
           output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
         },
         {
-          id: 208,
+          id: 'csdemo216',
+          filename: 'csdemo',
           input: '~아니요',
           output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
         }
@@ -1327,7 +1605,8 @@ var dialogs = [
   ]}]
 },
 {
-  id: 215,
+  id: 'csdemo223',
+  filename: 'csdemo',
   name: '주차안내',
   input: '~주차',
   output: [
@@ -1335,22 +1614,26 @@ var dialogs = [
   {output: '+center.parking+합니다.\n더 필요하신 게 있으신가요?', 
     children: [
     {
-      id: 211,
+      id: 'csdemo219',
+      filename: 'csdemo',
       input: '~네',
       output: '고객님, 어떤 부분이 궁금하신가요?'
     },
     {
-      id: 214,
+      id: 'csdemo222',
+      filename: 'csdemo',
       input: '~아니요',
       output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
       children: [
         {
-          id: 212,
+          id: 'csdemo220',
+          filename: 'csdemo',
           input: '~네',
           output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
         },
         {
-          id: 213,
+          id: 'csdemo221',
+          filename: 'csdemo',
           input: '~아니요',
           output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
         }
@@ -1362,54 +1645,64 @@ var dialogs = [
 
 var commonDialogs = [
 {
-  id: 0,
+  id: 'csdemocommon0',
+  filename: 'csdemocommon',
   name: '시작',
   input: ['시작', '처음'],
   output: '안녕하세요. 머니브레인 고객센터입니다.'
 },
 {
-  id: 1,
+  id: 'csdemocommon1',
+  filename: 'csdemocommon',
   input: '이전',
   output: {up:1}
 },
 {
-  id: 2,
+  id: 'csdemocommon2',
+  filename: 'csdemocommon',
   input: '전페이지',
   output: {repeat: 1, options: {page: 'pre'}}
 },
 {
-  id: 3,
+  id: 'csdemocommon3',
+  filename: 'csdemocommon',
   input: '다음페이지',
   output: {repeat: 1, options: {page: 'next'}}
 },
 {
-  id: 4,
+  id: 'csdemocommon4',
+  filename: 'csdemocommon',
   input: '콜센터',
   output: '고객센터 번호는 02-858-5683입니다.'
 },
 {
-  id: 9,
+  id: 'csdemocommon9',
+  filename: 'csdemocommon',
   name: '답변없음',
   input: '',
   output: '고객님, 불편을 끼쳐드려 죄송합니다. 현재 고객님께서 무슨 말씀을 하시는지 이해를 못하였습니다.\n 고객센터의 전문 상담원과 연결을 원하십니까?',
   children: [
    {
-     id: 5,
+     id: 'csdemocommon5',
+     filename: 'csdemocommon',
      input: '~네',
      output: '고객센터 번호는 02-858-5683입니다.'
    },
    {
-     id: 8,
+     id: 'csdemocommon8',
+     filename: 'csdemocommon',
      input: '~아니요',
      output: '머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?',
      children: [
        {
-         id: 6,
+         id: 'csdemocommon6',
+         filename: 'csdemocommon',
          input: '~네',
          output: '더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'
        },
        {
-         id: 7,
+         id: 'csdemocommon7',
+         filename: 'csdemocommon',
          input: '~아니요',
          output: '고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인가 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.'
        }
@@ -1423,11 +1716,3 @@ var commonDialogs = [
 var _bot = require(require('path').resolve("config/lib/bot")).getBot('csdemo');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);
-
-// TEST
-// var json = JSON.stringify(dialogs);
-// console.log(json);
-// var fs = require('fs');
-// fs.writeFile(require('path').resolve("public/js") + "/dialog.json", json, function(err) {
-// if(err) { return console.log(err); }
-// console.log("dialog.json was saved!"); });

@@ -251,7 +251,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         $rootScope.$broadcast('keyinput', vm.msg);
 
       // only in developer
-      if ($state.is('developer-home')) {
+      if ($state.is('developer-home') || $state.current.name.startsWith('bots.')) {
         if (event.keyCode == 118) {    // F7
           vm.buildBot();
         } else if (event.keyCode == 27) {
