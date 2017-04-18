@@ -400,7 +400,6 @@ exports.unfollowBot = function(req, res) {
  * Facebook Subscribe Page Information
  */
 exports.facebookPage = function (req, res) {
-  console.log(JSON.stringify(req.body));
   if (!req.body.list){
     UserBotFbPage.findOne({user : req.body.user, pageId : req.body.page.id}, function (err, data) {
       if(err){
@@ -448,7 +447,19 @@ exports.facebookPage = function (req, res) {
       if(err){
         console.log(err);
       }else {
-        return res.json(data);
+        for(var i = 0; i < data.length; i++){
+          for(var j = 0; j < req.body.pageInfo.length; j++){
+            if (data[i].pageId == req.body.pageInfo[j].id){
+              data[i].accessToken = req.body.pageInfo[j].access_token;
+            }
+          }
+        }
+        data.save(function (err) {
+          if(err){
+            console.log(err)
+          }
+          return res.json(data);
+        });
       }
 
     })

@@ -187,8 +187,8 @@ if (_platform !== 'mobile'){
           $scope.fbLoading = true;
           $scope.noPage = false;
           return FB.api('/me/accounts?fields=picture,name,link,access_token,perms', function(response) {
-            console.log(response);
             if (response.error){
+              console.log(response.error);
               var url = '/api/auth/facebook/page';
               // if ($state.previous && $state.previous.href) {
               //     url += '?redirect_to=' + encodeURIComponent($state.previous.h`ref);
@@ -198,9 +198,7 @@ if (_platform !== 'mobile'){
               $scope.fbLoading = false;
               $window.location.href = url;
             } else {
-              $http.post('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true}).then(function (res) {
-                console.log(res);
-
+              $http.post('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true, pageInfo: response.data}).then(function (res) {
                 for(var i = 0; i < res.data.length; i++){
                   for(var j = 0; j < response.data.length; j++){
                     if ((res.data[i].pageId == response.data[j].id) && res.data[i].connect){
@@ -211,20 +209,21 @@ if (_platform !== 'mobile'){
                     }
                   }
                 }
+
                 $scope.fbLoading = false;
                 $scope.pageLists = [];
                 $scope.pageLists = response.data;
                 if (!response.data.length){
                   $scope.noPage = true;
                 }
+
                 $scope.close = function () {
                   modalInstance.dismiss();
                 };
+
                 $scope.connect = function (page) {
                   // modalInstance.dismiss();
-                  console.log(page);
                   FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
-                    console.log(response);
                     if(response.success){
                       var info = {};
                       info['user'] = vm.user._id;
@@ -247,7 +246,6 @@ if (_platform !== 'mobile'){
                 };
                 $scope.disconnect = function (page) {
                   // modalInstance.dismiss();
-                  console.log(page);
                   var info = {};
                   info['user'] = vm.user._id;
                   info['userBot'] = vm.userBot._id;
