@@ -199,9 +199,9 @@ if (_platform !== 'mobile'){
               $window.location.href = url;
             } else {
               console.log(vm.user);
-              // $http.post('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true}, {'post' : {method : 'POST'}},function (response) {
-              //   console.log(response);
-              // });
+              $http.post('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true},function (response) {
+                console.log(response);
+              });
 
 
               $resource('/api/auth/facebook/pageInfo', {'post' : {method : 'POST'}, params: {user: vm.user._id, list: true}}).query(function (response) {
@@ -285,9 +285,9 @@ if (_platform !== 'mobile'){
           templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',
           scope: $scope
         });
-        modalInstance.result.then(function (response) {
-          console.log(response);
-        })
+        // modalInstance.result.then(function (response) {
+        //   console.log(response);
+        // })
       };
 
       if (!vm.userBot || !vm.userBot._id) {
