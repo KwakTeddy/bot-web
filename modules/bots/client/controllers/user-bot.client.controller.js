@@ -202,10 +202,10 @@ if (_platform !== 'mobile'){
               $http.post('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true},function (response) {
                 console.log(response);
               });
-
-              $resource('/api/auth/facebook/pageInfo', {},{'post' : {method : 'POST'}, params: {user: vm.user._id, list: true}}).query(function () {
-                console.log($post());
-              })
+              //
+              // $resource('/api/auth/facebook/pageInfo', {},{'post' : {method : 'POST'}, params: {user: vm.user._id, list: true}}).query(function () {
+              //   console.log($post());
+              // })
 
               $scope.fbLoading = false;
               $scope.pageLists = [];
