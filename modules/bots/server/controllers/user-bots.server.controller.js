@@ -400,6 +400,7 @@ exports.unfollowBot = function(req, res) {
  * Facebook Subscribe Page Information
  */
 exports.facebookPage = function (req, res) {
+  console.log(JSON.stringify(req.body));
   if (!req.body.list){
     UserBotFbPage.findOne({user : req.body.user, pageId : req.body.page.id}, function (err, data) {
       if(err){
