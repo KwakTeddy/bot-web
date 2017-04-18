@@ -203,7 +203,7 @@ if (_platform !== 'mobile'){
 
                 for(var i = 0; i < res.data.length; i++){
                   for(var j = 0; j < response.data.length; j++){
-                    if (res.data[i].pageId == response.data[j].id && res.data[i].connect){
+                    if ((res.data[i].pageId == response.data[j].id) && res.data[i].connect){
                       response.data[j]['connected'] = res.data[i].bot;
                       continue;
                     }else {
@@ -211,6 +211,7 @@ if (_platform !== 'mobile'){
                     }
                   }
                 }
+                console.log(JSON.stringify(response.data));
 
                 $scope.fbLoading = false;
                 $scope.pageLists = [];
