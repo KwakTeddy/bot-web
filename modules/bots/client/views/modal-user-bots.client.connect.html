@@ -63,33 +63,33 @@
 
   <!--facebook DIY-->
   <div name='facebook' ng-show="(channel == 'facebook') && (method !== 'easy')">
-    <h4>서비스 오픈 예정 입니다</h4>
-    <!--<h4 ng-if="fbLoading">페이스북 페이지를 불러오는 중이에요</h4>-->
-    <!--<h4 ng-if="noPage">페이스북 페이지가 하나도 없네요</h4>-->
-    <!--<h5 ng-if="noPage"><a href="https://www.facebook.com/pages/create/?ref_type=pages_browser" target="_blank">페이스북 페이지를 만들로 가요</a></h5>-->
-    <!--<table class="table table-hover">-->
-      <!--<tr ng-repeat = "pageList in pageLists">-->
-      <!--&lt;!&ndash;<tr ng-repeat = "pageList in pageLists" ng-if="(pageList.perms[0] == 'ADMINISTER')">&ndash;&gt;-->
-        <!--<td>-->
-          <!--<a href="{{pageList.link}}" target="_blank">-->
-            <!--<img src="{{pageList.picture.data.url}}" alt="facebook page img">-->
-            <!--{{pageList.name}}-->
-          <!--</a>-->
-          <!--<span>-->
-            <!--<button class="btn btn-default pull-right" ng-if="!pageList.connected" ng-click="connect(pageList)">-->
-              <!--연결해요-->
-            <!--</button>-->
-            <!--&lt;!&ndash;<img src="" alt="">&ndash;&gt;-->
-            <!--<button class="btn btn-danger pull-right" ng-if="pageList.connected" ng-click="disconnect(pageList)">-->
-              <!--연결끊기-->
-            <!--</button>-->
-            <!--<button class="btn btn-primary pull-right" ng-if="pageList.connected">-->
-              <!--<a href="https://www.messenger.com/t/{{pageList.id}}" target="_blank">대화해봐요</a>-->
-            <!--</button>-->
-          <!--</span>-->
-        <!--</td>-->
-      <!--</tr>-->
-    <!--</table>-->
+    <!--<h4>서비스 오픈 예정 입니다</h4>-->
+    <h4 ng-if="fbLoading">페이스북 페이지를 불러오는 중이에요</h4>
+    <h4 ng-if="noPage">페이스북 페이지가 하나도 없네요</h4>
+    <h5 ng-if="noPage"><a href="https://www.facebook.com/pages/create/?ref_type=pages_browser" target="_blank">페이스북 페이지를 만들로 가요</a></h5>
+    <table class="table table-hover">
+      <tr ng-repeat = "pageList in pageLists">
+      <!--<tr ng-repeat = "pageList in pageLists" ng-if="(pageList.perms[0] == 'ADMINISTER')">-->
+        <td>
+          <a href="{{pageList.link}}" target="_blank">
+            <img src="{{pageList.picture.data.url}}" alt="facebook page img">
+            {{pageList.name}}
+          </a>
+          <span>
+            <button class="btn btn-default pull-right" ng-if="!pageList.connected" ng-click="connect(pageList)">
+              연결해요
+            </button>
+            <!--<img src="" alt="">-->
+            <button class="btn btn-danger pull-right" ng-if="pageList.connected" ng-click="disconnect(pageList)">
+              연결끊기
+            </button>
+            <button class="btn btn-primary pull-right" ng-if="pageList.connected">
+              <a href="https://www.messenger.com/t/{{pageList.id}}" target="_blank">대화해봐요</a>
+            </button>
+          </span>
+        </td>
+      </tr>
+    </table>
   </div>
 
   <!--line-->
