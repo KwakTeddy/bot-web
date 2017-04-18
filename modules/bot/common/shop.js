@@ -232,6 +232,12 @@ function smsAuthValid(dialog, context, callback) {
 
 exports.smsAuthValid = smsAuthValid;
 
+function smsAuthinValid(dialog, context, callback) {
+  callback(dialog.inRaw.replace(/\s*/g, '') == context.dialog.smsAuth);
+}
+
+exports.smsAuthinValid = smsAuthinValid;
+
 var smsAuthTask = {
   action: function (task, context, callback) {
     context.user['mobile'] = context.dialog['mobile'];
