@@ -218,10 +218,12 @@ function receivedMessage(event) {
   console.log(event.botId);
 
   if (event.botId == "subscribeBot"){
+    console.log('subscribe Coming In');
       UserBotFbPage.findOne({pageId: event.recipient.id}, function (err, data) {
           if (err){
               console.log(err);
           }else {
+            console.log(JSON.stringify(data));
               subscribe = true;
               subscribePageToken = data.accessToken;
               event.botId = data.userBotId;
@@ -245,11 +247,8 @@ function receivedMessage(event) {
           }
       });
   }else {
-    console.log(!global._bots[event.botId]);
       if (!global._bots[event.botId]){
         botLib.loadBot(event.botId, function (realbot) {
-          console.log(global._bots[event.botId].facebook.id);
-          console.log(recipientID);
           if(recipientID == global._bots[event.botId].facebook.id) {
             contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
               //console.log('receivedMessage: ', event);
