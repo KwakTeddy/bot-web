@@ -219,6 +219,7 @@ if (_platform !== 'mobile'){
                 console.log(page);
                 FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
                   console.log(response);
+                  console.log(312312312);
                   if(response){
                     var info = {};
                     info['user'] = vm.user._id;
