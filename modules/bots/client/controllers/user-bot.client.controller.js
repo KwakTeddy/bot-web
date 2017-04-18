@@ -199,81 +199,88 @@ if (_platform !== 'mobile'){
               $window.location.href = url;
             } else {
               console.log(vm.user);
-              $http.post('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true}, function (err, response) {
-                if(err) {
-                  console.log(err)
-                }else {
-                  console.log(response)
+              $http.post('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true}).then(function (res) {
+                console.log(res);
+
+                for(var i = 0; i < res.data.length; i++){
+                  for(var j = 0; j < response.data.length; j++){
+                    console.log(i);
+                    console.log(j);
+                    if (res.data[i].pageId = response.data[j].id){
+                      response.data[j]['connected'] = res.data[i].userBot;
+                      continue;
+                    }
+                  }
                 }
-              });
 
-              $scope.fbLoading = false;
-              $scope.pageLists = [];
-              $scope.pageLists = response.data;
-              if (!response.data.length){
-                $scope.noPage = true;
-              }
-              $scope.close = function () {
-                modalInstance.dismiss();
-              };
-              $scope.connect = function (page) {
-                // modalInstance.dismiss();
-                console.log(page);
-                FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
-                  console.log(response);
-                  if(response.success){
-                    var info = {};
-                    info['user'] = vm.user._id;
-                    info['userBot'] = vm.userBot._id;
-                    info['userBotId'] = vm.userBot.id;
-                    info['page'] = page;
-                    info['connect'] = true;
-                    page['connected'] = true;
-                    $http.post('/api/auth/facebook/pageInfo', info, function (err) {
-                      if(err) {
-                        console.log(err)
-                      }else {
+                $scope.fbLoading = false;
+                $scope.pageLists = [];
+                $scope.pageLists = response.data;
+                if (!response.data.length){
+                  $scope.noPage = true;
+                }
+                $scope.close = function () {
+                  modalInstance.dismiss();
+                };
+                $scope.connect = function (page) {
+                  // modalInstance.dismiss();
+                  console.log(page);
+                  FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
+                    console.log(response);
+                    if(response.success){
+                      var info = {};
+                      info['user'] = vm.user._id;
+                      info['userBot'] = vm.userBot._id;
+                      info['userBotId'] = vm.userBot.id;
+                      info['page'] = page;
+                      info['connect'] = true;
+                      page['connected'] = true;
+                      $http.post('/api/auth/facebook/pageInfo', info, function (err) {
+                        if(err) {
+                          console.log(err)
+                        }else {
 
-                      }
-                    });
-                  }else {
+                        }
+                      });
+                    }else {
 
-                  }
+                    }
+                  });
+                };
+                $scope.disconnect = function (page) {
+                  // modalInstance.dismiss();
+                  console.log(page);
+                  var info = {};
+                  info['user'] = vm.user._id;
+                  info['userBot'] = vm.userBot._id;
+                  info['userBotId'] = vm.userBot.id;
+                  info['page'] = page;
+                  info['connect'] = false;
+                  page['connected'] = false;
+                  FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'delete', function (response) {
+                    console.log(response);
+                    if (response.success){
+                      page['connected'] = false;
+                      $http.post('/api/auth/facebook/pageInfo', info, function (err) {
+                        if(err) {
+                          console.log(err)
+                        }else {
+
+                        }
+                      });
+                    }else {
+
+                    }
+                  });
+                };
+                var modalInstance = $uibModal.open({
+                  templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',
+                  scope: $scope
                 });
-              };
-              $scope.disconnect = function (page) {
-                // modalInstance.dismiss();
-                console.log(page);
-                var info = {};
-                info['user'] = vm.user._id;
-                info['userBot'] = vm.userBot._id;
-                info['userBotId'] = vm.userBot.id;
-                info['page'] = page;
-                info['connect'] = false;
-                page['connected'] = false;
-                FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'delete', function (response) {
+                modalInstance.result.then(function (response) {
                   console.log(response);
-                  if (response.success){
-                    page['connected'] = false;
-                    $http.post('/api/auth/facebook/pageInfo', info, function (err) {
-                      if(err) {
-                        console.log(err)
-                      }else {
-
-                      }
-                    });
-                  }else {
-
-                  }
-                });
-              };
-              var modalInstance = $uibModal.open({
-                templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',
-                scope: $scope
+                })
               });
-              modalInstance.result.then(function (response) {
-                console.log(response);
-              })
             }
           });
         }

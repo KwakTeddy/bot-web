@@ -77,8 +77,9 @@
           </a>
           <span>
             <a href="#">
-              <img src="{{pageList.picture.data.url}}" alt="">
+              <img src="{{pageList.connectBot.imageFile}}" alt="">
             </a>
+            {{pageList.connectBot.id}}
           </span>
           <span>
             <button class="btn btn-default pull-right" ng-if="!pageList.connected" ng-click="connect(pageList)">
