@@ -100,13 +100,13 @@ shop.mapTask
     >+menu.name+ +menu.price+원\n+menu.description+
     <{if:'true'}>{repeat: 1, options: {postfix: '\n처음으로 가려면\n "시작"이라고 입력해주세요.'}}
 
-<{types: [shop.menuType]}
-'menuTask'
->[메뉴검색]\n#typeDoc#+index+. +name+ +price+원\n#\n번호나 메뉴명을 입력해주세요.
-    <{types: [{name: 'menu', listName: 'menus', typeCheck: 'listTypeCheck'}]}
-    shop.menuDetailTask
-    >[+menu.name+]\n+menu.price+원\n+menu.description+
-    <{if:'true'}>{repeat: 1, options: {postfix: '\n처음으로 가려면\n "시작"이라고 입력해주세요.'}}
+// <{types: [shop.menuType]}
+// 'menuTask'
+// >[메뉴검색]\n#typeDoc#+index+. +name+ +price+원\n#\n번호나 메뉴명을 입력해주세요.
+//     <{types: [{name: 'menu', listName: 'menus', typeCheck: 'listTypeCheck'}]}
+//     shop.menuDetailTask
+//     >[+menu.name+]\n+menu.price+원\n+menu.description+
+//     <{if:'true'}>{repeat: 1, options: {postfix: '\n처음으로 가려면\n "시작"이라고 입력해주세요.'}}
 
 // ****************** 영업시간 ****************** //
 날짜체크:
