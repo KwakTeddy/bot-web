@@ -199,18 +199,14 @@ if (_platform !== 'mobile'){
               $window.location.href = url;
             } else {
               console.log(vm.user);
-              $http.post('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true}, {'post' : {method : 'POST'}},function (response) {
-                console.log(response);
-              });
+              // $http.post('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true}, {'post' : {method : 'POST'}},function (response) {
+              //   console.log(response);
+              // });
 
 
-              $resource('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true}).post(function (res) {
-                if (res) {
-                  console.log(res);
-                }
-              }, function (err) {
-                console.log(err)
-              });
+              $resource('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true}, {'post' : {method : 'POST'}}, function (response) {
+                console.log(response)
+              })
 
               $scope.fbLoading = false;
               $scope.pageLists = [];
