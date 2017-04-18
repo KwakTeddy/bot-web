@@ -207,6 +207,8 @@ if (_platform !== 'mobile'){
                     if (res.data[i].pageId = response.data[j].id){
                       response.data[j]['connected'] = res.data[i].userBot;
                       continue;
+                    }else {
+                      response.data[j]['connected'] = false;
                     }
                   }
                 }
