@@ -203,6 +203,15 @@ if (_platform !== 'mobile'){
                 console.log(response);
               });
 
+
+              $resource('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true}).post(function (res) {
+                if (res) {
+                  console.log(res);
+                }
+              }, function (err) {
+                console.log(err)
+              });
+
               $scope.fbLoading = false;
               $scope.pageLists = [];
               $scope.pageLists = response.data;
