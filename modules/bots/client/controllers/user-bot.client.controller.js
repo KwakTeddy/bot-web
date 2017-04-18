@@ -186,7 +186,7 @@ if (_platform !== 'mobile'){
         if ((channel == 'facebook') && (method !== 'easy')){
           $scope.fbLoading = true;
           $scope.noPage = false;
-          FB.api('/me/accounts?fields=picture,name,link,access_token,perms', function(response) {
+          return FB.api('/me/accounts?fields=picture,name,link,access_token,perms', function(response) {
             console.log(response);
             if (response.error){
               var url = '/api/auth/facebook/page';
@@ -199,13 +199,13 @@ if (_platform !== 'mobile'){
               $window.location.href = url;
             } else {
               console.log(vm.user);
-              $http.post('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true},function (response) {
-                console.log(response);
-              });
+              // $http.post('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true},function (response) {
+              //   console.log(response);
+              // });
               //
-              // $resource('/api/auth/facebook/pageInfo', {},{'post' : {method : 'POST'}, params: {user: vm.user._id, list: true}}).query(function () {
-              //   console.log($post());
-              // })
+              $resource('/api/auth/facebook/pageInfo', {},{'post' : {method : 'POST'}, params: {user: vm.user._id, list: true}}).query({},function (res) {
+                console.log(res);
+              })
 
               $scope.fbLoading = false;
               $scope.pageLists = [];
@@ -284,9 +284,9 @@ if (_platform !== 'mobile'){
           templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',
           scope: $scope
         });
-        // modalInstance.result.then(function (response) {
-        //   console.log(response);
-        // })
+        modalInstance.result.then(function (response) {
+          console.log(response);
+        })
       };
 
       if (!vm.userBot || !vm.userBot._id) {
