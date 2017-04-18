@@ -331,8 +331,9 @@
 <!--facebook-->
 <script src="https://connect.facebook.net/en_US/all.js"></script>
 <!--<script src="https://connect.facebook.net/en_US/sdk.js"></script>-->
-<script type="text/javascript">
+<script>
   $.get('/config', function (facebookID) {
+    alert(facebookID);
     window.fbAsyncInit = function() {
       FB.init({
 //      appId      : '240853479709635',
