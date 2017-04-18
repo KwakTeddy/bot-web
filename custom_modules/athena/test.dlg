@@ -148,7 +148,8 @@ var first = /(?:~시작|~처음|^!$|취소)/
     > if(context.dialog.item.length != 0) \[+stockname+\]\n+Date+\n\n종가: +lastTradePriceOnly+원
     <{if: 'true'}> 죄송합니다. 등록되지 않은 회사명입니다.
 
-</([^\b]*)(?:\b|\s).*(뉴스).(찾다|검색)/
+</([^\b]*)(?:\b|\s).*(뉴스).(찾다|검색|추천)/
+</([^\b]*)(?:\b|\s).*(관련).(뉴스)/
 {action: navertask.searchNews}
 >if(context.dialog.item.length != 0 && context.user.channel == 'socket') 검색결과가 없습니다.
 >if(context.dialog.item.length != 0) 뉴스 검색결과입니다.\n#item#+index+. +title+\n#
