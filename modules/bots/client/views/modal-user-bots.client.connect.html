@@ -75,7 +75,7 @@
             <img src="{{pageList.picture.data.url}}" alt="facebook page img">
             {{pageList.name}}
           </a>
-          <span>
+          <span ng-if="pageList.connected">
             <a href="#">
               <img src="{{pageList.connected.imageFile}}" style="height: 50px" alt="">
             </a>
