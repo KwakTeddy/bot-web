@@ -234,7 +234,7 @@ if (_platform !== 'mobile'){
                       info['userBotId'] = vm.userBot.id;
                       info['page'] = page;
                       info['connect'] = true;
-                      page['connected'] = true;
+                      page['connected'] = vm.userBot;
                       $http.post('/api/auth/facebook/pageInfo', info, function (err) {
                         if(err) {
                           console.log(err)
