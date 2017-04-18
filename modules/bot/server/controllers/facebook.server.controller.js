@@ -46,6 +46,7 @@ exports.messageGet =  function(req, res) {
 
 
 exports.message = function (req, res) {
+  console.log('somethingcomingin')
   var data = req.body;
   // Make sure this is a page subscription
   if (data.object == 'page') {
