@@ -198,13 +198,6 @@ if (_platform !== 'mobile'){
               $scope.fbLoading = false;
               $window.location.href = url;
             } else {
-
-              $http.post('/api/auth/facebook/page/connect', {user: vm.user}, function (err, result) {
-                console.log(result);
-
-
-              });
-
               $scope.fbLoading = false;
               $scope.pageLists = [];
               $scope.pageLists = response.data;
@@ -219,13 +212,13 @@ if (_platform !== 'mobile'){
                 console.log(page);
                 FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
                   console.log(response);
-                  console.log(312312312);
                   if(response){
                     var info = {};
                     info['user'] = vm.user._id;
                     info['userBot'] = vm.userBot._id;
                     info['userBotId'] = vm.userBot.id;
                     info['page'] = page;
+                    info['connect'] = true;
                     page['connected'] = true;
                     $http.post('/api/auth/facebook/pageInfo', info, function (err) {
                       if(err) {
@@ -240,6 +233,12 @@ if (_platform !== 'mobile'){
               $scope.disconnect = function (page) {
                 // modalInstance.dismiss();
                 console.log(page);
+                var info = {};
+                info['user'] = vm.user._id;
+                info['userBot'] = vm.userBot._id;
+                info['userBotId'] = vm.userBot.id;
+                info['page'] = page;
+                info['connect'] = false;
                 page['connected'] = false;
                 FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'delete', function (response) {
                   console.log(response);

@@ -46,7 +46,6 @@ exports.messageGet =  function(req, res) {
 
 
 exports.message = function (req, res) {
-  console.log('somethingcomingin')
   var data = req.body;
   // Make sure this is a page subscription
   if (data.object == 'page') {
@@ -218,7 +217,7 @@ function receivedMessage(event) {
   console.log(event.botId);
 
   if (event.botId == "subscribeBot"){
-    console.log('subscribe Coming In');
+    console.log('Subscribe Coming In');
       UserBotFbPage.findOne({pageId: event.recipient.id}, function (err, data) {
           if (err){
               console.log(err);

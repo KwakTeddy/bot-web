@@ -34,8 +34,6 @@ module.exports = function (app) {
       'pages_messaging'
   ]}));
 
-  app.route('/api/auth/facebook/page/connect').post(users.fbPageConnect);
-
   app.route('/api/auth/facebook/:callback').get(users.oauthCallback('facebook'));
 
   // Setting the twitter oauth routes
