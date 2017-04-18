@@ -204,7 +204,7 @@ if (_platform !== 'mobile'){
               });
 
 
-              $resource('/api/auth/facebook/pageInfo', {'post' : {method : 'POST'}, params: {user: vm.user._id, list: true}}).query(function (response) {
+              $resource('/api/auth/facebook/pageInfo', {},{'post' : {method : 'POST'}, params: {user: vm.user._id, list: true}}).query(function (response) {
                 console.log(response);
               })
 
