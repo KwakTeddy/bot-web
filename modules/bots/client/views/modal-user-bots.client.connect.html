@@ -73,7 +73,7 @@
         <td>
           <a href="{{pageList.link}}" target="_blank">
             <img src="{{pageList.picture.data.url}}" alt="facebook page img">
-            {{pageList.name}}
+            {{pageList.name}}({{pageList.perms[0]}})
           </a>
           <span ng-if="pageList.connected">
             <a href="#">

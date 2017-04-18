@@ -211,8 +211,6 @@ if (_platform !== 'mobile'){
                     }
                   }
                 }
-                console.log(JSON.stringify(response.data));
-
                 $scope.fbLoading = false;
                 $scope.pageLists = [];
                 $scope.pageLists = response.data;
