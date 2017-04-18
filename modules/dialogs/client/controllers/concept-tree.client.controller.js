@@ -427,7 +427,7 @@ angular.module('dialogsets').controller('ConceptTreeController', ['$scope', '$ro
         }
         var scaleX = translateCoords.scale[0];
         var scaleY = translateCoords.scale[1];
-        scale = zoomListener.scale();
+        var scale = zoomListener.scale();
         svgGroup.transition().attr("transform", "translate(" + translateX + "," + translateY + ")scale(" + scale + ")");
         d3.select(domNode).select('g.node').attr("transform", "translate(" + translateX + "," + translateY + ")");
         zoomListener.scale(zoomListener.scale());
