@@ -124,6 +124,7 @@ shop.mapTask
 <몇 시
 <언제 끝
 <언제 시작
+>if(context.bot.holiday == '휴무없음') 영업시간은 +startTime+ 에서 +endTime+ 입니다.\n 휴무일은 없습니다.
 >영업시간은 +startTime+ 에서 +endTime+ 입니다.\n+holiday+은 휴무입니다.
 
 // ****************** 예약 ****************** //
