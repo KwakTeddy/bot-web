@@ -203,9 +203,8 @@ if (_platform !== 'mobile'){
                 console.log(response);
               });
 
-
-              $resource('/api/auth/facebook/pageInfo', {},{'post' : {method : 'POST'}, params: {user: vm.user._id, list: true}}).query(function (response) {
-                console.log(response);
+              $resource('/api/auth/facebook/pageInfo', {},{'post' : {method : 'POST'}, params: {user: vm.user._id, list: true}}).query(function () {
+                console.log($post());
               })
 
               $scope.fbLoading = false;
