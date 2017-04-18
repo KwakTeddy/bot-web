@@ -203,7 +203,9 @@ if (_platform !== 'mobile'){
                 console.log(res);
 
                 for(var i = 0; i < res.data.length; i++){
-                  for(var j = 0; j < response.data.length; i++){
+                  for(var j = 0; j < response.data.length; j++){
+                    console.log(i);
+                    console.log(j);
                     if (res.data[i].pageId = response.data[j].id){
                       response.data[j]['connected'] = res.data[i].userBot;
                       continue;
