@@ -186,7 +186,7 @@ if (_platform !== 'mobile'){
         if ((channel == 'facebook') && (method !== 'easy')){
           $scope.fbLoading = true;
           $scope.noPage = false;
-          return FB.api('/me/accounts?fields=picture,name,link,access_token,perms', function(response) {
+          FB.api('/me/accounts?fields=picture,name,link,access_token,perms', function(response) {
             console.log(response);
             if (response.error){
               var url = '/api/auth/facebook/page';
