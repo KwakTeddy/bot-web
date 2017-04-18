@@ -444,7 +444,7 @@ exports.facebookPage = function (req, res) {
 
     })
   }else {
-    UserBotFbPage.find({user : req.body.user}, function (err, data) {
+    UserBotFbPage.find({user : req.body.user}).populate('userBot').exec(function (err, data) {
       if(err){
         console.log(err);
       }else {
