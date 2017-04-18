@@ -443,7 +443,7 @@ exports.facebookPage = function (req, res) {
 
     })
   }else {
-    UserBotFbPage.find({user : req.body.user}).populate('bot').exec(function (err, data) {
+    UserBotFbPage.update({user : req.body.user}).populate('bot').exec(function (err, data) {
       if(err){
         console.log(err);
       }else {
@@ -451,15 +451,11 @@ exports.facebookPage = function (req, res) {
           for(var j = 0; j < req.body.pageInfo.length; j++){
             if (data[i].pageId == req.body.pageInfo[j].id){
               data[i].accessToken = req.body.pageInfo[j].access_token;
+              data[i].save();
             }
           }
         }
-        data.save(function (err) {
-          if(err){
-            console.log(err)
-          }
-          return res.json(data);
-        });
+        return res.json(data);
       }
 
     })
