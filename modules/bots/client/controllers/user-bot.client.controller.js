@@ -198,6 +198,14 @@ if (_platform !== 'mobile'){
               $scope.fbLoading = false;
               $window.location.href = url;
             } else {
+              $http.post('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true}, function (err, response) {
+                if(err) {
+                  console.log(err)
+                }else {
+                  console.log(response)
+                }
+              });
+
               $scope.fbLoading = false;
               $scope.pageLists = [];
               $scope.pageLists = response.data;
@@ -212,7 +220,7 @@ if (_platform !== 'mobile'){
                 console.log(page);
                 FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
                   console.log(response);
-                  if(response){
+                  if(response.success){
                     var info = {};
                     info['user'] = vm.user._id;
                     info['userBot'] = vm.userBot._id;
@@ -227,6 +235,8 @@ if (_platform !== 'mobile'){
 
                       }
                     });
+                  }else {
+
                   }
                 });
               };
@@ -242,16 +252,18 @@ if (_platform !== 'mobile'){
                 page['connected'] = false;
                 FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'delete', function (response) {
                   console.log(response);
-                  page['connected'] = false;
+                  if (response.success){
+                    page['connected'] = false;
+                    $http.post('/api/auth/facebook/pageInfo', info, function (err) {
+                      if(err) {
+                        console.log(err)
+                      }else {
 
-                  $http.post('/api/auth/facebook/pageInfo', info, function (err) {
-                    if(err) {
-                      console.log(err)
-                    }else {
+                      }
+                    });
+                  }else {
 
-                    }
-                  });
-
+                  }
                 });
               };
               var modalInstance = $uibModal.open({
@@ -267,25 +279,6 @@ if (_platform !== 'mobile'){
         $scope.close = function () {
           modalInstance.dismiss();
         };
-        // $scope.connect = function (page) {
-        //   modalInstance.dismiss();
-        //   console.log(page);
-        //   FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
-        //     console.log(response);
-        //     if(response){
-        //       var info = {};
-        //       info['user'] = vm.user._id;
-        //       info['userBot'] = vm.userBot._id;
-        //       info['userBotId'] = vm.userBot.id;
-        //       info['page'] = page;
-        //       $http.post('/api/auth/facebook/pageInfo', info, function (err) {
-        //           if(err) {
-        //               console.log(err)
-        //           }
-        //       });
-        //     }
-        //   });
-        // };
         var modalInstance = $uibModal.open({
           templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',
           scope: $scope
