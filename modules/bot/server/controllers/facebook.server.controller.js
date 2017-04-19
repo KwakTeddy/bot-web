@@ -403,15 +403,6 @@ function sendButtonMessage(recipientId, text, task, token) {
         payload: {
           template_type: "button",
           text: text,
-          // buttons:[{
-          //   type: "web_url",
-          //   url: "https://www.oculus.com/en-us/rift/",
-          //   title: "Open Web URL"
-          // }, {
-          //   type: "postback",
-          //   title: "Call Postback",
-          //   payload: "Developer defined postback"
-          // }],
           buttons: task.result.button
         }
       }
