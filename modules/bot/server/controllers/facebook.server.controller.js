@@ -453,7 +453,7 @@ function sendGenericMessage(recipientId, text, task, token) {
         type: "template",
         payload: {
           template_type: "generic",
-          elements: task.result
+          elements: [task.result]
           //   [{
           //   title: "rift",
           //   subtitle: "Next-generation virtual reality",
