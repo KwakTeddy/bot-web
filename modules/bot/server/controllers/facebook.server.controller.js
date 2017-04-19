@@ -489,6 +489,7 @@ function smartReplyMessage(recipientId, text, task, token) {
   for (var i = 0; i < task.result.smartReply.length; i++){
     task.result.smartReply[i] = {"title" : task.result.smartReply[i]};
     task.result.smartReply[i]['content_type'] = 'text';
+    task.result.smartReply[i]['payload'] = text;
     // task.result.smartReply[i]['payload'] = 'text';
   }
   console.log(util.inspect(task.result.smartReply, {showHidden: false, depth: null}));
