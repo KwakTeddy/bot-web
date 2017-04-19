@@ -93,6 +93,7 @@ function respondMessage(to, text, botId, task) {
     }
   };
   console.log(JSON.stringify(text));
+  console.log('here your console');
 
   contextModule.getContext(botId, 'facebook', to, null, function(context) {
     var bot = context.botUser.orgBot || context.bot;
