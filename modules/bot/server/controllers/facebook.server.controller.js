@@ -175,9 +175,11 @@ function receivedMessage(event) {
                       var messageId = message.mid;
                       var messageText = message.text;
                       var messageAttachments = message.attachments;
-                      if (messageAttachments){
+                    console.log(util.inspect(messageText, {showHidden: false, depth: null}))
+                    if (messageAttachments){
                         messageText = 'fbUserImage';
                         console.log(util.inspect(messageAttachments, {showHidden: false, depth: null}))
+                        var image = messageAttachments[0].payload.url
                       }
                       chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
                           console.log('this is write');
