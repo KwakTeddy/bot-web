@@ -353,7 +353,7 @@ function receivedPostback(event) {
  * Send a message with an using the Send API.
  *
  */
-function sendImageMessage(recipientId) {
+function sendImageMessage(recipientId, text, task, token) {
   var messageData = {
     recipient: {
       id: recipientId
@@ -362,13 +362,13 @@ function sendImageMessage(recipientId) {
       attachment: {
         type: "image",
         payload: {
-          url: "http://i.imgur.com/zYIlgBl.png"
+          url: task.result.image.url
         }
       }
     }
   };
 
-  callSendAPI(messageData);
+  callSendAPI(messageData, token);
 }
 
 /*
@@ -415,8 +415,6 @@ function sendButtonMessage(recipientId, text, task, token) {
       }
     }
   };
-  console.log('here button');
-  console.log(token);
   callSendAPI(messageData, token);
 }
 
