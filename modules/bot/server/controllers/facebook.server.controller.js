@@ -442,6 +442,7 @@ function sendGenericMessage(recipientId, text, task, token) {
       task.result['title'] = text;
     }
   }
+  console.log(util.inspect(task.result, {showHidden: false, depth: null}));
 
   var messageData = {
     recipient: {
