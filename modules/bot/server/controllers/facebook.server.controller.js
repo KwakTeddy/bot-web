@@ -102,6 +102,8 @@ function respondMessage(to, text, botId, task) {
         // callSendAPI(messageData, bot.facebook.PAGE_ACCESS_TOKEN);
         tokenData = bot.facebook.PAGE_ACCESS_TOKEN;
     }
+    console.log(util.inspect(task.result, {showHidden: false, depth: null}));
+    console.log('youre consoleellllllllll');
 
     if (task && task.result) {
       // If we receive a text message, check to see if it matches any special
