@@ -178,6 +178,7 @@ function receivedMessage(event) {
 
                       chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
                           console.log('this is write');
+                          console.log(util.inspect(task, {showHidden: false, depth: null}));
                           respondMessage(senderID, retText, event.botId, task);
                       });
                   }
