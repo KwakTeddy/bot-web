@@ -360,7 +360,7 @@ exports.saveOAuthUserProfile = function (req, providerUserProfile, done) {
         $or: [mainProviderSearchQuery, additionalProviderSearchQuery, emailSearchQuery]
     };
 
-      User.findOne(searchQuery, function (err, user) {
+    User.findOne(searchQuery, function (err, user) {
       if (err) {
         return done(err);
       } else {
@@ -403,7 +403,17 @@ exports.saveOAuthUserProfile = function (req, providerUserProfile, done) {
                   return done(err, user, '/settings/accounts');
               });
           } else {
+            if (user.provider == 'facebook'){
+              user.markModified('additionalProvidersData');
+              user.providerData.accessToken = providerUserProfile.providerData.accessToken;
+            }else {
+              user.markModified('additionalProvidersData');
+              user.additionalProvidersData.facebook.accessToken = providerUserProfile.providerData.accessToken;
+            }
+            user.save(function (err) {
+              if (err) console.log(err);
               return done(err, user);
+            })
           }
         }
       }
@@ -429,17 +439,16 @@ exports.saveOAuthUserProfile = function (req, providerUserProfile, done) {
         return done(err, user, '/settings/accounts');
       });
     } else {
-      console.log(util.inspect(providerUserProfile.providerData.accessToken));
-      User.findOne({_id: user.id}, function (err, data) {
-        if (data.provider == 'facebook'){
-          data.providerData.accessToken = providerUserProfile.providerData.accessToken;
-        }else {
-          data.additionalProvidersData.facebook.accessToken = providerUserProfile.providerData.accessToken;
-        }
-        data.save(function (err) {
-          if (err) console.log(err);
-          return done(new Error('User is already connected using this provider'), user);
-        })
+      if (user.provider == 'facebook'){
+        user.markModified('additionalProvidersData');
+        user.providerData.accessToken = providerUserProfile.providerData.accessToken;
+      }else {
+        user.markModified('additionalProvidersData');
+        user.additionalProvidersData.facebook.accessToken = providerUserProfile.providerData.accessToken;
+      }
+      user.save(function (err) {
+        if (err) console.log(err);
+        return done(new Error('User is already connected using this provider'), user);
       })
     }
   }
@@ -519,4 +528,15 @@ exports.validateEmailConfirmToken = function (req, res) {
             }
         });
     });
+};
+
+
+/**
+ * Get Token FB
+ */
+exports.getToken = function (req, res) {
+ User.findOne({_id: req.params.userId}, function (err, data) {
+   return res.json(data);
+ })
+
 };

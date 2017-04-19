@@ -17,7 +17,9 @@ var path = require('path'),
   _ = require('lodash'),
   botLib = require(path.resolve('config/lib/bot')),
   multer = require('multer'),
-  fs = require('fs');
+  fs = require('fs'),
+  request = require('request');
+
 
   var Dialogset = mongoose.model('Dialogset');
   var dialogsetModule = require(path.resolve('modules/bot/engine/dialogset/dialogset.js'));
@@ -447,14 +449,14 @@ exports.facebookPage = function (req, res) {
       if(err){
         console.log(err);
       }else {
-        for(var i = 0; i < data.length; i++){
-          for(var j = 0; j < req.body.pageInfo.length; j++){
-            if (data[i].pageId == req.body.pageInfo[j].id){
-              data[i].accessToken = req.body.pageInfo[j].access_token;
-              data[i].save();
-            }
-          }
-        }
+        // for(var i = 0; i < data.length; i++){
+        //   for(var j = 0; j < req.body.pageInfo.length; j++){
+        //     if (data[i].pageId == req.body.pageInfo[j].id){
+        //       data[i].accessToken = req.body.pageInfo[j].access_token;
+        //       data[i].save();
+        //     }
+        //   }
+        // }
         return res.json(data);
       }
 
