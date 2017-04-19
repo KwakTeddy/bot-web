@@ -115,7 +115,7 @@ function respondMessage(to, text, botId, task) {
       console.log(typeof Object.keys(task.result).toString());
       switch (Object.keys(task.result).toString()) {
         case 'image':
-          sendImageMessage(to, text, task, tokenData);
+          sendGenericMessage(to, text, task, tokenData);
           break;
 
         case 'buttons':
@@ -423,7 +423,26 @@ function sendButtonMessage(recipientId, text, task, token) {
  * Send a Structured Message (Generic Message type) using the Send API.
  *
  */
-function sendGenericMessage(recipientId) {
+function sendGenericMessage(recipientId, text, task, token) {
+  if (task.result.items){
+
+  }else {
+    if (task.result.buttons){
+      for(var i = 0; i < task.result.buttons.length; i++){
+        task.result.buttons[i].title = task.result.buttons[i].text;
+        delete task.result.buttons[i].text;
+        task.result.buttons[i]['type'] = 'web_url';
+        task.result['title'] = text;
+      }
+    }
+    if(task.result.image){
+      task.result.image = task.result.image_url;
+      delete task.result.image;
+      task.result.image_url = task.result.image.url;
+      task.result['title'] = text;
+    }
+  }
+
   var messageData = {
     recipient: {
       id: recipientId
@@ -433,48 +452,49 @@ function sendGenericMessage(recipientId) {
         type: "template",
         payload: {
           template_type: "generic",
-          elements: [{
-            title: "rift",
-            subtitle: "Next-generation virtual reality",
-            item_url: "https://www.oculus.com/en-us/rift/",
-            image_url: "http://messengerdemo.parseapp.com/img/rift.png",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.oculus.com/en-us/rift/",
-              title: "Open Web URL"
-            }, {
-              type: "postback",
-              title: "Call Postback",
-              payload: "Payload for first bubble",
-            }],
-          }, {
-            title: "touch",
-            subtitle: "Your Hands, Now in VR",
-            item_url: "https://www.oculus.com/en-us/touch/",
-            image_url: "http://messengerdemo.parseapp.com/img/touch.png",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.oculus.com/en-us/touch/",
-              title: "Open Web URL"
-            }, {
-              type: "postback",
-              title: "Call Postback",
-              payload: "Payload for second bubble",
-            }]
-          }]
+          elements: task.result
+          //   [{
+          //   title: "rift",
+          //   subtitle: "Next-generation virtual reality",
+          //   item_url: "https://www.oculus.com/en-us/rift/",
+          //   image_url: "http://messengerdemo.parseapp.com/img/rift.png",
+          //   buttons: [{
+          //     type: "web_url",
+          //     url: "https://www.oculus.com/en-us/rift/",
+          //     title: "Open Web URL"
+          //   }, {
+          //     type: "postback",
+          //     title: "Call Postback",
+          //     payload: "Payload for first bubble",
+          //   }],
+          // }, {
+          //   title: "touch",
+          //   subtitle: "Your Hands, Now in VR",
+          //   item_url: "https://www.oculus.com/en-us/touch/",
+          //   image_url: "http://messengerdemo.parseapp.com/img/touch.png",
+          //   buttons: [{
+          //     type: "web_url",
+          //     url: "https://www.oculus.com/en-us/touch/",
+          //     title: "Open Web URL"
+          //   }, {
+          //     type: "postback",
+          //     title: "Call Postback",
+          //     payload: "Payload for second bubble",
+          //   }]
+          // }]
         }
       }
     }
   };
 
-  callSendAPI(messageData);
+  callSendAPI(messageData, token);
 }
 
 /*
  * Send a receipt message using the Send API.
  *
  */
-function sendReceiptMessage(recipientId) {
+function sendReceiptMessage(recipientId, text, task, token) {
   // Generate a random receipt ID as the API requires a unique ID
   var receiptId = "order" + Math.floor(Math.random()*1000);
 
