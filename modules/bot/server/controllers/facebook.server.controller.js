@@ -396,9 +396,10 @@ function sendButtonMessage(recipientId, text, task, token) {
   var buttons = [];
   for(var i = 0; i < task.result.buttons.length; i++){
     task.result.buttons[i].title = task.result.buttons[i].text;
-    delete task.result.buttons[i].text
+    delete task.result.buttons[i].text;
+    task.result.buttons[i]['type'] = 'web_url';
   }
-  console.log(util.inspect(task));
+  console.log(util.inspect(task, {showHidden: false, depth: null}));
 
   var messageData = {
     recipient: {
