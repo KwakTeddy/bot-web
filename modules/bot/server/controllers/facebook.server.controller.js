@@ -107,7 +107,7 @@ function respondMessage(to, text, botId, task) {
         tokenData = bot.facebook.PAGE_ACCESS_TOKEN;
     }
 
-    if (task.result) {
+    if (task && task.result) {
       // If we receive a text message, check to see if it matches any special
       // keywords and send back the corresponding example. Otherwise, just echo
       // the text we received.
@@ -393,7 +393,6 @@ function sendTextMessage(recipientId, messageText) {
  *
  */
 function sendButtonMessage(recipientId, text, task, token) {
-  var buttons = [];
   for(var i = 0; i < task.result.buttons.length; i++){
     task.result.buttons[i].title = task.result.buttons[i].text;
     delete task.result.buttons[i].text;
@@ -411,15 +410,6 @@ function sendButtonMessage(recipientId, text, task, token) {
         payload: {
           template_type: "button",
           text: text,
-          // buttons:[{
-          //   type: "web_url",
-          //   url: "https://www.oculus.com/en-us/rift/",
-          //   title: "Open Web URL"
-          // }, {
-          //   type: "postback",
-          //   title: "Call Postback",
-          //   payload: "Developer defined postback"
-          // }],
           buttons: task.result.buttons
         }
       }
