@@ -175,7 +175,9 @@ function receivedMessage(event) {
                       var messageId = message.mid;
                       var messageText = message.text;
                       var messageAttachments = message.attachments;
-
+                      if (messageAttachments){
+                        console.log(util.inspect(messageAttachments, {showHidden: false, depth: null}))
+                      }
                       chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
                           console.log('this is write');
                           console.log(util.inspect(task, {showHidden: false, depth: null}));
@@ -498,8 +500,7 @@ function smartReplyMessage(recipientId, text, task, token) {
     message:{
       "text": text,
       "quick_replies": task.result.smartReply
-    },
-    sender_action: "typing_on"
+    }
   };
 
   callSendAPI(messageData, token);
