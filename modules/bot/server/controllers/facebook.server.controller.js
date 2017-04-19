@@ -133,10 +133,13 @@ function respondMessage(to, text, botId, task) {
         default:
           sendTextMessage(to, text);
       }
-    } else if (messageAttachments) {
-      sendTextMessage(to, "Message with attachment received");
-    } else {
-      sendTextMessage(to, "서버가 연결되어 있지 않습니다.");
+    }
+    // else if (messageAttachments) {
+    //   sendTextMessage(to, "Message with attachment received");
+    // }
+    else {
+      sendTextMessage(to, text, task, tokenData);
+      // sendTextMessage(to, "서버가 연결되어 있지 않습니다.");
     }
   });
 }
@@ -376,17 +379,17 @@ function sendImageMessage(recipientId, text, task, token) {
  * Send a text message using the Send API.
  *
  */
-function sendTextMessage(recipientId, messageText) {
+function sendTextMessage(recipientId, text, task, token) {
   var messageData = {
     recipient: {
       id: recipientId
     },
     message: {
-      text: messageText
+      text: text
     }
   };
 
-  callSendAPI(messageData);
+  callSendAPI(messageData, token);
 }
 
 /*
@@ -441,6 +444,7 @@ function sendGenericMessage(recipientId, text, task, token) {
       task.result.image_url = task.result.image_url.url;
       task.result['title'] = text;
     }
+    task.result = [task.result];
   }
   console.log(util.inspect(task.result, {showHidden: false, depth: null}));
 
@@ -453,36 +457,7 @@ function sendGenericMessage(recipientId, text, task, token) {
         type: "template",
         payload: {
           template_type: "generic",
-          elements: [task.result]
-          //   [{
-          //   title: "rift",
-          //   subtitle: "Next-generation virtual reality",
-          //   item_url: "https://www.oculus.com/en-us/rift/",
-          //   image_url: "http://messengerdemo.parseapp.com/img/rift.png",
-          //   buttons: [{
-          //     type: "web_url",
-          //     url: "https://www.oculus.com/en-us/rift/",
-          //     title: "Open Web URL"
-          //   }, {
-          //     type: "postback",
-          //     title: "Call Postback",
-          //     payload: "Payload for first bubble",
-          //   }],
-          // }, {
-          //   title: "touch",
-          //   subtitle: "Your Hands, Now in VR",
-          //   item_url: "https://www.oculus.com/en-us/touch/",
-          //   image_url: "http://messengerdemo.parseapp.com/img/touch.png",
-          //   buttons: [{
-          //     type: "web_url",
-          //     url: "https://www.oculus.com/en-us/touch/",
-          //     title: "Open Web URL"
-          //   }, {
-          //     type: "postback",
-          //     title: "Call Postback",
-          //     payload: "Payload for second bubble",
-          //   }]
-          // }]
+          elements: task.result
         }
       }
     }
