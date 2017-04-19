@@ -492,25 +492,14 @@ function smartReplyMessage(recipientId, text, task, token) {
     // task.result.smartReply[i]['payload'] = 'text';
   }
   console.log(util.inspect(task.result.smartReply, {showHidden: false, depth: null}));
+  console.log(util.inspect(text, {showHidden: false, depth: null}));
   var messageData = {
     recipient: {
       id: recipientId
     },
     message:{
       "text": text,
-      "quick_replies":task.result.smartReply
-      //   [
-      //   {
-      //     "content_type":"text",
-      //     "title":"Red",
-      //     "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_RED"
-      //   },
-      //   {
-      //     "content_type":"text",
-      //     "title":"Green",
-      //     "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_GREEN"
-      //   }
-      // ]
+      "quick_replies": task.result.smartReply
     }
   };
 
