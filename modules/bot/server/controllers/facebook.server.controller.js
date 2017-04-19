@@ -117,7 +117,7 @@ function respondMessage(to, text, botId, task) {
           sendReceiptMessage(to);
           break;
 
-        case 'template':
+        case 'smartReply':
           smartReplyMessage(to, text, task, tokenData);
           break;
 
@@ -486,24 +486,32 @@ function sendReceiptMessage(recipientId, text, task, token) {
  *
  */
 function smartReplyMessage(recipientId, text, task, token) {
+  for (var i = 0; i < task.result.smartReply.length; i++){
+    task.result.smartReply[i]['content_type'] = 'text';
+    task.result.smartReply[i].title = task.result.smartReply[i];
+    delete task.result.smartReply[i];
+    // task.result.smartReply[i]['payload'] = 'text';
+  }
+  console.log(util.inspect(task.result.smartReply, {showHidden: false, depth: null}));
   var messageData = {
     recipient: {
       id: recipientId
     },
     message:{
-      "text":"Pick a color:",
-      "quick_replies":[
-        {
-          "content_type":"text",
-          "title":"Red",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_RED"
-        },
-        {
-          "content_type":"text",
-          "title":"Green",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_GREEN"
-        }
-      ]
+      "text": text,
+      "quick_replies":task.result.smartReply
+      //   [
+      //   {
+      //     "content_type":"text",
+      //     "title":"Red",
+      //     "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_RED"
+      //   },
+      //   {
+      //     "content_type":"text",
+      //     "title":"Green",
+      //     "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_GREEN"
+      //   }
+      // ]
     }
   };
 
