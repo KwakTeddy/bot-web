@@ -111,7 +111,7 @@ function respondMessage(to, text, botId, task) {
       // If we receive a text message, check to see if it matches any special
       // keywords and send back the corresponding example. Otherwise, just echo
       // the text we received.
-      switch (text) {
+      switch (task.result) {
         case 'image':
           sendImageMessage(to, text, task, tokenData);
           break;
