@@ -423,7 +423,7 @@ function sendButtonMessage(recipientId, text, task, token) {
 function sendGenericMessage(recipientId, text, task, token) {
   if (task.result.items){
     task.result = task.result.items;
-    for(var i =0; i < 3; i++){
+    for(var i =0; i < task.result.length; i++){
       if (task.result[i].text){
         task.result[i].subtitle = task.result[i].text;
         delete task.result[i].text;
@@ -459,7 +459,7 @@ function sendGenericMessage(recipientId, text, task, token) {
     task.result = [task.result];
   }
   console.log(util.inspect(task.result, {showHidden: false, depth: null}));
-
+  task.result.splice(0, 13);
   var messageData = {
     recipient: {
       id: recipientId
