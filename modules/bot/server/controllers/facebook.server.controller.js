@@ -112,6 +112,7 @@ function respondMessage(to, text, botId, task) {
       // keywords and send back the corresponding example. Otherwise, just echo
       // the text we received.
       console.log(Object.keys(task.result));
+      console.log(typeof Object.keys(task.result));
       switch (Object.keys(task.result)) {
         case 'image':
           sendImageMessage(to, text, task, tokenData);
