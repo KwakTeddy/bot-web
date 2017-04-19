@@ -439,8 +439,8 @@ function sendGenericMessage(recipientId, text, task, token) {
           task.result[i].buttons[j]['type'] = 'web_url';
         }
       }
-
     }
+    task.result.splice(10);
   }else {
     if (task.result.buttons){
       for(var i = 0; i < task.result.buttons.length; i++){
@@ -459,7 +459,6 @@ function sendGenericMessage(recipientId, text, task, token) {
     task.result = [task.result];
   }
   console.log(util.inspect(task.result, {showHidden: false, depth: null}));
-  task.result.splice(0, 13);
   var messageData = {
     recipient: {
       id: recipientId
