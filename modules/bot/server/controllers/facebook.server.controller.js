@@ -433,10 +433,10 @@ function sendGenericMessage(recipientId, text, task, token) {
         delete task.result[i].imageUrl;
       }
       if (task.result[i].buttons) {
-        for (var i = 0; i < task.result.buttons.length; i++) {
-          task.result.buttons[i].title = task.result.buttons[i].text;
-          delete task.result.buttons[i].text;
-          task.result.buttons[i]['type'] = 'web_url';
+        for (var j = 0; j < task.result[i].buttons.length; j++) {
+          task.result[i].buttons[j].title = task.result[i].buttons[j].text;
+          delete task.result[i].buttons[j].text;
+          task.result[i].buttons[j]['type'] = 'web_url';
         }
       }
 
