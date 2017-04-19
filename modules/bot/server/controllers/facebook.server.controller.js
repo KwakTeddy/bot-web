@@ -436,9 +436,9 @@ function sendGenericMessage(recipientId, text, task, token) {
       }
     }
     if(task.result.image){
-      task.result.image = task.result.image_url;
+      task.result.image_url = task.result.image;
       delete task.result.image;
-      task.result.image_url = task.result.image.url;
+      task.result.image_url = task.result.image_url.url;
       task.result['title'] = text;
     }
   }
