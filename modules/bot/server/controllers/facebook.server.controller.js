@@ -92,10 +92,6 @@ function respondMessage(to, text, botId, task) {
       text: text
     }
   };
-  console.log(text);
-  console.log(util.inspect(task, {showHidden: false, depth: null}));
-  console.log('here your console');
-
   contextModule.getContext(botId, 'facebook', to, null, function(context) {
     var bot = context.botUser.orgBot || context.bot;
 
@@ -111,8 +107,6 @@ function respondMessage(to, text, botId, task) {
       // If we receive a text message, check to see if it matches any special
       // keywords and send back the corresponding example. Otherwise, just echo
       // the text we received.
-      console.log(Object.keys(task.result));
-      console.log(typeof Object.keys(task.result).toString());
       switch (Object.keys(task.result).toString()) {
         case 'image':
           sendGenericMessage(to, text, task, tokenData);
@@ -122,8 +116,8 @@ function respondMessage(to, text, botId, task) {
           sendButtonMessage(to, text, task, tokenData);
           break;
 
-        case 'generic':
-          sendGenericMessage(to);
+        case 'items':
+          sendGenericMessage(to, text, task, tokenData);
           break;
 
         case 'receipt':
