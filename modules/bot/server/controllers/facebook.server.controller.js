@@ -83,7 +83,7 @@ exports.message = function (req, res) {
 
 exports.respondMessage = respondMessage;
 function respondMessage(to, text, botId, task) {
-
+  var tokenData = '';
   var messageData = {
     recipient: {
       id: to
@@ -100,42 +100,43 @@ function respondMessage(to, text, botId, task) {
     var bot = context.botUser.orgBot || context.bot;
 
     if (subscribe){
-        callSendAPI(messageData, subscribePageToken);
+        // callSendAPI(messageData, subscribePageToken);
+        tokenData = subscribePageToken;
     }else {
-        callSendAPI(messageData, bot.facebook.PAGE_ACCESS_TOKEN);
+        // callSendAPI(messageData, bot.facebook.PAGE_ACCESS_TOKEN);
+        tokenData = bot.facebook.PAGE_ACCESS_TOKEN;
+    }
+
+    if (task.result) {
+      // If we receive a text message, check to see if it matches any special
+      // keywords and send back the corresponding example. Otherwise, just echo
+      // the text we received.
+      switch (text) {
+        case 'image':
+          sendImageMessage(to, text, task, tokenData);
+          break;
+
+        case 'buttons':
+          sendButtonMessage(to, text, task, tokenData);
+          break;
+
+        case 'generic':
+          sendGenericMessage(to);
+          break;
+
+        case 'receipt':
+          sendReceiptMessage(to);
+          break;
+
+        default:
+          sendTextMessage(to, text);
+      }
+    } else if (messageAttachments) {
+      sendTextMessage(to, "Message with attachment received");
+    } else {
+      sendTextMessage(to, "서버가 연결되어 있지 않습니다.");
     }
   });
-
-
-  // if (task) {
-  //   // If we receive a text message, check to see if it matches any special
-  //   // keywords and send back the corresponding example. Otherwise, just echo
-  //   // the text we received.
-  //   switch (text) {
-  //     case 'image':
-  //       sendImageMessage(to);
-  //       break;
-  //
-  //     case 'button':
-  //       sendButtonMessage(to);
-  //       break;
-  //
-  //     case 'generic':
-  //       sendGenericMessage(to);
-  //       break;
-  //
-  //     case 'receipt':
-  //       sendReceiptMessage(to);
-  //       break;
-  //
-  //     default:
-  //       sendTextMessage(to, text);
-  //   }
-  // } else if (messageAttachments) {
-  //   sendTextMessage(to, "Message with attachment received");
-  // } else {
-  //   sendTextMessage(to, "서버가 연결되어 있지 않습니다.");
-  // }
 }
 
 /*
@@ -389,7 +390,7 @@ function sendTextMessage(recipientId, messageText) {
  * Send a button message using the Send API.
  *
  */
-function sendButtonMessage(recipientId) {
+function sendButtonMessage(recipientId, text, task, token) {
   var messageData = {
     recipient: {
       id: recipientId
@@ -414,7 +415,7 @@ function sendButtonMessage(recipientId) {
     }
   };
 
-  callSendAPI(messageData);
+  callSendAPI(messageData, token);
 }
 
 /*
