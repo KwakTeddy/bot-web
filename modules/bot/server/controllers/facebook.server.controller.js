@@ -414,7 +414,8 @@ function sendButtonMessage(recipientId, text, task, token) {
       }
     }
   };
-
+  console.log('here button');
+  console.log(token);
   callSendAPI(messageData, token);
 }
 
