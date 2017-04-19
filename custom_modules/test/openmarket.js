@@ -1,5 +1,6 @@
 var path = require('path');
 var java = require('java');
+console.log(java);
 var request = require('request');
 var util = require('util');
 java.classpath.push(path.resolve(__dirname, '../../external_modules/hmac_sdk/commons-codec-1.10.jar'));

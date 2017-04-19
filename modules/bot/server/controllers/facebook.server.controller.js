@@ -102,8 +102,8 @@ function respondMessage(to, text, botId, task) {
         // callSendAPI(messageData, bot.facebook.PAGE_ACCESS_TOKEN);
         tokenData = bot.facebook.PAGE_ACCESS_TOKEN;
     }
-    console.log(util.inspect(task.result, {showHidden: false, depth: null}));
-    console.log('youre consoleellllllllll');
+    // console.log(util.inspect(task.result, {showHidden: false, depth: null}));
+    // console.log('youre consoleellllllllll');
 
     if (task && task.result) {
       // If we receive a text message, check to see if it matches any special
@@ -471,35 +471,6 @@ function sendGenericMessage(recipientId, text, task, token) {
         payload: {
           template_type: "generic",
           elements: task.result
-          // elements: [{
-          //   title: "rift",
-          //   subtitle: "Next-generation virtual reality",
-          //   item_url: "https://www.oculus.com/en-us/rift/",
-          //   image_url: "http://messengerdemo.parseapp.com/img/rift.png",
-          //   buttons: [{
-          //     type: "web_url",
-          //     url: "https://www.oculus.com/en-us/rift/",
-          //     title: "Open Web URL"
-          //   }, {
-          //     type: "postback",
-          //     title: "Call Postback",
-          //     payload: "Payload for first bubble",
-          //   }],
-          // }, {
-          //   title: "touch",
-          //   subtitle: "Your Hands, Now in VR",
-          //   item_url: "https://www.oculus.com/en-us/touch/",
-          //   image_url: "http://messengerdemo.parseapp.com/img/touch.png",
-          //   buttons: [{
-          //     type: "web_url",
-          //     url: "https://www.oculus.com/en-us/touch/",
-          //     title: "Open Web URL"
-          //   }, {
-          //     type: "postback",
-          //     title: "Call Postback",
-          //     payload: "Payload for second bubble",
-          //   }]
-          // }]
         }
       }
     }
