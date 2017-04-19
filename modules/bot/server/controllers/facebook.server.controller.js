@@ -393,6 +393,13 @@ function sendTextMessage(recipientId, messageText) {
  *
  */
 function sendButtonMessage(recipientId, text, task, token) {
+  var buttons = [];
+  for(var i = 0; i < task.result.buttons.length; i++){
+    task.result.buttons[i].title = task.result.buttons[i].text;
+    delete task.result.buttons[i].text
+  }
+  console.log(util.inspect(task));
+
   var messageData = {
     recipient: {
       id: recipientId
