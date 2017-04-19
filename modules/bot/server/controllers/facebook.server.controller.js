@@ -490,10 +490,7 @@ function smartReplyMessage(recipientId, text, task, token) {
     task.result.smartReply[i] = {"title" : task.result.smartReply[i]};
     task.result.smartReply[i]['content_type'] = 'text';
     task.result.smartReply[i]['payload'] = task.result.smartReply[i].title;
-    // task.result.smartReply[i]['payload'] = 'text';
   }
-  console.log(util.inspect(task.result.smartReply, {showHidden: false, depth: null}));
-  console.log(util.inspect(text, {showHidden: false, depth: null}));
   var messageData = {
     recipient: {
       id: recipientId
@@ -501,7 +498,8 @@ function smartReplyMessage(recipientId, text, task, token) {
     message:{
       "text": text,
       "quick_replies": task.result.smartReply
-    }
+    },
+    sender_action: "typing_on"
   };
 
   callSendAPI(messageData, token);
