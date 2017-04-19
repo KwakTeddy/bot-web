@@ -92,6 +92,7 @@ function respondMessage(to, text, botId, task) {
       text: text
     }
   };
+  console.log(JSON.stringify(text));
 
   contextModule.getContext(botId, 'facebook', to, null, function(context) {
     var bot = context.botUser.orgBot || context.bot;
@@ -214,7 +215,6 @@ function receivedMessage(event) {
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
   var message = event.message;
-  console.log(event.botId);
 
   if (event.botId == "subscribeBot"){
     console.log('Subscribe Coming In');
