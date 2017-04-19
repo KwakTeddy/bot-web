@@ -92,6 +92,7 @@ function respondMessage(to, text, botId, task) {
       text: text
     }
   };
+  console.log(text);
   console.log(util.inspect(task, {showHidden: false, depth: null}));
   console.log('here your console');
 
@@ -106,35 +107,35 @@ function respondMessage(to, text, botId, task) {
   });
 
 
-  if (task) {
-    // If we receive a text message, check to see if it matches any special
-    // keywords and send back the corresponding example. Otherwise, just echo
-    // the text we received.
-    switch (text) {
-      case 'image':
-        sendImageMessage(to);
-        break;
-
-      case 'button':
-        sendButtonMessage(to);
-        break;
-
-      case 'generic':
-        sendGenericMessage(to);
-        break;
-
-      case 'receipt':
-        sendReceiptMessage(to);
-        break;
-
-      default:
-        sendTextMessage(to, text);
-    }
-  } else if (messageAttachments) {
-    sendTextMessage(to, "Message with attachment received");
-  } else {
-    sendTextMessage(to, "서버가 연결되어 있지 않습니다.");
-  }
+  // if (task) {
+  //   // If we receive a text message, check to see if it matches any special
+  //   // keywords and send back the corresponding example. Otherwise, just echo
+  //   // the text we received.
+  //   switch (text) {
+  //     case 'image':
+  //       sendImageMessage(to);
+  //       break;
+  //
+  //     case 'button':
+  //       sendButtonMessage(to);
+  //       break;
+  //
+  //     case 'generic':
+  //       sendGenericMessage(to);
+  //       break;
+  //
+  //     case 'receipt':
+  //       sendReceiptMessage(to);
+  //       break;
+  //
+  //     default:
+  //       sendTextMessage(to, text);
+  //   }
+  // } else if (messageAttachments) {
+  //   sendTextMessage(to, "Message with attachment received");
+  // } else {
+  //   sendTextMessage(to, "서버가 연결되어 있지 않습니다.");
+  // }
 }
 
 /*
