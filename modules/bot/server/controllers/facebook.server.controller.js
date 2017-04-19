@@ -428,7 +428,25 @@ function sendButtonMessage(recipientId, text, task, token) {
  */
 function sendGenericMessage(recipientId, text, task, token) {
   if (task.result.items){
+    task.result = task.result.items;
+    for(var i =0; i < task.result.length; i++){
+      if (task.result[i].text){
+        task.result[i].subtitle = task.result[i].text;
+        delete task.result[i].text;
+      }
+      if (task.result[i].imageUrl) {
+        task.result[i].image_url = task.result[i].imageUrl;
+        delete task.result[i].imageUrl;
+      }
+      if (task.result[i].buttons) {
+        for (var i = 0; i < task.result.buttons.length; i++) {
+          task.result.buttons[i].title = task.result.buttons[i].text;
+          delete task.result.buttons[i].text;
+          task.result.buttons[i]['type'] = 'web_url';
+        }
+      }
 
+    }
   }else {
     if (task.result.buttons){
       for(var i = 0; i < task.result.buttons.length; i++){
@@ -458,6 +476,35 @@ function sendGenericMessage(recipientId, text, task, token) {
         payload: {
           template_type: "generic",
           elements: task.result
+          // elements: [{
+          //   title: "rift",
+          //   subtitle: "Next-generation virtual reality",
+          //   item_url: "https://www.oculus.com/en-us/rift/",
+          //   image_url: "http://messengerdemo.parseapp.com/img/rift.png",
+          //   buttons: [{
+          //     type: "web_url",
+          //     url: "https://www.oculus.com/en-us/rift/",
+          //     title: "Open Web URL"
+          //   }, {
+          //     type: "postback",
+          //     title: "Call Postback",
+          //     payload: "Payload for first bubble",
+          //   }],
+          // }, {
+          //   title: "touch",
+          //   subtitle: "Your Hands, Now in VR",
+          //   item_url: "https://www.oculus.com/en-us/touch/",
+          //   image_url: "http://messengerdemo.parseapp.com/img/touch.png",
+          //   buttons: [{
+          //     type: "web_url",
+          //     url: "https://www.oculus.com/en-us/touch/",
+          //     title: "Open Web URL"
+          //   }, {
+          //     type: "postback",
+          //     title: "Call Postback",
+          //     payload: "Payload for second bubble",
+          //   }]
+          // }]
         }
       }
     }
