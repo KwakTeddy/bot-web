@@ -30,6 +30,9 @@ exports.message = function (req, res) {
     var text = req.body.content;
     var download = function(uri, dir, callback){
       request.head(uri, function(err, res, body){
+        console.log(err);
+        console.log(body);
+        console.log(res.headers);
         console.log('content-type:', res.headers['content-type']);
         console.log('content-length:', res.headers['content-length']);
         request(uri).pipe(fs.createWriteStream(dir)).on('close', callback);
@@ -45,17 +48,16 @@ exports.message = function (req, res) {
       }else if (req.body.inputType == 'video'){
         var dir = 'public/videos/';
       }
-      var filename = 'kakaotestImage';
+      var filename = 'kakaotestImage.jpeg';
       download(req.body.url, dir + filename, function(){
         console.log('done');
         var media = new Media();
-        console.log(util.inspect(media, {showHidden: false, depth: null}))
         media.bot = req.params.bot;
         media.url = req.body.content;
         media.channel = 'kakao';
         media.userKey = req.body.user_key;
         media.context = 'Some context';
-
+        console.log(util.inspect(media, {showHidden: false, depth: null}))
         media.save(function (err) {
           if(err){
             console.log(err)
