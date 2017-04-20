@@ -28,6 +28,9 @@ exports.message = function (req, res) {
     var from = req.body.user_key;
     var type = req.body.type;
     var text = req.body.content;
+    if(type == 'photo'){
+      text = req.body.type;
+    }
 
     if (type == "photo" || type == "video"){
       Media.findOne({url: req.body.content}).exec(function (err, data) {
