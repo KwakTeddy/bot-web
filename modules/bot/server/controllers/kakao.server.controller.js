@@ -46,8 +46,9 @@ exports.message = function (req, res) {
                 }
                 fs.writeFile(path.resolve(localPath), body, 'binary',function() {
                   console.log('Successfully downloaded file ' + req.body.content);
-                  var media = new Media(req.body.content);
+                  var media = new Media();
                   media.bot = req.params.bot;
+                  media.url = req.body.content;
                   console.log(util.inspect(media, {showHidden: false, depth: null}))
                   media.save(function (err) {
                     if(err){
@@ -66,7 +67,7 @@ exports.message = function (req, res) {
     if (type == "photo" || type == "video"){
       req.body.inputType = req.body.type;
       delete req.body.type;
-      req.body.url = requ.body.content;
+      req.body.url = req.body.content;
       delete req.body.content;
     }
 
