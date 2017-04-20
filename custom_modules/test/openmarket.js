@@ -30,10 +30,10 @@ exports.info = {
 
 exports.imageSave = {
     action: function (task, context, callback) {
-
+      console.log(util.inspect(task,{showHidden: false, depth: null}))
+      console.log(util.inspect(context,{showHidden: false, depth: null}))
+      console.log(JSON.stringify(callback))
       var download = function(url, dir, callback1){
-        console.log(url);
-        console.log('------------------')
         request.head(url, function(err, res, body){
           if(err){
             console.log(err);

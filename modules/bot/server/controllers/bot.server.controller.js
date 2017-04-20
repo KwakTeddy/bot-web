@@ -173,7 +173,6 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
     },
 
     function(cb) {
-    console.log('comin?----------------------------------------')
       if(context.bot.dialogServer && context.bot.dialogServer.chatScript == true) {
         var chatscriptSocket = net.createConnection(options.chatServerConfig, function(){
           chatscriptSocket.write(user+'\x00'+ /*botName*/ '' +'\x00'+inTextNLP+'\x00');
