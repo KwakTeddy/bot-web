@@ -41,6 +41,7 @@ exports.message = function (req, res) {
 
             request.get(req.body.content, function(err, response, body) {
               console.log(body);
+              console.log(787878787878);
               if (body) {
                 var localPath = '';
                 if(type == "photo"){
