@@ -25,7 +25,7 @@ exports.testTypeCheck = function (text, type, task, context, callback) {
   console.log('text: ' + util.inspect(text));
   console.log('type: ' + util.inspect(type));
   console.log('task: ' + util.inspect(task));
-  console.log('context: ' + util.inspect(context, {showHidden: false, depth: null}));
+  console.log('context: ' + util.inspect(context.task, {showHidden: false, depth: null}));
   callback(text,task,matched);
 };
 
