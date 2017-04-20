@@ -20,8 +20,9 @@ var util = require('util');
 exports.info = {
   action : function (task, context, callback) {
     console.log(util.inspect(task,{showHidden: false, depth: null}))
+    console.log(util.inspect(task.topTask,{showHidden: false, depth: null}))
     console.log(util.inspect(context,{showHidden: false, depth: null}))
-    console.log(util.inspect(callback,{showHidden: false, depth: null}))
+    console.log(JSON.stringify(callback))
 
     callback(task, context);
   }
