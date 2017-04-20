@@ -180,6 +180,9 @@ function receivedMessage(event) {
                         console.log(util.inspect(messageAttachments, {showHidden: false, depth: null}))
                         var imageData = JSON.parse(JSON.stringify(messageAttachments));
                         message = {};
+                        if (imageData[0].type == 'image'){
+                          imageData[0].type = 'photo'
+                        }
                         message['inputType'] =  imageData[0].type;
                         message.url = imageData[0].payload.url;
                         messageText='fbImage';

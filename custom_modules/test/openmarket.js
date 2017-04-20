@@ -57,11 +57,11 @@ exports.imageSave = {
       download(context.task.url, dir + filename, function(){
         console.log('done');
         var media = new Media();
-        media.bot = 'bot';
+        media.bot = context.bot.id;
         media.url = context.task.url;
         media.type = context.task.inputType;
-        media.channel = 'kakao';
-        media.user = 'user';
+        media.channel = context.user.channel;
+        media.user = context.user.userId;
         media.context = 'Some context';
         media.save(function (err) {
           if(err){
