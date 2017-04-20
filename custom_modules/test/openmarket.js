@@ -2,7 +2,11 @@ var path = require('path');
 // var java = require('java');
 // console.log(java);
 var request = require('request');
+var mongoose = require('mongoose');
+var Media = mongoose.model('Media');
+
 var util = require('util');
+
 // java.classpath.push(path.resolve(__dirname, '../../external_modules/hmac_sdk/commons-codec-1.10.jar'));
 // java.classpath.push(path.resolve(__dirname, '../../external_modules/hmac_sdk/openapi-hmac-sdk-1.0.jar'));
 // var Hmac = java.import("com.coupang.openapi.sdk.Hmac");
@@ -13,17 +17,69 @@ var util = require('util');
 // var soap = require('soap');
 // var parseString = require('xml2js').parseString;
 
-exports.test = {
-    action: function (task, context, callback) {
-      console.log(context.dialog.imageUrl);
-      task.result = {
-        image: {url: context.dialog.imageUrl}
+exports.imageSave = {
+    action: function (task, context, callback1) {
+      var download = function(uri, dir, callback){
+        request.head(uri, function(err, res, body){
+          if(err){
+            console.log(err);
+          }
+          console.log('content-type:'+ res.headers['content-type']);
+          console.log('content-length:'+ res.headers['content-length']);
+          var ext = uri.split(".");
+          var fullName = dir + '.' + ext[ext.length - 1];
+          request(uri).pipe(fs.createWriteStream(fullName)).on('close', callback1);
+        });
       };
-      callback(task, context);
+      if (context.task.url == 'photo'){
+        var dir = 'public/images/';
+      }else if (context.task.url == 'video'){
+        var dir = 'public/videos/';
+      }else if (context.task.url == 'audio'){
+        var dir = 'public/audios/'
+      }
+      var filename = 'kakao' + '_' + 'user' + '_' + 'bot' + '_' + 'context';
+      download(context.task.url, dir + filename, function(){
+        console.log('done');
+        var media = new Media();
+        media.bot = req.params.bot;
+        media.url = req.body.url;
+        media.type = req.body.inputType;
+        media.channel = 'kakao';
+        media.user = req.body.user_key;
+        media.context = 'Some context';
+        media.save(function (err) {
+          if(err){
+            console.log(err)
+          }
+          callback(task, context)
+        })
+      });
     }
 };
 
-exports.testTypeCheck = function (text, type, task, context, callback) {
+exports.showImage = {
+  action: function (task, context, callback) {
+    console.log(context.dialog.imageUrl);
+    task.result = {
+      image: {url: context.dialog.imageUrl}
+    };
+    callback(task, context);
+  }
+};
+
+exports.test = {
+  action: function (task, context, callback) {
+    console.log(context.dialog.imageUrl);
+    task.result = {
+      image: {url: context.dialog.imageUrl}
+    };
+    callback(task, context);
+  }
+};
+
+
+exports.imageTypeCheck = function (text, type, task, context, callback) {
   var matched = false;
   console.log('-----------------------------------');
   console.log(context.task);
@@ -33,6 +89,8 @@ exports.testTypeCheck = function (text, type, task, context, callback) {
   }
   callback(text, task, matched);
 };
+
+
 
 // 배송 API
 exports.coupangShipment = {

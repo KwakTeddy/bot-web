@@ -58,6 +58,11 @@ openmarket.auctionBuyerNoteList
 openmarket.naver
 >네이버
 
-<{types: [{name: 'test', typeCheck: openmarket.testTypeCheck, raw: true}]}
-openmarket.test
->완료
+<{types: [{name: 'image', typeCheck: openmarket.imageTypeCheck, raw: true}]}
+>저장할까요?
+    <네
+    openmarket.imageSave
+    >이미지가 저장됐습니다. 보시겠습니까
+        <네
+        openmarket.showImage
+        >저장된 이미지 입니다.

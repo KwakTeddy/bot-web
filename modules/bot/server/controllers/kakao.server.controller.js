@@ -28,61 +28,17 @@ exports.message = function (req, res) {
     var from = req.body.user_key;
     var type = req.body.type;
     var text = req.body.content;
-    var download = function(uri, dir, callback){
-      request.head(uri, function(err, res, body){
-        if(err){
-          console.log(err);
-        }
-        console.log('content-type:'+ res.headers['content-type']);
-        console.log('content-length:'+ res.headers['content-length']);
-        var ext = text.split(".");
-        var fullName = dir + '.' + ext[ext.length - 1];
-        request(uri).pipe(fs.createWriteStream(fullName)).on('close', callback);
-      });
-    };
-    if (type == "photo" || type == "video" || type == 'audio'){
+    if (type == "photo" || type == "video" || type == 'audio') {
       req.body.inputType = req.body.type;
       delete req.body.type;
       req.body.url = req.body.content;
       delete req.body.content;
-      if (req.body.inputType == 'photo'){
-        var dir = 'public/images/';
-      }else if (req.body.inputType == 'video'){
-        var dir = 'public/videos/';
-      }else if (req.body.inputType == 'audio'){
-        var dir = 'public/audios/'
-      }
-      var filename = 'kakao' + '_' + req.body.user_key + '_' + req.params.bot + '_' + 'context';
-      download(req.body.url, dir + filename, function(){
-        console.log('done');
-        var media = new Media();
-        media.bot = req.params.bot;
-        media.url = req.body.url;
-        media.type = req.body.inputType;
-        media.channel = 'kakao';
-        media.user = req.body.user_key;
-        media.context = 'Some context';
-        media.save(function (err) {
-          if(err){
-            console.log(err)
-          }
-          console.log(JSON.stringify(req.params));
-          chat.write('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
-            console.log(util.inspect(json, {showHidden:false, depth: null}));
-            console.log(util.inspect(serverText, {showHidden:false, depth: null}));
-            respondMessage(res, serverText, json)
-          });
-
-        })
-      });
-    }else {
-      console.log(JSON.stringify(req.params));
-      chat.write('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
-        respondMessage(res, serverText, json)
-      });
     }
+    console.log(JSON.stringify(req.params));
+    chat.write('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
+      respondMessage(res, serverText, json)
+    });
   }
-
 };
 
 
