@@ -36,8 +36,10 @@ exports.message = function (req, res) {
         }else {
           if(!data){
 
-            request.get(req.body.content, function(response) {
+            request.get(req.body.content, function(err, response, body) {
               console.log(util.inspect(response, {showHidden: false, depth: null}))
+              console.log(util.inspect(body, {showHidden: false, depth: null}))
+              console.log(123123123);
 
               if (response.statusCode === 200) {
                 var localPath = '';
@@ -46,18 +48,18 @@ exports.message = function (req, res) {
                 }else if(type = "vidoe"){
                   localPath = "public/videos"
                 }
-                fs.write(path.resolve(localPath), response.body, function() {
+                fs.write(path.resolve(localPath), body, function() {
                   console.log('Successfully downloaded file ' + req.body.content);
+                  var media = new Media(req.body.content);
+                  media.bot = req.params.bot;
+                  media.save(function (err) {
+                    if(err){
+                      console.log(err)
+                    }
+                  })
                 });
               }
             });
-            var media = new Media(req.body.content);
-            media.bot = req.params.bot;
-            media.save(function (err) {
-              if(err){
-                console.log(err)
-              }
-            })
           }else {
 
           }
