@@ -39,7 +39,10 @@ exports.message = function (req, res) {
         }else {
           if(!data){
 
-            request.get({uri: req.body.content}, function(err, response, body) {
+            request({
+              uri: req.body.content,
+              method: 'GET'
+            }, function(err, response, body) {
               console.log(err);
               console.log(body);
               console.log(787878787878);
