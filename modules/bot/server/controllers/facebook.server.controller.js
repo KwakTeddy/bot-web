@@ -182,6 +182,7 @@ function receivedMessage(event) {
                         message = {};
                         message['inputType'] =  imageData[0].type;
                         message.url = imageData[0].payload.url;
+                        messageText='fbImage';
                     }
                     chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
                         console.log('this is write');
