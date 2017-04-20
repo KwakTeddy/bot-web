@@ -39,7 +39,7 @@ exports.message = function (req, res) {
         var contentType = res.headers['content-type'];
         console.log(contentType);
         var ext = contentType.split("/");
-        var fullName = dir + '.' + ext[ext.length = 1];
+        var fullName = dir + '.' + ext[ext.length - 1];
         console.log(fullName);
         request(uri).pipe(fs.createWriteStream(fullName)).on('close', callback);
       });
