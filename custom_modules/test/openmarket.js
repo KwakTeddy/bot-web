@@ -20,7 +20,7 @@ exports.test = {
     }
 };
 
-exports.testTypecheck = function (text, type, task, context, callback) {
+exports.testTypeCheck = function (text, type, task, context, callback) {
   var matched = false;
   console.log('task: ' + util.inspect(task));
   console.log('context: ' + util.inspect(context));
