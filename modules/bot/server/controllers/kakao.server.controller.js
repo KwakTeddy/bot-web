@@ -59,10 +59,18 @@ exports.deleteChatRoom = function (req, res) {
 
 
 function respondMessage(res, text, json) {
+  if (json.result.items){
+
+  }
+
   var sendMsg =
   {
     "message": {
-      "text": text
+      "text": text,
+      "message_button": {
+        "label": 'test',
+        "url" : 'https://coupon/url'
+      }
     }
   };
 
