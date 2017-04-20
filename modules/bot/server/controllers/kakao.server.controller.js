@@ -28,9 +28,9 @@ exports.message = function (req, res) {
     var from = req.body.user_key;
     var type = req.body.type;
     var text = req.body.content;
-    if(type == 'photo'){
-      text = req.body.type;
-    }
+    // if(type == 'photo'){
+    //   text = req.body.type;
+    // }
 
     if (type == "photo" || type == "video"){
       Media.findOne({url: req.body.content}).exec(function (err, data) {
@@ -39,7 +39,7 @@ exports.message = function (req, res) {
         }else {
           if(!data){
 
-            request.get(req.body.content, function(err, response, body) {
+            request.get({uri: req.body.content}, function(err, response, body) {
               console.log(err);
               console.log(body);
               console.log(787878787878);
