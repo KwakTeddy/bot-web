@@ -36,28 +36,28 @@ exports.message = function (req, res) {
         }else {
           if(!data){
 
-            // request.get(req.body.content, function(err, response, body) {
-            //   if (response.statusCode === 200) {
-            //     var localPath = '';
-            //     if(type == "photo"){
-            //       localPath = "public/images"
-            //     }else if(type = "vidoe"){
-            //       localPath = "public/videos"
-            //     }
-            //     fs.writeFile(path.resolve(localPath), body, 'binary',function() {
-            //       console.log('Successfully downloaded file ' + req.body.content);
-            //       var media = new Media();
-            //       media.bot = req.params.bot;
-            //       media.url = req.body.content;
-            //       console.log(util.inspect(media, {showHidden: false, depth: null}))
-            //       media.save(function (err) {
-            //         if(err){
-            //           console.log(err)
-            //         }
-            //       })
-            //     });
-            //   }
-            // });
+            request.get(req.body.content, function(err, response, body) {
+              if (response.statusCode === 200) {
+                var localPath = '';
+                if(type == "photo"){
+                  localPath = "public/images"
+                }else if(type = "vidoe"){
+                  localPath = "public/videos"
+                }
+                fs.writeFile(path.resolve(localPath), body, 'binary',function() {
+                  console.log('Successfully downloaded file ' + req.body.content);
+                  var media = new Media();
+                  media.bot = req.params.bot;
+                  media.url = req.body.content;
+                  console.log(util.inspect(media, {showHidden: false, depth: null}))
+                  media.save(function (err) {
+                    if(err){
+                      console.log(err)
+                    }
+                  })
+                });
+              }
+            });
           }else {
 
           }
@@ -78,9 +78,9 @@ exports.message = function (req, res) {
       if (type == "photo"){
         var json = {};
         json.photoUrl = req.body.content;
-        return respondMessage(res, serverText, json)
+        respondMessage(res, serverText, json)
       }
-      respondMessage(res, serverText, json)
+      // respondMessage(res, serverText, json)
     });
   }
 
