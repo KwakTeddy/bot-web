@@ -68,6 +68,8 @@ exports.message = function (req, res) {
           }
           console.log(JSON.stringify(req.params));
           chat.write('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
+            console.log(util.inspect(json, {showHidden:false, depth: null}));
+            console.log(util.inspect(serverText, {showHidden:false, depth: null}));
             respondMessage(res, serverText, json)
           });
 

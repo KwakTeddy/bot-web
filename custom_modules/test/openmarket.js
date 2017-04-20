@@ -31,7 +31,7 @@ exports.testTypeCheck = function (text, type, task, context, callback) {
     context.dialog.imageUrl = context.task.url;
     matched = true;
   }
-  callback(text,task,matched);
+  callback(text, task, matched);
 };
 
 // 배송 API
