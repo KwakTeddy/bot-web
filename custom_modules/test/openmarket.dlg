@@ -59,10 +59,5 @@ openmarket.naver
 >네이버
 
 <{types: [{name: 'image', typeCheck: openmarket.imageTypeCheck, raw: true}]}
+openmarket.imageSave
 >저장할까요?
-    <네
-    openmarket.imageSave
-    >이미지가 저장됐습니다. 보시겠습니까
-        <네
-        openmarket.showImage
-        >저장된 이미지 입니다.
