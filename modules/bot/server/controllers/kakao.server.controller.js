@@ -106,6 +106,14 @@ function respondMessage(res, text, json) {
     };
   }
 
+  if(json && json.result && json.result.smartReply) {
+    sendMsg.keyboard =
+      {
+        "type": "buttons",
+        "buttons": json.result.smartReply
+      };
+  }
+
   console.log(JSON.stringify(sendMsg));
   res.write(JSON.stringify(sendMsg));
   res.end();
