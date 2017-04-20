@@ -170,22 +170,22 @@ function receivedMessage(event) {
 
                   var bot = context.botUser.orgBot || context.bot;
                   if(recipientID == data.pageId) {
-                      console.log('2 senderID: ' + senderID + ', recipientID: ' + recipientID);
+                    console.log('2 senderID: ' + senderID + ', recipientID: ' + recipientID);
 
-                      var messageId = message.mid;
-                      var messageText = message.text;
-                      var messageAttachments = message.attachments;
+                    var messageId = message.mid;
+                    var messageText = message.text;
+                    var messageAttachments = message.attachments;
                     console.log(util.inspect(messageText, {showHidden: false, depth: null}))
                     if (messageAttachments){
                         messageText = 'fbUserImage';
                         console.log(util.inspect(messageAttachments, {showHidden: false, depth: null}))
                         var image = messageAttachments[0].payload.url
-                      }
-                      chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
-                          console.log('this is write');
-                          console.log(util.inspect(task, {showHidden: false, depth: null}));
-                          respondMessage(senderID, retText, event.botId, task);
-                      });
+                    }
+                    chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
+                        console.log('this is write');
+                        console.log(util.inspect(task, {showHidden: false, depth: null}));
+                        respondMessage(senderID, retText, event.botId, task);
+                    });
                   }
               });
           }
