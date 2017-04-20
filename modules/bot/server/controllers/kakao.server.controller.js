@@ -29,6 +29,9 @@ exports.message = function (req, res) {
    console.log(JSON.stringify(req.params));
     chat.write('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
       console.log(util.inspect(json, {showHidden: false, depth: null}));
+      if (type == "photo"){
+        json.photoUrl = req.body.content;
+      }
       respondMessage(res, serverText, json)
     });
   }
@@ -66,19 +69,15 @@ function respondMessage(res, text, json) {
   var sendMsg =
   {
     "message": {
-      "text": text,
-      "message_button": {
-        "label": 'test',
-        "url" : 'https://coupon/url'
-      }
+      "text": text
     }
   };
 
   if(json && json.photoUrl) {
     sendMsg.message.photo = {
       "url": json.photoUrl,
-      "width": json.photoWidth,
-      "height":json.photoHeight
+      "width": json.photoWidth || 640,
+      "height":json.photoHeight || 480
     }
   }
 
