@@ -19,16 +19,19 @@ var util = require('util');
 
 exports.imageSave = {
     action: function (task, context, callback1) {
-      var download = function(uri, dir, callback){
-        request.head(uri, function(err, res, body){
+
+      var download = function(url, dir, callback){
+        console.log(url);
+        console.log('------------------')
+        request.head(url, function(err, res, body){
           if(err){
             console.log(err);
           }
           console.log('content-type:'+ res.headers['content-type']);
           console.log('content-length:'+ res.headers['content-length']);
-          var ext = uri.split(".");
+          var ext = url.split(".");
           var fullName = dir + '.' + ext[ext.length - 1];
-          request(uri).pipe(fs.createWriteStream(fullName)).on('close', callback1);
+          request(url).pipe(fs.createWriteStream(fullName)).on('close', callback1);
         });
       };
       if (context.task.url == 'photo'){
