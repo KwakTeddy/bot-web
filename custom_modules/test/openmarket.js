@@ -35,11 +35,11 @@ exports.imageSave = {
           request(url).pipe(fs.createWriteStream(fullName)).on('close', callback1);
         });
       };
-      if (context.task.url == 'photo'){
+      if (context.task.inputType == 'photo'){
         var dir = 'public/images/';
-      }else if (context.task.url == 'video'){
+      }else if (context.task.inputType == 'video'){
         var dir = 'public/videos/';
-      }else if (context.task.url == 'audio'){
+      }else if (context.task.inputType == 'audio'){
         var dir = 'public/audios/'
       }
       var filename = 'kakao' + '_' + 'user' + '_' + 'bot' + '_' + 'context';
