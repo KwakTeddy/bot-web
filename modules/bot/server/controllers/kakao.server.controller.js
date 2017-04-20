@@ -40,7 +40,7 @@ exports.message = function (req, res) {
       });
     };
 
-    download(req.body.content, 'kakaoUserSend.png', function(){
+    download(req.body.content, 'public/images/kakaoUserSendTest.png', function(){
       console.log('done55555555');
     });
     // if (type == "photo" || type == "video"){
