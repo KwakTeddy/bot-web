@@ -38,9 +38,12 @@ exports.imageSave = {
           if(err){
             console.log(err);
           }
+          var ext = '';
           console.log('content-type:'+ res.headers['content-type']);
           console.log('content-length:'+ res.headers['content-length']);
-          var ext = url.split(".");
+          if (context.task.inputType == 'photo'){
+            ext = res.headers['content-type'].split(".")
+          }
           var fullName = dir + '.' + ext[ext.length - 1];
           console.log(fullName);
           request(url).pipe(fs.createWriteStream(fullName)).on('close', callback1);
