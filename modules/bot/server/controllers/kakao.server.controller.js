@@ -40,7 +40,8 @@ exports.message = function (req, res) {
           if(!data){
 
             request.get(req.body.content, function(err, response, body) {
-              if (response.statusCode === 200) {
+              console.log(body);
+              if (body) {
                 var localPath = '';
                 if(type == "photo"){
                   localPath = "public/images"
