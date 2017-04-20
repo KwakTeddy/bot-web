@@ -59,7 +59,7 @@ exports.deleteChatRoom = function (req, res) {
 
 
 function respondMessage(res, text, json) {
-  if (json.result.items){
+  if (json && json.result && json.result.items){
 
   }
 
