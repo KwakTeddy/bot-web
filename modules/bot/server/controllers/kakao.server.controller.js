@@ -39,34 +39,47 @@ exports.message = function (req, res) {
         }else {
           if(!data){
 
-            request({
-              uri: req.body.content,
-              method: 'GET'
-            }, function(err, response, body) {
-              console.log(err);
-              console.log(body);
-              console.log(787878787878);
-              if (body) {
-                var localPath = '';
-                if(type == "photo"){
-                  localPath = "public/images"
-                }else if(type = "vidoe"){
-                  localPath = "public/videos"
-                }
-                fs.writeFile(path.resolve(localPath), body, 'binary',function() {
-                  console.log('Successfully downloaded file ' + req.body.content);
-                  var media = new Media();
-                  media.bot = req.params.bot;
-                  media.url = req.body.content;
-                  console.log(util.inspect(media, {showHidden: false, depth: null}))
-                  media.save(function (err) {
-                    if(err){
-                      console.log(err)
-                    }
-                  })
-                });
-              }
+            var download = function(uri, filename, callback){
+              request.head(uri, function(err, res, body){
+                console.log('content-type:', res.headers['content-type']);
+                console.log('content-length:', res.headers['content-length']);
+
+                request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+              });
+            };
+
+            download(req.body.content, 'kakaoUserSend.png', function(){
+              console.log('done55555555');
             });
+
+            // request({
+            //   uri: req.body.content,
+            //   method: 'GET'
+            // }, function(err, response, body) {
+            //   console.log(err);
+            //   console.log(body);
+            //   console.log(787878787878);
+            //   if (body) {
+            //     var localPath = '';
+            //     if(type == "photo"){
+            //       localPath = "public/images"
+            //     }else if(type = "vidoe"){
+            //       localPath = "public/videos"
+            //     }
+            //     fs.writeFile(path.resolve(localPath), body, 'binary',function() {
+            //       console.log('Successfully downloaded file ' + req.body.content);
+            //       var media = new Media();
+            //       media.bot = req.params.bot;
+            //       media.url = req.body.content;
+            //       console.log(util.inspect(media, {showHidden: false, depth: null}))
+            //       media.save(function (err) {
+            //         if(err){
+            //           console.log(err)
+            //         }
+            //       })
+            //     });
+            //   }
+            // });
           }else {
 
           }
