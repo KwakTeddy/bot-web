@@ -57,3 +57,7 @@ openmarket.auctionBuyerNoteList
 <네이버
 openmarket.naver
 >네이버
+
+<{if: 'task.inputType == "photo"'}
+openmarket.test
+>완료

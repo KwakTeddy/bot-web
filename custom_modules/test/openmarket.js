@@ -1,17 +1,25 @@
-var path = require('path');
-var java = require('java');
-console.log(java);
-var request = require('request');
-var util = require('util');
-java.classpath.push(path.resolve(__dirname, '../../external_modules/hmac_sdk/commons-codec-1.10.jar'));
-java.classpath.push(path.resolve(__dirname, '../../external_modules/hmac_sdk/openapi-hmac-sdk-1.0.jar'));
-var Hmac = java.import("com.coupang.openapi.sdk.Hmac");
-var accessKey = "179e9a30-3bc7-4e40-a066-5dd311b544d3";
-var secretKey = "ce09d7771155f54f81bf6f1c0df3803f70d1fe7b";
-var host = "https://api-gateway.coupang.com";
+// var path = require('path');
+// var java = require('java');
+// console.log(java);
+// var request = require('request');
+// var util = require('util');
+// java.classpath.push(path.resolve(__dirname, '../../external_modules/hmac_sdk/commons-codec-1.10.jar'));
+// java.classpath.push(path.resolve(__dirname, '../../external_modules/hmac_sdk/openapi-hmac-sdk-1.0.jar'));
+// var Hmac = java.import("com.coupang.openapi.sdk.Hmac");
+// var accessKey = "179e9a30-3bc7-4e40-a066-5dd311b544d3";
+// var secretKey = "ce09d7771155f54f81bf6f1c0df3803f70d1fe7b";
+// var host = "https://api-gateway.coupang.com";
+//
+// var soap = require('soap');
+// var parseString = require('xml2js').parseString;
 
-var soap = require('soap');
-var parseString = require('xml2js').parseString;
+exports.test = {
+    action: function (task, context, callback) {
+      console.log(task);
+      callback(task, context);
+    }
+};
+
 
 // 배송 API
 exports.coupangShipment = {
