@@ -4,7 +4,7 @@ var path = require('path');
 var request = require('request');
 var mongoose = require('mongoose');
 var Media = mongoose.model('Media');
-
+var fs = require('fs');
 var util = require('util');
 
 // java.classpath.push(path.resolve(__dirname, '../../external_modules/hmac_sdk/commons-codec-1.10.jar'));
