@@ -61,3 +61,7 @@ openmarket.naver
 <{types: [{name: 'image', typeCheck: openmarket.imageTypeCheck, raw: true}]}
 openmarket.imageSave
 >저장할까요?
+
+<정보
+openmarket.info
+>정보

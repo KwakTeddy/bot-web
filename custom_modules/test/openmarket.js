@@ -17,6 +17,16 @@ var util = require('util');
 // var soap = require('soap');
 // var parseString = require('xml2js').parseString;
 
+exports.info = {
+  action : function (task, context, callback) {
+    console.log(util.inspect(task,{showHidden: false, depth: null}))
+    console.log(util.inspect(context,{showHidden: false, depth: null}))
+    console.log(util.inspect(callback,{showHidden: false, depth: null}))
+
+    callback(task, context);
+  }
+}
+
 exports.imageSave = {
     action: function (task, context, callback) {
 
