@@ -40,7 +40,7 @@ exports.message = function (req, res) {
         request(uri).pipe(fs.createWriteStream(fullName)).on('close', callback);
       });
     };
-    if (type == "photo" || type == "video"){
+    if (type == "photo" || type == "video" || type == 'audio'){
       req.body.inputType = req.body.type;
       delete req.body.type;
       req.body.url = req.body.content;
@@ -49,6 +49,8 @@ exports.message = function (req, res) {
         var dir = 'public/images/';
       }else if (req.body.inputType == 'video'){
         var dir = 'public/videos/';
+      }else if (req.body.inpuType == 'audio'){
+        var dir = 'public/videos/'
       }
       var filename = 'kakao' + '_' + req.body.user_key + '_' + req.params.bot + '_' + 'context';
       download(req.body.url, dir + filename, function(){
@@ -56,8 +58,9 @@ exports.message = function (req, res) {
         var media = new Media();
         media.bot = req.params.bot;
         media.url = req.body.url;
+        media.type = req.body.inputType;
         media.channel = 'kakao';
-        media.userKey = req.body.user_key;
+        media.user = req.body.user_key;
         media.context = 'Some context';
         media.save(function (err) {
           if(err){

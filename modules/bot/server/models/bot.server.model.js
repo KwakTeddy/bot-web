@@ -50,10 +50,13 @@ var MediaSchema = new Schema({
   channel: {
     type: String
   },
-  userKey: {
+  user: {
     type: String
   },
   context: {
+    type: String
+  },
+  type: {
     type: String
   }
 
