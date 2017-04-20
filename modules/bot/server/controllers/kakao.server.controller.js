@@ -3,6 +3,10 @@ var request = require('request');
 var path = require('path');
 var chat = require(path.resolve('modules/bot/server/controllers/bot.server.controller'));
 var contextModule = require(path.resolve('modules/bot/engine/common/context'));
+var mongoose = require('mongoose');
+var Media = mongoose.model('Media');
+var fs = require('fs');
+
 var util = require('util');
 exports.keyboard = function (req, res) {
   console.log("kakao keyboard");
@@ -10,7 +14,6 @@ exports.keyboard = function (req, res) {
   contextModule.getContext(req.params.bot, 'kakao', req.params.user_key, null, function(context) {
     var sendMsg = context.bot.kakao.keyboard;
     if(sendMsg == undefined) sendMsg = { type: 'text'};
-
     res.write(JSON.stringify(sendMsg));
     res.end();
 
@@ -26,12 +29,47 @@ exports.message = function (req, res) {
     var type = req.body.type;
     var text = req.body.content;
 
-   console.log(JSON.stringify(req.params));
+    if (type == "photo" || type == "video"){
+      Media.findOne({url: req.body.content}).exec(function (err, data) {
+        if(err){
+          console.log(err)
+        }else {
+          if(!data){
+
+            request.get(req.body.content, function(response) {
+              if (response.statusCode === 200) {
+                var localPath = '';
+                if(type == "photo"){
+                  localPath = "public/images"
+                }else if(type = "vidoe"){
+                  localPath = "public/videos"
+                }
+                fs.write(path.resolve(localPath), response.body, function() {
+                  console.log('Successfully downloaded file ' + req.body.content);
+                });
+              }
+            });
+            var media = new Media(req.body.content);
+            media.bot = req.params.bot;
+            media.save(function (err) {
+              if(err){
+                console.log(err)
+              }
+            })
+          }else {
+
+          }
+        }
+      })
+    }
+
+    console.log(JSON.stringify(req.params));
     chat.write('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
       console.log(util.inspect(json, {showHidden: false, depth: null}));
-      var json = {};
       if (type == "photo"){
+        var json = {};
         json.photoUrl = req.body.content;
+        return respondMessage(res, serverText, json)
       }
       respondMessage(res, serverText, json)
     });

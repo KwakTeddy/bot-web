@@ -32,3 +32,23 @@ var ChannelSchema = new Schema({
 });
 
 mongoose.model('Channel', ChannelSchema);
+
+/**
+ * Media Save Schema
+ */
+var MediaSchema = new Schema({
+  created: {
+    type: Date,
+    default: Date.now
+  },
+  url: {
+    type: String,
+  },
+  bot: {
+    type: Schema.ObjectId,
+    ref: 'Bot'
+  }
+});
+
+mongoose.model('Media', MediaSchema);
+
