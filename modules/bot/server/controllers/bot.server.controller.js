@@ -53,7 +53,6 @@ console.error = function(out) {
 function botProc(botName, channel, user, inTextRaw, json, outCallback, options) {
   // TODO 개발용
   dialog = utils.requireNoCache(path.resolve('modules/bot/action/common/dialog'));
-  console.log(JSON.stringify(json));
   var startTime = new Date();
   var print = function(_out, _task) {
     var endTime = new Date();
@@ -98,9 +97,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
       type.processInput(context, inTextRaw, function(_inTextNLP, _inDoc) {
         logger.debug("자연어 처리>> " + _inTextNLP);
         inTextNLP = _inTextNLP;
-        console.log(util.inspect(_inDoc, {showHidden:false, depth: null}));
         inDoc = utils.merge(_inDoc, json);
-        console.log(util.inspect(inDoc, {showHidden:false, depth: null}));
         cb(null);
       });
     },
