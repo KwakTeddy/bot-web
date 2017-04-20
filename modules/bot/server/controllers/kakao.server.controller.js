@@ -32,7 +32,7 @@ exports.message = function (req, res) {
       request.head(uri, function(err, res, body){
         console.log(err);
         console.log(body);
-        console.log(res.headers);
+        console.log(util.inspect(res.headers, {showHidden:false, depth: null}));
         console.log('content-type:', res.headers['content-type']);
         console.log('content-length:', res.headers['content-length']);
         request(uri).pipe(fs.createWriteStream(dir)).on('close', callback);
@@ -53,11 +53,10 @@ exports.message = function (req, res) {
         console.log('done');
         var media = new Media();
         media.bot = req.params.bot;
-        media.url = req.body.content;
+        media.url = req.body.url;
         media.channel = 'kakao';
         media.userKey = req.body.user_key;
         media.context = 'Some context';
-        console.log(util.inspect(media, {showHidden: false, depth: null}))
         media.save(function (err) {
           if(err){
             console.log(err)
