@@ -58,6 +58,6 @@ openmarket.auctionBuyerNoteList
 openmarket.naver
 >네이버
 
-<{if: 'task.inputType == "photo"'}
+<{types: [{name: 'test', typeCheck: openmarket.testTypeCheck, raw: true}]}
 openmarket.test
 >완료

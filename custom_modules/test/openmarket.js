@@ -20,6 +20,12 @@ exports.test = {
     }
 };
 
+exports.testTypecheck = function (text, type, task, context, callback) {
+  var matched = false;
+  console.log('task: ' + util.inspect(task));
+  console.log('context: ' + util.inspect(context));
+  callback(text,task,matched);
+};
 
 // 배송 API
 exports.coupangShipment = {
