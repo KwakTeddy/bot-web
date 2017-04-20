@@ -16,6 +16,8 @@ var toneModule = require(path.resolve('modules/bot/action/common/tone'));
 var contextModule = require(path.resolve('modules/bot/engine/common/context'));
 var dialogsetModule = require(path.resolve('modules/bot/engine/dialogset/dialogset'));
 
+var util = require('util'); //temporary
+
 var chatSocketConfig = {port: 1024, host: 'localhost', allowHalfOpen: true};
 
 var mongoose = require('mongoose'),
@@ -96,9 +98,9 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
       type.processInput(context, inTextRaw, function(_inTextNLP, _inDoc) {
         logger.debug("자연어 처리>> " + _inTextNLP);
         inTextNLP = _inTextNLP;
-        console.log(_inDoc, {showHidden:false, depth: null});
+        console.log(util.inspect(_inDoc, {showHidden:false, depth: null}));
         inDoc = utils.merge(_inDoc, json);
-        console.log(inDoc, {showHidden:false, depth: null});
+        console.log(util.inspect(inDoc, {showHidden:false, depth: null}));
         cb(null);
       });
     },

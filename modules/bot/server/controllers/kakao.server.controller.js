@@ -40,6 +40,7 @@ exports.message = function (req, res) {
           if(!data){
 
             request.get(req.body.content, function(err, response, body) {
+              console.log(err);
               console.log(body);
               console.log(787878787878);
               if (body) {
