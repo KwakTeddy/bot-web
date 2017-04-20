@@ -28,79 +28,51 @@ exports.message = function (req, res) {
     var from = req.body.user_key;
     var type = req.body.type;
     var text = req.body.content;
-    // if(type == 'photo'){
-    //   text = req.body.type;
-    // }
-    var download = function(uri, filename, callback){
+    var download = function(uri, dir, callback){
       request.head(uri, function(err, res, body){
         console.log('content-type:', res.headers['content-type']);
         console.log('content-length:', res.headers['content-length']);
-
-        request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+        request(uri).pipe(fs.createWriteStream(dir)).on('close', callback);
       });
     };
-
-    download(req.body.content, 'public/images/kakaoUserSendTest.png', function(){
-      console.log('done55555555');
-    });
-    // if (type == "photo" || type == "video"){
-    //   Media.findOne({url: req.body.content}).exec(function (err, data) {
-    //     if(err){
-    //       console.log(err)
-    //     }else {
-    //       if(!data){
-    //         request({
-    //           uri: req.body.content,
-    //           method: 'GET'
-    //         }, function(err, response, body) {
-    //           console.log(err);
-    //           console.log(body);
-    //           console.log(787878787878);
-    //           if (body) {
-    //             var localPath = '';
-    //             if(type == "photo"){
-    //               localPath = "public/images"
-    //             }else if(type = "vidoe"){
-    //               localPath = "public/videos"
-    //             }
-    //             fs.writeFile(path.resolve(localPath), body, 'binary',function() {
-    //               console.log('Successfully downloaded file ' + req.body.content);
-    //               var media = new Media();
-    //               media.bot = req.params.bot;
-    //               media.url = req.body.content;
-    //               console.log(util.inspect(media, {showHidden: false, depth: null}))
-    //               media.save(function (err) {
-    //                 if(err){
-    //                   console.log(err)
-    //                 }
-    //               })
-    //             });
-    //           }
-    //         });
-    //       }else {
-    //
-    //       }
-    //     }
-    //   })
-    // }
     if (type == "photo" || type == "video"){
       req.body.inputType = req.body.type;
       delete req.body.type;
       req.body.url = req.body.content;
       delete req.body.content;
-    }
-
-    console.log(JSON.stringify(req.params));
-    chat.write('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
-      console.log(util.inspect(json, {showHidden: false, depth: null}));
-      console.log(123123123123123);
-      if (type == "photo"){
-        var json = {};
-        json.photoUrl = req.body.content;
-        respondMessage(res, serverText, json)
+      if (req.body.inputType == 'photo'){
+        var dir = 'public/images/';
+      }else if (req.body.inputType == 'video'){
+        var dir = 'public/videos/';
       }
-      // respondMessage(res, serverText, json)
-    });
+      var filename = 'kakaotestImage';
+      download(req.body.url, dir + filename, function(){
+        console.log('done');
+        var media = new Media();
+        console.log(util.inspect(media, {showHidden: false, depth: null}))
+        media.bot = req.params.bot;
+        media.url = req.body.content;
+        media.channel = 'kakao';
+        media.userKey = req.body.user_key;
+        media.context = 'Some context';
+
+        media.save(function (err) {
+          if(err){
+            console.log(err)
+          }
+          console.log(JSON.stringify(req.params));
+          chat.write('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
+            respondMessage(res, serverText, json)
+          });
+
+        })
+      });
+    }else {
+      console.log(JSON.stringify(req.params));
+      chat.write('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
+        respondMessage(res, serverText, json)
+      });
+    }
   }
 
 };

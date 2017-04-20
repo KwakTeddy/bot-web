@@ -42,12 +42,21 @@ var MediaSchema = new Schema({
     default: Date.now
   },
   url: {
-    type: String,
+    type: String
   },
-  bot: {
-    type: Schema.ObjectId,
-    ref: 'Bot'
+  botId: {
+    type: String
+  },
+  channel: {
+    type: String
+  },
+  userKey: {
+    type: String
+  },
+  context: {
+    type: String
   }
+
 });
 
 mongoose.model('Media', MediaSchema);
