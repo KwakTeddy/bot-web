@@ -33,10 +33,11 @@ exports.message = function (req, res) {
         if(err){
           console.log(err);
         }
-        console.log(util.inspect(res.headers['content-type']));
+        console.log(util.inspect(res.headers));
         console.log('content-type:', res.headers['content-type']);
         console.log('content-length:', res.headers['content-length']);
         var contentType = res.headers['content-type'];
+        console.log(contentType);
         var ext = contentType.split("/");
         var fullName = dir + '.' + ext[ext.length = 1];
         console.log(fullName);
