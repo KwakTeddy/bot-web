@@ -15,7 +15,10 @@ var util = require('util');
 
 exports.test = {
     action: function (task, context, callback) {
-      console.log(1111);
+      console.log(context.dialog.imageUrl);
+      task.result = {
+        image: {url: context.dialog.imageUrl}
+      };
       callback(task, context);
     }
 };
@@ -23,10 +26,11 @@ exports.test = {
 exports.testTypeCheck = function (text, type, task, context, callback) {
   var matched = false;
   console.log('-----------------------------------');
-  console.log('type: ' + util.inspect(type));
-  console.log('task: ' + util.inspect(task));
-  console.log('context: ' + util.inspect(context, {showHidden: false, depth: null}));
-  console.log('context: ' + util.inspect(context.task, {showHidden: false, depth: null}));
+  console.log(context.task);
+  if (context.task.inputType == 'photo') {
+    context.dialog.imageUrl = context.task.url;
+    matched = true;
+  }
   callback(text,task,matched);
 };
 
