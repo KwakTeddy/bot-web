@@ -18,9 +18,9 @@ var util = require('util');
 // var parseString = require('xml2js').parseString;
 
 exports.imageSave = {
-    action: function (task, context, callback1) {
+    action: function (task, context, callback) {
 
-      var download = function(url, dir, callback){
+      var download = function(url, dir, callback1){
         console.log(url);
         console.log('------------------')
         request.head(url, function(err, res, body){
@@ -45,11 +45,11 @@ exports.imageSave = {
       download(context.task.url, dir + filename, function(){
         console.log('done');
         var media = new Media();
-        media.bot = req.params.bot;
-        media.url = req.body.url;
-        media.type = req.body.inputType;
+        media.bot = 'bot';
+        media.url = context.task.url;
+        media.type = context.task.inputType;
         media.channel = 'kakao';
-        media.user = req.body.user_key;
+        media.user = 'user';
         media.context = 'Some context';
         media.save(function (err) {
           if(err){
