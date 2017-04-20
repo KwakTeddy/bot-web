@@ -74,6 +74,7 @@ exports.message = function (req, res) {
     console.log(JSON.stringify(req.params));
     chat.write('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
       console.log(util.inspect(json, {showHidden: false, depth: null}));
+      console.log(123123123123123);
       if (type == "photo"){
         var json = {};
         json.photoUrl = req.body.content;
