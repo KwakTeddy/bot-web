@@ -37,6 +37,8 @@ exports.message = function (req, res) {
           if(!data){
 
             request.get(req.body.content, function(response) {
+              console.log(util.inspect(response, {showHidden: false, depth: null}))
+
               if (response.statusCode === 200) {
                 var localPath = '';
                 if(type == "photo"){
