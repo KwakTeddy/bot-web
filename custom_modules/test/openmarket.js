@@ -42,7 +42,7 @@ exports.imageSave = {
           console.log('content-type:'+ res.headers['content-type']);
           console.log('content-length:'+ res.headers['content-length']);
           if (context.task.inputType == 'photo'){
-            ext = res.headers['content-type'].split(".")
+            ext = res.headers['content-type'].split("/")
           }
           var fullName = dir + '.' + ext[ext.length - 1];
           console.log(fullName);
