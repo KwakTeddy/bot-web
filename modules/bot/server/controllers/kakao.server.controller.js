@@ -48,7 +48,7 @@ exports.message = function (req, res) {
                 }else if(type = "vidoe"){
                   localPath = "public/videos"
                 }
-                fs.write(path.resolve(localPath), body, function() {
+                fs.writeFile(path.resolve(localPath), body, 'binary',function() {
                   console.log('Successfully downloaded file ' + req.body.content);
                   var media = new Media(req.body.content);
                   media.bot = req.params.bot;
