@@ -53,7 +53,7 @@ exports.imageSave = {
       }else if (context.task.inputType == 'audio'){
         var dir = 'public/audios/'
       }
-      var filename = 'kakao' + '_' + 'user' + '_' + 'bot' + '_' + 'context';
+      var filename = context.user.channel + '_' + context.user.userId + '_' + context.bot.id + '_' + 'context';
       download(context.task.url, dir + filename, function(){
         console.log('done');
         var media = new Media();
