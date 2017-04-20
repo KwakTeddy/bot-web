@@ -58,6 +58,7 @@
           <a ui-sref="bots.ide({botId: file.bot._id, fileId: file._id})" ng-show="!file.edit"><i class="fa fa-edit"></i></a>
           <a ng-click="vm.remove($index)" ng-show="!file.edit"><i class="fa fa-trash-o"></i></a>
           <a ui-sref="bots.graph-dialog({botId: file.bot._id, fileId: file._id})" ng-show="!file.edit">Dialog Graph</a>
+          <a ui-sref="bots.dialog-tree({botId: file.bot._id, fileId: file._id})" ng-show="!file.edit">Dialog Tree</a>
 
         </td>
       </tr>

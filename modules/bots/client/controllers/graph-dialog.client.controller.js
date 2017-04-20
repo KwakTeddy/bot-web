@@ -137,7 +137,6 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
       }
     };
 
-    var num = 0;
     var handleDialog = function(dialog)
     {
       dialog.name = dialog.name || (dialog.name = "dialog" + dialog.id);
@@ -460,7 +459,6 @@ angular.module('bots').controller('GraphDialogController', ['$scope', '$rootScop
         currentNode = d;
         update();
         angular.element(document.getElementById('control')).scope().findOne(d.id);
-        $('.modal-with-form').click();
       }
 
       function wrap(text, width, maxLine) {
