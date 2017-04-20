@@ -51,7 +51,7 @@ console.error = function(out) {
 function botProc(botName, channel, user, inTextRaw, json, outCallback, options) {
   // TODO 개발용
   dialog = utils.requireNoCache(path.resolve('modules/bot/action/common/dialog'));
-
+  console.log(JSON.stringify(json));
   var startTime = new Date();
   var print = function(_out, _task) {
     var endTime = new Date();

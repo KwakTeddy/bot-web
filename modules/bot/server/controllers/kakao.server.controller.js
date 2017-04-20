@@ -37,10 +37,6 @@ exports.message = function (req, res) {
           if(!data){
 
             request.get(req.body.content, function(err, response, body) {
-              console.log(util.inspect(response, {showHidden: false, depth: null}))
-              console.log(util.inspect(body, {showHidden: false, depth: null}))
-              console.log(123123123);
-
               if (response.statusCode === 200) {
                 var localPath = '';
                 if(type == "photo"){
@@ -52,6 +48,7 @@ exports.message = function (req, res) {
                   console.log('Successfully downloaded file ' + req.body.content);
                   var media = new Media(req.body.content);
                   media.bot = req.params.bot;
+                  console.log(util.inspect(media, {showHidden: false, depth: null}))
                   media.save(function (err) {
                     if(err){
                       console.log(err)
@@ -65,6 +62,12 @@ exports.message = function (req, res) {
           }
         }
       })
+    }
+    if (type == "photo" || type == "video"){
+      req.body.inputType = req.body.type;
+      delete req.body.type;
+      req.body.url = requ.body.content;
+      delete req.body.content;
     }
 
     console.log(JSON.stringify(req.params));
