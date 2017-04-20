@@ -33,7 +33,6 @@ exports.message = function (req, res) {
         if(err){
           console.log(err);
         }
-        JSON.parse(req.headers);
         console.log(util.inspect(res.headers['content-type']));
         console.log('content-type:', res.headers['content-type']);
         console.log('content-length:', res.headers['content-length']);
