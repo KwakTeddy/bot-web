@@ -1,8 +1,8 @@
-// var path = require('path');
+var path = require('path');
 // var java = require('java');
 // console.log(java);
-// var request = require('request');
-// var util = require('util');
+var request = require('request');
+var util = require('util');
 // java.classpath.push(path.resolve(__dirname, '../../external_modules/hmac_sdk/commons-codec-1.10.jar'));
 // java.classpath.push(path.resolve(__dirname, '../../external_modules/hmac_sdk/openapi-hmac-sdk-1.0.jar'));
 // var Hmac = java.import("com.coupang.openapi.sdk.Hmac");
@@ -15,7 +15,7 @@
 
 exports.test = {
     action: function (task, context, callback) {
-      console.log(task);
+      console.log(1111);
       callback(task, context);
     }
 };
