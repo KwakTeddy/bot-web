@@ -30,12 +30,15 @@ exports.message = function (req, res) {
     var text = req.body.content;
     var download = function(uri, dir, callback){
       request.head(uri, function(err, res, body){
-        console.log(err);
-        console.log(body);
-        console.log(util.inspect(res.headers, {showHidden:false, depth: null}));
-        console.log('content-type:', res.headers['content-type']);
-        console.log('content-length:', res.headers['content-length']);
-        request(uri).pipe(fs.createWriteStream(dir)).on('close', callback);
+        if(err){
+          console.log(err);
+        }
+        console.log('content-type:', res.headers.content-type);
+        console.log('content-length:', res.headers.content-length);
+        var ext = res.headers.content-type.split("/");
+        var fullName = dir + '/' + ext[ext.length = 1];
+        console.log(fullName);
+        request(uri).pipe(fs.createWriteStream(fullName)).on('close', callback);
       });
     };
     if (type == "photo" || type == "video"){
@@ -48,7 +51,7 @@ exports.message = function (req, res) {
       }else if (req.body.inputType == 'video'){
         var dir = 'public/videos/';
       }
-      var filename = 'kakaotestImage.jpeg';
+      var filename = 'kakaotestImage';
       download(req.body.url, dir + filename, function(){
         console.log('done');
         var media = new Media();
