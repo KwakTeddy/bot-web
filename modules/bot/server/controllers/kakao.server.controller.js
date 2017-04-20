@@ -33,10 +33,11 @@ exports.message = function (req, res) {
         if(err){
           console.log(err);
         }
+        console.log(util.inspect(res.headers['content-type']));
         console.log('content-type:', res.headers['content-type']);
         console.log('content-length:', res.headers['content-length']);
         var ext = res.headers['content-type'].split("/");
-        var fullName = dir + '/' + ext[ext.length = 1];
+        var fullName = dir + '.' + ext[ext.length = 1];
         console.log(fullName);
         request(uri).pipe(fs.createWriteStream(fullName)).on('close', callback);
       });
