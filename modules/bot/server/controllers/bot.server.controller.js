@@ -97,7 +97,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
       type.processInput(context, inTextRaw, function(_inTextNLP, _inDoc) {
         logger.debug("자연어 처리>> " + _inTextNLP);
         inTextNLP = _inTextNLP;
-        inDoc = utils.merge(_inDoc, json);
+        context.task = utils.merge(_inDoc, json);
         console.log('inDoc ----------------------------------:'+util.inspect(inDoc, {showHidden: false, depth: null}));
         cb(null);
       });
