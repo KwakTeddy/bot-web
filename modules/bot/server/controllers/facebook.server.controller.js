@@ -104,10 +104,13 @@ function respondMessage(to, text, botId, task) {
       // the text we received.
       console.log(util.inspect(Object.keys(task.result).toString(), {showHidden: false, depth: null}))
       switch (Object.keys(task.result).toString()) {
-        case 'image' || 'image,buttons':
+        case 'image':
           sendGenericMessage(to, text, task, tokenData);
           break;
 
+        case 'image,buttons':
+          sendGenericMessage(to, text, task, tokenData);
+          break;
         case 'buttons':
           sendButtonMessage(to, text, task, tokenData);
           break;
