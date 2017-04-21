@@ -3,6 +3,7 @@ var request = require('request');
 var path = require('path');
 var chat = require(path.resolve('modules/bot/server/controllers/bot.server.controller'));
 var contextModule = require(path.resolve('modules/bot/engine/common/context'));
+var config = require(path.resolve('config/config'));
 
 var subscribe = '';
 var subscribePageToken = '';
@@ -380,7 +381,7 @@ function sendGenericMessage(recipientId, text, task, token) {
       }
       if (task.result[i].imageUrl) {
         if (task.result[i].imageUrl.substring(0,4) !== 'http'){
-          task.result[i].imageUrl = '' + task.result[i].imageUrl
+          task.result[i].imageUrl = config.host + task.result[i].imageUrl
         }
         task.result[i].image_url = task.result[i].imageUrl;
         delete task.result[i].imageUrl;
