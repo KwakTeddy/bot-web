@@ -778,7 +778,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
       //TODO: need to remove other links such as call...
       delete_int(d);
-      update(treeData);
+      update(d.parent);
     }
 
     function delete_int(d) {
