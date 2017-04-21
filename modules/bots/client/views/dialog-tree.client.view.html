@@ -135,6 +135,14 @@
         text-anchor: middle;
         alignment-baseline: middle;
     }
+
+    .mfp-bg {
+        //background : initial;
+        opacity: 0.6;
+    }
+
+    .modal-block {
+    }
 </style>
 <body>
 <header class="page-header">
@@ -199,14 +207,18 @@
             </form>
         </section>
     </div>
-
-    <div class="ui-widget">
-        <div class="col-md-3">
-            <input class="form-control" width="200" id="search">
+    <div class="col-md-3">
+        <div class="input-group input-search">
+            <form ng-submit="searchNode()">
+                <input type="text" class="form-control" name="q" id="search" placeholder="Search...">
+                <span class="input-group-btn"> <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button> </span>
+            </form>
         </div>
-        <div>
-            <button type="button" class="btn btn-primary" ng-click="searchNode()">Search</button>
-        </div>
+    </div>
+    <div class="col-md-9">
+        <form>
+            <button class="btn btn-primary pull-right"><i class="fa fa-save"></i> 저장하기</button>
+        </form>
     </div>
 
     <div id="tree-container" class="panel" width="100%" height="100%"></div>

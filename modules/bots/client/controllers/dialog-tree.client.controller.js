@@ -8,6 +8,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     vm.userId = $rootScope.userId;
     vm.bot_id = $stateParams.botId;
     vm.file_id = $stateParams.fileId;
+    vm.maxId = 0;
 
     console.log('Tree Controller');
 
@@ -57,19 +58,29 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       $scope.dialog.outputs.push({str:""});
     };
 
+    var currentKeyword = "";
+    var currentSearchIdx = 0;
+
     $scope.searchNode = function() {
       //find the node
       var selectedVal = document.getElementById('search').value;
       var node = baseSvg.selectAll(".node");
       if (selectedVal != "") {
         var selected = node.filter(function (d, i) {
-          return d.name === selectedVal;
+          return d.name.search(selectedVal) != -1;
         });
-        if(selected && selected.length == 1) {
-          currentNode = selected[0][0].__data__;
-          //console.log(JSON.stringify(currentNode));
-          update(currentNode);
-          centerNode(currentNode);
+        if (currentKeyword !== selectedVal) {
+          currentKeyword = selectedVal;
+          currentSearchIdx = 0;
+        }
+
+        if (selected && selected.length == 1) {
+          selectedNode = selected[0][currentSearchIdx].__data__;
+          selectedSVG = d3.select(selected[0][currentSearchIdx]);
+          update(selectedNode);
+          centerNode(selectedNode);
+
+          currentSearchIdx = (++currentSearchIdx) % selected[0].length;
         }
       }
     };
@@ -150,6 +161,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       nodes[dialog.name].input_text  = handleInput(dialog.input);
       nodes[dialog.name].output_text = handlePrintOutput(dialog.output);
 
+      if (dialog.id)
+        vm.maxId = Math.max(vm.maxId, parseInt(dialog.id.substring(vm.fileName.length, dialog.id.length)));
+
       if (dialog.children) {
         dialog.children.forEach(function(child) {
           handleDialog(child);
@@ -220,7 +234,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     $resource('/api/dialogs/:bot_id/:file_id', {}).get({bot_id: vm.bot_id, file_id: vm.file_id}, function(res) {
       vm.botId = res.botId;
-      vm.fileId = res.fileId;
+      vm.fileName = res.fileName;
       dialogs = res.data;
       for (var i = 0; i < dialogs.length; i++) {
         var d = dialogs[i];
@@ -331,7 +345,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       // Layout the tree initially and center on the root node.
       update(root);
-      centerNode(root, true);
+      centerNode(root, 'start');
     };
 
     var links_SVG, links_internal_SVG;
@@ -361,6 +375,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       var nodes_tree = tree.nodes(root).reverse();
       var links = tree.links(nodes_tree);
 
+      // TODO: need to update source and target in other links
+      nodes = [];
+      links_internal = [];
+      dialogs.forEach(handleDialog);
+      dialogs.forEach(handleLink);
 
       // Set widths between levels based on maxLabelLength.
       nodes_tree.forEach(function (d) {
@@ -406,8 +425,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         // .style("stroke", function (d) {
         //   return d._children ? "lightsteelblue" : "#fff";
         // })
-        .on('mouseover', tip.show)
-        .on('mouseout', tip.hide);
+        //.on('mouseover', tip.show)
+        //.on('mouseout', tip.hide);
 
       // add the text
       var text = nodeEnter.append("text")
@@ -525,9 +544,25 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           });
 
         // Transition links to their new position.
-        link.transition()
+        link
+          .filter(function(d) { return d.source.y !== d.target.y;})
+          .transition()
           .duration(duration)
           .attr("d", diag);
+
+        link
+          .filter(function(d) { return d.source.y === d.target.y;})
+          .transition()
+          .duration(duration)
+          .attr("d", function(d) {
+            var sx = d.source.x + rectH/2;
+            var sy = d.source.y + rectW;
+            var tx = d.target.x + rectH/2;
+            var ty = d.target.y + rectW;
+            var cx = (sx+tx) / 2;
+            var cy = sy + Math.abs(sx-tx) / itemHeight * 40 + 50;
+            return "M" + sy + " " + sx + " Q " + cy + " " + cx +" " + ty + " " + tx;
+          });
 
         // Transition exiting nodes to the parent's new position.
         link.exit().transition()
@@ -617,13 +652,14 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           .style('fill', 'black')
           .style('opacity', '0.3');
         setTimeout(function () {
+          currentNode = undefined;
           d3.select("#" + currentNode.name).remove();
         }, 1300);
       }
 
       if(selectedNode) {
         // draw selector
-        d3.select("#selected").remove();
+        d3.selectAll(".selectedRect").remove();
         d3.selectAll(".icon").remove();
 
         var rect = selectedSVG.append("rect")
@@ -634,6 +670,21 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           .attr("height", rectH+25)
           .attr("rx", 5)
           .attr("ry", 5);
+        var rect = selectedSVG.append("rect")
+          .attr("class", "selectedRect")
+          .attr("id", "selected")
+          .attr("y", -25)
+          .attr("width", rectW)
+          .attr("height", 25)
+          .style("pointer-events", "none")
+          .style('fill', 'lightsteelblue')
+          .style("opacity", 0.8)
+          .attr("rx", 5)
+          .attr("ry", 5);
+
+        if (selectedNode.depth == 0)
+          return;
+
         var t1 = selectedSVG.append('text')
           .on("click", edit)
           .attr("class", "icon")
@@ -653,15 +704,15 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           .attr("y", -5)
           .text(function(d) { return '\uf00d';} );
         var t2 = selectedSVG.append('text')
-          .on("click", toggleChildren)
+          .on("click", toggleAndCenter)
           .attr("class", "icon")
           .attr("x", rectW-25)
           .attr("y", -4)
-          .text(function(d) { if (d.children) return '\uf053'; else return '\uf054';} );
+          .text(function(d) { if (d.children) return '\uf053'; else if (d._children) return '\uf054';} );
 
 
       } else {
-        d3.select("#selected").remove();
+        d3.selectAll(".selectedRect").remove();
         d3.selectAll(".icon").remove();
       }
     }
@@ -687,7 +738,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     function centerNode(source, isStart) {
       var scale = zoomListener.scale();
       var x = -source.y0;
-      if (isStart != undefined) x -= 300;
+      if (isStart != undefined) {
+        if (isStart === 'start') {
+          x -= 300;
+        } else {
+          //x -= 400;
+        }
+      }
       var y = -source.x0 - 200;
       x = x * scale + viewerWidth / 2;
       y = y * scale + viewerHeight / 2;
@@ -700,6 +757,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     function addChild(d) {
       d3.event.stopPropagation();
+      if (d._children) {
+        toggleChildren(d);
+      }
+      (d.children || (d.children = [])).push({name:"", id:vm.fileName + (++vm.maxId), input:"", output:""});
+      update(d);
     }
 
     function initSelect() {
@@ -719,21 +781,15 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           }
         }
       }
-      // TODO: need to update source and target in other links
-      nodes = [];
-      links_internal = [];
-      dialogs.forEach(handleDialog);
-      dialogs.forEach(handleLink);
-      // TODO: if undo might be possible,
-      //delete_int(d);
+      //TODO: need to remove other links such as call...
+      delete_int(d);
       update(treeData);
     }
 
     function delete_int(d) {
-      d.deleted = true;
       if (d.children) {
-        d._children = d.children;
-        d._children.forEach(delete_int);
+        d.deleted_children = d.children;
+        d.deleted_children.forEach(delete_int);
         d.children = null;
       }
     }
@@ -762,6 +818,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     // Toggle children function
     function toggleChildren(d) {
+      d3.event.stopPropagation();
       if (d.children) {
         d._children = d.children;
         d.children = null;
