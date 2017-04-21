@@ -396,6 +396,8 @@ function sendGenericMessage(recipientId, text, task, token) {
     }
     task.result.splice(10);
   }else {
+    console.log('---------------------------------');
+    console.log(task.result);
     if (task.result.buttons){
       for(var i = 0; i < task.result.buttons.length; i++){
         task.result.buttons[i].title = task.result.buttons[i].text;
