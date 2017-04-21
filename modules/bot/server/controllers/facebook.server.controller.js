@@ -405,9 +405,11 @@ function sendGenericMessage(recipientId, text, task, token) {
       }
     }
     if(task.result.image){
-      task.result.image_url = task.result.image;
+      if (task.result.image.url.substring(0,4) !== 'http'){
+        task.result.image.url = config.host + task.result.image.url
+      }
+      task.result.image_url = task.result.image.url;
       delete task.result.image;
-      task.result.image_url = task.result.image_url.url;
       task.result['title'] = text;
     }
     task.result = [task.result];
