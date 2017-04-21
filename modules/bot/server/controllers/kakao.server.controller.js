@@ -21,7 +21,7 @@ exports.keyboard = function (req, res) {
       };
     }
     console.log(util.inspect(sendMsg));
-    res.write(sendMsg);
+    res.write(JSON.stringify(sendMsg));
     res.end();
 
   });
