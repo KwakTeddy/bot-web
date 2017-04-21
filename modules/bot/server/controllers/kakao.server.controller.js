@@ -14,6 +14,7 @@ exports.keyboard = function (req, res) {
   contextModule.getContext(req.params.bot, 'kakao', req.params.user_key, null, function(context) {
     var sendMsg = context.bot.kakao.keyboard;
     if(sendMsg == undefined) sendMsg = { type: 'text'};
+    console.log(util.inspect(sendMsg));
     res.write(JSON.stringify(sendMsg));
     res.end();
 
