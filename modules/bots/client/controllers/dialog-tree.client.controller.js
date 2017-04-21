@@ -14,7 +14,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     var links_internal = [];
     var nodes = [];
-    var links = [];
     var dialogs;
 
     // var currentDialog;
@@ -40,7 +39,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           }
 
           if(currentNode) {
-            //console.log(JSON.stringify(currentNode));
             update(currentNode);
             centerNode(currentNode);
           }
@@ -261,9 +259,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     var totalNodes = 0;
     var maxLabelLength = 0;
 
-    // panning variables
-    var panSpeed = 200;
-    var panBoundary = 20; // Within 20px from edges will pan when dragging.
     // Misc. variables
     var i = 0;
     var duration = 750;
@@ -420,7 +415,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         .attr("height", rectH)
         .attr("rx", 5)
         .attr("ry", 5)
-        .style('fill', '#DADAEB')
+        .style('fill', '#DADAEB');
         // .attr("stroke-width", 2)
         // .style("stroke", function (d) {
         //   return d._children ? "lightsteelblue" : "#fff";
@@ -429,14 +424,14 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         //.on('mouseout', tip.hide);
 
       // add the text
-      var text = nodeEnter.append("text")
+      nodeEnter.append("text")
         .attr("class","nodetext nodetitle")
         .style("pointer-events", "none")
         .attr("x", "1em")
         .attr("dy", "1.30em")
         .text(function(d) { return d.name; });
 
-      var line = nodeEnter.append("line")
+      nodeEnter.append("line")
         .style("pointer-events", "none")
         .attr("x1", 0)
         .attr("y1", "18")
@@ -445,7 +440,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         // .attr("stroke-width", 1.2)
         .style("stroke", function(d) { return d3.rgb("#7CA4C0").darker(); });
 
-      var text2 = nodeEnter.append("text")
+      nodeEnter.append("text")
         .attr("class","nodetext")
         .style("pointer-events", "none")
         .attr("x", 7)
@@ -453,7 +448,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         .text(function(d) { return "In: " + (d.input_text ? d.input_text: ""); })
         .call(wrap, rectW-30, 1);
 
-      var line2 = nodeEnter.append("line")
+      nodeEnter.append("line")
         .style("pointer-events", "none")
         .attr("x1", 0)
         .attr("y1", "2.7em")
@@ -463,7 +458,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         .attr("stroke-dasharray", "0,2 1")
         .attr("stroke", "gray");
 
-      var text3 = nodeEnter.append("text")
+      nodeEnter.append("text")
         .attr("class","nodetext")
         .style("pointer-events", "none")
         .attr("x", 7)
@@ -471,7 +466,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         .text(function(d) { return "Task: " + (d.task ? d.task : ""); })
         .call(wrap, rectW-25, 2);
 
-      var line2 = nodeEnter.append("line")
+      nodeEnter.append("line")
         .style("pointer-events", "none")
         .attr("x1", 0)
         .attr("y1", "4.3em")
@@ -481,7 +476,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         .attr("stroke-dasharray", "0,2 1")
         .attr("stroke", "gray");
 
-      var text4 = nodeEnter.append("text")
+      nodeEnter.append("text")
         .attr("class","nodetext")
         .style("pointer-events", "none")
         .attr("x", 7)
@@ -662,7 +657,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         d3.selectAll(".selectedRect").remove();
         d3.selectAll(".icon").remove();
 
-        var rect = selectedSVG.append("rect")
+        selectedSVG.append("rect")
           .attr("class", "selectedRect")
           .attr("id", "selected")
           .attr("y", -25)
@@ -670,7 +665,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           .attr("height", rectH+25)
           .attr("rx", 5)
           .attr("ry", 5);
-        var rect = selectedSVG.append("rect")
+        selectedSVG.append("rect")
           .attr("class", "selectedRect")
           .attr("id", "selected")
           .attr("y", -25)
@@ -685,25 +680,25 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         if (selectedNode.depth == 0)
           return;
 
-        var t1 = selectedSVG.append('text')
+        selectedSVG.append('text')
           .on("click", edit)
           .attr("class", "icon")
           .attr("x", rectW-25*4)
           .attr("y", -4)
           .text(function(d) { return '\uf044';} );
-        var t1 = selectedSVG.append('text')
+        selectedSVG.append('text')
           .on("click", addChild)
           .attr("class", "icon")
           .attr("x", rectW-25*3)
           .attr("y", -4)
           .text(function(d) { return '\uf067';} );
-        var t1 = selectedSVG.append('text')
+        selectedSVG.append('text')
           .on("click", deleteNode)
           .attr("class", "icon")
           .attr("x", rectW-25*2)
           .attr("y", -5)
           .text(function(d) { return '\uf00d';} );
-        var t2 = selectedSVG.append('text')
+        selectedSVG.append('text')
           .on("click", toggleAndCenter)
           .attr("class", "icon")
           .attr("x", rectW-25)
@@ -835,7 +830,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           words = text.text().split(/\s+/).reverse(),
           word,
           line = [],
-          lineNumber = 0,
           lineHeight = 1.1, // ems
           y = text.attr("y"),
           dy = parseFloat(text.attr("dy")),
@@ -859,35 +853,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         }
       });
     }
-
-    // TODO: Pan function, can be better implemented.
-    var panTimer;
-    function pan(domNode, direction) {
-      var speed = panSpeed;
-      if (panTimer) {
-        clearTimeout(panTimer);
-        var translateCoords = d3.transform(svgGroup.attr("transform"));
-        var translateX, translateY;
-        if (direction == 'left' || direction == 'right') {
-          translateX = direction == 'left' ? translateCoords.translate[0] + speed : translateCoords.translate[0] - speed;
-          translateY = translateCoords.translate[1];
-        } else if (direction == 'up' || direction == 'down') {
-          translateX = translateCoords.translate[0];
-          translateY = direction == 'up' ? translateCoords.translate[1] + speed : translateCoords.translate[1] - speed;
-        }
-        var scaleX = translateCoords.scale[0];
-        var scaleY = translateCoords.scale[1];
-        var scale = zoomListener.scale();
-        svgGroup.transition().attr("transform", "translate(" + translateX + "," + translateY + ")scale(" + scale + ")");
-        d3.select(domNode).select('g.node').attr("transform", "translate(" + translateX + "," + translateY + ")");
-        zoomListener.scale(zoomListener.scale());
-        zoomListener.translate([translateX, translateY]);
-        panTimer = setTimeout(function () {
-          pan(domNode, speed, direction);
-        }, 50);
-      }
-    }
-
   }]
 );
 
