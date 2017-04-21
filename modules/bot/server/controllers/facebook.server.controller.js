@@ -47,6 +47,7 @@ exports.messageGet =  function(req, res) {
 
 exports.message = function (req, res) {
   var data = req.body;
+  console.log(req.params[req.params.bot]);
   // Make sure this is a page subscription
   if (data.object == 'page') {
       // Iterate over each entry
@@ -378,6 +379,9 @@ function sendGenericMessage(recipientId, text, task, token) {
         delete task.result[i].text;
       }
       if (task.result[i].imageUrl) {
+        if (task.result[i].imageUrl.substring(0,4) !== 'http'){
+          task.result[i].imageUrl = '' + task.result[i].imageUrl
+        }
         task.result[i].image_url = task.result[i].imageUrl;
         delete task.result[i].imageUrl;
       }
