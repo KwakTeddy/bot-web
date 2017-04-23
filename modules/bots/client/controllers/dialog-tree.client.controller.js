@@ -129,12 +129,23 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.save = function() {
-      dialogs.forEach(function(d) {
-        d.parent = undefined;
-        d.x = d.x0 = d.y = d.y0 = d.input_text = d.output_text = d.depth = undefined;
+      var clear = function(node)
+      {
+        node.parent = null;
+        node.x = node.x0 = node.y = node.y0 = node.input_text = node.output_text = node.depth = null;
+        if (node.children)
+          node.children.forEach(clear);
+      };
+
+      dialogs.forEach(clear);
+
+      DialogSaveService.update({botId: vm.botId, fileName: vm.fileName, dialogs:dialogs},
+        function() {
+        console.log("saved");
+      }, function(err) {
+        console.log(err);
       });
 
-      DialogSaveService.update(dialogs);
     };
 
     // make nodes and links_internal from dialogs
@@ -255,7 +266,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.tasks = res.task;
       dialogs = res.data;
 
-      console.log(JSON.stringify(dialogs));
+      //console.log(JSON.stringify(dialogs));
 
       for (var i = 0; i < dialogs.length; i++) {
         var d = dialogs[i];

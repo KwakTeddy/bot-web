@@ -61,8 +61,8 @@ angular.module('analytics').factory('Dialogs', ['$resource',
 angular.module('analytics').factory('DialogSaveService', ['$resource',
   function ($resource) {
     return $resource('api/saveDialog/:botId/:fileName', {
-      botId: '@botId',
-      fileName: '@fileName'
+      botId: 'botId',
+      fileName: 'fileName'
     }, {
       update: {
         method: 'PUT'

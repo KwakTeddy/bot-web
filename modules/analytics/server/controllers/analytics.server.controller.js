@@ -285,7 +285,6 @@ var save = function(o, res, data) {
     o.input = data.inputs;
   });
 
-  //o.output = data.outputs;
 };
 
 exports.dialog = function (req, res) {
@@ -322,9 +321,18 @@ exports.save_dialogs = function(req, res) {
   var botId = req.body.botId;
   var fileName = req.body.fileName;
   var dialogs = req.body.dialogs;
+  // var dialogs = JSON.parse(req.body.dialogs, function(key, value){
+  //   console.log(key + "," + value);
+  //   if(typeof value != 'string') return value;
+  //   return ( value.substring(0,8) == 'function') ? eval('('+value+')') : value;
+  // });
+
+  // TODO: save to file using buildBot
+  // then loadBot?
   var dialogs_data = global._bots[botId].dialogs;
 
   console.log("saveAll: " + botId+","+fileName);
+  res.status(200).send({message: 'done'});
 };
 
 exports.dialogs = function (req, res) {
@@ -371,6 +379,10 @@ exports.dialogs = function (req, res) {
       });
 
       console.log("dialog:" + result.botId + "(" + botId + "), " + result.fileName);
+      // var json = JSON.stringify(result, function(key, value) {
+      //       return (typeof value === 'function' ) ? value.toString() : value;
+      //   });
+      // return res.send(json);
       return res.jsonp(result);
     }
   ]);
