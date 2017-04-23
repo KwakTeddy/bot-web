@@ -27,6 +27,9 @@ module.exports = function(app) {
     .get(analytics.dialog)
     .put(analytics.save_dialog);
 
+  app.route('/api/saveDialog/:bId/:fileName').all(analyticsPolicy.isAllowed)
+    .put(analytics.save_dialogs);
+
   app.route('/api/dialogs/:bId/:fileId').all(analyticsPolicy.isAllowed)
     .get(analytics.dialogs);
 

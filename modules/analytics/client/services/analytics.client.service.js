@@ -58,6 +58,18 @@ angular.module('analytics').factory('Dialogs', ['$resource',
   }
 ]);
 
+angular.module('analytics').factory('DialogSaveService', ['$resource',
+  function ($resource) {
+    return $resource('api/saveDialog/:botId/:fileName', {
+      botId: '@botId',
+      fileName: '@fileName'
+    }, {
+      update: {
+        method: 'PUT'
+      }
+    });
+  }
+]);
 angular.module('analytics').factory('DialogChildren', ['$resource',
   function ($resource) {
     return $resource('api/dialogchildren/:botId/:dialogId', {
