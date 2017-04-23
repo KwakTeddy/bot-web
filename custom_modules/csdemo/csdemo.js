@@ -225,7 +225,11 @@ exports.searchCenter = searchCenter;
 
 function searchNaver(task, context, callback) {
   if(task['1']) {
-    task.query = task['1'];
+    if (task['1'] == ('집' || '회사' || '내' || '우리집')) {
+      callback(task,context)
+    } else {
+      task.query = task['1'];
+    }
   } else {
     task.query = context.dialog.inCurRaw;
   }
