@@ -4,7 +4,7 @@ var logger = require(path.resolve('config/lib/logger'));
 var utils = require(path.resolve('modules/bot/action/common/utils'));
 
 
-function botBuild(bot, botPath) {
+function botBuild(bot, botPath, fileName, dialogs) {
   var botDir;
   if(botPath) botDir = path.resolve(botPath);
   else botDir = path.resolve('custom_modules/' + bot);
@@ -30,11 +30,13 @@ function botBuild(bot, botPath) {
     var file = files[i];
     // var dlgPath = path.join(botDir, file);
     var info = path.parse(file);
+    if (dialogs != undefined && info.name !== fileName)
+      continue;
     // var jsPath = path.join(info.dir, info.name + '.js');
     var dialogPath = path.join(info.dir, info.name + '.dialog.js');
 
     if(fs.existsSync(dialogPath) &&
-      fs.statSync(file).mtime <= fs.statSync(dialogPath).mtime) {
+      fs.statSync(file).mtime <= fs.statSync(dialogPath).mtime && dialogs == undefined) {
       logger.info('\t building dlg file: ' + file + ' [SKIP]');
 
       continue;
@@ -44,7 +46,13 @@ function botBuild(bot, botPath) {
 
     var text = fs.readFileSync(file, 'utf8');
     // console.log(text);
-    var js = build(text, false, info.name);
+    var js;
+    if (dialogs) {
+      logger.info('\t saved from dialog tree');
+      js = dialogs;
+    } else {
+      js = build(text, false, info.name);
+    }
 
     js = '\n' + js + '\n\n' + build(text, true, info.name + "common");
 
