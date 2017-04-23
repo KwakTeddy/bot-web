@@ -735,8 +735,15 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           .attr("rx", 5)
           .attr("ry", 5);
 
-        if (selectedNode.depth == 0)
+        if (selectedNode.depth == 0) {
+          selectedSVG.append('text')
+            .on("click", addChild)
+            .attr("class", "icon")
+            .attr("x", rectW-25)
+            .attr("y", -4)
+            .text(function(d) { return '\uf067';} );
           return;
+        }
 
         selectedSVG.append('text')
           .on("click", edit)
