@@ -295,8 +295,13 @@
 > 홀로그램 시작
 
 시작:
+#c<시작
+#>{text: '안녕하세요', actions: [{action: 'play-video-full', url: 'http://0.s3.envato.com/h264-video-previews/80fad324-9db4-11e3-bf3d-0050569255a8/490527.mp4'} ]}
+
 c<시작
->{text: '안녕하세요', actions: [{action: 'play-video-full', url: 'http://0.s3.envato.com/h264-video-previews/80fad324-9db4-11e3-bf3d-0050569255a8/490527.mp4'} ]}
+>안녕하세요 머니브레인 개발용 옐로아이디입니다. 개발용이니 참고해주세요.
+
+
 
 답변없음:
 c<> 알아듣지 못했습니다

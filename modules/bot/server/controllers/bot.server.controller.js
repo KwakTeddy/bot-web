@@ -16,6 +16,8 @@ var toneModule = require(path.resolve('modules/bot/action/common/tone'));
 var contextModule = require(path.resolve('modules/bot/engine/common/context'));
 var dialogsetModule = require(path.resolve('modules/bot/engine/dialogset/dialogset'));
 
+var util = require('util'); //temporary
+
 var chatSocketConfig = {port: 1024, host: 'localhost', allowHalfOpen: true};
 
 var mongoose = require('mongoose'),
@@ -51,7 +53,6 @@ console.error = function(out) {
 function botProc(botName, channel, user, inTextRaw, json, outCallback, options) {
   // TODO 개발용
   dialog = utils.requireNoCache(path.resolve('modules/bot/action/common/dialog'));
-
   var startTime = new Date();
   var print = function(_out, _task) {
     var endTime = new Date();
@@ -96,7 +97,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
       type.processInput(context, inTextRaw, function(_inTextNLP, _inDoc) {
         logger.debug("자연어 처리>> " + _inTextNLP);
         inTextNLP = _inTextNLP;
-        inDoc = _inDoc;
+        context.task = utils.merge(_inDoc, json);
         cb(null);
       });
     },

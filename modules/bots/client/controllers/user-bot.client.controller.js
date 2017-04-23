@@ -186,98 +186,101 @@ if (_platform !== 'mobile'){
         if ((channel == 'facebook') && (method !== 'easy')){
           $scope.fbLoading = true;
           $scope.noPage = false;
-          return FB.api('/me/accounts?fields=picture,name,link,access_token,perms', function(response) {
-            if (response.error){
-              console.log(response.error);
-              var url = '/api/auth/facebook/page';
-              // if ($state.previous && $state.previous.href) {
-              //     url += '?redirect_to=' + encodeURIComponent($state.previous.h`ref);
-              // }
-              // Effectively call OAuth authentication route:
+          return $http.get('/api/auth/facebook/token/' + vm.user._id).then(function (result) {
+            FB.api('/me/accounts?fields=picture,name,link,access_token,perms&access_token=' + result.data.additionalProvidersData.facebook.accessToken, function(response) {
+              if (response.error){
+                console.log(response.error);
+                var url = '/api/auth/facebook/page';
+                // if ($state.previous && $state.previous.href) {
+                //     url += '?redirect_to=' + encodeURIComponent($state.previous.h`ref);
+                // }
+                // Effectively call OAuth authentication route:
                 console.log(url);
-              $scope.fbLoading = false;
-              $window.location.href = url;
-            } else {
-              $http.post('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true, pageInfo: response.data}).then(function (res) {
-                for(var i = 0; i < res.data.length; i++){
-                  for(var j = 0; j < response.data.length; j++){
-                    if ((res.data[i].pageId == response.data[j].id) && res.data[i].connect){
-                      response.data[j]['connected'] = res.data[i].bot;
-                      continue;
-                    }else {
-                      response.data[j]['connected'] = false;
+                $scope.fbLoading = false;
+                $window.location.href = url;
+              } else {
+                console.log(response);
+                $http.post('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true, pageInfo: response.data}).then(function (res) {
+                  for(var i = 0; i < res.data.length; i++){
+                    for(var j = 0; j < response.data.length; j++){
+                      if ((res.data[i].pageId == response.data[j].id) && res.data[i].connect){
+                        response.data[j]['connected'] = res.data[i].bot;
+                        continue;
+                      }else {
+                        response.data[j]['connected'] = false;
+                      }
                     }
                   }
-                }
 
-                $scope.fbLoading = false;
-                $scope.pageLists = [];
-                $scope.pageLists = response.data;
-                if (!response.data.length){
-                  $scope.noPage = true;
-                }
+                  $scope.fbLoading = false;
+                  $scope.pageLists = [];
+                  $scope.pageLists = response.data;
+                  if (!response.data.length){
+                    $scope.noPage = true;
+                  }
 
-                $scope.close = function () {
-                  modalInstance.dismiss();
-                };
+                  $scope.close = function () {
+                    modalInstance.dismiss();
+                  };
 
-                $scope.connect = function (page) {
-                  // modalInstance.dismiss();
-                  FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
-                    if(response.success){
-                      var info = {};
-                      info['user'] = vm.user._id;
-                      info['userBot'] = vm.userBot._id;
-                      info['userBotId'] = vm.userBot.id;
-                      info['page'] = page;
-                      info['connect'] = true;
-                      page['connected'] = vm.userBot;
-                      $http.post('/api/auth/facebook/pageInfo', info, function (err) {
-                        if(err) {
-                          console.log(err)
-                        }else {
+                  $scope.connect = function (page) {
+                    // modalInstance.dismiss();
+                    FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
+                      if(response.success){
+                        var info = {};
+                        info['user'] = vm.user._id;
+                        info['userBot'] = vm.userBot._id;
+                        info['userBotId'] = vm.userBot.id;
+                        info['page'] = page;
+                        info['connect'] = true;
+                        page['connected'] = vm.userBot;
+                        $http.post('/api/auth/facebook/pageInfo', info, function (err) {
+                          if(err) {
+                            console.log(err)
+                          }else {
 
-                        }
-                      });
-                    }else {
+                          }
+                        });
+                      }else {
 
-                    }
+                      }
+                    });
+                  };
+                  $scope.disconnect = function (page) {
+                    // modalInstance.dismiss();
+                    var info = {};
+                    info['user'] = vm.user._id;
+                    info['userBot'] = vm.userBot._id;
+                    info['userBotId'] = vm.userBot.id;
+                    info['page'] = page;
+                    info['connect'] = false;
+                    page['connected'] = false;
+                    FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'delete', function (response) {
+                      console.log(response);
+                      if (response.success){
+                        page['connected'] = false;
+                        $http.post('/api/auth/facebook/pageInfo', info, function (err) {
+                          if(err) {
+                            console.log(err)
+                          }else {
+
+                          }
+                        });
+                      }else {
+
+                      }
+                    });
+                  };
+                  var modalInstance = $uibModal.open({
+                    templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',
+                    scope: $scope
                   });
-                };
-                $scope.disconnect = function (page) {
-                  // modalInstance.dismiss();
-                  var info = {};
-                  info['user'] = vm.user._id;
-                  info['userBot'] = vm.userBot._id;
-                  info['userBotId'] = vm.userBot.id;
-                  info['page'] = page;
-                  info['connect'] = false;
-                  page['connected'] = false;
-                  FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'delete', function (response) {
+                  modalInstance.result.then(function (response) {
                     console.log(response);
-                    if (response.success){
-                      page['connected'] = false;
-                      $http.post('/api/auth/facebook/pageInfo', info, function (err) {
-                        if(err) {
-                          console.log(err)
-                        }else {
-
-                        }
-                      });
-                    }else {
-
-                    }
-                  });
-                };
-                var modalInstance = $uibModal.open({
-                  templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',
-                  scope: $scope
+                  })
                 });
-                modalInstance.result.then(function (response) {
-                  console.log(response);
-                })
-              });
-            }
+              }
+            });
           });
         }
         $scope.close = function () {

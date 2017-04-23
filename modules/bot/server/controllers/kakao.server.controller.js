@@ -3,14 +3,18 @@ var request = require('request');
 var path = require('path');
 var chat = require(path.resolve('modules/bot/server/controllers/bot.server.controller'));
 var contextModule = require(path.resolve('modules/bot/engine/common/context'));
+var mongoose = require('mongoose');
+var Media = mongoose.model('Media');
+var fs = require('fs');
 
+var util = require('util');
 exports.keyboard = function (req, res) {
   console.log("kakao keyboard");
 
   contextModule.getContext(req.params.bot, 'kakao', req.params.user_key, null, function(context) {
     var sendMsg = context.bot.kakao.keyboard;
     if(sendMsg == undefined) sendMsg = { type: 'text'};
-
+    console.log(util.inspect(sendMsg))
     res.write(JSON.stringify(sendMsg));
     res.end();
 
@@ -25,13 +29,17 @@ exports.message = function (req, res) {
     var from = req.body.user_key;
     var type = req.body.type;
     var text = req.body.content;
-
-   console.log(JSON.stringify(req.params));
+    if (type == "photo" || type == "video" || type == 'audio') {
+      req.body.inputType = req.body.type;
+      delete req.body.type;
+      req.body.url = req.body.content;
+      delete req.body.content;
+    }
+    console.log(JSON.stringify(req.params));
     chat.write('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
       respondMessage(res, serverText, json)
     });
   }
-
 };
 
 
@@ -58,6 +66,10 @@ exports.deleteChatRoom = function (req, res) {
 
 
 function respondMessage(res, text, json) {
+  if (json && json.result && json.result.items){
+
+  }
+
   var sendMsg =
   {
     "message": {
@@ -68,8 +80,8 @@ function respondMessage(res, text, json) {
   if(json && json.photoUrl) {
     sendMsg.message.photo = {
       "url": json.photoUrl,
-      "width": json.photoWidth,
-      "height":json.photoHeight
+      "width": json.photoWidth || 640,
+      "height":json.photoHeight || 480
     }
   }
 
@@ -103,6 +115,14 @@ function respondMessage(res, text, json) {
       "type": "buttons",
       "buttons": json.buttons
     };
+  }
+
+  if(json && json.result && json.result.smartReply) {
+    sendMsg.keyboard =
+      {
+        "type": "buttons",
+        "buttons": json.result.smartReply
+      };
   }
 
   console.log(JSON.stringify(sendMsg));

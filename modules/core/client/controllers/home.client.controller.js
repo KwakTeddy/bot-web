@@ -4,6 +4,7 @@ angular.module('core').controller('HomeController', ['$scope', '$rootScope', '$d
   function ($scope, $rootScope, $document, $cookies, Authentication, Socket, $resource) {
     var vm = this;
     $scope.authentication = Authentication;
+    vm.test = '123';
 
     vm.resetDB = function() {
       $resource('/api/resetDB').delete();

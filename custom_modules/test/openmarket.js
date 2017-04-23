@@ -1,16 +1,114 @@
 var path = require('path');
-var java = require('java');
+// var java = require('java');
+// console.log(java);
 var request = require('request');
+var mongoose = require('mongoose');
+var Media = mongoose.model('Media');
+var fs = require('fs');
 var util = require('util');
-java.classpath.push(path.resolve(__dirname, '../../external_modules/hmac_sdk/commons-codec-1.10.jar'));
-java.classpath.push(path.resolve(__dirname, '../../external_modules/hmac_sdk/openapi-hmac-sdk-1.0.jar'));
-var Hmac = java.import("com.coupang.openapi.sdk.Hmac");
-var accessKey = "179e9a30-3bc7-4e40-a066-5dd311b544d3";
-var secretKey = "ce09d7771155f54f81bf6f1c0df3803f70d1fe7b";
-var host = "https://api-gateway.coupang.com";
 
-var soap = require('soap');
-var parseString = require('xml2js').parseString;
+// java.classpath.push(path.resolve(__dirname, '../../external_modules/hmac_sdk/commons-codec-1.10.jar'));
+// java.classpath.push(path.resolve(__dirname, '../../external_modules/hmac_sdk/openapi-hmac-sdk-1.0.jar'));
+// var Hmac = java.import("com.coupang.openapi.sdk.Hmac");
+// var accessKey = "179e9a30-3bc7-4e40-a066-5dd311b544d3";
+// var secretKey = "ce09d7771155f54f81bf6f1c0df3803f70d1fe7b";
+// var host = "https://api-gateway.coupang.com";
+//
+// var soap = require('soap');
+// var parseString = require('xml2js').parseString;
+
+exports.info = {
+  action : function (task, context, callback) {
+    console.log(util.inspect(task,{showHidden: false, depth: null}))
+    console.log(util.inspect(task.topTask,{showHidden: false, depth: null}))
+    console.log(util.inspect(context,{showHidden: false, depth: null}))
+    console.log(JSON.stringify(callback))
+
+    callback(task, context);
+  }
+}
+
+exports.imageSave = {
+    action: function (task, context, callback) {
+      console.log(util.inspect(task,{showHidden: false, depth: null}))
+      console.log(util.inspect(context,{showHidden: false, depth: null}))
+      console.log(JSON.stringify(callback))
+      var download = function(url, dir, callback1){
+        request.head(url, function(err, res, body){
+          if(err){
+            console.log(err);
+          }
+          var ext = '';
+          console.log('content-type:'+ res.headers['content-type']);
+          console.log('content-length:'+ res.headers['content-length']);
+          if (context.task.inputType == 'photo'){
+            ext = res.headers['content-type'].split("/")
+          }
+          var fullName = dir + '.' + ext[ext.length - 1];
+          console.log(fullName);
+          request(url).pipe(fs.createWriteStream(fullName)).on('close', callback1);
+        });
+      };
+      if (context.task.inputType == 'photo'){
+        var dir = 'public/images/';
+      }else if (context.task.inputType == 'video'){
+        var dir = 'public/videos/';
+      }else if (context.task.inputType == 'audio'){
+        var dir = 'public/audios/'
+      }
+      var filename = context.user.channel + '_' + context.user.userId + '_' + context.bot.id + '_' + 'context';
+      download(context.task.url, dir + filename, function(){
+        console.log('done');
+        var media = new Media();
+        media.bot = context.bot.id;
+        media.url = context.task.url;
+        media.type = context.task.inputType;
+        media.channel = context.user.channel;
+        media.user = context.user.userId;
+        media.context = 'Some context';
+        media.save(function (err) {
+          if(err){
+            console.log(err)
+          }
+          callback(task, context)
+        })
+      });
+    }
+};
+
+exports.showImage = {
+  action: function (task, context, callback) {
+    console.log(context.dialog.imageUrl);
+    task.result = {
+      image: {url: context.dialog.imageUrl}
+    };
+    callback(task, context);
+  }
+};
+
+exports.test = {
+  action: function (task, context, callback) {
+    console.log(context.dialog.imageUrl);
+    task.result = {
+      image: {url: context.dialog.imageUrl}
+    };
+    callback(task, context);
+  }
+};
+
+
+exports.imageTypeCheck = function (text, type, task, context, callback) {
+  var matched = false;
+  console.log('-----------------------------------');
+  console.log(context.task);
+  if (context.task.inputType == 'photo') {
+    context.dialog.imageUrl = context.task.url;
+    matched = true;
+  }
+  callback(text, task, matched);
+};
+
+
 
 // 배송 API
 exports.coupangShipment = {

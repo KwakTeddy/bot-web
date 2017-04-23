@@ -3,6 +3,7 @@ var request = require('request');
 var path = require('path');
 var chat = require(path.resolve('modules/bot/server/controllers/bot.server.controller'));
 var contextModule = require(path.resolve('modules/bot/engine/common/context'));
+var config = require(path.resolve('config/config'));
 
 var subscribe = '';
 var subscribePageToken = '';
@@ -47,6 +48,7 @@ exports.messageGet =  function(req, res) {
 
 exports.message = function (req, res) {
   var data = req.body;
+  console.log(req.params[req.params.bot]);
   // Make sure this is a page subscription
   if (data.object == 'page') {
       // Iterate over each entry
@@ -83,117 +85,61 @@ exports.message = function (req, res) {
 
 exports.respondMessage = respondMessage;
 function respondMessage(to, text, botId, task) {
-
-  var messageData = {
-    recipient: {
-      id: to
-    },
-    message: {
-      text: text
-    }
-  };
-
+  var tokenData = '';
   contextModule.getContext(botId, 'facebook', to, null, function(context) {
     var bot = context.botUser.orgBot || context.bot;
 
     if (subscribe){
-        callSendAPI(messageData, subscribePageToken);
+        tokenData = subscribePageToken;
     }else {
-        callSendAPI(messageData, bot.facebook.PAGE_ACCESS_TOKEN);
+        tokenData = bot.facebook.PAGE_ACCESS_TOKEN;
+    }
+
+    console.log(util.inspect(task, {showHidden: false, depth: null}))
+    console.log('999999999998989812398129839128398')
+
+    if (task && task.result) {
+      // If we receive a text message, check to see if it matches any special
+      // keywords and send back the corresponding example. Otherwise, just echo
+      // the text we received.
+      console.log(util.inspect(Object.keys(task.result).toString(), {showHidden: false, depth: null}))
+      switch (Object.keys(task.result).toString()) {
+        case 'image':
+          sendGenericMessage(to, text, task, tokenData);
+          break;
+
+        case 'image,buttons':
+          sendGenericMessage(to, text, task, tokenData);
+          break;
+        case 'buttons':
+          sendButtonMessage(to, text, task, tokenData);
+          break;
+
+        case 'items':
+          sendGenericMessage(to, text, task, tokenData);
+          break;
+
+        case 'receipt':
+          sendReceiptMessage(to);
+          break;
+
+        case 'smartReply':
+          smartReplyMessage(to, text, task, tokenData);
+          break;
+
+        default:
+          sendTextMessage(to, text);
+      }
+    }
+    // else if (messageAttachments) {
+    //   sendTextMessage(to, "Message with attachment received");
+    // }
+    else {
+      sendTextMessage(to, text, task, tokenData);
+      // sendTextMessage(to, "서버가 연결되어 있지 않습니다.");
     }
   });
-
-
-  // if (text) {
-  //   // If we receive a text message, check to see if it matches any special
-  //   // keywords and send back the corresponding example. Otherwise, just echo
-  //   // the text we received.
-  //   switch (text) {
-  //     case 'image':
-  //       sendImageMessage(to);
-  //       break;
-  //
-  //     case 'button':
-  //       sendButtonMessage(to);
-  //       break;
-  //
-  //     case 'generic':
-  //       sendGenericMessage(to);
-  //       break;
-  //
-  //     case 'receipt':
-  //       sendReceiptMessage(to);
-  //       break;
-  //
-  //     default:
-  //       sendTextMessage(to, text);
-  //   }
-  // } else if (messageAttachments) {
-  //   sendTextMessage(to, "Message with attachment received");
-  // } else {
-  //   sendTextMessage(to, "서버가 연결되어 있지 않습니다.");
-  // }
 }
-
-/*
- * Verify that the callback came from Facebook. Using the App Secret from
- * the App Dashboard, we can verify the signature that is sent with each
- * callback in the x-hub-signature field, located in the header.
- *
- * https://developers.facebook.com/docs/graph-api/webhooks#setup
- *
- */
-function verifyRequestSignature(req, res, buf) {
-  var signature = req.headers["x-hub-signature"];
-
-  if (!signature) {
-    // For testing, let's log an error. In production, you should throw an
-    // error.
-    console.error("Couldn't validate the signature.");
-  } else {
-    var elements = signature.split('=');
-    var method = elements[0];
-    var signatureHash = elements[1];
-
-    var expectedHash = crypto.createHmac('sha1', APP_SECRET)
-      .update(buf)
-      .digest('hex');
-
-    if (signatureHash != expectedHash) {
-      throw new Error("Couldn't validate the request signature.");
-    }
-  }
-}
-
-/*
- * Authorization Event
- *
- * The value for 'optin.ref' is defined in the entry point. For the "Send to
- * Messenger" plugin, it is the 'data-ref' field. Read more at
- * https://developers.facebook.com/docs/messenger-platform/webhook-reference#auth
- *
- */
-function receivedAuthentication(event) {
-  var senderID = event.sender.id;
-  var recipientID = event.recipient.id;
-  var timeOfAuth = event.timestamp;
-
-  // The 'ref' field is set in the 'Send to Messenger' plugin, in the 'data-ref'
-  // The developer can set this to an arbitrary value to associate the
-  // authentication callback with the 'Send to Messenger' click event. This is
-  // a way to do account linking when the user clicks the 'Send to Messenger'
-  // plugin.
-  var passThroughParam = event.optin.ref;
-
-  console.log("Received authentication for user %d and page %d with pass " +
-    "through param '%s' at %d", senderID, recipientID, passThroughParam,
-    timeOfAuth);
-
-  // When an authentication is received, we'll send a message back to the sender
-  // to let them know it was successful.
-  sendTextMessage(senderID, "Authentication successful");
-}
-
 
 /*
  * Message Event
@@ -214,7 +160,6 @@ function receivedMessage(event) {
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
   var message = event.message;
-  console.log(event.botId);
 
   if (event.botId == "subscribeBot"){
     console.log('Subscribe Coming In');
@@ -231,16 +176,28 @@ function receivedMessage(event) {
 
                   var bot = context.botUser.orgBot || context.bot;
                   if(recipientID == data.pageId) {
-                      console.log('2 senderID: ' + senderID + ', recipientID: ' + recipientID);
+                    console.log('2 senderID: ' + senderID + ', recipientID: ' + recipientID);
 
-                      var messageId = message.mid;
-                      var messageText = message.text;
-                      var messageAttachments = message.attachments;
-
-                      chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
-                          console.log('this is write');
-                          respondMessage(senderID, retText, event.botId, task);
-                      });
+                    var messageId = message.mid;
+                    var messageText = message.text;
+                    var messageAttachments = message.attachments;
+                    console.log(util.inspect(messageText, {showHidden: false, depth: null}))
+                    if (messageAttachments){
+                        console.log(util.inspect(messageAttachments, {showHidden: false, depth: null}))
+                        var imageData = JSON.parse(JSON.stringify(messageAttachments));
+                        message = {};
+                        if (imageData[0].type == 'image'){
+                          imageData[0].type = 'photo'
+                        }
+                        message['inputType'] =  imageData[0].type;
+                        message.url = imageData[0].payload.url;
+                        messageText='fbImage';
+                    }
+                    chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
+                        console.log('this is write');
+                        console.log(util.inspect(task, {showHidden: false, depth: null}));
+                        respondMessage(senderID, retText, event.botId, task);
+                    });
                   }
               });
           }
@@ -348,7 +305,7 @@ function receivedPostback(event) {
  * Send a message with an using the Send API.
  *
  */
-function sendImageMessage(recipientId) {
+function sendImageMessage(recipientId, text, task, token) {
   var messageData = {
     recipient: {
       id: recipientId
@@ -357,37 +314,45 @@ function sendImageMessage(recipientId) {
       attachment: {
         type: "image",
         payload: {
-          url: "http://i.imgur.com/zYIlgBl.png"
+          title: text,
+          url: task.result.image.url
         }
       }
     }
   };
 
-  callSendAPI(messageData);
+  callSendAPI(messageData, token);
 }
 
 /*
  * Send a text message using the Send API.
  *
  */
-function sendTextMessage(recipientId, messageText) {
+function sendTextMessage(recipientId, text, task, token) {
   var messageData = {
     recipient: {
       id: recipientId
     },
     message: {
-      text: messageText
+      text: text
     }
   };
 
-  callSendAPI(messageData);
+  callSendAPI(messageData, token);
 }
 
 /*
  * Send a button message using the Send API.
  *
  */
-function sendButtonMessage(recipientId) {
+function sendButtonMessage(recipientId, text, task, token) {
+  for(var i = 0; i < task.result.buttons.length; i++){
+    task.result.buttons[i].title = task.result.buttons[i].text;
+    delete task.result.buttons[i].text;
+    task.result.buttons[i]['type'] = 'web_url';
+  }
+  console.log(util.inspect(task, {showHidden: false, depth: null}));
+
   var messageData = {
     recipient: {
       id: recipientId
@@ -397,29 +362,66 @@ function sendButtonMessage(recipientId) {
         type: "template",
         payload: {
           template_type: "button",
-          text: "This is test text",
-          buttons:[{
-            type: "web_url",
-            url: "https://www.oculus.com/en-us/rift/",
-            title: "Open Web URL"
-          }, {
-            type: "postback",
-            title: "Call Postback",
-            payload: "Developer defined postback"
-          }]
+          text: text,
+          buttons: task.result.buttons
         }
       }
     }
   };
-
-  callSendAPI(messageData);
+  callSendAPI(messageData, token);
 }
 
 /*
  * Send a Structured Message (Generic Message type) using the Send API.
  *
  */
-function sendGenericMessage(recipientId) {
+function sendGenericMessage(recipientId, text, task, token) {
+  console.log('sendGenericMessage----------------------------------')
+  if (task.result.items){
+    task.result = task.result.items;
+    for(var i =0; i < task.result.length; i++){
+      if (task.result[i].text){
+        task.result[i].subtitle = task.result[i].text;
+        delete task.result[i].text;
+      }
+      if (task.result[i].imageUrl) {
+        if (task.result[i].imageUrl.substring(0,4) !== 'http'){
+          task.result[i].imageUrl = config.host + task.result[i].imageUrl
+        }
+        task.result[i].image_url = task.result[i].imageUrl;
+        delete task.result[i].imageUrl;
+      }
+      if (task.result[i].buttons) {
+        for (var j = 0; j < task.result[i].buttons.length; j++) {
+          task.result[i].buttons[j].title = task.result[i].buttons[j].text;
+          delete task.result[i].buttons[j].text;
+          task.result[i].buttons[j]['type'] = 'web_url';
+        }
+      }
+    }
+    task.result.splice(10);
+  }else {
+    console.log('---------------------------------');
+    console.log(task.result);
+    if (task.result.buttons){
+      for(var i = 0; i < task.result.buttons.length; i++){
+        task.result.buttons[i].title = task.result.buttons[i].text;
+        delete task.result.buttons[i].text;
+        task.result.buttons[i]['type'] = 'web_url';
+        task.result['title'] = text;
+      }
+    }
+    if(task.result.image){
+      if (task.result.image.url.substring(0,4) !== 'http'){
+        task.result.image.url = config.host + task.result.image.url
+      }
+      task.result.image_url = task.result.image.url;
+      delete task.result.image;
+      task.result['title'] = text;
+    }
+    task.result = [task.result];
+  }
+  console.log(util.inspect(task.result, {showHidden: false, depth: null}));
   var messageData = {
     recipient: {
       id: recipientId
@@ -429,48 +431,20 @@ function sendGenericMessage(recipientId) {
         type: "template",
         payload: {
           template_type: "generic",
-          elements: [{
-            title: "rift",
-            subtitle: "Next-generation virtual reality",
-            item_url: "https://www.oculus.com/en-us/rift/",
-            image_url: "http://messengerdemo.parseapp.com/img/rift.png",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.oculus.com/en-us/rift/",
-              title: "Open Web URL"
-            }, {
-              type: "postback",
-              title: "Call Postback",
-              payload: "Payload for first bubble",
-            }],
-          }, {
-            title: "touch",
-            subtitle: "Your Hands, Now in VR",
-            item_url: "https://www.oculus.com/en-us/touch/",
-            image_url: "http://messengerdemo.parseapp.com/img/touch.png",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.oculus.com/en-us/touch/",
-              title: "Open Web URL"
-            }, {
-              type: "postback",
-              title: "Call Postback",
-              payload: "Payload for second bubble",
-            }]
-          }]
+          elements: task.result
         }
       }
     }
   };
 
-  callSendAPI(messageData);
+  callSendAPI(messageData, token);
 }
 
 /*
  * Send a receipt message using the Send API.
  *
  */
-function sendReceiptMessage(recipientId) {
+function sendReceiptMessage(recipientId, text, task, token) {
   // Generate a random receipt ID as the API requires a unique ID
   var receiptId = "order" + Math.floor(Math.random()*1000);
 
@@ -533,6 +507,29 @@ function sendReceiptMessage(recipientId) {
 }
 
 /*
+ * Send a receipt message using the Send API.
+ *
+ */
+function smartReplyMessage(recipientId, text, task, token) {
+  for (var i = 0; i < task.result.smartReply.length; i++){
+    task.result.smartReply[i] = {"title" : task.result.smartReply[i]};
+    task.result.smartReply[i]['content_type'] = 'text';
+    task.result.smartReply[i]['payload'] = task.result.smartReply[i].title;
+  }
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message:{
+      "text": text,
+      "quick_replies": task.result.smartReply
+    }
+  };
+
+  callSendAPI(messageData, token);
+}
+
+/*
  * Call the Send API. The message data goes in the body. If successful, we'll
  * get the message id in a response
  *
@@ -560,4 +557,64 @@ function callSendAPI(messageData, PAGE_ACCESS_TOKEN) {
 
     }
   });
+}
+
+
+/*
+ * Verify that the callback came from Facebook. Using the App Secret from
+ * the App Dashboard, we can verify the signature that is sent with each
+ * callback in the x-hub-signature field, located in the header.
+ *
+ * https://developers.facebook.com/docs/graph-api/webhooks#setup
+ *
+ */
+function verifyRequestSignature(req, res, buf) {
+  var signature = req.headers["x-hub-signature"];
+
+  if (!signature) {
+    // For testing, let's log an error. In production, you should throw an
+    // error.
+    console.error("Couldn't validate the signature.");
+  } else {
+    var elements = signature.split('=');
+    var method = elements[0];
+    var signatureHash = elements[1];
+
+    var expectedHash = crypto.createHmac('sha1', APP_SECRET)
+      .update(buf)
+      .digest('hex');
+
+    if (signatureHash != expectedHash) {
+      throw new Error("Couldn't validate the request signature.");
+    }
+  }
+}
+
+/*
+ * Authorization Event
+ *
+ * The value for 'optin.ref' is defined in the entry point. For the "Send to
+ * Messenger" plugin, it is the 'data-ref' field. Read more at
+ * https://developers.facebook.com/docs/messenger-platform/webhook-reference#auth
+ *
+ */
+function receivedAuthentication(event) {
+  var senderID = event.sender.id;
+  var recipientID = event.recipient.id;
+  var timeOfAuth = event.timestamp;
+
+  // The 'ref' field is set in the 'Send to Messenger' plugin, in the 'data-ref'
+  // The developer can set this to an arbitrary value to associate the
+  // authentication callback with the 'Send to Messenger' click event. This is
+  // a way to do account linking when the user clicks the 'Send to Messenger'
+  // plugin.
+  var passThroughParam = event.optin.ref;
+
+  console.log("Received authentication for user %d and page %d with pass " +
+    "through param '%s' at %d", senderID, recipientID, passThroughParam,
+    timeOfAuth);
+
+  // When an authentication is received, we'll send a message back to the sender
+  // to let them know it was successful.
+  sendTextMessage(senderID, "Authentication successful");
 }

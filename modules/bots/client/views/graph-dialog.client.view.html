@@ -125,7 +125,7 @@
 </header>
 
 
-<div id="control" ng-controller="GraphDialogController" class="test-body">
+<div id="control" class="test-body">
   <a class="modal-with-form btn btn-default" style="display:none" href="#modalForm">Open Form</a>
 
   <!-- Modal Form -->
@@ -171,8 +171,15 @@
     </section>
   </div>
   <!--<div class="col-md-6">-->
+  <div class="ui-widget">
+    <div class="col-md-3">
+      <input class="form-control" width="200" id="search">
+    </div>
+    <div>
+      <button type="button" class="btn btn-primary" ng-click="searchNode()">Search</button>
+    </div>
+  </div>
   <section id="canvas" class="panel" >
-
   </section>
   <!--</div>-->
 </div>

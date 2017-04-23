@@ -6,7 +6,10 @@ angular.module('analytics').config(['$stateProvider',
       .state('analytics', {
         abstract: true,
         url: '/developer/analytics',
-        template: '<ui-view/>'
+        template: '<ui-view/>',
+        data: {
+          roles: ['user', 'admin'],
+        }
       })
       .state('analytics.dashboard', {
         url: '',

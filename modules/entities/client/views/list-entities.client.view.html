@@ -1,0 +1,40 @@
+<section>
+  <header class="page-header" style="z-index: 0 !important;">
+    <h2>엔터티(ENTITY)</h2>
+
+    <div class="right-wrapper pull-right">
+      <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-down"></i></a>
+    </div>
+  </header>
+  <div class="list-group">
+    <a ng-repeat="entity in vm.entities"
+       ui-sref="entities.view({ entityId: entity._id })"
+       class="list-group-item">
+      <h4 class="list-group-item-heading" ng-bind="entity.name"></h4>
+    </a>
+  </div>
+  <div ng-show="!vm.createEntity" class="alert alert-warning text-center">
+    <a ng-click="vm.createEntity = true">엔터티를 만들어봐요</a>
+    <!--<a ui-sref="entities.create">엔터티를 만들어봐요</a>-->
+  </div>
+  <div class="list-group-item" ng-show="vm.createEntity">
+    <form name="vm.form.entityForm" class="form-horizontal" ng-submit="vm.save(vm.form.entityForm.$valid)" novalidate>
+      <fieldset>
+        <div class="form-group" show-errors>
+          <label class="control-label" for="name">엔터티 이름</label>
+          <input name="name" type="text" ng-model="vm.entity.name" id="name" class="form-control" placeholder="Name" required>
+          <div ng-messages="vm.form.entityForm.name.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">이름을 입력하셔요</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <button type="submit" ng-click="vm.createEntity = false" class="btn btn-default">{{vm.entity._id ? '수정' : '만들기'}}</button>
+        </div>
+        <div ng-show="vm.error" class="text-danger">
+          <strong ng-bind="vm.error"></strong>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+
+</section>

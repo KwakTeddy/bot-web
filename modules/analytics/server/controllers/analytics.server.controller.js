@@ -5,14 +5,17 @@
  */
 var path = require('path'),
   mongoose = require('mongoose'),
+  Bot = mongoose.model('Bot'),
   BotUser = mongoose.model('BotUser'),
   UserDialogLog = mongoose.model('UserDialogLog'),
   UserDialog = mongoose.model('UserDialog'),
   FactLink = mongoose.model('FactLink'),
+  botLib = require(path.resolve('config/lib/bot')),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
 
 var async = require('async');
+var BotFile = mongoose.model('BotFile');
 
 /**
  * List of User count
@@ -223,6 +226,7 @@ var searchDialog = function(dialogs, dialogId, action, res, data) {
   dialogs.forEach(function(obj) {
     if (obj.id == dialogId) {
       action(obj, res, data);
+      return;
     }
     else if (obj.children) {
       searchDialog(obj.children, dialogId, action, res, data);
@@ -284,6 +288,47 @@ var save = function(o, res, data) {
   //o.output = data.outputs;
 };
 
+exports.dialogs = function (req, res) {
+  var botId = req.params.bId;
+  var fileId = req.params.fileId;
+
+  var result = {};
+  var dialogs_data;
+  async.waterfall([
+    function (cb) {
+      BotFile.findById(fileId).exec(function (err, file) {
+        result.fileName= file.name.split(".")[0];
+        cb(null);
+      });
+    },
+    function (cb) {
+      Bot.findOne({_id: botId}).exec(function (err, doc) {
+        result.botId = doc.id;
+        if (!global._bots[doc.id]) {
+          botLib.loadBot(doc.id, function (bot) {
+            dialogs_data = bot.dialogs;
+            cb(null);
+          });
+        } else {
+          dialogs_data = global._bots[doc.id].dialogs;
+          cb(null);
+        }
+      });
+    },
+    function (cb) {
+      result.data = [];
+      dialogs_data.forEach(function (d) {
+        if (d.filename === result.fileName) {
+          result.data.push(d);
+        }
+      });
+
+      console.log("dialog:" + result.botId + "(" + botId + "), " + result.fileName);
+      return res.jsonp(result);
+    }
+  ]);
+};
+
 exports.dialog = function (req, res) {
   var botId = req.params.bId;
   var dialogId = req.params.dialogId;
@@ -292,7 +337,6 @@ exports.dialog = function (req, res) {
 
   console.log("dialog:" + botId+","+dialogId);
   searchDialog(dialogs_data, dialogId, findOne, res, data);
-
 };
 
 exports.dialogChildren = function (req, res) {

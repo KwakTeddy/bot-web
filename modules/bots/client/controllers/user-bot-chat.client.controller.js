@@ -53,7 +53,8 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
       if(message.lastIndexOf(':log') == 0) {
         if(!$state.is('developer-home') && !$state.is('user-bots.context-analytics') &&
-          !$state.is('bots.graph-knowledge') && !$state.is('bots.graph-dialog')) return;
+          !$state.is('bots.graph-knowledge') && !$state.is('bots.graph-dialog') &&
+          !$state.is('bots.dialog-tree')) return;
         // vm.log += message.substring(message.indexOf('\n')+1);
         // logScrollBottom()
 
@@ -251,7 +252,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         $rootScope.$broadcast('keyinput', vm.msg);
 
       // only in developer
-      if ($state.is('developer-home')) {
+      if ($state.is('developer-home') || $state.current.name.startsWith('bots.')) {
         if (event.keyCode == 118) {    // F7
           vm.buildBot();
         } else if (event.keyCode == 27) {

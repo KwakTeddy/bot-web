@@ -331,13 +331,14 @@
 <!--facebook-->
 <script src="https://connect.facebook.net/en_US/all.js"></script>
 <!--<script src="https://connect.facebook.net/en_US/sdk.js"></script>-->
-<script type="text/javascript">
+<script>
   $.get('/config', function (facebookID) {
     window.fbAsyncInit = function() {
       FB.init({
 //      appId      : '240853479709635',
 //        appId      : '1557169960967403',
         appId      : facebookID,
+        status     : true,
         xfbml      : true,
         version    : 'v2.8'
       });
