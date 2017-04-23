@@ -102,7 +102,7 @@ var lgitem = {
   method: 'GET',
   xpath: {
     title: '//*[@id="container"]/div[2]/div[1]/div[1]/div[1]/h3/text()',
-    content: '//*[@id="container"]/div[2]/div[1]/div[1]/div[2]',
+    content: '//*[@id="container"]/div[2]/div[1]/div[1]/div[2]/node()',
   },
   // param: {
   //   "gubun": "SCS",
@@ -114,60 +114,83 @@ var lgitem = {
   //   "gubun": "SCS",
   //   "seq" : 2340,
   //   "itemId": "1308377241130",
-  //   "type": "keyword",
+  //   "type": "keyword"
   // },
   // param: {
   //   "gubun": "SCS",
   //   "seq" : 9418,
   //   "itemId": "20150138004197",
-  //   "type": "keyword",
+  //   "type": "keyword"
   // },
   // param: {
   //   "gubun": "SCS",
   //   "seq" : 6201,
   //   "itemId": "1778886",
-  //   "type": "keyword",
+  //   "type": "keyword"
+  // },
+  // param: {
+  //   "gubun": "SCS",
+  //   "seq" : 26829,
+  //   "itemId": "_0371ZTRX1YDCB",
+  //   "type": "keyword"
   // },
   param: {
     "gubun": "SCS",
-    "seq" : 26829,
-    "itemId": "_0371ZTRX1YDCB",
-    "type": "keyword",
+    "seq" : 9419,
+    "itemId": "20150138007211",
+    "type": "keyword"
   },
   postCallback: function (task, context, callback) {
     var item = {};
     item.title = task.doc.title.trim();
-
-    var collector = "";
-    var handleChildren = function(node) {
-      if (node.data) {
-        collector += node.data;
-      }
-      if (node.childNodes) {
-        for (var i=0; i < node.childNodes.length; ++i) {
-          handleChildren(node.childNodes[i], collector);
+    item.body = '';
+    async.eachSeries(task.doc.content, function(doc, cb) {
+      if (doc.firstChild) {
+        while (doc.firstChild) {
+          doc = doc.firstChild;
         }
+        if (doc.data) {
+          item.body += doc.data;
+        }
+      } else if (doc.data) {
+        item.body += doc.data;
       }
-    };
+      cb(null)
+    }, function (err) {
+      item.body = item.body.trim();
+      item.body = item.body.replace(/&amp;nbsp;|&nbsp;|\t|\r\n|\r|\n/g, ' ');
+      item.body = item.body.replace(/<br>/g, ' ');
+      item.body = item.body.replace(/<.*.>/g, '');
+      item.cate1 = task.topTask.c1.parentcatename;
+      item.cate2 = task.topTask.c1.catename;
+      item.keyword = task.topTask.c2.keyword;
 
-    if (task.doc.content) {
-      task.doc.content.forEach(function (c) {
-        handleChildren(c);
-      });
-      item.body = collector;
-    } else {
-      item.body = "";
-    }
-    item.body = item.body.trim();
-    item.body = item.body.replace(/&amp;nbsp;|&nbsp;|\t|\r\n|\r|\n/g, ' ');
-    item.body = item.body.replace(/<br>/g, ' ');
-
-    item.cate1 = task.topTask.c1.parentcatename;
-    item.cate2 = task.topTask.c1.catename;
-    item.keyword = task.topTask.c2.keyword;
-
-    task.topTask.data.push(item);
-    callback(task, context);
+      task.topTask.data.push(item);
+      callback(task, context);
+    });
+    // var collector = "";
+    // var handleChildren = function(node) {
+    //   if (node.data) {
+    //     collector += node.data;
+    //   }
+    //   if (node.childNodes) {
+    //     for (var i=0; i < node.childNodes.length; ++i) {
+    //       handleChildren(node.childNodes[i], collector);
+    //     }
+    //   }
+    // };
+    //
+    // if (task.doc.content) {
+    //   task.doc.content.forEach(function (c) {
+    //     handleChildren(c);
+    //   });
+    //   item.body = collector;
+    // } else {
+    //   item.body = "";
+    // }
+    // item.body = item.body.trim();
+    // item.body = item.body.replace(/&amp;nbsp;|&nbsp;|\t|\r\n|\r|\n/g, ' ');
+    // item.body = item.body.replace(/<br>/g, ' ');
   }
 };
 bot.setTask("lgitem", lgitem);

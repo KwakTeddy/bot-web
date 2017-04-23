@@ -21,7 +21,7 @@ var asCategory = [
 
   {category: '에어컨', alias: '온풍기 시스템에어컨 에어컨 에어콘'},
   {category: '텔레비전', alias: '텔레비전 TV 텔레비젼 티비'},
-  {category: '냉장고', alias: '냉장고 냉동고 김채낭장고 와인셀러 업소용냉장고'},
+  {category: '냉장고', alias: '냉장고 냉동고 김치냉장고 와인셀러 업소용냉장고'},
   {category: '가스레인지', alias: '가스레인지 가스렌지 가스오븐레인지 가스오브렌지 오븐'},
   {category: '세탁기', alias: '세탁기 건조기 의류건조기 스타일러'},
   {category: '식기세척기', alias: '식기세척기'},
@@ -76,13 +76,10 @@ function daumgeoCode (task, context, callback) {
         // task._doc.lng = doc.channel.item[0].lng;
         // task._doc.lat = doc.channel.item[0].lat;
         // task._doc.link_find = 'http://map.daum.net/link/to/' + query.q + ',' + task._doc.lat + ',' + task._doc.lng;
-        task._doc.link_map = 'http://map.daum.net/link/map/' + context.user.center.svc_center_name + ',' + context.user.center.lat + ',' + context.user.center.lng;
+        context.dialog.link_map = 'http://map.daum.net/link/map/' + context.user.center.svc_center_name + ',' + context.user.center.lat + ',' + context.user.center.lng;
         // console.log('lat: ' + task._doc.lat + ', lng: ' + task._doc.lng);
         // console.log('link: ' + task._doc.link_find);
         // console.log('link: ' + task._doc.link_map);
-
-        task.url = task._doc.link_map;
-        task.urlMessage = '지도에서 위치보기';
       }
       callback(task, context);
 
@@ -227,7 +224,11 @@ function searchCenter (task, context, callback) {
 exports.searchCenter = searchCenter;
 
 function searchNaver(task, context, callback) {
-  task.query=context.dialog.inCurRaw;
+  if(task['1']) {
+    task.query = task['1'];
+  } else {
+    task.query = context.dialog.inCurRaw;
+  }
 
   addressModule.naverGeoSearch(task, context, function(task, context) {
     for(var i = 0; i < task.doc.length; i++) {
@@ -342,7 +343,7 @@ function repairableCheck(task, context, callback) {
 
         if (category == "휴대폰" | category == "PC" | category == "스마트워치" | category == "Friends" | category == "헤드셋" | category == "청소기" | category == "컴퓨터주변기기" | category == "프로젝터" | category == "전자레인지" | category == "블루레이" | category == "가습기" | category == "제습기") {
           context.user.category = category;
-          context.dialog.repariable = true;
+          context.dialog.repairable = true;
           _cb(true);
         } else {
           context.dialog.repairable = false;
@@ -358,10 +359,59 @@ function repairableCheck(task, context, callback) {
 
 exports.repairableCheck = repairableCheck;
 
+function repairableChecktwo(task, context, callback) {
+
+  async.waterfall([
+    function (_cb) {
+      var category, word, rCategory;
+
+      word = context.dialog.ascategory;
+
+      if (word == "에어컨" | word == "텔레비전" | word == "냉장고" | word == "가스레인지" | word == "세탁기" | word == "식기세척기" | word == "정수기" | word == "안마의자" | word == "홈시어터") {
+        context.user.category = word;
+        context.dialog.repairable = 'remote';
+        _cb(true);
+      } else if (context.user.center == undefined) {
+        callback(task,context);
+      } else {
+
+        for (var j in context.user.center.product) {
+          rCategory = context.user.center.product[j];
+
+          word = RegExp.escape(word);
+          if (rCategory.alias.search(new RegExp(word, 'i')) != -1) {
+            category = rCategory.category;
+            break;
+          }
+        }
+
+        if (category == "휴대폰" | category == "PC" | category == "스마트워치" | category == "Friends" | category == "헤드셋" | category == "청소기" | category == "컴퓨터주변기기" | category == "프로젝터" | category == "전자레인지" | category == "블루레이" | category == "가습기" | category == "제습기") {
+          context.user.category = category;
+          context.dialog.repairable = true;
+          _cb(true);
+        } else {
+          context.dialog.repairable = false;
+          _cb(null);
+        }
+      }
+    }
+
+  ], function (err) {
+    callback(task,context,callback);
+  })
+}
+
+exports.repairableChecktwo = repairableChecktwo;
+
+
 function repairableTypecheck(inRaw, inNLP, inDoc, context, callback) {
 
   var matched = false;
-  var words = context.dialog.inNLP.split(' ');
+  if (context.dialog.inCurNLP) {
+    var words = context.dialog.inCurNLP.split(' ');
+  } else {
+    var words = context.dialog.inNLP.split(' ');
+  }
   async.waterfall([
     function (_cb) {
       var category, word, rCategory;

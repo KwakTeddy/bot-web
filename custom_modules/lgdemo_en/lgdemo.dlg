@@ -72,7 +72,6 @@ lgdemo.gimothee
 
 시작:
 c<~시작
-{action: 'startAction'}
 // > 안녕하세요. LG전자 고객센터 데모 입니다.
 > Hello. This is LG Electronics Customer Service Demo. How can I help you?
 

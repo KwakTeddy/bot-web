@@ -46,7 +46,6 @@ function startAction(task, context, callback) {
   callback(task, context);
 }
 
-bot.setAction("startAction", startAction);
 
 function googleGeocode(task, context, callback) {
   var request = require('request');
