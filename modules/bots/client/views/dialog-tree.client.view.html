@@ -193,15 +193,9 @@
                         <div class="col-md-9" >
                             <select id="task" name="task" data-plugin-selectTwo class="form-control populate placeholder"
                                     data-plugin-options='{ "placeholder": "Select a Task", "allowClear": true }'
-                                    ng-model="dialog.task.name" >
+                                    ng-model="dialog.task" >
                                 <option value="">---task를 선택해주세요---</option>
                                 <option ng-repeat="t in vm.tasks" value="{{t}}">{{t}}</option>
-                                <!--<optgroup label="Common tasks">-->
-                                <!--<option value="task1">task1</option>-->
-                                <!--</optgroup>-->
-                                <!--<optgroup label="User tasks">-->
-                                <!--<option value="ctask1">ctask1</option>-->
-                                <!--</optgroup>-->
                             </select>
                         </div>
                     </div>
@@ -253,7 +247,8 @@
     </div>
     <div class="col-md-9">
         <form>
-            <button class="btn btn-primary pull-right" ng-click="save()" ><i class="fa fa-save"></i> 저장하기</button>
+            <button class="mb-xs mt-xs mr-xs btn btn-danger pull-right" ng-disabled="!vm.isChanged" ng-click="save()" ><i class="fa fa-save"></i> 저장하기</button>
+            <button class="mb-xs mt-xs mr-xs btn btn-primary pull-right" ng-disabled="vm.changeHistory.length == 0" ng-click="undo()" ><i class="fa fa-undo"></i>되돌리기</button>
         </form>
     </div>
 
