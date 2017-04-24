@@ -285,7 +285,56 @@ var save = function(o, res, data) {
     o.input = data.inputs;
   });
 
-  //o.output = data.outputs;
+};
+
+exports.dialog = function (req, res) {
+  var botId = req.params.bId;
+  var dialogId = req.params.dialogId;
+  var dialogs_data = global._bots[botId].dialogs;
+  var data = {};
+
+  console.log("dialog:" + botId+","+dialogId);
+  searchDialog(dialogs_data, dialogId, findOne, res, data);
+};
+
+exports.dialogChildren = function (req, res) {
+  var botId = req.params.bId;
+  var dialogId = req.params.dialogId;
+  var dialogs_data = global._bots[botId].dialogs;
+  var data = {};
+
+  console.log("dialogChildren: " + botId+","+dialogId);
+  searchDialog(dialogs_data, dialogId, findChildren, res, data);
+};
+
+exports.save_dialog = function(req, res) {
+  var botId = req.body.botId;
+  var dialogId = req.body.dialogId;
+  var dialog = {inputs: req.body.inputs, outputs: req.body.outputs};
+  var dialogs_data = global._bots[botId].dialogs;
+
+  console.log("save: " + botId+","+dialogId);
+  searchDialog(dialogs_data, dialogId, save, res, dialog);
+};
+
+exports.save_dialogs = function(req, res) {
+  var botId = req.body.botId;
+  var fileName = req.body.fileName;
+  var dialogs = req.body.dialogs;
+  // var dialogs = JSON.parse(req.body.dialogs, function(key, value){
+  //   console.log(key + "," + value);
+  //   if(typeof value != 'string') return value;
+  //   return ( value.substring(0,8) == 'function') ? eval('('+value+')') : value;
+  // });
+
+  // TODO: save to file using buildBot
+  // then loadBot?
+  botLib.buildBot(botId, null, fileName, "var dialogs=" + JSON.stringify(dialogs) + ";");
+  botLib.loadBot(botId, function(bot) {
+    var dialogs_data = global._bots[botId].dialogs;
+    console.log("saveAll: " + botId+","+fileName);
+    res.status(200).send({message: 'done'});
+  });
 };
 
 exports.dialogs = function (req, res) {
@@ -307,13 +356,21 @@ exports.dialogs = function (req, res) {
         if (!global._bots[doc.id]) {
           botLib.loadBot(doc.id, function (bot) {
             dialogs_data = bot.dialogs;
-            cb(null);
+            cb(null, doc.id);
           });
         } else {
           dialogs_data = global._bots[doc.id].dialogs;
-          cb(null);
+          cb(null, doc.id);
         }
       });
+    },
+    function(botName,cb) {
+      result.task = [];
+      var keys = Object.keys(global._bots[botName].tasks);
+      for (var i=0; i < keys.length; ++i) {
+        result.task.push(global._bots[botName].tasks[keys[i]].name);
+      }
+      cb(null);
     },
     function (cb) {
       result.data = [];
@@ -324,29 +381,13 @@ exports.dialogs = function (req, res) {
       });
 
       console.log("dialog:" + result.botId + "(" + botId + "), " + result.fileName);
+      // var json = JSON.stringify(result, function(key, value) {
+      //       return (typeof value === 'function' ) ? value.toString() : value;
+      //   });
+      // return res.send(json);
       return res.jsonp(result);
     }
   ]);
-};
-
-exports.dialog = function (req, res) {
-  var botId = req.params.bId;
-  var dialogId = req.params.dialogId;
-  var dialogs_data = global._bots[botId].dialogs;
-  var data = {};
-
-  console.log("dialog:" + botId+","+dialogId);
-  searchDialog(dialogs_data, dialogId, findOne, res, data);
-};
-
-exports.dialogChildren = function (req, res) {
-  var botId = req.params.bId;
-  var dialogId = req.params.dialogId;
-  var dialogs_data = global._bots[botId].dialogs;
-  var data = {};
-
-  console.log("dialogChildren: " + botId+","+dialogId);
-  searchDialog(dialogs_data, dialogId, findChildren, res, data);
 };
 
 exports.resetDB = function(req, res) {
@@ -373,12 +414,3 @@ exports.resetDB = function(req, res) {
   });
 };
 
-exports.save_dialog = function(req, res) {
-  var botId = req.body.botId;
-  var dialogId = req.body.dialogId;
-  var dialog = {inputs: req.body.inputs, outputs: req.body.outputs};
-  var dialogs_data = global._bots[botId].dialogs;
-
-  console.log("save: " + botId+","+dialogId);
-  searchDialog(dialogs_data, dialogId, save, res, dialog);
-};

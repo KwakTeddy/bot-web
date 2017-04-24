@@ -12,11 +12,11 @@ var config = require('../config'),
   var async = require('async');
   var TemplateDataModule = require(path.resolve('modules/templates/server/controllers/template-datas.server.controller'));
 
-function buildBot(botName, botPath) {
+function buildBot(botName, botPath, fileName, dialogs) {
   console.log('Building Bot: ' + botName + botPath);
 
   var build = utils.requireNoCache(path.resolve('modules/bot/action/common/build'));
-  build.botBuild(botName, botPath);
+  build.botBuild(botName, botPath, fileName, dialogs);
 }
 
 exports.buildBot = buildBot;

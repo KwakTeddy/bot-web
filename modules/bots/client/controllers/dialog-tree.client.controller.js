@@ -2,8 +2,8 @@
 
 // Bots controller
 angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope', '$state', '$window','$timeout',
-'$stateParams', '$resource', 'Dialogs',
-  function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, Dialogs) {
+'$stateParams', '$resource', 'Dialogs', 'DialogSaveService',
+  function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, Dialogs, DialogSaveService) {
     var vm = this;
     vm.userId = $rootScope.userId;
     vm.bot_id = $stateParams.botId;
@@ -50,10 +50,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     // dialog editing
     $scope.addInput = function() {
-      $scope.dialog.inputs.push({str:""});
+      $scope.dialog.input.push({str:""});
     };
     $scope.addOutput= function() {
-      $scope.dialog.outputs.push({str:""});
+      $scope.dialog.output.push({str:""});
+    };
+    $scope.addTask= function() {
+      $scope.dialog.task.push({name:""});
     };
 
     var currentKeyword = "";
@@ -96,18 +99,16 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
-    $scope.findOne = function (dialogId) {
-      $scope.dialog = { botId: vm.botId, dialogId: dialogId };
+    $scope.findOne = function (dialog) {
+      //$scope.dialog = { botId: vm.botId, dialogId: dialogId };
 
-      var dialog = Dialogs.get({
-        botId: vm.botId,
-        dialogId: dialogId
-      }, function() {
-        $scope.dialog.name = dialog.name;
-        $scope.dialog.inputs = makeStr(dialog.inputs);
-        $scope.dialog.outputs = makeStr(dialog.outputs);
-        $('.modal-with-form').click();
-      });
+      $scope.dialog = {};
+      $scope.dialog.name = dialog.name;
+      $scope.dialog.input = makeStr(dialog.input);
+      $scope.dialog.task = dialog.task;
+      $scope.dialog.output = makeStr(dialog.output);
+      $scope.$apply();
+      $('.modal-with-form').click();
     };
 
     $scope.update = function (isValid) {
@@ -116,17 +117,40 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         $scope.$broadcast('show-errors-check-validity', 'dialogForm');
         return false;
       }
-      var dialog = $scope.dialog;
-      dialog.inputs = unMake($scope.dialog.inputs);
-      dialog.outputs = unMake($scope.dialog.outputs);
-      console.log(JSON.stringify((dialog)));
 
-      Dialogs.update(dialog);
+      selectedNode.name = $scope.dialog.name;
+      selectedNode.input = unMake($scope.dialog.input);
+      selectedNode.task = $scope.dialog.task;
+      selectedNode.output = unMake($scope.dialog.output);
+      selectedSVG.remove();
+      update(selectedNode);
+
+      //Dialogs.update(dialog);
+    };
+
+    $scope.save = function() {
+      var clear = function(node)
+      {
+        node.parent = null;
+        node.x = node.x0 = node.y = node.y0 = node.input_text = node.output_text = node.depth = null;
+        if (node.children)
+          node.children.forEach(clear);
+      };
+
+      dialogs.forEach(clear);
+
+      DialogSaveService.update({botId: vm.botId, fileName: vm.fileName, dialogs:dialogs},
+        function() {
+        console.log("saved");
+      }, function(err) {
+        console.log(err);
+      });
+
     };
 
     // make nodes and links_internal from dialogs
     var handleInput = function(input) {
-      if(typeof input == 'string') return input;
+      if(input == 'string') return input;
       else if(input.types && input.types[0].name) {
         return '[타입] ' + input.types[0].name;
       } else if(input.if) {
@@ -156,7 +180,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     {
       dialog.name = dialog.name || (dialog.name = "dialog" + "_" + dialog.id);
       nodes[dialog.name] = nodes[dialog.name] || (nodes[dialog.name] = dialog);
+      if (!Array.isArray(dialog.input))
+        dialog.input = [dialog.input];
       nodes[dialog.name].input_text  = handleInput(dialog.input);
+      if (!Array.isArray(dialog.output))
+        dialog.output = [dialog.output];
+      if (!dialog.task)
+        dialog.task = {name: ""};
       nodes[dialog.name].output_text = handlePrintOutput(dialog.output);
 
       if (dialog.id)
@@ -233,7 +263,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     $resource('/api/dialogs/:bot_id/:file_id', {}).get({bot_id: vm.bot_id, file_id: vm.file_id}, function(res) {
       vm.botId = res.botId;
       vm.fileName = res.fileName;
+      vm.tasks = res.task;
       dialogs = res.data;
+
+      //console.log(JSON.stringify(dialogs));
+
       for (var i = 0; i < dialogs.length; i++) {
         var d = dialogs[i];
         d.name = d.name || (d.name = "dialog_" + d.id);
@@ -425,6 +459,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       // add the text
       nodeEnter.append("text")
+        .attr("id", "name")
         .attr("class","nodetext nodetitle")
         .style("pointer-events", "none")
         .attr("x", "1em")
@@ -441,6 +476,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         .style("stroke", function(d) { return d3.rgb("#7CA4C0").darker(); });
 
       nodeEnter.append("text")
+        .attr("id", "input")
         .attr("class","nodetext")
         .style("pointer-events", "none")
         .attr("x", 7)
@@ -459,11 +495,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         .attr("stroke", "gray");
 
       nodeEnter.append("text")
+        .attr("id", "task")
         .attr("class","nodetext")
         .style("pointer-events", "none")
         .attr("x", 7)
         .attr("dy", "5em")
-        .text(function(d) { return "Task: " + (d.task ? d.task : ""); })
+        .text(function(d) { return "Task: " + (d.task ? (d.task.name ? d.task.name : d.task) : ""); })
         .call(wrap, rectW-25, 2);
 
       nodeEnter.append("line")
@@ -477,6 +514,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         .attr("stroke", "gray");
 
       nodeEnter.append("text")
+        .attr("id", "output")
         .attr("class","nodetext")
         .style("pointer-events", "none")
         .attr("x", 7)
@@ -497,9 +535,29 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           return "translate(" + d.y + "," + d.x + ")";
         });
 
-      // Fade the text in
-      nodeUpdate.select("text")
-        .style("fill-opacity", 1);
+
+      // add the text
+      // nodeUpdate.select("text#name")
+      //   .text(function(d) { return d.name; });
+      //
+      // nodeUpdate.select("text#input")
+      //   .text(function(d) { return "In: " + (d.input_text ? d.input_text: ""); })
+      //   .call(wrap, rectW-30, 1);
+      //
+      // nodeUpdate.select("text#task")
+      //   .text(function(d) { return "Task: " + (d.task ? d.task : ""); })
+      //   .call(wrap, rectW-25, 2);
+      //
+      // nodeUpdate.select("text#output")
+      //   .text(function(d) { return "Out: " + (d.output_text ? d.output_text : ""); })
+      //   .call(wrap, rectW-25, 2);
+      //
+      // // Fade the text in
+      // nodeUpdate.select("text")
+      //   .transition().duration(0)
+      //   .style("fill", "red")
+      //   .transition().duration(1000)
+      //   .style("fill", "black");
 
       // Transition exiting nodes to the parent's new position.
       var nodeExit = node.exit().transition()
@@ -677,8 +735,15 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           .attr("rx", 5)
           .attr("ry", 5);
 
-        if (selectedNode.depth == 0)
+        if (selectedNode.depth == 0) {
+          selectedSVG.append('text')
+            .on("click", addChild)
+            .attr("class", "icon")
+            .attr("x", rectW-25)
+            .attr("y", -4)
+            .text(function(d) { return '\uf067';} );
           return;
+        }
 
         selectedSVG.append('text')
           .on("click", edit)
@@ -778,7 +843,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
       //TODO: need to remove other links such as call...
       delete_int(d);
-      update(treeData);
+      update(d.parent);
     }
 
     function delete_int(d) {
@@ -791,7 +856,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     function edit(d) {
       d3.event.stopPropagation();
-      angular.element(document.getElementById('control')).scope().findOne(d.id);
+      angular.element(document.getElementById('control')).scope().findOne(d);
     }
 
     // Helper functions for collapsing and expanding nodes.
