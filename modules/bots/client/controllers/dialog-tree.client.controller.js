@@ -77,13 +77,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     // dialog editing
     $scope.addInput = function() {
-      $scope.dialog.input.push({str:""});
+      $scope.dialog.input.push({str:"", type:"Text"});
     };
     $scope.addOutput= function() {
-      $scope.dialog.output.push({str:""});
-    };
-    $scope.addTask= function() {
-      $scope.dialog.task.push({str:""});
+      $scope.dialog.output.push({str:"", type:"Text"});
     };
 
     var currentKeyword = "";
@@ -115,9 +112,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     var makeStr = function(obj) {
       if (Array.isArray(obj)) {
-        return obj.map(function (o) { return {str: o}; });
+        return obj.map(function (o) { return {str: o, type:'Text'}; });
       }
-      return [{str: obj}];
+      return [{str: obj, type:'Text'}];
     };
 
     var unMake = function(obj) {
