@@ -14,7 +14,7 @@
         url: '/developer/concepts',
         template: '<ui-view/>',
         data: {
-          roles: ['user', 'admin']
+          roles: ['user', 'enterprise', 'admin']
         }
       })
       .state('concepts.list', {

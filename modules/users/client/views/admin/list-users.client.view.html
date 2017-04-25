@@ -1,14 +1,12 @@
 <section>
-  <div class="page-header">
-    <div class="row">
-      <div class="col-md-4">
-        <h1>Users</h1>
-      </div>
-      <div class="col-md-4" style="margin-top: 2em">
-        <input class="form-control col-md-4" type="text" ng-model="search" placeholder="Search" ng-change="figureOutItemsToDisplay()" />
-      </div>
+  <header class="page-header" style="z-index: 0 !important;">
+    <h2>사용자 관리</h2>
+
+    <div class="right-wrapper pull-right">
+      <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-down"></i></a>
     </div>
-  </div>
+  </header>
+
   <div class="list-group">
     <a ng-repeat="user in pagedItems" ui-sref="admin.user({userId: user._id})" class="list-group-item">
       <h4 class="list-group-item-heading" ng-bind="user.username"></h4>
