@@ -77,19 +77,66 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     // dialog editing
     $scope.addI = function(input) {
-      input.push({type:'', str:'', btnClass:'btn-info'});
+      input.push({type:'Text', str:'', btnClass:getButtonClass('Text')});
     };
 
     $scope.removeI = function(i, input) {
       input.splice(input.indexOf(i),1);
     };
 
+    $scope.openEdit = function(i, input) {
+      vm.curInput = input;
+      vm.targetI = i;
+      vm.curI = {};
+      vm.curI.type = i.type;
+      vm.curI.str = i.str;
+      vm.curI.btnClass = i.btnClass;
+    };
+
+    $scope.saveI = function() {
+      vm.targetI.type = vm.curI.type;
+      vm.targetI.str = vm.curI.str;
+      vm.targetI.btnClass = vm.curI.btnClass;
+
+      $scope.resetI();
+    };
+
+    $scope.resetI= function() {
+      vm.curI = null;
+      vm.curInput = null;
+    };
+
+    $scope.setType = function(i, type) {
+      vm.curI.btnClass = i.btnClass;
+      i.type = type;
+      i.btnClass = getButtonClass(type);
+    };
+
+    $scope.getPlaceHolder = function(type, isOut) {
+      if (type === 'Text') {
+        if (isOut) return "답변을 입력해주세요";
+        return "질문을 입력해주세요";
+      }
+      if (type === 'RegExp') return "정규식을 입력해주세요";
+      if (type === 'Type') return "타입을 입력해주세요";
+      if (type === 'If') return "조건을 입력해주세요";
+    };
+
     $scope.addInput = function() {
       //["","",{types:[{name:'', typeCheck:'', raw:true},..,regexp:''}]]
       $scope.dialog.input.push([]);
     };
+
+    $scope.removeInput = function(input) {
+      $scope.dialog.input.splice($scope.dialog.input.indexOf(input),1);
+    };
+
     $scope.addOutput= function() {
       $scope.dialog.output.push({str:"", type:"Text"});
+    };
+
+    $scope.removeOutput = function(output) {
+      $scope.dialog.output.splice($scope.dialog.output.indexOf(output),1);
     };
 
     var currentKeyword = "";
@@ -119,22 +166,28 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
+    var getButtonClass = function(type) {
+      if (type === 'Text') return 'btn-primary';
+      if (type === 'Type') return 'btn-warning';
+      if (type === 'RegExp') return 'btn-success';
+    };
+
     var initInput = function(input) {
       var res = [];
       input.forEach(function(i) {
         var r = [];
         i.forEach(function(d) {
           if (typeof d === "string") {
-            r.push({type:'Text', str:d, btnClass:'btn-primary'});
+            r.push({type:'Text', str:d, btnClass:getButtonClass('Text')});
           } else {
             // types or regexp
             if (d.types) {
               d.types.forEach(function(t) {
-                r.push({type:'Type', str:t.name, btnClass:'btn-warning'});
+                r.push({type:'Type', str:t.name, btnClass:getButtonClass('Type')});
               });
             }
             if (d.regexp) {
-              r.push({type:'Regexp', str:d.regexp, btnClass:'btn-success'});
+              r.push({type:'RegExp', str:d.regexp, btnClass:getButtonClass('RegExp')});
             }
           }
         });
@@ -157,11 +210,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             i.push(r.str);
           } else if (r.type === 'Type') {
             (obj.types || (obj.types = [])).push({name:r.str});
-          } else if (r.type === 'Regexp') {
+          } else if (r.type === 'RegExp') {
             obj.regexp = r.str;
           }
         });
-        i.push(obj);
+        if (Object.keys(obj).length !== 0) i.push(obj);
         input.push(i);
       });
       return input;
@@ -173,6 +226,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     $scope.findOne = function (dialog) {
       $scope.dialog = {};
+      $scope.dialog.name = dialog.name;
       $scope.dialog.input = initInput(dialog.input);
       $scope.dialog.task = dialog.task;
       $scope.dialog.output = initOutput(dialog.output);
@@ -184,12 +238,14 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     $scope.update = function (isValid) {
       vm.setChanged(true);
 
-      $scope.error = null;
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'dialogForm');
-        return false;
-      }
+      // $scope.error = null;
+      // if (!isValid) {
+      //   $event.stopPropagation();
+      //   $scope.$broadcast('show-errors-check-validity', 'dialogForm');
+      //   return false;
+      // }
 
+      selectedNode.name = $scope.dialog.name;
       selectedNode.input = restoreInput($scope.dialog.input);
       selectedNode.task = $scope.dialog.task;
       selectedNode.output = restoreOutput($scope.dialog.output);
@@ -221,6 +277,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       DialogSaveService.update({botId: vm.botId, fileName: vm.fileName, dialogs:dialogs},
         function() {
+          new PNotify({
+            title: '저장 완료',
+            text: '',
+            type: 'success'
+          });
           console.log("saved");
         }, function(err) {
           console.log(err);
@@ -335,7 +396,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         handleOutput(dialog, dialog.output);
       }
     };
-
 
     vm.initTreeData = function() {
       treeData = {name: '시작', id: 'dummystart', children: []};
