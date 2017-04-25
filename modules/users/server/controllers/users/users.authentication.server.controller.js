@@ -408,7 +408,7 @@ exports.saveOAuthUserProfile = function (req, providerUserProfile, done) {
               user.providerData.accessToken = providerUserProfile.providerData.accessToken;
             }else {
               user.markModified('additionalProvidersData');
-              user.additionalProvidersData.facebook.accessToken = providerUserProfile.providerData.accessToken;
+              // user.additionalProvidersData.facebook.accessToken = providerUserProfile.providerData.accessToken;
             }
             user.save(function (err) {
               if (err) console.log(err);

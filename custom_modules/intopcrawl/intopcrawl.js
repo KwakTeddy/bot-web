@@ -303,7 +303,7 @@ exports.arrnageqna = function (task,context,callback) {
         if (doc.qna_link_number != '') {
           crawl.find({qna_number: doc.qna_link_number}).lean().exec(function(err,datas) {
             var data = datas[0];
-            qna.update({question:data.qna_content},{quetion: data.qna_content, answer: doc.qna_content}, {upsert: true}, function(err) {
+            qna.update({question:data.qna_content},{quetion: data.qna_title, answer: doc.qna_content}, {upsert: true}, function(err) {
               if (err) {
                 return err;
                 callback(task, context);

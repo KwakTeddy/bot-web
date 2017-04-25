@@ -102,7 +102,7 @@ var lgitem = {
   method: 'GET',
   xpath: {
     title: '//*[@id="container"]/div[2]/div[1]/div[1]/div[1]/h3/text()',
-    content: '//*[@id="container"]/div[2]/div[1]/div[1]/div[2]/node()',
+    // content: '//*[@id="container"]/div[2]/div[1]/div[1]/div[2]',
   },
   // param: {
   //   "gubun": "SCS",
@@ -142,32 +142,35 @@ var lgitem = {
   },
   postCallback: function (task, context, callback) {
     var item = {};
+    var html =task._text;
     item.title = task.doc.title.trim();
-    item.body = '';
-    async.eachSeries(task.doc.content, function(doc, cb) {
-      if (doc.firstChild) {
-        while (doc.firstChild) {
-          doc = doc.firstChild;
-        }
-        if (doc.data) {
-          item.body += doc.data;
-        }
-      } else if (doc.data) {
-        item.body += doc.data;
-      }
-      cb(null)
-    }, function (err) {
-      item.body = item.body.trim();
-      item.body = item.body.replace(/&amp;nbsp;|&nbsp;|\t|\r\n|\r|\n/g, ' ');
-      item.body = item.body.replace(/<br>/g, ' ');
-      item.body = item.body.replace(/<.*.>/g, '');
-      item.cate1 = task.topTask.c1.parentcatename;
-      item.cate2 = task.topTask.c1.catename;
-      item.keyword = task.topTask.c2.keyword;
+    var body = html.match(/<div class="board_view_cont">.*<\/div>/);
+    // item.body = '';
+    // async.eachSeries(task.doc.content, function(doc, cb) {
+    //   if (doc.firstChild) {
+    //     while (doc.firstChild) {
+    //       doc = doc.firstChild;
+    //     }
+    //     if (doc.data) {
+    //       item.body += doc.data;
+    //     }
+    //   } else if (doc.data) {
+    //     item.body += doc.data;
+    //   }
+    //   cb(null)
+    // }, function (err) {
+    //   item.body = item.body.trim();
+    //   item.body = item.body.replace(/&amp;nbsp;|&nbsp;|\t|\r\n|\r|\n/g, ' ');
+    //   item.body = item.body.replace(/<br>/g, ' ');
+    //   item.body = item.body.replace(/<.*.>/g, '');
+    //   item.cate1 = task.topTask.c1.parentcatename;
+    //   item.cate2 = task.topTask.c1.catename;
+    //   item.keyword = task.topTask.c2.keyword;
+    //
+    //   task.topTask.data.push(item);
+    //   callback(task, context);
+    // });
 
-      task.topTask.data.push(item);
-      callback(task, context);
-    });
     // var collector = "";
     // var handleChildren = function(node) {
     //   if (node.data) {
@@ -191,6 +194,12 @@ var lgitem = {
     // item.body = item.body.trim();
     // item.body = item.body.replace(/&amp;nbsp;|&nbsp;|\t|\r\n|\r|\n/g, ' ');
     // item.body = item.body.replace(/<br>/g, ' ');
+    // item.cate1 = task.topTask.c1.parentcatename;
+    // item.cate2 = task.topTask.c1.catename;
+    // item.keyword = task.topTask.c2.keyword;
+
+    // task.topTask.data.push(item);
+    callback(task, context);
   }
 };
 bot.setTask("lgitem", lgitem);

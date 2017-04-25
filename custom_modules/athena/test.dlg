@@ -6,7 +6,6 @@ var publictask = require('./publictask');
 var googletask = require('./googletask');
 var crawlertask = require('./crawler');
 var core = require('./core');
-
 var pre = /(?:~이전페이지|~앞|^<$)/;
 var next = /(?:~다음페이지|~뒤|^>$)/;
 var up = /(?:^0$)/
