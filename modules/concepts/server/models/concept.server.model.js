@@ -21,11 +21,6 @@ var ConceptSchema = new Schema({
   words: {
     type: String
   },
-
-
-
-
-
   updated: {
     type: Date,
     default: Date.now

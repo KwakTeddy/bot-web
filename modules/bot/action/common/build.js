@@ -49,7 +49,7 @@ function botBuild(bot, botPath, fileName, dialogs) {
     var js;
     if (dialogs) {
       logger.info('\t saved from dialog tree');
-      js = dialogs;
+      js = build(text, false, info.name, dialogs);
     } else {
       js = build(text, false, info.name);
     }
@@ -92,7 +92,7 @@ function botBuild(bot, botPath, fileName, dialogs) {
 }
 exports.botBuild = botBuild;
 
-function build(text, isCommon, filename) {
+function build(text, isCommon, filename, dialogs) {
   var id = 0;
   // 주석 escape
   text = text.replace(/['][^'\n]*\/\/[^'\n]*[']|["][^"\n]*\/\/[^"\n]*["]/g, function (match, p1, p2, p3, p4) {
@@ -380,7 +380,12 @@ function build(text, isCommon, filename) {
   if(isCommon) {
     output = 'var commonDialogs = [\n' + parseDialog('') + '\n];\n\n';
   } else {
-    output = 'var dialogs = [\n' + parseDialog('') + '\n];';
+    if (dialogs) {
+      parseDialog('');
+      output = 'var dialogs = ' + dialogs + ';';
+    } else {
+      output = 'var dialogs = [\n' + parseDialog('') + '\n];';
+    }
     output = jsLines.join('\n') + '\n\n' + output;
   }
 

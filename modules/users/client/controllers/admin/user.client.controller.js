@@ -27,6 +27,7 @@ angular.module('users.admin').controller('UserController', ['$scope', '$state', 
       }
 
       var user = $scope.user;
+      console.log(user);
 
       user.$update(function () {
         $state.go('admin.user', {

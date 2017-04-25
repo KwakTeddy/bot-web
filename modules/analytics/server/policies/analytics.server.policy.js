@@ -30,12 +30,6 @@ exports.invokeRolesPolicies = function () {
       resources: ['/api/user-count/:kind/:arg','/api/dialog-usage/:kind/:arg', '/api/dialog-success/:kind/:arg', '/api/session-success/:kind/:arg', '/api/dialog-failure/:kind/:arg', '/api/dialog/:bId/:dialogId', '/api/dialogchildren/:bId/:dialogId', '/api/resetDB', '/api/dialogs/:bId/:fileId','/api/saveDialog/:bId/:fileName'],
       permissions: '*'
     }]
-  }, {
-    roles: ['guest'],
-    allows: [{
-      resources: ['/api/user-count/:kind/:arg','/api/dialog-usage/:kind/:arg', '/api/dialog-success/:kind/:arg', '/api/session-success/:kind/:arg', '/api/dialog-failure/:kind/:arg', '/api/dialog/:bId/:dialogId', '/api/dialogchildren/:bId/:dialogId', '/api/resetDB'],
-      permissions: []
-    }]
   }]);
 };
 

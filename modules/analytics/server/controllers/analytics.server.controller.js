@@ -327,9 +327,8 @@ exports.save_dialogs = function(req, res) {
   //   return ( value.substring(0,8) == 'function') ? eval('('+value+')') : value;
   // });
 
-  // TODO: save to file using buildBot
-  // then loadBot?
-  botLib.buildBot(botId, null, fileName, "var dialogs=" + JSON.stringify(dialogs) + ";");
+  // save to dialog.js , buildBot and loadBot
+  botLib.buildBot(botId, null, fileName, JSON.stringify(dialogs, null, "\t"));
   botLib.loadBot(botId, function(bot) {
     var dialogs_data = global._bots[botId].dialogs;
     console.log("saveAll: " + botId+","+fileName);

@@ -28,6 +28,21 @@ exports.invokeRolesPolicies = function () {
       permissions: '*'
     }]
   }, {
+    roles: ['enterprise'],
+    allows: [{
+      resources: '/api/bots',
+      permissions: '*'
+    }, {
+      resources: '/api/bots/:botId',
+      permissions: '*'
+    }, {
+      resources: '/api/bots/files/:botId',
+      permissions: '*'
+    }, {
+      resources: '/api/bots/files/:botId/:fileId',
+      permissions: '*'
+    }]
+  }, {
     roles: ['user'],
     allows: [{
       resources: '/api/bots',
@@ -46,10 +61,16 @@ exports.invokeRolesPolicies = function () {
     roles: ['guest'],
     allows: [{
       resources: '/api/bots',
-      permissions: ['get']
+      permissions: '*'
     }, {
       resources: '/api/bots/:botId',
-      permissions: ['get']
+      permissions: '*'
+    }, {
+      resources: '/api/bots/files/:botId',
+      permissions: '*'
+    }, {
+      resources: '/api/bots/files/:botId/:fileId',
+      permissions: '*'
     }]
   }]);
 };
@@ -59,7 +80,7 @@ exports.invokeRolesPolicies = function () {
  */
 exports.isAllowed = function (req, res, next) {
   var roles = (req.user) ? req.user.roles : ['guest'];
-
+  console.log(roles);
   // If an bot is being processed and the current user created it then allow any manipulation
   if (req.bot && req.user && req.bot.user.id === req.user.id) {
     return next();
