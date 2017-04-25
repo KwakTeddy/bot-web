@@ -95,8 +95,8 @@ function respondMessage(res, text, json) {
     if(!json.url) {
       sendMsg.message.message_button =
         {
-          "label": (json.urlMessage ? json.urlMessage : "상세보기"),
-          "url": json.result.buttons[0].url
+          "label": (json.urlMessage ? json.urlMessage : "이미지보기"),
+          "url": json.result.image.url
         };
     }
   }
