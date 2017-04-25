@@ -47,9 +47,7 @@ var dialogs = [
 				"ㄴㅇㄹㄴㅇㄹㅇㄴ"
 			],
 			[
-				{
-					"call": "ㄴㅇㄹㄴㅇㄹ"
-				}
+				{}
 			]
 		],
 		"name": "dialog_default0",
@@ -64,47 +62,65 @@ var dialogs = [
 					]
 				],
 				"output": [
-					"하이롱"
-				]
-			},
-			{
-				"name": "dialog_default2",
-				"id": "default2",
-				"filename": "default",
-				"input": [
 					[
-						"왓더"
+						{
+							"call": "dialog_default0"
+						}
 					]
 				],
-				"output": [
-					"헬"
-				],
 				"children": [
+					{
+						"name": "dialog_default2",
+						"id": "default2",
+						"filename": "default",
+						"input": [
+							[]
+						],
+						"output": [
+							[
+								{
+									"call": "dialog_default4"
+								}
+							]
+						]
+					},
+					{
+						"name": "dialog_default3",
+						"id": "default3",
+						"filename": "default",
+						"input": [
+							[]
+						],
+						"output": [
+							[]
+						]
+					},
+					{
+						"name": "dialog_default4",
+						"id": "default4",
+						"filename": "default",
+						"input": [
+							[]
+						],
+						"output": [
+							[]
+						]
+					},
 					{
 						"name": "dialog_default5",
 						"id": "default5",
 						"filename": "default",
 						"input": [
-							""
+							[]
 						],
 						"output": [
-							""
+							[
+								{
+									"call": "dialog_default0"
+								}
+							]
 						]
 					}
-				]
-			},
-			{
-				"name": "dialog_default3",
-				"id": "default3",
-				"filename": "default",
-				"input": [
-					[
-						"어쩌라고"
-					]
-				],
-				"output": [
-					"확",
-					"그냥"
 				]
 			}
 		]

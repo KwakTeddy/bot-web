@@ -400,6 +400,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     var handleOutput = function(dialog, output) {
+      if (Array.isArray(output)) {
+        for (var i=0; i < output.length; ++i)
+          handleOutput(dialog,output[i]);
+      }
       if (output.output) {
         handleOutput(dialog, output.output);
       }
@@ -1027,7 +1031,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       if (d._children) {
         toggleChildren(d);
       }
-      var newDialog = {name:"", id:vm.fileName + (++vm.maxId), filename:vm.fileName, input:"", output:""};
+      var newDialog = {name:"", id:vm.fileName + (++vm.maxId), filename:vm.fileName, input:[[]], output:[[]]};
       (d.children || (d.children = [])).push(newDialog);
       if (d.depth === 0)
         dialogs.push(newDialog);
