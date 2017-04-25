@@ -76,8 +76,17 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     });
 
     // dialog editing
+    $scope.addI = function(input) {
+      input.push({type:'', str:'', btnClass:'btn-info'});
+    };
+
+    $scope.removeI = function(i, input) {
+      input.splice(input.indexOf(i),1);
+    };
+
     $scope.addInput = function() {
-      $scope.dialog.input.push({str:"", type:"Text"});
+      //["","",{types:[{name:'', typeCheck:'', raw:true},..,regexp:''}]]
+      $scope.dialog.input.push([]);
     };
     $scope.addOutput= function() {
       $scope.dialog.output.push({str:"", type:"Text"});
@@ -110,27 +119,64 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
-    var makeStr = function(obj) {
-      if (Array.isArray(obj)) {
-        return obj.map(function (o) { return {str: o, type:'Text'}; });
-      }
-      return [{str: obj, type:'Text'}];
+    var initInput = function(input) {
+      var res = [];
+      input.forEach(function(i) {
+        var r = [];
+        i.forEach(function(d) {
+          if (typeof d === "string") {
+            r.push({type:'Text', str:d, btnClass:'btn-primary'});
+          } else {
+            // types or regexp
+            if (d.types) {
+              d.types.forEach(function(t) {
+                r.push({type:'Type', str:t.name, btnClass:'btn-warning'});
+              });
+            }
+            if (d.regexp) {
+              r.push({type:'Regexp', str:d.regexp, btnClass:'btn-success'});
+            }
+          }
+        });
+        res.push(r);
+      });
+      return res;
     };
 
-    var unMake = function(obj) {
-      if (Array.isArray(obj)) {
-        return obj.map(function (o) { return o['str']; });
-      }
+    var initOutput = function(output) {
+      return output;
+    };
+
+    var restoreInput = function(result) {
+      var input = [];
+      result.forEach(function(res) {
+        var i = [];
+        var obj = {};
+        res.forEach(function(r) {
+          if (r.type === 'Text') {
+            i.push(r.str);
+          } else if (r.type === 'Type') {
+            (obj.types || (obj.types = [])).push({name:r.str});
+          } else if (r.type === 'Regexp') {
+            obj.regexp = r.str;
+          }
+        });
+        i.push(obj);
+        input.push(i);
+      });
+      return input;
+    };
+
+    var restoreOutput = function(result) {
+      return result;
     };
 
     $scope.findOne = function (dialog) {
-      //$scope.dialog = { botId: vm.botId, dialogId: dialogId };
-
       $scope.dialog = {};
-      $scope.dialog.name = dialog.name;
-      $scope.dialog.input = makeStr(dialog.input);
+      $scope.dialog.input = initInput(dialog.input);
       $scope.dialog.task = dialog.task;
-      $scope.dialog.output = makeStr(dialog.output);
+      $scope.dialog.output = initOutput(dialog.output);
+
       $scope.$apply();
       $('.modal-with-form').click();
     };
@@ -144,13 +190,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         return false;
       }
 
-      selectedNode.name = $scope.dialog.name;
-      selectedNode.input = unMake($scope.dialog.input);
+      selectedNode.input = restoreInput($scope.dialog.input);
       selectedNode.task = $scope.dialog.task;
-      selectedNode.output = unMake($scope.dialog.output);
+      selectedNode.output = restoreOutput($scope.dialog.output);
+
       selectedSVG.remove();
       update(selectedNode);
-
       //Dialogs.update(dialog);
     };
 
