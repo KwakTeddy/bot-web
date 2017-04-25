@@ -9,7 +9,7 @@ var cscenter = require('./cscenter');
     <양문
     {action: function (task, context, callback) {
         task.result = {
-            image: {url: '/files/lgsample.png'},
+            image: {url: 'https://dev.moneybrain.ai/files/lgsample.png'},
             buttons: [{text:'상세보기',url:'https://www.moneybrain.ai'}]
         }
         callback(task,context);
