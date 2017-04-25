@@ -93,6 +93,15 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.curI.btnClass = i.btnClass;
     };
 
+    $scope.openEditO = function(o, output) {
+      vm.curOutput = output;
+      vm.targetO = o;
+      vm.curO = {};
+      vm.curO.type = o.type;
+      vm.curO.str = o.str;
+      vm.curO.btnClass = o.btnClass;
+    };
+
     $scope.saveI = function() {
       vm.targetI.type = vm.curI.type;
       vm.targetI.str = vm.curI.str;
@@ -101,13 +110,25 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       $scope.resetI();
     };
 
+    $scope.saveO = function() {
+      vm.targetO.type = vm.curO.type;
+      vm.targetO.str = vm.curO.str;
+      vm.targetO.btnClass = vm.curO.btnClass;
+
+      $scope.resetO();
+    };
+
     $scope.resetI= function() {
       vm.curI = null;
       vm.curInput = null;
     };
 
+    $scope.resetO= function() {
+      vm.curO = null;
+      vm.curOutput= null;
+    };
+
     $scope.setType = function(i, type) {
-      vm.curI.btnClass = i.btnClass;
       i.type = type;
       i.btnClass = getButtonClass(type);
     };
@@ -119,6 +140,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
       if (type === 'RegExp') return "정규식을 입력해주세요";
       if (type === 'Type') return "타입을 입력해주세요";
+      if (type === 'Call') return "다이얼로그 이름을 입력해주세요";
       if (type === 'If') return "조건을 입력해주세요";
     };
 
@@ -132,7 +154,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.addOutput= function() {
-      $scope.dialog.output.push({str:"", type:"Text"});
+      $scope.dialog.output.push([]);
     };
 
     $scope.removeOutput = function(output) {
@@ -170,6 +192,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       if (type === 'Text') return 'btn-primary';
       if (type === 'Type') return 'btn-warning';
       if (type === 'RegExp') return 'btn-success';
+      if (type === 'Call') return 'btn-danger';
+      if (type === 'If') return 'btn-info';
+      return 'btn-default';
     };
 
     var initInput = function(input) {
@@ -197,7 +222,27 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     var initOutput = function(output) {
-      return output;
+      var res = [];
+      output.forEach(function(o) {
+        var r = [];
+        o.forEach(function(d) {
+          if (typeof d === 'string') {
+            r.push({type:'Text', str:d, btnClass:getButtonClass('Text')});
+          } else {
+            if (d.call) {
+              r.push({type:'Call', str:d.call, btnClass:getButtonClass('Call')});
+            }
+            if (d.if) {
+              r.push({type:'If', str:d.if, output:d.output, btnClass:getButtonClass('If')});
+            }
+            if (d.up) {
+              r.push({type:'Up', str:d.up, btnClass:getButtonClass('Up')});
+            }
+          }
+        });
+        res.push(r);
+      });
+      return res;
     };
 
     var restoreInput = function(result) {
@@ -221,7 +266,23 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     var restoreOutput = function(result) {
-      return result;
+      var output = [];
+      result.forEach(function(res) {
+        var o = [];
+        res.forEach(function(r) {
+          if (r.type === 'Text') {
+            o.push(r.str);
+          } else if (r.type === 'Call') {
+            o.push({call:r.str});
+          } else if (r.type === 'If') {
+            o.push({if:r.str, output:r.output});
+          } else if (r.type === 'Up') {
+            o.push({up:r.str});
+          }
+        });
+        output.push(o);
+      });
+      return output;
     };
 
     $scope.findOne = function (dialog) {

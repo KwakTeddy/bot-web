@@ -185,8 +185,8 @@
                             <div ng-repeat="input in dialog.input">
                                 <div class="input-group mb-md" ng-show="vm.curInput == input">
                                     <div class="input-group-btn" >
-                                        <button tabindex="-1" class="btn btn-primary" type="button">{{vm.curI.type}}</button>
-                                        <button tabindex="-1" data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
+                                        <button tabindex="-1" class="btn" ng-class="vm.curI.btnClass" type="button">{{vm.curI.type}}</button>
+                                        <button tabindex="-1" data-toggle="dropdown" ng-class="vm.curI.btnClass" class="btn dropdown-toggle" type="button">
                                             <span class="caret"></span>
                                         </button>
                                         <ul role="menu" class="dropdown-menu">
@@ -230,25 +230,41 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Output <span class="required" aria-required="true">*</span></label>
                         <div class="col-sm-9">
-                            <div class="input-group mb-md" ng-repeat="output in dialog.output">
-                                <div class="input-group-btn">
-                                    <button tabindex="-1" class="btn btn-primary" type="button">{{output.type}}</button>
-                                    <button tabindex="-1" data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul role="menu" class="dropdown-menu">
-                                        <li><a href="#" ng-click="output.type = 'Text'">Text</a></li>
-                                        <li class="divider"></li>
-                                        <li><a href="#" ng-click="output.type = 'Call'">Call</a></li>
-                                        <li><a href="#" ng-click="output.type = 'ReturnCall'">ReturnCall</a></li>
-                                        <li><a href="#" ng-click="output.type = 'ReturnDialog'">ReturnDialog</a></li>
-                                        <li><a href="#" ng-click="output.type = 'Up'">Up</a></li>
-                                        <li class="divider"></li>
-                                        <li><a href="#" ng-click="output.type = 'If'">If</a></li>
-                                    </ul>
+                            <div ng-repeat="output in dialog.output">
+                                <div class="input-group mb-md" ng-show="vm.curOutput == output">
+                                    <div class="input-group-btn" >
+                                        <button tabindex="-1" class="btn" ng-class="vm.curO.btnClass" type="button">{{vm.curO.type}}</button>
+                                        <button tabindex="-1" data-toggle="dropdown" ng-class="vm.curO.btnClass" class="btn dropdown-toggle" type="button">
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul role="menu" class="dropdown-menu">
+                                            <li><a href="#" ng-click="setType(vm.curO,  'Text')">Text</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="#" ng-click="setType(vm.curO,  'Call')">Call</a></li>
+                                            <li><a href="#" ng-click="setType(vm.curO,  'ReturnCall')">ReturnCall</a></li>
+                                            <li><a href="#" ng-click="setType(vm.curO,  'ReturnDialog')">ReturnDialog</a></li>
+                                            <li><a href="#" ng-click="setType(vm.curO,  'Up')">Up</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="#" ng-click="setType(vm.curO,  'If')">If</a></li>
+                                        </ul>
+                                    </div>
+                                    <input type="text" id="input" name="input" ng-model="vm.curO.str" class="form-control"
+                                           placeholder="{{getPlaceHolder(vm.curO.type, true)}}" required="" aria-required="true" aria-invalid="false">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-success" ng-click="saveO()" type="button">저장</button>
+                                        <button class="btn btn-danger" ng-click="resetO()" type="button">취소</button>
+                                    </span>
                                 </div>
-                                <input type="text" id="output" name="output" ng-model="output.str" class="form-control"
-                                       placeholder="답변을 입력해주세요" required="" aria-required="true" aria-invalid="false">
+                                <div class="mb-md" ng-show="vm.curOutput != output">
+                                    <div class="form-control col-md-11 mb-xs" style="height:auto;">
+                                        <button class="mr-xs btn btn-xs" ng-class="o.btnClass"
+                                                ng-click="openEditO(o,output)"
+                                                ng-repeat="o in output">{{i.str == '' ? "-new-" : o.str}}&nbsp;
+                                            <i ng-click="removeI(o,output)" class="fa fa-remove" style="color:white"></i></button>
+                                        <button class="mr-xs mb-xs btn btn-default btn-xs"><i ng-click="addI(output)" class="fa fa-plus"></i></button>
+                                        <span class="icon pull-right" ><i ng-click="removeOutput(output)" class="fa fa-1 fa-remove" style="color:red;"></i></span>
+                                    </div>
+                                </div>
                             </div>
                             <button type="button" ng-click="addOutput()" class="mb-xs mr-xs btn btn-sm btn-info"><i class="glyphicon glyphicon-plus"></i> Output 추가</button>
                         </div>

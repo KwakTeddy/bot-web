@@ -42,7 +42,15 @@ var dialogs = [
 			]
 		],
 		"output": [
-			"안녕하세요"
+			[
+				"안녕하세요",
+				"ㄴㅇㄹㄴㅇㄹㅇㄴ"
+			],
+			[
+				{
+					"call": "ㄴㅇㄹㄴㅇㄹ"
+				}
+			]
 		],
 		"name": "dialog_default0",
 		"children": [
