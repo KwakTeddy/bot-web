@@ -471,12 +471,15 @@ csdemo.searchCenterTask
 
 시작:
 c<{regexp: first}
-//{action: 'startAction',
-//    postCallback: function(task, context, callback) {
-//        task.result = {smartReply: ['서비스센터찾기', '영업시간', '수리가능품목']}
-//        callback(task, context);
-//    }
-//}
+{action: function (task,context,callback) {
+    if (context.user.center) {
+        context.user.center = null;
+    }
+    if (context.user.address) {
+        context.user.address = null;
+    }
+    callback(task,context);
+}}
 > 안녕하세요. 머니브레인 고객센터입니다.
 
 특수문자:
