@@ -8,11 +8,6 @@ var dialogs = [
 		"input": [
 			{
 				"text": "안녕",
-				"types": [
-					{
-						"name": "address"
-					}
-				],
 				"regexp": "/abc/"
 			},
 			{
@@ -22,9 +17,6 @@ var dialogs = [
 		"output": [
 			{
 				"output": "어쩌라고"
-			},
-			{
-				"if": "a = b"
 			}
 		],
 		"name": "dialog_default0",
@@ -60,9 +52,15 @@ var dialogs = [
 						"name": "dialog_default5",
 						"id": "default5",
 						"filename": "default",
-						"input": [],
+						"input": [
+							{
+								"text": "베베"
+							}
+						],
 						"output": [
-							{}
+							{
+								"output": "꺼져"
+							}
 						]
 					},
 					{

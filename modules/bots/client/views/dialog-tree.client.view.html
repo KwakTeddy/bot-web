@@ -183,7 +183,7 @@
                         <label class="col-sm-2 control-label">Input <span class="required" aria-required="true">*</span></label>
                         <div class="col-sm-9">
                             <div ng-repeat="input in dialog.input">
-                                <div class="input-group mb-md" ng-show="vm.curInput == input">
+                                <div class="input-group mb-md" ng-show="vm.inputMode && vm.curInput == input">
                                     <div class="input-group-btn" >
                                         <button tabindex="-1" class="btn" ng-class="vm.curI.btnClass" type="button">{{vm.curI.type}}</button>
                                         <button tabindex="-1" data-toggle="dropdown" ng-class="vm.curI.btnClass" class="btn dropdown-toggle" type="button">
@@ -196,13 +196,13 @@
                                         </ul>
                                     </div>
                                     <input type="text" id="input" name="input" ng-model="vm.curI.str" class="form-control"
-                                            placeholder="{{getPlaceHolder(vm.curI.type)}}" required="" aria-required="true" aria-invalid="false">
+                                            placeholder="{{getPlaceHolder(vm.curI.type)}}" >
                                     <span class="input-group-btn">
-                                        <button class="btn btn-success" ng-click="saveI()" type="button">저장</button>
+                                        <button class="btn btn-primary" ng-click="saveI()" type="button">저장</button>
                                         <button class="btn btn-danger" ng-click="resetI()" type="button">취소</button>
                                     </span>
                                 </div>
-                                <div class="mb-md" ng-show="vm.curInput != input">
+                                <div class="mb-md" ng-show="!vm.inputMode || vm.curInput != input">
                                     <div class="form-control col-md-11 mb-xs" style="height:auto;">
                                         <button class="mr-xs btn btn-xs" ng-class="i.btnClass"
                                                 ng-click="openEdit(i,input)"
@@ -245,9 +245,11 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <input type="text" id="input" name="input" ng-model="vm.curO.str" class="form-control"
-                                           ng-show="isTextInput(vm.curO.type)"
-                                           placeholder="{{getPlaceHolder(vm.curO.type, true)}}" required="" aria-required="true" aria-invalid="false">
+                                    <div ng-show="isTextInput(vm.curO.type)">
+                                        <input type="text" id="input" name="input" ng-model="vm.curO.str" class="form-control"
+
+                                               placeholder="{{getPlaceHolder(vm.curO.type, true)}}">
+                                    </div>
                                     <button class="btn btn-default btn-block dropdown-toggle" type="button" data-toggle="dropdown"
                                             ng-model="vm.curO.str"
                                             ng-disabled="dialogList().length == 0"
@@ -259,8 +261,18 @@
                                     <ul class="dropdown-menu btn-block">
                                         <li class="text-center" ng-repeat = "t in dialogList()"><a href="#" ng-click="vm.curO.str = t">{{t}}</a></li>
                                     </ul>
+
+                                    <!--<select class="js-example-basic-single" ng-model="vm.curO.str">-->
+                                        <!--<option ng-repeat = "t in dialogList()" value="{{t}}">{{t}}</option>-->
+                                    <!--</select>-->
+                                    <!--<script type="text/javascript">-->
+                                      <!--$(document).ready(function() {-->
+                                        <!--$(".js-example-basic-single").select2();-->
+                                      <!--});-->
+                                    <!--</script>-->
+
                                     <span class="input-group-btn">
-                                        <button class="btn btn-success" ng-click="saveO()" type="button">저장</button>
+                                        <button class="btn btn-primary" ng-click="saveO()" type="button">저장</button>
                                         <button class="btn btn-danger" ng-click="resetO()" type="button">취소</button>
                                     </span>
                                 </div>
@@ -302,11 +314,10 @@
     </div>
     <div class="col-md-9">
         <form>
-            <button class="mb-xs mt-xs mr-xs btn btn-danger pull-right" ng-disabled="!vm.isChanged" ng-click="save()" ><i class="fa fa-save"></i> 저장하기</button>
-            <button class="mb-xs mt-xs mr-xs btn btn-primary pull-right" ng-disabled="vm.changeHistory.length == 0" ng-click="undo()" ><i class="fa fa-undo"></i>되돌리기</button>
+            <button class="mb-xs mt-xs mr-xs btn btn-primary pull-right" ng-disabled="!vm.isChanged" ng-click="save()" ><i class="fa fa-save"></i> 저장하기</button>
+            <button class="mb-xs mt-xs mr-xs btn btn-warning pull-right" ng-disabled="vm.changeHistory.length == 0" ng-click="undo()" ><i class="fa fa-undo"></i>되돌리기</button>
         </form>
     </div>
-
     <div id="tree-container" class="panel" width="100%" height="100%"></div>
 </div>
 <script src="/vendor/pnotify/pnotify.custom.js"></script>

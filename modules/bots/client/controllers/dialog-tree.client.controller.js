@@ -93,6 +93,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.curInput = input;
       vm.targetI = i;
       vm.curI = angular.copy(i);
+      vm.inputMode = true;
     };
 
     $scope.addO = function(input) {
@@ -127,17 +128,17 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.resetI= function() {
-      vm.curI = null;
-      vm.curInput = null;
+      vm.inputMode = false;
     };
 
     $scope.resetO= function() {
-      vm.curO = null;
-      vm.curOutput= null;
+      vm.inputMode = false;
     };
 
     $scope.setType = function(i, type) {
       i.type = type;
+      if (type != "Text" && type != "If" && type !="Regexp")
+        i.str = "";
       i.btnClass = getButtonClass(type);
     };
 

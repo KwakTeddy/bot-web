@@ -364,11 +364,7 @@ exports.dialogs = function (req, res) {
       });
     },
     function(botName,cb) {
-      result.task = [];
-      var keys = Object.keys(global._bots[botName].tasks);
-      for (var i=0; i < keys.length; ++i) {
-        result.task.push(global._bots[botName].tasks[keys[i]].name);
-      }
+      result.task = Object.keys(global._bots[botName].tasks).map(function(key) {return global._bots[botName].tasks[key].name;});
       cb(null);
     },
     function (cb) {
