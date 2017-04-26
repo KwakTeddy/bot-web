@@ -44,6 +44,9 @@ exports.processInput = function(context, inRaw, callback) {
     spamfilter: true     // (optional default: false)
   });
 
+  // var entity = utils.requireNoCache(path.resolve('modules/bot/engine/nlu/entity'));
+  // entity.entityDictionaryCheck(inRaw, commonTypes, doc, context, function(_inRaw, inDoc) {
+
   checkTypes(inRaw, commonTypes, doc, context, function(_inRaw, inDoc) {
     nlpKo.tokenize/*ToStrings*/(_inRaw, function(err, result) {
 
@@ -79,6 +82,9 @@ exports.processInput = function(context, inRaw, callback) {
     });
 
   });
+
+  // });
+
 };
 
 exports.processOutput = processOutput;
@@ -822,9 +828,9 @@ exports.mongoDbTypeCheck = mongoDbTypeCheck;
 
 var commonTypes = [
   // amountType,
-  // mobileType,
+  mobileType,
   // phoneType,
-  // dateType,
+  dateType,
   // timeType,
   // accountType
 ];
@@ -1623,13 +1629,13 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
         // else context.botUser.analytics = null;
         else context.botUser.analytics2 = true;
 
-        console.log('topic20: '+ (context.botUser.topic ? context.botUser.topic[0].text : 'null') + ',' + context.botUser.analytics + ',' + context.botUser.analytics2);
+        // console.log('topic20: '+ (context.botUser.topic ? context.botUser.topic[0].text : 'null') + ',' + context.botUser.analytics + ',' + context.botUser.analytics2);
 
         dialogTypeCheck(text, format, inDoc, context, callback);
       } else {
         if(topicKeywords && topicKeywords.length > 0) context.botUser.topic = topicKeywords;
 
-        console.log('topic21: '+ (context.botUser.topic ? context.botUser.topic[0].text : 'null') + ',' + context.botUser.analytics + ',' + context.botUser.analytics2);
+        // console.log('topic21: '+ (context.botUser.topic ? context.botUser.topic[0].text : 'null') + ',' + context.botUser.analytics + ',' + context.botUser.analytics2);
         callback(text, inDoc, false);
       }
     }

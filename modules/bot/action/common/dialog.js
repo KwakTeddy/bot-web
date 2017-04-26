@@ -8,6 +8,7 @@ var botUser= require(path.resolve('modules/bot-users/server/controllers/bot-user
 var userDilaog = require(path.resolve('modules/user-dialogs/server/controllers/user-dialogs.server.controller'));
 var autoCorrection = require(path.resolve('modules/bot/engine/nlp/autoCorrection'));
 var quibble = require(path.resolve('modules/bot/engine/dialog/quibbleModule'));
+var intent = require(path.resolve('modules/bot/engine/nlu/intent'));
 
 const START_DIALOG_NAME = '시작';
 exports.START_DIALOG_NAME = START_DIALOG_NAME;
@@ -96,47 +97,53 @@ function matchGlobalDialogs(inRaw, inNLP, dialogs, context, print, callback, wor
       callback(true, _dialog);
     } else {
       matchDialogs(inRaw, inNLP, dialogs, context, print, function(matched, _dialog) {
-        if(matched == true) {
-          callback(matched, _dialog);
-        } else if(context.bot.useAutoCorrection == true && !wordCorrection) {
-          var _inRaw = autoCorrection.correction(inRaw);
-          context.botUser.orgNlp = context.botUser.nlp;
-          type.processInput(context, _inRaw, function(_inNLP, _inDoc) {
-            context.botUser.nlpCorrection = _inNLP;
-            context.botUser.inRawCorrection = _inRaw;
-            matchGlobalDialogs(_inRaw, _inNLP, dialogs, context, print, callback, true);
-          });
-        } else {
-          for (var i = 0; i < dialogs.length; i++) {
-            var dialog = dialogs[i];
-            if(dialog.input == undefined || dialog.input === '' || dialog.name == NO_DIALOG_NAME ) {
-              executeDialog(dialog, context, print, callback);
-              context.dialog.isFail = true;
-              callback(true, dialog);
-              return;
+        // intent.matchIntent(inRaw, inNLP, context, function(matched, _dialog) {
+        //   if(matched == true) {
+        //     executeDialog(_dialog, context, print, callback);
+        //   } else {
+            if(matched == true) {
+              callback(matched, _dialog);
+            } else if(context.bot.useAutoCorrection == true && !wordCorrection) {
+              var _inRaw = autoCorrection.correction(inRaw);
+              context.botUser.orgNlp = context.botUser.nlp;
+              type.processInput(context, _inRaw, function(_inNLP, _inDoc) {
+                context.botUser.nlpCorrection = _inNLP;
+                context.botUser.inRawCorrection = _inRaw;
+                matchGlobalDialogs(_inRaw, _inNLP, dialogs, context, print, callback, true);
+              });
+            } else {
+              for (var i = 0; i < dialogs.length; i++) {
+                var dialog = dialogs[i];
+                if(dialog.input == undefined || dialog.input === '' || dialog.name == NO_DIALOG_NAME ) {
+                  executeDialog(dialog, context, print, callback);
+                  context.dialog.isFail = true;
+                  callback(true, dialog);
+                  return;
+                }
+              }
+
+              if(context.botUser.orgNlp) context.botUser.nlp = context.botUser.orgNlp;
+              context.botUser.orgNlp = null;
+
+              if(context.bot.useQuibble ==  true) {
+                context.dialog.isFail = true;
+                // print(quibble.quibble(context));
+                var dialog = {id: -1, name: 'quibble', input: 'false', output: quibble.quibble(context)};
+                executeDialog(dialog, context, print, callback);
+              } else if(context.bot.noDialog) {
+                context.dialog.isFail = true;
+                executeDialog(context.bot.noDialog, context, print, callback);
+              } else {
+                context.dialog.isFail = true;
+                console.error('NO_DIALOG(답변없음)가 없습니다. 아래와 같이 설정바랍니다.\n답변없음:c<> 알아듣지 못하는 말입니다.');
+                // print('학습되어 있지 않은 대화 입니다.');
+                // callback(true, context.bot.noDialog);
+                var dialog = {id: -1, name: 'no_dialog', input: 'false', output: '학습되어 있지 않은 대화 입니다.'};
+                executeDialog(dialog, context, print, callback);
+              }
             }
-          }
-
-          if(context.botUser.orgNlp) context.botUser.nlp = context.botUser.orgNlp;
-          context.botUser.orgNlp = null;
-
-          if(context.bot.useQuibble ==  true) {
-            context.dialog.isFail = true;
-            // print(quibble.quibble(context));
-            var dialog = {id: -1, name: 'quibble', input: 'false', output: quibble.quibble(context)};
-            executeDialog(dialog, context, print, callback);
-          } else if(context.bot.noDialog) {
-            context.dialog.isFail = true;
-            executeDialog(context.bot.noDialog, context, print, callback);
-          } else {
-            context.dialog.isFail = true;
-            console.error('NO_DIALOG(답변없음)가 없습니다. 아래와 같이 설정바랍니다.\n답변없음:c<> 알아듣지 못하는 말입니다.');
-            // print('학습되어 있지 않은 대화 입니다.');
-            // callback(true, context.bot.noDialog);
-            var dialog = {id: -1, name: 'no_dialog', input: 'false', output: '학습되어 있지 않은 대화 입니다.'};
-            executeDialog(dialog, context, print, callback);
-          }
-        }
+          // }
+        // })
       });
     }
   });
@@ -376,9 +383,15 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
           },
 
           function(matched, cb2) {
-            if(typeof input == 'string') {
+            if(typeof input == 'string' || input.text) {
               var _matched = true;
-              var words = input.split(/\s/);
+              var _input;
+              if(typeof input.text == 'string') {
+                _input = input.text;
+              }
+              else _input = input;
+
+              var words = _input.split(/\s/);
               for (var i = 0; i < words.length; i++) {
                 var word = words[i];
                 word = RegExp.escape(word);
@@ -472,7 +485,6 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
           }
         });
       };
-
 
       if(Array.isArray(dialog.input)) {
         async.eachSeries(dialog.input, function(input, cb3) {
@@ -739,6 +751,9 @@ function executeDialog(dialog, context, print, callback, options) {
           } else {
             if(output.constructor == String) {
               outputs.push(output);
+              cb2(null);
+            } else if(output.output) {
+              outputs.push(output.output);
               cb2(null);
             } else if(output != undefined) {
               matchedOutput = output;

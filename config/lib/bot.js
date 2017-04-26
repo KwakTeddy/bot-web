@@ -4,6 +4,7 @@ var config = require('../config'),
   fs = require('fs'),
   utils = require(path.resolve('modules/bot/action/common/utils')),
   tone = require(path.resolve('modules/bot/action/common/tone')),
+  concept = require(path.resolve('modules/bot/engine/concept/concept')),
   globalDialogs = require(path.resolve('custom_modules/global/global-dialogs')),
   _ = require('lodash');
 
@@ -150,6 +151,12 @@ function loadBot(botName, callback) {
       bot = getBot(botName);
       if(!bot || bot.use === false) cb(true);
       else cb(null);
+    },
+
+    function(cb) {
+      concept.loadCustomConcept(bot, function() {
+        cb(null);
+      });
     },
 
     function(cb) {

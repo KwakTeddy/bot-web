@@ -295,33 +295,81 @@ function clearBubble() {
 }
 
 function addBotBubble(msg) {
-  var main = document.getElementById('chat_main');
-  var bubble = document.createElement('div');
-  bubble.setAttribute('class', 'bubble');
-  if(msg.startsWith('{')) {
-    var json = JSON.parse(msg);
-    bubble.innerText = json.text;
-    if(json.url) {
-      if(json.urlMessage) bubble.innerHTML += '\n<br/><a href="' + json.url + '" target="_blank">' + json.urlMessage +'</a>';
-      else bubble.innerHTML += '\n<br/><a href="' + json.url + '" target="_blank">' + json.url +'</a>';
-    }
-  } else {
-    bubble.innerText = msg;
+
+  var text = (msg && msg.text) ? msg.text : msg;
+  console.log(vm.userBot);
+
+  var d = new Date();
+  var datetext = d.getHours() + ':' + d.getMinutes();
+  var innerHTML =
+    '<div class="item item-avatar b-none friend">'+
+    '<img src="'+vm.userBot.imageFile+'">' +
+    '<div class="text-xs"><span class="font-bold m-r-sm">'+vm.userBot.name+'</span><span class="color-grey-500">'+datetext+'</span></div>' +
+    '<div class="bubble"><i class="icon-tail"></i>' +
+    '<div class="content"><div class="content-text">' + text + '</div>';
+
+  if(msg.image) {
+    innerHTML += '<div ><img class="message-image" src="' + msg.image.url +'"/></div>';
   }
-  main.appendChild(bubble);
+
+  if(msg.buttons) {
+    for(var i in msg.buttons) {
+      innerHTML += '<div class="bubble-button"><a href="' + msg.buttons[i].url + '" target="_blank">' + msg.buttons[i].text + '</a></div>';
+    }
+  }
+
+  innerHTML += '</div></div>';
+
+  innerHTML += '</div>';
+
+
+  var main = document.getElementById('chat_main');
+  main.insertAdjacentHTML('beforeend', innerHTML);
+
+  // var main = document.getElementById('chat_main');
+  // var bubble = document.createElement('div');
+  // bubble.setAttribute('class', 'bubble');
+  // if(msg.startsWith('{')) {
+  //   var json = JSON.parse(msg);
+  //   bubble.innerText = json.text;
+  //   if(json.url) {
+  //     if(json.urlMessage) bubble.innerHTML += '\n<br/><a href="' + json.url + '" target="_blank">' + json.urlMessage +'</a>';
+  //     else bubble.innerHTML += '\n<br/><a href="' + json.url + '" target="_blank">' + json.url +'</a>';
+  //   }
+  // } else {
+  //   bubble.innerText = msg;
+  // }
+  // main.appendChild(bubble);
 
   main.scrollTop = main.scrollHeight - main.clientHeight;
 }
 
 function addUserBubble(msg) {
+
   var main = document.getElementById('chat_main');
+
+  var d = new Date();
+  var datetext = d.getHours() + ':' + d.getMinutes();
+
   var bubble = document.createElement('div');
-  bubble.setAttribute('class', 'bubble bubble--alt');
-  bubble.innerText = msg;
+  bubble.setAttribute('class', 'item item-avatar-right b-none me');
+  bubble.innerHTML =
+    '<div class="text-xs"><span class="font-bold m-r-sm"></span><span class="color-grey-500">'+ datetext + '</span></div>' +
+    '<div class="bubble"><i class="icon-tail-me"></i><span class="content">' + msg + '</span></div>';
+
   main.appendChild(bubble);
 
   document.chatForm.inputbox.value = '';
   main.scrollTop = main.scrollHeight - main.clientHeight;
+
+  // var main = document.getElementById('chat_main');
+  // var bubble = document.createElement('div');
+  // bubble.setAttribute('class', 'bubble bubble--alt');
+  // bubble.innerText = msg;
+  // main.appendChild(bubble);
+  //
+  // document.chatForm.inputbox.value = '';
+  // main.scrollTop = main.scrollHeight - main.clientHeight;
 }
 
 /**
