@@ -400,13 +400,29 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     // make nodes and links_internal from dialogs
     var handleInput = function(input) {
-      if(input == 'string') return input;
-      else if(input.types && input.types[0].name) {
-        return '[타입] ' + input.types[0].name;
-      } else if(input.if) {
-        return '[조건] ' + input.if;
+      if (Array.isArray(input)) {
+        var text = [];
+        input.forEach(function(i) {
+          if (i.text)
+            text.push('[단어] '+ i.text);
+          if (i.types && i.types[0].name)
+            text.push('[타입] ' + i.types[0].name);
+          if (i.regexp)
+            text.push('[정규식] ' + i.regexp);
+          if (i.if)
+            text.push('[조건] ' + i.if);
+        });
+        return text + "";
       } else {
-        return input;
+        // for dialogs from dlg
+        if(input == 'string') return input;
+        else if(input.types && input.types[0].name) {
+          return '[타입] ' + input.types[0].name;
+        } else if(input.if) {
+          return '[조건] ' + input.if;
+        } else {
+          return input;
+        }
       }
     };
 
@@ -414,15 +430,33 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       if (typeof output == 'string') return output;
       else if(Array.isArray(output)) {
         var _output = '';
-        for(var i = 0; i < output.length; i++) {
-          if(i !== 0) _output += ', ';
+        for (var i = 0; i < output.length; i++) {
+          if (i !== 0) _output += ', ';
           _output += handlePrintOutput(output[i]);
         }
         return _output;
-      } else if(output.if) {
-        return '[조건] ' + output.if;
       } else {
-        return output;
+        var text = [];
+        if (typeof output.output === 'string') {
+          text.push('[문장] ' + output.output);
+        }
+        if (output.if) {
+          text.push('[조건] ' + output.if);
+        }
+        if (output.call) {
+          text.push('[Call] ' + output.call);
+        }
+        if (output.returnCall) {
+          text.push('[ReturnCall] ' + output.returnCall);
+        }
+        if (output.returnDialog) {
+          text.push('[ReturnDialog] ' + output.returnDialog);
+        }
+        if (output.up) {
+          text.push('[up] ' + output.up);
+        }
+
+        return text + "";
       }
     };
 

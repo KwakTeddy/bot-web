@@ -6,29 +6,25 @@ var dialogs = [
 		"id": "default0",
 		"filename": "default",
 		"input": [
-      {
-        "text": "안녕 sdfsdf",
-        "types": [
-          {
-            "name": "address"
-          },
-          {
-            "name": "data"
-          }
-        ],
-        "regexp": "/abc/",
-        "if:": ""
-      },
 			{
-			  "text": "sdfdsf sdfsdf sdfsdf",
+				"text": "안녕 sdfsdf",
+				"types": [
+					{
+						"name": "address"
+					},
+					{
+						"name": "data"
+					}
+				]
 			},
-      {
-        "regexp": "/xxx/"
-      },
+			{
+				"text": "바보"
+			}
 		],
 		"output": [
-			{'output':'tete'},
-			{'if':'dfdf', 'call':'sdfsdf'},
+			{
+				"output": "어쩌라고"
+			}
 		],
 		"name": "dialog_default0",
 		"children": [
@@ -37,16 +33,18 @@ var dialogs = [
 				"id": "default1",
 				"filename": "default",
 				"input": [
-					[
-						"하이"
-					]
+					{
+						"text": "써글"
+					},
+					{
+						"text": "왓"
+					}
 				],
 				"output": [
-					[
-						{
-							"call": "dialog_default0"
-						}
-					]
+					{
+						"output": "그래서 어쩌자는 거냐고ㅇㅇㅇㅇ",
+						"if": "true"
+					}
 				],
 				"children": [
 					{
