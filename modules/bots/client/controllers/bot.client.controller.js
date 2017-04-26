@@ -11,10 +11,24 @@ var setInput = function(cur) {
 
 // Bots controller
 angular.module('bots').controller('BotController', [
-  '$resource', '$scope', '$state', '$window', '$timeout', '$compile', '$stateParams', 'botResolve', 'TemplatesService', 'FileUploader',
-  function ($resource, $scope, $state, $window, $timeout, $compile, $stateParams, bot, TemplatesService, FileUploader) {
+  '$resource', '$scope', '$state', '$window', '$timeout', '$compile', '$stateParams', 'botResolve', 'TemplatesService', 'FileUploader', 'dialogsetsResolve',
+  function ($resource, $scope, $state, $window, $timeout, $compile, $stateParams, bot, TemplatesService, FileUploader, dialogsetsResolve) {
     var vm = this;
     vm.bot = bot;
+    vm.dialogSets= dialogsetsResolve;
+    console.log(vm.dialogSets);
+    if (vm.bot.dialogsets && vm.bot.dialogsets.length){
+      for(var i = 0; i < vm.dialogSets.length; i++){
+        for(var j = 0; j < vm.bot.dialogsets.length; j++){
+          if(vm.dialogSets[i]._id == vm.bot.dialogsets[j]){
+            vm.dialogSets[i].use = true;
+          }
+        }
+      }
+    }
+
+    console.log(vm.bot);
+    console.log(vm.dialogSets);
 
     // Create new Bot
     vm.create = function (isValid) {
@@ -82,6 +96,36 @@ angular.module('bots').controller('BotController', [
       }
     };
 
+    //connect dialogset to bot
+
+    vm.dialogsetsConnect = function (target) {
+      if (!vm.bot.dialogsets){
+        vm.bot['dialogsets'] = [];
+      }
+      vm.bot.dialogsets.push(target._id);
+      vm.bot.$update(function (response) {
+        vm.bot = response;
+        target.use = true;
+
+      }, function (err) {
+        console.log(err);
+      })
+    };
+
+    vm.dialogsetsDisconnect = function (target) {
+      var index = vm.bot.dialogsets.indexOf(target._id);
+      if (index > -1) {
+        vm.bot.dialogsets.splice(index, 1);
+      }
+      console.log(vm.bot);
+      vm.bot.$update(function (response) {
+        target.use = false;
+        vm.bot = response;
+      }, function (err) {
+        console.log(err);
+      })
+    };
+
     /********************* template *********************/
 
     var editor;
@@ -131,7 +175,6 @@ angular.module('bots').controller('BotController', [
         return;
       }
 
-      console.log(jsonSchema);
 
       var schema = {};
 
@@ -187,7 +230,6 @@ angular.module('bots').controller('BotController', [
 
       schema.properties = vm.parseSchema(template.dataSchema);
 
-      console.log(schema);
 
       if (editor) {
         editor.destroy();
@@ -205,7 +247,6 @@ angular.module('bots').controller('BotController', [
       }
 
       editor.on('change', function() {
-        console.log('xxx');
         $compile(document.getElementById('editor_holder'))($scope);
         $scope.ierror = {};
         $scope.isuccess = {};
