@@ -7,15 +7,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "안녕 sdfsdf",
-				"types": [
-					{
-						"name": "address"
-					},
-					{
-						"name": "data"
-					}
-				]
+				"text": "안녕"
 			},
 			{
 				"text": "바보"
@@ -24,6 +16,10 @@ var dialogs = [
 		"output": [
 			{
 				"output": "어쩌라고"
+			},
+			{
+				"call": "dialog_default4",
+				"if": "a = b"
 			}
 		],
 		"name": "dialog_default0",
@@ -63,17 +59,6 @@ var dialogs = [
 						]
 					},
 					{
-						"name": "dialog_default3",
-						"id": "default3",
-						"filename": "default",
-						"input": [
-							[]
-						],
-						"output": [
-							[]
-						]
-					},
-					{
 						"name": "dialog_default4",
 						"id": "default4",
 						"filename": "default",
@@ -88,15 +73,11 @@ var dialogs = [
 						"name": "dialog_default5",
 						"id": "default5",
 						"filename": "default",
-						"input": [
-							[]
-						],
+						"input": [],
 						"output": [
-							[
-								{
-									"call": "dialog_default0"
-								}
-							]
+							{
+								"call": "dialog_default2"
+							}
 						]
 					}
 				]

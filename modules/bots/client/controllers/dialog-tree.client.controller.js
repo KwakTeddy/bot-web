@@ -395,7 +395,21 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         }, function(err) {
           console.log(err);
         });
+    };
 
+    $scope.isTextInput = function(type) {
+      if (type === 'Text' || type === 'If' || type === 'Up')
+        return true;
+      return false;
+    };
+
+    $scope.dialogList = function() {
+      var names = [];
+      for (var d in nodes) {
+        if (d !== selectedNode.name)
+          names.push(d);
+      }
+      return names;
     };
 
     // make nodes and links_internal from dialogs
