@@ -26,10 +26,7 @@ var csdemo2Bot = {
   naver: {
     clientId: 'c7VNVyIG3s95N4q2LWZQ',
     clientSecret: 'HXWvXdrKi7'
-  },
-  dialogFiles: [
-    'csdemo.dialog.js'
-  ]
+  }
 };
 
 botlib.makeBot('csdemo2', csdemo2Bot);
