@@ -189,10 +189,10 @@
                                         <button tabindex="-1" data-toggle="dropdown" ng-class="vm.curI.btnClass" class="btn dropdown-toggle" type="button">
                                             <span class="caret"></span>
                                         </button>
-                                        <ul role="menu" class="dropdown-menu">
-                                            <li><a href="#" ng-click="setType(vm.curI, 'Text')">Text</a></li>
-                                            <li><a href="#" ng-click="setType(vm.curI, 'RegExp')">RegExp</a></li>
-                                            <li><a href="#" ng-click="setType(vm.curI, 'Type')">Type</a></li>
+                                        <ul role="menu" class="dropdown-menu" >
+                                            <li ng-repeat="type in getInputTypes(vm.curInput, vm.curI)">
+                                                <a href="#" ng-click="setType(vm.curI, type)">{{type}}</a>
+                                            </li>
                                         </ul>
                                     </div>
                                     <input type="text" id="input" name="input" ng-model="vm.curI.str" class="form-control"
@@ -208,7 +208,9 @@
                                                 ng-click="openEdit(i,input)"
                                                 ng-repeat="i in input">{{i.str == '' ? "-new-" : i.str}}&nbsp;
                                             <i ng-click="removeI(i,input)" class="fa fa-remove" style="color:white"></i></button>
-                                        <button class="mr-xs mb-xs btn btn-default btn-xs"><i ng-click="addI(input)" class="fa fa-plus"></i></button>
+                                        <button class="mr-xs mb-xs btn btn-default btn-xs"
+                                                ng-show="getInputTypes(input).length > 0"
+                                                ng-click="addI(input)" ><i class="fa fa-plus"></i></button>
                                         <span class="icon pull-right" ><i ng-click="removeInput(input)" class="fa fa-1 fa-remove" style="color:red;"></i></span>
                                     </div>
                                 </div>
@@ -238,14 +240,9 @@
                                             <span class="caret"></span>
                                         </button>
                                         <ul role="menu" class="dropdown-menu">
-                                            <li><a href="#" ng-click="setType(vm.curO,  'Text')">Text</a></li>
-                                            <li class="divider"></li>
-                                            <li><a href="#" ng-click="setType(vm.curO,  'Call')">Call</a></li>
-                                            <li><a href="#" ng-click="setType(vm.curO,  'ReturnCall')">ReturnCall</a></li>
-                                            <li><a href="#" ng-click="setType(vm.curO,  'ReturnDialog')">ReturnDialog</a></li>
-                                            <li><a href="#" ng-click="setType(vm.curO,  'Up')">Up</a></li>
-                                            <li class="divider"></li>
-                                            <li><a href="#" ng-click="setType(vm.curO,  'If')">If</a></li>
+                                            <li ng-repeat="t in getOutputTypes(vm.curOutput, vm.curO)">
+                                                <a href="#" ng-click="setType(vm.curO, t)">{{t}}</a>
+                                            </li>
                                         </ul>
                                     </div>
                                     <input type="text" id="input" name="input" ng-model="vm.curO.str" class="form-control"
@@ -261,7 +258,9 @@
                                                 ng-click="openEditO(o,output)"
                                                 ng-repeat="o in output">{{i.str == '' ? "-new-" : o.str}}&nbsp;
                                             <i ng-click="removeI(o,output)" class="fa fa-remove" style="color:white"></i></button>
-                                        <button class="mr-xs mb-xs btn btn-default btn-xs"><i ng-click="addI(output)" class="fa fa-plus"></i></button>
+                                        <button class="mr-xs mb-xs btn btn-default btn-xs"
+                                                ng-show="getOutputTypes(output).length > 0"
+                                                ng-click="addO(output)" ><i class="fa fa-plus"></i></button>
                                         <span class="icon pull-right" ><i ng-click="removeOutput(output)" class="fa fa-1 fa-remove" style="color:red;"></i></span>
                                     </div>
                                 </div>
