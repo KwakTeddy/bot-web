@@ -153,7 +153,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     vm.inputTypes = ["Text","RegExp","Type","If"];
-    vm.outputTypes = ["Text","Call","ReturnCall","ReturnDialog","Up"];
+    vm.outputTypes = ["Text","Call","ReturnCall","CallChild","Up"];
 
     var findType = function(input, typeName) {
       for (var i=0; i < input.length; ++i) {
@@ -281,6 +281,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         if (d.call) {
           r.push({type:'Call', str:d.call, btnClass:getButtonClass('Call')});
         }
+        if (d.callChild) {
+          r.push({type:'CallChild', str:d.callChild, btnClass:getButtonClass('CallChild')});
+        }
+        if (d.returnCall) {
+          r.push({type:'ReturnCall', str:d.returnCall, btnClass:getButtonClass('ReturnCall')});
+        }
         if (d.if) {
           r.push({type:'If', str:d.if, output:d.output, btnClass:getButtonClass('If')});
         }
@@ -322,6 +328,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             o.output = r.str;
           } else if (r.type === 'Call') {
             o.call = r.str;
+          } else if (r.type === 'CallChild') {
+            o.callChild = r.str;
+          } else if (r.type === 'ReturnCall') {
+            o.returnCall = r.str;
           } else if (r.type === 'If') {
             o.if = r.str;
           } else if (r.type === 'Up') {
@@ -463,8 +473,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         if (output.returnCall) {
           text.push('[ReturnCall] ' + output.returnCall);
         }
-        if (output.returnDialog) {
-          text.push('[ReturnDialog] ' + output.returnDialog);
+        if (output.callChild) {
+          text.push('[callChild] ' + output.callChild);
         }
         if (output.up) {
           text.push('[up] ' + output.up);

@@ -7,7 +7,13 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "안녕"
+				"text": "안녕",
+				"types": [
+					{
+						"name": "address"
+					}
+				],
+				"regexp": "/abc/"
 			},
 			{
 				"text": "바보"
@@ -18,7 +24,6 @@ var dialogs = [
 				"output": "어쩌라고"
 			},
 			{
-				"call": "dialog_default4",
 				"if": "a = b"
 			}
 		],
@@ -44,30 +49,12 @@ var dialogs = [
 				],
 				"children": [
 					{
-						"name": "dialog_default2",
-						"id": "default2",
-						"filename": "default",
-						"input": [
-							[]
-						],
-						"output": [
-							[
-								{
-									"call": "dialog_default4"
-								}
-							]
-						]
-					},
-					{
 						"name": "dialog_default4",
 						"id": "default4",
 						"filename": "default",
-						"input": [
-							[]
-						],
-						"output": [
-							[]
-						]
+						"input": [],
+						"output": [],
+						"task": "lglist"
 					},
 					{
 						"name": "dialog_default5",
@@ -75,10 +62,44 @@ var dialogs = [
 						"filename": "default",
 						"input": [],
 						"output": [
-							{
-								"call": "dialog_default2"
-							}
+							{}
 						]
+					},
+					{
+						"name": "dialog_default6",
+						"id": "default6",
+						"filename": "default",
+						"input": [],
+						"output": []
+					},
+					{
+						"name": "dialog_default7",
+						"id": "default7",
+						"filename": "default",
+						"input": [],
+						"output": []
+					}
+				]
+			},
+			{
+				"name": "dialog_default8",
+				"id": "default8",
+				"filename": "default",
+				"input": [
+					{
+						"regexp": "/[0-9]+/"
+					}
+				],
+				"output": [
+					{
+						"call": "dialog_default4",
+						"if": "a=b"
+					},
+					{
+						"returnCall": "dialog_default7"
+					},
+					{
+						"callChild": "dialog_default6"
 					}
 				]
 			}
