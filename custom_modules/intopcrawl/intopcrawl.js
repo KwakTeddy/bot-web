@@ -151,6 +151,22 @@ var metaSchema = {
   }
 };
 
+var categorySchema = {
+  id: {
+    type: Number
+  },
+  gender: {
+    type: String
+  },
+  name: {
+    type: String
+  },
+  parent_id: {
+    type: Number
+  }
+};
+
+
 exports.itemscrawl = function (task,context,callback) {
   var mysql = require('mysql');
   var crawl = mongo.getModel('gas_crawl_items',crawl_itemsSchema);
@@ -446,6 +462,50 @@ exports.metacrawl = function (task,context,callback) {
   });
 
   connection.query('select * from gas_item_metas', function (error, results, fields) {
+    if (error) {
+      throw error;
+      callback(task,context);
+    } else {
+      async.eachSeries(results, function(doc, cb) {
+        crawl.update({id: doc.id}, doc, {upsert: true}, function(err) {
+          if (err) {
+            return err;
+            callback(task, context);
+          }
+        });
+        cb(null)
+      }, function (err) {
+        console.log("data saved");
+        callback(task,context);
+      });
+      // console.log(results);
+      // callback(task,context);
+    }
+  });
+};
+
+exports.categorycrawl = function (task,context,callback) {
+  var mysql = require('mysql');
+  var crawl = mongo.getModel('gas_item_category',categorySchema);
+  var connection = mysql.createConnection({
+    host: 'backup-2017-03-17.c9xpl7bryatp.ap-northeast-2.rds.amazonaws.com',
+    user: 'crawl_root',
+    password: 'crawl',
+    database: 'gas'
+  });
+
+  connection.connect(function(err){
+    if (err){
+      console.log("cannot connect to database");
+      console.log(err);
+    }
+    else
+    {
+      console.log("connected to database");
+    }
+  });
+
+  connection.query('select * from gas_item_category', function (error, results, fields) {
     if (error) {
       throw error;
       callback(task,context);

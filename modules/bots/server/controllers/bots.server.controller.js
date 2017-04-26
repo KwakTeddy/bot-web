@@ -215,6 +215,19 @@ function createFile(fileName, user, bot) {
  */
 exports.read = function (req, res) {
   res.json(req.bot);
+  // Dialogset.find({user: req.user._id}).exec(function (err, data) {
+  //   if (err) {
+  //     return res.status(400).send({
+  //       message: errorHandler.getErrorMessage(err)
+  //     });
+  //   }else {
+  //     if(!req.bot.dialogsets){
+  //       req.bot['dialogsets'] = [];
+  //     }
+  //     req.bot.dialogsets.push(data);
+  //     res.json(req.bot);
+  //   }
+  // });
 };
 
 /**
@@ -223,7 +236,11 @@ exports.read = function (req, res) {
 exports.update = function (req, res) {
   var bot = req.bot;
   bot = _.extend(bot , req.body);
-  if (bot.dialogsets){
+  console.log(util.inspect(mongoose.Types.ObjectId(bot.dialogsets[0])));
+  console.log(util.inspect(bot.dialogsets));
+  console.log(util.inspect('---------------------------------'));
+  console.log(util.inspect(bot));
+  if (bot.dialogsets && bot.dialogsets.length){
     for (var i=0; i < bot.dialogsets.length; ++i) {
       bot.dialogsets[i] = mongoose.Types.ObjectId(bot.dialogsets[i]);
     }
@@ -307,7 +324,7 @@ exports.update = function (req, res) {
         });
       } else {
         if(bot.templateId) {
-          botLib.buildBot(bot.template.id, bot.path);
+          botLib.buildBot(bot.templateId, bot.path);
         } else {
           botLib.buildBot(bot.id, bot.path);
         }
@@ -622,10 +639,10 @@ exports.botByID = function (req, res, next, id) {
 
     async.waterfall([
       function(cb) {
-        if (bot.dialogsets) {
+        if (bot.dialogsets && bot.dialogsets.length) {
           Dialogset.findOne({_id: bot.dialogsets[0]}).lean().exec(function(err, doc) {
-            req.bot._doc.filename = doc.filename;
-            cb(null);
+              req.bot._doc.filename = doc.filename;
+              cb(null);
           })
         } else {
           cb(null);
@@ -748,6 +765,37 @@ exports.createFile = function (req, res) {
           message: errorHandler.getErrorMessage(err)
         });
       } else {
+        // Bot.findOne({_id: req.bot._id}).exec(function (err, data) {
+        //   if (err) {
+        //     return res.status(400).send({
+        //       message: errorHandler.getErrorMessage(err)
+        //     });
+        //   }else {
+        //     console.log(data);
+        //     if(!data.dialogsets){
+        //       data['dialogsets'] = [];
+        //     }
+        //     console.log(botFile);
+        //     data.dialogsets.push(botFile);
+        //     console.log(data.dialogsets);
+        //     console.log('---------------------------------------------------------');
+        //     console.log(data);
+        //     data.markModified('dialogsets');
+        //
+        //     data.save(function (err, result) {
+        //       console.log(err);
+        //       if (err) {
+        //         return res.status(400).send({
+        //           message: errorHandler.getErrorMessage(err)
+        //         });
+        //       }else {
+        //         console.log(result);
+        //         res.json(botFile);
+        //         console.log('res.json');
+        //       }
+        //     })
+        //   }
+        // })
         res.json(botFile);
         console.log('res.json');
       }
@@ -800,6 +848,7 @@ exports.readFile = function (req, res) {
   var bot = req.bot;
   var file = req.file;
   var botFolder = generateBotFolder(file.bot.id);
+
   fs.readFile(botFolder + file.name, function (err, data) {
     if(err) {
       console.log(err.toString());

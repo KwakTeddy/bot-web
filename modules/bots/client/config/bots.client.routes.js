@@ -37,7 +37,8 @@ angular.module('bots').config(['$stateProvider',
         controller: 'BotController',
         controllerAs: 'vm',
         resolve: {
-          botResolve: getBot
+          botResolve: getBot,
+          dialogsetsResolve: getDialogsets
         }
       })
       .state('bots.ide', {
@@ -118,5 +119,29 @@ function readBotFile(BotFilesService, $stateParams) {
   return BotFilesService.get({
     botId: $stateParams.botId,
     fileId: $stateParams.fileId
+  }).$promise;
+}
+
+getDialogsets.$inject = ['DialogsetsService'];
+function getDialogsets(DialogsetsService) {
+  return DialogsetsService.query().$promise;
+}
+
+getDialogset.$inject = ['$stateParams', 'DialogsetsService'];
+function getDialogset($stateParams, DialogsetsService) {
+  return DialogsetsService.get({
+    dialogsetId: $stateParams.dialogsetId
+  }).$promise;
+}
+
+newDialogset.$inject = ['DialogsetsService'];
+function newDialogset(DialogsetsService) {
+  return new DialogsetsService();
+}
+
+getDialogsetDialogs.$inject = ['$stateParams', 'DialogsetDialogsService'];
+function getDialogsetDialogs($stateParams, DialogsetDialogsService) {
+  return DialogsetDialogsService.query({
+    dialogsetId: $stateParams.dialogsetId
   }).$promise;
 }
