@@ -117,9 +117,7 @@ var first = /(?:~시작|~처음|^!$|취소)/
         >dd
         <{if:'true'}>dd
 
-<test
-{action: intop.test}
->dd
+
 
 시작:
 c<{regexp: first}
