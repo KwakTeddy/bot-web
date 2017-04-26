@@ -233,7 +233,7 @@
                         <label class="col-sm-2 control-label">Output <span class="required" aria-required="true">*</span></label>
                         <div class="col-sm-9">
                             <div ng-repeat="output in dialog.output">
-                                <div class="input-group mb-md" ng-show="vm.curOutput == output">
+                                <div class="input-group mb-md" ng-show="vm.inputMode && vm.curOutput == output">
                                     <div class="input-group-btn" >
                                         <button tabindex="-1" class="btn" ng-class="vm.curO.btnClass" type="button">{{vm.curO.type}}</button>
                                         <button tabindex="-1" data-toggle="dropdown" ng-class="vm.curO.btnClass" class="btn dropdown-toggle" type="button">
@@ -276,7 +276,7 @@
                                         <button class="btn btn-danger" ng-click="resetO()" type="button">취소</button>
                                     </span>
                                 </div>
-                                <div class="mb-md" ng-show="vm.curOutput != output">
+                                <div class="mb-md" ng-show="!vm.inputMode || vm.curOutput != output">
                                     <div class="form-control col-md-11 mb-xs" style="height:auto;">
                                         <button class="mr-xs btn btn-xs" ng-class="o.btnClass"
                                                 ng-click="openEditO(o,output)"

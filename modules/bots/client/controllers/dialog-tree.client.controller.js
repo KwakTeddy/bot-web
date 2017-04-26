@@ -109,6 +109,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.curOutput = output;
       vm.targetO = o;
       vm.curO = angular.copy(o);
+      vm.inputMode = true;
     };
 
     $scope.saveI = function() {
