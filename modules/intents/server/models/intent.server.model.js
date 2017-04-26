@@ -35,6 +35,7 @@ var IntentContentSchema = new Schema({
     type: String,
     unique: true
   },
+  input: String,
   created: {
     type: Date,
     default: Date.now
@@ -77,3 +78,19 @@ var IntentUtteranceSchema = new Schema({
 });
 
 mongoose.model('IntentUtterance', IntentUtteranceSchema);
+
+
+var BotIntentSchema = new Schema({
+  botId: {
+    type: String
+  },
+  intent: {
+    type: Schema.ObjectId,
+    ref: 'Intent'
+  },
+  dialogId: {
+    type: String
+  }
+});
+
+mongoose.model('BotIntent', BotIntentSchema);

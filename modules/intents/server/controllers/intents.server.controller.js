@@ -1,5 +1,9 @@
 'use strict';
 
+
+var path = require('path');
+var dialogset = require(path.resolve('modules/bot/engine/dialogset/dialogset.js'));
+
 /**
  * Module dependencies.
  */
@@ -24,27 +28,32 @@ exports.create = function(req, res) {
   intentContent.intentId = intent._id;
   intentContent.name = req.query.content;
 
-  intent.save(function(err) {
-    if (err) {
-      console.log(err);
-      return res.status(400).send({
-        message: err
-      });
-    } else {
-      intentContent.save(function (err) {
+  dialogset.processInput(null, req.query.content, function(_input, _json) {
+    intentContent.input = _input;
+
+    intent.save(function(err) {
+      if (err) {
         console.log(err);
-        if (err) {
+        return res.status(400).send({
+          message: err
+        });
+      } else {
+        intentContent.save(function (err) {
           console.log(err);
-          return res.status(400).send({
-            message: err
-          });
-        }else {
-          console.log(intent);
-          res.jsonp(intent);
-        }
-      })
-    }
+          if (err) {
+            console.log(err);
+            return res.status(400).send({
+              message: err
+            });
+          }else {
+            console.log(intent);
+            res.jsonp(intent);
+          }
+        })
+      }
+    });
   });
+
 };
 
 /**
@@ -168,17 +177,23 @@ exports.contentCreate = function(req, res) {
         intentContent.name = req.body.content;
         intentContent.user = req.user;
         intentContent.intentId = req.body.intentId;
-        intentContent.save(function (err, data) {
-          console.log(err);
-          if(err){
-            return res.status(400).send({
-              message: errorHandler.getErrorMessage(err)
-            });
-          }else {
-            console.log(data);
-            res.json(data);
-          }
+
+        dialogset.processInput(null, req.body.content, function(_input, _json) {
+          intentContent.input = _input;
+
+          intentContent.save(function (err, data) {
+            console.log(err);
+            if(err){
+              return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            }else {
+              console.log(data);
+              res.json(data);
+            }
+          });
         });
+
       }else {
         return res.status(400).send({
           message: '동일한 내용이 존재합니다.'

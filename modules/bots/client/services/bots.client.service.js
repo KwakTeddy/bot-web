@@ -76,3 +76,36 @@ angular.module('bots').factory('Dialogs', ['$resource',
     });
   }
 ]);
+
+
+angular
+  .module('bots')
+  .factory('DialogsetsService', DialogsetsService);
+
+DialogsetsService.$inject = ['$resource'];
+
+function DialogsetsService($resource) {
+  return $resource('api/dialogsets/:dialogsetId', {
+    dialogsetId: '@_id'
+  }, {
+    update: {
+      method: 'PUT'
+    }
+  });
+}
+
+angular
+  .module('bots')
+  .factory('DialogsetDialogsService', DialogsetDialogsService);
+
+DialogsetDialogsService.$inject = ['$resource'];
+
+function DialogsetDialogsService($resource) {
+  return $resource('api/dialogsets/:dialogsetId/dialogs/:dialogId', {
+    dialogsetId: '@dialogset', dialogId: '@_id'
+  }, {
+    update: {
+      method: 'PUT'
+    }
+  });
+}

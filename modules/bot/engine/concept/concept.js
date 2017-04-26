@@ -341,3 +341,49 @@ function batchConcept(botId, callback) {
 
 exports.batchConcept = batchConcept;
 
+
+function loadCustomConcept(bot, callback) {
+  async.waterfall([
+    function(cb) {
+      var conceptnet = {};
+      var Concept = mongoose.model('conceptlists');
+
+      Concept.find({}).lean().exec(function(err, docs) {
+        for(var i in docs) {
+          conceptnet[docs[i].name] = docs[i];
+        }
+
+        for(var i in conceptnet) {
+          for(var j in conceptnet) {
+            if(conceptnet[i].parent == conceptnet[j]._id) {
+              conceptnet[i].parentKey = conceptnet[j].name;
+              break;
+            }
+          }
+        }
+
+        for(var key in conceptnet) {
+          // conceptnet[key].parentKey = conceptnet[key].parent
+          conceptnet[key].parent = conceptnet[conceptnet[key].parentKey];
+
+          if(conceptnet[conceptnet[key].parentKey]) {
+            if(conceptnet[conceptnet[key].parentKey].children == undefined) {
+              conceptnet[conceptnet[key].parentKey].children = [conceptnet[key]];
+            } else {
+              conceptnet[conceptnet[key].parentKey].children.push(conceptnet[key]);
+            }
+          }
+        }
+
+        bot.conceptNet = conceptnet;
+        cb(null);
+      })
+    }
+
+  ], function(err) {
+    if(callback) callback();
+  })
+}
+
+
+exports.loadCustomConcept = loadCustomConcept;

@@ -40,7 +40,7 @@ var DialogsetSchema = new Schema({
   public: {
     type: Boolean
   },
-  languange: {
+  language: {
     type: String,
     default: 'en'
   },

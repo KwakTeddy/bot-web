@@ -67,7 +67,7 @@ function correction(text) {
   var t0 = new Date();
   var tokens = text.split(' ');
   for(var i = 0;i < tokens.length; i++) {
-    tokens[i] = speller_ko.correct(tokens[i]);
+    if(tokens[i].length <= 5) tokens[i] = speller_ko.correct(tokens[i]);
   }
 
   var t1 = new Date();

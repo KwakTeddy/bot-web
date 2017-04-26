@@ -7,15 +7,13 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "안녕 sdfsdf",
+				"text": "안녕",
 				"types": [
 					{
 						"name": "address"
-					},
-					{
-						"name": "data"
 					}
-				]
+				],
+				"regexp": "/abc/"
 			},
 			{
 				"text": "바보"
@@ -24,6 +22,9 @@ var dialogs = [
 		"output": [
 			{
 				"output": "어쩌라고"
+			},
+			{
+				"if": "a = b"
 			}
 		],
 		"name": "dialog_default0",
@@ -48,56 +49,57 @@ var dialogs = [
 				],
 				"children": [
 					{
-						"name": "dialog_default2",
-						"id": "default2",
-						"filename": "default",
-						"input": [
-							[]
-						],
-						"output": [
-							[
-								{
-									"call": "dialog_default4"
-								}
-							]
-						]
-					},
-					{
-						"name": "dialog_default3",
-						"id": "default3",
-						"filename": "default",
-						"input": [
-							[]
-						],
-						"output": [
-							[]
-						]
-					},
-					{
 						"name": "dialog_default4",
 						"id": "default4",
 						"filename": "default",
-						"input": [
-							[]
-						],
-						"output": [
-							[]
-						]
+						"input": [],
+						"output": [],
+						"task": "lglist"
 					},
 					{
 						"name": "dialog_default5",
 						"id": "default5",
 						"filename": "default",
-						"input": [
-							[]
-						],
+						"input": [],
 						"output": [
-							[
-								{
-									"call": "dialog_default0"
-								}
-							]
+							{}
 						]
+					},
+					{
+						"name": "dialog_default6",
+						"id": "default6",
+						"filename": "default",
+						"input": [],
+						"output": []
+					},
+					{
+						"name": "dialog_default7",
+						"id": "default7",
+						"filename": "default",
+						"input": [],
+						"output": []
+					}
+				]
+			},
+			{
+				"name": "dialog_default8",
+				"id": "default8",
+				"filename": "default",
+				"input": [
+					{
+						"regexp": "/[0-9]+/"
+					}
+				],
+				"output": [
+					{
+						"call": "dialog_default4",
+						"if": "a=b"
+					},
+					{
+						"returnCall": "dialog_default7"
+					},
+					{
+						"callChild": "dialog_default6"
 					}
 				]
 			}

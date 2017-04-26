@@ -55,11 +55,11 @@
     }
 
     #callChild{
-        fill: #E6550D;
+        fill: #64550D;
     }
 
     .link_internal.callChild{
-        stroke: #E6550D;
+        stroke: #64550D;
     }
 
     #returnDialog{
@@ -208,7 +208,7 @@
                                                 ng-click="openEdit(i,input)"
                                                 ng-repeat="i in input">{{i.str == '' ? "-new-" : i.str}}&nbsp;
                                             <i ng-click="removeI(i,input)" class="fa fa-remove" style="color:white"></i></button>
-                                        <button class="mr-xs mb-xs btn btn-default btn-xs"
+                                        <button class="mr-xs btn btn-default btn-xs"
                                                 ng-show="getInputTypes(input).length > 0"
                                                 ng-click="addI(input)" ><i class="fa fa-plus"></i></button>
                                         <span class="icon pull-right" ><i ng-click="removeInput(input)" class="fa fa-1 fa-remove" style="color:red;"></i></span>
@@ -246,7 +246,19 @@
                                         </ul>
                                     </div>
                                     <input type="text" id="input" name="input" ng-model="vm.curO.str" class="form-control"
+                                           ng-show="isTextInput(vm.curO.type)"
                                            placeholder="{{getPlaceHolder(vm.curO.type, true)}}" required="" aria-required="true" aria-invalid="false">
+                                    <button class="btn btn-default btn-block dropdown-toggle" type="button" data-toggle="dropdown"
+                                            ng-model="vm.curO.str"
+                                            ng-disabled="dialogList().length == 0"
+                                            ng-show="!isTextInput(vm.curO.type)"
+                                    >
+                                        {{vm.curO.str}}
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu btn-block">
+                                        <li class="text-center" ng-repeat = "t in dialogList()"><a href="#" ng-click="vm.curO.str = t">{{t}}</a></li>
+                                    </ul>
                                     <span class="input-group-btn">
                                         <button class="btn btn-success" ng-click="saveO()" type="button">저장</button>
                                         <button class="btn btn-danger" ng-click="resetO()" type="button">취소</button>
@@ -258,7 +270,7 @@
                                                 ng-click="openEditO(o,output)"
                                                 ng-repeat="o in output">{{i.str == '' ? "-new-" : o.str}}&nbsp;
                                             <i ng-click="removeI(o,output)" class="fa fa-remove" style="color:white"></i></button>
-                                        <button class="mr-xs mb-xs btn btn-default btn-xs"
+                                        <button class="mr-xs btn btn-default btn-xs"
                                                 ng-show="getOutputTypes(output).length > 0"
                                                 ng-click="addO(output)" ><i class="fa fa-plus"></i></button>
                                         <span class="icon pull-right" ><i ng-click="removeOutput(output)" class="fa fa-1 fa-remove" style="color:red;"></i></span>
