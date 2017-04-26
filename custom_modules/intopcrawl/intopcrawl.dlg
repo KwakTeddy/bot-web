@@ -31,6 +31,10 @@ var intop = require('./intopcrawl');
 {action:intop.arrnageqna}
 >finish
 
+<category
+{action:intop.categorycrawl}
+>finish
+
 시작:
 c<시작
 c<처음
