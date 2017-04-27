@@ -736,7 +736,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         // var output_text = (typeof d.output_text == 'string' ? d.output_text.replace(/(?:\r\n|\r|\n)/g, '<br />') : d.output_text);
         // return "<strong>Input:</strong><br/><span style='color:cornflowerblue'>" + input_text + "</span><br/><br/>" +
         //   "<strong>Output:</strong><br/><span style='color:cornflowerblue'>" + output_text + "</span>";
-        return "<image src='" + d.image_text + "' height='120px'>";
+        return "<image src='" + d.image_text + "' height='150px'>";
       });
     baseSvg.call(tip);
 
