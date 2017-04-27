@@ -2,9 +2,9 @@
 
 // Bots controller
 angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope', '$state', '$window','$timeout',
-  '$stateParams', '$resource', 'Dialogs', 'DialogSaveService', 'OpenTasksService', 'FileUploader',
+  '$stateParams', '$resource', 'Dialogs', 'DialogSaveService', 'OpenTasksService', 'FileUploader','$document',
   function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, Dialogs, DialogSaveService,
-            OpenTasksService, FileUploader) {
+            OpenTasksService, FileUploader, $document) {
 
     var vm = this;
     vm.userId = $rootScope.userId;
@@ -76,6 +76,53 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         }
       }
     });
+
+    var updateSelected = function(newd) {
+      selectedNode = newd;
+      selectedSVG = baseSvg.selectAll(".node").filter(function(d) {
+        if (d.id === newd.id)
+          return true;
+      });
+      update(selectedNode);
+      centerNode(selectedNode);
+    };
+
+    var keydown = function(event) {
+      if (!selectedNode)
+        return false;
+      if ([65,68,69,37,38,39,40].indexOf(event.keyCode) == -1)
+        return false;
+
+      event.preventDefault();
+      console.log(event.keyCode);
+      if (event.keyCode == 65) { // A
+        addChild(selectedNode);
+      } else if (event.keyCode == 68) { //d
+        deleteNode(selectedNode);
+      } else if (event.keyCode == 69) { //e
+        edit(selectedNode);
+      } else if (event.keyCode == 37) { //left
+        if (selectedNode.parent) {
+          updateSelected(selectedNode.parent);
+        }
+      } else if (event.keyCode == 38) { //up
+        if (selectedNode.parent && selectedNode.parent.children &&
+          selectedNode.parent.children.indexOf(selectedNode) > 0) {
+          updateSelected(selectedNode.parent.children[selectedNode.parent.children.indexOf(selectedNode)-1]);
+        }
+      } else if (event.keyCode == 39) { //right
+        if (selectedNode.children && selectedNode.children.length > 0) {
+          updateSelected(selectedNode.children[0]);
+        }
+      } else if (event.keyCode == 40) { //down
+        if (selectedNode.parent && selectedNode.parent.children &&
+          selectedNode.parent.children.indexOf(selectedNode) < selectedNode.parent.children.length-1) {
+          updateSelected(selectedNode.parent.children[selectedNode.parent.children.indexOf(selectedNode)+1]);
+        }
+      }
+    };
+
+    document.addEventListener("keydown", keydown);
 
     $scope.openTask = function(task, isCommon) {
 
@@ -934,6 +981,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         .attr("class","nodetext")
         .attr("x", 7)
         .attr("dy", "10em")
+        //.style("text-decoration", "underline")
         .text(function(d) { return "Image: " + (d.image_text ? d.image_text: ""); })
         .on('mouseover', showTip)
         .on('mouseout', tip.hide)
@@ -1243,7 +1291,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     function addChild(d) {
       vm.setChanged(true, true);
-      d3.event.stopPropagation();
+      if (d3.event)
+        d3.event.stopPropagation();
       if (d._children) {
         toggleChildren(d);
       }
@@ -1251,7 +1300,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       (d.children || (d.children = [])).push(newDialog);
       if (d.depth === 0)
         dialogs.push(newDialog);
+
       update(d);
+
+      updateSelected(newDialog);
+
+      edit(selectedNode);
     }
 
     function initSelect() {
@@ -1261,7 +1315,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     function deleteNode(d) {
       vm.setChanged(true, true);
-      d3.event.stopPropagation();
+      if (d3.event)
+        d3.event.stopPropagation();
       initSelect();
 
       if (d.parent && d.parent.children) {
@@ -1284,7 +1339,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       //TODO: need to remove other links such as call...
       delete_int(d);
-      update(d.parent);
+      updateSelected(d.parent);
     }
 
     function delete_int(d) {
@@ -1296,7 +1351,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     }
 
     function edit(d) {
-      d3.event.stopPropagation();
+      if (d3.event)
+        d3.event.stopPropagation();
       angular.element(document.getElementById('control')).scope().findOne(d);
     }
 
