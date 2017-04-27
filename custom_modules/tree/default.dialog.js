@@ -8,11 +8,6 @@ var dialogs = [
 		"input": [
 			{
 				"text": "안녕",
-				"types": [
-					{
-						"name": "address"
-					}
-				],
 				"regexp": "/abc/"
 			},
 			{
@@ -21,10 +16,24 @@ var dialogs = [
 		],
 		"output": [
 			{
-				"output": "어쩌라고"
+				"output": "어쩌라고",
+				"buttons": [
+					{
+						"name": "fgdfg"
+					},
+					{
+						"name": "asdasd"
+					},
+					{
+						"name": "asdasd"
+					}
+				]
 			},
 			{
-				"if": "a = b"
+				"call": "dialog_default6"
+			},
+			{
+				"image": "menu.jpg"
 			}
 		],
 		"name": "dialog_default0",
@@ -60,9 +69,15 @@ var dialogs = [
 						"name": "dialog_default5",
 						"id": "default5",
 						"filename": "default",
-						"input": [],
+						"input": [
+							{
+								"text": "베베"
+							}
+						],
 						"output": [
-							{}
+							{
+								"output": "꺼져"
+							}
 						]
 					},
 					{
@@ -100,6 +115,16 @@ var dialogs = [
 					},
 					{
 						"callChild": "dialog_default6"
+					},
+					{
+						"buttons": [
+							{
+								"name": "abc"
+							},
+							{
+								"name": "bdf"
+							}
+						]
 					}
 				]
 			}
