@@ -184,18 +184,18 @@
                         <label class="col-sm-2 control-label">Input <span class="required" aria-required="true">*</span></label>
                         <div class="col-sm-9">
                             <div ng-repeat="input in dialog.input">
-                                <div class="input-group mb-md" ng-show="vm.inputMode && vm.curInput == input">
+                                <div class="input-group mb-xs" ng-show="vm.inputMode && vm.curInput == input">
                                     <div class="input-group-btn" >
                                         <button tabindex="-1" class="btn" ng-class="vm.getButtonClass(vm.curI.type)" type="button">{{vm.curI.type}}</button>
                                         <button tabindex="-1" data-toggle="dropdown" ng-class="vm.getButtonClass(vm.curI.type)" class="btn dropdown-toggle" type="button">
                                             <span class="caret"></span>
                                         </button>
-                                        <ul role="menu" class="dropdown-menu" >
-                                            <li ng-repeat="type in getInputTypes(vm.curInput, vm.curI)">
-                                                <a href="#" ng-click="setType(vm.curI, type)">{{type}}</a>
-                                            </li>
-                                        </ul>
                                     </div>
+                                    <ul role="menu" class="dropdown-menu" >
+                                        <li ng-repeat="type in getInputTypes(vm.curInput, vm.curI)">
+                                            <a href="#" ng-click="setType(vm.curI, type)">{{type}}</a>
+                                        </li>
+                                    </ul>
                                     <input type="text" id="input" name="input" ng-model="vm.curI.str" class="form-control"
                                             placeholder="{{getPlaceHolder(vm.curI.type)}}" >
                                     <span class="input-group-btn">
@@ -203,7 +203,7 @@
                                         <button class="btn btn-danger" ng-click="resetI()" type="button">취소</button>
                                     </span>
                                 </div>
-                                <div class="mb-md" ng-show="!vm.inputMode || vm.curInput != input">
+                                <div  ng-show="!vm.inputMode || vm.curInput != input">
                                     <div class="form-control col-md-11 mb-xs" style="height:auto;">
                                         <button class="mr-xs btn btn-xs" ng-class="vm.getButtonClass(i.type)"
                                                 ng-click="openEdit(i,input)"
@@ -212,7 +212,10 @@
                                         <button class="mr-xs btn btn-default btn-xs"
                                                 ng-show="getInputTypes(input).length > 0"
                                                 ng-click="addI(input)" ><i class="fa fa-plus"></i></button>
-                                        <span class="icon pull-right" ><i ng-click="removeInput(input)" class="fa fa-1 fa-remove" style="color:red;"></i></span>
+                                        <span class="icon pull-right " style="height:20px;line-height:20px">
+                                            <i ng-click="removeInput(input)" class="fa fa-remove"
+                                               style="color:red;font-size:70%;"></i>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -244,7 +247,7 @@
                         <label class="col-sm-2 control-label">Output <span class="required" aria-required="true">*</span></label>
                         <div class="col-sm-9">
                             <div ng-repeat="output in dialog.output">
-                                <div class="input-group mb-md" ng-show="vm.inputModeO && vm.curOutput == output">
+                                <div class="input-group mb-xs" ng-show="vm.inputModeO && vm.curOutput == output">
                                     <div class="input-group-btn" >
                                         <button tabindex="-1" class="btn" ng-class="vm.getButtonClass(vm.curO.type)" type="button">{{vm.curO.type}}</button>
                                         <button tabindex="-1" data-toggle="dropdown" ng-class="vm.getButtonClass(vm.curO.type)" class="btn dropdown-toggle" type="button">
@@ -275,8 +278,8 @@
                                     </div>
 
                                     <div class="text-left" ng-show="vm.inputModeO && getInputType(vm.curO.type) == 'image'" >
-                                      <span class="btn btn-default btn-file">
-                                          <input type="file" nv-file-select uploader="imageUploader" style="width:100%">
+                                      <span class="btn btn-default btn-file" style="padding-bottom:0px">
+                                          <input type="file" nv-file-select uploader="imageUploader" style="width:100%;">
                                           <i ng-cloak
                                              ng-show="vm.curO.str != ''"
                                              class="fa fa-check-square fa-2x pull-right"
@@ -298,7 +301,7 @@
                                         <button class="btn btn-danger" ng-click="resetO()" type="button">취소</button>
                                     </span>
                                 </div>
-                                <div class="mb-md" ng-show="!vm.inputModeO || vm.curOutput != output">
+                                <div ng-show="!vm.inputModeO || vm.curOutput != output">
                                     <div class="form-control col-md-11 mb-xs" style="height:auto;">
                                         <button class="mr-xs btn btn-xs" ng-class="vm.getButtonClass(o.type)"
                                                 ng-click="openEditO(o,output)"
@@ -307,7 +310,10 @@
                                         <button class="mr-xs btn btn-default btn-xs"
                                                 ng-show="getOutputTypes(output).length > 0"
                                                 ng-click="addO(output)" ><i class="fa fa-plus"></i></button>
-                                        <span class="icon pull-right" ><i ng-click="removeOutput(output)" class="fa fa-1 fa-remove" style="color:red;"></i></span>
+                                        <span class="icon pull-right" style="height:20px;line-height:20px">
+                                            <i ng-click="removeOutput(output)" class="fa fa-1 fa-remove"
+                                               style="color:red;font-size:70%;"></i>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
