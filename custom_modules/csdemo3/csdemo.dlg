@@ -253,7 +253,7 @@ var first = /(?:~시작|~처음|^!$|취소)/
 
 
 냉장고강냉둘:
-<~강냉
+<~냉장고 ~강냉
 {action: function (task,context,callback) {
     context.botUser.curcontext = 'refri';
     callback(task,context);
@@ -474,6 +474,12 @@ var first = /(?:~시작|~처음|^!$|취소)/
     <~에어컨
     >{call:'에어컨약냉둘'}
 
+<~강냉
+>iff (csdemo.refricheck) {call: '냉장고강냉둘'}
+>iff (csdemo.aircheck) 죄송합니다. 에어컨의 강냉 관련 질문은 챗봇상담이 불가능합니다.\n고객센터의 전문 상담원과 연결을 원하십니까?
+    <~네> LG전자 고객센터 번호는 1577-7314입니다.
+    <~아니요> 감사합니다. LG전자에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.
+>if(true) {call:'냉장고강냉둘'}
 
 시작:
 c<{regexp: first}
