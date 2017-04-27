@@ -340,7 +340,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           if (r.type === 'Text') {
             obj.text = r.str;
           } else if (r.type === 'Type') {
-            (obj.types || (obj.types = [])).push(vm.types[r.str]);
+            (obj.types || (obj.types = [])).push(vm.type_dic[r.str]);
           } else if (r.type === 'RegExp') {
             obj.regexp = r.str;
           } else if (r.type === 'If') {
@@ -476,8 +476,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         input.forEach(function(i) {
           if (i.text)
             text.push('[단어] '+ i.text);
-          if (i.types && i.types[0].name)
-            text.push('[타입] ' + i.types[0].name);
+          if (i.types && i.types[0].name) {
+            i.types.forEach(function (t) {
+              text.push('[타입] ' + t.name);
+            });
+          }
           if (i.regexp)
             text.push('[정규식] ' + i.regexp);
           if (i.if)
@@ -654,6 +657,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.fileName = res.fileName;
       vm.tasks = res.tasks;
       vm.types = res.types;
+      vm.type_dic = res.type_dic;
       dialogs = res.data;
 
       OpenTasksService.query().$promise.then(function(result) {

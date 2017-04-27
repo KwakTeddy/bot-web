@@ -365,7 +365,8 @@ exports.dialogs = function (req, res) {
     },
     function(botName,cb) {
       result.tasks = Object.keys(global._bots[botName].tasks).map(function(key) {return global._bots[botName].tasks[key].name;});
-      result.types = Object.keys(global._bots[botName].types).map(function(key) {return global._bots[botName].types[key].name;});
+      result.types = Object.keys(global._bots[botName].types).map(function(key) {return global._bots[botName].types[key]});
+      result.type_dic = global._bots[botName].types;
       cb(null);
     },
     function (cb) {
