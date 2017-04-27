@@ -364,7 +364,8 @@ exports.dialogs = function (req, res) {
       });
     },
     function(botName,cb) {
-      result.task = Object.keys(global._bots[botName].tasks).map(function(key) {return global._bots[botName].tasks[key].name;});
+      result.tasks = Object.keys(global._bots[botName].tasks).map(function(key) {return global._bots[botName].tasks[key].name;});
+      result.types = Object.keys(global._bots[botName].types).map(function(key) {return global._bots[botName].types[key].name;});
       cb(null);
     },
     function (cb) {

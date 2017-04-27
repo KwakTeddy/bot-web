@@ -81,6 +81,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     };
 
+    $scope.openType = function(type) {
+
+    };
+
     // dialog editing
     $scope.addI = function(input) {
       var init = {};
@@ -336,7 +340,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           if (r.type === 'Text') {
             obj.text = r.str;
           } else if (r.type === 'Type') {
-            (obj.types || (obj.types = [])).push({name:r.str});
+            (obj.types || (obj.types = [])).push(vm.types[r.str]);
           } else if (r.type === 'RegExp') {
             obj.regexp = r.str;
           } else if (r.type === 'If') {
@@ -444,7 +448,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.getInputType = function(type) {
-      if (type === 'Text' || type === 'If' || type === 'Up')
+      if (type === 'Text' || type === 'If' || type === 'Up' || type === 'RegExp')
         return 'text';
       if (type === 'Call' || type === 'CallChild' || type === 'ReturnCall' || type =='ReturnChild')
         return 'dialog';
@@ -452,6 +456,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         return 'image';
       if (type === 'Button')
         return 'text';
+      if (type === 'Type')
+        return 'type';
     };
 
     $scope.dialogList = function() {
@@ -646,7 +652,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     $resource('/api/dialogs/:bot_id/:file_id', {}).get({bot_id: vm.bot_id, file_id: vm.file_id}, function(res) {
       vm.botId = res.botId;
       vm.fileName = res.fileName;
-      vm.tasks = res.task;
+      vm.tasks = res.tasks;
+      vm.types = res.types;
       dialogs = res.data;
 
       OpenTasksService.query().$promise.then(function(result) {
@@ -719,7 +726,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         // var output_text = (typeof d.output_text == 'string' ? d.output_text.replace(/(?:\r\n|\r|\n)/g, '<br />') : d.output_text);
         // return "<strong>Input:</strong><br/><span style='color:cornflowerblue'>" + input_text + "</span><br/><br/>" +
         //   "<strong>Output:</strong><br/><span style='color:cornflowerblue'>" + output_text + "</span>";
-        return "<image src='" + d.image_text + "' height='100px'>";
+        return "<image src='" + d.image_text + "' height='120px'>";
       });
     baseSvg.call(tip);
 

@@ -34,5 +34,20 @@ var lglist = {
     callback(task, context);
   }
 };
-
 bot.setTask("lglist", lglist);
+
+var addrType = {
+  "name": "address",
+  "listName": "address",
+  "typeCheck": "listTypeCheck"
+};
+
+var dateType = {
+  "name": "date",
+  "typeCheck": "dateTypeCheck",
+  "raw": true,
+  "context": true
+};
+
+bot.setType("address", addrType);
+bot.setType("date", dateType);

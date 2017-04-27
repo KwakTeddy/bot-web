@@ -190,14 +190,31 @@
                                         <button tabindex="-1" data-toggle="dropdown" ng-class="vm.getButtonClass(vm.curI.type)" class="btn dropdown-toggle" type="button">
                                             <span class="caret"></span>
                                         </button>
+                                        <ul role="menu" class="dropdown-menu" >
+                                            <li ng-repeat="type in getInputTypes(vm.curInput, vm.curI)">
+                                                <a href="#" ng-click="setType(vm.curI, type)">{{type}}</a>
+                                            </li>
+                                        </ul>
                                     </div>
-                                    <ul role="menu" class="dropdown-menu" >
-                                        <li ng-repeat="type in getInputTypes(vm.curInput, vm.curI)">
-                                            <a href="#" ng-click="setType(vm.curI, type)">{{type}}</a>
-                                        </li>
-                                    </ul>
-                                    <input type="text" id="input" name="input" ng-model="vm.curI.str" class="form-control"
-                                            placeholder="{{getPlaceHolder(vm.curI.type)}}" >
+                                    <div ng-show="vm.inputMode && getInputType(vm.curI.type) == 'text'">
+                                        <input type="text" id="input" name="input" ng-model="vm.curI.str" class="form-control"
+                                                placeholder="{{getPlaceHolder(vm.curI.type)}}" >
+                                    </div>
+                                    <div ng-show="vm.inputMode && getInputType(vm.curI.type) == 'type'">
+                                        <button class="btn btn-default btn-block dropdown-toggle" type="button" data-toggle="dropdown"
+                                                ng-model="vm.curI.str"
+                                                ng-disabled="vm.types.length == 0"
+                                        >
+                                            {{vm.curI.str}}
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu btn-block">
+                                            <li class="text-center" ng-repeat = "t in vm.types">
+                                                <a href="#" ng-click="vm.curI.str = t.name">{{t.name}}</a>
+                                                <i ngClick="openType(t)" class="btn fa fa-3 fa-edit pull-right" style="margin-top:-25px"></i>
+                                            </li>
+                                        </ul>
+                                    </div>
                                     <span class="input-group-btn">
                                         <button class="btn btn-primary" ng-click="saveI()" type="button">저장</button>
                                         <button class="btn btn-danger" ng-click="resetI()" type="button">취소</button>
@@ -265,18 +282,17 @@
                                                placeholder="{{getPlaceHolder(vm.curO.type, true)}}">
                                     </div>
                                     <div ng-show="vm.inputModeO && getInputType(vm.curO.type) == 'dialog'">
-                                    <button class="btn btn-default btn-block dropdown-toggle" type="button" data-toggle="dropdown"
-                                            ng-model="vm.curO.str"
-                                            ng-disabled="dialogList().length == 0"
-                                    >
-                                        {{vm.curO.str}}
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu btn-block">
-                                        <li class="text-center" ng-repeat = "t in dialogList()"><a href="#" ng-click="vm.curO.str = t">{{t}}</a></li>
-                                    </ul>
+                                        <button class="btn btn-default btn-block dropdown-toggle" type="button" data-toggle="dropdown"
+                                                ng-model="vm.curO.str"
+                                                ng-disabled="dialogList().length == 0"
+                                        >
+                                            {{vm.curO.str}}
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu btn-block">
+                                            <li class="text-center" ng-repeat = "t in dialogList()"><a href="#" ng-click="vm.curO.str = t">{{t}}</a></li>
+                                        </ul>
                                     </div>
-
                                     <div class="text-left" ng-show="vm.inputModeO && getInputType(vm.curO.type) == 'image'" >
                                       <span class="btn btn-default btn-file" style="padding-bottom:0px">
                                           <input type="file" nv-file-select uploader="imageUploader" style="width:100%;">
