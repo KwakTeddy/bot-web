@@ -227,6 +227,7 @@ globals.setGlobalTask('smsAuth', smsAuth);
 
 
 function smsAuthValid(dialog, context, callback) {
+  console.log(context.dialog.smsAuth);
   callback(dialog.inRaw.replace(/\s*/g, '') == context.dialog.smsAuth);
 }
 

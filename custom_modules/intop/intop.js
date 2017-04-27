@@ -30,3 +30,21 @@ var searchCategorychild= {
 };
 
 bot.setTask('searchCategorychild', searchCategorychild);
+
+var showProducts= {
+  action: function (task,context,callback) {
+    var item = mongo.getModel('gas_crawl_items');
+    var id = context.dialog.categoryone.id.toString();
+    var parent = context.dialog.categoryone.parent_id.toString();
+    item.find({$or:[{item_category: id},{item_category: parent}]}).lean().exec(function(err, docs) {
+      if (docs.length != 0) {
+        context.dialog.item = docs;
+      } else {
+        context.dialog.item = null;
+      }
+      callback(task, context);
+    });
+  }
+};
+
+bot.setTask('showProducts', showProducts);
