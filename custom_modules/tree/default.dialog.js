@@ -16,7 +16,24 @@ var dialogs = [
 		],
 		"output": [
 			{
-				"output": "어쩌라고"
+				"output": "어쩌라고",
+				"buttons": [
+					{
+						"name": "fgdfg"
+					},
+					{
+						"name": "asdasd"
+					},
+					{
+						"name": "asdasd"
+					}
+				]
+			},
+			{
+				"call": "dialog_default6"
+			},
+			{
+				"image": "menu.jpg"
 			}
 		],
 		"name": "dialog_default0",
@@ -98,6 +115,16 @@ var dialogs = [
 					},
 					{
 						"callChild": "dialog_default6"
+					},
+					{
+						"buttons": [
+							{
+								"name": "abc"
+							},
+							{
+								"name": "bdf"
+							}
+						]
 					}
 				]
 			}

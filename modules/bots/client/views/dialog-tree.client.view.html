@@ -143,6 +143,7 @@
 
     .modal-block {
     }
+
 </style>
 <body>
 <header class="page-header">
@@ -185,8 +186,8 @@
                             <div ng-repeat="input in dialog.input">
                                 <div class="input-group mb-md" ng-show="vm.inputMode && vm.curInput == input">
                                     <div class="input-group-btn" >
-                                        <button tabindex="-1" class="btn" ng-class="vm.curI.btnClass" type="button">{{vm.curI.type}}</button>
-                                        <button tabindex="-1" data-toggle="dropdown" ng-class="vm.curI.btnClass" class="btn dropdown-toggle" type="button">
+                                        <button tabindex="-1" class="btn" ng-class="vm.getButtonClass(vm.curI.type)" type="button">{{vm.curI.type}}</button>
+                                        <button tabindex="-1" data-toggle="dropdown" ng-class="vm.getButtonClass(vm.curI.type)" class="btn dropdown-toggle" type="button">
                                             <span class="caret"></span>
                                         </button>
                                         <ul role="menu" class="dropdown-menu" >
@@ -204,7 +205,7 @@
                                 </div>
                                 <div class="mb-md" ng-show="!vm.inputMode || vm.curInput != input">
                                     <div class="form-control col-md-11 mb-xs" style="height:auto;">
-                                        <button class="mr-xs btn btn-xs" ng-class="i.btnClass"
+                                        <button class="mr-xs btn btn-xs" ng-class="vm.getButtonClass(i.type)"
                                                 ng-click="openEdit(i,input)"
                                                 ng-repeat="i in input">{{i.str == '' ? "-new-" : i.str}}&nbsp;
                                             <i ng-click="removeI(i,input)" class="fa fa-remove" style="color:white"></i></button>
@@ -225,7 +226,17 @@
                                 <span class="caret"></span></button>
                             <ul class="dropdown-menu btn-block">
                                 <li class="text-center"><a href="#" ng-click="dialog.task = undefined">선택 안함</a></li>
-                                <li class="text-center" ng-repeat = "t in vm.tasks"><a href="#" ng-click="dialog.task = t">{{t}}</a></li>
+                                <li class="divider">|</li>
+                                <li class="text-center" ng-repeat = "t in vm.tasks">
+                                    <a href="#" ng-click="dialog.task = t">{{t}}</a>
+                                    <i ngClick="openTask(t, false)" class="btn fa fa-3 fa-edit pull-right" style="margin-top:-25px"></i>
+                                </li>
+                                <li class="divider">|</li>
+                                <!--<li class="text-center" readonly>공개 Task</li>-->
+                                <li class="text-center" ng-repeat = "t in vm.commonTasks">
+                                    <a href="#" ng-click="dialog.task = t.name">{{t.name}}</a>
+                                    <i ngClick="openTask(t, true)" class="btn fa fa-3 fa-list pull-right" style="margin-top:-25px"></i>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -233,10 +244,10 @@
                         <label class="col-sm-2 control-label">Output <span class="required" aria-required="true">*</span></label>
                         <div class="col-sm-9">
                             <div ng-repeat="output in dialog.output">
-                                <div class="input-group mb-md" ng-show="vm.inputMode && vm.curOutput == output">
+                                <div class="input-group mb-md" ng-show="vm.inputModeO && vm.curOutput == output">
                                     <div class="input-group-btn" >
-                                        <button tabindex="-1" class="btn" ng-class="vm.curO.btnClass" type="button">{{vm.curO.type}}</button>
-                                        <button tabindex="-1" data-toggle="dropdown" ng-class="vm.curO.btnClass" class="btn dropdown-toggle" type="button">
+                                        <button tabindex="-1" class="btn" ng-class="vm.getButtonClass(vm.curO.type)" type="button">{{vm.curO.type}}</button>
+                                        <button tabindex="-1" data-toggle="dropdown" ng-class="vm.getButtonClass(vm.curO.type)" class="btn dropdown-toggle" type="button">
                                             <span class="caret"></span>
                                         </button>
                                         <ul role="menu" class="dropdown-menu">
@@ -245,15 +256,15 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <div ng-show="isTextInput(vm.curO.type)">
+                                    <div ng-show="vm.inputModeO && getInputType(vm.curO.type) == 'text'">
                                         <input type="text" id="input" name="input" ng-model="vm.curO.str" class="form-control"
 
                                                placeholder="{{getPlaceHolder(vm.curO.type, true)}}">
                                     </div>
+                                    <div ng-show="vm.inputModeO && getInputType(vm.curO.type) == 'dialog'">
                                     <button class="btn btn-default btn-block dropdown-toggle" type="button" data-toggle="dropdown"
                                             ng-model="vm.curO.str"
                                             ng-disabled="dialogList().length == 0"
-                                            ng-show="!isTextInput(vm.curO.type)"
                                     >
                                         {{vm.curO.str}}
                                         <span class="caret"></span>
@@ -261,7 +272,18 @@
                                     <ul class="dropdown-menu btn-block">
                                         <li class="text-center" ng-repeat = "t in dialogList()"><a href="#" ng-click="vm.curO.str = t">{{t}}</a></li>
                                     </ul>
+                                    </div>
 
+                                    <div class="text-left" ng-show="vm.inputModeO && getInputType(vm.curO.type) == 'image'" >
+                                      <span class="btn btn-default btn-file">
+                                          <input type="file" nv-file-select uploader="imageUploader" style="width:100%">
+                                          <i ng-cloak
+                                             ng-show="vm.curO.str != ''"
+                                             class="fa fa-check-square fa-2x pull-right"
+                                             style="margin-top: -24px;margin-right: -8px;" aria-hidden="true">
+                                          </i>
+                                      </span>
+                                    </div>
                                     <!--<select class="js-example-basic-single" ng-model="vm.curO.str">-->
                                         <!--<option ng-repeat = "t in dialogList()" value="{{t}}">{{t}}</option>-->
                                     <!--</select>-->
@@ -276,9 +298,9 @@
                                         <button class="btn btn-danger" ng-click="resetO()" type="button">취소</button>
                                     </span>
                                 </div>
-                                <div class="mb-md" ng-show="!vm.inputMode || vm.curOutput != output">
+                                <div class="mb-md" ng-show="!vm.inputModeO || vm.curOutput != output">
                                     <div class="form-control col-md-11 mb-xs" style="height:auto;">
-                                        <button class="mr-xs btn btn-xs" ng-class="o.btnClass"
+                                        <button class="mr-xs btn btn-xs" ng-class="vm.getButtonClass(o.type)"
                                                 ng-click="openEditO(o,output)"
                                                 ng-repeat="o in output">{{i.str == '' ? "-new-" : o.str}}&nbsp;
                                             <i ng-click="removeI(o,output)" class="fa fa-remove" style="color:white"></i></button>

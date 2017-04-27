@@ -2,8 +2,10 @@
 
 // Bots controller
 angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope', '$state', '$window','$timeout',
-'$stateParams', '$resource', 'Dialogs', 'DialogSaveService',
-  function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, Dialogs, DialogSaveService) {
+  '$stateParams', '$resource', 'Dialogs', 'DialogSaveService', 'OpenTasksService', 'FileUploader',
+  function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, Dialogs, DialogSaveService,
+            OpenTasksService, FileUploader) {
+
     var vm = this;
     vm.userId = $rootScope.userId;
     vm.bot_id = $stateParams.botId;
@@ -75,13 +77,15 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     });
 
+    $scope.openTask = function(task, isCommon) {
+
+    };
+
     // dialog editing
     $scope.addI = function(input) {
       var init = {};
       init.type = $scope.getInputTypes(input)[0];
       init.str = '';
-      init.btnClass = getButtonClass($scope.getInputTypes(input)[0]);
-      input.push(init);
       $scope.openEdit(init, input);
     };
 
@@ -100,8 +104,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       var init = {};
       init.type = $scope.getOutputTypes(input)[0];
       init.str = '';
-      init.btnClass = getButtonClass($scope.getOutputTypes(input)[0]);
-      input.push(init);
       $scope.openEditO(init, input);
     };
 
@@ -109,13 +111,15 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.curOutput = output;
       vm.targetO = o;
       vm.curO = angular.copy(o);
-      vm.inputMode = true;
+      vm.inputModeO = true;
     };
 
     $scope.saveI = function() {
       vm.targetI.type = vm.curI.type;
       vm.targetI.str = vm.curI.str;
-      vm.targetI.btnClass = vm.curI.btnClass;
+
+      if (vm.curInput.indexOf(vm.targetI) == -1)
+        vm.curInput.push(vm.targetI);
 
       $scope.resetI();
     };
@@ -123,7 +127,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     $scope.saveO = function() {
       vm.targetO.type = vm.curO.type;
       vm.targetO.str = vm.curO.str;
-      vm.targetO.btnClass = vm.curO.btnClass;
+
+      if (vm.curOutput.indexOf(vm.targetO) == -1)
+        vm.curOutput.push(vm.targetO);
 
       $scope.resetO();
     };
@@ -133,14 +139,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.resetO= function() {
-      vm.inputMode = false;
+      vm.inputModeO = false;
     };
 
     $scope.setType = function(i, type) {
       i.type = type;
-      if (type != "Text" && type != "If" && type !="Regexp")
+      if (type != "Text" && type != "If" && type !="Regexp" && type !="Button")
         i.str = "";
-      i.btnClass = getButtonClass(type);
     };
 
     $scope.getPlaceHolder = function(type, isOut) {
@@ -150,7 +155,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
       if (type === 'RegExp') return "정규식을 입력해주세요";
       if (type === 'Type') return "타입을 입력해주세요";
-      if (type === 'Call') return "다이얼로그 이름을 입력해주세요";
+      if (type === 'Button') return "버튼 이름을 입력해주세요";
       if (type === 'If') return "조건을 입력해주세요";
     };
 
@@ -185,8 +190,16 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           isDone = true;
         }
       });
-      if (!isDone || (i != undefined && vm.outputTypes.indexOf(i.type) != -1)) {
-        types = angular.copy(vm.outputTypes);
+      if ((!isDone || (i != undefined && vm.outputTypes.indexOf(i.type) != -1))) {
+        if (!findType(input, 'Button') && !findType(input,'Image'))
+          types = angular.copy(vm.outputTypes);
+        else
+          types.push('Text');
+      }
+      if (!isDone || (isDone && findType(input,'Text'))) {
+        if (!findType(input,'Image'))
+          types.push('Image');
+        types.push('Button');
       }
       if (!findType(input,"If") || (i != undefined && i.type == "If"))
         types.push("If");
@@ -241,13 +254,19 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
-    var getButtonClass = function(type) {
-      if (type === 'Text') return 'btn-primary';
-      if (type === 'Type') return 'btn-warning';
-      if (type === 'RegExp') return 'btn-success';
-      if (type === 'Call') return 'btn-danger';
-      if (type === 'If') return 'btn-info';
-      return 'btn-default';
+    vm.btnClass = [];
+    vm.btnClass['Text'] = 'btn-primary';
+    vm.btnClass['RegExp'] = 'btn-success';
+    vm.btnClass['Type'] = 'btn-warning';
+    vm.btnClass['Call'] = 'btn-danger';
+    vm.btnClass['CallChild'] = 'btn-danger';
+    vm.btnClass['ReturnCall'] = 'btn-danger';
+    vm.btnClass['If'] = 'btn-info';
+    vm.btnClass['Image'] = 'btn-warning';
+    vm.btnClass['Button'] = 'btn-success';
+
+    vm.getButtonClass = function(type) {
+      return vm.btnClass[type];
     };
 
     var initInput = function(input) {
@@ -255,19 +274,20 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       input.forEach(function(d) {
         var r = [];
         if (d.text) {
-          r.push({type: 'Text', str: d.text, btnClass: getButtonClass('Text')});
+          r.push({type: 'Text', str: d.text});
         }
         if (d.types) {
           d.types.forEach(function (t) {
-            r.push({type: 'Type', str: t.name, btnClass: getButtonClass('Type')});
+            r.push({type: 'Type', str: t.name});
           });
         }
         if (d.regexp) {
-          r.push({type: 'RegExp', str: d.regexp, btnClass: getButtonClass('RegExp')});
+          r.push({type: 'RegExp', str: d.regexp});
         }
         if (d.if) {
-          r.push({type:'If', str:d.if, btnClass:getButtonClass('If')});
+          r.push({type:'If', str:d.if});
         }
+
         res.push(r);
       });
       return res;
@@ -278,22 +298,30 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       output.forEach(function(d) {
         var r = [];
         if (d.output) {
-          r.push({type:'Text', str:d.output, btnClass:getButtonClass('Text')});
+          r.push({type:'Text', str:d.output});
         }
         if (d.call) {
-          r.push({type:'Call', str:d.call, btnClass:getButtonClass('Call')});
+          r.push({type:'Call', str:d.call});
         }
         if (d.callChild) {
-          r.push({type:'CallChild', str:d.callChild, btnClass:getButtonClass('CallChild')});
+          r.push({type:'CallChild', str:d.callChild});
         }
         if (d.returnCall) {
-          r.push({type:'ReturnCall', str:d.returnCall, btnClass:getButtonClass('ReturnCall')});
+          r.push({type:'ReturnCall', str:d.returnCall});
         }
         if (d.if) {
-          r.push({type:'If', str:d.if, output:d.output, btnClass:getButtonClass('If')});
+          r.push({type:'If', str:d.if, output:d.output});
         }
         if (d.up) {
-          r.push({type:'Up', str:d.up, btnClass:getButtonClass('Up')});
+          r.push({type:'Up', str:d.up});
+        }
+        if (d.buttons) {
+          d.buttons.forEach(function(b) {
+            r.push({type:'Button', str:b.name});
+          });
+        }
+        if (d.image) {
+          r.push({type:'Image', str:d.image});
         }
         res.push(r);
       });
@@ -338,6 +366,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             o.if = r.str;
           } else if (r.type === 'Up') {
             o.up = r.str;
+          } else if (r.type === 'Image') {
+            o.image = r.str;
+          } else if (r.type === 'Button') {
+            (o.buttons || (o.buttons = [])).push({name:r.str});
           }
         });
         output.push(o);
@@ -388,6 +420,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         delete node.y0;
         delete node.input_text;
         delete node.output_text;
+        delete node.image_text;
+        delete node.buttons;
         delete node.depth;
 
         if (node.children)
@@ -409,10 +443,15 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         });
     };
 
-    $scope.isTextInput = function(type) {
+    $scope.getInputType = function(type) {
       if (type === 'Text' || type === 'If' || type === 'Up')
-        return true;
-      return false;
+        return 'text';
+      if (type === 'Call' || type === 'CallChild' || type === 'ReturnCall' || type =='ReturnChild')
+        return 'dialog';
+      if (type === 'Image')
+        return 'image';
+      if (type === 'Button')
+        return 'text';
     };
 
     $scope.dialogList = function() {
@@ -452,13 +491,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
-    var handlePrintOutput = function(output) {
+    var handlePrintOutput = function(dialog, output) {
       if (typeof output == 'string') return output;
       else if(Array.isArray(output)) {
         var _output = '';
         for (var i = 0; i < output.length; i++) {
           if (i !== 0) _output += ', ';
-          _output += handlePrintOutput(output[i]);
+          _output += handlePrintOutput(dialog, output[i]);
         }
         return _output;
       } else {
@@ -481,9 +520,20 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         if (output.up) {
           text.push('[up] ' + output.up);
         }
+        if (output.image) {
+          dialog.image_text = '/files/' + output.image;
+        }
+        if (output.buttons) {
+          dialog.buttons = output.buttons.map(function(b) { return b.name });
+        }
 
         return text + "";
       }
+    };
+
+    var initPrintOutput = function(dialog) {
+      delete dialog.image_text;
+      delete dialog.buttons;
     };
 
     var handleDialog = function(dialog)
@@ -495,7 +545,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       nodes[dialog.name].input_text  = handleInput(dialog.input);
       if (!Array.isArray(dialog.output))
         dialog.output = [dialog.output];
-      nodes[dialog.name].output_text = handlePrintOutput(dialog.output);
+      initPrintOutput(dialog);
+      nodes[dialog.name].output_text = handlePrintOutput(dialog, dialog.output);
 
       if (dialog.id)
         vm.maxId = Math.max(vm.maxId, parseInt(dialog.id.substring(vm.fileName.length, dialog.id.length)));
@@ -515,6 +566,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       if (output.output) {
         handleOutput(dialog, output.output);
       }
+
       if (output.options) {
         if (output.options.returnDialog) {
           if (nodes[output.options.returnDialog]) {
@@ -597,6 +649,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.tasks = res.task;
       dialogs = res.data;
 
+      OpenTasksService.query().$promise.then(function(result) {
+        vm.commonTasks = result;
+      });
+
       //console.log(JSON.stringify(dialogs));
       vm.initTreeData();
       init();
@@ -616,7 +672,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     var viewerHeight = document.getElementById('sidebar-left').clientHeight;
 
     // size of rect
-    var rectW = 220, rectH = 100;
+    var rectW = 220, rectH = 130;
     // height for one node
     var itemHeight = rectH+100;
     // width for one depth
@@ -659,10 +715,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       .attr('class', 'd3-tip')
       .offset([-10, 0])
       .html(function(d) {
-        var input_text = (typeof d.input_text == 'string' ? d.input_text.replace(/(?:\r\n|\r|\n)/g, '<br />') : d.input_text);
-        var output_text = (typeof d.output_text == 'string' ? d.output_text.replace(/(?:\r\n|\r|\n)/g, '<br />') : d.output_text);
-        return "<strong>Input:</strong><br/><span style='color:cornflowerblue'>" + input_text + "</span><br/><br/>" +
-          "<strong>Output:</strong><br/><span style='color:cornflowerblue'>" + output_text + "</span>";
+        // var input_text = (typeof d.input_text == 'string' ? d.input_text.replace(/(?:\r\n|\r|\n)/g, '<br />') : d.input_text);
+        // var output_text = (typeof d.output_text == 'string' ? d.output_text.replace(/(?:\r\n|\r|\n)/g, '<br />') : d.output_text);
+        // return "<strong>Input:</strong><br/><span style='color:cornflowerblue'>" + input_text + "</span><br/><br/>" +
+        //   "<strong>Output:</strong><br/><span style='color:cornflowerblue'>" + output_text + "</span>";
+        return "<image src='" + d.image_text + "' height='100px'>";
       });
     baseSvg.call(tip);
 
@@ -768,12 +825,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         .attr("rx", 5)
         .attr("ry", 5)
         .style('fill', '#DADAEB');
-        // .attr("stroke-width", 2)
-        // .style("stroke", function (d) {
-        //   return d._children ? "lightsteelblue" : "#fff";
-        // })
-        //.on('mouseover', tip.show)
-        //.on('mouseout', tip.hide);
+      // .attr("stroke-width", 2)
+      // .style("stroke", function (d) {
+      //   return d._children ? "lightsteelblue" : "#fff";
+      // })
+      //.on('mouseover', tip.show)
+      //.on('mouseout', tip.hide);
 
       // add the text
       nodeEnter.append("text")
@@ -839,6 +896,40 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         .attr("dy", "7em")
         .text(function(d) { return "Out: " + (d.output_text ? d.output_text : ""); })
         .call(wrap, rectW-25, 2);
+
+      nodeEnter.append("line")
+        .style("pointer-events", "none")
+        .attr("x1", 0)
+        .attr("y1", "6.7em")
+        .attr("x2", rectW)
+        .attr("y2", "6.7em")
+        .attr("stroke-width", 1)
+        .attr("stroke-dasharray", "0,2 1")
+        .attr("stroke", "gray");
+
+      var showTip = function(d) {
+        if (d.image_text)
+          tip.show(d);
+      };
+
+      nodeEnter.append("text")
+        .attr("id", "image")
+        .attr("class","nodetext")
+        .attr("x", 7)
+        .attr("dy", "10em")
+        .text(function(d) { return "Image: " + (d.image_text ? d.image_text: ""); })
+        .on('mouseover', showTip)
+        .on('mouseout', tip.hide)
+        .call(wrap, rectW-25, 1);
+
+      nodeEnter.append("text")
+        .attr("id", "image")
+        .attr("class","nodetext")
+        .style("pointer-events", "none")
+        .attr("x", 7)
+        .attr("dy", "12em")
+        .text(function(d) { return "Button: " + (d.buttons ? d.buttons + "": ""); })
+        .call(wrap, rectW-25, 1);
 
       // Change the rect fill depending on whether it has children and is collapsed
       // node.select("rect.nodeRect")
@@ -1251,6 +1342,80 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         }
       });
     }
+
+    /********************* image *********************/
+    $scope.imageURL = undefined;
+    $scope.error = {};
+    $scope.success = {};
+
+    // Create file imageUploader instance
+    $scope.imageUploader = new FileUploader({
+      url: '/api/user-bots/image-files',
+      alias: 'uploadImageFile',
+      autoUpload: true
+    });
+
+    $scope.imageUploader.filters.push({
+      name: 'imageFilter',
+      fn: function (item, options) {
+        var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+        if('|jpg|png|jpeg|bmp|gif|'.indexOf(type) == -1){
+          $scope.success.image = null;
+          $scope.error['image'] = '이미지 파일이 아니에요'
+        }else {
+          $scope.error.image = null;
+        }
+        return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+      }
+    });
+
+    // Called after the user selected a new picture file
+    $scope.imageUploader.onAfterAddingFile = function (fileItem) {
+      if ($window.FileReader) {
+        var fileReader = new FileReader();
+        fileReader.readAsDataURL(fileItem._file);
+
+        fileReader.onload = function (fileReaderEvent) {
+          $timeout(function () {
+            $scope.imageURL = fileReaderEvent.target.result;
+          }, 0);
+        };
+      }
+    };
+
+    // Called after the user has successfully uploaded a new picture
+    $scope.imageUploader.onSuccessItem = function (fileItem, response, status, headers) {
+      // Show success message
+      $scope.success['image'] = true;
+
+      vm.curO.str = response.filename;
+      // Clear upload buttons
+      $scope.cancelImageUpload();
+    };
+
+    // Called after the user has failed to uploaded a new picture
+    $scope.imageUploader.onErrorItem = function (fileItem, response, status, headers) {
+      // Clear upload buttons
+      $scope.cancelImageUpload();
+
+      // Show error message
+      $scope.error = response.message;
+    };
+
+    // Change user profile picture
+    $scope.uploadImageFiles = function () {
+      // Clear messages
+      $scope.success = $scope.error = null;
+
+      // Start upload
+      $scope.imageUploader.uploadAll();
+    };
+
+    // Cancel the upload process
+    $scope.cancelImageUpload = function () {
+      $scope.imageUploader.clearQueue();
+      // $scope.imageURL = $scope.user.profileImageURL;
+    };
   }]
 );
 
