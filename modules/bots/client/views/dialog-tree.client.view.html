@@ -224,7 +224,9 @@
                                     <div class="form-control col-md-11 mb-xs" style="height:auto;">
                                         <button class="mr-xs btn btn-xs" ng-class="vm.getButtonClass(i.type)"
                                                 ng-click="openEdit(i,input)"
-                                                ng-repeat="i in input">{{i.str == '' ? "-new-" : i.str}}&nbsp;
+                                                ng-repeat="i in input">
+                                            <i class='fa' ng-class="vm.getIconClass(i.type)" style="color:antiquewhite"></i>&nbsp;
+                                            {{i.str == '' ? "-new-" : i.str.substring(0,10)}}&nbsp;
                                             <i ng-click="removeI(i,input)" class="fa fa-remove" style="color:white"></i></button>
                                         <button class="mr-xs btn btn-default btn-xs"
                                                 ng-show="getInputTypes(input).length > 0"
@@ -266,13 +268,17 @@
                             <div ng-repeat="output in dialog.output">
                                 <div class="input-group mb-xs" ng-show="vm.inputModeO && vm.curOutput == output">
                                     <div class="input-group-btn" >
-                                        <button tabindex="-1" class="btn" ng-class="vm.getButtonClass(vm.curO.type)" type="button">{{vm.curO.type}}</button>
+                                        <button tabindex="-1" class="btn" ng-class="vm.getButtonClass(vm.curO.type)" type="button">
+                                            {{vm.curO.type}}
+                                        </button>
                                         <button tabindex="-1" data-toggle="dropdown" ng-class="vm.getButtonClass(vm.curO.type)" class="btn dropdown-toggle" type="button">
                                             <span class="caret"></span>
                                         </button>
                                         <ul role="menu" class="dropdown-menu">
                                             <li ng-repeat="t in getOutputTypes(vm.curOutput, vm.curO)">
-                                                <a href="#" ng-click="setType(vm.curO, t)">{{t}}</a>
+                                                <a href="#" ng-click="setType(vm.curO, t)">
+                                                    {{t}}
+                                                </a>
                                             </li>
                                         </ul>
                                     </div>
@@ -321,7 +327,9 @@
                                     <div class="form-control col-md-11 mb-xs" style="height:auto;">
                                         <button class="mr-xs btn btn-xs" ng-class="vm.getButtonClass(o.type)"
                                                 ng-click="openEditO(o,output)"
-                                                ng-repeat="o in output">{{i.str == '' ? "-new-" : o.str}}&nbsp;
+                                                ng-repeat="o in output">
+                                            <i class='fa' ng-class="vm.getIconClass(o.type)" style="color:antiquewhite"></i>&nbsp;
+                                            {{i.str == '' ? "-new-" : o.str.substring(0,10)}}&nbsp;
                                             <i ng-click="removeI(o,output)" class="fa fa-remove" style="color:white"></i></button>
                                         <button class="mr-xs btn btn-default btn-xs"
                                                 ng-show="getOutputTypes(output).length > 0"

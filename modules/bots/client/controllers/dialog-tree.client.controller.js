@@ -258,19 +258,25 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
-    vm.btnClass = [];
-    vm.btnClass['Text'] = 'btn-primary';
-    vm.btnClass['RegExp'] = 'btn-success';
-    vm.btnClass['Type'] = 'btn-warning';
-    vm.btnClass['Call'] = 'btn-danger';
-    vm.btnClass['CallChild'] = 'btn-danger';
-    vm.btnClass['ReturnCall'] = 'btn-danger';
-    vm.btnClass['If'] = 'btn-info';
-    vm.btnClass['Image'] = 'btn-warning';
-    vm.btnClass['Button'] = 'btn-success';
+    vm.typeClass = [];
+    vm.typeClass['Text'] = {btn:'btn-primary',icon:'fa-commenting'};
+    vm.typeClass['RegExp'] = {btn:'btn-success',icon:'fa-registered'};
+    vm.typeClass['Type'] = {btn:'btn-warning',icon:'fa-gear'};
+    vm.typeClass['Call'] = {btn:'btn-danger',icon:'fa-bolt'};
+    vm.typeClass['CallChild'] = {btn:'btn-danger',icon:'fa-mail-forward'};
+    vm.typeClass['ReturnCall'] = {btn:'btn-danger',icon:'fa-mail-reply'};
+    vm.typeClass['If'] = {btn:'btn-info',icon:'fa-question'};
+    vm.typeClass['Image'] = {btn:'btn-warning',icon:'fa-image'};
+    vm.typeClass['Button'] = {btn:'btn-success',icon:'fa-play-circle'};
 
     vm.getButtonClass = function(type) {
-      return vm.btnClass[type];
+      if (!type) return '';
+      return vm.typeClass[type].btn;
+    };
+
+    vm.getIconClass = function(type) {
+      if (!type) return '';
+      return vm.typeClass[type].icon;
     };
 
     var initInput = function(input) {
