@@ -313,7 +313,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     vm.inputTypes = ["Text","RegExp","Type","If"];
-    vm.outputTypes = ["Text","Call","ReturnCall","CallChild","Up"];
+    vm.outputTypes = ["Text","Call","ReturnCall","CallChild","Up", "Repeat"];
 
     var findType = function(input, typeName) {
       for (var i=0; i < input.length; ++i) {
@@ -408,15 +408,17 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     vm.typeClass = [];
-    vm.typeClass['Text'] = {btn:'btn-primary',icon:'fa-commenting'};
-    vm.typeClass['RegExp'] = {btn:'btn-success',icon:'fa-registered'};
-    vm.typeClass['Type'] = {btn:'btn-warning',icon:'fa-gear'};
-    vm.typeClass['Call'] = {btn:'btn-danger',icon:'fa-bolt'};
-    vm.typeClass['CallChild'] = {btn:'btn-danger',icon:'fa-mail-forward'};
-    vm.typeClass['ReturnCall'] = {btn:'btn-danger',icon:'fa-mail-reply'};
-    vm.typeClass['If'] = {btn:'btn-info',icon:'fa-question'};
-    vm.typeClass['Image'] = {btn:'btn-warning',icon:'fa-image'};
-    vm.typeClass['Button'] = {btn:'btn-success',icon:'fa-play-circle'};
+    vm.typeClass['Text'] = {btn:'btn-primary',icon:'fa-commenting', input:'text'};
+    vm.typeClass['RegExp'] = {btn:'btn-success',icon:'fa-registered', input:'text'};
+    vm.typeClass['Type'] = {btn:'btn-warning',icon:'fa-gear', input:'type'};
+    vm.typeClass['Call'] = {btn:'btn-danger',icon:'fa-bolt', input:'dialog'};
+    vm.typeClass['CallChild'] = {btn:'btn-danger',icon:'fa-mail-forward', input:'dialog'};
+    vm.typeClass['ReturnCall'] = {btn:'btn-danger',icon:'fa-mail-reply', input:'dialog'};
+    vm.typeClass['If'] = {btn:'btn-info',icon:'fa-question', input:'text'};
+    vm.typeClass['Up'] = {btn:'btn-info',icon:'fa-arrow-up', input:'text'};
+    vm.typeClass['Repeat'] = {btn:'btn-info',icon:'fa-repeat', input:'text'};
+    vm.typeClass['Image'] = {btn:'btn-warning',icon:'fa-image', input:'image'};
+    vm.typeClass['Button'] = {btn:'btn-success',icon:'fa-play-circle', input:'text'};
 
     vm.getButtonClass = function(type) {
       if (!type) return '';
@@ -426,6 +428,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     vm.getIconClass = function(type) {
       if (!type) return '';
       return vm.typeClass[type].icon;
+    };
+
+    $scope.getInputType = function(type) {
+      return vm.typeClass[type].input;
     };
 
     var initInput = function(input) {
@@ -473,6 +479,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         }
         if (d.up) {
           r.push({type:'Up', str:d.up});
+        }
+        if (d.repeat) {
+          r.push({type:'Repeat', str:d.repeat});
         }
         if (d.buttons) {
           d.buttons.forEach(function(b) {
@@ -525,6 +534,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             o.if = r.str;
           } else if (r.type === 'Up') {
             o.up = r.str;
+          } else if (r.type === 'Repeat') {
+            o.repeat = r.str;
           } else if (r.type === 'Image') {
             o.image = r.str;
           } else if (r.type === 'Button') {
@@ -610,19 +621,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         });
     };
 
-    $scope.getInputType = function(type) {
-      if (type === 'Text' || type === 'If' || type === 'Up' || type === 'RegExp')
-        return 'text';
-      if (type === 'Call' || type === 'CallChild' || type === 'ReturnCall' || type =='ReturnChild')
-        return 'dialog';
-      if (type === 'Image')
-        return 'image';
-      if (type === 'Button')
-        return 'text';
-      if (type === 'Type')
-        return 'type';
-    };
-
     $scope.dialogList = function() {
       var names = [];
       for (var d in nodes) {
@@ -693,6 +691,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         }
         if (output.up) {
           text.push('[up] ' + output.up);
+        }
+        if (output.repeat) {
+          text.push('[repeat] ' + output.repeat);
         }
         if (output.image) {
           dialog.image_text = '/files/' + output.image;
