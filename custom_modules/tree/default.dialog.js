@@ -35,6 +35,12 @@ var dialogs = [
 			},
 			{
 				"image": "menu.jpg"
+			},
+			{
+				"repeat": "2"
+			},
+			{
+				"up": "2"
 			}
 		],
 		"name": "dialog_default0",
@@ -97,7 +103,8 @@ var dialogs = [
 						"input": [],
 						"output": []
 					}
-				]
+				],
+				"task": "lglist"
 			},
 			{
 				"name": "dialog_default8",
