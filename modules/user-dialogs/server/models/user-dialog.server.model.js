@@ -35,7 +35,7 @@ var UserDialogSchema = new Schema({
   },
 
   dialogId: {
-    type: Number
+    type: String
   },
 
   dialogName: {
@@ -43,7 +43,7 @@ var UserDialogSchema = new Schema({
   },
 
   preDialogId: {
-    type: Number
+    type: String
   },
 
   preDialogName: {
