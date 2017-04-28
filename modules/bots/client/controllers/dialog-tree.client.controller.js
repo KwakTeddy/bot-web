@@ -845,7 +845,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     // size of rect
     var rectW = 220, rectH = 130;
     // height for one node
-    var itemHeight = rectH+100;
+    var itemHeight = rectH+300;
     // width for one depth
     var labelWidth = 350;
 
