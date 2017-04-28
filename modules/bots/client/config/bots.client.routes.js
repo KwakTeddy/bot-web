@@ -28,7 +28,8 @@ angular.module('bots').config(['$stateProvider',
         controller: 'BotController',
         controllerAs: 'vm',
         resolve: {
-          botResolve: newBot
+          botResolve: newBot,
+          dialogsetsResolve: getDialogsets
         }
       })
       .state('bots.edit', {
