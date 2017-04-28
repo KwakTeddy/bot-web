@@ -170,8 +170,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             if(nodes[i].id == dialog.id) {
               currentNode = nodes[i];
               break;
-            } else if (dialog.name === "시작") {
-              currentNode = treeData[0];
+            } else if (dialog.name == "시작") {
+              currentNode = treeData;
               break;
             }
           }

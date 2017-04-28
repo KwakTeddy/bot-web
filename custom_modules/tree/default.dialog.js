@@ -12,35 +12,11 @@ var dialogs = [
 					"address",
 					"date"
 				]
-			},
-			{
-				"regexp": "/abc/"
 			}
 		],
 		"output": [
 			{
-				"output": "어쩌라고",
-				"buttons": [
-					{
-						"name": "fgdfg"
-					},
-					{
-						"name": "asdasd"
-					}
-				]
-			},
-			{
-				"call": "dialog_default6",
-				"if": "a = b"
-			},
-			{
-				"image": "menu.jpg"
-			},
-			{
-				"repeat": "2"
-			},
-			{
-				"up": "2"
+				"output": "어쩌라고"
 			}
 		],
 		"name": "dialog_default0",
@@ -112,7 +88,10 @@ var dialogs = [
 				"filename": "default",
 				"input": [
 					{
-						"regexp": "/[0-9]+/"
+						"regexp": "/[0-9]+/",
+						"types": [
+							"date"
+						]
 					}
 				],
 				"output": [
