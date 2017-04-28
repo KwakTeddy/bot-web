@@ -7,11 +7,17 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "안녕",
-				"regexp": "/abc/"
+				"text": "바보",
+				"types": [
+					{
+						"name": "address",
+						"listName": "address",
+						"typeCheck": "listTypeCheck"
+					}
+				]
 			},
 			{
-				"text": "바보"
+				"regexp": "/abc/"
 			}
 		],
 		"output": [
@@ -23,14 +29,12 @@ var dialogs = [
 					},
 					{
 						"name": "asdasd"
-					},
-					{
-						"name": "asdasd"
 					}
 				]
 			},
 			{
-				"call": "dialog_default6"
+				"call": "dialog_default6",
+				"if": "a = b"
 			},
 			{
 				"image": "menu.jpg"
