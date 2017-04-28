@@ -481,7 +481,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           r.push({type:'Up', str:d.up});
         }
         if (d.repeat) {
-          r.push({type:'Repeat', str:d.repeat});
+          r.push({type:'Repeat', str:d.repeat+""});
         }
         if (d.buttons) {
           d.buttons.forEach(function(b) {
@@ -575,7 +575,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       selectedNode.name = $scope.dialog.name;
       selectedNode.input = restoreInput($scope.dialog.input);
-      if ($scope.dialog.task && $scope.dialog.task.keys().length == 1)
+      if ($scope.dialog.task && Object.keys($scope.dialog.task).length == 1)
         selectedNode.task = $scope.dialog.task.name;
       else
         selectedNode.task = $scope.dialog.task;

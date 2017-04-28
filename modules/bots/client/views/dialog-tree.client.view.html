@@ -382,8 +382,8 @@
                                                 ng-click="openEditO(o,output)"
                                                 ng-repeat="o in output">
                                             <i class='fa' ng-class="vm.getIconClass(o.type)" style="color:antiquewhite"></i>&nbsp;
-                                            {{i.str == '' ? "-new-" : o.str.substring(0,10)}}&nbsp;
-                                            <i ng-click="removeI(o,output)" class="fa fa-remove" style="color:white"></i></button>
+                                            {{o.str == '' ? "-new-" : o.str.substring(0,10)}}&nbsp;
+                                            <i ng-click="removeO(o,output)" class="fa fa-remove" style="color:white"></i></button>
                                         <button class="mr-xs btn btn-default btn-xs"
                                                 ng-show="getOutputTypes(output).length > 0"
                                                 ng-click="addO(output)" ><i class="fa fa-plus"></i></button>
