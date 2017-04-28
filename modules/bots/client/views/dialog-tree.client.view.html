@@ -165,8 +165,58 @@
 
 <div id="control" class="test-body">
     <a class="modal-with-form btn btn-default" style="display:none" href="#modalForm">Open Form</a>
+    <a class="modal-with-task btn btn-default" style="display:none" href="#modalTaskForm">Open Form</a>
 
     <!-- Modal Form -->
+    <div id="modalTaskForm" class="modal-block modal-block-primary mfp-hide">
+        <section class="panel">
+            <header class="panel-heading">
+                <h2 class="panel-title">Task 정보</h2>
+            </header>
+            <form name="dialogTaskForm" class="form-horizontal" novalidate="novalidate">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">URL</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control mb-xs" ng-model="dialog.task.url" placeholder="url을 입력해주세요">
+                        </div>
+                        <label class="col-sm-2 control-label">URL</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control mb-xs" ng-model="dialog.task.url" placeholder="url을 입력해주세요">
+                        </div>
+                        <label class="col-sm-2 control-label">URL</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control mb-xs" ng-model="dialog.task.url" placeholder="url을 입력해주세요">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Entity</label>
+                        <div class="col-sm-9">
+                            <ul>
+                                <li><span>Entity12345</span></li>
+                                <li><span>Entity12345</span></li>
+                                <li><span>Entity12345</span></li>
+                                <li><span>Entity12345</span></li>
+                                <li><span>Entity12345</span></li>
+                                <li><span>Entity12345</span></li>
+                                <li><span>Entity12345</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <footer class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <button class="btn btn-primary" ng-click="backToEdit(true)" >저장</button>
+                            <button class="btn btn-default" ng-click="backToEdit(false)" >이전</button>
+                        </div>
+                    </div>
+                </footer>
+            </form>
+        </section>
+    </div>
+
     <div id="modalForm" class="modal-block modal-block-primary mfp-hide">
         <section class="panel">
             <header class="panel-heading">
@@ -177,9 +227,10 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Name</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control mb-xs" ng-model="dialog.name" placeholder="이름을 입력해주세요">
+                            <input type="text" id="name" class="form-control mb-xs" ng-model="dialog.name" placeholder="이름을 입력해주세요">
                         </div>
                     </div>
+                    <hr>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Input <span class="required" aria-required="true">*</span></label>
                         <div class="col-sm-9">
@@ -211,7 +262,7 @@
                                         <ul class="dropdown-menu btn-block">
                                             <li class="text-center" ng-repeat = "t in vm.types">
                                                 <a href="#" ng-click="vm.curI.str = t.name">{{t.name}}</a>
-                                                <i ngClick="openType(t)" class="btn fa fa-3 fa-edit pull-right" style="margin-top:-25px"></i>
+                                                <i ng-click="openType(t)" class="btn fa fa-3 fa-edit pull-right" style="margin-top:-25px"></i>
                                             </li>
                                         </ul>
                                     </div>
@@ -241,27 +292,29 @@
                             <button type="button" ng-click="addInput()" class="mb-xs mr-xs btn btn-sm btn-info"><i class="glyphicon glyphicon-plus"></i> Input 추가</button>
                         </div>
                     </div>
+                    <hr>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Task</label>
                         <div class="col-sm-9 dropdwon">
-                            <button ng-disabled="vm.tasks.length == 0" class="btn btn-default btn-block dropdown-toggle" ng-model="dialog.task" type="button" data-toggle="dropdown">{{dialog.task}}
+                            <button ng-disabled="vm.tasks.length == 0" class="btn btn-default btn-block dropdown-toggle" ng-model="dialog.task" type="button" data-toggle="dropdown">{{dialog.task.name}}
                                 <span class="caret"></span></button>
                             <ul class="dropdown-menu btn-block">
                                 <li class="text-center"><a href="#" ng-click="dialog.task = undefined">선택 안함</a></li>
                                 <li class="divider">|</li>
                                 <li class="text-center" ng-repeat = "t in vm.tasks">
-                                    <a href="#" ng-click="dialog.task = t">{{t}}</a>
-                                    <i ngClick="openTask(t, false)" class="btn fa fa-3 fa-edit pull-right" style="margin-top:-25px"></i>
+                                    <a href="#" ng-click="dialog.task = {name:t}">{{t}}</a>
+                                    <i ng-click="openTask(t, false)" class="btn fa fa-3 fa-edit pull-right" style="margin-top:-25px"></i>
                                 </li>
                                 <li class="divider">|</li>
                                 <!--<li class="text-center" readonly>공개 Task</li>-->
                                 <li class="text-center" ng-repeat = "t in vm.commonTasks">
-                                    <a href="#" ng-click="dialog.task = t.name">{{t.name}}</a>
-                                    <i ngClick="openTask(t, true)" class="btn fa fa-3 fa-list pull-right" style="margin-top:-25px"></i>
+                                    <a href="#" ng-click="dialog.task = {name:t.name}">{{t.name}}</a>
+                                    <i ng-click="openTask(t, true)" class="btn fa fa-3 fa-list pull-right" style="margin-top:-25px"></i>
                                 </li>
                             </ul>
                         </div>
                     </div>
+                    <hr>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Output <span class="required" aria-required="true">*</span></label>
                         <div class="col-sm-9">
@@ -349,7 +402,7 @@
                     <div class="row">
                         <div class="col-md-12 text-right">
                             <button class="btn btn-primary modal-confirm" ng-click="update(dialogForm.$valid)" >저장</button>
-                            <button class="btn btn-default modal-dismiss">취소</button>
+                            <button class="btn btn-default modal-dismiss" ng-click="vm.edit = false">취소</button>
                         </div>
                     </div>
                 </footer>
@@ -373,7 +426,6 @@
     <div id="tree-container" class="panel" width="100%" height="100%"></div>
 </div>
 <script src="/vendor/pnotify/pnotify.custom.js"></script>
-<script src="/js/ui-elements/examples.modals.js"></script>
 </body>
 </html>
 

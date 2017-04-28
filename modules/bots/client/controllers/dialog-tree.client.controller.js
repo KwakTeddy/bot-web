@@ -6,6 +6,112 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
   function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, Dialogs, DialogSaveService,
             OpenTasksService, FileUploader, $document) {
 
+    (function($) {
+      'use strict';
+
+      $('.modal-with-move-anim').magnificPopup({
+        type: 'inline',
+
+        fixedContentPos: false,
+        fixedBgPos: true,
+
+        overflowY: 'auto',
+
+        closeBtnInside: true,
+        preloader: false,
+
+        midClick: true,
+        removalDelay: 300,
+        mainClass: 'my-mfp-slide-bottom',
+        modal: true
+      });
+
+      /*
+       Modal Dismiss
+       */
+      $(document).on('click', '.modal-dismiss', function (e) {
+        e.preventDefault();
+        $.magnificPopup.close();
+      });
+
+      /*
+       Modal Confirm
+       */
+      $(document).on('click', '.modal-confirm', function (e) {
+        e.preventDefault();
+        $.magnificPopup.close();
+
+        new PNotify({
+          title: 'Success!',
+          text: 'Modal Confirm Message.',
+          type: 'success'
+        });
+      });
+
+      /*
+       Form
+       */
+      $('.modal-with-form').magnificPopup({
+        type: 'inline',
+        preloader: false,
+        focus: '#name',
+        modal: true,
+
+        // When elemened is focused, some mobile browsers in some cases zoom in
+        // It looks not nice, so we disable it:
+        callbacks: {
+          beforeOpen: function() {
+            if($(window).width() < 700) {
+              this.st.focus = false;
+            } else {
+              this.st.focus = '#name';
+            }
+          }
+        }
+      });
+      $('.modal-with-task').magnificPopup({
+        type: 'inline',
+        preloader: false,
+        focus: '#name',
+        modal: true,
+
+        // When elemened is focused, some mobile browsers in some cases zoom in
+        // It looks not nice, so we disable it:
+        callbacks: {
+          beforeOpen: function() {
+            if($(window).width() < 700) {
+              this.st.focus = false;
+            } else {
+              this.st.focus = '#name';
+            }
+          }
+        }
+      });
+    }).apply(this, [jQuery]);
+
+    $scope.openTask = function(task, isCommon) {
+      $scope.dialog.task = {name: task.name};
+      vm.edit = true;
+      if (isCommon) {
+        $.magnificPopup.close();
+        $('.modal-with-task').click();
+      }
+    };
+
+    $scope.openType = function(type) {
+    };
+
+    $scope.backToEdit = function(ok) {
+      if (!ok) {
+        if ($scope.dialog.task && $scope.dialog.task.name)
+          $scope.dialog.task = {name:$scope.dialog.task.name};
+        else
+          $scope.dialog.task = undefined;
+      }
+      $.magnificPopup.close();
+      $('.modal-with-form').click();
+    };
+
     var vm = this;
     vm.userId = $rootScope.userId;
     vm.bot_id = $stateParams.botId;
@@ -88,13 +194,14 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     var keydown = function(event) {
+      if (vm.edit)
+        return false;
       if (!selectedNode)
         return false;
       if ([65,68,69,37,38,39,40].indexOf(event.keyCode) == -1)
         return false;
 
       event.preventDefault();
-      console.log(event.keyCode);
       if (event.keyCode == 65) { // A
         addChild(selectedNode);
       } else if (event.keyCode == 68) { //d
@@ -123,14 +230,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     document.addEventListener("keydown", keydown);
-
-    $scope.openTask = function(task, isCommon) {
-
-    };
-
-    $scope.openType = function(type) {
-
-    };
 
     // dialog editing
     $scope.addI = function(input) {
@@ -435,6 +534,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.findOne = function (dialog) {
+      vm.edit = true;
       $scope.dialog = {};
       $scope.dialog.name = dialog.name;
       $scope.dialog.input = initInput(dialog.input);
@@ -939,7 +1039,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         .style("pointer-events", "none")
         .attr("x", 7)
         .attr("dy", "5em")
-        .text(function(d) { return "Task: " + (d.task ? d.task : ""); })
+        .text(function(d) { return "Task: " + ((d.task && d.task.name) ? d.task.name : ""); })
         .call(wrap, rectW-25, 2);
 
       nodeEnter.append("line")
@@ -1491,6 +1591,3 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
   }]
 );
-
-
-
