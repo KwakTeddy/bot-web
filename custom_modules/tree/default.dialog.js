@@ -68,8 +68,8 @@ var dialogs = [
 						"input": [],
 						"output": [],
 						"task": {
-							"name": "lglist"
-						}
+							name:'lglist'
+            }
 					},
 					{
 						"name": "dialog_default5",

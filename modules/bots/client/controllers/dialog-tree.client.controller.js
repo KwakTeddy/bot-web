@@ -538,7 +538,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       $scope.dialog = {};
       $scope.dialog.name = dialog.name;
       $scope.dialog.input = initInput(dialog.input);
-      $scope.dialog.task = dialog.task;
+      if (dialog.task && dialog.task.name)
+        $scope.dialog.task = dialog.task;
+      else
+        $scope.dialog.task = {name: dialog.task};
+
       $scope.dialog.output = initOutput(dialog.output);
 
       $scope.$apply();
@@ -557,7 +561,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       selectedNode.name = $scope.dialog.name;
       selectedNode.input = restoreInput($scope.dialog.input);
-      selectedNode.task = $scope.dialog.task;
+      if ($scope.dialog.task && $scope.dialog.task.keys().length == 1)
+        selectedNode.task = $scope.dialog.task.name;
+      else
+        selectedNode.task = $scope.dialog.task;
       selectedNode.output = restoreOutput($scope.dialog.output);
 
       selectedSVG.remove();
@@ -1039,7 +1046,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         .style("pointer-events", "none")
         .attr("x", 7)
         .attr("dy", "5em")
-        .text(function(d) { return "Task: " + ((d.task && d.task.name) ? d.task.name : ""); })
+        .text(function(d) {
+          if (d.task && d.task.name)
+            return "Task: " + d.task.name;
+          else if (d.task)
+            return "Task: " + d.task;
+          return "Task: ";
+        })
         .call(wrap, rectW-25, 2);
 
       nodeEnter.append("line")
