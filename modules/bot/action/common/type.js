@@ -78,6 +78,11 @@ exports.processInput = function(context, inRaw, callback) {
       //   callback(_in2, inDoc);
       // });
 
+      // concept.processCustomConcept(inRaw, _in, _nlp, context, function(inRaw, _in2, _nlp2) {
+      //   context.botUser.nlp = _nlp2;
+      //   callback(_in2, inDoc);
+      // });
+
       callback(_in, inDoc);
     });
 

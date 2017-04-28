@@ -5,15 +5,18 @@
  */
 var path = require('path'),
   mongoose = require('mongoose'),
-  Concept = mongoose.model('Concept'),
+  CustomConcept = mongoose.model('CustomConcept'),
+  CustomConceptWord = mongoose.model('CustomConceptWord'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
+
+var async = require('async');
 
 /**
  * Create a Custom action
  */
 exports.create = function(req, res) {
-  var concept = new Concept(req.body);
+  var concept = new CustomConcept(req.body);
   concept.user = req.user;
 
   concept.save(function(err) {
@@ -22,7 +25,16 @@ exports.create = function(req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.jsonp(concept);
+
+      var words = req.body.words.split(',');
+      async.eachSeries(words, function(word, cb) {
+        var conceptWord = new CustomConceptWord({bot: concept.bot, name: word.trim(), concept: concept, user: concept.user});
+        conceptWord.save(function(err) {
+          cb(null);
+        });
+      }, function(err) {
+        res.jsonp(concept);
+      });
     }
   });
 };
@@ -55,7 +67,17 @@ exports.update = function(req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.jsonp(concept);
+      CustomConceptWord.remove({concept: concept}, function(err) {
+        var words = concept.words.split(',');
+        async.eachSeries(words, function(word, cb) {
+          var conceptWord = new CustomConceptWord({bot: concept.bot, name: word.trim(), concept: concept, user: concept.user});
+          conceptWord.save(function(err) {
+            cb(null);
+          });
+        }, function(err) {
+          res.jsonp(concept);
+        });
+      });
     }
   });
 };
@@ -66,22 +88,25 @@ exports.update = function(req, res) {
 exports.delete = function(req, res) {
   var concept = req.concept ;
 
-  concept.remove(function(err) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.jsonp(concept);
-    }
-  });
+  CustomConceptWord.remove({concept: concept}, function(err) {
+    concept.remove(function(err) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(concept);
+      }
+    });
+  })
+
 };
 
 /**
  * List of Custom actions
  */
 exports.list = function(req, res) { 
-  Concept.find().sort('-created').populate('user', 'displayName').exec(function(err, concepts) {
+  CustomConcept.find().sort('-created').populate('user', 'displayName').exec(function(err, concepts) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -103,7 +128,7 @@ exports.conceptByID = function(req, res, next, id) {
     });
   }
 
-  Concept.findById(id).populate('user', 'displayName').exec(function (err, concept) {
+  CustomConcept.findById(id).populate('user', 'displayName').exec(function (err, concept) {
     if (err) {
       return next(err);
     } else if (!concept) {
@@ -111,7 +136,19 @@ exports.conceptByID = function(req, res, next, id) {
         message: 'No Custom action with that identifier has been found'
       });
     }
-    req.concept = concept;
-    next();
+
+    CustomConceptWord.find({concept: concept}).exec(function(err, words) {
+      var _words = [];
+      async.eachSeries(words, function(word, cb) {
+        _words.push(word.name);
+        cb(null);
+      }, function(err) {
+        concept._doc.words = _words.join(', ');
+
+        req.concept = concept;
+        next();
+      })
+    })
+
   });
 };
