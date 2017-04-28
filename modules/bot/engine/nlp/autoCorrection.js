@@ -18,14 +18,15 @@ function batchCorrectionDB(callback) {
         speller.train(doc.dialog);
         cb();
       }, function (err) {
-        saveWordCorrections(speller.nWords, function() {
-          callback();
+        saveWordCorrections(speller.getNWords(), function() {
+          console.log('batchCorrectionDB: DONE');
+          if(callback) callback();
         })
       });
 
     } else if (err) {
       console.log(err);
-      callback();
+      if(callback) callback();
     }
 
   });

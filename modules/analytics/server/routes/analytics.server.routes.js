@@ -3,8 +3,10 @@
 /**
  * Module dependencies
  */
-var analyticsPolicy = require('../policies/analytics.server.policy'),
-  analytics = require('../controllers/analytics.server.controller');
+var path = require('path'),
+  analyticsPolicy = require('../policies/analytics.server.policy'),
+  analytics = require('../controllers/analytics.server.controller'),
+  autoCorrection = require(path.resolve('modules/bot/engine/nlp/autoCorrection'));
 
 module.exports = function(app) {
   // Bot users Routes
@@ -35,6 +37,9 @@ module.exports = function(app) {
 
   app.route('/api/resetDB').all(analyticsPolicy.isAllowed)
     .delete(analytics.resetDB);
+
+  app.route('/api/batchCorrection')
+    .get(function(req, res) {autoCorrection.batchCorrectionDB()});
 
   app.route('/api/dialogchildren/:bId/:dialogId').all(analyticsPolicy.isAllowed)
     .get(analytics.dialogChildren);

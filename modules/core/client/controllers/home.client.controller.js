@@ -10,6 +10,10 @@ angular.module('core').controller('HomeController', ['$scope', '$rootScope', '$d
       $resource('/api/resetDB').delete();
     };
 
+    vm.batchCorrection = function() {
+      $resource('/api/batchCorrection').get();
+    };
+
     vm.connectBot = function() {
       console.log('connectBot');
       $rootScope.$broadcast('connectUserBot', {id: vm.bot});

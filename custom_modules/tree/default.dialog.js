@@ -9,11 +9,8 @@ var dialogs = [
 			{
 				"text": "바보",
 				"types": [
-					{
-						"name": "address",
-						"listName": "address",
-						"typeCheck": "listTypeCheck"
-					}
+					"address",
+					"date"
 				]
 			},
 			{
@@ -68,8 +65,8 @@ var dialogs = [
 						"input": [],
 						"output": [],
 						"task": {
-							name:'lglist'
-            }
+							"name": "lglist"
+						}
 					},
 					{
 						"name": "dialog_default5",

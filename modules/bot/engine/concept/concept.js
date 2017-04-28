@@ -1,5 +1,6 @@
 var path = require('path');
 var mongoModule = require(path.resolve('modules/bot/action/common/mongo'));
+var utils = require(path.resolve('modules/bot/action/common/utils'));
 var dialogsetModule = require(path.resolve('modules/bot/engine/dialogset/dialogset'));
 var async = require('async');
 var _ = require('lodash');
@@ -355,7 +356,7 @@ function loadCustomConcept(bot, callback) {
 
         for(var i in conceptnet) {
           for(var j in conceptnet) {
-            if(conceptnet[i].parent == conceptnet[j]._id) {
+            if(conceptnet[i].parent && conceptnet[i].parent.toString() == conceptnet[j]._id.toString()) {
               conceptnet[i].parentKey = conceptnet[j].name;
               break;
             }
@@ -378,6 +379,41 @@ function loadCustomConcept(bot, callback) {
         bot.conceptNet = conceptnet;
         cb(null);
       })
+    },
+
+    function(cb) {
+      var CustomConceptWord = mongoose.model('CustomConceptWord');
+      CustomConceptWord.find({bot: bot}).populate('concept').lean().exec(function(err, docs) {
+        var conceptWords = {};
+        for(var i in docs) {
+          conceptWords[docs[i].name] = {name: docs[i].name, concept: docs[i].concept};
+        }
+
+        bot.conceptWords = conceptWords;
+
+        cb(null);
+      })
+    },
+
+    function(cb) {
+      var CustomConcept = mongoose.model('CustomConcept');
+      CustomConcept.find({bot: bot}).lean().exec(function(err, docs) {
+        var concepts = {};
+        for(var i in docs) {
+          concepts[docs[i].name] = {name: docs[i].name, parent: null};
+        }
+
+        if(bot.concepts == undefined) bot.concepts = {};
+        bot.concepts = utils.merge(bot.concepts, concepts);
+
+        for(var i in bot.conceptWords) {
+          if(bot.conceptWords[i].concept && bot.concepts[bot.conceptWords[i].concept.name]) {
+            bot.conceptWords[i].concept = bot.concepts[bot.conceptWords[i].concept.name]
+          }
+
+          cb(null);
+        }
+      })
     }
 
   ], function(err) {
@@ -387,3 +423,23 @@ function loadCustomConcept(bot, callback) {
 
 
 exports.loadCustomConcept = loadCustomConcept;
+
+
+function processCustomConcept(inRaw, inNLP, nlp, context, callback) {
+
+  if(context.bot.conceptWords) {
+    for(var i in nlp) {
+      var item = nlp[i];
+
+      if(context.bot.conceptWords[nlp[i].text]) {
+        nlp[i].concept = context.bot.conceptWords[nlp[i].text].concept;
+
+        inNLP = inNLP.replace(nlp[i].text, '~' + nlp[i].concept.name);
+      }
+    }
+  }
+
+  callback(inRaw, inNLP, nlp);
+}
+
+exports.processCustomConcept = processCustomConcept;

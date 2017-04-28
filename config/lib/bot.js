@@ -153,11 +153,11 @@ function loadBot(botName, callback) {
       else cb(null);
     },
 
-    function(cb) {
-      concept.loadCustomConcept(bot, function() {
-        cb(null);
-      });
-    },
+    // function(cb) {
+    //   concept.loadCustomConcept(bot, function() {
+    //     cb(null);
+    //   });
+    // },
 
     function(cb) {
       bot.setDialogs(globalDialogs.globalStartDialogs);

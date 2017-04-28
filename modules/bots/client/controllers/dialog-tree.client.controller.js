@@ -170,6 +170,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             if(nodes[i].id == dialog.id) {
               currentNode = nodes[i];
               break;
+            } else if (dialog.name === "시작") {
+              currentNode = treeData[0];
+              break;
             }
           }
 
@@ -434,7 +437,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         }
         if (d.types) {
           d.types.forEach(function (t) {
-            r.push({type: 'Type', str: t.name});
+            r.push({type: 'Type', str: t});
           });
         }
         if (d.regexp) {
@@ -492,7 +495,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           if (r.type === 'Text') {
             obj.text = r.str;
           } else if (r.type === 'Type') {
-            (obj.types || (obj.types = [])).push(vm.type_dic[r.str]);
+            (obj.types || (obj.types = [])).push(r.str);
           } else if (r.type === 'RegExp') {
             obj.regexp = r.str;
           } else if (r.type === 'If') {
@@ -636,10 +639,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         input.forEach(function(i) {
           if (i.text)
             text.push('[단어] '+ i.text);
-          if (i.types && i.types[0].name) {
+          if (i.types) {
+            var types = [];
             i.types.forEach(function (t) {
-              text.push('[타입] ' + t.name);
+              types.push(t);
             });
+            text.push('[타입] ' + types);
           }
           if (i.regexp)
             text.push('[정규식] ' + i.regexp);
@@ -816,7 +821,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.botId = res.botId;
       vm.fileName = res.fileName;
       vm.tasks = res.tasks;
-      vm.types = res.types;
+      vm.types = res.types.map(function(t) { return t.name} );
       vm.type_dic = res.type_dic;
       dialogs = res.data;
 
@@ -843,7 +848,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     var viewerHeight = document.getElementById('sidebar-left').clientHeight;
 
     // size of rect
-    var rectW = 220, rectH = 130;
+    var rectW = 250, rectH = 130;
     // height for one node
     var itemHeight = rectH+300;
     // width for one depth
