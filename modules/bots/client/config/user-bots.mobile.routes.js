@@ -164,7 +164,8 @@ function getUserBots(UserBotsService, UserBotsFollowService, $stateParams, Authe
         if (!Authentication.user){
             return $rootScope.showSigninModal();
         }
-        return UserBotsFollowService.list({botUserId: $stateParams['botUserId']}).$promise;
+        return UserBotsFollowService.list({botUserId: $stateParams['query']}).$promise;
+        // return UserBotsFollowService.list({botUserId: $stateParams['botUserId']}).$promise;
     } else if($stateParams['listType'] == 'my'){
         if (!Authentication.user){
             return $rootScope.showSigninModal();

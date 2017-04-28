@@ -421,11 +421,10 @@ exports.list = function (req, res) {
     }
     if(req.query.my) {
         delete query.public;
-        query['user'] =  req.query.botUserId;
+        query['user'] =  req.user._id;
     }
     if(req.body.query) query['name'] = new RegExp(req.body.query, 'i');
     console.log(util.inspect(query));
-    console.log(req.body.currentPage);
     Bot.find(query).sort(sort).populate('user').skip(req.body.currentPage * perPage).limit(perPage).exec(function (err, bots) {
         if (err) {
             return res.status(400).send({
@@ -454,8 +453,10 @@ exports.followList = function (req, res) {
   search['public'] = true;
   var populateQuery = [];
 
-  BotFollow.find(query).populate({path: 'bot', match: {public: 'true'}}).sort('-created').exec(function (err, follows) {
-  // BotFollow.find(query).populate('bot', null, search).sort('-created').skip(req.body.currentPage * perPage).limit(perPage).exec(function (err, follows) {
+  console.log(util.inspect(query));
+
+  // BotFollow.find(query).populate({path: 'bot', match: {public: 'true'}}).sort('-created').exec(function (err, follows) {
+  BotFollow.find(query).populate('bot', null, search).sort('-created').skip(req.body.currentPage * perPage).limit(perPage).exec(function (err, follows) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)

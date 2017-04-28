@@ -28,7 +28,7 @@
                 <ion-item menu-close ui-sref="user-bots.list({listType: 'followed'})">
                     친구봇
                 </ion-item>
-                <ion-item menu-close ui-sref="user-bots.list({listType: 'my'})">
+                <ion-item menu-close ui-sref="user-bots.list({listType: 'my', query: authentication.user._id})">
                     마이봇
                 </ion-item>
                 <ion-item menu-close ui-sref="authenticationMobile.signup" ng-if="!authentication.user">

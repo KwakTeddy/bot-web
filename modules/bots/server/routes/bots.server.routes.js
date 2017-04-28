@@ -16,6 +16,12 @@ module.exports = function (app) {
     .post(bots.list)
     .get(bots.list);
 
+
+  app.route('/api/bots/follow')
+    .post(bots.followList)
+    .put(bots.followBot)
+    .delete(bots.unfollowBot);
+
   app.route('/api/bots/:botId')
     .get(bots.read)
     .put(bots.update)
