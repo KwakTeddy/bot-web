@@ -5,7 +5,7 @@ var csdemo = require('./csdemo');
 
 var pre = /(?:~이전페이지|~앞|^<$)/;
 var next = /(?:~다음페이지|~뒤|^>$)/;
-var up = /(?:^0$)/
+var up = /(?:^0$|이전)/
 var first = /(?:~시작|~처음|^!$|취소)/
 
 <{text:'출장 비'}
