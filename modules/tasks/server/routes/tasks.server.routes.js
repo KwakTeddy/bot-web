@@ -31,5 +31,5 @@ module.exports = function(app) {
 
 
   // Finish by binding the Custom action middleware
-  app.param('taskId', tasks.taskByID);
+  app.param('name', tasks.taskByID);
 };

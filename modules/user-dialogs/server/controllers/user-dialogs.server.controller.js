@@ -11,14 +11,17 @@ var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
 
+var util = require('util');
+
 /**
  * List of Bot users
  */
 exports.list = function (req, res) {
   var query = {};
   if(req.params.botName && req.params.botName != '') query.botId = req.params.botName;
-  if(req.params.botName && req.params.botName == '') query.botId = 'order';
+  // if(req.params.botName && req.params.botName == '') query.botId = 'csdemo';
   query.userId = req.params.userKey;
+  console.log(util.inspect(query));
 
   UserDialog.find(query).sort('+created').exec(function (err, userDialogs) {
     if (err) {

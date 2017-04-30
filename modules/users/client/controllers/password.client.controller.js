@@ -19,7 +19,6 @@ angular.module('users').controller('PasswordController', ['$scope', '$stateParam
     //
     //
 
-
     $scope.itemArray = [
       {id: 1, name: 'first'},
       {id: 2, name: 'second'},
@@ -28,10 +27,7 @@ angular.module('users').controller('PasswordController', ['$scope', '$stateParam
       {id: 5, name: 'fifth'}
     ];
 
-    $scope.selectedItem = '';
-    $scope.go =function (target) {
-      console.log($scope)
-    }
+    $scope.abc = {};
 
 
     //routing

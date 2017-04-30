@@ -27,12 +27,12 @@
           roles: ['user', 'admin'],
           pageTitle: 'Bot users List'
         }
-      })
-      ;
+      });
   }
 
   getUserDialogs.$inject = ['$stateParams', 'UserDialogsService'];
   function getUserDialogs($stateParams, UserDialogsService) {
+    console.log($stateParams);
     return UserDialogsService.query({botId: $stateParams.botId, userKey: $stateParams.userKey}).$promise;
   }
 

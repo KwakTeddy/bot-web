@@ -49,9 +49,11 @@
       function successCallback(res) {
         vm.error = null;
         $scope.$broadcast('show-errors-check-validity', 'vm.form.intentForm');
-        $state.go('intents.list', {
+        $state.go('intents.edit', {
           intentId: res._id
         }, {reload: true});
+
+
       }
 
       function errorCallback(res) {
@@ -69,17 +71,26 @@
         return false;
       }
       console.log(vm.intent._id);
-      $resource('/api/intentsContent').save({content: vm.intentContent, intentId: vm.intent._id}, function (result) {
-        console.log(result);
-        vm.intent.content.unshift(result);
-        vm.intentContent = '';
-        // console.log(document.getElementById('contentForm').classList.value)
-        // document.getElementById('contentForm').classList;
-        vm.contentError = '';
-      }, function (err) {
-        console.log(err);
-        vm.contentError = err.data.message
-      })
+      if (vm.intent._id){
+        $resource('/api/intentsContent').save({content: vm.intentContent, intentId: vm.intent._id}, function (result) {
+          console.log(result);
+          vm.intent.content.unshift(result);
+          vm.intentContent = '';
+          // console.log(document.getElementById('contentForm').classList.value)
+          // document.getElementById('contentForm').classList;
+          vm.contentError = '';
+        }, function (err) {
+          console.log(err);
+          vm.contentError = err.data.message
+        })
+      }else {
+        if(!vm.intent.content){
+          vm.intent['content'] = [];
+        }
+        vm.intent.content.unshift({name: vm.intentContent});
+        vm.intentContent = ''
+
+      }
     };
     
     vm.contentRemove = function (target) {

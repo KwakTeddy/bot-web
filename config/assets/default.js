@@ -5,7 +5,8 @@ module.exports = {
     lib: {
       css: [
         'public/lib/bootstrap/dist/css/bootstrap.css',
-        'public/lib/bootstrap/dist/css/bootstrap-theme.css'
+        'public/lib/bootstrap/dist/css/bootstrap-theme.css',
+        'public/lib/angular-ui-select/dist/select.css'
       ],
       js: [
         'public/lib/ionic/js/ionic.bundle.js',
@@ -22,6 +23,7 @@ module.exports = {
         'public/lib/codemirror/lib/codemirror.js',
         'public/lib/codemirror/mode/javascript/javascript.js',
         'public/lib/angular-ui-codemirror/ui-codemirror.js',
+        'public/lib/angular-ui-notification/dist/angular-ui-notification.js',
         'public/lib/angular-ui-select/dist/select.js',
         'public/lib/angular-sanitize/angular-sanitize.js',
         'public/lib/dropzone/downloads/dropzone.js',
@@ -30,14 +32,16 @@ module.exports = {
         'public/lib/angular-dropzone/lib/angular-dropzone.js',
         'public/lib/d3/d3.min.js',
         'public/lib/d3-tip/index.js',
-        'public/js/jsoneditor.js',
+        'public/lib/jsoneditor/dist/jsoneditor.js'
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
     },
     css: [
       'modules/*/client/css/*.css',
       'public/lib/codemirror/lib/codemirror.css',
-      'public/lib/dropzone/downloads/css/dropzone.css'
+      'public/lib/dropzone/downloads/css/dropzone.css',
+      'public/lib/angular-ui-select/dist/select.css'
+
     ],
     less: [
       'modules/*/client/less/*.less'
@@ -72,6 +76,7 @@ module.exports = {
         'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
         'public/lib/angular-cookies/angular-cookies.min.js',
         'public/lib/ngInfiniteScroll/build/ng-infinite-scroll.js',
+
         // 'public/lib/angular-file-upload/angular-file-upload.js',
         // 'public/lib/ng-file-upload/ng-file-upload-shim.js',
         // 'public/lib/ng-file-upload/ng-file-upload.js',

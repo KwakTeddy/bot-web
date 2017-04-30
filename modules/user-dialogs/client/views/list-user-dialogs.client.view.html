@@ -39,24 +39,41 @@
     <!--<h2 class="panel-title">{{vm.isConnected ? vm.bot : '접속해주세요'}}</h2>-->
   <!--</header>-->
 
-  <div class="panel-body " style="background-color: #ddd;">
+  <div ng-if="!vm.userDialogs.length"><h3>대화 내역이 없습니다</h3></div>
+
+  <div class="panel-body col-md-7" style="background-color: #ddd">
+    <div ng-if="vm.userDialogs.length" ng-repeat="userDialog in ::vm.userDialogs" ng-class="!userDialog.inOut ?'item item-avatar b-none friend':'item item-avatar-right b-none me'">
+      <!--<div class="text-xs">-->
+        <!--<span class="font-bold m-r-sm">{{}}</span>-->
+      <!--</div>-->
+      <div class="bubble">
+      <i class="icon-tail"></i><div class="content"><div class="content-text">{{userDialog.dialog}}</div></div>
+      </div>
+    </div>
 
     <div id="chat_main" class="chat_main" style="height: 550px">
       <!--<div ng-repeat="userDialog in ::vm.userDialogs" >-->
-        <!--<div ng-class="!userDialog.inOut ?'bubble':'bubble bubble&#45;&#45;alt'" style="white-space: pre-wrap;">-->
+        <!--<div ng-class="!userDialog.inOut ?'bubble':'bubble bubble--alt'" style="white-space: pre-wrap;">-->
           <!--{{userDialog.dialog}}-->
         <!--</div>-->
       <!--</div>-->
 
       <div ng-repeat="userDialog in ::vm.userDialogs" ng-class="!userDialog.inOut ?'item item-avatar b-none friend':'item item-avatar-right b-none me'">
-        <div class="text-xs"><span class="font-bold m-r-sm">{{}}</span>
-          </div><div class="bubble">
-        <i class="icon-tail"></i><div class="content"><div class="content-text">{{userDialog.dialog}}</div></div></div></div>
+        <div class="text-xs">
+          <span class="font-bold m-r-sm">{{}}</span>
+        </div>
+        <div class="bubble">
+          <i class="icon-tail"></i>
+          <div class="content">
+            <div class="content-text">{{userDialog.dialog}}</div>
+         </div>
+        </div>
+      </div>
 
       <!--<div class="item item-avatar b-none friend"><div class="text-xs"><span class="font-bold m-r-sm">csdemo</span><span class="color-grey-500">13:48</span></div><div class="bubble"><i class="icon-tail"></i><div class="content"><div class="content-text">안녕하세요. 머니브레인 고객센터입니다.</div></div></div></div>-->
       <!--<div class="item item-avatar-right b-none me"><div class="text-xs"><span class="font-bold m-r-sm"></span><span class="color-grey-500">13:48</span></div><div class="bubble"><i class="icon-tail-me"></i><span class="content">센터</span></div></div>-->
 
-      <!--<div ng-repeat="userDialog in ::vm.userDialogs" ng-class="!userDialog.inOut ?'bubble':'bubble bubble&#45;&#45;alt'" style="white-space: pre-wrap;">{{userDialog.dialog}}<br/><span style="font-size: 9px;">{{userDialog.created | date: 'yyyy-MM-dd HH:mm'}}</span></div>-->
+      <!--<div ng-repeat="userDialog in ::vm.userDialogs" ng-class="!userDialog.inOut ?'bubble':'bubble bubble--alt'" style="white-space: pre-wrap;">{{userDialog.dialog}}<br/><span style="font-size: 9px;">{{userDialog.created | date: 'yyyy-MM-dd HH:mm'}}</span></div>-->
     </div>
   </div>
 </section>

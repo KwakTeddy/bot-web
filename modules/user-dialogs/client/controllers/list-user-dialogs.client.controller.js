@@ -9,6 +9,7 @@
 
   function UserDialogsListController(userDialogs) {
     var vm = this;
+    console.log(userDialogs);
 
     vm.userDialogs = userDialogs;
   }
