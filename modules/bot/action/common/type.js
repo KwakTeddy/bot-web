@@ -33,7 +33,7 @@ exports.DOC_NAME = DOC_NAME;
 exports.MAX_LIST= MAX_LIST;
 exports.LIST_PER_PAGE = LIST_PER_PAGE;
 
-exports.processInput = function(context, inRaw, callback) {
+function processInput(context, inRaw, callback) {
   if(inRaw.startsWith(":")) {
     callback(inRaw, null);
     return;
@@ -118,7 +118,6 @@ exports.processInput = function(context, inRaw, callback) {
           context.botUser.intentDialog = undefined;
         }
 
-
         cb(null);
       })
     }
@@ -131,7 +130,9 @@ exports.processInput = function(context, inRaw, callback) {
     callback(inNLP, entities, doc);
   });
 
-};
+}
+
+exports.processInput = processInput;
 
 exports.processOutput = processOutput;
 

@@ -1,3 +1,59 @@
+var path = require('path');
+var intent = require(path.resolve('modules/bot/engine/nlu/intent.js'));
+
+var dialogsType = {
+  name: 'typeDoc',
+  typeCheck: global._context.typeChecks['dialogTypeCheck'], //type.mongoDbTypeCheck,
+  limit: 10,
+  matchRate: 0.4,
+  matchCount: 4,
+  exclude: ['하다', '이다'],
+  mongo: {
+    model: 'lgfaq',
+    queryFields: ['input'],
+    fields: 'conceptId input output' ,
+    taskFields: ['conceptId', 'input', 'output', 'matchCount', 'matchRate'],
+    minMatch: 1
+  }
+};
+
+//<{types: [intent.intentCheck]}
+//intent.intentTask
+//>완료
+
+<{intent: '약냉'}
+{
+    name: '테스크1',
+    entities: [
+        {type: '가전제품', required: true}
+    ]
+}
+>인텐트 분석 성공
+
+<{types: [dialogsType]}
+{
+      action: function(task, context, callback) {
+        if(Array.isArray(task.typeDoc)) {
+          if(task.typeDoc.length > 1) task._output = task.typeDoc[0].output;
+          else task._output = task.typeDoc[0].output;
+
+          console.log(task.typeDoc[0].inputRaw + ', ' + task.typeDoc[0].input + '(' + task.typeDoc[0].matchCount + ', ' + task.typeDoc[0].matchRate + ')');
+        } else {
+          task._output = task.typeDoc.output;
+          console.log(task.typeDoc.inputRaw + ', ' + task.typeDoc.input + '(' + task.typeDoc.matchCount + ', ' + task.typeDoc.matchRate + ')');
+        }
+
+        if(Array.isArray(task._output)) {
+          task._output = task._output[Math.floor(Math.random() * task._output.length)];
+        }
+
+        callback(task, context);
+      }
+    }
+
+>+_output+
+
+
 < items
 {
     action: function(task, context, callback) {

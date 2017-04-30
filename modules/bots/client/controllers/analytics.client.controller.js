@@ -20,6 +20,8 @@ angular.module('user-bots').controller('AnalyticsController', ['$scope', '$rootS
 
     var timer = null;
     $scope.$on('keyinput', function(event, arg0) {
+      console.log('intent');
+
       if(timer == null) {
         timer = setTimeout(function() {
           var input = arg0;
@@ -59,9 +61,16 @@ angular.module('user-bots').controller('AnalyticsController', ['$scope', '$rootS
             // console.log(JSON.stringify(res.result));
             timer = null;
           })
+
+          $resource('/api/user-bots-analytics/intent', {}).get({input: input, botId: $rootScope.botId}, function (res) {
+            console.log('intent: ' + JSON.stringify(res));
+          })
+
         }, 300);
       }
+
     });
+
   }
 ]);
 

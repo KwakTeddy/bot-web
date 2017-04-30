@@ -79,6 +79,10 @@ module.exports = function (app) {
   app.route('/api/user-bots-analytics/auto-correction')
     .get(userBots.autoCorrection);
 
+  app.route('/api/user-bots-analytics/intent')
+    .get(userBots.analyzeIntent);
+
+
   app.route('/api/speech/:msg')
     .get(userBots.speech);
 

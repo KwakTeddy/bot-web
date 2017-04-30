@@ -1101,3 +1101,19 @@ exports.speech = function (req, res) {
   });
   _req.pipe(res); // 브라우저로 출력
 };
+
+var typeModule = require(path.resolve('modules/bot/action/common/type.js'));
+
+exports.analyzeIntent = function(req, res) {
+  var context = {
+    bot: global._bots[req.query['botId']],
+    dialog: {},
+    botUser: {}
+  };
+
+  typeModule.processInput(context, req.query.input, function(_inNLP, entities, _doc) {
+    console.log(JSON.stringify(_doc));
+    res.json(_doc);
+  })
+};
+

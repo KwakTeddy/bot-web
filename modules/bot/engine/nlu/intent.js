@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var BotIntent = mongoose.model('BotIntent');
+var Intent = mongoose.model('Intent');
 var path = require('path');
 var dialog = require(path.resolve('modules/bot/action/common/dialog.js'));
 
@@ -20,19 +20,33 @@ var intentCheck = {
   },
   preType: function(task, context, type, callback) {
     type.mongo.queryStatic = {};
-    BotIntent.aggregate([
-      {$match: {botId: context.bot.id}},
-      {$group: {_id: '$botId', intents: {$push: '$intent'}}}
-    ], function(err, intents) {
-      if(intents && intents.length > 0) {
-        type.mongo.queryStatic = {intentId: {$in: intents[0].intents}};
-      } else {
-        type.mongo.queryStatic.intentId = null;
+    if(type.typeCheck == undefined) type.typeCheck =global._context.typeChecks['dialogTypeCheck'];
+
+    if(context.bot.intents && context.bot.intents.length > 0) {
+      var _intents = [];
+      for(var i in context.bot.intents) {
+        _intents.push(context.bot.intents[i]._id);
       }
+      type.mongo.queryStatic = {intentId: {$in: _intents}};
+    } else {
+      type.mongo.queryStatic.intentId = null;
+    }
 
-      callback(task, context);
+    callback(task, context);
 
-    });
+    // BotIntent.aggregate([
+    //   {$match: {botId: context.bot.id}},
+    //   {$group: {_id: '$botId', intents: {$push: '$intent'}}}
+    // ], function(err, intents) {
+    //   if(intents && intents.length > 0) {
+    //     type.mongo.queryStatic = {intentId: {$in: intents[0].intents}};
+    //   } else {
+    //     type.mongo.queryStatic.intentId = null;
+    //   }
+    //
+    //   callback(task, context);
+    //
+    // });
   }
 };
 
@@ -73,18 +87,34 @@ function matchIntent(inRaw, inNLP, context, callback) {
         intentId = task.intentDoc.intentId;
       }
 
-      BotIntent.findOne({botId: context.bot.id, intent: intentId}).lean().exec(function(err, intent) {
-        if(intent) {
+      Intent.findOne({_id: intentId}).lean().exec(function(err, _intent) {
+        if(_intent) {
           for(var i in context.bot.dialogs) {
             var dialog = context.bot.dialogs[i];
-            if(dialog.id == intent.dialogId) {
-              callback(true, intent, dialog);
+            if(dialog.input.intent && dialog.input.intent == _intent.name) {
+              callback(true, {name: _intent.name}, dialog);
               return;
             }
           }
+
+          callback(true, {name: _intent.name}, null);
+        } else {
+          callback(false, null, null);
         }
-        callback(false, null, null);
-      });
+      })
+
+      // BotIntent.findOne({botId: context.bot.id, intent: intentId}).lean().exec(function(err, intent) {
+      //   if(intent) {
+      //     for(var i in context.bot.dialogs) {
+      //       var dialog = context.bot.dialogs[i];
+      //       if(dialog.id == intent.dialogId) {
+      //         callback(true, intent, dialog);
+      //         return;
+      //       }
+      //     }
+      //   }
+      //   callback(false, null, null);
+      // });
     } else {
       callback(false, null, null);
     }
