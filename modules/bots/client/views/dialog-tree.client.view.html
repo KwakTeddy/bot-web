@@ -1,5 +1,11 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
+<style>
+    .content-body {padding: 3px}
+    .panel-body {padding: 3px}
+    .CodeMirror {height: auto;}
+
+</style>
 <style type="text/css">
 
     .node {
@@ -146,8 +152,9 @@
 
 </style>
 <body>
+
 <header class="page-header">
-    <h2>파일관리</h2>
+    <h2>에디터</h2>
 
     <div class="right-wrapper pull-right">
         <ol class="breadcrumbs">
@@ -156,16 +163,56 @@
                     <i class="fa fa-home"></i>
                 </a>
             </li>
-            <li><span>Dialog Tree</span></li>
+            <li><span>챗봇 관리</span></li>
+            <li><span>{{vm.botName}}</span></li>
+            <li><span>{{vm.name}}</span></li>
         </ol>
 
         <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
     </div>
 </header>
 
-<div id="control" class="test-body">
+<div>
+    <ul class="nav nav-tabs">
+        <li role="presentation"
+            ng-repeat="tab in vm.tabs"
+            ng-class="{active: tab.active}">
+            <a href="#" ng-click="vm.changeTab(tab)">{{tab.name}}</a>
+        </li>
+    </ul>
+</div>
+
+<div id="control" ng-show="vm.tabs[0].active" class="test-body">
     <a class="modal-with-form btn btn-default" style="display:none" href="#modalForm">Open Form</a>
     <a class="modal-with-task btn btn-default" style="display:none" href="#modalTaskForm">Open Form</a>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="input-group mt-xs input-search">
+                <form ng-submit="searchNode()">
+                    <input type="text" class="form-control" name="q" id="search" placeholder="Search...">
+                    <span class="input-group-btn"> <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button> </span>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-2 ">
+            <div class="input-group mt-xs pull-right">
+                <input class="form-control" type="text" ng-model="vm.depth" readonly>
+                <span class="input-group-btn">
+                    <button class="btn btn-default" ng-click="vm.addDepth()"><i class="fa fa-plus"></i></button>
+                    <button class="btn btn-default" ng-click="vm.minusDepth()"><i class="fa fa-minus"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <form>
+                <button class="mt-xs mr-xs btn btn-primary pull-right" ng-disabled="!vm.isChanged" ng-click="save()" ><i class="fa fa-save"></i> 저장하기</button>
+                <button class="mt-xs mr-xs btn btn-warning pull-right" ng-disabled="vm.changeHistory.length == 0" ng-click="undo()" ><i class="fa fa-undo"></i>되돌리기</button>
+            </form>
+        </div>
+    </div>
+    <div id="tree-container" class="panel" width="100%" height="100%"></div>
 
     <!-- Modal Form -->
     <div id="modalTaskForm" class="modal-block modal-block-primary mfp-hide">
@@ -249,7 +296,7 @@
                                     </div>
                                     <div ng-show="vm.inputMode && getInputType(vm.curI.type) == 'text'">
                                         <input type="text" id="input" name="input" ng-model="vm.curI.str" class="form-control"
-                                                placeholder="{{getPlaceHolder(vm.curI.type)}}" >
+                                               placeholder="{{getPlaceHolder(vm.curI.type)}}" >
                                     </div>
                                     <div ng-show="vm.inputMode && getInputType(vm.curI.type) == 'type'">
                                         <button class="btn btn-default btn-block dropdown-toggle" type="button" data-toggle="dropdown"
@@ -363,12 +410,12 @@
                                       </span>
                                     </div>
                                     <!--<select class="js-example-basic-single" ng-model="vm.curO.str">-->
-                                        <!--<option ng-repeat = "t in dialogList()" value="{{t}}">{{t}}</option>-->
+                                    <!--<option ng-repeat = "t in dialogList()" value="{{t}}">{{t}}</option>-->
                                     <!--</select>-->
                                     <!--<script type="text/javascript">-->
-                                      <!--$(document).ready(function() {-->
-                                        <!--$(".js-example-basic-single").select2();-->
-                                      <!--});-->
+                                    <!--$(document).ready(function() {-->
+                                    <!--$(".js-example-basic-single").select2();-->
+                                    <!--});-->
                                     <!--</script>-->
 
                                     <span class="input-group-btn">
@@ -409,22 +456,37 @@
             </form>
         </section>
     </div>
-    <div class="col-md-3">
-        <div class="input-group input-search">
-            <form ng-submit="searchNode()">
-                <input type="text" class="form-control" name="q" id="search" placeholder="Search...">
-                <span class="input-group-btn"> <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button> </span>
-            </form>
+</div>
+
+<section id="ide" ng-show="vm.tabs[1].active" class="panel">
+    <header class="panel-heading"  style="padding: 10px 15px;">
+        <div class="row">
+            <div class="col-sm-6 pull-left">
+                <h2 class="panel-title">{{vm.name}}</h2>
+            </div>
+
+            <div class="col-sm-6 text-right">
+                <!--<a class="btn btn-primary" ng-click="vm.viewGraph()">-->
+                <!--dialog graph-->
+                <!--</a>-->
+                <a class="btn btn-primary" ng-click="vm.saveFile()">
+                    Save & Build
+                </a>
+            </div>
         </div>
-    </div>
-    <div class="col-md-9">
-        <form>
-            <button class="mb-xs mt-xs mr-xs btn btn-primary pull-right" ng-disabled="!vm.isChanged" ng-click="save()" ><i class="fa fa-save"></i> 저장하기</button>
-            <button class="mb-xs mt-xs mr-xs btn btn-warning pull-right" ng-disabled="vm.changeHistory.length == 0" ng-click="undo()" ><i class="fa fa-undo"></i>되돌리기</button>
+
+    </header>
+    <div class="panel-body" style="position:relative">
+        <form class="form-horizontal" action="#">
+            <div class="col-md-12">
+                <ui-codemirror
+                        ui-codemirror-opts="vm.codemirrorOpts"
+                        ui-codemirror="{ onLoad: codeLoaded}"
+                        ng-model="vm.currentTab.data" ui-refresh='refreshCodemirror'></ui-codemirror>
+            </div>
         </form>
     </div>
-    <div id="tree-container" class="panel" width="100%" height="100%"></div>
-</div>
+</section>
 <script src="/vendor/pnotify/pnotify.custom.js"></script>
 </body>
 </html>

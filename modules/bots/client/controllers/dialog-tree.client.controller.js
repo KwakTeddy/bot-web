@@ -3,8 +3,9 @@
 // Bots controller
 angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope', '$state', '$window','$timeout',
   '$stateParams', '$resource', 'Dialogs', 'DialogSaveService', 'OpenTasksService', 'FileUploader','$document',
+  'fileResolve', 'BotFilesService', 'CoreUtils',
   function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, Dialogs, DialogSaveService,
-            OpenTasksService, FileUploader, $document) {
+            OpenTasksService, FileUploader, $document, file, BotFilesService, CoreUtils) {
 
     (function($) {
       'use strict';
@@ -126,6 +127,72 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     vm.isChanged = false;
     vm.changeHistory = [];
 
+    // tab handling
+    vm.botName = file.botName;
+    vm.name = file.name;
+    vm.data = file.data;
+
+    vm.initTabs = function() {
+      vm.tabs.forEach(function(t) {
+        t.active = false;
+      });
+    };
+
+    vm.addTab = function(name) {
+      vm.tabs.push({name:name, data:vm.data, file_id:vm.file_id,  active:false});
+    };
+
+    vm.changeTab = function (tab) {
+      vm.initTabs();
+      vm.currentTab = tab;
+      tab.active = true;
+      vm.file = tab.name;
+
+      $scope.refreshCodemirror = true;
+      $timeout(function () {
+        $scope.refreshCodemirror = false;
+      }, 100);
+    };
+
+    vm.tabs = [{name:vm.name, data:vm.data, file_id:vm.file_id, active:true}];
+    vm.currentTab = vm.tabs[0];
+    vm.addTab(vm.name.split('.')[0]+'.task.js');
+
+    // file tree
+    vm.treeData =
+      [{
+        "id": "demo_root_1",
+        "text": "Root 1",
+        "children": true,
+        "type": "root"
+      }, {
+        "id": "demo_root_2",
+        "text": "Root 2",
+        "type": "root"
+      }];
+
+
+    // ide
+    vm.codemirrorOpts = {
+      lineWrapping: true,
+      lineNumbers: true,
+      mode: 'javascript'
+    };
+
+    $scope.codeLoaded = function(_editor) {
+      vm.editor = _editor;
+      vm.editor.setSize(viewerWidth,viewerHeight);
+    };
+
+    vm.saveFile = function () {
+      new BotFilesService({botId: $stateParams.botId, _id: vm.currentTab.file_id, fileData: vm.currentTab.data}).$save(function (botFile) {
+        CoreUtils.showConfirmAlert('저장되었습니다.');
+      }, function (err) {
+        CoreUtils.showConfirmAlert(err.data.message);
+      });
+    };
+
+    // graph edit
     vm.setChanged = function(c, updateScope) {
       if (c == true) {
         vm.changeHistory.push({source:angular.copy(selectedNode), dialogs:angular.copy(dialogs)});
@@ -161,6 +228,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     var currentNode;
     var selectedNode;
     var selectedSVG;
+
+    vm.depth = 2;
 
     $scope.$on('updateLog', function(event, arg0) {
       var index = $rootScope.logUpdated.indexOf('[DIALOG_SEL]');
@@ -818,18 +887,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         d.name = d.name || (d.name = "dialog_" + d.id);
         treeData.children.push(d);
       }
-      treeData.children.forEach(function (d) {
-        if (d.children) {
-          d.children.forEach(function (e) {
-            //collapse(e);
-          });
-        }
-      });
 
       dialogs.forEach(handleDialog); // for-loop is 10 times faster
       dialogs.forEach(handleLink);
       console.log(nodes);
       console.log(links_internal);
+
     };
 
     $resource('/api/dialogs/:bot_id/:file_id', {}).get({bot_id: vm.bot_id, file_id: vm.file_id}, function(res) {
@@ -860,12 +923,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     // size of the diagram
     var viewerWidth = document.getElementById('tree-container').clientWidth;
-    var viewerHeight = document.getElementById('sidebar-left').clientHeight;
+    var viewerHeight = document.getElementById('sidebar-left').clientHeight - 170;
 
     // size of rect
     var rectW = 250, rectH = 130;
     // height for one node
-    var itemHeight = rectH+300;
+    var itemHeight = rectH+100;
     // width for one depth
     var labelWidth = 350;
 
@@ -932,6 +995,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }, function (d) {
         return d.children && d.children.length > 0 ? d.children : null;
       });
+
+      vm.collapseDepth();
 
       // Layout the tree initially and center on the root node.
       if (source) {
@@ -1621,6 +1686,36 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     $scope.cancelImageUpload = function () {
       $scope.imageUploader.clearQueue();
       // $scope.imageURL = $scope.user.profileImageURL;
+    };
+
+    vm.collapseDepth = function() {
+      vm.itemHeight = vm.itemHeight + 100 + 20*vm.depth;
+      if (!treeData)
+        return;
+      treeData.children.forEach(function (d) {
+        if (d.children) {
+          d.children.forEach(function (e) {
+            if (e.depth >= vm.depth)
+              collapse(e);
+            if (e.depth < vm.depth)
+              expand(e);
+          });
+        }
+      });
+    };
+
+    vm.addDepth = function() {
+      ++vm.depth;
+      vm.collapseDepth();
+      update(treeData);
+    };
+
+    vm.minusDepth = function() {
+      if (vm.depth > 1) {
+        --vm.depth;
+        vm.collapseDepth();
+        update(treeData);
+      }
     };
   }]
 );

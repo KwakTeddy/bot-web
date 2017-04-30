@@ -1,6 +1,3 @@
-/**
- * Created by Phebe on 2016. 7. 11..
- */
 'use strict';
 
 // Bots controller
@@ -80,19 +77,8 @@ angular.module('bots').controller('IDEController', ['$scope', '$timeout', '$stat
 
       vm.viewGraph= function () {
           new BotFilesService({botId: $stateParams.botId, _id: $stateParams.fileId, fileData: vm.data}).$save(function (botFile) {
-              // if (!Socket.socket) {
-              //   Socket.connect();
-              // }
-              // Socket.emit('send_msg', {
-              //   host: vm.server.split(':')[0],
-              //   port: vm.server.split(':')[1],
-              //   bot: vm.bot,
-              //   user: vm.userId,
-              //   msg: msg
-              // });
-              // vm.sendMsg(':build');
-
-              vm.sendMsg(':viewGraph');
+            CoreUtils.showConfirmAlert('저장되었습니다.');
+              //vm.sendMsg(':viewGraph');
           }, function (err) {
               CoreUtils.showConfirmAlert(err.data.message);
           });
@@ -100,18 +86,6 @@ angular.module('bots').controller('IDEController', ['$scope', '$timeout', '$stat
 
     vm.buildBot = function () {
       new BotFilesService({botId: $stateParams.botId, _id: $stateParams.fileId, fileData: vm.data}).$save(function (botFile) {
-        // if (!Socket.socket) {
-        //   Socket.connect();
-        // }
-        // Socket.emit('send_msg', {
-        //   host: vm.server.split(':')[0],
-        //   port: vm.server.split(':')[1],
-        //   bot: vm.bot,
-        //   user: vm.userId,
-        //   msg: msg
-        // });
-        // vm.sendMsg(':build');
-
         vm.sendMsg(':build');
       }, function (err) {
         CoreUtils.showConfirmAlert(err.data.message);
@@ -119,18 +93,6 @@ angular.module('bots').controller('IDEController', ['$scope', '$timeout', '$stat
     };
     vm.save = function () {
       new BotFilesService({botId: $stateParams.botId, _id: $stateParams.fileId, fileData: vm.data}).$save(function (botFile) {
-        // if (!Socket.socket) {
-        //   Socket.connect();
-        // }
-        // Socket.emit('send_msg', {
-        //   host: vm.server.split(':')[0],
-        //   port: vm.server.split(':')[1],
-        //   bot: vm.bot,
-        //   user: vm.userId,
-        //   msg: msg
-        // });
-        // vm.sendMsg(':build');
-
         CoreUtils.showConfirmAlert('저장되었습니다.');
       }, function (err) {
         CoreUtils.showConfirmAlert(err.data.message);
