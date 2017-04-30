@@ -6,15 +6,14 @@
     .module('entitys')
     .controller('EntitysController', EntitysController);
 
-  EntitysController.$inject = ['$scope', '$state', 'Authentication', 'entityResolve', '$resource', 'EntitysService'];
+  EntitysController.$inject = ['$scope', '$state', 'Authentication', 'entityResolve', '$resource', 'EntitysService', '$rootScope'];
 
-  function EntitysController($scope, $state, Authentication, entity, $resource, EntitysService) {
+  function EntitysController($scope, $state, Authentication, entity, $resource, EntitysService, $rootScope) {
     var vm = this;
 
     vm.authentication = Authentication;
     vm.entity = entity;
     vm.entityContent = '';
-    console.log(vm.entity);
     vm.error = null;
     vm.contentError = null;
     vm.form = {};
@@ -39,6 +38,7 @@
         $scope.$broadcast('show-errors-check-validity', 'vm.form.entityForm');
         return false;
       }
+      vm.entity.botId = $rootScope.botId;
       // TODO: move create/update logic to service
       if (vm.entity._id) {
         vm.entity.$update(successCallback, errorCallback);
@@ -49,7 +49,7 @@
       function successCallback(res) {
         vm.error = null;
         $scope.$broadcast('show-errors-check-validity', 'vm.form.entityForm');
-        $state.go('entitys.list', {
+        $state.go('entitys.edit', {
           entityId: res._id
         }, {reload: true});
       }
@@ -63,6 +63,7 @@
     }
 
     vm.contentSave = function(isValid){
+      console.log($rootScope);
       console.log(isValid);
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.form.entityForm');

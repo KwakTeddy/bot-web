@@ -47,7 +47,7 @@
       <div class="form-group" show-errors id="contentForm" data-ng-if="vm.intent._id">
         <label class="col-sm-2 control-label">목록 <span class="required" aria-required="true">*</span></label>
         <div class="col-sm-10">
-          <table datatable="ng" class="table table-bordered mb-none">
+          <table class="table table-bordered table-hover mb-none">
             <thead>
             <tr>
               <!--<th class="text-center">봇아이디</th>-->
@@ -62,13 +62,14 @@
             <tbody>
             <tr ng-repeat="intent in vm.intent.content">
               <!--<td class="text-center">{{intent.bot.id}}</td>-->
-              <td class="text-center"><a ui-sref="intents.edit({intentId: intent._id})">{{intent.name}}</a></td>
+              <td class="text-center">{{intent.name}}</td>
+              <!--<td class="text-center"><a ui-sref="intents.edit({intentId: intent._id})">{{intent.name}}</a></td>-->
               <!--<td class="text-center">{{intent.words}}</td>-->
               <!--<td class="text-center">{{intent.user ? intent.user.displayName : '장세영'}}</td>-->
               <!--<td class="text-center">{{intent.updated | date: 'yyyy-MM-dd HH:mm:ss'}}</td>-->
               <!--<td class="text-center">{{intent.created | date: 'yyyy-MM-dd HH:mm:ss'}}</td>-->
               <td>
-                <a class="btn btn-default btn-block" ng-click="vm.contentRemove(intent)">
+                <a class="btn btn-default btn-block btn-xs" ng-click="vm.contentRemove(intent)" style="border: 0!important;">
                   <i class="glyphicon glyphicon-trash"></i>
                 </a>
               </td>
@@ -98,7 +99,7 @@
             <!--<a class="btn btn-primary" ng-click="vm.save(form.$valid)">-->
             <!--<i class="glyphicon glyphicon-edit"></i> 수정-->
             <!--</a>-->
-            <a class="btn btn-danger pull-left" ng-click="vm.remove()">
+            <a class="btn btn-danger pull-left btn-sm" ng-click="vm.remove()">
               <i class="glyphicon glyphicon-trash"></i> 삭제
             </a>
           </div>

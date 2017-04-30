@@ -177,6 +177,7 @@ exports.contentCreate = function(req, res) {
         intentContent.name = req.body.content;
         intentContent.user = req.user;
         intentContent.intentId = req.body.intentId;
+        intentContent.botId = req.body.botId;
 
         dialogset.processInput(null, req.body.content, function(_input, _json) {
           intentContent.input = _input;

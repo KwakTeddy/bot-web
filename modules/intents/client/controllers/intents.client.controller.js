@@ -6,15 +6,14 @@
     .module('intents')
     .controller('IntentsController', IntentsController);
 
-  IntentsController.$inject = ['$scope', '$state', 'Authentication', 'intentResolve', '$resource', 'IntentsService'];
+  IntentsController.$inject = ['$scope', '$state', 'Authentication', 'intentResolve', '$resource', 'IntentsService', '$rootScope'];
 
-  function IntentsController($scope, $state, Authentication, intent, $resource, IntentsService) {
+  function IntentsController($scope, $state, Authentication, intent, $resource, IntentsService, $rootScope) {
     var vm = this;
 
     vm.authentication = Authentication;
     vm.intent = intent;
     vm.intentContent = '';
-    console.log(vm.intent);
     vm.error = null;
     vm.contentError = null;
     vm.form = {};
@@ -39,6 +38,7 @@
         $scope.$broadcast('show-errors-check-validity', 'vm.form.intentForm');
         return false;
       }
+      vm.intent.botId = $rootScope.botId;
       // TODO: move create/update logic to service
       if (vm.intent._id) {
         vm.intent.$update(successCallback, errorCallback);
@@ -72,7 +72,7 @@
       }
       console.log(vm.intent._id);
       if (vm.intent._id){
-        $resource('/api/intentsContent').save({content: vm.intentContent, intentId: vm.intent._id}, function (result) {
+        $resource('/api/intentsContent').save({content: vm.intentContent, intentId: vm.intent._id, botId: $rootScope.botId}, function (result) {
           console.log(result);
           vm.intent.content.unshift(result);
           vm.intentContent = '';
