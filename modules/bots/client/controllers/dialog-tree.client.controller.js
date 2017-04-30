@@ -91,7 +91,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     $scope.openTask = function(task, isCommon) {
       $scope.dialog.task = {name: task.name};
-      vm.edit = true;
+      vm.edit = 'task';
       if (isCommon) {
         $.magnificPopup.close();
         $('.modal-with-task').click();
@@ -101,7 +101,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     $scope.openType = function(type) {
     };
 
+    $scope.closeEdit = function() {
+      vm.edit = false;
+      $.magnificPopup.close();
+    };
+
     $scope.backToEdit = function(ok) {
+      vm.edit = 'dialog';
       if (!ok) {
         if ($scope.dialog.task && $scope.dialog.task.name)
           $scope.dialog.task = {name:$scope.dialog.task.name};
@@ -197,7 +203,15 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     var keydown = function(event) {
-      if (vm.edit)
+      if (event.keyCode == 27) { // esc
+        if (vm.edit === 'dialog') {
+          $scope.closeEdit();
+        } else if (vm.edit === 'task') {
+          $scope.backToEdit(false);
+        }
+        return false;
+      }
+      if (vm.edit === 'dialog' || vm.edit === 'task')
         return false;
       if (!selectedNode)
         return false;
@@ -548,7 +562,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.findOne = function (dialog) {
-      vm.edit = true;
+      vm.edit = 'dialog';
       $scope.dialog = {};
       $scope.dialog.name = dialog.name;
       $scope.dialog.input = initInput(dialog.input);

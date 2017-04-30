@@ -7,16 +7,21 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "바보",
-				"types": [
-					"address",
-					"date"
-				]
+				"text": "바보"
 			}
 		],
 		"output": [
 			{
-				"output": "어쩌라고"
+				"output": "어쩌라고",
+				"image": "menu.jpg",
+				"buttons": [
+					{
+						"name": "abc"
+					},
+					{
+						"name": "def"
+					}
+				]
 			}
 		],
 		"name": "dialog_default0",
@@ -116,8 +121,26 @@ var dialogs = [
 						]
 					}
 				]
+			},
+			{
+				"name": "dialog_default9",
+				"id": "default9",
+				"filename": "default",
+				"input": [
+					{
+						"types": [
+							"address"
+						]
+					}
+				],
+				"output": [
+					{
+						"output": "주소입니다"
+					}
+				]
 			}
-		]
+		],
+		"task": "lglist"
 	}
 ];
 
