@@ -76,6 +76,7 @@ angular.module('bots').config(['$stateProvider',
         controller: 'DialogTreeController',
         controllerAs: 'vm',
         resolve: {
+          botFilesResolve: getBotFiles,
           fileResolve: readBotFile
         }
       })

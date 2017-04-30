@@ -3,9 +3,9 @@
 // Bots controller
 angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope', '$state', '$window','$timeout',
   '$stateParams', '$resource', 'Dialogs', 'DialogSaveService', 'OpenTasksService', 'FileUploader','$document',
-  'fileResolve', 'BotFilesService', 'CoreUtils',
+  'fileResolve', 'BotFilesService', 'CoreUtils', 'botFilesResolve',
   function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, Dialogs, DialogSaveService,
-            OpenTasksService, FileUploader, $document, file, BotFilesService, CoreUtils) {
+            OpenTasksService, FileUploader, $document, file, BotFilesService, CoreUtils, files) {
 
     (function($) {
       'use strict';
@@ -96,7 +96,19 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       if (isCommon) {
         $.magnificPopup.close();
         $('.modal-with-task').click();
+      } else {
+        $.magnificPopup.close();
+        vm.fromTask = true;
+        vm.changeTab(vm.tabs[1]);
       }
+    };
+
+    $scope.gotoTree = function() {
+      vm.fromTask = false;
+      vm.edit = 'task';
+      vm.changeTab(vm.tabs[0]);
+      $('.modal-with-form').click();
+
     };
 
     $scope.openType = function(type) {
@@ -139,7 +151,15 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     vm.addTab = function(name) {
-      vm.tabs.push({name:name, data:vm.data, file_id:vm.file_id,  active:false});
+      files.forEach(function(f) {
+        if (f.name === name) {
+          vm.taskFile = f;
+        }
+      });
+      BotFilesService.get({botId: vm.bot_id, fileId: vm.taskFile._id}, function(result) {
+        vm.taskFile.data = result.data;
+        vm.tabs.push({name:name, data:vm.taskFile.data, file_id:vm.taskFile._id,  active:false});
+      });
     };
 
     vm.changeTab = function (tab) {
@@ -351,6 +371,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.saveI = function() {
+      if ($scope.getInputType(vm.curI.type) != 'text' && vm.curI.str === "") {
+        $scope.resetI();
+        return;
+      }
+
       vm.targetI.type = vm.curI.type;
       vm.targetI.str = vm.curI.str;
 
@@ -361,6 +386,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.saveO = function() {
+      if ($scope.getInputType(vm.curO.type) != 'text' && vm.curO.str === "") {
+        $scope.resetO();
+        return;
+      }
       vm.targetO.type = vm.curO.type;
       vm.targetO.str = vm.curO.str;
 
@@ -395,7 +424,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       if (type === 'If') return "조건을 입력해주세요";
     };
 
-    vm.inputTypes = ["Text","RegExp","Type","If"];
+    vm.inputTypes = ["Text","RegExp","Type","If","Intent"];
     vm.outputTypes = ["Text","Call","ReturnCall","CallChild","Up", "Repeat"];
 
     var findType = function(input, typeName) {
@@ -443,7 +472,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.addInput = function() {
-      //["","",{types:[{name:'', typeCheck:'', raw:true},..,regexp:''}]]
+      //["","",{types:[{name:'', typeCheck:'', raw:true},..,regexp:'',intent:''}]]
       var input = [];
       $scope.dialog.input.push(input);
       $scope.addI(input);
@@ -492,7 +521,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     vm.typeClass = [];
     vm.typeClass['Text'] = {btn:'btn-primary',icon:'fa-commenting', input:'text'};
-    vm.typeClass['RegExp'] = {btn:'btn-success',icon:'fa-registered', input:'text'};
+    vm.typeClass['RegExp'] = {btn:'btn-danger',icon:'fa-registered', input:'text'};
+    vm.typeClass['Intent'] = {btn:'btn-success',icon:'fa-user', input:'intent'};
     vm.typeClass['Type'] = {btn:'btn-warning',icon:'fa-gear', input:'type'};
     vm.typeClass['Call'] = {btn:'btn-danger',icon:'fa-bolt', input:'dialog'};
     vm.typeClass['CallChild'] = {btn:'btn-danger',icon:'fa-mail-forward', input:'dialog'};
@@ -531,6 +561,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         }
         if (d.regexp) {
           r.push({type: 'RegExp', str: d.regexp});
+        }
+        if (d.intent) {
+          r.push({type: 'Intent', str: d.intent});
         }
         if (d.if) {
           r.push({type:'If', str:d.if});
@@ -590,6 +623,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             (obj.types || (obj.types = [])).push(r.str);
           } else if (r.type === 'RegExp') {
             obj.regexp = r.str;
+          } else if (r.type === 'Intent') {
+            obj.intent= r.str;
           } else if (r.type === 'If') {
             obj.if = r.str;
           }
@@ -729,6 +764,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           }
           if (i.regexp)
             text.push('[정규식] ' + i.regexp);
+          if (i.intent)
+            text.push('[Intent] ' + i.intent);
           if (i.if)
             text.push('[조건] ' + i.if);
         });
@@ -899,6 +936,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.botId = res.botId;
       vm.fileName = res.fileName;
       vm.tasks = res.tasks;
+      vm.intents = res.intents.map(function(i) { return i.name; });
       vm.types = res.types.map(function(t) { return t.name} );
       vm.type_dic = res.type_dic;
       dialogs = res.data;
