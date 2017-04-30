@@ -64,7 +64,8 @@ var DialogsetDialogSchema = new Schema({
   input: Schema.Types.Mixed,
   inputRaw: Schema.Types.Mixed,
   output: Schema.Types.Mixed,
-  tag: [String]
+  tag: [String],
+  parent: Schema.Types.Mixed
 });
 
 mongoose.model('DialogsetDialog', DialogsetDialogSchema);

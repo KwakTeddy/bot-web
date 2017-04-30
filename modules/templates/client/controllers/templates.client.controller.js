@@ -21,6 +21,47 @@
       '요식업', '숙박여행', '의료건강', '교육', '뷰티', '온라인쇼핑', '오픈마켓', '비지니스'
     ];
 
+    // create the editor
+    var container = document.getElementById("jsoneditor");
+    var options = {name: vm.template.id, sortObjectKeys: true, mode: 'tree'};
+    var editor = new JSONEditor(container, options);
+    if(vm.template.dataSchema){
+      vm.template.dataSchema = JSON.parse(vm.template.dataSchema);
+      editor.set(vm.template.dataSchema);
+    }
+
+    vm.toTree = function () {
+      editor.destroy();
+      options.mode = 'tree';
+      editor = new JSONEditor(container, options);
+      console.log(editor);
+      editor.set(vm.template.dataSchema);
+    };
+
+    vm.toText = function () {
+      editor.destroy();
+      options.mode = 'text';
+      editor = new JSONEditor(container, options);
+      console.log(editor);
+      editor.set(vm.template.dataSchema);
+    };
+
+    vm.toCode = function () {
+      editor.destroy();
+      options.mode = 'code';
+      editor = new JSONEditor(container, options);
+      editor.set(vm.template.dataSchema);
+      var ad =document.getElementsByClassName('jsoneditor-poweredBy')[0];
+      ad.parentNode.removeChild(ad)
+    };
+
+    vm.toForm = function () {
+      editor.destroy();
+      editor = new JSONEditor(container, {mode: 'form'});
+      console.log(editor);
+      editor.set(vm.template.dataSchema);
+    };
+
     // Remove existing Custom action
     function remove() {
       if (confirm('Are you sure you want to delete?')) {
@@ -34,7 +75,8 @@
         $scope.$broadcast('show-errors-check-validity', 'vm.form.templateForm');
         return false;
       }
-
+      vm.template.dataSchema = editor.get();
+      vm.template.dataSchema = JSON.stringify(vm.template.dataSchema);
       // TODO: move create/update logic to service
       if (vm.template._id) {
         vm.template.$update(successCallback, errorCallback);
@@ -49,6 +91,7 @@
       }
 
       function errorCallback(res) {
+        console.log(res);
         vm.error = res.data.message;
       }
     }

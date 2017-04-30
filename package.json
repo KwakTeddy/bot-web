@@ -62,6 +62,7 @@
     "jasmine-core": "^2.3.4",
     "java": "^0.8.0",
     "json-editor": "^0.7.28",
+    "jsoneditor": "^5.6.0",
     "kerberos": "0.0.22",
     "lodash": "^3.10.0",
     "method-override": "^2.3.3",

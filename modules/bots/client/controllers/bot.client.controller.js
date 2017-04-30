@@ -17,15 +17,15 @@ angular.module('bots').controller('BotController', [
     vm.bot = bot;
     vm.dialogSets= dialogsetsResolve;
     console.log(vm.dialogSets);
-    if (vm.bot.dialogsets && vm.bot.dialogsets.length){
-      for(var i = 0; i < vm.dialogSets.length; i++){
-        for(var j = 0; j < vm.bot.dialogsets.length; j++){
-          if(vm.dialogSets[i]._id == vm.bot.dialogsets[j]){
-            vm.dialogSets[i].use = true;
-          }
-        }
-      }
-    }
+    // if (vm.bot.dialogsets && vm.bot.dialogsets.length){
+    //   for(var i = 0; i < vm.dialogSets.length; i++){
+    //     for(var j = 0; j < vm.bot.dialogsets.length; j++){
+    //       if(vm.dialogSets[i]._id == vm.bot.dialogsets[j]){
+    //         vm.dialogSets[i].use = true;
+    //       }
+    //     }
+    //   }
+    // }
 
     console.log(vm.bot);
     console.log(vm.dialogSets);

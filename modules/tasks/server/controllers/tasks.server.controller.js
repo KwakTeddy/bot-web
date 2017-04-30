@@ -162,6 +162,7 @@ exports.delete = function(req, res) {
  * List of Custom actions
  */
 exports.list = function(req, res) {
+
   var taskList = global._bots['athena'].tasks;
   taskList = [taskList];
   res.jsonp(taskList);
@@ -185,6 +186,8 @@ exports.taskByID = function(req, res, next, id) {
         message: 'No Custom action with that identifier has been found'
       });
     }
+    console.log(task);
+    console.log(123321);
     req.task = task;
     next();
   });

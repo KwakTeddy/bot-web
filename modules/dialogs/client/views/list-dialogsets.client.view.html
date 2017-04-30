@@ -26,7 +26,23 @@
       </tr>
       </thead>
       <tbody>
-      <tr ng-repeat="dialogset in vm.dialogsets">
+      <tr ng-repeat="dialogset in vm.dialogsets" ng-if="vm.listType !== 'public'">
+        <!--<td class="text-center">{{dialogset.bot.id}}</td>-->
+        <td class="text-center">{{dialogset.type}}</td>
+        <td class="text-center">{{dialogset.title}}</td>
+        <td class="text-center">{{dialogset.user ? dialogset.user.displayName : '장세영'}}</td>
+        <td class="text-center">{{dialogset.created | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+        <td>
+          <a class="btn btn-primary" ui-sref="dialogsets.edit({dialogsetId: dialogset._id})">
+            <i class="glyphicon glyphicon-edit"></i> 수정
+          </a>
+          <a class="btn btn-primary" ui-sref="dialogsets.dialogs({dialogsetId: dialogset._id})">
+            <i class="glyphicon glyphicon-edit"></i> 대화관리
+          </a>
+        </td>
+      </tr>
+
+      <tr ng-repeat="dialogset in vm.dialogsets" ng-if="(vm.listType == 'public') && dialogset.public">
         <!--<td class="text-center">{{dialogset.bot.id}}</td>-->
         <td class="text-center">{{dialogset.type}}</td>
         <td class="text-center">{{dialogset.title}}</td>
