@@ -5,10 +5,9 @@ var config = require('../config'),
   utils = require(path.resolve('modules/bot/action/common/utils')),
   tone = require(path.resolve('modules/bot/action/common/tone')),
   concept = require(path.resolve('modules/bot/engine/concept/concept')),
+  intent = require(path.resolve('modules/bot/engine/nlu/intent')),
   globalDialogs = require(path.resolve('custom_modules/global/global-dialogs')),
   _ = require('lodash');
-
-// var dialogsetModule = require(path.resolve('modules/bot/engine/dialogset/dialogset.js'));
 
   var async = require('async');
   var TemplateDataModule = require(path.resolve('modules/templates/server/controllers/template-datas.server.controller'));
@@ -327,6 +326,12 @@ function loadBot(botName, callback) {
     function(cb) {
       bot.setDialogs(globalDialogs.globalEndDialogs);
       cb(null);
+    },
+
+    function(cb) {
+      intent.loadIntents(bot, function() {
+        cb(null);
+      })
     }
 
   ], function(err) {

@@ -21,10 +21,10 @@ var intentCheck = {
   preType: function(task, context, type, callback) {
     type.mongo.queryStatic = {};
     BotIntent.aggregate([
-      {$match: {botId: context.bot.name}},
+      {$match: {botId: context.bot.id}},
       {$group: {_id: '$botId', intents: {$push: '$intent'}}}
     ], function(err, intents) {
-      if(intents) {
+      if(intents && intents.length > 0) {
         type.mongo.queryStatic = {intentId: {$in: intents[0].intents}};
       } else {
         type.mongo.queryStatic.intentId = null;
@@ -67,74 +67,42 @@ function matchIntent(inRaw, inNLP, context, callback) {
   dialog.executeType(inRaw, inNLP, intentCheck, {}, context, function(inNLP, task, matched) {
     if(matched) {
       var intentId;
-      if(Array.isArray(task.intentDoc)) {
+      if(Array.isArray(task.intentDoc) && task.intentDoc.length > 0) {
         intentId = task.intentDoc[0].intentId;
       } else {
         intentId = task.intentDoc.intentId;
       }
 
-      BotIntent.findOne({botId: context.bot.name, intent: intentId}).lean().exec(function(err, intent) {
+      BotIntent.findOne({botId: context.bot.id, intent: intentId}).lean().exec(function(err, intent) {
         if(intent) {
           for(var i in context.bot.dialogs) {
             var dialog = context.bot.dialogs[i];
             if(dialog.id == intent.dialogId) {
-              callback(true, dialog);
+              callback(true, intent, dialog);
               return;
             }
           }
         }
-        callback(false, null);
+        callback(false, null, null);
       });
     } else {
-      callback(false, null);
+      callback(false, null, null);
     }
   })
 }
 
 exports.matchIntent = matchIntent;
 
-// var IntentSchema = new Schema({
-//   name: {
-//     type: String,
-//     default: '',
-//     required: 'Please fill name',
-//     trim: true
-//   },
-//   created: {
-//     type: Date,
-//     default: Date.now
-//   },
-//   user: {
-//     type: Schema.ObjectId,
-//     ref: 'User'
-//   }
-// });
-//
-// mongoose.model('Intent', IntentSchema);
-//
-// var IntentUtteranceSchema = new Schema({
-//   utterance: {
-//     type: String,
-//     default: '',
-//     required: 'Please fill utterance name',
-//     trim: true
-//   },
-//   input: {
-//     type: String
-//   },
-//   created: {
-//     type: Date,
-//     default: Date.now
-//   },
-//   user: {
-//     type: Schema.ObjectId,
-//     ref: 'User'
-//   },
-//   intent: {
-//     type: Schema.ObjectId,
-//     ref: 'Intent'
-//   }
-// });
-//
-// mongoose.model('IntentUtterance', IntentUtteranceSchema);
-//
+
+function loadIntents(bot, callback) {
+  var Intent = mongoose.model('Intent');
+
+  Intent.find({botId: bot.id}).lean().exec(function(err, docs) {
+    bot.intents = docs;
+    if(callback) callback();
+  });
+}
+
+exports.loadIntents = loadIntents;
+
+

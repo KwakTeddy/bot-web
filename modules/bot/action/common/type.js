@@ -9,6 +9,8 @@ var _ = require('lodash');
 var globals = require(path.resolve('./modules/bot/engine/common/globals'));
 var async = require('async');
 var concept = require(path.resolve('modules/bot/engine/concept/concept.js'));
+var entity = utils.requireNoCache(path.resolve('modules/bot/engine/nlu/entity'));
+var intent = utils.requireNoCache(path.resolve('modules/bot/engine/nlu/intent'));
 
 const TAG_START = '\\+';
 const TAG_END = '\\+';
@@ -37,58 +39,97 @@ exports.processInput = function(context, inRaw, callback) {
     return;
   }
 
-  var doc = {}
-  var nlpKo = new nlp({
-    stemmer: true,      // (optional default: true)
-    normalizer: true,   // (optional default: true)
-    spamfilter: true     // (optional default: false)
+  var doc = {entities: {}}, entities = {}, inNLP, _nlp = [], nlpAll = [], dialog;
+
+  async.waterfall([
+    function(cb) {
+      var nlpKo = new nlp({
+        stemmer: true,      // (optional default: true)
+        normalizer: true,   // (optional default: true)
+        spamfilter: true     // (optional default: false)
+      });
+
+      nlpKo.tokenize/*ToStrings*/(inRaw, function(err, result) {
+
+        var _inNLP = [];
+        if(!result) result = inRaw;
+        for (var i = 0; i < result.length; i++) {
+          // var word = result[i].text;
+          // if(word.search(/^(은|는|이|가|을|를)$/) == -1) result2.push(word);
+
+          // /*if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') */_nlp.push(result[i]);
+          // if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _inNLP.push(result[i].text);
+          nlpAll.push(result[i]);
+          if(result[i].text && result[i].text.search(/^(은|는|이|가|을|를)$/) == -1 && result[i].pos !== 'Punctuation') _nlp.push(result[i]);
+          if(result[i].text && result[i].text.search(/^(은|는|이|가|을|를)$/) == -1 && result[i].pos !== 'Punctuation') _inNLP.push(result[i].text);
+        }
+
+        inNLP = _inNLP.join(' ');
+        inNLP = inNLP.replace(/(?:\{ | \})/g, '+');
+        if(inNLP == '') inNLP = inRaw;
+
+        context.botUser.nlpAll = nlpAll;
+        context.botUser.nlp = _nlp;
+
+        cb(null);
+      })
+    },
+
+    function(cb) {
+      entity.matchDictionaryEntities(inRaw, commonTypes, doc, context, function(_inRaw, _entities) {
+        // doc.entities = doc.entities.concat(_doc.entities)
+        doc.entities = utils.merge(doc.entities, _entities);
+        cb(null);
+      });
+    },
+
+    function(cb) {
+      checkTypes(inRaw, commonTypes, {}, context, function(_inRaw, _entities) {
+        // doc.entities = doc.entities.concat(_entities)
+        doc.entities = utils.merge(doc.entities, _entities);
+        cb(null);
+      });
+    },
+
+    // function(cb) {
+    //   concept.processConcept(inRaw, inNLP, _nlp, function(inRaw, _in2, _nlp2) {
+    //     _nlp = _nlp2;
+    //     cb(null);
+    //   });
+    // },
+    //
+    // function(cb) {
+    //   concept.processCustomConcept(inRaw, inNLP, _nlp, context, function(inRaw, _in2, _nlp2) {
+    //     _nlp = _nlp2;
+    //     cb(null);
+    //   });
+    // },
+
+    function(cb) {
+      intent.matchIntent(inRaw, inNLP, context, function(matched, _intent, _dialog) {
+        if(_intent) doc.intent = _intent;
+        else doc.intent = undefined;
+
+        if(_dialog) {
+          doc.intentDialog = _dialog;
+          context.botUser.intentDialog = _dialog;
+        } else {
+          doc.intentDialog = undefined;
+          context.botUser.intentDialog = undefined;
+        }
+
+
+        cb(null);
+      })
+    }
+
+  ], function(err) {
+    context.botUser.nlpCorrection = undefined;
+    context.botUser.inRawCorrection = undefined;
+    context.botUser.wordCorrection = undefined;
+
+    callback(inNLP, entities, doc);
   });
-
-  // var entity = utils.requireNoCache(path.resolve('modules/bot/engine/nlu/entity'));
-  // entity.entityDictionaryCheck(inRaw, commonTypes, doc, context, function(_inRaw, inDoc) {
-
-  checkTypes(inRaw, commonTypes, doc, context, function(_inRaw, inDoc) {
-    nlpKo.tokenize/*ToStrings*/(_inRaw, function(err, result) {
-
-      var _nlp = [], _nlpAll = [],  _inNLP = [], _in;
-      if(!result) result = inRaw;
-      for (var i = 0; i < result.length; i++) {
-        // var word = result[i].text;
-        // if(word.search(/^(은|는|이|가|을|를)$/) == -1) result2.push(word);
-
-        // /*if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') */_nlp.push(result[i]);
-        // if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _inNLP.push(result[i].text);
-        _nlpAll.push(result[i]);
-        if(result[i].text && result[i].text.search(/^(은|는|이|가|을|를)$/) == -1 && result[i].pos !== 'Punctuation') _nlp.push(result[i]);
-        if(result[i].text && result[i].text.search(/^(은|는|이|가|을|를)$/) == -1 && result[i].pos !== 'Punctuation') _inNLP.push(result[i].text);
-      }
-
-      _in = _inNLP.join(' ');
-      _in = _in.replace(/(?:\{ | \})/g, '+');
-      if(_in == '') _in = inRaw;
-
-      context.botUser.nlpAll = _nlpAll;
-      context.botUser.nlp = _nlp;
-      context.botUser.nlpCorrection = undefined;
-      context.botUser.inRawCorrection = undefined;
-      context.botUser.wordCorrection = undefined;
-
-      // concept.processConcept(inRaw, _in, _nlp, function(inRaw, _in2, _nlp2) {
-      //   context.botUser.nlp = _nlp2;
-      //   callback(_in2, inDoc);
-      // });
-
-      // concept.processCustomConcept(inRaw, _in, _nlp, context, function(inRaw, _in2, _nlp2) {
-      //   context.botUser.nlp = _nlp2;
-      //   callback(_in2, inDoc);
-      // });
-
-      callback(_in, inDoc);
-    });
-
-  });
-
-  // });
 
 };
 

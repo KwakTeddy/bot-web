@@ -10,6 +10,9 @@ var mongoose = require('mongoose'),
  * Custom action Schema
  */
 var IntentSchema = new Schema({
+  botId: {
+    type: String
+  },
   name: {
     type: String,
     unique: true
@@ -31,6 +34,9 @@ mongoose.model('Intent', IntentSchema);
  * Custom action Schema
  */
 var IntentContentSchema = new Schema({
+  botId: {
+    type: String
+  },
   name: {
     type: String,
     unique: true
@@ -82,7 +88,7 @@ mongoose.model('IntentUtterance', IntentUtteranceSchema);
 
 var BotIntentSchema = new Schema({
   botId: {
-    type: String
+    type: 'String'
   },
   intent: {
     type: Schema.ObjectId,

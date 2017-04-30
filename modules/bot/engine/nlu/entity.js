@@ -1,18 +1,20 @@
 var path = require('path');
 var mongoose = require('mongoose');
 var mongoModule = require(path.resolve('modules/bot/action/common/mongo'));
+var utils = require(path.resolve('modules/bot/action/common/utils'));
 var async = require('async');
 
-function entityDictionaryCheck(inRaw, inNLP, inDoc, context, callback) {
+function matchDictionaryEntities(inRaw, inNLP, inDoc, context, callback) {
   var nlp = context.botUser.nlp;
-  var entities = [];
+  var entities = {};
 
   var Dic = mongoose.model('EntityContent');
   async.eachSeries(nlp, function(word, cb) {
     if(word.pos == 'Noun') {
-      Dic.find({name: word.text}).lean().populate('entity').exec(function(err, docs) {
+      Dic.find({name: word.text}).lean().populate('entityId').exec(function(err, docs) {
         for(var i in docs) {
-          entities.push({name: docs[i].entity.name, word: docs[i].name})
+          entities[docs[i].entityId.name] = docs[i].name;
+          // entities.push({name: docs[i].entityId.name, word: docs[i].name})
         }
 
         cb(null);
@@ -22,9 +24,36 @@ function entityDictionaryCheck(inRaw, inNLP, inDoc, context, callback) {
     }
 
   }, function(err) {
-    inDoc.entities = entities;
-    callback(inRaw, inDoc, true);
+    callback(inRaw, entities, true);
   });
 }
 
-exports.entityDictionaryCheck = entityDictionaryCheck;
+exports.matchDictionaryEntities = matchDictionaryEntities;
+
+
+function matchEntities(inRaw, inNLP, inDoc, context, callback) {
+
+  async.waterfall([
+    // dictionary-based entity
+    function(cb) {
+      matchDictionaryEntities(inRaw, inNLP, inDoc, context, function(_inRaw, _inDoc, _matched) {
+        cb(null);
+      })
+    },
+
+    // rule-based entity
+    function(cb) {
+
+    },
+
+    // custom entity
+    function(cb) {
+
+    }
+
+  ], function(err) {
+
+  })
+}
+
+exports.matchEntities = matchEntities;

@@ -97,53 +97,49 @@ function matchGlobalDialogs(inRaw, inNLP, dialogs, context, print, callback, wor
       callback(true, _dialog);
     } else {
       matchDialogs(inRaw, inNLP, dialogs, context, print, function(matched, _dialog) {
-        // intent.matchIntent(inRaw, inNLP, context, function(matched, _dialog) {
-        //   if(matched == true) {
-        //     executeDialog(_dialog, context, print, callback);
-        //   } else {
-            if(matched == true) {
-              callback(matched, _dialog);
-            } else if(context.bot.useAutoCorrection == true && !wordCorrection) {
-              var _inRaw = autoCorrection.correction(inRaw);
-              context.botUser.orgNlp = context.botUser.nlp;
-              type.processInput(context, _inRaw, function(_inNLP, _inDoc) {
-                context.botUser.nlpCorrection = _inNLP;
-                context.botUser.inRawCorrection = _inRaw;
-                matchGlobalDialogs(_inRaw, _inNLP, dialogs, context, print, callback, true);
-              });
-            } else {
-              for (var i = 0; i < dialogs.length; i++) {
-                var dialog = dialogs[i];
-                if(dialog.input == undefined || dialog.input === '' || dialog.name == NO_DIALOG_NAME ) {
-                  executeDialog(dialog, context, print, callback);
-                  context.dialog.isFail = true;
-                  callback(true, dialog);
-                  return;
-                }
-              }
-
-              if(context.botUser.orgNlp) context.botUser.nlp = context.botUser.orgNlp;
-              context.botUser.orgNlp = null;
-
-              if(context.bot.useQuibble ==  true) {
-                context.dialog.isFail = true;
-                // print(quibble.quibble(context));
-                var dialog = {id: -1, name: 'quibble', input: 'false', output: quibble.quibble(context)};
-                executeDialog(dialog, context, print, callback);
-              } else if(context.bot.noDialog) {
-                context.dialog.isFail = true;
-                executeDialog(context.bot.noDialog, context, print, callback);
-              } else {
-                context.dialog.isFail = true;
-                console.error('NO_DIALOG(답변없음)가 없습니다. 아래와 같이 설정바랍니다.\n답변없음:c<> 알아듣지 못하는 말입니다.');
-                // print('학습되어 있지 않은 대화 입니다.');
-                // callback(true, context.bot.noDialog);
-                var dialog = {id: -1, name: 'no_dialog', input: 'false', output: '학습되어 있지 않은 대화 입니다.'};
-                executeDialog(dialog, context, print, callback);
-              }
+        if (matched == true) {
+          callback(matched, _dialog);
+        } else if (context.botUser.intentDialog) {
+          executeDialog(context.botUser.intentDialog, context, print, callback);
+        } else if (context.bot.useAutoCorrection == true && !wordCorrection) {
+          var _inRaw = autoCorrection.correction(inRaw);
+          context.botUser.orgNlp = context.botUser.nlp;
+          type.processInput(context, _inRaw, function (_inNLP, _inDoc) {
+            context.botUser.nlpCorrection = _inNLP;
+            context.botUser.inRawCorrection = _inRaw;
+            matchGlobalDialogs(_inRaw, _inNLP, dialogs, context, print, callback, true);
+          });
+        } else {
+          for (var i = 0; i < dialogs.length; i++) {
+            var dialog = dialogs[i];
+            if (dialog.input == undefined || dialog.input === '' || dialog.name == NO_DIALOG_NAME) {
+              executeDialog(dialog, context, print, callback);
+              context.dialog.isFail = true;
+              callback(true, dialog);
+              return;
             }
-          // }
-        // })
+          }
+
+          if (context.botUser.orgNlp) context.botUser.nlp = context.botUser.orgNlp;
+          context.botUser.orgNlp = null;
+
+          if (context.bot.useQuibble == true) {
+            context.dialog.isFail = true;
+            // print(quibble.quibble(context));
+            var dialog = {id: -1, name: 'quibble', input: 'false', output: quibble.quibble(context)};
+            executeDialog(dialog, context, print, callback);
+          } else if (context.bot.noDialog) {
+            context.dialog.isFail = true;
+            executeDialog(context.bot.noDialog, context, print, callback);
+          } else {
+            context.dialog.isFail = true;
+            console.error('NO_DIALOG(답변없음)가 없습니다. 아래와 같이 설정바랍니다.\n답변없음:c<> 알아듣지 못하는 말입니다.');
+            // print('학습되어 있지 않은 대화 입니다.');
+            // callback(true, context.bot.noDialog);
+            var dialog = {id: -1, name: 'no_dialog', input: 'false', output: '학습되어 있지 않은 대화 입니다.'};
+            executeDialog(dialog, context, print, callback);
+          }
+        }
       });
     }
   });
@@ -175,8 +171,10 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback, opti
       callback(true, _dialog);
     } else {
       matchDialogs(inRaw, inNLP, dialogs, context, print, function(matched, _dialog) {
-        if(matched == true) {
+        if (matched == true) {
           callback(matched, _dialog);
+        } else if (context.botUser.intentDialog) {
+          executeDialog(context.botUser.intentDialog, context, print, callback);
         } else {
           if(context.bot.useAutoCorrection != true || wordCorrection) {
             for (var i = 0; i < dialogs.length; i++) {
@@ -970,6 +968,8 @@ function executeType(inRaw, inNLP, type, task, context, callback) {
     },
 
     function(cb4) {
+      if(context.dialog.typeMatches == undefined) context.dialog.typeMatches = {};
+
       if (context.dialog.typeMatches[type.name] == undefined) {
         var inText;
 
