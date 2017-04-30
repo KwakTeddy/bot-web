@@ -1,11 +1,37 @@
 'use strict';
 
-angular.module('users').controller('PasswordController', ['$scope', '$stateParams', '$http', '$location', 'Authentication', 'PasswordValidator', '$state', '$ionicModal', '$ionicPopup',
-  function ($scope, $stateParams, $http, $location, Authentication, PasswordValidator, $state, $ionicModal, $ionicPopup) {
+angular.module('users').controller('PasswordController', ['$scope', '$stateParams', '$http', '$location', 'Authentication',
+  'PasswordValidator', '$state', '$ionicModal', '$ionicPopup', 'Notification',
+  function ($scope, $stateParams, $http, $location, Authentication, PasswordValidator, $state, $ionicModal, $ionicPopup, Notification) {
+    var vm = this;
     $scope.authentication = Authentication;
     $scope.popoverMsg = PasswordValidator.getPopoverMsg();
     $scope.forgotPasswordForm = {};
     $scope.credentials = {};
+    //
+    // Notification({ message: '123', title: '<i class="glyphicon glyphicon-ok"></i> Password reset email sent successfully!', positionY: 'bottom', delay: 'no' });
+    // Notification.primary({ message: '123', title: '<i class="glyphicon glyphicon-ok"></i> Password reset email sent successfully!', positionY: 'bottom' , delay: 'no'});
+    // Notification.info({ message: '123', title: '<i class="glyphicon glyphicon-ok"></i> Password reset email sent successfully!', positionY: 'bottom' , delay: 'no'});
+    // Notification.success({ message: '123', title: '<i class="glyphicon glyphicon-ok"></i> Password reset email sent successfully!', positionY: 'bottom' , delay: 'no'});
+    // Notification.warning({ message: '123', title: '<i class="glyphicon glyphicon-ok"></i> Password reset email sent successfully!', positionY: 'bottom' , delay: 'no'});
+    // Notification.error({ message: '123', title: '<i class="glyphicon glyphicon-ok"></i> Password reset email sent successfully!', positionY: 'bottom' , delay: 'no'});
+    // Notification.success({ message: '123', title: '<i class="glyphicon glyphicon-ok"></i> Password reset email sent successfully!', positionY: 'bottom' , delay: 'no'});
+    //
+    //
+
+
+    $scope.itemArray = [
+      {id: 1, name: 'first'},
+      {id: 2, name: 'second'},
+      {id: 3, name: 'third'},
+      {id: 4, name: 'fourth'},
+      {id: 5, name: 'fifth'}
+    ];
+
+    $scope.selectedItem = '';
+    $scope.go =function (target) {
+      console.log($scope)
+    }
 
 
     //routing

@@ -15,6 +15,7 @@ var fs = require('fs');
 var multer = require('multer');
 var dialogsetModule = require(path.resolve('modules/bot/engine/dialogset/dialogset.js'));
 
+var util = require('util'); // temporary
 
 exports.lgfaq = function(req, res) {
   var model = mongoModule.getModel('lgfaqs');
@@ -32,6 +33,7 @@ exports.concepts = function(req, res) {
 
 exports.create = function (req, res) {
   var dialog = new DialogsetDialog(req.body);
+  console.log(util.inspect(req.body))
   dialog.user = req.user;
 
   dialogsetModule.processInput(null, dialog.inputRaw, function(_input) {

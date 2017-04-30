@@ -169,28 +169,6 @@ exports.signup = function (req, res) {
  * Signin after passport authentication
  */
 exports.signin = function (req, res, next) {
-  // var soap = require('soap');
-  // var url = 'http://api.auction.co.kr/APIv1/AuctionService.asmx?WSDL';
-  // var args = {};
-  // args = {
-  //   req: {
-  //     attributes: {
-  //       ItemID: 'B017297198'
-  //     }
-  //   }
-  // };
-  // var soapHeader = {
-  //   "EncryptedTicket": {
-  //     attributes: {xmlns: 'http://www.auction.co.kr/Security'},
-  //     Value: 'd4bf9KGW48nXIFoUtdInx7Z6ajRe4KokvjiEN+2NAPBaP18XuCEBsWcU8w78/B6oQzUYoQheiv+hL6FpKnOw3g1f/r4zF9aU8GhxvVNwjlXaBxsZ74EXB78gF4yxmdqmCwNphS7rhVxUCvJA+pN5VG5kZgE6saq8n9pqjE9E1G/AewHe9hZr//6lLeFcfK+DSTLVEx0uTlHvoLHoSXPWOcw='}
-  // };
-  //
-  // soap.createClient(url, function(err, client) {
-  //   client.addSoapHeader(soapHeader);
-  //   client.AuctionService.AuctionServiceSoap.ViewItem(args, function(err, result) {
-  //     console.log(util.inspect(result));
-  //   });
-  // });
 
     if (req.body.resendEmail){
         User.findOne({email: req.body.resendEmail}, function (err, user) {

@@ -45,8 +45,10 @@
   <link rel="stylesheet" href="/vendor/codemirror/theme/monokai.css"/>
 
   <!--<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.css">-->
-  <!--<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">-->
-  <!--<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css">-->
+
+  <!--select css-->
+  <link rel="stylesheet" href="/lib/angular-ui-select/dist/select.css">
+  <link rel="stylesheet" href="/lib/select2/select2.css">
 
 
   <!-- Theme CSS -->
@@ -59,6 +61,10 @@
   <link rel="stylesheet" href="/css/theme-custom.css">
 
   <link rel="stylesheet" href="/css/custom.css">
+
+  <!--jsoneditor-->
+  <link href="/lib/jsoneditor/dist/jsoneditor.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/lib/angular-ui-notification/dist/angular-ui-notification.css">
 
   <!-- Head Libs -->
   <script src="/vendor/modernizr/modernizr.js"></script>
@@ -153,7 +159,7 @@
                     </a>
                   </li>
                   <li>
-                    <a ui-sref="tasks.list">
+                    <a ui-sref="tasks.list({listType: 'all'})">
                       테스크 목록
                     </a>
                   </li>
@@ -230,7 +236,7 @@
                     </a>
                   </li>
                   <li>
-                    <a ui-sref="dialogsets.list">
+                    <a ui-sref="dialogsets.list({listType : 'public'})">
                       공통 DialogSet
                     </a>
                   </li>
@@ -240,7 +246,7 @@
                     </a>
                   </li>
                   <li>
-                    <a ui-sref="dialogsets.list">
+                    <a ui-sref="dialogsets.list({listType: 'all'})">
                       개별 DialogSet
                     </a>
                   </li>

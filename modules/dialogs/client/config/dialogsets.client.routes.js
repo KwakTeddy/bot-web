@@ -18,7 +18,7 @@
         }
       })
       .state('dialogsets.list', {
-        url: '',
+        url: '?listType',
         templateUrl: 'modules/dialogs/client/views/list-dialogsets.client.view.html',
         controller: 'DialogsetsListController',
         controllerAs: 'vm',

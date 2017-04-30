@@ -9,6 +9,7 @@ angular.module('user-bots').controller('UserBotListController', ['$scope', '$roo
   function ($scope, $rootScope, $stateParams, $state, userBots, UserBotsService, UserBotsFollowService, $http, Authentication, $ionicModal) {
     var vm = this;
     vm.authentication = Authentication;
+    console.log(userBots);
     vm.userBots = userBots;
     if(_platform == 'mobile') {
         if($stateParams['listType'] == 'recent') vm.listTypeName = '최신봇';
