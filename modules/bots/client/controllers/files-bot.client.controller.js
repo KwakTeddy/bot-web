@@ -45,6 +45,10 @@ angular.module('bots').controller('BotFilesController', ['$scope', '$stateParams
         vm.files[index].renameFileName = vm.files[index].name;
       }
     };
+
+    vm.isIde = function(name) {
+      return !name.endsWith('dialog.js') && !name.endsWith("task.js");
+    };
     
     // // Find a list of Bots
     // vm.find = function () {

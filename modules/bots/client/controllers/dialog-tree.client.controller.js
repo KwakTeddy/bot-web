@@ -996,7 +996,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         return d.children && d.children.length > 0 ? d.children : null;
       });
 
-      vm.collapseDepth();
+      //vm.collapseDepth();
 
       // Layout the tree initially and center on the root node.
       if (source) {
