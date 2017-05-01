@@ -34,6 +34,13 @@ function botBuild(bot, botPath, fileName, dialogs) {
       continue;
     // var jsPath = path.join(info.dir, info.name + '.js');
     var dialogPath = path.join(info.dir, info.name + '.dialog.js');
+    var taskPath = path.join(info.dir, info.name + '.task.js');
+
+    if(!fs.existsSync(taskPath)) {
+      logger.info('\t created task file: ' + info.name + '.task.js');
+      var str = '// This file is for task definitions\n';
+      fs.writeFileSync(taskPath, str, 'utf8');
+    }
 
     if(fs.existsSync(dialogPath) &&
       fs.statSync(file).mtime <= fs.statSync(dialogPath).mtime && dialogs == undefined) {

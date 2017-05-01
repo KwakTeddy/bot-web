@@ -8,12 +8,14 @@ var dialogs = [
 		"input": [
 			{
 				"text": "바보"
+			},
+			{
+				"intent": "테스트"
 			}
 		],
 		"output": [
 			{
 				"output": "어쩌라고",
-				"image": "menu.jpg",
 				"buttons": [
 					{
 						"name": "abc"
@@ -21,7 +23,8 @@ var dialogs = [
 					{
 						"name": "def"
 					}
-				]
+				],
+				"image": "menu.jpg"
 			}
 		],
 		"name": "dialog_default0",

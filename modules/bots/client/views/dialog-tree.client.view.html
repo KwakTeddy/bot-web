@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
-    .content-body {padding: 3px}
-    .panel-body {padding: 3px}
+    .content-body {padding: 0px; padding-top:7px}
+    .panel-body {padding: 2px;}
     .CodeMirror {height: auto;}
 
 </style>
@@ -197,13 +197,13 @@
         </div>
         <div class="col-md-4"></div>
         <div class="col-md-2 ">
-            <div class="input-group mt-xs pull-right">
-                <input class="form-control" type="text" ng-model="vm.depth" readonly>
-                <span class="input-group-btn">
-                    <button class="btn btn-default" ng-click="vm.addDepth()"><i class="fa fa-plus"></i></button>
-                    <button class="btn btn-default" ng-click="vm.minusDepth()"><i class="fa fa-minus"></i></button>
-                </span>
-            </div>
+            <!--<div class="input-group mt-xs pull-right">-->
+                <!--<input class="form-control" type="text" ng-model="vm.depth" readonly>-->
+                <!--<span class="input-group-btn">-->
+                    <!--<button class="btn btn-default" ng-click="vm.addDepth()"><i class="fa fa-plus"></i></button>-->
+                    <!--<button class="btn btn-default" ng-click="vm.minusDepth()"><i class="fa fa-minus"></i></button>-->
+                <!--</span>-->
+            <!--</div>-->
         </div>
         <div class="col-md-3">
             <form>
@@ -298,6 +298,18 @@
                                         <input type="text" id="input" name="input" ng-model="vm.curI.str" class="form-control"
                                                placeholder="{{getPlaceHolder(vm.curI.type)}}" >
                                     </div>
+                                    <div ng-show="vm.inputMode && getInputType(vm.curI.type) == 'intent'">
+                                        <button class="btn btn-default btn-block dropdown-toggle" type="button" data-toggle="dropdown"
+                                                ng-model="vm.curI.str"
+                                                ng-disabled="vm.intents.length == 0"
+                                        >
+                                            {{vm.curI.str}}
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu btn-block">
+                                            <li class="text-center" ng-repeat = "t in vm.intents"><a href="#" ng-click="vm.curI.str = t">{{t}}</a></li>
+                                        </ul>
+                                    </div>
                                     <div ng-show="vm.inputMode && getInputType(vm.curI.type) == 'type'">
                                         <button class="btn btn-default btn-block dropdown-toggle" type="button" data-toggle="dropdown"
                                                 ng-model="vm.curI.str"
@@ -314,7 +326,9 @@
                                         </ul>
                                     </div>
                                     <span class="input-group-btn">
-                                        <button class="btn btn-primary" ng-click="saveI()" type="button">저장</button>
+                                        <button class="btn btn-primary"
+                                                ng-disabled="vm.curI.str === ''"
+                                                ng-click="saveI()" type="button">저장</button>
                                         <button class="btn btn-danger" ng-click="resetI()" type="button">취소</button>
                                     </span>
                                 </div>
@@ -419,7 +433,9 @@
                                     <!--</script>-->
 
                                     <span class="input-group-btn">
-                                        <button class="btn btn-primary" ng-click="saveO()" type="button">저장</button>
+                                        <button class="btn btn-primary"
+                                                ng-disabled="vm.curO.str === ''"
+                                                ng-click="saveO()" type="button">저장</button>
                                         <button class="btn btn-danger" ng-click="resetO()" type="button">취소</button>
                                     </span>
                                 </div>
@@ -469,6 +485,9 @@
                 <!--<a class="btn btn-primary" ng-click="vm.viewGraph()">-->
                 <!--dialog graph-->
                 <!--</a>-->
+                <a class="btn btn-default" ng-show="vm.fromTask" ng-click="gotoTree()">
+                   돌아가기
+                </a>
                 <a class="btn btn-primary" ng-click="vm.saveFile()">
                     Save & Build
                 </a>
@@ -487,6 +506,7 @@
         </form>
     </div>
 </section>
+
 <script src="/vendor/pnotify/pnotify.custom.js"></script>
 </body>
 </html>
