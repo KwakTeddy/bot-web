@@ -77,15 +77,28 @@ var dialogs = [
 						"name": "dialog_default6",
 						"id": "default6",
 						"filename": "default",
-						"input": [],
+						"input": [
+							{
+								"text": "sdfsdf"
+							}
+						],
 						"output": []
 					},
 					{
 						"name": "dialog_default7",
 						"id": "default7",
 						"filename": "default",
-						"input": [],
-						"output": []
+						"input": [
+							{
+								"text": "asdasdsa",
+								"regexp": "sdfsdf"
+							}
+						],
+						"output": [
+							{
+								"call": "dialog_default1"
+							}
+						]
 					}
 				],
 				"task": "lglist"
@@ -139,6 +152,9 @@ var dialogs = [
 				"output": [
 					{
 						"output": "주소입니다"
+					},
+					{
+						"call": "dialog_default1"
 					}
 				]
 			}

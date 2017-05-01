@@ -1,11 +1,16 @@
-'use strict';
+'use stric';
+
+function gogo(filename) {
+  angular.element(document.getElementById('control')).scope().changeTabName(filename);
+};
 
 // Bots controller
 angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope', '$state', '$window','$timeout',
   '$stateParams', '$resource', 'Dialogs', 'DialogSaveService', 'OpenTasksService', 'FileUploader','$document',
-  'fileResolve', 'BotFilesService', 'CoreUtils', 'botFilesResolve',
+  'fileResolve', 'BotFilesService', 'CoreUtils', 'botFilesResolve', 'Socket', '$uibModal', '$compile',
   function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, Dialogs, DialogSaveService,
-            OpenTasksService, FileUploader, $document, file, BotFilesService, CoreUtils, files) {
+            OpenTasksService, FileUploader, $document, file, BotFilesService, CoreUtils, files, Socket,
+            $uibModal, $compile) {
 
     (function($) {
       'use strict';
@@ -88,7 +93,21 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           }
         }
       });
+
+      $(document).on('click', '.filetree_button', function (e) {
+        e.preventDefault();
+        $('.filetree_button').hide();
+        $('.filetree').show();
+      });
+
+      $(document).on('click', '#filetree_close', function (e) {
+        e.preventDefault();
+        $('.filetree').hide();
+        $('.filetree_button').show();
+      });
+
     }).apply(this, [jQuery]);
+
 
     $scope.openTask = function(task, isCommon) {
       $scope.dialog.task = {name: task.name};
@@ -112,6 +131,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.openType = function(type) {
+      $.magnificPopup.close();
+      vm.fromTask = true;
+      vm.changeTab(vm.tabs[1]);
     };
 
     $scope.closeEdit = function() {
@@ -132,6 +154,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     var vm = this;
+    vm.showTree = true;
     vm.userId = $rootScope.userId;
     vm.bot_id = $stateParams.botId;
     vm.file_id = $stateParams.fileId;
@@ -143,6 +166,50 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     vm.botName = file.botName;
     vm.name = file.name;
     vm.data = file.data;
+    vm.files = files;
+
+    vm.initialized = false;
+
+    vm.initTree = function() {
+      if (vm.initialized)
+        return;
+      vm.initialized = true;
+      vm.files.forEach(function(f) {
+        var item = "<li data-jstree='{\"type\":\"file\"";
+        if (f.name === vm.currentTab.name) {
+          item += ",\"selected\":true";
+        }
+        var included = false;
+        vm.tabs.forEach(function(t) {
+          if (t.name === f.name)
+            included = true;
+        });
+        if (!included)
+          item += ",\"disabled\":true";
+
+          item = item + "}'><a href='#' onClick='gogo(\""+f.name+"\")'>"+ f.name + "</a></li>";
+        document.getElementById('ul_list').insertAdjacentHTML('beforeEnd', item);
+      });
+
+      //$compile(document.getElementById('filetree'))($scope);
+
+      $('#treeBasic').jstree({
+        'core' : {
+          'themes' : {
+            'responsive': false
+          }
+        },
+        'types' : {
+          'default' : {
+            'icon' : 'fa fa-folder'
+          },
+          'file' : {
+            'icon' : 'fa fa-file'
+          }
+        },
+        'plugins': ['types']
+      });
+    };
 
     vm.initTabs = function() {
       vm.tabs.forEach(function(t) {
@@ -162,6 +229,25 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       });
     };
 
+    $scope.changeTabName  = function (name) {
+      var tab = null;
+      vm.tabs.forEach(function(t) {
+        if (t.name === name)
+          tab = t;
+      });
+
+      if (tab != null) {
+        vm.initTabs();
+        vm.currentTab = tab;
+        tab.active = true;
+        vm.file = tab.name;
+
+        $scope.refreshCodemirror = true;
+        $timeout(function () {
+          $scope.refreshCodemirror = false;
+        }, 100);
+      }
+    };
     vm.changeTab = function (tab) {
       vm.initTabs();
       vm.currentTab = tab;
@@ -178,20 +264,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     vm.currentTab = vm.tabs[0];
     vm.addTab(vm.name.split('.')[0]+'.task.js');
 
-    // file tree
-    vm.treeData =
-      [{
-        "id": "demo_root_1",
-        "text": "Root 1",
-        "children": true,
-        "type": "root"
-      }, {
-        "id": "demo_root_2",
-        "text": "Root 2",
-        "type": "root"
-      }];
-
-
     // ide
     vm.codemirrorOpts = {
       lineWrapping: true,
@@ -206,7 +278,16 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     vm.saveFile = function () {
       new BotFilesService({botId: $stateParams.botId, _id: vm.currentTab.file_id, fileData: vm.currentTab.data}).$save(function (botFile) {
-        CoreUtils.showConfirmAlert('저장되었습니다.');
+        $resource('/api/loadBot/:bot_id', {}).get({bot_id: vm.bot_id, }, function(res) {
+          $scope.message = "저장되었습니다";
+          var modalInstance = $uibModal.open({
+            templateUrl: 'modules/bots/client/views/modal-bots.html',
+            scope: $scope
+          });
+          modalInstance.result.then(function (response) {
+            console.log(response);
+          });
+        });
       }, function (err) {
         CoreUtils.showConfirmAlert(err.data.message);
       });
@@ -215,7 +296,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     // graph edit
     vm.setChanged = function(c, updateScope) {
       if (c == true) {
-        vm.changeHistory.push({source:angular.copy(selectedNode), dialogs:angular.copy(dialogs)});
+        vm.changeHistory.push({source:angular.copy(selectedNode),  dialogs:angular.copy(dialogs)});
       }
       vm.isChanged = c;
 
@@ -230,6 +311,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         dialogs = history.dialogs;
         vm.initTreeData();
         init(history.source);
+        var svg = baseSvg.selectAll(".node").filter(function(d) {
+          if (d.id === history.source.id)
+            return true;
+        });
+        svg.remove();
+        update(history.source);
       }
       if (vm.changeHistory.length == 0) {
         vm.setChanged(false);
@@ -733,6 +820,17 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             text: '',
             type: 'success'
           });
+          $scope.emitMsg(':reset user');
+          $scope.emitMsg(':init');
+
+          $scope.message = "저장되었습니다";
+          var modalInstance = $uibModal.open({
+            templateUrl: 'modules/bots/client/views/modal-bots.html',
+            scope: $scope
+          });
+          modalInstance.result.then(function (response) {
+            console.log(response);
+          });
           console.log("saved");
         }, function(err) {
           console.log(err);
@@ -926,7 +1024,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
 
       dialogs.forEach(handleDialog); // for-loop is 10 times faster
-      dialogs.forEach(handleLink);
+      if (vm.show_link)
+        dialogs.forEach(handleLink);
       console.log(nodes);
       console.log(links_internal);
 
@@ -966,7 +1065,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     // size of rect
     var rectW = 250, rectH = 130;
     // height for one node
-    var itemHeight = rectH+100;
+    var itemHeight = rectH+300;
     // width for one depth
     var labelWidth = 350;
 
@@ -1077,7 +1176,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       nodes = [];
       links_internal = [];
       dialogs.forEach(handleDialog);
-      dialogs.forEach(handleLink);
+      if (vm.show_link)
+        dialogs.forEach(handleLink);
 
       // Set widths between levels based on maxLabelLength.
       nodes_tree.forEach(function (d) {
@@ -1224,7 +1324,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         .call(wrap, rectW-25, 1);
 
       nodeEnter.append("text")
-        .attr("id", "image")
+        .attr("id", "button")
         .attr("class","nodetext")
         .style("pointer-events", "none")
         .attr("x", 7)
@@ -1246,7 +1346,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         });
 
 
-      // add the text
+      //add the text
       // nodeUpdate.select("text#name")
       //   .text(function(d) { return d.name; });
       //
@@ -1255,14 +1355,28 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       //   .call(wrap, rectW-30, 1);
       //
       // nodeUpdate.select("text#task")
-      //   .text(function(d) { return "Task: " + (d.task ? d.task : ""); })
+      //   .text(function(d) {
+      //     if (d.task && d.task.name)
+      //       return "Task: " + d.task.name;
+      //     else if (d.task)
+      //       return "Task: " + d.task;
+      //     return "Task: ";
+      //   })
       //   .call(wrap, rectW-25, 2);
       //
       // nodeUpdate.select("text#output")
       //   .text(function(d) { return "Out: " + (d.output_text ? d.output_text : ""); })
       //   .call(wrap, rectW-25, 2);
       //
-      // // Fade the text in
+      // nodeUpdate.select("text#image")
+      //   .text(function(d) { return "Image: " + (d.image_text ? d.image_text: ""); })
+      //   .call(wrap, rectW-25, 1);
+      //
+      // nodeUpdate.select("text#button")
+      //   .text(function(d) { return "Button: " + (d.buttons ? d.buttons + "": ""); })
+      //   .call(wrap, rectW-25, 1);
+
+      // Fade the text in
       // nodeUpdate.select("text")
       //   .transition().duration(0)
       //   .style("fill", "red")
@@ -1526,6 +1640,18 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     }
 
     function addChild(d) {
+      var isCallNode = false;
+      if (d.output) {
+        d.output.forEach(function(o) {
+          if (o.call) {
+            isCallNode = true;
+          }
+        });
+      }
+
+      if (isCallNode)
+        return;
+
       vm.setChanged(true, true);
       if (d3.event)
         d3.event.stopPropagation();
@@ -1727,7 +1853,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     vm.collapseDepth = function() {
-      vm.itemHeight = vm.itemHeight + 100 + 20*vm.depth;
+      //vm.itemHeight = vm.itemHeight + 100 + 20*vm.depth;
       if (!treeData)
         return;
       treeData.children.forEach(function (d) {
@@ -1755,5 +1881,23 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         update(treeData);
       }
     };
+
+    vm.show_link = true;
+    vm.showLink = function() {
+      vm.show_link = true;
+      update(treeData);
+    };
+    vm.hideLink = function() {
+      vm.show_link = false;
+      update(treeData);
+    };
+
+    $scope.emitMsg = function(msg) {
+      Socket.emit('send_msg', {
+        bot: vm.botName,
+        user: vm.userId,
+        msg: msg
+      });
+    }
   }]
 );

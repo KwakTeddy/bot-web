@@ -3,6 +3,19 @@ var mongo = require(path.resolve('./modules/bot/action/common/mongo'));
 var bot = require(path.resolve('config/lib/bot')).getBot('tree');
 var async = require('async');
 
+var lgtest = {
+};
+bot.setTask("lgtest",lgtest);
+
+var lgtest2 = {
+};
+bot.setTask("lgtest2",lgtest2);
+
+var lgtest3 = {
+};
+bot.setTask("lgtest3",lgtest3);
+
+
 var lglist = {
   module: 'http',
   action: "simpleRequest",

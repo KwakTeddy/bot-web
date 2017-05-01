@@ -317,6 +317,14 @@ exports.save_dialog = function(req, res) {
   searchDialog(dialogs_data, dialogId, save, res, dialog);
 };
 
+exports.load_bot = function(req, res) {
+  var botId = req.params.bId;
+  botLib.loadBot(botId, function(bot) {
+    console.log("loadBot: " + botId);
+    res.status(200).send({message: 'done'});
+  });
+};
+
 exports.save_dialogs = function(req, res) {
   var botId = req.body.botId;
   var fileName = req.body.fileName;
@@ -330,7 +338,6 @@ exports.save_dialogs = function(req, res) {
   // save to dialog.js , buildBot and loadBot
   botLib.buildBot(botId, null, fileName, JSON.stringify(dialogs, null, "\t"));
   botLib.loadBot(botId, function(bot) {
-    var dialogs_data = global._bots[botId].dialogs;
     console.log("saveAll: " + botId+","+fileName);
     res.status(200).send({message: 'done'});
   });

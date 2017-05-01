@@ -150,6 +150,25 @@
     .modal-block {
     }
 
+    .filetree {
+        position:absolute;
+        top:100px;
+        left:10px;
+        width:200px;
+        height:90%;
+        border: 1px solid;
+        z-index: 2000;
+        background:white;
+        opacity: 0.9;
+    }
+    .filetree_button {
+        position:absolute;
+        top:100px;
+        left:10px;
+        z-index: 2000;
+        opacity: 0.9;
+    }
+
 </style>
 <body>
 
@@ -185,6 +204,7 @@
 <div id="control" ng-show="vm.tabs[0].active" class="test-body">
     <a class="modal-with-form btn btn-default" style="display:none" href="#modalForm">Open Form</a>
     <a class="modal-with-task btn btn-default" style="display:none" href="#modalTaskForm">Open Form</a>
+    <a class="file-tree btn btn-default" style="display:none" href="#file-tree">Open Form</a>
 
     <div class="row">
         <div class="col-md-3">
@@ -204,11 +224,17 @@
                     <!--<button class="btn btn-default" ng-click="vm.minusDepth()"><i class="fa fa-minus"></i></button>-->
                 <!--</span>-->
             <!--</div>-->
+            <button class="mt-xs mr-xs btn btn-default pull-right"
+                    ng-show="!vm.show_link"
+                    ng-click="vm.showLink()" ><i class="fa fa-flag"> 관계선 보이기</i></button>
+            <button class="mt-xs mr-xs btn btn-default pull-right"
+                    ng-show="vm.show_link"
+                    ng-click="vm.hideLink()()" ><i class="fa fa-flag"> 관계선 감추기</i></button>
         </div>
         <div class="col-md-3">
             <form>
                 <button class="mt-xs mr-xs btn btn-primary pull-right" ng-disabled="!vm.isChanged" ng-click="save()" ><i class="fa fa-save"></i> 저장하기</button>
-                <button class="mt-xs mr-xs btn btn-warning pull-right" ng-disabled="vm.changeHistory.length == 0" ng-click="undo()" ><i class="fa fa-undo"></i>되돌리기</button>
+                <button class="mt-xs mr-xs btn btn-warning pull-right" ng-disabled="vm.changeHistory.length == 0" ng-click="undo()" ><i class="fa fa-undo"></i> 되돌리기</button>
             </form>
         </div>
     </div>
@@ -423,15 +449,6 @@
                                           </i>
                                       </span>
                                     </div>
-                                    <!--<select class="js-example-basic-single" ng-model="vm.curO.str">-->
-                                    <!--<option ng-repeat = "t in dialogList()" value="{{t}}">{{t}}</option>-->
-                                    <!--</select>-->
-                                    <!--<script type="text/javascript">-->
-                                    <!--$(document).ready(function() {-->
-                                    <!--$(".js-example-basic-single").select2();-->
-                                    <!--});-->
-                                    <!--</script>-->
-
                                     <span class="input-group-btn">
                                         <button class="btn btn-primary"
                                                 ng-disabled="vm.curO.str === ''"
@@ -489,7 +506,7 @@
                    돌아가기
                 </a>
                 <a class="btn btn-primary" ng-click="vm.saveFile()">
-                    Save & Build
+                   저장하기
                 </a>
             </div>
         </div>
@@ -507,7 +524,32 @@
     </div>
 </section>
 
+<link href="/lib/jstree/dist/themes/default/style.css" rel="stylesheet" type="text/css">
+
+<button id="filetree_open" class="filetree_button btn btn-sm" ng-click="vm.initTree()">파일 트리</button>
+
+<div id='filetree' class="filetree" style="display:none">
+    <div class="row">
+        <button id="filetree_close" class="btn btn-default btn-sm pull-right"
+                style="margin-right:20px;margin-top:5px">닫기</button>
+    </div>
+    <div class="panel-body">
+        <div id="treeBasic">
+            <ul>
+                <li data-jstree="{'opened'=true}"> Root
+                    <ul id="ul_list">
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script src="/vendor/jstree/jstree.js"></script>
+<script>
+</script>
+
 <script src="/vendor/pnotify/pnotify.custom.js"></script>
+
 </body>
 </html>
 
