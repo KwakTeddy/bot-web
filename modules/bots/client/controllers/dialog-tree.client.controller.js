@@ -391,15 +391,17 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         return false;
       if (!selectedNode)
         return false;
-      if ([65,68,69,37,38,39,40].indexOf(event.keyCode) == -1)
+      if ([45,46,32,13, 37,38,39,40].indexOf(event.keyCode) == -1)
         return false;
 
       event.preventDefault();
-      if (event.keyCode == 65) { // A
+      if (event.keyCode == 45) { // insert
         addChild(selectedNode);
-      } else if (event.keyCode == 68) { //d
+      } else if (event.keyCode == 46) { // del
         deleteNode(selectedNode);
-      } else if (event.keyCode == 69) { //e
+      } else if (event.keyCode == 32) { // space
+        toggleAndCenter(selectedNode);
+      } else if (event.keyCode == 13) { //enter
         edit(selectedNode);
       } else if (event.keyCode == 37) { //left
         if (selectedNode.parent) {
@@ -1100,7 +1102,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       .attr("width", viewerWidth)
       .attr("height", viewerHeight)
       .attr("class", "overlay graph-svg-component")
-      .call(zoomListener);
+      .call(zoomListener)
+      .on('dblclick.zoom', null);
 
     var tip = d3.tip()
       .attr('class', 'd3-tip')
@@ -1210,7 +1213,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         .attr("transform", function (d) {
           return "translate(" + source.y0 + "," + source.x0 + ")";
         })
-        .on('click', click);
+        .on('click', click)
+        .on('dblclick', dblclick);
+
 
       nodeEnter.append("rect")
         .attr('class', 'nodeRect')
@@ -1603,13 +1608,38 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     // node interactions
 
+    var dblclick_occured = false;
+    var t = null;
+    var tempSVG = null;
     // Toggle children on click.
     function click(d) {
+      tempSVG = d3.select(this);
+      if (d3.event.defaultPrevented) return; // click suppressed
+      if (t) return; // When Timeout already present, ignore this handler
+      t = setTimeout(function(){
+        if (dblclick_occured){
+          dblclick_occured = false;
+          t = null;
+          return;
+        }
+
+        t = null;
+        selectedNode = d;
+        selectedSVG = tempSVG;
+        update(d);
+        centerNode(d);
+      }, 200); // time to doubleclick
+    }
+
+    // Toggle children on click.
+    function dblclick(d) {
+      dblclick_occured = true;
       if (d3.event.defaultPrevented) return; // click suppressed
       selectedNode = d;
       selectedSVG = d3.select(this);
       update(d);
       centerNode(d);
+      edit(d);
     }
 
     function toggleAndCenter(d) {
