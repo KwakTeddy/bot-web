@@ -90,6 +90,13 @@ exports.create = function (req, res) {
         fs.writeFileSync(botFolder + 'default.dlg', dlgFile, {flag: 'wx'});
         createFile('default.dlg', bot.user, bot);
 
+        var taskFile = fs.readFileSync('./custom_modules/global/default.task.js.template', 'utf8');
+        taskFile= taskFile.replace(/__bot__/g, bot.id);
+        fs.writeFileSync(botFolder + 'default.task.js', taskFile, {flag: 'wx'});
+        createFile('default.task.js', bot.user, bot);
+
+        createFile('default.dialog.js', bot.user, bot);
+
         cb(null);
       } else {
         cb(null);

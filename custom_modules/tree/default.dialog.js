@@ -82,7 +82,16 @@ var dialogs = [
 								"text": "sdfsdf"
 							}
 						],
-						"output": []
+						"output": [],
+						"children": [
+							{
+								"name": "dialog_default10",
+								"id": "default10",
+								"filename": "default",
+								"input": [],
+								"output": []
+							}
+						]
 					},
 					{
 						"name": "dialog_default7",

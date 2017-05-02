@@ -64,3 +64,6 @@ var dateType = {
 
 bot.setType("address", addrType);
 bot.setType("date", dateType);
+
+var task2 = function() {}
+bot.setTask('task2',task2);

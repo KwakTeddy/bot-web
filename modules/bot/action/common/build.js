@@ -3,6 +3,22 @@ var path = require('path');
 var logger = require(path.resolve('config/lib/logger'));
 var utils = require(path.resolve('modules/bot/action/common/utils'));
 
+// var mongoose = require('mongoose'),
+//     BotFile = mongoose.model('BotFile');
+//
+// function createFile(fileName, user, bot) {
+//   var botFile = new BotFile();
+//   botFile.bot = bot;
+//   botFile.name = fileName;
+//   botFile.user = user;
+//   console.log('botFile: ' + botFile.name);
+//   botFile.save(function (err) {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//     }
+//   });
+// }
 
 function botBuild(bot, botPath, fileName, dialogs) {
   var botDir;
@@ -38,8 +54,10 @@ function botBuild(bot, botPath, fileName, dialogs) {
 
     if(!fs.existsSync(taskPath)) {
       logger.info('\t created task file: ' + info.name + '.task.js');
-      var str = '// This file is for task definitions\n';
-      fs.writeFileSync(taskPath, str, 'utf8');
+      var taskFile = fs.readFileSync('./custom_modules/global/default.task.js.template', 'utf8');
+      taskFile= taskFile.replace(/__bot__/g, bot.id);
+      //createFile('default.task.js', bot.user, bot);
+      fs.writeFileSync(taskPath, taskFile, 'utf8');
     }
 
     if(fs.existsSync(dialogPath) &&

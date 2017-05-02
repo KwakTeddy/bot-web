@@ -97,16 +97,30 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       $(document).on('click', '.filetree_button', function (e) {
         e.preventDefault();
         $('.filetree_button').hide();
-        $('.filetree').show();
+        $('#filetree').addClass('col-md-3');
+        $('#content').removeClass('col-md-12');
+        $('#content').addClass('col-md-9');
+        $('#filetree').show();
+        viewerWidth = document.getElementById('tree-container').clientWidth;
+        baseSvg.attr("width", viewerWidth);
+        angular.element(document.getElementById('control')).scope().updateEditor();
       });
 
       $(document).on('click', '#filetree_close', function (e) {
         e.preventDefault();
-        $('.filetree').hide();
+        $('#filetree').hide();
+        $('#filetree').removeClass('col-md-3');
+        $('#content').removeClass('col-md-9');
+        $('#content').addClass('col-md-12');
         $('.filetree_button').show();
+        viewerWidth = document.getElementById('tree-container').clientWidth;
+        baseSvg.attr("width", viewerWidth);
+        angular.element(document.getElementById('control')).scope().updateEditor();
       });
 
     }).apply(this, [jQuery]);
+
+    var editor;
 
     $scope.addTask = function() {
       vm.edit = 'task';
@@ -115,8 +129,14 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.fromTask = true;
       vm.changeTab(vm.tabs[1]);
 
+      vm.currentTab.data += "\nvar task = function() {}\nbot.setTask('',task);";
+
+      $scope.refreshCodemirror = true;
       vm.editor.focus();
       vm.editor.setCursor({line:vm.editor.lastLine() ,ch:0});
+      $timeout(function () {
+        $scope.refreshCodemirror = false;
+      }, 100);
     };
 
 
@@ -131,8 +151,17 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         vm.fromTask = true;
         vm.changeTab(vm.tabs[1]);
 
+        var lines = vm.currentTab.data.split("\n");
+        for (var where=0; where < lines.length; ++where) {
+          if (lines[where].search(task) != -1)
+            break;
+        }
+        $scope.refreshCodemirror = true;
         vm.editor.focus();
-        vm.editor.setCursor({line:20,ch:0});
+        vm.editor.setCursor({line:where,ch:0});
+        $timeout(function () {
+          $scope.refreshCodemirror = false;
+        }, 100);
       }
     };
 
@@ -284,7 +313,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     vm.codemirrorOpts = {
       lineWrapping: true,
       lineNumbers: true,
-      mode: 'javascript'
+      mode: 'javascript',
     };
 
     $scope.codeLoaded = function(_editor) {
@@ -292,9 +321,18 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.editor.setSize(viewerWidth,viewerHeight);
     };
 
+    $scope.updateEditor = function() {
+      vm.editor.setSize(viewerWidth,viewerHeight);
+      $scope.$apply();
+      $scope.refreshCodemirror = true;
+      $timeout(function () {
+        $scope.refreshCodemirror = false;
+      }, 100);
+    };
+
     vm.saveFile = function () {
       new BotFilesService({botId: $stateParams.botId, _id: vm.currentTab.file_id, fileData: vm.currentTab.data}).$save(function (botFile) {
-        $resource('/api/loadBot/:bot_id', {}).get({bot_id: vm.bot_id, }, function(res) {
+        $resource('/api/loadBot/:bot_id', {}).get({bot_id: file.botName, }, function(res) {
           $scope.message = "저장되었습니다";
           var modalInstance = $uibModal.open({
             templateUrl: 'modules/bots/client/views/modal-bots.html',
@@ -405,8 +443,30 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
       if (vm.edit === 'dialog' || vm.edit === 'task')
         return false;
+
+      if (event.ctrlKey && event.keyCode == 90) { // ctrl+z
+        event.preventDefault();
+        if (vm.changeHistory.length != 0) {
+          $scope.undo();
+          $scope.$apply();
+        }
+        return;
+      } else if (event.ctrlKey && event.keyCode == 83) { // ctrl+s
+        event.preventDefault();
+        if (vm.isChanged) {
+          $scope.save();
+          $scope.$apply();
+        }
+        return;
+      } else if (event.keyCode == 191) { //  /
+        event.preventDefault();
+        document.getElementById('search').focus();
+        return;
+      }
+
       if (!selectedNode)
         return false;
+
       if ([45,46,32,13, 37,38,39,40].indexOf(event.keyCode) == -1)
         return false;
 
