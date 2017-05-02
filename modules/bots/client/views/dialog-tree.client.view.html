@@ -382,23 +382,34 @@
                     <hr>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Task</label>
-                        <div class="col-sm-9 dropdwon">
-                            <button ng-disabled="vm.tasks.length == 0" class="btn btn-default btn-block dropdown-toggle" ng-model="dialog.task" type="button" data-toggle="dropdown">{{dialog.task.name}}
-                                <span class="caret"></span></button>
-                            <ul class="dropdown-menu btn-block">
-                                <li class="text-center"><a href="#" ng-click="dialog.task = undefined">선택 안함</a></li>
-                                <li class="divider">|</li>
-                                <li class="text-center" ng-repeat = "t in vm.tasks">
-                                    <a href="#" ng-click="dialog.task = {name:t}">{{t}}</a>
-                                    <i ng-click="openTask(t, false)" class="btn fa fa-3 fa-edit pull-right" style="margin-top:-25px"></i>
-                                </li>
-                                <li class="divider">|</li>
-                                <!--<li class="text-center" readonly>공개 Task</li>-->
-                                <li class="text-center" ng-repeat = "t in vm.commonTasks">
-                                    <a href="#" ng-click="dialog.task = {name:t.name}">{{t.name}}</a>
-                                    <i ng-click="openTask(t, true)" class="btn fa fa-3 fa-list pull-right" style="margin-top:-25px"></i>
-                                </li>
-                            </ul>
+                        <div class="col-sm-9 ">
+                            <div class="dropdown mb-xs ">
+                                <button ng-disabled="vm.tasks.length == 0"
+                                        class="btn btn-default btn-block dropdown-toggle"
+                                        ng-model="dialog.task" type="button"
+                                        data-toggle="dropdown">{{dialog.task.name}}
+                                    <span class="caret"></span></button>
+                                <ul class="dropdown-menu btn-block">
+                                    <li class="text-center"><a href="#" ng-click="dialog.task = undefined">선택 안함</a></li>
+                                    <li class="divider">|</li>
+                                    <li class="text-center" ng-repeat = "t in vm.tasks">
+                                        <a href="#" ng-click="dialog.task = {name:t}">{{t}}</a>
+                                        <i ng-click="openTask(t, false)" class="btn fa fa-3 fa-edit pull-right" style="margin-top:-25px"></i>
+                                    </li>
+                                    <li class="divider">|</li>
+                                    <!--<li class="text-center" readonly>공개 Task</li>-->
+                                    <li class="text-center" ng-repeat = "t in vm.commonTasks">
+                                        <a href="#" ng-click="dialog.task = {name:t.name}">{{t.name}}</a>
+                                        <i ng-click="openTask(t, true)" class="btn fa fa-3 fa-list pull-right" style="margin-top:-25px"></i>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--<span class="input-group-btn">-->
+                                <!--<button class="btn btn-primary"-->
+                                        <!--ng-click="addTask()" type="button">추가-->
+                                <!--</button>-->
+                            <!--</span>-->
+                            <button type="button" ng-click="addTask()" class="mb-xs mr-xs btn btn-sm btn-info"><i class="glyphicon glyphicon-plus"></i> Task 추가</button>
                         </div>
                     </div>
                     <hr>

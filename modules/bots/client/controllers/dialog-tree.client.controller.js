@@ -108,6 +108,17 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     }).apply(this, [jQuery]);
 
+    $scope.addTask = function() {
+      vm.edit = 'task';
+
+      $.magnificPopup.close();
+      vm.fromTask = true;
+      vm.changeTab(vm.tabs[1]);
+
+      vm.editor.focus();
+      vm.editor.setCursor({line:vm.editor.lastLine() ,ch:0});
+    };
+
 
     $scope.openTask = function(task, isCommon) {
       $scope.dialog.task = {name: task.name};
@@ -119,6 +130,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         $.magnificPopup.close();
         vm.fromTask = true;
         vm.changeTab(vm.tabs[1]);
+
+        vm.editor.focus();
+        vm.editor.setCursor({line:20,ch:0});
       }
     };
 
@@ -223,10 +237,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           vm.taskFile = f;
         }
       });
-      BotFilesService.get({botId: vm.bot_id, fileId: vm.taskFile._id}, function(result) {
-        vm.taskFile.data = result.data;
-        vm.tabs.push({name:name, data:vm.taskFile.data, file_id:vm.taskFile._id,  active:false});
-      });
+      if (vm.taskFile) {
+        BotFilesService.get({botId: vm.bot_id, fileId: vm.taskFile._id}, function(result) {
+          vm.taskFile.data = result.data;
+          vm.tabs.push({name:name, data:vm.taskFile.data, file_id:vm.taskFile._id,  active:false});
+        });
+      }
     };
 
     $scope.changeTabName  = function (name) {
@@ -1279,7 +1295,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             return "Task: " + d.task.name;
           else if (d.task)
             return "Task: " + d.task;
-          return "Task: ";
+          return "";
         })
         .call(wrap, rectW-25, 2);
 
@@ -1323,7 +1339,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         .attr("x", 7)
         .attr("dy", "10em")
         //.style("text-decoration", "underline")
-        .text(function(d) { return "Image: " + (d.image_text ? d.image_text: ""); })
+        .text(function(d) { return (d.image_text ? "Image: " + d.image_text: ""); })
         .on('mouseover', showTip)
         .on('mouseout', tip.hide)
         .call(wrap, rectW-25, 1);
@@ -1334,7 +1350,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         .style("pointer-events", "none")
         .attr("x", 7)
         .attr("dy", "12em")
-        .text(function(d) { return "Button: " + (d.buttons ? d.buttons + "": ""); })
+        .text(function(d) { return (d.buttons ? "Button: " + d.buttons + "": ""); })
         .call(wrap, rectW-25, 1);
 
       // Change the rect fill depending on whether it has children and is collapsed
