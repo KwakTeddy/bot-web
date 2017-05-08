@@ -13,11 +13,23 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 
     // Home state routing
     $stateProvider
+    // .state('developer-home', {
+    //   url: '/developer',
+    //   templateUrl: 'modules/core/client/views/home.client.view.html',
+    //   controller: 'HomeController',
+    //   controllerAs: 'vm',
+    //   data: {
+    //     roles: ['user', 'enterprise', 'admin']
+    //   }
+    // })
     .state('developer-home', {
       url: '/developer',
-      templateUrl: 'modules/core/client/views/home.client.view.html',
-      controller: 'HomeController',
+      templateUrl: 'modules/bots/client/views/list-bots.client.view.html',
+      controller: 'BotListController',
       controllerAs: 'vm',
+      resolve: {
+        botsResolve: getBots
+      },
       data: {
         roles: ['user', 'enterprise', 'admin']
       }
