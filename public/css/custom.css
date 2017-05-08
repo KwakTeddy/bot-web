@@ -118,21 +118,23 @@
 /************************** new **************************/
 
 .content-body {
-    margin-right: 400px;
+    margin-right: 330px;
+    padding: 30px;
 }
 
 .page-header {
-    padding-right: 400px;
+    padding-right: 330px;
 
 }
 
 
 #chat-include {
-    width: 400px;
+    width: 330px;
     position: fixed;
     right: 0px;
-    top: 120px;
+    top: 115px;
     bottom: 0px;
+    box-shadow: -1px 0px 1px 0px #999;
 }
 
 
@@ -409,3 +411,20 @@
     padding: 0 5px 0 5px;
     margin: 0px;
 }
+
+
+.sidebar-right {
+    margin-right: 0px;
+    background: transparent;
+}
+
+#chat-include .chat-header {
+    display: none;
+}
+
+#chat-include .chat_main {
+    min-height: 100vh;
+    padding-bottom: 154px;
+    margin-bottom: -154px;
+}
+

@@ -105,7 +105,7 @@
   <div class="inner-wrapper">
     <!--<section ng-include="'/modules/core/client/views/menu.client.view.html'"></section>-->
 
-    <aside id="sidebar-left" class="sidebar-left" style="z-index: 0;">
+    <aside id="sidebar-left" class="sidebar-left" >
 
       <div class="sidebar-header">
         <div class="sidebar-title">
@@ -528,7 +528,9 @@
       {% block content %}{% endblock %}
     </section>
 
-    <section id="chat-include" ng-include="'/modules/bots/client/views/chat-user-bot.client.view.html'"></section>
+    <aside id="chat-include" class="sidebar-right" style="z-index: 0;" ng-include="'/modules/bots/client/views/chat-user-bot.client.view.html'"></aside>
+
+    <!--<section id="chat-include" ng-include="'/modules/bots/client/views/chat-user-bot.client.view.html'"></section>-->
 
   </div>
 </section>

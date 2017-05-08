@@ -1,4 +1,4 @@
-<div id="container-chat" class="chat-container" ng-controller="UserBotChatController"
+<div id="container-chat" class="" ng-controller="UserBotChatController"
      ng-keyup="vm.onKeyPress($event.keyCode)">
 
     <div id="chat-header" class="chat-header">
@@ -14,7 +14,7 @@
             <div class="row">
                 <div class="input-group">
                     <input type="text" class="form-control" name="inputbox" id="inputbox"
-                           placeholder="대화를 입력해주세요." ng-model="vm.msg"/>
+                           placeholder="대화를 입력해주세요2." ng-model="vm.msg"/>
                     <span class="input-group-btn">
                       <!--<button class="btn" type="submit">SEND</button>-->
                       <button id="voiceButton" class="btn" type="button" ng-click="vm.toggleVoice()">Voice</button>
@@ -25,14 +25,14 @@
     </div>
     <br/>
 
-    <div class="input-group" style="margin-top: 70px;">
-        <input type="text" class="form-control" id="selectBot" name="selectBot"
-               ng-model="vm.bot"
-               placeholder="봇 이름"/>
-        <span class="input-group-btn">
-          <button class="btn btn-success" type="button" ng-click="vm.connectUserBot(vm.bot);">CONNECT</button>
-        </span>
-    </div>
+    <!--<div class="input-group" style="margin-top: 70px;">-->
+        <!--<input type="text" class="form-control" id="selectBot" name="selectBot"-->
+               <!--ng-model="vm.bot"-->
+               <!--placeholder="봇 이름"/>-->
+        <!--<span class="input-group-btn">-->
+          <!--<button class="btn btn-success" type="button" ng-click="vm.connectUserBot(vm.bot);">CONNECT</button>-->
+        <!--</span>-->
+    <!--</div>-->
 
     <!--<source id='videoSrc1' src="http://localhost:8443/videos/지속동영상.mp4" type="video/mp4">-->
 
