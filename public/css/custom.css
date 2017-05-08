@@ -169,7 +169,7 @@
 .chat_main {
     height: 444px !important;
     padding: 10px 0 0 0;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
 }
 
@@ -424,7 +424,11 @@
 
 #chat-include .chat_main {
     min-height: 100vh;
-    padding-bottom: 154px;
-    margin-bottom: -154px;
+    padding-bottom: 150px;
+    margin-bottom: -150px;
+}
+
+body {
+    overflow-y: auto;
 }
 
