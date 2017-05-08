@@ -15,19 +15,19 @@ exports.invokeRolesPolicies = function () {
   acl.allow([{
     roles: ['admin'],
     allows: [{
-      resources: ['/api/user-count/:kind/:arg','/api/dialog-usage/:kind/:arg', '/api/dialog-success/:kind/:arg', '/api/session-success/:kind/:arg', '/api/dialog-failure/:kind/:arg', '/api/dialog/:bId/:dialogId', '/api/dialogchildren/:bId/:dialogId', '/api/resetDB', '/api/dialogs/:bId/:fileId','/api/saveDialog/:bId/:fileName','/api/loadBot/:bId'],
+      resources: ['/api/user-count/:kind/:arg','/api/dialog-usage/:kind/:arg', '/api/dialog-success/:kind/:arg', '/api/session-success/:kind/:arg', '/api/dialog-failure/:bId/:kind/:arg', '/api/dialog/:bId/:dialogId', '/api/dialogchildren/:bId/:dialogId', '/api/resetDB', '/api/dialogs/:bId/:fileId','/api/saveDialog/:bId/:fileName','/api/loadBot/:bId'],
       permissions: '*'
     }]
   }, {
     roles: ['enterprise'],
     allows: [{
-      resources: ['/api/user-count/:kind/:arg','/api/dialog-usage/:kind/:arg', '/api/dialog-success/:kind/:arg', '/api/session-success/:kind/:arg', '/api/dialog-failure/:kind/:arg', '/api/dialog/:bId/:dialogId', '/api/dialogchildren/:bId/:dialogId', '/api/resetDB', '/api/dialogs/:bId/:fileId','/api/saveDialog/:bId/:fileName','/api/loadBot/:bId'],
+      resources: ['/api/user-count/:kind/:arg','/api/dialog-usage/:kind/:arg', '/api/dialog-success/:kind/:arg', '/api/session-success/:kind/:arg', '/api/dialog-failure/:bId/:kind/:arg', '/api/dialog/:bId/:dialogId', '/api/dialogchildren/:bId/:dialogId', '/api/resetDB', '/api/dialogs/:bId/:fileId','/api/saveDialog/:bId/:fileName','/api/loadBot/:bId'],
       permissions: '*'
     }]
   }, {
     roles: ['user'],
     allows: [{
-      resources: ['/api/user-count/:kind/:arg','/api/dialog-usage/:kind/:arg', '/api/dialog-success/:kind/:arg', '/api/session-success/:kind/:arg', '/api/dialog-failure/:kind/:arg', '/api/dialog/:bId/:dialogId', '/api/dialogchildren/:bId/:dialogId', '/api/resetDB', '/api/dialogs/:bId/:fileId','/api/saveDialog/:bId/:fileName','/api/loadBot/:bId'],
+      resources: ['/api/user-count/:kind/:arg','/api/dialog-usage/:kind/:arg', '/api/dialog-success/:kind/:arg', '/api/session-success/:kind/:arg', '/api/dialog-failure/:bId/:kind/:arg', '/api/dialog/:bId/:dialogId', '/api/dialogchildren/:bId/:dialogId', '/api/resetDB', '/api/dialogs/:bId/:fileId','/api/saveDialog/:bId/:fileName','/api/loadBot/:bId'],
       permissions: '*'
     }]
   }]);

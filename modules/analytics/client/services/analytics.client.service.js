@@ -38,7 +38,8 @@ angular.module('analytics').factory('DialogSuccessService', ['$resource',
 
 angular.module('analytics').factory('DialogFailureService', ['$resource',
   function ($resource) {
-    return $resource('api/dialog-failure/:kind/:arg', {
+    return $resource('api/dialog-failure/:botId/:kind/:arg', {
+      botId: '',
       kind: 'kind',
       arg: 'arg'
     }, {});

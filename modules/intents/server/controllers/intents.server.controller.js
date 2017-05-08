@@ -29,7 +29,7 @@ exports.create = function(req, res) {
         message: err
       });
     } else {
-      if (!result){
+      if (!result) {
         var intent = new Intent();
         intent.botId = req.body.botName;
         intent.name = req.body.name;
@@ -41,35 +41,37 @@ exports.create = function(req, res) {
         intentContent.name = req.body.content;
         intentContent.botId = req.body.botName;
 
-        dialogset.processInput(null, req.query.content, function(_input, _json) {
+        dialogset.processInput(null, req.query.content, function (_input, _json) {
           intentContent.input = _input;
 
-    intent.save(function(err) {
-      if (err) {
-        console.log(err);
-        return res.status(400).send({
-          message: err
+          intent.save(function (err) {
+            if (err) {
+              console.log(err);
+              return res.status(400).send({
+                message: err
+              });
+            } else {
+              intentContent.save(function (err) {
+                console.log(err);
+                if (err) {
+                  console.log(err);
+                  return res.status(400).send({
+                    message: err
+                  });
+                } else {
+                  // console.log(intent);
+
+                  intentModule.saveIntentTopics(intent.botId, function () {
+                    res.jsonp(intent);
+                  });
+                }
+              })
+            }
+          });
         });
-      } else {
-        intentContent.save(function (err) {
-          console.log(err);
-          if (err) {
-            console.log(err);
-            return res.status(400).send({
-              message: err
-            });
-          }else {
-            // console.log(intent);
-
-            intentModule.saveIntentTopics(intent.botId, function() {
-              res.jsonp(intent);
-            });
-          }
-        })
       }
-    });
-  });
-
+    }
+  })
 };
 
 /**

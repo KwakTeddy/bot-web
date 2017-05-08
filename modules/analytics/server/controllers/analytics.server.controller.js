@@ -185,6 +185,7 @@ exports.sessionSuccessList = function (req, res) {
 };
 
 exports.dialogFailureList = function (req, res) {
+  var botId = req.params.bId;
   var kind = req.params.kind;
   var arg = req.params.arg;
 
@@ -195,9 +196,9 @@ exports.dialogFailureList = function (req, res) {
     cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth()+1, inOut: true}
   cond.fail = true;
   //TODO: change this to regexp
-  cond.dialog = {$ne: null, $nin: [":reset user", ":build csdemo reset"]};
+  cond.dialog = {$ne: null, $nin: [":reset user", ":build " + botId + " reset"]};
   cond.preDialogId = {$ne: 0};
-  cond.botId = "csdemo";
+  cond.botId = botId;
 
   console.log(JSON.stringify(cond));
 

@@ -22,7 +22,7 @@ module.exports = function(app) {
   app.route('/api/session-success/:kind/:arg').all(analyticsPolicy.isAllowed)
     .get(analytics.sessionSuccessList);
 
-  app.route('/api/dialog-failure/:kind/:arg').all(analyticsPolicy.isAllowed)
+  app.route('/api/dialog-failure/:bId/:kind/:arg').all(analyticsPolicy.isAllowed)
     .get(analytics.dialogFailureList);
 
   app.route('/api/dialog/:bId/:dialogId').all(analyticsPolicy.isAllowed)
