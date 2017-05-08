@@ -231,13 +231,15 @@
                             </form>
                         </div>
                     </div>
-                    <div class="col-sm-2 col-sm-offset-3">
+                    <div class="col-sm-3 col-sm-offset-2">
                         <!--<label class="col-sm-2 control-label">Depth: </label>-->
                         <div class="input-group mt-xs pull-right">
                             <input class="form-control"  type="text" ng-model="vm.depth" readonly>
                             <span class="input-group-btn">
                                 <button class="btn btn-default" ng-click="vm.addDepth()"><i class="fa fa-plus"></i></button>
                                 <button class="btn btn-default" ng-click="vm.minusDepth()"><i class="fa fa-minus"></i></button>
+                                <button class="btn btn-default" ng-click="vm.expandAll()"><i class="fa fa-expand"></i></button>
+                                <button class="btn btn-default" ng-click="vm.collapseAll()"><i class="fa fa-compress"></i></button>
                             </span>
                         </div>
                     </div>

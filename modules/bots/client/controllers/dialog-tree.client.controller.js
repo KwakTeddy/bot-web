@@ -1221,7 +1221,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     // size of rect
     var rectW = 250, rectH = 130;
     // height for one node
-    var itemHeight = rectH+250;
+    var itemHeight = rectH+200;
     // width for one depth
     var labelWidth = 350;
 
@@ -1290,7 +1290,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         return d.children && d.children.length > 0 ? d.children : null;
       });
 
-      //vm.collapseDepth();
 
       // Layout the tree initially and center on the root node.
       if (source) {
@@ -1299,6 +1298,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       } else {
         update(root);
         updateSelected(root);
+        vm.collapseDepth();
+        update(root);
         centerNode(root, 'start');
       }
     };
@@ -2125,6 +2126,27 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       ++vm.depth;
       vm.collapseDepth();
       update(treeData);
+      if (selectedNode) {
+        centerNode(selectedNode);
+      }
+    };
+
+    vm.expandAll = function() {
+      vm.depth = vm.maxDepth;
+      vm.collapseDepth();
+      update(treeData);
+      if (selectedNode) {
+        centerNode(selectedNode);
+      } else {
+        centerNode(treeData);
+      }
+    };
+
+    vm.collapseAll = function() {
+      vm.depth = 1;
+      vm.collapseDepth();
+      update(treeData);
+      centerNode(treeData);
     };
 
     vm.minusDepth = function() {
@@ -2132,6 +2154,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         --vm.depth;
         vm.collapseDepth();
         update(treeData);
+        if (selectedNode) {
+          centerNode(selectedNode);
+        }
       }
     };
 
