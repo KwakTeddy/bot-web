@@ -1785,6 +1785,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           .attr("y", -4)
           .text(function(d) { if (d.children) return '\uf053'; else if (d._children) return '\uf054';} );
 
+        // move selected dialog to the top
+        selectedSVG.each(function() {
+         this.parentNode.appendChild(this);
+        })
+
 
       } else {
         d3.selectAll(".selectedRect").remove();
