@@ -158,11 +158,11 @@
         opacity: 0.9;
     }
     .filetree_button {
-        position:absolute;
-        top:100px;
-        left:10px;
-        z-index: 2000;
-        opacity: 0.9;
+        /*position:absolute;*/
+        /*top:100px;*/
+        /*left:10px;*/
+        /*z-index: 2000;*/
+        /*opacity: 0.9;*/
     }
 
 </style>
@@ -188,23 +188,13 @@
 </header>
 
 <div>
-    <ul class="nav nav-tabs">
-        <li role="presentation"
-            ng-repeat="tab in vm.tabs"
-            ng-class="{active: tab.active}">
-            <a href="#" ng-click="vm.changeTab(tab)">{{tab.name}}</a>
-        </li>
-    </ul>
-</div>
-
-<div class="row">
     <div id='filetree' style=" display: none;">
-        <div class="row">
-            <button id="filetree_close" class="btn btn-default btn-sm pull-right"
-                    style="margin-right:20px;margin-top:5px">닫기</button>
+        <div class="row mb-sm">
+            <button id="filetree_close" class="btn btn-default btn-xs pull-right"
+                    style="margin-right:20px;margin-top:1px">닫기</button>
         </div>
         <div class="panel-body">
-            <div id="treeBasic">
+            <div id="treeBasic" class="panel-body mt-sm">
                 <ul>
                     <li data-jstree="{'opened'=true}"> Root
                         <ul id="ul_list">
@@ -214,257 +204,272 @@
             </div>
         </div>
     </div>
-    <div id='content' class="col-md-12">
-        <div id="control" ng-show="vm.tabs[0].active" class="test-body">
-            <a class="modal-with-form btn btn-default" style="display:none" href="#modalForm">Open Form</a>
-            <a class="modal-with-task btn btn-default" style="display:none" href="#modalTaskForm">Open Form</a>
-            <a class="file-tree btn btn-default" style="display:none" href="#file-tree">Open Form</a>
+    <div>
 
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="input-group mt-xs input-search">
-                        <form ng-submit="searchNode()">
-                            <input type="text" class="form-control" name="q" id="search" placeholder="Search...">
-                            <span class="input-group-btn"> <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button> </span>
+    </div>
+    <div id='content' class="col-md-12">
+        <div>
+            <button id="filetree_open"
+                    class="mt-xs mr-xs filetree_button btn btn-sm pull-left" ng-click="vm.initTree()"><i class="fa fa-bars"></i></button>
+            <ul class="nav nav-tabs">
+                <li role="presentation"
+                    ng-repeat="tab in vm.tabs"
+                    ng-class="{active: tab.active}">
+                    <a href="#" ng-click="vm.changeTab(tab)">{{tab.name}}</a>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <div id="control" ng-show="vm.tabs[0].active" class="test-body">
+                <a class="modal-with-form btn btn-default" style="display:none" href="#modalForm">Open Form</a>
+                <a class="modal-with-task btn btn-default" style="display:none" href="#modalTaskForm">Open Form</a>
+                <a class="file-tree btn btn-default" style="display:none" href="#file-tree">Open Form</a>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-group mt-xs input-search">
+                            <form ng-submit="searchNode()">
+                                <input type="text" class="form-control" name="q" id="search" placeholder="Search...">
+                                <span class="input-group-btn"> <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button> </span>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-md-4"></div>
+                    <div class="col-md-2 ">
+                        <!--<div class="input-group mt-xs pull-right">-->
+                        <!--<input class="form-control" type="text" ng-model="vm.depth" readonly>-->
+                        <!--<span class="input-group-btn">-->
+                        <!--<button class="btn btn-default" ng-click="vm.addDepth()"><i class="fa fa-plus"></i></button>-->
+                        <!--<button class="btn btn-default" ng-click="vm.minusDepth()"><i class="fa fa-minus"></i></button>-->
+                        <!--</span>-->
+                        <!--</div>-->
+                        <button class="mt-xs mr-xs btn btn-default pull-right"
+                                ng-show="!vm.show_link"
+                                ng-click="vm.showLink()" ><i class="fa fa-flag"> 관계선 보이기</i></button>
+                        <button class="mt-xs mr-xs btn btn-default pull-right"
+                                ng-show="vm.show_link"
+                                ng-click="vm.hideLink()()" ><i class="fa fa-flag"> 관계선 감추기</i></button>
+                    </div>
+                    <div class="col-md-3">
+                        <form>
+                            <button class="mt-xs mr-xs btn btn-primary pull-right" ng-disabled="!vm.isChanged" ng-click="save()" ><i class="fa fa-save"></i> 저장하기</button>
+                            <button class="mt-xs mr-xs btn btn-warning pull-right" ng-disabled="vm.changeHistory.length == 0" ng-click="undo()" ><i class="fa fa-undo"></i> 되돌리기</button>
                         </form>
                     </div>
                 </div>
-                <div class="col-md-4"></div>
-                <div class="col-md-2 ">
-                    <!--<div class="input-group mt-xs pull-right">-->
-                    <!--<input class="form-control" type="text" ng-model="vm.depth" readonly>-->
-                    <!--<span class="input-group-btn">-->
-                    <!--<button class="btn btn-default" ng-click="vm.addDepth()"><i class="fa fa-plus"></i></button>-->
-                    <!--<button class="btn btn-default" ng-click="vm.minusDepth()"><i class="fa fa-minus"></i></button>-->
-                    <!--</span>-->
-                    <!--</div>-->
-                    <button class="mt-xs mr-xs btn btn-default pull-right"
-                            ng-show="!vm.show_link"
-                            ng-click="vm.showLink()" ><i class="fa fa-flag"> 관계선 보이기</i></button>
-                    <button class="mt-xs mr-xs btn btn-default pull-right"
-                            ng-show="vm.show_link"
-                            ng-click="vm.hideLink()()" ><i class="fa fa-flag"> 관계선 감추기</i></button>
-                </div>
-                <div class="col-md-3">
-                    <form>
-                        <button class="mt-xs mr-xs btn btn-primary pull-right" ng-disabled="!vm.isChanged" ng-click="save()" ><i class="fa fa-save"></i> 저장하기</button>
-                        <button class="mt-xs mr-xs btn btn-warning pull-right" ng-disabled="vm.changeHistory.length == 0" ng-click="undo()" ><i class="fa fa-undo"></i> 되돌리기</button>
-                    </form>
-                </div>
-            </div>
-            <div id="tree-container" class="panel" width="100%" height="100%"></div>
+                <div id="tree-container" class="panel" width="100%" height="100%"></div>
 
-            <!-- Modal Form -->
-            <div id="modalTaskForm" class="modal-block modal-block-primary mfp-hide">
-                <section class="panel">
-                    <header class="panel-heading">
-                        <h2 class="panel-title">Task 정보</h2>
-                    </header>
-                    <form name="dialogTaskForm" class="form-horizontal" novalidate="novalidate">
-                        <div class="panel-body">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">URL</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control mb-xs" ng-model="dialog.task.url" placeholder="url을 입력해주세요">
+                <!-- Modal Form -->
+                <div id="modalTaskForm" class="modal-block modal-block-primary mfp-hide">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            <h2 class="panel-title">Task 정보</h2>
+                        </header>
+                        <form name="dialogTaskForm" class="form-horizontal" novalidate="novalidate">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">URL</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control mb-xs" ng-model="dialog.task.url" placeholder="url을 입력해주세요">
+                                    </div>
+                                    <label class="col-sm-2 control-label">URL</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control mb-xs" ng-model="dialog.task.url" placeholder="url을 입력해주세요">
+                                    </div>
+                                    <label class="col-sm-2 control-label">URL</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control mb-xs" ng-model="dialog.task.url" placeholder="url을 입력해주세요">
+                                    </div>
                                 </div>
-                                <label class="col-sm-2 control-label">URL</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control mb-xs" ng-model="dialog.task.url" placeholder="url을 입력해주세요">
-                                </div>
-                                <label class="col-sm-2 control-label">URL</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control mb-xs" ng-model="dialog.task.url" placeholder="url을 입력해주세요">
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Entity</label>
-                                <div class="col-sm-9">
-                                    <ul>
-                                        <li><span>Entity12345</span></li>
-                                        <li><span>Entity12345</span></li>
-                                        <li><span>Entity12345</span></li>
-                                        <li><span>Entity12345</span></li>
-                                        <li><span>Entity12345</span></li>
-                                        <li><span>Entity12345</span></li>
-                                        <li><span>Entity12345</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <footer class="panel-footer">
-                            <div class="row">
-                                <div class="col-md-12 text-right">
-                                    <button class="btn btn-primary" ng-click="backToEdit(true)" >저장</button>
-                                    <button class="btn btn-default" ng-click="backToEdit(false)" >이전</button>
+                                <hr>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Entity</label>
+                                    <div class="col-sm-9">
+                                        <ul>
+                                            <li><span>Entity12345</span></li>
+                                            <li><span>Entity12345</span></li>
+                                            <li><span>Entity12345</span></li>
+                                            <li><span>Entity12345</span></li>
+                                            <li><span>Entity12345</span></li>
+                                            <li><span>Entity12345</span></li>
+                                            <li><span>Entity12345</span></li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </footer>
-                    </form>
-                </section>
-            </div>
+                            <footer class="panel-footer">
+                                <div class="row">
+                                    <div class="col-md-12 text-right">
+                                        <button class="btn btn-primary" ng-click="backToEdit(true)" >저장</button>
+                                        <button class="btn btn-default" ng-click="backToEdit(false)" >이전</button>
+                                    </div>
+                                </div>
+                            </footer>
+                        </form>
+                    </section>
+                </div>
 
-            <div id="modalForm" class="modal-block modal-block-primary mfp-hide">
-                <section class="panel">
-                    <header class="panel-heading">
-                        <h2 class="panel-title">다이얼로그 수정</h2>
-                    </header>
-                    <form name="dialogForm" class="form-horizontal" novalidate="novalidate">
-                        <div class="panel-body">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Name</label>
-                                <div class="col-sm-9">
-                                    <input type="text" id="name" class="form-control mb-xs" ng-model="dialog.name" placeholder="이름을 입력해주세요">
+                <div id="modalForm" class="modal-block modal-block-primary mfp-hide">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            <h2 class="panel-title">다이얼로그 수정</h2>
+                        </header>
+                        <form name="dialogForm" class="form-horizontal" novalidate="novalidate">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Name</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" id="name" class="form-control mb-xs" ng-model="dialog.name" placeholder="이름을 입력해주세요">
+                                    </div>
                                 </div>
-                            </div>
-                            <hr>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Input <span class="required" aria-required="true">*</span></label>
-                                <div class="col-sm-9">
-                                    <div ng-repeat="input in dialog.input">
-                                        <div class="input-group mb-xs" ng-show="vm.inputMode && vm.curInput == input">
-                                            <div class="input-group-btn" >
-                                                <button tabindex="-1" class="btn" ng-class="vm.getButtonClass(vm.curI.type)" type="button">{{vm.curI.type}}</button>
-                                                <button tabindex="-1" data-toggle="dropdown" ng-class="vm.getButtonClass(vm.curI.type)" class="btn dropdown-toggle" type="button">
-                                                    <span class="caret"></span>
-                                                </button>
-                                                <ul role="menu" class="dropdown-menu" >
-                                                    <li ng-repeat="type in getInputTypes(vm.curInput, vm.curI)">
-                                                        <a href="#" ng-click="setType(vm.curI, type)">{{type}}</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div ng-show="vm.inputMode && getInputType(vm.curI.type) == 'text'">
-                                                <input type="text" id="input" name="input" ng-model="vm.curI.str" class="form-control"
-                                                       placeholder="{{getPlaceHolder(vm.curI.type)}}" >
-                                            </div>
-                                            <div ng-show="vm.inputMode && getInputType(vm.curI.type) == 'intent'">
-                                                <button class="btn btn-default btn-block dropdown-toggle" type="button" data-toggle="dropdown"
-                                                        ng-model="vm.curI.str"
-                                                        ng-disabled="vm.intents.length == 0"
-                                                >
-                                                    {{vm.curI.str}}
-                                                    <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu btn-block">
-                                                    <li class="text-center" ng-repeat = "t in vm.intents"><a href="#" ng-click="vm.curI.str = t">{{t}}</a></li>
-                                                </ul>
-                                            </div>
-                                            <div ng-show="vm.inputMode && getInputType(vm.curI.type) == 'type'">
-                                                <button class="btn btn-default btn-block dropdown-toggle" type="button" data-toggle="dropdown"
-                                                        ng-model="vm.curI.str"
-                                                        ng-disabled="vm.types.length == 0"
-                                                >
-                                                    {{vm.curI.str}}
-                                                    <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu btn-block">
-                                                    <li class="text-center" ng-repeat = "t in vm.types">
-                                                        <a href="#" ng-click="vm.curI.str = t">{{t}}</a>
-                                                        <i ng-click="openType(t)" class="btn fa fa-3 fa-edit pull-right" style="margin-top:-25px"></i>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <span class="input-group-btn">
+                                <hr>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Input <span class="required" aria-required="true">*</span></label>
+                                    <div class="col-sm-9">
+                                        <div ng-repeat="input in dialog.input">
+                                            <div class="input-group mb-xs" ng-show="vm.inputMode && vm.curInput == input">
+                                                <div class="input-group-btn" >
+                                                    <button tabindex="-1" class="btn" ng-class="vm.getButtonClass(vm.curI.type)" type="button">{{vm.curI.type}}</button>
+                                                    <button tabindex="-1" data-toggle="dropdown" ng-class="vm.getButtonClass(vm.curI.type)" class="btn dropdown-toggle" type="button">
+                                                        <span class="caret"></span>
+                                                    </button>
+                                                    <ul role="menu" class="dropdown-menu" >
+                                                        <li ng-repeat="type in getInputTypes(vm.curInput, vm.curI)">
+                                                            <a href="#" ng-click="setType(vm.curI, type)">{{type}}</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div ng-show="vm.inputMode && getInputType(vm.curI.type) == 'text'">
+                                                    <input type="text" id="input" name="input" ng-model="vm.curI.str" class="form-control"
+                                                           placeholder="{{getPlaceHolder(vm.curI.type)}}" >
+                                                </div>
+                                                <div ng-show="vm.inputMode && getInputType(vm.curI.type) == 'intent'">
+                                                    <button class="btn btn-default btn-block dropdown-toggle" type="button" data-toggle="dropdown"
+                                                            ng-model="vm.curI.str"
+                                                            ng-disabled="vm.intents.length == 0"
+                                                    >
+                                                        {{vm.curI.str}}
+                                                        <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu btn-block">
+                                                        <li class="text-center" ng-repeat = "t in vm.intents"><a href="#" ng-click="vm.curI.str = t">{{t}}</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div ng-show="vm.inputMode && getInputType(vm.curI.type) == 'type'">
+                                                    <button class="btn btn-default btn-block dropdown-toggle" type="button" data-toggle="dropdown"
+                                                            ng-model="vm.curI.str"
+                                                            ng-disabled="vm.types.length == 0"
+                                                    >
+                                                        {{vm.curI.str}}
+                                                        <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu btn-block">
+                                                        <li class="text-center" ng-repeat = "t in vm.types">
+                                                            <a href="#" ng-click="vm.curI.str = t">{{t}}</a>
+                                                            <i ng-click="openType(t)" class="btn fa fa-3 fa-edit pull-right" style="margin-top:-25px"></i>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <span class="input-group-btn">
                                         <button class="btn btn-primary"
                                                 ng-disabled="vm.curI.str === ''"
                                                 ng-click="saveI()" type="button">저장</button>
                                         <button class="btn btn-danger" ng-click="resetI()" type="button">취소</button>
                                     </span>
-                                        </div>
-                                        <div  ng-show="!vm.inputMode || vm.curInput != input">
-                                            <div class="form-control col-md-11 mb-xs" style="height:auto;">
-                                                <button class="mr-xs btn btn-xs" ng-class="vm.getButtonClass(i.type)"
-                                                        ng-click="openEdit(i,input)"
-                                                        ng-repeat="i in input">
-                                                    <i class='fa' ng-class="vm.getIconClass(i.type)" style="color:antiquewhite"></i>&nbsp;
-                                                    {{i.str == '' ? "-new-" : i.str.substring(0,10)}}&nbsp;
-                                                    <i ng-click="removeI(i,input)" class="fa fa-remove" style="color:white"></i></button>
-                                                <button class="mr-xs btn btn-default btn-xs"
-                                                        ng-show="getInputTypes(input).length > 0"
-                                                        ng-click="addI(input)" ><i class="fa fa-plus"></i></button>
-                                                <span class="icon pull-right " style="height:20px;line-height:20px">
+                                            </div>
+                                            <div  ng-show="!vm.inputMode || vm.curInput != input">
+                                                <div class="form-control col-md-11 mb-xs" style="height:auto;">
+                                                    <button class="mr-xs btn btn-xs" ng-class="vm.getButtonClass(i.type)"
+                                                            ng-click="openEdit(i,input)"
+                                                            ng-repeat="i in input">
+                                                        <i class='fa' ng-class="vm.getIconClass(i.type)" style="color:antiquewhite"></i>&nbsp;
+                                                        {{i.str == '' ? "-new-" : i.str.substring(0,10)}}&nbsp;
+                                                        <i ng-click="removeI(i,input)" class="fa fa-remove" style="color:white"></i></button>
+                                                    <button class="mr-xs btn btn-default btn-xs"
+                                                            ng-show="getInputTypes(input).length > 0"
+                                                            ng-click="addI(input)" ><i class="fa fa-plus"></i></button>
+                                                    <span class="icon pull-right " style="height:20px;line-height:20px">
                                             <i ng-click="removeInput(input)" class="fa fa-remove"
                                                style="color:red;font-size:70%;"></i>
                                         </span>
+                                                </div>
                                             </div>
                                         </div>
+                                        <button type="button" ng-click="addInput()" class="mb-xs mr-xs btn btn-sm btn-info"><i class="glyphicon glyphicon-plus"></i> Input 추가</button>
                                     </div>
-                                    <button type="button" ng-click="addInput()" class="mb-xs mr-xs btn btn-sm btn-info"><i class="glyphicon glyphicon-plus"></i> Input 추가</button>
                                 </div>
-                            </div>
-                            <hr>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Task</label>
-                                <div class="col-sm-9 ">
-                                    <div class="dropdown mb-xs ">
-                                        <button ng-disabled="vm.tasks.length == 0"
-                                                class="btn btn-default btn-block dropdown-toggle"
-                                                ng-model="dialog.task" type="button"
-                                                data-toggle="dropdown">{{dialog.task.name}}
-                                            <span class="caret"></span></button>
-                                        <ul class="dropdown-menu btn-block">
-                                            <li class="text-center"><a href="#" ng-click="dialog.task = undefined">선택 안함</a></li>
-                                            <li class="divider">|</li>
-                                            <li class="text-center" ng-repeat = "t in vm.tasks">
-                                                <a href="#" ng-click="dialog.task = {name:t}">{{t}}</a>
-                                                <i ng-click="openTask(t, false)" class="btn fa fa-3 fa-edit pull-right" style="margin-top:-25px"></i>
-                                            </li>
-                                            <li class="divider">|</li>
-                                            <!--<li class="text-center" readonly>공개 Task</li>-->
-                                            <li class="text-center" ng-repeat = "t in vm.commonTasks">
-                                                <a href="#" ng-click="dialog.task = {name:t.name}">{{t.name}}</a>
-                                                <i ng-click="openTask(t, true)" class="btn fa fa-3 fa-list pull-right" style="margin-top:-25px"></i>
-                                            </li>
-                                        </ul>
+                                <hr>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Task</label>
+                                    <div class="col-sm-9 ">
+                                        <div class="dropdown mb-xs ">
+                                            <button ng-disabled="vm.tasks.length == 0"
+                                                    class="btn btn-default btn-block dropdown-toggle"
+                                                    ng-model="dialog.task" type="button"
+                                                    data-toggle="dropdown">{{dialog.task.name}}
+                                                <span class="caret"></span></button>
+                                            <ul class="dropdown-menu btn-block">
+                                                <li class="text-center"><a href="#" ng-click="dialog.task = undefined">선택 안함</a></li>
+                                                <li class="divider">|</li>
+                                                <li class="text-center" ng-repeat = "t in vm.tasks">
+                                                    <a href="#" ng-click="dialog.task = {name:t}">{{t}}</a>
+                                                    <i ng-click="openTask(t, false)" class="btn fa fa-3 fa-edit pull-right" style="margin-top:-25px"></i>
+                                                </li>
+                                                <li class="divider">|</li>
+                                                <!--<li class="text-center" readonly>공개 Task</li>-->
+                                                <li class="text-center" ng-repeat = "t in vm.commonTasks">
+                                                    <a href="#" ng-click="dialog.task = {name:t.name}">{{t.name}}</a>
+                                                    <i ng-click="openTask(t, true)" class="btn fa fa-3 fa-list pull-right" style="margin-top:-25px"></i>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <!--<span class="input-group-btn">-->
+                                        <!--<button class="btn btn-primary"-->
+                                        <!--ng-click="addTask()" type="button">추가-->
+                                        <!--</button>-->
+                                        <!--</span>-->
+                                        <button type="button" ng-click="addTask()" class="mb-xs mr-xs btn btn-sm btn-info"><i class="glyphicon glyphicon-plus"></i> Task 추가</button>
                                     </div>
-                                    <!--<span class="input-group-btn">-->
-                                    <!--<button class="btn btn-primary"-->
-                                    <!--ng-click="addTask()" type="button">추가-->
-                                    <!--</button>-->
-                                    <!--</span>-->
-                                    <button type="button" ng-click="addTask()" class="mb-xs mr-xs btn btn-sm btn-info"><i class="glyphicon glyphicon-plus"></i> Task 추가</button>
                                 </div>
-                            </div>
-                            <hr>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Output <span class="required" aria-required="true">*</span></label>
-                                <div class="col-sm-9">
-                                    <div ng-repeat="output in dialog.output">
-                                        <div class="input-group mb-xs" ng-show="vm.inputModeO && vm.curOutput == output">
-                                            <div class="input-group-btn" >
-                                                <button tabindex="-1" class="btn" ng-class="vm.getButtonClass(vm.curO.type)" type="button">
-                                                    {{vm.curO.type}}
-                                                </button>
-                                                <button tabindex="-1" data-toggle="dropdown" ng-class="vm.getButtonClass(vm.curO.type)" class="btn dropdown-toggle" type="button">
-                                                    <span class="caret"></span>
-                                                </button>
-                                                <ul role="menu" class="dropdown-menu">
-                                                    <li ng-repeat="t in getOutputTypes(vm.curOutput, vm.curO)">
-                                                        <a href="#" ng-click="setType(vm.curO, t)">
-                                                            {{t}}
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div ng-show="vm.inputModeO && getInputType(vm.curO.type) == 'text'">
-                                                <input type="text" id="input" name="input" ng-model="vm.curO.str" class="form-control"
+                                <hr>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Output <span class="required" aria-required="true">*</span></label>
+                                    <div class="col-sm-9">
+                                        <div ng-repeat="output in dialog.output">
+                                            <div class="input-group mb-xs" ng-show="vm.inputModeO && vm.curOutput == output">
+                                                <div class="input-group-btn" >
+                                                    <button tabindex="-1" class="btn" ng-class="vm.getButtonClass(vm.curO.type)" type="button">
+                                                        {{vm.curO.type}}
+                                                    </button>
+                                                    <button tabindex="-1" data-toggle="dropdown" ng-class="vm.getButtonClass(vm.curO.type)" class="btn dropdown-toggle" type="button">
+                                                        <span class="caret"></span>
+                                                    </button>
+                                                    <ul role="menu" class="dropdown-menu">
+                                                        <li ng-repeat="t in getOutputTypes(vm.curOutput, vm.curO)">
+                                                            <a href="#" ng-click="setType(vm.curO, t)">
+                                                                {{t}}
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div ng-show="vm.inputModeO && getInputType(vm.curO.type) == 'text'">
+                                                    <input type="text" id="input" name="input" ng-model="vm.curO.str" class="form-control"
 
-                                                       placeholder="{{getPlaceHolder(vm.curO.type, true)}}">
-                                            </div>
-                                            <div ng-show="vm.inputModeO && getInputType(vm.curO.type) == 'dialog'">
-                                                <button class="btn btn-default btn-block dropdown-toggle" type="button" data-toggle="dropdown"
-                                                        ng-model="vm.curO.str"
-                                                        ng-disabled="dialogList().length == 0"
-                                                >
-                                                    {{vm.curO.str}}
-                                                    <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu btn-block">
-                                                    <li class="text-center" ng-repeat = "t in dialogList()"><a href="#" ng-click="vm.curO.str = t">{{t}}</a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="text-left" ng-show="vm.inputModeO && getInputType(vm.curO.type) == 'image'" >
+                                                           placeholder="{{getPlaceHolder(vm.curO.type, true)}}">
+                                                </div>
+                                                <div ng-show="vm.inputModeO && getInputType(vm.curO.type) == 'dialog'">
+                                                    <button class="btn btn-default btn-block dropdown-toggle" type="button" data-toggle="dropdown"
+                                                            ng-model="vm.curO.str"
+                                                            ng-disabled="dialogList().length == 0"
+                                                    >
+                                                        {{vm.curO.str}}
+                                                        <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu btn-block">
+                                                        <li class="text-center" ng-repeat = "t in dialogList()"><a href="#" ng-click="vm.curO.str = t">{{t}}</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="text-left" ng-show="vm.inputModeO && getInputType(vm.curO.type) == 'image'" >
                                       <span class="btn btn-default btn-file" style="padding-bottom:4px;padding-top:4px">
                                           <input type="file" nv-file-select uploader="imageUploader" style="width:100%;">
                                           <i ng-cloak
@@ -473,88 +478,87 @@
                                              style="margin-top: -22px;margin-right: -8px;font-size:20px" aria-hidden="true">
                                           </i>
                                       </span>
-                                            </div>
-                                            <span class="input-group-btn">
+                                                </div>
+                                                <span class="input-group-btn">
                                         <button class="btn btn-primary"
                                                 ng-disabled="vm.curO.str === ''"
                                                 ng-click="saveO()" type="button">저장</button>
                                         <button class="btn btn-danger" ng-click="resetO()" type="button">취소</button>
                                     </span>
-                                        </div>
-                                        <div ng-show="!vm.inputModeO || vm.curOutput != output">
-                                            <div class="form-control col-md-11 mb-xs" style="height:auto;">
-                                                <button class="mr-xs btn btn-xs" ng-class="vm.getButtonClass(o.type)"
-                                                        ng-click="openEditO(o,output)"
-                                                        ng-repeat="o in output">
-                                                    <i class='fa' ng-class="vm.getIconClass(o.type)" style="color:antiquewhite"></i>&nbsp;
-                                                    {{o.str == '' ? "-new-" : o.str.substring(0,10)}}&nbsp;
-                                                    <i ng-click="removeI(o,output)" class="fa fa-remove" style="color:white"></i></button>
-                                                <button class="mr-xs btn btn-default btn-xs"
-                                                        ng-show="getOutputTypes(output).length > 0"
-                                                        ng-click="addO(output)" ><i class="fa fa-plus"></i></button>
-                                                <span class="icon pull-right" style="height:20px;line-height:20px">
+                                            </div>
+                                            <div ng-show="!vm.inputModeO || vm.curOutput != output">
+                                                <div class="form-control col-md-11 mb-xs" style="height:auto;">
+                                                    <button class="mr-xs btn btn-xs" ng-class="vm.getButtonClass(o.type)"
+                                                            ng-click="openEditO(o,output)"
+                                                            ng-repeat="o in output">
+                                                        <i class='fa' ng-class="vm.getIconClass(o.type)" style="color:antiquewhite"></i>&nbsp;
+                                                        {{o.str == '' ? "-new-" : o.str.substring(0,10)}}&nbsp;
+                                                        <i ng-click="removeI(o,output)" class="fa fa-remove" style="color:white"></i></button>
+                                                    <button class="mr-xs btn btn-default btn-xs"
+                                                            ng-show="getOutputTypes(output).length > 0"
+                                                            ng-click="addO(output)" ><i class="fa fa-plus"></i></button>
+                                                    <span class="icon pull-right" style="height:20px;line-height:20px">
                                             <i ng-click="removeOutput(output)" class="fa fa-1 fa-remove"
                                                style="color:red;font-size:70%;"></i>
                                         </span>
+                                                </div>
                                             </div>
                                         </div>
+                                        <button type="button" ng-click="addOutput()" class="mb-xs mr-xs btn btn-sm btn-info"><i class="glyphicon glyphicon-plus"></i> Output 추가</button>
                                     </div>
-                                    <button type="button" ng-click="addOutput()" class="mb-xs mr-xs btn btn-sm btn-info"><i class="glyphicon glyphicon-plus"></i> Output 추가</button>
                                 </div>
                             </div>
-                        </div>
-                        <footer class="panel-footer">
-                            <div class="row">
-                                <div class="col-md-12 text-right">
-                                    <button class="btn btn-primary modal-confirm" ng-click="update(dialogForm.$valid)" >저장</button>
-                                    <button class="btn btn-default" ng-click="closeEdit();">취소</button>
+                            <footer class="panel-footer">
+                                <div class="row">
+                                    <div class="col-md-12 text-right">
+                                        <button class="btn btn-primary modal-confirm" ng-click="update(dialogForm.$valid)" >저장</button>
+                                        <button class="btn btn-default" ng-click="closeEdit();">취소</button>
+                                    </div>
                                 </div>
-                            </div>
-                        </footer>
-                    </form>
-                </section>
-            </div>
-        </div>
-
-        <section id="ide" ng-show="vm.tabs[1].active" class="panel">
-            <header class="panel-heading"  style="padding: 10px 15px;">
-                <div class="row">
-                    <div class="col-sm-6 pull-left">
-                        <h2 class="panel-title">{{vm.name}}</h2>
-                    </div>
-
-                    <div class="col-sm-6 text-right">
-                        <!--<a class="btn btn-primary" ng-click="vm.viewGraph()">-->
-                        <!--dialog graph-->
-                        <!--</a>-->
-                        <a class="btn btn-default" ng-show="vm.fromTask" ng-click="gotoTree()">
-                            돌아가기
-                        </a>
-                        <a class="btn btn-primary" ng-click="vm.saveFile()">
-                            저장하기
-                        </a>
-                    </div>
+                            </footer>
+                        </form>
+                    </section>
                 </div>
-
-            </header>
-            <div class="panel-body" style="position:relative">
-                <form class="form-horizontal" action="#">
-                    <div class="col-md-12">
-                        <ui-codemirror
-                                ui-codemirror-opts="vm.codemirrorOpts"
-                                ui-codemirror="{ onLoad: codeLoaded}"
-                                ng-model="vm.currentTab.data" ui-refresh='refreshCodemirror'></ui-codemirror>
-                    </div>
-                </form>
             </div>
-        </section>
 
+            <section id="ide" ng-show="vm.tabs[1].active" class="panel">
+                <header class="panel-heading"  style="padding: 10px 15px;">
+                    <div class="row">
+                        <div class="col-sm-6 pull-left">
+                            <h2 class="panel-title">{{vm.name}}</h2>
+                        </div>
+
+                        <div class="col-sm-6 text-right">
+                            <!--<a class="btn btn-primary" ng-click="vm.viewGraph()">-->
+                            <!--dialog graph-->
+                            <!--</a>-->
+                            <a class="btn btn-default" ng-show="vm.fromTask" ng-click="gotoTree()">
+                                돌아가기
+                            </a>
+                            <a class="btn btn-primary" ng-click="vm.saveFile()">
+                                저장하기
+                            </a>
+                        </div>
+                    </div>
+
+                </header>
+                <div class="panel-body" style="position:relative">
+                    <form class="form-horizontal" action="#">
+                        <div class="col-md-12">
+                            <ui-codemirror
+                                    ui-codemirror-opts="vm.codemirrorOpts"
+                                    ui-codemirror="{ onLoad: codeLoaded}"
+                                    ng-model="vm.currentTab.data" ui-refresh='refreshCodemirror'></ui-codemirror>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+        </div>
     </div>
 </div>
 
 <link href="/lib/jstree/dist/themes/default/style.css" rel="stylesheet" type="text/css">
-
-<button id="filetree_open" class="filetree_button btn btn-sm" ng-click="vm.initTree()">파일 트리</button>
 
 <script src="/vendor/jstree/jstree.js"></script>
 <script>
