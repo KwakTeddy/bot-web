@@ -98,3 +98,22 @@ var BotIntentSchema = new Schema({
 });
 
 mongoose.model('BotIntent', BotIntentSchema);
+
+
+
+var BotIntentFailSchema = new Schema({
+  botId: {
+    type: 'String'
+  },
+  intent: {
+    type: Schema.ObjectId,
+    ref: 'Intent'
+  },
+  userDialog: {
+    type: Schema.ObjectId,
+    ref: 'UserDialog'
+  }
+});
+
+mongoose.model('BotIntentFail', BotIntentFailSchema);
+

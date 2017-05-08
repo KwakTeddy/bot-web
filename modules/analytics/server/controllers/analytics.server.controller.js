@@ -189,6 +189,18 @@ exports.dialogFailureList = function (req, res) {
   var kind = req.params.kind;
   var arg = req.params.arg;
 
+  _dialogFailureList(botId, kind, arg, function(userCounts, err) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.jsonp(userCounts);
+    }
+  });
+};
+
+function _dialogFailureList(botId, kind, arg, callback) {
   var cond = { inOut: true};
   if (kind == 'year')
     cond = {year: parseInt(arg), inOut: true};
@@ -200,7 +212,7 @@ exports.dialogFailureList = function (req, res) {
   cond.preDialogId = {$ne: 0};
   cond.botId = botId;
 
-  console.log(JSON.stringify(cond));
+  // console.log(JSON.stringify(cond));
 
   UserDialog.aggregate(
     [
@@ -208,20 +220,16 @@ exports.dialogFailureList = function (req, res) {
         inOut: '$inOut', dialog: '$dialog', fail:'$fail', preDialogId:'$preDialogId', preDialogName:'$preDialogName', botId:'$botId'}},
       {$match: cond},
       {$match:{ preDialogId: { $exists:true, $ne: null } } },
-      {$group: {_id: {dialog:'$dialog', preDialogId: '$preDialogId'}, count: {$sum: 1}}},
+      {$group: {_id: {_id: '$_id', dialog:'$dialog', preDialogId: '$preDialogId'}, count: {$sum: 1}}},
       {$sort: {count: -1}},
       {$limit: 300}
     ]
   ).exec(function (err, userCounts) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.jsonp(userCounts);
-    }
+    callback(userCounts, err);
   });
-};
+}
+
+exports._dialogFailureList = _dialogFailureList;
 
 var searchDialog = function(dialogs, dialogId, action, res, data) {
   dialogs.forEach(function(obj) {

@@ -6,7 +6,6 @@ var config = require('../config'),
   tone = require(path.resolve('modules/bot/action/common/tone')),
   concept = require(path.resolve('modules/bot/engine/concept/concept')),
   intent = require(path.resolve('modules/bot/engine/nlu/intent')),
-  globalDialogs = require(path.resolve('custom_modules/global/global-dialogs')),
   _ = require('lodash');
 
   var async = require('async');
@@ -62,7 +61,9 @@ function loadBot(botName, callback) {
   utils.requireNoCache(path.resolve('modules/bot/global/type/common.type'));
   utils.requireNoCache(path.resolve('custom_modules/global/global-dialogs'));
 
-  console.log('Loading Bot: ' + botName);
+  var globalDialogs = require(path.resolve('custom_modules/global/global-dialogs'));
+
+    console.log('Loading Bot: ' + botName);
 
   var bot;
   var botDir = path.resolve('custom_modules/' + botName);

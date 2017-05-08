@@ -6,7 +6,8 @@
 var path = require('path'),
   analyticsPolicy = require('../policies/analytics.server.policy'),
   analytics = require('../controllers/analytics.server.controller'),
-  autoCorrection = require(path.resolve('modules/bot/engine/nlp/autoCorrection'));
+  autoCorrection = require(path.resolve('modules/bot/engine/nlp/autoCorrection')),
+  intent = require(path.resolve('modules/bot/engine/nlu/intent'));
 
 module.exports = function(app) {
   // Bot users Routes
@@ -47,4 +48,5 @@ module.exports = function(app) {
   app.route('/api/dialogchildren/:bId/:dialogId').all(analyticsPolicy.isAllowed)
     .get(analytics.dialogChildren);
 
+  app.route('/api/intent/analyzeFailIntent/:bId').get(intent.analyzeIntentFailReq);
 };

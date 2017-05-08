@@ -5,6 +5,9 @@ var IntentContent = mongoose.model('IntentContent');
 var path = require('path');
 var dialog = require(path.resolve('modules/bot/action/common/dialog.js'));
 var mongoModule = require(path.resolve('modules/bot/action/common/mongo'));
+var analytics = require(path.resolve('modules/analytics/server/controllers/analytics.server.controller'));
+var async = require('async');
+var _ = require('lodash');
 
 var intentCheck = {
   name: 'intentDoc',
@@ -154,7 +157,8 @@ function saveIntentTopics(botId, callback) {
 
     var _words = [];
     for(var i in words) {
-      _words.push({word: i, count: words[i], botId: botId});
+      if(i.length > 1)
+        _words.push({word: i, count: words[i], botId: botId});
     }
 
     mongoModule.remove({mongo: {model: 'intentcontext', query: {botId: botId}}}, null, function() {
@@ -181,3 +185,131 @@ function loadIntentTopics(bot, callback) {
 }
 
 exports.loadIntentTopics = loadIntentTopics;
+
+
+var BotIntentFail = mongoose.model('BotIntentFail');
+
+function analyzeIntentFailReq(req, res) {
+  analyzeIntentFail(req.params.bId, function() {
+    res.end();
+  })
+}
+
+exports.analyzeIntentFailReq = analyzeIntentFailReq;
+
+function analyzeIntentFail(botId, callback) {
+  var failDialogs, bot;
+  async.waterfall([
+    function(cb) {
+      analytics._dialogFailureList(botId, null, null, function(_failDialogs, err) {
+        if(_failDialogs) {
+          failDialogs = _failDialogs;
+          cb(null);
+        } else {
+          cb(true);
+        }
+      })
+    },
+
+    function(cb) {
+      // var _failDialog = [];
+      async.eachSeries(failDialogs, function(failDialog, cb2) {
+
+        var nlp = require(path.resolve('modules/bot/engine/nlp/processor'));
+        var nlpKo = new nlp({
+          stemmer: true,      // (optional default: true)
+          normalizer: true,   // (optional default: true)
+          spamfilter: true     // (optional default: false)
+        });
+
+        nlpKo.tokenize/*ToStrings*/(failDialog._id.dialog, function(err, result) {
+          var _nlp = [], _in;
+          for (var i = 0; i < result.length; i++) {
+            if (result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _nlp.push(result[i].text);
+          }
+          _in = _nlp.join(' ');
+
+          // _failDialog.push(_in);
+          failDialog.input = _in;
+          cb2(null);
+        });
+
+      }, function(err) {
+        // failDialogs = _failDialog;
+        cb(null);
+      })
+    },
+
+    function(cb) {
+      BotIntentFail.remove({botId: botId}, function(err) {
+        cb(null);
+      })
+    },
+
+    function(cb) {
+      if(global._bots[botId] && global._bots[botId].intents) {
+        bot = global._bots[botId];
+
+        async.eachSeries(bot.intents, function(intent, cb2) {
+          IntentContent.find({botId: botId, intentId: intent}, {}, function(err, docs) {
+            var words = {};
+            for(var i in docs) {
+              var ws = docs[i].input.split(' ');
+
+              for(var j in ws) {
+                var word = ws[j];
+                if(words[word] == undefined) words[word] = 1;
+                else words[word]++;
+              }
+            }
+
+            var _words = [];
+            for(var i in words) {
+              if(i.length > 1)
+                _words.push({word: i, count: words[i], botId: botId});
+            }
+
+            async.eachSeries(failDialogs, function(failDialog, cb3) {
+              var fws = failDialog.input.split(' ');
+
+              var bExist = false;
+              for(var j in _words) {
+                if(bExist) break;
+                if(_.includes(fws, _words[j].word)) {
+                  bExist = true;
+                }
+              }
+
+              if(bExist) {
+                var bif = new BotIntentFail({
+                  botId: botId,
+                  intent: intent,
+                  userDialog: failDialog._id._id
+                });
+
+                bif.save(function(err4) {
+                  cb3(null);
+                });
+              } else {
+                cb3(null);
+              }
+
+            }, function(err3) {
+              cb2(null);
+            });
+          })
+        }, function(err2) {
+          cb(null);
+        })
+
+      } else {
+        cb(true);
+      }
+    }
+  ], function(err) {
+    if(callback) callback();
+    else return;
+  });
+}
+
+exports.analyzeIntentFail = analyzeIntentFail;
