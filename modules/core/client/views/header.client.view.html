@@ -19,11 +19,11 @@
     <div id="userbox" class="userbox">
       <a href="#" data-toggle="dropdown">
         <figure class="profile-picture">
-          <img src="/images/!logged-user.jpg" alt="Joseph Doe" class="img-circle" data-lock-picture="/images/!logged-user.jpg" />
+          <img src="{{currentBot.imageFile}}" alt="Joseph Doe" class="img-circle" data-lock-picture="/images/!logged-user.jpg" />
         </figure>
-        <div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@okler.com">
-          <span class="name">{{authentication.user.displayName}}</span>
-          <span class="role">{{authentication.user.roles[0]}}</span>
+        <div class="profile-info">
+          <span class="name">{{currentBot.name}}</span>
+          <!--<span class="role">{{}}</span>-->
         </div>
 
         <i class="fa custom-caret"></i>
@@ -32,15 +32,23 @@
       <div class="dropdown-menu" >
         <ul class="list-unstyled">
           <li class="divider"></li>
-          <li>
-            <a role="menuitem" tabindex="-1" href="pages-user-profile.html" ><i class="fa fa-user"></i> My Profile</a>
+          <li data-ng-repeat="bot in myBot" ng-click="changeBot(bot)">
+            <a role="menuitem" tabindex="-1" >
+              <figure class="profile-picture">
+                <img src="{{bot.imageFile}}" alt="Joseph Doe" class="img-circle" data-lock-picture="/images/!logged-user.jpg" />
+              </figure>
+              <div class="profile-info">
+                <span class="name">{{bot.name}}</span>
+              </div>
+            </a>
           </li>
+
           <!--<li>-->
           <!--<a role="menuitem" tabindex="-1" href="#" data-lock-screen="true"><i class="fa fa-lock"></i> Lock Screen</a>-->
           <!--</li>-->
-          <li>
-            <a role="menuitem" tabindex="-1" href="/api/auth/signout" target="_self"><i class="fa fa-power-off"></i> Logout</a>
-          </li>
+          <!--<li>-->
+            <!--<a role="menuitem" tabindex="-1" href="/api/auth/signout" target="_self"><i class="fa fa-power-off"></i> Logout</a>-->
+          <!--</li>-->
         </ul>
       </div>
     </div>
@@ -61,9 +69,9 @@
       <div class="dropdown-menu" >
         <ul class="list-unstyled">
           <li class="divider"></li>
-          <li>
-            <a role="menuitem" tabindex="-1" href="pages-user-profile.html" ><i class="fa fa-user"></i> My Profile</a>
-          </li>
+          <!--<li>-->
+            <!--<a role="menuitem" tabindex="-1" href="pages-user-profile.html" ><i class="fa fa-user"></i> My Profile</a>-->
+          <!--</li>-->
           <!--<li>-->
             <!--<a role="menuitem" tabindex="-1" href="#" data-lock-screen="true"><i class="fa fa-lock"></i> Lock Screen</a>-->
           <!--</li>-->

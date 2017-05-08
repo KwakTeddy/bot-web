@@ -19,11 +19,12 @@
     vm.form = {};
     vm.remove = remove;
     vm.save = save;
+    console.log(vm.intent);
 
     // Remove existing Custom action
     function remove() {
-      if (confirm('Are you sure you want to delete?')) {
-        vm.intent.$remove(function (response) {
+      if (confirm('\'' + vm.intent.name + '\' ' + '정말 삭제하시겠습니까?')) {
+        vm.intent.$remove({botName: $rootScope.botId}, function (response) {
           $state.go('intents.list')
         });
         // vm.intent.$remove($state.go('intents.list'), {}, {reload: true});
@@ -38,12 +39,14 @@
         $scope.$broadcast('show-errors-check-validity', 'vm.form.intentForm');
         return false;
       }
-      vm.intent.botId = $rootScope.botId;
+      vm.intent.botName = $rootScope.botId;
+      vm.intent.content = vm.intentContent;
       // TODO: move create/update logic to service
+      // console.log(vm.intent.botId);
       if (vm.intent._id) {
         vm.intent.$update(successCallback, errorCallback);
       } else {
-        vm.intent.$save({content: vm.intentContent},successCallback, errorCallback);
+        vm.intent.$save({botName: $rootScope.botId},successCallback, errorCallback);
       }
 
       function successCallback(res) {
@@ -57,6 +60,7 @@
       }
 
       function errorCallback(res) {
+        console.log(res);
         vm.error = res.data.message;
         if (res.data.message.code == 11000){
           vm.error = '\'' + res.data.message.op.name + '\'' +' 이름의 인텐트가 존재합니다. 다른 이름으로 생성해주세요'
@@ -94,23 +98,22 @@
     };
     
     vm.contentRemove = function (target) {
-      if (confirm('Are you sure you want to delete?')) {
-        console.log(vm.intent);
-        // vm.intent.content[target._id].$remove();
-        console.log(vm.intentContent);
-        console.log(target);
-        $resource('/api/intentsContent').delete({contentId: target._id}, function (result) {
-          if (result.ok){
-            IntentsService.get({
-              intentId: vm.intent._id
-            }).$promise.then(function (data) {
-              vm.intent = data;
-            })
+      console.log(vm.intent);
+      // vm.intent.content[target._id].$remove();
+      console.log(vm.intentContent);
+      console.log(target);
+      $resource('/api/intentsContent').delete({contentId: target._id}, function (result) {
+        if (result.ok){
+          IntentsService.get({
+            botName: $rootScope.botId,
+            intentId: vm.intent._id
+          }).$promise.then(function (data) {
+            vm.intent = data;
+          })
 
-          }
-        });
-        // vm.intent.$remove($state.go('intents.list'), {}, {reload: true});
-      }
+        }
+      });
+      // vm.intent.$remove($state.go('intents.list'), {}, {reload: true});
     }
   }
 })();

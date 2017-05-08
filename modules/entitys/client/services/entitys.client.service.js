@@ -9,7 +9,7 @@
   EntitysService.$inject = ['$resource'];
 
   function EntitysService($resource) {
-    return $resource('api/entitys/:entityId', {
+    return $resource('api/entitys/:botName/:entityId', {
       entityId: '@_id'
     }, {
       update: {

@@ -20,40 +20,58 @@ var util = require('util'); //temporary
  * Create a Custom action
  */
 exports.create = function(req, res) {
-  var intent = new Intent(req.body);
-  intent.user = req.user;
+  var query = {botId: req.body.botName, user: req.user._id, name: req.body.name};
+  Intent.findOne(query, function (err, result) {
+    if (err) {
+      console.log(err);
+      return res.status(400).send({
+        message: err
+      });
+    } else {
+      if (!result){
+        var intent = new Intent();
+        intent.botId = req.body.botName;
+        intent.name = req.body.name;
+        intent.user = req.user;
 
-  var intentContent = new IntentContent();
-  intentContent.user = req.user;
-  intentContent.intentId = intent._id;
-  intentContent.name = req.query.content;
+        var intentContent = new IntentContent();
+        intentContent.user = req.user;
+        intentContent.intentId = intent._id;
+        intentContent.name = req.body.content;
+        intentContent.botId = req.body.botName;
 
-  dialogset.processInput(null, req.query.content, function(_input, _json) {
-    intentContent.input = _input;
+        dialogset.processInput(null, req.query.content, function(_input, _json) {
+          intentContent.input = _input;
 
-    intent.save(function(err) {
-      if (err) {
-        console.log(err);
-        return res.status(400).send({
-          message: err
+          intent.save(function(err) {
+            if (err) {
+              console.log(err);
+              return res.status(400).send({
+                message: err
+              });
+            } else {
+              intentContent.save(function (err) {
+                console.log(err);
+                if (err) {
+                  console.log(err);
+                  return res.status(400).send({
+                    message: err
+                  });
+                }else {
+                  console.log(intent);
+                  res.jsonp(intent);
+                }
+              })
+            }
+          });
         });
-      } else {
-        intentContent.save(function (err) {
-          console.log(err);
-          if (err) {
-            console.log(err);
-            return res.status(400).send({
-              message: err
-            });
-          }else {
-            console.log(intent);
-            res.jsonp(intent);
-          }
-        })
+      }else {
+        return res.status(400).send({
+          message:  '\'' + req.body.name + '\'' +' 이름의 인텐트가 존재합니다. 다른 이름으로 생성해주세요'
+        });
       }
-    });
+    }
   });
-
 };
 
 /**
@@ -62,25 +80,27 @@ exports.create = function(req, res) {
 exports.read = function(req, res) {
   // convert mongoose document to JSON
   var intent = req.intent ? req.intent.toJSON() : {};
-  console.log(util.inspect(intent));
 
-  // Add a custom field to the Article, for determining if the current User is the "owner".
-  // NOTE: This field is NOT persisted to the database, since it doesn't exist in the Article model.
-  intent.isCurrentUserOwner = req.user && intent.user && intent.user._id.toString() === req.user._id.toString() ? true : false;
+  if (req.user && (String(req.user._id) == String(intent.user._id)) && (req.intent.botId == req.params.botName)){
+    // Add a custom field to the Article, for determining if the current User is the "owner".
+    // NOTE: This field is NOT persisted to the database, since it doesn't exist in the Article model.
+    intent.isCurrentUserOwner = req.user && intent.user && intent.user._id.toString() === req.user._id.toString() ? true : false;
 
-  IntentContent.find({intentId: intent._id}, function (err, result) {
-    if(err){
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    }else {
-      console.log(JSON.stringify(result));
-      intent.content = result;
-      console.log(util.inspect(intent));
-      res.jsonp(intent);
-    }
-  });
-  // res.jsonp(intent);
+    IntentContent.find({intentId: intent._id}, function (err, result) {
+      if(err){
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      }else {
+        // console.log(JSON.stringify(result));
+        intent.content = result;
+        // console.log(util.inspect(intent));
+        res.jsonp(intent);
+      }
+    })
+  }else {
+    return res.end();
+  }
 };
 
 /**
@@ -123,8 +143,10 @@ exports.delete = function(req, res) {
 /**
  * List of Custom actions
  */
-exports.list = function(req, res) { 
-  Intent.find().sort('-created').populate('user', 'displayName').exec(function(err, intents) {
+exports.list = function(req, res) {
+  console.log(321312321312);
+
+  Intent.find({botId: req.params.botName}).sort('-created').populate('user', 'displayName').exec(function(err, intents) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)

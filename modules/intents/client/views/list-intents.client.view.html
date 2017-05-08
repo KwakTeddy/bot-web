@@ -17,8 +17,8 @@
     <table datatable="ng" class="table table-bordered table-hover mb-none">
       <thead>
       <tr>
-        <!--<th class="text-center">봇아이디</th>-->
-        <th class="text-center col-md-10">개념</th>
+        <th class="text-center">챗봇</th>
+        <th class="text-center col-md-10">인텐트</th>
         <!--<th class="text-center">단어</th>-->
         <!--<th class="text-center">작성자</th>-->
         <!--<th class="text-center">수정일</th>-->
@@ -28,7 +28,14 @@
       </thead>
       <tbody>
       <tr ng-repeat="intent in vm.intents">
-        <!--<td class="text-center">{{intent.bot.id}}</td>-->
+        <td class="text-center rows">
+          <div class="col-md-2">
+            <img src="{{vm.bot.imageFile}}" style="width: 25px;height: 25px" alt="Joseph Doe" class="img-circle" data-lock-picture="/images/!logged-user.jpg" />
+          </div>
+          <div class="col-md-3">
+            <span >{{vm.bot.id}}</span>
+          </div>
+        </td>
         <td class="text-center"><a ui-sref="intents.edit({intentId: intent._id})">{{intent.name}}</a></td>
         <!--<td class="text-center">{{intent.words}}</td>-->
         <!--<td class="text-center">{{intent.user ? intent.user.displayName : '장세영'}}</td>-->

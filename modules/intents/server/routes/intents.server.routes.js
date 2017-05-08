@@ -8,11 +8,11 @@ var intentsPolicy = require('../policies/intents.server.policy'),
 
 module.exports = function(app) {
   // Custom actions Routes
-  app.route('/api/intents')//.all(intentsPolicy.isAllowed)
+  app.route('/api/intents/:botName')//.all(intentsPolicy.isAllowed)
     .get(intents.list)
     .post(intents.create);
 
-  app.route('/api/intents/:intentId')//.all(intentsPolicy.isAllowed)
+  app.route('/api/intents/:botName/:intentId')//.all(intentsPolicy.isAllowed)
     .get(intents.read)
     .put(intents.update)
     .delete(intents.delete);

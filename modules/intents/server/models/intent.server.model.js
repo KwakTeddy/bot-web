@@ -14,8 +14,7 @@ var IntentSchema = new Schema({
     type: String
   },
   name: {
-    type: String,
-    unique: true
+    type: String
   },
   content: {},
   created: {
@@ -38,8 +37,7 @@ var IntentContentSchema = new Schema({
     type: String
   },
   name: {
-    type: String,
-    unique: true
+    type: String
   },
   input: String,
   created: {

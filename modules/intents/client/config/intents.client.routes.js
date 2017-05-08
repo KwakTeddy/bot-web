@@ -69,20 +69,23 @@
       });
   }
 
-  getIntents.$inject = ['IntentsService'];
-  function getIntents(IntentsService) {
-    return IntentsService.query().$promise;
+  getIntents.$inject = ['IntentsService', '$rootScope', '$cookies'];
+  function getIntents(IntentsService, $rootScope, $cookies) {
+    return IntentsService.query({botName: $cookies.get('default_bot')}).$promise;
+    // return IntentsService.query({botName: $rootScope.botId}).$promise;
   }
 
-  getIntent.$inject = ['$stateParams', 'IntentsService'];
-  function getIntent($stateParams, IntentsService) {
+  getIntent.$inject = ['$stateParams', 'IntentsService', '$rootScope', '$cookies'];
+  function getIntent($stateParams, IntentsService, $rootScope, $cookies) {
     return IntentsService.get({
+      // botName: $rootScope.botId,
+      botName: $cookies.get('default_bot'),
       intentId: $stateParams.intentId
     }).$promise;
   }
 
-  newIntent.$inject = ['IntentsService'];
-  function newIntent(IntentsService) {
-    return new IntentsService();
+  newIntent.$inject = ['IntentsService', '$rootScope'];
+  function newIntent(IntentsService, $rootScope) {
+    return new IntentsService({botName: $rootScope.botId});
   }
 })();

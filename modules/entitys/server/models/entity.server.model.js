@@ -11,8 +11,10 @@ var mongoose = require('mongoose'),
  */
 var EntitySchema = new Schema({
   name: {
-    type: String,
-    unique: true
+    type: String
+  },
+  botId: {
+    type: String
   },
   content: {},
   created: {
@@ -32,8 +34,10 @@ mongoose.model('Entity', EntitySchema);
  */
 var EntityContentSchema = new Schema({
   name: {
-    type: String,
-    unique: true
+    type: String
+  },
+  botId: {
+    type: String
   },
   created: {
     type: Date,

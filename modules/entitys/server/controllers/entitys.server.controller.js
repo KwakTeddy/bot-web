@@ -16,33 +16,57 @@ var util = require('util'); //temporary
  * Create a Custom action
  */
 exports.create = function(req, res) {
-  var entity = new Entity(req.body);
-  entity.user = req.user;
+  console.log(req.body.botName);
+  console.log('----------------------------');
 
-  var entityContent = new EntityContent();
-  entityContent.user = req.user;
-  entityContent.entityId = entity._id;
-  entityContent.name = req.query.content;
-
-  entity.save(function(err) {
+  var query = {botId: req.body.botName, user: req.user._id, name: req.body.name};
+  Entity.findOne(query, function (err, result) {
     if (err) {
       console.log(err);
       return res.status(400).send({
         message: err
       });
     } else {
-      entityContent.save(function (err) {
-        console.log(err);
-        if (err) {
-          console.log(err);
-          return res.status(400).send({
-            message: err
-          });
-        }else {
-          console.log(entity);
-          res.jsonp(entity);
-        }
-      })
+      if (!result){
+
+        var entity = new Entity();
+        entity.user = req.user;
+        entity.botId = req.body.botName;
+        entity.name = req.body.name;
+        entity.user = req.user;
+
+        var entityContent = new EntityContent();
+        entityContent.user = req.user;
+        entityContent.entityId = entity._id;
+        entityContent.name = req.body.content;
+        entityContent.botId = req.body.botName;
+
+        entity.save(function(err) {
+          if (err) {
+            console.log(err);
+            return res.status(400).send({
+              message: err
+            });
+          } else {
+            entityContent.save(function (err) {
+              console.log(err);
+              if (err) {
+                console.log(err);
+                return res.status(400).send({
+                  message: err
+                });
+              }else {
+                console.log(entity);
+                res.jsonp(entity);
+              }
+            })
+          }
+        });
+      }else {
+        return res.status(400).send({
+          message:  '\'' + req.body.name + '\'' +' 이름의 엔터티가 존재합니다. 다른 이름으로 생성해주세요'
+        });
+      }
     }
   });
 };
@@ -55,23 +79,26 @@ exports.read = function(req, res) {
   var entity = req.entity ? req.entity.toJSON() : {};
   console.log(util.inspect(entity));
 
-  // Add a custom field to the Article, for determining if the current User is the "owner".
-  // NOTE: This field is NOT persisted to the database, since it doesn't exist in the Article model.
-  entity.isCurrentUserOwner = req.user && entity.user && entity.user._id.toString() === req.user._id.toString() ? true : false;
+  if (req.user && (String(req.user._id) == String(entity.user._id)) && (req.entity.botId == req.params.botName)) {
+    // Add a custom field to the Article, for determining if the current User is the "owner".
+    // NOTE: This field is NOT persisted to the database, since it doesn't exist in the Article model.
+    entity.isCurrentUserOwner = req.user && entity.user && entity.user._id.toString() === req.user._id.toString() ? true : false;
 
-  EntityContent.find({entityId: entity._id}, function (err, result) {
-    if(err){
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    }else {
-      console.log(JSON.stringify(result));
-      entity.content = result;
-      console.log(util.inspect(entity));
-      res.jsonp(entity);
-    }
-  });
-  // res.jsonp(entity);
+    EntityContent.find({entityId: entity._id}, function (err, result) {
+      if(err){
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      }else {
+        console.log(JSON.stringify(result));
+        entity.content = result;
+        console.log(util.inspect(entity));
+        res.jsonp(entity);
+      }
+    });
+  }else {
+    return res.end();
+  }
 };
 
 /**
@@ -114,8 +141,8 @@ exports.delete = function(req, res) {
 /**
  * List of Custom actions
  */
-exports.list = function(req, res) { 
-  Entity.find().sort('-created').populate('user', 'displayName').exec(function(err, entitys) {
+exports.list = function(req, res) {
+  Entity.find({botId: req.params.botName}).sort('-created').populate('user', 'displayName').exec(function(err, entitys) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -166,6 +193,7 @@ exports.contentCreate = function(req, res) {
       if(!data.length){
         var entityContent = new EntityContent();
         entityContent.name = req.body.content;
+        entityContent.botId = req.body.botId;
         entityContent.user = req.user;
         entityContent.entityId = req.body.entityId;
         entityContent.save(function (err, data) {

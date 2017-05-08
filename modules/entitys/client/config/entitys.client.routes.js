@@ -69,14 +69,15 @@
       });
   }
 
-  getEntitys.$inject = ['EntitysService'];
-  function getEntitys(EntitysService) {
-    return EntitysService.query().$promise;
+  getEntitys.$inject = ['EntitysService', '$cookies'];
+  function getEntitys(EntitysService, $cookies) {
+    return EntitysService.query({botName: $cookies.get('default_bot')}).$promise;
   }
 
-  getEntity.$inject = ['$stateParams', 'EntitysService'];
-  function getEntity($stateParams, EntitysService) {
+  getEntity.$inject = ['$stateParams', 'EntitysService', '$cookies'];
+  function getEntity($stateParams, EntitysService, $cookies) {
     return EntitysService.get({
+      botName: $cookies.get('default_bot'),
       entityId: $stateParams.entityId
     }).$promise;
   }

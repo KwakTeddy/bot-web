@@ -8,7 +8,7 @@ angular.module('analytics').config(['$stateProvider',
         url: '/developer/analytics',
         template: '<ui-view/>',
         data: {
-          roles: ['user', 'enterprise', 'admin'],
+          roles: ['user', 'enterprise', 'admin']
         }
       })
       .state('analytics.dashboard', {
@@ -45,6 +45,12 @@ angular.module('analytics').config(['$stateProvider',
         url: '/session-success',
         templateUrl: 'modules/analytics/client/views/session-success.client.view.html',
         controller: 'AnalyticsListController',
+        controllerAs: 'vm'
+      })
+      .state('analytics.dialog-intent', {
+        url: '/dialog-intent',
+        templateUrl: 'modules/analytics/client/views/dialog-intent.client.view.html',
+        controller: 'AnalyticsIntentController',
         controllerAs: 'vm'
       });
   }

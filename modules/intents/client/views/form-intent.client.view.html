@@ -85,7 +85,7 @@
       <div class="row">
         <div class="col-sm-12 text-center" ng-hide="vm.intent && vm.intent._id">
           <!--<button class="btn btn-primary">Submit</button>-->
-          <button class="btn btn-primary" ng-click="vm.save(vm.form.intentForm.$valid)">생성</button>
+          <a class="btn btn-primary" ng-click="vm.save(vm.form.intentForm.$valid)">생성</a>
           <!--<button type="submit" class="btn btn-primary" ng-click="vm.contentSave(form.$valid)">만들기</button>-->
           <!--<button type="reset" class="btn btn-default">초기화</button>-->
           <button type="button" class="btn btn-danger" ui-sref="intents.list">취소</button>

@@ -22,8 +22,8 @@
 
     // Remove existing Custom action
     function remove() {
-      if (confirm('Are you sure you want to delete?')) {
-        vm.entity.$remove(function (response) {
+      if (confirm('\'' + vm.entity.name + '\' ' + '정말 삭제하시겠습니까?')) {
+        vm.entity.$remove({botName: $rootScope.botId}, function (response) {
           $state.go('entitys.list')
         });
         // vm.entity.$remove($state.go('entitys.list'), {}, {reload: true});
@@ -38,12 +38,13 @@
         $scope.$broadcast('show-errors-check-validity', 'vm.form.entityForm');
         return false;
       }
-      vm.entity.botId = $rootScope.botId;
+      vm.entity.botName = $rootScope.botId;
+      vm.entity.content = vm.entityContent;
       // TODO: move create/update logic to service
       if (vm.entity._id) {
         vm.entity.$update(successCallback, errorCallback);
       } else {
-        vm.entity.$save({content: vm.entityContent},successCallback, errorCallback);
+        vm.entity.$save({botName: $rootScope.botId},successCallback, errorCallback);
       }
 
       function successCallback(res) {
@@ -70,7 +71,7 @@
         return false;
       }
       console.log(vm.entity._id);
-      $resource('/api/entitysContent').save({content: vm.entityContent, entityId: vm.entity._id}, function (result) {
+      $resource('/api/entitysContent').save({content: vm.entityContent, entityId: vm.entity._id, botId: $rootScope.botId}, function (result) {
         console.log(result);
         vm.entity.content.unshift(result);
         vm.entityContent = '';
@@ -84,23 +85,22 @@
     };
     
     vm.contentRemove = function (target) {
-      if (confirm('Are you sure you want to delete?')) {
-        console.log(vm.entity);
-        // vm.entity.content[target._id].$remove();
-        console.log(vm.entityContent);
-        console.log(target);
-        $resource('/api/entitysContent').delete({contentId: target._id}, function (result) {
-          if (result.ok){
-            EntitysService.get({
-              entityId: vm.entity._id
-            }).$promise.then(function (data) {
-              vm.entity = data;
-            })
+      console.log(vm.entity);
+      // vm.entity.content[target._id].$remove();
+      console.log(vm.entityContent);
+      console.log(target);
+      $resource('/api/entitysContent').delete({contentId: target._id}, function (result) {
+        if (result.ok){
+          EntitysService.get({
+            botName: $rootScope.botId,
+            entityId: vm.entity._id
+          }).$promise.then(function (data) {
+            vm.entity = data;
+          })
 
-          }
-        });
-        // vm.entity.$remove($state.go('entitys.list'), {}, {reload: true});
-      }
+        }
+      });
+      // vm.entity.$remove($state.go('entitys.list'), {}, {reload: true});
     }
   }
 })();

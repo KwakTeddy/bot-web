@@ -9,7 +9,7 @@
   IntentsService.$inject = ['$resource'];
 
   function IntentsService($resource) {
-    return $resource('api/intents/:intentId', {
+    return $resource('api/intents/:botName/:intentId', {
       intentId: '@_id'
     }, {
       update: {
