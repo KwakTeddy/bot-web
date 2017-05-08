@@ -1,4 +1,4 @@
-<header class="page-header" style="z-index: 0 !important;">
+<header class="page-header">
   <h2>대화하기</h2>
 
   <div class="right-wrapper pull-right">
@@ -35,16 +35,15 @@
 
   <!--<br/>-->
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
       <input type="text" class="form-control" id="initMsg" name="initMsg"
              ng-model="vm.initMsg"
              placeholder="시작 메세지"/>
     </div>
-    <div class="col-md-4" >
-      <button class="btn btn-danger" ng-click="vm.buildBot()">빌드 (F7)</button>
-      <button class="btn btn-info" ng-click="vm.resetBot()">초기화 (ESC)</button>
-      <button class="btn btn-info" ng-click="vm.resetDB()">DB초기화 </button>
-      <button class="btn btn-info" ng-click="vm.batchCorrection()">오타 Batch</button>
+    <div class="col-md-6" style="text-align: right;">
+      <button class="btn btn-default" ng-click="vm.resetBot()">봇시작 (F5)</button>
+      <button class="btn btn-default" ng-click="vm.buildBot()">빌드 (F7)</button>
+      <button class="btn btn-default" ng-click="vm.clearLog()">로그초기화</button>
     </div>
 
     <!--<div class="col-md-4">-->
@@ -63,7 +62,7 @@
   <br/>
   <div class="row">
     <div class="col-md-12">
-      <div  id="logDiv" ng-bind="vm.log" style="white-space:pre; line-height: 17px;  width: 100%; height: 500px;overflow: scroll" class="form-control"></div>
+      <div  id="logDiv" ng-bind="vm.log" style="white-space:pre; line-height: 17px;  width: 100%; min-height: 70vh;padding-bottom: 30px;overflow: scroll" class="form-control"></div>
     </div>
   </div>
 

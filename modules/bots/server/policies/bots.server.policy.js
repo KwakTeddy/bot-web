@@ -80,7 +80,7 @@ exports.invokeRolesPolicies = function () {
  */
 exports.isAllowed = function (req, res, next) {
   var roles = (req.user) ? req.user.roles : ['guest'];
-  console.log(roles);
+  // console.log(roles);
   // If an bot is being processed and the current user created it then allow any manipulation
   if (req.bot && req.user && req.bot.user.id === req.user.id) {
     return next();

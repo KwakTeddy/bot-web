@@ -336,6 +336,9 @@
                   <li>
                     <a ui-sref="analytics.dialog-intent">대화 인테트 분석</a>
                   </li>
+                  <li>
+                    <a ui-sref="analytics.manage-batch">배치 관리</a>
+                  </li>
                 </ul>
               </li>
 
@@ -495,9 +498,6 @@
                 <!--</a>-->
               <!--</li>-->
 
-
-
-
             </ul>
           </nav>
 
@@ -519,11 +519,15 @@
 
     </aside>
 
-    <section role="main" class="content-body" style="z-index: 0 !imrpotant;">
+    <section id="main" role="main" class="content-body" >
       {% block content %}{% endblock %}
     </section>
 
-    <aside id="chat-include" class="sidebar-right" style="z-index: 0;" ng-include="'/modules/bots/client/views/chat-user-bot.client.view.html'"></aside>
+    <div id="log-button" class="log-button" onClick="javascript: showLogPanel();" >log</div>
+    <section id="log-include" class="hide-log" style="z-index: 10"
+             ng-include="'/modules/bots/client/views/log.client.view.html'"></section>
+
+    <aside id="chat-include" class="sidebar-right" style="z-index: 11;" ng-include="'/modules/bots/client/views/chat-user-bot.client.view.html'"></aside>
 
     <!--<section id="chat-include" ng-include="'/modules/bots/client/views/chat-user-bot.client.view.html'"></section>-->
 

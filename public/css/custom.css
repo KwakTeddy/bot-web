@@ -432,3 +432,35 @@ body {
     overflow-y: auto;
 }
 
+.hide-log {
+    display: none;
+}
+
+.show-log {
+    height: 200px;
+    padding-left: 300px;padding-right: 330px;background: white;position: fixed;bottom: 0px;width: 100%;box-shadow: 0px -1px 0px 0px #ccc;
+}
+
+.log-button {
+    opacity: 0.75;background: #282d36;border-radius: 7px 7px 0 0;height: 25px;width:40px;position: fixed;right: 340px;bottom: 0px;text-align: center;
+}
+
+.log-button-hide {
+    visibility: hidden;
+}
+
+.content-body-show-log {
+    margin-bottom: 200px
+}
+
+.tree-content-show-log {
+    padding-bottom: 200px
+}
+
+.scroll-to-top {
+    display: none !important;
+}
+
+.pagination > .active > a {
+    z-index: auto;
+}

@@ -84,7 +84,7 @@ function getUserBots(UserBotsService, $stateParams) {
 
 getUserBot.$inject = ['UserBotsService', '$stateParams'];
 function getUserBot(UserBotsService, $stateParams) {
-  console.log($stateParams.userBotId);
+  // console.log($stateParams.userBotId);
   return UserBotsService.get({
     userBotId: $stateParams.userBotId
   }).$promise;

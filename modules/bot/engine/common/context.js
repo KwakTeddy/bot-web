@@ -57,7 +57,7 @@ function getContext(botName, channel, user, options, callback) {
 
         if(options) botUserContext.options = options;
 
-        console.log('changeBot: '  + botUserContext.curBotId + ' ' + botUserContext.curBotName);
+        // console.log('changeBot: '  + botUserContext.curBotId + ' ' + botUserContext.curBotName);
         if(botUserContext.curBotId) botName = botUserContext.curBotId;
       }
 

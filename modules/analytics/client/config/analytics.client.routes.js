@@ -52,6 +52,12 @@ angular.module('analytics').config(['$stateProvider',
         templateUrl: 'modules/analytics/client/views/dialog-intent.client.view.html',
         controller: 'AnalyticsIntentController',
         controllerAs: 'vm'
+      })
+      .state('analytics.manage-batch', {
+        url: '/manage-batch',
+        templateUrl: 'modules/analytics/client/views/manage-batch.client.view.html',
+        controller: 'ManageBatchController',
+        controllerAs: 'vm'
       });
   }
 ]);

@@ -52,9 +52,10 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       //   console.log(message.lastIndexOf(':log'));
 
       if(message.lastIndexOf(':log') == 0) {
-        if(!$state.is('developer-home') && !$state.is('user-bots.context-analytics') &&
-          !$state.is('bots.graph-knowledge') && !$state.is('bots.graph-dialog') &&
-          !$state.is('bots.dialog-tree')) return;
+        // if(!$state.is('developer-home') && !$state.is('user-bots.context-analytics') &&
+        //   !$state.is('bots.graph-knowledge') && !$state.is('bots.graph-dialog') &&
+        //   !$state.is('bots.dialog-tree')) return;
+
         // vm.log += message.substring(message.indexOf('\n')+1);
         // logScrollBottom()
 
@@ -251,13 +252,20 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         $rootScope.$broadcast('keyinput', vm.msg);
 
       // only in developer
-      if ($state.is('developer-home') || $state.current.name.startsWith('bots.')) {
-        if (event.keyCode == 118) {    // F7
+      // if ($state.is('developer-home') || $state.current.name.startsWith('bots.')) {
+        if (event.keyCode == 118) {         // F7
           vm.buildBot();
-        } else if (event.keyCode == 27) {
+          angular.element('#inputbox').focus();
+          event.preventDefault();
+        } else if (event.keyCode == 116) {  //F5
           vm.resetBot();
+          angular.element('#inputbox').focus();
+          event.preventDefault();
+        } else if (event.keyCode == 121) {  //F10
+          angular.element('#inputbox').focus();
+          event.preventDefault();
         }
-      }
+      // }
     };
 
     $document.bind("keydown", keydown);
@@ -545,7 +553,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       var datetext = d.getHours() + ':' + d.getMinutes();
       var innerHTML =
         '<div class="item item-avatar b-none friend">'+
-        '<img src="'+vm.userBot.imageFile+'">' +
+        '<img src="'+(vm.userBot.imageFile? vm.userBot.imageFile: '/images/!logged-user.jpg')+'">' +
         '<div class="text-xs"><span class="font-bold m-r-sm">'+vm.userBot.name+'</span><span class="color-grey-500">'+datetext+'</span></div>' +
         '<div class="bubble"><i class="icon-tail"></i>' +
         '<div class="content"><div class="content-text">' + text + '</div>';

@@ -77,15 +77,15 @@ angular.module('core').controller('UserHomeController', ['$scope', '$document', 
     };
 
     // 전체화면 이벤트로 전환
-    $document.bind("keydown", function(event) {
-      // console.debug('keydown:' + event.keyCode)
-
-        if(event.keyCode == 116) {    // F5
-          vm.buildBot();
-        } else if(event.keyCode == 27) {
-          vm.resetBot();
-        }
-    });
+    // $document.bind("keydown", function(event) {
+    //   // console.debug('keydown:' + event.keyCode)
+    //
+    //     if(event.keyCode == 116) {    // F5
+    //       vm.buildBot();
+    //     } else if(event.keyCode == 27) {
+    //       vm.resetBot();
+    //     }
+    // });
 
     // vm.onKeyPress = function (keyCode) {
     //   if(keyCode == 116) {    // F5

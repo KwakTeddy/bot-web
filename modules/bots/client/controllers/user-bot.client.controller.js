@@ -23,8 +23,8 @@ if (_platform !== 'mobile'){
       var vm = this;
       vm.user = Authentication.user;
       vm.userBot = userBot;
-      console.log(vm.user);
-      console.log(vm.userBot);
+      // console.log(vm.user);
+      // console.log(vm.userBot);
       vm.isPublic = true;
       vm.sample = false;
       if ((vm.userBot.id == 'restaurantbot') || (vm.userBot.id == 'athena') || (vm.userBot.id == 'hairshopbot') || (vm.userBot.id == 'massagebot') || (vm.userBot.id == 'nailbot') || (vm.userBot.id == 'order')){

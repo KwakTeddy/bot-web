@@ -19,7 +19,7 @@
     <div id="userbox" class="userbox">
       <a href="#" data-toggle="dropdown">
         <figure class="profile-picture">
-          <img src="{{currentBot.imageFile}}" alt="Joseph Doe" class="img-circle" data-lock-picture="/images/!logged-user.jpg" />
+          <img src="{{currentBot.imageFile?currentBot.imageFile:'/images/!logged-user.jpg'}}" alt="Joseph Doe" class="img-circle" data-lock-picture="/images/!logged-user.jpg" />
         </figure>
         <div class="profile-info">
           <span class="name">{{currentBot.name}}</span>
@@ -35,7 +35,7 @@
           <li data-ng-repeat="bot in myBot" ng-click="changeBot(bot)">
             <a role="menuitem" tabindex="-1" >
               <figure class="profile-picture">
-                <img src="{{bot.imageFile}}" alt="Joseph Doe" class="img-circle" data-lock-picture="/images/!logged-user.jpg" />
+                <img src="{{bot.imageFile?bot.imageFile:'/images/!logged-user.jpg'}}" alt="Joseph Doe" class="img-circle" data-lock-picture="/images/!logged-user.jpg" />
               </figure>
               <div class="profile-info">
                 <span class="name">{{bot.name}}</span>
