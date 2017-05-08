@@ -456,6 +456,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     var keydown = function(event) {
+
+
       if (vm.edit === 'task') {
         if (event.keyCode == 27) { // esc
           event.preventDefault();
@@ -478,12 +480,17 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         return false;
       }
 
+      if (document.activeElement == document.getElementById('inputbox') )
+        if (event.keyCode == 27 || event.keyCode == 13) // esc, enter should be handled in chat window
+          return false;
+
       if (event.keyCode == 27) { // esc
+        document.getElementById('search').blur();
         $.magnificPopup.close();
         return false;
       }
 
-      if (document.activeElement == document.getElementById('search'))
+      if (document.activeElement == document.getElementById('search') )
         return false;
 
       if (event.ctrlKey && event.keyCode == 90) { // ctrl+z
@@ -1289,6 +1296,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         centerNode(source);
       } else {
         update(root);
+        updateSelected(root);
         centerNode(root, 'start');
       }
     };
@@ -1869,16 +1877,27 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       selectedSVG = null;
     }
 
-    function swapNode(parent,a,b) {
+    function swapNode(parent,src, target) {
+      var srcNode = angular.copy(parent.children[src]);
+      var targetNode = angular.copy(parent.children[target]);
 
+      parent.children[src] = targetNode;
+      parent.children[target] = srcNode;
+
+      updateSelected(srcNode);
     }
 
+    // assumption: idx is already checked when creating buttons for the following actions
     function goUp(d) {
-
+      vm.setChanged(true);
+      var idx = d.parent.children.indexOf(d);
+      swapNode(d.parent, idx, idx-1 );
     }
 
     function goDown(d) {
-
+      vm.setChanged(true);
+      var idx = d.parent.children.indexOf(d);
+      swapNode(d.parent, idx, idx+1 );
     }
 
     function deleteNode(d) {
