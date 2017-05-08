@@ -96,7 +96,7 @@
 
   getTask.$inject = ['$stateParams', 'TasksService'];
   function getTask($stateParams, TasksService) {
-    console.log($stateParams);
+    console.log($stateParams.taskId);
     return TasksService.get({
       taskId: $stateParams.taskId
     }).$promise;

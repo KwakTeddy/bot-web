@@ -60,10 +60,11 @@ angular.module('user-bots').controller('AnalyticsController', ['$scope', '$rootS
 
             // console.log(JSON.stringify(res.result));
             timer = null;
-          })
+          });
 
           $resource('/api/user-bots-analytics/intent', {}).get({input: input, botId: $rootScope.botId}, function (res) {
             console.log('intent: ' + JSON.stringify(res));
+            console.log(res);
           })
 
         }, 300);

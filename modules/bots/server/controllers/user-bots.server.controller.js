@@ -1112,7 +1112,6 @@ exports.analyzeIntent = function(req, res) {
   };
 
   typeModule.processInput(context, req.query.input, function(_inNLP, entities, _doc) {
-    console.log(JSON.stringify(_doc));
     res.json(_doc);
   })
 };
