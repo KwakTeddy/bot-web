@@ -441,7 +441,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         }
         return false;
       }
-      if (vm.edit === 'dialog' || vm.edit === 'task')
+      if (vm.edit === 'dialog' || vm.edit === 'task' || document.activeElement == document.getElementById('search'))
         return false;
 
       if (event.ctrlKey && event.keyCode == 90) { // ctrl+z
@@ -660,7 +660,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     var currentKeyword = "";
     var currentSearchIdx = 0;
 
-    $scope.searchNode = function() {
+    $scope.searchNode = function(event) {
       //find the node
       var selectedVal = document.getElementById('search').value;
       var node = baseSvg.selectAll(".node");
