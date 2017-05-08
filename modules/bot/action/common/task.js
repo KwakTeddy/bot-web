@@ -5,7 +5,7 @@ var async = require('async');
 var dialogModule = require(path.resolve('modules/bot/action/common/dialog'));
 const MAX_ACTION = 100;
 
-function executeTask(task, context, callback) {
+function executeTask(task, context, callback, print, options) {
   if(task == undefined) throw new Error('task.js:executeTask: Wrong arguments. task undefined');
   if(context == undefined) throw new Error('task.js:executeTask: Wrong arguments. context undefined ' + task.module + '.' + task.action);
   if(callback == undefined) throw new Error('task.js:executeTask: Wrong arguments. callback undefined ' + task.module + '.' + task.action);
@@ -40,18 +40,23 @@ function executeTask(task, context, callback) {
           if(paramDef.context && context.user[paramDef.name] != undefined) {
             task[paramDef.name] = context.user[paramDef.name];
             callbackEach();
+          } else if(paramDef.type && context.botUser.entities[paramDef.type] != undefined) {
+            task[paramDef.type] = context.botUser.entities[paramDef.type];
+            callbackEach();
           } else {
             var paramType;
-            if(typeof paramDef.type === 'string' || paramDef.type instanceof String) paramType = type[paramDef.type+'Type'];
-            else paramType = paramDef.type;
+            if(typeof paramDef.type === 'string' || paramDef.type instanceof String) {
+              if(type[paramDef.type+'Type'] != undefined) paramType = type[paramDef.type+'Type'];
+              else paramType = {};
+            } else paramType = paramDef.type;
 
             paramType.name = paramDef.name;
 
             var printRequired = function(text, inDoc, paramDef, paramType) {
               if(inDoc.requiredOut) {
-                task.topTask.print(inDoc.requiredOut + context.global.messages.typeExit, inDoc);
+                print(inDoc.requiredOut + context.global.messages.typeExit, inDoc);
               } else {
-                task.topTask.print((paramDef.question instanceof Function ? paramDef.question(inDoc, context) : paramDef.question) +
+                print((paramDef.question instanceof Function ? paramDef.question(inDoc, context) : paramDef.question) +
                   context.global.messages.typeExit, inDoc);
               }
             };
@@ -88,15 +93,23 @@ function executeTask(task, context, callback) {
               // } else if(paramDef.dialog){
               //   callback(null, _inRaw, _inNLP, task)
               } else if(paramDef.required) {
-                context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, _context, print) {
-                  task.topTask.print = print;
-                  context.user.pendingCallback = null;
-                  callback(null, _inRaw, _inNLP, task)
-                };
+                if(paramDef.question) {
+                  context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, _context, print) {
+                    // task.topTask.print = print;
+                    context.user.pendingCallback = null;
+                    callback(null, _inRaw, _inNLP, task)
+                  };
 
-                printRequired(null, task, paramDef, paramType);
-              } else {
-                callback(true, null, null, task, false);
+                  printRequired(null, task, paramDef, paramType);
+                } else if(paramDef.questionDialog) {
+                  var _dialog = {
+                    input: false,
+                    output: {returnCall: paramDef.questionDialog, options: {returnDialog: options.currentDialog.name}}
+                  };
+                  dialogModule.executeDialog(_dialog, context, print, function(_matched, __dialog) {
+                    // callback(true, null, null, task, false);
+                  }, null);
+                }
               }
             };
 
@@ -150,7 +163,7 @@ function executeTask(task, context, callback) {
                   callback(null, inRaw, inNLP, inDoc, matched);
               } else if(paramDef.required) {
                 context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, _context, print) {
-                  task.topTask.print = print;
+                  // task.topTask.print = print;
                   context.user.pendingCallback = null;
                   typeCheck(_inRaw, _inNLP, task, typeCheckCallback);
                 };
@@ -222,7 +235,7 @@ function executeTask(task, context, callback) {
             var additionalCheck =  function(inRaw, inNLP, inDoc, matched, callback) {
               if(inDoc.requiredOut) {
                 context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, _context, print) {
-                  task.topTask.print = print;
+                  // task.topTask.print = print;
                   context.user.pendingCallback = null;
                   customCheck(_inRaw, _inNLP, task, true, customCheckCallback);
                 };

@@ -1,8 +1,10 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Intent = mongoose.model('Intent');
+var IntentContent = mongoose.model('IntentContent');
 var path = require('path');
 var dialog = require(path.resolve('modules/bot/action/common/dialog.js'));
+var mongoModule = require(path.resolve('modules/bot/action/common/mongo'));
 
 var intentCheck = {
   name: 'intentDoc',
@@ -136,3 +138,46 @@ function loadIntents(bot, callback) {
 exports.loadIntents = loadIntents;
 
 
+function saveIntentTopics(botId, callback) {
+  var words = {};
+
+  IntentContent.find({botId: botId}, {}, function(err, docs) {
+    for(var i in docs) {
+      var ws = docs[i].input.split(' ');
+
+      for(var j in ws) {
+        var word = ws[j];
+        if(words[word] == undefined) words[word] = 1;
+        else words[word]++;
+      }
+    }
+
+    var _words = [];
+    for(var i in words) {
+      _words.push({word: i, count: words[i], botId: botId});
+    }
+
+    mongoModule.remove({mongo: {model: 'intentcontext', query: {botId: botId}}}, null, function() {
+      mongoModule.save({mongo: {model: 'intentcontext'}, doc: _words}, null, function () {
+        callback();
+      });
+    });
+  });
+}
+
+exports.saveIntentTopics = saveIntentTopics;
+
+function loadIntentTopics(bot, callback) {
+
+  mongoModule.find({mongo: {model: 'intentcontext', query: {botId: bot.id}}}, null, function(_task, _context) {
+    var words = _task.doc, nWords = {};
+    for(var i in words) {
+      nWords[words[i].word] = words[i].count;
+    }
+
+    bot.intentTopics = nWords;
+    if(callback) callback();
+  });
+}
+
+exports.loadIntentTopics = loadIntentTopics;

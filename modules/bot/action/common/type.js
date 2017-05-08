@@ -79,6 +79,9 @@ function processInput(context, inRaw, callback) {
       entity.matchDictionaryEntities(inRaw, commonTypes, doc, context, function(_inRaw, _entities) {
         // doc.entities = doc.entities.concat(_doc.entities)
         doc.entities = utils.merge(doc.entities, _entities);
+
+        console.log('entities: ' + JSON.stringify(_entities));
+
         cb(null);
       });
     },
@@ -87,6 +90,7 @@ function processInput(context, inRaw, callback) {
       checkTypes(inRaw, commonTypes, {}, context, function(_inRaw, _entities) {
         // doc.entities = doc.entities.concat(_entities)
         doc.entities = utils.merge(doc.entities, _entities);
+        context.botUser.entities = doc.entities;
         cb(null);
       });
     },
@@ -107,8 +111,13 @@ function processInput(context, inRaw, callback) {
 
     function(cb) {
       intent.matchIntent(inRaw, inNLP, context, function(matched, _intent, _dialog) {
-        if(_intent) doc.intent = _intent;
-        else doc.intent = undefined;
+        if(_intent) {
+          doc.intent = _intent;
+          context.botUser.init = _intent;
+        } else {
+          doc.intent = undefined;
+          context.botUser.init = undefined;
+        }
 
         if(_dialog) {
           doc.intentDialog = _dialog;
@@ -118,6 +127,7 @@ function processInput(context, inRaw, callback) {
           context.botUser.intentDialog = undefined;
         }
 
+        console.log('intent: ' + JSON.stringify(_intent));
         cb(null);
       })
     }
@@ -1657,7 +1667,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
       }
 
       if(topicKeywords && topicKeywords.length > 0) context.botUser.topic = topicKeywords;
-      console.log('topic1: '+ (context.botUser.topic ? context.botUser.topic[0].text : 'null')+ ',' + context.botUser.analytics + ',' + context.botUser.analytics2);
+      // console.log('topic1: '+ (context.botUser.topic ? context.botUser.topic[0].text : 'null')+ ',' + context.botUser.analytics + ',' + context.botUser.analytics2);
 
       callback(text, inDoc, true);
     } else {

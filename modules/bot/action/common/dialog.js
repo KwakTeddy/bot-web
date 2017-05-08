@@ -381,6 +381,14 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
           },
 
           function(matched, cb2) {
+            if(input && input.intent) {
+              cb2(true, false);
+            } else {
+              cb2(null, true);
+            }
+          },
+
+          function(matched, cb2) {
             if(typeof input == 'string' || input.text) {
               var _matched = true;
               var _input;
@@ -591,7 +599,7 @@ function executeDialog(dialog, context, print, callback, options) {
             taskModule.executeTask(dialog.task, context, function (_task, context) {
               dialog.task = _task;
             cb(null);
-          });
+          }, print, {currentDialog: dialog});
         } else {
           // logger.debug('Task action 함수가 없습니다.');
           cb(null);

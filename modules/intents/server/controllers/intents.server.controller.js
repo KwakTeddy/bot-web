@@ -2,7 +2,8 @@
 
 
 var path = require('path');
-var dialogset = require(path.resolve('modules/bot/engine/dialogset/dialogset.js'));
+var dialogset = require(path.resolve('modules/bot/engine/dialogset/dialogset'));
+var intentModule = require(path.resolve('modules/bot/engine/nlu/intent'));
 
 /**
  * Module dependencies.
@@ -43,35 +44,32 @@ exports.create = function(req, res) {
         dialogset.processInput(null, req.query.content, function(_input, _json) {
           intentContent.input = _input;
 
-          intent.save(function(err) {
-            if (err) {
-              console.log(err);
-              return res.status(400).send({
-                message: err
-              });
-            } else {
-              intentContent.save(function (err) {
-                console.log(err);
-                if (err) {
-                  console.log(err);
-                  return res.status(400).send({
-                    message: err
-                  });
-                }else {
-                  console.log(intent);
-                  res.jsonp(intent);
-                }
-              })
-            }
-          });
-        });
-      }else {
+    intent.save(function(err) {
+      if (err) {
+        console.log(err);
         return res.status(400).send({
-          message:  '\'' + req.body.name + '\'' +' 이름의 인텐트가 존재합니다. 다른 이름으로 생성해주세요'
+          message: err
         });
+      } else {
+        intentContent.save(function (err) {
+          console.log(err);
+          if (err) {
+            console.log(err);
+            return res.status(400).send({
+              message: err
+            });
+          }else {
+            // console.log(intent);
+
+            intentModule.saveIntentTopics(intent.botId, function() {
+              res.jsonp(intent);
+            });
+          }
+        })
       }
-    }
+    });
   });
+
 };
 
 /**
@@ -80,6 +78,7 @@ exports.create = function(req, res) {
 exports.read = function(req, res) {
   // convert mongoose document to JSON
   var intent = req.intent ? req.intent.toJSON() : {};
+  console.log(util.inspect(intent));
 
   if (req.user && (String(req.user._id) == String(intent.user._id)) && (req.intent.botId == req.params.botName)){
     // Add a custom field to the Article, for determining if the current User is the "owner".
@@ -108,8 +107,8 @@ exports.read = function(req, res) {
  */
 exports.update = function(req, res) {
   var intent = req.intent ;
-  console.log(util.inspect(intent));
-  console.log(util.inspect(req.body));
+  // console.log(util.inspect(intent));
+  // console.log(util.inspect(req.body));
   intent = _.extend(intent , req.body);
 
   intent.save(function(err) {
@@ -184,11 +183,11 @@ exports.intentByID = function(req, res, next, id) {
  * Create a Custom action
  */
 exports.contentCreate = function(req, res) {
-  console.log(req.body.content);
-  console.log('-----------------');
+  // console.log(req.body.content);
+  // console.log('-----------------');
   IntentContent.find({user: req.user._id, intentId: req.body.intentId, name: req.body.content}).exec(function (err, data) {
     console.log(err);
-    console.log(data);
+    // console.log(data);
     if(err){
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -211,8 +210,10 @@ exports.contentCreate = function(req, res) {
                 message: errorHandler.getErrorMessage(err)
               });
             }else {
-              console.log(data);
-              res.json(data);
+              // console.log(data);
+              intentModule.saveIntentTopics(intentContent.botId, function() {
+                res.jsonp(data);
+              });
             }
           });
         });
@@ -238,8 +239,8 @@ exports.contentDelete = function(req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      console.log(data);
-      console.log('--------------')
+      // console.log(data);
+      // console.log('--------------')
       res.jsonp(data);
     }
   })

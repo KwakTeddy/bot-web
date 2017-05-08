@@ -330,7 +330,15 @@ function loadBot(botName, callback) {
 
     function(cb) {
       intent.loadIntents(bot, function() {
-        cb(null);
+        intent.loadIntentTopics(bot, function() {
+          var _topicKeywords = [];
+          for(var key in bot.intentTopics) {
+            if(key.length > 1) _topicKeywords.push(key);
+          }
+          if(bot.topicKeywords) bot.topicKeywords = bot.topicKeywords.concat(_topicKeywords);
+          else bot.topicKeywords = _topicKeywords;
+          cb(null);
+        })
       })
     }
 

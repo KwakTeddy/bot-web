@@ -279,10 +279,12 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       // addBotBubble('머니봇 [' + vm.bot + '] 접속 (' + vm.server.split(':')[0] + ':' + vm.server.split(':')[1] + ' as ' + vm.userId + ')');
       emitMsg(':reset user');
 
-      // setTimeout(function() {
-      //   console.log('init: ' + vm.initMsg);
-      //   if(vm.initMsg != undefined && vm.initMsg != null && vm.initMsg != '') emitMsg(vm.initMsg);
-      // }, 200);
+      $rootScope.$broadcast('getInitMsg');
+
+      setTimeout(function() {
+        console.log('init: ' + vm.initMsg);
+        if($rootScope.initMsg != undefined && $rootScope.initMsg != null && $rootScope.initMsg != '') emitMsg($rootScope.initMsg);
+      }, 200);
 
     }
 

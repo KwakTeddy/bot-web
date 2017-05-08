@@ -35,6 +35,10 @@ angular.module('core').controller('HomeController', ['$scope', '$rootScope', '$d
       // logScrollTimer = -1;
       // }, 300);
     }
+
+    $scope.$on('getInitMsg', function(event, arg0) {
+      $rootScope.initMsg = vm.initMsg;
+    })
   }
 ]);
 
