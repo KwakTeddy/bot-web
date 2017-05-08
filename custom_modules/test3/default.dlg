@@ -1,0 +1,52 @@
+가전체크:
+<false
+>가전제품 종류를 말씀해주세요.
+    <냉장고
+    >{return: 1}
+    <에어컨
+    >{return: 1}
+    <{if: 'true'}
+    >{repeat: 1, options: {prefix: '냉장고나 에어컨 중에 말씀해주세요'}}
+
+
+약냉:
+<{intent: '약냉'}
+'refriweak'
+>{output:'아래는 냉장고의 냉기가 약할 때의 주된 원인입니다.\n#doc#+index+. +title+\n#\n고객님께 해당되는 경우가 있으면 선택해주세요.\n어떤 것도 해당하지 않으면 전문기사님의 출장점검을 도와드리겠습니다.'}
+    <{types: [{name: 'doc', listName: 'doc', field: 'title', typeCheck: 'listTypeCheck'}]}
+    >{output:'[답변]\n+doc.content+\n\n다른 경우를 보시려면 "이전"을 입력해주세요\n\n답변이 유용한가요?'}
+        <{text:'~네'}>{call: '만족도조사'}
+        <{text:'~아니요'}>{call: '미해결'}
+    <{if: 'true'}>{call: '미해결'}
+
+강냉:
+<{intent: '강냉'}
+'refristrong'
+>{output:'아래는 냉장고의 냉기가 너무 강할 때의 주된 원인입니다.\n#doc#+index+. +title+\n#\n고객님께 해당되는 경우가 있으면 선택해주세요.\n어떤 것도 해당하지 않으면 전문기사님의 출장점검을 도와드리겠습니다.'}
+    <{types: [{name: 'doc', listName: 'doc', field: 'title', typeCheck: 'listTypeCheck'}]}
+    >{output:'[답변]\n+doc.content+\n\n다른 경우를 보시려면 "이전"을 입력해주세요\n\n답변이 유용한가요?'}
+        <{text:'~네'}>{call: '만족도조사'}
+        <{text:'~아니요'}>{call: '미해결'}
+    <{if: 'true'}>{call: '미해결'}
+
+만족도조사:
+<false
+>{output:'더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.'}
+
+미해결:
+<false
+>{output:'답변으로 문제 해결이 어렵다면 전문기사가 출장점검을 진행해야합니다.\n출장예약을 도와드릴까요?'}
+    <{text:'~네'}>{call:'예약'}
+    <{text:'~아니요'}>{output:'고객님, 만족스러운 답변을 드리지 못해 죄송합니다.\nLG전자 고객센터는 1577-7324입니다.'}
+
+시작:
+c<시작
+>test3 입니다.
+
+답변없음:
+c<> 알아듣지 못했습니다
+
+<안녕
+>안녕하세요
+
+
