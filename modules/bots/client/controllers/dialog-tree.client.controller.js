@@ -57,6 +57,25 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       /*
        Form
        */
+      $('.modal-with-help').magnificPopup({
+        type: 'inline',
+        preloader: false,
+        focus: '#name',
+        modal: true,
+
+        // When elemened is focused, some mobile browsers in some cases zoom in
+        // It looks not nice, so we disable it:
+        callbacks: {
+          beforeOpen: function() {
+            if($(window).width() < 700) {
+              this.st.focus = false;
+            } else {
+              this.st.focus = '#name';
+            }
+          }
+        }
+      });
+
       $('.modal-with-form').magnificPopup({
         type: 'inline',
         preloader: false,
@@ -433,15 +452,34 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     var keydown = function(event) {
-      if (event.keyCode == 27) { // esc
-        if (vm.edit === 'dialog') {
-          $scope.closeEdit();
-        } else if (vm.edit === 'task') {
+      if (vm.edit === 'task') {
+        if (event.keyCode == 27) { // esc
+          event.preventDefault();
           $scope.backToEdit(false);
+        } else if (vm.fromTask && event.altKey && event.keyCode == 37) { // alt + left
+          event.preventDefault();
+          $scope.gotoTree();
         }
         return false;
       }
-      if (vm.edit === 'dialog' || vm.edit === 'task' || document.activeElement == document.getElementById('search'))
+
+      if (vm.edit === 'dialog') {
+        if (event.keyCode == 27) { // esc
+          event.preventDefault();
+          $scope.closeEdit();
+        } else if (event.ctrlKey && event.keyCode == 13) { // ctrl+enter
+          $scope.update(true);
+          $scope.closeEdit();
+        }
+        return false;
+      }
+
+      if (event.keyCode == 27) { // esc
+        $.magnificPopup.close();
+        return false;
+      }
+
+      if (document.activeElement == document.getElementById('search'))
         return false;
 
       if (event.ctrlKey && event.keyCode == 90) { // ctrl+z
@@ -470,7 +508,16 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         return;
       } else if (event.keyCode == 191) { //  /
         event.preventDefault();
-        document.getElementById('search').focus();
+        if (event.shiftKey) {
+          // shortcut help
+          if ($.magnificPopup.instance.isOpen) {
+            $.magnificPopup.close();
+          } else {
+            $('.modal-with-help').click();
+          }
+        } else {
+          document.getElementById('search').focus();
+        }
         return;
       }
 
@@ -496,7 +543,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       } else if (event.keyCode == 38) { //up
         if (selectedNode.parent && selectedNode.parent.children &&
           selectedNode.parent.children.indexOf(selectedNode) > 0) {
-          updateSelected(selectedNode.parent.children[selectedNode.parent.children.indexOf(selectedNode)-1]);
+          if (event.ctrlKey) { // ctrl+up
+            goUp(selectedNode);
+          } else {
+            updateSelected(selectedNode.parent.children[selectedNode.parent.children.indexOf(selectedNode)-1]);
+          }
         }
       } else if (event.keyCode == 39) { //right
         if (selectedNode.children && selectedNode.children.length > 0) {
@@ -505,7 +556,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       } else if (event.keyCode == 40) { //down
         if (selectedNode.parent && selectedNode.parent.children &&
           selectedNode.parent.children.indexOf(selectedNode) < selectedNode.parent.children.length-1) {
-          updateSelected(selectedNode.parent.children[selectedNode.parent.children.indexOf(selectedNode)+1]);
+          if (event.ctrlKey) { // ctrl+down
+            goDown(selectedNode);
+          } else {
+            updateSelected(selectedNode.parent.children[selectedNode.parent.children.indexOf(selectedNode) + 1]);
+          }
         }
       }
     };
@@ -1661,6 +1716,19 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         }
 
         selectedSVG.append('text')
+          .on("click", goUp)
+          .attr("class", "icon")
+          .attr("x", 10)
+          .attr("y", -5)
+          .text(function(d) { return '\uf062';} );
+        selectedSVG.append('text')
+          .on("click", goDown)
+          .attr("class", "icon")
+          .attr("x", 10+25)
+          .attr("y", -5)
+          .text(function(d) { return '\uf063';} );
+
+        selectedSVG.append('text')
           .on("click", edit)
           .attr("class", "icon")
           .attr("x", rectW-25*4)
@@ -1791,6 +1859,14 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       selectedSVG = null;
     }
 
+    function goUp(d) {
+
+    }
+
+    function goDown(d) {
+
+    }
+
     function deleteNode(d) {
       vm.setChanged(true, true);
       if (d3.event)
@@ -1853,7 +1929,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     // Toggle children function
     function toggleChildren(d) {
-      d3.event.stopPropagation();
+      if (d3.event)
+        d3.event.stopPropagation();
       if (d.children) {
         d._children = d.children;
         d.children = null;
@@ -1968,6 +2045,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       // $scope.imageURL = $scope.user.profileImageURL;
     };
 
+    // depth handling
     vm.collapseDepth = function() {
       //vm.itemHeight = vm.itemHeight + 100 + 20*vm.depth;
       if (!treeData)
@@ -1998,6 +2076,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
+    // show/hide links
     vm.show_link = true;
     vm.showLink = function() {
       vm.show_link = true;
@@ -2008,6 +2087,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       update(treeData);
     };
 
+    // to send msg to chatting window
     $scope.emitMsg = function(msg) {
       Socket.emit('send_msg', {
         bot: vm.botName,

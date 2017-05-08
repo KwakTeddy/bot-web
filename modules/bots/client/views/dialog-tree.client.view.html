@@ -221,12 +221,9 @@
         </div>
         <div>
             <div id="control" ng-show="vm.tabs[0].active" class="test-body">
-                <a class="modal-with-form btn btn-default" style="display:none" href="#modalForm">Open Form</a>
-                <a class="modal-with-task btn btn-default" style="display:none" href="#modalTaskForm">Open Form</a>
-                <a class="file-tree btn btn-default" style="display:none" href="#file-tree">Open Form</a>
 
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-sm-3">
                         <div class="input-group mt-xs input-search">
                             <form ng-submit="searchNode()">
                                 <input type="text" class="form-control" name="q" id="search" placeholder="Search...">
@@ -234,15 +231,21 @@
                             </form>
                         </div>
                     </div>
-                    <div class="col-md-4"></div>
-                    <div class="col-md-2 ">
-                        <!--<div class="input-group mt-xs pull-right">-->
-                        <!--<input class="form-control" type="text" ng-model="vm.depth" readonly>-->
-                        <!--<span class="input-group-btn">-->
-                        <!--<button class="btn btn-default" ng-click="vm.addDepth()"><i class="fa fa-plus"></i></button>-->
-                        <!--<button class="btn btn-default" ng-click="vm.minusDepth()"><i class="fa fa-minus"></i></button>-->
-                        <!--</span>-->
-                        <!--</div>-->
+                    <div class="col-sm-2 col-sm-offset-3">
+                        <!--<label class="col-sm-2 control-label">Depth: </label>-->
+                        <div class="input-group mt-xs pull-right">
+                            <input class="form-control"  type="text" ng-model="vm.depth" readonly>
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" ng-click="vm.addDepth()"><i class="fa fa-plus"></i></button>
+                                <button class="btn btn-default" ng-click="vm.minusDepth()"><i class="fa fa-minus"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <form>
+                            <button class="mt-xs mr-xs btn btn-primary pull-right" ng-disabled="!vm.isChanged" ng-click="save()" ><i class="fa fa-save"></i> 저장하기</button>
+                            <button class="mt-xs mr-xs btn btn-warning pull-right" ng-disabled="vm.changeHistory.length == 0" ng-click="undo()" ><i class="fa fa-undo"></i> 되돌리기</button>
+                        </form>
                         <button class="mt-xs mr-xs btn btn-default pull-right"
                                 ng-show="!vm.show_link"
                                 ng-click="vm.showLink()" ><i class="fa fa-flag"> 관계선 보이기</i></button>
@@ -250,16 +253,64 @@
                                 ng-show="vm.show_link"
                                 ng-click="vm.hideLink()()" ><i class="fa fa-flag"> 관계선 감추기</i></button>
                     </div>
-                    <div class="col-md-3">
-                        <form>
-                            <button class="mt-xs mr-xs btn btn-primary pull-right" ng-disabled="!vm.isChanged" ng-click="save()" ><i class="fa fa-save"></i> 저장하기</button>
-                            <button class="mt-xs mr-xs btn btn-warning pull-right" ng-disabled="vm.changeHistory.length == 0" ng-click="undo()" ><i class="fa fa-undo"></i> 되돌리기</button>
-                        </form>
-                    </div>
                 </div>
                 <div id="tree-container" class="panel" width="100%" height="100%"></div>
 
-                <!-- Modal Form -->
+                <a class="modal-with-form btn btn-default" style="display:none" href="#modalForm">Open Form</a>
+                <a class="modal-with-task btn btn-default" style="display:none" href="#modalTaskForm">Open Form</a>
+                <a class="modal-with-help btn btn-default" style="display:none" href="#modalHelpForm">Open Form</a>
+                <a class="file-tree btn btn-default" style="display:none" href="#file-tree">Open Form</a>
+
+                <!-- Modal Form for help -->
+                <div id="modalHelpForm" class="modal-block modal-block-primary mfp-hide">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            <h2 class="panel-title">Keyboard Shortcuts</h2>
+                        </header>
+                        <div class="panel-body">
+                            <p>
+                            <b>Dialog Graph</b><br/>
+←↓↑→: Navigate Dialog<br/>
+Enter: Open Edit Dialog<br/>
+Esc: Cancel Edit<br/>
+Insert: Add child dialog<br/>
+Del: Delete Dialog<br/>
+Space: Expand/Collapse Child Dialog<br/>
+<br/>
+                            <b>Dialog Editor</b><br/>
+Tab: Next (Input, Task, Output 전환, Input 등 여러 개 인경우 한줄씩 이동)<br/>
+<!--Insert, Enter: Add (포커스된 상태에 따라 한줄 추가)<br/>-->
+<!--Del: Delete (포커스된 상태에 따라 한줄 삭제)<br/>-->
+<!--Ctrl+Insert: Add Item(한줄안에 추가)<br/>-->
+<!--Ctrl+→: Edit (Task, Type, Intent 등 선택된 상태에서)<br/>-->
+Ctrl+Enter: Save Dialog Modal<br/>
+<br/>
+                            <b>Code Editor</b><br/>
+Alt+←: Back (Dialog Graph에서 Code Editor로 온 후에 복귀)<br/>
+<!--Alt+→: Forward<br/>-->
+<!--Ctrl+Tab: next tab<br/>-->
+<!--Ctrl+W: Close Tab<br/>-->
+<!--Ctrl+E: Last Tab<br/>-->
+<!--Ctrl+F: Search<br/>-->
+<!--Ctrl+R: Replace<br/>-->
+<br/>
+                            <b>Project Files</b><br/>
+Ctrl+P: Open/Close Project Files<br/>
+↑→: Navigate Tree<br/>
+<!--←→: Expand/Collapse Tree<br/>-->
+Enter: Open File<br/>
+<br/>
+                            <b>Common</b><br/>
+/: Search Box<br/>
+Ctrl+S: Save File<br/>
+Ctrl+Z: Undo<br/>
+?: keyboard shortcut help
+                            </p>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Modal Form for task detail -->
                 <div id="modalTaskForm" class="modal-block modal-block-primary mfp-hide">
                     <section class="panel">
                         <header class="panel-heading">
@@ -309,6 +360,7 @@
                     </section>
                 </div>
 
+                <!-- Modal Form for dialog -->
                 <div id="modalForm" class="modal-block modal-block-primary mfp-hide">
                     <section class="panel">
                         <header class="panel-heading">
