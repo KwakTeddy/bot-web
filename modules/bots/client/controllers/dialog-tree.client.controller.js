@@ -184,6 +184,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
+    $scope.closePopup = function() {
+      $.magnificPopup.close();
+    };
+
     $scope.gotoTree = function() {
       vm.fromTask = false;
       vm.edit = 'task';
@@ -1715,18 +1719,24 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           return;
         }
 
-        selectedSVG.append('text')
-          .on("click", goUp)
-          .attr("class", "icon")
-          .attr("x", 10)
-          .attr("y", -5)
-          .text(function(d) { return '\uf062';} );
-        selectedSVG.append('text')
-          .on("click", goDown)
-          .attr("class", "icon")
-          .attr("x", 10+25)
-          .attr("y", -5)
-          .text(function(d) { return '\uf063';} );
+        if (selectedNode.parent && selectedNode.parent.children &&
+            selectedNode.parent.children.indexOf(selectedNode) > 0) {
+          selectedSVG.append('text')
+            .on("click", goUp)
+            .attr("class", "icon")
+            .attr("x", 10)
+            .attr("y", -5)
+            .text(function(d) { return '\uf062';} );
+        }
+        if (selectedNode.parent && selectedNode.parent.children &&
+          selectedNode.parent.children.indexOf(selectedNode) < selectedNode.parent.children.length-1) {
+          selectedSVG.append('text')
+            .on("click", goDown)
+            .attr("class", "icon")
+            .attr("x", 10+25)
+            .attr("y", -5)
+            .text(function(d) { return '\uf063';} );
+        }
 
         selectedSVG.append('text')
           .on("click", edit)
@@ -1857,6 +1867,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     function initSelect() {
       selectedNode = null;
       selectedSVG = null;
+    }
+
+    function swapNode(parent,a,b) {
+
     }
 
     function goUp(d) {
