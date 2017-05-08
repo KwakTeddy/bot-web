@@ -90,6 +90,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
               this.st.focus = false;
             } else {
               this.st.focus = '#name';
+              if (!document.getElementById('input_div').classList.contains("ng-hide")) {
+                this.st.focus = '#input';
+              }
             }
           }
         }
@@ -123,6 +126,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         viewerWidth = document.getElementById('tree-container').clientWidth;
         baseSvg.attr("width", viewerWidth);
         angular.element(document.getElementById('control')).scope().updateEditor();
+        $('#treeBasic').focus();
       });
 
       $(document).on('click', '#filetree_close', function (e) {
@@ -159,6 +163,20 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
 
+    $scope.setPosition = function(task) {
+      var lines = vm.currentTab.data.split("\n");
+      for (var where=0; where < lines.length; ++where) {
+        if (lines[where].search(task) != -1)
+          break;
+      }
+      $scope.refreshCodemirror = true;
+      vm.editor.focus();
+      vm.editor.setCursor({line:where,ch:0});
+      $timeout(function () {
+        $scope.refreshCodemirror = false;
+      }, 100);
+    };
+
     $scope.openTask = function(task, isCommon) {
       $scope.dialog.task = {name: task.name};
       vm.edit = 'task';
@@ -170,17 +188,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         vm.fromTask = true;
         vm.changeTab(vm.tabs[1]);
 
-        var lines = vm.currentTab.data.split("\n");
-        for (var where=0; where < lines.length; ++where) {
-          if (lines[where].search(task) != -1)
-            break;
-        }
-        $scope.refreshCodemirror = true;
-        vm.editor.focus();
-        vm.editor.setCursor({line:where,ch:0});
-        $timeout(function () {
-          $scope.refreshCodemirror = false;
-        }, 100);
+        $scope.setPosition(task);
       }
     };
 
@@ -200,6 +208,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       $.magnificPopup.close();
       vm.fromTask = true;
       vm.changeTab(vm.tabs[1]);
+      $scope.setPosition(type);
     };
 
     $scope.closeEdit = function() {
@@ -919,8 +928,19 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       $scope.dialog.output = initOutput(dialog.output);
 
+      var isFocus =false;
+      if (dialog.input.length == 0) {
+        $scope.addInput();
+        isFocus = true;
+      }
+
+      if (dialog.output.length == 0) {
+        $scope.addOutput();
+      }
+
       $scope.$apply();
       $('.modal-with-form').click();
+
     };
 
     $scope.update = function (isValid) {
