@@ -324,7 +324,7 @@
                 <div id="modalTaskForm" class="modal-block modal-block-primary mfp-hide">
                     <section class="panel">
                         <header class="panel-heading">
-                            <h2 class="panel-title">&nbsp;</h2>
+                            <h2 class="panel-title">Task 정보</h2>
                         </header>
                         <form name="dialogTaskForm" class="form-horizontal" novalidate="novalidate">
                             <div class="panel-body">
@@ -374,7 +374,7 @@
                 <div id="modalForm" class="modal-block modal-block-primary mfp-hide">
                     <section class="panel">
                         <header class="panel-heading">
-                            <h2 class="panel-title">&nbsp;</h2>
+                            <h2 class="panel-title">Dialog 수정</h2>
                         </header>
                         <form name="dialogForm" class="form-horizontal" novalidate="novalidate">
                             <div class="panel-body">
@@ -401,36 +401,35 @@
                                                         </li>
                                                     </ul>
                                                 </div>
-                                                <div ng-show="vm.inputMode && getInputType(vm.curI.type) == 'text'">
+                                                <div id='input_div' ng-show="vm.inputMode && getInputType(vm.curI.type) == 'text'">
                                                     <input type="text" id="input" name="input" ng-model="vm.curI.str" class="form-control"
                                                            placeholder="{{getPlaceHolder(vm.curI.type)}}" >
                                                 </div>
                                                 <div ng-show="vm.inputMode && getInputType(vm.curI.type) == 'intent'">
-                                                    <button class="btn btn-default btn-block dropdown-toggle" type="button" data-toggle="dropdown"
-                                                            ng-model="vm.curI.str"
-                                                            ng-disabled="vm.intents.length == 0"
-                                                    >
-                                                        {{vm.curI.str}}
-                                                        <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu btn-block">
-                                                        <li class="text-center" ng-repeat = "t in vm.intents"><a href="#" ng-click="vm.curI.str = t">{{t}}</a></li>
-                                                    </ul>
+                                                    <ui-select ng-model="vm.curI.str"
+                                                               theme="bootstrap"
+                                                               ng-disabled="vm.intents.length == 0"
+                                                               reset-search-input="true"
+                                                               title="Intent를 선택하세요">
+                                                        <ui-select-match placeholder="Intent 이름을 입력해주세요">{{$select.selected}}</ui-select-match>
+                                                        <ui-select-choices repeat="t in vm.intents |filter: $select.search track by $index"
+                                                                           refresh-delay="0">
+                                                            <div ng-bind-html="t | highlight: $select.search"></div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
                                                 </div>
                                                 <div ng-show="vm.inputMode && getInputType(vm.curI.type) == 'type'">
-                                                    <button class="btn btn-default btn-block dropdown-toggle" type="button" data-toggle="dropdown"
-                                                            ng-model="vm.curI.str"
-                                                            ng-disabled="vm.types.length == 0"
-                                                    >
-                                                        {{vm.curI.str}}
-                                                        <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu btn-block">
-                                                        <li class="text-center" ng-repeat = "t in vm.types">
-                                                            <a href="#" ng-click="vm.curI.str = t">{{t}}</a>
-                                                            <i ng-click="openType(t)" class="btn fa fa-3 fa-edit pull-right" style="margin-top:-25px"></i>
-                                                        </li>
-                                                    </ul>
+                                                    <ui-select ng-model="vm.curI.str"
+                                                               theme="bootstrap"
+                                                               ng-disabled="vm.types.length == 0"
+                                                               reset-search-input="true"
+                                                               title="Type을 선택하세요">
+                                                        <ui-select-match placeholder="Type 이름을 입력해주세요">{{$select.selected}}</ui-select-match>
+                                                        <ui-select-choices repeat="t in vm.types |filter: $select.search track by $index"
+                                                                           refresh-delay="0">
+                                                            <div ng-bind-html="t | highlight: $select.search"></div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
                                                 </div>
                                                 <span class="input-group-btn">
                                         <button class="btn btn-primary"
@@ -465,25 +464,37 @@
                                     <label class="col-sm-2 control-label">Task</label>
                                     <div class="col-sm-9 ">
                                         <div class="dropdown mb-xs ">
-                                            <button ng-disabled="vm.tasks.length == 0"
-                                                    class="btn btn-default btn-block dropdown-toggle"
-                                                    ng-model="dialog.task" type="button"
-                                                    data-toggle="dropdown">{{dialog.task.name}}
-                                                <span class="caret"></span></button>
-                                            <ul class="dropdown-menu btn-block">
-                                                <li class="text-center"><a href="#" ng-click="dialog.task = undefined">선택 안함</a></li>
-                                                <li class="divider">|</li>
-                                                <li class="text-center" ng-repeat = "t in vm.tasks">
-                                                    <a href="#" ng-click="dialog.task = {name:t}">{{t}}</a>
-                                                    <i ng-click="openTask(t, false)" class="btn fa fa-3 fa-edit pull-right" style="margin-top:-25px"></i>
-                                                </li>
-                                                <li class="divider">|</li>
-                                                <!--<li class="text-center" readonly>공개 Task</li>-->
-                                                <li class="text-center" ng-repeat = "t in vm.commonTasks">
-                                                    <a href="#" ng-click="dialog.task = {name:t.name}">{{t.name}}</a>
-                                                    <i ng-click="openTask(t, true)" class="btn fa fa-3 fa-list pull-right" style="margin-top:-25px"></i>
-                                                </li>
-                                            </ul>
+                                            <!--<button ng-disabled="vm.tasks.length == 0"-->
+                                                    <!--class="btn btn-default btn-block dropdown-toggle"-->
+                                                    <!--ng-model="dialog.task" type="button"-->
+                                                    <!--data-toggle="dropdown">{{dialog.task.name}}-->
+                                                <!--<span class="caret"></span></button>-->
+                                            <!--<ul class="dropdown-menu btn-block">-->
+                                                <!--<li class="text-center"><a href="#" ng-click="dialog.task = undefined">선택 안함</a></li>-->
+                                                <!--<li class="divider">|</li>-->
+                                                <!--<li class="text-center" ng-repeat = "t in vm.tasks">-->
+                                                    <!--<a href="#" ng-click="dialog.task = {name:t}">{{t}}</a>-->
+                                                    <!--<i ng-click="openTask(t, false)" class="btn fa fa-3 fa-edit pull-right" style="margin-top:-25px"></i>-->
+                                                <!--</li>-->
+                                                <!--<li class="divider">|</li>-->
+                                                <!--&lt;!&ndash;<li class="text-center" readonly>공개 Task</li>&ndash;&gt;-->
+                                                <!--<li class="text-center" ng-repeat = "t in vm.commonTasks">-->
+                                                    <!--<a href="#" ng-click="dialog.task = {name:t.name}">{{t.name}}</a>-->
+                                                    <!--<i ng-click="openTask(t, true)" class="btn fa fa-3 fa-list pull-right" style="margin-top:-25px"></i>-->
+                                                <!--</li>-->
+                                            <!--</ul>-->
+                                            <ui-select ng-model="dialog.task.name"
+                                                       theme="bootstrap"
+                                                       ng-disabled="vm.tasks.length == 0"
+                                                       reset-search-input="true"
+                                                       title="Task를 선택하세요">
+                                            <ui-select-match placeholder="Task 이름을 입력해주세요">{{$select.selected}}</ui-select-match>
+                                                <ui-select-choices repeat="t in vm.tasks | filter: $select.search track by $index"
+                                                                   refresh-delay="0">
+                                                    <div ng-bind-html="t | highlight: $select.search"></div>
+                                                    <i ng-click="openTask(t, false)" class="btn fa fa-3 fa-edit pull-right" style="color:forestgreen;margin-top:-25px"></i>
+                                                </ui-select-choices>
+                                            </ui-select>
                                         </div>
                                         <!--<span class="input-group-btn">-->
                                         <!--<button class="btn btn-primary"-->
@@ -515,21 +526,22 @@
                                                     </ul>
                                                 </div>
                                                 <div ng-show="vm.inputModeO && getInputType(vm.curO.type) == 'text'">
-                                                    <input type="text" id="input" name="input" ng-model="vm.curO.str" class="form-control"
+                                                    <input type="text" id="output" name="output" ng-model="vm.curO.str" class="form-control"
 
                                                            placeholder="{{getPlaceHolder(vm.curO.type, true)}}">
                                                 </div>
                                                 <div ng-show="vm.inputModeO && getInputType(vm.curO.type) == 'dialog'">
-                                                    <button class="btn btn-default btn-block dropdown-toggle" type="button" data-toggle="dropdown"
-                                                            ng-model="vm.curO.str"
-                                                            ng-disabled="dialogList().length == 0"
-                                                    >
-                                                        {{vm.curO.str}}
-                                                        <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu btn-block">
-                                                        <li class="text-center" ng-repeat = "t in dialogList()"><a href="#" ng-click="vm.curO.str = t">{{t}}</a></li>
-                                                    </ul>
+                                                    <ui-select ng-model="vm.curO.str"
+                                                               theme="bootstrap"
+                                                               ng-disabled="dialogList().length == 0"
+                                                               reset-search-input="true"
+                                                               title="Dialog를 선택하세요">
+                                                        <ui-select-match placeholder="Dialog 이름을 입력해주세요">{{$select.selected}}</ui-select-match>
+                                                        <ui-select-choices repeat="t in dialogList() | filter: $select.search track by $index"
+                                                                           refresh-delay="0">
+                                                            <div ng-bind-html="t | highlight: $select.search"></div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
                                                 </div>
                                                 <div class="text-left" ng-show="vm.inputModeO && getInputType(vm.curO.type) == 'image'" >
                                       <span class="btn btn-default btn-file" style="padding-bottom:4px;padding-top:4px">
