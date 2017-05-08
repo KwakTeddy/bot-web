@@ -172,6 +172,7 @@ exports.list = function(req, res) {
  * Custom action middleware
  */
 exports.taskByID = function(req, res, next, id) {
+  console.log('---------------123================')
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
       message: 'Custom action is invalid'

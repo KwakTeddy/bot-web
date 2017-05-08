@@ -233,7 +233,6 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
     vm.connectUserBot = function(botId) {
       clearBubble();
-
       $resource('/api/bots/byNameId/:botNameId', {botNameId:'@id'}).
       get({botNameId: botId}, function(data) {
         // console.log(data);

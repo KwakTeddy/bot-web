@@ -17,14 +17,6 @@ var BotUserSchema = new Schema({
     type: String,
     default: '카카오톡'
   },
-  currentBank: {
-    type: Schema.ObjectId,
-    ref: 'Bank'
-  },
-  currentAccount: {
-    type: String
-  },
-
   name: {
     type: String
   },
@@ -48,7 +40,10 @@ var BotUserSchema = new Schema({
     default: Date.now
   },
 
-  confirmTerms: Boolean
+  confirmTerms: Boolean,
+  botId: {
+    type: String
+  }
 });
 
 mongoose.model('BotUser', BotUserSchema);
