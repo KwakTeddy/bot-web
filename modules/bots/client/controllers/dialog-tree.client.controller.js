@@ -458,6 +458,16 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           $scope.$apply();
         }
         return;
+      } else if (event.ctrlKey && event.keyCode == 80) { // ctrl+p
+        event.preventDefault();
+        if (document.getElementById('filetree').style.display == 'none') {
+          vm.initTree();
+          $('#filetree_open').click();
+        } else {
+          $('#filetree_close').click();
+        }
+
+        return;
       } else if (event.keyCode == 191) { //  /
         event.preventDefault();
         document.getElementById('search').focus();
