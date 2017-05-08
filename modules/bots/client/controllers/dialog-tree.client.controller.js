@@ -393,6 +393,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             return true;
         });
         svg.remove();
+        initSelect();
         update(history.source);
       }
       if (vm.changeHistory.length == 0) {
@@ -923,6 +924,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.update = function (isValid) {
+      vm.edit = false;
       vm.setChanged(true);
 
       // $scope.error = null;
@@ -1219,7 +1221,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     // size of rect
     var rectW = 250, rectH = 130;
     // height for one node
-    var itemHeight = rectH+300;
+    var itemHeight = rectH+250;
     // width for one depth
     var labelWidth = 350;
 
@@ -1309,6 +1311,17 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       // This prevents the layout looking squashed when new nodes are made visible or looking sparse when nodes are removed
       // This makes the layout more consistent.
       var levelWidth = [1];
+      vm.maxDepth = 0;
+      var calcDepth = function(d) {
+        vm.maxDepth = Math.max(vm.maxDepth, d.depth);
+        if (d.children) {
+          d.children.forEach(calcDepth);
+        } else if (d._children) {
+          d._children.forEach(calcDepth);
+        }
+      };
+      calcDepth(root);
+
       var childCount = function (level, n) {
 
         if (n.children && n.children.length > 0) {
@@ -1943,37 +1956,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       angular.element(document.getElementById('control')).scope().findOne(d);
     }
 
-    // Helper functions for collapsing and expanding nodes.
-    function collapse(d) {
-      if (d.children) {
-        d._children = d.children;
-        d._children.forEach(collapse);
-        d.children = null;
-      }
-    }
-
-    function expand(d) {
-      if (d._children) {
-        d.children = d._children;
-        d.children.forEach(expand);
-        d._children = null;
-      }
-    }
-
-    // Toggle children function
-    function toggleChildren(d) {
-      if (d3.event)
-        d3.event.stopPropagation();
-      if (d.children) {
-        d._children = d.children;
-        d.children = null;
-      } else if (d._children) {
-        d.children = d._children;
-        d._children = null;
-      }
-      return d;
-    }
-
     function wrap(text, width, maxLine) {
       text.each(function() {
         var text = d3.select(this),
@@ -2079,23 +2061,67 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     // depth handling
+    // Helper functions for collapsing and expanding nodes.
+    function collapse(d) {
+      if (d.children) {
+        d._children = d.children;
+        d._children.forEach(collapse);
+        d.children = null;
+      }
+    }
+
+    function expand(d) {
+      if (d._children) {
+        d.children = d._children;
+        d.children.forEach(expand);
+        d._children = null;
+      }
+    }
+
+    // Toggle children function
+    function toggleChildren(d) {
+      if (d3.event)
+        d3.event.stopPropagation();
+      if (d.children) {
+        d._children = d.children;
+        d.children = null;
+      } else if (d._children) {
+        d.children = d._children;
+        d._children = null;
+      }
+      return d;
+    }
+
+
+    vm.handleCurrent = function(d) {
+      if (d.depth == vm.depth) {
+        if (d.children) {
+          d._children = d.children;
+          d.children = null;
+        }
+      } else {
+        if (d.children) {
+          d.children.forEach(vm.handleCurrent);
+        }
+        if (d._children) {
+          d.children = d._children;
+          d._children = null;
+          d.children.forEach(vm.handleCurrent);
+        }
+      }
+    };
+
     vm.collapseDepth = function() {
-      //vm.itemHeight = vm.itemHeight + 100 + 20*vm.depth;
       if (!treeData)
         return;
-      treeData.children.forEach(function (d) {
-        if (d.children) {
-          d.children.forEach(function (e) {
-            if (e.depth >= vm.depth)
-              collapse(e);
-            if (e.depth < vm.depth)
-              expand(e);
-          });
-        }
-      });
+      if (treeData.children) {
+        treeData.children.forEach(vm.handleCurrent);
+      }
     };
 
     vm.addDepth = function() {
+      if (vm.depth >= vm.maxDepth)
+        return false;
       ++vm.depth;
       vm.collapseDepth();
       update(treeData);
