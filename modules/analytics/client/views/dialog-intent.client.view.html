@@ -1,49 +1,65 @@
-<header class="page-header">
-  <h2>인텐트 분석</h2>
 
-  <div class="right-wrapper pull-right">
-    <ol class="breadcrumbs">
-      <li>
-        <a ui-sref="home">
-          <i class="fa fa-home"></i>
-        </a>
-      </li>
-      <li><span>인텐트 분석</span></li>
-    </ol>
+<!--<header class="page-header">-->
+  <!--<h2>인텐트 분석</h2>-->
 
-    <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
-  </div>
-</header>
+  <!--<div class="right-wrapper pull-right">-->
+    <!--<ol class="breadcrumbs">-->
+      <!--<li>-->
+        <!--<a ui-sref="home">-->
+          <!--<i class="fa fa-home"></i>-->
+        <!--</a>-->
+      <!--</li>-->
+      <!--<li><span>인텐트 분석</span></li>-->
+    <!--</ol>-->
 
+    <!--<a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>-->
+  <!--</div>-->
+<!--</header>-->
 
 <!--<div class="col-md-6">-->
-<section class="panel">
-  <form name="botForm" class="form-horizontal form-bordered" ng-submit="create(botForm.$valid)" novalidate="novalidate">
+<section class="panel" ng-controller="AnalyticsIntentController as vm" style="height: 200px; overflow-x: hidden; overflow-y: auto; background: #ecedf0;">
+
+  <div class="row" style="padding: 5px 12px 3px 5px">
+    <div class="col-md-6">
+      <input type="text" class="form-control" ng-model="msg"
+             placeholder="분석할 문장을 입력해주세요."
+             style="height: 29px; width: 80%; display: inline-block;"/>
+      <a class="btn btn-default btn-sm" style="margin-top: -4px;" ng-click="tester()">분석</a>
+    </div>
+    <div class="col-md-6" style="text-align: right;">
+      <button class="btn btn-sm btn-default" onclick="hideIntentPanel()">닫기</button>
+    </div>
+  </div>
+
+  <form name="botForm" class="form-horizontal form-bordered" ng-submit="create(botForm.$valid)" novalidate="novalidate"
+  style="margin: 3px 8px;">
 
     <div class="panel-body">
       <div class="form-group">
-        <label class="col-sm-2 control-label">인텐트</label>
+        <label class="col-sm-2 control-label">Intent</label>
         <div class="col-sm-10">
           <p class="form-control-static" data-ng-bind="intent.name">해당하는 인텐트가 없습니다</p>
         </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-2 control-label">엔터티</label>
+        <label class="col-sm-2 control-label">Entities</label>
         <div class="col-sm-10">
-          <p class="form-control-static" data-ng-bind="entities"></p>
+          <p class="form-control-static" ng-repeat="(key1, value1) in entities">
+            <span ng-bind="key1"></span>: <span ng-bind="value1"></span><br/>
+          </p>
         </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-2 control-label">테스크 </label>
+        <label class="col-sm-2 control-label">Task </label>
         <div class="col-sm-10">
           <p class="form-control-static" ng-bind="task.name"></p>
         </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-2 control-label">테스크 엔터티</label>
+        <label class="col-sm-2 control-label">Parameters</label>
         <div class="col-sm-10">
           <!--<p class="form-control-static" data-ng-if="!taskEntities.length">없음</p>-->
-          <table class="table table-bordered table-striped mb-none" data-ng-if="taskEntities.length">
+          <table class="table table-bordered table-striped mb-none" data-ng-if="tasktaskEntities.length">
             <thead>
             <tr>
               <th class="text-center col-md-2">필수</th>
@@ -64,13 +80,7 @@
         </div>
       </div>
     </div>
-    <footer class="panel-footer">
-      <div class="row">
-      </div>
-    </footer>
   </form>
-  <!--<input type="text" data-ng-model="test">-->
-  <!--<a class="btn btn-primary" ng-click="tester()">button</a>-->
 </section>
 <!--</div>-->
 

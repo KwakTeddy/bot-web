@@ -528,7 +528,11 @@
       {% block content %}{% endblock %}
     </section>
 
-    <div id="log-button" class="log-button" onClick="javascript: showLogPanel();" >log</div>
+    <div id="intent-button" class="intent-button" onClick="javascript: showIntentPanel();" >분석</div>
+    <section id="intent-include" class="hide-intent" style="z-index: 10"
+             ng-include="'/modules/analytics/client/views/dialog-intent.client.view.html'"></section>
+
+    <div id="log-button" class="log-button" onClick="javascript: showLogPanel();" >Log</div>
     <section id="log-include" class="hide-log" style="z-index: 10"
              ng-include="'/modules/bots/client/views/log.client.view.html'"></section>
 

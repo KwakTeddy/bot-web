@@ -386,6 +386,23 @@ figure.profile-picture {display: none !important;}
     visibility: hidden;
 }
 
+.hide-intent {
+    display: none;
+}
+
+.show-intent {
+    height: 200px;
+    padding-left: 230px;padding-right: 330px;/*background: white;*/position: fixed;bottom: 0px;width: 100%;box-shadow: 0px -1px 0px 0px #ccc;
+}
+
+.intent-button {
+    opacity: 0.75;background: #282d36;border-radius: 7px 7px 0 0;height: 25px;width:40px;position: fixed;right: 385px;bottom: 0px;text-align: center;
+}
+
+.intent-button-hide {
+    visibility: hidden;
+}
+
 .content-body-show-log {
     margin-bottom: 200px
 }
@@ -436,3 +453,7 @@ figure.profile-picture {display: none !important;}
 
 #dt_wrapper > #dt_paginate {float: none; text-align: center;}
 
+#intent-include .form-group {
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}

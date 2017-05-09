@@ -68,6 +68,7 @@ angular.module('analytics').controller('AnalyticsIntentController', ['$scope', '
     $scope.$on('keyinput', function(event, arg0) {
       $scope.msg = arg0;
     });
+
     $document.bind("keydown", function (event) {
       if (event.keyCode == 13){
         $resource('/api/user-bots-analytics/intent', {}).get({input: $scope.msg, botId: $rootScope.botId}, function (res) {
@@ -75,23 +76,23 @@ angular.module('analytics').controller('AnalyticsIntentController', ['$scope', '
           if (res.intent){
             $scope.intent = res.intent;
           }else {
-            $scope.intent['name'] = '해당하는 인텐트가 없습니다'
+            $scope.intent['name'] = '해당하는 Intent가 없습니다'
           }
 
           if (!Object.keys(res.entities).length){
-            $scope.entities = '해당하는 엔터티가 없습니다'
+            $scope.entities = '해당하는 Entity가 없습니다'
           }else {
-            $scope.entities = JSON.stringify(res.entities);
+            $scope.entities = res.entities;
           }
 
-          if(res.intentDialog && res.intentDialog.task){
-            $scope.task = res.intentDialog.task
+          if(res.dialog && res.dialog.task){
+            $scope.task = res.dialog.task
           }else {
-            $scope.task['name'] = '없음'
+            $scope.task['name'] = '해당하는 Task가 없습니다'
           }
 
-          if(res.intentDialog && res.intentDialog.task && res.intentDialog.task.entities){
-            $scope.taskEntities = res.intentDialog.task.entities;
+          if(res.dialog && res.dialog.task && res.dialog.task.entities){
+            $scope.taskEntities = res.dialog.task.entities;
           }else {
             $scope.taskEntities = [];
           }
@@ -101,3 +102,18 @@ angular.module('analytics').controller('AnalyticsIntentController', ['$scope', '
     });
   }
 ]);
+
+function showIntentPanel() {
+  document.getElementById('intent-button').className='intent-button-hide';
+  document.getElementById('intent-include').className='show-intent';
+  document.getElementById('main').classList.add('content-body-show-log');
+  document.getElementById('content').classList.add('tree-content-show-log');
+
+}
+
+function hideIntentPanel() {
+  document.getElementById('intent-button').className = 'intent-button';
+  document.getElementById('intent-include').className = 'hide-intent';
+  document.getElementById('main').classList.remove('content-body-show-log');
+  document.getElementById('content').classList.remove('tree-content-show-log');
+}

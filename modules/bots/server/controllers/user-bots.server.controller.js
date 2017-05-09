@@ -1112,7 +1112,29 @@ exports.analyzeIntent = function(req, res) {
   };
 
   typeModule.processInput(context, req.query.input, function(_inNLP, entities, _doc) {
-    res.json(_doc);
+    var doc = {
+      intent: _doc.intent,
+      entities: _doc.entities
+    };
+
+    if(_doc.intentDialog) {
+      doc.dialog = {
+        name: _doc.intentDialog.name,
+        input: _doc.intentDialog.input,
+        output: _doc.intentDialog.output
+      };
+
+      if(_doc.intentDialog.task) {
+        doc.dialog.task = {
+          name: typeof _doc.intentDialog.task === 'string' ? _doc.intentDialog.task :_doc.intentDialog.task.name,
+          paramDefs: _doc.intentDialog.task.paramDefs
+        }
+      }
+
+    }
+
+
+    res.json(doc);
   })
 };
 
