@@ -892,7 +892,7 @@ exports.readFile = function (req, res) {
       });
     } else {
       console.log('data: ' + data);
-      res.json({botName: bot.name, name: file.name, data: data.toString()});
+      res.json({botName: bot.name, name: file.name, data: data.toString(), _id: file._id});
     }
   })
 };
