@@ -33,7 +33,7 @@ var TaskSchema = new Schema({
   json: {
     type: String
   },
-  schema: {
+  paramSchema: {
     type: String
   },
   open: {

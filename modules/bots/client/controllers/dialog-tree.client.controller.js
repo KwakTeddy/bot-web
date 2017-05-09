@@ -1233,7 +1233,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       OpenTasksService.query().$promise.then(function(result) {
         vm.commonTasks = result;
-        vm.commonTasks = vm.commonTasks.map(function(t) { return {name:t.name, type:'common'}});
+        var vm.commonTasks.map(function(t) { return {name:t.name, type:'common'}});
         vm.tasks = vm.tasks.concat(vm.commonTasks);
       });
 
