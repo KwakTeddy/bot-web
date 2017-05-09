@@ -540,6 +540,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       if ([45,46,32,13, 37,38,39,40].indexOf(event.keyCode) == -1)
         return false;
 
+      var goto = function(root, func) {
+
+      };
       event.preventDefault();
       if (event.keyCode == 45) { // insert
         addChild(selectedNode);
@@ -554,12 +557,25 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           updateSelected(selectedNode.parent);
         }
       } else if (event.keyCode == 38) { //up
-        if (selectedNode.parent && selectedNode.parent.children &&
-          selectedNode.parent.children.indexOf(selectedNode) > 0) {
-          if (event.ctrlKey) { // ctrl+up
-            goUp(selectedNode);
+        if (selectedNode.parent && selectedNode.parent.children) {
+          if (selectedNode.parent.children.indexOf(selectedNode) > 0) {
+            if (event.ctrlKey) { // ctrl+up
+              goUp(selectedNode);
+            } else {
+              updateSelected(selectedNode.parent.children[selectedNode.parent.children.indexOf(selectedNode)-1]);
+            }
           } else {
-            updateSelected(selectedNode.parent.children[selectedNode.parent.children.indexOf(selectedNode)-1]);
+            var nearUp = {x:0};
+            visit(treeData, function(d) {
+              if (d.y == selectedNode.y && d.x < selectedNode.x && d.x > nearUp.x)
+                nearUp = d;
+            }, function (d) {
+              return d.children && d.children.length > 0 ? d.children : null;
+            });
+
+            if (nearUp.x != 0) {
+              updateSelected(nearUp);
+            }
           }
         }
       } else if (event.keyCode == 39) { //right
@@ -567,12 +583,25 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           updateSelected(selectedNode.children[0]);
         }
       } else if (event.keyCode == 40) { //down
-        if (selectedNode.parent && selectedNode.parent.children &&
-          selectedNode.parent.children.indexOf(selectedNode) < selectedNode.parent.children.length-1) {
-          if (event.ctrlKey) { // ctrl+down
-            goDown(selectedNode);
+        if (selectedNode.parent && selectedNode.parent.children) {
+          if (selectedNode.parent.children.indexOf(selectedNode) < selectedNode.parent.children.length-1) {
+            if (event.ctrlKey) { // ctrl+down
+              goDown(selectedNode);
+            } else {
+              updateSelected(selectedNode.parent.children[selectedNode.parent.children.indexOf(selectedNode) + 1]);
+            }
           } else {
-            updateSelected(selectedNode.parent.children[selectedNode.parent.children.indexOf(selectedNode) + 1]);
+            var nearDown = {x:99999};
+            visit(treeData, function(d) {
+              if (d.y == selectedNode.y && d.x > selectedNode.x && d.x < nearDown.x)
+                nearDown = d;
+            }, function (d) {
+              return d.children && d.children.length > 0 ? d.children : null;
+            });
+
+            if (nearDown.x != 99999) {
+              updateSelected(nearDown);
+            }
           }
         }
       }
@@ -1939,6 +1968,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           return true;
       })[0];
       var offset = svg[0].getBoundingClientRect();
+      if (offset["left"] == 0 && offset["bottom"] == 0)
+        return;
       console.log([offset["left"], offset["top"],offset["right"],offset["bottom"]]+"");
       if (isStart !=='start' && offset["left"] > 300 && offset["top"] > 200 && offset["top"] < viewerHeight && offset["left"] < viewerWidth)
         return;

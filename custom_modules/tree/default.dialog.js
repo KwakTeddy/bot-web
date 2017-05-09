@@ -142,6 +142,36 @@ var dialogs = [
 						"call": "dialog_default1"
 					}
 				]
+			},
+			{
+				"name": "dialog_default10",
+				"id": "default10",
+				"filename": "default",
+				"input": [],
+				"output": [],
+				"children": [
+					{
+						"name": "dialog_default11",
+						"id": "default11",
+						"filename": "default",
+						"input": [],
+						"output": []
+					},
+					{
+						"name": "dialog_default12",
+						"id": "default12",
+						"filename": "default",
+						"input": [],
+						"output": []
+					},
+					{
+						"name": "dialog_default13",
+						"id": "default13",
+						"filename": "default",
+						"input": [],
+						"output": []
+					}
+				]
 			}
 		]
 	}
