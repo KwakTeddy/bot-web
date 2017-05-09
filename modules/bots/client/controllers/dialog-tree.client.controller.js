@@ -244,6 +244,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     vm.files = files;
 
     vm.initialized = false;
+    vm.smallDialog = true;
 
     vm.initTree = function() {
       if (vm.initialized)
@@ -423,7 +424,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     var selectedNode;
     var selectedSVG;
 
-    vm.depth = 2;
+    vm.depth = 1;
 
     $scope.$on('updateLog', function(event, arg0) {
       var index = $rootScope.logUpdated.indexOf('[DIALOG_SEL]');
@@ -447,7 +448,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
           if(currentNode) {
             update(currentNode);
-            centerNode(currentNode);
+
+            (currentNode);
           }
         } catch(e) {
           console.log(e);
@@ -1028,7 +1030,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         var text = [];
         input.forEach(function(i) {
           if (i.text)
-            text.push('[단어] '+ i.text);
+            text.push(/*'[단어] '+ */i.text);
           if (i.types) {
             var types = [];
             i.types.forEach(function (t) {
@@ -1069,7 +1071,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       } else {
         var text = [];
         if (typeof output.output === 'string') {
-          text.push('[문장] ' + output.output);
+          text.push(/*'[문장] ' + */output.output);
         }
         if (output.if) {
           text.push('[조건] ' + output.if);
@@ -1327,6 +1329,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     var links_SVG, links_internal_SVG;
 
     function update(source) {
+      if(vm.smallDialog) {
+        rectW = 200;
+        rectH = 58;
+        itemHeight = rectH+30;
+        labelWidth = 350;
+      }
+
       tip.hide();
       // Compute the new height, function counts total children of root node and sets tree height accordingly.
       // This prevents the layout looking squashed when new nodes are made visible or looking sparse when nodes are removed
@@ -1442,7 +1451,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         .style("pointer-events", "none")
         .attr("x", 7)
         .attr("dy", "3em")
-        .text(function(d) { return "In: " + (d.input_text ? d.input_text: ""); })
+        .text(function(d) { return "< " + (d.input_text ? d.input_text: ""); })
         .call(wrap, rectW-30, 1);
 
       nodeEnter.append("line")
@@ -1455,74 +1464,82 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         .attr("stroke-dasharray", "0,2 1")
         .attr("stroke", "gray");
 
-      nodeEnter.append("text")
-        .attr("id", "task")
-        .attr("class","nodetext")
-        .style("pointer-events", "none")
-        .attr("x", 7)
-        .attr("dy", "5em")
-        .text(function(d) {
-          if (d.task && d.task.name)
-            return "Task: " + d.task.name;
-          else if (d.task)
-            return "Task: " + d.task;
-          return "";
-        })
-        .call(wrap, rectW-25, 2);
+      if(vm.smallDialog == false) {
+        nodeEnter.append("text")
+          .attr("id", "task")
+          .attr("class", "nodetext")
+          .style("pointer-events", "none")
+          .attr("x", 7)
+          .attr("dy", "5em")
+          .text(function (d) {
+            if (d.task && d.task.name)
+              return "Task: " + d.task.name;
+            else if (d.task)
+              return "Task: " + d.task;
+            return "";
+          })
+          .call(wrap, rectW - 25, 2);
 
-      nodeEnter.append("line")
-        .style("pointer-events", "none")
-        .attr("x1", 0)
-        .attr("y1", "4.3em")
-        .attr("x2", rectW)
-        .attr("y2", "4.3em")
-        .attr("stroke-width", 1)
-        .attr("stroke-dasharray", "0,2 1")
-        .attr("stroke", "gray");
+        nodeEnter.append("line")
+          .style("pointer-events", "none")
+          .attr("x1", 0)
+          .attr("y1", "4.3em")
+          .attr("x2", rectW)
+          .attr("y2", "4.3em")
+          .attr("stroke-width", 1)
+          .attr("stroke-dasharray", "0,2 1")
+          .attr("stroke", "gray");
+      }
 
       nodeEnter.append("text")
         .attr("id", "output")
         .attr("class","nodetext")
         .style("pointer-events", "none")
         .attr("x", 7)
-        .attr("dy", "7em")
-        .text(function(d) { return "Out: " + (d.output_text ? d.output_text : ""); })
-        .call(wrap, rectW-25, 2);
+        .attr("dy", vm.smallDialog? "5em":"7em")
+        .text(function(d) { return "> " + (d.output_text ? d.output_text : ""); })
+        .call(wrap, rectW-25, vm.smallDialog?1:2);
 
-      nodeEnter.append("line")
-        .style("pointer-events", "none")
-        .attr("x1", 0)
-        .attr("y1", "6.7em")
-        .attr("x2", rectW)
-        .attr("y2", "6.7em")
-        .attr("stroke-width", 1)
-        .attr("stroke-dasharray", "0,2 1")
-        .attr("stroke", "gray");
+      if(vm.smallDialog == false) {
+        nodeEnter.append("line")
+          .style("pointer-events", "none")
+          .attr("x1", 0)
+          .attr("y1", "6.7em")
+          .attr("x2", rectW)
+          .attr("y2", "6.7em")
+          .attr("stroke-width", 1)
+          .attr("stroke-dasharray", "0,2 1")
+          .attr("stroke", "gray");
 
-      var showTip = function(d) {
-        if (d.image_text)
-          tip.show(d);
-      };
+        var showTip = function (d) {
+          if (d.image_text)
+            tip.show(d);
+        };
 
-      nodeEnter.append("text")
-        .attr("id", "image")
-        .attr("class","nodetext")
-        .attr("x", 7)
-        .attr("dy", "10em")
-        //.style("text-decoration", "underline")
-        .text(function(d) { return (d.image_text ? "Image: " + d.image_text: ""); })
-        .on('mouseover', showTip)
-        .on('mouseout', tip.hide)
-        .call(wrap, rectW-25, 1);
+        nodeEnter.append("text")
+          .attr("id", "image")
+          .attr("class", "nodetext")
+          .attr("x", 7)
+          .attr("dy", "10em")
+          //.style("text-decoration", "underline")
+          .text(function (d) {
+            return (d.image_text ? "Image: " + d.image_text : "");
+          })
+          .on('mouseover', showTip)
+          .on('mouseout', tip.hide)
+          .call(wrap, rectW - 25, 1);
 
-      nodeEnter.append("text")
-        .attr("id", "button")
-        .attr("class","nodetext")
-        .style("pointer-events", "none")
-        .attr("x", 7)
-        .attr("dy", "12em")
-        .text(function(d) { return (d.buttons ? "Button: " + d.buttons + "": ""); })
-        .call(wrap, rectW-25, 1);
+        nodeEnter.append("text")
+          .attr("id", "button")
+          .attr("class", "nodetext")
+          .style("pointer-events", "none")
+          .attr("x", 7)
+          .attr("dy", "12em")
+          .text(function (d) {
+            return (d.buttons ? "Button: " + d.buttons + "" : "");
+          })
+          .call(wrap, rectW - 25, 1);
+      }
 
       // Change the rect fill depending on whether it has children and is collapsed
       // node.select("rect.nodeRect")
@@ -2186,7 +2203,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     // show/hide links
-    vm.show_link = true;
+    vm.show_link = false;
     vm.showLink = function() {
       vm.show_link = true;
       update(treeData);
