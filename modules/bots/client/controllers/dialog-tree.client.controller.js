@@ -528,7 +528,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         return;
       } else if (event.ctrlKey && event.keyCode == 80) { // ctrl+p
         event.preventDefault();
-        if (document.getElementById('filetree').style.display == 'none') {
+        if (document.getElementById('filetree_close').style.display == 'none') {
           vm.initTree();
           $('#filetree_open').click();
         } else {
