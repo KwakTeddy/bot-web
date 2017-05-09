@@ -24,7 +24,7 @@
     // create the editor
     var container = document.getElementById("jsoneditor");
     var options = {name: vm.template.id, sortObjectKeys: true, mode: 'tree'};
-    var editor = new JSONEditor(container, options);
+    var editor = new JSONEditor2(container, options);
     if(vm.template.dataSchema){
       vm.template.dataSchema = JSON.parse(vm.template.dataSchema);
       editor.set(vm.template.dataSchema);
@@ -33,7 +33,7 @@
     vm.toTree = function () {
       editor.destroy();
       options.mode = 'tree';
-      editor = new JSONEditor(container, options);
+      editor = new JSONEditor2(container, options);
       console.log(editor);
       editor.set(vm.template.dataSchema);
     };
@@ -41,7 +41,7 @@
     vm.toText = function () {
       editor.destroy();
       options.mode = 'text';
-      editor = new JSONEditor(container, options);
+      editor = new JSONEditor2(container, options);
       console.log(editor);
       editor.set(vm.template.dataSchema);
     };
@@ -49,7 +49,7 @@
     vm.toCode = function () {
       editor.destroy();
       options.mode = 'code';
-      editor = new JSONEditor(container, options);
+      editor = new JSONEditor2(container, options);
       editor.set(vm.template.dataSchema);
       var ad =document.getElementsByClassName('jsoneditor-poweredBy')[0];
       ad.parentNode.removeChild(ad)
@@ -57,7 +57,7 @@
 
     vm.toForm = function () {
       editor.destroy();
-      editor = new JSONEditor(container, {mode: 'form'});
+      editor = new JSONEditor2(container, {mode: 'form'});
       console.log(editor);
       editor.set(vm.template.dataSchema);
     };
