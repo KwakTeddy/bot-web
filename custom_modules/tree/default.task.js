@@ -67,3 +67,32 @@ bot.setType("date", dateType);
 
 var task2 = function() {}
 bot.setTask('task2',task2);
+
+var temptask =
+{
+   module: 'http',
+   action: 'simpleRequest',
+   uri: 'https://www.lgservice.co.kr/main.do#none',
+   paramDefs: [
+       {
+           type: 'lotteriaMenu',
+           name: 'menu',
+           display: '메뉴',
+           isDisplay: false,
+           required: true,
+           question: '주문할 메뉴를 말씀해 주세요'
+       },
+       {
+           type: 'count',
+           name: 'orderCount',
+           isRequire: false,
+           display: '주문개수',
+           isDisplay: false,
+           required: false,
+           question: '주문개수를 입력해주세요'
+       }
+   ]
+};
+
+bot.setTask('temptask',temptask);
+

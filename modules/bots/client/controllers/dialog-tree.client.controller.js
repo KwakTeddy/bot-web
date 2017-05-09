@@ -1,16 +1,24 @@
-'use stric';
+'use strict';
+
+var currentInput;
+var currentJSONNode;
+
+var setInput = function(cur) {
+  currentInput = cur;
+  currentJSONNode = cur.replace(/_/g,'.');
+};
 
 function gogo(filename) {
   angular.element(document.getElementById('control')).scope().changeTabName(filename);
-};
+}
 
 // Bots controller
 angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope', '$state', '$window','$timeout',
   '$stateParams', '$resource', 'Dialogs', 'DialogSaveService', 'OpenTasksService', 'FileUploader','$document',
-  'fileResolve', 'BotFilesService', 'CoreUtils', 'botFilesResolve', 'Socket', '$uibModal', '$compile',
+  'fileResolve', 'BotFilesService', 'CoreUtils', 'botFilesResolve', 'Socket', '$uibModal', '$compile', '$cookies',
   function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, Dialogs, DialogSaveService,
             OpenTasksService, FileUploader, $document, file, BotFilesService, CoreUtils, files, Socket,
-            $uibModal, $compile) {
+            $uibModal, $compile, $cookies) {
 
     (function($) {
       'use strict';
@@ -152,6 +160,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     var editor;
 
+    var newTask_template = "\nvar newTask = {\n\tname: 'newTask',\n\taction: function (task,context,callback) {" +
+      "\n\t\tcallback(task,context);\n\t}\n};\n\n" +
+      "bot.setTask('newTask',newTask);";
+
     $scope.addTask = function() {
       vm.edit = 'task';
 
@@ -159,7 +171,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.fromTask = true;
       vm.changeTab(vm.tabs[1]);
 
-      vm.currentTab.data += "\nvar task = function() {}\nbot.setTask('',task);";
+      vm.currentTab.data += newTask_template;
 
       $scope.refreshCodemirror = true;
       vm.editor.focus();
@@ -184,21 +196,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }, 100);
     };
 
-    $scope.openTask = function(task, isCommon) {
-      $scope.dialog.task = {name: task.name};
-      vm.edit = 'task';
-      if (isCommon) {
-        $.magnificPopup.close();
-        $('.modal-with-task').click();
-      } else {
-        $.magnificPopup.close();
-        vm.fromTask = true;
-        vm.changeTab(vm.tabs[1]);
-
-        $scope.setPosition(task);
-      }
-    };
-
     $scope.closePopup = function() {
       $.magnificPopup.close();
     };
@@ -221,18 +218,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     $scope.closeEdit = function() {
       vm.edit = false;
       $.magnificPopup.close();
-    };
-
-    $scope.backToEdit = function(ok) {
-      vm.edit = 'dialog';
-      if (!ok) {
-        if ($scope.dialog.task && $scope.dialog.task.name)
-          $scope.dialog.task = {name:$scope.dialog.task.name};
-        else
-          $scope.dialog.task = undefined;
-      }
-      $.magnificPopup.close();
-      $('.modal-with-form').click();
     };
 
     var vm = this;
@@ -424,6 +409,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     var links_internal = [];
     var nodes = [];
     var dialogs;
+    var common_dialogs;
     var treeData;
 
     // var currentDialog;
@@ -997,7 +983,15 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
         if (node.task) {
           delete node.task.type;
+          delete node.task.paramSchema;
         }
+
+        if (node._children != null) {
+          node.children = node._children;
+          node._children = null;
+        }
+
+        delete node._children;
 
         if (node.children)
           node.children.forEach(clear);
@@ -1208,7 +1202,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     vm.initTreeData = function() {
-      treeData = {name: '시작', id: 'dummystart', children: []};
+      handleDialog(common_dialogs[0]);
+      treeData = angular.copy(common_dialogs[0]);
+      treeData.name = '시작';
+      treeData.id = 'dummystart';
+      treeData.children = [];
+
       for (var i = 0; i < dialogs.length; i++) {
         var d = dialogs[i];
         d.name = d.name || (d.name = "dialog_" + d.id);
@@ -1230,11 +1229,17 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.types = res.types.map(function(t) { return t.name} );
       vm.type_dic = res.type_dic;
       dialogs = res.data;
+      common_dialogs = res.common;
 
-      OpenTasksService.query().$promise.then(function(result) {
+      OpenTasksService.query({botId:$cookies.get('default_bot')}).$promise.then(function(result) {
         vm.commonTasks = result;
-        vm.commonTasks = vm.commonTasks.map(function(t) { return {name:t.name, type:'common'}});
+        vm.entity = [];
+        vm.commonTasks.forEach(function(d) {
+          vm.entity[d.name] = d.entity;
+        });
+        vm.commonTasks = vm.commonTasks.map(function(t) { return {name:t.name, paramSchema:t.paramSchema, type:'common'};});
         vm.tasks = vm.tasks.concat(vm.commonTasks);
+
       });
 
       //console.log(JSON.stringify(dialogs));
@@ -1261,6 +1266,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     var itemHeight = rectH+200;
     // width for one depth
     var labelWidth = 350;
+
+    // icon size of selected node
+    var iconSize= 20;
 
     var tree = d3.layout.tree()
       .size([viewerHeight, viewerWidth]);
@@ -1527,7 +1535,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         var ret = null;
         if (d.output) {
           d.output.forEach(function(o) {
-            if (o.repeat)
+            if (o.repeat && typeof o.repeat === 'string')
               ret = o.repeat;
           })
         }
@@ -1797,17 +1805,17 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         selectedSVG.append("rect")
           .attr("class", "selectedRect")
           .attr("id", "selected")
-          .attr("y", -25)
+          .attr("y", -iconSize)
           .attr("width", rectW)
-          .attr("height", rectH+25)
+          .attr("height", rectH+iconSize)
           .attr("rx", 5)
           .attr("ry", 5);
         selectedSVG.append("rect")
           .attr("class", "selectedRect")
           .attr("id", "selected")
-          .attr("y", -25)
+          .attr("y", -iconSize)
           .attr("width", rectW)
-          .attr("height", 25)
+          .attr("height", iconSize)
           .style("pointer-events", "none")
           .style('fill', '#70c8e2')    //lightsteelblue
           .style("opacity", 0.8)
@@ -1818,7 +1826,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           selectedSVG.append('text')
             .on("click", addChild)
             .attr("class", "icon")
-            .attr("x", rectW-25)
+            .attr("x", rectW-iconSize)
             .attr("y", -4)
             .text(function(d) { return '\uf067';} );
           return;
@@ -1838,7 +1846,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           selectedSVG.append('text')
             .on("click", goDown)
             .attr("class", "icon")
-            .attr("x", 10+25)
+            .attr("x", 10+iconSize)
             .attr("y", -5)
             .text(function(d) { return '\uf063';} );
         }
@@ -1846,25 +1854,25 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         selectedSVG.append('text')
           .on("click", edit)
           .attr("class", "icon")
-          .attr("x", rectW-25*4)
+          .attr("x", rectW-iconSize*4)
           .attr("y", -4)
           .text(function(d) { return '\uf044';} );
         selectedSVG.append('text')
           .on("click", addChild)
           .attr("class", "icon")
-          .attr("x", rectW-25*3)
+          .attr("x", rectW-iconSize*3)
           .attr("y", -4)
           .text(function(d) { return '\uf067';} );
         selectedSVG.append('text')
           .on("click", deleteNode)
           .attr("class", "icon")
-          .attr("x", rectW-25*2)
+          .attr("x", rectW-iconSize*2)
           .attr("y", -5)
           .text(function(d) { return '\uf00d';} );
         selectedSVG.append('text')
           .on("click", toggleAndCenter)
           .attr("class", "icon")
-          .attr("x", rectW-25)
+          .attr("x", rectW-iconSize)
           .attr("y", -4)
           .text(function(d) { if (d.children) return '\uf053'; else if (d._children) return '\uf054';} );
 
@@ -1930,7 +1938,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       })[0];
       var offset = svg[0].getBoundingClientRect();
       console.log([offset["left"], offset["top"],offset["right"],offset["bottom"]]+"");
-      if (!isStart && offset["left"] > 300 && offset["top"] > 200 && offset["top"] < viewerHeight && offset["left"] < viewerWidth-300)
+      if (isStart !=='start' && offset["left"] > 300 && offset["top"] > 200 && offset["top"] < viewerHeight && offset["left"] < viewerWidth)
         return;
 
       var scale = zoomListener.scale();
@@ -2013,6 +2021,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     }
 
     function deleteNode(d) {
+      if (d.name === "시작")
+        return;
       vm.setChanged(true, true);
       if (d3.event)
         d3.event.stopPropagation();
@@ -2050,6 +2060,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     }
 
     function edit(d) {
+      if (d.name === "시작")
+        return;
       if (d3.event)
         d3.event.stopPropagation();
       angular.element(document.getElementById('control')).scope().findOne(d);
@@ -2277,5 +2289,326 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         msg: msg
       });
     }
+
+    // for task template
+    //TODO: this should be a separte module
+    var types = {
+      "string": {"type":"string"},
+      "date" : {"type":"string", "format":"date"},
+      "datetime" : {"type":"string", "format":"datetime"},
+      "time" : {"type":"string", "format":"time", "options": {"grid_columns":3}},
+      "number" : {"type":"string", "format":"number"},
+      "image" : {
+        "type":"string",
+        "format":"image",
+        "readonly":"true",
+      },
+    };
+
+    var jsonEditor;
+
+    vm.parseSchema = function(dataSchema) {
+      var jsonSchema;
+      try {
+        jsonSchema = JSON.parse(dataSchema);
+      } catch(e) {
+        alert("invalid schema" + e.message);
+        return;
+      }
+
+      console.log(jsonSchema);
+
+      var schema = {};
+
+      Object.keys(jsonSchema).forEach(function(key) {
+        if (jsonSchema[key].hidden) return;
+        var type = jsonSchema[key].type.toLowerCase();
+        if (!types[type]) {
+          switch (type) {
+            case "enum":
+              schema[key] = {type: "string", options:{grid_columns:3}, enum: jsonSchema[key].data};
+              break;
+            case "list":
+              schema[key] = {
+                type: "array",
+                format: "table",
+                uniqueItems: true,
+                options: {grid_columns:12},
+                items: {
+                  type: "object",
+                  title: jsonSchema[key]['item_title'] ? jsonSchema[key]['item_title'] : "항목",
+                  /*format:"grid",*/
+                  "properties": vm.parseSchema(jsonSchema[key].schema)}
+              };
+              break;
+            default:
+              console.log("unknown type: " + type + "in template schema:" + jsonSchema);
+              break;
+          }
+        } else {
+          schema[key] = angular.copy(types[type]);
+        }
+        var keys = Object.keys(jsonSchema[key]);
+        for (var i=0; i < keys.length; ++i) {
+          if (keys[i] != 'type' && keys[i] != 'enum')
+            schema[key][keys[i]] = jsonSchema[key][keys[i]];
+          //TODO: move to template definition
+          if (key === 'address') {
+            schema[key]["options"] = {grid_columns: 12};
+            schema[key]["readonly"] = true;
+          }
+          if (key === 'startTime')
+            schema[key]["default"] = '09:00';
+          if (key === 'endTime')
+            schema[key]["default"] = '18:00';
+        }
+      });
+      return schema;
+    };
+
+    vm.handleEditor = function(paramSchema) {
+      console.log(paramSchema);
+
+      // init json editor
+      JSONEditor.defaults.options.theme = 'bootstrap3';
+      JSONEditor.defaults.options.iconlib= 'fontawesome4';
+      JSONEditor.defaults.options.required_by_default = 'true';
+      JSONEditor.defaults.options.disable_array_delete_all_rows = 'true';
+      JSONEditor.defaults.options.disable_array_delete_last_row = 'true';
+      JSONEditor.defaults.language = "kr";
+      JSONEditor.defaults.languages.kr = {
+        error_uniqueItems: "리스트에 중복된 항목이 있습니다",
+        button_add_row_title: "{{0}} 추가",
+      };
+      //JSONEditor.defaults.options.show_erros = 'change';
+
+      var custom_validator = function(schema, value, path) {
+        var errors = [];
+
+        if (path === "root.phone") {
+          var regExp = /^\d{2,3}-\d{3,4}-\d{4}$/;
+          if (!regExp.test(value))
+            errors.push({
+              path: path,
+              property: 'format',
+              message: "전화번호를 입력해주세요"
+            });
+          return errors;
+        }
+
+        if (path === "root.mobile") {
+          var regExp = /^\d{3}-\d{3,4}-\d{4}$/;
+          if (!regExp.test(value))
+            errors.push({
+              path: path,
+              property: 'format',
+              message: "휴대폰 번호를 입력해주세요"
+            });
+          return errors;
+        }
+
+        if (path === "root.address") {
+          if (value === "") {
+            errors.push({
+              path: path,
+              property: 'format',
+              message: schema.title + "를 입력해주세요"
+            });
+            return errors;
+          }
+        }
+
+        if (schema.format !== "image" && value === "") {
+          // Errors must be an object with `path`, `property`, and `message`
+          var msg;
+          switch (schema.format) {
+            case 'date': msg = "날짜를 입력해주세요"; break;
+            case 'time': msg = "시각을 입력해주세요"; break;
+            case "image": msg = "이미지 파일을 선택해주세요"; break;
+            default: msg = "내용을 입력해주세요"; break;
+          }
+          errors.push({
+            path: path,
+            property: 'format',
+            message: msg
+          });
+        }
+        return errors;
+      };
+
+      if (JSONEditor.defaults.custom_validators.length == 0) {
+        JSONEditor.defaults.custom_validators.push(custom_validator);
+      }
+
+      $scope.ierror = {};
+      $scope.isuccess = {};
+
+      var schema = {
+        type: "object",
+        title: "Task Parameter",
+        properties: {},
+        format: "grid",
+      };
+
+      schema.properties = vm.parseSchema(paramSchema);
+
+      console.log("schema="+ JSON.stringify(schema));
+
+      if (jsonEditor) {
+        jsonEditor.destroy();
+      }
+
+      jsonEditor = new JSONEditor(document.getElementById('editor_holder'), {
+        schema: schema,
+        disable_collapse: true,
+        disable_properties: true,
+        disable_edit_json: true,
+        disable_array_reorder: true,
+        grid_columns: 3,
+      });
+
+      $compile(document.getElementById('editor_holder'))($scope);
+      if ($scope.dialog.task) {
+        var temp = angular.copy($scope.dialog.task);
+        delete temp.name;
+        delete temp.paramSchema;
+        delete temp.type;
+        console.log("given input=" + JSON.stringify(temp));
+        jsonEditor.setValue(temp);
+      }
+
+      jsonEditor.on('change', function() {
+        console.log('editor.onchange -> $compile editor');
+        var inputList = document.getElementsByName("mine");
+        var compileList = [];
+        for (var idx=0; idx < inputList.length; ++idx) {
+          var input = inputList[idx];
+          if (input.getAttribute("compiled") && input.getAttribute("compiled") == "false") {
+            compileList.push(input);
+          }
+        }
+        $compile(compileList)($scope);
+        compileList.forEach(function(obj) {
+          obj.setAttribute("compiled", "true");
+        });
+
+        jsonEditor.options.show_errors = undefined;
+      });
+    };
+
+    $scope.openTask = function(task, isCommon) {
+      if (!$scope.dialog.task || $scope.dialog.task.name !== task.name)
+        $scope.dialog.task = task;
+      vm.edit = 'task';
+      if (isCommon) {
+        $.magnificPopup.close();
+        if (task.paramSchema != undefined) {
+          $scope.dialog.task.paramSchema = task.paramSchema;
+          vm.handleEditor(task.paramSchema);
+        }
+        $('.modal-with-task').click();
+      } else {
+        $.magnificPopup.close();
+        vm.fromTask = true;
+        vm.changeTab(vm.tabs[1]);
+
+        $scope.setPosition(task);
+      }
+    };
+
+    $scope.backToEdit = function(ok) {
+      vm.edit = 'dialog';
+      if (!ok) {
+        if ($scope.dialog.task && $scope.dialog.task.name)
+          $scope.dialog.task = {name:$scope.dialog.task.name};
+        else
+          $scope.dialog.task = undefined;
+      } else {
+        var temp = jsonEditor.getValue();
+        temp.name = $scope.dialog.task.name;
+        temp.type = $scope.dialog.task.type;
+        temp.paramSchema=  $scope.dialog.task.paramSchema;
+
+        $scope.dialog.task = temp;
+      }
+      $.magnificPopup.close();
+      $('.modal-with-form').click();
+    };
+
+    // Create file imageUploader instance
+    $scope.jsonImageUploader = new FileUploader({
+      url: '/api/user-bots/image-files',
+      alias: 'uploadImageFile',
+      autoUpload: true
+    });
+
+    var setValue = function(value) {
+      //document.getElementById(currentInput).value = value;
+      jsonEditor.getEditor(currentJSONNode).setValue('/files/' + value);
+    };
+
+    $scope.jsonImageUploader.filters.push({
+      name: 'imageFilter',
+      fn: function (item, options) {
+        var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+        if('|jpg|png|jpeg|bmp|gif|'.indexOf(type) == -1) {
+          $scope.isuccess[currentInput] = null;
+          $scope.ierror[currentInput] = true;
+          setValue('');
+        }
+        return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+      }
+    });
+
+    // Called after the user selected a new picture file
+    $scope.jsonImageUploader.onAfterAddingFile = function (fileItem) {
+      if ($window.FileReader) {
+        var fileReader = new FileReader();
+        fileReader.readAsDataURL(fileItem._file);
+
+        fileReader.onload = function (fileReaderEvent) {
+          $timeout(function () {
+            //$scope.imageURL = fileReaderEvent.target.result;
+          }, 0);
+        };
+      }
+    };
+
+    // Called after the user has successfully uploaded a new picture
+    $scope.jsonImageUploader.onSuccessItem = function (fileItem, response, status, headers) {
+      // Show success message
+      $scope.ierror[currentInput] = null;
+      $scope.isuccess[currentInput] = true;
+
+      setValue(response.filename);
+      // Clear upload buttons
+      $scope.cancelImageUpload();
+    };
+
+    // Called after the user has failed to uploaded a new picture
+    $scope.jsonImageUploader.onErrorItem = function (fileItem, response, status, headers) {
+      // Clear upload buttons
+      $scope.cancelImageUpload();
+      setValue('');
+
+      // Show error message
+      $scope.ierror = response.message;
+    };
+
+    // Change user profile picture
+    $scope.uploadImageFiles = function () {
+      // Clear messages
+      $scope.isuccess = $scope.ierror = null;
+
+      // Start upload
+      $scope.jsonImageUploader.uploadAll();
+    };
+
+    // Cancel the upload process
+    $scope.cancelImageUpload = function () {
+      $scope.jsonImageUploader.clearQueue();
+      setValue('');
+      // $scope.imageURL = $scope.user.profileImageURL;
+    };
   }]
 );
