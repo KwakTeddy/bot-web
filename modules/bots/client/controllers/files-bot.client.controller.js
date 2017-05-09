@@ -56,8 +56,9 @@ angular.module('bots').controller('BotFilesController', ['$scope', '$stateParams
         .withOption('dom', 'l<"toolbar">frtip')
         .withOption('initComplete', function(settings, json) {
           $('#dt_filter > label > input[type="search"]').addClass('form-control').attr('placeholder', 'Search');
-          $("div.toolbar").html('<button id="addToTable" class="btn btn-primary" ng-click="vm.create()"><i class="fa fa-plus"></i> 파일추가</button>');
+          $("div.toolbar").html('<input type="text" class="mb-md" ng-model="vm.addFileName" placeholder="파일명"/><button id="addToTable" class="btn btn-primary" ng-click="vm.create()"><i class="fa fa-plus"></i> 파일추가</button>');
           $compile(angular.element(document.querySelector('div.toolbar')).contents())($scope);
+          $('input[type="text"].mb-md').addClass('form-control').css('width', '100px').css('float', 'left');
         })
     // // Find a list of Bots
     // vm.find = function () {
