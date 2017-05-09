@@ -75,7 +75,6 @@ angular.module('analytics').controller('AnalyticsIntentController', ['$scope', '
         if (res.intent){
           $scope.intent = res.intent;
         }else {
-          // $scope.intent['name'] = '해당하는 Intent가 없습니다'
           $scope.intent = undefined;
         }
 
@@ -89,7 +88,6 @@ angular.module('analytics').controller('AnalyticsIntentController', ['$scope', '
           $scope.task = res.dialog.task
         }else {
           $scope.task = undefined;
-          // $scope.task['name'] = '해당하는 Task가 없습니다'
         }
 
         if(res.dialog && res.dialog.task && res.dialog.task.entities){
