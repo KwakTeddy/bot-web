@@ -4,8 +4,8 @@
 'use strict';
 
 // Bots controller
-angular.module('bots').controller('BotListController', ['$scope', '$stateParams', 'botsResolve', 'BotsService', 'DTOptionsBuilder',
-  function ($scope, $stateParams, bots, BotsService, DTOptionsBuilder) {
+angular.module('bots').controller('BotListController', ['$scope', '$stateParams', 'botsResolve', 'BotsService', 'DTOptionsBuilder', '$compile',
+  function ($scope, $stateParams, bots, BotsService, DTOptionsBuilder, $compile) {
     var vm = this;
     vm.bots = bots;
     angular.forEach(vm.bots, function (bot) {
@@ -34,7 +34,7 @@ angular.module('bots').controller('BotListController', ['$scope', '$stateParams'
       .withOption('initComplete', function(settings, json) {
         $('#dt_filter > label > input[type="search"]').addClass('form-control').attr('placeholder', 'Search');
         $("div.toolbar").html('<button id="addToTable" class="btn btn-primary" ui-sref="bots.create"><i class="fa fa-plus"></i> 신규등록</button>');
+        $compile(angular.element(document.querySelector('div.toolbar')).contents())($scope);
       })
-
   }
 ]);

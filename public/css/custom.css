@@ -503,7 +503,7 @@ body {
     border-bottom-color: #CCCCCC;;
 }
 
-#dt_filter > label {float: left;}
+#dt_filter > label {float: left; width: 25%;}
 
 #dt_wrapper > .toolbar {float: right; margin-bottom: 10px;}
 
