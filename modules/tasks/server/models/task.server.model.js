@@ -33,6 +33,9 @@ var TaskSchema = new Schema({
   json: {
     type: String
   },
+  schema: {
+    type: String
+  },
   open: {
     type: Boolean
   },
