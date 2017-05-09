@@ -32,7 +32,7 @@ module.exports = {
         'public/lib/angular-dropzone/lib/angular-dropzone.js',
         'public/lib/d3/d3.min.js',
         'public/lib/d3-tip/index.js',
-        'public/lib/jsoneditor/dist/jsoneditor/js',
+        'public/js/jsoneditor/dist/jsoneditor.js',
         'public/js/jsoneditor.js',
         'public/lib/jstree/dist/jstree.js',
       ],
