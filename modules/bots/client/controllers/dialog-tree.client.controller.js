@@ -1363,7 +1363,15 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           });
         }
       };
+
       childCount(0, root);
+
+      // var prev = 0;
+      // for (var i=0; i < levelWidth.length; ++i) {
+      //   levelWidth[i] = prev + levelWidth[i];
+      //   prev = levelWidth[i]-2 ;
+      // }
+
       var newHeight = d3.max(levelWidth) * itemHeight;
       tree = tree.size([newHeight, viewerWidth]);
 
@@ -1499,6 +1507,29 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         .attr("dy", vm.smallDialog? "5em":"7em")
         .text(function(d) { return "> " + (d.output_text ? d.output_text : ""); })
         .call(wrap, rectW-25, vm.smallDialog?1:2);
+
+      var isRepeat = function(d) {
+        var ret = null;
+        if (d.output) {
+          d.output.forEach(function(o) {
+            if (o.repeat)
+              ret = o.repeat;
+          })
+        }
+        return ret;
+      };
+
+      nodeEnter.append('text')
+        .attr("class", "icon2")
+        .style("pointer-events", "none")
+        .attr("x", rectW-20)
+        .attr("dy", vm.smallDialog? "4em":"6em")
+        .text(function(d) {
+          if (isRepeat(d) != null)
+            return '\uf01e';
+          else
+            return '';
+        } );
 
       if(vm.smallDialog == false) {
         nodeEnter.append("line")

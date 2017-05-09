@@ -28,6 +28,8 @@ var dialogs = [
 			}
 		],
 		"name": "dialog_default0",
+		"task": "lglist",
+		"_children": null,
 		"children": [
 			{
 				"name": "dialog_default8",
@@ -82,6 +84,8 @@ var dialogs = [
 						"if": "true"
 					}
 				],
+				"task": "lglist",
+				"_children": null,
 				"children": [
 					{
 						"name": "dialog_default4",
@@ -92,6 +96,7 @@ var dialogs = [
 						"task": {
 							"name": "lglist"
 						},
+						"_children": null,
 						"children": [
 							{
 								"name": "dialog_default10",
@@ -119,7 +124,11 @@ var dialogs = [
 								"id": "default13",
 								"filename": "default",
 								"input": [],
-								"output": []
+								"output": [
+									{
+										"repeat": "2"
+									}
+								]
 							}
 						]
 					},
@@ -165,8 +174,7 @@ var dialogs = [
 							}
 						]
 					}
-				],
-				"task": "lglist"
+				]
 			},
 			{
 				"name": "dialog_default9",
@@ -188,8 +196,7 @@ var dialogs = [
 					}
 				]
 			}
-		],
-		"task": "lglist"
+		]
 	}
 ];
 
