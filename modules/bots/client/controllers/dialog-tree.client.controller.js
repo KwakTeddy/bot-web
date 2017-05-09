@@ -174,9 +174,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.currentTab.data += newTask_template;
 
       $scope.refreshCodemirror = true;
+      vm.editor.focus();
       vm.editor.setCursor({line:vm.editor.lastLine() ,ch:0});
       $timeout(function () {
-        vm.editor.focus();
         $scope.refreshCodemirror = false;
       }, 100);
     };
@@ -189,9 +189,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           break;
       }
       $scope.refreshCodemirror = true;
+      vm.editor.focus();
       vm.editor.setCursor({line:where,ch:0});
       $timeout(function () {
-        vm.editor.focus();
         $scope.refreshCodemirror = false;
       }, 100);
     };
