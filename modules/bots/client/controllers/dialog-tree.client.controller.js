@@ -135,7 +135,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         $('#filetree_open').hide();
         $('#filetree_close').show();
 
-        viewerWidth = document.getElementById('tree-container').clientWidth;
+        viewerWidth = document.getElementById('content').clientWidth;
         baseSvg.attr("width", viewerWidth);
         angular.element(document.getElementById('control')).scope().updateEditor();
         $('#treeBasic').focus();
@@ -151,7 +151,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         $('#filetree_close').hide();
         $('#filetree_open').show();
 
-        viewerWidth = document.getElementById('tree-container').clientWidth;
+        viewerWidth = document.getElementById('content').clientWidth;
         baseSvg.attr("width", viewerWidth);
         angular.element(document.getElementById('control')).scope().updateEditor();
       });
@@ -461,8 +461,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     var keydown = function(event) {
-
-
       if (vm.edit === 'task') {
         if (event.keyCode == 27) { // esc
           event.preventDefault();
@@ -486,8 +484,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
 
       if (document.activeElement == document.getElementById('inputbox') )
-        if (event.keyCode == 27 || event.keyCode == 13) // esc, enter should be handled in chat window
-          return false;
+        return false;
 
       if (event.keyCode == 27) { // esc
         document.getElementById('search').blur();
@@ -1026,7 +1023,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     $scope.dialogList = function() {
       var names = [];
       for (var d in nodes) {
-        if (d !== selectedNode.name)
+        if (selectedNode && d !== selectedNode.name)
           names.push(d);
       }
       return names;
@@ -1128,7 +1125,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       nodes[dialog.name].output_text = handlePrintOutput(dialog, dialog.output);
 
       if (dialog.id)
-        vm.maxId = Math.max(vm.maxId, parseInt(dialog.id.substring(vm.fileName.length, dialog.id.length)));
+      {
+        var cur = parseInt(dialog.id.substring(vm.fileName.length, dialog.id.length));
+        if (isNaN(cur) == false)
+          vm.maxId = Math.max(vm.maxId,cur);
+      }
 
       if (dialog.children) {
         dialog.children.forEach(function(child) {
@@ -1300,6 +1301,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     var baseSvg = d3.select("#tree-container").append("svg")
       .attr("width", viewerWidth)
       .attr("height", viewerHeight)
+      .attr("id", "basesvg")
       .attr("class", "overlay graph-svg-component")
       .call(zoomListener)
       .on('dblclick.zoom', null);

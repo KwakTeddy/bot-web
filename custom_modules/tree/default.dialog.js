@@ -28,7 +28,6 @@ var dialogs = [
 		"task": {
 			"url": "asdfsd",
 			"desc": "sdfsadf",
-			"temp": "",
 			"name": "temptask"
 		},
 		"children": [
