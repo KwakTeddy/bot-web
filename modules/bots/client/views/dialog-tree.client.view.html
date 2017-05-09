@@ -34,7 +34,7 @@
     }
     .icon {
         font-family: FontAwesome;
-        font-size: 1.5em;
+        font-size: 1.0em;
         cursor: pointer;
     }
 
@@ -373,13 +373,7 @@
                                     <label class="col-sm-2 control-label">Entity</label>
                                     <div class="col-sm-9">
                                         <ul>
-                                            <li><span>Entity12345</span></li>
-                                            <li><span>Entity12345</span></li>
-                                            <li><span>Entity12345</span></li>
-                                            <li><span>Entity12345</span></li>
-                                            <li><span>Entity12345</span></li>
-                                            <li><span>Entity12345</span></li>
-                                            <li><span>Entity12345</span></li>
+                                            <li ng-repeat="e in vm.entity[dialog.task.name]"><span>{{e.name}}</span></li>
                                         </ul>
                                     </div>
                                 </div>

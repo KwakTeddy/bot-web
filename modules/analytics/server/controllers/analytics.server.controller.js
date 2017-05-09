@@ -361,6 +361,7 @@ exports.dialogs = function (req, res) {
 
   var result = {};
   var dialogs_data;
+  var common_dialogs;
   async.waterfall([
     function (cb) {
       BotFile.findById(fileId).exec(function (err, file) {
@@ -374,10 +375,12 @@ exports.dialogs = function (req, res) {
         if (!global._bots[doc.id]) {
           botLib.loadBot(doc.id, function (bot) {
             dialogs_data = bot.dialogs;
+            common_dialogs = global._bots[doc.id].commonDialogs;
             cb(null, doc.id);
           });
         } else {
           dialogs_data = global._bots[doc.id].dialogs;
+          common_dialogs = global._bots[doc.id].commonDialogs;
           cb(null, doc.id);
         }
       });
@@ -394,6 +397,13 @@ exports.dialogs = function (req, res) {
       dialogs_data.forEach(function (d) {
         if (d.filename === result.fileName) {
           result.data.push(d);
+        }
+      });
+
+      result.common = [];
+      common_dialogs.forEach(function (d) {
+        if (d.filename === result.fileName + "common") {
+          result.common.push(d);
         }
       });
 

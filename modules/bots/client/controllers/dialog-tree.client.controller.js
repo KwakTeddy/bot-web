@@ -1,8 +1,16 @@
-'use stric';
+'use strict';
+
+var currentInput;
+var currentJSONNode;
+
+var setInput = function(cur) {
+  currentInput = cur;
+  currentJSONNode = cur.replace(/_/g,'.');
+};
 
 function gogo(filename) {
   angular.element(document.getElementById('control')).scope().changeTabName(filename);
-};
+}
 
 // Bots controller
 angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope', '$state', '$window','$timeout',
@@ -152,6 +160,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     var editor;
 
+    var newTask_template = "\nvar newTask = {\n\tname: 'newTask',\n\taction: function (task,context,callback) {" +
+      "\n\t\tcallback(task,context);\n\t}\n};\n\n" +
+      "bot.setTask('newTask',newTask);";
+
     $scope.addTask = function() {
       vm.edit = 'task';
 
@@ -159,7 +171,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.fromTask = true;
       vm.changeTab(vm.tabs[1]);
 
-      vm.currentTab.data += "\nvar task = function() {}\nbot.setTask('',task);";
+      vm.currentTab.data += newTask_template;
 
       $scope.refreshCodemirror = true;
       vm.editor.focus();
@@ -397,6 +409,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     var links_internal = [];
     var nodes = [];
     var dialogs;
+    var common_dialogs;
     var treeData;
 
     // var currentDialog;
@@ -1189,7 +1202,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     vm.initTreeData = function() {
-      treeData = {name: '시작', id: 'dummystart', children: []};
+      handleDialog(common_dialogs[0]);
+      treeData = angular.copy(common_dialogs[0]);
+      treeData.name = '시작';
+      treeData.id = 'dummystart';
+      treeData.children = [];
+
       for (var i = 0; i < dialogs.length; i++) {
         var d = dialogs[i];
         d.name = d.name || (d.name = "dialog_" + d.id);
@@ -1211,11 +1229,17 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.types = res.types.map(function(t) { return t.name} );
       vm.type_dic = res.type_dic;
       dialogs = res.data;
+      common_dialogs = res.common;
 
       OpenTasksService.query({botId:$cookies.get('default_bot')}).$promise.then(function(result) {
         vm.commonTasks = result;
-        vm.commonTasks = vm.commonTasks.map(function(t) { return {name:t.name, paramSchema:t.paramSchema, type:'common'}});
+        vm.entity = [];
+        vm.commonTasks.forEach(function(d) {
+          vm.entity[d.name] = d.entity;
+        });
+        vm.commonTasks = vm.commonTasks.map(function(t) { return {name:t.name, paramSchema:t.paramSchema, type:'common'};});
         vm.tasks = vm.tasks.concat(vm.commonTasks);
+
       });
 
       //console.log(JSON.stringify(dialogs));
@@ -1242,6 +1266,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     var itemHeight = rectH+200;
     // width for one depth
     var labelWidth = 350;
+
+    // icon size of selected node
+    var iconSize= 20;
 
     var tree = d3.layout.tree()
       .size([viewerHeight, viewerWidth]);
@@ -1508,7 +1535,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         var ret = null;
         if (d.output) {
           d.output.forEach(function(o) {
-            if (o.repeat)
+            if (o.repeat && typeof o.repeat === 'string')
               ret = o.repeat;
           })
         }
@@ -1778,17 +1805,17 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         selectedSVG.append("rect")
           .attr("class", "selectedRect")
           .attr("id", "selected")
-          .attr("y", -25)
+          .attr("y", -iconSize)
           .attr("width", rectW)
-          .attr("height", rectH+25)
+          .attr("height", rectH+iconSize)
           .attr("rx", 5)
           .attr("ry", 5);
         selectedSVG.append("rect")
           .attr("class", "selectedRect")
           .attr("id", "selected")
-          .attr("y", -25)
+          .attr("y", -iconSize)
           .attr("width", rectW)
-          .attr("height", 25)
+          .attr("height", iconSize)
           .style("pointer-events", "none")
           .style('fill', '#70c8e2')    //lightsteelblue
           .style("opacity", 0.8)
@@ -1799,7 +1826,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           selectedSVG.append('text')
             .on("click", addChild)
             .attr("class", "icon")
-            .attr("x", rectW-25)
+            .attr("x", rectW-iconSize)
             .attr("y", -4)
             .text(function(d) { return '\uf067';} );
           return;
@@ -1819,7 +1846,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           selectedSVG.append('text')
             .on("click", goDown)
             .attr("class", "icon")
-            .attr("x", 10+25)
+            .attr("x", 10+iconSize)
             .attr("y", -5)
             .text(function(d) { return '\uf063';} );
         }
@@ -1827,25 +1854,25 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         selectedSVG.append('text')
           .on("click", edit)
           .attr("class", "icon")
-          .attr("x", rectW-25*4)
+          .attr("x", rectW-iconSize*4)
           .attr("y", -4)
           .text(function(d) { return '\uf044';} );
         selectedSVG.append('text')
           .on("click", addChild)
           .attr("class", "icon")
-          .attr("x", rectW-25*3)
+          .attr("x", rectW-iconSize*3)
           .attr("y", -4)
           .text(function(d) { return '\uf067';} );
         selectedSVG.append('text')
           .on("click", deleteNode)
           .attr("class", "icon")
-          .attr("x", rectW-25*2)
+          .attr("x", rectW-iconSize*2)
           .attr("y", -5)
           .text(function(d) { return '\uf00d';} );
         selectedSVG.append('text')
           .on("click", toggleAndCenter)
           .attr("class", "icon")
-          .attr("x", rectW-25)
+          .attr("x", rectW-iconSize)
           .attr("y", -4)
           .text(function(d) { if (d.children) return '\uf053'; else if (d._children) return '\uf054';} );
 
@@ -1994,6 +2021,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     }
 
     function deleteNode(d) {
+      if (d.name === "시작")
+        return;
       vm.setChanged(true, true);
       if (d3.event)
         d3.event.stopPropagation();
@@ -2031,6 +2060,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     }
 
     function edit(d) {
+      if (d.name === "시작")
+        return;
       if (d3.event)
         d3.event.stopPropagation();
       angular.element(document.getElementById('control')).scope().findOne(d);
@@ -2274,7 +2305,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       },
     };
 
-    var editor;
+    var jsonEditor;
 
     vm.parseSchema = function(dataSchema) {
       var jsonSchema;
@@ -2423,11 +2454,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       console.log("schema="+ JSON.stringify(schema));
 
-      if (editor) {
-        editor.destroy();
+      if (jsonEditor) {
+        jsonEditor.destroy();
       }
 
-      editor = new JSONEditor(document.getElementById('editor_holder'), {
+      jsonEditor = new JSONEditor(document.getElementById('editor_holder'), {
         schema: schema,
         disable_collapse: true,
         disable_properties: true,
@@ -2443,10 +2474,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         delete temp.paramSchema;
         delete temp.type;
         console.log("given input=" + JSON.stringify(temp));
-        editor.setValue(temp);
+        jsonEditor.setValue(temp);
       }
 
-      editor.on('change', function() {
+      jsonEditor.on('change', function() {
         console.log('editor.onchange -> $compile editor');
         var inputList = document.getElementsByName("mine");
         var compileList = [];
@@ -2461,7 +2492,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           obj.setAttribute("compiled", "true");
         });
 
-        editor.options.show_errors = undefined;
+        jsonEditor.options.show_errors = undefined;
       });
     };
 
@@ -2471,8 +2502,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.edit = 'task';
       if (isCommon) {
         $.magnificPopup.close();
-        if (task.paramSchema != undefined)
+        if (task.paramSchema != undefined) {
+          $scope.dialog.task.paramSchema = task.paramSchema;
           vm.handleEditor(task.paramSchema);
+        }
         $('.modal-with-task').click();
       } else {
         $.magnificPopup.close();
@@ -2491,7 +2524,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         else
           $scope.dialog.task = undefined;
       } else {
-        var temp = editor.getValue();
+        var temp = jsonEditor.getValue();
         temp.name = $scope.dialog.task.name;
         temp.type = $scope.dialog.task.type;
         temp.paramSchema=  $scope.dialog.task.paramSchema;
@@ -2502,6 +2535,80 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       $('.modal-with-form').click();
     };
 
+    // Create file imageUploader instance
+    $scope.jsonImageUploader = new FileUploader({
+      url: '/api/user-bots/image-files',
+      alias: 'uploadImageFile',
+      autoUpload: true
+    });
 
+    var setValue = function(value) {
+      //document.getElementById(currentInput).value = value;
+      jsonEditor.getEditor(currentJSONNode).setValue('/files/' + value);
+    };
+
+    $scope.jsonImageUploader.filters.push({
+      name: 'imageFilter',
+      fn: function (item, options) {
+        var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+        if('|jpg|png|jpeg|bmp|gif|'.indexOf(type) == -1) {
+          $scope.isuccess[currentInput] = null;
+          $scope.ierror[currentInput] = true;
+          setValue('');
+        }
+        return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+      }
+    });
+
+    // Called after the user selected a new picture file
+    $scope.jsonImageUploader.onAfterAddingFile = function (fileItem) {
+      if ($window.FileReader) {
+        var fileReader = new FileReader();
+        fileReader.readAsDataURL(fileItem._file);
+
+        fileReader.onload = function (fileReaderEvent) {
+          $timeout(function () {
+            //$scope.imageURL = fileReaderEvent.target.result;
+          }, 0);
+        };
+      }
+    };
+
+    // Called after the user has successfully uploaded a new picture
+    $scope.jsonImageUploader.onSuccessItem = function (fileItem, response, status, headers) {
+      // Show success message
+      $scope.ierror[currentInput] = null;
+      $scope.isuccess[currentInput] = true;
+
+      setValue(response.filename);
+      // Clear upload buttons
+      $scope.cancelImageUpload();
+    };
+
+    // Called after the user has failed to uploaded a new picture
+    $scope.jsonImageUploader.onErrorItem = function (fileItem, response, status, headers) {
+      // Clear upload buttons
+      $scope.cancelImageUpload();
+      setValue('');
+
+      // Show error message
+      $scope.ierror = response.message;
+    };
+
+    // Change user profile picture
+    $scope.uploadImageFiles = function () {
+      // Clear messages
+      $scope.isuccess = $scope.ierror = null;
+
+      // Start upload
+      $scope.jsonImageUploader.uploadAll();
+    };
+
+    // Cancel the upload process
+    $scope.cancelImageUpload = function () {
+      $scope.jsonImageUploader.clearQueue();
+      setValue('');
+      // $scope.imageURL = $scope.user.profileImageURL;
+    };
   }]
 );

@@ -26,7 +26,10 @@ var dialogs = [
 		],
 		"name": "dialog_default0",
 		"task": {
-			"name": "lgtest3"
+			"url": "asdfsd",
+			"desc": "sdfsadf",
+			"temp": "",
+			"name": "temptask"
 		},
 		"children": [
 			{
@@ -114,7 +117,12 @@ var dialogs = [
 							}
 						]
 					}
-				]
+				],
+				"task": {
+					"url": "czxczxc",
+					"desc": "asdasdasd",
+					"name": "googlesearchtask"
+				}
 			},
 			{
 				"name": "dialog_default9",
