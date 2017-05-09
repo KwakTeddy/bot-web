@@ -383,7 +383,7 @@ figure.profile-picture {display: none !important;}
 }
 
 .log-button-hide {
-    visibility: hidden;
+    bottom: 200px !important;
 }
 
 .hide-intent {
@@ -400,7 +400,7 @@ figure.profile-picture {display: none !important;}
 }
 
 .intent-button-hide {
-    visibility: hidden;
+    bottom: 200px !important;
 }
 
 .content-body-show-log {
