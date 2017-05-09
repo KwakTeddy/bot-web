@@ -8,14 +8,12 @@ var dialogs = [
 		"input": [
 			{
 				"text": "바보"
-			},
-			{
-				"intent": "테스트"
 			}
 		],
 		"output": [
 			{
 				"output": "어쩌라고",
+				"image": "menu.jpg",
 				"buttons": [
 					{
 						"name": "abc"
@@ -23,11 +21,11 @@ var dialogs = [
 					{
 						"name": "def"
 					}
-				],
-				"image": "menu.jpg"
+				]
 			}
 		],
 		"name": "dialog_default0",
+		"_children": null,
 		"children": [
 			{
 				"name": "dialog_default8",
@@ -82,6 +80,7 @@ var dialogs = [
 						"if": "true"
 					}
 				],
+				"_children": null,
 				"children": [
 					{
 						"name": "dialog_default4",
@@ -92,36 +91,7 @@ var dialogs = [
 						"task": {
 							"name": "lglist"
 						},
-						"children": [
-							{
-								"name": "dialog_default10",
-								"id": "default10",
-								"filename": "default",
-								"input": [],
-								"output": []
-							},
-							{
-								"name": "dialog_default11",
-								"id": "default11",
-								"filename": "default",
-								"input": [],
-								"output": []
-							},
-							{
-								"name": "dialog_default12",
-								"id": "default12",
-								"filename": "default",
-								"input": [],
-								"output": []
-							},
-							{
-								"name": "dialog_default13",
-								"id": "default13",
-								"filename": "default",
-								"input": [],
-								"output": []
-							}
-						]
+						"_children": null
 					},
 					{
 						"name": "dialog_default5",
@@ -147,7 +117,11 @@ var dialogs = [
 								"text": "sdfsdf"
 							}
 						],
-						"output": []
+						"output": [
+							{
+								"repeat": "2"
+							}
+						]
 					},
 					{
 						"name": "dialog_default7",
@@ -165,8 +139,7 @@ var dialogs = [
 							}
 						]
 					}
-				],
-				"task": "lglist"
+				]
 			},
 			{
 				"name": "dialog_default9",
@@ -188,8 +161,7 @@ var dialogs = [
 					}
 				]
 			}
-		],
-		"task": "lglist"
+		]
 	}
 ];
 
