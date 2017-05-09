@@ -108,17 +108,18 @@ exports.update = function(req, res) {
 
   // var task = req.task ;
   console.log(util.inspect(req.body));
+  console.log('=-=-===--.................');
   // task = _.extend(task , req.body);
-  Task.findOne({name: req.body.task.name}, function (err, data) {
+  Task.findOne({name: req.body.name}, function (err, data) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
       if(!data){
-
+        res.end();
       }else {
-        data.open = !data.open;
+        data = _.extend(data, req.body);
         data.save(function (err) {
           if (err) {
             return res.status(400).send({
@@ -164,7 +165,6 @@ exports.delete = function(req, res) {
  * List of Custom actions
  */
 exports.list = function(req, res) {
-  console.log(util.inspect(global._bot));
 
   if (!global._bot && global._bots[req.bot.id]){
     var taskList = global._bots[req.bot.id].tasks;
@@ -183,7 +183,6 @@ exports.list = function(req, res) {
  * Custom action middleware
  */
 exports.taskByID = function(req, res, next, id) {
-  console.log('---------------123================')
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
       message: 'Custom action is invalid'
@@ -198,8 +197,6 @@ exports.taskByID = function(req, res, next, id) {
         message: 'No Custom action with that identifier has been found'
       });
     }
-    console.log(task);
-    console.log(123321);
     req.task = task;
     next();
   });
@@ -268,7 +265,7 @@ exports.contentDelete = function(req, res) {
  * List of Custom actions
  */
 exports.openList = function(req, res) {
-  Task.find().sort('-created').populate('user', 'displayName').exec(function(err, tasks) {
+  Task.find({}).sort('-created').populate('user', 'displayName').exec(function(err, tasks) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
