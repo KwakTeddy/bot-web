@@ -9,7 +9,9 @@ var path = require('path'),
   TaskEntity = mongoose.model('TaskEntity'),
   Entity = mongoose.model('Entity'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
-  _ = require('lodash');
+  _ = require('lodash'),
+  botLib = require(path.resolve('config/lib/bot'));
+
 
 var util = require('util'); //temporary
 
@@ -162,11 +164,19 @@ exports.delete = function(req, res) {
  * List of Custom actions
  */
 exports.list = function(req, res) {
-  console.log(util.inspect(req.bot));
+  console.log(util.inspect(global._bot));
 
-  var taskList = global._bots[req.bot.id].tasks;
-  taskList = [taskList];
-  res.jsonp(taskList);
+  if (!global._bot && global._bots[req.bot.id]){
+    var taskList = global._bots[req.bot.id].tasks;
+    taskList = [taskList];
+    res.jsonp(taskList);
+  }else {
+    botLib.loadBot(req.bot.id, function () {
+      var taskList = global._bots[req.bot.id].tasks;
+      taskList = [taskList];
+      res.jsonp(taskList);
+    });
+  }
 };
 
 /**
