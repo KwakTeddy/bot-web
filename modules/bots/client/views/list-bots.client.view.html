@@ -36,9 +36,6 @@
         <td class="text-center">{{bot.user ? bot.user.displayName : '장세영'}}</td>
         <td class="text-center">{{bot.created | date: 'yyyy-MM-dd'}}</td>
         <td>
-          <a class="btn btn-default btn-sm" ui-sref="bots.edit({botId: bot._id})">
-            <i class="glyphicon glyphicon-edit"></i> 수정
-          </a>
           <a class="btn btn-default btn-sm" ui-sref="bots.files({botId: bot._id})">
             <i class="glyphicon glyphicon-edit"></i> 파일관리
           </a>

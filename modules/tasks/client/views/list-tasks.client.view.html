@@ -12,6 +12,9 @@
 </div>
 <section class="panel" ng-if = "vm.type == 'all'">
   <header class="panel-heading">
+    <div class="panel-actions">
+      <button id="addToTable" class="btn btn-primary" ui-sref="tasks.create({listType: 'all', taskId: 'new'})"><i class="fa fa-plus"></i> 신규등록</button>
+    </div>
 
     <h2 class="panel-title">&nbsp;</h2>
   </header>
@@ -35,7 +38,7 @@
         <td class="text-center">{{task.user ? task.user.displayName : '장세영'}}</td>
         <td class="text-center">{{task.open ? task.open : false}}</td>
         <td class="text-center col-md-2">
-          <a class="btn btn-primary btn-xs btn-block" ng-if="!task.open && !task.save" ng-click="vm.openTaskFn(task)">
+          <a class="btn btn-default btn-sm btn-block" ng-if="!task.open && !task.save" ng-click="vm.openTaskFn(task)">
             <i class="glyphicon glyphicon-edit"></i> 공개등록
           </a>
           <a class="btn btn-primary btn-xs btn-block" ng-if="task.save" ui-sref="tasks.edit({taskId: task.name, listType : 'openTask'})">

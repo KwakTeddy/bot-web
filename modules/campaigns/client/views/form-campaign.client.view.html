@@ -66,7 +66,7 @@
       <div class="form-group">
         <label class="col-sm-3 control-label">이미지 </label>
         <div class="col-sm-9">
-          <input class="btn btn-default btn-sm" type="file" nv-file-select uploader="vm.uploader"/><br/>
+          <input class="btn btn-default" type="file" nv-file-select uploader="vm.uploader"/><br/>
           <!--<span class="btn btn-default btn-file" ngf-select ng-model="vm.image" ngf-accept="'image/*'"-->
           <!--ngf-resize="{width: 300}">-->
           <!--선택-->
@@ -114,13 +114,13 @@
     <footer class="panel-footer">
       <div class="row">
         <div class="col-sm-12 text-center" ng-hide="vm.campaign && vm.campaign._id">
-          <!--<button class="btn btn-primary btn-sm">Submit</button>-->
-          <button type="submit" class="btn btn-primary btn-sm">생성</button>
-          <!--<button type="reset" class="btn btn-default btn-sm">초기화</button>-->
+          <!--<button class="btn btn-primary">Submit</button>-->
+          <button type="submit" class="btn btn-primary">생성</button>
+          <!--<button type="reset" class="btn btn-default">초기화</button>-->
           <button type="button" class="btn btn-danger" ui-sref="campaigns.list">취소</button>
         </div>
         <div class="col-sm-12 text-center" ng-show="vm.campaign && vm.campaign._id">
-          <a class="btn btn-primary btn-sm" ng-click="vm.save(form.$valid)">
+          <a class="btn btn-primary" ng-click="vm.save(form.$valid)">
             <i class="glyphicon glyphicon-edit"></i> 수정
           </a>
           <a class="btn btn-danger" ng-click="vm.remove()">

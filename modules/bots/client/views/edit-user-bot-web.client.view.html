@@ -49,16 +49,16 @@
                                 <button type="button" class="btn btn-danger" ng-show="vm.isAdmin()" ng-click="vm.graph()">
                                     <i class="glyphicon glyphicon-edit"></i> 지식그래프 생성
                                 </button>
-                                <a class="btn btn-primary btn-sm" ui-sref="user-bots-web.graph({userBotId: vm.userBot._id})"
+                                <a class="btn btn-primary" ui-sref="user-bots-web.graph({userBotId: vm.userBot._id})"
                                    style="padding: 10px 20px 10px 20px;">지식그래프</a>
-                                <a class="btn btn-primary btn-sm" ng-show="vm.isMine" ui-sref="user-bots-web.edit({userBotId: vm.userBot._id})"
+                                <a class="btn btn-primary" ng-show="vm.isMine" ui-sref="user-bots-web.edit({userBotId: vm.userBot._id})"
                                    style="padding: 10px 20px 10px 20px;">수정하기</a>
-                                <a class="btn btn-default btn-sm" ng-show="!vm.userBot.userFollow && vm.user" ng-click="vm.followBot(vm.userBot);"
+                                <a class="btn btn-default" ng-show="!vm.userBot.userFollow && vm.user" ng-click="vm.followBot(vm.userBot);"
                                    style="padding: 10px 20px 10px 20px;">친구추가</a>
-                                <a class="btn btn-default btn-sm" ng-show="vm.userBot.userFollow && vm.user" ng-click="vm.unfollowBot(vm.userBot);"
+                                <a class="btn btn-default" ng-show="vm.userBot.userFollow && vm.user" ng-click="vm.unfollowBot(vm.userBot);"
                                    style="padding: 10px 20px 10px 20px;">친구해제</a>
-                                <!--<a class="btn btn-default btn-sm" ng-click="">대화 가르치기</a>-->
-<!--                                <a class="btn btn-primary btn-sm" ng-click="vm.userBotChat(vm.userBot);"
+                                <!--<a class="btn btn-default" ng-click="">대화 가르치기</a>-->
+<!--                                <a class="btn btn-primary" ng-click="vm.userBotChat(vm.userBot);"
                                    style="padding: 10px 20px 10px 20px;">대화하기</a>-->
                             </div>
 
@@ -93,8 +93,8 @@
                             <input type="text" ng-model="vm.comment.text" class="form-control valid" placeholder="댓글을 입력해주세요."
                                    aria-invalid="false" style="width: 80%;float: left;margin-right: 10px" ng-disabeld = "!vm.user"
                                    ng-required="true" ng-minlength="10">
-                            <button class="btn btn-default btn-sm" ng-click="vm.createComment(commentForm.$valid);" ng-show="vm.user">등록</button>
-                            <button class="btn btn-default btn-sm" ui-sref="authentication.signin" ng-show="!vm.user">로그인해요</button>
+                            <button class="btn btn-default" ng-click="vm.createComment(commentForm.$valid);" ng-show="vm.user">등록</button>
+                            <button class="btn btn-default" ui-sref="authentication.signin" ng-show="!vm.user">로그인해요</button>
                             </form>
                         </div>
                         <div>
@@ -148,7 +148,7 @@
                                         <div class="thumbnail" style="text-align: center;height: 190px;">
                                             <img src="/images/Playchat_logo_small.png" style="height: 100px;margin-top: 5px;">
                                             <div class="caption">
-                                                <p><a href="#" class="btn btn-default btn-sm" role="button" ng-click="vm.userBot.public = false; vm.create(userBotForm.$valid);">대화파일 없이 만들기</a></p>
+                                                <p><a href="#" class="btn btn-default" role="button" ng-click="vm.userBot.public = false; vm.create(userBotForm.$valid);">대화파일 없이 만들기</a></p>
                                             </div>
                                         </div>
                                     </div>
@@ -157,7 +157,7 @@
                                         <div class="thumbnail" style="text-align: center;height: 190px;">
                                             <img src="/images/Playchat_logo_small.png" style="height: 100px;margin-top: 5px;">
                                             <div class="caption">
-                                                <p><a href="#" class="btn btn-default btn-sm" role="button" ng-click="vm.setEditType('file'); vm.changeType('edit-detail'); vm.unselectTemplate(); ">대화파일 올리기</a></p>
+                                                <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('file'); vm.changeType('edit-detail'); vm.unselectTemplate(); ">대화파일 올리기</a></p>
                                             </div>
                                         </div>
                                     </div>
@@ -167,7 +167,7 @@
                                       <div class="thumbnail" style="text-align: center;height: 190px;">
                                         <img src={{vm.getImage(template)}} style="height: 100px;">
                                         <div class="caption">
-                                          <p><a href="#" class="btn btn-default btn-sm" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
+                                          <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
                                         </div>
                                       </div>
                                     </div>
@@ -177,7 +177,7 @@
                                     <div class="thumbnail" style="text-align: center;height: 190px;">
                                       <img src={{vm.getImage(template)}} style="height: 100px;">
                                       <div class="caption">
-                                        <p><a href="#" class="btn btn-default btn-sm" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
+                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
                                       </div>
                                     </div>
                                   </div>
@@ -188,7 +188,7 @@
                                     <div class="thumbnail" style="text-align: center;height: 190px;">
                                       <img src={{vm.getImage(template)}} style="height: 100px;">
                                       <div class="caption">
-                                        <p><a href="#" class="btn btn-default btn-sm" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
+                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
                                       </div>
                                     </div>
                                   </div>
@@ -199,7 +199,7 @@
                                     <div class="thumbnail" style="text-align: center;height: 190px;">
                                       <img src={{vm.getImage(template)}} style="height: 100px;">
                                       <div class="caption">
-                                        <p><a href="#" class="btn btn-default btn-sm" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
+                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
                                       </div>
                                     </div>
                                   </div>
@@ -210,7 +210,7 @@
                                     <div class="thumbnail" style="text-align: center;height: 190px;">
                                       <img src={{vm.getImage(template)}} style="height: 100px;">
                                       <div class="caption">
-                                        <p><a href="#" class="btn btn-default btn-sm" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
+                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
                                       </div>
                                     </div>
                                   </div>
@@ -220,7 +220,7 @@
                                     <div class="thumbnail" style="text-align: center;height: 190px;">
                                       <img src={{vm.getImage(template)}} style="height: 100px;">
                                       <div class="caption">
-                                        <p><a href="#" class="btn btn-default btn-sm" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
+                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
                                       </div>
                                     </div>
                                   </div>
@@ -230,7 +230,7 @@
                                     <div class="thumbnail" style="text-align: center;height: 190px;">
                                       <img src={{vm.getImage(template)}} style="height: 100px;">
                                       <div class="caption">
-                                        <p><a href="#" class="btn btn-default btn-sm" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
+                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
                                       </div>
                                     </div>
                                   </div>
@@ -241,7 +241,7 @@
                                     <div class="thumbnail" style="text-align: center;height: 190px;">
                                       <img src={{vm.getImage(template)}} style="height: 100px;">
                                       <div class="caption">
-                                        <p><a href="#" class="btn btn-default btn-sm" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
+                                        <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
                                       </div>
                                     </div>
                                   </div>
@@ -271,8 +271,8 @@
                                             </span>
                                     </div>
                                     <div class="text-center form-group" ng-show="false">
-                                        <button class="btn btn-primary btn-sm" ng-click="uploadDialogFiles();">Upload</button>
-                                        <button class="btn btn-default btn-sm" ng-click="cancelUpload();">Cancel</button>
+                                        <button class="btn btn-primary" ng-click="uploadDialogFiles();">Upload</button>
+                                        <button class="btn btn-default" ng-click="cancelUpload();">Cancel</button>
                                     </div>
                                 </div>
                             </div>
@@ -281,7 +281,7 @@
                                 <div class="col-sm-9">
                                     <div class="text-center form-group">
                                         <label class="col-sm-3 control-label">{{vm.userBot.filename}}</label>
-                                        <a class="btn btn-primary btn-sm" target="_self"
+                                        <a class="btn btn-primary" target="_self"
                                            ng-href="{{'/files/' + vm.userBot.filename}}"
                                            download="{{vm.userBot.filename}}">Download</a>
                                     </div>
@@ -440,7 +440,7 @@
                                        aria-invalid="false" style="width: 44%;float: left;margin-right: 5px" required>
                                 <input type="text" id="answer" name="answer" ng-model="vm.dialog.output" class="form-control valid" placeholder="답변"
                                        aria-invalid="false"  style="width: 44%;float: left;margin-right: 5px" required>
-                                <button class="btn btn-primary btn-sm" ng-click="vm.createDialog(learnForm.$valid);">추가</button>
+                                <button class="btn btn-primary" ng-click="vm.createDialog(learnForm.$valid);">추가</button>
                             </div>
                             </form>
 
@@ -449,8 +449,8 @@
                                        aria-invalid="false" ng-blur="vm.updateDialog(dialog)"  style="width: 44%;float: left;margin-right: 5px">
                                 <input type="text" ng-model="dialog.output" class="form-control valid" placeholder="답변"
                                        aria-invalid="false" ng-blur="vm.updateDialog(dialog)"  style="width: 44%;float: left;margin-right: 5px">
-                                <!--<button class="btn btn-default btn-sm" ng-click="vm.updateDialog(dialog)">수정</button>-->
-                                <button class="btn btn-default btn-sm" ng-click="vm.removeDialog(dialog)">삭제</button>
+                                <!--<button class="btn btn-default" ng-click="vm.updateDialog(dialog)">수정</button>-->
+                                <button class="btn btn-default" ng-click="vm.removeDialog(dialog)">삭제</button>
                             </div>
 
                         </div>
@@ -461,19 +461,19 @@
                     <footer class="panel-footer" ng-show="vm.state=='edit'" >
                         <div class="row">
                             <!--<div class="col-sm-12 text-center" ng-hide="vm.userBot && vm.userBot._id">-->
-                                <!--<button type="button" class="btn btn-default btn-sm" ng-click="vm.type='edit'">이전</button>-->
-                                <!--<button type="button" class="btn btn-primary btn-sm" ng-click="vm.create(userBotForm.$valid)">만들기</button>-->
-                                <!--<button type="button" class="btn btn-default btn-sm" onclick="javascript:history.back();" >취소</button>-->
+                                <!--<button type="button" class="btn btn-default" ng-click="vm.type='edit'">이전</button>-->
+                                <!--<button type="button" class="btn btn-primary" ng-click="vm.create(userBotForm.$valid)">만들기</button>-->
+                                <!--<button type="button" class="btn btn-default" onclick="javascript:history.back();" >취소</button>-->
                             <!--</div>-->
                             <div class="col-sm-12 text-center" ng-show="vm.userBot && vm.userBot._id">
                                 <button type="button" class="btn btn-default pull-right" ui-sref="user-bots-web.list({listType: 'my'})" >돌아가기</button>
-                                <!--<a class="btn btn-primary btn-sm" ng-click="vm.update(userBotForm1.$valid)">-->
+                                <!--<a class="btn btn-primary" ng-click="vm.update(userBotForm1.$valid)">-->
                                     <!--<i class="glyphicon glyphicon-edit"></i> 수정-->
                                 <!--</a>-->
                                 <!--<a class="btn btn-danger" ng-click="vm.remove()">-->
                                     <!--<i class="glyphicon glyphicon-trash"></i> 삭제-->
                                 <!--</a>-->
-                                <!--<button type="button" class="btn btn-default btn-sm" onclick="javascript:history.back();" >취소</button>-->
+                                <!--<button type="button" class="btn btn-default" onclick="javascript:history.back();" >취소</button>-->
                             </div>
                         </div>
                     </footer>
@@ -518,7 +518,7 @@
                                 조금만 기다려요</h3>
                             </div>
                             <!--<div class="col-sm-6" style="text-align: left; padding-left: 20px;">-->
-                                <!--<button type="button" class="btn btn-primary btn-sm"-->
+                                <!--<button type="button" class="btn btn-primary"-->
                                         <!--style="width: 130px;height: 50px; font-size: 18px;"-->
                                         <!--ng-click="vm.userBotChat(vm.userBot)">대화하기</button>-->
                             <!--</div>-->
@@ -533,7 +533,7 @@
                                         <img src="/images/sns/kakaotalk-icon1.png" style="height: 70px;margin-top: 5px;">
                                         <div class="caption">
                                             <p style="text-align: center;">카카오톡</p>
-                                            <p><a href="#" class="btn btn-default btn-sm" role="button" ng-click="vm.modal('kakao', 'easy')">카카오톡 연결</a></p>
+                                            <p><a href="#" class="btn btn-default" role="button" ng-click="vm.modal('kakao', 'easy')">카카오톡 연결</a></p>
                                         </div>
                                     </div>
                                 </div>
@@ -543,7 +543,7 @@
                                         <img src="/images/sns/facebook-messenger-android.png" style="height: 80px;">
                                         <div class="caption">
                                             <p style="text-align: center;">페이스북 메신져</p>
-                                            <p><a href="#" class="btn btn-default btn-sm" role="button" ng-click="vm.modal('facebook', 'easy')">페이스북 메신져 연결</a></p>
+                                            <p><a href="#" class="btn btn-default" role="button" ng-click="vm.modal('facebook', 'easy')">페이스북 메신져 연결</a></p>
                                         </div>
                                     </div>
                                 </div>
@@ -553,7 +553,7 @@
                                         <img src="/images/sns/line-messenger-vector-logo.png" style="height: 70px;margin-top: 5px;">
                                         <div class="caption">
                                             <p style="text-align: center;">라인</p>
-                                            <p><a href="#" class="btn btn-default btn-sm" role="button" ng-click="vm.modal('navertalk', 'easy')">라인 연결</a></p>
+                                            <p><a href="#" class="btn btn-default" role="button" ng-click="vm.modal('navertalk', 'easy')">라인 연결</a></p>
                                         </div>
                                     </div>
                                 </div>
@@ -563,7 +563,7 @@
                                     <img src="/images/sns/navertalk.png" style="height: 70px;margin-top: 5px;border-radius: 10%">
                                     <div class="caption">
                                       <p style="text-align: center;">네이버톡톡</p>
-                                      <p><a href="#" class="btn btn-default btn-sm" role="button" ng-click="vm.modal('navertalk', 'easy')">네이버톡톡 연결</a></p>
+                                      <p><a href="#" class="btn btn-default" role="button" ng-click="vm.modal('navertalk', 'easy')">네이버톡톡 연결</a></p>
                                     </div>
                                   </div>
                                 </div>
@@ -581,7 +581,7 @@
                                         <img src="/images/sns/kakaotalk-icon1.png" style="height: 70px;margin-top: 10px;">
                                         <div class="caption">
                                             <p style="text-align: center;">카카오톡</p>
-                                            <p><a href="#" class="btn btn-default btn-sm" role="button" ng-click="vm.modal('kakao')">메신져봇 생성</a></p>
+                                            <p><a href="#" class="btn btn-default" role="button" ng-click="vm.modal('kakao')">메신져봇 생성</a></p>
                                         </div>
                                     </div>
                                 </div>
@@ -591,7 +591,7 @@
                                         <img src="/images/sns/facebook-messenger-android.png" style="height: 80px;">
                                         <div class="caption">
                                             <p style="text-align: center;">페이스북 메신져</p>
-                                            <p><a href="#" class="btn btn-default btn-sm" role="button" ng-click="vm.modal('facebook')">메신져봇 생성</a></p>
+                                            <p><a href="#" class="btn btn-default" role="button" ng-click="vm.modal('facebook')">메신져봇 생성</a></p>
                                         </div>
                                     </div>
                                 </div>
@@ -601,7 +601,7 @@
                                         <img src="/images/sns/line-messenger-vector-logo.png" style="height: 70px;margin-top: 10px;">
                                         <div class="caption">
                                             <p style="text-align: center;">라인</p>
-                                            <p><a href="#" class="btn btn-default btn-sm" role="button" ng-click="vm.modal('line')">메신져봇 생성</a></p>
+                                            <p><a href="#" class="btn btn-default" role="button" ng-click="vm.modal('line')">메신져봇 생성</a></p>
                                         </div>
                                     </div>
                                 </div>
@@ -611,7 +611,7 @@
                                     <img src="/images/sns/navertalk.png" style="height: 70px;margin-top: 10px; border-radius: 10%">
                                     <div class="caption">
                                       <p style="text-align: center;">네이버톡톡</p>
-                                      <p><a href="#" class="btn btn-default btn-sm" role="button" ng-click="vm.modal('navertalk')">메신져봇 생성</a></p>
+                                      <p><a href="#" class="btn btn-default" role="button" ng-click="vm.modal('navertalk')">메신져봇 생성</a></p>
                                     </div>
                                   </div>
                                 </div>
@@ -624,7 +624,7 @@
                     <footer class="panel-footer" ng-show="vm.state=='edit' || vm.state=='create'" >
                         <div class="row">
                             <!--<div class="col-sm-12 text-center" ng-hide="vm.userBot && vm.userBot._id">-->
-                                <!--<button type="button" class="btn btn-primary btn-sm" ng-click="vm.userBotChat(vm.userBot)">대화하기</button>-->
+                                <!--<button type="button" class="btn btn-primary" ng-click="vm.userBotChat(vm.userBot)">대화하기</button>-->
                                 <!--<button type="button" class="btn btn-danger" ui-sref="user-bots.list({listType: 'my'})">챗봇목록</button>-->
                             <!--</div>-->
                             <div class="col-sm-12 text-center" >

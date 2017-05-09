@@ -7,11 +7,11 @@
 <section ng-if="vm.listType !== 'openTask'">
   <div class="pull-right"
        data-ng-show="vm.task.isCurrentUserOwner">
-    <a class="btn btn-primary btn-sm"
+    <a class="btn btn-primary"
        data-ui-sref="tasks.edit({ taskId: vm.task._id })">
       <i class="glyphicon glyphicon-edit"></i>
     </a>
-    <a class="btn btn-primary btn-sm" data-ng-click="vm.remove()">
+    <a class="btn btn-primary" data-ng-click="vm.remove()">
       <i class="glyphicon glyphicon-trash"></i>
     </a>
   </div>
@@ -105,11 +105,11 @@
 <section ng-if="vm.listType == 'openTask'">
   <div class="pull-right"
        data-ng-show="vm.task.isCurrentUserOwner">
-    <a class="btn btn-primary btn-sm"
+    <a class="btn btn-primary"
        data-ui-sref="tasks.edit({ taskId: vm.task._id })">
       <i class="glyphicon glyphicon-edit"></i>
     </a>
-    <a class="btn btn-primary btn-sm" data-ng-click="vm.remove()">
+    <a class="btn btn-primary" data-ng-click="vm.remove()">
       <i class="glyphicon glyphicon-trash"></i>
     </a>
   </div>

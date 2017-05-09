@@ -8,7 +8,7 @@
 <section class="panel">
   <header class="panel-heading">
     <!--<div class="panel-actions">-->
-      <!--<button id="addToTable" class="btn btn-primary btn-sm" ui-sref="deliveryOrders.create"><i class="fa fa-plus"></i> 신규등록</button>-->
+      <!--<button id="addToTable" class="btn btn-primary" ui-sref="deliveryOrders.create"><i class="fa fa-plus"></i> 신규등록</button>-->
     <!--</div>-->
 
     <h2 class="panel-title">&nbsp;</h2>
@@ -40,11 +40,11 @@
         <td class="text-center">{{deliveryOrder.botUser.mobile}}</td>
         <td class="text-center">{{deliveryOrder.status}}</td>
         <td>
-          <a class="btn btn-primary btn-sm" ng-click="vm.updateStatus(deliveryOrder, '접수', '')" ng-show="deliveryOrder.status == '요청'">
+          <a class="btn btn-primary" ng-click="vm.updateStatus(deliveryOrder, '접수', '')" ng-show="deliveryOrder.status == '요청'">
 
             <i class="glyphicon glyphicon-edit"></i> 접수
           </a>
-          <a class="btn btn-primary btn-sm" ng-click="vm.updateStatus(deliveryOrder, '취소', '')" ng-show="deliveryOrder.status == '요청'">
+          <a class="btn btn-primary" ng-click="vm.updateStatus(deliveryOrder, '취소', '')" ng-show="deliveryOrder.status == '요청'">
             <i class="glyphicon glyphicon-edit"></i> 취소
           </a>
         </td>

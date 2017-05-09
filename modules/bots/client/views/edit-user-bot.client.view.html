@@ -55,8 +55,8 @@
           </span>
           </div>
           <div class="text-center form-group" ng-show="false">
-            <button class="btn btn-primary btn-sm" ng-click="uploadImageFiles();">Upload</button>
-            <button class="btn btn-default btn-sm" ng-click="cancelImageUpload();">Cancel</button>
+            <button class="btn btn-primary" ng-click="uploadImageFiles();">Upload</button>
+            <button class="btn btn-default" ng-click="cancelImageUpload();">Cancel</button>
           </div>
         </div>
         <div ng-messages="imageURL.$error" role="alert" class="col-sm-offset-3 col-sm-9">
@@ -124,8 +124,8 @@
           </div>
           <!--<div class="text-center form-group" ng-show="uploader.queue.length">-->
           <div class="text-right" style="display: inline;">
-            <button class="btn btn-primary btn-sm" ng-click="uploadDialogFiles();">Upload</button>
-            <button class="btn btn-default btn-sm" ng-click="cancelUpload();">Cancel</button>
+            <button class="btn btn-primary" ng-click="uploadDialogFiles();">Upload</button>
+            <button class="btn btn-default" ng-click="cancelUpload();">Cancel</button>
           </div>
           <div ng-show="success" class="text-center text-success">
             <strong>파일이 업로드 되었습니</strong>
@@ -158,11 +158,11 @@
     <footer class="panel-footer">
       <div class="row">
         <div class="col-sm-12 text-center" ng-hide="vm.userBot && vm.userBot._id">
-          <button type="button" class="btn btn-primary btn-sm" ng-click="vm.create(userBotForm.$valid)">생성</button>
+          <button type="button" class="btn btn-primary" ng-click="vm.create(userBotForm.$valid)">생성</button>
           <button type="button" class="btn btn-danger" ui-sref="user-bots.list">취소</button>
         </div>
         <div class="col-sm-12 text-center" ng-show="vm.userBot && vm.userBot._id">
-          <a class="btn btn-primary btn-sm" ng-click="vm.update(userBotForm.$valid)">
+          <a class="btn btn-primary" ng-click="vm.update(userBotForm.$valid)">
             <i class="glyphicon glyphicon-edit"></i> 수정
           </a>
           <a class="btn btn-danger" ng-click="vm.remove()">
