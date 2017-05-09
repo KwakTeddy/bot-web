@@ -7,10 +7,10 @@ function gogo(filename) {
 // Bots controller
 angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope', '$state', '$window','$timeout',
   '$stateParams', '$resource', 'Dialogs', 'DialogSaveService', 'OpenTasksService', 'FileUploader','$document',
-  'fileResolve', 'BotFilesService', 'CoreUtils', 'botFilesResolve', 'Socket', '$uibModal', '$compile',
+  'fileResolve', 'BotFilesService', 'CoreUtils', 'botFilesResolve', 'Socket', '$uibModal', '$compile', '$cookies',
   function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, Dialogs, DialogSaveService,
             OpenTasksService, FileUploader, $document, file, BotFilesService, CoreUtils, files, Socket,
-            $uibModal, $compile) {
+            $uibModal, $compile, $cookies) {
 
     (function($) {
       'use strict';
@@ -185,7 +185,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.openTask = function(task, isCommon) {
-      $scope.dialog.task = {name: task.name};
+      $scope.dialog.task = task;
       vm.edit = 'task';
       if (isCommon) {
         $.magnificPopup.close();
@@ -997,6 +997,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
         if (node.task) {
           delete node.task.type;
+          delete node.task.paramSchema;
         }
 
         if (node.children)
@@ -1231,9 +1232,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.type_dic = res.type_dic;
       dialogs = res.data;
 
-      OpenTasksService.query().$promise.then(function(result) {
+      OpenTasksService.query({botId:$cookies.get('default_bot')}).$promise.then(function(result) {
         vm.commonTasks = result;
-        vm.commonTasks = vm.commonTasks.map(function(t) { return {name:t.name, type:'common'}});
+        vm.commonTasks = vm.commonTasks.map(function(t) { return {name:t.name, paramSchema:t.paramSchema, type:'common'}});
         vm.tasks = vm.tasks.concat(vm.commonTasks);
       });
 
@@ -1930,7 +1931,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       })[0];
       var offset = svg[0].getBoundingClientRect();
       console.log([offset["left"], offset["top"],offset["right"],offset["bottom"]]+"");
-      if (!isStart && offset["left"] > 300 && offset["top"] > 200 && offset["top"] < viewerHeight && offset["left"] < viewerWidth-300)
+      if (isStart !=='start' && offset["left"] > 300 && offset["top"] > 200 && offset["top"] < viewerHeight && offset["left"] < viewerWidth)
         return;
 
       var scale = zoomListener.scale();
