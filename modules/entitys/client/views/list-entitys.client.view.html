@@ -6,15 +6,15 @@
 </header>
 
 <section class="panel">
-  <header class="panel-heading">
-    <div class="panel-actions">
-      <button id="addToTable" class="btn btn-primary" ui-sref="entitys.create"><i class="fa fa-plus"></i> 신규등록</button>
-    </div>
+  <!--<header class="panel-heading">-->
+    <!--<div class="panel-actions">-->
+      <!--<button id="addToTable" class="btn btn-primary" ui-sref="entitys.create"><i class="fa fa-plus"></i> 신규등록</button>-->
+    <!--</div>-->
 
-    <h2 class="panel-title">&nbsp;</h2>
-  </header>
+    <!--<h2 class="panel-title">&nbsp;</h2>-->
+  <!--</header>-->
   <div class="panel-body">
-    <table datatable="ng" class="table table-bordered table-hover mb-none">
+    <table id="dt" datatable="ng" dt-options="vm.dtOptions" class="table table-bordered table-hover mb-none">
       <thead>
       <tr>
         <!--<th class="text-center">봇아이디</th>-->

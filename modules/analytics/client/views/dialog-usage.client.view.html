@@ -25,7 +25,7 @@
 </script>
 
 <header class="page-header">
-  <h2>대화별 사용량 분석</h2>
+  <h2>대화별 사용량</h2>
 
   <div class="right-wrapper pull-right">
     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
@@ -34,7 +34,7 @@
 
 <!-- start: page -->
 <section class="panel" ng-controller="AnalyticsListController" ng-init="find_dialog()">
-  <header class="panel-heading">
+  <header class="panel-heading" style="padding:3px">
     <form name="form" novalidate="novalidate">
       <table width="100%"><tr><td>
         <h2 class="panel-title">&nbsp;</h2>
@@ -52,7 +52,7 @@
   </header>
 
   <div class="panel-body">
-    <table datatable="ng" id="dt" class="table table-bordered table-striped mb-none">
+    <table datatable="ng" id="dt" dt-options="vm.dtOptions" class="table table-bordered table-striped mb-none">
       <thead>
       <tr>
         <th class="text-center">대화</th>

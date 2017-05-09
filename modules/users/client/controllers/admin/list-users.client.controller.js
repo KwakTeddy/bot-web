@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('users.admin').controller('UserListController', ['$scope', '$filter', 'Admin',
-  function ($scope, $filter, Admin) {
+angular.module('users.admin').controller('UserListController', ['$scope', '$filter', 'Admin','DTOptionsBuilder', '$compile',
+  function ($scope, $filter, Admin, DTOptionsBuilder, $compile) {
     Admin.query(function (data) {
       $scope.users = data;
       $scope.buildPager();
@@ -27,5 +27,14 @@ angular.module('users.admin').controller('UserListController', ['$scope', '$filt
     $scope.pageChanged = function () {
       $scope.figureOutItemsToDisplay();
     };
+
+    $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withOption('bLengthChange', false)
+        .withOption('info', false)
+        .withOption('dom', 'l<"toolbar">frtip')
+        .withOption('initComplete', function(settings, json) {
+          $('#dt_filter > label > input[type="search"]').addClass('form-control').attr('placeholder', 'Search');
+          $compile(angular.element(document.querySelector('div.toolbar')).contents())($scope);
+        })
   }
 ]);

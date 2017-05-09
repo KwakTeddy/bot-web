@@ -80,6 +80,12 @@ angular.module('bots').config(['$stateProvider',
           fileResolve: readBotFile
         }
       })
+      .state('bots.dialog-tree2', {
+        url: '/dialog-tree2/',
+        templateUrl: 'modules/bots/client/views/dialog-tree.client.view.html',
+        controller: 'DialogTreeController',
+        controllerAs: 'vm'
+      })
       .state('bots.graph-knowledge', {
         url: '/graph-knowledge/:botId',
         templateUrl: 'modules/bots/client/views/graph-knowledge.client.view.html',

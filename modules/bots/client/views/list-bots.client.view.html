@@ -1,5 +1,5 @@
 <header class="page-header">
-  <h2>챗봇 관리</h2>
+  <h2>챗봇 리스트</h2>
 
   <div class="right-wrapper pull-right">
     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
@@ -36,12 +36,12 @@
         <td class="text-center">{{bot.user ? bot.user.displayName : '장세영'}}</td>
         <td class="text-center">{{bot.created | date: 'yyyy-MM-dd'}}</td>
         <td>
-          <a class="btn btn-default btn-sm" ui-sref="bots.files({botId: bot._id})">
+          <a class="btn btn-default btn-sm btn-block" ui-sref="bots.files({botId: bot._id})">
             <i class="glyphicon glyphicon-edit"></i> 파일관리
           </a>
-          <a class="btn btn-default btn-sm" ui-sref="bots.graph-knowledge({botId: bot._id})">
-            지식 Graph
-          </a>
+          <!--<a class="btn btn-default btn-sm" ui-sref="bots.graph-knowledge({botId: bot._id})">-->
+            <!--지식 Graph-->
+          <!--</a>-->
         </td>
       </tr>
       </tbody>

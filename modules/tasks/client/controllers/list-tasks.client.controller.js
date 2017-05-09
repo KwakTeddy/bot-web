@@ -5,9 +5,9 @@
     .module('tasks')
     .controller('TasksListController', TasksListController);
 
-  TasksListController.$inject = ['tasksResolve', 'openTasksResolve', 'TasksService', 'OpenTasksService', '$stateParams', '$state'];
+  TasksListController.$inject = ['tasksResolve', 'openTasksResolve', 'TasksService', 'OpenTasksService', '$stateParams', '$state','DTOptionsBuilder', '$compile', '$scope'];
 
-  function TasksListController(tasksResolve, openTasksResolve, TasksService, OpenTasksService, $stateParams, $state) {
+  function TasksListController(tasksResolve, openTasksResolve, TasksService, OpenTasksService, $stateParams, $state, DTOptionsBuilder, $compile, $scope) {
     var vm = this;
     vm.type = $stateParams.listType;
     vm.tasks = Object.keys(tasksResolve[0]).map(function (key) {return tasksResolve[0][key]; });
@@ -61,5 +61,26 @@
     vm.changeType = function (type) {
       vm.type = type
     }
+
+    var abc = "\"tasks.create({listType: 'all', taskId: 'new'})\"";
+
+    vm.dtOptions = DTOptionsBuilder.newOptions()
+        .withOption('bLengthChange', false)
+        .withOption('info', false)
+        .withOption('dom', 'l<"toolbar">frtip')
+        .withOption('initComplete', function(settings, json) {
+          $('#dt_filter > label > input[type="search"]').addClass('form-control').attr('placeholder', 'Search');
+          $("div.toolbar").html('<button id="addToTable" class="btn btn-primary" ui-sref= '+abc+'><i class="fa fa-plus"></i> 신규등록</button>');
+          $compile(angular.element(document.querySelector('div.toolbar')).contents())($scope);
+        })
+
+    vm.dtOptions2 = DTOptionsBuilder.newOptions()
+        .withOption('bLengthChange', false)
+        .withOption('info', false)
+        .withOption('dom', 'l<"toolbar">frtip')
+        .withOption('initComplete', function(settings, json) {
+          $('#dt_filter > label > input[type="search"]').addClass('form-control').attr('placeholder', 'Search');
+          $compile(angular.element(document.querySelector('div.toolbar')).contents())($scope);
+        })
   }
 })();

@@ -33,7 +33,7 @@
 
 <!-- start: page -->
 <section class="panel" ng-controller="AnalyticsListController" ng-init="find_dialog_success()">
-  <header class="panel-heading">
+  <header class="panel-heading", style="padding:3px">
     <form name="form" novalidate="novalidate">
       <table width="100%"><tr><td>
         <h2 class="panel-title">&nbsp;</h2>
@@ -52,7 +52,7 @@
 
 <!-- start: page -->
   <div class="panel-body">
-    <table datatable="ng" id="dt" class="table table-bordered table-striped mb-none">
+    <table datatable="ng" id="dt" dt-options="vm.dtOptions" class="table table-bordered table-striped mb-none">
       <thead>
       <tr>
         <th class="text-center">년</th>

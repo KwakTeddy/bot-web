@@ -8,14 +8,14 @@
 
 <!-- start: page -->
 <section class="panel" ng-controller="AnalyticsListController">
-  <header class="panel-heading">
-    <form name="form" novalidate="novalidate">
-      <table width="100%">
-        <tr>
-          <td>
-            <h2 class="panel-title">대화 실패 유지보수</h2>
-          </td>
-          <td align="right">
+  <!--<header class="panel-heading">-->
+    <!--<form name="form" novalidate="novalidate">-->
+      <!--<table width="100%">-->
+        <!--<tr>-->
+          <!--<td>-->
+            <!--<h2 class="panel-title">대화 실패 유지보수</h2>-->
+          <!--</td>-->
+          <!--<td align="right">-->
             <!--<select name="kind" ng-model="kind"  onchange="changeFunc(this)">-->
               <!--<option selected="selected" value="all">전체</option>-->
               <!--<option value="year">연도별</option>-->
@@ -23,15 +23,15 @@
             <!--</select>-->
             <!--<input type="number" id="year" ng-model="year" min="1999" max="2100" value='2017' style="display:none">-->
             <!--<input type="month" id="ym" ng-model="ym" style="display:none" value="2017-03">-->
-            <button class="btn btn-primary" ng-click="find_dialog_failure_maintenance()">오류 목록 검사</button>
-          </td>
-        </tr>
-      </table>
-    </form>
-  </header>
+            <!--<button class="btn btn-primary" ng-click="find_dialog_failure_maintenance()">오류 목록 검사</button>-->
+          <!--</td>-->
+        <!--</tr>-->
+      <!--</table>-->
+    <!--</form>-->
+  <!--</header>-->
 
   <div class="panel-body">
-    <table datatable="ng" id="dt" class="table table-bordered mb-none">
+    <table datatable="ng" id="dt" dt-options="vm.dtOptions2" class="table table-bordered mb-none">
       <thead>
       <tr>
         <th class="text-center">실패 인텐트</th>

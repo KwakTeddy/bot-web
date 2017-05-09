@@ -226,6 +226,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
       vm.userBot = userBot;
       $rootScope.botId = userBot.id;
+      $rootScope.botObjectId = userBot._id;
       $rootScope.userBot = vm.userBot;
 
       var header = document.getElementById("chat-header");

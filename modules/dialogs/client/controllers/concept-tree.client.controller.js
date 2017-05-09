@@ -12,6 +12,8 @@ angular.module('dialogsets').controller('ConceptTreeController', ['$scope', '$ro
     var labelWidth = 250;
 
     if ($stateParams.kind == 'general') {
+      vm.type = 'general';
+      console.log('general');
       labelWidth = 150;
       treeData = {name: '', children: []};
       $resource('/api/generalconcepts', {}).query({}, function (res) {
@@ -42,6 +44,8 @@ angular.module('dialogsets').controller('ConceptTreeController', ['$scope', '$ro
         init();
       });
     } else {
+      vm.type = 'faq';
+      console.log('faq');
       var nodes = {};
       treeData = {name: '', children: []};
       $resource('/api/conceptlist', {}).query({}, function (res) {

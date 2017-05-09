@@ -2,9 +2,9 @@
 
 // Analytics controller
 angular.module('analytics').controller('AnalyticsListController', ['$scope', '$rootScope', '$stateParams', '$location', '$window', '$http', '$cookies', 'Authentication', 'AnalyticsService',
-  'DialogUsageService', 'DialogSuccessService', 'SessionSuccessService', 'DialogFailureService', 'Dialogs','DialogChildren', 'DialogFailureMaintenanceService',
+  'DialogUsageService', 'DialogSuccessService', 'SessionSuccessService', 'DialogFailureService', 'Dialogs','DialogChildren', 'DialogFailureMaintenanceService','DTOptionsBuilder', '$compile',
   function ($scope, $rootScope, $stateParams, $location, $window, $http, $cookies, Authentication, AnalyticsService, DialogUsageService, DialogSuccessService, SessionSuccessService,
-            DialogFailureService, Dialogs, DialogChildren, DialogFailureMaintenanceService) {
+            DialogFailureService, Dialogs, DialogChildren, DialogFailureMaintenanceService, DTOptionsBuilder, $compile) {
     $scope.authentication = Authentication;
     $scope.kind = "all";
     $scope.year = new Date().getFullYear();
@@ -350,7 +350,42 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
       }).apply(this, [jQuery]);
     };
 
+    var vm = this;
 
+    var abcd =
+        '<form name="form" novalidate="novalidate">' +
+        '<table width="100%"><tr><td>' +
+        '<h2 class="panel-title">&nbsp;</h2>' +
+        '<td align="right">' +
+        '<select name="kind" ng-model="kind"  onchange="changeFunc(this)">' +
+        '<option selected="selected" value="all">전체</option>' +
+        '<option value="year">연도별</option>' +
+        '<option value="month">월별</option>' +
+        '</select>' +
+        '<input type="number" id="year" ng-model="year" min="1999" max="2100" value="2017" style="display:none">' +
+        '<input type="month" id="ym" ng-model="ym" style="display:none" value="2017-03">' +
+        '<button class="btn btn-primary" ng-click="find_dialog_failure()">검색</button>' +
+        '</td></tr></table>' +
+        '</form>';
+
+    vm.dtOptions = DTOptionsBuilder.newOptions()
+        .withOption('bLengthChange', false)
+        .withOption('info', false)
+        .withOption('dom', 'l<"toolbar">frtip')
+        .withOption('initComplete', function(settings, json) {
+          $('#dt_filter > label > input[type="search"]').addClass('form-control').attr('placeholder', 'Search');
+          $compile(angular.element(document.querySelector('div.toolbar')).contents())($scope);
+        })
+
+    vm.dtOptions2 = DTOptionsBuilder.newOptions()
+        .withOption('bLengthChange', false)
+        .withOption('info', false)
+        .withOption('dom', 'l<"toolbar">frtip')
+        .withOption('initComplete', function(settings, json) {
+          $('#dt_filter > label > input[type="search"]').addClass('form-control').attr('placeholder', 'Search');
+          $("div.toolbar").html('<button class="btn btn-primary" ng-click="find_dialog_failure_maintenance()">오류 목록 검사</button>');
+          $compile(angular.element(document.querySelector('div.toolbar')).contents())($scope);
+        })
 
     $scope.find_dialog_failure_maintenance = function () {
       $http.get('/api/intent/analyzeFailIntent/'+ $cookies.get('default_bot')).then(function (data) {
