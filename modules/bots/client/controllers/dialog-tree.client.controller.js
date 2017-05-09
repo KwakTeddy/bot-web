@@ -1878,6 +1878,15 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     // Function to center node when clicked/dropped so node doesn't get lost when collapsing/moving with large amount of children.
     function centerNode(source, isStart) {
+      var svg  = baseSvg.selectAll(".node").filter(function(d) {
+        if (d.id === source.id)
+          return true;
+      })[0];
+      var offset = svg[0].getBoundingClientRect();
+      console.log([offset["left"], offset["top"],offset["right"],offset["bottom"]]+"");
+      if (!isStart && offset["left"] > 300 && offset["top"] > 200 && offset["top"] < viewerHeight && offset["left"] < viewerWidth-300)
+        return;
+
       var scale = zoomListener.scale();
       var x = -source.y0;
       if (isStart != undefined) {
@@ -1890,6 +1899,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       var y = -source.x0 - 200;
       x = x * scale + viewerWidth / 2;
       y = y * scale + viewerHeight / 2;
+
       d3.select('g').transition()
         .duration(duration)
         .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
