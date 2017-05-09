@@ -60,7 +60,7 @@ exports.read = function(req, res) {
   console.log('---------------------====');
   console.log(util.inspect(req.params));
   console.log(util.inspect(req.body));
-  var taskList = global._bots['athena'].tasks;
+  var taskList = global._bots[req.params.botNameId].tasks;
   var task = taskList[req.params.name];
   res.jsonp(task);
   // Task.findOne({name: req.params.name}).exec(function (err, result) {
