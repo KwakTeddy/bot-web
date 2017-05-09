@@ -1,0 +1,83 @@
+<header class="page-header">
+  <h2>대화 실패 유지보수</h2>
+  <div class="right-wrapper pull-right">
+    <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+  </div>
+</header>
+
+
+<section class="panel">
+  <form name="vm.form.failedIntentForm" class="form-horizontal form-bordered" ng-submit="save(vm.form.entityForm.$valid)"
+        novalidate="novalidate">
+    <div class="panel-body">
+      <div class="form-group">
+        <label class="col-sm-2 control-label">인텐트 <span class="required" aria-required="true">*</span></label>
+        <div class="col-sm-9">
+          <!--<input id="entityFormName" type="text" name="name" ng-model="failedIntent" class="form-control valid"-->
+                 <!--placeholder="인텐트"-->
+                 <!--required=""-->
+                 <!--aria-required="true" aria-invalid="false"-->
+                 <!--ng-disabled = "true">-->
+
+
+          <div class="dropdown">
+            <button class="btn btn-default btn-block dropdown-toggle" type="button" data-toggle="dropdown">{{failedIntent.name}}
+              <span class="caret"></span></button>
+            <ul class="dropdown-menu btn-block">
+              <li ><a class="text-center" href="#" ng-click="intentChange(intent)" data-ng-repeat="intent in intents">{{intent.name}}</a></li>
+            </ul>
+          </div>
+        </div>
+        <div ng-show="vm.error" class="text-danger text-center">
+          <strong ng-bind="vm.error"></strong>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">대화 목록 <span class="required" aria-required="true">*</span></label>
+        <div class="col-sm-10">
+          <table class="table table-bordered table-hover mb-none">
+            <thead>
+            <tr>
+              <!--<th class="text-center">봇아이디</th>-->
+              <th class="text-center col-md-9">내용</th>
+              <!--<th class="text-center">단어</th>-->
+              <!--<th class="text-center">작성자</th>-->
+              <!--<th class="text-center">수정일</th>-->
+              <!--<th class="text-center">등록일</th>-->
+              <th class="text-center">인텐트 내용 추가</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="dialog in failedIntentDialog">
+              <!--<td class="text-center">{{entity.bot.id}}</td>-->
+              <td class="text-center">{{dialog.userDialog.dialog}}</td>
+              <!--<td class="text-center"><a ui-sref="entitys.edit({entityId: entity._id})">{{entity.name}}</a></td>-->
+              <!--<td class="text-center">{{entity.words}}</td>-->
+              <!--<td class="text-center">{{entity.user ? entity.user.displayName : '장세영'}}</td>-->
+              <!--<td class="text-center">{{entity.updated | date: 'yyyy-MM-dd HH:mm:ss'}}</td>-->
+              <!--<td class="text-center">{{entity.created | date: 'yyyy-MM-dd HH:mm:ss'}}</td>-->
+              <td class="text-center">
+                <input type="checkbox" data-ng-model="dialog.clear">
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+    <footer class="panel-footer">
+      <div class="row">
+        <div class="col-sm-12 text-center" >
+          <!--<button class="btn btn-primary">Submit</button>-->
+          <button type="submit" class="btn btn-primary pull-right">
+            <i class="glyphicon glyphicon-edit"></i> 추가
+          </button>
+
+          <!--<button type="button" class="btn btn-danger" ui-sref="entitys.list">취소</button>-->
+        </div>
+      </div>
+    </footer>
+  </form>
+</section>

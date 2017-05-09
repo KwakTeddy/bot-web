@@ -19,7 +19,11 @@
     vm.form = {};
     vm.remove = remove;
     vm.save = save;
-    console.log(vm.intent);
+    if (!vm.intent._id){
+      angular.element('#intentFormName').focus();
+    }else {
+      angular.element('#intentContentForm').focus();
+    }
 
     // Remove existing Custom action
     function remove() {
@@ -70,7 +74,7 @@
 
     vm.contentSave = function(isValid){
       console.log(isValid);
-      if (!isValid) {
+      if (!isValid  || !vm.intent._id) {
         $scope.$broadcast('show-errors-check-validity', 'vm.form.intentForm');
         return false;
       }

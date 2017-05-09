@@ -79,3 +79,15 @@ angular.module('analytics').factory('DialogChildren', ['$resource',
     }, {});
   }
 ]);
+angular.module('analytics').factory('DialogFailureMaintenanceService', ['$resource',
+  function ($resource) {
+    return $resource('/api/dialog-failure-maintenance/:botId/:intentId', {
+      botId: '@botId',
+      intentId: '@intentId'
+    }, {
+      update: {
+        method: 'PUT'
+      }
+    });
+  }
+]);

@@ -59,6 +59,24 @@ angular.module('analytics').config(['$stateProvider',
         controller: 'ManageBatchController',
         controllerAs: 'vm'
       });
+      })
+      .state('analytics.dialog-failure-maintenance', {
+        url: '/dialog-failure-maintenance',
+        abstract: true,
+        template: '<ui-view/>',
+      })
+      .state('analytics.dialog-failure-maintenance.list', {
+        url: '',
+        templateUrl: 'modules/analytics/client/views/list-dialog-failure-maintenance.client.view.html',
+        controller: 'AnalyticsListController',
+        controllerAs: 'vm'
+      })
+      .state('analytics.dialog-failure-maintenance.edit', {
+        url: '/:intentId/edit',
+        templateUrl: 'modules/analytics/client/views/form-dialog-failure-maintenance.client.view.html',
+        controller: 'AnalyticsIntentController',
+        controllerAs: 'vm'
+      })
   }
 ]);
 

@@ -53,6 +53,9 @@ var UserDialogSchema = new Schema({
   created: {
     type: Date,
     default: Date.now
+  },
+  clear: {
+    type: Boolean
   }
 });
 

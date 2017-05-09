@@ -1,12 +1,15 @@
 'use strict';
 
 // Analytics controller
-angular.module('analytics').controller('AnalyticsListController', ['$scope', '$rootScope', '$stateParams', '$location', '$window', 'Authentication', 'AnalyticsService', 'DialogUsageService', 'DialogSuccessService', 'SessionSuccessService', 'DialogFailureService', 'Dialogs','DialogChildren',
-  function ($scope, $rootScope, $stateParams, $location, $window, Authentication, AnalyticsService, DialogUsageService, DialogSuccessService, SessionSuccessService, DialogFailureService, Dialogs, DialogChildren) {
+angular.module('analytics').controller('AnalyticsListController', ['$scope', '$rootScope', '$stateParams', '$location', '$window', '$http', '$cookies', 'Authentication', 'AnalyticsService',
+  'DialogUsageService', 'DialogSuccessService', 'SessionSuccessService', 'DialogFailureService', 'Dialogs','DialogChildren', 'DialogFailureMaintenanceService',
+  function ($scope, $rootScope, $stateParams, $location, $window, $http, $cookies, Authentication, AnalyticsService, DialogUsageService, DialogSuccessService, SessionSuccessService,
+            DialogFailureService, Dialogs, DialogChildren, DialogFailureMaintenanceService) {
     $scope.authentication = Authentication;
     $scope.kind = "all";
     $scope.year = new Date().getFullYear();
     $scope.ym = new Date();
+    $scope.failedIntent = [];
 
     // Find a list of UserCount
     $scope.find = function () {
@@ -347,5 +350,18 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
       }).apply(this, [jQuery]);
     };
 
+
+
+    $scope.find_dialog_failure_maintenance = function () {
+      $http.get('/api/intent/analyzeFailIntent/'+ $cookies.get('default_bot')).then(function (data) {
+        DialogFailureMaintenanceService.query({botId: $cookies.get('default_bot')}, function (result) {
+          $scope.failedIntent = result;
+        }, function (err) {
+          console.log(err);
+        })
+      }, function (err) {
+        console.log(err)
+      })
+    }
   }
 ]);

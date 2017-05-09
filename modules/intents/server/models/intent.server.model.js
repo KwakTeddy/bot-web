@@ -112,6 +112,9 @@ var BotIntentFailSchema = new Schema({
   userDialog: {
     type: Schema.ObjectId,
     ref: 'UserDialog'
+  },
+  clear: {
+    type: Boolean
   }
 });
 

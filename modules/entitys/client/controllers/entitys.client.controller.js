@@ -19,6 +19,11 @@
     vm.form = {};
     vm.remove = remove;
     vm.save = save;
+    if (!vm.entity._id){
+      angular.element('#entityFormName').focus();
+    }else {
+      angular.element('#entityContentForm').focus();
+    }
 
     // Remove existing Custom action
     function remove() {
@@ -66,7 +71,8 @@
     vm.contentSave = function(isValid){
       console.log($rootScope);
       console.log(isValid);
-      if (!isValid) {
+      if (!isValid || !vm.entity._id) {
+        console.log('done')
         $scope.$broadcast('show-errors-check-validity', 'vm.form.entityForm');
         return false;
       }

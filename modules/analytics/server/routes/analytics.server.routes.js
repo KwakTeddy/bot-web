@@ -48,5 +48,14 @@ module.exports = function(app) {
   app.route('/api/dialogchildren/:bId/:dialogId').all(analyticsPolicy.isAllowed)
     .get(analytics.dialogChildren);
 
-  app.route('/api/intent/analyzeFailIntent/:bId').get(intent.analyzeIntentFailReq);
+  app.route('/api/intent/analyzeFailIntent/:bId')
+    .get(intent.analyzeIntentFailReq);
+
+  app.route('/api/dialog-failure-maintenance/:botNameId')
+    .get(analytics.dialogFailureMaintenanceList);
+
+  app.route('/api/dialog-failure-maintenance/:botNameId/:intentId')
+    .get(analytics.dialogFailureMaintenance)
+    .put(analytics.dialogFailureMaintenanceUpdate);
+
 };

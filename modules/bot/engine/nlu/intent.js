@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Intent = mongoose.model('Intent');
 var IntentContent = mongoose.model('IntentContent');
+var BotIntentFail = mongoose.model('BotIntentFail');
 var path = require('path');
 var dialog = require(path.resolve('modules/bot/action/common/dialog.js'));
 var mongoModule = require(path.resolve('modules/bot/action/common/mongo'));
@@ -185,9 +186,6 @@ function loadIntentTopics(bot, callback) {
 }
 
 exports.loadIntentTopics = loadIntentTopics;
-
-
-var BotIntentFail = mongoose.model('BotIntentFail');
 
 function analyzeIntentFailReq(req, res) {
   analyzeIntentFail(req.params.bId, function() {
