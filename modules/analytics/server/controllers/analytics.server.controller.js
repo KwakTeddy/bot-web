@@ -14,7 +14,8 @@ var path = require('path'),
   FactLink = mongoose.model('FactLink'),
   botLib = require(path.resolve('config/lib/bot')),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
-  _ = require('lodash');
+  _ = require('lodash'),
+  utils = require(path.resolve('modules/bot/action/common/utils'));
 
 var async = require('async');
 var BotFile = mongoose.model('BotFile');
@@ -214,16 +215,17 @@ function _dialogFailureList(botId, kind, arg, callback) {
   cond.dialog = {$ne: null, $nin: [":reset user", ":build " + botId + " reset"]};
   cond.preDialogId = {$ne: 0};
   cond.botId = botId;
+  cond.clear = {$ne: true};
 
   // console.log(JSON.stringify(cond));
 
   UserDialog.aggregate(
     [
       {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" },
-        inOut: '$inOut', dialog: '$dialog', fail:'$fail', preDialogId:'$preDialogId', preDialogName:'$preDialogName', botId:'$botId'}},
+        inOut: '$inOut', dialog: '$dialog', fail:'$fail', preDialogId:'$preDialogId', preDialogName:'$preDialogName', botId:'$botId', clear:'$clear'}},
       {$match: cond},
       {$match:{ preDialogId: { $exists:true, $ne: null } } },
-      {$group: {_id: {_id: '$_id', dialog:'$dialog', preDialogId: '$preDialogId'}, count: {$sum: 1}}},
+      {$group: {_id: {dialog:'$dialog', preDialogId: '$preDialogId'}, count: {$sum: 1}}},
       {$sort: {count: -1}},
       {$limit: 300}
     ]
@@ -233,17 +235,17 @@ function _dialogFailureList(botId, kind, arg, callback) {
 }
 
 exports._dialogFailureList = _dialogFailureList;
+var dialogs_data;
 
 var searchDialog = function(dialogs, dialogId, action, res, data) {
-  dialogs.forEach(function(obj) {
-    if (obj.id == dialogId) {
-      action(obj, res, data);
-      return;
+  for(var i = 0; i < dialogs.length; i++){
+    if (dialogs[i].id == dialogId){
+      return action(dialogs[i], res, data);
+    }else if (dialogs[i].children) {
+      searchDialog(dialogs[i].children, dialogId, action, res, data);
     }
-    else if (obj.children) {
-      searchDialog(obj.children, dialogId, action, res, data);
-    }
-  });
+  }
+  res.end();
 };
 
 var findOne = function(o, res, data) {
@@ -258,20 +260,53 @@ var findOne = function(o, res, data) {
 
 var findChildren = function(object, res, data) {
   var dialogChildren = [];
+  if (object.children){
+    object.children.forEach(function(obj) {
+      var dialog = {};
+      dialog.dialogId = obj.id;
+      dialog.name = obj.name != undefined ? obj.name : "dialog"+obj.id;
+      dialog.outputs = obj.output;
+      if (Array.isArray(obj.input)){
+        for(var i = 0; i < obj.input.length; i++){
+          if (obj.input[i].text){
+            obj.input[i] = obj.input[i].text
+          }
+        }
+      }else if(typeof obj.input == 'Object'){
+        obj.input = obj.input.text
+      }
 
-  object.children.forEach(function(obj) {
-    var dialog = {};
-    dialog.dialogId = obj.id;
-    dialog.name = obj.name != undefined ? obj.name : "dialog"+obj.id;
-    dialog.inputs = obj.input;
-    dialog.outputs = obj.output;
-    dialogChildren.push(dialog);
-  });
+      dialog.inputs = obj.input;
 
-  console.log(JSON.stringify(dialogChildren));
-  res.jsonp(dialogChildren);
+      dialogChildren.push(dialog);
+    });
+
+    res.jsonp(dialogChildren);
+  }else {
+    dialogs_data.forEach(function(obj) {
+      var dialog = {};
+      dialog.dialogId = obj.id;
+      dialog.name = obj.name != undefined ? obj.name : "dialog"+obj.id;
+      dialog.outputs = obj.output;
+      if (Array.isArray(obj.input)){
+        for(var i = 0; i < obj.input.length; i++){
+          if (obj.input[i].text){
+            obj.input[i] = obj.input[i].text
+          }
+        }
+      }else if(typeof obj.input == 'Object'){
+        obj.input = obj.input.text
+      }
+      dialog.inputs = obj.input;
+      dialogChildren.push(dialog);
+    });
+    res.jsonp(dialogChildren);
+  }
 };
 
+var dialogId;
+var originalDialog;
+var targetPreDialog;
 var save = function(o, res, data) {
   console.log(JSON.stringify(data));
 
@@ -294,7 +329,40 @@ var save = function(o, res, data) {
 
     data.inputs[data.inputs.length - 1] = _in;
 
-    o.input = data.inputs;
+    if (Array.isArray(data.inputs)){
+      for(var i = 0; i < data.inputs.length; i++){
+        if (data.inputs[i].text){
+          data.inputs[i] = data.inputs[i].text
+        }
+      }
+    }else if(typeof data.inputs == 'Object'){
+      data.inputs = data.inputs.text
+    }
+
+    for(var i = 0; i < o.input.length; i++){
+      o.input[i]['text'] = data.inputs[i]
+    }
+    for(var j = o.input.length; j < data.inputs.length;j++){
+      o.input.push({'text': data.inputs[j]});
+    }
+
+    for(var i = 0; i < o.output.length; i++){
+      o.output[i]['output'] = data.outputs[i].output
+    }
+    for(var j = o.output.length; j < data.outputs.length;j++){
+      o.output.push({'output': data.outputs[j].output});
+    }
+
+    var userDialogIds = [];
+
+    UserDialog.update({preDialogId : targetPreDialog, dialog : originalDialog, fail: true, inOut: true}, {clear: true}, {multi: true}, function (err, result) {
+      if(err){
+        console.log(err)
+      }else {
+        console.log(result)
+        res.json(result)
+      }
+    });
   });
 
 };
@@ -302,17 +370,18 @@ var save = function(o, res, data) {
 exports.dialog = function (req, res) {
   var botId = req.params.bId;
   var dialogId = req.params.dialogId;
-  var dialogs_data = global._bots[botId].dialogs;
+  dialogs_data = utils.clone(global._bots[botId].dialogs);
   var data = {};
 
   console.log("dialog:" + botId+","+dialogId);
   searchDialog(dialogs_data, dialogId, findOne, res, data);
 };
 
+
 exports.dialogChildren = function (req, res) {
   var botId = req.params.bId;
   var dialogId = req.params.dialogId;
-  var dialogs_data = global._bots[botId].dialogs;
+  dialogs_data = utils.clone(global._bots[botId].dialogs);
   var data = {};
 
   console.log("dialogChildren: " + botId+","+dialogId);
@@ -321,9 +390,11 @@ exports.dialogChildren = function (req, res) {
 
 exports.save_dialog = function(req, res) {
   var botId = req.body.botId;
-  var dialogId = req.body.dialogId;
+  dialogId = req.body.dialogId;
+  originalDialog = req.body.originalDialog;
+  targetPreDialog = req.body.targetPreDialog;
   var dialog = {inputs: req.body.inputs, outputs: req.body.outputs};
-  var dialogs_data = global._bots[botId].dialogs;
+  dialogs_data = global._bots[botId].dialogs;
 
   console.log("save: " + botId+","+dialogId);
   searchDialog(dialogs_data, dialogId, save, res, dialog);
