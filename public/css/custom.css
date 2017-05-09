@@ -502,3 +502,10 @@ body {
 .page-header h2 {
     border-bottom-color: #CCCCCC;;
 }
+
+#dt_filter > label {float: left;}
+
+#dt_wrapper > .toolbar {float: right; margin-bottom: 10px;}
+
+#dt_wrapper > #dt_paginate {float: none; text-align: center;}
+
