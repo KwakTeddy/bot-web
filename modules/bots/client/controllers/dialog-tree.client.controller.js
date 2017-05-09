@@ -925,7 +925,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       $scope.dialog.input = initInput(dialog.input);
       if (dialog.task && dialog.task.name)
         $scope.dialog.task = dialog.task;
-      else
+      else if (dialog.task)
         $scope.dialog.task = {name: dialog.task};
 
       $scope.dialog.output = initOutput(dialog.output);
@@ -965,7 +965,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       selectedNode.output = restoreOutput($scope.dialog.output);
 
       selectedSVG.remove();
+      selectedSVG = null;
+
       update(selectedNode);
+      updateSelected(selectedNode);
       //Dialogs.update(dialog);
     };
 
@@ -984,6 +987,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         delete node.image_text;
         delete node.buttons;
         delete node.depth;
+
+        if (node.task) {
+          delete node.task.type;
+        }
 
         if (node.children)
           node.children.forEach(clear);
@@ -1212,7 +1219,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     $resource('/api/dialogs/:bot_id/:file_id', {}).get({bot_id: vm.bot_id, file_id: vm.file_id}, function(res) {
       vm.botId = res.botId;
       vm.fileName = res.fileName;
-      vm.tasks = res.tasks;
+      vm.tasks = res.tasks.map(function(t) { return {name:t, type:'default'}});
       vm.intents = res.intents.map(function(i) { return i.name; });
       vm.types = res.types.map(function(t) { return t.name} );
       vm.type_dic = res.type_dic;
@@ -1220,6 +1227,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       OpenTasksService.query().$promise.then(function(result) {
         vm.commonTasks = result;
+        vm.commonTasks = vm.commonTasks.map(function(t) { return {name:t.name, type:'common'}});
+        vm.tasks = vm.tasks.concat(vm.commonTasks);
       });
 
       //console.log(JSON.stringify(dialogs));
@@ -1774,7 +1783,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         }, 1300);
       }
 
-      if(selectedNode) {
+      if(selectedNode && selectedSVG != null) {
         // draw selector
         d3.selectAll(".selectedRect").remove();
         d3.selectAll(".icon").remove();

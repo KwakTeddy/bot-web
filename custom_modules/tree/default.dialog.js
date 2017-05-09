@@ -28,8 +28,10 @@ var dialogs = [
 			}
 		],
 		"name": "dialog_default0",
-		"task": "lglist",
 		"_children": null,
+		"task": {
+			"name": "lgtest"
+		},
 		"children": [
 			{
 				"name": "dialog_default8",
@@ -84,7 +86,6 @@ var dialogs = [
 						"if": "true"
 					}
 				],
-				"task": "lglist",
 				"_children": null,
 				"children": [
 					{
@@ -116,8 +117,17 @@ var dialogs = [
 								"name": "dialog_default12",
 								"id": "default12",
 								"filename": "default",
-								"input": [],
-								"output": []
+								"input": [
+									{
+										"text": "ㄴㅇㄹㄴㅇㄹ"
+									}
+								],
+								"output": [
+									{}
+								],
+								"task": {
+									"name": "lgtest3"
+								}
 							},
 							{
 								"name": "dialog_default13",

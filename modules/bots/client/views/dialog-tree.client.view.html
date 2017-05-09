@@ -468,44 +468,30 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Task</label>
                                     <div class="col-sm-9 ">
-                                        <div class="dropdown mb-xs ">
-                                            <!--<button ng-disabled="vm.tasks.length == 0"-->
-                                                    <!--class="btn btn-default btn-block dropdown-toggle"-->
-                                                    <!--ng-model="dialog.task" type="button"-->
-                                                    <!--data-toggle="dropdown">{{dialog.task.name}}-->
-                                                <!--<span class="caret"></span></button>-->
-                                            <!--<ul class="dropdown-menu btn-block">-->
-                                                <!--<li class="text-center"><a href="#" ng-click="dialog.task = undefined">선택 안함</a></li>-->
-                                                <!--<li class="divider">|</li>-->
-                                                <!--<li class="text-center" ng-repeat = "t in vm.tasks">-->
-                                                    <!--<a href="#" ng-click="dialog.task = {name:t}">{{t}}</a>-->
-                                                    <!--<i ng-click="openTask(t, false)" class="btn fa fa-3 fa-edit pull-right" style="margin-top:-25px"></i>-->
-                                                <!--</li>-->
-                                                <!--<li class="divider">|</li>-->
-                                                <!--&lt;!&ndash;<li class="text-center" readonly>공개 Task</li>&ndash;&gt;-->
-                                                <!--<li class="text-center" ng-repeat = "t in vm.commonTasks">-->
-                                                    <!--<a href="#" ng-click="dialog.task = {name:t.name}">{{t.name}}</a>-->
-                                                    <!--<i ng-click="openTask(t, true)" class="btn fa fa-3 fa-list pull-right" style="margin-top:-25px"></i>-->
-                                                <!--</li>-->
-                                            <!--</ul>-->
-                                            <ui-select ng-model="dialog.task.name"
-                                                       theme="bootstrap"
-                                                       ng-disabled="vm.tasks.length == 0"
-                                                       reset-search-input="true"
-                                                       title="Task를 선택하세요">
-                                            <ui-select-match placeholder="Task 이름을 입력해주세요">{{$select.selected}}</ui-select-match>
-                                                <ui-select-choices repeat="t in vm.tasks | filter: $select.search track by $index"
-                                                                   refresh-delay="0">
-                                                    <div ng-bind-html="t | highlight: $select.search"></div>
-                                                    <i ng-click="openTask(t, false)" class="btn fa fa-3 fa-edit pull-right" style="color:forestgreen;margin-top:-25px"></i>
-                                                </ui-select-choices>
-                                            </ui-select>
+                                        <div class="input-group mb-xs">
+                                            <div>
+                                                <ui-select ng-model="dialog.task"
+                                                           theme="bootstrap"
+                                                           ng-disabled="vm.tasks.length == 0"
+                                                           reset-search-input="true"
+                                                           title="Task를 선택하세요">
+                                                    <ui-select-match placeholder="Task 이름을 입력해주세요">{{$select.selected.name}}</ui-select-match>
+                                                    <ui-select-choices repeat="t in vm.tasks | filter: $select.search track by $index"
+                                                                       refresh-delay="0">
+                                                        <div ng-bind-html="t.name | highlight: $select.search"></div>
+                                                        <i ng-show="t.type === 'default'"
+                                                           ng-click="openTask(t.name, false)" class="btn fa fa-3 fa-edit pull-right" style="color:forestgreen;margin-top:-25px"></i>
+                                                        <i ng-show="t.type === 'common'"
+                                                           ng-click="openTask(t, true)" class="btn fa fa-3 fa-list pull-right" style="margin-top:-25px"></i>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default">
+                                                    <i ng-click="dialog.task = undefined" class="fa fa-remove" style="color:red"></i>
+                                                </button>
+                                            </span>
                                         </div>
-                                        <!--<span class="input-group-btn">-->
-                                        <!--<button class="btn btn-primary"-->
-                                        <!--ng-click="addTask()" type="button">추가-->
-                                        <!--</button>-->
-                                        <!--</span>-->
                                         <button type="button" ng-click="addTask()" class="mb-xs mr-xs btn btn-sm btn-info"><i class="glyphicon glyphicon-plus"></i> Task 추가</button>
                                     </div>
                                 </div>
@@ -549,21 +535,21 @@
                                                     </ui-select>
                                                 </div>
                                                 <div class="text-left" ng-show="vm.inputModeO && getInputType(vm.curO.type) == 'image'" >
-                                      <span class="btn btn-default btn-file" style="padding-bottom:4px;padding-top:4px">
-                                          <input type="file" nv-file-select uploader="imageUploader" style="width:100%;">
-                                          <i ng-cloak
-                                             ng-show="vm.curO.str != ''"
-                                             class="fa fa-check-square pull-right"
-                                             style="margin-top: -22px;margin-right: -8px;font-size:20px" aria-hidden="true">
-                                          </i>
-                                      </span>
+                                                  <span class="btn btn-default btn-file" style="padding-bottom:4px;padding-top:4px">
+                                                      <input type="file" nv-file-select uploader="imageUploader" style="width:100%;">
+                                                      <i ng-cloak
+                                                         ng-show="vm.curO.str != ''"
+                                                         class="fa fa-check-square pull-right"
+                                                         style="margin-top: -22px;margin-right: -8px;font-size:20px" aria-hidden="true">
+                                                      </i>
+                                                  </span>
                                                 </div>
                                                 <span class="input-group-btn">
-                                        <button class="btn btn-primary"
-                                                ng-disabled="vm.curO.str === ''"
-                                                ng-click="saveO()" type="button">저장</button>
-                                        <button class="btn btn-danger" ng-click="resetO()" type="button">취소</button>
-                                    </span>
+                                                    <button class="btn btn-primary"
+                                                            ng-disabled="vm.curO.str === ''"
+                                                            ng-click="saveO()" type="button">저장</button>
+                                                    <button class="btn btn-danger" ng-click="resetO()" type="button">취소</button>
+                                                </span>
                                             </div>
                                             <div ng-show="!vm.inputModeO || vm.curOutput != output">
                                                 <div class="form-control col-md-11 mb-xs" style="height:auto;">
