@@ -21,9 +21,9 @@
 
       <div style="margin-bottom: 15px;">
         <input type="text" id="question" name="question" ng-model="vm.dialog.inputRaw" class="form-control valid" placeholder="질문"
-               aria-invalid="false" style="width: 42%;float: left;margin-right: 5px">
+               aria-invalid="false" style="width: 43%;float: left;margin-right: 5px">
         <input type="text" id="answer" name="answer" ng-model="vm.dialog.output" class="form-control valid" placeholder="답변"
-               aria-invalid="false"  style="width: 42%;float: left;margin-right: 5px">
+               aria-invalid="false"  style="width: 43%;float: left;margin-right: 5px">
         <button class="btn btn-primary" ng-click="vm.createDialog();">추가</button>
       </div>
 
@@ -37,8 +37,8 @@
         <input type="text" ng-model="dialog.output" class="form-control valid" placeholder="답변"
                aria-invalid="false" ng-blur="vm.updateDialog(dialog)"  style="width: 43%;float: left;margin-right: 5px">
         <!--<button class="btn btn-default" ng-click="vm.updateDialog(dialog)">수정</button>-->
-        <button class="btn btn-default" ng-click="vm.createDepthDialog(dialog, $index)" >Dep</button>
-        <button class="btn btn-default" ng-click="vm.removeDialog(dialog)" >삭</button>
+        <button class="btn btn-default" ng-click="vm.createDepthDialog(dialog, $index)" ><i class="glyphicon glyphicon-sort-by-attributes"></i></button>
+        <button class="btn btn-default" ng-click="vm.removeDialog(dialog)" ><i class="glyphicon glyphicon-trash"></i></button>
       </div>
 
       <!--<div class="form-group">-->
