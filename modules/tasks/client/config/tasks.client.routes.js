@@ -76,34 +76,36 @@
       });
   }
 
-  getOpenTasks.$inject = ['OpenTasksService'];
-  function getOpenTasks(OpenTasksService) {
-    return OpenTasksService.query().$promise;
+  getOpenTasks.$inject = ['OpenTasksService', '$cookies'];
+  function getOpenTasks(OpenTasksService, $cookies) {
+    return OpenTasksService.query({botId: $cookies.get('default_bot')}).$promise;
   }
 
-  getOpenTask.$inject = ['$stateParams', 'OpenTasksService'];
-  function getOpenTask($stateParams, OpenTasksService) {
+  getOpenTask.$inject = ['$stateParams', 'OpenTasksService', '$cookies'];
+  function getOpenTask($stateParams, OpenTasksService, $cookies) {
     console.log($stateParams);
     return OpenTasksService.get({
+      botId: $cookies.get('default_bot'),
       taskId: $stateParams.taskId
     }).$promise;
   }
 
-  getTasks.$inject = ['TasksService'];
-  function getTasks(TasksService) {
-    return TasksService.query().$promise;
+  getTasks.$inject = ['TasksService', '$cookies'];
+  function getTasks(TasksService, $cookies) {
+    return TasksService.query({botId: $cookies.get('default_bot')}).$promise;
   }
 
-  getTask.$inject = ['$stateParams', 'TasksService'];
-  function getTask($stateParams, TasksService) {
+  getTask.$inject = ['$stateParams', 'TasksService', '$cookies'];
+  function getTask($stateParams, TasksService, $cookies) {
     console.log($stateParams.taskId);
     return TasksService.get({
+      botId: $cookies.get('default_bot'),
       taskId: $stateParams.taskId
     }).$promise;
   }
 
-  newTask.$inject = ['TasksService'];
-  function newTask(TasksService) {
+  newTask.$inject = ['TasksService', '$cookies'];
+  function newTask(TasksService, $cookies) {
     return new TasksService();
   }
 })();

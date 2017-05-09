@@ -9,7 +9,8 @@
 
   TasksService.$inject = ['$resource'];
   function TasksService($resource) {
-    return $resource('api/tasks/:taskId', {
+    return $resource('api/tasks/:botId/:taskId', {
+      botId: '@botId',
       taskId: '@name'
     }, {
       update: {
@@ -20,7 +21,8 @@
 
   OpenTasksService.$inject = ['$resource'];
   function OpenTasksService($resource) {
-    return $resource('api/openTasks/:taskId', {
+    return $resource('api/openTasks/:botId/:taskId', {
+      botId: '@botId',
       taskId: '@name'
     }, {
       update: {

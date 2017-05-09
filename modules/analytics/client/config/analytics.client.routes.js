@@ -58,12 +58,11 @@ angular.module('analytics').config(['$stateProvider',
         templateUrl: 'modules/analytics/client/views/manage-batch.client.view.html',
         controller: 'ManageBatchController',
         controllerAs: 'vm'
-      });
       })
       .state('analytics.dialog-failure-maintenance', {
         url: '/dialog-failure-maintenance',
         abstract: true,
-        template: '<ui-view/>',
+        template: '<ui-view/>'
       })
       .state('analytics.dialog-failure-maintenance.list', {
         url: '',

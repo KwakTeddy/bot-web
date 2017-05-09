@@ -162,8 +162,9 @@ exports.delete = function(req, res) {
  * List of Custom actions
  */
 exports.list = function(req, res) {
+  console.log(util.inspect(req.bot));
 
-  var taskList = global._bots['athena'].tasks;
+  var taskList = global._bots[req.bot.id].tasks;
   taskList = [taskList];
   res.jsonp(taskList);
 };

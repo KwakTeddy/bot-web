@@ -8,23 +8,23 @@ var tasksPolicy = require('../policies/tasks.server.policy'),
 
 module.exports = function(app) {
   // Custom actions Routes
-  app.route('/api/tasks')//.all(tasksPolicy.isAllowed)
+  app.route('/api/tasks/:botNameId')//.all(tasksPolicy.isAllowed)
     .get(tasks.list)
     .post(tasks.create)
     .put(tasks.update);
 
-  app.route('/api/tasks/:name')//.all(tasksPolicy.isAllowed)
+  app.route('/api/tasks/:botNameId/:name')//.all(tasksPolicy.isAllowed)
     .get(tasks.read)
     .put(tasks.update)
     .delete(tasks.delete);
 
   // Custom actions Routes
-  app.route('/api/openTasks')//.all(tasksPolicy.isAllowed)
+  app.route('/api/openTasks/:botNameId')//.all(tasksPolicy.isAllowed)
     .get(tasks.openList)
     .post(tasks.contentCreate)
     .delete(tasks.contentDelete);
 
-  app.route('/api/openTasks/:name')//.all(tasksPolicy.isAllowed)
+  app.route('/api/openTasks/:botNameId/:name')//.all(tasksPolicy.isAllowed)
     .get(tasks.openRead)
     .put(tasks.update)
     .delete(tasks.contentDelete);
