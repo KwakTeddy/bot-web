@@ -207,6 +207,8 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       addUserBubble(msg);
       emitMsg(msg);
 
+      $rootScope.$broadcast('sendmsg', {message: msg});
+
       if(useInput)  vm.msg = '';
 
       return false;
