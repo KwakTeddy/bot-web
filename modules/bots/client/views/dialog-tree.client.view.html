@@ -171,6 +171,24 @@
         /*opacity: 0.9;*/
     }
 
+    .well-sm {
+        padding: 3px;
+        border: 0px;
+        background-color: transparent;
+        box-shadow: inset 0 0px 0px rgba(0, 0, 0, .05);
+    }
+
+    .well-sm .form-group {
+        border-bottom: 0px;
+    }
+
+    #editor_holder h3 {
+        font-size: 18px;
+    }
+
+    .well-sm h3{
+        font-size: 18px;
+    }
 </style>
 <body>
 
@@ -344,20 +362,10 @@
                         <header class="panel-heading">
                             <h2 class="panel-title">Task 정보</h2>
                         </header>
-                        <form name="dialogTaskForm" class="form-horizontal" novalidate="novalidate">
+                        <form name="dialogTaskForm" novalidate="novalidate" >
                             <div class="panel-body">
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">URL</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control mb-xs" ng-model="dialog.task.url" placeholder="url을 입력해주세요">
-                                    </div>
-                                    <label class="col-sm-2 control-label">URL</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control mb-xs" ng-model="dialog.task.url" placeholder="url을 입력해주세요">
-                                    </div>
-                                    <label class="col-sm-2 control-label">URL</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control mb-xs" ng-model="dialog.task.url" placeholder="url을 입력해주세요">
+                                <div class="form-group" ng-show="dialog.task.paramSchema != undefined">
+                                    <div class="col-sm-12" id='editor_holder'>
                                     </div>
                                 </div>
                                 <hr>

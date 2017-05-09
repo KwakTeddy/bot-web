@@ -13,7 +13,6 @@ var dialogs = [
 		"output": [
 			{
 				"output": "어쩌라고",
-				"image": "menu.jpg",
 				"buttons": [
 					{
 						"name": "abc"
@@ -21,11 +20,14 @@ var dialogs = [
 					{
 						"name": "def"
 					}
-				]
+				],
+				"image": "menu.jpg"
 			}
 		],
 		"name": "dialog_default0",
-		"_children": null,
+		"task": {
+			"name": "lgtest3"
+		},
 		"children": [
 			{
 				"name": "dialog_default8",
@@ -80,34 +82,7 @@ var dialogs = [
 						"if": "true"
 					}
 				],
-				"_children": null,
 				"children": [
-					{
-						"name": "dialog_default4",
-						"id": "default4",
-						"filename": "default",
-						"input": [],
-						"output": [],
-						"task": {
-							"name": "lglist"
-						},
-						"_children": null
-					},
-					{
-						"name": "dialog_default5",
-						"id": "default5",
-						"filename": "default",
-						"input": [
-							{
-								"text": "베베"
-							}
-						],
-						"output": [
-							{
-								"output": "꺼져"
-							}
-						]
-					},
 					{
 						"name": "dialog_default6",
 						"id": "default6",

@@ -184,21 +184,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }, 100);
     };
 
-    $scope.openTask = function(task, isCommon) {
-      $scope.dialog.task = task;
-      vm.edit = 'task';
-      if (isCommon) {
-        $.magnificPopup.close();
-        $('.modal-with-task').click();
-      } else {
-        $.magnificPopup.close();
-        vm.fromTask = true;
-        vm.changeTab(vm.tabs[1]);
-
-        $scope.setPosition(task);
-      }
-    };
-
     $scope.closePopup = function() {
       $.magnificPopup.close();
     };
@@ -221,18 +206,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     $scope.closeEdit = function() {
       vm.edit = false;
       $.magnificPopup.close();
-    };
-
-    $scope.backToEdit = function(ok) {
-      vm.edit = 'dialog';
-      if (!ok) {
-        if ($scope.dialog.task && $scope.dialog.task.name)
-          $scope.dialog.task = {name:$scope.dialog.task.name};
-        else
-          $scope.dialog.task = undefined;
-      }
-      $.magnificPopup.close();
-      $('.modal-with-form').click();
     };
 
     var vm = this;
@@ -999,6 +972,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           delete node.task.type;
           delete node.task.paramSchema;
         }
+
+        if (node._children != null) {
+          node.children = node._children;
+          node._children = null;
+        }
+
+        delete node._children;
 
         if (node.children)
           node.children.forEach(clear);
@@ -2278,5 +2258,250 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         msg: msg
       });
     }
+
+    // for task template
+    //TODO: this should be a separte module
+    var types = {
+      "string": {"type":"string"},
+      "date" : {"type":"string", "format":"date"},
+      "datetime" : {"type":"string", "format":"datetime"},
+      "time" : {"type":"string", "format":"time", "options": {"grid_columns":3}},
+      "number" : {"type":"string", "format":"number"},
+      "image" : {
+        "type":"string",
+        "format":"image",
+        "readonly":"true",
+      },
+    };
+
+    var editor;
+
+    vm.parseSchema = function(dataSchema) {
+      var jsonSchema;
+      try {
+        jsonSchema = JSON.parse(dataSchema);
+      } catch(e) {
+        alert("invalid schema" + e.message);
+        return;
+      }
+
+      console.log(jsonSchema);
+
+      var schema = {};
+
+      Object.keys(jsonSchema).forEach(function(key) {
+        if (jsonSchema[key].hidden) return;
+        var type = jsonSchema[key].type.toLowerCase();
+        if (!types[type]) {
+          switch (type) {
+            case "enum":
+              schema[key] = {type: "string", options:{grid_columns:3}, enum: jsonSchema[key].data};
+              break;
+            case "list":
+              schema[key] = {
+                type: "array",
+                format: "table",
+                uniqueItems: true,
+                options: {grid_columns:12},
+                items: {
+                  type: "object",
+                  title: jsonSchema[key]['item_title'] ? jsonSchema[key]['item_title'] : "항목",
+                  /*format:"grid",*/
+                  "properties": vm.parseSchema(jsonSchema[key].schema)}
+              };
+              break;
+            default:
+              console.log("unknown type: " + type + "in template schema:" + jsonSchema);
+              break;
+          }
+        } else {
+          schema[key] = angular.copy(types[type]);
+        }
+        var keys = Object.keys(jsonSchema[key]);
+        for (var i=0; i < keys.length; ++i) {
+          if (keys[i] != 'type' && keys[i] != 'enum')
+            schema[key][keys[i]] = jsonSchema[key][keys[i]];
+          //TODO: move to template definition
+          if (key === 'address') {
+            schema[key]["options"] = {grid_columns: 12};
+            schema[key]["readonly"] = true;
+          }
+          if (key === 'startTime')
+            schema[key]["default"] = '09:00';
+          if (key === 'endTime')
+            schema[key]["default"] = '18:00';
+        }
+      });
+      return schema;
+    };
+
+    vm.handleEditor = function(paramSchema) {
+      console.log(paramSchema);
+
+      // init json editor
+      JSONEditor.defaults.options.theme = 'bootstrap3';
+      JSONEditor.defaults.options.iconlib= 'fontawesome4';
+      JSONEditor.defaults.options.required_by_default = 'true';
+      JSONEditor.defaults.options.disable_array_delete_all_rows = 'true';
+      JSONEditor.defaults.options.disable_array_delete_last_row = 'true';
+      JSONEditor.defaults.language = "kr";
+      JSONEditor.defaults.languages.kr = {
+        error_uniqueItems: "리스트에 중복된 항목이 있습니다",
+        button_add_row_title: "{{0}} 추가",
+      };
+      //JSONEditor.defaults.options.show_erros = 'change';
+
+      var custom_validator = function(schema, value, path) {
+        var errors = [];
+
+        if (path === "root.phone") {
+          var regExp = /^\d{2,3}-\d{3,4}-\d{4}$/;
+          if (!regExp.test(value))
+            errors.push({
+              path: path,
+              property: 'format',
+              message: "전화번호를 입력해주세요"
+            });
+          return errors;
+        }
+
+        if (path === "root.mobile") {
+          var regExp = /^\d{3}-\d{3,4}-\d{4}$/;
+          if (!regExp.test(value))
+            errors.push({
+              path: path,
+              property: 'format',
+              message: "휴대폰 번호를 입력해주세요"
+            });
+          return errors;
+        }
+
+        if (path === "root.address") {
+          if (value === "") {
+            errors.push({
+              path: path,
+              property: 'format',
+              message: schema.title + "를 입력해주세요"
+            });
+            return errors;
+          }
+        }
+
+        if (schema.format !== "image" && value === "") {
+          // Errors must be an object with `path`, `property`, and `message`
+          var msg;
+          switch (schema.format) {
+            case 'date': msg = "날짜를 입력해주세요"; break;
+            case 'time': msg = "시각을 입력해주세요"; break;
+            case "image": msg = "이미지 파일을 선택해주세요"; break;
+            default: msg = "내용을 입력해주세요"; break;
+          }
+          errors.push({
+            path: path,
+            property: 'format',
+            message: msg
+          });
+        }
+        return errors;
+      };
+
+      if (JSONEditor.defaults.custom_validators.length == 0) {
+        JSONEditor.defaults.custom_validators.push(custom_validator);
+      }
+
+      $scope.ierror = {};
+      $scope.isuccess = {};
+
+      var schema = {
+        type: "object",
+        title: "Task Parameter",
+        properties: {},
+        format: "grid",
+      };
+
+      schema.properties = vm.parseSchema(paramSchema);
+
+      console.log("schema="+ JSON.stringify(schema));
+
+      if (editor) {
+        editor.destroy();
+      }
+
+      editor = new JSONEditor(document.getElementById('editor_holder'), {
+        schema: schema,
+        disable_collapse: true,
+        disable_properties: true,
+        disable_edit_json: true,
+        disable_array_reorder: true,
+        grid_columns: 3,
+      });
+
+      $compile(document.getElementById('editor_holder'))($scope);
+      if ($scope.dialog.task) {
+        var temp = angular.copy($scope.dialog.task);
+        delete temp.name;
+        delete temp.paramSchema;
+        delete temp.type;
+        console.log("given input=" + JSON.stringify(temp));
+        editor.setValue(temp);
+      }
+
+      editor.on('change', function() {
+        console.log('editor.onchange -> $compile editor');
+        var inputList = document.getElementsByName("mine");
+        var compileList = [];
+        for (var idx=0; idx < inputList.length; ++idx) {
+          var input = inputList[idx];
+          if (input.getAttribute("compiled") && input.getAttribute("compiled") == "false") {
+            compileList.push(input);
+          }
+        }
+        $compile(compileList)($scope);
+        compileList.forEach(function(obj) {
+          obj.setAttribute("compiled", "true");
+        });
+
+        editor.options.show_errors = undefined;
+      });
+    };
+
+    $scope.openTask = function(task, isCommon) {
+      if (!$scope.dialog.task || $scope.dialog.task.name !== task.name)
+        $scope.dialog.task = task;
+      vm.edit = 'task';
+      if (isCommon) {
+        $.magnificPopup.close();
+        if (task.paramSchema != undefined)
+          vm.handleEditor(task.paramSchema);
+        $('.modal-with-task').click();
+      } else {
+        $.magnificPopup.close();
+        vm.fromTask = true;
+        vm.changeTab(vm.tabs[1]);
+
+        $scope.setPosition(task);
+      }
+    };
+
+    $scope.backToEdit = function(ok) {
+      vm.edit = 'dialog';
+      if (!ok) {
+        if ($scope.dialog.task && $scope.dialog.task.name)
+          $scope.dialog.task = {name:$scope.dialog.task.name};
+        else
+          $scope.dialog.task = undefined;
+      } else {
+        var temp = editor.getValue();
+        temp.name = $scope.dialog.task.name;
+        temp.type = $scope.dialog.task.type;
+        temp.paramSchema=  $scope.dialog.task.paramSchema;
+
+        $scope.dialog.task = temp;
+      }
+      $.magnificPopup.close();
+      $('.modal-with-form').click();
+    };
+
+
   }]
 );
