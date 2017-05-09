@@ -292,7 +292,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       $rootScope.$broadcast('getInitMsg');
 
       setTimeout(function() {
-        console.log('init: ' + vm.initMsg);
+        // console.log('init: ' + vm.initMsg);
         if($rootScope.initMsg != undefined && $rootScope.initMsg != null && $rootScope.initMsg != '') emitMsg($rootScope.initMsg);
       }, 200);
 

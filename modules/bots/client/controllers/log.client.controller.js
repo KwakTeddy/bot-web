@@ -47,7 +47,7 @@ function showLogPanel() {
   document.getElementById('log-button').className='log-button-hide';
   document.getElementById('log-include').className='show-log';
   document.getElementById('main').classList.add('content-body-show-log');
-  document.getElementById('content').classList.add('tree-content-show-log');
+  if(document.getElementById('content')) document.getElementById('content').classList.add('tree-content-show-log');
 
 }
 
@@ -55,5 +55,5 @@ function hideLogPanel() {
   document.getElementById('log-button').className = 'log-button';
   document.getElementById('log-include').className = 'hide-log';
   document.getElementById('main').classList.remove('content-body-show-log');
-  document.getElementById('content').classList.remove('tree-content-show-log');
+  if(document.getElementById('content')) document.getElementById('content').classList.remove('tree-content-show-log');
 }
