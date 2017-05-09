@@ -132,13 +132,21 @@
     }
 
     vm.openTaskFn = function () {
-      TasksService.save({task: vm.task}, function (response) {
-        $state.go('tasks.list', {listType: 'openTask'})
-      }, function (err) {
-        console.log(err);
-      })
+      if (vm.task._id) {
+        vm.task.$update({botId:$cookies.get('default_bot'), taskId: vm.task.name},function (result) {
+          console.log(result)
+          $state.go('tasks.list', {listType: 'openTask'})
+        }, function (err) {
+          console.log(err)
+        });
+      } else {
+        TasksService.save({task: vm.task, botId:$cookies.get('default_bot')}, function (response) {
+          $state.go('tasks.list', {listType: 'openTask'})
+        }, function (err) {
+          console.log(err);
+        })
+      }
+
     };
-
-
   }
 })();
