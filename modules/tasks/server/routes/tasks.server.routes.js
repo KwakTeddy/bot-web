@@ -10,8 +10,7 @@ module.exports = function(app) {
   // Custom actions Routes
   app.route('/api/tasks/:botNameId')//.all(tasksPolicy.isAllowed)
     .get(tasks.list)
-    .post(tasks.create)
-    .put(tasks.update);
+    .post(tasks.create);
 
   app.route('/api/tasks/:botNameId/:name')//.all(tasksPolicy.isAllowed)
     .get(tasks.read)

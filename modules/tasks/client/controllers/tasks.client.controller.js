@@ -6,9 +6,9 @@
     .module('tasks')
     .controller('TasksController', TasksController);
 
-  TasksController.$inject = ['$scope', '$state', 'Authentication', '$resource', 'TasksService', '$stateParams','openTaskResolve', 'taskResolve'];
+  TasksController.$inject = ['$scope', '$state', 'Authentication', '$resource', 'TasksService', '$stateParams','openTaskResolve', 'taskResolve', '$cookies'];
 
-  function TasksController($scope, $state, Authentication, $resource, TasksService, $stateParams, openTaskResolve, taskResolve) {
+  function TasksController($scope, $state, Authentication, $resource, TasksService, $stateParams, openTaskResolve, taskResolve, $cookies) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -47,9 +47,9 @@
       }
       // TODO: move create/update logic to service
       if (vm.task._id) {
-        vm.task.$update(successCallback, errorCallback);
+        vm.task.$update({botId:$cookies.get('default_bot')},successCallback, errorCallback);
       } else {
-        vm.task.$save({content: vm.taskContent},successCallback, errorCallback);
+        vm.task.$save({botId:$cookies.get('default_bot'),content: vm.taskContent},successCallback, errorCallback);
       }
 
       function successCallback(res) {
