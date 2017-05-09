@@ -1442,7 +1442,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         .attr("height", rectH)
         .attr("rx", 5)
         .attr("ry", 5)
-        .style('fill', '#DADAEB');
+        .style('fill', 'white');    //#DADAEB  //eee
       // .attr("stroke-width", 2)
       // .style("stroke", function (d) {
       //   return d._children ? "lightsteelblue" : "#fff";
@@ -1466,7 +1466,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         .attr("x2", rectW)
         .attr("y2", "18")
         // .attr("stroke-width", 1.2)
-        .style("stroke", function(d) { return d3.rgb("#7CA4C0").darker(); });
+        .style("stroke", function(d) { return d3.rgb("#d4d4d4").darker(); });   //7CA4C0
 
       nodeEnter.append("text")
         .attr("id", "input")
@@ -1480,12 +1480,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       nodeEnter.append("line")
         .style("pointer-events", "none")
         .attr("x1", 0)
-        .attr("y1", "2.7em")
+        .attr("y1", "2.8em")
         .attr("x2", rectW)
-        .attr("y2", "2.7em")
+        .attr("y2", "2.8em")
         .attr("stroke-width", 1)
-        .attr("stroke-dasharray", "0,2 1")
-        .attr("stroke", "gray");
+        // .attr("stroke-dasharray", "0,2 1")
+        .attr("stroke", "#d4d4d4");  //gray
 
       if(vm.smallDialog == false) {
         nodeEnter.append("text")
@@ -1510,8 +1510,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           .attr("x2", rectW)
           .attr("y2", "4.3em")
           .attr("stroke-width", 1)
-          .attr("stroke-dasharray", "0,2 1")
-          .attr("stroke", "gray");
+          // .attr("stroke-dasharray", "0,2 1")
+          .attr("stroke", "#d4d4d4");  //gray
       }
 
       nodeEnter.append("text")
@@ -1809,7 +1809,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           .attr("width", rectW)
           .attr("height", 25)
           .style("pointer-events", "none")
-          .style('fill', 'lightsteelblue')
+          .style('fill', '#70c8e2')    //lightsteelblue
           .style("opacity", 0.8)
           .attr("rx", 5)
           .attr("ry", 5);

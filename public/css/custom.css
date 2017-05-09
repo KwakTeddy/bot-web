@@ -498,3 +498,7 @@ body {
     font-size: 1.1em;
     padding: 10px 5px 0 5px;
 }
+
+.page-header h2 {
+    border-bottom-color: #CCCCCC;;
+}
