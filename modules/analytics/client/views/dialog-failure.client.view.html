@@ -54,7 +54,8 @@
         <td class="text-center">{{dialogUsage._id.dialog}}</td>
         <td class="text-center">{{dialogUsage.count}}</td>
         <td class="text-center">
-          <button class="modal-with-form2 btn btn-default btn-sm btn-block" ng-click="findChildren(dialogUsage._id.preDialogId, dialogUsage._id.dialog)">대화수정</button>
+          <button class="modal-with-form2 btn btn-default btn-sm" style="width:49%" ng-click="findChildren(dialogUsage._id.preDialogId, dialogUsage._id.dialog)">대화수정</button>
+          <button class="modal-with-form2 btn btn-default btn-sm" style="width:49%" ng-click="findChildren(dialogUsage._id.preDialogId, dialogUsage._id.dialog)">삭제</button>
         </td>
       </tr>
       </tbody>
@@ -74,9 +75,22 @@
           <div class="form-group">
             <label class="col-sm-3 control-label">다이얼로그 선택</label>
             <div class="col-sm-9">
-              <select name="kind" ng-model="selected" ng-options="d.name for d in dialogs">
-                <!--<option ng-repeat="d in dialogs" ng-selected="selected == d.idx" value="{{d.idx}}">{{d.name}}</option>-->
-              </select>
+              <!--<select name="kind" ng-model="selected" ng-options="d.name for d in dialogs">-->
+                <!--&lt;!&ndash;<option ng-repeat="d in dialogs" ng-selected="selected == d.idx" value="{{d.idx}}">{{d.name}}</option>&ndash;&gt;-->
+              <!--</select>-->
+
+              <ui-select ng-model="selected"
+                         theme="bootstrap"
+                         reset-search-input="true"
+                         title="Dialog를 선택하세요">
+                <ui-select-match placeholder="Dialog 이름을 입력해주세요">{{$select.selected.name}}</ui-select-match>
+                <ui-select-choices repeat="t in dialogs | filter: $select.search track by $index"
+                                   refresh-delay="0">
+                  <div ng-bind-html="t.name | highlight: $select.search"></div>
+                </ui-select-choices>
+              </ui-select>
+
+
             </div>
           </div>
           <div class="form-group">
@@ -92,7 +106,7 @@
             <label class="col-sm-3 control-label">답변 <span class="required" aria-required="true">*</span></label>
             <div class="col-sm-9">
               <div class="input-group input-group-icon" ng-repeat="output in selected.outputs">
-                <input type="text" id="output" name="output" ng-model="output.str" class="form-control valid mb-xs" placeholder="답변을 입력해주세요" required="" aria-required="true" aria-invalid="false">
+                <input type="text" id="output" name="output" ng-model="output.str.output" class="form-control valid mb-xs" placeholder="답변을 입력해주세요" required="" aria-required="true" aria-invalid="false">
               </div>
               <button type="button" ng-click="addOutput()" class="mb-xs mr-xs btn btn-sm btn-info"><i class="glyphicon glyphicon-plus"></i> 답변추가</button>
             </div>

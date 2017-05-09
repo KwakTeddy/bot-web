@@ -213,13 +213,15 @@ function conceptRegExp(context, regexp) {
   if(regexp == undefined) return regexp;
 
   var match = regexp.toString().match(new RegExp('^/(.*?)/([gimy]*)$'));
-  var str = match[1];
+  if (match) {
+    var str = match[1];
 
-  str = str.replace(/~([0-9a-zA-Z가-힣]+)/g, function(match, p1) {
-    return '(?:' + conceptsString(context, p1) + ')';
-  });
+    str = str.replace(/~([0-9a-zA-Z가-힣]+)/g, function (match, p1) {
+      return '(?:' + conceptsString(context, p1) + ')';
+    });
 
-  return new RegExp(str, regexp.flags);
+    return new RegExp(str, regexp.flags);
+  }
 }
 
 exports.concepRegExp = conceptRegExp;

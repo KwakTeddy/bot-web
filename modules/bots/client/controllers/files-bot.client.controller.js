@@ -4,8 +4,8 @@
 'use strict';
 
 // Bots controller
-angular.module('bots').controller('BotFilesController', ['$scope', '$stateParams', 'botResolve', 'botFilesResolve', 'BotFilesService', 'CoreUtils',
-  function ($scope, $stateParams, bot, files, BotFilesService, CoreUtils) {
+angular.module('bots').controller('BotFilesController', ['$scope', '$stateParams', 'botResolve', 'botFilesResolve', 'BotFilesService', 'CoreUtils', 'DTOptionsBuilder', '$compile',
+  function ($scope, $stateParams, bot, files, BotFilesService, CoreUtils, DTOptionsBuilder, $compile) {
     var vm = this;
     vm.bot = bot;
     vm.files = files;
@@ -49,7 +49,16 @@ angular.module('bots').controller('BotFilesController', ['$scope', '$stateParams
     vm.isIde = function(name) {
       return !name.endsWith('dialog.js') && !name.endsWith("task.js");
     };
-    
+
+    vm.dtOptions = DTOptionsBuilder.newOptions()
+        .withOption('bLengthChange', false)
+        .withOption('info', false)
+        .withOption('dom', 'l<"toolbar">frtip')
+        .withOption('initComplete', function(settings, json) {
+          $('#dt_filter > label > input[type="search"]').addClass('form-control').attr('placeholder', 'Search');
+          $("div.toolbar").html('<button id="addToTable" class="btn btn-primary" ng-click="vm.create()"><i class="fa fa-plus"></i> 파일추가</button>');
+          $compile(angular.element(document.querySelector('div.toolbar')).contents())($scope);
+        })
     // // Find a list of Bots
     // vm.find = function () {
     //   vm.bots = BotsService.query();

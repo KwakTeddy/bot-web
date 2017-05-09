@@ -87,10 +87,10 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
 
     // dialog editing
     $scope.addInput = function() {
-      $scope.dialog.inputs.push({str:""});
+      $scope.selected.inputs.push({str:""});
     };
     $scope.addOutput= function() {
-      $scope.dialog.outputs.push({str:""});
+      $scope.selected.outputs.push({str:""});
     };
 
     var makeStr = function(obj) {
@@ -125,21 +125,29 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
     $scope.findChildren = function (dialogId, newDialog) {
       var botId = $rootScope.botId;
 
+      $scope.targetDialog = newDialog;
+      $scope.targetPreDialog = dialogId;
+      console.log(dialogId)
+
       var dialogs = DialogChildren.query({
         botId: botId,
         dialogId: dialogId
       }, function() {
         console.log(dialogs);
-        dialogs.forEach(function(obj, i) {
-          obj.idx = i;
-          obj.inputs = makeStr(obj.inputs);
-          obj.outputs = makeStr(obj.outputs);
-          obj.inputs.push({str:newDialog});
-        });
-        $scope.dialogs = dialogs;
-        $scope.selected = $scope.dialogs[0];
+        if (dialogs.length){
+          dialogs.forEach(function(obj, i) {
+            obj.idx = i;
+            obj.inputs = makeStr(obj.inputs);
+            obj.outputs = makeStr(obj.outputs);
+            obj.inputs.push({str:newDialog});
+          });
+          $scope.dialogs = dialogs;
+          $scope.selected = $scope.dialogs[0];
 
-        $('.modal-with-form').click();
+          $('.modal-with-form').click(); 
+        }else {
+          alert('시작 다이얼로그 입니다')
+        }
       }, function(err) {
         console.log(err);
       });
@@ -155,9 +163,19 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
       dialog.botId = $rootScope.botId;
       dialog.inputs = unMake(dialog.inputs);
       dialog.outputs = unMake(dialog.outputs);
-      console.log(JSON.stringify((dialog)));
+      dialog.originalDialog = $scope.targetDialog;
+      dialog.targetPreDialog = $scope.targetPreDialog;
+      console.log(dialog);
+      console.log($scope.selected);
 
-      Dialogs.update(dialog);
+      Dialogs.update(dialog, function (result) {
+        console.log(result);
+        $scope.find_dialog_failure();
+      }, function (err) {
+        console.log(err);
+      });
+
+
     };
 
     // Find a list of dialog fail
@@ -353,39 +371,39 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
     var vm = this;
 
     var abcd =
-        '<form name="form" novalidate="novalidate">' +
-        '<table width="100%"><tr><td>' +
-        '<h2 class="panel-title">&nbsp;</h2>' +
-        '<td align="right">' +
-        '<select name="kind" ng-model="kind"  onchange="changeFunc(this)">' +
-        '<option selected="selected" value="all">전체</option>' +
-        '<option value="year">연도별</option>' +
-        '<option value="month">월별</option>' +
-        '</select>' +
-        '<input type="number" id="year" ng-model="year" min="1999" max="2100" value="2017" style="display:none">' +
-        '<input type="month" id="ym" ng-model="ym" style="display:none" value="2017-03">' +
-        '<button class="btn btn-primary" ng-click="find_dialog_failure()">검색</button>' +
-        '</td></tr></table>' +
-        '</form>';
+      '<form name="form" novalidate="novalidate">' +
+      '<table width="100%"><tr><td>' +
+      '<h2 class="panel-title">&nbsp;</h2>' +
+      '<td align="right">' +
+      '<select name="kind" ng-model="kind"  onchange="changeFunc(this)">' +
+      '<option selected="selected" value="all">전체</option>' +
+      '<option value="year">연도별</option>' +
+      '<option value="month">월별</option>' +
+      '</select>' +
+      '<input type="number" id="year" ng-model="year" min="1999" max="2100" value="2017" style="display:none">' +
+      '<input type="month" id="ym" ng-model="ym" style="display:none" value="2017-03">' +
+      '<button class="btn btn-primary" ng-click="find_dialog_failure()">검색</button>' +
+      '</td></tr></table>' +
+      '</form>';
 
     vm.dtOptions = DTOptionsBuilder.newOptions()
-        .withOption('bLengthChange', false)
-        .withOption('info', false)
-        .withOption('dom', 'l<"toolbar">frtip')
-        .withOption('initComplete', function(settings, json) {
-          $('#dt_filter > label > input[type="search"]').addClass('form-control').attr('placeholder', 'Search');
-          $compile(angular.element(document.querySelector('div.toolbar')).contents())($scope);
-        })
+      .withOption('bLengthChange', false)
+      .withOption('info', false)
+      .withOption('dom', 'l<"toolbar">frtip')
+      .withOption('initComplete', function(settings, json) {
+        $('#dt_filter > label > input[type="search"]').addClass('form-control').attr('placeholder', 'Search');
+        $compile(angular.element(document.querySelector('div.toolbar')).contents())($scope);
+      })
 
     vm.dtOptions2 = DTOptionsBuilder.newOptions()
-        .withOption('bLengthChange', false)
-        .withOption('info', false)
-        .withOption('dom', 'l<"toolbar">frtip')
-        .withOption('initComplete', function(settings, json) {
-          $('#dt_filter > label > input[type="search"]').addClass('form-control').attr('placeholder', 'Search');
-          $("div.toolbar").html('<button class="btn btn-primary" ng-click="find_dialog_failure_maintenance()">오류 목록 검사</button>');
-          $compile(angular.element(document.querySelector('div.toolbar')).contents())($scope);
-        })
+      .withOption('bLengthChange', false)
+      .withOption('info', false)
+      .withOption('dom', 'l<"toolbar">frtip')
+      .withOption('initComplete', function(settings, json) {
+        $('#dt_filter > label > input[type="search"]').addClass('form-control').attr('placeholder', 'Search');
+        $("div.toolbar").html('<button class="btn btn-primary" ng-click="find_dialog_failure_maintenance()">오류 목록 검사</button>');
+        $compile(angular.element(document.querySelector('div.toolbar')).contents())($scope);
+      })
 
     $scope.find_dialog_failure_maintenance = function () {
       $http.get('/api/intent/analyzeFailIntent/'+ $cookies.get('default_bot')).then(function (data) {
