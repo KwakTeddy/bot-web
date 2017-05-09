@@ -84,7 +84,11 @@ angular.module('bots').config(['$stateProvider',
         url: '/dialog-tree2/',
         templateUrl: 'modules/bots/client/views/dialog-tree.client.view.html',
         controller: 'DialogTreeController',
-        controllerAs: 'vm'
+        controllerAs: 'vm',
+        resolve: {
+          botFilesResolve: getBotFiles,
+          fileResolve: readBotFile
+        }
       })
       .state('bots.graph-knowledge', {
         url: '/graph-knowledge/:botId',
@@ -116,18 +120,31 @@ function newBot(BotsService) {
   return new BotsService();
 }
 
-getBotFiles.$inject = ['BotFilesService', '$stateParams'];
-function getBotFiles(BotFilesService, $stateParams) {
+getBotFiles.$inject = ['BotFilesService', '$stateParams', '$rootScope'];
+function getBotFiles(BotFilesService, $stateParams, $rootScope) {
+  var _botId = $stateParams.botId ? $stateParams.botId : $rootScope.botObjectId;
+
   return BotFilesService.query({
-    botId: $stateParams.botId
+    botId: _botId
   }).$promise;
 }
-readBotFile.$inject = ['BotFilesService', '$stateParams'];
-function readBotFile(BotFilesService, $stateParams) {
+
+readBotFile.$inject = ['BotFilesService', '$stateParams', '$rootScope', '$resource'];
+function readBotFile(BotFilesService, $stateParams, $rootScope, $resource) {
+  // console.log('readBotFile:' + $rootScope.botObjectId);
+  var _botId = $stateParams.botId ? $stateParams.botId : $rootScope.botObjectId;
+  var _fileId = $stateParams.fileId ? $stateParams.fileId : 'none';
+
   return BotFilesService.get({
-    botId: $stateParams.botId,
-    fileId: $stateParams.fileId
+    botId: _botId,
+    fileId: _fileId
   }).$promise;
+
+}
+
+newBotFile.$inject = ['BotFilesService'];
+function newBotFile(BotFilesService) {
+  return new BotFilesService();
 }
 
 getDialogsets.$inject = ['DialogsetsService'];

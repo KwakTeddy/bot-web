@@ -20,8 +20,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             OpenTasksService, FileUploader, $document, file, BotFilesService, CoreUtils, files, Socket,
             $uibModal, $compile, $cookies) {
 
-    console.log($rootScope.botObjectId);
-    
     (function($) {
       'use strict';
 
@@ -225,8 +223,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     var vm = this;
     vm.showTree = true;
     vm.userId = $rootScope.userId;
-    vm.bot_id = $stateParams.botId;
-    vm.file_id = $stateParams.fileId;
+    vm.bot_id = $stateParams.botId ? $stateParams.botId : $rootScope.botObjectId;
+    vm.file_id = $stateParams.fileId ? $stateParams.fileId : file._id;
     vm.maxId = 0;
     vm.isChanged = false;
     vm.changeHistory = [];

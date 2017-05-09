@@ -649,8 +649,8 @@ exports.botByID = function (req, res, next, id) {
       function(cb) {
         if (bot.dialogsets && bot.dialogsets.length) {
           Dialogset.findOne({_id: bot.dialogsets[0]}).lean().exec(function(err, doc) {
-              req.bot._doc.filename = doc.filename;
-              cb(null);
+            req.bot._doc.filename = doc.filename;
+            cb(null);
           })
         } else {
           cb(null);
@@ -702,10 +702,10 @@ exports.botByID = function (req, res, next, id) {
           cb(null);
         }
       }
-      ], function(err) {
-        next();
+    ], function(err) {
+      next();
     });
-  });
+  })
 };
 
 
@@ -725,23 +725,50 @@ exports.botByNameID = function (req, res, next, id) {
 };
 
 exports.fileByID = function (req, res, next, id) {
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).send({
-      message: 'File is invalid'
-    });
-  }
+  async.waterfall([
+    function(cb) {
+      if (id == 'none') {
+        BotFile.find({bot: req.bot._id}).exec(function (err, files) {
+          if (err) {
+            return res.status(400).send({
+              message: errorHandler.getErrorMessage(err)
+            });
+          } else {
+            for(var i in files) {
+              var file = files[i];
+              if(file.name == 'default.dialog.js') {
+                id = file._id;
+                break;
+              } else if(file.name.endsWith('dialog.js')) {
+                id = file._id;
+              }
+            }
 
-  BotFile.findById(id).populate('user', 'displayName').populate('bot').exec(function (err, file) {
-    if (err) {
-      return next(err);
-    } else if (!file) {
-      return res.status(404).send({
-        message: 'No file with that identifier has been found'
-      });
+            cb(null);
+          }
+        })
+      } else if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).send({
+          message: 'File is invalid'
+        });
+      } else {
+        cb(null);
+      }
     }
-    req.file = file;
-    next();
-  });
+  ], function(err) {
+    BotFile.findById(id).populate('user', 'displayName').populate('bot').exec(function (err, file) {
+      if (err) {
+        return next(err);
+      } else if (!file) {
+        return res.status(404).send({
+          message: 'No file with that identifier has been found'
+        });
+      }
+      req.file = file;
+      next();
+    })
+  })
+;
 };
 
 
