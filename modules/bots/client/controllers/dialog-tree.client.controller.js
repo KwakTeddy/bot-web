@@ -174,9 +174,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.currentTab.data += newTask_template;
 
       $scope.refreshCodemirror = true;
-      vm.editor.focus();
       vm.editor.setCursor({line:vm.editor.lastLine() ,ch:0});
       $timeout(function () {
+        vm.editor.focus();
         $scope.refreshCodemirror = false;
       }, 100);
     };
@@ -189,9 +189,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           break;
       }
       $scope.refreshCodemirror = true;
-      vm.editor.focus();
       vm.editor.setCursor({line:where,ch:0});
       $timeout(function () {
+        vm.editor.focus();
         $scope.refreshCodemirror = false;
       }, 100);
     };
@@ -626,6 +626,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.targetI = i;
       vm.curI = angular.copy(i);
       vm.inputMode = true;
+      document.getElementById('input').focus();
     };
 
     $scope.addO = function(input) {
@@ -640,6 +641,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.targetO = o;
       vm.curO = angular.copy(o);
       vm.inputModeO = true;
+      setTimeout(function () {
+        document.getElementById('output').focus();
+      }, 500);
     };
 
     $scope.saveI = function() {
@@ -949,14 +953,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       $scope.dialog.output = initOutput(dialog.output);
 
-      var isFocus =false;
-      if (dialog.input.length == 0) {
-        $scope.addInput();
-        isFocus = true;
-      }
-
       if (dialog.output.length == 0) {
         $scope.addOutput();
+      }
+
+      if (dialog.input.length == 0) {
+        $scope.addInput();
       }
 
       $scope.$apply();
@@ -964,7 +966,16 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     };
 
+    $scope.saveEnter = function(event,func) {
+      if (event.keyCode == 13) {
+        event.preventDefault();
+        event.stopPropagation();
+        func();
+      }
+    };
+
     $scope.update = function (isValid) {
+
       vm.edit = false;
       vm.setChanged(true);
 
@@ -2644,4 +2655,20 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       // $scope.imageURL = $scope.user.profileImageURL;
     };
   }]
-);
+)
+.directive('autoFocus', [ '$timeout', function ($timeout) {
+  return {
+    restrict: 'A',
+
+    link: function ($scope, $element, $attributes) {
+      if ($scope.$eval($attributes.autoFocus) !== false) {
+        var element = $element[0];
+
+        $timeout(function() {
+          $scope.$emit('focus', element);
+          element.focus();
+        });
+      }
+    }
+  };
+}]);
