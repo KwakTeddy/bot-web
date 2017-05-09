@@ -188,12 +188,24 @@
 </header>
 
 <div>
-    <div id='filetree' style=" display: none;">
-        <div class="row mb-sm">
-            <button id="filetree_close" class="btn btn-default btn-xs pull-right"
-                    style="margin-right:20px;margin-top:1px">닫기</button>
+    <div id='filetree' class="col-md-1">
+        <div class="row mb-sm" style="margin: -5px -5px 5px 0 !important;">
+            <div id="filelabel0" >
+                Files
+            </div>
+            <!--<button id="filetree_close" class="btn btn-default btn-xs pull-right"-->
+                    <!--style="margin-right:20px;margin-top:1px">닫기</button>-->
+            <button id="filetree_close" class="mt-xs mr-xs filetree_button btn btn-sm pull-right"
+                    style="display: none;"><i class="fa fa-chevron-left"></i> Close</button>
+            <button id="filetree_open"
+                    class="mt-xs mr-xs filetree_button btn btn-sm pull-right" ng-click="vm.initTree()"><i class="fa fa-chevron-right"></i></button>
         </div>
-        <div class="panel-body">
+
+        <div id="filelabel1" style="writing-mode: tb-rl">
+            Files
+        </div>
+
+        <div class="panel-body" style="display: none;">
             <div id="treeBasic" class="panel-body mt-sm">
                 <ul>
                     <li data-jstree="{'opened'=true}"> Root
@@ -207,10 +219,10 @@
     <div>
 
     </div>
-    <div id='content' class="col-md-12">
+    <div id='content' class="col-md-11">
         <div>
-            <button id="filetree_open"
-                    class="mt-xs mr-xs filetree_button btn btn-sm pull-left" ng-click="vm.initTree()"><i class="fa fa-bars"></i></button>
+            <!--<button id="filetree_open"-->
+                    <!--class="mt-xs mr-xs filetree_button btn btn-sm pull-left" ng-click="vm.initTree()"><i class="fa fa-bars"></i></button>-->
             <ul class="nav nav-tabs">
                 <li role="presentation"
                     ng-repeat="tab in vm.tabs"

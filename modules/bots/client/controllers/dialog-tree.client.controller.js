@@ -116,13 +116,17 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         }
       });
 
-      $(document).on('click', '.filetree_button', function (e) {
+      $(document).on('click', '#filetree_open', function (e) {
         e.preventDefault();
-        $('.filetree_button').hide();
-        $('#filetree').addClass('col-md-3');
-        $('#content').removeClass('col-md-12');
-        $('#content').addClass('col-md-9');
-        $('#filetree').show();
+
+        $('#filetree').css('width', '230px');
+        $('#content').css('padding', '0 0 0 235px');
+        $('#filetree > div.panel-body').show();
+        $('#filelabel0').show();
+        $('#filelabel1').hide();
+        $('#filetree_open').hide();
+        $('#filetree_close').show();
+
         viewerWidth = document.getElementById('tree-container').clientWidth;
         baseSvg.attr("width", viewerWidth);
         angular.element(document.getElementById('control')).scope().updateEditor();
@@ -131,11 +135,14 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       $(document).on('click', '#filetree_close', function (e) {
         e.preventDefault();
-        $('#filetree').hide();
-        $('#filetree').removeClass('col-md-3');
-        $('#content').removeClass('col-md-9');
-        $('#content').addClass('col-md-12');
-        $('.filetree_button').show();
+        $('#filetree > div.panel-body').hide();
+        $('#filelabel0').hide();
+        $('#filelabel1').show();
+        $('#filetree').css('width', '42px');
+        $('#content').css('padding', '0 0 0 45px');
+        $('#filetree_close').hide();
+        $('#filetree_open').show();
+
         viewerWidth = document.getElementById('tree-container').clientWidth;
         baseSvg.attr("width", viewerWidth);
         angular.element(document.getElementById('control')).scope().updateEditor();
@@ -1206,7 +1213,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         dialogs.forEach(handleLink);
       console.log(nodes);
       console.log(links_internal);
-
     };
 
     $resource('/api/dialogs/:bot_id/:file_id', {}).get({bot_id: vm.bot_id, file_id: vm.file_id}, function(res) {

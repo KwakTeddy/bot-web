@@ -464,3 +464,37 @@ body {
 .pagination > .active > a {
     z-index: auto;
 }
+
+#filetree{
+    background: gray;
+    min-height: 100vh;
+    margin-top: -5px;
+    padding: 8px 5px 0 5px;
+    width: 42px;
+    z-index: 1;
+}
+
+#filetree > .panel-body{
+    min-height: 80vh;
+}
+
+#content {
+    width: 100%;
+    position: absolute;
+    padding: 0 0 0 45px;
+}
+
+#filelabel0 {
+    color: rgb(192, 192, 192);
+    font-size: 1.1em;
+    display: none;
+    float: left;
+    padding: 10px 0 0 5px;
+}
+
+#filelabel1 {
+    writing-mode: lr-tb;
+    color: rgb(192, 192, 192);
+    font-size: 1.1em;
+    padding: 10px 5px 0 5px;
+}
