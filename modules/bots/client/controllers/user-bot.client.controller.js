@@ -744,7 +744,7 @@ if (_platform !== 'mobile'){
 
         // special handling for address
         if (document.getElementsByName("root[address]").length == 1) {
-          var innerHTML = '&nbsp;&nbsp;&nbsp;<button class="btn btn-default" ng-click="vm.findAddress()" >주소검색</button>';
+          var innerHTML = '&nbsp;&nbsp;&nbsp;<button class="btn btn-default btn-sm" ng-click="vm.findAddress()" >주소검색</button>';
           document.getElementsByName("root[address]")[0].insertAdjacentHTML("beforebegin", innerHTML);
           innerHTML = '<div name="mine" class="row" style="padding-top:10px">';
           innerHTML += '<div class="col-md-7"><input ng-model="vm.address1" type="text" class="form-control" name="address1" disabled></div>';

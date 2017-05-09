@@ -245,7 +245,7 @@
                         <div class="input-group mt-xs input-search">
                             <form ng-submit="searchNode()">
                                 <input type="text" class="form-control" name="q" id="search" placeholder="Search...">
-                                <span class="input-group-btn"> <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button> </span>
+                                <span class="input-group-btn"> <button class="btn btn-default btn-sm" type="submit"><i class="fa fa-search"></i></button> </span>
                             </form>
                         </div>
                     </div>
@@ -254,10 +254,10 @@
                         <div class="input-group mt-xs pull-right">
                             <input class="form-control"  type="text" ng-model="vm.depth" readonly>
                             <span class="input-group-btn">
-                                <button class="btn btn-default" ng-click="vm.addDepth()"><i class="fa fa-plus"></i></button>
-                                <button class="btn btn-default" ng-click="vm.minusDepth()"><i class="fa fa-minus"></i></button>
-                                <button class="btn btn-default" ng-click="vm.expandAll()"><i class="fa fa-expand"></i></button>
-                                <button class="btn btn-default" ng-click="vm.collapseAll()"><i class="fa fa-compress"></i></button>
+                                <button class="btn btn-default btn-sm" ng-click="vm.addDepth()"><i class="fa fa-plus"></i></button>
+                                <button class="btn btn-default btn-sm" ng-click="vm.minusDepth()"><i class="fa fa-minus"></i></button>
+                                <button class="btn btn-default btn-sm" ng-click="vm.expandAll()"><i class="fa fa-expand"></i></button>
+                                <button class="btn btn-default btn-sm" ng-click="vm.collapseAll()"><i class="fa fa-compress"></i></button>
                             </span>
                         </div>
                     </div>
@@ -331,7 +331,7 @@
                         <footer class="panel-footer">
                             <div class="row">
                                 <div class="col-md-12 text-right">
-                                    <button class="btn btn-primary" ng-click="closePopup()" >닫기</button>
+                                    <button class="btn btn-primary btn-sm" ng-click="closePopup()" >닫기</button>
                                 </div>
                             </div>
                         </footer>
@@ -379,8 +379,8 @@
                             <footer class="panel-footer">
                                 <div class="row">
                                     <div class="col-md-12 text-right">
-                                        <button class="btn btn-primary" ng-click="backToEdit(true)" >저장</button>
-                                        <button class="btn btn-default" ng-click="backToEdit(false)" >이전</button>
+                                        <button class="btn btn-primary btn-sm" ng-click="backToEdit(true)" >저장</button>
+                                        <button class="btn btn-default btn-sm" ng-click="backToEdit(false)" >이전</button>
                                     </div>
                                 </div>
                             </footer>
@@ -450,7 +450,7 @@
                                                     </ui-select>
                                                 </div>
                                                 <span class="input-group-btn">
-                                        <button class="btn btn-primary"
+                                        <button class="btn btn-primary btn-sm"
                                                 ng-disabled="vm.curI.str === ''"
                                                 ng-click="saveI()" type="button">저장</button>
                                         <button class="btn btn-danger" ng-click="resetI()" type="button">취소</button>
@@ -500,7 +500,7 @@
                                                 </ui-select>
                                             </div>
                                             <span class="input-group-btn">
-                                                <button class="btn btn-default">
+                                                <button class="btn btn-default btn-sm">
                                                     <i ng-click="dialog.task = undefined" class="fa fa-remove" style="color:red"></i>
                                                 </button>
                                             </span>
@@ -558,7 +558,7 @@
                                                   </span>
                                                 </div>
                                                 <span class="input-group-btn">
-                                                    <button class="btn btn-primary"
+                                                    <button class="btn btn-primary btn-sm"
                                                             ng-disabled="vm.curO.str === ''"
                                                             ng-click="saveO()" type="button">저장</button>
                                                     <button class="btn btn-danger" ng-click="resetO()" type="button">취소</button>
@@ -590,7 +590,7 @@
                                 <div class="row">
                                     <div class="col-md-12 text-right">
                                         <button class="btn btn-primary modal-confirm" ng-click="update(dialogForm.$valid)" >저장</button>
-                                        <button class="btn btn-default" ng-click="closeEdit();">취소</button>
+                                        <button class="btn btn-default btn-sm" ng-click="closeEdit();">취소</button>
                                     </div>
                                 </div>
                             </footer>
@@ -607,13 +607,13 @@
                         </div>
 
                         <div class="col-sm-6 text-right">
-                            <!--<a class="btn btn-primary" ng-click="vm.viewGraph()">-->
+                            <!--<a class="btn btn-primary btn-sm" ng-click="vm.viewGraph()">-->
                             <!--dialog graph-->
                             <!--</a>-->
-                            <a class="btn btn-default" ng-show="vm.fromTask" ng-click="gotoTree()">
+                            <a class="btn btn-default btn-sm" ng-show="vm.fromTask" ng-click="gotoTree()">
                                 돌아가기
                             </a>
-                            <a class="btn btn-primary" ng-click="vm.saveFile()">
+                            <a class="btn btn-primary btn-sm" ng-click="vm.saveFile()">
                                 저장하기
                             </a>
                         </div>

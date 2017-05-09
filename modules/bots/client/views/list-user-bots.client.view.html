@@ -10,7 +10,7 @@
 <section class="panel">
   <header class="panel-heading">
     <div class="panel-actions">
-      <button id="addToTable" class="btn btn-primary" ui-sref="user-bots.create"><i class="fa fa-plus"></i> 신규등록</button>
+      <button id="addToTable" class="btn btn-primary btn-sm" ui-sref="user-bots.create"><i class="fa fa-plus"></i> 신규등록</button>
     </div>
 
     <h2 class="panel-title">&nbsp;</h2>
@@ -37,10 +37,10 @@
         <td class="text-center">{{userBot.user ? userBot.user.displayName : '장세영'}}</td>
         <td class="text-center">{{userBot.created | date: 'yyyy-MM-dd'}}</td>
         <td>
-          <a class="btn btn-primary" ui-sref="user-bots.edit({userBotId: userBot._id})">
+          <a class="btn btn-primary btn-sm" ui-sref="user-bots.edit({userBotId: userBot._id})">
             <i class="glyphicon glyphicon-edit"></i> 수정
           </a>
-          <a class="btn btn-default" ui-sref="user-bots.files({userBotId: userBot._id})">
+          <a class="btn btn-default btn-sm" ui-sref="user-bots.files({userBotId: userBot._id})">
             <i class="glyphicon glyphicon-edit"></i> 파일관리
           </a>
         </td>
@@ -86,7 +86,7 @@
 <!--</div>-->
 
 <!--<div class="col-sm-6 text-right">-->
-<!--<a class="btn btn-primary" ui-sref="user-bots.create">-->
+<!--<a class="btn btn-primary btn-sm" ui-sref="user-bots.create">-->
 <!--<i class="fa fa-plus"></i> 신규등록-->
 <!--</a>-->
 <!--</div>-->
@@ -131,7 +131,7 @@
 <!--</div>-->
 
 <!--<div class="col-sm-6 text-right">-->
-<!--<a class="btn btn-primary" ui-sref="user-bots.create">-->
+<!--<a class="btn btn-primary btn-sm" ui-sref="user-bots.create">-->
 <!--<i class="fa fa-plus"></i> 신규등록-->
 <!--</a>-->
 <!--</div>-->

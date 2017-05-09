@@ -32,7 +32,7 @@ var first = /(?:~시작|~처음|^!$|취소)/
         csdemo.searchCenterTask
         >{returnCall: '서비스센터정보', options: {returnDialog: '수리가능'}}
         <{if: 'true'}> {up: 1}
-    <{if: 'true'}> 죄송합니다. 지금 입력하신 주소는 찾을수 없는 주소입니다.\n 아래 예시와 같이 다시 말씀해주세요.\n1.동명: 가산동, 구로동\n2.지번주소: 금천구 가산동 60-3\n3.도로명주소: 금천구 디지털로9길 68\n4.건물명: 여의도 트윈타워\n5.지하철역: 여의도역|죄송합니다. 지금 입력하신 주소는 찾을수 없는 주소입니다.아래 예시와 같이 다시 말씀해주세요.
+    <{if: 'true'}> 죄송합니다. 지금 입력하신 "+query+"에 대한 주소를 찾을 수 없습니다.\n 아래 예시와 같이 다시 말씀해주세요.\n1.동명: 가산동, 구로동\n2.지번주소: 금천구 가산동 60-3\n3.도로명주소: 금천구 디지털로9길 68\n4.건물명: 여의도 트윈타워\n5.지하철역: 여의도역|죄송합니다. 지금 입력하신 "+query+"에 대한 주소를 찾을 수 없습니다.아래 예시와 같이 다시 말씀해주세요.
 > if(!Array.isArray(context.dialog.address)) +address.시군구명+ +address.법정읍면동명+ 맞나요?|이 주소가 맞나요?
     < ~네
     csdemo.searchCenterTask
@@ -47,7 +47,7 @@ var first = /(?:~시작|~처음|^!$|취소)/
 센터정보:
 <센터 정보
 >iff(csdemo.locationNotExists) {returnCall: '위치찾기', options: {returnDialog: '센터정보', output: '고객님 근처의 서비스 센터를 파악한 후에 센터정보를 안내해드려도 될까요?'}}
->[+center.svc_center_name+]\n- 주소: +center.address3+\n- 영업시간 : 평일: +center.winter_week_open+ ~ +center.winter_week_close+, 토요일: +center.winter_sat_open+ ~ +center.winter_sat_close+\n- 전화번호: +center.phone+\n- +center.parking+\n서비스 센터의 위치를 지도에서 확인하시겠습니까?|센터 정보는 다음과 같습니다.위치를 지도에서 확인하시겠습니까?
+>iff(csdemo.locationExists) [+center.svc_center_name+]\n- 주소: +center.address3+\n- 영업시간 : 평일: +center.winter_week_open+ ~ +center.winter_week_close+, 토요일: +center.winter_sat_open+ ~ +center.winter_sat_close+\n- 전화번호: +center.phone+\n- +center.parking+\n서비스 센터의 위치를 지도에서 확인하시겠습니까?|센터 정보는 다음과 같습니다.위치를 지도에서 확인하시겠습니까?
     <~네> {call:'방문경로'}
     <~아니요> 고객님, 추가적으로 궁금하신 사항이 있으신지요?
         <~네> 네, 필요하신 사항이 있으시면 말씀해주세요.
@@ -70,7 +70,7 @@ var first = /(?:~시작|~처음|^!$|취소)/
 주요지명컨셉검색:
 < {types: [{name: 'dong', typeCheck: csdemo.dongTypeCheck, raw: true}], regexp: /~서비스센터/}
 {action: csdemo.searchNaverTwo}
-> if(!(context.dialog.item)) {repeat: 1, options : {output: '죄송합니다. 지금 입력하신 주소는 찾을수 없는 주소입니다.\n 아래 예시와 같이 다시 말씀해주세요.\n1.동명: 가산동, 구로동\n2.지번주소: 금천구 가산동 60-3\n3.도로명주소: 금천구 디지털로9길 68\n4.건물명: 여의도 트윈타워\n5.지하철역: 여의도역|죄송합니다. 지금 입력하신 주소는 찾을수 없는 주소입니다.아래 예시와 같이 다시 말씀해주세요.'}}
+> if(!(context.dialog.item)) {repeat: 1, options : {output: '죄송합니다. 지금 입력하신 "+query+"에 대한 주소를 찾을 수 없습니다.\n 아래 예시와 같이 다시 말씀해주세요.\n1.동명: 가산동, 구로동\n2.지번주소: 금천구 가산동 60-3\n3.도로명주소: 금천구 디지털로9길 68\n4.건물명: 여의도 트윈타워\n5.지하철역: 여의도역|죄송합니다. 지금 입력하신 "+query+"에 대한 주소를 찾을 수 없습니다.아래 예시와 같이 다시 말씀해주세요.'}}
 > if(context.dialog.item) +address2+ 맞나요?|이 주소가 맞나요?
     < ~네
     >{call: '서비스센터정보'}
@@ -80,7 +80,7 @@ var first = /(?:~시작|~처음|^!$|취소)/
 </([^\b]*)(?:\b|\s).*(근처|주변).*(센터)/
 </([^\b]*)(?:\b|\s)*(에서).*(센터)/
 {action: csdemo.searchNaver}
-> if(!(context.dialog.item)) 죄송합니다. 지금 입력하신 주소는 찾을수 없는 주소입니다.\n 아래 예시와 같이 다시 말씀해주세요.\n1.동명: 가산동, 구로동\n2.지번주소: 금천구 가산동 60-3\n3.도로명주소: 금천구 디지털로9길 68\n4.건물명: 여의도 트윈타워\n5.지하철역: 여의도역|죄송합니다. 지금 입력하신 주소는 찾을수 없는 주소입니다.아래 예시와 같이 다시 말씀해주세요.
+> if(!(context.dialog.item)) 죄송합니다. 지금 입력하신 "+query+"에 대한 주소를 찾을 수 없습니다.\n 아래 예시와 같이 다시 말씀해주세요.\n1.동명: 가산동, 구로동\n2.지번주소: 금천구 가산동 60-3\n3.도로명주소: 금천구 디지털로9길 68\n4.건물명: 여의도 트윈타워\n5.지하철역: 여의도역|죄송합니다. 지금 입력하신 "+query+"에 대한 주소를 찾을 수 없습니다.아래 예시와 같이 다시 말씀해주세요.
 > if(context.dialog.item) +address2+에 비슷한 건물 또는 지역이 있습니다\n 이 주소가 맞나요?|이 주소가 맞나요?
     < ~네
     >{call: '서비스센터정보'}
@@ -101,19 +101,19 @@ var first = /(?:~시작|~처음|^!$|취소)/
         >{call: '서비스센터정보'}
         <{if: 'true'}> {up: 1}
     > if(Array.isArray(context.dialog.address)) 다음 중 어떤 지역이신가요?\n#address#+index+. +지번주소+ +시군구용건물명+\n#|다음 중 어떤 지역이신가요?
-        <{types: [{name: 'address', listName: 'address', typeCheck: 'listTypeCheck'}]}
+        <{types: [{name: 'address', listName: 'address', field: '지번주소', typeCheck: 'listTypeCheck'}]}
         >{call: '서비스센터정보'}
         <{if: 'true'}> {up: 1}
     < {types: [{name: 'dong', typeCheck: csdemo.dongTypeCheck, raw: true}]}
     {action: csdemo.searchNaverTwo}
-    > if(!(context.dialog.item)) {repeat: 1, options : {output: '죄송합니다. 지금 입력하신 주소는 찾을수 없는 주소입니다.\n 아래 예시와 같이 다시 말씀해주세요.\n1.동명: 가산동, 구로동\n2.지번주소: 금천구 가산동 60-3\n3.도로명주소: 금천구 디지털로9길 68\n4.건물명: 여의도 트윈타워\n5.지하철역: 여의도역|죄송합니다. 지금 입력하신 주소는 찾을수 없는 주소입니다.아래 예시와 같이 다시 말씀해주세요.'}}
+    > if(!(context.dialog.item)) {repeat: 1, options : {output: '죄송합니다. 지금 입력하신 "+query+"에 대한 주소를 찾을 수 없습니다.\n 아래 예시와 같이 다시 말씀해주세요.\n1.동명: 가산동, 구로동\n2.지번주소: 금천구 가산동 60-3\n3.도로명주소: 금천구 디지털로9길 68\n4.건물명: 여의도 트윈타워\n5.지하철역: 여의도역|죄송합니다. 지금 입력하신 "+query+"에 대한 주소를 찾을 수 없습니다.아래 예시와 같이 다시 말씀해주세요.'}}
     > if(context.dialog.item) +address2+ 맞나요?|이 주소가 맞나요?
         < ~네
         >{call: '서비스센터정보'}
         <{if: 'true'}> {up: 1}
     < {if: 'true'}
     {action: csdemo.searchNaver}
-    > if(!(context.dialog.item)) {repeat: 1, options : {output: '죄송합니다. 지금 입력하신 주소는 찾을수 없는 주소입니다.\n 아래 예시와 같이 다시 말씀해주세요.\n1.동명: 가산동, 구로동\n2.지번주소: 금천구 가산동 60-3\n3.도로명주소: 금천구 디지털로9길 68\n4.건물명: 여의도 트윈타워\n5.지하철역: 여의도역|죄송합니다. 지금 입력하신 주소는 찾을수 없는 주소입니다.아래 예시와 같이 다시 말씀해주세요.'}}
+    > if(!(context.dialog.item)) {repeat: 1, options : {output: '죄송합니다. 지금 입력하신 "+query+"에 대한 주소를 찾을 수 없습니다.\n 아래 예시와 같이 다시 말씀해주세요.\n1.동명: 가산동, 구로동\n2.지번주소: 금천구 가산동 60-3\n3.도로명주소: 금천구 디지털로9길 68\n4.건물명: 여의도 트윈타워\n5.지하철역: 여의도역|죄송합니다. 지금 입력하신 "+query+"에 대한 주소를 찾을 수 없습니다.아래 예시와 같이 다시 말씀해주세요.'}}
     > if(context.dialog.item) +address2+에 비슷한 건물 또는 지역이 있습니다\n 이 주소가 맞나요?|이 주소가 맞나요?
         < ~네
         >{call: '서비스센터정보'}
@@ -135,19 +135,19 @@ var first = /(?:~시작|~처음|^!$|취소)/
             >{call: '서비스센터정보'}
             <{if: 'true'}> {up: 1}
         > if(Array.isArray(context.dialog.address)) 다음 중 어떤 지역이신가요?\n#address#+index+. +지번주소+ +시군구용건물명+\n#|다음 중 어떤 지역이신가요?
-            <{types: [{name: 'address', listName: 'address', typeCheck: 'listTypeCheck'}]}
+            <{types: [{name: 'address', listName: 'address', field: '지번주소',typeCheck: 'listTypeCheck'}]}
             >{call: '서비스센터정보'}
             <{if: 'true'}> {up: 1}
         < {types: [{name: 'dong', typeCheck: csdemo.dongTypeCheck, raw: true}]}
         {action: csdemo.searchNaverTwo}
-        > if(!(context.dialog.item)) {repeat: 1, options : {output: '죄송합니다. 지금 입력하신 주소는 찾을수 없는 주소입니다.\n 아래 예시와 같이 다시 말씀해주세요.\n1.동명: 가산동, 구로동\n2.지번주소: 금천구 가산동 60-3\n3.도로명주소: 금천구 디지털로9길 68\n4.건물명: 여의도 트윈타워\n5.지하철역: 여의도역|죄송합니다. 지금 입력하신 주소는 찾을수 없는 주소입니다.아래 예시와 같이 다시 말씀해주세요.'}}
+        > if(!(context.dialog.item)) {repeat: 1, options : {output: '죄송합니다. 지금 입력하신 "+query+"에 대한 주소를 찾을 수 없습니다.\n 아래 예시와 같이 다시 말씀해주세요.\n1.동명: 가산동, 구로동\n2.지번주소: 금천구 가산동 60-3\n3.도로명주소: 금천구 디지털로9길 68\n4.건물명: 여의도 트윈타워\n5.지하철역: 여의도역|죄송합니다. 지금 입력하신 "+query+"에 대한 주소를 찾을 수 없습니다.아래 예시와 같이 다시 말씀해주세요.'}}
         > if(context.dialog.item) +address2+ 맞나요?|이 주소가 맞나요?
             < ~네
             >{call: '서비스센터정보'}
             <{if: 'true'}> {up: 1}
         < {if: 'true'}
         {action: csdemo.searchNaver}
-        > if(!(context.dialog.item)) {repeat: 1, options : {output: '죄송합니다. 지금 입력하신 주소는 찾을수 없는 주소입니다.\n 아래 예시와 같이 다시 말씀해주세요.\n1.동명: 가산동, 구로동\n2.지번주소: 금천구 가산동 60-3\n3.도로명주소: 금천구 디지털로9길 68\n4.건물명: 여의도 트윈타워\n5.지하철역: 여의도역|죄송합니다. 지금 입력하신 주소는 찾을수 없는 주소입니다.아래 예시와 같이 다시 말씀해주세요.'}}
+        > if(!(context.dialog.item)) {repeat: 1, options : {output: '죄송합니다. 지금 입력하신 "+query+"에 대한 주소를 찾을 수 없습니다.\n 아래 예시와 같이 다시 말씀해주세요.\n1.동명: 가산동, 구로동\n2.지번주소: 금천구 가산동 60-3\n3.도로명주소: 금천구 디지털로9길 68\n4.건물명: 여의도 트윈타워\n5.지하철역: 여의도역|죄송합니다. 지금 입력하신 "+query+"에 대한 주소를 찾을 수 없습니다.아래 예시와 같이 다시 말씀해주세요.'}}
         > if(context.dialog.item) +address2+에 비슷한 건물 또는 지역이 있습니다\n 이 주소가 맞나요?|이 주소가 맞나요?
             < ~네
             >{call: '서비스센터정보'}
@@ -232,7 +232,7 @@ csdemo.searchCenterTask
 < ~금요일
 < ~토요일
 >iff(csdemo.locationNotExists) {returnCall: '위치찾기', options: {returnDialog: '토요일영업', output: '고객님 근처의 서비스 센터를 파악한 후에 영업시간을 안내해드려도 될까요?'}}
-> 네 영업일입니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.\n더 필요하신 게 있으신가요?
+>iff(csdemo.locationExists) 네 영업일입니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.\n더 필요하신 게 있으신가요?
     <~네> 고객님, 추가적으로 궁금하신 사항이 있으시면 말씀해주세요~~
     <~아니요> 머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
         <~네> 더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.
@@ -242,7 +242,7 @@ csdemo.searchCenterTask
 < ~공휴일
 < 일요일
 >iff(csdemo.locationNotExists) {returnCall: '위치찾기', options: {returnDialog: '공휴일영업', output: '고객님 근처의 서비스 센터를 파악한 후에 영업시간을 안내해드려도 될까요?'}}
-> 죄송합니다. 영업일이 아닙니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.\n더 필요하신 게 있으신가요?
+>iff(csdemo.locationExists)  죄송합니다. 영업일이 아닙니다.\n해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.\n더 필요하신 게 있으신가요?
     <~네> 고객님, 어떤 부분이 궁금하신가요?
     <~아니요> 머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
         <~네> 더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.
@@ -252,7 +252,7 @@ csdemo.searchCenterTask
 <~영업 ~시간
 <몇 시
 > iff(csdemo.locationNotExists)  {returnCall: '위치찾기', options: {returnDialog: '영업시간', output: '고객님 근처의 서비스 센터를 파악한 후에 영업시간을 안내해드려도 될까요?'}}
-> 해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.\n더 필요하신 게 있으신가요
+>iff(csdemo.locationExists)  해당 서비스 센터의 영업시간은\n평일 +center.winter_week_open+부터 +center.winter_week_close+까지,\n 토요일 +center.winter_sat_open+부터 +center.winter_sat_close+까지 이며,\n 공휴일은 휴무입니다.\n더 필요하신 게 있으신가요
     <~네> 고객님, 어떤 부분이 궁금하신가요?
     <~아니요> 머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
         <~네> 더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.
@@ -266,31 +266,30 @@ csdemo.searchCenterTask
 < 위치
 {action: csdemo.daumgeoCode}
 > iff(csdemo.locationNotExists) {returnCall: '위치찾기', options: {returnDialog: '방문경로둘', output: '고객님 근처의 서비스 센터를 파악한 후에 방문경로를 안내해드려도 될까요?'}}
-> +center.svc_center_name+의 위치정보입니다\n 주소: +center.address3+\n 영업시간 : 평일: +center.winter_week_open+ ~ +center.winter_week_close+, 토요일: +center.winter_sat_open+ ~ +center.winter_sat_close+\n 전화번호: +center.phone+\n +center.parking+\nhttp:\/\/map.daum.net\/link\/map\/+center.svc_center_name+,+center.lat+,+center.lng+ \n해당 서비스 센터의 방문 예약을 하시겠습니까?|위치정보는 다음과 같습니다. 방문예약을 하시겠습니까?
-        <~네> {call:'방문예약'}
-        <~아니요> 더 필요하신 게 있으신가요?
-            <~네> 고객님, 어떤 부분이 궁금하신가요?
-            <~아니요> 머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
-                <~네> 더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.
-                <~아니요> 고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인이 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.
+> iff(csdemo.locationExists) +center.svc_center_name+의 위치정보입니다\n 주소: +center.address3+\n 영업시간 : 평일: +center.winter_week_open+ ~ +center.winter_week_close+, 토요일: +center.winter_sat_open+ ~ +center.winter_sat_close+\n 전화번호: +center.phone+\n +center.parking+\nhttp:\/\/map.daum.net\/link\/map\/+center.svc_center_name+,+center.lat+,+center.lng+ \n해당 서비스 센터의 방문 예약을 하시겠습니까?|위치정보는 다음과 같습니다. 방문예약을 하시겠습니까?
+    <~네> {call:'방문예약둘'}
+    <~아니요> 더 필요하신 게 있으신가요?
+        <~네> 고객님, 어떤 부분이 궁금하신가요?
+        <~아니요> 머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
+            <~네> 더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.
+            <~아니요> 고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인이 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.
 
 방문경로:
 < false
 {action: csdemo.daumgeoCode}
 > iff(csdemo.locationNotExists) {returnCall: '위치찾기', options: {returnDialog: '방문경로둘', output: '고객님 근처의 서비스 센터를 파악한 후에 방문경로를 안내해드려도 될까요?'}}
-> +center.svc_center_name+의 위치정보입니다\nhttp:\/\/map.daum.net\/link\/map\/+center.svc_center_name+,+center.lat+,+center.lng+\n해당 서비스 센터의 방문 예약을 하시겠습니까?
-        <~네> {call:'방문예약'}
-        <~아니요> 더 필요하신 게 있으신가요?
-            <~네> 고객님, 어떤 부분이 궁금하신가요?
-            <~아니요> 머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
-                <~네> 더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.
-                <~아니요> 고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인이 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.
-
+> iff(csdemo.locationExists) +center.svc_center_name+의 위치정보입니다\nhttp:\/\/map.daum.net\/link\/map\/+center.svc_center_name+,+center.lat+,+center.lng+\n해당 서비스 센터의 방문 예약을 하시겠습니까?
+    <~네> {call:'방문예약둘'}
+    <~아니요> 더 필요하신 게 있으신가요?
+        <~네> 고객님, 어떤 부분이 궁금하신가요?
+        <~아니요> 머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
+            <~네> 더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.
+            <~아니요> 고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인이 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.
 
 예약:
 <false
 > if(context.dialog.repairable == true) 네 +category+ 상품은 현 지점에서 현장 수리 가능합니다.\n성함을 말씀해주세요
-    < {regexp: /[가-힣]/g}
+    < {types: [{name: 'name', typeCheck: csdemo.nameTypeCheck, raw: true}]}
     > 휴대폰 번호를 말씀해주세요.
         < {types: [{type : type.mobileType, context: false}]}
         > 원하시는 방문날짜를 입력해주세요
@@ -300,6 +299,7 @@ csdemo.searchCenterTask
             < 오늘
             < 모레
             < {regexp: /\d{1,2} \/ \d{1,2}/g}
+            < {regexp: /\d{1,2}/g}
             > 시간을 선택해주세요\n오전\n09:00 09:30 09:50\n10:10 10:30 11:00\n11:20 11:30 11:50\n오후\n12:00 12:30 12:50\n13:00 13:20 13:40\n15:00 15:10 15:50\n 16:10 16:20 16:50\n17:00 17:20 17:40|원하시는 시간을 말씀해주세요.
                 < {types: [{name: 'time', typeCheck: 'timeTypeCheck', raw: true}]}
                 > 센터방문 예약이 완료되었습니다.\n더 필요하신 게 있으신가요?
@@ -317,6 +317,50 @@ csdemo.searchCenterTask
         <~네> 더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.
         <~아니요> 고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인이 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.
 
+방문예약둘:
+< false
+> 서비스를 받고 싶으신 제품을 말씀해주세요.
+    <{types: [{name: 'repairable', typeCheck: csdemo.repairableTypecheck, raw: true}]}
+    {action: csdemo.repairableCheck}
+    >if(context.dialog.repairable == 'remote') +category+ 상품은 서비스 센터에서 수리를 받으시는 것보다 출장 수리를 예약하여, 기사님을 통하여 서비스를 받으시면 더욱 편리합니다.\n서비스 기사님의 출장수리 예약을 도와드릴까요?|서비스 기사님의 출장수리 예약을 도와드릴까요?
+        <~네> {call:'출장수리예약'}
+        <~아니요> 더 필요하신 게 있으신가요?
+            <~네> 고객님, 어떤 부분이 궁금하신가요?
+            <~아니요>머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
+                <~네> 더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.
+                <~아니요> 고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인이 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.
+    > iff(csdemo.locationNotExists) {returnCall: '위치찾기', options: {returnDialog: '예약', output: '고객님 근처의 서비스 센터를 파악한 후에 방문예약을 도와드려도 될까요?'}}
+    > if(context.dialog.repairable == true) 네 +ascategory+ 상품은 현 지점에서 현장 수리 가능합니다.\n성함을 말씀해주세요
+        < {types: [{name: 'name', typeCheck: csdemo.nameTypeCheck, raw: true}]}
+        > 휴대폰 번호를 말씀해주세요.
+            < {types: [{type : type.mobileType, context: false}]}
+            > 원하시는 방문날짜를 입력해주세요
+                < 월
+                < 일
+                < 내일
+                < 오늘
+                < 모레
+                < {regexp: /\d{1,2} \/ \d{1,2}/g}
+                < {regexp: /\d{1,2}/g}
+                > 시간을 선택해주세요\n오전\n09:00 09:30 09:50\n10:10 10:30 11:00\n11:20 11:30 11:50\n오후\n12:00 12:30 12:50\n13:00 13:20 13:40\n15:00 15:10 15:50\n 16:10 16:20 16:50\n17:00 17:20 17:40|원하시는 시간을 말씀해주세요.
+                    < {types: [{name: 'time', typeCheck: 'timeTypeCheck', raw: true}]}
+                    > 센터방문 예약이 완료되었습니다.\n더 필요하신 게 있으신가요?
+                        <~네> 고객님, 어떤 부분이 궁금하신가요?
+                        <~아니요>머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
+                            <~네> 더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.
+                            <~아니요> 고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인이 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.
+                    <{if: 'true'}> {repeat: 1, options: {output: '시간을 말씀해주세요.\n예시)14시, 오후 2시, 04:00'}}
+                <{if: 'true'}> {repeat: 1, options: {output: '방문 날짜를 말씀해주세요.'}}
+            <{if: 'true'}> {repeat: 1, options: {output: '휴대폰 번호를 말씀해주세요.'}}
+        <{if: 'true'}> {repeat: 1, options: {output: '성함을 말씀해주세요.'}}
+    >if(context.dialog.repairable == false) 죄송합니다. 이 영업점에서는 취급하지 않는 품목입니다.\n더 필요한 것이 있으신가요?
+        <~네> 고객님, 어떤 부분이 궁금하신가요?
+        <~아니요> 머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
+            <~네> 더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.
+            <~아니요> 고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인이 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.
+    <{if: 'true'}> {repeat: 1, options: {output: '제품명을 입력해주세요.\n[예시]청소기,에어컨,노트북 등\n처음으로 돌아가시려면 \"시작\"을 입력해주세요.'}}
+
+
 방문예약:
 < 예약
 > 서비스 센터 방문 예약을 도와드릴까요?
@@ -332,7 +376,7 @@ csdemo.searchCenterTask
                     <~아니요> 고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인이 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.
         > iff(csdemo.locationNotExists) {returnCall: '위치찾기', options: {returnDialog: '예약', output: '고객님 근처의 서비스 센터를 파악한 후에 방문예약을 도와드려도 될까요?'}}
         > if(context.dialog.repairable == true) 네 +ascategory+ 상품은 현 지점에서 현장 수리 가능합니다.\n성함을 말씀해주세요
-            < {regexp: /[가-힣]/g}
+            < {types: [{name: 'name', typeCheck: csdemo.nameTypeCheck, raw: true}]}
             > 휴대폰 번호를 말씀해주세요.
                 < {types: [{type : type.mobileType, context: false}]}
                 > 원하시는 방문날짜를 입력해주세요
@@ -342,6 +386,7 @@ csdemo.searchCenterTask
                     < 오늘
                     < 모레
                     < {regexp: /\d{1,2} \/ \d{1,2}/g}
+                    < {regexp: /\d{1,2}/g}
                     > 시간을 선택해주세요\n오전\n09:00 09:30 09:50\n10:10 10:30 11:00\n11:20 11:30 11:50\n오후\n12:00 12:30 12:50\n13:00 13:20 13:40\n15:00 15:10 15:50\n 16:10 16:20 16:50\n17:00 17:20 17:40|원하시는 시간을 말씀해주세요.
                         < {types: [{name: 'time', typeCheck: 'timeTypeCheck', raw: true}]}
                         > 센터방문 예약이 완료되었습니다.\n더 필요하신 게 있으신가요?
@@ -370,7 +415,7 @@ csdemo.searchCenterTask
 > 출장 수리 예약을 하기 위하여, 간단한 정보 몇가지를 수집하도록 하겠습니다. \n 수리가 필요한 제품의 증상을 입력해 주세요.
     < {regexp: /[가-힣]/g}
     > 출장 방문시 안내를 받으실 분의 성함을 입력해 주세요.
-        < {regexp: /[가-힣]/g}
+        < {types: [{name: 'name', typeCheck: csdemo.nameTypeCheck, raw: true}]}
         > 저희 기사님께서 출장 방문시 연락드릴 휴대폰 번호를 입력해주세요.
             < {types: [{type : type.mobileType, context: false}]}
             > 출장 방문을 하기 위해서는 고객님의 정확한 주소가 필요합니다.\n 지번 또는 도로명을 포함한 상세주소를 입력 부탁드리겠습니다.
@@ -382,6 +427,7 @@ csdemo.searchCenterTask
                     < 모레
                     < 오늘
                     < {regexp: /\d{1,2} \/ \d{1,2}/g}
+                    < {regexp: /\d{1,2}/g}
                     > 고객님께서 지정하신 날짜에 출장 수리 예약이 가능한 시간 목록입니다. 원하시는 시간을 선택해주세요\n오전\n09:00 09:30 09:50\n10:10 10:30 11:00\n11:20 11:30 11:50\n오후\n12:00 12:30 12:50\n13:00 13:20 13:40\n15:00 15:10 15:50\n 16:10 16:20 16:50\n17:00 17:20 17:40|원하시는 시간을 말씀해주세요.
                         < {types: [{name: 'time', typeCheck: 'timeTypeCheck', raw: true}]}
                         > 출장수리 예약이 완료되었습니다. \n더 필요하신 게 있으신가요?
@@ -429,7 +475,7 @@ csdemo.searchCenterTask
 < ~수리 ~가능
 {action: csdemo.repairableList}
 > iff(csdemo.locationNotExists) {returnCall: '위치찾기', options: {returnDialog: '수리가능품목', output: '고객님 근처의 서비스 센터를 파악한 후에 수리가능품목을 안내해드려도 될까요?'}}
-> 문의 주신 서비스센터의 수리 가능 품목은 +center.productlist+ 입니다.\n 해당 서비스 센터 정보를 알려드릴까요?
+> iff(csdemo.locationExists) 문의 주신 서비스센터의 수리 가능 품목은 +center.productlist+ 입니다.\n 해당 서비스 센터 정보를 알려드릴까요?
     <~네> [+center.svc_center_name+]\n- 주소: +center.address3+\n- 영업시간 : 평일: +center.winter_week_open+ ~ +center.winter_week_close+, 토요일: +center.winter_sat_open+ ~ +center.winter_sat_close+\n- 전화번호: +center.phone+\n- +center.parking+\n서비스 센터의 위치를 지도에서 확인하시겠습니까?|센터 정보는 다음과 같습니다.위치를 지도에서 확인하시겠습니까?
         <~네> {call:'방문경로'}
         <~아니요> 머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
@@ -441,11 +487,42 @@ csdemo.searchCenterTask
             <~네> 더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.
             <~아니요> 고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인이 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.
 
+< 고장
+> 어떤 제품이 고장나셨나요?
+    <{types: [{name: 'repairable', typeCheck: csdemo.repairableTypecheck, raw: true}]}
+    {action: csdemo.repairableCheck}
+    >if(context.dialog.repairable == 'remote') +category+ 상품은 서비스 센터에서 수리를 받으시는 것보다 출장 수리를 예약하여, 기사님을 통하여 서비스를 받으시면 더욱 편리합니다.\n서비스 기사님의 출장수리 예약을 도와드릴까요?|서비스 기사님의 출장 수리 예약을 도와드릴까요?
+        <~네> {call:'출장수리예약'}
+        <~아니요> 더 필요하신 게 있으신가요?
+            <~네> 고객님, 어떤 부분이 궁금하신가요?
+            <~아니요>머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
+                <~네> 더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.
+                <~아니요> 고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인이 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.
+    >iff(csdemo.locationNotExists) {returnCall: '위치찾기', options: {returnDialog: '수리가능', output: '고객님 근처의 서비스 센터를 파악한 후에 수리가능여부를 안내해드려도 될까요?'}}
+    >if(context.dialog.repairable == true) 네 +ascategory+ 상품은 현재 서비스 센터에서 현장 수리 가능합니다.\n 서비스 센터 방문 전 예약을 미리 하시면 대기시간 없이 서비스를 받아 보실 수 있습니다. 서비스 센터 방문예약을 도와드릴까요?|+category+ 상품은 현재 서비스 센터에서 현장 수리 가능합니다.서비스 센터 방문 예약을 도와드릴까요?
+        <~네> {call:'예약', options: {output: '성함을 말씀해주세요.'}}
+        <~아니요> 더 필요하신 게 있으신가요?
+            <~네> 고객님, 어떤 부분이 궁금하신가요?
+            <~아니요>머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
+                <~네> 더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.
+                <~아니요> 고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인이 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.
+    >if(context.dialog.repairable == false) 죄송합니다. 이 영업점에서는 취급하지 않는 품목입니다.\n센터 정보를 알려드릴까요?
+        <~네> [+center.svc_center_name+]\n- 주소: +center.address3+\n- 영업시간 : 평일: +center.winter_week_open+ ~ +center.winter_week_close+, 토요일: +center.winter_sat_open+ ~ +center.winter_sat_close+\n- 전화번호: +center.phone+\n- +center.parking+\n서비스 센터의 위치를 지도에서 확인하시겠습니까?|센터 정보는 다음과 같습니다.위치를 지도에서 확인하시겠습니까?
+            <~네> {call:'방문경로'}
+            <~아니요> 머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
+                <~네> 더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.
+                <~아니요> 고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인이 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.
+        <~아니요> 더 필요하신 게 있으신가요?
+            <~네> 고객님, 어떤 부분이 궁금하신가요?
+            <~아니요>머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
+                <~네> 더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.
+                <~아니요> 고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인이 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.
+
 
 전화번호안내:
 < ~번호
 > iff(csdemo.locationNotExists)  {returnCall: '위치찾기', options: {returnDialog: '전화번호안내', output: '고객님 근처의 서비스 센터를 파악한 후에 전화번호를 안내해드려도 될까요?'}}
-> +center.svc_center_name+ 전화번호입니다.\n +center.phone+\n더 필요하신 게 있으신가요?
+> iff(csdemo.locationExists) +center.svc_center_name+ 전화번호입니다.\n +center.phone+\n더 필요하신 게 있으신가요?
     <~네> 고객님, 어떤 부분이 궁금하신가요?
     <~아니요> 머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
         <~네> 더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.
@@ -454,7 +531,7 @@ csdemo.searchCenterTask
 주차안내:
 < ~주차
 > iff(csdemo.locationNotExists)  {returnCall: '위치찾기', options: {returnDialog: '주차안내', output: '고객님 근처의 서비스 센터를 파악한 후에 주차가능여부를 안내해드려도 될까요?'}}
-> +center.parking+합니다.\n더 필요하신 게 있으신가요?
+> iff(csdemo.locationExists) +center.parking+합니다.\n더 필요하신 게 있으신가요?
     <~네> 고객님, 어떤 부분이 궁금하신가요?
     <~아니요> 머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
         <~네> 더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.
@@ -463,7 +540,7 @@ csdemo.searchCenterTask
 주소안내:
 < 주소
 > iff(csdemo.locationNotExists)  {returnCall: '위치찾기', options: {returnDialog: '주소안내', output: '고객님 근처의 서비스 센터를 파악한 후에 주차가능여부를 안내해드려도 될까요?'}}
-> +center.address3+입니다. 더 필요하신 게 있으신가요?
+> iff(csdemo.locationExists) +center.address3+입니다. 더 필요하신 게 있으신가요?
     <~네> 고객님, 어떤 부분이 궁금하신가요?
     <~아니요> 머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\nChatbot에서 제공해드린 답변이 도움이 되었습니까?
         <~네> 더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.
@@ -490,6 +567,8 @@ c</^(\.|\,|\;|\:|\!|\?|\@|\#|\$|\%)$/
        <~네> 더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.
        <~아니요> 고객님, 만족스러운 답변을 드리지 못해 죄송합니다. 더 노력하는 머니브레인이 되겠습니다.\n머니브레인 콜센터 번호는 02-858-5683입니다.\n머니브레인에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.\n감사합니다.|만족스러운 답변을 드리지 못해 죄송합니다 더 노력하겠습니다.
 
+<안녕하다
+>네, 안녕하세요 고객님~
 
 c<{regexp: up}
 >{up:1}

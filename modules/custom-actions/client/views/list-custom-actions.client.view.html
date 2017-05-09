@@ -8,7 +8,7 @@
 <section class="panel">
   <header class="panel-heading">
     <div class="panel-actions">
-      <button id="addToTable" class="btn btn-primary" ui-sref="custom-actions.create"><i class="fa fa-plus"></i> 신규등록</button>
+      <button id="addToTable" class="btn btn-primary btn-sm" ui-sref="custom-actions.create"><i class="fa fa-plus"></i> 신규등록</button>
     </div>
 
     <h2 class="panel-title">&nbsp;</h2>
@@ -33,7 +33,7 @@
         <td class="text-center">{{customAction.updated | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
         <td class="text-center">{{customAction.created | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
         <td>
-          <a class="btn btn-primary" ui-sref="custom-actions.edit({customActionId: customAction._id})">
+          <a class="btn btn-primary btn-sm" ui-sref="custom-actions.edit({customActionId: customAction._id})">
             <i class="glyphicon glyphicon-edit"></i> 수정
           </a>
         </td>

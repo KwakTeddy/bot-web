@@ -11,7 +11,7 @@
 <section class="panel">
   <header class="panel-heading">
     <div class="panel-actions">
-      <button id="addToTable" class="btn btn-primary" ui-sref="bots.create"><i class="fa fa-plus"></i> 신규등록</button>
+      <button id="addToTable" class="btn btn-primary btn-sm" ui-sref="bots.create"><i class="fa fa-plus"></i> 신규등록</button>
     </div>
 
     <h2 class="panel-title">&nbsp;</h2>
@@ -22,7 +22,6 @@
       <tr>
         <th class="text-center">봇아이디</th>
         <th class="text-center">봇이름</th>
-        <th class="text-center">채널</th>
         <th class="text-center">사용여부</th>
         <th class="text-center">소유자</th>
         <th class="text-center">등록일</th>
@@ -31,20 +30,19 @@
       </thead>
       <tbody>
       <tr ng-repeat="bot in ::vm.bots">
-        <td class="text-center">{{bot.id}}</td>
-        <td class="text-center">{{bot.name}}</td>
-        <td class="text-center">{{bot.channel}}</td>
+        <td class="text-center"><a ui-sref="bots.edit({botId: bot._id})">{{bot.id}}</a></td>
+        <td class="text-center">{{bot.name}}</a></td>
         <td class="text-center">{{bot.using ? '사용중' : '사용안함'}}</td>
         <td class="text-center">{{bot.user ? bot.user.displayName : '장세영'}}</td>
         <td class="text-center">{{bot.created | date: 'yyyy-MM-dd'}}</td>
         <td>
-          <a class="btn btn-primary" ui-sref="bots.edit({botId: bot._id})">
+          <a class="btn btn-default btn-sm" ui-sref="bots.edit({botId: bot._id})">
             <i class="glyphicon glyphicon-edit"></i> 수정
           </a>
-          <a class="btn btn-default" ui-sref="bots.files({botId: bot._id})">
+          <a class="btn btn-default btn-sm" ui-sref="bots.files({botId: bot._id})">
             <i class="glyphicon glyphicon-edit"></i> 파일관리
           </a>
-          <a class="btn btn-default" ui-sref="bots.graph-knowledge({botId: bot._id})">
+          <a class="btn btn-default btn-sm" ui-sref="bots.graph-knowledge({botId: bot._id})">
             지식 Graph
           </a>
         </td>
@@ -90,7 +88,7 @@
 <!--</div>-->
 
 <!--<div class="col-sm-6 text-right">-->
-<!--<a class="btn btn-primary" ui-sref="bots.create">-->
+<!--<a class="btn btn-primary btn-sm" ui-sref="bots.create">-->
 <!--<i class="fa fa-plus"></i> 신규등록-->
 <!--</a>-->
 <!--</div>-->
@@ -135,7 +133,7 @@
 <!--</div>-->
 
 <!--<div class="col-sm-6 text-right">-->
-<!--<a class="btn btn-primary" ui-sref="bots.create">-->
+<!--<a class="btn btn-primary btn-sm" ui-sref="bots.create">-->
 <!--<i class="fa fa-plus"></i> 신규등록-->
 <!--</a>-->
 <!--</div>-->

@@ -8,7 +8,7 @@
 <section class="panel">
   <header class="panel-heading">
     <div class="panel-actions">
-      <button id="addToTable" class="btn btn-primary" ui-sref="restaurants.create"><i class="fa fa-plus"></i> 신규등록</button>
+      <button id="addToTable" class="btn btn-primary btn-sm" ui-sref="restaurants.create"><i class="fa fa-plus"></i> 신규등록</button>
     </div>
 
     <h2 class="panel-title">&nbsp;</h2>
@@ -35,7 +35,7 @@
         <td class="text-center">{{restaurant.updated | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
         <td class="text-center">{{restaurant.created | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
         <td>
-          <a class="btn btn-primary" ui-sref="restaurants.edit({restaurantId: restaurant._id})">
+          <a class="btn btn-primary btn-sm" ui-sref="restaurants.edit({restaurantId: restaurant._id})">
             <i class="glyphicon glyphicon-edit"></i> 수정
           </a>
         </td>

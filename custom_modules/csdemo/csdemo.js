@@ -302,7 +302,7 @@ function searchNaverTwo(task, context, callback) {
 
     context.dialog.item = task.doc[0];
     if (context.dialog.item) {
-      var re = /(?:(경기도|경기|강원도|강원|충청북도|충북|충청남도|충남|전라북도|전북|전라남도|전남|경상북도|경북|경상남도|경남|제주특별자치도|제주도|제주|서울특별시|서울시|서울|인천광역시|인천시|인천|대전광역시|대전시|대전|대구광역시|대구시|대구|광주광역시|광주시|광주|부산광역시|부산시|부산|울산광역시|울산시|울산|세종특별자치시|세종특별시|세종시|세종)\s*)?(?:([가-힣]+시|[가-힣]+군|[가-힣]+구)\s*)?(?:[가-힣]+구\s*)?(?:(?:(?:([가-힣]+읍|[가-힣]+면|[가-힣]+동|[가-힣]+.*[0-9]+.*가)))|([가-힣]+[\s0-9]*번?로[\s0-9]*번?[가나다라마바사아자차카타파하]?길|[가-힣]+[\s0-9]*번?[가나다라마바사아자차카타파하]?길|[가-힣]+[\s0-9]*번?로))/;
+      var re = /(?:(경기도|경기|강원도|강원|충청북도|충북|충청남도|충남|전라북도|전북|전라남도|전남|경상북도|경북|경상남도|경남|제주특별자치도|제주도|제주|서울특별시|서울시|서울|인천광역시|인천시|인천|대전광역시|대전시|대전|대구광역시|대구시|대구|광주광역시|광주시|광주|부산광역시|부산시|부산|울산광역시|울산시|울산|세종특별자치시|세종특별시|세종시|세종)\s*)?(?:([가-힣]+시|[가-힣]+군|[가-힣]+구)\s*)?(?:[가-힣]+구\s*)?(?:(?:(?:([가-힣]+읍|[가-힣]+면|[가-힣]+.[0-9]?동|[가-힣]+.*[0-9]+.*가)))|([가-힣]+[\s0-9]*번?로[\s0-9]*번?[가나다라마바사아자차카타파하]?길|[가-힣]+[\s0-9]*번?[가나다라마바사아자차카타파하]?길|[가-힣]+[\s0-9]*번?로))/;
       if (Array.isArray(context.dialog.item.address.match(re))) {
         context.dialog.address2 = context.dialog.item.address.match(re)[0];
       } else {
@@ -371,9 +371,9 @@ exports.checkTime = checkTime;
 function checkDate(task, context, callback) {
   var day = context.dialog.date.getDay();
 
-  if (day <=5) {
+  if (day <=6) {
     context.dialog.check = false;
-  } else if (day >= 6) {
+  } else if (day >= 7) {
     context.dialog.check = true;
   }
   callback(task, context);
@@ -499,7 +499,7 @@ function repairableTypecheck(inRaw, inNLP, inDoc, context, callback) {
         word = words[i];
         if (category) break;
 
-        if (word.length == 1) continue;
+        if (word.length == 1 && word != '폰') continue;
         for (var j in asCategory) {
           rCategory = asCategory[j];
 
@@ -549,4 +549,17 @@ exports.dongTypeCheck = function (text, type, task, context, callback) {
     }
   });
   callback(text, task, matched);
+};
+
+exports.nameTypeCheck = function (text, type, task, context, callback) {
+  var re = /^[가-힣]{2,4}$/g;
+  var matched = false;
+  var word = text.replace(/ /,'');
+  word = word.match(re);
+  if (word) {
+    matched = true;
+    callback(text, task, matched);
+  } else {
+    callback(text, task, matched);
+  }
 };

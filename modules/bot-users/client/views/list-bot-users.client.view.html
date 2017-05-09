@@ -18,7 +18,6 @@
       <tr>
         <th class="text-center">유저키</th>
         <th class="text-center">채널</th>
-        <th class="text-center">이름</th>
         <th class="text-center">전화번호</th>
         <!--<th class="text-center">이메일</th>-->
         <th class="text-center">등록일</th>
@@ -30,7 +29,6 @@
       <tr ng-repeat="botUser in ::vm.botUsers">
         <td class="text-center">{{botUser.userKey}}</td>
         <td class="text-center">{{botUser.channel}}</td>
-        <td class="text-center">{{botUser.name}}</td>
         <td class="text-center">{{botUser.mobile}}</td>
         <!--<td class="text-center">{{botUser.email}}</td>-->
         <td class="text-center">{{botUser.created | date: 'yyyy-MM-dd'}}</td>
@@ -39,7 +37,7 @@
           <a class="btn btn-default btn-block" ui-sref="user-dialogs.list({botId: botId, userKey: botUser.userKey})">
             내역
           </a>
-          <!--<a class="btn btn-primary" ui-sref="messages.send({userKey: botUser.userKey, channel: botUser.channel})">-->
+          <!--<a class="btn btn-primary btn-sm" ui-sref="messages.send({userKey: botUser.userKey, channel: botUser.channel})">-->
             <!--<i class="glyphicon glyphicon-send"></i> 전송-->
           <!--</a>-->
         </td>

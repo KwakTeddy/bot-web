@@ -84,10 +84,10 @@
     <footer class="panel-footer">
       <div class="row">
         <div class="col-sm-12 text-center" ng-hide="vm.intent && vm.intent._id">
-          <!--<button class="btn btn-primary">Submit</button>-->
-          <button type="submit" class="btn btn-primary" ng-click="vm.save(vm.form.intentForm.$valid)">생성</button>
-          <!--<button type="submit" class="btn btn-primary" ng-click="vm.contentSave(form.$valid)">만들기</button>-->
-          <!--<button type="reset" class="btn btn-default">초기화</button>-->
+          <!--<button class="btn btn-primary btn-sm">Submit</button>-->
+          <button type="submit" class="btn btn-primary btn-sm" ng-click="vm.save(vm.form.intentForm.$valid)">생성</button>
+          <!--<button type="submit" class="btn btn-primary btn-sm" ng-click="vm.contentSave(form.$valid)">만들기</button>-->
+          <!--<button type="reset" class="btn btn-default btn-sm">초기화</button>-->
           <button type="button" class="btn btn-danger" ui-sref="intents.list">취소</button>
         </div>
         <div class="col-sm-12 text-center" ng-show="vm.intent && vm.intent._id">
@@ -96,7 +96,7 @@
             <!--<a class="btn btn-primary pull-right" ng-click="vm.contentSave(vm.form.intentForm.$valid)">-->
               <!--<i class="glyphicon glyphicon-edit"></i> 만들기-->
             <!--</a>-->
-            <!--<a class="btn btn-primary" ng-click="vm.save(form.$valid)">-->
+            <!--<a class="btn btn-primary btn-sm" ng-click="vm.save(form.$valid)">-->
             <!--<i class="glyphicon glyphicon-edit"></i> 수정-->
             <!--</a>-->
             <a class="btn btn-danger pull-left btn-sm" ng-click="vm.remove()">
