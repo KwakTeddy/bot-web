@@ -37,10 +37,10 @@ var dialogs = [
 				"filename": "default",
 				"input": [
 					{
-						"regexp": "/[0-9]+/",
 						"types": [
 							"date"
-						]
+						],
+						"regexp": "/[0-9]+/"
 					}
 				],
 				"output": [
@@ -64,7 +64,12 @@ var dialogs = [
 							}
 						]
 					}
-				]
+				],
+				"task": {
+					"url": "aaa",
+					"desc": "ssss",
+					"name": "temptask"
+				}
 			},
 			{
 				"name": "dialog_default1",
@@ -172,6 +177,13 @@ var dialogs = [
 						"output": []
 					}
 				]
+			},
+			{
+				"name": "dialog_default14",
+				"id": "default14",
+				"filename": "default",
+				"input": [],
+				"output": []
 			}
 		]
 	}
