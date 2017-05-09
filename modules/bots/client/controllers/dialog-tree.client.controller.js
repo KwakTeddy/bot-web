@@ -2489,9 +2489,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       var schema = {
         type: "object",
-        title: "Task Parameter",
+        title: $scope.dialog.task.name,
         properties: {},
-        format: "grid",
+        // format: "grid",
       };
 
       schema.properties = vm.parseSchema(paramSchema);
