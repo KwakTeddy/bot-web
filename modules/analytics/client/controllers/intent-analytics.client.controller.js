@@ -40,66 +40,41 @@ angular.module('analytics').controller('AnalyticsIntentController', ['$scope', '
       $scope.failedIntent = target;
     };
 
+    $scope.$on('sendmsg', function(event, arg0) {
+      $scope.msg = arg0.message;
+      $scope.sendIntent();
+    });
 
-    $scope.save = function () {
-      var clearList = [];
-      for(var i = 0; i < $scope.failedIntentDialog.length; i++){
-        if ($scope.failedIntentDialog[i].clear){
-          clearList.push($scope.failedIntentDialog[i])
+    $scope.sendIntent = function() {
+      $resource('/api/user-bots-analytics/intent', {}).get({input: $scope.msg, botId: $rootScope.botId}, function (res) {
+        console.log(res);
+        if (res.intent){
+          $scope.intent = res.intent;
+        }else {
+          $scope.intent['name'] = '해당하는 Intent가 없습니다'
         }
-      }
 
-      $resource('/api/intentsContent').save({content: clearList, intentId: $scope.failedIntent._id, botId: $rootScope.botId}, function () {
-       $scope.failedIntentDialog[0].$update({intentId: $scope.failedIntent._id, clearList: clearList}, function (result) {
-         DialogFailureMaintenanceService.query({intentId: $stateParams.intentId, botId: $cookies.get('default_bot')}, function (result2) {
-           $scope.failedIntentDialog = result2;
-         }, function (err2) {
-           console.log(err2)
-         });
+        if (!Object.keys(res.entities).length){
+          $scope.entities = '해당하는 Entity가 없습니다'
+        }else {
+          $scope.entities = res.entities;
+        }
 
-       }, function (err1) {
-         console.log(err1);
-       })
-      }, function (err) {
-        console.log(err);
+        if(res.dialog && res.dialog.task){
+          $scope.task = res.dialog.task
+        }else {
+          $scope.task['name'] = '해당하는 Task가 없습니다'
+        }
+
+        if(res.dialog && res.dialog.task && res.dialog.task.entities){
+          $scope.taskEntities = res.dialog.task.entities;
+        }else {
+          $scope.taskEntities = [];
+        }
+
+        $scope.msg = '';
       })
-    };
-
-    $scope.$on('keyinput', function(event, arg0) {
-      $scope.msg = arg0;
-    });
-
-    $document.bind("keydown", function (event) {
-      if (event.keyCode == 13){
-        $resource('/api/user-bots-analytics/intent', {}).get({input: $scope.msg, botId: $rootScope.botId}, function (res) {
-          console.log(res);
-          if (res.intent){
-            $scope.intent = res.intent;
-          }else {
-            $scope.intent['name'] = '해당하는 Intent가 없습니다'
-          }
-
-          if (!Object.keys(res.entities).length){
-            $scope.entities = '해당하는 Entity가 없습니다'
-          }else {
-            $scope.entities = res.entities;
-          }
-
-          if(res.dialog && res.dialog.task){
-            $scope.task = res.dialog.task
-          }else {
-            $scope.task['name'] = '해당하는 Task가 없습니다'
-          }
-
-          if(res.dialog && res.dialog.task && res.dialog.task.entities){
-            $scope.taskEntities = res.dialog.task.entities;
-          }else {
-            $scope.taskEntities = [];
-          }
-
-        })
-      }
-    });
+    }
   }
 ]);
 
