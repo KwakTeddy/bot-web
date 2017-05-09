@@ -239,7 +239,7 @@ function analyzeIntentFail(botId, callback) {
     },
 
     function(cb) {
-      BotIntentFail.remove({botId: botId}, function(err) {
+      BotIntentFail.remove({botId: botId, clear: {$ne: true}}, function(err) {
         cb(null);
       })
     },
@@ -305,6 +305,7 @@ function analyzeIntentFail(botId, callback) {
       }
     }
   ], function(err) {
+    console.log('사용자 대화 Intent 분석 완료');
     if(callback) callback();
     else return;
   });

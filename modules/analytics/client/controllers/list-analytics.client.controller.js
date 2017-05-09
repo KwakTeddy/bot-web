@@ -389,13 +389,17 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
 
     $scope.find_dialog_failure_maintenance = function () {
       $http.get('/api/intent/analyzeFailIntent/'+ $cookies.get('default_bot')).then(function (data) {
-        DialogFailureMaintenanceService.query({botId: $cookies.get('default_bot')}, function (result) {
-          $scope.failedIntent = result;
-        }, function (err) {
-          console.log(err);
-        })
+        console.log('분석 완료');
       }, function (err) {
         console.log(err)
+      })
+    }
+
+    $scope.initDialogFailure = function() {
+      DialogFailureMaintenanceService.query({botId: $cookies.get('default_bot')}, function (result) {
+        $scope.failedIntent = result;
+      }, function (err) {
+        console.log(err);
       })
     }
   }
