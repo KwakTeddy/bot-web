@@ -13,7 +13,8 @@ function matchDictionaryEntities(inRaw, inNLP, inDoc, context, callback) {
     if(word.pos == 'Noun') {
       Dic.find({name: word.text}).lean().populate('entityId').exec(function(err, docs) {
         for(var i in docs) {
-          entities[docs[i].entityId.name] = docs[i].name;
+          if(docs[i].entityId)
+            entities[docs[i].entityId.name] = docs[i].name;
           // entities.push({name: docs[i].entityId.name, word: docs[i].name})
         }
 
