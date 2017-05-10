@@ -15,7 +15,7 @@ var first = /(?:~시작|~처음|^!$|취소)/
     <{if: 'context.botUser.entities.일반형 || context.botUser.entities.양문형'}
     >{call:'약냉'}
     <{if:'true'}
-    >양문형 혹은 일반형 중에 말씀해주세요
+    >{output:'양문형 혹은 일반형 중에 말씀해주세요'}
 >if (context.botUser.entities.에어컨 && context.botUser.entities.스탠딩) {call:'에어컨약냉'}
 >if (context.botUser.entities.에어컨 && context.botUser.entities.벽걸이) {call:'에어컨약냉'}
 >if (context.botUser.entities.에어컨) 에어컨이 스탠딩인가요? 벽걸이인가요?
@@ -28,14 +28,14 @@ var first = /(?:~시작|~처음|^!$|취소)/
         <{if :'context.botUser.entities.일반형'}
         >{call:'약냉'}
         <{if:'true'}
-        >양문형 혹은 일반형 중에 말씀해주세요
+        >{output:'양문형 혹은 일반형 중에 말씀해주세요'}
     <{if :'context.botUser.entities.에어컨'}
     >{output: '에어컨이 스탠딩인가요? 벽걸이인가요?'}
         <{if :'context.botUser.entities.스탠딩'}
         <{if :'context.botUser.entities.벽걸이'}
         >{call:'에어컨약냉'}
         <{if:'true'}
-        >스탠딩 혹은 벽걸이 중에 말씀해주세요
+        >{output:'스탠딩 혹은 벽걸이 중에 말씀해주세요'}
     <{if:'true'}>{repeat:1, options: {output: '냉장고나 에어컨 중 하나를 말씀해주세요.'}}
 
 
@@ -46,7 +46,7 @@ var first = /(?:~시작|~처음|^!$|취소)/
     <{if: 'context.botUser.entities.일반형 || context.botUser.entities.양문형'}
     >{call:'무냉'}
     <{if:'true'}
-    >양문형 혹은 일반형 중에 말씀해주세요
+    >{output:'양문형 혹은 일반형 중에 말씀해주세요'}
 >if (context.botUser.entities.에어컨 && context.botUser.entities.스탠딩) {call:'에어컨무냉'}
 >if (context.botUser.entities.에어컨 && context.botUser.entities.벽걸이) {call:'에어컨무냉'}
 >if (context.botUser.entities.에어컨) 에어컨이 스탠딩인가요? 벽걸이인가요?
@@ -59,14 +59,14 @@ var first = /(?:~시작|~처음|^!$|취소)/
         <{if :'context.botUser.entities.일반형'}
         >{call:'무냉'}
         <{if:'true'}
-        >양문형 혹은 일반형 중에 말씀해주세요
+        >{output:'양문형 혹은 일반형 중에 말씀해주세요'}
     <{if :'context.botUser.entities.에어컨'}
     >{output: '에어컨이 스탠딩인가요? 벽걸이인가요?'}
         <{if :'context.botUser.entities.스탠딩'}
         <{if :'context.botUser.entities.벽걸이'}
         >{call:'에어컨무냉'}
         <{if:'true'}
-        >스탠딩 혹은 벽걸이 중에 말씀해주세요
+        >{output:'스탠딩 혹은 벽걸이 중에 말씀해주세요'}
     <{if:'true'}>{repeat:1, options: {output: '냉장고나 에어컨 중 하나를 말씀해주세요.'}}
 
 <{intent:'강냉'}
