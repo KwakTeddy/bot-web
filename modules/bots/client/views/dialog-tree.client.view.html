@@ -1,4 +1,13 @@
 <!DOCTYPE html>
+<script>
+  $(document).ready(function() {
+    $('#dt').dataTable( {
+      "autoWidth": false,
+      "searching": false,
+      "lengthChange": false
+    });
+  } );
+</script>
 <meta charset="utf-8">
 <style>
     .content-body {padding: 0px; padding-top:7px}
@@ -360,7 +369,7 @@
                 <div id="modalTaskForm" class="modal-block modal-block-primary mfp-hide">
                     <section class="panel">
                         <header class="panel-heading">
-                            <h2 class="panel-title">Task 정보</h2>
+                            <h2 class="panel-title">Task 정보 수정</h2>
                         </header>
                         <form name="dialogTaskForm" novalidate="novalidate" >
                             <div class="panel-body">
@@ -369,12 +378,25 @@
                                     </div>
                                 </div>
                                 <hr>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Entity</label>
-                                    <div class="col-sm-9">
-                                        <ul>
-                                            <li ng-repeat="e in vm.entity[dialog.task.name]"><span>{{e.name}}</span></li>
-                                        </ul>
+                                <div class="form-group mb-md">
+                                    <div class="col-sm-12">
+                                    <label class="control-label">Entity</label>
+                                        <table id="dt" class="table table-bordered table-striped mb-none">
+                                            <thead>
+                                            <tr>
+                                                <th class="text-center col-sm-2">이름</th>
+                                                <th class="text-center col-sm-2">닉네임</th>
+                                                <th class="text-center col-sm-6">재질문</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="entity in vm.entity[dialog.task.name]">
+                                                <td class="text-center">{{entity.type}}</td>
+                                                <td class="text-center">{{entity.display}}</td>
+                                                <td class="text-center">{{entity.question}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -423,7 +445,10 @@
                                                 </div>
                                                 <div id='input_div' ng-show="vm.inputMode && getInputType(vm.curI.type) == 'text'">
                                                     <input type="text" id="input" name="input" ng-model="vm.curI.str" class="form-control"
-                                                           placeholder="{{getPlaceHolder(vm.curI.type)}}" >
+                                                           placeholder="{{getPlaceHolder(vm.curI.type)}}"
+                                                           auto-focus
+                                                           ng-keydown="saveEnter($event,saveI)"
+                                                    >
                                                 </div>
                                                 <div ng-show="vm.inputMode && getInputType(vm.curI.type) == 'intent'">
                                                     <ui-select ng-model="vm.curI.str"
@@ -531,9 +556,10 @@
                                                         </li>
                                                     </ul>
                                                 </div>
-                                                <div ng-show="vm.inputModeO && getInputType(vm.curO.type) == 'text'">
+                                                <div ng-show="vm.inputModeO && getInputType(vm.curO.type) == 'text'" autofocus>
                                                     <input type="text" id="output" name="output" ng-model="vm.curO.str" class="form-control"
-
+                                                           ng-keydown="saveEnter($event,saveO)"
+                                                           auto-focus
                                                            placeholder="{{getPlaceHolder(vm.curO.type, true)}}">
                                                 </div>
                                                 <div ng-show="vm.inputModeO && getInputType(vm.curO.type) == 'dialog'">

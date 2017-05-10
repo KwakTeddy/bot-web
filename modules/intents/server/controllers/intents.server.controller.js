@@ -16,6 +16,7 @@ var path = require('path'),
   _ = require('lodash');
 
 var util = require('util'); //temporary
+var async = require('async');
 
 /**
  * Create a Custom action
@@ -183,17 +184,26 @@ exports.intentByID = function(req, res, next, id) {
  */
 exports.contentCreate = function(req, res) {
   if ((typeof req.body.content !== 'string')){
-    for(var i = 0; i < req.body.content.length; i++){
+    var i = 0;
+    async.eachSeries(req.body.content, function(c, cb) {
       req.body.content[i]['user'] = req.user._id;
       req.body.content[i]['name'] = req.body.content[i].userDialog.dialog;
       req.body.content[i]['intentId'] = req.body.intentId;
-    }
-    IntentContent.create(req.body.content, function (err, data) {
-      if(err){
-        console.log(err)
-      }else {
-        res.end();
-      }
+
+      dialogset.processInput(null, req.body.content[i]['name'], function(_input, _json) {
+        req.body.content[i]['input'] = _input;
+
+        i++;
+        cb(null);
+      });
+    }, function(err) {
+      IntentContent.create(req.body.content, function (err, data) {
+        if(err){
+          console.log(err)
+        }else {
+          res.end();
+        }
+      })
     })
 
   }else {

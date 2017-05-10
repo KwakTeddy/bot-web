@@ -135,7 +135,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         $('#filetree_open').hide();
         $('#filetree_close').show();
 
-        viewerWidth = document.getElementById('tree-container').clientWidth;
+        viewerWidth = document.getElementById('content').clientWidth;
         baseSvg.attr("width", viewerWidth);
         angular.element(document.getElementById('control')).scope().updateEditor();
         $('#treeBasic').focus();
@@ -151,7 +151,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         $('#filetree_close').hide();
         $('#filetree_open').show();
 
-        viewerWidth = document.getElementById('tree-container').clientWidth;
+        viewerWidth = document.getElementById('content').clientWidth;
         baseSvg.attr("width", viewerWidth);
         angular.element(document.getElementById('control')).scope().updateEditor();
       });
@@ -461,8 +461,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     var keydown = function(event) {
-
-
       if (vm.edit === 'task') {
         if (event.keyCode == 27) { // esc
           event.preventDefault();
@@ -486,8 +484,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
 
       if (document.activeElement == document.getElementById('inputbox') )
-        if (event.keyCode == 27 || event.keyCode == 13) // esc, enter should be handled in chat window
-          return false;
+        return false;
 
       if (event.keyCode == 27) { // esc
         document.getElementById('search').blur();
@@ -543,6 +540,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       if ([45,46,32,13, 37,38,39,40].indexOf(event.keyCode) == -1)
         return false;
 
+      var goto = function(root, func) {
+
+      };
       event.preventDefault();
       if (event.keyCode == 45) { // insert
         addChild(selectedNode);
@@ -557,12 +557,25 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           updateSelected(selectedNode.parent);
         }
       } else if (event.keyCode == 38) { //up
-        if (selectedNode.parent && selectedNode.parent.children &&
-          selectedNode.parent.children.indexOf(selectedNode) > 0) {
-          if (event.ctrlKey) { // ctrl+up
-            goUp(selectedNode);
+        if (selectedNode.parent && selectedNode.parent.children) {
+          if (selectedNode.parent.children.indexOf(selectedNode) > 0) {
+            if (event.ctrlKey) { // ctrl+up
+              goUp(selectedNode);
+            } else {
+              updateSelected(selectedNode.parent.children[selectedNode.parent.children.indexOf(selectedNode)-1]);
+            }
           } else {
-            updateSelected(selectedNode.parent.children[selectedNode.parent.children.indexOf(selectedNode)-1]);
+            var nearUp = {x:0};
+            visit(treeData, function(d) {
+              if (d.y == selectedNode.y && d.x < selectedNode.x && d.x > nearUp.x)
+                nearUp = d;
+            }, function (d) {
+              return d.children && d.children.length > 0 ? d.children : null;
+            });
+
+            if (nearUp.x != 0) {
+              updateSelected(nearUp);
+            }
           }
         }
       } else if (event.keyCode == 39) { //right
@@ -570,12 +583,25 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           updateSelected(selectedNode.children[0]);
         }
       } else if (event.keyCode == 40) { //down
-        if (selectedNode.parent && selectedNode.parent.children &&
-          selectedNode.parent.children.indexOf(selectedNode) < selectedNode.parent.children.length-1) {
-          if (event.ctrlKey) { // ctrl+down
-            goDown(selectedNode);
+        if (selectedNode.parent && selectedNode.parent.children) {
+          if (selectedNode.parent.children.indexOf(selectedNode) < selectedNode.parent.children.length-1) {
+            if (event.ctrlKey) { // ctrl+down
+              goDown(selectedNode);
+            } else {
+              updateSelected(selectedNode.parent.children[selectedNode.parent.children.indexOf(selectedNode) + 1]);
+            }
           } else {
-            updateSelected(selectedNode.parent.children[selectedNode.parent.children.indexOf(selectedNode) + 1]);
+            var nearDown = {x:99999};
+            visit(treeData, function(d) {
+              if (d.y == selectedNode.y && d.x > selectedNode.x && d.x < nearDown.x)
+                nearDown = d;
+            }, function (d) {
+              return d.children && d.children.length > 0 ? d.children : null;
+            });
+
+            if (nearDown.x != 99999) {
+              updateSelected(nearDown);
+            }
           }
         }
       }
@@ -600,6 +626,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.targetI = i;
       vm.curI = angular.copy(i);
       vm.inputMode = true;
+      document.getElementById('input').focus();
     };
 
     $scope.addO = function(input) {
@@ -614,6 +641,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.targetO = o;
       vm.curO = angular.copy(o);
       vm.inputModeO = true;
+      setTimeout(function () {
+        document.getElementById('output').focus();
+      }, 500);
     };
 
     $scope.saveI = function() {
@@ -923,14 +953,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       $scope.dialog.output = initOutput(dialog.output);
 
-      var isFocus =false;
-      if (dialog.input.length == 0) {
-        $scope.addInput();
-        isFocus = true;
-      }
-
       if (dialog.output.length == 0) {
         $scope.addOutput();
+      }
+
+      if (dialog.input.length == 0) {
+        $scope.addInput();
       }
 
       $scope.$apply();
@@ -938,7 +966,16 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     };
 
+    $scope.saveEnter = function(event,func) {
+      if (event.keyCode == 13) {
+        event.preventDefault();
+        event.stopPropagation();
+        func();
+      }
+    };
+
     $scope.update = function (isValid) {
+
       vm.edit = false;
       vm.setChanged(true);
 
@@ -1026,7 +1063,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     $scope.dialogList = function() {
       var names = [];
       for (var d in nodes) {
-        if (d !== selectedNode.name)
+        if (selectedNode && d !== selectedNode.name)
           names.push(d);
       }
       return names;
@@ -1128,7 +1165,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       nodes[dialog.name].output_text = handlePrintOutput(dialog, dialog.output);
 
       if (dialog.id)
-        vm.maxId = Math.max(vm.maxId, parseInt(dialog.id.substring(vm.fileName.length, dialog.id.length)));
+      {
+        var cur = parseInt(dialog.id.substring(vm.fileName.length, dialog.id.length));
+        if (isNaN(cur) == false)
+          vm.maxId = Math.max(vm.maxId,cur);
+      }
 
       if (dialog.children) {
         dialog.children.forEach(function(child) {
@@ -1300,6 +1341,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     var baseSvg = d3.select("#tree-container").append("svg")
       .attr("width", viewerWidth)
       .attr("height", viewerHeight)
+      .attr("id", "basesvg")
       .attr("class", "overlay graph-svg-component")
       .call(zoomListener)
       .on('dblclick.zoom', null);
@@ -1937,6 +1979,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           return true;
       })[0];
       var offset = svg[0].getBoundingClientRect();
+      if (offset["left"] == 0 && offset["bottom"] == 0)
+        return;
       console.log([offset["left"], offset["top"],offset["right"],offset["bottom"]]+"");
       if (isStart !=='start' && offset["left"] > 300 && offset["top"] > 200 && offset["top"] < viewerHeight && offset["left"] < viewerWidth)
         return;
@@ -2445,9 +2489,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       var schema = {
         type: "object",
-        title: "Task Parameter",
+        title: $scope.dialog.task.name,
         properties: {},
-        format: "grid",
+        // format: "grid",
       };
 
       schema.properties = vm.parseSchema(paramSchema);
@@ -2611,4 +2655,20 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       // $scope.imageURL = $scope.user.profileImageURL;
     };
   }]
-);
+)
+.directive('autoFocus', [ '$timeout', function ($timeout) {
+  return {
+    restrict: 'A',
+
+    link: function ($scope, $element, $attributes) {
+      if ($scope.$eval($attributes.autoFocus) !== false) {
+        var element = $element[0];
+
+        $timeout(function() {
+          $scope.$emit('focus', element);
+          element.focus();
+        });
+      }
+    }
+  };
+}]);

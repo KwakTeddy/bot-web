@@ -15,30 +15,54 @@ angular.module('analytics').controller('AnalyticsIntentController', ['$scope', '
     $scope.failedIntentDialog = '';
     $scope.failedIntent = $stateParams.intentId;
 
-    // DialogFailureMaintenanceService.query({intentId: $stateParams.intentId, botId: $cookies.get('default_bot')}, function (result) {
-    //   $scope.failedIntentDialog = result;
-    // }, function (err) {
-    //   console.log(err)
-    // });
-    //
-    // IntentsService.query({botName: $cookies.get('default_bot')}, function (result) {
-    //   $scope.intents = result;
-    // }, function (err) {
-    //   console.log(err)
-    // });
-    //
-    // IntentsService.get({
-    //   botName: $cookies.get('default_bot'),
-    //   intentId: $stateParams.intentId
-    // }, function (result) {
-    //   $scope.failedIntent = result;
-    // }, function (err) {
-    //   console.log(err)
-    // });
-    //
-    // $scope.intentChange = function (target) {
-    //   $scope.failedIntent = target;
-    // };
+    DialogFailureMaintenanceService.query({intentId: $stateParams.intentId, botId: $cookies.get('default_bot')}, function (result) {
+      $scope.failedIntentDialog = result;
+    }, function (err) {
+      console.log(err)
+    });
+
+    IntentsService.query({botName: $cookies.get('default_bot')}, function (result) {
+      $scope.intents = result;
+    }, function (err) {
+      console.log(err)
+    });
+
+    IntentsService.get({
+      botName: $cookies.get('default_bot'),
+      intentId: $stateParams.intentId
+    }, function (result) {
+      $scope.failedIntent = result;
+    }, function (err) {
+      console.log(err)
+    });
+
+    $scope.intentChange = function (target) {
+      $scope.failedIntent = target;
+    };
+
+    $scope.save = function () {
+      var clearList = [];
+      for(var i = 0; i < $scope.failedIntentDialog.length; i++){
+        if ($scope.failedIntentDialog[i].clear){
+          clearList.push($scope.failedIntentDialog[i])
+        }
+      }
+
+      $resource('/api/intentsContent').save({content: clearList, intentId: $scope.failedIntent._id, botId: $rootScope.botId}, function () {
+        $scope.failedIntentDialog[0].$update({intentId: $scope.failedIntent._id, clearList: clearList}, function (result) {
+          DialogFailureMaintenanceService.query({intentId: $stateParams.intentId, botId: $cookies.get('default_bot')}, function (result2) {
+            $scope.failedIntentDialog = result2;
+          }, function (err2) {
+            console.log(err2)
+          });
+
+        }, function (err1) {
+          console.log(err1);
+        })
+      }, function (err) {
+        console.log(err);
+      })
+    };
 
     $scope.$on('sendmsg', function(event, arg0) {
       $scope.msg = arg0.message;
@@ -51,7 +75,6 @@ angular.module('analytics').controller('AnalyticsIntentController', ['$scope', '
         if (res.intent){
           $scope.intent = res.intent;
         }else {
-          // $scope.intent['name'] = '해당하는 Intent가 없습니다'
           $scope.intent = undefined;
         }
 
@@ -65,7 +88,6 @@ angular.module('analytics').controller('AnalyticsIntentController', ['$scope', '
           $scope.task = res.dialog.task
         }else {
           $scope.task = undefined;
-          // $scope.task['name'] = '해당하는 Task가 없습니다'
         }
 
         if(res.dialog && res.dialog.task && res.dialog.task.entities){
@@ -81,15 +103,18 @@ angular.module('analytics').controller('AnalyticsIntentController', ['$scope', '
 ]);
 
 function showIntentPanel() {
-  document.getElementById('intent-button').className='intent-button-hide';
+  document.getElementById('log-button').classList.add('log-button-hide');
+  document.getElementById('intent-button').classList.add('intent-button-hide');
   document.getElementById('intent-include').className='show-intent';
+  document.getElementById('log-include').className = 'hide-log';
   document.getElementById('main').classList.add('content-body-show-log');
   if(document.getElementById('content')) document.getElementById('content').classList.add('tree-content-show-log');
 
 }
 
 function hideIntentPanel() {
-  document.getElementById('intent-button').className = 'intent-button';
+  document.getElementById('log-button').classList.remove('log-button-hide');
+  document.getElementById('intent-button').classList.remove('intent-button-hide');
   document.getElementById('intent-include').className = 'hide-intent';
   document.getElementById('main').classList.remove('content-body-show-log');
   if(document.getElementById('content')) document.getElementById('content').classList.remove('tree-content-show-log');

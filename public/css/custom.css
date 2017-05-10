@@ -380,10 +380,11 @@ figure.profile-picture {display: none !important;}
 
 .log-button {
     opacity: 0.75;background: #282d36;border-radius: 7px 7px 0 0;height: 25px;width:40px;position: fixed;right: 340px;bottom: 0px;text-align: center;
+    cursor: pointer;
 }
 
 .log-button-hide {
-    visibility: hidden;
+    bottom: 200px !important;
 }
 
 .hide-intent {
@@ -397,10 +398,11 @@ figure.profile-picture {display: none !important;}
 
 .intent-button {
     opacity: 0.75;background: #282d36;border-radius: 7px 7px 0 0;height: 25px;width:40px;position: fixed;right: 385px;bottom: 0px;text-align: center;
+    cursor:pointer;
 }
 
 .intent-button-hide {
-    visibility: hidden;
+    bottom: 200px !important;
 }
 
 .content-body-show-log {
