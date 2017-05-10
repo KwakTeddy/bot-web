@@ -96,5 +96,15 @@ function addDialog(inText, outText, isFail, dialog, context, callback) {
     // callback();
   });
 }
-
 exports.addDialog = addDialog;
+
+exports.update = function (req, res) {
+  UserDialog.update({preDialogId : req.body._id.preDialogId, dialog : req.body._id.dialog, fail: true, inOut: true}, {clear: true}, {multi: true}, function (err, result) {
+    if(err){
+      console.log(err)
+    }else {
+      console.log(result)
+      res.json(result)
+    }
+  });
+};

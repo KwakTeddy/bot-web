@@ -245,7 +245,6 @@ var searchDialog = function(dialogs, dialogId, action, res, data) {
       searchDialog(dialogs[i].children, dialogId, action, res, data);
     }
   }
-  res.end();
 };
 
 var findOne = function(o, res, data) {
@@ -261,6 +260,7 @@ var findOne = function(o, res, data) {
 var findChildren = function(object, res, data) {
   var dialogChildren = [];
   if (object.children){
+    // dialogs_data.forEach(function(obj) {
     object.children.forEach(function(obj) {
       var dialog = {};
       dialog.dialogId = obj.id;
@@ -280,7 +280,9 @@ var findChildren = function(object, res, data) {
 
       dialogChildren.push(dialog);
     });
-
+    data['actionCall'] = true
+    // res.end();
+    console.log(JSON.stringify(dialogChildren));
     res.jsonp(dialogChildren);
   }else {
     dialogs_data.forEach(function(obj) {
@@ -300,6 +302,8 @@ var findChildren = function(object, res, data) {
       dialog.inputs = obj.input;
       dialogChildren.push(dialog);
     });
+    data['actionCall'] = true;
+
     res.jsonp(dialogChildren);
   }
 };
@@ -375,6 +379,7 @@ exports.dialog = function (req, res) {
 
   console.log("dialog:" + botId+","+dialogId);
   searchDialog(dialogs_data, dialogId, findOne, res, data);
+
 };
 
 
@@ -386,6 +391,12 @@ exports.dialogChildren = function (req, res) {
 
   console.log("dialogChildren: " + botId+","+dialogId);
   searchDialog(dialogs_data, dialogId, findChildren, res, data);
+  console.log(util.inspect(data));
+  console.log('----------------');
+  if (!data.actionCall){
+    // findChildren(dialogs_data, res, data)
+    res.end()
+  }
 };
 
 exports.save_dialog = function(req, res) {

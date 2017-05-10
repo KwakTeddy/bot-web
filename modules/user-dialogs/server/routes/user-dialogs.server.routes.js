@@ -10,4 +10,7 @@ module.exports = function(app) {
   app.route('/api/user-dialogs/:botName/:userKey').all(userDialogsPolicy.isAllowed)
     .get(userDialogs.list);
 
+  app.route('/api/user-dialogs/failedDialog')
+    .put(userDialogs.update);
+
 };

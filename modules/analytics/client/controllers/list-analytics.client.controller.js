@@ -93,6 +93,17 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
       $scope.selected.outputs.push({str:""});
     };
 
+    $scope.dialogFailureClear = function (target) {
+      console.log(target)
+      $http.put('/api/user-dialogs/failedDialog', target).then(function (result) {
+        console.log(result)
+        $scope.find_dialog_failure();
+      }, function (err) {
+        console.log(err)
+
+      })
+    };
+
     var makeStr = function(obj) {
       if (Array.isArray(obj)) {
         return obj.map(function (o) { return {str: o}; });
