@@ -9,10 +9,34 @@ var first = /(?:~시작|~처음|^!$|취소)/
 
 
 <{intent:'약냉'}
->if (context.botUser.curcontext == 'refri') {call: '약냉'}
->if (context.botUser.curcontext == 'air') {call: '에어컨약냉'}
->if (context.botUser.curcontext == 'air1') {call: '투인원스탠딩'}
->if (context.botUser.curcontext == 'air2') {call: '투인원벽걸이'}
+>if (context.botUser.entities.냉장고 && context.botUser.entities.양문형) {call:'약냉'}
+>if (context.botUser.entities.냉장고 && context.botUser.entities.일반형) {call:'약냉'}
+>if (context.botUser.entities.냉장고) 냉장고가 양문형인가요? 일반형인가요?
+    <{if: 'context.botUser.entities.일반형 || context.botUser.entities.양문형'}
+    >{call:'약냉'}
+    <{if:'true'}
+    >양문형 혹은 일반형 중에 말씀해주세요
+>if (context.botUser.entities.에어컨 && context.botUser.entities.스탠딩) {call:'에어컨약냉'}
+>if (context.botUser.entities.에어컨 && context.botUser.entities.벽걸이) {call:'에어컨약냉'}
+>if (context.botUser.entities.에어컨) 에어컨이 스탠딩인가요? 벽걸이인가요?
+    <{if: 'context.botUser.entities.벽걸이 || context.botUser.entities.스탠딩'}
+    >{call:'에어컨약냉'}
+>if (true) 에어컨과 냉장고 중 어떤 제품에 문제가 생기셨나요?
+    <{if :'context.botUser.entities.냉장고'}
+    >{output: '냉장고가 양문형인가요? 일반형인가요?'}
+        <{if :'context.botUser.entities.양문형'}
+        <{if :'context.botUser.entities.일반형'}
+        >{call:'약냉'}
+        <{if:'true'}
+        >양문형 혹은 일반형 중에 말씀해주세요
+    <{if :'context.botUser.entities.에어컨'}
+    >{output: '에어컨이 스탠딩인가요? 벽걸이인가요?'}
+        <{if :'context.botUser.entities.스탠딩'}
+        <{if :'context.botUser.entities.벽걸이'}
+        >{call:'에어컨약냉'}
+        <{if:'true'}
+        >스탠딩 혹은 벽걸이 중에 말씀해주세요
+    <{if:'true'}>{repeat:1, options: {output: '냉장고나 에어컨 중 하나를 말씀해주세요.'}}
 
 
 <{intent:'무냉'}
