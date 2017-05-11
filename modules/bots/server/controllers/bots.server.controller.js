@@ -624,8 +624,27 @@ exports.botExist = function(req, res) {
 };
 
 exports.nluProcess = function(req, res) {
-  console.log(util.inspect(req.body));
-  res.end()
+  var input = '';
+  var nlp = require(path.resolve('modules/bot/engine/nlp/processor'));
+  var nlpKo = new nlp({
+    stemmer: true,      // (optional default: true)
+    normalizer: true,   // (optional default: true)
+    spamfilter: true     // (optional default: false)
+  });
+
+  nlpKo.tokenize/*ToStrings*/(req.params.input, function(err, result) {
+    var _nlp = [], _in;
+    for (var i = 0; i < result.length; i++) {
+
+      if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _nlp.push(result[i].text);
+    }
+
+    _in = _nlp.join(' ');
+
+    input = _in;
+
+    res.json(input);
+  });
 };
 
 

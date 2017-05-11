@@ -15,25 +15,12 @@ function gogo(filename) {
 // Bots controller
 angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope', '$state', '$window','$timeout',
   '$stateParams', '$resource', 'Dialogs', 'DialogSaveService', 'OpenTasksService', 'FileUploader','$document',
-  'fileResolve', 'BotFilesService', 'CoreUtils', 'botFilesResolve', 'Socket', '$uibModal', '$compile', '$cookies', '$http',
+  'fileResolve', 'BotFilesService', 'CoreUtils', 'botFilesResolve', 'Socket', '$uibModal', '$compile', '$cookies', '$http','IntentsService',
   function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, Dialogs, DialogSaveService,
             OpenTasksService, FileUploader, $document, file, BotFilesService, CoreUtils, files, Socket,
-            $uibModal, $compile, $cookies, $http) {
+            $uibModal, $compile, $cookies, $http, IntentsService) {
     (function($) {
       'use strict';
-
-
-
-      $scope.processInput = function () {
-        console.log(vm.curI.str);
-        // $http.post('/api/nluprocess', '123').success(function (result) {
-        //   console.log(result.data);
-        // }).error(function (err) {
-        //   console.log(err)
-        // })
-        $resource
-
-      };
 
       $('.modal-with-move-anim').magnificPopup({
         type: 'inline',
@@ -136,6 +123,25 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         }
       });
 
+      $('.modal-with-intent').magnificPopup({
+        type: 'inline',
+        preloader: false,
+        focus: '#name',
+        modal: true,
+
+        // When elemened is focused, some mobile browsers in some cases zoom in
+        // It looks not nice, so we disable it:
+        callbacks: {
+          beforeOpen: function() {
+            if($(window).width() < 700) {
+              this.st.focus = false;
+            } else {
+              this.st.focus = '#name';
+            }
+          }
+        }
+      });
+
       $(document).on('click', '#filetree_open', function (e) {
         e.preventDefault();
 
@@ -170,11 +176,43 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     }).apply(this, [jQuery]);
 
+    $scope.processInput = function () {
+      // $resource('/api/nluprocess/:input', {}).get({input: vm.curI.str}, function (res) {
+      //   console.log(res)
+      //   $scope.processedInput = res.input;
+      // }, function (err) {
+      //   console.log(err);
+      // });
+      if (vm.curI.str.length){
+        $http.get('/api/nluprocess/'+vm.curI.str).then(function (res) {
+          $scope.processedInput = res.data;
+        }, function (err) {
+          console.log(err);
+        })
+      }
+    };
+
     var editor;
 
     var newTask_template = "\nvar newTask = {\n\tname: 'newTask',\n\taction: function (task,context,callback) {" +
       "\n\t\tcallback(task,context);\n\t}\n};\n\n" +
       "bot.setTask('newTask',newTask);";
+
+
+    $scope.saveIntent = function () {
+      $scope.intent.botName = $rootScope.botId;
+      $scope.intent.content = $scope.intentContent;
+      $scope.intent.$save({botName: $rootScope.botId},successCallback, errorCallback);
+
+      function successCallback(res) {
+        console.log(res);
+        $scope.backToEdit(false);
+      }
+
+      function errorCallback(res) {
+        console.log(res);
+      }
+    };
 
     $scope.addTask = function() {
       vm.edit = 'task';
@@ -665,7 +703,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
 
       vm.targetI.type = vm.curI.type;
-      vm.targetI.str = vm.curI.str;
+      vm.targetI.str = $scope.processedInput;
+      // vm.targetI.str = vm.curI.str;
 
       if (vm.curInput.indexOf(vm.targetI) == -1)
         vm.curInput.push(vm.targetI);
@@ -2573,6 +2612,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           $scope.dialog.task.paramSchema = task.paramSchema;
           vm.handleEditor(task.paramSchema);
         }
+
         $('.modal-with-task').click();
       } else {
         $.magnificPopup.close();
@@ -2581,6 +2621,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
         $scope.setPosition(task);
       }
+    };
+
+    $scope.openIntent = function(task, isCommon) {
+      $scope.intent = new IntentsService({botName: $rootScope.botId});
+      $('.modal-with-intent').click();
     };
 
     $scope.backToEdit = function(ok) {

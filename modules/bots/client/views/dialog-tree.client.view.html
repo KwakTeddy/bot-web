@@ -307,8 +307,53 @@
                 <a class="modal-with-task btn btn-default" style="display:none" href="#modalTaskForm">Open Form</a>
                 <a class="modal-with-help btn btn-default" style="display:none" href="#modalHelpForm">Open Form</a>
                 <a class="file-tree btn btn-default" style="display:none" href="#file-tree">Open Form</a>
+                <a class="modal-with-intent btn btn-default" style="display:none" href="#modalIntentForm">Open Form</a>
 
-                <!-- Modal Form for help -->
+              <!-- Modal Form for Intent -->
+              <div id="modalIntentForm" class="modal-block modal-block-primary mfp-hide">
+                <section class="panel">
+                  <header class="panel-heading">
+                    <h2 class="panel-title">Intent 등록</h2>
+                  </header>
+                  <div class="panel-body">
+                    <div class="form-group" >
+                      <label class="col-sm-2">이름 <span class="required" aria-required="true">*</span></label>
+                      <div class="col-sm-9">
+                        <input type="text" name="name" ng-model="intent.name" class="form-control valid"
+                               placeholder="인텐트의 이름을 지정해주세요"
+                               required=""
+                               aria-required="true" aria-invalid="false">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="panel-body">
+                    <div class="form-group" >
+                      <label class="col-sm-2">내용 <span class="required" aria-required="true">*</span></label>
+                      <div class="col-sm-9">
+                        <input type="text" name="intentContent" ng-model="intentContent" class="form-control valid"
+                               placeholder="인텐트에 속하는 내용을 적어주세요"
+                               required=""
+                               aria-required="true" aria-invalid="false">
+                      </div>
+                    </div>
+                    <div class="col-sm-9 col-sm-offset-2" data-ng-if="processedInput">
+                      자연어처리 결과 : {{processedInput}}
+                    </div>
+                  </div>
+                  <footer class="panel-footer">
+                    <div class="row">
+                      <div class="col-md-12 text-right">
+                        <button class="btn btn-primary" ng-click="saveIntent()" >등록</button>
+                        <button class="btn btn-primary" ng-click="backToEdit(false)" >이전</button>
+                      </div>
+                    </div>
+                  </footer>
+                </section>
+              </div>
+
+
+              <!-- Modal Form for help -->
                 <div id="modalHelpForm" class="modal-block modal-block-primary mfp-hide">
                     <section class="panel">
                         <header class="panel-heading">
@@ -477,6 +522,7 @@
                                                     </ui-select>
                                                 </div>
                                                 <span class="input-group-btn">
+                                        <button class="btn btn-default" ng-click="openIntent()" type="button" data-ng-if="vm.inputMode && getInputType(vm.curI.type) == 'intent'">+</button>
                                         <button class="btn btn-primary"
                                                 ng-disabled="vm.curI.str === ''"
                                                 ng-click="saveI()" type="button">저장</button>
@@ -505,8 +551,8 @@
                                     <div class="col-sm-1 " style="padding-left: 0;padding-top: 3px">
                                       <button type="button" ng-click="addInput()" class="mb-xs mr-xs btn btn-sm btn-default" style="border: none"><i class="glyphicon glyphicon-plus"></i></button>
                                     </div>
-                                  <div class="col-sm-9 col-sm-offset-2">
-                                    {{processedInput}}
+                                  <div class="col-sm-9 col-sm-offset-2" data-ng-if="processedInput">
+                                    자연어처리 결과 : {{processedInput}}
                                   </div>
                                 </div>
                                 <hr>
@@ -634,6 +680,8 @@
                         </form>
                     </section>
                 </div>
+
+
             </div>
 
             <section id="ide" ng-show="vm.tabs[1].active" class="panel">
