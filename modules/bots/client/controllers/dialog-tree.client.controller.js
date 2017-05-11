@@ -2017,7 +2017,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           //x -= 400;
         }
       }
-      var y = -source.x0 - 200;
+      var y = -source.x0 - 100;
       x = x * scale + viewerWidth / 2;
       y = y * scale + viewerHeight / 2;
 
