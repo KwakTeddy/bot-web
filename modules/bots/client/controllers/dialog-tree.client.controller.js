@@ -825,6 +825,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     var initInput = function(input) {
       var res = [];
+
       input.forEach(function(d) {
         var r = [];
         if (d.text) {
@@ -1157,10 +1158,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       dialog.name = dialog.name || (dialog.name = "dialog" + "_" + dialog.id);
       nodes[dialog.name] = nodes[dialog.name] || (nodes[dialog.name] = dialog);
       if (!Array.isArray(dialog.input))
-        dialog.input = [dialog.input];
+        dialog.input = [{text:dialog.input}];
       nodes[dialog.name].input_text  = handleInput(dialog.input);
       if (!Array.isArray(dialog.output))
-        dialog.output = [dialog.output];
+        dialog.output = [{output:dialog.output}];
       initPrintOutput(dialog);
       nodes[dialog.name].output_text = handlePrintOutput(dialog, dialog.output);
 
