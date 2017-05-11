@@ -1474,7 +1474,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       if (vm.oneline) {
         rectW = 150;
-        rectH = 28;
+        rectH = 23;
         itemHeight = rectH+30;
         labelWidth = 250;
       } else {
