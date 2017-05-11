@@ -803,6 +803,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       var input = [];
       $scope.dialog.input.push(input);
       $scope.addI(input);
+
+      $('.pull-down').each(function() {
+        var $this = $(this);
+        $this.css('margin-top', $this.parent().height() - $this.height())
+      });
     };
 
     $scope.removeInput = function(input) {
@@ -1324,31 +1329,35 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       console.log(links_internal);
     };
 
-    $resource('/api/dialogs/:bot_id/:file_id', {}).get({bot_id: vm.bot_id, file_id: vm.file_id}, function(res) {
-      vm.botId = res.botId;
-      vm.fileName = res.fileName;
-      vm.tasks = res.tasks.map(function(t) { return {name:t, type:'default'}});
-      vm.intents = res.intents.map(function(i) { return i.name; });
-      vm.types = res.types.map(function(t) { return t.name} );
-      vm.type_dic = res.type_dic;
-      dialogs = res.data;
-      common_dialogs = res.common;
+    vm.reloadTree = function() {
 
-      OpenTasksService.query({botId:$cookies.get('default_bot')}).$promise.then(function(result) {
-        vm.commonTasks = result;
-        vm.entity = [];
-        vm.commonTasks.forEach(function(d) {
-          vm.entity[d.name] = d.entity;
+      $resource('/api/dialogs/:bot_id/:file_id', {}).get({bot_id: vm.bot_id, file_id: vm.file_id}, function(res) {
+        vm.botId = res.botId;
+        vm.fileName = res.fileName;
+        vm.tasks = res.tasks.map(function(t) { return {name:t, type:'default'}});
+        vm.intents = res.intents.map(function(i) { return i.name; });
+        vm.types = res.types.map(function(t) { return t.name} );
+        vm.type_dic = res.type_dic;
+        dialogs = res.data;
+        common_dialogs = res.common;
+
+        OpenTasksService.query({botId:$cookies.get('default_bot')}).$promise.then(function(result) {
+          vm.commonTasks = result;
+          vm.entity = [];
+          vm.commonTasks.forEach(function(d) {
+            vm.entity[d.name] = d.entity;
+          });
+          vm.commonTasks = vm.commonTasks.map(function(t) { return {name:t.name, paramSchema:t.paramSchema, type:'common'};});
+          vm.tasks = vm.tasks.concat(vm.commonTasks);
+
         });
-        vm.commonTasks = vm.commonTasks.map(function(t) { return {name:t.name, paramSchema:t.paramSchema, type:'common'};});
-        vm.tasks = vm.tasks.concat(vm.commonTasks);
 
+        //console.log(JSON.stringify(dialogs));
+        vm.initTreeData();
+        init();
       });
-
-      //console.log(JSON.stringify(dialogs));
-      vm.initTreeData();
-      init();
-    });
+    };
+    vm.reloadTree();
 
     // Calculate total nodes, max label length
     var totalNodes = 0;
@@ -1463,6 +1472,18 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         labelWidth = 350;
       }
 
+      if (vm.oneline) {
+        rectW = 150;
+        rectH = 28;
+        itemHeight = rectH+30;
+        labelWidth = 250;
+      } else {
+        rectW = 200;
+        rectH = 58;
+        itemHeight = rectH+30;
+        labelWidth = 350;
+      }
+
       tip.hide();
       // Compute the new height, function counts total children of root node and sets tree height accordingly.
       // This prevents the layout looking squashed when new nodes are made visible or looking sparse when nodes are removed
@@ -1528,6 +1549,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       //   }
       //   if (node.children) {
       //     node.children.forEach(layout);
+      d3.selectAll('node').remove();
       //   }
       // };
       // treeData.children.forEach(layout);
@@ -1571,132 +1593,135 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         .attr("dy", "1.30em")
         .text(function(d) { return d.name; });
 
-      nodeEnter.append("line")
-        .style("pointer-events", "none")
-        .attr("x1", 0)
-        .attr("y1", "18")
-        .attr("x2", rectW)
-        .attr("y2", "18")
-        // .attr("stroke-width", 1.2)
-        .style("stroke", function(d) { return d3.rgb("#d4d4d4").darker(); });   //7CA4C0
+      if (!vm.oneline) {
+        nodeEnter.append("line")
+          .style("pointer-events", "none")
+          .attr("x1", 0)
+          .attr("y1", "18")
+          .attr("x2", rectW)
+          .attr("y2", "18")
+          // .attr("stroke-width", 1.2)
+          .style("stroke", function(d) { return d3.rgb("#d4d4d4").darker(); });   //7CA4C0
 
-      nodeEnter.append("text")
-        .attr("id", "input")
-        .attr("class","nodetext")
-        .style("pointer-events", "none")
-        .attr("x", 7)
-        .attr("dy", "3em")
-        .text(function(d) { return "< " + (d.input_text ? d.input_text: ""); })
-        .call(wrap, rectW-30, 1);
-
-      nodeEnter.append("line")
-        .style("pointer-events", "none")
-        .attr("x1", 0)
-        .attr("y1", "2.8em")
-        .attr("x2", rectW)
-        .attr("y2", "2.8em")
-        .attr("stroke-width", 1)
-        // .attr("stroke-dasharray", "0,2 1")
-        .attr("stroke", "#d4d4d4");  //gray
-
-      if(vm.smallDialog == false) {
         nodeEnter.append("text")
-          .attr("id", "task")
-          .attr("class", "nodetext")
+          .attr("id", "input")
+          .attr("class","nodetext")
           .style("pointer-events", "none")
           .attr("x", 7)
-          .attr("dy", "5em")
-          .text(function (d) {
-            if (d.task && d.task.name)
-              return "Task: " + d.task.name;
-            else if (d.task)
-              return "Task: " + d.task;
-            return "";
-          })
-          .call(wrap, rectW - 25, 2);
+          .attr("dy", "3em")
+          .text(function(d) { return "< " + (d.input_text ? d.input_text: ""); })
+          .call(wrap, rectW-30, 1);
 
         nodeEnter.append("line")
           .style("pointer-events", "none")
           .attr("x1", 0)
-          .attr("y1", "4.3em")
+          .attr("y1", "2.8em")
           .attr("x2", rectW)
-          .attr("y2", "4.3em")
+          .attr("y2", "2.8em")
           .attr("stroke-width", 1)
           // .attr("stroke-dasharray", "0,2 1")
           .attr("stroke", "#d4d4d4");  //gray
-      }
 
-      nodeEnter.append("text")
-        .attr("id", "output")
-        .attr("class","nodetext")
-        .style("pointer-events", "none")
-        .attr("x", 7)
-        .attr("dy", vm.smallDialog? "5em":"7em")
-        .text(function(d) { return "> " + (d.output_text ? d.output_text : ""); })
-        .call(wrap, rectW-25, vm.smallDialog?1:2);
+        if(vm.smallDialog == false) {
+          nodeEnter.append("text")
+            .attr("id", "task")
+            .attr("class", "nodetext")
+            .style("pointer-events", "none")
+            .attr("x", 7)
+            .attr("dy", "5em")
+            .text(function (d) {
+              if (d.task && d.task.name)
+                return "Task: " + d.task.name;
+              else if (d.task)
+                return "Task: " + d.task;
+              return "";
+            })
+            .call(wrap, rectW - 25, 2);
 
-      var isRepeat = function(d) {
-        var ret = null;
-        if (d.output) {
-          d.output.forEach(function(o) {
-            if (o.repeat && typeof o.repeat === 'string')
-              ret = o.repeat;
-          })
+          nodeEnter.append("line")
+            .style("pointer-events", "none")
+            .attr("x1", 0)
+            .attr("y1", "4.3em")
+            .attr("x2", rectW)
+            .attr("y2", "4.3em")
+            .attr("stroke-width", 1)
+            // .attr("stroke-dasharray", "0,2 1")
+            .attr("stroke", "#d4d4d4");  //gray
         }
-        return ret;
-      };
 
-      nodeEnter.append('text')
-        .attr("class", "icon2")
-        .style("pointer-events", "none")
-        .attr("x", rectW-20)
-        .attr("dy", vm.smallDialog? "4em":"6em")
-        .text(function(d) {
-          if (isRepeat(d) != null)
-            return '\uf01e';
-          else
-            return '';
-        } );
-
-      if(vm.smallDialog == false) {
-        nodeEnter.append("line")
+        nodeEnter.append("text")
+          .attr("id", "output")
+          .attr("class","nodetext")
           .style("pointer-events", "none")
-          .attr("x1", 0)
-          .attr("y1", "6.7em")
-          .attr("x2", rectW)
-          .attr("y2", "6.7em")
-          .attr("stroke-width", 1)
-          .attr("stroke-dasharray", "0,2 1")
-          .attr("stroke", "gray");
+          .attr("x", 7)
+          .attr("dy", vm.smallDialog? "5em":"7em")
+          .text(function(d) { return "> " + (d.output_text ? d.output_text : ""); })
+          .call(wrap, rectW-25, vm.smallDialog?1:2);
 
-        var showTip = function (d) {
-          if (d.image_text)
-            tip.show(d);
+        var isRepeat = function(d) {
+          var ret = null;
+          if (d.output) {
+            d.output.forEach(function(o) {
+              if (o.repeat && typeof o.repeat === 'string')
+                ret = o.repeat;
+            })
+          }
+          return ret;
         };
 
-        nodeEnter.append("text")
-          .attr("id", "image")
-          .attr("class", "nodetext")
-          .attr("x", 7)
-          .attr("dy", "10em")
-          //.style("text-decoration", "underline")
-          .text(function (d) {
-            return (d.image_text ? "Image: " + d.image_text : "");
-          })
-          .on('mouseover', showTip)
-          .on('mouseout', tip.hide)
-          .call(wrap, rectW - 25, 1);
-
-        nodeEnter.append("text")
-          .attr("id", "button")
-          .attr("class", "nodetext")
+        nodeEnter.append('text')
+          .attr("class", "icon2")
           .style("pointer-events", "none")
-          .attr("x", 7)
-          .attr("dy", "12em")
-          .text(function (d) {
-            return (d.buttons ? "Button: " + d.buttons + "" : "");
-          })
-          .call(wrap, rectW - 25, 1);
+          .attr("x", rectW-20)
+          .attr("dy", vm.smallDialog? "4em":"6em")
+          .text(function(d) {
+            if (isRepeat(d) != null)
+              return '\uf01e';
+            else
+              return '';
+          } );
+
+        if(vm.smallDialog == false) {
+          nodeEnter.append("line")
+            .style("pointer-events", "none")
+            .attr("x1", 0)
+            .attr("y1", "6.7em")
+            .attr("x2", rectW)
+            .attr("y2", "6.7em")
+            .attr("stroke-width", 1)
+            .attr("stroke-dasharray", "0,2 1")
+            .attr("stroke", "gray");
+
+          var showTip = function (d) {
+            if (d.image_text)
+              tip.show(d);
+          };
+
+          nodeEnter.append("text")
+            .attr("id", "image")
+            .attr("class", "nodetext")
+            .attr("x", 7)
+            .attr("dy", "10em")
+            //.style("text-decoration", "underline")
+            .text(function (d) {
+              return (d.image_text ? "Image: " + d.image_text : "");
+            })
+            .on('mouseover', showTip)
+            .on('mouseout', tip.hide)
+            .call(wrap, rectW - 25, 1);
+
+          nodeEnter.append("text")
+            .attr("id", "button")
+            .attr("class", "nodetext")
+            .style("pointer-events", "none")
+            .attr("x", 7)
+            .attr("dy", "12em")
+            .text(function (d) {
+              return (d.buttons ? "Button: " + d.buttons + "" : "");
+            })
+            .call(wrap, rectW - 25, 1);
+        }
+
       }
 
       // Change the rect fill depending on whether it has children and is collapsed
@@ -2043,7 +2068,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       var offset = svg[0].getBoundingClientRect();
       if (offset["left"] == 0 && offset["bottom"] == 0)
         return;
-      console.log([offset["left"], offset["top"],offset["right"],offset["bottom"]]+"");
+      //console.log([offset["left"], offset["top"],offset["right"],offset["bottom"]]+"");
       if (isStart !=='start' && offset["left"] > 300 && offset["top"] > 200 && offset["top"] < viewerHeight && offset["left"] < viewerWidth)
         return;
 
@@ -2384,6 +2409,21 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
     vm.hideLink = function() {
       vm.show_link = false;
+      update(treeData);
+    };
+
+    // oneline/detail view
+    vm.oneline = true;
+    vm.showOneline = function() {
+      vm.oneline = true;
+      d3.selectAll('.node').remove();
+      d3.selectAll('path').remove();
+      update(treeData);
+    };
+    vm.showDetail = function() {
+      vm.oneline = false;
+      d3.selectAll('.node').remove();
+      d3.selectAll('path').remove();
       update(treeData);
     };
 
