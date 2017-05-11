@@ -5,6 +5,21 @@ angular.module('bots').controller('LogController', ['$scope', '$rootScope', '$do
     var vm = this;
     $scope.authentication = Authentication;
 
+    function emitMsg(msg) {
+      Socket.emit('send_msg', {
+        bot: vm.bot,
+        user: vm.userId,
+        msg: msg,
+        options: vm.params
+      });
+    }
+    vm.buildBot = function () {
+      emitMsg(':build');
+    };
+
+    vm.resetBot = function () {
+      emitMsg(':init');
+    };
     vm.connectBot = function() {
       // console.log('connectBot');
       $rootScope.$broadcast('connectUserBot', {id: vm.bot});
