@@ -2418,13 +2418,25 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.oneline = true;
       d3.selectAll('.node').remove();
       d3.selectAll('path').remove();
+      selectedSVG =null;
       update(treeData);
+      selectedSVG = baseSvg.selectAll(".node").filter(function(d) {
+        if (d.id === selectedNode.id)
+          return true;
+      });
+      update(selectedNode);
     };
     vm.showDetail = function() {
       vm.oneline = false;
       d3.selectAll('.node').remove();
       d3.selectAll('path').remove();
+      selectedSVG =null;
       update(treeData);
+      selectedSVG = baseSvg.selectAll(".node").filter(function(d) {
+        if (d.id === selectedNode.id)
+          return true;
+      });
+      update(selectedNode);
     };
 
     // to send msg to chatting window
