@@ -137,6 +137,7 @@ exports.deleteTemplateData = function(templateDataId, dataSchema, listName, call
  * List of Custom actions
  */
 exports.list = function(req, res) {
+  console.log(JSON.stringify(req.params))
   listTemplateData(req.template, req.params.listName, mongoose.Types.ObjectId(req.params.upTemplateId), function(templateDatas, err) {
     if (err) {
       return res.status(400).send({
@@ -155,6 +156,8 @@ function listTemplateData(template, listName, upTemplateId, callback) {
   var query = {};
   if(upTemplateId && upTemplateId != 'null') query.upTemplateId = upTemplateId;
   else query.templateId = template._id;
+
+  console.log(JSON.stringify(query))
 
   TemplateData.find(query).sort('-created').populate('user', 'displayName').exec(function(err, templateDatas) {
     callback(templateDatas, err);

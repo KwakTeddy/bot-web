@@ -623,6 +623,12 @@ exports.botExist = function(req, res) {
   });
 };
 
+exports.nluProcess = function(req, res) {
+  console.log(util.inspect(req.body));
+  res.end()
+};
+
+
 /**
  * Bot middleware
  */

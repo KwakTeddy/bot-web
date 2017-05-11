@@ -394,7 +394,7 @@ exports.dialogChildren = function (req, res) {
   console.log(util.inspect(data));
   console.log('----------------');
   if (!data.actionCall){
-    // findChildren(dialogs_data, res, data)
+    findChildren(dialogs_data, res, data)
     res.end()
   }
 };

@@ -88,6 +88,9 @@ module.exports = function (app) {
   app.route('/api/bot-exist')
     .get(bots.botExist);
 
+  app.route('/api/nluprocess')
+    .post(bots.nluProcess);
+
   // Finish by binding the bot middleware
   app.param('botId', bots.botByID);
   app.param('botNameId', bots.botByNameID);

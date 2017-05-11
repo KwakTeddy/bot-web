@@ -15,13 +15,25 @@ function gogo(filename) {
 // Bots controller
 angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope', '$state', '$window','$timeout',
   '$stateParams', '$resource', 'Dialogs', 'DialogSaveService', 'OpenTasksService', 'FileUploader','$document',
-  'fileResolve', 'BotFilesService', 'CoreUtils', 'botFilesResolve', 'Socket', '$uibModal', '$compile', '$cookies',
+  'fileResolve', 'BotFilesService', 'CoreUtils', 'botFilesResolve', 'Socket', '$uibModal', '$compile', '$cookies', '$http',
   function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, Dialogs, DialogSaveService,
             OpenTasksService, FileUploader, $document, file, BotFilesService, CoreUtils, files, Socket,
-            $uibModal, $compile, $cookies) {
-
+            $uibModal, $compile, $cookies, $http) {
     (function($) {
       'use strict';
+
+
+
+      $scope.processInput = function () {
+        console.log(vm.curI.str);
+        // $http.post('/api/nluprocess', '123').success(function (result) {
+        //   console.log(result.data);
+        // }).error(function (err) {
+        //   console.log(err)
+        // })
+        $resource
+
+      };
 
       $('.modal-with-move-anim').magnificPopup({
         type: 'inline',
@@ -967,10 +979,20 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     };
 
+    $scope.InputKeyDown = function (event, func) {
+      if (event.keyCode == 13) {
+        event.preventDefault();
+        event.stopPropagation();
+        func();
+      }
+      $scope.processInput();
+    };
+
     $scope.saveEnter = function(event,func) {
       if (event.keyCode == 13) {
         event.preventDefault();
         event.stopPropagation();
+
         func();
       }
     };
