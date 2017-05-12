@@ -382,7 +382,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     vm.tabs = [{name:vm.name, data:vm.data, file_id:vm.file_id, active:true}];
     vm.currentTab = vm.tabs[0];
-    vm.addTab(vm.name.split('.')[0]+'.task.js');
+    vm.addTab(vm.name.split('.')[0]+'.js');
 
     // ide
     vm.codemirrorOpts = {
@@ -533,7 +533,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         return false;
       }
 
-      if (document.activeElement == document.getElementById('inputbox') )
+      if (document.activeElement == document.getElementById('inputbox') ||
+          document.activeElement == document.getElementById('treeBasic'))
         return false;
 
       if (event.keyCode == 27) { // esc

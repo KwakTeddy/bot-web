@@ -50,10 +50,11 @@ function botBuild(bot, botPath, fileName, dialogs) {
       continue;
     // var jsPath = path.join(info.dir, info.name + '.js');
     var dialogPath = path.join(info.dir, info.name + '.dialog.js');
-    var taskPath = path.join(info.dir, info.name + '.task.js');
+    var graphPath = path.join(info.dir, info.name + '.graph.js');
+    var taskPath = path.join(info.dir, info.name + '.js');
 
     if(!fs.existsSync(taskPath)) {
-      logger.info('\t created task file: ' + info.name + '.task.js');
+      logger.info('\t created task file: ' + info.name + '.js');
       var taskFile = fs.readFileSync('./custom_modules/global/default.task.js.template', 'utf8');
       taskFile= taskFile.replace(/__bot__/g, bot.id);
       //createFile('default.task.js', bot.user, bot);
@@ -98,16 +99,14 @@ function botBuild(bot, botPath, fileName, dialogs) {
     }
     js = js + tail;
 
-    // graph view TEST
-    // TODO 파일별로 저장하기
-    //   var tail2 = '\n// TEST' + '\nvar json = JSON.stringify(dialogs);' + '\nconsole.log(json);' +
-    //     '\nvar fs = require(\'fs\');' +
-    //       '\nfs.writeFile(require(\'path\').resolve("public/js") + "/dialog.json", json, function(err) {' +
-    //       '\nif(err) { return console.log(err); }' +
-    //       '\nconsole.log("dialog.json was saved!"); });'
-    //   js += tail2;
-
-    fs.writeFileSync(dialogPath, js, 'utf8');
+    if (dialogs) {
+      fs.writeFileSync(graphPath, js, 'utf8');
+    } else {
+      fs.writeFileSync(dialogPath, js, 'utf8');
+      if(!fs.existsSync(graphPath)) {
+        fs.writeFileSync(graphPath, js, 'utf8');
+      }
+    }
 
   }
 

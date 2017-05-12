@@ -108,7 +108,7 @@
       console.log(target);
       $resource('/api/intentsContent').delete({contentId: target._id}, function (result) {
         if (result.ok){
-          IntentsService.get({
+          IntentsService.query({
             botName: $rootScope.botId,
             intentId: vm.intent._id
           }).$promise.then(function (data) {

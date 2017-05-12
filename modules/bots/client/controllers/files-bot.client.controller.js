@@ -47,7 +47,7 @@ angular.module('bots').controller('BotFilesController', ['$scope', '$stateParams
     };
 
     vm.isIde = function(name) {
-      return !name.endsWith('dialog.js') && !name.endsWith("task.js");
+      return !name.endsWith('graph.js') && (name.endsWith("bot.js") || name.endsWith("dlg"));
     };
 
     vm.dtOptions = DTOptionsBuilder.newOptions()

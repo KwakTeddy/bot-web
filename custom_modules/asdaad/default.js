@@ -1,5 +1,5 @@
 var path = require('path');
-var bot = require(path.resolve('config/lib/bot')).getBot('__bot__');
+var bot = require(path.resolve('config/lib/bot')).getBot('asdaad');
 
 var defaultTask = {
     name: 'defaultTask',

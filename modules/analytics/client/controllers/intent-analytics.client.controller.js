@@ -27,7 +27,7 @@ angular.module('analytics').controller('AnalyticsIntentController', ['$scope', '
       console.log(err)
     });
 
-    IntentsService.get({
+    IntentsService.query({
       botName: $cookies.get('default_bot'),
       intentId: $stateParams.intentId
     }, function (result) {
