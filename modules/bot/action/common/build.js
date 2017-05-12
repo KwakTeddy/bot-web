@@ -102,7 +102,10 @@ function botBuild(bot, botPath, fileName, dialogs) {
     if (dialogs) {
       fs.writeFileSync(graphPath, js, 'utf8');
     } else {
-      fs.writeFileSync(dialogPath, js, 'utf8');
+      if(fs.existsSync(dialogPath) &&
+        fs.statSync(file).mtime <= fs.statSync(dialogPath).mtime) {
+        fs.writeFileSync(dialogPath, js, 'utf8');
+      }
       if(!fs.existsSync(graphPath)) {
         fs.writeFileSync(graphPath, js, 'utf8');
       }
