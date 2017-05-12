@@ -30,9 +30,6 @@
                  aria-required="true" aria-invalid="false"
                  ng-disabled="vm.bot._id">
         </div>
-        <div ng-messages="botForm.id.$error" role="alert" class="col-sm-offset-3 col-sm-9">
-          <p class="help-block error-text" ng-message="required">아이디를 입력해주세요</p>
-        </div>
       </div>
       <div class="form-horizontal form-group">
         <label class="col-sm-2 control-label">봇이름 <span class="required" aria-required="true">*</span></label>
@@ -41,18 +38,12 @@
                  required=""
                  aria-required="true" aria-invalid="false">
         </div>
-        <div ng-messages="botForm.name.$error" role="alert" class="col-sm-offset-3 col-sm-9">
-          <p class="help-block error-text" ng-message="required">이름을 입력해주세요</p>
-        </div>
       </div>
       <div class="form-horizontal form-group">
         <label class="col-sm-2 control-label">설명 <span class="required" aria-required="true">*</span></label>
         <div class="col-sm-10">
           <textarea name="description" ng-model="vm.bot.description" id="description" rows="5" class="form-control"
                     placeholder="내용을 입력해주세요" required="" aria-required="true" aria-invalid="true"></textarea>
-        </div>
-        <div ng-messages="botForm.description.$error" role="alert" class="col-sm-offset-3 col-sm-9">
-          <p class="help-block error-text" ng-message="required">설명을 입력해주세요</p>
         </div>
       </div>
 
