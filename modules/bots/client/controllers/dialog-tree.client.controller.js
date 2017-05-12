@@ -1457,14 +1457,14 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         update(root);
         updateSelected(root);
         vm.collapseDepth();
-        update(root);
+        update(root, true);
         centerNode(root, 'start');
       }
     };
 
     var links_SVG, links_internal_SVG;
 
-    function update(source) {
+    function update(source, collapseAll) {
       if(vm.smallDialog) {
         rectW = 200;
         rectH = 58;
@@ -1779,7 +1779,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       var nodeExit = node.exit().transition()
         .duration(duration)
         .attr("transform", function (d) {
-          return "translate(" + source.y + "," + source.x + ")";
+          return collapseAll ?
+            "translate(" + source.y + "," + source.x + ")" :
+            "translate(" + d.parent.y + "," + d.parent.x + ")" ;
+
         })
         .remove();
 
@@ -1837,10 +1840,18 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         link.exit().transition()
           .duration(duration)
           .attr("d", function (d) {
-            var o = {
-              x: source.x,
-              y: source.y
-            };
+            var o;
+            if (collapseAll) {
+              o = {
+                x: source.x,
+                y: source.y
+              };
+            } else {
+              o = {
+                x: d.source.x,
+                y: d.source.y
+              };
+            }
             return diag({
               source: o,
               target: o
@@ -2386,7 +2397,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     vm.collapseAll = function() {
       vm.depth = 1;
       vm.collapseDepth();
-      update(treeData);
+      update(treeData, true);
       centerNode(treeData);
     };
 
