@@ -90,6 +90,16 @@ angular.module('bots').config(['$stateProvider',
           fileResolve: readBotFile
         }
       })
+      .state('bots.dialog-graph', {
+        url: '/dialog-graph/:botId/:fileId',
+        templateUrl: 'modules/bots/client/views/dialog-graph.client.view.html',
+        controller: 'DialogGraphController',
+        controllerAs: 'vm',
+        resolve: {
+          botFilesResolve: getBotFiles,
+          fileResolve: readBotFile
+        }
+      })
       .state('bots.graph-knowledge', {
         url: '/graph-knowledge/:botId',
         templateUrl: 'modules/bots/client/views/graph-knowledge.client.view.html',

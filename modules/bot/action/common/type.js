@@ -1477,7 +1477,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
               for(var k = 0; k < docs.length; k++) {
                 var doc = docs[k];
 
-                var matchCount = 0, matchCount1 = 0, matchTotal = 0;
+                var matchCount = 0, matchCount1 = 0, matchTotal = 0, matchNLP = [];
                 matchedWord = '';
                 var matchIndex = -1, matchMin = -1, matchMax = -1;
 
@@ -1493,6 +1493,8 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
 
                 for(var l = 0; l < format.mongo.queryFields.length; l++) {
                   for(var m = 0; m < _nlps.length; m++) {
+                    if(_nlps[m].pos == 'Josa') continue;
+
                     var _word = _nlps[m].text;
                     _word = RegExp.escape(_word);
 
@@ -1546,6 +1548,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
 
                         matchTotal += doc[format.mongo.queryFields[l]].split(' ').length;
                         matchedWord += nlps[m];
+                        matchNLP.push({text: _nlps[m].text, pos: _nlps[m].pos});
 
                         var __word = nlps[m].text;
                         __word = RegExp.escape(__word);
@@ -1575,6 +1578,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                     doc.inputLen = doc.input.split(' ').length;
                     doc.matchWord = matchedWord;
                     doc.matchCount = matchCount1;
+                    doc.matchNLP = matchNLP;
                     doc.matchMin = matchMin;
                     doc.matchMax = matchMax;
                     doc.matchRate = matchCount / nlpMatchLength;
@@ -1615,12 +1619,9 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
     }
 
     if (matchedDoc.length > 0) {
-
       inDoc[format.name] = [];
       for (var _l = 0; _l < matchedDoc.length; _l++) {
         var matchDoc = matchedDoc[_l];
-
-        // console.log(matchDoc.input + ' ' + matchDoc.matchCount);
 
         var matchText = '';
         for (var l = 0; l < format.mongo.queryFields.length; l++) {
@@ -1661,24 +1662,28 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
 
       var t1 = new Date();
       try {
-        logger.debug('type.js:dialogTypeCheck: MATCHED ' + (t1 - t0) + ' ms ' + format.name + ' "' + text + ' isArray: ' + Array.isArray(inDoc[format.name]) /* + '" inDoc: ' + JSON.stringify(inDoc)*/);
+        logger.debug('type.js:dialogCheck: MATCHED ' + (t1 - t0) + ' ms ' + format.name + ' "' + text + ' isArray: ' + Array.isArray(inDoc[format.name]) /* + '" inDoc: ' + JSON.stringify(inDoc)*/);
       } catch (e) {
-        logger.debug('type.js:dialogTypeCheck: MATCHED ' + (t1 - t0) + ' ms ' + format.name + ' "' + text + ' isArray: ' + Array.isArray(inDoc[format.name]) /* + '" inDoc.' + format.name + ': ' + inDoc[format.name] + ' inDoc.typeDoc: ' + JSON.stringify(inDoc.typeDoc)*/);
+        logger.debug('type.js:dialogCheck: MATCHED ' + (t1 - t0) + ' ms ' + format.name + ' "' + text + ' isArray: ' + Array.isArray(inDoc[format.name]) /* + '" inDoc.' + format.name + ': ' + inDoc[format.name] + ' inDoc.typeDoc: ' + JSON.stringify(inDoc.typeDoc)*/);
       }
 
       if(topicKeywords && topicKeywords.length > 0) context.botUser.topic = topicKeywords;
       // console.log('topic1: '+ (context.botUser.topic ? context.botUser.topic[0].text : 'null')+ ',' + context.botUser.analytics + ',' + context.botUser.analytics2);
+
+      for(var i = 0; i < matchedDoc.length && i < 5; i++) {
+        var _doc = matchedDoc[i];
+        console.log('type.js:dialogCheck: ' + _doc.matchText + ': ' + _doc.matchCount + ', ' + _doc.matchRate + ', ' + JSON.stringify(_doc.matchNLP));
+      }
 
       callback(text, inDoc, true);
     } else {
 
       var t1 = new Date();
       try {
-        logger.debug('type.js:dialogTypeCheck: NOT MATCHED ' + (t1 - t0) + ' ms ' + format.name + ' "' + text + '" inDoc: ' + JSON.stringify(inDoc));
+        logger.debug('type.js:dialogCheck: NOT MATCHED ' + (t1 - t0) + ' ms ' + format.name + ' "' + text + '" inDoc: ' + JSON.stringify(inDoc));
       } catch (e) {
-        logger.debug('type.js:dialogTypeCheck: NOT MATCHED ' + (t1 - t0) + ' ms ' + format.name + ' "' + text + '" inDoc.' + format.name + ': ' + inDoc[format.name] + ' inDoc.typeDoc: ' + JSON.stringify(inDoc.typeDoc));
+        logger.debug('type.js:dialogCheck: NOT MATCHED ' + (t1 - t0) + ' ms ' + format.name + ' "' + text + '" inDoc.' + format.name + ': ' + inDoc[format.name] + ' inDoc.typeDoc: ' + JSON.stringify(inDoc.typeDoc));
       }
-
 
       if(context.botUser.topic && context.botUser.topic.length > 0 &&
           (context.botUser.analytics == null || context.botUser.analytics2 == null)) {
