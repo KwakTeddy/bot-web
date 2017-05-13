@@ -657,7 +657,7 @@
                                                             ng-click="openEditO(o,output)"
                                                             ng-repeat="o in output">
                                                         <i class='fa' ng-class="vm.getIconClass(o.type)" style="color:antiquewhite"></i>&nbsp;
-                                                        {{o.str == '' ? "-new-" : o.str.substring(0,10)}}&nbsp;
+                                                        {{printOutput(o)}}&nbsp;
                                                         <i ng-click="removeI(o,output)" class="fa fa-remove" style="color:white"></i></button>
                                                     <button class="mr-xs btn btn-default btn-xs"
                                                             ng-show="getOutputTypes(output).length > 0"
@@ -715,6 +715,7 @@
                     <form class="form-horizontal" action="#">
                         <div class="col-md-12">
                             <ui-codemirror
+                                    id ='codemirror'
                                     ui-codemirror-opts="vm.codemirrorOpts"
                                     ui-codemirror="{ onLoad: codeLoaded}"
                                     ng-model="vm.currentTab.data" ui-refresh='refreshCodemirror'></ui-codemirror>

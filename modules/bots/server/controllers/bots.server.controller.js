@@ -762,11 +762,23 @@ exports.fileByID = function (req, res, next, id) {
           } else {
             for(var i in files) {
               var file = files[i];
-              if(file.name == 'default.dialog.js') {
+              if(file.name == 'default.graph.js') {
                 id = file._id;
                 break;
-              } else if(file.name.endsWith('dialog.js')) {
+              } else if(file.name.endsWith('graph.js')) {
                 id = file._id;
+              }
+            }
+            if (id == 'none') {
+              // old version without .graph.js
+              for(var i in files) {
+                var file = files[i];
+                if(file.name == 'default.dialog.js') {
+                  id = file._id;
+                  break;
+                } else if(file.name.endsWith('dialog.js')) {
+                  id = file._id;
+                }
               }
             }
 

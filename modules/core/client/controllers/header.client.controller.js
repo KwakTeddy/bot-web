@@ -32,6 +32,7 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
       // emitMsg(':reset user', target);
 
       $cookies.put('default_bot', target.id);
+      //$route.reload?
       $window.location.reload();
       // vm.changeBotInfo(target);
       // vm.connect();

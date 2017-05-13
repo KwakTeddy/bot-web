@@ -242,6 +242,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.editor.focus();
       vm.editor.setCursor({line:where,ch:0});
       $timeout(function () {
+        vm.editor.focus();
+        vm.editor.setCursor({line:where,ch:0});
+        vm.editor.refresh();
         $scope.refreshCodemirror = false;
       }, 100);
     };
@@ -376,6 +379,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       $scope.refreshCodemirror = true;
       $timeout(function () {
+        vm.editor.focus();
+        vm.editor.refresh();
         $scope.refreshCodemirror = false;
       }, 100);
     };
@@ -684,10 +689,20 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       var init = {};
       init.type = $scope.getOutputTypes(input)[0];
       init.str = '';
+
       $scope.openEditO(init, input);
     };
 
+    $scope.printOutput= function(o) {
+      if (o.type === 'Repeat')
+        return '';
+      else
+        return o.str.substring(0,10);
+    };
+
     $scope.openEditO = function(o, output) {
+      if (o.type === 'Repeat')
+        return;
       vm.curOutput = output;
       vm.targetO = o;
       vm.curO = angular.copy(o);
@@ -739,6 +754,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       i.type = type;
       if (type != "Text" && type != "If" && type !="Regexp" && type !="Button")
         i.str = "";
+      if (type === 'Repeat') {
+        vm.curO.type = 'Repeat';
+        vm.curO.str = '1';
+        $scope.saveO();
+      }
     };
 
     $scope.getPlaceHolder = function(type, isOut) {
