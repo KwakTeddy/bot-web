@@ -96,7 +96,8 @@ function respondMessage(to, text, botId, task) {
     }
 
     console.log(util.inspect(task, {showHidden: false, depth: null}))
-    console.log('999999999998989812398129839128398')
+    console.log('999999999998989812398129839128398');
+    console.log(to);
 
     if (task && task.result) {
       // If we receive a text message, check to see if it matches any special
@@ -534,6 +535,7 @@ function smartReplyMessage(recipientId, text, task, token) {
  */
 function callSendAPI(messageData, PAGE_ACCESS_TOKEN) {
   console.log(PAGE_ACCESS_TOKEN);
+  console.log(util.inspect(messageData));
   // console.log('callSendAPI: ', messageData);
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
