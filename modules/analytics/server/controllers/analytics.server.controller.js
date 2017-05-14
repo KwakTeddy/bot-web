@@ -488,12 +488,53 @@ exports.dialogs = function (req, res) {
           result.common.push(d);
         }
       });
+      result.common.forEach(function(d) {
+        delete d.task;
+      });
 
       console.log("dialog:" + result.botId + "(" + botId + "), " + result.fileName);
       // var json = JSON.stringify(result, function(key, value) {
       //       return (typeof value === 'function' ) ? value.toString() : value;
       //   });
-      // return res.send(json);
+
+      var isCyclic = function(obj) {
+        var keys = [];
+        var stack = [];
+        var stackSet = new Set();
+        var detected = false;
+
+        function detect(obj, key) {
+          if (!(obj instanceof Object)) { return; } // Now works with other
+                                                    // kinds of object.
+
+          if (stackSet.has(obj)) { // it's cyclic! Print the object and its locations.
+            var oldindex = stack.indexOf(obj);
+            var l1 = keys.join('.') + '.' + key;
+            var l2 = keys.slice(0, oldindex + 1).join('.');
+            console.log('CIRCULAR: ' + l1 + ' = ' + l2 + ' = ' + obj);
+            console.log(obj);
+            detected = true;
+            return;
+          }
+
+          keys.push(key);
+          stack.push(obj);
+          stackSet.add(obj);
+          for (var k in obj) { //dive on the object's children
+            if (obj.hasOwnProperty(k)) { detect(obj[k], k); }
+          }
+
+          keys.pop();
+          stack.pop();
+          stackSet.delete(obj);
+          return;
+        }
+
+        detect(obj, 'obj');
+        return detected;
+      };
+
+      isCyclic(result);
       return res.jsonp(result);
     }
   ]);
