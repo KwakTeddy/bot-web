@@ -5,12 +5,24 @@
     .module('entitys')
     .controller('EntitysListController', EntitysListController);
 
-  EntitysListController.$inject = ['entitysResolve','DTOptionsBuilder', '$compile', '$scope'];
+  EntitysListController.$inject = ['entitysResolve','DTOptionsBuilder', '$compile', '$scope', '$rootScope', '$state', 'EntitysService'];
 
-  function EntitysListController(entitys, DTOptionsBuilder, $compile, $scope) {
+  function EntitysListController(entitys, DTOptionsBuilder, $compile, $scope, $rootScope, $state, EntitysService) {
     var vm = this;
 
     vm.entitys = entitys;
+    // Remove existing Custom action
+    vm.remove = function (target) {
+      if (confirm('\'' + target.name + '\' ' + '정말 삭제하시겠습니까?')) {
+        target.$remove({botName: $rootScope.botId}, function (response) {
+          EntitysService.query({botName: $rootScope.botId}).$promise.then(function (data) {
+            vm.entitys = data;
+          }, function (err) {
+            console.log(err)
+          })
+        });
+      }
+    };
 
     vm.dtOptions = DTOptionsBuilder.newOptions()
         .withOption('bLengthChange', false)

@@ -5,20 +5,31 @@
     .module('intents')
     .controller('IntentsListController', IntentsListController);
 
-  IntentsListController.$inject = ['intentsResolve', '$cookies', '$http','DTOptionsBuilder', '$compile', '$scope'];
+  IntentsListController.$inject = ['intentsResolve', '$cookies', '$http','DTOptionsBuilder', '$compile', '$scope', '$rootScope', '$state', 'IntentsService'];
 
-  function IntentsListController(intents, $cookies, $http, DTOptionsBuilder, $compile, $scope) {
+  function IntentsListController(intents, $cookies, $http, DTOptionsBuilder, $compile, $scope, $rootScope, $state, IntentsService) {
     var vm = this;
 
     vm.intents = intents;
     vm.bot = '';
 
     $http.get('/api/bots/byNameId/' + $cookies.get('default_bot')).then(function (result) {
-      console.log(result.data);
       vm.bot = result.data;
     }, function (err) {
       console.log(err);
     });
+
+    vm.remove = function(target) {
+      if (confirm('\'' + target.name + '\' ' + '정말 삭제하시겠습니까?')) {
+        target.$remove({botName: $rootScope.botId}, function (response) {
+          IntentsService.query({botName: $rootScope.botId}).$promise.then(function (result) {
+            vm.intents = result
+          }, function (err) {
+            console.log(err);
+          })
+        });
+      }
+    };
 
     vm.dtOptions = DTOptionsBuilder.newOptions()
         .withOption('bLengthChange', false)
@@ -28,6 +39,6 @@
           $('#dt_filter > label > input[type="search"]').addClass('form-control').attr('placeholder', 'Search');
           $("div.toolbar").html('<button id="addToTable" class="btn btn-primary" ui-sref="intents.create"><i class="fa fa-plus"></i> 신규등록</button>');
           $compile(angular.element(document.querySelector('div.toolbar')).contents())($scope);
-        })
+    })
   }
 })();

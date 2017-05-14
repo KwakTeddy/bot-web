@@ -26,7 +26,7 @@ module.exports = function(app) {
 
   app.route('/api/entitysContent/:entityId')//.all(entitysPolicy.isAllowed)
     .get(entitys.read)
-    .put(entitys.update)
+    .post(entitys.updateContent)
     .delete(entitys.contentDelete);
 
 

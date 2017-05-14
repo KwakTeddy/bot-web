@@ -25,50 +25,59 @@ exports.create = function(req, res) {
   var query = {botId: req.body.botName, user: req.user._id, name: req.body.name};
   Intent.findOne(query, function (err, result) {
     if (err) {
-      console.log(err);
       return res.status(400).send({
         message: err
       });
     } else {
       if (!result) {
-        var intent = new Intent();
-        intent.botId = req.body.botName;
-        intent.name = req.body.name;
-        intent.user = req.user;
+        if (req.body.content){
+          var intent = new Intent();
+          intent.botId = req.body.botName;
+          intent.name = req.body.name;
+          intent.user = req.user;
 
-        var intentContent = new IntentContent();
-        intentContent.user = req.user;
-        intentContent.intentId = intent._id;
-        intentContent.name = req.body.content;
-        intentContent.botId = req.body.botName;
-
-        dialogset.processInput(null, req.body.content, function (_input, _json) {
-          intentContent.input = _input;
-
-          intent.save(function (err) {
-            if (err) {
+          async.eachSeries(req.body.content, function(content, cb) {
+            console.log(util.inspect(content));
+            dialogset.processInput(null, content.name, function (_input, _json) {
+              content['input'] = _input;
+              content['intentId'] =intent._id ;
+              content['botId'] = req.body.botName;
+              content['user'] = req.user._id;
+              cb(null);
+            });
+          }, function(err) {
+            if (err){
               console.log(err);
-              return res.status(400).send({
-                message: err
-              });
-            } else {
-              intentContent.save(function (err) {
-                console.log(err);
+            }else {
+              intent.save(function (err) {
                 if (err) {
                   console.log(err);
                   return res.status(400).send({
                     message: err
                   });
                 } else {
-                  // console.log(intent);
-
-                  intentModule.saveIntentTopics(intent.botId, function () {
-                    res.jsonp(intent);
-                  });
+                  IntentContent.collection.insert(req.body.content, function (err, result) {
+                    if(err){
+                      console.log(util.inspect(err))
+                    }else {
+                      intentModule.saveIntentTopics(intent.botId, function () {
+                        res.jsonp(intent);
+                      });
+                    }
+                  })
                 }
-              })
+              });
+
             }
           });
+        }else {
+          res.send({
+            message: '적어도 하나의 인텐트 내용을 입력해주세요'
+          })
+        }
+      }else {
+        res.status(400).send({
+          message: '동일한 이름의 인텐트가 존재합니다'
         });
       }
     }
@@ -112,17 +121,55 @@ exports.update = function(req, res) {
   // console.log(util.inspect(intent));
   // console.log(util.inspect(req.body));
   intent = _.extend(intent , req.body);
-
   intent.save(function(err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
+
+      // async.eachSeries(req.body.content, function(content, cb) {
+      //   console.log(util.inspect(content));
+      //   IntentContent.update({_id: content._id}, {input: })
+      //
+      // }, function(err) {
+      //   if (err){
+      //     console.log(err);
+      //   }else {
+      //
+      //   }
+      // });
       res.jsonp(intent);
-    }
+    };
   });
 };
+
+
+
+/**
+ * Update a Custom action
+ */
+exports.contentUpdate = function(req, res) {
+  IntentContent.findOne({_id: req.body._id}).exec(function (err, data) {
+    if (err){
+      console.log(err)
+    }else {
+
+      dialogset.processInput(null, req.body.name, function (_input, _json) {
+        data.name = req.body.name;
+        data.input = _input;
+        data.save(function (err) {
+          if (err){
+            console.log(err)
+          }else {
+            res.end();
+          }
+        })
+      });
+    }
+  })
+};
+
 
 /**
  * Delete an Custom action

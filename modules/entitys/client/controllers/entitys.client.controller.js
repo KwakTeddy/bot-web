@@ -6,14 +6,16 @@
     .module('entitys')
     .controller('EntitysController', EntitysController);
 
-  EntitysController.$inject = ['$scope', '$state', 'Authentication', 'entityResolve', '$resource', 'EntitysService', '$rootScope'];
+  EntitysController.$inject = ['$scope', '$state', 'Authentication', 'entityResolve', '$resource', 'EntitysService', '$rootScope', '$http'];
 
-  function EntitysController($scope, $state, Authentication, entity, $resource, EntitysService, $rootScope) {
+  function EntitysController($scope, $state, Authentication, entity, $resource, EntitysService, $rootScope, $http) {
     var vm = this;
 
     vm.authentication = Authentication;
     vm.entity = entity;
+    $scope.entity = vm.entity;
     vm.entityContent = '';
+    vm.entityContentSyn = '';
     vm.error = null;
     vm.contentError = null;
     vm.form = {};
@@ -24,6 +26,62 @@
     }else {
       angular.element('#entityContentForm').focus();
     }
+
+    if (vm.entity._id){
+      for(var i = 0; i < vm.entity.content.length; i++){
+        if (!vm.entity.content[i].syn){
+          vm.entity.content[i]['syn'] = [];
+        }
+      }
+    }
+
+    if(vm.entity._id) {
+      $scope.$watch('entity.content', function (newVal, oldVal) {
+        if (newVal && (newVal.length == oldVal.length)) {
+          for (var i = 0; i < newVal.length; i++) {
+            if (newVal[i].name !== oldVal[i].name) {
+              return $http.post('/api/entitysContent/' + newVal[i].entityId, newVal[i]).then(function (result) {
+              }, function (err) {
+                console.log(err)
+              })
+            }else {
+              if(newVal[i].syn && (newVal[i].syn.length !== oldVal[i].syn.length)){
+                return $http.post('/api/entitysContent/' + newVal[i].entityId, newVal[i]).then(function (result) {
+                }, function (err) {
+                  console.log(err)
+                })
+              }else {
+                if (newVal[i].syn){
+                  for(var j = 0; j < newVal[i].syn.length; j++){
+                    if(newVal[i].syn[j] !== oldVal[i].syn[j]){
+                      return $http.post('/api/entitysContent/' + newVal[i].entityId, newVal[i]).then(function (result) {
+                      }, function (err) {
+                        console.log(err)
+                      })
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }, true);
+    }
+    if (vm.entity._id) {
+      $scope.$watch('entity', function (newVal, oldVal) {
+        if (newVal.name !== oldVal.name) {
+          $http.put('/api/entitys/' + $rootScope.botId + '/' + newVal._id, newVal).then(function (result) {
+
+          }, function (err) {
+            console.log(err)
+          })
+        }
+      }, true);
+    }
+
+
+
+
 
     // Remove existing Custom action
     function remove() {
@@ -44,7 +102,7 @@
         return false;
       }
       vm.entity.botName = $rootScope.botId;
-      vm.entity.content = vm.entityContent;
+      console.log(vm.entity);
       // TODO: move create/update logic to service
       if (vm.entity._id) {
         vm.entity.$update(successCallback, errorCallback);
@@ -71,23 +129,43 @@
     vm.contentSave = function(isValid){
       console.log($rootScope);
       console.log(isValid);
-      if (!isValid || !vm.entity._id) {
+      if (!isValid) {
         console.log('done')
         $scope.$broadcast('show-errors-check-validity', 'vm.form.entityForm');
         return false;
       }
-      console.log(vm.entity._id);
-      $resource('/api/entitysContent').save({content: vm.entityContent, entityId: vm.entity._id, botId: $rootScope.botId}, function (result) {
-        console.log(result);
-        vm.entity.content.unshift(result);
-        vm.entityContent = '';
-        // console.log(document.getElementById('contentForm').classList.value)
-        // document.getElementById('contentForm').classList;
-        vm.contentError = '';
-      }, function (err) {
-        console.log(err);
-        vm.contentError = err.data.message
-      })
+      if (vm.entity._id){
+        console.log(vm.entity._id);
+        $resource('/api/entitysContent').save({content: vm.entityContent, entityId: vm.entity._id, botId: $rootScope.botId}, function (result) {
+          console.log(result);
+          vm.entity.content.unshift(result);
+          vm.entityContent = '';
+          // console.log(document.getElementById('contentForm').classList.value)
+          // document.getElementById('contentForm').classList;
+          vm.contentError = '';
+        }, function (err) {
+          console.log(err);
+          vm.contentError = err.data.message
+        }) 
+      }else {
+        if(!vm.entity.content){
+          vm.entity['content'] = [];
+        }
+        if (vm.entityContent){
+          for(var i = 0; i < vm.entity.content.length; i++){
+            if (vm.entity.content[i].name == vm.entityContent){
+              vm.contentError = '동일한 내용이 존재합니다';
+              return false
+            }
+          }
+          vm.entity.content.unshift({name: vm.entityContent, syn: [vm.entityContent]});
+          vm.entityContent = '';
+          vm.contentError = ''
+        }else {
+          vm.contentError = '내용을 입력해주세요'
+        }
+
+      }
     };
     
     vm.contentRemove = function (target) {
@@ -108,5 +186,27 @@
       });
       // vm.entity.$remove($state.go('entitys.list'), {}, {reload: true});
     }
+
+    vm.contentRemoveBeforeSave = function (target) {
+      var index = vm.entity.content.indexOf(target);
+      if(index > -1){
+        vm.entity.content.splice(index, 1)
+      }
+    }
+
+    vm.contentSynSave = function (target) {
+      console.log(target)
+      if(!target.syn){
+        target['syn'] = [];
+      }
+      target.syn.push(vm.entityContentSyn);
+      vm.entityContentSyn = '';
+    }
+
+    vm.contentSynRemoveBeforeSave = function (content, syn) {
+      var index = content.syn.indexOf(syn);
+      content.syn.splice(index, 1);
+    }
+
   }
 })();

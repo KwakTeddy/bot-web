@@ -23,7 +23,7 @@
         <!--<th class="text-center">작성자</th>-->
         <!--<th class="text-center">수정일</th>-->
         <!--<th class="text-center">등록일</th>-->
-        <!--<th class="text-center">관리</th>-->
+        <th class="text-center">관리</th>
       </tr>
       </thead>
       <tbody>
@@ -34,11 +34,11 @@
         <!--<td class="text-center">{{entity.user ? entity.user.displayName : '장세영'}}</td>-->
         <!--<td class="text-center">{{entity.updated | date: 'yyyy-MM-dd HH:mm:ss'}}</td>-->
         <!--<td class="text-center">{{entity.created | date: 'yyyy-MM-dd HH:mm:ss'}}</td>-->
-        <!--<td>-->
-          <!--<a class="btn btn-primary btn-block" ui-sref="entitys.edit({entityId: entity._id})">-->
-            <!--<i class="glyphicon glyphicon-edit"></i> 수정-->
-          <!--</a>-->
-        <!--</td>-->
+        <td>
+          <a class="btn btn-default btn-block" ng-click="vm.remove(entity)" style="border: none">
+            <i class="glyphicon glyphicon-trash"></i>
+          </a>
+        </td>
       </tr>
       </tbody>
     </table>

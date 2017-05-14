@@ -26,7 +26,7 @@ module.exports = function(app) {
 
   app.route('/api/intentsContent/:intentId')//.all(intentsPolicy.isAllowed)
     .get(intents.read)
-    .put(intents.update)
+    .post(intents.contentUpdate)
     .delete(intents.contentDelete);
 
 

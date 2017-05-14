@@ -7,6 +7,7 @@ var path = require('path'),
   mongoose = require('mongoose'),
   Entity = mongoose.model('Entity'),
   EntityContent = mongoose.model('EntityContent'),
+  EntityContent = mongoose.model('EntityContent'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
 
@@ -18,6 +19,7 @@ var util = require('util'); //temporary
 exports.create = function(req, res) {
   console.log(req.body.botName);
   console.log('----------------------------');
+  console.log(util.inspect(req.body.content));
 
   var query = {botId: req.body.botName, user: req.user._id, name: req.body.name};
   Entity.findOne(query, function (err, result) {
@@ -28,40 +30,37 @@ exports.create = function(req, res) {
       });
     } else {
       if (!result){
-
-        var entity = new Entity();
-        entity.user = req.user;
-        entity.botId = req.body.botName;
-        entity.name = req.body.name;
-        entity.user = req.user;
-
-        var entityContent = new EntityContent();
-        entityContent.user = req.user;
-        entityContent.entityId = entity._id;
-        entityContent.name = req.body.content;
-        entityContent.botId = req.body.botName;
-
-        entity.save(function(err) {
-          if (err) {
-            console.log(err);
-            return res.status(400).send({
-              message: err
-            });
-          } else {
-            entityContent.save(function (err) {
+        if (req.body.content){
+          var entity = new Entity();
+          entity.botId = req.body.botName;
+          entity.name = req.body.name;
+          entity.user = req.user;
+          entity.save(function (err) {
+            if (err) {
               console.log(err);
-              if (err) {
-                console.log(err);
-                return res.status(400).send({
-                  message: err
-                });
-              }else {
-                console.log(entity);
-                res.jsonp(entity);
+              return res.status(400).send({
+                message: err
+              });
+            } else {
+              for(var i = 0; i < req.body.content.length; i++){
+                req.body.content[i]['entityId'] = entity._id ;
+                req.body.content[i]['botId'] = req.body.botName;
+                req.body.content[i]['user'] = req.user._id;
               }
-            })
-          }
-        });
+              EntityContent.collection.insert(req.body.content, function (err, result) {
+                if(err){
+                  console.log(util.inspect(err))
+                }else {
+                  res.jsonp(entity);
+                }
+              })
+            }
+          });
+        }else {
+          res.status(400).send({
+            message: '적어도 하나의 엔터티 내용을 입력해주세요'
+          })
+        }
       }else {
         return res.status(400).send({
           message:  '\'' + req.body.name + '\'' +' 이름의 엔터티가 존재합니다. 다른 이름으로 생성해주세요'
@@ -106,8 +105,6 @@ exports.read = function(req, res) {
  */
 exports.update = function(req, res) {
   var entity = req.entity ;
-  console.log(util.inspect(entity));
-  console.log(util.inspect(req.body));
   entity = _.extend(entity , req.body);
 
   entity.save(function(err) {
@@ -120,6 +117,28 @@ exports.update = function(req, res) {
     }
   });
 };
+
+/**
+ * Update a Custom action
+ */
+exports.updateContent = function(req, res) {
+  EntityContent.findOne({_id: req.body._id}).exec(function (err, data) {
+    if (err){
+      console.log(err)
+    }else {
+      data.name = req.body.name;
+      data.syn = req.body.syn;
+      data.save(function (err) {
+        if (err){
+          console.log(err)
+        }else {
+          res.end();
+        }
+      })
+    }
+  })
+};
+
 
 /**
  * Delete an Custom action

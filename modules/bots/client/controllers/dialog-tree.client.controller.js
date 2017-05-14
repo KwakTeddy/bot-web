@@ -176,6 +176,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     }).apply(this, [jQuery]);
 
+    $scope.removeProcessedInput = function () {
+      $scope.processedInput = '';
+    };
+
     $scope.processInput = function () {
       // $resource('/api/nluprocess/:input', {}).get({input: vm.curI.str}, function (res) {
       //   console.log(res)
@@ -199,20 +203,77 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       "bot.setTask('newTask',newTask);";
 
 
-    $scope.saveIntent = function () {
+    // $scope.saveIntent = function () {
+    //   $scope.intent.botName = $rootScope.botId;
+    //   $scope.intent.content = $scope.intentContent;
+    //   $scope.intent.$save({botName: $rootScope.botId},successCallback, errorCallback);
+    //
+    //   function successCallback(res) {
+    //     console.log(res);
+    //     $scope.backToEdit(false);
+    //   }
+    //
+    //   function errorCallback(res) {
+    //     console.log(res);
+    //   }
+    // };
+
+    $scope.saveIntent = function (isValid) {
+      if (!$scope.intent.name) {
+        $scope.intentError = '인텐트 이름을 입력해주세요';
+        return false;
+      }
+      console.log($scope.intent.content)
+      if (!$scope.intent.content || $scope.intent.content.length == 0){
+        $scope.contentListError = '적어도 하나의 내용을 목록에 추가해주세요';
+        return false
+      }
+
       $scope.intent.botName = $rootScope.botId;
-      $scope.intent.content = $scope.intentContent;
+
       $scope.intent.$save({botName: $rootScope.botId},successCallback, errorCallback);
 
       function successCallback(res) {
-        console.log(res);
         $scope.backToEdit(false);
       }
 
       function errorCallback(res) {
         console.log(res);
+        $scope.intentError = res.data.message;
+        if (res.data.message.code == 11000){
+          $scope.intentError = '\'' + res.data.message.op.name + '\'' +' 이름의 인텐트가 존재합니다. 다른 이름으로 생성해주세요'
+        }
+      }
+    }
+
+    $scope.saveIntentContent = function (isValid) {
+      if(!$scope.intent.content){
+        $scope.intent['content'] = [];
+      }
+      if ($scope.intentContent){
+        for(var i = 0; i < $scope.intent.content.length; i++){
+          if ($scope.intent.content[i].name == $scope.intentContent){
+            $scope.contentError = '동일한 내용이 존재합니다';
+            return false
+          }
+        }
+        $scope.intent.content.unshift({name: $scope.intentContent});
+        $scope.intentContent = '';
+        $scope.contentError = ''
+      }else {
+        $scope.contentError = '내용을 입력해주세요'
       }
     };
+
+    $scope.contentRemoveBeforeSave = function (target) {
+      console.log($scope.intent.content.indexOf(target))
+      var index = $scope.intent.content.indexOf(target);
+      if(index > -1){
+        $scope.intent.content.splice(index, 1)
+      }
+    }
+
+
 
     $scope.addTask = function() {
       vm.edit = 'task';
@@ -678,6 +739,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.openEdit = function(i, input) {
+      $scope.processedInput = '';
       vm.curInput = input;
       vm.targetI = i;
       vm.curI = angular.copy(i);

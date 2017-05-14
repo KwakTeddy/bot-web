@@ -6,13 +6,14 @@
     .module('intents')
     .controller('IntentsController', IntentsController);
 
-  IntentsController.$inject = ['$scope', '$state', 'Authentication', 'intentResolve', '$resource', 'IntentsService', '$rootScope'];
+  IntentsController.$inject = ['$scope', '$state', 'Authentication', 'intentResolve', '$resource', 'IntentsService', '$rootScope', '$http'];
 
-  function IntentsController($scope, $state, Authentication, intent, $resource, IntentsService, $rootScope) {
+  function IntentsController($scope, $state, Authentication, intent, $resource, IntentsService, $rootScope, $http) {
     var vm = this;
 
     vm.authentication = Authentication;
     vm.intent = intent;
+    $scope.intent = vm.intent;
     vm.intentContent = '';
     vm.error = null;
     vm.contentError = null;
@@ -31,9 +32,36 @@
         vm.intent.$remove({botName: $rootScope.botId}, function (response) {
           $state.go('intents.list')
         });
-        // vm.intent.$remove($state.go('intents.list'), {}, {reload: true});
       }
     }
+    
+    $scope.$watch('intent.content', function (newVal, oldVal) {
+      if(vm.intent._id){
+        if(newVal && (newVal.length == oldVal.length)){
+          for(var i = 0; i < newVal.length; i++){
+            if(newVal[i].name !== oldVal[i].name){
+              $http.post('/api/intentsContent/'+ newVal[i].intentId, newVal[i]).then(function (result) {
+              }, function (err) {
+                console.log(err)
+              })
+            }
+          }
+        }
+
+      }
+    }, true);
+
+    $scope.$watch('intent', function (newVal, oldVal) {
+      if (vm.intent._id){
+        if (newVal.name !== oldVal.name){
+          $http.put('/api/intents/'+ $rootScope.botId + '/' + newVal._id, newVal).then(function (result) {
+
+          }, function (err) {
+            console.log(err)
+          })
+        }
+      }
+    }, true);
 
     // Save Custom action
     function save(isValid) {
@@ -43,10 +71,15 @@
         $scope.$broadcast('show-errors-check-validity', 'vm.form.intentForm');
         return false;
       }
+      if (!vm.intent.content){
+        vm.contentListError = '적어도 하나의 내용을 목록에 추가해주세요';
+        return false
+      }
+
       vm.intent.botName = $rootScope.botId;
-      vm.intent.content = vm.intentContent;
-      // TODO: move create/update logic to service
-      // console.log(vm.intent.botId);
+
+      console.log(vm.intent);
+
       if (vm.intent._id) {
         vm.intent.$update(successCallback, errorCallback);
       } else {
@@ -56,11 +89,7 @@
       function successCallback(res) {
         vm.error = null;
         $scope.$broadcast('show-errors-check-validity', 'vm.form.intentForm');
-        $state.go('intents.edit', {
-          intentId: res._id
-        }, {reload: true});
-
-
+        $state.go('intents.list')
       }
 
       function errorCallback(res) {
@@ -73,51 +102,64 @@
     }
 
     vm.contentSave = function(isValid){
-      console.log(isValid);
-      if (!isValid  || !vm.intent._id) {
+      if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.form.intentForm');
         return false;
       }
-      console.log(vm.intent._id);
       if (vm.intent._id){
-        $resource('/api/intentsContent').save({content: vm.intentContent, intentId: vm.intent._id, botId: $rootScope.botId}, function (result) {
-          console.log(result);
-          vm.intent.content.unshift(result);
-          vm.intentContent = '';
-          // console.log(document.getElementById('contentForm').classList.value)
-          // document.getElementById('contentForm').classList;
-          vm.contentError = '';
-        }, function (err) {
-          console.log(err);
-          vm.contentError = err.data.message
-        })
+        if (vm.intentContent){
+          $resource('/api/intentsContent').save({content: vm.intentContent, intentId: vm.intent._id, botId: $rootScope.botId}, function (result) {
+            vm.intent.content.unshift(result);
+            vm.intentContent = '';
+            vm.contentError = '';
+          }, function (err) {
+            console.log(err);
+            vm.contentError = err.data.message
+          })
+        }else {
+          vm.contentError = '내용을 입력해주세요'
+        }
+
       }else {
         if(!vm.intent.content){
           vm.intent['content'] = [];
         }
-        vm.intent.content.unshift({name: vm.intentContent});
-        vm.intentContent = ''
-
+        if (vm.intentContent){
+          for(var i = 0; i < vm.intent.content.length; i++){
+            if (vm.intent.content[i].name == vm.intentContent){
+              vm.contentError = '동일한 내용이 존재합니다';
+              return false
+            }
+          }
+          vm.intent.content.unshift({name: vm.intentContent});
+          vm.intentContent = '';
+          vm.contentError = ''
+        }else {
+          vm.contentError = '내용을 입력해주세요'
+        }
       }
     };
     
     vm.contentRemove = function (target) {
-      console.log(vm.intent);
-      // vm.intent.content[target._id].$remove();
-      console.log(vm.intentContent);
-      console.log(target);
       $resource('/api/intentsContent').delete({contentId: target._id}, function (result) {
         if (result.ok){
-          IntentsService.query({
+          IntentsService.get({
             botName: $rootScope.botId,
             intentId: vm.intent._id
           }).$promise.then(function (data) {
             vm.intent = data;
           })
-
+        }else {
         }
       });
-      // vm.intent.$remove($state.go('intents.list'), {}, {reload: true});
+    };
+    
+    vm.contentRemoveBeforeSave = function (target) {
+      console.log(vm.intent.content.indexOf(target))
+      var index = vm.intent.content.indexOf(target);
+      if(index > -1){
+        vm.intent.content.splice(index, 1)
+      }
     }
   }
 })();

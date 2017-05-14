@@ -10,7 +10,8 @@
 
   function IntentsService($resource) {
     return $resource('api/intents/:botName/:intentId', {
-      intentId: '@_id'
+      intentId: '@_id',
+      botName: '@botName'
     }, {
       update: {
         method: 'PUT'

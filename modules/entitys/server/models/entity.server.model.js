@@ -50,6 +50,8 @@ var EntityContentSchema = new Schema({
   entityId: {
     type: Schema.ObjectId,
     ref: 'Entity'
+  },
+  syn: {
   }
 
 });
