@@ -183,7 +183,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       // }, function (err) {
       //   console.log(err);
       // });
-      if (vm.curI.str.length){
+      if (vm.curI.type === 'Text' && vm.curI.str.length){
         $http.get('/api/nluprocess/'+vm.curI.str).then(function (res) {
           $scope.processedInput = res.data;
         }, function (err) {
@@ -719,7 +719,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
 
       vm.targetI.type = vm.curI.type;
-      vm.targetI.str = $scope.processedInput;
+      if (vm.curI.type == 'Text') {
+        vm.targetI.str = $scope.processedInput;
+      } else {
+        vm.targetI.str = vm.curI.str;
+      }
       // vm.targetI.str = vm.curI.str;
 
       if (vm.curInput.indexOf(vm.targetI) == -1)
@@ -743,6 +747,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.resetI= function() {
+      $scope.processedInput = null;
       vm.inputMode = false;
     };
 
