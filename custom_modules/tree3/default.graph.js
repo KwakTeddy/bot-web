@@ -7,21 +7,86 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "안녕"
+				"text": "안녕하다"
 			}
 		],
 		"output": [
 			{
-				"output": "안녕하세요"
-			},
-			{
-				"repeat": "1"
+				"output": "어 안녕"
 			}
 		],
-		"name": "dialog_default0",
-		"task": {
-			"name": "moviecrawl"
-		}
+		"name": "dialog_default0"
+	},
+	{
+		"name": "dialog_default1",
+		"id": "default1",
+		"filename": "default",
+		"input": [
+			{
+				"text": "바보 이다"
+			}
+		],
+		"output": [
+			{
+				"output": "너가 바보다"
+			}
+		]
+	},
+	{
+		"name": "dialog_default2",
+		"id": "default2",
+		"filename": "default",
+		"input": [
+			{
+				"text": "ㅁㄴ"
+			}
+		],
+		"output": [
+			{
+				"call": "dialog_default4"
+			}
+		]
+	},
+	{
+		"name": "dialog_default3",
+		"id": "default3",
+		"filename": "default",
+		"input": [],
+		"output": [
+			{
+				"output": "ㅁㄴㅇㅁㄴㅇ"
+			}
+		]
+	},
+	{
+		"name": "dialog_default4",
+		"id": "default4",
+		"filename": "default",
+		"input": [
+			{
+				"text": "ㅁㄴㅇㄴ"
+			}
+		],
+		"output": [
+			{
+				"output": "ㅁㄴㅇㄴㅁㅇ"
+			}
+		]
+	},
+	{
+		"name": "dialog_default5",
+		"id": "default5",
+		"filename": "default",
+		"input": [
+			{
+				"text": "ㅁㄴㅇㄴ"
+			}
+		],
+		"output": [
+			{
+				"output": "ㅁㄴㅇㄴㅁㅇ"
+			}
+		]
 	}
 ];
 

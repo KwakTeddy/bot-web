@@ -682,15 +682,18 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.targetI = i;
       vm.curI = angular.copy(i);
       vm.inputMode = true;
-      document.getElementById('input').focus();
+      setTimeout(function () {
+        if (document.getElementById('input'))
+          document.getElementById('input').focus();
+      }, 300);
     };
 
-    $scope.addO = function(input) {
+    $scope.addO = function(input, first) {
       var init = {};
       init.type = $scope.getOutputTypes(input)[0];
       init.str = '';
 
-      $scope.openEditO(init, input);
+      $scope.openEditO(init, input, first);
     };
 
     $scope.printOutput= function(o) {
@@ -700,16 +703,19 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         return o.str.substring(0,10);
     };
 
-    $scope.openEditO = function(o, output) {
+    $scope.openEditO = function(o, output, first) {
       if (o.type === 'Repeat')
         return;
       vm.curOutput = output;
       vm.targetO = o;
       vm.curO = angular.copy(o);
       vm.inputModeO = true;
-      setTimeout(function () {
-        document.getElementById('output').focus();
-      }, 500);
+      if (!first) {
+        setTimeout(function () {
+          if (document.getElementById('output'))
+            document.getElementById('output').focus();
+        }, 300);
+      }
     };
 
     $scope.saveI = function() {
@@ -840,10 +846,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       $scope.dialog.input.splice($scope.dialog.input.indexOf(input),1);
     };
 
-    $scope.addOutput= function() {
+    $scope.addOutput= function(first) {
       var output = [];
       $scope.dialog.output.push(output);
-      $scope.addO(output);
+      $scope.addO(output, first);
     };
 
     $scope.removeOutput = function(output) {
@@ -1037,7 +1043,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       $scope.dialog.output = initOutput(dialog.output);
 
       if (dialog.output.length == 0) {
-        $scope.addOutput();
+        $scope.addOutput(dialog.input.length == 0);
+      } else if (dialog.output.length == 1 && Object.keys(dialog.output[0]).length == 0) {
+        $scope.addO($scope.dialog.output[0], dialog.input.length == 0);
       }
 
       if (dialog.input.length == 0) {
@@ -2139,8 +2147,17 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         });
       }
 
-      if (isCallNode)
+      if (isCallNode) {
+        $scope.message = "Output이 Call인 노드는 Child노드를 추가할 수 없습니다";
+        var modalInstance = $uibModal.open({
+          templateUrl: 'modules/bots/client/views/modal-bots.html',
+          scope: $scope
+        });
+        modalInstance.result.then(function (response) {
+          console.log(response);
+        });
         return;
+      }
 
       vm.setChanged(true, true);
       if (d3.event)
