@@ -2352,27 +2352,29 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     }
 
     function swapNode(parent,src, target) {
-      var srcNode = angular.copy(parent.children[src]);
-      var targetNode = angular.copy(parent.children[target]);
+      var srcNode = parent.children[src];
+      var targetNode = parent.children[target];
 
+      var temp = srcNode;
       parent.children[src] = targetNode;
-      parent.children[target] = srcNode;
+      parent.children[target] = temp;
 
       if (parent.depth == 0) {
         var srcDialog, targetDialog;
         var srcIdx, targetIdx;
         for (var i=0; i < dialogs.length; ++i) {
           if (dialogs[i].id === srcNode.id) {
-            srcDialog = angular.copy(dialogs[i]);
+            srcDialog = dialogs[i];
             srcIdx = i;
           }
           if (dialogs[i].id === targetNode.id) {
-            targetDialog = angular.copy(dialogs[i]);
+            targetDialog = dialogs[i];
             targetIdx = i;
           }
         }
+        var temp = srcDialog;
         dialogs[srcIdx] = targetDialog;
-        dialogs[targetIdx] = srcDialog;
+        dialogs[targetIdx] = temp;
       }
 
       updateSelected(srcNode);
