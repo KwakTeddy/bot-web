@@ -236,6 +236,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       $scope.intent.$save({botName: $rootScope.botId},successCallback, errorCallback);
 
       function successCallback(res) {
+        IntentsService.query({botName: $rootScope.botId}).$promise.then(function (result) {
+          vm.intents = result.map(function(i) { return i.name; });
+        }, function (err) {
+          console.log(err);
+        });
         $scope.backToEdit(false);
       }
 
@@ -1216,6 +1221,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         $scope.addInput();
       }
 
+      IntentsService.query({botName: $rootScope.botId}).$promise.then(function (result) {
+        vm.intents = result.map(function(i) { return i.name; });
+      }, function (err) {
+        console.log(err);
+      });
+
       $scope.$apply();
       $('.modal-with-form').click();
 
@@ -1547,7 +1558,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         vm.botId = res.botId;
         vm.fileName = res.fileName;
         vm.tasks = res.tasks.map(function(t) { return {name:t, type:'default'}});
-        vm.intents = res.intents.map(function(i) { return i.name; });
+        // vm.intents = res.intents.map(function(i) { return i.name; });
         vm.entities = res.entities.map(function(i) { return i.name; });
         vm.types = res.types.map(function(t) { return t.name} );
         vm.type_dic = res.type_dic;

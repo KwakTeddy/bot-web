@@ -260,7 +260,8 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
               });
           }
           console.log(val);
-          drawBar(val);
+          if (val.length > 1)
+            drawBar(val);
         }, function(err) {
           console.log(err);
         });
