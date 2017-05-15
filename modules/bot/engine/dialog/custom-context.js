@@ -3,6 +3,7 @@ var mongoModule = require(path.resolve('modules/bot/action/common/mongo'));
 var async = require('async');
 
 function loadCustomContext(bot, callback) {
+  var list = [];
   var contexts = {};
 
   async.waterfall([
@@ -10,6 +11,7 @@ function loadCustomContext(bot, callback) {
       var CustomContext = mongoModule.getModel('customcontext');
 
       CustomContext.find({bot: bot.id}).lean().exec(function(err, docs) {
+        list = docs;
         for(var i in docs) {
           if(docs[i].parent) {
             docs[i].parentId = docs[i].parent;
@@ -46,14 +48,19 @@ function loadCustomContext(bot, callback) {
     function(cb) {
       var CustomContextItem = mongoModule.getModel('customcontextitem');
 
-      CustomContextItem.find({bot: bot}).lean().populate('context').exec(function(err, docs) {
+      CustomContextItem.find({bot: bot.id}).lean().exec(function(err, docs) {
         for(var i in docs) {
           var item = docs[i];
 
-          var context = contexts[item.context.name];
+          for(var j in list) {
+            if(list[j]._id.toString() == item.context.toString()) {
+              var context = list[j];
+              if(context.items == undefined) context.items = [];
+              context.items.push({type: item.itemType, name: item.name});
 
-          if(context.items == undefined) context.items = [];
-          context.items.push({type: item.itemType, name: item.name});
+              break;
+            }
+          }
         }
 
         cb(null);
@@ -63,10 +70,22 @@ function loadCustomContext(bot, callback) {
     function(cb) {
       for(var i in bot.dialogs) {
         var dialog = bot.dialogs[i];
-        for(var j in contexts) {
-          if(dialog.context == contexts[j].path) {dialog.context = contexts[j];break;}
+        for(var key in contexts) {
+          if(dialog.context == key) {
+            dialog.context = contexts[key];
+
+            if(contexts[key].dialogs == undefined) {
+              contexts[key].dialogs = [dialog];
+            } else {
+              contexts[key].dialogs.push(dialog);
+            }
+
+            break;
+          }
         }
       }
+
+      cb(null);
     }
 
   ], function(err) {

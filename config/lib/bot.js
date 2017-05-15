@@ -350,13 +350,13 @@ function loadBot(botName, callback) {
       entity.loadEntities(bot, function() {
         cb(null);
       })
-    }
+    },
 
-    // function(cb) {
-    //   customContext.loadCustomContext(bot, function() {
-    //     cb(null);
-    //   })
-    // }
+    function(cb) {
+      customContext.loadCustomContext(bot, function() {
+        cb(null);
+      })
+    }
 
   ], function(err) {
     if(callback) callback(bot);
