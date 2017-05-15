@@ -1120,7 +1120,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.InputKeyDown = function (event, func) {
-      if (event.keyCode == 13) {
+      if (event.keyCode == 13) { // enter
         event.preventDefault();
         event.stopPropagation();
         func();
