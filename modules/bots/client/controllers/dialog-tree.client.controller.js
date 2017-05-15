@@ -869,8 +869,27 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       if (type === 'If') return "조건을 입력해주세요";
     };
 
-    vm.inputTypes = ["Text","RegExp","Type","If","Intent","매칭없음"];
-    vm.outputTypes = ["Text","Call","ReturnCall","CallChild","Up", "Repeat"];
+    // input/ouput types
+    vm.inputTypes = ["Text","Intent","Entity","RegExp","Type","If","매칭없음"];
+    vm.outputTypes = ["Text","Call","ReturnCall","CallChild","Up", "Repeat", "Return"];
+
+    vm.typeClass = [];
+    vm.typeClass['Text'] = {btn:'btn-primary',icon:'fa-commenting', input:'text'};
+    vm.typeClass['RegExp'] = {btn:'btn-danger',icon:'fa-registered', input:'text'};
+    vm.typeClass['Intent'] = {btn:'btn-success',icon:'fa-user', input:'intent'};
+    vm.typeClass['Entity'] = {btn:'btn-success',icon:'fa-tags', input:'entity'};
+    vm.typeClass['Type'] = {btn:'btn-warning',icon:'fa-gear', input:'type'};
+    vm.typeClass['매칭없음'] = {btn:'btn-danger',icon:'fa-ban', input:'button'};
+
+    vm.typeClass['Call'] = {btn:'btn-danger',icon:'fa-bolt', input:'dialog'};
+    vm.typeClass['CallChild'] = {btn:'btn-danger',icon:'fa-mail-forward', input:'dialog'};
+    vm.typeClass['ReturnCall'] = {btn:'btn-danger',icon:'fa-mail-reply', input:'dialog'};
+    vm.typeClass['If'] = {btn:'btn-info',icon:'fa-question', input:'text'};
+    vm.typeClass['Up'] = {btn:'btn-info',icon:'fa-arrow-up', input:'button'};
+    vm.typeClass['Repeat'] = {btn:'btn-info',icon:'fa-repeat', input:'button'};
+    vm.typeClass['Return'] = {btn:'btn-info',icon:'fa-level-up', input:'button'};
+    vm.typeClass['Image'] = {btn:'btn-warning',icon:'fa-image', input:'image'};
+    vm.typeClass['Button'] = {btn:'btn-success',icon:'fa-play-circle', input:'text'};
 
     var findType = function(input, typeName) {
       for (var i=0; i < input.length; ++i) {
@@ -885,7 +904,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       var types = [];
       if (!input) return types;
       vm.inputTypes.forEach(function(t) {
-        if (t === 'Type' || (i != undefined && t === i.type) || !findType(input,t))
+        if (t === 'Type' || t === 'Entity' || (i != undefined && t === i.type) || !findType(input,t))
           types.push(t);
       });
       return types;
@@ -969,21 +988,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
-    vm.typeClass = [];
-    vm.typeClass['Text'] = {btn:'btn-primary',icon:'fa-commenting', input:'text'};
-    vm.typeClass['RegExp'] = {btn:'btn-danger',icon:'fa-registered', input:'text'};
-    vm.typeClass['Intent'] = {btn:'btn-success',icon:'fa-user', input:'intent'};
-    vm.typeClass['Type'] = {btn:'btn-warning',icon:'fa-gear', input:'type'};
-    vm.typeClass['매칭없음'] = {btn:'btn-danger',icon:'fa-ban', input:'button'};
-    vm.typeClass['Call'] = {btn:'btn-danger',icon:'fa-bolt', input:'dialog'};
-    vm.typeClass['CallChild'] = {btn:'btn-danger',icon:'fa-mail-forward', input:'dialog'};
-    vm.typeClass['ReturnCall'] = {btn:'btn-danger',icon:'fa-mail-reply', input:'dialog'};
-    vm.typeClass['If'] = {btn:'btn-info',icon:'fa-question', input:'text'};
-    vm.typeClass['Up'] = {btn:'btn-info',icon:'fa-arrow-up', input:'button'};
-    vm.typeClass['Repeat'] = {btn:'btn-info',icon:'fa-repeat', input:'button'};
-    vm.typeClass['Image'] = {btn:'btn-warning',icon:'fa-image', input:'image'};
-    vm.typeClass['Button'] = {btn:'btn-success',icon:'fa-play-circle', input:'text'};
-
     vm.getButtonClass = function(type) {
       if (!type) return '';
       return vm.typeClass[type].btn;
@@ -1019,6 +1023,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           }
           if (d.intent) {
             r.push({type: 'Intent', str: d.intent});
+          }
+          if (d.entities) {
+            d.entities.forEach(function(t) {
+              r.push({type: 'Entity', str: t});
+            });
           }
           if (d.if) {
             r.push({type:'If', str:d.if});
@@ -1056,6 +1065,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
       if (d.repeat) {
         r.push({type:'Repeat', str:d.repeat+""});
+      }
+      if (d.return) {
+        r.push({type:'Return', str:d.return+""});
       }
       if (d.buttons) {
         d.buttons.forEach(function(b) {
@@ -1099,6 +1111,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
               obj.text = r.str;
             } else if (r.type === 'Type') {
               (obj.types || (obj.types = [])).push(r.str);
+            } else if (r.type === 'Entity') {
+              (obj.entities || (obj.entities = [])).push(r.str);
             } else if (r.type === 'RegExp') {
               obj.regexp = r.str;
             } else if (r.type === 'Intent') {
@@ -1133,6 +1147,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             o.up = r.str;
           } else if (r.type === 'Repeat') {
             o.repeat = r.str;
+          } else if (r.type === 'Return') {
+            o.return = r.str;
           } else if (r.type === 'Image') {
             o.image = {url: '/files/'+r.str};
           } else if (r.type === 'Button') {
@@ -1314,10 +1330,17 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             });
             text.push('[타입] ' + types);
           }
+          if (i.entities) {
+            var entities = [];
+            i.entities.forEach(function (t) {
+              entities.push(t);
+            });
+            text.push('[엔터티] ' + entities);
+          }
           if (i.regexp)
             text.push('[정규식] ' + i.regexp);
           if (i.intent)
-            text.push('[Intent] ' + i.intent);
+            text.push('[인테트] ' + i.intent);
           if (i.if)
             text.push('[조건] ' + i.if);
         });
@@ -1366,6 +1389,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         }
         if (output.repeat) {
           text.push('[repeat] ' + output.repeat);
+        }
+        if (output.return) {
+          text.push('[return] ' + output.return);
         }
         if (output.image) {
           dialog.image_text = '/files/' + output.image;
@@ -1500,6 +1526,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         vm.fileName = res.fileName;
         vm.tasks = res.tasks.map(function(t) { return {name:t, type:'default'}});
         vm.intents = res.intents.map(function(i) { return i.name; });
+        vm.entities = res.entities.map(function(i) { return i.name; });
         vm.types = res.types.map(function(t) { return t.name} );
         vm.type_dic = res.type_dic;
         dialogs = res.data;

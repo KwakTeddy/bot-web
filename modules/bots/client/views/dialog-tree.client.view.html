@@ -550,6 +550,19 @@
                                                         </ui-select-choices>
                                                     </ui-select>
                                                 </div>
+                                                <div ng-show="vm.inputMode && getInputType(vm.curI.type) == 'entity'">
+                                                    <ui-select ng-model="vm.curI.str"
+                                                               theme="bootstrap"
+                                                               ng-disabled="vm.entities.length == 0"
+                                                               reset-search-input="true"
+                                                               title="Entity를 선택하세요">
+                                                        <ui-select-match placeholder="Entity 이름을 입력해주세요">{{$select.selected}}</ui-select-match>
+                                                        <ui-select-choices repeat="t in vm.entities |filter: $select.search track by $index"
+                                                                           refresh-delay="0">
+                                                            <div ng-bind-html="t | highlight: $select.search"></div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </div>
                                                 <div ng-show="vm.inputMode && getInputType(vm.curI.type) == 'type'">
                                                     <ui-select ng-model="vm.curI.str"
                                                                theme="bootstrap"
