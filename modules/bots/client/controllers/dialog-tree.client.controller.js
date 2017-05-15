@@ -742,6 +742,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.openEdit = function(i, input) {
+      if ($scope.getInputType(i.type) === 'button')
+        return;
       $scope.processedInput = '';
       vm.curInput = input;
       vm.targetI = i;
@@ -761,15 +763,22 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       $scope.openEditO(init, input, first);
     };
 
+    $scope.printInput = function(o) {
+      if (vm.typeClass[o.type].input === 'button')
+        return 'false';
+      else
+        return o.str.substring(0,10);
+    };
+
     $scope.printOutput= function(o) {
-      if (o.type === 'Repeat' || o.type === 'Up')
+      if (vm.typeClass[o.type].input === 'button')
         return '';
       else
         return o.str.substring(0,10);
     };
 
     $scope.openEditO = function(o, output, first) {
-      if (o.type === 'Repeat' || o.type === 'Up')
+      if ($scope.getInputType(o.type) === 'button')
         return;
       vm.curOutput = output;
       vm.targetO = o;
@@ -830,10 +839,16 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       i.type = type;
       if (type != "Text" && type != "If" && type !="Regexp" && type !="Button")
         i.str = "";
-      if (type === 'Repeat' || type === 'Up') {
-        vm.curO.type = type;
-        vm.curO.str = '1';
-        $scope.saveO();
+      if ($scope.getInputType(type) === 'button') {
+        if (i == vm.curO) {
+          vm.curO.type = type;
+          vm.curO.str = '1';
+          $scope.saveO();
+        } else {
+          vm.curI.type = type;
+          vm.curI.str = '1';
+          $scope.saveI();
+        }
       }
     };
 
@@ -848,7 +863,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       if (type === 'If') return "조건을 입력해주세요";
     };
 
-    vm.inputTypes = ["Text","RegExp","Type","If","Intent"];
+    vm.inputTypes = ["Text","RegExp","Type","If","Intent","매칭없음"];
     vm.outputTypes = ["Text","Call","ReturnCall","CallChild","Up", "Repeat"];
 
     var findType = function(input, typeName) {
@@ -953,12 +968,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     vm.typeClass['RegExp'] = {btn:'btn-danger',icon:'fa-registered', input:'text'};
     vm.typeClass['Intent'] = {btn:'btn-success',icon:'fa-user', input:'intent'};
     vm.typeClass['Type'] = {btn:'btn-warning',icon:'fa-gear', input:'type'};
+    vm.typeClass['매칭없음'] = {btn:'btn-danger',icon:'fa-ban', input:'button'};
     vm.typeClass['Call'] = {btn:'btn-danger',icon:'fa-bolt', input:'dialog'};
     vm.typeClass['CallChild'] = {btn:'btn-danger',icon:'fa-mail-forward', input:'dialog'};
     vm.typeClass['ReturnCall'] = {btn:'btn-danger',icon:'fa-mail-reply', input:'dialog'};
     vm.typeClass['If'] = {btn:'btn-info',icon:'fa-question', input:'text'};
-    vm.typeClass['Up'] = {btn:'btn-info',icon:'fa-arrow-up', input:'text'};
-    vm.typeClass['Repeat'] = {btn:'btn-info',icon:'fa-repeat', input:'text'};
+    vm.typeClass['Up'] = {btn:'btn-info',icon:'fa-arrow-up', input:'button'};
+    vm.typeClass['Repeat'] = {btn:'btn-info',icon:'fa-repeat', input:'button'};
     vm.typeClass['Image'] = {btn:'btn-warning',icon:'fa-image', input:'image'};
     vm.typeClass['Button'] = {btn:'btn-success',icon:'fa-play-circle', input:'text'};
 
@@ -979,28 +995,32 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     var initInput = function(input) {
       var res = [];
 
-      input.forEach(function(d) {
-        var r = [];
-        if (d.text) {
-          r.push({type: 'Text', str: d.text});
-        }
-        if (d.types) {
-          d.types.forEach(function (t) {
-            r.push({type: 'Type', str: t});
-          });
-        }
-        if (d.regexp) {
-          r.push({type: 'RegExp', str: d.regexp});
-        }
-        if (d.intent) {
-          r.push({type: 'Intent', str: d.intent});
-        }
-        if (d.if) {
-          r.push({type:'If', str:d.if});
-        }
+      if (input === 'false') {
+        res.push([{type:'매칭없음', str:'false'}]);
+      } else {
+        input.forEach(function(d) {
+          var r = [];
+          if (d.text) {
+            r.push({type: 'Text', str: d.text});
+          }
+          if (d.types) {
+            d.types.forEach(function (t) {
+              r.push({type: 'Type', str: t});
+            });
+          }
+          if (d.regexp) {
+            r.push({type: 'RegExp', str: d.regexp});
+          }
+          if (d.intent) {
+            r.push({type: 'Intent', str: d.intent});
+          }
+          if (d.if) {
+            r.push({type:'If', str:d.if});
+          }
 
-        res.push(r);
-      });
+          res.push(r);
+        });
+      }
       return res;
     };
 
@@ -1044,24 +1064,28 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     var restoreInput = function(result) {
       var input = [];
-      result.forEach(function(res) {
-        var obj = {};
-        res.forEach(function(r) {
-          if (r.type === 'Text') {
-            obj.text = r.str;
-          } else if (r.type === 'Type') {
-            (obj.types || (obj.types = [])).push(r.str);
-          } else if (r.type === 'RegExp') {
-            obj.regexp = r.str;
-          } else if (r.type === 'Intent') {
-            obj.intent= r.str;
-          } else if (r.type === 'If') {
-            obj.if = r.str;
-          }
+      if (result.length == 1 && result[0].length == 1 && result[0][0].type ==='매칭없음') {
+        input = 'false';
+      } else {
+        result.forEach(function(res) {
+          var obj = {};
+          res.forEach(function(r) {
+            if (r.type === 'Text') {
+              obj.text = r.str;
+            } else if (r.type === 'Type') {
+              (obj.types || (obj.types = [])).push(r.str);
+            } else if (r.type === 'RegExp') {
+              obj.regexp = r.str;
+            } else if (r.type === 'Intent') {
+              obj.intent= r.str;
+            } else if (r.type === 'If') {
+              obj.if = r.str;
+            }
+          });
+          if (Object.keys(obj).length !== 0)
+            input.push(obj);
         });
-        if (Object.keys(obj).length !== 0)
-          input.push(obj);
-      });
+      }
       return input;
     };
 
@@ -1322,7 +1346,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     {
       dialog.name = dialog.name || (dialog.name = "dialog" + "_" + dialog.id);
       nodes[dialog.name] = nodes[dialog.name] || (nodes[dialog.name] = dialog);
-      if (!Array.isArray(dialog.input))
+      if (dialog.input === 'false')
+        dialog.input = 'false';
+      else if (!Array.isArray(dialog.input))
         dialog.input = [{text:dialog.input}];
       nodes[dialog.name].input_text  = handleInput(dialog.input);
       if (!Array.isArray(dialog.output))

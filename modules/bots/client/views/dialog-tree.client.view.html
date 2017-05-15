@@ -577,7 +577,7 @@
                                                             ng-click="openEdit(i,input)"
                                                             ng-repeat="i in input">
                                                         <i class='fa' ng-class="vm.getIconClass(i.type)" style="color:antiquewhite"></i>&nbsp;
-                                                        {{i.str == '' ? "-new-" : i.str.substring(0,10)}}&nbsp;
+                                                        {{printInput(i)}}&nbsp;
                                                         <i ng-click="removeI(i,input)" class="fa fa-remove" style="color:white"></i></button>
                                                     <button class="mr-xs btn btn-default btn-xs"
                                                             ng-show="getInputTypes(input).length > 0"
