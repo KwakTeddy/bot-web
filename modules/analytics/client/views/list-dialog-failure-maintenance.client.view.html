@@ -7,7 +7,7 @@
 </header>
 
 <!-- start: page -->
-<section class="panel" ng-controller="AnalyticsListController" ng-init="initDialogFailure();">
+<section class="panel">
   <!--<header class="panel-heading">-->
     <!--<form name="form" novalidate="novalidate">-->
       <!--<table width="100%">-->
@@ -44,7 +44,7 @@
         <td class="text-center">{{intent._id.name}}</td>
         <!--<td class="text-center">{{intent.count}}</td>-->
         <td class="text-center col-md-2">
-          <button class="btn btn-default btn-block btn-xs" ui-sref="analytics.dialog-failure-maintenance.edit({intentId: intent._id._id})">대화수정</button>
+          <button class="btn btn-default btn-block btn-xs" ui-sref="analytics.dialog-failure-maintenance.edit({intentId: intent._id._id})" style="border: none">대화수정</button>
         </td>
       </tr>
       </tbody>

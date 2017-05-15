@@ -155,6 +155,8 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
           $scope.dialogs = dialogs;
           $scope.selected = $scope.dialogs[0];
 
+          console.log($scope.dialogs)
+
           $('.modal-with-form').click(); 
         }else {
           alert('시작 다이얼로그 입니다')
@@ -162,6 +164,10 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
       }, function(err) {
         console.log(err);
       });
+    };
+
+    $scope.selectDialog = function (target) {
+      $scope.selected = target
     };
 
     $scope.update = function (isValid) {
@@ -203,7 +209,6 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
           kind: $scope.kind,
           arg: arg
         }, function() {
-          console.log(dialogFailure);
           $scope.dialogFailure = dialogFailure;
         }, function(err) {
           console.log(err);
@@ -412,24 +417,29 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
       .withOption('dom', 'l<"toolbar">frtip')
       .withOption('initComplete', function(settings, json) {
         $('#dt_filter > label > input[type="search"]').addClass('form-control').attr('placeholder', 'Search');
-        $("div.toolbar").html('<button class="btn btn-primary" ng-click="find_dialog_failure_maintenance()">오류 목록 검사</button>');
+        $("div.toolbar").html('<button class="btn btn-primary" ng-click="find_dialog_failure_maintenance()">검사</button>');
         $compile(angular.element(document.querySelector('div.toolbar')).contents())($scope);
       })
 
     $scope.find_dialog_failure_maintenance = function () {
       $http.get('/api/intent/analyzeFailIntent/'+ $cookies.get('default_bot')).then(function (data) {
         console.log('분석 완료');
+        $scope.initDialogFailure();
       }, function (err) {
         console.log(err)
       })
     }
 
+
     $scope.initDialogFailure = function() {
       DialogFailureMaintenanceService.query({botId: $cookies.get('default_bot')}, function (result) {
+        console.log(result);
         $scope.failedIntent = result;
       }, function (err) {
         console.log(err);
       })
-    }
+    };
+    $scope.initDialogFailure();
+
   }
 ]);

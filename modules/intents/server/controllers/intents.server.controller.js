@@ -88,6 +88,7 @@ exports.create = function(req, res) {
  * Show the current Custom action
  */
 exports.read = function(req, res) {
+  console.log('noenownowneo-------------------------------------------------')
   // convert mongoose document to JSON
   var intent = req.intent ? req.intent.toJSON() : {};
 
@@ -238,6 +239,8 @@ exports.list = function(req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
+      console.log(util.inspect(intents));
+      console.log('-----------3========2=========------')
       res.jsonp(intents);
     }
   });

@@ -285,7 +285,12 @@ var findChildren = function(object, res, data) {
     console.log(JSON.stringify(dialogChildren));
     res.jsonp(dialogChildren);
   }else {
-    dialogs_data.forEach(function(obj) {
+    console.log(util.inspect(object))
+    if (!Array.isArray(object)){
+      object = [object];
+    }
+    object.forEach(function(obj) {
+    // dialogs_data.forEach(function(obj) {
       var dialog = {};
       dialog.dialogId = obj.id;
       dialog.name = obj.name != undefined ? obj.name : "dialog"+obj.id;
@@ -388,13 +393,21 @@ exports.dialogChildren = function (req, res) {
   var dialogId = req.params.dialogId;
   dialogs_data = utils.clone(global._bots[botId].dialogs);
   var data = {};
+  console.log(util.inspect(dialogs_data))
 
   console.log("dialogChildren: " + botId+","+dialogId);
   searchDialog(dialogs_data, dialogId, findChildren, res, data);
   console.log(util.inspect(data));
   console.log('----------------');
   if (!data.actionCall){
-    findChildren(dialogs_data, res, data)
+    var filteredDialog = [];
+    for(var i = 0; i < dialogs_data.length; i++){
+      if (dialogs_data[i].filename){
+        filteredDialog.push(dialogs_data[i])
+      }
+    }
+    console.log(util.inspect(filteredDialog));
+    findChildren(filteredDialog, res, data);
     res.end()
   }
 };
@@ -566,14 +579,28 @@ exports.resetDB = function(req, res) {
 
 exports.dialogFailureMaintenanceList = function (req, res) {
   BotIntentFail.aggregate(
-    [
-      {$match: {botId: req.bot.id}},
+    [{$match: {botId: req.bot.id, clear: {$ne: true}}},
       {$group: {_id: '$intent'}}
+      // {$group: {_id: '$intent', userDialog: {$push: '$userDialog'}}}
     ]
   ).exec(function (err, data) {
     if (err){
       console.log(err)
     }else {
+      console.log(util.inspect(data));
+      //
+      // UserDialog.populate(data, {path: 'userDialog'}, function (err, result) {
+      //   console.log(util.inspect(err))
+      //   console.log(util.inspect(result));
+      //   if (err){
+      //     console.log(err)
+      //   }else {
+      //     for(var i = 0; i < result.length; i++){
+      //       result[i].userDialog
+      //     }
+      //   }
+      //
+      // })
       Intent.populate(data, {path: '_id'},function (err, result) {
         if (err){
           console.log(err)
@@ -586,36 +613,42 @@ exports.dialogFailureMaintenanceList = function (req, res) {
 };
 
 exports.dialogFailureMaintenance = function (req, res) {
-  BotIntentFail.find({intent : req.params.intentId, clear: {$ne: true}}).populate('userDialog').exec(function (err, data) {
+  BotIntentFail.find({intent : req.params.intentId, clear: {$ne: true}}).populate('userDialog', null, {clear: {$ne: true}}).exec(function (err, data) {
     if(err){
       console.log(err)
     }else {
-      res.json(data)
+      var result = [];
+      for(var i = 0; i < data.length; i++){
+        if(data[i].userDialog){
+          result.push(data[i])
+        }
+      }
+      res.json(result);
     }
   })
 };
 
 exports.dialogFailureMaintenanceUpdate = function (req, res) {
-  // console.log(util.inspect(req.query.clearList));
+  console.log(util.inspect(req.query.clearList));
   // console.log(util.inspect(typeof req.query.clearList));
   // console.log(util.inspect(JSON.parse(req.query.clearList)));
   // console.log(util.inspect(req.query.clearList.length));
   // console.log('-------------------==--');
-  var intentFailIds = [];
+  // var intentFailIds = [];
   var userDialogIds = [];
 
   if (typeof req.query.clearList == 'string'){
     req.query.clearList = JSON.parse(req.query.clearList);
-    intentFailIds.push(req.query.clearList._id)
+    // intentFailIds.push(req.query.clearList._id)
     userDialogIds.push(req.query.clearList.userDialog._id)
   }else {
     for(var i = 0; i < req.query.clearList.length; i++){
-      intentFailIds.push(JSON.parse(req.query.clearList[i])._id);
+      // intentFailIds.push(JSON.parse(req.query.clearList[i])._id);
       userDialogIds.push(JSON.parse(req.query.clearList[i]).userDialog._id)
     }
   }
 
-  BotIntentFail.update({_id : {$in: intentFailIds}}, {clear: true}, {multi: true}, function (err, result) {
+  BotIntentFail.update({userDialog : {$in: userDialogIds}}, {clear: true}, {multi: true}, function (err, result) {
     if(err){
       console.log(util.inspect(err))
     }else {

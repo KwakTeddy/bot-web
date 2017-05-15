@@ -91,3 +91,16 @@ angular.module('analytics').factory('DialogFailureMaintenanceService', ['$resour
     });
   }
 ]);
+//
+// angular.module('analytics').factory('IntentsService', ['$resource',
+//   function ($resource) {
+//     return $resource('api/intents/:botName/:intentId', {
+//       intentId: '@_id',
+//       botName: '@botName'
+//     }, {
+//       update: {
+//         method: 'PUT'
+//       }
+//     });
+//   }
+// ]);
