@@ -20,6 +20,7 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
         arg = $scope.ym;
       var userCounts = AnalyticsService.query(
         {
+          bId: $cookies.get('default_bot'),
           kind: $scope.kind,
           arg: arg
         }, function() {
@@ -39,6 +40,7 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
         arg = $scope.ym;
       var dialogUsages = DialogUsageService.query(
         {
+          bId: $cookies.get('default_bot'),
           kind: $scope.kind,
           arg: arg
         }, function() {
@@ -57,6 +59,7 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
         arg = $scope.ym;
       var dialogSuccess = DialogSuccessService.query(
         {
+          bId: $cookies.get('default_bot'),
           kind: $scope.kind,
           arg: arg
         }, function() {
@@ -267,6 +270,9 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
           success += obj.success_count;
           fail += obj.fail_count;
         });
+
+        if (success == 0)
+          return 100.0;
         return (success-fail) / success * 100.0;
       };
 

@@ -2,7 +2,8 @@
 
 angular.module('analytics').factory('AnalyticsService', ['$resource',
   function ($resource) {
-    return $resource('api/user-count/:kind/:arg', {
+    return $resource('api/user-count/:bId/:kind/:arg', {
+      bId: 'bId',
       kind: 'kind',
       arg: 'arg'
     }, {});
@@ -11,7 +12,8 @@ angular.module('analytics').factory('AnalyticsService', ['$resource',
 
 angular.module('analytics').factory('DialogUsageService', ['$resource',
   function ($resource) {
-    return $resource('api/dialog-usage/:kind/:arg', {
+    return $resource('api/dialog-usage/:bId/:kind/:arg', {
+      bId: 'bId',
       kind: 'kind',
       arg: 'arg'
     }, {});
@@ -20,7 +22,7 @@ angular.module('analytics').factory('DialogUsageService', ['$resource',
 
 angular.module('analytics').factory('SessionSuccessService', ['$resource',
   function ($resource) {
-    return $resource('api/session-success/:kind/:arg', {
+    return $resource('api/session-success/:bId/:kind/:arg', {
       kind: 'kind',
       arg: 'arg'
     }, {});
@@ -29,7 +31,8 @@ angular.module('analytics').factory('SessionSuccessService', ['$resource',
 
 angular.module('analytics').factory('DialogSuccessService', ['$resource',
   function ($resource) {
-    return $resource('api/dialog-success/:kind/:arg', {
+    return $resource('api/dialog-success/:bId/:kind/:arg', {
+      bId: 'bId',
       kind: 'kind',
       arg: 'arg'
     }, {});
@@ -38,8 +41,8 @@ angular.module('analytics').factory('DialogSuccessService', ['$resource',
 
 angular.module('analytics').factory('DialogFailureService', ['$resource',
   function ($resource) {
-    return $resource('api/dialog-failure/:botId/:kind/:arg', {
-      botId: '',
+    return $resource('api/dialog-failure/:bId/:kind/:arg', {
+      bId: 'bId',
       kind: 'kind',
       arg: 'arg'
     }, {});

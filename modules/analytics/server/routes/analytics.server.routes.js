@@ -11,16 +11,16 @@ var path = require('path'),
 
 module.exports = function(app) {
   // Bot users Routes
-  app.route('/api/user-count/:kind/:arg').all(analyticsPolicy.isAllowed)
+  app.route('/api/user-count/:bId/:kind/:arg').all(analyticsPolicy.isAllowed)
     .get(analytics.list);
 
-  app.route('/api/dialog-usage/:kind/:arg').all(analyticsPolicy.isAllowed)
+  app.route('/api/dialog-usage/:bId/:kind/:arg').all(analyticsPolicy.isAllowed)
     .get(analytics.dialogList);
 
-  app.route('/api/dialog-success/:kind/:arg').all(analyticsPolicy.isAllowed)
+  app.route('/api/dialog-success/:bId/:kind/:arg').all(analyticsPolicy.isAllowed)
     .get(analytics.dialogSuccessList);
 
-  app.route('/api/session-success/:kind/:arg').all(analyticsPolicy.isAllowed)
+  app.route('/api/session-success/:bId/:kind/:arg').all(analyticsPolicy.isAllowed)
     .get(analytics.sessionSuccessList);
 
   app.route('/api/dialog-failure/:bId/:kind/:arg').all(analyticsPolicy.isAllowed)

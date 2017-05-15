@@ -27,12 +27,16 @@ var util = require('util');
 exports.list = function (req, res) {
   var kind = req.params.kind;
   var arg = req.params.arg;
+  var botId = req.params.bId;
 
   var cond = {};
   if (kind == 'year')
     cond = {year: parseInt(arg)};
   else if (kind == 'month')
     cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth()+1 };
+
+  cond.botId = botId;
+
   console.log(JSON.stringify(cond));
   UserDialogLog.aggregate(
     [
@@ -54,6 +58,7 @@ exports.list = function (req, res) {
 exports.dialogList = function (req, res) {
   var kind = req.params.kind;
   var arg = req.params.arg;
+  var botId = req.params.bId;
 
   var cond = { inOut: true};
   if (kind == 'year') {
@@ -62,7 +67,7 @@ exports.dialogList = function (req, res) {
     cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth() + 1, inOut: true}
   }
   cond.dialog = {$ne: null, $nin: [":reset user", ":build csdemo reset"]};
-  cond.botId = "csdemo";
+  cond.botId = botId;
 
   console.log(JSON.stringify(cond));
   UserDialog.aggregate(
@@ -92,12 +97,14 @@ exports.dialogList = function (req, res) {
 exports.dialogSuccessList = function (req, res) {
   var kind = req.params.kind;
   var arg = req.params.arg;
+  var botId = req.params.bId;
 
   var cond = { inOut: true};
   if (kind == 'year')
     cond = {year: parseInt(arg), inOut: true};
   else if (kind == 'month')
     cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth()+1, inOut: true};
+  cond.botId = botId;
   console.log(JSON.stringify(cond));
   async.waterfall([
     function(cb) {
@@ -163,12 +170,14 @@ exports.dialogSuccessList = function (req, res) {
 exports.sessionSuccessList = function (req, res) {
   var kind = req.params.kind;
   var arg = req.params.arg;
+  var botId = req.params.bId;
 
   var cond = { inOut: true};
   if (kind == 'year')
     cond = {year: parseInt(arg), inOut: true};
   else if (kind == 'month')
     cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth()+1, inOut: true};
+  cond.botId = botId;
   console.log(JSON.stringify(cond));
   UserDialog.aggregate(
     [
