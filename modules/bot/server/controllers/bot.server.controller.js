@@ -103,7 +103,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
     },
 
     function(cb) {
-      if (context.botUser.nlp) {
+      if (context.botUser && context.botUser.nlp) {
         context.botUser.sentenceInfo = dialogsetModule.analyzeSentence(inTextRaw, null, context.botUser.nlpAll);
 
         if(context.bot.useMemoryFacts) {
