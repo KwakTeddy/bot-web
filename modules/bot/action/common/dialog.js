@@ -535,6 +535,59 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
         if(intentDialogs.length == 1) _executeDialog(intentDialogs[0]);
         else {
           console.log('Dialog intent 검색됨');
+          var intentDialog;
+          function matchContext(dialogs, context, customContext, intentDialogs, print, callback, options) {
+            if(customContext.children && customContext.children.length > 0) {
+              for(var i in customContext.children) {
+                var child = customContext.children[i];
+
+                if(child.dialogs && child.dialogs.length > 0) {
+                  for(var j in intentDialogs) {
+                    for(var k in child.dialogs) {
+                      if (intentDialogs[j].id == child.dialog[k].id) {
+                        intentDialog = intentDialogs[j];
+                        _executeDialog(intentDialogs[j]);
+                        return true;
+                      }
+                    }
+                  }
+                } else if(child.items) {
+                  var itemCheck = false, itemChecked;
+                  for(var j in child.items) {
+                    var item = child.items[j];
+                    if(item.type == "entityItem") {
+                      for(var key in context.botUser.entities) {
+                        if(item.name != '@' + key && item.name != context.botUser.entities[key] + '@'+key) {
+                          itemCheck = false;
+                        }
+                      }
+                    }
+                  }
+
+                  if(itemCheck) {
+                    return matchContext(dialogs, context, child, intentDialogs, print, callback, callback, options);
+                  }
+                } else if(context.dialog.inRaw.indexOf(child.name) != -1) {
+                  return matchContext(dialogs, context, child, intentDialogs, print, callback, callback, options);
+                }
+              }
+
+              var question = '다음중 어떤것이 좋으세요? \n';
+              for(var k in child.items) {
+                question += child.items[k] + ' ';
+              }
+
+              console.log(question);
+              return false;
+            } else {
+              return false;
+            }
+          }
+
+          var contextMatched = matchContext(dialogs, context, context.bot.contextTree, intentDialogs, print, callback, options);
+          if(contextMatched) {
+            callback(true, intentDialog);
+          } else callback(false);
         }
       } else if(eachMatched) {
         var dialog = err;
@@ -548,21 +601,8 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
 
 exports.matchDialogs = matchDialogs;
 
-function matchContext(dialogs, context, customContext, intentDialogs, print, callback, options) {
-  if(customContext.children && customContext.children.length > 0) {
-    for(var i in customContext.children) {
-      var child = customContext.children[i];
-      if(child.items) {
 
-      }
-    }
-  } else {
-
-  }
-
-}
-
-exports.matchContext = matchContext;
+// exports.matchContext = matchContext;
 
 function executeDialog(dialog, context, print, callback, options) {
   if(dialog.name || dialog.input) logger.debug('executeDialog: ' + toDialogString(dialog) + ' options= ' + (options?options.prefix: ''));

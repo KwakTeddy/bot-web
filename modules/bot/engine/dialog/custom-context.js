@@ -86,6 +86,14 @@ function loadCustomContext(bot, callback) {
       }
 
       cb(null);
+    },
+    
+    function(cb) {
+      for(var i in contexts) {
+        if(contexts[i].parent == null) bot.contextTree = contexts[i];
+      }
+
+      cb(null);
     }
 
   ], function(err) {
