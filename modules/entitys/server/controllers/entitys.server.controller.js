@@ -215,8 +215,9 @@ exports.contentCreate = function(req, res) {
         entityContent.botId = req.body.botId;
         entityContent.user = req.user;
         entityContent.entityId = req.body.entityId;
+        entityContent.syn = [];
+        entityContent.syn.push(req.body.content);
         entityContent.save(function (err, data) {
-          console.log(err);
           if(err){
             return res.status(400).send({
               message: errorHandler.getErrorMessage(err)

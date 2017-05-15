@@ -136,6 +136,7 @@
       }
       if (vm.entity._id){
         console.log(vm.entity._id);
+
         $resource('/api/entitysContent').save({content: vm.entityContent, entityId: vm.entity._id, botId: $rootScope.botId}, function (result) {
           console.log(result);
           vm.entity.content.unshift(result);
@@ -185,27 +186,33 @@
         }
       });
       // vm.entity.$remove($state.go('entitys.list'), {}, {reload: true});
-    }
+    };
 
     vm.contentRemoveBeforeSave = function (target) {
       var index = vm.entity.content.indexOf(target);
       if(index > -1){
         vm.entity.content.splice(index, 1)
       }
-    }
+    };
 
     vm.contentSynSave = function (target) {
-      console.log(target)
       if(!target.syn){
         target['syn'] = [];
       }
       target.syn.push(vm.entityContentSyn);
       vm.entityContentSyn = '';
-    }
+    };
 
     vm.contentSynRemoveBeforeSave = function (content, syn) {
       var index = content.syn.indexOf(syn);
       content.syn.splice(index, 1);
+    };
+
+    vm.synInputKeyDown = function (event, target) {
+      if (event.keyCode == 13){ //enter
+        vm.contentSynSave(target);
+        event.preventDefault();
+      }
     }
 
   }
