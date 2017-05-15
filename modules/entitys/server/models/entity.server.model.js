@@ -57,3 +57,30 @@ var EntityContentSchema = new Schema({
 });
 
 mongoose.model('EntityContent', EntityContentSchema);
+
+
+/**
+ * Custom action Schema
+ */
+var EntityContentSynonymSchema = new Schema({
+  name: {
+    type: String
+  },
+  created: {
+    type: Date,
+    default: Date.now
+  },
+  contentId: {
+    type: Schema.ObjectId,
+    ref: 'EntityContent'
+  },
+  entityId: {
+    type: Schema.ObjectId,
+    ref: 'Entity'
+  },
+  botId: {
+    type: String
+  }
+});
+
+mongoose.model('EntityContentSynonym', EntityContentSynonymSchema);

@@ -6,14 +6,15 @@
     .module('entitys')
     .controller('EntitysController', EntitysController);
 
-  EntitysController.$inject = ['$scope', '$state', 'Authentication', 'entityResolve', '$resource', 'EntitysService', '$rootScope', '$http', '$timeout'];
+  EntitysController.$inject = ['$scope', '$state', 'Authentication', 'entityResolve', '$resource', 'EntitysService', '$rootScope', '$http', '$timeout', '$cookies'];
 
-  function EntitysController($scope, $state, Authentication, entity, $resource, EntitysService, $rootScope, $http, $timeout) {
+  function EntitysController($scope, $state, Authentication, entity, $resource, EntitysService, $rootScope, $http, $timeout, $cookies) {
     var vm = this;
 
     vm.authentication = Authentication;
     vm.entity = entity;
     $scope.entity = vm.entity;
+    console.log(vm.entity)
     vm.entityContent = '';
     vm.entityContentSyn = '';
     vm.error = null;
@@ -40,6 +41,8 @@
         if (newVal && (newVal.length == oldVal.length)) {
           for (var i = 0; i < newVal.length; i++) {
             if (newVal[i].name !== oldVal[i].name) {
+              console.log(newVal[i]);
+              newVal[i].botId = $cookies.get('default_bot')
               return $http.post('/api/entitysContent/' + newVal[i].entityId, newVal[i]).then(function (result) {
                 vm.contentListError = null;
               }, function (err) {
@@ -47,6 +50,7 @@
               })
             }else {
               if(newVal[i].syn && (newVal[i].syn.length !== oldVal[i].syn.length)){
+                newVal[i].botId = $cookies.get('default_bot')
                 return $http.post('/api/entitysContent/' + newVal[i].entityId, newVal[i]).then(function (result) {
                   vm.contentListError = null;
                 }, function (err) {
@@ -55,7 +59,8 @@
               }else {
                 if (newVal[i].syn){
                   for(var j = 0; j < newVal[i].syn.length; j++){
-                    if(newVal[i].syn[j] !== oldVal[i].syn[j]){
+                    if(newVal[i].syn[j].name !== oldVal[i].syn[j].name){
+                      newVal[i].botId = $cookies.get('default_bot')
                       return $http.post('/api/entitysContent/' + newVal[i].entityId, newVal[i]).then(function (result) {
                         vm.contentListError = null;
                       }, function (err) {
@@ -166,7 +171,8 @@
               return false
             }
           }
-          vm.entity.content.unshift({name: vm.entityContent, syn: [vm.entityContent]});
+          vm.entity.content.unshift({name: vm.entityContent, syn:[{name: vm.entityContent}]});
+          console.log(vm.entity.content);
           vm.entityContent = '';
           vm.contentError = '';
           vm.contentListError = null;
@@ -219,7 +225,7 @@
             return
           }
         }
-        target.syn.push(vm.entityContentSyn);
+        target.syn.push({name: vm.entityContentSyn});
         vm.entityContentSyn = '';
       }
     };

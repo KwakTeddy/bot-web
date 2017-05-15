@@ -8,6 +8,7 @@ var path = require('path'),
   Entity = mongoose.model('Entity'),
   EntityContent = mongoose.model('EntityContent'),
   EntityContent = mongoose.model('EntityContent'),
+  EntityContentSynonym = mongoose.model('EntityContentSynonym'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
 
@@ -17,9 +18,7 @@ var util = require('util'); //temporary
  * Create a Custom action
  */
 exports.create = function(req, res) {
-  console.log(req.body.botName);
   console.log('----------------------------');
-  console.log(util.inspect(req.body.content));
 
   var query = {botId: req.body.botName, user: req.user._id, name: req.body.name};
   Entity.findOne(query, function (err, result) {
@@ -42,16 +41,39 @@ exports.create = function(req, res) {
                 message: err
               });
             } else {
+              var synonym = [];
               for(var i = 0; i < req.body.content.length; i++){
+                for(var j = 0; j < req.body.content[i].syn.length; j++){
+                  var unit = {};
+                  unit['name'] = req.body.content[i].syn[j].name;
+                  unit['contentId'] = req.body.content[i].name;
+                  unit['entityId'] = entity._id;
+                  unit['botId'] = req.body.botName;
+                  synonym.push(unit);
+                }
                 req.body.content[i]['entityId'] = entity._id ;
                 req.body.content[i]['botId'] = req.body.botName;
                 req.body.content[i]['user'] = req.user._id;
+                delete req.body.content[i].syn;
               }
               EntityContent.collection.insert(req.body.content, function (err, result) {
                 if(err){
                   console.log(util.inspect(err))
                 }else {
-                  res.jsonp(entity);
+                  for(var h = 0; h < result.ops.length; h++){
+                    for(var k = 0; k < synonym.length; k++){
+                      if (result.ops[h].name == synonym[k].contentId){
+                        synonym[k].contentId = result.ops[h]._id
+                      }
+                    }
+                  }
+                  EntityContentSynonym.collection.insert(synonym, function (err, result2) {
+                    if(err){
+                      console.log(err)
+                    }else {
+                      res.jsonp(entity);
+                    }
+                  });
                 }
               })
             }
@@ -89,10 +111,36 @@ exports.read = function(req, res) {
           message: errorHandler.getErrorMessage(err)
         });
       }else {
-        console.log(JSON.stringify(result));
-        entity.content = result;
-        console.log(util.inspect(entity));
-        res.jsonp(entity);
+        var contentIds = []
+        for(var k = 0; k < result.length; k++){
+          contentIds.push(result[k]._id)
+        }
+        console.log(util.inspect(contentIds));
+        EntityContentSynonym.find({contentId: {$in : contentIds}}, function (err2, result2) {
+          if(err2){
+            return res.status(400).send({
+              message: errorHandler.getErrorMessage(err2)
+            });
+          }else {
+            console.log(util.inspect(result));
+            console.log(util.inspect(result2));
+            console.log('9494949494--===========================')
+            for(var i = 0; i < result.length; i++){
+              for(var j = 0; j < result2.length; j++){
+                console.log(result2[j].contentId)
+                if (result2[j].contentId.toString() == result[i]._id.toString()){
+                  if(!result[i].syn){
+                    result[i]['syn'] = [];
+                  }
+                  result[i].syn.push(result2[j])
+                }
+              }
+            }
+            console.log(util.inspect(result))
+            entity.content = result;
+            res.jsonp(entity);
+          }
+        });
       }
     });
   }else {
@@ -160,15 +208,85 @@ exports.updateContent = function(req, res) {
             if (err) {
               console.log(err)
             } else {
-              data.name = req.body.name;
-              data.syn = req.body.syn;
-              data.save(function (err) {
-                if (err) {
-                  console.log(err)
-                } else {
-                  res.end();
-                }
-              })
+              if (data.name !== req.body.name){
+                data.name = req.body.name;
+                data.save(function (err) {
+                  if (err) {
+                    console.log(err)
+                  } else {
+                    return res.end();
+                  }
+                })
+              }else {
+                console.log(util.inspect(data));
+                console.log('-------------------------------------------')
+                EntityContentSynonym.find({contentId: data._id}).exec(function (err2, data2) {
+                  if(err2){
+                    console.log(err2)
+                  }else {
+                    console.log(util.inspect(data2));
+                    if (data2.length !== req.body.syn.length){
+                      if ( data2.length > req.body.syn.length){
+                        // var deleteId = [];
+                        // for(var j = 0; j < data2.length; j++){
+                        //   deleteId.push(data2[j]._id);
+                        //   for(var k = 0; k < req.body.syn.length; k++){
+                        //     if ( data2[j]._id !== req.body.syn[k]._id){
+                        //
+                        //       deleteId.splice(deleteId.indexOf(data2[i]._id), 1)
+                        //     }
+                        //   }
+                        // }
+                        for(var i = 0; i < data2.length; i++){
+                          data2[i] = data2[i]._id.toString()
+                        }
+                        for(var i = 0; i < req.body.syn.length; i++){
+                          req.body.syn[i] = req.body.syn[i]._id.toString()
+                        }
+
+                        var deleteId = data2.filter(function (i) {
+                          return req.body.syn.indexOf(i) < 0;
+                        })
+                        EntityContentSynonym.remove({_id: {$in: deleteId}}).exec(function (err5, data5 ) {
+                          if(err5){
+                            console.log(err5)
+                          }else {
+                            return res.end()
+                          }
+                        })
+
+                      }else {
+                        var entityContentSynonym = new EntityContentSynonym;
+                        entityContentSynonym.botId = req.body.botId
+                        entityContentSynonym.entityId = req.body.entityId
+                        entityContentSynonym.contentId = req.body._id
+                        entityContentSynonym.name = req.body.syn[req.body.syn.length - 1].name
+                        entityContentSynonym.save(function (err3, data3) {
+                          if(err3){
+                            console.log(err3)
+                          }else {
+                            return res.end()
+                          }
+                        })
+                      }
+
+                    }else {
+                      for(var i = 0; i < data2.length; i++){
+                        if(data2[i].name == req.body.syn[i].name){
+                          data2[i].name = req.body.syn[i].name
+                        }
+                      }
+                      // data2.save(function (err4, data4) {
+                      //   if (err4){
+                      //     console.log(err4)
+                      //   }else {
+                      //     return res.end();
+                      //   }
+                      // })
+                    }
+                  }
+                })
+              }
             }
           })
         }
@@ -257,16 +375,27 @@ exports.contentCreate = function(req, res) {
         entityContent.botId = req.body.botId;
         entityContent.user = req.user;
         entityContent.entityId = req.body.entityId;
-        entityContent.syn = [];
-        entityContent.syn.push(req.body.content);
         entityContent.save(function (err, data) {
           if(err){
             return res.status(400).send({
               message: errorHandler.getErrorMessage(err)
             });
           }else {
-            console.log(data);
-            res.json(data);
+            var entityContentSynonym = new EntityContentSynonym();
+            entityContentSynonym.name = req.body.content;
+            entityContentSynonym.botId = req.body.botId;
+            entityContentSynonym.entityId = req.body.entityId;
+            entityContentSynonym.contentId = entityContent._id;
+            entityContentSynonym.save(function (err2, data2) {
+              if(err2){
+                return res.status(400).send({
+                  message: errorHandler.getErrorMessage(err)
+                });
+              }else {
+                data.syn = [data2];
+                res.json(data);
+              }
+            });
           }
         });
       }else {

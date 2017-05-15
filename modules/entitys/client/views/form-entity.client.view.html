@@ -68,7 +68,7 @@
                 </td>
                 <td ng-click="vm.selectedContent = $index">
                   <div data-ng-repeat="syn in content.syn track by $index" id="synWrapper_{{content.name}}_{{syn}}" class="synWrapper" style="display: inline-block; padding: 10px; border: 1px solid; border-color: gainsboro; margin: 2px" >
-                    <span>{{syn}}</span>
+                    <span>{{syn.name}}</span>
                     <a href="#" ng-click="vm.contentSynRemoveBeforeSave(content, syn)" id="synTrashIcon" style="padding-left: 5px" ><i class="fa fa-times" aria-hidden="true" style="right: 5px"></i></a>
                   </div>
                   <input type="text" placeholder="동의어 입력(Enter)" style="border: none; height: 40px; margin: 2px" data-ng-model="vm.entityContentSyn" ng-keydown = "vm.synInputKeyDown($event, content)" data-ng-if="vm.selectedContent == $index">

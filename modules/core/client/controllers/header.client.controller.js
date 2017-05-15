@@ -16,7 +16,7 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
 
     BotsService.query({my: 1}).$promise.then(function (result) {
       $scope.myBot = result
-      $scope.$broadcast('myBot', $scope.myBot);
+      $rootScope.$broadcast('myBot', $scope.myBot);
     }, function (err) {
       console.log(err)
     });
