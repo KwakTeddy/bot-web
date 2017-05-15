@@ -354,8 +354,6 @@ var save = function(o, res, data) {
     for(var j = o.input.length; j < data.inputs.length;j++){
       o.input.push({'text': data.inputs[j]});
     }
-    console.log(util.inspect(o.output));
-    console.log(util.inspect(data.outputs));
     if (Array.isArray(o.output)){
       for(var i = 0; i < o.output.length; i++){
         o.output[i] = data.outputs[i]
