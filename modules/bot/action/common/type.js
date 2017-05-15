@@ -113,10 +113,10 @@ function processInput(context, inRaw, callback) {
       intent.matchIntent(inRaw, inNLP, context, function(matched, _intent, _dialog) {
         if(_intent) {
           doc.intent = _intent;
-          context.botUser.init = _intent;
+          context.botUser.intent = _intent;
         } else {
           doc.intent = undefined;
-          context.botUser.init = undefined;
+          context.botUser.intent = undefined;
         }
 
         if(_dialog) {
