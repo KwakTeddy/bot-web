@@ -1,5 +1,3 @@
-시작:c<~시작> 초기화 메세지 입니다
-
 <찾다> 텍스트 내용을 출력합니다.2
 </정규식/g> RegExp 매치 되면 내용 출력합니다.
 < {if: function(inRaw, inNLP, dialog, context, callback) { if(inRaw == '함수')callback(true);else callback(false); }}
@@ -203,5 +201,20 @@ c< /여러/g
 }
 >items 결과
 
+<{intent: '테스트 인텐트', entities: ['가전제품']}
+'helloworldTask'
+> 인텐트, 엔터티 인식
+
+<{intent: '테스트 인텐트'}
+'helloworldTask'
+> 인텐트 인식
+
+<{entities: ['가전제품']}
+> 엔터티 인식
 
 <> 매칭되는 문장이 없습니다.                                     // input이 없으면 순서가 오면 무조건 표시 gambit 역활
+
+
+시작:
+c<시작>sample 입니다.
+
