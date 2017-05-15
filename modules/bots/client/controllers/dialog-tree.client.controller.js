@@ -96,7 +96,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             if($(window).width() < 700) {
               this.st.focus = false;
             } else {
-              this.st.focus = '#name';
+              if (!document.getElementById('name').readonly) {
+                this.st.focus = '#name';
+              }
               if (!document.getElementById('input_div').classList.contains("ng-hide")) {
                 this.st.focus = '#input';
               }
@@ -733,7 +735,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
-    document.addEventListener("keydown", keydown);
+    document.getElementById('mainpage').addEventListener("keydown", keydown);
+    document.getElementById('mainpage').focus();
 
     // dialog editing
     $scope.addI = function(input) {
@@ -1177,7 +1180,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       return output;
     };
 
-    $scope.findOne = function (dialog) {
+    $scope.findOne = function (dialog, isStartNode) {
+      if (isStartNode)
+        vm.isStartNode = true;
+      else
+        vm.isStartNode = false;
       vm.edit = 'dialog';
       $scope.dialog = {};
       $scope.dialog.name = dialog.name;
@@ -2160,6 +2167,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           .attr("ry", 5);
 
         if (selectedNode.depth == 0) {
+          // selectedSVG.append('text')
+          //   .on("click", edit)
+          //   .attr("class", "icon")
+          //   .attr("x", rectW-iconSize*2)
+          //   .attr("y", -4)
+          //   .text(function(d) { return '\uf044';} );
           selectedSVG.append('text')
             .on("click", addChild)
             .attr("class", "icon")
@@ -2433,11 +2446,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     }
 
     function edit(d) {
-      if (d.name === "시작")
-        return;
       if (d3.event)
         d3.event.stopPropagation();
-      angular.element(document.getElementById('control')).scope().findOne(d);
+      if (d.name === "시작") {
+        angular.element(document.getElementById('control')).scope().findOne(d, true);
+      } else {
+        angular.element(document.getElementById('control')).scope().findOne(d);
+      }
     }
 
     function wrap(text, width, maxLine) {

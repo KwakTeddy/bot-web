@@ -220,7 +220,7 @@
     </div>
 </header>
 
-<div>
+<section id="mainpage" tabindex="0">
     <div id='filetree' class="col-md-1" style="position:fixed;overflow-y:scroll;overflow:hidden">
         <div class="row mb-sm" style="margin: -5px -5px 5px 0 !important;">
             <div id="filelabel0" >
@@ -510,107 +510,111 @@
                                 <div class="form-group" style="margin-top: 15px">
                                     <label class="col-sm-2 control-label">Name</label>
                                     <div class="col-sm-9">
-                                        <input type="text" id="name" class="form-control mb-xs" ng-model="dialog.name" placeholder="이름을 입력해주세요">
+                                        <input type="text" id="name" class="form-control mb-xs"
+                                               ng-readonly="vm.isStartNode"
+                                               ng-model="dialog.name" placeholder="이름을 입력해주세요">
                                     </div>
                                 </div>
                                 <hr>
-                                <div class="form-group" >
-                                    <label class="col-sm-2 control-label">Input <span class="required" aria-required="true">*</span></label>
-                                    <div class="col-sm-9">
-                                        <div ng-repeat="input in dialog.input">
-                                            <div class="input-group mb-xs" ng-show="vm.inputMode && vm.curInput == input">
-                                                <div class="input-group-btn" >
-                                                    <button tabindex="-1" class="btn" ng-class="vm.getButtonClass(vm.curI.type)" type="button">{{vm.curI.type}}</button>
-                                                    <button tabindex="-1" data-toggle="dropdown" ng-class="vm.getButtonClass(vm.curI.type)" class="btn dropdown-toggle" type="button">
-                                                        <span class="caret"></span>
-                                                    </button>
-                                                    <ul role="menu" class="dropdown-menu" >
-                                                        <li ng-repeat="type in getInputTypes(vm.curInput, vm.curI)">
-                                                            <a href="#" ng-click="setType(vm.curI, type)">{{type}}</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div id='input_div' ng-show="vm.inputMode && getInputType(vm.curI.type) == 'text'">
-                                                    <input type="text" id="input" name="input" ng-model="vm.curI.str" class="form-control"
-                                                           placeholder="{{getPlaceHolder(vm.curI.type)}}"
-                                                           auto-focus
-                                                           ng-keydown="InputKeyDown($event,saveI)"
-                                                    >
-                                                </div>
-                                                <div ng-show="vm.inputMode && getInputType(vm.curI.type) == 'intent'">
-                                                    <ui-select ng-model="vm.curI.str"
-                                                               theme="bootstrap"
-                                                               ng-disabled="vm.intents.length == 0"
-                                                               reset-search-input="true"
-                                                               title="Intent를 선택하세요">
-                                                        <ui-select-match placeholder="Intent 이름을 입력해주세요">{{$select.selected}}</ui-select-match>
-                                                        <ui-select-choices repeat="t in vm.intents |filter: $select.search track by $index"
-                                                                           refresh-delay="0">
-                                                            <div ng-bind-html="t | highlight: $select.search"></div>
-                                                        </ui-select-choices>
-                                                    </ui-select>
-                                                </div>
-                                                <div ng-show="vm.inputMode && getInputType(vm.curI.type) == 'entity'">
-                                                    <ui-select ng-model="vm.curI.str"
-                                                               theme="bootstrap"
-                                                               ng-disabled="vm.entities.length == 0"
-                                                               reset-search-input="true"
-                                                               title="Entity를 선택하세요">
-                                                        <ui-select-match placeholder="Entity 이름을 입력해주세요">{{$select.selected}}</ui-select-match>
-                                                        <ui-select-choices repeat="t in vm.entities |filter: $select.search track by $index"
-                                                                           refresh-delay="0">
-                                                            <div ng-bind-html="t | highlight: $select.search"></div>
-                                                        </ui-select-choices>
-                                                    </ui-select>
-                                                </div>
-                                                <div ng-show="vm.inputMode && getInputType(vm.curI.type) == 'type'">
-                                                    <ui-select ng-model="vm.curI.str"
-                                                               theme="bootstrap"
-                                                               ng-disabled="vm.types.length == 0"
-                                                               reset-search-input="true"
-                                                               title="Type을 선택하세요">
-                                                        <ui-select-match placeholder="Type 이름을 입력해주세요">{{$select.selected}}</ui-select-match>
-                                                        <ui-select-choices repeat="t in vm.types |filter: $select.search track by $index"
-                                                                           refresh-delay="0">
-                                                            <div ng-bind-html="t | highlight: $select.search"></div>
-                                                        </ui-select-choices>
-                                                    </ui-select>
-                                                </div>
-                                                <span class="input-group-btn">
+                                <div ng-show="!vm.isStartNode">
+                                    <div class="form-group" >
+                                        <label class="col-sm-2 control-label">Input <span class="required" aria-required="true">*</span></label>
+                                        <div class="col-sm-9">
+                                            <div ng-repeat="input in dialog.input">
+                                                <div class="input-group mb-xs" ng-show="vm.inputMode && vm.curInput == input">
+                                                    <div class="input-group-btn" >
+                                                        <button tabindex="-1" class="btn" ng-class="vm.getButtonClass(vm.curI.type)" type="button">{{vm.curI.type}}</button>
+                                                        <button tabindex="-1" data-toggle="dropdown" ng-class="vm.getButtonClass(vm.curI.type)" class="btn dropdown-toggle" type="button">
+                                                            <span class="caret"></span>
+                                                        </button>
+                                                        <ul role="menu" class="dropdown-menu" >
+                                                            <li ng-repeat="type in getInputTypes(vm.curInput, vm.curI)">
+                                                                <a href="#" ng-click="setType(vm.curI, type)">{{type}}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div id='input_div' ng-show="vm.inputMode && getInputType(vm.curI.type) == 'text'">
+                                                        <input type="text" id="input" name="input" ng-model="vm.curI.str" class="form-control"
+                                                               placeholder="{{getPlaceHolder(vm.curI.type)}}"
+                                                               auto-focus
+                                                               ng-keydown="InputKeyDown($event,saveI)"
+                                                        >
+                                                    </div>
+                                                    <div ng-show="vm.inputMode && getInputType(vm.curI.type) == 'intent'">
+                                                        <ui-select ng-model="vm.curI.str"
+                                                                   theme="bootstrap"
+                                                                   ng-disabled="vm.intents.length == 0"
+                                                                   reset-search-input="true"
+                                                                   title="Intent를 선택하세요">
+                                                            <ui-select-match placeholder="Intent 이름을 입력해주세요">{{$select.selected}}</ui-select-match>
+                                                            <ui-select-choices repeat="t in vm.intents |filter: $select.search track by $index"
+                                                                               refresh-delay="0">
+                                                                <div ng-bind-html="t | highlight: $select.search"></div>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                    <div ng-show="vm.inputMode && getInputType(vm.curI.type) == 'entity'">
+                                                        <ui-select ng-model="vm.curI.str"
+                                                                   theme="bootstrap"
+                                                                   ng-disabled="vm.entities.length == 0"
+                                                                   reset-search-input="true"
+                                                                   title="Entity를 선택하세요">
+                                                            <ui-select-match placeholder="Entity 이름을 입력해주세요">{{$select.selected}}</ui-select-match>
+                                                            <ui-select-choices repeat="t in vm.entities |filter: $select.search track by $index"
+                                                                               refresh-delay="0">
+                                                                <div ng-bind-html="t | highlight: $select.search"></div>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                    <div ng-show="vm.inputMode && getInputType(vm.curI.type) == 'type'">
+                                                        <ui-select ng-model="vm.curI.str"
+                                                                   theme="bootstrap"
+                                                                   ng-disabled="vm.types.length == 0"
+                                                                   reset-search-input="true"
+                                                                   title="Type을 선택하세요">
+                                                            <ui-select-match placeholder="Type 이름을 입력해주세요">{{$select.selected}}</ui-select-match>
+                                                            <ui-select-choices repeat="t in vm.types |filter: $select.search track by $index"
+                                                                               refresh-delay="0">
+                                                                <div ng-bind-html="t | highlight: $select.search"></div>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                    <span class="input-group-btn">
                                         <button class="btn btn-default" ng-click="openIntent()" type="button" data-ng-if="vm.inputMode && getInputType(vm.curI.type) == 'intent'">+</button>
                                         <button class="btn btn-primary"
                                                 ng-disabled="vm.curI.str === ''"
                                                 ng-click="saveI()" type="button">저장</button>
                                         <button class="btn btn-danger" ng-click="resetI()" type="button">취소</button>
                                     </span>
-                                            </div>
-                                            <div  ng-show="!vm.inputMode || vm.curInput != input">
-                                                <div class="form-control col-md-11 mb-xs" style="height:auto;">
-                                                    <button class="mr-xs btn btn-xs" ng-class="vm.getButtonClass(i.type)"
-                                                            ng-click="openEdit(i,input)"
-                                                            ng-repeat="i in input">
-                                                        <i class='fa' ng-class="vm.getIconClass(i.type)" style="color:antiquewhite"></i>&nbsp;
-                                                        {{printInput(i)}}&nbsp;
-                                                        <i ng-click="removeI(i,input)" class="fa fa-remove" style="color:white"></i></button>
-                                                    <button class="mr-xs btn btn-default btn-xs"
-                                                            ng-show="getInputTypes(input).length > 0"
-                                                            ng-click="addI(input)" ><i class="fa fa-plus"></i></button>
-                                                    <span class="icon pull-right " style="height:20px;line-height:20px">
+                                                </div>
+                                                <div  ng-show="!vm.inputMode || vm.curInput != input">
+                                                    <div class="form-control col-md-11 mb-xs" style="height:auto;">
+                                                        <button class="mr-xs btn btn-xs" ng-class="vm.getButtonClass(i.type)"
+                                                                ng-click="openEdit(i,input)"
+                                                                ng-repeat="i in input">
+                                                            <i class='fa' ng-class="vm.getIconClass(i.type)" style="color:antiquewhite"></i>&nbsp;
+                                                            {{printInput(i)}}&nbsp;
+                                                            <i ng-click="removeI(i,input)" class="fa fa-remove" style="color:white"></i></button>
+                                                        <button class="mr-xs btn btn-default btn-xs"
+                                                                ng-show="getInputTypes(input).length > 0"
+                                                                ng-click="addI(input)" ><i class="fa fa-plus"></i></button>
+                                                        <span class="icon pull-right " style="height:20px;line-height:20px">
                                             <i ng-click="removeInput(input)" class="fa fa-remove"
                                                style="color:red;font-size:70%;"></i>
                                         </span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-sm-1 pull-down" style="padding-left: 0;padding-top: 3px">
+                                            <button type="button" ng-click="addInput()" class="mb-xs mr-xs btn btn-sm btn-default" style="border: none"><i class="glyphicon glyphicon-plus"></i></button>
+                                        </div>
+                                        <div class="col-sm-9 col-sm-offset-2" data-ng-if="processedInput">
+                                            자연어처리 결과 : {{processedInput}}
+                                        </div>
                                     </div>
-                                    <div class="col-sm-1 pull-down" style="padding-left: 0;padding-top: 3px">
-                                      <button type="button" ng-click="addInput()" class="mb-xs mr-xs btn btn-sm btn-default" style="border: none"><i class="glyphicon glyphicon-plus"></i></button>
-                                    </div>
-                                  <div class="col-sm-9 col-sm-offset-2" data-ng-if="processedInput">
-                                    자연어처리 결과 : {{processedInput}}
-                                  </div>
+                                    <hr>
                                 </div>
-                                <hr>
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Task</label>
                                     <div class="col-sm-9 ">
@@ -775,7 +779,7 @@
 
         </div>
     </div>
-</div>
+</section>
 
 <link href="/lib/jstree/dist/themes/default/style.css" rel="stylesheet" type="text/css">
 
