@@ -26,7 +26,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     vm.isVoice = false
     vm.stt = false;
     vm.tts = false;
-
+    var sendedMsg = '';
     var main = document.getElementById('chat_main');
 
     vm.connect = function () {
@@ -111,6 +111,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       }
 
       $rootScope.$broadcast('onmsg', {message: message});
+      $rootScope.$broadcast('sendmsg', {message: sendedMsg});
 
       // var snd = new Audio('/images/doorbell-6.mp3');
       // snd.play();
@@ -213,8 +214,8 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       addUserBubble(msg);
       emitMsg(msg);
 
-      $rootScope.$broadcast('sendmsg', {message: msg});
-
+      // $rootScope.$broadcast('sendmsg', {message: msg});
+      sendedMsg = vm.msg;
       if(useInput)  vm.msg = '';
 
       return false;

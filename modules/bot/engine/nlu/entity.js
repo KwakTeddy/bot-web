@@ -47,12 +47,12 @@ function matchDictionaryEntities(inRaw, inNLP, inDoc, context, callback) {
     },
 
     function(cb) {
-      var Dic = mongoose.model('EntityContent');
+      var Dic = mongoose.model('EntityContentSynonym');
       async.eachSeries(nouns, function(word, cb1) {
-        Dic.find({botId: context.bot.id, name: word}).lean().populate('entityId').exec(function(err, docs) {
+        Dic.find({botId: context.bot.id, name: word}).lean().populate('entityId').populate('contentId').exec(function(err, docs) {
           for(var i in docs) {
             if(docs[i].entityId && entities[docs[i].entityId.name] == undefined)
-              entities[docs[i].entityId.name] = docs[i].name;
+              entities[docs[i].entityId.name] = docs[i].contentId.name;
           }
 
           cb1(null);
@@ -63,12 +63,12 @@ function matchDictionaryEntities(inRaw, inNLP, inDoc, context, callback) {
     },
 
     function(cb) {
-      var Dic = mongoose.model('EntityContent');
+      var Dic = mongoose.model('EntityContentSynonym');
       async.eachSeries(nouns, function(word, cb1) {
-        Dic.find({botId: null, name: word}).lean().populate('entityId').exec(function(err, docs) {
+        Dic.find({botId: null, name: word}).lean().populate('entityId').populate('contentId').exec(function(err, docs) {
           for(var i in docs) {
             if(docs[i].entityId && entities[docs[i].entityId.name] == undefined)
-              entities[docs[i].entityId.name] = docs[i].name;
+              entities[docs[i].entityId.name] = docs[i].contentId.name;
           }
 
           cb1(null);

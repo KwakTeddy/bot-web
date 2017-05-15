@@ -36,9 +36,10 @@ function loadCustomContext(bot, callback) {
         };
 
         for(var i in docs) {
-          contexts[getPath(docs[i])] = docs[i];
+          docs[i].path = getPath(docs[i]);
+          contexts[docs[i].path] = docs[i];
         }
-
+        
         bot.contexts = contexts;
 
         cb(null);

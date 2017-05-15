@@ -13,11 +13,9 @@ var dialogs = [
 				]
 			}
 		],
-		"output": "냉장고 양문형 강냉인 경우의 증상 입니다.",
-		"name": "냉장고.양문형.강냉",
-		"context": {
-			"name": "강냉"
-		}
+		"output": "냉장고 강냉인 경우의 증상 입니다.",
+		"name": "냉장고.강냉",
+		"context": "LG전자.냉장고.강냉"
 	},
 	{
 		"id": "default1",
@@ -29,13 +27,11 @@ var dialogs = [
 		],
 		"output": [
 			{
-				"output": "냉장고 양문형 약냉인 경우의 증상 입니다."
+				"output": "냉장고 약냉인 경우의 증상 입니다."
 			}
 		],
-		"name": "냉장고.양문형.약냉",
-		"context": {
-			"name": "약냉"
-		}
+		"name": "냉장고.약냉",
+    "context": "LG전자.냉장고.약냉"
 	},
 	{
 		"id": "default3",
@@ -45,65 +41,9 @@ var dialogs = [
 				"intent": "무냉"
 			}
 		],
-		"output": "냉장고 양문형 무냉인 경우의 증상 입니다.",
-		"name": "냉장고.양문형.무냉",
-		"context": {
-			"name": "무냉"
-		}
-	},
-	{
-		"id": "default4",
-		"filename": "default",
-		"input": [
-			{
-				"intent": "강냉"
-			}
-		],
-		"output": [
-			{
-				"output": "냉장고 일반형 강냉인 경우의 증상 입니다."
-			}
-		],
-		"name": "냉장고.일반형.강냉",
-		"context": {
-			"name": "강냉"
-		}
-	},
-	{
-		"id": "default5",
-		"filename": "default",
-		"input": [
-			{
-				"intent": "약냉"
-			}
-		],
-		"output": [
-			{
-				"output": "냉장고 일반형 약냉인 경우의 증상 입니다."
-			}
-		],
-		"name": "냉장고.일반형.약냉",
-		"context": {
-			"name": "약냉"
-		}
-	},
-	{
-		"id": "default6",
-		"filename": "default",
-		"input": [
-			{
-				"intent": "무냉"
-			}
-		],
-		"output": [
-			{
-				"output": "냉장고 일반형 무냉인 경우의 증상 입니다."
-			}
-		],
-		"name": "냉장고.일반형.무냉",
-		"context": {
-			"name": "무냉"
-		}
+		"output": "냉장고 무냉인 경우의 증상 입니다.",
+		"name": "냉장고.무냉",
+    "context": "LG전자.냉장고.무냉"
 	},
 	{
 		"id": "default7",
@@ -115,13 +55,11 @@ var dialogs = [
 		],
 		"output": [
 			{
-				"output": "에어컨 스탠딩 강냉인 경우의 증상 입니다."
+				"output": "에어컨 강냉인 경우의 증상 입니다."
 			}
 		],
-		"name": "에어컨.스탠딩.강냉",
-		"context": {
-			"name": "무냉"
-		}
+		"name": "에어컨.강냉",
+    "context": "LG전자.에어컨.강냉"
 	},
 	{
 		"id": "default8",
@@ -133,13 +71,11 @@ var dialogs = [
 		],
 		"output": [
 			{
-				"output": "에어컨 스탠딩 약냉인 경우의 증상 입니다."
+				"output": "에어컨 약냉인 경우의 증상 입니다."
 			}
 		],
-		"name": "에어컨.스탠딩.약냉",
-		"context": {
-			"name": "무냉"
-		}
+		"name": "에어컨.약냉",
+    "context": "LG전자.에어컨.약냉"
 	},
 	{
 		"id": "default9",
@@ -151,67 +87,11 @@ var dialogs = [
 		],
 		"output": [
 			{
-				"output": "에어컨 스탠딩 무냉인 경우의 증상 입니다."
+				"output": "에어컨 무냉인 경우의 증상 입니다."
 			}
 		],
-		"name": "에어컨.스탠딩.무냉",
-		"context": {
-			"name": "무냉"
-		}
-	},
-	{
-		"id": "default10",
-		"filename": "default",
-		"input": [
-			{
-				"intent": "강냉"
-			}
-		],
-		"output": [
-			{
-				"output": "에어컨 벽걸이 강냉인 경우의 증상 입니다."
-			}
-		],
-		"name": "에어컨.벽걸이.강냉",
-		"context": {
-			"name": "무냉"
-		}
-	},
-	{
-		"id": "default11",
-		"filename": "default",
-		"input": [
-			{
-				"intent": "약냉"
-			}
-		],
-		"output": [
-			{
-				"output": "에어컨 벽걸이 약냉인 경우의 증상 입니다."
-			}
-		],
-		"name": "에어컨.벽걸이.약냉",
-		"context": {
-			"name": "무냉"
-		}
-	},
-	{
-		"id": "default12",
-		"filename": "default",
-		"input": [
-			{
-				"intent": "무냉"
-			}
-		],
-		"output": [
-			{
-				"output": "에어컨 벽걸이 무냉인 경우의 증상 입니다."
-			}
-		],
-		"name": "에어컨.벽걸이.무냉",
-		"context": {
-			"name": "무냉"
-		}
+		"name": "에어컨.무냉",
+    "context": "LG전자.에어컨.무냉"
 	}
 ];
 

@@ -458,10 +458,10 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
           }
 
         ], function(err, matched) {
-          // if(intentMatched) {
-          //   intentDialogs.push(dialog);
-          //   _cb(null);
-          // } else
+          if(intentMatched && context.bot.contexts && Object.keys(context.bot.contexts).length > 0) {
+            intentDialogs.push(dialog);
+            _cb(null);
+          } else
             if(matched) {
             eachMatched = true; _cb(dialog);
           } else {
@@ -532,9 +532,11 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
       }
 
       if(intentDialogs.length > 0) {
-        if(intentDialogs.length == 1) _executeDialog(intentDialogs[0]);
+        if(intentDialogs.length == 1) {
+          intentDialogs[0].context = null;
+          _executeDialog(intentDialogs[0]);
+        }
         else {
-          console.log('Dialog intent 검색됨');
           var intentDialog;
           function matchContext(dialogs, context, customContext, intentDialogs, print, callback, options) {
             if(customContext.children && customContext.children.length > 0) {
@@ -544,9 +546,11 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
                 if(child.dialogs && child.dialogs.length > 0) {
                   for(var j in intentDialogs) {
                     for(var k in child.dialogs) {
-                      if (intentDialogs[j].id == child.dialog[k].id) {
+                      if (intentDialogs[j].id == child.dialogs[k].id) {
                         intentDialog = intentDialogs[j];
-                        _executeDialog(intentDialogs[j]);
+                        intentDialog.context = null;
+                        context.botUser.context = child;
+                        _executeDialog(intentDialog);
                         return true;
                       }
                     }
@@ -557,8 +561,8 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
                     var item = child.items[j];
                     if(item.type == "entityItem") {
                       for(var key in context.botUser.entities) {
-                        if(item.name != '@' + key && item.name != context.botUser.entities[key] + '@'+key) {
-                          itemCheck = false;
+                        if(item.name == '@' + key || item.name == context.botUser.entities[key] + '@'+key) {
+                          itemCheck = true;
                         }
                       }
                     }
@@ -567,18 +571,26 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
                   if(itemCheck) {
                     return matchContext(dialogs, context, child, intentDialogs, print, callback, callback, options);
                   }
-                } else if(context.dialog.inRaw.indexOf(child.name) != -1) {
+                } else if(context.dialog.inCurRaw && context.dialog.inCurRaw.indexOf(child.name) != -1) {
                   return matchContext(dialogs, context, child, intentDialogs, print, callback, callback, options);
                 }
               }
 
-              var question = '다음중 어떤것이 좋으세요? \n';
-              for(var k in child.items) {
-                question += child.items[k] + ' ';
-              }
+              context.user.pendingCallback = function(_inRaw, _inNLP, _inDoc, _context, print) {
+                context.user.pendingCallback = null;
+                matchContext(dialogs, context, customContext, intentDialogs, print, callback, options);
+              };
 
+              var question = '상담 가능한 다음 항목 중 골라주세요.\n>';
+              for(var k in customContext.children) {
+                if(k != 0) question += ',';
+                question += customContext.children[k].name + ' ';
+              }
+              question += '\n\n처음은 "시작"을 입력해 주세요.';
               console.log(question);
-              return false;
+              print(question);
+
+              return true;
             } else {
               return false;
             }

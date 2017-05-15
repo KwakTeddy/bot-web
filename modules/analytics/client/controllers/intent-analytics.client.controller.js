@@ -97,14 +97,52 @@ angular.module('analytics').controller('AnalyticsIntentController', ['$scope', '
     //   })
     // };
 
-    $scope.$on('sendmsg', function(event, arg0) {
-      $scope.msg = arg0.message;
-      $scope.sendIntent();
-    });
+    // $scope.$on('sendmsg', function(event, arg0) {
+    //   $scope.msg = arg0.message;
+    //   $scope.sendIntent();
+    // });
+
+    $scope.$on('updateLog', function(event, arg0) {
+      var index = $rootScope.logUpdated.indexOf('[DIALOG_SEL]');
+
+      if(index != -1) {
+        var json = $rootScope.logUpdated.substring('[DIALOG_SEL]'.length);
+
+        try {
+          var res = JSON.parse(json);
+
+          if (res.context){
+            $scope.context = res.context;
+          }else {
+            $scope.context = undefined;
+          }
+
+          if (res.intent){
+            $scope.intent = res.intent;
+          }else {
+            $scope.intent = undefined;
+          }
+
+          if (!Object.keys(res.entities).length){
+            $scope.entities = undefined;
+          }else {
+            $scope.entities = res.entities;
+          }
+        } catch(e) {
+          console.log(e);
+        }
+      }
+    })
 
     $scope.sendIntent = function() {
       $resource('/api/user-bots-analytics/intent', {}).get({input: $scope.msg, botId: $rootScope.botId}, function (res) {
         // console.log(res);
+        if (res.context){
+          $scope.context = res.context;
+        }else {
+          $scope.context = undefined;
+        }
+
         if (res.intent){
           $scope.intent = res.intent;
         }else {

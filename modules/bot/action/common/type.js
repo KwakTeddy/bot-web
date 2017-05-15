@@ -1572,8 +1572,8 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                   }
 
                   if(!bExist &&
-                    (matchCount / nlpMatchLength >= format.matchRate ||
-                    matchCount1 >= format.matchCount)) {
+                    (nlps.length > 1 && (matchCount / nlpMatchLength >= format.matchRate ||
+                    matchCount1 >= format.matchCount))) {
                     if(Array.isArray(doc.input)) doc.input = doc.input[maxMatchIndex];
                     doc.inputLen = doc.input.split(' ').length;
                     doc.matchWord = matchedWord;

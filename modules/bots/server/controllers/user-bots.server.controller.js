@@ -1113,6 +1113,7 @@ exports.analyzeIntent = function(req, res) {
 
   typeModule.processInput(context, req.query.input, function(_inNLP, entities, _doc) {
     var doc = {
+      context: context.botUser.context,
       intent: _doc.intent,
       entities: _doc.entities
     };
