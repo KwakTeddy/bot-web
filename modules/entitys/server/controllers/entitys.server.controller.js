@@ -104,52 +104,81 @@ exports.read = function(req, res) {
  * Update a Custom action
  */
 exports.update = function(req, res) {
-  var entity = req.entity ;
-  entity = _.extend(entity , req.body);
+  if (req.body.name){
+    Entity.find({botId: req.body.botId, name: req.body.name, _id: {$ne: req.body._id}}).exec(function (err, result) {
+      if (err){
+        console.log(err)
+      }else {
+        if(result.length){
+          return res.status(400).send({
+            message: '동일한 이름의 엔터티가 존재합니다'
+          })
+        }else {
+          var entity = req.entity ;
+          entity = _.extend(entity , req.body);
 
-  entity.save(function(err) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.jsonp(entity);
-    }
-  });
+          entity.save(function(err) {
+            if (err) {
+              return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            } else {
+              res.jsonp(entity);
+            }
+          });
+        }
+      }
+    });
+  }else {
+    return res.status(400).send({
+      message: '엔터티 이름이 빈 칸입니다'
+    })
+  }
+
 };
 
 /**
  * Update a Custom action
  */
 exports.updateContent = function(req, res) {
-  EntityContent.findOne({name: req.body.name, botId: req.body.botId, _id: {$ne: req.body._id}}).exec(function (error, result) {
-    console.log(util.inspect(result));
-    if (error){
-      console.log(error)
-    }else {
-      if (result){
-        return res.status(400).send({
-          message : '동일한 이름의 엔터티가 존재합니다'
-        })
-      }else {
-        EntityContent.findOne({_id: req.body._id}).exec(function (err, data) {
-          if (err){
-            console.log(err)
-          }else {
-            data.name = req.body.name;
-            data.syn = req.body.syn;
-            data.save(function (err) {
-              if (err){
-                console.log(err)
-              }else {
-                res.end();
-              }
-            })
-          }
-        })
+  if (req.body.name) {
+    EntityContent.find({
+      name: req.body.name,
+      entityId: req.body.entityId,
+      _id: {$ne: req.body._id}
+    }).exec(function (error, result) {
+      console.log(util.inspect(result));
+      if (error) {
+        console.log(error)
+      } else {
+        if (result.length) {
+          return res.status(400).send({
+            message: '동일한 이름의 엔터티가 존재합니다'
+          })
+        } else {
+          EntityContent.findOne({_id: req.body._id}).exec(function (err, data) {
+            if (err) {
+              console.log(err)
+            } else {
+              data.name = req.body.name;
+              data.syn = req.body.syn;
+              data.save(function (err) {
+                if (err) {
+                  console.log(err)
+                } else {
+                  res.end();
+                }
+              })
+            }
+          })
+        }
       }
-    }
-  });
+    });
+  }else {
+    return res.status(400).send({
+      message: '엔터티 내용이 빈 칸입니다'
+    })
+  }
 };
 
 

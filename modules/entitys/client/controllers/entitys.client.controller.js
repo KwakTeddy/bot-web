@@ -41,22 +41,25 @@
           for (var i = 0; i < newVal.length; i++) {
             if (newVal[i].name !== oldVal[i].name) {
               return $http.post('/api/entitysContent/' + newVal[i].entityId, newVal[i]).then(function (result) {
+                vm.contentListError = null;
               }, function (err) {
-                console.log(err)
+                vm.contentListError = err.data.message;
               })
             }else {
               if(newVal[i].syn && (newVal[i].syn.length !== oldVal[i].syn.length)){
                 return $http.post('/api/entitysContent/' + newVal[i].entityId, newVal[i]).then(function (result) {
+                  vm.contentListError = null;
                 }, function (err) {
-                  console.log(err)
+                  vm.contentListError = err.data.message;
                 })
               }else {
                 if (newVal[i].syn){
                   for(var j = 0; j < newVal[i].syn.length; j++){
                     if(newVal[i].syn[j] !== oldVal[i].syn[j]){
                       return $http.post('/api/entitysContent/' + newVal[i].entityId, newVal[i]).then(function (result) {
+                        vm.contentListError = null;
                       }, function (err) {
-                        console.log(err)
+                        vm.contentListError = err.data.message;
                       })
                     }
                   }
@@ -71,8 +74,9 @@
       $scope.$watch('entity', function (newVal, oldVal) {
         if (newVal.name !== oldVal.name) {
           $http.put('/api/entitys/' + $rootScope.botId + '/' + newVal._id, newVal).then(function (result) {
-
+            vm.error = null;
           }, function (err) {
+            vm.error = err.data.message;
             console.log(err)
           })
         }
@@ -113,9 +117,7 @@
       function successCallback(res) {
         vm.error = null;
         $scope.$broadcast('show-errors-check-validity', 'vm.form.entityForm');
-        $state.go('entitys.edit', {
-          entityId: res._id
-        }, {reload: true});
+        $state.go('entitys.list')
       }
 
       function errorCallback(res) {

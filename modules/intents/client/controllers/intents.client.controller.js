@@ -41,8 +41,10 @@
           for(var i = 0; i < newVal.length; i++){
             if(newVal[i].name !== oldVal[i].name){
               $http.post('/api/intentsContent/'+ newVal[i].intentId, newVal[i]).then(function (result) {
+                vm.contentListError = null;
               }, function (err) {
-                console.log(err)
+                console.log(err);
+                vm.contentListError = err.data.message;
               })
             }
           }
@@ -55,8 +57,9 @@
       if (vm.intent._id){
         if (newVal.name !== oldVal.name){
           $http.put('/api/intents/'+ $rootScope.botId + '/' + newVal._id, newVal).then(function (result) {
-
+            vm.error = null;
           }, function (err) {
+            vm.error = err.data.message;
             console.log(err)
           })
         }

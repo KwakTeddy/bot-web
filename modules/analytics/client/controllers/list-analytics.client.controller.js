@@ -199,7 +199,7 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
         arg = $scope.ym;
       var dialogFailure = DialogFailureService.query(
         {
-          botId: $rootScope.botId,
+          botId: $cookies.get('default_bot'),
           kind: $scope.kind,
           arg: arg
         }, function() {

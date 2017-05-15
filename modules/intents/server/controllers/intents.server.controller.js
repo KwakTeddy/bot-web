@@ -117,31 +117,49 @@ exports.read = function(req, res) {
  * Update a Custom action
  */
 exports.update = function(req, res) {
-  var intent = req.intent ;
-  // console.log(util.inspect(intent));
-  // console.log(util.inspect(req.body));
-  intent = _.extend(intent , req.body);
-  intent.save(function(err) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
+  if (req.body.name){
+    Intent.find({botId: req.body.botId, name: req.body.name, _id: {$ne: req.body._id}}).exec(function (err, result) {
+      if (err){
+        console.log(err)
+      }else {
+        if (result.length){
+          return res.status(400).send({
+            message: '동일한 이름의 인텐트가 존재합니다'
+          })
+        }else {
+          var intent = req.intent ;
+          // console.log(util.inspect(intent));
+          // console.log(util.inspect(req.body));
+          intent = _.extend(intent , req.body);
+          intent.save(function(err) {
+            if (err) {
+              return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            } else {
 
-      // async.eachSeries(req.body.content, function(content, cb) {
-      //   console.log(util.inspect(content));
-      //   IntentContent.update({_id: content._id}, {input: })
-      //
-      // }, function(err) {
-      //   if (err){
-      //     console.log(err);
-      //   }else {
-      //
-      //   }
-      // });
-      res.jsonp(intent);
-    };
-  });
+              // async.eachSeries(req.body.content, function(content, cb) {
+              //   console.log(util.inspect(content));
+              //   IntentContent.update({_id: content._id}, {input: })
+              //
+              // }, function(err) {
+              //   if (err){
+              //     console.log(err);
+              //   }else {
+              //
+              //   }
+              // });
+              res.jsonp(intent);
+            };
+          });
+        }
+      }
+    })
+  }else {
+    return res.status(400).send({
+      message: '인텐트 이름이 빈 칸입니다'
+    })
+  }
 };
 
 
@@ -150,24 +168,46 @@ exports.update = function(req, res) {
  * Update a Custom action
  */
 exports.contentUpdate = function(req, res) {
-  IntentContent.findOne({_id: req.body._id}).exec(function (err, data) {
-    if (err){
-      console.log(err)
-    }else {
+  if (req.body.name){
+    IntentContent.find({
+      name: req.body.name,
+      intentId: req.body.intentId,
+      _id: {$ne: req.body._id}
+    }).exec(function (err, result) {
+      if (err){
+        console.log(err)
+      }else {
+        if (result.length){
+          return res.status(400).send({
+            message: '동일한 이름의 인텐트가 존재합니다'
+          })
+        }else {
+          IntentContent.findOne({_id: req.body._id}).exec(function (err, data) {
+            if (err){
+              console.log(err)
+            }else {
 
-      dialogset.processInput(null, req.body.name, function (_input, _json) {
-        data.name = req.body.name;
-        data.input = _input;
-        data.save(function (err) {
-          if (err){
-            console.log(err)
-          }else {
-            res.end();
-          }
-        })
-      });
-    }
-  })
+              dialogset.processInput(null, req.body.name, function (_input, _json) {
+                data.name = req.body.name;
+                data.input = _input;
+                data.save(function (err) {
+                  if (err){
+                    console.log(err)
+                  }else {
+                    res.end();
+                  }
+                })
+              });
+            }
+          })
+        }
+      }
+    });
+  }else {
+    return res.status(400).send({
+      message: '인텐트 내용이 빈 칸입니다'
+    })
+  }
 };
 
 
