@@ -221,7 +221,7 @@
 </header>
 
 <div>
-    <div id='filetree' class="col-md-1">
+    <div id='filetree' class="col-md-1" style="position:fixed;overflow-y:scroll;overflow:hidden">
         <div class="row mb-sm" style="margin: -5px -5px 5px 0 !important;">
             <div id="filelabel0" >
                 Files
@@ -252,7 +252,7 @@
     <div>
 
     </div>
-    <div id='content' class="col-md-11">
+    <div id='content' class="col-md-11" style="position:fixed;overflow:hidden">
         <div>
             <!--<button id="filetree_open"-->
                     <!--class="mt-xs mr-xs filetree_button btn btn-sm pull-left" ng-click="vm.initTree()"><i class="fa fa-bars"></i></button>-->
@@ -307,7 +307,7 @@
                                 ng-click="vm.showDetail()" ><i class="fa fa-plus-square-o"> detailed</i></button>
                     </div>
                 </div>
-                <div id="tree-container" class="panel" width="100%" height="100%"></div>
+                <div id="tree-container" class="panel" width="100%" height="90%" style="margin-bottom:0px"></div>
 
                 <a class="modal-with-form btn btn-default" style="display:none" ng-click="removeProcessedInput()" href="#modalForm">Open Form</a>
                 <a class="modal-with-task btn btn-default" style="display:none" href="#modalTaskForm">Open Form</a>

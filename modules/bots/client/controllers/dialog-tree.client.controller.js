@@ -1466,7 +1466,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     // size of the diagram
     var viewerWidth = document.getElementById('tree-container').clientWidth;
-    var viewerHeight = document.getElementById('sidebar-left').clientHeight - 170;
+    var viewerHeight = document.getElementById('sidebar-left').clientHeight*0.80;
 
     // size of rect
     var rectW = 250, rectH = 130;
