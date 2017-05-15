@@ -16,14 +16,18 @@ const NO_DIALOG_NAME = '답변없음';
 exports.NO_DIALOG_NAME = NO_DIALOG_NAME;
 
 function findDialog(dialog, context, name) {
+  // if(findGlobalDepth > 100) return null;
+
   if (dialog == null) {
     for (var i = 0; context.bot.dialogs && i < context.bot.dialogs.length; i++) {
       var dialog = context.bot.dialogs[i];
+      if(dialog == null) continue;
       var found = findDialog(dialog, context, name);
       if(found) return found;
     }
     for (var i = 0; context.bot.commonDialogs && i < context.bot.commonDialogs.length; i++) {
       var dialog = context.bot.commonDialogs[i];
+      if(dialog == null) continue;
       var found = findDialog(dialog, context, name);
       if(found) return found;
     }
@@ -33,6 +37,7 @@ function findDialog(dialog, context, name) {
   } else if(Array.isArray(dialog.children)) {
     for (var i = 0; i < dialog.children.length; i++) {
       var rejoinder = dialog.children[i];
+      if(rejoinder == null) continue;
       var found = findDialog(rejoinder, context, name);
       if (found) return found;
     }
@@ -40,6 +45,7 @@ function findDialog(dialog, context, name) {
   } else if(Array.isArray(dialog.output)) {
     for (var i = 0; i < dialog.output.length; i++) {
       var output = dialog.output[i];
+      if(output == null) continue;
       var found = findDialog(output, context, name);
       if (found) return found;
     }
@@ -99,8 +105,8 @@ function matchGlobalDialogs(inRaw, inNLP, dialogs, context, print, callback, wor
       matchDialogs(inRaw, inNLP, dialogs, context, print, function(matched, _dialog) {
         if (matched == true) {
           callback(matched, _dialog);
-        } else if (context.botUser.intentDialog) {
-          executeDialog(context.botUser.intentDialog, context, print, callback);
+        // } else if (context.botUser.intentDialog) {
+        //   executeDialog(context.botUser.intentDialog, context, print, callback);
         } else if (context.bot.useAutoCorrection == true && !wordCorrection) {
           var _inRaw = autoCorrection.correction(inRaw);
           context.botUser.orgNlp = context.botUser.nlp;
@@ -173,8 +179,8 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback, opti
       matchDialogs(inRaw, inNLP, dialogs, context, print, function(matched, _dialog) {
         if (matched == true) {
           callback(matched, _dialog);
-        } else if (context.botUser.intentDialog) {
-          executeDialog(context.botUser.intentDialog, context, print, callback);
+        // } else if (context.botUser.intentDialog) {
+        //   executeDialog(context.botUser.intentDialog, context, print, callback);
         } else {
           if(context.bot.useAutoCorrection != true || wordCorrection) {
             for (var i = 0; i < dialogs.length; i++) {
@@ -309,6 +315,23 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
           },
 
           function(matched, cb2) {
+            if(input && Array.isArray(input.entities)) {
+              var eachMatched2 = false;
+              for(var i in input.entities) {
+                for(key in context.botUser.entities) {
+                  if(input.entities[i] == key) {
+                    eachMatched2 = true;
+                  }
+                }
+              }
+              if (eachMatched2) cb2(null, true);
+              else cb2(true, false);
+            } else {
+              cb2(null, true);
+            }
+          },
+
+          function(matched, cb2) {
             if(input && Array.isArray(input.types)) {
               var eachMatched2 = true;
               async.eachSeries(input.types, function (type1, cb3) {
@@ -382,7 +405,8 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
 
           function(matched, cb2) {
             if(input && input.intent) {
-              cb2(true, false);
+              if(context.botUser.intent && input.intent == context.botUser.intent.name) cb2(null, true);
+              else cb2(true, false);
             } else {
               cb2(null, true);
             }

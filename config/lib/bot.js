@@ -278,7 +278,8 @@ function loadBot(botName, callback) {
               if('string' == typeof dialog.input.pattern) patternDialog = bot.patterns[dialog.input.pattern];
               else patternDialog = dialog.input.pattern;
 
-              bot.dialogs[i] = changeDialogPattern(patternDialog, dialog.input.params);
+              if(patternDialog != undefined)
+                bot.dialogs[i] = changeDialogPattern(patternDialog, dialog.input.params);
             }
           }
 
