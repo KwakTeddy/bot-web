@@ -32,7 +32,7 @@
           convergenceResolve: newConvergence
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['user', 'enterprise', 'admin'],
           pageTitle: 'Convergences Create'
         }
       })
@@ -45,7 +45,7 @@
           convergenceResolve: getConvergence
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['user', 'enterprise', 'admin'],
           pageTitle: 'Edit Convergence {{ convergenceResolve.name }}'
         }
       })

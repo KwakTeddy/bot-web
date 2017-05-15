@@ -11,11 +11,11 @@ var concept = require('../../../bot/engine/concept/concept.js');
 
 module.exports = function(app) {
   // Custom actions Routes
-  app.route('/api/dialogsets')//.all(dialogsetsPolicy.isAllowed)
+  app.route('/api/dialogsets')//all(dialogsetsPolicy.isAllowed)
     .get(dialogsets.list)
     .post(dialogsets.create);
 
-  app.route('/api/dialogsets/:dialogsetId')//.all(dialogsetsPolicy.isAllowed)
+  app.route('/api/dialogsets/:dialogsetId')//all(dialogsetsPolicy.isAllowed)
     .get(dialogsets.read)
     .put(dialogsets.update)
     .delete(dialogsets.delete);
@@ -23,11 +23,11 @@ module.exports = function(app) {
   app.route('/api/dialogsets/uploadfile').post(dialogsets.uploadFile);
   app.route('/api/dialogsets/convert').post(dialogsets.convertFile);
 
-  app.route('/api/dialogsets/:dialogsetId/dialogs')//.all(dialogsetsPolicy.isAllowed)
+  app.route('/api/dialogsets/:dialogsetId/dialogs')//all(dialogsetsPolicy.isAllowed)
     .get(dialogsetDialogs.list)
     .post(dialogsetDialogs.create);
 
-  app.route('/api/dialogsets/:dialogsetId/dialogs/:dialogsetDialogId')//.all(dialogsetsPolicy.isAllowed)
+  app.route('/api/dialogsets/:dialogsetId/dialogs/:dialogsetDialogId')//all(dialogsetsPolicy.isAllowed)
     .get(dialogsetDialogs.read)
     .put(dialogsetDialogs.update)
     .delete(dialogsetDialogs.delete);

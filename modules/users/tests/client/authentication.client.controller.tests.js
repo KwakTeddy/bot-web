@@ -157,7 +157,7 @@
         // Mock logged in user
         _Authentication_.user = {
           username: 'test',
-          roles: ['user']
+          roles: ['enterprise', 'user']
         };
 
         AuthenticationController = $controller('AuthenticationController', {

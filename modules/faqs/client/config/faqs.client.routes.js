@@ -14,7 +14,7 @@
         url: '/developer/faqs',
         template: '<ui-view/>',
         data: {
-          roles: ['user', 'admin']
+          roles: ['user', 'enterprise', 'admin']
         }
       })
       .state('faqs.list', {

@@ -236,6 +236,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       $scope.intent.$save({botName: $rootScope.botId},successCallback, errorCallback);
 
       function successCallback(res) {
+        IntentsService.query({botName: $rootScope.botId}).$promise.then(function (result) {
+          vm.intents = result.map(function(i) { return i.name; });
+        }, function (err) {
+          console.log(err);
+        });
         $scope.backToEdit(false);
       }
 
@@ -479,7 +484,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     vm.saveFile = function () {
-      new BotFilesService({botId: $stateParams.botId, _id: vm.currentTab.file_id, fileData: vm.currentTab.data}).$save(function (botFile) {
+      new BotFilesService({botId: vm.bot_id, _id: vm.currentTab.file_id, fileData: vm.currentTab.data}).$save(function (botFile) {
         $resource('/api/loadBot/:bot_id', {}).get({bot_id: file.botName, }, function(res) {
           $scope.message = "저장되었습니다";
           var modalInstance = $uibModal.open({
@@ -930,6 +935,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         else
           types.push('Text');
       }
+      if (findType(input,'Return')) {
+        if (!findType(input,'Text'))
+          types.push('Text');
+        return types;
+      }
       if (!findType(input,"If") || (i != undefined && i.type == "If"))
         types.push("If");
       if (!isDone || (isDone && findType(input,'Text'))) {
@@ -937,6 +947,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           types.push('Image');
         types.push('Button');
       }
+
       return types;
     };
 
@@ -1045,6 +1056,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     var procOutput = function(d,r) {
+      if (typeof d === 'string') {
+        r.push({type: 'Text', str: d});
+      }
       if (!d.if && d.output) {
         r.push({type:'Text', str:d.output});
       }
@@ -1068,7 +1082,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       if (d.up) {
         r.push({type:'Up', str:d.up});
       }
-      if (d.repeat) {
+      if (d.repeat && typeof d.repeat == 'string') {
         r.push({type:'Repeat', str:d.repeat+""});
       }
       if (d.return) {
@@ -1207,6 +1221,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         $scope.addInput();
       }
 
+      IntentsService.query({botName: $rootScope.botId}).$promise.then(function (result) {
+        vm.intents = result.map(function(i) { return i.name; });
+      }, function (err) {
+        console.log(err);
+      });
+
       $scope.$apply();
       $('.modal-with-form').click();
 
@@ -1292,10 +1312,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       dialogs.forEach(clear);
 
-      var commons = angular.copy(treeData);
-      delete commons.children;
+      var common = angular.copy(treeData);
+      delete common.children;
+      common_dialogs[0] = common;
+      clear(common_dialogs[0]);
 
-      DialogSaveService.update({botId: vm.botId, fileName: vm.fileName, dialogs:dialogs, commons:commons},
+      DialogSaveService.update({botId: vm.botId, fileName: vm.fileName, dialogs:dialogs, commons:common_dialogs},
         function() {
           new PNotify({
             title: '저장 완료',
@@ -1515,7 +1537,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       handleDialog(common_dialogs[0]);
       treeData = angular.copy(common_dialogs[0]);
       treeData.name = '시작';
-      treeData.id = 'dummystart';
+      //treeData.id = 'dummystart';
       treeData.children = [];
 
       for (var i = 0; i < dialogs.length; i++) {
@@ -1536,7 +1558,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         vm.botId = res.botId;
         vm.fileName = res.fileName;
         vm.tasks = res.tasks.map(function(t) { return {name:t, type:'default'}});
-        vm.intents = res.intents.map(function(i) { return i.name; });
+        // vm.intents = res.intents.map(function(i) { return i.name; });
         vm.entities = res.entities.map(function(i) { return i.name; });
         vm.types = res.types.map(function(t) { return t.name} );
         vm.type_dic = res.type_dic;

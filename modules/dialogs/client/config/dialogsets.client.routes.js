@@ -14,7 +14,7 @@
         url: '/developer/dialogsets',
         template: '<ui-view/>',
         data: {
-          roles: ['user', 'admin']
+          roles: ['user', 'enterprise', 'admin']
         }
       })
       .state('dialogsets.list', {
@@ -44,7 +44,7 @@
           dialogsetResolve: newDialogset
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle : 'Custom actions Create'
         }
       })
@@ -57,7 +57,7 @@
           dialogsetResolve: getDialogset
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle: 'Edit Custom action {{ dialogsetResolve.name }}'
         }
       })
@@ -83,7 +83,7 @@
           dialogsetDialogResolve: getDialogsetDialogs
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle : 'Custom actions Create'
         }
       })

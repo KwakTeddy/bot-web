@@ -14,7 +14,7 @@
         url: '/developer/restaurants',
         template: '<ui-view/>',
         data: {
-          roles: ['user', 'admin']
+          roles: ['user', 'enterprise', 'admin']
         }
       })
       .state('restaurants.list', {
@@ -38,7 +38,7 @@
           restaurantResolve: newRestaurant
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle : 'Custom actions Create'
         }
       })
@@ -64,7 +64,7 @@
           restaurantResolve: getRestaurant
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle: 'Edit Custom action {{ restaurantResolve.name }}'
         }
       })

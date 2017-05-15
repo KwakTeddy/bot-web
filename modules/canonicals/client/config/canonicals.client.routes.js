@@ -14,7 +14,7 @@
         url: '/developer/canonicals',
         template: '<ui-view/>',
         data: {
-          roles: ['user', 'admin']
+          roles: ['user', 'enterprise', 'admin']
         }
       })
       .state('canonicals.list', {
@@ -38,7 +38,7 @@
           canonicalResolve: newCanonical
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle : 'Custom actions Create'
         }
       })
@@ -51,7 +51,7 @@
           canonicalResolve: getCanonical
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle: 'Edit Custom action {{ canonicalResolve.name }}'
         }
       })

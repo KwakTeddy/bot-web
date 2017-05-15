@@ -8,11 +8,11 @@ var dictsPolicy = require('../policies/dicts.server.policy'),
 
 module.exports = function(app) {
   // Custom actions Routes
-  app.route('/api/dicts')//.all(dictsPolicy.isAllowed)
+  app.route('/api/dicts')//all(dictsPolicy.isAllowed)
     .get(dicts.list)
     .post(dicts.create);
 
-  app.route('/api/dicts/:dictId')//.all(dictsPolicy.isAllowed)
+  app.route('/api/dicts/:dictId')//all(dictsPolicy.isAllowed)
     .get(dicts.read)
     .put(dicts.update)
     .delete(dicts.delete);

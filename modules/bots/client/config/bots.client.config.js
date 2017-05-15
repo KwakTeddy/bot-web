@@ -21,7 +21,7 @@ angular.module('bots').run(['Menus',
     Menus.addSubMenuItem('topbar', 'bots', {
       title: 'Create Bots',
       state: 'bots.create',
-      roles: ['user']
+      roles: ['enterprise', 'user']
     });
   }
 ]);

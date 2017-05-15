@@ -8,11 +8,11 @@ var canonicalsPolicy = require('../policies/canonicals.server.policy'),
 
 module.exports = function(app) {
   // Custom actions Routes
-  app.route('/api/canonicals')//.all(canonicalsPolicy.isAllowed)
+  app.route('/api/canonicals')//all(canonicalsPolicy.isAllowed)
     .get(canonicals.list)
     .post(canonicals.create);
 
-  app.route('/api/canonicals/:canonicalId')//.all(canonicalsPolicy.isAllowed)
+  app.route('/api/canonicals/:canonicalId')//all(canonicalsPolicy.isAllowed)
     .get(canonicals.read)
     .put(canonicals.update)
     .delete(canonicals.delete);

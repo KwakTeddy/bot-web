@@ -64,7 +64,7 @@
                 userBotResolve: getUserBot
             },
             data: {
-                roles: ['user', 'admin']
+                roles: ['user', 'enterprise', 'admin']
             }
           }
         }
@@ -95,7 +95,7 @@
           abstract: true,
           url: '/settings',
           data: {
-              roles: ['user', 'admin']
+              roles: ['user', 'enterprise', 'admin']
           }
       })
         // .state('mobile.settings.profile', {

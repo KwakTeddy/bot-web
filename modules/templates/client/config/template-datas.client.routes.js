@@ -14,7 +14,7 @@
         url: '/developer/templates/:templateId/template-datas/:listName/:upTemplateId',
         template: '<ui-view/>',
         data: {
-          roles: ['user', 'admin']
+          roles: ['user', 'enterprise', 'admin']
         }
       })
       .state('template-datas.list', {
@@ -39,7 +39,7 @@
           templateResolve: getTemplate
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle : 'Custom actions Create'
         }
       })
@@ -53,7 +53,7 @@
           templateResolve: getTemplate
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle: 'Edit Custom action {{ template-dataResolve.name }}'
         }
       })

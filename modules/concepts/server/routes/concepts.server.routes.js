@@ -8,11 +8,11 @@ var conceptsPolicy = require('../policies/concepts.server.policy'),
 
 module.exports = function(app) {
   // Custom actions Routes
-  app.route('/api/concepts')//.all(conceptsPolicy.isAllowed)
+  app.route('/api/concepts')//all(conceptsPolicy.isAllowed)
     .get(concepts.list)
     .post(concepts.create);
 
-  app.route('/api/concepts/:conceptId')//.all(conceptsPolicy.isAllowed)
+  app.route('/api/concepts/:conceptId')//all(conceptsPolicy.isAllowed)
     .get(concepts.read)
     .put(concepts.update)
     .delete(concepts.delete);

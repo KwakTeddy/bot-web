@@ -8,11 +8,11 @@ var customActionsPolicy = require('../policies/custom-actions.server.policy'),
 
 module.exports = function(app) {
   // Custom actions Routes
-  app.route('/api/custom-actions')//.all(customActionsPolicy.isAllowed)
+  app.route('/api/custom-actions')//all(customActionsPolicy.isAllowed)
     .get(customActions.list)
     .post(customActions.create);
 
-  app.route('/api/custom-actions/:customActionId')//.all(customActionsPolicy.isAllowed)
+  app.route('/api/custom-actions/:customActionId')//all(customActionsPolicy.isAllowed)
     .get(customActions.read)
     .put(customActions.update)
     .delete(customActions.delete);

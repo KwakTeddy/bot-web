@@ -14,7 +14,7 @@
         url: '/developer/deliveryOrders',
         template: '<ui-view/>'
         // data: {
-        //   roles: ['user', 'admin']
+        //   roles: ['user', 'enterprise', 'admin']
         // }
       })
       .state('deliveryOrders.list', {
@@ -38,7 +38,7 @@
           deliveryOrderResolve: newDeliveryOrder
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle : 'Custom actions Create'
         }
       })
@@ -64,7 +64,7 @@
           deliveryOrderResolve: getDeliveryOrder
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle: 'Edit Custom action {{ deliveryOrderResolve.name }}'
         }
       })

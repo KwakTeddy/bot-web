@@ -20,6 +20,7 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
         arg = $scope.ym;
       var userCounts = AnalyticsService.query(
         {
+          bId: $cookies.get('default_bot'),
           kind: $scope.kind,
           arg: arg
         }, function() {
@@ -39,6 +40,7 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
         arg = $scope.ym;
       var dialogUsages = DialogUsageService.query(
         {
+          bId: $cookies.get('default_bot'),
           kind: $scope.kind,
           arg: arg
         }, function() {
@@ -57,6 +59,7 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
         arg = $scope.ym;
       var dialogSuccess = DialogSuccessService.query(
         {
+          bId: $cookies.get('default_bot'),
           kind: $scope.kind,
           arg: arg
         }, function() {
@@ -219,6 +222,7 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
       $scope.find_dialog();
       var userCounts = AnalyticsService.query(
         {
+          bId: $cookies.get('default_bot'),
           kind: "all",
           arg: "empty"
         }, function() {
@@ -240,6 +244,7 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
 
       var dialogSuccess = DialogSuccessService.query(
         {
+          bId: $cookies.get('default_bot'),
           kind: 'all',
           arg: 'empty'
         }, function() {
@@ -255,7 +260,8 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
               });
           }
           console.log(val);
-          drawBar(val);
+          if (val.length > 1)
+            drawBar(val);
         }, function(err) {
           console.log(err);
         });
@@ -267,11 +273,15 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
           success += obj.success_count;
           fail += obj.fail_count;
         });
+
+        if (success == 0)
+          return 100.0;
         return (success-fail) / success * 100.0;
       };
 
       var dialogSuccessYear = DialogSuccessService.query(
         {
+          bId: $cookies.get('default_bot'),
           kind: 'year',
           arg: $scope.year
         }, function() {
@@ -283,6 +293,7 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
 
       var dialogSuccessMonth = DialogSuccessService.query(
         {
+          bId: $cookies.get('default_bot'),
           kind: 'month',
           arg: $scope.ym
         }, function() {

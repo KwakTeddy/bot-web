@@ -673,7 +673,7 @@ describe('User CRUD tests', function () {
           var userUpdate = {
             firstName: 'user_update_first',
             lastName: 'user_update_last',
-            roles: ['user', 'admin']
+            roles: ['user', 'enterprise', 'admin']
           };
 
           agent.put('/api/users')

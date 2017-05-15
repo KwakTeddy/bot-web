@@ -8,11 +8,11 @@ var commonActionsPolicy = require('../policies/common-actions.server.policy'),
 
 module.exports = function(app) {
   // Custom actions Routes
-  app.route('/api/common-actions')//.all(commonActionsPolicy.isAllowed)
+  app.route('/api/common-actions')//all(commonActionsPolicy.isAllowed)
     .get(commonActions.list)
     .post(commonActions.create);
 
-  app.route('/api/common-actions/:commonActionId')//.all(commonActionsPolicy.isAllowed)
+  app.route('/api/common-actions/:commonActionId')//all(commonActionsPolicy.isAllowed)
     .get(commonActions.read)
     .put(commonActions.update)
     .delete(commonActions.delete);

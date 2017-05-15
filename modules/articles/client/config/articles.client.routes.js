@@ -8,7 +8,10 @@ angular.module('articles').config(['$stateProvider',
       .state('articles', {
         abstract: true,
         url: '/developer/articles',
-        template: '<ui-view/>'
+        template: '<ui-view/>',
+        data: {
+          roles: ['admin']
+        }
       })
       .state('articles.list', {
         url: '',
@@ -18,7 +21,7 @@ angular.module('articles').config(['$stateProvider',
         url: '/create',
         templateUrl: 'modules/articles/client/views/create-article.client.view.html',
         data: {
-          roles: ['user', 'admin']
+          roles: ['admin']
         }
       })
       .state('articles.view', {
@@ -29,7 +32,7 @@ angular.module('articles').config(['$stateProvider',
         url: '/:articleId/edit',
         templateUrl: 'modules/articles/client/views/edit-article.client.view.html',
         data: {
-          roles: ['user', 'admin']
+          roles: ['admin']
         }
       });
   }

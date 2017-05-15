@@ -14,7 +14,7 @@
         url: '/developer/products',
         template: '<ui-view/>',
         data: {
-          roles: ['user', 'admin']
+          roles: ['user', 'enterprise', 'admin']
         }
       })
       .state('products.list', {

@@ -14,7 +14,7 @@
         url: '/developer/custom-actions',
         template: '<ui-view/>',
         data: {
-          roles: ['user', 'admin']
+          roles: ['user', 'enterprise', 'admin']
         }
       })
       .state('custom-actions.list', {
@@ -38,7 +38,7 @@
           customActionResolve: newCustomAction
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle : 'Custom actions Create'
         }
       })
@@ -51,7 +51,7 @@
           customActionResolve: getCustomAction
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle: 'Edit Custom action {{ customActionResolve.name }}'
         }
       })

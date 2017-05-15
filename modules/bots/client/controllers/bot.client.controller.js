@@ -42,7 +42,12 @@ angular.module('bots').controller('BotController', [
       }
 
       vm.bot.$save(function (response) {
-        $state.go('bots.list');
+        // $state.go('bots.list');
+        $scope.$on('myBot', function (data) {
+          console.log(data)
+        });
+        // $window.location.reload();
+
         // $location.path('bots/' + response._id);
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;

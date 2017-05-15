@@ -20,7 +20,7 @@ var utils = require(path.resolve('modules/bot/action/common/utils'));
 //   });
 // }
 
-function botBuild(bot, botPath, fileName, dialogs) {
+function botBuild(bot, botPath, fileName, dialogs, commons) {
   var botDir;
   if(botPath) botDir = path.resolve(botPath);
   else botDir = path.resolve('custom_modules/' + bot);
@@ -88,13 +88,18 @@ function botBuild(bot, botPath, fileName, dialogs) {
     // console.log(text);
     var js;
     if (dialogs) {
-      logger.info('\t saved from dialog tree');
-      js = build(text, false, infoname, dialogs);
+      logger.info('\t dialogs saved from dialog tree');
+      js = build(text, false, infoname, dialogs, commons);
     } else {
       js = build(text, false, infoname);
     }
 
-    js = '\n' + js + '\n\n' + build(text, true, infoname + "common");
+    if (commons) {
+      logger.info('\t common dialogs saved from dialog tree');
+      js = '\n' + js + '\n\n' + build(text, true, infoname + "common", dialogs, commons);
+    } else {
+      js = '\n' + js + '\n\n' + build(text, true, infoname + "common");
+    }
 
     // try {
     //   var include = fs.readFileSync(path.join(info.dir, infoname + '.js'), 'utf8');
@@ -133,7 +138,7 @@ function botBuild(bot, botPath, fileName, dialogs) {
 }
 exports.botBuild = botBuild;
 
-function build(text, isCommon, filename, dialogs) {
+function build(text, isCommon, filename, dialogs, commons) {
   var id = 0;
   // 주석 escape
   text = text.replace(/['][^'\n]*\/\/[^'\n]*[']|["][^"\n]*\/\/[^"\n]*["]/g, function (match, p1, p2, p3, p4) {
@@ -419,7 +424,11 @@ function build(text, isCommon, filename, dialogs) {
   };
 
   if(isCommon) {
-    output = 'var commonDialogs = [\n' + parseDialog('') + '\n];\n\n';
+    if (commons) {
+      output = 'var commonDialogs = ' + commons + ';';
+    } else {
+      output = 'var commonDialogs = [\n' + parseDialog('') + '\n];\n\n';
+    }
   } else {
     if (dialogs) {
       parseDialog('');

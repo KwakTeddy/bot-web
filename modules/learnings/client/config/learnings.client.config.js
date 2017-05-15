@@ -21,7 +21,7 @@ angular.module('learnings').run(['Menus',
     Menus.addSubMenuItem('topbar', 'learnings', {
       title: 'Create Learnings',
       state: 'learnings.create',
-      roles: ['user']
+      roles: ['enterprise', 'user']
     });
   }
 ]);

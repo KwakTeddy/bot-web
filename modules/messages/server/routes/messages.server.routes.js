@@ -8,11 +8,11 @@ var messagesPolicy = require('../policies/messages.server.policy'),
 
 module.exports = function(app) {
   // Custom actions Routes
-  app.route('/api/messages')//.all(messagesPolicy.isAllowed)
+  app.route('/api/messages')//all(messagesPolicy.isAllowed)
     .get(messages.list)
     .post(messages.create);
 
-  app.route('/api/messages/:messageId')//.all(messagesPolicy.isAllowed)
+  app.route('/api/messages/:messageId')//all(messagesPolicy.isAllowed)
     .get(messages.read)
     .put(messages.update)
     .delete(messages.delete);

@@ -10,7 +10,7 @@ angular.module('learnings').config(['$stateProvider',
         url: '/developer/learnings',
         template: '<ui-view/>',
         data: {
-          roles: ['user', 'admin']
+          roles: ['user', 'enterprise', 'admin']
         }
       })
       .state('learnings.list', {
@@ -21,7 +21,7 @@ angular.module('learnings').config(['$stateProvider',
         url: '/create',
         templateUrl: 'modules/learnings/client/views/create-learning.client.view.html',
         data: {
-          roles: ['user', 'admin']
+          roles: ['user', 'enterprise', 'admin']
         }
       })
       .state('learnings.view', {
@@ -32,7 +32,7 @@ angular.module('learnings').config(['$stateProvider',
         url: '/:learningId/edit',
         templateUrl: 'modules/learnings/client/views/edit-learning.client.view.html',
         data: {
-          roles: ['user', 'admin']
+          roles: ['user', 'enterprise', 'admin']
         }
       });
   }

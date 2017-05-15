@@ -21,24 +21,6 @@ exports.invokeRolesPolicies = function () {
       resources: '/api/templates/:templateId',
       permissions: '*'
     }]
-  }, {
-    roles: ['user'],
-    allows: [{
-      resources: '/api/templates',
-      permissions: ['get', 'post']
-    }, {
-      resources: '/api/templates/:templateId',
-      permissions: ['get']
-    }]
-  }, {
-    roles: ['guest'],
-    allows: [{
-      resources: '/api/templates',
-      permissions: ['get']
-    }, {
-      resources: '/api/templates/:templateId',
-      permissions: ['get']
-    }]
   }]);
 };
 
