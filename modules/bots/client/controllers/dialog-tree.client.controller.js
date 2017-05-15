@@ -1075,11 +1075,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
       if (d.buttons) {
         d.buttons.forEach(function(b) {
-          r.push({type:'Button', str:b.name});
+          r.push({type:'Button', str:b.text});
         });
       }
       if (d.image) {
-        r.push({type:'Image', str:d.image});
+        r.push({type:'Image', str:d.image.url});
       }
     };
 

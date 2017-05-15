@@ -35,9 +35,8 @@ var dialogs = [
 		],
 		"output": {
 			"image": {
-				"url": "/files/001-car.png"
-			},
-			"output": "image"
+				"url": "/files/menu.jpg"
+			}
 		}
 	},
 	{
@@ -50,12 +49,24 @@ var dialogs = [
 			}
 		],
 		"output": {
-			"output": "버튼을 테스트하고 있습니다.",
 			"buttons": [
 				{
-					"text": "button1"
+					"text": "test"
 				}
 			]
+		}
+	},
+	{
+		"name": "false2",
+		"id": "default17",
+		"filename": "default",
+		"input": [
+			{
+				"text": "false"
+			}
+		],
+		"output": {
+			"call": "false"
 		}
 	},
 	{
@@ -70,6 +81,117 @@ var dialogs = [
 		"output": {
 			"call": "text-text"
 		}
+	},
+	{
+		"name": "all input",
+		"id": "default16",
+		"filename": "default",
+		"input": [
+			{
+				"text": "text",
+				"types": [
+					"date"
+				],
+				"regexp": "/포도/"
+			}
+		],
+		"output": "all success"
+	},
+	{
+		"name": "task4",
+		"id": "default23",
+		"filename": "default",
+		"input": [
+			{
+				"text": "output"
+			}
+		],
+		"output": [
+			{
+				"if": "context.dialog.check=='check'",
+				"output": "Success"
+			},
+			{
+				"if": "context.dialog.check!='check'",
+				"output": "Fail"
+			}
+		],
+		"task": "defaultTask"
+	},
+	{
+		"name": "returncall",
+		"id": "default10",
+		"filename": "default",
+		"input": [
+			{
+				"text": "return"
+			}
+		],
+		"output": {
+			"returnCall": "text-text"
+		},
+		"children": [
+			{
+				"name": "returncall2",
+				"id": "default11",
+				"filename": "default",
+				"input": [
+					{
+						"text": "child"
+					}
+				],
+				"output": "success"
+			}
+		]
+	},
+	{
+		"name": "intent",
+		"id": "default14",
+		"filename": "default",
+		"input": [
+			{
+				"intent": "노래요청1"
+			}
+		],
+		"output": "노래 불러줄게"
+	},
+	{
+		"name": "task",
+		"id": "default19",
+		"filename": "default",
+		"input": [
+			{
+				"text": "task"
+			}
+		],
+		"output": "choose",
+		"task": {
+			"name": "defaultTask"
+		},
+		"children": [
+			{
+				"name": "task2",
+				"id": "default21",
+				"filename": "default",
+				"input": [
+					{
+						"if": "context.dialog.check=='check'"
+					}
+				],
+				"output": "success"
+			},
+			{
+				"name": "task3",
+				"id": "default22",
+				"filename": "default",
+				"input": [
+					{
+						"if": "context.dialog.check!='check'"
+					}
+				],
+				"output": "fail"
+			}
+		]
 	},
 	{
 		"name": "repeat1",
@@ -124,78 +246,6 @@ var dialogs = [
 		]
 	},
 	{
-		"name": "returncall",
-		"id": "default10",
-		"filename": "default",
-		"input": [
-			{
-				"text": "return"
-			}
-		],
-		"output": {
-			"returnCall": "text-text"
-		},
-		"children": [
-			{
-				"name": "returncall2",
-				"id": "default11",
-				"filename": "default",
-				"input": [
-					{
-						"text": "child"
-					}
-				],
-				"output": "success"
-			}
-		]
-	},
-	{
-		"name": "false",
-		"id": "default12",
-		"filename": "default",
-		"input": "false",
-		"output": "success"
-	},
-	{
-		"name": "intent",
-		"id": "default14",
-		"filename": "default",
-		"input": [
-			{
-				"intent": "노래요청1"
-			}
-		],
-		"output": "노래 불러줄게"
-	},
-	{
-		"name": "all input",
-		"id": "default16",
-		"filename": "default",
-		"input": [
-			{
-				"text": "text",
-				"types": [
-					"date"
-				],
-				"regexp": "/포도/"
-			}
-		],
-		"output": "all success"
-	},
-	{
-		"name": "false2",
-		"id": "default17",
-		"filename": "default",
-		"input": [
-			{
-				"text": "false"
-			}
-		],
-		"output": {
-			"call": "false"
-		}
-	},
-	{
 		"name": "type",
 		"id": "default18",
 		"filename": "default",
@@ -209,63 +259,11 @@ var dialogs = [
 		"output": "datesucccess"
 	},
 	{
-		"name": "task",
-		"id": "default19",
+		"name": "false",
+		"id": "default12",
 		"filename": "default",
-		"input": [
-			{
-				"text": "task"
-			}
-		],
-		"output": "choose",
-		"task": {
-			"name": "defaultTask"
-		},
-		"children": [
-			{
-				"name": "task2",
-				"id": "default21",
-				"filename": "default",
-				"input": [
-					{
-						"if": "context.dialog.check=='check'"
-					}
-				],
-				"output": "success"
-			},
-			{
-				"name": "task3",
-				"id": "default22",
-				"filename": "default",
-				"input": [
-					{
-						"if": "context.dialog.check!='check'"
-					}
-				],
-				"output": "fail"
-			}
-		]
-	},
-	{
-		"name": "task4",
-		"id": "default23",
-		"filename": "default",
-		"input": [
-			{
-				"text": "output"
-			}
-		],
-		"output": [
-			{
-				"if": "context.dialog.check=='check'",
-				"output": "Success"
-			},
-			{
-				"if": "context.dialog.check!='check'",
-				"output": "Fail"
-			}
-		],
-		"task": "defaultTask"
+		"input": "false",
+		"output": "success"
 	}
 ];
 
