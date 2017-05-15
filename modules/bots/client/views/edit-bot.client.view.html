@@ -74,26 +74,26 @@
         </div>
       </div>
 
-      <div class="form-horizontal form-group">
-        <label class="col-sm-2 control-label">템플릿 <span class="required" aria-required="true">*</span></label>
-        <div class="col-sm-10">
-            <button ng-click="vm.unselectTemplate()" style="float: left;margin-left: 10px;" class="mb-xs mt-xs mr-xs btn btn-sm btn-default"
-                    ng-class="{'btn-primary': vm.selectedTemplate == undefined}">선택 안함</button>
-          <div ng-repeat="template in vm.templates">
-            <button ng-click="vm.selectTemplate(template)" style="float: left;margin-left: 10px;" class="mb-xs mt-xs mr-xs btn btn-sm btn-default"
-                    ng-class="{'btn-primary': vm.selectedTemplate == template}">{{template.name}}</button>
-          </div>
-        </div>
-      </div>
-
-      <div class=" form-group" ng-show="vm.selectedTemplate != undefined">
-        <label class="form-horizontal col-sm-2 control-label">Content <span class="required" aria-required="true">*</span></label>
-        <!--<div class="col-sm-9">-->
-          <!--<textarea name="content" ng-model="vm.bot.template.templateData" id="_content" rows="5" class="form-control" placeholder="내용을 입력해 주세요" required="" aria-required="true" aria-invalid="true"></textarea><label id="content-error" class="error" for="content">내용은 필수 입니다.</label>-->
+      <!--<div class="form-horizontal form-group">-->
+        <!--<label class="col-sm-2 control-label">템플릿 <span class="required" aria-required="true">*</span></label>-->
+        <!--<div class="col-sm-10">-->
+            <!--<button ng-click="vm.unselectTemplate()" style="float: left;margin-left: 10px;" class="mb-xs mt-xs mr-xs btn btn-sm btn-default"-->
+                    <!--ng-class="{'btn-primary': vm.selectedTemplate == undefined}">선택 안함</button>-->
+          <!--<div ng-repeat="template in vm.templates">-->
+            <!--<button ng-click="vm.selectTemplate(template)" style="float: left;margin-left: 10px;" class="mb-xs mt-xs mr-xs btn btn-sm btn-default"-->
+                    <!--ng-class="{'btn-primary': vm.selectedTemplate == template}">{{template.name}}</button>-->
+          <!--</div>-->
         <!--</div>-->
-        <div class="col-sm-10" id='editor_holder'>
-        </div>
-      </div>
+      <!--</div>-->
+
+      <!--<div class=" form-group" ng-show="vm.selectedTemplate != undefined">-->
+        <!--<label class="form-horizontal col-sm-2 control-label">Content <span class="required" aria-required="true">*</span></label>-->
+        <!--&lt;!&ndash;<div class="col-sm-9">&ndash;&gt;-->
+          <!--&lt;!&ndash;<textarea name="content" ng-model="vm.bot.template.templateData" id="_content" rows="5" class="form-control" placeholder="내용을 입력해 주세요" required="" aria-required="true" aria-invalid="true"></textarea><label id="content-error" class="error" for="content">내용은 필수 입니다.</label>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--<div class="col-sm-10" id='editor_holder'>-->
+        <!--</div>-->
+      <!--</div>-->
 
     </div>
     <footer class="panel-footer">
