@@ -2329,13 +2329,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     // assumption: idx is already checked when creating buttons for the following actions
     function goUp(d) {
-      vm.setChanged(true);
+      vm.setChanged(true , true);
       var idx = d.parent.children.indexOf(d);
       swapNode(d.parent, idx, idx-1 );
     }
 
     function goDown(d) {
-      vm.setChanged(true);
+      vm.setChanged(true, true);
       var idx = d.parent.children.indexOf(d);
       swapNode(d.parent, idx, idx+1 );
     }
