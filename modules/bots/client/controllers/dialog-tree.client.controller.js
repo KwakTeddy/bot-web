@@ -276,7 +276,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
 
     $scope.addTask = function() {
-      vm.edit = 'task';
 
       $.magnificPopup.close();
       vm.fromTask = true;
@@ -316,7 +315,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     $scope.gotoTree = function() {
       vm.fromTask = false;
-      vm.edit = 'task';
+      vm.edit = false;
       vm.changeTab(vm.tabs[0]);
       $('.modal-with-form').click();
 
@@ -441,6 +440,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       tab.active = true;
       vm.file = tab.name;
 
+      if (vm.currentTab == vm.tabs[1])
+        vm.edit = 'task';
       $scope.refreshCodemirror = true;
       $timeout(function () {
         vm.editor.focus();
@@ -579,6 +580,16 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       centerNode(selectedNode);
     };
 
+    var toggleFileTree = function(event) {
+      event.preventDefault();
+      if (document.getElementById('filetree_close').style.display == 'none') {
+        vm.initTree();
+        $('#filetree_open').click();
+      } else {
+        $('#filetree_close').click();
+      }
+    };
+
     var keydown = function(event) {
       if (vm.edit === 'task') {
         if (event.keyCode == 27) { // esc
@@ -587,6 +598,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         } else if (vm.fromTask && event.altKey && event.keyCode == 37) { // alt + left
           event.preventDefault();
           $scope.gotoTree();
+        } else if (event.ctrlKey && event.keyCode == 80) { // ctrl+p
+          toggleFileTree(event);
         }
         return false;
       }
@@ -630,14 +643,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         }
         return;
       } else if (event.ctrlKey && event.keyCode == 80) { // ctrl+p
-        event.preventDefault();
-        if (document.getElementById('filetree_close').style.display == 'none') {
-          vm.initTree();
-          $('#filetree_open').click();
-        } else {
-          $('#filetree_close').click();
-        }
-
+        toggleFileTree(event);
         return;
       } else if (event.keyCode == 191) { //  /
         event.preventDefault();
@@ -2323,6 +2329,23 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       parent.children[src] = targetNode;
       parent.children[target] = srcNode;
+
+      if (parent.depth == 0) {
+        var srcDialog, targetDialog;
+        var srcIdx, targetIdx;
+        for (var i=0; i < dialogs.length; ++i) {
+          if (dialogs[i].id === srcNode.id) {
+            srcDialog = angular.copy(dialogs[i]);
+            srcIdx = i;
+          }
+          if (dialogs[i].id === targetNode.id) {
+            targetDialog = angular.copy(dialogs[i]);
+            targetIdx = i;
+          }
+        }
+        dialogs[srcIdx] = targetDialog;
+        dialogs[targetIdx] = srcDialog;
+      }
 
       updateSelected(srcNode);
     }
