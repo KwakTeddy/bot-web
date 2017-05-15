@@ -21,7 +21,7 @@ angular.module('messengers').run(['Menus',
     Menus.addSubMenuItem('topbar', 'messengers', {
       title: 'Create Messengers',
       state: 'messengers.create',
-      roles: ['user']
+      roles: ['enterprise', 'user']
     });
   }
 ]);

@@ -24,7 +24,7 @@
           userDialogsResolve: getUserDialogs
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['user', 'enterprise', 'admin'],
           pageTitle: 'Bot users List'
         }
       });

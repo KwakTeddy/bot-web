@@ -26,7 +26,7 @@ module.exports = function (app) {
   app.route('/api/auth/facebook/pageInfo').post(userBots.facebookPage);
 
     // Single userBot routes
-  // app.route('/api/user-bots/:userBotId').all(userBotsPolicy.isAllowed)
+  // app.route('/api/user-bots/:userBotId')//all(userBotsPolicy.isAllowed)
   app.route('/api/user-bots/:userBotId')
     .get(userBots.read)
     .put(userBots.update)

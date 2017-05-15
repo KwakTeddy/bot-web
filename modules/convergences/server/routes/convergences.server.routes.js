@@ -8,11 +8,11 @@ var convergencesPolicy = require('../policies/convergences.server.policy'),
 
 module.exports = function(app) {
   // Convergences Routes
-  app.route('/api/convergences').all(convergencesPolicy.isAllowed)
+  app.route('/api/convergences')//all(convergencesPolicy.isAllowed)
     .get(convergences.list)
     .post(convergences.create);
 
-  app.route('/api/convergences/:convergenceId').all(convergencesPolicy.isAllowed)
+  app.route('/api/convergences/:convergenceId')//all(convergencesPolicy.isAllowed)
     .get(convergences.read)
     .put(convergences.update)
     .delete(convergences.delete);

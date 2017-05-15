@@ -42,7 +42,7 @@
       beforeEach(inject(function ($controller, $rootScope, _Socket_, _Authentication_, _$timeout_, _$location_) {
         Authentication.user = {
           name: 'user',
-          roles: ['user']
+          roles: ['enterprise', 'user']
         };
 
         ChatController = $controller('ChatController', {

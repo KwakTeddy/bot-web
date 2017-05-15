@@ -33,7 +33,7 @@ describe('Configuration Tests:', function () {
           firstName: 'User',
           lastName: 'Local',
           displayName: 'User Local',
-          roles: ['user']
+          roles: ['enterprise', 'user']
         };
 
         admin1 = {
@@ -43,7 +43,7 @@ describe('Configuration Tests:', function () {
           firstName: 'Admin',
           lastName: 'Local',
           displayName: 'Admin Local',
-          roles: ['user', 'admin']
+          roles: ['user', 'enterprise', 'admin']
         };
 
         userFromSeedConfig = config.seedDB.options.seedUser;

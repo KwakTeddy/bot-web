@@ -38,7 +38,7 @@
           intentResolve: newIntent
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle : 'Custom actions Create'
         }
       })
@@ -51,7 +51,7 @@
           intentResolve: getIntent
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle: 'Edit Custom action {{ intentResolve.name }}'
         }
       })

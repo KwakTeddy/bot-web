@@ -54,7 +54,7 @@
 
       // Mock logged in user
       Authentication.user = {
-        roles: ['user']
+        roles: ['enterprise', 'user']
       };
 
       // Initialize the Banks controller.

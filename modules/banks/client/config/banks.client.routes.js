@@ -32,7 +32,7 @@
           bankResolve: newBank
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['user', 'enterprise', 'admin'],
           pageTitle : 'Banks Create'
         }
       })
@@ -45,7 +45,7 @@
           bankResolve: getBank
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['user', 'enterprise', 'admin'],
           pageTitle: 'Edit Bank {{ bankResolve.name }}'
         }
       })

@@ -38,7 +38,7 @@
           entityResolve: newEntity
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle : 'Custom actions Create'
         }
       })
@@ -51,7 +51,7 @@
           entityResolve: getEntity
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle: 'Edit Custom action {{ entityResolve.name }}'
         }
       })

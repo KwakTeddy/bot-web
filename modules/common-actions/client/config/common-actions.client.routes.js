@@ -14,7 +14,7 @@
         url: '/developer/common-actions',
         template: '<ui-view/>',
         data: {
-          roles: ['user', 'admin']
+          roles: ['user', 'enterprise', 'admin']
         }
       })
       .state('common-actions.list', {
@@ -38,7 +38,7 @@
           commonActionResolve: newCommonAction
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle : 'Custom actions Create'
         }
       })
@@ -51,7 +51,7 @@
           commonActionResolve: getCommonAction
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle: 'Edit Custom action {{ commonActionResolve.name }}'
         }
       })

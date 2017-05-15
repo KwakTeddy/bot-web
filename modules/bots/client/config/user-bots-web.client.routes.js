@@ -37,7 +37,7 @@ angular.module('user-bots').config(['$stateProvider',
           userBotResolve: newUserBotWeb
         },
         data: {
-          roles: ['user', 'admin']
+          roles: ['user', 'enterprise', 'admin']
         }
       })
       .state('user-bots-web.edit', {
@@ -49,7 +49,7 @@ angular.module('user-bots').config(['$stateProvider',
           userBotResolve: getUserBotWeb
         },
         data: {
-          roles: ['user', 'admin']
+          roles: ['user', 'enterprise', 'admin']
         }
       })
       .state('user-bots-web.view', {
@@ -66,7 +66,7 @@ angular.module('user-bots').config(['$stateProvider',
           url: '/settings',
           templateUrl: 'modules/users/client/views/settings/settings.client.view.html',
           data: {
-              roles: ['user', 'admin']
+              roles: ['user', 'enterprise', 'admin']
           }
       })
       .state('user-bots-web.settings.profile', {
@@ -155,7 +155,7 @@ angular.module('user-bots').config(['$stateProvider',
           userBotResolve: getUserBotWeb
         },
         data: {
-          roles: ['user', 'admin']
+          roles: ['user', 'enterprise', 'admin']
         }
       });
   }

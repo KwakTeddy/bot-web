@@ -19,13 +19,13 @@ exports.invokeRolesPolicies = function () {
       permissions: '*'
     }]
   }, {
-    roles: ['enterprise'],
+    roles: ['enterprise', 'user'],
     allows: [{
       resources: ['/api/user-count/:bId/:kind/:arg','/api/dialog-usage/:bId/:kind/:arg', '/api/dialog-success/:bId/:kind/:arg', '/api/session-success/:bId/:kind/:arg', '/api/dialog-failure/:bId/:kind/:arg', '/api/dialog/:bId/:dialogId', '/api/dialogchildren/:bId/:dialogId', '/api/resetDB', '/api/dialogs/:bId/:fileId','/api/saveDialog/:bId/:fileName','/api/loadBot/:bId'],
       permissions: '*'
     }]
   }, {
-    roles: ['user'],
+    roles: ['guest'],
     allows: [{
       resources: ['/api/user-count/:bId/:kind/:arg','/api/dialog-usage/:bId/:kind/:arg', '/api/dialog-success/:bId/:kind/:arg', '/api/session-success/:bId/:kind/:arg', '/api/dialog-failure/:bId/:kind/:arg', '/api/dialog/:bId/:dialogId', '/api/dialogchildren/:bId/:dialogId', '/api/resetDB', '/api/dialogs/:bId/:fileId','/api/saveDialog/:bId/:fileName','/api/loadBot/:bId'],
       permissions: '*'

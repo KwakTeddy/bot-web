@@ -14,7 +14,7 @@
         url: '/developer/messages',
         template: '<ui-view/>',
         data: {
-          roles: ['user', 'admin']
+          roles: ['user', 'enterprise', 'admin']
         }
       })
       .state('messages.list', {
@@ -38,7 +38,7 @@
           messageResolve: newMessage
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle : 'Custom actions Create'
         }
       })
@@ -51,7 +51,7 @@
           messageResolve: getMessage
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle: 'Edit Custom action {{ messageResolve.name }}'
         }
       })

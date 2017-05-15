@@ -27,7 +27,7 @@
     // menuService.addSubMenuItem('topbar', 'convergences', {
     //   title: 'Create Convergence',
     //   state: 'convergences.create',
-    //   roles: ['user']
+    //   roles: ['enterprise', 'user']
     // });
   }
 }());

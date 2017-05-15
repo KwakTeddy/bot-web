@@ -14,7 +14,7 @@
         url: '/developer/facts',
         template: '<ui-view/>',
         data: {
-          roles: ['user', 'admin']
+          roles: ['user', 'enterprise', 'admin']
         }
       })
       .state('facts.list', {
@@ -38,7 +38,7 @@
           factResolve: newFact
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle : 'Custom actions Create'
         }
       })
@@ -51,7 +51,7 @@
           factResolve: getFact
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle: 'Edit Custom action {{ factResolve.name }}'
         }
       })

@@ -9,20 +9,20 @@ var campaignsPolicy = require('../policies/campaigns.server.policy'),
 
 module.exports = function(app) {
   // Custom actions Routes
-  app.route('/api/campaigns')//.all(campaignsPolicy.isAllowed)
+  app.route('/api/campaigns')//all(campaignsPolicy.isAllowed)
     .get(campaigns.list)
     .post(campaigns.create);
 
-  app.route('/api/campaigns/:campaignId')//.all(campaignsPolicy.isAllowed)
+  app.route('/api/campaigns/:campaignId')//all(campaignsPolicy.isAllowed)
     .get(campaigns.read)
     .put(campaigns.update)
     .delete(campaigns.delete);
 
-  app.route('/api/campaign-users/:campaignId')//.all(campaignsPolicy.isAllowed)
+  app.route('/api/campaign-users/:campaignId')//all(campaignsPolicy.isAllowed)
     .get(campaignUsers.list)
     .post(campaignUsers.create);
 
-  app.route('/api/campaign-users/:campaignId/:campaignUserId')//.all(campaignsPolicy.isAllowed)
+  app.route('/api/campaign-users/:campaignId/:campaignUserId')//all(campaignsPolicy.isAllowed)
     .get(campaignUsers.read)
     .put(campaignUsers.update)
     .delete(campaignUsers.delete);

@@ -8,12 +8,12 @@ var learningsPolicy = require('../policies/learnings.server.policy'),
 
 module.exports = function (app) {
   // Learnings collection routes
-  app.route('/api/learnings').all(learningsPolicy.isAllowed)
+  app.route('/api/learnings')//all(learningsPolicy.isAllowed)
     .get(learnings.list)
     .post(learnings.create);
 
   // Single learning routes
-  app.route('/api/learnings/:learningId').all(learningsPolicy.isAllowed)
+  app.route('/api/learnings/:learningId')//all(learningsPolicy.isAllowed)
     .get(learnings.read)
     .put(learnings.update)
     .delete(learnings.delete);

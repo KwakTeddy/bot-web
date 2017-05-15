@@ -19,7 +19,7 @@ exports.invokeRolesPolicies = function () {
       permissions: '*'
     }]
   }, {
-    roles: ['user'],
+    roles: ['enterprise', 'user'],
     allows: [{
       resources: '/api/user-dialogs/:botName/:userKey',
       permissions: '*'

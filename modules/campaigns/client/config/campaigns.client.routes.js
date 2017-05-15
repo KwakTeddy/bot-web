@@ -14,7 +14,7 @@
         url: '/developer/campaigns',
         template: '<ui-view/>',
         data: {
-          roles: ['user', 'admin']
+          roles: ['user', 'enterprise', 'admin']
         }
       })
       .state('campaigns.list', {
@@ -40,7 +40,7 @@
           campaignUsersResolve: getCampaignUsers
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle : 'Custom actions Create'
         }
       })
@@ -55,7 +55,7 @@
           campaignUsersResolve: getCampaignUsers
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle: 'Edit Custom action {{ campaignResolve.name }}'
         }
       })

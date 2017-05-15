@@ -73,7 +73,7 @@ angular.module('analytics').config(['$stateProvider',
       .state('analytics.dialog-failure-maintenance.edit', {
         url: '/:intentId/edit',
         templateUrl: 'modules/analytics/client/views/form-dialog-failure-maintenance.client.view.html',
-        controller: 'AnalyticsIntentController',
+        controller: 'IntentFailMaintenanceController',
         controllerAs: 'vm'
       })
   }

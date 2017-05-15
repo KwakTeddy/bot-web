@@ -18,7 +18,7 @@
 //         url: '/create',
 //         templateUrl: 'modules/messengers/client/views/create-messenger.client.view.html',
 //         data: {
-//           roles: ['user', 'admin']
+//           roles: ['user', 'enterprise', 'admin']
 //         }
 //       })
 //       .state('messengers.view', {
@@ -29,7 +29,7 @@
 //         url: '/:messengerId/edit',
 //         templateUrl: 'modules/messengers/client/views/edit-messenger.client.view.html',
 //         data: {
-//           roles: ['user', 'admin']
+//           roles: ['user', 'enterprise', 'admin']
 //         }
 //       });
 //   }

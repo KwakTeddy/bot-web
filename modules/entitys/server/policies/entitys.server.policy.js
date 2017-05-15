@@ -22,9 +22,9 @@ exports.invokeRolesPolicies = function () {
       permissions: '*'
     }]
   }, {
-    roles: ['user'],
+    roles: ['enterprise', 'user'],
     allows: [{
-      resources: '/api/entitys',
+      resources: '/api/entitys/:botName',
       permissions: ['get', 'post']
     }, {
       resources: '/api/entitys/:entityId',

@@ -7,6 +7,7 @@ angular.module('core').controller('MenuController', ['$scope', '$state', 'Authen
     $scope.authentication = Authentication;
     $scope.currentBot = '';
     $scope.myBot = '';
+    console.log($scope.authentication)
 
     $http.get('/api/bots/byNameId/' + $cookies.get('default_bot')).then(function (result) {
       $scope.currentBot = result.data;

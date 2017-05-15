@@ -8,11 +8,11 @@ var faqsPolicy = require('../policies/faqs.server.policy'),
 
 module.exports = function(app) {
   // Faqs Routes
-  app.route('/api/faqs')//.all(faqsPolicy.isAllowed)
+  app.route('/api/faqs')//all(faqsPolicy.isAllowed)
     .get(faqs.list)
     .post(faqs.create);
 
-  app.route('/api/faqs/:faqId')//.all(faqsPolicy.isAllowed)
+  app.route('/api/faqs/:faqId')//all(faqsPolicy.isAllowed)
     .get(faqs.read)
     .put(faqs.update)
     .delete(faqs.delete);

@@ -28,7 +28,7 @@ exports.invokeRolesPolicies = function () {
       permissions: '*'
     }]
   }, {
-    roles: ['enterprise'],
+    roles: ['enterprise', 'user'],
     allows: [{
       resources: '/api/bots',
       permissions: '*'
@@ -43,7 +43,7 @@ exports.invokeRolesPolicies = function () {
       permissions: '*'
     }]
   }, {
-    roles: ['user'],
+    roles: ['enterprise', 'user'],
     allows: [{
       resources: '/api/bots',
       permissions: '*'

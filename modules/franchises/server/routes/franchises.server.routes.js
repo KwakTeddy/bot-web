@@ -8,16 +8,16 @@ var franchisesPolicy = require('../policies/franchises.server.policy'),
 
 module.exports = function(app) {
   // Custom actions Routes
-  app.route('/api/franchises')//.all(franchisesPolicy.isAllowed)
+  app.route('/api/franchises')//all(franchisesPolicy.isAllowed)
     .get(franchises.list)
     .post(franchises.create);
 
-  app.route('/api/franchises/:franchiseId')//.all(franchisesPolicy.isAllowed)
+  app.route('/api/franchises/:franchiseId')//all(franchisesPolicy.isAllowed)
     .get(franchises.read)
     .put(franchises.update)
     .delete(franchises.delete);
 
-  app.route('/api/franchises/:franchiseId/menus')//.all(franchisesPolicy.isAllowed)
+  app.route('/api/franchises/:franchiseId/menus')//all(franchisesPolicy.isAllowed)
     .get(franchises.readMenus)
     .put(franchises.updateMenus);
 

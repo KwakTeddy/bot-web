@@ -14,7 +14,7 @@
         url: '/developer/franchises',
         template: '<ui-view/>',
         data: {
-          roles: ['user', 'admin']
+          roles: ['user', 'enterprise', 'admin']
         }
       })
       .state('franchises.list', {
@@ -38,7 +38,7 @@
           franchiseResolve: newFranchise
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle : 'Custom actions Create'
         }
       })
@@ -64,7 +64,7 @@
           franchiseResolve: getFranchise
         },
         data: {
-          // roles: ['user', 'admin'],
+          // roles: ['user', 'enterprise', 'admin'],
           pageTitle: 'Edit Custom action {{ franchiseResolve.name }}'
         }
       })
