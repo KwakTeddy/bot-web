@@ -1292,10 +1292,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       dialogs.forEach(clear);
 
-      var commons = angular.copy(treeData);
-      delete commons.children;
+      var common = angular.copy(treeData);
+      delete common.children;
+      common_dialogs[0] = common;
+      clear(common_dialogs[0]);
 
-      DialogSaveService.update({botId: vm.botId, fileName: vm.fileName, dialogs:dialogs, commons:commons},
+      DialogSaveService.update({botId: vm.botId, fileName: vm.fileName, dialogs:dialogs, commons:common_dialogs},
         function() {
           new PNotify({
             title: '저장 완료',
@@ -1515,7 +1517,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       handleDialog(common_dialogs[0]);
       treeData = angular.copy(common_dialogs[0]);
       treeData.name = '시작';
-      treeData.id = 'dummystart';
+      //treeData.id = 'dummystart';
       treeData.children = [];
 
       for (var i = 0; i < dialogs.length; i++) {

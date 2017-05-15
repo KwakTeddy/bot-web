@@ -454,7 +454,7 @@ exports.save_dialogs = function(req, res) {
   // });
 
   // save to dialog.js , buildBot and loadBot
-  botLib.buildBot(botId, null, fileName, JSON.stringify(dialogs, null, "\t"));
+  botLib.buildBot(botId, null, fileName, JSON.stringify(dialogs, null, "\t"),JSON.stringify(commons, null, '\t'));
   botLib.loadBot(botId, function(bot) {
     console.log("saveAll: " + botId+","+fileName);
     res.status(200).send({message: 'done'});
@@ -495,8 +495,8 @@ exports.dialogs = function (req, res) {
       result.tasks = Object.keys(global._bots[botName].tasks).map(function(key) {return global._bots[botName].tasks[key].name;});
       result.types = Object.keys(global._bots[botName].types).map(function(key) {return global._bots[botName].types[key]});
       result.intents = Object.keys(global._bots[botName].intents).map(function(key) {return global._bots[botName].intents[key]});
-      //result.entities = Object.keys(global._bots[botName].entities).map(function(key) {return global._bots[botName].entities[key]});
-      result.entities = Object.keys(global._bots[botName].entityContents).map(function(key) {return global._bots[botName].entityContents[key]});
+      result.entities = Object.keys(global._bots[botName].entities).map(function(key) {return global._bots[botName].entities[key]});
+      //result.entities = Object.keys(global._bots[botName].entityContents).map(function(key) {return global._bots[botName].entityContents[key]});
       result.type_dic = global._bots[botName].types;
       cb(null);
     },
