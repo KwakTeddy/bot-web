@@ -115,7 +115,7 @@ angular.module('bots').config(['$stateProvider',
 
 getBots.$inject = ['BotsService'];
 function getBots(BotsService) {
-  return BotsService.query().$promise;
+  return BotsService.query({my: 1}).$promise;
 }
 
 getBot.$inject = ['BotsService', '$stateParams'];
