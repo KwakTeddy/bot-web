@@ -66,8 +66,8 @@ exports.create = function (req, res) {
 
   async.waterfall([
     function(cb) {
-      if(req.body.isMakeFile) {
-        var botFolder = generateBotFolder(bot.id);
+      var botFolder = generateBotFolder(bot.id);
+      if(req.body.isMakeFile && !fs.existsSync(botFolder)) {
         try {
           fs.statSync(botFolder);
         } catch (e) {
