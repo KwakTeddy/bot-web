@@ -930,6 +930,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         else
           types.push('Text');
       }
+      if (findType(input,'Return')) {
+        if (!findType(input,'Text'))
+          types.push('Text');
+        return types;
+      }
       if (!findType(input,"If") || (i != undefined && i.type == "If"))
         types.push("If");
       if (!isDone || (isDone && findType(input,'Text'))) {
@@ -937,6 +942,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           types.push('Image');
         types.push('Button');
       }
+
       return types;
     };
 
