@@ -215,7 +215,7 @@
           target['syn'] = [];
         }
         for(var i = 0; i < target.syn.length; i++){
-          if (target.syn[i] == vm.entityContentSyn){
+          if (target.syn[i].name == vm.entityContentSyn){
             var border = angular.copy(document.getElementById('synWrapper_' + target.name + '_' + vm.entityContentSyn).style.border);
             var syn = angular.copy(vm.entityContentSyn);
             document.getElementById('synWrapper_' + target.name + '_' + syn).style.border = 'pink solid 1px';

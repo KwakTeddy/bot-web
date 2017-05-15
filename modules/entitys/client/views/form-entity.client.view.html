@@ -67,7 +67,7 @@
                   <input type="text" data-ng-model="content.name" class="text-center" style="border: none; width: 100%; height: 100%; position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%)">
                 </td>
                 <td ng-click="vm.selectedContent = $index">
-                  <div data-ng-repeat="syn in content.syn track by $index" id="synWrapper_{{content.name}}_{{syn}}" class="synWrapper" style="display: inline-block; padding: 10px; border: 1px solid; border-color: gainsboro; margin: 2px" >
+                  <div data-ng-repeat="syn in content.syn track by $index" id="synWrapper_{{content.name}}_{{syn.name}}" class="synWrapper" style="display: inline-block; padding: 10px; border: 1px solid; border-color: gainsboro; margin: 2px" >
                     <span>{{syn.name}}</span>
                     <a href="#" ng-click="vm.contentSynRemoveBeforeSave(content, syn)" id="synTrashIcon" style="padding-left: 5px" ><i class="fa fa-times" aria-hidden="true" style="right: 5px"></i></a>
                   </div>
