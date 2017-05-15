@@ -354,13 +354,23 @@ var save = function(o, res, data) {
     for(var j = o.input.length; j < data.inputs.length;j++){
       o.input.push({'text': data.inputs[j]});
     }
+    console.log(util.inspect(o.output));
+    console.log(util.inspect(data.outputs));
+    if (Array.isArray(o.output)){
+      for(var i = 0; i < o.output.length; i++){
+        o.output[i] = data.outputs[i]
+      }
+      for(var j = o.output.length; j < data.outputs.length;j++){
+        o.output.push(data.outputs[j]);
+      }
+    }else {
+      if (data.outputs.length == 1){
+        o.output = data.outputs[0];
+      }else {
+        o.output = data.outputs;
+      }
+    }
 
-    for(var i = 0; i < o.output.length; i++){
-      o.output[i]['output'] = data.outputs[i].output
-    }
-    for(var j = o.output.length; j < data.outputs.length;j++){
-      o.output.push({'output': data.outputs[j].output});
-    }
 
     var userDialogIds = [];
 
@@ -418,6 +428,8 @@ exports.save_dialog = function(req, res) {
   originalDialog = req.body.originalDialog;
   targetPreDialog = req.body.targetPreDialog;
   var dialog = {inputs: req.body.inputs, outputs: req.body.outputs};
+  console.log(util.inspect(req.body.outputs));
+
   dialogs_data = global._bots[botId].dialogs;
 
   console.log("save: " + botId+","+dialogId);
