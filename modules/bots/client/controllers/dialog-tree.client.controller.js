@@ -1024,41 +1024,52 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       return res;
     };
 
+    var procOutput = function(d,r) {
+      if (!d.if && d.output) {
+        r.push({type:'Text', str:d.output});
+      }
+      if (d.call) {
+        r.push({type:'Call', str:d.call});
+      }
+      if (d.callChild) {
+        r.push({type:'CallChild', str:d.callChild});
+      }
+      if (d.returnCall) {
+        r.push({type:'ReturnCall', str:d.returnCall});
+      }
+      if (d.if) {
+        r.push({type:'If', str:d.if});
+        procOutput(d.output, r);
+      }
+      if (d.up) {
+        r.push({type:'Up', str:d.up});
+      }
+      if (d.repeat) {
+        r.push({type:'Repeat', str:d.repeat+""});
+      }
+      if (d.buttons) {
+        d.buttons.forEach(function(b) {
+          r.push({type:'Button', str:b.name});
+        });
+      }
+      if (d.image) {
+        r.push({type:'Image', str:d.image});
+      }
+    };
+
     var initOutput = function(output) {
       var res = [];
-      output.forEach(function(d) {
+      if (Array.isArray(output)) {
+        output.forEach(function(d) {
+          var r = [];
+          procOutput(d,r);
+          res.push(r);
+        });
+      } else {
         var r = [];
-        if (d.output) {
-          r.push({type:'Text', str:d.output});
-        }
-        if (d.call) {
-          r.push({type:'Call', str:d.call});
-        }
-        if (d.callChild) {
-          r.push({type:'CallChild', str:d.callChild});
-        }
-        if (d.returnCall) {
-          r.push({type:'ReturnCall', str:d.returnCall});
-        }
-        if (d.if) {
-          r.push({type:'If', str:d.if, output:d.output});
-        }
-        if (d.up) {
-          r.push({type:'Up', str:d.up});
-        }
-        if (d.repeat) {
-          r.push({type:'Repeat', str:d.repeat+""});
-        }
-        if (d.buttons) {
-          d.buttons.forEach(function(b) {
-            r.push({type:'Button', str:b.name});
-          });
-        }
-        if (d.image) {
-          r.push({type:'Image', str:d.image});
-        }
+        procOutput(output,r);
         res.push(r);
-      });
+      }
       return res;
     };
 
@@ -1114,8 +1125,19 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             (o.buttons || (o.buttons = [])).push({name:r.str});
           }
         });
-        output.push(o);
+        var newo = {};
+        if (o.if) {
+          newo.if = angular.copy(o.if);
+          delete o.if;
+          newo.output = angular.copy(o);
+        } else {
+          newo = o;
+        }
+        output.push(newo);
       });
+      if (output.length == 1) {
+        output = output[0];
+      }
       return output;
     };
 
@@ -1351,8 +1373,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       else if (!Array.isArray(dialog.input))
         dialog.input = [{text:dialog.input}];
       nodes[dialog.name].input_text  = handleInput(dialog.input);
-      if (!Array.isArray(dialog.output))
-        dialog.output = [{output:dialog.output}];
       initPrintOutput(dialog);
       nodes[dialog.name].output_text = handlePrintOutput(dialog, dialog.output);
 
@@ -1786,10 +1806,15 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         var isRepeat = function(d) {
           var ret = null;
           if (d.output) {
-            d.output.forEach(function(o) {
-              if (o.repeat && typeof o.repeat === 'string')
+            if (Array.isArray(d.output)) {
+              d.output.forEach(function(o) {
+                if (o.repeat && typeof o.repeat === 'string')
+                  ret = o.repeat;
+              });
+            } else {
+              if (d.output.repeat && typeof d.output.repeat === 'string')
                 ret = o.repeat;
-            })
+            }
           }
           return ret;
         };
@@ -2231,11 +2256,17 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     function addChild(d) {
       var isCallNode = false;
       if (d.output) {
-        d.output.forEach(function(o) {
-          if (o.call) {
+        if (Array.isArray(d.output)) {
+          d.output.forEach(function(o) {
+            if (o.call) {
+              isCallNode = true;
+            }
+          });
+        } else {
+          if (d.output.call) {
             isCallNode = true;
           }
-        });
+        }
       }
 
       if (isCallNode) {
