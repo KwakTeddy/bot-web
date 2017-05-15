@@ -252,7 +252,7 @@
     <div>
 
     </div>
-    <div id='content' class="col-md-11" style="position:fixed;overflow:hidden">
+    <div id='content' class="col-md-11" style="overflow-y:scroll;overflow:hidden">
         <div>
             <!--<button id="filetree_open"-->
                     <!--class="mt-xs mr-xs filetree_button btn btn-sm pull-left" ng-click="vm.initTree()"><i class="fa fa-bars"></i></button>-->
@@ -276,7 +276,7 @@
                             </form>
                         </div>
                     </div>
-                    <div class="col-sm-3 col-sm-offset-2">
+                    <div class="col-sm-3 col-sm-offset-1">
                         <!--<label class="col-sm-2 control-label">Depth: </label>-->
                         <div class="input-group mt-xs pull-right">
                             <input class="form-control"  type="text" ng-model="vm.depth" readonly>
@@ -288,7 +288,7 @@
                             </span>
                         </div>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-5">
                         <form>
                             <button class="mt-xs mr-xs btn btn-default pull-right" ng-disabled="!vm.isChanged" ng-click="save()" ><i class="fa fa-save"></i></button>
                             <button class="mt-xs mr-xs btn btn-default pull-right" ng-disabled="vm.changeHistory.length == 0" ng-click="undo()" ><i class="fa fa-undo"></i></button>

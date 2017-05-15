@@ -759,14 +759,14 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.printOutput= function(o) {
-      if (o.type === 'Repeat')
+      if (o.type === 'Repeat' || o.type === 'Up')
         return '';
       else
         return o.str.substring(0,10);
     };
 
     $scope.openEditO = function(o, output, first) {
-      if (o.type === 'Repeat')
+      if (o.type === 'Repeat' || o.type === 'Up')
         return;
       vm.curOutput = output;
       vm.targetO = o;
@@ -827,8 +827,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       i.type = type;
       if (type != "Text" && type != "If" && type !="Regexp" && type !="Button")
         i.str = "";
-      if (type === 'Repeat') {
-        vm.curO.type = 'Repeat';
+      if (type === 'Repeat' || type === 'Up') {
+        vm.curO.type = type;
         vm.curO.str = '1';
         $scope.saveO();
       }
