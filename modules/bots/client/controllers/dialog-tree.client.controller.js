@@ -1826,7 +1826,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
               });
             } else {
               if (d.output.repeat && typeof d.output.repeat === 'string')
-                ret = o.repeat;
+                ret = d.output.repeat;
             }
           }
           return ret;
