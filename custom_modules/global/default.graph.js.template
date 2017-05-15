@@ -16,7 +16,7 @@ var commonDialogs = [
   filename: 'defaultcommon',
   name: '시작',
   input: '시작',
-  output: 'aaaa 입니다.'
+  output: '__bot__ 입니다.'
 },
 {
   id: 'defaultcommon1',
