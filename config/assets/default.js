@@ -23,7 +23,6 @@ module.exports = {
         'public/lib/codemirror/lib/codemirror.js',
         'public/lib/codemirror/mode/javascript/javascript.js',
         'public/lib/angular-ui-codemirror/ui-codemirror.js',
-        'public/lib/angular-ui-notification/dist/angular-ui-notification.js',
         'public/lib/angular-ui-select/dist/select.js',
         'public/lib/angular-sanitize/angular-sanitize.js',
         'public/lib/dropzone/downloads/dropzone.js',

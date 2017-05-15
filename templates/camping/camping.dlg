@@ -49,6 +49,81 @@ shop.mapTask
 {action:shop.previewCategoryAction}
 > if(context.dialog.categorys == undefined) 아직 시설 정보를 등록하지 않았습니다.
 > if(context.dialog.categorys.length != 1) [시설정보]\n##+index+. +name+\n#번호를 선택해주세요.
+    <{types: [{name: 'reserve', listName: 'reserves', typeCheck: 'listTypeCheck'}]}
+    'reserveCancel'
+    >예약이 취소되었습니다.
+    <{if: 'true'}
+    >{repeat: 1, options: {prefix: '목록에서 선택해주세요.\n'}}
+>if(context.dialog.reserve != undefined) 고객님의 예약 내역입니다.\n상태: +reserve.status+\n일시: +reserve.dateStr+ +reserve.period+\n인원: +reserve.numOfPerson+명\n객실: +reserve.memo+\n예약자명: +reserve.name+\n연락처: +reserve.mobile+\n\n예약을 취소하시려면 "취소"라고 말씀해주세요.
+    <취소
+    'reserveCancel'
+    >예약이 취소되었습니다.
+> 고객님의 예약내역이 없습니다.
+
+<예약
+>{callChild: '날짜선택'}
+    날짜선택:<false
+    >예약하실 일자를 말씀해 주세요.
+        <{types: [{name: 'date', typeCheck: 'dateTypeCheck'}]}
+        {action: shop.checkDate}
+        >{call: '기간선택'}
+        <{if: 'context.dialog.날짜입력최초 == undefined'}
+        {
+          action: function(task, context, callback) {
+            context.dialog.날짜입력최초 = true; callback(task, context);
+          }
+        }
+        >{call: '날짜선택'}
+        <{if: 'true'}
+        >{repeat: 1, options: {prefix: '날짜가 아닙니다.\n', postfix: '\n\n취소하고 처음으로가려면\n"시작"이라고 말씀해주세요.'}}
+    기간선택:<false
+    > 몇박 몇일로 묵으실 예정인가요?
+        <{if: 'true'}
+        'reservePeriodTask'
+        >{call: '인원선택'}
+    인원선택:<false
+    >몇명이 오실지 말씀해 주세요
+        <{types: [{name: 'numOfPerson', typeCheck: 'numOfPersonTypeCheck', init: true}]}
+        >{call: '서비스선택'}
+        <{if: 'context.dialog.인원선택최초 == undefined'}
+        {
+          action: function(task, context, callback) {
+            context.dialog.인원선택최초 = true; callback(task, context);
+          }
+        }
+        >{call: '인원선택'}
+        <{if: 'true'}
+        >{repeat: 1, options: {prefix: '인원수가 아닙니다.\n', postfix: '\n\n예약 진행을 취소하시려면\n"시작"이라고 말씀해주세요.'}}
+    서비스선택:<false
+    >어떤 객실을 예약하실지 말씀해주세요.
+        <{if: 'true'}
+        'reserveMemoTask'
+        >{call: '예약자명'}
+    예약자명:<false
+    >예약하실 이름을 입력해주세요.
+        <{if: 'true'}
+        'reserveNameTask'
+        >if(context.user.mobile == undefined){call: '휴대폰번호입력'}
+        >if(true) {call: '예약내용확인'}
+    휴대폰번호입력:<false
+    > 휴대폰 번호를 말씀해주세요.
+//        < {types: [{type : type.mobileType, context: false}]}
+//        >{call: '예약내용확인'}
+        < {types: [{type : type.mobileType, context: false}]}
+        'smsAuth'
+        >문자메세지(SMS)로 발송된 인증번호를 입력해주세요.
+            <{regexp: /[\d\s]+/}
+            >{if: shop.smsAuthValid, task: 'smsAuthTask', output: {call: '예약내용확인'}}
+            >{if: shop.smsAuthinValid, repeat: 1, options: {output:'인증번호가 틀렸습니다.\n제대로 된 인증번호를 입력해주세요.\n0. 이전\n!. 처음'}}
+            <{if: 'true'}>{repeat: 1, options: {output:'인증번호가 틀렸습니다.\n제대로 된 인증번호를 입력해주세요.\n0. 이전\n!. 처음'}}
+        <{if: 'true'}
+        >{repeat: 1, options: {prefix: '휴대폰 번호가 아닙니다.\n', postfix: '\n\n예약 진행을 취소하시려면\n"시작"이라고 말씀해주세요.'}}
+    예약내용확인:<false
+    {action: 'reserveConfirm'}
+    > 예약내용을 확인해주세요.\n일시: +dateStr+ +period+\n인원: +numOfPerson+명\n객실: +memo+\n연락처: +mobile+\n다음과 같이 예약신청하시겠습니까?
+        <~네
+        {action: 'reserveRequest'}
+        >예약을 요청하였습니다.\n\n아직 확정이 아닙니다.\n좌석 확인 후 예약완료 문자를 보내 드리겠습니다.
     <{types: [{name: 'category', listName: 'categorys', typeCheck: 'listTypeCheck'}]}
     {action: shop.previewAction}
     > if(context.user.channel == 'socket') 정보가 등록되지 않았습니다.
@@ -137,81 +212,6 @@ shop.reserveCheck
     >{repeat: 1, options: {prefix: '목록에서 선택해주세요.\n'}}
 >if(context.botUser.isOwner && context.dialog.reserves == undefined) 미처리 예약내역이 없습니다.
 >if(context.dialog.reserves != undefined) 고객님의 예약 내역입니다.\n#reserves#+index+. +dateStr+ +period+ +numOfPerson+명 [+status+]\n#\n예약을 취소하시려면, 취소할 번호를 말씀해주세요.
-    <{types: [{name: 'reserve', listName: 'reserves', typeCheck: 'listTypeCheck'}]}
-    'reserveCancel'
-    >예약이 취소되었습니다.
-    <{if: 'true'}
-    >{repeat: 1, options: {prefix: '목록에서 선택해주세요.\n'}}
->if(context.dialog.reserve != undefined) 고객님의 예약 내역입니다.\n상태: +reserve.status+\n일시: +reserve.dateStr+ +reserve.period+\n인원: +reserve.numOfPerson+명\n객실: +reserve.memo+\n예약자명: +reserve.name+\n연락처: +reserve.mobile+\n\n예약을 취소하시려면 "취소"라고 말씀해주세요.
-    <취소
-    'reserveCancel'
-    >예약이 취소되었습니다.
-> 고객님의 예약내역이 없습니다.
-
-<예약
->{callChild: '날짜선택'}
-    날짜선택:<false
-    >예약하실 일자를 말씀해 주세요.
-        <{types: [{name: 'date', typeCheck: 'dateTypeCheck'}]}
-        {action: shop.checkDate}
-        >{call: '기간선택'}
-        <{if: 'context.dialog.날짜입력최초 == undefined'}
-        {
-          action: function(task, context, callback) {
-            context.dialog.날짜입력최초 = true; callback(task, context);
-          }
-        }
-        >{call: '날짜선택'}
-        <{if: 'true'}
-        >{repeat: 1, options: {prefix: '날짜가 아닙니다.\n', postfix: '\n\n취소하고 처음으로가려면\n"시작"이라고 말씀해주세요.'}}
-    기간선택:<false
-    > 몇박 몇일로 묵으실 예정인가요?
-        <{if: 'true'}
-        'reservePeriodTask'
-        >{call: '인원선택'}
-    인원선택:<false
-    >몇명이 오실지 말씀해 주세요
-        <{types: [{name: 'numOfPerson', typeCheck: 'numOfPersonTypeCheck', init: true}]}
-        >{call: '서비스선택'}
-        <{if: 'context.dialog.인원선택최초 == undefined'}
-        {
-          action: function(task, context, callback) {
-            context.dialog.인원선택최초 = true; callback(task, context);
-          }
-        }
-        >{call: '인원선택'}
-        <{if: 'true'}
-        >{repeat: 1, options: {prefix: '인원수가 아닙니다.\n', postfix: '\n\n예약 진행을 취소하시려면\n"시작"이라고 말씀해주세요.'}}
-    서비스선택:<false
-    >어떤 객실을 예약하실지 말씀해주세요.
-        <{if: 'true'}
-        'reserveMemoTask'
-        >{call: '예약자명'}
-    예약자명:<false
-    >예약하실 이름을 입력해주세요.
-        <{if: 'true'}
-        'reserveNameTask'
-        >if(context.user.mobile == undefined){call: '휴대폰번호입력'}
-        >if(true) {call: '예약내용확인'}
-    휴대폰번호입력:<false
-    > 휴대폰 번호를 말씀해주세요.
-//        < {types: [{type : type.mobileType, context: false}]}
-//        >{call: '예약내용확인'}
-        < {types: [{type : type.mobileType, context: false}]}
-        'smsAuth'
-        >문자메세지(SMS)로 발송된 인증번호를 입력해주세요.
-            <{regexp: /[\d\s]+/}
-            >{if: shop.smsAuthValid, task: 'smsAuthTask', output: {call: '예약내용확인'}}
-            >{if: shop.smsAuthinValid, repeat: 1, options: {output:'인증번호가 틀렸습니다.\n제대로 된 인증번호를 입력해주세요.\n0. 이전\n!. 처음'}}
-            <{if: 'true'}>{repeat: 1, options: {output:'인증번호가 틀렸습니다.\n제대로 된 인증번호를 입력해주세요.\n0. 이전\n!. 처음'}}
-        <{if: 'true'}
-        >{repeat: 1, options: {prefix: '휴대폰 번호가 아닙니다.\n', postfix: '\n\n예약 진행을 취소하시려면\n"시작"이라고 말씀해주세요.'}}
-    예약내용확인:<false
-    {action: 'reserveConfirm'}
-    > 예약내용을 확인해주세요.\n일시: +dateStr+ +period+\n인원: +numOfPerson+명\n객실: +memo+\n연락처: +mobile+\n다음과 같이 예약신청하시겠습니까?
-        <~네
-        {action: 'reserveRequest'}
-        >예약을 요청하였습니다.\n\n아직 확정이 아닙니다.\n좌석 확인 후 예약완료 문자를 보내 드리겠습니다.
 
 시작:
 c<시작
