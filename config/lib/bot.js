@@ -6,6 +6,8 @@ var config = require('../config'),
   tone = require(path.resolve('modules/bot/action/common/tone')),
   concept = require(path.resolve('modules/bot/engine/concept/concept')),
   intent = require(path.resolve('modules/bot/engine/nlu/intent')),
+  entity = require(path.resolve('modules/bot/engine/nlu/entity')),
+  customContext = require(path.resolve('modules/bot/engine/dialog/custom-context.js')),
   _ = require('lodash');
 
   var async = require('async');
@@ -342,7 +344,19 @@ function loadBot(botName, callback) {
           cb(null);
         })
       })
+    },
+
+    function(cb) {
+      entity.loadEntities(bot, function() {
+        cb(null);
+      })
     }
+
+    // function(cb) {
+    //   customContext.loadCustomContext(bot, function() {
+    //     cb(null);
+    //   })
+    // }
 
   ], function(err) {
     if(callback) callback(bot);

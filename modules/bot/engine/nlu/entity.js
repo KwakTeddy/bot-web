@@ -113,3 +113,15 @@ function matchEntities(inRaw, inNLP, inDoc, context, callback) {
 }
 
 exports.matchEntities = matchEntities;
+
+
+function loadEntities(bot, callback) {
+  var Entity = mongoose.model('Entity');
+
+  Entity.find({botId: bot.id}).lean().exec(function(err, docs) {
+    bot.entities = docs;
+    if(callback) callback();
+  });
+}
+
+exports.loadEntities = loadEntities;
