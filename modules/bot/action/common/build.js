@@ -25,7 +25,7 @@ function botBuild(bot, botPath, fileName, dialogs) {
   if(botPath) botDir = path.resolve(botPath);
   else botDir = path.resolve('custom_modules/' + bot);
 
-  var fileFilter = function(file) { return file.endsWith('dlg'); };
+  var fileFilter = function(file) { return file.endsWith('dlg') || file.endsWith('graph.js'); };
 
   var files;
   try {
@@ -46,15 +46,22 @@ function botBuild(bot, botPath, fileName, dialogs) {
     var file = files[i];
     // var dlgPath = path.join(botDir, file);
     var info = path.parse(file);
-    if (dialogs != undefined && info.name !== fileName)
+    var infoname;
+    if (info.name.endsWith('graph')) {
+      infoname = info.name.split('.')[0];
+    } else {
+      infoname = info.name;
+    }
+    if (dialogs != undefined && infoname !== fileName)
       continue;
+
     // var jsPath = path.join(info.dir, info.name + '.js');
-    var dialogPath = path.join(info.dir, info.name + '.dialog.js');
-    var graphPath = path.join(info.dir, info.name + '.graph.js');
-    var taskPath = path.join(info.dir, info.name + '.js');
+    var dialogPath = path.join(info.dir, infoname + '.dialog.js');
+    var graphPath = path.join(info.dir, infoname + '.graph.js');
+    var taskPath = path.join(info.dir, infoname + '.js');
 
     if(!fs.existsSync(taskPath)) {
-      logger.info('\t created task file: ' + info.name + '.js');
+      logger.info('\t created task file: ' + infoname + '.js');
       var taskFile = fs.readFileSync('./custom_modules/global/default.task.js.template', 'utf8');
       taskFile= taskFile.replace(/__bot__/g, bot.id);
       //createFile('default.task.js', bot.user, bot);
@@ -68,22 +75,29 @@ function botBuild(bot, botPath, fileName, dialogs) {
       continue;
     }
 
-    logger.info('\t building dlg file: ' + file + ' -> ' + info.name + '.dialog.js');
+    logger.info('\t building dlg file: ' + file + ' -> ' + infoname + '.dialog.js');
 
-    var text = fs.readFileSync(file, 'utf8');
+    var text;
+    if (dialogs) {
+      var dlgFile = fs.readFileSync('./custom_modules/global/default.dlg.template', 'utf8');
+      dlgFile= dlgFile.replace(/__bot__/g, bot.id);
+      text = dlgFile;
+    } else {
+      text = fs.readFileSync(file, 'utf8');
+    }
     // console.log(text);
     var js;
     if (dialogs) {
       logger.info('\t saved from dialog tree');
-      js = build(text, false, info.name, dialogs);
+      js = build(text, false, infoname, dialogs);
     } else {
-      js = build(text, false, info.name);
+      js = build(text, false, infoname);
     }
 
-    js = '\n' + js + '\n\n' + build(text, true, info.name + "common");
+    js = '\n' + js + '\n\n' + build(text, true, infoname + "common");
 
     // try {
-    //   var include = fs.readFileSync(path.join(info.dir, info.name + '.js'), 'utf8');
+    //   var include = fs.readFileSync(path.join(info.dir, infoname + '.js'), 'utf8');
     //   if(include) js = include + js;
     // } catch(e) {}
 

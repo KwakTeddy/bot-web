@@ -85,17 +85,20 @@ exports.create = function (req, res) {
         fs.writeFileSync(botFolder + bot.id + '.bot.js', botFile, {flag: 'wx'});
         createFile(bot.id + '.bot.js', bot.user, bot);
 
-        var dlgFile = fs.readFileSync('./custom_modules/global/default.dlg.template', 'utf8');
-        dlgFile = dlgFile.replace(/__bot__/g, bot.name);
-        fs.writeFileSync(botFolder + 'default.dlg', dlgFile, {flag: 'wx'});
-        createFile('default.dlg', bot.user, bot);
+        // default.dlg remains only to pass build process
+        // var dlgFile = fs.readFileSync('./custom_modules/global/default.dlg.template', 'utf8');
+        // dlgFile = dlgFile.replace(/__bot__/g, bot.name);
+        // fs.writeFileSync(botFolder + 'default.dlg', dlgFile, {flag: 'wx'});
+        //createFile('default.dlg', bot.user, bot);
 
         var taskFile = fs.readFileSync('./custom_modules/global/default.task.js.template', 'utf8');
         taskFile= taskFile.replace(/__bot__/g, bot.id);
         fs.writeFileSync(botFolder + 'default.js', taskFile, {flag: 'wx'});
         createFile('default.js', bot.user, bot);
 
-        //createFile('default.dialog.js', bot.user, bot);
+        var graphFile = fs.readFileSync('./custom_modules/global/default.graph.js.template', 'utf8');
+        graphFile = graphFile.replace(/__bot__/g, bot.id);
+        fs.writeFileSync(botFolder + 'default.graph.js', graphFile, {flag: 'wx'});
         createFile('default.graph.js', bot.user, bot);
 
         cb(null);

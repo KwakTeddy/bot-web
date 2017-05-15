@@ -345,7 +345,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     // tab handling
     vm.botName = file.botName;
-    vm.name = file.name;
+    vm.name = file.name.substring(0, file.name.length-3);
     vm.data = file.data;
     vm.files = files;
 
@@ -356,8 +356,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       if (vm.initialized)
         return;
       vm.initialized = true;
+
       vm.files.forEach(function(f) {
         var item = "<li data-jstree='{\"type\":\"file\"";
+        if (f.name.endsWith('graph.js'))
+          f.name = f.name.substring(0, f.name.length-3);
         if (f.name === vm.currentTab.name) {
           item += ",\"selected\":true";
         }
