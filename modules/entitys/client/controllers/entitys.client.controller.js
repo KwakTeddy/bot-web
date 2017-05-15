@@ -6,9 +6,9 @@
     .module('entitys')
     .controller('EntitysController', EntitysController);
 
-  EntitysController.$inject = ['$scope', '$state', 'Authentication', 'entityResolve', '$resource', 'EntitysService', '$rootScope', '$http'];
+  EntitysController.$inject = ['$scope', '$state', 'Authentication', 'entityResolve', '$resource', 'EntitysService', '$rootScope', '$http', '$timeout'];
 
-  function EntitysController($scope, $state, Authentication, entity, $resource, EntitysService, $rootScope, $http) {
+  function EntitysController($scope, $state, Authentication, entity, $resource, EntitysService, $rootScope, $http, $timeout) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -79,10 +79,6 @@
       }, true);
     }
 
-
-
-
-
     // Remove existing Custom action
     function remove() {
       if (confirm('\'' + vm.entity.name + '\' ' + '정말 삭제하시겠습니까?')) {
@@ -95,11 +91,15 @@
 
     // Save Custom action
     function save(isValid) {
-      console.log(isValid);
-      if (!isValid) {
+      console.log(vm.entity.content);
+      if (!isValid || !vm.entity.content || !vm.entity.content.length){
         vm.error = null;
-        $scope.$broadcast('show-errors-check-validity', 'vm.form.entityForm');
-        return false;
+        if (!vm.entity.content || !vm.entity.content.length){
+          return vm.contentListError = '적어도 하나의 내용을 추가해주세요';
+        }else {
+          $scope.$broadcast('show-errors-check-validity', 'vm.form.entityForm');
+          return false;
+        }
       }
       vm.entity.botName = $rootScope.botId;
       console.log(vm.entity);
@@ -129,10 +129,14 @@
     vm.contentSave = function(isValid){
       console.log($rootScope);
       console.log(isValid);
-      if (!isValid) {
-        console.log('done')
-        $scope.$broadcast('show-errors-check-validity', 'vm.form.entityForm');
-        return false;
+      if (!isValid || !vm.entityContent) {
+        if (!vm.entityContent){
+          return vm.contentError = '내용을 입력해주세요'
+        }else {
+          console.log('done')
+          $scope.$broadcast('show-errors-check-validity', 'vm.form.entityForm');
+          return false;
+        }
       }
       if (vm.entity._id){
         console.log(vm.entity._id);
@@ -144,6 +148,7 @@
           // console.log(document.getElementById('contentForm').classList.value)
           // document.getElementById('contentForm').classList;
           vm.contentError = '';
+          vm.contentListError = null;
         }, function (err) {
           console.log(err);
           vm.contentError = err.data.message
@@ -161,7 +166,8 @@
           }
           vm.entity.content.unshift({name: vm.entityContent, syn: [vm.entityContent]});
           vm.entityContent = '';
-          vm.contentError = ''
+          vm.contentError = '';
+          vm.contentListError = null;
         }else {
           vm.contentError = '내용을 입력해주세요'
         }
@@ -196,11 +202,24 @@
     };
 
     vm.contentSynSave = function (target) {
-      if(!target.syn){
-        target['syn'] = [];
+      if(vm.entityContentSyn){
+        if(!target.syn){
+          target['syn'] = [];
+        }
+        for(var i = 0; i < target.syn.length; i++){
+          if (target.syn[i] == vm.entityContentSyn){
+            var border = angular.copy(document.getElementById('synWrapper_' + target.name + '_' + vm.entityContentSyn).style.border);
+            var syn = angular.copy(vm.entityContentSyn);
+            document.getElementById('synWrapper_' + target.name + '_' + syn).style.border = 'pink solid 1px';
+            $timeout(function () {
+              document.getElementById('synWrapper_' + target.name + '_' + syn).style.border = border;
+            }, 3000);
+            return
+          }
+        }
+        target.syn.push(vm.entityContentSyn);
+        vm.entityContentSyn = '';
       }
-      target.syn.push(vm.entityContentSyn);
-      vm.entityContentSyn = '';
     };
 
     vm.contentSynRemoveBeforeSave = function (content, syn) {

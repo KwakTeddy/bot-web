@@ -122,21 +122,34 @@ exports.update = function(req, res) {
  * Update a Custom action
  */
 exports.updateContent = function(req, res) {
-  EntityContent.findOne({_id: req.body._id}).exec(function (err, data) {
-    if (err){
-      console.log(err)
+  EntityContent.findOne({name: req.body.name, botId: req.body.botId, _id: {$ne: req.body._id}}).exec(function (error, result) {
+    console.log(util.inspect(result));
+    if (error){
+      console.log(error)
     }else {
-      data.name = req.body.name;
-      data.syn = req.body.syn;
-      data.save(function (err) {
-        if (err){
-          console.log(err)
-        }else {
-          res.end();
-        }
-      })
+      if (result){
+        return res.status(400).send({
+          message : '동일한 이름의 엔터티가 존재합니다'
+        })
+      }else {
+        EntityContent.findOne({_id: req.body._id}).exec(function (err, data) {
+          if (err){
+            console.log(err)
+          }else {
+            data.name = req.body.name;
+            data.syn = req.body.syn;
+            data.save(function (err) {
+              if (err){
+                console.log(err)
+              }else {
+                res.end();
+              }
+            })
+          }
+        })
+      }
     }
-  })
+  });
 };
 
 
