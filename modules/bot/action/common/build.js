@@ -63,7 +63,7 @@ function botBuild(bot, botPath, fileName, dialogs) {
     if(!fs.existsSync(taskPath)) {
       logger.info('\t created task file: ' + infoname + '.js');
       var taskFile = fs.readFileSync('./custom_modules/global/default.task.js.template', 'utf8');
-      taskFile= taskFile.replace(/__bot__/g, bot.id);
+      taskFile= taskFile.replace(/__bot__/g, bot);
       //createFile('default.task.js', bot.user, bot);
       fs.writeFileSync(taskPath, taskFile, 'utf8');
     }
@@ -80,7 +80,7 @@ function botBuild(bot, botPath, fileName, dialogs) {
     var text;
     if (dialogs) {
       var dlgFile = fs.readFileSync('./custom_modules/global/default.dlg.template', 'utf8');
-      dlgFile= dlgFile.replace(/__bot__/g, bot.id);
+      dlgFile= dlgFile.replace(/__bot__/g, bot);
       text = dlgFile;
     } else {
       text = fs.readFileSync(file, 'utf8');
