@@ -15,27 +15,20 @@ var dialogs = [
 				"output": "안녕하세요"
 			}
 		],
-		"name": "안녕"
+		"name": "dialog_default0"
 	},
 	{
-		"name": "이미지버튼",
+		"name": "dialog_default1",
 		"id": "default1",
 		"filename": "default",
 		"input": [
 			{
-				"text": "이미지 버튼"
+				"regexp": "/사과/"
 			}
 		],
 		"output": [
 			{
-				"image": "002-hospital.png"
-			},
-			{
-				"buttons": [
-					{
-						"name": "이미지보기"
-					}
-				]
+				"output": "사과레귤러"
 			}
 		]
 	}
