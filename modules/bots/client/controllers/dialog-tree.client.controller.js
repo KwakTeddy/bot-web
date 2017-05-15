@@ -187,7 +187,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       // }, function (err) {
       //   console.log(err);
       // });
-      if (vm.curI.type === 'Text' && vm.curI.str.length){
+      if (vm.curI.type === 'Keyword' && vm.curI.str.length){
         $http.get('/api/nluprocess/'+vm.curI.str).then(function (res) {
           $scope.processedInput = res.data;
         }, function (err) {
@@ -805,7 +805,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
 
       vm.targetI.type = vm.curI.type;
-      if (vm.curI.type == 'Text') {
+      if (vm.curI.type == 'Keyword') {
         vm.targetI.str = $scope.processedInput;
       } else {
         vm.targetI.str = vm.curI.str;
@@ -843,7 +843,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     $scope.setType = function(i, type) {
       i.type = type;
-      if (type != "Text" && type != "If" && type !="Regexp" && type !="Button")
+      if (type != "Keyword" && type != "If" && type !="Regexp" && type !="Button")
         i.str = "";
       if ($scope.getInputType(type) === 'button') {
         if (i == vm.curO) {
@@ -859,7 +859,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.getPlaceHolder = function(type, isOut) {
-      if (type === 'Text') {
+      if (type === 'Keyword') {
         if (isOut) return "답변을 입력해주세요";
         return "질문을 입력해주세요";
       }
@@ -870,17 +870,18 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     // input/ouput types
-    vm.inputTypes = ["Text","Intent","Entity","RegExp","Type","If","매칭없음"];
+    vm.inputTypes = ["Keyword","Intent","Entity","RegExp","Type","If","매칭없음"];
     vm.outputTypes = ["Text","Call","ReturnCall","CallChild","Up", "Repeat", "Return"];
 
     vm.typeClass = [];
-    vm.typeClass['Text'] = {btn:'btn-primary',icon:'fa-commenting', input:'text'};
+    vm.typeClass['Keyword'] = {btn:'btn-primary',icon:'fa-commenting', input:'text'};
     vm.typeClass['RegExp'] = {btn:'btn-danger',icon:'fa-registered', input:'text'};
     vm.typeClass['Intent'] = {btn:'btn-success',icon:'fa-user', input:'intent'};
     vm.typeClass['Entity'] = {btn:'btn-success',icon:'fa-tags', input:'entity'};
     vm.typeClass['Type'] = {btn:'btn-warning',icon:'fa-gear', input:'type'};
     vm.typeClass['매칭없음'] = {btn:'btn-danger',icon:'fa-ban', input:'button'};
 
+    vm.typeClass['Text'] = {btn:'btn-primary',icon:'fa-commenting', input:'text'};
     vm.typeClass['Call'] = {btn:'btn-danger',icon:'fa-bolt', input:'dialog'};
     vm.typeClass['CallChild'] = {btn:'btn-danger',icon:'fa-mail-forward', input:'dialog'};
     vm.typeClass['ReturnCall'] = {btn:'btn-danger',icon:'fa-mail-reply', input:'dialog'};
@@ -1011,7 +1012,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         input.forEach(function(d) {
           var r = [];
           if (d.text) {
-            r.push({type: 'Text', str: d.text});
+            r.push({type: 'Keyword', str: d.text});
           }
           if (d.types) {
             d.types.forEach(function (t) {
@@ -1107,7 +1108,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         result.forEach(function(res) {
           var obj = {};
           res.forEach(function(r) {
-            if (r.type === 'Text') {
+            if (r.type === 'Keyword') {
               obj.text = r.str;
             } else if (r.type === 'Type') {
               (obj.types || (obj.types = [])).push(r.str);
