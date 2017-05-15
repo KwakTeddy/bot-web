@@ -504,6 +504,7 @@ exports.dialogs = function (req, res) {
       result.data = [];
       dialogs_data.forEach(function (d) {
         if (d.filename === result.fileName) {
+          if(d.context) d.context = {name: d.context.name};
           result.data.push(d);
         }
       });

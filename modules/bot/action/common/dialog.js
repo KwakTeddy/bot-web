@@ -264,12 +264,13 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
   if(options && options.dontMatch == 1) {callback(false);return;}
 
   if(Array.isArray(dialogs)) {
-    var eachMatched = false;
+    var eachMatched = false, intentMatched = false, intentDialogs = [];
     var inDoc = {};
     async.eachSeries(dialogs, function(dialog, cb) {
 
       var matchInput = function(input, _cb) {
         eachMatched = false;
+        intentMatched = false;
 
         async.waterfall([
           function(cb2) {
@@ -319,7 +320,7 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
               var eachMatched2 = false;
               for(var i in input.entities) {
                 for(key in context.botUser.entities) {
-                  if(input.entities[i] == key) {
+                  if(input.entities[i] == '@' + key || input.entities[i] == context.botUser.entities[key] + '@' + key) {
                     eachMatched2 = true;
                   }
                 }
@@ -405,7 +406,10 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
 
           function(matched, cb2) {
             if(input && input.intent) {
-              if(context.botUser.intent && input.intent == context.botUser.intent.name) cb2(null, true);
+              if(context.botUser.intent && input.intent == context.botUser.intent.name) {
+                intentMatched = true;
+                cb2(null, true);
+              }
               else cb2(true, false);
             } else {
               cb2(null, true);
@@ -454,63 +458,13 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
           }
 
         ], function(err, matched) {
-          if(matched) {
-            // if(process.env.NODE_ENV == 'development' && dialog.name == '시작') {
-            //   var module = taskModule.findModule({module: context.bot.module}, context);
-            //   if(module) {
-            //     context.bot.commonDialogs= module.commonDialogs;
-            //     context.bot.dialogs = module.dialogs;
-            //   }
-            // }
-
-            // context.botUser.dialog = dialog;
-
-            if(dialog.output.up) {
-              if (context.botUser.currentDialog.parent)
-                dialog.parent = context.botUser.currentDialog.parent.parent;
-            } else if(context.botUser.currentDialog && context.botUser.currentDialog.name != undefined && (dialog.output.call == context.botUser.currentDialog.name ||
-              dialog.output.callChild == context.botUser.currentDialog.name)) {
-              dialog.parent = context.botUser.currentDialog.parent;
-            } else { // TODO 자기 자신으로 parent 참조하기 막기
-              dialog.parent = context.botUser.currentDialog;
-            }
-
-            if(context.botUser.currentDialog) {
-              dialog.top = context.botUser.currentDialog.top;
-              // if(context.botUser.currentDialog.upCallback) dialog.upCallback = context.botUser.currentDialog.upCallback;
-              // if(context.botUser.currentDialog.returnDialog) dialog.returnDialog = context.botUser.currentDialog.returnDialog;
-            }
-
-            var nextOptions;
-            if(options && (options.prefix || options.output || options.postfix)) {
-              nextOptions = {};
-              if(options.prefix) nextOptions.prefix = options.prefix;
-              if(options.post) nextOptions.post = options.postfix;
-              if(options.output) nextOptions.output = options.output;
-            }
-
-            var _dialog = utils.cloneWithParent(dialog);
-            if(_dialog.task && typeof _dialog.task == 'string') {
-              var _task = context.bot.tasks[_dialog.task];
-              if(_task) _dialog.task = utils.clone(_task);
-              else {
-                _task = context.global.tasks[_dialog.task];
-                if(_task) _dialog.task = utils.clone(_task);
-              }
-              // } else {
-              //   _dialog.task = utils.clone(_dialog.task);
-            }
-
-            _dialog.task = utils.mergeWithClone(_dialog.task, inDoc);
-
-            _dialog.inRaw = _dialog.task.inRaw = inRaw;
-            _dialog.inNLP = _dialog.task.inNLP = inNLP;
-            // executeDialog(_dialog, context, print, callback, nextOptions);
-            executeDialog(_dialog, context, print, callback, nextOptions);
-            eachMatched = true; _cb(_dialog);
+          // if(intentMatched) {
+          //   intentDialogs.push(dialog);
+          //   _cb(null);
+          // } else
+            if(matched) {
+            eachMatched = true; _cb(dialog);
           } else {
-            // context.botUser.dialog = null;
-
             eachMatched = false; _cb(null);
           }
         });
@@ -530,23 +484,62 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
       }
 
     }, function(err){
-      if(eachMatched) callback(true, err);
-      else callback(false);
-      // else {
-      //   if(wordCorrection == true) callback(false);
-      //   else {
-      //     if(context.botUser.nlpCorrection) {
-      //       matchDialogs(context.botUser.inRawCorrection, context.botUser.nlpCorrection, dialogs, context, print, callback, options, true);
-      //     } else {
-      //       var _inRaw = autoCorrection.correction(inRaw);
-      //       type.processInput(context, _inRaw, function(_inNLP, _inDoc) {
-      //         context.botUser.nlpCorrection = _inNLP;
-      //         context.botUser.inRawCorrection = _inRaw;
-      //         matchDialogs(_inRaw, _inNLP, dialogs, context, print, callback, options, true);
-      //       });
-      //     }
-      //   }
-      // }
+      var _executeDialog = function(dialog) {
+        if(dialog.output.up) {
+          if (context.botUser.currentDialog.parent)
+            dialog.parent = context.botUser.currentDialog.parent.parent;
+        } else if(context.botUser.currentDialog && context.botUser.currentDialog.name != undefined && (dialog.output.call == context.botUser.currentDialog.name ||
+          dialog.output.callChild == context.botUser.currentDialog.name)) {
+          dialog.parent = context.botUser.currentDialog.parent;
+        } else { // TODO 자기 자신으로 parent 참조하기 막기
+          dialog.parent = context.botUser.currentDialog;
+        }
+
+        if(context.botUser.currentDialog) {
+          dialog.top = context.botUser.currentDialog.top;
+          // if(context.botUser.currentDialog.upCallback) dialog.upCallback = context.botUser.currentDialog.upCallback;
+          // if(context.botUser.currentDialog.returnDialog) dialog.returnDialog = context.botUser.currentDialog.returnDialog;
+        }
+
+        var nextOptions;
+        if(options && (options.prefix || options.output || options.postfix)) {
+          nextOptions = {};
+          if(options.prefix) nextOptions.prefix = options.prefix;
+          if(options.post) nextOptions.post = options.postfix;
+          if(options.output) nextOptions.output = options.output;
+        }
+
+        var _dialog = utils.cloneWithParent(dialog);
+        if(_dialog.task && typeof _dialog.task == 'string') {
+          var _task = context.bot.tasks[_dialog.task];
+          if(_task) _dialog.task = utils.clone(_task);
+          else {
+            _task = context.global.tasks[_dialog.task];
+            if(_task) _dialog.task = utils.clone(_task);
+          }
+          // } else {
+          //   _dialog.task = utils.clone(_dialog.task);
+        }
+
+        _dialog.task = utils.mergeWithClone(_dialog.task, inDoc);
+
+        _dialog.inRaw = _dialog.task.inRaw = inRaw;
+        _dialog.inNLP = _dialog.task.inNLP = inNLP;
+        // executeDialog(_dialog, context, print, callback, nextOptions);
+        executeDialog(_dialog, context, print, callback, nextOptions);
+
+        callback(true, err);
+      }
+
+      if(intentDialogs.length > 0) {
+        if(intentDialogs.length == 1) _executeDialog(intentDialogs[0]);
+        else {
+          console.log('Dialog intent 검색됨');
+        }
+      } else if(eachMatched) {
+        var dialog = err;
+        _executeDialog(dialog);
+      } else callback(false);
     });
   } else {
     callback(false);
@@ -555,6 +548,21 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
 
 exports.matchDialogs = matchDialogs;
 
+function matchContext(dialogs, context, customContext, intentDialogs, print, callback, options) {
+  if(customContext.children && customContext.children.length > 0) {
+    for(var i in customContext.children) {
+      var child = customContext.children[i];
+      if(child.items) {
+
+      }
+    }
+  } else {
+
+  }
+
+}
+
+exports.matchContext = matchContext;
 
 function executeDialog(dialog, context, print, callback, options) {
   if(dialog.name || dialog.input) logger.debug('executeDialog: ' + toDialogString(dialog) + ' options= ' + (options?options.prefix: ''));
@@ -885,7 +893,6 @@ function executeDialog(dialog, context, print, callback, options) {
               context.dialog.page = context.dialog.page + 1;
           }
         }
-
 
         var userOut = type.processOutput(dialog.task, context, _output);
 

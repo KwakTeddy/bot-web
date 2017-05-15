@@ -347,7 +347,10 @@ function loadBot(botName, callback) {
     },
 
     function(cb) {
-      entity.loadEntities(bot, function() {
+      // entity.loadEntities(bot, function() {
+      //   cb(null);
+      // })
+      entity.loadEntityContents(bot, function() {
         cb(null);
       })
     },

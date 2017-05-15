@@ -49,7 +49,7 @@ function matchDictionaryEntities(inRaw, inNLP, inDoc, context, callback) {
     function(cb) {
       var Dic = mongoose.model('EntityContent');
       async.eachSeries(nouns, function(word, cb1) {
-        Dic.find({botId: context.bot.id, name: word}).lean().populate('entityId').exec(function(err, docs) {
+        Dic.find({botId: context.bot.id, $or: [{name: word}, {$contains: {syn: word}}]}).lean().populate('entityId').exec(function(err, docs) {
           for(var i in docs) {
             if(docs[i].entityId && entities[docs[i].entityId.name] == undefined)
               entities[docs[i].entityId.name] = docs[i].name;
@@ -65,7 +65,7 @@ function matchDictionaryEntities(inRaw, inNLP, inDoc, context, callback) {
     function(cb) {
       var Dic = mongoose.model('EntityContent');
       async.eachSeries(nouns, function(word, cb1) {
-        Dic.find({botId: null, name: word}).lean().populate('entityId').exec(function(err, docs) {
+        Dic.find({botId: null, $or: [{name: word}, {$contains: {syn: word}}]}).lean().populate('entityId').exec(function(err, docs) {
           for(var i in docs) {
             if(docs[i].entityId && entities[docs[i].entityId.name] == undefined)
               entities[docs[i].entityId.name] = docs[i].name;
@@ -125,3 +125,28 @@ function loadEntities(bot, callback) {
 }
 
 exports.loadEntities = loadEntities;
+
+function loadEntityContents(bot, callback) {
+  var Entity = mongoose.model('Entity');
+
+  Entity.find({botId: bot.id}).lean().exec(function(err, docs) {
+    bot.entityContents = docs;
+    for(var i in docs) {
+      docs[i].name = '@' + docs[i].name;
+    }
+
+    var EntityContent = mongoose.model('EntityContent');
+
+    EntityContent.find({botId: bot.id}).lean().populate('entityId').exec(function(err, docs) {
+      for(var i in docs) {
+        docs[i].name = docs[i].name + '@' + docs[i].entityId.name;
+      }
+      bot.entityContents = bot.entityContents.concat(docs);
+
+      if(callback) callback();
+    });
+  });
+
+}
+
+exports.loadEntityContents = loadEntityContents;
