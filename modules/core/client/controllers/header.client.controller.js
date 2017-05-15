@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('core').controller('HeaderController', ['$scope', '$state', 'Authentication', 'Menus', '$cookies', '$http', '$rootScope', 'Socket', '$location', '$window',
-  function ($scope, $state, Authentication, Menus, $cookies, $http, $rootScope, Socket, $location, $window) {
+angular.module('core').controller('HeaderController', ['$scope', '$state', 'Authentication', 'Menus', '$cookies', '$http', '$rootScope', 'Socket', '$location', '$window', 'BotsService',
+  function ($scope, $state, Authentication, Menus, $cookies, $http, $rootScope, Socket, $location, $window, BotsService) {
     // Expose view variables
     $scope.$state = $state;
     $scope.authentication = Authentication;
@@ -14,9 +14,9 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
       console.log(err);
     });
 
-
-    $http.get('/api/bots/list').then(function (result) {
-      $scope.myBot = result.data;
+    BotsService.query({my: 1}).$promise.then(function (result) {
+      console.log(result)
+      $scope.myBot = result
     }, function (err) {
       console.log(err)
     });
