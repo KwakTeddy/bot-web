@@ -1292,7 +1292,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       dialogs.forEach(clear);
 
-      DialogSaveService.update({botId: vm.botId, fileName: vm.fileName, dialogs:dialogs},
+      var commons = angular.copy(treeData);
+      delete commons.children;
+
+      DialogSaveService.update({botId: vm.botId, fileName: vm.fileName, dialogs:dialogs, commons:commons},
         function() {
           new PNotify({
             title: '저장 완료',
@@ -1731,7 +1734,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       // TODO: need to update source and target in other links
       nodes = [];
       links_internal = [];
-      dialogs.forEach(handleDialog);
+      //dialogs.forEach(handleDialog);
+      handleDialog(treeData);
       if (vm.show_link)
         dialogs.forEach(handleLink);
 
@@ -2169,12 +2173,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           .attr("ry", 5);
 
         if (selectedNode.depth == 0) {
-          // selectedSVG.append('text')
-          //   .on("click", edit)
-          //   .attr("class", "icon")
-          //   .attr("x", rectW-iconSize*2)
-          //   .attr("y", -4)
-          //   .text(function(d) { return '\uf044';} );
+          selectedSVG.append('text')
+            .on("click", edit)
+            .attr("class", "icon")
+            .attr("x", rectW-iconSize*2)
+            .attr("y", -4)
+            .text(function(d) { return '\uf044';} );
           selectedSVG.append('text')
             .on("click", addChild)
             .attr("class", "icon")

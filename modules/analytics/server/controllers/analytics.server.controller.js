@@ -446,6 +446,7 @@ exports.save_dialogs = function(req, res) {
   var botId = req.body.botId;
   var fileName = req.body.fileName;
   var dialogs = req.body.dialogs;
+  var commons = req.body.commons;
   // var dialogs = JSON.parse(req.body.dialogs, function(key, value){
   //   console.log(key + "," + value);
   //   if(typeof value != 'string') return value;
@@ -494,7 +495,8 @@ exports.dialogs = function (req, res) {
       result.tasks = Object.keys(global._bots[botName].tasks).map(function(key) {return global._bots[botName].tasks[key].name;});
       result.types = Object.keys(global._bots[botName].types).map(function(key) {return global._bots[botName].types[key]});
       result.intents = Object.keys(global._bots[botName].intents).map(function(key) {return global._bots[botName].intents[key]});
-      result.entities = Object.keys(global._bots[botName].entities).map(function(key) {return global._bots[botName].entities[key]});
+      //result.entities = Object.keys(global._bots[botName].entities).map(function(key) {return global._bots[botName].entities[key]});
+      result.entities = Object.keys(global._bots[botName].entityContents).map(function(key) {return global._bots[botName].entityContents[key]});
       result.type_dic = global._bots[botName].types;
       cb(null);
     },
