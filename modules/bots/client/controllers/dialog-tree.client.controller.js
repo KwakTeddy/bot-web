@@ -1080,7 +1080,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         });
       }
       if (d.image) {
-        r.push({type:'Image', str:d.image.url});
+        r.push({type:'Image', str:d.image.url.substring(7)});
       }
     };
 
