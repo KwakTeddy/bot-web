@@ -222,6 +222,7 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
       $scope.find_dialog();
       var userCounts = AnalyticsService.query(
         {
+          bId: $cookies.get('default_bot'),
           kind: "all",
           arg: "empty"
         }, function() {
@@ -243,6 +244,7 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
 
       var dialogSuccess = DialogSuccessService.query(
         {
+          bId: $cookies.get('default_bot'),
           kind: 'all',
           arg: 'empty'
         }, function() {
@@ -278,6 +280,7 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
 
       var dialogSuccessYear = DialogSuccessService.query(
         {
+          bId: $cookies.get('default_bot'),
           kind: 'year',
           arg: $scope.year
         }, function() {
@@ -289,6 +292,7 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
 
       var dialogSuccessMonth = DialogSuccessService.query(
         {
+          bId: $cookies.get('default_bot'),
           kind: 'month',
           arg: $scope.ym
         }, function() {
