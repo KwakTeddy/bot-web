@@ -900,13 +900,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         else
           types.push('Text');
       }
+      if (!findType(input,"If") || (i != undefined && i.type == "If"))
+        types.push("If");
       if (!isDone || (isDone && findType(input,'Text'))) {
         if (!findType(input,'Image'))
           types.push('Image');
         types.push('Button');
       }
-      if (!findType(input,"If") || (i != undefined && i.type == "If"))
-        types.push("If");
       return types;
     };
 
@@ -1039,7 +1039,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
       if (d.if) {
         r.push({type:'If', str:d.if});
-        procOutput(d.output, r);
+        if (typeof d.output === 'string') {
+          r.push({type:'Text', str:d.output});
+        } else {
+          procOutput(d.output, r);
+        }
       }
       if (d.up) {
         r.push({type:'Up', str:d.up});
@@ -1067,7 +1071,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         });
       } else {
         var r = [];
-        procOutput(output,r);
+        if (typeof output === 'string') {
+          r.push({type:'Text', str:output});
+        } else {
+          procOutput(output,r);
+        }
         res.push(r);
       }
       return res;
@@ -1129,7 +1137,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         if (o.if) {
           newo.if = angular.copy(o.if);
           delete o.if;
+          if (Object.keys(o).length == 1 && typeof o.output === 'string') {
+            o = o.output;
+          }
           newo.output = angular.copy(o);
+        } else if (Object.keys(o).length == 1 && typeof o.output === 'string') {
+          newo = o.output
         } else {
           newo = o;
         }
