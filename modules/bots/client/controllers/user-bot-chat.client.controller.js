@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('user-bots').controller('UserBotChatController', ['$state', '$rootScope', '$scope', '$stateParams', '$document', '$location', '$compile', '$resource', '$cookies', 'Socket',
-  'UserBotsService', '$ionicModal', '$ionicScrollDelegate',
-  function ($state, $rootScope, $scope, $stateParams, $document, $location, $compile, $resource, $cookies, Socket, UserBotsService, $ionicModal, $ionicScrollDelegate) {
+  'UserBotsService', '$ionicModal', '$ionicScrollDelegate', '$http',
+  function ($state, $rootScope, $scope, $stateParams, $document, $location, $compile, $resource, $cookies, Socket, UserBotsService, $ionicModal, $ionicScrollDelegate, $http) {
     var vm = this;
     $scope.vm = vm;
 
@@ -40,6 +40,12 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       }
 
       $cookies.put('default_bot', vm.bot);
+      // $http.get('/api/bots/byNameId/'+vm.bot).then(function (result) {
+      //   console.log(result);
+      //   $cookies.put('botObjectId', result.data._id)
+      // }, function (err) {
+      //   console.log(err)
+      // });
 
       vm.isConnected = true;
       init();
@@ -229,6 +235,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       vm.userBot = userBot;
       $rootScope.botId = userBot.id;
       $rootScope.botObjectId = userBot._id;
+      $cookies.put('botObjectId', userBot._id);
       $rootScope.userBot = vm.userBot;
 
       var header = document.getElementById("chat-header");

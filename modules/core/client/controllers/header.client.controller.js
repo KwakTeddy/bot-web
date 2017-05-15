@@ -15,7 +15,6 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
     });
 
     BotsService.query({my: 1}).$promise.then(function (result) {
-      console.log(result)
       $scope.myBot = result
     }, function (err) {
       console.log(err)

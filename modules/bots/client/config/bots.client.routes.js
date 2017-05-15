@@ -130,21 +130,20 @@ function newBot(BotsService) {
   return new BotsService();
 }
 
-getBotFiles.$inject = ['BotFilesService', '$stateParams', '$rootScope'];
-function getBotFiles(BotFilesService, $stateParams, $rootScope) {
-  var _botId = $stateParams.botId ? $stateParams.botId : $rootScope.botObjectId;
+getBotFiles.$inject = ['BotFilesService', '$stateParams', '$rootScope', '$cookies'];
+function getBotFiles(BotFilesService, $stateParams, $rootScope, $cookies) {
+  var _botId = $stateParams.botId ? $stateParams.botId : $cookies.get('botObjectId');
 
   return BotFilesService.query({
     botId: _botId
   }).$promise;
 }
 
-readBotFile.$inject = ['BotFilesService', '$stateParams', '$rootScope', '$resource'];
-function readBotFile(BotFilesService, $stateParams, $rootScope, $resource) {
+readBotFile.$inject = ['BotFilesService', '$stateParams', '$rootScope', '$resource', '$cookies'];
+function readBotFile(BotFilesService, $stateParams, $rootScope, $resource, $cookies) {
   // console.log('readBotFile:' + $rootScope.botObjectId);
-  var _botId = $stateParams.botId ? $stateParams.botId : $rootScope.botObjectId;
+  var _botId = $stateParams.botId ? $stateParams.botId :  $cookies.get('botObjectId');
   var _fileId = $stateParams.fileId ? $stateParams.fileId : 'none';
-
   return BotFilesService.get({
     botId: _botId,
     fileId: _fileId

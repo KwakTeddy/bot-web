@@ -338,7 +338,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     var vm = this;
     vm.showTree = true;
     vm.userId = $rootScope.userId;
-    vm.bot_id = $stateParams.botId ? $stateParams.botId : $rootScope.botObjectId;
+    vm.bot_id = $stateParams.botId ? $stateParams.botId : $cookies.get('botObjectId');
+    // vm.bot_id = $stateParams.botId ? $stateParams.botId : $rootScope.botObjectId;
     vm.file_id = $stateParams.fileId ? $stateParams.fileId : file._id;
     vm.maxId = 0;
     vm.isChanged = false;
@@ -1528,7 +1529,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     vm.reloadTree = function() {
-
       $resource('/api/dialogs/:bot_id/:file_id', {}).get({bot_id: vm.bot_id, file_id: vm.file_id}, function(res) {
         vm.botId = res.botId;
         vm.fileName = res.fileName;
@@ -1554,6 +1554,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         //console.log(JSON.stringify(dialogs));
         vm.initTreeData();
         init();
+      }, function (err) {
+        console.log(err)
       });
     };
     vm.reloadTree();
