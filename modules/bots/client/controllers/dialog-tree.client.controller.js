@@ -1051,6 +1051,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     var procOutput = function(d,r) {
+      if (typeof d === 'string') {
+        r.push({type: 'Text', str: d});
+      }
       if (!d.if && d.output) {
         r.push({type:'Text', str:d.output});
       }
@@ -1074,7 +1077,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       if (d.up) {
         r.push({type:'Up', str:d.up});
       }
-      if (d.repeat) {
+      if (d.repeat && typeof d.repeat == 'string') {
         r.push({type:'Repeat', str:d.repeat+""});
       }
       if (d.return) {
