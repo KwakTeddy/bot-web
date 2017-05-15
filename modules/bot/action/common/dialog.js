@@ -886,7 +886,12 @@ function executeDialog(dialog, context, print, callback, options) {
           }
         }
 
+
         var userOut = type.processOutput(dialog.task, context, _output);
+
+        if(output.image || output.buttons || output.items || output.result)
+          dialog.task = utils.merge(dialog.task, output);
+
         print(userOut, dialog.task);
 
          userDilaog.addDialog(dialog.inRaw || context.dialog.inCurRaw || context.dialog.inRaw, userOut, context.dialog.isFail, dialog, context, function() {
@@ -894,6 +899,9 @@ function executeDialog(dialog, context, print, callback, options) {
         });
       } else if (output.if) {
         cb(null, output);
+      } else if(output.image || output.buttons || output.items || output.result) {
+        dialog.task = utils.merge(dialog.task, output);
+        print('', dialog.task);
       } else {
         cb(null);
       }

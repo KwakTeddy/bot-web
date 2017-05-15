@@ -1134,9 +1134,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           } else if (r.type === 'Repeat') {
             o.repeat = r.str;
           } else if (r.type === 'Image') {
-            o.image = r.str;
+            o.image = {url: '/files/'+r.str};
           } else if (r.type === 'Button') {
-            (o.buttons || (o.buttons = [])).push({name:r.str});
+            (o.buttons || (o.buttons = [])).push({text:r.str});
           }
         });
         var newo = {};

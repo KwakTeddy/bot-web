@@ -34,7 +34,10 @@ var dialogs = [
 			}
 		],
 		"output": {
-			"image": "스크린샷 2017-05-15 오후 6.08.48.png"
+			"image": {
+				"url": "/files/001-car.png"
+			},
+			"output": "image"
 		}
 	},
 	{
@@ -47,9 +50,10 @@ var dialogs = [
 			}
 		],
 		"output": {
+			"output": "버튼을 테스트하고 있습니다.",
 			"buttons": [
 				{
-					"name": "button1"
+					"text": "button1"
 				}
 			]
 		}

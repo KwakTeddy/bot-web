@@ -27,11 +27,14 @@ module.exports = function (io, socket) {
   socket.on('send_msg', function(msg) {
     bot.botProc(msg.bot, msg.channel || 'socket', msg.user, msg.msg, msg, function(_out, _task) {
 
-      if(_task == undefined || _task.result == undefined ) {
+      if(_task == undefined || (_task.result == undefined && _task.image == undefined && _task.buttons == undefined && _task.items == undefined)) {
         socket.emit('send_msg', _out);
-      } else {
+      } else if(_task.result) {
         if(_task.result.text == undefined) _task.result.text = _out;
         socket.emit('send_msg', JSON.stringify(_task.result));
+      } else {
+        if(_task.text == undefined) _task.text = _out;
+        socket.emit('send_msg', JSON.stringify(_task));
       }
 
     }, msg.options);

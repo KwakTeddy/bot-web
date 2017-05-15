@@ -550,12 +550,17 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     }
 
     function addBotBubble(msg) {
-      var text = (msg && msg.text) ? msg.text : msg;
+      // var text = (msg != undefined && msg.text != undefined) ? msg.text : msg;
+      var text;
+      if(msg != undefined && msg.text != undefined)
+        text = msg.text;
+      else
+        text = msg;
 
       var d = new Date();
       var datetext = d.getHours() + ':' + d.getMinutes();
       var innerHTML =
-        '<div class="item item-avatar b-none friend">'+
+        '<div class="item item-avatar b-none friend" id="i'+d.getTime()+'">'+
         '<img src="'+(vm.userBot.imageFile? vm.userBot.imageFile: '/images/!logged-user.jpg')+'">' +
         '<div class="text-xs"><span class="font-bold m-r-sm">'+vm.userBot.name+'</span><span class="color-grey-500">'+datetext+'</span></div>' +
         '<div class="bubble"><i class="icon-tail"></i>' +
@@ -567,7 +572,9 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
       if(msg.buttons) {
           for(var i in msg.buttons) {
-            innerHTML += '<div class="bubble-button"><a href="' + msg.buttons[i].url + '" target="_blank">' + msg.buttons[i].text + '</a></div>';
+            if(msg.buttons[i].url) innerHTML += '<div class="bubble-button"><a href="' + msg.buttons[i].url + '" target="_blank">' + msg.buttons[i].text + '</a></div>';
+            else innerHTML += '<div class="bubble-button"><a ng-click="vm.sendMsg(\'' + msg.buttons[i].text + '\')">' + msg.buttons[i].text + '</a></div>';
+
           }
         }
 
@@ -577,6 +584,9 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
       var main = document.getElementById('chat_main');
       main.insertAdjacentHTML('beforeend', innerHTML);
+
+      var element = angular.element(document.querySelector('#i' +d.getTime()));
+      $compile(element.contents())($scope);
 
       if(_platform == 'mobile') $ionicScrollDelegate.scrollBottom();
       else main.scrollTop = main.scrollHeight - main.clientHeight;
