@@ -159,6 +159,7 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
           $scope.selected = $scope.dialogs[0];
 
           console.log($scope.dialogs)
+          console.log($scope.selected)
 
           $('.modal-with-form').click(); 
         }else {
@@ -208,7 +209,7 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
         arg = $scope.ym;
       var dialogFailure = DialogFailureService.query(
         {
-          botId: $cookies.get('default_bot'),
+          bId: $cookies.get('default_bot'),
           kind: $scope.kind,
           arg: arg
         }, function() {
