@@ -11,8 +11,8 @@ var setInput = function(cur) {
 
 // Bots controller
 angular.module('bots').controller('BotController', [
-  '$resource', '$scope', '$state', '$window', '$timeout', '$compile', '$stateParams', 'botResolve', 'TemplatesService', 'FileUploader', 'dialogsetsResolve', '$rootScope',
-  function ($resource, $scope, $state, $window, $timeout, $compile, $stateParams, bot, TemplatesService, FileUploader, dialogsetsResolve, $rootScope) {
+  '$resource', '$scope', '$state', '$window', '$timeout', '$compile', '$stateParams', 'botResolve', 'TemplatesService', 'FileUploader', 'dialogsetsResolve',
+  function ($resource, $scope, $state, $window, $timeout, $compile, $stateParams, bot, TemplatesService, FileUploader, dialogsetsResolve) {
     var vm = this;
     vm.bot = bot;
     vm.dialogSets= dialogsetsResolve;
@@ -43,10 +43,6 @@ angular.module('bots').controller('BotController', [
 
       vm.bot.$save(function (response) {
         $state.go('bots.list');
-        // console.log($rootScope);
-        // console.log(response);
-        // $scope.$emit('myBot', response);
-        // $window.location.reload();
 
         // $location.path('bots/' + response._id);
       }, function (errorResponse) {

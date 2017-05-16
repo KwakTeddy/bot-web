@@ -52,7 +52,6 @@ exports.create = function(req, res) {
                     unit['botId'] = req.body.botName;
                     synonym.push(unit);
                   }
-
                 }
                 req.body.content[i]['entityId'] = entity._id ;
                 req.body.content[i]['botId'] = req.body.botName;
