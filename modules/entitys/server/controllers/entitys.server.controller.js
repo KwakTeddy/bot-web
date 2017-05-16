@@ -334,6 +334,31 @@ exports.list = function(req, res) {
   });
 };
 
+
+exports.listEntityContents = function(req, res) {
+  var Entity = mongoose.model('Entity');
+
+  var entitys = [];
+  Entity.find({botId: req.params.botName}).lean().exec(function(err, docs) {
+    entitys = docs;
+    for(var i in docs) {
+      docs[i].name = '@' + docs[i].name;
+    }
+
+    var EntityContent = mongoose.model('EntityContent');
+
+    EntityContent.find({botId: req.params.botName}).lean().populate('entityId').exec(function(err, docs) {
+      for(var i in docs) {
+        docs[i].name = docs[i].name + '@' + (docs[i].entityId ? docs[i].entityId.name : '');
+      }
+
+      entitys = entitys.concat(docs);
+
+      res.jsonp(entitys);
+    });
+  });
+};
+
 /**
  * Custom action middleware
  */

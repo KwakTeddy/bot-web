@@ -24,6 +24,9 @@ module.exports = function(app) {
     .delete(entitys.contentDelete);
 
 
+  app.route('/api/entityContents/:botName')//all(entitysPolicy.isAllowed)
+    .get(entitys.listEntityContents)
+
   app.route('/api/entitysContent/:entityId')//all(entitysPolicy.isAllowed)
     .get(entitys.read)
     .post(entitys.updateContent)
