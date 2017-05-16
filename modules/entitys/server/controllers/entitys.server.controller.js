@@ -43,13 +43,16 @@ exports.create = function(req, res) {
             } else {
               var synonym = [];
               for(var i = 0; i < req.body.content.length; i++){
-                for(var j = 0; j < req.body.content[i].syn.length; j++){
-                  var unit = {};
-                  unit['name'] = req.body.content[i].syn[j].name;
-                  unit['contentId'] = req.body.content[i].name;
-                  unit['entityId'] = entity._id;
-                  unit['botId'] = req.body.botName;
-                  synonym.push(unit);
+                if(req.body.content[i].syn.length){
+                  for(var j = 0; j < req.body.content[i].syn.length; j++){
+                    var unit = {};
+                    unit['name'] = req.body.content[i].syn[j].name;
+                    unit['contentId'] = req.body.content[i].name;
+                    unit['entityId'] = entity._id;
+                    unit['botId'] = req.body.botName;
+                    synonym.push(unit);
+                  }
+
                 }
                 req.body.content[i]['entityId'] = entity._id ;
                 req.body.content[i]['botId'] = req.body.botName;
