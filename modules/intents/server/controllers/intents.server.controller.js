@@ -92,7 +92,7 @@ exports.read = function(req, res) {
   // convert mongoose document to JSON
   var intent = req.intent ? req.intent.toJSON() : {};
 
-  if (req.user && intent.user && (String(req.user._id) == String(intent.user._id)) && (req.intent.botId == req.params.botName)){
+  if (/*req.user && intent.user && (String(req.user._id) == String(intent.user._id)) && */(req.intent.botId == req.params.botName)){
     // Add a custom field to the Article, for determining if the current User is the "owner".
     // NOTE: This field is NOT persisted to the database, since it doesn't exist in the Article model.
     intent.isCurrentUserOwner = req.user && intent.user && intent.user._id.toString() === req.user._id.toString() ? true : false;
