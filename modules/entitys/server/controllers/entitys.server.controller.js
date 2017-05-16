@@ -100,7 +100,7 @@ exports.read = function(req, res) {
   var entity = req.entity ? req.entity.toJSON() : {};
   console.log(util.inspect(entity));
 
-  if (req.user && entity.user && (String(req.user._id) == String(entity.user._id)) && (req.entity.botId == req.params.botName)) {
+  if (/*req.user && entity.user && (String(req.user._id) == String(entity.user._id)) && */(req.entity.botId == req.params.botName)) {
     // Add a custom field to the Article, for determining if the current User is the "owner".
     // NOTE: This field is NOT persisted to the database, since it doesn't exist in the Article model.
     entity.isCurrentUserOwner = req.user && entity.user && entity.user._id.toString() === req.user._id.toString() ? true : false;
