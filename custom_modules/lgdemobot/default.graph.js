@@ -405,7 +405,7 @@ var dialogs = [
 						]
 					}
 				],
-				"output": "[답변]+item.content+다른 경우를 보시려면 \"이전\"을 입력해주세요답변이 유용한가요?",
+				"output": "[답변]+listType.content+다른 경우를 보시려면 \"이전\"을 입력해주세요답변이 유용한가요?",
 				"name": "dialog_default75",
 				"task": "checkcontext",
 				"children": [
@@ -513,7 +513,7 @@ var dialogs = [
 						]
 					}
 				],
-				"output": "[답변]\n+doc.content+\n\n다른 경우를 보시려면 \"이전\"을 입력해주세요\n\n답변이 유용한가요?",
+				"output": "[답변]+listType.content+다른 경우를 보시려면 \"이전\"을 입력해주세요답변이 유용한가요?",
 				"name": "dialog_default87",
 				"children": [
 					{
@@ -620,7 +620,7 @@ var dialogs = [
 						]
 					}
 				],
-				"output": "[답변]\n+doc.content+\n\n다른 경우를 보시려면 \"이전\"을 입력해주세요\n\n답변이 유용한가요?",
+				"output": "[답변]+listType.content+다른 경우를 보시려면 \"이전\"을 입력해주세요답변이 유용한가요?",
 				"name": "dialog_default99",
 				"children": [
 					{
@@ -830,7 +830,7 @@ var dialogs = [
 						]
 					}
 				],
-				"output": "[답변]\n+doc.content+\n\n다른 경우를 보시려면 \"이전\"을 입력해주세요\n\n답변이 유용한가요?",
+				"output": "[답변]+listType.content+다른 경우를 보시려면 \"이전\"을 입력해주세요답변이 유용한가요?",
 				"name": "dialog_default147",
 				"children": [
 					{
@@ -969,7 +969,7 @@ var dialogs = [
 						]
 					}
 				],
-				"output": "[답변]\n+doc.content+\n\n다른 경우를 보시려면 \"이전\"을 입력해주세요\n\n답변이 유용한가요?",
+				"output": "[답변]+listType.content+다른 경우를 보시려면 \"이전\"을 입력해주세요답변이 유용한가요?",
 				"name": "dialog_default163",
 				"children": [
 					{
@@ -1199,6 +1199,19 @@ var dialogs = [
 				"output": {
 					"call": "약냉"
 				}
+			},
+			{
+				"name": "dialog_default209",
+				"id": "default209",
+				"filename": "default",
+				"input": [
+					{
+						"if": "true"
+					}
+				],
+				"output": {
+					"repeat": "1"
+				}
 			}
 		]
 	},
@@ -1227,6 +1240,19 @@ var dialogs = [
 				],
 				"output": {
 					"call": "무냉"
+				}
+			},
+			{
+				"name": "dialog_default208",
+				"id": "default208",
+				"filename": "default",
+				"input": [
+					{
+						"if": "true"
+					}
+				],
+				"output": {
+					"repeat": "1"
 				}
 			}
 		]
@@ -1257,6 +1283,19 @@ var dialogs = [
 				"output": {
 					"call": "에어컨약냉"
 				}
+			},
+			{
+				"name": "dialog_default207",
+				"id": "default207",
+				"filename": "default",
+				"input": [
+					{
+						"if": "true"
+					}
+				],
+				"output": {
+					"repeat": "1"
+				}
 			}
 		]
 	},
@@ -1285,6 +1324,19 @@ var dialogs = [
 				],
 				"output": {
 					"call": "에어컨무냉"
+				}
+			},
+			{
+				"name": "dialog_default206",
+				"id": "default206",
+				"filename": "default",
+				"input": [
+					{
+						"if": "true"
+					}
+				],
+				"output": {
+					"repeat": "1"
 				}
 			}
 		]
@@ -1394,6 +1446,19 @@ var dialogs = [
 				"output": {
 					"call": "냉장고유형1"
 				}
+			},
+			{
+				"name": "dialog_default205",
+				"id": "default205",
+				"filename": "default",
+				"input": [
+					{
+						"if": "true"
+					}
+				],
+				"output": {
+					"repeat": "1"
+				}
 			}
 		]
 	},
@@ -1433,6 +1498,19 @@ var dialogs = [
 				"output": {
 					"call": "냉장고유형2"
 				}
+			},
+			{
+				"name": "dialog_default204",
+				"id": "default204",
+				"filename": "default",
+				"input": [
+					{
+						"if": "true"
+					}
+				],
+				"output": {
+					"repeat": "1"
+				}
 			}
 		]
 	},
@@ -1470,6 +1548,19 @@ var dialogs = [
 					}
 				],
 				"output": "죄송합니다. 에어컨의 강냉 관련 질문은 챗봇상담이 불가능합니다."
+			},
+			{
+				"name": "dialog_default203",
+				"id": "default203",
+				"filename": "default",
+				"input": [
+					{
+						"if": "true"
+					}
+				],
+				"output": {
+					"repeat": "1"
+				}
 			}
 		]
 	}
