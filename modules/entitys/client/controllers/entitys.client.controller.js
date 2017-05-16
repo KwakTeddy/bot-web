@@ -165,12 +165,12 @@
           vm.entity['content'] = [];
         }
         if (vm.entityContent){
-          for(var i = 0; i < vm.entity.content.length; i++){
-            if (vm.entity.content[i].name == vm.entityContent){
-              vm.contentError = '동일한 내용이 존재합니다';
-              return false
-            }
-          }
+          // for(var i = 0; i < vm.entity.content.length; i++){
+          //   if (vm.entity.content[i].name == vm.entityContent){
+          //     vm.contentError = '동일한 내용이 존재합니다';
+          //     return false
+          //   }
+          // }
           vm.entity.content.unshift({name: vm.entityContent, syn:[{name: vm.entityContent}]});
           console.log(vm.entity.content);
           vm.entityContent = '';
