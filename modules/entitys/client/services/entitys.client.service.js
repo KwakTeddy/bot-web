@@ -17,4 +17,21 @@
       }
     });
   }
+
+  angular
+    .module('entitys')
+    .factory('EntityContentsService', EntityContentsService);
+
+  EntityContentsService.$inject = ['$resource'];
+
+  function EntityContentsService($resource) {
+    return $resource('api/entityContents/:botName/:entityId', {
+      entityId: '@_id'
+    }, {
+      update: {
+        method: 'PUT'
+      }
+    });
+  }
+
 })();

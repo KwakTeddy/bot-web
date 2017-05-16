@@ -143,6 +143,8 @@ function loadEntityContents(bot, callback) {
       }
       bot.entityContents = bot.entityContents.concat(docs);
 
+      bot.entities = bot.entityContents;
+
       if(callback) callback();
     });
   });
