@@ -139,7 +139,7 @@ function loadEntityContents(bot, callback) {
 
     EntityContent.find({botId: bot.id}).lean().populate('entityId').exec(function(err, docs) {
       for(var i in docs) {
-        docs[i].name = docs[i].name + '@' + docs[i].entityId.name;
+        docs[i].name = docs[i].name + '@' + (docs[i].entityId ? docs[i].entityId.name : '');
       }
       bot.entityContents = bot.entityContents.concat(docs);
 
