@@ -42,7 +42,7 @@ angular.module('bots').controller('BotController', [
       }
 
       vm.bot.$save(function (response) {
-        $state.go('bots.list')
+        $state.go('bots.list');
         // console.log($rootScope);
         // console.log(response);
         // $scope.$emit('myBot', response);

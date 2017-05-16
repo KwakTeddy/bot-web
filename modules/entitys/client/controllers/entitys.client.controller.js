@@ -210,20 +210,21 @@
     };
 
     vm.contentSynSave = function (target) {
+      console.log('mauauau')
       if(vm.entityContentSyn){
         if(!target.syn){
           target['syn'] = [];
         }
         for(var i = 0; i < target.syn.length; i++){
-          if (target.syn[i].name == vm.entityContentSyn){
-            var border = angular.copy(document.getElementById('synWrapper_' + target.name + '_' + vm.entityContentSyn).style.border);
-            var syn = angular.copy(vm.entityContentSyn);
-            document.getElementById('synWrapper_' + target.name + '_' + syn).style.border = 'pink solid 1px';
-            $timeout(function () {
-              document.getElementById('synWrapper_' + target.name + '_' + syn).style.border = border;
-            }, 3000);
-            return
-          }
+          // if (target.syn[i].name == vm.entityContentSyn){
+          //   var border = angular.copy(document.getElementById('synWrapper_' + target.name + '_' + vm.entityContentSyn).style.border);
+          //   var syn = angular.copy(vm.entityContentSyn);
+          //   document.getElementById('synWrapper_' + target.name + '_' + syn).style.border = 'pink solid 1px';
+          //   $timeout(function () {
+          //     document.getElementById('synWrapper_' + target.name + '_' + syn).style.border = border;
+          //   }, 3000);
+          //   return
+          // }
         }
         target.syn.push({name: vm.entityContentSyn});
         vm.entityContentSyn = '';
