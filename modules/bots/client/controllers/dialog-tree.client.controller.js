@@ -15,10 +15,10 @@ function gogo(filename) {
 // Bots controller
 angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope', '$state', '$window','$timeout',
   '$stateParams', '$resource', 'Dialogs', 'DialogSaveService', 'OpenTasksService', 'FileUploader','$document',
-  'fileResolve', 'BotFilesService', 'CoreUtils', 'botFilesResolve', 'Socket', '$uibModal', '$compile', '$cookies', '$http','IntentsService',
+  'fileResolve', 'BotFilesService', 'CoreUtils', 'botFilesResolve', 'Socket', '$uibModal', '$compile', '$cookies', '$http','IntentsService', 'EntitysService',
   function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, Dialogs, DialogSaveService,
             OpenTasksService, FileUploader, $document, file, BotFilesService, CoreUtils, files, Socket,
-            $uibModal, $compile, $cookies, $http, IntentsService) {
+            $uibModal, $compile, $cookies, $http, IntentsService, EntitysService) {
     (function($) {
       'use strict';
 
@@ -1223,9 +1223,18 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       IntentsService.query({botName: $rootScope.botId}).$promise.then(function (result) {
         vm.intents = result.map(function(i) { return i.name; });
+        console.log(vm.intents)
       }, function (err) {
         console.log(err);
       });
+
+      EntitysService.query({botName: $cookies.get('default_bot')}).$promise.then(function (result) {
+        vm.entities = result.map(function (i) {
+          return i.name
+        })
+      }, function (err) {
+        console.log(err)
+      })
 
       $scope.$apply();
       $('.modal-with-form').click();
