@@ -445,6 +445,8 @@ exports.save_dialog = function(req, res) {
 
 exports.load_bot = function(req, res) {
   var botId = req.params.bId;
+  var fileName = req.params.fileName;
+  botLib.buildBot(botId, null, fileName);
   botLib.loadBot(botId, function(bot) {
     console.log("loadBot: " + botId);
     res.status(200).send({message: 'done'});

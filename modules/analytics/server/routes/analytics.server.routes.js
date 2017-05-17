@@ -33,7 +33,7 @@ module.exports = function(app) {
   app.route('/api/saveDialog/:bId/:fileName')//all(analyticsPolicy.isAllowed)
     .put(analytics.save_dialogs);
 
-  app.route('/api/loadBot/:bId')//all(analyticsPolicy.isAllowed)
+  app.route('/api/loadBot/:bId/:fileName')//all(analyticsPolicy.isAllowed)
     .get(analytics.load_bot);
 
   app.route('/api/dialogs/:bId/:fileId')//all(analyticsPolicy.isAllowed)

@@ -485,7 +485,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     vm.saveFile = function () {
       new BotFilesService({botId: vm.bot_id, _id: vm.currentTab.file_id, fileData: vm.currentTab.data}).$save(function (botFile) {
-        $resource('/api/loadBot/:bot_id', {}).get({bot_id: file.botName, }, function(res) {
+        $resource('/api/loadBot/:bot_id/:fileName', {}).get({bot_id: vm.botId, fileName: vm.fileName}, function(res) {
           $scope.message = "저장되었습니다";
           var modalInstance = $uibModal.open({
             templateUrl: 'modules/bots/client/views/modal-bots.html',
