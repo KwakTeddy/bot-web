@@ -1057,10 +1057,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     var procOutput = function(d,r) {
       if (typeof d === 'string') {
-        r.push({type: 'Text', str: d});
+        r.push({type: 'Text', str: d.replace(/\\/g,'\\\\')});
       }
       if (!d.if && d.output) {
-        r.push({type:'Text', str:d.output});
+        r.push({type:'Text', str:d.output.replace(/\\/g,'\\\\')});
       }
       if (d.call) {
         r.push({type:'Call', str:d.call});
@@ -1109,7 +1109,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       } else {
         var r = [];
         if (typeof output === 'string') {
-          r.push({type:'Text', str:output});
+          r.push({type:'Text', str:output.replace(/\n/g,'\\n')});
         } else {
           procOutput(output,r);
         }
@@ -1402,7 +1402,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     var handlePrintOutput = function(dialog, output) {
-      if (typeof output == 'string') return output;
+      if (typeof output == 'string') return output.replace(/\n/g,'\\n');
       else if(Array.isArray(output)) {
         var _output = '';
         for (var i = 0; i < output.length; i++) {
@@ -1413,7 +1413,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       } else {
         var text = [];
         if (typeof output.output === 'string') {
-          text.push(/*'[문장] ' + */output.output);
+          text.push(/*'[문장] ' + */output.output.replace(/\n/g, '\\n'));
         }
         if (output.if) {
           text.push('[조건] ' + output.if);
