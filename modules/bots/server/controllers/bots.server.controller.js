@@ -247,13 +247,13 @@ exports.read = function (req, res) {
 exports.update = function (req, res) {
   var bot = req.bot;
   bot = _.extend(bot , req.body);
-  console.log(util.inspect(mongoose.Types.ObjectId(bot.dialogsets[0])));
+  console.log(util.inspect(mongoose.Types.ObjectId(bot.dialogsets[0]._id)));
   console.log(util.inspect(bot.dialogsets));
   console.log(util.inspect('---------------------------------'));
   console.log(util.inspect(bot));
   if (bot.dialogsets && bot.dialogsets.length){
     for (var i=0; i < bot.dialogsets.length; ++i) {
-      bot.dialogsets[i] = mongoose.Types.ObjectId(bot.dialogsets[i]);
+      bot.dialogsets[i] = bot.dialogsets[i];
     }
   }
   async.waterfall([
