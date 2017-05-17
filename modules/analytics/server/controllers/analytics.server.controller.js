@@ -489,13 +489,13 @@ exports.dialogs = function (req, res) {
         result.botId = doc.id;
         if (!global._bots[doc.id]) {
           botLib.loadBot(doc.id, function (bot) {
-            dialogs_data = utils.clone(bot.dialogs);
-            common_dialogs = utils.clone(global._bots[doc.id].commonDialogs);
+            dialogs_data = (bot.dialogs);
+            common_dialogs = (global._bots[doc.id].commonDialogs);
             cb(null, doc.id);
           });
         } else {
-          dialogs_data = utils.clone(global._bots[doc.id].dialogs);
-          common_dialogs = utils.clone(global._bots[doc.id].commonDialogs);
+          dialogs_data = (global._bots[doc.id].dialogs);
+          common_dialogs = (global._bots[doc.id].commonDialogs);
           cb(null, doc.id);
         }
       });
