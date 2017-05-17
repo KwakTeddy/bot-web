@@ -514,6 +514,7 @@ exports.dialogs = function (req, res) {
 
       var clear = function(d) {
         delete d.parent;
+        delete d.top;
         if(d.context) d.context = {name: d.context.name};
         if (d.children) {
           d.children.forEach(clear);
