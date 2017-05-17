@@ -110,7 +110,7 @@ exports.dialogSuccessList = function (req, res) {
     function(cb) {
       UserDialog.aggregate(
         [
-          {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" }, inOut: '$inOut', dialog: '$dialog'}},
+          {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" }, inOut: '$inOut', dialog: '$dialog', botId: '$botId'}},
           {$match: cond},
           {$group: {_id: {year: '$year', month: '$month', date: '$day'}, date: {$first: '$date'}, count: {$sum: 1}}},
           {$sort: {_id:-1, date: -1}}
@@ -129,7 +129,7 @@ exports.dialogSuccessList = function (req, res) {
       cond.fail = true;
       UserDialog.aggregate(
         [
-          {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" }, inOut: '$inOut', dialog: '$dialog', fail:'$fail'}},
+          {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" }, inOut: '$inOut', dialog: '$dialog', fail:'$fail', botId:'$botId'}},
           {$match: cond},
           {$group: {_id: {year: '$year', month: '$month', date: '$day'}, date: {$first: '$date'}, count: {$sum: 1}}},
           {$sort: {_id:1, date: -1}}
@@ -181,7 +181,7 @@ exports.sessionSuccessList = function (req, res) {
   console.log(JSON.stringify(cond));
   UserDialog.aggregate(
     [
-      {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" }, inOut: '$inOut', dialog: '$dialog', fail:'$fail'}},
+      {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" }, inOut: '$inOut', dialog: '$dialog', fail:'$fail', botId:"$botId"}},
       {$match: cond},
       {$group: {_id: '$dialog', count: {$sum: 1}}},
       {$sort: {count: -1}}
