@@ -511,9 +511,19 @@ exports.dialogs = function (req, res) {
     },
     function (cb) {
       result.data = [];
+
+      var clear = function(d) {
+        delete d.parent;
+        if(d.context) d.context = {name: d.context.name};
+        if (d.children) {
+          d.children.forEach(clear);
+        }
+      };
+
+      dialogs_data.forEach(clear);
+
       dialogs_data.forEach(function (d) {
         if (d.filename === result.fileName) {
-          if(d.context) d.context = {name: d.context.name};
           result.data.push(d);
         }
       });
