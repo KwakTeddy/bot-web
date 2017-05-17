@@ -39,6 +39,9 @@ module.exports = function(app) {
   app.route('/api/dialogs/:bId/:fileId')//all(analyticsPolicy.isAllowed)
     .get(analytics.dialogs);
 
+  app.route('/api/dialoginfos/:bId/:fileId')//all(analyticsPolicy.isAllowed)
+    .get(analytics.dialoginfos);
+
   app.route('/api/resetDB')//all(analyticsPolicy.isAllowed)
     .delete(analytics.resetDB);
 

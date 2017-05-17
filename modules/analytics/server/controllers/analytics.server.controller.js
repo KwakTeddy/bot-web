@@ -470,6 +470,47 @@ exports.save_dialogs = function(req, res) {
   });
 };
 
+
+var isCyclic = function(obj) {
+  var keys = [];
+  var stack = [];
+  var stackSet = new Set();
+  var detected = false;
+
+  function detect(obj, key) {
+    if (!(obj instanceof Object)) {
+      return;
+    } // Now works with other
+      // kinds of object.
+
+    if (stackSet.has(obj)) { // it's cyclic! Print the object and its locations.
+      var oldindex = stack.indexOf(obj);
+      var l1 = keys.join('.') + '.' + key;
+      var l2 = keys.slice(0, oldindex + 1).join('.');
+      console.log('CIRCULAR: ' + l1 + ' = ' + l2 + ' = ' + obj);
+      console.log(obj);
+      detected = true;
+      return;
+    }
+
+    keys.push(key);
+    stack.push(obj);
+    stackSet.add(obj);
+    for (var k in obj) { //dive on the object's children
+      if (obj.hasOwnProperty(k)) {
+        detect(obj[k], k);
+      }
+    }
+
+    keys.pop();
+    stack.pop();
+    stackSet.delete(obj);
+    return;
+  }
+  detect(obj, 'obj');
+  return detected;
+};
+
 exports.dialogs = function (req, res) {
   var botId = req.params.bId;
   var fileId = req.params.fileId;
@@ -499,15 +540,6 @@ exports.dialogs = function (req, res) {
           cb(null, doc.id);
         }
       });
-    },
-    function(botName,cb) {
-      result.tasks = Object.keys(global._bots[botName].tasks).map(function(key) {return global._bots[botName].tasks[key].name;});
-      result.types = Object.keys(global._bots[botName].types).map(function(key) {return global._bots[botName].types[key]});
-      result.intents = Object.keys(global._bots[botName].intents).map(function(key) {return global._bots[botName].intents[key]});
-      //result.entities = Object.keys(global._bots[botName].entities).map(function(key) {return global._bots[botName].entities[key]});
-      result.entities = Object.keys(global._bots[botName].entityContents).map(function(key) {return global._bots[botName].entityContents[key]});
-      result.type_dic = global._bots[botName].types;
-      cb(null);
     },
     function (cb) {
       result.data = [];
@@ -546,49 +578,45 @@ exports.dialogs = function (req, res) {
       //       return (typeof value === 'function' ) ? value.toString() : value;
       //   });
 
-      var isCyclic = function(obj) {
-        var keys = [];
-        var stack = [];
-        var stackSet = new Set();
-        var detected = false;
-
-        function detect(obj, key) {
-          if (!(obj instanceof Object)) { return; } // Now works with other
-                                                    // kinds of object.
-
-          if (stackSet.has(obj)) { // it's cyclic! Print the object and its locations.
-            var oldindex = stack.indexOf(obj);
-            var l1 = keys.join('.') + '.' + key;
-            var l2 = keys.slice(0, oldindex + 1).join('.');
-            console.log('CIRCULAR: ' + l1 + ' = ' + l2 + ' = ' + obj);
-            console.log(obj);
-            detected = true;
-            return;
-          }
-
-          keys.push(key);
-          stack.push(obj);
-          stackSet.add(obj);
-          for (var k in obj) { //dive on the object's children
-            if (obj.hasOwnProperty(k)) { detect(obj[k], k); }
-          }
-
-          keys.pop();
-          stack.pop();
-          stackSet.delete(obj);
-          return;
-        }
-
-        detect(obj, 'obj');
-        return detected;
-      };
-
       isCyclic(result);
       return res.jsonp(result);
     }
   ]);
 };
 
+exports.dialoginfos = function (req, res) {
+  var botId = req.params.bId;
+  var fileId = req.params.fileId;
+
+  var result = {};
+  async.waterfall([
+    function (cb) {
+      BotFile.findById(fileId).exec(function (err, file) {
+        result.fileName= file.name.split(".")[0];
+        cb(null);
+      });
+    },
+    function (cb) {
+      Bot.findOne({_id: botId}).exec(function (err, doc) {
+        result.botId = doc.id;
+        if (!global._bots[doc.id]) {
+          botLib.loadBot(doc.id, function (bot) {
+            cb(null, doc.id);
+          });
+        } else {
+          cb(null, doc.id);
+        }
+      });
+    },
+    function(botName,cb) {
+      result.tasks = Object.keys(global._bots[botName].tasks).map(function(key) {return global._bots[botName].tasks[key].name;});
+      result.types = Object.keys(global._bots[botName].types).map(function(key) {return global._bots[botName].types[key]});
+      result.type_dic = global._bots[botName].types;
+      console.log("dialoginfos:" + result.botId + "(" + botId + "), " + result.fileName);
+      return res.jsonp(result);
+    }
+  ]);
+};
 exports.resetDB = function(req, res) {
   console.log('resetDB');
   var cond = { inOut: true};
