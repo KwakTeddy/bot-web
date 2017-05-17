@@ -1221,6 +1221,20 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         $scope.addInput();
       }
 
+      $resource('/api/dialogs/:bot_id/:file_id', {}).get({bot_id: vm.bot_id, file_id: vm.file_id}, function(res) {
+        vm.tasks = res.tasks.map(function (t) { return {name: t, type: 'default'} });
+        vm.types = res.types.map(function (t) { return t.name });
+        vm.type_dic = res.type_dic;
+
+        OpenTasksService.query({botId: $cookies.get('default_bot')}).$promise.then(function (result) {
+          vm.commonTasks = result;
+          vm.entity = [];
+          vm.commonTasks.forEach(function (d) { vm.entity[d.name] = d.entity; });
+          vm.commonTasks = vm.commonTasks.map(function (t) { return {name: t.name, paramSchema: t.paramSchema, type: 'common'}; });
+          vm.tasks = vm.tasks.concat(vm.commonTasks);
+        });
+      });
+
       IntentsService.query({botName: $rootScope.botId}).$promise.then(function (result) {
         vm.intents = result.map(function(i) { return i.name; });
         console.log(vm.intents)
@@ -1234,7 +1248,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         })
       }, function (err) {
         console.log(err)
-      })
+      });
 
       $scope.$apply();
       $('.modal-with-form').click();
@@ -1566,13 +1580,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       $resource('/api/dialogs/:bot_id/:file_id', {}).get({bot_id: vm.bot_id, file_id: vm.file_id}, function(res) {
         vm.botId = res.botId;
         vm.fileName = res.fileName;
-        vm.tasks = res.tasks.map(function(t) { return {name:t, type:'default'}});
-        // vm.intents = res.intents.map(function(i) { return i.name; });
-        vm.entities = res.entities.map(function(i) { return i.name; });
-        vm.types = res.types.map(function(t) { return t.name} );
-        vm.type_dic = res.type_dic;
         dialogs = res.data;
         common_dialogs = res.common;
+        // vm.intents = res.intents.map(function(i) { return i.name; });
+        //vm.entities = res.entities.map(function(i) { return i.name; });
+        vm.tasks = res.tasks.map(function(t) { return {name:t, type:'default'}});
+        vm.types = res.types.map(function(t) { return t.name} );
+        vm.type_dic = res.type_dic;
 
         OpenTasksService.query({botId:$cookies.get('default_bot')}).$promise.then(function(result) {
           vm.commonTasks = result;
