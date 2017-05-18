@@ -161,6 +161,7 @@ function receivedMessage(event) {
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
   var message = event.message;
+  console.log('--------------------------------------------------------------------------')
 
   if (event.botId == "subscribeBot"){
     console.log('Subscribe Coming In');

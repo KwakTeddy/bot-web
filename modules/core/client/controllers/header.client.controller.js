@@ -94,5 +94,20 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
     $scope.$on('$stateChangeSuccess', function () {
       $scope.isCollapsed = false;
     });
+
+    $scope.signout = function () {
+
+      var cookies = $cookies.getAll();
+      angular.forEach(cookies, function (v, k) {
+        $cookies.remove(k);
+      });
+      $cookies.put('default_bot', 'athena')
+      $http.get('/api/auth/signout').then(function (result) {
+        console.log(result)
+        $window.location.reload();
+      }, function (err) {
+        console.log(err)
+      })
+    }
   }
 ]);
