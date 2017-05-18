@@ -364,7 +364,6 @@ function sendImageMessage(recipientId, text, task, token) {
       attachment: {
         type: "image",
         payload: {
-          title: text,
           url: task.image.url
         }
       }
