@@ -103,7 +103,7 @@ function respondMessage(to, text, botId, task) {
       // If we receive a text message, check to see if it matches any special
       // keywords and send back the corresponding example. Otherwise, just echo
       // the text we received.
-      console.log(task.result, {showHidden: false, depth: null})
+      console.log(util.inspect(task.result), {showHidden: false, depth: null})
       console.log(util.inspect(Object.keys(task.result).toString(), {showHidden: false, depth: null}))
       switch (Object.keys(task.result).toString()) {
         case 'image':
