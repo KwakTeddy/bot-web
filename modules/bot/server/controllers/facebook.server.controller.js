@@ -141,7 +141,7 @@ function respondMessage(to, text, botId, task) {
 
           }else {
             //text && image
-            sendImageMessage(to, text, task, tokenData);
+            sendGenericMessage(to, text, task, tokenData);
 
           }
         }else {
@@ -167,8 +167,7 @@ function respondMessage(to, text, botId, task) {
           }
         }else {
           if (task.hasOwnProperty('buttons')){
-            //buttons
-            sendButtonMessage(to, text, task, tokenData);
+            //buttons this is error
 
           }else {
             //nothing
@@ -404,7 +403,6 @@ function sendButtonMessage(recipientId, text, task, token) {
     delete task.buttons[i].text;
     task.buttons[i]['type'] = 'web_url';
   }
-  console.log(util.inspect(task, {showHidden: false, depth: null}));
 
   var messageData = {
     recipient: {
@@ -421,6 +419,9 @@ function sendButtonMessage(recipientId, text, task, token) {
       }
     }
   };
+  console.log(util.inspect(messageData, {showHidden: false, depth: null}));
+  console.log(util.inspect(messageData.message.payload, {showHidden: false, depth: null}));
+
   callSendAPI(messageData, token);
 }
 
