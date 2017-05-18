@@ -131,42 +131,42 @@ function respondMessage(to, text, botId, task) {
         if (task.hasOwnProperty('image')){
           if (task.hasOwnProperty('buttons')){
             //text && image && buttons
-            sendGenericMessage(to, text, task.result, tokenData);
+            sendGenericMessage(to, text, task, tokenData);
 
           }else {
             //text && image
-            sendGenericMessage(to, text, task.result, tokenData);
+            sendGenericMessage(to, text, task, tokenData);
 
           }
         }else {
           if (task.hasOwnProperty('buttons')){
             //text && buttons
-            sendButtonMessage(to, text, task.result, tokenData);
+            sendButtonMessage(to, text, task, tokenData);
 
           }else {
             //text
-            sendTextMessage(to, text, task.result, tokenData);
+            sendTextMessage(to, text, task, tokenData);
           }
         }
       }else {
         if (task.hasOwnProperty('image')){
           if (task.hasOwnProperty('buttons')){
             //image && buttons
-            sendGenericMessage(to, text, task.result, tokenData);
+            sendGenericMessage(to, text, task, tokenData);
 
           }else {
             //image
-            sendGenericMessage(to, text, task.result, tokenData);
+            sendGenericMessage(to, text, task, tokenData);
 
           }
         }else {
           if (task.hasOwnProperty('buttons')){
             //buttons
-            sendButtonMessage(to, text, task.result, tokenData);
+            sendButtonMessage(to, text, task, tokenData);
 
           }else {
             //nothing
-            sendTextMessage(to, text, task.result, tokenData);
+            sendTextMessage(to, text, task, tokenData);
 
           }
         }
