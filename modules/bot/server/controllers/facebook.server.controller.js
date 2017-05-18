@@ -90,7 +90,7 @@ function respondMessage(to, text, botId, task) {
     console.log('999999999998989812398129839128398');
     console.log(to);
 
-    if (task.result) {
+    if (task && task.result) {
       // If we receive a text message, check to see if it matches any special
       // keywords and send back the corresponding example. Otherwise, just echo
       // the text we received.
@@ -123,16 +123,58 @@ function respondMessage(to, text, botId, task) {
         default:
           sendTextMessage(to, text, task.result, tokenData);
       }
-    }
-    // else if (messageAttachments) {
-    //   sendTextMessage(to, "Message with attachment received");
-    // }
-    else {
-      // If we receive a text message, check to see if it matches any special
-      // keywords and send back the corresponding example. Otherwise, just echo
-      // the text we received.
+    }else {
       console.log('taks' + util.inspect(task), {showHidden: false, depth: null})
       console.log('taks' + util.inspect(text), {showHidden: false, depth: null})
+
+      if(text){
+        if (task.hasOwnProperty('image')){
+          if (task.hasOwnProperty('buttons')){
+            //text && image && buttons
+            sendGenericMessage(to, text, task.result, tokenData);
+
+          }else {
+            //text && image
+            sendGenericMessage(to, text, task.result, tokenData);
+
+          }
+        }else {
+          if (task.hasOwnProperty('buttons')){
+            //text && buttons
+            sendButtonMessage(to, text, task.result, tokenData);
+
+          }else {
+            //text
+            sendTextMessage(to, text, task.result, tokenData);
+          }
+        }
+      }else {
+        if (task.hasOwnProperty('image')){
+          if (task.hasOwnProperty('buttons')){
+            //image && buttons
+            sendGenericMessage(to, text, task.result, tokenData);
+
+          }else {
+            //image
+            sendGenericMessage(to, text, task.result, tokenData);
+
+          }
+        }else {
+          if (task.hasOwnProperty('buttons')){
+            //buttons
+            sendButtonMessage(to, text, task.result, tokenData);
+
+          }else {
+            //nothing
+            sendTextMessage(to, text, task.result, tokenData);
+
+          }
+        }
+      }
+
+
+
+
       switch (Object.keys(task).toString()) {
         case 'image':
           sendGenericMessage(to, text, task, tokenData);
