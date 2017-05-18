@@ -365,7 +365,7 @@ function sendImageMessage(recipientId, text, task, token) {
     }
   };
 
-  console.log(util.inspect(messageData));
+  console.log(util.inspect(messageData), {showHidden: false, depth: null});
 
   callSendAPI(messageData, token);
 }
