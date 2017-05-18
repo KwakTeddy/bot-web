@@ -1348,7 +1348,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       var common = angular.copy(treeData);
       delete common.children;
       common_dialogs[0] = common;
-      clear(common_dialogs[0]);
+      common_dialogs.forEach(clear);
 
       DialogSaveService.update({botId: vm.botId, fileName: vm.fileName, dialogs:dialogs, commons:common_dialogs},
         function() {
@@ -1573,15 +1573,24 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       //treeData.id = 'dummystart';
       treeData.children = [];
 
-      for (var i = 0; i < dialogs.length; i++) {
-        var d = dialogs[i];
-        d.name = d.name || (d.name = "dialog_" + d.id);
-        treeData.children.push(d);
-      }
+      if (vm.dialog) {
+        for (var i = 0; i < dialogs.length; i++) {
+          var d = dialogs[i];
+          d.name = d.name || (d.name = "dialog_" + d.id);
+          treeData.children.push(d);
+        }
 
-      dialogs.forEach(handleDialog); // for-loop is 10 times faster
-      if (vm.show_link)
-        dialogs.forEach(handleLink);
+        dialogs.forEach(handleDialog); // for-loop is 10 times faster
+        if (vm.show_link)
+          dialogs.forEach(handleLink);
+      } else {
+        for (var i = 1; i < common_dialogs.length; i++) {
+          var d = common_dialogs[i];
+          d.name = d.name || (d.name = "common_" + d.id);
+          treeData.children.push(d);
+        }
+        common_dialogs.forEach(handleDialog); // for-loop is 10 times faster
+      }
       console.log(nodes);
       console.log(links_internal);
     };
@@ -2391,10 +2400,16 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       if (d._children) {
         toggleChildren(d);
       }
-      var newDialog = {name:"", id:vm.fileName + (++vm.maxId), filename:vm.fileName, input:[], output:[]};
+      var newDialog = {name:"", id:(!vm.dialog ? "common" : "") + vm.fileName + (++vm.maxId),
+        filename:vm.fileName+(!vm.dialog?"common" : "") , input:[], output:[]};
       (d.children || (d.children = [])).push(newDialog);
-      if (d.depth === 0)
-        dialogs.push(newDialog);
+      if (d.depth === 0) {
+        if (vm.dialog) {
+          dialogs.push(newDialog);
+        } else {
+          common_dialogs.push(newDialog);
+        }
+      }
 
       update(d);
 
@@ -2419,19 +2434,35 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       if (parent.depth == 0) {
         var srcDialog, targetDialog;
         var srcIdx, targetIdx;
-        for (var i=0; i < dialogs.length; ++i) {
-          if (dialogs[i].id === srcNode.id) {
-            srcDialog = dialogs[i];
-            srcIdx = i;
+        if (vm.dialog) {
+          for (var i=0; i < dialogs.length; ++i) {
+            if (dialogs[i].id === srcNode.id) {
+              srcDialog = dialogs[i];
+              srcIdx = i;
+            }
+            if (dialogs[i].id === targetNode.id) {
+              targetDialog = dialogs[i];
+              targetIdx = i;
+            }
           }
-          if (dialogs[i].id === targetNode.id) {
-            targetDialog = dialogs[i];
-            targetIdx = i;
+          var temp = srcDialog;
+          dialogs[srcIdx] = targetDialog;
+          dialogs[targetIdx] = temp;
+        } else {
+          for (var i=0; i < common_dialogs.length; ++i) {
+            if (common_dialogs[i].id === srcNode.id) {
+              srcDialog = common_dialogs[i];
+              srcIdx = i;
+            }
+            if (common_dialogs[i].id === targetNode.id) {
+              targetDialog = common_dialogs[i];
+              targetIdx = i;
+            }
           }
+          var temp = srcDialog;
+          common_dialogs[srcIdx] = targetDialog;
+          common_dialogs[targetIdx] = temp;
         }
-        var temp = srcDialog;
-        dialogs[srcIdx] = targetDialog;
-        dialogs[targetIdx] = temp;
       }
 
       updateSelected(srcNode);
@@ -2740,6 +2771,26 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       update(selectedNode);
     };
 
+    vm.dialog = true;
+    vm.showDialog = function() {
+      vm.changeHistory = [];
+      vm.dialog= true;
+      d3.selectAll('.node').remove();
+      d3.selectAll('path').remove();
+      selectedSVG =null;
+      vm.initTreeData();
+      init();
+    };
+    vm.showCommon = function() {
+      vm.changeHistory = [];
+      vm.dialog= false;
+      d3.selectAll('.node').remove();
+      d3.selectAll('path').remove();
+      selectedSVG =null;
+      vm.initTreeData();
+      init();
+    };
+
     // to send msg to chatting window
     $scope.emitMsg = function(msg) {
       Socket.emit('send_msg', {
@@ -2747,7 +2798,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         user: vm.userId,
         msg: msg
       });
-    }
+    };
 
     // for task template
     //TODO: this should be a separte module

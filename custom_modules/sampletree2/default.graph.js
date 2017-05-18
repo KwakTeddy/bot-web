@@ -277,14 +277,25 @@ var commonDialogs = [
 				"text": "시작"
 			}
 		],
-		"output": "sampletree2 입니다. 왓???????"
+		"output": "sampletree2 입니다. 왓???????ㄴㅇㄹㄴㅇㄹ"
 	},
 	{
 		"id": "defaultcommon1",
 		"filename": "defaultcommon",
 		"name": "답변없음",
-		"input": "",
+		"input": [
+			{
+				"text": ""
+			}
+		],
 		"output": "알아듣지 못했습니다"
+	},
+	{
+		"name": "dialog_commondefault24",
+		"id": "commondefault24",
+		"filename": "defaultcommon",
+		"input": [],
+		"output": {}
 	}
 ];
 var _bot = require(require('path').resolve("config/lib/bot")).getBot('sampletree2');
