@@ -133,7 +133,6 @@ function respondMessage(to, text, botId, task) {
           delete task.output
         }
       }
-
       if(text){
         if (task.hasOwnProperty('image')){
           if (task.hasOwnProperty('buttons')){
@@ -142,7 +141,7 @@ function respondMessage(to, text, botId, task) {
 
           }else {
             //text && image
-            sendGenericMessage(to, text, task, tokenData);
+            sendImageMessage(to, text, task, tokenData);
 
           }
         }else {
@@ -163,7 +162,7 @@ function respondMessage(to, text, botId, task) {
 
           }else {
             //image
-            sendGenericMessage(to, text, task, tokenData);
+            sendImageMessage(to, text, task, tokenData);
 
           }
         }else {
