@@ -66,6 +66,8 @@ exports.deleteChatRoom = function (req, res) {
 
 
 function respondMessage(res, text, json) {
+  console.log(text);
+  console.log(util.inspect(json));
   if (json && json.result && json.result.items){
 
   }
