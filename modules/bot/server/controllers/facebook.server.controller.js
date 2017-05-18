@@ -157,8 +157,8 @@ function respondMessage(to, text, botId, task) {
       }else {
         if (task.hasOwnProperty('image')){
           if (task.hasOwnProperty('buttons')){
-            //image && buttons
-            sendGenericMessage(to, text, task, tokenData);
+            //image && buttons _ error
+            // sendGenericMessage(to, text, task, tokenData);
 
           }else {
             //image
@@ -166,14 +166,15 @@ function respondMessage(to, text, botId, task) {
 
           }
         }else {
-          if (task.hasOwnProperty('buttons')){
-            //buttons this is error
-
-          }else {
-            //nothing
-            sendTextMessage(to, text, task, tokenData);
-
-          }
+          //only button or nothing _ error
+          // if (task.hasOwnProperty('buttons')){
+          //   //buttons this is error
+          //
+          // }else {
+          //   //nothing
+          //   sendTextMessage(to, text, task, tokenData);
+          //
+          // }
         }
       }
     }
@@ -359,7 +360,7 @@ function receivedPostback(event) {
 function sendImageMessage(recipientId, text, task, token) {
   if(task.image){
     if (task.image.url.substring(0,4) !== 'http'){
-      task.image.url = 'https://shinhan.moneybrain.ai' + task.image.url
+      task.image.url = config.host + task.image.url
       // task.image.url = config.host + task.image.url
     }
   }
@@ -409,8 +410,14 @@ function sendButtonMessage(recipientId, text, task, token) {
   for(var i = 0; i < task.buttons.length; i++){
     task.buttons[i].title = task.buttons[i].text;
     delete task.buttons[i].text;
-    task.buttons[i]['type'] = 'postback';
-    task.buttons[i]['payload'] = 'etesteststst';
+
+    if ( buttons[i].url){
+      task.buttons[i]['type'] = 'web_url';
+
+    }else {
+      task.buttons[i]['type'] = 'postback';
+      task.buttons[i]['payload'] = 'etesteststst';
+    }
   }
 
   var messageData = {
@@ -468,7 +475,14 @@ function sendGenericMessage(recipientId, text, task, token) {
       for(var i = 0; i < task.buttons.length; i++){
         task.buttons[i].title = task.buttons[i].text;
         delete task.buttons[i].text;
-        task.buttons[i]['type'] = 'web_url';
+
+        if ( buttons[i].url){
+          task.buttons[i]['type'] = 'web_url';
+
+        }else {
+          task.buttons[i]['type'] = 'postback';
+          task.buttons[i]['payload'] = 'etesteststst';
+        }
         task['title'] = text;
       }
     }
