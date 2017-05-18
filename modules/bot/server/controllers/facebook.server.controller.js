@@ -401,7 +401,7 @@ function sendButtonMessage(recipientId, text, task, token) {
   for(var i = 0; i < task.buttons.length; i++){
     task.buttons[i].title = task.buttons[i].text;
     delete task.buttons[i].text;
-    task.buttons[i]['type'] = 'web_url';
+    task.buttons[i]['type'] = 'postback';
   }
 
   var messageData = {
@@ -410,7 +410,7 @@ function sendButtonMessage(recipientId, text, task, token) {
     },
     message: {
       attachment: {
-        type: "postback",
+        type: "template",
         payload: {
           template_type: "button",
           text: text,
