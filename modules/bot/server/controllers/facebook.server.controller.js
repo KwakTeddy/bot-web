@@ -90,13 +90,50 @@ function respondMessage(to, text, botId, task) {
     console.log('999999999998989812398129839128398');
     console.log(to);
 
-    if (task && task.result) {
+    if (task.result) {
       // If we receive a text message, check to see if it matches any special
       // keywords and send back the corresponding example. Otherwise, just echo
       // the text we received.
-      console.log(util.inspect(task.result), {showHidden: false, depth: null})
+      console.log(util.inspect(task), {showHidden: false, depth: null})
       console.log(util.inspect(Object.keys(task.result).toString(), {showHidden: false, depth: null}))
       switch (Object.keys(task.result).toString()) {
+        case 'image':
+          sendGenericMessage(to, text, task.result, tokenData);
+          break;
+
+        case 'image,buttons':
+          sendGenericMessage(to, text, task.result, tokenData);
+          break;
+        case 'buttons':
+          sendButtonMessage(to, text, task.result, tokenData);
+          break;
+
+        case 'items':
+          sendGenericMessage(to, text, task.result, tokenData);
+          break;
+
+        case 'receipt':
+          sendReceiptMessage(to);
+          break;
+
+        case 'smartReply':
+          smartReplyMessage(to, text, task.result, tokenData);
+          break;
+
+        default:
+          sendTextMessage(to, text, task.result, tokenData);
+      }
+    }
+    // else if (messageAttachments) {
+    //   sendTextMessage(to, "Message with attachment received");
+    // }
+    else {
+      // If we receive a text message, check to see if it matches any special
+      // keywords and send back the corresponding example. Otherwise, just echo
+      // the text we received.
+      console.log(util.inspect(task), {showHidden: false, depth: null})
+      console.log(util.inspect(Object.keys(task.result).toString(), {showHidden: false, depth: null}))
+      switch (Object.keys(task).toString()) {
         case 'image':
           sendGenericMessage(to, text, task, tokenData);
           break;
@@ -121,14 +158,9 @@ function respondMessage(to, text, botId, task) {
           break;
 
         default:
-          sendTextMessage(to, text);
+          sendTextMessage(to, text, task, tokenData);
       }
-    }
-    // else if (messageAttachments) {
-    //   sendTextMessage(to, "Message with attachment received");
-    // }
-    else {
-      sendTextMessage(to, text, task, tokenData);
+      
       // sendTextMessage(to, "서버가 연결되어 있지 않습니다.");
     }
   });
@@ -312,7 +344,7 @@ function sendImageMessage(recipientId, text, task, token) {
         type: "image",
         payload: {
           title: text,
-          url: task.result.image.url
+          url: task.image.url
         }
       }
     }
@@ -343,10 +375,10 @@ function sendTextMessage(recipientId, text, task, token) {
  *
  */
 function sendButtonMessage(recipientId, text, task, token) {
-  for(var i = 0; i < task.result.buttons.length; i++){
-    task.result.buttons[i].title = task.result.buttons[i].text;
-    delete task.result.buttons[i].text;
-    task.result.buttons[i]['type'] = 'web_url';
+  for(var i = 0; i < task.buttons.length; i++){
+    task.buttons[i].title = task.buttons[i].text;
+    delete task.buttons[i].text;
+    task.buttons[i]['type'] = 'web_url';
   }
   console.log(util.inspect(task, {showHidden: false, depth: null}));
 
@@ -360,7 +392,7 @@ function sendButtonMessage(recipientId, text, task, token) {
         payload: {
           template_type: "button",
           text: text,
-          buttons: task.result.buttons
+          buttons: task.buttons
         }
       }
     }
@@ -374,49 +406,49 @@ function sendButtonMessage(recipientId, text, task, token) {
  */
 function sendGenericMessage(recipientId, text, task, token) {
   console.log('sendGenericMessage----------------------------------')
-  if (task.result.items){
-    task.result = task.result.items;
-    for(var i =0; i < task.result.length; i++){
-      if (task.result[i].text){
-        task.result[i].subtitle = task.result[i].text;
-        delete task.result[i].text;
+  if (task.items){
+    task = task.items;
+    for(var i =0; i < task.length; i++){
+      if (task[i].text){
+        task[i].subtitle = task[i].text;
+        delete task[i].text;
       }
-      if (task.result[i].imageUrl) {
-        if (task.result[i].imageUrl.substring(0,4) !== 'http'){
-          task.result[i].imageUrl = config.host + task.result[i].imageUrl
+      if (task[i].imageUrl) {
+        if (task[i].imageUrl.substring(0,4) !== 'http'){
+          task[i].imageUrl = config.host + task[i].imageUrl
         }
-        task.result[i].image_url = task.result[i].imageUrl;
-        delete task.result[i].imageUrl;
+        task[i].image_url = task[i].imageUrl;
+        delete task[i].imageUrl;
       }
-      if (task.result[i].buttons) {
-        for (var j = 0; j < task.result[i].buttons.length; j++) {
-          task.result[i].buttons[j].title = task.result[i].buttons[j].text;
-          delete task.result[i].buttons[j].text;
-          task.result[i].buttons[j]['type'] = 'web_url';
+      if (task[i].buttons) {
+        for (var j = 0; j < task[i].buttons.length; j++) {
+          task[i].buttons[j].title = task[i].buttons[j].text;
+          delete task[i].buttons[j].text;
+          task[i].buttons[j]['type'] = 'web_url';
         }
       }
     }
-    task.result.splice(10);
+    task.splice(10);
   }else {
-    if (task.result.buttons){
-      for(var i = 0; i < task.result.buttons.length; i++){
-        task.result.buttons[i].title = task.result.buttons[i].text;
-        delete task.result.buttons[i].text;
-        task.result.buttons[i]['type'] = 'web_url';
-        task.result['title'] = text;
+    if (task.buttons){
+      for(var i = 0; i < task.buttons.length; i++){
+        task.buttons[i].title = task.buttons[i].text;
+        delete task.buttons[i].text;
+        task.buttons[i]['type'] = 'web_url';
+        task['title'] = text;
       }
     }
-    if(task.result.image){
-      if (task.result.image.url.substring(0,4) !== 'http'){
-        task.result.image.url = config.host + task.result.image.url
+    if(task.image){
+      if (task.image.url.substring(0,4) !== 'http'){
+        task.image.url = config.host + task.image.url
       }
-      task.result.image_url = task.result.image.url;
-      delete task.result.image;
-      task.result['title'] = text;
+      task.image_url = task.image.url;
+      delete task.image;
+      task['title'] = text;
     }
-    task.result = [task.result];
+    task = [task];
   }
-  console.log(util.inspect(task.result, {showHidden: false, depth: null}));
+  console.log(util.inspect(task, {showHidden: false, depth: null}));
   var messageData = {
     recipient: {
       id: recipientId
@@ -426,7 +458,7 @@ function sendGenericMessage(recipientId, text, task, token) {
         type: "template",
         payload: {
           template_type: "generic",
-          elements: task.result
+          elements: task
         }
       }
     }
@@ -506,10 +538,10 @@ function sendReceiptMessage(recipientId, text, task, token) {
  *
  */
 function smartReplyMessage(recipientId, text, task, token) {
-  for (var i = 0; i < task.result.smartReply.length; i++){
-    task.result.smartReply[i] = {"title" : task.result.smartReply[i]};
-    task.result.smartReply[i]['content_type'] = 'text';
-    task.result.smartReply[i]['payload'] = task.result.smartReply[i].title;
+  for (var i = 0; i < task.smartReply.length; i++){
+    task.smartReply[i] = {"title" : task.smartReply[i]};
+    task.smartReply[i]['content_type'] = 'text';
+    task.smartReply[i]['payload'] = task.smartReply[i].title;
   }
   var messageData = {
     recipient: {
@@ -517,7 +549,7 @@ function smartReplyMessage(recipientId, text, task, token) {
     },
     message:{
       "text": text,
-      "quick_replies": task.result.smartReply
+      "quick_replies": task.smartReply
     }
   };
 
