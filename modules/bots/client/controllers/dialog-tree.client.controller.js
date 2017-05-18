@@ -178,6 +178,16 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     }).apply(this, [jQuery]);
 
+    $scope.safeApply = function(fn) {
+      var phase = this.$root.$$phase;
+      if(phase == '$apply' || phase == '$digest') {
+        if(fn && (typeof(fn) === 'function')) {
+          fn();
+        }
+      } else {
+        this.$apply(fn);
+      }
+    };
     $scope.removeProcessedInput = function () {
       $scope.processedInput = '';
     };
@@ -476,7 +486,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     $scope.updateEditor = function() {
       vm.editor.setSize(viewerWidth,viewerHeight);
-      $scope.$apply();
+      $scope.safeApply();
       $scope.refreshCodemirror = true;
       $timeout(function () {
         $scope.refreshCodemirror = false;
@@ -508,7 +518,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.isChanged = c;
 
       if (updateScope) {
-        $scope.$apply();
+        $scope.safeApply();
       }
     };
 
@@ -640,14 +650,14 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         event.preventDefault();
         if (vm.changeHistory.length != 0) {
           $scope.undo();
-          $scope.$apply();
+          $scope.safeApply();
         }
         return;
       } else if (event.ctrlKey && event.keyCode == 83) { // ctrl+s
         event.preventDefault();
         if (vm.isChanged) {
           $scope.save();
-          $scope.$apply();
+          $scope.safeApply();
         }
         return;
       } else if (event.ctrlKey && event.keyCode == 80) { // ctrl+p
@@ -1250,7 +1260,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         console.log(err)
       });
 
-      $scope.$apply();
+      $scope.safeApply();
       $('.modal-with-form').click();
 
     };
