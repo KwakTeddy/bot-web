@@ -191,6 +191,7 @@ function receivedMessage(event) {
                     }
                     chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
                         console.log('this is write');
+                        console.log(util.inspect(retText, {showHidden: false, depth: null}));
                         console.log(util.inspect(task, {showHidden: false, depth: null}));
                         respondMessage(senderID, retText, event.botId, task);
                     });
@@ -534,7 +535,8 @@ function callSendAPI(messageData, PAGE_ACCESS_TOKEN) {
   // console.log('callSendAPI: ', messageData);
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: { access_token: PAGE_ACCESS_TOKEN || 'EAAWvTpdxqVYBAErPqmZBKy3PwB5nyWkZCXT4h6HfDNZC8u5ZAlYMZCMXrPErG7Qzeac6gLGNzGUpb3opKVCeHxPe4xkcn2zl1SGVb4Rh9ZCbnseRcbAXCZBoy6dRNhir1pD9HODdxM1N0eItAGl2CR5JVZBXnV5SOOZCvhKKw2SUM5wZDZD' },
+    qs: { access_token: PAGE_ACCESS_TOKEN },
+    // qs: { access_token: PAGE_ACCESS_TOKEN || 'EAAWvTpdxqVYBAErPqmZBKy3PwB5nyWkZCXT4h6HfDNZC8u5ZAlYMZCMXrPErG7Qzeac6gLGNzGUpb3opKVCeHxPe4xkcn2zl1SGVb4Rh9ZCbnseRcbAXCZBoy6dRNhir1pD9HODdxM1N0eItAGl2CR5JVZBXnV5SOOZCvhKKw2SUM5wZDZD' },
     method: 'POST',
     json: messageData
 
