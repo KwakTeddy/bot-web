@@ -371,6 +371,7 @@ function sendImageMessage(recipientId, text, task, token) {
   };
   console.log('-----------------------=--------------------------------------------------')
   console.log('imageMessage: ' + util.inspect(messageData), {showHidden: false, depth: null});
+  console.log('imageMessage: ' + util.inspect(messageData.message.attachment.payload), {showHidden: false, depth: null});
 
   callSendAPI(messageData, token);
 }
