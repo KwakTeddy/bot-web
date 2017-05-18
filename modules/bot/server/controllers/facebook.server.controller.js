@@ -14,15 +14,6 @@ var botLib = require(path.resolve('config/lib/bot'));
 
 var util =require('util'); //temporary
 
-// var APP_SECRET =  "174b2a851e3811c3f2c267d46708d212";
-// var PAGE_ACCESS_TOKEN =  "EAAYwPrsj1ZA0BAORAoGhxvLLs5eRZADJ8BheTdjOXu8lT0X2tVFwZAZCEJiWFenFHCVqSuctfONET6dhbPDBnlivq5sXEvBABTnRlYpX8hLxZAnO2lywRiA6sVlbYAvG1n1EpQwkVhZAdrmq1p9PlQRUu327O1ohcZBwVLYZCn3beQZDZD";
-// var VALIDATION_TOKEN = "my_voice_is_my_password_verify_me";
-
-// var APP_SECRET =  "eb2974959255583150013648e7ac5da4";
-// var PAGE_ACCESS_TOKEN =  "EAAJGZBCFjFukBAE63miCdcKFwqTEmbbhSbm6jIr6ws5I7fKnWSMUqIzGfHZBDTqmW0wra5xZBZCLWg2O9miPcc6WdVQRyfHdDCYuhLjIbng0njUHqOdbasHcSZAs2WEO7zG72wgmciNsF138QCq1vLnzMHR3XYIP0VnV1iZBsZAngZDZD";
-// var VALIDATION_TOKEN = "moneybrain_token";
-
-
 exports.messageGet =  function(req, res) {
   contextModule.getContext(req.params.bot, 'facebook', null, null, function(context) {
       // console.log(req.query['hub.mode'] + ', ' + req.query['hub.verify_token'] + ',' + context.bot.facebook.VALIDATION_TOKEN );
@@ -166,10 +157,12 @@ function receivedMessage(event) {
   console.log(event.botId)
   if (event.botId == "subscribeBot"){
     console.log('Subscribe Coming In');
+    console.log()
       UserBotFbPage.findOne({pageId: event.recipient.id}, function (err, data) {
           if (err){
               console.log(err);
           }else {
+            console.log('here is data');
             console.log(JSON.stringify(data));
               subscribe = true;
               subscribePageToken = data.accessToken;
@@ -541,7 +534,7 @@ function callSendAPI(messageData, PAGE_ACCESS_TOKEN) {
   // console.log('callSendAPI: ', messageData);
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: { access_token: PAGE_ACCESS_TOKEN },
+    qs: { access_token: PAGE_ACCESS_TOKEN || 'EAAWvTpdxqVYBAErPqmZBKy3PwB5nyWkZCXT4h6HfDNZC8u5ZAlYMZCMXrPErG7Qzeac6gLGNzGUpb3opKVCeHxPe4xkcn2zl1SGVb4Rh9ZCbnseRcbAXCZBoy6dRNhir1pD9HODdxM1N0eItAGl2CR5JVZBXnV5SOOZCvhKKw2SUM5wZDZD' },
     method: 'POST',
     json: messageData
 
