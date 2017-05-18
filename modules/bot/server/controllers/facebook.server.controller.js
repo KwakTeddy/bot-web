@@ -162,7 +162,7 @@ function receivedMessage(event) {
   var timeOfMessage = event.timestamp;
   var message = event.message;
   console.log('--------------------------------------------------------------------------')
-
+  console.log(event.botId)
   if (event.botId == "subscribeBot"){
     console.log('Subscribe Coming In');
       UserBotFbPage.findOne({pageId: event.recipient.id}, function (err, data) {
