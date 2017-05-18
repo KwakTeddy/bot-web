@@ -126,6 +126,13 @@ function respondMessage(to, text, botId, task) {
     }else {
       console.log('taks' + util.inspect(task), {showHidden: false, depth: null})
       console.log('taks' + util.inspect(text), {showHidden: false, depth: null})
+      if (task){
+        delete task.inNLP;
+        delete task.inRaw;
+        if(task.output){
+          delete task.output
+        }
+      }
 
       if(text){
         if (task.hasOwnProperty('image')){
