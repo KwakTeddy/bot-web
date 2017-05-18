@@ -23,6 +23,8 @@ var dialogs = [
 			}
 		],
 		"output": "[답변]\n1. [잠금/풀림] 버튼을  2초 이상 길게 눌러 풀림 상태로 만듭니다.\n1초 이상 누를 시 잠금이 풀리는 모델도 있습니다.\n2. 냉동실은 \"냉동온도\", 냉장실은 \"냉장온도\" 버튼으로 원하는 온도로 조절 할 수 있습니다.\n3. 원하시는 온도로 조절하신 후 잠금/풀림 버튼을 누르시면 다시 자물쇠가 잠금그림으로 됩니다.\n\n다른 경우를 보시려면 \"이전\"을 입력해주세요\n\n답변이 유용한가요?",
+		"inRaw": "냉장",
+		"inNLP": "냉장",
 		"children": [
 			{
 				"id": "default1",
@@ -62,6 +64,8 @@ var dialogs = [
 			}
 		],
 		"output": "[답변]\n에어컨은 기기의 버튼 또는 리모콘을 통해 온도조절을 할 수 있습니다.\n\n다른 경우를 보시려면 \"이전\"을 입력해주세요\n\n답변이 유용한가요?",
+		"inRaw": "에어컨이요",
+		"inNLP": "에어컨 요",
 		"children": [
 			{
 				"id": "default6",
@@ -392,8 +396,12 @@ var dialogs = [
 		"filename": "default",
 		"name": "약냉",
 		"input": "false",
-		"task": "refriweak",
+		"task": {
+			"name": "refriweak"
+		},
 		"output": "아래는 냉장고의 냉기가 약할 때의 주된 원인입니다.\n#doc#+index+. +title+\n#\n고객님께 해당되는 경우가 있으면 선택해주세요.\n어떤 것도 해당하지 않으면 전문기사님의 출장점검을 도와드리겠습니다.",
+		"inRaw": "싱싱냉장고",
+		"inNLP": "싱싱 냉장고",
 		"children": [
 			{
 				"id": "default75",
@@ -500,8 +508,12 @@ var dialogs = [
 		"filename": "default",
 		"name": "강냉",
 		"input": "false",
-		"task": "refristrong",
+		"task": {
+			"name": "refristrong"
+		},
 		"output": "아래는 냉장고의 냉기가 너무 강할 때의 주된 원인입니다.\n#doc#+index+. +title+\n#\n고객님께 해당되는 경우가 있으면 선택해주세요.\n어떤 것도 해당하지 않으면 전문기사님의 출장점검을 도와드리겠습니다.",
+		"inRaw": "냉장고요",
+		"inNLP": "냉장고 요",
 		"children": [
 			{
 				"id": "default87",
@@ -607,8 +619,12 @@ var dialogs = [
 		"filename": "default",
 		"name": "무냉",
 		"input": "false",
-		"task": "refrino",
+		"task": {
+			"name": "refrino"
+		},
 		"output": "아래는 냉장고이 작동하지 않을 때의 주된 원인입니다.\n#doc#+index+. +title+\n#\n고객님께 해당되는 경우가 있으면 선택해주세요.\n어떤 것도 해당하지 않으면 전문기사님의 출장점검을 도와드리겠습니다.",
+		"inRaw": "싱싱냉장고",
+		"inNLP": "싱싱 냉장고",
 		"children": [
 			{
 				"id": "default99",
@@ -817,8 +833,12 @@ var dialogs = [
 		"filename": "default",
 		"name": "에어컨약냉",
 		"input": "false",
-		"task": "airweak",
+		"task": {
+			"name": "airweak"
+		},
 		"output": "아래는 에어컨의 냉기가 약할 때의 주된 원인입니다.\n#doc#+index+. +title+\n#\n고객님께 해당되는 경우가 있으면 선택해주세요.\n어떤 것도 해당하지 않으면 전문기사님의 출장점검을 도와드리겠습니다.",
+		"inRaw": "스탠딩",
+		"inNLP": "스탠딩",
 		"children": [
 			{
 				"id": "default147",
@@ -935,7 +955,9 @@ var dialogs = [
 						"text": "아니다"
 					}
 				],
-				"output": "LG전자 고객센터 번호는 1577-7314입니다.",
+				"output": {
+					"call": "아니요"
+				},
 				"name": "dialog_default156"
 			},
 			{
@@ -946,7 +968,9 @@ var dialogs = [
 						"text": "네"
 					}
 				],
-				"output": "감사합니다. LG전자에서 보다 빠르고 정확한 도움을 드리기 위해 노력하겠습니다.",
+				"output": {
+					"call": "네"
+				},
 				"name": "dialog_default157"
 			}
 		]
@@ -956,8 +980,12 @@ var dialogs = [
 		"filename": "default",
 		"name": "에어컨무냉",
 		"input": "false",
-		"task": "airweak",
+		"task": {
+			"name": "airweak"
+		},
 		"output": "아래는 에어컨이 작동하지 않을 때의 주된 원인입니다.\n#doc#+index+. +title+\n#\n고객님께 해당되는 경우가 있으면 선택해주세요.\n어떤 것도 해당하지 않으면 전문기사님의 출장점검을 도와드리겠습니다.",
+		"inRaw": "스탠드형이요",
+		"inNLP": "스탠드 형 이요",
 		"children": [
 			{
 				"id": "default163",
@@ -1164,14 +1192,18 @@ var dialogs = [
 		"id": "default183",
 		"filename": "default",
 		"input": "false",
-		"output": "더 좋은 서비스가 되도록 노력하겠습니다. \\n감사합니다."
+		"output": "더 좋은 서비스가 되도록 노력하겠습니다. \n감사합니다.",
+		"inRaw": "응",
+		"inNLP": "응"
 	},
 	{
 		"name": "아니요",
 		"id": "default184",
 		"filename": "default",
 		"input": "false",
-		"output": "고객님, 만족스러운 답변을 드리지 못해 죄송합니다.\\nLG전자 고객센터는 1577-7324입니다."
+		"output": "고객님, 만족스러운 답변을 드리지 못해 죄송합니다.\nLG전자 고객센터는 1577-7324입니다.",
+		"inRaw": "출장점검",
+		"inNLP": "출장 점검"
 	},
 	{
 		"name": "냉장고유형1",
@@ -1179,6 +1211,8 @@ var dialogs = [
 		"filename": "default",
 		"input": "false",
 		"output": "냉장고가 양문형인가요? 일반형인가요?",
+		"inRaw": "냉장고가 안시원해요",
+		"inNLP": "냉장고 안 시원하다",
 		"children": [
 			{
 				"name": "dialog_default186",
@@ -1221,6 +1255,8 @@ var dialogs = [
 		"filename": "default",
 		"input": "false",
 		"output": "냉장고가 양문형인가요? 일반형인가요?",
+		"inRaw": "냉장고",
+		"inNLP": "냉장고",
 		"children": [
 			{
 				"name": "dialog_default188",
@@ -1263,6 +1299,8 @@ var dialogs = [
 		"filename": "default",
 		"input": "false",
 		"output": "에어컨이 스탠딩인가요? 벽걸이인가요?",
+		"inRaw": "에어컨 안시원해",
+		"inNLP": "에어컨 안 시원하다",
 		"children": [
 			{
 				"name": "dialog_default190",
@@ -1305,6 +1343,8 @@ var dialogs = [
 		"filename": "default",
 		"input": "false",
 		"output": "에어컨이 스탠딩인가요? 벽걸이인가요?",
+		"inRaw": "에어컨이 잘 안돼",
+		"inNLP": "에어컨 자다 안 돼다",
 		"children": [
 			{
 				"name": "dialog_default193",
@@ -1347,75 +1387,8 @@ var dialogs = [
 		"filename": "default",
 		"input": "false",
 		"output": "에어컨과 냉장고 중 어떤 제품에 문제가 생기셨나요?",
-		"inRaw": "냉장고",
-		"inNLP": "냉장고",
-		"top": {
-			"id": "default39",
-			"filename": "default",
-			"input": [
-				{
-					"intent": "약냉"
-				}
-			],
-			"output": [
-				{
-					"if": "context.botUser.entities.냉장고 && context.botUser.entities.양문형",
-					"output": {
-						"call": "약냉"
-					}
-				},
-				{
-					"if": "context.botUser.entities.냉장고 && context.botUser.entities.일반형",
-					"output": {
-						"call": "약냉"
-					}
-				},
-				{
-					"if": "context.botUser.entities.냉장고",
-					"output": {
-						"call": "냉장고유형1"
-					}
-				},
-				{
-					"if": "context.botUser.entities.에어컨 && context.botUser.entities.스탠딩",
-					"output": {
-						"call": "에어컨약냉"
-					}
-				},
-				{
-					"if": "context.botUser.entities.에어컨 && context.botUser.entities.벽걸이",
-					"output": {
-						"call": "에어컨약냉"
-					}
-				},
-				{
-					"if": "context.botUser.entities.에어컨",
-					"output": {
-						"call": "에어컨유형1"
-					}
-				},
-				{
-					"if": "true",
-					"output": {
-						"call": "가전제품유형1"
-					},
-					"task": {
-						"inRaw": "냉장고",
-						"inNLP": "냉장고"
-					},
-					"inRaw": "냉장고",
-					"inNLP": "냉장고"
-				}
-			],
-			"name": "약냉분기",
-			"parent": null,
-			"task": {
-				"inRaw": "냉장고",
-				"inNLP": "냉장고"
-			},
-			"inRaw": "냉장고",
-			"inNLP": "냉장고"
-		},
+		"inRaw": "안 차가워",
+		"inNLP": "안 차갑다",
 		"children": [
 			{
 				"name": "dialog_default195",
@@ -1468,6 +1441,8 @@ var dialogs = [
 		"filename": "default",
 		"input": "false",
 		"output": "에어컨과 냉장고 중 어떤 제품에 문제가 생기셨나요?",
+		"inRaw": "냉기가 없어요",
+		"inNLP": "냉기 없다",
 		"children": [
 			{
 				"name": "dialog_default198",
@@ -1520,6 +1495,8 @@ var dialogs = [
 		"filename": "default",
 		"input": "false",
 		"output": "에어컨과 냉장고 중 어떤 제품에 문제가 생기셨나요?",
+		"inRaw": "냉기가 너무 세요",
+		"inNLP": "냉기 너무 세요",
 		"children": [
 			{
 				"name": "dialog_default201",
