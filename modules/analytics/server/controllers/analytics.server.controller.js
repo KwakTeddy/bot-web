@@ -234,7 +234,8 @@ function _dialogFailureList(botId, kind, arg, callback) {
         inOut: '$inOut', dialog: '$dialog', fail:'$fail', preDialogId:'$preDialogId', preDialogName:'$preDialogName', botId:'$botId', clear:'$clear'}},
       {$match: cond},
       {$match:{ preDialogId: { $exists:true, $ne: null } } },
-      {$group: {_id: {_id: '$_id', dialog:'$dialog', preDialogId: '$preDialogId'}, count: {$sum: 1}}},
+      {$group: {_id: {dialog:'$dialog', preDialogId: '$preDialogId'}, count: {$sum: 1}}},
+      // {$group: {_id: {_id: '$_id', dialog:'$dialog', preDialogId: '$preDialogId'}, count: {$sum: 1}}},
       {$sort: {count: -1}},
       {$limit: 300}
     ]
@@ -357,12 +358,20 @@ var save = function(o, res, data) {
       data.inputs = data.inputs.text
     }
 
-    for(var i = 0; i < o.input.length; i++){
-      o.input[i]['text'] = data.inputs[i]
+    if (!Array.isArray(o.input)){
+      o.input = [];
+      for(var i = 0; i < data.inputs.length; i++){
+        o.input.push({'text': data.inputs[i]})
+      }
+    }else{
+      for(var i = 0; i < o.input.length; i++){
+        o.input[i]['text'] = data.inputs[i]
+      }
+      for(var j = o.input.length; j < data.inputs.length;j++){
+        o.input.push({'text': data.inputs[j]});
+      }
     }
-    for(var j = o.input.length; j < data.inputs.length;j++){
-      o.input.push({'text': data.inputs[j]});
-    }
+
     if (Array.isArray(o.output)){
       for(var i = 0; i < o.output.length; i++){
         o.output[i] = data.outputs[i]
