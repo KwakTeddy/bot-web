@@ -352,7 +352,8 @@ function receivedPostback(event) {
 function sendImageMessage(recipientId, text, task, token) {
   if(task.image){
     if (task.image.url.substring(0,4) !== 'http'){
-      task.image.url = config.host + task.image.url
+      task.image.url = 'https://shinhan.moneybrain.ai' + task.image.url
+      // task.image.url = config.host + task.image.url
     }
   }
 
