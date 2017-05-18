@@ -425,7 +425,7 @@ function build(text, isCommon, filename, dialogs, commons) {
 
   if(isCommon) {
     if (commons) {
-      dialogs = commons.replace(/\\\\/g, '\\');
+      commons = commons.replace(/\\\\/g, '\\');
       output = 'var commonDialogs = ' + commons + ';';
     } else {
       output = 'var commonDialogs = [\n' + parseDialog('') + '\n];\n\n';
