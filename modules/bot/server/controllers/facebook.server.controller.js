@@ -410,7 +410,7 @@ function sendButtonMessage(recipientId, text, task, token) {
     },
     message: {
       attachment: {
-        type: "template",
+        type: "postback",
         payload: {
           template_type: "button",
           text: text,
