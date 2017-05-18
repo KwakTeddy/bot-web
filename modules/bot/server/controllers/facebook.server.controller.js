@@ -171,39 +171,6 @@ function respondMessage(to, text, botId, task) {
           }
         }
       }
-
-
-
-
-      switch (Object.keys(task).toString()) {
-        case 'image':
-          sendGenericMessage(to, text, task, tokenData);
-          break;
-
-        case 'image,buttons':
-          sendGenericMessage(to, text, task, tokenData);
-          break;
-        case 'buttons':
-          sendButtonMessage(to, text, task, tokenData);
-          break;
-
-        case 'items':
-          sendGenericMessage(to, text, task, tokenData);
-          break;
-
-        case 'receipt':
-          sendReceiptMessage(to);
-          break;
-
-        case 'smartReply':
-          smartReplyMessage(to, text, task, tokenData);
-          break;
-
-        default:
-          sendTextMessage(to, text, task, tokenData);
-      }
-      
-      // sendTextMessage(to, "서버가 연결되어 있지 않습니다.");
     }
   });
 }
