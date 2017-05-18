@@ -476,7 +476,7 @@ function sendGenericMessage(recipientId, text, task, token) {
         task.buttons[i].title = task.buttons[i].text;
         delete task.buttons[i].text;
 
-        if ( buttons[i].url){
+        if ( task.buttons[i].url){
           task.buttons[i]['type'] = 'web_url';
 
         }else {
