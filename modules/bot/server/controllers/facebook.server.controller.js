@@ -350,6 +350,12 @@ function receivedPostback(event) {
  *
  */
 function sendImageMessage(recipientId, text, task, token) {
+  if(task.image){
+    if (task.image.url.substring(0,4) !== 'http'){
+      task.image.url = config.host + task.image.url
+    }
+  }
+
   var messageData = {
     recipient: {
       id: recipientId
@@ -364,8 +370,8 @@ function sendImageMessage(recipientId, text, task, token) {
       }
     }
   };
-
-  console.log(util.inspect(messageData), {showHidden: false, depth: null});
+  console.log('-----------------------=--------------------------------------------------')
+  console.log('imageMessage: ' + util.inspect(messageData), {showHidden: false, depth: null});
 
   callSendAPI(messageData, token);
 }
