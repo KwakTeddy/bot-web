@@ -22,7 +22,7 @@ var dialogs = [
 				"intent": "냉장고 온도 조절"
 			}
 		],
-		"output": "[답변]\n1. [잠금/풀림] 버튼을  2초 이상 길게 눌러 풀림 상태로 만듭니다.\n1초 이상 누를 시 잠금이 풀리는 모델도 있습니다.\n2. 냉동실은 \"냉동온도\", 냉장실은 \"냉장온도\" 버튼으로 원하는 온도로 조절 할 수 있습니다.\n3. 원하시는 온도로 조절하신 후 잠금/풀림 버튼을 누르시면 다시 자물쇠가 잠금그림으로 됩니다.\n\n다른 경우를 보시려면 \"이전\"을 입력해주세요\n\n답변이 유용한가요?",
+		"output": "[답변]\n1. [잠금/풀림] 버튼을  2초 이상 길게 눌러 풀림 상태로 만듭니다.\n1초 이상 누를 시 잠금이 풀리는 모델도 있습니다.\n2. 냉동실은 \"냉동온도\", 냉장실은 \"냉장온도\" 버튼으로 원하는 온도로 조절 할 수 있습니다.\n3. 원하시는 온도로 조절하신 후 잠금/풀림 버튼을 누르시면 다시 자물쇠가 잠금그림으로 됩니다.\n\n답변이 유용한가요?",
 		"inRaw": "냉장",
 		"inNLP": "냉장",
 		"children": [
@@ -31,11 +31,11 @@ var dialogs = [
 				"filename": "default",
 				"input": [
 					{
-						"text": "네"
+						"text": "~네"
 					}
 				],
 				"output": {
-					"call": "네"
+					"call": "~네"
 				},
 				"name": "dialog_default1"
 			},
@@ -44,7 +44,7 @@ var dialogs = [
 				"filename": "default",
 				"input": [
 					{
-						"text": "아니다"
+						"text": "~아니요"
 					}
 				],
 				"output": {
@@ -63,7 +63,7 @@ var dialogs = [
 				"intent": "에어컨 온도 조절"
 			}
 		],
-		"output": "[답변]\n에어컨은 기기의 버튼 또는 리모콘을 통해 온도조절을 할 수 있습니다.\n\n다른 경우를 보시려면 \"이전\"을 입력해주세요\n\n답변이 유용한가요?",
+		"output": "[답변]\n에어컨은 기기의 버튼 또는 리모콘을 통해 온도조절을 할 수 있습니다.\n\n답변이 유용한가요?",
 		"inRaw": "에어컨이요",
 		"inNLP": "에어컨 요",
 		"children": [
@@ -72,11 +72,11 @@ var dialogs = [
 				"filename": "default",
 				"input": [
 					{
-						"text": "네"
+						"text": "~네"
 					}
 				],
 				"output": {
-					"call": "네"
+					"call": "~네"
 				},
 				"name": "dialog_default6"
 			},
@@ -86,7 +86,7 @@ var dialogs = [
 				"filename": "default",
 				"input": [
 					{
-						"text": "아니다"
+						"text": "~아니요"
 					}
 				],
 				"output": {
@@ -146,7 +146,7 @@ var dialogs = [
 				"text": "투 인원 함께"
 			}
 		],
-		"output": "[답변]\n정속 투인원 모델(FNC*** / FNS*** 모델)은 스탠드형/벽걸이형 동시에 가동을 하게 되면 냉기가 약해질 수 있습니다.\n실외기에서 낼 수 있는 냉방 성능은 정해져 있고, 그 냉방 성능을 스탠드형과 벽걸이형이 나눠서 가집니다.\n하지만 최근에 개발되는 투인원(FNQ***)모델은 고효율 인버터 냉방 시스템을 적용하여 인버터 압축기의 회전수를 높여 100% 능력을 달성합니다.\n\n다른 경우를 보시려면 \"이전\"을 입력해주세요\n\n답변이 유용한가요?",
+		"output": "[답변]\n정속 투인원 모델(FNC*** / FNS*** 모델)은 스탠드형/벽걸이형 동시에 가동을 하게 되면 냉기가 약해질 수 있습니다.\n실외기에서 낼 수 있는 냉방 성능은 정해져 있고, 그 냉방 성능을 스탠드형과 벽걸이형이 나눠서 가집니다.\n하지만 최근에 개발되는 투인원(FNQ***)모델은 고효율 인버터 냉방 시스템을 적용하여 인버터 압축기의 회전수를 높여 100% 능력을 달성합니다.\n\n답변이 유용한가요?",
 		"name": "투인원 함께",
 		"children": [
 			{
@@ -154,11 +154,11 @@ var dialogs = [
 				"filename": "default",
 				"input": [
 					{
-						"text": "네"
+						"text": "~네"
 					}
 				],
 				"output": {
-					"call": "네"
+					"call": "~네"
 				},
 				"name": "dialog_default14"
 			},
@@ -167,7 +167,7 @@ var dialogs = [
 				"filename": "default",
 				"input": [
 					{
-						"text": "아니다"
+						"text": "~아니요"
 					}
 				],
 				"output": {
@@ -185,7 +185,7 @@ var dialogs = [
 				"text": "Od"
 			}
 		],
-		"output": "[답변]\n[Od]는 실외기 과열 감지 표시입니다.\n실외기 앞쪽 환기창이 열려있다 하더라도 갤러리 각도가 일직선이 되지 않거나 방충망이 닫혀있는 경우에도 발생할 수 있습니다.\n날씨가 더울 때는 갤러리 각도를 일직선으로 맞추고 방충망까지 열어주세요.\n실외기가 열을 받으면 냉각 능력이 떨어질 수 있습니다. \n\n다른 경우를 보시려면 \"이전\"을 입력해주세요\n\n답변이 유용한가요?",
+		"output": "[답변]\n[Od]는 실외기 과열 감지 표시입니다.\n실외기 앞쪽 환기창이 열려있다 하더라도 갤러리 각도가 일직선이 되지 않거나 방충망이 닫혀있는 경우에도 발생할 수 있습니다.\n날씨가 더울 때는 갤러리 각도를 일직선으로 맞추고 방충망까지 열어주세요.\n실외기가 열을 받으면 냉각 능력이 떨어질 수 있습니다. \n\n답변이 유용한가요?",
 		"name": "Od 오류",
 		"children": [
 			{
@@ -193,11 +193,11 @@ var dialogs = [
 				"filename": "default",
 				"input": [
 					{
-						"text": "네"
+						"text": "~네"
 					}
 				],
 				"output": {
-					"call": "네"
+					"call": "~네"
 				},
 				"name": "dialog_default19"
 			},
@@ -206,7 +206,7 @@ var dialogs = [
 				"filename": "default",
 				"input": [
 					{
-						"text": "아니다"
+						"text": "~아니요"
 					}
 				],
 				"output": {
@@ -224,7 +224,7 @@ var dialogs = [
 				"intent": "냉동실은 되지만 냉장실은 안됨"
 			}
 		],
-		"output": "[답변]\n냉동실 내부 결빙(성에)으로 냉장실 쪽으로 냉기가 순환이 안되어 나타나는 증상입니다.\n고객님이 직접 하실 수 있는 방법은 여유 냉장고로 음식물을 옮겨놓은 상태에서 제품의 전원을 끄고 냉동/냉장 도어를 활짝 열어 녹이는 방법이 있습니다.\n전원을 끄기 힘들다면 서비스 엔지니어 방문 점검이 필요합니다. 서비스 접수를 신청해주시기 바랍니다.\n\n다른 경우를 보시려면 \"이전\"을 입력해주세요\n\n답변이 유용한가요?",
+		"output": "[답변]\n냉동실 내부 결빙(성에)으로 냉장실 쪽으로 냉기가 순환이 안되어 나타나는 증상입니다.\n고객님이 직접 하실 수 있는 방법은 여유 냉장고로 음식물을 옮겨놓은 상태에서 제품의 전원을 끄고 냉동/냉장 도어를 활짝 열어 녹이는 방법이 있습니다.\n전원을 끄기 힘들다면 서비스 엔지니어 방문 점검이 필요합니다. 서비스 접수를 신청해주시기 바랍니다.\n\n답변이 유용한가요?",
 		"name": "냉장실만 안됨",
 		"children": [
 			{
@@ -232,11 +232,11 @@ var dialogs = [
 				"filename": "default",
 				"input": [
 					{
-						"text": "네"
+						"text": "~네"
 					}
 				],
 				"output": {
-					"call": "네"
+					"call": "~네"
 				},
 				"name": "dialog_default24"
 			},
@@ -245,7 +245,7 @@ var dialogs = [
 				"filename": "default",
 				"input": [
 					{
-						"text": "아니다"
+						"text": "~아니요"
 					}
 				],
 				"output": {
@@ -422,11 +422,11 @@ var dialogs = [
 						"filename": "default",
 						"input": [
 							{
-								"text": "네"
+								"text": "~네"
 							}
 						],
 						"output": {
-							"call": "네"
+							"call": "~네"
 						},
 						"name": "dialog_default71"
 					},
@@ -435,7 +435,7 @@ var dialogs = [
 						"filename": "default",
 						"input": [
 							{
-								"text": "아니다"
+								"text": "~아니요"
 							}
 						],
 						"output": {
@@ -533,11 +533,11 @@ var dialogs = [
 						"filename": "default",
 						"input": [
 							{
-								"text": "네"
+								"text": "~네"
 							}
 						],
 						"output": {
-							"call": "네"
+							"call": "~네"
 						},
 						"name": "dialog_default83"
 					},
@@ -546,7 +546,7 @@ var dialogs = [
 						"filename": "default",
 						"input": [
 							{
-								"text": "아니다"
+								"text": "~아니요"
 							}
 						],
 						"output": {
@@ -644,11 +644,11 @@ var dialogs = [
 						"filename": "default",
 						"input": [
 							{
-								"text": "네"
+								"text": "~네"
 							}
 						],
 						"output": {
-							"call": "네"
+							"call": "~네"
 						},
 						"name": "dialog_default95"
 					},
@@ -657,7 +657,7 @@ var dialogs = [
 						"filename": "default",
 						"input": [
 							{
-								"text": "아니다"
+								"text": "~아니요"
 							}
 						],
 						"output": {
@@ -858,11 +858,11 @@ var dialogs = [
 						"filename": "default",
 						"input": [
 							{
-								"text": "네"
+								"text": "~네"
 							}
 						],
 						"output": {
-							"call": "네"
+							"call": "~네"
 						},
 						"name": "dialog_default143"
 					},
@@ -871,7 +871,7 @@ var dialogs = [
 						"filename": "default",
 						"input": [
 							{
-								"text": "아니다"
+								"text": "~아니요"
 							}
 						],
 						"output": {
@@ -952,7 +952,7 @@ var dialogs = [
 				"filename": "default",
 				"input": [
 					{
-						"text": "아니다"
+						"text": "~아니요"
 					}
 				],
 				"output": {
@@ -965,11 +965,11 @@ var dialogs = [
 				"filename": "default",
 				"input": [
 					{
-						"text": "네"
+						"text": "~네"
 					}
 				],
 				"output": {
-					"call": "네"
+					"call": "~네"
 				},
 				"name": "dialog_default157"
 			}
@@ -1005,11 +1005,11 @@ var dialogs = [
 						"filename": "default",
 						"input": [
 							{
-								"text": "네"
+								"text": "~네"
 							}
 						],
 						"output": {
-							"call": "네"
+							"call": "~네"
 						},
 						"name": "dialog_default159"
 					},
@@ -1018,7 +1018,7 @@ var dialogs = [
 						"filename": "default",
 						"input": [
 							{
-								"text": "아니다"
+								"text": "~아니요"
 							}
 						],
 						"output": {
@@ -1188,7 +1188,7 @@ var dialogs = [
 		"name": "dialog_default180"
 	},
 	{
-		"name": "네",
+		"name": "~네",
 		"id": "default183",
 		"filename": "default",
 		"input": "false",
@@ -1557,6 +1557,19 @@ var commonDialogs = [
 	},
 	{
 		"id": "defaultcommon1",
+		"filename": "defaultcommon",
+		"name": "이전",
+		"input": [
+			{
+				"text": "이전"
+			}
+		],
+		"output": {
+			"up": "1"
+		}
+	},
+	{
+		"id": "defaultcommon2",
 		"filename": "defaultcommon",
 		"name": "답변없음",
 		"input": "",
