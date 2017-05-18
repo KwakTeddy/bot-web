@@ -402,7 +402,7 @@ function sendButtonMessage(recipientId, text, task, token) {
     task.buttons[i].title = task.buttons[i].text;
     delete task.buttons[i].text;
     task.buttons[i]['type'] = 'postback';
-    task.buttons[i]['payload'] = 'this is webhock bro';
+    task.buttons[i]['payload'] = {text: 'thehwlll'};
   }
 
   var messageData = {
