@@ -844,6 +844,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
       vm.targetO.type = vm.curO.type;
       vm.targetO.str = vm.curO.str;
+      vm.targetO.url = vm.curO.url;
 
       if (vm.curOutput.indexOf(vm.targetO) == -1)
         vm.curOutput.push(vm.targetO);
@@ -910,6 +911,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     vm.typeClass['Return'] = {btn:'btn-info',icon:'fa-level-up', input:'button'};
     vm.typeClass['Image'] = {btn:'btn-warning',icon:'fa-image', input:'image'};
     vm.typeClass['Button'] = {btn:'btn-success',icon:'fa-play-circle', input:'text'};
+    vm.typeClass['URLButton'] = {btn:'btn-success',icon:'fa-play-circle', input:'text_for_button'};
 
     var findType = function(input, typeName) {
       for (var i=0; i < input.length; ++i) {
@@ -940,7 +942,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         }
       });
       if ((!isDone || (i != undefined && vm.outputTypes.indexOf(i.type) != -1))) {
-        if (!findType(input, 'Button') && !findType(input,'Image'))
+        if (!findType(input, 'Button') && !findType(input, 'URLButton') && !findType(input,'Image'))
           types = angular.copy(vm.outputTypes);
         else
           types.push('Text');
@@ -956,6 +958,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         if (!findType(input,'Image'))
           types.push('Image');
         types.push('Button');
+        types.push('URLButton');
       }
 
       return types;
@@ -1100,7 +1103,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
       if (d.buttons) {
         d.buttons.forEach(function(b) {
-          r.push({type:'Button', str:b.text});
+          if (b.url) {
+            r.push({type:'URLButton', str:b.text, url:b.url});
+          } else {
+            r.push({type:'Button', str:b.text});
+          }
         });
       }
       if (d.image) {
@@ -1182,6 +1189,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             o.image = {url: '/files/'+r.str};
           } else if (r.type === 'Button') {
             (o.buttons || (o.buttons = [])).push({text:r.str});
+          } else if (r.type === 'URLButton') {
+            (o.buttons || (o.buttons = [])).push({text:r.str, url:r.url});
           }
         });
         var newo = {};

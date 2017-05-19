@@ -680,6 +680,15 @@
                                                            auto-focus
                                                            placeholder="{{getPlaceHolder(vm.curO.type, true)}}">
                                                 </div>
+                                                <div ng-show="vm.inputModeO && getInputType(vm.curO.type) == 'text_for_button'">
+                                                    <input type="text" id="output" name="output" ng-model="vm.curO.str"
+                                                           class="form-control clearfix"
+                                                           auto-focus
+                                                           placeholder="버튼이름을 입력해주세요">
+                                                    <input type="text" id="output_url" name="output_url" ng-model="vm.curO.url" class="form-control"
+                                                           auto-focus
+                                                           placeholder="버튼URL을 입력해주세요">
+                                                </div>
                                                 <div ng-show="vm.inputModeO && getInputType(vm.curO.type) == 'dialog'">
                                                     <ui-select ng-model="vm.curO.str"
                                                                theme="bootstrap"
