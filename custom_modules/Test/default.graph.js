@@ -16,7 +16,7 @@ var commonDialogs = [
   filename: 'defaultcommon',
   name: '시작',
   input: '시작',
-  output: 'test1 입니다.'
+  output: 'Test 입니다.'
 },
 {
   id: 'defaultcommon1',
@@ -28,6 +28,6 @@ var commonDialogs = [
 ];
 
 
-var _bot = require(require('path').resolve("config/lib/bot")).getBot('test1');
+var _bot = require(require('path').resolve("config/lib/bot")).getBot('Test');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

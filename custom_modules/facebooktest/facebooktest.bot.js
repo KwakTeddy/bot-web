@@ -1,9 +1,9 @@
 var path = require('path');
 var botlib = require(path.resolve('config/lib/bot'));
 
-var Test = {
+var facebooktest = {
   use: true
 };
 
-botlib.makeBot('Test', Test);
+botlib.makeBot('facebooktest', facebooktest);
 

@@ -217,7 +217,7 @@ function shinhan(task, context, callback) {
         .init()
         .then(function() {
             // client.end();
-            client.url('https://www.shinhancard.com')
+            client.url('https://www.Shinhancard.com')
                 .pause(1000)
                 .click('#shcGnb > li:nth-child(2) > a')
                 .pause(1000)
