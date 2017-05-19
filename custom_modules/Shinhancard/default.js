@@ -5,6 +5,13 @@ var async = require('async');
 var mongo = require(path.resolve('./modules/bot/action/common/mongo'));
 var type = require(path.resolve('./modules/bot/action/common/type'));
 
+var listType = {
+  name: "faq",
+  listName: "faqDoc",
+  typeCheck: "listTypeCheck"
+};
+
+bot.setType("listType", listType);
 
 var fanfaqType = {
     typeCheck: type.mongoDbTypeCheck,
