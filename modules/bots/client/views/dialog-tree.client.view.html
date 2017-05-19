@@ -198,6 +198,7 @@
     .well-sm h3{
         font-size: 18px;
     }
+
 </style>
 <body>
 
@@ -659,7 +660,7 @@
                                     <div class="col-sm-9">
                                         <div ng-repeat="output in dialog.output">
                                             <div class="input-group mb-xs" ng-show="vm.inputModeO && vm.curOutput == output">
-                                                <div class="input-group-btn" >
+                                                <div class="input-group-btn" id="outputButton" style="vertical-align: top">
                                                     <button tabindex="-1" class="btn" ng-class="vm.getButtonClass(vm.curO.type)" type="button">
                                                         {{vm.curO.type}}
                                                     </button>
@@ -712,7 +713,7 @@
                                                       </i>
                                                   </span>
                                                 </div>
-                                                <span class="input-group-btn">
+                                                <span class="input-group-btn" style="vertical-align: top">
                                                     <button class="btn btn-primary"
                                                             ng-disabled="vm.curO.str === ''"
                                                             ng-click="saveO()" type="button">저장</button>
