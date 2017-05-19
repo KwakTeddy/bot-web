@@ -73,6 +73,7 @@
                   $scope.connect = function (page) {
                     // modalInstance.dismiss();
                     FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
+                      console.log(response);
                       if(response.success){
                         var info = {};
                         info['user'] = vm.user._id;
