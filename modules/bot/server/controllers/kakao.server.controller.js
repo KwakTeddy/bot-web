@@ -111,7 +111,8 @@ function respondMessage(res, text, json) {
     sendMsg.message.message_button =
       {
         "label": json.buttons[0].text,
-        "url": json.buttons[0].url
+        "url": 'https://shinhan.moneybrain.ai'
+        // "url": json.buttons[0].url
       };
     // sendMsg.keyboard =
     // {
@@ -121,6 +122,10 @@ function respondMessage(res, text, json) {
   }
 
   if(json && json.image){
+    if (json.image.url.substring(0,4) !== 'http'){
+      json.image.url = config.host + json.image.url
+    }
+
     sendMsg.message.photo =
       {
         "url": json.image.url,
