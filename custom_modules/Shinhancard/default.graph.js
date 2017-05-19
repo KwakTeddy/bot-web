@@ -220,7 +220,7 @@ var dialogs = [
 			"output": "신한 FAN 고객만을 위한 혜택입니다. 지금바로 신한 FAN의 다양한 혜택을 확인하세요!  \n\n[할인 혜택]\n- GS25, 홈플러스, 동부화재, 티머니\n[포인트적립/쿠폰 혜택]\n- 홈플러스, 야놀자, X-GOLF 무료부킹\n[쇼핑/식품]\n- GS25, 홈플러스, 11번가, 티몬, CJ오쇼핑, 롯데면세점, 마켓컬리, 에브리밀\n[여가/보험]\n-교보문고, 인터파크 티켓, X-GOLF, 롯데시네마, 하나투어, 호텔패스, 야놀자, 동부화재\n[요식/생활]\n-포잉, 요기요, 플레이팅, 다방, 한방이사, 한솔교육, 리화이트\n[뷰티/패션]\n- 아모레퍼시픽, LF몰, 브리치, 스트라입스, 헤이뷰티, 왓슈, 꾸까\n[교통/차량]\n- 티머니, 쏘카, 아이파킹, 카페인, 페달링, 빨리와, 자몽, 화물맨, 코레일\n\n이 많은 혜택을 신한 FAN에 가입하시면 누리실 수 있어요!\n신한 FAN에 가입하신 고객은 '바로보기'를 클릭해 주세요.\n아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
 			"buttons": [
 				{
-					"text": "혜택 확인하기",
+					"text": "바로보기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?maintap=FAN_TAB_104"
 				}
 			],
@@ -568,7 +568,18 @@ var dialogs = [
 				"text": "리 워드"
 			}
 		],
-		"output": "신한에선 포인트도 자산이다!\n신한금융그룹과 거래를 할수록 더많은 혜택을 드리는 통합리워드 서비스 신한 FAN클럽! \n포인트 적립/이용부터 쇼핑/쿠폰/그룹사 혜택까지 한번에 이용하세요\n\n\n신한 FAN클럽 서비스는 가입하신 고객에게 제공되는 서비스입니다. \n가입 고객은 '바로보기'를 클릭해 주세요.\n아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+		"output": {
+			"output": "신한에선 포인트도 자산이다!\n신한금융그룹과 거래를 할수록 더많은 혜택을 드리는 통합리워드 서비스 신한 FAN클럽! \n포인트 적립/이용부터 쇼핑/쿠폰/그룹사 혜택까지 한번에 이용하세요\n\n\n신한 FAN클럽 서비스는 가입하신 고객에게 제공되는 서비스입니다. \n가입 고객은 '바로보기'를 클릭해 주세요.\n아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+			"image": {
+				"url": "/files/sh_logo.png"
+			},
+			"buttons": [
+				{
+					"text": "바로보기",
+					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?maintap=FAN_TAB_102"
+				}
+			]
+		},
 		"children": [
 			{
 				"name": "dialog_default107",
@@ -984,7 +995,15 @@ var dialogs = [
 										"text": "캐시 백"
 									}
 								],
-								"output": "고객님께 딱 맞는 카드를 추천해드려요.\n\n[신한카드 YOLO ⓘ]가 고객님께서 좋아하실 카드 입니다. \n\n할인율과 디자인을 내 마음대로!!\n나의 맞춤카드를 원하신다면, “YOLO”오세요~\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+								"output": {
+									"output": "고객님께 딱 맞는 카드를 추천해드려요.\n\n[신한카드 YOLO ⓘ]가 고객님께서 좋아하실 카드 입니다. \n\n할인율과 디자인을 내 마음대로!!\n나의 맞춤카드를 원하신다면, “YOLO”오세요~\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+									"buttons": [
+										{
+											"text": "바로보기",
+											"url": "https://www.shinhancard.com/conts/person/card_info/major/benefit/propose/1301614_31350.jsp"
+										}
+									]
+								},
 								"children": [
 									{
 										"name": "dialog_default130",
@@ -1013,7 +1032,15 @@ var dialogs = [
 										"text": "2"
 									}
 								],
-								"output": "고객님께 딱 맞는 카드를 추천해드려요.\n\n[신한 Hi-Point 카드 Nano f]가 고객님께서  좋아하실 카드 입니다. \n\n이 땅의 패션피플을 위한 단 하나의 카드!입니다.\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+								"output": {
+									"output": "고객님께 딱 맞는 카드를 추천해드려요.\n\n[신한 Hi-Point 카드 Nano f]가 고객님께서  좋아하실 카드 입니다. \n\n이 땅의 패션피플을 위한 단 하나의 카드!입니다.\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+									"buttons": [
+										{
+											"text": "바로보기",
+											"url": "https://www.shinhancard.com/conts/person/card_info/major/benefit/oneself/1198220_12880.jsp"
+										}
+									]
+								},
 								"children": [
 									{
 										"name": "dialog_default132",
@@ -1104,7 +1131,15 @@ var dialogs = [
 												"text": "재테크"
 											}
 										],
-										"output": "고객님께 딱 맞는 카드를 추천해드려요.\n\n[신한카드 미래설계]가 고객님께서  좋아하실 카드 입니다. \n\n생활비 할인에 금융 혜택까지 제공해드립니다.\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+										"output": {
+											"output": "고객님께 딱 맞는 카드를 추천해드려요.\n\n[신한카드 미래설계]가 고객님께서  좋아하실 카드 입니다. \n\n생활비 할인에 금융 혜택까지 제공해드립니다.\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+											"buttons": [
+												{
+													"text": "바로보기",
+													"url": "https://www.shinhancard.com/conts/person/card_info/major/benefit/wealth/1237418_12886.jsp"
+												}
+											]
+										},
 										"children": [
 											{
 												"name": "dialog_default133",
@@ -1139,6 +1174,142 @@ var dialogs = [
 										"output": "맛과 멋을 즐기시는 고개님께서 좋아하실만한 신용카드가 4가지나 있네요. \n아래 4가지 카드 중에서 관심 자세히 보고 싶으신 카드를 선택해주세요.  \n\n1. 언제나 FAN으로 혜택을 받을수 있어요. [신한카드 Always FAN]\n2. 온.오프라인을 뛰어넘은 할인을 제공해드려요. [신한카드 O2O]\n3. 실속형 여성 프리미엄 회원을 위한 카드입니다. [신한카드 The LADY CLASSIC]\n4. Premium 적립에 Trendy 할인을 맞추었습니다. [신한카드 The CLASSIC-Y]\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
 										"children": [
 											{
+												"name": "dialog_default143",
+												"id": "default143",
+												"filename": "default",
+												"input": [
+													{
+														"text": "1"
+													}
+												],
+												"output": {
+													"output": "[신한카드 Always FAN] 카드를 추천해드릴게요.\\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"buttons": [
+														{
+															"text": "바로보기",
+															"url": "https://www.shinhancard.com/conts/person/card_info/major/benefit/propose/1331070_31350.jsp"
+														}
+													]
+												},
+												"children": [
+													{
+														"name": "dialog_default147",
+														"id": "default147",
+														"filename": "default",
+														"input": [
+															{
+																"text": "이전"
+															}
+														],
+														"output": {
+															"up": "1"
+														}
+													}
+												]
+											},
+											{
+												"name": "dialog_default144",
+												"id": "default144",
+												"filename": "default",
+												"input": [
+													{
+														"text": "2"
+													}
+												],
+												"output": {
+													"output": "[신한카드 O2O] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"buttons": [
+														{
+															"text": "바로보기",
+															"url": "https://www.shinhancard.com/conts/person/card_info/major/benefit/propose/1310619_31350.jsp"
+														}
+													]
+												},
+												"children": [
+													{
+														"name": "dialog_default148",
+														"id": "default148",
+														"filename": "default",
+														"input": [
+															{
+																"text": "이전"
+															}
+														],
+														"output": {
+															"up": "1"
+														}
+													}
+												]
+											},
+											{
+												"name": "dialog_default145",
+												"id": "default145",
+												"filename": "default",
+												"input": [
+													{
+														"text": "3"
+													}
+												],
+												"output": {
+													"output": "[신한카드 The LADY CLASSIC] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"buttons": [
+														{
+															"text": "바로보기",
+															"url": "https://www.shinhancard.com/conts/person/card_info/premium/vip/1282931_12788.jsp"
+														}
+													]
+												},
+												"children": [
+													{
+														"name": "dialog_default149",
+														"id": "default149",
+														"filename": "default",
+														"input": [
+															{
+																"text": "이전"
+															}
+														],
+														"output": {
+															"up": "1"
+														}
+													}
+												]
+											},
+											{
+												"name": "dialog_default146",
+												"id": "default146",
+												"filename": "default",
+												"input": [
+													{
+														"text": "4"
+													}
+												],
+												"output": {
+													"output": "[신한카드 The CLASSIC-Y] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"buttons": [
+														{
+															"text": "바로보기",
+															"url": "https://www.shinhancard.com/conts/person/card_info/premium/vip/1282931_12788.jsp"
+														}
+													]
+												},
+												"children": [
+													{
+														"name": "dialog_default150",
+														"id": "default150",
+														"filename": "default",
+														"input": [
+															{
+																"text": "이전"
+															}
+														],
+														"output": {
+															"up": "1"
+														}
+													}
+												]
+											},
+											{
 												"name": "dialog_default134",
 												"id": "default134",
 												"filename": "default",
@@ -1149,6 +1320,19 @@ var dialogs = [
 												],
 												"output": {
 													"up": "1"
+												}
+											},
+											{
+												"name": "dialog_default154",
+												"id": "default154",
+												"filename": "default",
+												"input": [
+													{
+														"if": "true"
+													}
+												],
+												"output": {
+													"repeat": "1"
 												}
 											}
 										]
@@ -1171,7 +1355,15 @@ var dialogs = [
 												"text": "3"
 											}
 										],
-										"output": "고객님께 딱 맞는 카드를 추천해드려요.\n\n[GS칼텍스 신한카드 Shine] 가 기름값, 교통비 할인 혜택이 제공되는 카드는 입니다.\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+										"output": {
+											"output": "고객님께 딱 맞는 카드를 추천해드려요.\n\n[GS칼텍스 신한카드 Shine] 가 기름값, 교통비 할인 혜택이 제공되는 카드는 입니다.\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+											"buttons": [
+												{
+													"text": "바로보기",
+													"url": "https://www.shinhancard.com/conts/person/card_info/major/benefit/oil/1198262_12889.jsp"
+												}
+											]
+										},
 										"children": [
 											{
 												"name": "dialog_default135",
@@ -1245,7 +1437,15 @@ var dialogs = [
 												"text": "1"
 											}
 										],
-										"output": "고객님께 딱 맞는 카드를 추천해드려요.\n\n[신한카드 주거래 신용 [스마트 OTP 겸용]]이 고객님께서 좋아하실 카드 입니다. \n\n나의 Main 금융파트너!\n신한 주거래 패키지로 혜택을 누리세요!\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+										"output": {
+											"output": "고객님께 딱 맞는 카드를 추천해드려요.\n\n[신한카드 주거래 신용 [스마트 OTP 겸용]]이 고객님께서 좋아하실 카드 입니다. \n\n나의 Main 금융파트너!\n신한 주거래 패키지로 혜택을 누리세요!\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+											"buttons": [
+												{
+													"text": "바로보기",
+													"url": "https://www.shinhancard.com/conts/person/card_info/major/benefit/wealth/1278820_12886.jsp"
+												}
+											]
+										},
 										"children": [
 											{
 												"name": "dialog_default136",
@@ -1291,6 +1491,87 @@ var dialogs = [
 												"output": {
 													"up": "1"
 												}
+											},
+											{
+												"name": "dialog_default151",
+												"id": "default151",
+												"filename": "default",
+												"input": [
+													{
+														"text": "1"
+													}
+												],
+												"output": {
+													"output": "[신한 Hi-Point 카드] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"buttons": [
+														{
+															"text": "바로보기",
+															"url": "https://www.shinhancard.com/conts/person/card_info/major/benefit/large/1198313_12904.jsp"
+														}
+													]
+												},
+												"children": [
+													{
+														"name": "dialog_default172",
+														"id": "default172",
+														"filename": "default",
+														"input": [
+															{
+																"text": "이전"
+															}
+														],
+														"output": {
+															"up": "1"
+														}
+													}
+												]
+											},
+											{
+												"name": "dialog_default152",
+												"id": "default152",
+												"filename": "default",
+												"input": [
+													{
+														"text": "2"
+													}
+												],
+												"output": {
+													"output": "[신한카드 The CLASSIC-L] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"buttons": [
+														{
+															"text": "바로보기",
+															"url": "https://www.shinhancard.com/conts/person/card_info/premium/vip/1219771_12788.jsp"
+														}
+													]
+												},
+												"children": [
+													{
+														"name": "dialog_default173",
+														"id": "default173",
+														"filename": "default",
+														"input": [
+															{
+																"text": "이전"
+															}
+														],
+														"output": {
+															"up": "1"
+														}
+													}
+												]
+											},
+											{
+												"name": "dialog_default153",
+												"id": "default153",
+												"filename": "default",
+												"input": [
+													{
+														"if": "true"
+													}
+												],
+												"output": {
+													"repeat": "1"
+												}
 											}
 										]
 									},
@@ -1323,6 +1604,155 @@ var dialogs = [
 												"output": {
 													"up": "1"
 												}
+											},
+											{
+												"name": "dialog_default155",
+												"id": "default155",
+												"filename": "default",
+												"input": [
+													{
+														"text": "1"
+													}
+												],
+												"output": {
+													"output": "[신한 RPM+ Platinum# 카드] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"buttons": [
+														{
+															"text": "바로보기",
+															"url": "https://www.shinhancard.com/conts/person/card_info/premium/platinum/1293916_12791.jsp"
+														}
+													]
+												},
+												"children": [
+													{
+														"name": "dialog_default174",
+														"id": "default174",
+														"filename": "default",
+														"input": [
+															{
+																"text": "이전"
+															}
+														],
+														"output": {
+															"up": "1"
+														}
+													}
+												]
+											},
+											{
+												"name": "dialog_default156",
+												"id": "default156",
+												"filename": "default",
+												"input": [
+													{
+														"text": "2"
+													}
+												],
+												"output": {
+													"output": "[신한카드 Air Platinum#] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"buttons": [
+														{
+															"text": "바로보기",
+															"url": "https://www.shinhancard.com/conts/person/card_info/premium/platinum/1259018_12791.jsp"
+														}
+													]
+												},
+												"children": [
+													{
+														"name": "dialog_default175",
+														"id": "default175",
+														"filename": "default",
+														"input": [
+															{
+																"text": "이전"
+															}
+														],
+														"output": {
+															"up": "1"
+														}
+													}
+												]
+											},
+											{
+												"name": "dialog_default157",
+												"id": "default157",
+												"filename": "default",
+												"input": [
+													{
+														"text": "3"
+													}
+												],
+												"output": {
+													"output": "[신한카드 The Best-T] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"buttons": [
+														{
+															"text": "바로보기",
+															"url": "https://www.shinhancard.com/conts/person/card_info/premium/vip/1320225_12788.jsp"
+														}
+													]
+												},
+												"children": [
+													{
+														"name": "dialog_default176",
+														"id": "default176",
+														"filename": "default",
+														"input": [
+															{
+																"text": "이전"
+															}
+														],
+														"output": {
+															"up": "1"
+														}
+													}
+												]
+											},
+											{
+												"name": "dialog_default158",
+												"id": "default158",
+												"filename": "default",
+												"input": [
+													{
+														"text": "4"
+													}
+												],
+												"output": {
+													"output": "[신한 THE BEST-F 카드] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"buttons": [
+														{
+															"text": "바로보기",
+															"url": "https://www.shinhancard.com/conts/person/card_info/premium/vip/1208724_12788.jsp"
+														}
+													]
+												},
+												"children": [
+													{
+														"name": "dialog_default177",
+														"id": "default177",
+														"filename": "default",
+														"input": [
+															{
+																"text": "이전"
+															}
+														],
+														"output": {
+															"up": "1"
+														}
+													}
+												]
+											},
+											{
+												"name": "dialog_default159",
+												"id": "default159",
+												"filename": "default",
+												"input": [
+													{
+														"if": "true"
+													}
+												],
+												"output": {
+													"repeat": "1"
+												}
 											}
 										]
 									},
@@ -1354,6 +1784,45 @@ var dialogs = [
 												],
 												"output": {
 													"up": "1"
+												}
+											},
+											{
+												"name": "dialog_default160",
+												"id": "default160",
+												"filename": "default",
+												"input": [
+													{
+														"text": "1"
+													}
+												],
+												"output": {
+													"call": "dialog_default155"
+												}
+											},
+											{
+												"name": "dialog_default161",
+												"id": "default161",
+												"filename": "default",
+												"input": [
+													{
+														"text": "2"
+													}
+												],
+												"output": {
+													"call": "dialog_default156"
+												}
+											},
+											{
+												"name": "dialog_default162",
+												"id": "default162",
+												"filename": "default",
+												"input": [
+													{
+														"if": "true"
+													}
+												],
+												"output": {
+													"repeat": "1"
 												}
 											}
 										]
@@ -1471,7 +1940,15 @@ var dialogs = [
 								"text": "1"
 							}
 						],
-						"output": "고객님께 딱 맞는 카드를 추천해드려요.\n\n[신한카드 4Tune 체크]가 고객님께서 좋아하실거 같아요.\n어디서나 0.2% 적립됩니다. \n추가로 고객님께서 선택한 곳에서는 5배로 적립됩니다!\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+						"output": {
+							"output": "고객님께 딱 맞는 카드를 추천해드려요.\n\n[신한카드 4Tune 체크]가 고객님께서 좋아하실거 같아요.\n어디서나 0.2% 적립됩니다. \n추가로 고객님께서 선택한 곳에서는 5배로 적립됩니다!\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+							"buttons": [
+								{
+									"text": "바로보기",
+									"url": "https://www.shinhancard.com/conts/person/card_info/rookie/benefit/select/1267879_17067.jsp"
+								}
+							]
+						},
 						"children": [
 							{
 								"name": "dialog_default120",
@@ -1538,6 +2015,87 @@ var dialogs = [
 												],
 												"output": {
 													"up": "1"
+												}
+											},
+											{
+												"name": "dialog_default163",
+												"id": "default163",
+												"filename": "default",
+												"input": [
+													{
+														"text": "1"
+													}
+												],
+												"output": {
+													"output": "[신한 S20 체크카드] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"buttons": [
+														{
+															"text": "바로보기",
+															"url": "https://www.shinhancard.com/conts/person/card_info/rookie/benefit/life/1198821_13338.jsp"
+														}
+													]
+												},
+												"children": [
+													{
+														"name": "dialog_default178",
+														"id": "default178",
+														"filename": "default",
+														"input": [
+															{
+																"text": "이전"
+															}
+														],
+														"output": {
+															"up": "1"
+														}
+													}
+												]
+											},
+											{
+												"name": "dialog_default164",
+												"id": "default164",
+												"filename": "default",
+												"input": [
+													{
+														"text": "2"
+													}
+												],
+												"output": {
+													"output": "[신한 S20 Pink 카드] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"buttons": [
+														{
+															"text": "바로보기",
+															"url": "https://www.shinhancard.com/conts/person/card_info/rookie/benefit/life/1198822_13338.jsp"
+														}
+													]
+												},
+												"children": [
+													{
+														"name": "dialog_default179",
+														"id": "default179",
+														"filename": "default",
+														"input": [
+															{
+																"text": "이전"
+															}
+														],
+														"output": {
+															"up": "1"
+														}
+													}
+												]
+											},
+											{
+												"name": "dialog_default165",
+												"id": "default165",
+												"filename": "default",
+												"input": [
+													{
+														"if": "true"
+													}
+												],
+												"output": {
+													"repeat": "1"
 												}
 											}
 										]
@@ -1697,6 +2255,87 @@ var dialogs = [
 												"output": {
 													"up": "1"
 												}
+											},
+											{
+												"name": "dialog_default166",
+												"id": "default166",
+												"filename": "default",
+												"input": [
+													{
+														"text": "1"
+													}
+												],
+												"output": {
+													"output": "[쿠팡 신한카드 체크] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"buttons": [
+														{
+															"text": "바로보기",
+															"url": "https://www.shinhancard.com/conts/person/card_info/rookie/benefit/buy/1335816_13344.jsp"
+														}
+													]
+												},
+												"children": [
+													{
+														"name": "dialog_default180",
+														"id": "default180",
+														"filename": "default",
+														"input": [
+															{
+																"text": "이전"
+															}
+														],
+														"output": {
+															"up": "1"
+														}
+													}
+												]
+											},
+											{
+												"name": "dialog_default167",
+												"id": "default167",
+												"filename": "default",
+												"input": [
+													{
+														"text": "2"
+													}
+												],
+												"output": {
+													"output": "[카카오페이 신한 체크카드] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"buttons": [
+														{
+															"text": "바로보기",
+															"url": "https://www.shinhancard.com/conts/person/card_info/rookie/benefit/propose/1297119_13356.jsp"
+														}
+													]
+												},
+												"children": [
+													{
+														"name": "dialog_default181",
+														"id": "default181",
+														"filename": "default",
+														"input": [
+															{
+																"text": "이전"
+															}
+														],
+														"output": {
+															"up": "1"
+														}
+													}
+												]
+											},
+											{
+												"name": "dialog_default168",
+												"id": "default168",
+												"filename": "default",
+												"input": [
+													{
+														"if": "true"
+													}
+												],
+												"output": {
+													"repeat": "1"
+												}
 											}
 										]
 									},
@@ -1726,6 +2365,87 @@ var dialogs = [
 												"output": {
 													"up": "1"
 												}
+											},
+											{
+												"name": "dialog_default169",
+												"id": "default169",
+												"filename": "default",
+												"input": [
+													{
+														"text": "1"
+													}
+												],
+												"output": {
+													"output": "[Smart Global 신한카드 체크] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"buttons": [
+														{
+															"text": "바로보기",
+															"url": "https://www.shinhancard.com/conts/person/card_info/rookie/benefit/propose/1252727_13356.jsp"
+														}
+													]
+												},
+												"children": [
+													{
+														"name": "dialog_default182",
+														"id": "default182",
+														"filename": "default",
+														"input": [
+															{
+																"text": "이전"
+															}
+														],
+														"output": {
+															"up": "1"
+														}
+													}
+												]
+											},
+											{
+												"name": "dialog_default170",
+												"id": "default170",
+												"filename": "default",
+												"input": [
+													{
+														"text": "2"
+													}
+												],
+												"output": {
+													"output": "[신한카드 YOLO Triplus 체크] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"buttons": [
+														{
+															"text": "바로보기",
+															"url": "https://www.shinhancard.com/conts/person/card_info/rookie/benefit/enjoy/1317826_13347.jsp"
+														}
+													]
+												},
+												"children": [
+													{
+														"name": "dialog_default183",
+														"id": "default183",
+														"filename": "default",
+														"input": [
+															{
+																"text": "이전"
+															}
+														],
+														"output": {
+															"up": "1"
+														}
+													}
+												]
+											},
+											{
+												"name": "dialog_default171",
+												"id": "default171",
+												"filename": "default",
+												"input": [
+													{
+														"if": "true"
+													}
+												],
+												"output": {
+													"repeat": "1"
+												}
 											}
 										]
 									},
@@ -1741,7 +2461,15 @@ var dialogs = [
 												"text": "3"
 											}
 										],
-										"output": "고객님께 딱 맞는 카드를 추천해드려요.\n\n[신한카드 주거래 체크]가 고객님께서 좋아하실거 같아요.\n\n나의 Main 금융파트너!\n신한 주거래 패키지로 혜택을 누리세요!\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.\n\n(* 처음으로 돌아가기 0 또는 '처음', 이전 메뉴 : '이전')",
+										"output": {
+											"output": "고객님께 딱 맞는 카드를 추천해드려요.\n\n[신한카드 주거래 체크]가 고객님께서 좋아하실거 같아요.\n\n나의 Main 금융파트너!\n신한 주거래 패키지로 혜택을 누리세요!\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.\n\n(* 처음으로 돌아가기 0 또는 '처음', 이전 메뉴 : '이전')",
+											"buttons": [
+												{
+													"text": "바로보기",
+													"url": "https://www.shinhancard.com/conts/person/card_info/rookie/benefit/wealth/1278822_13341.jsp"
+												}
+											]
+										},
 										"children": [
 											{
 												"name": "dialog_default127",
