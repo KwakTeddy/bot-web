@@ -68,10 +68,6 @@ exports.deleteChatRoom = function (req, res) {
 function respondMessage(res, text, json) {
   console.log(text);
   console.log(util.inspect(json));
-  if (json && json.result && json.result.items){
-
-  }
-
   var sendMsg =
   {
     "message": {
@@ -112,12 +108,27 @@ function respondMessage(res, text, json) {
   }
 
   if(json && json.buttons) {
-    sendMsg.keyboard =
-    {
-      "type": "buttons",
-      "buttons": json.buttons
-    };
+    sendMsg.message.message_button =
+      {
+        "label": json.buttons[0].text,
+        "url": json.buttons[0].url
+      };
+    // sendMsg.keyboard =
+    // {
+    //   "type": "buttons",
+    //   "buttons": json.buttons
+    // };
   }
+
+  if(json && json.image){
+    sendMsg.message.photo =
+      {
+        "url": json.image.url,
+        "width" : 640,
+        "height" : 480
+      }
+  }
+
 
   if(json && json.result && json.result.smartReply) {
     sendMsg.keyboard =
