@@ -129,7 +129,7 @@
             });
           }else {
             //register through local not facebook
-            var url = '/api/auth/facebook';
+            var url = '/api/auth/facebook/page';
             if ($state.previous && $state.previous.href) {
               url += '?redirect_to=' + encodeURIComponent($state.previous.href);
             }
