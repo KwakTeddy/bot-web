@@ -6,6 +6,8 @@ var contextModule = require(path.resolve('modules/bot/engine/common/context'));
 var mongoose = require('mongoose');
 var Media = mongoose.model('Media');
 var fs = require('fs');
+var config = require(path.resolve('config/config'));
+
 
 var util = require('util');
 exports.keyboard = function (req, res) {
