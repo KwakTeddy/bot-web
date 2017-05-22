@@ -58,6 +58,7 @@
                       }
                     }
                   }
+                  console.log(response);
 
                   $scope.fbLoading = false;
                   $scope.pageLists = [];
