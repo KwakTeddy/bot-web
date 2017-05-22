@@ -71,7 +71,8 @@
                   };
 
                   $scope.connect = function (page) {
-                    // modalInstance.dismiss();
+                    console.log(page);
+                    console.log('--------------------')
                     FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
                       console.log(response);
                       if(response.success){
