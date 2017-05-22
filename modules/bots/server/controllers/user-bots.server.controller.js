@@ -430,8 +430,11 @@ exports.facebookPage = function (req, res) {
           info['bot'] = req.body.userBot;
           info['userBotId'] = req.body.userBotId;
           info['connect'] = req.body.connect;
-          console.info(util.inspect(info));
+          console.log(util.inspect(req.body));
+          console.log(util.inspect(info));
           var userBotFbPage = new UserBotFbPage(info);
+          console.log(util.inspect(userBotFbPage));
+          console.log('-----------------------------------------------')
           userBotFbPage.save(function (err) {
             if (err){
               console.log(err);

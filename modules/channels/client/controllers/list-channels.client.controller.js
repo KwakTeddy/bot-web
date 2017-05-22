@@ -10,8 +10,11 @@
   function ChannelsListController(ChannelsService, $scope, $cookies, $uibModal, $http, Authentication, $window, $state) {
     var vm = this;
     vm.user = Authentication.user;
-    vm.userBot = {};
-    vm.userBot['id'] = $cookies.get('default_bot');
+    $http.get('/api/bots/byNameId/' + $cookies.get('default_bot')).then(function (result) {
+      vm.userBot = result.data;
+    }, function (err) {
+      console.log(err)
+    });
 
     // Connect UserBot Dialogue
     vm.modal = function (channel, method) {
@@ -51,14 +54,13 @@
                   for(var i = 0; i < res.data.length; i++){
                     for(var j = 0; j < response.data.length; j++){
                       if ((res.data[i].pageId == response.data[j].id) && res.data[i].connect){
-                        response.data[j]['connected'] = res.data[i].bot || res.data[i].userBot;
+                        response.data[j]['connected'] = res.data[i].bot
                         continue;
                       }else {
                         response.data[j]['connected'] = false;
                       }
                     }
                   }
-                  console.log(response);
 
                   $scope.fbLoading = false;
                   $scope.pageLists = [];
@@ -72,8 +74,6 @@
                   };
 
                   $scope.connect = function (page) {
-                    console.log(page);
-                    console.log('--------------------')
                     FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
                       console.log(response);
                       if(response.success){
@@ -84,6 +84,7 @@
                         info['page'] = page;
                         info['connect'] = true;
                         page['connected'] = vm.userBot;
+                        console.log(info);
                         $http.post('/api/auth/facebook/pageInfo', info, function (err) {
                           if(err) {
                             console.log(err)
