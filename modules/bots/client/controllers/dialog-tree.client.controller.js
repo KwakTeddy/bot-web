@@ -887,6 +887,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       if (type === 'Type') return "타입을 입력해주세요";
       if (type === 'Button') return "버튼 이름을 입력해주세요";
       if (type === 'If') return "조건을 입력해주세요";
+      if (type === 'Options') return 'Option을 입력해주세요';
     };
 
     // input/ouput types
@@ -923,6 +924,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       return false;
     };
 
+    var addType = function(types, type) {
+      if (types.indexOf(type) == -1) {
+        types.push(type);
+      }
+    };
+
     $scope.getInputTypes = function(input, i) {
       var types = [];
       if (!input) return types;
@@ -943,27 +950,27 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         }
       });
       if (findType(input, 'Repeat') || findType(input, 'Call')) {
-        types.push('Options');
+        addType(types,'Options');
         return types;
       }
       if ((!isDone || (i != undefined && vm.outputTypes.indexOf(i.type) != -1))) {
         if (!findType(input, 'Button') && !findType(input, 'URLButton') && !findType(input,'Image'))
           types = angular.copy(vm.outputTypes);
         else
-          types.push('Text');
+          addType(types,'Text');
       }
       if (findType(input,'Return')) {
         if (!findType(input,'Text'))
-          types.push('Text');
+          addType(types,'Text');
         return types;
       }
       if (!findType(input,"If") || (i != undefined && i.type == "If"))
-        types.push("If");
+        addType(types,"If");
       if (!isDone || (isDone && findType(input,'Text'))) {
         if (!findType(input,'Image'))
-          types.push('Image');
-        types.push('Button');
-        types.push('URLButton');
+          addType(types,'Image');
+        addType(types,'Button');
+        addType(types,'URLButton');
       }
 
       return types;
