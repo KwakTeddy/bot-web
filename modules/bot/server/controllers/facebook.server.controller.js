@@ -134,7 +134,7 @@ function respondMessage(to, text, botId, task) {
         }
       }
       if(text){
-        if (task.hasOwnProperty('image')){
+        if (task && task.hasOwnProperty('image')){
           if (task.hasOwnProperty('buttons')){
             //text && image && buttons
             sendGenericMessage(to, text, task, tokenData);
@@ -145,7 +145,7 @@ function respondMessage(to, text, botId, task) {
 
           }
         }else {
-          if (task.hasOwnProperty('buttons')){
+          if (task && task.hasOwnProperty('buttons')){
             //text && buttons
             sendButtonMessage(to, text, task, tokenData);
 
@@ -155,8 +155,8 @@ function respondMessage(to, text, botId, task) {
           }
         }
       }else {
-        if (task.hasOwnProperty('image')){
-          if (task.hasOwnProperty('buttons')){
+        if (task && task.hasOwnProperty('image')){
+          if (task && task.hasOwnProperty('buttons')){
             //image && buttons _ error
             // sendGenericMessage(to, text, task, tokenData);
 
@@ -204,7 +204,6 @@ function receivedMessage(event) {
   console.log(event.botId)
   if (event.botId == "subscribeBot"){
     console.log('Subscribe Coming In');
-    console.log()
       UserBotFbPage.findOne({pageId: event.recipient.id}, function (err, data) {
           if (err){
               console.log(err);
