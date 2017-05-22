@@ -74,7 +74,7 @@ exports.message = function (req, res) {
       // successfully received the callback. Otherwise, the request will time out.
       res.sendStatus(200);
   }else {
-    return false
+    return true;
   }
 };
 
