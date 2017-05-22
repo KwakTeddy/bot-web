@@ -908,6 +908,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     vm.typeClass['If'] = {btn:'btn-info',icon:'fa-question', input:'text'};
     vm.typeClass['Up'] = {btn:'btn-info',icon:'fa-arrow-up', input:'button'};
     vm.typeClass['Repeat'] = {btn:'btn-info',icon:'fa-repeat', input:'button'};
+    vm.typeClass['Options'] = {btn:'btn-warning',icon:'fa-cog', input:'text'};
     vm.typeClass['Return'] = {btn:'btn-info',icon:'fa-level-up', input:'button'};
     vm.typeClass['Image'] = {btn:'btn-warning',icon:'fa-image', input:'image'};
     vm.typeClass['Button'] = {btn:'btn-success',icon:'fa-play-circle', input:'text'};
@@ -941,6 +942,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           isDone = true;
         }
       });
+      if (findType(input, 'Repeat') || findType(input, 'Call')) {
+        types.push('Options');
+        return types;
+      }
       if ((!isDone || (i != undefined && vm.outputTypes.indexOf(i.type) != -1))) {
         if (!findType(input, 'Button') && !findType(input, 'URLButton') && !findType(input,'Image'))
           types = angular.copy(vm.outputTypes);
@@ -1098,6 +1103,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       if (d.repeat && typeof d.repeat == 'string') {
         r.push({type:'Repeat', str:d.repeat+""});
       }
+      if (d.options && d.options.output) {
+        r.push({type:'Options', str:d.options.output.replace(/\\/g, '\\\\')});
+      }
       if (d.return) {
         r.push({type:'Return', str:d.return+""});
       }
@@ -1183,6 +1191,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             o.up = r.str;
           } else if (r.type === 'Repeat') {
             o.repeat = r.str;
+          } else if (r.type === 'Options') {
+            o.options = {output: r.str};
           } else if (r.type === 'Return') {
             o.return = r.str;
           } else if (r.type === 'Image') {
