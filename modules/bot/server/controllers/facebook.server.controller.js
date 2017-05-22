@@ -43,7 +43,7 @@ exports.message = function (req, res) {
   console.log(util.inspect(req.body, {showHidden: false, depth: null}));
   console.log('----------------------------whatupbot===================================')
   // Make sure this is a page subscription
-  if ((data.object == 'page') && !data.entry[0].messaging[0].delivery ) {
+  if (data.object == 'page') {
   // if ((data.object == 'page') && !data.entry[0].messaging[0].message.is_echo && !data.entry[0].messaging[0].delivery ) {
       // Iterate over each entry
       // There may be multiple if batched
