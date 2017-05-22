@@ -41,7 +41,6 @@ exports.message = function (req, res) {
   var data = req.body;
   console.log(util.inspect(req.params));
   console.log(util.inspect(req.body, {showHidden: false, depth: null}));
-  console.log(util.inspect(req.body.entry[0].messaging, {showHidden: false, depth: null}));
   console.log('----------------------------whatupbot===================================')
   // Make sure this is a page subscription
   if (data.object == 'page') {
