@@ -115,10 +115,11 @@ function respondMessage(res, text, json) {
       // Object.defineProperty(json.buttons, "keyboard", Object.getOwnPropertyDescriptor(json.buttons, "message"));
       // delete json.buttons['message'];
       sendMsg = {};
-      sendMsg['type'] = 'buttons';
-      sendMsg['buttons'] = [];
+      sendMsg['keyboard'] = {}
+      sendMsg.keyboard['type'] = 'buttons';
+      sendMsg.keyboard['buttons'] = [];
       for( var i = 0; i < json.buttons.length; i++){
-        sendMsg.buttons.push(json.buttons[i].text);
+        sendMsg.keyboard.buttons.push(json.buttons[i].text);
       }
     }else {
       sendMsg.message.message_button =
