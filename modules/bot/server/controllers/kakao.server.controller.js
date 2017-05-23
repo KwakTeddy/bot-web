@@ -114,8 +114,7 @@ function respondMessage(res, text, json) {
       console.log(util.inspect(json.buttons));
       // Object.defineProperty(json.buttons, "keyboard", Object.getOwnPropertyDescriptor(json.buttons, "message"));
       // delete json.buttons['message'];
-      sendMsg = {};
-      sendMsg['keyboard'] = {}
+      sendMsg['keyboard'] = {};
       sendMsg.keyboard['type'] = 'buttons';
       sendMsg.keyboard['buttons'] = [];
       for( var i = 0; i < json.buttons.length; i++){
