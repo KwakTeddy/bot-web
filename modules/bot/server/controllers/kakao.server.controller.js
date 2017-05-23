@@ -118,7 +118,7 @@ function respondMessage(res, text, json) {
       sendMsg['type'] = 'buttons';
       sendMsg['buttons'] = [];
       for( var i = 0; i < json.buttons.length; i++){
-        sendMsg.buttons.push(json.buttons[i]);
+        sendMsg.buttons.push(json.buttons[i].text);
       }
     }else {
       sendMsg.message.message_button =
