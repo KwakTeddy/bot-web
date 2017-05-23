@@ -208,6 +208,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
+    $scope.$watch('vm.curI.str', function() {
+      if (vm.curI && vm.curI.type === 'Keyword')
+        $scope.processInput();
+    });
+
     var editor;
 
     var newTask_template = "\nvar newTask = {\n\tname: 'newTask',\n\taction: function (task,context,callback) {" +
@@ -822,19 +827,26 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         $scope.resetI();
         return;
       }
-
       vm.targetI.type = vm.curI.type;
       if (vm.curI.type == 'Keyword') {
-        vm.targetI.str = $scope.processedInput;
+        if (vm.curI.type === 'Keyword' && vm.curI.str.length){
+          $http.get('/api/nluprocess/'+vm.curI.str).then(function (res) {
+            $scope.processedInput = res.data;
+            vm.targetI.str = $scope.processedInput;
+
+            if (vm.curInput.indexOf(vm.targetI) == -1)
+              vm.curInput.push(vm.targetI);
+            $scope.resetI();
+          }, function (err) {
+            console.log(err);
+          })
+        }
       } else {
         vm.targetI.str = vm.curI.str;
+        if (vm.curInput.indexOf(vm.targetI) == -1)
+          vm.curInput.push(vm.targetI);
+        $scope.resetI();
       }
-      // vm.targetI.str = vm.curI.str;
-
-      if (vm.curInput.indexOf(vm.targetI) == -1)
-        vm.curInput.push(vm.targetI);
-
-      $scope.resetI();
     };
 
     $scope.saveO = function() {
@@ -1297,7 +1309,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         event.stopPropagation();
         func();
       }
-      $scope.processInput();
+      //$scope.processInput();
     };
 
     $scope.saveEnter = function(event,func) {
