@@ -295,16 +295,32 @@ if (_platform !== 'mobile'){
         })
       };
 
+      // vm.press_id = function(event) {
+      //   var key = event.keyCode;
+      //   if((key >=48 && key <= 90) || (key == 189) || (key >=96 && key <= 105) || (key == 8) ||
+      //     (key == 9) || (key == 13) || (key == 16) || (key == 37) || (key == 39) || (key == 116)){
+      //     return true;
+      //   }
+      //   else{
+      //     event.preventDefault();
+      //     event.stopPropagation();
+      //     return false;
+      //   }
+      // };
+
       if (!vm.userBot || !vm.userBot._id) {
         $scope.$watch('vm.userBot.id', function () {
-          $resource('/api/bot-exist', {}).get({bot_id: vm.userBot.id}, function (res) {
-            if (res) {
-              $scope.error.id = "같은 아이디가 존재합니다";
-              return false;
-            }
-          }, function (err) {
-            $scope.error.id = null;
-          });
+          if (vm.userBot.id) {
+            vm.userBot.id = vm.userBot.id.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g,'');
+            $resource('/api/bot-exist', {}).get({bot_id: vm.userBot.id}, function (res) {
+              if (res) {
+                $scope.error.id = "같은 아이디가 존재합니다";
+                return false;
+              }
+            }, function (err) {
+              $scope.error.id = null;
+            });
+          }
         });
       }
 

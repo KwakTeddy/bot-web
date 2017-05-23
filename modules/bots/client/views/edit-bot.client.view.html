@@ -30,6 +30,12 @@
                  aria-required="true" aria-invalid="false"
                  ng-disabled="vm.bot._id">
         </div>
+        <div ng-messages="botForm.id.$error" role="alert" class="col-sm-offset-3 col-sm-9" ng-show = "botForm.id.$error && submitted">
+          <p class="help-block error-text text-danger" ng-message="required">아이디를 입력해야죠</p>
+        </div>
+        <div ng-show="error.id" role="alert" class="col-sm-offset-3 col-sm-9">
+          <span class="error-text text-center text-danger"> <strong ng-bind="error.id"></strong> </span>
+        </div>
       </div>
       <div class="form-horizontal form-group">
         <label class="col-sm-2 control-label">봇이름 <span class="required" aria-required="true">*</span></label>
