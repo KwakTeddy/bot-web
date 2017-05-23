@@ -248,7 +248,22 @@ exports.signin = function (req, res, next) {
                     if (err) {
                         res.status(400).send(err);
                     } else {
-                        res.json(user);
+                      if (sessionRedirectURL.indexOf('developer') > -1){
+                        Bot.find({user: req.user._id}).exec(function (err, data) {
+                          if (err){
+                            return res.redirect('/authentication/signin')
+                          }
+                          if (data.length){
+                            res.cookie('default_bot', data[0].id);
+                          }else {
+                            console.log('----------------------------==================================================')
+                            console.log(util.inspect(req.cookies));
+                            res.cookie('default_bot', null);
+                          }
+                        });
+                      }
+
+                      res.json(user);
                     }
                 });
             }

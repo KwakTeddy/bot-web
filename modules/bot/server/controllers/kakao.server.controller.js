@@ -110,7 +110,7 @@ function respondMessage(res, text, json) {
   }
 
   if(json && json.buttons) {
-    if (Array.isArray(json.buttons)){
+    if (json.buttons.length > 1){
       console.log(util.inspect(json.buttons));
       // Object.defineProperty(json.buttons, "keyboard", Object.getOwnPropertyDescriptor(json.buttons, "message"));
       // delete json.buttons['message'];
