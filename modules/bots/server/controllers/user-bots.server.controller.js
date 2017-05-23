@@ -745,6 +745,42 @@ exports.uploadImageFile = function (req, res) {
   // }
 };
 
+exports.uploadImageFileReplace = function (req, res) {
+  var newname = req.cookies.default_bot + Date.now();
+  var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './public/files/')
+    },
+    filename: function (req, file, cb) {
+      console.log(file.originalname +','+ newname);
+      cb(null,newname + path.parse(file.originalname).ext);
+    }
+  });
+
+  // var user = req.user;
+  var upload = multer({storage: storage}).single('uploadImageFile');
+
+  // Filtering to upload only images
+  upload.fileFilter = function (req, file, cb) {
+    if (file.mimetype !== 'image/png' && file.mimetype !== 'image/jpg' && file.mimetype !== 'image/jpeg' && file.mimetype !== 'image/gif') {
+      return cb(new Error('Only image files are allowed!'), false);
+    }
+    cb(null, true);
+  };
+
+  // if (user) {
+  upload(req, res, function (uploadError) {
+    if(uploadError) {
+      return res.status(400).send({
+        message: 'Error occurred while uploading file'
+      });
+    } else {
+      console.log('uploadFile:' + req.file.filename);
+      res.json({result: 'ok', displayname:req.file.originalname , filename: req.file.filename});
+    }
+  });
+};
+
 exports.convertFile = function (req, res) {
   // var dir = path.resolve('custom_modules/private_bot/_data/');
   var filename = req.body.filename;

@@ -46,6 +46,7 @@ module.exports = function (app) {
     .put(userBots.renameFile);
 
   app.route('/api/user-bots/image-files').post(userBots.uploadImageFile);
+  app.route('/api/user-bots/image-files-replace').post(userBots.uploadImageFileReplace);
   app.route('/api/user-bots/convert').post(userBots.convertFile);
 
 

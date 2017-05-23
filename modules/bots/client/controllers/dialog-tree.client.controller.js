@@ -857,6 +857,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.targetO.type = vm.curO.type;
       vm.targetO.str = vm.curO.str;
       vm.targetO.url = vm.curO.url;
+      vm.targetO.filename = vm.curO.filename;
 
       if (vm.curOutput.indexOf(vm.targetO) == -1)
         vm.curOutput.push(vm.targetO);
@@ -1138,7 +1139,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         });
       }
       if (d.image) {
-        r.push({type:'Image', str:d.image.url.substring(7)});
+        r.push({type:'Image', str:d.image.displayname, filename:d.image.url.substring(7)});
       }
     };
 
@@ -1215,7 +1216,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           } else if (r.type === 'Return') {
             o.return = r.str;
           } else if (r.type === 'Image') {
-            o.image = {url: '/files/'+r.str};
+            o.image = {url: '/files/'+r.filename, displayname:r.str};
           } else if (r.type === 'Button') {
             (o.buttons || (o.buttons = [])).push({text:r.str});
           } else if (r.type === 'URLButton') {
@@ -2605,7 +2606,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     // Create file imageUploader instance
     $scope.imageUploader = new FileUploader({
-      url: '/api/user-bots/image-files',
+      url: '/api/user-bots/image-files-replace',
       alias: 'uploadImageFile',
       autoUpload: true
     });
@@ -2643,7 +2644,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       // Show success message
       $scope.success['image'] = true;
 
-      vm.curO.str = response.filename;
+      vm.curO.filename = response.filename;
+      vm.curO.str = response.displayname;
       // Clear upload buttons
       $scope.cancelImageUpload();
     };
