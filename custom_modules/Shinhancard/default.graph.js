@@ -872,6 +872,51 @@ var dialogs = [
 		"output": "FAN관련 궁금하신부분을 말씀하시면 가장 알맞은 답변을 안내해드리겠습니다. 궁금하신 질문을 '단어'로 입력해주세요!",
 		"children": [
 			{
+				"name": "dialog_default189",
+				"id": "default189",
+				"filename": "default",
+				"input": [
+					{
+						"text": "질문"
+					},
+					{
+						"text": "FAQ"
+					},
+					{
+						"text": "문의"
+					}
+				],
+				"output": {
+					"call": "FAN에 대해 자주하는 질문들(FAQ)"
+				}
+			},
+			{
+				"name": "dialog_default190",
+				"id": "default190",
+				"filename": "default",
+				"input": [
+					{
+						"text": "추천"
+					}
+				],
+				"output": {
+					"call": "신한 카드 추천"
+				}
+			},
+			{
+				"name": "dialog_default191",
+				"id": "default191",
+				"filename": "default",
+				"input": [
+					{
+						"text": "FAN"
+					}
+				],
+				"output": {
+					"call": "신한 FAN 플랫폼 소개"
+				}
+			},
+			{
 				"name": "dialog_default98",
 				"id": "default98",
 				"filename": "default",
@@ -1000,7 +1045,7 @@ var dialogs = [
 									"buttons": [
 										{
 											"text": "바로보기",
-											"url": "https://www.shinhancard.com/conts/person/card_info/major/benefit/propose/1301614_31350.jsp"
+											"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1350235_33659.html"
 										}
 									]
 								},
@@ -1037,7 +1082,7 @@ var dialogs = [
 									"buttons": [
 										{
 											"text": "바로보기",
-											"url": "https://www.shinhancard.com/conts/person/card_info/major/benefit/oneself/1198220_12880.jsp"
+											"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1355079_33659.html"
 										}
 									]
 								},
@@ -1136,7 +1181,7 @@ var dialogs = [
 											"buttons": [
 												{
 													"text": "바로보기",
-													"url": "https://www.shinhancard.com/conts/person/card_info/major/benefit/wealth/1237418_12886.jsp"
+													"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1350241_33659.html"
 												}
 											]
 										},
@@ -1187,7 +1232,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/major/benefit/propose/1331070_31350.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1350234_33659.html"
 														}
 													]
 												},
@@ -1221,7 +1266,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/major/benefit/propose/1310619_31350.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1350244_33659.html"
 														}
 													]
 												},
@@ -1255,7 +1300,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/premium/vip/1282931_12788.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/premium/1350224_33658.html"
 														}
 													]
 												},
@@ -1289,7 +1334,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/premium/vip/1282931_12788.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/premium/1350226_33658.html"
 														}
 													]
 												},
@@ -1360,7 +1405,7 @@ var dialogs = [
 											"buttons": [
 												{
 													"text": "바로보기",
-													"url": "https://www.shinhancard.com/conts/person/card_info/major/benefit/oil/1198262_12889.jsp"
+													"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1364067_33659.html"
 												}
 											]
 										},
@@ -1442,7 +1487,7 @@ var dialogs = [
 											"buttons": [
 												{
 													"text": "바로보기",
-													"url": "https://www.shinhancard.com/conts/person/card_info/major/benefit/wealth/1278820_12886.jsp"
+													"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1350237_33659.html"
 												}
 											]
 										},
@@ -1506,7 +1551,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/major/benefit/large/1198313_12904.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1350243_33659.html"
 														}
 													]
 												},
@@ -1540,7 +1585,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/premium/vip/1219771_12788.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/premium/1350227_33658.html"
 														}
 													]
 												},
@@ -1619,7 +1664,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/premium/platinum/1293916_12791.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1350231_33659.html"
 														}
 													]
 												},
@@ -1653,7 +1698,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/premium/platinum/1259018_12791.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1350232_33659.html"
 														}
 													]
 												},
@@ -1687,7 +1732,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/premium/vip/1320225_12788.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/premium/1350223_33658.html"
 														}
 													]
 												},
@@ -1721,7 +1766,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/premium/vip/1208724_12788.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/premium/1350228_33658.html"
 														}
 													]
 												},
@@ -1945,7 +1990,7 @@ var dialogs = [
 							"buttons": [
 								{
 									"text": "바로보기",
-									"url": "https://www.shinhancard.com/conts/person/card_info/rookie/benefit/select/1267879_17067.jsp"
+									"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350273_33660.html"
 								}
 							]
 						},
@@ -2031,7 +2076,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/rookie/benefit/life/1198821_13338.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350266_33660.html"
 														}
 													]
 												},
@@ -2065,7 +2110,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/rookie/benefit/life/1198822_13338.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350263_33660.html"
 														}
 													]
 												},
@@ -2270,7 +2315,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/rookie/benefit/buy/1335816_13344.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350250_33660.html"
 														}
 													]
 												},
@@ -2304,7 +2349,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/rookie/benefit/propose/1297119_13356.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350256_33660.html"
 														}
 													]
 												},
@@ -2312,6 +2357,40 @@ var dialogs = [
 													{
 														"name": "dialog_default181",
 														"id": "default181",
+														"filename": "default",
+														"input": [
+															{
+																"text": "이전"
+															}
+														],
+														"output": {
+															"up": "1"
+														}
+													}
+												]
+											},
+											{
+												"name": "dialog_default184",
+												"id": "default184",
+												"filename": "default",
+												"input": [
+													{
+														"text": "3"
+													}
+												],
+												"output": {
+													"output": "[네이버페이 신한 체크카드] 카드를 추천해드릴게요.아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"buttons": [
+														{
+															"text": "바로보기",
+															"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350254_33660.html"
+														}
+													]
+												},
+												"children": [
+													{
+														"name": "dialog_default185",
+														"id": "default185",
 														"filename": "default",
 														"input": [
 															{
@@ -2380,7 +2459,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/rookie/benefit/propose/1252727_13356.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350269_33660.html"
 														}
 													]
 												},
@@ -2414,7 +2493,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/rookie/benefit/enjoy/1317826_13347.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350267_33660.html"
 														}
 													]
 												},
@@ -2466,7 +2545,7 @@ var dialogs = [
 											"buttons": [
 												{
 													"text": "바로보기",
-													"url": "https://www.shinhancard.com/conts/person/card_info/rookie/benefit/wealth/1278822_13341.jsp"
+													"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350268_33660.html"
 												}
 											]
 										},
@@ -2596,10 +2675,49 @@ var dialogs = [
 				"text": "플랫폼"
 			}
 		],
-		"output": {
-			"call": "시작"
-		},
-		"name": "신한 FAN 플랫폼 소개"
+		"output": "신한 FAN에 궁금한점을 OOO 챗봇이 해결해 드립니다. 메뉴 또는 궁금하신 키워드를 입력해주세요.\n\n1. 신한 FAN에 가입하고 싶어요\n2. 신한 FAN에는 어떤 혜택이 있나요\n3. 신한 FAN으로는 무엇을 할 수 있나요",
+		"name": "신한 FAN 플랫폼 소개",
+		"children": [
+			{
+				"name": "dialog_default186",
+				"id": "default186",
+				"filename": "default",
+				"input": [
+					{
+						"text": "1"
+					}
+				],
+				"output": {
+					"call": "FAN 가입"
+				}
+			},
+			{
+				"name": "dialog_default187",
+				"id": "default187",
+				"filename": "default",
+				"input": [
+					{
+						"text": "2"
+					}
+				],
+				"output": {
+					"call": "FAN 혜택"
+				}
+			},
+			{
+				"name": "dialog_default188",
+				"id": "default188",
+				"filename": "default",
+				"input": [
+					{
+						"text": "3"
+					}
+				],
+				"output": {
+					"call": "이용안내"
+				}
+			}
+		]
 	},
 	{
 		"name": "FAQ Type",
@@ -2671,78 +2789,7 @@ var commonDialogs = [
 		],
 		"output": "내 손안의 생활 플랫폼\n생활의 판을 바꾸다!\n간편 결제를 기반으로 결제, 금융, 생활편의 서비스를 한번에 누리세요!\n\n · 편리한 모바일결제 신한FAN페이\n보유하고 있는 카드를 신한 FAN에 등록하여 간편하게 결제하세요!\n\n · 다양하고 편리한 생활서비스\n다양한 제휴사 할인, 적립 서비스와 게임, 운세 등 FUN 및 생활서비스를 신한 FAN에서 한판에 즐기세요!\n\n · 통합리워드 서비스 신한 FAN클럽\n신한금융그룹이 동행하면 더 많은 포인트와 혜택이 함께합니다.\n\n신한 FAN에 궁금한점을 OOO 챗봇이 해결해 드립니다. 메뉴 또는 궁금하신 키워드를 입력해주세요.\n\n1. 신한 FAN에 가입하고 싶어요\n2. 신한 FAN에는 어떤 혜택이 있나요\n3. 신한 FAN으로는 무엇을 할 수 있나요\n4. FAN에 대해 자주하는 질문들(FAQ)\n5. 내게 맞는 카드를 추천해주세요.",
 		"inRaw": "0",
-		"inNLP": "0",
-		"top": {
-			"name": "dialog_commondefault90",
-			"id": "commondefault90",
-			"filename": "defaultcommon",
-			"input": [
-				{
-					"text": "0"
-				},
-				{
-					"text": "처음"
-				}
-			],
-			"output": {
-				"call": "시작"
-			},
-			"parent": {
-				"name": "FAN 혜택",
-				"id": "default4",
-				"filename": "default",
-				"input": [
-					{
-						"text": "혜택"
-					},
-					{
-						"text": "2"
-					}
-				],
-				"output": "신한 FAN에는 고객님을 위한  다양한 혜택들이 있습니다. 어떤 혜택을 알아볼까요?\n1. FAN 전용 적립 및 할인\n2. 진행중인 대박 이벤트\n\n(* 처음으로 돌아가기 : 0 또는 '처음')",
-				"children": [
-					{
-						"name": "dialog_default28",
-						"id": "default28",
-						"filename": "default",
-						"input": [
-							{
-								"text": "1"
-							}
-						],
-						"output": {
-							"call": "FAN 전용 적립 및 할인"
-						}
-					},
-					{
-						"name": "dialog_default29",
-						"id": "default29",
-						"filename": "default",
-						"input": [
-							{
-								"text": "2"
-							}
-						],
-						"output": {
-							"call": "이벤트"
-						}
-					}
-				],
-				"parent": null,
-				"task": {
-					"inRaw": "2",
-					"inNLP": "2"
-				},
-				"inRaw": "2",
-				"inNLP": "2"
-			},
-			"task": {
-				"inRaw": "0",
-				"inNLP": "0"
-			},
-			"inRaw": "0",
-			"inNLP": "0"
-		}
+		"inNLP": "0"
 	},
 	{
 		"id": "defaultcommon1",

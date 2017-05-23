@@ -23,6 +23,22 @@ var dialogs = [
 			}
 		],
 		"output": "너도ㅋ"
+	},
+	{
+		"name": "이미지텍스트",
+		"id": "default4",
+		"filename": "default",
+		"input": [
+			{
+				"text": "양념 치킨"
+			}
+		],
+		"output": {
+			"output": "양념치킨은 15000원입니다",
+			"image": {
+				"url": "/files/img_sauce_big01.jpg"
+			}
+		}
 	}
 ];
 
