@@ -12,7 +12,10 @@
       .state('channels', {
         abstract: true,
         url: '/developer/channels',
-        template: '<ui-view/>'
+        template: '<ui-view/>',
+        data: {
+          roles: ['user', 'enterprise', 'admin']
+        }
       })
       .state('channels.list', {
         url: '',

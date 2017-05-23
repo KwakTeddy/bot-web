@@ -110,12 +110,26 @@ function respondMessage(res, text, json) {
   }
 
   if(json && json.buttons) {
-    sendMsg.message.message_button =
-    {
-        "label": json.buttons[0].text,
-        "url": json.buttons[0].url
-        // "url": json.buttons[0].url
-      };
+    if (Array.isArray(json.buttons)){
+      console.log(util.inspect(json.buttons));
+      // Object.defineProperty(json.buttons, "keyboard", Object.getOwnPropertyDescriptor(json.buttons, "message"));
+      // delete json.buttons['message'];
+      sendMsg = {};
+      sendMsg['type'] = 'buttons';
+      sendMsg['buttons'] = [];
+      for( var i = 0; i < json.buttons.length; i++){
+        sendMsg.buttons.push(json.buttons[i]);
+      }
+    }else {
+      sendMsg.message.message_button =
+        {
+          "label": json.buttons[0].text,
+          "url": json.buttons[0].url
+          // "url": json.buttons[0].url
+        };
+    }
+
+
     // sendMsg.keyboard =
     // {
     //   "type": "buttons",
@@ -130,8 +144,8 @@ function respondMessage(res, text, json) {
     sendMsg.message.photo =
       {
         "url": json.image.url,
-        "width" : 640,
-        "height" : 480
+        "width" : 720,
+        "height" : 630
       }
   }
 

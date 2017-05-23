@@ -8,6 +8,7 @@ var path = require('path'),
   mongoose = require('mongoose'),
   passport = require('passport'),
   User = mongoose.model('User'),
+  Bot = mongoose.model('Bot'),
   // UserbotFbPage = mongoose.model('UserbotFbPage'),
     nodemailer = require('nodemailer'),
     async = require('async'),
@@ -259,6 +260,7 @@ exports.signin = function (req, res, next) {
  * Signout
  */
 exports.signout = function (req, res) {
+  console.log(util.inspect(req.session.redirect_to));
   req.logout();
   req.session.destroy();
 
@@ -305,6 +307,21 @@ exports.oauthCallback = function (strategy, scope) {
         }
         console.log(redirectURL.redirect_to);
         console.log(sessionRedirectURL);
+        console.log(sessionRedirectURL.indexOf('developer'));
+        if (sessionRedirectURL.indexOf('developer') > -1){
+          Bot.find({user: req.user._id}).exec(function (err, data) {
+            if (err){
+              return res.redirect('/authentication/signin')
+            }
+            if (data.length){
+              res.cookie('default_bot', data[0].id);
+            }else {
+              console.log('----------------------------==================================================')
+              console.log(util.inspect(req.cookies));
+              res.cookie('default_bot', null);
+            }
+          });
+        }
         return res.redirect(redirectURL.redirect_to || sessionRedirectURL || '/');
       });
     })(req, res, next);
