@@ -110,26 +110,23 @@ function respondMessage(res, text, json) {
   }
 
   if(json && json.buttons) {
-    if (json.buttons.length > 1){
-      console.log(util.inspect(json.buttons));
-      // Object.defineProperty(json.buttons, "keyboard", Object.getOwnPropertyDescriptor(json.buttons, "message"));
-      // delete json.buttons['message'];
-      sendMsg['keyboard'] = {};
-      sendMsg.keyboard['type'] = 'buttons';
-      sendMsg.keyboard['buttons'] = [];
-      for( var i = 0; i < json.buttons.length; i++){
+
+    for(var i = 0; i < json.buttons.length; i++){
+      if ( json.buttons[i].url){
+        sendMsg.message.message_button =
+          {
+            "label": json.buttons[i].text,
+            "url": json.buttons[i].url
+          };
+      }else {
+        if (!sendMsg.keyboard){
+          sendMsg['keyboard'] = {};
+          sendMsg.keyboard['buttons'] = [];
+          sendMsg.keyboard['type'] = 'buttons';
+        }
         sendMsg.keyboard.buttons.push(json.buttons[i].text);
       }
-    }else {
-      sendMsg.message.message_button =
-        {
-          "label": json.buttons[0].text,
-          "url": json.buttons[0].url
-          // "url": json.buttons[0].url
-        };
     }
-
-
     // sendMsg.keyboard =
     // {
     //   "type": "buttons",
