@@ -2918,9 +2918,6 @@ var commonDialogs = [
 			},
 			{
 				"text": "처음"
-			},
-			{
-				"text": "시작"
 			}
 		],
 		"output": {
