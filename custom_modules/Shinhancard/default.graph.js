@@ -872,6 +872,51 @@ var dialogs = [
 		"output": "FAN관련 궁금하신부분을 말씀하시면 가장 알맞은 답변을 안내해드리겠습니다. 궁금하신 질문을 '단어'로 입력해주세요!",
 		"children": [
 			{
+				"name": "dialog_default189",
+				"id": "default189",
+				"filename": "default",
+				"input": [
+					{
+						"text": "질문"
+					},
+					{
+						"text": "FAQ"
+					},
+					{
+						"text": "문의"
+					}
+				],
+				"output": {
+					"call": "FAN에 대해 자주하는 질문들(FAQ)"
+				}
+			},
+			{
+				"name": "dialog_default190",
+				"id": "default190",
+				"filename": "default",
+				"input": [
+					{
+						"text": "추천"
+					}
+				],
+				"output": {
+					"call": "신한 카드 추천"
+				}
+			},
+			{
+				"name": "dialog_default191",
+				"id": "default191",
+				"filename": "default",
+				"input": [
+					{
+						"text": "FAN"
+					}
+				],
+				"output": {
+					"call": "신한 FAN 플랫폼 소개"
+				}
+			},
+			{
 				"name": "dialog_default98",
 				"id": "default98",
 				"filename": "default",
@@ -947,7 +992,17 @@ var dialogs = [
 				"text": "5"
 			}
 		],
-		"output": "안녕하세요. OOO봇입니다\n내게 맞는 신한카드를 추천해드립니다. \n나의 소비 패턴 및 결제스타일을 기반으로 OOO봇이 추천해드립니다.\n\n먼저 나의 결제 스타일부터 알아볼까요?\n1. 신용카드를 선호합니다.\n2. 체크카드를 선호합니다.\n\n(* 처음으로 돌아가기 : 0 또는 '처음')\n",
+		"output": {
+			"output": "안녕하세요. OOO봇입니다\n내게 맞는 신한카드를 추천해드립니다. \n나의 소비 패턴 및 결제스타일을 기반으로 OOO봇이 추천해드립니다.\n\n먼저 나의 결제 스타일부터 알아볼까요?\n\n1.신용카드\n2.체크카드",
+			"buttons": [
+				{
+					"text": "신용카드"
+				},
+				{
+					"text": "체크카드"
+				}
+			]
+		},
 		"children": [
 			{
 				"name": "신용카드",
@@ -964,7 +1019,20 @@ var dialogs = [
 						"text": "1"
 					}
 				],
-				"output": "신한카드에서 제공되는 혜택을 직접 이것저것 선택하여 구성할 수 도 있고, 미리 구성되어 있는 카드중에서 고르실 수도 있어요. \n다음단계로 넘어가기 위해서 아래 보기중에서 선택해주세요. \n1. 직접 혜택을 구성하고 싶다 (혜택선택형)\n2. 구성되어 있는 카드를 고르고 싶다(혜택기본형)\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+				"output": {
+					"output": "신한카드에서 제공되는 혜택을 직접 이것저것 선택하여 구성할 수 도 있고, 미리 구성되어 있는 카드중에서 고르실 수도 있어요. \n다음단계로 넘어가기 위해서 아래 보기중에서 선택해주세요. \n1. 직접 혜택을 구성하고 싶다 (혜택선택형)\n2. 구성되어 있는 카드를 고르고 싶다(혜택기본형)",
+					"buttons": [
+						{
+							"text": "혜택선택형"
+						},
+						{
+							"text": "혜택기본형"
+						},
+						{
+							"text": "이전메뉴"
+						}
+					]
+				},
 				"children": [
 					{
 						"name": "혜택선택형",
@@ -978,7 +1046,20 @@ var dialogs = [
 								"text": "1"
 							}
 						],
-						"output": "고객님께서 구성하고 싶으신 혜택이 주로 할인인가요? 포인트 적립인가요?\n\n1. 할인(캐시백)\n2. 포인트 적립\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+						"output": {
+							"output": "고객님께서 구성하고 싶으신 혜택이 주로 할인인가요? 포인트 적립인가요?\n\n1. 할인(캐시백)\n2. 포인트 적립",
+							"buttons": [
+								{
+									"text": "할인"
+								},
+								{
+									"text": "포인트"
+								},
+								{
+									"text": "이전메뉴"
+								}
+							]
+						},
 						"children": [
 							{
 								"name": "할인",
@@ -1000,7 +1081,7 @@ var dialogs = [
 									"buttons": [
 										{
 											"text": "바로보기",
-											"url": "https://www.shinhancard.com/conts/person/card_info/major/benefit/propose/1301614_31350.jsp"
+											"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1350235_33659.html"
 										}
 									]
 								},
@@ -1037,7 +1118,7 @@ var dialogs = [
 									"buttons": [
 										{
 											"text": "바로보기",
-											"url": "https://www.shinhancard.com/conts/person/card_info/major/benefit/oneself/1198220_12880.jsp"
+											"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1355079_33659.html"
 										}
 									]
 								},
@@ -1069,19 +1150,6 @@ var dialogs = [
 								"output": {
 									"up": "1"
 								}
-							},
-							{
-								"name": "dialog_default65",
-								"id": "default65",
-								"filename": "default",
-								"input": [
-									{
-										"if": "true"
-									}
-								],
-								"output": {
-									"repeat": "1"
-								}
 							}
 						]
 					},
@@ -1097,7 +1165,20 @@ var dialogs = [
 								"text": "2"
 							}
 						],
-						"output": "신용카드를 추천해드리기 전에 간단하게 고객님께서 어떤 카드를 원하시는지 몇가지만 여쭤볼께요. \n할인(캐시백)과 포인트 적립중 어떤 것을 선호하시나요?\n\n1. 할인(캐시백)\n2. 포인트 적립\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+						"output": {
+							"output": "신용카드를 추천해드리기 전에 간단하게 고객님께서 어떤 카드를 원하시는지 몇가지만 여쭤볼께요. \n할인(캐시백)과 포인트 적립중 어떤 것을 선호하시나요?\n\n1. 할인(캐시백)\n2. 포인트 적립",
+							"buttons": [
+								{
+									"text": "할인"
+								},
+								{
+									"text": "포인트"
+								},
+								{
+									"text": "이전메뉴"
+								}
+							]
+						},
 						"children": [
 							{
 								"name": "할인2",
@@ -1114,7 +1195,23 @@ var dialogs = [
 										"text": "1"
 									}
 								],
-								"output": "고객님은 어떤 소비유형에 가까우신가요?\n\n1. 숫자에 민감하며, 재테크에 관심이 많다. \n2. 맛과 멋, 여유를 즐기는 소비를 추구한다. \n3. 기름값, 교통비가 할인을 원하는 실속파다.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+								"output": {
+									"output": "고객님은 어떤 소비유형에 가까우신가요?\n\n1. 숫자에 민감하며, 재테크에 관심이 많다. \n2. 맛과 멋, 여유를 즐기는 소비를 추구한다. \n3. 기름값, 교통비가 할인을 원하는 실속파다.",
+									"buttons": [
+										{
+											"text": "숫자민감형"
+										},
+										{
+											"text": "소비추구형"
+										},
+										{
+											"text": "OIL실속형"
+										},
+										{
+											"text": "이전메뉴"
+										}
+									]
+								},
 								"children": [
 									{
 										"name": "숫자민감형",
@@ -1136,7 +1233,7 @@ var dialogs = [
 											"buttons": [
 												{
 													"text": "바로보기",
-													"url": "https://www.shinhancard.com/conts/person/card_info/major/benefit/wealth/1237418_12886.jsp"
+													"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1350241_33659.html"
 												}
 											]
 										},
@@ -1171,7 +1268,26 @@ var dialogs = [
 												"text": "2"
 											}
 										],
-										"output": "맛과 멋을 즐기시는 고개님께서 좋아하실만한 신용카드가 4가지나 있네요. \n아래 4가지 카드 중에서 관심 자세히 보고 싶으신 카드를 선택해주세요.  \n\n1. 언제나 FAN으로 혜택을 받을수 있어요. [신한카드 Always FAN]\n2. 온.오프라인을 뛰어넘은 할인을 제공해드려요. [신한카드 O2O]\n3. 실속형 여성 프리미엄 회원을 위한 카드입니다. [신한카드 The LADY CLASSIC]\n4. Premium 적립에 Trendy 할인을 맞추었습니다. [신한카드 The CLASSIC-Y]\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+										"output": {
+											"output": "맛과 멋을 즐기시는 고개님께서 좋아하실만한 신용카드가 4가지나 있네요. 아래 4가지 카드 중에서 관심 자세히 보고 싶으신 카드를 선택해주세요.  1. 언제나 FAN으로 혜택을 받을수 있어요. [신한카드 Always FAN]2. 온.오프라인을 뛰어넘은 할인을 제공해드려요. [신한카드 O2O]3. 실속형 여성 프리미엄 회원을 위한 카드입니다. [신한카드 The LADY CLASSIC]4. Premium 적립에 Trendy 할인을 맞추었습니다. [신한카드 The CLASSIC-Y]",
+											"buttons": [
+												{
+													"text": "Always FAN"
+												},
+												{
+													"text": "O2O"
+												},
+												{
+													"text": "The LADY CLASSIC"
+												},
+												{
+													"text": "The CLASSIC-Y"
+												},
+												{
+													"text": "이전메뉴"
+												}
+											]
+										},
 										"children": [
 											{
 												"name": "dialog_default143",
@@ -1180,6 +1296,9 @@ var dialogs = [
 												"input": [
 													{
 														"text": "1"
+													},
+													{
+														"text": "Always FAN"
 													}
 												],
 												"output": {
@@ -1187,7 +1306,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/major/benefit/propose/1331070_31350.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1350234_33659.html"
 														}
 													]
 												},
@@ -1214,6 +1333,9 @@ var dialogs = [
 												"input": [
 													{
 														"text": "2"
+													},
+													{
+														"text": "O 2 O"
 													}
 												],
 												"output": {
@@ -1221,7 +1343,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/major/benefit/propose/1310619_31350.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1350244_33659.html"
 														}
 													]
 												},
@@ -1248,6 +1370,9 @@ var dialogs = [
 												"input": [
 													{
 														"text": "3"
+													},
+													{
+														"text": "The LADY CLASSIC"
 													}
 												],
 												"output": {
@@ -1255,7 +1380,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/premium/vip/1282931_12788.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/premium/1350224_33658.html"
 														}
 													]
 												},
@@ -1282,6 +1407,9 @@ var dialogs = [
 												"input": [
 													{
 														"text": "4"
+													},
+													{
+														"text": "The CLASSIC Y"
 													}
 												],
 												"output": {
@@ -1289,7 +1417,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/premium/vip/1282931_12788.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/premium/1350226_33658.html"
 														}
 													]
 												},
@@ -1310,8 +1438,8 @@ var dialogs = [
 												]
 											},
 											{
-												"name": "dialog_default134",
-												"id": "default134",
+												"name": "dialog_default154",
+												"id": "default154",
 												"filename": "default",
 												"input": [
 													{
@@ -1320,19 +1448,6 @@ var dialogs = [
 												],
 												"output": {
 													"up": "1"
-												}
-											},
-											{
-												"name": "dialog_default154",
-												"id": "default154",
-												"filename": "default",
-												"input": [
-													{
-														"if": "true"
-													}
-												],
-												"output": {
-													"repeat": "1"
 												}
 											}
 										]
@@ -1360,7 +1475,7 @@ var dialogs = [
 											"buttons": [
 												{
 													"text": "바로보기",
-													"url": "https://www.shinhancard.com/conts/person/card_info/major/benefit/oil/1198262_12889.jsp"
+													"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1364067_33659.html"
 												}
 											]
 										},
@@ -1392,19 +1507,6 @@ var dialogs = [
 										"output": {
 											"up": "1"
 										}
-									},
-									{
-										"name": "dialog_default72",
-										"id": "default72",
-										"filename": "default",
-										"input": [
-											{
-												"if": "true"
-											}
-										],
-										"output": {
-											"repeat": "1"
-										}
 									}
 								]
 							},
@@ -1420,7 +1522,26 @@ var dialogs = [
 										"text": "2"
 									}
 								],
-								"output": "고객님은 어떤 소비유형에 가까우신가요?\n\n1. 숫자에 민감하며, 재테크에 관심이 많다. \n2. 맛과 멋, 여유를 즐기는 소비를 추구한다. \n3. 여행을 좋아한다. 항공마일리지에 집중!\n4. 기름값, 교통비가 할인을 원하는 실속파다.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+								"output": {
+									"output": "고객님은 어떤 소비유형에 가까우신가요?\n\n1. 숫자에 민감하며, 재테크에 관심이 많다. \n2. 맛과 멋, 여유를 즐기는 소비를 추구한다. \n3. 여행을 좋아한다. 항공마일리지에 집중!\n4. 기름값, 교통비가 할인을 원하는 실속파다.",
+									"buttons": [
+										{
+											"text": "숫자민감형"
+										},
+										{
+											"text": "소비추구형"
+										},
+										{
+											"text": "여행덕후형"
+										},
+										{
+											"text": "OIL실속형"
+										},
+										{
+											"text": "이전메뉴"
+										}
+									]
+								},
 								"children": [
 									{
 										"name": "숫자민감형2",
@@ -1442,7 +1563,7 @@ var dialogs = [
 											"buttons": [
 												{
 													"text": "바로보기",
-													"url": "https://www.shinhancard.com/conts/person/card_info/major/benefit/wealth/1278820_12886.jsp"
+													"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1350237_33659.html"
 												}
 											]
 										},
@@ -1477,7 +1598,20 @@ var dialogs = [
 												"text": "2"
 											}
 										],
-										"output": "맛과 멋을 즐기시는 고개님께서 좋아하실만한 신용카드가 2가지가 있네요. \n아래 2가지 카드 중에서 관심 자세히 보고 싶으신 카드를 선택해주세요.  \n\n1. 포인트를 백화점 상품권으로 돌려받을 수 있어요. 포인트 최고 5% 적립! [신한 Hi-Point 카드]\n2.신한카드 레저 맴버가 되고 싶은 고객님을 위한 카드입니다.  [신한카드 The CLASSIC-L]\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+										"output": {
+											"output": "맛과 멋을 즐기시는 고개님께서 좋아하실만한 신용카드가 2가지가 있네요. \n아래 2가지 카드 중에서 관심 자세히 보고 싶으신 카드를 선택해주세요.  \n\n1. 포인트를 백화점 상품권으로 돌려받을 수 있어요. 포인트 최고 5% 적립! [신한 Hi-Point 카드]\n2.신한카드 레저 맴버가 되고 싶은 고객님을 위한 카드입니다.  [신한카드 The CLASSIC-L]",
+											"buttons": [
+												{
+													"text": "Hi-Point"
+												},
+												{
+													"text": "The CLASSIC-L"
+												},
+												{
+													"text": "이전메뉴"
+												}
+											]
+										},
 										"children": [
 											{
 												"name": "dialog_default137",
@@ -1499,6 +1633,9 @@ var dialogs = [
 												"input": [
 													{
 														"text": "1"
+													},
+													{
+														"text": "Hi Point"
 													}
 												],
 												"output": {
@@ -1506,7 +1643,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/major/benefit/large/1198313_12904.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1350243_33659.html"
 														}
 													]
 												},
@@ -1533,6 +1670,9 @@ var dialogs = [
 												"input": [
 													{
 														"text": "2"
+													},
+													{
+														"text": "The CLASSIC L"
 													}
 												],
 												"output": {
@@ -1540,7 +1680,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/premium/vip/1219771_12788.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/premium/1350227_33658.html"
 														}
 													]
 												},
@@ -1559,19 +1699,6 @@ var dialogs = [
 														}
 													}
 												]
-											},
-											{
-												"name": "dialog_default153",
-												"id": "default153",
-												"filename": "default",
-												"input": [
-													{
-														"if": "true"
-													}
-												],
-												"output": {
-													"repeat": "1"
-												}
 											}
 										]
 									},
@@ -1590,7 +1717,26 @@ var dialogs = [
 												"text": "3"
 											}
 										],
-										"output": "여행 즐기시는 고개님께서 좋아하실만한 신용카드가 4가지나 있네요. \n아래 4가지 카드 중에서 관심 자세히 보고 싶으신 카드를 선택해주세요.  \n\n1. 모든 주유소 포인트 적립에 생활 맞춤 혜택까지 제공합니다. [신한카드 RPM+ Platinum#]\n2. 항공 마일리지에 포인트, 프리미엄 서비스까지 제공해드려요. [신한카드 Air Platinum#]\n3. 해외 여행의 든든한 파트너가 되는 카드입니다. [신한카드 The BEST-T]\n4. 소중한 사람들과 누리는 생활속 프리미엄카드 입니다.  [신한 THE BEST-F 카드]\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+										"output": {
+											"output": "여행 즐기시는 고개님께서 좋아하실만한 신용카드가 4가지나 있네요. \n아래 4가지 카드 중에서 관심 자세히 보고 싶으신 카드를 선택해주세요.  \n\n1. 모든 주유소 포인트 적립에 생활 맞춤 혜택까지 제공합니다. [신한카드 RPM+ Platinum#]\n2. 항공 마일리지에 포인트, 프리미엄 서비스까지 제공해드려요. [신한카드 Air Platinum#]\n3. 해외 여행의 든든한 파트너가 되는 카드입니다. [신한카드 The BEST-T]\n4. 소중한 사람들과 누리는 생활속 프리미엄카드 입니다.  [신한 THE BEST-F 카드]",
+											"buttons": [
+												{
+													"text": "RPM+ Platinum#"
+												},
+												{
+													"text": "Air Platinum#"
+												},
+												{
+													"text": "The Best-T"
+												},
+												{
+													"text": "The Best-F"
+												},
+												{
+													"text": "이전메뉴"
+												}
+											]
+										},
 										"children": [
 											{
 												"name": "dialog_default138",
@@ -1612,6 +1758,9 @@ var dialogs = [
 												"input": [
 													{
 														"text": "1"
+													},
+													{
+														"text": "RPM Platinum"
 													}
 												],
 												"output": {
@@ -1619,7 +1768,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/premium/platinum/1293916_12791.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1350231_33659.html"
 														}
 													]
 												},
@@ -1646,6 +1795,9 @@ var dialogs = [
 												"input": [
 													{
 														"text": "2"
+													},
+													{
+														"text": "Air Platinum"
 													}
 												],
 												"output": {
@@ -1653,7 +1805,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/premium/platinum/1259018_12791.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1350232_33659.html"
 														}
 													]
 												},
@@ -1680,6 +1832,9 @@ var dialogs = [
 												"input": [
 													{
 														"text": "3"
+													},
+													{
+														"text": "The Best T"
 													}
 												],
 												"output": {
@@ -1687,7 +1842,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/premium/vip/1320225_12788.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/premium/1350223_33658.html"
 														}
 													]
 												},
@@ -1714,6 +1869,9 @@ var dialogs = [
 												"input": [
 													{
 														"text": "4"
+													},
+													{
+														"text": "The Best F"
 													}
 												],
 												"output": {
@@ -1721,7 +1879,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/premium/vip/1208724_12788.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/premium/1350228_33658.html"
 														}
 													]
 												},
@@ -1740,19 +1898,6 @@ var dialogs = [
 														}
 													}
 												]
-											},
-											{
-												"name": "dialog_default159",
-												"id": "default159",
-												"filename": "default",
-												"input": [
-													{
-														"if": "true"
-													}
-												],
-												"output": {
-													"repeat": "1"
-												}
 											}
 										]
 									},
@@ -1769,9 +1914,25 @@ var dialogs = [
 											},
 											{
 												"text": "4"
+											},
+											{
+												"text": "OIL 실속 형"
 											}
 										],
-										"output": "맛과 멋을 즐기시는 고개님께서 좋아하실만한 신용카드가 2가지가 있네요. \n아래 2가지 카드 중에서 관심 자세히 보고 싶으신 카드를 선택해주세요.  \n\n1. 모든 주유소 포인트 적립에 생활 맞춤 혜택까지 제공합니다. [신한카드 RPM+ Platinum#]\n2. 항공 마일리지에 포인트, 프리미엄 서비스까지 제공해드려요. [신한카드 Air Platinum#]\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+										"output": {
+											"output": "맛과 멋을 즐기시는 고개님께서 좋아하실만한 신용카드가 2가지가 있네요. \n아래 2가지 카드 중에서 관심 자세히 보고 싶으신 카드를 선택해주세요.  \n\n1. 모든 주유소 포인트 적립에 생활 맞춤 혜택까지 제공합니다. [신한카드 RPM+ Platinum#]\n2. 항공 마일리지에 포인트, 프리미엄 서비스까지 제공해드려요. [신한카드 Air Platinum#]",
+											"buttons": [
+												{
+													"text": "RPM+ Platinum#"
+												},
+												{
+													"text": "Air Platinum#"
+												},
+												{
+													"text": "이전메뉴"
+												}
+											]
+										},
 										"children": [
 											{
 												"name": "dialog_default139",
@@ -1793,6 +1954,9 @@ var dialogs = [
 												"input": [
 													{
 														"text": "1"
+													},
+													{
+														"text": "RPM Platinum"
 													}
 												],
 												"output": {
@@ -1806,23 +1970,13 @@ var dialogs = [
 												"input": [
 													{
 														"text": "2"
+													},
+													{
+														"text": "Air Platinum"
 													}
 												],
 												"output": {
 													"call": "dialog_default156"
-												}
-											},
-											{
-												"name": "dialog_default162",
-												"id": "default162",
-												"filename": "default",
-												"input": [
-													{
-														"if": "true"
-													}
-												],
-												"output": {
-													"repeat": "1"
 												}
 											}
 										]
@@ -1839,19 +1993,6 @@ var dialogs = [
 										"output": {
 											"up": "1"
 										}
-									},
-									{
-										"name": "dialog_default77",
-										"id": "default77",
-										"filename": "default",
-										"input": [
-											{
-												"if": "true"
-											}
-										],
-										"output": {
-											"repeat": "1"
-										}
 									}
 								]
 							},
@@ -1867,19 +2008,6 @@ var dialogs = [
 								"output": {
 									"up": "1"
 								}
-							},
-							{
-								"name": "dialog_default68",
-								"id": "default68",
-								"filename": "default",
-								"input": [
-									{
-										"if": "true"
-									}
-								],
-								"output": {
-									"repeat": "1"
-								}
 							}
 						]
 					},
@@ -1894,19 +2022,6 @@ var dialogs = [
 						],
 						"output": {
 							"up": "1"
-						}
-					},
-					{
-						"name": "dialog_default62",
-						"id": "default62",
-						"filename": "default",
-						"input": [
-							{
-								"if": "true"
-							}
-						],
-						"output": {
-							"repeat": "1"
 						}
 					}
 				]
@@ -1926,7 +2041,20 @@ var dialogs = [
 						"text": "2"
 					}
 				],
-				"output": "신한카드에서 제공되는 혜택을 직접 이것저것 선택하여 구성할 수 도 있고, 미리 구성되어 있는 카드중에서 고르실 수도 있어요. \n다음단계로 넘어가기 위해서 아래 보기중에서 선택해주세요. \n1. 직접 혜택을 구성하고 싶다 (혜택선택형)\n2. 구성되어 있는 카드를 고르고 싶다(혜택기본형)\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+				"output": {
+					"output": "신한카드에서 제공되는 혜택을 직접 이것저것 선택하여 구성할 수 도 있고, 미리 구성되어 있는 카드중에서 고르실 수도 있어요. \n다음단계로 넘어가기 위해서 아래 보기중에서 선택해주세요. \n1. 직접 혜택을 구성하고 싶다 (혜택선택형)\n2. 구성되어 있는 카드를 고르고 싶다(혜택기본형)",
+					"buttons": [
+						{
+							"text": "혜택선택형"
+						},
+						{
+							"text": "혜택기본형"
+						},
+						{
+							"text": "이전메뉴"
+						}
+					]
+				},
 				"children": [
 					{
 						"name": "혜택선택형2",
@@ -1945,7 +2073,7 @@ var dialogs = [
 							"buttons": [
 								{
 									"text": "바로보기",
-									"url": "https://www.shinhancard.com/conts/person/card_info/rookie/benefit/select/1267879_17067.jsp"
+									"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350273_33660.html"
 								}
 							]
 						},
@@ -1977,7 +2105,20 @@ var dialogs = [
 								"text": "2"
 							}
 						],
-						"output": "신용카드를 추천해드리기 전에 간단하게 고객님께서 어떤 카드를 원하시는지 몇가지만 여쭤볼께요. \n2030세대 이신가요~?\n\n1. 2030세대에요!\n2. 2030세대가 아니에요. \n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+						"output": {
+							"output": "신용카드를 추천해드리기 전에 간단하게 고객님께서 어떤 카드를 원하시는지 몇가지만 여쭤볼께요. \n2030세대 이신가요~?\n\n1. 2030세대가 맞아요.\n2. 2030세대가 아니에요.",
+							"buttons": [
+								{
+									"text": "2030세대가 맞아요"
+								},
+								{
+									"text": "2030세대가 아니에요"
+								},
+								{
+									"text": "이전메뉴"
+								}
+							]
+						},
 						"children": [
 							{
 								"name": "2030",
@@ -1986,9 +2127,25 @@ var dialogs = [
 								"input": [
 									{
 										"text": "1"
+									},
+									{
+										"text": "2030 세대 맞다"
 									}
 								],
-								"output": "2030 맞춤 혜택 상품을 추천할까요~?\n\n1. 네 추천해주세요!\n2. 아니요, 좀더 찾아주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+								"output": {
+									"output": "2030 맞춤 혜택 상품을 추천할까요~?\n\n1. 네 추천해주세요!\n2. 아니요, 좀더 찾아주세요.",
+									"buttons": [
+										{
+											"text": "네 추천해주세요"
+										},
+										{
+											"text": "아니요 좀 더 찾아주세요"
+										},
+										{
+											"text": "이전메뉴"
+										}
+									]
+								},
 								"children": [
 									{
 										"name": "추천(2030)",
@@ -2002,7 +2159,20 @@ var dialogs = [
 												"text": "네"
 											}
 										],
-										"output": "2030세대에 어울리는 카드가 2가지가 있네요. \n아래 2가지 카드 중에서 관심 자세히 보고 싶으신 카드를 선택해주세요.  \n\n1. 스무살, 첫 금융특권 [신한 S20 체크카드]\n2.스무살, 첫 금융특권 [신한 S20 Pink 체크카드]\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+										"output": {
+											"output": "2030세대에 어울리는 카드가 2가지가 있네요. \n아래 2가지 카드 중에서 관심 자세히 보고 싶으신 카드를 선택해주세요.  \n\n1. 스무살, 첫 금융특권 [신한 S20 체크카드]\n2.스무살, 첫 금융특권 [신한 S20 Pink 체크카드]",
+											"buttons": [
+												{
+													"text": "S20"
+												},
+												{
+													"text": "S20 Pink"
+												},
+												{
+													"text": "이전메뉴"
+												}
+											]
+										},
 										"children": [
 											{
 												"name": "dialog_default123",
@@ -2018,46 +2188,15 @@ var dialogs = [
 												}
 											},
 											{
-												"name": "dialog_default163",
-												"id": "default163",
-												"filename": "default",
-												"input": [
-													{
-														"text": "1"
-													}
-												],
-												"output": {
-													"output": "[신한 S20 체크카드] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
-													"buttons": [
-														{
-															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/rookie/benefit/life/1198821_13338.jsp"
-														}
-													]
-												},
-												"children": [
-													{
-														"name": "dialog_default178",
-														"id": "default178",
-														"filename": "default",
-														"input": [
-															{
-																"text": "이전"
-															}
-														],
-														"output": {
-															"up": "1"
-														}
-													}
-												]
-											},
-											{
 												"name": "dialog_default164",
 												"id": "default164",
 												"filename": "default",
 												"input": [
 													{
 														"text": "2"
+													},
+													{
+														"text": "S 20 Pink"
 													}
 												],
 												"output": {
@@ -2065,7 +2204,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/rookie/benefit/life/1198822_13338.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350263_33660.html"
 														}
 													]
 												},
@@ -2086,17 +2225,41 @@ var dialogs = [
 												]
 											},
 											{
-												"name": "dialog_default165",
-												"id": "default165",
+												"name": "dialog_default163",
+												"id": "default163",
 												"filename": "default",
 												"input": [
 													{
-														"if": "true"
+														"text": "1"
+													},
+													{
+														"text": "S 20"
 													}
 												],
 												"output": {
-													"repeat": "1"
-												}
+													"output": "[신한 S20 체크카드] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"buttons": [
+														{
+															"text": "바로보기",
+															"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350266_33660.html"
+														}
+													]
+												},
+												"children": [
+													{
+														"name": "dialog_default178",
+														"id": "default178",
+														"filename": "default",
+														"input": [
+															{
+																"text": "이전"
+															}
+														],
+														"output": {
+															"up": "1"
+														}
+													}
+												]
 											}
 										]
 									},
@@ -2112,7 +2275,23 @@ var dialogs = [
 												"text": "2"
 											}
 										],
-										"output": "그렇다면, 고객님의 소비성향을 알려주세요. \n1. 주유, 쇼핑 등 생활혜택에 관심이 있으신 알뜰 실속파\n2. 해외에서도 혜택은 챙기는 센스실속파\n3. 주거래 계좌 연결하시면 기본+추가+특별 적립이 한번에! 슈퍼 실속파!\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+										"output": {
+											"output": "그렇다면, 고객님의 소비성향을 알려주세요. \n1. 주유, 쇼핑 등 생활혜택에 관심이 있으신 알뜰 실속파\n2. 해외에서도 혜택은 챙기는 센스실속파\n3. 주거래 계좌 연결하시면 기본+추가+특별 적립이 한번에! 슈퍼 실속파!",
+											"buttons": [
+												{
+													"text": "알뜰실속파"
+												},
+												{
+													"text": "센스실속파"
+												},
+												{
+													"text": "슈퍼실속파"
+												},
+												{
+													"text": "이전메뉴"
+												}
+											]
+										},
 										"children": [
 											{
 												"name": "dialog_default93",
@@ -2174,19 +2353,6 @@ var dialogs = [
 												"output": {
 													"up": "1"
 												}
-											},
-											{
-												"name": "dialog_default96",
-												"id": "default96",
-												"filename": "default",
-												"input": [
-													{
-														"if": "true"
-													}
-												],
-												"output": {
-													"repeat": "1"
-												}
 											}
 										]
 									},
@@ -2202,19 +2368,6 @@ var dialogs = [
 										"output": {
 											"up": "1"
 										}
-									},
-									{
-										"name": "dialog_default88",
-										"id": "default88",
-										"filename": "default",
-										"input": [
-											{
-												"if": "true"
-											}
-										],
-										"output": {
-											"repeat": "1"
-										}
 									}
 								]
 							},
@@ -2225,9 +2378,28 @@ var dialogs = [
 								"input": [
 									{
 										"text": "2"
+									},
+									{
+										"text": "2030 세대 아니다"
 									}
 								],
-								"output": "그렇다면, 고객님의 소비성향을 알려주세요. \n1. 주유, 쇼핑 등 생활혜택에 관심이 있으신 알뜰 실속파\n2. 해외에서도 혜택은 챙기는 센스실속파\n3. 주거래 계좌 연결하시면 기본+추가+특별 적립이 한번에! 슈퍼 실속파!\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+								"output": {
+									"output": "그렇다면, 고객님의 소비성향을 알려주세요. \n1. 주유, 쇼핑 등 생활혜택에 관심이 있으신 알뜰 실속파\n2. 해외에서도 혜택은 챙기는 센스실속파\n3. 주거래 계좌 연결하시면 기본+추가+특별 적립이 한번에! 슈퍼 실속파!",
+									"buttons": [
+										{
+											"text": "알뜰실속파"
+										},
+										{
+											"text": "센스실속파"
+										},
+										{
+											"text": "슈퍼실속파"
+										},
+										{
+											"text": "이전메뉴"
+										}
+									]
+								},
 								"children": [
 									{
 										"name": "알뜰 실속",
@@ -2241,7 +2413,23 @@ var dialogs = [
 												"text": "1"
 											}
 										],
-										"output": "생활 혜택에 관심이 있으신 알뜰하신 고객님께서 좋아하실만한 신용카드가 3가지가 있네요. 아래 3가지 카드 중에서 자세히 보고 싶으신 카드를 선택해주세요.  \n\n1. 쿠팡 이용금액 3% 무제한 적립에 스타벅스 이용금액 캐시백까지! [쿠팡 신한카드 체크]\n2. 카카오페이 신한 체크카드로 카카오페이에서 간편하게 결제하고 캐시백 혜택을 누려보세요!  [카카오페이 신한 체크카드]\n3.이제 오프라인에서도 네이버페이로 결제하고 네이버페이포인트도 적립하세요!  [네이버페이 신한카드 체크]\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+										"output": {
+											"output": "생활 혜택에 관심이 있으신 알뜰하신 고객님께서 좋아하실만한 신용카드가 3가지가 있네요. 아래 3가지 카드 중에서 자세히 보고 싶으신 카드를 선택해주세요.  \n\n1. 쿠팡 이용금액 3% 무제한 적립에 스타벅스 이용금액 캐시백까지! [쿠팡 신한카드 체크]\n2. 카카오페이 신한 체크카드로 카카오페이에서 간편하게 결제하고 캐시백 혜택을 누려보세요!  [카카오페이 신한 체크카드]\n3.이제 오프라인에서도 네이버페이로 결제하고 네이버페이포인트도 적립하세요!  [네이버페이 신한카드 체크]",
+											"buttons": [
+												{
+													"text": "쿠팡"
+												},
+												{
+													"text": "카카오페이"
+												},
+												{
+													"text": "네이버페이"
+												},
+												{
+													"text": "이전메뉴"
+												}
+											]
+										},
 										"children": [
 											{
 												"name": "dialog_default125",
@@ -2263,6 +2451,9 @@ var dialogs = [
 												"input": [
 													{
 														"text": "1"
+													},
+													{
+														"text": "쿠팡"
 													}
 												],
 												"output": {
@@ -2270,7 +2461,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/rookie/benefit/buy/1335816_13344.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350250_33660.html"
 														}
 													]
 												},
@@ -2297,6 +2488,9 @@ var dialogs = [
 												"input": [
 													{
 														"text": "2"
+													},
+													{
+														"text": "카카오 페이"
 													}
 												],
 												"output": {
@@ -2304,7 +2498,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/rookie/benefit/propose/1297119_13356.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350256_33660.html"
 														}
 													]
 												},
@@ -2325,17 +2519,41 @@ var dialogs = [
 												]
 											},
 											{
-												"name": "dialog_default168",
-												"id": "default168",
+												"name": "dialog_default184",
+												"id": "default184",
 												"filename": "default",
 												"input": [
 													{
-														"if": "true"
+														"text": "3"
+													},
+													{
+														"text": "네이버 페이"
 													}
 												],
 												"output": {
-													"repeat": "1"
-												}
+													"output": "[네이버페이 신한 체크카드] 카드를 추천해드릴게요.아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"buttons": [
+														{
+															"text": "바로보기",
+															"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350254_33660.html"
+														}
+													]
+												},
+												"children": [
+													{
+														"name": "dialog_default185",
+														"id": "default185",
+														"filename": "default",
+														"input": [
+															{
+																"text": "이전"
+															}
+														],
+														"output": {
+															"up": "1"
+														}
+													}
+												]
 											}
 										]
 									},
@@ -2351,7 +2569,20 @@ var dialogs = [
 												"text": "2"
 											}
 										],
-										"output": "해외에서도 누릴 수 있는 혜택에 관심이 있으신 센스있는 고객님께서 좋아하실만한 신용카드가 2가지가 있어요. 아래 2가지 카드 중에서 자세히 보고 싶으신 카드를 선택해주세요.  \n\n1. 해외 여행도! 해외 직구도! [Smart Global 신한카드 체크]\n2. 여행에 혜택을 더하였습니다.  [신한카드 YOLO Triplus 체크]\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+										"output": {
+											"output": "해외에서도 누릴 수 있는 혜택에 관심이 있으신 센스있는 고객님께서 좋아하실만한 신용카드가 2가지가 있어요. 아래 2가지 카드 중에서 자세히 보고 싶으신 카드를 선택해주세요.  \n\n1. 해외 여행도! 해외 직구도! [Smart Global 신한카드 체크]\n2. 여행에 혜택을 더하였습니다.  [신한카드 YOLO Triplus 체크]",
+											"buttons": [
+												{
+													"text": "Smart Global"
+												},
+												{
+													"text": "YOLO Triplus"
+												},
+												{
+													"text": "이전메뉴"
+												}
+											]
+										},
 										"children": [
 											{
 												"name": "dialog_default126",
@@ -2373,6 +2604,9 @@ var dialogs = [
 												"input": [
 													{
 														"text": "1"
+													},
+													{
+														"text": "Smart Global"
 													}
 												],
 												"output": {
@@ -2380,7 +2614,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/rookie/benefit/propose/1252727_13356.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350269_33660.html"
 														}
 													]
 												},
@@ -2407,6 +2641,9 @@ var dialogs = [
 												"input": [
 													{
 														"text": "2"
+													},
+													{
+														"text": "YOLO Triplus"
 													}
 												],
 												"output": {
@@ -2414,7 +2651,7 @@ var dialogs = [
 													"buttons": [
 														{
 															"text": "바로보기",
-															"url": "https://www.shinhancard.com/conts/person/card_info/rookie/benefit/enjoy/1317826_13347.jsp"
+															"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350267_33660.html"
 														}
 													]
 												},
@@ -2433,19 +2670,6 @@ var dialogs = [
 														}
 													}
 												]
-											},
-											{
-												"name": "dialog_default171",
-												"id": "default171",
-												"filename": "default",
-												"input": [
-													{
-														"if": "true"
-													}
-												],
-												"output": {
-													"repeat": "1"
-												}
 											}
 										]
 									},
@@ -2466,7 +2690,7 @@ var dialogs = [
 											"buttons": [
 												{
 													"text": "바로보기",
-													"url": "https://www.shinhancard.com/conts/person/card_info/rookie/benefit/wealth/1278822_13341.jsp"
+													"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350268_33660.html"
 												}
 											]
 										},
@@ -2498,19 +2722,6 @@ var dialogs = [
 										"output": {
 											"up": "1"
 										}
-									},
-									{
-										"name": "dialog_default92",
-										"id": "default92",
-										"filename": "default",
-										"input": [
-											{
-												"if": "true"
-											}
-										],
-										"output": {
-											"repeat": "1"
-										}
 									}
 								]
 							},
@@ -2525,19 +2736,6 @@ var dialogs = [
 								],
 								"output": {
 									"up": "1"
-								}
-							},
-							{
-								"name": "dialog_default85",
-								"id": "default85",
-								"filename": "default",
-								"input": [
-									{
-										"if": "true"
-									}
-								],
-								"output": {
-									"repeat": "1"
 								}
 							}
 						]
@@ -2554,34 +2752,8 @@ var dialogs = [
 						"output": {
 							"up": "1"
 						}
-					},
-					{
-						"name": "dialog_default82",
-						"id": "default82",
-						"filename": "default",
-						"input": [
-							{
-								"if": "true"
-							}
-						],
-						"output": {
-							"repeat": "1"
-						}
 					}
 				]
-			},
-			{
-				"name": "dialog_default79",
-				"id": "default79",
-				"filename": "default",
-				"input": [
-					{
-						"if": "true"
-					}
-				],
-				"output": {
-					"repeat": "1"
-				}
 			}
 		]
 	},
@@ -2596,10 +2768,49 @@ var dialogs = [
 				"text": "플랫폼"
 			}
 		],
-		"output": {
-			"call": "시작"
-		},
-		"name": "신한 FAN 플랫폼 소개"
+		"output": "신한 FAN에 궁금한점을 OOO 챗봇이 해결해 드립니다. 메뉴 또는 궁금하신 키워드를 입력해주세요.\n\n1. 신한 FAN에 가입하고 싶어요\n2. 신한 FAN에는 어떤 혜택이 있나요\n3. 신한 FAN으로는 무엇을 할 수 있나요",
+		"name": "신한 FAN 플랫폼 소개",
+		"children": [
+			{
+				"name": "dialog_default186",
+				"id": "default186",
+				"filename": "default",
+				"input": [
+					{
+						"text": "1"
+					}
+				],
+				"output": {
+					"call": "FAN 가입"
+				}
+			},
+			{
+				"name": "dialog_default187",
+				"id": "default187",
+				"filename": "default",
+				"input": [
+					{
+						"text": "2"
+					}
+				],
+				"output": {
+					"call": "FAN 혜택"
+				}
+			},
+			{
+				"name": "dialog_default188",
+				"id": "default188",
+				"filename": "default",
+				"input": [
+					{
+						"text": "3"
+					}
+				],
+				"output": {
+					"call": "이용안내"
+				}
+			}
+		]
 	},
 	{
 		"name": "FAQ Type",
@@ -2669,80 +2880,22 @@ var commonDialogs = [
 				"text": "시작"
 			}
 		],
-		"output": "내 손안의 생활 플랫폼\n생활의 판을 바꾸다!\n간편 결제를 기반으로 결제, 금융, 생활편의 서비스를 한번에 누리세요!\n\n · 편리한 모바일결제 신한FAN페이\n보유하고 있는 카드를 신한 FAN에 등록하여 간편하게 결제하세요!\n\n · 다양하고 편리한 생활서비스\n다양한 제휴사 할인, 적립 서비스와 게임, 운세 등 FUN 및 생활서비스를 신한 FAN에서 한판에 즐기세요!\n\n · 통합리워드 서비스 신한 FAN클럽\n신한금융그룹이 동행하면 더 많은 포인트와 혜택이 함께합니다.\n\n신한 FAN에 궁금한점을 OOO 챗봇이 해결해 드립니다. 메뉴 또는 궁금하신 키워드를 입력해주세요.\n\n1. 신한 FAN에 가입하고 싶어요\n2. 신한 FAN에는 어떤 혜택이 있나요\n3. 신한 FAN으로는 무엇을 할 수 있나요\n4. FAN에 대해 자주하는 질문들(FAQ)\n5. 내게 맞는 카드를 추천해주세요.",
-		"inRaw": "0",
-		"inNLP": "0",
-		"top": {
-			"name": "dialog_commondefault90",
-			"id": "commondefault90",
-			"filename": "defaultcommon",
-			"input": [
+		"output": {
+			"output": "내 손안의 생활 플랫폼\n생활의 판을 바꾸다!\n간편 결제를 기반으로 결제, 금융, 생활편의 서비스를 한번에 누리세요!\n\n · 편리한 모바일결제 신한FAN페이보유하고 있는 카드를 신한 FAN에 등록하여 간편하게 결제하세요!\n\n · 다양하고 편리한 생활서비스다양한 제휴사 할인, 적립 서비스와 게임, 운세 등 FUN 및 생활서비스를 신한 FAN에서 한판에 즐기세요!\n\n · 통합리워드 서비스 신한 FAN클럽\n신한금융그룹이 동행하면 더 많은 포인트와 혜택이 함께합니다.\n\n신한 FAN에 궁금한점을 OOO 챗봇이 해결해 드립니다. 메뉴 또는 궁금하신 키워드를 입력해주세요.",
+			"buttons": [
 				{
-					"text": "0"
+					"text": "FAN"
 				},
 				{
-					"text": "처음"
+					"text": "내게 맞는 카드 추천"
+				},
+				{
+					"text": "자주 묻는 질문(FAQ)"
 				}
-			],
-			"output": {
-				"call": "시작"
-			},
-			"parent": {
-				"name": "FAN 혜택",
-				"id": "default4",
-				"filename": "default",
-				"input": [
-					{
-						"text": "혜택"
-					},
-					{
-						"text": "2"
-					}
-				],
-				"output": "신한 FAN에는 고객님을 위한  다양한 혜택들이 있습니다. 어떤 혜택을 알아볼까요?\n1. FAN 전용 적립 및 할인\n2. 진행중인 대박 이벤트\n\n(* 처음으로 돌아가기 : 0 또는 '처음')",
-				"children": [
-					{
-						"name": "dialog_default28",
-						"id": "default28",
-						"filename": "default",
-						"input": [
-							{
-								"text": "1"
-							}
-						],
-						"output": {
-							"call": "FAN 전용 적립 및 할인"
-						}
-					},
-					{
-						"name": "dialog_default29",
-						"id": "default29",
-						"filename": "default",
-						"input": [
-							{
-								"text": "2"
-							}
-						],
-						"output": {
-							"call": "이벤트"
-						}
-					}
-				],
-				"parent": null,
-				"task": {
-					"inRaw": "2",
-					"inNLP": "2"
-				},
-				"inRaw": "2",
-				"inNLP": "2"
-			},
-			"task": {
-				"inRaw": "0",
-				"inNLP": "0"
-			},
-			"inRaw": "0",
-			"inNLP": "0"
-		}
+			]
+		},
+		"inRaw": "0",
+		"inNLP": "0"
 	},
 	{
 		"id": "defaultcommon1",
@@ -2765,10 +2918,26 @@ var commonDialogs = [
 			},
 			{
 				"text": "처음"
+			},
+			{
+				"text": "시작"
 			}
 		],
 		"output": {
 			"call": "시작"
+		}
+	},
+	{
+		"name": "dialog_commondefault192",
+		"id": "commondefault192",
+		"filename": "defaultcommon",
+		"input": [
+			{
+				"regexp": "/^FAN$/"
+			}
+		],
+		"output": {
+			"call": "신한 FAN 플랫폼 소개"
 		}
 	}
 ];

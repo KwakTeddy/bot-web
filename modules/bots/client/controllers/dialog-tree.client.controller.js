@@ -208,6 +208,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
+    $scope.$watch('vm.curI.str', function() {
+      if (vm.curI && vm.curI.type === 'Keyword')
+        $scope.processInput();
+    });
+
     var editor;
 
     var newTask_template = "\nvar newTask = {\n\tname: 'newTask',\n\taction: function (task,context,callback) {" +
@@ -818,23 +823,39 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.saveI = function() {
+      // check regexp
+      if (vm.curI.type == 'RegExp') {
+        try {
+          var reg = new RegExp(vm.curI.str);
+        } catch (e) {
+          $scope.inputError = "regular expression 형식에 맞게 입력해주세요";
+          return;
+        }
+      }
       if ($scope.getInputType(vm.curI.type) != 'text' && vm.curI.str === "") {
         $scope.resetI();
         return;
       }
-
       vm.targetI.type = vm.curI.type;
       if (vm.curI.type == 'Keyword') {
-        vm.targetI.str = $scope.processedInput;
+        if (vm.curI.type === 'Keyword' && vm.curI.str.length){
+          $http.get('/api/nluprocess/'+vm.curI.str).then(function (res) {
+            $scope.processedInput = res.data;
+            vm.targetI.str = $scope.processedInput;
+
+            if (vm.curInput.indexOf(vm.targetI) == -1)
+              vm.curInput.push(vm.targetI);
+            $scope.resetI();
+          }, function (err) {
+            console.log(err);
+          })
+        }
       } else {
         vm.targetI.str = vm.curI.str;
+        if (vm.curInput.indexOf(vm.targetI) == -1)
+          vm.curInput.push(vm.targetI);
+        $scope.resetI();
       }
-      // vm.targetI.str = vm.curI.str;
-
-      if (vm.curInput.indexOf(vm.targetI) == -1)
-        vm.curInput.push(vm.targetI);
-
-      $scope.resetI();
     };
 
     $scope.saveO = function() {
@@ -845,6 +866,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.targetO.type = vm.curO.type;
       vm.targetO.str = vm.curO.str;
       vm.targetO.url = vm.curO.url;
+      vm.targetO.filename = vm.curO.filename;
 
       if (vm.curOutput.indexOf(vm.targetO) == -1)
         vm.curOutput.push(vm.targetO);
@@ -853,6 +875,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.resetI= function() {
+      $scope.inputError = '';
       $scope.processedInput = null;
       vm.inputMode = false;
     };
@@ -863,7 +886,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     $scope.setType = function(i, type) {
       i.type = type;
-      if (type != "Keyword" && type != "If" && type !="Regexp" && type !="Button")
+      if (type != "Keyword" && type != "If" && type !="RegExp" && type !="Button")
         i.str = "";
       if ($scope.getInputType(type) === 'button') {
         if (i == vm.curO) {
@@ -887,6 +910,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       if (type === 'Type') return "타입을 입력해주세요";
       if (type === 'Button') return "버튼 이름을 입력해주세요";
       if (type === 'If') return "조건을 입력해주세요";
+      if (type === 'Options') return 'Option을 입력해주세요';
     };
 
     // input/ouput types
@@ -923,6 +947,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       return false;
     };
 
+    var addType = function(types, type) {
+      if (types.indexOf(type) == -1) {
+        types.push(type);
+      }
+    };
+
     $scope.getInputTypes = function(input, i) {
       var types = [];
       if (!input) return types;
@@ -943,27 +973,27 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         }
       });
       if (findType(input, 'Repeat') || findType(input, 'Call')) {
-        types.push('Options');
+        addType(types,'Options');
         return types;
       }
       if ((!isDone || (i != undefined && vm.outputTypes.indexOf(i.type) != -1))) {
         if (!findType(input, 'Button') && !findType(input, 'URLButton') && !findType(input,'Image'))
           types = angular.copy(vm.outputTypes);
         else
-          types.push('Text');
+          addType(types,'Text');
       }
       if (findType(input,'Return')) {
         if (!findType(input,'Text'))
-          types.push('Text');
+          addType(types,'Text');
         return types;
       }
       if (!findType(input,"If") || (i != undefined && i.type == "If"))
-        types.push("If");
+        addType(types,"If");
       if (!isDone || (isDone && findType(input,'Text'))) {
         if (!findType(input,'Image'))
-          types.push('Image');
-        types.push('Button');
-        types.push('URLButton');
+          addType(types,'Image');
+        addType(types,'Button');
+        addType(types,'URLButton');
       }
 
       return types;
@@ -1119,7 +1149,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         });
       }
       if (d.image) {
-        r.push({type:'Image', str:d.image.url.substring(7)});
+        r.push({type:'Image', str:d.image.displayname, filename:d.image.url.substring(7)});
       }
     };
 
@@ -1196,7 +1226,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           } else if (r.type === 'Return') {
             o.return = r.str;
           } else if (r.type === 'Image') {
-            o.image = {url: '/files/'+r.str};
+            o.image = {url: '/files/'+r.filename, displayname:r.str};
           } else if (r.type === 'Button') {
             (o.buttons || (o.buttons = [])).push({text:r.str});
           } else if (r.type === 'URLButton') {
@@ -1290,7 +1320,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         event.stopPropagation();
         func();
       }
-      $scope.processInput();
+      //$scope.processInput();
     };
 
     $scope.saveEnter = function(event,func) {
@@ -2586,7 +2616,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     // Create file imageUploader instance
     $scope.imageUploader = new FileUploader({
-      url: '/api/user-bots/image-files',
+      url: '/api/user-bots/image-files-replace',
       alias: 'uploadImageFile',
       autoUpload: true
     });
@@ -2624,7 +2654,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       // Show success message
       $scope.success['image'] = true;
 
-      vm.curO.str = response.filename;
+      vm.curO.filename = response.filename;
+      vm.curO.str = response.displayname;
       // Clear upload buttons
       $scope.cancelImageUpload();
     };

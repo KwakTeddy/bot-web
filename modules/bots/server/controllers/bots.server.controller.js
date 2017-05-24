@@ -340,8 +340,27 @@ exports.update = function (req, res) {
           botLib.buildBot(bot.id, bot.path);
         }
 
-        botLib.loadBot(bot.id);
-        res.json(bot);
+        botLib.loadBot(bot.id, function(realbot) {
+          var result = "";
+          async.waterfall([
+            function (cb) {
+              async.eachSeries(realbot.dialogsets, function(dialogset, cb2) {
+                dialogsetModule.analyzeKnowledge(dialogset, bot.id, result, function () {
+                  cb2();
+                });
+              }, function(err) {
+                cb(null);
+              });
+            },
+            function (cb) {
+              dialogsetModule.analyzeKnowledgeDialog(realbot.dialogs, bot.id, result, function() {
+                cb(null);
+              });
+            },
+          ], function (err) {
+            res.json(bot);
+          });
+        });
       }
     }
   );

@@ -110,12 +110,23 @@ function respondMessage(res, text, json) {
   }
 
   if(json && json.buttons) {
-    sendMsg.message.message_button =
-    {
-        "label": json.buttons[0].text,
-        "url": json.buttons[0].url
-        // "url": json.buttons[0].url
-      };
+
+    for(var i = 0; i < json.buttons.length; i++){
+      if ( json.buttons[i].url){
+        sendMsg.message.message_button =
+          {
+            "label": json.buttons[i].text,
+            "url": json.buttons[i].url
+          };
+      }else {
+        if (!sendMsg.keyboard){
+          sendMsg['keyboard'] = {};
+          sendMsg.keyboard['buttons'] = [];
+          sendMsg.keyboard['type'] = 'buttons';
+        }
+        sendMsg.keyboard.buttons.push(json.buttons[i].text);
+      }
+    }
     // sendMsg.keyboard =
     // {
     //   "type": "buttons",
@@ -130,8 +141,8 @@ function respondMessage(res, text, json) {
     sendMsg.message.photo =
       {
         "url": json.image.url,
-        "width" : 640,
-        "height" : 480
+        "width" : 720,
+        "height" : 630
       }
   }
 
