@@ -823,6 +823,15 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.saveI = function() {
+      // check regexp
+      if (vm.curI.type == 'RegExp') {
+        try {
+          var reg = new RegExp(vm.curI.str);
+        } catch (e) {
+          $scope.inputError = "regular expression 형식에 맞게 입력해주세요";
+          return;
+        }
+      }
       if ($scope.getInputType(vm.curI.type) != 'text' && vm.curI.str === "") {
         $scope.resetI();
         return;
@@ -866,6 +875,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.resetI= function() {
+      $scope.inputError = '';
       $scope.processedInput = null;
       vm.inputMode = false;
     };
@@ -876,7 +886,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     $scope.setType = function(i, type) {
       i.type = type;
-      if (type != "Keyword" && type != "If" && type !="Regexp" && type !="Button")
+      if (type != "Keyword" && type != "If" && type !="RegExp" && type !="Button")
         i.str = "";
       if ($scope.getInputType(type) === 'button') {
         if (i == vm.curO) {

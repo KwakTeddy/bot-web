@@ -355,9 +355,6 @@
                         </button>
                       </div>
                     </div>
-                    <div class="col-sm-9 col-sm-offset-2" data-ng-if="processedInput">
-                      자연어처리 결과 : {{processedInput}}
-                    </div>
                     <div ng-show="contentError" class="text-danger text-center">
                       <strong ng-bind="contentError"></strong>
                     </div>
@@ -618,6 +615,9 @@
                                         </div>
                                         <div class="col-sm-9 col-sm-offset-2" data-ng-if="processedInput">
                                             자연어처리 결과 : {{processedInput}}
+                                        </div>
+                                        <div ng-show="inputError" class="text-danger text-center">
+                                            <strong ng-bind="inputError"></strong>
                                         </div>
                                     </div>
                                     <hr>
