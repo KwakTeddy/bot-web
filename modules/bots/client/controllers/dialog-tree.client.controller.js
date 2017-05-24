@@ -1139,10 +1139,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     var procOutput = function(d,r) {
       if (typeof d === 'string') {
-        r.push({type: 'Text', str: d.replace(/\\/g,'\\\\')});
+        r.push({type: 'Text', str: d.replace(/\n/g,'\\n')});
       }
       if (!d.if && d.output) {
-        r.push({type:'Text', str:d.output.replace(/\\/g,'\\\\')});
+        r.push({type:'Text', str:d.output.replace(/\n/g,'\\n')});
       }
       if (d.call) {
         r.push({type:'Call', str:d.call});
@@ -1168,7 +1168,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         r.push({type:'Repeat', str:d.repeat+""});
       }
       if (d.options && d.options.output) {
-        r.push({type:'Options', str:d.options.output.replace(/\\/g, '\\\\')});
+        r.push({type:'Options', str:d.options.output.replace(/\n/g, '\\n')});
       }
       if (d.return) {
         r.push({type:'Return', str:d.return+""});
