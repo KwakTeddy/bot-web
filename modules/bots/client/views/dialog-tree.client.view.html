@@ -321,7 +321,70 @@
                 <a class="modal-with-help btn btn-default" style="display:none" href="#modalHelpForm">Open Form</a>
                 <a class="file-tree btn btn-default" style="display:none" href="#file-tree">Open Form</a>
                 <a class="modal-with-intent btn btn-default" style="display:none" href="#modalIntentForm">Open Form</a>
+                <a class="modal-with-list btn btn-default" style="display:none" href="#modalListForm">Open Form</a>
 
+                <!-- Modal Form for List-->
+                <div id="modalListForm" class="modal-block modal-block-primary mfp-hide">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            <h2 class="panel-title">List 수정</h2>
+                        </header>
+                        <div class="panel-body">
+                            <div class="form-group" style="margin-top: 15px;">
+                                <label class="col-sm-2" style="padding-left: 50px;">내용</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="listContent" ng-model="listContent" class="form-control valid"
+                                           placeholder="리스트에 속하는 항목을 적어주세요"
+                                           required=""
+                                           aria-required="true" aria-invalid="false">
+                                </div>
+                                <div class="col-sm-1" style="padding-right: 0;right: 15px">
+                                    <button ng-click="saveListContent()" class="btn btn-default btn-block">+
+                                    </button>
+                                </div>
+                            </div>
+                            <div ng-show="contentError" class="text-danger text-center">
+                                <strong ng-bind="contentError"></strong>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 15px;margin-top: 15px">
+                                <label class="col-sm-2" style="padding-left: 30px">리스트 <span class="required" aria-required="true">*</span></label>
+                                <div class="col-sm-10">
+                                    <table class="table table-bordered table-hover mb-none">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-center col-md-10">항목</th>
+                                            <th class="text-center">관리</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="item in vm.curI.list">
+                                            <td class="text-center">{{item}}</td>
+                                            <td>
+                                                <a class="btn btn-default btn-block btn-xs" ng-click="itemRemoveBeforeSave(item)" style="border: 0!important;">
+                                                    <i class="fa fa-minus" aria-hidden="true"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 15px" ng-show="contentListError" class="text-danger text-center">
+                                <strong ng-bind="contentListError"></strong>
+                            </div >
+                        </div>
+
+                        <footer class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <button class="btn btn-primary" ng-disabled='!vm.curI.list' ng-click="saveList()" >저장</button>
+                                    <button class="btn btn-primary" ng-click="backToEdit(false)" >이전</button>
+                                </div>
+                            </div>
+                        </footer>
+                    </section>
+                </div>
               <!-- Modal Form for Intent -->
               <div id="modalIntentForm" class="modal-block modal-block-primary mfp-hide">
                 <section class="panel">

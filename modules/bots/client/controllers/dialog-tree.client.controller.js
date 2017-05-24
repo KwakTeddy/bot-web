@@ -67,20 +67,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       $('.modal-with-help').magnificPopup({
         type: 'inline',
         preloader: false,
-        focus: '#name',
         modal: true,
-
-        // When elemened is focused, some mobile browsers in some cases zoom in
-        // It looks not nice, so we disable it:
-        callbacks: {
-          beforeOpen: function() {
-            if($(window).width() < 700) {
-              this.st.focus = false;
-            } else {
-              this.st.focus = '#name';
-            }
-          }
-        }
       });
 
       $('.modal-with-form').magnificPopup({
@@ -93,36 +80,21 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         // It looks not nice, so we disable it:
         callbacks: {
           beforeOpen: function() {
-            if($(window).width() < 700) {
-              this.st.focus = false;
-            } else {
-              if (!document.getElementById('name').readonly) {
-                this.st.focus = '#name';
-              }
-              if (!document.getElementById('input_div').classList.contains("ng-hide")) {
-                this.st.focus = '#input';
-              }
+            if (!document.getElementById('name').readonly) {
+              this.st.focus = '#name';
+            }
+            if (!document.getElementById('input_div').classList.contains("ng-hide")) {
+              this.st.focus = '#input';
             }
           }
         }
       });
+
       $('.modal-with-task').magnificPopup({
         type: 'inline',
         preloader: false,
         focus: '#name',
         modal: true,
-
-        // When elemened is focused, some mobile browsers in some cases zoom in
-        // It looks not nice, so we disable it:
-        callbacks: {
-          beforeOpen: function() {
-            if($(window).width() < 700) {
-              this.st.focus = false;
-            } else {
-              this.st.focus = '#name';
-            }
-          }
-        }
       });
 
       $('.modal-with-intent').magnificPopup({
@@ -130,16 +102,21 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         preloader: false,
         focus: '#name',
         modal: true,
-
-        // When elemened is focused, some mobile browsers in some cases zoom in
-        // It looks not nice, so we disable it:
         callbacks: {
           beforeOpen: function() {
-            if($(window).width() < 700) {
-              this.st.focus = false;
-            } else {
-              this.st.focus = '#name';
-            }
+            this.st.focus = '#name';
+          }
+        }
+      });
+
+      $('.modal-with-list').magnificPopup({
+        type: 'inline',
+        preloader: false,
+        focus: '#listContent',
+        modal: true,
+        callbacks: {
+          beforeOpen: function() {
+            this.st.focus = '#listContent';
           }
         }
       });
@@ -234,6 +211,39 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     //     console.log(res);
     //   }
     // };
+
+    $scope.saveList = function(isValid) {
+      if (vm.curI.list)
+        vm.curI.str = '' + vm.curI.list;
+      $scope.saveI();
+      $scope.backToEdit(false);
+    };
+
+    $scope.saveListContent = function(isValid) {
+      if ($scope.listContent == '') {
+        return;
+      }
+
+      if (vm.curI.list) {
+        for(var i = 0; i < vm.curI.list.length; ++i){
+          if (vm.curI.list[i] == $scope.listContent){
+            $scope.contentError = '동일한 항목이 존재합니다';
+            return false
+          }
+        }
+      }
+      $scope.contentError = '';
+
+      (vm.curI.list = vm.curI.list || []).push($scope.listContent);
+      $scope.listContent = '';
+    };
+
+    $scope.itemRemoveBeforeSave = function(target) {
+      var index = vm.curI.list.indexOf(target);
+      if(index > -1){
+        vm.curI.list.splice(index, 1)
+      }
+    };
 
     $scope.saveIntent = function (isValid) {
       if (!$scope.intent.name) {
@@ -339,8 +349,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.fromTask = false;
       vm.edit = false;
       vm.changeTab(vm.tabs[0]);
-      $('.modal-with-form').click();
-
+      $timeout(function() {
+        $('.modal-with-form').click();
+      })
     };
 
     $scope.openType = function(type) {
@@ -607,9 +618,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       event.preventDefault();
       if (document.getElementById('filetree_close').style.display == 'none') {
         vm.initTree();
-        $('#filetree_open').click();
+        $timeout(function() {
+          $('#filetree_open').click();
+        });
       } else {
-        $('#filetree_close').click();
+        $timeout(function() {
+          $('#filetree_close').click();
+        });
       }
     };
 
@@ -778,6 +793,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.curInput = input;
       vm.targetI = i;
       vm.curI = angular.copy(i);
+      if ($scope.getInputType(i.type) === 'list') {
+        $scope.openList();
+        return;
+      }
+
       vm.inputMode = true;
       setTimeout(function () {
         if (document.getElementById('input'))
@@ -850,6 +870,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             console.log(err);
           })
         }
+      } else if (vm.curI.type === 'List') {
+        vm.targetI.str = vm.curI.str;
+        vm.targetI.list = vm.curI.list;
+        if (vm.curInput.indexOf(vm.targetI) == -1)
+          vm.curInput.push(vm.targetI);
+        $scope.resetI();
       } else {
         vm.targetI.str = vm.curI.str;
         if (vm.curInput.indexOf(vm.targetI) == -1)
@@ -899,6 +925,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           $scope.saveI();
         }
       }
+      if ($scope.getInputType(type) === 'list') {
+        $scope.openList();
+      }
     };
 
     $scope.getPlaceHolder = function(type, isOut) {
@@ -914,7 +943,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     // input/ouput types
-    vm.inputTypes = ["Keyword","Intent","Entity","RegExp","Type","If","매칭없음"];
+    vm.inputTypes = ["Keyword","Intent","Entity","RegExp","Type","List","If","매칭없음"];
     vm.outputTypes = ["Text","Call","ReturnCall","CallChild","Up", "Repeat", "Return"];
 
     vm.typeClass = [];
@@ -923,6 +952,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     vm.typeClass['Intent'] = {btn:'btn-success',icon:'fa-user', input:'intent'};
     vm.typeClass['Entity'] = {btn:'btn-success',icon:'fa-tags', input:'entity'};
     vm.typeClass['Type'] = {btn:'btn-warning',icon:'fa-gear', input:'type'};
+    vm.typeClass['List'] = {btn:'btn-info', icon:'fa-list', input:'list'};
     vm.typeClass['매칭없음'] = {btn:'btn-danger',icon:'fa-ban', input:'button'};
 
     vm.typeClass['Text'] = {btn:'btn-primary',icon:'fa-commenting', input:'text'};
@@ -1097,6 +1127,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             r.push({type:'If', str:d.if});
           }
 
+          if (d.list) {
+            r.push({type:'List', str:''+d.list, list:d.list});
+          }
+
           res.push(r);
         });
       }
@@ -1193,6 +1227,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
               obj.intent= r.str;
             } else if (r.type === 'If') {
               obj.if = r.str;
+            } else if (r.type === 'List') {
+              obj.list = r.list;
             }
           });
           if (Object.keys(obj).length !== 0)
@@ -1310,7 +1346,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       });
 
       $scope.safeApply();
-      $('.modal-with-form').click();
+      $timeout(function() {
+        $('.modal-with-form').click();
+      });
 
     };
 
@@ -1459,6 +1497,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             text.push('[인테트] ' + i.intent);
           if (i.if)
             text.push('[조건] ' + i.if);
+          if (i.list)
+            text.push('[리스트] ' + i.list);
         });
         return text + "";
       } else {
@@ -3061,13 +3101,15 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         $scope.dialog.task = task;
       vm.edit = 'task';
       if (isCommon) {
-        $.magnificPopup.close();
         if (task.paramSchema != undefined) {
           $scope.dialog.task.paramSchema = task.paramSchema;
           vm.handleEditor(task.paramSchema);
         }
 
-        $('.modal-with-task').click();
+        $timeout(function() {
+          $.magnificPopup.close();
+          $('.modal-with-task').click();
+        });
       } else {
         $.magnificPopup.close();
         vm.fromTask = true;
@@ -3079,7 +3121,16 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     $scope.openIntent = function(task, isCommon) {
       $scope.intent = new IntentsService({botName: $rootScope.botId});
-      $('.modal-with-intent').click();
+      $timeout(function() {
+        $('.modal-with-intent').click();
+      });
+    };
+
+    $scope.openList = function(task, isCommon) {
+      $timeout(function() {
+        $('.modal-with-list').click();
+      });
+
     };
 
     $scope.backToEdit = function(ok) {
@@ -3097,8 +3148,14 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
         $scope.dialog.task = temp;
       }
-      $.magnificPopup.close();
-      $('.modal-with-form').click();
+
+      if (vm.curI.type === 'List')
+        $scope.resetI();
+
+      $timeout(function() {
+        $.magnificPopup.close();
+        $('.modal-with-form').click();
+      });
     };
   }]
 )
