@@ -359,6 +359,17 @@ function loadBot(botName, callback) {
       customContext.loadCustomContext(bot, function() {
         cb(null);
       })
+    },
+
+    function(cb) {
+      for(var i in bot.dialogsets) {
+        if(bot.dialogsets[i].topicKeywords) {
+          if(bot.topicKeywords) bot.topicKeywords = bot.topicKeywords.concat(bot.dialogsets[i].topicKeywords);
+          else bot.topicKeywords = bot.dialogsets[i].topicKeywords;
+        }
+      }
+      
+      cb(null);
     }
 
   ], function(err) {

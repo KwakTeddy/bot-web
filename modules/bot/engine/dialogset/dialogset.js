@@ -13,6 +13,11 @@ var dialogsetSmi = require('./dialogset-smi');
 var dialogsetKdrama = require('./dialogset-kdrama');
 
 var DialogsetDialog = mongoose.model('DialogsetDialog');
+var XLSX = require('xlsx');
+
+var _ = require('lodash');
+
+var commonWords = ['하나요', '경우', '에서', '어디', '무엇', '까지', '뭔가', '언제', '알다', '확인', '얼마나', '얼마', '자도', '누가'];
 
 //TODO: should be replace with convertDialogset1
 function convertDialogset(original, callback) {
@@ -39,59 +44,87 @@ function convertDialogset(original, callback) {
 
 exports.convertDialogset = convertDialogset;
 
-
 function convertDialogset1(dialogset, bot_id, callback) {
   var dialogType = dialogset.type;
   var dir = path.resolve('public/files/');
   var filepath = path.join(dir, dialogset.filename);
 
-  var analysis = function(result) {
-    if (bot_id != null) {
-      analyzeKnowledge(dialogset, bot_id, result, callback);
-    } else {
-      callback(result);
-    }
-  };
-
-  var info = path.parse(dialogset.originalFilename);
-  if (info.ext == '.txt') {
-    dialogType = 'kakao';
-    dialogsetKakao.convertDialogset(filepath, dialogset, analysis);
-  } else if (info.ext == '.csv') {
-    dialogType = "csv";
-    async.waterfall([
-      function(cb) {
-        utils.readFirstLine(filepath).then(function(head) {
-          if (head === "Date,User,Message") {
-            dialogType = "kakao";
-          }
-          cb(null);
-        }, function(err) {
-          dialogType = 'csv';
+  async.waterfall([
+    function(cb) {
+      var info = path.parse(dialogset.originalFilename);
+      if (info.ext == '.txt') {
+        dialogType = 'kakao';
+        dialogsetKakao.convertDialogset(filepath, dialogset, function() {
           cb(null);
         });
-      },
-      function(cb) {
-        if (dialogType == "kakao") {
-          dialogsetKakao.convertDialogset(filepath, dialogset, analysis);
-        } else {
-          insertDatasetFile1(filepath, dialogset, analysis);
-          //insertDatasetLg(filepath, dialogset, analysis);
-        }
+      } else if(info.ext == '.xls' || info.ext == '.xlsx') {
+        dialogType = 'xlsx';
+        insertExcelFile(filepath, dialogset, function() {
+          cb(null);
+        });
+
+      } else if (info.ext == '.csv') {
+        dialogType = "csv";
+
+        async.waterfall([
+          function(cb2) {
+            utils.readFirstLine(filepath).then(function(head) {
+              if (head === "Date,User,Message") {
+                dialogType = "kakao";
+              }
+              cb2(null);
+            }, function(err) {
+              dialogType = 'csv';
+              cb2(null);
+            });
+          },
+          function(cb2) {
+            if (dialogType == "kakao") {
+              dialogsetKakao.convertDialogset(filepath, dialogset, analysis);
+            } else {
+              insertDatasetFile1(filepath, dialogset, function() {
+                cb2(null);
+              });
+            }
+            cb2(null);
+          }
+        ], function(err) {
+          cb(null);
+        });
+      } else if(info.ext == '.smi') {
+        dialogType = 'smi';
+        dialogsetSmi.convertDialogset(filepath, dialogset, function() {
+          cb(null);
+        });
+      }
+
+      console.log(dialogType);
+    },
+
+    function(cb) {
+      preProcessDialog(dialogset, function() {
+        cb(null);
+      })
+    },
+    
+    function(cb) {
+      if (bot_id != null) {
+        analyzeKnowledge(dialogset, bot_id, result, function() {
+          cb(null);
+        });
+      } else {
         cb(null);
       }
-    ]);
-  } else if(info.ext == '.smi') {
-    dialogType = 'smi';
-    dialogsetSmi.convertDialogset(filepath, dialogset, analysis);
-  }
-  console.log(dialogType);
+    }
+  ], function(err) {
+    if(callback) callback();
+  })
 
 }
 
 exports.convertDialogset1 = convertDialogset1;
 
-function insertDailogsetDialog(dialogset, countId, input, output, callback) {
+function insertDailogsetDialog(dialogset, countId, input, output, context, callback) {
 
   if(Array.isArray(input)) {
     var inputRaw = [];
@@ -109,7 +142,8 @@ function insertDailogsetDialog(dialogset, countId, input, output, callback) {
         tag: [],
         inputRaw: input,
         input: inputRaw,
-        output: output
+        output: output,
+        context: context
       });
 
       dialogsetDialog.save(function(err) {
@@ -127,7 +161,8 @@ function insertDailogsetDialog(dialogset, countId, input, output, callback) {
         tag: [],
         inputRaw: input,
         input: _input,
-        output: output
+        output: output,
+        context: context
       });
 
       dialogsetDialog.save(function(err) {
@@ -140,6 +175,70 @@ function insertDailogsetDialog(dialogset, countId, input, output, callback) {
 }
 
 exports.insertDailogsetDialog = insertDailogsetDialog;
+
+function insertDialogsetContext(dialogset, contexts, callback) {
+  var parent = null;
+  var CustomContext = mongoose.model('CustomContext');
+  async.eachSeries(contexts, function(context, cb) {
+    async.waterfall([
+
+      function(cb2) {
+        CustomContext.update({
+            // bot: dialogset.bot,
+            dialogset: dialogset._id,
+            name: context
+          },
+          {
+            // bot: dialogset.bot,
+            dialogset: dialogset._id,
+            parent: parent, //(parent ? parent._id : null),
+            name: context
+          },
+          {
+            upsert: true
+          },
+          function(err, doc) {
+            // if(doc.upserted && doc.upserted[0]) parent = doc.upserted[0];
+            // else parent = null;
+            parent = null;
+            cb2(null);
+          }
+        );
+      },
+
+      function(cb2) {
+        if(parent == null) {
+          CustomContext.findOne({
+            // bot: dialogset.bot,
+            dialogset: dialogset._id,
+            name: context
+          }, function(err3, doc) {
+            if(doc) parent = doc;
+            cb2(null);
+          })
+        } else {
+          cb2(null);
+        }
+      }
+
+    ], function(err2) {
+      cb(null);
+    });
+
+    // var customContext = new CustomContext({
+    //   bot: dialogset.bot,
+    //   dialogset: dialogset,
+    //   parent: context.parent,
+    //   name: context.name
+    // })
+    //
+    // customContext.save(function(err) {
+    //   if(callback) callback();
+    // })
+  }, function(err) {
+    if(callback) callback(parent);
+  })
+}
 
 function insertDatasetCSVFile(infile, dialogset, callback) {
   const csv = require('csvtojson');
@@ -172,7 +271,7 @@ function insertDatasetCSVFile(infile, dialogset, callback) {
         saveOutput = output;
         input = null; output = null;
 
-        insertDailogsetDialog(dialogset, saveCount.toString(), saveInput, saveOutput, function() {
+        insertDailogsetDialog(dialogset, saveCount.toString(), saveInput, saveOutput, null, function() {
           // input = null; output = null;
         });
         next();
@@ -197,7 +296,7 @@ function insertDatasetLg(infile, dialogset, callback) {
       var input = doc.title;
       var output = doc.body;
       ++count;
-      insertDailogsetDialog(dialogset, count.toString(), input, output, function() {});
+      insertDailogsetDialog(dialogset, count.toString(), input, output, null, function() {});
     });
     console.log(' 완료');
     callback("OK");
@@ -205,6 +304,178 @@ function insertDatasetLg(infile, dialogset, callback) {
 }
 
 exports.insertDatasetLg = insertDatasetLg;
+
+
+function insertExcelFile(infile, dialogset, callback) {
+  var workbook = XLSX.readFile(infile);
+  var first_sheet_name = workbook.SheetNames[0];
+  var ws = workbook.Sheets[first_sheet_name];
+
+  var range = XLSX.utils.decode_range(ws['!ref']);
+  var endOfCol = range.e.c;
+
+  for(var i = range.e.c; i >= 0; i--) {
+    if(ws[XLSX.utils.encode_cell({c:i, r:0})] != undefined
+      && ws[XLSX.utils.encode_cell({c:i, r:0})].v != undefined
+      && ws[XLSX.utils.encode_cell({c:i, r:0})].v != '') {
+      endOfCol = i;
+      break;
+    }
+  }
+
+  var contexts = [], input, output, values = [], context = null;
+  var R = range.s.r, count = 0;
+  async.whilst(
+    function() {++R; return R <= range.e.r},
+
+    function(cbr) {
+      async.waterfall([
+        function(cb2) {
+          if(ws[XLSX.utils.encode_cell({c:endOfCol, r:R})]) {
+            for(var i = 0; i <= endOfCol; i++) {
+              if(ws[XLSX.utils.encode_cell({c:i, r:R})]) values[i] = ws[XLSX.utils.encode_cell({c:i, r:R})].v;
+              else values[i] = '';
+            }
+
+            if(values[endOfCol - 1] && values[endOfCol] &&
+              values[endOfCol - 1].trim().toLowerCase() == 'question' && values[endOfCol].trim().toLowerCase() == 'answer') {  // header row pass
+              cb2(true);
+            } else {
+              cb2(null);
+            }
+          } else {
+            cb2(true);
+          }
+        },
+
+        function(cb2) {
+          if(R == 1) {
+            var CustomContext = mongoose.model('CustomContext');
+            CustomContext.remove({dialogset: dialogset._id}, function(err, result) {
+              cb2(null);
+            })
+          } else {
+            cb2(null);
+          }
+        },
+
+        function(cb2) {
+          console.log(R + ', ' + range.e.r);
+          if(input != null && output != null &&
+            (values[endOfCol - 1] != '' && values[endOfCol] != '') &&
+            ((Array.isArray(input) && input[input.length-1] != values[endOfCol - 1]) || input != values[endOfCol - 1])
+            && ((Array.isArray(output) && output[output.length-1] != values[endOfCol]) || output != values[endOfCol])) {
+
+            count++;
+            insertDailogsetDialog(dialogset, count.toString(), input, output, context, function() {
+              input = null; output = null;
+              cb2(null);
+            });
+
+          } else {
+            cb2(null);
+          }
+        },
+
+        function(cb2) {
+          var bContext = false;
+          for(var i = endOfCol - 2; i >= 0; i--) {
+            if(values[i] != '' && values[i] != contexts[i]) {
+              bContext = true;
+              break;
+            }
+          }
+
+          for(var i = 0; i < endOfCol - 1; i++) {
+            if(values[i] != '') contexts[i] = values[i];
+          }
+
+          if(bContext) {
+            insertDialogsetContext(dialogset, contexts, function(_context) {
+              context = _context;
+              for(var i = endOfCol - 2; i >= 0; i--) {
+                if(values[i] != '' && values[i] != contexts[i]) contexts[i] = null;
+              }
+              cb2(null);
+            });
+          } else {
+            cb2(null);
+          }
+        },
+
+        function(cb2) {
+          if(values[endOfCol - 1] != '') {
+            if(input == null) input = values[endOfCol - 1];
+            else if(Array.isArray(input)) input.push(values[endOfCol - 1]);
+            else input = [input, values[endOfCol - 1]];
+          }
+
+          if(values[endOfCol] != '') {
+            if(output == null) output = values[endOfCol];
+            else if(Array.isArray(output)) output.push(values[endOfCol]);
+            else output = [output, values[endOfCol]];
+          }
+
+          cb2(null);
+        }
+
+      ], function(err2) {
+        cbr(null);
+      });
+    },
+
+    function(err) {
+
+      async.waterfall([
+        function(cb2) {
+          var bContext = false;
+          for(var i = endOfCol - 2; i >= 0; i--) {
+            if(contexts[i] != null) {
+              bContext = true;
+              break;
+            }
+          }
+
+          if(bContext) {
+            insertDialogsetContext(dialogset, contexts, function(_context) {
+              context = _context;
+              cb2(null);
+            });
+          } else {
+            cb2(null);
+          }
+        },
+
+        function(cb2) {
+          if(input != null && output != null) {
+            count++;
+            insertDailogsetDialog(dialogset, count.toString(), input, output, context, function() {
+              input = null; output = null;
+              cb2(null);
+            });
+          } else {
+            cb2(null);
+          }
+        }
+      ], function(err2) {
+        console.log('insertExcelFile: 완료');
+        callback();
+      })
+    }
+  );
+
+  // for(var R = range.s.r; R <= range.e.r; ++R) {
+  //   for(var C = range.s.c; C <= range.e.c; ++C) {
+  //     var address = XLSX.utils.encode_cell({c:C, r:R});
+  //     var cell = ws[address];
+  //
+  //     console.log('insertExcelFile: '  + address + '=' + cell.v);
+  //   }
+  // }
+
+}
+
+exports.insertExcelFile = insertExcelFile;
 
 function insertDatasetFile1(infile, dialogset, callback) {
   var input, output, count = 0;
@@ -244,7 +515,7 @@ function insertDatasetFile1(infile, dialogset, callback) {
           ((Array.isArray(input) && input[input.length-1] != array[1]) || input != array[1])
           && ((Array.isArray(output) && output[output.length-1] != array[2]) || output != array[2])) {
           count++;
-          insertDailogsetDialog(dialogset, count.toString(), input, output, function() {
+          insertDailogsetDialog(dialogset, count.toString(), input, output, null, function() {
             input = null; output = null;
             next();
           });
@@ -266,7 +537,7 @@ function insertDatasetFile1(infile, dialogset, callback) {
 
         if(input != null && output != null && line != '') {
           count++;
-          insertDailogsetDialog(dialogset, count.toString(), input, output, function() {
+          insertDailogsetDialog(dialogset, count.toString(), input, output, null, function() {
             input = null; output = null;
             next();
           });
@@ -1143,3 +1414,95 @@ var faqDialog = {
 };
 
 exports.faqDialog = faqDialog;
+
+function preProcessDialog(dialogset, callback) {
+  var wordCount = {};
+
+  async.waterfall([
+    function(cb) {
+      var wordCountFunc = function(input) {
+        if(!input.startsWith(':')) {
+          var words = input.split(' ');
+          for(var i in words) {
+            if(words[i].length > 1) wordCount[words[i]] = wordCount.hasOwnProperty(words[i]) ? wordCount[words[i]] + 1 : 1;
+          }
+        }
+      };
+
+      var wordCountNLPFunc = function(words) {
+        for(var i in words) {
+          if(words[i].text.length > 1 && (words[i].pos == 'Noun'/* || words[i].pos == 'Verb' || words[i].pos == 'Adjective'*/))
+            wordCount[words[i].text] = wordCount.hasOwnProperty(words[i].text) ? wordCount[words[i].text] + 1 : 1;
+        }
+      };
+
+      var query = {dialogset: dialogset};
+      var DialogsetDialog = mongoose.model('DialogsetDialog');
+      DialogsetDialog.find(query).lean().exec(function(err, docs) {
+
+        async.eachSeries(docs, function(doc, cb2) {
+          if(Array.isArray(doc.input)) {
+            async.eachSeries(doc.input, function(input, cb3) {
+              processInput(null, input, function(_in, result) {
+                wordCountNLPFunc(result._nlp);
+                cb3(null);
+              })
+            }, function(err3) {
+              cb2(null);
+            })
+
+          } else {
+            processInput(null, doc.input, function(_in, result) {
+              wordCountNLPFunc(result._nlp);
+              cb2(null);
+            })
+          }
+        }, function(err2) {
+          cb(null);
+        });
+
+      })
+    },
+
+    function(cb) {
+      var wordArray = [];
+      for(var i in wordCount) {
+        wordArray.push({word: i, count: wordCount[i]});
+      }
+
+      wordArray.sort(function(a, b) {
+        if(b.count > a.count) return 1;
+        else if(b.count < a.count) return -1;
+        else return 0;
+      });
+
+      dialogset.topicKeywords = [];
+
+      for(var i in wordArray) {
+        var w = wordArray[i];
+
+        if(w.count > 10 && !_.includes(commonWords, w.word)) {
+          dialogset.topicKeywords.push(w.word);
+          // console.log(w.word + ' ' + w.count);
+        }
+      }
+
+      console.log('topics: ' + dialogset.topicKeywords.join(', '));
+
+      // for(var i in wordCount) {
+      //   if(wordCount[i] > 5) console.log(i + ':' + wordCount[i]);
+      // }
+
+      cb(null);
+    },
+
+    function(cb) {
+      dialogset.save(function(err) {
+        cb(null);
+      })
+    }
+
+  ], function(err) {
+    if(callback) callback(dialogset);
+  });
+}

@@ -9,9 +9,9 @@ var CustomContextSchema = new Schema({
   name: {
     type: String
   },
-  parentId: {
+  parent: {
     type: Schema.ObjectId,
-    ref: 'DialogConcept'
+    ref: 'CustomContext'
   },
   updated: {
     type: Date,

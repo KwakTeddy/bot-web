@@ -54,7 +54,7 @@ var BotSchema = new Schema({
     type:String
   },
 
-  dialogsets: Schema.Types.Mixed,
+  dialogsets: [{ type: Schema.Types.ObjectId, ref: 'Dialogset'}],
 
   followed: {
     type: Number,

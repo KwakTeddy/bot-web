@@ -5,6 +5,7 @@ var async = require('async');
 function loadCustomContext(bot, callback) {
   var list = [];
   var contexts = {};
+  var dialogsetContexts = {};
 
   async.waterfall([
     function(cb) {
@@ -95,6 +96,82 @@ function loadCustomContext(bot, callback) {
       }
 
       cb(null);
+    },
+
+    function(cb) {
+     bot.dialogsetContexts = {};
+
+     var CustomContext = mongoModule.getModel('customcontext');
+     async.eachSeries(bot.dialogsets, function(dialogset, cb2) {
+       
+       async.waterfall([
+         function(cb3) {
+           CustomContext.find({dialogset: dialogset}).lean().exec(function(err, docs) {
+             list = docs;
+             dialogsetContexts = {};
+
+             for(var i in docs) {
+               if(docs[i].parent) {
+                 docs[i].parentId = docs[i].parent;
+                 for (var j in docs) {
+                   if (docs[j]._id.toString() == docs[i].parentId.toString()) {
+                     docs[i].parent = docs[j];
+                     break;
+                   }
+                 }
+
+                 if(docs[i].parent.children == undefined) {
+                   docs[i].parent.children = [docs[i]];
+                 } else {
+                   docs[i].parent.children.push(docs[i]);
+                 }
+               }
+             }
+
+             var getPath = function(context) {
+               if(context.parent == null) return context.name;
+               else return getPath(context.parent) + '.' + context.name;
+             };
+
+             for(var i in docs) {
+               docs[i].path = getPath(docs[i]);
+               dialogsetContexts[docs[i]._id] = docs[i];
+             }
+
+             bot.dialogsetContexts[dialogset] = dialogsetContexts;
+
+             cb3(null);
+           })
+         },
+
+         function(cb3) {
+           var CustomContextItem = mongoModule.getModel('customcontextitem');
+
+           CustomContextItem.find({dialogset: dialogset}).lean().exec(function(err, docs) {
+             for(var i in docs) {
+               var item = docs[i];
+
+               for(var j in list) {
+                 if(list[j]._id.toString() == item.context.toString()) {
+                   var context = list[j];
+                   if(context.items == undefined) context.items = [];
+                   context.items.push({type: item.itemType, name: item.name});
+
+                   break;
+                 }
+               }
+             }
+
+             cb3(null);
+           })
+         }
+       ], function(err3) {
+         cb2(null);
+       })
+
+     }, function(err2) {
+       cb(null);
+     });
     }
 
   ], function(err) {

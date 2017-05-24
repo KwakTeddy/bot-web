@@ -1334,6 +1334,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
   }
 
   var topicKeywords = [];
+  var contexts = [];
   if(!context.dialog) context.dialog = {};
 
   async.waterfall([
@@ -1425,6 +1426,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
         var word = nlps[i].text;
         // if(word.length <= 1) continue;
         word = RegExp.escape(word);
+
         if(context.bot.topicKeywords && _.includes(context.bot.topicKeywords, word)) {
           topicKeywords.push(nlps[i]);
         }
@@ -1434,18 +1436,20 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
           excluded.push(nlps[i]);
       }
 
-      // console.log('current Topic: ' + JSON.stringify(topicKeywords, null, 2) + '\ncontext Topic: ' + JSON.stringify(context.botUser.topic, null, 2));
-
-      // if(topicKeywords.length > 0) context.botUser.topic = topicKeywords;
-      if(topicKeywords.length == 0 && context.botUser.topic && context.botUser.topic.length > 0) topicKeywords = context.botUser.topic;
+      if(context.botUser.contexts && context.botUser.contexts.length > 0) {
+        topicKeywords = [];
+        for(var j = 0; j < context.botUser.contexts.length; j++)
+          if(context.botUser.contexts[j].name) topicKeywords.push(context.botUser.contexts[j].name);
+      } else if(topicKeywords.length == 0 && context.botUser.topic && context.botUser.topic.length > 0) {
+        topicKeywords = context.botUser.topic;
+      }
 
       if(_nlps.length == 0) _nlps.concat(excluded);
 
       async.eachSeries((topicKeywords.length > 0 ? topicKeywords : _nlps), function (word, _callback){
-        word = RegExp.escape(word.text);
-        // console.log(word);
+        word = word.text ? RegExp.escape(word.text): word;
 
-        if(word.length <= 1) {
+        if(false/*word.length <= 1*/) {
           _callback(null);
         } else {
           var query = {};
@@ -1651,6 +1655,24 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
         if (inDoc[format.name].length >= (format.limit || MAX_LIST)) break;
       }
 
+      if(inDoc[format.name][0].context) {
+        var _dialog = inDoc[format.name][0];
+        context.botUser.contexts = [];
+        var parentContext = function(_context) {
+          var __context;
+          if(context.bot.dialogsetContexts[_dialog.dialogset] && context.bot.dialogsetContexts[_dialog.dialogset][_context]) {
+            __context = context.bot.dialogsetContexts[_dialog.dialogset][_context];
+            context.botUser.contexts.unshift(__context);
+          }
+
+          if(__context && __context.parent) {
+            parentContext(__context.parent._id);
+          }
+        };
+
+        parentContext(inDoc[format.name][0].context);
+      }
+
       if(inDoc[format.name].length == 1) {
         inDoc[format.name] = inDoc[format.name][0];
 
@@ -1685,9 +1707,13 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
         logger.debug('type.js:dialogCheck: NOT MATCHED ' + (t1 - t0) + ' ms ' + format.name + ' "' + text + '" inDoc.' + format.name + ': ' + inDoc[format.name] + ' inDoc.typeDoc: ' + JSON.stringify(inDoc.typeDoc));
       }
 
-      if(context.botUser.topic && context.botUser.topic.length > 0 &&
+      if(((context.botUser.topic && context.botUser.topic.length > 0) ||
+        (context.botUser.contexts && context.botUser.contexts.length > 0))&&
           (context.botUser.analytics == null || context.botUser.analytics2 == null)) {
-        if(context.botUser.analytics == null) context.botUser.topic = null;
+        if(context.botUser.analytics == null) {
+          context.botUser.topic = null;
+          context.botUser.contexts = null;
+        }
         // else context.botUser.analytics = null;
         else context.botUser.analytics2 = true;
 

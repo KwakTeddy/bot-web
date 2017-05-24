@@ -288,9 +288,25 @@ var dialogsType = {
     model: 'dialogsetdialogs',
     queryStatic: {dialogset: ''},
     queryFields: ['input'],
-    fields: 'dialogset input inputRaw output' ,
-    taskFields: ['input', 'inputRaw', 'output', 'matchCount', 'matchRate'],
-    minMatch: 1
+    fields: 'dialogset input inputRaw output context' ,
+    taskFields: ['input', 'inputRaw', 'output', 'matchCount', 'matchRate', 'dialogset', 'context'],
+    minMatch: 1,
+    schema: {
+      dialogset: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Dialogset'
+      },
+      id: Number,
+      input: mongoose.Schema.Types.Mixed,
+      inputRaw: mongoose.Schema.Types.Mixed,
+      output: mongoose.Schema.Types.Mixed,
+      tag: [String],
+      parent: mongoose.Schema.Types.Mixed,
+      context: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'CustomContext'
+      }
+    }
   }
 };
 

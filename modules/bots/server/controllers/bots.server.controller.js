@@ -247,15 +247,7 @@ exports.read = function (req, res) {
 exports.update = function (req, res) {
   var bot = req.bot;
   bot = _.extend(bot , req.body);
-  console.log(util.inspect(mongoose.Types.ObjectId(bot.dialogsets[0]._id)));
-  console.log(util.inspect(bot.dialogsets));
-  console.log(util.inspect('---------------------------------'));
-  console.log(util.inspect(bot));
-  if (bot.dialogsets && bot.dialogsets.length){
-    for (var i=0; i < bot.dialogsets.length; ++i) {
-      bot.dialogsets[i] = bot.dialogsets[i];
-    }
-  }
+
   async.waterfall([
       function(cb) {
         if (bot.template) {
@@ -286,7 +278,13 @@ exports.update = function (req, res) {
       },
 
       function(cb) {
-        bot.save(function (err) {
+        // if (bot.dialogsets && bot.dialogsets.length){
+        //   for (var i=0; i < bot.dialogsets.length; ++i) {
+        //     bot.dialogsets[i] = bot.dialogsets[i]._id;
+        //   }
+        // }
+
+        bot.save(function (err, doc) {
           if(err)
             cb(err);
           else
@@ -682,7 +680,7 @@ exports.botByID = function (req, res, next, id) {
   //   });
   // }
 
-  Bot.findById(id).populate('user').exec(function (err, bot) {
+  Bot.findById(id).populate('dialogsets').populate('user').exec(function (err, bot) {
     if (err) {
       console.log(err);
       return next(err);
