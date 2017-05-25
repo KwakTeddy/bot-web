@@ -312,9 +312,21 @@ if (_platform !== 'mobile'){
         $scope.$watch('vm.userBot.id', function () {
           if (vm.userBot.id) {
             vm.userBot.id = vm.userBot.id.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g,'');
+            vm.userBot.id = vm.userBot.id.replace(/[0-9]/g,'');
+            vm.userBot.id = vm.userBot.id.replace(/ /g,'');
             $resource('/api/bot-exist', {}).get({bot_id: vm.userBot.id}, function (res) {
               if (res) {
-                $scope.error.id = "같은 아이디가 존재합니다";
+                $scope.error = {};
+                console.log(res);
+                console.log($scope.error);
+                if($scope.error){
+                  $scope.error.id = "같은 아이디가 존재합니다";
+                }
+                if(res._id){
+                  $scope.error.id = "같은 아이디가 존재합니다";
+                }else {
+                  $scope.error = null;
+                }
                 return false;
               }
             }, function (err) {
