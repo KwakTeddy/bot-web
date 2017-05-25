@@ -28,7 +28,7 @@
       angular.element('#intentContentForm').focus();
     }
 
-    vm.count = vm.intent.content.length;
+    // vm.count = vm.intent.content.length;
     // vm.analyzeIntent = function () {
     //   console.log(vm.count)
     //   if(vm.count){
