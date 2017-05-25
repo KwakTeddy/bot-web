@@ -83,42 +83,42 @@
         </div>
       </div>
 
-      <div class="form-group">
-        <label class="col-sm-3 control-label">설정</label>
-        <div class="col-sm-9">
-            <div class="row">
-              <label class="col-sm-2 control-label">limit:</label>
-              <div class="col-sm-10">
-                <input type="text" id="limit" name="limit" ng-model="vm.dialogset.limit" class="col-sm-8 mb-xs form-control valid" placeholder="limit을 입력해주세요" required="" aria-required="true" aria-invalid="false">
-              </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 control-label">matchRate:</label>
-              <div class="col-sm-10">
-                <input type="text" id="matchRate" name="matchRate" ng-model="vm.dialogset.matchRate" class="mb-xs form-control valid" placeholder="matchRate을 입력해주세요" required="" aria-required="true" aria-invalid="false">
-              </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 control-label">matchCount:</label>
-              <div class="col-sm-10">
-              <input type="text" id="matchCount" name="matchCount" ng-model="vm.dialogset.matchCount" class="mb-xs form-control valid" placeholder="matchCount을 입력해주세요" required="" aria-required="true" aria-invalid="false">
-            </div>
-        </div>
-      </div>
-      <div class="form-group" ng-show="topics.length > 1">
-        <label class="col-sm-3 control-label">topicKeywords</label>
-        <div class="col-sm-9">
-          <label class="form-control" ng-repeat="topic in topics">
-            <input
-                    type="checkbox"
-                    name="topicKeywords[]"
-                    value="{{topic}}"
-                    ng-checked="vm.dialogset.topicKeywords.indexOf(topic) > -1"
-                    ng-click="toggleSelection(topic)"
-            > {{topic}}
-          </label>
-        </div>
-      </div>
+      <!--<div class="form-group">-->
+        <!--<label class="col-sm-3 control-label">설정</label>-->
+        <!--<div class="col-sm-9">-->
+            <!--<div class="row">-->
+              <!--<label class="col-sm-2 control-label">limit:</label>-->
+              <!--<div class="col-sm-10">-->
+                <!--<input type="text" id="limit" name="limit" ng-model="vm.dialogset.limit" class="col-sm-8 mb-xs form-control valid" placeholder="limit을 입력해주세요" required="" aria-required="true" aria-invalid="false">-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<div class="row">-->
+              <!--<label class="col-sm-2 control-label">matchRate:</label>-->
+              <!--<div class="col-sm-10">-->
+                <!--<input type="text" id="matchRate" name="matchRate" ng-model="vm.dialogset.matchRate" class="mb-xs form-control valid" placeholder="matchRate을 입력해주세요" required="" aria-required="true" aria-invalid="false">-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<div class="row">-->
+              <!--<label class="col-sm-2 control-label">matchCount:</label>-->
+              <!--<div class="col-sm-10">-->
+              <!--<input type="text" id="matchCount" name="matchCount" ng-model="vm.dialogset.matchCount" class="mb-xs form-control valid" placeholder="matchCount을 입력해주세요" required="" aria-required="true" aria-invalid="false">-->
+            <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="form-group" ng-show="topics.length > 1">-->
+        <!--<label class="col-sm-3 control-label">topicKeywords</label>-->
+        <!--<div class="col-sm-9">-->
+          <!--<label class="form-control" ng-repeat="topic in topics">-->
+            <!--<input-->
+                    <!--type="checkbox"-->
+                    <!--name="topicKeywords[]"-->
+                    <!--value="{{topic}}"-->
+                    <!--ng-checked="vm.dialogset.topicKeywords.indexOf(topic) > -1"-->
+                    <!--ng-click="toggleSelection(topic)"-->
+            <!--&gt; {{topic}}-->
+          <!--</label>-->
+        <!--</div>-->
+      <!--</div>-->
 
     </div>
     <footer class="panel-footer">

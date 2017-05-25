@@ -535,8 +535,7 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
         if(intentDialogs.length == 1) {
           intentDialogs[0].context = null;
           _executeDialog(intentDialogs[0]);
-        }
-        else {
+        } else {
           var intentDialog;
           function matchContext(dialogs, context, customContext, intentDialogs, print, callback, options) {
             if(customContext.children && customContext.children.length > 0) {
