@@ -69,6 +69,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             $scope.close = function () {
                 modalInstance.dismiss();
                 $state.go('home');
+                // $state.go($state.previous.href);
+
             };
             $scope.resend = function () {
                 modalInstance.dismiss();

@@ -332,6 +332,8 @@ exports.oauthCallback = function (strategy, scope) {
             }
           });
         }
+        console.log(util.inspect(redirectURL.redirect_to))
+        console.log(util.inspect(sessionRedirectURL))
         return res.redirect(redirectURL.redirect_to || sessionRedirectURL || '/');
       });
     })(req, res, next);

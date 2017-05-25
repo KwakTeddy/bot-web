@@ -45,6 +45,15 @@ var DialogsetSchema = new Schema({
     default: 'en'
   },
 
+  limit: {
+    type: Number
+  },
+  matchRate: {
+    type: Number
+  },
+  matchCount: {
+    type: Number
+  },
   topicKeywords: Schema.Types.Mixed,
 
   created: {

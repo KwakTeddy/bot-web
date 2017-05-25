@@ -50,6 +50,20 @@
       }
     }
 
+    $scope.topics = ["토픽1","토픽2","토픽3"];
+
+    $scope.toggleSelection = function(topic) {
+      var idx = vm.dialogset.topicKeywords.indexOf(topic);
+
+      // Is currently selected
+      if (idx > -1) {
+        vm.dialogset.topicKeywords.splice(idx, 1);
+      }
+      // Is newly selected
+      else {
+        vm.dialogset.topicKeywords.push(topic);
+      }
+    };
 
     /************** 파일 업로드 ****************/
 
