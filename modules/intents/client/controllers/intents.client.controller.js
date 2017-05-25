@@ -28,32 +28,32 @@
       angular.element('#intentContentForm').focus();
     }
 
-    vm.count = vm.intent.content.length;
-    vm.analyzeIntent = function () {
-      console.log(vm.count)
-      if(vm.count){
-        $resource('/api/user-bots-analytics/intent', {}).get({input: vm.intent.content[vm.count-1].input, botId: $cookies.get('default_bot')}, function (res) {
-          console.log(res)
-          if (!Object.keys(res.entities).length){
-            vm.entities = undefined;
-          }else {
-            vm.entities = res.entities;
-            console.log(Object.values(vm.entities)[0]);
-            console.log(vm.intent.content[vm.count-1].input.split(Object.values(vm.entities)[0]))
-            vm.intent.content[vm.count-1].input = vm.intent.content[vm.count-1].input.split(' ')
-            console.log(vm.intent.content[vm.count-1].input)
-            for(var i = 0; i < vm.intent.content[vm.count-1].input.length; i++){
-              if(vm.intent.content[vm.count-1].input[i] == Object.values(vm.entities)[0]){
-
-              }
-            }
-          }
-
-          vm.count--;
-          vm.analyzeIntent();
-        })
-      }
-    };
+    // vm.count = vm.intent.content.length;
+    // vm.analyzeIntent = function () {
+    //   console.log(vm.count)
+    //   if(vm.count){
+    //     $resource('/api/user-bots-analytics/intent', {}).get({input: vm.intent.content[vm.count-1].input, botId: $cookies.get('default_bot')}, function (res) {
+    //       console.log(res)
+    //       if (!Object.keys(res.entities).length){
+    //         vm.entities = undefined;
+    //       }else {
+    //         vm.entities = res.entities;
+    //         console.log(Object.values(vm.entities)[0]);
+    //         console.log(vm.intent.content[vm.count-1].input.split(Object.values(vm.entities)[0]))
+    //         vm.intent.content[vm.count-1].input = vm.intent.content[vm.count-1].input.split(' ')
+    //         console.log(vm.intent.content[vm.count-1].input)
+    //         for(var i = 0; i < vm.intent.content[vm.count-1].input.length; i++){
+    //           if(vm.intent.content[vm.count-1].input[i] == Object.values(vm.entities)[0]){
+    //
+    //           }
+    //         }
+    //       }
+    //
+    //       vm.count--;
+    //       vm.analyzeIntent();
+    //     })
+    //   }
+    // };
     // vm.analyzeIntent();
 
 
