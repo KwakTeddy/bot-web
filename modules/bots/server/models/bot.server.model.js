@@ -203,7 +203,8 @@ var BotDialogSchema = new Schema({
   created: {
     type: Date,
     default: Date.now
-  }
+  },
+  parent: Schema.Types.Mixed
 });
 
 mongoose.model('BotDialog', BotDialogSchema);

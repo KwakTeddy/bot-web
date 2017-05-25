@@ -121,6 +121,25 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         }
       });
 
+      $('.modal-with-entity').magnificPopup({
+        type: 'inline',
+        preloader: false,
+        focus: '#name',
+        modal: true,
+
+        // When elemened is focused, some mobile browsers in some cases zoom in
+        // It looks not nice, so we disable it:
+        callbacks: {
+          beforeOpen: function() {
+            if($(window).width() < 700) {
+              this.st.focus = false;
+            } else {
+              this.st.focus = '#name';
+            }
+          }
+        }
+      });
+
       $(document).on('click', '#filetree_open', function (e) {
         e.preventDefault();
 
@@ -274,10 +293,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       function successCallback(res) {
         IntentsService.query({botName: $rootScope.botId}).$promise.then(function (result) {
           vm.intents = result.map(function(i) { return i.name; });
+          $scope.backToEdit(false);
         }, function (err) {
           console.log(err);
         });
-        $scope.backToEdit(false);
       }
 
       function errorCallback(res) {
@@ -313,6 +332,118 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       var index = $scope.intent.content.indexOf(target);
       if(index > -1){
         $scope.intent.content.splice(index, 1)
+      }
+    }
+
+
+
+    //ENTITY
+    $scope.saveEntity = function (isValid) {
+      if (!$scope.entity.name) {
+        $scope.entityError = '엔터티 이름을 입력해주세요';
+        return false;
+      }
+      if (!$scope.entity.content || $scope.entity.content.length == 0){
+        $scope.contentListError = '적어도 하나의 내용을 목록에 추가해주세요';
+        return false
+      }
+
+      $scope.entity.botName = $rootScope.botId;
+
+      $scope.entity.$save({botName: $rootScope.botId},successCallback, errorCallback);
+
+      function successCallback(res) {
+        EntityContentsService.query({botName: $cookies.get('default_bot')}).$promise.then(function (result) {
+          vm.entities = result.map(function (i) {
+            return i.name
+          });
+          $scope.backToEdit(false);
+        }, function (err) {
+          console.log(err)
+        });
+      }
+
+      function errorCallback(res) {
+        console.log(res);
+        $scope.entityError = res.data.message;
+        if (res.data.message.code == 11000){
+          $scope.entityError = '\'' + res.data.message.op.name + '\'' +' 이름의 엔터티가 존재합니다. 다른 이름으로 생성해주세요'
+        }
+      }
+    }
+
+    $scope.saveEntityContent = function (isValid) {
+      if(!$scope.entity.content){
+        $scope.entity['content'] = [];
+      }
+      if ($scope.entityContent){
+        for(var i = 0; i < $scope.entity.content.length; i++){
+          if ($scope.entity.content[i].name == $scope.entityContent){
+            $scope.contentError = '동일한 내용이 존재합니다';
+            return false
+          }
+        }
+        $scope.entity.content.unshift({name: $scope.entityContent, syn:[{name: $scope.entityContent}]});
+
+        $scope.entityContent = '';
+        $scope.contentError = ''
+        $scope.contentListError = null;
+
+      }else {
+        $scope.contentError = '내용을 입력해주세요'
+      }
+    };
+
+    $scope.contentRemoveBeforeSave = function (target) {
+      console.log($scope.entity.content.indexOf(target))
+      var index = $scope.entity.content.indexOf(target);
+      if(index > -1){
+        $scope.entity.content.splice(index, 1)
+      }
+    };
+
+    $scope.contentSynSave = function (target) {
+
+      if(vm.entityContentSyn){
+        if(!target.syn){
+          target['syn'] = [];
+        }
+        if(target.syn.length){
+          console.log('fff')
+          for(var i = 0; i < target.syn.length; i++){
+            if (target.syn[i].name == vm.entityContentSyn){
+              var border = angular.copy(document.getElementById('synWrapper_' + target.name + '_' + vm.entityContentSyn).style.border);
+              var syn = angular.copy(vm.entityContentSyn);
+              document.getElementById('synWrapper_' + target.name + '_' + syn).style.border = 'pink solid 1px';
+              $timeout(function () {
+                document.getElementById('synWrapper_' + target.name + '_' + syn).style.border = border;
+              }, 3000);
+              return
+            }
+          }
+        }
+        target.syn.push({name: vm.entityContentSyn});
+        console.log(target)
+        vm.entityContentSyn = '';
+      }
+    };
+
+    $scope.contentSynRemoveBeforeSave = function (content, syn) {
+      var index = content.syn.indexOf(syn);
+      content.syn.splice(index, 1);
+    };
+
+    $scope.synInputKeyDown = function (event, target) {
+      if (event.keyCode == 13){ //enter
+        $scope.contentSynSave(target);
+        event.preventDefault();
+      }
+    }
+
+    $scope.entityContentInputKeyDown = function (event, target) {
+      if (event.keyCode == 13){ //enter
+        $scope.saveEntityContent(target);
+        event.preventDefault();
       }
     }
 
@@ -1361,6 +1492,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       });
 
       EntityContentsService.query({botName: $cookies.get('default_bot')}).$promise.then(function (result) {
+        console.log(result);
         vm.entities = result.map(function (i) {
           return i.name
         })
@@ -3156,6 +3288,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         $('.modal-with-list').click();
       });
 
+    };
+
+    $scope.openEntity = function(task, isCommon) {
+      $scope.entity = new EntitysService({botName: $rootScope.botId});
+      $('.modal-with-entity').click();
     };
 
     $scope.backToEdit = function(ok) {

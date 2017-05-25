@@ -44,6 +44,7 @@
 
     vm.createDepthDialog = function(parent, index) {
       vm.childDialog['parent'] = parent._id;
+      console.log(vm.childDialog)
       vm.childDialog.$save(function (response) {
         vm.childDialog = response;
         vm.dialogsetDialogs.splice(index+1, 0, response);

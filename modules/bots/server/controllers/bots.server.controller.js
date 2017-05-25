@@ -1211,10 +1211,10 @@ exports.listDialog = function (req, res) {
   var query = {};
 
   if (user)
-    query['user'] =  user;
+    query['user'] =  user._id;
   if(req.params.dBotId) query['botId'] =  req.params.dBotId;
-  query['input'] = {"$ne":""};
-  query['output'] = {"$ne":""};
+  // query['input'] = {"$ne":""};
+  // query['output'] = {"$ne":""};
 
   BotDialog.find(query).sort(sort).populate('user').exec(function (err, dialogs) {
     if (err) {
@@ -1222,6 +1222,7 @@ exports.listDialog = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
+      console.log(util.inspect(dialogs))
       res.json(dialogs);
     }
   });

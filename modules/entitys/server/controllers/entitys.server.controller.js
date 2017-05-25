@@ -307,16 +307,31 @@ exports.updateContent = function(req, res) {
  */
 exports.delete = function(req, res) {
   var entity = req.entity ;
-
-  entity.remove(function(err) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.jsonp(entity);
+  EntityContent.find({entityId: req.entity._id}).exec(function (err, result) {
+    if (err){
+      console.log(err)
+    }else {
+      var contentIds = [];
+      for(var i = 0; i < result.length; i++){
+        contentIds.push(result[i]._id)
+      }
+      EntityContent.remove({_id: {$in: contentIds}}).exec(function (err, result) {
+        if (err){
+          console.log(err)
+        }else {
+          entity.remove(function(err) {
+            if (err) {
+              return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            } else {
+              res.jsonp(entity);
+            }
+          });
+        }
+      })
     }
-  });
+  })
 };
 
 /**

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('users').controller('AuthenticationController', ['$scope', '$state', '$http', '$location', '$window', 'Authentication', 'PasswordValidator', '$uibModal',
-    '$ionicModal', '$rootScope', '$ionicSideMenuDelegate', '$stateParams', '$ionicPopup', '$cookies',
-  function ($scope, $state, $http, $location, $window, Authentication, PasswordValidator, $uibModal, $ionicModal, $rootScope, $ionicSideMenuDelegate, $stateParams, $ionicPopup, $cookies) {
+    '$ionicModal', '$rootScope', '$ionicSideMenuDelegate', '$stateParams', '$ionicPopup', '$cookies', '$timeout',
+  function ($scope, $state, $http, $location, $window, Authentication, PasswordValidator, $uibModal, $ionicModal, $rootScope, $ionicSideMenuDelegate, $stateParams, $ionicPopup, $cookies, $timeout) {
     $scope.authentication = Authentication;
     $scope.popoverMsg = PasswordValidator.getPopoverMsg();
     $scope.credentials = {};
@@ -131,10 +131,11 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         return false;
       }
 
-      $http.post('/api/auth/signin', $scope.credentials).success(function (response) {
+      $http.post('/api/auth/signin?redirect_to=' + encodeURIComponent($state.previous.href), $scope.credentials).success(function (response) {
         // If successful we assign the response to the global user model
         $scope.authentication.user = response;
-
+        console.log($cookies.getAll());
+        console.log($state.previous.state.name)
         // And redirect to the previous or home page
         if (_platform == 'mobile'){
             $rootScope.closeSigninModal();
@@ -142,6 +143,11 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         }else {
             $state.go($state.previous.state.name || 'home', $state.previous.params);
         }
+
+        //temporary code
+        $timeout(function () {
+          $window.location.reload();
+        }, 100)
       }).error(function (response) {
         console.log(response);
         $scope.error = response.message;

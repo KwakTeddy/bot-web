@@ -87,8 +87,16 @@
           pageTitle : 'Custom actions Create'
         }
       })
-
-    ;
+      .state('dialogsets.dialogsLearn', {
+        url: '/dialogsLearn/:botNameId/',
+        templateUrl: 'modules/dialogs/client/views/dialogs.client.view.html',
+        controller: 'DialogsetDialogsLearnController',
+        controllerAs: 'vm',
+        resolve: {
+          botResolve : getBot,
+          dialogsResolve: getDialogs
+        }
+      })
   }
 
   getDialogsets.$inject = ['DialogsetsService'];
@@ -113,6 +121,16 @@
     return DialogsetDialogsService.query({
       dialogsetId: $stateParams.dialogsetId
     }).$promise;
+  }
+
+  getBot.$inject = ['$http', '$cookies'];
+  function getBot($http, $cookies) {
+    return $http.get('/api/bots/byNameId/' + $cookies.get('default_bot'))
+  }
+
+  getDialogs.$inject = ['UserBotDialogService', '$cookies'];
+  function getDialogs(UserBotDialogService, $cookies) {
+    return UserBotDialogService.query({botId: $cookies.get('default_bot')}).$promise;
   }
 
 })();

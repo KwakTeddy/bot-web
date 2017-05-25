@@ -6,9 +6,9 @@
     .module('intents')
     .controller('IntentsController', IntentsController);
 
-  IntentsController.$inject = ['$scope', '$state', 'Authentication', 'intentResolve', '$resource', 'IntentsService', '$rootScope', '$http'];
+  IntentsController.$inject = ['$scope', '$state', 'Authentication', 'intentResolve', '$resource', 'IntentsService', '$rootScope', '$http', '$cookies'];
 
-  function IntentsController($scope, $state, Authentication, intent, $resource, IntentsService, $rootScope, $http) {
+  function IntentsController($scope, $state, Authentication, intent, $resource, IntentsService, $rootScope, $http, $cookies) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -20,11 +20,37 @@
     vm.form = {};
     vm.remove = remove;
     vm.save = save;
+    vm.entities = [];
+
     if (!vm.intent._id){
       angular.element('#intentFormName').focus();
     }else {
       angular.element('#intentContentForm').focus();
     }
+
+    vm.count = vm.intent.content.length;
+    vm.analyzeIntent = function () {
+      console.log(vm.count)
+      if(vm.count){
+        $resource('/api/user-bots-analytics/intent', {}).get({input: vm.intent.content[vm.count-1].input, botId: $cookies.get('default_bot')}, function (res) {
+          console.log(res)
+          if (!Object.keys(res.entities).length){
+            vm.entities = undefined;
+          }else {
+            vm.entities = res.entities;
+            console.log(Object.values(vm.entities));
+            console.log(vm.intent.content[vm.count-1].input.split(Object.values(vm.entities)[0]))
+            vm.intent.content[vm.count-1].input = vm.intent.content[vm.count-1].input.split(Object.values(vm.entities)[0])
+            console.log(vm.intent.content[vm.count-1].input)
+          }
+
+          vm.count--;
+          vm.analyzeIntent();
+        })
+      }
+    };
+    vm.analyzeIntent();
+
 
     // Remove existing Custom action
     function remove() {
