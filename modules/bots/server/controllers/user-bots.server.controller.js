@@ -403,7 +403,7 @@ exports.unfollowBot = function(req, res) {
  */
 exports.facebookPage = function (req, res) {
   if (!req.body.list){
-    UserBotFbPage.findOne({user : req.body.user, pageId : req.body.page.id}, function (err, data) {
+    UserBotFbPage.findOne({pageId : req.body.page.id}, function (err, data) {
       if(err){
         console.log(err);
       }else {

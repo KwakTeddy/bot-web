@@ -639,7 +639,7 @@ exports.botExist = function(req, res) {
     if (bot) {
       res.json(bot);
     } else {
-      res.status(404).send({message: 'No Bot exists'});
+      res.status(200).send({message: 'No Bot exists'});
     }
   });
 };
