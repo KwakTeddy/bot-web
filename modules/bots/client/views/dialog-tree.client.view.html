@@ -493,14 +493,16 @@
                                     <table class="table table-bordered table-hover mb-none">
                                         <thead>
                                         <tr>
+                                            <th class="text-center"></th>
                                             <th class="text-center col-md-4">타이틀</th>
                                             <th class="text-center col-md-4">내용</th>
                                             <th class="text-center col-md-3">이미지</th>
-                                            <th class="text-center">관리</th>
+                                            <th class="text-center col-md-1">관리</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="item in vm.curO.list">
+                                            <td class="text-center">{{$index+1}}</td>
                                             <td class="text-center">{{item.title}}</td>
                                             <td class="text-center">{{item.content}}</td>
                                             <td class="text-center">{{item.displayname}}</td>
