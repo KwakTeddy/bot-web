@@ -132,23 +132,11 @@
                   <span>챗봇 개발</span>
                 </a>
               </li>
-              <li class="nav-parent">
-                <a>
-                  <i class="fa fa-archive" aria-hidden="true"></i>
-                  <span>챗봇 관리</span>
+              <li class="nav-active">
+                <a ui-sref="dialogsets.dialogsLearn({botId: myBot})" >
+                  <i class="fa fa-cube" aria-hidden="true"></i>
+                  <span>개별 대화 학습</span>
                 </a>
-                <ul class="nav nav-children">
-                  <li>
-                    <a ui-sref="bots.list">
-                      챗봇 리스트
-                    </a>
-                  </li>
-                  <li data-ng-show="authentication.user.roles[0] == 'admin'">
-                    <a ui-sref="templates.list">
-                      템플릿 관리
-                    </a>
-                  </li>
-                </ul>
               </li>
 
               <li class="nav-parent">
@@ -338,6 +326,25 @@
                   <i class="fa fa-cube" aria-hidden="true"></i>
                   <span>채널 관리</span>
                 </a>
+              </li>
+
+              <li class="nav-parent">
+                <a>
+                  <i class="fa fa-archive" aria-hidden="true"></i>
+                  <span>챗봇 관리</span>
+                </a>
+                <ul class="nav nav-children">
+                  <li>
+                    <a ui-sref="bots.list">
+                      챗봇 리스트
+                    </a>
+                  </li>
+                  <li data-ng-show="authentication.user.roles[0] == 'admin'">
+                    <a ui-sref="templates.list">
+                      템플릿 관리
+                    </a>
+                  </li>
+                </ul>
               </li>
 
               <li class="nav-parent">

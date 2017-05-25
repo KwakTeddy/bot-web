@@ -8,14 +8,15 @@ var path = require('path'),
   Dialogset = mongoose.model('Dialogset'),
   DialogsetDialog = mongoose.model('DialogsetDialog'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
+  dialogsetModule = require(path.resolve('modules/bot/engine/dialogset/dialogset.js')),
   _ = require('lodash');
 
 var async = require('async');
 var fs = require('fs');
 var multer = require('multer');
-var dialogsetModule = require(path.resolve('modules/bot/engine/dialogset/dialogset.js'));
 
 var utils = require(path.resolve('modules/bot/action/common/utils'));
+
 /**
  * Create a Custom action
  */
@@ -57,33 +58,80 @@ exports.read = function(req, res) {
  * Update a Custom action
  */
 exports.update = function(req, res) {
-  var dialogset = req.dialogset ;
+  var dialogsetModule = utils.requireNoCache(path.resolve('modules/bot/engine/dialogset/dialogset.js'));
 
-  dialogset = _.extend(dialogset , req.body);
+  var dialogset = req.dialogset;
+  var fileUploaded = req.body.fileuploaded;
 
-  dialogset.save(function(err) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
+  async.waterfall([
+    function(cb) {
+      if (fileUploaded) {
+        DialogsetDialog.remove({dialogset: dialogset._id}, function (err, num) {
+          cb(null);
+        });
+      } else {
+        cb(null);
+      }
+    },
+
+    function(cb) {
+      if (fileUploaded && dialogset.filename != req.body.filename) {
+        fs.unlink(path.join(dialogset.path, dialogset.filename), function (err) {
+          cb(null);
+        })
+      } else {
+        cb(null);
+      }
+    },
+
+    function(cb) {
+      dialogset = _.extend(dialogset , req.body);
+
+      dialogset.save(function(err) {
+        if (err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.jsonp(dialogset);
+          cb(null);
+        }
       });
-    } else {
-      res.jsonp(dialogset);
+    },
 
-      if(dialogset.fileuploaded) {
-        // DialogsetDialog.remove({dialogset: dialogset._id}, function(err, num) {
-        // fs.unlink(path.join(dialogset.path, dialogset.filename), function (err) {
-        //   if (err) throw err;
-
-            dialogsetModule.convertDialogset1(dialogset, null, function(result) {
-              console.log(dialogset.filename + ' converted');
-            });
-
-            console.log('successfully deleted: ' + dialogset.filename);
-        //   });
-        // });
+    function(cb) {
+      if(fileUploaded) {
+        dialogsetModule.convertDialogset1(dialogset, null, function(result) {
+          console.log(dialogset.filename + ' converted');
+        });
       }
     }
-  });
+  ]);
+
+  // var dialogset = req.dialogset ;
+  // dialogset = _.extend(dialogset , req.body);
+  //
+  // dialogset.save(function(err) {
+  //   if (err) {
+  //     return res.status(400).send({
+  //       message: errorHandler.getErrorMessage(err)
+  //     });
+  //   } else {
+  //     res.jsonp(dialogset);
+  //
+  //     if(dialogset.fileuploaded) {
+  //       DialogsetDialog.remove({dialogset: dialogset._id}, function(err, num) {
+  //         fs.unlink(path.join(dialogset.path, dialogset.filename), function (err) {
+  //           dialogsetModule.convertDialogset1(dialogset, null, function(result) {
+  //             console.log(dialogset.filename + ' converted');
+  //           });
+  //
+  //           console.log('successfully converted: ' + dialogset.filename);
+  //         });
+  //       });
+  //     }
+  //   }
+  // });
 };
 
 /**
@@ -120,7 +168,7 @@ exports.list = function(req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      console.log(dialogsets);
+      // console.log(dialogsets);
       res.jsonp(dialogsets);
     }
   });
@@ -191,7 +239,7 @@ exports.uploadFile = function (req, res) {
       var count = 0;
       // check file
       var info = path.parse(req.file.filename);
-      if (info.ext === ".csv" || info.ext === ".txt") {
+      if (info.ext === ".csv" || info.ext === ".txt" || info.ext === ".xls" || info.ext === ".xlsx") {
         var filepath = req.file.destination + req.file.filename;
         async.waterfall( [
           function(cb) {

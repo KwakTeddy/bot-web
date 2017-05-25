@@ -63,8 +63,13 @@
     $scope.uploader.filters.push({
       name: 'fileFilter',
       fn: function (item, options) {
-        var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
-        return '|txt|csv|vnd.ms-excel|'.indexOf(type) !== -1;
+        if(item.name.endsWith('txt') || item.name.endsWith('csv')  || item.name.endsWith('xls')  || item.name.endsWith('xlsx')) {
+          return true;
+        } else {
+          return false;
+        }
+        // var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+        // return '|txt|csv|vnd.ms-excel|'.indexOf(type) !== -1;
       }
     });
 
@@ -75,6 +80,7 @@
         fileReader.readAsDataURL(fileItem._file);
 
         fileReader.onload = function (fileReaderEvent) {
+          console.log(fileReaderEvent);
           // $timeout(function () {
           //   $scope.imageURL = fileReaderEvent.target.result;
           // }, 0);

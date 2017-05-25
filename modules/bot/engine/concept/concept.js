@@ -248,7 +248,7 @@ function batchConcept(botId, callback) {
 
           if(doc.dialogsets && doc.dialogsets.length > 0) {
             query = {$or: []};
-            for(var i in doc.dialogsets) {
+            for(var i = 0; i < doc.dialogsets.length; i++) {
               query.$or.push({dialogset: doc.dialogsets[i]})
             }
           }

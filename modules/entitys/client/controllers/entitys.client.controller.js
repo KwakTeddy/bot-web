@@ -90,6 +90,7 @@
 
     // Remove existing Custom action
     function remove() {
+      console.log(vm.entity)
       if (confirm('\'' + vm.entity.name + '\' ' + '정말 삭제하시겠습니까?')) {
         vm.entity.$remove({botName: $rootScope.botId}, function (response) {
           $state.go('entitys.list')
