@@ -213,20 +213,20 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     // };
 
     $scope.saveList = function(isValid) {
-      if (vm.curI.list)
-        vm.curI.str = '' + vm.curI.list;
-      $scope.saveI();
+      if (vm.curO.list)
+        vm.curO.str = '' + vm.curO.list.map(function(item) { return item.title; });
+      $scope.saveO();
       $scope.backToEdit(false);
     };
 
     $scope.saveListContent = function(isValid) {
-      if ($scope.listContent == '') {
+      if ($scope.listTitle == '') {
         return;
       }
 
-      if (vm.curI.list) {
-        for(var i = 0; i < vm.curI.list.length; ++i){
-          if (vm.curI.list[i] == $scope.listContent){
+      if (vm.curO.list) {
+        for(var i = 0; i < vm.curO.list.length; ++i){
+          if (vm.curO.list[i].title == $scope.listTitle){
             $scope.contentError = '동일한 항목이 존재합니다';
             return false
           }
@@ -234,14 +234,25 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
       $scope.contentError = '';
 
-      (vm.curI.list = vm.curI.list || []).push($scope.listContent);
+      var item = {title:$scope.listTitle};
+      if ($scope.listContent)
+        item.content = $scope.listContent;
+      if (vm.curO.filename) {
+        item.image = '/files/' + vm.curO.filename;
+        item.displayname = vm.curO.str;
+      }
+
+      (vm.curO.list = vm.curO.list || []).push(item);
+      vm.curO.filename = '';
+      vm.curO.str = '';
+      $scope.listTitle = '';
       $scope.listContent = '';
     };
 
     $scope.itemRemoveBeforeSave = function(target) {
-      var index = vm.curI.list.indexOf(target);
+      var index = vm.curO.list.indexOf(target);
       if(index > -1){
-        vm.curI.list.splice(index, 1)
+        vm.curO.list.splice(index, 1)
       }
     };
 
@@ -793,10 +804,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.curInput = input;
       vm.targetI = i;
       vm.curI = angular.copy(i);
-      if ($scope.getInputType(i.type) === 'list') {
-        $scope.openList();
-        return;
-      }
 
       vm.inputMode = true;
       setTimeout(function () {
@@ -833,6 +840,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.curOutput = output;
       vm.targetO = o;
       vm.curO = angular.copy(o);
+
+      if ($scope.getInputType(o.type) === 'list') {
+        $scope.openList();
+        return;
+      }
+
       vm.inputModeO = true;
       if (!first) {
         setTimeout(function () {
@@ -870,12 +883,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             console.log(err);
           })
         }
-      } else if (vm.curI.type === 'List') {
-        vm.targetI.str = vm.curI.str;
-        vm.targetI.list = vm.curI.list;
-        if (vm.curInput.indexOf(vm.targetI) == -1)
-          vm.curInput.push(vm.targetI);
-        $scope.resetI();
       } else {
         vm.targetI.str = vm.curI.str;
         if (vm.curInput.indexOf(vm.targetI) == -1)
@@ -893,6 +900,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.targetO.str = vm.curO.str;
       vm.targetO.url = vm.curO.url;
       vm.targetO.filename = vm.curO.filename;
+
+      if (vm.curO.type === 'List') {
+        vm.targetO.str = vm.curO.str;
+        vm.targetO.list = vm.curO.list;
+      }
 
       if (vm.curOutput.indexOf(vm.targetO) == -1)
         vm.curOutput.push(vm.targetO);
@@ -943,8 +955,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     // input/ouput types
-    vm.inputTypes = ["Keyword","Intent","Entity","RegExp","Type","List","If","매칭없음"];
-    vm.outputTypes = ["Text","Call","ReturnCall","CallChild","Up", "Repeat", "Return"];
+    vm.inputTypes = ["Keyword","Intent","Entity","RegExp","Type","If","매칭없음"];
+    vm.outputTypes = ["Text","List","Call","ReturnCall","CallChild","Up", "Repeat", "Return"];
 
     vm.typeClass = [];
     vm.typeClass['Keyword'] = {btn:'btn-primary',icon:'fa-commenting', input:'text'};
@@ -1029,30 +1041,40 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       return types;
     };
 
+    $scope.initButton = function() {
+      $timeout(function() {
+        $('.pull-down').each(function() {
+          var $this = $(this);
+          $this.css('margin-top', $this.prev().height() - $this.height())
+        });
+      });
+    };
+
     $scope.addInput = function() {
       //["","",{types:[{name:'', typeCheck:'', raw:true},..,regexp:'',intent:''}]]
       var input = [];
       $scope.dialog.input.push(input);
       $scope.addI(input);
 
-      $('.pull-down').each(function() {
-        var $this = $(this);
-        $this.css('margin-top', $this.parent().height() - $this.height())
-      });
+      $scope.initButton();
     };
 
     $scope.removeInput = function(input) {
       $scope.dialog.input.splice($scope.dialog.input.indexOf(input),1);
+
+      $scope.initButton();
     };
 
     $scope.addOutput= function(first) {
       var output = [];
       $scope.dialog.output.push(output);
       $scope.addO(output, first);
+      $scope.initButton();
     };
 
     $scope.removeOutput = function(output) {
       $scope.dialog.output.splice($scope.dialog.output.indexOf(output),1);
+      $scope.initButton();
     };
 
     var currentKeyword = "";
@@ -1127,10 +1149,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             r.push({type:'If', str:d.if});
           }
 
-          if (d.list) {
-            r.push({type:'List', str:''+d.list, list:d.list});
-          }
-
           res.push(r);
         });
       }
@@ -1185,6 +1203,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       if (d.image) {
         r.push({type:'Image', str:d.image.displayname, filename:d.image.url.substring(7)});
       }
+
+      if (d.list) {
+        r.push({type:'List', str:''+d.list.map(function(item) { return item.title; }), list:d.list});
+      }
+
     };
 
     var initOutput = function(output) {
@@ -1227,8 +1250,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
               obj.intent= r.str;
             } else if (r.type === 'If') {
               obj.if = r.str;
-            } else if (r.type === 'List') {
-              obj.list = r.list;
             }
           });
           if (Object.keys(obj).length !== 0)
@@ -1267,6 +1288,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             (o.buttons || (o.buttons = [])).push({text:r.str});
           } else if (r.type === 'URLButton') {
             (o.buttons || (o.buttons = [])).push({text:r.str, url:r.url});
+          } else if (r.type === 'List') {
+            o.list = r.list;
           }
         });
         var newo = {};
@@ -1348,6 +1371,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       $scope.safeApply();
       $timeout(function() {
         $('.modal-with-form').click();
+        $scope.initButton();
       });
 
     };
@@ -1497,8 +1521,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             text.push('[인테트] ' + i.intent);
           if (i.if)
             text.push('[조건] ' + i.if);
-          if (i.list)
-            text.push('[리스트] ' + i.list);
         });
         return text + "";
       } else {
@@ -1555,6 +1577,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         if (output.buttons) {
           dialog.buttons = output.buttons.map(function(b) { return b.name });
         }
+        if (output.list)
+          text.push('[리스트] ' + output.list.map(function(item) { return item.title; }));
 
         return text + "";
       }
@@ -3127,6 +3151,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.openList = function(task, isCommon) {
+      vm.curO.filename = '';
       $timeout(function() {
         $('.modal-with-list').click();
       });
@@ -3149,8 +3174,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         $scope.dialog.task = temp;
       }
 
-      if (vm.curI.type === 'List')
-        $scope.resetI();
+      if (vm.curO.type === 'List')
+        $scope.resetO();
 
       $timeout(function() {
         $.magnificPopup.close();
