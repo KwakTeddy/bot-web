@@ -24,30 +24,36 @@
 
     vm.hasParentDialogs = [];
 
-
-    for(var i = vm.dialogs.length - 1; i >= 0; i--){
-      if(vm.dialogs[i].parent){
-        vm.hasParentDialogs.push(vm.filterDialogs[i]);
-        vm.dialogs.splice(i, 1)
-      }
-    }
-    for (var k = 0; k < vm.hasParentDialogs.length; k++){
-      for(var j = 0; j < vm.dialogs.length; j++){
-        if (vm.dialogs[j]._id == vm.hasParentDialogs[k].parent){
-          vm.dialogs.splice(j+1, 0, vm.hasParentDialogs[k])
-          break;
+    if(vm.dialogs.length){
+      for(var i = vm.dialogs.length - 1; i >= 0; i--){
+        if(vm.dialogs[i].parent){
+          vm.hasParentDialogs.push(vm.filterDialogs[i]);
+          vm.dialogs.splice(i, 1)
         }
       }
     }
+    if(vm.hasParentDialogs.length){
+      for (var k = 0; k < vm.hasParentDialogs.length; k++){
+        for(var j = 0; j < vm.dialogs.length; j++){
+          if (vm.dialogs[j]._id == vm.hasParentDialogs[k].parent){
+            vm.dialogs.splice(j+1, 0, vm.hasParentDialogs[k])
+            break;
+          }
+        }
+      }
+    }
+
     $scope.$$postDigest(function () {
-      for (var i = 0; i < vm.dialogs.length; i++){
-        if(vm.dialogs[i].parent) {
-          for(var j = 0; j < vm.dialogs.length; j++){
-            if(vm.dialogs[j]._id == vm.dialogs[i].parent){
-              // console.log('learnDialog_' + (i - 1))
-              // console.log(String(parseInt(document.getElementById('learnDialog_' + (i - 1)).style.width)*(vm.ratio))+ '%');
-              // document.getElementById('learnDialog_' + vm.dialogs[i]._id).style.width = String(parseInt(document.getElementById('learnDialog_' + vm.dialogs[j]._id).style.width)*(vm.ratio)) + '%'
-              document.getElementById('learnDialog_' + i).style.width = String(parseInt(document.getElementById('learnDialog_' + j).style.width)*(vm.ratio)) + '%'
+      if(vm.dialogs.length){
+        for (var i = 0; i < vm.dialogs.length; i++){
+          if(vm.dialogs[i].parent) {
+            for(var j = 0; j < vm.dialogs.length; j++){
+              if(vm.dialogs[j]._id == vm.dialogs[i].parent){
+                // console.log('learnDialog_' + (i - 1))
+                // console.log(String(parseInt(document.getElementById('learnDialog_' + (i - 1)).style.width)*(vm.ratio))+ '%');
+                // document.getElementById('learnDialog_' + vm.dialogs[i]._id).style.width = String(parseInt(document.getElementById('learnDialog_' + vm.dialogs[j]._id).style.width)*(vm.ratio)) + '%'
+                document.getElementById('learnDialog_' + i).style.width = String(parseInt(document.getElementById('learnDialog_' + j).style.width)*(vm.ratio)) + '%'
+              }
             }
           }
         }
