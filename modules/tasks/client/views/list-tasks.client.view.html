@@ -34,8 +34,8 @@
       <tr ng-repeat="task in vm.tasks">
         <!--<td class="text-center">{{task.bot.id}}</td>-->
         <td class="text-center"><a ui-sref="tasks.view({taskId: task.name})">{{task.name}}</a></td>
-        <td class="text-center">아테나</td>
-        <td class="text-center">{{task.user ? task.user.displayName : '장세영'}}</td>
+        <td class="text-center">{{vm.currentBot}}</td>
+        <td class="text-center">{{vm.user.displayName}}</td>
         <td class="text-center">{{task.open ? task.open : false}}</td>
         <td class="text-center col-md-2">
           <a class="btn btn-default btn-sm btn-block" ng-if="!task.open && !task.save" ng-click="vm.openTaskFn(task)">
@@ -76,7 +76,7 @@
       <tr ng-repeat="openTask in vm.openTasks" ng-if="openTask.open">
         <!--<td class="text-center">{{task.bot.id}}</td>-->
         <td class="text-center"><a ui-sref="tasks.view({taskId: openTask.name, listType: 'openTask'})">{{openTask.name}}</a></td>
-        <td class="text-center">{{task.user ? task.user.displayName : '장세영'}}</td>
+        <td class="text-center">{{task.user ? task.user.displayName : '이름이 없네요'}}</td>
         <td class="text-center col-md-2">
           <!--<a class="btn btn-primary btn-xs btn-block" ng-click="vm.closeTask(openTask)">-->
             <!--<i class="glyphicon glyphicon-edit"></i> 비공개-->

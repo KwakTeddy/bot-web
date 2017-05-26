@@ -27,6 +27,7 @@ if (_platform !== 'mobile'){
       // console.log(vm.userBot);
       vm.isPublic = true;
       vm.sample = false;
+      $scope.error = {};
       if ((vm.userBot.id == 'restaurantbot') || (vm.userBot.id == 'athena') || (vm.userBot.id == 'hairshopbot') || (vm.userBot.id == 'massagebot') || (vm.userBot.id == 'nailbot') || (vm.userBot.id == 'order')){
         vm.sample = true;
         vm.videoSrc = '/videos/'+ vm.userBot.id+'.mov'
@@ -337,6 +338,7 @@ if (_platform !== 'mobile'){
       }
 
       vm.checkAndChangeType = function(isValid, type) {
+        $scope.error = {};
         $scope.submitted = true;
         if (!isValid) {
           $scope.$broadcast('show-errors-check-validity', 'userBotForm');

@@ -57,13 +57,32 @@
       });
     };
 
+    // vm.deleteChild = function (target) {
+    //   for(var i = 0; i < vm.dialogs.length; i++){
+    //     if(vm.dialogs[i].parent == target._id){
+    //       vm.dialogs[i].deleted = 'true';
+    //       vm.deleteChild(vm.dialogs[i])
+    //     }
+    //   }
+    // };
+
     vm.removeDialog = function(dialog) {
       dialog.userBotId = vm.bot.id;
       dialog.$remove(function(response) {
         console.log(response);
         dialog.deleted = 'true';
+
+
+        // for(var i = 0; i < vm.dialogs.length; i++){
+        //   if(vm.dialogs[i].parent == dialog._id){
+        //     vm.dialogs[i].deleted = 'true';
+        //   }
+        // }
+
       });
     };
+
+
 
 
     vm.createDepthDialog = function(parent, index) {

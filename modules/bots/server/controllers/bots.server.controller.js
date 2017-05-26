@@ -1193,7 +1193,6 @@ exports.updateDialog = function (req, res) {
 
 exports.deleteDialog = function (req, res) {
   var dialog = req.dialog;
-
   dialog.remove(function (err) {
     if (err) {
       return res.status(400).send({
@@ -1203,6 +1202,34 @@ exports.deleteDialog = function (req, res) {
       res.json(dialog);
     }
   });
+
+  // BotDialog.find({'parent': dialog._id}).exec(function (err, result) {
+  //   if(err){
+  //     console.log(err)
+  //   }else {
+  //     console.log(util.inspect(result));
+  //     var childIds = [];
+  //     for(var i = 0; i < result.length; i++){
+  //       childIds.push(result[i]._id)
+  //     }
+  //     console.log(util.inspect(childIds));
+  //     BotDialog.remove({_id: {$in: childIds}}).exec(function (err, data) {
+  //       if(err){
+  //         console.log(err)
+  //       }else {
+  //         dialog.remove(function (err) {
+  //           if (err) {
+  //             return res.status(400).send({
+  //               message: errorHandler.getErrorMessage(err)
+  //             });
+  //           } else {
+  //             res.json(dialog);
+  //           }
+  //         });
+  //       }
+  //     })
+  //   }
+  // });
 };
 
 exports.listDialog = function (req, res) {

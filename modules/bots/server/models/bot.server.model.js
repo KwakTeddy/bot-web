@@ -204,7 +204,10 @@ var BotDialogSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  parent: Schema.Types.Mixed,
+  parent: {
+    type: Schema.ObjectId,
+    ref: 'BotDialog'
+  },
   depth: {
     type: Number
   }
