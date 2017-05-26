@@ -359,6 +359,7 @@ var save = function(o, res, data) {
 
     data.inputs[data.inputs.length - 1] = _in;
 
+
     if (Array.isArray(data.inputs)){
       for(var i = 0; i < data.inputs.length; i++){
         if (data.inputs[i].text){
@@ -366,7 +367,9 @@ var save = function(o, res, data) {
         }
       }
     }else if(typeof data.inputs == 'Object'){
-      data.inputs = data.inputs.text
+      if (data.inputs.text){
+        data.inputs = data.inputs.text
+      }
     }
 
     if (!Array.isArray(o.input)){
@@ -376,7 +379,9 @@ var save = function(o, res, data) {
       }
     }else{
       for(var i = 0; i < o.input.length; i++){
-        o.input[i]['text'] = data.inputs[i]
+        if (o.input[i].text){
+          o.input[i].text = data.inputs[i]
+        }
       }
       for(var j = o.input.length; j < data.inputs.length;j++){
         o.input.push({'text': data.inputs[j]});
