@@ -234,7 +234,7 @@ function _dialogFailureList(botId, kind, arg, callback) {
         inOut: '$inOut', dialog: '$dialog', fail:'$fail', preDialogId:'$preDialogId', preDialogName:'$preDialogName', botId:'$botId', clear:'$clear'}},
       {$match: cond},
       {$match:{ preDialogId: { $exists:true, $ne: null } } },
-      {$group: {_id: {dialog:'$dialog', preDialogId: '$preDialogId'}, count: {$sum: 1}}},
+      {$group: {_id: {dialog:'$dialog', preDialogId: '$preDialogId'}, id: {$first: '$_id'}, count: {$sum: 1}}},
       // {$group: {_id: {_id: '$_id', dialog:'$dialog', preDialogId: '$preDialogId'}, count: {$sum: 1}}},
       {$sort: {count: -1}},
       {$limit: 300}

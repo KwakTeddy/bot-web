@@ -7,14 +7,11 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"intent": "강냉",
-				"entities": [
-					"냉장고@가전제품"
-				]
+				"intent": "강냉"
 			}
 		],
 		"output": "냉장고 강냉인 경우의 증상 입니다.",
-		"name": "냉장고.강냉",
+		"name": "냉장고.강냉1",
 		"context": {
 			"name": "강냉"
 		}
@@ -111,10 +108,11 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"intent": "긍정"
+				"intent": "부정"
 			}
 		],
-		"output": "긍정 입니다."
+		"output": "긍정 입니다.",
+		"context": null
 	}
 ];
 

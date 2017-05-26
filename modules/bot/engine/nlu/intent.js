@@ -282,7 +282,7 @@ function analyzeIntentFail(botId, callback) {
                 var bif = new BotIntentFail({
                   botId: botId,
                   intent: intent,
-                  userDialog: failDialog._id._id
+                  userDialog: failDialog.id
                 });
 
                 bif.save(function(err4) {
