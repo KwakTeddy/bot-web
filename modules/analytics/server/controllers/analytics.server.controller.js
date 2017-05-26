@@ -21,6 +21,17 @@ var async = require('async');
 var BotFile = mongoose.model('BotFile');
 
 var util = require('util');
+var clear = function(d) {
+  delete d.parent;
+  delete d.top;
+  if (d.task)
+    delete d.task.topTask;
+  if(d.context) d.context = {name: d.context.name};
+  if (d.children) {
+    d.children.forEach(clear);
+  }
+};
+
 /**
  * List of User count
  */
@@ -405,6 +416,8 @@ var save = function(o, res, data) {
 exports.dialog = function (req, res) {
   var botId = req.params.bId;
   var dialogId = req.params.dialogId;
+  isCyclic(global._bots[botId].dialogs)
+  global._bots[botId].dialogs.forEach(clear);
   dialogs_data = utils.clone(global._bots[botId].dialogs);
   var data = {};
 
@@ -417,6 +430,8 @@ exports.dialog = function (req, res) {
 exports.dialogChildren = function (req, res) {
   var botId = req.params.bId;
   var dialogId = req.params.dialogId;
+  isCyclic(global._bots[botId].dialogs)
+  global._bots[botId].dialogs.forEach(clear);
   dialogs_data = utils.clone(global._bots[botId].dialogs);
   var data = {};
   console.log(util.inspect(dialogs_data))
@@ -554,17 +569,6 @@ exports.dialogs = function (req, res) {
     },
     function (cb) {
       result.data = [];
-
-      var clear = function(d) {
-        delete d.parent;
-        delete d.top;
-        if (d.task)
-          delete d.task.topTask;
-        if(d.context) d.context = {name: d.context.name};
-        if (d.children) {
-          d.children.forEach(clear);
-        }
-      };
 
       dialogs_data.forEach(clear);
 
