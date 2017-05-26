@@ -1579,7 +1579,8 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                   }
 
                   if(!bExist &&
-                    ((nlps.length <= 2 && matchCount == matchTotal) ||
+                    ((nlps.length <= 2 && (matchCount == matchTotal ||
+                    (matchCount / nlpMatchLength >= format.matchRate || matchCount1 >= format.matchCount))) ||
                     (nlps.length > 2 && (matchCount / nlpMatchLength >= format.matchRate ||
                     matchCount1 >= format.matchCount)))) {
                     if(Array.isArray(doc.input)) doc.input = doc.input[maxMatchIndex];
