@@ -248,22 +248,22 @@ exports.signin = function (req, res, next) {
                     if (err) {
                         res.status(400).send(err);
                     } else {
-                      if (sessionRedirectURL.indexOf('developer') > -1){
+                      if (req.query.redirect_to.indexOf('developer') > -1){
                         Bot.find({user: req.user._id}).exec(function (err, data) {
                           if (err){
                             return res.redirect('/authentication/signin')
                           }
                           if (data.length){
                             res.cookie('default_bot', data[0].id);
+                            res.json(user);
                           }else {
-                            console.log('----------------------------==================================================')
-                            console.log(util.inspect(req.cookies));
                             res.cookie('default_bot', null);
+                            res.json(user);
                           }
                         });
+                      }else {
+                        res.json(user);
                       }
-
-                      res.json(user);
                     }
                 });
             }
@@ -275,11 +275,11 @@ exports.signin = function (req, res, next) {
  * Signout
  */
 exports.signout = function (req, res) {
-  console.log(util.inspect(req.session.redirect_to));
   req.logout();
   req.session.destroy();
 
   if(req.query['path']) res.redirect(req.query['path']);
+  else if (req.query['redirect_to']) res.redirect((req.query['redirect_to']))
   else res.redirect('/');
 };
 
@@ -320,9 +320,6 @@ exports.oauthCallback = function (strategy, scope) {
         if (err) {
           return res.redirect('/authentication/signin');
         }
-        console.log(redirectURL.redirect_to);
-        console.log(sessionRedirectURL);
-        console.log(sessionRedirectURL.indexOf('developer'));
         if (sessionRedirectURL.indexOf('developer') > -1){
           Bot.find({user: req.user._id}).exec(function (err, data) {
             if (err){
@@ -331,12 +328,12 @@ exports.oauthCallback = function (strategy, scope) {
             if (data.length){
               res.cookie('default_bot', data[0].id);
             }else {
-              console.log('----------------------------==================================================')
-              console.log(util.inspect(req.cookies));
               res.cookie('default_bot', null);
             }
           });
         }
+        console.log(util.inspect(redirectURL.redirect_to))
+        console.log(util.inspect(sessionRedirectURL))
         return res.redirect(redirectURL.redirect_to || sessionRedirectURL || '/');
       });
     })(req, res, next);

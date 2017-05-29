@@ -1,24 +1,53 @@
 'use strict';
 
-angular.module('core').controller('HeaderController', ['$scope', '$state', 'Authentication', 'Menus', '$cookies', '$http', '$rootScope', 'Socket', '$location', '$window', 'BotsService',
-  function ($scope, $state, Authentication, Menus, $cookies, $http, $rootScope, Socket, $location, $window, BotsService) {
+angular.module('core').controller('HeaderController', ['$scope', '$state', 'Authentication', 'Menus', '$cookies', '$http', '$rootScope', 'Socket', '$location', '$window',
+  'BotsService', '$timeout',
+  function ($scope, $state, Authentication, Menus, $cookies, $http, $rootScope, Socket, $location, $window, BotsService, $timeout) {
     // Expose view variables
     $scope.$state = $state;
     $scope.authentication = Authentication;
     $scope.currentBot = '';
     $scope.myBot = '';
+    console.log($cookies.getAll())
+    $scope.$$postDigest(function () {
+      BotsService.query({my: 1}).$promise.then(function (result) {
+        $scope.myBot = result;
+        console.log($scope.myBot)
+        // if (result.length){
+        //   for(var i = 0; i < result.length; i++){
+        //     if($cookies.get('default_bot') == result[i].id){
+        //       $scope.test = true
+        //       break
+        //     }
+        //   }
+        //   console.log($scope.test)
+        //   if(!$scope.test){
+        //     // $rootScope.botId = $scope.myBot[0].id;
+        //     // $rootScope.userBot = $scope.myBot[0];
+        //     // $cookies.put('botObjectId', $scope.myBot[0]._id);
+        //     $cookies.remove('default_bot')
+        //     console.log($scope.myBot[0].id)
+        //     $cookies.put('default_bot', $scope.myBot[0].id);
+        //     console.log($cookies.getAll())
+        //     // $window.location.reload()
+        //   }
+        //
+        // }else {
+        //   $cookies.put('default_bot', null);
+        //   $cookies.put('botObjectId', null);
+        //   // $window.location.href ='http://localhost:8443/developer/bots/create'
+        //
+        // }
+      }, function (err) {
+        console.log(err)
+      });
+    })
+
 
     $http.get('/api/bots/byNameId/' + $cookies.get('default_bot')).then(function (result) {
       $scope.currentBot = result.data;
     }, function (err) {
       console.log(err);
-    });
-
-    BotsService.query({my: 1}).$promise.then(function (result) {
-      $scope.myBot = result
-      $rootScope.$broadcast('myBot', $scope.myBot);
-    }, function (err) {
-      console.log(err)
     });
 
     $scope.changeBot = function (target) {
@@ -96,18 +125,16 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
     });
 
     $scope.signout = function () {
-
       var cookies = $cookies.getAll();
       angular.forEach(cookies, function (v, k) {
-        $cookies.remove(k);
+        $cookies.remove(k)
       });
-      $cookies.put('default_bot', 'athena')
-      $http.get('/api/auth/signout').then(function (result) {
-        console.log(result)
-        $window.location.reload();
-      }, function (err) {
-        console.log(err)
-      })
+      if ($location.absUrl().split('?')[0].indexOf('developer') > -1){
+        var redirect = '/developer'
+      }else {
+        var redirect = '/'
+      }
+      $window.location.href = '/api/auth/signout?redirect_to=' + redirect;
     }
   }
 ]);

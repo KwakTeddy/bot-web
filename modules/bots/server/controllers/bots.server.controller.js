@@ -247,15 +247,7 @@ exports.read = function (req, res) {
 exports.update = function (req, res) {
   var bot = req.bot;
   bot = _.extend(bot , req.body);
-  console.log(util.inspect(mongoose.Types.ObjectId(bot.dialogsets[0]._id)));
-  console.log(util.inspect(bot.dialogsets));
-  console.log(util.inspect('---------------------------------'));
-  console.log(util.inspect(bot));
-  if (bot.dialogsets && bot.dialogsets.length){
-    for (var i=0; i < bot.dialogsets.length; ++i) {
-      bot.dialogsets[i] = bot.dialogsets[i];
-    }
-  }
+
   async.waterfall([
       function(cb) {
         if (bot.template) {
@@ -286,7 +278,13 @@ exports.update = function (req, res) {
       },
 
       function(cb) {
-        bot.save(function (err) {
+        // if (bot.dialogsets && bot.dialogsets.length){
+        //   for (var i=0; i < bot.dialogsets.length; ++i) {
+        //     bot.dialogsets[i] = bot.dialogsets[i]._id;
+        //   }
+        // }
+
+        bot.save(function (err, doc) {
           if(err)
             cb(err);
           else
@@ -340,8 +338,27 @@ exports.update = function (req, res) {
           botLib.buildBot(bot.id, bot.path);
         }
 
-        botLib.loadBot(bot.id);
-        res.json(bot);
+        botLib.loadBot(bot.id, function(realbot) {
+          var result = "";
+          async.waterfall([
+            function (cb) {
+              async.eachSeries(realbot.dialogsets, function(dialogset, cb2) {
+                dialogsetModule.analyzeKnowledge(dialogset, bot.id, result, function () {
+                  cb2();
+                });
+              }, function(err) {
+                cb(null);
+              });
+            },
+            function (cb) {
+              dialogsetModule.analyzeKnowledgeDialog(realbot.dialogs, bot.id, result, function() {
+                cb(null);
+              });
+            },
+          ], function (err) {
+            res.json(bot);
+          });
+        });
       }
     }
   );
@@ -622,7 +639,7 @@ exports.botExist = function(req, res) {
     if (bot) {
       res.json(bot);
     } else {
-      res.status(404).send({message: 'No Bot exists'});
+      res.status(200).send({message: 'No Bot exists'});
     }
   });
 };
@@ -663,7 +680,7 @@ exports.botByID = function (req, res, next, id) {
   //   });
   // }
 
-  Bot.findById(id).populate('user').exec(function (err, bot) {
+  Bot.findById(id).populate('dialogsets').populate('user').exec(function (err, bot) {
     if (err) {
       console.log(err);
       return next(err);
@@ -1176,7 +1193,6 @@ exports.updateDialog = function (req, res) {
 
 exports.deleteDialog = function (req, res) {
   var dialog = req.dialog;
-
   dialog.remove(function (err) {
     if (err) {
       return res.status(400).send({
@@ -1186,6 +1202,34 @@ exports.deleteDialog = function (req, res) {
       res.json(dialog);
     }
   });
+
+  // BotDialog.find({'parent': dialog._id}).exec(function (err, result) {
+  //   if(err){
+  //     console.log(err)
+  //   }else {
+  //     console.log(util.inspect(result));
+  //     var childIds = [];
+  //     for(var i = 0; i < result.length; i++){
+  //       childIds.push(result[i]._id)
+  //     }
+  //     console.log(util.inspect(childIds));
+  //     BotDialog.remove({_id: {$in: childIds}}).exec(function (err, data) {
+  //       if(err){
+  //         console.log(err)
+  //       }else {
+  //         dialog.remove(function (err) {
+  //           if (err) {
+  //             return res.status(400).send({
+  //               message: errorHandler.getErrorMessage(err)
+  //             });
+  //           } else {
+  //             res.json(dialog);
+  //           }
+  //         });
+  //       }
+  //     })
+  //   }
+  // });
 };
 
 exports.listDialog = function (req, res) {
@@ -1194,10 +1238,10 @@ exports.listDialog = function (req, res) {
   var query = {};
 
   if (user)
-    query['user'] =  user;
+    query['user'] =  user._id;
   if(req.params.dBotId) query['botId'] =  req.params.dBotId;
-  query['input'] = {"$ne":""};
-  query['output'] = {"$ne":""};
+  // query['input'] = {"$ne":""};
+  // query['output'] = {"$ne":""};
 
   BotDialog.find(query).sort(sort).populate('user').exec(function (err, dialogs) {
     if (err) {
@@ -1205,6 +1249,7 @@ exports.listDialog = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
+      console.log(util.inspect(dialogs))
       res.json(dialogs);
     }
   });

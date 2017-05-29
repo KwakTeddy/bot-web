@@ -217,14 +217,29 @@ exports.contentUpdate = function(req, res) {
  */
 exports.delete = function(req, res) {
   var intent = req.intent ;
-
-  intent.remove(function(err) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.jsonp(intent);
+  IntentContent.find({intentId: req.intent._id}).exec(function (err, result) {
+    if (err){
+      console.log(err)
+    }else {
+      var contentIds = [];
+      for(var i = 0; i < result.length; i++){
+        contentIds.push(result[i]._id)
+      }
+      IntentContent.remove({_id: {$in: contentIds}}).exec(function (err, result) {
+        if (err){
+          console.log(err)
+        }else {
+          intent.remove(function(err) {
+            if (err) {
+              return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            } else {
+              res.jsonp(intent);
+            }
+          });
+        }
+      })
     }
   });
 };

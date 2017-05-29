@@ -132,23 +132,11 @@
                   <span>챗봇 개발</span>
                 </a>
               </li>
-              <li class="nav-parent">
-                <a>
-                  <i class="fa fa-archive" aria-hidden="true"></i>
-                  <span>챗봇 관리</span>
+              <li class="nav-active">
+                <a ui-sref="dialogsets.dialogsLearn({botNameId: currentBot.id})" >
+                  <i class="fa fa-cube" aria-hidden="true"></i>
+                  <span>개별 대화 학습</span>
                 </a>
-                <ul class="nav nav-children">
-                  <li>
-                    <a ui-sref="bots.list">
-                      챗봇 리스트
-                    </a>
-                  </li>
-                  <li data-ng-show="authentication.user.roles[0] == 'admin'">
-                    <a ui-sref="templates.list">
-                      템플릿 관리
-                    </a>
-                  </li>
-                </ul>
               </li>
 
               <li class="nav-parent">
@@ -263,27 +251,27 @@
                 </ul>
               </li>
 
-              <li class="nav-parent">
-                <a>
-                  <i class="fa fa-book" aria-hidden="true"></i>
-                  <span>지식/온톨로지</span>
-                </a>
-                <ul class="nav nav-children">
-                  <li>
-                    <a ui-sref="dialogsets.concepts({kind: 'general'})">
-                      공통 컨셉
-                    </a>
-                  </li>
-                  <li>
-                    <a ui-sref="dialogsets.concepts({kind: 'faq'})">
-                      커스텀 컨셉
-                    </a>
-                  </li>
-                  <li>
-                    <a ui-sref="bots.graph-knowledge({botId: bot._id})">
-                      지식 그래프
-                    </a>
-                  </li>
+              <!--<li class="nav-parent">-->
+                <!--<a>-->
+                  <!--<i class="fa fa-book" aria-hidden="true"></i>-->
+                  <!--<span>지식/온톨로지</span>-->
+                <!--</a>-->
+                <!--<ul class="nav nav-children">-->
+                  <!--<li>-->
+                    <!--<a ui-sref="dialogsets.concepts({kind: 'general'})">-->
+                      <!--공통 컨셉-->
+                    <!--</a>-->
+                  <!--</li>-->
+                  <!--<li>-->
+                    <!--<a ui-sref="dialogsets.concepts({kind: 'faq'})">-->
+                      <!--커스텀 컨셉-->
+                    <!--</a>-->
+                  <!--</li>-->
+                  <!--<li>-->
+                    <!--<a ui-sref="bots.graph-knowledge({botId: bot._id})">-->
+                      <!--지식 그래프-->
+                    <!--</a>-->
+                  <!--</li>-->
                   <!--<li>-->
                   <!--<a ui-sref="facts.list">-->
                   <!--공통 지식-->
@@ -294,18 +282,18 @@
                   <!--공통 사전-->
                   <!--</a>-->
                   <!--</li>-->
-                  <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                  <!--&lt;!&ndash;<a ui-sref="canonicals.list">&ndash;&gt;-->
-                  <!--&lt;!&ndash;canonicals&ndash;&gt;-->
-                  <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                  <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                  <!--<li>-->
+                  <!--<a ui-sref="canonicals.list">-->
+                  <!--canonicals-->
+                  <!--</a>-->
+                  <!--</li>-->
                   <!--<li>-->
                   <!--<a>-->
                   <!--공통 Corpus-->
                   <!--</a>-->
                   <!--</li>-->
-                </ul>
-              </li>
+                <!--</ul>-->
+              <!--</li>-->
 
               <li class="nav-active">
                 <a ui-sref="bot-users.list">
@@ -342,6 +330,25 @@
 
               <li class="nav-parent">
                 <a>
+                  <i class="fa fa-archive" aria-hidden="true"></i>
+                  <span>챗봇 관리</span>
+                </a>
+                <ul class="nav nav-children">
+                  <li>
+                    <a ui-sref="bots.list">
+                      챗봇 리스트
+                    </a>
+                  </li>
+                  <li data-ng-show="authentication.user.roles[0] == 'admin'">
+                    <a ui-sref="templates.list">
+                      템플릿 관리
+                    </a>
+                  </li>
+                </ul>
+              </li>
+
+              <li class="nav-parent">
+                <a>
                   <i class="fa fa-align-left" aria-hidden="true"></i>
                   <span>운영 관리</span>
                 </a>
@@ -371,15 +378,15 @@
                   <li>
                     <a ui-sref="analytics.dashboard">Dashboard</a>
                   </li>
-                  <li>
-                    <a ui-sref="analytics.user-count">사용자수 분석</a>
-                  </li>
+                  <!--<li>-->
+                    <!--<a ui-sref="analytics.user-count">사용자수 분석</a>-->
+                  <!--</li>-->
                   <li>
                     <a ui-sref="analytics.dialog-usage">대화별 사용량</a>
                   </li>
-                  <li>
-                    <a ui-sref="analytics.dialog-success">문장 성공률</a>
-                  </li>
+                  <!--<li>-->
+                    <!--<a ui-sref="analytics.dialog-success">문장 성공률</a>-->
+                  <!--</li>-->
                   <li>
                     <a ui-sref="user-bots.context-analytics">Context 분석</a>
                   </li>
@@ -511,7 +518,6 @@
               <!--</li>-->
               <!--</ul>-->
               <!--</li>-->
-
               <!--<li class="nav">-->
               <!--<a ui-sref="convergences.list">-->
               <!--<i class="fa fa-plug" aria-hidden="true"></i>-->
@@ -537,6 +543,14 @@
 
         </div>
       </div>
+
+    </aside>
+
+
+
+    <aside id="sidebar-left-docs" >
+
+
 
     </aside>
 

@@ -12,26 +12,42 @@ var setInput = function(cur) {
 // Bots controller
 angular.module('bots').controller('BotController', [
   '$resource', '$scope', '$state', '$window', '$timeout', '$compile', '$stateParams', 'botResolve', 'TemplatesService', 'FileUploader', 'dialogsetsResolve', '$cookies',
-  function ($resource, $scope, $state, $window, $timeout, $compile, $stateParams, bot, TemplatesService, FileUploader, dialogsetsResolve, $cookies) {
+  '$rootScope', 'BotsService',
+  function ($resource, $scope, $state, $window, $timeout, $compile, $stateParams, bot, TemplatesService, FileUploader, dialogsetsResolve, $cookies, $rootScope, BotsService) {
     var vm = this;
     vm.bot = bot;
     vm.dialogSets= dialogsetsResolve;
 
-    console.log(vm.bot);
+    if(!vm.bot._id){
+      $scope.$watch('vm.bot.id', function () {
+        if (vm.bot.id) {
+          vm.bot.id = vm.bot.id.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g,'');
+          vm.bot.id = vm.bot.id.replace(/[0-9]/g,'');
+          vm.bot.id = vm.bot.id.replace(/ /g,'');
+          $resource('/api/bot-exist', {}).get({bot_id: vm.bot.id}, function (res) {
+            if (res) {
+              $scope.error = {};
+              console.log(res);
+              console.log($scope.error);
+              if($scope.error){
+                $scope.error.id = "같은 아이디가 존재합니다";
+              }
+              if(res._id){
+                $scope.error.id = "같은 아이디가 존재합니다";
+              }else {
+                $scope.error = null;
+              }
+              return false;
+            }
+          }, function (err) {
+            if($scope.error){
+              $scope.error.id = null;
+            }
+          });
+        }
+      });
+    }
 
-    $scope.$watch('vm.bot.id', function () {
-      if (vm.bot.id) {
-        vm.bot.id = vm.bot.id.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g,'');
-        $resource('/api/bot-exist', {}).get({bot_id: vm.bot.id}, function (res) {
-          if (res) {
-            $scope.error.id = "같은 아이디가 존재합니다";
-            return false;
-          }
-        }, function (err) {
-          $scope.error.id = null;
-        });
-      }
-    });
 
     // Create new Bot
     vm.create = function (isValid) {
@@ -71,12 +87,46 @@ angular.module('bots').controller('BotController', [
 
     // Remove existing Bot
     vm.remove = function () {
-      if (vm.bot && vm.bot._id) {
-        vm.bot.$remove(function () {
-          $state.go('bots.list');
-        }, function (errorResponse) {
-          $scope.error = errorResponse.data.message;
-        });
+      if (confirm('정말 삭제하시겠습니까?')) {
+        if (vm.bot && vm.bot._id) {
+          vm.bot.$remove(function () {
+
+            BotsService.query({my: 1}).$promise.then(function (result) {
+              console.log(result)
+              if (result.length){
+                $rootScope.botId = result[0].id;
+                $rootScope.userBot = result[0];
+
+                $cookies.put('default_bot', result[0].id);
+                $cookies.put('botObjectId', result[0]._id);
+                $state.go('bots.list');
+                $timeout(function () {
+                  $window.location.reload();
+                }, 100)
+              }else {
+                $rootScope.botId = null;
+                $rootScope.userBot = null;
+
+                $cookies.put('default_bot', null);
+                $cookies.put('botObjectId', null);
+                $timeout(function () {
+                  $window.location.reload();
+                }, 100)
+                if(confirm('봇이 없습니다. 지금 봇을 만드세요!')){
+                  $state.go('bots.create');
+                }else {
+                  $state.go('bots.list')
+                }
+
+
+              }
+            }, function (err) {
+              console.log(err)
+            });
+          }, function (errorResponse) {
+            $scope.error = errorResponse.data.message;
+          });
+        }
       }
     };
 

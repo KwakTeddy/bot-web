@@ -54,7 +54,7 @@ var BotSchema = new Schema({
     type:String
   },
 
-  dialogsets: Schema.Types.Mixed,
+  dialogsets: [{ type: Schema.Types.ObjectId, ref: 'Dialogset'}],
 
   followed: {
     type: Number,
@@ -203,6 +203,13 @@ var BotDialogSchema = new Schema({
   created: {
     type: Date,
     default: Date.now
+  },
+  parent: {
+    type: Schema.ObjectId,
+    ref: 'BotDialog'
+  },
+  depth: {
+    type: Number
   }
 });
 

@@ -45,6 +45,17 @@ var DialogsetSchema = new Schema({
     default: 'en'
   },
 
+  limit: {
+    type: Number
+  },
+  matchRate: {
+    type: Number
+  },
+  matchCount: {
+    type: Number
+  },
+  topicKeywords: Schema.Types.Mixed,
+
   created: {
     type: Date,
     default: Date.now
@@ -65,7 +76,11 @@ var DialogsetDialogSchema = new Schema({
   inputRaw: Schema.Types.Mixed,
   output: Schema.Types.Mixed,
   tag: [String],
-  parent: Schema.Types.Mixed
+  parent: Schema.Types.Mixed,
+  context: {
+    type: Schema.ObjectId,
+    ref: 'CustomContext'
+  }
 });
 
 mongoose.model('DialogsetDialog', DialogsetDialogSchema);

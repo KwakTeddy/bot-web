@@ -1334,6 +1334,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
   }
 
   var topicKeywords = [];
+  var contexts = [];
   if(!context.dialog) context.dialog = {};
 
   async.waterfall([
@@ -1425,6 +1426,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
         var word = nlps[i].text;
         // if(word.length <= 1) continue;
         word = RegExp.escape(word);
+
         if(context.bot.topicKeywords && _.includes(context.bot.topicKeywords, word)) {
           topicKeywords.push(nlps[i]);
         }
@@ -1434,18 +1436,20 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
           excluded.push(nlps[i]);
       }
 
-      // console.log('current Topic: ' + JSON.stringify(topicKeywords, null, 2) + '\ncontext Topic: ' + JSON.stringify(context.botUser.topic, null, 2));
-
-      // if(topicKeywords.length > 0) context.botUser.topic = topicKeywords;
-      if(topicKeywords.length == 0 && context.botUser.topic && context.botUser.topic.length > 0) topicKeywords = context.botUser.topic;
+      if(context.botUser.contexts && context.botUser.contexts.length > 0) {
+        topicKeywords = [];
+        for(var j = 0; j < context.botUser.contexts.length; j++)
+          if(context.botUser.contexts[j].name) topicKeywords.push(context.botUser.contexts[j].name);
+      } else if(topicKeywords.length == 0 && context.botUser.topic && context.botUser.topic.length > 0) {
+        topicKeywords = context.botUser.topic;
+      }
 
       if(_nlps.length == 0) _nlps.concat(excluded);
 
       async.eachSeries((topicKeywords.length > 0 ? topicKeywords : _nlps), function (word, _callback){
-        word = RegExp.escape(word.text);
-        // console.log(word);
+        word = word.text ? RegExp.escape(word.text): word;
 
-        if(word.length <= 1) {
+        if(false/*word.length <= 1*/) {
           _callback(null);
         } else {
           var query = {};
@@ -1492,6 +1496,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                 }
 
                 for(var l = 0; l < format.mongo.queryFields.length; l++) {
+                  var bMatchTotal = false;
                   for(var m = 0; m < _nlps.length; m++) {
                     if(_nlps[m].pos == 'Josa') continue;
 
@@ -1509,7 +1514,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                           else {_matchCount[n]++;_matchCount1[n]++;}
 
                           // console.log(word + ' ' + _word + ' ' + doc[format.mongo.queryFields[l]][n] + ' ' +_matchCount[n]);
-                          _matchTotal[n] += doc[format.mongo.queryFields[l]][n].split(' ').length;
+                          if(!bMatchTotal) {_matchTotal[n] += doc[format.mongo.queryFields[l]][n].split(' ').length; bMatchTotal = true};
                           _matchedWord[n] += nlps[m];
 
                           var __word = nlps[m].text;
@@ -1546,9 +1551,11 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                         else {matchCount++; matchCount1++;}
                         // console.log(word + ' ' + _word + ' ' + doc[format.mongo.queryFields[l]] + ' ' +matchCount);
 
-                        matchTotal += doc[format.mongo.queryFields[l]].split(' ').length;
+                        if(!bMatchTotal) {matchTotal += doc[format.mongo.queryFields[l]].split(' ').length;bMatchTotal = true;}
                         matchedWord += nlps[m];
                         matchNLP.push({text: _nlps[m].text, pos: _nlps[m].pos});
+
+                        console.log(l + ',' + doc[format.mongo.queryFields[l]] + ', ' + matchCount + ',' + matchTotal);
 
                         var __word = nlps[m].text;
                         __word = RegExp.escape(__word);
@@ -1572,8 +1579,10 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                   }
 
                   if(!bExist &&
-                    (nlps.length > 1 && (matchCount / nlpMatchLength >= format.matchRate ||
-                    matchCount1 >= format.matchCount))) {
+                    ((nlps.length <= 2 && (matchCount == matchTotal ||
+                    (matchCount / nlpMatchLength >= format.matchRate || matchCount1 >= format.matchCount))) ||
+                    (nlps.length > 2 && (matchCount / nlpMatchLength >= format.matchRate ||
+                    matchCount1 >= format.matchCount)))) {
                     if(Array.isArray(doc.input)) doc.input = doc.input[maxMatchIndex];
                     doc.inputLen = doc.input.split(' ').length;
                     doc.matchWord = matchedWord;
@@ -1651,6 +1660,24 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
         if (inDoc[format.name].length >= (format.limit || MAX_LIST)) break;
       }
 
+      if(inDoc[format.name][0].context) {
+        var _dialog = inDoc[format.name][0];
+        context.botUser.contexts = [];
+        var parentContext = function(_context) {
+          var __context;
+          if(context.bot.dialogsetContexts[_dialog.dialogset] && context.bot.dialogsetContexts[_dialog.dialogset][_context]) {
+            __context = context.bot.dialogsetContexts[_dialog.dialogset][_context];
+            context.botUser.contexts.unshift(__context);
+          }
+
+          if(__context && __context.parent) {
+            parentContext(__context.parent._id);
+          }
+        };
+
+        parentContext(inDoc[format.name][0].context);
+      }
+
       if(inDoc[format.name].length == 1) {
         inDoc[format.name] = inDoc[format.name][0];
 
@@ -1685,9 +1712,13 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
         logger.debug('type.js:dialogCheck: NOT MATCHED ' + (t1 - t0) + ' ms ' + format.name + ' "' + text + '" inDoc.' + format.name + ': ' + inDoc[format.name] + ' inDoc.typeDoc: ' + JSON.stringify(inDoc.typeDoc));
       }
 
-      if(context.botUser.topic && context.botUser.topic.length > 0 &&
+      if(((context.botUser.topic && context.botUser.topic.length > 0) ||
+        (context.botUser.contexts && context.botUser.contexts.length > 0))&&
           (context.botUser.analytics == null || context.botUser.analytics2 == null)) {
-        if(context.botUser.analytics == null) context.botUser.topic = null;
+        if(context.botUser.analytics == null) {
+          context.botUser.topic = null;
+          context.botUser.contexts = null;
+        }
         // else context.botUser.analytics = null;
         else context.botUser.analytics2 = true;
 

@@ -5,13 +5,16 @@
     .module('tasks')
     .controller('TasksListController', TasksListController);
 
-  TasksListController.$inject = ['tasksResolve', 'openTasksResolve', 'TasksService', 'OpenTasksService', '$stateParams', '$state','DTOptionsBuilder', '$compile', '$scope'];
+  TasksListController.$inject = ['tasksResolve', 'openTasksResolve', 'TasksService', 'OpenTasksService', '$stateParams', '$state','DTOptionsBuilder', '$compile', '$scope', '$cookies', 'Authentication'];
 
-  function TasksListController(tasksResolve, openTasksResolve, TasksService, OpenTasksService, $stateParams, $state, DTOptionsBuilder, $compile, $scope) {
+  function TasksListController(tasksResolve, openTasksResolve, TasksService, OpenTasksService, $stateParams, $state, DTOptionsBuilder, $compile, $scope, $cookies, Authentication) {
     var vm = this;
     vm.type = $stateParams.listType;
     vm.tasks = Object.keys(tasksResolve[0]).map(function (key) {return tasksResolve[0][key]; });
     vm.openTasks = openTasksResolve;
+    vm.currentBot = $cookies.get('default_bot');
+    vm.user = Authentication.user;
+    console.log(vm.user.displayName)
     for(var i = 0; i < vm.tasks.length; i++){
       for(var j = 0; j < vm.openTasks.length; j++){
         if (vm.tasks[i].name == vm.openTasks[j].name){
