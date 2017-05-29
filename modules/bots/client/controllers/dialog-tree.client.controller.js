@@ -3311,7 +3311,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         $scope.dialog.task = temp;
       }
 
-      if (vm.curO.type === 'List')
+      if (vm.curO && vm.curO.type === 'List')
         $scope.resetO();
 
       $timeout(function() {
