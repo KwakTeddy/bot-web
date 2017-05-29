@@ -1471,7 +1471,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
 
       $resource('/api/dialoginfos/:bot_id/:file_id', {}).get({bot_id: vm.bot_id, file_id: vm.file_id}, function(res) {
-        vm.tasks = res.tasks.map(function (t) { return {name: t, type: 'default'} });
+        vm.tasks = res.tasks.map(function (t) { return {name: t, type: 'User Tasks'} });
         vm.types = res.types.map(function (t) { return t.name });
         vm.type_dic = res.type_dic;
 
@@ -1479,7 +1479,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           vm.commonTasks = result;
           vm.entity = [];
           vm.commonTasks.forEach(function (d) { vm.entity[d.name] = d.entity; });
-          vm.commonTasks = vm.commonTasks.map(function (t) { return {name: t.name, paramSchema: t.paramSchema, type: 'common'}; });
+          vm.commonTasks = vm.commonTasks.map(function (t) { return {name: t.name, displayName:t.displayName, paramSchema: t.paramSchema, type: 'Common Tasks'}; });
           vm.tasks = vm.tasks.concat(vm.commonTasks);
         });
       });
@@ -3229,6 +3229,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         delete temp.name;
         delete temp.paramSchema;
         delete temp.type;
+        delete temp.displayName;
+
         console.log("given input=" + JSON.stringify(temp));
         jsonEditor.setValue(temp);
       }

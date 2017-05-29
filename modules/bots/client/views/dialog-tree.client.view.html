@@ -838,18 +838,22 @@
                                         <div class="input-group mb-xs">
                                             <div>
                                                 <ui-select ng-model="dialog.task"
+                                                           allow-clear
                                                            theme="bootstrap"
                                                            ng-disabled="vm.tasks.length == 0"
                                                            reset-search-input="true"
                                                            title="Task를 선택하세요">
                                                     <ui-select-match placeholder="Task 이름을 입력해주세요">{{$select.selected.name}}</ui-select-match>
-                                                    <ui-select-choices repeat="t in vm.tasks | filter: $select.search track by $index"
-                                                                       refresh-delay="0">
-                                                        <div ng-bind-html="t.name | highlight: $select.search"></div>
-                                                        <i ng-show="t.type === 'default'"
-                                                           ng-click="openTask(t.name, false)" class="btn fa fa-3 fa-edit pull-right" style="color:forestgreen;margin-top:-25px"></i>
-                                                        <i ng-show="t.type === 'common'"
-                                                           ng-click="openTask(t, true)" class="btn fa fa-3 fa-list pull-right" style="margin-top:-25px"></i>
+                                                    <ui-select-choices
+                                                            group-by="'type'"
+                                                            repeat="t in vm.tasks | filter: $select.search track by $index"
+                                                            refresh-delay="0">
+                                                        <span ng-bind-html="t.name | highlight: $select.search"></span>
+                                                        <small ng-show="t.displayName" ng-bind-html=" '(' + t.displayName + ')' | highlight: $select.search"></small>
+                                                        <i ng-show="t.type === 'User Tasks'"
+                                                           ng-click="openTask(t.name, false)" class="btn fa fa-3 fa-edit pull-right" style="color:forestgreen;margin-top:-5px"></i>
+                                                        <i ng-show="t.type === 'Common Tasks'"
+                                                           ng-click="openTask(t, true)" class="btn fa fa-3 fa-list pull-right" style="margin-top:-5px"></i>
                                                     </ui-select-choices>
                                                 </ui-select>
                                             </div>
