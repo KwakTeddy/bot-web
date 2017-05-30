@@ -437,6 +437,7 @@ exports.delete = function (req, res) {
  * List of UserBots
  */
 exports.list = function (req, res) {
+    console.log(util.inspect(req.query))
     var sort = req.query.sort || '-created';
     var perPage = req.body.perPage || 10;
     if(req.query.developer){
@@ -456,6 +457,9 @@ exports.list = function (req, res) {
     }
     if(req.body.query) query['name'] = new RegExp(req.body.query, 'i');
     console.log(util.inspect(query));
+    if(req.query.role && (req.query.role == 'admin')){
+      query = {};
+    }
     Bot.find(query).sort(sort).populate('user').skip(req.body.currentPage * perPage).limit(perPage).exec(function (err, bots) {
         if (err) {
             return res.status(400).send({

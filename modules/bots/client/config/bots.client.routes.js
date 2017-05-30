@@ -116,9 +116,9 @@ angular.module('bots').config(['$stateProvider',
   }
 ]);
 
-getBots.$inject = ['BotsService'];
-function getBots(BotsService) {
-  return BotsService.query({my: 1, developer: true}).$promise;
+getBots.$inject = ['BotsService', 'Authentication'];
+function getBots(BotsService, Authentication) {
+  return BotsService.query({my: 1, developer: true, role: Authentication.user.roles}).$promise;
 }
 
 getBot.$inject = ['BotsService', '$stateParams'];

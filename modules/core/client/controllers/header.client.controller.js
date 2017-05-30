@@ -32,6 +32,13 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
       });
     };
 
+    $http.get('/config').then(function (result) {
+      console.log(result.data.logo);
+      $scope.enterprise = result.data.logo;
+    }, function (err) {
+      console.log(err)
+    });
+
     $http.get('/api/bots/byNameId/' + $cookies.get('default_bot')).then(function (result) {
       $scope.currentBot = result.data;
     }, function (err) {

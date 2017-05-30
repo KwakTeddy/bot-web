@@ -16,9 +16,10 @@
     <table id="dt" datatable="ng" dt-options="vm.dtOptions" class="table table-bordered mb-none">
       <thead>
       <tr>
+        <th class="text-center">봇아이디</th>
         <th class="text-center">유저키</th>
         <th class="text-center">채널</th>
-        <th class="text-center">전화번호</th>
+        <!--<th class="text-center">전화번호</th>-->
         <!--<th class="text-center">이메일</th>-->
         <th class="text-center">등록일</th>
         <!--<th class="text-center">접속</th>-->
@@ -27,9 +28,10 @@
       </thead>
       <tbody>
       <tr ng-repeat="botUser in ::vm.botUsers">
+        <td class="text-center">{{botUser.botId}}</td>
         <td class="text-center">{{botUser.userKey}}</td>
         <td class="text-center">{{botUser.channel}}</td>
-        <td class="text-center">{{botUser.mobile}}</td>
+        <!--<td class="text-center">{{botUser.mobile}}</td>-->
         <!--<td class="text-center">{{botUser.email}}</td>-->
         <td class="text-center">{{botUser.created | date: 'yyyy-MM-dd'}}</td>
         <!--<td class="text-center">{{botUser.isOn ? ' ON' : 'OFF'}}</td>-->

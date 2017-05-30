@@ -8,7 +8,8 @@ var path = require('path'),
   BotUser = mongoose.model('BotUser'),
   Bank = mongoose.model('Bank'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
-  _ = require('lodash');
+  _ = require('lodash'),
+  util = require('util');
 
 /**
  * Create a Bot user
@@ -119,7 +120,12 @@ exports.delete = function (req, res) {
  * List of Bot users
  */
 exports.list = function (req, res) {
-  BotUser.find().sort('-created').populate('currentBank').exec(function (err, botUsers) {
+  var query = {};
+  query['botId'] = req.query.botId;
+  if(req.query.role && (req.query.role == 'admin')){
+    query = {};
+  }
+  BotUser.find(query).sort('-created').populate('currentBank').exec(function (err, botUsers) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)

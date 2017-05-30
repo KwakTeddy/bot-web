@@ -9,7 +9,7 @@
 
   function BotUsersListController($rootScope, $scope, botUsers, DTOptionsBuilder, $compile) {
     var vm = this;
-
+    console.log(123123);
     vm.botUsers = botUsers;
 
     $scope.botId = $rootScope.botId || 'athena';

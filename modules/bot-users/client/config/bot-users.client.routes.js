@@ -71,9 +71,9 @@
       });
   }
 
-  getBotUsers.$inject = ['BotUsersService'];
-  function getBotUsers(BotUsersService) {
-    return BotUsersService.query().$promise;
+  getBotUsers.$inject = ['BotUsersService', '$cookies', 'Authentication'];
+  function getBotUsers(BotUsersService, $cookies, Authentication) {
+    return BotUsersService.query({botId: $cookies.get('default_bot'), role: Authentication.user.roles}).$promise;
   }
 
   getBotUser.$inject = ['$stateParams', 'BotUsersService'];

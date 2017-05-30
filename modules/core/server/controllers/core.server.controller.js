@@ -82,5 +82,5 @@ exports.renderNotFound = function (req, res) {
 * get config
 */
 exports.getConfig = function (req, res) {
-  res.json(config.facebook.clientID);
+  res.json(config);
 };
