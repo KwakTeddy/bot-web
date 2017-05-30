@@ -693,10 +693,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         svg.remove();
         initSelect();
         update(history.source);
+        vm.isChanged = true;
       }
-      if (vm.changeHistory.length == 0) {
-        vm.setChanged(false);
-      }
+      // if (vm.changeHistory.length == 0) {
+      //   vm.setChanged(false);
+      // }
     };
 
     console.log('Tree Controller');
@@ -1555,7 +1556,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.save = function() {
-      vm.changeHistory = [];
+      //vm.changeHistory = [];
       vm.setChanged(false);
       var clear = function(node)
       {
