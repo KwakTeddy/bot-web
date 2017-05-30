@@ -439,6 +439,9 @@ exports.delete = function (req, res) {
 exports.list = function (req, res) {
     var sort = req.query.sort || '-created';
     var perPage = req.body.perPage || 10;
+    if(req.query.developer){
+      perPage = 0;
+    }
     var query = {};
     query['public'] = true;
 
@@ -533,7 +536,7 @@ exports.followBot = function(req, res) {
               message: errorHandler.getErrorMessage(err)
             });
           } else {
-            Bot.findOne({_id: req.body.bot}).exec(function (err, result) {
+            Bot.findOne({_id: req.body.bot}).populate('user').exec(function (err, result) {
               result.followed++;
               result.save(function (err, data) {
                 console.log(err)
@@ -554,7 +557,7 @@ exports.followBot = function(req, res) {
               message: errorHandler.getErrorMessage(err)
             });
           }
-          Bot.findOne({_id: req.body.userBot}).exec(function (err, result) {
+          Bot.findOne({_id: req.body.userBot}).populate('user').exec(function (err, result) {
             result.followed++;
             result.save(function (err, data) {
               console.log(err);
@@ -588,7 +591,7 @@ exports.unfollowBot = function(req, res) {
               message: errorHandler.getErrorMessage(err)
             });
           } else {
-            Bot.findOne({_id: req.query.bot}).exec(function (err, result) {
+            Bot.findOne({_id: req.query.bot}).populate('user').exec(function (err, result) {
               if (result.followed <= 0){
                 result.followed = 0;
               }else {
@@ -614,7 +617,7 @@ exports.unfollowBot = function(req, res) {
               message: errorHandler.getErrorMessage(err)
             });
           }else {
-            Bot.findOne({_id: req.query.userBot}).exec(function (err, result) {
+            Bot.findOne({_id: req.query.userBot}).populate('user').exec(function (err, result) {
               if (result.followed <= 0){
                 result.followed = 0;
               }else {

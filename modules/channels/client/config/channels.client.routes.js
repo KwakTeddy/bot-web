@@ -14,7 +14,8 @@
         url: '/developer/channels',
         template: '<ui-view/>',
         data: {
-          roles: ['user', 'enterprise', 'admin']
+          roles: ['user', 'enterprise', 'admin'],
+          botCheck: true
         }
       })
       .state('channels.list', {

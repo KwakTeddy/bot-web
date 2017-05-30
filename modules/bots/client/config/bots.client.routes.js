@@ -88,6 +88,9 @@ angular.module('bots').config(['$stateProvider',
         resolve: {
           botFilesResolve: getBotFiles,
           fileResolve: readBotFile
+        },
+        data: {
+          botCheck : true
         }
       })
       .state('bots.dialog-graph', {
@@ -115,7 +118,7 @@ angular.module('bots').config(['$stateProvider',
 
 getBots.$inject = ['BotsService'];
 function getBots(BotsService) {
-  return BotsService.query({my: 1}).$promise;
+  return BotsService.query({my: 1, developer: true}).$promise;
 }
 
 getBot.$inject = ['BotsService', '$stateParams'];

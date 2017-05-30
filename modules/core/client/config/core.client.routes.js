@@ -31,7 +31,8 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
         botsResolve: getBots
       },
       data: {
-        roles: ['user', 'enterprise', 'admin']
+        roles: ['user', 'enterprise', 'admin'],
+        botCheck : true
       }
     })
     .state('not-found', {

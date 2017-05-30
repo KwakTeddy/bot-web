@@ -162,14 +162,13 @@ if (_platform == "mobile") {
 
 
 } else {
-  angular.module(ApplicationConfiguration.applicationModuleName).run(function ($rootScope, $state, Authentication) {
-    appRun($rootScope, $state, Authentication);
+  angular.module(ApplicationConfiguration.applicationModuleName).run(function ($rootScope, $state, Authentication, BotsService) {
+    appRun($rootScope, $state, Authentication, BotsService);
   });
 }
 
 
-function appRun($rootScope, $state, Authentication) {
-
+function appRun($rootScope, $state, Authentication, BotsService) {
   // Check authentication before changing state
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
     if (toState.data && toState.data.roles && toState.data.roles.length > 0) {
@@ -210,8 +209,18 @@ function appRun($rootScope, $state, Authentication) {
         }
       }
     }
+    if (toState.data && toState.data.botCheck){
+      BotsService.query({my: 1}, function (result) {
+        if(!result.length){
+          var userbotChat = document.getElementById('container-chat');
+          $state.go('bots.create')
+        }
+      }, function (err) {
+        console.log(err)
+      })
+    }
 
-    if(toState.name.indexOf('authentication') != -1 || toState.name.indexOf('password') != -1) {
+    if(toState.name.indexOf('authentication') != -1 || toState.name.indexOf('password') != -1) { // when login or password change, chat UI display none
       var userbotHeader = document.getElementById('mainHeader');
       var userbotChat = document.getElementById('container-chat');
       if (userbotHeader && userbotChat) {
@@ -254,6 +263,7 @@ function appRun($rootScope, $state, Authentication) {
 
   // Store previous state
   function storePreviousState(state, params) {
+
     // only store this state if it shouldn't be ignored
     if (!state.data || !state.data.ignoreState) {
       $state.previous = {

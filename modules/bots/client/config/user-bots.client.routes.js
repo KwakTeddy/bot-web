@@ -10,7 +10,8 @@ angular.module('user-bots').config(['$stateProvider',
         url: '/developer/user-bots',
         template: '<ui-view/>',
         data: {
-          roles: ['user', 'enterprise', 'admin']
+          roles: ['user', 'enterprise', 'admin'],
+          botCheck: true
         }
       })
       .state('user-bots.list', {

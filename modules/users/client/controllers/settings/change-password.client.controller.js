@@ -21,15 +21,19 @@ angular.module('users').controller('ChangePasswordController', ['$scope', '$http
           console.log(response);
         $scope.$broadcast('show-errors-reset', 'passwordForm');
         $scope.success = true;
-        var alertPopup = $ionicPopup.alert({
-          title: '비밀번호 변경',
-          template: '비밀번호가 성공적으로 변경되었어요'
-        });
-        alertPopup.then(function(res) {
-          console.log(res);
-          $scope.passwordDetails = {};
-          $state.go('homeMobile');
-        });
+        if(_platform == 'mobile'){
+          var alertPopup = $ionicPopup.alert({
+            title: '비밀번호 변경',
+            template: '비밀번호가 성공적으로 변경되었어요'
+          });
+          alertPopup.then(function(res) {
+            console.log(res);
+            $scope.passwordDetails = {};
+            $state.go('homeMobile');
+          });
+        }else if(confirm('비밀번호가 성공적으로 변경되었습니다')){
+          $state.go('home')
+        }
       }).error(function (response) {
           console.log(response);
         $scope.error = response.message;

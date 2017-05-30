@@ -12,7 +12,10 @@
       .state('bot-users', {
         abstract: true,
         url: '/developer/bot-users',
-        template: '<ui-view/>'
+        template: '<ui-view/>',
+        data: {
+          botCheck: true
+        }
       })
       .state('bot-users.list', {
         url: '',

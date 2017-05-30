@@ -445,7 +445,6 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
 
     $scope.initDialogFailure = function() {
       DialogFailureMaintenanceService.query({botId: $cookies.get('default_bot')}, function (result) {
-        console.log(result);
         $scope.failedIntent = result;
       }, function (err) {
         console.log(err);

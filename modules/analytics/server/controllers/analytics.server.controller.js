@@ -373,6 +373,7 @@ var save = function(o, res, data) {
     }
 
     if (!Array.isArray(o.input)){
+
       o.input = [];
       for(var i = 0; i < data.inputs.length; i++){
         o.input.push({'text': data.inputs[i]})

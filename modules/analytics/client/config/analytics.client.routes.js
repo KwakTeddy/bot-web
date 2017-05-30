@@ -8,7 +8,8 @@ angular.module('analytics').config(['$stateProvider',
         url: '/developer/analytics',
         template: '<ui-view/>',
         data: {
-          roles: ['user', 'enterprise', 'admin']
+          roles: ['user', 'enterprise', 'admin'],
+          botCheck: true
         }
       })
       .state('analytics.dashboard', {

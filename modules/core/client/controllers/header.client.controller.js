@@ -8,41 +8,29 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
     $scope.authentication = Authentication;
     $scope.currentBot = '';
     $scope.myBot = '';
-    console.log($cookies.getAll())
-    $scope.$$postDigest(function () {
-      BotsService.query({my: 1}).$promise.then(function (result) {
+    window.onload = function () {
+      BotsService.query({my: 1, developer: true}).$promise.then(function (result) {
         $scope.myBot = result;
-        console.log($scope.myBot)
-        // if (result.length){
-        //   for(var i = 0; i < result.length; i++){
-        //     if($cookies.get('default_bot') == result[i].id){
-        //       $scope.test = true
-        //       break
-        //     }
-        //   }
-        //   console.log($scope.test)
-        //   if(!$scope.test){
-        //     // $rootScope.botId = $scope.myBot[0].id;
-        //     // $rootScope.userBot = $scope.myBot[0];
-        //     // $cookies.put('botObjectId', $scope.myBot[0]._id);
-        //     $cookies.remove('default_bot')
-        //     console.log($scope.myBot[0].id)
-        //     $cookies.put('default_bot', $scope.myBot[0].id);
-        //     console.log($cookies.getAll())
-        //     // $window.location.reload()
-        //   }
-        //
-        // }else {
-        //   $cookies.put('default_bot', null);
-        //   $cookies.put('botObjectId', null);
-        //   // $window.location.href ='http://localhost:8443/developer/bots/create'
-        //
-        // }
+        if (result.length){
+          for(var i = 0; i < result.length; i++){
+            if($cookies.get('default_bot') == result[i].id){
+              $scope.checkMyBot = true;
+              break
+            }
+          }
+          if(!$scope.checkMyBot){
+            $cookies.put('default_bot', $scope.myBot[0].id);
+            $window.location.reload()
+          }
+
+        }else{
+          $scope.currentBot = '';
+          document.getElementById('chat-include').style.display = 'none';
+        }
       }, function (err) {
         console.log(err)
       });
-    })
-
+    };
 
     $http.get('/api/bots/byNameId/' + $cookies.get('default_bot')).then(function (result) {
       $scope.currentBot = result.data;
