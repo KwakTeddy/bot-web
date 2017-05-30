@@ -44,6 +44,10 @@ module.exports = {
       }
     }
   },
+  enterprise: {
+    logo: '/images/' + process.env.ENTERPRISE + '.png',
+    name: process.env.ENTERPRISE
+  },
   chatServer: '../bot-server/',
   callcenter: '15777314'
 };
