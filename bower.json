@@ -34,7 +34,8 @@
     "jsoneditor": "^5.6.0",
     "select2": "3.4.5",
     "ng-js-tree": "^0.0.10",
-    "angular-ui-notification": "^0.3.6"
+    "angular-ui-notification": "^0.3.6",
+    "angular-pnotify": "^0.1.2"
   },
   "resolutions": {
     "angular": "1.5.3",

@@ -34,6 +34,8 @@ module.exports = {
         'public/js/jsoneditor/dist/jsoneditor.js',
         'public/js/jsoneditor.js',
         'public/lib/jstree/dist/jstree.js',
+        'public/lib/pnotify/dist/pnotify.js',
+        'public/lib/angular-pnotify/src/angular-pnotify.js',
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
     },
@@ -41,7 +43,8 @@ module.exports = {
       'modules/*/client/css/*.css',
       'public/lib/codemirror/lib/codemirror.css',
       'public/lib/dropzone/downloads/css/dropzone.css',
-      'public/lib/angular-ui-select/dist/select.css'
+      'public/lib/angular-ui-select/dist/select.css',
+      'public/lib/pnotify/dist/pnotify.css',
 
     ],
     less: [

@@ -16,9 +16,11 @@ function gogo(filename) {
 angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope', '$state', '$window','$timeout',
   '$stateParams', '$resource', 'Dialogs', 'DialogSaveService', 'OpenTasksService', 'FileUploader','$document',
   'fileResolve', 'BotFilesService', 'CoreUtils', 'botFilesResolve', 'Socket', '$uibModal', '$compile', '$cookies', '$http','IntentsService', 'EntitysService', 'EntityContentsService',
+  'notificationService',
   function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, Dialogs, DialogSaveService,
             OpenTasksService, FileUploader, $document, file, BotFilesService, CoreUtils, files, Socket,
-            $uibModal, $compile, $cookies, $http, IntentsService, EntitysService, EntityContentsService) {
+            $uibModal, $compile, $cookies, $http, IntentsService, EntitysService, EntityContentsService, notificationService
+  ) {
     (function($) {
       'use strict';
 
@@ -54,11 +56,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         e.preventDefault();
         $.magnificPopup.close();
 
-        new PNotify({
-          title: 'Success!',
-          text: 'Modal Confirm Message.',
-          type: 'success'
-        });
       });
 
       /*
@@ -1622,16 +1619,18 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           $scope.emitMsg(':reset user');
           $scope.emitMsg(':init');
 
-          $scope.message = "저장되었습니다";
-          $scope.choice = false;
-          var modalInstance = $uibModal.open({
-            templateUrl: 'modules/bots/client/views/modal-bots.html',
-            scope: $scope
-          });
-          modalInstance.closed.then(function () {
-            if (func)
-              func();
-          });
+          notificationService.success('저장되었습니다');
+
+          // $scope.message = "저장되었습니다";
+          // $scope.choice = false;
+          // var modalInstance = $uibModal.open({
+          //   templateUrl: 'modules/bots/client/views/modal-bots.html',
+          //   scope: $scope
+          // });
+          // modalInstance.closed.then(function () {
+          //   if (func)
+          //     func();
+          // });
           console.log("saved");
         }, function(err) {
           console.log(err);
