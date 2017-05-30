@@ -673,15 +673,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     vm.saveFile = function () {
       new BotFilesService({botId: vm.bot_id, _id: vm.currentTab.file_id, fileData: vm.currentTab.data}).$save(function (botFile) {
         $resource('/api/loadBot/:bot_id/:fileName', {}).get({bot_id: vm.botId, fileName: vm.fileName}, function(res) {
-          $scope.message = "저장되었습니다";
-          $scope.choice = false;
-          var modalInstance = $uibModal.open({
-            templateUrl: 'modules/bots/client/views/modal-bots.html',
-            scope: $scope
-          });
-          modalInstance.result.then(function (response) {
-            console.log(response);
-          });
+
+          notificationService.success('저장되었습니다');
+
         });
       }, function (err) {
         CoreUtils.showConfirmAlert(err.data.message);
@@ -1621,16 +1615,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
           notificationService.success('저장되었습니다');
 
-          // $scope.message = "저장되었습니다";
-          // $scope.choice = false;
-          // var modalInstance = $uibModal.open({
-          //   templateUrl: 'modules/bots/client/views/modal-bots.html',
-          //   scope: $scope
-          // });
-          // modalInstance.closed.then(function () {
-          //   if (func)
-          //     func();
-          // });
           console.log("saved");
         }, function(err) {
           console.log(err);
