@@ -28,7 +28,7 @@ module.exports = {
   // for obsecurity reasons
   sessionKey: 'sessionId',
   sessionCollection: 'sessions',
-  logo: 'public/images/' + process.env.ENTERPRISE + '.png',
+  logo: 'public/images/' + process.env + '.png',
   favicon: 'modules/core/client/img/brand/playchat_favicon3.ico',
   uploads: {
     profileUpload: {
