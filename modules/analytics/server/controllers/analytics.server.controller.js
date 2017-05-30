@@ -585,6 +585,8 @@ exports.dialogs = function (req, res) {
       });
 
       result.common = [];
+
+      common_dialogs.forEach(clear);
       common_dialogs.forEach(function (d) {
         if (d.filename === result.fileName + "common") {
           result.common.push(d);
