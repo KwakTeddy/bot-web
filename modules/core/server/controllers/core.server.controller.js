@@ -4,6 +4,8 @@ var   path = require('path'),
   multer = require('multer'),
   config = require(path.resolve('./config/config'));
 
+var util = require('util');
+
 /**
  * Render the main application page
  */
@@ -82,5 +84,6 @@ exports.renderNotFound = function (req, res) {
 * get config
 */
 exports.getConfig = function (req, res) {
+  console.log(util.inspect(process.env))
   res.json(config);
 };
