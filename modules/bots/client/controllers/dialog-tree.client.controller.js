@@ -174,6 +174,28 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     }).apply(this, [jQuery]);
 
+    $scope.$state = $state;
+
+    $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+      if (vm.isChanged) {
+        event.preventDefault();
+        $scope.message = "저장하지 않은 항목이 있습니다. 이동하겠습니까?";
+        $scope.choice = true;
+        var modalInstance = $uibModal.open({
+          templateUrl: 'modules/bots/client/views/modal-bots.html',
+          scope: $scope
+        });
+        $scope.yes = function () {
+          vm.isChanged = false;
+          modalInstance.dismiss();
+          $state.go(toState.name);
+        };
+        $scope.no = function () {
+          modalInstance.dismiss();
+        };
+      }
+    });
+
     $scope.safeApply = function(fn) {
       var phase = this.$root.$$phase;
       if(phase == '$apply' || phase == '$digest') {
@@ -655,6 +677,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       new BotFilesService({botId: vm.bot_id, _id: vm.currentTab.file_id, fileData: vm.currentTab.data}).$save(function (botFile) {
         $resource('/api/loadBot/:bot_id/:fileName', {}).get({bot_id: vm.botId, fileName: vm.fileName}, function(res) {
           $scope.message = "저장되었습니다";
+          $scope.choice = false;
           var modalInstance = $uibModal.open({
             templateUrl: 'modules/bots/client/views/modal-bots.html',
             scope: $scope
@@ -1555,7 +1578,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       //Dialogs.update(dialog);
     };
 
-    $scope.save = function() {
+    $scope.save = function(func) {
       //vm.changeHistory = [];
       vm.setChanged(false);
       var clear = function(node)
@@ -1594,23 +1617,20 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       common_dialogs[0] = common;
       common_dialogs.forEach(clear);
 
-      DialogSaveService.update({botId: vm.botId, fileName: vm.fileName, dialogs:dialogs, commons:common_dialogs},
+      return DialogSaveService.update({botId: vm.botId, fileName: vm.fileName, dialogs:dialogs, commons:common_dialogs},
         function() {
-          new PNotify({
-            title: '저장 완료',
-            text: '',
-            type: 'success'
-          });
           $scope.emitMsg(':reset user');
           $scope.emitMsg(':init');
 
           $scope.message = "저장되었습니다";
+          $scope.choice = false;
           var modalInstance = $uibModal.open({
             templateUrl: 'modules/bots/client/views/modal-bots.html',
             scope: $scope
           });
-          modalInstance.result.then(function (response) {
-            console.log(response);
+          modalInstance.closed.then(function () {
+            if (func)
+              func();
           });
           console.log("saved");
         }, function(err) {
@@ -2641,6 +2661,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       if (isCallNode) {
         $scope.message = "Output이 Call인 노드는 Child노드를 추가할 수 없습니다";
+        $scope.choice = false;
         var modalInstance = $uibModal.open({
           templateUrl: 'modules/bots/client/views/modal-bots.html',
           scope: $scope
