@@ -1620,9 +1620,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     $scope.dialogList = function() {
       var names = [];
       for (var d in nodes) {
-        if (selectedNode && d !== selectedNode.name)
+        if (selectedNode && d !== selectedNode.name && d != '시작')
           names.push(d);
       }
+      vm.otherDialogs.forEach(function(d) { names.push(d.name); });
       return names;
     };
 
@@ -1818,23 +1819,33 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       //treeData.id = 'dummystart';
       treeData.children = [];
 
+      for (var i = 0; i < dialogs.length; i++) {
+        var d = dialogs[i];
+        d.name = d.name || (d.name = "dialog_" + d.id);
+      }
+
+      for (var i = 1; i < common_dialogs.length; i++) {
+        var d = common_dialogs[i];
+        d.name = d.name || (d.name = "common_" + d.id);
+      }
+
       if (vm.dialog) {
         for (var i = 0; i < dialogs.length; i++) {
           var d = dialogs[i];
-          d.name = d.name || (d.name = "dialog_" + d.id);
           treeData.children.push(d);
         }
-
         dialogs.forEach(handleDialog); // for-loop is 10 times faster
-        if (vm.show_link)
+        if (vm.show_link) {
           dialogs.forEach(handleLink);
+        }
+        vm.otherDialogs = common_dialogs;
       } else {
         for (var i = 1; i < common_dialogs.length; i++) {
           var d = common_dialogs[i];
-          d.name = d.name || (d.name = "common_" + d.id);
           treeData.children.push(d);
         }
         common_dialogs.forEach(handleDialog); // for-loop is 10 times faster
+        vm.otherDialogs = dialogs;
       }
       console.log(nodes);
       console.log(links_internal);
