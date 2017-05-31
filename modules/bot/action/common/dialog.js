@@ -486,8 +486,10 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
     }, function(err){
       var _executeDialog = function(dialog) {
         if(dialog.output.up) {
-          if (context.botUser.currentDialog.parent)
+          if (context.botUser.currentDialog && context.botUser.currentDialog.parent)
             dialog.parent = context.botUser.currentDialog.parent.parent;
+          else if (context.botUser.lastDialog && context.botUser.lastDialog.parent)
+            dialog.parent = context.botUser.lastDialog.parent;
         } else if(context.botUser.currentDialog && context.botUser.currentDialog.name != undefined && (dialog.output.call == context.botUser.currentDialog.name ||
           dialog.output.callChild == context.botUser.currentDialog.name)) {
           dialog.parent = context.botUser.currentDialog.parent;
