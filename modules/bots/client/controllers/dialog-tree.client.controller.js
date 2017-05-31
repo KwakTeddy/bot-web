@@ -2437,8 +2437,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       if(currentNode) {
         // draw selector
+        var nodeId = "current" + currentNode.id;
         svgGroup.append("rect")
-          .attr("id", currentNode.name)
+          .attr("id", nodeId)
           .attr("x", currentNode.y)
           .attr("y", currentNode.x)
           .attr("width", rectW)
@@ -2448,10 +2449,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           .style("pointer-events", "none")
           .style('fill', 'black')
           .style('opacity', '0.3');
+
         setTimeout(function () {
-          d3.select("#" + currentNode.name).remove();
+          d3.select("#" + nodeId).remove();
           currentNode = undefined;
-        }, 1300);
+        }, 1000);
       }
 
       if(selectedNode && selectedSVG != null) {
