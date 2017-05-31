@@ -644,6 +644,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         loop:false,
         nav:false,
         dots: false,
+        items: 4,
         margin: 3,
         autoWidth: true
       });
