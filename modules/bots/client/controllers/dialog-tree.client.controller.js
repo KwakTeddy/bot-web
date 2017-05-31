@@ -1468,7 +1468,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       $scope.dialog = {};
       $scope.dialog.name = dialog.name;
       $scope.dialog.input = initInput(dialog.input);
-      if (dialog.task && dialog.task.name)
+      if (dialog.task && (dialog.task.name || dialog.task.template))
         $scope.dialog.task = dialog.task;
       else if (dialog.task)
         $scope.dialog.task = {name: dialog.task};
@@ -1556,7 +1556,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       selectedNode.name = $scope.dialog.name;
       selectedNode.input = restoreInput($scope.dialog.input);
       if ($scope.dialog.task && Object.keys($scope.dialog.task).length == 1)
-        selectedNode.task = $scope.dialog.task.name;
+        selectedNode.task = $scope.dialog.task.name || $scope.dialog.task.template;
       else
         selectedNode.task = $scope.dialog.task;
       selectedNode.output = restoreOutput($scope.dialog.output);
@@ -3217,7 +3217,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       var schema = {
         type: "object",
-        title: $scope.dialog.task.name,
+        title: $scope.dialog.task.name || $scope.dialog.task.template,
         properties: {},
         // format: "grid",
       };
@@ -3243,6 +3243,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       if ($scope.dialog.task) {
         var temp = angular.copy($scope.dialog.task);
         delete temp.name;
+        delete temp.template;
         delete temp.paramSchema;
         delete temp.type;
         delete temp.displayName;
@@ -3271,7 +3272,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.openTask = function(task, isCommon) {
-      if (!$scope.dialog.task || $scope.dialog.task.name !== task.name)
+      if (!$scope.dialog.task || ($scope.dialog.task.name || $scope.dialog.task.template) !== task.name)
         $scope.dialog.task = task;
       vm.edit = 'task';
       if (isCommon) {
@@ -3322,7 +3323,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           $scope.dialog.task = undefined;
       } else {
         var temp = jsonEditor.getValue();
-        temp.name = $scope.dialog.task.name;
+        temp.template = $scope.dialog.task.name;
         temp.type = $scope.dialog.task.type;
         temp.paramSchema=  $scope.dialog.task.paramSchema;
 

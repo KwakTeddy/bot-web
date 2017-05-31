@@ -5,6 +5,7 @@ var xpath = require('xpath')
 var utils = require('./utils');
 var tough = require('tough-cookie');
 var charset = require('charset');
+var globals = require(path.resolve('modules/bot/engine/common/globals'));
 var _ = require('lodash');
 
 var commonHeaders = {"Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
@@ -595,6 +596,7 @@ function simpleRequest(task, context, callback) {
 }
 
 exports.simpleRequest = simpleRequest;
+
 
 function xpathAction(doc, path, isRepeat) {
   if(path._repeat && isRepeat !== true) {

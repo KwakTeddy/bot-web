@@ -669,16 +669,27 @@ function executeDialog(dialog, context, print, callback, options) {
   async.waterfall([
     function(cb) {
       if (dialog.task) {
-        if(dialog.task && (typeof dialog.task == 'string' || dialog.task.name)) {
-          var taskname;
-          if(dialog.task.name) taskname = dialog.task.name;
-          else taskname = dialog.task;
+        if(dialog.task) {
+          if(dialog.task.template && typeof dialog.task.template == 'string') {
+            var _template = context.bot.tasks[dialog.task.template];
+            if(_template) dialog.task.template = utils.clone(_template);
+            else {
+              _template = context.global.tasks[dialog.task.template];
+              if(_template) dialog.task.template = utils.clone(_template);
+            }
+          }
 
-          var _task = context.bot.tasks[taskname];
-          if(_task) dialog.task = utils.clone(_task);
-          else {
-            _task = context.global.tasks[taskname];
+          if((typeof dialog.task == 'string' || dialog.task.name)) {
+            var taskname;
+            if(dialog.task.name) taskname = dialog.task.name;
+            else taskname = dialog.task;
+
+            var _task = context.bot.tasks[taskname];
             if(_task) dialog.task = utils.clone(_task);
+            else {
+              _task = context.global.tasks[taskname];
+              if(_task) dialog.task = utils.clone(_task);
+            }
           }
         }
 
