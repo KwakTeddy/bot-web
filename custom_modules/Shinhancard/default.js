@@ -107,3 +107,39 @@ var te = {
     }
 };
 bot.setTask("te", te);
+
+var task1 = {
+	name: 'task1',
+	action: function(task, context, callback) {
+		if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+			task.result = {
+				buttons: [
+					{
+						text: "바로가입하기",
+						url: "https://newm.shinhancard.com/event/2015/pt06.jsp?prm=naver"
+					}
+					]
+			}
+		} else if (context.user.channel == 'facebook') {
+			task.result = {
+				buttons: [
+					{
+						text: "바로가입하기",
+						url: "https://newm.shinhancard.com/event/2015/pt06.jsp?prm=facebook"
+					}
+				]
+			}
+		} else if (context.user.channel == 'kakao') {
+			task.result = {
+				buttons: [
+					{
+						text: "바로가입하기",
+						url: "https://newm.shinhancard.com/event/2015/pt06.jsp?prm=kakao"
+					}
+				]
+			}
+		}
+		callback(task, context);
+	}
+};
+bot.setTask("task1", task1);

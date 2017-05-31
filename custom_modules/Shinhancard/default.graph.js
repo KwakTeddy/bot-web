@@ -38,20 +38,12 @@ var dialogs = [
 				"text": "1"
 			}
 		],
-		"output": {
-			"output": "신한 FAN은 신한카드가 없어도 가입가능! \n신한카드를 이미 보유하고 계시면 카드회원, 아직 카드가 없으시다면 일반회원으로 가입해주세요. \n\n신한 FAN에 가입 하시면 다양한 경품이 가득!\n아래 링크를 클릭하시고 이벤트에 응모해주세요. \n[24시간내 전원 100% 당첨 경품 제공!]\n* 대상 : 최초 신규 등록회원(기존 가입회원 제외)\n* 방법 : 하단 클릭 후 이벤트 응모 ] 24시간내 앱다운로드 및 가입 ] 경품 실시간 발송\n\n신한 FAN App이 설치되어 있어야, 회원 가입 및 이벤트에 참여 하실 수 있습니다.\n\n※ 가입시, '추천인 등록'에 '신한카드'를 선택하셔야 쿠폰이 발송됩니다.\n\n(* 처음으로 돌아가기 : 0 또는 '처음')",
-			"buttons": [
-				{
-					"text": "가입하기",
-					"url": "https://newm.shinhancard.com/event/2015/pt06.jsp?prm=kakao"
-				}
-			],
-			"image": {
-				"url": "/files/sh_logo.png"
-			}
-		},
+		"output": "✔ 신한 FAN은 신한카드가 없어도 가입가능!  \n✔ 신한 FAN에 가입 하시면 다양한 경품이 가득! \n✔ 신규라면 100% 당첨 경품 제공!\n\n (* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9' 또는 '이전')",
 		"inRaw": "1",
-		"inNLP": "1"
+		"inNLP": "1",
+		"task": {
+			"name": "task1"
+		}
 	},
 	{
 		"name": "FAN 혜택",
@@ -110,7 +102,7 @@ var dialogs = [
 				"text": "쿠폰"
 			}
 		],
-		"output": "스마트컨슈머를 위한 다양한 혜택!\n신한 FAN만의 다양한 혜택을 누리세요!\n\n1. 신한 FAN 혜택ZONE!\n2. 나만의 맞춤 쿠폰 Sally\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+		"output": "스마트컨슈머를 위한 다양한 혜택!\n신한 FAN만의 다양한 혜택을 누리세요!\n \n 1. 신한 FAN 혜택ZONE!\n 2. 나만의 맞춤 쿠폰 Sally\n \n (* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9' 또는 '이전')",
 		"inRaw": "1",
 		"inNLP": "1",
 		"children": [
@@ -139,19 +131,6 @@ var dialogs = [
 				"output": {
 					"call": "Sally 쿠폰 상세"
 				}
-			},
-			{
-				"name": "dialog_default100",
-				"id": "default100",
-				"filename": "default",
-				"input": [
-					{
-						"text": "이전"
-					}
-				],
-				"output": {
-					"call": "FAN 혜택"
-				}
 			}
 		]
 	},
@@ -165,32 +144,14 @@ var dialogs = [
 			}
 		],
 		"output": {
-			"output": "지금 진행되는 다양한 이벤트가 있어요.\n\n[5월 온라인 쇼핑몰 할인 혜택]\n- 5월에도 멈추지 안흔 신한카드의 할인 혜택! 이달의 온리안 쇼핑몰/홈쇼핑 할인행사가 있어요! \n- 기간 : 2017년 05월 01일~2017년 05월 31일\n\n[포인트 바꿔쓰기 이벤트]\n- 차곡차곡 쌓은 마이신한포인트, FAN에서 다양하게 바꾸어 사용해보세요. 추첨을 통해 포인트를 드립니다.\n- 기간 : 2017년 05월 08일~2017년 05월 31일\n\n이외에 00개의 이벤트가 있어요. 자세한 내용은 '신한 FAN'에서 확인할 수 있어요. \n\n신한 FAN에 가입하신 고객은 '바로보기'를 클릭해 주세요.\n아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음')",
+			"output": "지금 FAN에서 진행되는 다양한 이벤트가 있어요.\n \n✔ 5월 FAN 신규가입 이벤트\n✔ 5월 FAN 포인트 바꿔쓰기 이벤트\n✔ 5월 FAN 가정의 달 이벤트\n\n신한 FAN에는 항상 다양한 이벤트가 준비되어 있어요!\n \n신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n (* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9' 또는 '이전')",
 			"buttons": [
 				{
-					"text": "바로보기",
+					"text": "대박이벤트 바로가기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?+A2:F14=FAN_MAIN_304"
 				}
-			],
-			"image": {
-				"url": "/files/sh_logo.png"
-			}
-		},
-		"children": [
-			{
-				"name": "dialog_default101",
-				"id": "default101",
-				"filename": "default",
-				"input": [
-					{
-						"text": "이전"
-					}
-				],
-				"output": {
-					"call": "FAN 혜택"
-				}
-			}
-		]
+			]
+		}
 	},
 	{
 		"name": "혜택 안내",
@@ -217,34 +178,16 @@ var dialogs = [
 			}
 		],
 		"output": {
-			"output": "신한 FAN 고객만을 위한 혜택입니다. 지금바로 신한 FAN의 다양한 혜택을 확인하세요!  \n\n[할인 혜택]\n- GS25, 홈플러스, 동부화재, 티머니\n[포인트적립/쿠폰 혜택]\n- 홈플러스, 야놀자, X-GOLF 무료부킹\n[쇼핑/식품]\n- GS25, 홈플러스, 11번가, 티몬, CJ오쇼핑, 롯데면세점, 마켓컬리, 에브리밀\n[여가/보험]\n-교보문고, 인터파크 티켓, X-GOLF, 롯데시네마, 하나투어, 호텔패스, 야놀자, 동부화재\n[요식/생활]\n-포잉, 요기요, 플레이팅, 다방, 한방이사, 한솔교육, 리화이트\n[뷰티/패션]\n- 아모레퍼시픽, LF몰, 브리치, 스트라입스, 헤이뷰티, 왓슈, 꾸까\n[교통/차량]\n- 티머니, 쏘카, 아이파킹, 카페인, 페달링, 빨리와, 자몽, 화물맨, 코레일\n\n이 많은 혜택을 신한 FAN에 가입하시면 누리실 수 있어요!\n신한 FAN에 가입하신 고객은 '바로보기'를 클릭해 주세요.\n아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+			"output": "지금바로 신한 FAN의 다양한 혜택을 확인하세요! \n \n✔ GS25 바나나맛우유 100원 쿠폰\n✔ 홈플러스 10% 할인혜택\n✔ 비스테까 티라미수 1만원 할인\n\n 더 많은 혜택을 신한 FAN에 가입하시면 누리실 수 있어요!\n\n 신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n (* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9' 또는 '이전')",
 			"buttons": [
 				{
-					"text": "바로보기",
+					"text": "FAN 혜택 바로보기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?maintap=FAN_TAB_104"
 				}
-			],
-			"image": {
-				"url": "/files/sh_logo.png"
-			}
+			]
 		},
 		"inRaw": "1",
-		"inNLP": "1",
-		"children": [
-			{
-				"name": "dialog_default102",
-				"id": "default102",
-				"filename": "default",
-				"input": [
-					{
-						"text": "이전"
-					}
-				],
-				"output": {
-					"call": "FAN 전용 적립 및 할인"
-				}
-			}
-		]
+		"inNLP": "1"
 	},
 	{
 		"name": "Sally 쿠폰 상세",
@@ -259,32 +202,14 @@ var dialogs = [
 			}
 		],
 		"output": {
-			"output": "빅데이터 기반의 고객 맞춤형  혜택쿠폰 Sally\n\nSally는 신한카드의 다양한 혜택을 빅데이터 기반으로 고객님께 안내/추천 해드리는 서비스입니다.\n뜻밖의 행운이라는 샐리의 법칙처럼 고객님의 매일매일이 기분좋은 설렘으로 가특하시기 바랍니다.\n\nSally는 신한 FAN에 가입하신 고객님께 제공되는 혜택입니다. \n신한 FAN에 가입하신 고객은 '바로보기'를 클릭해 주세요.\n아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+			"output": "빅데이터 기반의 고객 맞춤형 혜택쿠폰 Sally\n \n Sally는 빅데이터를 분석해 고객님께 필요한 쿠폰을 추천해드리는 서비스입니다.\n\n  신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n (* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9' 또는 '이전')",
 			"buttons": [
 				{
-					"text": "바로보기",
+					"text": "나만의 혜택 보기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_305"
 				}
-			],
-			"image": {
-				"url": "/files/sh_logo.png"
-			}
-		},
-		"children": [
-			{
-				"name": "dialog_default103",
-				"id": "default103",
-				"filename": "default",
-				"input": [
-					{
-						"text": "이전"
-					}
-				],
-				"output": {
-					"call": "FAN 전용 적립 및 할인"
-				}
-			}
-		]
+			]
+		}
 	},
 	{
 		"name": "이용안내",
@@ -307,7 +232,7 @@ var dialogs = [
 				"text": "3"
 			}
 		],
-		"output": "간편결제를 기반으로 결제,금융/생활, 포인트 서비스를 한번에! 무엇을 알아볼까요?\n1. 편리한 FAN페이 결제 이용가이드\n2. FAN페이 가맹점 안내\n3. 다양한 제휴/FUN/생활/금융 서비스\n4. 통합리워드(포인트) 신한 FAN클럽",
+		"output": "결제, 생활금융, 생활, 포인트 서비스를 한번에!  번호를 선택하세요!\n\n 1. FAN페이 결제\n 2. FAN페이 오프라인 가맹점 \n 3. 신한 FAN 생활금융 서비스\n 4. 신한 FAN클럽 (통합포인트)\n\n(* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9'  또는 '이전')",
 		"children": [
 			{
 				"name": "dialog_default33",
@@ -382,32 +307,14 @@ var dialogs = [
 			}
 		],
 		"output": {
-			"output": "신한 FAN을 통해 편리한 온/오프라인 결제를 할 수 있습니다.\n\n결제 방식은 나한테 맞는걸 선택하시면 되요. \n고객님을 항상 생각하는 스마트한 FAN답게 다양한 결제 방식을 제공합니다. \n\n- 비밀번호\n- 지문\n- 홍채 인증\n\n이용가이드를 확인해보세요!\n신한 FAN을 통해서 결제를 하고 싶으시다면 회원가입은 필수 겠지요? \n\n신한 FAN에 가입하신 고객은 '바로보기'를 클릭해 주세요.\n아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+			"output": "신한 FAN을 통해 편리한 결제를 할 수 있어요!\n \n 결제 방식은 나한테 맞는걸 선택하시면 되요. \n 고객님을 생각하는 FAN답게 다양한 인증방식을 제공합니다. \n \n✔ 비밀번호\n✔ 지문\n✔ 홍채 인증\n\n 신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n (* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9 또는 '이전')",
 			"buttons": [
 				{
-					"text": "바로보기",
-					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?url=https://m.shinhancard.com/conts/html/shinhanFAN/introFAN/M"
+					"text": "이용가이드 보기",
+					"url": "\"https://newm.shinhancard.com/event/2015/fc_launch.jsp?url=https://m.shinhancard.com/conts/html/shinhanFAN/introFAN/MOBFM021R02.html&title=GUIDE \""
 				}
-			],
-			"image": {
-				"url": "/files/sh_logo.png"
-			}
-		},
-		"children": [
-			{
-				"name": "dialog_default104",
-				"id": "default104",
-				"filename": "default",
-				"input": [
-					{
-						"text": "이전"
-					}
-				],
-				"output": {
-					"call": "이용안내"
-				}
-			}
-		]
+			]
+		}
 	},
 	{
 		"name": "FAN페이 가맹점 안내",
@@ -419,32 +326,14 @@ var dialogs = [
 			}
 		],
 		"output": {
-			"output": "GS25, GS슈퍼마켓, 롯데마트, 홈플러스, 롯데슈퍼, 하나로클럽, 세븐일레븐, 바이더웨이, 교보문고, JDC면세점, S-Oil, E1, 아리따움, Espoire, 에띄드, 오설록, 에버랜드, 대명리조트, 파르나스몰, 베어스타운리조트, BEANS NIS, 홀리스커피, 카페 Ti-amo, 이니스프리, 주커피, ORGA, Obong 도시락, Eight Seconds, LOHB, 엘지패션, 씨유, 커피앤구르나루\n\nFAN App에서 고객님께서 계신 지역에 어떤 가맹점이 있는지 더 자세히 볼 수 있어요. \n\n신한 FAN에 가입하신 고객은 '바로보기'를 클릭해 주세요.\n아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+			"output": "FAN에 는 다양한 오프라인 가맹점이 있어요!\n어떤 가맹점이 있는지 더 자세히 알아볼까요?\n \n 신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n (* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9 또는 '이전')",
 			"buttons": [
 				{
-					"text": "바로보기",
+					"text": "가맹점 보기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_038"
 				}
-			],
-			"image": {
-				"url": "/files/sh_logo.png"
-			}
-		},
-		"children": [
-			{
-				"name": "dialog_default105",
-				"id": "default105",
-				"filename": "default",
-				"input": [
-					{
-						"text": "이전"
-					}
-				],
-				"output": {
-					"call": "이용안내"
-				}
-			}
-		]
+			]
+		}
 	},
 	{
 		"name": "다양한 제휴/FUN/생활/금융 서비스",
@@ -461,10 +350,10 @@ var dialogs = [
 				"text": "컨텐츠"
 			}
 		],
-		"output": "신한 FAN에서는 xx개의 제휴사 서비스스와 운세, 게임, 웹툰과  같은  FUN컨텐츠 부터  더치페이, 투자정보, 소비관리 와 같은 금융서비스까지  한번에 누릴 수 있습니다. 신한 FAN에 놀러오세요!\n1. 제휴사서비스(혜택+)\n2. 운세\n3. 게임\n4. 페이봇\n5. 트렌드연구소\n6. 더치페이\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+		"output": "신한 FAN에서는 제휴사 서비스, FUN컨텐츠부터 생활금융서비스까지 유용한 기능이 한가득!\n번호를 선택해 주세요.\n\n 1. 제휴사서비스(혜택+)\n 2. 운세\n 3. 게임\n 4. 페이봇\n 5. 신한 트렌드연구소\n 6. 더치페이\n\n (* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9 또는 '이전')",
 		"children": [
 			{
-				"name": "dialog_default37",
+				"name": "dialog_default3722",
 				"id": "default37",
 				"filename": "default",
 				"input": [
@@ -540,19 +429,6 @@ var dialogs = [
 				"output": {
 					"call": "더치페이"
 				}
-			},
-			{
-				"name": "dialog_default106",
-				"id": "default106",
-				"filename": "default",
-				"input": [
-					{
-						"text": "이전"
-					}
-				],
-				"output": {
-					"call": "이용안내"
-				}
 			}
 		]
 	},
@@ -569,32 +445,14 @@ var dialogs = [
 			}
 		],
 		"output": {
-			"output": "신한에선 포인트도 자산이다!\n신한금융그룹과 거래를 할수록 더많은 혜택을 드리는 통합리워드 서비스 신한 FAN클럽! \n포인트 적립/이용부터 쇼핑/쿠폰/그룹사 혜택까지 한번에 이용하세요\n\n\n신한 FAN클럽 서비스는 가입하신 고객에게 제공되는 서비스입니다. \n가입 고객은 '바로보기'를 클릭해 주세요.\n아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
-			"image": {
-				"url": "/files/sh_logo.png"
-			},
+			"output": "신한금융그룹과 거래를 할수록 더많은 혜택을 드리는 통합리워드 서비스 신한 FAN클럽! \n 포인트 적립/이용부터 쇼핑/쿠폰/그룹사 혜택까지 한번에 이용하세요.\n \n 신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n (* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9 또는 '이전')",
 			"buttons": [
 				{
 					"text": "바로보기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?maintap=FAN_TAB_102"
 				}
 			]
-		},
-		"children": [
-			{
-				"name": "dialog_default107",
-				"id": "default107",
-				"filename": "default",
-				"input": [
-					{
-						"text": "이전"
-					}
-				],
-				"output": {
-					"call": "이용안내"
-				}
-			}
-		]
+		}
 	},
 	{
 		"name": "제휴사서비스(혜택+)",
@@ -630,32 +488,14 @@ var dialogs = [
 			}
 		],
 		"output": {
-			"output": "신한 FAN 고객만을 위한 혜택입니다. 지금바로 신한 FAN의 다양한 혜택을 확인하세요!  \n\n[할인 혜택]\n- GS25, 홈플러스, 동부화재, 티머니\n[포인트적립/쿠폰 혜택]\n- 홈플러스, 야놀자, X-GOLF 무료부킹\n[쇼핑/식품]\n- GS25, 홈플러스, 11번가, 티몬, CJ오쇼핑, 롯데면세점, 마켓컬리, 에브리밀\n[여가/보험]\n-교보문고, 인터파크 티켓, X-GOLF, 롯데시네마, 하나투어, 호텔패스, 야놀자, 동부화재\n[요식/생활]\n-포잉, 요기요, 플레이팅, 다방, 한방이사, 한솔교육, 리화이트\n[뷰티/패션]\n- 아모레퍼시픽, LF몰, 브리치, 스트라입스, 헤이뷰티, 왓슈, 꾸까\n[교통/차량]\n- 티머니, 쏘카, 아이파킹, 카페인, 페달링, 빨리와, 자몽, 화물맨, 코레일\n\n이 많은 혜택을 신한 FAN에 가입하시면 누리실 수 있어요!\n신한 FAN에 가입하신 고객은 '바로보기'를 클릭해 주세요.\n아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+			"output": "지금바로 신한 FAN의 다양한 혜택을 확인하세요! \n \n✔ GS25 바나나맛우유 100원 쿠폰\n✔ 홈플러스 10% 할인혜택\n✔ 비스테까 티라미수 1만원 할인 \n\n더 많은 혜택을 신한 FAN에 가입하시면 누리실 수 있어요! \n\n신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n (* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9' 또는 '이전')",
 			"buttons": [
 				{
-					"text": "바로보기",
+					"text": "FAN 혜택 바로보기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?maintap=FAN_TAB_104"
 				}
-			],
-			"image": {
-				"url": "/files/sh_logo.png"
-			}
-		},
-		"children": [
-			{
-				"name": "dialog_default108",
-				"id": "default108",
-				"filename": "default",
-				"input": [
-					{
-						"text": "이전"
-					}
-				],
-				"output": {
-					"call": "다양한 제휴/FUN/생활/금융 서비스"
-				}
-			}
-		]
+			]
+		}
 	},
 	{
 		"name": "운세",
@@ -667,32 +507,14 @@ var dialogs = [
 			}
 		],
 		"output": {
-			"output": "오늘의 운세, 주간운세 신토정비결, 타로카드 등 나의 운세를 확인해보세요. \n\n- 동양운세\n- 서양운세(오늘의타로,월간타로, 신년타로 등)\n\n운세 서비스는 신한 FAN에 가입하신 고객에게 제공되는 서비스입니다. \n가입 고객은 '바로보기'를 클릭해 주세요.\n아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+			"output": "오늘의 운세, 주간운세, 신토정비결, 타로카드 등 나의 운세를 확인해보세요. \n \n✔ 동양운세\n✔ 서양운세 \n \n신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n아직 가입 전이시면 '가입' 이라고 입력해주세요.\n (* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9' 또는 '이전')",
 			"buttons": [
 				{
-					"text": "바로보기",
+					"text": "나의 운세 확인하기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_301"
 				}
-			],
-			"image": {
-				"url": "/files/sh_logo.png"
-			}
-		},
-		"children": [
-			{
-				"name": "dialog_default109",
-				"id": "default109",
-				"filename": "default",
-				"input": [
-					{
-						"text": "이전"
-					}
-				],
-				"output": {
-					"call": "다양한 제휴/FUN/생활/금융 서비스"
-				}
-			}
-		]
+			]
+		}
 	},
 	{
 		"name": "게임",
@@ -707,32 +529,14 @@ var dialogs = [
 			}
 		],
 		"output": {
-			"output": "게임만 해도 포인트가 적립되는 미니게임이 있어요! 게임이 자신이 있으신 분들은 도전해보세요!\n\n[미니게임]\n- 차곡차곡판권쌓기 (5월대회진행중)\n- FAN 팡!(5월대회진행중)\n- 판원을 구해라(5월대회진행중)\n\nFAN게임존은 신한 FAN에 가입하신 고객에게 제공되는 서비스입니다. \n가입 고객은 '바로보기'를 클릭해 주세요.\n아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+			"output": "게임만 해도 포인트가 적립되는 미니게임이 있어요!  \n매달 1등하면 10만포인트 지급!\n\n✔ 판귄의 남극탐험\n✔ 차곡차곡 판권쌓기\n✔ FAN팡\n \n 신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n (* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9' 또는 '이전')",
 			"buttons": [
 				{
-					"text": "바로보기",
+					"text": "게임하러가기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_302"
 				}
-			],
-			"image": {
-				"url": "/files/sh_logo.png"
-			}
-		},
-		"children": [
-			{
-				"name": "dialog_default110",
-				"id": "default110",
-				"filename": "default",
-				"input": [
-					{
-						"text": "이전"
-					}
-				],
-				"output": {
-					"call": "다양한 제휴/FUN/생활/금융 서비스"
-				}
-			}
-		]
+			]
+		}
 	},
 	{
 		"name": "페이봇",
@@ -747,32 +551,14 @@ var dialogs = [
 			}
 		],
 		"output": {
-			"output": "합리적인 소비를 도와줄 나만의 금융비서 페이봇!\n\nFAN페이봇은 신한 FAN에 가입하신 고객에게 제공되는 서비스입니다. \n가입 고객은 '바로보기'를 클릭해 주세요.\n아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+			"output": "화재의 AI 인공지능 아세요?\n나만의 금융비서 페이봇이\n고객님의 소비내역을 분석해 드려요!\n\n신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n아직 가입 전이시면 '가입' 이라고 입력해주세요.\n(* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9' 또는 '이전')",
 			"buttons": [
 				{
-					"text": "바로보기",
-					"url": "\"https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_084 \""
+					"text": "소비관리 바로가기",
+					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_084"
 				}
-			],
-			"image": {
-				"url": "/files/sh_logo.png"
-			}
-		},
-		"children": [
-			{
-				"name": "dialog_default111",
-				"id": "default111",
-				"filename": "default",
-				"input": [
-					{
-						"text": "이전"
-					}
-				],
-				"output": {
-					"call": "다양한 제휴/FUN/생활/금융 서비스"
-				}
-			}
-		]
+			]
+		}
 	},
 	{
 		"name": "트렌드연구소",
@@ -787,32 +573,14 @@ var dialogs = [
 			}
 		],
 		"output": {
-			"output": "이것만 알면 나도 트렌드세터! 트렌드연구소에서 다양한 정보를 제공해드립니다.\n\n[트렌드클립]\n- 동영상으로 제공되는 라이프스타일 정보컨텐츠 입니다\n[트렌트뉴스]\n- 기사로 보는 트렌트 관련 뉴스들 입니다.\n[인포그래픽스]\n- 트렌드와 관련된 다양한 통계정보를 제공합니다. \n\n신한 트렌드연구소의 컨텐츠는 신한FAN에 가입하신 고객에게 제공되는 서비스입니다. \n가입 고객은 '바로보기'를 클릭해 주세요.\n아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+			"output": "이것만 알면 나도 트렌드세터! 신한 트렌드연구소에서 다양한 정보를 제공해드립니다.\n \n✔ 트렌드클립 : 동영상\n✔ 트렌트뉴스 : 기사 \n✔ 인포그래픽스 : 유익한 통계정보\n \n신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n아직 가입 전이시면 '가입' 이라고 입력해주세요.\n(* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9' 또는 '이전')",
 			"buttons": [
 				{
-					"text": "바로보기",
+					"text": "트렌드 확인하기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_314"
 				}
-			],
-			"image": {
-				"url": "/files/sh_logo.png"
-			}
-		},
-		"children": [
-			{
-				"name": "dialog_default112",
-				"id": "default112",
-				"filename": "default",
-				"input": [
-					{
-						"text": "이전"
-					}
-				],
-				"output": {
-					"call": "다양한 제휴/FUN/생활/금융 서비스"
-				}
-			}
-		]
+			]
+		}
 	},
 	{
 		"name": "더치페이",
@@ -824,32 +592,140 @@ var dialogs = [
 			}
 		],
 		"output": {
-			"output": "현금없이도 가능한\n카드 '더치페이'\n설명 : 대표로 카드 결제한 고객이 FAN을 통해 대상자에게 분담금액을 요청하고 분담금액의 신용카드 결제를 통해 대표로 카드 결제한 고객의 결제대금을 차감받는 서비스\n\n더치페이는 신한 FAN에 가입하신 고객에게 제공되는 서비스입니다. \n가입 고객은 '바로보기'를 클릭해 주세요.\n아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+			"output": "한명이 카드로 결제한 밥값을 여러명에게 청구하는 특별한 더이페이 서비스!\n나눌 친구는 카드대금으로 청구되고 요청친구는 그만큼 차감됩니다.\n\n신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n아직 가입 전이시면 '가입' 이라고 입력해주세요.\n(* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9' 또는 '이전')",
 			"buttons": [
 				{
-					"text": "바로보기",
+					"text": "더치페이 바로가기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_085"
 				}
-			],
-			"image": {
-				"url": "/files/sh_logo.png"
+			]
+		}
+	},
+	{
+		"name": "금융/납부 서비스",
+		"id": "default192",
+		"filename": "default",
+		"input": [
+			{
+				"text": "금융"
+			},
+			{
+				"text": "금융 서비스"
+			},
+			{
+				"text": "납부"
+			},
+			{
+				"text": "납부 서비스"
+			},
+			{
+				"text": "4"
 			}
-		},
+		],
+		"output": "신한 FAN에는 편리하게 금융/납부서비스를 신청할 수 있어요!\n \n1. 단기카드대출(현금서비스)\n2. 장기카드대출(카드론)\n3. MF일반대출\n4. 납부서비스\n \n (* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9' 또는 '이전')",
 		"children": [
 			{
-				"name": "dialog_default113",
-				"id": "default113",
+				"name": "dialog_default194",
+				"id": "default194",
 				"filename": "default",
 				"input": [
 					{
-						"text": "이전"
+						"text": "1"
 					}
 				],
 				"output": {
-					"call": "다양한 제휴/FUN/생활/금융 서비스"
+					"call": "단기카드대출"
+				}
+			},
+			{
+				"name": "dialog_default196",
+				"id": "default196",
+				"filename": "default",
+				"input": [
+					{
+						"text": "2"
+					}
+				],
+				"output": {
+					"call": "장기카드대출"
 				}
 			}
 		]
+	},
+	{
+		"name": "단기카드대출",
+		"id": "default193",
+		"filename": "default",
+		"input": [
+			{
+				"text": "단기 카드 대출"
+			},
+			{
+				"text": "현금 서비스"
+			}
+		],
+		"output": {
+			"output": "신한 FAN을 통해 단기카드대출(현금서비스)을 이용할 수 있습니다!\n\n신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n (* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9' 또는 '이전')",
+			"buttons": [
+				{
+					"text": "단기카드대출 바로가기",
+					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_201"
+				}
+			]
+		}
+	},
+	{
+		"name": "장기카드대출",
+		"id": "default195",
+		"filename": "default",
+		"input": [
+			{
+				"text": "장기 카드 대출"
+			},
+			{
+				"text": "카드 론"
+			}
+		],
+		"output": {
+			"output": "신한 FAN을 통해 장기카드대출(카드론)을 이용할 수 있습니다!\n\n✔ 스피드론\n✔ 프리미엄론\n\n신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n (* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9' 또는 '이전')",
+			"buttons": [
+				{
+					"text": "장기카드대출 바로가기",
+					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_202"
+				}
+			]
+		}
+	},
+	{
+		"name": "MF일반대출",
+		"id": "default197",
+		"filename": "default",
+		"input": [
+			{
+				"text": "일반 대출"
+			},
+			{
+				"text": "MF 일반 대출"
+			},
+			{
+				"text": "즉시 대출"
+			},
+			{
+				"text": "스피드 론"
+			},
+			{
+				"text": "담보 대출"
+			}
+		],
+		"output": {
+			"output": "신한 FAN을 통해 MF일반대출을 이용할 수 있습니다!\n\n✔ 즉시대출\n✔ 직장인대출\n✔ 개인사업자대출\n✔ 아파트소유자대출\n✔ 국민연금납부자대출\n✔ 국민연금수령자대출\n✔ 자동차담보대출\n✔ 스피드론2\n\n신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n (* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9' 또는 '이전')",
+			"buttons": [
+				{
+					"text": "MF일반대출 바로가기",
+					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_203"
+				}
+			]
+		}
 	},
 	{
 		"name": "FAN에 대해 자주하는 질문들(FAQ)",
@@ -864,9 +740,6 @@ var dialogs = [
 			},
 			{
 				"text": "문의"
-			},
-			{
-				"text": "4"
 			}
 		],
 		"output": "FAN관련 궁금하신부분을 말씀하시면 가장 알맞은 답변을 안내해드리겠습니다. 궁금하신 질문을 '단어'로 입력해주세요!",
@@ -940,22 +813,7 @@ var dialogs = [
 								]
 							}
 						],
-						"output": "[+listType.title+]\n+listType.content+\n더 필요하신 게 있으시면 말씀해주세요~\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
-						"children": [
-							{
-								"name": "dialog_default114",
-								"id": "default114",
-								"filename": "default",
-								"input": [
-									{
-										"text": "이전"
-									}
-								],
-								"output": {
-									"up": "1"
-								}
-							}
-						]
+						"output": "[+listType.title+]\n+listType.content+\n더 필요하신 게 있으시면 말씀해주세요~\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')"
 					},
 					{
 						"name": "dialog_default140",
@@ -987,9 +845,6 @@ var dialogs = [
 			},
 			{
 				"text": "추천"
-			},
-			{
-				"text": "5"
 			}
 		],
 		"output": {
@@ -1084,22 +939,7 @@ var dialogs = [
 											"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1350235_33659.html"
 										}
 									]
-								},
-								"children": [
-									{
-										"name": "dialog_default130",
-										"id": "default130",
-										"filename": "default",
-										"input": [
-											{
-												"text": "이전"
-											}
-										],
-										"output": {
-											"up": "1"
-										}
-									}
-								]
+								}
 							},
 							{
 								"name": "포인트적립",
@@ -1121,34 +961,6 @@ var dialogs = [
 											"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1355079_33659.html"
 										}
 									]
-								},
-								"children": [
-									{
-										"name": "dialog_default132",
-										"id": "default132",
-										"filename": "default",
-										"input": [
-											{
-												"text": "이전"
-											}
-										],
-										"output": {
-											"up": "1"
-										}
-									}
-								]
-							},
-							{
-								"name": "dialog_default131",
-								"id": "default131",
-								"filename": "default",
-								"input": [
-									{
-										"text": "이전"
-									}
-								],
-								"output": {
-									"up": "1"
 								}
 							}
 						]
@@ -1236,22 +1048,7 @@ var dialogs = [
 													"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1350241_33659.html"
 												}
 											]
-										},
-										"children": [
-											{
-												"name": "dialog_default133",
-												"id": "default133",
-												"filename": "default",
-												"input": [
-													{
-														"text": "이전"
-													}
-												],
-												"output": {
-													"up": "1"
-												}
-											}
-										]
+										}
 									},
 									{
 										"name": "소비추구형",
@@ -1309,22 +1106,7 @@ var dialogs = [
 															"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1350234_33659.html"
 														}
 													]
-												},
-												"children": [
-													{
-														"name": "dialog_default147",
-														"id": "default147",
-														"filename": "default",
-														"input": [
-															{
-																"text": "이전"
-															}
-														],
-														"output": {
-															"up": "1"
-														}
-													}
-												]
+												}
 											},
 											{
 												"name": "dialog_default144",
@@ -1346,22 +1128,7 @@ var dialogs = [
 															"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1350244_33659.html"
 														}
 													]
-												},
-												"children": [
-													{
-														"name": "dialog_default148",
-														"id": "default148",
-														"filename": "default",
-														"input": [
-															{
-																"text": "이전"
-															}
-														],
-														"output": {
-															"up": "1"
-														}
-													}
-												]
+												}
 											},
 											{
 												"name": "dialog_default145",
@@ -1383,22 +1150,7 @@ var dialogs = [
 															"url": "https://m.shinhancard.com/conts/html/card/apply/premium/1350224_33658.html"
 														}
 													]
-												},
-												"children": [
-													{
-														"name": "dialog_default149",
-														"id": "default149",
-														"filename": "default",
-														"input": [
-															{
-																"text": "이전"
-															}
-														],
-														"output": {
-															"up": "1"
-														}
-													}
-												]
+												}
 											},
 											{
 												"name": "dialog_default146",
@@ -1420,34 +1172,6 @@ var dialogs = [
 															"url": "https://m.shinhancard.com/conts/html/card/apply/premium/1350226_33658.html"
 														}
 													]
-												},
-												"children": [
-													{
-														"name": "dialog_default150",
-														"id": "default150",
-														"filename": "default",
-														"input": [
-															{
-																"text": "이전"
-															}
-														],
-														"output": {
-															"up": "1"
-														}
-													}
-												]
-											},
-											{
-												"name": "dialog_default154",
-												"id": "default154",
-												"filename": "default",
-												"input": [
-													{
-														"text": "이전"
-													}
-												],
-												"output": {
-													"up": "1"
 												}
 											}
 										]
@@ -1478,34 +1202,6 @@ var dialogs = [
 													"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1364067_33659.html"
 												}
 											]
-										},
-										"children": [
-											{
-												"name": "dialog_default135",
-												"id": "default135",
-												"filename": "default",
-												"input": [
-													{
-														"text": "이전"
-													}
-												],
-												"output": {
-													"up": "1"
-												}
-											}
-										]
-									},
-									{
-										"name": "dialog_default129",
-										"id": "default129",
-										"filename": "default",
-										"input": [
-											{
-												"text": "이전"
-											}
-										],
-										"output": {
-											"up": "1"
 										}
 									}
 								]
@@ -1566,22 +1262,7 @@ var dialogs = [
 													"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1350237_33659.html"
 												}
 											]
-										},
-										"children": [
-											{
-												"name": "dialog_default136",
-												"id": "default136",
-												"filename": "default",
-												"input": [
-													{
-														"text": "이전"
-													}
-												],
-												"output": {
-													"up": "1"
-												}
-											}
-										]
+										}
 									},
 									{
 										"name": "소비추구형2",
@@ -1614,19 +1295,6 @@ var dialogs = [
 										},
 										"children": [
 											{
-												"name": "dialog_default137",
-												"id": "default137",
-												"filename": "default",
-												"input": [
-													{
-														"text": "이전"
-													}
-												],
-												"output": {
-													"up": "1"
-												}
-											},
-											{
 												"name": "dialog_default151",
 												"id": "default151",
 												"filename": "default",
@@ -1646,22 +1314,7 @@ var dialogs = [
 															"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1350243_33659.html"
 														}
 													]
-												},
-												"children": [
-													{
-														"name": "dialog_default172",
-														"id": "default172",
-														"filename": "default",
-														"input": [
-															{
-																"text": "이전"
-															}
-														],
-														"output": {
-															"up": "1"
-														}
-													}
-												]
+												}
 											},
 											{
 												"name": "dialog_default152",
@@ -1683,22 +1336,7 @@ var dialogs = [
 															"url": "https://m.shinhancard.com/conts/html/card/apply/premium/1350227_33658.html"
 														}
 													]
-												},
-												"children": [
-													{
-														"name": "dialog_default173",
-														"id": "default173",
-														"filename": "default",
-														"input": [
-															{
-																"text": "이전"
-															}
-														],
-														"output": {
-															"up": "1"
-														}
-													}
-												]
+												}
 											}
 										]
 									},
@@ -1771,22 +1409,7 @@ var dialogs = [
 															"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1350231_33659.html"
 														}
 													]
-												},
-												"children": [
-													{
-														"name": "dialog_default174",
-														"id": "default174",
-														"filename": "default",
-														"input": [
-															{
-																"text": "이전"
-															}
-														],
-														"output": {
-															"up": "1"
-														}
-													}
-												]
+												}
 											},
 											{
 												"name": "dialog_default156",
@@ -1808,22 +1431,7 @@ var dialogs = [
 															"url": "https://m.shinhancard.com/conts/html/card/apply/credit/1350232_33659.html"
 														}
 													]
-												},
-												"children": [
-													{
-														"name": "dialog_default175",
-														"id": "default175",
-														"filename": "default",
-														"input": [
-															{
-																"text": "이전"
-															}
-														],
-														"output": {
-															"up": "1"
-														}
-													}
-												]
+												}
 											},
 											{
 												"name": "dialog_default157",
@@ -1845,22 +1453,7 @@ var dialogs = [
 															"url": "https://m.shinhancard.com/conts/html/card/apply/premium/1350223_33658.html"
 														}
 													]
-												},
-												"children": [
-													{
-														"name": "dialog_default176",
-														"id": "default176",
-														"filename": "default",
-														"input": [
-															{
-																"text": "이전"
-															}
-														],
-														"output": {
-															"up": "1"
-														}
-													}
-												]
+												}
 											},
 											{
 												"name": "dialog_default158",
@@ -1882,22 +1475,7 @@ var dialogs = [
 															"url": "https://m.shinhancard.com/conts/html/card/apply/premium/1350228_33658.html"
 														}
 													]
-												},
-												"children": [
-													{
-														"name": "dialog_default177",
-														"id": "default177",
-														"filename": "default",
-														"input": [
-															{
-																"text": "이전"
-															}
-														],
-														"output": {
-															"up": "1"
-														}
-													}
-												]
+												}
 											}
 										]
 									},
@@ -1935,19 +1513,6 @@ var dialogs = [
 										},
 										"children": [
 											{
-												"name": "dialog_default139",
-												"id": "default139",
-												"filename": "default",
-												"input": [
-													{
-														"text": "이전"
-													}
-												],
-												"output": {
-													"up": "1"
-												}
-											},
-											{
 												"name": "dialog_default160",
 												"id": "default160",
 												"filename": "default",
@@ -1980,49 +1545,10 @@ var dialogs = [
 												}
 											}
 										]
-									},
-									{
-										"name": "dialog_default128",
-										"id": "default128",
-										"filename": "default",
-										"input": [
-											{
-												"text": "이전"
-											}
-										],
-										"output": {
-											"up": "1"
-										}
 									}
 								]
-							},
-							{
-								"name": "dialog_default122",
-								"id": "default122",
-								"filename": "default",
-								"input": [
-									{
-										"text": "이전"
-									}
-								],
-								"output": {
-									"up": "1"
-								}
 							}
 						]
-					},
-					{
-						"name": "dialog_default116",
-						"id": "default116",
-						"filename": "default",
-						"input": [
-							{
-								"text": "이전"
-							}
-						],
-						"output": {
-							"up": "1"
-						}
 					}
 				]
 			},
@@ -2076,22 +1602,7 @@ var dialogs = [
 									"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350273_33660.html"
 								}
 							]
-						},
-						"children": [
-							{
-								"name": "dialog_default120",
-								"id": "default120",
-								"filename": "default",
-								"input": [
-									{
-										"text": "이전"
-									}
-								],
-								"output": {
-									"up": "1"
-								}
-							}
-						]
+						}
 					},
 					{
 						"name": "혜택기본형2",
@@ -2175,19 +1686,6 @@ var dialogs = [
 										},
 										"children": [
 											{
-												"name": "dialog_default123",
-												"id": "default123",
-												"filename": "default",
-												"input": [
-													{
-														"text": "이전"
-													}
-												],
-												"output": {
-													"up": "1"
-												}
-											},
-											{
 												"name": "dialog_default164",
 												"id": "default164",
 												"filename": "default",
@@ -2207,22 +1705,7 @@ var dialogs = [
 															"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350263_33660.html"
 														}
 													]
-												},
-												"children": [
-													{
-														"name": "dialog_default179",
-														"id": "default179",
-														"filename": "default",
-														"input": [
-															{
-																"text": "이전"
-															}
-														],
-														"output": {
-															"up": "1"
-														}
-													}
-												]
+												}
 											},
 											{
 												"name": "dialog_default163",
@@ -2244,22 +1727,7 @@ var dialogs = [
 															"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350266_33660.html"
 														}
 													]
-												},
-												"children": [
-													{
-														"name": "dialog_default178",
-														"id": "default178",
-														"filename": "default",
-														"input": [
-															{
-																"text": "이전"
-															}
-														],
-														"output": {
-															"up": "1"
-														}
-													}
-												]
+												}
 											}
 										]
 									},
@@ -2340,34 +1808,8 @@ var dialogs = [
 												"output": {
 													"call": "슈퍼 실속"
 												}
-											},
-											{
-												"name": "dialog_default124",
-												"id": "default124",
-												"filename": "default",
-												"input": [
-													{
-														"text": "이전"
-													}
-												],
-												"output": {
-													"up": "1"
-												}
 											}
 										]
-									},
-									{
-										"name": "dialog_default118",
-										"id": "default118",
-										"filename": "default",
-										"input": [
-											{
-												"text": "이전"
-											}
-										],
-										"output": {
-											"up": "1"
-										}
 									}
 								]
 							},
@@ -2432,19 +1874,6 @@ var dialogs = [
 										},
 										"children": [
 											{
-												"name": "dialog_default125",
-												"id": "default125",
-												"filename": "default",
-												"input": [
-													{
-														"text": "이전"
-													}
-												],
-												"output": {
-													"up": "1"
-												}
-											},
-											{
 												"name": "dialog_default166",
 												"id": "default166",
 												"filename": "default",
@@ -2464,22 +1893,7 @@ var dialogs = [
 															"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350250_33660.html"
 														}
 													]
-												},
-												"children": [
-													{
-														"name": "dialog_default180",
-														"id": "default180",
-														"filename": "default",
-														"input": [
-															{
-																"text": "이전"
-															}
-														],
-														"output": {
-															"up": "1"
-														}
-													}
-												]
+												}
 											},
 											{
 												"name": "dialog_default167",
@@ -2501,22 +1915,7 @@ var dialogs = [
 															"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350256_33660.html"
 														}
 													]
-												},
-												"children": [
-													{
-														"name": "dialog_default181",
-														"id": "default181",
-														"filename": "default",
-														"input": [
-															{
-																"text": "이전"
-															}
-														],
-														"output": {
-															"up": "1"
-														}
-													}
-												]
+												}
 											},
 											{
 												"name": "dialog_default184",
@@ -2538,22 +1937,7 @@ var dialogs = [
 															"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350254_33660.html"
 														}
 													]
-												},
-												"children": [
-													{
-														"name": "dialog_default185",
-														"id": "default185",
-														"filename": "default",
-														"input": [
-															{
-																"text": "이전"
-															}
-														],
-														"output": {
-															"up": "1"
-														}
-													}
-												]
+												}
 											}
 										]
 									},
@@ -2585,19 +1969,6 @@ var dialogs = [
 										},
 										"children": [
 											{
-												"name": "dialog_default126",
-												"id": "default126",
-												"filename": "default",
-												"input": [
-													{
-														"text": "이전"
-													}
-												],
-												"output": {
-													"up": "1"
-												}
-											},
-											{
 												"name": "dialog_default169",
 												"id": "default169",
 												"filename": "default",
@@ -2617,22 +1988,7 @@ var dialogs = [
 															"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350269_33660.html"
 														}
 													]
-												},
-												"children": [
-													{
-														"name": "dialog_default182",
-														"id": "default182",
-														"filename": "default",
-														"input": [
-															{
-																"text": "이전"
-															}
-														],
-														"output": {
-															"up": "1"
-														}
-													}
-												]
+												}
 											},
 											{
 												"name": "dialog_default170",
@@ -2654,22 +2010,7 @@ var dialogs = [
 															"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350267_33660.html"
 														}
 													]
-												},
-												"children": [
-													{
-														"name": "dialog_default183",
-														"id": "default183",
-														"filename": "default",
-														"input": [
-															{
-																"text": "이전"
-															}
-														],
-														"output": {
-															"up": "1"
-														}
-													}
-												]
+												}
 											}
 										]
 									},
@@ -2693,65 +2034,11 @@ var dialogs = [
 													"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350268_33660.html"
 												}
 											]
-										},
-										"children": [
-											{
-												"name": "dialog_default127",
-												"id": "default127",
-												"filename": "default",
-												"input": [
-													{
-														"text": "이전"
-													}
-												],
-												"output": {
-													"up": "1"
-												}
-											}
-										]
-									},
-									{
-										"name": "dialog_default119",
-										"id": "default119",
-										"filename": "default",
-										"input": [
-											{
-												"text": "이전"
-											}
-										],
-										"output": {
-											"up": "1"
 										}
 									}
 								]
-							},
-							{
-								"name": "dialog_default121",
-								"id": "default121",
-								"filename": "default",
-								"input": [
-									{
-										"text": "이전"
-									}
-								],
-								"output": {
-									"up": "1"
-								}
 							}
 						]
-					},
-					{
-						"name": "dialog_default117",
-						"id": "default117",
-						"filename": "default",
-						"input": [
-							{
-								"text": "이전"
-							}
-						],
-						"output": {
-							"up": "1"
-						}
 					}
 				]
 			}
@@ -2768,8 +2055,10 @@ var dialogs = [
 				"text": "플랫폼"
 			}
 		],
-		"output": "신한 FAN에 궁금한점을 OOO 챗봇이 해결해 드립니다. 메뉴 또는 궁금하신 키워드를 입력해주세요.\n\n1. 신한 FAN에 가입하고 싶어요\n2. 신한 FAN에는 어떤 혜택이 있나요\n3. 신한 FAN으로는 무엇을 할 수 있나요",
+		"output": "안녕하세요ㅇㅇ봇 입니다. 메뉴 또는 궁금하신 키워드를 입력해주세요.\n \n 1. 신한 FAN에 가입하고 싶어요\n 2. 신한 FAN에는 어떤 혜택이 있나요\n 3. 신한 FAN으로는 무엇을 할 수 있나요\n 4. 편리한 금융/납부 서비스\n \n (* 처음으로 돌아가기 0 또는 '처음')",
 		"name": "신한 FAN 플랫폼 소개",
+		"inRaw": "FAN",
+		"inNLP": "FAN",
 		"children": [
 			{
 				"name": "dialog_default186",
@@ -2836,22 +2125,7 @@ var dialogs = [
 						]
 					}
 				],
-				"output": "[+listType.title+]\n+listType.content+\n더 필요하신 게 있으시면 말씀해주세요~\n\n(* 처음으로 돌아가기 : 0 또는 '처음')",
-				"children": [
-					{
-						"name": "dialog_default115",
-						"id": "default115",
-						"filename": "default",
-						"input": [
-							{
-								"text": "이전"
-							}
-						],
-						"output": {
-							"up": "1"
-						}
-					}
-				]
+				"output": "[+listType.title+]\n+listType.content+\n더 필요하신 게 있으시면 말씀해주세요~\n\n(* 처음으로 돌아가기 : 0 또는 '처음')"
 			}
 		]
 	}
@@ -2923,6 +2197,22 @@ var commonDialogs = [
 		],
 		"output": {
 			"call": "신한 FAN 플랫폼 소개"
+		}
+	},
+	{
+		"name": "dialog_commondefault197",
+		"id": "commondefault197",
+		"filename": "defaultcommon",
+		"input": [
+			{
+				"text": "9"
+			},
+			{
+				"text": "이전"
+			}
+		],
+		"output": {
+			"up": "1"
 		}
 	}
 ];
