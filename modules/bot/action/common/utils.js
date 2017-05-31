@@ -155,6 +155,49 @@ function cloneWithParent(obj) {
   throw new Error("Unable to copy obj! Its type isn't supported.");
 };
 
+exports.cloneWithoutCycle = cloneWithoutCycle;
+
+function cloneWithoutCycle(obj) {
+  var copy;
+
+  // Handle the 3 simple types, and null or undefined
+  if (null == obj || "object" != typeof obj) return obj;
+
+  // Handle Date
+  if (obj instanceof Date) {
+    copy = new Date();
+    copy.setTime(obj.getTime());
+    return copy;
+  }
+
+  // Handle RegExp
+  if (obj instanceof RegExp) {
+    return obj;
+  }
+
+  // Handle Array
+  if (obj instanceof Array) {
+    copy = [];
+    for (var i = 0, len = obj.length; i < len; i++) {
+      copy[i] = cloneWithoutCycle(obj[i]);
+    }
+    return copy;
+  }
+
+  // Handle Object
+  if (obj instanceof Object) {
+    copy = {};
+    for (var attr in obj) {
+      if (obj.hasOwnProperty(attr)) {
+        if(!attr.startsWith('parent') && !attr.startsWith('top') && !attr.startsWith('topTask'))
+          copy[attr] = cloneWithoutCycle(obj[attr]);
+      }
+    }
+    return copy;
+  }
+
+  throw new Error("Unable to copy obj! Its type isn't supported.");
+};
 exports.requireNoCache = requireNoCache;
 function requireNoCache(filePath, isForce) {
   if(process.env.NODE_ENV == 'development' || isForce == true)

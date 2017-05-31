@@ -22,10 +22,6 @@ var BotFile = mongoose.model('BotFile');
 
 var util = require('util');
 var clear = function(d) {
-  //delete d.parent;
-  delete d.top;
-  if (d.task)
-    delete d.task.topTask;
   if(d.context) d.context = {name: d.context.name};
   if (d.children) {
     d.children.forEach(clear);
@@ -424,7 +420,7 @@ exports.dialog = function (req, res) {
   var dialogId = req.params.dialogId;
   isCyclic(global._bots[botId].dialogs)
   global._bots[botId].dialogs.forEach(clear);
-  dialogs_data = utils.cloneWithParent(global._bots[botId].dialogs);
+  dialogs_data = utils.cloneWithoutCycle(global._bots[botId].dialogs);
   var data = {};
 
   console.log("dialog:" + botId+","+dialogId);
@@ -438,7 +434,7 @@ exports.dialogChildren = function (req, res) {
   var dialogId = req.params.dialogId;
   isCyclic(global._bots[botId].dialogs)
   global._bots[botId].dialogs.forEach(clear);
-  dialogs_data = utils.cloneWithParent(global._bots[botId].dialogs);
+  dialogs_data = utils.cloneWithoutCycle(global._bots[botId].dialogs);
   var data = {};
   console.log(util.inspect(dialogs_data))
 
@@ -576,7 +572,7 @@ exports.dialogs = function (req, res) {
     function (cb) {
       result.data = [];
 
-      var _dialogs_data = utils.cloneWithParent(dialogs_data);
+      var _dialogs_data = utils.cloneWithoutCycle(dialogs_data);
       _dialogs_data.forEach(clear);
 
       _dialogs_data.forEach(function (d) {
@@ -587,7 +583,7 @@ exports.dialogs = function (req, res) {
 
       result.common = [];
 
-      var _common_dialogs = utils.cloneWithParent(common_dialogs)
+      var _common_dialogs = utils.cloneWithoutCycle(common_dialogs);
       _common_dialogs.forEach(clear);
       _common_dialogs.forEach(function (d) {
         if (d.filename === result.fileName + "common") {
