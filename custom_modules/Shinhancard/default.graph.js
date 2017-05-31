@@ -38,7 +38,13 @@ var dialogs = [
 				"text": "1"
 			}
 		],
-		"output": "✔ 신한 FAN은 신한카드가 없어도 가입가능!  \n✔ 신한 FAN에 가입 하시면 다양한 경품이 가득! \n✔ 신규라면 100% 당첨 경품 제공!\n\n (* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9' 또는 '이전')",
+		"output": {
+			"output": "✔ 신한 FAN은 신한카드가 없어도 가입가능!  \n✔ 신한 FAN에 가입 하시면 다양한 경품이 가득! \n✔ 신규라면 100% 당첨 경품 제공!\n\n (* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9' 또는 '이전')",
+			"image": {
+				"url": "/files/Shinhancard1496222468984.jpg",
+				"displayname": "FAN가입.jpg"
+			}
+		},
 		"inRaw": "1",
 		"inNLP": "1",
 		"task": "task1"
@@ -148,7 +154,11 @@ var dialogs = [
 					"text": "대박이벤트 바로가기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?+A2:F14=FAN_MAIN_304"
 				}
-			]
+			],
+			"image": {
+				"url": "/files/Shinhancard1496222537217.jpg",
+				"displayname": "이벤트.jpg"
+			}
 		}
 	},
 	{
@@ -182,7 +192,11 @@ var dialogs = [
 					"text": "FAN 혜택 바로보기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?maintap=FAN_TAB_104"
 				}
-			]
+			],
+			"image": {
+				"url": "/files/Shinhancard1496222562458.jpg",
+				"displayname": "혜택+.jpg"
+			}
 		},
 		"inRaw": "1",
 		"inNLP": "1"
@@ -206,7 +220,11 @@ var dialogs = [
 					"text": "나만의 혜택 보기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_305"
 				}
-			]
+			],
+			"image": {
+				"url": "/files/Shinhancard1496222574835.jpg",
+				"displayname": "Sally.jpg"
+			}
 		}
 	},
 	{
@@ -311,7 +329,11 @@ var dialogs = [
 					"text": "이용가이드 보기",
 					"url": "\"https://newm.shinhancard.com/event/2015/fc_launch.jsp?url=https://m.shinhancard.com/conts/html/shinhanFAN/introFAN/MOBFM021R02.html&title=GUIDE \""
 				}
-			]
+			],
+			"image": {
+				"url": "/files/Shinhancard1496222593859.jpg",
+				"displayname": "sns_FAN이용가이드.jpg"
+			}
 		}
 	},
 	{
@@ -330,7 +352,11 @@ var dialogs = [
 					"text": "가맹점 보기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_038"
 				}
-			]
+			],
+			"image": {
+				"url": "/files/Shinhancard1496222604898.jpg",
+				"displayname": "FAN-가맹점안내.jpg"
+			}
 		}
 	},
 	{
@@ -449,7 +475,11 @@ var dialogs = [
 					"text": "바로보기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?maintap=FAN_TAB_102"
 				}
-			]
+			],
+			"image": {
+				"url": "/files/Shinhancard1496222726221.jpg",
+				"displayname": "판클럽.jpg"
+			}
 		}
 	},
 	{
@@ -492,7 +522,11 @@ var dialogs = [
 					"text": "FAN 혜택 바로보기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?maintap=FAN_TAB_104"
 				}
-			]
+			],
+			"image": {
+				"url": "/files/Shinhancard1496222648895.jpg",
+				"displayname": "FAN_제휴사혜택.jpg"
+			}
 		}
 	},
 	{
@@ -511,7 +545,11 @@ var dialogs = [
 					"text": "나의 운세 확인하기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_301"
 				}
-			]
+			],
+			"image": {
+				"url": "/files/Shinhancard1496222664707.jpg",
+				"displayname": "타로.jpg"
+			}
 		}
 	},
 	{
@@ -533,7 +571,11 @@ var dialogs = [
 					"text": "게임하러가기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_302"
 				}
-			]
+			],
+			"image": {
+				"url": "/files/Shinhancard1496222674349.jpg",
+				"displayname": "게임.jpg"
+			}
 		}
 	},
 	{
@@ -555,7 +597,11 @@ var dialogs = [
 					"text": "소비관리 바로가기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_084"
 				}
-			]
+			],
+			"image": {
+				"url": "/files/Shinhancard1496222685533.jpg",
+				"displayname": "페이봇.jpg"
+			}
 		}
 	},
 	{
@@ -577,7 +623,11 @@ var dialogs = [
 					"text": "트렌드 확인하기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_314"
 				}
-			]
+			],
+			"image": {
+				"url": "/files/Shinhancard1496222694990.jpg",
+				"displayname": "트렌디연구소.jpg"
+			}
 		}
 	},
 	{
@@ -596,7 +646,11 @@ var dialogs = [
 					"text": "더치페이 바로가기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_085"
 				}
-			]
+			],
+			"image": {
+				"url": "/files/Shinhancard1496222710229.jpg",
+				"displayname": "더치페이.jpg"
+			}
 		}
 	},
 	{
@@ -757,6 +811,20 @@ var dialogs = [
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_308"
 				}
 			]
+		}
+	},
+	{
+		"name": "dialog_default199",
+		"id": "default199",
+		"filename": "default",
+		"input": [
+			{
+				"text": "faq update start"
+			}
+		],
+		"output": "success",
+		"task": {
+			"name": "te"
 		}
 	},
 	{
@@ -963,10 +1031,14 @@ var dialogs = [
 										"text": "캐시 백"
 									}
 								],
-								"output": "[신한카드 YOLO ⓘ]카드를 추천해드립니다. \n\n할인율과 디자인을 내 마음대로!!\n나의 맞춤카드를 원하신다면, “YOLO”오세요~\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.",
-								"task": {
-									"name": "YOLO"
-								}
+								"output": {
+									"output": "[신한카드 YOLO ⓘ]카드를 추천해드립니다. \n\n할인율과 디자인을 내 마음대로!!\n나의 맞춤카드를 원하신다면, “YOLO”오세요~\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.",
+									"image": {
+										"url": "/files/Shinhancard1496222852475.jpg",
+										"displayname": "card01.jpg"
+									}
+								},
+								"task": "YOLO"
 							},
 							{
 								"name": "포인트적립",
@@ -980,9 +1052,15 @@ var dialogs = [
 										"text": "2"
 									}
 								],
-								"output": "[신한 Hi-Point 카드 Nano f]카드를 추천해드립니다. \n\n이 땅의 패션피플을 위한 단 하나의 카드!입니다.\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.",
+								"output": {
+									"output": "[신한 Hi-Point 카드 Nano f]카드를 추천해드립니다. \n\n이 땅의 패션피플을 위한 단 하나의 카드!입니다.\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.",
+									"image": {
+										"url": "/files/Shinhancard1496222865319.jpg",
+										"displayname": "card02.jpg"
+									}
+								},
 								"task": {
-									"name": "HiPoint"
+									"name": "NANOf"
 								}
 							}
 						]
@@ -1062,10 +1140,14 @@ var dialogs = [
 												"text": "재테크"
 											}
 										],
-										"output": "[신한카드 미래설계] 카드를 추천해드립니다.\n\n생활비 할인에 금융 혜택까지 제공해드립니다.\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.",
-										"task": {
-											"name": "mirae"
-										}
+										"output": {
+											"output": "[신한카드 미래설계] 카드를 추천해드립니다.\n\n생활비 할인에 금융 혜택까지 제공해드립니다.\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.",
+											"image": {
+												"url": "/files/Shinhancard1496222892867.jpg",
+												"displayname": "card03.jpg"
+											}
+										},
+										"task": "mirae"
 									},
 									{
 										"name": "소비추구형",
@@ -1112,13 +1194,17 @@ var dialogs = [
 														"text": "1"
 													},
 													{
-														"text": "Always FAN"
+														"text": "Always"
 													}
 												],
-												"output": "[신한카드 Always FAN] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
-												"task": {
-													"name": "AlwaysFAN"
-												}
+												"output": {
+													"output": "[신한카드 Always FAN] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"image": {
+														"url": "/files/Shinhancard1496222904469.jpg",
+														"displayname": "card04.jpg"
+													}
+												},
+												"task": "AlwaysFAN"
 											},
 											{
 												"name": "dialog_default144",
@@ -1132,10 +1218,14 @@ var dialogs = [
 														"text": "O 2 O"
 													}
 												],
-												"output": "[신한카드 O2O] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
-												"task": {
-													"name": "O2O"
-												}
+												"output": {
+													"output": "[신한카드 O2O] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"image": {
+														"url": "/files/Shinhancard1496222925697.jpg",
+														"displayname": "card05.jpg"
+													}
+												},
+												"task": "O2O"
 											},
 											{
 												"name": "dialog_default145",
@@ -1149,10 +1239,14 @@ var dialogs = [
 														"text": "The LADY CLASSIC"
 													}
 												],
-												"output": "[신한카드 The LADY CLASSIC] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
-												"task": {
-													"name": "TheLadyClassic"
-												}
+												"output": {
+													"output": "[신한카드 The LADY CLASSIC] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"image": {
+														"url": "/files/Shinhancard1496222940212.jpg",
+														"displayname": "card10.jpg"
+													}
+												},
+												"task": "TheLadyClassic"
 											},
 											{
 												"name": "dialog_default146",
@@ -1166,10 +1260,14 @@ var dialogs = [
 														"text": "The CLASSIC Y"
 													}
 												],
-												"output": "[신한카드 The CLASSIC-Y] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
-												"task": {
-													"name": "TheClassicY"
-												}
+												"output": {
+													"output": "[신한카드 The CLASSIC-Y] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"image": {
+														"url": "/files/Shinhancard1496222951062.jpg",
+														"displayname": "card11.jpg"
+													}
+												},
+												"task": "TheClassicY"
 											}
 										]
 									},
@@ -1191,10 +1289,14 @@ var dialogs = [
 												"text": "3"
 											}
 										],
-										"output": "기름값, 교통비 할인 혜택이 제공되는 [GS칼텍스 신한카드 Shine]을 추천해드립니다.\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.",
-										"task": {
-											"name": "GSShine"
-										}
+										"output": {
+											"output": "기름값, 교통비 할인 혜택이 제공되는 [GS칼텍스 신한카드 Shine]을 추천해드립니다.\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.",
+											"image": {
+												"url": "/files/Shinhancard1496223008518.jpg",
+												"displayname": "card12.jpg"
+											}
+										},
+										"task": "GSShine"
 									}
 								]
 							},
@@ -1246,10 +1348,14 @@ var dialogs = [
 												"text": "1"
 											}
 										],
-										"output": "[신한카드 주거래 신용 [스마트 OTP 겸용]]카드를 추천해드립니다. \n\n나의 Main 금융파트너!\n신한 주거래 패키지로 혜택을 누리세요!\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.",
-										"task": {
-											"name": "Main"
-										}
+										"output": {
+											"output": "[신한카드 주거래 신용 [스마트 OTP 겸용]]카드를 추천해드립니다. \n\n나의 Main 금융파트너!\n신한 주거래 패키지로 혜택을 누리세요!\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.",
+											"image": {
+												"url": "/files/Shinhancard1496222965267.jpg",
+												"displayname": "card13.jpg"
+											}
+										},
+										"task": "Main"
 									},
 									{
 										"name": "소비추구형2",
@@ -1293,10 +1399,14 @@ var dialogs = [
 														"text": "Hi Point"
 													}
 												],
-												"output": "[신한 Hi-Point 카드] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
-												"task": {
-													"name": "HiPoint"
-												}
+												"output": {
+													"output": "[신한 Hi-Point 카드] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"image": {
+														"url": "/files/Shinhancard1496222978095.jpg",
+														"displayname": "card14.jpg"
+													}
+												},
+												"task": "HiPoint"
 											},
 											{
 												"name": "dialog_default152",
@@ -1310,10 +1420,14 @@ var dialogs = [
 														"text": "The CLASSIC L"
 													}
 												],
-												"output": "[신한카드 The CLASSIC-L] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
-												"task": {
-													"name": "TheClassicL"
-												}
+												"output": {
+													"output": "[신한카드 The CLASSIC-L] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"image": {
+														"url": "/files/Shinhancard1496222991777.jpg",
+														"displayname": "card15.jpg"
+													}
+												},
+												"task": "TheClassicL"
 											}
 										]
 									},
@@ -1365,10 +1479,14 @@ var dialogs = [
 														"text": "RPM Platinum"
 													}
 												],
-												"output": "[신한 RPM+ Platinum# 카드] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
-												"task": {
-													"name": "RPM"
-												}
+												"output": {
+													"output": "[신한 RPM+ Platinum# 카드] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"image": {
+														"url": "/files/Shinhancard1496223034783.jpg",
+														"displayname": "card16.jpg"
+													}
+												},
+												"task": "RPM"
 											},
 											{
 												"name": "dialog_default156",
@@ -1382,10 +1500,14 @@ var dialogs = [
 														"text": "Air Platinum"
 													}
 												],
-												"output": "[신한카드 Air Platinum#] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
-												"task": {
-													"name": "Air"
-												}
+												"output": {
+													"output": "[신한카드 Air Platinum#] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"image": {
+														"url": "/files/Shinhancard1496223047272.jpg",
+														"displayname": "card17.jpg"
+													}
+												},
+												"task": "Air"
 											},
 											{
 												"name": "dialog_default157",
@@ -1399,10 +1521,14 @@ var dialogs = [
 														"text": "The Best T"
 													}
 												],
-												"output": "[신한카드 The Best-T] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
-												"task": {
-													"name": "BESTT"
-												}
+												"output": {
+													"output": "[신한카드 The Best-T] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"image": {
+														"url": "/files/Shinhancard1496223060412.jpg",
+														"displayname": "card18.jpg"
+													}
+												},
+												"task": "BESTT"
 											},
 											{
 												"name": "dialog_default158",
@@ -1416,10 +1542,14 @@ var dialogs = [
 														"text": "The Best F"
 													}
 												],
-												"output": "[신한 THE BEST-F 카드] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
-												"task": {
-													"name": "BESTF"
-												}
+												"output": {
+													"output": "[신한 THE BEST-F 카드] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"image": {
+														"url": "/files/Shinhancard1496223074215.jpg",
+														"displayname": "card19.jpg"
+													}
+												},
+												"task": "BESTF"
 											}
 										]
 									},
@@ -1641,10 +1771,14 @@ var dialogs = [
 														"text": "S 20 Pink"
 													}
 												],
-												"output": "[신한 S20 Pink 카드] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
-												"task": {
-													"name": "S20Pink"
-												}
+												"output": {
+													"output": "[신한 S20 Pink 카드] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"image": {
+														"url": "/files/Shinhancard1496223114080.jpg",
+														"displayname": "card23.jpg"
+													}
+												},
+												"task": "S20Pink"
 											},
 											{
 												"name": "dialog_default163",
@@ -1658,10 +1792,14 @@ var dialogs = [
 														"text": "S 20"
 													}
 												],
-												"output": "[신한 S20 체크카드] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
-												"task": {
-													"name": "S20"
-												}
+												"output": {
+													"output": "[신한 S20 체크카드] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"image": {
+														"url": "/files/Shinhancard1496223125514.jpg",
+														"displayname": "card22.jpg"
+													}
+												},
+												"task": "S20"
 											}
 										]
 									},
@@ -1819,10 +1957,14 @@ var dialogs = [
 														"text": "쿠팡"
 													}
 												],
-												"output": "[쿠팡 신한카드 체크] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
-												"task": {
-													"name": "coupang"
-												}
+												"output": {
+													"output": "[쿠팡 신한카드 체크] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"image": {
+														"url": "/files/Shinhancard1496223141009.jpg",
+														"displayname": "card27.jpg"
+													}
+												},
+												"task": "coupang"
 											},
 											{
 												"name": "dialog_default167",
@@ -1836,10 +1978,14 @@ var dialogs = [
 														"text": "카카오 페이"
 													}
 												],
-												"output": "[카카오페이 신한 체크카드] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
-												"task": {
-													"name": "kakao"
-												}
+												"output": {
+													"output": "[카카오페이 신한 체크카드] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
+													"image": {
+														"url": "/files/Shinhancard1496223171927.jpg",
+														"displayname": "card26.jpg"
+													}
+												},
+												"task": "kakao"
 											},
 											{
 												"name": "dialog_default184",
@@ -1860,7 +2006,11 @@ var dialogs = [
 															"text": "바로보기",
 															"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350254_33660.html"
 														}
-													]
+													],
+													"image": {
+														"url": "/files/Shinhancard1496223203051.jpg",
+														"displayname": "card25.jpg"
+													}
 												}
 											}
 										]
@@ -1952,12 +2102,13 @@ var dialogs = [
 										],
 										"output": {
 											"output": "[신한카드 주거래 체크]를 추천해드립니다.\n\n나의 Main 금융파트너!\n신한 주거래 패키지로 혜택을 누리세요!\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.",
-											"buttons": [
-												{
-													"text": "바로보기",
-													"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350268_33660.html"
-												}
-											]
+											"image": {
+												"url": "/files/Shinhancard1496223253775.jpg",
+												"displayname": "card29.jpg"
+											}
+										},
+										"task": {
+											"name": "MainCheck"
 										}
 									}
 								]
@@ -2049,7 +2200,7 @@ var dialogs = [
 						]
 					}
 				],
-				"output": "[+listType.title+]\n+listType.content+\n더 필요하신 게 있으시면 말씀해주세요~\n\n(* 처음으로 돌아가기 : 0 또는 '처음')"
+				"output": "[+listType.title+]\n+listType.content+\n더 필요하신 게 있으시면 말씀해주세요~\n\n(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')"
 			}
 		]
 	}
