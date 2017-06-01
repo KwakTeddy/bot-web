@@ -10,9 +10,11 @@ var subscribePageToken = '';
 var mongoose = require('mongoose');
 var UserBotFbPage = mongoose.model('UserBotFbPage');
 var botLib = require(path.resolve('config/lib/bot'));
+var utils = require(path.resolve('modules/bot/action/common/utils'));
 
 
 var util =require('util'); //temporary
+ 
 
 exports.messageGet =  function(req, res) {
   contextModule.getContext(req.params.bot, 'facebook', null, null, function(context) {
@@ -475,48 +477,106 @@ function sendGenericMessage(recipientId, text, task, token) {
     }
     task.splice(10);
   }else {
-    if (task.buttons){
-      for(var i = 0; i < task.buttons.length; i++){
-        task.buttons[i].title = task.buttons[i].text;
-        delete task.buttons[i].text;
 
-        if ( task.buttons[i].url){
-          task.buttons[i]['type'] = 'web_url';
-
-        }else {
-          task.buttons[i]['type'] = 'postback';
-          task.buttons[i]['payload'] = task.buttons[i].title;
+    if((text.length > 80) && task.image){
+      if(task.image){
+        if (task.image.url.substring(0,4) !== 'http'){
+          task.image.url = config.host + task.image.url
         }
+      }
+
+      if (task.buttons){
+        delete task.image;
+        for(var i = 0; i < task.buttons.length; i++){
+          task.buttons[i].title = task.buttons[i].text;
+          delete task.buttons[i].text;
+
+          if ( task.buttons[i].url){
+            task.buttons[i]['type'] = 'web_url';
+
+          }else {
+            task.buttons[i]['type'] = 'postback';
+            task.buttons[i]['payload'] = task.buttons[i].title;
+          }
+        }
+        var messageData2 = {
+          recipient: {
+            id: recipientId
+          },
+          message: {
+            attachment: {
+              type: "template",
+              payload: {
+                template_type: "button",
+                text : text,
+                buttons: task.buttons
+              }
+            }
+          }
+        };
+        callSendAPI(messageData2, token);
+      }
+
+      var messageData1 = {
+        recipient: {
+          id: recipientId
+        },
+        message: {
+          attachment: {
+            type: "image",
+            payload: {
+              "url": task.image.url
+            }
+          }
+        }
+      };
+
+      callSendAPI(messageData1, token);
+
+    }else {
+      if (task.buttons){
+        for(var i = 0; i < task.buttons.length; i++){
+          task.buttons[i].title = task.buttons[i].text;
+          delete task.buttons[i].text;
+
+          if ( task.buttons[i].url){
+            task.buttons[i]['type'] = 'web_url';
+
+          }else {
+            task.buttons[i]['type'] = 'postback';
+            task.buttons[i]['payload'] = task.buttons[i].title;
+          }
+          task['title'] = text;
+        }
+      }
+      if(task.image){
+        if (task.image.url.substring(0,4) !== 'http'){
+          task.image.url = config.host + task.image.url
+        }
+        task.image_url = task.image.url;
+        delete task.image;
         task['title'] = text;
       }
+      task = [task];
     }
-    if(task.image){
-      if (task.image.url.substring(0,4) !== 'http'){
-        task.image.url = config.host + task.image.url
-      }
-      task.image_url = task.image.url;
-      delete task.image;
-      task['subtitle'] = text;
-    }
-    task = [task];
-  }
-  console.log(util.inspect(task, {showHidden: false, depth: null}));
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "generic",
-          elements: task
+    console.log(util.inspect(task, {showHidden: false, depth: null}));
+    var messageData = {
+      recipient: {
+        id: recipientId
+      },
+      message: {
+        attachment: {
+          type: "template",
+          payload: {
+            template_type: "generic",
+            elements: task
+          }
         }
       }
-    }
-  };
+    };
 
-  callSendAPI(messageData, token);
+    callSendAPI(messageData, token);
+    }
 }
 
 /*
@@ -616,7 +676,8 @@ function smartReplyMessage(recipientId, text, task, token) {
 function callSendAPI(messageData, PAGE_ACCESS_TOKEN) {
   console.log(PAGE_ACCESS_TOKEN);
   console.log(util.inspect(messageData, {showHidden: false, depth: null}));
-  // console.log('callSendAPI: ', messageData);
+
+
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: PAGE_ACCESS_TOKEN },
