@@ -1385,7 +1385,8 @@ var dialogs = [
 												"text": "여유"
 											}
 										],
-										"output": {}
+										"output": "ㅇ",
+										"task": "cardlist1"
 									}
 								]
 							},

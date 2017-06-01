@@ -1101,7 +1101,7 @@ bot.setTask("MainCheck", MainCheck);
 var cardlist1 = {
     name: 'cardlist1',
     action: function(task, context, callback) {
-        if (context.user.channel == 'navertalk' || context.user.channel == 'socekt') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.result = {
                 items: [
                     {
@@ -1201,6 +1201,7 @@ var cardlist1 = {
                 ]
             }
         }
+      	console.log(JSON.stringify(task.result))
         callback(task, context);
     }
 };
