@@ -47,7 +47,20 @@ var dialogs = [
 		},
 		"inRaw": "1",
 		"inNLP": "1",
-		"task": "task1"
+		"task": {
+			"name": "task1",
+			"buttons": [
+				{
+					"text": "바로가입하기",
+					"url": "https://newm.shinhancard.com/event/2015/pt06.jsp?prm=kakao"
+				}
+			],
+			"output": "✔ 신한 FAN은 신한카드가 없어도 가입가능!  \n✔ 신한 FAN에 가입 하시면 다양한 경품이 가득! \n✔ 신규라면 100% 당첨 경품 제공!\n\n (* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9' 또는 '이전')",
+			"image": {
+				"url": "https://shinhancard.moneybrain.ai/files/Shinhancard1496222468984.jpg",
+				"displayname": "FAN가입.jpg"
+			}
+		}
 	},
 	{
 		"name": "FAN 혜택",
@@ -62,6 +75,8 @@ var dialogs = [
 			}
 		],
 		"output": "신한 FAN에는 고객님을 위한  다양한 혜택들이 있습니다. 어떤 혜택을 알아볼까요?\n1. FAN 전용 적립 및 할인\n2. 진행중인 대박 이벤트\n\n(* 처음으로 돌아가기 : 0 또는 '처음')",
+		"inRaw": "2",
+		"inNLP": "2",
 		"children": [
 			{
 				"name": "dialog_default28",
@@ -156,7 +171,22 @@ var dialogs = [
 				}
 			],
 			"image": {
-				"url": "/files/Shinhancard1496222537217.jpg",
+				"url": "https://shinhancard.moneybrain.ai/files/Shinhancard1496222537217.jpg",
+				"displayname": "이벤트.jpg"
+			}
+		},
+		"inRaw": "2",
+		"inNLP": "2",
+		"task": {
+			"output": "지금 FAN에서 진행되는 다양한 이벤트가 있어요.\n \n✔ 5월 FAN 신규가입 이벤트\n✔ 5월 FAN 포인트 바꿔쓰기 이벤트\n✔ 5월 FAN 가정의 달 이벤트\n\n신한 FAN에는 항상 다양한 이벤트가 준비되어 있어요!\n \n신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n (* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9' 또는 '이전')",
+			"buttons": [
+				{
+					"text": "대박이벤트 바로가기",
+					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?+A2:F14=FAN_MAIN_304"
+				}
+			],
+			"image": {
+				"url": "https://shinhancard.moneybrain.ai/files/Shinhancard1496222537217.jpg",
 				"displayname": "이벤트.jpg"
 			}
 		}
@@ -194,12 +224,25 @@ var dialogs = [
 				}
 			],
 			"image": {
-				"url": "/files/Shinhancard1496222562458.jpg",
+				"url": "https://shinhancard.moneybrain.ai/files/Shinhancard1496222562458.jpg",
 				"displayname": "혜택+.jpg"
 			}
 		},
 		"inRaw": "1",
-		"inNLP": "1"
+		"inNLP": "1",
+		"task": {
+			"output": "지금바로 신한 FAN의 다양한 혜택을 확인하세요! \n \n✔ GS25 바나나맛우유 100원 쿠폰\n✔ 홈플러스 10% 할인혜택\n✔ 비스테까 티라미수 1만원 할인\n\n 더 많은 혜택을 신한 FAN에 가입하시면 누리실 수 있어요!\n\n 신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n (* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9' 또는 '이전')",
+			"buttons": [
+				{
+					"text": "FAN 혜택 바로보기",
+					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?maintap=FAN_TAB_104"
+				}
+			],
+			"image": {
+				"url": "https://shinhancard.moneybrain.ai/files/Shinhancard1496222562458.jpg",
+				"displayname": "혜택+.jpg"
+			}
+		}
 	},
 	{
 		"name": "Sally 쿠폰 상세",
@@ -477,7 +520,22 @@ var dialogs = [
 				}
 			],
 			"image": {
-				"url": "/files/Shinhancard1496222726221.jpg",
+				"url": "https://shinhancard.moneybrain.ai/files/Shinhancard1496222726221.jpg",
+				"displayname": "판클럽.jpg"
+			}
+		},
+		"inRaw": "4",
+		"inNLP": "4",
+		"task": {
+			"output": "신한금융그룹과 거래를 할수록 더많은 혜택을 드리는 통합리워드 서비스 신한 FAN클럽! \n 포인트 적립/이용부터 쇼핑/쿠폰/그룹사 혜택까지 한번에 이용하세요.\n \n 신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n (* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9 또는 '이전')",
+			"buttons": [
+				{
+					"text": "바로보기",
+					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?maintap=FAN_TAB_102"
+				}
+			],
+			"image": {
+				"url": "https://shinhancard.moneybrain.ai/files/Shinhancard1496222726221.jpg",
 				"displayname": "판클럽.jpg"
 			}
 		}
@@ -717,6 +775,17 @@ var dialogs = [
 			}
 		],
 		"output": {
+			"output": "신한 FAN을 통해 단기카드대출(현금서비스)을 이용할 수 있습니다!\n\n신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n (* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9' 또는 '이전')",
+			"buttons": [
+				{
+					"text": "단기카드대출 바로가기",
+					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_201"
+				}
+			]
+		},
+		"inRaw": "1",
+		"inNLP": "1",
+		"task": {
 			"output": "신한 FAN을 통해 단기카드대출(현금서비스)을 이용할 수 있습니다!\n\n신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n (* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9' 또는 '이전')",
 			"buttons": [
 				{
@@ -1150,18 +1219,21 @@ var dialogs = [
 										"task": "mirae"
 									},
 									{
-										"name": "소비추구형",
+										"name": "소비추구형카카오",
 										"id": "default70",
 										"filename": "default",
 										"input": [
 											{
-												"text": "소비"
+												"text": "소비",
+												"if": "context.user.channel == 'kakao'"
 											},
 											{
-												"text": "여유"
+												"text": "여유",
+												"if": "context.user.channel == 'kakao'"
 											},
 											{
-												"text": "2"
+												"text": "2",
+												"if": "context.user.channel == 'kakao'"
 											}
 										],
 										"output": {
@@ -1297,6 +1369,23 @@ var dialogs = [
 											}
 										},
 										"task": "GSShine"
+									},
+									{
+										"name": "소비추구형",
+										"id": "default201",
+										"filename": "default",
+										"input": [
+											{
+												"text": "2"
+											},
+											{
+												"text": "소비"
+											},
+											{
+												"text": "여유"
+											}
+										],
+										"output": {}
 									}
 								]
 							},
