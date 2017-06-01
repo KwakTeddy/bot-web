@@ -1206,3 +1206,395 @@ var cardlist1 = {
     }
 };
 bot.setTask("cardlist1", cardlist1);
+
+var cardlist2 = {
+    name: 'cardlist2',
+    action: function(task, context, callback) {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socekt') {
+            task.result = {
+                items: [
+                    {
+                        title: "신한 Hi-Point 카드",
+                        text: "포인트를 백화점 상품권으로 돌려받을 수 있어요. 포인트 최고 5% 적립!",
+                        imageUrl: "/files/Shinhancard1496222978095.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2111&empSeq=563&datakey=&agcCd="
+                            }
+                        ]
+                    },
+                    {
+                        title: "신한카드 The CLASSIC-L",
+                        text: "신한카드 레저 맴버가 되고 싶은 고객님을 위한 카드입니다.",
+                        imageUrl: "/files/Shinhancard1496222991777.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2686&empSeq=563&datakey=&agcCd="
+                            }
+                        ]
+
+                    }
+                ]
+            }
+        } else if (context.user.channel == 'facebook') {
+            task.result = {
+                items: [
+                    {
+                        title: "신한 Hi-Point 카드",
+                        text: "포인트를 백화점 상품권으로 돌려받을 수 있어요. 포인트 최고 5% 적립!",
+                        imageUrl: "/files/Shinhancard1496222978095.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2111&empSeq=562&datakey=&agcCd="
+                            }
+                        ]
+                    },
+                    {
+                        title: "신한카드 The CLASSIC-L",
+                        text: "신한카드 레저 맴버가 되고 싶은 고객님을 위한 카드입니다.",
+                        imageUrl: "/files/Shinhancard1496222991777.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2686&empSeq=562&datakey=&agcCd="
+                            }
+                        ]
+
+                    }
+                ]
+            }
+        }
+        callback(task, context);
+    }
+};
+bot.setTask("cardlist2", cardlist2);
+
+var cardlist3 = {
+    name: 'cardlist3',
+    action: function(task, context, callback) {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socekt') {
+            task.result = {
+                items: [
+                    {
+                        title: "신한카드 RPM+ Platinum#",
+                        text: "모든 주유소 포인트 적립에 생활 맞춤 혜택까지 제공합니다.",
+                        imageUrl: "/files/Shinhancard1496223034783.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2795&empSeq=563&datakey=&agcCd="
+                            }
+                        ]
+                    },
+                    {
+                        title: "신한카드 Air Platinum#",
+                        text: "항공 마일리지에 포인트, 프리미엄 서비스까지 제공해드려요.",
+                        imageUrl: "/files/Shinhancard1496223047272.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2753&empSeq=561&datakey=&agcCd="
+                            }
+                        ]
+
+                    },
+                    {
+                        title: "신한카드 The BEST-T",
+                        text: "해외 여행의 든든한 파트너가 되는 프리미엄카드 입니다. ",
+                        imageUrl: "/files/Shinhancard1496223060412.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2814&empSeq=563&datakey=&agcCd="
+                            }
+                        ]
+                    },
+                    {
+                        title: "신한 THE BEST-F 카드",
+                        text: "소중한 사람들과 누리는 생활속 프리미엄카드 입니다.",
+                        imageUrl: "/files/Shinhancard1496223074215.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2648&empSeq=563&datakey=&agcCd="
+                            }
+                        ]
+                    }
+                ]
+            }
+        } else if (context.user.channel == 'facebook') {
+            task.result = {
+                items: [
+                    {
+                        title: "신한카드 RPM+ Platinum#",
+                        text: "모든 주유소 포인트 적립에 생활 맞춤 혜택까지 제공합니다.",
+                        imageUrl: "/files/Shinhancard1496223034783.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2795&empSeq=562&datakey=&agcCd="
+                            }
+                        ]
+                    },
+                    {
+                        title: "신한카드 Air Platinum#",
+                        text: "항공 마일리지에 포인트, 프리미엄 서비스까지 제공해드려요.",
+                        imageUrl: "/files/Shinhancard1496223047272.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2814&empSeq=562&datakey=&agcCd="
+                            }
+                        ]
+
+                    },
+                    {
+                        title: "신한카드 The BEST-T",
+                        text: "해외 여행의 든든한 파트너가 되는 프리미엄카드 입니다. ",
+                        imageUrl: "/files/Shinhancard1496223060412.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2814&empSeq=562&datakey=&agcCd="
+                            }
+                        ]
+                    },
+                    {
+                        title: "신한 THE BEST-F 카드",
+                        text: "소중한 사람들과 누리는 생활속 프리미엄카드 입니다.",
+                        imageUrl: "/files/Shinhancard1496223074215.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2648&empSeq=562&datakey=&agcCd="
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+        callback(task, context);
+    }
+};
+bot.setTask("cardlist3", cardlist3);
+
+var cardlist4 = {
+    name: 'cardlist4',
+    action: function(task, context, callback) {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socekt') {
+            task.result = {
+                items: [
+                    {
+                        title: "신한카드 RPM+ Platinum#",
+                        text: "모든 주유소 포인트 적립에 생활 맞춤 혜택까지 제공합니다.",
+                        imageUrl: "/files/Shinhancard1496223034783.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2795&empSeq=563&datakey=&agcCd="
+                            }
+                        ]
+                    },
+                    {
+                        title: "신한카드 Air Platinum#",
+                        text: "항공 마일리지에 포인트, 프리미엄 서비스까지 제공해드려요.",
+                        imageUrl: "/files/Shinhancard1496223047272.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2753&empSeq=561&datakey=&agcCd="
+                            }
+                        ]
+
+                    }
+                ]
+            }
+        } else if (context.user.channel == 'facebook') {
+            task.result = {
+                items: [
+                    {
+                        title: "신한카드 RPM+ Platinum#",
+                        text: "모든 주유소 포인트 적립에 생활 맞춤 혜택까지 제공합니다.",
+                        imageUrl: "/files/Shinhancard1496223034783.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2795&empSeq=562&datakey=&agcCd="
+                            }
+                        ]
+                    },
+                    {
+                        title: "신한카드 Air Platinum#",
+                        text: "항공 마일리지에 포인트, 프리미엄 서비스까지 제공해드려요.",
+                        imageUrl: "/files/Shinhancard1496223047272.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2814&empSeq=562&datakey=&agcCd="
+                            }
+                        ]
+
+                    }
+                ]
+            }
+        }
+        callback(task, context);
+    }
+};
+bot.setTask("cardlist4", cardlist4);
+
+var cardlist5 = {
+    name: 'cardlist5',
+    action: function(task, context, callback) {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socekt') {
+            task.result = {
+                items: [
+                    {
+                        title: "신한 S20 체크카드",
+                        text: "스무살, 첫 금융특권",
+                        imageUrl: "/files/Shinhancard1496223125514.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2527&empSeq=563&datakey=&agcCd="
+                            }
+                        ]
+                    },
+                    {
+                        title: "신한 S20 Pink 체크카드",
+                        text: "스무살, 첫 금융특권",
+                        imageUrl: "/files/Shinhancard1496223114080.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2528&empSeq=563&datakey=&agcCd="
+                            }
+                        ]
+
+                    }
+                ]
+            }
+        } else if (context.user.channel == 'facebook') {
+            task.result = {
+                items: [
+                    {
+                        title: "신한 S20 체크카드",
+                        text: "스무살, 첫 금융특권",
+                        imageUrl: "/files/Shinhancard1496223125514.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2527&empSeq=562&datakey=&agcCd="
+                            }
+                        ]
+                    },
+                    {
+                        title: "신한 S20 Pink 체크카드",
+                        text: "스무살, 첫 금융특권",
+                        imageUrl: "/files/Shinhancard1496223114080.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2528&empSeq=562&datakey=&agcCd="
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+        callback(task, context);
+    }
+};
+bot.setTask("cardlist5", cardlist5);
+
+var cardlist6 = {
+    name: 'cardlist6',
+    action: function(task, context, callback) {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socekt') {
+            task.result = {
+                items: [
+                    {
+                        title: "쿠팡 신한카드 체크",
+                        text: "쿠팡 이용금액 3% 무제한 적립에 스타벅스 이용금액 캐시백까지!",
+                        imageUrl: "/files/Shinhancard1496223141009.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2833&empSeq=563&datakey=&agcCd="
+                            }
+                        ]
+                    },
+                    {
+                        title: "카카오페이 신한 체크카드",
+                        text: "카카오페이 신한 체크카드로 카카오페이에서 간편하게 결제하고 캐시백 혜택을 누려보세요!",
+                        imageUrl: "/files/Shinhancard1496223171927.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=4294&empSeq=563&datakey=&agcCd="
+                            }
+                        ]
+
+                    },
+                    {
+                        title: "네이버페이 신한카드 체크",
+                        text: "이제 오프라인에서도 네이버페이로 결제하고 네이버페이포인트도 적립하세요!",
+                        imageUrl: "/files/Shinhancard1496223203051.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/conts/html/card/apply/check/1350254_33660.html"
+                            }
+                        ]
+
+                    }
+                ]
+            }
+        } else if (context.user.channel == 'facebook') {
+            task.result = {
+                items: [
+                    {
+                        title: "쿠팡 신한카드 체크",
+                        text: "쿠팡 이용금액 3% 무제한 적립에 스타벅스 이용금액 캐시백까지!",
+                        imageUrl: "/files/Shinhancard1496223141009.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2833&empSeq=562&datakey=&agcCd="
+                            }
+                        ]
+                    },
+                    {
+                        title: "카카오페이 신한 체크카드",
+                        text: "카카오페이 신한 체크카드로 카카오페이에서 간편하게 결제하고 캐시백 혜택을 누려보세요!",
+                        imageUrl: "/files/Shinhancard1496223171927.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=4294&empSeq=562&datakey=&agcCd="
+                            }
+                        ]
+
+                    },
+                    {
+                        title: "네이버페이 신한카드 체크",
+                        text: "이제 오프라인에서도 네이버페이로 결제하고 네이버페이포인트도 적립하세요!",
+                        imageUrl: "/files/Shinhancard1496223203051.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/conts/html/card/apply/check/1350254_33660.html"
+                            }
+                        ]
+
+                    }
+                ]
+            }
+        }
+        callback(task, context);
+    }
+};
+bot.setTask("cardlist6", cardlist6);
