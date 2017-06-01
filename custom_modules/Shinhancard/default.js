@@ -111,7 +111,7 @@ bot.setTask("te", te);
 var task1 = {
     name: 'task1',
     action: function (task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가입하기",
@@ -144,7 +144,7 @@ bot.setTask("task1", task1);
 var YOLO = {
     name: 'YOLO',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -177,7 +177,7 @@ bot.setTask("YOLO", YOLO);
 var NANOf = {
     name: 'NANOf',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -210,7 +210,7 @@ bot.setTask("NANOf", NANOf);
 var mirae = {
     name: 'mirae',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -242,7 +242,7 @@ bot.setTask("mirae", mirae);
 var AlwaysFAN = {
     name: 'AlwaysFAN',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -275,7 +275,7 @@ bot.setTask("AlwaysFAN", AlwaysFAN);
 var O2O = {
     name: 'O2O',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -308,7 +308,7 @@ bot.setTask("O2O", O2O);
 var Shopping = {
     name: 'Shopping',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -341,7 +341,7 @@ bot.setTask("Shopping", Shopping);
 var YOLOTasty = {
     name: 'YOLOTasty',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -374,7 +374,7 @@ bot.setTask("YOLOTasty", YOLOTasty);
 var MrLife = {
     name: 'MrLife',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -407,7 +407,7 @@ bot.setTask("MrLife", MrLife);
 var BBig = {
     name: 'BBig',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -440,7 +440,7 @@ bot.setTask("BBig", BBig);
 var TheLadyClassic = {
     name: 'TheLadyClassic',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -473,7 +473,7 @@ bot.setTask("TheLadyClassic", TheLadyClassic);
 var TheClassicY = {
     name: 'TheClassicY',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -506,7 +506,7 @@ bot.setTask("TheClassicY", TheClassicY);
 var GSShine = {
     name: 'GSShine',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -539,7 +539,7 @@ bot.setTask("GSShine", GSShine);
 var Main = {
     name: 'Main',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -572,7 +572,7 @@ bot.setTask("Main", Main);
 var HiPoint = {
     name: 'HiPoint',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -605,7 +605,7 @@ bot.setTask("HiPoint", HiPoint);
 var TheClassicL = {
     name: 'TheClassicL',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -638,7 +638,7 @@ bot.setTask("TheClassicL", TheClassicL);
 var RPM = {
     name: 'RPM',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -671,7 +671,7 @@ bot.setTask("RPM", RPM);
 var Air = {
     name: 'Air',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -704,7 +704,7 @@ bot.setTask("Air", Air);
 var BESTT = {
     name: 'BESTT',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -737,7 +737,7 @@ bot.setTask("BESTT", BESTT);
 var BESTF = {
     name: 'BESTF',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -770,7 +770,7 @@ bot.setTask("BESTF", BESTF);
 var TheClassicplus = {
     name: 'TheClassicplus',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -803,7 +803,7 @@ bot.setTask("TheClassicplus", TheClassicplus);
 var Edu = {
     name: 'Edu',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -836,7 +836,7 @@ bot.setTask("Edu", Edu);
 var Noon = {
     name: 'Noon',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -870,7 +870,7 @@ bot.setTask("Noon", Noon);
 var Tune = {
     name: 'Tune',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -903,7 +903,7 @@ bot.setTask("Tune", Tune);
 var S20 = {
     name: 'S20',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -936,7 +936,7 @@ bot.setTask("S20", S20);
 var S20Pink = {
     name: 'S20Pink',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -969,7 +969,7 @@ bot.setTask("S20Pink", S20Pink);
 var hypass = {
     name: 'hypass',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -1002,7 +1002,7 @@ bot.setTask("hypass", hypass);
 var kakao = {
     name: 'kakao',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -1035,7 +1035,7 @@ bot.setTask("kakao", kakao);
 var coupang = {
     name: 'coupang',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -1068,7 +1068,7 @@ bot.setTask("coupang", coupang);
 var MainCheck = {
     name: 'MainCheck',
     action: function(task, context, callback) {
-        if (context.user.channel == 'naver' || context.user.channel == 'socket') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "바로가기",
@@ -1097,3 +1097,111 @@ var MainCheck = {
     }
 };
 bot.setTask("MainCheck", MainCheck);
+
+var cardlist1 = {
+    name: 'cardlist1',
+    action: function(task, context, callback) {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socekt') {
+            task.result = {
+                items: [
+                    {
+                        title: "신한카드 Always FAN",
+                        text: "언제나 FAN으로 혜택을 받을수 있어요.",
+                        imageUrl: "/files/Shinhancard1496222904469.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2831&empSeq=563&datakey=&agcCd="
+                            }
+                        ]
+                    },
+                    {
+                        title: "신한카드 O2O",
+                        text: "온.오프라인을 뛰어넘은 할인을 제공해드려요.",
+                        imageUrl: "/files/Shinhancard1496222925697.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2808&empSeq=563&datakey=&agcCd="
+                            }
+                        ]
+
+                    },
+                    {
+                        title: "신한카드 The LADY CLASSIC",
+                        text: "실속형 여성 프리미엄 회원을 위한 카드입니다.",
+                        imageUrl: "/files/Shinhancard1496222940212.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C03.shc?EntryLoc=2804&tmEntryLoc=TM2534&empSeq=563&datakey&agcCd="
+                            }
+                        ]
+                    },
+                    {
+                        title: "신한카드 The CLASSIC-Y",
+                        text: "Premium 적립에 Trendy 할인을 맞추었습니다.",
+                        imageUrl: "/files/Shinhancard1496222951062.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2733&empSeq=563&datakey=&agcCd="
+                            }
+                        ]
+                    }
+                ]
+            }
+        } else if (context.user.channel == 'facebook') {
+            task.result = {
+                items: [
+                    {
+                        title: "신한카드 Always FAN",
+                        text: "언제나 FAN으로 혜택을 받을수 있어요.",
+                        imageUrl: "/files/Shinhancard1496222904469.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2831&empSeq=562&datakey=&agcCd="
+                            }
+                        ]
+                    },
+                    {
+                        title: "신한카드 O2O",
+                        text: "온.오프라인을 뛰어넘은 할인을 제공해드려요.",
+                        imageUrl: "/files/Shinhancard1496222925697.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2808&empSeq=562&datakey=&agcCd="
+                            }
+                        ]
+                    },
+                    {
+                        title: "신한카드 The LADY CLASSIC",
+                        text: "실속형 여성 프리미엄 회원을 위한 카드입니다.",
+                        imageUrl: "/files/Shinhancard1496222940212.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C03.shc?EntryLoc=2804&tmEntryLoc=TM2534&empSeq=562&datakey&agcCd="
+                            }
+                        ]
+                    },
+                    {
+                        title: "신한카드 The CLASSIC-Y",
+                        text: "Premium 적립에 Trendy 할인을 맞추었습니다.",
+                        imageUrl: "/files/Shinhancard1496222951062.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2733&empSeq=562&datakey=&agcCd="
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+        callback(task, context);
+    }
+};
+bot.setTask("cardlist1", cardlist1);
