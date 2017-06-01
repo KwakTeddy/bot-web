@@ -485,7 +485,8 @@ function sendGenericMessage(recipientId, text, task, token) {
         }
         var task2 = utils.clone(task)
         delete task2.buttons
-        console.log('kfkdslfksldkflskdfl ' + task2)
+        console.log(util.inspect(task2, {showHidden: false, depth: null}))
+        console.log(util.inspect('+++++++++++++++++++++++++++++++++++++'))
         var messageData1 = {
           recipient: {
             id: recipientId
