@@ -416,8 +416,8 @@ function sendButtonMessage(recipientId, text, task, token) {
       task.buttons[i]['type'] = 'web_url';
 
     }else {
-      task.buttons[i]['type'] = text;
-      task.buttons[i]['payload'] = 'etesteststst';
+      task.buttons[i]['type'] = 'postback';
+      task.buttons[i]['payload'] = task;
     }
   }
 
@@ -482,7 +482,7 @@ function sendGenericMessage(recipientId, text, task, token) {
 
         }else {
           task.buttons[i]['type'] = 'postback';
-          task.buttons[i]['payload'] = 'etesteststst';
+          task.buttons[i]['payload'] = task.buttons[i].title;
         }
         task['title'] = text;
       }
