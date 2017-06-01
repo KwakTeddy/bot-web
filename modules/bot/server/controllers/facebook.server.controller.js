@@ -483,8 +483,22 @@ function sendGenericMessage(recipientId, text, task, token) {
         if (task.image.url.substring(0,4) !== 'http'){
           task.image.url = config.host + task.image.url
         }
+        var messageData1 = {
+          recipient: {
+            id: recipientId
+          },
+          message: {
+            attachment: {
+              type: "image",
+              payload: {
+                "url": task.image.url
+              }
+            }
+          }
+        };
+
+        callSendAPI(messageData1, token);
       }
-      var image = utils.clone(task.image)
 
       if (task.buttons){
         delete task.image;
@@ -517,22 +531,6 @@ function sendGenericMessage(recipientId, text, task, token) {
         };
         callSendAPI(messageData2, token);
       }
-
-      var messageData1 = {
-        recipient: {
-          id: recipientId
-        },
-        message: {
-          attachment: {
-            type: "image",
-            payload: {
-              "url": image.url
-            }
-          }
-        }
-      };
-
-      callSendAPI(messageData1, token);
 
     }else {
       if (task.buttons){
