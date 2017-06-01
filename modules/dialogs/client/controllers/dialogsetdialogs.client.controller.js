@@ -26,7 +26,7 @@
     }
     vm.error = null;
 
-    vm.dialog = new DialogsetDialogsService({user: vm.authentication, dialogset: vm.dialogset._id});
+    vm.dialog = new DialogsetDialogsService({user: vm.authentication, dialogset: vm.dialogset._id, depth: 0});
     vm.childDialog = new DialogsetDialogsService({user: vm.authentication, dialogset: vm.dialogset._id});
     console.log(vm.dialog);
 
@@ -44,18 +44,15 @@
 
     vm.createDepthDialog = function(parent, index) {
       vm.childDialog['parent'] = parent._id;
-      console.log(vm.childDialog)
+      vm.childDialog['depth'] = parent.depth + 1;
+
       vm.childDialog.$save(function (response) {
-        vm.childDialog = response;
         vm.dialogsetDialogs.splice(index+1, 0, response);
         vm.childDialog = new DialogsetDialogsService({user: vm.authentication, dialogset: vm.dialogset._id});
-        // vm.childDialog = new DialogsetDialogsService({user: vm.authentication, dialogset: vm.dialogset._id});
       }, function (err) {
         $scope.error = errorResponse.data.message;
         vm.childDialog = new DialogsetDialogsService({user: vm.authentication, dialogset: vm.dialogset._id});
-      })
-
-
+      });
     };
 
     vm.updateDialog = function (dialog) {

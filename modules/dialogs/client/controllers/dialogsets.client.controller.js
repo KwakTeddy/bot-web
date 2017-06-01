@@ -6,47 +6,90 @@
     .module('dialogsets')
     .controller('DialogsetsController', DialogsetsController);
 
-  DialogsetsController.$inject = ['$scope', '$state', '$window', 'Authentication', 'dialogsetResolve', 'FileUploader'];
+  DialogsetsController.$inject = ['$scope', '$state', '$window', 'Authentication', 'dialogsetResolve', 'BotsService','FileUploader', '$http', 'DialogsetsService'];
 
-  function DialogsetsController($scope, $state, $window, Authentication, dialogset, FileUploader) {
+  function DialogsetsController($scope, $state, $window, Authentication, dialogset, BotsService, FileUploader, $http, DialogsetsService) {
     var vm = this;
 
     vm.authentication = Authentication;
     vm.dialogset = dialogset;
+    vm.dialogsetDialogs = [];
+    vm.mybot = '';
     vm.error = null;
     vm.form = {};
     vm.remove = remove;
     vm.save = save;
+    vm.type = 'oneByOne';
+    console.log(vm.dialogset)
+
+    BotsService.query({my: 1, developer: true, role: Authentication.user.roles}, function (result) {
+      vm.mybot = result;
+      console.log(vm.mybot)
+
+    }, function (err) {
+      console.log(err)
+    });
+
 
     // Remove existing Custom action
     function remove() {
       if (confirm('Are you sure you want to delete?')) {
-        vm.dialogset.$remove($state.go('dialogsets.list'), {}, {reload: true});
+        vm.dialogset.$remove(function (result) {
+          $state.go('dialogsets.list')
+        }, function (err) {
+          console.log(err)
+        });
       }
     }
 
     // Save Custom action
     function save(isValid) {
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'vm.form.dialogsetForm');
-        return false;
-      }
+      console.log(vm.dialogset)
+      if (vm.type == 'bulk'){
+        if (!isValid) {
+          $scope.$broadcast('show-errors-check-validity', 'vm.form.dialogsetForm');
+          return false;
+        }
+        // TODO: move create/update logic to service
+        if (vm.dialogset._id) {
+          vm.dialogset.$update(successCallback, errorCallback);
+        } else {
+          vm.dialogset.$save(successCallback, errorCallback);
+        }
+        function successCallback(res) {
+          $state.go('dialogsets.list', {
+            dialogsetId: res._id
+          }, {reload: true});
+        }
+        function errorCallback(res) {
+          vm.error = res.data.message;
+        }
+      }else {
+        if (vm.dialogset._id) {
+          if (!vm.dialogset.title || !vm.dialogset.content){
+            return false;
+          }
+          vm.dialogset.$update(function (result) {
+            $state.go('dialogsets.list', {
+              dialogsetId: result._id
+            }, {reload: true});
+          }, function (err) {
+            console.log(err);
+            vm.error = err.data.message
+          });
+        } else {
+          if (!vm.dialogsetDialogs.length || !vm.dialogset.title || !vm.dialogset.content){
+            return false;
+          }
+          vm.dialogset['type'] = 'oneByOne';
+          vm.dialogset['dialogs'] = vm.dialogsetDialogs;
+          vm.dialogset.$save(function (result) {
+            $state.go('dialogsets.list')
 
-      // TODO: move create/update logic to service
-      if (vm.dialogset._id) {
-        vm.dialogset.$update(successCallback, errorCallback);
-      } else {
-        vm.dialogset.$save(successCallback, errorCallback);
-      }
-
-      function successCallback(res) {
-        $state.go('dialogsets.list', {
-          dialogsetId: res._id
-        }, {reload: true});
-      }
-
-      function errorCallback(res) {
-        vm.error = res.data.message;
+          }, function (err) {
+            console.log(err)
+          });
+        }
       }
     }
 
@@ -142,6 +185,77 @@
       $scope.uploader.clearQueue();
       // $scope.imageURL = $scope.user.profileImageURL;
     };
+
+    vm.disconnectBot = function (target) {
+      target.dialogsets.splice(target.dialogsets.indexOf(vm.dialogset._id), 1);
+      $http.put('/api/bots/' + target._id, target).then(function (result) {
+        DialogsetsService.get({dialogsetId: vm.dialogset._id}, function (result) {
+          vm.dialogset = result;
+          BotsService.query({my: 1, developer: true, role: Authentication.user.roles}, function (result) {
+            vm.mybot = result;
+            vm.selectedBot = '';
+          }, function (err) {
+            console.log(err)
+          });
+        }, function (err) {
+          console.log(err)
+        })
+      }, function (err) {
+        console.log(err);
+      })
+    };
+
+    vm.connectBot = function () {
+      for(var i = 0; i < vm.selectedBot.dialogsets.length; i++){
+        if(vm.selectedBot.dialogsets[i] == vm.dialogset._id){
+          vm.selectedBot = '';
+          return alert('이미 연결되어 있는 봇입니다')
+        }
+      }
+      vm.selectedBot.dialogsets.push(vm.dialogset);
+      vm.selectedBot.$update(function (response) {
+        DialogsetsService.get({dialogsetId: vm.dialogset._id}, function (result) {
+          vm.dialogset = result;
+          BotsService.query({my: 1, developer: true, role: Authentication.user.roles}, function (result) {
+            vm.mybot = result;
+            vm.selectedBot = '';
+          }, function (err) {
+            console.log(err)
+          });
+        }, function (err) {
+          console.log(err)
+        })
+      }, function (err) {
+        console.log(err)
+      })
+    };
+
+    vm.changeType = function (type) {
+      vm.type = type;
+    };
+
+    vm.createDialog = function () {
+      if(vm.dialog.inputRaw && vm.dialog.output){
+        vm.dialogsetDialogs.push({inputRaw: vm.dialog.inputRaw, output: vm.dialog.output, depth: 0})
+        vm.dialog = '';
+      }
+    };
+
+    vm.removeDialog = function (target) {
+      vm.dialogsetDialogs.splice(vm.dialogsetDialogs.indexOf(target), 1)
+    };
+
+    vm.createDepthDialog = function (target, index) {
+      vm.childDialog = {parent: target, depth: target.depth + 1};
+      vm.dialogsetDialogs.splice(index+1, 0, vm.childDialog)
+    };
+
+    vm.keyDown = function (event) {
+      if (event.keyCode == 13){ //enter
+        vm.createDialog();
+        angular.element('#question').focus();
+      }
+    }
 
   }
 })();

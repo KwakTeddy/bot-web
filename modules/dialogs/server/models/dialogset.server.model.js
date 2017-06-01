@@ -80,6 +80,10 @@ var DialogsetDialogSchema = new Schema({
   context: {
     type: Schema.ObjectId,
     ref: 'CustomContext'
+  },
+  depth: {
+    type: Number,
+    default: 0
   }
 });
 

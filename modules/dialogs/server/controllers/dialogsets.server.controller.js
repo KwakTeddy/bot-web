@@ -7,15 +7,18 @@ var path = require('path'),
   mongoose = require('mongoose'),
   Dialogset = mongoose.model('Dialogset'),
   DialogsetDialog = mongoose.model('DialogsetDialog'),
+  Bot = mongoose.model('Bot'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   dialogsetModule = require(path.resolve('modules/bot/engine/dialogset/dialogset.js')),
   _ = require('lodash');
-
+var engineDialogset = require(path.resolve('modules/bot/engine/dialogset/dialogset'));
 var async = require('async');
 var fs = require('fs');
 var multer = require('multer');
 
 var utils = require(path.resolve('modules/bot/action/common/utils'));
+
+var util = require('util')
 
 /**
  * Create a Custom action
@@ -31,10 +34,29 @@ exports.create = function(req, res) {
       });
     } else {
       res.jsonp(dialogset);
-
-      dialogsetModule.convertDialogset1(dialogset, null, function(result) {
-        console.log(dialogset.filename + ' converted');
-      })
+      if(dialogset.filename && dialogset.path){
+        dialogsetModule.convertDialogset1(dialogset, null, function(result) {
+          console.log(dialogset.filename + ' converted');
+        })
+      }else {
+        async.eachSeries(req.body.dialogs, function (dialog, cb) {
+          engineDialogset.processInput(null, dialog.inputRaw, function (_input, _json) {
+            dialog['input'] = _input;
+            dialog['dialogset'] = dialogset._id;
+            cb(null);
+          });
+        }, function (err) {
+          if (err){
+            console.log(err)
+          }else {
+            DialogsetDialog.collection.insert(req.body.dialogs, function (err, result) {
+              if(err){
+                console.log(util.inspect(err))
+              }
+            })
+          }
+        })
+      }
     }
   });
 
@@ -51,7 +73,14 @@ exports.read = function(req, res) {
   // NOTE: This field is NOT persisted to the database, since it doesn't exist in the Article model.
   dialogset.isCurrentUserOwner = req.user && dialogset.user && dialogset.user._id.toString() === req.user._id.toString() ? true : false;
 
-  res.jsonp(dialogset);
+  Bot.find({dialogsets: dialogset._id}).populate('user').exec(function (err, result) {
+    if (err){
+      console.log(err)
+    }else {
+      dialogset['connectedBot'] = result;
+      res.jsonp(dialogset);
+    }
+  });
 };
 
 /**
@@ -146,13 +175,55 @@ exports.delete = function(req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.jsonp(dialogset);
-
-      DialogsetDialog.remove({dialogset: dialogset._id}, function(err, num) {
-        fs.unlink(path.join(dialogset.path, dialogset.filename), function (err) {
-          if (err) throw err;
-          console.log('successfully deleted: ' + dialogset.filename);
-        });
+      Bot.find({dialogsets: req.dialogset._id}).exec(function (err, result) {
+        if(err){
+          console.log(err)
+        }else {
+          if(result.length){
+            async.eachSeries(result, function (bot, cb) {
+              if(bot.dialogsets && (bot.dialogsets.length > 0)){
+                for(var i = 0; i < bot.dialogsets.length; i++){
+                  if(bot.dialogsets[i] == req.dialogset._id.toString()){
+                    bot.dialogsets.splice(bot.dialogsets.indexOf(bot.dialogsets[i], 1))
+                    bot.save(function (err) {
+                      if(err){
+                        console.log(err)
+                      }else {
+                        cb(null)
+                      }
+                    })
+                  }
+                }
+                cb(null)
+              }else {
+                cb(null)
+              }
+            }, function (err) {
+              if(err){
+                console.log(err)
+              }
+              DialogsetDialog.remove({dialogset: dialogset._id}, function(err, num) {
+                res.jsonp(dialogset);
+                if(dialogset.path && dialogset.filname){
+                  fs.unlink(path.join(dialogset.path, dialogset.filename), function (err) {
+                    if (err) throw err;
+                    console.log('successfully deleted: ' + dialogset.filename);
+                  });
+                }
+              })
+            })
+          }else {
+            DialogsetDialog.remove({dialogset: dialogset._id}, function(err, num) {
+              res.jsonp(dialogset);
+              if(dialogset.path && dialogset.filname){
+                fs.unlink(path.join(dialogset.path, dialogset.filename), function (err) {
+                  if (err) throw err;
+                  console.log('successfully deleted: ' + dialogset.filename);
+                });
+              }
+            })
+          }
+        }
       });
     }
   });

@@ -33,7 +33,6 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
     };
 
     $http.get('/config').then(function (result) {
-      console.log(result.data.enterprise);
       $scope.enterprise = result.data.enterprise;
     }, function (err) {
       console.log(err)

@@ -84,6 +84,5 @@ exports.renderNotFound = function (req, res) {
 * get config
 */
 exports.getConfig = function (req, res) {
-  console.log(util.inspect(process.env))
   res.json(config);
 };
