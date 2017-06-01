@@ -131,6 +131,9 @@ function respondMessage(to, text, botId, task) {
       if (task){
         delete task.inNLP;
         delete task.inRaw;
+        delete task.name;
+        delete task.action;
+        delete task.topTask;
         if(task.output){
           delete task.output
         }
