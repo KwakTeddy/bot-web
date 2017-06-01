@@ -483,6 +483,9 @@ function sendGenericMessage(recipientId, text, task, token) {
         if (task.image.url.substring(0,4) !== 'http'){
           task.image.url = config.host + task.image.url
         }
+        var task2 = utils.clone(task)
+        delete task2.buttons
+        console.log('kfkdslfksldkflskdfl ' + task2)
         var messageData1 = {
           recipient: {
             id: recipientId
@@ -491,7 +494,7 @@ function sendGenericMessage(recipientId, text, task, token) {
             attachment: {
               type: "image",
               payload: {
-                "url": task.image.url
+                "url": task2.image.url
               }
             }
           }
