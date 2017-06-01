@@ -496,7 +496,7 @@ function sendGenericMessage(recipientId, text, task, token) {
       }
       task.image_url = task.image.url;
       delete task.image;
-      task['title'] = text;
+      task['subtitle'] = text;
     }
     task = [task];
   }
@@ -615,7 +615,7 @@ function smartReplyMessage(recipientId, text, task, token) {
  */
 function callSendAPI(messageData, PAGE_ACCESS_TOKEN) {
   console.log(PAGE_ACCESS_TOKEN);
-  console.log(util.inspect(messageData));
+  console.log(util.inspect(messageData, {showHidden: false, depth: null}));
   // console.log('callSendAPI: ', messageData);
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
