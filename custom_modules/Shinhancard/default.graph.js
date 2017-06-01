@@ -1525,18 +1525,21 @@ var dialogs = [
 										]
 									},
 									{
-										"name": "여행덕후형",
+										"name": "여행덕후형카카오",
 										"id": "default75",
 										"filename": "default",
 										"input": [
 											{
-												"text": "여행"
+												"text": "여행",
+												"if": "context.user.channel == 'kakao'"
 											},
 											{
-												"text": "항공"
+												"text": "항공",
+												"if": "context.user.channel == 'kakao'"
 											},
 											{
-												"text": "3"
+												"text": "3",
+												"if": "context.user.channel == 'kakao'"
 											}
 										],
 										"output": {
@@ -1647,21 +1650,25 @@ var dialogs = [
 										]
 									},
 									{
-										"name": "OIL실속형2",
+										"name": "OIL실속형카카오2",
 										"id": "default76",
 										"filename": "default",
 										"input": [
 											{
-												"text": "기름"
+												"text": "기름",
+												"if": "context.user.channel == 'kakao'"
 											},
 											{
-												"text": "교통"
+												"text": "교통",
+												"if": "context.user.channel == 'kakao'"
 											},
 											{
-												"text": "4"
+												"text": "4",
+												"if": "context.user.channel == 'kakao'"
 											},
 											{
-												"text": "OIL 실속 형"
+												"text": "OIL 실속 형",
+												"if": "context.user.channel == 'kakao'"
 											}
 										],
 										"output": {
@@ -1731,6 +1738,49 @@ var dialogs = [
 										"output": "d",
 										"task": {
 											"name": "cardlist2"
+										}
+									},
+									{
+										"name": "여행덕후형",
+										"id": "default203",
+										"filename": "default",
+										"input": [
+											{
+												"text": "여행"
+											},
+											{
+												"text": "항공"
+											},
+											{
+												"text": "3"
+											}
+										],
+										"output": "ㅇ",
+										"task": {
+											"name": "cardlist3"
+										}
+									},
+									{
+										"name": "오일실속형",
+										"id": "default204",
+										"filename": "default",
+										"input": [
+											{
+												"text": "기름"
+											},
+											{
+												"text": "교통"
+											},
+											{
+												"text": "오일"
+											},
+											{
+												"text": "4"
+											}
+										],
+										"output": "ㅇ",
+										"task": {
+											"name": "cardlist4"
 										}
 									}
 								]
@@ -1851,10 +1901,12 @@ var dialogs = [
 										"filename": "default",
 										"input": [
 											{
-												"text": "1"
+												"text": "1",
+												"if": "context.user.channel == 'kakao'"
 											},
 											{
-												"text": "네"
+												"text": "네",
+												"if": "context.user.channel == 'kakao'"
 											}
 										],
 										"output": {
@@ -1922,10 +1974,12 @@ var dialogs = [
 										"filename": "default",
 										"input": [
 											{
-												"text": "아니다"
+												"text": "아니다",
+												"if": "context.user.channel == 'kakao'"
 											},
 											{
-												"text": "2"
+												"text": "2",
+												"if": "context.user.channel == 'kakao'"
 											}
 										],
 										"output": {
@@ -1995,6 +2049,23 @@ var dialogs = [
 												}
 											}
 										]
+									},
+									{
+										"name": "dialog_default205",
+										"id": "default205",
+										"filename": "default",
+										"input": [
+											{
+												"text": "1"
+											},
+											{
+												"text": "네"
+											}
+										],
+										"output": "d",
+										"task": {
+											"name": "cardlist5"
+										}
 									}
 								]
 							},
@@ -2034,10 +2105,12 @@ var dialogs = [
 										"filename": "default",
 										"input": [
 											{
-												"text": "알뜰"
+												"text": "알뜰",
+												"if": "context.user.channel == 'kakao'"
 											},
 											{
-												"text": "1"
+												"text": "1",
+												"if": "context.user.channel == 'kakao'"
 											}
 										],
 										"output": {
@@ -2222,6 +2295,23 @@ var dialogs = [
 										},
 										"task": {
 											"name": "MainCheck"
+										}
+									},
+									{
+										"name": "dialog_default207",
+										"id": "default207",
+										"filename": "default",
+										"input": [
+											{
+												"text": "알뜰"
+											},
+											{
+												"text": "1"
+											}
+										],
+										"output": "ㅇ",
+										"task": {
+											"name": "cardlist6"
 										}
 									}
 								]
