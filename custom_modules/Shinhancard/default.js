@@ -1210,7 +1210,7 @@ bot.setTask("cardlist1", cardlist1);
 var cardlist2 = {
     name: 'cardlist2',
     action: function(task, context, callback) {
-        if (context.user.channel == 'navertalk' || context.user.channel == 'socekt') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.result = {
                 items: [
                     {
@@ -1275,7 +1275,7 @@ bot.setTask("cardlist2", cardlist2);
 var cardlist3 = {
     name: 'cardlist3',
     action: function(task, context, callback) {
-        if (context.user.channel == 'navertalk' || context.user.channel == 'socekt') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.result = {
                 items: [
                     {
@@ -1384,7 +1384,7 @@ bot.setTask("cardlist3", cardlist3);
 var cardlist4 = {
     name: 'cardlist4',
     action: function(task, context, callback) {
-        if (context.user.channel == 'navertalk' || context.user.channel == 'socekt') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.result = {
                 items: [
                     {
@@ -1449,7 +1449,7 @@ bot.setTask("cardlist4", cardlist4);
 var cardlist5 = {
     name: 'cardlist5',
     action: function(task, context, callback) {
-        if (context.user.channel == 'navertalk' || context.user.channel == 'socekt') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.result = {
                 items: [
                     {
@@ -1513,7 +1513,7 @@ bot.setTask("cardlist5", cardlist5);
 var cardlist6 = {
     name: 'cardlist6',
     action: function(task, context, callback) {
-        if (context.user.channel == 'navertalk' || context.user.channel == 'socekt') {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.result = {
                 items: [
                     {
