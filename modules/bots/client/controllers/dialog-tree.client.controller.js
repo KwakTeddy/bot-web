@@ -816,6 +816,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       if (event.keyCode == 27) { // esc
         document.getElementById('search').blur();
+        document.getElementById('mainpage').focus();
         $.magnificPopup.close();
         return false;
       }
@@ -852,6 +853,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         } else {
           document.getElementById('search').focus();
         }
+        return;
+      } else if (event.ctrlKey && event.keyCode == 82) { // ctrl+r
+        event.preventDefault();
+        vm.isReplace = !vm.isReplace;
+        $scope.safeApply();
         return;
       }
 
@@ -1226,13 +1232,17 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     var currentKeyword = "";
     var currentSearchIdx = 0;
 
+    vm.searchKind = 'name';
+    vm.isReplace = false;
     $scope.searchNode = function(event) {
       //find the node
       var selectedVal = document.getElementById('search').value;
       var node = baseSvg.selectAll(".node");
       if (selectedVal != "") {
         var selected = node.filter(function (d, i) {
-          return d.name.search(selectedVal) != -1;
+          if (vm.searchKind == 'name') {
+            return d.name.search(selectedVal) != -1;
+          }
         });
         if (currentKeyword !== selectedVal) {
           currentKeyword = selectedVal;
@@ -1248,6 +1258,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           currentSearchIdx = (++currentSearchIdx) % selected[0].length;
         }
       }
+    };
+
+    $scope.replaceNode = function(event) {
+      var selectedVal = document.getElementById('search').value;
+      var replaceVal = document.getElementById('replace').value;
+      if (selectedVal == '' || replaceVal == '')
+        return;
     };
 
     vm.getButtonClass = function(type) {

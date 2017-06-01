@@ -270,12 +270,27 @@
 
                 <div class="row" style="padding: 5px 0 5px 0">
                     <div class="col-sm-3">
-                        <div class="input-group mt-xs input-search">
-                            <form ng-submit="searchNode()">
+                        <form ng-submit="searchNode()">
+                            <div class="input-group mt-xs ">
+                                <div class="input-group-btn" >
+                                    <button tabindex="-1" class="btn btn-primary" type="button">{{vm.searchKind}}</button>
+                                    <button tabindex="-1" data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul role="menu" class="dropdown-menu" >
+                                        <li> <a href="#" ng-click="vm.searchKind = 'name'" >name</a> </li>
+                                        <li> <a href="#" ng-click="vm.searchKind = 'input'" >input</a> </li>
+                                        <li> <a href="#" ng-click="vm.searchKind = 'output'" >output</a> </li>
+                                    </ul>
+                                </div>
                                 <input type="text" class="form-control" name="q" id="search" placeholder="Search...">
                                 <span class="input-group-btn"> <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button> </span>
-                            </form>
-                        </div>
+                            </div>
+                            <div ng-show="vm.isReplace" class="input-group mt-xs">
+                                <input type="text" class="form-control" name="r" id="replace" placeholder="Replace...">
+                                <span class="input-group-btn"> <button class="btn btn-default" ng-click="replaceNode()"><i class="fa fa-edit"></i></button> </span>
+                            </div>
+                        </form>
                     </div>
                     <div class="col-sm-3">
                         <!--<label class="col-sm-2 control-label">Depth: </label>-->
@@ -650,6 +665,7 @@
                                 <br/>
                                 <b>Common</b><br/>
                                 /: Search Box<br/>
+                                Ctrl+R: replace <br/>
                                 Ctrl+S: Save File<br/>
                                 Ctrl+Z: Undo<br/>
                                 ?: keyboard shortcut help
