@@ -1453,13 +1453,16 @@ var dialogs = [
 										"filename": "default",
 										"input": [
 											{
-												"text": "소비"
+												"text": "소비",
+												"if": "context.user.channel == 'kakao'"
 											},
 											{
-												"text": "여유"
+												"text": "여유",
+												"if": "context.user.channel == 'kakao'"
 											},
 											{
-												"text": "2"
+												"text": "2",
+												"if": "context.user.channel == 'kakao'"
 											}
 										],
 										"output": {
@@ -1709,6 +1712,26 @@ var dialogs = [
 												}
 											}
 										]
+									},
+									{
+										"name": "소비추구형카카오2",
+										"id": "default202",
+										"filename": "default",
+										"input": [
+											{
+												"text": "소비"
+											},
+											{
+												"text": "여유"
+											},
+											{
+												"text": "2"
+											}
+										],
+										"output": "d",
+										"task": {
+											"name": "cardlist2"
+										}
 									}
 								]
 							}
