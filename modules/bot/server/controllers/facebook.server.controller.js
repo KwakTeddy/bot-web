@@ -484,6 +484,7 @@ function sendGenericMessage(recipientId, text, task, token) {
           task.image.url = config.host + task.image.url
         }
       }
+      var image = utils.clone(task.image)
 
       if (task.buttons){
         delete task.image;
@@ -525,7 +526,7 @@ function sendGenericMessage(recipientId, text, task, token) {
           attachment: {
             type: "image",
             payload: {
-              "url": task.image.url
+              "url": image.url
             }
           }
         }
