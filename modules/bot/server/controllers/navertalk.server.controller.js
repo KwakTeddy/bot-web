@@ -3,6 +3,7 @@ var request = require('request');
 var path = require('path');
 var chat = require(path.resolve('modules/bot/server/controllers/bot.server.controller'));
 var contextModule = require(path.resolve('modules/bot/engine/common/context'));
+var util = require('util');
 
 exports.message =  function(req, res) {
   console.log("navertalk message");
@@ -28,6 +29,8 @@ exports.message =  function(req, res) {
       case 'send' :
         if(req.body.sender == 'user' && req.body.textContent) {
           chat.write('navertalk', from, 'Shinhancard', req.body.textContent.text, req.body, function (serverText, json) {
+            console.log(util.inspect(serverText, {showHidden: false, depth: null}));
+            console.log(util.inspect(json, {showHidden: false, depth: null}));
           // chat.write('navertalk', from, req.params.bot, req.body.textContent.text, req.body, function (serverText, json) {
             response.request.textContent.text = serverText;
             res.json(response);
