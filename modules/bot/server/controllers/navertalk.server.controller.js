@@ -28,11 +28,12 @@ exports.message =  function(req, res) {
       // 메시지 전송 이벤트 처리
       case 'send' :
         if(req.body.sender == 'user' && req.body.textContent) {
+          console.log(req.params.bot)
           chat.write('navertalk', from, 'Shinhancard', req.body.textContent.text, req.body, function (serverText, json) {
             console.log(util.inspect(serverText, {showHidden: false, depth: null}));
             console.log(util.inspect(json, {showHidden: false, depth: null}));
           // chat.write('navertalk', from, req.params.bot, req.body.textContent.text, req.body, function (serverText, json) {
-            response.request.textContent.text = '123';
+            response.request.textContent.text = serverText;
             res.json(response);
           });
 
