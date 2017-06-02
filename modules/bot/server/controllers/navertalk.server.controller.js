@@ -29,7 +29,7 @@ exports.message =  function(req, res) {
       case 'send' :
         if(req.body.sender == 'user' && req.body.textContent) {
           console.log(req.params.bot)
-          chat.write('navertalk', from, 'Shinhancard', req.body.textContent.text, req.body, function (serverText, json) {
+          chat.write('navertalk', from, 'junhatest_second', req.body.textContent.text, req.body, function (serverText, json) {
             console.log(util.inspect(serverText, {showHidden: false, depth: null}));
             console.log(util.inspect(json, {showHidden: false, depth: null}));
           // chat.write('navertalk', from, req.params.bot, req.body.textContent.text, req.body, function (serverText, json) {
