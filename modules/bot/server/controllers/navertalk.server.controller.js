@@ -1,15 +1,11 @@
-var net = require('net');
 var request = require('request');
 var path = require('path');
 var chat = require(path.resolve('modules/bot/server/controllers/bot.server.controller'));
-var contextModule = require(path.resolve('modules/bot/engine/common/context'));
-var util = require('util');
 var config = require(path.resolve('config/config'));
-
+var util = require('util');
 
 exports.message =  function(req, res) {
   console.log("navertalk message");
-  console.log(JSON.stringify(req.body));
 
     // default response
     var response = {
@@ -18,7 +14,7 @@ exports.message =  function(req, res) {
         event: "send", /* send message */
         sender: "partner", /* 파트너가 보내는 메시지 */
         user : req.body.user, /* 유저 식별값 */
-        partner: req.body.partner, /* 파트너 식별값 wc1234 */
+        partner: req.body.partner /* 파트너 식별값 wc1234 */
       }
     };
     var from = req.body.user;
@@ -27,17 +23,9 @@ exports.message =  function(req, res) {
       // 메시지 전송 이벤트 처리
       case 'send' :
         if(req.body.sender == 'user' && req.body.textContent) {
-          console.log(req.params.bot)
           chat.write('navertalk', from, 'Shinhancard', req.body.textContent.text, req.body, function (serverText, json) {
-            console.log(util.inspect(serverText, {showHidden: false, depth: null}));
-            console.log(util.inspect(json, {showHidden: false, depth: null}));
-          // chat.write('navertalk', from, req.params.bot, req.body.textContent.text, req.body, function (serverText, json) {
-
-
             respondMessage(response, serverText, json, res);
           });
-
-          // response.request.textContent.text = 'echo: ' + req.body.textContent.text;
         } else {
           // 그외의 경우는 무반응
           res.json({ success: true });
@@ -49,14 +37,16 @@ exports.message =  function(req, res) {
         switch(req.body.options.inflow) {
           // 채팅리스트로부터 인입되었을때
           case 'list' :
-            response.request.textContent.text = '안녕하세요 PlayChat입니다. 인기봇, 최신봇, 친구봇, 마이봇 중 하나를 입력해주세요. 되돌아가시려면 목록을 입력해주세요';
-            res.json(response);
+            chat.write('navertalk', from, 'Shinhancard', '시작', req.body, function (serverText, json) {
+              respondMessage(response, serverText, json, res);
+            });
             break;
 
           // 유입경로가 없거나 화면을 갱신하였을때
           case 'none' :
-            response.request.textContent.text = '안녕하세요 PlayChat입니다. 인기봇, 최신봇, 친구봇, 마이봇 중 하나를 입력해주세요. 되돌아가시려면 목록을 입력해주세요';
-            res.json(response);
+            chat.write('navertalk', from, 'Shinhancard', '시작', req.body, function (serverText, json) {
+              respondMessage(response, serverText, json, res);
+            });
             break;
 
           default:
