@@ -514,7 +514,8 @@ function sendGenericMessage(recipientId, text, task, token) {
           type: "template",
           payload: {
             template_type: "generic",
-            elements: task
+            elements: task,
+            image_aspect_ratio: 'square'
           }
         }
       }
@@ -654,7 +655,8 @@ function sendGenericMessage(recipientId, text, task, token) {
             type: "template",
             payload: {
               template_type: "generic",
-              elements: task
+              elements: task,
+              image_aspect_ratio: 'square'
             }
           }
         }
