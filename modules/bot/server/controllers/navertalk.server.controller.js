@@ -97,37 +97,23 @@ function respondMessage(response, text, task, res) {
         delete task.output
       }
     }
-    // If we receive a text message, check response see if it matches any special
-    // keywords and send back the corresponding example. Otherwise, just echo
-    // the text we received.
     console.log(util.inspect(task), {showHidden: false, depth: null})
     console.log(util.inspect(Object.keys(task.result).toString(), {showHidden: false, depth: null}))
     switch (Object.keys(task.result).toString()) {
       case 'image':
-        sendGenericMessage(response, text, task.result);
+        sendImageMessage(response, text, task.result, res);
         break;
 
       case 'image,buttons':
-        sendGenericMessage(response, text, task.result);
-        break;
-      case 'buttons':
-        sendButtonMessage(response, text, task.result);
+        sendCompositeMessage(response, text, task.result, res);
         break;
 
       case 'items':
-        sendGenericMessage(response, text, task.result);
-        break;
-
-      case 'receipt':
-        sendReceiptMessage(response);
-        break;
-
-      case 'smartReply':
-        smartReplyMessage(response, text, task.result);
+        sendCompositeMessage(response, text, task.result, res);
         break;
 
       default:
-        sendTextMessage(response, text, task.result);
+        sendTextMessage(response, text, task.result, res);
     }
   }else {
     console.log('taks' + util.inspect(task), {showHidden: false, depth: null})
