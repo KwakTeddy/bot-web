@@ -345,6 +345,7 @@ function receivedPostback(event) {
     if (err){
       console.log(err)
     }else {
+      subscribe = true;
       subscribePageToken = data.accessToken;
       event.botId = data.userBotId;
 
