@@ -32,7 +32,7 @@ exports.message =  function(req, res) {
             console.log(util.inspect(serverText, {showHidden: false, depth: null}));
             console.log(util.inspect(json, {showHidden: false, depth: null}));
           // chat.write('navertalk', from, req.params.bot, req.body.textContent.text, req.body, function (serverText, json) {
-            response.request.textContent.text = serverText;
+            response.request.textContent.text = '123';
             res.json(response);
           });
 
