@@ -218,7 +218,7 @@ function receivedMessage(event) {
   var message = event.message;
   console.log('--------------------------------------------------------------------------')
   console.log(event.botId)
-  console.log(message)
+  console.log(util.inspect(message, {showHidden: false, depth: null}))
   if (event.botId == "subscribeBot"){
     console.log('Subscribe Coming In');
       UserBotFbPage.findOne({pageId: event.recipient.id}, function (err, data) {
@@ -433,15 +433,17 @@ function sendTextMessage(recipientId, text, task, token) {
  */
 function sendButtonMessage(recipientId, text, task, token) {
   for(var i = 0; i < task.buttons.length; i++){
-    task.buttons[i].title = task.buttons[i].text;
-    delete task.buttons[i].text;
+    if(task.buttons[i].text){
+      task.buttons[i].title = task.buttons[i].text;
+      delete task.buttons[i].text;
 
-    if ( task.buttons[i].url){
-      task.buttons[i]['type'] = 'web_url';
+      if ( task.buttons[i].url){
+        task.buttons[i]['type'] = 'web_url';
 
-    }else {
-      task.buttons[i]['type'] = 'postback';
-      task.buttons[i]['payload'] = task.buttons[i].title;
+      }else {
+        task.buttons[i]['type'] = 'postback';
+        task.buttons[i]['payload'] = task.buttons[i].title;
+      }
     }
   }
 
