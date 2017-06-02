@@ -500,8 +500,6 @@ function sendGenericMessage(recipientId, text, task, token) {
             }
           }
         };
-
-        callSendAPI(messageData1, token);
       }
 
       if (task.buttons){
@@ -533,8 +531,48 @@ function sendGenericMessage(recipientId, text, task, token) {
             }
           }
         };
-        callSendAPI(messageData2, token);
       }
+
+
+
+      request({
+        uri: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: { access_token: token },
+        method: 'POST',
+        json: messageData1
+
+      }, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+          var recipientId = body.recipient_id;
+          var messageId = body.message_id;
+
+          console.log("Successfully sent generic message with id %s to recipient %s",
+            messageId, recipientId);
+
+          request({
+            uri: 'https://graph.facebook.com/v2.6/me/messages',
+            qs: { access_token: token },
+            method: 'POST',
+            json: messageData2
+
+          }, function (error2, response2, body2) {
+            if (!error && response.statusCode == 200) {
+
+              console.log("Successfully sent generic message with id %s to recipient %s",
+                messageId, recipientId);
+
+            }else {
+              console.log("Unable to send message.");
+              console.log(JSON.stringify(response.body.error));
+              console.log(error);
+            }
+          })
+        } else {
+          console.log("Unable to send message.");
+          console.log(JSON.stringify(response.body.error));
+          console.log(error);
+        }
+      });
 
     }else {
       if (task.buttons){
@@ -561,25 +599,28 @@ function sendGenericMessage(recipientId, text, task, token) {
         task['title'] = text;
       }
       task = [task];
-    }
-    console.log(util.inspect(task, {showHidden: false, depth: null}));
-    var messageData = {
-      recipient: {
-        id: recipientId
-      },
-      message: {
-        attachment: {
-          type: "template",
-          payload: {
-            template_type: "generic",
-            elements: task
+
+      console.log(util.inspect(task, {showHidden: false, depth: null}));
+      var messageData = {
+        recipient: {
+          id: recipientId
+        },
+        message: {
+          attachment: {
+            type: "template",
+            payload: {
+              template_type: "generic",
+              elements: task
+            }
           }
         }
-      }
-    };
+      };
 
-    callSendAPI(messageData, token);
+      callSendAPI(messageData, token);
     }
+
+    }
+
 }
 
 /*
