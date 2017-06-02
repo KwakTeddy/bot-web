@@ -353,7 +353,7 @@ function receivedPostback(event) {
       // let them know it was successful
 
       console.log(util.inspect(event, {showHidden: false, depth: null}))
-      receivedMessage(event)
+      receivedMessage(event);
       // sendTextMessage(senderID, payload, '', token);
     }
   });
