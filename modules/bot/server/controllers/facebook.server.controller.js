@@ -345,7 +345,7 @@ function receivedPostback(event) {
     if (err){
       console.log(err)
     }else {
-      token = data.accessToken;
+      subscribePageToken = data.accessToken;
       event.botId = data.userBotId;
 
       console.log("Received postback for user %d and page %d with payload '%s' " +
