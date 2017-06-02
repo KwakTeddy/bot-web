@@ -18,7 +18,6 @@ var util =require('util'); //temporary
 
 exports.messageGet =  function(req, res) {
   contextModule.getContext(req.params.bot, 'facebook', null, null, function(context) {
-      // console.log(req.query['hub.mode'] + ', ' + req.query['hub.verify_token'] + ',' + context.bot.facebook.VALIDATION_TOKEN );
       var bot = '';
       if (!context.botUser){
           bot = context.bot
@@ -352,7 +351,10 @@ function receivedPostback(event) {
 
       // When a postback is called, we'll send a message back to the sender to
       // let them know it was successful
-      sendTextMessage(senderID, payload, '', token);
+
+      console.log(util.inspect(event, {showHidden: false, depth: null}))
+      receivedMessage(event)
+      // sendTextMessage(senderID, payload, '', token);
     }
   });
 
