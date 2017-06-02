@@ -35,7 +35,6 @@ exports.message =  function(req, res) {
 
 
             respondMessage(response, serverText, json, res);
-            res.json(response);
           });
 
           // response.request.textContent.text = 'echo: ' + req.body.textContent.text;
