@@ -1243,6 +1243,20 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           if (vm.searchKind == 'name') {
             return d.name.search(selectedVal) != -1;
           }
+          if (vm.searchKind == 'input') {
+            for (var i=0; i < d.input.length; ++i) {
+              return d.input[i].text && d.input[i].text.search(selectedVal) != -1;
+            }
+          }
+          if (vm.searchKind == 'output') {
+            if (typeof d.output === 'string') {
+              return d.output.search(selectedVal) != -1;
+            } else if (Array.isArray(d.output)) {
+              for (var i = 0; i < d.output.length; ++i) {
+                return d.output[i].text && d.output[i].text.search(selectedVal) != -1;
+              }
+            }
+          }
         });
         if (currentKeyword !== selectedVal) {
           currentKeyword = selectedVal;
