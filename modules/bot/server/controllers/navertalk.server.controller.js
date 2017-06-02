@@ -27,15 +27,13 @@ exports.message =  function(req, res) {
       // 메시지 전송 이벤트 처리
       case 'send' :
         if(req.body.sender == 'user' && req.body.textContent) {
-          //
-          chat.write('navertalk', from, req.params.bot, req.body.textContent.text, req.body, function (serverText, json) {
+          chat.write('navertalk', from, 'Shinhancard', req.body.textContent.text, req.body, function (serverText, json) {
+          // chat.write('navertalk', from, req.params.bot, req.body.textContent.text, req.body, function (serverText, json) {
             response.request.textContent.text = serverText;
             res.json(response);
           });
 
-
-          response.request.textContent.text = 'echo: ' + req.body.textContent.text;
-
+          // response.request.textContent.text = 'echo: ' + req.body.textContent.text;
         } else {
           // 그외의 경우는 무반응
           res.json({ success: true });
