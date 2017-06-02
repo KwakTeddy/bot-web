@@ -198,7 +198,13 @@ function sendCompositeMessage(response, text, task, res) {
     if(length > 10) length = 10; // 최대 10개
     for(var i =0; i < length; i++){
       var composit = {};
-      composit['title'] = task[i].text;
+      if(task[i].title){
+        composit['title'] = task[i].title;
+        composit['description'] = task[i].text;
+      }else {
+        composit['title'] = task[i].text;
+      }
+
 
       if(task[i].image){
         if (task[i].image.url.substring(0,4) !== 'http'){
