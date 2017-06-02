@@ -94,6 +94,16 @@ function respondMessage(to, text, botId, task) {
     console.log(to);
 
     if (task && task.result) {
+      if (task){
+        delete task.inNLP;
+        delete task.inRaw;
+        delete task.name;
+        delete task.action;
+        delete task.topTask;
+        if(task.output){
+          delete task.output
+        }
+      }
       // If we receive a text message, check to see if it matches any special
       // keywords and send back the corresponding example. Otherwise, just echo
       // the text we received.
@@ -480,11 +490,36 @@ function sendGenericMessage(recipientId, text, task, token) {
         for (var j = 0; j < task[i].buttons.length; j++) {
           task[i].buttons[j].title = task[i].buttons[j].text;
           delete task[i].buttons[j].text;
-          task[i].buttons[j]['type'] = 'web_url';
+
+          if ( task[i].buttons[j].url){
+            task[i].buttons[j]['type'] = 'web_url';
+
+          }else {
+            task[i].buttons[j]['type'] = 'postback';
+            task[i].buttons[j]['payload'] = task[i].buttons[j].title;
+          }
         }
       }
     }
     task.splice(10);
+
+    var messageData = {
+      recipient: {
+        id: recipientId
+      },
+      message: {
+        attachment: {
+          type: "template",
+          payload: {
+            template_type: "generic",
+            elements: task
+          }
+        }
+      }
+    };
+
+
+    callSendAPI(messageData, token);
   }else {
 
     if((text.length > 80) && task.image){
