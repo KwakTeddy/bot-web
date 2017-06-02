@@ -208,6 +208,7 @@ function receivedMessage(event) {
   var message = event.message;
   console.log('--------------------------------------------------------------------------')
   console.log(event.botId)
+  console.log(message)
   if (event.botId == "subscribeBot"){
     console.log('Subscribe Coming In');
       UserBotFbPage.findOne({pageId: event.recipient.id}, function (err, data) {
@@ -345,6 +346,7 @@ function receivedPostback(event) {
       console.log(err)
     }else {
       token = data.accessToken;
+      event.botId = data.userBotId;
 
       console.log("Received postback for user %d and page %d with payload '%s' " +
         "at %d", senderID, recipientID, payload, timeOfPostback);
@@ -352,9 +354,13 @@ function receivedPostback(event) {
       // When a postback is called, we'll send a message back to the sender to
       // let them know it was successful
 
-      console.log(util.inspect(event, {showHidden: false, depth: null}))
-      receivedMessage(event);
-      // sendTextMessage(senderID, payload, '', token);
+      console.log(util.inspect(event, {showHidden: false, depth: null}));
+      chat.write('facebook', senderID, event.botId, event.postback.payload, event, function (retText, task) {
+        console.log('this is write');
+        console.log(util.inspect(retText, {showHidden: false, depth: null}));
+        console.log(util.inspect(task, {showHidden: false, depth: null}));
+        respondMessage(senderID, retText, event.botId, task);
+      });
     }
   });
 
