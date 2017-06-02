@@ -34,7 +34,7 @@ exports.message =  function(req, res) {
           // chat.write('navertalk', from, req.params.bot, req.body.textContent.text, req.body, function (serverText, json) {
 
 
-            respondMessage(response, serverText, json);
+            respondMessage(response, serverText, json, res);
             res.json(response);
           });
 
@@ -86,7 +86,7 @@ exports.message =  function(req, res) {
 };
 
 
-function respondMessage(response, text, task) {
+function respondMessage(response, text, task, res) {
   if (task && task.result) {
     if (task){
       delete task.inNLP;
@@ -147,21 +147,21 @@ function respondMessage(response, text, task) {
       if (task && task.hasOwnProperty('image')){
         if (task.hasOwnProperty('buttons')){
           //text && image && buttons
-          sendCompositeMessage(response, text, task);
+          sendCompositeMessage(response, text, task, res);
 
         }else {
           //text && image
-          sendCompositeMessage(response, text, task);
+          sendCompositeMessage(response, text, task, res);
 
         }
       }else {
         if (task && task.hasOwnProperty('buttons')){
           //text && buttons
-          sendCompositeMessage(response, text, task);
+          sendCompositeMessage(response, text, task, res);
 
         }else {
           //text
-          sendTextMessage(response, text, task);
+          sendTextMessage(response, text, task, res);
         }
       }
     }else {
@@ -172,7 +172,7 @@ function respondMessage(response, text, task) {
 
         }else {
           //image
-          sendImageMessage(response, text, task);
+          sendImageMessage(response, text, task, res);
 
         }
       }else {
@@ -190,13 +190,13 @@ function respondMessage(response, text, task) {
   }
 }
 
-function sendTextMessage(response, text, task) {
+function sendTextMessage(response, text, task, res) {
   response.request['textContent'] = {text: ''};
   response.request.textContent.text = text;
   res.json(response)
 }
 
-function sendImageMessage(response, text, task) {
+function sendImageMessage(response, text, task, res) {
   if (task.image.url.substring(0,4) !== 'http'){
     task.image.url = config.host + task.image.url
   }
@@ -205,7 +205,7 @@ function sendImageMessage(response, text, task) {
   res.json(response)
 }
 
-function sendCompositeMessage(response, text, task) {
+function sendCompositeMessage(response, text, task, res) {
   response.request['compositeContent'] = { compositeList: []};
   if(task.items){
 
