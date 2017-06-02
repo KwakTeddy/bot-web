@@ -212,7 +212,7 @@ function sendCompositeMessage(response, text, task, res) {
   }else {
     var composit = {};
     composit['title'] = text;
-    composit['description'] = text;
+    // composit['description'] = text;
     if(task.image){
       if (task.image.url.substring(0,4) !== 'http'){
         task.image.url = config.host + task.image.url
