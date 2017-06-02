@@ -422,7 +422,7 @@ function sendButtonMessage(recipientId, text, task, token) {
 
     }else {
       task.buttons[i]['type'] = 'postback';
-      task.buttons[i]['payload'] = task;
+      task.buttons[i]['payload'] = task.buttons[i].title;
     }
   }
 
@@ -532,8 +532,6 @@ function sendGenericMessage(recipientId, text, task, token) {
           }
         };
       }
-
-
 
       request({
         uri: 'https://graph.facebook.com/v2.6/me/messages',
