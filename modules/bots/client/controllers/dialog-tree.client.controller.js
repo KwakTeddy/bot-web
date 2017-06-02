@@ -816,12 +816,14 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       if (event.keyCode == 27) { // esc
         document.getElementById('search').blur();
+        document.getElementById('replace').blur();
         document.getElementById('mainpage').focus();
         $.magnificPopup.close();
         return false;
       }
 
-      if (document.activeElement == document.getElementById('search') )
+      if (document.activeElement == document.getElementById('search') ||
+          document.activeElement == document.getElementById('replace') )
         return false;
 
       if (event.ctrlKey && event.keyCode == 90) { // ctrl+z
@@ -857,6 +859,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       } else if (event.ctrlKey && event.keyCode == 82) { // ctrl+r
         event.preventDefault();
         vm.isReplace = !vm.isReplace;
+        if (vm.isReplace)
+          document.getElementById('search').focus();
         $scope.safeApply();
         return;
       }
@@ -1276,9 +1280,45 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     $scope.replaceNode = function(event) {
       var selectedVal = document.getElementById('search').value;
-      var replaceVal = document.getElementById('replace').value;
-      if (selectedVal == '' || replaceVal == '')
+      var replacedVal = document.getElementById('replace').value;
+      if (selectedVal == '' || replacedVal == '')
         return;
+
+      var re = new RegExp(selectedVal, "g");
+      for (var idx=0; idx < dialogs.length; ++idx) {
+        var d = dialogs[idx];
+        if (vm.searchKind == 'name') {
+          d.name = d.name.replace(re, replacedVal);
+        }
+        if (vm.searchKind == 'input') {
+          for (var i=0; i < d.input.length; ++i) {
+            if (d.input[i].text)
+              d.input[i].text = d.input[i].text.replace(re, replacedVal);
+          }
+        }
+        if (vm.searchKind == 'output') {
+          if (typeof d.output === 'string') {
+            d.output = d.output.replace(re, replacedVal);
+          } else if (Array.isArray(d.output)) {
+            for (var i = 0; i < d.output.length; ++i) {
+              if (d.output[i].text)
+                d.output[i].text = d.output[i].text.replace(re, replacedVal);
+            }
+          }
+        }
+      }
+
+      vm.setChanged(true);
+
+      d3.selectAll('.node').remove();
+      d3.selectAll('path').remove();
+      selectedSVG =null;
+      update(treeData);
+      selectedSVG = baseSvg.selectAll(".node").filter(function(d) {
+        if (d.id === selectedNode.id)
+          return true;
+      });
+      update(selectedNode);
     };
 
     vm.getButtonClass = function(type) {

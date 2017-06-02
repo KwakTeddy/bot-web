@@ -286,7 +286,9 @@
                                 <input type="text" class="form-control" name="q" id="search" placeholder="Search...">
                                 <span class="input-group-btn"> <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button> </span>
                             </div>
-                            <div ng-show="vm.isReplace" class="input-group mt-xs">
+                        </form>
+                        <form ng-show="vm.isReplace" ng-submit="replaceNode()">
+                            <div class="input-group mt-xs">
                                 <input type="text" class="form-control" name="r" id="replace" placeholder="Replace...">
                                 <span class="input-group-btn"> <button class="btn btn-default" ng-click="replaceNode()"><i class="fa fa-edit"></i></button> </span>
                             </div>
