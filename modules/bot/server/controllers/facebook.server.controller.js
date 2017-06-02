@@ -39,6 +39,8 @@ exports.messageGet =  function(req, res) {
 
 
 exports.message = function (req, res) {
+  console.log('hello***************************************************************')
+  console.log(util.inspect(req.body, {showHidden: false, depth: null}))
   var data = req.body;
   // Make sure this is a page subscription
   if (data.object == 'page') {
