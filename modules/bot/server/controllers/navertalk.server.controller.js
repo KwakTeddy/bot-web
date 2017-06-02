@@ -206,11 +206,11 @@ function sendCompositeMessage(response, text, task, res) {
       }
 
 
-      if(task[i].image){
-        if (task[i].image.url.substring(0,4) !== 'http'){
-          task[i].image.url = config.host + task[i].image.url
+      if(task[i].imageUrl){
+        if (task[i].imageUrl.substring(0,4) !== 'http'){
+          task[i].imageUrl = config.host + task[i].imageUrl
         }
-        composit['image'] = {imageUrl: task[i].image.url, height: '530', width: '290'};
+        composit['image'] = {imageUrl: task[i].imageUrl, height: '530', width: '290'};
       }
       
       
