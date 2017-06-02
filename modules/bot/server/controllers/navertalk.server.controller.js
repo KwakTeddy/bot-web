@@ -207,6 +207,54 @@ function sendImageMessage(response, text, task, res) {
 function sendCompositeMessage(response, text, task, res) {
   response.request['compositeContent'] = { compositeList: []};
   if(task.items){
+    task = task.items;
+    var length = task.length;
+    if(length > 10) length = 10; // 최대 10개
+    for(var i =0; i < length; i++){
+      var composit = {};
+      composit['title'] = task[i].text;
+
+      if(task[i].image){
+        if (task[i].image.url.substring(0,4) !== 'http'){
+          task[i].image.url = config.host + task[i].image.url
+        }
+        composit['image'] = {imageUrl: task[i].image.url, height: '530', width: '290'};
+      }
+      
+      
+      if (task[i].buttons) {
+        composit['buttonList'] = [];
+        for(var k = 0; k < task[k].buttons.length; k++){
+          var button = '';
+          if ( task[i].buttons[k].url){
+            button = {
+              "type": "LINK",
+              "link": {
+                "title": '', /* 버튼에 노출하는 버튼명 (최대 20자)*/
+                "url": "", /* 톡톡 PC버전 채팅창에서 링크 URL */
+                "mobileUrl": "", /* 톡톡 모바일버전 채팅창에서 링크 URL */
+                "targetSelf": true, /* 톡톡 모바일버전 채팅창에서 버튼클릭시 자창(true)/새창(false) 여부 (default: false) */
+                "pcTargetSelf": false, /* 톡톡 PC버전 채팅창에서 버튼클릭시 자창(true)/새창(false) 여부 (default: false) */
+                "pcPopupSpecs": "titlebar=0,menubar= 0,toolbar=0,scrollbars=0,resizable=0,width=412,height=640" /* pcTargetSelf 속성이 false 이면서 pcPopupSpecs 가 정의되면 팝업으로 전환 */
+              }
+            };
+            button.link.title = task[i].buttons[k].text;
+            button.link.url = task[i].buttons[k].url;
+            button.link.mobileUrl = task[i].buttons[k].url;
+          }else {
+            button = {
+              "type": "TEXT",
+              "text": "", /* 버튼에 노출하는 버튼명 (최대 20자)*/
+              "code": "" /* code를 정의하는경우 유저가 보내는 send이벤트 textContent에 code가 삽입되어 전송됨 (최대 1,000자)*/
+            };
+            button.text = task[i].buttons[k].text;
+          }
+          composit.buttonList.push(button);
+        }
+      }
+      response.request.compositeContent.compositeList.push(composit);
+    }
+    res.json(response);
 
   }else {
     var composit = {};
@@ -244,12 +292,12 @@ function sendCompositeMessage(response, text, task, res) {
             "code": "" /* code를 정의하는경우 유저가 보내는 send이벤트 textContent에 code가 삽입되어 전송됨 (최대 1,000자)*/
           };
           button.text = task.buttons[i].text;
-          button.code = '123123123';
         }
         composit.buttonList.push(button);
       }
     }
-    response.request.compositeContent.compositeList.push(composit)
+    response.request.compositeContent.compositeList.push(composit);
+    console.log(util.inspect(response), {showHidden: false, depth: null})
     res.json(response);
   }
 }
