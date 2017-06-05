@@ -54,6 +54,28 @@
       </div>
 
       <div class="form-horizontal form-group">
+        <label class="col-sm-2 control-label">이미지</label>
+        <div class="col-sm-10">
+          <img ng-src="{{imageURL? imageURL : vm.bot.imageFile}}" class="img-thumbnail user-profile-picture" style="border: 0;width:150px; height: 150px;text-align:center;line-height: 150px;" alt="이미지를 업로드해요" >
+          <!--<img ng-src="{{vm.bot.imageFile}}" class="img-thumbnail user-profile-picture" style="border: 0;width:150px; height: 150px;text-align:center;line-height: 150px;" alt="이미지를 업로드해요" data-ng-if="vm.bot._id && vm.bot.imageFile">-->
+          <p></p>
+          <div class="text-left" ng-hide="imageUploader.queue.length" style="display: inline-block;left: 180px;top: 10px;position: absolute;">
+            <span class="btn btn-default btn-file">
+                <input type="file" nv-file-select uploader="imageUploader" style="width:200px;">
+            </span>
+            <span ng-show="success.image" class="text-center text-success">
+              <strong>이미지가 업로드 되었네요</strong>
+            </span>
+            <span ng-show="error.image" class="text-center text-danger">
+              <strong ng-bind="error.image"></strong>
+            </span>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="form-horizontal form-group">
         <label class="col-sm-2 control-label">대화파일 <span class="required" aria-required="true">*</span></label>
         <!--<div class="col-sm-9">-->
           <!--<input type="text" name="name" ng-model="vm.bot.name" class="form-control valid" placeholder="자유롭게 입력해주세요"-->

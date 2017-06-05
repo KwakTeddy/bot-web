@@ -114,6 +114,8 @@ exports.read = function(req, res) {
   }
 };
 
+
+
 /**
  * Update a Custom action
  */
@@ -191,11 +193,12 @@ exports.contentUpdate = function(req, res) {
               dialogset.processInput(null, req.body.name, function (_input, _json) {
                 data.name = req.body.name;
                 data.input = _input;
-                data.save(function (err) {
+                data.save(function (err, data2) {
                   if (err){
                     console.log(err)
                   }else {
-                    res.end();
+                    console.log(util.inspect(data2))
+                    res.json(data2);
                   }
                 })
               });

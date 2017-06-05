@@ -153,6 +153,9 @@ angular.module('bots').controller('BotController', [
       if(vm.bot && vm.bot._id) {
         vm.bot.$update(function () {
           $state.go('bots.list');
+          $timeout(function () {
+            $window.location.reload();
+          }, 100)
         }, function (errorResponse) {
           $scope.error = errorResponse.data.message;
         });
@@ -392,6 +395,82 @@ angular.module('bots').controller('BotController', [
     // Cancel the upload process
     $scope.cancelImageUpload = function () {
       $scope.jsonImageUploader.clearQueue();
+      // $scope.imageURL = $scope.user.profileImageURL;
+    };
+
+
+
+    /********************* image *********************/
+    $scope.imageURL = undefined;
+    $scope.error = {};
+    $scope.success = {};
+
+    // Create file imageUploader instance
+    $scope.imageUploader = new FileUploader({
+      url: '/api/user-bots/image-files',
+      alias: 'uploadImageFile',
+      autoUpload: true
+    });
+
+    $scope.imageUploader.filters.push({
+      name: 'imageFilter',
+      fn: function (item, options) {
+        var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+        if('|jpg|png|jpeg|bmp|gif|'.indexOf(type) == -1){
+          $scope.success.image = null;
+          $scope.error['image'] = '이미지 파일이 아니에요'
+        }else {
+          $scope.error.image = null;
+        }
+        return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+      }
+    });
+
+    // Called after the user selected a new picture file
+    $scope.imageUploader.onAfterAddingFile = function (fileItem) {
+      if ($window.FileReader) {
+        var fileReader = new FileReader();
+        fileReader.readAsDataURL(fileItem._file);
+
+        fileReader.onload = function (fileReaderEvent) {
+          $timeout(function () {
+            $scope.imageURL = fileReaderEvent.target.result;
+          }, 0);
+        };
+      }
+    };
+
+    // Called after the user has successfully uploaded a new picture
+    $scope.imageUploader.onSuccessItem = function (fileItem, response, status, headers) {
+      // Show success message
+      $scope.success['image'] = true;
+
+      vm.bot.imageFile = '/files/' + response.filename;
+      // Clear upload buttons
+      $scope.cancelImageUpload();
+    };
+
+    // Called after the user has failed to uploaded a new picture
+    $scope.imageUploader.onErrorItem = function (fileItem, response, status, headers) {
+      // Clear upload buttons
+      $scope.cancelImageUpload();
+
+      // Show error message
+      $scope.error = response.message;
+    };
+
+    // Change user profile picture
+    $scope.uploadImageFiles = function () {
+      // Clear messages
+      $scope.success = $scope.error = null;
+
+      // Start upload
+      $scope.imageUploader.uploadAll();
+    };
+
+    // Cancel the upload process
+    $scope.cancelImageUpload = function () {
+      $scope.imageUploader.clearQueue();
       // $scope.imageURL = $scope.user.profileImageURL;
     };
   }

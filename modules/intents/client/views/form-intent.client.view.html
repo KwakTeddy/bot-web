@@ -61,10 +61,14 @@
               </tr>
               </thead>
               <tbody>
-              <tr ng-repeat="intent in vm.intent.content">
+              <tr ng-repeat="intent in vm.intent.content track by $index">
                 <!--<td class="text-center">{{intent.bot.id}}</td>-->
-                <td>
-                  <input class="text-center" type="text" data-ng-model="intent.name" style="border: none; width: 100%">
+                <td class="text-center" ng-click="vm.selectContent($index)">
+                  <div id = 'content_{{$index}}' data-ng-show="vm.selectedContent !== $index" data-ng-bind="intent.name">
+                  </div>
+                  <input class="text-center" type="text" data-ng-model="intent.name" style="border: none; width: 100%" data-ng-show ='vm.selectedContent == $index'
+                         ng-blur = 'vm.contentBlur($index, intent)'
+                         id = "input_{{$index}}">
                 </td>
                 <!--<td class="text-center"><a ui-sref="intents.edit({intentId: intent._id})">{{intent.name}}</a></td>-->
                 <!--<td class="text-center">{{intent.words}}</td>-->
@@ -84,6 +88,7 @@
             </table>
 
           </div>
+
         </div>
         <div ng-show="vm.contentListError" class="text-danger text-center row">
           <strong ng-bind="vm.contentListError"></strong>

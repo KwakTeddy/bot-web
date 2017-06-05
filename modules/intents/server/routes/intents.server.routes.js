@@ -29,7 +29,6 @@ module.exports = function(app) {
     .post(intents.contentUpdate)
     .delete(intents.contentDelete);
 
-
   // Finish by binding the Custom action middleware
   app.param('intentId', intents.intentByID);
 };

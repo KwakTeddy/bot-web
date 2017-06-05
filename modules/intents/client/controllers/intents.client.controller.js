@@ -6,9 +6,9 @@
     .module('intents')
     .controller('IntentsController', IntentsController);
 
-  IntentsController.$inject = ['$scope', '$state', 'Authentication', 'intentResolve', '$resource', 'IntentsService', '$rootScope', '$http', '$cookies'];
+  IntentsController.$inject = ['$scope', '$state', 'Authentication', 'intentResolve', '$resource', 'IntentsService', '$rootScope', '$http', '$cookies', '$timeout'];
 
-  function IntentsController($scope, $state, Authentication, intent, $resource, IntentsService, $rootScope, $http, $cookies) {
+  function IntentsController($scope, $state, Authentication, intent, $resource, IntentsService, $rootScope, $http, $cookies, $timeout) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -21,40 +21,42 @@
     vm.remove = remove;
     vm.save = save;
     vm.entities = [];
+    vm.background = {'가전제품' : 'rgb(210, 195, 234)', '사람' : '#fffda6'}
 
     if (!vm.intent._id){
       angular.element('#intentFormName').focus();
     }else {
       angular.element('#intentContentForm').focus();
     }
+    if(vm.intent.content.length){
+      vm.count = vm.intent.content.length;
+    }
 
-    // vm.count = vm.intent.content.length;
-    // vm.analyzeIntent = function () {
-    //   console.log(vm.count)
-    //   if(vm.count){
-    //     $resource('/api/user-bots-analytics/intent', {}).get({input: vm.intent.content[vm.count-1].input, botId: $cookies.get('default_bot')}, function (res) {
-    //       console.log(res)
-    //       if (!Object.keys(res.entities).length){
-    //         vm.entities = undefined;
-    //       }else {
-    //         vm.entities = res.entities;
-    //         console.log(Object.values(vm.entities)[0]);
-    //         console.log(vm.intent.content[vm.count-1].input.split(Object.values(vm.entities)[0]))
-    //         vm.intent.content[vm.count-1].input = vm.intent.content[vm.count-1].input.split(' ')
-    //         console.log(vm.intent.content[vm.count-1].input)
-    //         for(var i = 0; i < vm.intent.content[vm.count-1].input.length; i++){
-    //           if(vm.intent.content[vm.count-1].input[i] == Object.values(vm.entities)[0]){
-    //
-    //           }
-    //         }
-    //       }
-    //
-    //       vm.count--;
-    //       vm.analyzeIntent();
-    //     })
-    //   }
-    // };
-    // vm.analyzeIntent();
+    vm.analyzeIntent = function () {
+      if(vm.count){
+        $resource('/api/user-bots-analytics/intent', {}).get({input: vm.intent.content[vm.count-1].input, botId: $cookies.get('default_bot')}, function (res) {
+          if (!Object.keys(res.entities).length){
+            vm.entities = undefined;
+          }else {
+            vm.entities = res.entities;
+            var processedInput = vm.intent.content[vm.count-1].input.split(' ');
+            for(var i = 0; i < processedInput.length; i++){
+              for(var j = 0; j < Object.keys(vm.entities).length; j++){
+                if(processedInput[i] == Object.values(vm.entities)[j]){
+                  document.getElementById('content_' + (vm.count-1)).innerHTML = document.getElementById('content_' + (vm.count-1)).innerHTML.replace(Object.values(vm.entities)[j], '<span style="background-color: ' + vm.background[Object.keys(vm.entities)[j]] + '">' + Object.values(vm.entities)[j] + '</span>')
+                }
+              }
+            }
+          }
+
+          vm.count--;
+          vm.analyzeIntent();
+        }, function (err) {
+          console.log(err)
+        })
+      }
+    };
+    vm.analyzeIntent();
 
 
     // Remove existing Custom action
@@ -71,8 +73,11 @@
         if(newVal && (newVal.length == oldVal.length)){
           for(var i = 0; i < newVal.length; i++){
             if(newVal[i].name !== oldVal[i].name){
+              var num = angular.copy(i);
               $http.post('/api/intentsContent/'+ newVal[i].intentId, newVal[i]).then(function (result) {
                 vm.contentListError = null;
+                newVal[num].input = result.data.input;
+                console.log(result)
               }, function (err) {
                 console.log(err);
                 vm.contentListError = err.data.message;
@@ -146,6 +151,8 @@
             vm.intent.content.unshift(result);
             vm.intentContent = '';
             vm.contentError = '';
+            vm.count = vm.intent.content.length;
+            vm.analyzeIntent();
           }, function (err) {
             console.log(err);
             vm.contentError = err.data.message
@@ -182,6 +189,8 @@
             intentId: vm.intent._id
           }).$promise.then(function (data) {
             vm.intent = data;
+            vm.count = vm.intent.content.length;
+            vm.analyzeIntent();
           })
         }else {
         }
@@ -189,11 +198,49 @@
     };
     
     vm.contentRemoveBeforeSave = function (target) {
-      console.log(vm.intent.content.indexOf(target))
       var index = vm.intent.content.indexOf(target);
       if(index > -1){
         vm.intent.content.splice(index, 1)
       }
+    };
+
+
+
+    vm.selectContent = function (index) {
+      vm.selectedContent = index
+      $timeout(function () {
+        angular.element('#input_' + index).focus()
+      });
+    };
+
+    vm.contentBlur = function (index, content) {
+      vm.selectedContent = null;
+      console.log(index);
+      $timeout(function () {
+        console.log(vm.intent.content[index]);
+        $resource('/api/user-bots-analytics/intent', {}).get({input: vm.intent.content[index].input, botId: $cookies.get('default_bot')}, function (res) {
+          console.log(res)
+          if (!Object.keys(res.entities).length){
+            vm.entities = undefined;
+          }else {
+            vm.entities = res.entities;
+            var processedInput = vm.intent.content[index].input.split(' ');
+            console.log(processedInput)
+            for(var i = 0; i < processedInput.length; i++){
+              for(var j = 0; j < Object.keys(vm.entities).length; j++){
+                if(processedInput[i] == Object.values(vm.entities)[j]){
+                  document.getElementById('content_' + index).innerHTML = document.getElementById('content_' + index).innerHTML.replace(Object.values(vm.entities)[j], '<span style="background-color: ' + vm.background[Object.keys(vm.entities)[j]] + '">' + Object.values(vm.entities)[j] + '</span>')
+                }
+              }
+            }
+          }
+        }, function (err) {
+          console.log(err)
+        })
+      }, 100)
+
+
     }
+
   }
 })();

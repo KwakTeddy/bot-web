@@ -30,18 +30,21 @@ angular.module('users').config(['$stateProvider',
         templateUrl: 'modules/users/client/views/settings/change-profile-picture.client.view.html'
       })
       .state('authentication', {
-          abstract: true,
-          url: '/authentication',
-          templateUrl: '/modules/users/client/views/authentication/authentication.client.view.html',
-          controller: 'AuthenticationController'
+        abstract: true,
+        url: '/authentication',
+        template: '<ui-view/>',
+        // templateUrl: '/modules/users/client/views/authentication/authentication.client.view.html',
+        // controller: 'AuthenticationController'
       })
       .state('authentication.signup', {
         url: '/signup',
-        templateUrl: 'modules/users/client/views/authentication/signup.client.view.html'
+        templateUrl: 'modules/users/client/views/authentication/signup.client.view.html',
+        controller: 'AuthenticationController'
       })
       .state('authentication.signin', {
         url: '/signin?err',
-        templateUrl: 'modules/users/client/views/authentication/signin.client.view.html'
+        templateUrl: 'modules/users/client/views/authentication/signin.client.view.html',
+        controller: 'AuthenticationController'
       })
       .state('password', {
         abstract: true,
