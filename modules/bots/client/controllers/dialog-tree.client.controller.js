@@ -939,14 +939,28 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     var element = document.getElementById('tree-container');
+    var element2 = document.getElementById('editor-container');
     new ResizeSensor(element, function() {
-      console.log('Changed to ' + element.clientWidth);
-      viewerWidth = document.getElementById('tree-container').clientWidth;
-      viewerHeight = document.getElementById('sidebar-left').clientHeight*0.80;
+      console.log('Graph Changed to ' + element.clientWidth);
+      var viewerWidth = document.getElementById('tree-container').clientWidth;
+      var viewerHeight = document.getElementById('sidebar-left').clientHeight*0.80;
 
       baseSvg
         .attr("width", viewerWidth)
         .attr("height", viewerHeight);
+
+    });
+
+    new ResizeSensor(element2, function() {
+      if (element2.clientWidth == 0)
+        return;
+      console.log('Editor Changed to ' + element2.clientWidth);
+      var viewerWidth = document.getElementById('editor-container').clientWidth;
+      var viewerHeight = document.getElementById('sidebar-left').clientHeight*0.80;
+
+      if (vm.editor) {
+        vm.editor.setSize(viewerWidth,viewerHeight);
+      }
     });
 
     document.getElementById('mainpage').addEventListener("keydown", keydown);
