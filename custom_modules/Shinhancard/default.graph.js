@@ -2193,9 +2193,6 @@ var dialogs = [
 													"text": "알뜰실속파"
 												},
 												{
-													"text": "센스실속파"
-												},
-												{
 													"text": "슈퍼실속파"
 												}
 											]
@@ -2215,22 +2212,6 @@ var dialogs = [
 												],
 												"output": {
 													"call": "알뜰 실속"
-												}
-											},
-											{
-												"name": "dialog_default94",
-												"id": "default94",
-												"filename": "default",
-												"input": [
-													{
-														"text": "센스"
-													},
-													{
-														"text": "2"
-													}
-												],
-												"output": {
-													"call": "센스 실속"
 												}
 											},
 											{
