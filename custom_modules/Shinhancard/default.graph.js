@@ -3,6 +3,34 @@
 
 var dialogs = [
 	{
+		"name": "FAQ Check",
+		"id": "default211",
+		"filename": "default",
+		"input": [
+			{
+				"types": [
+					"faqtype1"
+				]
+			}
+		],
+		"output": "아래 중에 궁금하신 내용이 있나요?\n#typeDoc#+index+. +title+\n#번호를 입력하면 상세 내용을 보여드립니다.\n다시 검색하시려면 검색어를 입력해주세요.\n\n(* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
+		"children": [
+			{
+				"name": "dialog_default212",
+				"id": "default212",
+				"filename": "default",
+				"input": [
+					{
+						"types": [
+							"listType"
+						]
+					}
+				],
+				"output": "[+listType.title+]\n+listType.content+\n더 필요하신 게 있으시면 말씀해주세요~\n\n(* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')"
+			}
+		]
+	},
+	{
 		"name": "FAN 가입",
 		"id": "default1",
 		"filename": "default",
@@ -437,7 +465,7 @@ var dialogs = [
 				}
 			],
 			"image": {
-				"url": "/files//shinhancard.moneybrain.ai/files/Shinhancard1496222593859.jpg",
+				"url": "/files/Shinhancard1496653015883.jpg",
 				"displayname": "sns_FAN이용가이드.jpg"
 			}
 		},
@@ -1178,7 +1206,7 @@ var dialogs = [
 				"input": [
 					{
 						"types": [
-							"fanfaqType"
+							"faqtype2"
 						]
 					}
 				],
@@ -2562,7 +2590,7 @@ var dialogs = [
 		"input": [
 			{
 				"types": [
-					"fanfaqType"
+					"faqtype2"
 				]
 			}
 		],
