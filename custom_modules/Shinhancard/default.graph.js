@@ -1206,7 +1206,7 @@ var dialogs = [
 				"input": [
 					{
 						"types": [
-							"faqtype2"
+							"fanfaqType"
 						]
 					}
 				],
@@ -2283,13 +2283,10 @@ var dialogs = [
 									}
 								],
 								"output": {
-									"output": "그렇다면, 고객님의 소비성향을 알려주세요. \n1. 주유, 쇼핑 등 생활혜택에 관심이 있는 알뜰 실속파\n2. 해외에서도 혜택을 챙기는 센스실속파\n3. 주거래 계좌 연결하시면 기본+추가+특별 적립이 한번에! 슈퍼 실속파!\n\n(* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
+									"output": "그렇다면, 고객님의 소비성향을 알려주세요. \n1. 주유, 쇼핑 등 생활혜택에 관심이 있는 알뜰 실속파\n2. 주거래 계좌 연결하시면 기본+추가+특별 적립이 한번에! 슈퍼 실속파!\n\n(* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
 									"buttons": [
 										{
 											"text": "알뜰실속파"
-										},
-										{
-											"text": "센스실속파"
 										},
 										{
 											"text": "슈퍼실속파"
@@ -2368,76 +2365,6 @@ var dialogs = [
 										]
 									},
 									{
-										"name": "센스 실속",
-										"id": "default90",
-										"filename": "default",
-										"input": [
-											{
-												"text": "센스"
-											},
-											{
-												"text": "2"
-											}
-										],
-										"output": {
-											"output": "고객님께서 좋아하실만한 체크카드가 2가지가 있네요. 아래 2가지 카드 중 자세히 보고 싶으신 카드를 선택해주세요.  \n\n1. 해외 여행도! 해외 직구도! [Smart Global 신한카드 체크]\n2. 여행에 혜택을 더하였습니다.  [신한카드 YOLO Triplus 체크]\n\n(* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
-											"buttons": [
-												{
-													"text": "Smart Global"
-												},
-												{
-													"text": "YOLO Triplus"
-												}
-											]
-										},
-										"children": [
-											{
-												"name": "dialog_default169",
-												"id": "default169",
-												"filename": "default",
-												"input": [
-													{
-														"text": "1"
-													},
-													{
-														"text": "Smart Global"
-													}
-												],
-												"output": {
-													"output": "[Smart Global 신한카드 체크] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
-													"buttons": [
-														{
-															"text": "바로보기",
-															"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350269_33660.html"
-														}
-													]
-												}
-											},
-											{
-												"name": "dialog_default170",
-												"id": "default170",
-												"filename": "default",
-												"input": [
-													{
-														"text": "2"
-													},
-													{
-														"text": "YOLO Triplus"
-													}
-												],
-												"output": {
-													"output": "[신한카드 YOLO Triplus 체크] 카드를 추천해드릴게요.\n아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.\n\n(* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
-													"buttons": [
-														{
-															"text": "바로보기",
-															"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350267_33660.html"
-														}
-													]
-												}
-											}
-										]
-									},
-									{
 										"name": "슈퍼 실속",
 										"id": "default91",
 										"filename": "default",
@@ -2446,7 +2373,7 @@ var dialogs = [
 												"text": "슈퍼"
 											},
 											{
-												"text": "3"
+												"text": "2"
 											}
 										],
 										"output": {
@@ -2456,9 +2383,7 @@ var dialogs = [
 												"displayname": "card29.jpg"
 											}
 										},
-										"task": {
-											"name": "MainCheck"
-										}
+										"task": "MainCheck"
 									},
 									{
 										"name": "dialog_default207",
@@ -2590,7 +2515,7 @@ var dialogs = [
 		"input": [
 			{
 				"types": [
-					"faqtype2"
+					"fanfaqType"
 				]
 			}
 		],

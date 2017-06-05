@@ -489,7 +489,7 @@ var TheLadyClassic = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C03.shc?EntryLoc=2804&tmEntryLoc=TM2534&empSeq=563&datakey&agcCd="
+                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2767&empSeq=563&datakey=&agcCd="
                 }
             ]
 
@@ -497,7 +497,7 @@ var TheLadyClassic = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C03.shc?EntryLoc=2804&tmEntryLoc=TM2534&empSeq=562&datakey&agcCd="
+                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2767&empSeq=562&datakey=&agcCd="
                 }
             ]
 
@@ -505,7 +505,7 @@ var TheLadyClassic = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C03.shc?EntryLoc=2804&tmEntryLoc=TM2534&empSeq=561&datakey&agcCd="
+                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2767&empSeq=561&datakey=&agcCd="
                 }
             ]
 
