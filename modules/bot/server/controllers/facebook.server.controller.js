@@ -597,6 +597,7 @@ function sendGenericMessage(recipientId, text, task, token) {
 
           if ( task.buttons[i].url){
             btn['type'] = 'web_url';
+            btn['url'] = task.buttons[i].url;
           }else {
             btn['type'] = 'postback';
             btn['payload'] = task.buttons[i].text;
@@ -616,6 +617,7 @@ function sendGenericMessage(recipientId, text, task, token) {
           // }
         }
 
+        console.log(JSON.stringify(buttons));
 
         var messageData2 = {
           recipient: {
