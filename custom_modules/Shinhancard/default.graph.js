@@ -167,7 +167,7 @@ var dialogs = [
 			"buttons": [
 				{
 					"text": "대박이벤트 바로가기",
-					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?+A2:F14=FAN_MAIN_304"
+					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_304"
 				}
 			],
 			"image": {
