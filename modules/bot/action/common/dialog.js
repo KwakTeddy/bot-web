@@ -963,6 +963,8 @@ function executeDialog(dialog, context, print, callback, options) {
         if(output.image || output.buttons || output.items || output.result)
           dialog.task = utils.merge(dialog.task, output);
 
+        context.botUser._currentDialog = dialog;    // 이게 진짜 현재 다이얼로그
+
         print(userOut, dialog.task);
 
          userDilaog.addDialog(dialog.inRaw || context.dialog.inCurRaw || context.dialog.inRaw, userOut, context.dialog.isFail, dialog, context, function() {
@@ -986,7 +988,7 @@ function executeDialog(dialog, context, print, callback, options) {
           print(context.global.messages.userError);
       } else {
         // dialog.output.options = null;
-        context.botUser.currentDialog = dialog;
+        context.botUser.currentDialog = dialog;   // 이건 사실 이전 다이얼로그로서 역활
         context.botUser.lastDialog = dialog;
 
         // dialog.inRaw = null;
