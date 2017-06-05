@@ -15,6 +15,7 @@ var utils = require(path.resolve('modules/bot/action/common/utils'));
 
 var util =require('util'); //temporary
 var bot = '';
+var botContext = '';
  
 
 exports.messageGet =  function(req, res) {
@@ -230,6 +231,7 @@ function receivedMessage(event) {
               subscribePageToken = data.accessToken;
               event.botId = data.userBotId;
               contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
+                botContext = context;
                   //console.log('receivedMessage: ', event);
 
                   // var bot = context.botUser.orgBot || context.bot;
@@ -434,7 +436,7 @@ function sendTextMessage(recipientId, text, task, token) {
  *
  */
 function sendButtonMessage(recipientId, text, task, token) {
-  if(bot.commonButtons && bot.commonButtons.length){
+  if(bot && bot.commonButtons && bot.commonButtons.length && bot._currentDialog && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)){
     for(var i = 0; i < bot.commonButtons.length; i++){
       task.buttons.pop();
     }
