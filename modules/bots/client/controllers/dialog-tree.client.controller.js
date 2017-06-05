@@ -563,8 +563,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           if (t.name === f.name)
             included = true;
         });
-        if (!included)
-          item += ",\"disabled\":true";
+        // if (!included)
+        //   item += ",\"disabled\":true";
 
           item = item + "}'><a href='#' onClick='gogo(\""+f.name+"\")'>"+ f.name + "</a></li>";
         document.getElementById('ul_list').insertAdjacentHTML('beforeEnd', item);
@@ -596,7 +596,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       });
     };
 
-    vm.addTab = function(name) {
+    vm.addTab = function(name, action) {
       files.forEach(function(f) {
         if (f.name === name) {
           vm.taskFile = f;
@@ -606,6 +606,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         BotFilesService.get({botId: vm.bot_id, fileId: vm.taskFile._id}, function(result) {
           vm.taskFile.data = result.data;
           vm.tabs.push({name:name, data:vm.taskFile.data, file_id:vm.taskFile._id,  active:false});
+          if (action)
+            action();
         });
       }
     };
@@ -621,9 +623,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         vm.initTabs();
         vm.currentTab = tab;
         tab.active = true;
-        if (tab.name.endsWith('js')) {
-          vm.file = tab.name;
 
+        if (vm.currentTab.name.endsWith('js')) {
+          vm.file = vm.currentTab.name;
+
+          $scope.safeApply();
           $scope.refreshCodemirror = true;
           $timeout(function () {
             vm.editor.focus();
@@ -633,7 +637,28 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         } else {
           $scope.safeApply();
         }
+      } else {
+        vm.addTab(name, function() {
+          vm.currentTab = vm.tabs[vm.tabs.length-1];
+          vm.initTabs();
+          vm.currentTab.active = true;
+
+          if (vm.currentTab.name.endsWith('js')) {
+            vm.file = vm.currentTab.name;
+
+            $scope.safeApply();
+            $scope.refreshCodemirror = true;
+            $timeout(function () {
+              vm.editor.focus();
+              vm.editor.refresh();
+              $scope.refreshCodemirror = false;
+            }, 100);
+          } else {
+            $scope.safeApply();
+          }
+        });
       }
+
     };
     vm.changeTab = function (tab) {
       vm.initTabs();
@@ -642,7 +667,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       if (tab.name.endsWith('js'))
         vm.file = tab.name;
 
-      if (vm.currentTab == vm.tabs[1]) {
+      if (vm.currentTab != vm.tabs[0]) {
         vm.edit = 'task';
         $scope.refreshCodemirror = true;
         $timeout(function () {
