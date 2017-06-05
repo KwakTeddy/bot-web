@@ -554,7 +554,7 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
                         _executeDialog(intentDialog);
                         return true;
                       }
-                    }
+                    };
                   }
                 } else if(child.items) {
                   var itemCheck = false, itemChecked;

@@ -144,7 +144,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
           cb(true);
         }
       } else if(context.bot.dialogs) {
-        context.botUser.currentDialog = null;
+        // context.botUser.currentDialog = null;
 
         context.botUser._dialog = {};
         context.dialog = context.botUser._dialog;
@@ -163,12 +163,17 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
               if(_dialog) console.log('[DIALOG_SEL]' + JSON.stringify({id: _dialog.id, name: _dialog.name, input: _dialog.input,
                 context: context.botUser.context ? context.botUser.context.path : '', intent: context.botUser.intent,
                 entities: context.botUser.entities}));
+
+              if(_dialog && context.bot.startDialog.name == _dialog.name) {
+                context.botUser.currentDialog = null;
+              }
+
               cb(true);
             }
             else cb(null);
+
           })
         }
-
       } else {
         cb(null);
       }
