@@ -31,6 +31,127 @@ var dialogs = [
 		]
 	},
 	{
+		"name": "퀴즈",
+		"id": "default213",
+		"filename": "default",
+		"input": [
+			{
+				"text": "퀴즈"
+			}
+		],
+		"output": {
+			"output": "안녕하세요. 신한은행입니다. 돌발 이벤트 퀴즈 시작합니다.\n1. 신한카드는 몇가지 신용카드가 있을까요?\n2. 신한카드는 몇가지 체크카드가 있을까요?\n\n(* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
+			"buttons": [
+				{
+					"text": "신용카드 퀴즈"
+				},
+				{
+					"text": "체크카드 퀴즈"
+				}
+			]
+		},
+		"children": [
+			{
+				"name": "신용카드 퀴즈",
+				"id": "default214",
+				"filename": "default",
+				"input": [
+					{
+						"text": "1"
+					},
+					{
+						"text": "신용카드"
+					}
+				],
+				"output": "신한카드에는 몇가지 신용카드가 있을까요?\n정답을 입력해주세요!\n\n정답을 맞추시면 빵빵한 혜택을 드립니다.",
+				"children": [
+					{
+						"name": "dialog_default216",
+						"id": "default216",
+						"filename": "default",
+						"input": [
+							{
+								"text": "24"
+							}
+						],
+						"output": "와우!!\n축하드립니다!! 정답이에요."
+					},
+					{
+						"name": "dialog_default217",
+						"id": "default217",
+						"filename": "default",
+						"input": "false",
+						"output": "이런 정답이 아니에요.\n다시 시도하시겠습니까?",
+						"children": [
+							{
+								"name": "dialog_default218",
+								"id": "default218",
+								"filename": "default",
+								"input": [
+									{
+										"text": "네"
+									}
+								],
+								"output": {
+									"up": "1"
+								}
+							}
+						]
+					}
+				]
+			},
+			{
+				"name": "체크카드 퀴즈",
+				"id": "default215",
+				"filename": "default",
+				"input": [
+					{
+						"text": "2"
+					},
+					{
+						"text": "체크카드"
+					}
+				],
+				"output": "신한카드에는 몇가지 채크카드가 있을까요?\n정답을 입력해주세요!\n\n정답을 맞추시면 빵빵한 혜택을 드립니다.",
+				"children": [
+					{
+						"name": "dialog_default219",
+						"id": "default219",
+						"filename": "default",
+						"input": [
+							{
+								"text": "8"
+							}
+						],
+						"output": "와우!!\n축하드립니다!! 정답이에요."
+					},
+					{
+						"name": "dialog_default220",
+						"id": "default220",
+						"filename": "default",
+						"input": "false",
+						"output": "이런 정답이 아니에요.\n다시 시도하시겠습니까?",
+						"children": [
+							{
+								"name": "dialog_default221",
+								"id": "default221",
+								"filename": "default",
+								"input": [
+									{
+										"text": "네"
+									}
+								],
+								"output": {
+									"up": "1"
+								}
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	{
 		"name": "FAN 가입",
 		"id": "default1",
 		"filename": "default",
