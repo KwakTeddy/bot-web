@@ -71,10 +71,10 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
       context.botUser._currentDialog.name != context.bot.startDialog.name) {
 
       if(_task.buttons && (_task.buttons.length < 2 ||
-        _.isEqual(_task.buttons.slice(_task.buttons.length - 2, _task.buttons.length), context.bot.commonButtons)) == false)
+        _.isEqual(_task.buttons.slice(_task.buttons.length - 2, _task.buttons.length), context.bot.commonButtons) == false))
         _task.buttons = _task.buttons.concat(context.bot.commonButtons);
       else if(_task.result && _task.result.buttons && (_task.result.buttons.length < 2 ||
-        _.isEqual(_task.result.buttons.slice(_task.result.buttons.length - 2, _task.result.buttons.length), context.bot.commonButtons)) == false)
+        _.isEqual(_task.result.buttons.slice(_task.result.buttons.length - 2, _task.result.buttons.length), context.bot.commonButtons) == false))
         _task.result.buttons = _task.result.buttons.concat(context.bot.commonButtons);
     }
 
