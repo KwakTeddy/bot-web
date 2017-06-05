@@ -901,6 +901,9 @@ if (_platform !== 'mobile'){
       };
 
 
+
+
+
       /********************* dialog *********************/
       vm.dialog = new UserBotDialogService({user: vm.user, userBot: vm.userBot, botId: vm.userBot.id});
       vm.dialogs = UserBotDialogService.query({botId: vm.userBot.id});
