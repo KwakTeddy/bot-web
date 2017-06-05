@@ -683,9 +683,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     // graph edit
-    vm.setChanged = function(c, updateScope) {
+    vm.setChanged = function(c, updateScope, isReplace) {
       if (c == true) {
-        vm.changeHistory.push({source:angular.copy(selectedNode),  dialogs:angular.copy(dialogs)});
+        vm.changeHistory.push({source:angular.copy(selectedNode),  dialogs:angular.copy(dialogs), isReplace: isReplace});
       }
       vm.isChanged = c;
 
@@ -697,16 +697,32 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     $scope.undo = function() {
       if (vm.changeHistory.length > 0) {
         var history = vm.changeHistory.pop();
-        dialogs = history.dialogs;
-        vm.initTreeData();
-        init(history.source);
-        var svg = baseSvg.selectAll(".node").filter(function(d) {
-          if (d.id === history.source.id)
-            return true;
-        });
-        svg.remove();
-        initSelect();
-        update(history.source);
+        if (!history.isReplace) {
+          dialogs = angular.copy(history.dialogs);
+          vm.initTreeData();
+          init(history.source);
+          var svg = baseSvg.selectAll(".node").filter(function(d) {
+            if (d.id === history.source.id)
+              return true;
+          });
+          svg.remove();
+          initSelect();
+          update(history.source);
+        } else {
+          d3.selectAll('path').remove();
+          d3.selectAll('.node').remove();
+          dialogs = angular.copy(history.dialogs);
+          vm.initTreeData();
+          selectedSVG =null;
+          update(treeData);
+          if (selectedNode) {
+            selectedSVG = baseSvg.selectAll(".node").filter(function(d) {
+              if (d.id === selectedNode.id)
+                return true;
+            });
+            update(selectedNode);
+          }
+        }
         vm.isChanged = true;
       }
       // if (vm.changeHistory.length == 0) {
@@ -1324,6 +1340,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       if (selectedVal == '' || replacedVal == '')
         return;
 
+      vm.setChanged(true, false, true);
+
       var re = new RegExp(selectedVal, "g");
       for (var idx=0; idx < dialogs.length; ++idx) {
         var d = dialogs[idx];
@@ -1348,17 +1366,17 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         }
       }
 
-      vm.setChanged(true);
-
       d3.selectAll('.node').remove();
       d3.selectAll('path').remove();
       selectedSVG =null;
       update(treeData);
-      selectedSVG = baseSvg.selectAll(".node").filter(function(d) {
-        if (d.id === selectedNode.id)
-          return true;
-      });
-      update(selectedNode);
+      if (selectedNode) {
+        selectedSVG = baseSvg.selectAll(".node").filter(function(d) {
+          if (d.id === selectedNode.id)
+            return true;
+        });
+        update(selectedNode);
+      }
     };
 
     vm.getButtonClass = function(type) {
@@ -3131,11 +3149,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       d3.selectAll('path').remove();
       selectedSVG =null;
       update(treeData);
-      selectedSVG = baseSvg.selectAll(".node").filter(function(d) {
-        if (d.id === selectedNode.id)
-          return true;
-      });
-      update(selectedNode);
+      if (selectedNode) {
+        selectedSVG = baseSvg.selectAll(".node").filter(function(d) {
+          if (d.id === selectedNode.id)
+            return true;
+        });
+        update(selectedNode);
+      }
     };
     vm.showDetail = function() {
       vm.oneline = false;
@@ -3143,11 +3163,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       d3.selectAll('path').remove();
       selectedSVG =null;
       update(treeData);
-      selectedSVG = baseSvg.selectAll(".node").filter(function(d) {
-        if (d.id === selectedNode.id)
-          return true;
-      });
-      update(selectedNode);
+      if (selectedNode) {
+        selectedSVG = baseSvg.selectAll(".node").filter(function(d) {
+          if (d.id === selectedNode.id)
+            return true;
+        });
+        update(selectedNode);
+      }
     };
 
     vm.dialog = true;
