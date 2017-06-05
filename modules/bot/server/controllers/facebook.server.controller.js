@@ -440,7 +440,7 @@ function sendButtonMessage(recipientId, text, task, token) {
   console.log(util.inspect(botContext.botUser._currentDialog, {showHidden:false, depth: null}))
   console.log(util.inspect(botContext.bot.startDialog, {showHidden:false, depth: null}))
   console.log('*************************************************************************&*&*&*&')
-  if(bot && bot.commonButtons && bot.commonButtons.length && bot._currentDialog && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)){
+  if(bot && bot.commonButtons && bot.commonButtons.length && botContext.botUser._currentDialog.name && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)){
     for(var i = 0; i < bot.commonButtons.length; i++){
       task.buttons.pop();
     }
