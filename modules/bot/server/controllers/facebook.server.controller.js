@@ -370,7 +370,7 @@ function receivedPostback(event) {
       // let them know it was successful
 
       console.log(util.inspect(event, {showHidden: false, depth: null}));
-      chat.write('facebook', senderID, event.botId, event.postback.payload, event, function (retText, task) {
+      chat.write('facebook', senderID, event.botId, event.postback.payload, null, function (retText, task) {
         console.log('this is write');
         console.log(util.inspect(retText, {showHidden: false, depth: null}));
         console.log(util.inspect(task, {showHidden: false, depth: null}));
