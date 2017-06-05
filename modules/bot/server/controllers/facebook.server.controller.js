@@ -96,13 +96,13 @@ function respondMessage(to, text, botId, task) {
 
   if (task && task.result) {
     if (task){
-      task.inNLP = null;
-      task.inRaw = null;
-      task.name = null;
-      task.action = null;
-      task.topTask = null;
+      delete task.inNLP;
+      delete task.inRaw;
+      delete task.name;
+      delete task.action;
+      delete task.topTask;
       if(task.output){
-        task.output = null
+        delete task.output
       }
     }
     // If we receive a text message, check to see if it matches any special
@@ -141,13 +141,13 @@ function respondMessage(to, text, botId, task) {
     console.log('taks' + util.inspect(task), {showHidden: false, depth: null})
     console.log('taks' + util.inspect(text), {showHidden: false, depth: null})
     if (task){
-      task.inNLP = null;
-      task.inRaw = null;
-      task.name = null;
-      task.action = null;
-      task.topTask = null;
+      delete task.inNLP;
+      delete task.inRaw;
+      delete task.name;
+      delete task.action;
+      delete task.topTask;
       if(task.output){
-        task.output = null
+        delete task.output
       }
     }
     if(text){
@@ -464,7 +464,7 @@ function sendButtonMessage(recipientId, text, task, token) {
     for(var i = 0; i < task.buttons.length; i++){
       if(task.buttons[i].text){
         task.buttons[i].title = task.buttons[i].text;
-        task.buttons[i].text = null;
+        delete task.buttons[i].text;
 
         if ( task.buttons[i].url){
           task.buttons[i]['type'] = 'web_url';
@@ -509,22 +509,22 @@ function sendGenericMessage(recipientId, text, task, token) {
     for(var i =0; i < task.length; i++){
       if (task[i].text){
         task[i].subtitle = task[i].text;
-        task[i].text = null;
+        delete task[i].text;
       }
       if (task[i].imageUrl) {
         if (task[i].imageUrl.substring(0,4) !== 'http'){
           task[i].imageUrl = config.host + task[i].imageUrl
         }
         task[i].image_url = task[i].imageUrl;
-        task[i].imageUrl = null;
+        delete task[i].imageUrl;
       }
       if (task[i].buttons) {
         if(task[i].buttons.length > 3){
-          task[i].buttons = null
+          delete task[i].buttons
         }else {
           for (var j = 0; j < task[i].buttons.length; j++) {
             task[i].buttons[j].title = task[i].buttons[j].text;
-            task[i].buttons[j].text = null;
+            delete task[i].buttons[j].text;
 
             if ( task[i].buttons[j].url){
               task[i].buttons[j]['type'] = 'web_url';
@@ -566,7 +566,7 @@ function sendGenericMessage(recipientId, text, task, token) {
           task.image.url = config.host + task.image.url
         }
         var task2 = utils.clone(task)
-        task2.buttons = null;
+        delete task2.buttons
         console.log(util.inspect(task2, {showHidden: false, depth: null}))
         console.log(util.inspect('+++++++++++++++++++++++++++++++++++++'))
         var messageData1 = {
@@ -585,10 +585,10 @@ function sendGenericMessage(recipientId, text, task, token) {
       }
 
       if (task.buttons){
-        task.image = null;
+        delete task.image;
         for(var i = 0; i < task.buttons.length; i++){
           task.buttons[i].title = task.buttons[i].text;
-          task.buttons[i].text = null;
+          delete task.buttons[i].text;
 
           if ( task.buttons[i].url){
             task.buttons[i]['type'] = 'web_url';
@@ -656,13 +656,13 @@ function sendGenericMessage(recipientId, text, task, token) {
 
     }else {
       if (task.buttons.length > 3){
-        task.buttons = null;
+        delete task.buttons;
         if(task.image){
           if (task.image.url.substring(0,4) !== 'http'){
             task.image.url = config.host + task.image.url
           }
           task.image_url = task.image.url;
-          task.image = null;
+          delete task.image;
           task['title'] = text;
         }
         task = [task];
@@ -690,7 +690,7 @@ function sendGenericMessage(recipientId, text, task, token) {
         if (task.buttons){
           for(var i = 0; i < task.buttons.length; i++){
             task.buttons[i].title = task.buttons[i].text;
-            task.buttons[i].text = null;
+            delete task.buttons[i].text;
 
             if ( task.buttons[i].url){
               task.buttons[i]['type'] = 'web_url';
@@ -707,7 +707,7 @@ function sendGenericMessage(recipientId, text, task, token) {
             task.image.url = config.host + task.image.url
           }
           task.image_url = task.image.url;
-          task.image = null;
+          delete task.image;
           task['title'] = text;
         }
         task = [task];
