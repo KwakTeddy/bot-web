@@ -14,6 +14,7 @@ var utils = require(path.resolve('modules/bot/action/common/utils'));
 
 
 var util =require('util'); //temporary
+var bot = '';
  
 
 exports.messageGet =  function(req, res) {
@@ -82,121 +83,117 @@ exports.message = function (req, res) {
 exports.respondMessage = respondMessage;
 function respondMessage(to, text, botId, task) {
   var tokenData = '';
-  contextModule.getContext(botId, 'facebook', to, null, function(context) {
-    var bot = context.botUser.orgBot || context.bot;
+  if (subscribe){
+      tokenData = subscribePageToken;
+  }else {
+      tokenData = bot.facebook.PAGE_ACCESS_TOKEN;
+  }
 
-    if (subscribe){
-        tokenData = subscribePageToken;
-    }else {
-        tokenData = bot.facebook.PAGE_ACCESS_TOKEN;
+  console.log(util.inspect(task, {showHidden: false, depth: null}))
+  console.log('999999999998989812398129839128398');
+  console.log(to);
+
+  if (task && task.result) {
+    if (task){
+      delete task.inNLP;
+      delete task.inRaw;
+      delete task.name;
+      delete task.action;
+      delete task.topTask;
+      if(task.output){
+        delete task.output
+      }
     }
+    // If we receive a text message, check to see if it matches any special
+    // keywords and send back the corresponding example. Otherwise, just echo
+    // the text we received.
+    console.log(util.inspect(task), {showHidden: false, depth: null})
+    console.log(util.inspect(Object.keys(task.result).toString(), {showHidden: false, depth: null}))
+    switch (Object.keys(task.result).toString()) {
+      case 'image':
+        sendGenericMessage(to, text, task.result, tokenData);
+        break;
 
-    console.log(util.inspect(task, {showHidden: false, depth: null}))
-    console.log('999999999998989812398129839128398');
-    console.log(to);
+      case 'image,buttons':
+        sendGenericMessage(to, text, task.result, tokenData);
+        break;
+      case 'buttons':
+        sendButtonMessage(to, text, task.result, tokenData);
+        break;
 
-    if (task && task.result) {
-      if (task){
-        delete task.inNLP;
-        delete task.inRaw;
-        delete task.name;
-        delete task.action;
-        delete task.topTask;
-        if(task.output){
-          delete task.output
-        }
+      case 'items':
+        sendGenericMessage(to, text, task.result, tokenData);
+        break;
+
+      case 'receipt':
+        sendReceiptMessage(to);
+        break;
+
+      case 'smartReply':
+        smartReplyMessage(to, text, task.result, tokenData);
+        break;
+
+      default:
+        sendTextMessage(to, text, task.result, tokenData);
+    }
+  }else {
+    console.log('taks' + util.inspect(task), {showHidden: false, depth: null})
+    console.log('taks' + util.inspect(text), {showHidden: false, depth: null})
+    if (task){
+      delete task.inNLP;
+      delete task.inRaw;
+      delete task.name;
+      delete task.action;
+      delete task.topTask;
+      if(task.output){
+        delete task.output
       }
-      // If we receive a text message, check to see if it matches any special
-      // keywords and send back the corresponding example. Otherwise, just echo
-      // the text we received.
-      console.log(util.inspect(task), {showHidden: false, depth: null})
-      console.log(util.inspect(Object.keys(task.result).toString(), {showHidden: false, depth: null}))
-      switch (Object.keys(task.result).toString()) {
-        case 'image':
-          sendGenericMessage(to, text, task.result, tokenData);
-          break;
+    }
+    if(text){
+      if (task && task.hasOwnProperty('image')){
+        if (task.hasOwnProperty('buttons')){
+          //text && image && buttons
+          sendGenericMessage(to, text, task, tokenData);
 
-        case 'image,buttons':
-          sendGenericMessage(to, text, task.result, tokenData);
-          break;
-        case 'buttons':
-          sendButtonMessage(to, text, task.result, tokenData);
-          break;
-
-        case 'items':
-          sendGenericMessage(to, text, task.result, tokenData);
-          break;
-
-        case 'receipt':
-          sendReceiptMessage(to);
-          break;
-
-        case 'smartReply':
-          smartReplyMessage(to, text, task.result, tokenData);
-          break;
-
-        default:
-          sendTextMessage(to, text, task.result, tokenData);
-      }
-    }else {
-      console.log('taks' + util.inspect(task), {showHidden: false, depth: null})
-      console.log('taks' + util.inspect(text), {showHidden: false, depth: null})
-      if (task){
-        delete task.inNLP;
-        delete task.inRaw;
-        delete task.name;
-        delete task.action;
-        delete task.topTask;
-        if(task.output){
-          delete task.output
-        }
-      }
-      if(text){
-        if (task && task.hasOwnProperty('image')){
-          if (task.hasOwnProperty('buttons')){
-            //text && image && buttons
-            sendGenericMessage(to, text, task, tokenData);
-
-          }else {
-            //text && image
-            sendGenericMessage(to, text, task, tokenData);
-
-          }
         }else {
-          if (task && task.hasOwnProperty('buttons')){
-            //text && buttons
-            sendButtonMessage(to, text, task, tokenData);
+          //text && image
+          sendGenericMessage(to, text, task, tokenData);
 
-          }else {
-            //text
-            sendTextMessage(to, text, task, tokenData);
-          }
         }
       }else {
-        if (task && task.hasOwnProperty('image')){
-          if (task && task.hasOwnProperty('buttons')){
-            //image && buttons _ error
-            // sendGenericMessage(to, text, task, tokenData);
+        if (task && task.hasOwnProperty('buttons')){
+          //text && buttons
+          sendButtonMessage(to, text, task, tokenData);
 
-          }else {
-            //image
-            sendImageMessage(to, text, task, tokenData);
-
-          }
         }else {
-          //only button or nothing _ error
-          // if (task.hasOwnProperty('buttons')){
-          //   //buttons this is error
-          //
-          // }else {
-          //   //nothing
-          //   sendTextMessage(to, text, task, tokenData);
-          //
-          // }
+          //text
+          sendTextMessage(to, text, task, tokenData);
         }
       }
+    }else {
+      if (task && task.hasOwnProperty('image')){
+        if (task && task.hasOwnProperty('buttons')){
+          //image && buttons _ error
+          // sendGenericMessage(to, text, task, tokenData);
+
+        }else {
+          //image
+          sendImageMessage(to, text, task, tokenData);
+
+        }
+      }else {
+        //only button or nothing _ error
+        // if (task.hasOwnProperty('buttons')){
+        //   //buttons this is error
+        //
+        // }else {
+        //   //nothing
+        //   sendTextMessage(to, text, task, tokenData);
+        //
+        // }
+      }
     }
-  });
+  }
 }
 
 /*
@@ -235,9 +232,10 @@ function receivedMessage(event) {
               contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
                   //console.log('receivedMessage: ', event);
 
-                  var bot = context.botUser.orgBot || context.bot;
-                  console.log(util.inspect(bot, {showHidden: false, depth: null}));
-                  console.log(util.inspect('*****************************************************************************'));
+                  // var bot = context.botUser.orgBot || context.bot;
+                  bot = context.botUser.orgBot || context.bot;
+                  // console.log(util.inspect(bot, {showHidden: false, depth: null}));
+                  // console.log(util.inspect('*****************************************************************************'));
                   if(recipientID == data.pageId) {
                     console.log('2 senderID: ' + senderID + ', recipientID: ' + recipientID);
 
@@ -273,7 +271,7 @@ function receivedMessage(event) {
             contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
               //console.log('receivedMessage: ', event);
 
-              var bot = context.botUser.orgBot || context.bot;
+              bot = context.botUser.orgBot || context.bot;
               if(recipientID == bot.facebook.id) {
                 console.log('2 senderID: ' + senderID + ', recipientID: ' + recipientID);
 
@@ -294,7 +292,7 @@ function receivedMessage(event) {
           contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
             //console.log('receivedMessage: ', event);
 
-            var bot = context.botUser.orgBot || context.bot;
+            bot = context.botUser.orgBot || context.bot;
             if(recipientID == bot.facebook.id) {
               console.log('2 senderID: ' + senderID + ', recipientID: ' + recipientID);
 
@@ -436,17 +434,23 @@ function sendTextMessage(recipientId, text, task, token) {
  *
  */
 function sendButtonMessage(recipientId, text, task, token) {
-  if(task.buttons.length > 3){
-    var messageData = {
-      recipient: {
-        id: recipientId
-      },
-      message: {
-        text: text
-      }
-    };
+  if(bot.commonButtons && bot.commonButtons.length){
+    for(var i = 0; i < bot.commonButtons.length; i++){
+      task.buttons.pop();
+    }
+  }
 
-    callSendAPI(messageData, token);
+  if(task.buttons.length > 3){
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      text: text
+    }
+  };
+
+  callSendAPI(messageData, token);
 
   }else {
 
