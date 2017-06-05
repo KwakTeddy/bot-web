@@ -622,53 +622,66 @@ function sendGenericMessage(recipientId, text, task, token) {
       });
 
     }else {
-      if (task.buttons){
-        for(var i = 0; i < task.buttons.length; i++){
-          task.buttons[i].title = task.buttons[i].text;
-          delete task.buttons[i].text;
-
-          if ( task.buttons[i].url){
-            task.buttons[i]['type'] = 'web_url';
-
-          }else {
-            task.buttons[i]['type'] = 'postback';
-            task.buttons[i]['payload'] = task.buttons[i].title;
+      if (task.buttons.length > 3){
+        var messageData = {
+          recipient: {
+            id: recipientId
+          },
+          message: {
+            text: text
           }
+        };
+
+        callSendAPI(messageData, token);
+
+
+      }else {
+        if (task.buttons){
+          for(var i = 0; i < task.buttons.length; i++){
+            task.buttons[i].title = task.buttons[i].text;
+            delete task.buttons[i].text;
+
+            if ( task.buttons[i].url){
+              task.buttons[i]['type'] = 'web_url';
+
+            }else {
+              task.buttons[i]['type'] = 'postback';
+              task.buttons[i]['payload'] = task.buttons[i].title;
+            }
+            task['title'] = text;
+          }
+        }
+        if(task.image){
+          if (task.image.url.substring(0,4) !== 'http'){
+            task.image.url = config.host + task.image.url
+          }
+          task.image_url = task.image.url;
+          delete task.image;
           task['title'] = text;
         }
-      }
-      if(task.image){
-        if (task.image.url.substring(0,4) !== 'http'){
-          task.image.url = config.host + task.image.url
-        }
-        task.image_url = task.image.url;
-        delete task.image;
-        task['title'] = text;
-      }
-      task = [task];
+        task = [task];
 
-      console.log(util.inspect(task, {showHidden: false, depth: null}));
-      var messageData = {
-        recipient: {
-          id: recipientId
-        },
-        message: {
-          attachment: {
-            type: "template",
-            payload: {
-              template_type: "generic",
-              elements: task,
-              image_aspect_ratio: 'square'
+        console.log(util.inspect(task, {showHidden: false, depth: null}));
+        var messageData = {
+          recipient: {
+            id: recipientId
+          },
+          message: {
+            attachment: {
+              type: "template",
+              payload: {
+                template_type: "generic",
+                elements: task,
+                image_aspect_ratio: 'square'
+              }
             }
           }
-        }
-      };
+        };
 
-      callSendAPI(messageData, token);
+        callSendAPI(messageData, token);
+      }
     }
-
-    }
-
+  }
 }
 
 /*
