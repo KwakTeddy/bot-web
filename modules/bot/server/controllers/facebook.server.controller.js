@@ -236,6 +236,8 @@ function receivedMessage(event) {
                   //console.log('receivedMessage: ', event);
 
                   var bot = context.botUser.orgBot || context.bot;
+                  console.log(util.inspect(bot, {showHidden: false, depth: null}));
+                  console.log(util.inspect('*****************************************************************************'));
                   if(recipientID == data.pageId) {
                     console.log('2 senderID: ' + senderID + ', recipientID: ' + recipientID);
 
@@ -506,18 +508,23 @@ function sendGenericMessage(recipientId, text, task, token) {
         delete task[i].imageUrl;
       }
       if (task[i].buttons) {
-        for (var j = 0; j < task[i].buttons.length; j++) {
-          task[i].buttons[j].title = task[i].buttons[j].text;
-          delete task[i].buttons[j].text;
+        if(task[i].buttons.length > 3){
+          delete task[i].buttons
+        }else {
+          for (var j = 0; j < task[i].buttons.length; j++) {
+            task[i].buttons[j].title = task[i].buttons[j].text;
+            delete task[i].buttons[j].text;
 
-          if ( task[i].buttons[j].url){
-            task[i].buttons[j]['type'] = 'web_url';
+            if ( task[i].buttons[j].url){
+              task[i].buttons[j]['type'] = 'web_url';
 
-          }else {
-            task[i].buttons[j]['type'] = 'postback';
-            task[i].buttons[j]['payload'] = task[i].buttons[j].title;
+            }else {
+              task[i].buttons[j]['type'] = 'postback';
+              task[i].buttons[j]['payload'] = task[i].buttons[j].title;
+            }
           }
         }
+
       }
     }
     task.splice(10);
