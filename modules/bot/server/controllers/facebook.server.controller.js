@@ -561,14 +561,17 @@ function sendGenericMessage(recipientId, text, task, token) {
   }else {
 
     if((text.length > 80) && task.image){
+      console.log('sendGenericMessage 0');
       if(task.image){
+        var imageUrl;
         if (task.image.url.substring(0,4) !== 'http'){
-          task.image.url = config.host + task.image.url
-        }
-        var task2 = utils.clone(task)
-        delete task2.buttons
-        console.log(util.inspect(task2, {showHidden: false, depth: null}))
-        console.log(util.inspect('+++++++++++++++++++++++++++++++++++++'))
+          imageUrl = config.host + task.image.url
+        } else imageUrl = task.image.url;
+
+        // var task2 = utils.clone(task)
+        // delete task2.buttons
+        // console.log(util.inspect(task2, {showHidden: false, depth: null}))
+        // console.log(util.inspect('+++++++++++++++++++++++++++++++++++++'))
         var messageData1 = {
           recipient: {
             id: recipientId
@@ -577,7 +580,7 @@ function sendGenericMessage(recipientId, text, task, token) {
             attachment: {
               type: "image",
               payload: {
-                "url": task2.image.url
+                "url": imageUrl
               }
             }
           }
@@ -585,19 +588,35 @@ function sendGenericMessage(recipientId, text, task, token) {
       }
 
       if (task.buttons){
-        delete task.image;
+        var buttons = [];
+        // delete task.image;
         for(var i = 0; i < task.buttons.length; i++){
-          task.buttons[i].title = task.buttons[i].text;
-          delete task.buttons[i].text;
+          var btn = {
+            title: task.buttons[i].text
+          }
 
           if ( task.buttons[i].url){
-            task.buttons[i]['type'] = 'web_url';
-
+            btn['type'] = 'web_url';
           }else {
-            task.buttons[i]['type'] = 'postback';
-            task.buttons[i]['payload'] = task.buttons[i].title;
+            btn['type'] = 'postback';
+            btn['payload'] = task.buttons[i].text;
           }
+
+          buttons.push(btn);
+
+          // task.buttons[i].title = task.buttons[i].text;
+          // delete task.buttons[i].text;
+
+          // if ( task.buttons[i].url){
+          //   task.buttons[i]['type'] = 'web_url';
+          //
+          // }else {
+          //   task.buttons[i]['type'] = 'postback';
+          //   task.buttons[i]['payload'] = task.buttons[i].title;
+          // }
         }
+
+
         var messageData2 = {
           recipient: {
             id: recipientId
@@ -608,7 +627,7 @@ function sendGenericMessage(recipientId, text, task, token) {
               payload: {
                 template_type: "button",
                 text : text,
-                buttons: task.buttons
+                buttons: buttons
               }
             }
           }
@@ -622,6 +641,8 @@ function sendGenericMessage(recipientId, text, task, token) {
         json: messageData1
 
       }, function (error, response, body) {
+        console.log('sendGenericMessage 01');
+
         if (!error && response.statusCode == 200) {
           var recipientId = body.recipient_id;
           var messageId = body.message_id;
@@ -636,6 +657,8 @@ function sendGenericMessage(recipientId, text, task, token) {
             json: messageData2
 
           }, function (error2, response2, body2) {
+            console.log('sendGenericMessage 02');
+
             if (!error && response.statusCode == 200) {
 
               console.log("Successfully sent generic message with id %s to recipient %s",
@@ -655,6 +678,8 @@ function sendGenericMessage(recipientId, text, task, token) {
       });
 
     }else {
+      console.log('sendGenericMessage 10');
+
       if (task.buttons.length > 3){
         delete task.buttons;
         if(task.image){
@@ -683,8 +708,9 @@ function sendGenericMessage(recipientId, text, task, token) {
           }
         };
 
-        callSendAPI(messageData, token);
+        console.log('sendGenericMessage 11');
 
+        callSendAPI(messageData, token);
 
       }else {
         if (task.buttons){
@@ -728,6 +754,8 @@ function sendGenericMessage(recipientId, text, task, token) {
             }
           }
         };
+
+        console.log('sendGenericMessage 12');
 
         callSendAPI(messageData, token);
       }
