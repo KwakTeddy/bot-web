@@ -13,6 +13,51 @@ var listType = {
 
 bot.setType("listType", listType);
 
+var faqtype1 = {
+    name: 'typeDoc',
+    typeCheck: global._context.typeChecks['dialogTypeCheck'], //type.mongoDbTypeCheck,
+    preType: function(task, context, type, callback) {
+        type.mongo.queryStatic.botId = context.bot.botName;
+        callback(task, context);
+    },
+    limit: 5,
+    matchRate: 0.7,
+    matchCount: 4,
+    mongo: {
+        model: 'fan_faq',
+        queryStatic: {botId: undefined},
+        queryFields: ['title'],
+        fields: 'title content' ,
+        taskFields: ['_id', 'title', 'content'],
+        minMatch: 1
+    }
+};
+
+bot.setType('faqtype1',faqtype1);
+
+var faqtype2 = {
+    name: 'typeDoc',
+    typeCheck: global._context.typeChecks['dialogTypeCheck'], //type.mongoDbTypeCheck,
+    preType: function(task, context, type, callback) {
+        type.mongo.queryStatic.botId = context.bot.botName;
+        callback(task, context);
+    },
+    limit: 5,
+    matchRate: 0.3,
+    matchCount: 4,
+    mongo: {
+        model: 'fan_faq',
+        queryStatic: {botId: undefined},
+        queryFields: ['title'],
+        fields: 'title content' ,
+        taskFields: ['_id', 'title', 'content'],
+        minMatch: 1
+    }
+};
+
+bot.setType('faqtype2',faqtype2);
+
+
 var fanfaqType = {
     typeCheck: type.mongoDbTypeCheck,
     limit: 5,
