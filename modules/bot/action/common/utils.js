@@ -197,7 +197,8 @@ function cloneWithoutCycle(obj) {
   }
 
   throw new Error("Unable to copy obj! Its type isn't supported.");
-};
+}
+
 exports.requireNoCache = requireNoCache;
 function requireNoCache(filePath, isForce) {
   if(process.env.NODE_ENV == 'development' || isForce == true)

@@ -938,6 +938,17 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
+    var element = document.getElementById('tree-container');
+    new ResizeSensor(element, function() {
+      console.log('Changed to ' + element.clientWidth);
+      viewerWidth = document.getElementById('tree-container').clientWidth;
+      viewerHeight = document.getElementById('sidebar-left').clientHeight*0.80;
+
+      baseSvg
+        .attr("width", viewerWidth)
+        .attr("height", viewerHeight);
+    });
+
     document.getElementById('mainpage').addEventListener("keydown", keydown);
     document.getElementById('mainpage').focus();
 
@@ -2015,6 +2026,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     var svgGroup = baseSvg.append("g");
 
     var init = function(source) {
+
       // Define the root
       root = treeData;
       root.x0 = viewerHeight / 2;
