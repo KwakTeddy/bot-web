@@ -434,40 +434,55 @@ function sendTextMessage(recipientId, text, task, token) {
  *
  */
 function sendButtonMessage(recipientId, text, task, token) {
-  for(var i = 0; i < task.buttons.length; i++){
-    if(task.buttons[i].text){
-      task.buttons[i].title = task.buttons[i].text;
-      delete task.buttons[i].text;
-
-      if ( task.buttons[i].url){
-        task.buttons[i]['type'] = 'web_url';
-
-      }else {
-        task.buttons[i]['type'] = 'postback';
-        task.buttons[i]['payload'] = task.buttons[i].title;
+  if(task.buttons.length > 3){
+    var messageData = {
+      recipient: {
+        id: recipientId
+      },
+      message: {
+        text: text
       }
-    }
-  }
+    };
 
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "button",
-          text: text,
-          buttons: task.buttons
+    callSendAPI(messageData, token);
+
+  }else {
+
+    for(var i = 0; i < task.buttons.length; i++){
+      if(task.buttons[i].text){
+        task.buttons[i].title = task.buttons[i].text;
+        delete task.buttons[i].text;
+
+        if ( task.buttons[i].url){
+          task.buttons[i]['type'] = 'web_url';
+
+        }else {
+          task.buttons[i]['type'] = 'postback';
+          task.buttons[i]['payload'] = task.buttons[i].title;
         }
       }
     }
-  };
-  console.log(util.inspect(messageData, {showHidden: false, depth: null}));
-  console.log(util.inspect(messageData.message.payload, {showHidden: false, depth: null}));
 
-  callSendAPI(messageData, token);
+    var messageData = {
+      recipient: {
+        id: recipientId
+      },
+      message: {
+        attachment: {
+          type: "template",
+          payload: {
+            template_type: "button",
+            text: text,
+            buttons: task.buttons
+          }
+        }
+      }
+    };
+    console.log(util.inspect(messageData, {showHidden: false, depth: null}));
+    console.log(util.inspect(messageData.message.payload, {showHidden: false, depth: null}));
+
+    callSendAPI(messageData, token);
+  }
 }
 
 /*
@@ -623,12 +638,30 @@ function sendGenericMessage(recipientId, text, task, token) {
 
     }else {
       if (task.buttons.length > 3){
+        delete task.buttons;
+        if(task.image){
+          if (task.image.url.substring(0,4) !== 'http'){
+            task.image.url = config.host + task.image.url
+          }
+          task.image_url = task.image.url;
+          delete task.image;
+          task['title'] = text;
+        }
+        task = [task];
+
         var messageData = {
           recipient: {
             id: recipientId
           },
           message: {
-            text: text
+            attachment: {
+              type: "template",
+              payload: {
+                template_type: "generic",
+                elements: task,
+                image_aspect_ratio: 'square'
+              }
+            }
           }
         };
 
