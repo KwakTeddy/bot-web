@@ -2067,7 +2067,7 @@ var dialogs = [
 									}
 								],
 								"output": {
-									"output": "2030 맞춤 혜택 상품을 추천할까요~?\n\n1. 네 추천해주세요!\n2. 아니요, 좀더 찾아주세요.\n\n(* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
+									"output": "2030 맞춤 혜택 상품을 추천할까요~?\n\n1. 네 추천해주세요!\n2. 아니요 좀 더 찾아주세요.\n\n(* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
 									"buttons": [
 										{
 											"text": "네 추천해주세요"
@@ -2154,12 +2154,10 @@ var dialogs = [
 										"filename": "default",
 										"input": [
 											{
-												"text": "아니다",
-												"if": "context.user.channel == 'kakao'"
+												"text": "아니다"
 											},
 											{
-												"text": "2",
-												"if": "context.user.channel == 'kakao'"
+												"text": "2"
 											}
 										],
 										"output": {
