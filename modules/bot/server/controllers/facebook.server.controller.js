@@ -141,7 +141,7 @@ function respondMessage(to, text, botId, task) {
     console.log('taks' + util.inspect(task), {showHidden: false, depth: null})
     console.log('taks' + util.inspect(text), {showHidden: false, depth: null})
     if (task){
-      ask.inNLP = null;
+      task.inNLP = null;
       task.inRaw = null;
       task.name = null;
       task.action = null;
