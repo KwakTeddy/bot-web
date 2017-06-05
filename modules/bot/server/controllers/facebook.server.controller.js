@@ -438,8 +438,8 @@ function sendTextMessage(recipientId, text, task, token) {
 function sendButtonMessage(recipientId, text, task, token) {
   console.log('*************************************************************************&*&*&*&')
   if(bot && bot.commonButtons && bot.commonButtons.length && botContext.botUser._currentDialog.name && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)){
-    if(task.buttons) task.buttons =  task.buttons.slice(task.buttons.length - bot.commonButtons.length, task.buttons.length);
-    else if(task.result.buttons) task.result.buttons =  task.result.buttons.slice(task.result.buttons.length - bot.commonButtons.length, task.result.buttons.length);
+    if(task.buttons) task.buttons =  task.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
+    else if(task.result.buttons) task.result.buttons =  task.result.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
     //
     // task.buttons =  task.buttons.slice(task.but);
     // for(var i = 0; i < bot.commonButtons.length; i++){
