@@ -433,29 +433,16 @@ var dialogs = [
 			"buttons": [
 				{
 					"text": "이용가이드 보기",
-					"url": "\"https://newm.shinhancard.com/event/2015/fc_launch.jsp?url=https://m.shinhancard.com/conts/html/shinhanFAN/introFAN/MOBFM021R02.html&title=GUIDE \""
+					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?url=https://m.shinhancard.com/conts/html/shinhanFAN/introFAN/MOBFM021R02.html&title=GUIDE"
 				}
 			],
 			"image": {
-				"url": "https://shinhancard.moneybrain.ai/files/Shinhancard1496222593859.jpg",
+				"url": "/files//shinhancard.moneybrain.ai/files/Shinhancard1496222593859.jpg",
 				"displayname": "sns_FAN이용가이드.jpg"
 			}
 		},
 		"inRaw": "1",
-		"inNLP": "1",
-		"task": {
-			"output": "신한 FAN을 통해 편리한 결제를 할 수 있어요!\n \n 결제 방식은 나한테 맞는걸 선택하시면 되요. \n 고객님을 생각하는 FAN답게 다양한 인증방식을 제공합니다. \n \n✔ 비밀번호\n✔ 지문\n✔ 홍채 인증\n\n 신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n (* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
-			"buttons": [
-				{
-					"text": "이용가이드 보기",
-					"url": "\"https://newm.shinhancard.com/event/2015/fc_launch.jsp?url=https://m.shinhancard.com/conts/html/shinhanFAN/introFAN/MOBFM021R02.html&title=GUIDE \""
-				}
-			],
-			"image": {
-				"url": "https://shinhancard.moneybrain.ai/files/Shinhancard1496222593859.jpg",
-				"displayname": "sns_FAN이용가이드.jpg"
-			}
-		}
+		"inNLP": "1"
 	},
 	{
 		"name": "FAN페이 가맹점 안내",
@@ -1000,19 +987,14 @@ var dialogs = [
 					"text": "단기카드대출 바로가기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_201"
 				}
-			]
+			],
+			"image": {
+				"url": "/files/Shinhancard1496651075350.jpg",
+				"displayname": "단기카드대출(현금서비스).jpg"
+			}
 		},
 		"inRaw": "1",
-		"inNLP": "1",
-		"task": {
-			"output": "신한 FAN을 통해 단기카드대출(현금서비스)을 이용할 수 있습니다!\n\n신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n (* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
-			"buttons": [
-				{
-					"text": "단기카드대출 바로가기",
-					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_201"
-				}
-			]
-		}
+		"inNLP": "1"
 	},
 	{
 		"name": "장기카드대출",
@@ -1033,7 +1015,11 @@ var dialogs = [
 					"text": "장기카드대출 바로가기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_202"
 				}
-			]
+			],
+			"image": {
+				"url": "/files/Shinhancard1496651098080.jpg",
+				"displayname": "장기카드대출(카드론).jpg"
+			}
 		}
 	},
 	{
@@ -1064,7 +1050,11 @@ var dialogs = [
 					"text": "MF일반대출 바로가기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_203"
 				}
-			]
+			],
+			"image": {
+				"url": "/files/Shinhancard1496651111434.jpg",
+				"displayname": "MF일반대출.jpg"
+			}
 		}
 	},
 	{
@@ -1098,7 +1088,11 @@ var dialogs = [
 					"text": "납부서비스 바로가기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_308"
 				}
-			]
+			],
+			"image": {
+				"url": "/files/Shinhancard1496651121529.jpg",
+				"displayname": "MF일반대출.jpg"
+			}
 		}
 	},
 	{
@@ -2027,7 +2021,11 @@ var dialogs = [
 									"text": "바로보기",
 									"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350273_33660.html"
 								}
-							]
+							],
+							"image": {
+								"url": "/files/Shinhancard1496650940118.jpg",
+								"displayname": "card21.jpg"
+							}
 						}
 					},
 					{
@@ -2286,16 +2284,13 @@ var dialogs = [
 											}
 										],
 										"output": {
-											"output": "고객님께서 좋아하실만한 체크카드가 3가지가 있네요. 아래 3가지 카드 중 자세히 보고 싶으신 카드를 선택해주세요.  \n\n1. 쿠팡 이용금액 3% 무제한 적립에 스타벅스 이용금액 캐시백까지! [쿠팡 신한카드 체크]\n2. 카카오페이 신한 체크카드로 카카오페이에서 간편하게 결제하고 캐시백 혜택을 누려보세요!  [카카오페이 신한 체크카드]\n3.이제 오프라인에서도 네이버페이로 결제하고 네이버페이포인트도 적립하세요!  [네이버페이 신한카드 체크]\n\n(* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
+											"output": "고객님께서 좋아하실만한 체크카드가 3가지가 있네요. 아래 3가지 카드 중 자세히 보고 싶으신 카드를 선택해주세요.  \n\n1. 쿠팡 이용금액 3% 무제한 적립에 스타벅스 이용금액 캐시백까지! [쿠팡 신한카드 체크]\n2. 카카오페이 신한 체크카드로 카카오페이에서 간편하게 결제하고 캐시백 혜택을 누려보세요!  [카카오페이 신한 체크카드]\n\n(* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
 											"buttons": [
 												{
 													"text": "쿠팡"
 												},
 												{
 													"text": "카카오페이"
-												},
-												{
-													"text": "네이버페이"
 												}
 											]
 										},
@@ -2341,32 +2336,6 @@ var dialogs = [
 													}
 												},
 												"task": "kakao"
-											},
-											{
-												"name": "dialog_default184",
-												"id": "default184",
-												"filename": "default",
-												"input": [
-													{
-														"text": "3"
-													},
-													{
-														"text": "네이버 페이"
-													}
-												],
-												"output": {
-													"output": "[네이버페이 신한 체크카드] 카드를 추천해드릴게요.아래 바로보기 링크를 클릭해 상세 정보를 살펴보세요.(* 처음으로 돌아가기 : 0 또는 '처음', 이전 메뉴 : '이전')",
-													"buttons": [
-														{
-															"text": "바로보기",
-															"url": "https://m.shinhancard.com/conts/html/card/apply/check/1350254_33660.html"
-														}
-													],
-													"image": {
-														"url": "/files/Shinhancard1496223203051.jpg",
-														"displayname": "card25.jpg"
-													}
-												}
 											}
 										]
 									},
