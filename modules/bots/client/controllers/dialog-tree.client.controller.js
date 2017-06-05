@@ -675,7 +675,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           vm.editor.refresh();
           $scope.refreshCodemirror = false;
         }, 100);
+      } else {
+        vm.edit = false;
       }
+    };
+    vm.closeTab = function (idx) {
+      vm.tabs.splice(idx,1);
+      vm.changeTab(vm.tabs[idx-1]);
     };
 
     vm.tabs = [{name:vm.name, data:vm.data, file_id:vm.file_id, active:true}];
@@ -826,10 +832,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         vm.initTree();
         $timeout(function() {
           $('#filetree_open').click();
+          $('#filetree > div.panel-body').focus();
         });
       } else {
         $timeout(function() {
           $('#filetree_close').click();
+          $('#filetree > div.panel-body').blur();
+          document.getElementById('mainpage').focus();
         });
       }
     };
@@ -860,7 +869,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
 
       if (document.activeElement == document.getElementById('inputbox') ||
-          document.activeElement == document.getElementById('treeBasic'))
+          document.activeElement == document.getElementById('treeBasic')
+      )
         return false;
 
       if (event.keyCode == 27) { // esc
@@ -920,13 +930,15 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       if (!selectedNode)
         return false;
 
+      // to prevent keydown event from filetree
+      if (document.activeElement != document.getElementById('mainpage'))
+        return;
+
       if ([45,46,32,13, 37,38,39,40].indexOf(event.keyCode) == -1)
         return false;
 
-      var goto = function(root, func) {
-
-      };
       event.preventDefault();
+
       if (event.keyCode == 45) { // insert
         addChild(selectedNode);
       } else if (event.keyCode == 46) { // del

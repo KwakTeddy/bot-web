@@ -259,9 +259,11 @@
                     <!--class="mt-xs mr-xs filetree_button btn btn-sm pull-left" ng-click="vm.initTree()"><i class="fa fa-bars"></i></button>-->
             <ul class="nav nav-tabs">
                 <li role="presentation"
-                    ng-repeat="tab in vm.tabs"
+                    ng-repeat="tab in vm.tabs track by $index"
                     ng-class="{active: tab.active}">
-                    <a href="#" ng-click="vm.changeTab(tab)">{{tab.name}}</a>
+                    <a href="#"><span ng-click="vm.changeTab(tab)">{{tab.name}}</span>
+                        <i ng-show="$index > 1" ng-click="vm.closeTab($index)" style="cursor:pointer" class="fa fa-close"></i>
+                    </a>
                 </li>
             </ul>
         </div>
