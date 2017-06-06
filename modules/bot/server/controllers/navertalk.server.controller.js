@@ -222,7 +222,7 @@ function sendCompositeMessage(response, text, task, res) {
     if(task.buttons){
       composit['buttonList'] = [];
       var buttonLength;
-      if(task.buttons.length > 4) buttonLength = 4;
+      if(task.buttons.length > 3) buttonLength = 3;
       else buttonLength = task.buttons.length
       for(var i = 0; i < buttonLength; i++){
         var button = {};
