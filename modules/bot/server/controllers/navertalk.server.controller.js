@@ -37,7 +37,6 @@ exports.message =  function(req, res) {
         switch(req.body.options.inflow) {
           // 채팅리스트로부터 인입되었을때
           case 'list' :
-            console.log('+++++++++++++++++++list')
             chat.write('navertalk', from, 'Shinhancard', '시작', req.body, function (serverText, json) {
               respondMessage(response, serverText, json, res);
             });
@@ -45,10 +44,6 @@ exports.message =  function(req, res) {
 
           // 유입경로가 없거나 화면을 갱신하였을때
           case 'none' :
-            console.log('+++++++++++++++++++none')
-            // chat.write('navertalk', from, 'Shinhancard', '시작', req.body, function (serverText, json) {
-            //   respondMessage(response, serverText, json, res);
-            // });
             res.json({ success: true });
             break;
 
