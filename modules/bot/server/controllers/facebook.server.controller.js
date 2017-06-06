@@ -41,13 +41,9 @@ exports.messageGet =  function(req, res) {
 
 exports.message = function (req, res) {
   var data = req.body;
-  // Make sure this is a page subscription
-  if (data.object == 'page') {
-      // There may be multiple if batched
-      data.entry.forEach(function(pageEntry) {
-          // Iterate over each messaging event
-          pageEntry.messaging.forEach(function(messagingEvent) {
-
+  if (data.object == 'page') {      // Make sure this is a page subscription
+    data.entry.forEach(function(pageEntry) {       // There may be multiple if batched
+          pageEntry.messaging.forEach(function(messagingEvent) {          // Iterate over each messaging event
             messagingEvent.botId = req.params.bot;
 
             if (messagingEvent.message) receivedMessage(messagingEvent);
@@ -66,7 +62,6 @@ exports.message = function (req, res) {
 function receivedMessage(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
-  var timeOfMessage = event.timestamp;
   var message = event.message;
   if (event.botId == "subscribeBot"){
     console.log('Subscribe Coming In');
@@ -149,29 +144,55 @@ function receivedMessage(event) {
  * Postback Event
  */
 function receivedPostback(event) {
-  console.log(util.inspect(event, {showHidden: false, depth: null}));
-
-
   var senderID = event.sender.id;
   var payload = event.postback.payload;
-  var bot = botContext.botUser.orgBot || botContext.bot;
+  var recipientID = event.recipient.id;
 
-  UserBotFbPage.findOne({pageId: event.recipient.id}, function (err, data) {
-    if (err){
-      console.log(err)
-    }else {
-      subscribe = true;
-      subscribePageToken = data.accessToken;
+  if (event.botId == "subscribeBot"){
+    UserBotFbPage.findOne({pageId: event.recipient.id}, function (err, data) {
+      if (err){
+        console.log(err);
+      }else {
+        subscribe = true;
+        subscribePageToken = data.accessToken;
+        event.botId = data.userBotId;
+        contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
+          botContext = context;
+          console.log("Received postback");
+          chat.write('facebook', senderID, event.botId, payload, null, function (retText, task) {
+            respondMessage(senderID, retText, event.botId, task);
+          });
+        });
+      }
+    });
+  }else {
 
-      event.botId = data.userBotId;
-
-      console.log("Received postback");
-
-      chat.write('facebook', senderID, event.botId, event.postback.payload, null, function (retText, task) {
-        respondMessage(senderID, retText, event.botId, task);
+    if (!global._bots[event.botId]){
+      botLib.loadBot(event.botId, function (realbot) {
+        if(recipientID == global._bots[event.botId].facebook.id) {
+          contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
+            botContext = context;
+            if(recipientID == bot.facebook.id) {
+              chat.write('facebook', senderID, event.botId, payload, null, function (retText, task) {
+                respondMessage(senderID, retText, event.botId, task);
+              });
+            }
+          });
+        }
       });
+    }else {
+      if(recipientID == global._bots[event.botId].facebook.id) {
+        contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
+          botContext = context;
+          if(recipientID == bot.facebook.id) {
+            chat.write('facebook', senderID, event.botId, payload, null, function (retText, task) {
+              respondMessage(senderID, retText, event.botId, task);
+            });
+          }
+        });
+      }
     }
-  });
+  }
 }
 
 /*
@@ -221,7 +242,6 @@ function receivedAuthentication(event) {
 }
 
 
-exports.respondMessage = respondMessage;
 function respondMessage(to, text, botId, task) {
   var tokenData = '';
   var bot = botContext.botUser.orgBot || botContext.bot;
@@ -298,7 +318,7 @@ function respondMessage(to, text, botId, task) {
     }
   }
 }
-
+exports.respondMessage = respondMessage;
 
 
 /*
