@@ -77,18 +77,6 @@ exports.message =  function(req, res) {
 
 function respondMessage(response, text, task, res) {
   if (task && task.result) {
-    if (task){
-      delete task.inNLP;
-      delete task.inRaw;
-      delete task.name;
-      delete task.action;
-      delete task.topTask;
-      if(task.output){
-        delete task.output
-      }
-    }
-    console.log(util.inspect(task), {showHidden: false, depth: null})
-    console.log(util.inspect(Object.keys(task.result).toString(), {showHidden: false, depth: null}))
     switch (Object.keys(task.result).toString()) {
       case 'image':
         sendImageMessage(response, text, task.result, res);
@@ -106,18 +94,6 @@ function respondMessage(response, text, task, res) {
         sendTextMessage(response, text, task.result, res);
     }
   }else {
-    console.log('taks' + util.inspect(task), {showHidden: false, depth: null})
-    console.log('taks' + util.inspect(text), {showHidden: false, depth: null})
-    if (task){
-      delete task.inNLP;
-      delete task.inRaw;
-      delete task.name;
-      delete task.action;
-      delete task.topTask;
-      if(task.output){
-        delete task.output
-      }
-    }
     if(text){
       if (task && task.hasOwnProperty('image')){
         if (task.hasOwnProperty('buttons')){
@@ -143,7 +119,7 @@ function respondMessage(response, text, task, res) {
       if (task && task.hasOwnProperty('image')){
         if (task && task.hasOwnProperty('buttons')){
           //image && buttons _ error
-          // sendGenericMessage(response, text, task);
+          console.log('only image and buttons. No TEXT!')
 
         }else {
           //image
@@ -152,18 +128,12 @@ function respondMessage(response, text, task, res) {
         }
       }else {
         //only button or nothing _ error
-        // if (task.hasOwnProperty('buttons')){
-        //   //buttons this is error
-        //
-        // }else {
-        //   //nothing
-        //   sendTextMessage(response, text, task);
-        //
-        // }
+        console.log('only button or nothing!')
       }
     }
   }
 }
+
 
 function sendTextMessage(response, text, task, res) {
   response.request['textContent'] = {text: ''};
@@ -280,6 +250,7 @@ function sendCompositeMessage(response, text, task, res) {
       }
     }
     response.request.compositeContent.compositeList.push(composit);
+    console.log(util.inspect(response), {showHidden: false, depth: null})
     console.log(util.inspect(response), {showHidden: false, depth: null})
     res.json(response);
   }
