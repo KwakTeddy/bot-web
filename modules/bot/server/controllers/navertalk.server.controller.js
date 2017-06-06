@@ -37,6 +37,7 @@ exports.message =  function(req, res) {
         switch(req.body.options.inflow) {
           // 채팅리스트로부터 인입되었을때
           case 'list' :
+            console.log('+++++++++++++++++++list')
             chat.write('navertalk', from, 'Shinhancard', '시작', req.body, function (serverText, json) {
               respondMessage(response, serverText, json, res);
             });
@@ -44,6 +45,7 @@ exports.message =  function(req, res) {
 
           // 유입경로가 없거나 화면을 갱신하였을때
           case 'none' :
+            console.log('+++++++++++++++++++none')
             chat.write('navertalk', from, 'Shinhancard', '시작', req.body, function (serverText, json) {
               respondMessage(response, serverText, json, res);
             });
@@ -258,20 +260,20 @@ function sendCompositeMessage(response, text, task, res) {
     console.log(util.inspect(response.request.compositeContent.compositeList[0]), {showHidden: false, depth: null})
     res.json(response);
 
-    // var start = { title: '내 손안의 생활 플랫폼\n생활의 판을 바꾸다!\n간편 결제를 기반으로 결제, 금융, 생활편의 서비스를 한번에 누리세요!\n\n · 편리한 모바일결제 신한FAN페이보유하고 있는 카드를 신한 FAN에 등록하여 간편하게 결제하세요!\n\n · 다양하고 편리한 생활서비스다양한 제휴사 할인, 적립 서비스와 게임, 운세 등 FUN 및 생활서비스를 신한 FAN에서 한판에 즐기세요!\n\n · 통합리워드 서비스 신한 FAN클럽\n신한금융그룹이 동행하면 더 많은 포인트와 혜택이 함께합니다.\n\n신한 FAN에 궁금한점을 신한카드 챗봇이 해결해 드립니다. 메뉴 또는 궁금하신 키워드를 입력해주세요.',
-    //   buttonList:
-    //   [ { type: 'TEXT', text: 'FAN' },
-    //     { type: 'TEXT', text: '내게 맞는 카드 추천' },
-    //     { type: 'TEXT', text: '자주 묻는 질문(FAQ)' } ] }
-    //
-    // var fan = { title: '안녕하세요 신한카드입니다. 메뉴 또는 궁금하신 키워드를 입력해주세요.\n \n 1. 신한 FAN에 가입하고 싶어요\n 2. 신한 FAN에는 어떤 혜택이 있나요\n 3. 신한 FAN으로는 무엇을 할 수 있나요\n 4. 편리한 금융/납부 서비스\n\n(* 처음으로 돌아가기 : \'0\' 또는 \'처음\', 이전단계 : \'9\' 또는 \'이전\')',
-    //   buttonList:
-    //   [ { type: 'TEXT', text: '신한 FAN에 가입하고 싶어요' },
-    //     { type: 'TEXT', text: '신한 FAN에는 어떤 혜택이 있나요' },
-    //     { type: 'TEXT', text: '신한 FAN으로는 무엇을 할 수 있나요' },
-    //     { type: 'TEXT', text: '편리한 금융/납부 서비스' },
-    //     { type: 'TEXT', text: '이전단계' },
-    //     { type: 'TEXT', text: '시작메뉴' } ] }
+    var start = { title: '내 손안의 생활 플랫폼\n생활의 판을 바꾸다!\n간편 결제를 기반으로 결제, 금융, 생활편의 서비스를 한번에 누리세요!\n\n · 편리한 모바일결제 신한FAN페이보유하고 있는 카드를 신한 FAN에 등록하여 간편하게 결제하세요!\n\n · 다양하고 편리한 생활서비스다양한 제휴사 할인, 적립 서비스와 게임, 운세 등 FUN 및 생활서비스를 신한 FAN에서 한판에 즐기세요!\n\n · 통합리워드 서비스 신한 FAN클럽\n신한금융그룹이 동행하면 더 많은 포인트와 혜택이 함께합니다.\n\n신한 FAN에 궁금한점을 신한카드 챗봇이 해결해 드립니다. 메뉴 또는 궁금하신 키워드를 입력해주세요.',
+      buttonList:
+      [ { type: 'TEXT', text: 'FAN' },
+        { type: 'TEXT', text: '내게 맞는 카드 추천' },
+        { type: 'TEXT', text: '자주 묻는 질문(FAQ)' } ] }
+
+    var fan = { title: '안녕하세요 신한카드입니다. 메뉴 또는 궁금하신 키워드를 입력해주세요.\n \n 1. 신한 FAN에 가입하고 싶어요\n 2. 신한 FAN에는 어떤 혜택이 있나요\n 3. 신한 FAN으로는 무엇을 할 수 있나요\n 4. 편리한 금융/납부 서비스\n\n(* 처음으로 돌아가기 : \'0\' 또는 \'처음\', 이전단계 : \'9\' 또는 \'이전\')',
+      buttonList:
+      [ { type: 'TEXT', text: '신한 FAN에 가입하고 싶어요' },
+        { type: 'TEXT', text: '신한 FAN에는 어떤 혜택이 있나요' },
+        { type: 'TEXT', text: '신한 FAN으로는 무엇을 할 수 있나요' },
+        { type: 'TEXT', text: '편리한 금융/납부 서비스' },
+        { type: 'TEXT', text: '이전단계' },
+        { type: 'TEXT', text: '시작메뉴' } ] }
 
   }
 }
