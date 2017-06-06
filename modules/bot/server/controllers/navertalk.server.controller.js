@@ -251,7 +251,7 @@ function sendCompositeMessage(response, text, task, res) {
     }
     response.request.compositeContent.compositeList.push(composit);
     console.log(util.inspect(response), {showHidden: false, depth: null})
-    console.log(util.inspect(response.request.compositeContent.request.compositeContent.compositeList), {showHidden: false, depth: null})
+    console.log(util.inspect(response.request.compositeContent.compositeList), {showHidden: false, depth: null})
     res.json(response);
   }
 }
