@@ -248,7 +248,7 @@ function sendCompositeMessage(response, text, task, res) {
             // "code": "" /* code를 정의하는경우 유저가 보내는 send이벤트 textContent에 code가 삽입되어 전송됨 (최대 1,000자)*/
           };
           button.text = task.buttons[i].text;
-          console.log('+++++++++++++++++++++' + button.link.title.length)
+          console.log('+++++++++++++++++++++' + button.text.length)
           if(button.text.length > 20) button.text = button.text.substring(0,19);
 
         }
