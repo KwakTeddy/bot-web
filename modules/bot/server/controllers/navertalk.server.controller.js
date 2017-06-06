@@ -239,7 +239,6 @@ function sendCompositeMessage(response, text, task, res) {
           button.link.title = task.buttons[i].text;
           button.link.url = task.buttons[i].url;
           button.link.mobileUrl = task.buttons[i].url;
-          console.log('+++++++++++++++++++++' + button.link.title.length)
           if(button.link.title.length > 20) button.link.title = button.link.title.substring(0,19);
 
         }else {
@@ -249,6 +248,9 @@ function sendCompositeMessage(response, text, task, res) {
             // "code": "" /* code를 정의하는경우 유저가 보내는 send이벤트 textContent에 code가 삽입되어 전송됨 (최대 1,000자)*/
           };
           button.text = task.buttons[i].text;
+          console.log('+++++++++++++++++++++' + button.link.title.length)
+          if(button.text.length > 20) button.text = button.text.substring(0,19);
+
         }
         composit.buttonList.push(button);
       }
