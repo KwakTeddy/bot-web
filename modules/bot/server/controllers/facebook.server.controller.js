@@ -438,7 +438,8 @@ function sendGenericMessage(recipientId, text, task, token) {
     for(var i =0; i < elementsLength; i++){
       var elm = {}
       if (task[i].text){
-        elm['title'] = task[i].text;
+        elm['title'] = task[i].title;
+        elm['subtitle'] = task[i].text;
       }
       if (task[i].imageUrl) {
         if (task[i].imageUrl.substring(0,4) !== 'http'){
@@ -477,7 +478,7 @@ function sendGenericMessage(recipientId, text, task, token) {
           type: "template",
           payload: {
             template_type: "generic",
-            elements: task,
+            elements: elements,
             image_aspect_ratio: 'square'
           }
         }
