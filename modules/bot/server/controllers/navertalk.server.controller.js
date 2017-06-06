@@ -227,7 +227,7 @@ function sendCompositeMessage(response, text, task, res) {
           button = {
             "type": "LINK",
             "link": {
-              "title": '', /* 버튼에 노출하는 버튼명 (최대 20자)*/
+              "title": "", /* 버튼에 노출하는 버튼명 (최대 20자)*/
               "url": "", /* 톡톡 PC버전 채팅창에서 링크 URL */
               "mobileUrl": "", /* 톡톡 모바일버전 채팅창에서 링크 URL */
               "targetSelf": true, /* 톡톡 모바일버전 채팅창에서 버튼클릭시 자창(true)/새창(false) 여부 (default: false) */
@@ -242,7 +242,7 @@ function sendCompositeMessage(response, text, task, res) {
           button = {
             "type": "TEXT",
             "text": "", /* 버튼에 노출하는 버튼명 (최대 20자)*/
-            "code": "" /* code를 정의하는경우 유저가 보내는 send이벤트 textContent에 code가 삽입되어 전송됨 (최대 1,000자)*/
+            // "code": "" /* code를 정의하는경우 유저가 보내는 send이벤트 textContent에 code가 삽입되어 전송됨 (최대 1,000자)*/
           };
           button.text = task.buttons[i].text;
         }
