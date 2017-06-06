@@ -239,6 +239,8 @@ function sendCompositeMessage(response, text, task, res) {
           button.link.title = task.buttons[i].text;
           button.link.url = task.buttons[i].url;
           button.link.mobileUrl = task.buttons[i].url;
+          if(button.link.title > 20) button.link.title = button.link.title.substring(0,19);
+
         }else {
           button = {
             "type": "TEXT",
