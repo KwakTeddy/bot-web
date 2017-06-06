@@ -9,13 +9,10 @@ exports.message =  function(req, res) {
 
     // default response
     var response = {
-      success: true,
-      request: {
-        event: "send", /* send message */
-        sender: "partner", /* 파트너가 보내는 메시지 */
-        user : req.body.user, /* 유저 식별값 */
-        partner: req.body.partner /* 파트너 식별값 wc1234 */
-      }
+      event: "send", /* send message */
+      sender: "partner", /* 파트너가 보내는 메시지 */
+      user : req.body.user, /* 유저 식별값 */
+      partner: req.body.partner /* 파트너 식별값 wc1234 */
     };
     var from = req.body.user;
 
@@ -136,8 +133,8 @@ function respondMessage(response, text, task, res) {
 
 
 function sendTextMessage(response, text, task, res) {
-  response.request['textContent'] = {text: ''};
-  response.request.textContent.text = text;
+  response['textContent'] = {text: ''};
+  response.textContent.text = text;
   res.json(response)
 }
 
@@ -145,13 +142,13 @@ function sendImageMessage(response, text, task, res) {
   if (task.image.url.substring(0,4) !== 'http'){
     task.image.url = config.host + task.image.url
   }
-  response.request['imageContent'] = {imageUrl: '', height: '594', width: '420'};
-  response.request.imageContent.imageUrl = task.image.url;
+  response['imageContent'] = {imageUrl: '', height: '594', width: '420'};
+  response.imageContent.imageUrl = task.image.url;
   res.json(response)
 }
 
 function sendCompositeMessage(response, text, task, res) {
-  response.request['compositeContent'] = { compositeList: []};
+  response['compositeContent'] = { compositeList: []};
   if(task.items){
     task = task.items;
     var length = task.length;
@@ -204,7 +201,7 @@ function sendCompositeMessage(response, text, task, res) {
           composit.buttonList.push(button);
         }
       }
-      response.request.compositeContent.compositeList.push(composit);
+      response.compositeContent.compositeList.push(composit);
     }
     console.log(util.inspect(response, {showHidden: false, depth: null}))
     res.json(response);
@@ -222,8 +219,8 @@ function sendCompositeMessage(response, text, task, res) {
     if(task.buttons){
       composit['buttonList'] = [];
       var buttonLength;
-      if(task.buttons.length > 3) buttonLength = 3;
-      else buttonLength = task.buttons.length
+      if(task.buttons.length > 10) buttonLength = 10;
+      else buttonLength = task.buttons.length;
       for(var i = 0; i < buttonLength; i++){
         var button = {};
         if ( task.buttons[i].url){
@@ -252,10 +249,10 @@ function sendCompositeMessage(response, text, task, res) {
         composit.buttonList.push(button);
       }
     }
-    response.request.compositeContent.compositeList.push(composit);
+    response.compositeContent.compositeList.push(composit);
     console.log(util.inspect(response), {showHidden: false, depth: null})
-    console.log(util.inspect(response.request.compositeContent.compositeList), {showHidden: false, depth: null})
-    console.log(util.inspect(response.request.compositeContent.compositeList[0]), {showHidden: false, depth: null})
+    console.log(util.inspect(response.compositeContent.compositeList), {showHidden: false, depth: null})
+    console.log(util.inspect(response.compositeContent.compositeList[0]), {showHidden: false, depth: null})
     res.json(response);
 
     // var start = { title: '내 손안의 생활 플랫폼\n생활의 판을 바꾸다!\n간편 결제를 기반으로 결제, 금융, 생활편의 서비스를 한번에 누리세요!\n\n · 편리한 모바일결제 신한FAN페이보유하고 있는 카드를 신한 FAN에 등록하여 간편하게 결제하세요!\n\n · 다양하고 편리한 생활서비스다양한 제휴사 할인, 적립 서비스와 게임, 운세 등 FUN 및 생활서비스를 신한 FAN에서 한판에 즐기세요!\n\n · 통합리워드 서비스 신한 FAN클럽\n신한금융그룹이 동행하면 더 많은 포인트와 혜택이 함께합니다.\n\n신한 FAN에 궁금한점을 신한카드 챗봇이 해결해 드립니다. 메뉴 또는 궁금하신 키워드를 입력해주세요.',
