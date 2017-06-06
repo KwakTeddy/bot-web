@@ -14,7 +14,6 @@ var utils = require(path.resolve('modules/bot/action/common/utils'));
 
 
 var util =require('util'); //temporary
-var bot = '';
 var botContext = '';
  
 
@@ -41,228 +40,63 @@ exports.messageGet =  function(req, res) {
 
 
 exports.message = function (req, res) {
-  console.log('hello***************************************************************')
-  console.log(util.inspect(req.body, {showHidden: false, depth: null}))
   var data = req.body;
   // Make sure this is a page subscription
   if (data.object == 'page') {
-  // if ((data.object == 'page') && !data.entry[0].messaging[0].message.is_echo && !data.entry[0].messaging[0].delivery ) {
-      // Iterate over each entry
       // There may be multiple if batched
       data.entry.forEach(function(pageEntry) {
-          var pageID = pageEntry.id;
-          var timeOfEvent = pageEntry.time;
-
           // Iterate over each messaging event
           pageEntry.messaging.forEach(function(messagingEvent) {
-              messagingEvent.botId = req.params.bot;
 
-              if (messagingEvent.optin) {
-                  receivedAuthentication(messagingEvent);
-              } else if (messagingEvent.message) {
-                  receivedMessage(messagingEvent);
-              } else if (messagingEvent.delivery) {
-                  receivedDeliveryConfirmation(messagingEvent);
-              } else if (messagingEvent.postback) {
-                  receivedPostback(messagingEvent);
-              } else {
-                  // console.log("Webhook received unknown messagingEvent: ", messagingEvent);
-              }
+            messagingEvent.botId = req.params.bot;
+
+            if (messagingEvent.message) receivedMessage(messagingEvent);
+            else if (messagingEvent.postback) receivedPostback(messagingEvent);
+            else if (messagingEvent.optin) receivedAuthentication(messagingEvent);
+            else if (messagingEvent.delivery) receivedDeliveryConfirmation(messagingEvent);
+            else console.log("Webhook received unknown messagingEvent: ", messagingEvent);
           });
       });
-
-      // Assume all went well.
-      //
-      // You must send back a 200, within 20 seconds, to let us know you've
-      // successfully received the callback. Otherwise, the request will time out.
-      res.sendStatus(200);
+      res.sendStatus(200); // You must send back a 200, within 20 seconds, to let us know you've
   }else {
     return false;
   }
 };
 
-exports.respondMessage = respondMessage;
-function respondMessage(to, text, botId, task) {
-  var tokenData = '';
-  if (subscribe){
-      tokenData = subscribePageToken;
-  }else {
-      tokenData = bot.facebook.PAGE_ACCESS_TOKEN;
-  }
-
-  console.log(util.inspect(task, {showHidden: false, depth: null}))
-  console.log('999999999998989812398129839128398');
-  console.log(to);
-
-  if (task && task.result) {
-    if (task){
-      delete task.inNLP;
-      delete task.inRaw;
-      delete task.name;
-      delete task.action;
-      delete task.topTask;
-      if(task.output){
-        delete task.output
-      }
-    }
-    // If we receive a text message, check to see if it matches any special
-    // keywords and send back the corresponding example. Otherwise, just echo
-    // the text we received.
-    console.log(util.inspect(task), {showHidden: false, depth: null})
-    console.log(util.inspect(Object.keys(task.result).toString(), {showHidden: false, depth: null}))
-    switch (Object.keys(task.result).toString()) {
-      case 'image':
-        sendGenericMessage(to, text, task.result, tokenData);
-        break;
-
-      case 'image,buttons':
-        sendGenericMessage(to, text, task.result, tokenData);
-        break;
-      case 'buttons':
-        sendButtonMessage(to, text, task.result, tokenData);
-        break;
-
-      case 'items':
-        sendGenericMessage(to, text, task.result, tokenData);
-        break;
-
-      case 'receipt':
-        sendReceiptMessage(to);
-        break;
-
-      case 'smartReply':
-        smartReplyMessage(to, text, task.result, tokenData);
-        break;
-
-      default:
-        sendTextMessage(to, text, task.result, tokenData);
-    }
-  }else {
-    console.log('taks' + util.inspect(task), {showHidden: false, depth: null})
-    console.log('taks' + util.inspect(text), {showHidden: false, depth: null})
-    if (task){
-      delete task.inNLP;
-      delete task.inRaw;
-      delete task.name;
-      delete task.action;
-      delete task.topTask;
-      if(task.output){
-        delete task.output
-      }
-    }
-    if(text){
-      if (task && task.hasOwnProperty('image')){
-        if (task.hasOwnProperty('buttons')){
-          //text && image && buttons
-          sendGenericMessage(to, text, task, tokenData);
-
-        }else {
-          //text && image
-          sendGenericMessage(to, text, task, tokenData);
-
-        }
-      }else {
-        if (task && task.hasOwnProperty('buttons')){
-          //text && buttons
-          sendButtonMessage(to, text, task, tokenData);
-
-        }else {
-          //text
-          sendTextMessage(to, text, task, tokenData);
-        }
-      }
-    }else {
-      if (task && task.hasOwnProperty('image')){
-        if (task && task.hasOwnProperty('buttons')){
-          //image && buttons _ error
-          // sendGenericMessage(to, text, task, tokenData);
-
-        }else {
-          //image
-          sendImageMessage(to, text, task, tokenData);
-
-        }
-      }else {
-        //only button or nothing _ error
-        // if (task.hasOwnProperty('buttons')){
-        //   //buttons this is error
-        //
-        // }else {
-        //   //nothing
-        //   sendTextMessage(to, text, task, tokenData);
-        //
-        // }
-      }
-    }
-  }
-}
-
-/*
- * Message Event
- *
- * This event is called when a message is sent to your page. The 'message'
- * object format can vary depending on the kind of message that was received.
- * Read more at https://developers.facebook.com/docs/messenger-platform/webhook-reference#received_message
- *
- * For this example, we're going to echo any text that we get. If we get some
- * special keywords ('button', 'generic', 'receipt'), then we'll send back
- * examples of those bubbles to illustrate the special message bubbles we've
- * created. If we receive a message with an attachment (image, video, audio),
- * then we'll simply confirm that we've received the attachment.
- *
- */
 function receivedMessage(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
   var message = event.message;
-  console.log('--------------------------------------------------------------------------')
-  console.log(event.botId)
-  console.log(util.inspect(message, {showHidden: false, depth: null}))
   if (event.botId == "subscribeBot"){
     console.log('Subscribe Coming In');
       UserBotFbPage.findOne({pageId: event.recipient.id}, function (err, data) {
           if (err){
               console.log(err);
           }else {
-            console.log('here is data');
-            console.log(JSON.stringify(data));
               subscribe = true;
               subscribePageToken = data.accessToken;
               event.botId = data.userBotId;
               contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
                 botContext = context;
-                  //console.log('receivedMessage: ', event);
-
-                  // var bot = context.botUser.orgBot || context.bot;
-                  bot = context.botUser.orgBot || context.bot;
-                  // console.log(util.inspect(bot, {showHidden: false, depth: null}));
-                  // console.log(util.inspect('*****************************************************************************'));
-                  if(recipientID == data.pageId) {
-                    console.log('2 senderID: ' + senderID + ', recipientID: ' + recipientID);
-
-                    var messageId = message.mid;
-                    var messageText = message.text;
-                    var messageAttachments = message.attachments;
-                    console.log(util.inspect(messageText, {showHidden: false, depth: null}))
-                    if (messageAttachments){
-                        console.log(util.inspect(messageAttachments, {showHidden: false, depth: null}))
-                        var imageData = JSON.parse(JSON.stringify(messageAttachments));
-                        message = {};
-                        if (imageData[0].type == 'image'){
-                          imageData[0].type = 'photo'
-                        }
-                        message['inputType'] =  imageData[0].type;
-                        message.url = imageData[0].payload.url;
-                        messageText='fbImage';
-                    }
-                    chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
-                        console.log('this is write');
-                        console.log(util.inspect(retText, {showHidden: false, depth: null}));
-                        console.log(util.inspect(task, {showHidden: false, depth: null}));
-                        respondMessage(senderID, retText, event.botId, task);
-                    });
+                if(recipientID == data.pageId) {
+                  var messageId = message.mid;
+                  var messageText = message.text;
+                  var messageAttachments = message.attachments;
+                  if (messageAttachments){
+                      var imageData = JSON.parse(JSON.stringify(messageAttachments));
+                      message = {};
+                      if (imageData[0].type == 'image'){
+                        imageData[0].type = 'photo'
+                      }
+                      message['inputType'] =  imageData[0].type;
+                      message.url = imageData[0].payload.url;
+                      messageText='fbImage';
                   }
+                  chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
+                      respondMessage(senderID, retText, event.botId, task);
+                  });
+                }
               });
           }
       });
@@ -313,39 +147,8 @@ function receivedMessage(event) {
   }
 }
 
-
-/*
- * Delivery Confirmation Event
- *
- * This event is sent to confirm the delivery of a message. Read more about
- * these fields at https://developers.facebook.com/docs/messenger-platform/webhook-reference#message_delivery
- *
- */
-function receivedDeliveryConfirmation(event) {
-  var senderID = event.sender.id;
-  var recipientID = event.recipient.id;
-  var delivery = event.delivery;
-  var messageIDs = delivery.mids;
-  var watermark = delivery.watermark;
-  var sequenceNumber = delivery.seq;
-
-  if (messageIDs) {
-    messageIDs.forEach(function(messageID) {
-      // console.log("Received delivery confirmation for message ID: %s",
-      //   messageID);
-    });
-  }
-
-  // console.log("All message before %d were delivered.", watermark);
-}
-
-
 /*
  * Postback Event
- *`
- * This event is called when a postback is tapped on a Structured Message. Read
- * more at https://developers.facebook.com/docs/messenger-platform/webhook-reference#postback
- *
  */
 function receivedPostback(event) {
   var senderID = event.sender.id;
@@ -378,41 +181,134 @@ function receivedPostback(event) {
       });
     }
   });
+}
 
+/*
+ * Delivery Confirmation Event
+ */
+function receivedDeliveryConfirmation(event) {
+  var senderID = event.sender.id;
+  var recipientID = event.recipient.id;
+  var delivery = event.delivery;
+  var messageIDs = delivery.mids;
+  var watermark = delivery.watermark;
+  var sequenceNumber = delivery.seq;
+
+  if (messageIDs) {
+    messageIDs.forEach(function(messageID) {
+      // console.log("Received delivery confirmation for message ID: %s",
+      //   messageID);
+    });
+  }
+
+  // console.log("All message before %d were delivered.", watermark);
 }
 
 
 /*
- * Send a message with an using the Send API.
- *
+ * Authorization Event
  */
-function sendImageMessage(recipientId, text, task, token) {
-  if(task.image){
-    if (task.image.url.substring(0,4) !== 'http'){
-      task.image.url = config.host + task.image.url
-      // task.image.url = config.host + task.image.url
-    }
-  }
+function receivedAuthentication(event) {
+  var senderID = event.sender.id;
+  var recipientID = event.recipient.id;
+  var timeOfAuth = event.timestamp;
 
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      attachment: {
-        type: "image",
-        payload: {
-          url: task.image.url
+  // The 'ref' field is set in the 'Send to Messenger' plugin, in the 'data-ref'
+  // The developer can set this to an arbitrary value to associate the
+  // authentication callback with the 'Send to Messenger' click event. This is
+  // a way to do account linking when the user clicks the 'Send to Messenger'
+  // plugin.
+  var passThroughParam = event.optin.ref;
+
+  console.log("Received authentication for user %d and page %d with pass " +
+    "through param '%s' at %d", senderID, recipientID, passThroughParam,
+    timeOfAuth);
+
+  // When an authentication is received, we'll send a message back to the sender
+  // to let them know it was successful.
+  sendTextMessage(senderID, "Authentication successful");
+}
+
+
+exports.respondMessage = respondMessage;
+function respondMessage(to, text, botId, task) {
+  var tokenData = '';
+  var bot = botContext.botUser.orgBot || botContext.bot;
+
+  if (subscribe) tokenData = subscribePageToken;
+  else tokenData = bot.facebook.PAGE_ACCESS_TOKEN;
+
+  if (task && task.result) {
+    var result = task.result;
+
+    switch (Object.keys(result).toString()) {
+      case 'image':
+        sendGenericMessage(to, text, result, tokenData);
+        break;
+
+      case 'image,buttons':
+        sendGenericMessage(to, text, result, tokenData);
+        break;
+      case 'buttons':
+        sendButtonMessage(to, text, result, tokenData);
+        break;
+
+      case 'items':
+        sendGenericMessage(to, text, result, tokenData);
+        break;
+
+      case 'receipt':
+        sendReceiptMessage(to);
+        break;
+
+      case 'smartReply':
+        smartReplyMessage(to, text, result, tokenData);
+        break;
+
+      default:
+        sendTextMessage(to, text, result, tokenData);
+    }
+  }else {
+    if(text){
+      if (task && task.hasOwnProperty('image')){
+        if (task.hasOwnProperty('buttons')){
+          //text && image && buttons
+          sendGenericMessage(to, text, task, tokenData);
+
+        }else {
+          //text && image
+          sendGenericMessage(to, text, task, tokenData);
+
+        }
+      }else {
+        if (task && task.hasOwnProperty('buttons')){
+          //text && buttons
+          sendButtonMessage(to, text, task, tokenData);
+
+        }else {
+          //text
+          sendTextMessage(to, text, task, tokenData);
         }
       }
-    }
-  };
-  console.log('-----------------------=--------------------------------------------------')
-  console.log('imageMessage: ' + util.inspect(messageData), {showHidden: false, depth: null});
-  console.log('imageMessage: ' + util.inspect(messageData.message.attachment.payload), {showHidden: false, depth: null});
+    }else {
+      if (task && task.hasOwnProperty('image')){
+        if (task && task.hasOwnProperty('buttons')){
+          //image && buttons _ error
+          console.log('only image and buttons. No TEXT!')
+        }else {
+          //image
+          sendImageMessage(to, text, task, tokenData);
 
-  callSendAPI(messageData, token);
+        }
+      }else {
+        //only button or nothing _ error
+        console.log('only button or nothing!')
+      }
+    }
+  }
 }
+
+
 
 /*
  * Send a text message using the Send API.
@@ -431,20 +327,45 @@ function sendTextMessage(recipientId, text, task, token) {
   callSendAPI(messageData, token);
 }
 
+
+/*
+ * Send a message with an using the Send API.
+ *
+ */
+function sendImageMessage(recipientId, text, task, token) {
+  if(task.image){
+    if (task.image.url.substring(0,4) !== 'http'){
+      task.image.url = config.host + task.image.url
+    }
+  }
+
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      attachment: {
+        type: "image",
+        payload: {
+          url: task.image.url
+        }
+      }
+    }
+  };
+  callSendAPI(messageData, token);
+}
+
 /*
  * Send a button message using the Send API.
  *
  */
 function sendButtonMessage(recipientId, text, task, token) {
-  console.log('*************************************************************************&*&*&*&')
+  var bot = botContext.botUser.orgBot || botContext.bot;
+  var buttons = [];
+
   if(bot && bot.commonButtons && bot.commonButtons.length && botContext.botUser._currentDialog.name && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)){
     if(task.buttons) task.buttons =  task.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
     else if(task.result.buttons) task.result.buttons =  task.result.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
-    //
-    // task.buttons =  task.buttons.slice(task.but);
-    // for(var i = 0; i < bot.commonButtons.length; i++){
-    //   task.buttons =  task.buttons.slice();
-    // }
   }
 
   if(task.buttons.length > 3){
@@ -462,18 +383,16 @@ function sendButtonMessage(recipientId, text, task, token) {
   }else {
 
     for(var i = 0; i < task.buttons.length; i++){
-      if(task.buttons[i].text){
-        task.buttons[i].title = task.buttons[i].text;
-        delete task.buttons[i].text;
+      var button = {};
+      button['title'] = task.buttons[i].text;
+      if (task.buttons[i].url){
+        button['type'] = 'web_url';
 
-        if ( task.buttons[i].url){
-          task.buttons[i]['type'] = 'web_url';
-
-        }else {
-          task.buttons[i]['type'] = 'postback';
-          task.buttons[i]['payload'] = task.buttons[i].title;
-        }
+      }else {
+        button['type'] = 'postback';
+        button['payload'] = task.buttons[i].text
       }
+      buttons.push(button)
     }
 
     var messageData = {
@@ -486,14 +405,11 @@ function sendButtonMessage(recipientId, text, task, token) {
           payload: {
             template_type: "button",
             text: text,
-            buttons: task.buttons
+            buttons: buttons
           }
         }
       }
     };
-    console.log(util.inspect(messageData, {showHidden: false, depth: null}));
-    console.log(util.inspect(messageData.message.payload, {showHidden: false, depth: null}));
-
     callSendAPI(messageData, token);
   }
 }
@@ -503,7 +419,6 @@ function sendButtonMessage(recipientId, text, task, token) {
  *
  */
 function sendGenericMessage(recipientId, text, task, token) {
-  console.log('sendGenericMessage----------------------------------')
   if (task.items){
     task = task.items;
     for(var i =0; i < task.length; i++){
@@ -559,208 +474,88 @@ function sendGenericMessage(recipientId, text, task, token) {
 
     callSendAPI(messageData, token);
   }else {
+    var imageUrl;
+    var buttons = [];
 
-    if((text.length > 80) && task.image){
-      console.log('sendGenericMessage 0');
-      if(task.image){
-        var imageUrl;
-        if (task.image.url.substring(0,4) !== 'http'){
-          imageUrl = config.host + task.image.url
-        } else imageUrl = task.image.url;
+    if(task.image){
+      if (task.image.url.substring(0,4) !== 'http'){
+        imageUrl = config.host + task.image.url
+      } else imageUrl = task.image.url;
+    }
 
-        // var task2 = utils.clone(task)
-        // delete task2.buttons
-        // console.log(util.inspect(task2, {showHidden: false, depth: null}))
-        // console.log(util.inspect('+++++++++++++++++++++++++++++++++++++'))
-        var messageData1 = {
-          recipient: {
-            id: recipientId
-          },
-          message: {
-            attachment: {
-              type: "image",
-              payload: {
-                "url": imageUrl
-              }
-            }
-          }
+    if (task.buttons){
+      for(var i = 0; i < task.buttons.length; i++){
+        var btn = {
+          title: task.buttons[i].text
         };
-      }
 
-      if (task.buttons){
-        var buttons = [];
-        // delete task.image;
-        for(var i = 0; i < task.buttons.length; i++){
-          var btn = {
-            title: task.buttons[i].text
-          }
-
-          if ( task.buttons[i].url){
-            btn['type'] = 'web_url';
-            btn['url'] = task.buttons[i].url;
-          }else {
-            btn['type'] = 'postback';
-            btn['payload'] = task.buttons[i].text;
-          }
-
-          buttons.push(btn);
-
-          // task.buttons[i].title = task.buttons[i].text;
-          // delete task.buttons[i].text;
-
-          // if ( task.buttons[i].url){
-          //   task.buttons[i]['type'] = 'web_url';
-          //
-          // }else {
-          //   task.buttons[i]['type'] = 'postback';
-          //   task.buttons[i]['payload'] = task.buttons[i].title;
-          // }
+        if ( task.buttons[i].url){
+          btn['type'] = 'web_url';
+          btn['url'] = task.buttons[i].url;
+        }else {
+          btn['type'] = 'postback';
+          btn['payload'] = task.buttons[i].text;
         }
 
-        console.log(JSON.stringify(buttons));
+        buttons.push(btn);
+      }
+    }
 
-        var messageData2 = {
-          recipient: {
-            id: recipientId
-          },
-          message: {
-            attachment: {
-              type: "template",
-              payload: {
-                template_type: "button",
-                text : text,
-                buttons: buttons
-              }
+    if(text.length > 80){
+      var messageData1 = {
+        recipient: {
+          id: recipientId
+        },
+        message: {
+          attachment: {
+            type: "image",
+            payload: {
+              "url": imageUrl
             }
           }
-        };
-      }
-
-      request({
-        uri: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: { access_token: token },
-        method: 'POST',
-        json: messageData1
-
-      }, function (error, response, body) {
-        console.log('sendGenericMessage 01');
-
-        if (!error && response.statusCode == 200) {
-          var recipientId = body.recipient_id;
-          var messageId = body.message_id;
-
-          console.log("Successfully sent generic message with id %s to recipient %s",
-            messageId, recipientId);
-
-          request({
-            uri: 'https://graph.facebook.com/v2.6/me/messages',
-            qs: { access_token: token },
-            method: 'POST',
-            json: messageData2
-
-          }, function (error2, response2, body2) {
-            console.log('sendGenericMessage 02');
-
-            if (!error && response.statusCode == 200) {
-
-              console.log("Successfully sent generic message with id %s to recipient %s",
-                messageId, recipientId);
-
-            }else {
-              console.log("Unable to send message.");
-              console.log(JSON.stringify(response.body.error));
-              console.log(error);
-            }
-          })
-        } else {
-          console.log("Unable to send message.");
-          console.log(JSON.stringify(response.body.error));
-          console.log(error);
         }
+      };
+
+      var messageData2 = {
+        recipient: {
+          id: recipientId
+        },
+        message: {
+          attachment: {
+            type: "template",
+            payload: {
+              template_type: "button",
+              text : text,
+              buttons: buttons
+            }
+          }
+        }
+      };
+
+      callSendAPI(messageData1, token, function () {
+        callSendAPI(messageData2, token)
       });
-
     }else {
-      console.log('sendGenericMessage 10');
-
-      if (task.buttons.length > 3){
-        delete task.buttons;
-        if(task.image){
-          if (task.image.url.substring(0,4) !== 'http'){
-            task.image.url = config.host + task.image.url
-          }
-          task.image_url = task.image.url;
-          delete task.image;
-          task['title'] = text;
-        }
-        task = [task];
-
-        var messageData = {
-          recipient: {
-            id: recipientId
-          },
-          message: {
-            attachment: {
-              type: "template",
-              payload: {
-                template_type: "generic",
-                elements: task,
-                image_aspect_ratio: 'square'
-              }
+      var messageData = {
+        recipient: {
+          id: recipientId
+        },
+        message: {
+          attachment: {
+            type: "template",
+            payload: {
+              template_type: "generic",
+              elements: {
+                title: text,
+                image_url: imageUrl,
+                buttons: buttons
+              },
+              image_aspect_ratio: 'square'
             }
           }
-        };
-
-        console.log('sendGenericMessage 11');
-
-        callSendAPI(messageData, token);
-
-      }else {
-        if (task.buttons){
-          for(var i = 0; i < task.buttons.length; i++){
-            task.buttons[i].title = task.buttons[i].text;
-            delete task.buttons[i].text;
-
-            if ( task.buttons[i].url){
-              task.buttons[i]['type'] = 'web_url';
-
-            }else {
-              task.buttons[i]['type'] = 'postback';
-              task.buttons[i]['payload'] = task.buttons[i].title;
-            }
-            task['title'] = text;
-          }
         }
-        if(task.image){
-          if (task.image.url.substring(0,4) !== 'http'){
-            task.image.url = config.host + task.image.url
-          }
-          task.image_url = task.image.url;
-          delete task.image;
-          task['title'] = text;
-        }
-        task = [task];
-
-        console.log(util.inspect(task, {showHidden: false, depth: null}));
-        var messageData = {
-          recipient: {
-            id: recipientId
-          },
-          message: {
-            attachment: {
-              type: "template",
-              payload: {
-                template_type: "generic",
-                elements: task,
-                image_aspect_ratio: 'square'
-              }
-            }
-          }
-        };
-
-        console.log('sendGenericMessage 12');
-
-        callSendAPI(messageData, token);
-      }
+      };
+      callSendAPI(messageData, token);
     }
   }
 }
@@ -854,35 +649,22 @@ function smartReplyMessage(recipientId, text, task, token) {
   callSendAPI(messageData, token);
 }
 
-/*
- * Call the Send API. The message data goes in the body. If successful, we'll
- * get the message id in a response
- *
- */
-function callSendAPI(messageData, PAGE_ACCESS_TOKEN) {
-  console.log(PAGE_ACCESS_TOKEN);
+function callSendAPI(messageData, PAGE_ACCESS_TOKEN, cb) {
   console.log(util.inspect(messageData, {showHidden: false, depth: null}));
-
-
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: PAGE_ACCESS_TOKEN },
-    // qs: { access_token: PAGE_ACCESS_TOKEN || 'EAAWvTpdxqVYBAErPqmZBKy3PwB5nyWkZCXT4h6HfDNZC8u5ZAlYMZCMXrPErG7Qzeac6gLGNzGUpb3opKVCeHxPe4xkcn2zl1SGVb4Rh9ZCbnseRcbAXCZBoy6dRNhir1pD9HODdxM1N0eItAGl2CR5JVZBXnV5SOOZCvhKKw2SUM5wZDZD' },
     method: 'POST',
     json: messageData
 
   }, function (error, response, body) {
     if (!error && response.statusCode == 200) {
-      var recipientId = body.recipient_id;
-      var messageId = body.message_id;
-
-      console.log("Successfully sent generic message with id %s to recipient %s",
-        messageId, recipientId);
+      console.log("Successfully sent message");
+      if(cb) cb();
     } else {
       console.log("Unable to send message.");
       console.log(JSON.stringify(response.body.error));
       console.log(error);
-
     }
   });
 }
@@ -916,33 +698,4 @@ function verifyRequestSignature(req, res, buf) {
       throw new Error("Couldn't validate the request signature.");
     }
   }
-}
-
-/*
- * Authorization Event
- *
- * The value for 'optin.ref' is defined in the entry point. For the "Send to
- * Messenger" plugin, it is the 'data-ref' field. Read more at
- * https://developers.facebook.com/docs/messenger-platform/webhook-reference#auth
- *
- */
-function receivedAuthentication(event) {
-  var senderID = event.sender.id;
-  var recipientID = event.recipient.id;
-  var timeOfAuth = event.timestamp;
-
-  // The 'ref' field is set in the 'Send to Messenger' plugin, in the 'data-ref'
-  // The developer can set this to an arbitrary value to associate the
-  // authentication callback with the 'Send to Messenger' click event. This is
-  // a way to do account linking when the user clicks the 'Send to Messenger'
-  // plugin.
-  var passThroughParam = event.optin.ref;
-
-  console.log("Received authentication for user %d and page %d with pass " +
-    "through param '%s' at %d", senderID, recipientID, passThroughParam,
-    timeOfAuth);
-
-  // When an authentication is received, we'll send a message back to the sender
-  // to let them know it was successful.
-  sendTextMessage(senderID, "Authentication successful");
 }
