@@ -253,12 +253,6 @@ function sendCompositeMessage(response, text, task, res) {
     console.log(util.inspect(response), {showHidden: false, depth: null})
     console.log(util.inspect(response.request.compositeContent.compositeList), {showHidden: false, depth: null})
     console.log(util.inspect(response.request.compositeContent.compositeList[0]), {showHidden: false, depth: null})
-    console.log(util.inspect(response.request.compositeContent.compositeList[1]), {showHidden: false, depth: null})
-    console.log(util.inspect(response.request.compositeContent.compositeList[2]), {showHidden: false, depth: null})
-    console.log(util.inspect(response.request.compositeContent.compositeList[3]), {showHidden: false, depth: null})
-    console.log(util.inspect(response.request.compositeContent.compositeList[4]), {showHidden: false, depth: null})
-    console.log(util.inspect(response.request.compositeContent.compositeList[5]), {showHidden: false, depth: null})
-    console.log(util.inspect(response.request.compositeContent.compositeList[6]), {showHidden: false, depth: null})
     res.json(response);
   }
 }
