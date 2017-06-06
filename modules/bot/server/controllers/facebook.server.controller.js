@@ -116,7 +116,6 @@ function receivedMessage(event) {
                 var messageAttachments = message.attachments;
 
                 chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
-                  console.log('this is write')
                   respondMessage(senderID, retText, event.botId, task);
                 });
               }
@@ -137,7 +136,6 @@ function receivedMessage(event) {
               var messageAttachments = message.attachments;
 
               chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
-                console.log('this is write')
                 respondMessage(senderID, retText, event.botId, task);
               });
             }
@@ -151,32 +149,25 @@ function receivedMessage(event) {
  * Postback Event
  */
 function receivedPostback(event) {
+  console.log(util.inspect(event, {showHidden: false, depth: null}));
+
+
   var senderID = event.sender.id;
-  var recipientID = event.recipient.id;
-  var timeOfPostback = event.timestamp;
-  var token = '';
-  // The 'payload' param is a developer-defined field which is set in a postback
-  // button for Structured Messages.
   var payload = event.postback.payload;
+  var bot = botContext.botUser.orgBot || botContext.bot;
+
   UserBotFbPage.findOne({pageId: event.recipient.id}, function (err, data) {
     if (err){
       console.log(err)
     }else {
       subscribe = true;
       subscribePageToken = data.accessToken;
+
       event.botId = data.userBotId;
 
-      console.log("Received postback for user %d and page %d with payload '%s' " +
-        "at %d", senderID, recipientID, payload, timeOfPostback);
+      console.log("Received postback");
 
-      // When a postback is called, we'll send a message back to the sender to
-      // let them know it was successful
-
-      console.log(util.inspect(event, {showHidden: false, depth: null}));
       chat.write('facebook', senderID, event.botId, event.postback.payload, null, function (retText, task) {
-        console.log('this is write');
-        console.log(util.inspect(retText, {showHidden: false, depth: null}));
-        console.log(util.inspect(task, {showHidden: false, depth: null}));
         respondMessage(senderID, retText, event.botId, task);
       });
     }
@@ -323,7 +314,6 @@ function sendTextMessage(recipientId, text, task, token) {
       text: text
     }
   };
-
   callSendAPI(messageData, token);
 }
 
@@ -381,18 +371,17 @@ function sendButtonMessage(recipientId, text, task, token) {
   callSendAPI(messageData, token);
 
   }else {
-
     for(var i = 0; i < task.buttons.length; i++){
-      var button = {};
-      button['title'] = task.buttons[i].text;
+      var btn = {};
+      btn['title'] = task.buttons[i].text;
       if (task.buttons[i].url){
-        button['type'] = 'web_url';
+        btn['type'] = 'web_url';
 
       }else {
-        button['type'] = 'postback';
-        button['payload'] = task.buttons[i].text
+        btn['type'] = 'postback';
+        btn['payload'] = task.buttons[i].text
       }
-      buttons.push(button)
+      buttons.push(btn)
     }
 
     var messageData = {
@@ -421,40 +410,44 @@ function sendButtonMessage(recipientId, text, task, token) {
 function sendGenericMessage(recipientId, text, task, token) {
   if (task.items){
     task = task.items;
-    for(var i =0; i < task.length; i++){
+    var elements = [];
+    var elementsLength;
+    if (task.length > 10) elementsLength = 10;
+    else elementsLength = task.length;
+
+    for(var i =0; i < elementsLength; i++){
+      var elm = {}
       if (task[i].text){
-        task[i].subtitle = task[i].text;
-        delete task[i].text;
+        elm['title'] = task[i].text;
       }
       if (task[i].imageUrl) {
         if (task[i].imageUrl.substring(0,4) !== 'http'){
           task[i].imageUrl = config.host + task[i].imageUrl
         }
-        task[i].image_url = task[i].imageUrl;
-        delete task[i].imageUrl;
+        elm['image_url'] = task[i].imageUrl
       }
       if (task[i].buttons) {
-        if(task[i].buttons.length > 3){
-          delete task[i].buttons
-        }else {
-          for (var j = 0; j < task[i].buttons.length; j++) {
-            task[i].buttons[j].title = task[i].buttons[j].text;
-            delete task[i].buttons[j].text;
+        var buttons = [];
+        var buttonLength;
 
-            if ( task[i].buttons[j].url){
-              task[i].buttons[j]['type'] = 'web_url';
+        if (task[i].buttons.length > 3) buttonLength = 3;
+        else buttonLength = task[i].buttons.length;
 
-            }else {
-              task[i].buttons[j]['type'] = 'postback';
-              task[i].buttons[j]['payload'] = task[i].buttons[j].title;
-            }
+        for (var j = 0; j < buttonLength; j++) {
+          var btn = {};
+          btn["title"] = task[i].buttons[j].text;
+          if ( task[i].buttons[j].url){
+            btn['type'] = 'web_url';
+            btn['url'] = task[i].buttons[j].url;
+          }else {
+            btn['type'] = 'postback';
+            btn['payload'] = task[i].buttons[j].text;
           }
+          buttons.push(btn);
         }
-
       }
+      elements.push(elm);
     }
-    task.splice(10);
-
     var messageData = {
       recipient: {
         id: recipientId
@@ -470,21 +463,23 @@ function sendGenericMessage(recipientId, text, task, token) {
         }
       }
     };
-
-
     callSendAPI(messageData, token);
+
   }else {
-    var imageUrl;
+    var imageUrl = "";
     var buttons = [];
 
     if(task.image){
-      if (task.image.url.substring(0,4) !== 'http'){
-        imageUrl = config.host + task.image.url
-      } else imageUrl = task.image.url;
+      if (task.image.url.substring(0,4) !== 'http') imageUrl = config.host + task.image.url;
+      else imageUrl = task.image.url;
     }
 
     if (task.buttons){
-      for(var i = 0; i < task.buttons.length; i++){
+      var buttonLength;
+      if (task.buttons.length > 3) buttonLength = 3;
+      else buttonLength = task.buttons.length;
+
+      for(var i = 0; i < buttonLength; i++){
         var btn = {
           title: task.buttons[i].text
         };
@@ -496,7 +491,6 @@ function sendGenericMessage(recipientId, text, task, token) {
           btn['type'] = 'postback';
           btn['payload'] = task.buttons[i].text;
         }
-
         buttons.push(btn);
       }
     }
