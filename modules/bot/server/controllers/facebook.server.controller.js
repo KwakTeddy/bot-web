@@ -466,6 +466,7 @@ function sendGenericMessage(recipientId, text, task, token) {
           }
           buttons.push(btn);
         }
+        elm['buttons'] = buttons;
       }
       elements.push(elm);
     }
