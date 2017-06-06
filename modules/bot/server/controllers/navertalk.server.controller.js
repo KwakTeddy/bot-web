@@ -222,10 +222,9 @@ function sendCompositeMessage(response, text, task, res) {
     if(task.buttons){
       composit['buttonList'] = [];
       var buttonLength;
-      if(task.buttons.length) {
-
-      }
-      for(var i = 0; i < 4; i++){
+      if(task.buttons.length > 4) buttonLength = 4;
+      else buttonLength = task.buttons.length
+      for(var i = 0; i < buttonLength; i++){
         var button = {};
         if ( task.buttons[i].url){
           button = {
