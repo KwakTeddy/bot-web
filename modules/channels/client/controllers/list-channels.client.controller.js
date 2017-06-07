@@ -85,8 +85,10 @@
                         info['connect'] = true;
                         page['connected'] = vm.userBot;
                         $http.post('/api/auth/facebook/pageInfo', info).then(function (response) {
-                          FB.api('me/messenger_profile?access_token='+ page.access_token, 'post', function (response) {
+                          $http.post('https://graph.facebook.com/v2.6/me/messenger_profile?access_token='+ page.access_token, {get_started: {payload: "GET_STARTED_PAYLOAD"}}).then(function (response) {
                             console.log(response);
+                          }, function (err) {
+                            console.log(err)
                           })
                         }, function (err) {
                           console.log(err)
