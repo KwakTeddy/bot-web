@@ -194,14 +194,20 @@ var dialogs = [
 				"displayname": "FAN가입.jpg"
 			}
 		},
-		"inRaw": "1",
-		"inNLP": "1",
+		"inRaw": "신한 FAN에 가입하고 싶어요",
+		"inNLP": "신한 FAN 에 가입 하다 싶다",
 		"task": {
 			"name": "task1",
 			"buttons": [
 				{
 					"text": "바로가입하기",
 					"url": "https://newm.shinhancard.com/event/2015/pt06.jsp?prm=kakao"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
 				}
 			],
 			"output": "✔ 신한 FAN은 신한카드가 없어도 가입가능!  \n✔ 신한 FAN에 가입 하시면 다양한 경품이 가득! \n✔ 신규라면 100% 당첨 경품 제공!\n\n (* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
@@ -231,11 +237,17 @@ var dialogs = [
 				},
 				{
 					"text": "진행중인 대박 이벤트"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
 				}
 			]
 		},
-		"inRaw": "2",
-		"inNLP": "2",
+		"inRaw": "이전단계",
+		"inNLP": "이전 단계",
 		"children": [
 			{
 				"name": "dialog_default28",
@@ -294,11 +306,17 @@ var dialogs = [
 				},
 				{
 					"text": "나만의 맞춤 쿠폰 Sally"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
 				}
 			]
 		},
-		"inRaw": "1",
-		"inNLP": "1",
+		"inRaw": "FAN 전용 적립 및 할인",
+		"inNLP": "FAN 전용 적립 및 할인",
 		"children": [
 			{
 				"name": "dialog_default30",
@@ -356,22 +374,8 @@ var dialogs = [
 				"displayname": "이벤트.jpg"
 			}
 		},
-		"inRaw": "2",
-		"inNLP": "2",
-		"task": {
-			"name": "cardlist1",
-			"output": "지금 FAN에서 진행되는 다양한 이벤트가 있어요.\n \n✔ 5월 FAN 신규가입 이벤트\n✔ 5월 FAN 포인트 바꿔쓰기 이벤트\n✔ 5월 FAN 가정의 달 이벤트\n\n신한 FAN에는 항상 다양한 이벤트가 준비되어 있어요!\n \n신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n (* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
-			"buttons": [
-				{
-					"text": "대박이벤트 바로가기",
-					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?+A2:F14=FAN_MAIN_304"
-				}
-			],
-			"image": {
-				"url": "https://shinhancard.moneybrain.ai/files//shinhancard.moneybrain.ai/files/Shinhancard1496222537217.jpg",
-				"displayname": "이벤트.jpg"
-			}
-		}
+		"inRaw": "진행중인 대박 이벤트",
+		"inNLP": "진행중 인 대박 이벤트"
 	},
 	{
 		"name": "혜택 안내",
@@ -406,25 +410,12 @@ var dialogs = [
 				}
 			],
 			"image": {
-				"url": "https://shinhancard.moneybrain.ai/files/Shinhancard1496222562458.jpg",
+				"url": "/files//shinhancard.moneybrain.ai/files/Shinhancard1496222562458.jpg",
 				"displayname": "혜택+.jpg"
 			}
 		},
-		"inRaw": "1",
-		"inNLP": "1",
-		"task": {
-			"output": "지금바로 신한 FAN의 다양한 혜택을 확인하세요! \n \n✔ GS25 바나나맛우유 100원 쿠폰\n✔ 홈플러스 10% 할인혜택\n✔ 비스테까 티라미수 1만원 할인\n\n 더 많은 혜택을 신한 FAN에 가입하시면 누리실 수 있어요!\n\n 신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n (* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
-			"buttons": [
-				{
-					"text": "FAN 혜택 바로보기",
-					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?maintap=FAN_TAB_104"
-				}
-			],
-			"image": {
-				"url": "https://shinhancard.moneybrain.ai/files/Shinhancard1496222562458.jpg",
-				"displayname": "혜택+.jpg"
-			}
-		}
+		"inRaw": "신한 FAN 혜택ZONE!",
+		"inNLP": "신한 FAN 혜택 ZONE"
 	},
 	{
 		"name": "Sally 쿠폰 상세",
@@ -444,13 +435,21 @@ var dialogs = [
 				{
 					"text": "나만의 혜택 보기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_305"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
 				}
 			],
 			"image": {
-				"url": "/files/Shinhancard1496222574835.jpg",
+				"url": "/files//shinhancard.moneybrain.ai/files/Shinhancard1496222574835.jpg",
 				"displayname": "Sally.jpg"
 			}
-		}
+		},
+		"inRaw": "나만의 맞춤 쿠폰 Sally",
+		"inNLP": "나 만의 맞춤 쿠폰 Sally"
 	},
 	{
 		"name": "이용안내",
@@ -492,6 +491,23 @@ var dialogs = [
 		},
 		"inRaw": "3",
 		"inNLP": "3",
+		"task": {
+			"output": "결제, 생활금융, 생활, 포인트 서비스를 한번에!  번호를 선택하세요!\n\n 1. FAN페이 결제\n 2. FAN페이 오프라인 가맹점 \n 3. 신한 FAN 생활금융 서비스\n 4. 신한 FAN클럽 (통합포인트)\n\n(* 처음으로 돌아가기 0 또는 '처음', 이전단계 '9'  또는 '이전')",
+			"buttons": [
+				{
+					"text": "FAN페이 결제"
+				},
+				{
+					"text": "FAN페이 오프라인 가맹점"
+				},
+				{
+					"text": "신한 FAN 생활금융 서비스"
+				},
+				{
+					"text": "신한 FAN클럽 (통합포인트)"
+				}
+			]
+		},
 		"children": [
 			{
 				"name": "dialog_default33",
@@ -583,15 +599,40 @@ var dialogs = [
 				{
 					"text": "이용가이드 보기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?url=https://m.shinhancard.com/conts/html/shinhanFAN/introFAN/MOBFM021R02.html&title=GUIDE"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
 				}
 			],
 			"image": {
-				"url": "/files/Shinhancard1496653015883.jpg",
+				"url": "https://shinhancard.moneybrain.ai/files/Shinhancard1496653015883.jpg",
 				"displayname": "sns_FAN이용가이드.jpg"
 			}
 		},
-		"inRaw": "1",
-		"inNLP": "1"
+		"inRaw": "FAN페이 결제",
+		"inNLP": "FAN 페이 결제",
+		"task": {
+			"output": "신한 FAN을 통해 편리한 결제를 할 수 있어요!\n \n 결제 방식은 나한테 맞는걸 선택하시면 되요. \n 고객님을 생각하는 FAN답게 다양한 인증방식을 제공합니다. \n \n✔ 비밀번호\n✔ 지문\n✔ 홍채 인증\n\n 신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n (* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
+			"buttons": [
+				{
+					"text": "이용가이드 보기",
+					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?url=https://m.shinhancard.com/conts/html/shinhanFAN/introFAN/MOBFM021R02.html&title=GUIDE"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
+				}
+			],
+			"image": {
+				"url": "https://shinhancard.moneybrain.ai/files/Shinhancard1496653015883.jpg",
+				"displayname": "sns_FAN이용가이드.jpg"
+			}
+		}
 	},
 	{
 		"name": "FAN페이 가맹점 안내",
@@ -608,6 +649,33 @@ var dialogs = [
 				{
 					"text": "가맹점 보기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_038"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
+				}
+			],
+			"image": {
+				"url": "/files/Shinhancard1496222604898.jpg",
+				"displayname": "FAN-가맹점안내.jpg"
+			}
+		},
+		"inRaw": "2",
+		"inNLP": "2",
+		"task": {
+			"output": "FAN에 는 다양한 오프라인 가맹점이 있어요!\n어떤 가맹점이 있는지 더 자세히 알아볼까요?\n \n 신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n (* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
+			"buttons": [
+				{
+					"text": "가맹점 보기",
+					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_038"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
 				}
 			],
 			"image": {
@@ -654,8 +722,31 @@ var dialogs = [
 				}
 			]
 		},
-		"inRaw": "3",
-		"inNLP": "3",
+		"inRaw": "이전단계",
+		"inNLP": "이전 단계",
+		"task": {
+			"output": "신한 FAN에서는 제휴사 서비스, FUN컨텐츠부터 생활금융서비스까지 유용한 기능이 한가득!\n번호를 선택해 주세요.\n\n 1. 제휴사서비스(혜택+)\n 2. 운세\n 3. 게임\n 4. 페이봇\n 5. 신한 트렌드연구소\n 6. 더치페이\n\n (* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
+			"buttons": [
+				{
+					"text": "제휴사서비스(혜택+)"
+				},
+				{
+					"text": "운세"
+				},
+				{
+					"text": "게임"
+				},
+				{
+					"text": "페이봇"
+				},
+				{
+					"text": "신한 트렌드연구소"
+				},
+				{
+					"text": "더치페이"
+				}
+			]
+		},
 		"children": [
 			{
 				"name": "dialog_default3722",
@@ -788,6 +879,12 @@ var dialogs = [
 				{
 					"text": "바로보기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?maintap=FAN_TAB_102"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
 				}
 			],
 			"image": {
@@ -850,6 +947,12 @@ var dialogs = [
 				{
 					"text": "FAN 혜택 바로보기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?maintap=FAN_TAB_104"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
 				}
 			],
 			"image": {
@@ -888,6 +991,12 @@ var dialogs = [
 				{
 					"text": "나의 운세 확인하기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_301"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
 				}
 			],
 			"image": {
@@ -914,6 +1023,33 @@ var dialogs = [
 				{
 					"text": "게임하러가기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_302"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
+				}
+			],
+			"image": {
+				"url": "/files/Shinhancard1496222674349.jpg",
+				"displayname": "게임.jpg"
+			}
+		},
+		"inRaw": "3",
+		"inNLP": "3",
+		"task": {
+			"output": "게임만 해도 포인트가 적립되는 미니게임이 있어요!  \n매달 1등하면 10만포인트 지급!\n\n✔ 판귄의 남극탐험\n✔ 차곡차곡 판권쌓기\n✔ FAN팡\n \n 신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n (* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
+			"buttons": [
+				{
+					"text": "게임하러가기",
+					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_302"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
 				}
 			],
 			"image": {
@@ -947,14 +1083,20 @@ var dialogs = [
 				"displayname": "페이봇.jpg"
 			}
 		},
-		"inRaw": "4",
-		"inNLP": "4",
+		"inRaw": "페이봇",
+		"inNLP": "페이 봇",
 		"task": {
 			"output": "화재의 AI 인공지능 아세요?\n나만의 금융비서 페이봇이\n고객님의 소비내역을 분석해 드려요!\n\n신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n(* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
 			"buttons": [
 				{
 					"text": "소비관리 바로가기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_084"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
 				}
 			],
 			"image": {
@@ -981,6 +1123,33 @@ var dialogs = [
 				{
 					"text": "트렌드 확인하기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_314"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
+				}
+			],
+			"image": {
+				"url": "/files/Shinhancard1496222694990.jpg",
+				"displayname": "트렌디연구소.jpg"
+			}
+		},
+		"inRaw": "5",
+		"inNLP": "5",
+		"task": {
+			"output": "이것만 알면 나도 트렌드세터! 신한 트렌드연구소에서 다양한 정보를 제공해드립니다.\n \n✔ 트렌드클립 : 동영상\n✔ 트렌트뉴스 : 기사 \n✔ 인포그래픽스 : 유익한 통계정보\n \n신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n(* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
+			"buttons": [
+				{
+					"text": "트렌드 확인하기",
+					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_314"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
 				}
 			],
 			"image": {
@@ -1004,13 +1173,21 @@ var dialogs = [
 				{
 					"text": "더치페이 바로가기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_085"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
 				}
 			],
 			"image": {
-				"url": "/files/Shinhancard1496222710229.jpg",
+				"url": "/files//shinhancard.moneybrain.ai/files/Shinhancard1496222710229.jpg",
 				"displayname": "더치페이.jpg"
 			}
-		}
+		},
+		"inRaw": "더치페이",
+		"inNLP": "더치페이"
 	},
 	{
 		"name": "금융/납부 서비스",
@@ -1034,6 +1211,25 @@ var dialogs = [
 			}
 		],
 		"output": {
+			"output": "신한 FAN에는 편리하게 금융/납부서비스를 신청할 수 있어요!\n \n1. 단기카드대출(현금서비스)\n2. 장기카드대출(카드론)\n3. MF일반대출\n4. 납부서비스\n \n (* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
+			"buttons": [
+				{
+					"text": "단기카드대출(현금서비스)"
+				},
+				{
+					"text": "장기카드대출(카드론)"
+				},
+				{
+					"text": "MF일반대출"
+				},
+				{
+					"text": "납부서비스"
+				}
+			]
+		},
+		"inRaw": "이전단계",
+		"inNLP": "이전 단계",
+		"task": {
 			"output": "신한 FAN에는 편리하게 금융/납부서비스를 신청할 수 있어요!\n \n1. 단기카드대출(현금서비스)\n2. 장기카드대출(카드론)\n3. MF일반대출\n4. 납부서비스\n \n (* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
 			"buttons": [
 				{
@@ -1135,6 +1331,12 @@ var dialogs = [
 				{
 					"text": "단기카드대출 바로가기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_201"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
 				}
 			],
 			"image": {
@@ -1143,7 +1345,26 @@ var dialogs = [
 			}
 		},
 		"inRaw": "1",
-		"inNLP": "1"
+		"inNLP": "1",
+		"task": {
+			"output": "신한 FAN을 통해 단기카드대출(현금서비스)을 이용할 수 있습니다!\n\n신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n (* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
+			"buttons": [
+				{
+					"text": "단기카드대출 바로가기",
+					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_201"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
+				}
+			],
+			"image": {
+				"url": "/files/Shinhancard1496651075350.jpg",
+				"displayname": "단기카드대출(현금서비스).jpg"
+			}
+		}
 	},
 	{
 		"name": "장기카드대출",
@@ -1163,6 +1384,33 @@ var dialogs = [
 				{
 					"text": "장기카드대출 바로가기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_202"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
+				}
+			],
+			"image": {
+				"url": "/files/Shinhancard1496651098080.jpg",
+				"displayname": "장기카드대출(카드론).jpg"
+			}
+		},
+		"inRaw": "2",
+		"inNLP": "2",
+		"task": {
+			"output": "신한 FAN을 통해 장기카드대출(카드론)을 이용할 수 있습니다!\n\n✔ 스피드론\n✔ 프리미엄론\n\n신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n (* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
+			"buttons": [
+				{
+					"text": "장기카드대출 바로가기",
+					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_202"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
 				}
 			],
 			"image": {
@@ -1198,10 +1446,37 @@ var dialogs = [
 				{
 					"text": "MF일반대출 바로가기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_203"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
 				}
 			],
 			"image": {
-				"url": "/files/Shinhancard1496651111434.jpg",
+				"url": "https://shinhancard.moneybrain.ai/files/Shinhancard1496651111434.jpg",
+				"displayname": "MF일반대출.jpg"
+			}
+		},
+		"inRaw": "3",
+		"inNLP": "3",
+		"task": {
+			"output": "신한 FAN을 통해 MF일반대출을 이용할 수 있습니다!\n\n✔ 즉시대출\n✔ 직장인대출\n✔ 개인사업자대출\n✔ 아파트소유자대출\n✔ 국민연금납부자대출\n✔ 국민연금수령자대출\n✔ 자동차담보대출\n✔ 스피드론2\n\n신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n (* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
+			"buttons": [
+				{
+					"text": "MF일반대출 바로가기",
+					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_203"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
+				}
+			],
+			"image": {
+				"url": "https://shinhancard.moneybrain.ai/files/Shinhancard1496651111434.jpg",
 				"displayname": "MF일반대출.jpg"
 			}
 		}
@@ -1236,12 +1511,23 @@ var dialogs = [
 				{
 					"text": "납부서비스 바로가기",
 					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_308"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
 				}
 			],
 			"image": {
-				"url": "/files/Shinhancard1496651121529.jpg",
-				"displayname": "MF일반대출.jpg"
+				"url": "/files/Shinhancard1496759981537.jpg",
+				"displayname": "납부서비스.jpg"
 			}
+		},
+		"inRaw": "4",
+		"inNLP": "4",
+		"task": {
+			"name": "defaultTask"
 		}
 	},
 	{
@@ -2111,12 +2397,13 @@ var dialogs = [
 											},
 											{
 												"text": "4"
+											},
+											{
+												"text": "OIL 실속 형"
 											}
 										],
 										"output": "ㅇ",
-										"task": {
-											"name": "cardlist4"
-										}
+										"task": "cardlist4"
 									}
 								]
 							}
@@ -2464,7 +2751,20 @@ var dialogs = [
 												},
 												"task": "kakao"
 											}
-										]
+										],
+										"inRaw": "이전단계",
+										"inNLP": "이전 단계",
+										"task": {
+											"output": "고객님께서 좋아하실만한 체크카드가 3가지가 있네요. 아래 3가지 카드 중 자세히 보고 싶으신 카드를 선택해주세요.  \n\n1. 쿠팡 이용금액 3% 무제한 적립에 스타벅스 이용금액 캐시백까지! [쿠팡 신한카드 체크]\n2. 카카오페이 신한 체크카드로 카카오페이에서 간편하게 결제하고 캐시백 혜택을 누려보세요!  [카카오페이 신한 체크카드]\n\n(* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
+											"buttons": [
+												{
+													"text": "쿠팡"
+												},
+												{
+													"text": "카카오페이"
+												}
+											]
+										}
 									},
 									{
 										"name": "슈퍼 실속",
@@ -2485,7 +2785,28 @@ var dialogs = [
 												"displayname": "card29.jpg"
 											}
 										},
-										"task": "MainCheck"
+										"task": {
+											"name": "MainCheck",
+											"buttons": [
+												{
+													"text": "바로가기",
+													"url": "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2779&empSeq=562&datakey=&agcCd="
+												},
+												{
+													"text": "이전단계"
+												},
+												{
+													"text": "시작메뉴"
+												}
+											],
+											"output": "[신한카드 주거래 체크]를 추천해드립니다.\n\n나의 Main 금융파트너!\n신한 주거래 패키지로 혜택을 누리세요!\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.\n\n(* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
+											"image": {
+												"url": "/files/Shinhancard1496223253775.jpg",
+												"displayname": "card29.jpg"
+											}
+										},
+										"inRaw": "슈퍼실속파",
+										"inNLP": "슈퍼 실속 파"
 									},
 									{
 										"name": "dialog_default207",
@@ -2533,16 +2854,35 @@ var dialogs = [
 					"text": "신한 FAN에는 어떤 혜택이 있나요"
 				},
 				{
-					"text": "신한 FAN으로는 무엇을 할 수 있나요"
+					"text": "신한 FAN으로 무엇을 할 수 있나요"
 				},
 				{
 					"text": "편리한 금융/납부 서비스"
 				}
-			]
+			],
+			"text": "안녕하세요 신한카드입니다. 메뉴 또는 궁금하신 키워드를 입력해주세요.\n \n 1. 신한 FAN에 가입하고 싶어요\n 2. 신한 FAN에는 어떤 혜택이 있나요\n 3. 신한 FAN으로는 무엇을 할 수 있나요\n 4. 편리한 금융/납부 서비스\n\n(* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')"
 		},
 		"name": "신한 FAN 플랫폼 소개",
 		"inRaw": "FAN",
 		"inNLP": "FAN",
+		"task": {
+			"output": "안녕하세요 신한카드입니다. 메뉴 또는 궁금하신 키워드를 입력해주세요.\n \n 1. 신한 FAN에 가입하고 싶어요\n 2. 신한 FAN에는 어떤 혜택이 있나요\n 3. 신한 FAN으로는 무엇을 할 수 있나요\n 4. 편리한 금융/납부 서비스\n\n(* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
+			"buttons": [
+				{
+					"text": "신한 FAN에 가입하고 싶어요"
+				},
+				{
+					"text": "신한 FAN에는 어떤 혜택이 있나요"
+				},
+				{
+					"text": "신한 FAN으로 무엇을 할 수 있나요"
+				},
+				{
+					"text": "편리한 금융/납부 서비스"
+				}
+			],
+			"text": "안녕하세요 신한카드입니다. 메뉴 또는 궁금하신 키워드를 입력해주세요.\n \n 1. 신한 FAN에 가입하고 싶어요\n 2. 신한 FAN에는 어떤 혜택이 있나요\n 3. 신한 FAN으로는 무엇을 할 수 있나요\n 4. 편리한 금융/납부 서비스\n\n(* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')"
+		},
 		"children": [
 			{
 				"name": "dialog_default186",

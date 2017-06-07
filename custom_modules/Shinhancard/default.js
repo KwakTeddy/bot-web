@@ -1179,7 +1179,7 @@ var cardlist1 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C03.shc?EntryLoc=2804&tmEntryLoc=TM2534&empSeq=563&datakey&agcCd="
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2767&empSeq=563&datakey=&agcCd="
                             }
                         ]
                     },
@@ -1228,7 +1228,7 @@ var cardlist1 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C03.shc?EntryLoc=2804&tmEntryLoc=TM2534&empSeq=562&datakey&agcCd="
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2767&empSeq=562&datakey=&agcCd="
                             }
                         ]
                     },
@@ -1583,18 +1583,6 @@ var cardlist6 = {
                             }
                         ]
 
-                    },
-                    {
-                        title: "네이버페이 신한카드 체크",
-                        text: "이제 오프라인에서도 네이버페이로 결제하고 네이버페이포인트도 적립하세요!",
-                        imageUrl: "/files/Shinhancard1496223203051.jpg",
-                        buttons: [
-                            {
-                                text: "바로가기",
-                                url: "https://m.shinhancard.com/conts/html/card/apply/check/1350254_33660.html"
-                            }
-                        ]
-
                     }
                 ]
             }
@@ -1620,18 +1608,6 @@ var cardlist6 = {
                             {
                                 text: "바로가기",
                                 url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=4294&empSeq=562&datakey=&agcCd="
-                            }
-                        ]
-
-                    },
-                    {
-                        title: "네이버페이 신한카드 체크",
-                        text: "이제 오프라인에서도 네이버페이로 결제하고 네이버페이포인트도 적립하세요!",
-                        imageUrl: "/files/Shinhancard1496223203051.jpg",
-                        buttons: [
-                            {
-                                text: "바로가기",
-                                url: "https://m.shinhancard.com/conts/html/card/apply/check/1350254_33660.html"
                             }
                         ]
 
