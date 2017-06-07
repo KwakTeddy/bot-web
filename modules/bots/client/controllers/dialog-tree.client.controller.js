@@ -64,6 +64,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       $('.modal-with-help').magnificPopup({
         type: 'inline',
         preloader: false,
+        focus: '#help_input',
         modal: true,
       });
 
@@ -1028,6 +1029,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     });
 
     document.getElementById('mainpage').addEventListener("keydown", keydown);
+    document.getElementById('modalForm').addEventListener("keydown", keydown);
+    document.getElementById('modalTaskForm').addEventListener("keydown", keydown);
+    document.getElementById('modalHelpForm').addEventListener("keydown", keydown);
+    document.getElementById('modalIntentForm').addEventListener("keydown", keydown);
+    document.getElementById('modalListForm').addEventListener("keydown", keydown);
+    document.getElementById('modalEntityForm').addEventListener("keydown", keydown);
     document.getElementById('mainpage').focus();
 
     // dialog editing
