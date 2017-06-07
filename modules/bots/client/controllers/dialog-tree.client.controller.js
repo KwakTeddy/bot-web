@@ -1259,6 +1259,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     var currentKeyword = "";
+    var currentKind = "";
     var currentSearchIdx = 0;
 
     vm.searchKind = 'name';
@@ -1287,12 +1288,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             }
           }
         });
-        if (currentKeyword !== selectedVal) {
+        if (currentKeyword !== selectedVal || currentKind !== vm.searchKind) {
           currentKeyword = selectedVal;
+          currentKind = vm.searchKind;
           currentSearchIdx = 0;
         }
 
-        if (selected && selected.length == 1) {
+        if (selected && selected.length == 1 && selected[0].length >= 1) {
           selectedNode = selected[0][currentSearchIdx].__data__;
           selectedSVG = d3.select(selected[0][currentSearchIdx]);
           update(selectedNode);
