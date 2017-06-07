@@ -552,6 +552,8 @@ function sendGenericMessage(recipientId, text, task, token) {
         callSendAPI(messageData2, token)
       });
     }else {
+      console.log('here++++++++++++++++++++++++++++++++')
+      console.log(text.length)
       var messageData = {
         recipient: {
           id: recipientId
@@ -561,11 +563,11 @@ function sendGenericMessage(recipientId, text, task, token) {
             type: "template",
             payload: {
               template_type: "generic",
-              elements: {
+              elements: [{
                 title: text,
                 image_url: imageUrl,
                 buttons: buttons
-              },
+              }],
               image_aspect_ratio: 'square'
             }
           }
