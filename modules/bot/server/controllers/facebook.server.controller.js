@@ -517,7 +517,7 @@ function sendGenericMessage(recipientId, text, task, token) {
       }
     }
 
-    if(text.length > 80){
+    if(true){
       var messageData1 = {
         recipient: {
           id: recipientId
@@ -552,8 +552,6 @@ function sendGenericMessage(recipientId, text, task, token) {
         callSendAPI(messageData2, token)
       });
     }else {
-      console.log('here++++++++++++++++++++++++++++++++')
-      console.log(text.length)
       var messageData = {
         recipient: {
           id: recipientId
