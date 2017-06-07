@@ -80,7 +80,11 @@ var dialogs = [
 						"name": "dialog_default217",
 						"id": "default217",
 						"filename": "default",
-						"input": "false",
+						"input": [
+							{
+								"if": "true"
+							}
+						],
 						"output": "이런 정답이 아니에요.\n다시 시도하시겠습니까?",
 						"children": [
 							{
@@ -129,7 +133,11 @@ var dialogs = [
 						"name": "dialog_default220",
 						"id": "default220",
 						"filename": "default",
-						"input": "false",
+						"input": [
+							{
+								"if": "true"
+							}
+						],
 						"output": "이런 정답이 아니에요.\n다시 시도하시겠습니까?",
 						"children": [
 							{
