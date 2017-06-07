@@ -409,30 +409,14 @@ var dialogs = [
 				}
 			],
 			"image": {
-				"url": "https://shinhancard.moneybrain.ai/files/Shinhancard1496628594783.jpg",
+				"url": "/files//shinhancard.moneybrain.ai/files/Shinhancard1496628594783.jpg",
 				"displayname": "이벤트.jpg"
 			}
 		},
 		"inRaw": "진행중인 대박 이벤트",
 		"inNLP": "진행중 인 대박 이벤트",
 		"task": {
-			"output": "지금 FAN에서 진행되는 다양한 이벤트가 있어요.\n \n✔ 5월 FAN 신규가입 이벤트\n✔ 5월 FAN 포인트 바꿔쓰기 이벤트\n✔ 5월 FAN 가정의 달 이벤트\n\n신한 FAN에는 항상 다양한 이벤트가 준비되어 있어요!\n \n신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n (* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
-			"buttons": [
-				{
-					"text": "대박이벤트 바로가기",
-					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_304"
-				},
-				{
-					"text": "이전단계"
-				},
-				{
-					"text": "시작메뉴"
-				}
-			],
-			"image": {
-				"url": "https://shinhancard.moneybrain.ai/files/Shinhancard1496628594783.jpg",
-				"displayname": "이벤트.jpg"
-			}
+			"name": "defaultTask"
 		}
 	},
 	{
@@ -478,23 +462,7 @@ var dialogs = [
 		"inRaw": "신한 FAN 혜택ZONE!",
 		"inNLP": "신한 FAN 혜택 ZONE",
 		"task": {
-			"output": "지금바로 신한 FAN의 다양한 혜택을 확인하세요! \n \n✔ GS25 바나나맛우유 100원 쿠폰\n✔ 홈플러스 10% 할인혜택\n✔ 비스테까 티라미수 1만원 할인\n\n 더 많은 혜택을 신한 FAN에 가입하시면 누리실 수 있어요!\n\n 신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n 아직 가입 전이시면 '가입' 이라고 입력해주세요.\n\n (* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
-			"buttons": [
-				{
-					"text": "FAN 혜택 바로보기",
-					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?maintap=FAN_TAB_104"
-				},
-				{
-					"text": "이전단계"
-				},
-				{
-					"text": "시작메뉴"
-				}
-			],
-			"image": {
-				"url": "https://shinhancard.moneybrain.ai/files//shinhancard.moneybrain.ai/files/Shinhancard1496222562458.jpg",
-				"displayname": "혜택+.jpg"
-			}
+			"name": "defaultTask"
 		}
 	},
 	{
@@ -2700,6 +2668,9 @@ var dialogs = [
 			},
 			{
 				"text": "플랫폼"
+			},
+			{
+				"text": "판"
 			}
 		],
 		"output": {
@@ -2717,35 +2688,13 @@ var dialogs = [
 				{
 					"text": "편리한 금융/납부 서비스"
 				}
-			],
-			"text": "안녕하세요 신한카드입니다. 메뉴 또는 궁금하신 키워드를 입력해주세요.\n \n 1. 신한 FAN에 가입하고 싶어요\n 2. 신한 FAN에는 어떤 혜택이 있나요\n 3. 신한 FAN으로는 무엇을 할 수 있나요\n 4. 편리한 금융/납부 서비스\n\n(* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')"
+			]
 		},
 		"name": "신한 FAN 플랫폼 소개",
 		"inRaw": "FAN",
 		"inNLP": "FAN",
 		"task": {
-			"output": "안녕하세요 신한카드입니다. 메뉴 또는 궁금하신 키워드를 입력해주세요.\n \n 1. 신한 FAN에 가입하고 싶어요\n 2. 신한 FAN에는 어떤 혜택이 있나요\n 3. 신한 FAN으로는 무엇을 할 수 있나요\n 4. 편리한 금융/납부 서비스\n\n(* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
-			"buttons": [
-				{
-					"text": "신한 FAN에 가입하고 싶어요"
-				},
-				{
-					"text": "신한 FAN에는 어떤 혜택이 있나요"
-				},
-				{
-					"text": "신한 FAN으로 무엇을 할 수 있나요"
-				},
-				{
-					"text": "편리한 금융/납부 서비스"
-				},
-				{
-					"text": "이전단계"
-				},
-				{
-					"text": "시작메뉴"
-				}
-			],
-			"text": "안녕하세요 신한카드입니다. 메뉴 또는 궁금하신 키워드를 입력해주세요.\n \n 1. 신한 FAN에 가입하고 싶어요\n 2. 신한 FAN에는 어떤 혜택이 있나요\n 3. 신한 FAN으로는 무엇을 할 수 있나요\n 4. 편리한 금융/납부 서비스\n\n(* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')"
+			"name": "defaultTask"
 		},
 		"children": [
 			{
@@ -2906,6 +2855,9 @@ var commonDialogs = [
 		"input": [
 			{
 				"regexp": "/^FAN$/"
+			},
+			{
+				"regexp": "/^판$/"
 			}
 		],
 		"output": {
