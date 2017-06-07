@@ -85,11 +85,15 @@
                         info['connect'] = true;
                         page['connected'] = vm.userBot;
                         $http.post('/api/auth/facebook/pageInfo', info).then(function (response) {
-                          $http.post('https://graph.facebook.com/v2.6/me/messenger_profile?access_token='+ page.access_token, {get_started: {payload: "GET_STARTED_PAYLOAD"}}).then(function (response) {
-                            console.log(response);
-                          }, function (err) {
-                            console.log(err)
-                          })
+                          console.log(page.access_token);
+                          FB.api('me/messenger_profile?access_token='+ page.access_token, 'post', { "get_started" : {"payload" : "시작"}}, function (response) {
+                            console.log(response)
+                          });
+                          // $http.post('https://graph.facebook.com/v2.8/me/messenger_profile?access_token='+ page.access_token, {"get_started": {"payload": "시작"}}).then(function (response) {
+                          //   console.log(response.data);
+                          // }, function (err) {
+                          //   console.log(err)
+                          // })
                         }, function (err) {
                           console.log(err)
                         })
