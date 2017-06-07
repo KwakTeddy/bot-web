@@ -85,15 +85,26 @@
                         info['connect'] = true;
                         page['connected'] = vm.userBot;
                         $http.post('/api/auth/facebook/pageInfo', info).then(function (response) {
-                          console.log(page.access_token);
-                          FB.api('me/messenger_profile?access_token='+ page.access_token, 'post', { "get_started" : {"payload" : "시작"}}, function (response) {
+                          FB.api('me/messenger_profile?access_token='+ page.access_token, 'post', {
+                            "persistent_menu":[
+                              {
+                                "locale":"default",
+                                "call_to_actions":[
+                                  {
+                                    "type":"postback",
+                                    "title":"시작하기",
+                                    "payload":"시작",
+                                    "webview_height_ratio":"full"
+                                  }
+                                ]
+                              }
+                            ],
+                            "get_started":{
+                              "payload":"시작"
+                            }
+                          }, function (response) {
                             console.log(response)
                           });
-                          // $http.post('https://graph.facebook.com/v2.8/me/messenger_profile?access_token='+ page.access_token, {"get_started": {"payload": "시작"}}).then(function (response) {
-                          //   console.log(response.data);
-                          // }, function (err) {
-                          //   console.log(err)
-                          // })
                         }, function (err) {
                           console.log(err)
                         })
@@ -115,15 +126,20 @@
                       console.log(response);
                       if (response.success){
                         page['connected'] = false;
-                        $http.post('/api/auth/facebook/pageInfo', info, function (err) {
-                          if(err) {
-                            console.log(err)
-                          }else {
-
-                          }
-                        });
-                      }else {
-
+                        $http.post('/api/auth/facebook/pageInfo', info).then(function (response) {
+                          FB.api('me/messenger_profile?access_token='+ page.access_token, 'DELETE', {
+                            "fields":[
+                              "get_started",
+                              "persistent_menu",
+                              "greeting"
+                            ]
+                          }, function (response) {
+                            console.log(response)
+                          });
+                        }, function (err) {
+                          console.log(err)
+                        })
+                        }else {
                       }
                     });
                   };
