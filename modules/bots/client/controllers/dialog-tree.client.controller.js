@@ -1176,6 +1176,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
+    var removeType = function(types, type) {
+      if (types.indexOf(type) != -1) {
+        types.splice(types.indexOf(type), 1);
+      }
+    };
+
     $scope.getInputTypes = function(input, i) {
       var types = [];
       if (!input) return types;
@@ -1200,8 +1206,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         return types;
       }
       if ((!isDone || (i != undefined && vm.outputTypes.indexOf(i.type) != -1))) {
-        if (!findType(input, 'Button') && !findType(input, 'URLButton') && !findType(input,'Image'))
+        if (!findType(input, 'Button') && !findType(input, 'URLButton') && !findType(input,'Image')) {
           types = angular.copy(vm.outputTypes);
+          if ($scope.dialog.depth <= 1) {
+            removeType(types, "Up");
+            removeType(types, "Repeat");
+          }
+        }
         else
           addType(types,'Text');
       }
@@ -1566,6 +1577,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         vm.isStartNode = false;
       vm.edit = 'dialog';
       $scope.dialog = {};
+      $scope.dialog.depth = dialog.depth;
       $scope.dialog.name = dialog.name;
       $scope.dialog.input = initInput(dialog.input);
       if (dialog.task && (dialog.task.name || dialog.task.template))
