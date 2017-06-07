@@ -838,9 +838,19 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         return false;
       }
 
+      if (event.ctrlKey && event.keyCode == 82) { // ctrl+r
+        event.preventDefault();
+        vm.isReplace = !vm.isReplace;
+        if (vm.isReplace)
+          document.getElementById('search').focus();
+        $scope.safeApply();
+        return;
+      }
+
       if (document.activeElement == document.getElementById('search') ||
-          document.activeElement == document.getElementById('replace') )
+        document.activeElement == document.getElementById('replace') ) {
         return false;
+      }
 
       if (event.ctrlKey && event.keyCode == 90) { // ctrl+z
         event.preventDefault();
@@ -871,13 +881,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         } else {
           document.getElementById('search').focus();
         }
-        return;
-      } else if (event.ctrlKey && event.keyCode == 82) { // ctrl+r
-        event.preventDefault();
-        vm.isReplace = !vm.isReplace;
-        if (vm.isReplace)
-          document.getElementById('search').focus();
-        $scope.safeApply();
         return;
       }
 
