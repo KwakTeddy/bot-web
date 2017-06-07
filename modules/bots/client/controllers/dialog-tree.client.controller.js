@@ -1988,7 +1988,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     // Misc. variables
     var i = 0;
-    var duration = 750;
     var root;
 
     // size of the diagram
@@ -2001,6 +2000,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     var itemHeight = rectH+200;
     // width for one depth
     var labelWidth = 350;
+
+    // transition animation speed
+    var duration = 300;
 
     // icon size of selected node
     var iconSize= 20;
