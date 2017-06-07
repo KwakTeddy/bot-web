@@ -89,7 +89,9 @@
                           if(err) {
                             console.log(err)
                           }else {
-
+                            FB.api('me/messenger_profile?access_token='+ page.access_token, 'post', function (response) {
+                              console.log(response);
+                            })
                           }
                         });
                       }else {
