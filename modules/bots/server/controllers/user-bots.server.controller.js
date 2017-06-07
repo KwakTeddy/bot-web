@@ -416,7 +416,7 @@ exports.facebookPage = function (req, res) {
             if (err){
               console.log(err);
             }else {
-              return res.end();
+              return res.json(data);
             }
           })
         }else {
@@ -439,7 +439,7 @@ exports.facebookPage = function (req, res) {
             if (err){
               console.log(err);
             }else {
-              return res.end();
+              return res.json(data);
             }
           })
 

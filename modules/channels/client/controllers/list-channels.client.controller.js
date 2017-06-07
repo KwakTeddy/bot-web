@@ -84,16 +84,13 @@
                         info['page'] = page;
                         info['connect'] = true;
                         page['connected'] = vm.userBot;
-                        console.log(info);
-                        $http.post('/api/auth/facebook/pageInfo', info, function (err) {
-                          if(err) {
-                            console.log(err)
-                          }else {
-                            FB.api('me/messenger_profile?access_token='+ page.access_token, 'post', function (response) {
-                              console.log(response);
-                            })
-                          }
-                        });
+                        $http.post('/api/auth/facebook/pageInfo', info).then(function (response) {
+                          FB.api('me/messenger_profile?access_token='+ page.access_token, 'post', function (response) {
+                            console.log(response);
+                          })
+                        }, function (err) {
+                          console.log(err)
+                        })
                       }else {
 
                       }
