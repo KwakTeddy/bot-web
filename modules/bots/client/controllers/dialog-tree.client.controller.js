@@ -714,7 +714,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           dialogs = angular.copy(history.dialogs);
           vm.initTreeData();
           selectedSVG =null;
-          update(treeData);
+          init(treeData);
           if (selectedNode) {
             selectedSVG = baseSvg.selectAll(".node").filter(function(d) {
               if (d.id === selectedNode.id)
