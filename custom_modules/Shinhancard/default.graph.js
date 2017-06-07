@@ -249,7 +249,7 @@ var dialogs = [
 		"inRaw": "신한 FAN에는 어떤 혜택이 있나요",
 		"inNLP": "신한 FAN 에는 어떻다 혜택 있다",
 		"task": {
-			"output": "신한 FAN에는 고객님을 위한  다양한 혜택들이 있습니다. 어떤 혜택을 알아볼까요?\n1. FAN 전용 적립 및 할인\n2. 진행중인 대박 이벤트\n\n(* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
+			"output": "신한 FAN에는 고객님을 위한  다양한 혜택들이 있습니다. 어떤 혜택을 알아볼까요?\n1. FAN 전용 적립 및 할인\n2. 진행중인 대박 이벤트",
 			"buttons": [
 				{
 					"text": "FAN 전용 적립 및 할인"
@@ -264,7 +264,7 @@ var dialogs = [
 					"text": "시작메뉴"
 				}
 			],
-			"text": "신한 FAN에는 고객님을 위한  다양한 혜택들이 있습니다. 어떤 혜택을 알아볼까요?\n1. FAN 전용 적립 및 할인\n2. 진행중인 대박 이벤트\n\n(* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')"
+			"text": "신한 FAN에는 고객님을 위한  다양한 혜택들이 있습니다. 어떤 혜택을 알아볼까요?\n1. FAN 전용 적립 및 할인\n2. 진행중인 대박 이벤트"
 		},
 		"children": [
 			{
@@ -336,7 +336,7 @@ var dialogs = [
 		"inRaw": "FAN 전용 적립 및 할인",
 		"inNLP": "FAN 전용 적립 및 할인",
 		"task": {
-			"output": "스마트컨슈머를 위한 다양한 혜택!\n신한 FAN만의 다양한 혜택을 누리세요!\n \n 1. 신한 FAN 혜택ZONE!\n 2. 나만의 맞춤 쿠폰 Sally\n\n (* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')",
+			"output": "스마트컨슈머를 위한 다양한 혜택!\n신한 FAN만의 다양한 혜택을 누리세요!\n \n 1. 신한 FAN 혜택ZONE!\n 2. 나만의 맞춤 쿠폰 Sally",
 			"buttons": [
 				{
 					"text": "신한 FAN 혜택ZONE!"
@@ -351,7 +351,7 @@ var dialogs = [
 					"text": "시작메뉴"
 				}
 			],
-			"text": "스마트컨슈머를 위한 다양한 혜택!\n신한 FAN만의 다양한 혜택을 누리세요!\n \n 1. 신한 FAN 혜택ZONE!\n 2. 나만의 맞춤 쿠폰 Sally\n\n (* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')"
+			"text": "스마트컨슈머를 위한 다양한 혜택!\n신한 FAN만의 다양한 혜택을 누리세요!\n \n 1. 신한 FAN 혜택ZONE!\n 2. 나만의 맞춤 쿠폰 Sally"
 		},
 		"children": [
 			{
@@ -409,7 +409,7 @@ var dialogs = [
 				}
 			],
 			"image": {
-				"url": "/files//shinhancard.moneybrain.ai/files/Shinhancard1496628594783.jpg",
+				"url": "/files/Shinhancard1496628594783.jpg",
 				"displayname": "이벤트.jpg"
 			}
 		},
@@ -637,7 +637,7 @@ var dialogs = [
 				}
 			],
 			"image": {
-				"url": "/files//shinhancard.moneybrain.ai/files/Shinhancard1496653015883.jpg",
+				"url": "/files/Shinhancard1496653015883.jpg",
 				"displayname": "sns_FAN이용가이드.jpg"
 			}
 		},
@@ -844,7 +844,7 @@ var dialogs = [
 				}
 			],
 			"image": {
-				"url": "/files//shinhancard.moneybrain.ai/files/Shinhancard1496222726221.jpg",
+				"url": "/files/Shinhancard1496222726221.jpg",
 				"displayname": "판클럽.jpg"
 			}
 		},
@@ -899,7 +899,7 @@ var dialogs = [
 				}
 			],
 			"image": {
-				"url": "/files//shinhancard.moneybrain.ai/files/Shinhancard1496222648895.jpg",
+				"url": "/files/Shinhancard1496222648895.jpg",
 				"displayname": "FAN_제휴사혜택.jpg"
 			}
 		},
@@ -930,7 +930,7 @@ var dialogs = [
 				}
 			],
 			"image": {
-				"url": "/files//shinhancard.moneybrain.ai/files/Shinhancard1496222664707.jpg",
+				"url": "/files/Shinhancard1496222664707.jpg",
 				"displayname": "타로.jpg"
 			}
 		},
@@ -998,7 +998,7 @@ var dialogs = [
 				}
 			],
 			"image": {
-				"url": "/files//shinhancard.moneybrain.ai/files/Shinhancard1496222685533.jpg",
+				"url": "/files/Shinhancard1496222685533.jpg",
 				"displayname": "페이봇.jpg"
 			}
 		},
@@ -1132,7 +1132,7 @@ var dialogs = [
 					"text": "시작메뉴"
 				}
 			],
-			"text": "신한 FAN에는 편리하게 금융/납부서비스를 신청할 수 있어요!\n \n1. 단기카드대출(현금서비스)\n2. 장기카드대출(카드론)\n3. MF일반대출\n4. 납부서비스\n \n (* 처음으로 돌아가기 : '0' 또는 '처음', 이전단계 : '9' 또는 '이전')"
+			"text": "신한 FAN에는 편리하게 금융/납부서비스를 신청할 수 있어요!\n \n1. 단기카드대출(현금서비스)\n2. 장기카드대출(카드론)\n3. MF일반대출\n4. 납부서비스"
 		},
 		"children": [
 			{
@@ -1302,7 +1302,7 @@ var dialogs = [
 				}
 			],
 			"image": {
-				"url": "/files//shinhancard.moneybrain.ai/files/Shinhancard1496651111434.jpg",
+				"url": "/files/Shinhancard1496651111434.jpg",
 				"displayname": "MF일반대출.jpg"
 			}
 		},
