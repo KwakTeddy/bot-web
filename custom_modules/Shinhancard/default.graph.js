@@ -8,7 +8,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "퀴즈"
+				"intent": "퀴즈"
 			}
 		],
 		"output": {
@@ -159,31 +159,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "가입"
-			},
-			{
-				"text": "앱"
-			},
-			{
-				"text": "앱 카드"
-			},
-			{
-				"text": "설치"
-			},
-			{
-				"text": "회원"
-			},
-			{
-				"text": "다운로드"
-			},
-			{
-				"text": "다운"
-			},
-			{
-				"text": "앱스토어"
-			},
-			{
-				"text": "플레이스토어"
+				"intent": "FAN 가입"
 			},
 			{
 				"text": "1"
@@ -196,14 +172,14 @@ var dialogs = [
 				"displayname": "FAN가입.jpg"
 			}
 		},
-		"inRaw": "1",
-		"inNLP": "1",
+		"inRaw": "신한 FAN에 가입하고 싶어요",
+		"inNLP": "신한 FAN 에 가입 하다 싶다",
 		"task": {
 			"name": "task1",
 			"buttons": [
 				{
 					"text": "바로가입하기",
-					"url": "https://newm.shinhancard.com/event/2015/pt06.jsp?prm=facebook"
+					"url": "https://newm.shinhancard.com/event/2015/pt06.jsp?prm=naver"
 				},
 				{
 					"text": "이전단계"
@@ -216,7 +192,8 @@ var dialogs = [
 			"image": {
 				"url": "/files/Shinhancard1496222468984.jpg",
 				"displayname": "FAN가입.jpg"
-			}
+			},
+			"text": "✔ 신한 FAN은 신한카드가 없어도 가입가능!  \n✔ 신한 FAN에 가입 하시면 다양한 경품이 가득! \n✔ 신규라면 100% 당첨 경품 제공!"
 		}
 	},
 	{
@@ -225,7 +202,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "혜택"
+				"intent": "FAN 혜택"
 			},
 			{
 				"text": "2"
@@ -246,7 +223,8 @@ var dialogs = [
 				{
 					"text": "시작메뉴"
 				}
-			]
+			],
+			"text": "신한 FAN에는 고객님을 위한  다양한 혜택들이 있습니다. 어떤 혜택을 알아볼까요?\n1. FAN 전용 적립 및 할인\n2. 진행중인 대박 이벤트"
 		},
 		"inRaw": "신한 FAN에는 어떤 혜택이 있나요",
 		"inNLP": "신한 FAN 에는 어떻다 혜택 있다",
@@ -309,13 +287,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "적립"
-			},
-			{
-				"text": "할인"
-			},
-			{
-				"text": "쿠폰"
+				"intent": "FAN 전용 적립 및 할인"
 			}
 		],
 		"output": {
@@ -337,24 +309,6 @@ var dialogs = [
 		},
 		"inRaw": "FAN 전용 적립 및 할인",
 		"inNLP": "FAN 전용 적립 및 할인",
-		"task": {
-			"output": "스마트컨슈머를 위한 다양한 혜택!\n신한 FAN만의 다양한 혜택을 누리세요!\n \n 1. 신한 FAN 혜택ZONE!\n 2. 나만의 맞춤 쿠폰 Sally",
-			"buttons": [
-				{
-					"text": "신한 FAN 혜택ZONE!"
-				},
-				{
-					"text": "나만의 맞춤 쿠폰 Sally"
-				},
-				{
-					"text": "이전단계"
-				},
-				{
-					"text": "시작메뉴"
-				}
-			],
-			"text": "스마트컨슈머를 위한 다양한 혜택!\n신한 FAN만의 다양한 혜택을 누리세요!\n \n 1. 신한 FAN 혜택ZONE!\n 2. 나만의 맞춤 쿠폰 Sally"
-		},
 		"children": [
 			{
 				"name": "dialog_default30",
@@ -396,7 +350,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "이벤트"
+				"intent": "이벤트"
 			}
 		],
 		"output": {
@@ -408,16 +362,45 @@ var dialogs = [
 				},
 				{
 					"text": "가입하기"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
 				}
 			],
 			"image": {
 				"url": "/files/Shinhancard1496628594783.jpg",
 				"displayname": "이벤트.jpg"
-			}
+			},
+			"text": "지금 FAN에서 진행되는 다양한 이벤트가 있어요.\n\n✔ 6월 FAN 신규가입 이벤트\n✔ 6월 FAN 여름맞이 이벤트\n✔ 6월 FAN 추가포인트 적립 이벤트\n\n신한 FAN에는 항상 다양한 이벤트가 준비되어 있어요!\n \n신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n\n아직 가입 전이시면 '가입하기'를 눌러주세요."
 		},
 		"inRaw": "진행중인 대박 이벤트",
 		"inNLP": "진행중 인 대박 이벤트",
-		"task": "defaultTask"
+		"task": {
+			"output": "지금 FAN에서 진행되는 다양한 이벤트가 있어요.\n\n✔ 6월 FAN 신규가입 이벤트\n✔ 6월 FAN 여름맞이 이벤트\n✔ 6월 FAN 추가포인트 적립 이벤트\n\n신한 FAN에는 항상 다양한 이벤트가 준비되어 있어요!\n \n신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n\n아직 가입 전이시면 '가입하기'를 눌러주세요.",
+			"buttons": [
+				{
+					"text": "대박이벤트 바로가기",
+					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_304"
+				},
+				{
+					"text": "가입하기"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
+				}
+			],
+			"image": {
+				"url": "/files/Shinhancard1496628594783.jpg",
+				"displayname": "이벤트.jpg"
+			},
+			"text": "지금 FAN에서 진행되는 다양한 이벤트가 있어요.\n\n✔ 6월 FAN 신규가입 이벤트\n✔ 6월 FAN 여름맞이 이벤트\n✔ 6월 FAN 추가포인트 적립 이벤트\n\n신한 FAN에는 항상 다양한 이벤트가 준비되어 있어요!\n \n신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n\n아직 가입 전이시면 '가입하기'를 눌러주세요."
+		}
 	},
 	{
 		"name": "혜택 안내",
@@ -425,22 +408,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "X GOLF"
-			},
-			{
-				"text": "동부 화재"
-			},
-			{
-				"text": "티머니"
-			},
-			{
-				"text": "하나투어"
-			},
-			{
-				"text": "야 놀다"
-			},
-			{
-				"text": "리 화이트"
+				"intent": "혜택 안내"
 			}
 		],
 		"output": {
@@ -460,10 +428,7 @@ var dialogs = [
 			}
 		},
 		"inRaw": "신한 FAN 혜택ZONE!",
-		"inNLP": "신한 FAN 혜택 ZONE",
-		"task": {
-			"name": "defaultTask"
-		}
+		"inNLP": "신한 FAN 혜택 ZONE"
 	},
 	{
 		"name": "Sally 쿠폰 상세",
@@ -471,10 +436,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "빅데이터"
-			},
-			{
-				"text": "SALLY"
+				"intent": "Sally"
 			}
 		],
 		"output": {
@@ -503,16 +465,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "결제"
-			},
-			{
-				"text": "금융"
-			},
-			{
-				"text": "생활"
-			},
-			{
-				"text": "포인트"
+				"intent": "이용안내"
 			},
 			{
 				"text": "3"
@@ -537,9 +490,6 @@ var dialogs = [
 		},
 		"inRaw": "이전단계",
 		"inNLP": "이전 단계",
-		"task": {
-			"name": "defaultTask"
-		},
 		"children": [
 			{
 				"name": "dialog_default33",
@@ -613,16 +563,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "이용"
-			},
-			{
-				"text": "가이드"
-			},
-			{
-				"text": "지문"
-			},
-			{
-				"text": "홍채"
+				"intent": "FAN 결제 이용가이드"
 			}
 		],
 		"output": {
@@ -642,10 +583,7 @@ var dialogs = [
 			}
 		},
 		"inRaw": "FAN페이 결제",
-		"inNLP": "FAN 페이 결제",
-		"task": {
-			"name": "defaultTask"
-		}
+		"inNLP": "FAN 페이 결제"
 	},
 	{
 		"name": "FAN페이 가맹점 안내",
@@ -653,7 +591,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "가맹 점"
+				"intent": "FAN페이 가맹점"
 			}
 		],
 		"output": {
@@ -673,10 +611,7 @@ var dialogs = [
 			}
 		},
 		"inRaw": "FAN페이 오프라인 가맹점",
-		"inNLP": "FAN 페이 오프라인   가맹 점",
-		"task": {
-			"name": "defaultTask"
-		}
+		"inNLP": "FAN 페이 오프라인   가맹 점"
 	},
 	{
 		"name": "다양한 제휴/FUN/생활/금융 서비스",
@@ -684,13 +619,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "FUN"
-			},
-			{
-				"text": "서비스"
-			},
-			{
-				"text": "컨텐츠"
+				"intent": "다양한 제휴/FUN/생활/금융 서비스"
 			}
 		],
 		"output": {
@@ -718,9 +647,6 @@ var dialogs = [
 		},
 		"inRaw": "이전단계",
 		"inNLP": "이전 단계",
-		"task": {
-			"name": "defaultTask"
-		},
 		"children": [
 			{
 				"name": "dialog_default3722",
@@ -826,10 +752,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "FAN 클럽"
-			},
-			{
-				"text": "리 워드"
+				"intent": "FAN클럽"
 			}
 		],
 		"output": {
@@ -849,10 +772,7 @@ var dialogs = [
 			}
 		},
 		"inRaw": "신한 FAN클럽 (통합포인트)",
-		"inNLP": "신한 FAN 클럽 통합 포인트",
-		"task": {
-			"name": "defaultTask"
-		}
+		"inNLP": "신한 FAN 클럽 통합 포인트"
 	},
 	{
 		"name": "제휴사서비스(혜택+)",
@@ -860,31 +780,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "쇼핑"
-			},
-			{
-				"text": "식품"
-			},
-			{
-				"text": "여가"
-			},
-			{
-				"text": "보험"
-			},
-			{
-				"text": "음식"
-			},
-			{
-				"text": "뷰티"
-			},
-			{
-				"text": "패션"
-			},
-			{
-				"text": "교통"
-			},
-			{
-				"text": "차량"
+				"intent": "제휴사서비스"
 			}
 		],
 		"output": {
@@ -904,10 +800,7 @@ var dialogs = [
 			}
 		},
 		"inRaw": "제휴사서비스(혜택+)",
-		"inNLP": "제휴 사 서비스 혜택",
-		"task": {
-			"name": "defaultTask"
-		}
+		"inNLP": "제휴 사 서비스 혜택"
 	},
 	{
 		"name": "운세",
@@ -915,7 +808,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "운세"
+				"intent": "운세"
 			}
 		],
 		"output": {
@@ -935,10 +828,7 @@ var dialogs = [
 			}
 		},
 		"inRaw": "운세",
-		"inNLP": "운세",
-		"task": {
-			"name": "defaultTask"
-		}
+		"inNLP": "운세"
 	},
 	{
 		"name": "게임",
@@ -946,10 +836,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "게임"
-			},
-			{
-				"text": "게임 존"
+				"intent": "게임"
 			}
 		],
 		"output": {
@@ -969,10 +856,7 @@ var dialogs = [
 			}
 		},
 		"inRaw": "게임",
-		"inNLP": "게임",
-		"task": {
-			"name": "defaultTask"
-		}
+		"inNLP": "게임"
 	},
 	{
 		"name": "페이봇",
@@ -980,10 +864,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "페이 봇"
-			},
-			{
-				"text": "소비 관리"
+				"intent": "페이봇"
 			}
 		],
 		"output": {
@@ -1003,10 +884,7 @@ var dialogs = [
 			}
 		},
 		"inRaw": "페이봇",
-		"inNLP": "페이 봇",
-		"task": {
-			"name": "defaultTask"
-		}
+		"inNLP": "페이 봇"
 	},
 	{
 		"name": "트렌드연구소",
@@ -1014,10 +892,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "트렌드 연구소"
-			},
-			{
-				"text": "트렌디 스"
+				"intent": "트렌드연구소"
 			}
 		],
 		"output": {
@@ -1037,10 +912,7 @@ var dialogs = [
 			}
 		},
 		"inRaw": "신한 트렌드연구소",
-		"inNLP": "신한 트렌드 연구소",
-		"task": {
-			"name": "defaultTask"
-		}
+		"inNLP": "신한 트렌드 연구소"
 	},
 	{
 		"name": "더치페이",
@@ -1048,7 +920,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "더치페이"
+				"intent": "더치페이"
 			}
 		],
 		"output": {
@@ -1076,16 +948,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "금융"
-			},
-			{
-				"text": "금융 서비스"
-			},
-			{
-				"text": "납부"
-			},
-			{
-				"text": "납부 서비스"
+				"intent": "금융/납부 서비스"
 			},
 			{
 				"text": "4"
@@ -1110,30 +973,6 @@ var dialogs = [
 		},
 		"inRaw": "이전단계",
 		"inNLP": "이전 단계",
-		"task": {
-			"output": "신한 FAN에는 편리하게 금융/납부서비스를 신청할 수 있어요!\n \n1. 단기카드대출(현금서비스)\n2. 장기카드대출(카드론)\n3. MF일반대출\n4. 납부서비스",
-			"buttons": [
-				{
-					"text": "단기카드대출(현금서비스)"
-				},
-				{
-					"text": "장기카드대출(카드론)"
-				},
-				{
-					"text": "MF일반대출"
-				},
-				{
-					"text": "납부서비스"
-				},
-				{
-					"text": "이전단계"
-				},
-				{
-					"text": "시작메뉴"
-				}
-			],
-			"text": "신한 FAN에는 편리하게 금융/납부서비스를 신청할 수 있어요!\n \n1. 단기카드대출(현금서비스)\n2. 장기카드대출(카드론)\n3. MF일반대출\n4. 납부서비스"
-		},
 		"children": [
 			{
 				"name": "dialog_default194",
@@ -1207,10 +1046,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "단기 카드 대출"
-			},
-			{
-				"text": "현금 서비스"
+				"intent": "단기카드대출"
 			}
 		],
 		"output": {
@@ -1230,10 +1066,7 @@ var dialogs = [
 			}
 		},
 		"inRaw": "단기카드대출(현금서비스)",
-		"inNLP": "단기 카드 대출 현금 서비스",
-		"task": {
-			"name": "defaultTask"
-		}
+		"inNLP": "단기 카드 대출 현금 서비스"
 	},
 	{
 		"name": "장기카드대출",
@@ -1241,10 +1074,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "장기 카드 대출"
-			},
-			{
-				"text": "카드 론"
+				"intent": "장기카드대출"
 			}
 		],
 		"output": {
@@ -1265,9 +1095,7 @@ var dialogs = [
 		},
 		"inRaw": "장기카드대출(카드론)",
 		"inNLP": "장기 카드 대출 카드 론",
-		"task": {
-			"name": "defaultTask"
-		}
+		"task": "defaultTask"
 	},
 	{
 		"name": "MF일반대출",
@@ -1275,19 +1103,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "일반 대출"
-			},
-			{
-				"text": "MF 일반 대출"
-			},
-			{
-				"text": "즉시 대출"
-			},
-			{
-				"text": "스피드 론"
-			},
-			{
-				"text": "담보 대출"
+				"intent": "MF일반대출"
 			}
 		],
 		"output": {
@@ -1307,10 +1123,7 @@ var dialogs = [
 			}
 		},
 		"inRaw": "MF일반대출",
-		"inNLP": "MF 일반 대출",
-		"task": {
-			"name": "defaultTask"
-		}
+		"inNLP": "MF 일반 대출"
 	},
 	{
 		"name": "납부서비스",
@@ -1318,22 +1131,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "전기"
-			},
-			{
-				"text": "전화"
-			},
-			{
-				"text": "도시가스"
-			},
-			{
-				"text": "등록금"
-			},
-			{
-				"text": "아파트"
-			},
-			{
-				"text": "관리 비"
+				"intent": "납부서비스"
 			}
 		],
 		"output": {
@@ -1353,22 +1151,7 @@ var dialogs = [
 			}
 		},
 		"inRaw": "4",
-		"inNLP": "4",
-		"task": "defaultTask"
-	},
-	{
-		"name": "dialog_default199",
-		"id": "default199",
-		"filename": "default",
-		"input": [
-			{
-				"text": "faq update start"
-			}
-		],
-		"output": "success",
-		"task": {
-			"name": "te"
-		}
+		"inNLP": "4"
 	},
 	{
 		"name": "FAN에 대해 자주하는 질문들(FAQ)",
@@ -1376,73 +1159,16 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "질문"
-			},
-			{
-				"text": "FAQ"
-			},
-			{
-				"text": "문의"
+				"intent": "FAQ"
 			}
 		],
 		"output": "FAN관련 궁금하신부분을 말씀하시면 가장 알맞은 답변을 안내해드리겠습니다. 궁금하신 질문을 '단어'로 입력해주세요!",
 		"children": [
 			{
-				"name": "dialog_default189",
-				"id": "default189",
-				"filename": "default",
-				"input": [
-					{
-						"text": "질문"
-					},
-					{
-						"text": "FAQ"
-					},
-					{
-						"text": "문의"
-					}
-				],
-				"output": {
-					"call": "FAN에 대해 자주하는 질문들(FAQ)"
-				}
-			},
-			{
-				"name": "dialog_default190",
-				"id": "default190",
-				"filename": "default",
-				"input": [
-					{
-						"text": "추천"
-					}
-				],
-				"output": {
-					"call": "신한 카드 추천"
-				}
-			},
-			{
-				"name": "dialog_default191",
-				"id": "default191",
-				"filename": "default",
-				"input": [
-					{
-						"text": "FAN"
-					}
-				],
-				"output": {
-					"call": "신한 FAN 플랫폼 소개"
-				}
-			},
-			{
 				"name": "dialog_default98",
 				"id": "default98",
 				"filename": "default",
-				"input": [
-					{
-						"types": [
-							"fanfaqType"
-						]
-					}
-				],
+				"input": "false",
 				"output": "아래 중에 궁금하신 내용이 있나요?\n#typeDoc#+index+. +title+\n#번호를 입력하면 상세 내용을 보여드립니다.\n다시 검색하시려면 검색어를 입력해주세요.",
 				"children": [
 					{
@@ -1481,17 +1207,11 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "신용카드"
-			},
-			{
-				"text": "체크카드"
-			},
-			{
-				"text": "추천"
+				"intent": "카드추천"
 			}
 		],
 		"output": {
-			"output": "안녕하세요. OOO봇입니다\n고객님의 소비 패턴 및 결제스타일을 기반으로 최적의 신한카드를 추천해드리겠습니다.\n\n먼저 고객님의 결제 스타일부터 알아볼까요?\n1. 신용카드를 선호합니다.\n2. 체크카드를 선호합니다.",
+			"output": "안녕하세요. 신한카드입니다\n고객님의 소비 패턴 및 결제스타일을 기반으로 최적의 신한카드를 추천해드리겠습니다.\n\n먼저 고객님의 결제 스타일부터 알아볼까요?\n1. 신용카드를 선호합니다.\n2. 체크카드를 선호합니다.",
 			"buttons": [
 				{
 					"text": "신용카드"
@@ -2664,13 +2384,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "FAN"
-			},
-			{
-				"text": "플랫폼"
-			},
-			{
-				"text": "판"
+				"intent": "FAN"
 			}
 		],
 		"output": {
@@ -2694,7 +2408,29 @@ var dialogs = [
 		"inRaw": "FAN",
 		"inNLP": "FAN",
 		"task": {
-			"name": "defaultTask"
+			"name": "defaultTask",
+			"output": "안녕하세요 신한카드입니다. 메뉴 또는 궁금하신 키워드를 입력해주세요.\n \n 1. 신한 FAN에 가입하고 싶어요\n 2. 신한 FAN에는 어떤 혜택이 있나요\n 3. 신한 FAN으로는 무엇을 할 수 있나요\n 4. 편리한 금융/납부 서비스",
+			"buttons": [
+				{
+					"text": "신한 FAN에 가입하고 싶어요"
+				},
+				{
+					"text": "신한 FAN에는 어떤 혜택이 있나요"
+				},
+				{
+					"text": "신한 FAN으로 무엇을 할 수 있나요"
+				},
+				{
+					"text": "편리한 금융/납부 서비스"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
+				}
+			],
+			"text": "안녕하세요 신한카드입니다. 메뉴 또는 궁금하신 키워드를 입력해주세요.\n \n 1. 신한 FAN에 가입하고 싶어요\n 2. 신한 FAN에는 어떤 혜택이 있나요\n 3. 신한 FAN으로는 무엇을 할 수 있나요\n 4. 편리한 금융/납부 서비스"
 		},
 		"children": [
 			{
@@ -2779,7 +2515,7 @@ var commonDialogs = [
 			"output": "내 손안의 생활 플랫폼\n생활의 판을 바꾸다!\n간편 결제를 기반으로 결제, 금융, 생활편의 서비스를 한번에 누리세요!\n\n · 편리한 모바일결제 신한FAN페이보유하고 있는 카드를 신한 FAN에 등록하여 간편하게 결제하세요!\n\n · 다양하고 편리한 생활서비스다양한 제휴사 할인, 적립 서비스와 게임, 운세 등 FUN 및 생활서비스를 신한 FAN에서 한판에 즐기세요!\n\n · 통합리워드 서비스 신한 FAN클럽\n신한금융그룹이 동행하면 더 많은 포인트와 혜택이 함께합니다.\n\n신한 FAN에 궁금한점을 신한카드 챗봇이 해결해 드립니다. 메뉴 또는 궁금하신 키워드를 입력해주세요.",
 			"buttons": [
 				{
-					"text": "FAN"
+					"text": "생활 플랫폼 FAN"
 				},
 				{
 					"text": "내게 맞는 카드 추천"
@@ -2787,11 +2523,10 @@ var commonDialogs = [
 				{
 					"text": "자주 묻는 질문(FAQ)"
 				}
-			],
-			"text": "내 손안의 생활 플랫폼\n생활의 판을 바꾸다!\n간편 결제를 기반으로 결제, 금융, 생활편의 서비스를 한번에 누리세요!\n\n · 편리한 모바일결제 신한FAN페이보유하고 있는 카드를 신한 FAN에 등록하여 간편하게 결제하세요!\n\n · 다양하고 편리한 생활서비스다양한 제휴사 할인, 적립 서비스와 게임, 운세 등 FUN 및 생활서비스를 신한 FAN에서 한판에 즐기세요!\n\n · 통합리워드 서비스 신한 FAN클럽\n신한금융그룹이 동행하면 더 많은 포인트와 혜택이 함께합니다.\n\n신한 FAN에 궁금한점을 신한카드 챗봇이 해결해 드립니다. 메뉴 또는 궁금하신 키워드를 입력해주세요."
+			]
 		},
-		"inRaw": "이전단계",
-		"inNLP": "이전 단계"
+		"inRaw": "0",
+		"inNLP": "0"
 	},
 	{
 		"id": "defaultcommon1",
