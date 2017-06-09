@@ -3,34 +3,6 @@
 
 var dialogs = [
 	{
-		"name": "FAQ Check",
-		"id": "default211",
-		"filename": "default",
-		"input": [
-			{
-				"types": [
-					"faqtype1"
-				]
-			}
-		],
-		"output": "아래 중에 궁금하신 내용이 있나요?\n#typeDoc#+index+. +title+\n#번호를 입력하면 상세 내용을 보여드립니다.\n다시 검색하시려면 검색어를 입력해주세요.",
-		"children": [
-			{
-				"name": "dialog_default212",
-				"id": "default212",
-				"filename": "default",
-				"input": [
-					{
-						"types": [
-							"listType"
-						]
-					}
-				],
-				"output": "[+listType.title+]\n+listType.content+\n더 필요하신 게 있으시면 말씀해주세요~"
-			}
-		]
-	},
-	{
 		"name": "퀴즈",
 		"id": "default213",
 		"filename": "default",
@@ -93,12 +65,23 @@ var dialogs = [
 								"filename": "default",
 								"input": [
 									{
-										"text": "네"
+										"intent": "네"
 									}
 								],
 								"output": {
 									"up": "1"
 								}
+							},
+							{
+								"name": "dialog_default222",
+								"id": "default222",
+								"filename": "default",
+								"input": [
+									{
+										"intent": "아니요"
+									}
+								],
+								"output": "다음에 다시 도전해주세요~"
 							}
 						]
 					}
@@ -146,12 +129,23 @@ var dialogs = [
 								"filename": "default",
 								"input": [
 									{
-										"text": "네"
+										"intent": "네"
 									}
 								],
 								"output": {
 									"up": "1"
 								}
+							},
+							{
+								"name": "dialog_default223",
+								"id": "default223",
+								"filename": "default",
+								"input": [
+									{
+										"intent": "아니요"
+									}
+								],
+								"output": "다음에 다시 도전해주세요~"
 							}
 						]
 					}
@@ -2766,34 +2760,6 @@ var dialogs = [
 				"output": {
 					"call": "금융/납부 서비스"
 				}
-			}
-		]
-	},
-	{
-		"name": "FAQ Type",
-		"id": "default57",
-		"filename": "default",
-		"input": [
-			{
-				"types": [
-					"fanfaqType"
-				]
-			}
-		],
-		"output": "아래 중에 궁금하신 내용이 있나요?\n#typeDoc#+index+. +title+\n#번호를 입력하면 상세 내용을 보여드립니다.\n다시 검색하시려면 검색어를 입력해주세요.",
-		"children": [
-			{
-				"name": "dialog_default97",
-				"id": "default97",
-				"filename": "default",
-				"input": [
-					{
-						"types": [
-							"listType"
-						]
-					}
-				],
-				"output": "[+listType.title+]\n+listType.content+\n더 필요하신 게 있으시면 말씀해주세요~"
 			}
 		]
 	}

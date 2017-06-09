@@ -2075,7 +2075,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     var labelWidth = 350;
 
     // transition animation speed
-    var duration = 300;
+    var duration = 500;
 
     // icon size of selected node
     var iconSize= 20;
