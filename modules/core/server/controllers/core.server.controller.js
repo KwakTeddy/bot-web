@@ -21,10 +21,10 @@ exports.renderIndex = function (req, res) {
 
   var admin = false;
   var path = path_uri.split('/');
+  console.log(path)
   if(path.length > 1 && path[1] == 'admin') {
     admin = true;
   }
-
 
   if(path[1] == 'mobile') {  // 모바일 화면
     req.session._platform = "mobile";
@@ -40,7 +40,12 @@ exports.renderIndex = function (req, res) {
     res.render('modules/core/server/views/index', {
       user: req.user || null
     });
-  } else {
+  } else if(config.enterprise.name){
+    req.session._platform = "web";
+    res.render('modules/core/server/views/index', {
+      user: req.user || null
+    });
+  } else{
     res.render('modules/core/server/views/user-bot', {
       user: req.user
     });

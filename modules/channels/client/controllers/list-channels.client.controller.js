@@ -31,7 +31,6 @@
             var accessToken = '';
             if (result.data.provider == 'facebook') accessToken = result.data.providerData.accessToken;
             else accessToken = result.data.additionalProvidersData.facebook.accessToken;
-            console.log(accessToken);
 
             FB.api('/me/accounts?fields=picture,name,link,access_token,perms&access_token=' + accessToken, function(response) {
               if (response.error){
@@ -68,8 +67,6 @@
                 });
               } else {
                 $http.post('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true, pageInfo: response.data}).then(function (res) {
-                  console.log(response.data);
-                  console.log(res.data);
                   for(var j = 0; j < response.data.length; j++){ // show which page is connected
                     for(var i = 0; i < res.data.length; i++){
                       if ((res.data[i].pageId == response.data[j].id) && res.data[i].connect){
@@ -81,8 +78,6 @@
                       }
                     }
                   }
-                  console.log(response.data);
-                  console.log(res.data);
                   $scope.fbLoading = false;
                   $scope.pageLists = [];
                   $scope.pageLists = response.data;
