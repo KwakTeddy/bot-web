@@ -28,7 +28,7 @@
     }else {
       angular.element('#intentContentForm').focus();
     }
-    if(vm.intent.content.length){
+    if(vm.intent.content && vm.intent.content.length){
       vm.count = vm.intent.content.length;
     }
 
