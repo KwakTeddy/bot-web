@@ -32,6 +32,7 @@
             var accessToken = '';
             if (result.data.provider == 'facebook') accessToken = result.data.providerData.accessToken;
             else accessToken = result.data.additionalProvidersData.facebook.accessToken;
+            console.log(accessToken);
 
             FB.api('/me/accounts?fields=picture,name,link,access_token,perms&access_token=' + accessToken, function(response) {
               console.log(response)
