@@ -1171,11 +1171,11 @@ var dialogs = [
 				"input": [
 					{
 						"types": [
-							"dialogsType"
+							"fanfaqType"
 						]
 					}
 				],
-				"output": "+_output+",
+				"output": "아래 중에 궁금하신 내용이 있나요?\n#typeDoc#+index+. +title+\n#번호를 입력하면 상세 내용을 보여드립니다.\n다시 검색하시려면 검색어를 입력해주세요.",
 				"children": [
 					{
 						"name": "dialog_default99",
@@ -1188,25 +1188,41 @@ var dialogs = [
 								]
 							}
 						],
-						"output": "[+listType.title+]\n+listType.content+\n더 필요하신 게 있으시면 말씀해주세요~"
+						"output": "[+listType.title+]\n+listType.content+\n더 필요하신 게 있으시면 말씀해주세요~",
+						"children": [
+							{
+								"name": "dialog_default225",
+								"id": "default225",
+								"filename": "default",
+								"input": [
+									{
+										"types": [
+											"fanfaqType"
+										]
+									}
+								],
+								"output": {
+									"callChild": "FAN에 대해 자주하는 질문들(FAQ)"
+								}
+							}
+						]
 					},
 					{
-						"name": "dialog_default140",
-						"id": "default140",
+						"name": "dialog_default224",
+						"id": "default224",
 						"filename": "default",
 						"input": [
 							{
-								"if": "true"
+								"types": [
+									"fanfaqType"
+								]
 							}
 						],
 						"output": {
 							"callChild": "FAN에 대해 자주하는 질문들(FAQ)"
 						}
 					}
-				],
-				"task": {
-					"name": "fanfaq"
-				}
+				]
 			}
 		]
 	},

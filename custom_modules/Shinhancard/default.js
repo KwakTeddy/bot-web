@@ -23,7 +23,7 @@ var dialogsType = {
     exclude: ['하다', '이다'],
     mongo: {
         model: 'dialogsetdialogs',
-        queryStatic: {dialogset: ObjectId("593a6a60367a73e11f9b6526")},
+        queryStatic: {dialogset: ObjectId("593a74581f2d12a832a15795")},
         queryFields: ['input'],
         fields: 'dialogset input inputRaw output context' ,
         taskFields: ['input', 'inputRaw', 'output', 'matchCount', 'matchRate', 'dialogset', 'context'],
@@ -145,49 +145,49 @@ var fanfaq = {
     name: 'faqselect',
     action: function(task, context, callback) {
 
-        if(Array.isArray(task.typeDoc)) {
-            if(context.bot.dialogsetOption && context.bot.dialogsetOption.useList &&
-                (context.bot.dialogsetOption.listMatchRate == undefined || context.bot.dialogsetOption.listMatchRate > task.typeDoc[0].matchRate) &&
-                (context.bot.dialogsetOption.listMatchCount == undefined || context.bot.dialogsetOption.listMatchCount > task.typeDoc[0].matchCount)) {
-                context.dialog.typeDoc = task.typeDoc;
-                if(context.bot.dialogsetOption.listOutput) {
-                    context.dialog.output = context.bot.dialogsetOption.listOutput;
-                } else {
-                    context.dialog.output = '질문에 가장 유사한 답변을 찾았습니다.\n\n#typeDoc#+index+. +inputRaw+\n# 번호를 입력해 주세요.';
-                }
+        if(Array.isArray(context.dialog.dialogsType)) {
+            // if(context.bot.dialogsetOption && context.bot.dialogsetOption.useList &&
+            //     (context.bot.dialogsetOption.listMatchRate == undefined || context.bot.dialogsetOption.listMatchRate > context.dialog.dialogsType[0].matchRate) &&
+            //     (context.bot.dialogsetOption.listMatchCount == undefined || context.bot.dialogsetOption.listMatchCount > context.dialog.dialogsType[0].matchCount)) {
+                context.dialog.typeDoc = context.dialog.dialogsType;
+                // if(context.bot.dialogsetOption.listOutput) {
+                //     context.dialog.output = context.bot.dialogsetOption.listOutput;
+                // } else {
+                //     context.dialog.output = '질문에 가장 유사한 답변을 찾았습니다.\n\n#typeDoc#+index+. +inputRaw+\n# 번호를 입력해 주세요.';
+                // }
 
-                context.dialog.children = [
-                    {
-                        input: {types: [{name: 'doc1', listName: 'typeDoc', typeCheck: 'listTypeCheck'}]},
-                        output: (context.bot.dialogsetOption.contentOutput ?
-                            context.bot.dialogsetOption.contentOutput
-                            : '[+doc1.inputRaw+]\n+doc1.output+\n\n더 필요하신 게 있으시면 말씀해주세요~\n')
-                    }
-                ];
-            } else {
-                if(task.typeDoc.length > 1) task._output = task.typeDoc[0].output;
-                else task._output = task.typeDoc[0].output;
-
-                if(Array.isArray(task._output)) {
-                    task._output = task._output[Math.floor(Math.random() * task._output.length)];
-                }
-
-                context.dialog.output = '+_output+';
-                context.dialog.children = null;
-                //
-                // console.log(task.typeDoc[0].inputRaw + ', ' + task.typeDoc[0].input + '(' + task.typeDoc[0].matchCount + ', ' + task.typeDoc[0].matchRate + ')');
-            }
+                // context.dialog.children = [
+                //     {
+                //         input: {types: [{name: 'doc1', listName: 'typeDoc', typeCheck: 'listTypeCheck'}]},
+                //         output: (context.bot.dialogsetOption.contentOutput ?
+                //             context.bot.dialogsetOption.contentOutput
+                //             : '[+doc1.inputRaw+]\n+doc1.output+\n\n더 필요하신 게 있으시면 말씀해주세요~\n')
+                //     }
+                // ];
+            // } else {
+            //     if(context.dialog.dialogsType.length > 1) task._output = context.dialog.dialogsType[0].output;
+            //     else task._output = context.dialog.dialogsType[0].output;
+            //
+            //     if(Array.isArray(task._output)) {
+            //         task._output = task._output[Math.floor(Math.random() * task._output.length)];
+            //     }
+            //
+            //     context.dialog.output = '+_output+';
+            //     context.dialog.children = null;
+            //     //
+            //     // console.log(context.dialog.dialogsType[0].inputRaw + ', ' + context.dialog.dialogsType[0].input + '(' + context.dialog.dialogsType[0].matchCount + ', ' + context.dialog.dialogsType[0].matchRate + ')');
+            // }
 
         } else {
-            task._output = task.typeDoc.output;
+            task._output = context.dialog.dialogsType.output;
 
             if(Array.isArray(task._output)) {
                 task._output = task._output[Math.floor(Math.random() * task._output.length)];
             }
 
-            context.dialog.output = '+_output+';
-            context.dialog.children = null;
-            // console.log(task.typeDoc.inputRaw + ', ' + task.typeDoc.input + '(' + task.typeDoc.matchCount + ', ' + task.typeDoc.matchRate + ')');
+            // context.dialog.output = '+_output+';
+            // context.dialog.children = null;
+            // console.log(context.dialog.dialogsType.inputRaw + ', ' + context.dialog.dialogsType.input + '(' + context.dialog.dialogsType.matchCount + ', ' + context.dialog.dialogsType.matchRate + ')');
         }
 
         callback(task, context);
