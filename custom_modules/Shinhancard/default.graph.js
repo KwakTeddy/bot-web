@@ -1168,8 +1168,14 @@ var dialogs = [
 				"name": "dialog_default98",
 				"id": "default98",
 				"filename": "default",
-				"input": "false",
-				"output": "아래 중에 궁금하신 내용이 있나요?\n#typeDoc#+index+. +title+\n#번호를 입력하면 상세 내용을 보여드립니다.\n다시 검색하시려면 검색어를 입력해주세요.",
+				"input": [
+					{
+						"types": [
+							"dialogsType"
+						]
+					}
+				],
+				"output": "+_output+",
 				"children": [
 					{
 						"name": "dialog_default99",
@@ -1197,7 +1203,10 @@ var dialogs = [
 							"callChild": "FAN에 대해 자주하는 질문들(FAQ)"
 						}
 					}
-				]
+				],
+				"task": {
+					"name": "fanfaq"
+				}
 			}
 		]
 	},
