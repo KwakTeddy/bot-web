@@ -412,7 +412,7 @@ exports.facebookPage = function (req, res) {
           data.bot = req.body.userBot;
           data.userBotId = req.body.userBotId;
           data.connect = req.body.connect;
-          console.log(util.inspect(data));
+          data.user = req.user._id;
           data.save(function (err) {
             if (err){
               console.log(err);
@@ -445,7 +445,11 @@ exports.facebookPage = function (req, res) {
 
     })
   }else { //get facebook pages connected
-    UserBotFbPage.find({user : req.body.user}).populate('bot').exec(function (err, data) {
+    var pageIds = [];
+    for(var i = 0; i < req.body.pageInfo.length; i++){
+      pageIds.push(req.body.pageInfo[i].id)
+    }
+    UserBotFbPage.find({pageId: {$in: pageIds}}).populate('bot').exec(function (err, data) {
       if(err){
         console.log(err);
       }else {
