@@ -326,6 +326,9 @@ exports.respondMessage = respondMessage;
  *
  */
 function sendTextMessage(recipientId, text, task, token) {
+  if(text.length > 640){
+    text = text.substring(0, 639);
+  }
   var messageData = {
     recipient: {
       id: recipientId
