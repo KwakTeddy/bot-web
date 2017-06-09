@@ -156,6 +156,8 @@
                   })
                 });
               }
+            }, function (err) {
+              console.log(err)
             });
           }else {
             var url = '/api/auth/facebook/page';
