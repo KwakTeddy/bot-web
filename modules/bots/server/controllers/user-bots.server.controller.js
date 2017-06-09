@@ -412,6 +412,7 @@ exports.facebookPage = function (req, res) {
           data.bot = req.body.userBot;
           data.userBotId = req.body.userBotId;
           data.connect = req.body.connect;
+          console.log(util.inspect(data));
           data.save(function (err) {
             if (err){
               console.log(err);
