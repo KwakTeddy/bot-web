@@ -1555,7 +1555,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                         matchedWord += nlps[m];
                         matchNLP.push({text: _nlps[m].text, pos: _nlps[m].pos});
 
-                        console.log(l + ',' + doc[format.mongo.queryFields[l]] + ', ' + matchCount + ',' + matchTotal);
+                        // console.log(l + ',' + doc[format.mongo.queryFields[l]] + ', ' + matchCount + ',' + matchTotal);
 
                         var __word = nlps[m].text;
                         __word = RegExp.escape(__word);

@@ -50,12 +50,8 @@
           $scope.$broadcast('show-errors-check-validity', 'vm.form.dialogsetForm');
           return false;
         }
+
         // TODO: move create/update logic to service
-        if (vm.dialogset._id) {
-          vm.dialogset.$update(successCallback, errorCallback);
-        } else {
-          vm.dialogset.$save(successCallback, errorCallback);
-        }
         function successCallback(res) {
           $state.go('dialogsets.list', {
             dialogsetId: res._id
@@ -63,6 +59,12 @@
         }
         function errorCallback(res) {
           vm.error = res.data.message;
+        }
+
+        if (vm.dialogset._id) {
+          vm.dialogset.$update(successCallback, errorCallback);
+        } else {
+          vm.dialogset.$save(successCallback, errorCallback);
         }
       }else {
         if (vm.dialogset._id) {

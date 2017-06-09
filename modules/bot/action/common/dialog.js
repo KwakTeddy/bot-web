@@ -710,6 +710,18 @@ function executeDialog(dialog, context, print, callback, options) {
     },
 
     function(cb) {
+      if(context.dialog.output) {
+        dialog.output = context.dialog.output;
+      }
+
+      if(context.dialog.children) {
+        dialog.children = context.dialog.children;
+      }
+
+      cb(null);
+    },
+
+    function(cb) {
       var nextOptions = {};
       if(options && (options.prefix || options.output || options.postfix || options.commonCallChild)) {
         // if(dialog.output.constructor == String) dialog.output = {output: dialog.output, options: {}};
@@ -990,6 +1002,8 @@ function executeDialog(dialog, context, print, callback, options) {
         // dialog.output.options = null;
         context.botUser.currentDialog = dialog;   // 이건 사실 이전 다이얼로그로서 역활
         context.botUser.lastDialog = dialog;
+        if(context.dialog.output) context.dialog.output = null;
+        if(context.dialog.children) context.dialog.children = null;
 
         // dialog.inRaw = null;
         // dialog.inNLP = null;
