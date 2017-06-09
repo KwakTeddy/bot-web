@@ -27,7 +27,6 @@
         $scope.fbLoading = true;
         $scope.noPage = false;
         return $http.get('/api/auth/facebook/token/' + vm.user._id).then(function (result) {
-          console.log(result);
           if ((result.data.provider == 'facebook') || (result.data.additionalProvidersData && result.data.additionalProvidersData.facebook)){
             var accessToken = '';
             if (result.data.provider == 'facebook') accessToken = result.data.providerData.accessToken;
@@ -35,40 +34,36 @@
             console.log(accessToken);
 
             FB.api('/me/accounts?fields=picture,name,link,access_token,perms&access_token=' + accessToken, function(response) {
-              console.log(response)
               if (response.error){
                 console.log(response.error);
-                var url = '/api/auth/facebook/page';
-                if ($state.previous && $state.previous.href) url += '?redirect_to=' + encodeURIComponent($state.previous.href);
-                $scope.fbLoading = false;
-                $window.location.href = url; //register facebook but No page Token(getting Token)
-
               }else if(!response.data.length){
                 FB.api('/me/permissions?access_token='+accessToken, function (response2) {
-                  console.log(response2)
-                  var hasPageToken = '';
-                  for(var i = 0; i < response2.data.length; i++){
-                    if(response2.data[i].permission == "manage_pages"){
-                      hasPageToken = true;
-                      break
-                    }
-                  }
-                  console.log(hasPageToken)
-                  if(!hasPageToken){
-                    var url = '/api/auth/facebook/page';
-                    if ($state.previous && $state.previous.href) url += '?redirect_to=' + encodeURIComponent($state.previous.href);
-                    $scope.fbLoading = false;
-                    $window.location.href = url; //register facebook but No page Token(getting Token)
+                  if(response2.error){
+                    console.log(response2.error)
                   }else {
-                    $scope.noPage = true; //user has no page
-                    $scope.fbLoading = false;
-                    var modalInstance = $uibModal.open({
-                      templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',
-                      scope: $scope
-                    });
-                    modalInstance.result.then(function (response) {
-                      console.log(response);
-                    })
+                    var hasPageToken = '';
+                    for(var i = 0; i < response2.data.length; i++){
+                      if(response2.data[i].permission == "manage_pages"){
+                        hasPageToken = true;
+                        break
+                      }
+                    }
+                    if(!hasPageToken){
+                      var url = '/api/auth/facebook/page';
+                      if ($state.previous && $state.previous.href) url += '?redirect_to=' + encodeURIComponent($state.previous.href);
+                      $scope.fbLoading = false;
+                      $window.location.href = url; //register facebook but No page Token(getting Token)
+                    }else {
+                      $scope.noPage = true; //user has no page
+                      $scope.fbLoading = false;
+                      var modalInstance = $uibModal.open({
+                        templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',
+                        scope: $scope
+                      });
+                      modalInstance.result.then(function (response) {
+                        console.log(response);
+                      })
+                    }
                   }
                 });
               } else {
