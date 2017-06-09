@@ -47,13 +47,13 @@
               }else if(!response.data.length){
                 $scope.noPage = true; //user has no page
                 $scope.fbLoading = false;
-                var modalInstance = $uibModal.open({
-                  templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',
-                  scope: $scope
-                });
-                modalInstance.result.then(function (response) {
-                  console.log(response);
-                })
+                // var modalInstance = $uibModal.open({
+                //   templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',
+                //   scope: $scope
+                // });
+                // modalInstance.result.then(function (response) {
+                //   console.log(response);
+                // })
               } else {
                 $http.post('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true, pageInfo: response.data}).then(function (res) {
                   console.log(response.data);
