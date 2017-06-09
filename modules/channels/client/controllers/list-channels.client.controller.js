@@ -34,8 +34,9 @@
             else accessToken = result.data.additionalProvidersData.facebook.accessToken;
             console.log(accessToken);
 
-            FB.api('/me/accounts?fields=picture,name,link,access_token,perms&access_token=' + accessToken, function(response) {
+            FB.api('/me/accounts?fields=picture,name,link,access_token,perms&access_token=' + accessToken, function(response, err) {
               console.log(response)
+              console.log(err);
 
               if (response.error){
                 console.log(response.error);
