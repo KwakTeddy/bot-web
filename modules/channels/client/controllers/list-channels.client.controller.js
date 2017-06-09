@@ -27,12 +27,14 @@
         $scope.fbLoading = true;
         $scope.noPage = false;
         return $http.get('/api/auth/facebook/token/' + vm.user._id).then(function (result) {
+          console.log(result);
           if ((result.data.provider == 'facebook') || (result.data.additionalProvidersData && result.data.additionalProvidersData.facebook)){
             var accessToken = '';
             if (result.data.provider == 'facebook') accessToken = result.data.providerData.accessToken;
             else accessToken = result.data.additionalProvidersData.facebook.accessToken;
 
             FB.api('/me/accounts?fields=picture,name,link,access_token,perms&access_token=' + accessToken, function(response) {
+              console.log(response)
 
               if (response.error){
                 console.log(response.error);
