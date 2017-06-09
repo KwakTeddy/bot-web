@@ -45,6 +45,7 @@
 
               }else if(!response.data.length){
                 $scope.noPage = true; //user has no page
+                $scope.fbLoading = false;
                 var modalInstance = $uibModal.open({
                   templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',
                   scope: $scope
