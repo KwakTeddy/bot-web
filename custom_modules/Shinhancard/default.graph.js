@@ -2797,12 +2797,8 @@ var commonDialogs = [
 		"id": "defaultcommon1",
 		"filename": "defaultcommon",
 		"name": "답변없음",
-		"input": [
-			{
-				"text": ""
-			}
-		],
-		"output": "알아듣지 못했습니다"
+		"input": [],
+		"output": "고객님, 신한카드는 FAN, 맞춤형 카드 추천, 자주묻는 질문에 대한 답변이 학습되어 있어요.\n어떤 내용 관련하여 상담을 받고 싶으신가요?\n충분한 답변이 되지 않았으면 고객센터로 문의하시면 전문 상담원을 통하여 상세한 답변을 해드릴 수 있습니다.\n(1544-7000)"
 	},
 	{
 		"name": "dialog_commondefault90",
