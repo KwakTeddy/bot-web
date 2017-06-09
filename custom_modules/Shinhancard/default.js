@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var async = require('async');
 var mongo = require(path.resolve('./modules/bot/action/common/mongo'));
 var type = require(path.resolve('./modules/bot/action/common/type'));
+var ObjectId = mongoose.Types.ObjectId;
 
 var dialogsType = {
     name: 'typeDoc',
