@@ -10,6 +10,7 @@ var util = require('util');
  * Render the main application page
  */
 exports.renderIndex = function (req, res) {
+  console.log('****************************************************************************************************************')
 
   var ua = req.headers['user-agent'].toLowerCase();
   var path_uri = req.path;
@@ -18,6 +19,7 @@ exports.renderIndex = function (req, res) {
       path_uri = "/mobile" + path_uri;
     }
   }
+  console.log(util.inspect(req.session))
 
   var admin = false;
   var path = path_uri.split('/');
@@ -42,9 +44,7 @@ exports.renderIndex = function (req, res) {
     });
   } else if(config.enterprise.name){
     req.session._platform = "web";
-    res.render('modules/core/server/views/index', {
-      user: req.user || null
-    });
+    res.redirect('/developer')
   } else{
     res.render('modules/core/server/views/user-bot', {
       user: req.user
