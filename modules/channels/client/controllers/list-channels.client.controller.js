@@ -36,7 +36,6 @@
 
             FB.api('/me/accounts?fields=picture,name,link,access_token,perms&access_token=' + accessToken, function(response) {
               console.log(response)
-
               if (response.error){
                 console.log(response.error);
                 var url = '/api/auth/facebook/page';
@@ -45,15 +44,33 @@
                 $window.location.href = url; //register facebook but No page Token(getting Token)
 
               }else if(!response.data.length){
-                $scope.noPage = true; //user has no page
-                $scope.fbLoading = false;
-                var modalInstance = $uibModal.open({
-                  templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',
-                  scope: $scope
+                FB.api('/me/permissions?access_token='+accessToken, function (response2) {
+                  console.log(response2)
+                  var hasPageToken = '';
+                  for(var i = 0; i < response2.data.length; i++){
+                    if(response2.data[i].permission == "manage_pages"){
+                      hasPageToken = true;
+                      break
+                    }
+                  }
+                  console.log(hasPageToken)
+                  if(!hasPageToken){
+                    var url = '/api/auth/facebook/page';
+                    if ($state.previous && $state.previous.href) url += '?redirect_to=' + encodeURIComponent($state.previous.href);
+                    $scope.fbLoading = false;
+                    $window.location.href = url; //register facebook but No page Token(getting Token)
+                  }else {
+                    $scope.noPage = true; //user has no page
+                    $scope.fbLoading = false;
+                    var modalInstance = $uibModal.open({
+                      templateUrl: 'modules/bots/client/views/modal-user-bots.client.connect.html',
+                      scope: $scope
+                    });
+                    modalInstance.result.then(function (response) {
+                      console.log(response);
+                    })
+                  }
                 });
-                modalInstance.result.then(function (response) {
-                  console.log(response);
-                })
               } else {
                 $http.post('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true, pageInfo: response.data}).then(function (res) {
                   console.log(response.data);
