@@ -12,16 +12,16 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
     //routing
     var stingParser = $state.current.name;
     var parsedString = stingParser.split('.');
-    // if (parsedString[0] == 'user-bots-web') {
-    //   $scope.passwordForgot = 'user-bots-web.password.forgot';
-    //   $scope.authenticationSignup = 'user-bots-web.authentication.signup';
-    //   $scope.authenticationSignin = 'user-bots-web.authentication.signin';
-    //
-    // } else {
+    if (parsedString[0] == 'user-bots-web') {
+      $scope.passwordForgot = 'user-bots-web.password.forgot';
+      $scope.authenticationSignup = 'user-bots-web.authentication.signup';
+      $scope.authenticationSignin = 'user-bots-web.authentication.signin';
+
+    } else {
       $scope.passwordForgot = 'password.forgot';
       $scope.authenticationSignup = 'authentication.signup';
       $scope.authenticationSignin = 'authentication.signin';
-    // }
+    }
 
     // If user is signed in then redirect back home
     if ($scope.authentication.user) {
@@ -132,18 +132,19 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
         return false;
       }
-
       $http.post('/api/auth/signin?redirect_to=' + encodeURIComponent($state.previous.href), $scope.credentials).success(function (response) {
         // If successful we assign the response to the global user model
         $scope.authentication.user = response;
-        console.log($cookies.getAll());
-        console.log($state.previous.state.name)
         // And redirect to the previous or home page
         if (_platform == 'mobile'){
             $rootScope.closeSigninModal();
             $state.go($state.previous.state.name || 'homeMobile', $state.previous.params);
         }else {
+          if(window.location.href.indexOf('developer') > -1){
+            $state.go('developer-home')
+          }else {
             $state.go($state.previous.state.name || 'home', $state.previous.params);
+          }
         }
 
         //temporary code

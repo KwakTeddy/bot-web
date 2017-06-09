@@ -31,10 +31,8 @@ angular.module('users').config(['$stateProvider',
       })
       .state('authentication', {
         abstract: true,
-        url: '/authentication',
-        template: '<ui-view/>',
-        // templateUrl: '/modules/users/client/views/authentication/authentication.client.view.html',
-        // controller: 'AuthenticationController'
+        url: '/developer/authentication',
+        template: '<ui-view/>'
       })
       .state('authentication.signup', {
         url: '/signup',
@@ -48,7 +46,7 @@ angular.module('users').config(['$stateProvider',
       })
       .state('password', {
         abstract: true,
-        url: '/password',
+        url: '/developer/password',
         template: '<ui-view/>'
       })
       .state('password.forgot', {

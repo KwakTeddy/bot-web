@@ -70,7 +70,6 @@
                   for(var j = 0; j < response.data.length; j++){ // show which page is connected
                     for(var i = 0; i < res.data.length; i++){
                       if ((res.data[i].pageId == response.data[j].id) && res.data[i].connect){
-                        console.log('getin')
                         response.data[j]['connected'] = res.data[i].bot
                         break;
                       }else {

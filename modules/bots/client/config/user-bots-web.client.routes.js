@@ -85,20 +85,20 @@ angular.module('user-bots').config(['$stateProvider',
           url: '/picture',
           templateUrl: 'modules/users/client/views/settings/change-profile-picture.client.view.html'
       })
-      // .state('user-bots-web.authentication', {
-      //     abstract: true,
-      //     url: '/authentication',
-      //     templateUrl: '/modules/users/client/views/authentication/authentication.client.view.html',
-      //     controller: 'AuthenticationController'
-      // })
-      // .state('user-bots-web.authentication.signup', {
-      //     url: '/signup',
-      //     templateUrl: 'modules/users/client/views/authentication/signup.client.view.html'
-      // })
-      // .state('user-bots-web.authentication.signin', {
-      //     url: '/signin?err',
-      //     templateUrl: 'modules/users/client/views/authentication/signin.client.view.html'
-      // })
+      .state('user-bots-web.authentication', {
+          abstract: true,
+          url: '/authentication',
+          templateUrl: '/modules/users/client/views/authentication/authentication.client.view.html',
+          controller: 'AuthenticationController'
+      })
+      .state('user-bots-web.authentication.signup', {
+          url: '/signup',
+          templateUrl: 'modules/users/client/views/authentication/signup.client.view.html'
+      })
+      .state('user-bots-web.authentication.signin', {
+          url: '/signin?err',
+          templateUrl: 'modules/users/client/views/authentication/signin.client.view.html'
+      })
       .state('user-bots-web.password', {
           abstract: true,
           url: '/password',
