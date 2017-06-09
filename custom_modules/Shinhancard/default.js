@@ -5,6 +5,49 @@ var async = require('async');
 var mongo = require(path.resolve('./modules/bot/action/common/mongo'));
 var type = require(path.resolve('./modules/bot/action/common/type'));
 
+var dialogsType = {
+    name: 'typeDoc',
+    typeCheck: global._context.typeChecks['dialogTypeCheck'], //type.mongoDbTypeCheck,
+    preType: function(task, context, type, callback) {
+        if(context.bot.dialogsets) {
+            if(type.mongo.queryStatic.$or.length == 0) type.mongo.queryStatic = {dialogset: ''};
+        } else {
+            type.mongo.queryStatic = {dialogset: ''};
+        }
+        callback(task, context);
+    },
+    limit: 5,
+    matchRate: 0.4,
+    matchCount: 4,
+    exclude: ['하다', '이다'],
+    mongo: {
+        model: 'dialogsetdialogs',
+        queryStatic: {dialogset: ObjectId("593a6a60367a73e11f9b6526")},
+        queryFields: ['input'],
+        fields: 'dialogset input inputRaw output context' ,
+        taskFields: ['input', 'inputRaw', 'output', 'matchCount', 'matchRate', 'dialogset', 'context'],
+        minMatch: 1,
+        schema: {
+            dialogset: {
+                type: mongoose.Schema.ObjectId,
+                ref: 'Dialogset'
+            },
+            id: Number,
+            input: mongoose.Schema.Types.Mixed,
+            inputRaw: mongoose.Schema.Types.Mixed,
+            output: mongoose.Schema.Types.Mixed,
+            tag: [String],
+            parent: mongoose.Schema.Types.Mixed,
+            context: {
+                type: mongoose.Schema.ObjectId,
+                ref: 'CustomContext'
+            }
+        }
+    }
+};
+
+bot.setType("dialogsType", dialogsType);
+
 var listType = {
     name: "faq",
     listName: "faqDoc",
@@ -96,6 +139,70 @@ var faqSchema = {
         type: String
     }
 };
+
+var fanfaq = {
+    name: 'faqselect',
+    action: function(task, context, callback) {
+
+        if(Array.isArray(task.typeDoc)) {
+            if(context.bot.dialogsetOption && context.bot.dialogsetOption.useList &&
+                (context.bot.dialogsetOption.listMatchRate == undefined || context.bot.dialogsetOption.listMatchRate > task.typeDoc[0].matchRate) &&
+                (context.bot.dialogsetOption.listMatchCount == undefined || context.bot.dialogsetOption.listMatchCount > task.typeDoc[0].matchCount)) {
+                context.dialog.typeDoc = task.typeDoc;
+                if(context.bot.dialogsetOption.listOutput) {
+                    context.dialog.output = context.bot.dialogsetOption.listOutput;
+                } else {
+                    context.dialog.output = '질문에 가장 유사한 답변을 찾았습니다.\n\n#typeDoc#+index+. +inputRaw+\n# 번호를 입력해 주세요.';
+                }
+
+                context.dialog.children = [
+                    {
+                        input: {types: [{name: 'doc1', listName: 'typeDoc', typeCheck: 'listTypeCheck'}]},
+                        output: (context.bot.dialogsetOption.contentOutput ?
+                            context.bot.dialogsetOption.contentOutput
+                            : '[+doc1.inputRaw+]\n+doc1.output+\n\n더 필요하신 게 있으시면 말씀해주세요~\n')
+                    }
+                ];
+            } else {
+                if(task.typeDoc.length > 1) task._output = task.typeDoc[0].output;
+                else task._output = task.typeDoc[0].output;
+
+                if(Array.isArray(task._output)) {
+                    task._output = task._output[Math.floor(Math.random() * task._output.length)];
+                }
+
+                context.dialog.output = '+_output+';
+                context.dialog.children = null;
+                //
+                // console.log(task.typeDoc[0].inputRaw + ', ' + task.typeDoc[0].input + '(' + task.typeDoc[0].matchCount + ', ' + task.typeDoc[0].matchRate + ')');
+            }
+
+        } else {
+            task._output = task.typeDoc.output;
+
+            if(Array.isArray(task._output)) {
+                task._output = task._output[Math.floor(Math.random() * task._output.length)];
+            }
+
+            context.dialog.output = '+_output+';
+            context.dialog.children = null;
+            // console.log(task.typeDoc.inputRaw + ', ' + task.typeDoc.input + '(' + task.typeDoc.matchCount + ', ' + task.typeDoc.matchRate + ')');
+        }
+
+        callback(task, context);
+    }
+
+    // postCallback: function(task, context, callback) {
+    //   var toneType = context.botUser.tone;
+    //   if(toneType == undefined) toneType = '해요체';
+    //
+    //   tone.toneSentence(task._output, toneType, function(_output) {
+    //     task._output = _output;
+    //     callback(task, context);
+    //   });
+    // }
+};
+bot.setTask("fanfaq", fanfaq);
 
 var defaultTask = {
     name: 'defaultTask',
