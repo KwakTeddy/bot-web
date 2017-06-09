@@ -7,12 +7,11 @@ angular.module('core').controller('MenuController', ['$scope', '$state', 'Authen
     $scope.authentication = Authentication;
     $scope.currentBot = '';
 
-    $http.get('/api/bots/byNameId/' + $cookies.get('default_bot')).then(function (result) {
-      $scope.currentBot = result.data;
-    }, function (err) {
-      console.log(err);
-    });
-
+    // $http.get('/api/bots/byNameId/' + $cookies.get('default_bot')).then(function (result) {
+    //   $scope.currentBot = result.data;
+    // }, function (err) {
+    //   console.log(err);
+    // });
 
     BotsService.query({my: 1}, function (result) {
       if(!result.length){
@@ -20,23 +19,8 @@ angular.module('core').controller('MenuController', ['$scope', '$state', 'Authen
       }
     }, function (err) {
       console.log(err)
-    })
+    });
 
-    // $scope.changeBot = function (target) {
-    //   console.log(target.name);
-    //   $scope.currentBot = target;
-    //   $rootScope.botId = target.id;
-    //   $rootScope.userBot = target;
-    //   // clearBubble();
-    //   // var header = document.getElementById("chat-header");
-    //   // if(header) header.innerText = target.name;
-    //   // emitMsg(':reset user', target);
-    //
-    //   $cookies.put('default_bot', target.id);
-    //   $window.location.reload();
-    //   // vm.changeBotInfo(target);
-    //   // vm.connect();
-    // };
     function emitMsg(msg, target) {
       Socket.emit('send_msg', {
         bot: target.id,

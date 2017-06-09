@@ -402,7 +402,7 @@ exports.unfollowBot = function(req, res) {
  * Facebook Subscribe Page Information
  */
 exports.facebookPage = function (req, res) {
-  if (!req.body.list){
+  if (!req.body.list){ //change the information about facebook page connected
     UserBotFbPage.findOne({pageId : req.body.page.id}, function (err, data) {
       if(err){
         console.log(err);
@@ -430,11 +430,7 @@ exports.facebookPage = function (req, res) {
           info['bot'] = req.body.userBot;
           info['userBotId'] = req.body.userBotId;
           info['connect'] = req.body.connect;
-          console.log(util.inspect(req.body));
-          console.log(util.inspect(info));
           var userBotFbPage = new UserBotFbPage(info);
-          console.log(util.inspect(userBotFbPage));
-          console.log('-----------------------------------------------')
           userBotFbPage.save(function (err) {
             if (err){
               console.log(err);
@@ -447,19 +443,11 @@ exports.facebookPage = function (req, res) {
       }
 
     })
-  }else {
+  }else { //get facebook pages connected
     UserBotFbPage.find({user : req.body.user}).populate('bot').exec(function (err, data) {
       if(err){
         console.log(err);
       }else {
-        // for(var i = 0; i < data.length; i++){
-        //   for(var j = 0; j < req.body.pageInfo.length; j++){
-        //     if (data[i].pageId == req.body.pageInfo[j].id){
-        //       data[i].accessToken = req.body.pageInfo[j].access_token;
-        //       data[i].save();
-        //     }
-        //   }
-        // }
         return res.json(data);
       }
 

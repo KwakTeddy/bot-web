@@ -299,14 +299,14 @@
                 <!--</ul>-->
               <!--</li>-->
 
-              <li class="nav-active" data-ng-show="!noBot">
+              <li class="nav-active" data-ng-show="!noBot" id="menuTest">
                 <a ui-sref="bot-users.list">
                   <i class="fa fa-user" aria-hidden="true"></i>
                   <span>사용자 관리</span>
                 </a>
               </li>
 
-              <li class="nav-parent" data-ng-show="authentication.user.roles[0] == 'admin'">
+              <li class="nav-parent" data-ng-if="authentication.user.roles[0] == 'admin'">
                 <a>
                   <i class="fa fa-list-alt" aria-hidden="true"></i>
                   <span>권한 관리</span>

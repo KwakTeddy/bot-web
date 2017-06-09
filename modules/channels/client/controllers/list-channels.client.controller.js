@@ -27,47 +27,38 @@
         $scope.fbLoading = true;
         $scope.noPage = false;
         return $http.get('/api/auth/facebook/token/' + vm.user._id).then(function (result) {
-          console.log(result)
           if ((result.data.provider == 'facebook') || (result.data.additionalProvidersData && result.data.additionalProvidersData.facebook)){
             var accessToken = '';
-            if (result.data.provider == 'facebook'){
-              accessToken = result.data.providerData.accessToken;
-            }else {
-              accessToken = result.data.additionalProvidersData.facebook.accessToken
-            }
-            console.log(accessToken);
+            if (result.data.provider == 'facebook') accessToken = result.data.providerData.accessToken;
+            else accessToken = result.data.additionalProvidersData.facebook.accessToken;
 
             FB.api('/me/accounts?fields=picture,name,link,access_token,perms&access_token=' + accessToken, function(response) {
+
               if (response.error){
                 console.log(response.error);
                 var url = '/api/auth/facebook/page';
-                // if ($state.previous && $state.previous.href) {
-                //     url += '?redirect_to=' + encodeURIComponent($state.previous.h`ref);
-                // }
-                // Effectively call OAuth authentication route:
-                console.log(url);
+                if ($state.previous && $state.previous.href) url += '?redirect_to=' + encodeURIComponent($state.previous.href);
                 $scope.fbLoading = false;
-                $window.location.href = url;
+                $window.location.href = url; //register facebook but No page Token(getting Token)
+
+              }else if(!response.data.length){
+                $scope.noPage = true; //user has no page
+
               } else {
-                console.log(response);
                 $http.post('/api/auth/facebook/pageInfo', {user: vm.user._id, list: true, pageInfo: response.data}).then(function (res) {
-                  for(var i = 0; i < res.data.length; i++){
-                    for(var j = 0; j < response.data.length; j++){
+                  for(var j = 0; j < response.data.length; j++){ // show which page is connected
+                    for(var i = 0; i < res.data.length; i++){
                       if ((res.data[i].pageId == response.data[j].id) && res.data[i].connect){
                         response.data[j]['connected'] = res.data[i].bot
-                        continue;
+                        break;
                       }else {
                         response.data[j]['connected'] = false;
                       }
                     }
                   }
-
                   $scope.fbLoading = false;
                   $scope.pageLists = [];
                   $scope.pageLists = response.data;
-                  if (!response.data.length){
-                    $scope.noPage = true;
-                  }
 
                   $scope.close = function () {
                     modalInstance.dismiss();
@@ -75,7 +66,6 @@
 
                   $scope.connect = function (page) {
                     FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'post', function (response) {
-                      console.log(response);
                       if(response.success){
                         var info = {};
                         info['user'] = vm.user._id;
@@ -109,12 +99,11 @@
                           console.log(err)
                         })
                       }else {
-
+                        console.log(response)
                       }
                     });
                   };
                   $scope.disconnect = function (page) {
-                    // modalInstance.dismiss();
                     var info = {};
                     info['user'] = vm.user._id;
                     info['userBot'] = vm.userBot._id;
@@ -123,7 +112,6 @@
                     info['connect'] = false;
                     page['connected'] = false;
                     FB.api('/me/subscribed_apps?access_token='+ page.access_token, 'delete', function (response) {
-                      console.log(response);
                       if (response.success){
                         page['connected'] = false;
                         $http.post('/api/auth/facebook/pageInfo', info).then(function (response) {
@@ -139,7 +127,8 @@
                         }, function (err) {
                           console.log(err)
                         })
-                        }else {
+                      }else {
+                        console.log(response)
                       }
                     });
                   };
@@ -154,14 +143,9 @@
               }
             });
           }else {
-            //register through local not facebook
             var url = '/api/auth/facebook/page';
-            if ($state.previous && $state.previous.href) {
-              url += '?redirect_to=' + encodeURIComponent($state.previous.href);
-            }
-
-            // Effectively call OAuth authentication route:
-            $window.location.href = url;
+            if ($state.previous && $state.previous.href) url += '?redirect_to=' + encodeURIComponent($state.previous.href);
+            $window.location.href = url;             //register through local not facebook(getting Token)
           }
         });
       }
