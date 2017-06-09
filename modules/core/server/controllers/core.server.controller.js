@@ -43,7 +43,7 @@ exports.renderIndex = function (req, res) {
       user: req.user || null
     });
   } else if(config.enterprise.name){
-    req.session._platform = "web";
+    console.log('***+++++++++++++++++++++++++++++++++++++++++++++++')
     res.redirect('/developer')
   } else{
     res.render('modules/core/server/views/user-bot', {
