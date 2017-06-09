@@ -9,14 +9,14 @@ var ObjectId = mongoose.Types.ObjectId;
 var dialogsType = {
     name: 'typeDoc',
     typeCheck: global._context.typeChecks['dialogTypeCheck'], //type.mongoDbTypeCheck,
-    preType: function(task, context, type, callback) {
-        if(context.bot.dialogsets) {
-            if(type.mongo.queryStatic.$or.length == 0) type.mongo.queryStatic = {dialogset: ''};
-        } else {
-            type.mongo.queryStatic = {dialogset: ''};
-        }
-        callback(task, context);
-    },
+    // preType: function(task, context, type, callback) {
+    //     if(context.bot.dialogsets) {
+    //         if(type.mongo.queryStatic.$or.length == 0) type.mongo.queryStatic = {dialogset: ''};
+    //     } else {
+    //         type.mongo.queryStatic = {dialogset: ''};
+    //     }
+    //     callback(task, context);
+    // },
     limit: 5,
     matchRate: 0.4,
     matchCount: 4,
