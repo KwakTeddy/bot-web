@@ -146,9 +146,9 @@ var fanfaq = {
     action: function(task, context, callback) {
 
         if(Array.isArray(context.dialog.dialogsType)) {
-            // if(context.bot.dialogsetOption && context.bot.dialogsetOption.useList &&
-            //     (context.bot.dialogsetOption.listMatchRate == undefined || context.bot.dialogsetOption.listMatchRate > context.dialog.dialogsType[0].matchRate) &&
-            //     (context.bot.dialogsetOption.listMatchCount == undefined || context.bot.dialogsetOption.listMatchCount > context.dialog.dialogsType[0].matchCount)) {
+            // if(context.bot.dialogsetOption && context.bot.dialogsetOption.matchList &&
+            //     (context.bot.dialogsetOption.matchOneRate == undefined || context.bot.dialogsetOption.matchOneRate > context.dialog.dialogsType[0].matchRate) &&
+            //     (context.bot.dialogsetOption.matchOneCount == undefined || context.bot.dialogsetOption.matchOneCount > context.dialog.dialogsType[0].matchCount)) {
                 context.dialog.typeDoc = context.dialog.dialogsType;
                 // if(context.bot.dialogsetOption.listOutput) {
                 //     context.dialog.output = context.bot.dialogsetOption.listOutput;

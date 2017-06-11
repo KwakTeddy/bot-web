@@ -130,6 +130,56 @@ function processInput(context, inRaw, callback) {
         console.log('intent: ' + JSON.stringify(_intent));
         cb(null);
       })
+    },
+
+    function(cb) {
+      var dialogModule = require(path.resolve('modules/bot/action/common/dialog'));
+      var globalDialogs = require(path.resolve('custom_modules/global/global-dialogs'));
+
+      dialogModule.executeType(inRaw, inNLP, globalDialogs.userDialogType, {}, context, function(inNLP, task, matched) {
+        if(matched) context.botUser.userDialogs = task.typeDoc;
+        else context.botUser.userDialogs = undefined;
+        cb(null);
+      });
+    },
+
+    function(cb) {
+      var dialogModule = require(path.resolve('modules/bot/action/common/dialog'));
+      var globalDialogs = require(path.resolve('custom_modules/global/global-dialogs'));
+
+      dialogModule.executeType(inRaw, inNLP, globalDialogs.dialogsType, {}, context, function(inNLP, task, matched) {
+        if(matched) context.botUser.dialogsetDialogs = task.typeDoc;
+        else context.botUser.dialogsetDialogs = undefined;
+        cb(null);
+      });
+    }, 
+    
+    function(cb) {
+      var bestDialog;
+
+      if(context.botUser.intentDialog) {
+        bestDialog = context.botUser.intentDialog;
+      }
+
+      if(context.botUser.userDialogs) {
+        var userDialog = context.botUser.userDialogs[0];
+        if(!bestDialog || userDialog.matchRate > bestDialog.matchRate || userDialog.matchCount > bestDialog.matchCount) {
+          bestDialog = userDialog;
+        }
+      }
+
+      if(context.botUser.dialogsetDialogs) {
+        var dialogsetDialog = context.botUser.dialogsetDialogs[0];
+        if(!bestDialog || dialogsetDialog.matchRate > bestDialog.matchRate || dialogsetDialog.matchCount > bestDialog.matchCount) {
+          bestDialog = dialogsetDialog;
+        }
+      }
+
+      if(bestDialog) {
+        context.botUser.bestDialog = bestDialog;
+      }
+
+      cb(null);
     }
 
   ], function(err) {
