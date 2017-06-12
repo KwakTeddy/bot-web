@@ -46,7 +46,8 @@ module.exports = {
   },
   enterprise: {
     logo: '/images/' + process.env.ENTERPRISE + '.png',
-    name: process.env.ENTERPRISE
+    name: process.env.ENTERPRISE,
+    title: prcess.env.ENTERPRISETITLE
   },
   chatServer: '../bot-server/',
   callcenter: '15777314'

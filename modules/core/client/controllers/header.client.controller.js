@@ -8,6 +8,8 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
     $scope.authentication = Authentication;
     $scope.currentBot = '';
     $scope.myBot = '';
+    $scope.enterpriseTitle = '';
+
     window.onload = function () {
       BotsService.query({my: 1, developer: true}).$promise.then(function (result) {
         $scope.myBot = result;
