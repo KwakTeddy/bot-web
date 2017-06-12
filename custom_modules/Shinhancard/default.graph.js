@@ -2365,12 +2365,6 @@ var dialogs = [
 		"name": "신한 FAN 플랫폼 소개",
 		"inRaw": "FAN",
 		"inNLP": "FAN",
-<<<<<<< HEAD
-=======
-		"task": {
-			"name": "defaultTask"
-		},
->>>>>>> 6350e32e63672cf3757f31c120b3922fbb42c6a0
 		"children": [
 			{
 				"name": "dialog_default186",
