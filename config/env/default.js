@@ -29,7 +29,7 @@ module.exports = {
   sessionKey: 'sessionId',
   sessionCollection: 'sessions',
   logo: 'public/images/' + process.env.ENTERPRISE + '.png',
-  favicon: 'modules/core/client/img/brand/playchat_favicon3.ico',
+  favicon: process.env.ENTERPRISEFAVICON || 'modules/core/client/img/brand/playchat_favicon3.ico',
   uploads: {
     profileUpload: {
       dest: './modules/users/client/img/profile/uploads/', // Profile upload destination path
@@ -46,7 +46,8 @@ module.exports = {
   },
   enterprise: {
     logo: '/images/' + process.env.ENTERPRISE + '.png',
-    name: process.env.ENTERPRISE
+    name: process.env.ENTERPRISE,
+    title: process.env.ENTERPRISETITLE
   },
   chatServer: '../bot-server/',
   callcenter: '15777314'

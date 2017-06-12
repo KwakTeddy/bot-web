@@ -12,7 +12,7 @@ var dialogs = [
 			}
 		],
 		"output": {
-			"output": "안녕하세요. 신한은행입니다. 돌발 이벤트 퀴즈 시작합니다.\n1. 신한카드는 몇가지 신용카드가 있을까요?\n2. 신한카드는 몇가지 체크카드가 있을까요?",
+			"output": "안녕하세요. 신한카드입니다. 돌발 이벤트 퀴즈 시작합니다.\n1. 신한카드는 몇가지 신용카드가 있을까요?\n2. 신한카드는 몇가지 체크카드가 있을까요?",
 			"buttons": [
 				{
 					"text": "신용카드 퀴즈"
@@ -223,29 +223,10 @@ var dialogs = [
 				{
 					"text": "시작메뉴"
 				}
-			],
-			"text": "신한 FAN에는 고객님을 위한  다양한 혜택들이 있습니다. 어떤 혜택을 알아볼까요?\n1. FAN 전용 적립 및 할인\n2. 진행중인 대박 이벤트"
+			]
 		},
-		"inRaw": "신한 FAN에는 어떤 혜택이 있나요",
-		"inNLP": "신한 FAN 에는 어떻다 혜택 있다",
-		"task": {
-			"output": "신한 FAN에는 고객님을 위한  다양한 혜택들이 있습니다. 어떤 혜택을 알아볼까요?\n1. FAN 전용 적립 및 할인\n2. 진행중인 대박 이벤트",
-			"buttons": [
-				{
-					"text": "FAN 전용 적립 및 할인"
-				},
-				{
-					"text": "진행중인 대박 이벤트"
-				},
-				{
-					"text": "이전단계"
-				},
-				{
-					"text": "시작메뉴"
-				}
-			],
-			"text": "신한 FAN에는 고객님을 위한  다양한 혜택들이 있습니다. 어떤 혜택을 알아볼까요?\n1. FAN 전용 적립 및 할인\n2. 진행중인 대박 이벤트"
-		},
+		"inRaw": "이전단계",
+		"inNLP": "이전 단계",
 		"children": [
 			{
 				"name": "dialog_default28",
@@ -373,34 +354,10 @@ var dialogs = [
 			"image": {
 				"url": "/files/Shinhancard1496628594783.jpg",
 				"displayname": "이벤트.jpg"
-			},
-			"text": "지금 FAN에서 진행되는 다양한 이벤트가 있어요.\n\n✔ 6월 FAN 신규가입 이벤트\n✔ 6월 FAN 여름맞이 이벤트\n✔ 6월 FAN 추가포인트 적립 이벤트\n\n신한 FAN에는 항상 다양한 이벤트가 준비되어 있어요!\n \n신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n\n아직 가입 전이시면 '가입하기'를 눌러주세요."
+			}
 		},
 		"inRaw": "진행중인 대박 이벤트",
-		"inNLP": "진행중 인 대박 이벤트",
-		"task": {
-			"output": "지금 FAN에서 진행되는 다양한 이벤트가 있어요.\n\n✔ 6월 FAN 신규가입 이벤트\n✔ 6월 FAN 여름맞이 이벤트\n✔ 6월 FAN 추가포인트 적립 이벤트\n\n신한 FAN에는 항상 다양한 이벤트가 준비되어 있어요!\n \n신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n\n아직 가입 전이시면 '가입하기'를 눌러주세요.",
-			"buttons": [
-				{
-					"text": "대박이벤트 바로가기",
-					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_304"
-				},
-				{
-					"text": "가입하기"
-				},
-				{
-					"text": "이전단계"
-				},
-				{
-					"text": "시작메뉴"
-				}
-			],
-			"image": {
-				"url": "/files/Shinhancard1496628594783.jpg",
-				"displayname": "이벤트.jpg"
-			},
-			"text": "지금 FAN에서 진행되는 다양한 이벤트가 있어요.\n\n✔ 6월 FAN 신규가입 이벤트\n✔ 6월 FAN 여름맞이 이벤트\n✔ 6월 FAN 추가포인트 적립 이벤트\n\n신한 FAN에는 항상 다양한 이벤트가 준비되어 있어요!\n \n신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n\n아직 가입 전이시면 '가입하기'를 눌러주세요."
-		}
+		"inNLP": "진행중 인 대박 이벤트"
 	},
 	{
 		"name": "혜택 안내",
@@ -457,7 +414,29 @@ var dialogs = [
 		},
 		"inRaw": "나만의 맞춤 쿠폰 Sally",
 		"inNLP": "나 만의 맞춤 쿠폰 Sally",
-		"task": "defaultTask"
+		"task": {
+			"name": "defaultTask",
+			"output": "빅데이터 기반의 고객 맞춤형 혜택쿠폰 Sally\n \n Sally는 빅데이터를 분석해 고객님께 필요한 쿠폰을 추천해드리는 서비스입니다.\n\n  신한 FAN에 가입하신 고객은 아래 링크를 클릭해주세요.\n\n아직 가입 전이시면 '가입하기'를 눌러주세요.",
+			"buttons": [
+				{
+					"text": "나만의 혜택 보기",
+					"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_305"
+				},
+				{
+					"text": "가입하기"
+				},
+				{
+					"text": "이전단계"
+				},
+				{
+					"text": "시작메뉴"
+				}
+			],
+			"image": {
+				"url": "https://shinhancard.moneybrain.ai/files/Shinhancard1496222574835.jpg",
+				"displayname": "Sally.jpg"
+			}
+		}
 	},
 	{
 		"name": "이용안내",
@@ -1094,8 +1073,7 @@ var dialogs = [
 			}
 		},
 		"inRaw": "장기카드대출(카드론)",
-		"inNLP": "장기 카드 대출 카드 론",
-		"task": "defaultTask"
+		"inNLP": "장기 카드 대출 카드 론"
 	},
 	{
 		"name": "MF일반대출",
@@ -1175,7 +1153,7 @@ var dialogs = [
 						]
 					}
 				],
-				"output": "아래 중에 궁금하신 내용이 있나요?\n#typeDoc#+index+. +title+\n#번호를 입력하면 상세 내용을 보여드립니다.\n다시 검색하시려면 검색어를 입력해주세요.",
+				"output": "아래 중에 궁금하신 내용이 있나요?\n#typeDoc#+index+. +title+\n#번호를 입력하면 상세 내용을 보여드립니다.\n\n다시 검색하시려면 검색어를 입력해주세요.",
 				"children": [
 					{
 						"name": "dialog_default99",
@@ -2432,31 +2410,6 @@ var dialogs = [
 		"name": "신한 FAN 플랫폼 소개",
 		"inRaw": "FAN",
 		"inNLP": "FAN",
-		"task": {
-			"name": "defaultTask",
-			"output": "안녕하세요 신한카드입니다. 메뉴 또는 궁금하신 키워드를 입력해주세요.\n \n 1. 신한 FAN에 가입하고 싶어요\n 2. 신한 FAN에는 어떤 혜택이 있나요\n 3. 신한 FAN으로는 무엇을 할 수 있나요\n 4. 편리한 금융/납부 서비스",
-			"buttons": [
-				{
-					"text": "신한 FAN에 가입하고 싶어요"
-				},
-				{
-					"text": "신한 FAN에는 어떤 혜택이 있나요"
-				},
-				{
-					"text": "신한 FAN으로 무엇을 할 수 있나요"
-				},
-				{
-					"text": "편리한 금융/납부 서비스"
-				},
-				{
-					"text": "이전단계"
-				},
-				{
-					"text": "시작메뉴"
-				}
-			],
-			"text": "안녕하세요 신한카드입니다. 메뉴 또는 궁금하신 키워드를 입력해주세요.\n \n 1. 신한 FAN에 가입하고 싶어요\n 2. 신한 FAN에는 어떤 혜택이 있나요\n 3. 신한 FAN으로는 무엇을 할 수 있나요\n 4. 편리한 금융/납부 서비스"
-		},
 		"children": [
 			{
 				"name": "dialog_default186",

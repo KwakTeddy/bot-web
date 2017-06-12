@@ -1,12 +1,12 @@
 <!doctype html>
 <html class="fixed" id="html">
-<head>
+<head ng-controller="TitleController">
   <base href="/">
 
   <!-- Basic -->
   <meta charset="UTF-8">
 
-  <title>아테나 Athena - 인공지능 챗봇 플랫폼, 머니브레인 MoneyBrain</title>
+  <title data-ng-bind="enterpriseTitle"></title>
   <meta name="keywords" content="인공지능 AI 챗봇 Chatbot 딥러닝 Deep Learning"/>
   <meta name="description" content="NLP 자연어처리 NLU 자연어 이해 대화관리 Dialog Management 딥러닝 Deep Learning 인텐트 Intent 엔터티 Entity">
   <meta name="author" content="MoneyBrain">
@@ -637,14 +637,11 @@
   $.get('/config', function (facebookID) {
     window.fbAsyncInit = function() {
       FB.init({
-//      appId      : '240853479709635',
-//        appId      : '1557169960967403',
         appId      : facebookID,
         status     : true,
         xfbml      : true,
         version    : 'v2.8'
       });
-//    FB.AppEvents.logPageView();
     };
     (function(d, s, id){
       var js, fjs = d.getElementsByTagName(s)[0];
@@ -659,8 +656,7 @@
 <!--kakao-->
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script type='text/javascript'>
-  // // 사용할 앱의 JavaScript 키를 설정해 주세요.
-  Kakao.init('f1eb73f3491e5c1e1178b3b8c12b10e5');
+  Kakao.init('f1eb73f3491e5c1e1178b3b8c12b10e5');  // 사용할 앱의 JavaScript 키를 설정해 주세요.
 </script>
 
 <!--line-->
