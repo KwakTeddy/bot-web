@@ -39,20 +39,6 @@ var intentCheck = {
     }
 
     callback(task, context);
-
-    // BotIntent.aggregate([
-    //   {$match: {botId: context.bot.id}},
-    //   {$group: {_id: '$botId', intents: {$push: '$intent'}}}
-    // ], function(err, intents) {
-    //   if(intents && intents.length > 0) {
-    //     type.mongo.queryStatic = {intentId: {$in: intents[0].intents}};
-    //   } else {
-    //     type.mongo.queryStatic.intentId = null;
-    //   }
-    //
-    //   callback(task, context);
-    //
-    // });
   }
 };
 
@@ -86,11 +72,16 @@ exports.intentTask = intentTask;
 function matchIntent(inRaw, inNLP, context, callback) {
   dialog.executeType(inRaw, inNLP, intentCheck, {}, context, function(inNLP, task, matched) {
     if(matched) {
+      var matchCount, matchRate;
       var intentId;
       if(Array.isArray(task.intentDoc) && task.intentDoc.length > 0) {
         intentId = task.intentDoc[0].intentId;
+        matchCount = task.intentDoc[0].matchCount;
+        matchRate = task.intentDoc[0].matchRate;
       } else {
         intentId = task.intentDoc.intentId;
+        matchCount = task.intentDoc.matchCount;
+        matchRate = task.intentDoc.matchRate;
       }
 
       Intent.findOne({_id: intentId}).lean().exec(function(err, _intent) {
@@ -98,29 +89,17 @@ function matchIntent(inRaw, inNLP, context, callback) {
           for(var i in context.bot.dialogs) {
             var dialog = context.bot.dialogs[i];
             if(dialog.input.intent && dialog.input.intent == _intent.name) {
-              callback(true, {name: _intent.name}, dialog);
+              callback(true, {name: _intent.name, matchRate: matchRate, matchCount: matchCount}, dialog);
               return;
             }
           }
 
-          callback(true, {name: _intent.name}, null);
+          callback(true, {name: _intent.name, matchRate: matchRate, matchCount: matchCount}, null);
         } else {
           callback(false, null, null);
         }
       })
 
-      // BotIntent.findOne({botId: context.bot.id, intent: intentId}).lean().exec(function(err, intent) {
-      //   if(intent) {
-      //     for(var i in context.bot.dialogs) {
-      //       var dialog = context.bot.dialogs[i];
-      //       if(dialog.id == intent.dialogId) {
-      //         callback(true, intent, dialog);
-      //         return;
-      //       }
-      //     }
-      //   }
-      //   callback(false, null, null);
-      // });
     } else {
       callback(false, null, null);
     }

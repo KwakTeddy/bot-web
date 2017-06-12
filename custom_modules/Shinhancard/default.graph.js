@@ -175,25 +175,7 @@ var dialogs = [
 		"inRaw": "신한 FAN에 가입하고 싶어요",
 		"inNLP": "신한 FAN 에 가입 하다 싶다",
 		"task": {
-			"name": "task1",
-			"buttons": [
-				{
-					"text": "바로가입하기",
-					"url": "https://newm.shinhancard.com/event/2015/pt06.jsp?prm=naver"
-				},
-				{
-					"text": "이전단계"
-				},
-				{
-					"text": "시작메뉴"
-				}
-			],
-			"output": "✔ 신한 FAN은 신한카드가 없어도 가입가능!  \n✔ 신한 FAN에 가입 하시면 다양한 경품이 가득! \n✔ 신규라면 100% 당첨 경품 제공!",
-			"image": {
-				"url": "/files/Shinhancard1496222468984.jpg",
-				"displayname": "FAN가입.jpg"
-			},
-			"text": "✔ 신한 FAN은 신한카드가 없어도 가입가능!  \n✔ 신한 FAN에 가입 하시면 다양한 경품이 가득! \n✔ 신규라면 100% 당첨 경품 제공!"
+			"name": "task1"
 		}
 	},
 	{
@@ -223,10 +205,11 @@ var dialogs = [
 				{
 					"text": "시작메뉴"
 				}
-			]
+			],
+			"text": "신한 FAN에는 고객님을 위한  다양한 혜택들이 있습니다. 어떤 혜택을 알아볼까요?\n1. FAN 전용 적립 및 할인\n2. 진행중인 대박 이벤트"
 		},
-		"inRaw": "이전단계",
-		"inNLP": "이전 단계",
+		"inRaw": "신한 FAN에는 어떤 혜택이 있나요",
+		"inNLP": "신한 FAN 에는 어떻다 혜택 있다",
 		"children": [
 			{
 				"name": "dialog_default28",
@@ -2302,18 +2285,7 @@ var dialogs = [
 											}
 										],
 										"inRaw": "이전단계",
-										"inNLP": "이전 단계",
-										"task": {
-											"output": "고객님께서 좋아하실만한 체크카드가 3가지가 있네요. 아래 3가지 카드 중 자세히 보고 싶으신 카드를 선택해주세요.  \n\n1. 쿠팡 이용금액 3% 무제한 적립에 스타벅스 이용금액 캐시백까지! [쿠팡 신한카드 체크]\n2. 카카오페이 신한 체크카드로 카카오페이에서 간편하게 결제하고 캐시백 혜택을 누려보세요!  [카카오페이 신한 체크카드]",
-											"buttons": [
-												{
-													"text": "쿠팡"
-												},
-												{
-													"text": "카카오페이"
-												}
-											]
-										}
+										"inNLP": "이전 단계"
 									},
 									{
 										"name": "슈퍼 실속",
@@ -2335,24 +2307,7 @@ var dialogs = [
 											}
 										},
 										"task": {
-											"name": "MainCheck",
-											"buttons": [
-												{
-													"text": "바로가기",
-													"url": "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2779&empSeq=562&datakey=&agcCd="
-												},
-												{
-													"text": "이전단계"
-												},
-												{
-													"text": "시작메뉴"
-												}
-											],
-											"output": "[신한카드 주거래 체크]를 추천해드립니다.\n\n나의 Main 금융파트너!\n신한 주거래 패키지로 혜택을 누리세요!\n\n자세한 내용을 보시려면 아래의 링크를 클릭해주세요.",
-											"image": {
-												"url": "/files/Shinhancard1496223253775.jpg",
-												"displayname": "card29.jpg"
-											}
+											"name": "MainCheck"
 										},
 										"inRaw": "슈퍼실속파",
 										"inNLP": "슈퍼 실속 파"
@@ -2410,6 +2365,12 @@ var dialogs = [
 		"name": "신한 FAN 플랫폼 소개",
 		"inRaw": "FAN",
 		"inNLP": "FAN",
+<<<<<<< HEAD
+=======
+		"task": {
+			"name": "defaultTask"
+		},
+>>>>>>> 6350e32e63672cf3757f31c120b3922fbb42c6a0
 		"children": [
 			{
 				"name": "dialog_default186",

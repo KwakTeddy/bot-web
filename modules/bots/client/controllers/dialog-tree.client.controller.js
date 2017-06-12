@@ -72,7 +72,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         type: 'inline',
         preloader: false,
         focus: '#name',
-        modal: true,
+        modal: false,
+
+        removalDelay: 300,
+        mainClass: 'my-mfp-slide-bottom',
 
         // When elemened is focused, some mobile browsers in some cases zoom in
         // It looks not nice, so we disable it:

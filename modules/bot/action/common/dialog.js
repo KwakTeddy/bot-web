@@ -179,8 +179,6 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback, opti
       matchDialogs(inRaw, inNLP, dialogs, context, print, function(matched, _dialog) {
         if (matched == true) {
           callback(matched, _dialog);
-        // } else if (context.botUser.intentDialog) {
-        //   executeDialog(context.botUser.intentDialog, context, print, callback);
         } else {
           if(context.bot.useAutoCorrection != true || wordCorrection) {
             for (var i = 0; i < dialogs.length; i++) {
@@ -262,6 +260,27 @@ function matchChildDialogs(inRaw, inNLP, dialogs, context, print, callback, opti
 
 function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) {
   if(options && options.dontMatch == 1) {callback(false);return;}
+
+  if(context.botUser.intent && (context.botUser.userDialogs || context.botUser.dialogsetDialogs)) {
+    var dialog;
+    if(context.botUser.userDialogs) dialog = context.botUser.userDialogs[0];
+    else if(context.botUser.dialogsetDialogs) dialog = context.botUser.dialogsetDialogs[0];
+
+    var rateOffset = 0, countOffset = 0;
+    if(context.intentOption) {
+      if(options && options.child) rateOffset = context.intentOption.matchRateChildOffest;
+      else rateOffset = context.intentOption.matchRateOffest;
+
+      if(options && options.child) countOffset = context.intentOption.matchCountChildOffest;
+      else countOffset = context.intentOption.matchCountOffest;
+    }
+
+    if(dialog && (dialog.matchRate > context.botUser.intent.matchRate + rateOffset ||
+      dialog.matchCount > context.botUser.intent.matchCount + countOffset)) {
+      executeDialog(dialog, context, print, callback);
+      return;
+    }
+  }
 
   if(Array.isArray(dialogs)) {
     var eachMatched = false, intentMatched = false, intentDialogs = [];

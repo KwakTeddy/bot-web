@@ -77,6 +77,8 @@ var userDialogType = {
   }
 };
 
+exports.userDialogType = userDialogType;
+
 var dialogsStartType = {
   name: 'typeDoc',
   typeCheck: global._context.typeChecks['dialogTypeCheck'], //type.mongoDbTypeCheck,
@@ -122,6 +124,7 @@ var dialogsStartType = {
     }
   }
 };
+
 
 var globalStartDialogs = [
   {
@@ -388,6 +391,8 @@ var dialogsType = {
   }
 };
 
+exports.dialogsType = dialogsType;
+
 var globalEndDialogs = [
   {
     input: {types: [dialogsType]},
@@ -395,9 +400,9 @@ var globalEndDialogs = [
       action: function(task, context, callback) {
 
         if(Array.isArray(task.typeDoc)) {
-          if(context.bot.dialogsetOption && context.bot.dialogsetOption.useList &&
-            (context.bot.dialogsetOption.listMatchRate == undefined || context.bot.dialogsetOption.listMatchRate > task.typeDoc[0].matchRate) &&
-            (context.bot.dialogsetOption.listMatchCount == undefined || context.bot.dialogsetOption.listMatchCount > task.typeDoc[0].matchCount)) {
+          if(context.bot.dialogsetOption && context.bot.dialogsetOption.matchList &&
+            (context.bot.dialogsetOption.matchOneRate == undefined || context.bot.dialogsetOption.matchOneRate > task.typeDoc[0].matchRate) &&
+            (context.bot.dialogsetOption.matchOneCount == undefined || context.bot.dialogsetOption.matchOneCount > task.typeDoc[0].matchCount)) {
             context.dialog.typeDoc = task.typeDoc;
             if(context.bot.dialogsetOption.listOutput) {
               context.dialog.output = context.bot.dialogsetOption.listOutput;
