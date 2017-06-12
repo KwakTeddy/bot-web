@@ -275,8 +275,8 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
       else countOffset = context.intentOption.matchCountOffest;
     }
 
-    if(dialog.matchRate > context.botUser.intent.matchRate + rateOffset ||
-      dialog.matchCount > context.botUser.intent.matchCount + countOffset) {
+    if(dialog && (dialog.matchRate > context.botUser.intent.matchRate + rateOffset ||
+      dialog.matchCount > context.botUser.intent.matchCount + countOffset)) {
       executeDialog(dialog, context, print, callback);
       return;
     }
