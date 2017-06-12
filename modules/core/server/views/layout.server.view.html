@@ -143,6 +143,13 @@
                 </a>
               </li>
 
+              <li class="nav-active" data-ng-show="!noBot">
+                <a ui-sref="bots.content-list({botId: $cookies.get('default_bot'), fileId: 'null'})" >
+                  <i class="fa fa-cube" aria-hidden="true"></i>
+                  <span>컨텐츠 관리</span>
+                </a>
+              </li>
+
               <li class="nav-parent">
                 <a data-ng-show="!noBot">
                   <i class="fa fa-language" aria-hidden="true"></i>
