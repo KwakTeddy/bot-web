@@ -145,7 +145,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         e.preventDefault();
 
         $('#filetree').css('width', '230px');
-        $('#content').css('padding', '0 0 0 235px');
+        $('#content').css('padding-left', '235px');
         $('#filetree > div.panel-body').show();
         $('#filelabel0').show();
         $('#filelabel1').hide();
@@ -164,7 +164,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         $('#filelabel0').hide();
         $('#filelabel1').show();
         $('#filetree').css('width', '42px');
-        $('#content').css('padding', '0 0 0 45px');
+        $('#content').css('padding-left', '45px');
         $('#filetree_close').hide();
         $('#filetree_open').show();
 
@@ -1014,8 +1014,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     var element2 = document.getElementById('editor-container');
     new ResizeSensor(element, function() {
       console.log('Graph Changed to ' + element.clientWidth);
-      var viewerWidth = document.getElementById('tree-container').clientWidth;
-      var viewerHeight = document.getElementById('sidebar-left').clientHeight*0.80;
+      viewerWidth = document.getElementById('tree-container').clientWidth;
+      viewerHeight = document.getElementById('sidebar-left').clientHeight*0.80;
 
       baseSvg
         .attr("width", viewerWidth)
@@ -1027,8 +1027,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       if (element2.clientWidth == 0)
         return;
       console.log('Editor Changed to ' + element2.clientWidth);
-      var viewerWidth = document.getElementById('editor-container').clientWidth;
-      var viewerHeight = document.getElementById('sidebar-left').clientHeight*0.80;
+      viewerWidth = document.getElementById('editor-container').clientWidth;
+      viewerHeight = document.getElementById('sidebar-left').clientHeight*0.80;
 
       if (vm.editor) {
         vm.editor.setSize(viewerWidth,viewerHeight);
@@ -1716,13 +1716,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.openEditor = function() {
-      $('#content').css('padding', '0px 450px 0px 45px');
+      $('#content').css('padding-right', '450px');
       $('#modalForm').show();
     };
 
     $scope.closeEditor = function() {
       $('#modalForm').hide();
-      $('#content').css('padding', '0px 0px 0px 45px');
+      $('#content').css('padding-right', '0px');
       document.getElementById('mainpage').focus();
     };
 
