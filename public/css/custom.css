@@ -435,6 +435,15 @@ outline: none;
     background:white;
 }
 
+#modalTaskForm {
+    display:none;
+    width: 450px;
+    min-height: 100vh;
+    margin-top: -5px;
+    padding: 8px 5px 0 5px;
+    z-index: 1;
+    background:white;
+}
 #filetree{
     background: gray;
     min-height: 100vh;

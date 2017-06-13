@@ -670,52 +670,6 @@
                     </section>
                 </div>
 
-                <!-- Modal Form for task detail -->
-                <div id="modalTaskForm" class="modal-block modal-block-primary mfp-hide">
-                    <section class="panel">
-                        <header class="panel-heading">
-                            <h2 class="panel-title">Task 정보 수정</h2>
-                        </header>
-                        <form name="dialogTaskForm" novalidate="novalidate" >
-                            <div class="panel-body">
-                                <div class="form-group" ng-show="dialog.task.paramSchema != undefined">
-                                    <div class="col-sm-12" id='editor_holder'>
-                                    </div>
-                                </div>
-                                <hr>
-                                <div class="form-group mb-md">
-                                    <div class="col-sm-12">
-                                    <label class="control-label">Entity</label>
-                                        <table id="dt" class="table table-bordered table-striped mb-none">
-                                            <thead>
-                                            <tr>
-                                                <th class="text-center col-sm-2">이름</th>
-                                                <th class="text-center col-sm-2">닉네임</th>
-                                                <th class="text-center col-sm-6">재질문</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr ng-repeat="entity in vm.entity[dialog.task.name]">
-                                                <td class="text-center">{{entity.type}}</td>
-                                                <td class="text-center">{{entity.display}}</td>
-                                                <td class="text-center">{{entity.question}}</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <footer class="panel-footer">
-                                <div class="row">
-                                    <div class="col-md-12 text-right">
-                                        <button class="btn btn-primary" ng-click="backToEdit(true)" >저장</button>
-                                        <button class="btn btn-default" ng-click="backToEdit(false)" >이전</button>
-                                    </div>
-                                </div>
-                            </footer>
-                        </form>
-                    </section>
-                </div>
 
             </div>
 
@@ -1012,6 +966,52 @@
             </form>
     </div>
 
+    <!-- Modal Form for task detail -->
+    <div id="modalTaskForm" class="col-md-1 pull-right">
+        <section class="panel">
+            <header class="panel-heading">
+                <h2 class="panel-title">Task 정보 수정</h2>
+            </header>
+            <form name="dialogTaskForm" novalidate="novalidate" >
+                <div class="panel-body">
+                    <div class="form-group" ng-show="dialog.task.paramSchema != undefined">
+                        <div class="col-sm-12" id='editor_holder'>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group mb-md">
+                        <div class="col-sm-12">
+                            <label class="control-label">Entity</label>
+                            <table id="dt" class="table table-bordered table-striped mb-none">
+                                <thead>
+                                <tr>
+                                    <th class="text-center col-sm-2">이름</th>
+                                    <th class="text-center col-sm-2">닉네임</th>
+                                    <th class="text-center col-sm-6">재질문</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="entity in vm.entity[dialog.task.name]">
+                                    <td class="text-center">{{entity.type}}</td>
+                                    <td class="text-center">{{entity.display}}</td>
+                                    <td class="text-center">{{entity.question}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <footer class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <button class="btn btn-primary" ng-click="backToEdit(true)" >저장</button>
+                            <button class="btn btn-default" ng-click="backToEdit(false)" >이전</button>
+                        </div>
+                    </div>
+                </footer>
+            </form>
+        </section>
+    </div>
 
 </section>
 

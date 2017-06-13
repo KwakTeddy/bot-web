@@ -1715,6 +1715,16 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     };
 
+    $scope.openEditorTask  = function() {
+      $('#content').css('padding-right', '450px');
+      $('#modalTaskForm').show();
+    };
+
+    $scope.closeEditorTask= function() {
+      $('#modalTaskForm').hide();
+      $('#content').css('padding-right', '0px');
+    };
+
     $scope.openEditor = function() {
       $('#content').css('padding-right', '450px');
       $('#modalForm').show();
@@ -3498,11 +3508,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         }
 
         $timeout(function() {
-          $.magnificPopup.close();
-          $('.modal-with-task').click();
+          $scope.closeEditor();
+          $scope.openEditorTask();
         });
       } else {
-        $.magnificPopup.close();
+        $scope.closeEditor();
         vm.fromTask = true;
         vm.changeTab(vm.tabs[1]);
 
@@ -3550,7 +3560,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         $scope.resetO();
 
       $timeout(function() {
-        $.magnificPopup.close();
+        $scope.closeEditorTask();
         $scope.openEditor();
       });
     };
