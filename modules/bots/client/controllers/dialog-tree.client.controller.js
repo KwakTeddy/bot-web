@@ -461,20 +461,19 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         $scope.contentSynSave(target);
         event.preventDefault();
       }
-    }
+    };
 
     $scope.entityContentInputKeyDown = function (event, target) {
       if (event.keyCode == 13){ //enter
         $scope.saveEntityContent(target);
         event.preventDefault();
       }
-    }
+    };
 
 
 
     $scope.addTask = function() {
 
-      $.magnificPopup.close();
       vm.fromTask = true;
       vm.changeTab(vm.tabs[1]);
 
