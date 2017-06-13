@@ -852,20 +852,23 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     var keydown = function(event) {
-      if (document.activeElement == document.getElementById('mainPage')) {
-        if (vm.edit === 'task') {
-          if (event.keyCode == 27) { // esc
-            event.preventDefault();
-            $scope.backToEdit(false);
-          } else if (vm.fromTask && event.altKey && event.keyCode == 37) { // alt + left
-            event.preventDefault();
-            $scope.gotoTree();
-          } else if (event.ctrlKey && event.keyCode == 80) { // ctrl+p
-            toggleFileTree(event);
-          }
-          return false;
-        }
 
+      if (document.activeElement == document.getElementById('inputbox') ||
+          document.activeElement == document.getElementById('treeBasic')) {
+        return false;
+      }
+
+      if (event.altKey && event.keyCode == 37) { // alt+left
+        event.preventDefault();
+        if (vm.fromTask) {
+          $scope.gotoTree();
+        } else if (vm.edit === 'dialog') {
+          document.getElementById('mainpage').focus();
+        }
+        return false;
+      }
+
+      if (event.keyCode == 27) { // esc
         if (vm.edit === 'dialog') {
           if (event.keyCode == 27) { // esc
             event.preventDefault();
@@ -875,20 +878,15 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             $scope.closeEdit();
           }
           return false;
+        } else if (vm.edit === 'task') {
+            event.preventDefault();
+            $scope.backToEdit(false);
+        } else {
+          document.getElementById('search').blur();
+          document.getElementById('replace').blur();
+          document.getElementById('mainpage').focus();
+          return false;
         }
-      }
-
-      if (document.activeElement == document.getElementById('inputbox') ||
-          document.activeElement == document.getElementById('treeBasic')
-      )
-        return false;
-
-      if (event.keyCode == 27) { // esc
-        document.getElementById('search').blur();
-        document.getElementById('replace').blur();
-        document.getElementById('mainpage').focus();
-        $.magnificPopup.close();
-        return false;
       }
 
       if (event.ctrlKey && event.keyCode == 82) { // ctrl+r
