@@ -1720,6 +1720,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     $scope.closeEditor = function() {
       $('#modalForm').hide();
       $('#content').css('padding', '0px 0px 0px 45px');
+      document.getElementById('mainpage').focus();
     };
 
     $scope.InputKeyDown = function (event, func) {
@@ -1765,6 +1766,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       update(selectedNode);
       updateSelected(selectedNode);
+
+      $scope.closeEditor();
       //Dialogs.update(dialog);
     };
 
