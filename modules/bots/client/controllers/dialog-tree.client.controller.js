@@ -508,6 +508,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     $scope.closePopup = function() {
       $.magnificPopup.close();
+      $scope.closeEditor();
     };
 
     $scope.gotoTree = function() {
@@ -515,7 +516,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.edit = false;
       vm.changeTab(vm.tabs[0]);
       $timeout(function() {
-        $('.modal-with-form').click();
+        $scope.openEditor();
       })
     };
 
@@ -528,7 +529,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     $scope.closeEdit = function() {
       vm.edit = false;
-      $.magnificPopup.close();
+      $scope.closeEditor();
     };
 
     var vm = this;
@@ -1705,10 +1706,20 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       $scope.safeApply();
       $timeout(function() {
-        $('.modal-with-form').click();
+        $scope.openEditor();
         $scope.initButton();
       });
 
+    };
+
+    $scope.openEditor = function() {
+      $('#content').css('padding', '0px 450px 0px 45px');
+      $('#modalForm').show();
+    };
+
+    $scope.closeEditor = function() {
+      $('#modalForm').hide();
+      $('#content').css('padding', '0px 0px 0px 45px');
     };
 
     $scope.InputKeyDown = function (event, func) {
@@ -3532,7 +3543,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       $timeout(function() {
         $.magnificPopup.close();
-        $('.modal-with-form').click();
+        $scope.openEditor();
       });
     };
   }]
