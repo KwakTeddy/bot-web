@@ -1020,6 +1020,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         .attr("width", viewerWidth)
         .attr("height", viewerHeight);
 
+      if (selectedNode)
+        centerNode(selectedNode);
+
     });
 
     new ResizeSensor(element2, function() {
