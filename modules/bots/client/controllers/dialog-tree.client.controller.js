@@ -829,6 +829,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       });
       update(selectedNode);
       centerNode(selectedNode);
+
+      if (vm.edit === 'dialog')
+        edit(selectedNode);
     };
 
     var toggleFileTree = function(event) {
@@ -849,28 +852,30 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     var keydown = function(event) {
-      if (vm.edit === 'task') {
-        if (event.keyCode == 27) { // esc
-          event.preventDefault();
-          $scope.backToEdit(false);
-        } else if (vm.fromTask && event.altKey && event.keyCode == 37) { // alt + left
-          event.preventDefault();
-          $scope.gotoTree();
-        } else if (event.ctrlKey && event.keyCode == 80) { // ctrl+p
-          toggleFileTree(event);
+      if (document.activeElement == document.getElementById('mainPage')) {
+        if (vm.edit === 'task') {
+          if (event.keyCode == 27) { // esc
+            event.preventDefault();
+            $scope.backToEdit(false);
+          } else if (vm.fromTask && event.altKey && event.keyCode == 37) { // alt + left
+            event.preventDefault();
+            $scope.gotoTree();
+          } else if (event.ctrlKey && event.keyCode == 80) { // ctrl+p
+            toggleFileTree(event);
+          }
+          return false;
         }
-        return false;
-      }
 
-      if (vm.edit === 'dialog') {
-        if (event.keyCode == 27) { // esc
-          event.preventDefault();
-          $scope.closeEdit();
-        } else if (event.ctrlKey && event.keyCode == 13) { // ctrl+enter
-          $scope.update(true);
-          $scope.closeEdit();
+        if (vm.edit === 'dialog') {
+          if (event.keyCode == 27) { // esc
+            event.preventDefault();
+            $scope.closeEdit();
+          } else if (event.ctrlKey && event.keyCode == 13) { // ctrl+enter
+            $scope.update(true);
+            $scope.closeEdit();
+          }
+          return false;
         }
-        return false;
       }
 
       if (document.activeElement == document.getElementById('inputbox') ||
@@ -2780,6 +2785,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         selectedSVG = tempSVG;
         update(d);
         centerNode(d);
+        if (vm.edit === 'dialog')
+          edit(d);
       }, 200); // time to doubleclick
     }
 
