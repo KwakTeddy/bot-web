@@ -10,7 +10,7 @@ var ApplicationConfiguration = (function () {
   if(_platform == 'mobile') {
     applicationModuleVendorDependencies = ['ng', 'ngResource', 'ngAnimate', 'ngMessages', 'ngCookies', 'ui.router', 'ui.bootstrap', 'ui.bootstrap.modal', 'ui.utils', 'ionic'];
   } else {
-    applicationModuleVendorDependencies = ['ngResource', 'ngAnimate', 'ngMessages', 'ngCookies', 'ui.router', 'ui.bootstrap', 'ui.utils', 'angularFileUpload', 'datatables', 'ui.codemirror', 'ui.select', 'ngSanitize', 'ngDropzone', 'jlareau.pnotify'];
+    applicationModuleVendorDependencies = ['ngResource', 'ngAnimate', 'ngMessages', 'ngCookies', 'ui.router', 'ui.bootstrap', 'ui.utils', 'angularFileUpload', 'datatables', 'ui.codemirror', 'ui.select', 'ngSanitize', 'ngDropzone', 'jlareau.pnotify', 'mentio'];
   }
 
   // Add a new vertical module

@@ -218,7 +218,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       // }, function (err) {
       //   console.log(err);
       // });
-      if (vm.curI.type === 'Keyword' && vm.curI.str.length){
+      if (vm.curI.str.length){
         $http.get('/api/nluprocess/'+vm.curI.str).then(function (res) {
           $scope.processedInput = res.data;
         }, function (err) {
@@ -228,8 +228,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.$watch('vm.curI.str', function() {
-      if (vm.curI && vm.curI.type === 'Keyword')
+      if (vm.curI && (vm.curI.str.indexOf('@') != 0) && (vm.curI.str.indexOf('#') != 0) && (vm.curI.str.indexOf('/') != 0) && (vm.curI.str.indexOf('if ') != 0)){
         $scope.processInput();
+      }
     });
 
     var editor;
@@ -1047,6 +1048,94 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     document.getElementById('mainpage').focus();
 
     // dialog editing
+
+    IntentsService.query({botName: $rootScope.botId}).$promise.then(function (result) {
+      vm.intents = result.map(function(i) { return i.name; });
+      console.log(vm.intents)
+    }, function (err) {
+      console.log(err);
+    });
+
+    EntityContentsService.query({botName: $cookies.get('default_bot')}).$promise.then(function (result) {
+      console.log(result);
+      vm.entities = result.map(function (i) {
+        return i.name
+      })
+    }, function (err) {
+      console.log(err)
+    });
+
+    vm.inlineInputFocus = function (index) {
+      $timeout(function () {
+        document.getElementById('inlineInput_' + index).focus()
+      })
+    };
+
+    vm.searchTopic = function(topicTerm, target) { 
+      console.log(topicTerm)
+      console.log(target)
+      console.log(vm.intents)
+      console.log(vm.entities)
+      var topicList = [];  
+      if(target == 'entity'){ 
+        angular.forEach(vm.entities, function(item) { 
+          if (item.toUpperCase().indexOf(topicTerm.toUpperCase()) >= 0) { 
+            topicList.push(item); 
+          } 
+        }); 
+        vm.matchedEntities = topicList; 
+      }else if(target == 'intent'){ 
+        angular.forEach(vm.intents, function(item) { 
+          if (item.toUpperCase().indexOf(topicTerm.toUpperCase()) >= 0) { 
+            topicList.push(item); 
+          } 
+        }); 
+        console.log(topicList)
+        vm.matchedIntents = topicList; 
+      } };
+
+      vm.getTopicTextRaw = function(topic, inlineInput) { 
+      console.log(inlineInput) 
+      if(vm.curI.str.indexOf('@') > -1){ 
+        inlineInput.push({type: 'Entity', str: topic}); 
+      }else if(vm.curI.str.indexOf('#') > -1){ 
+          inlineInput.push({type: 'Intent', str: topic}); 
+        }else if(vm.curI.str.indexOf(':') == 0){ 
+        inlineInput.push({type: 'RegExp', str: topic}); 
+      } 
+      vm.curI.str = '';  
+      return ''; 
+    };  
+
+    $scope.inlineInputKeyDown = function (event, inlineInput) { 
+      if(event.keyCode == 13 && (vm.curI.str.indexOf('@') != 0) && (vm.curI.str.indexOf('#') != 0) && (vm.curI.str.indexOf(':') != 0) && (vm.curI.str.indexOf('if ') != 0)){ 
+        console.log(vm.curI.str); 
+        inlineInput.push({type: 'Keyword', str: vm.curI.str}); 
+        vm.curI.str = ''; 
+        $scope.processedInput = ''; 
+        event.preventDefault(); 
+        event.stopPropagation(); 
+      } 
+      if(event.keyCode == 13 && (vm.curI.str.indexOf(':') == 0)){ 
+        vm.curI.str = vm.curI.str.slice(1); 
+        inlineInput.push({type: 'RegExp', str: vm.curI.str}); 
+        vm.curI.str = ''; 
+        $scope.processedInput = ''; 
+        event.preventDefault(); 
+        event.stopPropagation(); 
+      } 
+      if(event.keyCode == 13 && (vm.curI.str.indexOf('if ') == 0)){ 
+        vm.curI.str = vm.curI.str.slice(2); 
+        inlineInput.push({type: 'If', str: vm.curI.str}); 
+        vm.curI.str = ''; 
+        $scope.processedInput = ''; 
+        event.preventDefault(); 
+        event.stopPropagation();
+      }
+     };
+
+
+
     $scope.addI = function(input) {
       var init = {};
       init.type = $scope.getInputTypes(input)[0];
@@ -1220,26 +1309,26 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     vm.outputTypes = ["Text","List","Call","ReturnCall","CallChild","Up", "Repeat", "Return"];
 
     vm.typeClass = [];
-    vm.typeClass['Keyword'] = {btn:'btn-primary',icon:'fa-commenting', input:'text'};
-    vm.typeClass['RegExp'] = {btn:'btn-danger',icon:'fa-registered', input:'text'};
-    vm.typeClass['Intent'] = {btn:'btn-success',icon:'fa-user', input:'intent'};
-    vm.typeClass['Entity'] = {btn:'btn-success',icon:'fa-tags', input:'entity'};
-    vm.typeClass['Type'] = {btn:'btn-warning',icon:'fa-gear', input:'type'};
-    vm.typeClass['List'] = {btn:'btn-info', icon:'fa-list', input:'list'};
-    vm.typeClass['매칭없음'] = {btn:'btn-danger',icon:'fa-ban', input:'button'};
+    vm.typeClass['Keyword'] = {btn:'btn-primary',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf', icon:'fa-commenting', iconColor: 'rgba(243, 243, 243, 0.65)', input:'text'};
+    vm.typeClass['RegExp'] = {btn:'btn-danger',btnColor:'#fdf7f7', btnBorderColor: '#ffb9cc', icon:'fa-registered', iconColor: 'rgb(234, 67, 53)', input:'text'};
+    vm.typeClass['Intent'] = {btn:'btn-success',btnColor:'#f8f8ff', btnBorderColor: '#aeb0ff',icon:'fa-quote-right', iconColor: 'rgb(66, 133, 244)', input:'intent'};
+    vm.typeClass['Entity'] = {btn:'btn-success',btnColor:'rgba(239, 255, 242, 0.46)', btnBorderColor: 'rgba(2, 125, 24, 0.44)',icon:'fa-at', iconColor: 'rgb(52, 168, 83)', input:'entity'};
+    vm.typeClass['Type'] = {btn:'btn-warning',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-gear', iconColor: 'red', input:'type'};
+    vm.typeClass['List'] = {btn:'btn-info', btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-list', iconColor: 'red', input:'list'};
+    vm.typeClass['매칭없음'] = {btn:'btn-danger',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-ban', iconColor: 'red', input:'button'};
 
-    vm.typeClass['Text'] = {btn:'btn-primary',icon:'fa-commenting', input:'text'};
-    vm.typeClass['Call'] = {btn:'btn-danger',icon:'fa-bolt', input:'dialog'};
-    vm.typeClass['CallChild'] = {btn:'btn-danger',icon:'fa-mail-forward', input:'dialog'};
-    vm.typeClass['ReturnCall'] = {btn:'btn-danger',icon:'fa-mail-reply', input:'dialog'};
-    vm.typeClass['If'] = {btn:'btn-info',icon:'fa-question', input:'text'};
-    vm.typeClass['Up'] = {btn:'btn-info',icon:'fa-arrow-up', input:'button'};
-    vm.typeClass['Repeat'] = {btn:'btn-info',icon:'fa-repeat', input:'button'};
-    vm.typeClass['Options'] = {btn:'btn-warning',icon:'fa-cog', input:'text'};
-    vm.typeClass['Return'] = {btn:'btn-info',icon:'fa-level-up', input:'button'};
-    vm.typeClass['Image'] = {btn:'btn-warning',icon:'fa-image', input:'image'};
-    vm.typeClass['Button'] = {btn:'btn-success',icon:'fa-play-circle', input:'text'};
-    vm.typeClass['URLButton'] = {btn:'btn-success',icon:'fa-play-circle', input:'text_for_button'};
+    vm.typeClass['Text'] = {btn:'btn-primary',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-commenting', iconColor: 'red', input:'text'};
+    vm.typeClass['Call'] = {btn:'btn-danger',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-bolt', iconColor: 'red', input:'dialog'};
+    vm.typeClass['CallChild'] = {btn:'btn-danger',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-mail-forward', iconColor: 'red', input:'dialog'};
+    vm.typeClass['ReturnCall'] = {btn:'btn-danger',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-mail-reply', iconColor: 'red', input:'dialog'};
+    vm.typeClass['If'] = {btn:'btn-info',btnColor:'#fffbee', btnBorderColor: '#ffbe3e',icon:'fa-question', iconColor: 'rgb(251, 188, 5)', input:'text'};
+    vm.typeClass['Up'] = {btn:'btn-info',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-arrow-up', iconColor: 'red', input:'button'};
+    vm.typeClass['Repeat'] = {btn:'btn-info',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-repeat', iconColor: 'red', input:'button'};
+    vm.typeClass['Options'] = {btn:'btn-warning',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-cog', iconColor: 'red', input:'text'};
+    vm.typeClass['Return'] = {btn:'btn-info',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-level-up', iconColor: 'red', input:'button'};
+    vm.typeClass['Image'] = {btn:'btn-warning',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-image', iconColor: 'red', input:'image'};
+    vm.typeClass['Button'] = {btn:'btn-success',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-play-circle', iconColor: 'red', input:'text'};
+    vm.typeClass['URLButton'] = {btn:'btn-success',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-play-circle', iconColor: 'red', input:'text_for_button'};
 
     var findType = function(input, typeName) {
       for (var i=0; i < input.length; ++i) {
@@ -1326,7 +1415,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       //["","",{types:[{name:'', typeCheck:'', raw:true},..,regexp:'',intent:''}]]
       var input = [];
       $scope.dialog.input.push(input);
-      $scope.addI(input);
+      // $scope.addI(input);
 
       $scope.initButton();
     };
@@ -1451,6 +1540,30 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     vm.getIconClass = function(type) {
       if (!type) return '';
       return vm.typeClass[type].icon;
+    };
+
+    vm.getIcon = function(type) {
+      if (!type || type == 'Keyword') return '';
+      if (type == 'Entity') return '@ ';
+      if (type == 'Intent') return '# ';
+      if (type == 'RegExp') return '/ ';
+      if (type == 'If') return 'If ( ';
+      return null;
+    };
+
+    vm.getBtnColor = function(type) {
+      if (!type) return '';
+      return vm.typeClass[type].btnColor;
+    };
+
+    vm.getBtnBorderColor = function(type) {
+      if (!type) return '';
+      return vm.typeClass[type].btnBorderColor;
+    };
+
+    vm.getIconColor = function(type) {
+      if (!type) return '';
+      return vm.typeClass[type].iconColor;
     };
 
     $scope.getInputType = function(type) {

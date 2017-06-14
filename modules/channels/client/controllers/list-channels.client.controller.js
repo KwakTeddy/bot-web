@@ -61,7 +61,10 @@
                       });
                       modalInstance.result.then(function (response) {
                         console.log(response);
-                      })
+                      });
+                      $scope.close = function () {
+                        modalInstance.dismiss();
+                      };
                     }
                   }
                 });

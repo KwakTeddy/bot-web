@@ -140,6 +140,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             $rootScope.closeSigninModal();
             $state.go($state.previous.state.name || 'homeMobile', $state.previous.params);
         }else {
+          console.log(window.location.href);
+          console.log(window.location.href.indexOf('developer'));
           if(window.location.href.indexOf('developer') > -1){
             $state.go('developer-home')
           }else {
