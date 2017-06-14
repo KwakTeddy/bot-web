@@ -1838,13 +1838,24 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         });
     };
 
+
     $scope.dialogList = function() {
       var names = [];
-      for (var d in nodes) {
-        if (selectedNode && d !== selectedNode.name && d != '시작')
-          names.push(d);
-      }
-      vm.otherDialogs.forEach(function(d) { names.push(d.name); });
+
+      var findNames = function(d) {
+        if (!selectedNode || (selectedNode && d !== selectedNode.name && d !== '시작')) {
+          names.push(d.name);
+        }
+        if (d.children) {
+          d.children.forEach(findNames);
+        }
+        if (d._children) {
+          d._children.forEach(findNames);
+        }
+      };
+
+      dialogs.forEach(findNames);
+      vm.otherDialogs.forEach(findNames);
       return names;
     };
 
