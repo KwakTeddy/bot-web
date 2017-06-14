@@ -429,20 +429,26 @@ outline: none;
     display:none;
     width: 450px;
     min-height: 86vh;
+    max-height: 86vh;
     margin-top: -5px;
     padding: 8px 5px 0 5px;
     z-index: 1;
     background:white;
+    overflow-y:auto;
+    overflow-x:hidden;
 }
 
 #modalTaskForm {
     display:none;
     width: 450px;
     min-height: 86vh;
+    max-height: 86vh;
     margin-top: -5px;
     padding: 8px 5px 0 5px;
     z-index: 1;
     background:white;
+    overflow-y:auto;
+    overflow-x:hidden;
 }
 #filetree{
     background: gray;
