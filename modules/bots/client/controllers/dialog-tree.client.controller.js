@@ -1996,7 +1996,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
           if (i.regexp)
             text.push('[정규식] ' + i.regexp);
           if (i.intent)
-            text.push('[인테트] ' + i.intent);
+            text.push('[인텐트] ' + i.intent);
           if (i.if)
             text.push('[조건] ' + i.if);
         });

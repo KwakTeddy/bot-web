@@ -4,7 +4,7 @@ var botlib = require(path.resolve('config/lib/bot'));
 var Shinhancard = {
   use: true,
   kakao: {
-    keyboard: { type :"buttons", buttons:["시작"]}
+    keyboard: { type :"buttons", buttons:["반갑습니다, 신한카드입니다"]}
   },
   commonButtons: [{"text": "이전단계"}, {"text": "시작메뉴"}],
   intentOption: {
