@@ -1162,12 +1162,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }, 300);
     };
 
-    $scope.addO = function(input, first) {
+    $scope.addO = function(output, first) {
       var init = {};
-      init.type = $scope.getOutputTypes(input)[0];
-      init.str = '';
+      init.kind = 'Text';
+      output.push(init);
 
-      $scope.openEditO(init, input, first);
+      //$scope.openEditO(init, input, first);
     };
 
     $scope.printInput = function(o) {
@@ -1178,6 +1178,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.printOutput= function(o) {
+      return 'deprecated';
       if (vm.typeClass[o.type].input === 'button')
         return '';
       else
@@ -1427,10 +1428,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.addOutput= function(first) {
-      var output = [];
-      $scope.dialog.output.push(output);
-      $scope.addO(output, first);
-      $scope.initButton();
+      $scope.addO($scope.dialog.output, first);
+      //$scope.initButton();
     };
 
     $scope.removeOutput = function(output) {
@@ -1682,6 +1681,23 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       return res;
     };
 
+    var initOutput2 = function(output) {
+      var res = [];
+      if (Array.isArray(output)) {
+        output.forEach(function(d) {
+          res.push(d);
+        });
+      } else {
+        if (typeof output === 'string') {
+          res.push({if: null, text: output.replace(/\n/g, '\\n')});
+        }
+        else {
+          res.push(output);
+        }
+      }
+      return res;
+    };
+
     var restoreInput = function(result) {
       var input = [];
       if (result.length == 1 && result[0].length == 1 && result[0][0].type ==='매칭없음') {
@@ -1765,6 +1781,26 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       return output;
     };
 
+    // output handling
+    vm.outputKind = [
+      {name:"Text",  active:true},
+      {name:"Content",  active:false},
+      {name:"List",  active:false},
+      {name:"Action",  active:false},
+    ];
+
+    vm.changeOutputKind = function(output, kind) {
+      vm.outputKind.forEach(function(k) {k.active = false});
+      kind.active = true;
+      output.kind = kind.name;
+    };
+
+    vm.getOutputKind = function(output) {
+      if (typeof output === 'string') return 'Text';
+      if (output.kind) return output.kind;
+      return 'Text';
+    };
+
     $scope.findOne = function (dialog, isStartNode) {
       if (isStartNode)
         vm.isStartNode = true;
@@ -1780,7 +1816,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       else if (dialog.task)
         $scope.dialog.task = {name: dialog.task};
 
-      $scope.dialog.output = initOutput(dialog.output);
+      $scope.dialog.output = initOutput2(dialog.output);
 
       if (dialog.output.length == 0) {
         $scope.addOutput(dialog.input.length == 0);
@@ -1887,7 +1923,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         selectedNode.task = $scope.dialog.task.name || $scope.dialog.task.template;
       else
         selectedNode.task = $scope.dialog.task;
-      selectedNode.output = restoreOutput($scope.dialog.output);
+      //selectedNode.output = restoreOutput($scope.dialog.output);
+      selectedNode.output = $scope.dialog.output;
 
       selectedSVG.remove();
       selectedSVG = null;
@@ -1952,7 +1989,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
 
-    $scope.dialogList = function() {
+    vm.dialogList = function() {
       var names = [];
 
       var findNames = function(d) {

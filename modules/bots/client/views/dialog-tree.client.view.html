@@ -711,7 +711,6 @@
     </div>
 
   <!-- Modal Form for dialog -->
-    <!-- Modal Form for dialog -->
   <div id="modalForm" class="col-md-1 pull-right"  >
     <header class="panel-heading">
       <h2 class="panel-title">Dialog 수정</h2>
@@ -895,6 +894,7 @@
           </div>
           <hr>
         </div>
+
         <div class="form-group">
           <label class="col-sm-2 control-label">Task</label>
           <div class="col-sm-9 ">
@@ -920,106 +920,120 @@
                   </ui-select-choices>
                 </ui-select>
               </div>
-              <span class="input-group-btn">
-                                                <button class="btn btn-default">
-                                                    <i ng-click="dialog.task = undefined" class="fa fa-remove" style="color:red"></i>
-                                                </button>
-                                            </span>
+                <span class="input-group-btn">
+                    <button class="btn btn-default">
+                        <i ng-click="dialog.task = undefined" class="fa fa-remove" style="color:red"></i>
+                    </button>
+                </span>
             </div>
           </div>
-          <div class="col-sm-1 " style="padding-left: 0;padding-top: 3px">
-            <button type="button" ng-click="addTask()" class="mb-xs mr-xs btn btn-sm btn-default" style="border: none"><i class="glyphicon glyphicon-plus"></i></button>
-          </div>
-        </div>
-        <hr>
-        <div class="form-group" style="margin-bottom: 15px">
-          <label class="col-sm-2 control-label">Output <span class="required" aria-required="true">*</span></label>
-          <div class="col-sm-9">
-            <div ng-repeat="output in dialog.output">
-              <div class="input-group mb-xs" ng-show="vm.inputModeO && vm.curOutput == output">
-                <div class="input-group-btn" id="outputButton" style="vertical-align: top">
-                  <button tabindex="-1" class="btn" ng-class="vm.getButtonClass(vm.curO.type)" type="button">
-                    {{vm.curO.type}}
-                  </button>
-                  <button tabindex="-1" data-toggle="dropdown" ng-class="vm.getButtonClass(vm.curO.type)" class="btn dropdown-toggle" type="button">
-                    <span class="caret"></span>
-                  </button>
-                  <ul role="menu" class="dropdown-menu">
-                    <li ng-repeat="t in getOutputTypes(vm.curOutput, vm.curO)">
-                      <a href="#" ng-click="setType(vm.curO, t)">
-                        {{t}}
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div ng-show="vm.inputModeO && getInputType(vm.curO.type) == 'text'" autofocus>
-                  <input type="text" id="output" name="output" ng-model="vm.curO.str" class="form-control"
-                         ng-keydown="saveEnter($event,saveO)"
-                         auto-focus
-                         placeholder="{{getPlaceHolder(vm.curO.type, true)}}">
-                </div>
-                <div ng-show="vm.inputModeO && getInputType(vm.curO.type) == 'text_for_button'">
-                  <input type="text" id="output" name="output" ng-model="vm.curO.str"
-                         class="form-control clearfix"
-                         auto-focus
-                         placeholder="버튼이름을 입력해주세요">
-                  <input type="text" id="output_url" name="output_url" ng-model="vm.curO.url" class="form-control"
-                         auto-focus
-                         placeholder="버튼URL을 입력해주세요">
-                </div>
-                <div ng-show="vm.inputModeO && getInputType(vm.curO.type) == 'dialog'">
-                  <ui-select ng-model="vm.curO.str"
-                             theme="bootstrap"
-                             ng-disabled="dialogList().length == 0"
-                             reset-search-input="true"
-                             title="Dialog를 선택하세요">
-                    <ui-select-match placeholder="Dialog 이름을 입력해주세요">{{$select.selected}}</ui-select-match>
-                    <ui-select-choices repeat="t in dialogList() | filter: $select.search track by $index"
-                                       refresh-delay="0">
-                      <div ng-bind-html="t | highlight: $select.search"></div>
-                    </ui-select-choices>
-                  </ui-select>
-                </div>
-                <div class="text-left" ng-show="vm.inputModeO && getInputType(vm.curO.type) == 'image'" >
-                                                  <span class="btn btn-default btn-file" style="padding-bottom:4px;padding-top:4px">
-                                                      <input type="file" nv-file-select uploader="imageUploader" style="width:100%;">
-                                                      <i ng-cloak
-                                                         ng-show="vm.curO.str != ''"
-                                                         class="fa fa-check-square pull-right"
-                                                         style="margin-top: -22px;margin-right: -8px;font-size:20px" aria-hidden="true">
-                                                      </i>
-                                                  </span>
-                </div>
-                <span class="input-group-btn" style="vertical-align: top">
-                                                    <button class="btn btn-primary"
-                                                            ng-disabled="vm.curO.str === ''"
-                                                            ng-click="saveO()" type="button">저장</button>
-                                                    <button class="btn btn-danger" ng-click="resetO()" type="button">취소</button>
-                                                </span>
-              </div>
-              <div ng-show="!vm.inputModeO || vm.curOutput != output">
-                <div class="form-control col-md-11 mb-xs" style="height:auto;">
-                  <button class="mr-xs btn btn-xs" ng-class="vm.getButtonClass(o.type)"
-                          ng-click="openEditO(o,output)"
-                          ng-repeat="o in output">
-                    <i class='fa' ng-class="vm.getIconClass(o.type)" style="color:antiquewhite"></i>&nbsp;
-                    {{printOutput(o)}}&nbsp;
-                    <i ng-click="removeI(o,output)" class="fa fa-remove" style="color:white"></i></button>
-                  <button class="mr-xs btn btn-default btn-xs"
-                          ng-show="getOutputTypes(output).length > 0"
-                          ng-click="addO(output)" ><i class="fa fa-plus"></i></button>
-                  <span class="icon pull-right" style="height:20px;line-height:20px">
-                                            <i ng-click="removeOutput(output)" class="fa fa-1 fa-remove"
-                                               style="color:red;font-size:70%;"></i>
-                                        </span>
-                </div>
-              </div>
+            <div class="col-sm-1 " style="padding-left: 0;padding-top: 3px">
+                <button type="button" ng-click="addTask()" class="mb-xs mr-xs btn btn-sm btn-default" style="border: none"><i class="glyphicon glyphicon-plus"></i></button>
             </div>
-          </div>
-          <div class="col-sm-1 pull-down" style="padding-left: 0;padding-top: 3px">
-            <button type="button" ng-click="addOutput()" class="mb-xs mr-xs btn btn-sm btn-default" style="border: none;"><i class="glyphicon glyphicon-plus"></i></button>
-          </div>
         </div>
+          <hr>
+
+          <div class="form-group" style="margin-bottom: 15px ">
+              <label class="col-sm-2 control-label">Output <span class="required" aria-required="true">*</span></label>
+              <div class="col-sm-9">
+                  <div ng-repeat="output in dialog.output">
+                      <span class="icon pull-right" style="height:20px;line-height:20px">
+                          <i ng-click="removeOutput(output)" class="fa fa-1 fa-remove" style="color:red;"></i>
+                      </span>
+                      <div>
+                          <ul class="nav nav-tabs">
+                              <li role="presentation"
+                                  ng-repeat="kind in vm.outputKind track by $index"
+                                  ng-click="vm.changeOutputKind(output,kind)"
+                                  ng-class="{active: vm.getOutputKind(output) === kind.name}">
+                                  <a href="#"><span >{{kind.name}}</span></a>
+                              </li>
+                          </ul>
+                      </div>
+                      <div ng-show="vm.getOutputKind(output) == 'Text'" autofocus>
+                          <label class="col-sm-2 control-label">If</label>
+                          <div class="col-sm-10 mb-xs">
+                              <input type="text" id="if" name="if" ng-model="output.if" class="form-control">
+                          </div>
+                          <label class="col-sm-2 control-label">Text</label>
+                          <div class="col-sm-10 mx-xs">
+                                        <textarea rows="4" cols="50" id="text" name="text" ng-model="output.text" class="form-control" auto-focus>
+                                        </textarea>
+                          </div>
+                      </div>
+                      <div ng-show="vm.getOutputKind(output) == 'Content'" autofocus>
+                          <label class="col-sm-2 control-label">If</label>
+                          <div class="col-sm-10 mb-xs">
+                              <input type="text" id="if" name="if" ng-model="output.if" class="form-control">
+                          </div>
+                          <label class="col-sm-2 control-label">Image</label>
+                          <div class="col-sm-10 mb-xs">
+                              <img src="{{output.image.url}}" width="100%" height="180">
+                              <span class="btn btn-default btn-file" style="padding-bottom:4px;padding-top:4px">
+                                              <input type="file" nv-file-select uploader="imageUploader" style="width:100%;">
+                                              <i ng-cloak
+                                                 ng-show="output.image.url != undefined"
+                                                 class="fa fa-check-square pull-right"
+                                                 style="margin-top: -22px;margin-right: -8px;font-size:20px" aria-hidden="true">
+                                              </i>
+                                          </span>
+                          </div>
+                          <label class="col-sm-2 control-label">Text</label>
+                          <div class="col-sm-10 mb-xs">
+                                        <textarea rows="4" cols="50" id="text" name="text" ng-model="output.text" class="form-control" auto-focus>
+                                        </textarea>
+                          </div>
+                          <label class="col-sm-2 control-label">Button</label>
+                          <div class="col-sm-10 mb-xs" >
+                              <input ng-repeat="button in output.buttons" type="text" ng-model="button.text" class="form-control">
+                              <input type="text" class="form-control">
+                          </div>
+                      </div>
+                      <div ng-show="vm.getOutputKind(output) == 'Action'" autofocus>
+                          <label class="col-sm-2 control-label">If</label>
+                          <div class="col-sm-10 mb-xs">
+                              <input type="text" id="if" name="if" ng-model="output.if" class="form-control">
+                          </div>
+                          <div class="input-group mb-xs" >
+                              <div class="input-group-btn" id="outputButton" style="vertical-align: top">
+                                  <button tabindex="-1" class="btn" ng-class="vm.getButtonClass('Call')" type="button">
+                                      Call
+                                  </button>
+                                  <button tabindex="-1" data-toggle="dropdown" ng-class="vm.getButtonClass('Call')" class="btn dropdown-toggle" type="button">
+                                      <span class="caret"></span>
+                                  </button>
+                                  <ul role="menu" class="dropdown-menu">
+                                      <li ng-repeat="t in ['Call','ReturnCall']">
+                                          <a href="#" ng-click="setType(output, t)">
+                                              {{t}}
+                                          </a>
+                                      </li>
+                                  </ul>
+                              </div>
+                              <div>
+                                  <ui-select ng-model="output.dialog"
+                                             theme="bootstrap"
+                                             ng-disabled="vm.dialogList().length == 0"
+                                             reset-search-input="true"
+                                             title="Dialog를 선택하세요">
+                                      <ui-select-match placeholder="Dialog 이름을 입력해주세요">{{$select.selected}}</ui-select-match>
+                                      <ui-select-choices repeat="t in vm.dialogList() | filter: $select.search track by $index"
+                                                         refresh-delay="0">
+                                          <div ng-bind-html="t | highlight: $select.search"></div>
+                                      </ui-select-choices>
+                                  </ui-select>
+                              </div>
+                          </div>
+                      </div>
+                      <div>
+                          {{output}}
+                      </div>
+                  </div>
+              </div>
+              <div class="col-sm-1 pull-down" style="padding-left: 0;padding-top: 3px">
+                  <button type="button" ng-click="addOutput()" class="mb-xs mr-xs btn btn-sm btn-default" style="border: none;"><i class="glyphicon glyphicon-plus"></i></button>
+              </div>
+          </div>
       </div>
       <footer class="panel-footer">
         <div class="row">
