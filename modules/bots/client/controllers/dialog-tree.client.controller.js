@@ -1647,6 +1647,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       var res = [];
       if (Array.isArray(output)) {
         output.forEach(function(d) {
+          console.log(JSON.stringify(d));
           if (d.output) {
             d.text = d.output;
             delete d.output;
