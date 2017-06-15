@@ -145,7 +145,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
           if(window.location.href.indexOf('developer') > -1){
             $state.go('developer-home')
           }else {
-            $state.go($state.previous.state.name || 'home', $state.previous.params);
+            $state.go('developer-home')
+            // $state.go($state.previous.state.name || 'home', $state.previous.params);
           }
         }
 
