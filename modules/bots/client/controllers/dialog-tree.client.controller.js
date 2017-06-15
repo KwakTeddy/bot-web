@@ -1,13 +1,5 @@
 'use strict';
 
-var currentInput;
-var currentJSONNode;
-
-var setInput = function(cur) {
-  currentInput = cur;
-  currentJSONNode = cur.replace(/_/g,'.');
-};
-
 function gogo(filename) {
   angular.element(document.getElementById('control')).scope().changeTabName(filename);
 }
@@ -3193,8 +3185,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       // Show success message
       $scope.success['image'] = true;
 
-      vm.curO.filename = response.filename;
-      vm.curO.str = response.displayname;
+      $scope.dialog.output[vm.currentIdx].image = { url: '/files/' + response.filename, displayname: response.displayname };
       // Clear upload buttons
       $scope.cancelImageUpload();
     };
@@ -3623,6 +3614,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
         $scope.setPosition(task);
       }
+    };
+
+    vm.setInput = function(cur) {
+      vm.currentIdx = cur;
     };
 
     $scope.openIntent = function(task, isCommon) {
