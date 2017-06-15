@@ -38,6 +38,8 @@ exports.renderIndex = function (req, res) {
       user: req.user || null
     });
   } else if(config.enterprise.name){
+    console.log('************************************************************');
+    console.log(config.enterprise.name);
     res.redirect('/developer')
   } else{
     res.render('modules/core/server/views/user-bot', {
