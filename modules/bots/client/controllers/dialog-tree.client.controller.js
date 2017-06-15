@@ -1646,8 +1646,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     var initOutput = function(output) {
       var res = [];
       if (Array.isArray(output)) {
-        var r = [];
         output.forEach(function(d) {
+          if (d.output) {
+            d.text = d.output;
+            delete d.output;
+          }
           res.push(d)
         });
       } else {
