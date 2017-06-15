@@ -145,15 +145,11 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
           if(window.location.href.indexOf('developer') > -1){
             $state.go('developer-home')
           }else {
-            $state.go('developer-home')
-            // $state.go($state.previous.state.name || 'home', $state.previous.params);
+            // $state.go('developer-home')
+            $state.go($state.previous.state.name || 'home', $state.previous.params);
           }
         }
 
-        //temporary code
-        $timeout(function () {
-          $window.location.reload();
-        }, 100)
       }).error(function (response) {
         console.log(response);
         $scope.error = response.message;
