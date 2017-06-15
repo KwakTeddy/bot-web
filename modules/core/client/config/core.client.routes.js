@@ -24,8 +24,8 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
     // })
     .state('developer-home', {
       url: '/developer',
-      templateUrl: 'modules/bots/client/views/list-bots.client.view.html',
-      controller: 'BotListController',
+      templateUrl: 'modules/core/client/views/landing-bots.client.view.html',
+      controller: 'LandingBotsController',
       controllerAs: 'vm',
       resolve: {
         botsResolve: getBots

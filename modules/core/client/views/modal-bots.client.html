@@ -1,0 +1,198 @@
+<div data-ng-if="modalMode == 'create'">
+  <div class="modal-header">
+    <h4 class="modal-title text-center" >{{checkNew ? "챗봇 만들기" : "챗봇 수정"}}</h4>
+  </div>
+  <div class="modal-body">
+    <form name="botForm" class="form-bordered" ng-submit="createBotModal(botForm.$valid)"
+          novalidate="novalidate">
+      <div class="panel-body">
+        <div class="form-horizontal form-group">
+
+          <label class="col-sm-2 control-label">봇 아이디 <span class="required" aria-required="true">*</span></label>
+          <div class="col-sm-10">
+            <input type="text" name="id" ng-model="newBot.id" class="form-control valid"
+                   placeholder="영어(대문자)와 _의 조합, 추후 변경 불가"
+                   required=""
+                   data-ng-if="checkNew"
+                   aria-required="true" aria-invalid="false"
+                   ng-disabled="bot._id">
+            <input type="text" name="id" ng-model="bot.id" class="form-control valid"
+                   placeholder="영어(대문자)와 _의 조합, 추후 변경 불가"
+                   required=""
+                   data-ng-if="!checkNew"
+                   aria-required="true" aria-invalid="false"
+                   ng-disabled="bot._id">
+          </div>
+
+          <div ng-messages="botForm.id.$error" role="alert" class="col-sm-offset-3 col-sm-9" ng-show = "botForm.id.$error && submitted">
+            <p class="help-block error-text text-danger" ng-message="required">아이디를 입력해야죠</p>
+          </div>
+          <div ng-show="error.id" role="alert" class="col-sm-offset-3 col-sm-9">
+            <span class="error-text text-center text-danger"> <strong ng-bind="error.id"></strong> </span>
+          </div>
+
+        </div>
+
+        <div class="form-horizontal form-group">
+          <label class="col-sm-2 control-label">봇 이름 <span class="required" aria-required="true">*</span></label>
+          <div class="col-sm-10">
+            <input type="text" name="name" ng-model="newBot.name" class="form-control valid" placeholder="자유롭게 입력해주세요"
+                   required=""
+                   data-ng-if="checkNew"
+                   aria-required="true" aria-invalid="false">
+            <input type="text" name="name" ng-model="bot.name" class="form-control valid" placeholder="자유롭게 입력해주세요"
+                   required=""
+                   data-ng-if="!checkNew"
+                   aria-required="true" aria-invalid="false">
+          </div>
+        </div>
+        <div class="form-horizontal form-group">
+          <label class="col-sm-2 control-label">설명 <span class="required" aria-required="true">*</span></label>
+          <div class="col-sm-10">
+          <textarea name="description" ng-model="newBot.description" rows="5" class="form-control"
+                    data-ng-if="checkNew"
+                    placeholder="내용을 입력해주세요" required="" aria-required="true" aria-invalid="true">
+
+          </textarea>
+            <textarea name="description" ng-model="bot.description" rows="5" class="form-control"
+                      data-ng-if="!checkNew"
+                      placeholder="내용을 입력해주세요" required="" aria-required="true" aria-invalid="true"></textarea>
+          </div>
+        </div>
+
+        <div class="form-horizontal form-group">
+          <label class="col-sm-2 control-label">이미지</label>
+          <div class="col-sm-10">
+            <img ng-src="{{imageURL? imageURL : vm.bot.imageFile}}" class="img-thumbnail user-profile-picture" style="border: 0;width:150px; height: 150px;text-align:center;line-height: 150px;" alt="이미지를 업로드해요" >
+            <!--<img ng-src="{{vm.bot.imageFile}}" class="img-thumbnail user-profile-picture" style="border: 0;width:150px; height: 150px;text-align:center;line-height: 150px;" alt="이미지를 업로드해요" data-ng-if="vm.bot._id && vm.bot.imageFile">-->
+            <p></p>
+            <div class="text-left" ng-hide="imageUploader.queue.length" style="display: inline-block;left: 180px;top: 10px;position: absolute;">
+              <div class="btn btn-default btn-file">
+                  <input type="file" nv-file-select uploader="imageUploader" style="width:200px;">
+              </div>
+              <div ng-show="success.image" class="text-center text-success">
+                <strong>이미지가 업로드 되었네요</strong>
+              </div>
+              <span ng-show="error.image" class="text-center text-danger">
+                <strong ng-bind="error.image"></strong>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="panel-footer" style="background-color: white">
+        <div class="row">
+          <div class="col-sm-12 text-center" ng-hide="bot && bot._id">
+            <button type="submit" class="btn btn-primary">생성</button>
+            <button type="button" class="btn btn-danger" ng-click="closeModal()">취소</button>
+          </div>
+          <div class="col-sm-12 text-center" ng-show="bot && bot._id">
+            <a class="btn btn-primary" ng-click="updateBot(botForm.$valid)">
+              <i class="glyphicon glyphicon-edit"></i> 수정
+            </a>
+            <button type="button" class="btn btn-danger" ng-click="closeModal()">취소</button>
+          </div>
+        </div>
+      </footer>
+      <div ng-show="error" class="text-danger">
+        <!--<strong ng-bind="error"></strong>-->
+      </div>
+    </form>
+  </div>
+</div>
+
+<div data-ng-if="modalMode == 'copy'">
+  <div style="padding-top: 64px; padding-right: 64px;padding-left: 64px;padding-bottom: 32px">
+    <div class="modal-header" style="border-bottom: none; display: flex">
+      <h2 style="color: tomato; flex: 1"><span>챗봇을 복제합니다</span></h2>
+      <button ng-click="closeModal()" class="btn btn-default" style="border: none;position: absolute;top: 30px;right: 30px"><i class="fa fa-remove fa-lg"></i></button>
+    </div>
+    <div class="modal-body">
+      <form name="botForm" class="form-bordered" ng-submit="createBotModal(botForm.$valid)"
+            novalidate="novalidate">
+        <div class="form-horizontal form-group">
+
+          <label class="col-sm-2 control-label" style="padding-right: 0px;padding-left: 0px;text-align: left">봇 아이디 <span class="required" aria-required="true">*</span></label>
+          <div class="col-sm-10">
+            <input type="text" name="id" ng-model="copyTargetBot.id" class="form-control valid"
+                   placeholder="영어(대문자)와 _의 조합, 추후 변경 불가"
+                   required=""
+                   data-ng-if="!checkNew"
+                   aria-required="true" aria-invalid="false"
+                   ng-disabled="bot._id">
+          </div>
+
+          <div ng-messages="botForm.id.$error" role="alert" class="col-sm-offset-3 col-sm-9" ng-show = "botForm.id.$error && submitted">
+            <p class="help-block error-text text-danger" ng-message="required">아이디를 입력해야죠</p>
+          </div>
+          <div ng-show="error.id" role="alert" class="col-sm-offset-3 col-sm-9">
+            <span class="error-text text-center text-danger"> <strong ng-bind="error.id"></strong> </span>
+          </div>
+
+        </div>
+
+        <div class="form-horizontal form-group">
+          <label class="col-sm-2 control-label" style="padding-right: 0px;padding-left: 0px;text-align: left">봇 이름 <span class="required" aria-required="true">*</span></label>
+          <div class="col-sm-10">
+            <input type="text" name="name" ng-model="copyTargetBot.name" class="form-control valid" placeholder="자유롭게 입력해주세요"
+                   required=""
+                   data-ng-if="!checkNew"
+                   aria-required="true" aria-invalid="false">
+          </div>
+        </div>
+        <div class="form-horizontal form-group">
+          <label class="col-sm-2 control-label" style="padding-right: 0px;padding-left: 0px;text-align: left">설명 <span class="required" aria-required="true">*</span></label>
+          <div class="col-sm-10">
+
+        </textarea>
+            <textarea name="description" ng-model="copyTargetBot.description" rows="5" class="form-control"
+                      data-ng-if="!checkNew"
+                      placeholder="내용을 입력해주세요" required="" aria-required="true" aria-invalid="true"></textarea>
+          </div>
+        </div>
+
+        <div class="form-horizontal form-group">
+          <label class="col-sm-2 control-label" style="padding-right: 0px;padding-left: 0px;text-align: left">이미지</label>
+          <div class="col-sm-10">
+            <img ng-src="{{imageURL? imageURL : copyTargetBot.imageFile}}" class="img-thumbnail user-profile-picture" style="border: 0;width:150px; height: 150px;text-align:center;line-height: 150px;" alt="이미지를 업로드해요" >
+            <!--<img ng-src="{{vm.bot.imageFile}}" class="img-thumbnail user-profile-picture" style="border: 0;width:150px; height: 150px;text-align:center;line-height: 150px;" alt="이미지를 업로드해요" data-ng-if="vm.bot._id && vm.bot.imageFile">-->
+            <p></p>
+            <div class="text-left" ng-hide="imageUploader.queue.length" style="display: inline-block;left: 180px;top: 10px;position: absolute;">
+              <span class="btn btn-default btn-file">
+                  <input type="file" nv-file-select uploader="imageUploader" style="width:200px;">
+              </span>
+                <span ng-show="success.image" class="text-center text-success">
+                <strong>이미지가 업로드 되었네요</strong>
+              </span>
+                <span ng-show="error.image" class="text-center text-danger">
+                <strong ng-bind="error.image"></strong>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div ng-show="error" class="text-danger">
+          <!--<strong ng-bind="error"></strong>-->
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer" style="border-top: none">
+      <button class="btn btn-default" style="border-radius: 20px;width: 120px" ng-click="copyBotModal()">복사</button>
+    </div>
+  </div>
+</div>
+
+<div data-ng-if="modalMode == 'delete'">
+  <div style="padding-top: 64px; padding-right: 64px;padding-left: 64px;padding-bottom: 32px">
+    <div class="modal-header" style="border-bottom: none; display: flex">
+      <h2 style="color: #ea4335;flex: 1"><span>챗봇을 삭제합니다</span></h2>
+      <button ng-click="closeModal()" class="btn btn-default" style="border: none;position: absolute;top: 30px;right: 30px"><i class="fa fa-remove fa-lg"></i></button>
+    </div>
+    <div class="modal-body">
+      <div style="font-size: 20px; line-height: 150%">삭제할 시 되돌릴 수 없습니다. <br> 삭제하시길 원하시면 입력창 "삭제"라고 입력해주세요</div>
+      <input type="text" data-ng-model="deleteInput" placeholder='"삭제"를 입력해주세요' style="border: none;width: 100%; border-bottom: 2px solid #d0dada;padding-top: 30px">
+    </div>
+    <div class="modal-footer" style="border-top: none">
+      <button class="btn btn-default" style="border-radius: 15px; background-color: #ea4335;color: white;width: 120px;border-color: #ea4335" ng-click="deleteBotModal()" ng-disabled = 'deleteInput != "삭제"'>삭제</button>
+    </div>
+  </div>
+</div>
