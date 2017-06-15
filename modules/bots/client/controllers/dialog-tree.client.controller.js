@@ -1273,23 +1273,19 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.inputModeO = false;
     };
 
+    $scope.resetActions = function(i) {
+      delete i.call;
+      delete i.callChild;
+      delete i.returnCall;
+      delete i.returnDialog;
+    };
+
     $scope.setType = function(i, type) {
       i.type = type;
-      if (type != "Keyword" && type != "If" && type !="RegExp" && type !="Button")
-        i.str = "";
+      $scope.resetActions(i);
+
       if ($scope.getInputType(type) === 'button') {
-        if (i == vm.curO) {
-          vm.curO.type = type;
-          vm.curO.str = '1';
-          $scope.saveO();
-        } else {
-          vm.curI.type = type;
-          vm.curI.str = '1';
-          $scope.saveI();
-        }
-      }
-      if ($scope.getInputType(type) === 'list') {
-        $scope.openList();
+        i.str = '1';
       }
     };
 
@@ -1607,53 +1603,39 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     var procOutput = function(d,r) {
-      if (typeof d === 'string') {
-        r.push({type: 'Text', str: d.replace(/\n/g,'\\n')});
-      }
-      if (!d.if && d.output) {
-        r.push({type:'Text', str:d.output.replace(/\n/g,'\\n')});
+      if (d.kind) {
+        r.kind = d.kind;
       }
       if (d.call) {
-        r.push({type:'Call', str:d.call});
+        r.action = {type:'Call', str:d.call};
+        r.kind= "Action";
       }
       if (d.callChild) {
-        r.push({type:'CallChild', str:d.callChild});
+        r.action = {type:'CallChild', str:d.callChild};
+        r.kind= "Action";
       }
       if (d.returnCall) {
-        r.push({type:'ReturnCall', str:d.returnCall});
-      }
-      if (d.if) {
-        r.push({type:'If', str:d.if});
-        if (typeof d.output === 'string') {
-          r.push({type:'Text', str:d.output});
-        } else {
-          procOutput(d.output, r);
-        }
+        r.action = {type:'ReturnCall', str:d.returnCall};
+        r.kind= "Action";
       }
       if (d.up) {
-        r.push({type:'Up', str:d.up});
+        r.action = {type:'Up', str:d.up};
+        r.kind= "Action";
       }
       if (d.repeat && typeof d.repeat == 'string') {
-        r.push({type:'Repeat', str:d.repeat+""});
+        r.action = {type:'Repeat', str:d.repeat+""};
+        r.kind= "Action";
       }
+
       if (d.options && d.options.output) {
-        r.push({type:'Options', str:d.options.output.replace(/\n/g, '\\n')});
+        r.options = d.options;
       }
       if (d.return) {
-        r.push({type:'Return', str:d.return+""});
+        r.action = {type:'Return', str:d.return+""};
       }
-      if (d.buttons) {
-        d.buttons.forEach(function(b) {
-          if (b.url) {
-            r.push({type:'URLButton', str:b.text, url:b.url});
-          } else {
-            r.push({type:'Button', str:b.text});
-          }
-        });
-      }
-      if (d.image) {
-        r.push({type:'Image', str:d.image.displayname, filename:d.image.url.substring(7)});
-      }
+
+      if (r.kind != 'Action')
+        r.push(d);
 
       if (d.list) {
         r.push({type:'List', str:''+d.list.map(function(item) { return item.title; }), list:d.list});
@@ -1664,28 +1646,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     var initOutput = function(output) {
       var res = [];
       if (Array.isArray(output)) {
-        output.forEach(function(d) {
-          var r = [];
-          procOutput(d,r);
-          res.push(r);
-        });
-      } else {
         var r = [];
-        if (typeof output === 'string') {
-          r.push({type:'Text', str:output.replace(/\n/g,'\\n')});
-        } else {
-          procOutput(output,r);
-        }
-        res.push(r);
-      }
-      return res;
-    };
-
-    var initOutput2 = function(output) {
-      var res = [];
-      if (Array.isArray(output)) {
         output.forEach(function(d) {
-          res.push(d);
+          res.push(d)
         });
       } else {
         if (typeof output === 'string') {
@@ -1789,6 +1752,16 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       {name:"Action",  active:false},
     ];
 
+    vm.actionList = ['Call','CallChild','ReturnCall','Up', 'Repeat'];
+
+    vm.getActionType = function(output) {
+      if (vm.getOutputKind(output) != 'Action')
+        return;
+      if (!output.type || !vm.actionList.indexOf(output.type))
+        output.type = "Call";
+      return output.type;
+    };
+
     vm.changeOutputKind = function(output, kind) {
       vm.outputKind.forEach(function(k) {k.active = false});
       kind.active = true;
@@ -1816,7 +1789,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       else if (dialog.task)
         $scope.dialog.task = {name: dialog.task};
 
-      $scope.dialog.output = initOutput2(dialog.output);
+      $scope.dialog.output = initOutput(dialog.output);
 
       if (dialog.output.length == 0) {
         $scope.addOutput(dialog.input.length == 0);

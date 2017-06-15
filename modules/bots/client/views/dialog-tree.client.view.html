@@ -997,14 +997,14 @@
                           </div>
                           <div class="input-group mb-xs" >
                               <div class="input-group-btn" id="outputButton" style="vertical-align: top">
-                                  <button tabindex="-1" class="btn" ng-class="vm.getButtonClass('Call')" type="button">
-                                      Call
+                                  <button tabindex="-1" class="btn" ng-class="vm.getButtonClass(vm.getActionType(output))" type="button">
+                                      {{vm.getActionType(output)}}
                                   </button>
-                                  <button tabindex="-1" data-toggle="dropdown" ng-class="vm.getButtonClass('Call')" class="btn dropdown-toggle" type="button">
+                                  <button tabindex="-1" data-toggle="dropdown" ng-class="vm.getButtonClass(vm.getActionType(output))" class="btn dropdown-toggle" type="button">
                                       <span class="caret"></span>
                                   </button>
                                   <ul role="menu" class="dropdown-menu">
-                                      <li ng-repeat="t in ['Call','ReturnCall']">
+                                      <li ng-repeat="t in vm.actionList">
                                           <a href="#" ng-click="setType(output, t)">
                                               {{t}}
                                           </a>
@@ -1012,7 +1012,29 @@
                                   </ul>
                               </div>
                               <div>
-                                  <ui-select ng-model="output.dialog"
+                                  <ui-select ng-if="vm.getActionType(output) === 'Call'" ng-model="output.call"
+                                             theme="bootstrap"
+                                             ng-disabled="vm.dialogList().length == 0"
+                                             reset-search-input="true"
+                                             title="Dialog를 선택하세요">
+                                      <ui-select-match placeholder="Dialog 이름을 입력해주세요">{{$select.selected}}</ui-select-match>
+                                      <ui-select-choices repeat="t in vm.dialogList() | filter: $select.search track by $index"
+                                                         refresh-delay="0">
+                                          <div ng-bind-html="t | highlight: $select.search"></div>
+                                      </ui-select-choices>
+                                  </ui-select>
+                                  <ui-select ng-if="vm.getActionType(output) === 'CallChild'" ng-model="output.callChild"
+                                             theme="bootstrap"
+                                             ng-disabled="vm.dialogList().length == 0"
+                                             reset-search-input="true"
+                                             title="Dialog를 선택하세요">
+                                      <ui-select-match placeholder="Dialog 이름을 입력해주세요">{{$select.selected}}</ui-select-match>
+                                      <ui-select-choices repeat="t in vm.dialogList() | filter: $select.search track by $index"
+                                                         refresh-delay="0">
+                                          <div ng-bind-html="t | highlight: $select.search"></div>
+                                      </ui-select-choices>
+                                  </ui-select>
+                                  <ui-select ng-if="vm.getActionType(output) === 'ReturnCall'" ng-model="output.returnCall"
                                              theme="bootstrap"
                                              ng-disabled="vm.dialogList().length == 0"
                                              reset-search-input="true"
@@ -1024,6 +1046,9 @@
                                       </ui-select-choices>
                                   </ui-select>
                               </div>
+                          </div>
+                          <div class="col-sm-10 mb-xs">
+                              <input type="text" id="option" name="option" ng-model="output.options.output" class="form-control">
                           </div>
                       </div>
                       <div>
