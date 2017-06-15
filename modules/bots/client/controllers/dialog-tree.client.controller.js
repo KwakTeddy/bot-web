@@ -1603,44 +1603,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     var procOutput = function(d,r) {
-      if (d.kind) {
-        r.kind = d.kind;
-      }
-      if (d.call) {
-        r.action = {type:'Call', str:d.call};
-        r.kind= "Action";
-      }
-      if (d.callChild) {
-        r.action = {type:'CallChild', str:d.callChild};
-        r.kind= "Action";
-      }
-      if (d.returnCall) {
-        r.action = {type:'ReturnCall', str:d.returnCall};
-        r.kind= "Action";
-      }
-      if (d.up) {
-        r.action = {type:'Up', str:d.up};
-        r.kind= "Action";
-      }
-      if (d.repeat && typeof d.repeat == 'string') {
-        r.action = {type:'Repeat', str:d.repeat+""};
-        r.kind= "Action";
-      }
-
-      if (d.options && d.options.output) {
-        r.options = d.options;
-      }
-      if (d.return) {
-        r.action = {type:'Return', str:d.return+""};
-      }
-
-      if (r.kind != 'Action')
-        r.push(d);
-
       if (d.list) {
         r.push({type:'List', str:''+d.list.map(function(item) { return item.title; }), list:d.list});
       }
-
     };
 
     var initOutput = function(output) {
