@@ -146,7 +146,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             $state.go('developer-home')
           }else {
             $state.go('developer-home')
-            $state.go($state.previous.state.name || 'home', $state.previous.params);
+            // $state.go($state.previous.state.name || 'home', $state.previous.params);
           }
         }
 
