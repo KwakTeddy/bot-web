@@ -1715,6 +1715,14 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     vm.actionList = ['Call','CallChild','ReturnCall','Up', 'Repeat'];
 
+    vm.removeButton = function(output, idx) {
+      output.buttons.splice(idx,1);
+    };
+
+    vm.addButton = function(output) {
+      (output.buttons = output.buttons || []).push({text:''});
+    };
+
     vm.getActionType = function(output) {
       if (vm.getOutputKind(output) != 'Action')
         return;
@@ -1727,6 +1735,17 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.outputKind.forEach(function(k) {k.active = false});
       kind.active = true;
       output.kind = kind.name;
+
+      // var newoutput = {kind: kind.name};
+      // if (newoutput.kind === 'Text') {
+      //   newoutput.if = output.if;
+      //   newoutput.text = output.text;
+      // } else if (newoutput.kind === 'Content') {
+      //
+      // } else if (newoutput.kind === 'Action') {
+      //
+      // }
+      // output = newoutput;
     };
 
     vm.getOutputKind = function(output) {
