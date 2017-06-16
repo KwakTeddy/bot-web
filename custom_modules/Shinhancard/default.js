@@ -213,6 +213,25 @@ var defaultTask = {
 };
 bot.setTask("defaultTask", defaultTask);
 
+var resetcount = {
+    name: 'resetcount',
+    action: function(task, context, callback) {
+      	context.dialog.quizcount = 0;
+        callback(task, context);
+    }
+};
+bot.setTask("resetcount", resetcount);
+
+var quizcount = {
+    name: 'quizcount',
+    action: function(task, context, callback) {
+      	context.dialog.quizcount += 1;
+        callback(task, context);
+    }
+};
+bot.setTask("quizcount", quizcount);
+
+
 var te = {
     name: 'te',
     action: function (task,context,callback) {
