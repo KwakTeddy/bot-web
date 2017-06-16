@@ -1037,12 +1037,17 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     $scope.inlineInputKeyDown = function (event, inlineInput) { 
       if(event.keyCode == 13 && (vm.curI.str.indexOf('@') != 0) && (vm.curI.str.indexOf('#') != 0) && (vm.curI.str.indexOf(':') != 0) && (vm.curI.str.indexOf('if ') != 0)){ 
-        console.log(vm.curI.str); 
-        inlineInput.push({type: 'Keyword', str: vm.curI.str}); 
-        vm.curI.str = ''; 
-        $scope.processedInput = ''; 
-        event.preventDefault(); 
-        event.stopPropagation(); 
+        console.log(vm.curI.str);
+        event.preventDefault();
+        event.stopPropagation();
+        $http.get('/api/nluprocess/'+vm.curI.str).then(function (res) {
+          $scope.processedInput = res.data;
+          inlineInput.push({type: 'Keyword', str: $scope.processedInput});
+          vm.curI.str = '';
+          $scope.processedInput = '';
+        }, function (err) {
+          console.log(err);
+        });
       } 
       if(event.keyCode == 13 && (vm.curI.str.indexOf(':') == 0)){ 
         vm.curI.str = vm.curI.str.slice(1); 
