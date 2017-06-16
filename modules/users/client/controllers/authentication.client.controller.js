@@ -68,8 +68,11 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             });
             $scope.close = function () {
                 modalInstance.dismiss();
-                $state.go('home');
-                // $state.go($state.previous.href);
+                if(window.location.href.indexOf('developer') > -1){
+                  $state.go('developer-home')
+                }else {
+                  $state.go($state.previous.state.name || 'home', $state.previous.params);
+                }
 
             };
             $scope.resend = function () {
@@ -83,7 +86,11 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                     modalInstanceSecond.result.then(function (response) {
                         console.log(response);
                     });
-                    $state.go('home');
+                    if(window.location.href.indexOf('developer') > -1){
+                      $state.go('developer-home')
+                    }else {
+                      $state.go($state.previous.state.name || 'home', $state.previous.params);
+                    }
 
                 }).error(function (response) {
                     console.log(response)
@@ -198,8 +205,11 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
               });
               $scope.close = function () {
                   modalInstance.dismiss();
-                  $state.go('home');
-              };
+                  if(window.location.href.indexOf('developer') > -1){
+                    $state.go('developer-home')
+                  }else {
+                    $state.go($state.previous.state.name || 'home', $state.previous.params);
+                  }              };
               $scope.resend = function () {
                   modalInstance.dismiss();
                   var modalInstanceSecond = $uibModal.open({
@@ -211,8 +221,11 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                       modalInstanceSecond.result.then(function (response) {
                           console.log(response);
                       });
-                      $state.go('home');
-
+                      if(window.location.href.indexOf('developer') > -1){
+                        $state.go('developer-home')
+                      }else {
+                        $state.go($state.previous.state.name || 'home', $state.previous.params);
+                      }
                   }).error(function (response) {
                       console.log(response)
                   })

@@ -32,7 +32,6 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
       },
       data: {
         roles: ['user', 'enterprise', 'admin'],
-        botCheck : true
       }
     })
     .state('not-found', {

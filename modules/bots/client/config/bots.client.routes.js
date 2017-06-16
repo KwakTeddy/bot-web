@@ -89,9 +89,6 @@ angular.module('bots').config(['$stateProvider',
           botFilesResolve: getBotFiles,
           fileResolve: readBotFile
         },
-        data: {
-          botCheck : true
-        }
       })
       .state('bots.dialog-graph', {
         url: '/dialog-graph/:botId/:fileId',

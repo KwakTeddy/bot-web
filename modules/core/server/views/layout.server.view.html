@@ -130,20 +130,20 @@
               <!--<span>대화하기</span>-->
               <!--</a>-->
               <!--</li>-->
-              <li class="nav-active" data-ng-show="!noBot">
+              <li class="nav-active">
                 <a ui-sref="bots.dialog-tree2({botId: $cookies.get('default_bot'), fileId: 'null'})" >
                   <i class="fa fa-cube" aria-hidden="true"></i>
                   <span>챗봇 개발</span>
                 </a>
               </li>
-              <li class="nav-active" data-ng-show="!noBot">
+              <li class="nav-active">
                 <a ui-sref="dialogsets.dialogsLearn({botNameId: currentBot.id})" >
                   <i class="fa fa-cube" aria-hidden="true"></i>
-                  <span>개별 대화 학습</span>
+                  <span>대화 학습</span>
                 </a>
               </li>
 
-              <li class="nav-active" data-ng-show="!noBot">
+              <li class="nav-active">
                 <a ui-sref="bots.content-list({botId: $cookies.get('default_bot'), fileId: 'null'})" >
                   <i class="fa fa-cube" aria-hidden="true"></i>
                   <span>컨텐츠 관리</span>
@@ -151,7 +151,7 @@
               </li>
 
               <li class="nav-parent">
-                <a data-ng-show="!noBot">
+                <a>
                   <i class="fa fa-language" aria-hidden="true"></i>
                   <span>자연어 이해(NLU)</span>
                 </a>
@@ -169,7 +169,7 @@
                 </ul>
               </li>
 
-              <li class="nav-parent" data-ng-show="!noBot">
+              <li class="nav-parent">
                 <a>
                   <i class="fa fa-tasks" aria-hidden="true"></i>
                   <span>태스크(TASK)</span>
@@ -228,7 +228,7 @@
               <!--</ul>-->
               <!--</li>-->
 
-              <li class="nav-parent" data-ng-show="!noBot">
+              <li class="nav-parent">
                 <a>
                   <i class="fa fa-comments-o" aria-hidden="true"></i>
                   <span>대화 관리</span>
@@ -306,7 +306,7 @@
                 <!--</ul>-->
               <!--</li>-->
 
-              <li class="nav-active" data-ng-show="!noBot" id="menuTest">
+              <li class="nav-active" id="menuTest">
                 <a ui-sref="bot-users.list">
                   <i class="fa fa-user" aria-hidden="true"></i>
                   <span>사용자 관리</span>
@@ -332,7 +332,7 @@
                 </ul>
               </li>
 
-              <li class="nav-active" data-ng-show="!noBot">
+              <li class="nav-active">
                 <a ui-sref="channels.list" >
                   <i class="fa fa-cube" aria-hidden="true"></i>
                   <span>채널 관리</span>
@@ -358,7 +358,7 @@
                 </ul>
               </li>
 
-              <li class="nav-parent" data-ng-show="!noBot">
+              <li class="nav-parent">
                 <a>
                   <i class="fa fa-align-left" aria-hidden="true"></i>
                   <span>운영 관리</span>
@@ -380,7 +380,7 @@
                 </ul>
               </li>
 
-              <li class="nav-parent" data-ng-show="!noBot">
+              <li class="nav-parent">
                 <a ui-sref="analytics.dashboard">
                   <i class="fa fa-area-chart" aria-hidden="true"></i>
                   <span>분석</span>

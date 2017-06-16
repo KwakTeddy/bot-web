@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('users').controller('PasswordController', ['$scope', '$stateParams', '$http', '$location', 'Authentication',
-  'PasswordValidator', '$state', '$ionicModal', '$ionicPopup', 'Notification',
-  function ($scope, $stateParams, $http, $location, Authentication, PasswordValidator, $state, $ionicModal, $ionicPopup, Notification) {
+  'PasswordValidator', '$state', '$ionicModal', '$ionicPopup',
+  function ($scope, $stateParams, $http, $location, Authentication, PasswordValidator, $state, $ionicModal, $ionicPopup) {
     var vm = this;
     $scope.authentication = Authentication;
     $scope.popoverMsg = PasswordValidator.getPopoverMsg();

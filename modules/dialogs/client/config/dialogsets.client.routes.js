@@ -15,7 +15,6 @@
         template: '<ui-view/>',
         data: {
           roles: ['user', 'enterprise', 'admin'],
-          botCheck: true
         }
       })
       .state('dialogsets.list', {
@@ -96,9 +95,6 @@
         resolve: {
           botResolve : getBot,
           dialogsResolve: getDialogs
-        },
-        data: {
-          botCheck : true
         }
       })
   }

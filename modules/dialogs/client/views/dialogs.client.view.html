@@ -1,23 +1,17 @@
 <header class="page-header">
-  <h2>개별 대화 학습</h2>
-
-  <div class="right-wrapper pull-right">
-    <ol class="breadcrumbs">
-      <li>
-        <a ui-sref="home">
-          <i class="fa fa-home"></i>
-        </a>
-      </li>
-      <li><span>대화Set-Dialog</span></li>
-    </ol>
-
-    <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
-  </div>
+  <h2>대화 학습</h2>
 </header>
+
+<div>
+  <ul class="nav nav-tabs">
+    <li role="presentation" ng-class="{active: vm.type == 'defaultDialogset'}"><a href="#" ng-click="vm.changeType('defaultDialogset');">기본 대화셋</a></li>
+    <li role="presentation" ng-class="{active: vm.type == 'dialogset'}"><a href="#" ng-click="vm.changeType('dialogset');">추가 대화셋</a></li>
+  </ul>
+</div>
 
 <section class="panel">
 
-  <div class="panel-body">
+  <div class="panel-body" data-ng-if="vm.type == 'defaultDialogset'">
 
     <div style="margin-bottom: 15px;">
       <input type="text" id="question" name="question" ng-model="vm.dialog.inputRaw" class="form-control valid" placeholder="질문"
@@ -72,6 +66,51 @@
 
     <!--</div>-->
     <!--</div>-->
+
+  </div>
+
+
+  <div class="panel-body" data-ng-if="vm.type == 'dialogset'">
+    <table id="dt" datatable="ng" dt-options="vm.dtOptions" class="table table-bordered mb-none">
+      <thead>
+      <tr>
+        <!--<th class="text-center">봇아이디</th>-->
+        <th class="text-center">제목</th>
+        <th class="text-center">타입</th>
+        <th class="text-center">작성자</th>
+        <th class="text-center">등록일</th>
+        <th class="text-center">관리</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="dialogset in vm.dialogsets" ng-if="vm.listType !== 'public'">
+        <!--<td class="text-center">{{dialogset.bot.id}}</td>-->
+        <td class="text-center"><a ui-sref="dialogsets.edit({dialogsetId: dialogset._id})">{{dialogset.title}}</a></td>
+        <td class="text-center">{{dialogset.type}}</td>
+        <td class="text-center">{{dialogset.user ? dialogset.user.displayName : '장세영'}}</td>
+        <td class="text-center">{{dialogset.created | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+        <td>
+          <a class="btn btn-default btn-sm btn-block" ui-sref="dialogsets.dialogs({dialogsetId: dialogset._id})" style="border: none">
+            <i class="glyphicon glyphicon-edit"></i> 대화관리
+          </a>
+        </td>
+      </tr>
+
+      <tr ng-repeat="dialogset in vm.dialogsets" ng-if="(vm.listType == 'public') && dialogset.public">
+        <!--<td class="text-center">{{dialogset.bot.id}}</td>-->
+        <td class="text-center"><a ui-sref="dialogsets.edit({dialogsetId: dialogset._id})">{{dialogset.title}}</a></td>
+        <td class="text-center">{{dialogset.type}}</td>
+        <td class="text-center">{{dialogset.user ? dialogset.user.displayName : '장세영'}}</td>
+        <td class="text-center">{{dialogset.created | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+        <td>
+          <a class="btn btn-default btn-sm btn-block" ui-sref="dialogsets.dialogs({dialogsetId: dialogset._id})" style="border: none">
+            <i class="glyphicon glyphicon-edit"></i> 대화관리
+          </a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
 
   </div>
 

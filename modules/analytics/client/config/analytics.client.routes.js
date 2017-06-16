@@ -9,7 +9,6 @@ angular.module('analytics').config(['$stateProvider',
         template: '<ui-view/>',
         data: {
           roles: ['user', 'enterprise', 'admin'],
-          botCheck: true
         }
       })
       .state('analytics.dashboard', {

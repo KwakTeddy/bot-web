@@ -1,5 +1,5 @@
 <header class="page-header">
-  <h2>대화셋 관리</h2>
+  <h2>대화 학습</h2>
 
   <div class="right-wrapper pull-right">
     <ol class="breadcrumbs">
@@ -78,7 +78,7 @@
       <div class="row">
         <div class="col-sm-12 text-center" ng-hide="vm.dialogset && vm.dialogset._id">
           <a ng-click="vm.save()" class="btn btn-primary" >대화셋으로 저장</a>
-          <button type="button" class="btn btn-danger" ui-sref="dialogsets.list">취소</button>
+          <button type="button" class="btn btn-danger" ui-sref="dialogsets.dialogsLearn('dialogSet')">취소</button>
         </div>
       </div>
     </footer>
@@ -247,7 +247,7 @@
           <!--<button class="btn btn-primary">Submit</button>-->
           <button type="submit" class="btn btn-primary" >생성</button>
           <!--<button type="reset" class="btn btn-default">초기화</button>-->
-          <button type="button" class="btn btn-danger" ui-sref="dialogsets.list">취소</button>
+          <button type="button" class="btn btn-danger" ui-sref="dialogsets.dialogsLearn('dialogSet')">취소</button>
         </div>
         <div class="col-sm-12 text-center" ng-show="vm.dialogset && vm.dialogset._id">
           <button class="btn btn-primary" type="submit">

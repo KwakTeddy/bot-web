@@ -248,22 +248,22 @@ exports.signin = function (req, res, next) {
                     if (err) {
                         res.status(400).send(err);
                     } else {
-                      if (req.query.redirect_to.indexOf('developer') > -1){
-                        Bot.find({user: req.user._id}).exec(function (err, data) {
-                          if (err){
-                            return res.redirect('/authentication/signin')
-                          }
-                          if (data.length){
-                            res.cookie('default_bot', data[0].id);
-                            res.json(user);
-                          }else {
-                            res.cookie('default_bot', null);
-                            res.json(user);
-                          }
-                        });
-                      }else {
+                      // if (req.query.redirect_to.indexOf('developer') > -1){
+                      //   Bot.find({user: req.user._id}).exec(function (err, data) {
+                      //     if (err){
+                      //       return res.redirect('/authentication/signin')
+                      //     }
+                      //     if (data.length){
+                      //       res.cookie('default_bot', data[0].id);
+                      //       res.json(user);
+                      //     }else {
+                      //       res.cookie('default_bot', null);
+                      //       res.json(user);
+                      //     }
+                      //   });
+                      // }else {
                         res.json(user);
-                      }
+                      // }
                     }
                 });
             }

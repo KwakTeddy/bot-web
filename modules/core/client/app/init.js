@@ -216,16 +216,6 @@ function appRun($rootScope, $state, Authentication, BotsService) {
         }
       }
     }
-    if (toState.data && toState.data.botCheck){
-      BotsService.query({my: 1}, function (result) {
-        if(!result.length){
-          var userbotChat = document.getElementById('container-chat');
-          $state.go('bots.create')
-        }
-      }, function (err) {
-        console.log(err)
-      })
-    }
 
     if(toState.name.indexOf('authentication') != -1 || toState.name.indexOf('password') != -1) { // when login or password change, chat UI display none
       var userbotHeader = document.getElementById('mainHeader');
