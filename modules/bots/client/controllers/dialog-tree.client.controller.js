@@ -1594,34 +1594,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       return res;
     };
 
-    var procOutput = function(d,r) {
-      if (d.list) {
-        r.push({type:'List', str:''+d.list.map(function(item) { return item.title; }), list:d.list});
-      }
-    };
-
-    var initOutput = function(output) {
-      var res = [];
-      if (Array.isArray(output)) {
-        output.forEach(function(d) {
-          console.log(JSON.stringify(d));
-          if (d.output) {
-            d.text = d.output;
-            delete d.output;
-          }
-          res.push(d)
-        });
-      } else {
-        if (typeof output === 'string') {
-          res.push({if: null, text: output.replace(/\n/g, '\\n')});
-        }
-        else {
-          res.push(output);
-        }
-      }
-      return res;
-    };
-
     var restoreInput = function(result) {
       var input = [];
       if (result.length == 1 && result[0].length == 1 && result[0][0].type ==='매칭없음') {
@@ -1651,57 +1623,91 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       return input;
     };
 
+    var procOutput = function(d) {
+      // if (d.list) {
+      //   r.push({type:'List', str:''+d.list.map(function(item) { return item.title; }), list:d.list});
+      // }
+      if (d.output) {
+        d.text = d.output;
+        delete d.output;
+      }
+      if (!d.kind) {
+        if (d.buttons || d.images) {
+          d.kind = 'Content';
+        } else if (d.call || d.callChild || d.returnDialog || d.up || d.repeat) {
+          d.kind = 'Action';
+          if (d.call)
+            d.type = 'Call';
+          else if (d.callChild)
+            d.type = 'CallChild';
+          else if (d.returnCall)
+            d.type = 'returnCall';
+          else if (d.return)
+            d.type = 'Return';
+          else if (d.up)
+            d.type = 'Up';
+          else if (d.repeat)
+            d.type = 'Repeat';
+        } else if (d.list) {
+          d.kind = 'List';
+        } else {
+          d.kind = 'Text';
+        }
+      }
+    };
+
+    var initOutput = function(output) {
+      var res = [];
+      if (Array.isArray(output)) {
+        output.forEach(function(d) {
+          procOutput(d);
+          res.push(d)
+        });
+      } else {
+        if (typeof output === 'string') {
+          res.push({kind:'Text', text: output});
+        }
+        else {
+          procOutput(output);
+          res.push(output);
+        }
+      }
+      return res;
+    };
+
     var restoreOutput = function(result) {
       var output = [];
+
       result.forEach(function(res) {
         var o = {};
-        res.forEach(function(r) {
-          if (r.type === 'Text') {
-            o.output = r.str;
-          } else if (r.type === 'Call') {
-            o.call = r.str;
-          } else if (r.type === 'CallChild') {
-            o.callChild = r.str;
-          } else if (r.type === 'ReturnCall') {
-            o.returnCall = r.str;
-          } else if (r.type === 'If') {
-            o.if = r.str;
-          } else if (r.type === 'Up') {
-            o.up = r.str;
-          } else if (r.type === 'Repeat') {
-            o.repeat = r.str;
-          } else if (r.type === 'Options') {
-            o.options = {output: r.str};
-          } else if (r.type === 'Return') {
-            o.return = r.str;
-          } else if (r.type === 'Image') {
-            o.image = {url: '/files/'+r.filename, displayname:r.str};
-          } else if (r.type === 'Button') {
-            (o.buttons || (o.buttons = [])).push({text:r.str});
-          } else if (r.type === 'URLButton') {
-            (o.buttons || (o.buttons = [])).push({text:r.str, url:r.url});
-          } else if (r.type === 'List') {
-            o.list = r.list;
-          }
-        });
-        var newo = {};
-        if (o.if) {
-          newo.if = angular.copy(o.if);
-          delete o.if;
-          if (Object.keys(o).length == 1 && typeof o.output === 'string') {
-            o = o.output;
-          }
-          newo.output = angular.copy(o);
-        } else if (Object.keys(o).length == 1 && typeof o.output === 'string') {
-          newo = o.output
-        } else {
-          newo = o;
+        switch(res.kind) {
+          case 'Text':
+            o.if = res.if;
+            o.text = res.text;
+            break;
+          case 'Content':
+            o.if = res.if;
+            o.text = res.text;
+            o.image = res.image;
+            o.buttons = res.buttons;
+            break;
+          case 'List':
+            o.list = res.list;
+            break;
+          case 'Action':
+            o = angular.copy(res);
+            delete o.text;
+            delete o.image;
+            delete o.buttons;
+            delete o.type;
+            break;
+          default:
+            o = res;
+            break;
         }
-        output.push(newo);
+        o.kind = res.kind;
+        output.push(o);
       });
-      if (output.length == 1) {
-        output = output[0];
-      }
       return output;
     };
 
@@ -1713,7 +1719,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       {name:"Action",  active:false},
     ];
 
-    vm.actionList = ['Call','CallChild','ReturnCall','Up', 'Repeat'];
+    vm.actionList = ['Call','CallChild','ReturnCall','Up', 'Repeat', 'Return'];
 
     vm.removeButton = function(output, idx) {
       output.buttons.splice(idx,1);
@@ -1736,16 +1742,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       kind.active = true;
       output.kind = kind.name;
 
-      // var newoutput = {kind: kind.name};
-      // if (newoutput.kind === 'Text') {
-      //   newoutput.if = output.if;
-      //   newoutput.text = output.text;
-      // } else if (newoutput.kind === 'Content') {
-      //
-      // } else if (newoutput.kind === 'Action') {
-      //
-      // }
-      // output = newoutput;
     };
 
     vm.getOutputKind = function(output) {
@@ -1769,7 +1765,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       else if (dialog.task)
         $scope.dialog.task = {name: dialog.task};
 
-      $scope.dialog.output = initOutput(dialog.output);
+      $scope.dialog.output = angular.copy(initOutput(dialog.output));
 
       if (dialog.output.length == 0) {
         $scope.addOutput(dialog.input.length == 0);
@@ -1876,8 +1872,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         selectedNode.task = $scope.dialog.task.name || $scope.dialog.task.template;
       else
         selectedNode.task = $scope.dialog.task;
-      //selectedNode.output = restoreOutput($scope.dialog.output);
-      selectedNode.output = $scope.dialog.output;
+      selectedNode.output = restoreOutput($scope.dialog.output);
+      //selectedNode.output = $scope.dialog.output;
 
       selectedSVG.remove();
       selectedSVG = null;
