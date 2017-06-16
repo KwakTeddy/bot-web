@@ -425,6 +425,18 @@ outline: 0;
 outline: none;
 }
 
+#mybtn {
+    border-radius: 5px;
+    border: 1px solid #5bc0de;
+    padding: 3px;
+}
+
+.withborder {
+    border-radius: 5px;
+    border: 1px solid #5bc0de;
+    padding: 3px;
+}
+
 #modalForm {
     display:none;
     width: 450px;

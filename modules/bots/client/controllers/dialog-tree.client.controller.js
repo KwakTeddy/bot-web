@@ -1270,6 +1270,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       delete i.callChild;
       delete i.returnCall;
       delete i.returnDialog;
+      delete i.return;
+      delete i.repeat;
+      delete i.up;
     };
 
     $scope.setType = function(i, type) {
@@ -1277,7 +1280,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       $scope.resetActions(i);
 
       if ($scope.getInputType(type) === 'button') {
-        i.str = '1';
+        i[type.toLowerCase()] = '1';
       }
     };
 
@@ -1634,25 +1637,28 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       if (!d.kind) {
         if (d.buttons || d.images) {
           d.kind = 'Content';
-        } else if (d.call || d.callChild || d.returnDialog || d.up || d.repeat) {
+        } else if (d.call || d.callChild || d.returnDialog || d.returnCall || d.up || d.repeat) {
           d.kind = 'Action';
-          if (d.call)
-            d.type = 'Call';
-          else if (d.callChild)
-            d.type = 'CallChild';
-          else if (d.returnCall)
-            d.type = 'returnCall';
-          else if (d.return)
-            d.type = 'Return';
-          else if (d.up)
-            d.type = 'Up';
-          else if (d.repeat)
-            d.type = 'Repeat';
         } else if (d.list) {
           d.kind = 'List';
         } else {
           d.kind = 'Text';
         }
+      }
+
+      if (d.kind === 'Action') {
+        if (d.call)
+          d.type = 'Call';
+        else if (d.callChild)
+          d.type = 'CallChild';
+        else if (d.returnCall)
+          d.type = 'ReturnCall';
+        else if (d.return)
+          d.type = 'Return';
+        else if (d.up)
+          d.type = 'Up';
+        else if (d.repeat)
+          d.type = 'Repeat';
       }
     };
 
