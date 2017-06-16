@@ -11,31 +11,30 @@ var dialogs = [
 				"intent": "퀴즈"
 			}
 		],
-		"output": {
-			"output": "안녕하세요. 신한카드입니다. 돌발 이벤트 퀴즈 시작합니다.\n1. 신한카드는 몇가지 신용카드가 있을까요?\n2. 신한카드는 몇가지 체크카드가 있을까요?",
-			"buttons": [
-				{
-					"text": "신용카드 퀴즈"
-				},
-				{
-					"text": "체크카드 퀴즈"
-				}
-			]
-		},
+		"output": "고객님께서 젤 좋아하는 카드사는? 힌트. 접니다.",
 		"children": [
 			{
-				"name": "신용카드 퀴즈",
+				"name": "정답1",
 				"id": "default214",
 				"filename": "default",
 				"input": [
 					{
-						"text": "1"
+						"text": "신한카드"
 					},
 					{
-						"text": "신용카드"
+						"text": "신한카드 사"
+					},
+					{
+						"text": "신한"
+					},
+					{
+						"text": "shinhancard"
+					},
+					{
+						"text": "shinhan"
 					}
 				],
-				"output": "신한카드에는 몇가지 신용카드가 있을까요?\n정답을 입력해주세요!\n\n정답을 맞추시면 빵빵한 혜택을 드립니다.",
+				"output": "정답입니다! 저도 고객님을 젤 좋아합니다 ♥♥ \n\n'나도' 라고 입력하시면 다음 퀴즈를 낼게요.",
 				"children": [
 					{
 						"name": "정답",
@@ -88,70 +87,28 @@ var dialogs = [
 				]
 			},
 			{
-				"name": "체크카드 퀴즈",
-				"id": "default215",
+				"name": "오답1",
+				"id": "default254",
 				"filename": "default",
 				"input": [
 					{
-						"text": "2"
-					},
-					{
-						"text": "체크카드"
+						"if": " true"
 					}
 				],
-				"output": "신한카드에는 몇가지 채크카드가 있을까요?\n정답을 입력해주세요!\n\n정답을 맞추시면 빵빵한 혜택을 드립니다.",
-				"children": [
-					{
-						"name": "정답2",
-						"id": "default219",
-						"filename": "default",
-						"input": [
-							{
-								"text": "8"
-							}
-						],
-						"output": "와우!!\n축하드립니다!! 정답이에요."
-					},
-					{
-						"name": "오답2",
-						"id": "default220",
-						"filename": "default",
-						"input": [
-							{
-								"if": "true"
-							}
-						],
-						"output": "이런 정답이 아니에요.\n다시 시도하시겠습니까?",
-						"children": [
-							{
-								"name": "네2",
-								"id": "default221",
-								"filename": "default",
-								"input": [
-									{
-										"intent": "네"
-									}
-								],
-								"output": {
-									"up": "1"
-								}
-							},
-							{
-								"name": "아니요2",
-								"id": "default223",
-								"filename": "default",
-								"input": [
-									{
-										"intent": "아니요"
-									}
-								],
-								"output": "다음에 다시 도전해주세요~"
-							}
-						]
+				"output": {
+					"repeat": "1",
+					"options": {
+						"output": "와! (리액션하기 곤란하네) 다시 한번 입력해 주세요"
 					}
-				]
+				},
+				"task": {
+					"name": "quizcount"
+				}
 			}
-		]
+		],
+		"task": {
+			"name": "resetcount"
+		}
 	},
 	{
 		"id": "default0",
