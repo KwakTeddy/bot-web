@@ -456,84 +456,7 @@
               </div>
 
 
-                <!-- Modal Form for List-->
-                <div id="modalListForm" class="modal-block modal-block-primary mfp-hide">
-                    <section class="panel">
-                        <header class="panel-heading">
-                            <h2 class="panel-title">List 수정</h2>
-                        </header>
-                        <div class="panel-body">
-                            <div class="form-group" style="margin-top: 15px;">
-                                <label class="col-sm-2" style="padding-left: 50px;">내용</label>
-                                <div class="col-sm-9">
-                                    <input type="text" id="listTitle" ng-model="listTitle" class="mb-xs form-control valid"
-                                           placeholder="타이틀을 적어주세요"
-                                           required=""
-                                           aria-required="true" aria-invalid="false">
-                                    <input type="text" id="listContent" ng-model="listContent" class="mb-xs form-control valid"
-                                           placeholder="컨텐츠를 적어주세요"
-                                           required=""
-                                           aria-required="true" aria-invalid="false">
-                                    <span class="btn btn-default btn-file" style="padding-bottom:4px;padding-top:4px">
-                                          <input type="file" nv-file-select uploader="imageUploader" style="width:100%;">
-                                          <i ng-cloak ng-show="vm.curO.filename != ''" class="fa fa-check-square pull-right"
-                                             style="margin-top: -22px;margin-right: -8px;font-size:20px" aria-hidden="true">
-                                          </i>
-                                    </span>
-                                </div>
-                                <div class="col-sm-1" style="margin-top:80px; padding-right: 0;right: 15px">
-                                    <button ng-click="saveListContent()" class="btn btn-default btn-block">+
-                                    </button>
-                                </div>
-                            </div>
-                            <div ng-show="contentError" class="text-danger text-center">
-                                <strong ng-bind="contentError"></strong>
-                            </div>
-
-                            <div class="form-group" style="margin-bottom: 15px;margin-top: 15px">
-                                <div class="col-sm-12">
-                                    <table class="table table-bordered table-hover mb-none">
-                                        <thead>
-                                        <tr>
-                                            <th class="text-center"></th>
-                                            <th class="text-center col-md-4">타이틀</th>
-                                            <th class="text-center col-md-4">내용</th>
-                                            <th class="text-center col-md-3">이미지</th>
-                                            <th class="text-center col-md-1">관리</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr ng-repeat="item in vm.curO.list">
-                                            <td class="text-center">{{$index+1}}</td>
-                                            <td class="text-center">{{item.title}}</td>
-                                            <td class="text-center">{{item.content}}</td>
-                                            <td class="text-center">{{item.displayname}}</td>
-                                            <td>
-                                                <a class="btn btn-default btn-block btn-xs" ng-click="itemRemoveBeforeSave(item)" style="border: 0!important;">
-                                                    <i class="fa fa-minus" aria-hidden="true"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div style="margin-bottom: 15px" ng-show="contentListError" class="text-danger text-center">
-                                <strong ng-bind="contentListError"></strong>
-                            </div >
-                        </div>
-
-                        <footer class="panel-footer">
-                            <div class="row">
-                                <div class="col-md-12 text-right">
-                                    <button class="btn btn-primary" ng-disabled='!vm.curO.list' ng-click="saveList()" >저장</button>
-                                    <button class="btn btn-default" ng-click="backToEdit(false)" >이전</button>
-                                </div>
-                            </div>
-                        </footer>
-                    </section>
-                </div>
-              <!-- Modal Form for Intent -->
+                <!-- Modal Form for Intent -->
               <div id="modalIntentForm" class="modal-block modal-block-primary mfp-hide">
                 <section class="panel">
                   <header class="panel-heading">
@@ -971,7 +894,7 @@
                               <img src="{{output.image.url}}" width="100%" height="180">
                               <span class="btn btn-default btn-file" style="padding-bottom:4px;padding-top:4px">
                                               <input
-                                                      ng-click="vm.setInput($index)"
+                                                      ng-click="vm.setInput(output)"
                                                       type="file" nv-file-select uploader="imageUploader" style="width:100%;">
                                               <i ng-cloak
                                                  ng-show="output.image.url != undefined"
@@ -1063,8 +986,65 @@
                               <input type="text" id="option" name="option" ng-model="output.options.output" class="form-control">
                           </div>
                       </div>
-                      <div>
-                          {{output}}
+                      <div ng-show="vm.getOutputKind(output) == 'List'">
+                          <div  class="form-group" style="margin-top: 15px;" autofocus>
+                              <label class="col-sm-2" style="padding-left: 15px;">내용</label>
+                              <div class="col-sm-9">
+                                  <input type="text" id="listTitle" ng-model="vm.listTitle" class="mb-xs form-control valid"
+                                         placeholder="타이틀을 적어주세요"
+                                         required=""
+                                         aria-required="true" aria-invalid="false">
+                                  <input type="text" id="listContent" ng-model="vm.listContent" class="mb-xs form-control valid"
+                                         placeholder="컨텐츠를 적어주세요"
+                                         required=""
+                                         aria-required="true" aria-invalid="false">
+                                  <span class="btn btn-default btn-file" style="padding-bottom:4px;padding-top:4px">
+                                          <input
+                                                  ng-click="vm.setInput(vm.listImage)"
+                                                  type="file" nv-file-select uploader="imageUploader" style="width:100%;">
+                                          <i
+                                              ng-cloak ng-show="vm.listImage.image != undefined" class="fa fa-check-square pull-right"
+                                             style="margin-top: -22px;margin-right: -8px;font-size:20px" aria-hidden="true">
+                                          </i>
+                                    </span>
+                              </div>
+                              <div class="col-sm-1" style="margin-top:80px; padding-right: 0;right: 15px">
+                                  <button ng-click="saveListContent(output)" class="btn btn-default btn-block">+
+                                  </button>
+                              </div>
+                          </div>
+                          <div ng-show="vm.contentError" class="text-danger text-center">
+                              <strong ng-bind="vm.contentError"></strong>
+                          </div>
+
+                          <div class="form-group" style="margin-bottom: 15px;margin-top: 15px">
+                              <div class="col-sm-12">
+                                  <table class="table table-bordered table-hover mb-none">
+                                      <thead>
+                                      <tr>
+                                          <th class="text-center"></th>
+                                          <th class="text-center col-md-4">타이틀</th>
+                                          <th class="text-center col-md-3">내용</th>
+                                          <th class="text-center col-md-3">이미지</th>
+                                          <th class="text-center col-md-2">관리</th>
+                                      </tr>
+                                      </thead>
+                                      <tbody>
+                                      <tr ng-repeat="item in output.list">
+                                          <td class="text-center">{{$index+1}}</td>
+                                          <td class="text-center">{{item.title}}</td>
+                                          <td class="text-center">{{item.content}}</td>
+                                          <td class="text-center">{{item.displayname}}</td>
+                                          <td>
+                                              <a class="btn btn-default btn-block btn-xs" ng-click="itemRemoveBeforeSave(output.list,item)" style="border: 0!important;">
+                                                  <i class="fa fa-minus" aria-hidden="true"></i>
+                                              </a>
+                                          </td>
+                                      </tr>
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
                       </div>
                       <div class="text-center">or</div>
                   </div>

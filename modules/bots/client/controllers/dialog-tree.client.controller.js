@@ -60,35 +60,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         modal: true,
       });
 
-      $('.modal-with-form').magnificPopup({
-        type: 'inline',
-        preloader: false,
-        focus: '#name',
-        modal: false,
-
-        removalDelay: 300,
-        mainClass: 'my-mfp-slide-bottom',
-
-        // When elemened is focused, some mobile browsers in some cases zoom in
-        // It looks not nice, so we disable it:
-        callbacks: {
-          beforeOpen: function() {
-            if (!document.getElementById('name').readonly) {
-              this.st.focus = '#name';
-            }
-            if (!document.getElementById('input_div').classList.contains("ng-hide")) {
-              this.st.focus = '#input';
-            }
-          }
-        }
-      });
-
-      $('.modal-with-task').magnificPopup({
-        type: 'inline',
-        preloader: false,
-        focus: '#name',
-        modal: true,
-      });
 
       $('.modal-with-intent').magnificPopup({
         type: 'inline',
@@ -98,18 +69,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         callbacks: {
           beforeOpen: function() {
             this.st.focus = '#name';
-          }
-        }
-      });
-
-      $('.modal-with-list').magnificPopup({
-        type: 'inline',
-        preloader: false,
-        focus: '#listContent',
-        modal: true,
-        callbacks: {
-          beforeOpen: function() {
-            this.st.focus = '#listContent';
           }
         }
       });
@@ -231,63 +190,40 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       "\n\t\tcallback(task,context);\n\t}\n};\n\n" +
       "bot.setTask('newTask',newTask);";
 
-
-    // $scope.saveIntent = function () {
-    //   $scope.intent.botName = $rootScope.botId;
-    //   $scope.intent.content = $scope.intentContent;
-    //   $scope.intent.$save({botName: $rootScope.botId},successCallback, errorCallback);
-    //
-    //   function successCallback(res) {
-    //     console.log(res);
-    //     $scope.backToEdit(false);
-    //   }
-    //
-    //   function errorCallback(res) {
-    //     console.log(res);
-    //   }
-    // };
-
-    $scope.saveList = function(isValid) {
-      if (vm.curO.list)
-        vm.curO.str = '' + vm.curO.list.map(function(item) { return item.title; });
-      $scope.saveO();
-      $scope.backToEdit(false);
-    };
-
-    $scope.saveListContent = function(isValid) {
-      if ($scope.listTitle == '') {
+    $scope.saveListContent = function(output) {
+      if (!vm.listTitle || vm.listTitle === '') {
         return;
       }
 
-      if (vm.curO.list) {
-        for(var i = 0; i < vm.curO.list.length; ++i){
-          if (vm.curO.list[i].title == $scope.listTitle){
-            $scope.contentError = '동일한 항목이 존재합니다';
+      if (output.list) {
+        for(var i = 0; i < output.list.length; ++i){
+          if (output.list[i].title == vm.listTitle){
+            vm.contentError = '동일한 항목이 존재합니다';
             return false
           }
         }
       }
-      $scope.contentError = '';
+      vm.contentError = '';
 
-      var item = {title:$scope.listTitle};
-      if ($scope.listContent)
-        item.content = $scope.listContent;
-      if (vm.curO.filename) {
-        item.image = '/files/' + vm.curO.filename;
-        item.displayname = vm.curO.str;
+      var item = {title:vm.listTitle};
+      if (vm.listContent)
+        item.content = vm.listContent;
+
+      if (vm.listImage.image) {
+        item.displayname = vm.listImage.image.displayname;
+        item.filename = vm.listImage.image.url;
       }
 
-      (vm.curO.list = vm.curO.list || []).push(item);
-      vm.curO.filename = '';
-      vm.curO.str = '';
-      $scope.listTitle = '';
-      $scope.listContent = '';
+      (output.list = output.list || []).push(item);
+      delete vm.listImage.image;
+      vm.listTitle = '';
+      vm.listContent = '';
     };
 
-    $scope.itemRemoveBeforeSave = function(target) {
-      var index = vm.curO.list.indexOf(target);
+    $scope.itemRemoveBeforeSave = function(list, target) {
+      var index = list.indexOf(target);
       if(index > -1){
-        vm.curO.list.splice(index, 1)
+        list.splice(index, 1)
       }
     };
 
@@ -525,6 +461,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     var vm = this;
+    vm.listImage = {};
     vm.showTree = true;
     vm.userId = $rootScope.userId;
     vm.bot_id = $stateParams.botId ? $stateParams.botId : $cookies.get('botObjectId');
@@ -1035,7 +972,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     document.getElementById('modalTaskForm').addEventListener("keydown", keydown);
     document.getElementById('modalHelpForm').addEventListener("keydown", keydown);
     document.getElementById('modalIntentForm').addEventListener("keydown", keydown);
-    document.getElementById('modalListForm').addEventListener("keydown", keydown);
     document.getElementById('modalEntityForm').addEventListener("keydown", keydown);
     document.getElementById('mainpage').focus();
 
@@ -3206,7 +3142,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       // Show success message
       $scope.success['image'] = true;
 
-      $scope.dialog.output[vm.currentIdx].image = { url: '/files/' + response.filename, displayname: response.displayname };
+      vm.current.image = { url: '/files/' + response.filename, displayname: response.displayname };
       // Clear upload buttons
       $scope.cancelImageUpload();
     };
@@ -3638,7 +3574,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     vm.setInput = function(cur) {
-      vm.currentIdx = cur;
+      vm.current = cur;
     };
 
     $scope.openIntent = function(task, isCommon) {
