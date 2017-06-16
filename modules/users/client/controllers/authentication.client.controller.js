@@ -152,7 +152,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
           if(window.location.href.indexOf('developer') > -1){
             $state.go('developer-home')
           }else {
-            $state.go($state.previous.state.name || 'home', $state.previous.params);
+            $state.go('home');
           }
         }
       }).error(function (response) {
@@ -208,7 +208,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                   if(window.location.href.indexOf('developer') > -1){
                     $state.go('developer-home')
                   }else {
-                    $state.go($state.previous.state.name || 'home', $state.previous.params);
+                    $state.go('home');
                   }              };
               $scope.resend = function () {
                   modalInstance.dismiss();
@@ -224,7 +224,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                       if(window.location.href.indexOf('developer') > -1){
                         $state.go('developer-home')
                       }else {
-                        $state.go($state.previous.state.name || 'home', $state.previous.params);
+                        $state.go('home');
                       }
                   }).error(function (response) {
                       console.log(response)

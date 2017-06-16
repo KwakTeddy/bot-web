@@ -6,9 +6,9 @@
     .module('dialogsets')
     .controller('DialogsetDialogsLearnController', DialogsetDialogsLearnController);
 
-  DialogsetDialogsLearnController.$inject = ['$scope', '$state', '$window', 'Authentication', 'UserBotDialogService', 'dialogsResolve', 'botResolve', '$cookies', '$timeout'];
+  DialogsetDialogsLearnController.$inject = ['$scope', '$state', '$window', 'Authentication', 'UserBotDialogService', 'dialogsResolve', 'botResolve', '$cookies', '$timeout', 'DTOptionsBuilder', '$compile'];
 
-  function DialogsetDialogsLearnController($scope, $state, $window, Authentication, UserBotDialogService, getDialogs, botResolve, $cookies, $timeout) {
+  function DialogsetDialogsLearnController($scope, $state, $window, Authentication, UserBotDialogService, getDialogs, botResolve, $cookies, $timeout, DTOptionsBuilder, $compile) {
     var vm = this;
     vm.authentication = Authentication;
     vm.bot = botResolve.data;
@@ -18,6 +18,7 @@
     vm.error = null;
     vm.filterDialogs = angular.copy(vm.dialogs);
     vm.hasParentDialogs = [];
+    vm.type = 'defaultDialogset';
 
     if(vm.dialogs.length){
       for(var i = vm.dialogs.length - 1; i >= 0; i--){
@@ -38,6 +39,10 @@
         }
       }
     }
+    vm.changeType = function (type) {
+      vm.type = type
+    }
+
 
     vm.createDialog = function() {
       vm.dialog.$save(function (response) {
@@ -106,7 +111,17 @@
         vm.createDialog();
         angular.element('#question').focus();
       }
-    }
+    };
+
+    vm.dtOptions = DTOptionsBuilder.newOptions()
+      .withOption('bLengthChange', false)
+      .withOption('info', false)
+      .withOption('dom', 'l<"toolbar">frtip')
+      .withOption('initComplete', function(settings, json) {
+        $('#dt_filter > label > input[type="search"]').addClass('form-control').attr('placeholder', 'Search');
+        $("div.toolbar").html('<button id="addToTable" class="btn btn-primary" ui-sref="dialogsets.create"><i class="fa fa-plus"></i> 신규등록</button>');
+        $compile(angular.element(document.querySelector('div.toolbar')).contents())($scope);
+      })
 
   }
 })();
