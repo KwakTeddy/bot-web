@@ -150,9 +150,9 @@ angular.module('core').controller('LandingBotsController', ['$scope', '$state', 
     $cookies.put('default_bot', bot.id);
     $cookies.put('botObjectId', bot._id);
     $state.go('dialogsets.dialogsLearn');
-    $timeout(function () {
+    $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
       $window.location.reload();
-    }, 100)
+    });
   };
 
   $scope.deleteBot = function (bot) {
