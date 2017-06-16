@@ -11,38 +11,6 @@
   function EntitysController($scope, $state, Authentication, entity, $resource, EntitysService, $rootScope, $http, $timeout, $cookies) {
     var vm = this;
 
-    vm.people = [
-      { label: 'Joe'},
-      { label: 'Mike'},
-      { label: 'Mike1'},
-      { label: 'Mike2'},
-      { label: 'Mike3'},
-      { label: 'Mike4'},
-      { label: 'Diane'}
-    ];
-    $scope.people = [
-      { label: 'Joe'},
-      { label: 'Mike'},
-      { label: 'Diane'}
-    ]
-
-    vm.searchTopic = function(topicTerm) {
-      console.log(topicTerm)
-      var topicList = [];
-      angular.forEach(vm.people, function(item) {
-        if (item.label.toUpperCase().indexOf(topicTerm.toUpperCase()) >= 0) {
-          topicList.push(item);
-        }
-      });
-      vm.found = topicList;
-      console.log(topicList)
-    };
-
-    vm.getTopicTextRaw = function(topic) {
-      console.log(topic)
-      return '@' + topic.label;
-    };
-
     vm.authentication = Authentication;
     vm.entity = entity;
     $scope.entity = vm.entity;
