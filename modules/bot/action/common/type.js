@@ -1489,7 +1489,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
       if(context.botUser.contexts && context.botUser.contexts.length > 0) {
         topicKeywords = [];
         for(var j = 0; j < context.botUser.contexts.length; j++)
-          if(context.botUser.contexts[j].name) topicKeywords.push(context.botUser.contexts[j].name);
+          if(context.botUser.contexts[j].name) topicKeywords.push({text: context.botUser.contexts[j].name, pos: 'Noun'});
       } else if(topicKeywords.length == 0 && context.botUser.topic && context.botUser.topic.length > 0) {
         topicKeywords = context.botUser.topic;
       }
