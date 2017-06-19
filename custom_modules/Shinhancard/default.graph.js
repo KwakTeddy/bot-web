@@ -2331,7 +2331,7 @@ var dialogs = [
 								]
 							}
 						],
-						"output": "[+listType.inputRaw+]\n\n답변: +listType.output+\n\n더 필요하신 게 있으시면 말씀해주세요~\n처음으로 돌아가시려면 '시작'이라고 말씀해주세요",
+						"output": "[+listType.inputRaw+]\n\n답변: +listType.output+\n\n더 필요하신 게 있으시면 말씀해주세요~\n처음으로 돌아가시려면 '시작'이라고 말씀해주세요.",
 						"children": [
 							{
 								"name": "FAQ재검색2",
