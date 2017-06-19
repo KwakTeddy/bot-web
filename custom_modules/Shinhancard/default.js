@@ -135,15 +135,15 @@ var fanfaqType = {
     raw: true,
     context: true,
     mongo: {
-        model: 'fan_faq',
-        queryFields: ['title'],
-        fields: 'title content created' ,
-        taskFields: ['_id','title','content'],
-        // model: 'dialogsetdialogs',
-        // queryFields: ['input'],
-        // queryStatic: {dialogset: ObjectId("59474590df0c859b48a6e86f")},
-        // fields: 'dialogset input inputRaw output context' ,
-        // taskFields: ['input', 'inputRaw', 'output', 'matchCount', 'matchRate', 'dialogset', 'context'],
+        // model: 'fan_faq',
+        // queryFields: ['title'],
+        // fields: 'title content created' ,
+        // taskFields: ['_id','title','content'],
+        model: 'dialogsetdialogs',
+        queryFields: ['input'],
+        queryStatic: {dialogset: ObjectId("59474590df0c859b48a6e86f")},
+        fields: 'dialogset input inputRaw output context' ,
+        taskFields: ['input', 'inputRaw', 'output', 'matchCount', 'matchRate', 'dialogset', 'context'],
         taskSort: function(a, b) {
             if(b.matchCount > a.matchCount) return 1;
             else if(b.matchCount < a.matchCount) return -1;
