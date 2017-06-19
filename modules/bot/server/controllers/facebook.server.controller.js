@@ -330,7 +330,7 @@ function sendTextMessage(recipientId, text, task, token) {
     var subtext = text.substring(0, 639);
     var buttons = [{
       "type":"web_url",
-      "url": config.host,
+      "url": config.host + '/developer/privacy',
       "title":"전문 보기"
     }];
 
