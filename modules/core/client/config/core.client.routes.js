@@ -63,5 +63,12 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
             ignoreState: true
         }
     })
+    .state('facebookOvertext', {
+      url: '/developer/facebookOvertext',
+      templateUrl: 'modules/users/client/views/authentication/signup.client.privacy.view.html',
+      data: {
+        ignoreState: true
+      }
+    })
   }
 ]);
