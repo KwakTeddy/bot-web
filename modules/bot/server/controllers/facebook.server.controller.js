@@ -360,8 +360,8 @@ function sendTextMessage(recipientId, text, task, token) {
         text: text
       }
     };
-    callSendAPI(messageData, token);
   }
+  callSendAPI(messageData, token);
 }
 
 
