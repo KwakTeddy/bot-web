@@ -16,6 +16,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     (function($) {
       'use strict';
 
+      // deprecated
       $('.modal-with-move-anim').magnificPopup({
         type: 'inline',
 
@@ -33,6 +34,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         modal: true
       });
 
+      // deprecated
       /*
        Modal Dismiss
        */
@@ -41,6 +43,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         $.magnificPopup.close();
       });
 
+      // deprecated
       /*
        Modal Confirm
        */
@@ -128,6 +131,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     $scope.$state = $state;
 
+    // sateChange가 있을 때 불림
     $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
       if (vm.isChanged) {
         event.preventDefault();
@@ -148,6 +152,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     });
 
+    //$scope.$apply를 exception-safe 하게 해주는 함수
     $scope.safeApply = function(fn) {
       var phase = this.$root.$$phase;
       if(phase == '$apply' || phase == '$digest') {
@@ -186,10 +191,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     var editor;
 
+    // 새로운 task 추가시 사용되는 template
     var newTask_template = "\nvar newTask = {\n\tname: 'newTask',\n\taction: function (task,context,callback) {" +
       "\n\t\tcallback(task,context);\n\t}\n};\n\n" +
       "bot.setTask('newTask',newTask);";
 
+    // list item 저장
     $scope.saveListContent = function(output) {
       if (!vm.listTitle || vm.listTitle === '') {
         return;
@@ -220,6 +227,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.listContent = '';
     };
 
+    // list item 지우기
     $scope.itemRemoveBeforeSave = function(list, target) {
       var index = list.indexOf(target);
       if(index > -1){
@@ -401,6 +409,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
 
 
+    // 새로운 task 추가
     $scope.addTask = function() {
 
       vm.fromTask = true;
@@ -417,6 +426,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
 
+    // editor의 위치 설정 (task이름으로 검색)
     $scope.setPosition = function(task) {
       var lines = vm.currentTab.data.split("\n");
       for (var where=0; where < lines.length; ++where) {
@@ -461,13 +471,15 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     var vm = this;
-    vm.listImage = {};
     vm.showTree = true;
     vm.userId = $rootScope.userId;
     vm.bot_id = $stateParams.botId ? $stateParams.botId : $cookies.get('botObjectId');
-    // vm.bot_id = $stateParams.botId ? $stateParams.botId : $rootScope.botObjectId;
     vm.file_id = $stateParams.fileId ? $stateParams.fileId : file._id;
+
+    // 새로운 dialog 추가시 next id
     vm.maxId = 0;
+
+    // undo를 위한 data
     vm.isChanged = false;
     vm.changeHistory = [];
 
@@ -477,9 +489,15 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     vm.data = file.data;
     vm.files = files;
 
-    vm.initialized = false;
     vm.smallDialog = true;
 
+    // filetree 초기화여부
+    vm.initialized = false;
+
+    // output-list에서 이미지 저장용
+    vm.listImage = {};
+
+    // initialize file tree
     vm.initTree = function() {
       if (vm.initialized)
         return;
@@ -524,12 +542,14 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       });
     };
 
+    // tab 초기화
     vm.initTabs = function() {
       vm.tabs.forEach(function(t) {
         t.active = false;
       });
     };
 
+    // tab 추가
     vm.addTab = function(name, action) {
       files.forEach(function(f) {
         if (f.name === name) {
@@ -546,6 +566,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
+    // 탭 바꾸기
     $scope.changeTabName  = function (name) {
       var tab = null;
       vm.tabs.forEach(function(t) {
@@ -643,6 +664,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }, 100);
     };
 
+    // editor 파일 저장
     vm.saveFile = function () {
       new BotFilesService({botId: vm.bot_id, _id: vm.currentTab.file_id, fileData: vm.currentTab.data}).$save(function (botFile) {
         $resource('/api/loadBot/:bot_id/:fileName', {}).get({bot_id: vm.botId, fileName: vm.fileName}, function(res) {
@@ -667,6 +689,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
+    // undo, changeHistoryd에 정보가 있으면 pop해서 복원
     $scope.undo = function() {
       if (vm.changeHistory.length > 0) {
         var history = vm.changeHistory.pop();
@@ -705,20 +728,30 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     console.log('Tree Controller');
 
+
     // internal data represented by tree
-    var links_internal = [];
     var nodes = [];
-    var dialogs;
-    var common_dialogs;
     var treeData;
 
-    // var currentDialog;
+    // dialogs
+    var dialogs;
+    // common dialogs
+    var common_dialogs;
+
+    // call, callChild등의 path를 그리기 위함
+    var links_internal = [];
+
+    // highlight된 노드
     var currentNode;
+
+    // 현재 선택된 노드와 svg
     var selectedNode;
     var selectedSVG;
 
+    // collapse/expand용 current depth
     vm.depth = 1;
 
+    // chatting 창에서 선택된 dialog 하이라이트를 위해 사용
     $scope.$on('updateLog', function(event, arg0) {
       var index = $rootScope.logUpdated.indexOf('[DIALOG_SEL]');
 
@@ -750,6 +783,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     });
 
+    // 선택된 node 업데이트
     var updateSelected = function(newd) {
       selectedNode = newd;
       selectedSVG = baseSvg.selectAll(".node").filter(function(d) {
@@ -763,6 +797,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         edit(selectedNode);
     };
 
+    // file tree toggle
     var toggleFileTree = function(event) {
       event.preventDefault();
       if (document.getElementById('filetree_close').style.display == 'none') {
@@ -782,6 +817,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     var keydown = function(event) {
 
+      // search 인풋필드나 filetree에 포커스 있는 경우 스킵
       if (document.activeElement == document.getElementById('inputbox') ||
           document.activeElement == document.getElementById('treeBasic')) {
         return false;
@@ -939,6 +975,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
+    // 화면 크기 변경시 내부 그래프나 editor창 크기 자동 변경
     var element = document.getElementById('tree-container');
     var element2 = document.getElementById('editor-container');
     new ResizeSensor(element, function() {
@@ -1105,6 +1142,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         return o.str.substring(0,10);
     };
 
+    // deprecated
     $scope.printOutput= function(o) {
       return 'deprecated';
       if (vm.typeClass[o.type].input === 'button')
@@ -1113,6 +1151,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         return o.str.substring(0,10);
     };
 
+    // deprecated
     $scope.openEditO = function(o, output, first) {
       if ($scope.getInputType(o.type) === 'button')
         return;
@@ -1170,6 +1209,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
+    // deprecated
     $scope.saveO = function() {
       if ($scope.getInputType(vm.curO.type) != 'text' && vm.curO.str === "") {
         $scope.resetO();
@@ -1197,10 +1237,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.inputMode = false;
     };
 
+    // deprecated
     $scope.resetO= function() {
       vm.inputModeO = false;
     };
 
+    // action 타입 데이터 초기화
     $scope.resetActions = function(i) {
       delete i.call;
       delete i.callChild;
@@ -1220,6 +1262,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
+    // deprecated
     $scope.getPlaceHolder = function(type, isOut) {
       if (type === 'Keyword') {
         if (isOut) return "답변을 입력해주세요";
@@ -1258,6 +1301,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     vm.typeClass['Button'] = {btn:'btn-success',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-play-circle', iconColor: 'red', input:'text'};
     vm.typeClass['URLButton'] = {btn:'btn-success',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-play-circle', iconColor: 'red', input:'text_for_button'};
 
+    // deprecated
     var findType = function(input, typeName) {
       for (var i=0; i < input.length; ++i) {
         if (input[i].type === typeName) {
@@ -1267,12 +1311,14 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       return false;
     };
 
+    // deprecated
     var addType = function(types, type) {
       if (types.indexOf(type) == -1) {
         types.push(type);
       }
     };
 
+    // deprecated
     var removeType = function(types, type) {
       if (types.indexOf(type) != -1) {
         types.splice(types.indexOf(type), 1);
@@ -1289,6 +1335,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       return types;
     };
 
+    // deprecated
     $scope.getOutputTypes = function(input, i) {
       var types = [];
       if (!input) return types;
@@ -1364,6 +1411,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       $scope.initButton();
     };
 
+    // 키워드 검색용
     var currentKeyword = "";
     var currentKind = "";
     var currentSearchIdx = 0;
@@ -1413,6 +1461,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
+    // 키워드 replace
     $scope.replaceNode = function(event) {
       var selectedVal = document.getElementById('search').value;
       var replacedVal = document.getElementById('replace').value;
@@ -1562,6 +1611,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       return input;
     };
 
+    // dialog output -> 편집용 output 으로 변환
     var procOutput = function(d) {
       // if (d.list) {
       //   r.push({type:'List', str:''+d.list.map(function(item) { return item.title; }), list:d.list});
@@ -1617,6 +1667,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       return res;
     };
 
+    // 편집용 output -> dialog output 으로 변환
     var restoreOutput = function(result) {
       var output = [];
 
@@ -1653,31 +1704,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       return output;
     };
 
-    // output handling
+    // output tab handling
     vm.outputKind = [
       {name:"Text",  active:true},
       {name:"Content",  active:false},
       {name:"List",  active:false},
       {name:"Action",  active:false},
     ];
-
-    vm.actionList = ['Call','CallChild','ReturnCall','Up', 'Repeat', 'Return'];
-
-    vm.removeButton = function(output, idx) {
-      output.buttons.splice(idx,1);
-    };
-
-    vm.addButton = function(output) {
-      (output.buttons = output.buttons || []).push({text:''});
-    };
-
-    vm.getActionType = function(output) {
-      if (vm.getOutputKind(output) != 'Action')
-        return;
-      if (!output.type || !vm.actionList.indexOf(output.type))
-        output.type = "Call";
-      return output.type;
-    };
 
     vm.changeOutputKind = function(output, kind) {
       vm.outputKind.forEach(function(k) {k.active = false});
@@ -1692,6 +1725,27 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       return 'Text';
     };
 
+    // action 타입에 사용되는 select list
+    vm.actionList = ['Call','CallChild','ReturnCall','Up', 'Repeat', 'Return'];
+
+    vm.getActionType = function(output) {
+      if (vm.getOutputKind(output) != 'Action')
+        return;
+      if (!output.type || !vm.actionList.indexOf(output.type))
+        output.type = "Call";
+      return output.type;
+    };
+
+    // button handlings
+    vm.removeButton = function(output, idx) {
+      output.buttons.splice(idx,1);
+    };
+
+    vm.addButton = function(output) {
+      (output.buttons = output.buttons || []).push({text:''});
+    };
+
+    // 수정 열기
     $scope.findOne = function (dialog, isStartNode) {
       if (isStartNode)
         vm.isStartNode = true;
@@ -1757,21 +1811,25 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     };
 
+    // deprecated
     $scope.openEditorTask  = function() {
       $('#content').css('padding-right', '450px');
       $('#modalTaskForm').show();
     };
 
+    // deprecated
     $scope.closeEditorTask= function() {
       $('#modalTaskForm').hide();
       $('#content').css('padding-right', '0px');
     };
 
+    // deprecated
     $scope.openEditor = function() {
       $('#content').css('padding-right', '450px');
       $('#modalForm').show();
     };
 
+    // deprecated
     $scope.closeEditor = function() {
       $('#modalForm').hide();
       $('#content').css('padding-right', '0px');
@@ -1796,6 +1854,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
+    // 수정한 node dialog에 저장
     $scope.update = function (isValid) {
 
       vm.edit = false;
@@ -1827,6 +1886,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       //Dialogs.update(dialog);
     };
 
+    // 전체 dialog 저장
     $scope.save = function(func) {
       //vm.changeHistory = [];
       vm.setChanged(false);
@@ -1879,7 +1939,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         });
     };
 
-
+    // call, callChild 등에서 자기 자신 제외한 현재 호출 가능한 dialog 리스트를 가져오는 함수
     vm.dialogList = function() {
       var names = [];
 
@@ -1995,6 +2055,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       delete dialog.buttons;
     };
 
+    // dialog traverse 하며 빠진 내용 채워주고 graph 에 보여줄 내용 채움
     var handleDialog = function(dialog)
     {
       dialog.name = dialog.name || (dialog.name = "dialog" + "_" + dialog.id);
@@ -2085,6 +2146,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
+    // tree graph 데이터 초기화
     vm.initTreeData = function() {
       handleDialog(common_dialogs[0]);
       treeData = angular.copy(common_dialogs[0]);
@@ -2124,6 +2186,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       console.log(links_internal);
     };
 
+    // tree reload
     vm.reloadTree = function() {
       $resource('/api/dialogs/:bot_id/:file_id', {}).get({bot_id: vm.bot_id, file_id: vm.file_id}, function(res) {
         vm.botId = res.botId;
@@ -2203,10 +2266,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       .attr('class', 'd3-tip')
       .offset([-10, 0])
       .html(function(d) {
-        // var input_text = (typeof d.input_text == 'string' ? d.input_text.replace(/(?:\r\n|\r|\n)/g, '<br />') : d.input_text);
-        // var output_text = (typeof d.output_text == 'string' ? d.output_text.replace(/(?:\r\n|\r|\n)/g, '<br />') : d.output_text);
-        // return "<strong>Input:</strong><br/><span style='color:cornflowerblue'>" + input_text + "</span><br/><br/>" +
-        //   "<strong>Output:</strong><br/><span style='color:cornflowerblue'>" + output_text + "</span>";
         return "<image src='" + d.image_text + "' height='150px'>";
       });
     baseSvg.call(tip);
@@ -2214,6 +2273,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     // Append a group which holds all nodes and which the zoom Listener can act upon.
     var svgGroup = baseSvg.append("g");
 
+    // d3 graph 초기화
     var init = function(source) {
 
       // Define the root
@@ -2247,6 +2307,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     var links_SVG, links_internal_SVG;
 
+    // 실제 d3 graph를 그리는 함수
     function update(source, collapseAll) {
       if(vm.smallDialog) {
         rectW = 200;
@@ -2297,12 +2358,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       childCount(0, root);
 
-      // var prev = 0;
-      // for (var i=0; i < levelWidth.length; ++i) {
-      //   levelWidth[i] = prev + levelWidth[i];
-      //   prev = levelWidth[i]-2 ;
-      // }
-
       var newHeight = d3.max(levelWidth) * itemHeight;
       tree = tree.size([newHeight, viewerWidth]);
 
@@ -2320,23 +2375,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       // Set widths between levels based on maxLabelLength.
       nodes_tree.forEach(function (d) {
-        //d.y = (d.depth * (maxLabelLength * 10)); //maxLabelLength * 10px
         d.y = (d.depth * labelWidth); //maxLabelLength * 10px
-        // alternatively to keep a fixed scale one can set a fixed depth per level
-        // Normalize for fixed-depth by commenting out below line
-        // d.y = (d.depth * 500); //500px per level.
       });
 
-      // var layout = function(node) {
-      //   if (node.parent != null) {
-      //     node.x = node.parent.x + itemHeight * node.parent.children.indexOf(node);
-      //   }
-      //   if (node.children) {
-      //     node.children.forEach(layout);
       d3.selectAll('node').remove();
-      //   }
-      // };
-      // treeData.children.forEach(layout);
 
       // Update the nodes…
       var node = svgGroup.selectAll("g.node")
@@ -2361,12 +2403,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         .attr("rx", 5)
         .attr("ry", 5)
         .style('fill', 'white');    //#DADAEB  //eee
-      // .attr("stroke-width", 2)
-      // .style("stroke", function (d) {
-      //   return d._children ? "lightsteelblue" : "#fff";
-      // })
-      //.on('mouseover', tip.show)
-      //.on('mouseout', tip.hide);
 
       // add the text
       nodeEnter.append("text")
@@ -2513,56 +2549,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       }
 
-      // Change the rect fill depending on whether it has children and is collapsed
-      // node.select("rect.nodeRect")
-      //   .style("stroke", function (d) {
-      //     return d._children ? "lightsteelblue" : "#fff";
-      //   });
-
+      // deprecated
       // Transition nodes to their new position.
       var nodeUpdate = node.transition()
         .duration(duration)
         .attr("transform", function (d) {
           return "translate(" + d.y + "," + d.x + ")";
         });
-
-
-      //add the text
-      // nodeUpdate.select("text#name")
-      //   .text(function(d) { return d.name; });
-      //
-      // nodeUpdate.select("text#input")
-      //   .text(function(d) { return "In: " + (d.input_text ? d.input_text: ""); })
-      //   .call(wrap, rectW-30, 1);
-      //
-      // nodeUpdate.select("text#task")
-      //   .text(function(d) {
-      //     if (d.task && d.task.name)
-      //       return "Task: " + d.task.name;
-      //     else if (d.task)
-      //       return "Task: " + d.task;
-      //     return "Task: ";
-      //   })
-      //   .call(wrap, rectW-25, 2);
-      //
-      // nodeUpdate.select("text#output")
-      //   .text(function(d) { return "Out: " + (d.output_text ? d.output_text : ""); })
-      //   .call(wrap, rectW-25, 2);
-      //
-      // nodeUpdate.select("text#image")
-      //   .text(function(d) { return "Image: " + (d.image_text ? d.image_text: ""); })
-      //   .call(wrap, rectW-25, 1);
-      //
-      // nodeUpdate.select("text#button")
-      //   .text(function(d) { return "Button: " + (d.buttons ? d.buttons + "": ""); })
-      //   .call(wrap, rectW-25, 1);
-
-      // Fade the text in
-      // nodeUpdate.select("text")
-      //   .transition().duration(0)
-      //   .style("fill", "red")
-      //   .transition().duration(1000)
-      //   .style("fill", "black");
 
       // Transition exiting nodes to the parent's new position.
       var nodeExit = node.exit().transition()
@@ -2690,17 +2683,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       // define a d3 diagonal projection for use by the node paths later on.
       drawLink(links_internal_SVG, links_internal, "link_internal", diagonal);
 
-      // var edgelabels = svgGroup.selectAll(".edgelabel")
-      //   .data(links_internal)
-      //   .enter().append('text')
-      //   .text(function(d) { return d.type; })
-      //   .attr("x", function(d) {
-      //     return ((d.source.x + rectW/2 + d.target.x + rectW/2 )/2);
-      //   })
-      //   .attr("y", function(d) {
-      //     return ((d.source.y + rectH/2 + d.target.y + rectH/2 )/2);
-      //   });
-
       // Stash the old positions for transition.
       nodes_tree.forEach(function (d) {
         d.x0 = d.x;
@@ -2826,10 +2808,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     }
 
     // node interactions
-
-    var dblclick_occured = false;
+    var dblclick_occured = false; // to distinguish dblclick and click events
     var t = null;
     var tempSVG = null;
+
     // Toggle children on click.
     function click(d) {
       tempSVG = d3.select(this);
@@ -2902,6 +2884,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       zoomListener.translate([x, y]);
     }
 
+    // child node 추가
     function addChild(d) {
       var isCallNode = false;
       if (d.output) {
@@ -2960,6 +2943,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       selectedSVG = null;
     }
 
+    // src, target 노드 swap
     function swapNode(parent,src, target) {
       var srcNode = parent.children[src];
       var targetNode = parent.children[target];
@@ -3006,12 +2990,14 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     }
 
     // assumption: idx is already checked when creating buttons for the following actions
+    // 위에 노드와 swap
     function goUp(d) {
       vm.setChanged(true , true);
       var idx = d.parent.children.indexOf(d);
       swapNode(d.parent, idx, idx-1 );
     }
 
+    // 아래 노드와 swap
     function goDown(d) {
       vm.setChanged(true, true);
       var idx = d.parent.children.indexOf(d);
@@ -3057,6 +3043,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     }
 
+    // d3 event와 angular event 연결 (수정 버튼)
     function edit(d) {
       if (d3.event)
         d3.event.stopPropagation();
@@ -3067,6 +3054,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     }
 
+    // wrapping text in d3 graph
     function wrap(text, width, maxLine) {
       text.each(function() {
         var text = d3.select(this),
@@ -3203,7 +3191,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       return d;
     }
 
-
     vm.handleCurrent = function(d) {
       if (d.depth == vm.depth) {
         if (d.children) {
@@ -3312,6 +3299,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
+    // show dialogs or common dialogs
     vm.dialog = true;
     vm.showDialog = function() {
       vm.changeHistory = [];
@@ -3341,8 +3329,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       });
     };
 
-    // for task template
-    //TODO: this should be a separte module
+    // for task template (pasted from playchat.ai code) which should be provided as a seperate module to be shared
     var types = {
       "string": {"type":"string"},
       "date" : {"type":"string", "format":"date"},
@@ -3358,6 +3345,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     var jsonEditor;
 
+    // schema parsing
     vm.parseSchema = function(dataSchema) {
       var jsonSchema;
       try {
@@ -3433,6 +3421,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       };
       //JSONEditor.defaults.options.show_erros = 'change';
 
+      // to validate inputs such as handphone number
       var custom_validator = function(schema, value, path) {
         var errors = [];
 
@@ -3531,6 +3520,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         jsonEditor.setValue(temp);
       }
 
+      // editor 내에 list 에 element 추가시 자동으로 $compile 불러주기
       jsonEditor.on('change', function() {
         console.log('editor.onchange -> $compile editor');
         var inputList = document.getElementsByName("mine");
@@ -3550,6 +3540,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       });
     };
 
+    // editor에서 task 열어주는 함수
     $scope.openTask = function(task, isCommon) {
       if (!$scope.dialog.task || ($scope.dialog.task.name || $scope.dialog.task.template) !== task.name)
         $scope.dialog.task = task;
@@ -3573,6 +3564,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
+    // output-list에 image upload or content image upload시 사용
     vm.setInput = function(cur) {
       vm.current = cur;
     };
@@ -3584,6 +3576,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       });
     };
 
+    // deprecated
     $scope.openList = function(task, isCommon) {
       vm.curO.filename = '';
       $timeout(function() {
@@ -3597,6 +3590,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       $('.modal-with-entity').click();
     };
 
+    // editor에서 graph editor로 돌아가기
     $scope.backToEdit = function(ok) {
       vm.edit = 'dialog';
       if (!ok) {
@@ -3625,6 +3619,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 )
 .directive('autoFocus', [ '$timeout', function ($timeout) {
   return {
+    // input filed autofocus에 사용
     restrict: 'A',
 
     link: function ($scope, $element, $attributes) {
