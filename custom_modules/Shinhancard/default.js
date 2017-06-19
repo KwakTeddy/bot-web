@@ -49,6 +49,33 @@ var dialogsType = {
 
 bot.setType("dialogsType", dialogsType);
 
+var numType = {
+  name: 'num',
+  typeCheck: numTypeCheck
+}
+
+bot.setType("numType", numType);
+
+function numTypeCheck(text, type, task, context, callback) {
+  if(text.search(/^(\d)+$/g) != -1) {
+    console.log('text: '+text);
+    if (text < 50) {
+      context.dialog.numstep = 1;
+    } else if (50 <= text && text < 90) {
+      context.dialog.numstep = 2;
+    } else if (90 <= text && text < 100) {
+      context.dialog.numstep = 3;
+    } else {
+      context.dialog.numstep = 4;
+    }
+    console.log('context.dialog.numstep: '+context.dialog.numstep);
+    callback(text, task, true);
+  } else {
+    callback(text, task, false);
+  }
+}
+
+
 var listType = {
     name: "faq",
     listName: "faqDoc",
@@ -213,10 +240,21 @@ var defaultTask = {
 };
 bot.setTask("defaultTask", defaultTask);
 
+var setcount = {
+    name: 'setcount',
+    action: function(task, context, callback) {
+      	if (!context.dialog.quizcount) {
+          context.dialog.quizcount = 0;
+        }
+        callback(task, context);
+    }
+};
+bot.setTask("setcount", setcount);
+
 var resetcount = {
     name: 'resetcount',
     action: function(task, context, callback) {
-      	context.dialog.quizcount = 0;
+          context.dialog.quizcount = 0;
         callback(task, context);
     }
 };
@@ -226,6 +264,7 @@ var quizcount = {
     name: 'quizcount',
     action: function(task, context, callback) {
       	context.dialog.quizcount += 1;
+      	console.log('quizcount: '+context.dialog.quizcount);
         callback(task, context);
     }
 };
