@@ -92,8 +92,6 @@ exports.getConfig = function (req, res) {
  * get fbOvertext
  */
 exports.fbOvertext = function (req, res) {
-  console.log('*********************_____________________')
-  res.render('modules/core/server/views/nomenu-index', {
-    user: req.user || null
-  });
+
+  res.send(global.facebook.text);
 };
