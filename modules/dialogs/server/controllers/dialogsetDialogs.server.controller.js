@@ -91,6 +91,11 @@ exports.list = function (req, res) {
 
   var query = {};
   if(req.params.dialogsetId) query['dialogset'] =  mongoose.Types.ObjectId(req.params.dialogsetId);
+  if(req.query.inputRaw) query['inputRaw'] =  {$regex: req.query.inputRaw};
+  if(req.query.output) query['output'] =  {$regex: req.query.output};
+  if(req.query.category) query['category'] =  {$regex: req.query.category};
+  console.log(util.inspect(req.query));
+  console.log(util.inspect(query));
 
   DialogsetDialog.find(query).lean().sort(sort).populate('user').exec(function (err, dialogs) {
     if (err) {

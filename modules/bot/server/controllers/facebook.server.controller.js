@@ -327,17 +327,41 @@ exports.respondMessage = respondMessage;
  */
 function sendTextMessage(recipientId, text, task, token) {
   if(text.length > 640){
-    text = text.substring(0, 639);
+    var subtext = text.substring(0, 639);
+    var buttons = [{
+      "type":"web_url",
+      "url": config.host,
+      "title":"전문 보기"
+    }];
+
+    var messageData = {
+      recipient: {
+        id: recipientId
+      },
+      message: {
+        attachment: {
+          type: "template",
+          payload: {
+            template_type: "button",
+            text: subtext,
+            buttons: buttons
+          }
+        }
+      }
+    };
+
+
+  }else {
+    var messageData = {
+      recipient: {
+        id: recipientId
+      },
+      message: {
+        text: text
+      }
+    };
+    callSendAPI(messageData, token);
   }
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      text: text
-    }
-  };
-  callSendAPI(messageData, token);
 }
 
 

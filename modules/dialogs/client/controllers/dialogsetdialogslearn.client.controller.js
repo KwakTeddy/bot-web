@@ -6,19 +6,37 @@
     .module('dialogsets')
     .controller('DialogsetDialogsLearnController', DialogsetDialogsLearnController);
 
-  DialogsetDialogsLearnController.$inject = ['$scope', '$state', '$window', 'Authentication', 'UserBotDialogService', 'dialogsResolve', 'botResolve', '$cookies', '$timeout', 'DTOptionsBuilder', '$compile'];
+  DialogsetDialogsLearnController.$inject = ['$scope', '$http', '$state', '$stateParams', '$window', 'Authentication', 'UserBotDialogService', 'dialogsResolve', 'botResolve',
+    '$cookies', '$timeout', 'DTOptionsBuilder', '$compile', 'dialogsetsResolve', 'DialogsetsService'];
 
-  function DialogsetDialogsLearnController($scope, $state, $window, Authentication, UserBotDialogService, getDialogs, botResolve, $cookies, $timeout, DTOptionsBuilder, $compile) {
+  function DialogsetDialogsLearnController($scope, $http, $state, $stateParams, $window, Authentication, UserBotDialogService, getDialogs, botResolve, $cookies, $timeout,
+                                           DTOptionsBuilder, $compile, dialogsetsResolve, DialogsetsService) {
     var vm = this;
     vm.authentication = Authentication;
-    vm.bot = botResolve.data;
+    vm.bot = botResolve;
+    console.log(vm.bot)
+
+    vm.dialogsets = dialogsetsResolve;
     vm.dialogs = getDialogs;
     vm.dialog = new UserBotDialogService({user: vm.authentication.user, userBot: vm.bot, botId: vm.bot.id, depth: 0});
     vm.childDialog = new UserBotDialogService({user: vm.authentication.user, userBot: vm.bot, botId: vm.bot.id, depth: 0});
     vm.error = null;
     vm.filterDialogs = angular.copy(vm.dialogs);
     vm.hasParentDialogs = [];
-    vm.type = 'defaultDialogset';
+
+    if($stateParams.listType && ($stateParams.listType == 'additional')) vm.type = 'additionalDialogset';
+    else vm.type = 'defaultDialogset';
+
+    if(vm.dialogsets && vm.dialogsets.length &&vm.bot.dialogsets && vm.bot.dialogsets.length){
+      vm.dialogsets.forEach(function (dialogset) {
+        vm.bot.dialogsets.forEach(function (connectedDialogset) {
+          if(dialogset._id == connectedDialogset._id){
+            dialogset['connect'] = true;
+          }
+        })
+      })
+    }
+    console.log(vm.dialogsets)
 
     if(vm.dialogs.length){
       for(var i = vm.dialogs.length - 1; i >= 0; i--){
@@ -39,6 +57,29 @@
         }
       }
     }
+
+    vm.connectBot = function (dialogset) {
+      vm.bot.dialogsets.push(dialogset._id);
+      vm.bot.$update(function (response) {
+        console.log(response)
+        vm.bot=response
+        dialogset['connect'] = true
+      }, function (err) {
+        console.log(err)
+      })
+    };
+    vm.disconnectBot = function (target) {
+      vm.bot.dialogsets.splice(vm.bot.dialogsets.indexOf(target._id), 1);
+      vm.bot.$update(function (response) {
+        console.log(response)
+        vm.bot=response
+        delete target.connect
+      }, function (err) {
+        console.log(err)
+      })
+    };
+
+
     vm.changeType = function (type) {
       vm.type = type
     }

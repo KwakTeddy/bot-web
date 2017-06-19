@@ -6,9 +6,9 @@
     .module('dialogsets')
     .controller('DialogsetDialogsController', DialogsetDialogsController);
 
-  DialogsetDialogsController.$inject = ['$scope', '$state', '$window', 'Authentication', 'dialogsetResolve', 'dialogsetDialogResolve', 'DialogsetDialogsService'];
+  DialogsetDialogsController.$inject = ['$scope', '$state', '$stateParams', '$window', 'Authentication', 'dialogsetResolve', 'dialogsetDialogResolve', 'DialogsetDialogsService'];
 
-  function DialogsetDialogsController($scope, $state, $window, Authentication, dialogset, dialogsetDialogs, DialogsetDialogsService) {
+  function DialogsetDialogsController($scope, $state, $stateParams, $window, Authentication, dialogset, dialogsetDialogs, DialogsetDialogsService) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -25,6 +25,25 @@
       }
     }
     vm.error = null;
+
+    vm.searchDialog = function () {
+      var query = {dialogsetId: $stateParams.dialogsetId};
+      if(vm.selectedCategory == '카테고리') query['category'] = vm.dialogSearch;
+      if(vm.selectedCategory == '질문') query['inputRaw'] = vm.dialogSearch;
+      if(vm.selectedCategory == '답변') query['output'] = vm.dialogSearch;
+      DialogsetDialogsService.query(query).$promise.then(function (result) {
+        vm.dialogsetDialogs = result;
+
+        console.log(result)
+      });
+    };
+    vm.initDialog = function () {
+      var query = {dialogsetId: $stateParams.dialogsetId};
+      DialogsetDialogsService.query(query).$promise.then(function (result) {
+        vm.dialogsetDialogs = result;
+        console.log(result)
+      });
+    };
 
     vm.dialog = new DialogsetDialogsService({user: vm.authentication, dialogset: vm.dialogset._id, depth: 0});
     vm.childDialog = new DialogsetDialogsService({user: vm.authentication, dialogset: vm.dialogset._id});
