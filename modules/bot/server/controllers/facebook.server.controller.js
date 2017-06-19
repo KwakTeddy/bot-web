@@ -333,6 +333,8 @@ function sendTextMessage(recipientId, text, task, token) {
       "url": config.host + '/facebookOvertext',
       "title":"전문 보기"
     }];
+    global['facebook'] = {};
+    global['facebook'] = {userId: recipientId, text: text};
 
     var messageData = {
       recipient: {
