@@ -2305,7 +2305,55 @@ var dialogs = [
 				"intent": "FAQ"
 			}
 		],
-		"output": "궁금하신 부분을 단어로 입력해 주시면 제가 아는 가장 알맞은 답변을 안내해 드리겠습니다."
+		"output": "궁금하신 부분을 단어로 입력해 주시면 제가 아는 가장 알맞은 답변을 안내해 드리겠습니다.",
+		"children": [
+			{
+				"name": "FAQ검색",
+				"id": "default274",
+				"filename": "default",
+				"input": [
+					{
+						"types": [
+							"fanfaqType"
+						]
+					}
+				],
+				"output": "FAQ 검색 결과입니다.\n\n#faqitem#+index+. +title+ \n\n#궁금하신 질문과 비슷한 번호를 선택해주세요.",
+				"children": [
+					{
+						"name": "FAQ선택",
+						"id": "default276",
+						"filename": "default",
+						"input": [
+							{
+								"types": [
+									"listType"
+								]
+							}
+						],
+						"output": "[+listType.title+]\n\n답변: +listType.content+",
+						"task": "defaultTask"
+					}
+				],
+				"task": "saveFAQ"
+			},
+			{
+				"name": "미검색",
+				"id": "default275",
+				"filename": "default",
+				"input": [
+					{
+						"if": " true"
+					}
+				],
+				"output": {
+					"repeat": "1"
+				},
+				"task": {
+					"name": "defaultTask"
+				}
+			}
+		]
 	}
 ];
 
@@ -2394,334 +2442,6 @@ var commonDialogs = [
 		"output": {
 			"up": "1"
 		}
-	},
-	{
-		"name": "FAN 가입",
-		"id": "commondefault231",
-		"filename": "defaultcommon",
-		"input": [
-			{
-				"intent": "FAN 가입"
-			}
-		],
-		"output": {
-			"call": "FAN 가입_"
-		}
-	},
-	{
-		"name": "FAN 혜택",
-		"id": "comdefault4",
-		"filename": "defaultcommon",
-		"input": [
-			{
-				"intent": "FAN 혜택"
-			}
-		],
-		"output": {
-			"call": "FAN 혜택_"
-		},
-		"inRaw": "신한 FAN에는 어떤 혜택이 있나요",
-		"inNLP": "신한 FAN 에는 어떻다 혜택 있다"
-	},
-	{
-		"name": "FAN 전용 적립 및 할인",
-		"id": "comdefault5",
-		"filename": "defaultcommon",
-		"input": [
-			{
-				"intent": "FAN 전용 적립 및 할인"
-			}
-		],
-		"output": {
-			"call": "FAN 전용 적립 및 할인_"
-		},
-		"inRaw": "FAN 전용 적립 및 할인",
-		"inNLP": "FAN 전용 적립 및 할인"
-	},
-	{
-		"name": "이벤트",
-		"id": "comdefault6",
-		"filename": "defaultcommon",
-		"input": [
-			{
-				"intent": "이벤트"
-			}
-		],
-		"output": {
-			"call": "이벤트_"
-		},
-		"inRaw": "진행중인 대박 이벤트",
-		"inNLP": "진행중 인 대박 이벤트"
-	},
-	{
-		"name": "혜택 안내",
-		"id": "comdefault7",
-		"filename": "defaultcommon",
-		"input": [
-			{
-				"intent": "혜택 안내"
-			}
-		],
-		"output": {
-			"call": "FAN 혜택+ 서비스_"
-		},
-		"inRaw": "신한 FAN 혜택ZONE!",
-		"inNLP": "신한 FAN 혜택 ZONE"
-	},
-	{
-		"name": "Sally 쿠폰 상세",
-		"id": "comdefault9",
-		"filename": "defaultcommon",
-		"input": [
-			{
-				"intent": "Sally"
-			}
-		],
-		"output": {
-			"call": "Sally_"
-		},
-		"inRaw": "나만의 맞춤 쿠폰 Sally",
-		"inNLP": "나 만의 맞춤 쿠폰 Sally"
-	},
-	{
-		"name": "이용안내",
-		"id": "comdefault10",
-		"filename": "defaultcommon",
-		"input": [
-			{
-				"intent": "이용안내"
-			}
-		],
-		"output": {
-			"call": "이용안내_"
-		},
-		"inRaw": "이전단계",
-		"inNLP": "이전 단계"
-	},
-	{
-		"name": "FAN 결제 이용가이드",
-		"id": "comdefault11",
-		"filename": "defaultcommon",
-		"input": [
-			{
-				"intent": "FAN 결제 이용가이드"
-			}
-		],
-		"output": {
-			"call": "FAN페이 결제 이용가이드"
-		},
-		"inRaw": "FAN페이 결제",
-		"inNLP": "FAN 페이 결제"
-	},
-	{
-		"name": "FAN페이 가맹점 안내",
-		"id": "comdefault12",
-		"filename": "defaultcommon",
-		"input": [
-			{
-				"intent": "FAN페이 가맹점"
-			}
-		],
-		"output": {
-			"call": "FAN페이 오프라인 가맹점_"
-		},
-		"inRaw": "FAN페이 오프라인 가맹점",
-		"inNLP": "FAN 페이 오프라인   가맹 점"
-	},
-	{
-		"name": "다양한 제휴/FUN/생활/금융 서비스",
-		"id": "comdefault13",
-		"filename": "defaultcommon",
-		"input": [
-			{
-				"intent": "다양한 제휴/FUN/생활/금융 서비스"
-			}
-		],
-		"output": {
-			"call": "신한 FAN 생활금융 서비스_"
-		},
-		"inRaw": "이전단계",
-		"inNLP": "이전 단계"
-	},
-	{
-		"name": "통합리워드(포인트) 신한 FAN클럽",
-		"id": "comdefault14",
-		"filename": "defaultcommon",
-		"input": [
-			{
-				"intent": "FAN클럽"
-			}
-		],
-		"output": {
-			"call": "FAN 클럽_"
-		},
-		"inRaw": "신한 FAN클럽 (통합포인트)",
-		"inNLP": "신한 FAN 클럽 통합 포인트"
-	},
-	{
-		"name": "제휴사서비스(혜택+)",
-		"id": "comdefault15",
-		"filename": "defaultcommon",
-		"input": [
-			{
-				"intent": "제휴사서비스"
-			}
-		],
-		"output": {
-			"call": "제휴사 서비스_"
-		},
-		"inRaw": "제휴사서비스(혜택+)",
-		"inNLP": "제휴 사 서비스 혜택"
-	},
-	{
-		"name": "운세",
-		"id": "comdefault16",
-		"filename": "defaultcommon",
-		"input": [
-			{
-				"intent": "운세"
-			}
-		],
-		"output": {
-			"call": "운세_"
-		},
-		"inRaw": "운세",
-		"inNLP": "운세"
-	},
-	{
-		"name": "게임",
-		"id": "comdefault17",
-		"filename": "defaultcommon",
-		"input": [
-			{
-				"intent": "게임"
-			}
-		],
-		"output": {
-			"call": "게임_"
-		},
-		"inRaw": "게임",
-		"inNLP": "게임"
-	},
-	{
-		"name": "페이봇",
-		"id": "comdefault18",
-		"filename": "defaultcommon",
-		"input": [
-			{
-				"intent": "페이봇"
-			}
-		],
-		"output": {
-			"call": "페이봇_"
-		},
-		"inRaw": "페이봇",
-		"inNLP": "페이 봇"
-	},
-	{
-		"name": "트렌드연구소",
-		"id": "comdefault19",
-		"filename": "defaultcommon",
-		"input": [
-			{
-				"intent": "트렌드연구소"
-			}
-		],
-		"output": {
-			"call": "트렌드_"
-		},
-		"inRaw": "신한 트렌드연구소",
-		"inNLP": "신한 트렌드 연구소"
-	},
-	{
-		"name": "더치페이",
-		"id": "comdefault20",
-		"filename": "defaultcommon",
-		"input": [
-			{
-				"intent": "더치페이"
-			}
-		],
-		"output": {
-			"call": "더치페이_"
-		},
-		"inRaw": "더치페이",
-		"inNLP": "더치페이"
-	},
-	{
-		"name": "금융/납부 서비스",
-		"id": "comdefault192",
-		"filename": "defaultcommon",
-		"input": [
-			{
-				"intent": "금융/납부 서비스"
-			}
-		],
-		"output": {
-			"call": "금융/납부 서비스_"
-		},
-		"inRaw": "이전단계",
-		"inNLP": "이전 단계"
-	},
-	{
-		"name": "단기카드대출",
-		"id": "comdefault193",
-		"filename": "defaultcommon",
-		"input": [
-			{
-				"intent": "단기카드대출"
-			}
-		],
-		"output": {
-			"call": "단기카드대출_"
-		},
-		"inRaw": "단기카드대출(현금서비스)",
-		"inNLP": "단기 카드 대출 현금 서비스"
-	},
-	{
-		"name": "장기카드대출",
-		"id": "comdefault195",
-		"filename": "defaultcommon",
-		"input": [
-			{
-				"intent": "장기카드대출"
-			}
-		],
-		"output": {
-			"call": "장기카드대출_"
-		},
-		"inRaw": "장기카드대출(카드론)",
-		"inNLP": "장기 카드 대출 카드 론"
-	},
-	{
-		"name": "MF일반대출",
-		"id": "comdefault197",
-		"filename": "defaultcommon",
-		"input": [
-			{
-				"intent": "MF일반대출"
-			}
-		],
-		"output": {
-			"call": "MF일반대출_"
-		},
-		"inRaw": "MF일반대출",
-		"inNLP": "MF 일반 대출"
-	},
-	{
-		"name": "납부서비스",
-		"id": "comdefault198",
-		"filename": "defaultcommon",
-		"input": [
-			{
-				"intent": "납부서비스"
-			}
-		],
-		"output": {
-			"call": "납부서비스_"
-		},
-		"inRaw": "4",
-		"inNLP": "4"
 	}
 ];
 var _bot = require(require('path').resolve("config/lib/bot")).getBot('Shinhancard');

@@ -8,7 +8,7 @@ var ObjectId = mongoose.Types.ObjectId;
 
 var dialogsType = {
     name: 'typeDoc',
-    typeCheck: global._context.typeChecks['dialogTypeCheck'], //type.mongoDbTypeCheck,
+    typeCheck: type.dialogTypeCheck, //type.mongoDbTypeCheck,
     // preType: function(task, context, type, callback) {
     //     if(context.bot.dialogsets) {
     //         if(type.mongo.queryStatic.$or.length == 0) type.mongo.queryStatic = {dialogset: ''};
@@ -23,7 +23,7 @@ var dialogsType = {
     exclude: ['하다', '이다'],
     mongo: {
         model: 'dialogsetdialogs',
-        queryStatic: {dialogset: ObjectId("593a74581f2d12a832a15795")},
+        queryStatic: {dialogset: ObjectId("59474590df0c859b48a6e86f")},
         queryFields: ['input'],
         fields: 'dialogset input inputRaw output context' ,
         taskFields: ['input', 'inputRaw', 'output', 'matchCount', 'matchRate', 'dialogset', 'context'],
@@ -138,7 +138,12 @@ var fanfaqType = {
         model: 'fan_faq',
         queryFields: ['title'],
         fields: 'title content created' ,
-        taskFields: ['_id', 'title', 'content'],
+        taskFields: ['_id','title','content'],
+        // model: 'dialogsetdialogs',
+        // queryFields: ['input'],
+        // queryStatic: {dialogset: ObjectId("59474590df0c859b48a6e86f")},
+        // fields: 'dialogset input inputRaw output context' ,
+        // taskFields: ['input', 'inputRaw', 'output', 'matchCount', 'matchRate', 'dialogset', 'context'],
         taskSort: function(a, b) {
             if(b.matchCount > a.matchCount) return 1;
             else if(b.matchCount < a.matchCount) return -1;
@@ -239,6 +244,15 @@ var defaultTask = {
     }
 };
 bot.setTask("defaultTask", defaultTask);
+
+var saveFAQ = {
+    name: 'saveFAQ',
+    action: function(task, context, callback) {
+        context.dialog.faqitem = context.dialog.faqDoc;
+        callback(task, context);
+    }
+};
+bot.setTask("saveFAQ", saveFAQ);
 
 var setcount = {
     name: 'setcount',
