@@ -50,125 +50,124 @@ var dialogsType1 = {
 bot.setType("dialogsType1", dialogsType1);
 
 var faqTask = {
-    action: function(task, context, callback) {
-        task.dialogsType1 = context.dialog.dialogsType1;
+  action: function(task, context, callback) {
+    task.dialogsType1 = context.dialog.dialogsType1;
 
-        if(Array.isArray(task.dialogsType1)) {
-            if(context.bot.dialogsetOption && context.bot.dialogsetOption.matchList &&
-                (context.bot.dialogsetOption.matchOneRate == undefined || context.bot.dialogsetOption.matchOneRate > task.dialogsType1[0].matchRate) &&
-                (context.bot.dialogsetOption.matchOneCount == undefined || context.bot.dialogsetOption.matchOneCount > task.dialogsType1[0].matchCount)) {
-                context.dialog.dialogsType1 = task.dialogsType1;
-                // if (context.bot.dialogsetOption.listOutput) {
-                //   context.dialog.output = context.bot.dialogsetOption.listOutput;
-                // } else {
-                context.dialog.output = "아래 중에 궁금하신 내용이 있나요?\n\n#dialogsType1#+index+. +inputRaw+\n\n#번호를 입력하면 상세 내용을 보여드립니다.\n다시 검색하시려면 검색어를 입력해주세요.\n처음으로 돌아가시려면 '시작'이라고 말씀해주세요";
-                // }
+    if(Array.isArray(task.dialogsType1)) {
+      if(context.bot.dialogsetOption && context.bot.dialogsetOption.matchList &&
+        (context.bot.dialogsetOption.matchOneRate == undefined || context.bot.dialogsetOption.matchOneRate > task.dialogsType1[0].matchRate) &&
+        (context.bot.dialogsetOption.matchOneCount == undefined || context.bot.dialogsetOption.matchOneCount > task.dialogsType1[0].matchCount)) {
+        context.dialog.dialogsType1 = task.dialogsType1;
+        // if (context.bot.dialogsetOption.listOutput) {
+        //   context.dialog.output = context.bot.dialogsetOption.listOutput;
+        // } else {
+        context.dialog.output = "아래 중에 궁금하신 내용이 있나요?\n\n#dialogsType1#+index+. +inputRaw+\n\n#번호를 입력하면 상세 내용을 보여드립니다.\n다시 검색하시려면 검색어를 입력해주세요.\n처음으로 돌아가시려면 '시작'이라고 말씀해주세요";
+        // }
 
-                // context.dialog.children = [
-                //   {
-                //     input: {types: [{name: 'doc1', listName: 'dialogsType1', typeCheck: 'listTypeCheck'}]},
-                //     output: (context.bot.dialogsetOption.contentOutput ?
-                //       context.bot.dialogsetOption.contentOutput
-                //       : '[+doc1.inputRaw+]\n+doc1.output+\n\n더 필요하신 게 있으시면 말씀해주세요~\n')
-                //   }
-                // ];
-            } else if(context.bot.dialogsetOption && context.bot.dialogsetOption.matchList && task.dialogsType1.length > 1 &&
-                (task.dialogsType1[0].matchCount == task.dialogsType1[1].matchCount)) {
+        // context.dialog.children = [
+        //   {
+        //     input: {types: [{name: 'doc1', listName: 'dialogsType1', typeCheck: 'listTypeCheck'}]},
+        //     output: (context.bot.dialogsetOption.contentOutput ?
+        //       context.bot.dialogsetOption.contentOutput
+        //       : '[+doc1.inputRaw+]\n+doc1.output+\n\n더 필요하신 게 있으시면 말씀해주세요~\n')
+        //   }
+        // ];
+      } else if(context.bot.dialogsetOption && context.bot.dialogsetOption.matchList && task.dialogsType1.length > 1 &&
+        (task.dialogsType1[0].matchCount == task.dialogsType1[1].matchCount)) {
 
-                var dialogs = [];
-                for(var i = 0; i < task.dialogsType1.length; i++) {
-                    if(i == 0) dialogs.push(task.dialogsType1[i]);
-                    else if(dialogs[dialogs.length - 1].matchCount != task.dialogsType1[i].matchCount) break;
-                    else dialogs.push(task.dialogsType1[i]);
-                }
-                task.dialogsType1 = dialogs;
+        var dialogs = [];
+        for(var i = 0; i < task.dialogsType1.length; i++) {
+          if(i == 0) dialogs.push(task.dialogsType1[i]);
+          else if(dialogs[dialogs.length - 1].matchCount != task.dialogsType1[i].matchCount) break;
+          else dialogs.push(task.dialogsType1[i]);
+        }
+        task.dialogsType1 = dialogs;
 
-                context.dialog.dialogsType1 = task.dialogsType1;
-                // if (context.bot.dialogsetOption.listOutput) {
-                //   context.dialog.output = context.bot.dialogsetOption.listOutput;
-                // } else {
-                context.dialog.output = "아래 중에 궁금하신 내용이 있나요?\n\n#dialogsType1#+index+. +inputRaw+\n\n#번호를 입력하면 상세 내용을 보여드립니다.\n다시 검색하시려면 검색어를 입력해주세요.\n처음으로 돌아가시려면 '시작'이라고 말씀해주세요";
-                // }
+        context.dialog.dialogsType1 = task.dialogsType1;
+        // if (context.bot.dialogsetOption.listOutput) {
+        //   context.dialog.output = context.bot.dialogsetOption.listOutput;
+        // } else {
+        context.dialog.output = "아래 중에 궁금하신 내용이 있나요?\n\n#dialogsType1#+index+. +inputRaw+\n\n#번호를 입력하면 상세 내용을 보여드립니다.\n다시 검색하시려면 검색어를 입력해주세요.\n처음으로 돌아가시려면 '시작'이라고 말씀해주세요";
+        // }
 
-                // context.dialog.children = [
-                //   {
-                //     input: {types: [{name: 'doc1', listName: 'dialogsType1', typeCheck: 'listTypeCheck'}]},
-                //     output: (context.bot.dialogsetOption.contentOutput ?
-                //       context.bot.dialogsetOption.contentOutput
-                //       : '[+doc1.inputRaw+]\n+doc1.output+\n\n더 필요하신 게 있으시면 말씀해주세요~\n')
-                //   }
-                // ];
-            } else {
-                if(task.dialogsType1.length > 1) {
-                    task._output = task.dialogsType1[0].output;
-                    context.dialog.listType = task.dialogsType1[0];
-                } else {
-                    task._output = task.dialogsType1.output;
-                    context.dialog.listType = task.dialogsType1;
-                }
-
-                if(Array.isArray(task._output)) {
-                    task._output = task._output[Math.floor(Math.random() * task._output.length)];
-                }
-
-                context.dialog.output = "[+listType.inputRaw+]\n\n답변: +listType.output+\n\n더 필요하신 게 있으시면 말씀해주세요~\n처음으로 돌아가시려면 '시작'이라고 말씀해주세요"
-                // context.dialog.output = '+_output+';
-                // context.dialog.children = null;
-                //
-                // console.log(task.dialogsType1[0].inputRaw + ', ' + task.dialogsType1[0].input + '(' + task.dialogsType1[0].matchCount + ', ' + task.dialogsType1[0].matchRate + ')');
-            }
-
+        // context.dialog.children = [
+        //   {
+        //     input: {types: [{name: 'doc1', listName: 'dialogsType1', typeCheck: 'listTypeCheck'}]},
+        //     output: (context.bot.dialogsetOption.contentOutput ?
+        //       context.bot.dialogsetOption.contentOutput
+        //       : '[+doc1.inputRaw+]\n+doc1.output+\n\n더 필요하신 게 있으시면 말씀해주세요~\n')
+        //   }
+        // ];
+      } else {
+        if(task.dialogsType1.length > 1) {
+          task._output = task.dialogsType1[0].output;
+          context.dialog.listType = task.dialogsType1[0];
         } else {
-            context.dialog.listType = task.dialogsType1;
-            task._output = task.dialogsType1.output;
-
-            if(Array.isArray(task._output)) {
-                task._output = task._output[Math.floor(Math.random() * task._output.length)];
-            }
-
-            context.dialog.output = "[+listType.inputRaw+]\n\n답변: +listType.output+\n\n더 필요하신 게 있으시면 말씀해주세요~\n처음으로 돌아가시려면 '시작'이라고 말씀해주세요";
-            // context.dialog.children = null;
-            // console.log(task.dialogsType1.inputRaw + ', ' + task.dialogsType1.input + '(' + task.dialogsType1.matchCount + ', ' + task.dialogsType1.matchRate + ')');
+          task._output = task.dialogsType1.output;
+          context.dialog.listType = task.dialogsType1;
         }
 
-        callback(task, context);
+        if(Array.isArray(task._output)) {
+          task._output = task._output[Math.floor(Math.random() * task._output.length)];
+        }
+
+        context.dialog.output = "[+listType.inputRaw+]\n\n답변: +listType.output+\n\n더 필요하신 게 있으시면 말씀해주세요~\n처음으로 돌아가시려면 '시작'이라고 말씀해주세요"
+        // context.dialog.output = '+_output+';
+        // context.dialog.children = null;
+        //
+        // console.log(task.dialogsType1[0].inputRaw + ', ' + task.dialogsType1[0].input + '(' + task.dialogsType1[0].matchCount + ', ' + task.dialogsType1[0].matchRate + ')');
+      }
+
+    } else if(task.dialogsType1) {
+      task._output = task.dialogsType1.output;
+
+      if(Array.isArray(task._output)) {
+        task._output = task._output[Math.floor(Math.random() * task._output.length)];
+      }
+
+      context.dialog.output = '+_output+';
+      // context.dialog.children = null;
+      // console.log(task.dialogsType1.inputRaw + ', ' + task.dialogsType1.input + '(' + task.dialogsType1.matchCount + ', ' + task.dialogsType1.matchRate + ')');
     }
+
+    callback(task, context);
+  }
 }
 
 bot.setTask('faqTask', faqTask);
 
 var numType = {
-    name: 'num',
-    typeCheck: numTypeCheck
+  name: 'num',
+  typeCheck: numTypeCheck
 }
 
 bot.setType("numType", numType);
 
 var faqTest = {
     action: function (task, context, callback) {
-        callback(task, context);
+      callback(task, context);
     }
 };
 
 bot.setTask("faqTest", faqTest);
 
 function numTypeCheck(text, type, task, context, callback) {
-    if(text.search(/^(\d)+$/g) != -1) {
-        console.log('text: '+text);
-        if (text < 50) {
-            context.dialog.numstep = 1;
-        } else if (50 <= text && text < 90) {
-            context.dialog.numstep = 2;
-        } else if (90 <= text && text < 100) {
-            context.dialog.numstep = 3;
-        } else {
-            context.dialog.numstep = 4;
-        }
-        console.log('context.dialog.numstep: '+context.dialog.numstep);
-        callback(text, task, true);
+  if(text.search(/^(\d)+$/g) != -1) {
+    console.log('text: '+text);
+    if (text < 50) {
+      context.dialog.numstep = 1;
+    } else if (50 <= text && text < 90) {
+      context.dialog.numstep = 2;
+    } else if (90 <= text && text < 100) {
+      context.dialog.numstep = 3;
     } else {
-        callback(text, task, false);
+      context.dialog.numstep = 4;
     }
+    console.log('context.dialog.numstep: '+context.dialog.numstep);
+    callback(text, task, true);
+  } else {
+    callback(text, task, false);
+  }
 }
 
 
@@ -277,21 +276,21 @@ var fanfaq = {
             // if(context.bot.dialogsetOption && context.bot.dialogsetOption.matchList &&
             //     (context.bot.dialogsetOption.matchOneRate == undefined || context.bot.dialogsetOption.matchOneRate > context.dialog.dialogsType[0].matchRate) &&
             //     (context.bot.dialogsetOption.matchOneCount == undefined || context.bot.dialogsetOption.matchOneCount > context.dialog.dialogsType[0].matchCount)) {
-            context.dialog.typeDoc = context.dialog.dialogsType;
-            // if(context.bot.dialogsetOption.listOutput) {
-            //     context.dialog.output = context.bot.dialogsetOption.listOutput;
-            // } else {
-            //     context.dialog.output = '질문에 가장 유사한 답변을 찾았습니다.\n\n#typeDoc#+index+. +inputRaw+\n# 번호를 입력해 주세요.';
-            // }
+                context.dialog.typeDoc = context.dialog.dialogsType;
+                // if(context.bot.dialogsetOption.listOutput) {
+                //     context.dialog.output = context.bot.dialogsetOption.listOutput;
+                // } else {
+                //     context.dialog.output = '질문에 가장 유사한 답변을 찾았습니다.\n\n#typeDoc#+index+. +inputRaw+\n# 번호를 입력해 주세요.';
+                // }
 
-            // context.dialog.children = [
-            //     {
-            //         input: {types: [{name: 'doc1', listName: 'typeDoc', typeCheck: 'listTypeCheck'}]},
-            //         output: (context.bot.dialogsetOption.contentOutput ?
-            //             context.bot.dialogsetOption.contentOutput
-            //             : '[+doc1.inputRaw+]\n+doc1.output+\n\n더 필요하신 게 있으시면 말씀해주세요~\n')
-            //     }
-            // ];
+                // context.dialog.children = [
+                //     {
+                //         input: {types: [{name: 'doc1', listName: 'typeDoc', typeCheck: 'listTypeCheck'}]},
+                //         output: (context.bot.dialogsetOption.contentOutput ?
+                //             context.bot.dialogsetOption.contentOutput
+                //             : '[+doc1.inputRaw+]\n+doc1.output+\n\n더 필요하신 게 있으시면 말씀해주세요~\n')
+                //     }
+                // ];
             // } else {
             //     if(context.dialog.dialogsType.length > 1) task._output = context.dialog.dialogsType[0].output;
             //     else task._output = context.dialog.dialogsType[0].output;
@@ -353,8 +352,8 @@ bot.setTask("saveFAQ", saveFAQ);
 var setcount = {
     name: 'setcount',
     action: function(task, context, callback) {
-        if (!context.dialog.quizcount) {
-            context.dialog.quizcount = 0;
+      	if (!context.dialog.quizcount) {
+          context.dialog.quizcount = 0;
         }
         callback(task, context);
     }
@@ -364,7 +363,7 @@ bot.setTask("setcount", setcount);
 var resetcount = {
     name: 'resetcount',
     action: function(task, context, callback) {
-        context.dialog.quizcount = 0;
+          context.dialog.quizcount = 0;
         callback(task, context);
     }
 };
@@ -373,8 +372,8 @@ bot.setTask("resetcount", resetcount);
 var quizcount = {
     name: 'quizcount',
     action: function(task, context, callback) {
-        context.dialog.quizcount += 1;
-        console.log('quizcount: '+context.dialog.quizcount);
+      	context.dialog.quizcount += 1;
+      	console.log('quizcount: '+context.dialog.quizcount);
         callback(task, context);
     }
 };
@@ -1622,7 +1621,7 @@ var cardlist1 = {
                 ]
             }
         }
-        console.log(JSON.stringify(task.result))
+      	console.log(JSON.stringify(task.result))
         callback(task, context);
     }
 };
