@@ -253,7 +253,7 @@ function respondMessage(to, text, botId, task) {
   else tokenData = bot.facebook.PAGE_ACCESS_TOKEN;
 
   if(bot && bot.commonButtons && bot.commonButtons.length && botContext.botUser._currentDialog.name && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)){
-    if(task.buttons) task.buttons =  task.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
+    if(task && task.buttons) task.buttons =  task.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
     else if(task.result.buttons) task.result.buttons =  task.result.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
   }
 

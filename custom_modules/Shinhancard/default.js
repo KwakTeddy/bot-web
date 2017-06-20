@@ -691,6 +691,73 @@ var YOLOTasty = {
 };
 bot.setTask("YOLOTasty", YOLOTasty);
 
+var SmartGlobal = {
+    name: 'SmartGlobal',
+    action: function(task, context, callback) {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
+            task.buttons = [
+                {
+                    text: "바로가기",
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350269_39649.html"
+                }
+            ]
+
+        } else if (context.user.channel == 'facebook') {
+            task.buttons = [
+                {
+                    text: "바로가기",
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350269_39648.html"
+                }
+            ]
+
+        } else if (context.user.channel == 'kakao') {
+            task.buttons = [
+                {
+                    text: "바로가기",
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350269_39409.html"
+                }
+            ]
+
+        }
+        callback(task, context);
+    }
+};
+bot.setTask("SmartGlobal", SmartGlobal);
+
+var YOLOTriplus = {
+    name: 'YOLOTriplus',
+    action: function(task, context, callback) {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
+            task.buttons = [
+                {
+                    text: "바로가기",
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350267_39649.html"
+                }
+            ]
+
+        } else if (context.user.channel == 'facebook') {
+            task.buttons = [
+                {
+                    text: "바로가기",
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350267_39648.html"
+                }
+            ]
+
+        } else if (context.user.channel == 'kakao') {
+            task.buttons = [
+                {
+                    text: "바로가기",
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350267_39409.html"
+                }
+            ]
+
+        }
+        callback(task, context);
+    }
+};
+bot.setTask("YOLOTriplus", YOLOTriplus);
+
+
 var MrLife = {
     name: 'MrLife',
     action: function(task, context, callback) {
@@ -2130,7 +2197,49 @@ var cardlist7 = {
 bot.setTask("cardlist7", cardlist7);
 
 var cardlist8 = {
-    name: 'cardlist7',
+    name: 'cardlist8',
+    action: function(task, context, callback) {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
+            task.result = {
+                items: [
+                    {
+                        title: "신한카드 4Tune체크",
+                        text: "적립과 할인을 동시에!",
+                        imageUrl: "/files/Shinhancard1497432336775.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C07.shc?EntryLoc=2764&tmEntryLoc=&empSeq=563&datakey=&agcCd="
+                            }
+                        ]
+                    }
+                ]
+            }
+        } else if (context.user.channel == 'facebook') {
+            task.result = {
+                items: [
+                    {
+                        title: "신한카드 4Tune체크",
+                        text: "적립과 할인을 동시에!",
+                        imageUrl: "/files/Shinhancard1497432336775.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C07.shc?EntryLoc=2764&tmEntryLoc=&empSeq=562&datakey=&agcCd="
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+        console.log(JSON.stringify(task.result))
+        callback(task, context);
+    }
+};
+bot.setTask("cardlist8", cardlist8);
+
+var cardlist9 = {
+    name: 'cardlist9',
     action: function(task, context, callback) {
         if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.result = {
@@ -2191,4 +2300,4 @@ var cardlist8 = {
         callback(task, context);
     }
 };
-bot.setTask("cardlist8", cardlist8);
+bot.setTask("cardlist9", cardlist9);

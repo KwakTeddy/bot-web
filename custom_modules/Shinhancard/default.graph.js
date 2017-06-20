@@ -286,12 +286,6 @@ var dialogs = [
 				},
 				{
 					"text": "신한 FAN 금융/납부 서비스"
-				},
-				{
-					"text": "이전단계"
-				},
-				{
-					"text": "시작메뉴"
 				}
 			]
 		},
@@ -312,7 +306,7 @@ var dialogs = [
 					}
 				],
 				"output": {
-					"output": "현명한 선택! 결제\\+혜택\\+재미가 있는 신한 FAN 입니다. \n\n✔ 신한 FAN은 신한카드가 없어도 가입가능!  \n✔ 신한 FAN에 가입 하시면 다양한 경품이 가득! \n✔ 신규 고객이라면 100% 당첨 경품 제공!",
+					"output": "현명한 선택! 결제+혜택+재미가 있는 신한 FAN 입니다. \n\n✔ 신한 FAN은 신한카드가 없어도 가입가능!  \n✔ 신한 FAN에 가입 하시면 다양한 경품이 가득! \n✔ 신규 고객이라면 100% 당첨 경품 제공!",
 					"image": {
 						"url": "/files/Shinhancard1497408485049.jpg",
 						"displayname": "FAN가입.jpg"
@@ -326,7 +320,7 @@ var dialogs = [
 							"url": "https://newm.shinhancard.com/event/2015/pt06.jsp?prm=facebook"
 						}
 					],
-					"output": "현명한 선택! 결제\\+혜택\\+재미가 있는 신한 FAN 입니다. \n\n✔ 신한 FAN은 신한카드가 없어도 가입가능!  \n✔ 신한 FAN에 가입 하시면 다양한 경품이 가득! \n✔ 신규 고객이라면 100% 당첨 경품 제공!",
+					"output": "현명한 선택! 결제+혜택+재미가 있는 신한 FAN 입니다. \n\n✔ 신한 FAN은 신한카드가 없어도 가입가능!  \n✔ 신한 FAN에 가입 하시면 다양한 경품이 가득! \n✔ 신규 고객이라면 100% 당첨 경품 제공!",
 					"image": {
 						"url": "/files/Shinhancard1497408485049.jpg",
 						"displayname": "FAN가입.jpg"
@@ -379,15 +373,8 @@ var dialogs = [
 								},
 								{
 									"text": "나만의 맞춤 쿠폰 Sally"
-								},
-								{
-									"text": "이전단계"
-								},
-								{
-									"text": "시작메뉴"
 								}
-							],
-							"text": "FAN 전용 할인, 포인트 적립/쿠폰, 각종 제휴사 혜택 등 놓칠 수 없는 FAN 혜택을 \n\n1. 모~두 보고 싶다면, 신한 FAN 혜택ZONE!\n2. 나한테 필요한 혜택만 골라보고 싶다면, 나만의 맞춤 쿠폰 Sally!\n"
+							]
 						},
 						"children": [
 							{
@@ -450,25 +437,7 @@ var dialogs = [
 							}
 						],
 						"inRaw": "할인",
-						"inNLP": "할인",
-						"task": {
-							"output": "FAN 전용 할인, 포인트 적립/쿠폰, 각종 제휴사 혜택 등 놓칠 수 없는 FAN 혜택을 \n\n1. 모~두 보고 싶다면, 신한 FAN 혜택ZONE!\n\n2. 나한테 필요한 혜택만 골라보고 싶다면, 나만의 맞춤 쿠폰 Sally!\n",
-							"buttons": [
-								{
-									"text": "신한 FAN 혜택 ZONE!"
-								},
-								{
-									"text": "나만의 맞춤 쿠폰 Sally"
-								},
-								{
-									"text": "이전단계"
-								},
-								{
-									"text": "시작메뉴"
-								}
-							],
-							"text": "FAN 전용 할인, 포인트 적립/쿠폰, 각종 제휴사 혜택 등 놓칠 수 없는 FAN 혜택을 \n\n1. 모~두 보고 싶다면, 신한 FAN 혜택ZONE!\n\n2. 나한테 필요한 혜택만 골라보고 싶다면, 나만의 맞춤 쿠폰 Sally!\n"
-						}
+						"inNLP": "할인"
 					},
 					{
 						"name": "이벤트_",
@@ -527,15 +496,8 @@ var dialogs = [
 						},
 						{
 							"text": "FAN클럽"
-						},
-						{
-							"text": "이전단계"
-						},
-						{
-							"text": "시작메뉴"
 						}
-					],
-					"text": "결제는 어떻게 하지? 어디에서? 어떤 혜택이 있다고? 포인트까지? 이 모든걸 FAN 에서 한번에! \n\n 1. FAN페이 결제\n 2. FAN페이 오프라인 가맹점 \n 3. 신한 FAN 생활형 서비스\n 4. 신한 FAN 클럽(통합포인트)"
+					]
 				},
 				"children": [
 					{
@@ -628,12 +590,6 @@ var dialogs = [
 								},
 								{
 									"text": "더치페이"
-								},
-								{
-									"text": "이전단계"
-								},
-								{
-									"text": "시작메뉴"
 								}
 							]
 						},
@@ -659,45 +615,15 @@ var dialogs = [
 										},
 										{
 											"text": "가입하기"
-										},
-										{
-											"text": "이전단계"
-										},
-										{
-											"text": "시작메뉴"
 										}
 									],
 									"image": {
 										"url": "/files/Shinhancard1497420190594.jpg",
 										"displayname": "FAN_제휴사혜택.jpg"
-									},
-									"text": "\"우와, 이런 혜택. 놓칠 수 없어!\"\n \n신한 FAN 고객이라면 득템하러 고고.\n\n아직 가입 전이시면 '가입하기'부터!"
+									}
 								},
 								"inRaw": "제휴사 혜택",
-								"inNLP": "제휴 사 혜택",
-								"task": {
-									"output": "\"우와, 이런 혜택. 놓칠 수 없어!\"\n \n신한 FAN 고객이라면 득템하러 고고.\n\n아직 가입 전이시면 '가입하기'부터!",
-									"buttons": [
-										{
-											"text": "혜택 보기",
-											"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?maintap=FAN_TAB_104"
-										},
-										{
-											"text": "가입하기"
-										},
-										{
-											"text": "이전단계"
-										},
-										{
-											"text": "시작메뉴"
-										}
-									],
-									"image": {
-										"url": "/files/Shinhancard1497420190594.jpg",
-										"displayname": "FAN_제휴사혜택.jpg"
-									},
-									"text": "\"우와, 이런 혜택. 놓칠 수 없어!\"\n \n신한 FAN 고객이라면 득템하러 고고.\n\n아직 가입 전이시면 '가입하기'부터!"
-								}
+								"inNLP": "제휴 사 혜택"
 							},
 							{
 								"name": "운세_",
@@ -879,31 +805,7 @@ var dialogs = [
 					}
 				],
 				"inRaw": "포인트",
-				"inNLP": "포인트",
-				"task": {
-					"output": "결제는 어떻게 하지? 어디에서? 어떤 혜택이 있다고? 포인트까지? 이 모든걸 FAN 에서 한번에! \n\n 1. FAN페이 결제\n 2. FAN페이 오프라인 가맹점 \n 3. 신한 FAN 생활형 서비스\n 4. 신한 FAN 클럽(통합포인트)",
-					"buttons": [
-						{
-							"text": "결제"
-						},
-						{
-							"text": "오프라인 가맹점"
-						},
-						{
-							"text": "생활형 서비스"
-						},
-						{
-							"text": "FAN클럽"
-						},
-						{
-							"text": "이전단계"
-						},
-						{
-							"text": "시작메뉴"
-						}
-					],
-					"text": "결제는 어떻게 하지? 어디에서? 어떤 혜택이 있다고? 포인트까지? 이 모든걸 FAN 에서 한번에! \n\n 1. FAN페이 결제\n 2. FAN페이 오프라인 가맹점 \n 3. 신한 FAN 생활형 서비스\n 4. 신한 FAN 클럽(통합포인트)"
-				}
+				"inNLP": "포인트"
 			},
 			{
 				"name": "금융/납부 서비스_",
@@ -1075,12 +977,6 @@ var dialogs = [
 				},
 				{
 					"text": "체크카드"
-				},
-				{
-					"text": "이전단계"
-				},
-				{
-					"text": "시작메뉴"
 				}
 			]
 		},
@@ -2100,6 +1996,83 @@ var dialogs = [
 										"inNLP": "이전 단계"
 									},
 									{
+										"name": "센스 실속",
+										"id": "default1322327",
+										"filename": "default",
+										"input": [
+											{
+												"text": "센스",
+												"if": " context.user.channel == 'kakao'"
+											},
+											{
+												"text": "2",
+												"if": " context.user.channel == 'kakao'"
+											}
+										],
+										"output": {
+											"output": "해외에서도 누릴 수 있는 혜택에 관심이 있으신 센스있는 고객님께서 좋아하실만한 신용카드가 2가지가 있어요. 아래 2가지 카드 중에서 자세히 보고 싶으신 카드를 선택해주세요. \n\n1. 해외 직구와 해외여행을 알뜰하게 하고 싶다면 [Smart Global 신한카드 체크]\n2. 여행으로 마일리지 모으고 있다면 [신한카드 YOLO Triplus 체크]",
+											"buttons": [
+												{
+													"text": "Smart Global"
+												},
+												{
+													"text": "YOLO Triplus"
+												}
+											]
+										},
+										"children": [
+											{
+												"name": "Smart Global",
+												"id": "default1322328",
+												"filename": "default",
+												"input": [
+													{
+														"text": "Smart Global"
+													},
+													{
+														"text": "1"
+													}
+												],
+												"output": {
+													"output": "[Smart Global 신한카드 체크]\n\n✔ 해외/국내 이용 캐시백 ✔ 해외 현금인출 이용 캐시백 \n\n자세한 내용을 보시려면 아래의 링크를 클릭해 주세요.",
+													"image": {
+														"url": "/files/Shinhancard1497948005502.jpg",
+														"displayname": "card36.jpg"
+													}
+												},
+												"task": {
+													"name": "SmartGlobal"
+												}
+											},
+											{
+												"name": "YOLO Triplus",
+												"id": "default1322329",
+												"filename": "default",
+												"input": [
+													{
+														"text": "YOLO Triplus"
+													},
+													{
+														"text": "YOLO"
+													},
+													{
+														"text": "2"
+													}
+												],
+												"output": {
+													"output": "[신한카드 YOLO Triplus 체크]\n\n✔ 전가맹점 마일리지 적립\n✔ 국내외 스타벅스 마일리지 적립\n\n자세한 내용을 보시려면 아래의 링크를 클릭해 주세요.",
+													"image": {
+														"url": "/files/Shinhancard1497948018344.jpg",
+														"displayname": "card37.jpg"
+													}
+												},
+												"task": {
+													"name": "YOLOTriplus"
+												}
+											}
+										]
+									},
+									{
 										"name": "슈퍼 실속",
 										"id": "default91",
 										"filename": "default",
@@ -2138,6 +2111,20 @@ var dialogs = [
 										"task": {
 											"name": "cardlist6"
 										}
+									},
+									{
+										"name": "센스실속(F,N)",
+										"id": "default1322330",
+										"filename": "default",
+										"input": [
+											{
+												"text": "센스"
+											},
+											{
+												"text": "2"
+											}
+										],
+										"output": "ㅇㅇ"
 									}
 								]
 							},
@@ -2787,7 +2774,7 @@ var commonDialogs = [
 			}
 		],
 		"output": {
-			"output": "안녕하세요, 신한카드입니다. \n저는 전화, 홈페이지 보다 메신저가 편한 고객님들을 위해 새롭게 선보이는 신한카드 자동채팅 서비스입니다.\n결제\\+혜택\\+재미=신한 FAN 과 카드에 대해 알려드리겠습니다.\n많이 이용해 주실꺼죠?\n\n신한 FAN, 카드 추천, 자주 묻는 질문(FAQ) 중 하나를 선택해 주세요.\n\n1. 신한 FAN을 알려줘요\n2. 내게 꼭 맞는 카드를 추천해줘요\n3. 궁금한게 있는데요(FAQ)",
+			"output": "안녕하세요, 신한카드입니다. \n저는 전화, 홈페이지 보다 메신저가 편한 고객님들을 위해 새롭게 선보이는 신한카드 자동채팅 서비스입니다.\n결제+혜택+재미=신한 FAN 과 카드에 대해 알려드리겠습니다.\n많이 이용해 주실꺼죠?\n\n신한 FAN, 카드 추천, 자주 묻는 질문(FAQ) 중 하나를 선택해 주세요.\n\n1. 신한 FAN을 알려줘요\n2. 내게 꼭 맞는 카드를 추천해줘요\n3. 궁금한게 있는데요(FAQ)",
 			"buttons": [
 				{
 					"text": "신한 FAN을 알려줘요"
