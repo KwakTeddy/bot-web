@@ -6,7 +6,7 @@ var Shinhancard = {
   kakao: {
     keyboard: { type :"buttons", buttons:["반갑습니다, 신한카드입니다"]}
   },
-  // commonButtons: [{"text": "이전단계"}, {"text": "시작메뉴"}],
+  commonButtons: [{"text": "이전단계"}, {"text": "시작메뉴"}],
   commonQuickReplies: [{"text": "이전"}, {"text": "시작"}],
   intentOption: {
     matchRate: 0.3, matchCount: 3,
