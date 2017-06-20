@@ -23,7 +23,7 @@ var dialogsType1 = {
     exclude: ['하다', '이다'],
     mongo: {
         model: 'dialogsetdialogs',
-        queryStatic: {dialogset: ObjectId("59478cf17a294c58195c9cf2")},
+        queryStatic: {dialogset: ObjectId("59410b4fbb33920264ee001b")},
         queryFields: ['input'],
         fields: 'dialogset input inputRaw output context' ,
         taskFields: ['input', 'inputRaw', 'output', 'matchCount', 'matchRate', 'dialogset', 'context'],
@@ -236,7 +236,7 @@ var fanfaqType = {
         // taskFields: ['_id','title','content'],
         model: 'dialogsetdialogs',
         queryFields: ['input'],
-        queryStatic: {dialogset: ObjectId("59474590df0c859b48a6e86f")},
+        queryStatic: {dialogset: ObjectId("59410b4fbb33920264ee001b")},
         fields: 'dialogset input inputRaw output context' ,
         taskFields: ['input', 'inputRaw', 'output', 'matchCount', 'matchRate', 'dialogset', 'context'],
         taskSort: function(a, b) {
