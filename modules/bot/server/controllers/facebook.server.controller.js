@@ -421,11 +421,6 @@ function sendButtonMessage(recipientId, text, task, token) {
   var bot = botContext.botUser.orgBot || botContext.bot;
   var buttons = [];
 
-  if(bot && bot.commonButtons && bot.commonButtons.length && botContext.botUser._currentDialog.name && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)){
-    if(task.buttons) task.buttons =  task.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
-    else if(task.result.buttons) task.result.buttons =  task.result.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
-  }
-
   if(task.buttons.length > 3){
   var messageData = {
     recipient: {
@@ -545,13 +540,6 @@ function sendGenericMessage(recipientId, text, task, token) {
     }
 
     if (task.buttons){
-      var bot = botContext.botUser.orgBot || botContext.bot;
-      if(bot && bot.commonButtons && bot.commonButtons.length && botContext.botUser._currentDialog.name && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)){
-        if(task.buttons) task.buttons =  task.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
-        else if(task.result.buttons) task.result.buttons =  task.result.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
-      }
-
-
       var buttonLength;
       if (task.buttons.length > 3) buttonLength = 3;
       else buttonLength = task.buttons.length;
@@ -848,9 +836,9 @@ function smartReplyMessage(recipientId, text, task, token) {
 
 function callSendAPI(messageData, PAGE_ACCESS_TOKEN, cb) {
   var bot = botContext.botUser.orgBot || botContext.bot;
-  if(bot && bot.commonButtons && bot.commonButtons.length && botContext.botUser._currentDialog.name && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)){
+  if(bot && bot.commonQuickReplies && bot.commonQuickReplies.length && botContext.botUser._currentDialog.name && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)){
     var quick_replies = [];
-    bot.commonButtons.forEach(function (b) {
+    bot.commonQuickReplies.forEach(function (b) {
       var btn = {content_type: "text"};
       btn['title'] = b.text;
       btn['payload'] = b.text;
