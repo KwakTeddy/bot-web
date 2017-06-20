@@ -836,7 +836,7 @@ function smartReplyMessage(recipientId, text, task, token) {
 
 function callSendAPI(messageData, PAGE_ACCESS_TOKEN, cb) {
   var bot = botContext.botUser.orgBot || botContext.bot;
-  console.log(util.inspect(botContext._currentDialog));
+  console.log(util.inspect(botContext.botUser._currentDialog));
   console.log('*********************************************')
   if(bot && bot.commonQuickReplies && bot.commonQuickReplies.length
     && botContext.botUser._currentDialog.name
