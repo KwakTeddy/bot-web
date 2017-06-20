@@ -75,7 +75,7 @@ var overTextLinkSchema = new Schema({
   text: {
     type: String
   },
-  recipientId: {
+  index: {
     type: String
   }
 });

@@ -94,8 +94,8 @@ exports.getConfig = function (req, res) {
  * get fbOvertext
  */
 exports.fbOvertext = function (req, res) {
-  console.log(util.inspect(typeof req.params.recipientId));
-  OverTextLink.findOne({recipientId: req.params.recipientId}).exec(function (err, result) {
+  console.log(util.inspect(req.params.index));
+  OverTextLink.findOne({index: req.params.index}).exec(function (err, result) {
     if(err){
       console.log(err)
     }else {
@@ -105,7 +105,7 @@ exports.fbOvertext = function (req, res) {
           enterpriseName: config.enterprise.name ? config.enterprise.name : 'Moneybrain'
         });
       }else {
-        res.send('해당하는 메세지를 찾을 수 없네요');
+        res.send('링크의 유효기간이 만료되었습니다');
       }
     }
   });

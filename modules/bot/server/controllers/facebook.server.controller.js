@@ -246,9 +246,6 @@ function receivedAuthentication(event) {
 
 
 function respondMessage(to, text, botId, task) {
-  console.log(util.inspect(task));
-  console.log(util.inspect(botContext));
-  console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
   var tokenData = '';
   var bot = botContext.botUser.orgBot || botContext.bot;
 
@@ -336,7 +333,7 @@ function sendTextMessage(recipientId, text, task, token) {
     var subtext = text.substring(0, 639);
     var buttons = [{
       "type":"web_url",
-      "url": config.host + '/facebookOvertext/' + recipientId,
+      "url": config.host + '/facebookOvertext/',
       "title":"전문 보기"
     }];
     var messageData = {
@@ -354,33 +351,47 @@ function sendTextMessage(recipientId, text, task, token) {
         }
       }
     };
-    OverTextLink.findOne({recipientId: recipientId}).exec(function (err, result) {
-      if(err){
-        console.log(err)
-      }else {
-        if (result){
-          result.text = text;
-          result.save(function (err) {
-            if(err){
-              console.log(err)
-            }else {
-              callSendAPI(messageData, token);
-            }
-          })
+    crypto.randomBytes(10, function (err, buffer) {
+      var index = buffer.toString('hex');
+      buttons[0].url = buttons[0].url + index;
+      var overTextLink = new OverTextLink();
+      overTextLink['text'] = text;
+      overTextLink['index'] = index;
+      overTextLink.save(function (err) {
+        if(err){
+          console.log(err)
         }else {
-          var overTextLink = new OverTextLink();
-          overTextLink['text'] = text;
-          overTextLink['recipientId'] = recipientId;
-          overTextLink.save(function (err) {
-            if(err){
-              console.log(err)
-            }else {
-              callSendAPI(messageData, token);
-            }
-          })
+          callSendAPI(messageData, token);
         }
-      }
+      })
     });
+    // OverTextLink.findOne({recipientId: recipientId}).exec(function (err, result) {
+    //   if(err){
+    //     console.log(err)
+    //   }else {
+    //     if (result){
+    //       result.text = text;
+    //       result.save(function (err) {
+    //         if(err){
+    //           console.log(err)
+    //         }else {
+    //           callSendAPI(messageData, token);
+    //         }
+    //       })
+    //     }else {
+    //       var overTextLink = new OverTextLink();
+    //       overTextLink['text'] = text;
+    //       overTextLink['recipientId'] = recipientId;
+    //       overTextLink.save(function (err) {
+    //         if(err){
+    //           console.log(err)
+    //         }else {
+    //           callSendAPI(messageData, token);
+    //         }
+    //       })
+    //     }
+    //   }
+    // });
   }else {
     var messageData = {
       recipient: {
