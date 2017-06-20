@@ -836,8 +836,6 @@ function smartReplyMessage(recipientId, text, task, token) {
 
 function callSendAPI(messageData, PAGE_ACCESS_TOKEN, cb) {
   var bot = botContext.botUser.orgBot || botContext.bot;
-  console.log(util.inspect(botContext.botUser._currentDialog));
-  console.log('*********************************************')
   if(bot && bot.commonQuickReplies && bot.commonQuickReplies.length
     && botContext.botUser._currentDialog.name
     && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)
@@ -854,7 +852,7 @@ function callSendAPI(messageData, PAGE_ACCESS_TOKEN, cb) {
   if(bot && bot.commonQuickReplies && bot.commonQuickReplies.length
     && botContext.botUser._currentDialog.name
     && (botContext.botUser._currentDialog.name == botContext.bot.noDialog.name)){
-
+    messageData.message['quick_replies'] = [{content_type: "text", title: "시작메뉴", payload: "시작메뉴"}]
   }
   console.log(util.inspect(messageData, {showHidden: false, depth: null}));
   request({
