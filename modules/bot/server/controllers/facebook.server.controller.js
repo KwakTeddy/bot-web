@@ -836,7 +836,10 @@ function smartReplyMessage(recipientId, text, task, token) {
 
 function callSendAPI(messageData, PAGE_ACCESS_TOKEN, cb) {
   var bot = botContext.botUser.orgBot || botContext.bot;
-  if(bot && bot.commonQuickReplies && bot.commonQuickReplies.length && botContext.botUser._currentDialog.name && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)){
+  console.log(util.inspect(botContext._currentDialog));
+  console.log(util.inspect(botContext.bot));
+  if(bot && bot.commonQuickReplies && bot.commonQuickReplies.length
+    && botContext.botUser._currentDialog.name && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)){
     var quick_replies = [];
     bot.commonQuickReplies.forEach(function (b) {
       var btn = {content_type: "text"};
