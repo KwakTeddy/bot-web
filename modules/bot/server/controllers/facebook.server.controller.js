@@ -243,6 +243,8 @@ function receivedAuthentication(event) {
 
 
 function respondMessage(to, text, botId, task) {
+  console.log(util.inspect(task));
+  console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
   var tokenData = '';
   var bot = botContext.botUser.orgBot || botContext.bot;
 
@@ -330,11 +332,11 @@ function sendTextMessage(recipientId, text, task, token) {
     var subtext = text.substring(0, 639);
     var buttons = [{
       "type":"web_url",
-      "url": config.host + '/facebookOvertext',
+      "url": config.host + '/facebookOvertext/' + recipientId,
       "title":"전문 보기"
     }];
-    global['facebook'] = {};
-    global['facebook'] = {userId: recipientId, text: text};
+    // if(!global.facebook) global['facebook'] = {};
+    // global.facebook[recipientId] = text;
 
     var messageData = {
       recipient: {
