@@ -2395,6 +2395,105 @@ var dialogs = [
 						"output": "죄송합니다. 검색결과가 없습니다.\n다시 한번 말씀해주세요~\n처음으로 돌아가시려면 '시작'이라고 말씀해주세요"
 					}
 				}
+			},
+			{
+				"name": "정치",
+				"id": "default11276",
+				"filename": "default",
+				"input": [
+					{
+						"intent": "정치"
+					}
+				],
+				"output": "이런 질문엔 아! 그렇군요 라고 답하라고 배웠습니다. \"아, 그렇군요\" \n\n궁금하신 다른 키워드를 입력해 주세요."
+			},
+			{
+				"name": "욕설",
+				"id": "default11277",
+				"filename": "default",
+				"input": [
+					{
+						"intent": "욕설"
+					}
+				],
+				"output": "헉. 고객님을 화나게 하다니 제 눈에서 눈물을 뽑아드릴게요. \n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+			},
+			{
+				"name": "칭찬",
+				"id": "default11278",
+				"filename": "default",
+				"input": [
+					{
+						"intent": "칭찬"
+					}
+				],
+				"output": "감동입니다, 고객님. 감사합니다.\n\n 궁금하신 다른 키워드를 입력해 주세요. 알파고처럼 대답하겠습니다."
+			},
+			{
+				"name": "인사",
+				"id": "default11279",
+				"filename": "default",
+				"input": [
+					{
+						"intent": "인사"
+					}
+				],
+				"output": "고객님도 안녕하세요! \n먼저 인사해 주셔서 전 지금 감동 최고조 입니다. \n\n궁금하신 다른 키워드를 입력해 주세요. 알파고처럼 대답하겠습니다."
+			},
+			{
+				"name": "돈",
+				"id": "default11280",
+				"filename": "default",
+				"input": [
+					{
+						"intent": "돈"
+					}
+				],
+				"output": "화장실 좀 다녀올게요. \n\n궁금하신 다른 키워드를 입력해 주시겠습니까?"
+			},
+			{
+				"name": "일상",
+				"id": "default11281",
+				"filename": "default",
+				"input": [
+					{
+						"intent": "일상"
+					}
+				],
+				"output": "전 오늘도 알파고 형님을 뒤따르기 위해 열일중입니다. 데헷! \n\n궁금하신 다른 키워드를 입력해 주세요."
+			},
+			{
+				"name": "날씨",
+				"id": "default11282",
+				"filename": "default",
+				"input": [
+					{
+						"intent": "날씨"
+					}
+				],
+				"output": "아… 제가 아직 거기까지는… 긁적긁적. \n\n궁금하신 다른 키워드를 입력해 주세요."
+			},
+			{
+				"name": "푸념",
+				"id": "default11283",
+				"filename": "default",
+				"input": [
+					{
+						"intent": "푸념"
+					}
+				],
+				"output": "저도요. T.,T\n\n궁금하신 다른 키워드를 입력해 주세요."
+			},
+			{
+				"name": "답답",
+				"id": "default11284",
+				"filename": "default",
+				"input": [
+					{
+						"intent": "답답"
+					}
+				],
+				"output": "헉. 제가 아직 좀더 배워야 해서 아직 답정너입니다. 빨리 배우겠습니다. \n\n다시 한번 궁금하신 키워드를 입력해 주시겠습니까?"
 			}
 		]
 	},
