@@ -254,7 +254,7 @@ function respondMessage(to, text, botId, task) {
 
   if(bot && bot.commonButtons && bot.commonButtons.length && botContext.botUser._currentDialog.name && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)){
     if(task && task.buttons) task.buttons =  task.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
-    else if(task.result.buttons) task.result.buttons =  task.result.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
+    else if(task && task.result.buttons) task.result.buttons =  task.result.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
   }
 
   if (task && task.result) {
