@@ -384,15 +384,15 @@ function parseNumber(text, json) {
   var _text = text.trim();
   if (_text.endsWith(".")) _text = _text.substr(0, _text.length - 1);
   else if (_text.endsWith(",")) _text = _text.substr(0, _text.length - 1);
-  else if (_text.startsWith("일") || _text.startsWith("처") || _text.startsWith("첫")) _text = "1";
-  else if (_text.startsWith("이") || _text.startsWith("두") || _text.startsWith("둘")) _text = "2";
-  else if (_text.startsWith("삼") || _text.startsWith("세") || _text.startsWith("셋")) _text = "3";
-  else if (_text.startsWith("사") || _text.startsWith("네") || _text.startsWith("넷")) _text = "4";
-  else if (_text.startsWith("오") || _text.startsWith("다섯")) _text = "5";
-  else if (_text.startsWith("육") || _text.startsWith("여섯")) _text = "6";
-  else if (_text.startsWith("칠") || _text.startsWith("일곱")) _text = "7";
-  else if (_text.startsWith("팔") || _text.startsWith("여덟")) _text = "8";
-  else if (_text.startsWith("구") || _text.startsWith("아홉")) _text = "9";
+  else if (_text == "일" || _text.startsWith("처음") || _text.startsWith("첫째") || _text.startsWith("첫번")) _text = "1";
+  else if (_text == "이" || _text.startsWith("두번") || _text.startsWith("둘째")) _text = "2";
+  else if (_text == "삼" || _text.startsWith("세번") || _text.startsWith("셋째")) _text = "3";
+  else if (_text == "사" || _text.startsWith("네번") || _text.startsWith("넷째")) _text = "4";
+  else if (_text == "오" || _text.startsWith("다섯")) _text = "5";
+  else if (_text == "육" || _text.startsWith("여섯")) _text = "6";
+  else if (_text == "칠" || _text.startsWith("일곱")) _text = "7";
+  else if (_text == "팔" || _text.startsWith("여덟")) _text = "8";
+  else if (_text == "구" || _text.startsWith("아홉")) _text = "9";
 
   return _text;
 }
@@ -1486,12 +1486,12 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
           excluded.push(nlps[i]);
       }
 
-      if(context.botUser.contexts && context.botUser.contexts.length > 0) {
+      if(context.bot.dialogsetOption.useContext !== false && context.botUser.contexts && context.botUser.contexts.length > 0) {
         topicKeywords = [];
         for(var j = 0; j < context.botUser.contexts.length; j++)
           if(context.botUser.contexts[j].name) topicKeywords.push({text: context.botUser.contexts[j].name, pos: 'Noun'});
         console.log('topicKeywords: contexts ' + topicKeywords);
-      } else if(topicKeywords.length == 0 && context.botUser.topic && context.botUser.topic.length > 0) {
+      } else if(context.bot.dialogsetOption.useTopic !== false && topicKeywords.length == 0 && context.botUser.topic && context.botUser.topic.length > 0) {
         topicKeywords = context.botUser.topic;
         console.log('topicKeywords: topic ' + topicKeywords);
       }
