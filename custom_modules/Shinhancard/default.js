@@ -2245,24 +2245,24 @@ var cardlist9 = {
             task.result = {
                 items: [
                     {
-                        title: "신한카드 4Tune체크",
-                        text: "적립과 할인을 동시에!",
-                        imageUrl: "/files/Shinhancard1497432336775.jpg",
+                        title: "Smart Global 신한카드 체크",
+                        text: "해외/국내 이용 캐시백",
+                        imageUrl: "/files/Shinhancard1497948005502.jpg",
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C07.shc?EntryLoc=2764&tmEntryLoc=&empSeq=563&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/check/1350269_39649.html"
                             }
                         ]
                     },
                     {
-                        title: "신한카드 S-Choice체크",
-                        text: "한가지 혜택에 All-In",
-                        imageUrl: "/files/Shinhancard1497432434674.jpg",
+                        title: "신한카드 YOLO Triplus 체크",
+                        text: "전가맹점 마일리지 적립",
+                        imageUrl: "/files/Shinhancard1497948018344.jpg",
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://www.moneybrain.ai"
+                                url: "https://m.shinhancard.com/conts/html/card/apply/check/1350269_39648.html"
                             }
                         ]
                     }
@@ -2272,24 +2272,24 @@ var cardlist9 = {
             task.result = {
                 items: [
                     {
-                        title: "신한카드 4Tune체크",
-                        text: "적립과 할인을 동시에!",
-                        imageUrl: "/files/Shinhancard1497432336775.jpg",
+                        title: "Smart Global 신한카드 체크",
+                        text: "해외/국내 이용 캐시백",
+                        imageUrl: "/files/Shinhancard1497948005502.jpg",
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C07.shc?EntryLoc=2764&tmEntryLoc=&empSeq=562&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C07.shc?EntryLoc=2764&tmEntryLoc=&empSeq=563&datakey=&agcCd="
                             }
                         ]
                     },
                     {
-                        title: "신한카드 S-Choice체크",
-                        text: "한가지 혜택에 All-In",
-                        imageUrl: "/files/Shinhancard1497432434674.jpg",
+                        title: "신한카드 YOLO Triplus 체크",
+                        text: "전가맹점 마일리지 적립",
+                        imageUrl: "/files/Shinhancard1497948018344.jpg",
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://www.moneybrain.ai"
+                                url: "https://m.shinhancard.com/conts/html/card/apply/check/1350267_39648.html"
                             }
                         ]
                     }
