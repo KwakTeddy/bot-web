@@ -354,32 +354,33 @@ function sendTextMessage(recipientId, text, task, token) {
         }
       }
     };
-    OverTextLink.findOne({recipientId: recipientId}).exec(function (result) {
-      if (result){
-        result.text = text;
-        result.save(function (err) {
-          if(err){
-            console.log(err)
-          }else {
-            callSendAPI(messageData, token);
-          }
-        })
+    OverTextLink.findOne({recipientId: recipientId}).exec(function (err, result) {
+      if(err){
+        console.log(err)
       }else {
-        var overTextLink = new OverTextLink();
-        overTextLink['text'] = text;
-        overTextLink['recipientId'] = recipientId;
-        overTextLink.save(function (err) {
-          if(err){
-            console.log(err)
-          }else {
-            callSendAPI(messageData, token);
-          }
-        })
+        if (result){
+          result.text = text;
+          result.save(function (err) {
+            if(err){
+              console.log(err)
+            }else {
+              callSendAPI(messageData, token);
+            }
+          })
+        }else {
+          var overTextLink = new OverTextLink();
+          overTextLink['text'] = text;
+          overTextLink['recipientId'] = recipientId;
+          overTextLink.save(function (err) {
+            if(err){
+              console.log(err)
+            }else {
+              callSendAPI(messageData, token);
+            }
+          })
+        }
       }
-    }, function (err) {
-      console.log(err)
     });
-
   }else {
     var messageData = {
       recipient: {

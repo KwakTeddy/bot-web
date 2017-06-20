@@ -94,18 +94,19 @@ exports.getConfig = function (req, res) {
  * get fbOvertext
  */
 exports.fbOvertext = function (req, res) {
-  console.log(util.inspect(req.params.recipientId));
-  OverTextLink.findOne({recipientId: req.params.recipientId}).exec(function (result) {
-    console.log(util.inspect(result));
-    if(result){
-      res.render('modules/core/server/views/facebookOvertext', {
-        text: result.text,
-        enterpriseName: config.enterprise.name ? config.enterprise.name : 'Moneybrain'
-      });
+  console.log(util.inspect(typeof req.params.recipientId));
+  OverTextLink.findOne({recipientId: req.params.recipientId}).exec(function (err) {
+    if(err){
+      console.log(err)
     }else {
-      res.send('해당하는 메세지를 찾을 수 없네요');
+      if(result){
+        res.render('modules/core/server/views/facebookOvertext', {
+          text: result.text,
+          enterpriseName: config.enterprise.name ? config.enterprise.name : 'Moneybrain'
+        });
+      }else {
+        res.send('해당하는 메세지를 찾을 수 없네요');
+      }
     }
-  }, function (err) {
-    console.log(err)
   });
 };
