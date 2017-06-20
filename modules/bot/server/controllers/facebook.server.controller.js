@@ -837,9 +837,11 @@ function smartReplyMessage(recipientId, text, task, token) {
 function callSendAPI(messageData, PAGE_ACCESS_TOKEN, cb) {
   var bot = botContext.botUser.orgBot || botContext.bot;
   console.log(util.inspect(botContext._currentDialog));
-  console.log(util.inspect(botContext.bot));
+  console.log('*********************************************')
   if(bot && bot.commonQuickReplies && bot.commonQuickReplies.length
-    && botContext.botUser._currentDialog.name && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)){
+    && botContext.botUser._currentDialog.name
+    && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)
+    && (botContext.botUser._currentDialog.name != botContext.bot.noDialog.name)){
     var quick_replies = [];
     bot.commonQuickReplies.forEach(function (b) {
       var btn = {content_type: "text"};
@@ -848,6 +850,11 @@ function callSendAPI(messageData, PAGE_ACCESS_TOKEN, cb) {
       quick_replies.push(btn)
     });
     messageData.message['quick_replies'] = quick_replies
+  }
+  if(bot && bot.commonQuickReplies && bot.commonQuickReplies.length
+    && botContext.botUser._currentDialog.name
+    && (botContext.botUser._currentDialog.name == botContext.bot.noDialog.name)){
+
   }
   console.log(util.inspect(messageData, {showHidden: false, depth: null}));
   request({
