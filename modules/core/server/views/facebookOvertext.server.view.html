@@ -4,15 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
 
-  <title>{% block title %}{{enterpriseName}}{% endblock %}</title>
+  <title>{% block title %}{{enterpriseName? enterpriseName : 'Moneybrain'}}{% endblock %}</title>
   {% block head %}
   {% endblock %}
 </head>
 <body>
-  <section style="white-space: pre-wrap;" class="row">
-    <div class="col-xs-12">
+  <section style="white-space: pre-wrap;padding: 40px">
+    <p>
       {{ text }}
-    </div>
+    </p>
   </section>
 </body>
 </html>

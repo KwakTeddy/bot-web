@@ -104,7 +104,10 @@ exports.fbOvertext = function (req, res) {
           enterpriseName: config.enterprise.name ? config.enterprise.name : 'Moneybrain'
         });
       }else {
-        res.send('링크의 유효기간이 만료되었습니다');
+        res.render('modules/core/server/views/facebookOvertext', {
+          text: '링크의 유효기간이 만료되었습니다',
+          enterpriseName: config.enterprise.name ? config.enterprise.name : 'Moneybrain'
+        });
       }
     }
   });
