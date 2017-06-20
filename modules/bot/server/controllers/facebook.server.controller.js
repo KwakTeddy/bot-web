@@ -264,7 +264,11 @@ function respondMessage(to, text, botId, task) {
         sendGenericMessage(to, text, result, tokenData);
         break;
       case 'buttons':
-        sendButtonMessage(to, text, result, tokenData);
+        if(config.enterprise.name){
+          sendTextMessage(to, text, result, tokenData);
+        }else {
+          sendButtonMessage(to, text, result, tokenData);
+        }
         break;
 
       case 'items':
@@ -297,8 +301,11 @@ function respondMessage(to, text, botId, task) {
       }else {
         if (task && task.hasOwnProperty('buttons')){
           //text && buttons
-          sendButtonMessage(to, text, task, tokenData);
-
+          if(config.enterprise.name){
+            sendTextMessage(to, text, result, tokenData);
+          }else {
+            sendButtonMessage(to, text, result, tokenData);
+          }
         }else {
           //text
           sendTextMessage(to, text, task, tokenData);
@@ -618,6 +625,132 @@ function sendGenericMessage(recipientId, text, task, token) {
 }
 
 /*
+ * Send a list message using the Send API.
+ *
+ */
+function listMessage(recipientId, text, task, token) {
+
+  var elements = [];
+  for(var i = 0; i < task.buttons.length; i++){
+    var elm = {};
+    elm['title']
+  }
+
+  var messageData = {
+    "recipient":{
+      "id": recipientId
+    }, "message": {
+      "attachment": {
+        "type": "template",
+        "payload": {
+          "template_type": "list",
+          "elements": [
+            {
+              "title": "Classic T-Shirt Collection",
+              "image_url": "https://peterssendreceiveapp.ngrok.io/img/collection.png",
+              "subtitle": "See all our colors",
+              "default_action": {
+                "type": "web_url",
+                "url": "https://peterssendreceiveapp.ngrok.io/shop_collection",
+                "messenger_extensions": true,
+                "webview_height_ratio": "tall",
+                "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+              },
+              "buttons": [
+                {
+                  "title": "View",
+                  "type": "web_url",
+                  "url": "https://peterssendreceiveapp.ngrok.io/collection",
+                  "messenger_extensions": true,
+                  "webview_height_ratio": "tall",
+                  "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                }
+              ]
+            },
+            {
+              "title": "Classic White T-Shirt",
+              "image_url": "https://peterssendreceiveapp.ngrok.io/img/white-t-shirt.png",
+              "subtitle": "100% Cotton, 200% Comfortable",
+              "default_action": {
+                "type": "web_url",
+                "url": "https://peterssendreceiveapp.ngrok.io/view?item=100",
+                "messenger_extensions": true,
+                "webview_height_ratio": "tall",
+                "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+              },
+              "buttons": [
+                {
+                  "title": "Shop Now",
+                  "type": "web_url",
+                  "url": "https://peterssendreceiveapp.ngrok.io/shop?item=100",
+                  "messenger_extensions": true,
+                  "webview_height_ratio": "tall",
+                  "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                }
+              ]
+            },
+            {
+              "title": "Classic Blue T-Shirt",
+              "image_url": "https://peterssendreceiveapp.ngrok.io/img/blue-t-shirt.png",
+              "subtitle": "100% Cotton, 200% Comfortable",
+              "default_action": {
+                "type": "web_url",
+                "url": "https://peterssendreceiveapp.ngrok.io/view?item=101",
+                "messenger_extensions": true,
+                "webview_height_ratio": "tall",
+                "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+              },
+              "buttons": [
+                {
+                  "title": "Shop Now",
+                  "type": "web_url",
+                  "url": "https://peterssendreceiveapp.ngrok.io/shop?item=101",
+                  "messenger_extensions": true,
+                  "webview_height_ratio": "tall",
+                  "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                }
+              ]
+            },
+            {
+              "title": "Classic Black T-Shirt",
+              "image_url": "https://peterssendreceiveapp.ngrok.io/img/black-t-shirt.png",
+              "subtitle": "100% Cotton, 200% Comfortable",
+              "default_action": {
+                "type": "web_url",
+                "url": "https://peterssendreceiveapp.ngrok.io/view?item=102",
+                "messenger_extensions": true,
+                "webview_height_ratio": "tall",
+                "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+              },
+              "buttons": [
+                {
+                  "title": "Shop Now",
+                  "type": "web_url",
+                  "url": "https://peterssendreceiveapp.ngrok.io/shop?item=102",
+                  "messenger_extensions": true,
+                  "webview_height_ratio": "tall",
+                  "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                }
+              ]
+            }
+          ],
+          "buttons": [
+            {
+              "title": "View More",
+              "type": "postback",
+              "payload": "payload"
+            }
+          ]
+        }
+      }
+    }
+
+  };
+  callSendAPI(messageData, token);
+}
+
+
+/*
  * Send a receipt message using the Send API.
  *
  */
@@ -707,6 +840,16 @@ function smartReplyMessage(recipientId, text, task, token) {
 }
 
 function callSendAPI(messageData, PAGE_ACCESS_TOKEN, cb) {
+  if(bot && bot.commonButtons && bot.commonButtons.length){
+    var quick_replies = [];
+    bot.commonButtons.forEach(function (b) {
+      var btn = {content_type: "text"};
+      btn['title'] = b.text;
+      btn['payload'] = b.text;
+      quick_replies.push(btn)
+    });
+    messageData.message['quick_replies'] = quick_replies
+  }
   console.log(util.inspect(messageData, {showHidden: false, depth: null}));
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
