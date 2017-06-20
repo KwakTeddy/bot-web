@@ -351,7 +351,7 @@ function sendTextMessage(recipientId, text, task, token) {
         }
       }
     };
-    crypto.randomBytes(10, function (err, buffer) {
+    crypto.randomBytes(20, function (err, buffer) {
       var index = buffer.toString('hex');
       buttons[0].url = buttons[0].url + index;
       var overTextLink = new OverTextLink();
@@ -365,33 +365,6 @@ function sendTextMessage(recipientId, text, task, token) {
         }
       })
     });
-    // OverTextLink.findOne({recipientId: recipientId}).exec(function (err, result) {
-    //   if(err){
-    //     console.log(err)
-    //   }else {
-    //     if (result){
-    //       result.text = text;
-    //       result.save(function (err) {
-    //         if(err){
-    //           console.log(err)
-    //         }else {
-    //           callSendAPI(messageData, token);
-    //         }
-    //       })
-    //     }else {
-    //       var overTextLink = new OverTextLink();
-    //       overTextLink['text'] = text;
-    //       overTextLink['recipientId'] = recipientId;
-    //       overTextLink.save(function (err) {
-    //         if(err){
-    //           console.log(err)
-    //         }else {
-    //           callSendAPI(messageData, token);
-    //         }
-    //       })
-    //     }
-    //   }
-    // });
   }else {
     var messageData = {
       recipient: {

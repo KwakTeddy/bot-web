@@ -70,7 +70,8 @@ mongoose.model('Media', MediaSchema);
 var overTextLinkSchema = new Schema({
   created: {
     type: Date,
-    default: Date.now
+    default: Date.now,
+    expires: 60*60*24*30
   },
   text: {
     type: String

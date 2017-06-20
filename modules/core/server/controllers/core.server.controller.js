@@ -94,7 +94,6 @@ exports.getConfig = function (req, res) {
  * get fbOvertext
  */
 exports.fbOvertext = function (req, res) {
-  console.log(util.inspect(req.params.index));
   OverTextLink.findOne({index: req.params.index}).exec(function (err, result) {
     if(err){
       console.log(err)
