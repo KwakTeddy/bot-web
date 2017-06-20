@@ -9,8 +9,11 @@ var subscribe = '';
 var subscribePageToken = '';
 var mongoose = require('mongoose');
 var UserBotFbPage = mongoose.model('UserBotFbPage');
+var OverTextLink = mongoose.model('OverTextLink');
 var botLib = require(path.resolve('config/lib/bot'));
 var utils = require(path.resolve('modules/bot/action/common/utils'));
+var crypto = require('crypto');
+
 
 
 var util =require('util'); //temporary
@@ -336,9 +339,6 @@ function sendTextMessage(recipientId, text, task, token) {
       "url": config.host + '/facebookOvertext/' + recipientId,
       "title":"전문 보기"
     }];
-    // if(!global.facebook) global['facebook'] = {};
-    // global.facebook[recipientId] = text;
-
     var messageData = {
       recipient: {
         id: recipientId
@@ -354,7 +354,31 @@ function sendTextMessage(recipientId, text, task, token) {
         }
       }
     };
-
+    OverTextLink.findOne({recipientId: recipientId}).exec(function (result) {
+      if (result){
+        result.text = text;
+        result.save(function (err) {
+          if(err){
+            console.log(err)
+          }else {
+            callSendAPI(messageData, token);
+          }
+        })
+      }else {
+        var overTextLink = new OverTextLink();
+        overTextLink['text'] = text;
+        overTextLink['recipientId'] = recipientId;
+        overTextLink.save(function (err) {
+          if(err){
+            console.log(err)
+          }else {
+            callSendAPI(messageData, token);
+          }
+        })
+      }
+    }, function (err) {
+      console.log(err)
+    });
 
   }else {
     var messageData = {
@@ -365,8 +389,8 @@ function sendTextMessage(recipientId, text, task, token) {
         text: text
       }
     };
+    callSendAPI(messageData, token);
   }
-  callSendAPI(messageData, token);
 }
 
 

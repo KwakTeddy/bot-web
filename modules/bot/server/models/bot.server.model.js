@@ -64,3 +64,20 @@ var MediaSchema = new Schema({
 
 mongoose.model('Media', MediaSchema);
 
+/**
+ * OvertextLink Schema
+ */
+var overTextLinkSchema = new Schema({
+  created: {
+    type: Date,
+    default: Date.now
+  },
+  text: {
+    type: String
+  },
+  recipientId: {
+    type: String
+  }
+});
+
+mongoose.model('OverTextLink', overTextLinkSchema);
