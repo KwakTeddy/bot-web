@@ -2314,12 +2314,15 @@ var dialogs = [
 				"input": [
 					{
 						"types": [
-							"fanfaqType"
+							"dialogsType1"
 						]
 					}
 				],
-				"output": "아래 중에 궁금하신 내용이 있나요?\n\n#typeDoc#+index+. +inputRaw+\n\n#번호를 입력하면 상세 내용을 보여드립니다.\n다시 검색하시려면 검색어를 입력해주세요.\n처음으로 돌아가시려면 '시작'이라고 말씀해주세요",
-				"children": [
+        "task": {
+					"name": "faqTask"
+				},
+        "output": "아래 중에 궁금하신 내용이 있나요?\n\n#dialogsType1#+index+. +inputRaw+\n\n#번호를 입력하면 상세 내용을 보여드립니다.\n다시 검색하시려면 검색어를 입력해주세요.\n처음으로 돌아가시려면 '시작'이라고 말씀해주세요",
+        "children": [
 					{
 						"name": "FAQ선택",
 						"id": "default99",
@@ -2340,7 +2343,7 @@ var dialogs = [
 								"input": [
 									{
 										"types": [
-											"fanfaqType"
+											"dialogsType1"
 										]
 									}
 								],
@@ -2357,7 +2360,7 @@ var dialogs = [
 						"input": [
 							{
 								"types": [
-									"fanfaqType"
+									"dialogsType1"
 								]
 							}
 						],
@@ -2381,7 +2384,7 @@ var dialogs = [
 							}
 						}
 					}
-				]
+        ]
 			},
 			{
 				"name": "미검색",
