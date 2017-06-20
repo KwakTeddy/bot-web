@@ -837,6 +837,8 @@ function smartReplyMessage(recipientId, text, task, token) {
   if(task.buttons){
     var smartReplies = [];
     for(var i = 0; i < task.buttons.length; i++){
+      console.log(util.inspect(task.buttons[i]));
+      console.log('*&*&*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
       var repl = {content_type:"text"};
       repl['title'] = i+1;
       repl['payload'] = i+1;
