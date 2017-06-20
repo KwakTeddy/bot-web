@@ -244,6 +244,7 @@ function receivedAuthentication(event) {
 
 function respondMessage(to, text, botId, task) {
   console.log(util.inspect(task));
+  console.log(util.inspect(botContext));
   console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
   var tokenData = '';
   var bot = botContext.botUser.orgBot || botContext.bot;
