@@ -2308,12 +2308,15 @@ var dialogs = [
 				"input": [
 					{
 						"types": [
-							"fanfaqType"
+							"dialogsType1"
 						]
 					}
 				],
+        "task": {
+					"name": "faqTask"
+				},
 				"output": "신한카드에 학습되어 있는 질문입니다.\n아래 보기중에서 원하시는 질문이 있으시면 <번호>를 선택해주세요.\n\n#typeDoc#+index+. +inputRaw+\n\n#원하시는 질문 목록이 없으면 다른 말로 질문해주세요.\n처음으로 돌아가고 싶으시면 '시작'이라고 입력해주세요.",
-				"children": [
+        "children": [
 					{
 						"name": "FAQ선택",
 						"id": "default99",
@@ -2334,7 +2337,7 @@ var dialogs = [
 								"input": [
 									{
 										"types": [
-											"fanfaqType"
+											"dialogsType1"
 										]
 									}
 								],
@@ -2351,7 +2354,7 @@ var dialogs = [
 						"input": [
 							{
 								"types": [
-									"fanfaqType"
+									"dialogsType1"
 								]
 							}
 						],
@@ -2375,7 +2378,7 @@ var dialogs = [
 							}
 						}
 					}
-				]
+        ]
 			},
 			{
 				"name": "미검색",
