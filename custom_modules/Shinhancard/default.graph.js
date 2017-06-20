@@ -2312,11 +2312,11 @@ var dialogs = [
 						]
 					}
 				],
-        "task": {
+				"task": {
 					"name": "faqTask"
 				},
 				"output": "신한카드에 학습되어 있는 질문입니다.\n아래 보기중에서 원하시는 질문이 있으시면 <번호>를 선택해주세요.\n\n#typeDoc#+index+. +inputRaw+\n\n#원하시는 질문 목록이 없으면 다른 말로 질문해주세요.\n처음으로 돌아가고 싶으시면 '시작'이라고 입력해주세요.",
-        "children": [
+				"children": [
 					{
 						"name": "FAQ선택",
 						"id": "default99",
@@ -2363,6 +2363,105 @@ var dialogs = [
 						}
 					},
 					{
+						"name": "정치",
+						"id": "default12276",
+						"filename": "default",
+						"input": [
+							{
+								"intent": "정치"
+							}
+						],
+						"output": "이런 질문엔 아! 그렇군요 라고 답하라고 배웠습니다. \"아, 그렇군요\" \n\n궁금하신 다른 키워드를 입력해 주세요."
+					},
+					{
+						"name": "욕설",
+						"id": "default12277",
+						"filename": "default",
+						"input": [
+							{
+								"intent": "욕설"
+							}
+						],
+						"output": "헉. 고객님을 화나게 하다니 제 눈에서 눈물을 뽑아드릴게요. \n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+					},
+					{
+						"name": "칭찬",
+						"id": "default12278",
+						"filename": "default",
+						"input": [
+							{
+								"intent": "칭찬"
+							}
+						],
+						"output": "감동입니다, 고객님. 감사합니다.\n\n 궁금하신 다른 키워드를 입력해 주세요. 알파고처럼 대답하겠습니다."
+					},
+					{
+						"name": "인사",
+						"id": "default12279",
+						"filename": "default",
+						"input": [
+							{
+								"intent": "인사"
+							}
+						],
+						"output": "고객님도 안녕하세요! \n먼저 인사해 주셔서 전 지금 감동 최고조 입니다. \n\n궁금하신 다른 키워드를 입력해 주세요. 알파고처럼 대답하겠습니다."
+					},
+					{
+						"name": "돈",
+						"id": "default12280",
+						"filename": "default",
+						"input": [
+							{
+								"intent": "돈"
+							}
+						],
+						"output": "화장실 좀 다녀올게요. \n\n궁금하신 다른 키워드를 입력해 주시겠습니까?"
+					},
+					{
+						"name": "일상",
+						"id": "default12281",
+						"filename": "default",
+						"input": [
+							{
+								"intent": "일상"
+							}
+						],
+						"output": "전 오늘도 알파고 형님을 뒤따르기 위해 열일중입니다. 데헷! \n\n궁금하신 다른 키워드를 입력해 주세요."
+					},
+					{
+						"name": "날씨",
+						"id": "default12282",
+						"filename": "default",
+						"input": [
+							{
+								"intent": "날씨"
+							}
+						],
+						"output": "아… 제가 아직 거기까지는… 긁적긁적. \n\n궁금하신 다른 키워드를 입력해 주세요."
+					},
+					{
+						"name": "푸념",
+						"id": "default12283",
+						"filename": "default",
+						"input": [
+							{
+								"intent": "푸념"
+							}
+						],
+						"output": "저도요. T.,T\n\n궁금하신 다른 키워드를 입력해 주세요."
+					},
+					{
+						"name": "답답",
+						"id": "default12284",
+						"filename": "default",
+						"input": [
+							{
+								"intent": "답답"
+							}
+						],
+						"output": "헉. 제가 아직 좀더 배워야 해서 아직 답정너입니다. 빨리 배우겠습니다. \n\n다시 한번 궁금하신 키워드를 입력해 주시겠습니까?"
+					},
+					{
 						"name": "미선택",
 						"id": "default275",
 						"filename": "default",
@@ -2378,7 +2477,7 @@ var dialogs = [
 							}
 						}
 					}
-        ]
+				]
 			},
 			{
 				"name": "미검색",
