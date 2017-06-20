@@ -302,9 +302,9 @@ function respondMessage(to, text, botId, task) {
         if (task && task.hasOwnProperty('buttons')){
           //text && buttons
           if(config.enterprise.name){
-            sendTextMessage(to, text, result, tokenData);
+            sendTextMessage(to, text, task, tokenData);
           }else {
-            sendButtonMessage(to, text, result, tokenData);
+            sendButtonMessage(to, text, task, tokenData);
           }
         }else {
           //text
@@ -545,6 +545,13 @@ function sendGenericMessage(recipientId, text, task, token) {
     }
 
     if (task.buttons){
+      var bot = botContext.botUser.orgBot || botContext.bot;
+      if(bot && bot.commonButtons && bot.commonButtons.length && botContext.botUser._currentDialog.name && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)){
+        if(task.buttons) task.buttons =  task.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
+        else if(task.result.buttons) task.result.buttons =  task.result.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
+      }
+
+
       var buttonLength;
       if (task.buttons.length > 3) buttonLength = 3;
       else buttonLength = task.buttons.length;
