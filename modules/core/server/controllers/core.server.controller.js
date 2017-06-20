@@ -94,7 +94,9 @@ exports.getConfig = function (req, res) {
  * get fbOvertext
  */
 exports.fbOvertext = function (req, res) {
+  console.log(util.inspect(req.params.recipientId));
   OverTextLink.findOne({recipientId: req.params.recipientId}).exec(function (result) {
+    console.log(util.inspect(result));
     if(result){
       res.render('modules/core/server/views/facebookOvertext', {
         text: result.text,
