@@ -93,8 +93,11 @@ exports.getConfig = function (req, res) {
  */
 exports.fbOvertext = function (req, res) {
   var text;
-  if(global.facebook && global.facebook.text) text = global.facebook.text;
-  else text = 'textPage';
+  console.log(util.inspect(req.params))
+  console.log(util.inspect(global.facebook))
+  if(global.facebook[req.params.recipientId]) text = global.facebook[req.params.recipientId];
+  // if(global.facebook && global.facebook.text) text = global.facebook.text;
+  // else text = 'textPage';
   text = '[SMS 문자 서비스에 대해 알고싶어요]\n\n답변: SMS문자 서비스는 고객님이 소지한 카드 거래 시 바로 확인할 수 있도록 휴대폰 문자 메시지로 거래 내역을 알려 드리는 서비스입니다.\r\n\r\n1. 가입대상 \r\n\r\n1) 휴대폰 정보가 등재되어 있는 모든 신용카드 및 체크카드 고객. \r\n2) 본인 주민번호상에 있는 본인카드와 가족카드 거래에 내역 전송.\r\n3) 가족카드 분실 접수 시 본인 고객의 휴대폰으로 전송됨. \r\n\r\n2. 전송기준 \r\n\r\n1) 할부, 일시불, 단기카드대출(현금서비스), 장기카드대출(카드론) 이용금액 전송 (해외 swipe 거래건에 대해 발송되며 key-in 승인 건은 전송되지 않음) \r\n2) 본인 거래 및 가족카드 거래건 모두 본인 고객님의 휴대폰으로 전송 (가족카드 SMS서비스는 신한카드 고객센터(☎ 1544-7000) 를 통해 별도 신청 후 이용 가능하며 가족카드 내역을 가족고객의 휴대폰으로 전송받도록 신청 가능함) \r\n3) 휴대폰, 전기요금 등 무승인거래의 경우 승인 거절시 SMS 전송에서 제외될 수 있음 4) SMS가입 회원 중 본인회원(프리미엄 SMS회원 포함) 승인내역 발송 시 승인시점 누적사용금액을 1건의 SMS메시지로 함께 발송. \r\n\r\n3. 누적사용금액 개념\r\n\r\n1) 신용카드 이용금액 중 승인'
   res.render('modules/core/server/views/facebookOvertext', {
     text: text,
