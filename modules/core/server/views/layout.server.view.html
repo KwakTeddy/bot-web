@@ -641,10 +641,10 @@
 <script src="https://connect.facebook.net/en_US/all.js"></script>
 <!--<script src="https://connect.facebook.net/en_US/sdk.js"></script>-->
 <script>
-  $.get('/config', function (facebookID) {
+  $.get('/config', function (config) {
     window.fbAsyncInit = function() {
       FB.init({
-        appId      : facebookID,
+        appId      : config.facebook.clientID,
         status     : true,
         xfbml      : true,
         version    : 'v2.8'
