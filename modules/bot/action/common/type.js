@@ -210,6 +210,7 @@ function processOutput(task, context, out) {
     var re2 = new RegExp(TAG_START + "([\\w가-힣\\d-_\\.]+)" + TAG_END, "g");
 
     //text = text.replace(/\\#/g, "%23");
+    out = out.replace(/\\\+/g, '%2B');
 
     out = out.replace(re, function (match, p1, p2, offset, string) {
       var val;
@@ -292,6 +293,8 @@ function processOutput(task, context, out) {
 
       // return p1;
     });
+
+    out = out.replace(/%2B/g, '+');
 
   } catch(e) {
     console.log("processOutput:error: " + e);
@@ -1501,7 +1504,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
       async.eachSeries((topicKeywords.length > 0 ? topicKeywords : _nlps), function (word, _callback){
         word = word.text ? RegExp.escape(word.text): word;
 
-        if(false/*word.length <= 1*/) {
+        if(word.length <= 1) {
           _callback(null);
         } else {
           var query = {};

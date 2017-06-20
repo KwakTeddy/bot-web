@@ -303,7 +303,7 @@ var dialogs = [
 					}
 				],
 				"output": {
-					"output": "현명한 선택! 결제+혜택+재미가 있는 신한 FAN 입니다. \n\n✔ 신한 FAN은 신한카드가 없어도 가입가능!  \n✔ 신한 FAN에 가입 하시면 다양한 경품이 가득! \n✔ 신규 고객이라면 100% 당첨 경품 제공!",
+					"output": "현명한 선택! 결제\\+혜택\\+재미가 있는 신한 FAN 입니다. \n\n✔ 신한 FAN은 신한카드가 없어도 가입가능!  \n✔ 신한 FAN에 가입 하시면 다양한 경품이 가득! \n✔ 신규 고객이라면 100% 당첨 경품 제공!",
 					"image": {
 						"url": "/files/Shinhancard1497408485049.jpg",
 						"displayname": "FAN가입.jpg"
@@ -323,7 +323,7 @@ var dialogs = [
 							"text": "시작메뉴"
 						}
 					],
-					"output": "현명한 선택! 결제+혜택+재미가 있는 신한 FAN 입니다. \n\n✔ 신한 FAN은 신한카드가 없어도 가입가능!  \n✔ 신한 FAN에 가입 하시면 다양한 경품이 가득! \n✔ 신규 고객이라면 100% 당첨 경품 제공!",
+					"output": "현명한 선택! 결제\\+혜택\\+재미가 있는 신한 FAN 입니다. \n\n✔ 신한 FAN은 신한카드가 없어도 가입가능!  \n✔ 신한 FAN에 가입 하시면 다양한 경품이 가득! \n✔ 신규 고객이라면 100% 당첨 경품 제공!",
 					"image": {
 						"url": "/files/Shinhancard1497408485049.jpg",
 						"displayname": "FAN가입.jpg"
@@ -359,7 +359,7 @@ var dialogs = [
 				"children": [
 					{
 						"name": "FAN 전용 적립 및 할인_",
-						"id": "default224",
+						"id": "default113224",
 						"filename": "default",
 						"input": [
 							{
@@ -370,7 +370,7 @@ var dialogs = [
 							}
 						],
 						"output": {
-							"output": "FAN 전용 할인, 포인트 적립/쿠폰, 각종 제휴사 혜택 등 놓칠 수 없는 FAN 혜택을 \n\n1. 모~두 보고 싶다면, 신한 FAN 혜택ZONE!\n\n2. 나한테 필요한 혜택만 골라보고 싶다면, 나만의 맞춤 쿠폰 Sally!\n",
+							"output": "FAN 전용 할인, 포인트 적립/쿠폰, 각종 제휴사 혜택 등 놓칠 수 없는 FAN 혜택을 \n\n1. 모~두 보고 싶다면, 신한 FAN 혜택ZONE!\n2. 나한테 필요한 혜택만 골라보고 싶다면, 나만의 맞춤 쿠폰 Sally!\n",
 							"buttons": [
 								{
 									"text": "신한 FAN 혜택 ZONE!"
@@ -385,12 +385,12 @@ var dialogs = [
 									"text": "시작메뉴"
 								}
 							],
-							"text": "FAN 전용 할인, 포인트 적립/쿠폰, 각종 제휴사 혜택 등 놓칠 수 없는 FAN 혜택을 \n\n1. 모~두 보고 싶다면, 신한 FAN 혜택ZONE!\n\n2. 나한테 필요한 혜택만 골라보고 싶다면, 나만의 맞춤 쿠폰 Sally!\n"
+							"text": "FAN 전용 할인, 포인트 적립/쿠폰, 각종 제휴사 혜택 등 놓칠 수 없는 FAN 혜택을 \n\n1. 모~두 보고 싶다면, 신한 FAN 혜택ZONE!\n2. 나한테 필요한 혜택만 골라보고 싶다면, 나만의 맞춤 쿠폰 Sally!\n"
 						},
 						"children": [
 							{
 								"name": "FAN 혜택+ 서비스_",
-								"id": "default226",
+								"id": "default1322326",
 								"filename": "default",
 								"input": [
 									{
@@ -470,7 +470,7 @@ var dialogs = [
 					},
 					{
 						"name": "이벤트_",
-						"id": "default225",
+						"id": "default223245",
 						"filename": "default",
 						"input": [
 							{
@@ -2312,11 +2312,11 @@ var dialogs = [
 						]
 					}
 				],
-        "task": {
+				"task": {
 					"name": "faqTask"
 				},
 				"output": "신한카드에 학습되어 있는 질문입니다.\n아래 보기중에서 원하시는 질문이 있으시면 <번호>를 선택해주세요.\n\n#typeDoc#+index+. +inputRaw+\n\n#원하시는 질문 목록이 없으면 다른 말로 질문해주세요.\n처음으로 돌아가고 싶으시면 '시작'이라고 입력해주세요.",
-        "children": [
+				"children": [
 					{
 						"name": "FAQ선택",
 						"id": "default99",
@@ -2363,6 +2363,105 @@ var dialogs = [
 						}
 					},
 					{
+						"name": "정치",
+						"id": "default12276",
+						"filename": "default",
+						"input": [
+							{
+								"intent": "정치"
+							}
+						],
+						"output": "이런 질문엔 아! 그렇군요 라고 답하라고 배웠습니다. \"아, 그렇군요\" \n\n궁금하신 다른 키워드를 입력해 주세요."
+					},
+					{
+						"name": "욕설",
+						"id": "default12277",
+						"filename": "default",
+						"input": [
+							{
+								"intent": "욕설"
+							}
+						],
+						"output": "헉. 고객님을 화나게 하다니 제 눈에서 눈물을 뽑아드릴게요. \n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+					},
+					{
+						"name": "칭찬",
+						"id": "default12278",
+						"filename": "default",
+						"input": [
+							{
+								"intent": "칭찬"
+							}
+						],
+						"output": "감동입니다, 고객님. 감사합니다.\n\n 궁금하신 다른 키워드를 입력해 주세요. 알파고처럼 대답하겠습니다."
+					},
+					{
+						"name": "인사",
+						"id": "default12279",
+						"filename": "default",
+						"input": [
+							{
+								"intent": "인사"
+							}
+						],
+						"output": "고객님도 안녕하세요! \n먼저 인사해 주셔서 전 지금 감동 최고조 입니다. \n\n궁금하신 다른 키워드를 입력해 주세요. 알파고처럼 대답하겠습니다."
+					},
+					{
+						"name": "돈",
+						"id": "default12280",
+						"filename": "default",
+						"input": [
+							{
+								"intent": "돈"
+							}
+						],
+						"output": "화장실 좀 다녀올게요. \n\n궁금하신 다른 키워드를 입력해 주시겠습니까?"
+					},
+					{
+						"name": "일상",
+						"id": "default12281",
+						"filename": "default",
+						"input": [
+							{
+								"intent": "일상"
+							}
+						],
+						"output": "전 오늘도 알파고 형님을 뒤따르기 위해 열일중입니다. 데헷! \n\n궁금하신 다른 키워드를 입력해 주세요."
+					},
+					{
+						"name": "날씨",
+						"id": "default12282",
+						"filename": "default",
+						"input": [
+							{
+								"intent": "날씨"
+							}
+						],
+						"output": "아… 제가 아직 거기까지는… 긁적긁적. \n\n궁금하신 다른 키워드를 입력해 주세요."
+					},
+					{
+						"name": "푸념",
+						"id": "default12283",
+						"filename": "default",
+						"input": [
+							{
+								"intent": "푸념"
+							}
+						],
+						"output": "저도요. T.,T\n\n궁금하신 다른 키워드를 입력해 주세요."
+					},
+					{
+						"name": "답답",
+						"id": "default12284",
+						"filename": "default",
+						"input": [
+							{
+								"intent": "답답"
+							}
+						],
+						"output": "헉. 제가 아직 좀더 배워야 해서 아직 답정너입니다. 빨리 배우겠습니다. \n\n다시 한번 궁금하신 키워드를 입력해 주시겠습니까?"
+					},
+					{
 						"name": "미선택",
 						"id": "default275",
 						"filename": "default",
@@ -2378,7 +2477,7 @@ var dialogs = [
 							}
 						}
 					}
-        ]
+				]
 			},
 			{
 				"name": "미검색",
@@ -2395,6 +2494,105 @@ var dialogs = [
 						"output": "죄송합니다. 검색결과가 없습니다.\n다시 한번 말씀해주세요~\n처음으로 돌아가시려면 '시작'이라고 말씀해주세요"
 					}
 				}
+			},
+			{
+				"name": "정치",
+				"id": "default11276",
+				"filename": "default",
+				"input": [
+					{
+						"intent": "정치"
+					}
+				],
+				"output": "이런 질문엔 아! 그렇군요 라고 답하라고 배웠습니다. \"아, 그렇군요\" \n\n궁금하신 다른 키워드를 입력해 주세요."
+			},
+			{
+				"name": "욕설",
+				"id": "default11277",
+				"filename": "default",
+				"input": [
+					{
+						"intent": "욕설"
+					}
+				],
+				"output": "헉. 고객님을 화나게 하다니 제 눈에서 눈물을 뽑아드릴게요. \n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+			},
+			{
+				"name": "칭찬",
+				"id": "default11278",
+				"filename": "default",
+				"input": [
+					{
+						"intent": "칭찬"
+					}
+				],
+				"output": "감동입니다, 고객님. 감사합니다.\n\n 궁금하신 다른 키워드를 입력해 주세요. 알파고처럼 대답하겠습니다."
+			},
+			{
+				"name": "인사",
+				"id": "default11279",
+				"filename": "default",
+				"input": [
+					{
+						"intent": "인사"
+					}
+				],
+				"output": "고객님도 안녕하세요! \n먼저 인사해 주셔서 전 지금 감동 최고조 입니다. \n\n궁금하신 다른 키워드를 입력해 주세요. 알파고처럼 대답하겠습니다."
+			},
+			{
+				"name": "돈",
+				"id": "default11280",
+				"filename": "default",
+				"input": [
+					{
+						"intent": "돈"
+					}
+				],
+				"output": "화장실 좀 다녀올게요. \n\n궁금하신 다른 키워드를 입력해 주시겠습니까?"
+			},
+			{
+				"name": "일상",
+				"id": "default11281",
+				"filename": "default",
+				"input": [
+					{
+						"intent": "일상"
+					}
+				],
+				"output": "전 오늘도 알파고 형님을 뒤따르기 위해 열일중입니다. 데헷! \n\n궁금하신 다른 키워드를 입력해 주세요."
+			},
+			{
+				"name": "날씨",
+				"id": "default11282",
+				"filename": "default",
+				"input": [
+					{
+						"intent": "날씨"
+					}
+				],
+				"output": "아… 제가 아직 거기까지는… 긁적긁적. \n\n궁금하신 다른 키워드를 입력해 주세요."
+			},
+			{
+				"name": "푸념",
+				"id": "default11283",
+				"filename": "default",
+				"input": [
+					{
+						"intent": "푸념"
+					}
+				],
+				"output": "저도요. T.,T\n\n궁금하신 다른 키워드를 입력해 주세요."
+			},
+			{
+				"name": "답답",
+				"id": "default11284",
+				"filename": "default",
+				"input": [
+					{
+						"intent": "답답"
+					}
+				],
+				"output": "헉. 제가 아직 좀더 배워야 해서 아직 답정너입니다. 빨리 배우겠습니다. \n\n다시 한번 궁금하신 키워드를 입력해 주시겠습니까?"
 			}
 		]
 	},
@@ -2510,7 +2708,7 @@ var commonDialogs = [
 			}
 		],
 		"output": {
-			"output": "안녕하세요, 신한카드입니다. \n저는 전화, 홈페이지 보다 메신저가 편한 고객님들을 위해 새롭게 선보이는 신한카드 자동채팅 서비스입니다. 결제+혜택+재미=신한 FAN 과 카드에 대해 알려드리겠습니다. 많이 이용해 주실꺼죠?\n\n신한 FAN, 카드 추천, 자주 묻는 질문(FAQ) 중 하나를 선택해 주세요.",
+			"output": "안녕하세요, 신한카드입니다. \n저는 전화, 홈페이지 보다 메신저가 편한 고객님들을 위해 새롭게 선보이는 신한카드 자동채팅 서비스입니다. 결제\\+혜택\\+재미=신한 FAN 과 카드에 대해 알려드리겠습니다. 많이 이용해 주실꺼죠?\n\n신한 FAN, 카드 추천, 자주 묻는 질문(FAQ) 중 하나를 선택해 주세요.",
 			"buttons": [
 				{
 					"text": "신한 FAN을 알려줘요"
@@ -2521,8 +2719,7 @@ var commonDialogs = [
 				{
 					"text": "궁금한게 있는데요(FAQ)"
 				}
-			],
-			"text": "안녕하세요, 신한카드입니다. \n저는 전화, 홈페이지 보다 메신저가 편한 고객님들을 위해 새롭게 선보이는 신한카드 자동채팅 서비스입니다. 결제재미=신한 FAN 과 카드에 대해 알려드리겠습니다. 많이 이용해 주실꺼죠?\n\n신한 FAN, 카드 추천, 자주 묻는 질문(FAQ) 중 하나를 선택해 주세요."
+			]
 		},
 		"inRaw": "0",
 		"inNLP": "0"
