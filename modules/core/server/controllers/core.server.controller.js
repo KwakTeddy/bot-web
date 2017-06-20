@@ -95,7 +95,7 @@ exports.getConfig = function (req, res) {
  */
 exports.fbOvertext = function (req, res) {
   console.log(util.inspect(typeof req.params.recipientId));
-  OverTextLink.findOne({recipientId: req.params.recipientId}).exec(function (err) {
+  OverTextLink.findOne({recipientId: req.params.recipientId}).exec(function (err, result) {
     if(err){
       console.log(err)
     }else {
