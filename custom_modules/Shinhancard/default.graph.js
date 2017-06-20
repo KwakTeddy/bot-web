@@ -359,7 +359,7 @@ var dialogs = [
 				"children": [
 					{
 						"name": "FAN 전용 적립 및 할인_",
-						"id": "default224",
+						"id": "default113224",
 						"filename": "default",
 						"input": [
 							{
@@ -370,7 +370,7 @@ var dialogs = [
 							}
 						],
 						"output": {
-							"output": "FAN 전용 할인, 포인트 적립/쿠폰, 각종 제휴사 혜택 등 놓칠 수 없는 FAN 혜택을 \n\n1. 모~두 보고 싶다면, 신한 FAN 혜택ZONE!\n\n2. 나한테 필요한 혜택만 골라보고 싶다면, 나만의 맞춤 쿠폰 Sally!\n",
+							"output": "FAN 전용 할인, 포인트 적립/쿠폰, 각종 제휴사 혜택 등 놓칠 수 없는 FAN 혜택을 \n\n1. 모~두 보고 싶다면, 신한 FAN 혜택ZONE!\n2. 나한테 필요한 혜택만 골라보고 싶다면, 나만의 맞춤 쿠폰 Sally!\n",
 							"buttons": [
 								{
 									"text": "신한 FAN 혜택 ZONE!"
@@ -385,12 +385,12 @@ var dialogs = [
 									"text": "시작메뉴"
 								}
 							],
-							"text": "FAN 전용 할인, 포인트 적립/쿠폰, 각종 제휴사 혜택 등 놓칠 수 없는 FAN 혜택을 \n\n1. 모~두 보고 싶다면, 신한 FAN 혜택ZONE!\n\n2. 나한테 필요한 혜택만 골라보고 싶다면, 나만의 맞춤 쿠폰 Sally!\n"
+							"text": "FAN 전용 할인, 포인트 적립/쿠폰, 각종 제휴사 혜택 등 놓칠 수 없는 FAN 혜택을 \n\n1. 모~두 보고 싶다면, 신한 FAN 혜택ZONE!\n2. 나한테 필요한 혜택만 골라보고 싶다면, 나만의 맞춤 쿠폰 Sally!\n"
 						},
 						"children": [
 							{
 								"name": "FAN 혜택+ 서비스_",
-								"id": "default226",
+								"id": "default1322326",
 								"filename": "default",
 								"input": [
 									{
@@ -470,7 +470,7 @@ var dialogs = [
 					},
 					{
 						"name": "이벤트_",
-						"id": "default225",
+						"id": "default223245",
 						"filename": "default",
 						"input": [
 							{
