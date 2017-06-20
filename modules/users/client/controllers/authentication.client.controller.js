@@ -152,9 +152,14 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
           if(window.location.href.indexOf('developer') > -1){
             $state.go('developer-home')
           }else {
-            $state.go('home');
+            $state.go($state.previous.state.name || 'home', $state.previous.params);
           }
         }
+
+        //temporary code
+        $timeout(function () {
+          $window.location.reload();
+        }, 100)
       }).error(function (response) {
         console.log(response);
         $scope.error = response.message;
@@ -205,11 +210,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
               });
               $scope.close = function () {
                   modalInstance.dismiss();
-                  if(window.location.href.indexOf('developer') > -1){
-                    $state.go('developer-home')
-                  }else {
-                    $state.go('home');
-                  }              };
+                  $state.go('home');
+              };
               $scope.resend = function () {
                   modalInstance.dismiss();
                   var modalInstanceSecond = $uibModal.open({
@@ -221,11 +223,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                       modalInstanceSecond.result.then(function (response) {
                           console.log(response);
                       });
-                      if(window.location.href.indexOf('developer') > -1){
-                        $state.go('developer-home')
-                      }else {
-                        $state.go('home');
-                      }
+                      $state.go('home');
+
                   }).error(function (response) {
                       console.log(response)
                   })

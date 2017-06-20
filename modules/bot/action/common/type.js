@@ -384,15 +384,15 @@ function parseNumber(text, json) {
   var _text = text.trim();
   if (_text.endsWith(".")) _text = _text.substr(0, _text.length - 1);
   else if (_text.endsWith(",")) _text = _text.substr(0, _text.length - 1);
-  else if (_text.startsWith("일") || _text.startsWith("처") || _text.startsWith("첫")) _text = "1";
-  else if (_text.startsWith("이") || _text.startsWith("두") || _text.startsWith("둘")) _text = "2";
-  else if (_text.startsWith("삼") || _text.startsWith("세") || _text.startsWith("셋")) _text = "3";
-  else if (_text.startsWith("사") || _text.startsWith("네") || _text.startsWith("넷")) _text = "4";
-  else if (_text.startsWith("오") || _text.startsWith("다섯")) _text = "5";
-  else if (_text.startsWith("육") || _text.startsWith("여섯")) _text = "6";
-  else if (_text.startsWith("칠") || _text.startsWith("일곱")) _text = "7";
-  else if (_text.startsWith("팔") || _text.startsWith("여덟")) _text = "8";
-  else if (_text.startsWith("구") || _text.startsWith("아홉")) _text = "9";
+  else if (_text == "일" || _text.startsWith("처음") || _text.startsWith("첫째") || _text.startsWith("첫번")) _text = "1";
+  else if (_text == "이" || _text.startsWith("두번") || _text.startsWith("둘째")) _text = "2";
+  else if (_text == "삼" || _text.startsWith("세번") || _text.startsWith("셋째")) _text = "3";
+  else if (_text == "사" || _text.startsWith("네번") || _text.startsWith("넷째")) _text = "4";
+  else if (_text == "오" || _text.startsWith("다섯")) _text = "5";
+  else if (_text == "육" || _text.startsWith("여섯")) _text = "6";
+  else if (_text == "칠" || _text.startsWith("일곱")) _text = "7";
+  else if (_text == "팔" || _text.startsWith("여덟")) _text = "8";
+  else if (_text == "구" || _text.startsWith("아홉")) _text = "9";
 
   return _text;
 }
@@ -1486,12 +1486,14 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
           excluded.push(nlps[i]);
       }
 
-      if(context.botUser.contexts && context.botUser.contexts.length > 0) {
+      if(context.bot.dialogsetOption.useContext !== false && context.botUser.contexts && context.botUser.contexts.length > 0) {
         topicKeywords = [];
         for(var j = 0; j < context.botUser.contexts.length; j++)
           if(context.botUser.contexts[j].name) topicKeywords.push({text: context.botUser.contexts[j].name, pos: 'Noun'});
-      } else if(topicKeywords.length == 0 && context.botUser.topic && context.botUser.topic.length > 0) {
+        console.log('topicKeywords: contexts ' + topicKeywords);
+      } else if(context.bot.dialogsetOption.useTopic !== false && topicKeywords.length == 0 && context.botUser.topic && context.botUser.topic.length > 0) {
         topicKeywords = context.botUser.topic;
+        console.log('topicKeywords: topic ' + topicKeywords);
       }
 
       if(_nlps.length == 0) _nlps.concat(excluded);
@@ -1657,7 +1659,185 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
         if(matchedDoc.length > 0) _cb(true);
         else _cb(null);
       })
-    }
+    },
+
+    // function(_cb) {
+    //   if(context.bot.dialogsetContexts == undefined) {
+    //     _cb(null);
+    //   } else {
+    //     var CustomContext = mongoModule.getModel('customcontext');
+    //
+    //     async.eachSeries(nlps, function (word, _callback) {
+    //       CustomContext.find({name: new RegExp(word, 'i')}).lean().exec(function(err, docs) {
+    //
+    //       })
+    //     }, function(err) {
+    //
+    //     });
+    //
+    //     async.eachSeries(nlps, function (word, _callback){
+    //       word = word.text ? RegExp.escape(word.text): word;
+    //
+    //       if(false/*word.length <= 1*/) {
+    //         _callback(null);
+    //       } else {
+    //         var query = {};
+    //         if(format.mongo.queryStatic) query = format.mongo.queryStatic;
+    //         else query = {};
+    //
+    //         for(var j = 0; j < format.mongo.queryFields.length; j++) {
+    //           try {
+    //             if(!(format.exclude && _.includes(format.exclude, word)))
+    //               query[format.mongo.queryFields[j]] = new RegExp(word, 'i');
+    //             else
+    //               excluded.push(word);
+    //           } catch(e) {}
+    //         }
+    //
+    //         if(format.query) query = utils.merge(query, format.query);
+    //
+    //         var _query = model.find(query, format.mongo.fields, format.mongo.options);
+    //         if(format.mongo.sort) _query.sort(format.mongo.sort);
+    //         if(format.mongo.limit) _query.limit(format.mongo.limit || type.MAX_LIST);
+    //
+    //         _query.lean().exec(function (err, docs) {
+    //           nlpsCount++;
+    //
+    //           if (err || !docs || docs.length <= 0) {
+    //             //callback(text, inDoc);
+    //           } else {
+    //
+    //             for(var k = 0; k < docs.length; k++) {
+    //               var doc = docs[k];
+    //
+    //               var matchCount = 0, matchCount1 = 0, matchTotal = 0, matchNLP = [];
+    //               matchedWord = '';
+    //               var matchIndex = -1, matchMin = -1, matchMax = -1;
+    //
+    //               var _matchCount = [], _matchCount1 = [], _matchTotal = [];
+    //               var _matchedWord = [];
+    //               var _matchIndex = [], _matchMin = [], _matchMax = [], _matchOrgIndex = [];
+    //               if(Array.isArray(doc['input'])) {
+    //                 for (var n = 0; n < doc['input'].length; n++) {
+    //                   _matchCount[n] = 0; _matchTotal[n] = 0; _matchedWord[n] = '';
+    //                   _matchIndex[n] = -1; _matchMin[n] = -1; _matchMax[n] = -1;
+    //                 }
+    //               }
+    //
+    //               for(var l = 0; l < format.mongo.queryFields.length; l++) {
+    //                 var bMatchTotal = false;
+    //                 for(var m = 0; m < _nlps.length; m++) {
+    //                   if(_nlps[m].pos == 'Josa') continue;
+    //
+    //                   var _word = _nlps[m].text;
+    //                   _word = RegExp.escape(_word);
+    //
+    //                   if(Array.isArray(doc[format.mongo.queryFields[l]])) {
+    //
+    //                     for(var n = 0; n < doc[format.mongo.queryFields[l]].length; n++) {
+    //                       _matchIndex[n] = doc[format.mongo.queryFields[l]][n].search(new RegExp(_word, 'i'));
+    //
+    //                       if(_matchIndex[n] != -1) {
+    //                         if(context.bot.topicKeywords && _.includes(context.bot.topicKeywords, _nlps[m].text)) {_matchCount[n]++; _matchCount1[n] +=3;}
+    //                         else if(_nlps[m].pos == 'Noun') {_matchCount[n]++;_matchCount1[n]+=2;}
+    //                         else {_matchCount[n]++;_matchCount1[n]++;}
+    //
+    //                         // console.log(word + ' ' + _word + ' ' + doc[format.mongo.queryFields[l]][n] + ' ' +_matchCount[n]);
+    //                         if(!bMatchTotal) {_matchTotal[n] += doc[format.mongo.queryFields[l]][n].split(' ').length; bMatchTotal = true};
+    //                         _matchedWord[n] += nlps[m];
+    //
+    //                         var __word = nlps[m].text;
+    //                         __word = RegExp.escape(__word);
+    //
+    //                         _matchOrgIndex[n] = text.search(new RegExp(__word, 'i'));
+    //                         if(_matchOrgIndex[n] != -1 && (_matchMin[n] == -1 || _matchOrgIndex[n] < _matchMin[n])) _matchMin[n] = _matchOrgIndex[n];
+    //                         if(_matchOrgIndex[n] != -1 && (_matchMax[n] == -1 || _matchOrgIndex[n] + nlps[m].length> _matchMax[n])) _matchMax[n] = _matchOrgIndex[n] + nlps[m].length;
+    //                       }
+    //                     }
+    //
+    //                     var maxMatchIndex = 0, maxMatchedCount = 0;
+    //                     for(var n = 0; n < doc[format.mongo.queryFields[l]].length; n++) {
+    //                       if(_matchCount[n] > maxMatchedCount) {
+    //                         maxMatchIndex = n;
+    //                         maxMatchedCount = _matchCount[n];
+    //                       }
+    //                     }
+    //
+    //                     matchCount = _matchCount[maxMatchIndex];
+    //                     matchCount1 = _matchCount1[maxMatchIndex];
+    //                     matchTotal= _matchTotal[maxMatchIndex];
+    //                     matchedWord = _matchedWord[maxMatchIndex];
+    //                     matchIndex = _matchIndex[maxMatchIndex];
+    //                     matchMin = _matchMin[maxMatchIndex];
+    //                     matchMax = _matchMax[maxMatchIndex];
+    //
+    //                   } else {
+    //                     matchIndex = doc[format.mongo.queryFields[l]].search(new RegExp(_word, 'i'));
+    //
+    //                     if(matchIndex != -1) {
+    //                       if(context.bot.topicKeywords && _.includes(context.bot.topicKeywords, _nlps[m].text)) {matchCount++; matchCount1 +=3;}
+    //                       else if(_nlps[m].pos == 'Noun') {matchCount++; matchCount1+=2;}
+    //                       else {matchCount++; matchCount1++;}
+    //                       // console.log(word + ' ' + _word + ' ' + doc[format.mongo.queryFields[l]] + ' ' +matchCount);
+    //
+    //                       if(!bMatchTotal) {matchTotal += doc[format.mongo.queryFields[l]].split(' ').length;bMatchTotal = true;}
+    //                       matchedWord += nlps[m];
+    //                       matchNLP.push({text: _nlps[m].text, pos: _nlps[m].pos});
+    //
+    //                       // console.log(l + ',' + doc[format.mongo.queryFields[l]] + ', ' + matchCount + ',' + matchTotal);
+    //
+    //                       var __word = nlps[m].text;
+    //                       __word = RegExp.escape(__word);
+    //
+    //                       var matchOrgIndex = text.search(new RegExp(__word, 'i'));
+    //                       if(matchOrgIndex != -1 && (matchMin == -1 || matchOrgIndex < matchMin)) matchMin = matchOrgIndex;
+    //                       if(matchOrgIndex != -1 && (matchMax == -1 || matchOrgIndex + nlps[m].length> matchMax)) matchMax = matchOrgIndex + nlps[m].length;
+    //                     }
+    //                   }
+    //                 }
+    //               }
+    //
+    //               if(!format.mongo.minMatch || matchCount >= format.mongo.minMatch) {
+    //                 var bExist = false;
+    //                 for(var l = 0; l < matchedDoc.length; l++) {
+    //                   if((Array.isArray(doc.input) && doc.input[maxMatchIndex] == matchedDoc[l].input) ||
+    //                     (doc.input == matchedDoc[l].input)) {
+    //                     bExist = true;
+    //                     break;
+    //                   }
+    //                 }
+    //
+    //                 if(!bExist &&
+    //                   ((nlps.length <= 2 && (matchCount == matchTotal ||
+    //                   (matchCount / nlpMatchLength >= format.matchRate || matchCount1 >= format.matchCount))) ||
+    //                   (nlps.length > 2 && (matchCount / nlpMatchLength >= format.matchRate ||
+    //                   matchCount1 >= format.matchCount)))) {
+    //                   if(Array.isArray(doc.input)) doc.input = doc.input[maxMatchIndex];
+    //                   doc.inputLen = doc.input.split(' ').length;
+    //                   doc.matchWord = matchedWord;
+    //                   doc.matchCount = matchCount1;
+    //                   doc.matchNLP = matchNLP;
+    //                   doc.matchMin = matchMin;
+    //                   doc.matchMax = matchMax;
+    //                   doc.matchRate = matchCount / nlpMatchLength;
+    //                   // doc.matchRate = matchCount / matchTotal;
+    //
+    //                   matchedDoc.push(doc);
+    //                 }
+    //               }
+    //             }
+    //           }
+    //
+    //           _callback(null);
+    //         });
+    //       }
+    //       // var word = nlps[i];
+    //     }, function(err) {
+    //       if(matchedDoc.length > 0) _cb(true);
+    //       else _cb(null);
+    //     })
+    //   }
+    // }
 
   ], function(err) {
 
