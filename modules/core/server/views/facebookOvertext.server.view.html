@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}{{enterpriseName}}{% endblock %}</title>
+
+  {% block head %}
+  {% endblock %}
+</head>
+<body>
+  <p style="white-space: pre-wrap; padding: 40px">
+    {% autoescape true %}{{ text }}{% endautoescape %}
+  </p>
+
+</body>
+</html>

@@ -92,6 +92,12 @@ exports.getConfig = function (req, res) {
  * get fbOvertext
  */
 exports.fbOvertext = function (req, res) {
+  var text;
+  if(global.facebook && global.facebook.text) text = global.facebook.text;
+  else text = 'textPage';
 
-  res.send(global.facebook.text);
+  res.render('modules/core/server/views/facebookOvertext', {
+    text: text,
+    enterpriseName: config.enterprise.name ? config.enterprise.name : 'Moneybrain'
+  });
 };
