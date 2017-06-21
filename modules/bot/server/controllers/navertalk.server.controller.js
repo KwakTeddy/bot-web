@@ -44,7 +44,9 @@ exports.message =  function(req, res) {
 
           // 유입경로가 없거나 화면을 갱신하였을때
           case 'none' :
-            res.json({ success: true });
+            chat.write('navertalk', from, 'Shinhancard', '시작', req.body, function (serverText, json) {
+              respondMessage(response, serverText, json, res);
+            });
             break;
 
           default:
