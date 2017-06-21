@@ -61,7 +61,7 @@ var faqTask = {
         // if (context.bot.dialogsetOption.listOutput) {
         //   context.dialog.output = context.bot.dialogsetOption.listOutput;
         // } else {
-        context.dialog.output = "아래 중에 궁금하신 내용이 있나요?\n\n#dialogsType1#+index+. +inputRaw+\n\n#번호를 입력하면 상세 내용을 보여드립니다.\n다시 검색하시려면 검색어를 입력해주세요.\n처음으로 돌아가시려면 '시작'이라고 말씀해주세요";
+        context.dialog.output = "아래 중에 궁금하신 내용이 있나요?\n\n#dialogsType1#+index+. +inputRaw+\n\n#번호를 입력하면 상세 내용을 보여드립니다.\n다시 검색하시려면 검색어를 입력해주세요.\n처음으로 돌아가시려면 '처음'이라고 말씀해주세요";
         // }
 
         // context.dialog.children = [
@@ -87,7 +87,7 @@ var faqTask = {
         // if (context.bot.dialogsetOption.listOutput) {
         //   context.dialog.output = context.bot.dialogsetOption.listOutput;
         // } else {
-        context.dialog.output = "아래 중에 궁금하신 내용이 있나요?\n\n#dialogsType1#+index+. +inputRaw+\n\n#번호를 입력하면 상세 내용을 보여드립니다.\n다시 검색하시려면 검색어를 입력해주세요.\n처음으로 돌아가시려면 '시작'이라고 말씀해주세요";
+        context.dialog.output = "아래 중에 궁금하신 내용이 있나요?\n\n#dialogsType1#+index+. +inputRaw+\n\n#번호를 입력하면 상세 내용을 보여드립니다.\n다시 검색하시려면 검색어를 입력해주세요.\n처음으로 돌아가시려면 '처음'이라고 말씀해주세요";
         // }
 
         // context.dialog.children = [
@@ -111,7 +111,7 @@ var faqTask = {
           task._output = task._output[Math.floor(Math.random() * task._output.length)];
         }
 
-        context.dialog.output = "[+listType.inputRaw+]\n\n답변: +listType.output+\n\n더 필요하신 게 있으시면 말씀해주세요~\n처음으로 돌아가시려면 '시작'이라고 말씀해주세요"
+        context.dialog.output = "[+listType.inputRaw+]\n\n답변: +listType.output+\n\n더 필요하신 게 있으시면 말씀해주세요~\n처음으로 돌아가시려면 '처음'이라고 말씀해주세요"
         // context.dialog.output = '+_output+';
         // context.dialog.children = null;
         //
