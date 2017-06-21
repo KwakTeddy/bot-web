@@ -23,8 +23,14 @@ var dialogsType1 = {
     exclude: ['하다', '이다'],
     mongo: {
         model: 'dialogsetdialogs',
-        queryStatic: {dialogset: ObjectId("5949dd8dc7120e5e7dd468b8")},
-        queryFields: ['input'],
+
+
+
+
+        queryStatic: {dialogset: ObjectId("59410b4fbb33920264ee001b")}, //server
+       // queryStatic: {dialogset: ObjectId("59478cf17a294c58195c9cf2")},  //local
+       queryFields: ['input'],
+
         fields: 'dialogset input inputRaw output context id' ,
         taskFields: ['input', 'inputRaw', 'output', 'matchCount', 'matchRate', 'dialogset', 'context'],
         minMatch: 1,
@@ -51,7 +57,7 @@ bot.setType("dialogsType1", dialogsType1);
 
 var faqTask = {
   action: function(task, context, callback) {
-    task.dialogsType1 = context.dialog.dialogsType1;
+    if(!task.dialogsType1) task.dialogsType1 = context.dialog.dialogsType1;
 
     if(Array.isArray(task.dialogsType1)) {
       if(context.bot.dialogsetOption && context.bot.dialogsetOption.matchList &&
