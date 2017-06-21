@@ -120,7 +120,9 @@
   getDialogsetDialogs.$inject = ['$stateParams', 'DialogsetDialogsService'];
   function getDialogsetDialogs($stateParams, DialogsetDialogsService) {
     return DialogsetDialogsService.query({
-      dialogsetId: $stateParams.dialogsetId
+      dialogsetId: $stateParams.dialogsetId,
+      currentPage: 0,
+      perPage: 100
     }).$promise;
   }
 

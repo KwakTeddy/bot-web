@@ -25,9 +25,24 @@
       }
     }
     vm.error = null;
+    vm.currentPage = 1;
+    vm.perPage = 100;
+    vm.selectedCategory = '전체';
+
+    vm.nextPage = function () {
+      var query = {dialogsetId: $stateParams.dialogsetId};
+      query['currentPage'] = vm.currentPage;
+      query['perPage'] = vm.perPage;
+      DialogsetDialogsService.query(query).$promise.then(function (result) {
+        if(result.length < 100) vm.pagingEnd = true;
+        vm.dialogsetDialogs.push.apply(vm.dialogsetDialogs, result);
+        vm.currentPage++;
+      });
+    };
 
     vm.searchDialog = function () {
       var query = {dialogsetId: $stateParams.dialogsetId};
+      if(vm.selectedCategory == '전체') query['all'] = vm.dialogSearch;
       if(vm.selectedCategory == '카테고리') query['category'] = vm.dialogSearch;
       if(vm.selectedCategory == '질문') query['inputRaw'] = vm.dialogSearch;
       if(vm.selectedCategory == '답변') query['output'] = vm.dialogSearch;
@@ -38,7 +53,11 @@
       });
     };
     vm.initDialog = function () {
-      var query = {dialogsetId: $stateParams.dialogsetId};
+      var query = {
+        dialogsetId: $stateParams.dialogsetId,
+        currentPage : 0,
+        perPage: 100
+      };
       DialogsetDialogsService.query(query).$promise.then(function (result) {
         vm.dialogsetDialogs = result;
         console.log(result)

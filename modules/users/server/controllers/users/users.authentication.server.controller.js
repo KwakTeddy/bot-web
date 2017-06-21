@@ -20,7 +20,9 @@ var util = require('util');
 // URLs for which user can't be redirected on signin
 var noReturnUrls = [
   '/authentication/signin',
-  '/authentication/signup'
+  '/authentication/signup',
+  '/developer/authentication/signup',
+  '/developer/authentication/signup',
 ];
 var request = require('request');
 
@@ -318,23 +320,18 @@ exports.oauthCallback = function (strategy, scope) {
       }
       req.login(user, function (err) {
         if (err) {
-          return res.redirect('/authentication/signin');
+          if (sessionRedirectURL && sessionRedirectURL.indexOf('developer') > -1){
+            return res.redirect('/developer/authentication/signin');
+          }else {
+            return res.redirect('/authentication/signin');
+          }
         }
-        if (sessionRedirectURL.indexOf('developer') > -1){
-          Bot.find({user: req.user._id}).exec(function (err, data) {
-            if (err){
-              return res.redirect('/authentication/signin')
-            }
-            if (data.length){
-              res.cookie('default_bot', data[0].id);
-            }else {
-              res.cookie('default_bot', null);
-            }
-          });
+        if (sessionRedirectURL && sessionRedirectURL.indexOf('developer') > -1){
+          return res.redirect('/developer');
+        }else {
+          return res.redirect('/');
         }
-        console.log(util.inspect(redirectURL.redirect_to))
-        console.log(util.inspect(sessionRedirectURL))
-        return res.redirect(redirectURL.redirect_to || sessionRedirectURL || '/');
+        // return res.redirect(redirectURL.redirect_to || sessionRedirectURL || '/');
       });
     })(req, res, next);
   };

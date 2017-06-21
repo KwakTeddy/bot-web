@@ -31,33 +31,39 @@
 
       <div class="btn-group" uib-dropdown is-open="status.isopen" style="10%">
         <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
-          {{vm.selectedCategory ? vm.selectedCategory : '카테고리' }}<span class="caret"></span>
+          {{vm.selectedCategory ? vm.selectedCategory : '전체' }}<span class="caret"></span>
         </button>
         <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+          <li role="menuitem" ng-click="vm.selectedCategory = '전체'"><a href="#">전체</a></li>
           <li role="menuitem" ng-click="vm.selectedCategory = '카테고리'"><a href="#">카테고리</a></li>
           <li role="menuitem" ng-click="vm.selectedCategory = '질문'"><a href="#">질문</a></li>
           <li role="menuitem" ng-click="vm.selectedCategory = '답변'"><a href="#">답변</a></li>
         </ul>
       </div>
-      <input type="text" data-ng-model="vm.dialogSearch" placeholder="카테고리 검색" style="width: 13%;display: inline-block;margin-bottom: 15px;border: none;padding: 6px 12px"></input>
+      <input type="text" data-ng-model="vm.dialogSearch" placeholder="무엇을 찾을까요" style="width: 13%;display: inline-block;margin-bottom: 15px;border: none;padding: 6px 12px"></input>
       <button class="btn btn-default" ng-click="vm.searchDialog();">검색</button>
       <button class="btn btn-default" ng-click="vm.initDialog();">초기화</button>
 
+      <div infinite-scroll="vm.nextPage()"
+           infinite-scroll-distance="0"
+           infinite-scroll-disabled="vm.pagingEnd"
+           infinite-scroll-container='"#main"'>
+        <div ng-repeat="dialog in vm.dialogsetDialogs track by $index" ng-show="dialog.deleted == undefined" style="margin-bottom: 5px;">
 
-      <div ng-repeat="dialog in vm.dialogsetDialogs track by $index" ng-show="dialog.deleted == undefined" style="margin-bottom: 5px;">
+          <input type="text" ng-model="dialog.category" class="form-control valid" placeholder="카테고리"
+                 aria-invalid="false" style="width: 13%;float: left;margin-right: 5px">
+          <span style="width: 40%;float: left;margin-right: 5px">
+           <input type="text" ng-model="dialog.inputRaw" class="form-control valid" placeholder="질문" id = 'learnDialog_{{dialog._id}}'
+                  aria-invalid="false" ng-blur="vm.updateDialog(dialog)" style="width: {{100-10*dialog.depth}}%;float: right">
+          </span>
+          <input type="text" ng-model="dialog.output" class="form-control valid" placeholder="답변"
+                 aria-invalid="false" ng-blur="vm.updateDialog(dialog)"  style="width: 40%;float: left;margin-right: 5px">
 
-        <input type="text" ng-model="dialog.category" class="form-control valid" placeholder="카테고리"
-               aria-invalid="false" style="width: 13%;float: left;margin-right: 5px">
-        <span style="width: 40%;float: left;margin-right: 5px">
-         <input type="text" ng-model="dialog.inputRaw" class="form-control valid" placeholder="질문" id = 'learnDialog_{{dialog._id}}'
-                aria-invalid="false" ng-blur="vm.updateDialog(dialog)" style="width: {{100-10*dialog.depth}}%;float: right">
-        </span>
-        <input type="text" ng-model="dialog.output" class="form-control valid" placeholder="답변"
-               aria-invalid="false" ng-blur="vm.updateDialog(dialog)"  style="width: 40%;float: left;margin-right: 5px">
-
-        <button class="btn btn-default" ng-click="vm.createDepthDialog(dialog, $index)" ><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
-        <button class="btn btn-default" ng-click="vm.removeDialog(dialog)" ><i class="glyphicon glyphicon-trash"></i></button>
+          <button class="btn btn-default" ng-click="vm.createDepthDialog(dialog, $index)" ><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+          <button class="btn btn-default" ng-click="vm.removeDialog(dialog)" ><i class="glyphicon glyphicon-trash"></i></button>
+        </div>
       </div>
+      <h3 class="text-center" data-ng-if="vm.pagingEnd">더 이상 대화가 존재하지 않아요</h3>
 
       <!--<div class="form-group">-->
         <!--<label class="col-sm-3 control-label">Title <span class="required" aria-required="true">*</span></label>-->

@@ -258,7 +258,9 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
       if ($state.previous && $state.previous.href) {
         url += '?redirect_to=' + encodeURIComponent($state.previous.href);
       }
-
+      if (window.location.href.indexOf('developer') > -1){
+        url += '?redirect_to=/developer';
+      }
       // Effectively call OAuth authentication route:
         console.log(url);
       $window.location.href = url;

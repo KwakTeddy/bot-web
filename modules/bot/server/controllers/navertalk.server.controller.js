@@ -37,14 +37,14 @@ exports.message =  function(req, res) {
         switch(req.body.options.inflow) {
           // 채팅리스트로부터 인입되었을때
           case 'list' :
-            chat.write('navertalk', from, 'Shinhancard', '시작', req.body, function (serverText, json) {
+            chat.write('navertalk', from, 'Shinhancard', '처음', req.body, function (serverText, json) {
               respondMessage(response, serverText, json, res);
             });
             break;
 
           // 유입경로가 없거나 화면을 갱신하였을때
           case 'none' :
-            chat.write('navertalk', from, 'Shinhancard', '시작', req.body, function (serverText, json) {
+            chat.write('navertalk', from, 'Shinhancard', '처음', req.body, function (serverText, json) {
               respondMessage(response, serverText, json, res);
             });
             break;

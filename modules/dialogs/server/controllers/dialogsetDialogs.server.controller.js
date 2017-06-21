@@ -88,17 +88,31 @@ exports.delete = function (req, res) {
 
 exports.list = function (req, res) {
   var sort = req.query.sort || '-created';
-
+  var currentPage = null;
+  var perPage = null;
   var query = {};
+
   if(req.params.dialogsetId) query['dialogset'] =  mongoose.Types.ObjectId(req.params.dialogsetId);
+  if(req.query.currentPage) currentPage = req.query.currentPage ;
+  if(req.query.perPage) perPage = Number(req.query.perPage) ;
+
   if(req.query.inputRaw) query['inputRaw'] =  {$regex: req.query.inputRaw};
   if(req.query.output) query['output'] =  {$regex: req.query.output};
   if(req.query.category) query['category'] =  {$regex: req.query.category};
-  console.log(util.inspect(req.query));
+  if(req.query.all){
+    query ={
+      $or: [
+        { inputRaw: {$regex: req.query.all}},
+        { output: {$regex: req.query.all}},
+        { category: {$regex: req.query.all}}
+      ]
+    };
+  }
+  console.log(util.inspect(req.query))
   console.log(util.inspect(query));
-
-  DialogsetDialog.find(query).lean().sort(sort).populate('user').exec(function (err, dialogs) {
+  DialogsetDialog.find(query).skip(currentPage*perPage).limit(perPage).lean().sort(sort).populate('user').exec(function (err, dialogs) {
     if (err) {
+      console.log(err)
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });

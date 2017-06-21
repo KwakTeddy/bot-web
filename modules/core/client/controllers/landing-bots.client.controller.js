@@ -4,9 +4,11 @@ angular.module('core').controller('LandingBotsController', ['$scope', '$state', 
   'BotsService', '$timeout', '$uibModal', 'FileUploader',
   function ($scope, $state, Authentication, Menus, $cookies, $http, $rootScope, Socket, $location, $window, BotsService, $timeout, $uibModal, FileUploader) {
   var vm = this;
-  document.getElementById('sidebar-left').style.display = 'none';
-  document.getElementById('chat-include').style.display = 'none';
-  document.getElementById('main').classList.remove('content-body');
+  $timeout(function () {
+    document.getElementById('sidebar-left').style.display = 'none';
+    document.getElementById('chat-include').style.display = 'none';
+    document.getElementById('main').classList.remove('content-body');
+  })
   $scope.myBot = '';
   $scope.copyTargetBot = {};
   $scope.deleteInput = '';
