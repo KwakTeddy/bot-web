@@ -252,6 +252,11 @@ function respondMessage(to, text, botId, task) {
   if (subscribe) tokenData = subscribePageToken;
   else tokenData = bot.facebook.PAGE_ACCESS_TOKEN;
 
+  if(bot && bot.commonButtons && bot.commonButtons.length && botContext.botUser._currentDialog.name && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)){
+    if(task && task.buttons) task.buttons =  task.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
+    else if(task && task.result && task.result.buttons) task.result.buttons =  task.result.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
+  }
+
   if (task && task.result) {
     var result = task.result;
 
@@ -265,7 +270,7 @@ function respondMessage(to, text, botId, task) {
         break;
       case 'buttons':
         if(config.enterprise.name){
-          sendTextMessage(to, text, result, tokenData);
+          smartReplyMessage(to, text, result, tokenData);
         }else {
           sendButtonMessage(to, text, result, tokenData);
         }
@@ -302,7 +307,7 @@ function respondMessage(to, text, botId, task) {
         if (task && task.hasOwnProperty('buttons')){
           //text && buttons
           if(config.enterprise.name){
-            sendTextMessage(to, text, task, tokenData);
+            smartReplyMessage(to, text, task, tokenData);
           }else {
             sendButtonMessage(to, text, task, tokenData);
           }
@@ -816,39 +821,57 @@ function sendReceiptMessage(recipientId, text, task, token) {
  *
  */
 function smartReplyMessage(recipientId, text, task, token) {
-  for (var i = 0; i < task.smartReply.length; i++){
-    task.smartReply[i] = {"title" : task.smartReply[i]};
-    task.smartReply[i]['content_type'] = 'text';
-    task.smartReply[i]['payload'] = task.smartReply[i].title;
-  }
   var messageData = {
     recipient: {
       id: recipientId
     },
     message:{
       "text": text,
-      "quick_replies": task.smartReply
+      "quick_replies": ''
     }
   };
+  if(task.smartReply && task.smartReply.length){
+    for (var i = 0; i < task.smartReply.length; i++){
+      task.smartReply[i] = {"title" : task.smartReply[i]};
+      task.smartReply[i]['content_type'] = 'text';
+      task.smartReply[i]['payload'] = task.smartReply[i].title;
+    }
+    messageData.message.quick_replies = task.smartReply;
+  }
 
+  if(task.buttons){
+    var smartReplies = [];
+    for(var i = 0; i < task.buttons.length; i++){
+      console.log(util.inspect(task.buttons[i]));
+      console.log('*&*&*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+      var repl = {content_type:"text"};
+      repl['title'] = i+1;
+      repl['payload'] = i+1;
+      smartReplies.push(repl);
+    }
+    messageData.message.quick_replies = smartReplies;
+  }
   callSendAPI(messageData, token);
 }
 
 function callSendAPI(messageData, PAGE_ACCESS_TOKEN, cb) {
   var bot = botContext.botUser.orgBot || botContext.bot;
+
   if(bot && bot.commonQuickReplies && bot.commonQuickReplies.length
     && botContext.botUser._currentDialog.name
     && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)
     && (botContext.botUser._currentDialog.name != botContext.bot.noDialog.name)){
     var quick_replies = [];
+    if(!messageData.message['quick_replies']) messageData.message['quick_replies']= [];
+
     bot.commonQuickReplies.forEach(function (b) {
       var btn = {content_type: "text"};
       btn['title'] = b.text;
       btn['payload'] = b.text;
-      quick_replies.push(btn)
+      messageData.message.quick_replies.push(btn);
     });
-    messageData.message['quick_replies'] = quick_replies
   }
+
   if(bot && bot.commonQuickReplies && bot.commonQuickReplies.length
     && botContext.botUser._currentDialog.name
     && (botContext.botUser._currentDialog.name == botContext.bot.noDialog.name)){
