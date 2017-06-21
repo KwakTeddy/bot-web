@@ -1,5 +1,5 @@
 <header class="page-header">
-  <h2>대화 학습</h2>
+  <h2>대화 학습 - 추가 대화셋</h2>
 
   <div class="right-wrapper pull-right">
     <ol class="breadcrumbs">
@@ -41,7 +41,7 @@
       </div>
 
       <div class="form-group">
-        <label class="col-sm-2 control-label">개별 대화 입력</label>
+        <label class="col-sm-2 control-label">대화 입력</label>
         <div class="col-sm-10">
           <div style="margin-bottom: 15px;">
             <input type="text" id="question" name="question" ng-model="vm.dialog.inputRaw" class="form-control valid" placeholder="질문"
@@ -78,7 +78,7 @@
       <div class="row">
         <div class="col-sm-12 text-center" ng-hide="vm.dialogset && vm.dialogset._id">
           <a ng-click="vm.save()" class="btn btn-primary" >대화셋으로 저장</a>
-          <button type="button" class="btn btn-danger" ui-sref="dialogsets.dialogsLearn('dialogSet')">취소</button>
+          <button type="button" class="btn btn-danger" ui-sref="dialogsets.dialogsLearn({listType: 'additional'})">취소</button>
         </div>
       </div>
     </footer>
@@ -183,25 +183,25 @@
         </div>
       </div>
 
-      <div class="form-group" data-ng-if="vm.dialogset._id">
-        <label class="col-sm-3 control-label">봇 연결하기</label>
-        <div class="col-sm-8">
-          <ui-select ng-model="vm.selectedBot"
-                     theme="bootstrap"
-                     ng-disabled="vm.mybot.length == 0"
-                     reset-search-input="true"
-                     title="연결할 봇을 선택해주세요">
-            <ui-select-match placeholder="연결할 봇을 선택해주세요">{{$select.selected.id}}</ui-select-match>
-            <ui-select-choices repeat="t in vm.mybot |filter: $select.search track by $index"
-                               refresh-delay="0">
-              <div ng-bind-html="t.id | highlight: $select.search"></div>
-            </ui-select-choices>
-          </ui-select>
-        </div>
-        <div class="col-sm-1">
-          <button type="button" class="btn btn-default" style="width: 100%" ng-click="vm.connectBot()">연결</button>
-        </div>
-      </div>
+      <!--<div class="form-group" data-ng-if="vm.dialogset._id">-->
+        <!--<label class="col-sm-3 control-label">봇 연결하기</label>-->
+        <!--<div class="col-sm-8">-->
+          <!--<ui-select ng-model="vm.selectedBot"-->
+                     <!--theme="bootstrap"-->
+                     <!--ng-disabled="vm.mybot.length == 0"-->
+                     <!--reset-search-input="true"-->
+                     <!--title="연결할 봇을 선택해주세요">-->
+            <!--<ui-select-match placeholder="연결할 봇을 선택해주세요">{{$select.selected.id}}</ui-select-match>-->
+            <!--<ui-select-choices repeat="t in vm.mybot |filter: $select.search track by $index"-->
+                               <!--refresh-delay="0">-->
+              <!--<div ng-bind-html="t.id | highlight: $select.search"></div>-->
+            <!--</ui-select-choices>-->
+          <!--</ui-select>-->
+        <!--</div>-->
+        <!--<div class="col-sm-1">-->
+          <!--<button type="button" class="btn btn-default" style="width: 100%" ng-click="vm.connectBot()">연결</button>-->
+        <!--</div>-->
+      <!--</div>-->
 
       <!--<div class="form-group">-->
         <!--<label class="col-sm-3 control-label">설정</label>-->
@@ -247,7 +247,7 @@
           <!--<button class="btn btn-primary">Submit</button>-->
           <button type="submit" class="btn btn-primary" >생성</button>
           <!--<button type="reset" class="btn btn-default">초기화</button>-->
-          <button type="button" class="btn btn-danger" ui-sref="dialogsets.dialogsLearn('dialogSet')">취소</button>
+          <button type="button" class="btn btn-danger" ui-sref="dialogsets.dialogsLearn({listType: 'additional'})">취소</button>
         </div>
         <div class="col-sm-12 text-center" ng-show="vm.dialogset && vm.dialogset._id">
           <button class="btn btn-primary" type="submit">

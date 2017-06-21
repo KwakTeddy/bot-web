@@ -20,7 +20,6 @@
     vm.remove = remove;
     vm.save = save;
     vm.type = 'oneByOne';
-    console.log(vm.dialogset)
 
     BotsService.query({my: 1, developer: true, role: Authentication.user.roles}, function (result) {
       vm.mybot = result;
@@ -53,9 +52,11 @@
 
         // TODO: move create/update logic to service
         function successCallback(res) {
-          $state.go('dialogsets.list', {
-            dialogsetId: res._id
-          }, {reload: true});
+          $state.go('dialogsets.dialogsLearn', {listType: "additional"})
+
+          // $state.go('dialogsets.dialogsLearn', {
+          //   dialogsetId: res._id
+          // }, {reload: true});
         }
         function errorCallback(res) {
           vm.error = res.data.message;
@@ -72,9 +73,11 @@
             return false;
           }
           vm.dialogset.$update(function (result) {
-            $state.go('dialogsets.list', {
-              dialogsetId: result._id
-            }, {reload: true});
+            // $state.go('dialogsets.dialogsLearn', {
+            //   dialogsetId: result._id
+            // }, {reload: true});
+
+            $state.go('dialogsets.dialogsLearn', {listType: "additional"})
           }, function (err) {
             console.log(err);
             vm.error = err.data.message
@@ -86,7 +89,7 @@
           vm.dialogset['type'] = 'oneByOne';
           vm.dialogset['dialogs'] = vm.dialogsetDialogs;
           vm.dialogset.$save(function (result) {
-            $state.go('dialogsets.list')
+            $state.go('dialogsets.dialogsLearn', {listType: "additional"})
 
           }, function (err) {
             console.log(err)

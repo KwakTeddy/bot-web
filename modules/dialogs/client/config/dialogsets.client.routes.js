@@ -88,13 +88,14 @@
         }
       })
       .state('dialogsets.dialogsLearn', {
-        url: '/dialogsLearn/:botNameId/',
+        url: '/dialogsLearn/:botNameId/?listType',
         templateUrl: 'modules/dialogs/client/views/dialogs.client.view.html',
         controller: 'DialogsetDialogsLearnController',
         controllerAs: 'vm',
         resolve: {
           botResolve : getBot,
-          dialogsResolve: getDialogs
+          dialogsResolve: getDialogs,
+          dialogsetsResolve: getDialogsets
         }
       })
   }
@@ -123,9 +124,11 @@
     }).$promise;
   }
 
-  getBot.$inject = ['$http', '$cookies'];
-  function getBot($http, $cookies) {
-    return $http.get('/api/bots/byNameId/' + $cookies.get('default_bot'))
+  getBot.$inject = ['$http', '$cookies', 'BotsService'];
+  function getBot($http, $cookies, BotsService) {
+    return BotsService.get({
+      botId: $cookies.get('botObjectId')
+    }).$promise;
   }
 
   getDialogs.$inject = ['UserBotDialogService', '$cookies'];

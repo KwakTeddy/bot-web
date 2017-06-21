@@ -5,7 +5,7 @@
 <div>
   <ul class="nav nav-tabs">
     <li role="presentation" ng-class="{active: vm.type == 'defaultDialogset'}"><a href="#" ng-click="vm.changeType('defaultDialogset');">기본 대화셋</a></li>
-    <li role="presentation" ng-class="{active: vm.type == 'dialogset'}"><a href="#" ng-click="vm.changeType('dialogset');">추가 대화셋</a></li>
+    <li role="presentation" ng-class="{active: vm.type == 'additionalDialogset'}"><a href="#" ng-click="vm.changeType('additionalDialogset');">추가 대화셋</a></li>
   </ul>
 </div>
 
@@ -70,7 +70,7 @@
   </div>
 
 
-  <div class="panel-body" data-ng-if="vm.type == 'dialogset'">
+  <div class="panel-body" data-ng-if="vm.type == 'additionalDialogset'">
     <table id="dt" datatable="ng" dt-options="vm.dtOptions" class="table table-bordered mb-none">
       <thead>
       <tr>
@@ -80,6 +80,7 @@
         <th class="text-center">작성자</th>
         <th class="text-center">등록일</th>
         <th class="text-center">관리</th>
+        <th class="text-center">연결</th>
       </tr>
       </thead>
       <tbody>
@@ -88,26 +89,40 @@
         <td class="text-center"><a ui-sref="dialogsets.edit({dialogsetId: dialogset._id})">{{dialogset.title}}</a></td>
         <td class="text-center">{{dialogset.type}}</td>
         <td class="text-center">{{dialogset.user ? dialogset.user.displayName : '장세영'}}</td>
-        <td class="text-center">{{dialogset.created | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+        <td class="text-center">{{dialogset.created | date: 'yyyy-MM-dd HH:mm'}}</td>
         <td>
           <a class="btn btn-default btn-sm btn-block" ui-sref="dialogsets.dialogs({dialogsetId: dialogset._id})" style="border: none">
             <i class="glyphicon glyphicon-edit"></i> 대화관리
           </a>
         </td>
+        <td>
+          <a data-ng-if="!dialogset.connect" class="btn btn-default btn-sm btn-block" style="border: none" ng-click="vm.connectBot(dialogset)">
+            연결하기
+          </a>
+          <a data-ng-if="dialogset.connect" class="btn btn-danger btn-sm btn-block" style="border: none" ng-click="vm.disconnectBot(dialogset)">
+            연결끊기
+          </a>
+        </td>
+
       </tr>
 
-      <tr ng-repeat="dialogset in vm.dialogsets" ng-if="(vm.listType == 'public') && dialogset.public">
-        <!--<td class="text-center">{{dialogset.bot.id}}</td>-->
-        <td class="text-center"><a ui-sref="dialogsets.edit({dialogsetId: dialogset._id})">{{dialogset.title}}</a></td>
-        <td class="text-center">{{dialogset.type}}</td>
-        <td class="text-center">{{dialogset.user ? dialogset.user.displayName : '장세영'}}</td>
-        <td class="text-center">{{dialogset.created | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
-        <td>
-          <a class="btn btn-default btn-sm btn-block" ui-sref="dialogsets.dialogs({dialogsetId: dialogset._id})" style="border: none">
-            <i class="glyphicon glyphicon-edit"></i> 대화관리
-          </a>
-        </td>
-      </tr>
+      <!--<tr ng-repeat="dialogset in vm.dialogsets" ng-if="(vm.listType == 'public') && dialogset.public">-->
+        <!--&lt;!&ndash;<td class="text-center">{{dialogset.bot.id}}</td>&ndash;&gt;-->
+        <!--<td class="text-center"><a ui-sref="dialogsets.edit({dialogsetId: dialogset._id})">{{dialogset.title}}</a></td>-->
+        <!--<td class="text-center">{{dialogset.type}}</td>-->
+        <!--<td class="text-center">{{dialogset.user ? dialogset.user.displayName : '장세영'}}</td>-->
+        <!--<td class="text-center">{{dialogset.created | date: 'yyyy-MM-dd HH:mm:ss'}}</td>-->
+        <!--<td>-->
+          <!--<a class="btn btn-default btn-sm btn-block" ui-sref="dialogsets.dialogs({dialogsetId: dialogset._id})" style="border: none">-->
+            <!--<i class="glyphicon glyphicon-edit"></i> 대화관리-->
+          <!--</a>-->
+        <!--</td>-->
+        <!--<td>-->
+          <!--<a class="btn btn-default btn-sm btn-block" ui-sref="dialogsets.dialogs({dialogsetId: dialogset._id})" style="border: none">-->
+            <!--<i class="glyphicon glyphicon-edit"></i> 연결하기-->
+          <!--</a>-->
+        <!--</td>-->
+      <!--</tr>-->
       </tbody>
     </table>
 

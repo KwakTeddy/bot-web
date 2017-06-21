@@ -19,33 +19,42 @@
 
     <div class="panel-body">
 
-      <div style="margin-bottom: 15px;">
+      <div style="margin-bottom: 20px;">
+        <input type="text" id="category" name="category" ng-model="vm.dialog.category" class="form-control valid" placeholder="카테고리"
+               aria-invalid="false" style="width: 13%;float: left;margin-right: 5px">
         <input type="text" id="question" name="question" ng-model="vm.dialog.inputRaw" class="form-control valid" placeholder="질문"
-               aria-invalid="false" style="width: 43%;float: left;margin-right: 5px">
+               aria-invalid="false" style="width: 40%;float: left;margin-right: 5px">
         <input type="text" id="answer" name="answer" ng-model="vm.dialog.output" class="form-control valid" placeholder="답변"
-               aria-invalid="false"  style="width: 43%;float: left;margin-right: 5px">
+               aria-invalid="false"  style="width: 40%;float: left;margin-right: 5px">
         <button class="btn btn-primary" ng-click="vm.createDialog();">추가</button>
       </div>
 
-      <div ng-repeat="dialog in vm.dialogsetDialogs" ng-show="dialog.deleted == undefined" style="margin-bottom: 5px;">
+      <div class="btn-group" uib-dropdown is-open="status.isopen" style="10%">
+        <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+          {{vm.selectedCategory ? vm.selectedCategory : '카테고리' }}<span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+          <li role="menuitem" ng-click="vm.selectedCategory = '카테고리'"><a href="#">카테고리</a></li>
+          <li role="menuitem" ng-click="vm.selectedCategory = '질문'"><a href="#">질문</a></li>
+          <li role="menuitem" ng-click="vm.selectedCategory = '답변'"><a href="#">답변</a></li>
+        </ul>
+      </div>
+      <input type="text" data-ng-model="vm.dialogSearch" placeholder="카테고리 검색" style="width: 13%;display: inline-block;margin-bottom: 15px;border: none;padding: 6px 12px"></input>
+      <button class="btn btn-default" ng-click="vm.searchDialog();">검색</button>
+      <button class="btn btn-default" ng-click="vm.initDialog();">초기화</button>
 
 
-        <span style="width: 43%;float: left;margin-right: 5px">
+      <div ng-repeat="dialog in vm.dialogsetDialogs track by $index" ng-show="dialog.deleted == undefined" style="margin-bottom: 5px;">
+
+        <input type="text" ng-model="dialog.category" class="form-control valid" placeholder="카테고리"
+               aria-invalid="false" style="width: 13%;float: left;margin-right: 5px">
+        <span style="width: 40%;float: left;margin-right: 5px">
          <input type="text" ng-model="dialog.inputRaw" class="form-control valid" placeholder="질문" id = 'learnDialog_{{dialog._id}}'
                 aria-invalid="false" ng-blur="vm.updateDialog(dialog)" style="width: {{100-10*dialog.depth}}%;float: right">
         </span>
-        <!--<input type="text" ng-if="!dialog.parent" ng-model="dialog.inputRaw" class="form-control valid" placeholder="질문"-->
-               <!--aria-invalid="false" ng-blur="vm.updateDialog(dialog)"  style="width: 43%;float: left;margin-right: 5px">-->
-        <!--<span ng-if="dialog.parent" class="fa fa-arrow-right" aria-hidden="true" style="width: 5%; float: left; padding: 6px;padding-left: 16px;padding-top: 10px"></span>-->
-        <!--<input type="text" ng-if="dialog.parent" ng-model="dialog.inputRaw" class="form-control valid" placeholder="질문"-->
-               <!--aria-invalid="false" ng-blur="vm.updateDialog(dialog)"  style="width: 38%;float: left;margin-right: 5px">-->
-
-
-
-
         <input type="text" ng-model="dialog.output" class="form-control valid" placeholder="답변"
-               aria-invalid="false" ng-blur="vm.updateDialog(dialog)"  style="width: 43%;float: left;margin-right: 5px">
-        <!--<button class="btn btn-default" ng-click="vm.updateDialog(dialog)">수정</button>-->
+               aria-invalid="false" ng-blur="vm.updateDialog(dialog)"  style="width: 40%;float: left;margin-right: 5px">
+
         <button class="btn btn-default" ng-click="vm.createDepthDialog(dialog, $index)" ><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
         <button class="btn btn-default" ng-click="vm.removeDialog(dialog)" ><i class="glyphicon glyphicon-trash"></i></button>
       </div>

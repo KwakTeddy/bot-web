@@ -2,8 +2,7 @@
 
 angular.module('core').controller('TitleController', ['$scope', '$http',
   function ($scope, $http) {
-    $http.get("/config").then(function (result) {
-      console.log(result.data);
+    $http.get('/config').then(function (result) {
       if(result.data.enterprise.title){
         $scope.enterpriseTitle = result.data.enterprise.title
       }else {
