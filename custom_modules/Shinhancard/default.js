@@ -23,7 +23,7 @@ var dialogsType1 = {
     exclude: ['하다', '이다'],
     mongo: {
         model: 'dialogsetdialogs',
-        queryStatic: {dialogset: ObjectId("59410b4fbb33920264ee001b")},
+        queryStatic: {dialogset: ObjectId("5949d42f45216bf67b70b60e")},
         queryFields: ['input'],
         fields: 'dialogset input inputRaw output context' ,
         taskFields: ['input', 'inputRaw', 'output', 'matchCount', 'matchRate', 'dialogset', 'context'],
