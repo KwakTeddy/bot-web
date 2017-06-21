@@ -23,9 +23,15 @@ var dialogsType1 = {
     exclude: ['하다', '이다'],
     mongo: {
         model: 'dialogsetdialogs',
-        queryStatic: {dialogset: ObjectId("59474590df0c859b48a6e86f")},
-        queryFields: ['input'],
-        fields: 'dialogset input inputRaw output context' ,
+
+
+
+
+        queryStatic: {dialogset: ObjectId("59410b4fbb33920264ee001b")}, //server
+       // queryStatic: {dialogset: ObjectId("59478cf17a294c58195c9cf2")},  //local
+       queryFields: ['input'],
+
+        fields: 'dialogset input inputRaw output context id' ,
         taskFields: ['input', 'inputRaw', 'output', 'matchCount', 'matchRate', 'dialogset', 'context'],
         minMatch: 1,
         schema: {
@@ -51,7 +57,7 @@ bot.setType("dialogsType1", dialogsType1);
 
 var faqTask = {
   action: function(task, context, callback) {
-    task.dialogsType1 = context.dialog.dialogsType1;
+    if(!task.dialogsType1) task.dialogsType1 = context.dialog.dialogsType1;
 
     if(Array.isArray(task.dialogsType1)) {
       if(context.bot.dialogsetOption && context.bot.dialogsetOption.matchList &&
@@ -61,7 +67,7 @@ var faqTask = {
         // if (context.bot.dialogsetOption.listOutput) {
         //   context.dialog.output = context.bot.dialogsetOption.listOutput;
         // } else {
-        context.dialog.output = "아래 중에 궁금하신 내용이 있나요?\n\n#dialogsType1#+index+. +inputRaw+\n\n#번호를 입력하면 상세 내용을 보여드립니다.\n다시 검색하시려면 검색어를 입력해주세요.\n처음으로 돌아가시려면 '시작'이라고 말씀해주세요";
+        context.dialog.output = "아래 중에 궁금하신 내용이 있나요?\n\n#dialogsType1#+index+. +inputRaw+\n\n#번호를 입력하면 상세 내용을 보여드립니다.\n다시 검색하시려면 검색어를 입력해주세요.\n처음으로 돌아가시려면 '처음'이라고 말씀해주세요";
         // }
 
         // context.dialog.children = [
@@ -87,7 +93,7 @@ var faqTask = {
         // if (context.bot.dialogsetOption.listOutput) {
         //   context.dialog.output = context.bot.dialogsetOption.listOutput;
         // } else {
-        context.dialog.output = "아래 중에 궁금하신 내용이 있나요?\n\n#dialogsType1#+index+. +inputRaw+\n\n#번호를 입력하면 상세 내용을 보여드립니다.\n다시 검색하시려면 검색어를 입력해주세요.\n처음으로 돌아가시려면 '시작'이라고 말씀해주세요";
+        context.dialog.output = "아래 중에 궁금하신 내용이 있나요?\n\n#dialogsType1#+index+. +inputRaw+\n\n#번호를 입력하면 상세 내용을 보여드립니다.\n다시 검색하시려면 검색어를 입력해주세요.\n처음으로 돌아가시려면 '처음'이라고 말씀해주세요";
         // }
 
         // context.dialog.children = [
@@ -111,7 +117,7 @@ var faqTask = {
           task._output = task._output[Math.floor(Math.random() * task._output.length)];
         }
 
-        context.dialog.output = "[+listType.inputRaw+]\n\n답변: +listType.output+\n\n더 필요하신 게 있으시면 말씀해주세요~\n처음으로 돌아가시려면 '시작'이라고 말씀해주세요"
+        context.dialog.output = "[+listType.inputRaw+]\n\n답변: +listType.output+\n\n더 필요하신 게 있으시면 말씀해주세요~\n처음으로 돌아가시려면 '처음'이라고 말씀해주세요"
         // context.dialog.output = '+_output+';
         // context.dialog.children = null;
         //
@@ -119,13 +125,14 @@ var faqTask = {
       }
 
     } else if(task.dialogsType1) {
+      context.dialog.listType = task.dialogsType1;
       task._output = task.dialogsType1.output;
 
       if(Array.isArray(task._output)) {
         task._output = task._output[Math.floor(Math.random() * task._output.length)];
       }
 
-      context.dialog.output = '+_output+';
+      context.dialog.output = "[+listType.inputRaw+]\n\n답변: +listType.output+\n\n더 필요하신 게 있으시면 말씀해주세요~\n처음으로 돌아가시려면 '시작'이라고 말씀해주세요";
       // context.dialog.children = null;
       // console.log(task.dialogsType1.inputRaw + ', ' + task.dialogsType1.input + '(' + task.dialogsType1.matchCount + ', ' + task.dialogsType1.matchRate + ')');
     }
@@ -690,6 +697,73 @@ var YOLOTasty = {
     }
 };
 bot.setTask("YOLOTasty", YOLOTasty);
+
+var SmartGlobal = {
+    name: 'SmartGlobal',
+    action: function(task, context, callback) {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
+            task.buttons = [
+                {
+                    text: "바로가기",
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350269_39649.html"
+                }
+            ]
+
+        } else if (context.user.channel == 'facebook') {
+            task.buttons = [
+                {
+                    text: "바로가기",
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350269_39648.html"
+                }
+            ]
+
+        } else if (context.user.channel == 'kakao') {
+            task.buttons = [
+                {
+                    text: "바로가기",
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350269_39409.html"
+                }
+            ]
+
+        }
+        callback(task, context);
+    }
+};
+bot.setTask("SmartGlobal", SmartGlobal);
+
+var YOLOTriplus = {
+    name: 'YOLOTriplus',
+    action: function(task, context, callback) {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
+            task.buttons = [
+                {
+                    text: "바로가기",
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350267_39649.html"
+                }
+            ]
+
+        } else if (context.user.channel == 'facebook') {
+            task.buttons = [
+                {
+                    text: "바로가기",
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350267_39648.html"
+                }
+            ]
+
+        } else if (context.user.channel == 'kakao') {
+            task.buttons = [
+                {
+                    text: "바로가기",
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350267_39409.html"
+                }
+            ]
+
+        }
+        callback(task, context);
+    }
+};
+bot.setTask("YOLOTriplus", YOLOTriplus);
+
 
 var MrLife = {
     name: 'MrLife',
@@ -2130,7 +2204,7 @@ var cardlist7 = {
 bot.setTask("cardlist7", cardlist7);
 
 var cardlist8 = {
-    name: 'cardlist7',
+    name: 'cardlist8',
     action: function(task, context, callback) {
         if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.result = {
@@ -2143,17 +2217,6 @@ var cardlist8 = {
                             {
                                 text: "바로가기",
                                 url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C07.shc?EntryLoc=2764&tmEntryLoc=&empSeq=563&datakey=&agcCd="
-                            }
-                        ]
-                    },
-                    {
-                        title: "신한카드 S-Choice체크",
-                        text: "한가지 혜택에 All-In",
-                        imageUrl: "/files/Shinhancard1497432434674.jpg",
-                        buttons: [
-                            {
-                                text: "바로가기",
-                                url: "https://www.moneybrain.ai"
                             }
                         ]
                     }
@@ -2172,15 +2235,68 @@ var cardlist8 = {
                                 url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C07.shc?EntryLoc=2764&tmEntryLoc=&empSeq=562&datakey=&agcCd="
                             }
                         ]
-                    },
+                    }
+                ]
+            }
+        }
+        console.log(JSON.stringify(task.result))
+        callback(task, context);
+    }
+};
+bot.setTask("cardlist8", cardlist8);
+
+var cardlist9 = {
+    name: 'cardlist9',
+    action: function(task, context, callback) {
+        if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
+            task.result = {
+                items: [
                     {
-                        title: "신한카드 S-Choice체크",
-                        text: "한가지 혜택에 All-In",
-                        imageUrl: "/files/Shinhancard1497432434674.jpg",
+                        title: "Smart Global 신한카드 체크",
+                        text: "해외/국내 이용 캐시백",
+                        imageUrl: "/files/Shinhancard1497948005502.jpg",
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://www.moneybrain.ai"
+                                url: "https://m.shinhancard.com/conts/html/card/apply/check/1350269_39649.html"
+                            }
+                        ]
+                    },
+                    {
+                        title: "신한카드 YOLO Triplus 체크",
+                        text: "전가맹점 마일리지 적립",
+                        imageUrl: "/files/Shinhancard1497948018344.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/conts/html/card/apply/check/1350269_39648.html"
+                            }
+                        ]
+                    }
+                ]
+            }
+        } else if (context.user.channel == 'facebook') {
+            task.result = {
+                items: [
+                    {
+                        title: "Smart Global 신한카드 체크",
+                        text: "해외/국내 이용 캐시백",
+                        imageUrl: "/files/Shinhancard1497948005502.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C07.shc?EntryLoc=2764&tmEntryLoc=&empSeq=563&datakey=&agcCd="
+                            }
+                        ]
+                    },
+                    {
+                        title: "신한카드 YOLO Triplus 체크",
+                        text: "전가맹점 마일리지 적립",
+                        imageUrl: "/files/Shinhancard1497948018344.jpg",
+                        buttons: [
+                            {
+                                text: "바로가기",
+                                url: "https://m.shinhancard.com/conts/html/card/apply/check/1350267_39648.html"
                             }
                         ]
                     }
@@ -2191,4 +2307,4 @@ var cardlist8 = {
         callback(task, context);
     }
 };
-bot.setTask("cardlist8", cardlist8);
+bot.setTask("cardlist9", cardlist9);

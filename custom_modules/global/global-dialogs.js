@@ -289,7 +289,7 @@ var globalStartDialogs = [
     output: '+_output+'
   },
   {
-    input: {types: [userDialogType]},
+    input: {if: 'context.bot.dialogsetOption == undefined || context.bot.dialogsetOption.useBotDialog != false', types: [userDialogType]},
     task: {
       action: function(task, context, callback) {
         if(Array.isArray(task.typeDoc)) {
@@ -395,7 +395,7 @@ exports.dialogsType = dialogsType;
 
 var globalEndDialogs = [
   {
-    input: {types: [dialogsType]},
+    input: {if: 'context.bot.dialogsetOption == undefined || context.bot.dialogsetOption.useDialogset != false', types: [dialogsType]},
     task:   {
       action: function(task, context, callback) {
 
@@ -418,6 +418,33 @@ var globalEndDialogs = [
                   : '[+doc1.inputRaw+]\n+doc1.output+\n\n더 필요하신 게 있으시면 말씀해주세요~\n')
               }
             ];
+          } else if(context.bot.dialogsetOption && context.bot.dialogsetOption.matchList && task.typeDoc.length > 1 &&
+            (task.typeDoc[0].matchCount == task.typeDoc[1].matchCount)) {
+
+            var dialogs = [];
+            for(var i = 0; i < task.typeDoc.length; i++) {
+              if(i == 0) dialogs.push(task.typeDoc[i]);
+              else if(dialogs[dialogs.length - 1].matchCount != task.typeDoc[i].matchCount) break;
+              else dialogs.push(task.typeDoc[i]);
+            }
+            task.typeDoc = dialogs;
+
+            context.dialog.typeDoc = task.typeDoc;
+            // if (context.bot.dialogsetOption.listOutput) {
+            //   context.dialog.output = context.bot.dialogsetOption.listOutput;
+            // } else {
+            context.dialog.output = "아래 중에 궁금하신 내용이 있나요?\n\n#typeDoc#+index+. +inputRaw+\n\n#번호를 입력하면 상세 내용을 보여드립니다.\n다시 검색하시려면 검색어를 입력해주세요.\n처음으로 돌아가시려면 '시작'이라고 말씀해주세요";
+            // }
+
+            context.dialog.children = [
+              {
+                input: {types: [{name: 'doc1', listName: 'typeDoc', typeCheck: 'listTypeCheck'}]},
+                output: (context.bot.dialogsetOption.contentOutput ?
+                  context.bot.dialogsetOption.contentOutput
+                  : '[+doc1.inputRaw+]\n+doc1.output+\n\n더 필요하신 게 있으시면 말씀해주세요~\n')
+              }
+            ];
+
           } else {
             if(task.typeDoc.length > 1) task._output = task.typeDoc[0].output;
             else task._output = task.typeDoc[0].output;

@@ -690,7 +690,7 @@ function executeDialog(dialog, context, print, callback, options) {
   async.waterfall([
     function(cb) {
       if (dialog.task) {
-        if(dialog.task) {
+        if(!dialog.task.action) {
           if(dialog.task.template && typeof dialog.task.template == 'string') {
             var _template = context.bot.tasks[dialog.task.template];
             if(_template) dialog.task.template = utils.clone(_template);
