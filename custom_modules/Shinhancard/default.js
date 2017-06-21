@@ -132,7 +132,7 @@ var faqTask = {
         task._output = task._output[Math.floor(Math.random() * task._output.length)];
       }
 
-      context.dialog.output = "[+listType.inputRaw+]\n\n답변: +listType.output+\n\n더 필요하신 게 있으시면 말씀해주세요~\n처음으로 돌아가시려면 '시작'이라고 말씀해주세요";
+      context.dialog.output = "[+listType.inputRaw+]\n\n답변: +listType.output+\n\n더 필요하신 게 있으시면 말씀해주세요~\n처음으로 돌아가시려면 '시작'이라고 말씀해주세요"; 
       // context.dialog.children = null;
       // console.log(task.dialogsType1.inputRaw + ', ' + task.dialogsType1.input + '(' + task.dialogsType1.matchCount + ', ' + task.dialogsType1.matchRate + ')');
     }
