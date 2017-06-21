@@ -25,7 +25,7 @@ var dialogsType1 = {
         model: 'dialogsetdialogs',
         queryStatic: {dialogset: ObjectId("5949dd8dc7120e5e7dd468b8")},
         queryFields: ['input'],
-        fields: 'dialogset input inputRaw output context' ,
+        fields: 'dialogset input inputRaw output context id' ,
         taskFields: ['input', 'inputRaw', 'output', 'matchCount', 'matchRate', 'dialogset', 'context'],
         minMatch: 1,
         schema: {

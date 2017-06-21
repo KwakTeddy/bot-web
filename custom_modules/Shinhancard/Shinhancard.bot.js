@@ -9,10 +9,13 @@ var Shinhancard = {
   commonButtons: [{"text": "이전"}, {"text": "처음"}],
   commonQuickReplies: [{"text": "이전"}, {"text": "처음"}],
   intentOption: {
+    useIntent: false,
     matchRate: 0.3, matchCount: 3,
     matchRateChildOffset: 0.2, matchCountChildOffest: 2
   },
   dialogsetOption: {
+    useBotDialog: false,
+    useDialogset: false,
     useContext: false,
     useTopic: false,
     matchRate: 0.3, matchCount: 3,

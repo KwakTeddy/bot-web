@@ -54,6 +54,7 @@ function processInput(context, inRaw, callback) {
         var _inNLP = [];
         if(!result) result = inRaw;
         for (var i = 0; i < result.length; i++) {
+          if(result[i].pos == 'Alpha') result[i].pos = 'Noun';
           // var word = result[i].text;
           // if(word.search(/^(은|는|이|가|을|를)$/) == -1) result2.push(word);
 
@@ -110,26 +111,30 @@ function processInput(context, inRaw, callback) {
     // },
 
     function(cb) {
-      intent.matchIntent(inRaw, inNLP, context, function(matched, _intent, _dialog) {
-        if(_intent) {
-          doc.intent = _intent;
-          context.botUser.intent = _intent;
-        } else {
-          doc.intent = undefined;
-          context.botUser.intent = undefined;
-        }
+      if(context.bot.intentOption == undefined || context.bot.intentOption.useIntent != false) {
+        intent.matchIntent(inRaw, inNLP, context, function(matched, _intent, _dialog) {
+          if(_intent) {
+            doc.intent = _intent;
+            context.botUser.intent = _intent;
+          } else {
+            doc.intent = undefined;
+            context.botUser.intent = undefined;
+          }
 
-        if(_dialog) {
-          doc.intentDialog = _dialog;
-          context.botUser.intentDialog = _dialog;
-        } else {
-          doc.intentDialog = undefined;
-          context.botUser.intentDialog = undefined;
-        }
+          if(_dialog) {
+            doc.intentDialog = _dialog;
+            context.botUser.intentDialog = _dialog;
+          } else {
+            doc.intentDialog = undefined;
+            context.botUser.intentDialog = undefined;
+          }
 
-        console.log('intent: ' + JSON.stringify(_intent));
+          console.log('intent: ' + JSON.stringify(_intent));
+          cb(null);
+        })
+      } else {
         cb(null);
-      })
+      }
     },
 
     function(cb) {
@@ -1480,7 +1485,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
         // if(word.length <= 1) continue;
         word = RegExp.escape(word);
 
-        if(context.bot.topicKeywords && _.includes(context.bot.topicKeywords, word)) {
+        if(context.bot.dialogsetOption.useTopic !== false && context.bot.topicKeywords && _.includes(context.bot.topicKeywords, word)) {
           topicKeywords.push(nlps[i]);
         }
         if(!(format.exclude && _.includes(format.exclude, word)))
@@ -1502,7 +1507,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
       if(_nlps.length == 0) _nlps.concat(excluded);
 
       async.eachSeries((topicKeywords.length > 0 ? topicKeywords : _nlps), function (word, _callback){
-        word = word.text ? RegExp.escape(word.text): word;
+         word = word.text ? RegExp.escape(word.text): word;
 
         if(word.length <= 1) {
           _callback(null);
@@ -1523,6 +1528,8 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
           if(format.query) query = utils.merge(query, format.query);
 
           var _query = model.find(query, format.mongo.fields, format.mongo.options);
+
+          _query.populate('context');
           if(format.mongo.sort) _query.sort(format.mongo.sort);
           if(format.mongo.limit) _query.limit(format.mongo.limit || type.MAX_LIST);
 
@@ -1601,7 +1608,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                       matchIndex = doc[format.mongo.queryFields[l]].search(new RegExp(_word, 'i'));
 
                       if(matchIndex != -1) {
-                        if(context.bot.topicKeywords && _.includes(context.bot.topicKeywords, _nlps[m].text)) {matchCount++; matchCount1 +=3;}
+                        if(context.bot.dialogsetOption.useTopic !== false && context.bot.topicKeywords && _.includes(context.bot.topicKeywords, _nlps[m].text)) {matchCount++; matchCount1 +=3;}
                         else if(_nlps[m].pos == 'Noun') {matchCount++; matchCount1+=2;}
                         else {matchCount++; matchCount1++;}
                         // console.log(word + ' ' + _word + ' ' + doc[format.mongo.queryFields[l]] + ' ' +matchCount);
@@ -1622,6 +1629,15 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                     }
                   }
                 }
+
+                // context match
+                // if(doc.context) {
+                //   matchIndex = doc.context.name.search(new RegExp(_word, 'i'));
+                //
+                //   if(matchIndex != -1) {
+                //     matchCount++; matchCount1+=3;
+                //   }
+                // }
 
                 if(!format.mongo.minMatch || matchCount >= format.mongo.minMatch) {
                   var bExist = false;
@@ -1849,7 +1865,10 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
     } else {
       matchedDoc.sort(function (a, b) {
         if(b.matchCount == a.matchCount) {
-          if(b.matchRate == a.matchRate) return a.inputLen - b.inputLen;
+          if(b.matchRate == a.matchRate) {
+            return a.id - b.id;
+            // return a.inputLen - b.inputLen;
+          }
           else return b.matchRate - a.matchRate;
         } else {
           if(!b.matchCount) b.matchCount = 0;
@@ -1930,9 +1949,9 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
       if(topicKeywords && topicKeywords.length > 0) context.botUser.topic = topicKeywords;
       // console.log('topic1: '+ (context.botUser.topic ? context.botUser.topic[0].text : 'null')+ ',' + context.botUser.analytics + ',' + context.botUser.analytics2);
 
-      for(var i = 0; i < matchedDoc.length && i < 5; i++) {
+      for(var i = 0; i < matchedDoc.length /*&& i < 5*/; i++) {
         var _doc = matchedDoc[i];
-        console.log('type.js:dialogCheck: ' + _doc.matchText + ': ' + _doc.matchCount + ', ' + _doc.matchRate + ', ' + JSON.stringify(_doc.matchNLP));
+        console.log('type.js:dialogCheck: ' + /*(_doc.context ? _doc.context.name + ':': '') +*/ _doc.matchText + ': ' + _doc.matchCount + ', ' + _doc.matchRate + ', ' + JSON.stringify(_doc.matchNLP));
       }
 
       callback(text, inDoc, true);
