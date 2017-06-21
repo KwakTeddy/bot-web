@@ -2848,7 +2848,7 @@ var commonDialogs = [
 				"text": "처음"
 			},
 			{
-				"text": "반갑다 신한카드 이다"
+				"text": "반갑다 신한카드"
 			}
 		],
 		"output": {
