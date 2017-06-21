@@ -2124,9 +2124,28 @@ var dialogs = [
 												"text": "2"
 											}
 										],
-										"output": "ㅇㅇ"
+										"output": "ㅇㅇ",
+										"task": {
+											"name": "cardlist9"
+										}
 									}
-								]
+								],
+								"inRaw": "이전",
+								"inNLP": "이전",
+								"task": {
+									"output": "그렇다면 고객님의 소비성향을 알려주세요. \n\n1. 주유, 쇼핑 등 생활 혜택에 관심이 있으신 알뜰 실속파\n2. 해외에서도 혜택은 챙기는 센스실속파\n3. 주거래 계좌 연결하시면 기본+추가+특별 적립이 한번에! 슈퍼 실속파",
+									"buttons": [
+										{
+											"text": "알뜰실속파"
+										},
+										{
+											"text": "센스실속파"
+										},
+										{
+											"text": "슈퍼실속파"
+										}
+									]
+								}
 							},
 							{
 								"name": "2030",
@@ -2274,8 +2293,8 @@ var dialogs = [
 			}
 		],
 		"output": "궁금하신 부분을 단어로 입력해 주시면 제가 아는 가장 알맞은 답변을 안내해 드리겠습니다.",
-		"inRaw": "faq",
-		"inNLP": "faq",
+		"inRaw": "NFC전원",
+		"inNLP": "NFC 전원",
 		"children": [
 			{
 				"name": "FAQ검색",
@@ -2319,6 +2338,22 @@ var dialogs = [
 								],
 								"output": {
 									"callChild": "FAN에 대해 자주하는 질문들(FAQ)"
+								}
+							},
+							{
+								"name": "미검색",
+								"id": "default1322331",
+								"filename": "default",
+								"input": [
+									{
+										"if": " true"
+									}
+								],
+								"output": {
+									"repeat": "1",
+									"options": {
+										"output": "죄송합니다. 검색결과가 없습니다.\n다시 한번 말씀해주세요~\n처음으로 돌아가시려면 '시작'이라고 말씀해주세요"
+									}
 								}
 							}
 						]
@@ -2787,8 +2822,8 @@ var commonDialogs = [
 				}
 			]
 		},
-		"inRaw": "이전단계",
-		"inNLP": "이전 단계"
+		"inRaw": "0",
+		"inNLP": "0"
 	},
 	{
 		"id": "defaultcommon1",
@@ -2889,6 +2924,19 @@ var commonDialogs = [
 		],
 		"output": {
 			"call": "FAN 가입_"
+		}
+	},
+	{
+		"name": "퀴즈커먼",
+		"id": "commondefault1322332",
+		"filename": "defaultcommon",
+		"input": [
+			{
+				"text": "퀴즈"
+			}
+		],
+		"output": {
+			"call": "퀴즈"
 		}
 	}
 ];
