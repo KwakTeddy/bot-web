@@ -1866,8 +1866,8 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
       matchedDoc.sort(function (a, b) {
         if(b.matchCount == a.matchCount) {
           if(b.matchRate == a.matchRate) {
-            return a.id - b.id;
-            // return a.inputLen - b.inputLen;
+            if(a.id && b.id) return a.id - b.id;
+            else return a.inputLen - b.inputLen;
           }
           else return b.matchRate - a.matchRate;
         } else {
