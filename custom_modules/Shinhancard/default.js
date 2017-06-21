@@ -27,7 +27,7 @@ var dialogsType1 = {
 
 
 
-        queryStatic: {dialogset: ObjectId("59410b4fbb33920264ee001b")}, //server
+        queryStatic: {dialogset: ObjectId("5949dd8dc7120e5e7dd468b8")}, //server
        // queryStatic: {dialogset: ObjectId("59478cf17a294c58195c9cf2")},  //local
        queryFields: ['input'],
 
@@ -2269,7 +2269,7 @@ var cardlist9 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/conts/html/card/apply/check/1350269_39648.html"
+                                url: "https://m.shinhancard.com/conts/html/card/apply/check/1350267_39649.html"
                             }
                         ]
                     }
