@@ -1051,92 +1051,6 @@ angular.module('bots').controller('DialogGraph3Controller', ['$scope', '$rootSco
 
     // dialog editing
 
-    IntentsService.query({botName: $rootScope.botId}).$promise.then(function (result) {
-      vm.intents = result.map(function(i) { return i.name; });
-      console.log(vm.intents)
-    }, function (err) {
-      console.log(err);
-    });
-
-    EntityContentsService.query({botName: $cookies.get('default_bot')}).$promise.then(function (result) {
-      console.log(result);
-      vm.entities = result.map(function (i) {
-        return i.name
-      })
-    }, function (err) {
-      console.log(err)
-    });
-
-    vm.inlineInputFocus = function (index) {
-      $timeout(function () {
-        document.getElementById('inlineInput_' + index).focus()
-      })
-    };
-
-    vm.searchTopic = function(topicTerm, target) { 
-      console.log(topicTerm)
-      console.log(target)
-      console.log(vm.intents)
-      console.log(vm.entities)
-      var topicList = [];  
-      if(target == 'entity'){ 
-        angular.forEach(vm.entities, function(item) { 
-          if (item.toUpperCase().indexOf(topicTerm.toUpperCase()) >= 0) { 
-            topicList.push(item); 
-          } 
-        }); 
-        vm.matchedEntities = topicList; 
-      }else if(target == 'intent'){ 
-        angular.forEach(vm.intents, function(item) { 
-          if (item.toUpperCase().indexOf(topicTerm.toUpperCase()) >= 0) { 
-            topicList.push(item); 
-          } 
-        }); 
-        console.log(topicList)
-        vm.matchedIntents = topicList; 
-      } };
-
-      vm.getTopicTextRaw = function(topic, inlineInput) { 
-      console.log(inlineInput) 
-      if(vm.curI.str.indexOf('@') > -1){ 
-        inlineInput.push({type: 'Entity', str: topic}); 
-      }else if(vm.curI.str.indexOf('#') > -1){ 
-          inlineInput.push({type: 'Intent', str: topic}); 
-        }else if(vm.curI.str.indexOf(':') == 0){ 
-        inlineInput.push({type: 'RegExp', str: topic}); 
-      } 
-      vm.curI.str = '';  
-      return ''; 
-    };  
-
-    $scope.inlineInputKeyDown = function (event, inlineInput) { 
-      if(event.keyCode == 13 && (vm.curI.str.indexOf('@') != 0) && (vm.curI.str.indexOf('#') != 0) && (vm.curI.str.indexOf(':') != 0) && (vm.curI.str.indexOf('if ') != 0)){ 
-        console.log(vm.curI.str); 
-        inlineInput.push({type: 'Keyword', str: vm.curI.str}); 
-        vm.curI.str = ''; 
-        $scope.processedInput = ''; 
-        event.preventDefault(); 
-        event.stopPropagation(); 
-      } 
-      if(event.keyCode == 13 && (vm.curI.str.indexOf(':') == 0)){ 
-        vm.curI.str = vm.curI.str.slice(1); 
-        inlineInput.push({type: 'RegExp', str: vm.curI.str}); 
-        vm.curI.str = ''; 
-        $scope.processedInput = ''; 
-        event.preventDefault(); 
-        event.stopPropagation(); 
-      } 
-      if(event.keyCode == 13 && (vm.curI.str.indexOf('if ') == 0)){ 
-        vm.curI.str = vm.curI.str.slice(2); 
-        inlineInput.push({type: 'If', str: vm.curI.str}); 
-        vm.curI.str = ''; 
-        $scope.processedInput = ''; 
-        event.preventDefault(); 
-        event.stopPropagation();
-      }
-     };
-
-
 
     $scope.addI = function(input) {
       var init = {};
@@ -3732,6 +3646,88 @@ angular.module('bots').controller('DialogGraph3Controller', ['$scope', '$rootSco
         $scope.closeEditorTask();
         $scope.openEditor();
       });
+    };
+
+    IntentsService.query({botName: $rootScope.botId}).$promise.then(function (result) {
+      vm.intents = result.map(function(i) { return i.name; });
+    }, function (err) {
+      console.log(err);
+    });
+
+    EntityContentsService.query({botName: $cookies.get('default_bot')}).$promise.then(function (result) {
+      vm.entities = result.map(function (i) {
+        return i.name
+      })
+    }, function (err) {
+      console.log(err);
+    });
+
+    vm.inlineInputFocus = function (index) {
+      $timeout(function () {
+        document.getElementById('inlineInput_' + index).focus()
+      })
+    };
+
+    vm.searchTopic = function(topicTerm, target) {
+      var topicList = [];
+      if(target == 'entity'){
+        angular.forEach(vm.entities, function(item) {
+          if (item.toUpperCase().indexOf(topicTerm.toUpperCase()) >= 0) {
+            topicList.push(item);
+          }
+        });
+        vm.matchedEntities = topicList;
+      }else if(target == 'intent'){
+        angular.forEach(vm.intents, function(item) {
+          if (item.toUpperCase().indexOf(topicTerm.toUpperCase()) >= 0) {
+            topicList.push(item);
+          }
+        });
+        vm.matchedIntents = topicList;
+      }
+    };
+
+    vm.getTopicTextRaw = function(topic, inlineInput) {
+      if(vm.curI.str.indexOf('@') > -1){
+        inlineInput.push({type: 'Entity', str: topic});
+      }else if(vm.curI.str.indexOf('#') > -1){
+        inlineInput.push({type: 'Intent', str: topic});
+      }else if(vm.curI.str.indexOf(':') == 0){
+        inlineInput.push({type: 'RegExp', str: topic});
+      }
+      vm.curI.str = '';
+      return '';
+    };
+
+    $scope.inlineInputKeyDown = function (event, inlineInput) {
+      if(event.keyCode == 13 && (vm.curI.str.indexOf('@') != 0) && (vm.curI.str.indexOf('#') != 0) && (vm.curI.str.indexOf(':') != 0) && (vm.curI.str.indexOf('if ') != 0)){
+        event.preventDefault();
+        event.stopPropagation();
+        $http.get('/api/nluprocess/'+vm.curI.str).then(function (res) {
+          $scope.processedInput = res.data;
+          inlineInput.push({type: 'Keyword', str: $scope.processedInput});
+          vm.curI.str = '';
+          $scope.processedInput = '';
+        }, function (err) {
+          console.log(err);
+        });
+      }
+      if(event.keyCode == 13 && (vm.curI.str.indexOf(':') == 0)){
+        vm.curI.str = vm.curI.str.slice(1);
+        inlineInput.push({type: 'RegExp', str: vm.curI.str});
+        vm.curI.str = '';
+        $scope.processedInput = '';
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      if(event.keyCode == 13 && (vm.curI.str.indexOf('if ') == 0)){
+        vm.curI.str = vm.curI.str.slice(2);
+        inlineInput.push({type: 'If', str: vm.curI.str});
+        vm.curI.str = '';
+        $scope.processedInput = '';
+        event.preventDefault();
+        event.stopPropagation();
+      }
     };
 
     /******************** grid graph **************************/
