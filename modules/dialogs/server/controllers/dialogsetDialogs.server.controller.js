@@ -87,7 +87,7 @@ exports.delete = function (req, res) {
 };
 
 exports.list = function (req, res) {
-  var sort = req.query.sort || '-created';
+  var sort = req.query.sort || 'created';
   var currentPage = null;
   var perPage = null;
   var query = {};
@@ -108,11 +108,18 @@ exports.list = function (req, res) {
       ]
     };
   }
-  console.log(util.inspect(req.query))
   console.log(util.inspect(query));
-  DialogsetDialog.find(query).skip(currentPage*perPage).limit(perPage).lean().sort(sort).populate('user').exec(function (err, dialogs) {
+  console.log(util.inspect(sort));
+  DialogsetDialog.find(query).skip(currentPage*perPage).limit(perPage).lean().sort(sort).exec(function (err, dialogs) {
+  // DialogsetDialog.aggregate([
+  //   {$match: query},
+  //   {$skip: currentPage*perPage},
+  //   {$limit: perPage},
+  //   {$group: {_id: {randomGroupId : "$randomGroupId", groupId: "$groupId"}, data: {$push: "$$ROOT"}}},
+  //   {$group: {_id: "$_id.groupId", data: {$push: "$$ROOT"}}}
+  //   ]).exec(function (err, dialogs) {
     if (err) {
-      console.log(err)
+      console.log(err);
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });

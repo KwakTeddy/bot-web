@@ -13,18 +13,21 @@
 
   <div class="panel-body" data-ng-if="vm.type == 'defaultDialogset'">
 
-    <div style="margin-bottom: 15px;">
-      <input type="text" id="question" name="question" ng-model="vm.dialog.inputRaw" class="form-control valid" placeholder="질문"
-             aria-invalid="false" style="width: 43%;float: left;margin-right: 5px" ng-keydown="vm.keyDown($event)">
-      <input type="text" id="answer" name="answer" ng-model="vm.dialog.output" class="form-control valid" placeholder="답변"
-             aria-invalid="false"  style="width: 43%;float: left;margin-right: 5px" ng-keydown="vm.keyDown($event)">
-      <button type="submit" class="btn btn-primary" ng-submit="vm.createDialog()" ng-click="vm.createDialog()">추가</button>
+    <div style="margin-bottom: 15px;overflow: hidden">
+      <textarea type="text" id="question" name="question" ng-model="vm.dialog.inputRaw" class="form-control valid" placeholder="질문" rows="2"
+             aria-invalid="false" ng-blur="vm.textareaFocus(null, null, 'blur', 'question')" ng-focus="vm.textareaFocus(null, null, 'focus', 'question')" style="width: 43%;float: left;margin-right: 5px;resize: none">
+      </textarea>
+      <textarea type="text" id="answer" name="answer" ng-model="vm.dialog.output" class="form-control valid" placeholder="답변" rows="2"
+             aria-invalid="false" ng-blur="vm.textareaFocus(null, null, 'blur', 'answer')" ng-focus="vm.textareaFocus(null, null, 'focus', 'answer')" style="width: 43%;float: left;margin-right: 5px;resize: none">
+      </textarea>
+      <button type="submit" class="btn btn-primary" ng-submit="vm.createDialog()" ng-click="vm.createDialog()" style="height: 50px">추가</button>
     </div>
 
-    <div ng-repeat="dialog in vm.dialogs track by $index" ng-show="dialog.deleted == undefined" style="margin-bottom: 5px;">
-      <span style="width: 43%;float: left;margin-right: 5px">
-         <input type="text" ng-model="dialog.inputRaw" class="form-control valid" placeholder="질문" id = 'learnDialog_{{dialog._id}}'
-                aria-invalid="false" ng-blur="vm.updateDialog(dialog)" style="width: {{100-10*dialog.depth}}%;float: right">
+    <div ng-repeat="dialog in vm.dialogs track by $index" ng-show="dialog.deleted == undefined" style="margin-bottom: 5px;overflow: hidden">
+      <span style="width: 43%;float: left;margin-right: 5px;position: relative">
+         <textarea type="text" ng-model="dialog.inputRaw" class="form-control valid" placeholder="질문" id="textarea_question_{{$index}}" rows="2"
+                aria-invalid="false" ng-blur="vm.updateDialog(dialog);vm.textareaFocus('question', $index, 'blur')" ng-focus="vm.textareaFocus('question', $index, 'focus')" style="width: {{100-10*dialog.depth}}%;float: right; resize: none">
+         </textarea>
       </span>
 
       <!--<span style="width: 43%;float: left;margin-right: 5px">-->
@@ -32,11 +35,14 @@
          <!--<input type="text" ng-if="dialog.parent" ng-model="dialog.inputRaw" class="form-control valid" placeholder="질문" id = 'learnDialog_{{dialog._id}}'-->
                 <!--aria-invalid="false" ng-blur="vm.updateDialog(dialog)" style="width: 100%;float: right">-->
       <!--</span>-->
+      <span style="width: 43%;float: left;margin-right: 5px ;position: relative">
+        <textarea type="text" ng-model="dialog.output" class="form-control valid" placeholder="답변" rows="2" id="textarea_answer_{{$index}}"
+               aria-invalid="false" ng-blur="vm.updateDialog(dialog);vm.textareaFocus('answer', $index, 'blur')" ng-focus="vm.textareaFocus('answer', $index, 'focus')" style="resize: none">
+        </textarea>
+      </span>
 
-      <input type="text" ng-model="dialog.output" class="form-control valid" placeholder="답변"
-         aria-invalid="false" ng-blur="vm.updateDialog(dialog)"  style="width: 43%;float: left;margin-right: 5px">
-      <button class="btn btn-default" ng-click="vm.createDepthDialog(dialog, $index)"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
-      <button class="btn btn-default" ng-click="vm.removeDialog(dialog)" ><i class="glyphicon glyphicon-trash"></i></button>
+      <button class="btn btn-default" ng-click="vm.createDepthDialog(dialog, $index)" style="height: 50px;width: 5%"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+      <button class="btn btn-default" ng-click="vm.removeDialog(dialog)" style="height: 50px;width: 5%"><i class="glyphicon glyphicon-trash"></i></button>
     </div>
 
     <!--<div class="form-group">-->
@@ -86,7 +92,8 @@
       <tbody>
       <tr ng-repeat="dialogset in vm.dialogsets" ng-if="vm.listType !== 'public'">
         <!--<td class="text-center">{{dialogset.bot.id}}</td>-->
-        <td class="text-center"><a ui-sref="dialogsets.edit({dialogsetId: dialogset._id})">{{dialogset.title}}</a></td>
+        <!--<td class="text-center"><a ui-sref="dialogsets.edit({dialogsetId: dialogset._id})">{{dialogset.title}}</a></td>-->
+        <td class="text-center"><a ng-click="vm.openInfoModal(dialogset)">{{dialogset.title}}</a></td>
         <td class="text-center">{{dialogset.type}}</td>
         <td class="text-center">{{dialogset.user ? dialogset.user.displayName : '장세영'}}</td>
         <td class="text-center">{{dialogset.created | date: 'yyyy-MM-dd HH:mm'}}</td>

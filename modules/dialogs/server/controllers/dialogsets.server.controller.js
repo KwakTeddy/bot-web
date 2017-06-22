@@ -39,23 +39,26 @@ exports.create = function(req, res) {
           console.log(dialogset.filename + ' converted');
         })
       }else {
-        async.eachSeries(req.body.dialogs, function (dialog, cb) {
-          engineDialogset.processInput(null, dialog.inputRaw, function (_input, _json) {
-            dialog['input'] = _input;
-            dialog['dialogset'] = dialogset._id;
-            cb(null);
-          });
-        }, function (err) {
-          if (err){
-            console.log(err)
-          }else {
-            DialogsetDialog.collection.insert(req.body.dialogs, function (err, result) {
-              if(err){
-                console.log(util.inspect(err))
-              }
-            })
-          }
-        })
+        if(req.body.dialogs){
+          async.eachSeries(req.body.dialogs, function (dialog, cb) {
+            engineDialogset.processInput(null, dialog.inputRaw, function (_input, _json) {
+              dialog['input'] = _input;
+              dialog['dialogset'] = dialogset._id;
+              cb(null);
+            });
+          }, function (err) {
+            if (err){
+              console.log(err)
+            }else {
+              DialogsetDialog.collection.insert(req.body.dialogs, function (err, result) {
+                if(err){
+                  console.log(util.inspect(err))
+                }
+              })
+            }
+          })
+        }
+
       }
     }
   });

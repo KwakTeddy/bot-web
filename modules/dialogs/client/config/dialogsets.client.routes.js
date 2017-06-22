@@ -122,7 +122,7 @@
     return DialogsetDialogsService.query({
       dialogsetId: $stateParams.dialogsetId,
       currentPage: 0,
-      perPage: 100
+      perPage: 50
     }).$promise;
   }
 

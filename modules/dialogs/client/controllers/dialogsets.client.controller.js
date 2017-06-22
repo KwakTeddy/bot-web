@@ -83,7 +83,7 @@
             vm.error = err.data.message
           });
         } else {
-          if (!vm.dialogsetDialogs.length || !vm.dialogset.title || !vm.dialogset.content){
+          if (!vm.dialogset.title || !vm.dialogset.content){
             return false;
           }
           vm.dialogset['type'] = 'oneByOne';

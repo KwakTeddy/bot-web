@@ -19,51 +19,76 @@
 
     <div class="panel-body">
 
-      <div style="margin-bottom: 20px;">
-        <input type="text" id="category" name="category" ng-model="vm.dialog.category" class="form-control valid" placeholder="카테고리"
-               aria-invalid="false" style="width: 13%;float: left;margin-right: 5px">
-        <input type="text" id="question" name="question" ng-model="vm.dialog.inputRaw" class="form-control valid" placeholder="질문"
-               aria-invalid="false" style="width: 40%;float: left;margin-right: 5px">
-        <input type="text" id="answer" name="answer" ng-model="vm.dialog.output" class="form-control valid" placeholder="답변"
-               aria-invalid="false"  style="width: 40%;float: left;margin-right: 5px">
-        <button class="btn btn-primary" ng-click="vm.createDialog();">추가</button>
+      <div style="margin-bottom: 20px; overflow: hidden">
+        <!--<input type="text" id="category" name="category" ng-model="vm.dialog.category" class="form-control valid" placeholder="카테고리"-->
+               <!--aria-invalid="false" style="width: 13%;float: left;margin-right: 5px">-->
+        <textarea type="text" id="question" name="question" ng-model="vm.dialog.inputRaw" class="form-control valid" placeholder="질문" rows="2"
+               aria-invalid="false" ng-blur="vm.textareaFocus(null, null, 'blur', 'question')" ng-focus="vm.textareaFocus(null, null, 'focus', 'question')" style="width: 44%;float: left;margin-right: 5px;resize: none" >
+        </textarea>
+        <textarea type="text" id="answer" name="answer" ng-model="vm.dialog.output" class="form-control valid" placeholder="답변" rows="2"
+               aria-invalid="false" ng-blur="vm.textareaFocus(null, null, 'blur', 'answer')" ng-focus="vm.textareaFocus(null, null, 'focus', 'answer')" style="width: 44%;float: left;margin-right: 5px;resize: none">
+        </textarea>
+        <button class="btn btn-primary" ng-click="vm.createDialog();" style="height: 50px">추가</button>
       </div>
 
-      <div class="btn-group" uib-dropdown is-open="status.isopen" style="10%">
-        <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
-          {{vm.selectedCategory ? vm.selectedCategory : '전체' }}<span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-          <li role="menuitem" ng-click="vm.selectedCategory = '전체'"><a href="#">전체</a></li>
-          <li role="menuitem" ng-click="vm.selectedCategory = '카테고리'"><a href="#">카테고리</a></li>
-          <li role="menuitem" ng-click="vm.selectedCategory = '질문'"><a href="#">질문</a></li>
-          <li role="menuitem" ng-click="vm.selectedCategory = '답변'"><a href="#">답변</a></li>
-        </ul>
+      <div style="text-align: right">
+        <div class="btn-group" uib-dropdown is-open="status.isopen" style="10%">
+          <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+            {{vm.selectedCategory ? vm.selectedCategory : '전체' }}<span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+            <li role="menuitem" ng-click="vm.selectedCategory = '전체'"><a href="#">전체</a></li>
+            <li role="menuitem" ng-click="vm.selectedCategory = '카테고리'"><a href="#">카테고리</a></li>
+            <li role="menuitem" ng-click="vm.selectedCategory = '질문'"><a href="#">질문</a></li>
+            <li role="menuitem" ng-click="vm.selectedCategory = '답변'"><a href="#">답변</a></li>
+          </ul>
+        </div>
+        <input type="text" data-ng-model="vm.dialogSearch" ng-keydown="vm.searchDialogKeydown()" placeholder="무엇을 찾을까요" style="width: 150px;display: inline-block;margin-bottom: 15px;border: none;padding: 6px 12px"></input>
+        <!--<button class="btn btn-default" ng-click="vm.searchDialog();">검색</button>-->
+        <!--<button class="btn btn-default" ng-click="vm.initDialog();">초기화</button>-->
       </div>
-      <input type="text" data-ng-model="vm.dialogSearch" placeholder="무엇을 찾을까요" style="width: 13%;display: inline-block;margin-bottom: 15px;border: none;padding: 6px 12px"></input>
-      <button class="btn btn-default" ng-click="vm.searchDialog();">검색</button>
-      <button class="btn btn-default" ng-click="vm.initDialog();">초기화</button>
 
       <div infinite-scroll="vm.nextPage()"
            infinite-scroll-distance="0"
            infinite-scroll-disabled="vm.pagingEnd"
            infinite-scroll-container='"#main"'>
-        <div ng-repeat="dialog in vm.dialogsetDialogs track by $index" ng-show="dialog.deleted == undefined" style="margin-bottom: 5px;">
+        <!--<div name="groupDiv" ng-repeat="dialogGroup in vm.dialogsetDialogs" ng-show="dialogGroup.deleted == undefined" style="margin: 20px;border: 1px solid red;margin-bottom: 5px;overflow: hidden" id="textarea_{{$index}}">-->
+          <!--<div name="randomGroupDiv" data-ng-repeat="randomGroupDialog in dialogGroup.data | orderByDepth: 'depth'" style="margin: 20px;border: 1px solid blue">-->
+            <!--<div name="dialogDiv" data-ng-repeat="dialog in randomGroupDialog.data" style="margin: 20px;border: 1px solid green">-->
+              <!--{{dialog.inputRaw}}-->
+            <!--</div>-->
+          <!--</div>-->
 
-          <input type="text" ng-model="dialog.category" class="form-control valid" placeholder="카테고리"
-                 aria-invalid="false" style="width: 13%;float: left;margin-right: 5px">
-          <span style="width: 40%;float: left;margin-right: 5px">
-           <input type="text" ng-model="dialog.inputRaw" class="form-control valid" placeholder="질문" id = 'learnDialog_{{dialog._id}}'
-                  aria-invalid="false" ng-blur="vm.updateDialog(dialog)" style="width: {{100-10*dialog.depth}}%;float: right">
+
+        <!--</div>-->
+
+        <div ng-repeat="dialog in vm.dialogsetDialogs" ng-show="dialog.deleted == undefined" style="margin-bottom: 5px;overflow: hidden" id="textarea_{{$index}}">
+          <!--<span style="width: 8%;float: left;margin-right: 5px;">-->
+            <!--<span data-ng-show="dialog.depth != 0">&nbsp</span>-->
+            <!--<textarea type="text" data-ng-show="dialog.depth == 0" ng-model="dialog.category"  class="form-control valid" placeholder="카테고리" rows="2" id="textarea_category_{{$index}}"-->
+                      <!--aria-invalid="false" style="resize: none; display: block"ng-blur="vm.textareaFocus('category', $index, 'blur')" ng-focus="vm.textareaFocus('category', $index, 'focus')">-->
+            <!--</textarea>-->
+          <!--</span>-->
+          <span style="position:relative;width: 44%;float: left;margin-right: 5px">
+           <textarea type="text" ng-model="dialog.inputRaw" class="form-control valid" placeholder="질문" rows="2" id="textarea_question_{{$index}}"
+                     aria-invalid="false" ng-blur="vm.updateDialog(dialog);vm.textareaFocus('question', $index, 'blur')" ng-focus="vm.textareaFocus('question', $index, 'focus')" style="width: {{100-10*dialog.depth}}%;float: right;resize: none;display: block">
+           </textarea>
+           <!--<button class="btn btn-default" style="position: absolute;right: 10px;top: 10px; border: none" ng-click="vm.addRandomQuestion(dialog, $index)"><i class="fa fa-plus"></i></button>-->
           </span>
-          <input type="text" ng-model="dialog.output" class="form-control valid" placeholder="답변"
-                 aria-invalid="false" ng-blur="vm.updateDialog(dialog)"  style="width: 40%;float: left;margin-right: 5px">
+          <span style="width: 44%;float: left;margin-right: 5px;position: relative">
+            <textarea type="text" ng-model="dialog.output" class="form-control valid" placeholder="답변" rows="2" id="textarea_answer_{{$index}}"
+                      aria-invalid="false" ng-blur="vm.updateDialog(dialog);vm.textareaFocus('answer', $index, 'blur')" ng-focus="vm.textareaFocus('answer', $index, 'focus')" style="resize: none;display: block">
+            </textarea>
+            <!--<button class="btn btn-default" style="position: absolute;right: 10px;top: 10px; border: none" ng-click="vm.addRandomAnswer(dialog)"><i class="fa fa-plus"></i></button>-->
+          </span>
 
-          <button class="btn btn-default" ng-click="vm.createDepthDialog(dialog, $index)" ><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
-          <button class="btn btn-default" ng-click="vm.removeDialog(dialog)" ><i class="glyphicon glyphicon-trash"></i></button>
+
+          <button class="btn btn-default" ng-click="vm.createDepthDialog(dialog, $index)" style="height: 50px;width: 5%;overflow: hidden"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+          <button class="btn btn-default" ng-click="vm.removeDialog(dialog)" style="height: 50px;width: 5%;overflow: hidden"><i class="glyphicon glyphicon-trash"></i></button>
         </div>
+
       </div>
-      <h3 class="text-center" data-ng-if="vm.pagingEnd">더 이상 대화가 존재하지 않아요</h3>
+      <h4 class="text-center" data-ng-if="vm.pagingEnd" style="padding-top: 50px;padding-left: 10px;padding-bottom: 50px">더 이상 대화가 존재하지 않네요</h4>
 
       <!--<div class="form-group">-->
         <!--<label class="col-sm-3 control-label">Title <span class="required" aria-required="true">*</span></label>-->
@@ -97,4 +122,8 @@
 
 </section>
 
-
+<style>
+  .textareaOpacity{
+    opacity: 0;
+  }
+</style>
