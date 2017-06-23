@@ -12,7 +12,11 @@ var dialogs = [
 			}
 		],
 		"output": "자~퀴즈 이벤트를 시작합니다.\n\n고객님께서 젤 좋아하는 카드사는?\n힌트. 접니다.",
-		"task": "setcount",
+		"task": {
+			"name": "setcount"
+		},
+		"inRaw": "퀴즈",
+		"inNLP": "퀴즈",
 		"children": [
 			{
 				"name": "정답1",
@@ -73,19 +77,67 @@ var dialogs = [
 												"output": [
 													{
 														"if": "context.dialog.numstep == 1",
-														"output": "아… 제가 너무 부족하군요. 오늘부터 더욱 열일모드 장착!\n✔ 대화 화면 캡쳐 → 아래 '이벤트 응모하기' 클릭 → 페이스북에 댓글 응모"
+														"output": {
+															"output": "아… 제가 너무 부족하군요. 오늘부터 더욱 열일모드 장착!\n✔ 대화 화면 캡쳐 → 아래 '이벤트 응모하기' 클릭 → 페이스북에 댓글 응모",
+															"buttons": [
+																{
+																	"text": "이벤트 응모하기",
+																	"url": "https://www.facebook.com/shinhancard"
+																}
+															],
+															"image": {
+																"url": "/files/Shinhancard1498183019764.jpg",
+																"displayname": "이벤트.jpg"
+															}
+														}
 													},
 													{
 														"if": "context.dialog.numstep == 2",
-														"output": "좀더 노력해서 고객님 마음에 쏘옥 들게 해볼게요! 불끈~\n✔ 대화 화면 캡쳐 → 아래 '이벤트 응모하기' 클릭 → 페이스북에 댓글 응모"
+														"output": {
+															"output": "좀더 노력해서 고객님 마음에 쏘옥 들게 해볼게요! 불끈~\n✔ 대화 화면 캡쳐 → 아래 '이벤트 응모하기' 클릭 → 페이스북에 댓글 응모",
+															"buttons": [
+																{
+																	"text": "이벤트 응모하기",
+																	"url": "https://www.facebook.com/shinhancard"
+																}
+															],
+															"image": {
+																"url": "/files/Shinhancard1498183086948.jpg",
+																"displayname": "이벤트.jpg"
+															}
+														}
 													},
 													{
 														"if": "context.dialog.numstep == 3",
-														"output": "우앙굿! 이런 점수 초등학교 이후로 처음입니다. 감사해요!\n✔ 대화 화면 캡쳐 → 아래 '이벤트 응모하기' 클릭 → 페이스북에 댓글 응모"
+														"output": {
+															"output": "우앙굿! 이런 점수 초등학교 이후로 처음입니다. 감사해요!\n✔ 대화 화면 캡쳐 → 아래 '이벤트 응모하기' 클릭 → 페이스북에 댓글 응모",
+															"buttons": [
+																{
+																	"text": "이벤트 응모하기",
+																	"url": "https://www.facebook.com/shinhancard"
+																}
+															],
+															"image": {
+																"url": "/files/Shinhancard1498183111345.jpg",
+																"displayname": "이벤트.jpg"
+															}
+														}
 													},
 													{
 														"if": "context.dialog.numstep == 4",
-														"output": "내 안에 너 있다? 내 지갑 안에 신한카드 있다?! \n감동의 물결. 고맙습니다. \n✔ 대화 화면 캡쳐 → 아래 '이벤트 응모하기' 클릭 → 페이스북에 댓글 응모"
+														"output": {
+															"output": "내 안에 너 있다? 내 지갑 안에 신한카드 있다?! \n감동의 물결. 고맙습니다. \n✔ 대화 화면 캡쳐 → 아래 '이벤트 응모하기' 클릭 → 페이스북에 댓글 응모",
+															"buttons": [
+																{
+																	"text": "이벤트 응모하기",
+																	"url": "https://www.facebook.com/shinhancard"
+																}
+															],
+															"image": {
+																"url": "/files/Shinhancard1498183124744.jpg",
+																"displayname": "이벤트.jpg"
+															}
+														}
 													}
 												],
 												"task": "resetcount"
@@ -817,143 +869,27 @@ var dialogs = [
 					},
 					{
 						"text": "4"
+					},
+					{
+						"intent": "납부서비스"
 					}
 				],
 				"output": {
-					"output": "신한 FAN 에서 바로 대출 및 자동 납부 서비스를 신청할 수 있어요. 원하는 서비스를 선택해 주세요. \n\n1. 단기카드대출(현금서비스)\n2. 장기카드대출(카드론)\n3. 신한카드 없어도 대출 (MF일반대출)\n4. 납부서비스",
+					"output": "매달 내야하는 요금들, 일일이 챙기기 번거로우셨죠? 신한 FAN을 통해 납부서비스를 이용할 수 있습니다!\n\n✔ 전기요금 \n✔ 전화요금\n✔ 도시가스요금\n✔ 대학등록금\n✔ 아파트 관리비\n✔ 원격결제/조회\n\n신한 FAN 고객이라면 납부서비스로 고고.\n\n아직 가입 전이시면 '가입하기'부터!",
 					"buttons": [
 						{
-							"text": "단기카드대출"
+							"text": "납부서비스 바로가기",
+							"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_308"
 						},
 						{
-							"text": "장기카드대출"
-						},
-						{
-							"text": "MF일반대출"
-						},
-						{
-							"text": "납부서비스"
+							"text": "가입하기"
 						}
-					]
-				},
-				"children": [
-					{
-						"name": "단기카드대출_",
-						"id": "default240",
-						"filename": "default",
-						"input": [
-							{
-								"intent": "단기카드대출"
-							},
-							{
-								"text": "1"
-							}
-						],
-						"output": {
-							"output": "단기카드대출(현금서비스)를 받아 고객님 계좌로 입금해 드리는 서비스로 365일 24시간 이용 가능합니다. \n\n✔ 한도 및 이자율 조회\n✔ 이용내역 조회\n\n신한 FAN 고객이라면 단기카드대출 자세히보기로 고고.\n\n아직 가입 전이시면 '가입하기'부터!",
-							"buttons": [
-								{
-									"text": "단기카드대출 바로가기",
-									"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_201"
-								},
-								{
-									"text": "가입하기"
-								}
-							],
-							"image": {
-								"url": "/files/Shinhancard1497422698865.jpg",
-								"displayname": "단기카드대출(현금서비스).jpg"
-							}
-						}
-					},
-					{
-						"name": "장기카드대출_",
-						"id": "default241",
-						"filename": "default",
-						"input": [
-							{
-								"intent": "장기카드대출"
-							},
-							{
-								"text": "2"
-							}
-						],
-						"output": {
-							"output": "신청서, 심사기간, 취급/중도상환수수료가 없고,  365일 언제나, 휴일에도 신청 가능합니다. \n\n✔ 스피드론\n✔ 프리미엄론\n✔ 대출조건/상환내역 조회\n\n신한 FAN 고객이라면 장기카드대출 자세히보기로 고고.\n\n아직 가입 전이시면 '가입하기'부터!\n",
-							"buttons": [
-								{
-									"text": "장기카드대출 바로가기",
-									"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_202"
-								},
-								{
-									"text": "가입하기"
-								}
-							],
-							"image": {
-								"url": "/files/Shinhancard1497423073106.jpg",
-								"displayname": "장기카드대출(카드론).jpg"
-							}
-						}
-					},
-					{
-						"name": "MF일반대출_",
-						"id": "default242",
-						"filename": "default",
-						"input": [
-							{
-								"intent": "MF일반대출"
-							},
-							{
-								"text": "3"
-							}
-						],
-						"output": {
-							"output": "신한카드가 없어도 이용가능한 중금리신용대출를 이용해 보세요. \n\n✔ 즉시대출\n✔ 직장인대출\n✔ 개인사업자대출\n✔ 아파트소유자대출\n✔ 국민연금납부자대출\n✔ 국민연금수령자대출\n✔ 자동차담보대출\n✔ 스피드론2\n\n신한 FAN 고객이라면 MF일반대출 자세히보기로 고고.\n\n아직 가입 전이시면 '가입하기'부터!",
-							"buttons": [
-								{
-									"text": "MF일반대출 바로가기",
-									"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_203"
-								},
-								{
-									"text": "가입하기"
-								}
-							],
-							"image": {
-								"url": "/files/Shinhancard1497423171724.jpg",
-								"displayname": "MF일반대출.jpg"
-							}
-						}
-					},
-					{
-						"name": "납부서비스_",
-						"id": "default243",
-						"filename": "default",
-						"input": [
-							{
-								"intent": "납부서비스"
-							},
-							{
-								"text": "4"
-							}
-						],
-						"output": {
-							"output": "매달 내야하는 요금들, 일일이 챙기기 번거로우셨죠? 신한 FAN을 통해 납부서비스를 이용할 수 있습니다!\n\n✔ 전기요금 \n✔ 전화요금\n✔ 도시가스요금\n✔ 대학등록금\n✔ 아파트 관리비\n✔ 원격결제/조회\n\n신한 FAN 고객이라면 납부서비스로 고고.\n\n아직 가입 전이시면 '가입하기'부터!",
-							"buttons": [
-								{
-									"text": "납부서비스 바로가기",
-									"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_308"
-								},
-								{
-									"text": "가입하기"
-								}
-							],
-							"image": {
-								"url": "/files/Shinhancard1497423267457.jpg",
-								"displayname": "납부서비스.jpg"
-							}
-						}
+					],
+					"image": {
+						"url": "/files/Shinhancard1498183296920.jpg",
+						"displayname": "납부서비스.jpg"
 					}
-				]
+				}
 			}
 		]
 	},
@@ -2318,8 +2254,8 @@ var dialogs = [
 			}
 		],
 		"output": "궁금하신 부분을 단어로 입력해 주시면 제가 아는 가장 알맞은 답변을 안내해 드리겠습니다.",
-		"inRaw": "NFC전원",
-		"inNLP": "NFC 전원",
+		"inRaw": "처오아대",
+		"inNLP": "처 오다",
 		"children": [
 			{
 				"name": "FAQ검색",
@@ -2728,7 +2664,58 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"intent": "정치"
+				"text": "정치"
+			},
+			{
+				"text": "박근혜"
+			},
+			{
+				"text": "문재인"
+			},
+			{
+				"text": "홍준표"
+			},
+			{
+				"text": "민주당"
+			},
+			{
+				"text": "자유 한국 당"
+			},
+			{
+				"text": "바르다 정당"
+			},
+			{
+				"text": "새누리"
+			},
+			{
+				"text": "자 다"
+			},
+			{
+				"text": "한국 당"
+			},
+			{
+				"text": "국민의당"
+			},
+			{
+				"text": "안철수"
+			},
+			{
+				"text": "대통령"
+			},
+			{
+				"text": "국회"
+			},
+			{
+				"text": "국회의원"
+			},
+			{
+				"text": "청와대"
+			},
+			{
+				"text": "강경화"
+			},
+			{
+				"text": "김상조"
 			}
 		],
 		"output": "이런 질문엔 아! 그렇군요 라고 답하라고 배웠습니다. \"아, 그렇군요\" \n\n궁금하신 다른 키워드를 입력해 주세요."
@@ -2739,7 +2726,67 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"intent": "욕설"
+				"text": "바보"
+			},
+			{
+				"text": "시발"
+			},
+			{
+				"text": "멍 청아"
+			},
+			{
+				"text": "씨발"
+			},
+			{
+				"text": "멍청하다"
+			},
+			{
+				"text": "ㅅㅂ"
+			},
+			{
+				"text": "ㄱㅅㄲ"
+			},
+			{
+				"text": "개새끼"
+			},
+			{
+				"text": "썅"
+			},
+			{
+				"text": "나쁘다 놈"
+			},
+			{
+				"text": "죽다 버리다"
+			},
+			{
+				"text": "짜증"
+			},
+			{
+				"text": "꺼지다"
+			},
+			{
+				"text": "병신"
+			},
+			{
+				"text": "ㅂㅅ"
+			},
+			{
+				"text": "ㅅㅂㄴ"
+			},
+			{
+				"text": "미치다"
+			},
+			{
+				"text": "눈 까다"
+			},
+			{
+				"text": "멍청이"
+			},
+			{
+				"text": "별로"
+			},
+			{
+				"text": "못 생기다"
 			}
 		],
 		"output": "헉. 고객님을 화나게 하다니 제 눈에서 눈물을 뽑아드릴게요. \n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
@@ -2750,7 +2797,28 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"intent": "칭찬"
+				"text": "수고 하다"
+			},
+			{
+				"text": "수고"
+			},
+			{
+				"text": "고생 많다"
+			},
+			{
+				"text": "고생 하다"
+			},
+			{
+				"text": "감사 하다"
+			},
+			{
+				"text": "고맙다"
+			},
+			{
+				"text": "ㄱㅅ"
+			},
+			{
+				"text": "땡큐"
 			}
 		],
 		"output": "감동입니다, 고객님. 감사합니다.\n\n 궁금하신 다른 키워드를 입력해 주세요. 알파고처럼 대답하겠습니다."
@@ -2761,7 +2829,19 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"intent": "인사"
+				"text": "안녕"
+			},
+			{
+				"text": "안녕하다"
+			},
+			{
+				"text": "헬로 우"
+			},
+			{
+				"text": "hello"
+			},
+			{
+				"text": "굿모닝"
 			}
 		],
 		"output": "고객님도 안녕하세요! \n먼저 인사해 주셔서 전 지금 감동 최고조 입니다. \n\n궁금하신 다른 키워드를 입력해 주세요. 알파고처럼 대답하겠습니다."
@@ -2772,7 +2852,19 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"intent": "돈"
+				"text": "돈"
+			},
+			{
+				"text": "내 돈 어디 가다"
+			},
+			{
+				"text": "돈 좀 주다"
+			},
+			{
+				"text": "돈 필요하다"
+			},
+			{
+				"text": "돈 좀 내주다"
 			}
 		],
 		"output": "화장실 좀 다녀올게요. \n\n궁금하신 다른 키워드를 입력해 주시겠습니까?"
@@ -2783,7 +2875,22 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"intent": "일상"
+				"text": "오늘 뭐"
+			},
+			{
+				"text": "오늘 모해"
+			},
+			{
+				"text": "모해"
+			},
+			{
+				"text": "뭐"
+			},
+			{
+				"text": "모하"
+			},
+			{
+				"text": "모햐"
 			}
 		],
 		"output": "전 오늘도 알파고 형님을 뒤따르기 위해 열일중입니다. 데헷! \n\n궁금하신 다른 키워드를 입력해 주세요."
@@ -2794,7 +2901,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"intent": "날씨"
+				"text": "날씨"
 			}
 		],
 		"output": "아… 제가 아직 거기까지는… 긁적긁적. \n\n궁금하신 다른 키워드를 입력해 주세요."
@@ -2805,7 +2912,19 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"intent": "푸념"
+				"text": "졸리다"
+			},
+			{
+				"text": "배고프다"
+			},
+			{
+				"text": "퇴근 시키다"
+			},
+			{
+				"text": "야근 하다 싫다"
+			},
+			{
+				"text": "힘들다"
 			}
 		],
 		"output": "저도요. T.,T\n\n궁금하신 다른 키워드를 입력해 주세요."
@@ -2816,10 +2935,36 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"intent": "답답"
+				"text": "답정너"
+			},
+			{
+				"text": "답답"
+			},
+			{
+				"text": "답답하다"
+			},
+			{
+				"text": "뭐임"
 			}
 		],
 		"output": "헉. 제가 아직 좀더 배워야 해서 아직 답정너입니다. 빨리 배우겠습니다. \n\n다시 한번 궁금하신 키워드를 입력해 주시겠습니까?"
+	},
+	{
+		"name": "사랑",
+		"id": "default1322332",
+		"filename": "default",
+		"input": [
+			{
+				"text": "좋아하다"
+			},
+			{
+				"text": "사랑"
+			},
+			{
+				"text": "하트"
+			}
+		],
+		"output": "저.. 저도요.. (부끄) \n저 사랑에 죄송한데 초면해도 될까요? ♥\n\n궁금하신 다른 키워드를 입력해 주세요. 알파고처럼 대답하겠습니다."
 	}
 ];
 
@@ -2834,7 +2979,7 @@ var commonDialogs = [
 			}
 		],
 		"output": {
-			"output": "안녕하세요, 신한카드입니다. \n저는 전화, 홈페이지 보다 메신저가 편한 고객님들을 위해 새롭게 선보이는 신한카드 자동채팅 서비스입니다.\n결제\\+혜택\\+재미=신한 FAN 과 카드에 대해 알려드리겠습니다.\n많이 이용해 주실꺼죠?\n\n신한 FAN, 카드 추천, 자주 묻는 질문(FAQ) 중 하나를 선택해 주세요.\n\n1. 신한 FAN을 알려줘요\n2. 내게 꼭 맞는 카드를 추천해줘요\n3. 궁금한게 있는데요(FAQ)",
+			"output": "안녕하세요, 신한카드입니다. \n저는 전화, 홈페이지 보다 메신저가 편한 고객님들을 위해 새롭게 선보이는 신한카드 자동채팅 서비스입니다.\n결제+혜택+재미=신한 FAN 과 카드에 대해 알려드리겠습니다.\n많이 이용해 주실꺼죠?\n\n신한 FAN, 카드 추천, 자주 묻는 질문(FAQ) 중 하나를 선택해 주세요.\n\n1. 신한 FAN을 알려줘요\n2. 내게 꼭 맞는 카드를 추천해줘요\n3. 궁금한게 있는데요(FAQ)",
 			"buttons": [
 				{
 					"text": "신한 FAN을 알려줘요"
@@ -2848,8 +2993,8 @@ var commonDialogs = [
 			],
 			"text": "안녕하세요, 신한카드입니다. \n저는 전화, 홈페이지 보다 메신저가 편한 고객님들을 위해 새롭게 선보이는 신한카드 자동채팅 서비스입니다.\n결제+혜택+재미=신한 FAN 과 카드에 대해 알려드리겠습니다.\n많이 이용해 주실꺼죠?\n\n신한 FAN, 카드 추천, 자주 묻는 질문(FAQ) 중 하나를 선택해 주세요.\n\n1. 신한 FAN을 알려줘요\n2. 내게 꼭 맞는 카드를 추천해줘요\n3. 궁금한게 있는데요(FAQ)"
 		},
-		"inRaw": "처음",
-		"inNLP": "처음"
+		"inRaw": "반가워요, 신한카드",
+		"inNLP": "반갑다 신한카드"
 	},
 	{
 		"id": "defaultcommon1",
