@@ -1485,7 +1485,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
         // if(word.length <= 1) continue;
         word = RegExp.escape(word);
 
-        if(context.bot.dialogsetOption.useTopic !== false && context.bot.topicKeywords && _.includes(context.bot.topicKeywords, word)) {
+        if((!context.bot.dialogsetOption || context.bot.dialogsetOption.useTopic !== false) && context.bot.topicKeywords && _.includes(context.bot.topicKeywords, word)) {
           topicKeywords.push(nlps[i]);
         }
         if(!(format.exclude && _.includes(format.exclude, word)))
@@ -1494,12 +1494,12 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
           excluded.push(nlps[i]);
       }
 
-      if(context.bot.dialogsetOption.useContext !== false && context.botUser.contexts && context.botUser.contexts.length > 0) {
+      if((!context.bot.dialogsetOption || context.bot.dialogsetOption.useContext !== false) && context.botUser.contexts && context.botUser.contexts.length > 0) {
         topicKeywords = [];
         for(var j = 0; j < context.botUser.contexts.length; j++)
           if(context.botUser.contexts[j].name) topicKeywords.push({text: context.botUser.contexts[j].name, pos: 'Noun'});
         console.log('topicKeywords: contexts ' + topicKeywords);
-      } else if(context.bot.dialogsetOption.useTopic !== false && topicKeywords.length == 0 && context.botUser.topic && context.botUser.topic.length > 0) {
+      } else if((!context.bot.dialogsetOption || context.bot.dialogsetOption.useTopic !== false) && topicKeywords.length == 0 && context.botUser.topic && context.botUser.topic.length > 0) {
         topicKeywords = context.botUser.topic;
         console.log('topicKeywords: topic ' + topicKeywords);
       }
@@ -1608,7 +1608,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                       matchIndex = doc[format.mongo.queryFields[l]].search(new RegExp(_word, 'i'));
 
                       if(matchIndex != -1) {
-                        if(context.bot.dialogsetOption.useTopic !== false && context.bot.topicKeywords && _.includes(context.bot.topicKeywords, _nlps[m].text)) {matchCount++; matchCount1 +=3;}
+                        if((!context.bot.dialogsetOption || context.bot.dialogsetOption.useTopic !== false) && context.bot.topicKeywords && _.includes(context.bot.topicKeywords, _nlps[m].text)) {matchCount++; matchCount1 +=3;}
                         else if(_nlps[m].pos == 'Noun') {matchCount++; matchCount1+=2;}
                         else {matchCount++; matchCount1++;}
                         // console.log(word + ' ' + _word + ' ' + doc[format.mongo.queryFields[l]] + ' ' +matchCount);
