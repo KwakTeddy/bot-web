@@ -144,15 +144,15 @@
                 </a>
                 <ul class="nav nav-children">
                   <li>
-                    <a ui-sref="bots.dialog-tree2({botId: $cookies.get('default_bot'), fileId: 'null'})">
-                      <i class="fa fa-cube" aria-hidden="true"></i>
-                      <span>대화 시나리오</span>
-                    </a>
-                  </li>
-                  <li>
                     <a ui-sref="dialogsets.dialogsLearn({botNameId: currentBot.id})">
                       <i class="fa fa-cube" aria-hidden="true"></i>
                       <span>대화 학습</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a ui-sref="bots.dialog-tree2({botId: $cookies.get('default_bot'), fileId: 'null'})">
+                      <i class="fa fa-cube" aria-hidden="true"></i>
+                      <span>대화 시나리오</span>
                     </a>
                   </li>
                   <li>

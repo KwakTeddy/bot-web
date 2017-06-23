@@ -1025,19 +1025,46 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       input.splice(input.indexOf(i),1);
     };
 
-    $scope.openEdit = function(i, input) {
+    $scope.openEdit = function(i, inlineInputs) {
+      console.log(i)
+      console.log(inlineInputs)
       if ($scope.getInputType(i.type) === 'button')
         return;
-      $scope.processedInput = '';
-      vm.curInput = input;
-      vm.targetI = i;
-      vm.curI = angular.copy(i);
 
-      vm.inputMode = true;
-      setTimeout(function () {
-        if (document.getElementById('input'))
-          document.getElementById('input').focus();
-      }, 300);
+      if(i.type == 'Keyword'){
+        vm.curI = angular.copy(i);
+        inlineInputs.splice(inlineInputs.indexOf(i), 1);
+      }
+      if(i.type == 'RegExp'){
+        vm.curI = angular.copy(i);
+        vm.curI.str = ':' + vm.curI.str
+        inlineInputs.splice(inlineInputs.indexOf(i), 1);
+      }
+      if(i.type == 'If'){
+        vm.curI = angular.copy(i);
+        vm.curI.str = 'if' + vm.curI.str;
+        inlineInputs.splice(inlineInputs.indexOf(i), 1);
+      }
+      if(i.type == 'Entity'){
+        vm.curI = angular.copy(i);
+        vm.curI.str = vm.curI.str;
+        inlineInputs.splice(inlineInputs.indexOf(i), 1);
+      }
+      if(i.type == 'Intent'){
+        vm.curI = angular.copy(i);
+        vm.curI.str = '#' + vm.curI.str;
+        inlineInputs.splice(inlineInputs.indexOf(i), 1);
+      }
+      // $scope.processedInput = '';
+      // vm.curInput = input;
+      // vm.targetI = i;
+      // vm.curI = angular.copy(i);
+      //
+      // vm.inputMode = true;
+      // setTimeout(function () {
+      //   if (document.getElementById('input'))
+      //     document.getElementById('input').focus();
+      // }, 300);
     };
 
     $scope.addO = function(output, first) {
@@ -3543,9 +3570,15 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       console.log(err);
     });
 
-    vm.inlineInputFocus = function (index) {
+    vm.inlineInputFocus = function (index, focus) {
       $timeout(function () {
-        document.getElementById('inlineInput_' + index).focus()
+        var textareaTarget = document.querySelector('#inlineInput_' + index);
+        if(focus == 'focus'){
+          textareaTarget.setAttribute("rows", 10);
+          document.getElementById('inlineInput_' + index).focus()
+        }else {
+          textareaTarget.setAttribute("rows", 1);
+        }
       })
     };
 

@@ -16,11 +16,18 @@
 </header>
 
 <section class="panel">
+    <header class="panel-heading" style="padding-left: 40px; border-bottom: 1px solid">
+      <div class="panel-actions">
+        <i class="fa fa-th-list fa-2x" ui-sref="dialogsets.dialogsLearn({listType: 'additional'})" style="cursor: pointer"></i>
+      </div>
+      <h2 class="panel-title">{{vm.dialogset.title}}</h2>
+      <p class="panel-subtitle">{{vm.dialogset.content}}</p>
+    </header>
 
-    <div style="margin-bottom: 40px; padding: 40px">
-      <h4>제목 : {{vm.dialogset.title}}</h4>
-      <h4>설명 : {{vm.dialogset.content}}</h4>
-    </div>
+    <!--<div style="padding: 40px">-->
+      <!--<h4>제목 : {{vm.dialogset.title}}</h4>-->
+      <!--<h4>설명 : {{vm.dialogset.content}}</h4>-->
+    <!--</div>-->
 
     <div class="panel-body">
 

@@ -654,7 +654,7 @@
             <div>
               <label class="col-sm-2 control-label">Input <span class="required" aria-required="true">*</span></label>
               <div class="col-sm-10">
-                <div ng-repeat="input in dialog.input track by $index" ng-click="vm.selectedContent = $index; vm.inlineInputFocus($index)">
+                <div ng-repeat="input in dialog.input track by $index" >
                   <div class="input-group mb-xs" ng-show="vm.inputMode && vm.curInput == input">
                     <div class="input-group-btn" >
                       <button tabindex="-1" class="btn" ng-class="vm.getButtonClass(vm.curI.type)" type="button">{{vm.curI.type}}</button>
@@ -724,16 +724,19 @@
                   </div>
                   <div  ng-show="!vm.inputMode || vm.curInput != input">
                     <div class = "row">
-                      <div class="col-sm-8 form-control mb-xs" style="height:auto;margin-top: 10px;width: 90%">
-                      <span ng-repeat="i in input track by $index">
-                        <!--<button id="inlineButton" class="btn btn-sm" ng-click="openEdit(i,input)" style="background-color: {{vm.getBtnColor(i.type)}}; border: 1px solid {{vm.getBtnBorderColor(i.type)}}; margin-bottom: 5px;margin-right: 2px">-->
-                        <button id="inlineButton" class="btn btn-sm" style="background-color: {{vm.getBtnColor(i.type)}}; border: 1px solid {{vm.getBtnBorderColor(i.type)}}; margin-bottom: 5px;margin-right: 2px">
+                      <div class="col-sm-8 form-control mb-xs" style="height:auto;margin-top: 10px;width: 90%" ng-click="vm.selectedContent = $index; vm.inlineInputFocus($index, 'focus')">
+                      <span ng-repeat="i in input track by $index" >
+                        <button id="inlineButton" class="btn btn-sm" ng-click="openEdit(i,input)" style="background-color: {{vm.getBtnColor(i.type)}}; border: 1px solid {{vm.getBtnBorderColor(i.type)}}; margin-bottom: 5px;margin-right: 2px">
+                        <!--<button id="inlineButton" class="btn btn-sm" style="background-color: {{vm.getBtnColor(i.type)}}; border: 1px solid {{vm.getBtnBorderColor(i.type)}}; margin-bottom: 5px;margin-right: 2px">-->
                           <span data-ng-if="i.type != 'RegExp'" style="color:{{vm.getIconColor(i.type)}};font-size:16px">{{vm.getIcon(i.type)}}</span>
                           <span data-ng-if="i.type == 'RegExp'" style="color:{{vm.getIconColor(i.type)}};font-size:16px;font-weight: bold">{{vm.getIcon(i.type)}}</span>
+
                           <span style="font-size: 13px">{{printInput(i)}}</span>
+
                           <span data-ng-if="i.type == 'RegExp'" style="color:{{vm.getIconColor(i.type)}};font-size:16px;font-weight: bold">/</span>
                           <span data-ng-if="i.type == 'If'" style="color:{{vm.getIconColor(i.type)}};font-size:16px">)</span>&nbsp;
-                        <i ng-click="removeI(i,input)" id="inlineRemoveIcon" class="fa fa-remove" style="color:tomato"></i></button>
+
+                          <i ng-click="removeI(i,input)" id="inlineRemoveIcon" class="fa fa-remove" style="color:tomato"></i></button>
                       </span>
                         <style>
                           #inlineRemoveIcon{
@@ -752,7 +755,7 @@
 
                         </style>
 
-                        <input type="text" placeholder="텍스트 @ 엔터티 # 인텐트 : 정규식 if 조건식 ENTER"   id="inlineInput_{{$index}}"
+                        <textarea type="text" placeholder="텍스트 @ 엔터티 # 인텐트 : 정규식 if 조건식 ENTER"   id="inlineInput_{{$index}}" rows="1"
                                mentio
                                mentio-id="'inlineInput'"
                                mentio-typed-text="typedTerm"
@@ -765,9 +768,12 @@
                                mentio-template-url="/mentions.tpl"
 
                                data-ng-if="vm.selectedContent == $index"
-                               style="border: none;width:100%"
+                               style="border: none;width:100%;resize: none"
+                               ng-focus="vm.inlineInputFocus($index, 'focus')"
+                               ng-blur="vm.inlineInputFocus($index, 'blur')"
                                ng-keyDown="inlineInputKeyDown($event, input)"
-                               ng-model="vm.curI.str"/>
+                               ng-model="vm.curI.str">
+                        </textarea>
                         <mentio-menu
                           data-ng-if="vm.selectedContent == $index"
 
@@ -808,13 +814,13 @@
                 <strong ng-bind="inputError"></strong>
               </div>
             </div>
-            <div class="col-sm-2">
 
+            <div class="col-sm-2">
             </div>
             <div class="col-sm-9" style="margin-top: 5px;padding: 0px">
-              <button type="button" ng-click="addInput();vm.selectedContent = dialog.input.length - 1; vm.inlineInputFocus(dialog.input.length - 1)" class="btn btn-default" style="width: 100%"><i class="glyphicon glyphicon-plus"></i></button>
-
+              <button type="button" ng-click="addInput();vm.selectedContent = dialog.input.length - 1; vm.inlineInputFocus(dialog.input.length - 1, 'focus')" class="btn btn-default" style="width: 100%"><i class="glyphicon glyphicon-plus"></i></button>
             </div>
+
           </div>
           <hr>
         </div>
