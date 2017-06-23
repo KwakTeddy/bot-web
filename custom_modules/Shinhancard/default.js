@@ -18,19 +18,14 @@ var dialogsType1 = {
         callback(task, context);
     },
     limit: 8,
-    matchRate: 0.3,
+    matchRate: 0.34,
     matchCount: 3,
     exclude: ['하다', '이다'],
     mongo: {
         model: 'dialogsetdialogs',
-
-
-
-
         queryStatic: {dialogset: ObjectId("5949dd8dc7120e5e7dd468b8")}, //server
        // queryStatic: {dialogset: ObjectId("59478cf17a294c58195c9cf2")},  //local
        queryFields: ['input'],
-
         fields: 'dialogset input inputRaw output context id' ,
         taskFields: ['input', 'inputRaw', 'output', 'matchCount', 'matchRate', 'dialogset', 'context'],
         minMatch: 1,
@@ -132,7 +127,7 @@ var faqTask = {
         task._output = task._output[Math.floor(Math.random() * task._output.length)];
       }
 
-      context.dialog.output = "[+listType.inputRaw+]\n\n답변: +listType.output+\n\n더 필요하신 게 있으시면 말씀해주세요~\n처음으로 돌아가시려면 '시작'이라고 말씀해주세요"; 
+      context.dialog.output = "[+listType.inputRaw+]\n\n답변: +listType.output+\n\n더 필요하신 게 있으시면 말씀해주세요~\n처음으로 돌아가시려면 '시작'이라고 말씀해주세요";
       // context.dialog.children = null;
       // console.log(task.dialogsType1.inputRaw + ', ' + task.dialogsType1.input + '(' + task.dialogsType1.matchCount + ', ' + task.dialogsType1.matchRate + ')');
     }
@@ -2269,7 +2264,7 @@ var cardlist9 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/conts/html/card/apply/check/1350267_39649.html"
+                                url: "https://m.shinhancard.com/conts/html/card/apply/check/1350269_39648.html"
                             }
                         ]
                     }
