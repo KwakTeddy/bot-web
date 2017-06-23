@@ -90,23 +90,25 @@ exports.list = function (req, res) {
   var sort = req.query.sort || 'created';
   var currentPage = null;
   var perPage = null;
-  var query = {};
+  var query = {$and: []};
 
-  if(req.params.dialogsetId) query['dialogset'] =  mongoose.Types.ObjectId(req.params.dialogsetId);
+  if(req.params.dialogsetId) query.$and.push({dialogset : mongoose.Types.ObjectId(req.params.dialogsetId)});
   if(req.query.currentPage) currentPage = req.query.currentPage ;
   if(req.query.perPage) perPage = Number(req.query.perPage) ;
 
-  if(req.query.inputRaw) query['inputRaw'] =  {$regex: req.query.inputRaw};
-  if(req.query.output) query['output'] =  {$regex: req.query.output};
-  if(req.query.category) query['category'] =  {$regex: req.query.category};
+  if(req.query.inputRaw) query.$and.push({inputRaw : {$regex: req.query.inputRaw}});
+  if(req.query.output) query.$and.push({output :{$regex: req.query.output}});
+  if(req.query.category) query.$and.push({category : {$regex: req.query.category}});
   if(req.query.all){
-    query ={
+    var searchQuery ={
       $or: [
         { inputRaw: {$regex: req.query.all}},
         { output: {$regex: req.query.all}},
         { category: {$regex: req.query.all}}
       ]
     };
+    query.$and.push(searchQuery)
+
   }
   console.log(util.inspect(query));
   console.log(util.inspect(sort));

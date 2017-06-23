@@ -130,18 +130,53 @@
               <!--<span>대화하기</span>-->
               <!--</a>-->
               <!--</li>-->
-              <li class="nav-active">
-                <a ui-sref="bots.dialog-tree2({botId: $cookies.get('default_bot'), fileId: 'null'})" >
+              <!--<li class="nav-active">-->
+                <!--<a ui-sref="bots.dialog-tree2({botId: $cookies.get('default_bot'), fileId: 'null'})" >-->
+                  <!--<i class="fa fa-cube" aria-hidden="true"></i>-->
+                  <!--<span>챗봇 개발</span>-->
+                <!--</a>-->
+              <!--</li>-->
+
+              <li class="nav-parent">
+                <a>
                   <i class="fa fa-cube" aria-hidden="true"></i>
                   <span>챗봇 개발</span>
                 </a>
+                <ul class="nav nav-children">
+                  <li>
+                    <a ui-sref="bots.dialog-tree2({botId: $cookies.get('default_bot'), fileId: 'null'})">
+                      <i class="fa fa-cube" aria-hidden="true"></i>
+                      <span>대화 시나리오</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a ui-sref="dialogsets.dialogsLearn({botNameId: currentBot.id})">
+                      <i class="fa fa-cube" aria-hidden="true"></i>
+                      <span>대화 학습</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a ui-sref="entitys.list">
+                      <i class="fa fa-cube" aria-hidden="true"></i>
+                      <span>엔터티(ENTITY)</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a ui-sref="intents.list">
+                      <i class="fa fa-cube" aria-hidden="true"></i>
+                      <span>인텐트(INTENT)</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a ui-sref="tasks.list({listType: 'all'})">
+                      <i class="fa fa-cube" aria-hidden="true"></i>
+                      <span>테스크(TASK)</span>
+                    </a>
+                  </li>
+                </ul>
               </li>
-              <li class="nav-active">
-                <a ui-sref="dialogsets.dialogsLearn({botNameId: currentBot.id})" >
-                  <i class="fa fa-cube" aria-hidden="true"></i>
-                  <span>대화 학습</span>
-                </a>
-              </li>
+
+
 
               <li class="nav-active">
                 <a ui-sref="bots.content-list({botId: $cookies.get('default_bot'), fileId: 'null'})" >
@@ -150,48 +185,123 @@
                 </a>
               </li>
 
+
+              <li class="nav-active">
+                <a ui-sref="channels.list" >
+                  <i class="fa fa-cube" aria-hidden="true"></i>
+                  <span>채널 관리</span>
+                </a>
+              </li>
+
+
               <li class="nav-parent">
                 <a>
                   <i class="fa fa-language" aria-hidden="true"></i>
-                  <span>자연어 이해(NLU)</span>
+                  <span>운영/분석</span>
                 </a>
                 <ul class="nav nav-children">
                   <li>
-                    <a ui-sref="entitys.list">
-                      개체명 분석(Entity)
+                    <a ui-sref="analytics.dialog-failure">
+                      <i class="fa fa-cube" aria-hidden="true"></i>
+                      <span>실패 대화학습</span>
                     </a>
                   </li>
                   <li>
-                    <a ui-sref="intents.list">
-                      의도 분석(Intent)
+                    <a ui-sref="analytics.dialog-failure-maintenance.list" >
+                      <i class="fa fa-cube" aria-hidden="true"></i>
+                      <span>인텐트 대화학습</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a ui-sref="analytics.dashboard">
+                      <i class="fa fa-cube" aria-hidden="true"></i>
+                      <span>Dashboard</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a ui-sref="bot-users.list">
+                      <i class="fa fa-cube" aria-hidden="true"></i>
+                      <span>사용자 관리</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a ui-sref="analytics.user-count">
+                      <i class="fa fa-cube" aria-hidden="true"></i>
+                      <span>사용자 수 분석</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a ui-sref="analytics.dialog-usage">
+                      <i class="fa fa-cube" aria-hidden="true"></i>
+                      <span>대화별 사용량</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a ui-sref="analytics.dialog-success">
+                      <i class="fa fa-cube" aria-hidden="true"></i>
+                      <span>문장 성공률</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a ui-sref="user-bots.context-analytics">
+                      <i class="fa fa-cube" aria-hidden="true"></i>
+                      <span>Context 분석</span>
                     </a>
                   </li>
                 </ul>
               </li>
 
-              <li class="nav-parent">
-                <a>
-                  <i class="fa fa-tasks" aria-hidden="true"></i>
-                  <span>태스크(TASK)</span>
+              <li class="nav-active" data-ng-if="authentication.user.roles[0] == 'admin'">
+                <a ui-sref="admin.users" >
+                  <i class="fa fa-cube" aria-hidden="true"></i>
+                  <span>사용자 관리</span>
                 </a>
-                <ul class="nav nav-children">
-                  <!--<li>-->
-                  <!--<a>-->
-                  <!--공통 테스크 목록-->
-                  <!--</a>-->
-                  <!--</li>-->
-                  <li>
-                    <a ui-sref="tasks.list({listType: 'all'})">
-                      태스크 리스트
-                    </a>
-                  </li>
-                  <!--<li>-->
-                  <!--<a ui-sref="tasks.graph">-->
-                  <!--테스크 그래프-->
-                  <!--</a>-->
-                  <!--</li>-->
-                </ul>
               </li>
+
+
+              <!--<li class="nav-parent" data-ng-if="authentication.user.roles[0] == 'admin'">-->
+                <!--<a>-->
+                  <!--<i class="fa fa-list-alt" aria-hidden="true"></i>-->
+                  <!--<span>권한 관리</span>-->
+                <!--</a>-->
+                <!--<ul class="nav nav-children">-->
+                  <!--<li>-->
+                    <!--<a ui-sref="admin.users">-->
+                      <!--<i class="fa fa-cube" aria-hidden="true"></i>-->
+                      <!--<span>사용자 관리</span>-->
+                    <!--</a>-->
+                  <!--</li>-->
+                  <!--&lt;!&ndash;<li>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<a ui-sref="admin.user-menu">&ndash;&gt;-->
+                  <!--&lt;!&ndash;권한별 메뉴 관리&ndash;&gt;-->
+                  <!--&lt;!&ndash;</a>&ndash;&gt;-->
+                  <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                <!--</ul>-->
+              <!--</li>-->
+
+              <!--<li class="nav-parent">-->
+                <!--<a>-->
+                  <!--<i class="fa fa-tasks" aria-hidden="true"></i>-->
+                  <!--<span>태스크(TASK)</span>-->
+                <!--</a>-->
+                <!--<ul class="nav nav-children">-->
+                  <!--&lt;!&ndash;<li>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<a>&ndash;&gt;-->
+                  <!--&lt;!&ndash;공통 테스크 목록&ndash;&gt;-->
+                  <!--&lt;!&ndash;</a>&ndash;&gt;-->
+                  <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                  <!--<li>-->
+                    <!--<a ui-sref="tasks.list({listType: 'all'})">-->
+                      <!--태스크 리스트-->
+                    <!--</a>-->
+                  <!--</li>-->
+                  <!--&lt;!&ndash;<li>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<a ui-sref="tasks.graph">&ndash;&gt;-->
+                  <!--&lt;!&ndash;테스크 그래프&ndash;&gt;-->
+                  <!--&lt;!&ndash;</a>&ndash;&gt;-->
+                  <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                <!--</ul>-->
+              <!--</li>-->
 
 
               <!--<li class="nav-parent">-->
@@ -306,111 +416,87 @@
                 <!--</ul>-->
               <!--</li>-->
 
-              <li class="nav-active" id="menuTest">
-                <a ui-sref="bot-users.list">
-                  <i class="fa fa-user" aria-hidden="true"></i>
-                  <span>사용자 관리</span>
-                </a>
-              </li>
+              <!--<li class="nav-active" id="menuTest">-->
+                <!--<a ui-sref="bot-users.list">-->
+                  <!--<i class="fa fa-user" aria-hidden="true"></i>-->
+                  <!--<span>사용자 관리</span>-->
+                <!--</a>-->
+              <!--</li>-->
 
-              <li class="nav-parent" data-ng-if="authentication.user.roles[0] == 'admin'">
-                <a>
-                  <i class="fa fa-list-alt" aria-hidden="true"></i>
-                  <span>권한 관리</span>
-                </a>
-                <ul class="nav nav-children">
-                  <li>
-                    <a ui-sref="admin.users">
-                      사용자 관리
-                    </a>
-                  </li>
+
+
+              <!--<li class="nav-parent">-->
+                <!--<a>-->
+                  <!--<i class="fa fa-archive" aria-hidden="true"></i>-->
+                  <!--<span>챗봇 관리</span>-->
+                <!--</a>-->
+                <!--<ul class="nav nav-children">-->
                   <!--<li>-->
-                  <!--<a ui-sref="admin.user-menu">-->
-                  <!--권한별 메뉴 관리-->
-                  <!--</a>-->
+                    <!--<a ui-sref="bots.list">-->
+                      <!--챗봇 리스트-->
+                    <!--</a>-->
                   <!--</li>-->
-                </ul>
-              </li>
-
-              <li class="nav-active">
-                <a ui-sref="channels.list" >
-                  <i class="fa fa-cube" aria-hidden="true"></i>
-                  <span>채널 관리</span>
-                </a>
-              </li>
-
-              <li class="nav-parent">
-                <a>
-                  <i class="fa fa-archive" aria-hidden="true"></i>
-                  <span>챗봇 관리</span>
-                </a>
-                <ul class="nav nav-children">
-                  <li>
-                    <a ui-sref="bots.list">
-                      챗봇 리스트
-                    </a>
-                  </li>
-                  <li data-ng-show="authentication.user.roles[0] == 'admin'">
-                    <a ui-sref="templates.list">
-                      템플릿 관리
-                    </a>
-                  </li>
-                </ul>
-              </li>
-
-              <li class="nav-parent">
-                <a>
-                  <i class="fa fa-align-left" aria-hidden="true"></i>
-                  <span>운영 관리</span>
-                </a>
-                <ul class="nav nav-children">
-                  <li>
-                    <a ui-sref="analytics.dialog-failure-maintenance.list">의도분석 대화학습</a>
-                  </li>
-                  <li>
-                    <a ui-sref="analytics.dialog-failure">Dialog 대화학습</a>
-                  </li>
-                  <!--<li>-->
-                    <!--<a ui-sref="analytics.dialog-intent">대화 인텐트 분석</a>-->
+                  <!--<li data-ng-show="authentication.user.roles[0] == 'admin'">-->
+                    <!--<a ui-sref="templates.list">-->
+                      <!--템플릿 관리-->
+                    <!--</a>-->
                   <!--</li>-->
-                  <li>
-                    <a ui-sref="analytics.manage-batch">배치 관리</a>
-                  </li>
+                <!--</ul>-->
+              <!--</li>-->
 
-                </ul>
-              </li>
-
-              <li class="nav-parent">
-                <a ui-sref="analytics.dashboard">
-                  <i class="fa fa-area-chart" aria-hidden="true"></i>
-                  <span>분석</span>
-                </a>
-                <ul class="nav nav-children">
-                  <li>
-                    <a ui-sref="analytics.dashboard">Dashboard</a>
-                  </li>
-                  <li>
-                    <a ui-sref="analytics.user-count">사용자수 분석</a>
-                  </li>
-                  <li>
-                    <a ui-sref="analytics.dialog-usage">대화별 사용량</a>
-                  </li>
-                  <li>
-                    <a ui-sref="analytics.dialog-success">문장 성공률</a>
-                  </li>
-                  <li>
-                    <a ui-sref="user-bots.context-analytics">Context 분석</a>
-                  </li>
+              <!--<li class="nav-parent">-->
+                <!--<a>-->
+                  <!--<i class="fa fa-align-left" aria-hidden="true"></i>-->
+                  <!--<span>운영 관리</span>-->
+                <!--</a>-->
+                <!--<ul class="nav nav-children">-->
                   <!--<li>-->
-                  <!--<a ui-sref="user-bots.context-learning">Context 학습</a>-->
+                    <!--<a ui-sref="analytics.dialog-failure-maintenance.list">의도분석 대화학습</a>-->
+                  <!--</li>-->
+                  <!--<li>-->
+                    <!--<a ui-sref="analytics.dialog-failure">Dialog 대화학습</a>-->
+                  <!--</li>-->
+                  <!--&lt;!&ndash;<li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<a ui-sref="analytics.dialog-intent">대화 인텐트 분석</a>&ndash;&gt;-->
+                  <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                  <!--<li>-->
+                    <!--<a ui-sref="analytics.manage-batch">배치 관리</a>-->
                   <!--</li>-->
 
+                <!--</ul>-->
+              <!--</li>-->
 
+              <!--<li class="nav-parent">-->
+                <!--<a ui-sref="analytics.dashboard">-->
+                  <!--<i class="fa fa-area-chart" aria-hidden="true"></i>-->
+                  <!--<span>분석</span>-->
+                <!--</a>-->
+                <!--<ul class="nav nav-children">-->
                   <!--<li>-->
-                    <!--<a ui-sref="analytics.session-success">대화(세션) 성공률</a>-->
+                    <!--<a ui-sref="analytics.dashboard">Dashboard</a>-->
                   <!--</li>-->
-                </ul>
-              </li>
+                  <!--<li>-->
+                    <!--<a ui-sref="analytics.user-count">사용자수 분석</a>-->
+                  <!--</li>-->
+                  <!--<li>-->
+                    <!--<a ui-sref="analytics.dialog-usage">대화별 사용량</a>-->
+                  <!--</li>-->
+                  <!--<li>-->
+                    <!--<a ui-sref="analytics.dialog-success">문장 성공률</a>-->
+                  <!--</li>-->
+                  <!--<li>-->
+                    <!--<a ui-sref="user-bots.context-analytics">Context 분석</a>-->
+                  <!--</li>-->
+                  <!--&lt;!&ndash;<li>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<a ui-sref="user-bots.context-learning">Context 학습</a>&ndash;&gt;-->
+                  <!--&lt;!&ndash;</li>&ndash;&gt;-->
+
+
+                  <!--&lt;!&ndash;<li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<a ui-sref="analytics.session-success">대화(세션) 성공률</a>&ndash;&gt;-->
+                  <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                <!--</ul>-->
+              <!--</li>-->
 
 
               <!--<li class="nav">-->

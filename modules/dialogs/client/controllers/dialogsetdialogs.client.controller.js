@@ -135,21 +135,22 @@
     };
 
     vm.nextPage = function () {
-      var query = {dialogsetId: $stateParams.dialogsetId};
-      query['currentPage'] = vm.currentPage;
-      query['perPage'] = vm.perPage;
-      console.log(vm.onSearch);
-      if(vm.onSearch){
-        if(vm.onSearch.category == '전체') query['all'] = vm.onSearch.searchInput;
-        if(vm.onSearch.category == '카테고리') query['category'] = vm.onSearch.searchInput;
-        if(vm.onSearch.category == '질문') query['inputRaw'] = vm.onSearch.searchInput;
-        if(vm.onSearch.category == '답변') query['output'] = vm.onSearch.searchInput;
+      if(vm.dialogsetDialogs.length >= vm.perPage){
+        var query = {dialogsetId: $stateParams.dialogsetId};
+        query['currentPage'] = vm.currentPage;
+        query['perPage'] = vm.perPage;
+        if(vm.onSearch){
+          if(vm.onSearch.category == '전체') query['all'] = vm.onSearch.searchInput;
+          if(vm.onSearch.category == '카테고리') query['category'] = vm.onSearch.searchInput;
+          if(vm.onSearch.category == '질문') query['inputRaw'] = vm.onSearch.searchInput;
+          if(vm.onSearch.category == '답변') query['output'] = vm.onSearch.searchInput;
+        }
+        DialogsetDialogsService.query(query).$promise.then(function (result) {
+          if(result.length < vm.perPage) vm.pagingEnd = true;
+          vm.dialogsetDialogs.push.apply(vm.dialogsetDialogs, result);
+          vm.currentPage++;
+        });
       }
-      DialogsetDialogsService.query(query).$promise.then(function (result) {
-        if(result.length < vm.perPage) vm.pagingEnd = true;
-        vm.dialogsetDialogs.push.apply(vm.dialogsetDialogs, result);
-        vm.currentPage++;
-      });
     };
 
     vm.searchDialog = function () {
@@ -166,12 +167,13 @@
       if(vm.selectedCategory == '답변') query['output'] = vm.dialogSearch;
       DialogsetDialogsService.query(query).$promise.then(function (result) {
         vm.dialogsetDialogs = result;
+        vm.currentPage++;
         if(result.length < vm.perPage) vm.pagingEnd = true;
         vm.onSearch = {category : angular.copy(vm.selectedCategory), searchInput: angular.copy(vm.dialogSearch)};
       });
     };
 
-    vm.searchDialogKeydown = function () {
+    vm.searchDialogKeyup = function () {
       vm.searchDialog();
     };
 
