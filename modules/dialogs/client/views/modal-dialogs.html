@@ -42,26 +42,26 @@
           </div>
         </div>
 
-        <div class="form-group" data-ng-if="!vm.dialogset.filename && (vm.dialogset.type == 'oneByone')">
-          <label class="col-sm-3 control-label">File <span class="required" aria-required="true">*</span></label>
-          <div class="col-sm-9">
-            <div class="text-left" ng-hide="uploader.queue.length" style="display: inline;">
-                                      <span class="btn btn-default btn-file">
-                                          <input type="file" nv-file-select uploader="uploader" style="width:200px;">
-                                      </span>
-            </div>
-            <div class="text-center form-group" ng-show="false">
-              <button class="btn btn-primary" ng-click="uploadDialogFiles();">Upload</button>
-              <button class="btn btn-default" ng-click="cancelUpload();">Cancel</button>
-            </div>
-            <div ng-show="success" class="text-center text-success">
-              <strong>파일이 업로드 되었습니</strong>
-            </div>
-            <div ng-show="error" class="text-center text-danger">
-              <strong ng-bind="error"></strong>
-            </div>
-          </div>
-        </div>
+        <!--<div class="form-group" data-ng-if="!vm.dialogset.filename && (vm.dialogset.type == 'oneByone')">-->
+          <!--<label class="col-sm-3 control-label">File <span class="required" aria-required="true">*</span></label>-->
+          <!--<div class="col-sm-9">-->
+            <!--<div class="text-left" ng-hide="uploader.queue.length" style="display: inline;">-->
+                                      <!--<span class="btn btn-default btn-file">-->
+                                          <!--<input type="file" nv-file-select uploader="uploader" style="width:200px;">-->
+                                      <!--</span>-->
+            <!--</div>-->
+            <!--<div class="text-center form-group" ng-show="false">-->
+              <!--<button class="btn btn-primary" ng-click="uploadDialogFiles();">Upload</button>-->
+              <!--<button class="btn btn-default" ng-click="cancelUpload();">Cancel</button>-->
+            <!--</div>-->
+            <!--<div ng-show="success" class="text-center text-success">-->
+              <!--<strong>파일이 업로드 되었습니</strong>-->
+            <!--</div>-->
+            <!--<div ng-show="error" class="text-center text-danger">-->
+              <!--<strong ng-bind="error"></strong>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
 
         <div class="form-group">
           <label class="col-sm-3 control-label">Content</label>
@@ -70,33 +70,33 @@
           </div>
         </div>
 
-        <div class="form-group" data-ng-show="vm.dialogset.connectedBot.length">
-          <label class="col-sm-3 control-label">연결된 봇</label>
-          <div class="col-sm-9">
-            <table class="table table-bordered mb-none">
-              <thead>
-              <tr>
-                <!--<th class="text-center">봇아이디</th>-->
-                <th class="text-center">봇 아이디</th>
-                <th class="text-center">봇 소유자</th>
-                <th class="text-center">관리</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr ng-repeat="bot in vm.dialogset.connectedBot">
-                <!--<td class="text-center">{{dialogset.bot.id}}</td>-->
-                <td class="text-center">{{bot.id}}</td>
-                <td class="text-center">{{bot.user.displayName}}</td>
-                <td>
-                  <a class="btn btn-default btn-sm btn-block" ng-click="vm.disconnectBot(bot)" style="border: none">
-                    <i class="glyphicon glyphicon-edit"></i> 연결 끊기
-                  </a>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <!--<div class="form-group" data-ng-show="vm.dialogset.connectedBot.length">-->
+          <!--<label class="col-sm-3 control-label">연결된 봇</label>-->
+          <!--<div class="col-sm-9">-->
+            <!--<table class="table table-bordered mb-none">-->
+              <!--<thead>-->
+              <!--<tr>-->
+                <!--&lt;!&ndash;<th class="text-center">봇아이디</th>&ndash;&gt;-->
+                <!--<th class="text-center">봇 아이디</th>-->
+                <!--<th class="text-center">봇 소유자</th>-->
+                <!--<th class="text-center">관리</th>-->
+              <!--</tr>-->
+              <!--</thead>-->
+              <!--<tbody>-->
+              <!--<tr ng-repeat="bot in vm.dialogset.connectedBot">-->
+                <!--&lt;!&ndash;<td class="text-center">{{dialogset.bot.id}}</td>&ndash;&gt;-->
+                <!--<td class="text-center">{{bot.id}}</td>-->
+                <!--<td class="text-center">{{bot.user.displayName}}</td>-->
+                <!--<td>-->
+                  <!--<a class="btn btn-default btn-sm btn-block" ng-click="vm.disconnectBot(bot)" style="border: none">-->
+                    <!--<i class="glyphicon glyphicon-edit"></i> 연결 끊기-->
+                  <!--</a>-->
+                <!--</td>-->
+              <!--</tr>-->
+              <!--</tbody>-->
+            <!--</table>-->
+          <!--</div>-->
+        <!--</div>-->
 
         <!--<div class="form-group" data-ng-if="vm.dialogset._id">-->
         <!--<label class="col-sm-3 control-label">봇 연결하기</label>-->
@@ -156,7 +156,7 @@
         <!--</div>-->
 
       </div>
-      <footer class="panel-footer">
+      <footer class="panel-footer" style="background-color: white;border: none">
         <div class="row">
           <div class="col-sm-12 text-center" ng-hide="vm.dialogset && vm.dialogset._id">
             <!--<button class="btn btn-primary">Submit</button>-->
@@ -239,7 +239,7 @@
         <!--</div>-->
 
       </div>
-      <footer class="panel-footer">
+      <footer class="panel-footer" style="background-color: white;border: none">
         <div class="row">
           <div class="col-sm-12 text-center" ng-hide="vm.dialogset && vm.dialogset._id">
             <a ng-click="vm.save()" class="btn btn-primary" >대화셋으로 저장</a>
@@ -318,7 +318,7 @@
             </div>
           </div>
         </div>
-        <footer class="panel-footer">
+        <footer class="panel-footer" style="background-color: white;border: none">
           <div class="row">
             <div class="col-sm-12 text-center">
               <!--<button class="btn btn-primary">Submit</button>-->
