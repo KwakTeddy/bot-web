@@ -1519,7 +1519,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
           for(var j = 0; j < format.mongo.queryFields.length; j++) {
             try {
               if(!(format.exclude && _.includes(format.exclude, word)))
-                query[format.mongo.queryFields[j]] = new RegExp(word, 'i');
+                query[format.mongo.queryFields[j]] = new RegExp('(?:^|\\s)' + word + '(?:$|\\s)', 'i');
               else
                 excluded.push(word);
             } catch(e) {}
@@ -1568,7 +1568,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                     if(Array.isArray(doc[format.mongo.queryFields[l]])) {
 
                       for(var n = 0; n < doc[format.mongo.queryFields[l]].length; n++) {
-                        _matchIndex[n] = doc[format.mongo.queryFields[l]][n].search(new RegExp(_word, 'i'));
+                        _matchIndex[n] = doc[format.mongo.queryFields[l]][n].search(new RegExp('(?:^|\\s)' + _word + '(?:$|\\s)', 'i'));
 
                         if(_matchIndex[n] != -1) {
                           if(context.bot.topicKeywords && _.includes(context.bot.topicKeywords, _nlps[m].text)) {_matchCount[n]++; _matchCount1[n] +=3;}

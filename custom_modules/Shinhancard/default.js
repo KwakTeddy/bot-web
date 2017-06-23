@@ -18,19 +18,14 @@ var dialogsType1 = {
         callback(task, context);
     },
     limit: 8,
-    matchRate: 0.3,
+    matchRate: 0.34,
     matchCount: 3,
     exclude: ['하다', '이다'],
     mongo: {
         model: 'dialogsetdialogs',
-
-
-
-
-        queryStatic: {dialogset: ObjectId("59410b4fbb33920264ee001b")}, //server
+        queryStatic: {dialogset: ObjectId("5949dd8dc7120e5e7dd468b8")}, //server
        // queryStatic: {dialogset: ObjectId("59478cf17a294c58195c9cf2")},  //local
        queryFields: ['input'],
-
         fields: 'dialogset input inputRaw output context id' ,
         taskFields: ['input', 'inputRaw', 'output', 'matchCount', 'matchRate', 'dialogset', 'context'],
         minMatch: 1,
