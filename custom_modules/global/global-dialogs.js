@@ -407,7 +407,7 @@ var globalEndDialogs = [
             if(context.bot.dialogsetOption.listOutput) {
               context.dialog.output = context.bot.dialogsetOption.listOutput;
             } else {
-              context.dialog.output = '질문에 가장 유사한 답변을 찾았습니다.\n\n#typeDoc#+index+. +inputRaw+\n# 번호를 입력해 주세요.';
+              context.dialog.output = '질문에 가장 유사한 답변을 찾았습니다.\n\n#typeDoc#+index+. +inputRaw+\n\n# 번호를 입력해 주세요.';
             }
 
             context.dialog.children = [

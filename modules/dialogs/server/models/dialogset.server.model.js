@@ -84,6 +84,12 @@ var DialogsetDialogSchema = new Schema({
   depth: {
     type: Number,
     default: 0
+  },
+  groupId: {
+    type: String
+  },
+  randomGroupId: {
+    type: String
   }
 });
 

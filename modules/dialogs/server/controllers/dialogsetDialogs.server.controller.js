@@ -87,13 +87,39 @@ exports.delete = function (req, res) {
 };
 
 exports.list = function (req, res) {
-  var sort = req.query.sort || '-created';
-
+  var sort = req.query.sort || 'created';
+  var currentPage = null;
+  var perPage = null;
   var query = {};
-  if(req.params.dialogsetId) query['dialogset'] =  mongoose.Types.ObjectId(req.params.dialogsetId);
 
-  DialogsetDialog.find(query).lean().sort(sort).populate('user').exec(function (err, dialogs) {
+  if(req.params.dialogsetId) query['dialogset'] =  mongoose.Types.ObjectId(req.params.dialogsetId);
+  if(req.query.currentPage) currentPage = req.query.currentPage ;
+  if(req.query.perPage) perPage = Number(req.query.perPage) ;
+
+  if(req.query.inputRaw) query['inputRaw'] =  {$regex: req.query.inputRaw};
+  if(req.query.output) query['output'] =  {$regex: req.query.output};
+  if(req.query.category) query['category'] =  {$regex: req.query.category};
+  if(req.query.all){
+    query ={
+      $or: [
+        { inputRaw: {$regex: req.query.all}},
+        { output: {$regex: req.query.all}},
+        { category: {$regex: req.query.all}}
+      ]
+    };
+  }
+  console.log(util.inspect(query));
+  console.log(util.inspect(sort));
+  DialogsetDialog.find(query).skip(currentPage*perPage).limit(perPage).lean().sort(sort).exec(function (err, dialogs) {
+  // DialogsetDialog.aggregate([
+  //   {$match: query},
+  //   {$skip: currentPage*perPage},
+  //   {$limit: perPage},
+  //   {$group: {_id: {randomGroupId : "$randomGroupId", groupId: "$groupId"}, data: {$push: "$$ROOT"}}},
+  //   {$group: {_id: "$_id.groupId", data: {$push: "$$ROOT"}}}
+  //   ]).exec(function (err, dialogs) {
     if (err) {
+      console.log(err);
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });

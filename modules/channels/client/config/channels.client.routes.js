@@ -15,7 +15,6 @@
         template: '<ui-view/>',
         data: {
           roles: ['user', 'enterprise', 'admin'],
-          botCheck: true
         }
       })
       .state('channels.list', {

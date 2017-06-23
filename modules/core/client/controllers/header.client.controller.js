@@ -10,29 +10,29 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
     $scope.myBot = '';
     $scope.enterpriseTitle = '';
 
-    window.onload = function () {
-      BotsService.query({my: 1, developer: true}).$promise.then(function (result) {
-        $scope.myBot = result;
-        if (result.length){
-          for(var i = 0; i < result.length; i++){
-            if($cookies.get('default_bot') == result[i].id){
-              $scope.checkMyBot = true;
-              break
-            }
-          }
-          if(!$scope.checkMyBot){
-            $cookies.put('default_bot', $scope.myBot[0].id);
-            $window.location.reload()
-          }
-
-        }else{
-          $scope.currentBot = '';
-          document.getElementById('chat-include').style.display = 'none';
-        }
-      }, function (err) {
-        console.log(err)
-      });
-    };
+    // window.onload = function () {
+    //   BotsService.query({my: 1, developer: true}).$promise.then(function (result) {
+    //     $scope.myBot = result;
+    //     if (result.length){
+    //       for(var i = 0; i < result.length; i++){
+    //         if($cookies.get('default_bot') == result[i].id){
+    //           $scope.checkMyBot = true;
+    //           break
+    //         }
+    //       }
+    //       if(!$scope.checkMyBot){
+    //         $cookies.put('default_bot', $scope.myBot[0].id);
+    //         $window.location.reload()
+    //       }
+    //
+    //     }else{
+    //       $scope.currentBot = '';
+    //       document.getElementById('chat-include').style.display = 'none';
+    //     }
+    //   }, function (err) {
+    //     console.log(err)
+    //   });
+    // };
 
     $http.get('/config').then(function (result) {
       $scope.enterprise = result.data.enterprise;

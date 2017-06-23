@@ -112,7 +112,11 @@ var dialogs = [
 			}
 		],
 		"output": "긍정 입니다.",
-		"context": null
+		"context": null,
+		"task": {
+			"url": "www.google.com",
+			"template": "httpRequest"
+		}
 	}
 ];
 

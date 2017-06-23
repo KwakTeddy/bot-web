@@ -1,11 +1,19 @@
 'use strict';
 
+var currentInput;
+var currentJSONNode;
+
+var setInput = function(cur) {
+  currentInput = cur;
+  currentJSONNode = cur.replace(/_/g,'.');
+};
+
 function gogo(filename) {
   angular.element(document.getElementById('control')).scope().changeTabName(filename);
 }
 
 // Bots controller
-angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope', '$state', '$window','$timeout',
+angular.module('bots').controller('DialogGraph2Controller', ['$scope', '$rootScope', '$state', '$window','$timeout',
   '$stateParams', '$resource', 'Dialogs', 'DialogSaveService', 'OpenTasksService', 'FileUploader','$document',
   'fileResolve', 'BotFilesService', 'CoreUtils', 'botFilesResolve', 'Socket', '$uibModal', '$compile', '$cookies', '$http','IntentsService', 'EntitysService', 'EntityContentsService',
   'notificationService',
@@ -16,7 +24,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     (function($) {
       'use strict';
 
-      // deprecated
       $('.modal-with-move-anim').magnificPopup({
         type: 'inline',
 
@@ -34,7 +41,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         modal: true
       });
 
-      // deprecated
       /*
        Modal Dismiss
        */
@@ -43,7 +49,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         $.magnificPopup.close();
       });
 
-      // deprecated
       /*
        Modal Confirm
        */
@@ -63,6 +68,35 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         modal: true,
       });
 
+      $('.modal-with-form').magnificPopup({
+        type: 'inline',
+        preloader: false,
+        focus: '#name',
+        modal: false,
+
+        removalDelay: 300,
+        mainClass: 'my-mfp-slide-bottom',
+
+        // When elemened is focused, some mobile browsers in some cases zoom in
+        // It looks not nice, so we disable it:
+        callbacks: {
+          beforeOpen: function() {
+            if (!document.getElementById('name').readonly) {
+              this.st.focus = '#name';
+            }
+            if (!document.getElementById('input_div').classList.contains("ng-hide")) {
+              this.st.focus = '#input';
+            }
+          }
+        }
+      });
+
+      $('.modal-with-task').magnificPopup({
+        type: 'inline',
+        preloader: false,
+        focus: '#name',
+        modal: true,
+      });
 
       $('.modal-with-intent').magnificPopup({
         type: 'inline',
@@ -72,6 +106,18 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         callbacks: {
           beforeOpen: function() {
             this.st.focus = '#name';
+          }
+        }
+      });
+
+      $('.modal-with-list').magnificPopup({
+        type: 'inline',
+        preloader: false,
+        focus: '#listContent',
+        modal: true,
+        callbacks: {
+          beforeOpen: function() {
+            this.st.focus = '#listContent';
           }
         }
       });
@@ -99,7 +145,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         e.preventDefault();
 
         $('#filetree').css('width', '230px');
-        $('#content').css('padding-left', '235px');
+        $('#content').css('padding', '0 0 0 235px');
         $('#filetree > div.panel-body').show();
         $('#filelabel0').show();
         $('#filelabel1').hide();
@@ -118,7 +164,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         $('#filelabel0').hide();
         $('#filelabel1').show();
         $('#filetree').css('width', '42px');
-        $('#content').css('padding-left', '45px');
+        $('#content').css('padding', '0 0 0 45px');
         $('#filetree_close').hide();
         $('#filetree_open').show();
 
@@ -131,7 +177,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     $scope.$state = $state;
 
-    // sateChange가 있을 때 불림
     $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
       if (vm.isChanged) {
         event.preventDefault();
@@ -152,7 +197,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     });
 
-    //$scope.$apply를 exception-safe 하게 해주는 함수
     $scope.safeApply = function(fn) {
       var phase = this.$root.$$phase;
       if(phase == '$apply' || phase == '$digest') {
@@ -174,7 +218,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       // }, function (err) {
       //   console.log(err);
       // });
-      if (vm.curI.str.length){
+      if (vm.curI.type === 'Keyword' && vm.curI.str.length){
         $http.get('/api/nluprocess/'+vm.curI.str).then(function (res) {
           $scope.processedInput = res.data;
         }, function (err) {
@@ -184,54 +228,73 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.$watch('vm.curI.str', function() {
-      if (vm.curI && (vm.curI.str.indexOf('@') != 0) && (vm.curI.str.indexOf('#') != 0) && (vm.curI.str.indexOf('/') != 0) && (vm.curI.str.indexOf('if ') != 0)){
+      if (vm.curI && vm.curI.type === 'Keyword')
         $scope.processInput();
-      }
     });
 
     var editor;
 
-    // 새로운 task 추가시 사용되는 template
     var newTask_template = "\nvar newTask = {\n\tname: 'newTask',\n\taction: function (task,context,callback) {" +
       "\n\t\tcallback(task,context);\n\t}\n};\n\n" +
       "bot.setTask('newTask',newTask);";
 
-    // list item 저장
-    $scope.saveListContent = function(output) {
-      if (!vm.listTitle || vm.listTitle === '') {
+
+    // $scope.saveIntent = function () {
+    //   $scope.intent.botName = $rootScope.botId;
+    //   $scope.intent.content = $scope.intentContent;
+    //   $scope.intent.$save({botName: $rootScope.botId},successCallback, errorCallback);
+    //
+    //   function successCallback(res) {
+    //     console.log(res);
+    //     $scope.backToEdit(false);
+    //   }
+    //
+    //   function errorCallback(res) {
+    //     console.log(res);
+    //   }
+    // };
+
+    $scope.saveList = function(isValid) {
+      if (vm.curO.list)
+        vm.curO.str = '' + vm.curO.list.map(function(item) { return item.title; });
+      $scope.saveO();
+      $scope.backToEdit(false);
+    };
+
+    $scope.saveListContent = function(isValid) {
+      if ($scope.listTitle == '') {
         return;
       }
 
-      if (output.list) {
-        for(var i = 0; i < output.list.length; ++i){
-          if (output.list[i].title == vm.listTitle){
-            vm.contentError = '동일한 항목이 존재합니다';
+      if (vm.curO.list) {
+        for(var i = 0; i < vm.curO.list.length; ++i){
+          if (vm.curO.list[i].title == $scope.listTitle){
+            $scope.contentError = '동일한 항목이 존재합니다';
             return false
           }
         }
       }
-      vm.contentError = '';
+      $scope.contentError = '';
 
-      var item = {title:vm.listTitle};
-      if (vm.listContent)
-        item.content = vm.listContent;
-
-      if (vm.listImage.image) {
-        item.displayname = vm.listImage.image.displayname;
-        item.filename = vm.listImage.image.url;
+      var item = {title:$scope.listTitle};
+      if ($scope.listContent)
+        item.content = $scope.listContent;
+      if (vm.curO.filename) {
+        item.image = '/files/' + vm.curO.filename;
+        item.displayname = vm.curO.str;
       }
 
-      (output.list = output.list || []).push(item);
-      delete vm.listImage.image;
-      vm.listTitle = '';
-      vm.listContent = '';
+      (vm.curO.list = vm.curO.list || []).push(item);
+      vm.curO.filename = '';
+      vm.curO.str = '';
+      $scope.listTitle = '';
+      $scope.listContent = '';
     };
 
-    // list item 지우기
-    $scope.itemRemoveBeforeSave = function(list, target) {
-      var index = list.indexOf(target);
+    $scope.itemRemoveBeforeSave = function(target) {
+      var index = vm.curO.list.indexOf(target);
       if(index > -1){
-        list.splice(index, 1)
+        vm.curO.list.splice(index, 1)
       }
     };
 
@@ -398,20 +461,20 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         $scope.contentSynSave(target);
         event.preventDefault();
       }
-    };
+    }
 
     $scope.entityContentInputKeyDown = function (event, target) {
       if (event.keyCode == 13){ //enter
         $scope.saveEntityContent(target);
         event.preventDefault();
       }
-    };
+    }
 
 
 
-    // 새로운 task 추가
     $scope.addTask = function() {
 
+      $.magnificPopup.close();
       vm.fromTask = true;
       vm.changeTab(vm.tabs[1]);
 
@@ -426,7 +489,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
 
-    // editor의 위치 설정 (task이름으로 검색)
     $scope.setPosition = function(task) {
       var lines = vm.currentTab.data.split("\n");
       for (var where=0; where < lines.length; ++where) {
@@ -446,7 +508,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     $scope.closePopup = function() {
       $.magnificPopup.close();
-      $scope.closeEditor();
     };
 
     $scope.gotoTree = function() {
@@ -454,7 +515,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.edit = false;
       vm.changeTab(vm.tabs[0]);
       $timeout(function() {
-        $scope.openEditor();
+        $('.modal-with-form').click();
       })
     };
 
@@ -467,21 +528,20 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     $scope.closeEdit = function() {
       vm.edit = false;
-      $scope.closeEditor();
+      $.magnificPopup.close();
     };
 
     var vm = this;
     vm.showTree = true;
     vm.userId = $rootScope.userId;
     vm.bot_id = $stateParams.botId ? $stateParams.botId : $cookies.get('botObjectId');
+    // vm.bot_id = $stateParams.botId ? $stateParams.botId : $rootScope.botObjectId;
     vm.file_id = $stateParams.fileId ? $stateParams.fileId : file._id;
-
-    // 새로운 dialog 추가시 next id
     vm.maxId = 0;
-
-    // undo를 위한 data
     vm.isChanged = false;
     vm.changeHistory = [];
+
+    console.log(vm.bot_id + '/' + vm.file_id);
 
     // tab handling
     vm.botName = file.botName;
@@ -489,15 +549,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     vm.data = file.data;
     vm.files = files;
 
+    vm.initialized = false;
     vm.smallDialog = true;
 
-    // filetree 초기화여부
-    vm.initialized = false;
-
-    // output-list에서 이미지 저장용
-    vm.listImage = {};
-
-    // initialize file tree
     vm.initTree = function() {
       if (vm.initialized)
         return;
@@ -542,14 +596,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       });
     };
 
-    // tab 초기화
     vm.initTabs = function() {
       vm.tabs.forEach(function(t) {
         t.active = false;
       });
     };
 
-    // tab 추가
     vm.addTab = function(name, action) {
       files.forEach(function(f) {
         if (f.name === name) {
@@ -566,7 +618,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
-    // 탭 바꾸기
     $scope.changeTabName  = function (name) {
       var tab = null;
       vm.tabs.forEach(function(t) {
@@ -664,7 +715,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }, 100);
     };
 
-    // editor 파일 저장
     vm.saveFile = function () {
       new BotFilesService({botId: vm.bot_id, _id: vm.currentTab.file_id, fileData: vm.currentTab.data}).$save(function (botFile) {
         $resource('/api/loadBot/:bot_id/:fileName', {}).get({bot_id: vm.botId, fileName: vm.fileName}, function(res) {
@@ -689,7 +739,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
-    // undo, changeHistoryd에 정보가 있으면 pop해서 복원
     $scope.undo = function() {
       if (vm.changeHistory.length > 0) {
         var history = vm.changeHistory.pop();
@@ -728,30 +777,20 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     console.log('Tree Controller');
 
-
     // internal data represented by tree
+    var links_internal = [];
     var nodes = [];
+    var dialogs;
+    var common_dialogs;
     var treeData;
 
-    // dialogs
-    var dialogs;
-    // common dialogs
-    var common_dialogs;
-
-    // call, callChild등의 path를 그리기 위함
-    var links_internal = [];
-
-    // highlight된 노드
+    // var currentDialog;
     var currentNode;
-
-    // 현재 선택된 노드와 svg
     var selectedNode;
     var selectedSVG;
 
-    // collapse/expand용 current depth
     vm.depth = 1;
 
-    // chatting 창에서 선택된 dialog 하이라이트를 위해 사용
     $scope.$on('updateLog', function(event, arg0) {
       var index = $rootScope.logUpdated.indexOf('[DIALOG_SEL]');
 
@@ -783,7 +822,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     });
 
-    // 선택된 node 업데이트
     var updateSelected = function(newd) {
       selectedNode = newd;
       selectedSVG = baseSvg.selectAll(".node").filter(function(d) {
@@ -792,12 +830,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       });
       update(selectedNode);
       centerNode(selectedNode);
-
-      if (vm.edit === 'dialog')
-        edit(selectedNode);
     };
 
-    // file tree toggle
     var toggleFileTree = function(event) {
       event.preventDefault();
       if (document.getElementById('filetree_close').style.display == 'none') {
@@ -816,42 +850,41 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     var keydown = function(event) {
-
-      // search 인풋필드나 filetree에 포커스 있는 경우 스킵
-      if (document.activeElement == document.getElementById('inputbox') ||
-          document.activeElement == document.getElementById('treeBasic')) {
-        return false;
-      }
-
-      if (event.altKey && event.keyCode == 37) { // alt+left
-        event.preventDefault();
-        if (vm.fromTask) {
+      if (vm.edit === 'task') {
+        if (event.keyCode == 27) { // esc
+          event.preventDefault();
+          $scope.backToEdit(false);
+        } else if (vm.fromTask && event.altKey && event.keyCode == 37) { // alt + left
+          event.preventDefault();
           $scope.gotoTree();
-        } else if (vm.edit === 'dialog') {
-          document.getElementById('mainpage').focus();
+        } else if (event.ctrlKey && event.keyCode == 80) { // ctrl+p
+          toggleFileTree(event);
         }
         return false;
       }
+
+      if (vm.edit === 'dialog') {
+        if (event.keyCode == 27) { // esc
+          event.preventDefault();
+          $scope.closeEdit();
+        } else if (event.ctrlKey && event.keyCode == 13) { // ctrl+enter
+          $scope.update(true);
+          $scope.closeEdit();
+        }
+        return false;
+      }
+
+      if (document.activeElement == document.getElementById('inputbox') ||
+          document.activeElement == document.getElementById('treeBasic')
+      )
+        return false;
 
       if (event.keyCode == 27) { // esc
-        if (vm.edit === 'dialog') {
-          if (event.keyCode == 27) { // esc
-            event.preventDefault();
-            $scope.closeEdit();
-          } else if (event.ctrlKey && event.keyCode == 13) { // ctrl+enter
-            $scope.update(true);
-            $scope.closeEdit();
-          }
-          return false;
-        } else if (vm.edit === 'task') {
-            event.preventDefault();
-            $scope.backToEdit(false);
-        } else {
-          document.getElementById('search').blur();
-          document.getElementById('replace').blur();
-          document.getElementById('mainpage').focus();
-          return false;
-        }
+        document.getElementById('search').blur();
+        document.getElementById('replace').blur();
+        document.getElementById('mainpage').focus();
+        $.magnificPopup.close();
+        return false;
       }
 
       if (event.ctrlKey && event.keyCode == 82) { // ctrl+r
@@ -922,7 +955,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         edit(selectedNode);
       } else if (event.keyCode == 37) { //left
         if (selectedNode.parent) {
-          updateSelected(selectedNode.parent);
+          _updateSelected(selectedNode.parent);
         }
       } else if (event.keyCode == 38) { //up
         if (selectedNode.parent && selectedNode.parent.children) {
@@ -930,7 +963,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             if (event.ctrlKey) { // ctrl+up
               goUp(selectedNode);
             } else {
-              updateSelected(selectedNode.parent.children[selectedNode.parent.children.indexOf(selectedNode)-1]);
+              _updateSelected(selectedNode.parent.children[selectedNode.parent.children.indexOf(selectedNode)-1]);
             }
           } else {
             var nearUp = {x:0};
@@ -942,13 +975,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             });
 
             if (nearUp.x != 0) {
-              updateSelected(nearUp);
+              _updateSelected(nearUp);
             }
           }
         }
       } else if (event.keyCode == 39) { //right
         if (selectedNode.children && selectedNode.children.length > 0) {
-          updateSelected(selectedNode.children[0]);
+          _updateSelected(selectedNode.children[0]);
         }
       } else if (event.keyCode == 40) { //down
         if (selectedNode.parent && selectedNode.parent.children) {
@@ -956,7 +989,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             if (event.ctrlKey) { // ctrl+down
               goDown(selectedNode);
             } else {
-              updateSelected(selectedNode.parent.children[selectedNode.parent.children.indexOf(selectedNode) + 1]);
+              _updateSelected(selectedNode.parent.children[selectedNode.parent.children.indexOf(selectedNode) + 1]);
             }
           } else {
             var nearDown = {x:99999};
@@ -968,27 +1001,23 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             });
 
             if (nearDown.x != 99999) {
-              updateSelected(nearDown);
+              _updateSelected(nearDown);
             }
           }
         }
       }
     };
 
-    // 화면 크기 변경시 내부 그래프나 editor창 크기 자동 변경
     var element = document.getElementById('tree-container');
     var element2 = document.getElementById('editor-container');
     new ResizeSensor(element, function() {
       console.log('Graph Changed to ' + element.clientWidth);
-      viewerWidth = document.getElementById('tree-container').clientWidth;
-      viewerHeight = document.getElementById('sidebar-left').clientHeight*0.80;
+      var viewerWidth = document.getElementById('tree-container').clientWidth;
+      var viewerHeight = document.getElementById('sidebar-left').clientHeight*0.80;
 
       baseSvg
         .attr("width", viewerWidth)
         .attr("height", viewerHeight);
-
-      if (selectedNode)
-        centerNode(selectedNode);
 
     });
 
@@ -996,8 +1025,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       if (element2.clientWidth == 0)
         return;
       console.log('Editor Changed to ' + element2.clientWidth);
-      viewerWidth = document.getElementById('editor-container').clientWidth;
-      viewerHeight = document.getElementById('sidebar-left').clientHeight*0.80;
+      var viewerWidth = document.getElementById('editor-container').clientWidth;
+      var viewerHeight = document.getElementById('sidebar-left').clientHeight*0.80;
 
       if (vm.editor) {
         vm.editor.setSize(viewerWidth,viewerHeight);
@@ -1009,11 +1038,11 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     document.getElementById('modalTaskForm').addEventListener("keydown", keydown);
     document.getElementById('modalHelpForm').addEventListener("keydown", keydown);
     document.getElementById('modalIntentForm').addEventListener("keydown", keydown);
+    document.getElementById('modalListForm').addEventListener("keydown", keydown);
     document.getElementById('modalEntityForm').addEventListener("keydown", keydown);
     document.getElementById('mainpage').focus();
 
     // dialog editing
-
     $scope.addI = function(input) {
       var init = {};
       init.type = $scope.getInputTypes(input)[0];
@@ -1040,12 +1069,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }, 300);
     };
 
-    $scope.addO = function(output, first) {
+    $scope.addO = function(input, first) {
       var init = {};
-      init.kind = 'Text';
-      output.push(init);
+      init.type = $scope.getOutputTypes(input)[0];
+      init.str = '';
 
-      //$scope.openEditO(init, input, first);
+      $scope.openEditO(init, input, first);
     };
 
     $scope.printInput = function(o) {
@@ -1055,16 +1084,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         return o.str.substring(0,10);
     };
 
-    // deprecated
     $scope.printOutput= function(o) {
-      return 'deprecated';
       if (vm.typeClass[o.type].input === 'button')
         return '';
       else
         return o.str.substring(0,10);
     };
 
-    // deprecated
     $scope.openEditO = function(o, output, first) {
       if ($scope.getInputType(o.type) === 'button')
         return;
@@ -1122,7 +1148,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
-    // deprecated
     $scope.saveO = function() {
       if ($scope.getInputType(vm.curO.type) != 'text' && vm.curO.str === "") {
         $scope.resetO();
@@ -1150,32 +1175,30 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       vm.inputMode = false;
     };
 
-    // deprecated
     $scope.resetO= function() {
       vm.inputModeO = false;
     };
 
-    // action 타입 데이터 초기화
-    $scope.resetActions = function(i) {
-      delete i.call;
-      delete i.callChild;
-      delete i.returnCall;
-      delete i.returnDialog;
-      delete i.return;
-      delete i.repeat;
-      delete i.up;
-    };
-
     $scope.setType = function(i, type) {
       i.type = type;
-      $scope.resetActions(i);
-
+      if (type != "Keyword" && type != "If" && type !="RegExp" && type !="Button")
+        i.str = "";
       if ($scope.getInputType(type) === 'button') {
-        i[type.toLowerCase()] = '1';
+        if (i == vm.curO) {
+          vm.curO.type = type;
+          vm.curO.str = '1';
+          $scope.saveO();
+        } else {
+          vm.curI.type = type;
+          vm.curI.str = '1';
+          $scope.saveI();
+        }
+      }
+      if ($scope.getInputType(type) === 'list') {
+        $scope.openList();
       }
     };
 
-    // deprecated
     $scope.getPlaceHolder = function(type, isOut) {
       if (type === 'Keyword') {
         if (isOut) return "답변을 입력해주세요";
@@ -1193,28 +1216,27 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     vm.outputTypes = ["Text","List","Call","ReturnCall","CallChild","Up", "Repeat", "Return"];
 
     vm.typeClass = [];
-    vm.typeClass['Keyword'] = {btn:'btn-primary',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf', icon:'fa-commenting', iconColor: 'rgba(243, 243, 243, 0.65)', input:'text'};
-    vm.typeClass['RegExp'] = {btn:'btn-danger',btnColor:'#fdf7f7', btnBorderColor: '#ffb9cc', icon:'fa-registered', iconColor: 'rgb(234, 67, 53)', input:'text'};
-    vm.typeClass['Intent'] = {btn:'btn-success',btnColor:'#f8f8ff', btnBorderColor: '#aeb0ff',icon:'fa-quote-right', iconColor: 'rgb(66, 133, 244)', input:'intent'};
-    vm.typeClass['Entity'] = {btn:'btn-success',btnColor:'rgba(239, 255, 242, 0.46)', btnBorderColor: 'rgba(2, 125, 24, 0.44)',icon:'fa-at', iconColor: 'rgb(52, 168, 83)', input:'entity'};
-    vm.typeClass['Type'] = {btn:'btn-warning',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-gear', iconColor: 'red', input:'type'};
-    vm.typeClass['List'] = {btn:'btn-info', btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-list', iconColor: 'red', input:'list'};
-    vm.typeClass['매칭없음'] = {btn:'btn-danger',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-ban', iconColor: 'red', input:'button'};
+    vm.typeClass['Keyword'] = {btn:'btn-primary',icon:'fa-commenting', input:'text'};
+    vm.typeClass['RegExp'] = {btn:'btn-danger',icon:'fa-registered', input:'text'};
+    vm.typeClass['Intent'] = {btn:'btn-success',icon:'fa-user', input:'intent'};
+    vm.typeClass['Entity'] = {btn:'btn-success',icon:'fa-tags', input:'entity'};
+    vm.typeClass['Type'] = {btn:'btn-warning',icon:'fa-gear', input:'type'};
+    vm.typeClass['List'] = {btn:'btn-info', icon:'fa-list', input:'list'};
+    vm.typeClass['매칭없음'] = {btn:'btn-danger',icon:'fa-ban', input:'button'};
 
-    vm.typeClass['Text'] = {btn:'btn-primary',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-commenting', iconColor: 'red', input:'text'};
-    vm.typeClass['Call'] = {btn:'btn-danger',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-bolt', iconColor: 'red', input:'dialog'};
-    vm.typeClass['CallChild'] = {btn:'btn-danger',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-mail-forward', iconColor: 'red', input:'dialog'};
-    vm.typeClass['ReturnCall'] = {btn:'btn-danger',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-mail-reply', iconColor: 'red', input:'dialog'};
-    vm.typeClass['If'] = {btn:'btn-info',btnColor:'#fffbee', btnBorderColor: '#ffbe3e',icon:'fa-question', iconColor: 'rgb(251, 188, 5)', input:'text'};
-    vm.typeClass['Up'] = {btn:'btn-info',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-arrow-up', iconColor: 'red', input:'button'};
-    vm.typeClass['Repeat'] = {btn:'btn-info',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-repeat', iconColor: 'red', input:'button'};
-    vm.typeClass['Options'] = {btn:'btn-warning',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-cog', iconColor: 'red', input:'text'};
-    vm.typeClass['Return'] = {btn:'btn-info',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-level-up', iconColor: 'red', input:'button'};
-    vm.typeClass['Image'] = {btn:'btn-warning',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-image', iconColor: 'red', input:'image'};
-    vm.typeClass['Button'] = {btn:'btn-success',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-play-circle', iconColor: 'red', input:'text'};
-    vm.typeClass['URLButton'] = {btn:'btn-success',btnColor:'rgba(243, 243, 243, 0.65)', btnBorderColor: '#bfbfbf',icon:'fa-play-circle', iconColor: 'red', input:'text_for_button'};
+    vm.typeClass['Text'] = {btn:'btn-primary',icon:'fa-commenting', input:'text'};
+    vm.typeClass['Call'] = {btn:'btn-danger',icon:'fa-bolt', input:'dialog'};
+    vm.typeClass['CallChild'] = {btn:'btn-danger',icon:'fa-mail-forward', input:'dialog'};
+    vm.typeClass['ReturnCall'] = {btn:'btn-danger',icon:'fa-mail-reply', input:'dialog'};
+    vm.typeClass['If'] = {btn:'btn-info',icon:'fa-question', input:'text'};
+    vm.typeClass['Up'] = {btn:'btn-info',icon:'fa-arrow-up', input:'button'};
+    vm.typeClass['Repeat'] = {btn:'btn-info',icon:'fa-repeat', input:'button'};
+    vm.typeClass['Options'] = {btn:'btn-warning',icon:'fa-cog', input:'text'};
+    vm.typeClass['Return'] = {btn:'btn-info',icon:'fa-level-up', input:'button'};
+    vm.typeClass['Image'] = {btn:'btn-warning',icon:'fa-image', input:'image'};
+    vm.typeClass['Button'] = {btn:'btn-success',icon:'fa-play-circle', input:'text'};
+    vm.typeClass['URLButton'] = {btn:'btn-success',icon:'fa-play-circle', input:'text_for_button'};
 
-    // deprecated
     var findType = function(input, typeName) {
       for (var i=0; i < input.length; ++i) {
         if (input[i].type === typeName) {
@@ -1224,14 +1246,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       return false;
     };
 
-    // deprecated
     var addType = function(types, type) {
       if (types.indexOf(type) == -1) {
         types.push(type);
       }
     };
 
-    // deprecated
     var removeType = function(types, type) {
       if (types.indexOf(type) != -1) {
         types.splice(types.indexOf(type), 1);
@@ -1248,7 +1268,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       return types;
     };
 
-    // deprecated
     $scope.getOutputTypes = function(input, i) {
       var types = [];
       if (!input) return types;
@@ -1303,7 +1322,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       //["","",{types:[{name:'', typeCheck:'', raw:true},..,regexp:'',intent:''}]]
       var input = [];
       $scope.dialog.input.push(input);
-      // $scope.addI(input);
+      $scope.addI(input);
 
       $scope.initButton();
     };
@@ -1315,8 +1334,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     };
 
     $scope.addOutput= function(first) {
-      $scope.addO($scope.dialog.output, first);
-      //$scope.initButton();
+      var output = [];
+      $scope.dialog.output.push(output);
+      $scope.addO(output, first);
+      $scope.initButton();
     };
 
     $scope.removeOutput = function(output) {
@@ -1324,7 +1345,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       $scope.initButton();
     };
 
-    // 키워드 검색용
     var currentKeyword = "";
     var currentKind = "";
     var currentSearchIdx = 0;
@@ -1374,7 +1394,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
-    // 키워드 replace
     $scope.replaceNode = function(event) {
       var selectedVal = document.getElementById('search').value;
       var replacedVal = document.getElementById('replace').value;
@@ -1430,30 +1449,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       return vm.typeClass[type].icon;
     };
 
-    vm.getIcon = function(type) {
-      if (!type || type == 'Keyword') return '';
-      if (type == 'Entity') return '@ ';
-      if (type == 'Intent') return '# ';
-      if (type == 'RegExp') return '/ ';
-      if (type == 'If') return 'If ( ';
-      return null;
-    };
-
-    vm.getBtnColor = function(type) {
-      if (!type) return '';
-      return vm.typeClass[type].btnColor;
-    };
-
-    vm.getBtnBorderColor = function(type) {
-      if (!type) return '';
-      return vm.typeClass[type].btnBorderColor;
-    };
-
-    vm.getIconColor = function(type) {
-      if (!type) return '';
-      return vm.typeClass[type].iconColor;
-    };
-
     $scope.getInputType = function(type) {
       return vm.typeClass[type].input;
     };
@@ -1495,6 +1490,81 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       return res;
     };
 
+    var procOutput = function(d,r) {
+      if (typeof d === 'string') {
+        r.push({type: 'Text', str: d.replace(/\n/g,'\\n')});
+      }
+      if (!d.if && d.output) {
+        r.push({type:'Text', str:d.output.replace(/\n/g,'\\n')});
+      }
+      if (d.call) {
+        r.push({type:'Call', str:d.call});
+      }
+      if (d.callChild) {
+        r.push({type:'CallChild', str:d.callChild});
+      }
+      if (d.returnCall) {
+        r.push({type:'ReturnCall', str:d.returnCall});
+      }
+      if (d.if) {
+        r.push({type:'If', str:d.if});
+        if (typeof d.output === 'string') {
+          r.push({type:'Text', str:d.output});
+        } else {
+          procOutput(d.output, r);
+        }
+      }
+      if (d.up) {
+        r.push({type:'Up', str:d.up});
+      }
+      if (d.repeat && typeof d.repeat == 'string') {
+        r.push({type:'Repeat', str:d.repeat+""});
+      }
+      if (d.options && d.options.output) {
+        r.push({type:'Options', str:d.options.output.replace(/\n/g, '\\n')});
+      }
+      if (d.return) {
+        r.push({type:'Return', str:d.return+""});
+      }
+      if (d.buttons) {
+        d.buttons.forEach(function(b) {
+          if (b.url) {
+            r.push({type:'URLButton', str:b.text, url:b.url});
+          } else {
+            r.push({type:'Button', str:b.text});
+          }
+        });
+      }
+      if (d.image) {
+        r.push({type:'Image', str:d.image.displayname, filename:d.image.url.substring(7)});
+      }
+
+      if (d.list) {
+        r.push({type:'List', str:''+d.list.map(function(item) { return item.title; }), list:d.list});
+      }
+
+    };
+
+    var initOutput = function(output) {
+      var res = [];
+      if (Array.isArray(output)) {
+        output.forEach(function(d) {
+          var r = [];
+          procOutput(d,r);
+          res.push(r);
+        });
+      } else {
+        var r = [];
+        if (typeof output === 'string') {
+          r.push({type:'Text', str:output.replace(/\n/g,'\\n')});
+        } else {
+          procOutput(output,r);
+        }
+        res.push(r);
+      }
+      return res;
+    };
+
     var restoreInput = function(result) {
       var input = [];
       if (result.length == 1 && result[0].length == 1 && result[0][0].type ==='매칭없음') {
@@ -1524,141 +1594,60 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       return input;
     };
 
-    // dialog output -> 편집용 output 으로 변환
-    var procOutput = function(d) {
-      // if (d.list) {
-      //   r.push({type:'List', str:''+d.list.map(function(item) { return item.title; }), list:d.list});
-      // }
-      if (d.output) {
-        d.text = d.output;
-        delete d.output;
-      }
-      if (!d.kind) {
-        if (d.buttons || d.images) {
-          d.kind = 'Content';
-        } else if (d.call || d.callChild || d.returnDialog || d.returnCall || d.up || d.repeat) {
-          d.kind = 'Action';
-        } else if (d.list) {
-          d.kind = 'List';
-        } else {
-          d.kind = 'Text';
-        }
-      }
-
-      if (d.kind === 'Action') {
-        if (d.call)
-          d.type = 'Call';
-        else if (d.callChild)
-          d.type = 'CallChild';
-        else if (d.returnCall)
-          d.type = 'ReturnCall';
-        else if (d.return)
-          d.type = 'Return';
-        else if (d.up)
-          d.type = 'Up';
-        else if (d.repeat)
-          d.type = 'Repeat';
-      }
-    };
-
-    var initOutput = function(output) {
-      var res = [];
-      if (Array.isArray(output)) {
-        output.forEach(function(d) {
-          procOutput(d);
-          res.push(d)
-        });
-      } else {
-        if (typeof output === 'string') {
-          res.push({kind:'Text', text: output});
-        }
-        else {
-          procOutput(output);
-          res.push(output);
-        }
-      }
-      return res;
-    };
-
-    // 편집용 output -> dialog output 으로 변환
     var restoreOutput = function(result) {
       var output = [];
-
       result.forEach(function(res) {
         var o = {};
-        switch(res.kind) {
-          case 'Text':
-            o.if = res.if;
-            o.text = res.text;
-            break;
-          case 'Content':
-            o.if = res.if;
-            o.text = res.text;
-            o.image = res.image;
-            o.buttons = res.buttons;
-            break;
-          case 'List':
-            o.list = res.list;
-            break;
-          case 'Action':
-            o = angular.copy(res);
-            delete o.text;
-            delete o.image;
-            delete o.buttons;
-            delete o.type;
-            break;
-          default:
-            o = res;
-            break;
+        res.forEach(function(r) {
+          if (r.type === 'Text') {
+            o.output = r.str;
+          } else if (r.type === 'Call') {
+            o.call = r.str;
+          } else if (r.type === 'CallChild') {
+            o.callChild = r.str;
+          } else if (r.type === 'ReturnCall') {
+            o.returnCall = r.str;
+          } else if (r.type === 'If') {
+            o.if = r.str;
+          } else if (r.type === 'Up') {
+            o.up = r.str;
+          } else if (r.type === 'Repeat') {
+            o.repeat = r.str;
+          } else if (r.type === 'Options') {
+            o.options = {output: r.str};
+          } else if (r.type === 'Return') {
+            o.return = r.str;
+          } else if (r.type === 'Image') {
+            o.image = {url: '/files/'+r.filename, displayname:r.str};
+          } else if (r.type === 'Button') {
+            (o.buttons || (o.buttons = [])).push({text:r.str});
+          } else if (r.type === 'URLButton') {
+            (o.buttons || (o.buttons = [])).push({text:r.str, url:r.url});
+          } else if (r.type === 'List') {
+            o.list = r.list;
+          }
+        });
+        var newo = {};
+        if (o.if) {
+          newo.if = angular.copy(o.if);
+          delete o.if;
+          if (Object.keys(o).length == 1 && typeof o.output === 'string') {
+            o = o.output;
+          }
+          newo.output = angular.copy(o);
+        } else if (Object.keys(o).length == 1 && typeof o.output === 'string') {
+          newo = o.output
+        } else {
+          newo = o;
         }
-        o.kind = res.kind;
-        output.push(o);
+        output.push(newo);
       });
+      if (output.length == 1) {
+        output = output[0];
+      }
       return output;
     };
 
-    // output tab handling
-    vm.outputKind = [
-      {name:"Text",  active:true},
-      {name:"Content",  active:false},
-      {name:"List",  active:false},
-      {name:"Action",  active:false},
-    ];
-
-    vm.changeOutputKind = function(output, kind) {
-      vm.outputKind.forEach(function(k) {k.active = false});
-      kind.active = true;
-      output.kind = kind.name;
-
-    };
-
-    vm.getOutputKind = function(output) {
-      if (typeof output === 'string') return 'Text';
-      if (output.kind) return output.kind;
-      return 'Text';
-    };
-
-    // action 타입에 사용되는 select list
-    vm.actionList = ['Call','CallChild','ReturnCall','Up', 'Repeat', 'Return'];
-
-    vm.getActionType = function(output) {
-      if (vm.getOutputKind(output) != 'Action')
-        return;
-      if (!output.type || !vm.actionList.indexOf(output.type))
-        output.type = "Call";
-      return output.type;
-    };
-
-    // button handlings
-    vm.removeButton = function(output, idx) {
-      output.buttons.splice(idx,1);
-    };
-
-    vm.addButton = function(output) {
-      (output.buttons = output.buttons || []).push({text:''});
-    };
-
-    // 수정 열기
     $scope.findOne = function (dialog, isStartNode) {
       if (isStartNode)
         vm.isStartNode = true;
@@ -1674,7 +1663,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       else if (dialog.task)
         $scope.dialog.task = {name: dialog.task};
 
-      $scope.dialog.output = angular.copy(initOutput(dialog.output));
+      $scope.dialog.output = initOutput(dialog.output);
 
       if (dialog.output.length == 0) {
         $scope.addOutput(dialog.input.length == 0);
@@ -1718,35 +1707,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       $scope.safeApply();
       $timeout(function() {
-        $scope.openEditor();
+        $('.modal-with-form').click();
         $scope.initButton();
       });
 
-    };
-
-    // deprecated
-    $scope.openEditorTask  = function() {
-      $('#content').css('padding-right', '450px');
-      $('#modalTaskForm').show();
-    };
-
-    // deprecated
-    $scope.closeEditorTask= function() {
-      $('#modalTaskForm').hide();
-      $('#content').css('padding-right', '0px');
-    };
-
-    // deprecated
-    $scope.openEditor = function() {
-      $('#content').css('padding-right', '450px');
-      $('#modalForm').show();
-    };
-
-    // deprecated
-    $scope.closeEditor = function() {
-      $('#modalForm').hide();
-      $('#content').css('padding-right', '0px');
-      document.getElementById('mainpage').focus();
     };
 
     $scope.InputKeyDown = function (event, func) {
@@ -1767,7 +1731,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
-    // 수정한 node dialog에 저장
     $scope.update = function (isValid) {
 
       vm.edit = false;
@@ -1787,19 +1750,15 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       else
         selectedNode.task = $scope.dialog.task;
       selectedNode.output = restoreOutput($scope.dialog.output);
-      //selectedNode.output = $scope.dialog.output;
 
       selectedSVG.remove();
       selectedSVG = null;
 
       update(selectedNode);
       updateSelected(selectedNode);
-
-      $scope.closeEditor();
       //Dialogs.update(dialog);
     };
 
-    // 전체 dialog 저장
     $scope.save = function(func) {
       //vm.changeHistory = [];
       vm.setChanged(false);
@@ -1852,24 +1811,13 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         });
     };
 
-    // call, callChild 등에서 자기 자신 제외한 현재 호출 가능한 dialog 리스트를 가져오는 함수
-    vm.dialogList = function() {
+    $scope.dialogList = function() {
       var names = [];
-
-      var findNames = function(d) {
-        if (!selectedNode || (selectedNode && d !== selectedNode.name && d !== '시작')) {
-          names.push(d.name);
-        }
-        if (d.children) {
-          d.children.forEach(findNames);
-        }
-        if (d._children) {
-          d._children.forEach(findNames);
-        }
-      };
-
-      dialogs.forEach(findNames);
-      vm.otherDialogs.forEach(findNames);
+      for (var d in nodes) {
+        if (selectedNode && d !== selectedNode.name && d != '시작')
+          names.push(d);
+      }
+      vm.otherDialogs.forEach(function(d) { names.push(d.name); });
       return names;
     };
 
@@ -1892,14 +1840,14 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
             i.entities.forEach(function (t) {
               entities.push(t);
             });
-            text.push('[엔터티] ' + entities);
+            text.push('@' + entities);
           }
           if (i.regexp)
-            text.push('[정규식] ' + i.regexp);
+            text.push('/' + i.regexp + '/');
           if (i.intent)
-            text.push('[인텐트] ' + i.intent);
+            text.push('#' + i.intent);
           if (i.if)
-            text.push('[조건] ' + i.if);
+            text.push('if: ' + i.if);
         });
         return text + "";
       } else {
@@ -1968,7 +1916,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       delete dialog.buttons;
     };
 
-    // dialog traverse 하며 빠진 내용 채워주고 graph 에 보여줄 내용 채움
     var handleDialog = function(dialog)
     {
       dialog.name = dialog.name || (dialog.name = "dialog" + "_" + dialog.id);
@@ -2059,7 +2006,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
-    // tree graph 데이터 초기화
     vm.initTreeData = function() {
       handleDialog(common_dialogs[0]);
       treeData = angular.copy(common_dialogs[0]);
@@ -2099,7 +2045,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       console.log(links_internal);
     };
 
-    // tree reload
     vm.reloadTree = function() {
       $resource('/api/dialogs/:bot_id/:file_id', {}).get({bot_id: vm.bot_id, file_id: vm.file_id}, function(res) {
         vm.botId = res.botId;
@@ -2108,7 +2053,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         common_dialogs = res.common;
 
         vm.initTreeData();
-        init();
+
+        // init();
+        _init();
+
       }, function (err) {
         console.log(err)
       });
@@ -2179,6 +2127,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       .attr('class', 'd3-tip')
       .offset([-10, 0])
       .html(function(d) {
+        // var input_text = (typeof d.input_text == 'string' ? d.input_text.replace(/(?:\r\n|\r|\n)/g, '<br />') : d.input_text);
+        // var output_text = (typeof d.output_text == 'string' ? d.output_text.replace(/(?:\r\n|\r|\n)/g, '<br />') : d.output_text);
+        // return "<strong>Input:</strong><br/><span style='color:cornflowerblue'>" + input_text + "</span><br/><br/>" +
+        //   "<strong>Output:</strong><br/><span style='color:cornflowerblue'>" + output_text + "</span>";
         return "<image src='" + d.image_text + "' height='150px'>";
       });
     baseSvg.call(tip);
@@ -2186,7 +2138,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     // Append a group which holds all nodes and which the zoom Listener can act upon.
     var svgGroup = baseSvg.append("g");
 
-    // d3 graph 초기화
     var init = function(source) {
 
       // Define the root
@@ -2220,7 +2171,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     var links_SVG, links_internal_SVG;
 
-    // 실제 d3 graph를 그리는 함수
     function update(source, collapseAll) {
       if(vm.smallDialog) {
         rectW = 200;
@@ -2271,6 +2221,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       childCount(0, root);
 
+      // var prev = 0;
+      // for (var i=0; i < levelWidth.length; ++i) {
+      //   levelWidth[i] = prev + levelWidth[i];
+      //   prev = levelWidth[i]-2 ;
+      // }
+
       var newHeight = d3.max(levelWidth) * itemHeight;
       tree = tree.size([newHeight, viewerWidth]);
 
@@ -2288,10 +2244,23 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       // Set widths between levels based on maxLabelLength.
       nodes_tree.forEach(function (d) {
+        //d.y = (d.depth * (maxLabelLength * 10)); //maxLabelLength * 10px
         d.y = (d.depth * labelWidth); //maxLabelLength * 10px
+        // alternatively to keep a fixed scale one can set a fixed depth per level
+        // Normalize for fixed-depth by commenting out below line
+        // d.y = (d.depth * 500); //500px per level.
       });
 
+      // var layout = function(node) {
+      //   if (node.parent != null) {
+      //     node.x = node.parent.x + itemHeight * node.parent.children.indexOf(node);
+      //   }
+      //   if (node.children) {
+      //     node.children.forEach(layout);
       d3.selectAll('node').remove();
+      //   }
+      // };
+      // treeData.children.forEach(layout);
 
       // Update the nodes…
       var node = svgGroup.selectAll("g.node")
@@ -2316,6 +2285,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         .attr("rx", 5)
         .attr("ry", 5)
         .style('fill', 'white');    //#DADAEB  //eee
+      // .attr("stroke-width", 2)
+      // .style("stroke", function (d) {
+      //   return d._children ? "lightsteelblue" : "#fff";
+      // })
+      //.on('mouseover', tip.show)
+      //.on('mouseout', tip.hide);
 
       // add the text
       nodeEnter.append("text")
@@ -2462,13 +2437,56 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
       }
 
-      // deprecated
+      // Change the rect fill depending on whether it has children and is collapsed
+      // node.select("rect.nodeRect")
+      //   .style("stroke", function (d) {
+      //     return d._children ? "lightsteelblue" : "#fff";
+      //   });
+
       // Transition nodes to their new position.
       var nodeUpdate = node.transition()
         .duration(duration)
         .attr("transform", function (d) {
           return "translate(" + d.y + "," + d.x + ")";
         });
+
+
+      //add the text
+      // nodeUpdate.select("text#name")
+      //   .text(function(d) { return d.name; });
+      //
+      // nodeUpdate.select("text#input")
+      //   .text(function(d) { return "In: " + (d.input_text ? d.input_text: ""); })
+      //   .call(wrap, rectW-30, 1);
+      //
+      // nodeUpdate.select("text#task")
+      //   .text(function(d) {
+      //     if (d.task && d.task.name)
+      //       return "Task: " + d.task.name;
+      //     else if (d.task)
+      //       return "Task: " + d.task;
+      //     return "Task: ";
+      //   })
+      //   .call(wrap, rectW-25, 2);
+      //
+      // nodeUpdate.select("text#output")
+      //   .text(function(d) { return "Out: " + (d.output_text ? d.output_text : ""); })
+      //   .call(wrap, rectW-25, 2);
+      //
+      // nodeUpdate.select("text#image")
+      //   .text(function(d) { return "Image: " + (d.image_text ? d.image_text: ""); })
+      //   .call(wrap, rectW-25, 1);
+      //
+      // nodeUpdate.select("text#button")
+      //   .text(function(d) { return "Button: " + (d.buttons ? d.buttons + "": ""); })
+      //   .call(wrap, rectW-25, 1);
+
+      // Fade the text in
+      // nodeUpdate.select("text")
+      //   .transition().duration(0)
+      //   .style("fill", "red")
+      //   .transition().duration(1000)
+      //   .style("fill", "black");
 
       // Transition exiting nodes to the parent's new position.
       var nodeExit = node.exit().transition()
@@ -2596,6 +2614,17 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       // define a d3 diagonal projection for use by the node paths later on.
       drawLink(links_internal_SVG, links_internal, "link_internal", diagonal);
 
+      // var edgelabels = svgGroup.selectAll(".edgelabel")
+      //   .data(links_internal)
+      //   .enter().append('text')
+      //   .text(function(d) { return d.type; })
+      //   .attr("x", function(d) {
+      //     return ((d.source.x + rectW/2 + d.target.x + rectW/2 )/2);
+      //   })
+      //   .attr("y", function(d) {
+      //     return ((d.source.y + rectH/2 + d.target.y + rectH/2 )/2);
+      //   });
+
       // Stash the old positions for transition.
       nodes_tree.forEach(function (d) {
         d.x0 = d.x;
@@ -2721,10 +2750,10 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     }
 
     // node interactions
-    var dblclick_occured = false; // to distinguish dblclick and click events
+
+    var dblclick_occured = false;
     var t = null;
     var tempSVG = null;
-
     // Toggle children on click.
     function click(d) {
       tempSVG = d3.select(this);
@@ -2742,8 +2771,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         selectedSVG = tempSVG;
         update(d);
         centerNode(d);
-        if (vm.edit === 'dialog')
-          edit(d);
       }, 200); // time to doubleclick
     }
 
@@ -2797,7 +2824,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       zoomListener.translate([x, y]);
     }
 
-    // child node 추가
     function addChild(d) {
       var isCallNode = false;
       if (d.output) {
@@ -2856,7 +2882,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       selectedSVG = null;
     }
 
-    // src, target 노드 swap
     function swapNode(parent,src, target) {
       var srcNode = parent.children[src];
       var targetNode = parent.children[target];
@@ -2903,14 +2928,12 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
     }
 
     // assumption: idx is already checked when creating buttons for the following actions
-    // 위에 노드와 swap
     function goUp(d) {
       vm.setChanged(true , true);
       var idx = d.parent.children.indexOf(d);
       swapNode(d.parent, idx, idx-1 );
     }
 
-    // 아래 노드와 swap
     function goDown(d) {
       vm.setChanged(true, true);
       var idx = d.parent.children.indexOf(d);
@@ -2956,7 +2979,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     }
 
-    // d3 event와 angular event 연결 (수정 버튼)
     function edit(d) {
       if (d3.event)
         d3.event.stopPropagation();
@@ -2967,7 +2989,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     }
 
-    // wrapping text in d3 graph
     function wrap(text, width, maxLine) {
       text.each(function() {
         var text = d3.select(this),
@@ -3043,7 +3064,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       // Show success message
       $scope.success['image'] = true;
 
-      vm.current.image = { url: '/files/' + response.filename, displayname: response.displayname };
+      vm.curO.filename = response.filename;
+      vm.curO.str = response.displayname;
       // Clear upload buttons
       $scope.cancelImageUpload();
     };
@@ -3103,6 +3125,7 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
       return d;
     }
+
 
     vm.handleCurrent = function(d) {
       if (d.depth == vm.depth) {
@@ -3212,7 +3235,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       }
     };
 
-    // show dialogs or common dialogs
     vm.dialog = true;
     vm.showDialog = function() {
       vm.changeHistory = [];
@@ -3242,7 +3264,8 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       });
     };
 
-    // for task template (pasted from playchat.ai code) which should be provided as a seperate module to be shared
+    // for task template
+    //TODO: this should be a separte module
     var types = {
       "string": {"type":"string"},
       "date" : {"type":"string", "format":"date"},
@@ -3258,7 +3281,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
 
     var jsonEditor;
 
-    // schema parsing
     vm.parseSchema = function(dataSchema) {
       var jsonSchema;
       try {
@@ -3334,7 +3356,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       };
       //JSONEditor.defaults.options.show_erros = 'change';
 
-      // to validate inputs such as handphone number
       var custom_validator = function(schema, value, path) {
         var errors = [];
 
@@ -3433,7 +3454,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         jsonEditor.setValue(temp);
       }
 
-      // editor 내에 list 에 element 추가시 자동으로 $compile 불러주기
       jsonEditor.on('change', function() {
         console.log('editor.onchange -> $compile editor');
         var inputList = document.getElementsByName("mine");
@@ -3453,7 +3473,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       });
     };
 
-    // editor에서 task 열어주는 함수
     $scope.openTask = function(task, isCommon) {
       if (!$scope.dialog.task || ($scope.dialog.task.name || $scope.dialog.task.template) !== task.name)
         $scope.dialog.task = task;
@@ -3465,21 +3484,16 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         }
 
         $timeout(function() {
-          $scope.closeEditor();
-          $scope.openEditorTask();
+          $.magnificPopup.close();
+          $('.modal-with-task').click();
         });
       } else {
-        $scope.closeEditor();
+        $.magnificPopup.close();
         vm.fromTask = true;
         vm.changeTab(vm.tabs[1]);
 
         $scope.setPosition(task);
       }
-    };
-
-    // output-list에 image upload or content image upload시 사용
-    vm.setInput = function(cur) {
-      vm.current = cur;
     };
 
     $scope.openIntent = function(task, isCommon) {
@@ -3489,7 +3503,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       });
     };
 
-    // deprecated
     $scope.openList = function(task, isCommon) {
       vm.curO.filename = '';
       $timeout(function() {
@@ -3503,7 +3516,6 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
       $('.modal-with-entity').click();
     };
 
-    // editor에서 graph editor로 돌아가기
     $scope.backToEdit = function(ok) {
       vm.edit = 'dialog';
       if (!ok) {
@@ -3524,98 +3536,236 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         $scope.resetO();
 
       $timeout(function() {
-        $scope.closeEditorTask();
-        $scope.openEditor();
+        $.magnificPopup.close();
+        $('.modal-with-form').click();
       });
     };
 
-    IntentsService.query({botName: $rootScope.botId}).$promise.then(function (result) {
-      vm.intents = result.map(function(i) { return i.name; });
-    }, function (err) {
-      console.log(err);
-    });
+    /******************** grid graph **************************/
+    function _init(source) {
+      root = treeData;
+      root.x0 = viewerHeight / 2;
+      root.y0 = 0;
 
-    EntityContentsService.query({botName: $cookies.get('default_bot')}).$promise.then(function (result) {
-      vm.entities = result.map(function (i) {
-        return i.name
-      })
-    }, function (err) {
-      console.log(err);
-    });
+      // Call visit function to establish maxLabelLength
+      visit(treeData, function (d) {
+        totalNodes++;
+        if (d.name != undefined)
+          maxLabelLength = Math.max(d.name.length, maxLabelLength);
 
-    vm.inlineInputFocus = function (index) {
-      $timeout(function () {
-        document.getElementById('inlineInput_' + index).focus()
-      })
-    };
+      }, function (d) {
+        return d.children && d.children.length > 0 ? d.children : null;
+      });
 
-    vm.searchTopic = function(topicTerm, target) {
-      var topicList = [];
-      if(target == 'entity'){
-        angular.forEach(vm.entities, function(item) {
-          if (item.toUpperCase().indexOf(topicTerm.toUpperCase()) >= 0) {
-            topicList.push(item);
+      // Layout the tree initially and center on the root node.
+      if (source) {
+        _update(source.children);
+        // centerNode(source);
+      } else {
+        // _update(root.children, document.getElementById('dialog-graph'), 1);
+        _update(root, document.getElementById('dialog-graph'));
+
+        _updateSelected(root.children[0]);
+        // vm.collapseDepth();
+        // update(root, true);
+        // centerNode(root, 'start');
+      }
+    }
+
+    var _update = function(dialog, parent, collapseAll) {
+      // var dialog = dlgs[i];
+      var input = handleInput(dialog.input);
+      var output = handlePrintOutput(dialog, dialog.output);
+
+      var dlgGroup = document.createElement('div');
+      parent.appendChild(dlgGroup);
+
+      dlgGroup.className = 'dlg-group';
+      dlgGroup.innerHTML ='<svg width="20" height="20"><line x1="0" y1="35" x2="20" y2="35" stroke="black"></line></svg>';
+
+      var dlg = document.createElement('div');
+      dlgGroup.appendChild(dlg);
+
+      dlg.id = dialog.id;
+      if(dialog.children) dlg.className = 'dlg with-children';
+      else dlg.className = 'dlg';
+
+      dlg.innerHTML =
+        '<div class="dlg-name">' + dialog.id + ',' + dialog.name + '</div>' +
+        '<div class="dlg-input">' + input + '</div>' +
+        '<div class="dlg-output">' + output.replace(/\\n/g, '\n') + '</div>';
+
+      if(dialog.output.buttons) {
+        for(var i in dialog.output.buttons) {
+          if(dialog.output.buttons[i].url) dlg.innerHTML += '<div class="bubble-button"><a href="' + dialog.output.buttons[i].url + '" target="_blank">' + dialog.output.buttons[i].text + '</a></div>';
+          else dlg.innerHTML += '<div class="bubble-button"><a ng-click="vm.sendMsg(\'' + dialog.output.buttons[i].text + '\')">' + dialog.output.buttons[i].text + '</a></div>';
+        }
+      }
+
+      var actionGroup = document.createElement('div');
+      dlg.appendChild(actionGroup);
+
+      var add = document.createElement('div');
+      actionGroup.appendChild(add);
+
+      add.innerText = '추가';
+      // add.onclick = function(e) {
+      //   addChild(dialog);
+      //   e.stopPropagation();
+      // };
+
+      dlg.onclick = function(e) {
+        _updateSelected(dialog);
+      };
+
+      if(dialog.children) {
+        var dlgChildren = document.createElement('div');
+        dlgGroup.appendChild(dlgChildren);
+        dlgChildren.className = 'dlg-children';
+
+        addObserver(dlgChildren);
+        dlgChildren.innerHTML +='<svg width="20" height="100"></svg>';
+
+        for(var j = 0; j < dialog.children.length; j++) {
+          _update(dialog.children[j], dlgChildren);
+        }
+      }
+    }
+
+    var _update2 = function(dlgs, parent, depth) {
+      // function _update(dlgs, parent, depth) {
+      addObserver(parent);
+      parent.innerHTML +='<svg width="20" height="100"></svg>';
+
+      for(var i in dlgs) {
+        var dialog = dlgs[i];
+        var input = handleInput(dialog.input);
+        var output = handlePrintOutput(dialog, dialog.output);
+
+        var dlgGroup = document.createElement('div');
+        parent.appendChild(dlgGroup);
+
+        dlgGroup.className = 'dlg-group';
+        dlgGroup.innerHTML ='<svg width="20" height="20"><line x1="0" y1="35" x2="20" y2="35" stroke="black"></line></svg>';
+
+        var dlg = document.createElement('div');
+        dlgGroup.appendChild(dlg);
+
+        dlg.id = dialog.id;
+        if(dialog.children) dlg.className = 'dlg with-children';
+        else dlg.className = 'dlg';
+
+        dlg.innerHTML =
+          '<div class="dlg-name">' + dialog.id + ',' + dialog.name + '</div>' +
+          '<div class="dlg-input">' + input + '</div>' +
+          '<div class="dlg-output">' + output.replace(/\\n/g, '\n') + '</div>';
+
+        if(dialog.output.buttons) {
+          for(var i in dialog.output.buttons) {
+            if(dialog.output.buttons[i].url) dlg.innerHTML += '<div class="bubble-button"><a href="' + dialog.output.buttons[i].url + '" target="_blank">' + dialog.output.buttons[i].text + '</a></div>';
+            else dlg.innerHTML += '<div class="bubble-button"><a ng-click="vm.sendMsg(\'' + dialog.output.buttons[i].text + '\')">' + dialog.output.buttons[i].text + '</a></div>';
+          }
+        }
+
+        var actionGroup = document.createElement('div');
+        dlg.appendChild(actionGroup);
+
+        var add = document.createElement('div');
+        actionGroup.appendChild(add);
+
+        add.innerText = '추가';
+        // add.onclick = function(e) {
+        //   addChild(dialog);
+        //   e.stopPropagation();
+        // };
+
+        dlg.onclick = function(e) {
+          console.log(i + ',' + dialog.id);
+          // angular.element(document.getElementById('control')).scope().findOne(dialog);
+          // e.stopImmediatePropagation();
+        };
+
+        if(dialog.children) {
+          var dlgChildren = document.createElement('div');
+          dlgChildren.className = 'dlg-children';
+
+          // _update(dialog.children, dlgChildren, depth+1);
+          dlgGroup.appendChild(dlgChildren);
+        }
+      }
+    }
+
+
+    function addObserver(target) {
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          // console.log(mutation.type + ', ' + target);
+          if(mutation.addedNodes || mutation.removeNodes) {
+            drawDialogLines(target);
           }
         });
-        vm.matchedEntities = topicList;
-      }else if(target == 'intent'){
-        angular.forEach(vm.intents, function(item) {
-          if (item.toUpperCase().indexOf(topicTerm.toUpperCase()) >= 0) {
-            topicList.push(item);
-          }
-        });
-        vm.matchedIntents = topicList;
+      });
+
+      var config = { childList: true };
+      observer.observe(target, config);
+    }
+
+    function drawDialogLines(target) {
+      var svgNode = target.childNodes[0];
+      svgNode.innerHTML = '';
+
+      var x1 = 0;
+      var y1 = 35;
+
+      var targetOffset = getOffset(target);
+      var last = target.childNodes[target.childNodes.length -1].childNodes[1];
+      var off2 = getOffset(last);
+      var x2 = 0;
+      var y2 = off2.top - targetOffset.top + 15;
+
+      svgNode.innerHTML = '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="black"/>';
+      svgNode.innerHTML += '<line x1="' + (x1 - 20) + '" y1="' + y1 + '" x2="' + x1+ '" y2="' + y1+'" stroke="black"/>';
+      svgNode.style.height = y2;
+    }
+
+    function getOffset( el ) {
+      var rect = el.getBoundingClientRect();
+      var offset = {x: 0, y: 0};
+      return {
+        left: rect.left + window.pageXOffset + offset.x,
+        top: rect.top + window.pageYOffset + offset.y,
+        width: rect.width || el.offsetWidth,
+        height: rect.height || el.offsetHeight
+      };
+    }
+
+    var _updateSelected = function(newd) {
+      if(selectedNode) {
+        var dlg = document.getElementById(selectedNode.id);
+        dlg.classList.remove('dlg-selected');
       }
+
+      selectedNode = newd;
+      // selectedSVG = baseSvg.selectAll(".node").filter(function(d) {
+      //   if (d.id === newd.id)
+      //     return true;
+      // });
+
+      var dlg = document.getElementById(selectedNode.id);
+      dlg.classList.add('dlg-selected');
+      // dlg.className += ' dlg-selected';
+
+      // _update(selectedNode);
+      // centerNode(selectedNode);
     };
 
-    vm.getTopicTextRaw = function(topic, inlineInput) {
-      if(vm.curI.str.indexOf('@') > -1){
-        inlineInput.push({type: 'Entity', str: topic});
-      }else if(vm.curI.str.indexOf('#') > -1){
-        inlineInput.push({type: 'Intent', str: topic});
-      }else if(vm.curI.str.indexOf(':') == 0){
-        inlineInput.push({type: 'RegExp', str: topic});
-      }
-      vm.curI.str = '';
-      return '';
-    };
 
-    $scope.inlineInputKeyDown = function (event, inlineInput) {
-      if(event.keyCode == 13 && (vm.curI.str.indexOf('@') != 0) && (vm.curI.str.indexOf('#') != 0) && (vm.curI.str.indexOf(':') != 0) && (vm.curI.str.indexOf('if ') != 0)){
-        event.preventDefault();
-        event.stopPropagation();
-        $http.get('/api/nluprocess/'+vm.curI.str).then(function (res) {
-          $scope.processedInput = res.data;
-          inlineInput.push({type: 'Keyword', str: $scope.processedInput});
-          vm.curI.str = '';
-          $scope.processedInput = '';
-        }, function (err) {
-          console.log(err);
-        });
-      }
-      if(event.keyCode == 13 && (vm.curI.str.indexOf(':') == 0)){
-        vm.curI.str = vm.curI.str.slice(1);
-        inlineInput.push({type: 'RegExp', str: vm.curI.str});
-        vm.curI.str = '';
-        $scope.processedInput = '';
-        event.preventDefault();
-        event.stopPropagation();
-      }
-      if(event.keyCode == 13 && (vm.curI.str.indexOf('if ') == 0)){
-        vm.curI.str = vm.curI.str.slice(2);
-        inlineInput.push({type: 'If', str: vm.curI.str});
-        vm.curI.str = '';
-        $scope.processedInput = '';
-        event.preventDefault();
-        event.stopPropagation();
-      }
-    };
-
+    document.getElementById('graph-group').addEventListener("keydown", keydown);
+    document.getElementById('graph-group').focus();
   }]
 )
 .directive('autoFocus', [ '$timeout', function ($timeout) {
   return {
-    // input filed autofocus에 사용
     restrict: 'A',
 
     link: function ($scope, $element, $attributes) {

@@ -1,12 +1,14 @@
 /************************** new **************************/
 body {
-    overflow-y: auto;
+    overflow-y: hidden;   // 메인 영역 스크롤
 }
 
 .content-body {
     margin-right: 330px !important;
     margin-left: 230px !important;
     padding: 20px;
+    height: 100%;   /* 메인 영역 스크롤 */
+    overflow: auto; /* 메인 영역 스크롤 */
 }
 
 html.fixed.sidebar-left-collapsed .content-body {
@@ -41,7 +43,10 @@ html.fixed.sidebar-left-collapsed .page-header {
 
 .header-right {height: 46px;}
 
-.inner-wrapper {padding-top: 90px !important;}
+.inner-wrapper {
+    padding-top: 90px !important;
+    height: 100%; // 메인 영역 스크롤
+}
 
 
 #content {
@@ -423,6 +428,18 @@ figure.profile-picture {display: none !important;}
 *:focus {
 outline: 0;
 outline: none;
+}
+
+#mybtn {
+    border-radius: 5px;
+    border: 1px solid #5bc0de;
+    padding: 3px;
+}
+
+.withborder {
+    border-radius: 5px;
+    border: 1px solid #5bc0de;
+    padding: 3px;
 }
 
 #modalForm {

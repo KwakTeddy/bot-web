@@ -7,20 +7,6 @@ angular.module('core').controller('MenuController', ['$scope', '$state', 'Authen
     $scope.authentication = Authentication;
     $scope.currentBot = '';
 
-    // $http.get('/api/bots/byNameId/' + $cookies.get('default_bot')).then(function (result) {
-    //   $scope.currentBot = result.data;
-    // }, function (err) {
-    //   console.log(err);
-    // });
-
-    BotsService.query({my: 1}, function (result) {
-      if(!result.length){
-        $scope.noBot = true;
-      }
-    }, function (err) {
-      console.log(err)
-    });
-
     function emitMsg(msg, target) {
       Socket.emit('send_msg', {
         bot: target.id,

@@ -15,7 +15,6 @@
         template: '<ui-view/>',
         data: {
           roles: ['user', 'enterprise', 'admin'],
-          botCheck: true
         }
       })
       .state('dialogsets.list', {
@@ -89,16 +88,14 @@
         }
       })
       .state('dialogsets.dialogsLearn', {
-        url: '/dialogsLearn/:botNameId/',
+        url: '/dialogsLearn/:botNameId/?listType',
         templateUrl: 'modules/dialogs/client/views/dialogs.client.view.html',
         controller: 'DialogsetDialogsLearnController',
         controllerAs: 'vm',
         resolve: {
           botResolve : getBot,
-          dialogsResolve: getDialogs
-        },
-        data: {
-          botCheck : true
+          dialogsResolve: getDialogs,
+          dialogsetsResolve: getDialogsets
         }
       })
   }
@@ -123,13 +120,17 @@
   getDialogsetDialogs.$inject = ['$stateParams', 'DialogsetDialogsService'];
   function getDialogsetDialogs($stateParams, DialogsetDialogsService) {
     return DialogsetDialogsService.query({
-      dialogsetId: $stateParams.dialogsetId
+      dialogsetId: $stateParams.dialogsetId,
+      currentPage: 0,
+      perPage: 50
     }).$promise;
   }
 
-  getBot.$inject = ['$http', '$cookies'];
-  function getBot($http, $cookies) {
-    return $http.get('/api/bots/byNameId/' + $cookies.get('default_bot'))
+  getBot.$inject = ['$http', '$cookies', 'BotsService'];
+  function getBot($http, $cookies, BotsService) {
+    return BotsService.get({
+      botId: $cookies.get('botObjectId')
+    }).$promise;
   }
 
   getDialogs.$inject = ['UserBotDialogService', '$cookies'];

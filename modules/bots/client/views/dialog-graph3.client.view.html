@@ -1,4 +1,103 @@
 <!DOCTYPE html>
+<style>
+  svg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    overflow: visible !important;
+  }
+
+  #graph-group {
+    /*posotion: relative;*/
+    padding:0 20px;
+  }
+
+  .dlg-graph {
+    /*overflow: auto;*/
+    position: relative;
+    width: 100%;
+    height: 100%;
+    /*padding: 0 20px;*/
+  }
+
+  .dlg-selected {
+    border: solid 3px !important;
+    background: lightgray !important;
+  }
+
+  .dlg-group {
+    white-space: nowrap;
+    position: relative;
+  }
+
+  .dlg-children {
+    display: inline-grid;
+    position: relative;
+  }
+
+  .dlg {
+    background: white;
+    width: 200px;
+    /*height: 100px;*/
+    border: 1px solid gray;
+    border-radius: 5px;
+    overflow: hidden;
+    /*float: left;*/
+    margin: 10px;
+    padding: 5px;
+    white-space: nowrap;
+    position: relative;
+  }
+  .dlg-oneline {
+    margin: 5px 10px;
+  }
+
+  .dlg-svg {
+    width: 100px;
+    height: 100px;
+  }
+
+  .dlg-name {
+    border-bottom: 1px solid;
+  }
+
+  .dlg-input {
+    border-bottom: 1px solid;
+  }
+
+  .dlg-output{
+    max-height: 160px;
+    white-space: pre-line;
+    overflow: hidden;
+  }
+
+  .dlg-selected .dlg-action {
+    display: block;
+  }
+
+  .dlg-action{
+    display: none;
+    padding-top: 10px;
+    border-top: 1px solid;
+  }
+
+  .dlg-action i {
+    float: left;
+    margin-right: 0.4em;
+    font-size: 1.3em;
+  }
+
+  .with-children{
+    display: inline-grid;
+  }
+
+  #dialog-line {
+    position: absolute;
+  }
+
+</style>
+
 <script>
   $(document).ready(function() {
     $('#dt').dataTable( {
@@ -281,15 +380,18 @@
                     </div>
                     <div class="col-sm-3">
                         <!--<label class="col-sm-2 control-label">Depth: </label>-->
-                        <div class="input-group mt-xs pull-right">
+                        <div class="input-group mt-xs pull-right" style="float: left;">
                             <input class="form-control"  type="text" ng-model="vm.depth" readonly>
                             <span class="input-group-btn">
                                 <button class="btn btn-default" ng-click="vm.addDepth()"><i class="fa fa-plus"></i></button>
                                 <button class="btn btn-default" ng-click="vm.minusDepth()"><i class="fa fa-minus"></i></button>
                                 <button class="btn btn-default" ng-click="vm.expandAll()"><i class="fa fa-expand"></i></button>
                                 <button class="btn btn-default" ng-click="vm.collapseAll()"><i class="fa fa-compress"></i></button>
+                                <button class="btn btn-default" ng-click="vm.zoomin()"><i class="fa fa-plus"></i></button>
+                                <button class="btn btn-default" ng-click="vm.zoomout()"><i class="fa fa-minus"></i></button>
                             </span>
                         </div>
+
                     </div>
                     <div class="col-sm-6">
                         <form>
@@ -304,10 +406,10 @@
                                 ng-click="vm.hideLink()" ><i class="fa fa-arrows-alt"> hide</i></button>
                         <button class="mt-xs mr-xs btn btn-default pull-right"
                                 ng-show="!vm.oneline"
-                                ng-click="vm.showOneline()" ><i class="fa fa-minus-square-o"> compact</i></button>
+                                ng-click="vm._showOneline()" ><i class="fa fa-minus-square-o"> compact</i></button>
                         <button class="mt-xs mr-xs btn btn-default pull-right"
                                 ng-show="vm.oneline"
-                                ng-click="vm.showDetail()" ><i class="fa fa-plus-square-o"> detailed</i></button>
+                                ng-click="vm._showDetail()" ><i class="fa fa-plus-square-o"> detailed</i></button>
                         <button class="mt-xs mr-xs btn btn-default pull-right"
                                 ng-show="!vm.dialog"
                                 ng-click="vm.showDialog()" ><i class="fa fa-book"> dialog</i></button>
@@ -316,7 +418,10 @@
                                 ng-click="vm.showCommon()" ><i class="fa fa-bookmark"> common</i></button>
                     </div>
                 </div>
-                <div id="tree-container" class="panel" width="100%" height="90%" style="margin-bottom:0px"></div>
+
+                <div id="graph-group"><div id="dialog-graph" class="dlg-graph"></div></div>
+
+                <div id="tree-container" class="panel" width="100%" height="90%" style="margin-bottom:0px; visibility: hidden"></div>
 
                 <a class="modal-with-form btn btn-default" style="display:none" ng-click="removeProcessedInput()" href="#modalForm">Open Form</a>
                 <a class="modal-with-task btn btn-default" style="display:none" href="#modalTaskForm">Open Form</a>
@@ -325,8 +430,6 @@
                 <a class="modal-with-intent btn btn-default" style="display:none" href="#modalIntentForm">Open Form</a>
                 <a class="modal-with-list btn btn-default" style="display:none" href="#modalListForm">Open Form</a>
                 <a class="modal-with-entity btn btn-default" style="display:none" href="#modalEntityForm">Open Form</a>
-
-
 
               <!-- Modal Form for Entity -->
               <div id="modalEntityForm" class="modal-block modal-block-primary mfp-hide">
@@ -456,7 +559,84 @@
               </div>
 
 
-                <!-- Modal Form for Intent -->
+                <!-- Modal Form for List-->
+                <div id="modalListForm" class="modal-block modal-block-primary mfp-hide">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            <h2 class="panel-title">List 수정</h2>
+                        </header>
+                        <div class="panel-body">
+                            <div class="form-group" style="margin-top: 15px;">
+                                <label class="col-sm-2" style="padding-left: 50px;">내용</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="listTitle" ng-model="listTitle" class="mb-xs form-control valid"
+                                           placeholder="타이틀을 적어주세요"
+                                           required=""
+                                           aria-required="true" aria-invalid="false">
+                                    <input type="text" id="listContent" ng-model="listContent" class="mb-xs form-control valid"
+                                           placeholder="컨텐츠를 적어주세요"
+                                           required=""
+                                           aria-required="true" aria-invalid="false">
+                                    <span class="btn btn-default btn-file" style="padding-bottom:4px;padding-top:4px">
+                                          <input type="file" nv-file-select uploader="imageUploader" style="width:100%;">
+                                          <i ng-cloak ng-show="vm.curO.filename != ''" class="fa fa-check-square pull-right"
+                                             style="margin-top: -22px;margin-right: -8px;font-size:20px" aria-hidden="true">
+                                          </i>
+                                    </span>
+                                </div>
+                                <div class="col-sm-1" style="margin-top:80px; padding-right: 0;right: 15px">
+                                    <button ng-click="saveListContent()" class="btn btn-default btn-block">+
+                                    </button>
+                                </div>
+                            </div>
+                            <div ng-show="contentError" class="text-danger text-center">
+                                <strong ng-bind="contentError"></strong>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 15px;margin-top: 15px">
+                                <div class="col-sm-12">
+                                    <table class="table table-bordered table-hover mb-none">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-center"></th>
+                                            <th class="text-center col-md-4">타이틀</th>
+                                            <th class="text-center col-md-4">내용</th>
+                                            <th class="text-center col-md-3">이미지</th>
+                                            <th class="text-center col-md-1">관리</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="item in vm.curO.list">
+                                            <td class="text-center">{{$index+1}}</td>
+                                            <td class="text-center">{{item.title}}</td>
+                                            <td class="text-center">{{item.content}}</td>
+                                            <td class="text-center">{{item.displayname}}</td>
+                                            <td>
+                                                <a class="btn btn-default btn-block btn-xs" ng-click="itemRemoveBeforeSave(item)" style="border: 0!important;">
+                                                    <i class="fa fa-minus" aria-hidden="true"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 15px" ng-show="contentListError" class="text-danger text-center">
+                                <strong ng-bind="contentListError"></strong>
+                            </div >
+                        </div>
+
+                        <footer class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <button class="btn btn-primary" ng-disabled='!vm.curO.list' ng-click="saveList()" >저장</button>
+                                    <button class="btn btn-default" ng-click="backToEdit(false)" >이전</button>
+                                </div>
+                            </div>
+                        </footer>
+                    </section>
+                </div>
+              <!-- Modal Form for Intent -->
               <div id="modalIntentForm" class="modal-block modal-block-primary mfp-hide">
                 <section class="panel">
                   <header class="panel-heading">
@@ -726,8 +906,7 @@
                     <div class = "row">
                       <div class="col-sm-8 form-control mb-xs" style="height:auto;margin-top: 10px;width: 90%">
                       <span ng-repeat="i in input track by $index">
-                        <!--<button id="inlineButton" class="btn btn-sm" ng-click="openEdit(i,input)" style="background-color: {{vm.getBtnColor(i.type)}}; border: 1px solid {{vm.getBtnBorderColor(i.type)}}; margin-bottom: 5px;margin-right: 2px">-->
-                        <button id="inlineButton" class="btn btn-sm" style="background-color: {{vm.getBtnColor(i.type)}}; border: 1px solid {{vm.getBtnBorderColor(i.type)}}; margin-bottom: 5px;margin-right: 2px">
+                        <button id="inlineButton" class="btn btn-sm" ng-click="openEdit(i,input)" style="background-color: {{vm.getBtnColor(i.type)}}; border: 1px solid {{vm.getBtnBorderColor(i.type)}}; margin-bottom: 5px;margin-right: 2px">
                           <span data-ng-if="i.type != 'RegExp'" style="color:{{vm.getIconColor(i.type)}};font-size:16px">{{vm.getIcon(i.type)}}</span>
                           <span data-ng-if="i.type == 'RegExp'" style="color:{{vm.getIconColor(i.type)}};font-size:16px;font-weight: bold">{{vm.getIcon(i.type)}}</span>
                           <span style="font-size: 13px">{{printInput(i)}}</span>
@@ -881,8 +1060,8 @@
                           </div>
                           <label class="col-sm-2 control-label">Text</label>
                           <div class="col-sm-10 mx-xs">
-                            <textarea rows="7" cols="50" id="text" name="text" ng-model="output.text" class="form-control" auto-focus>
-                            </textarea>
+                                        <textarea rows="4" cols="50" id="text" name="text" ng-model="output.text" class="form-control" auto-focus>
+                                        </textarea>
                           </div>
                       </div>
                       <div ng-show="vm.getOutputKind(output) == 'Content'" autofocus>
@@ -894,9 +1073,7 @@
                           <div class="col-sm-10 mb-xs">
                               <img src="{{output.image.url}}" width="100%" height="180">
                               <span class="btn btn-default btn-file" style="padding-bottom:4px;padding-top:4px">
-                                              <input
-                                                      ng-click="vm.setInput(output)"
-                                                      type="file" nv-file-select uploader="imageUploader" style="width:100%;">
+                                              <input type="file" nv-file-select uploader="imageUploader" style="width:100%;">
                                               <i ng-cloak
                                                  ng-show="output.image.url != undefined"
                                                  class="fa fa-check-square pull-right"
@@ -906,21 +1083,14 @@
                           </div>
                           <label class="col-sm-2 control-label">Text</label>
                           <div class="col-sm-10 mb-xs">
-                                        <textarea rows="7" cols="50" id="text" name="text" ng-model="output.text" class="form-control" auto-focus>
+                                        <textarea rows="4" cols="50" id="text" name="text" ng-model="output.text" class="form-control" auto-focus>
                                         </textarea>
                           </div>
                           <label class="col-sm-2 control-label">Button</label>
                           <div class="col-sm-10 mb-xs" >
-                              <div  ng-repeat="button in output.buttons">
-                                  <div id='mybtn' class="mb-xs">
-                                      <input type="text" ng-model="button.text" placeholder="text를 입력하세요" class="form-control">
-                                      <span class="icon pull-right" style="margin-left:-10px; margin-top:-25px; height:20px;line-height:20px">
-                                          <i ng-click="vm.removeButton(output, $index)" class="fa fa-1 fa-remove" style="color:red;"></i>
-                                      </span>
-                                      <input type="text" ng-model="button.url" placeholder='url을 입력하세요' class="form-control">
-                                  </div>
-                              </div>
-                              <button type="button" ng-click="vm.addButton(output)" class="btn btn-default" style="width: 100%"><i class="glyphicon glyphicon-plus"></i></button>
+                              <input ng-repeat="button in output.buttons" type="text" ng-model="button.text" class="form-control">
+                              <input type="text" class="form-control">
+                              <button type="button" ng-click="" class="btn btn-default" style="width: 100%"><i class="glyphicon glyphicon-plus"></i></button>
                           </div>
                       </div>
                       <div ng-show="vm.getOutputKind(output) == 'Action'" autofocus>
@@ -930,14 +1100,14 @@
                           </div>
                           <div class="input-group mb-xs" >
                               <div class="input-group-btn" id="outputButton" style="vertical-align: top">
-                                  <button tabindex="-1" class="btn" ng-class="vm.getButtonClass(vm.getActionType(output))" type="button">
-                                      {{vm.getActionType(output)}}
+                                  <button tabindex="-1" class="btn" ng-class="vm.getButtonClass('Call')" type="button">
+                                      Call
                                   </button>
-                                  <button tabindex="-1" data-toggle="dropdown" ng-class="vm.getButtonClass(vm.getActionType(output))" class="btn dropdown-toggle" type="button">
+                                  <button tabindex="-1" data-toggle="dropdown" ng-class="vm.getButtonClass('Call')" class="btn dropdown-toggle" type="button">
                                       <span class="caret"></span>
                                   </button>
                                   <ul role="menu" class="dropdown-menu">
-                                      <li ng-repeat="t in vm.actionList">
+                                      <li ng-repeat="t in ['Call','ReturnCall']">
                                           <a href="#" ng-click="setType(output, t)">
                                               {{t}}
                                           </a>
@@ -945,9 +1115,7 @@
                                   </ul>
                               </div>
                               <div>
-                                  <input ng-if="vm.getActionType(output) === 'Repeat' || vm.getActionType(output) === 'Up' || vm.getActionType(output) === 'Return'"
-                                         disabled class="form-control">
-                                  <ui-select ng-if="vm.getActionType(output) === 'Call'" ng-model="output.call"
+                                  <ui-select ng-model="output.dialog"
                                              theme="bootstrap"
                                              ng-disabled="vm.dialogList().length == 0"
                                              reset-search-input="true"
@@ -958,98 +1126,16 @@
                                           <div ng-bind-html="t | highlight: $select.search"></div>
                                       </ui-select-choices>
                                   </ui-select>
-                                  <ui-select ng-if="vm.getActionType(output) === 'CallChild'" ng-model="output.callChild"
-                                             theme="bootstrap"
-                                             ng-disabled="vm.dialogList().length == 0"
-                                             reset-search-input="true"
-                                             title="Dialog를 선택하세요">
-                                      <ui-select-match placeholder="Dialog 이름을 입력해주세요">{{$select.selected}}</ui-select-match>
-                                      <ui-select-choices repeat="t in vm.dialogList() | filter: $select.search track by $index"
-                                                         refresh-delay="0">
-                                          <div ng-bind-html="t | highlight: $select.search"></div>
-                                      </ui-select-choices>
-                                  </ui-select>
-                                  <ui-select ng-if="vm.getActionType(output) === 'ReturnCall'" ng-model="output.returnCall"
-                                             theme="bootstrap"
-                                             ng-disabled="vm.dialogList().length == 0"
-                                             reset-search-input="true"
-                                             title="Dialog를 선택하세요">
-                                      <ui-select-match placeholder="Dialog 이름을 입력해주세요">{{$select.selected}}</ui-select-match>
-                                      <ui-select-choices repeat="t in vm.dialogList() | filter: $select.search track by $index"
-                                                         refresh-delay="0">
-                                          <div ng-bind-html="t | highlight: $select.search"></div>
-                                      </ui-select-choices>
-                                  </ui-select>
-                              </div>
-                          </div>
-                          <label class="col-sm-2 control-label">Options</label>
-                          <div class="col-sm-10 mb-xs">
-                              <input type="text" id="option" name="option" ng-model="output.options.output" class="form-control">
-                          </div>
-                      </div>
-                      <div ng-show="vm.getOutputKind(output) == 'List'">
-                          <div  class="form-group" style="margin-top: 15px;" autofocus>
-                              <label class="col-sm-2" style="padding-left: 15px;">내용</label>
-                              <div class="col-sm-9">
-                                  <input type="text" id="listTitle" ng-model="vm.listTitle" class="mb-xs form-control valid"
-                                         placeholder="타이틀을 적어주세요"
-                                         required=""
-                                         aria-required="true" aria-invalid="false">
-                                  <input type="text" id="listContent" ng-model="vm.listContent" class="mb-xs form-control valid"
-                                         placeholder="컨텐츠를 적어주세요"
-                                         required=""
-                                         aria-required="true" aria-invalid="false">
-                                  <span class="btn btn-default btn-file" style="padding-bottom:4px;padding-top:4px">
-                                          <input
-                                                  ng-click="vm.setInput(vm.listImage)"
-                                                  type="file" nv-file-select uploader="imageUploader" style="width:100%;">
-                                          <i
-                                              ng-cloak ng-show="vm.listImage.image != undefined" class="fa fa-check-square pull-right"
-                                             style="margin-top: -22px;margin-right: -8px;font-size:20px" aria-hidden="true">
-                                          </i>
-                                    </span>
-                              </div>
-                              <div class="col-sm-1" style="margin-top:80px; padding-right: 0;right: 15px">
-                                  <button ng-click="saveListContent(output)" class="btn btn-default btn-block">+
-                                  </button>
-                              </div>
-                          </div>
-                          <div ng-show="vm.contentError" class="text-danger text-center">
-                              <strong ng-bind="vm.contentError"></strong>
-                          </div>
-
-                          <div class="form-group" style="margin-bottom: 15px;margin-top: 15px">
-                              <div class="col-sm-12">
-                                  <table class="table table-bordered table-hover mb-none">
-                                      <thead>
-                                      <tr>
-                                          <th class="text-center"></th>
-                                          <th class="text-center col-md-4">타이틀</th>
-                                          <th class="text-center col-md-3">내용</th>
-                                          <th class="text-center col-md-3">이미지</th>
-                                          <th class="text-center col-md-2">관리</th>
-                                      </tr>
-                                      </thead>
-                                      <tbody>
-                                      <tr ng-repeat="item in output.list">
-                                          <td class="text-center">{{$index+1}}</td>
-                                          <td class="text-center">{{item.title}}</td>
-                                          <td class="text-center">{{item.content}}</td>
-                                          <td class="text-center">{{item.displayname}}</td>
-                                          <td>
-                                              <a class="btn btn-default btn-block btn-xs" ng-click="itemRemoveBeforeSave(output.list,item)" style="border: 0!important;">
-                                                  <i class="fa fa-minus" aria-hidden="true"></i>
-                                              </a>
-                                          </td>
-                                      </tr>
-                                      </tbody>
-                                  </table>
                               </div>
                           </div>
                       </div>
-                      <div class="text-center">or</div>
+                      <div>
+                          {{output}}
+                      </div>
                   </div>
-                  <button type="button" ng-click="addOutput()" class="btn btn-default" style="width: 100%"><i class="glyphicon glyphicon-plus"></i></button>
+              </div>
+              <div class="col-sm-1 pull-down" style="padding-left: 0;padding-top: 3px">
+                  <button type="button" ng-click="addOutput()" class="mb-xs mr-xs btn btn-sm btn-default" style="border: none;"><i class="glyphicon glyphicon-plus"></i></button>
               </div>
           </div>
       </div>
@@ -1112,6 +1198,7 @@
     </div>
 
 </section>
+
 
 <link href="/lib/jstree/dist/themes/default/style.css" rel="stylesheet" type="text/css">
 

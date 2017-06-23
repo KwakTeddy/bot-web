@@ -1,36 +1,33 @@
 <header class="page-header">
-  <h2>개별 대화 학습</h2>
-
-  <div class="right-wrapper pull-right">
-    <ol class="breadcrumbs">
-      <li>
-        <a ui-sref="home">
-          <i class="fa fa-home"></i>
-        </a>
-      </li>
-      <li><span>대화Set-Dialog</span></li>
-    </ol>
-
-    <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
-  </div>
+  <h2>대화 학습</h2>
 </header>
+
+<div>
+  <ul class="nav nav-tabs">
+    <li role="presentation" ng-class="{active: vm.type == 'defaultDialogset'}"><a href="#" ng-click="vm.changeType('defaultDialogset');">기본 대화셋</a></li>
+    <li role="presentation" ng-class="{active: vm.type == 'additionalDialogset'}"><a href="#" ng-click="vm.changeType('additionalDialogset');">추가 대화셋</a></li>
+  </ul>
+</div>
 
 <section class="panel">
 
-  <div class="panel-body">
+  <div class="panel-body" data-ng-if="vm.type == 'defaultDialogset'">
 
-    <div style="margin-bottom: 15px;">
-      <input type="text" id="question" name="question" ng-model="vm.dialog.inputRaw" class="form-control valid" placeholder="질문"
-             aria-invalid="false" style="width: 43%;float: left;margin-right: 5px" ng-keydown="vm.keyDown($event)">
-      <input type="text" id="answer" name="answer" ng-model="vm.dialog.output" class="form-control valid" placeholder="답변"
-             aria-invalid="false"  style="width: 43%;float: left;margin-right: 5px" ng-keydown="vm.keyDown($event)">
-      <button type="submit" class="btn btn-primary" ng-submit="vm.createDialog()" ng-click="vm.createDialog()">추가</button>
+    <div style="margin-bottom: 15px;overflow: hidden">
+      <textarea type="text" id="question" name="question" ng-model="vm.dialog.inputRaw" class="form-control valid" placeholder="질문" rows="2"
+             aria-invalid="false" ng-blur="vm.textareaFocus(null, null, 'blur', 'question')" ng-focus="vm.textareaFocus(null, null, 'focus', 'question')" style="width: 43%;float: left;margin-right: 5px;resize: none">
+      </textarea>
+      <textarea type="text" id="answer" name="answer" ng-model="vm.dialog.output" class="form-control valid" placeholder="답변" rows="2"
+             aria-invalid="false" ng-blur="vm.textareaFocus(null, null, 'blur', 'answer')" ng-focus="vm.textareaFocus(null, null, 'focus', 'answer')" style="width: 43%;float: left;margin-right: 5px;resize: none">
+      </textarea>
+      <button type="submit" class="btn btn-primary" ng-submit="vm.createDialog()" ng-click="vm.createDialog()" style="height: 50px">추가</button>
     </div>
 
-    <div ng-repeat="dialog in vm.dialogs track by $index" ng-show="dialog.deleted == undefined" style="margin-bottom: 5px;">
-      <span style="width: 43%;float: left;margin-right: 5px">
-         <input type="text" ng-model="dialog.inputRaw" class="form-control valid" placeholder="질문" id = 'learnDialog_{{dialog._id}}'
-                aria-invalid="false" ng-blur="vm.updateDialog(dialog)" style="width: {{100-10*dialog.depth}}%;float: right">
+    <div ng-repeat="dialog in vm.dialogs track by $index" ng-show="dialog.deleted == undefined" style="margin-bottom: 5px;overflow: hidden">
+      <span style="width: 43%;float: left;margin-right: 5px;position: relative">
+         <textarea type="text" ng-model="dialog.inputRaw" class="form-control valid" placeholder="질문" id="textarea_question_{{$index}}" rows="2"
+                aria-invalid="false" ng-blur="vm.updateDialog(dialog);vm.textareaFocus('question', $index, 'blur')" ng-focus="vm.textareaFocus('question', $index, 'focus')" style="width: {{100-10*dialog.depth}}%;float: right; resize: none">
+         </textarea>
       </span>
 
       <!--<span style="width: 43%;float: left;margin-right: 5px">-->
@@ -38,11 +35,14 @@
          <!--<input type="text" ng-if="dialog.parent" ng-model="dialog.inputRaw" class="form-control valid" placeholder="질문" id = 'learnDialog_{{dialog._id}}'-->
                 <!--aria-invalid="false" ng-blur="vm.updateDialog(dialog)" style="width: 100%;float: right">-->
       <!--</span>-->
+      <span style="width: 43%;float: left;margin-right: 5px ;position: relative">
+        <textarea type="text" ng-model="dialog.output" class="form-control valid" placeholder="답변" rows="2" id="textarea_answer_{{$index}}"
+               aria-invalid="false" ng-blur="vm.updateDialog(dialog);vm.textareaFocus('answer', $index, 'blur')" ng-focus="vm.textareaFocus('answer', $index, 'focus')" style="resize: none">
+        </textarea>
+      </span>
 
-      <input type="text" ng-model="dialog.output" class="form-control valid" placeholder="답변"
-         aria-invalid="false" ng-blur="vm.updateDialog(dialog)"  style="width: 43%;float: left;margin-right: 5px">
-      <button class="btn btn-default" ng-click="vm.createDepthDialog(dialog, $index)"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
-      <button class="btn btn-default" ng-click="vm.removeDialog(dialog)" ><i class="glyphicon glyphicon-trash"></i></button>
+      <button class="btn btn-default" ng-click="vm.createDepthDialog(dialog, $index)" style="height: 50px;width: 5%"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+      <button class="btn btn-default" ng-click="vm.removeDialog(dialog)" style="height: 50px;width: 5%"><i class="glyphicon glyphicon-trash"></i></button>
     </div>
 
     <!--<div class="form-group">-->
@@ -72,6 +72,67 @@
 
     <!--</div>-->
     <!--</div>-->
+
+  </div>
+
+
+  <div class="panel-body" data-ng-if="vm.type == 'additionalDialogset'">
+    <table id="dt" datatable="ng" dt-options="vm.dtOptions" class="table table-bordered mb-none">
+      <thead>
+      <tr>
+        <!--<th class="text-center">봇아이디</th>-->
+        <th class="text-center">제목</th>
+        <th class="text-center">타입</th>
+        <th class="text-center">작성자</th>
+        <th class="text-center">등록일</th>
+        <th class="text-center">관리</th>
+        <th class="text-center">연결</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="dialogset in vm.dialogsets" ng-if="vm.listType !== 'public'">
+        <!--<td class="text-center">{{dialogset.bot.id}}</td>-->
+        <!--<td class="text-center"><a ui-sref="dialogsets.edit({dialogsetId: dialogset._id})">{{dialogset.title}}</a></td>-->
+        <td class="text-center"><a ng-click="vm.openInfoModal(dialogset)">{{dialogset.title}}</a></td>
+        <td class="text-center">{{dialogset.type}}</td>
+        <td class="text-center">{{dialogset.user ? dialogset.user.displayName : '장세영'}}</td>
+        <td class="text-center">{{dialogset.created | date: 'yyyy-MM-dd HH:mm'}}</td>
+        <td>
+          <a class="btn btn-default btn-sm btn-block" ui-sref="dialogsets.dialogs({dialogsetId: dialogset._id})" style="border: none">
+            <i class="glyphicon glyphicon-edit"></i> 대화관리
+          </a>
+        </td>
+        <td>
+          <a data-ng-if="!dialogset.connect" class="btn btn-default btn-sm btn-block" style="border: none" ng-click="vm.connectBot(dialogset)">
+            연결하기
+          </a>
+          <a data-ng-if="dialogset.connect" class="btn btn-danger btn-sm btn-block" style="border: none" ng-click="vm.disconnectBot(dialogset)">
+            연결끊기
+          </a>
+        </td>
+
+      </tr>
+
+      <!--<tr ng-repeat="dialogset in vm.dialogsets" ng-if="(vm.listType == 'public') && dialogset.public">-->
+        <!--&lt;!&ndash;<td class="text-center">{{dialogset.bot.id}}</td>&ndash;&gt;-->
+        <!--<td class="text-center"><a ui-sref="dialogsets.edit({dialogsetId: dialogset._id})">{{dialogset.title}}</a></td>-->
+        <!--<td class="text-center">{{dialogset.type}}</td>-->
+        <!--<td class="text-center">{{dialogset.user ? dialogset.user.displayName : '장세영'}}</td>-->
+        <!--<td class="text-center">{{dialogset.created | date: 'yyyy-MM-dd HH:mm:ss'}}</td>-->
+        <!--<td>-->
+          <!--<a class="btn btn-default btn-sm btn-block" ui-sref="dialogsets.dialogs({dialogsetId: dialogset._id})" style="border: none">-->
+            <!--<i class="glyphicon glyphicon-edit"></i> 대화관리-->
+          <!--</a>-->
+        <!--</td>-->
+        <!--<td>-->
+          <!--<a class="btn btn-default btn-sm btn-block" ui-sref="dialogsets.dialogs({dialogsetId: dialogset._id})" style="border: none">-->
+            <!--<i class="glyphicon glyphicon-edit"></i> 연결하기-->
+          <!--</a>-->
+        <!--</td>-->
+      <!--</tr>-->
+      </tbody>
+    </table>
+
 
   </div>
 

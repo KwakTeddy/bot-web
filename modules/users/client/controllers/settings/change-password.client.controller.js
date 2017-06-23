@@ -32,7 +32,11 @@ angular.module('users').controller('ChangePasswordController', ['$scope', '$http
             $state.go('homeMobile');
           });
         }else if(confirm('비밀번호가 성공적으로 변경되었습니다')){
-          $state.go('home')
+          if(window.location.href.indexOf('developer') > -1){
+            $state.go('developer-home')
+          }else {
+            $state.go($state.previous.state.name || 'home', $state.previous.params);
+          }
         }
       }).error(function (response) {
           console.log(response);
