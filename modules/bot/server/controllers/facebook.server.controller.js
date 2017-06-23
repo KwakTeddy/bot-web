@@ -93,6 +93,7 @@ function receivedMessage(event) {
                   }
                   chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
                     console.log(util.inspect(retText));
+                    console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
                     respondMessage(senderID, retText, event.botId, task);
                   });
                 }
