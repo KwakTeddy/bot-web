@@ -683,6 +683,8 @@ function executeDialog(dialog, context, print, callback, options) {
     }
   }
 
+  if(dialog.output == undefined && dialog.text) dialog.output = dialog.text;
+
   if(!(dialog.output && dialog.output.repeat && dialog.output.options && dialog.output.options.page) && !(options && options.page)) {
     context.dialog.page = null; context.dialog.numOfPage  = null;
   }
@@ -741,6 +743,7 @@ function executeDialog(dialog, context, print, callback, options) {
     },
 
     function(cb) {
+
       var nextOptions = {};
       if(options && (options.prefix || options.output || options.postfix || options.commonCallChild)) {
         // if(dialog.output.constructor == String) dialog.output = {output: dialog.output, options: {}};
