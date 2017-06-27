@@ -52,3 +52,4 @@ module.exports = {
   chatServer: '../bot-server/',
   callcenter: '15777314'
 };
+var as= '[신한카드 YOLO ⓘ]\n카드가 딱이네요!\n\n✔ 6개 선택처 할인율 선택(커피,택시,편의점,베이커리,소셜커머스,영화)\n✔ 카드 디자인 선택\n✔ 분기별 Bonus 모바일 쿠폰\n\n자세한 내용을 보시려면 아래의 링크를 클릭해 주세요.\n\n 유의사항 \nwww.moneybrain.ai'
