@@ -6,6 +6,7 @@ var util = require('util');
 
 exports.message =  function(req, res) {
   console.log("navertalk message");
+  console.log(util.inspect(req.body));
 
     // default response
     var response = {
