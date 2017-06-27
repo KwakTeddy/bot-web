@@ -175,9 +175,9 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
         } else {
           dialog.matchGlobalDialogs(inTextRaw, inTextNLP, context.bot.dialogs, context, print, function(matched, _dialog) {
             if(matched) {
-              if(_dialog) console.log('[DIALOG_SEL]' + JSON.stringify({id: _dialog.id, name: _dialog.name, input: _dialog.input,
-                context: context.botUser.context ? context.botUser.context.path : '', intent: context.botUser.intent,
-                entities: context.botUser.entities}));
+              // if(_dialog) console.log('[DIALOG_SEL]' + JSON.stringify({id: _dialog.id, name: _dialog.name, input: _dialog.input,
+              //   context: context.botUser.context ? context.botUser.context.path : '', intent: context.botUser.intent,
+              //   entities: context.botUser.entities}));
 
               if(_dialog && context.bot.startDialog.name == _dialog.name) {
                 context.botUser.currentDialog = null;

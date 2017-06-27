@@ -1813,7 +1813,9 @@ angular.module('bots').controller('DialogTreeController', ['$scope', '$rootScope
         selectedNode.task = $scope.dialog.task.name || $scope.dialog.task.template;
       else
         selectedNode.task = $scope.dialog.task;
-      selectedNode.output = restoreOutput($scope.dialog.output);
+
+      var _o = restoreOutput($scope.dialog.output);
+      selectedNode.output = Array.isArray(_o) ? _o[0]: _o;
       //selectedNode.output = $scope.dialog.output;
 
       selectedSVG.remove();

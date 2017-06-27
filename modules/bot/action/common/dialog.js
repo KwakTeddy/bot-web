@@ -637,7 +637,12 @@ exports.matchDialogs = matchDialogs;
 // exports.matchContext = matchContext;
 
 function executeDialog(dialog, context, print, callback, options) {
-  if(dialog.name || dialog.input) logger.debug('executeDialog: ' + toDialogString(dialog) + ' options= ' + (options?options.prefix: ''));
+  if(dialog.name || dialog.input) {
+    logger.debug('executeDialog: ' + toDialogString(dialog) + ' options= ' + (options?options.prefix: ''));
+    if(dialog) console.log('[DIALOG_SEL]' + JSON.stringify({id: dialog.id, name: dialog.name, input: dialog.input,
+        context: context.botUser.context ? context.botUser.context.path : '', intent: context.botUser.intent,
+        entities: context.botUser.entities}));
+  }
 
   // context.botUser.currentDialog = null;
   context.user.pendingCallback = null;
