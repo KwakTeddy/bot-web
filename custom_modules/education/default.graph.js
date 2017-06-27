@@ -10,7 +10,7 @@ var dialogs = [
 				"intent": "배고픔"
 			}
 		],
-		"output": "1, 치킨2, 피자",
+		"output": "배가 고프신가요? 제가 주문을 해드리겠습니다. 다음 중 어떤 것을 먹고 싶으신가요? 1.치킨 2.피자",
 		"name": "음식 카테고리",
 		"children": [
 			{
@@ -28,8 +28,8 @@ var dialogs = [
 				"output": {
 					"output": "치킨입니다",
 					"image": {
-						"url": "/files/junhabot1498453702728.jpg",
-						"displayname": "llllll1498453363946.jpg"
+						"url": "/files/education1498453537934.jpg",
+						"displayname": "card04.jpg"
 					}
 				}
 			},
@@ -48,20 +48,9 @@ var dialogs = [
 				"output": {
 					"output": "피자입니다",
 					"image": {
-						"url": "/files/junhabot1498453741942.jpg",
-						"displayname": "이벤트.jpg"
-					},
-					"text": "피자입니다"
-				},
-				"inRaw": "피자",
-				"inNLP": "피자",
-				"task": {
-					"output": "피자입니다",
-					"image": {
-						"url": "/files/junhabot1498453741942.jpg",
-						"displayname": "이벤트.jpg"
-					},
-					"text": "피자입니다"
+						"url": "/files/education1498453732955.jpg",
+						"displayname": "card04.jpg"
+					}
 				}
 			},
 			{
@@ -76,7 +65,7 @@ var dialogs = [
 				"output": {
 					"repeat": "1",
 					"options": {
-						"output": "치킨이나 피자 중에 선택해주세요"
+						"output": "치킨이나 피자중에 선택해주세요"
 					}
 				}
 			}
@@ -124,24 +113,9 @@ var dialogs = [
 			"buttons": [
 				{
 					"text": "배고파"
-				}
-			],
-			"output": "배고팡?"
-		}
-	},
-	{
-		"name": "dialog_default7",
-		"id": "default7",
-		"filename": "default",
-		"input": [
-			{
-				"text": "유알"
-			}
-		],
-		"output": {
-			"buttons": [
+				},
 				{
-					"text": "유알엘",
+					"text": "주문하기",
 					"url": "www.moneybrain.ai"
 				}
 			]
@@ -159,16 +133,31 @@ var commonDialogs = [
 				"text": "시작"
 			}
 		],
-		"output": "junhabot 입니다."
+		"output": "education 입니다."
 	},
 	{
 		"id": "defaultcommon1",
 		"filename": "defaultcommon",
 		"name": "답변없음",
-		"input": "",
+		"input": [
+			{
+				"text": ""
+			}
+		],
 		"output": "알아듣지 못했습니다"
+	},
+	{
+		"name": "피자3",
+		"id": "commondefault6",
+		"filename": "defaultcommon",
+		"input": [
+			{
+				"text": "피자"
+			}
+		],
+		"output": "공통피자입니다"
 	}
 ];
-var _bot = require(require('path').resolve("config/lib/bot")).getBot('junhabot');
+var _bot = require(require('path').resolve("config/lib/bot")).getBot('education');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

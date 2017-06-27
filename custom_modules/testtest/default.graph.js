@@ -10,8 +10,8 @@ var dialogs = [
 				"intent": "배고픔"
 			}
 		],
-		"output": "1, 치킨2, 피자",
-		"name": "음식 카테고리",
+		"output": "배고프세요 1, 치킨 2, 피자",
+		"name": "음식카테고리",
 		"children": [
 			{
 				"name": "치킨",
@@ -26,16 +26,16 @@ var dialogs = [
 					}
 				],
 				"output": {
-					"output": "치킨입니다",
+					"output": "치킨을주문해드리겠습니다.",
 					"image": {
-						"url": "/files/junhabot1498453702728.jpg",
-						"displayname": "llllll1498453363946.jpg"
+						"url": "/files/testtest1498453647934.png",
+						"displayname": "Capture001.png"
 					}
 				}
 			},
 			{
 				"name": "피자",
-				"id": "default2",
+				"id": "default3",
 				"filename": "default",
 				"input": [
 					{
@@ -46,27 +46,16 @@ var dialogs = [
 					}
 				],
 				"output": {
-					"output": "피자입니다",
+					"output": "피자를주문해드리겠습니다.",
 					"image": {
-						"url": "/files/junhabot1498453741942.jpg",
-						"displayname": "이벤트.jpg"
-					},
-					"text": "피자입니다"
-				},
-				"inRaw": "피자",
-				"inNLP": "피자",
-				"task": {
-					"output": "피자입니다",
-					"image": {
-						"url": "/files/junhabot1498453741942.jpg",
-						"displayname": "이벤트.jpg"
-					},
-					"text": "피자입니다"
+						"url": "/files/testtest1498453730237.png",
+						"displayname": "스크린샷 2017-04-17 15.58.57.png"
+					}
 				}
 			},
 			{
 				"name": "미선택",
-				"id": "default5",
+				"id": "default6",
 				"filename": "default",
 				"input": [
 					{
@@ -76,7 +65,7 @@ var dialogs = [
 				"output": {
 					"repeat": "1",
 					"options": {
-						"output": "치킨이나 피자 중에 선택해주세요"
+						"output": "치킨이나 피자중에 선택해"
 					}
 				}
 			}
@@ -84,7 +73,7 @@ var dialogs = [
 	},
 	{
 		"name": "치킨2",
-		"id": "default3",
+		"id": "default4",
 		"filename": "default",
 		"input": [
 			{
@@ -96,11 +85,12 @@ var dialogs = [
 		],
 		"output": {
 			"call": "치킨"
-		}
+		},
+		"task": "defaultTask"
 	},
 	{
 		"name": "피자2",
-		"id": "default4",
+		"id": "default5",
 		"filename": "default",
 		"input": [
 			{
@@ -112,8 +102,8 @@ var dialogs = [
 		}
 	},
 	{
-		"name": "dialog_default6",
-		"id": "default6",
+		"name": "버튼",
+		"id": "default7",
 		"filename": "default",
 		"input": [
 			{
@@ -124,25 +114,10 @@ var dialogs = [
 			"buttons": [
 				{
 					"text": "배고파"
-				}
-			],
-			"output": "배고팡?"
-		}
-	},
-	{
-		"name": "dialog_default7",
-		"id": "default7",
-		"filename": "default",
-		"input": [
-			{
-				"text": "유알"
-			}
-		],
-		"output": {
-			"buttons": [
+				},
 				{
 					"text": "유알엘",
-					"url": "www.moneybrain.ai"
+					"url": "www.moneybrain.먀"
 				}
 			]
 		}
@@ -159,7 +134,7 @@ var commonDialogs = [
 				"text": "시작"
 			}
 		],
-		"output": "junhabot 입니다."
+		"output": "testtest 입니다."
 	},
 	{
 		"id": "defaultcommon1",
@@ -169,6 +144,6 @@ var commonDialogs = [
 		"output": "알아듣지 못했습니다"
 	}
 ];
-var _bot = require(require('path').resolve("config/lib/bot")).getBot('junhabot');
+var _bot = require(require('path').resolve("config/lib/bot")).getBot('testtest');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);
