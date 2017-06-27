@@ -73,6 +73,14 @@
   <link rel="stylesheet" href="/lib/pnotify/dist/pnotify.css">
   <link rel="stylesheet" href="/lib/pnotify/dist/pnotify.buttons.css">
 
+  <style>
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0.0; }
+      100% { opacity: 1; }
+    }
+  </style>
+
   <script>
     var mobileKeyWords = new Array('iPhone', 'iPod', 'BlackBerry', 'Android', 'Windows CE', 'LG', 'MOT', 'SAMSUNG', 'SonyEricsson');
     //    for (var word in mobileKeyWords){
@@ -104,6 +112,9 @@
 
 </head>
 <body>
+<div data-ng-controller="LoadingSecreenController" data-ng-hide="loadingFinished" id="loading-screen" style="background: white;position: fixed; top: 0;left: 0;height: 100%;width: 100%;z-index: 999999;opacity: 1; transition: opacity .5s ease">
+  <div class="logo" style="display: block;width: 209px;height: 80px;background-repeat: no-repeat;background-image: url(images/playchat/playchat_logo.png);background-size: contain;position:absolute; top: 50%;left: 50%;margin: -40px 0 0 -105px; animation: blink normal 2s infinite ease-in-out"></div>
+</div>
 <section id = 'developer-body' class="body" >
   <section ng-include="'/modules/core/client/views/header.client.view.html'"></section>
   <div class="inner-wrapper">

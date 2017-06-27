@@ -7,8 +7,10 @@ angular.module('core').controller('LandingBotsController', ['$scope', '$state', 
   $timeout(function () {
     document.getElementById('sidebar-left').style.display = 'none';
     document.getElementById('chat-include').style.display = 'none';
+    document.getElementById('log-button').style.display = 'none';
+    document.getElementById('intent-button').style.display = 'none';
     document.getElementById('main').classList.remove('content-body');
-  })
+  });
   $scope.myBot = '';
   $scope.copyTargetBot = {};
   $scope.deleteInput = '';
@@ -91,6 +93,7 @@ angular.module('core').controller('LandingBotsController', ['$scope', '$state', 
       $scope.$broadcast('show-errors-check-validity', 'botForm');
       return false;
     }
+    document.getElementById('loading-screen').style.setProperty("display", "block", "important")
 
     // default settings
     $scope.newBot.isMakeFile = true;
@@ -111,9 +114,9 @@ angular.module('core').controller('LandingBotsController', ['$scope', '$state', 
       $cookies.put('default_bot', response.id);
       $cookies.put('botObjectId', response._id);
       $state.go('dialogsets.dialogsLearn');
-      $timeout(function () {
+      $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
         $window.location.reload();
-      }, 100)
+      });
     }, function (errorResponse) {
       $scope.error = errorResponse.data.message;
     });
@@ -151,6 +154,7 @@ angular.module('core').controller('LandingBotsController', ['$scope', '$state', 
   $scope.selectBot = function (bot) {
     $cookies.put('default_bot', bot.id);
     $cookies.put('botObjectId', bot._id);
+    document.getElementById('loading-screen').style.setProperty("display", "block", "important");
     $state.go('dialogsets.dialogsLearn');
     $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
       $window.location.reload();

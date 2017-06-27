@@ -3,6 +3,8 @@
 angular.module('users').controller('AuthenticationController', ['$scope', '$state', '$http', '$location', '$window', 'Authentication', 'PasswordValidator', '$uibModal',
     '$ionicModal', '$rootScope', '$ionicSideMenuDelegate', '$stateParams', '$ionicPopup', '$cookies', '$timeout',
   function ($scope, $state, $http, $location, $window, Authentication, PasswordValidator, $uibModal, $ionicModal, $rootScope, $ionicSideMenuDelegate, $stateParams, $ionicPopup, $cookies, $timeout) {
+    var vm = this;
+
     $scope.authentication = Authentication;
     $scope.popoverMsg = PasswordValidator.getPopoverMsg();
     $scope.credentials = {};
@@ -18,6 +20,12 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
       $scope.authenticationSignin = 'user-bots-web.authentication.signin';
 
     } else {
+      $timeout(function () {
+        document.getElementById('sidebar-left').style.display = 'none';
+        document.getElementById('chat-include').style.display = 'none';
+        document.getElementById('log-button').style.display = 'none';
+        document.getElementById('intent-button').style.display = 'none';
+      });
       $scope.passwordForgot = 'password.forgot';
       $scope.authenticationSignup = 'authentication.signup';
       $scope.authenticationSignin = 'authentication.signin';
@@ -28,7 +36,11 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         if (_platform == 'mobile'){
             $state.go('homeMobile')
         }else {
-            $state.go('home');
+            if(window.location.href.indexOf('developer') > -1){
+              $state.go('developer-home')
+            }else {
+              $state.go($state.previous.state.name || 'home', $state.previous.params);
+            }
         }
     }
 
@@ -38,7 +50,11 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
           if (_platform == 'mobile'){
               $state.go('homeMobile')
           }else {
-              $state.go('home');
+              if(window.location.href.indexOf('developer') > -1){
+                $state.go('developer-home')
+              }else {
+                $state.go($state.previous.state.name || 'home', $state.previous.params);
+              }
           }
       }
       $scope.error = {};
@@ -47,6 +63,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         $scope.$broadcast('show-errors-check-validity', 'userForm');
         return false;
       }
+      document.getElementById('loading-screen').style.setProperty("display", "block", "important");
 
       $http.post('/api/auth/signup', $scope.credentials).success(function (response) {
           console.log(response);
@@ -62,8 +79,10 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                 $state.go('homeMobile');
             });
         } else {
+            document.getElementById('loading-screen').style.setProperty("display", "none", "important")
             var modalInstance = $uibModal.open({
                 templateUrl: 'modules/users/client/views/authentication/email.confirm.modal.html',
+                backdrop: 'static',
                 scope: $scope
             });
             $scope.close = function () {
@@ -81,6 +100,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                     templateUrl: 'modules/users/client/views/authentication/email.confirm.resend.modal.html',
                     scope: $scope
                 });
+
+
                 $http.post('/api/auth/signin', {resendEmail: $scope.credentials.email}).success(function (response) {
                     console.log(response);
                     modalInstanceSecond.result.then(function (response) {
@@ -102,6 +123,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         }
 
       }).error(function (response) {
+        document.getElementById('loading-screen').style.setProperty("display", "none", "important")
         console.log(response);
         if(response.message.match('가입되어 있는 E-mail이네요')){
             $scope.error.email = response.message;
@@ -109,6 +131,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             $scope.error.email = response.message;
         } else if(response.message.match('Failure sending email')) {
           $scope.error.email = '회원가입은 되었지만 E-mail 인증 메일 보내기에 실패했어요. 관리자에게 문의해주세요.'
+        } else if(response.message.match('valid email')){
+          $scope.error.email = '유효한 형식의 이메일이 아니에요'
         }
       });
     };
@@ -117,7 +141,6 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
     var parsedString = stingParser.split('.');
 
     $scope.privacy = function () {
-      console.log(123);
       var modalInstance = $uibModal.open({
           templateUrl: 'modules/users/client/views/authentication/signup.client.privacy.view.html',
           scope: $scope
@@ -204,8 +227,13 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                   console.log(response);
               });
               $scope.close = function () {
+                console.log(window.location.href);
                   modalInstance.dismiss();
-                  $state.go('home');
+                if(window.location.href.indexOf('developer') > -1){
+                  $state.go('developer-home')
+                }else {
+                  $state.go($state.previous.state.name || 'home', $state.previous.params);
+                }
               };
               $scope.resend = function () {
                   modalInstance.dismiss();
@@ -218,7 +246,11 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                       modalInstanceSecond.result.then(function (response) {
                           console.log(response);
                       });
-                      $state.go('home');
+                      if(window.location.href.indexOf('developer') > -1){
+                        $state.go('developer-home')
+                      }else {
+                        $state.go($state.previous.state.name || 'home', $state.previous.params);
+                      }
 
                   }).error(function (response) {
                       console.log(response)
