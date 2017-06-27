@@ -14,6 +14,7 @@ module.exports = function (app) {
   app.route('/:url(api|modules|lib)/*').get(core.renderNotFound);
 
   app.route('/facebookOvertext/:index').get(core.fbOvertext);
+  app.route('/notice').get(core.notice);
 
   // Define application route
   app.route('/*').get(core.renderIndex);

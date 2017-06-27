@@ -138,6 +138,7 @@ function respondMessage(response, text, task, res) {
 function sendTextMessage(response, text, task, res) {
   response.request['textContent'] = {text: ''};
   response.request.textContent.text = text;
+  console.log(util.inspect(response, {showHidden: false, depth: null}))
   res.json(response)
 }
 
@@ -147,6 +148,7 @@ function sendImageMessage(response, text, task, res) {
   }
   response.request['imageContent'] = {imageUrl: '', height: '594', width: '420'};
   response.request.imageContent.imageUrl = task.image.url;
+  console.log(util.inspect(response, {showHidden: false, depth: null}))
   res.json(response)
 }
 
