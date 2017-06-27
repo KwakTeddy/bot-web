@@ -78,14 +78,13 @@
            infinite-scroll-distance="0"
            infinite-scroll-disabled="vm.pagingEnd"
            infinite-scroll-container='"#main"'>
+
         <!--<div name="groupDiv" ng-repeat="dialogGroup in vm.dialogsetDialogs" ng-show="dialogGroup.deleted == undefined" style="margin: 20px;border: 1px solid red;margin-bottom: 5px;overflow: hidden" id="textarea_{{$index}}">-->
           <!--<div name="randomGroupDiv" data-ng-repeat="randomGroupDialog in dialogGroup.data | orderByDepth: 'depth'" style="margin: 20px;border: 1px solid blue">-->
             <!--<div name="dialogDiv" data-ng-repeat="dialog in randomGroupDialog.data" style="margin: 20px;border: 1px solid green">-->
               <!--{{dialog.inputRaw}}-->
             <!--</div>-->
           <!--</div>-->
-
-
         <!--</div>-->
 
         <div ng-repeat="dialog in vm.dialogsetDialogs" ng-show="dialog.deleted == undefined" style="margin-bottom: 5px;overflow: hidden" id="textarea_{{$index}}">

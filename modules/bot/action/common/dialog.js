@@ -766,7 +766,7 @@ function executeDialog(dialog, context, print, callback, options) {
         dialog.output(dialog, context, print, callback);
         cb(true);
 
-      } else if(dialog.output.constructor == Object && dialog.output.text == undefined) {
+      } else if(dialog.output && dialog.output.constructor == Object && dialog.output.text == undefined) {
         var _dialog, _output;
 
         var _execDialog = function(_dialog, outputName) {
