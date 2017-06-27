@@ -18,7 +18,12 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
       $scope.authenticationSignin = 'user-bots-web.authentication.signin';
 
     } else {
-
+      $timeout(function () {
+        document.getElementById('sidebar-left').style.display = 'none';
+        document.getElementById('chat-include').style.display = 'none';
+        document.getElementById('log-button').style.display = 'none';
+        document.getElementById('intent-button').style.display = 'none';
+      });
       $scope.passwordForgot = 'password.forgot';
       $scope.authenticationSignup = 'authentication.signup';
       $scope.authenticationSignin = 'authentication.signin';
@@ -141,13 +146,17 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             $rootScope.closeSigninModal();
             $state.go($state.previous.state.name || 'homeMobile', $state.previous.params);
         }else {
-          console.log(window.location.href);
-          console.log(window.location.href.indexOf('developer'));
           if(window.location.href.indexOf('developer') > -1){
             $state.go('developer-home')
+            $rootScope.$on('$stateChangeSuccess', function() {
+              $window.location.reload()
+            });
           }else {
             // $state.go('developer-home')
             $state.go($state.previous.state.name || 'home', $state.previous.params);
+            $rootScope.$on('$stateChangeSuccess', function() {
+              $window.location.reload()
+            });
           }
         }
 
