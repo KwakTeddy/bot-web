@@ -28,6 +28,11 @@ var dialogs = [
 					}
 				],
 				"output": "정답입니다! 저도 고객님을 젤 좋아합니다 ♥♥ \n\n'나도' 라고 입력하시면 다음 퀴즈를 낼게요.",
+				"task": {
+					"name": "resetcount"
+				},
+				"inRaw": "바보야",
+				"inNLP": "바보 야",
 				"children": [
 					{
 						"name": "퀴즈2",
@@ -275,12 +280,7 @@ var dialogs = [
 						"inRaw": "ㅇ",
 						"inNLP": "ㅇ"
 					}
-				],
-				"task": {
-					"name": "resetcount"
-				},
-				"inRaw": "바보야",
-				"inNLP": "바보 야"
+				]
 			},
 			{
 				"name": "정답한계1",
@@ -557,6 +557,8 @@ var dialogs = [
 						}
 					]
 				},
+				"inRaw": "포인트",
+				"inNLP": "포인트",
 				"children": [
 					{
 						"name": "FAN페이 결제 이용가이드",
@@ -861,9 +863,7 @@ var dialogs = [
 							}
 						}
 					}
-				],
-				"inRaw": "포인트",
-				"inNLP": "포인트"
+				]
 			},
 			{
 				"name": "납부 서비스_",
@@ -1014,7 +1014,7 @@ var dialogs = [
 									}
 								],
 								"output": {
-									"output": "[신한카드 YOLO ⓘ]\n카드가 딱이네요!\n\n✔ 6개 선택처 할인율 선택(커피,택시,편의점,베이커리,소셜커머스,영화)\n✔ 카드 디자인 선택\n✔ 분기별 Bonus 모바일 쿠폰\n\n자세한 내용을 보시려면 아래의 링크를 클릭해 주세요.\n\n <a href=\"www.moneybrain.ai\">유의사항</a>",
+									"output": "[신한카드 YOLO ⓘ]\n카드가 딱이네요!\n\n✔ 6개 선택처 할인율 선택(커피,택시,편의점,베이커리,소셜커머스,영화)\n✔ 카드 디자인 선택\n✔ 분기별 Bonus 모바일 쿠폰\n\n자세한 내용을 보시려면 아래의 링크를 클릭해 주세요.\n\n 유의사항 \n https://shinhancard.moneybrain.ai/notice",
 									"image": {
 										"url": "/files/Shinhancard1496222852475.jpg",
 										"displayname": "card01.jpg"
