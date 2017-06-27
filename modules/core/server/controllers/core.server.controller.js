@@ -124,6 +124,6 @@ exports.fbOvertext = function (req, res) {
 exports.notice = function (req, res) {
   res.render('modules/core/server/views/notice', {
     text: '[유의사항] \n- 계약 체결 전 상품에 관한 상세한 사항은 상품설명서 및 약관을 읽어보시기 바랍니다. \n- 연체 이자율은 연체일수 및 약정금리에 따라 23.0~27.9%가 적용됩니다. \n- 신용카드 남용은 가계경제에 위협이 됩니다. \n- 수신거부 080-800-8114(무료) \n- 여신협회 심의필번호 제 2017-000-00000호',
-    enterpriseName: config.enterprise.name ? config.enterprise.name : 'Moneybrain'
+    enterpriseName: '신한카드'
   });
 };
