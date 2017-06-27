@@ -18,6 +18,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
       $scope.authenticationSignin = 'user-bots-web.authentication.signin';
 
     } else {
+
       $scope.passwordForgot = 'password.forgot';
       $scope.authenticationSignup = 'authentication.signup';
       $scope.authenticationSignin = 'authentication.signin';
