@@ -19,7 +19,9 @@ exports.message =  function(req, res) {
     };
     var from = req.body.user;
     console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-    console.log(util.inspect(req.body.options.inflow));
+    if(req.body.options && req.body.options.inflow){
+      console.log(util.inspect(req.body.options.inflow));
+    }
 
     switch(req.body.event) {
       // 메시지 전송 이벤트 처리
