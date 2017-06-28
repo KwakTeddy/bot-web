@@ -6,7 +6,6 @@ var util = require('util');
 
 exports.message =  function(req, res) {
   console.log("navertalk message");
-  console.log(util.inspect(req.params));
 
     // default response
     var response = {
@@ -24,7 +23,7 @@ exports.message =  function(req, res) {
       // 메시지 전송 이벤트 처리
       case 'send' :
         if(req.body.sender == 'user' && req.body.textContent) {
-          chat.write('navertalk', from, 'Shinhancard', req.body.textContent.text, req.body, function (serverText, json) {
+          chat.write('navertalk', from, req.params.bot, req.body.textContent.text, req.body, function (serverText, json) {
             respondMessage(response, serverText, json, res);
           });
         } else {
