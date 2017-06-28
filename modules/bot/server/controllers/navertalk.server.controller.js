@@ -80,6 +80,7 @@ function respondMessage(response, text, task, res) {
   console.log(util.inspect(task), {showHidden: false, depth: null});
   console.log('+++++++++++++++++++++++++++++++++++++++');
   if (task && task.result) {
+    console.log(util.inspect(task.result.items), {showHidden: false, depth: null});
     switch (Object.keys(task.result).toString()) {
       case 'image':
         sendImageMessage(response, text, task.result, res);
