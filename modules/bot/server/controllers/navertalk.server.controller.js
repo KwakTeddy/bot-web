@@ -6,7 +6,7 @@ var util = require('util');
 
 exports.message =  function(req, res) {
   console.log("navertalk message");
-  console.log(util.inspect(req.body));
+  console.log(util.inspect(req.query));
 
     // default response
     var response = {
@@ -77,6 +77,8 @@ exports.message =  function(req, res) {
 
 
 function respondMessage(response, text, task, res) {
+  console.log(util.inspect(task), {showHidden: false, depth: null});
+  console.log('+++++++++++++++++++++++++++++++++++++++');
   if (task && task.result) {
     switch (Object.keys(task.result).toString()) {
       case 'image':
