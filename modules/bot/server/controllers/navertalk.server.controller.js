@@ -18,11 +18,6 @@ exports.message =  function(req, res) {
       }
     };
     var from = req.body.user;
-    console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-    if(req.body.options && req.body.options.inflow){
-      console.log(util.inspect(req.body.options));
-      console.log(util.inspect(req.body.options.inflow));
-    }
 
     switch(req.body.event) {
       // 메시지 전송 이벤트 처리
@@ -55,7 +50,9 @@ exports.message =  function(req, res) {
             break;
 
           default:
-            res.json({ success: true });
+            chat.write('navertalk', from, req.params.bot, '시작', req.body, function (serverText, json) {
+              respondMessage(response, serverText, json, res);
+            });
         }
         break;
 
