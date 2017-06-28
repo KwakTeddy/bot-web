@@ -6,7 +6,7 @@ var util = require('util');
 
 exports.message =  function(req, res) {
   console.log("navertalk message");
-  console.log(util.inspect(req.query));
+  console.log(util.inspect(req.params));
 
     // default response
     var response = {
@@ -77,8 +77,6 @@ exports.message =  function(req, res) {
 
 
 function respondMessage(response, text, task, res) {
-  console.log(util.inspect(task), {showHidden: false, depth: null});
-  console.log('+++++++++++++++++++++++++++++++++++++++');
   if (task && task.result) {
     console.log(util.inspect(task.result.items), {showHidden: false, depth: null});
     switch (Object.keys(task.result).toString()) {
@@ -207,8 +205,6 @@ function sendCompositeMessage(response, text, task, res) {
             };
             button.text = task[i].buttons[k].text;
           }
-          console.log(util.inspect(composit.buttonList, {showHidden: false, depth: null}));
-          console.log('$$$%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
           composit.buttonList.push(button);
         }
       }
