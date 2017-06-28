@@ -182,7 +182,7 @@ function sendCompositeMessage(response, text, task, res) {
       
       if (task[i].buttons) {
         composit['buttonList'] = [];
-        for(var k = 0; k < task[k].buttons.length; k++){
+        for(var k = 0; k < task[i].buttons.length; k++){
           var button = '';
           if ( task[i].buttons[k].url){
             button = {
