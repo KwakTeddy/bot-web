@@ -207,6 +207,8 @@ function sendCompositeMessage(response, text, task, res) {
             };
             button.text = task[i].buttons[k].text;
           }
+          console.log(util.inspect(composit.buttonList, {showHidden: false, depth: null}));
+          console.log('$$$%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
           composit.buttonList.push(button);
         }
       }
