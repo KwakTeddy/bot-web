@@ -87,7 +87,7 @@ var dialogs = [
 															"buttons": [
 																{
 																	"text": "이벤트 응모하기",
-																	"url": "https://www.facebook.com/shinhancard"
+																	"url": "https://www.facebook.com/shinhancard/posts/1095233593910142"
 																}
 															],
 															"image": {
@@ -103,7 +103,7 @@ var dialogs = [
 															"buttons": [
 																{
 																	"text": "이벤트 응모하기",
-																	"url": "https://www.facebook.com/shinhancard"
+																	"url": "https://www.facebook.com/shinhancard/posts/1095233593910142"
 																}
 															],
 															"image": {
@@ -119,7 +119,7 @@ var dialogs = [
 															"buttons": [
 																{
 																	"text": "이벤트 응모하기",
-																	"url": "https://www.facebook.com/shinhancard"
+																	"url": "https://www.facebook.com/shinhancard/posts/1095233593910142"
 																}
 															],
 															"image": {
@@ -135,7 +135,7 @@ var dialogs = [
 															"buttons": [
 																{
 																	"text": "이벤트 응모하기",
-																	"url": "https://www.facebook.com/shinhancard"
+																	"url": "https://www.facebook.com/shinhancard/posts/1095233593910142"
 																}
 															],
 															"image": {
@@ -380,7 +380,7 @@ var dialogs = [
 					],
 					"output": "현명한 선택! 결제+혜택+재미가 있는 신한 FAN 입니다. \n\n✔ 신한 FAN은 신한카드가 없어도 가입가능!  \n✔ 신한 FAN에 가입 하시면 다양한 경품이 가득! \n✔ 신규 고객이라면 100% 당첨 경품 제공!",
 					"image": {
-						"url": "/files/Shinhancard1497408485049.jpg",
+						"url": "https://shinhancard.moneybrain.ai/files/Shinhancard1497408485049.jpg",
 						"displayname": "FAN가입.jpg"
 					}
 				},
@@ -756,7 +756,7 @@ var dialogs = [
 									}
 								],
 								"output": {
-									"output": "\"내 카드값 다 어디에 쓴거야?\"\n\n✔ 단골 가맹점\n✔ 많이 쓴 가맹점\n✔ 즐겨쓰는 카드\n✔ 많이 쓰는 요일\n✔ 많이 쓰는 업종\n\n똑똑한 금융 비서 페이봇이 고객님의 소비내역을 분석해 드려요! 이것만 잘 봐도 꼭 써야할 곳만 쓰게 되겠죠?\n\n신한 FAN 고객이라면 페이봇 만나러 고고.\n\n아직 가입 전이시면 '가입하기'부터!",
+									"output": "\"내 카드값 다 어디에 쓴거야?\"\n\n✔ 단골 가맹점\n✔ 많이 쓴 가맹점\n✔ 즐겨쓰는 카드\n✔ 많이 쓰는 요일\n✔ 많이 쓰는 업종\n\n똑똑한 금융 비서 페이봇이 고객님의 소비내역을 분석해 드려요! 이것만 잘 봐도 꼭 써야할 곳만 쓰게 되겠죠?\n\n신한 FAN 고객이라면 페이봇 만나러 고고.\n페이봇은 FAN 본인인증 후 확인할 수 있어요.\n\n아직 가입 전이시면 '가입하기'부터!",
 									"buttons": [
 										{
 											"text": "소비관리 바로가기",
@@ -2072,8 +2072,8 @@ var dialogs = [
 										}
 									}
 								],
-								"inRaw": "아니요 좀 더 찾아주세요",
-								"inNLP": "아니다 좀 더 찾다",
+								"inRaw": "이전",
+								"inNLP": "이전",
 								"task": {
 									"output": "그렇다면 고객님의 소비성향을 알려주세요. \n\n1. 주유, 쇼핑 등 생활 혜택에 관심이 있으신 알뜰 실속파\n2. 해외에서도 혜택은 챙기는 센스실속파\n3. 주거래 계좌 연결하시면 기본+추가+특별 적립이 한번에! 슈퍼 실속파",
 									"buttons": [
@@ -3769,8 +3769,8 @@ var commonDialogs = [
 			],
 			"text": "안녕하세요, 신한카드입니다. \n저는 전화, 홈페이지 보다 메신저가 편한 고객님들을 위해 새롭게 선보이는 신한카드 자동채팅 서비스입니다.\n결제+혜택+재미=신한 FAN 과 카드에 대해 알려드리겠습니다.\n많이 이용해 주실꺼죠?\n\n신한 FAN, 카드 추천, 자주 묻는 질문(FAQ) 중 하나를 선택해 주세요.\n\n1. 신한 FAN을 알려줘요\n2. 내게 꼭 맞는 카드를 추천해줘요\n3. 궁금한게 있는데요(FAQ)"
 		},
-		"inRaw": "반가워요, 신한카드",
-		"inNLP": "반갑다 신한카드"
+		"inRaw": "처음",
+		"inNLP": "처음"
 	},
 	{
 		"id": "defaultcommon1",
