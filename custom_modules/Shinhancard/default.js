@@ -470,7 +470,7 @@ var YOLO = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C03.shc?EntryLoc=2804&tmEntryLoc=TM2534&empSeq=563&datakey&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350235_39639.html"
                 }
             ]
 
@@ -478,7 +478,7 @@ var YOLO = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C03.shc?EntryLoc=2804&tmEntryLoc=TM2534&empSeq=562&datakey&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350235_39638.html"
                 }
             ]
 
@@ -486,7 +486,7 @@ var YOLO = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C03.shc?EntryLoc=2804&tmEntryLoc=TM2534&empSeq=561&datakey&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350235_39388.html"
                 }
             ]
 
@@ -503,7 +503,7 @@ var NANOf = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C05.shc?EntryLoc=2445&tmEntryLoc=TM2516&empSeq=563&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1355079_39639.html"
                 }
             ]
 
@@ -511,7 +511,7 @@ var NANOf = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C05.shc?EntryLoc=2445&tmEntryLoc=TM2516&empSeq=562&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1355079_39638.html"
                 }
             ]
 
@@ -519,7 +519,7 @@ var NANOf = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C05.shc?EntryLoc=2445&tmEntryLoc=TM2516&empSeq=561&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1355079_39388.html"
                 }
             ]
 
@@ -536,14 +536,14 @@ var mirae = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2727&empSeq=563&datakey&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350241_39639.html"
                 }
             ]
         } else if (context.user.channel == 'facebook') {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2727&empSeq=562&datakey&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350241_39638.html"
                 }
             ]
 
@@ -551,7 +551,7 @@ var mirae = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2727&empSeq=561&datakey&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350241_39388.html"
                 }
             ]
 
@@ -568,7 +568,7 @@ var AlwaysFAN = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2831&empSeq=563&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350234_39639.html"
                 }
             ]
 
@@ -576,7 +576,7 @@ var AlwaysFAN = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2831&empSeq=562&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350234_39638.html"
                 }
             ]
 
@@ -584,7 +584,7 @@ var AlwaysFAN = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2831&empSeq=561&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350234_39388.html"
                 }
             ]
 
@@ -601,7 +601,7 @@ var O2O = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2808&empSeq=563&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350244_39639.html"
                 }
             ]
 
@@ -609,7 +609,7 @@ var O2O = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2808&empSeq=562&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350244_39638.html"
                 }
             ]
 
@@ -617,7 +617,7 @@ var O2O = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2808&empSeq=561&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350244_39388.html"
                 }
             ]
 
@@ -667,7 +667,7 @@ var YOLOTasty = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2777&empSeq=563&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350238_39639.html"
                 }
             ]
 
@@ -675,7 +675,7 @@ var YOLOTasty = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2777&empSeq=562&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350238_39638.html"
                 }
             ]
 
@@ -683,7 +683,7 @@ var YOLOTasty = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2777&empSeq=561&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350238_39388.html"
                 }
             ]
 
@@ -767,7 +767,7 @@ var MrLife = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2774&empSeq=524&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350239_39639.html?EntryLoc=2774&empSeq=524&datakey=&agcCd="
                 }
             ]
 
@@ -775,7 +775,7 @@ var MrLife = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2774&empSeq=523&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350239_39638.html?EntryLoc=2774&empSeq=523&datakey=&agcCd="
                 }
             ]
 
@@ -783,7 +783,7 @@ var MrLife = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2774&empSeq=522&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350239_39388.html?EntryLoc=2774&empSeq=522&datakey=&agcCd="
                 }
             ]
 
@@ -800,7 +800,7 @@ var BBig = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2739&empSeq=561&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350240_39639.html"
                 }
             ]
 
@@ -808,7 +808,7 @@ var BBig = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2739&empSeq=562&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350240_39638.html"
                 }
             ]
 
@@ -816,7 +816,7 @@ var BBig = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2739&empSeq=561&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350240_39388.html"
                 }
             ]
 
@@ -833,7 +833,7 @@ var TheLadyClassic = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2767&empSeq=563&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/premium/1350224_39651.html"
                 }
             ]
 
@@ -841,7 +841,7 @@ var TheLadyClassic = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2767&empSeq=562&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/premium/1350224_39650.html"
                 }
             ]
 
@@ -849,7 +849,7 @@ var TheLadyClassic = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2767&empSeq=561&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/premium/1350224_39478.html"
                 }
             ]
 
@@ -899,7 +899,7 @@ var GSShine = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2453&empSeq=563&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1364067_39639.html"
                 }
             ]
 
@@ -907,7 +907,7 @@ var GSShine = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2453&empSeq=562&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1364067_39638.html"
                 }
             ]
 
@@ -915,7 +915,7 @@ var GSShine = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2453&empSeq=561&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1364067_39388.html"
                 }
             ]
 
@@ -932,7 +932,7 @@ var Main = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2778&empSeq=563&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350237_39639.html"
                 }
             ]
 
@@ -940,7 +940,7 @@ var Main = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2778&empSeq=562&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350237_39638.html"
                 }
             ]
 
@@ -948,7 +948,7 @@ var Main = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2778&empSeq=561&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350237_39388.html"
                 }
             ]
 
@@ -965,7 +965,7 @@ var HiPoint = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2111&empSeq=563&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350243_39639.html"
                 }
             ]
 
@@ -973,7 +973,7 @@ var HiPoint = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2111&empSeq=562&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350243_39638.html"
                 }
             ]
 
@@ -981,7 +981,7 @@ var HiPoint = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2111&empSeq=561&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350243_39388.html"
                 }
             ]
 
@@ -998,7 +998,7 @@ var TheClassicL = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2686&empSeq=563&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/premium/1350227_39651.html"
                 }
             ]
 
@@ -1006,7 +1006,7 @@ var TheClassicL = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2686&empSeq=562&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/premium/1350227_39650.html"
                 }
             ]
 
@@ -1014,7 +1014,7 @@ var TheClassicL = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2686&empSeq=561&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/premium/1350227_39478.html"
                 }
             ]
 
@@ -1031,7 +1031,7 @@ var RPM = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2795&empSeq=563&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350231_39639.html"
                 }
             ]
 
@@ -1039,7 +1039,7 @@ var RPM = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2795&empSeq=562&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350231_39638.html"
                 }
             ]
 
@@ -1047,7 +1047,7 @@ var RPM = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2795&empSeq=561&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350231_39388.html"
                 }
             ]
 
@@ -1064,7 +1064,7 @@ var Air = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2753&empSeq=561&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350232_39639.html"
                 }
             ]
 
@@ -1072,7 +1072,7 @@ var Air = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2753&empSeq=562&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350232_39638.html"
                 }
             ]
 
@@ -1080,7 +1080,7 @@ var Air = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2753&empSeq=563&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350232_39388.html"
                 }
             ]
 
@@ -1097,7 +1097,7 @@ var Air15 = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2850&empSeq=563&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1380116_39639.html"
                 }
             ]
 
@@ -1105,7 +1105,7 @@ var Air15 = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2850&empSeq=562&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1380116_39638.html"
                 }
             ]
 
@@ -1113,7 +1113,7 @@ var Air15 = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2850&empSeq=561&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1380116_39388.html"
                 }
             ]
 
@@ -1196,7 +1196,7 @@ var TheClassicplus = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2770&empSeq=563&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/premium/1350225_39651.html"
                 }
             ]
 
@@ -1204,7 +1204,7 @@ var TheClassicplus = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2770&empSeq=562&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/premium/1350225_39650.html"
                 }
             ]
 
@@ -1212,7 +1212,7 @@ var TheClassicplus = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2770&empSeq=561&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/premium/1350225_39478.html"
                 }
             ]
 
@@ -1229,7 +1229,7 @@ var FourTune = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C07.shc?EntryLoc=2764&tmEntryLoc=&empSeq=563&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350273_39649.html"
                 }
             ]
 
@@ -1237,7 +1237,7 @@ var FourTune = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C07.shc?EntryLoc=2764&tmEntryLoc=&empSeq=562&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350273_39648.html"
                 }
             ]
 
@@ -1245,7 +1245,7 @@ var FourTune = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C07.shc?EntryLoc=2764&tmEntryLoc=&empSeq=561&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350273_39409.html"
                 }
             ]
 
@@ -1295,7 +1295,7 @@ var Noon = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2841&empSeq=563&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1364066_39639.html"
                 }
             ]
 
@@ -1303,7 +1303,7 @@ var Noon = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2841&empSeq=562&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1364066_39638.html"
                 }
             ]
 
@@ -1311,7 +1311,7 @@ var Noon = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2841&empSeq=561&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/credit/1364066_39388.html"
                 }
             ]
 
@@ -1362,7 +1362,7 @@ var S20 = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2527&empSeq=563&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350266_39649.html"
                 }
             ]
 
@@ -1370,7 +1370,7 @@ var S20 = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2527&empSeq=562&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350266_39648.html"
                 }
             ]
 
@@ -1378,7 +1378,7 @@ var S20 = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2527&empSeq=561&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350266_39409.html"
                 }
             ]
 
@@ -1395,7 +1395,7 @@ var S20Pink = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2528&empSeq=563&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350263_39649.html"
                 }
             ]
 
@@ -1403,7 +1403,7 @@ var S20Pink = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2528&empSeq=562&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350263_39648.html"
                 }
             ]
 
@@ -1411,7 +1411,7 @@ var S20Pink = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2528&empSeq=561&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350263_39409.html"
                 }
             ]
 
@@ -1428,7 +1428,7 @@ var hypass = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2747&empSeq=563&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350274_39649.html"
                 }
             ]
 
@@ -1436,7 +1436,7 @@ var hypass = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2747&empSeq=562&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350274_39648.html"
                 }
             ]
 
@@ -1444,7 +1444,7 @@ var hypass = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2747&empSeq=561&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350274_39409.html"
                 }
             ]
 
@@ -1461,7 +1461,7 @@ var kakao = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=4294&empSeq=563&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350256_39649.html"
                 }
             ]
 
@@ -1469,7 +1469,7 @@ var kakao = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=4294&empSeq=562&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350256_39648.html"
                 }
             ]
 
@@ -1477,7 +1477,7 @@ var kakao = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=4294&empSeq=561&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350256_39409.html"
                 }
             ]
 
@@ -1494,7 +1494,7 @@ var coupang = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2833&empSeq=563&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350250_39649.html"
                 }
             ]
 
@@ -1502,7 +1502,7 @@ var coupang = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2833&empSeq=562&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350250_39648.html"
                 }
             ]
 
@@ -1510,7 +1510,7 @@ var coupang = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2833&empSeq=561&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350250_39409.html"
                 }
             ]
 
@@ -1527,7 +1527,7 @@ var SLine = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2695&empSeq=563&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350271_39649.html"
                 }
             ]
 
@@ -1535,7 +1535,7 @@ var SLine = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2695&empSeq=562&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350271_39648.html"
                 }
             ]
 
@@ -1543,7 +1543,7 @@ var SLine = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2695&empSeq=564&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350271_39409.html?EntryLoc=2695&empSeq=564&datakey=&agcCd="
                 }
             ]
 
@@ -1561,7 +1561,7 @@ var MainCheck = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2779&empSeq=563&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350268_39648.html"
                 }
             ]
 
@@ -1569,7 +1569,7 @@ var MainCheck = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2779&empSeq=562&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350268_39648.html"
                 }
             ]
 
@@ -1577,7 +1577,7 @@ var MainCheck = {
             task.buttons = [
                 {
                     text: "바로가기",
-                    url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2779&empSeq=561&datakey=&agcCd="
+                    url: "https://m.shinhancard.com/conts/html/card/apply/check/1350268_39409.html"
                 }
             ]
 
@@ -1600,7 +1600,7 @@ var cardlist1 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2831&empSeq=563&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350234_39639.html"
                             },
                             {
                               text: "이전",
@@ -1617,7 +1617,7 @@ var cardlist1 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2808&empSeq=563&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350244_39639.html"
                             }
                         ]
 
@@ -1629,7 +1629,7 @@ var cardlist1 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2777&empSeq=563&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350238_39639.html"
                             }
                         ]
                     },
@@ -1640,7 +1640,7 @@ var cardlist1 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2767&empSeq=563&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/premium/1350224_39651.html"
                             }
                         ]
                     }
@@ -1655,7 +1655,7 @@ var cardlist1 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2831&empSeq=562&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350234_39638.html"
                             }
                         ]
                     },
@@ -1666,7 +1666,7 @@ var cardlist1 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2808&empSeq=562&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350244_39638.html"
                             }
                         ]
                     },
@@ -1677,7 +1677,7 @@ var cardlist1 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2777&empSeq=562&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350238_39638.html"
                             }
                         ]
                     },
@@ -1688,7 +1688,7 @@ var cardlist1 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2767&empSeq=562&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/premium/1350224_39650.html"
                             }
                         ]
                     }
@@ -1708,13 +1708,13 @@ var cardlist2 = {
             task.result = {
                 items: [
                     {
-                        title: "(광고) [신한카드 Hi-Pint]\n포인트 적립의 끝판왕!",
+                        title: "(광고) [신한카드 Hi-Point]\n포인트 적립의 끝판왕!",
                         text: "✔ 모든 가맹점 적립\n✔ 주유 60원 적립\n\n-연회비\nVISAI 1만원, 1만5천원(플래티늄)\nMaster 1만원, 1만5천원(플래티늄)\nURS 8천원\nJCB 1만원\n\n자세한 내용을 보시려면 카드 아래의 바로가기를 클릭해주세요.\n\n[유의사항]\n- 계약 체결 전 상품에 관한 상세한 사항은 상품설명서 및 약관을 읽어보시기 바랍니다.\n- 연체 이자율은 연체일수 및 약정금리에 따라 23.0~27.9%가 적용됩니다.\n- 신용카드 남용은 가계경제에 위협이 됩니다.\n- 수신거부 080-800-8114(무료)\n- 여신협회 심의필번호 제 2017-c1f-07715호(2017.06.27~2018.06.26)",
                         imageUrl: "/files/Shinhancard1496222978095.jpg",
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2111&empSeq=563&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350243_39639.html"
                             },
                             {
                               text: "이전"
@@ -1731,7 +1731,7 @@ var cardlist2 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2686&empSeq=563&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/premium/1350227_39651.html"
                             }
                         ]
 
@@ -1748,7 +1748,7 @@ var cardlist2 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2111&empSeq=562&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350243_39638.html"
                             }
                         ]
                     },
@@ -1759,7 +1759,7 @@ var cardlist2 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2686&empSeq=562&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/premium/1350227_39650.html"
                             }
                         ]
 
@@ -1785,7 +1785,7 @@ var cardlist3 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2753&empSeq=561&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350232_39639.html"
                             },
                             {
                               text: "이전"
@@ -1802,7 +1802,7 @@ var cardlist3 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2850&empSeq=563&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/credit/1380116_39639.html"
                             }
                         ]
 
@@ -1814,7 +1814,7 @@ var cardlist3 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2770&empSeq=563&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/premium/1350225_39651.html"
                             }
                         ]
                     }
@@ -1830,7 +1830,7 @@ var cardlist3 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2753&empSeq=562&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350232_39638.html"
                             }
                         ]
                     },
@@ -1841,7 +1841,7 @@ var cardlist3 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2850&empSeq=562&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/credit/1380116_39638.html"
                             }
                         ]
 
@@ -1853,7 +1853,7 @@ var cardlist3 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2770&empSeq=562&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/premium/1350225_39650.html"
                             }
                         ]
                     }
@@ -1878,7 +1878,7 @@ var cardlist4 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2795&empSeq=563&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350231_39639.html"
                             },
                             {
                               text: "이전"
@@ -1895,7 +1895,7 @@ var cardlist4 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2753&empSeq=561&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350232_39639.html"
                             }
                         ]
 
@@ -1912,7 +1912,7 @@ var cardlist4 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2795&empSeq=562&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350231_39638.html"
                             }
                         ]
                     },
@@ -1923,7 +1923,7 @@ var cardlist4 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2814&empSeq=562&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350232_39638.html"
                             }
                         ]
 
@@ -1949,7 +1949,7 @@ var cardlist5 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2527&empSeq=563&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/check/1350266_39649.html"
                             },
                             {
                               text: "이전"
@@ -1966,7 +1966,7 @@ var cardlist5 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2528&empSeq=563&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/check/1350263_39649.html"
                             }
                         ]
 
@@ -1983,7 +1983,7 @@ var cardlist5 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2527&empSeq=562&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/check/1350266_39648.html"
                             }
                         ]
                     },
@@ -1994,7 +1994,7 @@ var cardlist5 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2528&empSeq=562&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/check/1350263_39648.html"
                             }
                         ]
                     }
@@ -2019,7 +2019,7 @@ var cardlist6 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2833&empSeq=563&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/check/1350250_39649.html"
                             },
                             {
                               text: "이전"
@@ -2036,7 +2036,7 @@ var cardlist6 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=4294&empSeq=563&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/check/1350256_39649.html"
                             }
                         ]
 
@@ -2048,7 +2048,7 @@ var cardlist6 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2695&empSeq=563&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/check/1350271_39649.html"
                             }
                         ]
 
@@ -2060,7 +2060,7 @@ var cardlist6 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2747&empSeq=563&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/check/1350274_39649.html"
                             }
                         ]
 
@@ -2077,7 +2077,7 @@ var cardlist6 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2833&empSeq=562&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/check/1350250_39648.html"
                             }
                         ]
                     },
@@ -2088,7 +2088,7 @@ var cardlist6 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=4294&empSeq=562&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/check/1350256_39648.html"
                             }
                         ]
 
@@ -2100,7 +2100,7 @@ var cardlist6 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2695&empSeq=562&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/check/1350271_39648.html"
                             }
                         ]
 
@@ -2112,7 +2112,7 @@ var cardlist6 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2747&empSeq=562&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/check/1350274_39648.html"
                             }
                         ]
 
@@ -2138,7 +2138,7 @@ var cardlist7 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2774&empSeq=524&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350239_39639.html?EntryLoc=2774&empSeq=524&datakey=&agcCd="
                             },
                             {
                               text: "이전",
@@ -2155,7 +2155,7 @@ var cardlist7 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2739&empSeq=561&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350240_39639.html"
                             }
                         ]
                     },
@@ -2166,7 +2166,7 @@ var cardlist7 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2841&empSeq=563&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/credit/1364066_39639.html"
                             }
                         ]
                     },
@@ -2177,7 +2177,7 @@ var cardlist7 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2727&empSeq=563&datakey&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350241_39639.html"
                             }
                         ]
                     }
@@ -2193,7 +2193,7 @@ var cardlist7 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2774&empSeq=523&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350239_39638.html?EntryLoc=2774&empSeq=523&datakey=&agcCd="
                             }
                         ]
                     },
@@ -2204,7 +2204,7 @@ var cardlist7 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2739&empSeq=562&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350240_39638.html"
                             }
                         ]
                     },
@@ -2215,7 +2215,7 @@ var cardlist7 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2841&empSeq=562&datakey=&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/credit/1364066_39638.html"
                             }
                         ]
                     },
@@ -2226,7 +2226,7 @@ var cardlist7 = {
                         buttons: [
                             {
                                 text: "바로가기",
-                                url: "https://m.shinhancard.com/mob/MOBFM038N/MOBFM038C01.shc?EntryLoc=2727&empSeq=562&datakey&agcCd="
+                                url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350241_39638.html"
                             }
                         ]
                     }
