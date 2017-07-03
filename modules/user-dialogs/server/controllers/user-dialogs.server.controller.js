@@ -73,7 +73,7 @@ function addDialog(inText, outText, isFail, dialog, context, callback) {
     preDialogName: preDialogName
   };
 
-  if(context.user.liveChat){
+  if(context.user.liveChat > 1){
     inQuery['liveChat'] = true;
     outQuery = {};
   }
