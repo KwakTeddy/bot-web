@@ -867,7 +867,7 @@ function callSendAPI(messageData, PAGE_ACCESS_TOKEN, cb) {
   var bot = botContext.botUser.orgBot || botContext.bot;
 
   if(bot && bot.commonQuickReplies && bot.commonQuickReplies.length
-    && botContext.botUser._currentDialog.name
+    && botContext.botUser._currentDialog.name && !botContext.user.liveChat
     && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)
     && (botContext.botUser._currentDialog.name != botContext.bot.noDialog.name)){
     var quick_replies = [];
