@@ -857,8 +857,11 @@ function smartReplyMessage(recipientId, text, task, token) {
 }
 
 function callSendAPI(messageData, PAGE_ACCESS_TOKEN, cb) {
-  if(botContext && botContext.user && botContext.user.liveChat && (botContext.user.liveChat > 1)){
-    return true
+  if(botContext && botContext.user && botContext.user.liveChat){
+    if (botContext.user.liveChat > 1){
+      return true
+    }
+    botContext.user.liveChat++;
   }
 
   var bot = botContext.botUser.orgBot || botContext.bot;
