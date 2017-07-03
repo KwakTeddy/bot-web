@@ -92,6 +92,7 @@ function receivedMessage(event) {
                       messageText='fbImage';
                   }
                   chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
+                    console.log(global.liveChat);
                     if(global.liveChat){
                       return true
                     }else {
