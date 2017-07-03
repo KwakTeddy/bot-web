@@ -93,7 +93,7 @@ function receivedMessage(event) {
                   }
                   chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
                     if(global.liveChat){
-                      return false
+                      return true
                     }else {
                       respondMessage(senderID, retText, event.botId, task);
                     }
