@@ -92,12 +92,9 @@ function receivedMessage(event) {
                       messageText='fbImage';
                   }
                   chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
-                    console.log(global.liveChat);
-                    if(global.liveChat){
-                      return true
-                    }else {
-                      respondMessage(senderID, retText, event.botId, task);
-                    }
+                    console.log(util.inspect(task), {showHidden: false, depth: null});
+                    console.log('************************************************************');
+                    respondMessage(senderID, retText, event.botId, task);
                   });
                 }
               });
