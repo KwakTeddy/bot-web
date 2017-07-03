@@ -92,9 +92,8 @@ function receivedMessage(event) {
                       messageText='fbImage';
                   }
                   chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
-                    console.log(util.inspect(task), {showHidden: false, depth: null});
-                    console.log(util.inspect(botContext), {showHidden: false, depth: null});
-                    console.log('************************************************************');
+                    console.log(util.inspect(botContext.user));
+                    console.log('******************&&*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
                     respondMessage(senderID, retText, event.botId, task);
                   });
                 }
@@ -858,6 +857,10 @@ function smartReplyMessage(recipientId, text, task, token) {
 }
 
 function callSendAPI(messageData, PAGE_ACCESS_TOKEN, cb) {
+  if(botContext && botContext.user && botContext.user.liveChat && (botContext.user.liveChat > 1)){
+    return true
+  }
+
   var bot = botContext.botUser.orgBot || botContext.bot;
 
   if(bot && bot.commonQuickReplies && bot.commonQuickReplies.length
