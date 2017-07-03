@@ -74,8 +74,10 @@ function addDialog(inText, outText, isFail, dialog, context, callback) {
   };
 
   if(context.user.liveChat){
+    console.log(util.inspect(context.user));
+    console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
     inQuery['liveChat'] = true;
-    if(context.user.liveChat > 1)outQuery = {};
+    if(context.user.liveChat > 1) outQuery = {};
     else outQuery['liveChat'] = true;
   }
 
