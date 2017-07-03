@@ -56,6 +56,9 @@ var UserDialogSchema = new Schema({
   },
   clear: {
     type: Boolean
+  },
+  liveChat: {
+    type: Boolean
   }
 });
 
