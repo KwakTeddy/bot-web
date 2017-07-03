@@ -73,15 +73,11 @@ function addDialog(inText, outText, isFail, dialog, context, callback) {
     preDialogName: preDialogName
   };
 
-  if(context.user.liveChat){
+  if(context.user.liveChat > 2){
     console.log(util.inspect(context.user));
     console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
     inQuery['liveChat'] = true;
-    if(context.user.liveChat > 1) outQuery = {};
-    else {
-      context.user.liveChat++;
-      outQuery['liveChat'] = true;
-    }
+    outQuery = {};
   }
 
   UserDialog.create([inQuery, outQuery], function(err) {
