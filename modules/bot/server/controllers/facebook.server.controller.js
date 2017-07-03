@@ -49,7 +49,7 @@ exports.messageGet =  function(req, res) {
 exports.message = function (req, res) {
   console.log(util.inspect(req.body, {showHidden: false, depth: null}));
   console.log(util.inspect(req.body.object, {showHidden: false, depth: null}));
-  console.log(util.inspect('&^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
+  console.log(util.inspect('&^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^'));
   var data = req.body;
   if (data.object == 'page') {      // Make sure this is a page subscription
     data.entry.forEach(function(pageEntry) {       // There may be multiple if batched
