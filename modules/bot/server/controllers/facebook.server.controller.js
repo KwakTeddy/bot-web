@@ -859,6 +859,7 @@ function smartReplyMessage(recipientId, text, task, token) {
 function callSendAPI(messageData, PAGE_ACCESS_TOKEN, cb) {
   if(botContext && botContext.user && botContext.user.liveChat){
     if (botContext.user.liveChat > 1){
+      botContext.user.liveChat++;
       return true
     }
     botContext.user.liveChat++;
