@@ -842,6 +842,8 @@ function smartReplyMessage(recipientId, text, task, token) {
   }
 
   if(task.buttons){
+    console.log(util.inspect(task.buttons, {showHidden: false, depth: null}))
+    console.log('++++++++++++++++++++++++++++++')
     var smartReplies = [];
     for(var i = 0; i < task.buttons.length; i++){
       var repl = {content_type:"text"};
