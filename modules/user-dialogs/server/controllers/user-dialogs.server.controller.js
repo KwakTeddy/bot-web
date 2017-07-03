@@ -75,7 +75,7 @@ function addDialog(inText, outText, isFail, dialog, context, callback) {
 
   if(context.user.liveChat){
     inQuery['liveChat'] = true;
-    outQuery['liveChat'] = true;
+    outQuery = {};
   }
 
   UserDialog.create([inQuery, outQuery], function(err) {
