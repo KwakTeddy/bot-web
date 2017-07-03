@@ -92,9 +92,11 @@ function receivedMessage(event) {
                       messageText='fbImage';
                   }
                   chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
-                    console.log(util.inspect(retText));
-                    console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
-                    respondMessage(senderID, retText, event.botId, task);
+                    if(global.liveChat){
+                      return false
+                    }else {
+                      respondMessage(senderID, retText, event.botId, task);
+                    }
                   });
                 }
               });
@@ -254,7 +256,7 @@ function respondMessage(to, text, botId, task) {
   if (subscribe) tokenData = subscribePageToken;
   else tokenData = bot.facebook.PAGE_ACCESS_TOKEN;
 
-  if(bot && bot.commonButtons && bot.commonButtons.length && botContext.botUser._currentDialog.name){
+  if(bot && bot.commonButtons && bot.commonButtons.length && botContext.botUser._currentDialog.name && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)){
     if(task && task.buttons) task.buttons =  task.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
     else if(task && task.result && task.result.buttons) task.result.buttons =  task.result.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
   }
