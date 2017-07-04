@@ -67,6 +67,35 @@ exports.message = function (req, res) {
   }
 };
 
+function liveChatAddDialog(botId, message , userId, inOut) {
+  var query = {
+    botId: botId,
+    userId : userId,
+    channel: "facebook",
+    dialog: message,
+    inOut: inOut,
+    fail: false,
+    liveChat: true
+  };
+  UserDialog.create(query, function(err, data) {
+    if(err) console.log(err);
+    else {
+      var query = {
+        botId: botId,
+        userId : userId,
+        channel: "facebook",
+        year: (new Date()).getYear() + 1900,
+        month: (new Date()).getMonth() + 1,
+        date: (new Date()).getDate()
+      };
+      UserDialogLog.update(query, query, {upsert: true}, function(err2, data2) {
+        if(err2) console.log(err2);
+        else return true
+      });
+    }
+  });
+}
+
 function receivedMessage(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
@@ -91,35 +120,9 @@ function receivedMessage(event) {
       if(message.is_echo){
         if(!message.metadata){
           UserBotFbPage.findOne({pageId: senderID}, function (err, data) {
-            if (err){
-              console.log(err);
-            }else {
-              var outQuery = {
-                botId: data.userBotId,
-                userId : recipientID,
-                channel: "facebook",
-                dialog: message.text,
-                inOut: false,
-                fail: false,
-                liveChat: true
-              };
-              UserDialog.create([outQuery], function(err, data) {
-                if(err) console.log(err);
-                else {
-                  var query = {
-                    botId: data.userBotId,
-                    userId : recipientID,
-                    channel: "facebook",
-                    year: (new Date()).getYear() + 1900,
-                    month: (new Date()).getMonth() + 1,
-                    date: (new Date()).getDate()
-                  };
-                  UserDialogLog.update(query, query, {upsert: true}, function(err2, data2) {
-                    if(err2) console.log(err2);
-                    else return true
-                  });
-                }
-              });
+            if (err) console.log(err);
+            else {
+              liveChatAddDialog(data.userBotId, messageText, recipientID, false);
             }
           });
         }else {
@@ -167,6 +170,7 @@ function receivedMessage(event) {
 
           case botContext.user.liveChat > 1 :
             botContext.user.liveChat++;
+            liveChatAddDialog(event.botId, messageText , senderID, true);
             return true;
         }
         chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
