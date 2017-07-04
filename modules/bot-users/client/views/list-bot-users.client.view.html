@@ -73,7 +73,7 @@
         <td class="text-center">{{botUser.created | date: 'yyyy-MM-dd'}}</td>
         <!--<td class="text-center">{{botUser.isOn ? ' ON' : 'OFF'}}</td>-->
         <td>
-          <a class="btn btn-default btn-sm btn-block" ui-sref="user-dialogs.list({botId: botId, userKey: botUser.userKey})">
+          <a class="btn btn-default btn-sm btn-block" ui-sref="user-dialogs.list({botId: botId, userKey: botUser.userKey, liveChat: true})">
             내역
           </a>
           <!--<a class="btn btn-primary" ui-sref="messages.send({userKey: botUser.userKey, channel: botUser.channel})">-->

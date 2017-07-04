@@ -32,7 +32,7 @@
 
   getUserDialogs.$inject = ['$stateParams', 'UserDialogsService'];
   function getUserDialogs($stateParams, UserDialogsService) {
-    return UserDialogsService.query({botId: $stateParams.botId, userKey: $stateParams.userKey}).$promise;
+    return UserDialogsService.query({botId: $stateParams.botId, userKey: $stateParams.userKey, liveChat: $stateParams.liveChat}).$promise;
   }
 
 })();
