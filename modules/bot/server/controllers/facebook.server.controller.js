@@ -91,35 +91,41 @@ function receivedMessage(event) {
       console.log('start echo process~~~~~~~~~~~~~~~~~~~~~~');
       console.log(util.inspect(botContext.user));
       if(!message.metadata){
-        var outQuery = {
-          botId: botContext.bot.botName,
-          userId : botContext.user.userKey,
-          channel: botContext.channel.name,
-          dialog: message.text,
-          inOut: false,
-          fail: false,
-          liveChat: true
-        };
-        console.log(util.inspect(outQuery));
-        UserDialog.create([outQuery], function(err, data) {
-          console.log(util.inspect(err));
-          console.log(util.inspect(data));
-          if(err) console.log(err);
-          else {
-            var query = {
-              botId: botContext.bot.botName,
-              userId : botContext.user.userKey,
+        UserBotFbPage.findOne({pageId: senderID}, function (err, data) {
+          if (err){
+            console.log(err);
+          }else {
+            var outQuery = {
+              botId: data.userBotId,
+              userId : recipientID,
               channel: botContext.channel.name,
-              year: (new Date()).getYear() + 1900,
-              month: (new Date()).getMonth() + 1,
-              date: (new Date()).getDate()
+              dialog: message.text,
+              inOut: false,
+              fail: false,
+              liveChat: true
             };
+            console.log(util.inspect(outQuery));
+            UserDialog.create([outQuery], function(err, data) {
+              console.log(util.inspect(err));
+              console.log(util.inspect(data));
+              if(err) console.log(err);
+              else {
+                var query = {
+                  botId: botContext.bot.botName,
+                  userId : botContext.user.userKey,
+                  channel: botContext.channel.name,
+                  year: (new Date()).getYear() + 1900,
+                  month: (new Date()).getMonth() + 1,
+                  date: (new Date()).getDate()
+                };
 
-            UserDialogLog.update(query, query, {upsert: true}, function(err2, data2) {
-              console.log(util.inspect(err2));
-              console.log(util.inspect(data2));
-              if(err2) console.log(err2);
-              else return true
+                UserDialogLog.update(query, query, {upsert: true}, function(err2, data2) {
+                  console.log(util.inspect(err2));
+                  console.log(util.inspect(data2));
+                  if(err2) console.log(err2);
+                  else return true
+                });
+              }
             });
           }
         });
@@ -860,8 +866,6 @@ function smartReplyMessage(recipientId, text, task, token) {
   }
 
   if(task.buttons){
-    console.log(util.inspect(task.buttons, {showHidden: false, depth: null}))
-    console.log('++++++++++++++++++++++++++++++')
     var smartReplies = [];
     for(var i = 0; i < task.buttons.length; i++){
       var repl = {content_type:"text"};
