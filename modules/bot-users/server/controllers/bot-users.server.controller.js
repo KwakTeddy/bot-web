@@ -154,7 +154,7 @@ exports.list = function (req, res) {
                 console.log(body)
                 if (!error && response.statusCode == 200) {
                   botUser['facebook'] = body;
-                  console.log(botUsers)
+                  console.log(botUser)
                   cb(null)
                 } else {
                   console.log(error);
