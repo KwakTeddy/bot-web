@@ -159,6 +159,16 @@ function receivedMessage(event) {
       contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
         botContext = context;
         bot = botContext.botUser.orgBot || botContext.bot;
+
+        switch(true) {
+          case botContext.user.liveChat == 1 :
+            botContext.user.liveChat++;
+            break;
+
+          case botContext.user.liveChat > 1 :
+            botContext.user.liveChat++;
+            return true;
+        }
         chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
           console.log(util.inspect(botContext.user));
           console.log('******************&&*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
