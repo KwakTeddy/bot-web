@@ -121,6 +121,9 @@ function receivedMessage(event) {
             if (err) console.log(err);
             else {
               liveChatAddDialog(data.userBotId, messageText, recipientID, false);
+              contextModule.getContext(data.userBotId, 'facebook', recipientID, null, function(context) {
+                context.user.liveChat = 1;
+              })
             }
           });
         }else {
