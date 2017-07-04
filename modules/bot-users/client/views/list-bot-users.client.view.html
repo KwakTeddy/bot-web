@@ -46,11 +46,10 @@
       </tr>
       </tbody>
     </table>
-    <button ng-click="vm.liveChat()">버튼 여기야</button>
   </div>
 
   <div class="panel-body" data-ng-if="vm.mode == 'liveChat'">
-    <table id="dt" datatable="ng" dt-options="vm.dtOptions" class="table table-bordered mb-none" >
+    <table id="dt" datatable="ng" dt-options="vm.dtOptions2" class="table table-bordered mb-none" >
       <thead>
       <tr>
         <th class="text-center">봇아이디</th>
@@ -83,6 +82,5 @@
       </tr>
       </tbody>
     </table>
-    <button ng-click="vm.liveChat()">버튼 여기야</button>
   </div>
 </section>
