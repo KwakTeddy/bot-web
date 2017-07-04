@@ -125,6 +125,7 @@ exports.list = function (req, res) {
   // if(req.query.role && (req.query.role == 'admin')){
   //   query = {};
   // }
+  if(req.query.liveChat) query['liveChat'] = true;
   console.log(util.inspect(query))
   console.log(util.inspect('+++++++++++++++++++++++++++++++++++++'))
   BotUser.find(query).sort('-created').exec(function (err, botUsers) {
