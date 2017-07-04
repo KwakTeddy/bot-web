@@ -66,8 +66,8 @@
       <tbody>
       <tr ng-repeat="botUser in vm.liveChatUsers">
         <td class="text-center">{{botId}}</td>
-        <td class="text-center">{{botUser.userKey}}</td>
-        <td class="text-center">{{botUser.channel}}</td>
+        <td class="text-center">{{botUser._id.userKey}}</td>
+        <td class="text-center">{{botUser._id.channel}}</td>
         <!--<td class="text-center">{{botUser.mobile}}</td>-->
         <!--<td class="text-center">{{botUser.email}}</td>-->
         <td class="text-center">{{botUser.created | date: 'yyyy-MM-dd'}}</td>
