@@ -46,8 +46,6 @@ exports.messageGet =  function(req, res) {
 
 exports.message = function (req, res) {
   console.log(util.inspect(req.body, {showHidden: false, depth: null}));
-  console.log(util.inspect(req.body.object, {showHidden: false, depth: null}));
-  console.log(util.inspect('&^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^'));
   var data = req.body;
   if (data.object == 'page') {      // Make sure this is a page subscription
     data.entry.forEach(function(pageEntry) {       // There may be multiple if batched
@@ -162,20 +160,17 @@ function receivedMessage(event) {
       contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
         botContext = context;
         bot = botContext.botUser.orgBot || botContext.bot;
-
-        switch(true) {
-          case botContext.user.liveChat == 1 :
-            botContext.user.liveChat++;
-            break;
-
-          case botContext.user.liveChat > 1 :
-            botContext.user.liveChat++;
-            liveChatAddDialog(event.botId, messageText , senderID, true);
-            return true;
-        }
         chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
-          console.log(util.inspect(botContext.user));
-          console.log('******************&&*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
+          switch(true) {
+            case botContext.user.liveChat == 1 :
+              botContext.user.liveChat++;
+              break;
+
+            case botContext.user.liveChat > 1 :
+              // liveChatAddDialog(event.botId, messageText , senderID, true);
+              return true;
+          }
+
           respondMessage(senderID, retText, event.botId, task);
         });
       });
@@ -186,94 +181,6 @@ function receivedMessage(event) {
       return next(err);
     }
   });
-
-  // contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
-  //   botContext = context;
-  //   bot = botContext.botUser.orgBot || botContext.bot;
-  //   if (messageAttachments){
-  //     var imageData = JSON.parse(JSON.stringify(messageAttachments));
-  //     message = {};
-  //     if (imageData[0].type == 'image'){
-  //       imageData[0].type = 'photo'
-  //     }
-  //     message['inputType'] =  imageData[0].type;
-  //     message.url = imageData[0].payload.url;
-  //     messageText='fbImage';
-  //   }
-  //   if(message.is_echo){
-  //     if(!message.metadata){
-  //       UserBotFbPage.findOne({pageId: senderID}, function (err, data) {
-  //         if (err){
-  //           console.log(err);
-  //         }else {
-  //           var outQuery = {
-  //             botId: data.userBotId,
-  //             userId : recipientID,
-  //             channel: "facebook",
-  //             dialog: message.text,
-  //             inOut: false,
-  //             fail: false,
-  //             liveChat: true
-  //           };
-  //           UserDialog.create([outQuery], function(err, data) {
-  //             if(err) console.log(err);
-  //             else {
-  //               var query = {
-  //                 botId: data.userBotId,
-  //                 userId : recipientID,
-  //                 channel: "facebook",
-  //                 year: (new Date()).getYear() + 1900,
-  //                 month: (new Date()).getMonth() + 1,
-  //                 date: (new Date()).getDate()
-  //               };
-  //
-  //               UserDialogLog.update(query, query, {upsert: true}, function(err2, data2) {
-  //                 if(err2) console.log(err2);
-  //                 else return true
-  //               });
-  //             }
-  //           });
-  //         }
-  //       });
-  //     }else {
-  //       return true
-  //     }
-  //   }else {
-  //     if (event.botId == "subscribeBot"){
-  //       console.log('Subscribe Coming In');
-  //         UserBotFbPage.findOne({pageId: event.recipient.id}, function (err, data) {
-  //             if (err){
-  //                 console.log(err);
-  //             }else {
-  //               subscribe = true;
-  //               subscribePageToken = data.accessToken;
-  //               event.botId = data.userBotId;
-  //               if(recipientID == data.pageId) {
-  //
-  //                 chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
-  //                   console.log(util.inspect(botContext.user));
-  //                   console.log('******************&&*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
-  //                   respondMessage(senderID, retText, event.botId, task);
-  //                 });
-  //               }
-  //             }
-  //         });
-  //     }else {
-  //       if (recipientID != bot.facebook.id) return true;
-  //       if (!global._bots[event.botId]){
-  //         botLib.loadBot(event.botId, function (realbot) {
-  //           chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
-  //             respondMessage(senderID, retText, event.botId, task);
-  //           });
-  //         });
-  //       }else {
-  //         chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
-  //           respondMessage(senderID, retText, event.botId, task);
-  //         });
-  //       }
-  //     }
-  //   }
-  // });
 }
 
 /*
@@ -986,53 +893,44 @@ function smartReplyMessage(recipientId, text, task, token) {
 
 function callSendAPI(messageData, PAGE_ACCESS_TOKEN, cb) {
   if(messageData.message) messageData.message['metadata'] = "sentByChatBot";
-  if(botContext && botContext.user && botContext.user.liveChat && (botContext.user.liveChat > 1)){
-    botContext.user.liveChat++;
-  }else {
-    if(botContext && botContext.user && botContext.user.liveChat && (botContext.user.liveChat == 1)) {
-      botContext.user.liveChat++;
-      liveChat = true;
-    }
-    var bot = botContext.botUser.orgBot || botContext.bot;
 
-    if(bot && bot.commonQuickReplies && bot.commonQuickReplies.length
-      && botContext.botUser._currentDialog.name && !botContext.user.liveChat
-      && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)
-      && (botContext.botUser._currentDialog.name != botContext.bot.noDialog.name)){
-      var quick_replies = [];
-      if(!messageData.message['quick_replies']) messageData.message['quick_replies']= [];
+  if(bot && bot.commonQuickReplies && bot.commonQuickReplies.length
+    && botContext.botUser._currentDialog.name && !botContext.user.liveChat
+    && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)
+    && (botContext.botUser._currentDialog.name != botContext.bot.noDialog.name)){
+    var quick_replies = [];
+    if(!messageData.message['quick_replies']) messageData.message['quick_replies']= [];
 
-      bot.commonQuickReplies.forEach(function (b) {
-        var btn = {content_type: "text"};
-        btn['title'] = b.text;
-        btn['payload'] = b.text;
-        messageData.message.quick_replies.push(btn);
-      });
-    }
-
-    if(bot && bot.commonQuickReplies && bot.commonQuickReplies.length
-      && botContext.botUser._currentDialog.name
-      && (botContext.botUser._currentDialog.name == botContext.bot.noDialog.name)){
-      messageData.message['quick_replies'] = [{content_type: "text", title: "시작메뉴", payload: "시작메뉴"}]
-    }
-    console.log(util.inspect(messageData, {showHidden: false, depth: null}));
-    request({
-      uri: 'https://graph.facebook.com/v2.6/me/messages',
-      qs: { access_token: PAGE_ACCESS_TOKEN },
-      method: 'POST',
-      json: messageData
-
-    }, function (error, response, body) {
-      if (!error && response.statusCode == 200) {
-        console.log("Successfully sent message");
-        if(cb) cb();
-      } else {
-        console.log("Unable to send message.");
-        console.log(JSON.stringify(response.body.error));
-        console.log(error);
-      }
+    bot.commonQuickReplies.forEach(function (b) {
+      var btn = {content_type: "text"};
+      btn['title'] = b.text;
+      btn['payload'] = b.text;
+      messageData.message.quick_replies.push(btn);
     });
   }
+
+  if(bot && bot.commonQuickReplies && bot.commonQuickReplies.length
+    && botContext.botUser._currentDialog.name
+    && (botContext.botUser._currentDialog.name == botContext.bot.noDialog.name)){
+    messageData.message['quick_replies'] = [{content_type: "text", title: "시작메뉴", payload: "시작메뉴"}]
+  }
+  console.log(util.inspect(messageData, {showHidden: false, depth: null}));
+  request({
+    uri: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: { access_token: PAGE_ACCESS_TOKEN },
+    method: 'POST',
+    json: messageData
+
+  }, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      console.log("Successfully sent message");
+      if(cb) cb();
+    } else {
+      console.log("Unable to send message.");
+      console.log(JSON.stringify(response.body.error));
+      console.log(error);
+    }
+  });
 }
 
 
