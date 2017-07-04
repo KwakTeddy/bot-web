@@ -92,6 +92,8 @@ function receivedMessage(event) {
       messageText='fbImage';
     }
     if(message.is_echo){
+      console.log('start echo process~~~~~~~~~~~~~~~~~~~~~~');
+      console.log(util.inspect(botContext.user));
       if(botContext.user.liveChat){
         var outQuery = {
           botId: botContext.bot.botName,
@@ -102,7 +104,10 @@ function receivedMessage(event) {
           fail: false,
           liveChat: true
         };
-        UserDialog.create([outQuery], function(err) {
+        console.log(util.inspect(outQuery));
+        UserDialog.create([outQuery], function(err, data) {
+          console.log(util.inspect(err));
+          console.log(util.inspect(data));
           if(err) console.log(err);
           else {
             var query = {
@@ -114,8 +119,10 @@ function receivedMessage(event) {
               date: (new Date()).getDate()
             };
 
-            UserDialogLog.update(query, query, {upsert: true}, function(err) {
-              if(err) console.log(err);
+            UserDialogLog.update(query, query, {upsert: true}, function(err2, data2) {
+              console.log(util.inspect(err2));
+              console.log(util.inspect(data2));
+              if(err2) console.log(err2);
               else return true
             });
           }
