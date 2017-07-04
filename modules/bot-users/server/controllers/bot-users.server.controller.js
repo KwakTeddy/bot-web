@@ -12,7 +12,9 @@ var path = require('path'),
   _ = require('lodash'),
   request = require('request'),
   async = require('async'),
-  util = require('util');
+  util = require('util'),
+  utils = require(path.resolve('modules/bot/action/common/utils'));
+
 
 /**
  * Create a Bot user
