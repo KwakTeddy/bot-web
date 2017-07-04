@@ -90,7 +90,7 @@ function receivedMessage(event) {
     if(message.is_echo){
       console.log('start echo process~~~~~~~~~~~~~~~~~~~~~~');
       console.log(util.inspect(botContext.user));
-      if(false){
+      if(!message.metadata){
         var outQuery = {
           botId: botContext.bot.botName,
           userId : botContext.user.userKey,
