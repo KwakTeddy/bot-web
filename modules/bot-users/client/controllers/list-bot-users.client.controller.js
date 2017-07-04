@@ -26,9 +26,9 @@
 
     vm.liveChat = function () {
       vm.mode = 'liveChat';
-      $http.post('/api/user-dialogs/liveChat', {botId: $scope.botId}).then(function (data) {
-        console.log(data)
-        vm.liveChatUsers = data.result
+      $http.post('/api/user-dialogs/liveChat', {botId: $scope.botId}).then(function (result) {
+        console.log(result)
+        vm.liveChatUsers = result.data
       }, function (err) {
         console.log(err)
       })
