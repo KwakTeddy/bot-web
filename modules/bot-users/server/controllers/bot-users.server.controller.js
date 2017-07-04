@@ -128,6 +128,7 @@ exports.list = function (req, res) {
   // if(req.query.role && (req.query.role == 'admin')){
   //   query = {};
   // }
+
   console.log(util.inspect(query))
   console.log(util.inspect('+++++++++++++++++++++++++++++++++++++'))
   BotUser.find(query).sort('-created').exec(function (err, botUsers) {
@@ -136,8 +137,10 @@ exports.list = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
+      console.log(botUsers.length)
       async.eachSeries(botUsers, function(botUser, cb) {
         if(botUser.channel == "facebook") {
+          console.log(botUser)
           UserBotFbPage.findOne({pageId: '1886604644926791'}).exec(function (err, data) {
             if(err) console.log(err);
             else {
@@ -158,7 +161,7 @@ exports.list = function (req, res) {
         cb(null)
       }, function (err) {
         if(err) console.log(err);
-        console.log(util.inspect(botUsers))
+        // console.log(util.inspect(botUsers))
         res.jsonp(botUsers);
       });
     }
