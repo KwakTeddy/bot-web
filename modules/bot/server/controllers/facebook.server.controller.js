@@ -167,6 +167,7 @@ function receivedMessage(event) {
               break;
 
             case botContext.user.liveChat > 1 :
+              botContext.user.liveChat++;
               // liveChatAddDialog(event.botId, messageText , senderID, true);
               return true;
           }
