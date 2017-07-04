@@ -30,8 +30,8 @@
       <tbody>
       <tr ng-repeat="botUser in ::vm.botUsers">
         <td class="text-center">{{botId}}</td>
-        <td class="text-center"><img src="{{botUser.profile_pic}}" alt=""></td>
-        <td class="text-center">{{botUser.first_name}}</td>
+        <td class="text-center"><img src="{{botUser.facebookData.profile_pic}}" alt=""></td>
+        <td class="text-center">{{botUser.facebookData.first_name}}</td>
         <td class="text-center">{{botUser.channel}}</td>
         <!--<td class="text-center">{{botUser.mobile}}</td>-->
         <!--<td class="text-center">{{botUser.email}}</td>-->
