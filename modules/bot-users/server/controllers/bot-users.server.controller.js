@@ -157,8 +157,8 @@ exports.list = function (req, res) {
                 console.log(response.statusCode)
                 console.log(body)
                 if (!error && response.statusCode == 200) {
-                  botUser['facebookData'] = body;
-                  console.log(botUser);
+                  botUser['facebookData'] = JSON.parse(JSON.stringify(body));
+                  console.log(util.inspect(botUser));
                   cb(null)
                 } else {
                   cb(null);
