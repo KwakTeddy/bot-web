@@ -149,9 +149,12 @@ exports.list = function (req, res) {
                 qs: { access_token: data.accessToken },
                 method: 'GET'
               }, function (error, response, body) {
+                console.log(error)
+                console.log(response)
                 console.log(body)
                 if (!error && response.statusCode == 200) {
                   botUser['facebook'] = body;
+                  console.log(botUsers)
                   cb(null)
                 } else {
                   console.log(error);
