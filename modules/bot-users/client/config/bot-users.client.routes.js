@@ -73,6 +73,7 @@
 
   getBotUsers.$inject = ['BotUsersService', '$cookies', 'Authentication'];
   function getBotUsers(BotUsersService, $cookies, Authentication) {
+
     return BotUsersService.query({botId: $cookies.get('default_bot'), role: Authentication.user.roles}).$promise;
   }
 

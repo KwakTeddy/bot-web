@@ -5,14 +5,14 @@
     .module('bot-users')
     .controller('BotUsersListController', BotUsersListController);
 
-  BotUsersListController.$inject = ['$rootScope', '$scope', 'botUsersResolve','DTOptionsBuilder', '$compile'];
+  BotUsersListController.$inject = ['$rootScope', '$scope', 'botUsersResolve','DTOptionsBuilder', '$compile', '$cookies'];
 
-  function BotUsersListController($rootScope, $scope, botUsers, DTOptionsBuilder, $compile) {
+  function BotUsersListController($rootScope, $scope, botUsers, DTOptionsBuilder, $compile, $cookies) {
     var vm = this;
-    console.log(123123);
     vm.botUsers = botUsers;
+    console.log($cookies.get('default_bot'))
 
-    $scope.botId = $rootScope.botId || 'athena';
+    $scope.botId = $cookies.get('default_bot') || 'athena';
 
     vm.dtOptions = DTOptionsBuilder.newOptions()
         .withOption('bLengthChange', false)

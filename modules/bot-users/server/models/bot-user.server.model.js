@@ -41,9 +41,8 @@ var BotUserSchema = new Schema({
   },
 
   confirmTerms: Boolean,
-  botId: {
-    type: String
-  }
+  botId: []
+
 });
 
 mongoose.model('BotUser', BotUserSchema);

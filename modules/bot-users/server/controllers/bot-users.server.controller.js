@@ -122,15 +122,18 @@ exports.delete = function (req, res) {
 exports.list = function (req, res) {
   var query = {};
   query['botId'] = req.query.botId;
-  if(req.query.role && (req.query.role == 'admin')){
-    query = {};
-  }
-  BotUser.find(query).sort('-created').populate('currentBank').exec(function (err, botUsers) {
+  // if(req.query.role && (req.query.role == 'admin')){
+  //   query = {};
+  // }
+  console.log(util.inspect(query))
+  console.log(util.inspect('+++++++++++++++++++++++++++++++++++++'))
+  BotUser.find(query).sort('-created').exec(function (err, botUsers) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
+      console.log(util.inspect(botUsers))
       res.jsonp(botUsers);
     }
   });
@@ -172,15 +175,33 @@ exports.botUserByUserKey = function (req, res, next, userKey) {
 
 
 function getUserContext(task, context, callback) {
+  var botExist;
   BotUser.findOne({userKey: task.userId}, function(err, doc) {
     if(doc == undefined) {
-      BotUser.create({userKey: task.userId, channel: task.channel, creaated: Date.now()}, function(err, _doc) {
+      BotUser.create({userKey: task.userId, channel: task.channel, creaated: Date.now(), botId: task.bot}, function(err, _doc) {
         task.doc = _doc;
         callback(task, context);
       });
     } else {
-      task.doc = doc;
-      callback(task, context);
+      doc.botId.forEach(function (botId) {
+        if(botId == task.bot) botExist = true
+      });
+      if(!botExist){
+       doc.botId.push(task.bot);
+       doc.markModified('botId');
+       doc.save(function (err) {
+         if(err) console.log(err);
+         else {
+           task.doc = doc;
+           callback(task, context);
+         }
+       })
+      }else {
+        task.doc = doc;
+        callback(task, context);
+      }
+      // task.doc = doc;
+      // callback(task, context);
     }
   });
 }

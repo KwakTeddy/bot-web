@@ -95,13 +95,14 @@ function liveChatAddDialog(botId, message , userId, inOut) {
 }
 
 function receivedMessage(event) {
-  var senderID = event.sender.id;
-  var recipientID = event.recipient.id;
-  var message = event.message;
-  var messageId = message.mid;
-  var messageText = message.text;
-  var messageAttachments = message.attachments;
-  var imageData = '';
+  var senderID = event.sender.id,
+  recipientID = event.recipient.id,
+  message = event.message,
+  messageId = message.mid,
+  messageText = message.text,
+  messageAttachments = message.attachments,
+  imageData = '';
+
   if (messageAttachments){
     imageData = JSON.parse(JSON.stringify(messageAttachments));
     message = {};
@@ -123,7 +124,7 @@ function receivedMessage(event) {
               liveChatAddDialog(data.userBotId, messageText, recipientID, false);
               contextModule.getContext(data.userBotId, 'facebook', recipientID, null, function(context) {
                 console.log(util.inspect(context.user));
-                context.user.liveChat = 2;
+                context.user.liveChat = 3;
               })
             }
           });

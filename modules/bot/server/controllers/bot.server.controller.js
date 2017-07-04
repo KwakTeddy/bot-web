@@ -25,7 +25,7 @@ var mongoose = require('mongoose'),
 
 exports.write = write;
 function write(channel, from, to, text, json, successCallback, errorCallback, endCallback) {
-    botProc(to, channel, from, text, json, successCallback, chatSocketConfig);
+  botProc(to, channel, from, text, json, successCallback, chatSocketConfig);
 };
 
 exports.botProc = botProc;
