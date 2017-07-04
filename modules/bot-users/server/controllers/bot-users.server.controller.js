@@ -142,8 +142,9 @@ exports.list = function (req, res) {
         if(botUser.channel == "facebook") {
           console.log(botUser)
           UserBotFbPage.findOne({pageId: '1886604644926791'}).exec(function (err, data) {
-            if(err) console.log(err);
-            else {
+            if(err) {
+              console.log(err);
+            }else {
               request({
                 uri: 'https://graph.facebook.com/v2.6/' + botUser.userKey,
                 qs: { access_token: data.accessToken },
@@ -154,7 +155,8 @@ exports.list = function (req, res) {
                 console.log(body)
                 if (!error && response.statusCode == 200) {
                   botUser.facebook = body;
-                  console.log(botUser)
+                  botUser.channel = body;
+                  console.log(botUser);
                   cb(null)
                 } else {
                   console.log(error);
