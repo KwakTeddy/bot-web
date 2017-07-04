@@ -94,6 +94,7 @@ function receivedMessage(event) {
     if(message.is_echo){
       console.log('start echo process~~~~~~~~~~~~~~~~~~~~~~');
       console.log(util.inspect(botContext.user));
+      console.log(util.inspect(liveChat));
       if(liveChat){
         var outQuery = {
           botId: botContext.bot.botName,
