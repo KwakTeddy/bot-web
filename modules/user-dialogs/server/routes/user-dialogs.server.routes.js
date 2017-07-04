@@ -13,4 +13,7 @@ module.exports = function(app) {
   app.route('/api/user-dialogs/failedDialog')
     .put(userDialogs.update);
 
+  app.route('/api/user-dialogs/liveChat')
+    .post(userDialogs.liveChat)
+
 };

@@ -13,6 +13,25 @@ var path = require('path'),
 
 var util = require('util');
 
+
+exports.liveChat = function (req, res) {
+  console.log(util.inspect(req.body))
+  UserDialog.aggregate(
+    [
+      {$match:{botId: req.body.botId, liveChat: true}},
+      {$group: {_id: {userKey: "$userId", channel: "$channel", botId: "$botId"}}}
+    ]
+  ).exec(function (err, data) {
+    if(err) console.log(err);
+    else {
+      console.log(util.inspect(data))
+      res.json(data);
+    }
+  })
+};
+
+
+
 /**
  * List of Bot users
  */

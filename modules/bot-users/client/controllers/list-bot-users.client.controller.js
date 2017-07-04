@@ -5,9 +5,9 @@
     .module('bot-users')
     .controller('BotUsersListController', BotUsersListController);
 
-  BotUsersListController.$inject = ['$rootScope', '$scope', 'botUsersResolve','DTOptionsBuilder', '$compile', '$cookies', 'BotUsersService'];
+  BotUsersListController.$inject = ['$rootScope', '$scope', 'botUsersResolve','DTOptionsBuilder', '$compile', '$cookies', 'BotUsersService', '$http'];
 
-  function BotUsersListController($rootScope, $scope, botUsers, DTOptionsBuilder, $compile, $cookies, BotUsersService) {
+  function BotUsersListController($rootScope, $scope, botUsers, DTOptionsBuilder, $compile, $cookies, BotUsersService, $http) {
     var vm = this;
     vm.mode = 'default';
     vm.botUsers = botUsers;
@@ -26,9 +26,9 @@
 
     vm.liveChat = function () {
       vm.mode = 'liveChat';
-      BotUsersService.query({botId: $cookies.get('default_bot'), liveChat: true}, function (result) {
-        console.log(result);
-        vm.liveChatUsers =result
+      $http.post('/api/user-dialogs/liveChat', {botId: $scope.botId}).then(function (data) {
+        console.log(data)
+        vm.liveChatUser = data.result
       }, function (err) {
         console.log(err)
       })
