@@ -132,12 +132,12 @@ function receivedMessage(event) {
     function (done) {
       if (event.botId == "subscribeBot"){
         console.log('Subscribe Coming In');
-        if(recipientID != data.pageId) return true;
         UserBotFbPage.findOne({pageId: event.recipient.id}, function (err, data) {
           if (err){
             console.log(err);
             return null;
           }else {
+            if(recipientID != data.pageId) return true;
             subscribe = true;
             subscribePageToken = data.accessToken;
             event.botId = data.userBotId;
