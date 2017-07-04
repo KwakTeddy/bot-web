@@ -38,7 +38,7 @@ exports.liveChat = function (req, res) {
 exports.list = function (req, res) {
   var query = {};
   if(req.params.botName && req.params.botName != '') query.botId = req.params.botName;
-  if(req.params.liveChat) query['liveChat'] = req.params.liveChat;
+  if(req.query.liveChat) query['liveChat'] = req.query.liveChat;
   // if(req.params.botName && req.params.botName == '') query.botId = 'csdemo';
   query.userId = req.params.userKey;
   console.log(util.inspect(query));
