@@ -150,10 +150,10 @@ exports.list = function (req, res) {
                 method: 'GET'
               }, function (error, response, body) {
                 console.log(error)
-                console.log(response)
+                console.log(response.statusCode)
                 console.log(body)
                 if (!error && response.statusCode == 200) {
-                  botUser['facebook'] = body;
+                  botUser.facebook = body;
                   console.log(botUser)
                   cb(null)
                 } else {
