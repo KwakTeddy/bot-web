@@ -6,9 +6,12 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   BotUser = mongoose.model('BotUser'),
+  UserBotFbPage = mongoose.model('UserBotFbPage'),
   Bank = mongoose.model('Bank'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash'),
+  request = require('request'),
+  async = require('async'),
   util = require('util');
 
 /**
@@ -125,7 +128,6 @@ exports.list = function (req, res) {
   // if(req.query.role && (req.query.role == 'admin')){
   //   query = {};
   // }
-  if(req.query.liveChat) query['liveChat'] = true;
   console.log(util.inspect(query))
   console.log(util.inspect('+++++++++++++++++++++++++++++++++++++'))
   BotUser.find(query).sort('-created').exec(function (err, botUsers) {
@@ -134,8 +136,31 @@ exports.list = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      console.log(util.inspect(botUsers))
-      res.jsonp(botUsers);
+      async.eachSeries(botUsers, function(botUser, cb) {
+        if(botUser.channel == "facebook") {
+          UserBotFbPage.findOne({pageId: '1886604644926791'}).exec(function (err, data) {
+            if(err) console.log(err);
+            else {
+              request({
+                uri: 'https://graph.facebook.com/v2.6/' + botUser.userKey,
+                qs: { access_token: data.accessToken },
+                method: 'GET'
+              }, function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                  botUser['facebook'] = response;
+                } else {
+                  console.log(error);
+                }
+              });
+            }
+          })
+        }
+        cb(null)
+      }, function (err) {
+        if(err) console.log(err);
+        console.log(util.inspect(botUsers))
+        res.jsonp(botUsers);
+      });
     }
   });
 };

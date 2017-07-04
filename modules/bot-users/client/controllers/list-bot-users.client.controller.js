@@ -11,6 +11,7 @@
     var vm = this;
     vm.mode = 'default';
     vm.botUsers = botUsers;
+    console.log(vm.botUsers)
     console.log($cookies.get('default_bot'))
 
     $scope.botId = $cookies.get('default_bot') || 'athena';
@@ -37,12 +38,11 @@
 
     vm.modeChange = function () {
       vm.mode = 'default'
-    }
+    };
 
     vm.modeChangeLiveChat = function () {
-      vm.mode = 'liveChat';
       $http.post('/api/user-dialogs/liveChat', {botId: $scope.botId}).then(function (result) {
-        console.log(result)
+        vm.mode = 'liveChat';
         vm.liveChatUsers = result.data
       }, function (err) {
         console.log(err)

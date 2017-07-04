@@ -17,7 +17,8 @@
       <thead>
       <tr>
         <th class="text-center">봇아이디</th>
-        <th class="text-center">유저키</th>
+        <th class="text-center">사진</th>
+        <th class="text-center">이름</th>
         <th class="text-center">채널</th>
         <!--<th class="text-center">전화번호</th>-->
         <!--<th class="text-center">이메일</th>-->
@@ -29,7 +30,8 @@
       <tbody>
       <tr ng-repeat="botUser in ::vm.botUsers">
         <td class="text-center">{{botId}}</td>
-        <td class="text-center">{{botUser.userKey}}</td>
+        <td class="text-center"><img src="{{botUser.profile_pic}}" alt=""></td>
+        <td class="text-center">{{botUser.first_name}}</td>
         <td class="text-center">{{botUser.channel}}</td>
         <!--<td class="text-center">{{botUser.mobile}}</td>-->
         <!--<td class="text-center">{{botUser.email}}</td>-->
