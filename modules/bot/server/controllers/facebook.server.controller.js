@@ -15,10 +15,6 @@ var utils = require(path.resolve('modules/bot/action/common/utils'));
 var crypto = require('crypto');
 var UserDialog = mongoose.model('UserDialog');
 var UserDialogLog = mongoose.model('UserDialogLog');
-var liveChat = false;
-
-
-
 
 var util =require('util'); //temporary
 var botContext = '';
@@ -94,8 +90,7 @@ function receivedMessage(event) {
     if(message.is_echo){
       console.log('start echo process~~~~~~~~~~~~~~~~~~~~~~');
       console.log(util.inspect(botContext.user));
-      console.log(util.inspect(liveChat));
-      if(liveChat){
+      if(false){
         var outQuery = {
           botId: botContext.bot.botName,
           userId : botContext.user.userKey,
@@ -880,6 +875,7 @@ function smartReplyMessage(recipientId, text, task, token) {
 }
 
 function callSendAPI(messageData, PAGE_ACCESS_TOKEN, cb) {
+  if(messageData.message) messageData.message['metadata'] = "sentByChatBot";
   if(botContext && botContext.user && botContext.user.liveChat && (botContext.user.liveChat > 1)){
     botContext.user.liveChat++;
   }else {
