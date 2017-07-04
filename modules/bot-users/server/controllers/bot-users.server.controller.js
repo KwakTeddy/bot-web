@@ -139,7 +139,6 @@ exports.list = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      var meta = utils.clone(botUsers);
       console.log(botUsers.length)
       async.eachSeries(botUsers, function(botUser, cb) {
         if(botUser.channel == "facebook") {
@@ -157,7 +156,7 @@ exports.list = function (req, res) {
                 console.log(response.statusCode)
                 console.log(body)
                 if (!error && response.statusCode == 200) {
-                  meta[meta.indexOf(botUser)]['facebook'] = body;
+                  botUser['facebookData'] = body;
                   console.log(botUser);
                   cb(null)
                 } else {
