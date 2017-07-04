@@ -36,6 +36,8 @@ exports.liveChat = function (req, res) {
  * List of Bot users
  */
 exports.list = function (req, res) {
+  console.log(util.inspect(req.params))
+  console.log(util.inspect(req.query))
   var query = {};
   if(req.params.botName && req.params.botName != '') query.botId = req.params.botName;
   if(req.query.liveChat) query['liveChat'] = req.query.liveChat;
