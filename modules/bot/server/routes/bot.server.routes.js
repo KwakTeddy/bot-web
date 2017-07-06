@@ -7,6 +7,7 @@ var kakao = require('../controllers/kakao.server.controller');
 var line = require('../controllers/line.server.controller');
 var facebook = require('../controllers/facebook.server.controller');
 var navertalk = require('../controllers/navertalk.server.controller');
+var wechat = require('../controllers/wechat.server.controller');
 
 module.exports = function (app) {
   // 카카오톡
@@ -27,4 +28,7 @@ module.exports = function (app) {
   // 네이버 톡톡
   app.route('/navertalk/:bot/webhook').post(navertalk.message);
 
+  // wechat
+  app.route('/wechat/:bot/webhook').get(wechat.message);
+  app.route('/wechat/:bot/webhook').post(wechat.message);
 };
