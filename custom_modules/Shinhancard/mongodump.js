@@ -19,22 +19,26 @@ exports.mongodump = function (req, res) {
             console.log(err2);
           }
           else {
-            if(data2 && data2.botId && data2.botId.length){
-              console.log('already Data');
-              count++;
-              cb(null)
+            if(!data2){
+              cb(null);
             }else {
-              data2['botId'] = ["Shinhancard"];
-              data2.save(function (err3) {
-                if(err3) {
-                  console.log(err3);
-                }
-                else {
-                  console.log('new Data Added');
-                  count++;
-                  cb(null)
-                }
-              })
+              if(data2.botId && data2.botId.length){
+                console.log('already Data');
+                count++;
+                cb(null)
+              }else {
+                data2['botId'] = ["Shinhancard"];
+                data2.save(function (err3) {
+                  if(err3) {
+                    console.log(err3);
+                  }
+                  else {
+                    console.log('new Data Added');
+                    count++;
+                    cb(null)
+                  }
+                })
+              }
             }
           }
         })
