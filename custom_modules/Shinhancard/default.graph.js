@@ -3435,6 +3435,25 @@ var dialogs = [
 		]
 	},
 	{
+		"name": "(페이스북)상담톡",
+		"id": "default31322333",
+		"filename": "default",
+		"input": [
+			{
+				"text": "페북 지기",
+				"if": " context.user.channel == 'facebook'"
+			},
+			{
+				"text": "4",
+				"if": " context.user.channel == 'facebook'"
+			}
+		],
+		"output": "페북지기에게 남기시고 싶은 말씀을 남겨주세요.\n남기고 싶으신 말씀을 다 남긴후에는 '시작'이라고 입력해주세요.\n감사합니다! \n\n*이후 '시작' 메세지 입력 전까지 챗봇은 작동하지 않습니다.",
+		"task": {
+			"name": "liveChat"
+		}
+	},
+	{
 		"name": "정치",
 		"id": "default276",
 		"filename": "default",
@@ -3885,6 +3904,13 @@ var commonDialogs = [
 		"output": {
 			"call": "퀴즈"
 		}
+	},
+	{
+		"name": "dialog_commondefault31322334",
+		"id": "commondefault31322334",
+		"filename": "defaultcommon",
+		"input": [],
+		"output": []
 	}
 ];
 var _bot = require(require('path').resolve("config/lib/bot")).getBot('Shinhancard');
