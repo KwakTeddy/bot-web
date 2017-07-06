@@ -29,7 +29,7 @@ module.exports.start = function() {
   app.use('/', express.static(path.resolve('./public')));
 
   var httpsServer = http.createServer(app);
-  httpsServer.listen(80, function() {
+  httpsServer.listen(3000, function() {
     console.log('listening on *:3000')
   });
 
