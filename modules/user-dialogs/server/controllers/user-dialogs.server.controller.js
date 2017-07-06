@@ -150,6 +150,9 @@ function addDialog(inText, outText, isFail, dialog, context, callback) {
     inQuery['liveChat'] = true;
     outQuery = {};
   }
+  console.log(util.inspect(context.user));
+  console.log(util.inspect(inQuery));
+  console.log(util.inspect('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'));
 
   UserDialog.create([inQuery, outQuery], function(err) {
     if(err) {}
