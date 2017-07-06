@@ -11,13 +11,17 @@ exports.mongodump = function (req, res) {
       console.log(err);
     }
     else {
+      var count = 0;
       async.eachSeries(data, function (dialog, cb) {
+        console.log(count);
         BotUser.findOne({userKey: dialog.userId}).exec(function (err2, data2) {
           if(err) {
             console.log(err2);
           }
           else {
             if(data2.botId && data2.botId.length){
+              console.log('already Data');
+              count++;
               cb(null)
             }else {
               data2['botId'] = ["Shinhancard"];
@@ -26,6 +30,8 @@ exports.mongodump = function (req, res) {
                   console.log(err3);
                 }
                 else {
+                  console.log('new Data Added');
+                  count++;
                   cb(null)
                 }
               })
