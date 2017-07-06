@@ -16,4 +16,6 @@ module.exports = function(app) {
   app.route('/api/user-dialogs/liveChat')
     .post(userDialogs.liveChat)
 
+  app.route('/api/user-dialogs/download')
+    .post(userDialogs.download)
 };

@@ -16,6 +16,7 @@ var path = require('path'),
   utils = require(path.resolve('modules/bot/action/common/utils'));
 
 
+
 /**
  * Create a Bot user
  */
