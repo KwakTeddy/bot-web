@@ -3435,6 +3435,25 @@ var dialogs = [
 		]
 	},
 	{
+		"name": "(페이스북)상담톡",
+		"id": "default31322333",
+		"filename": "default",
+		"input": [
+			{
+				"text": "페북 지기",
+				"if": " context.user.channel == 'facebook'"
+			},
+			{
+				"text": "4",
+				"if": " context.user.channel == 'facebook'"
+			}
+		],
+		"output": "페북지기에게 남기시고 싶은 말씀을 남겨주세요.\n남기고 싶으신 말씀을 다 남긴후에는 '시작'이라고 입력해주세요.\n감사합니다! \n\n*이후 '시작' 메세지 입력 전까지 챗봇은 작동하지 않습니다.",
+		"task": {
+			"name": "liveChat"
+		}
+	},
+	{
 		"name": "정치",
 		"id": "default276",
 		"filename": "default",
@@ -3754,35 +3773,44 @@ var commonDialogs = [
 				"text": "시작"
 			}
 		],
-		"output": [{
-		  "if": "context.user.channel == 'facebook'",
-			"output": "안녕하세요, 신한카드입니다123. \n저는 전화, 홈페이지 보다 메신저가 편한 고객님들을 위해 새롭게 선보이는 신한카드 자동채팅 서비스입니다.\n결제+혜택+재미=신한 FAN 과 카드에 대해 알려드리겠습니다.\n많이 이용해 주실꺼죠?\n\n신한 FAN, 카드 추천, 자주 묻는 질문(FAQ) 중 하나를 선택해 주세요.\n\n1. 신한 FAN을 알려줘요\n2. 내게 꼭 맞는 카드를 추천해줘요\n3. 궁금한게 있는데요(FAQ)",
-			"buttons": [
-				{
-					"text": "신한 FAN을 알려줘요"
-				},
-				{
-					"text": "내게 꼭 맞는 카드를 추천해줘요"
-				},
-				{
-					"text": "궁금한게 있는데요(FAQ)"
+		"output": [
+			{
+				"if": "context.user.channel == 'facebook'",
+				"output": {
+					"output": "안녕하세요, 신한카드입니다123. \n저는 전화, 홈페이지 보다 메신저가 편한 고객님들을 위해 새롭게 선보이는 신한카드 자동채팅 서비스입니다.\n결제+혜택+재미=신한 FAN 과 카드에 대해 알려드리겠습니다.\n많이 이용해 주실꺼죠?\n\n신한 FAN, 카드 추천, 자주 묻는 질문(FAQ) 중 하나를 선택해 주세요.\n\n1. 신한 FAN을 알려줘요\n2. 내게 꼭 맞는 카드를 추천해줘요\n3. 궁금한게 있는데요(FAQ)\n4. 페북지기에 메세지 남기기",
+					"buttons": [
+						{
+							"text": "신한 FAN을 알려줘요"
+						},
+						{
+							"text": "내게 꼭 맞는 카드를 추천해줘요"
+						},
+						{
+							"text": "궁금한게 있는데요(FAQ)"
+						},
+						{
+							"text": "페북지기에 메세지 남기기"
+						}
+					]
 				}
-			]
-		},{
-      "if": "context.user.channel != 'facebook'",
-      "output": "안녕하세요, 신한카드입니다. \n저는 전화, 홈페이지 보다 메신저가 편한 고객님들을 위해 새롭게 선보이는 신한카드 자동채팅 서비스입니다.\n결제+혜택+재미=신한 FAN 과 카드에 대해 알려드리겠습니다.\n많이 이용해 주실꺼죠?\n\n신한 FAN, 카드 추천, 자주 묻는 질문(FAQ) 중 하나를 선택해 주세요.\n\n1. 신한 FAN을 알려줘요\n2. 내게 꼭 맞는 카드를 추천해줘요\n3. 궁금한게 있는데요(FAQ)",
-      "buttons": [
-        {
-          "text": "신한 FAN을 알려줘요"
-        },
-        {
-          "text": "내게 꼭 맞는 카드를 추천해줘요"
-        },
-        {
-          "text": "궁금한게 있는데요(FAQ)"
-        }
-      ]
-    }
+			},
+			{
+				"if": "context.user.channel != 'facebook'",
+				"output": {
+					"output": "안녕하세요, 신한카드입니다. \n저는 전화, 홈페이지 보다 메신저가 편한 고객님들을 위해 새롭게 선보이는 신한카드 자동채팅 서비스입니다.\n결제+혜택+재미=신한 FAN 과 카드에 대해 알려드리겠습니다.\n많이 이용해 주실꺼죠?\n\n신한 FAN, 카드 추천, 자주 묻는 질문(FAQ) 중 하나를 선택해 주세요.\n\n1. 신한 FAN을 알려줘요\n2. 내게 꼭 맞는 카드를 추천해줘요\n3. 궁금한게 있는데요(FAQ)",
+					"buttons": [
+						{
+							"text": "신한 FAN을 알려줘요"
+						},
+						{
+							"text": "내게 꼭 맞는 카드를 추천해줘요"
+						},
+						{
+							"text": "궁금한게 있는데요(FAQ)"
+						}
+					]
+				}
+			}
 		],
 		"inRaw": "처음",
 		"inNLP": "처음"
@@ -3900,6 +3928,13 @@ var commonDialogs = [
 		"output": {
 			"call": "퀴즈"
 		}
+	},
+	{
+		"name": "dialog_commondefault31322334",
+		"id": "commondefault31322334",
+		"filename": "defaultcommon",
+		"input": [],
+		"output": []
 	}
 ];
 var _bot = require(require('path').resolve("config/lib/bot")).getBot('Shinhancard');

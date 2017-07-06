@@ -2350,3 +2350,28 @@ var cardlist9 = {
     }
 };
 bot.setTask("cardlist9", cardlist9);
+
+var liveChat = {
+	name: 'liveChat',
+	action: function (task,context,callback) {
+      console.log(JSON.stringify(context.user))
+      if(context && context.user && !context.user.liveTalk){
+        context.user['liveChat'] = 1;
+      }
+      console.log(JSON.stringify(context.user))
+      console.log('###########################')
+		callback(task,context);
+	}
+};
+
+bot.setTask('liveChat',liveChat);
+var liveChatEnd = {
+	name: 'liveChatEnd',
+	action: function (task,context,callback) {
+      context.user['liveChat'] = false;
+      console.log('###########################!!!!!!!')
+		callback(task,context);
+	}
+};
+
+bot.setTask('liveChatEnd',liveChatEnd);
