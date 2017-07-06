@@ -2350,3 +2350,62 @@ var cardlist9 = {
     }
 };
 bot.setTask("cardlist9", cardlist9);
+
+var liveChat = {
+  name: 'liveChat',
+  action: function (task, context, callback) {
+    console.log(JSON.stringify(context.user))
+    if (context && context.user && !context.user.liveTalk) {
+      context.user['liveChat'] = 1;
+    }
+    console.log(JSON.stringify(context.user))
+    console.log('###########################')
+    callback(task, context);
+  }
+};
+
+bot.setTask('liveChat', liveChat);
+
+var startTask = {
+  name: 'startTask',
+  action: function (task, context, callback) {
+    console.log(JSON.stringify(task.output))
+    if (context.user.channel == 'facebook') {
+
+      task.text = '안녕하세요, 신한카드입니다. \n저는 전화, 홈페이지 보다 메신저가 편한 고객님들을 위해 새롭게 선보이는 신한카드 자동채팅 서비스입니다.\n결제\+혜택\+재미=신한 FAN 과 카드에 대해 알려드리겠습니다.\n많이 이용해 주실꺼죠?\n\n신한 FAN, 카드 추천, 자주 묻는 질문(FAQ) 중 하나를 선택해 주세요.\n\n1. 신한 FAN을 알려줘요\n2. 내게 꼭 맞는 카드를 추천해줘요\n3. 궁금한게 있는데요(FAQ)\n4. 페북지기에 메세지 남기기'
+      task.buttons = [
+        {
+          'text': '신한 FAN을 알려줘요'
+        },
+        {
+          'text': '내게 꼭 맞는 카드를 추천해줘요'
+        },
+        {
+          'text': '궁금한게 있는데요(FAQ)'
+        },
+        {
+          'text': '페북지기에 메세지 남기기'
+        }
+      ]
+    } else {
+      task.text = '안녕하세요, 신한카드입니다. \n저는 전화, 홈페이지 보다 메신저가 편한 고객님들을 위해 새롭게 선보이는 신한카드 자동채팅 서비스입니다.\n결제\+혜택\+재미=신한 FAN 과 카드에 대해 알려드리겠습니다.\n많이 이용해 주실꺼죠?\n\n신한 FAN, 카드 추천, 자주 묻는 질문(FAQ) 중 하나를 선택해 주세요.\n\n1. 신한 FAN을 알려줘요\n2. 내게 꼭 맞는 카드를 추천해줘요\n3. 궁금한게 있는데요(FAQ)'
+      task.buttons = [
+        {
+          'text': '신한 FAN을 알려줘요'
+        },
+        {
+          'text': '내게 꼭 맞는 카드를 추천해줘요'
+        },
+        {
+          'text': '궁금한게 있는데요(FAQ)'
+        }
+      ]
+    }
+
+    context.user['liveChat'] = false;
+    console.log('###########################!!!!!!!')
+    callback(task, context);
+  }
+};
+
+bot.setTask('startTask', startTask);
