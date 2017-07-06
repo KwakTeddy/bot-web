@@ -121,12 +121,13 @@ exports.download = function (req, res) {
         data.push(['recent', dialog.maxDate]);
         data.push(['dialog', '사용자', '관리자', '시간']);
         dialog.dialogDatas.forEach(function (dialogData) {
-          if(dialogData.inOut){
-            data.push([" ", dialogData.dialog, " ", dialogData.created])
-          }else {
-            data.push([" ", " ", dialogData.dialog, dialogData.created])
+          if(dialogData.dialog){
+            if(dialogData.inOut){
+              data.push([" ", dialogData.dialog, " ", dialogData.created])
+            }else {
+              data.push([" ", " ", dialogData.dialog, dialogData.created])
+            }
           }
-
         });
       });
 
