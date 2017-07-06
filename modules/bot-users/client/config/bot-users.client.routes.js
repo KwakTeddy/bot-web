@@ -22,9 +22,9 @@
         templateUrl: 'modules/bot-users/client/views/list-bot-users.client.view.html',
         controller: 'BotUsersListController',
         controllerAs: 'vm',
-        resolve: {
-          botUsersResolve: getBotUsers
-        },
+        // resolve: {
+        //   botUsersResolve: getBotUsers
+        // },
         data: {
           roles: ['user', 'enterprise', 'admin'],
           pageTitle: 'Bot users List'
