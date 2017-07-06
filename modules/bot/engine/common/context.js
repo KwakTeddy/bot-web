@@ -30,7 +30,7 @@ function getContext(botName, channel, user, options, callback) {
         var _user = {userId: user, channel: channel, bot: botName};
         botUser.getUserContext(_user, null, function (_user, _context) {
           userContext = {userId: user, channel: channel, bot: botName};
-          console.log(util.inspect('~~~~~~~~~~~~~~~~~~~~@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@' + global._users[user]));
+          console.log('~~~~~~~~~~~~~~~~~~~~@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@' + util.inspect(global._users[user]));
           if(global._users[user] && global._users[user].liveChat) userContext['liveChat'] = global._users[user].liveChat;
           userContext = utils.merge(userContext, _user.doc._doc);
 
