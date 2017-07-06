@@ -168,6 +168,7 @@ function receivedMessage(event) {
         console.log(util.inspect(botContext.user, {showHidden: false, depth: null}))
         console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
         chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
+          console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
           console.log(util.inspect(botContext.user, {showHidden: false, depth: null}))
           switch(true) {
             case botContext.user.liveChat == 1 :
