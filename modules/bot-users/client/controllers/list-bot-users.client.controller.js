@@ -147,7 +147,7 @@
       .withOption('dom', 'l<"toolbar">frtip')
       .withOption('initComplete', function(settings, json) {
         $('#dt_filter > label > input[type="search"]').addClass('form-control').attr('placeholder', 'Search');
-        $("div.toolbar").html('<button id="addToTable" class="btn btn-default" ng-click="vm.downloadUserDilaogsLiveChat()">챗봇 대화내역 다운로드</button><button id="addToTable" class="btn btn-default" ng-click="vm.modeChange()"><i class="fa fa-plus"></i> 챗봇 대화내역 보기</button>');
+        $("div.toolbar").html('<button id="addToTable" class="btn btn-default" ng-click="vm.downloadUserDilaogsLiveChat()">수동 대화내역 다운로드</button> <button id="addToTable" class="btn btn-default" ng-click="vm.modeChange()"><i class="fa fa-plus"></i> 챗봇 대화내역 보기</button>');
         $compile(angular.element(document.querySelector('div.toolbar')).contents())($scope);
         $compile(angular.element('#' + settings.sTableId).contents())($scope);
       });

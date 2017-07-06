@@ -88,8 +88,8 @@ exports.download = function (req, res) {
   }
   var query = {};
   query['botId'] = req.body.botId;
-  // query['liveChat'] = true;
-  // query['channel'] = {$ne: "socket"};
+  query['liveChat'] = true;
+  query['channel'] = {$ne: "socket"};
   UserDialog.aggregate(
     [
       {$match: query},
