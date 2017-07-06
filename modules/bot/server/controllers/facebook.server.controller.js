@@ -162,29 +162,26 @@ function receivedMessage(event) {
       }
     },
     function (done) {
-      contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
-        botContext = context;
-        bot = botContext.botUser.orgBot || botContext.bot;
-        console.log(util.inspect(botContext.user, {showHidden: false, depth: null}))
-        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-        chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
+      chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
+        contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
+          botContext = context;
+          bot = botContext.botUser.orgBot || botContext.bot;
           console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
           console.log(util.inspect(botContext.user, {showHidden: false, depth: null}))
           switch(true) {
-            case botContext.user.liveChat == 1 :
-              botContext.user.liveChat++;
-              break;
+          case botContext.user.liveChat == 1 :
+            botContext.user.liveChat++;
+            break;
 
-            case botContext.user.liveChat > 1 :
-              botContext.user.liveChat++;
-              // liveChatAddDialog(event.botId, messageText , senderID, true);
-              return true;
+          case botContext.user.liveChat > 1 :
+            botContext.user.liveChat++;
+            // liveChatAddDialog(event.botId, messageText , senderID, true);
+            return true;
           }
-
+          done();
           respondMessage(senderID, retText, event.botId, task);
         });
       });
-      done();
     }
   ], function (err) {
     if (err) {
