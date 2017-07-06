@@ -62,7 +62,7 @@
       }),
       DTColumnBuilder.newColumn(null).withTitle('대화내역').notSortable()
         .renderWith(function(data, type, full, meta) {
-          return '<button style="width: 100%" class="btn btn-default" data-ui-sref="user-dialogs.list({botId: botId, userKey: \'' + data.userKey+ '\'})">' + '보기' + '</button>'
+          return '<button style="width: 100%" class="btn btn-default" data-ui-sref="user-dialogs.list({botId: botId, userKey: \'' + data._id.userKey+ '\'})">' + '보기' + '</button>'
         })
     ];
     function serverData(sSource, aoData, fnCallback, oSettings) {
