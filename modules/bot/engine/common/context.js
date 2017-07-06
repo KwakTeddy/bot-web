@@ -24,13 +24,13 @@ function getContext(botName, channel, user, options, callback) {
 
       if (user == undefined) {
         cb(null);
-      // } else if (!global._users[user]) {
-      } else{
+      } else if (!global._users[user]) {
+      // } else{
         var botUser = require(path.resolve('./modules/bot-users/server/controllers/bot-users.server.controller'));
         var _user = {userId: user, channel: channel, bot: botName};
         botUser.getUserContext(_user, null, function (_user, _context) {
           userContext = {userId: user, channel: channel, bot: botName};
-          if(global._users[user] && global._users[user].liveChat) userContext['liveChat'] = global._users[user].liveChat;
+          // if(global._users[user] && global._users[user].liveChat) userContext['liveChat'] = global._users[user].liveChat;
           userContext = utils.merge(userContext, _user.doc._doc);
 
           if (userContext.address)
@@ -43,10 +43,10 @@ function getContext(botName, channel, user, options, callback) {
           cb(null);
         });
       }
-      // else {
-      //   userContext = global._users[user];
-      //   cb(null);
-      // }
+      else {
+        userContext = global._users[user];
+        cb(null);
+      }
     }, function(cb) {
       if(user != undefined) {
         var botUserName;
