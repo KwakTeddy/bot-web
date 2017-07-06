@@ -4,6 +4,7 @@ var tough = require('tough-cookie');
 var botModule = require(path.resolve('./config/lib/bot'));
 var dialog = require(path.resolve('modules/bot/action/common/dialog'));
 var utils = require(path.resolve('./modules/bot/action/common/utils'));
+var util = require('util');
 
 
 exports.getContext = getContext;
@@ -29,6 +30,7 @@ function getContext(botName, channel, user, options, callback) {
         var _user = {userId: user, channel: channel, bot: botName};
         botUser.getUserContext(_user, null, function (_user, _context) {
           userContext = {userId: user, channel: channel, bot: botName};
+          console.log(util.inspect(global._users[user]));
           if(global._users[user] && global._users[user].liveChat) userContext['liveChat'] = global._users[user].liveChat;
           userContext = utils.merge(userContext, _user.doc._doc);
 
