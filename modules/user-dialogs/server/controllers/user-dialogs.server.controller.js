@@ -16,16 +16,68 @@ var util = require('util');
 
 exports.liveChat = function (req, res) {
   console.log(util.inspect(req.body))
+  var query = {};
+  query['botId'] = req.body.botId;
+  query['liveChat'] = true;
+  query['channel'] = {$ne: "socket"};
+  var currentPage = 0;
+  var perPage = 10;
+  var sort = {created : 1};
+  // if(req.query.role && (req.query.role == 'admin')){
+  //   query = {};
+  // }
+  if(req.query.currentPage) currentPage = req.query.currentPage;
+  if(req.query.perPage) perPage = req.query.perPage;
+  if(req.query.sortDir && req.query.sortCol) {
+    if (req.query.sortDir == 'asc') req.query.sortDir = 1;
+    else req.query.sortDir = -1;
+    sort[req.query.sortCol] = req.query.sortDir;
+  }
+  if(req.query.search){
+    var searchQuery = {};
+    searchQuery['$and'] = [];
+    searchQuery.$and.push(query);
+    searchQuery.$and.push({
+      $or : [
+        {channel: { $regex: req.query.search}},
+        {userId: { $regex: req.query.search}}
+      ]
+    });
+    query = searchQuery;
+  };
+  console.log(util.inspect(query, {showHidden: false}))
   UserDialog.aggregate(
     [
-      {$match:{botId: req.body.botId, liveChat: true}},
-      {$group: {_id: {userKey: "$userId", channel: "$channel", botId: "$botId"}}}
+      {$match: query},
+      {$group: {
+          _id: {userKey: "$userId", channel: "$channel", botId: "$botId"},
+        count: {$sum: 1},
+        maxDate: {$max: "$created"}
+        }
+      },
+      {$sort: sort},
+      {$skip: currentPage*perPage},
+      {$limit: perPage}
     ]
   ).exec(function (err, data) {
     if(err) console.log(err);
     else {
-      console.log(util.inspect(data))
-      res.json(data);
+      UserDialog.aggregate(
+        [
+          {$match: query},
+          {$group: {
+            _id: {userKey: "$userId", channel: "$channel", botId: "$botId"}
+          }
+          }
+        ]
+      ).exec(function (err, data2) {
+        if(err) console.log(err);
+        else {
+          console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+          var result = {data: data, recordsTotal: data2.length};
+          res.jsonp(result);
+        }
+      });
     }
   })
 };
