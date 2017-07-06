@@ -19,7 +19,7 @@ exports.mongodump = function (req, res) {
             console.log(err2);
           }
           else {
-            if(data2.botId && data2.botId.length){
+            if(data2 && data2.botId && data2.botId.length){
               console.log('already Data');
               count++;
               cb(null)
