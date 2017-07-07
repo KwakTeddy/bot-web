@@ -131,38 +131,44 @@
               <!--</a>-->
               <!--</li>-->
               <li class="nav-active" data-ng-show="!noBot">
-                <a ui-sref="bots.dialog-tree2({botId: $cookies.get('default_bot'), fileId: 'null'})" >
+                <a href="#" onclick="alert('이용 권한이 없습니다. 관리자에게 문의해주세요.')" >
+                <!--<a ui-sref="bots.dialog-tree2({botId: $cookies.get('default_bot'), fileId: 'null'})" >-->
                   <i class="fa fa-cube" aria-hidden="true"></i>
                   <span>챗봇 개발</span>
                 </a>
               </li>
               <li class="nav-active" data-ng-show="!noBot">
-                <a ui-sref="dialogsets.dialogsLearn({botNameId: currentBot.id})" >
+                <a href="#" onclick="alert('이용 권한이 없습니다. 관리자에게 문의해주세요.')">
+                <!--<a ui-sref="dialogsets.dialogsLearn({botNameId: currentBot.id})" >-->
                   <i class="fa fa-cube" aria-hidden="true"></i>
                   <span>개별 대화 학습</span>
                 </a>
               </li>
 
               <li class="nav-active" data-ng-show="!noBot">
-                <a ui-sref="bots.content-list({botId: $cookies.get('default_bot'), fileId: 'null'})" >
+                <a href="#" onclick="alert('이용 권한이 없습니다. 관리자에게 문의해주세요.')" >
+                <!--<a ui-sref="bots.content-list({botId: $cookies.get('default_bot'), fileId: 'null'})" >-->
                   <i class="fa fa-cube" aria-hidden="true"></i>
                   <span>컨텐츠 관리</span>
                 </a>
               </li>
 
               <li class="nav-parent">
-                <a data-ng-show="!noBot">
+                <a href="#" onclick="alert('이용 권한이 없습니다. 관리자에게 문의해주세요.')">
+                <!--<a data-ng-show="!noBot">-->
                   <i class="fa fa-language" aria-hidden="true"></i>
                   <span>자연어 이해(NLU)</span>
                 </a>
                 <ul class="nav nav-children">
                   <li>
-                    <a ui-sref="entitys.list">
+                    <a href="#" onclick="alert('이용 권한이 없습니다. 관리자에게 문의해주세요.')">
+                    <!--<a ui-sref="entitys.list">-->
                       개체명 분석(Entity)
                     </a>
                   </li>
                   <li>
-                    <a ui-sref="intents.list">
+                    <!--<a ui-sref="intents.list">-->
+                    <a href="#" onclick="alert('이용 권한이 없습니다. 관리자에게 문의해주세요.')">
                       의도 분석(Intent)
                     </a>
                   </li>
@@ -170,7 +176,7 @@
               </li>
 
               <li class="nav-parent" data-ng-show="!noBot">
-                <a>
+                <a href="#" onclick="alert('이용 권한이 없습니다. 관리자에게 문의해주세요.')">
                   <i class="fa fa-tasks" aria-hidden="true"></i>
                   <span>태스크(TASK)</span>
                 </a>
@@ -181,7 +187,8 @@
                   <!--</a>-->
                   <!--</li>-->
                   <li>
-                    <a ui-sref="tasks.list({listType: 'all'})">
+                    <a href="#" onclick="alert('이용 권한이 없습니다. 관리자에게 문의해주세요.')">
+                    <!--<a ui-sref="tasks.list({listType: 'all'})">-->
                       태스크 리스트
                     </a>
                   </li>
@@ -229,7 +236,7 @@
               <!--</li>-->
 
               <li class="nav-parent" data-ng-show="!noBot">
-                <a>
+                <a href="#" onclick="alert('이용 권한이 없습니다. 관리자에게 문의해주세요.')">
                   <i class="fa fa-comments-o" aria-hidden="true"></i>
                   <span>대화 관리</span>
                 </a>
@@ -250,7 +257,8 @@
                   <!--</a>-->
                   <!--</li>-->
                   <li>
-                    <a ui-sref="dialogsets.list({listType: 'all'})">
+                    <a href="#" onclick="alert('이용 권한이 없습니다. 관리자에게 문의해주세요.')">
+                    <!--<a ui-sref="dialogsets.list({listType: 'all'})">-->
                       대화셋 관리
                     </a>
                   </li>
@@ -314,7 +322,7 @@
               </li>
 
               <li class="nav-parent" data-ng-if="authentication.user.roles[0] == 'admin'">
-                <a>
+                <a href="#" onclick="alert('이용 권한이 없습니다. 관리자에게 문의해주세요.')">
                   <i class="fa fa-list-alt" aria-hidden="true"></i>
                   <span>권한 관리</span>
                 </a>
@@ -333,25 +341,28 @@
               </li>
 
               <li class="nav-active" data-ng-show="!noBot">
-                <a ui-sref="channels.list" >
+                <!--<a ui-sref="channels.list">-->
+                <a href="#" onclick="alert('이용 권한이 없습니다. 관리자에게 문의해주세요.')">
                   <i class="fa fa-cube" aria-hidden="true"></i>
                   <span>채널 관리</span>
                 </a>
               </li>
 
               <li class="nav-parent">
-                <a>
+                <a href="#">
                   <i class="fa fa-archive" aria-hidden="true"></i>
                   <span>챗봇 관리</span>
                 </a>
                 <ul class="nav nav-children">
                   <li>
-                    <a ui-sref="bots.list">
+                    <!--<a ui-sref="bots.list">-->
+                    <a href="#">
                       챗봇 리스트
                     </a>
                   </li>
                   <li data-ng-show="authentication.user.roles[0] == 'admin'">
-                    <a ui-sref="templates.list">
+                    <!--<a ui-sref="templates.list">-->
+                    <a href="#">
                       템플릿 관리
                     </a>
                   </li>
@@ -359,29 +370,39 @@
               </li>
 
               <li class="nav-parent" data-ng-show="!noBot">
-                <a>
+                <a href="#" onclick="alert('이용 권한이 없습니다. 관리자에게 문의해주세요.')">
                   <i class="fa fa-align-left" aria-hidden="true"></i>
                   <span>운영 관리</span>
                 </a>
                 <ul class="nav nav-children">
                   <li>
-                    <a ui-sref="analytics.dialog-failure-maintenance.list">의도분석 대화학습</a>
+                    <!--<a ui-sref="analytics.dialog-failure-maintenance.list">-->
+                    <a href="#" onclick="alert('이용 권한이 없습니다. 관리자에게 문의해주세요.')">
+                      의도분석 대화학습
+                    </a>
                   </li>
                   <li>
-                    <a ui-sref="analytics.dialog-failure">Dialog 대화학습</a>
+                    <!--<a ui-sref="analytics.dialog-failure">-->
+                    <a href="#" onclick="alert('이용 권한이 없습니다. 관리자에게 문의해주세요.')">
+                      Dialog 대화학습
+                    </a>
                   </li>
                   <!--<li>-->
                     <!--<a ui-sref="analytics.dialog-intent">대화 인텐트 분석</a>-->
                   <!--</li>-->
                   <li>
-                    <a ui-sref="analytics.manage-batch">배치 관리</a>
+                    <!--<a ui-sref="analytics.manage-batch">-->
+                    <a href="#" onclick="alert('이용 권한이 없습니다. 관리자에게 문의해주세요.')">
+                      배치 관리
+                    </a>
                   </li>
 
                 </ul>
               </li>
 
               <li class="nav-parent" data-ng-show="!noBot">
-                <a ui-sref="analytics.dashboard">
+                <!--<a ui-sref="analytics.dashboard">-->
+                <a>
                   <i class="fa fa-area-chart" aria-hidden="true"></i>
                   <span>분석</span>
                 </a>
