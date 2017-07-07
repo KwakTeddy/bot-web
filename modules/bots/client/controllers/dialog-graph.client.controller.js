@@ -3801,21 +3801,24 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
           dlgChildren.innerHTML +='<svg width="20" height="100"></svg>';
         }
 
-        for(var j = 0; j < dialog.children.length; j++) {
-          _update(dialog.children[j], dlgChildren);
-        }
-
-        // var inners = [];
         // for(var j = 0; j < dialog.children.length; j++) {
-        //   if(j < dialog.children.length -1 && dialog.children[j+1].children) {
-        //     if(inners.length == 0) inners.push(dialog.children[j]);
-        //     inners.push(dialog.children[j+1]);
-        //   } else if(inners.length > 1) {
-        //     _updateInners(inners[0], dlgChildren, false, inners);
-        //   } else {
-        //     _update(dialog.children[j], dlgChildren);
-        //   }
+        //   _update(dialog.children[j], dlgChildren);
         // }
+
+        var inners = [];
+        for(var j = 0; j < dialog.children.length; j++) {
+          if(j < dialog.children.length -1 && dialog.children[j+1].children == undefined) {
+            if(inners.length == 0) inners.push(dialog.children[j]);
+            inners.push(dialog.children[j+1]);
+            console.log('add inners: ' + dialog.children[j].id);
+          } else if(inners.length > 1) {
+            console.log('update inners: ' + inners);
+            _updateInners(inners[0], dlgChildren, false, inners);
+          } else {
+            console.log('update: ' + dialog.children[j].id);
+            _update(dialog.children[j], dlgChildren);
+          }
+        }
 
       } else if(document.getElementById(dialog.id + '_children')) {
         var elem = document.getElementById(dialog.id + '_children');
@@ -3910,7 +3913,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
         var inners = [];
         for(var j = 0; j < dialog.children.length; j++) {
-          if(j < dialog.children.length -1 && dialog.children[j+1].children) {
+          if(j < dialog.children.length -1 && dialog.children[j+1].children == undefined) {
             if(inners.length == 0) inners.push(dialog.children[j]);
             inners.push(dialog.children[j+1]);
           } else if(inners.length > 1) {
@@ -3986,6 +3989,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     }
 
     function addObserver(target) {
+      console.log('addObserver: ' + target.id);
       var observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
           // console.log(mutation.type + ', ' + target);
@@ -4062,6 +4066,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     }
 
     function drawDialogLines(target) {
+      console.log('drawDialogLines: ' + target.id);
       var svgNode = target.childNodes[0];
       svgNode.innerHTML = '';
 

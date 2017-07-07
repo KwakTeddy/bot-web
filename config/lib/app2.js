@@ -7,6 +7,7 @@ module.exports.start = function() {
   var http = require('http');
   var bodyParser = require('body-parser');
   var kakao = require('../../modules/bot/server/controllers/kakao.server.controller');
+  var wechat = require('../../modules/bot/server/controllers/wechat.server.controller');
   var action = require('../../modules/bot/server/controllers/_action.server.controller');
   var path = require('path');
 
@@ -37,6 +38,9 @@ module.exports.start = function() {
   app.route('/kakao/:bot/friend').post(kakao.friend);
   app.route('/kakao/:bot/friend/:user_key').delete(kakao.deleteFriend);
   app.route('/kakao/:bot/chat_room/:user_key').delete(kakao.deleteChatRoom);
+
+  app.route('/wechat/:bot/webhook').get(wechat.message);
+  app.route('/wechat/:bot/webhook').post(wechat.message);
 
   // app 실행하기
   app.route('/bot/app/:androidUrl/:androidStore/:iosUrl/:iosStore')
