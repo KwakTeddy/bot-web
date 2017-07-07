@@ -125,14 +125,15 @@ function receivedMessage(event) {
               contextModule.getContext(data.userBotId, 'facebook', recipientID, null, function(context) {
                 console.log(util.inspect(context.user));
                 context.user.liveChat = 3;
+                done(null);
               })
             }
           });
         }else {
-          done(true);
+          return null
         }
       }else {
-        done();
+        done(null);
       }
     },
     function (done) {
@@ -147,17 +148,17 @@ function receivedMessage(event) {
             subscribe = true;
             subscribePageToken = data.accessToken;
             event.botId = data.userBotId;
-            done();
+            done(null);
           }
         });
       }else {
         if (recipientID != bot.facebook.id) return true;
         if (!global._bots[event.botId]){
           botLib.loadBot(event.botId, function (realbot) {
-            done();
+            done(null);
           });
         }else {
-          done();
+          done(null);
         }
       }
     },
