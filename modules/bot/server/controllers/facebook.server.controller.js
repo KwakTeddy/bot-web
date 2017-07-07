@@ -116,8 +116,10 @@ function receivedMessage(event) {
 
   async.waterfall([
     function (done) {
+      console.log('@@@@@@@@@start waterfall' + util.inspect(message, {showHidden: false, depth: null, color: true}));
       if(message.is_echo){
         if(!message.metadata){
+          console.log('@@@@@@@@@@@@@No meataData' + util.inspect(message, {showHidden: false, depth: null, color: true}));
           UserBotFbPage.findOne({pageId: senderID}, function (err, data) {
             if (err) console.log(err);
             else {
@@ -130,9 +132,11 @@ function receivedMessage(event) {
             }
           });
         }else {
+          console.log('@@@@@@@@@@@@@meataData' + util.inspect(message, {showHidden: false, depth: null, color: true}));
           return done(true);
         }
       }else {
+        console.log('@@@@@@@@@@@@@noEco' + util.inspect(message, {showHidden: false, depth: null, color: true}));
         return done(null);
       }
     },
