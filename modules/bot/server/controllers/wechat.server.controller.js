@@ -1,4 +1,5 @@
 var xml2json = require('xml2js');
+var js2xmlparser = require("js2xmlparser");
 var path = require('path');
 var chat = require(path.resolve('modules/bot/server/controllers/bot.server.controller'));
 
@@ -27,11 +28,9 @@ exports.message =  function(req, res) {
 
   req.on('end', function () {
     console.log(body);
-
-    var result;
     try {
-      xml2json.parseString(body, {explicitArray: false}, function(err, js) {
-        receivedMessage(res, js);
+      xml2json.parseString(body, {}, function(err, js) {
+        receivedMessage(req, res, js);
       });
     } catch (exception) {
       res.write('');
@@ -40,16 +39,25 @@ exports.message =  function(req, res) {
   });
 }
 
+function receivedMessage(req, res, json) {
+  var from = json.xml.FromUserName[0];
+  var text = json.xml.Content[0] || '';
 
-function receivedMesage(req, res, json) {
-  var from = json.FromUserName;
-  var text = json.Content;
-
-  chat.write('wechat', from, req.params.bot, text, json, function (serverText, json) {
+  chat.write('wechat', from, req.params.bot, text, json, function (serverText, _json) {
     respondMessage(res, serverText, json)
   });
 }
 
 function respondMessage(res, text, json) {
+  var result = {
+    ToUserName: json.xml.FromUserName[0],
+    FromUserName: json.xml.ToUserName[0],
+    CreateTime: json.xml.CreateTime[0],
+    MsgType: 'text',
+    Content: text
+  };
 
+  var xml = js2xmlparser.parse("xml", result);
+  res.write(xml);
+  res.end();
 }
