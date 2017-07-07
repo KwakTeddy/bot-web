@@ -103,7 +103,7 @@ function receivedMessage(event) {
   messageAttachments = message.attachments,
   imageData = '';
 
-  if (messageAttachments){
+  if (messageAttachments && !message.is_echo){
     imageData = JSON.parse(JSON.stringify(messageAttachments));
     // message = {};
     if (imageData[0].type == 'image'){
