@@ -45,6 +45,7 @@ exports.messageGet =  function(req, res) {
 
 
 exports.message = function (req, res) {
+  console.log(util.inspect('##########################################start####################################', {showHidden: false, depth: null}));
   console.log(util.inspect(req.body, {showHidden: false, depth: null}));
   var data = req.body;
   if (data.object == 'page') {      // Make sure this is a page subscription
@@ -95,6 +96,7 @@ function liveChatAddDialog(botId, message , userId, inOut) {
 }
 
 function receivedMessage(event) {
+  console.log('@@@@@@@@@start receivedMaessage' + util.inspect(message, {showHidden: false, depth: null, color: true}));
   var senderID = event.sender.id,
   recipientID = event.recipient.id,
   message = event.message,
@@ -116,10 +118,8 @@ function receivedMessage(event) {
 
   async.waterfall([
     function (done) {
-      console.log('@@@@@@@@@start waterfall' + util.inspect(message, {showHidden: false, depth: null, color: true}));
       if(message.is_echo){
         if(!message.metadata){
-          console.log('@@@@@@@@@@@@@No meataData' + util.inspect(message, {showHidden: false, depth: null, color: true}));
           UserBotFbPage.findOne({pageId: senderID}, function (err, data) {
             if (err) console.log(err);
             else {
@@ -132,11 +132,9 @@ function receivedMessage(event) {
             }
           });
         }else {
-          console.log('@@@@@@@@@@@@@meataData' + util.inspect(message, {showHidden: false, depth: null, color: true}));
           return done(true);
         }
       }else {
-        console.log('@@@@@@@@@@@@@noEco' + util.inspect(message, {showHidden: false, depth: null, color: true}));
         return done(null);
       }
     },
@@ -146,7 +144,7 @@ function receivedMessage(event) {
         UserBotFbPage.findOne({pageId: event.recipient.id}, function (err, data) {
           if (err){
             console.log(err);
-            return null;
+            return done(err);
           }else {
             if(recipientID != data.pageId) return true;
             subscribe = true;
@@ -156,7 +154,9 @@ function receivedMessage(event) {
           }
         });
       }else {
-        if (recipientID != bot.facebook.id) return true;
+        if (recipientID != bot.facebook.id){
+         return done(true)
+        }
         if (!global._bots[event.botId]){
           botLib.loadBot(event.botId, function (realbot) {
             return done(null);
@@ -171,8 +171,6 @@ function receivedMessage(event) {
         contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
           botContext = context;
           bot = botContext.botUser.orgBot || botContext.bot;
-          console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-          console.log(util.inspect(botContext.user, {showHidden: false, depth: null}))
           switch(true) {
           case botContext.user.liveChat == 1 :
             botContext.user.liveChat++;
