@@ -105,7 +105,7 @@ function receivedMessage(event) {
 
   if (messageAttachments){
     imageData = JSON.parse(JSON.stringify(messageAttachments));
-    message = {};
+    // message = {};
     if (imageData[0].type == 'image'){
       imageData[0].type = 'photo'
     }
