@@ -23,7 +23,6 @@ var bot = "";
  
 
 exports.messageGet =  function(req, res) {
-  console.log(util.inspect('##########################################GETTTTTT####################################', {showHidden: false, depth: null}));
   contextModule.getContext(req.params.bot, 'facebook', null, null, function(context) {
       var bot = '';
       if (!context.botUser){
@@ -97,7 +96,6 @@ function liveChatAddDialog(botId, message , userId, inOut) {
 }
 
 function receivedMessage(event) {
-  console.log('@@@@@@@@@start receivedMaessage' + util.inspect(event, {showHidden: false, depth: null, color: true}));
   var senderID = event.sender.id,
   recipientID = event.recipient.id,
   message = event.message,
@@ -106,7 +104,7 @@ function receivedMessage(event) {
   messageAttachments = message.attachments,
   imageData = '';
 
-  if (messageAttachments && !message.is_echo){
+  if (messageAttachments){
     imageData = JSON.parse(JSON.stringify(messageAttachments));
     // message = {};
     if (imageData[0].type == 'image'){
@@ -905,7 +903,7 @@ function smartReplyMessage(recipientId, text, task, token) {
 }
 
 function callSendAPI(messageData, PAGE_ACCESS_TOKEN, cb) {
-  if(messageData.message && !messageData.message.attachment) messageData.message['metadata'] = "sentByChatBot";
+  if(messageData.message) messageData.message['metadata'] = "sentByChatBot";
 
   if(bot && bot.commonQuickReplies && bot.commonQuickReplies.length
     && botContext.botUser._currentDialog.name && !botContext.user.liveChat
