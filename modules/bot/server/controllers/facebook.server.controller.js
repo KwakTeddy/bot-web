@@ -186,7 +186,7 @@ function receivedMessage(event) {
     }
   ], function (err) {
     if (err) {
-      return next(err);
+      return true;
     }
   });
 }
