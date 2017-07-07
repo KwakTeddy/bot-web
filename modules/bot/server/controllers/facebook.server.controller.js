@@ -202,6 +202,8 @@ function receivedPostback(event) {
   var senderID = event.sender.id;
   var payload = event.postback.payload;
   var recipientID = event.recipient.id;
+  console.log('@@@@@@@@@@@@@meataData' + util.inspect(event, {showHidden: false, depth: null, color: true}));
+
 
   if (event.botId == "subscribeBot"){
     UserBotFbPage.findOne({pageId: event.recipient.id}, function (err, data) {
