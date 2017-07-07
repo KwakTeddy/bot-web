@@ -23,6 +23,7 @@ var bot = "";
  
 
 exports.messageGet =  function(req, res) {
+  console.log(util.inspect('##########################################GETTTTTT####################################', {showHidden: false, depth: null}));
   contextModule.getContext(req.params.bot, 'facebook', null, null, function(context) {
       var bot = '';
       if (!context.botUser){
@@ -96,7 +97,7 @@ function liveChatAddDialog(botId, message , userId, inOut) {
 }
 
 function receivedMessage(event) {
-  console.log('@@@@@@@@@start receivedMaessage' + util.inspect(message, {showHidden: false, depth: null, color: true}));
+  console.log('@@@@@@@@@start receivedMaessage' + util.inspect(event, {showHidden: false, depth: null, color: true}));
   var senderID = event.sender.id,
   recipientID = event.recipient.id,
   message = event.message,
