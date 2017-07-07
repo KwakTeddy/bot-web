@@ -129,7 +129,7 @@ function receivedMessage(event) {
             }
           });
         }else {
-          return true
+          done(true);
         }
       }else {
         done();
