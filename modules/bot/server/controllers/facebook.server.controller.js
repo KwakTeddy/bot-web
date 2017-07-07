@@ -905,7 +905,7 @@ function smartReplyMessage(recipientId, text, task, token) {
 }
 
 function callSendAPI(messageData, PAGE_ACCESS_TOKEN, cb) {
-  if(messageData.message) messageData.message['metadata'] = "sentByChatBot";
+  // if(messageData.message) messageData.message['metadata'] = "sentByChatBot";
 
   if(bot && bot.commonQuickReplies && bot.commonQuickReplies.length
     && botContext.botUser._currentDialog.name && !botContext.user.liveChat
