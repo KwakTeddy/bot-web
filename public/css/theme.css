@@ -38,6 +38,7 @@ a:active {
 /* Layout Base - Main Wrapper	*/
 .body {
 	min-height: 100vh;
+	height: 100vh;	/* 메인 영역 스크롤 */
 	width: 100%;
 }
 
