@@ -58,6 +58,9 @@ function respondMessage(res, text, json) {
   };
 
   var xml = js2xmlparser.parse("xml", result);
+  console.log('============================================');
+  console.log(xml);
+
   res.write(xml);
   res.end();
 }
