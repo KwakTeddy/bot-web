@@ -123,7 +123,7 @@
           <ul class="nav nav-tabs">
             <li role="presentation" ng-show="(vm.type=='edit-kind') || (vm.type == 'edit') || (vm.type == 'edit-detail')" ng-hide="vm.saved == true" ng-class="{active: vm.type == 'edit-kind'}"><a href="#" ng-click="vm.changeType('edit-kind');">챗봇선택</a></li>
             <li role="presentation" ng-show="(vm.type=='edit') || (vm.type == 'edit-detail')" ng-class="{active: vm.type == 'edit'}"><a href="#" ng-click="vm.changeType('edit');">챗봇정보</a></li>
-            <li role="presentation" ng-show="vm.type=='edit-detail'" ng-class="{active: vm.type == 'edit-detail'}" ng-show="vm.editType != 'start'"><a href="#" ng-click="vm.changeType('edit-detail');vm.checkAndChangeType(botForm.$valid,'edit')">상세정보</a></li>
+            <li role="presentation" ng-show="((vm.type=='edit') || (vm.type=='edit-detail'))&& (vm.selectedBot == 'template')" ng-class="{active: vm.type == 'edit-detail'}" ng-show="vm.editType != 'start'"><a href="#" ng-click="vm.checkAndChangeType(botForm.$valid,'edit-detail')">상세정보</a></li>
             <li role="presentation" ng-show ="vm.saved == true" ng-class="{active: vm.type == 'connect'}"><a href="#" ng-click="vm.changeType('connect');">연결하기</a></li>
           </ul>
         </div>
@@ -389,7 +389,7 @@
             </div>
             <div ng-show="vm.type == 'edit'">
               <button type="button" class="btn btn-default pull-left " onclick="javascript:history.back();" >취소</button>
-              <button type="button" class="btn btn-primary pull-right" ng-show="vm.editType != 'start'" ng-click="vm.changeType('edit-detail')">다음</button>
+              <button type="button" class="btn btn-primary pull-right" ng-show="vm.editType != 'start'" ng-click="vm.checkAndChangeType(botForm.$valid,'edit-detail')">다음</button>
               <button type="button" class="btn btn-default pull-right" data-ng-if="vm.selectedBot == 'noDialog'" ng-click="vm.create(botForm.$valid)">만들기</button>
               <button type="button" class="btn btn-default pull-right" ng-click="vm.changeType('edit-kind')">이전</button>
             </div>
