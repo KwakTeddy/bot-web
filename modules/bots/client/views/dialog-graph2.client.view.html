@@ -290,6 +290,9 @@
 <header class="page-header">
   <h2>Dialog Graph Editor</h2>
 
+  <a id="chatCloseBtn" class="sidebar-right-toggle" data-open="sidebar-right" onclick="closeChatPanel();" style="float:right;"><i class="fa fa-chevron-right"></i></a>
+  <a id="chatOpenBtn" class="sidebar-right-toggle" data-open="sidebar-right" onclick="openChatPanel();" style="float: right;display: none;"><i class="fa fa-chevron-left"></i></a>
+
   <div class="right-wrapper pull-right">
     <ol class="breadcrumbs">
       <li>
@@ -301,8 +304,6 @@
       <li><span>{{vm.botName}}</span></li>
       <li><span>{{vm.name}}</span></li>
     </ol>
-
-    <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
   </div>
 </header>
 

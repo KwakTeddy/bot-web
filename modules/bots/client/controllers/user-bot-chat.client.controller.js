@@ -827,3 +827,32 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
   }
 ]);
 
+
+function closeChatPanel() {
+  var main = document.getElementById('main');
+  var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+  main.style.marginRight = (mr - 330) + 'px';
+
+  var chatPanel = document.getElementById('chat-include');
+  if(chatPanel) chatPanel.style.display = 'none';
+
+  document.getElementById('chatCloseBtn').style.display = 'none';
+  document.getElementById('chatOpenBtn').style.display = 'block';
+
+  document.querySelector('.page-header').style.paddingRight = '0';
+}
+
+function openChatPanel() {
+  var main = document.getElementById('main');
+  var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+  main.style.marginRight = (mr + 330) + 'px';
+
+
+  var chatPanel = document.getElementById('chat-include');
+  if(chatPanel) chatPanel.style.display = 'block';
+
+  document.getElementById('chatOpenBtn').style.display = 'none';
+  document.getElementById('chatCloseBtn').style.display = 'block';
+
+  document.querySelector('.page-header').style.paddingRight = '330px';
+}
