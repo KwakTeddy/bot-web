@@ -1,10 +1,11 @@
-<!doctype html>
-<html lang="en">
-<head ng-controller="UserBotHeaderController">
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
 
-  <title ng-bind = "title" id="htmltitle">플레이챗 PlayChat</title>
-  <!--<title>플레이챗 PlayChat - 1분만에 만드는 인공지능 챗봇 머니브레인 MoneyBrain Inc</title>-->
-
+	<meta charset="utf-8">
+	<title>플레이챗 PlayChat - 1분만에 만드는 인공지능 챗봇 머니브레인 MoneyBrain</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="keywords" content="챗봇 Chatbot 봇 Bot 인공지능 AI 딥러닝 Deep Learning"/>
   <meta name="author" content="머니브레인 MoneyBrain">
   <meta name="description" content="누구나 쉽게 1분만에 만드는 나만의 인공지능! 국내 최초 챗봇 SNS">
@@ -16,37 +17,45 @@
 
   <meta id="ogTitle"       property="og:title"        content="플레이챗 PlayChat" />
   <meta id="ogDescription" property="og:description"  content="1분만에 만드는 인공지능 챗봇 머니브레인 MoneyBrain Inc" />
-  <meta id="ogImage"       property="og:image"        content= "https://dev.moneybrain.ai/images/Playchat_logo_small.png"/>
-  <meta id="ogImage2"      property="og:image"        content= "https://dev.moneybrain.ai/images/Playchat_logo_small.png"/>
+  <meta id="ogImage"       property="og:image"        content= "playchat_img/Playchat_logo_small.png"/>
+  <meta id="ogImage2"      property="og:image"        content= "playchat_img/Playchat_logo_small.png"/>
 
-  <base href="/">
-  <meta charset="utf-8">
 
-  <link href="/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
-  <link href="/vendor/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css">
-  <link href="/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
-  <link href="/vendor/owl.carousel/assets/owl.theme.default.min.css" rel="stylesheet">
+	<link href="playchat_img/Playchat_favicon.ico" rel="icon"/>
 
-  <link rel="stylesheet" href="/css/theme.css"/>
-  <link rel="stylesheet" href="/css/skins/default.css"/>
-  <link rel="stylesheet" href="/css/theme-custom.css">
-  <!--<link rel="stylesheet" href="/css/custom.css">-->
+	<link rel="stylesheet" href="libs/bootstrap/css/bootstrap-grid.min.css">
+	<!-- Icon fonts -->
+	<link rel="stylesheet" href="libs/pe-icon-7-stroke/css/pe-icon-7-stroke.css">
+	<link rel="stylesheet" href="libs/font-awesome-4.6.3/css/font-awesome.min.css">
+	<link rel="stylesheet" href="libs/superfish-master/css/superfish.css">
+	<link rel="stylesheet" href="libs/magnific-popup/magnific-popup.css">
+	<link rel="stylesheet" href="libs/ytp-player/css/jquery.mb.YTPlayer.min.css">
+	<link rel="stylesheet" href="libs/slick/slick.css">
+	<link rel="stylesheet" href="libs/animate/animate.css">
 
-  <link href="/css/user-bot-agency.css" rel="stylesheet">
-  <link href="/css/user-bot-custom.css" rel="stylesheet">
+	<!-- Google fonts -->
+	<link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,700,300|Roboto:400,500,700,300|Pacifico' rel='stylesheet' type='text/css'>
 
-  <!--jsoneditor-->
-  <link href="/lib/jsoneditor/dist/jsoneditor.min.css" rel="stylesheet" type="text/css">
+	<!-- Main styles -->
+	<link rel="stylesheet" href="css/main.css">
 
-  <!--notification-->
-  <!--<link rel="stylesheet" href="/lib/angular-ui-notification/dist/angular-ui-notification.css">-->
 
-  <!--select css-->
-  <link rel="stylesheet" href="/lib/angular-ui-select/dist/select.css">
-  <link rel="stylesheet" href="/lib/select2/select2.css">
+  <!-- Facebook Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+      document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '285328978593961'); // Insert your pixel ID here.
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+                 src="https://www.facebook.com/tr?id=285328978593961&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- DO NOT MODIFY -->
+  <!-- End Facebook Pixel Code -->
 
-  <!-- Head Libs -->
-  <script src="/vendor/modernizr/modernizr.js"></script>
 
   <script>
     var _platform = 'web';
@@ -63,318 +72,495 @@
     ga('send', 'pageview');
 
   </script>
+
+
+
 </head>
 
 <body>
-<nav id="mainNav" class="navbar navbar-default navbar-fixed-top affix-top" ng-controller="UserBotHeaderController">
-  <div class="container">
-    <div class="navbar-header page-scroll">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
-      </button>
-      <a class="navbar-brand page-scroll" href="/" style="padding-right: 0px"><img src="/images/playchat/playchat_logo.png" height="60"></a> Beta
+
+<!-- Start Header -->
+
+	<header  id="top-nav">
+		<div class="container">
+			<div class="row">
+			<!-- Logo -->
+			<a class="logo smooth-scroll" href="#top"> <img src="playchat_img/Playchat_logo_wide_small.png" style="height:50px; width:auto;"> </a>
+			<!--<a class="logo smooth-scroll" href="#top"> PlayChat </a>-->
+			<!-- Top navigation -->
+				<nav class="top-menu">
+					<ul class="sf-menu clearfix">
+            <li><a href="#top" class="smooth-scroll">Home</a></li>
+            <li><a href="#features" class="smooth-scroll">Features</a></li>
+            <li><a href="#template" class="smooth-scroll">Templates</a></li>
+            <li><a href="#customers" class="smooth-scroll">Examples</a></li>
+            <li><a href="#contact" class="smooth-scroll">Price</a></li>
+            <li><a href="#contact" class="smooth-scroll">Contact</a></li>
+
+					</ul>
+				</nav>
+				<!-- Toggle menu -->
+				<a href="#" class="toggle-mnu">
+					<span></span>
+				</a>
+				<!-- Mobile menu -->
+				<div id="mobile-menu">
+					<div class="inner-wrap">
+						<nav>
+							<ul class="nav_menu">
+                <li><a href="#top" class="smooth-scroll">Home</a></li>
+								<li><a href="#features" class="smooth-scroll">Features</a></li>
+                <li><a href="#template" class="smooth-scroll">Templates</a></li>
+								<li><a href="#customers" class="smooth-scroll">Customers</a></li>
+                <li><a href="#contact" class="smooth-scroll">Price</a></li>
+								<li><a href="#contact" class="smooth-scroll">Contact</a></li>
+							</ul>
+
+						</nav>
+					</div>
+				</div><!-- end mobile menu -->
+			</div>
+		</div>
+	</header>
+
+<!-- Start Slider section	 -->
+
+	<section class="slider" id="top">
+	<!-- Start Slider container -->
+		<div class="full-slider">
+		<!-- Start Slide item -->
+			<div class="slide bg-image" data-image="playchat_img/bg2.jpg">
+				<div class="container-slide right">
+					<div class="container">
+						<div class="row">
+						<!-- mockup iphone -->
+							<div class="col-lg-4 col-md-4 col-sm-4  hidden-xs">
+								<div class="iphone">
+									<!--<img src="img/iphone.png" alt="iPhone">-->
+								</div>
+							</div>
+							<!-- Content slider -->
+							<div class="col-lg-7 col-md-8 col-sm-8 col-lg-push-1 content-mill">
+								<div class="content-slide">
+									<!-- heading title -->
+									<h1 class="heading-title-big">
+										<span>인공지능 챗봇 플랫폼</span><br> 플레이챗 PlayChat
+									</h1>
+									<!-- horizontal line -->
+									<span class="horizontal-line"><span></span></span>
+									<!-- description slider -->
+									<div class="description">
+										<p>챗봇, 이제 직접 개발하지 않고 간단한 정보입력만으로 나만의 챗봇을 만들어 바로 사용할 수 있습니다.<br>음식점, 헤어샵, 네일샵 교육 의료 등 미리 만들어진 각 업종별 챗봇을 선택하기만 하면 됩니다.<br> 기존 플러스친구 페이스북에도 바로 연결할 수 있습니다. </p>
+									</div>
+								</div>
+								<!-- Download buttons -->
+								<div class="buttons-download">
+									<a href="#" class="download anim-shadow">
+										<i class="fa fa-apple" aria-hidden="true"></i>
+										<span><span>Download on the</span>App Store</span>
+									</a>
+									<a href="#" class="download anim-shadow">
+										<i class="fa fa-android" aria-hidden="true"></i>
+										<span><span>Get it on</span>Google Play</span>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		<!--&lt;!&ndash; Start Slide item &ndash;&gt;-->
+			<!--<div class="slide bg-image" data-image="img/bg3.jpg">-->
+				<!--<div class="container-slide left">-->
+					<!--<div class="container">-->
+						<!--<div class="row">-->
+							<!--&lt;!&ndash; Content slider &ndash;&gt;-->
+							<!--<div class="col-lg-7 col-md-8 col-sm-8 content-mill">-->
+								<!--<div class="content-slide">-->
+									<!--&lt;!&ndash; heading title &ndash;&gt;-->
+									<!--<h2 class="heading-title-big">-->
+										<!--<span>Awesome Start</span><br> For Your Business-->
+									<!--</h2>-->
+									<!--&lt;!&ndash; horizontal line &ndash;&gt;-->
+									<!--<span class="horizontal-line"><span></span></span>-->
+									<!--&lt;!&ndash; description slider &ndash;&gt;-->
+									<!--<div class="description">-->
+										<!--<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam..</p>-->
+									<!--</div>-->
+								<!--</div>-->
+								<!--&lt;!&ndash; Download buttons &ndash;&gt;-->
+								<!--<div class="buttons-download">-->
+									<!--<a href="#" class="download anim-shadow">-->
+										<!--<i class="fa fa-apple" aria-hidden="true"></i>-->
+										<!--<span><span>Download on the</span>App Store</span>-->
+									<!--</a>-->
+									<!--<a href="#" class="download  anim-shadow">-->
+										<!--<i class="fa fa-android" aria-hidden="true"></i>-->
+										<!--<span><span>Get it on</span>Google Play</span>-->
+									<!--</a>-->
+								<!--</div>-->
+							<!--</div>-->
+							<!--&lt;!&ndash; mockup iphone &ndash;&gt;-->
+							<!--<div class="col-lg-4 col-md-4 col-sm-4 col-lg-push-1 hidden-xs">-->
+								<!--<div class="iphone">-->
+									<!--<img src="img/iphone.png" alt="iPhone">-->
+								<!--</div>-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
+			</div><!-- end slider section -->
+
+
+
+		<!-- Strat Control slider -->
+		<div class="control-slider">
+			<!-- Pagiation container -->
+			<div class="dots-control" id="dots-control-full-slider"></div>
+			<!-- Prev - Next -->
+			<div class="prev-next">
+				<div class="prev"><i class="pe-7s-angle-left"></i></div>
+				<div class="next"><i class="pe-7s-angle-right"></i></div>
+			</div>
+		</div>
+	</section>
+
+
+
+<!-- Start Our Features section	 -->
+
+	<section class="features" id="features">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8 col-md-push-2">
+					<div class="heading-title">
+						<h2>Our Features</h2>
+						<p>플레이챗 챗봇만의 특징</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+			<!-- Item -->
+				<div class="col-md-3 col-sm-6 col-xs-12 item-icon">
+					<div class="icon-container">
+						<div class="icon icon-circle">
+							<img src="playchat_img/btn_feature_01.png">
+						</div>
+					</div>
+					<h3>업종별 맞춤형 템플릿</h3>
+					<p>미리 만들어진 템플릿에 간단하게 정보를 입력하여 나의 서비스를 소개할 수 있는  챗봇을 만들어보세요.
+            요식업, 쇼핑, 교육, 의료, 건강 등 다양한 분야의 템플릿이 준비 되어 있습니다.</p>
+				</div>
+			<!-- Item -->
+				<div class="col-md-3 col-sm-6 col-xs-12 item-icon">
+					<div class="icon-container">
+						<div class="icon icon-circle">
+              <img src="playchat_img/btn_feature_02.png">
+						</div>
+					</div>
+					<h3>1:1 대화 학습</h3>
+					<p>챗봇에 간단하게 질문/답변을 학습시키면 챗봇이 대답해줍니다.
+            생각이 날 때 마다 하나하나 학습 시킬수도 있고, 엑셀 파일과 같은 문서에 정리하여 한번에 학습 시킬수도 있어요.</p>
+				</div>
+			<!-- Item -->
+				<div class="col-md-3 col-sm-6 col-xs-12 item-icon">
+					<div class="icon-container">
+						<div class="icon icon-circle">
+              <img src="playchat_img/btn_feature_03.png">
+						</div>
+					</div>
+					<h3>시나리오 대화 관리</h3>
+					<p>사람이 대화하는 것 처럼 단계적인 대화를 구성할 수도 있어요.
+            시나리오 기반의 대화를 구성하면 더 많은 컨텐츠를 전달 할 수 있어요.
+            또한 나의 시스템과 연동할 수 있는 API도 공개되어 있어요. 활용할 수 있는 방법은 무궁무진 하겠죠?</p>
+				</div>
+			<!-- Item -->
+				<div class="col-md-3 col-sm-6 col-xs-12 item-icon">
+					<div class="icon-container">
+						<div class="icon icon-circle">
+              <img src="playchat_img/btn_feature_04.png">
+						</div>
+					</div>
+					<h3>다양한 플랫폼 지원</h3>
+					<p>카카오톡, 페이스북, 네이버톡톡 등 다양한 플랫폼을 통해서 내가 만든 챗봇을 연동할 수 있어요.
+            하나하나 따로 관리하는 것은 너무 고된 일이에요.
+            Playchat에서 통합관리 하세요~</p>
+				</div>
+			<!-- Edn items -->
+			</div>
+		</div>
+	</section>
+
+
+<!-- Start Screenshots Section -->
+
+	<section class="screenshots bg-mask triangle" id="template">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8 col-md-push-2">
+					<div class="heading-title">
+						<h2>업종별 템플릿 </h2>
+						<p>미리 준비된 업종별 템플릿을 이용하여 간단하고 쉽게 챗봇 서비스를 시작하세요!</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="container-carousel">
+					<div class="screenshot">
+					<!-- Start Block item -->
+						<div class="col-md-3">
+							<div class="item-screenshots">
+								<div class="preview-container">
+									<div class="button-preview icon-circle">
+										<a class="preview" href="playchat_img/tem_bg_01.png" title="Screenshot"><i class="pe-7s-search"></i></a>
+									</div>
+								</div>
+								<img src="playchat_img/tem_bg_01.png" alt="screnshot">
+                <p> </p>
+							</div>
+						</div>
+					<!-- Block item -->
+						<div class="col-md-3">
+							<div class="item-screenshots">
+								<div class="preview-container">
+									<div class="button-preview icon-circle">
+										<a class="preview" href="playchat_img/tem_bg_02.png" title="Screenshot"><i class="pe-7s-search"></i></a>
+									</div>
+								</div>
+								<img src="playchat_img/tem_bg_02.png" alt="screnshot">
+							</div>
+						</div>
+					<!-- Block item -->
+						<div class="col-md-3">
+							<div class="item-screenshots">
+								<div class="preview-container">
+									<div class="button-preview icon-circle">
+										<a class="preview" href="playchat_img/tem_bg_03.png" title="Screenshot"><i class="pe-7s-search"></i></a>
+									</div>
+								</div>
+								<img src="playchat_img/tem_bg_03.png" alt="screnshot">
+							</div>
+						</div>
+					<!-- Block item -->
+						<div class="col-md-3">
+							<div class="item-screenshots">
+								<div class="preview-container">
+									<div class="button-preview icon-circle">
+										<a class="preview" href="playchat_img/tem_bg_04.png" title="Screenshot"><i class="pe-7s-search"></i></a>
+									</div>
+								</div>
+								<img src="playchat_img/tem_bg_04.png" alt="screnshot">
+							</div>
+						</div>
+
+					<!-- End Block item -->
+					</div><!-- Edn div screenshots -->
+					<!-- Strat Control slider -->
+					<div class="prev-next-block">
+						<div class="prev"><i class="pe-7s-angle-left"></i></div>
+						<div class="next"><i class="pe-7s-angle-right"></i></div>
+					</div>
+					<!-- End Control slider -->
+				</div>
+				<!-- Dots control carousel -->
+				<div class="dots-screenshot" id="dots-control-screenshots"></div>
+			</div>
+		</div>
+	</section>
+
+<!-- Start Testimonials Section -->
+
+	<section class="testimonials white-color bg-mask triangle" id="customers" style="margin-top: 200px;">
+		<div class="container" >
+			<div class="row">
+				<div class="col-md-8 col-md-push-2">
+					<div class="heading-title">
+						<h2>구축사례</h2>
+						<p>이미 여러기업들이 PlayChat을 이용하여 챗봇서비스를 운영하고 있습니다!</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="container-carousel">
+					<div class="testimonials-items">
+					<!-- Start Block item -->
+						<div class="col-md-4">
+							<div class="item-testimonials">
+								<img src="playchat_img/ref_img_1.png" alt="photo">
+								<p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation.</p>
+
+								<span>농협은행</span>
+								<span>Designer, Company name</span>
+							</div>
+						</div>
+					<!-- Block item -->
+						<div class="col-md-4">
+							<div class="item-testimonials">
+								<img src="playchat_img/ref_img_2.png" alt="photo">
+
+								<p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation.</p>
+
+								<span>신한카드</span>
+								<span>Creative Director, Company name</span>
+							</div>
+						</div>
+					<!-- Block item -->
+						<div class="col-md-4">
+							<div class="item-testimonials">
+								<img src="playchat_img/ref_img_3.png" alt="photo">
+
+								<p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation.</p>
+
+								<span>배달봇 얌얌</span>
+								<span>Programer, Company name</span>
+							</div>
+						</div>
+					</div>
+					<!-- Strat Control carousel -->
+					<div class="prev-next-block" id="control-testimonials">
+						<div class="prev"><i class="pe-7s-angle-left"></i></div>
+						<div class="next"><i class="pe-7s-angle-right"></i></div>
+					</div>
+					<!-- End Control carousel -->
+				</div>
+				<!-- Dots control carousel -->
+				<div class="dots-screenshot" id="dots-control-testimonials"></div>
+			</div>
+		</div>
+	</section>
+
+<!-- Start Your Benefits Section -->
+
+	<section class="benefits">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8 col-md-push-2">
+					<div class="heading-title">
+						<h2>플레이챗은 무료기반의 챗봇 플랫폼입니다</h2>
+						<p>기업형 챗봇 구축을 원하시면 문의로 남겨주세요~^^</p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</section>
+
+<!-- Start Contact Section -->
+
+	<section class="contact-info" id="contact">
+		<div class="container">
+			<div class="row">
+			<!-- Block item -->
+				<div class="col-md-4 col-sm-4 col-xs-12 contacn-block">
+					<div class="section-class-item icon-circle-border">
+						<div class="item-icon">
+							<span class="icon-wrap icon-services"><i class="fa fa-phone" aria-hidden="true"></i></span>
+						</div>
+						<div class="item-text text-center">
+							<h3>Call us</h3>
+              <p>02-858-5683</p>
+						</div>
+					</div>
+				</div>
+			<!-- Block item -->
+				<div class="col-md-4 col-sm-4 col-xs-12 contacn-block">
+					<div class="section-class-item icon-circle-border">
+						<div class="item-icon">
+							<span class="icon-wrap icon-services"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
+						</div>
+						<div class="item-text text-center">
+							<h3>Email us</h3>
+							<p>sj@moneybrain.ai</p>
+						</div>
+					</div>
+				</div>
+			<!-- Block item -->
+				<div class="col-md-4 col-sm-4 col-xs-12 contacn-block">
+					<div class="section-class-item icon-circle-border">
+						<div class="item-icon">
+							<span class="icon-wrap icon-services"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
+						</div>
+						<div class="item-text text-center">
+							<h3>Address</h3>
+							<p>서울특별시 서초구 남부순환로289길 5, 1층</p>
+						</div>
+					</div>
+				</div>
+			<!-- Block item -->
+			</div>
+		</div>
+	</section>
+
+<!-- Start footer -->
+
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="heading-title">
+						<h2><span><img src="playchat_img/Playchat_logo_wide_small.png"></span></h2>
+					</div>
+					<div class="social-inons">
+						<ul>
+							<li class="icon-circle" ><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+							<li class="icon-circle" ><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+							<!-- <li class="icon-circle" ><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li> -->
+							<li class="icon-circle" ><a href="#"><i class="fa fa-dribbble" aria-hidden="true"></i></a></li>
+							<li class="icon-circle" ><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+							<li class="icon-circle" ><a href="#"><i class="fa fa-youtube" aria-hidden="true"></i></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="bottom-footer white-color">
+					<div class="col-md-6">
+						<div class="footer-copyright">
+							<p>Milness &copy; 2016 All Rights Reserved. Developed by - <a href="https://themeforest.net/user/brainiak" target="_blank">Brainiak</a></p>
+						</div>
+					</div>
+					<div class="col-md-6">
+					<!-- Bottom nav -->
+						<div class="footer-menu">
+							<ul>
+								<li><a href="#">Terms</a></li>
+								<li><a href="#">Privacy Policy</a></li>
+								<li><a href="#">Licenses</a></li>
+							</ul>
+						</div>
+					<!-- End Bottom nav -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+	<!-- Scroll to top -->
+	<div class="top icon-down toTopFromBottom">
+        <a href="#top" class="smooth-scroll"><i class="pe-7s-angle-up"></i></a>
     </div>
+    <!-- End Scroll to top -->
 
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav navbar-right">
-        <!--<li>-->
-        <!--<a href="#page-top">Home</a>-->
-        <!--</li>-->
-        <li class="">
-          <button class="page-scroll btn btn-primary" ui-sref="user-bots-web.create()"
-                  style="margin-top: 7px;margin-right: 15px;padding: 8px 20px 8px 20px;">챗봇 만들기</button>
-        </li>
+	<!--[if lt IE 9]>
+	<script src="libs/html5shiv/es5-shim.min.js"></script>
+	<script src="libs/html5shiv/html5shiv.min.js"></script>
+	<script src="libs/html5shiv/html5shiv-printshiv.min.js"></script>
+	<script src="libs/respond/respond.min.js"></script>
+	<![endif]-->
 
+	<!-- GOOGLE MAP -->
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfIvcRb39yOu1OFOX2G0c4jemKpLgpJl0&sensor=false"></script>
 
-        <li class="">
-          <a class="page-scroll" id = "header_popular" style="font-size:130%" href="/list?listType=popular">인기봇</a>
-        </li>
-        <li class="">
-          <a class="page-scroll" id = "header_recent" href="/list?listType=recent">최신봇</a>
-        </li>
-        <li class="">
-          <a class="page-scroll" id = "header_follow" href="/list?listType=followed">친구봇</a>
-        </li>
-        <li class="">
-          <a class="page-scroll" id = "header_my" href="/list?listType=my">마이봇</a>
-        </li>
+	<!-- LIBS -->
+	<script src="libs/jquery/jquery-1.12.0.min.js"></script>
+	<script src="js/libs.js" ></script>
 
-        <li class="" ng-hide="authentication && authentication.user">
-          <a role="menuitem" tabindex="-1" href="" ng-click="$state.go('user-bots-web.authentication.signin')" target="_self"><i class="fa fa-power-off"></i> 로그인</a>
-        </li>
-        <!--<li class="" ng-show="authentication && authentication.user">-->
-        <!--<a role="menuitem" tabindex="-1" href="/api/auth/signout?path=/userbot" target="_self"><i class="fa fa-power-off"></i> Logout</a>-->
-        <!--</li>-->
-
-        <li class="header-right" ng-show="authentication && authentication.user">
-
-          <span class="separator"></span>
-
-          <div id="userbox" class="userbox">
-            <a href="#" data-toggle="dropdown">
-              <!--<figure class="profile-picture">-->
-              <!--<img src="/images/!logged-user.jpg" alt="Joseph Doe" class="img-circle" data-lock-picture="/images/!logged-user.jpg" />-->
-              <!--</figure>-->
-              <div class="profile-info">
-                <span class="name" ng-bind="authentication.user.email">{{authentication.user.username}}</span>
-              </div>
-
-              <i class="fa custom-caret"></i>
-            </a>
-
-            <div class="dropdown-menu" style="padding-top: 30px;">
-              <ul class="list-unstyled">
-                <li class="divider"></li>
-                <li>
-                  <a role="menuitem" tabindex="-1" href="#" ng-click="$state.go('user-bots-web.settings.password')"><i class="fa fa-user"></i> 비밀번호 변경</a>
-                </li>
-                <li>
-                  <a role="menuitem" tabindex="-1" href="/api/auth/signout?path=/" target="_self"><i class="fa fa-power-off"></i> 로그아웃</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </li>
-
-        <!--<li class="">-->
-        <!--<div class="btn-group" role="group" style="margin-top: 10px;">-->
-        <!--<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-        <!--Language-->
-        <!--<span class="caret"></span>-->
-        <!--</button>-->
-        <!--<ul id="language_dropdown" class="dropdown-menu">-->
-        <!--<li><a href="#">한국어</a></li>-->
-        <!--<li><a href="#">English</a></li>-->
-        <!--<li><a href="#">中文</a></li>-->
-        <!--</ul>-->
-        <!--</div>-->
-        <!--</li>-->
-
-      </ul>
-    </div>
-  </div>
-</nav>
-
-<header id="mainHeader">
-  <div class="container">
-    <div class="intro-text">
-      <div class="intro-text-wrapper">
-        <div id="language_button" class="btn-group" role="group" aria-label="...">
-          <div class="btn-group" role="group">
-          </div>
-        </div>
-        <div class="intro-heading">인공지능 챗봇 플랫폼 - 플레이챗</div>
-        <div class="intro-lead-in">1분만에 쉽게 나만의 챗봇을 만드세요.</div>
-        <div class="row">
-          <div class="intro-in">
-            챗봇, 이제 개발하지 말고 간단한 정보의 입력만으로 나만의 챗봇을 만들어 바로 사용할 수 있습니다. 음식점, 혜어샵, 네일샵, 교육, 의료 등 각 업종별 미리 만들어진 챗봇을 선택하기만 하면 됩니다. 기존 플러스친구, 페이스북에도 바로 연결할 수 있습니다.
-            <!--
-            카카오톡에서 여자친구와 대화했던 내용으로 여자친구봇을 만들어 대화를 나눌 수 있습니다. 자막파일로 챗봇을 만들어 영화 속 주인공과 대화를 나누세요. 연예인, 정치인, 유명인의 대화를 모아서 챗봇을 만들고 공개하여 다른 사람도 이용하게 해보세요.
-            -->
-          </div>
-          <div class="col-sm-4">
-            <!--<a ui-sref="vm.create()" class="page-scroll btn btn-xl">챗봇 만들기</a>-->
-          </div>
-        </div>
-
-        <br/>
-
-        <div class="row">
-          <!--<div class="col-sm-4">-->
-          <!--&lt;!&ndash;모바일 앱을 다운로드 하세요.<br/>&ndash;&gt;-->
-          <!--<img src="/bot-client/images/app_store_icon.png" height="50"/>-->
-          <!--<img src="/bot-client/images/play_store_icon.png" height="50"/>-->
-          <!--</div>-->
-          <div class="col-sm-4 intro-messengers">
-            <!--메신져에서 친구 추가해서 사용하세요.<br/>-->
-            <a style="text-decoration: none;" href="http://plus.kakao.com/home/@playchat" target="_blank">
-              <img src="/bot-client/images/kakaotalk-icon1.png" height="50"/>
-            </a>
-            <a style="text-decoration: none;" href="https://line.me/R/ti/p/%40utw0596x" target="_blank">
-              <img src="/bot-client/images/line-messenger-vector-logo.png" height="50" alt="LINE it!" />
-            </a>
-            <a style="text-decoration: none;" href="https://www.messenger.com/t/1753073741670229" target="_blank">
-              <img src="/bot-client/images/facebook-messenger-android.png" height="50" style="border-radius: 8px;"/>
-            </a>
-
-            <!--<div class="line-it-button" data-lang="en" data-type="share-d" data-url="http://localhost:8443/userbot/home" style="display: none;"></div>-->
-
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</header>
-
-
-<div class="ui-view-class" ui-view></div>
-
-
-<div id="container-chat" class="chat-container" ng-controller="UserBotChatController"
-     ng-keyup="vm.onKeyPress($event.keyCode)">
-
-
-  <div id="chat-header" class="chat-header">
-  </div>
-  <div class="chat-body" >
-    <div id="chat_main" class="chat_main">
-    </div>
-  </div>
-
-  <div class="chat-footer" style="height: 34px;padding: 0 15px;">
-    <form name="chatForm" class="form-horizontal form-bordered" novalidate="novalidate"
-          ng-submit="vm.sendMsg();">
-      <div class="row">
-        <div class="input-group">
-          <input type="text" class="form-control" name="inputbox" id="inputbox"
-                 placeholder="대화를 입력해주세요." ng-model="vm.msg"/>
-          <span class="input-group-btn">
-                      <!--<button class="btn" type="submit">SEND</button>-->
-                      <button id="voiceButton" class="btn" type="button" ng-click="vm.toggleVoice()">Voice</button>
-                    </span>
-        </div>
-      </div>
-    </form>
-  </div>
-  <br/>
-</div>
-
-<footer class="footer-3">
-  <div class="container">
-    <div class="row v-center">
-      <div class="col-sm-2">
-        <a class="brand" href="http://moneybrain.ai/#">MoneyBrain Inc.</a>
-      </div>
-      <div class="col-sm-7">
-        <div class="additional-links">
-          Copyright 2017 by MoneyBrain Inc. All right reserved.
-        </div>
-      </div>
-      <div class="col-sm-3" style="text-align: left;padding: 0px;">
-        <h6>Contact</h6>
-        <!--<div class="address">-->
-        <!--Tel: 02-858-5683, 010-6662-4995-->
-        <!--</div>-->
-
-        <div class="address">Email: dyddnjs0007@moneybrain.ai
-        </div>
-        <div class="address">
-          주소: 서울시 서초구 남부순환로289길 5,<br/>오렌지팜 101호 (삼영빌딩)
-        </div>
-      </div>
-    </div>
-  </div>
-</footer>
-
-<!-- Vendor -->
-<script src="/vendor/jquery/jquery.js"></script>
-<script src="/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
-<script src="/vendor/bootstrap/js/bootstrap.js"></script>
-<script src="/vendor/nanoscroller/nanoscroller.js"></script>
-<script src="/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-<script src="/vendor/magnific-popup/jquery.magnific-popup.js"></script>
-<script src="/vendor/jquery-placeholder/jquery-placeholder.js"></script>
-
-<script src="/vendor/owl.carousel/owl.carousel.min.js"></script>
-
-<!-- Specific Page Vendor -->
-<script src="/vendor/jquery-ui/jquery-ui.js"></script>
-<script src="/vendor/jqueryui-touch-punch/jqueryui-touch-punch.js"></script>
-<script src="/vendor/jquery-appear/jquery-appear.js"></script>
-<script src="/vendor/bootstrap-multiselect/bootstrap-multiselect.js"></script>
-<script src="/vendor/select2/js/select2.js"></script>
-<script src="/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
-<script src="/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
-<script src="/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
-<script src="/vendor/jquery-maskedinput/jquery.maskedinput.js"></script>
-<script src="/vendor/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
-<!--<script src="/vendor/dropzone/dropzone.js"></script>-->
-
-<!--&lt;!&ndash; Theme Base, Components and Settings &ndash;&gt;-->
-<script src="/js/theme.js"></script>
-
-<!--&lt;!&ndash; Theme Custom &ndash;&gt;-->
-<script src="/js/theme.custom.js"></script>
-
-<!--&lt;!&ndash; Theme Initialization Files &ndash;&gt;-->
-<script src="/js/theme.init.js"></script>
-
-<!--Embedding The User Object-->
-<script type="text/javascript">
-  var user = {{ user | json | safe }};
-</script>
-
-<!--Load The Socket.io File-->
-<script type="text/javascript" src="/socket.io/socket.io.js"></script>
-
-<!--Application JavaScript Files-->
-{% for jsFile in jsFiles %}
-<script type="text/javascript" src="{{jsFile}}"></script>
-{% endfor %}
-
-{% if env == 'production' %}
-<script type="text/javascript" src="dist/application.min.js?rel={{app_version}}"></script>
-{% endif %}
-
-<script>
-
-  function chatPosition() {
-    var windowWidth = document.body.offsetWidth;
-    if(windowWidth > 1200) {
-      document.getElementById('container-chat').style.right = ((windowWidth - 1100) / 2) + 'px';
-    } else if (windowWidth < 1200) {
-      document.getElementById('container-chat').style.right = (-(1100 - windowWidth)) + 'px';
-    } else {
-      document.getElementById('container-chat').style.right = '10px';
-    }
-  }
-
-  window.onresize = function() {
-    chatPosition();
-  };
-  window.onload = function () {
-    chatPosition();
-  };
-
-</script>
-
-<!--facebook-->
-<script src="https://connect.facebook.net/en_US/all.js"></script>
-<!--<script src="https://connect.facebook.net/en_US/sdk.js"></script>-->
-<script>
-  $.get('/config', function (config) {
-    window.fbAsyncInit = function() {
-      FB.init({
-//      appId      : '240853479709635',
-//        appId      : '1557169960967403',
-        appId      : config.facebook.clientID,
-        status     : true,
-        xfbml      : true,
-        version    : 'v2.8'
-      });
-//    FB.AppEvents.logPageView();
-    };
-    (function(d, s, id){
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) {return;}
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/en_US/sdk.js";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-  });
-</script>
-
-<!--kakao-->
-<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
-<script type='text/javascript'>
-  // // 사용할 앱의 JavaScript 키를 설정해 주세요.
-  Kakao.init('f1eb73f3491e5c1e1178b3b8c12b10e5');
-</script>
-
-<!--line-->
-<script src="https://d.line-scdn.net/r/web/social-plugin/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
-
-<script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
+	<!-- Use scripts -->
+	<script src="js/common.js"></script>
 
 </body>
 </html>
