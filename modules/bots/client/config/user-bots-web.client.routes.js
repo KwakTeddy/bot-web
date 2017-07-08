@@ -12,13 +12,22 @@ angular.module('user-bots').config(['$stateProvider',
       })
       .state('home', {
         url: '/',
-        templateUrl: 'modules/core/client/views/user.client.view.html',
+        templateUrl: 'modules/core/client/views/user-home-new.client.view.html',
         controller: 'UserBotListController',
         controllerAs: 'vm',
         resolve: {
           userBotsResolve: getUserBotsWeb
         }
       })
+      // .state('home', {
+      //   url: '/',
+      //   templateUrl: 'modules/core/client/views/user.client.view.html',
+      //   controller: 'UserBotListController',
+      //   controllerAs: 'vm',
+      //   resolve: {
+      //     userBotsResolve: getUserBotsWeb
+      //   }
+      // })
       .state('user-bots-web.list', {
         url: '/list?listType&query',
         templateUrl: 'modules/bots/client/views/list-user-bot-web.client.view.html',

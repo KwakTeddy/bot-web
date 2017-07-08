@@ -7,6 +7,9 @@
 angular.module('user-bots').controller('UserBotListController', ['$scope', '$rootScope', '$stateParams', '$state', 'userBotsResolve',
   'UserBotsService', 'UserBotsFollowService', '$http', 'Authentication', '$ionicModal',
   function ($scope, $rootScope, $stateParams, $state, userBots, UserBotsService, UserBotsFollowService, $http, Authentication, $ionicModal) {
+
+    console.log('qoqoqoqo')
+    console.log(Authentication)
     var vm = this;
     vm.authentication = Authentication;
     console.log(userBots);

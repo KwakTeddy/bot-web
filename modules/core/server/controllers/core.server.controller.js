@@ -22,6 +22,7 @@ exports.renderIndex = function (req, res) {
   if(path.length > 1 && path[1] == 'admin') {
     admin = true;
   }
+  console.log('maybe?')
 
   if(path[1] == 'mobile') {  // 모바일 화면
     req.session._platform = "mobile";
@@ -38,10 +39,9 @@ exports.renderIndex = function (req, res) {
       user: req.user || null
     });
   } else if(config.enterprise.name){
-    console.log('************************************************************');
-    console.log(config.enterprise.name);
     res.redirect('/developer')
   } else{
+    console.log(req.user);
     res.render('modules/core/server/views/user-bot', {
       user: req.user
     });

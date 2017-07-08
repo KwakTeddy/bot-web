@@ -9,9 +9,9 @@ var setInput = function(cur) {
 };
 
 if (_platform !== 'mobile'){
-  $(document).ready(function() {
-    $('[data-toggle="tooltip"]').tooltip();
-  });
+  // $(document).ready(function() {
+  //   $('[data-toggle="tooltip"]').tooltip();
+  // });
 
   // UserBots controller
   angular.module('user-bots').controller('UserBotController', ['$scope', '$rootScope', '$state', '$window','$timeout', '$stateParams',

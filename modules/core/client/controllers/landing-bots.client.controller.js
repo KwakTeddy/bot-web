@@ -4,6 +4,7 @@ angular.module('core').controller('LandingBotsController', ['$scope', '$state', 
   'BotsService', '$timeout', '$uibModal', 'FileUploader', '$resource',
   function ($scope, $state, Authentication, Menus, $cookies, $http, $rootScope, Socket, $location, $window, BotsService, $timeout, $uibModal, FileUploader, $resource) {
   var vm = this;
+  console.log(Authentication)
   $timeout(function () {
     document.getElementById('sidebar-left').style.display = 'none';
     document.getElementById('chat-include').style.display = 'none';
