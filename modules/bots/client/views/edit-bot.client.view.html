@@ -1,181 +1,829 @@
-<header class="page-header">
-  <h2>{{vm.bot && vm.bot._id ? '봇 수정' : '봇 생성'}}</h2>
+<div id="editBot" style="height: 100vh;overflow: scroll;padding-left: 50px;padding-right: 50px">
 
-  <div class="right-wrapper pull-right">
-    <ol class="breadcrumbs">
-      <li>
-        <a ui-sref="home">
-          <i class="fa fa-home"></i>
-        </a>
-      </li>
-      <li><span>봇 관리</span></li>
-      <li><span>{{vm.bot && vm.bot._id ? vm.bot.name : '봇 생성'}}</span></li>
-    </ol>
+  <div class="bot-content" ng-show="vm.type == 'view'">
+    <div class="panel-body" >
 
-    <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+      <div class="bot-list-header" ng-show="vm.state=='view'" style="border-bottom: 1px solid lightgray;">
+        <ul class="nav nav-tabs">
+          <li role="presentation" ng-class="{active: vm.type == 'view'}"><a href="#" ng-click="vm.changeType('view');">챗봇정보</a></li>
+          <li role="presentation" ng-if="vm.isLearnable" ng-class="{active: vm.type == 'learn'}"><a href="#" ng-click="vm.changeType('learn');">대화학습</a></li>
+          <li role="presentation" ng-if="vm.user._id == vm.bot.user._id" ng-class="{active: vm.type == 'connect'}"><a href="#" ng-click="vm.changeType('connect');">연결하기</a></li>
+        </ul>
+      </div>
+      <div class="bot-list-header" ng-show="vm.state=='create'" style="border-bottom: 1px solid lightgray;">
+        <ul class="nav nav-tabs">
+          <li role="presentation" ng-class="{active: vm.type == 'view'}"><a href="#" ng-click="vm.changeType('view');">챗봇정보</a></li>
+          <li role="presentation" ng-class="{active: vm.type == 'connect'}"><a href="#" ng-click="vm.changeType('connect');">연결하기</a></li>
+        </ul>
+      </div>
+
+      <div style="clear: both; ">
+        <div style="width: 30%;display: block; float: left; text-align: center;">
+          <img src="{{vm.bot.imageFile}}" data-holder-rendered="true" style="max-width: 150px; border-radius: 50%;">
+        </div>
+        <div style="width: 70%;display: block; float: left">
+          <div>
+            <h4 style="float: left;color: #555;">{{vm.bot.name}} ({{vm.bot.id}})</h4>
+            <div style="color: #888;float: right; padding-top: 8px">{{vm.bot.user.username}} </div>
+          </div>
+
+          <div style="clear: both;">
+            <div style="float: left;margin-bottom: 10px">
+              <i class="fa fa-users" aria-hidden="true" style="color: #337ab7;margin-right: 3px;"></i><span>친구</span> {{vm.bot.followed}}명
+              <!--<i class="fa fa-comments-o" aria-hidden="true" style="color: #337ab7;margin-right: 5px;"></i><span>대화</span> 10억-->
+            </div>
+            <div style="color: #888; float: right">
+              {{vm.bot.created | date: 'yyyy-MM-dd'}}
+            </div>
+          </div>
+          <div  style="clear: both;border-top: 1px solid lightgray; margin-top: 15px;padding-top: 5px;">
+            <div style="color: #555;font-weight: bold;display: inline-block;">공유하기</div>
+            <img src="/images/sns/social-facebook-icon.png" height="35" style="border-radius: 8px; cursor:pointer;" ng-click="vm.fbShare()"/>
+            <img src="/images/sns/kakaostory-icon.png" height="35" style="border-radius: 8px;cursor:pointer;" ng-click="vm.kakaoShare()"/>
+            <img src="/images/sns/social-twitter-icon.png" height="35" style="cursor:pointer;" ng-click="vm.twitterShare()"/>
+            <!--<div class="line-it-button" style="display: none;" data-type="share-c" data-lang="en"></div>-->
+          </div>
+          <div style="border-top: 1px solid lightgray; margin-top: 5px;padding-top: 5px;text-align: right;">
+            <button type="button" class="btn btn-danger" ng-show="vm.isAdmin()" ng-click="vm.graph()">
+              <i class="glyphicon glyphicon-edit"></i> 지식그래프 생성
+            </button>
+            <a class="btn btn-primary" ui-sref="user-bots-web.graph({botId: vm.bot._id})"
+               style="padding: 10px 20px 10px 20px;">지식그래프</a>
+            <a class="btn btn-primary" ng-show="vm.isMine" ui-sref="user-bots-web.edit({botId: vm.bot._id})"
+               style="padding: 10px 20px 10px 20px;">수정하기</a>
+            <a class="btn btn-default" ng-show="!vm.bot.userFollow && vm.user" ng-click="vm.followBot(vm.bot);"
+               style="padding: 10px 20px 10px 20px;">친구추가</a>
+            <a class="btn btn-default" ng-show="vm.bot.userFollow && vm.user" ng-click="vm.unfollowBot(vm.bot);"
+               style="padding: 10px 20px 10px 20px;">친구해제</a>
+            <!--<a class="btn btn-default" ng-click="">대화 가르치기</a>-->
+            <!--                                <a class="btn btn-primary" ng-click="vm.botChat(vm.bot);"
+                                               style="padding: 10px 20px 10px 20px;">대화하기</a>-->
+          </div>
+
+        </div>
+      </div>
+
+      <div style="clear: both;padding: 20px 10px 10px 10px;" ng-hide="vm.sample && (vm.bot.id !== 'athena' && vm.bot.id !== 'order')">
+        {{vm.bot.description}}
+      </div>
+
+      <div style="clear: both;padding: 20px 10px 10px 10px;" ng-if="vm.sample && (vm.bot.id !== 'athena' && vm.bot.id !== 'order')">
+        <div style="width: 50%;display: block; float: left; text-align: left;margin-top: 5%; margin-left: 2%;font-size: 140%; line-height: 200%">
+          샘플로 제공되는 {{vm.bot.name}}이에요.<br> 손쉽게 화면과 같은 챗봇을 만들 수 있어요! <br> <b>카카오톡, 라인, 페이스북</b>에서 제공하려면 <br> 챗봇만들기를 클릭해서 시작하세요.
+        </div>
+        <div class="text-right">
+          <video autoplay loop controls="controls" style="width: 45%;height: 45%">
+            <source src="{{vm.videoSrc}}"></source>
+          </video>
+        </div>
+      </div>
+
+      <div style="clear: both;padding: 20px 10px 10px 10px;" ng-if="vm.sample && (vm.bot.id == 'athena' || vm.bot.id == 'order')">
+        <video autoplay loop controls="controls" style="width: 100%;height: 100%">
+          <source src="{{vm.videoSrc}}"></source>
+        </video>
+      </div>
+
+
+      <div style="border-top: 1px solid lightgray; margin-top: 5px;padding-top: 10px;">
+        <div>
+          <form name="commentForm">
+            <input type="text" ng-model="vm.comment.text" class="form-control valid" placeholder="댓글을 입력해주세요."
+                   aria-invalid="false" style="width: 80%;float: left;margin-right: 10px" ng-disabeld = "!vm.user"
+                   ng-required="true" ng-minlength="10">
+            <button class="btn btn-default" ng-click="vm.createComment(commentForm.$valid);" ng-show="vm.user">등록</button>
+            <button class="btn btn-default" ui-sref="authentication.signin" ng-show="!vm.user">로그인해요</button>
+          </form>
+        </div>
+        <div>
+          <ul style="padding: 10px 0px 10px 5px;">
+            <li ng-repeat="comment in vm.comments" ng-show="comment['deleted'] == undefined" style="list-style: none; padding: 0px; margin: 0px;">
+              <div style="color: #555;font-size: 14px;float:left;margin-right: 10px">{{comment.text}} </div>
+              <div>
+                <span style="color: #888;font-size: 12px; ">{{comment.user.created | date: 'medium'}}</span>
+                <span  style="color: #777;font-size: 13px; font-weight: bold;"> {{comment.user.username}}&emsp;</span>
+              </div>
+              <button class="btn btn-default btn-xs " ng-show="comment.user.username == vm.user.username" ng-click="vm.removeComment(comment);">삭제</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
   </div>
-</header>
+
+  <div class="bot-content" ng-show="vm.type.startsWith('edit')">
+
+    <form name="botForm" class="form-bordered" novalidate="novalidate">
+
+      <div class="panel-body">
+
+        <div class="bot-list-header" ng-show="vm.state=='create'" style="border-bottom: 1px solid lightgray;">
+          <ul class="nav nav-tabs">
+            <li role="presentation" ng-show="(vm.type=='edit-kind') || (vm.type == 'edit') || (vm.type == 'edit-detail')" ng-hide="vm.saved == true" ng-class="{active: vm.type == 'edit-kind'}"><a href="#" ng-click="vm.changeType('edit-kind');">챗봇선택</a></li>
+            <li role="presentation" ng-show="(vm.type=='edit') || (vm.type == 'edit-detail')" ng-class="{active: vm.type == 'edit'}"><a href="#" ng-click="vm.changeType('edit');">챗봇정보</a></li>
+            <li role="presentation" ng-show="vm.type=='edit-detail'" ng-class="{active: vm.type == 'edit-detail'}" ng-show="vm.editType != 'start'"><a href="#" ng-click="vm.changeType('edit-detail');vm.checkAndChangeType(botForm.$valid,'edit')">상세정보</a></li>
+            <li role="presentation" ng-show ="vm.saved == true" ng-class="{active: vm.type == 'connect'}"><a href="#" ng-click="vm.changeType('connect');">연결하기</a></li>
+          </ul>
+        </div>
+        <div class="bot-list-header" ng-show="vm.state=='edit'" style="border-bottom: 1px solid lightgray;">
+          <ul class="nav nav-tabs">
+            <li role="presentation" ng-class="{active: vm.type == 'edit'}"><a href="#" ng-click="vm.changeType('edit');">챗봇정보</a></li>
+            <li role="presentation" ng-class="{active: vm.type == 'edit-detail'}"><a href="#" ng-click="vm.changeType('edit-detail');">상세정보</a></li>
+            <li role="presentation" ng-class="{active: vm.type == 'learn'}"><a href="#" ng-click="vm.changeType('learn');">대화학습</a></li>
+            <li role="presentation" ng-class="{active: vm.type == 'connect'}"><a href="#" ng-click="vm.changeType('connect');">연결하기</a></li>
+          </ul>
+        </div>
+
+        <div class="form-group" ng-show="vm.type == 'edit-kind'">
+          <div style="clear: both; margin-bottom: 20px;">
+            <div style="font-size: 15px;color: #555;border-bottom: 1px solid lightgray; margin-bottom: 10px;padding-bottom: 5px;font-weight: bold;"></div>
+
+            <div class="row">
+              <div class="col-sm-6 col-md-4">
+                <div class="thumbnail" style="text-align: center;height: 190px;">
+                  <img src="/images/Playchat_logo_small.png" style="height: 100px;margin-top: 5px;">
+                  <div class="caption">
+                    <p><a href="#" class="btn btn-default" role="button" ng-click="vm.bot.public = false; vm.changeType('edit'); vm.selectedBot = 'noDialog'" >개발용 빈봇 만들기</a></p>
+                  </div>
+                </div>
+              </div>
+
+              <!--<div class="col-sm-6 col-md-4">-->
+                <!--<div class="thumbnail" style="text-align: center;height: 190px;">-->
+                  <!--<img src="/images/Playchat_logo_small.png" style="height: 100px;margin-top: 5px;">-->
+                  <!--<div class="caption">-->
+                    <!--<p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('file'); vm.changeType('edit'); vm.unselectTemplate(); ">대화파일 올리기</a></p>-->
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+
+              <h3 class="col-sm-12 col-md-12 " ng-if="vm.restaurantBusinessTemplates.length" >요식업</h3>
+              <div ng-repeat="template in vm.restaurantBusinessTemplates" class="col-sm-6 col-md-4" >
+                <div class="thumbnail" style="text-align: center;height: 190px;">
+                  <img src={{vm.getImage(template)}} style="height: 100px;">
+                  <div class="caption">
+                    <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit'); vm.selectTemplate(template);vm.selectedBot = 'template'">{{template.name}}</a></p>
+                  </div>
+                </div>
+              </div>
+
+              <h3 class="col-sm-12 col-md-12" ng-if="vm.onlineShoppingTemplates.length">온라인쇼핑</h3>
+              <div ng-repeat="template in vm.onlineShoppingTemplates" class="col-sm-6 col-md-4" >
+                <div class="thumbnail" style="text-align: center;height: 190px;">
+                  <img src={{vm.getImage(template)}} style="height: 100px;">
+                  <div class="caption">
+                    <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit'); vm.selectTemplate(template);">{{template.name}}</a></p>
+                  </div>
+                </div>
+              </div>
 
 
-<section class="panel">
-  <form name="botForm" class="form-bordered" ng-submit="vm.create(botForm.$valid)"
-        novalidate="novalidate">
-    <div class="panel-body">
-      <div class="form-horizontal form-group">
-        <label class="col-sm-2 control-label">봇아이디 <span class="required" aria-required="true">*</span></label>
-        <div class="col-sm-10">
-          <input type="text" name="id" ng-model="vm.bot.id" class="form-control valid"
-                 placeholder="영어(대문자)와 _의 조합, 추후 변경 불가"
-                 required=""
-                 aria-required="true" aria-invalid="false"
-                 ng-disabled="vm.bot._id">
-        </div>
-        <div ng-messages="botForm.id.$error" role="alert" class="col-sm-offset-3 col-sm-9" ng-show = "botForm.id.$error && submitted">
-          <p class="help-block error-text text-danger" ng-message="required">아이디를 입력해야죠</p>
-        </div>
-        <div ng-show="error.id" role="alert" class="col-sm-offset-3 col-sm-9">
-          <span class="error-text text-center text-danger"> <strong ng-bind="error.id"></strong> </span>
-        </div>
-      </div>
-      <div class="form-horizontal form-group">
-        <label class="col-sm-2 control-label">봇이름 <span class="required" aria-required="true">*</span></label>
-        <div class="col-sm-10">
-          <input type="text" name="name" ng-model="vm.bot.name" class="form-control valid" placeholder="자유롭게 입력해주세요"
-                 required=""
-                 aria-required="true" aria-invalid="false">
-        </div>
-      </div>
-      <div class="form-horizontal form-group">
-        <label class="col-sm-2 control-label">설명 <span class="required" aria-required="true">*</span></label>
-        <div class="col-sm-10">
-          <textarea name="description" ng-model="vm.bot.description" id="description" rows="5" class="form-control"
-                    placeholder="내용을 입력해주세요" required="" aria-required="true" aria-invalid="true"></textarea>
-        </div>
-      </div>
+              <h3 class="col-sm-12 col-md-12" ng-if="vm.openMarketTemplates.length">오픈마켓</h3>
+              <div ng-repeat="template in vm.openMarketTemplates" class="col-sm-6 col-md-4" >
+                <div class="thumbnail" style="text-align: center;height: 190px;">
+                  <img src={{vm.getImage(template)}} style="height: 100px;">
+                  <div class="caption">
+                    <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
+                  </div>
+                </div>
+              </div>
 
-      <div class="form-horizontal form-group">
-        <label class="col-sm-2 control-label">이미지</label>
-        <div class="col-sm-10">
-          <img ng-src="{{imageURL? imageURL : vm.bot.imageFile}}" class="img-thumbnail user-profile-picture" style="border: 0;width:150px; height: 150px;text-align:center;line-height: 150px;" alt="이미지를 업로드해요" >
-          <!--<img ng-src="{{vm.bot.imageFile}}" class="img-thumbnail user-profile-picture" style="border: 0;width:150px; height: 150px;text-align:center;line-height: 150px;" alt="이미지를 업로드해요" data-ng-if="vm.bot._id && vm.bot.imageFile">-->
-          <p></p>
-          <div class="text-left" ng-hide="imageUploader.queue.length" style="display: inline-block;left: 180px;top: 10px;position: absolute;">
-            <span class="btn btn-default btn-file">
-                <input type="file" nv-file-select uploader="imageUploader" style="width:200px;">
-            </span>
-            <span ng-show="success.image" class="text-center text-success">
-              <strong>이미지가 업로드 되었네요</strong>
-            </span>
-            <span ng-show="error.image" class="text-center text-danger">
-              <strong ng-bind="error.image"></strong>
-            </span>
+
+              <h3 class="col-sm-12 col-md-12" ng-if="vm.accommodationTemplates.length">숙박여행</h3>
+              <div ng-repeat="template in vm.accommodationTemplates" class="col-sm-6 col-md-4" >
+                <div class="thumbnail" style="text-align: center;height: 190px;">
+                  <img src={{vm.getImage(template)}} style="height: 100px;">
+                  <div class="caption">
+                    <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
+                  </div>
+                </div>
+              </div>
+
+
+              <h3 class="col-sm-12 col-md-12" ng-if="vm.eduTemplates.length">교육</h3>
+              <div ng-repeat="template in vm.eduTemplates" class="col-sm-6 col-md-4" >
+                <div class="thumbnail" style="text-align: center;height: 190px;">
+                  <img src={{vm.getImage(template)}} style="height: 100px;">
+                  <div class="caption">
+                    <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
+                  </div>
+                </div>
+              </div>
+
+              <h3 class="col-sm-12 col-md-12" ng-if="vm.medicalTemplates.length">의료건강</h3>
+              <div ng-repeat="template in vm.medicalTemplates" class="col-sm-6 col-md-4" >
+                <div class="thumbnail" style="text-align: center;height: 190px;">
+                  <img src={{vm.getImage(template)}} style="height: 100px;">
+                  <div class="caption">
+                    <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
+                  </div>
+                </div>
+              </div>
+
+              <h3 class="col-sm-12 col-md-12" ng-if="vm.beautyTemplates.length">뷰티</h3>
+              <div ng-repeat="template in vm.beautyTemplates" class="col-sm-6 col-md-4" >
+                <div class="thumbnail" style="text-align: center;height: 190px;">
+                  <img src={{vm.getImage(template)}} style="height: 100px;">
+                  <div class="caption">
+                    <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
+                  </div>
+                </div>
+              </div>
+
+
+              <h3 class="col-sm-12 col-md-12" ng-if="vm.businessTemplates.length">비지니스</h3>
+              <div ng-repeat="template in vm.businessTemplates" class="col-sm-6 col-md-4" >
+                <div class="thumbnail" style="text-align: center;height: 190px;">
+                  <img src={{vm.getImage(template)}} style="height: 100px;">
+                  <div class="caption">
+                    <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
           </div>
         </div>
+
+        <div class="form-horizontal form-group" ng-show="vm.type == 'edit'">
+          <div class="form-group" >
+            <label class="col-sm-3 control-label">봇아이디 <span class="required" aria-required="true">*</span></label>
+            <div class="col-sm-7" ng-class="{'has-error':(error.id)}">
+              <input type="text" name="id" ng-model="vm.bot.id" class="form-control valid"
+                     placeholder="영어(대문자)와 _의 조합, 추후 변경 불가"
+                     required
+                     aria-required="true" aria-invalid="false"
+                     ng-disabled="vm.bot._id" >
+            </div>
+            <div ng-messages="botForm.id.$error" role="alert" class="col-sm-offset-3 col-sm-9" ng-show = "botForm.id.$error && submitted">
+              <p class="help-block error-text text-danger" ng-message="required">아이디를 입력해야죠</p>
+            </div>
+            <div ng-show="error.id" role="alert" class="col-sm-offset-3 col-sm-9">
+              <span class="error-text text-center text-danger"> <strong ng-bind="error.id"></strong> </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-3 control-label">봇이름 <span class="required" aria-required="true">*</span></label>
+            <div class="col-sm-7">
+              <input type="text" name="name" ng-model="vm.bot.name" class="form-control valid" placeholder="자유롭게 입력해주세요"
+                     required
+                     aria-required="true" aria-invalid="false">
+            </div>
+            <div ng-messages="botForm.name.$error" role="alert" class="col-sm-offset-3 col-sm-9" ng-show = "botForm.name.$error && submitted">
+              <p class="help-block error-text text-danger" ng-message="required">이름을 입력해야죠</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-3 control-label">설명 <span class="required" aria-required="true">*</span></label>
+            <div class="col-sm-7">
+                                      <textarea name="description" ng-model="vm.bot.description" id="description" rows="5" class="form-control"
+                                                placeholder="내용을 입력해주세요" aria-invalid="true" required maxlength="255"></textarea>
+            </div>
+            <div ng-messages="botForm.description.$error" role="alert" class="col-sm-offset-3 col-sm-9" ng-show = "botForm.description.$error && submitted">
+              <p class="help-block error-text text-danger" ng-message="required">설명해줘요</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-3 control-label">이미지</label>
+            <div class="col-sm-9" style="vertical-align: top;">
+              <img ng-src="{{imageURL ? imageURL : vm.bot.imageFile}}" class="img-thumbnail user-profile-picture" style="border: 0;width:150px; height: 150px;text-align:center;line-height: 150px;" alt="이미지를 업로드해요" >
+              <p></p>
+              <div class="text-left" ng-hide="imageUploader.queue.length" style="display: inline-block;left: 180px;top: 10px;position: absolute;">
+                <span class="btn btn-default btn-file">
+                    <input type="file" nv-file-select uploader="imageUploader" style="width:200px;">
+                </span>
+                <span ng-show="success.image" class="text-center text-success">
+                  <strong>이미지가 업로드 되었네요</strong>
+                </span>
+                <span ng-show="error.image" class="text-center text-danger">
+                  <strong ng-bind="error.image"></strong>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label">대화 파일</label>
+            <div class="col-sm-9" style="vertical-align: top;">
+              <div class="text-left" ng-hide="uploader.queue.length" style="display: inline;">
+                <span class="btn btn-default btn-file">
+                    <input type="file" nv-file-select uploader="uploader" style="width:200px;" required>
+                </span>
+                <span ng-show="success.file" class="text-center text-success">
+                  <strong>대화 파일이 업로드 되었네요</strong>
+                </span>
+                <span ng-show="error.file" class="text-center text-danger">
+                  <strong ng-bind="error.file"></strong>
+                </span>
+              </div>
+              <div class="text-center form-group" ng-show="false">
+                <button class="btn btn-primary" ng-click="uploadDialogFiles();">Upload</button>
+                <button class="btn btn-default" ng-click="cancelUpload();">Cancel</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="row form-group">
+            <label class="col-sm-3 control-label"></label>
+            <div class="col-sm-9">
+              <div class="checkbox-custom checkbox-default" style="float: left;margin-left: 10px;">
+                <!--<input data-toggle="tooltip" title="대화셋이 100개 이상인 경우 공개가 가능합니다" type="checkbox" id="public" ng-model="vm.bot.public">-->
+                <input data-toggle="tooltip" title="대화셋이 100개 이상인 경우 공개가 가능합니다" ng-disabled="!vm.isPublic" type="checkbox" id="public" ng-model="vm.bot.public">
+                <label for="public">공개</label>
+              </div>
+              <div class="checkbox-custom checkbox-default" style="float: left;margin-left: 10px;">
+                <input type="checkbox" id="learn" ng-model="vm.bot.learn">
+                <label for="learn">대화 학습 허용</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-horizontal form-group" ng-show="vm.type == 'edit-detail' && vm.editType == 'file'">
+          <div class="row form-group">
+            <label class="col-sm-3 control-label">대화파일 <span class="required" aria-required="true"></span></label>
+            <div class="col-sm-9">
+              <div class="text-left" ng-hide="uploader.queue.length" style="display: inline;">
+                                            <span class="btn btn-default btn-file">
+                                                <input type="file" nv-file-select uploader="uploader" style="width:200px;" required>
+                                            </span>
+                <span ng-show="success.file" class="text-center text-success">
+                                              <strong>대화 파일이 업로드 되었네요</strong>
+                                            </span>
+                <span ng-show="error.file" class="text-center text-danger">
+                                              <strong ng-bind="error.file"></strong>
+                                            </span>
+              </div>
+              <div class="text-center form-group" ng-show="false">
+                <button class="btn btn-primary" ng-click="uploadDialogFiles();">Upload</button>
+                <button class="btn btn-default" ng-click="cancelUpload();">Cancel</button>
+              </div>
+            </div>
+          </div>
+          <div ng-show="vm.bot && vm.bot._id && vm.bot.filename" class="row form-group">
+            <label class="col-sm-3 control-label">사용중인 대화파일</label>
+            <div class="col-sm-9">
+              <div class="text-center form-group">
+                <label class="col-sm-3 control-label">{{vm.bot.filename}}</label>
+                <a class="btn btn-primary" target="_self"
+                   ng-href="{{'/files/' + vm.bot.filename}}"
+                   download="{{vm.bot.filename}}">Download</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-show="vm.type == 'edit-detail' && vm.editType == 'template'">
+          <div class="form-group" id='editor_holder'>
+          </div>
+        </div>
+
       </div>
 
+      <footer class="panel-footer">
+        <div class="row">
+          <div class="col-sm-12 text-center" ng-hide="vm.bot && vm.bot._id" >
+            <div ng-show="vm.type == 'edit-kind'">
+              <button type="button" class="btn btn-default pull-left" onclick="javascript:history.back();" >취소</button>
+              <button type="button" class="btn btn-primary pull-right" ng-click="vm.checkAndChangeType(botForm.$valid,'edit-kind')">다음</button>
+            </div>
+            <div ng-show="vm.type == 'edit'">
+              <button type="button" class="btn btn-default pull-left " onclick="javascript:history.back();" >취소</button>
+              <button type="button" class="btn btn-primary pull-right" ng-show="vm.editType != 'start'" ng-click="vm.changeType('edit-detail')">다음</button>
+              <button type="button" class="btn btn-default pull-right" data-ng-if="vm.selectedBot == 'noDialog'" ng-click="vm.create(botForm.$valid)">만들기</button>
+              <button type="button" class="btn btn-default pull-right" ng-click="vm.changeType('edit-kind')">이전</button>
+            </div>
+            <div ng-show="vm.type == 'edit-detail'">
+              <button type="button" class="btn btn-default pull-left " onclick="javascript:history.back();" >취소</button>
+              <button type="button" class="btn btn-primary pull-right" ng-click="vm.create(botForm.$valid)">만들기</button>
+              <button type="button" class="btn btn-default pull-right" ng-click="vm.changeType('edit')">이전</button>
+            </div>
+          </div>
+          <div class="col-sm-9 col-sm-offset-3 text-center" ng-show="vm.bot && vm.bot._id">
+            <a ng-click="vm.remove()">
+              <button type="button" class="btn btn-danger pull-left">
+                <i class="glyphicon glyphicon-trash"></i> 삭제
+              </button>
+            </a>
+            <button type="button" class="btn btn-default pull-right" onclick="javascript:history.back();" >취소</button>
+            <button type="button" class="btn btn-primary pull-right" ng-click="vm.update(botForm.$valid)">
+              <i class="glyphicon glyphicon-edit"></i> 수정
+            </button>
+          </div>
+        </div>
+      </footer>
+    </form>
+
+  </div>
+
+  <div class="bot-content" ng-show="vm.type == 'learn'">
+
+    <div class="panel-body">
+
+      <div class="bot-list-header" ng-show="vm.state=='create'"  style="border-bottom: 1px solid lightgray;">
+        <ul class="nav nav-tabs">
+          <li role="presentation" ng-class="{active: vm.type == 'view'}"><a ng-click="vm.changeType('view');">챗봇정보</a></li>
+          <!--<li role="presentation" ng-class="{active: vm.type == 'edit-detail'}"><a href="#" ng-click="vm.changeType('edit-detail');">상세정보</a></li>-->
+          <li role="presentation" ng-class="{active: vm.type == 'connect'}"><a ng-click="vm.changeType('connect');">연결하기</a></li>
+        </ul>
+      </div>
+
+      <div class="bot-list-header" ng-show="vm.state=='edit'"  style="border-bottom: 1px solid lightgray;">
+        <ul class="nav nav-tabs">
+          <li role="presentation" ng-class="{active: vm.type == 'edit'}"><a href="#" ng-click="vm.changeType('edit');">챗봇정보</a></li>
+          <li role="presentation" ng-class="{active: vm.type == 'edit-detail'}"><a href="#" ng-click="vm.changeType('edit-detail');">상세정보</a></li>
+          <li role="presentation" ng-class="{active: vm.type == 'learn'}"><a href="#" ng-click="vm.changeType('learn');">대화학습</a></li>
+          <li role="presentation" ng-class="{active: vm.type == 'connect'}"><a href="#" ng-click="vm.changeType('connect');">연결하기</a></li>
+        </ul>
+      </div>
+
+      <div class="bot-list-header" ng-show="vm.state=='view'" style="border-bottom: 1px solid lightgray;">
+        <ul class="nav nav-tabs">
+          <li role="presentation" ng-class="{active: vm.type == 'view'}"><a href="#" ng-click="vm.changeType('view');">챗봇정보</a></li>
+          <li role="presentation" ng-class="{active: vm.type == 'learn'}"><a href="#" ng-click="vm.changeType('learn');">대화학습</a></li>
+          <li role="presentation" ng-if="vm.user._id == vm.bot.user._id" ng-class="{active: vm.type == 'connect'}"><a href="#" ng-click="vm.changeType('connect');">연결하기</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <!--<div style="border-bottom: 1px solid lightgray; margin-bottom: 10px;padding-bottom: 5px;font-weight: bold;">대화입력</div>-->
+        <div style="margin-left: 10px; margin-bottom: 10px;">학습시킬 대화를 추가해 주세요.</div>
+        <form name="learnForm" novalidate="novalidate">
+          <div style="margin-bottom: 15px;">
+            <input type="text" id="question" name="question" ng-model="vm.dialog.inputRaw" class="form-control valid" placeholder="질문"
+                   aria-invalid="false" style="width: 44%;float: left;margin-right: 5px" required>
+            <input type="text" id="answer" name="answer" ng-model="vm.dialog.output" class="form-control valid" placeholder="답변"
+                   aria-invalid="false"  style="width: 44%;float: left;margin-right: 5px" required>
+            <button class="btn btn-primary" ng-click="vm.createDialog(learnForm.$valid);">추가</button>
+          </div>
+        </form>
+
+        <div ng-repeat="dialog in vm.dialogs" ng-show="dialog.deleted == undefined" style="margin-bottom: 5px;">
+          <input type="text" ng-model="dialog.inputRaw" class="form-control valid" placeholder="질문"
+                 aria-invalid="false" ng-blur="vm.updateDialog(dialog)"  style="width: 44%;float: left;margin-right: 5px">
+          <input type="text" ng-model="dialog.output" class="form-control valid" placeholder="답변"
+                 aria-invalid="false" ng-blur="vm.updateDialog(dialog)"  style="width: 44%;float: left;margin-right: 5px">
+          <!--<button class="btn btn-default" ng-click="vm.updateDialog(dialog)">수정</button>-->
+          <button class="btn btn-default" ng-click="vm.removeDialog(dialog)">삭제</button>
+        </div>
+
+      </div>
+
+    </div>
+    <form name="botForm1" class="form-horizontal form-bordered"
+          novalidate="novalidate">
+      <footer class="panel-footer" ng-show="vm.state=='edit'" >
+        <div class="row">
+          <!--<div class="col-sm-12 text-center" ng-hide="vm.bot && vm.bot._id">-->
+          <!--<button type="button" class="btn btn-default" ng-click="vm.type='edit'">이전</button>-->
+          <!--<button type="button" class="btn btn-primary" ng-click="vm.create(botForm.$valid)">만들기</button>-->
+          <!--<button type="button" class="btn btn-default" onclick="javascript:history.back();" >취소</button>-->
+          <!--</div>-->
+          <div class="col-sm-12 text-center" ng-show="vm.bot && vm.bot._id">
+            <button type="button" class="btn btn-default pull-right" ui-sref="user-bots-web.list({listType: 'my'})" >돌아가기</button>
+            <!--<a class="btn btn-primary" ng-click="vm.update(botForm1.$valid)">-->
+            <!--<i class="glyphicon glyphicon-edit"></i> 수정-->
+            <!--</a>-->
+            <!--<a class="btn btn-danger" ng-click="vm.remove()">-->
+            <!--<i class="glyphicon glyphicon-trash"></i> 삭제-->
+            <!--</a>-->
+            <!--<button type="button" class="btn btn-default" onclick="javascript:history.back();" >취소</button>-->
+          </div>
+        </div>
+      </footer>
+      <!--<div ng-show="error" class="text-danger">-->
+      <!--<strong ng-bind="error"></strong>-->
+      <!--</div>-->
+    </form>
+
+  </div>
+
+  <div class="bot-content" ng-show="vm.type == 'connect'">
+
+    <form name="botForm2" class="form-horizontal form-bordered"
+          novalidate="novalidate">
+      <div class="panel-body">
+        <div class="bot-list-header" ng-show="vm.state=='create'" style="border-bottom: 1px solid lightgray;">
+          <ul class="nav nav-tabs">
+            <li role="presentation" ng-class="{active: vm.type == 'view'}"><a ng-click="vm.changeType('view');">챗봇정보</a></li>
+            <!--<li role="presentation" ng-class="{active: vm.type == 'edit-detail'}"><a href="#" ng-click="vm.changeType('edit-detail');">상세정보</a></li>-->
+            <li role="presentation" ng-class="{active: vm.type == 'connect'}"><a ng-click="vm.changeType('connect');">연결하기</a></li>
+          </ul>
+        </div>
+        <div class="bot-list-header" ng-show="vm.state=='edit'" style="border-bottom: 1px solid lightgray;">
+          <ul class="nav nav-tabs">
+            <li role="presentation" ng-class="{active: vm.type == 'edit'}"><a href="#" ng-click="vm.changeType('edit');">챗봇정보</a></li>
+            <li role="presentation" ng-class="{active: vm.type == 'edit-detail'}"><a href="#" ng-click="vm.changeType('edit-detail');">상세정보</a></li>
+            <li role="presentation" ng-class="{active: vm.type == 'learn'}"><a href="#" ng-click="vm.changeType('learn');">대화학습</a></li>
+            <li role="presentation" ng-class="{active: vm.type == 'connect'}"><a href="#" ng-click="vm.changeType('connect');">연결하기</a></li>
+          </ul>
+        </div>
+        <div class="bot-list-header" ng-show="vm.state=='view'" style="border-bottom: 1px solid lightgray;">
+          <ul class="nav nav-tabs">
+            <li role="presentation" ng-class="{active: vm.type == 'view'}"><a href="#" ng-click="vm.changeType('view');">챗봇정보</a></li>
+            <li role="presentation" ng-class="{active: vm.type == 'learn'}" ng-if="vm.isLearnable"><a href="#" ng-click="vm.changeType('learn');">대화학습</a></li>
+            <li role="presentation" ng-if="vm.user._id == vm.bot.user._id" ng-class="{active: vm.type == 'connect'}"><a href="#" ng-click="vm.changeType('connect');">연결하기</a></li>
+          </ul>
+        </div>
+
+        <div ng-show="vm.learning">
+          <div class="col-sm-12" style="text-align: center; padding-left: 20px;">
+            <h3>챗봇이 학습 중이에요 <br><br>
+              조금만 기다려요</h3>
+          </div>
+          <!--<div class="col-sm-6" style="text-align: left; padding-left: 20px;">-->
+          <!--<button type="button" class="btn btn-primary"-->
+          <!--style="width: 130px;height: 50px; font-size: 18px;"-->
+          <!--ng-click="vm.botChat(vm.bot)">대화하기</button>-->
+          <!--</div>-->
+        </div>
+
+        <div style="clear: both; margin-bottom: 20px; ">
+          <div style="font-size: 15px;color: #555;border-bottom: 1px solid lightgray; margin-bottom: 10px;padding-bottom: 5px;font-weight: bold;">바로 사용하기</div>
+
+          <div class="row">
+            <div class="col-sm-6 col-md-4">
+              <div class="thumbnail" style="text-align: center;height: 190px;">
+                <img src="/images/sns/kakaotalk-icon1.png" style="height: 70px;margin-top: 5px;">
+                <div class="caption">
+                  <p style="text-align: center;">카카오톡</p>
+                  <p><a href="#" class="btn btn-default" role="button" ng-click="vm.modal('kakao', 'easy')">카카오톡 연결</a></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6 col-md-4" >
+              <div class="thumbnail" style="text-align: center;height: 190px;">
+                <img src="/images/sns/facebook-messenger-android.png" style="height: 80px;">
+                <div class="caption">
+                  <p style="text-align: center;">페이스북 메신져</p>
+                  <p><a href="#" class="btn btn-default" role="button" ng-click="vm.modal('facebook', 'easy')">페이스북 메신져 연결</a></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6 col-md-4">
+              <div class="thumbnail" style="text-align: center;height: 190px;">
+                <img src="/images/sns/line-messenger-vector-logo.png" style="height: 70px;margin-top: 5px;">
+                <div class="caption">
+                  <p style="text-align: center;">라인</p>
+                  <p><a href="#" class="btn btn-default" role="button" ng-click="vm.modal('navertalk', 'easy')">라인 연결</a></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6 col-md-4">
+              <div class="thumbnail" style="text-align: center;height: 190px;">
+                <img src="/images/sns/navertalk.png" style="height: 70px;margin-top: 5px;border-radius: 10%">
+                <div class="caption">
+                  <p style="text-align: center;">네이버톡톡</p>
+                  <p><a href="#" class="btn btn-default" role="button" ng-click="vm.modal('navertalk', 'easy')">네이버톡톡 연결</a></p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div style="clear: both; margin-bottom: 20px;">
+          <div style="font-size: 15px;color: #555;border-bottom: 1px solid lightgray; margin-bottom: 10px;padding-bottom: 5px;font-weight: bold;">챗봇 직접 서비스 하기</div>
+
+          <div class="row">
+            <div class="col-sm-6 col-md-4">
+              <div class="thumbnail" style="text-align: center;height: 190px;">
+                <img src="/images/sns/kakaotalk-icon1.png" style="height: 70px;margin-top: 10px;">
+                <div class="caption">
+                  <p style="text-align: center;">카카오톡</p>
+                  <p><a href="#" class="btn btn-default" role="button" ng-click="vm.modal('kakao')">메신져봇 생성</a></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6 col-md-4" >
+              <div class="thumbnail" style="text-align: center;height: 190px;">
+                <img src="/images/sns/facebook-messenger-android.png" style="height: 80px;">
+                <div class="caption">
+                  <p style="text-align: center;">페이스북 메신져</p>
+                  <p><a href="#" class="btn btn-default" role="button" ng-click="vm.modal('facebook')">메신져봇 생성</a></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6 col-md-4">
+              <div class="thumbnail" style="text-align: center;height: 190px;">
+                <img src="/images/sns/line-messenger-vector-logo.png" style="height: 70px;margin-top: 10px;">
+                <div class="caption">
+                  <p style="text-align: center;">라인</p>
+                  <p><a href="#" class="btn btn-default" role="button" ng-click="vm.modal('line')">메신져봇 생성</a></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6 col-md-4">
+              <div class="thumbnail" style="text-align: center;height: 190px;">
+                <img src="/images/sns/navertalk.png" style="height: 70px;margin-top: 10px; border-radius: 10%">
+                <div class="caption">
+                  <p style="text-align: center;">네이버톡톡</p>
+                  <p><a href="#" class="btn btn-default" role="button" ng-click="vm.modal('navertalk')">메신져봇 생성</a></p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+      <footer class="panel-footer" ng-show="vm.state=='edit' || vm.state=='create'" >
+        <div class="row">
+          <!--<div class="col-sm-12 text-center" ng-hide="vm.bot && vm.bot._id">-->
+          <!--<button type="button" class="btn btn-primary" ng-click="vm.botChat(vm.bot)">대화하기</button>-->
+          <!--<button type="button" class="btn btn-danger" ui-sref="user-bots.list({listType: 'my'})">챗봇목록</button>-->
+          <!--</div>-->
+          <div class="col-sm-12 text-center" >
+            <button type="button" class="btn btn-default pull-right" ui-sref="user-bots-web.list({listType: 'my'})" >돌아가기</button>
+          </div>
+          <!--<div class="col-sm-12 text-center" ng-show="vm.bot && vm.bot._id">-->
+          <!--<button type="button" class="btn btn-default pull-right" onclick="javascript:history.back();" >취소</button>-->
+          <!--<a class="btn btn-primary pull-right" ng-click="vm.update(botForm2.$valid)">-->
+          <!--<i class="glyphicon glyphicon-edit"></i> 수정-->
+          <!--</a>-->
+          <!--<a class="btn btn-danger pull-left" ng-click="vm.remove()">-->
+          <!--<i class="glyphicon glyphicon-trash"></i> 삭제-->
+          <!--</a>-->
+          <!--</div>-->
+        </div>
+      </footer>
+      <!--<div ng-show="error" class="text-danger">-->
+      <!--<strong ng-bind="error"></strong>-->
+      <!--</div>-->
+    </form>
+
+  </div>
+
+</div>
 
 
-      <div class="form-horizontal form-group">
-        <label class="col-sm-2 control-label">대화파일 <span class="required" aria-required="true">*</span></label>
-        <!--<div class="col-sm-9">-->
+<!--<section class="panel">-->
+  <!--<form name="botForm" class="form-bordered" ng-submit="vm.create(botForm.$valid)"-->
+        <!--novalidate="novalidate">-->
+    <!--<div class="panel-body">-->
+      <!--<div class="form-horizontal form-group">-->
+        <!--<label class="col-sm-2 control-label">봇123아이디 <span class="required" aria-required="true">*</span></label>-->
+        <!--<div class="col-sm-10">-->
+          <!--<input type="text" name="id" ng-model="vm.bot.id" class="form-control valid"-->
+                 <!--placeholder="영어(대문자)와 _의 조합, 추후 변경 불가"-->
+                 <!--required=""-->
+                 <!--aria-required="true" aria-invalid="false"-->
+                 <!--ng-disabled="vm.bot._id">-->
+        <!--</div>-->
+        <!--<div ng-messages="botForm.id.$error" role="alert" class="col-sm-offset-3 col-sm-9" ng-show = "botForm.id.$error && submitted">-->
+          <!--<p class="help-block error-text text-danger" ng-message="required">아이디를 입력해야죠</p>-->
+        <!--</div>-->
+        <!--<div ng-show="error.id" role="alert" class="col-sm-offset-3 col-sm-9">-->
+          <!--<span class="error-text text-center text-danger"> <strong ng-bind="error.id"></strong> </span>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="form-horizontal form-group">-->
+        <!--<label class="col-sm-2 control-label">봇이름 <span class="required" aria-required="true">*</span></label>-->
+        <!--<div class="col-sm-10">-->
           <!--<input type="text" name="name" ng-model="vm.bot.name" class="form-control valid" placeholder="자유롭게 입력해주세요"-->
                  <!--required=""-->
                  <!--aria-required="true" aria-invalid="false">-->
         <!--</div>-->
-        <div class="col-sm-10">
-          <ui-select multiple ng-model="vm.bot.dialogsets"
-                     theme="bootstrap"
-                     ng-disabled="vm.dialogSets.length == 0"
-                     reset-search-input="true"
-                     title="대화파일을 선택하세요">
-            <ui-select-match placeholder="대화파일을 선택해주세요">{{$item.filename}}</ui-select-match>
-            <ui-select-choices repeat="dialogset in vm.dialogSets | filter: $select.search track by $index"
-                               refresh-delay="0">
-              <div ng-bind-html="dialogset.filename | highlight: $select.search"></div>
-              <small>
-                  타입: {{dialogset.type}}
-                  공개: {{dialogset.public}}
-                  연결: {{dialogset.use? dialogset.use: 'false'}}</td>
-              </small>
-            </ui-select-choices>
-          </ui-select>
-        </div>
-      </div>
+      <!--</div>-->
+      <!--<div class="form-horizontal form-group">-->
+        <!--<label class="col-sm-2 control-label">설명 <span class="required" aria-required="true">*</span></label>-->
+        <!--<div class="col-sm-10">-->
+          <!--<textarea name="description" ng-model="vm.bot.description" id="description" rows="5" class="form-control"-->
+                    <!--placeholder="내용을 입력해주세요" required="" aria-required="true" aria-invalid="true"></textarea>-->
+        <!--</div>-->
+      <!--</div>-->
 
       <!--<div class="form-horizontal form-group">-->
-        <!--<label class="col-sm-2 control-label">템플릿 <span class="required" aria-required="true">*</span></label>-->
+        <!--<label class="col-sm-2 control-label">이미지</label>-->
         <!--<div class="col-sm-10">-->
-            <!--<button ng-click="vm.unselectTemplate()" style="float: left;margin-left: 10px;" class="mb-xs mt-xs mr-xs btn btn-sm btn-default"-->
-                    <!--ng-class="{'btn-primary': vm.selectedTemplate == undefined}">선택 안함</button>-->
-          <!--<div ng-repeat="template in vm.templates">-->
-            <!--<button ng-click="vm.selectTemplate(template)" style="float: left;margin-left: 10px;" class="mb-xs mt-xs mr-xs btn btn-sm btn-default"-->
-                    <!--ng-class="{'btn-primary': vm.selectedTemplate == template}">{{template.name}}</button>-->
+          <!--<img ng-src="{{imageURL? imageURL : vm.bot.imageFile}}" class="img-thumbnail user-profile-picture" style="border: 0;width:150px; height: 150px;text-align:center;line-height: 150px;" alt="이미지를 업로드해요" >-->
+          <!--&lt;!&ndash;<img ng-src="{{vm.bot.imageFile}}" class="img-thumbnail user-profile-picture" style="border: 0;width:150px; height: 150px;text-align:center;line-height: 150px;" alt="이미지를 업로드해요" data-ng-if="vm.bot._id && vm.bot.imageFile">&ndash;&gt;-->
+          <!--<p></p>-->
+          <!--<div class="text-left" ng-hide="imageUploader.queue.length" style="display: inline-block;left: 180px;top: 10px;position: absolute;">-->
+            <!--<span class="btn btn-default btn-file">-->
+                <!--<input type="file" nv-file-select uploader="imageUploader" style="width:200px;">-->
+            <!--</span>-->
+            <!--<span ng-show="success.image" class="text-center text-success">-->
+              <!--<strong>이미지가 업로드 되었네요</strong>-->
+            <!--</span>-->
+            <!--<span ng-show="error.image" class="text-center text-danger">-->
+              <!--<strong ng-bind="error.image"></strong>-->
+            <!--</span>-->
           <!--</div>-->
         <!--</div>-->
       <!--</div>-->
 
-      <!--<div class=" form-group" ng-show="vm.selectedTemplate != undefined">-->
-        <!--<label class="form-horizontal col-sm-2 control-label">Content <span class="required" aria-required="true">*</span></label>-->
+
+
+      <!--<div class="form-horizontal form-group">-->
+        <!--<label class="col-sm-2 control-label">대화파일 <span class="required" aria-required="true">*</span></label>-->
         <!--&lt;!&ndash;<div class="col-sm-9">&ndash;&gt;-->
-          <!--&lt;!&ndash;<textarea name="content" ng-model="vm.bot.template.templateData" id="_content" rows="5" class="form-control" placeholder="내용을 입력해 주세요" required="" aria-required="true" aria-invalid="true"></textarea><label id="content-error" class="error" for="content">내용은 필수 입니다.</label>&ndash;&gt;-->
+          <!--&lt;!&ndash;<input type="text" name="name" ng-model="vm.bot.name" class="form-control valid" placeholder="자유롭게 입력해주세요"&ndash;&gt;-->
+                 <!--&lt;!&ndash;required=""&ndash;&gt;-->
+                 <!--&lt;!&ndash;aria-required="true" aria-invalid="false">&ndash;&gt;-->
         <!--&lt;!&ndash;</div>&ndash;&gt;-->
-        <!--<div class="col-sm-10" id='editor_holder'>-->
+        <!--<div class="col-sm-10">-->
+          <!--<ui-select multiple ng-model="vm.bot.dialogsets"-->
+                     <!--theme="bootstrap"-->
+                     <!--ng-disabled="vm.dialogSets.length == 0"-->
+                     <!--reset-search-input="true"-->
+                     <!--title="대화파일을 선택하세요">-->
+            <!--<ui-select-match placeholder="대화파일을 선택해주세요">{{$item.filename}}</ui-select-match>-->
+            <!--<ui-select-choices repeat="dialogset in vm.dialogSets | filter: $select.search track by $index"-->
+                               <!--refresh-delay="0">-->
+              <!--<div ng-bind-html="dialogset.filename | highlight: $select.search"></div>-->
+              <!--<small>-->
+                  <!--타입: {{dialogset.type}}-->
+                  <!--공개: {{dialogset.public}}-->
+                  <!--연결: {{dialogset.use? dialogset.use: 'false'}}</td>-->
+              <!--</small>-->
+            <!--</ui-select-choices>-->
+          <!--</ui-select>-->
         <!--</div>-->
       <!--</div>-->
 
-    </div>
-    <footer class="panel-footer">
-      <div class="row">
-        <div class="col-sm-12 text-center" ng-hide="vm.bot && vm.bot._id">
-          <!--<button class="btn btn-primary">Submit</button>-->
-          <button type="submit" class="btn btn-primary">생성</button>
-          <!--<button type="reset" class="btn btn-default">초기화</button>-->
-          <button type="button" class="btn btn-danger" ui-sref="bots.list">취소</button>
-        </div>
-        <div class="col-sm-12 text-center" ng-show="vm.bot && vm.bot._id">
-          <a class="btn btn-primary" ng-click="vm.update(botForm.$valid)">
-            <i class="glyphicon glyphicon-edit"></i> 수정
-          </a>
-          <a class="btn btn-danger" ng-click="vm.remove()">
-            <i class="glyphicon glyphicon-trash"></i> 삭제
-          </a>
-        </div>
-      </div>
-    </footer>
-    <div ng-show="error" class="text-danger">
-      <!--<strong ng-bind="error"></strong>-->
-    </div>
-  </form>
-</section>
+      <!--&lt;!&ndash;<div class="form-horizontal form-group">&ndash;&gt;-->
+        <!--&lt;!&ndash;<label class="col-sm-2 control-label">템플릿 <span class="required" aria-required="true">*</span></label>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="col-sm-10">&ndash;&gt;-->
+            <!--&lt;!&ndash;<button ng-click="vm.unselectTemplate()" style="float: left;margin-left: 10px;" class="mb-xs mt-xs mr-xs btn btn-sm btn-default"&ndash;&gt;-->
+                    <!--&lt;!&ndash;ng-class="{'btn-primary': vm.selectedTemplate == undefined}">선택 안함</button>&ndash;&gt;-->
+          <!--&lt;!&ndash;<div ng-repeat="template in vm.templates">&ndash;&gt;-->
+            <!--&lt;!&ndash;<button ng-click="vm.selectTemplate(template)" style="float: left;margin-left: 10px;" class="mb-xs mt-xs mr-xs btn btn-sm btn-default"&ndash;&gt;-->
+                    <!--&lt;!&ndash;ng-class="{'btn-primary': vm.selectedTemplate == template}">{{template.name}}</button>&ndash;&gt;-->
+          <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--&lt;!&ndash;</div>&ndash;&gt;-->
 
+      <!--&lt;!&ndash;<div class=" form-group" ng-show="vm.selectedTemplate != undefined">&ndash;&gt;-->
+        <!--&lt;!&ndash;<label class="form-horizontal col-sm-2 control-label">Content <span class="required" aria-required="true">*</span></label>&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash;<div class="col-sm-9">&ndash;&gt;&ndash;&gt;-->
+          <!--&lt;!&ndash;&lt;!&ndash;<textarea name="content" ng-model="vm.bot.template.templateData" id="_content" rows="5" class="form-control" placeholder="내용을 입력해 주세요" required="" aria-required="true" aria-invalid="true"></textarea><label id="content-error" class="error" for="content">내용은 필수 입니다.</label>&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash;</div>&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="col-sm-10" id='editor_holder'>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--&lt;!&ndash;</div>&ndash;&gt;-->
 
-<!--<script src="assets/javascripts/forms/examples.validation.js"></script>-->
-
-<!--<section ng-controller="BotsController">-->
-<!--<div class="page-header">-->
-<!--<h1>New Bot</h1>-->
-<!--</div>-->
-<!--<div class="col-md-12">-->
-<!--<form name="botForm" class="form-horizontal" ng-submit="create(botForm.$valid)" novalidate>-->
-<!--<fieldset>-->
-<!--<div class="form-group" show-errors>-->
-<!--<label for="title">Title</label>-->
-<!--<input name="title" type="text" ng-model="title" id="title" class="form-control" placeholder="Title" required>-->
-<!--<div ng-messages="botForm.title.$error" role="alert">-->
-<!--<p class="help-block error-text" ng-message="required">Bot title is required.</p>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class="form-group">-->
-<!--<label for="content">Content</label>-->
-<!--<textarea name="content" ng-model="content" id="content" class="form-control" cols="30" rows="10" placeholder="Content"></textarea>-->
-<!--</div>-->
-<!--<div class="form-group">-->
-<!--<input type="submit" class="btn btn-default">-->
-<!--</div>-->
-<!--<div ng-show="error" class="text-danger">-->
-<!--<strong ng-bind="error"></strong>-->
-<!--</div>-->
-<!--</fieldset>-->
-<!--</form>-->
-<!--</div>-->
+    <!--</div>-->
+    <!--<footer class="panel-footer">-->
+      <!--<div class="row">-->
+        <!--<div class="col-sm-12 text-center" ng-hide="vm.bot && vm.bot._id">-->
+          <!--&lt;!&ndash;<button class="btn btn-primary">Submit</button>&ndash;&gt;-->
+          <!--<button type="submit" class="btn btn-primary">생성</button>-->
+          <!--&lt;!&ndash;<button type="reset" class="btn btn-default">초기화</button>&ndash;&gt;-->
+          <!--<button type="button" class="btn btn-danger" ui-sref="bots.list">취소</button>-->
+        <!--</div>-->
+        <!--<div class="col-sm-12 text-center" ng-show="vm.bot && vm.bot._id">-->
+          <!--<a class="btn btn-primary" ng-click="vm.update(botForm.$valid)">-->
+            <!--<i class="glyphicon glyphicon-edit"></i> 수정-->
+          <!--</a>-->
+          <!--<a class="btn btn-danger" ng-click="vm.remove()">-->
+            <!--<i class="glyphicon glyphicon-trash"></i> 삭제-->
+          <!--</a>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</footer>-->
+    <!--<div ng-show="error" class="text-danger">-->
+      <!--&lt;!&ndash;<strong ng-bind="error"></strong>&ndash;&gt;-->
+    <!--</div>-->
+  <!--</form>-->
 <!--</section>-->
+
+
+<!--&lt;!&ndash;<script src="assets/javascripts/forms/examples.validation.js"></script>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<section ng-controller="BotsController">&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="page-header">&ndash;&gt;-->
+<!--&lt;!&ndash;<h1>New Bot</h1>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="col-md-12">&ndash;&gt;-->
+<!--&lt;!&ndash;<form name="botForm" class="form-horizontal" ng-submit="create(botForm.$valid)" novalidate>&ndash;&gt;-->
+<!--&lt;!&ndash;<fieldset>&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="form-group" show-errors>&ndash;&gt;-->
+<!--&lt;!&ndash;<label for="title">Title</label>&ndash;&gt;-->
+<!--&lt;!&ndash;<input name="title" type="text" ng-model="title" id="title" class="form-control" placeholder="Title" required>&ndash;&gt;-->
+<!--&lt;!&ndash;<div ng-messages="botForm.title.$error" role="alert">&ndash;&gt;-->
+<!--&lt;!&ndash;<p class="help-block error-text" ng-message="required">Bot title is required.</p>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="form-group">&ndash;&gt;-->
+<!--&lt;!&ndash;<label for="content">Content</label>&ndash;&gt;-->
+<!--&lt;!&ndash;<textarea name="content" ng-model="content" id="content" class="form-control" cols="30" rows="10" placeholder="Content"></textarea>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="form-group">&ndash;&gt;-->
+<!--&lt;!&ndash;<input type="submit" class="btn btn-default">&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;<div ng-show="error" class="text-danger">&ndash;&gt;-->
+<!--&lt;!&ndash;<strong ng-bind="error"></strong>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;</fieldset>&ndash;&gt;-->
+<!--&lt;!&ndash;</form>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;</section>&ndash;&gt;-->
