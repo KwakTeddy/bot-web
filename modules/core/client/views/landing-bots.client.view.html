@@ -5,10 +5,10 @@
   <!--</div>-->
 <!--</header>-->
 <section class="panel">
-  <div>
-    <ul style="display: flex;flex-wrap: wrap;list-style: none;padding: 20px">
+  <div style="height: 100vh;overflow: scroll">
+    <ul style="display: flex;flex-wrap: wrap;list-style: none;padding: 20px;margin-bottom: 100px">
       <li style="width: 25%; padding: 8px;">
-        <a href="#" ng-click= "openCreateModal('new')">
+        <a href="#" data-ui-sref="bots.create">
           <div style="width: 100%; height: 255px;border: 3px dashed #b8c1c1">
             <section style="padding: 16px;height: 100%">
               <div class="text-center">
@@ -35,7 +35,7 @@
                   </button>
                   <ul class="dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="dLabel" style="background-color: #ecedf0">
                     <li role="menuitem" class="text-center" style="font-size: 15px;padding-top: 6px" ng-click="openCreateModal(bot)"><a>수정</a></li>
-                    <li role="menuitem" class="text-center" style="font-size: 15px;padding-top: 6px" ng-click="openCopyModal(bot)"><a>복제</a></li>
+                    <!--<li role="menuitem" class="text-center" style="font-size: 15px;padding-top: 6px" ng-click="openCopyModal(bot)"><a>복제</a></li>-->
                     <li role="menuitem" class="text-center" style="font-size: 15px;padding-top: 6px" ng-click="openDeleteModal(bot)"><a>삭제</a></li>
                   </ul>
                 </div>

@@ -1741,7 +1741,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       $scope.dialog.input = initInput(dialog.input);
       if (dialog.task && (dialog.task.name || dialog.task.template))
         $scope.dialog.task = dialog.task;
-      else if (dialog.task)
+      else if (typeof dialog.task == 'string')
         $scope.dialog.task = {name: dialog.task};
 
       $scope.dialog.output = angular.copy(initOutput(dialog.output));
@@ -1794,29 +1794,72 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
     };
 
+    var rightPanelClosed = true;
     // deprecated
     $scope.openEditorTask  = function() {
-      $('#content').css('padding-right', '450px');
+      if(rightPanelClosed) {
+        var main = document.getElementById('main');
+        var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+        main.style.marginRight = (mr + 450) + 'px';
+        main.style.overflow = 'visible';
+      }
+
+      $('#rightPanel').css('width', '450px');
+      // $('#content').css('padding-right', '450px');
       $('#modalTaskForm').show();
+
+      rightPanelClosed = false;
     };
 
     // deprecated
     $scope.closeEditorTask= function() {
+      if(!rightPanelClosed) {
+        var main = document.getElementById('main');
+        var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+        main.style.marginRight = (mr + 450) + 'px';
+        main.style.overflow = 'visible';
+      }
+
+      var main = document.getElementById('main');
+      var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+      main.style.marginRight = (mr - 450) + 'px';
+      main.style.overflow = '';
+
+      $('#rightPanel').css('width', '0px');
       $('#modalTaskForm').hide();
-      $('#content').css('padding-right', '0px');
+      // $('#content').css('padding-right', '0px');
+      rightPanelClosed = true;
     };
 
     // deprecated
     $scope.openEditor = function() {
-      $('#content').css('padding-right', '450px');
+      if(rightPanelClosed) {
+        var main = document.getElementById('main');
+        var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+        main.style.marginRight = (mr + 450) + 'px';
+        main.style.overflow = 'visible';
+      }
+
+      $('#rightPanel').css('width', '450px');
+      // $('#content').css('padding-right', '450px');
       $('#modalForm').show();
+      rightPanelClosed = false;
     };
 
     // deprecated
     $scope.closeEditor = function() {
+      if(!rightPanelClosed) {
+        var main = document.getElementById('main');
+        var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+        main.style.marginRight = (mr - 450) + 'px';
+        main.style.overflow = '';
+      }
+
+      $('#rightPanel').css('width', '0px');
       $('#modalForm').hide();
-      $('#content').css('padding-right', '0px');
+      // $('#content').css('padding-right', '0px');
       document.getElementById('mainpage').focus();
+      rightPanelClosed = true;
     };
 
     $scope.InputKeyDown = function (event, func) {
@@ -3783,7 +3826,10 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
       dlg.onclick = function(e) {
         updateSelected(dialog);
-        // angular.element(document.getElementById('control')).scope().findOne(dialog);
+      };
+
+      dlg.ondblclick = function(e) {
+        edit(dialog);
       };
 
       // console.log(dialog.id + ':' + dialog.parent + ',' + dialog.children);
@@ -3801,24 +3847,32 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
           dlgChildren.innerHTML +='<svg width="20" height="100"></svg>';
         }
 
-        // for(var j = 0; j < dialog.children.length; j++) {
-        //   _update(dialog.children[j], dlgChildren);
-        // }
-
-        var inners = [];
         for(var j = 0; j < dialog.children.length; j++) {
-          if(j < dialog.children.length -1 && dialog.children[j+1].children == undefined) {
-            if(inners.length == 0) inners.push(dialog.children[j]);
-            inners.push(dialog.children[j+1]);
-            console.log('add inners: ' + dialog.children[j].id);
-          } else if(inners.length > 1) {
-            console.log('update inners: ' + inners);
-            _updateInners(inners[0], dlgChildren, false, inners);
-          } else {
-            console.log('update: ' + dialog.children[j].id);
-            _update(dialog.children[j], dlgChildren);
-          }
+          _update(dialog.children[j], dlgChildren);
         }
+
+        // var inners = [];
+        // for(var j = 0; j < dialog.children.length; j++) {
+        //   if(j < dialog.children.length -1 && dialog.children[j+1].children == undefined) {
+        //     if(inners.length == 0) inners.push(dialog.children[j]);
+        //     inners.push(dialog.children[j+1]);
+        //     console.log('add inners: ' + dialog.children[j].id);
+        //   } else if(inners.length > 1) {
+        //     // console.log('update inners: ' + inners);
+        //     var str = '';
+        //     for(var k = 0; k < inners.length; k++) {
+        //       str += inners[k].id + ',';
+        //     }
+        //     console.log('update inners1: ' + str);
+        //
+        //     _updateInners(inners[0], dlgChildren, false, inners);
+        //     inners = [];
+        //
+        //   } else {
+        //     console.log('update: ' + dialog.children[j].id);
+        //     _update(dialog.children[j], dlgChildren);
+        //   }
+        // }
 
       } else if(document.getElementById(dialog.id + '_children')) {
         var elem = document.getElementById(dialog.id + '_children');
@@ -3850,48 +3904,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
       for(var ii = 0 ; ii < inners.length; ii++) {
         var _dialog = inners[ii];
-
-        var input = handleInput(_dialog.input);
-        var output = handlePrintOutput(_dialog, _dialog.output);
-
-        var dlg = document.createElement('div');
-        dlgInner.appendChild(dlg);
-
-        dlg.id = _dialog.id;
-        if(_dialog.children) dlg.className = 'dlg with-children';
-        else dlg.className = 'dlg';
-
-        if(vm.oneline) {
-          dlg.classList.add('dlg-oneline');
-          dlg.innerHTML =
-            '<div>' + _dialog.name + ' ('+ _dialog.id + ')' + '</div>';
-        } else {
-          dlg.innerHTML =
-            '<div class="dlg-name">' + _dialog.name + ' ('+ _dialog.id + ')' + '</div>' +
-            '<div class="dlg-input">' + input + '</div>' +
-            '<div class="dlg-output">' + output.replace(/\\n/g, '\n') + '</div>';
-
-          if(_dialog.output.buttons) {
-            for(var i in _dialog.output.buttons) {
-              if(_dialog.output.buttons[i].url) dlg.innerHTML += '<div class="bubble-button"><a href="' + _dialog.output.buttons[i].url + '" target="_blank">' + _dialog.output.buttons[i].text + '</a></div>';
-              else dlg.innerHTML += '<div class="bubble-button"><a ng-click="vm.sendMsg(\'' + _dialog.output.buttons[i].text + '\')">' + _dialog.output.buttons[i].text + '</a></div>';
-            }
-          }
-
-          var actionGroup = document.createElement('div');
-          dlg.appendChild(actionGroup);
-          actionGroup.id = _dialog.id + 'dlg-action';
-          actionGroup.className = 'dlg-action';
-
-          updateDialogAction(_dialog, actionGroup);
-        }
-
-        dlg.onclick = function(e) {
-          updateSelected(_dialog);
-          // angular.element(document.getElementById('control')).scope().findOne(_dialog);
-        };
-
-        // console.log(_dialog.id + ':' + _dialog.parent + ',' + _dialog.children);
+        addInner(_dialog, dlgInner);
       }
 
       if(dialog.children) {
@@ -3907,21 +3920,29 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
           dlgChildren.innerHTML +='<svg width="20" height="100"></svg>';
         }
 
-        // for(var j = 0; j < dialog.children.length; j++) {
-        //   _update(dialog.children[j], dlgChildren);
-        // }
-
-        var inners = [];
         for(var j = 0; j < dialog.children.length; j++) {
-          if(j < dialog.children.length -1 && dialog.children[j+1].children == undefined) {
-            if(inners.length == 0) inners.push(dialog.children[j]);
-            inners.push(dialog.children[j+1]);
-          } else if(inners.length > 1) {
-            _updateInners(inners[0], dlgChildren, false, inners);
-          } else {
-            _update(dialog.children[j], dlgChildren);
-          }
+          _update(dialog.children[j], dlgChildren);
         }
+
+        // var inners = [];
+        // for(var j = 0; j < dialog.children.length; j++) {
+        //   if(j < dialog.children.length -1 && dialog.children[j+1].children == undefined) {
+        //     if(inners.length == 0) inners.push(dialog.children[j]);
+        //     console.log('add inners1: ' + dialog.children[j].id);
+        //     inners.push(dialog.children[j+1]);
+        //   } else if(inners.length > 1) {
+        //     var str = '';
+        //     for(var k = 0; k < inners.length; k++) {
+        //       str += inners[k].id + ',';
+        //     }
+        //     console.log('update inners1: ' + str);
+        //     _updateInners(inners[0], dlgChildren, false, inners);
+        //     inners = [];
+        //   } else {
+        //     console.log('update1: ' + dialog.children[j].id);
+        //     _update(dialog.children[j], dlgChildren);
+        //   }
+        // }
 
       } else if(document.getElementById(dialog.id + '_children')) {
         var elem = document.getElementById(dialog.id + '_children');
@@ -3929,67 +3950,52 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       }
     }
 
+    function addInner(_dialog, parent) {
+      var input = handleInput(_dialog.input);
+      var output = handlePrintOutput(_dialog, _dialog.output);
 
-    var _updateInner = function (dialog, parent) {
-      var input = handleInput(dialog.input);
-      var output = handlePrintOutput(dialog, dialog.output);
+      var dlg = document.createElement('div');
+      parent.appendChild(dlg);
 
-      var dlgGroup, dlg;
-      if(document.getElementById(dialog.id)) {
-        dlg = document.getElementById(dialog.id);
-        // dlgGroup = dlg.parentNode;
-      } else {
-        var dlgGroup = document.createElement('div');
-        // parent.appendChild(dlgGroup);
-        //
-        // dlgGroup.className = 'dlg-group';
-        // if(vm.oneline) {
-        //   dlgGroup.innerHTML ='<svg width="10" height="10"><line x1="0" y1="20" x2="10" y2="20" stroke="black"></line></svg>';
-        // } else {
-        //   dlgGroup.innerHTML ='<svg width="20" height="20"><line x1="0" y1="35" x2="10" y2="35" stroke="black"></line></svg>';
-        // }
-
-        dlg = document.createElement('div');
-        parent.appendChild(dlg);
-      }
-
-      dlg.id = dialog.id;
-      if(dialog.children) dlg.className = 'dlg with-children';
+      dlg.id = _dialog.id;
+      if(_dialog.children) dlg.className = 'dlg with-children';
       else dlg.className = 'dlg';
 
       if(vm.oneline) {
         dlg.classList.add('dlg-oneline');
         dlg.innerHTML =
-          '<div>' + dialog.name + ' ('+ dialog.id + ')' + '</div>';
+          '<div>' + _dialog.name + ' ('+ _dialog.id + ')' + '</div>';
       } else {
         dlg.innerHTML =
-          '<div class="dlg-name">' + dialog.name + ' ('+ dialog.id + ')' + '</div>' +
+          '<div class="dlg-name">' + _dialog.name + ' ('+ _dialog.id + ')' + '</div>' +
           '<div class="dlg-input">' + input + '</div>' +
           '<div class="dlg-output">' + output.replace(/\\n/g, '\n') + '</div>';
 
-        if(dialog.output.buttons) {
-          for(var i in dialog.output.buttons) {
-            if(dialog.output.buttons[i].url) dlg.innerHTML += '<div class="bubble-button"><a href="' + dialog.output.buttons[i].url + '" target="_blank">' + dialog.output.buttons[i].text + '</a></div>';
-            else dlg.innerHTML += '<div class="bubble-button"><a ng-click="vm.sendMsg(\'' + dialog.output.buttons[i].text + '\')">' + dialog.output.buttons[i].text + '</a></div>';
+        if(_dialog.output.buttons) {
+          for(var i in _dialog.output.buttons) {
+            if(_dialog.output.buttons[i].url) dlg.innerHTML += '<div class="bubble-button"><a href="' + _dialog.output.buttons[i].url + '" target="_blank">' + _dialog.output.buttons[i].text + '</a></div>';
+            else dlg.innerHTML += '<div class="bubble-button"><a ng-click="vm.sendMsg(\'' + _dialog.output.buttons[i].text + '\')">' + _dialog.output.buttons[i].text + '</a></div>';
           }
         }
 
         var actionGroup = document.createElement('div');
         dlg.appendChild(actionGroup);
-        actionGroup.id = dialog.id + 'dlg-action';
+        actionGroup.id = _dialog.id + 'dlg-action';
         actionGroup.className = 'dlg-action';
 
-        updateDialogAction(dialog, actionGroup);
+        updateDialogAction(_dialog, actionGroup);
       }
 
       dlg.onclick = function(e) {
-        updateSelected(dialog);
-        // angular.element(document.getElementById('control')).scope().findOne(dialog);
+        updateSelected(_dialog);
+      };
+
+      dlg.ondblclick = function(e) {
+        edit(_dialog);
       };
     }
 
     function addObserver(target) {
-      console.log('addObserver: ' + target.id);
       var observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
           // console.log(mutation.type + ', ' + target);
@@ -4066,7 +4072,6 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     }
 
     function drawDialogLines(target) {
-      console.log('drawDialogLines: ' + target.id);
       var svgNode = target.childNodes[0];
       svgNode.innerHTML = '';
 
@@ -4077,13 +4082,27 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
       var targetOffset = getOffset(target);
       var last = target.childNodes[target.childNodes.length -1].childNodes[1];
+
+      if(target.childNodes[1].childNodes[1].className == 'dlg-inner') {
+        var inner = target.childNodes[1].childNodes[1];
+
+        for(var i = 0; i < inner.childNodes.length; i++) {
+          var child = inner.childNodes[i];
+          var childOffset = getOffset(child);
+          svgNode.innerHTML += '<line x1="' + 0 + '" y1="' + (childOffset.top - targetOffset.top + (vm.oneline? 15 : 25)) +
+            '" x2="' + 10  + '" y2="' + (childOffset.top - targetOffset.top + (vm.oneline? 15 : 25)) + '" stroke="black"/>';
+        }
+
+        last = inner.childNodes[inner.childNodes.length -1];
+      }
+
       var off2 = getOffset(last);
       var x2 = 0;
       var y2;
       if(vm.oneline) y2 = off2.top - targetOffset.top + 15;
       else y2 = off2.top - targetOffset.top + 25;
 
-      svgNode.innerHTML = '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="black"/>';
+      svgNode.innerHTML += '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="black"/>';
       if(vm.oneline)
         svgNode.innerHTML += '<line x1="' + (x1 - 10) + '" y1="' + y1 + '" x2="' + x1+ '" y2="' + y1+'" stroke="black"/>';
       else
@@ -4296,7 +4315,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       var rect = getOffset(el);
       // console.log('centerNode: src ' + source.id + ', offset ' + src.top + ', rect ' + rect.top + ', offsetTop ' + el.offsetTop + ', clientTop ' + el.clientTop + ', scrollTop ' + el.scrollTop);
 
-      var panel = document.getElementById('main');
+      var panel = document.getElementById('contentPanel');
       // var panelR = panel.getBoundingClientRect();
       var panelR = getOffset(panel);
       // console.log('centerNode: panel ' + panel.scrollTop + ', ' + panel.scrollLeft + ', ' + panel.scrollHeight + ',' + panel.scrollWidth);
@@ -4558,10 +4577,10 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       ev.preventDefault();
       // console.log('pointerMove ' + dragStartX + ', ' + ev.pageX + ', ' + main.scrollLeft);
 
-      main.scrollTop = main.scrollTop - (ev.pageY - dragStartY);
+      contentPanel.scrollTop = contentPanel.scrollTop - (ev.pageY - dragStartY);
       dragStartY  = ev.pageY;
 
-      main.scrollLeft = main.scrollLeft - (ev.pageX - dragStartX);
+      contentPanel.scrollLeft = contentPanel.scrollLeft - (ev.pageX - dragStartX);
       dragStartX  = ev.pageX;
 
       // handle.style.transform = "translate3d(" +
@@ -4584,9 +4603,8 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     var dragStartX = 0;
     var dragStartY = 0;
     var dialogGraph = document.getElementById('dialog-graph');
-    var main = document.getElementById('main');
+    var contentPanel = document.getElementById('contentPanel');
     dialogGraph.addEventListener("pointerdown", pointerDown);
-
   }]
 )
   .directive('autoFocus', [ '$timeout', function ($timeout) {

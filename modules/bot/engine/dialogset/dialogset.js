@@ -109,7 +109,7 @@ function convertDialogset1(dialogset, bot_id, callback) {
     
     function(cb) {
       if (bot_id != null) {
-        analyzeKnowledge(dialogset, bot_id, result, function() {
+        analyzeKnowledge(dialogset, bot_id, 'result', function() {
           cb(null);
         });
       } else {

@@ -13,15 +13,6 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 
     // Home state routing
     $stateProvider
-    // .state('developer-home', {
-    //   url: '/developer',
-    //   templateUrl: 'modules/core/client/views/home.client.view.html',
-    //   controller: 'HomeController',
-    //   controllerAs: 'vm',
-    //   data: {
-    //     roles: ['user', 'enterprise', 'admin']
-    //   }
-    // })
     .state('developer-home', {
       url: '/developer',
       templateUrl: 'modules/core/client/views/landing-bots.client.view.html',

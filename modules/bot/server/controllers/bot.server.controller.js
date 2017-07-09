@@ -179,7 +179,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
               //   context: context.botUser.context ? context.botUser.context.path : '', intent: context.botUser.intent,
               //   entities: context.botUser.entities}));
 
-              if(_dialog && context.bot.startDialog.name == _dialog.name) {
+              if(_dialog && context.bot.startDialog && context.bot.startDialog.name == _dialog.name) {
                 context.botUser.currentDialog = null;
               }
 

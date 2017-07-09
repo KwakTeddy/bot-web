@@ -29,6 +29,6 @@ module.exports = function (app) {
   app.route('/navertalk/:bot/webhook').post(navertalk.message);
 
   // wechat
-  app.route('/wechat/:bot/webhook').get(wechat.message);
+  app.route('/wechat/:bot/webhook').get(wechat.messageGet);
   app.route('/wechat/:bot/webhook').post(wechat.message);
 };

@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('core').controller('LandingBotsController', ['$scope', '$state', 'Authentication', 'Menus', '$cookies', '$http', '$rootScope', 'Socket', '$location', '$window',
-  'BotsService', '$timeout', '$uibModal', 'FileUploader',
-  function ($scope, $state, Authentication, Menus, $cookies, $http, $rootScope, Socket, $location, $window, BotsService, $timeout, $uibModal, FileUploader) {
+  'BotsService', '$timeout', '$uibModal', 'FileUploader', '$resource',
+  function ($scope, $state, Authentication, Menus, $cookies, $http, $rootScope, Socket, $location, $window, BotsService, $timeout, $uibModal, FileUploader, $resource) {
   var vm = this;
+  console.log(Authentication)
   $timeout(function () {
     document.getElementById('sidebar-left').style.display = 'none';
     document.getElementById('chat-include').style.display = 'none';
@@ -20,6 +21,32 @@ angular.module('core').controller('LandingBotsController', ['$scope', '$state', 
     console.log(err)
   });
   $scope.newBot =  new BotsService();
+
+  $scope.$watch('newBot.id', function () {
+    if ($scope.newBot.id) {
+      $scope.newBot.id = $scope.newBot.id.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g,'');
+      $scope.newBot.id = $scope.newBot.id.replace(/[0-9]/g,'');
+      $scope.newBot.id = $scope.newBot.id.replace(/ /g,'');
+      $resource('/api/bot-exist', {}).get({bot_id: $scope.newBot.id}, function (res) {
+        if (res) {
+          $scope.error = {};
+          console.log(res);
+          console.log($scope.error);
+          if($scope.error){
+            $scope.error.id = "같은 아이디가 존재합니다";
+          }
+          if(res._id){
+            $scope.error.id = "같은 아이디가 존재합니다";
+          }else {
+            $scope.error = null;
+          }
+          return false;
+        }
+      }, function (err) {
+        $scope.error.id = null;
+      });
+    }
+  });
 
   $scope.openCreateModal = function (bot) {
     $scope.modalMode = 'create';
@@ -39,18 +66,23 @@ angular.module('core').controller('LandingBotsController', ['$scope', '$state', 
       $scope.modalInstance.dismiss();
     };
     $scope.createBotModal = function (isValid) {
-      $scope.createBot(isValid)
-      $scope.modalInstance.dismiss();
+      console.log(isValid)
+      if(isValid){
+        // $scope.createBot(isValid);
+        // $scope.modalInstance.dismiss();
+      }
     };
     $scope.modalInstance.result.then(function (response) {
       console.log(response);
     })
   };
 
+  var test= '[신한카드 YOLO ⓘ]\n카드가 딱이네요!\n\n✔ 6개 선택처 할인율 선택(커피,택시,편의점,베이커리,소셜커머스,영화)\n✔ 카드 디자인 선택\n✔ 분기별 Bonus 모바일 쿠폰\n\n자세한 내용을 보시려면 아래의 링크를 클릭해 주세요.\n\n <a href="www.moneybrain.ai">유의사항</a>'
+
   $scope.openCopyModal = function (bot) {
-    $scope.copyTargetBot['name'] = bot.name + ' 복제봇;';
+    $scope.copyTargetBot['name'] = bot.name + ' 복제봇';
     $scope.copyTargetBot['description'] = bot.description;
-    $scope.copyTargetBot.name = bot.name + ' 복제봇;'
+    $scope.copyTargetBot.name = bot.name + ' 복제봇';
     $scope.modalMode = 'copy';
     $scope.copyModalInstance = $uibModal.open({
       templateUrl: 'modules/core/client/views/modal-bots.client.html',
@@ -177,7 +209,7 @@ angular.module('core').controller('LandingBotsController', ['$scope', '$state', 
 
   $scope.copyBot = function (bot) {
     console.log(bot);
-  }
+  };
 
     /********************* image *********************/
     $scope.imageURL = undefined;

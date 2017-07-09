@@ -313,10 +313,18 @@ exports.oauthCallback = function (strategy, scope) {
     passport.authenticate(strategy, scope, function (err, user, redirectURL) {
         console.log(err);
       if (err) {
-        return res.redirect('/authentication/signin?err=' + encodeURIComponent(errorHandler.getErrorMessage(err)));
+        if (sessionRedirectURL && sessionRedirectURL.indexOf('developer') > -1) {
+          return res.redirect('/developer/authentication/signin?err=' + encodeURIComponent(errorHandler.getErrorMessage(err)));
+        }else {
+          return res.redirect('/authentication/signin?err=' + encodeURIComponent(errorHandler.getErrorMessage(err)));
+        }
       }
       if (!user) {
-        return res.redirect('/authentication/signin');
+        if (sessionRedirectURL && sessionRedirectURL.indexOf('developer') > -1) {
+          return res.redirect('/developer/authentication/signin');
+        }else {
+          return res.redirect('/authentication/signin');
+        }
       }
       req.login(user, function (err) {
         if (err) {

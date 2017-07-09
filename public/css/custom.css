@@ -1,10 +1,10 @@
 /************************** new **************************/
 body {
-    overflow-y: hidden;   // 메인 영역 스크롤
+    overflow-y: auto;
 }
 
 .content-body {
-    margin-right: 330px !important;
+    margin-right: 330px;
     margin-left: 230px !important;
     padding: 20px;
     height: 100%;   /* 메인 영역 스크롤 */
@@ -36,7 +36,7 @@ html.fixed.sidebar-left-collapsed .page-header {
 
 .page-header .right-wrapper {
     height:40px;
-    display: none;
+    display: block;
 }
 
 #header {height: 50px;}
@@ -430,23 +430,12 @@ outline: 0;
 outline: none;
 }
 
-#mybtn {
-    border-radius: 5px;
-    border: 1px solid #5bc0de;
-    padding: 3px;
-}
-
-.withborder {
-    border-radius: 5px;
-    border: 1px solid #5bc0de;
-    padding: 3px;
-}
-
 #modalForm {
     display:none;
     width: 450px;
-    min-height: 86vh;
-    max-height: 86vh;
+    height: 100%;
+    /*min-height: 86vh;*/
+    /*max-height: 86vh;*/
     margin-top: -5px;
     padding: 8px 5px 0 5px;
     z-index: 1;
@@ -458,8 +447,9 @@ outline: none;
 #modalTaskForm {
     display:none;
     width: 450px;
-    min-height: 86vh;
-    max-height: 86vh;
+    height: 100%;
+    /*min-height: 86vh;*/
+    /*max-height: 86vh;*/
     margin-top: -5px;
     padding: 8px 5px 0 5px;
     z-index: 1;
