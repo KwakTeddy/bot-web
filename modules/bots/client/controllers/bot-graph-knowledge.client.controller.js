@@ -29,7 +29,8 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
 
       vm.closeGraph = function() {
         //$rootScope.nograph = true;
-        $state.go("user-bots-web.view", {userBotId: vm.userBot._id, noGraph:'t'}, {location:"replace"});
+        // $state.go("user-bots-web.view", {userBotId: vm.userBot._id, noGraph:'t'}, {location:"replace"});
+        $state.go("home");
       };
 
       vm.noGraph = function() {
