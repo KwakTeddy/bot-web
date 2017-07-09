@@ -1,6 +1,6 @@
 /************************** new **************************/
 body {
-    overflow-y: auto;
+    overflow-y: hidden;
 }
 
 .content-body {

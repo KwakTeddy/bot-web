@@ -184,7 +184,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     };
 
     $scope.$watch('vm.curI.str', function() {
-      if (vm.curI && (vm.curI.str.indexOf('@') != 0) && (vm.curI.str.indexOf('#') != 0) && (vm.curI.str.indexOf('/') != 0) && (vm.curI.str.indexOf('if ') != 0)){
+      if (vm.curI && (vm.curI.str.indexOf('@') != 0) && (vm.curI.str.indexOf('#') != 0) && (vm.curI.str.indexOf('$') != 0) && (vm.curI.str.indexOf('/') != 0) && (vm.curI.str.indexOf('if') != 0)){
         $scope.processInput();
       }
     });
@@ -240,7 +240,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         $scope.intentError = '인텐트 이름을 입력해주세요';
         return false;
       }
-      console.log($scope.intent.content)
+      // console.log($scope.intent.content)
       if (!$scope.intent.content || $scope.intent.content.length == 0){
         $scope.contentListError = '적어도 하나의 내용을 목록에 추가해주세요';
         return false
@@ -253,14 +253,14 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       function successCallback(res) {
         IntentsService.query({botName: $rootScope.botId}).$promise.then(function (result) {
           vm.intents = result.map(function(i) { return i.name; });
-          $scope.backToEdit(false);
+          $scope.backToEditIntent(true);
         }, function (err) {
           console.log(err);
         });
       }
 
       function errorCallback(res) {
-        console.log(res);
+        // console.log(res);
         $scope.intentError = res.data.message;
         if (res.data.message.code == 11000){
           $scope.intentError = '\'' + res.data.message.op.name + '\'' +' 이름의 인텐트가 존재합니다. 다른 이름으로 생성해주세요'
@@ -288,7 +288,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     };
 
     $scope.contentRemoveBeforeSave = function (target) {
-      console.log($scope.intent.content.indexOf(target))
+      // console.log($scope.intent.content.indexOf(target))
       var index = $scope.intent.content.indexOf(target);
       if(index > -1){
         $scope.intent.content.splice(index, 1)
@@ -317,14 +317,14 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
           vm.entities = result.map(function (i) {
             return i.name
           });
-          $scope.backToEdit(false);
+          $scope.backToEditEntity(true);
         }, function (err) {
           console.log(err)
         });
       }
 
       function errorCallback(res) {
-        console.log(res);
+        // console.log(res);
         $scope.entityError = res.data.message;
         if (res.data.message.code == 11000){
           $scope.entityError = '\'' + res.data.message.op.name + '\'' +' 이름의 엔터티가 존재합니다. 다른 이름으로 생성해주세요'
@@ -355,7 +355,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     };
 
     $scope.contentRemoveBeforeSave = function (target) {
-      console.log($scope.entity.content.indexOf(target))
+      // console.log($scope.entity.content.indexOf(target))
       var index = $scope.entity.content.indexOf(target);
       if(index > -1){
         $scope.entity.content.splice(index, 1)
@@ -369,7 +369,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
           target['syn'] = [];
         }
         if(target.syn.length){
-          console.log('fff')
+          // console.log('fff')
           for(var i = 0; i < target.syn.length; i++){
             if (target.syn[i].name == vm.entityContentSyn){
               var border = angular.copy(document.getElementById('synWrapper_' + target.name + '_' + vm.entityContentSyn).style.border);
@@ -726,7 +726,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     //   // }
     // };
 
-    console.log('Tree Controller');
+    // console.log('Tree Controller');
 
 
     // internal data represented by tree
@@ -758,7 +758,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       if(index != -1) {
         var json = $rootScope.logUpdated.substring('[DIALOG_SEL]'.length);
 
-        console.log(json);
+        // console.log(json);
         currentNode = null;
         try {
           var dialog = JSON.parse(json);
@@ -886,8 +886,8 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         toggleFileTree(event);
         return;
       } else if (event.keyCode == 191) { //  /
-        event.preventDefault();
         if (event.shiftKey) {
+          event.preventDefault();
           // shortcut help
           if ($.magnificPopup.instance.isOpen) {
             $.magnificPopup.close();
@@ -895,6 +895,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
             $('.modal-with-help').click();
           }
         } else {
+          event.preventDefault();
           document.getElementById('search').focus();
         }
         return;
@@ -922,6 +923,10 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         edit(selectedNode);
       } else if (event.keyCode == 37) { //left
         if (selectedNode.parent) {
+          if(!rightPanelClosed) {
+            edit(selectedNode.parent);
+            document.getElementById('mainpage').focus();
+          }
           updateSelected(selectedNode.parent);
         }
       } else if (event.keyCode == 38) { //up
@@ -930,6 +935,10 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
             if (event.ctrlKey) { // ctrl+up
               goUp(selectedNode);
             } else {
+              if(!rightPanelClosed) {
+                edit(selectedNode.parent.children[selectedNode.parent.children.indexOf(selectedNode)-1]);
+                document.getElementById('mainpage').focus();
+              }
               updateSelected(selectedNode.parent.children[selectedNode.parent.children.indexOf(selectedNode)-1]);
             }
           } else {
@@ -952,7 +961,13 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
             }
 
             var nearDialog = findUpNear(selectedNode, 1);
-            if(nearDialog) updateSelected(nearDialog);
+            if(nearDialog) {
+              if(!rightPanelClosed) {
+                edit(nearDialog);
+                document.getElementById('mainpage').focus();
+              }
+              updateSelected(nearDialog);
+            }
 
             // var nearUp = {x:0};
             // visit(treeData, function(d) {
@@ -969,6 +984,10 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         }
       } else if (event.keyCode == 39) { //right
         if (selectedNode.children && selectedNode.children.length > 0) {
+          if(!rightPanelClosed) {
+            edit(selectedNode.children[0]);
+            document.getElementById('mainpage').focus();
+          }
           updateSelected(selectedNode.children[0]);
         }
       } else if (event.keyCode == 40) { //down
@@ -977,6 +996,10 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
             if (event.ctrlKey) { // ctrl+down
               goDown(selectedNode);
             } else {
+              if(!rightPanelClosed) {
+                edit(selectedNode.parent.children[selectedNode.parent.children.indexOf(selectedNode) + 1]);
+                document.getElementById('mainpage').focus();
+              }
               updateSelected(selectedNode.parent.children[selectedNode.parent.children.indexOf(selectedNode) + 1]);
             }
           } else {
@@ -1000,7 +1023,13 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
             }
 
             var nearDialog = findDownNear(selectedNode, 1);
-            if(nearDialog) updateSelected(nearDialog);
+            if(nearDialog) {
+              if(!rightPanelClosed) {
+                edit(nearDialog);
+                document.getElementById('mainpage').focus();
+              }
+              updateSelected(nearDialog);
+            }
             
             // var nearDown = {x:99999};
             // visit(treeData, function(d) {
@@ -1022,7 +1051,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     var element = document.getElementById('tree-container');
     var element2 = document.getElementById('editor-container');
     new ResizeSensor(element, function() {
-      console.log('Graph Changed to ' + element.clientWidth);
+      // console.log('Graph Changed to ' + element.clientWidth);
       viewerWidth = document.getElementById('tree-container').clientWidth;
       viewerHeight = document.getElementById('sidebar-left').clientHeight*0.80;
 
@@ -1038,7 +1067,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     new ResizeSensor(element2, function() {
       if (element2.clientWidth == 0)
         return;
-      console.log('Editor Changed to ' + element2.clientWidth);
+      // console.log('Editor Changed to ' + element2.clientWidth);
       viewerWidth = document.getElementById('editor-container').clientWidth;
       viewerHeight = document.getElementById('sidebar-left').clientHeight*0.80;
 
@@ -1069,8 +1098,8 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     };
 
     $scope.openEdit = function(i, inlineInputs) {
-      console.log(i)
-      console.log(inlineInputs)
+      // console.log(i)
+      // console.log(inlineInputs)
       if ($scope.getInputType(i.type) === 'button')
         return;
 
@@ -1080,12 +1109,12 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       }
       if(i.type == 'RegExp'){
         vm.curI = angular.copy(i);
-        vm.curI.str = ':' + vm.curI.str
+        vm.curI.str = '/' + vm.curI.str
         inlineInputs.splice(inlineInputs.indexOf(i), 1);
       }
       if(i.type == 'If'){
         vm.curI = angular.copy(i);
-        vm.curI.str = 'if' + vm.curI.str;
+        vm.curI.str = 'if (' + vm.curI.str;
         inlineInputs.splice(inlineInputs.indexOf(i), 1);
       }
       if(i.type == 'Entity'){
@@ -1502,10 +1531,11 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
     vm.getIcon = function(type) {
       if (!type || type == 'Keyword') return '';
-      if (type == 'Entity') return '@ ';
-      if (type == 'Intent') return '# ';
-      if (type == 'RegExp') return '/ ';
-      if (type == 'If') return 'If ( ';
+      if (type == 'Entity') return '';
+      if (type == 'Intent') return '#';
+      if (type == 'RegExp') return '/';
+      if (type == 'Type') return '$';
+      if (type == 'If') return 'if (';
       return null;
     };
 
@@ -1526,6 +1556,17 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
     $scope.getInputType = function(type) {
       return vm.typeClass[type].input;
+    };
+
+    $scope.getInputType2 = function(str) {
+      if(str) {
+        if(str.startsWith('#')) return 'Intent';
+        else if(str.startsWith('@')) return 'Entity';
+        else if(str.startsWith('/')) return 'RegExp';
+        else if(str.startsWith('$')) return 'Type';
+        else if(str.startsWith('if (')) return 'If';
+        else if(str.length > 0) return 'Keyword';
+      } else return null;
     };
 
     var initInput = function(input) {
@@ -1772,13 +1813,13 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
       IntentsService.query({botName: $rootScope.botId}).$promise.then(function (result) {
         vm.intents = result.map(function(i) { return i.name; });
-        console.log(vm.intents)
+        // console.log(vm.intents)
       }, function (err) {
         console.log(err);
       });
 
       EntityContentsService.query({botName: $cookies.get('default_bot')}).$promise.then(function (result) {
-        console.log(result);
+        // console.log(result);
         vm.entities = result.map(function (i) {
           return i.name
         })
@@ -1797,6 +1838,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     var rightPanelClosed = true;
     // deprecated
     $scope.openEditorTask  = function() {
+
       if(rightPanelClosed) {
         var main = document.getElementById('main');
         var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
@@ -1813,22 +1855,17 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
     // deprecated
     $scope.closeEditorTask= function() {
-      if(!rightPanelClosed) {
-        var main = document.getElementById('main');
-        var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
-        main.style.marginRight = (mr + 450) + 'px';
-        main.style.overflow = 'visible';
-      }
-
-      var main = document.getElementById('main');
-      var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
-      main.style.marginRight = (mr - 450) + 'px';
-      main.style.overflow = '';
+      // if(!rightPanelClosed) {
+      //   var main = document.getElementById('main');
+      //   var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+      //   main.style.marginRight = (mr + 450) + 'px';
+      //   main.style.overflow = 'visible';
+      // }
 
       $('#rightPanel').css('width', '0px');
       $('#modalTaskForm').hide();
       // $('#content').css('padding-right', '0px');
-      rightPanelClosed = true;
+      // rightPanelClosed = true;
     };
 
     // deprecated
@@ -1860,6 +1897,64 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       // $('#content').css('padding-right', '0px');
       document.getElementById('mainpage').focus();
       rightPanelClosed = true;
+    };
+
+    $scope.openEditorIntent  = function() {
+      if(rightPanelClosed) {
+        var main = document.getElementById('main');
+        var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+        main.style.marginRight = (mr + 450) + 'px';
+        main.style.overflow = 'visible';
+      }
+
+      $('#rightPanel').css('width', '450px');
+      // $('#content').css('padding-right', '450px');
+      $('#modalIntentForm').show();
+      rightPanelClosed = false;
+    };
+
+    // deprecated
+    $scope.closeEditorIntent= function() {
+      // if(!rightPanelClosed) {
+      //   var main = document.getElementById('main');
+      //   var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+      //   main.style.marginRight = (mr + 450) + 'px';
+      //   main.style.overflow = 'visible';
+      // }
+
+      $('#rightPanel').css('width', '0px');
+      $('#modalIntentForm').hide();
+      // $('#content').css('padding-right', '0px');
+      // rightPanelClosed = true;
+    };
+
+    $scope.openEditorEntity = function() {
+      if(rightPanelClosed) {
+        var main = document.getElementById('main');
+        var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+        main.style.marginRight = (mr + 450) + 'px';
+        main.style.overflow = 'visible';
+      }
+
+      $('#rightPanel').css('width', '450px');
+      // $('#content').css('padding-right', '450px');
+      $('#modalEntityForm').show();
+      rightPanelClosed = false;
+    };
+
+    // deprecated
+    $scope.closeEditorEntity = function() {
+      // if(!rightPanelClosed) {
+      //   var main = document.getElementById('main');
+      //   var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+      //   main.style.marginRight = (mr + 450) + 'px';
+      //   main.style.overflow = 'visible';
+      // }
+
+      $('#rightPanel').css('width', '0px');
+      $('#modalEntityForm').hide();
+      // $('#content').css('padding-right', '0px');
+      // rightPanelClosed = true;
     };
 
     $scope.InputKeyDown = function (event, func) {
@@ -1959,7 +2054,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
           notificationService.success('저장되었습니다');
 
-          console.log("saved");
+          // console.log("saved");
         }, function(err) {
           console.log(err);
         });
@@ -2214,8 +2309,8 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         common_dialogs.forEach(handleDialog); // for-loop is 10 times faster
         vm.otherDialogs = dialogs;
       }
-      console.log(nodes);
-      console.log(links_internal);
+      // console.log(nodes);
+      // console.log(links_internal);
     };
 
     // tree reload
@@ -3389,7 +3484,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         return;
       }
 
-      console.log(jsonSchema);
+      // console.log(jsonSchema);
 
       var schema = {};
 
@@ -3440,7 +3535,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     };
 
     vm.handleEditor = function(paramSchema) {
-      console.log(paramSchema);
+      // console.log(paramSchema);
 
       // init json editor
       JSONEditor.defaults.options.theme = 'bootstrap3';
@@ -3526,7 +3621,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
       schema.properties = vm.parseSchema(paramSchema);
 
-      console.log("schema="+ JSON.stringify(schema));
+      // console.log("schema="+ JSON.stringify(schema));
 
       if (jsonEditor) {
         jsonEditor.destroy();
@@ -3550,13 +3645,13 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         delete temp.type;
         delete temp.displayName;
 
-        console.log("given input=" + JSON.stringify(temp));
+        // console.log("given input=" + JSON.stringify(temp));
         jsonEditor.setValue(temp);
       }
 
       // editor 내에 list 에 element 추가시 자동으로 $compile 불러주기
       jsonEditor.on('change', function() {
-        console.log('editor.onchange -> $compile editor');
+        // console.log('editor.onchange -> $compile editor');
         var inputList = document.getElementsByName("mine");
         var compileList = [];
         for (var idx=0; idx < inputList.length; ++idx) {
@@ -3606,7 +3701,8 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     $scope.openIntent = function(task, isCommon) {
       $scope.intent = new IntentsService({botName: $rootScope.botId});
       $timeout(function() {
-        $('.modal-with-intent').click();
+        $scope.closeEditor();
+        $scope.openEditorIntent();
       });
     };
 
@@ -3621,7 +3717,8 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
     $scope.openEntity = function(task, isCommon) {
       $scope.entity = new EntitysService({botName: $rootScope.botId});
-      $('.modal-with-entity').click();
+      $scope.closeEditor();
+      $scope.openEditorEntity();
     };
 
     // editor에서 graph editor로 돌아가기
@@ -3650,6 +3747,32 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       });
     };
 
+    $scope.backToEditIntent = function(ok) {
+      vm.edit = 'dialog';
+      if (!ok) {
+      } else {
+        vm.curInlineInput.push({type: 'Intent', str: $scope.intent.name});
+      }
+
+      $timeout(function() {
+        $scope.closeEditorIntent();
+        $scope.openEditor();
+      });
+    };
+
+    $scope.backToEditEntity = function(ok) {
+      vm.edit = 'dialog';
+      if (!ok) {
+      } else {
+        vm.curInlineInput.push({type: 'Entity', str: '@'+$scope.entity.name});
+      }
+
+      $timeout(function() {
+        $scope.closeEditorEntity();
+        $scope.openEditor();
+      });
+    };
+
     IntentsService.query({botName: $rootScope.botId}).$promise.then(function (result) {
       vm.intents = result.map(function(i) { return i.name; });
     }, function (err) {
@@ -3668,7 +3791,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       $timeout(function () {
         var textareaTarget = document.querySelector('#inlineInput_' + index);
         if(focus == 'focus'){
-          textareaTarget.setAttribute("rows", 10);
+          textareaTarget.setAttribute("rows", 2);
           document.getElementById('inlineInput_' + index).focus()
         }else {
           textareaTarget.setAttribute("rows", 1);
@@ -3679,36 +3802,54 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     vm.searchTopic = function(topicTerm, target) {
       var topicList = [];
       if(target == 'entity'){
+        topicList.push('새로만들기');
         angular.forEach(vm.entities, function(item) {
           if (item.toUpperCase().indexOf(topicTerm.toUpperCase()) >= 0) {
             topicList.push(item);
           }
         });
         vm.matchedEntities = topicList;
-      }else if(target == 'intent'){
+      }else if(target == 'intent' || vm.curI.str.startsWith('#')){
+        topicList.push('새로만들기');
         angular.forEach(vm.intents, function(item) {
           if (item.toUpperCase().indexOf(topicTerm.toUpperCase()) >= 0) {
             topicList.push(item);
           }
         });
         vm.matchedIntents = topicList;
+      }else if(target == 'type'){
+        angular.forEach(vm.types, function(item) {
+          if (item.toUpperCase().indexOf(topicTerm.toUpperCase()) >= 0) {
+            topicList.push(item);
+          }
+        });
+        vm.matchedTypes = topicList;
       }
     };
 
+    vm.curInlineInput;
     vm.getTopicTextRaw = function(topic, inlineInput) {
       if(vm.curI.str.indexOf('@') > -1){
-        inlineInput.push({type: 'Entity', str: topic});
+        if(topic == '새로만들기') {
+          vm.curInlineInput = inlineInput;
+          $scope.openEntity();
+        } else inlineInput.push({type: 'Entity', str: topic});
       }else if(vm.curI.str.indexOf('#') > -1){
-        inlineInput.push({type: 'Intent', str: topic});
-      }else if(vm.curI.str.indexOf(':') == 0){
+        if(topic == '새로만들기') {
+          vm.curInlineInput = inlineInput;
+          $scope.openIntent();
+        } else inlineInput.push({type: 'Intent', str: topic});
+      }else if(vm.curI.str.indexOf('/') == 0){
         inlineInput.push({type: 'RegExp', str: topic});
+      }else if(vm.curI.str.indexOf('$') == 0){
+        inlineInput.push({type: 'Type', str: topic});
       }
       vm.curI.str = '';
       return '';
     };
 
     $scope.inlineInputKeyDown = function (event, inlineInput) {
-      if(event.keyCode == 13 && (vm.curI.str.indexOf('@') != 0) && (vm.curI.str.indexOf('#') != 0) && (vm.curI.str.indexOf(':') != 0) && (vm.curI.str.indexOf('if ') != 0)){
+      if(event.keyCode == 13 && (vm.curI.str.indexOf('@') != 0) && (vm.curI.str.indexOf('#') != 0) && (vm.curI.str.indexOf('/') != 0) && (vm.curI.str.indexOf('$') != 0) && (vm.curI.str.indexOf('if') != 0)){
         event.preventDefault();
         event.stopPropagation();
         $http.get('/api/nluprocess/'+vm.curI.str).then(function (res) {
@@ -3720,7 +3861,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
           console.log(err);
         });
       }
-      if(event.keyCode == 13 && (vm.curI.str.indexOf(':') == 0)){
+      if(event.keyCode == 13 && (vm.curI.str.indexOf('/') == 0)){
         vm.curI.str = vm.curI.str.slice(1);
         inlineInput.push({type: 'RegExp', str: vm.curI.str});
         vm.curI.str = '';
@@ -3728,12 +3869,23 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         event.preventDefault();
         event.stopPropagation();
       }
-      if(event.keyCode == 13 && (vm.curI.str.indexOf('if ') == 0)){
-        vm.curI.str = vm.curI.str.slice(2);
+      if(event.keyCode == 13 && (vm.curI.str.indexOf('if (') == 0)){
+        vm.curI.str = vm.curI.str.slice(4);
         inlineInput.push({type: 'If', str: vm.curI.str});
         vm.curI.str = '';
         $scope.processedInput = '';
         event.preventDefault();
+        event.stopPropagation();
+      }
+
+      if(event.keyCode == 70 && vm.curI && vm.curI.str == 'i') {
+        vm.curI.str = 'if ('
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      if(event.keyCode == 191) {
+        // event.preventDefault();
         event.stopPropagation();
       }
     };
@@ -4198,7 +4350,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     }
 
     function toggleAndCenter(d) {
-      console.log('toggleAndCenter');
+      // console.log('toggleAndCenter');
       d = toggleChildren(d);
       _update(d);
       // centerNode(d);
@@ -4264,7 +4416,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       var targetElement = document.getElementById(targetNode.id).parentNode;
       var parentElement = targetElement.parentNode;
 
-      console.log(srcNode.id + ', ' + targetNode.id + ', '+ srcElement + ',' + targetElement + ',' + parentElement);
+      // console.log(srcNode.id + ', ' + targetNode.id + ', '+ srcElement + ',' + targetElement + ',' + parentElement);
       // parentElement.insertBefore(srcElement, targetElement);
 
       if(src > target) parentElement.insertBefore(srcElement, targetElement);
