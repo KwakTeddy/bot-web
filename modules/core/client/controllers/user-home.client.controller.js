@@ -1,14 +1,15 @@
 'use strict';
 
-angular.module('core').controller('UserHomeController', ['$scope', '$document', 'Authentication', 'Socket',
-  function ($scope, $document, Authentication, Socket) {
+angular.module('core').controller('UserHomeController', ['$scope', '$document', 'Authentication', 'Socket', 'UserBotsGraphService',
+  function ($scope, $document, Authentication, Socket, UserBotsGraphService) {
     var vm = this;
-
+    console.log('hi there')
     // if (!Socket.socket) {
     //   Socket.connect();
     // }
 
-//    $scope.authentication = Authentication;
+
+
 
     // TODO: Get Server, Bot List
     vm.servers = ['localhost:1024'];

@@ -2,7 +2,8 @@
 
 angular.module('user-bots').controller('UserBotChatController', ['$state', '$rootScope', '$scope', '$stateParams', '$document', '$location', '$compile', '$resource', '$cookies', 'Socket',
   'UserBotsService', '$ionicModal', '$ionicScrollDelegate', '$http',
-  function ($state, $rootScope, $scope, $stateParams, $document, $location, $compile, $resource, $cookies, Socket, UserBotsService, $ionicModal, $ionicScrollDelegate, $http) {
+  function ($state, $rootScope, $scope, $stateParams, $document, $location, $compile, $resource, $cookies, Socket,
+            UserBotsService, $ionicModal, $ionicScrollDelegate, $http) {
     var vm = this;
     $scope.vm = vm;
 
@@ -52,6 +53,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     };
 
     Socket.on('send_msg', function (message) {
+      console.log(message)
       // console.log('out:' + message);
 
       // if(message.startsWith(':log') && !$state.is('home')) return;
@@ -109,7 +111,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         //synthesize(voice);
         speak(voice);
       }
-
+      console.log(message);
       $rootScope.$broadcast('onmsg', {message: message});
       $rootScope.$broadcast('sendmsg', {message: sendedMsg});
 

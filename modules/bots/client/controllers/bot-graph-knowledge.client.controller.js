@@ -64,15 +64,15 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
       };
 
       console.log(vm.userBot.id);
-      $resource('/api/factLinks/findByBotId/:factUserID/:bot_id', {}).query({factUserID: vm.userId, bot_id: vm.userBot.id}, function(res) {
-        if (res.length < 50) return;
-        for(var i = 0; i < res.length; i++) {
-          addLink(res[i]);
-        }
-        console.log(nodes);
-        console.log(links);
-        update();
-      });
+      // $resource('/api/factLinks/findByBotId/:factUserID/:bot_id', {}).query({factUserID: vm.userId, bot_id: vm.userBot.id}, function(res) {
+      //   if (res.length < 50) return;
+      //   for(var i = 0; i < res.length; i++) {
+      //     addLink(res[i]);
+      //   }
+      //   console.log(nodes);
+      //   console.log(links);
+      //   update();
+      // });
 
       $scope.$on('updateLog', function(event, arg0) {
         var index = $rootScope.logUpdated.indexOf('[FACT_ADD]');
@@ -140,7 +140,9 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
       };
 
       var main = document.getElementById('chat-main');
+      console.log(main)
       var addItems = function(items) {
+        console.log(items)
         var innerHTML =
           '<div class="chat-items owl-carousel owl-theme" style="clear: both">';
 
@@ -231,6 +233,8 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
       };
 
       $scope.$on('onmsg', function(event, arg0) {
+        console.log(event)
+        console.log(arg0)
         if (!vm.isAnswer) {
           resetOwl();
         }

@@ -148,8 +148,6 @@
   </div>
 </section>
 
-
-
 <!-- Start Our Features section	 -->
 
 <section class="features" id="features" >
@@ -216,7 +214,7 @@
 </section>
 
 
-<!-- Start Screenshots Section -->
+<!-- 업종별 템플릿 -->
 
 <section class="screenshots bg-mask triangle" id="template">
   <div class="container">
@@ -235,12 +233,43 @@
           <!-- Start Block item -->
           <div class="col-md-3" data-ui-sref="user-bots-web.graph({userBotId: '58ed8a144d15d376033439d9'})">
             <div class="item-screenshots">
+
               <div class="preview-container">
                 <div class="button-preview icon-circle">
                   <!--<a class="preview" href="playchat_img/tem_bg_01.png" title="Screenshot"><i class="pe-7s-search"></i></a>-->
                 </div>
               </div>
-              <img src="playchat_img/tem_bg_01.png" alt="screnshot">
+
+              <div id="container-chat" class="chat-container" ng-controller="UserBotChatController"
+                   ng-keyup="vm.onKeyPress($event.keyCode)">
+
+                <div id="chat-header" class="chat-header">
+                </div>
+                <div class="chat-body" >
+                  <div id="chat_main" class="chat_main">
+                  </div>
+                </div>
+
+                <div class="chat-footer" style="height: 34px;padding: 0 15px;">
+                  <form name="chatForm" class="form-horizontal form-bordered" novalidate="novalidate"
+                        ng-submit="vm.sendMsg();">
+                    <div class="row">
+                      <div class="input-group">
+                        <input type="text" class="form-control" name="inputbox" id="inputbox"
+                               placeholder="대화를 입력해주세요." ng-model="vm.msg"/>
+                        <span class="input-group-btn">
+                      <!--<button class="btn" type="submit">SEND</button>-->
+                      <button id="voiceButton" class="btn" type="button" ng-click="vm.toggleVoice()">Voice</button>
+                    </span>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <br/>
+              </div>
+
+
+              <!--<img src="playchat_img/tem_bg_01.png" alt="screnshot">-->
               <p> </p>
             </div>
           </div>
