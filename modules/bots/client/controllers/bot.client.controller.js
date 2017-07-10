@@ -424,6 +424,7 @@ angular.module('bots').controller('BotController',
       if(!vm.bot.imageFile) vm.bot.imageFile = "/files/default.png";
 
       console.log(vm.bot)
+      vm.bot['isMakeFile'] = true;
 
       vm.bot.$save(function (response) {
         vm.learning = false;
