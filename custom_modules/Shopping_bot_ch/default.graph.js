@@ -340,7 +340,7 @@ var dialogs = [
 										"filename": "default",
 										"input": [
 											{
-												"regexp": /(.*)/
+												"regexp": {}
 											}
 										],
 										"output": "选项 +1+ 修改完成."
@@ -393,7 +393,7 @@ var dialogs = [
 										"filename": "default",
 										"input": [
 											{
-												"regexp": /(.*)/
+												"regexp": {}
 											}
 										],
 										"output": "新配送地 \n\n+1+\n\n确认?",
@@ -429,7 +429,6 @@ var commonDialogs = [
 		"name": "시작",
 		"input": [],
 		"output": {
-			"output": "您好，我是购物机器人.\n欢迎使用配送查询，订单取消和商品检索功能.",
 			"buttons": [
 				{
 					"text": "配送查询"
@@ -444,21 +443,35 @@ var commonDialogs = [
 					"text": "订单修改"
 				}
 			],
-			"text": "您好，我是购物机器人.\n欢迎使用配送查询，订单取消和商品检索功能."
+			"text": "您好，我是购物机器人.\n欢迎使用配送查询，订单取消和商品检索功能.",
+			"kind": "Content"
 		}
 	},
 	{
 		"id": "defaultcommon1",
 		"filename": "defaultcommon",
-		"name": "답변없음",
+		"name": "처음",
 		"input": [
 			{
 				"text": "第一"
 			}
 		],
 		"output": {
-			"call": "시작",
-			"kind": "Action"
+			"kind": "List"
+		}
+	},
+	{
+		"name": "이전",
+		"id": "commondefault23",
+		"filename": "defaultcommon",
+		"input": [
+			{
+				"text": "以前"
+			}
+		],
+		"output": {
+			"kind": "Action",
+			"up": "1"
 		}
 	}
 ];
