@@ -36,7 +36,9 @@ var dialogs = [
 					}
 				],
 				"output": "配送状态.\n(手机数: +mobile+)\n\n#order#+index+. [+order_simplestatus+] +order_product+\n#\n请输入想要查看详细内容的编号. +title+",
-				"task": "orderlist",
+				"task": {
+					"name": "orderlist"
+				},
 				"children": [
 					{
 						"name": "dialog_default3",
@@ -76,7 +78,9 @@ var dialogs = [
 							"kind": "Text"
 						}
 					}
-				]
+				],
+				"inRaw": "配送查询",
+				"inNLP": "配送查询"
 			},
 			{
 				"name": "dialog_default2",
@@ -288,15 +292,9 @@ var dialogs = [
 			}
 		],
 		"output": {
-			"output": "请选择修改内容",
-			"buttons": [
-				{
-					"text": "商品选项变更"
-				},
-				{
-					"text": "配送地变更"
-				}
-			]
+			"text": "请选择修改内容\n\n商品选项变更\n配送地变更",
+			"buttons": [],
+			"kind": "Content"
 		},
 		"children": [
 			{
@@ -429,21 +427,8 @@ var commonDialogs = [
 		"name": "시작",
 		"input": [],
 		"output": {
-			"buttons": [
-				{
-					"text": "配送查询"
-				},
-				{
-					"text": "订单取消"
-				},
-				{
-					"text": "商品检索"
-				},
-				{
-					"text": "订单修改"
-				}
-			],
-			"text": "您好，我是购物机器人.\n欢迎使用配送查询，订单取消和商品检索功能.",
+			"text": "您好，我是购物机器人.\n欢迎使用配送查询，订单取消和商品检索功能.\n\n配送查询\n订单取消\n商品检索\n订单修改",
+			"buttons": [],
 			"kind": "Content"
 		}
 	},
