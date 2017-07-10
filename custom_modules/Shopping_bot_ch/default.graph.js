@@ -36,9 +36,7 @@ var dialogs = [
 					}
 				],
 				"output": "配送状态.\n(手机数: +mobile+)\n\n#order#+index+. [+order_simplestatus+] +order_product+\n#\n请输入想要查看详细内容的编号. +title+",
-				"task": {
-					"name": "orderlist"
-				},
+				"task": "orderlist",
 				"children": [
 					{
 						"name": "dialog_default3",
@@ -51,7 +49,7 @@ var dialogs = [
 								]
 							}
 						],
-						"output": "[+listType.order_product+]  \n\n地址: +listType.order_adress+  \n\n配送进行状态: +listType.order_status+  \n\n预计到达日: +listType.order_expecteddate+"
+						"output": "[+listType.order_product+]  \n\n주소: +listType.order_adress+  \n\n配送进行状态: +listType.order_status+  \n\n预计到达日: +listType.order_expecteddate+"
 					},
 					{
 						"name": "dialog_default22",
@@ -78,9 +76,7 @@ var dialogs = [
 							"kind": "Text"
 						}
 					}
-				],
-				"inRaw": "配送查询",
-				"inNLP": "配送查询"
+				]
 			},
 			{
 				"name": "dialog_default2",
@@ -135,9 +131,7 @@ var dialogs = [
 					}
 				],
 				"output": "预订商品目录.\n\n#order#+index+. [+order_simplestatus+] +order_product+\n#\n请输入想要取消订单的号码.",
-				"task": {
-					"name": "orderlist"
-				},
+				"task": "orderlist",
 				"children": [
 					{
 						"name": "dialog_default8",
@@ -178,9 +172,7 @@ var dialogs = [
 							}
 						}
 					}
-				],
-				"inRaw": "订单取消",
-				"inNLP": "订单取消"
+				]
 			},
 			{
 				"name": "dialog_default7",
@@ -227,10 +219,7 @@ var dialogs = [
 						]
 					}
 				],
-				"output": {
-					"text": "相关种类商品目录.\n\n#items#+index+. +item_name+\n#\n想要查看具体信息请选择商品.",
-					"kind": "Text"
-				},
+				"output": "相关种类商品目录.\n\n#items#+index+. +item_name+\n#\n想要查看具体信息请选择商品.",
 				"task": "itemlist",
 				"children": [
 					{
@@ -244,10 +233,7 @@ var dialogs = [
 								]
 							}
 						],
-						"output": {
-							"text": "[+listType3.item_name+]\n+listType3.item_summary+\n\n价格: +listType3.item_price+\n颜色: +listType3.item_color+\n尺寸: +listType3.item_size+\n库存: +listType3.item_stock+\n预计入库日期: +listType3.item_restock_date+",
-							"kind": "Text"
-						},
+						"output": "[+listType3.item_name+]\n+listType3.item_summary+\n\n价格: +listType3.item_price+\n颜色: +listType3.item_color+\n尺寸: +listType3.item_size+\n库存: +listType3.item_stock+\n预计入库日期: +listType3.item_restock_date+",
 						"task": "itemdetail",
 						"children": [
 							{
@@ -354,7 +340,7 @@ var dialogs = [
 										"filename": "default",
 										"input": [
 											{
-												"regexp": {}
+												"regexp": /(.*)/
 											}
 										],
 										"output": "选项 +1+ 修改完成."
@@ -407,7 +393,7 @@ var dialogs = [
 										"filename": "default",
 										"input": [
 											{
-												"regexp": {}
+												"regexp": /(.*)/
 											}
 										],
 										"output": "新配送地 \n\n+1+\n\n确认?",
@@ -464,7 +450,7 @@ var commonDialogs = [
 	{
 		"id": "defaultcommon1",
 		"filename": "defaultcommon",
-		"name": "처음",
+		"name": "답변없음",
 		"input": [
 			{
 				"text": "第一"
