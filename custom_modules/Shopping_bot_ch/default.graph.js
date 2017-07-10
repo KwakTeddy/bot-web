@@ -51,7 +51,7 @@ var dialogs = [
 								]
 							}
 						],
-						"output": "[+listType.order_product+]  \n\n주소: +listType.order_adress+  \n\n配送进行状态: +listType.order_status+  \n\n预计到达日: +listType.order_expecteddate+"
+						"output": "[+listType.order_product+]  \n\n地址: +listType.order_adress+  \n\n配送进行状态: +listType.order_status+  \n\n预计到达日: +listType.order_expecteddate+"
 					},
 					{
 						"name": "dialog_default22",
