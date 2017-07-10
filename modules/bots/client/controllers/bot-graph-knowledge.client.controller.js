@@ -233,8 +233,8 @@ angular.module('user-bots').controller('BotGraphKnowledgeController', ['$scope',
       };
 
       $scope.$on('onmsg', function(event, arg0) {
-        console.log(event)
-        console.log(arg0)
+        console.log(event);
+        console.log(arg0);
         if (!vm.isAnswer) {
           resetOwl();
         }

@@ -8,7 +8,7 @@ var botProcess = require('../controllers/_action.server.controller');
 var bot = require('../controllers/bot.server.controller');
 var tough = require('tough-cookie');
 var utils = require(path.resolve('./modules/bot/action/common/utils'));
-
+var util = require('util')
 // var chatscriptConfig = {port: 0, host: '', allowHalfOpen: true};
 var defaultOptions = {};
 
@@ -25,6 +25,8 @@ module.exports = function (io, socket) {
   });
 
   socket.on('send_msg', function(msg) {
+    console.log(util.inspect(msg, {showHidden: false, depth: null}))
+    console.log('@@@@@@@@@@@@@@@@@@')
     bot.botProc(msg.bot, msg.channel || 'socket', msg.user, msg.msg, msg, function(_out, _task) {
 
       if(_task == undefined || (_task.result == undefined && _task.image == undefined && _task.buttons == undefined && _task.items == undefined)) {
