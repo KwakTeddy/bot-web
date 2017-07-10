@@ -15,8 +15,8 @@
           <li><a href="#customers" class="smooth-scroll">Examples</a></li>
           <li><a href="#contact" class="smooth-scroll">Price</a></li>
           <li><a href="#contact" class="smooth-scroll">Contact</a></li>
-          <li><a onclick="window.location='http://localhost:8443/developer'">디벨로퍼</a></li>
-          <li ng-hide="authentication && authentication.user"><a onclick="window.location='http://localhost:8443/developer/authentication/signin'">로그인</a></li>
+          <li><a onclick="window.location =  window.location.href.toString() + 'developer'">디벨로퍼</a></li>
+          <li ng-hide="authentication && authentication.user"><a onclick="window.location= window.location.href + 'developer/authentication/signin'">로그인</a></li>
           <li ng-show="authentication && authentication.user"><a>반가워요</a></li>
 
         </ul>
@@ -231,7 +231,7 @@
       <div class="container-carousel">
         <div class="screenshot">
           <!-- Start Block item -->
-          <div class="col-md-3" data-ui-sref="user-bots-web.graph({userBotId: '58ed8a144d15d376033439d9'})">
+          <div class="col-md-3" data-ui-sref="user-bots-web.graph({userBotId: '5959b1e36ea397a008536ad1'})">
             <div class="item-screenshots">
 
               <div class="preview-container">
