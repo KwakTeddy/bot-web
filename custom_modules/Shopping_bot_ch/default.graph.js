@@ -340,7 +340,7 @@ var dialogs = [
 										"filename": "default",
 										"input": [
 											{
-												"regexp": {}
+												"regexp": /(.*)/
 											}
 										],
 										"output": "选项 +1+ 修改完成."
@@ -393,7 +393,7 @@ var dialogs = [
 										"filename": "default",
 										"input": [
 											{
-												"regexp": {}
+												"regexp": /(.*)/
 											}
 										],
 										"output": "新配送地 \n\n+1+\n\n确认?",
@@ -457,7 +457,7 @@ var commonDialogs = [
 			}
 		],
 		"output": {
-			"kind": "List"
+			"call": "시작"
 		}
 	},
 	{
