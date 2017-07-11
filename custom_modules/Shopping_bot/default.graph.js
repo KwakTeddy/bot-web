@@ -33,7 +33,9 @@ var dialogs = [
 					}
 				],
 				"output": "배송 진행 상황입니다.\n(인증된 휴대폰 번호 : +mobile+)\n\n#order#+index+. [+order_simplestatus+] +order_product+\n#\n상세한 정보를 보고싶은 번호를 입력해주세요. +title+",
-				"task": "orderlist",
+				"task": {
+					"name": "orderlist"
+				},
 				"children": [
 					{
 						"name": "dialog_default3",
@@ -73,7 +75,9 @@ var dialogs = [
 							"kind": "Text"
 						}
 					}
-				]
+				],
+				"inRaw": "배송조회",
+				"inNLP": "배송 조회"
 			},
 			{
 				"name": "dialog_default2",
@@ -149,7 +153,6 @@ var dialogs = [
 							}
 						],
 						"task": "checkorderstatus"
-
 					},
 					{
 						"name": "dialog_default9",
@@ -325,7 +328,7 @@ var dialogs = [
 										"filename": "default",
 										"input": [
 											{
-												"regexp": /(.*)/
+												"regexp": {}
 											}
 										],
 										"output": "옵션이 +1+ 로 변경되었습니다."
@@ -375,7 +378,7 @@ var dialogs = [
 										"filename": "default",
 										"input": [
 											{
-												"regexp": /(.*)/
+												"regexp": {}
 											}
 										],
 										"output": "새로운 배송지 \n\n+1+\n\n맞습니까?",
@@ -410,24 +413,26 @@ var commonDialogs = [
 		"filename": "defaultcommon",
 		"name": "시작",
 		"input": [],
-		"output": {
-			"output": "안녕하세요 쇼핑봇입니다.\n배송조회, 주문취소, 상품검색 기능을 이용하실 수 있습니다.",
-			"buttons": [
-				{
-					"text": "배송조회"
-				},
-				{
-					"text": "주문취소"
-				},
-				{
-					"text": "상품검색"
-				},
-				{
-					"text": "주문변경"
-				}
-			],
-			"text": "안녕하세요 쇼핑봇입니다.\n배송조회, 주문취소, 상품검색 기능을 이용하실 수 있습니다."
-		}
+		"output": [
+			{
+				"text": "안녕하세요 머니브레인 쇼핑봇입니다.\n배송조회, 주문취소, 상품검색 기능을 이용하실 수 있습니다.\n아래에서 원하시는 메뉴를 선택해주세요.",
+				"buttons": [
+					{
+						"text": "배송조회"
+					},
+					{
+						"text": "주문취소"
+					},
+					{
+						"text": "상품검색"
+					},
+					{
+						"text": "주문변경"
+					}
+				],
+				"kind": "Content"
+			}
+		]
 	},
 	{
 		"id": "defaultcommon1",
