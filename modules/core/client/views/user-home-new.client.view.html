@@ -1,10 +1,11 @@
 <!-- Start Header -->
 
-<header  id="top-nav" ng-controller="UserBotHeaderController">
+<header  id="top-nav">
   <div class="container">
     <div class="row">
       <!-- Logo -->
-      <a class="logo smooth-scroll" href="#top"> <img src="playchat_img/Playchat_logo_wide_small.png" style="height:50px; width:auto;"> </a>
+      <a class="logo smooth-scroll" href="#top"> <img src="playchat_img/Playchat_logo_black.png" style="height:50px; width:auto;"> </a>
+      <!--<a class="logo smooth-scroll" href="#top"> <img src="playchat_img/Playchat_logo_wide_small.png" style="height:50px; width:auto;"> </a>-->
       <!--<a class="logo smooth-scroll" href="#top"> PlayChat </a>-->
       <!-- Top navigation -->
       <nav class="top-menu">
@@ -166,7 +167,7 @@
       <div class="col-md-3 col-sm-6 col-xs-12 item-icon">
         <div class="icon-container">
           <div class="icon icon-circle">
-            <img src="playchat_img/btn_feature_01.png">
+            <img src="playchat_img/btn_feature_05.png">
           </div>
         </div>
         <h3>업종별 맞춤형 템플릿</h3>
@@ -177,7 +178,7 @@
       <div class="col-md-3 col-sm-6 col-xs-12 item-icon">
         <div class="icon-container">
           <div class="icon icon-circle">
-            <img src="playchat_img/btn_feature_02.png">
+            <img src="playchat_img/btn_feature_06.png">
           </div>
         </div>
         <h3>1:1 대화 학습</h3>
@@ -188,7 +189,7 @@
       <div class="col-md-3 col-sm-6 col-xs-12 item-icon">
         <div class="icon-container">
           <div class="icon icon-circle">
-            <img src="playchat_img/btn_feature_03.png">
+            <img src="playchat_img/btn_feature_07.png">
           </div>
         </div>
         <h3>시나리오 대화 관리</h3>
@@ -200,7 +201,7 @@
       <div class="col-md-3 col-sm-6 col-xs-12 item-icon">
         <div class="icon-container">
           <div class="icon icon-circle">
-            <img src="playchat_img/btn_feature_04.png">
+            <img src="playchat_img/btn_feature_08.png">
           </div>
         </div>
         <h3>다양한 플랫폼 지원</h3>
@@ -216,7 +217,7 @@
 
 <!-- 업종별 템플릿 -->
 
-<section class="screenshots bg-mask triangle" id="template">
+<section class="screenshots bg-mask triangle" id="template" data-ng-controller="UserBotChatController">
   <div class="container">
     <div class="row">
       <div class="col-md-8 col-md-push-2">
@@ -231,7 +232,7 @@
       <div class="container-carousel">
         <div class="screenshot">
           <!-- Start Block item -->
-          <div class="col-md-3" data-ui-sref="user-bots-web.graph({userBotId: '5959b1e36ea397a008536ad1'})">
+          <div class="col-md-3" ng-click="vm.openChatModal()">
             <div class="item-screenshots">
 
               <div class="preview-container">
@@ -239,37 +240,7 @@
                   <!--<a class="preview" href="playchat_img/tem_bg_01.png" title="Screenshot"><i class="pe-7s-search"></i></a>-->
                 </div>
               </div>
-
-              <div id="container-chat" class="chat-container" ng-controller="UserBotChatController"
-                   ng-keyup="vm.onKeyPress($event.keyCode)">
-
-                <div id="chat-header" class="chat-header">
-                </div>
-                <div class="chat-body" >
-                  <div id="chat_main" class="chat_main">
-                  </div>
-                </div>
-
-                <div class="chat-footer" style="height: 34px;padding: 0 15px;">
-                  <form name="chatForm" class="form-horizontal form-bordered" novalidate="novalidate"
-                        ng-submit="vm.sendMsg();">
-                    <div class="row">
-                      <div class="input-group">
-                        <input type="text" class="form-control" name="inputbox" id="inputbox"
-                               placeholder="대화를 입력해주세요." ng-model="vm.msg"/>
-                        <span class="input-group-btn">
-                      <!--<button class="btn" type="submit">SEND</button>-->
-                      <button id="voiceButton" class="btn" type="button" ng-click="vm.toggleVoice()">Voice</button>
-                    </span>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-                <br/>
-              </div>
-
-
-              <!--<img src="playchat_img/tem_bg_01.png" alt="screnshot">-->
+              <img src="playchat_img/tem_bg_01_2.png" alt="screnshot">
               <p> </p>
             </div>
           </div>
@@ -281,7 +252,7 @@
                   <a class="preview" href="playchat_img/tem_bg_02.png" title="Screenshot"><i class="pe-7s-search"></i></a>
                 </div>
               </div>
-              <img src="playchat_img/tem_bg_02.png" alt="screnshot">
+              <img src="playchat_img/tem_bg_02_2.png" alt="screnshot">
             </div>
           </div>
           <!-- Block item -->
@@ -289,10 +260,10 @@
             <div class="item-screenshots">
               <div class="preview-container">
                 <div class="button-preview icon-circle">
-                  <a class="preview" href="playchat_img/tem_bg_03.png" title="Screenshot"><i class="pe-7s-search"></i></a>
+                  <a class="preview" href="playchat_img/tem_bg_03_3.png" title="Screenshot"><i class="pe-7s-search"></i></a>
                 </div>
               </div>
-              <img src="playchat_img/tem_bg_03.png" alt="screnshot">
+              <img src="playchat_img/tem_bg_03_2.png" alt="screnshot">
             </div>
           </div>
           <!-- Block item -->
@@ -300,10 +271,10 @@
             <div class="item-screenshots">
               <div class="preview-container">
                 <div class="button-preview icon-circle">
-                  <a class="preview" href="playchat_img/tem_bg_04.png" title="Screenshot"><i class="pe-7s-search"></i></a>
+                  <a class="preview" href="playchat_img/tem_bg_04_2.png" title="Screenshot"><i class="pe-7s-search"></i></a>
                 </div>
               </div>
-              <img src="playchat_img/tem_bg_04.png" alt="screnshot">
+              <img src="playchat_img/tem_bg_04_2.png" alt="screnshot">
             </div>
           </div>
 
@@ -322,9 +293,27 @@
   </div>
 </section>
 
+
+<!-- Start Your Benefits Section -->
+
+<section class="benefits">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-push-2">
+        <div class="heading-title">
+          <h2>플레이챗은 무료기반의 챗봇 플랫폼입니다</h2>
+          <p>기업형 챗봇 구축을 원하시면 문의로 남겨주세요~^^</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
 <!-- Start Testimonials Section -->
 
-<section class="testimonials white-color bg-mask triangle" id="customers" style="margin-top: 200px;">
+<section class="testimonials white-color bg-mask triangle" id="customers">
   <div class="container" >
     <div class="row">
       <div class="col-md-8 col-md-push-2">
@@ -381,22 +370,6 @@
       <!-- Dots control carousel -->
       <div class="dots-screenshot" id="dots-control-testimonials"></div>
     </div>
-  </div>
-</section>
-
-<!-- Start Your Benefits Section -->
-
-<section class="benefits">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-8 col-md-push-2">
-        <div class="heading-title">
-          <h2>플레이챗은 무료기반의 챗봇 플랫폼입니다</h2>
-          <p>기업형 챗봇 구축을 원하시면 문의로 남겨주세요~^^</p>
-        </div>
-      </div>
-    </div>
-
   </div>
 </section>
 
@@ -489,6 +462,34 @@
     </div>
   </div>
 </footer>
+
+<div id="container-chat" class="chat-container" ng-keyup="vm.onKeyPress($event.keyCode)" data-ng-hide="true">
+  <div id="chat-header" class="chat-header">
+  </div>
+
+  <div class="chat-body" >
+    <div id="chat_main" class="chat_main">
+    </div>
+  </div>
+
+  <div class="chat-footer" style="height: 34px;padding: 0 15px;">
+    <form name="chatForm" class="form-horizontal form-bordered" novalidate="novalidate"
+          ng-submit="vm.sendMsg();">
+      <div class="row">
+        <div class="input-group">
+          <input type="text" class="form-control" name="inputbox" id="inputbox"
+                 placeholder="대화를 입력해주세요." ng-model="vm.msg"/>
+          <span class="input-group-btn">
+                      <!--<button class="btn" type="submit">SEND</button>-->
+                      <button id="voiceButton" class="btn" type="button" ng-click="vm.toggleVoice()">Voice</button>
+                    </span>
+        </div>
+      </div>
+    </form>
+  </div>
+  <br/>
+</div>
+
 
 <!-- Use scripts -->
 <script src="js/common.js"></script>

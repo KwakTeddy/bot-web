@@ -1,17 +1,18 @@
 'use strict';
 
-angular.module('user-bots').controller('UserBotChatController', ['$state', '$rootScope', '$scope', '$stateParams', '$document', '$location', '$compile', '$resource', '$cookies', 'Socket',
+angular.module('user-bots').controller('UserBotChatController', ['$state', '$rootScope', '$scope', '$stateParams', '$document', '$location', '$compile', '$resource', '$cookies', 'Socket', '$uibModal', 'Authentication',
   'UserBotsService', '$ionicModal', '$ionicScrollDelegate', '$http',
-  function ($state, $rootScope, $scope, $stateParams, $document, $location, $compile, $resource, $cookies, Socket,
+  function ($state, $rootScope, $scope, $stateParams, $document, $location, $compile, $resource, $cookies, Socket, $uibModal, Authentication,
             UserBotsService, $ionicModal, $ionicScrollDelegate, $http) {
-    var vm = this;
-    $scope.vm = vm;
-
     // if (!Socket.socket) {
     //   Socket.connect();
     // }
+    var vm = this;
+    var sendedMsg = '';
+    var main = document.getElementById('chat_main');
 
-//    $scope.authentication = Authentication;
+    $scope.vm = vm;
+    vm.authentication = Authentication;
     vm.$stateParams = $stateParams;
     vm.params = $location.search();
     vm.server = 'localhost:1024';
@@ -24,11 +25,21 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     vm.userId = '';
     vm.msg = '';
     vm.isConnected = false;
-    vm.isVoice = false
+    vm.isVoice = false;
     vm.stt = false;
     vm.tts = false;
-    var sendedMsg = '';
-    var main = document.getElementById('chat_main');
+
+    vm.openChatModal = function () {
+      vm.connectUserBot('Shinhancard');
+      vm.sendMsg('시작');
+      vm.modalInstance = $uibModal.open({
+        templateUrl: 'modules/bots/client/views/bot-graph-knowledge.client.view.html',
+        scope: $scope
+      });
+      $scope.closeGraph = function () {
+        vm.modalInstance.dismiss();
+      };
+    };
 
     vm.connect = function () {
       if (!vm.userId || vm.userId.length <= 0) {
@@ -173,6 +184,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
             text: vm.userBot.name+'-'+ vm.userBot.description
         });
     };
+
     vm.kakaoTalkShare = function () {
       $scope.location = location.href;
       Kakao.Link.sendTalkLink({
@@ -188,11 +200,102 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     };
 
 
+    var textTimer = null;
+    var showText = function (target, message, index, interval) {
+      console.log(message)
+      if (index < message.length) {
+        console.log(index);
+        var char = message[index++];
+        if (char == '\n') char = "<br>";
+        $(target).append(char);
+        textTimer = setTimeout(function () {
+          showText(target, message, index, interval);
+        }, interval);
+      } else {
+        textTimer = null;
+      }
+    };
+
+    $scope.$on('onmsg', function(event, arg0) {
+      console.log(event);
+      console.log(arg0);
+      // if (!vm.isAnswer) {
+        // resetOwl();
+      // }
+
+      // resetButtons();
+
+      if (arg0.message.items) {
+        vm.isAnswer = false;
+        addItems(arg0.message.items);
+        return;
+      }
+
+      if(arg0.message.smartReply) {
+        vm.isAnswer = true;
+        addButtons(arg0.message.smartReply);
+      }
+
+      if (arg0.message.image) {
+        vm.isAnswer = false;
+
+        var msg = arg0.message;
+        var innerHTML = '<div class="content" style="><div class="content-text">' + msg.text + '</div>';
+        innerHTML += '<div><img class="message-image" width="35%" height="35%" src="' + msg.image.url +'"/></div>';
+        if(msg.buttons) {
+          for(var i in msg.buttons) {
+            innerHTML += '<div class="bubble-button" style="border-top:none"><a href="' + msg.buttons[i].url + '" target="_blank">' + msg.buttons[i].text + '</a></div>';
+          }
+        }
+        innerHTML += '</div></div>';
+        main.insertAdjacentHTML("afterbegin",innerHTML);
+
+        return;
+      }
+
+      vm.isAnswer = true;
+      var input='';
+      if (typeof arg0.message === 'string') input = arg0.message;
+      else input = arg0.message.text;
+
+      $('#answer').text('');
+      if (textTimer != null)
+        clearTimeout(textTimer);
+      var interval = 40;
+
+      showText('#answer', input, 0, interval);
+
+      // resetNodes();
+      // $resource('/api/user-bots-analytics/nlp', {}).get({input: input}, function(res) {
+      //   if(res.result) {
+      //     var centeredNodes = res.result.split(' ');
+      //     // 이 노드 값들 가운데로 이동함
+      //     if (centeredNodes != undefined) {
+      //       for (var i=0; i < centeredNodes.length; ++i) {
+      //         if (nodes[centeredNodes[i]] != undefined) {
+      //           nodes[centeredNodes[i]].isMain = true;
+      //           nodes[centeredNodes[i]].x = width / 2;
+      //           nodes[centeredNodes[i]].y = height / 2;
+      //           console.log(JSON.stringify(nodes[centeredNodes[i]]));
+      //           break;
+      //         }
+      //       }
+      //     }
+      //   }
+      // });
+      // update();
+      // if (timer3 == null) {
+      //   timer3 = setTimeout(function() { resetNodes(); update(); timer3 = null; }, 3000);
+      // }
+    });
+
     $scope.$on('sendMsgFromFarAway', function(event, arg0) {
       vm.sendMsg(arg0);
     });
 
     vm.sendMsg = function (msg) {
+      console.log(msg)
+      console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
       if (!vm.isConnected) return false;
 
       var element = document.getElementById("smart_reply");
@@ -212,6 +315,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         if(args.length > 1) vm.connectUserBot(args[1]);
         return false;
       }
+      vm.question = '';
 
       addUserBubble(msg);
       emitMsg(msg);
@@ -311,6 +415,8 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     vm.init = init;
 
     function emitMsg(msg) {
+      console.log('################################################################################')
+      console.log(msg)
       Socket.emit('send_msg', {
         bot: vm.bot,
         user: vm.userId,

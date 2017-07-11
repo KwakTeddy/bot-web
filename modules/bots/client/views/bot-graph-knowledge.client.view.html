@@ -58,9 +58,10 @@
         height:100%;
         box-sizing:border-box;
         padding:0px;
-
+        background: url("playchat_img/bg2.jpg") no-repeat ;
+        background-size: cover;
         background-color: black;
-        opacity:0.7;
+        opacity:1;
         z-index:2001;
     }
     .overlay_text {
@@ -77,14 +78,15 @@
     }
 
     .input {
-        background-color: rgba(0,0,0,0.1);
-        color: white;
-        border-top-style: none;
-        border-right-style: none;
-        border-left-style: none;
-        font-size:15pt;
-        text-align:center;
-        padding:5px 5px 15px 5px;
+        background-color: rgba(0,0,0,0.1)!important;
+        color: white!important;
+        border-top-style: none!important;
+        border-right-style: none!important;
+        border-left-style: none!important;
+        font-size:15pt!important;
+        text-align:center!important;
+        padding:5px 5px 15px 5px!important;
+        width: initial !important;
     }
 
     .my_smart {
@@ -102,7 +104,7 @@
 
 <section id="canvas" class="overlay" > </section>
 <section id="bg" class="overlay_bg" ></section>
-<section id="text" class="overlay_text" >
+<section id="text" class="overlay_text">
     <div style="position:absolute; top:1%; width:100%;">
     <!--<img src="/images/playchat/playchat_logo.png" height="60">-->
     </div>
@@ -125,17 +127,17 @@
     </div>
     <div id="buttons" style="position:absolute; top:65%; left:35%; width:30%; height:10%; text-align:center">
     </div>
-    <form id="f" novalidate="novalidate" ng-submit="vm.sendMsg();">
+    <form id="f" novalidate="novalidate" ng-submit="vm.sendMsg(vm.question);">
     <div style="position:absolute; top:70%; width:100%; text-align:center">
         <input type="text" id="question" autocomplete="off" class="input" size="40" ng-model="vm.question"/>
         <br><br>
         <span onmouseover="this.style.color='red'" onmouseout="this.style.color='white'"
-              style="display:inline-block;font-size:15px; cursor:pointer;" ng-click="vm.sendMsg()">입력</span>
+              style="display:inline-block;font-size:15px; cursor:pointer;" ng-click="vm.sendMsg(vm.question)">입력</span>
     </div>
     </form>
 
     <div style="position:absolute; top:2%; width:95%;">
-        <a class="btn btn-danger btn-xs pull-right" ng-click="vm.closeGraph()" >
+        <a class="btn btn-danger btn-xs pull-right" ng-click="closeGraph()" >
             <i class="fa fa-close"></i>
         </a>
         <!--<a class="btn-xs pull-right" style="color:white" ng-click="vm.noGraph()">-->

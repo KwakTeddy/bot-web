@@ -9,7 +9,6 @@ angular.module('core').controller('UserBotHeaderController', ['$scope', '$state'
     $scope.$state = $state;
     $scope.authentication = Authentication;
 
-    console.log($scope.authentication)
     $scope.currentUrl = $location.absUrl();
 
     // $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {

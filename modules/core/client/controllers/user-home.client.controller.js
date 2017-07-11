@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('core').controller('UserHomeController', ['$scope', '$document', 'Authentication', 'Socket', 'UserBotsGraphService',
-  function ($scope, $document, Authentication, Socket, UserBotsGraphService) {
+angular.module('core').controller('UserHomeController', ['$scope', '$document', 'Authentication', 'Socket', 'UserBotsGraphService', '$uibModal',
+  function ($scope, $document, Authentication, Socket, UserBotsGraphService, $uibModal) {
     var vm = this;
     console.log('hi there')
     // if (!Socket.socket) {
@@ -23,6 +23,8 @@ angular.module('core').controller('UserHomeController', ['$scope', '$document', 
 
     vm.isConnected = false;
 
+
+
     vm.connect = function () {
       if (!vm.userId || vm.userId.length <= 0) {
         alert('유저명을 입력해주세요!');
@@ -39,35 +41,35 @@ angular.module('core').controller('UserHomeController', ['$scope', '$document', 
     vm.init = init;
 
     vm.sendMsg = function (msg) {
-      console.log('sendMsg: ' + msg);
-      if (!vm.isConnected) {
-        return false;
-      }
-      var useInput = false;
-      if(!msg || msg.length <= 0) {
-        msg = vm.msg;
-        useInput = true;
-      }
-      if(!msg || msg.length <= 0) {
-        return false;
-      }
-
-      if(msg == ':build') {
-        build();
-        return false;
-      }
-
-      if (msg == ':init') {
-        init();
-        return false;
-      }
-
-      addUserBubble(msg);
-      emitMsg(msg);
-
-      if(useInput) {
-        vm.msg = '';
-      }
+      // console.log('sendMsg: ' + msg);
+      // if (!vm.isConnected) {
+      //   return false;
+      // }
+      // var useInput = false;
+      // if(!msg || msg.length <= 0) {
+      //   msg = vm.msg;
+      //   useInput = true;
+      // }
+      // if(!msg || msg.length <= 0) {
+      //   return false;
+      // }
+      //
+      // if(msg == ':build') {
+      //   build();
+      //   return false;
+      // }
+      //
+      // if (msg == ':init') {
+      //   init();
+      //   return false;
+      // }
+      //
+      // addUserBubble(msg);
+      // emitMsg(msg);
+      //
+      // if(useInput) {
+      //   vm.msg = '';
+      // }
     };
 
     vm.buildBot = function () {
