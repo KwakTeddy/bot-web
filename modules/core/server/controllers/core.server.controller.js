@@ -22,7 +22,6 @@ exports.renderIndex = function (req, res) {
   if(path.length > 1 && path[1] == 'admin') {
     admin = true;
   }
-  console.log('maybe?')
 
   if(path[1] == 'mobile') {  // 모바일 화면
     req.session._platform = "mobile";
