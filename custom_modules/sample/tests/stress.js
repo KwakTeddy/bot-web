@@ -2,7 +2,7 @@ var async = require('async');
 var request = require('request');
 
 
-var host = 'ec2-52-79-67-123.ap-northeast-2.compute.amazonaws.com';
+var host = 'ec2-13-124-56-23.ap-northeast-2.compute.amazonaws.com';
 var bot = 'Shinhancard';
 var user = 'QRtjQoQse8CX';
 
@@ -12,65 +12,121 @@ var texts = [
   "신한 FAN 가입"
 ];
 
-var numOfThread = 10, countOfThread = 0, numOfRepeat = 10, total = 0, totalTime = 0;
+var numOfThread = (process.argv[2] || 10), countOfThread = 0, numOfRepeat = (process.argv[3] ||  10), requestInterval = (process.argv[4] || 100), total = 0, totalTime = 0, errorCount = 0;
+var _request = function(json, _ecb, _cb) {
+  var start1 = new Date();
+  // console.log('request: ' + total + '/' + numOfThread*texts.length*numOfRepeat + ' ' + json.content);
 
-function stress(cb) {
+  request.post({
+    url: 'http://' + host + ':3000/kakao/' + bot + '/message',
+    headers: {
+      'Accept': '*/*',
+      'Cache-Control': 'no-cache',
+      'Content-Type': 'application/json; charset=utf-8'
+    },
+    timeout: (Number(process.argv[5]) || 10000),
+    body: JSON.stringify(json)
+  }, function (error, response, body) {
+    var responseTime = (new Date()) - start1;
+    totalTime += responseTime;
+    total++;
+    if (error) {
+      errorCount ++;
+      console.log('response: ' + total + '/' + numOfThread*texts.length*numOfRepeat + ', error= ' + errorCount + ', ' + responseTime + 'ms ' + json.content + ' error=' + error.code);
+      _ecb(true);
+    }
+    else {
+      console.log('response: ' + total + '/' + numOfThread*texts.length*numOfRepeat + ', error= ' + errorCount + ', ' + responseTime + 'ms ' + json.content/* + ' ' + body*/);
+    }
+
+    if(_cb) _cb(null);
+    if(total >= numOfThread*texts.length*numOfRepeat) end();
+  });
+};
+
+function stress(user1, cb) {
   var count = 0;
-  async.during(
-    function (callback) {
-      return callback(null, count < numOfRepeat);
+  async.whilst(
+    function () {
+      return count < numOfRepeat;
     },
 
     function (callback) {
       count++;
-      var _request = function(text, _ecb, _cb) {
-        var start1 = new Date();
 
-        request.post({
-          url: 'http://' + host + ':3000/kakao/' + bot + '/message',
-          headers: {
-            'Accept': '*/*',
-            'Cache-Control': 'no-cache',
-            'Content-Type': 'application/json; charset=utf-8'
-          },
-          body: text
-        }, function (error, response, body) {
-          var responseTime = (new Date()) - start1;
-          totalTime += responseTime;
-          if (error) {console.log(error); _ecb(true);}
-          else {
-            console.log('response ' + count + ' ' + responseTime + '/' + totalTime + ' ' +  body + '\n');
-            _cb(null);
-          }
+      var textId = 0;
+      async.whilst(
+        function () {
+          return textId < texts.length;
+        },
 
-        });
-        total++;
-      };
+        function(callback2) {
+          var json = {"user_key": user1, "type": "text", "content": texts[textId++]};
+          setTimeout(function() {
+            _request(json, function() {
+              callback2();
+            }, callback2);
+          } , requestInterval);
+        },
 
-      async.eachSeries(texts, function(text, cb2) {
-        var text1 = '{"user_key": "' + user +'" ,   "type": "text",   "content": "' + text + '"}';
+        function (err) {
+          callback(null);
+        }
+      )
 
-          setTimeout(function() {_request(text1, callback, cb2); } , 10);
-      }, function(err) {
-        callback(null);
-      });
+      // async.eachSeries(texts, function(text, cb2) {
+      //   var json = {"user_key": user1, "type": "text", "content": text};
+      //   setTimeout(function() {_request(json, callback, cb2); } , requestInterval);
+      // }, function(err) {
+      //   callback(null);
+      // });
     },
     function (err) {
-      console.log('end stress');
       cb(null);
-      // 5 seconds have passed
     }
   );
 }
 
-var start = new Date();
-console.log('[START] ' + start);
-for(var i = 0; i < numOfThread; i++) {
-  stress(function() {
-    if(++countOfThread >= numOfThread) {
-      var end = new Date();
-      console.log('[END] ' + end + ', ' + total + 'req, ' + (end-start) + 'ms, ' + Math.round(total/(end-start)*1000, 2) + 'req/sec, ' +
-        Math.round(totalTime /total, 2) + 'restime');
-    }
-  });
+function end() {
+  var end = new Date();
+  console.log('[END] star=' + start + ', numOfThread=' + numOfThread + ', numOfRepeat=' + numOfRepeat + ', requestInterval=' + requestInterval);
+  console.log('[END] end=' + end + ', ' + total + 'req, error=' + errorCount + ', res=' + (end-start) + 'ms, ' +
+    // Math.round(total/(reqEnd-start)*1000*100)/100 + ' req/sec, ' +
+    'reqPerSec=' + Math.round(total/(end-start)*1000*100)/100 +  ', ' +
+    'responseTime=' + Math.round(totalTime/total*100)/100 + 'ms');
 }
+
+var start = new Date(), reqEnd;
+console.log('[START] ' + start + ', numOfThread=' + numOfThread + ', numOfRepeat=' + numOfRepeat + ', requestInterval=' + requestInterval);
+
+// for(var i = 0; i < numOfThread; i++) {
+//   var user1 = user + i;
+//   stress(user1, function() {
+//     if(++countOfThread >= numOfThread) {
+//       reqEnd = new Date();
+//     }
+//   });
+// }
+
+
+async.whilst(
+  function () {
+    return countOfThread < numOfThread;
+  },
+
+  function (callback) {
+    ++countOfThread;
+    var user1 = user + countOfThread;
+    stress(user1, function() {
+      if(countOfThread >= numOfThread) {
+        reqEnd = new Date();
+      }
+    });
+
+    setTimeout(function() {
+      callback(null);
+    }, Math.max(1000/numOfThread, 1));
+  },
+  function (err) {
+  }
+);
