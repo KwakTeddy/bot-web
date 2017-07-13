@@ -11,13 +11,16 @@ var dialogs = [
 			}
 		],
 		"output": [
-			"배송조회를 진행하겠습니다.\n조회를 위해서는 휴대폰 인증이 필요합니다. \n가입하실때 사용하신 휴대폰 번호를 입력해주세요.",
 			{
 				"if": "context.user.mobile",
 				"output": {
 					"call": "목록휴대폰인증"
 				}
-			}
+			},
+      {
+        "if": "!context.user.mobile",
+        "output": "배송조회를 진행하겠습니다.\n조회를 위해서는 휴대폰 인증이 필요합니다. \n가입하실때 사용하신 휴대폰 번호를 입력해주세요."
+      }
 		],
 		"name": "배송조회",
 		"children": [
@@ -49,8 +52,8 @@ var dialogs = [
 						"output": "[+listType.order_product+]  \n\n주소: +listType.order_adress+  \n\n배송진행상황: +listType.order_status+  \n\n배송예정일: +listType.order_expecteddate+"
 					},
 					{
-						"name": "dialog_default22",
-						"id": "default22",
+						"name": "dialog_default22_1",
+						"id": "default22_1",
 						"filename": "default",
 						"input": [
 							{
@@ -104,13 +107,16 @@ var dialogs = [
 			}
 		],
 		"output": [
-			"주문취소를 진행하겠습니다. \n주문 취소를 위해서는 휴대폰 인증이 필요합니다. \n가입하실때 사용하신 휴대폰 번호를 입력해주세요.",
 			{
 				"if": "context.user.mobile",
 				"output": {
 					"call": "취소휴대폰"
 				}
-			}
+			},
+      {
+        "if": "!context.user.mobile",
+        "output": "주문취소를 진행하겠습니다. \n주문 취소를 위해서는 휴대폰 인증이 필요합니다. \n가입하실때 사용하신 휴대폰 번호를 입력해주세요."
+      }
 		],
 		"children": [
 			{
