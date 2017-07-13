@@ -1,5 +1,4 @@
 var path = require('path');
-var path = require('path');
 var bot = require(path.resolve('config/lib/bot')).getBot('Shopping_bot');
 var messages = require(path.resolve('modules/messages/server/controllers/messages.server.controller'));
 var type = require(path.resolve('./modules/bot/action/common/type'));
@@ -43,6 +42,7 @@ var itemlist = {
     }
 };
 bot.setTask("itemlist", itemlist);
+
 
 
 var categorylist = {
