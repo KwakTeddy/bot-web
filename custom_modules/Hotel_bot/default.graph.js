@@ -540,7 +540,7 @@ var commonDialogs = [
 		],
 		"output": {
 			"kind": "Action",
-			"call": "시"
+			"call": "시작"
 		}
 	},
 	{
