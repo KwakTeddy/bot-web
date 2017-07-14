@@ -79,3 +79,8 @@ config/sslcerts/
 public/js/dialog.json
 public/files
 public/videos
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

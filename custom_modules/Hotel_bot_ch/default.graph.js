@@ -530,7 +530,7 @@ var commonDialogs = [
             }
         ],
         "output": {
-            "text": "您好，欢迎光临Moneybrain酒店.\n提供酒店服务信息，请选择需要的选项. \n\n1. 房间 \n2. 餐饮 \n3, 设施 \n4. 活动 \n5. 咨询",
+            "text": "您好，欢迎光临Moneybrain酒店.\n提供酒店服务信息，请选择需要的选项. \n\n1. 房间 \n2. 餐饮 \n3. 设施 \n4. 活动 \n5. 咨询",
             "kind": "Text"
         }
     },
