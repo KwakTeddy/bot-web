@@ -17,6 +17,7 @@ describe('Bot', function () {
 
     var msgEqual = function (msg, expected, done) {
         bot.botProc(bot_name, channel, user, msg, {}, function (out, task) {
+            console.log('equal!!!!!!!!!!!!!!!!!!!!!!')
             assert.equal(out, expected);
             done();
         });
@@ -55,7 +56,7 @@ describe('Bot', function () {
             msgEqual(':reset user', '안녕하세요 쇼핑봇입니다.\n배송조회, 주문취소, 상품검색 기능을 이용하실 수 있습니다.', done);
         });
         it('2', function (done) {
-            msgMatch('배송조회', '배송조회를 진행하겠습니다. \n조회를 위해서는 휴대폰 인증이 필요합니다. \n가입하실때 사용하신 휴대폰 번호를 입력해주세요.', done);
+            msgEqual('배송조회', '배송조회를 진행하겠습니다. \n조회를 위해서는 휴대폰 인증이 필요합니다. \n가입하실때 사용하신 휴대폰 번호를 입력해주세요.', done);
         });
         it('3', function (done) {
             msgMatch('01092597716', '배송 진행 상황입니다.\n\n1. \\[배송중\\] 9117 구제 데님 원피스 \\(2color\\)\n2. \\[배송준비중\\] 꽃보다 츄리닝\n3. \\[배송준비중\\] 스키니핏 스판 청바지\n\n상세한 정보를 보고싶은 번호를 입력해주세요.', done);
