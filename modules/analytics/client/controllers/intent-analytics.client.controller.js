@@ -24,10 +24,10 @@ angular.module('analytics').controller('AnalyticsIntentController', ['$scope', '
         try {
           var res = JSON.parse(json);
 
-          if (res.context){
-            $scope.context = res.context;
+          if (res.contexts){
+            $scope.contexts = res.contexts;
           }else {
-            $scope.context = undefined;
+            $scope.contexts = undefined;
           }
 
           if (res.intent){
@@ -50,10 +50,10 @@ angular.module('analytics').controller('AnalyticsIntentController', ['$scope', '
     $scope.sendIntent = function() {
       $resource('/api/user-bots-analytics/intent', {}).get({input: $scope.msg, botId: $rootScope.botId}, function (res) {
         // console.log(res);
-        if (res.context){
-          $scope.context = res.context;
+        if (res.contexts){
+          $scope.contexts = res.contexts;
         }else {
-          $scope.context = undefined;
+          $scope.contexts = undefined;
         }
 
         if (res.intent){

@@ -35,7 +35,7 @@ module.exports = function (io, socket) {
         if(_task.result.text == undefined) _task.result.text = _out;
         socket.emit('send_msg', JSON.stringify(_task.result));
       } else {
-        if(_task.text == undefined) _task.text = _out;
+        _task.text = _out;
         _task.topTask = undefined;
         socket.emit('send_msg', JSON.stringify(_task));
       }

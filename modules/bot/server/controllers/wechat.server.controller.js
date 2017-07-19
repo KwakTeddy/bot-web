@@ -1,6 +1,7 @@
 var xml2json = require('xml2js');
 var js2xmlparser = require("js2xmlparser");
 var path = require('path');
+var utils = require(path.resolve('modules/bot/action/common/utils'));
 var chat = require(path.resolve('modules/bot/server/controllers/bot.server.controller'));
 
 exports.messageGet = function(req, res) {
@@ -44,6 +45,7 @@ function receivedMessage(req, res, json) {
   var text = json.xml.Content[0] || '';
 
   chat.write('wechat', from, req.params.bot, text, json, function (serverText, _json) {
+    json = utils.merge(json, _json);
     respondMessage(res, serverText, json)
   });
 }

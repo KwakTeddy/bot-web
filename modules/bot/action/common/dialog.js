@@ -639,8 +639,12 @@ exports.matchDialogs = matchDialogs;
 function executeDialog(dialog, context, print, callback, options) {
   if(dialog.name || dialog.input) {
     logger.debug('executeDialog: ' + toDialogString(dialog) + ' options= ' + (options?options.prefix: ''));
+
+    var contexts;
+    if(context.botUser.contexts) contexts = context.botUser.contexts.map(function(i) { return i.name; });
+
     if(dialog) console.log('[DIALOG_SEL]' + JSON.stringify({id: dialog.id, name: dialog.name, input: dialog.input,
-        context: context.botUser.context ? context.botUser.context.path : '', intent: context.botUser.intent,
+        contexts: contexts, intent: context.botUser.intent,
         entities: context.botUser.entities}));
   }
 
@@ -743,6 +747,9 @@ function executeDialog(dialog, context, print, callback, options) {
       if(context.dialog.children) {
         dialog.children = context.dialog.children;
       }
+
+      if(Array.isArray(dialog.output) && dialog.output.length == 1)
+        dialog.output = dialog.output[0];
 
       cb(null);
     },
@@ -866,28 +873,12 @@ function executeDialog(dialog, context, print, callback, options) {
               if (eval(output.if)) {
                 matchedOutput = output;
                 cb2(true);
-                // if(output.task && dialog.task) output.task = utils.merge(output.task, dialog.task);
-                // // else if(!output.task && dialog.task) output.task = dialog.task;
-                //
-                // output.inRaw = dialog.inRaw;
-                // output.inNLP = dialog.inNLP;
-                // executeDialog(output, context, print, callback, {current: dialog});
-                // cb(true);
-
               } else cb2(null);
             } else if(output.if instanceof Function) {
               output.if(dialog, context, function(matched) {
                 if(matched) {
                   matchedOutput = output;
                   cb2(true);
-
-                  // if(output.task && dialog.task) output.task = utils.merge(output.task, dialog.task);
-                  // // else if(!output.task && dialog.task) output.task = dialog.task;
-                  //
-                  // output.inRaw = dialog.inRaw;
-                  // output.inNLP = dialog.inNLP;
-                  // executeDialog(output, context, print, callback, {current: dialog});
-                  // cb(true);
                 } else cb2(null);
               })
             } else {
@@ -900,9 +891,13 @@ function executeDialog(dialog, context, print, callback, options) {
             } else if(output.output) {
               outputs.push(output.output);
               cb2(null);
-            } else if(output != undefined) {
+            } else if(output.kind == 'Action') {
               matchedOutput = output;
               cb2(true);
+            } else if(output != undefined) {
+              outputs.push(output);
+              // matchedOutput = output;
+              cb2(null);
             } else {
               cb2(null);
             }
@@ -910,6 +905,9 @@ function executeDialog(dialog, context, print, callback, options) {
         }, function(err) {
           if(matchedOutput) {
             var output = matchedOutput;
+            if(output.kind == 'Action') {
+              output.output = utils.cloneWithParent(output);
+            }
 
             var isAction = false, isPreCallback = false, isPostCallback = false;
             if(output.task !== undefined) {
@@ -995,6 +993,10 @@ function executeDialog(dialog, context, print, callback, options) {
             if(context.dialog.page && context.dialog.numOfPage && context.dialog.page < context.dialog.numOfPage)
               context.dialog.page = context.dialog.page + 1;
           }
+        }
+
+        if(dialog.task && dialog.task.text) {
+          _output = dialog.task.text;
         }
 
         var userOut = type.processOutput(dialog.task, context, _output);

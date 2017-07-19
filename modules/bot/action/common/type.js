@@ -1917,13 +1917,13 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
         context.botUser.contexts = [];
         var parentContext = function(_context) {
           var __context;
-          if(context.bot.dialogsetContexts[_dialog.dialogset] && context.bot.dialogsetContexts[_dialog.dialogset][_context]) {
-            __context = context.bot.dialogsetContexts[_dialog.dialogset][_context];
+          if(context.bot.dialogsetContexts[_dialog.dialogset] && context.bot.dialogsetContexts[_dialog.dialogset][_context._id]) {
+            __context = context.bot.dialogsetContexts[_dialog.dialogset][_context._id];
             context.botUser.contexts.unshift(__context);
           }
 
           if(__context && __context.parent) {
-            parentContext(__context.parent._id);
+            parentContext(__context.parent);
           }
         };
 

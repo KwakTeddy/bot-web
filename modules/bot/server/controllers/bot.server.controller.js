@@ -36,8 +36,8 @@ exports.setBotSocket = function(socket) {botSocket = socket};
 
 // console = {};
 console.log = function(out) {
-  // process.stdout.write(out+'\n');
-  // if(botSocket) botSocket.emit('send_msg', ":log \n" + out +"\n");
+  process.stdout.write(out+'\n');
+  if(botSocket) botSocket.emit('send_msg', ":log \n" + out +"\n");
 }
 
 console.error = function(out) {
@@ -81,7 +81,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
     var pre = (context.botUser.curBotId && context.botUser.curBotName && context.botUser.curBotId != botName ?
         context.botUser.curBotName + ': ' : undefined);
 
-    if(_task && _task.text) _out = _task.text;
+    // if(_task && _task.text) _out = _task.text;
 
       if(channel == 'ios' || channel == 'android') {
         outCallback(_out, _task);

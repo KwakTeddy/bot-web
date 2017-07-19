@@ -633,11 +633,14 @@ exports.dialoginfos = function (req, res) {
       result.tasks = Object.keys(global._bots[botName].tasks).map(function(key) {return global._bots[botName].tasks[key].name;});
       result.types = Object.keys(global._bots[botName].types).map(function(key) {return global._bots[botName].types[key]});
       result.type_dic = global._bots[botName].types;
+      result.commonTypes = Object.keys(global._context.types);
+
       console.log("dialoginfos:" + result.botId + "(" + botId + "), " + result.fileName);
       return res.jsonp(result);
     }
   ]);
 };
+
 exports.resetDB = function(req, res) {
   console.log('resetDB');
   var cond = { inOut: true};

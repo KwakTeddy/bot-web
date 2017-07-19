@@ -4,6 +4,37 @@ function gogo(filename) {
   angular.element(document.getElementById('control')).scope().changeTabName(filename);
 }
 
+angular.module('bots').directive('myUiSelect', function() {
+  return {
+    require: 'uiSelect',
+    link: function($scope, $element, attrs, $select) {
+      var searchInput = $element.querySelectorAll('input.ui-select-search');
+      if(searchInput.length !== 1) throw Error("bla");
+
+      searchInput.on('blur', function() {
+        $scope.$apply(function() {
+          $scope.$parent.taskInput = $select.search;
+        });
+      });
+      // don't forget to .off(..) on $scope.$destroy
+    }
+  }
+});
+
+angular.module('bots').filter('taskFilter', ['$filter', function($filter) {
+  return function(items, text){
+    var results = [];
+    var itemMatch = new RegExp(text, 'i');
+    for (var i = 0; items && i < items.length; i++) {
+      var item = items[i];
+      if ( itemMatch.test(item.name) || item.name === '새로만들기') {
+        results.push(item);
+      }
+    }
+    return results;
+  }
+}]);
+
 // Bots controller
 angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScope', '$state', '$window','$timeout',
   '$stateParams', '$resource', 'Dialogs', 'DialogSaveService', 'OpenTasksService', 'FileUploader','$document',
@@ -50,7 +81,6 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       $(document).on('click', '.modal-confirm', function (e) {
         e.preventDefault();
         $.magnificPopup.close();
-
       });
 
       /*
@@ -93,6 +123,13 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
             }
           }
         }
+      });
+
+      $('.modal-with-alert').magnificPopup({
+        type: 'inline',
+        preloader: false,
+        // focus: '#help_input',
+        modal: true,
       });
 
       $(document).on('click', '#filetree_open', function (e) {
@@ -192,9 +229,9 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     var editor;
 
     // 새로운 task 추가시 사용되는 template
-    var newTask_template = "\nvar newTask = {\n\tname: 'newTask',\n\taction: function (task,context,callback) {" +
-      "\n\t\tcallback(task,context);\n\t}\n};\n\n" +
-      "bot.setTask('newTask',newTask);";
+    var newTask_template = "\n\nvar _taskName_ = {\n  action: function (task,context,callback) {" +
+      "\n    \n    callback(task,context);\n\t}\n};\n\n" +
+      "bot.setTask('_taskName_', _taskName_);";
 
     // list item 저장
     $scope.saveListContent = function(output) {
@@ -410,17 +447,16 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
 
     // 새로운 task 추가
-    $scope.addTask = function() {
-
+    $scope.addTask = function(taskName) {
       vm.fromTask = true;
       vm.changeTab(vm.tabs[1]);
 
-      vm.currentTab.data += newTask_template;
+      vm.currentTab.data += newTask_template.replace(new RegExp('_taskName_', 'g'), taskName);
 
       $scope.refreshCodemirror = true;
       vm.editor.focus();
-      vm.editor.setCursor({line:vm.editor.lastLine() ,ch:0});
       $timeout(function () {
+        vm.editor.setCursor({line:vm.editor.lastLine() - 5,ch: 4});
         $scope.refreshCodemirror = false;
       }, 100);
     };
@@ -458,6 +494,25 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       })
     };
 
+    var newType_template = "\n\nvar _typeName_ = {\n  typeCheck: function (text, type, task, context, callback) {" +
+      "\n    var matched = true;\n    \n    callback(text, task, matched);\n\t}\n};\n\n" +
+      "bot.setType('_typeName_', _typeName_);";
+
+    // 새로운 task 추가
+    $scope.addNewType = function(typeName) {
+      // vm.fromTask = true;
+      vm.changeTab(vm.tabs[1]);
+
+      vm.currentTab.data += newType_template.replace(new RegExp('_typeName_', 'g'), typeName);
+
+      $scope.refreshCodemirror = true;
+      vm.editor.focus();
+      $timeout(function () {
+        vm.editor.setCursor({line:vm.editor.lastLine() - 5,ch:4});
+        $scope.refreshCodemirror = false;
+      }, 100);
+    };
+
     $scope.openType = function(type) {
       $.magnificPopup.close();
       vm.fromTask = true;
@@ -467,6 +522,8 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
     $scope.closeEdit = function() {
       vm.edit = false;
+      if(vm.curI) vm.curI.str = '';
+      $scope.processedInput = '';
       $scope.closeEditor();
     };
 
@@ -816,6 +873,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     };
 
     var keydown = function(event) {
+      // console.log(event.keyCode);
 
       // search 인풋필드나 filetree에 포커스 있는 경우 스킵
       if (document.activeElement == document.getElementById('inputbox') ||
@@ -908,12 +966,12 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       if (document.activeElement != document.getElementById('mainpage'))
         return;
 
-      if ([45,46,32,13, 37,38,39,40].indexOf(event.keyCode) == -1)
+      if ([45,46,32,13, 37,38,39,40, 187].indexOf(event.keyCode) == -1)
         return false;
 
       event.preventDefault();
 
-      if (event.keyCode == 45) { // insert
+      if (event.keyCode == 45 || (event.shiftKey && event.keyCode == 187)) { // insert, +
         addChild(selectedNode);
       } else if (event.keyCode == 46) { // del
         deleteNode(selectedNode);
@@ -981,7 +1039,55 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
             //   updateSelected(nearUp);
             // }
           }
+        } else if (selectedNode.parent && Array.isArray(selectedNode.parent.output) && selectedNode.parent.output.length && selectedNode.parent.output[0].if) {
+          if (selectedNode.parent.output.indexOf(selectedNode) > 0) {
+            if(!rightPanelClosed) {
+              edit(selectedNode.parent.output[selectedNode.parent.output.indexOf(selectedNode)-1]);
+              document.getElementById('mainpage').focus();
+            }
+            updateSelected(selectedNode.parent.output[selectedNode.parent.output.indexOf(selectedNode)-1]);
+          } else {
+            var findUpNear = function(d, depth) {
+              var _parent = d;
+              for(var i = 0; i < depth; i++) _parent = d.parent;
+              if(!_parent) return null;
+
+              if(_parent.parent) {
+                for(var i = 0; i < _parent.parent.children.length; i++) {
+                  if(_parent.parent.children[i] == _parent && i > 0) {
+                    if(_parent.parent.children[i-1].children)
+                      return _parent.parent.children[i-1].children[_parent.parent.children[i-1].children.length -1];
+                  }
+                }
+                return null;
+              } else {
+                return null;
+              }
+            }
+
+            var nearDialog = findUpNear(selectedNode, 1);
+            if(nearDialog) {
+              if(!rightPanelClosed) {
+                edit(nearDialog);
+                document.getElementById('mainpage').focus();
+              }
+              updateSelected(nearDialog);
+            }
+
+            // var nearUp = {x:0};
+            // visit(treeData, function(d) {
+            //   if (d.y == selectedNode.y && d.x < selectedNode.x && d.x > nearUp.x)
+            //     nearUp = d;
+            // }, function (d) {
+            //   return d.children && d.children.length > 0 ? d.children : null;
+            // });
+            //
+            // if (nearUp.x != 0) {
+            //   updateSelected(nearUp);
+            // }
+          }
         }
+
       } else if (event.keyCode == 39) { //right
         if (selectedNode.children && selectedNode.children.length > 0) {
           if(!rightPanelClosed) {
@@ -989,6 +1095,12 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
             document.getElementById('mainpage').focus();
           }
           updateSelected(selectedNode.children[0]);
+        } else if (Array.isArray(selectedNode.output) && selectedNode.output.length > 0 && selectedNode.output[0].if) {
+          if(!rightPanelClosed) {
+            edit(selectedNode.output[0]);
+            document.getElementById('mainpage').focus();
+          }
+          updateSelected(selectedNode.output[0]);
         }
       } else if (event.keyCode == 40) { //down
         if (selectedNode.parent && selectedNode.parent.children) {
@@ -1030,20 +1142,45 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
               }
               updateSelected(nearDialog);
             }
-            
-            // var nearDown = {x:99999};
-            // visit(treeData, function(d) {
-            //   if (d.y == selectedNode.y && d.x > selectedNode.x && d.x < nearDown.x)
-            //     nearDown = d;
-            // }, function (d) {
-            //   return d.children && d.children.length > 0 ? d.children : null;
-            // });
-            //
-            // if (nearDown.x != 99999) {
-            //   updateSelected(nearDown);
-            // }
+          }
+        } else if (selectedNode.parent && Array.isArray(selectedNode.parent.output) && selectedNode.parent.output.length > 0 && selectedNode.parent.output[0].if) {
+          if (selectedNode.parent.output.indexOf(selectedNode) < selectedNode.parent.output.length-1) {
+            if(!rightPanelClosed) {
+              edit(selectedNode.parent.output[selectedNode.parent.output.indexOf(selectedNode) + 1]);
+              document.getElementById('mainpage').focus();
+            }
+            updateSelected(selectedNode.parent.output[selectedNode.parent.output.indexOf(selectedNode) + 1]);
+          } else {
+
+            var findDownNear = function(d, depth) {
+              var _parent = d;
+              for(var i = 0; i < depth; i++) _parent = d.parent;
+              if(!_parent) return null;
+
+              if(_parent.parent) {
+                for(var i = 0; i < _parent.parent.children.length; i++) {
+                  if(_parent.parent.children[i] == _parent && i < _parent.parent.children.length - 1) {
+                    if(_parent.parent.children[i+1].children)
+                      return _parent.parent.children[i+1].children[0];
+                  }
+                }
+                return null;
+              } else {
+                return null;
+              }
+            }
+
+            var nearDialog = findDownNear(selectedNode, 1);
+            if(nearDialog) {
+              if(!rightPanelClosed) {
+                edit(nearDialog);
+                document.getElementById('mainpage').focus();
+              }
+              updateSelected(nearDialog);
+            }
           }
         }
+
       }
     };
 
@@ -1737,10 +1874,29 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     ];
 
     vm.changeOutputKind = function(output, kind) {
-      vm.outputKind.forEach(function(k) {k.active = false});
-      kind.active = true;
-      output.kind = kind.name;
+      var change = function() {
+        vm.outputKind.forEach(function(k) {k.active = false});
+        kind.active = true;
 
+        output.kind = kind.name;
+        output.if = undefined;
+        output.action = undefined;
+        output.text = '';
+        output.buttons = undefined;
+      }
+
+
+      if(output.text) {
+        $('.modal-with-alert').click();
+        $('#changeConfirm').on('click', function (e) {
+          e.preventDefault();
+          change();
+          $('#changeConfirm').off('click');
+          $.magnificPopup.close();
+        });
+      } else {
+        change();
+      }
     };
 
     vm.getOutputKind = function(output) {
@@ -1797,17 +1953,31 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         $scope.addInput();
       }
 
-      $resource('/api/dialoginfos/:bot_id/:file_id', {}).get({bot_id: vm.bot_id, file_id: vm.file_id}, function(res) {
-        vm.tasks = res.tasks.map(function (t) { return {name: t, type: 'User Tasks'} });
-        vm.types = res.types.map(function (t) { return t.name });
+      vm.selectedContent = 0;
+
+      $resource('/api/dialoginfos/:bot_id/:file_id', {}).get({bot_id: vm.bot_id, file_id: vm.file_id}, function (res) {
+        vm.tasks = res.tasks.map(function (t) {
+          return {name: t, type: 'User Tasks'}
+        });
+        vm.types = res.types.map(function (t) {
+          return t.name
+        });
         vm.type_dic = res.type_dic;
+
+        vm.commonTypes = res.commonTypes;
+        if(vm.commonTypes) vm.types = vm.types.concat(vm.commonTypes);
 
         OpenTasksService.query({botId: $cookies.get('default_bot')}).$promise.then(function (result) {
           vm.commonTasks = result;
           vm.entity = [];
-          vm.commonTasks.forEach(function (d) { vm.entity[d.name] = d.entity; });
-          vm.commonTasks = vm.commonTasks.map(function (t) { return {name: t.name, displayName:t.displayName, paramSchema: t.paramSchema, type: 'Common Tasks'}; });
+          vm.commonTasks.forEach(function (d) {
+            vm.entity[d.name] = d.entity;
+          });
+          vm.commonTasks = vm.commonTasks.map(function (t) {
+            return {name: t.name, displayName: t.displayName, paramSchema: t.paramSchema, type: 'Common Tasks'};
+          });
           vm.tasks = vm.tasks.concat(vm.commonTasks);
+          vm.tasks.unshift({name: '새로만들기'})
         });
       });
 
@@ -1831,6 +2001,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       $timeout(function() {
         $scope.openEditor();
         $scope.initButton();
+        document.getElementById('name').focus();
       });
 
     };
@@ -1988,6 +2159,12 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       //   return false;
       // }
 
+      if($scope.dialog.input && $scope.dialog.input.length == 1 && $scope.dialog.input[0].length == 0) {
+        $scope.dialog.input[0].push({type: 'Keyword', str: $scope.processedInput});
+        vm.curI.str = '';
+        $scope.processedInput = '';
+      }
+
       selectedNode.name = $scope.dialog.name;
       selectedNode.input = restoreInput($scope.dialog.input);
       if ($scope.dialog.task && Object.keys($scope.dialog.task).length == 1)
@@ -2021,7 +2198,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         delete node.input_text;
         delete node.output_text;
         delete node.image_text;
-        delete node.buttons;
+        // delete node.buttons;
         delete node.depth;
 
         if (node.task) {
@@ -2036,8 +2213,17 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
         delete node._children;
 
+        if (node._output != null) {
+          node.output = node._output;
+          node._output = null;
+        }
+
+        delete node._output;
+
         if (node.children)
           node.children.forEach(clear);
+        else if(node.output && Array.isArray(node.output))
+          node.output.forEach(clear);
       };
 
       dialogs.forEach(clear);
@@ -2132,7 +2318,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
           _output += handlePrintOutput(dialog, output[i]);
         }
         return _output;
-      } else {
+      } else if(output != undefined) {
         var text = [];
         if (typeof output.output === 'string') {
           text.push(/*'[문장] ' + */output.output.replace(/\n/g, '\\n'));
@@ -2171,6 +2357,8 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
           text.push('[리스트] ' + output.list.map(function(item) { return item.title; }));
 
         return text + "";
+      } else {
+        return "";
       }
     };
 
@@ -2204,6 +2392,18 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
           child.parent = dialog;
           handleDialog(child);
         });
+      } else {
+        if (Array.isArray(dialog.output) && dialog.output.length > 0 && dialog.output[0].if) {
+          dialog.output.forEach(function(_output) {
+            _output.parent = dialog;
+            if(_output.if && _output.children) {
+              _output.children.forEach(function(child) {
+                child.parent = dialog;
+                handleDialog(child);
+              })
+            }
+          })
+        }
       }
     };
 
@@ -3067,10 +3267,10 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     //   edit(selectedNode);
     // }
     //
-    // function initSelect() {
-    //   selectedNode = null;
-    //   selectedSVG = null;
-    // }
+    function initSelect() {
+      selectedNode = null;
+      selectedSVG = null;
+    }
     //
     // src, target 노드 swap
     // function swapNode(parent,src, target) {
@@ -3310,13 +3510,21 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     function toggleChildren(d) {
       if (d3.event)
         d3.event.stopPropagation();
+
       if (d.children) {
         d._children = d.children;
         d.children = null;
       } else if (d._children) {
         d.children = d._children;
         d._children = null;
+      } else if (Array.isArray(d.output) && d.output.length > 0 && d.output[0].if) {
+        d._output = d.output;
+        d.output = null;
+      } else if (d._output) {
+        d.output = d._output;
+        d._output = null;
       }
+
       return d;
     }
 
@@ -3669,6 +3877,16 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       });
     };
 
+    $scope.taskInput = '';
+    $scope.selectTask = function(item, model) {
+      if(item.name === '새로만들기') {
+        var newItem = {name: $scope.taskInput, type: 'User Tasks'}
+        vm.tasks.push(newItem)
+        $scope.dialog.task = newItem;
+        $scope.addTask(newItem.name);
+      }
+    }
+
     // editor에서 task 열어주는 함수
     $scope.openTask = function(task, isCommon) {
       if (!$scope.dialog.task || ($scope.dialog.task.name || $scope.dialog.task.template) !== task.name)
@@ -3818,6 +4036,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         });
         vm.matchedIntents = topicList;
       }else if(target == 'type'){
+        topicList.push('새로만들기');
         angular.forEach(vm.types, function(item) {
           if (item.toUpperCase().indexOf(topicTerm.toUpperCase()) >= 0) {
             topicList.push(item);
@@ -3842,7 +4061,12 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       }else if(vm.curI.str.indexOf('/') == 0){
         inlineInput.push({type: 'RegExp', str: topic});
       }else if(vm.curI.str.indexOf('$') == 0){
-        inlineInput.push({type: 'Type', str: topic});
+        if(topic == '새로만들기') {
+          vm.curInlineInput = inlineInput;
+          var typeName = vm.curI.str.substring(1);
+          inlineInput.push({type: 'Type', str: typeName});
+          $scope.addNewType(typeName);
+        } else inlineInput.push({type: 'Type', str: topic});
       }
       vm.curI.str = '';
       return '';
@@ -3925,8 +4149,9 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     }
 
     var _update = function(dialog, parent, collapseAll) {
-      var input = handleInput(dialog.input);
-      var output = handlePrintOutput(dialog, dialog.output);
+      var input;
+      if(dialog.input) input = handleInput(dialog.input);
+      var output = handlePrintOutput(dialog, (dialog.output || dialog._output || dialog.text));
 
       var dlgGroup, dlg;
       if(document.getElementById(dialog.id)) {
@@ -3948,20 +4173,20 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       }
 
       dlg.id = dialog.id;
-      if(dialog.children) dlg.className = 'dlg with-children';
+      if(dialog.children || (Array.isArray(dialog.output) && dialog.output.length > 0 && dialog.output[0].if)) dlg.className = 'dlg with-children';
       else dlg.className = 'dlg';
 
+      dlg.innerHTML = '';
       if(vm.oneline) {
         dlg.classList.add('dlg-oneline');
-        dlg.innerHTML =
-          '<div>' + dialog.name + ' ('+ dialog.id + ')' + '</div>';
+        if(dialog.id) dlg.innerHTML += '<div>' + dialog.name + ' ('+ dialog.id + ')' + '</div>';
       } else {
-        dlg.innerHTML =
-          '<div class="dlg-name">' + dialog.name + ' ('+ dialog.id + ')' + '</div>' +
-          '<div class="dlg-input">' + input + '</div>' +
-          '<div class="dlg-output">' + output.replace(/\\n/g, '\n') + '</div>';
+        if(dialog.if) dlg.innerHTML += '<div class="dlg-name">' + dialog.if + '</div>';
+        else dlg.innerHTML += '<div class="dlg-name">' + dialog.name + ' ('+ dialog.id + ')' + '</div>';
+        if(input) dlg.innerHTML += '<div class="dlg-input">' + input + '</div>';
+        dlg.innerHTML += '<div class="dlg-output">' + output.replace(/\\n/g, '\n') + '</div>';
 
-        if(dialog.output.buttons) {
+        if(dialog.output && dialog.output.buttons) {
           for(var i in dialog.output.buttons) {
             if(dialog.output.buttons[i].url) dlg.innerHTML += '<div class="bubble-button"><a href="' + dialog.output.buttons[i].url + '" target="_blank">' + dialog.output.buttons[i].text + '</a></div>';
             else dlg.innerHTML += '<div class="bubble-button"><a ng-click="vm.sendMsg(\'' + dialog.output.buttons[i].text + '\')">' + dialog.output.buttons[i].text + '</a></div>';
@@ -3976,13 +4201,15 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         updateDialogAction(dialog, actionGroup);
       }
 
-      dlg.onclick = function(e) {
+      dlg.onclick = function (e) {
         updateSelected(dialog);
       };
 
-      dlg.ondblclick = function(e) {
-        edit(dialog);
-      };
+      if(!dialog.if) {
+        dlg.ondblclick = function (e) {
+          edit(dialog);
+        };
+      }
 
       // console.log(dialog.id + ':' + dialog.parent + ',' + dialog.children);
 
@@ -3993,13 +4220,13 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         dlgChildren.className = 'dlg-children';
 
         addObserver(dlgChildren);
-        if(vm.oneline) {
-          dlgChildren.innerHTML +='<svg width="10" height="100"></svg>';
+        if (vm.oneline) {
+          dlgChildren.innerHTML += '<svg width="10" height="100"></svg>';
         } else {
-          dlgChildren.innerHTML +='<svg width="20" height="100"></svg>';
+          dlgChildren.innerHTML += '<svg width="20" height="100"></svg>';
         }
 
-        for(var j = 0; j < dialog.children.length; j++) {
+        for (var j = 0; j < dialog.children.length; j++) {
           _update(dialog.children[j], dlgChildren);
         }
 
@@ -4025,9 +4252,31 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         //     _update(dialog.children[j], dlgChildren);
         //   }
         // }
+      } else if(Array.isArray(dialog.output) && dialog.output.length > 0 && dialog.output[0].if && dialog.output[0].kind != 'Action') {
+        var dlgChildren = document.createElement('div');
+        dlgGroup.appendChild(dlgChildren);
+        dlgChildren.id = dialog.id + '_outputs';
+        dlgChildren.className = 'dlg-children';
 
+        addObserver(dlgChildren);
+        if (vm.oneline) {
+          dlgChildren.innerHTML += '<svg width="10" height="100"></svg>';
+        } else {
+          dlgChildren.innerHTML += '<svg width="20" height="100"></svg>';
+        }
+
+        for(var i = 0; i < dialog.output.length; i++) {
+          dialog.output[i].id = dialog.id + '_' + i;
+          if(dialog.output[i].if) _update(dialog.output[i], dlgChildren);
+          // for (var j = 0; dialog.output[i].children && j < dialog.output[i].children.length; j++) {
+          //   _update(dialog.output[i].children[j], dlgChildren);
+          // }
+        }
       } else if(document.getElementById(dialog.id + '_children')) {
         var elem = document.getElementById(dialog.id + '_children');
+        elem.parentNode.removeChild(elem);
+      } else if(document.getElementById(dialog.id + '_outputs')) {
+        var elem = document.getElementById(dialog.id + '_outputs');
         elem.parentNode.removeChild(elem);
       }
     }
@@ -4165,7 +4414,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     function updateDialogAction(dialog, actionGroup) {
       while (actionGroup.firstChild) actionGroup.removeChild(actionGroup.firstChild);
 
-      if(dialog.parent && dialog.parent.children) {
+      if(dialog.if == undefined && dialog.parent && dialog.parent.children) {
         var idx = dialog.parent.children.indexOf(dialog);
         if(idx > 0) {
           var goUpBtn = document.createElement('div');
@@ -4187,24 +4436,29 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         }
       }
 
-      if(dialog.children || dialog._children) {
+      if(dialog.children || dialog._children || (Array.isArray(dialog.output) && dialog.output.length > 0 && dialog.output[0].if) || dialog._output) {
         var toggleBtn = document.createElement('div');
         toggleBtn.style.float = 'right';
         actionGroup.appendChild(toggleBtn);
-        if (dialog.children) toggleBtn.innerHTML = '<i class="fa fa-chevron-left"></i>'; else if(dialog._children) toggleBtn.innerHTML = '<i class="fa fa-chevron-right"></i>';
-        // toggleBtn.innerText = '토글';
+        if (dialog.children || (Array.isArray(dialog.output) && dialog.output.length > 0 && dialog.output[0].if))
+          toggleBtn.innerHTML = '<i class="fa fa-chevron-left"></i>';
+        else if(dialog._children || dialog._output)
+          toggleBtn.innerHTML = '<i class="fa fa-chevron-right"></i>';
         toggleBtn.onclick = function(e) {
           toggleAndCenter(dialog)
         };
       }
 
-      var deleteBtn = document.createElement('div');
-      deleteBtn.style.float = 'right';
-      actionGroup.appendChild(deleteBtn);
-      deleteBtn.innerHTML = '<i class="fa fa-close"></i>';
-      deleteBtn.onclick = function(e) {
-        deleteNode(dialog);
-      };
+      if(dialog.if == undefined) {
+        var deleteBtn = document.createElement('div');
+        deleteBtn.style.float = 'right';
+        actionGroup.appendChild(deleteBtn);
+        deleteBtn.innerHTML = '<i class="fa fa-close"></i>';
+        deleteBtn.onclick = function(e) {
+          deleteNode(dialog);
+          e.stopPropagation();
+        };
+      }
 
       var addBtn = document.createElement('div');
       addBtn.style.float = 'right';
@@ -4212,15 +4466,18 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       addBtn.innerHTML = '<i class="fa fa-plus"></i>';
       addBtn.onclick = function(e) {
         addChild(dialog);
+        e.stopPropagation();
       };
 
-      var editBtn = document.createElement('div');
-      editBtn.style.float = 'right';
-      actionGroup.appendChild(editBtn);
-      editBtn.innerHTML = '<i class="fa fa-edit"></i>';
-      editBtn.onclick = function(e) {
-        edit(dialog);
-      };
+      if(dialog.if == undefined) {
+        var editBtn = document.createElement('div');
+        editBtn.style.float = 'right';
+        actionGroup.appendChild(editBtn);
+        editBtn.innerHTML = '<i class="fa fa-edit"></i>';
+        editBtn.onclick = function(e) {
+          edit(dialog);
+        };
+      }
     }
 
     function drawDialogLines(target) {
@@ -4265,14 +4522,14 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     function drawSelectDialogLine(node) {
       var cNode = node;
       while(cNode.parent) {
-        drawDialogLines(document.getElementById(cNode.parent.id + '_children'));
+        drawDialogLines(document.getElementById(cNode.parent.id + '_children') || document.getElementById(cNode.parent.id + '_outputs'));
         cNode = cNode.parent;
       }
     }
 
     function drawChildDialogLine(node) {
       if(node.children) {
-        drawDialogLines(document.getElementById(node.id + '_children'));
+        drawDialogLines(document.getElementById(node.id + '_children') || document.getElementById(node.id + '_outputs'));
 
         for(var i = 0; i < node.children.length; i++) {
           drawChildDialogLine(node.children[i]);
@@ -4350,7 +4607,6 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     }
 
     function toggleAndCenter(d) {
-      // console.log('toggleAndCenter');
       d = toggleChildren(d);
       _update(d);
       // centerNode(d);
@@ -4378,7 +4634,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       parent.children[src] = targetNode;
       parent.children[target] = temp;
 
-      if (parent.depth == 0) {
+      if (parent.parent == undefined /*parent.depth == 0*/) {
         var srcDialog, targetDialog;
         var srcIdx, targetIdx;
         if (vm.dialog) {
@@ -4431,8 +4687,6 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       if (d.name === "시작")
         return;
       vm.setChanged(true, true);
-      if (d3.event)
-        d3.event.stopPropagation();
       initSelect();
 
       if (d.parent && d.parent.children) {
@@ -4442,9 +4696,23 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
             break;
           }
         }
+        if(d.parent.children.length == 0) delete d.parent.children;
+      } else if(d.parent && Array.isArray(d.parent.output)) {
+        for (var j=0; j < d.parent.output.length; j++) {
+          if(d.parent.output[j].children) {
+            for(var i = 0; i < d.parent.output[j].children.length; i++) {
+              if (d.parent.output[j].children[i].id === d.id) {
+                d.parent.output[j].children.splice(i,1);
+                break;
+              }
+            }
+            
+            if(d.parent.output[j].children.length == 0) delete d.parent.output[j].children;
+          }
+        }
       }
 
-      if (d.depth == 1) {
+      if (d.parent && d.parent.parent == undefined /*d.depth == 1*/) {
         for (var i=0; i < dialogs.length; ++i) {
           if (dialogs[i].id === d.id) {
             dialogs.splice(i,1);
@@ -4515,6 +4783,20 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         return;
       }
 
+      if ((Array.isArray(d.output) && d.output.length > 0 && d.output[0].if) ||
+        (d.if && d.call)) {
+        $scope.message = "output에 if를 사용한 Dialog는  Child노드를 추가할 수 없습니다";
+        $scope.choice = false;
+        var modalInstance = $uibModal.open({
+          templateUrl: 'modules/bots/client/views/modal-bots.html',
+          scope: $scope
+        });
+        modalInstance.result.then(function (response) {
+          console.log(response);
+        });
+        return;
+      }
+
       vm.setChanged(true, true);
       if (d3.event)
         d3.event.stopPropagation();
@@ -4524,7 +4806,8 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       var newDialog = {name:"", id:(!vm.dialog ? "common" : "") + vm.fileName + (++vm.maxId),
         filename:vm.fileName+(!vm.dialog?"common" : "") , input:[], output:[]};
       (d.children || (d.children = [])).push(newDialog);
-      if (d.depth === 0) {
+      newDialog.parent = (d.if ? d.parent : d);
+      if ((d.if ? d.parent : d).parent == undefined /*d.depth === 0*/) {
         if (vm.dialog) {
           dialogs.push(newDialog);
         } else {

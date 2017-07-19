@@ -544,6 +544,7 @@
         <a class="modal-with-intent btn btn-default" style="display:none" href="#modalIntentForm">Open Form</a>
         <a class="modal-with-list btn btn-default" style="display:none" href="#modalListForm">Open Form</a>
         <a class="modal-with-entity btn btn-default" style="display:none" href="#modalEntityForm">Open Form</a>
+        <a class="modal-with-alert btn btn-default" style="display:none" href="#modalAlert">Open Form</a>
 
         <!-- Modal Form for help -->
         <div id="modalHelpForm" class="modal-block modal-block-primary mfp-hide">
@@ -744,7 +745,7 @@
                     </div>
                     <div ng-show="!vm.inputMode || vm.curInput != input">
                       <div >
-                        <div class="col-sm-8 form-control mb-xs" style="height:auto;margin-top: 0px;width: 90%; padding: 4px 4px 0px 4px;"
+                        <div class="col-sm-8 form-control mb-xs" style="height:auto;margin-top: 0px;width: 90%; padding: 4px 4px 0px 4px;min-height: 35px;"
                              ng-click="vm.selectedContent = $index; vm.inlineInputFocus($index, 'focus')">
                       <span ng-repeat="i in input track by $index" style="display: inline-block;margin-bottom: 5px;">
                         <button id="inlineButton" class="btn btn-sm" ng-click="openEdit(i,input)"
@@ -838,10 +839,10 @@
                         </div>
 
                         <button class="btn btn-default" id="removeButton"
-                                style="margin-left: -2px; padding-left: 8px"><i ng-click="removeInput(input)"
-                                                                                           id="removeIcon"
-                                                                                           class="fa fa-remove"
-                                                                                           style="color: tomato"></i>
+                                style="margin-left: -2px; padding-left: 8px" tabindex="-1"><i ng-click="removeInput(input)"
+                                                                                id="removeIcon"
+                                                                                class="fa fa-remove"
+                                                                                style="color: tomato"></i>
                         </button>
                       </div>
                       <div class="row">
@@ -863,7 +864,7 @@
                 <div class="col-sm-1" style="padding-left: 0;padding-top: 3px; margin-left: -10px;">
                   <button type="button"
                           ng-click="addInput();vm.selectedContent = dialog.input.length - 1; vm.inlineInputFocus(dialog.input.length - 1, 'focus')"
-                          class="mb-xs mr-xs btn btn-sm btn-default" style="border: none"><i class="glyphicon glyphicon-plus"></i></button>
+                          class="mb-xs mr-xs btn btn-sm btn-default" style="border: none" tabindex="-1"><i class="glyphicon glyphicon-plus"></i></button>
 
                 </div>
                 <!--<div ng-show="inputError" class="text-danger text-center">-->
@@ -889,16 +890,18 @@
             <div class="col-sm-9 ">
               <div class="input-group mb-xs">
                 <div>
-                  <ui-select ng-model="dialog.task"
+                  <ui-select my-ui-select ng-model="dialog.task"
+                             on-select="selectTask($item, $model)"
                              allow-clear
                              theme="bootstrap"
+                             autofocus="true"
                              ng-disabled="vm.tasks.length == 0"
                              reset-search-input="true"
                              title="Task를 선택하세요">
-                    <ui-select-match placeholder="Task 이름을 입력해주세요">{{$select.selected.name}}</ui-select-match>
+                    <ui-select-match placeholder="Task 이름을 입력해주세요" id="taskNameInput">{{$select.selected.name}}</ui-select-match>
                     <ui-select-choices
                       group-by="'type'"
-                      repeat="t in vm.tasks | filter: $select.search track by $index"
+                      repeat="t in vm.tasks | taskFilter: $select.search track by $index"
                       refresh-delay="0">
                       <span ng-bind-html="t.name | highlight: $select.search"></span>
                       <small ng-show="t.displayName"
@@ -912,15 +915,15 @@
                   </ui-select>
                 </div>
                 <span class="input-group-btn">
-                    <button class="btn btn-default">
+                    <button class="btn btn-default" tabindex="-1">
                         <i ng-click="dialog.task = undefined" class="fa fa-remove" style="color:red"></i>
                     </button>
                 </span>
               </div>
             </div>
             <div class="col-sm-1 " style="padding-left: 0;padding-top: 3px;margin-left: -10px;">
-              <button type="button" ng-click="addTask()" class="mb-xs mr-xs btn btn-sm btn-default" style="border: none">
-                <i class="glyphicon glyphicon-plus"></i></button>
+              <!--<button type="button" ng-click="addTask()" class="mb-xs mr-xs btn btn-sm btn-default" style="border: none" tabindex="-1">-->
+                <!--<i class="glyphicon glyphicon-plus"></i></button>-->
             </div>
           </div>
 
@@ -936,12 +939,12 @@
                         ng-repeat="kind in vm.outputKind track by $index"
                         ng-click="vm.changeOutputKind(output,kind)"
                         ng-class="{active: vm.getOutputKind(output) === kind.name}">
-                      <a href="#"><span>{{kind.name}}</span></a>
+                      <a href="#" tabindex="-1"><span>{{kind.name}}</span></a>
                     </li>
                   </ul>
 
                   <button class="btn btn-default"
-                  style="display: inline-block; float: right; margin-top: 3px; padding-left: 8px"><i ng-click="removeOutput(output)"
+                  style="display: inline-block; float: right; margin-top: 3px; padding-left: 8px" tabindex="-1"><i ng-click="removeOutput(output)"
                   id="removeIcon"
                   class="fa fa-remove"
                   style="color: tomato"></i>
@@ -951,7 +954,7 @@
                 <div ng-show="vm.getOutputKind(output) == 'Text'" class="output-box" autofocus>
                   <label class="col-sm-2 control-label">If</label>
                   <div class="col-sm-10 mb-xs">
-                    <input type="text" id="if" name="if" ng-model="output.if" class="form-control">
+                    <input type="text" id="if" name="if" ng-model="output.if" class="form-control" tabindex="-1">
                   </div>
                   <label class="col-sm-2 control-label">Text</label>
                   <div class="col-sm-10 mx-xs">
@@ -964,7 +967,7 @@
                 <div ng-show="vm.getOutputKind(output) == 'Content'" class="output-box" autofocus>
                   <label class="col-sm-2 control-label">If</label>
                   <div class="col-sm-10 mb-xs">
-                    <input type="text" id="if" name="if" ng-model="output.if" class="form-control">
+                    <input type="text" id="if" name="if" ng-model="output.if" class="form-control" tabindex="-1">
                   </div>
                   <label class="col-sm-2 control-label">Image</label>
                   <div class="col-sm-10 mb-xs">
@@ -1138,7 +1141,7 @@
               </div>
             </div>
             <div class="col-sm-1" style="padding-left: 0;padding-top: 3px; margin-left: -10px;">
-              <button type="button" ng-click="addOutput()" class="mb-xs mr-xs btn btn-sm btn-default" style="border: none">
+              <button type="button" ng-click="addOutput()" class="mb-xs mr-xs btn btn-sm btn-default" style="border: none" tabindex="-1">
                 <i class="glyphicon glyphicon-plus"></i></button>
             </div>
           </div>
@@ -1410,6 +1413,30 @@
             <div class="col-md-12 text-right">
               <button class="btn btn-primary" ng-click="saveIntent()">등록</button>
               <button class="btn btn-default" ng-click="backToEditIntent(false)">이전</button>
+            </div>
+          </div>
+        </footer>
+      </section>
+    </div>
+
+    <div id="modalAlert" class="modal-block modal-block-sm mfp-hide">
+      <section class="panel">
+        <header class="panel-heading">
+          <h2 class="panel-title">변경 확인</h2>
+        </header>
+        <div class="panel-body">
+          <div class="modal-wrapper">
+            <div class="modal-text">
+              <p style="white-space: pre-line">컨텐츠 종류를 변경하면 기존 내용이 삭제 됩니다.
+                그래도 다른 종류의 컨텐츠로 변경하시겠습니까?</p>
+            </div>
+          </div>
+        </div>
+        <footer class="panel-footer">
+          <div class="row">
+            <div class="col-md-12 text-right">
+              <button id="changeConfirm" class="btn btn-primary">Confirm</button>
+              <button class="btn btn-default modal-dismiss">Cancel</button>
             </div>
           </div>
         </footer>
