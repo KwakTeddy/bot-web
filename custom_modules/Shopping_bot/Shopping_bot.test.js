@@ -52,7 +52,7 @@ describe('Bot', function () {
 
 
         it('1', function (done) {
-            msgMatch(':reset user', '안녕하세요 쇼핑봇입니다.\n배송조회, 주문취소, 상품검색 기능을 이용하실 수 있습니다.', done);
+            msgEqual(':reset user', '안녕하세요 쇼핑봇입니다.\n배송조회, 주문취소, 상품검색 기능을 이용하실 수 있습니다.', done);
         });
         it('2', function (done) {
             msgMatch('배송조회', '배송조회를 진행하겠습니다. \n조회를 위해서는 휴대폰 인증이 필요합니다. \n가입하실때 사용하신 휴대폰 번호를 입력해주세요.', done);
