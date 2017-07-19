@@ -36,8 +36,8 @@ exports.setBotSocket = function(socket) {botSocket = socket};
 
 // console = {};
 console.log = function(out) {
-  // process.stdout.write(out+'\n');
-  // if(botSocket) botSocket.emit('send_msg', ":log \n" + out +"\n");
+  process.stdout.write(out+'\n');
+  if(botSocket) botSocket.emit('send_msg', ":log \n" + out +"\n");
 }
 
 console.error = function(out) {
