@@ -36,7 +36,7 @@ angular.module('analytics').controller('AnalyticsIntentController', ['$scope', '
             $scope.intent = undefined;
           }
 
-          if (!Object.keys(res.entities).length){
+          if (!res.entities || !Object.keys(res.entities).length){
             $scope.entities = undefined;
           }else {
             $scope.entities = res.entities;

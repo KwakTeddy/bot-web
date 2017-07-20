@@ -658,7 +658,7 @@ exports.readFile = function (req, res) {
         message: 'Read File Failed'
       });
     } else {
-      console.log('data: ' + data);
+      // console.log('data: ' + data);
       res.json({userBotName: userBot.name, name: file.name, data: data.toString()});
     }
   })

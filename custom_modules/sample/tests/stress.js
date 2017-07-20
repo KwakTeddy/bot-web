@@ -2,7 +2,7 @@ var async = require('async');
 var request = require('request');
 
 
-var host = 'ec2-13-124-56-23.ap-northeast-2.compute.amazonaws.com';
+var host = 'localhost';
 var bot = 'Shinhancard';
 var user = 'QRtjQoQse8CX';
 

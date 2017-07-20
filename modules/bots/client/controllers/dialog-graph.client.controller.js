@@ -11,11 +11,16 @@ angular.module('bots').directive('myUiSelect', function() {
       var searchInput = $element.querySelectorAll('input.ui-select-search');
       if(searchInput.length !== 1) throw Error("bla");
 
-      searchInput.on('blur', function() {
-        $scope.$apply(function() {
-          $scope.$parent.taskInput = $select.search;
-        });
+      searchInput.on('keyup', function(e) {
+        $scope.$parent.taskInput = $select.search;
       });
+
+      // searchInput.on('blur', function() {
+      //   $scope.$apply(function() {
+      //     // $scope.$parent.taskInput = $select.search;
+      //   });
+      // });
+
       // don't forget to .off(..) on $scope.$destroy
     }
   }
@@ -500,7 +505,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
     // 새로운 task 추가
     $scope.addNewType = function(typeName) {
-      // vm.fromTask = true;
+      vm.fromTask = true;
       vm.changeTab(vm.tabs[1]);
 
       vm.currentTab.data += newType_template.replace(new RegExp('_typeName_', 'g'), typeName);
@@ -820,11 +825,11 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         try {
           var dialog = JSON.parse(json);
           for(var i in nodes) {
-            if(nodes[i].id == dialog.id) {
-              currentNode = nodes[i];
-              break;
-            } else if (dialog.name == "시작") {
+            if(dialog.name == "시작") {
               currentNode = treeData;
+              break;
+            } else if(nodes[i].id == dialog.id) {
+              currentNode = nodes[i];
               break;
             }
           }
@@ -922,7 +927,8 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       }
 
       if (document.activeElement == document.getElementById('search') ||
-        document.activeElement == document.getElementById('replace') ) {
+        document.activeElement == document.getElementById('replace') ||
+        document.activeElement.type == 'text') {
         return false;
       }
 
@@ -2226,17 +2232,43 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
           node.output.forEach(clear);
       };
 
-      dialogs.forEach(clear);
+      function clone(obj) {
+        var copy;
+        if (null == obj || "object" != typeof obj) return obj;
+
+        if (obj instanceof Array) {
+          copy = [];
+          for (var i = 0, len = obj.length; i < len; i++) {
+            copy[i] = clone(obj[i]);
+          }
+          return copy;
+        }
+
+        if (obj instanceof Object) {
+          copy = {};
+          for (var attr in obj) {
+            if(attr.startsWith('parent') || attr.startsWith('top')) copy[attr] = obj[attr];
+            else if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
+          }
+          return copy;
+        }
+      }
+
+      var sDialogs = clone(dialogs);
+      sDialogs.forEach(clear);
+      // dialogs.forEach(clear);
 
       var common = angular.copy(treeData);
       delete common.children;
       common_dialogs[0] = common;
-      common_dialogs.forEach(clear);
+      var sCommons = clone(common_dialogs);
+      sCommons.forEach(clear);
+      // common_dialogs.forEach(clear);
 
-      return DialogSaveService.update({botId: vm.botId, fileName: vm.fileName, dialogs:dialogs, commons:common_dialogs},
+      return DialogSaveService.update({botId: vm.botId, fileName: vm.fileName, dialogs:sDialogs, commons:sCommons},
         function() {
           $scope.emitMsg(':reset user');
-          $scope.emitMsg(':init');
+          // $scope.emitMsg(':init');
 
           notificationService.success('저장되었습니다');
 
@@ -3660,7 +3692,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     // to send msg to chatting window
     $scope.emitMsg = function(msg) {
       Socket.emit('send_msg', {
-        bot: vm.botName,
+        bot: vm.botId,
         user: vm.userId,
         msg: msg
       });
@@ -3991,7 +4023,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       });
     };
 
-    IntentsService.query({botName: $rootScope.botId}).$promise.then(function (result) {
+    IntentsService.query({botName: $cookies.get('default_bot')}).$promise.then(function (result) {
       vm.intents = result.map(function(i) { return i.name; });
     }, function (err) {
       console.log(err);
@@ -4726,7 +4758,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
       var srcElement = document.getElementById(d.id).parentNode;
       srcElement.parentNode.removeChild(srcElement);
-      // updateSelected(d.parent);
+      updateSelected(d.parent);
     }
 
     function centerNode(source, isStart) {

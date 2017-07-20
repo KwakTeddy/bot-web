@@ -265,6 +265,18 @@ function conceptRegExp(context, regexp) {
     });
 
     return new RegExp(str, regexp.flags);
+  } else {
+    try {
+      var str = regexp;
+
+      str = str.replace(/~([0-9a-zA-Z가-힣]+)/g, function (match, p1) {
+        return '(?:' + conceptsString(context, p1) + ')';
+      });
+
+      return new RegExp(str, regexp.flags);
+    } catch(e) {
+      return null;
+    }
   }
 }
 

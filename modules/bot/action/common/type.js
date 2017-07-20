@@ -1042,6 +1042,7 @@ var addressType = {
 };
 
 exports.addressType= addressType;
+globals.setGlobalType('address', addressType);
 
 
 var stringType = {
@@ -1062,6 +1063,7 @@ var numberType = {
   typeCheck: numberTypeCheck
 }
 
+globals.setGlobalType('number', numberType);
 exports.numberType= numberType;
 
 function numberTypeCheck(text, type, task, context, callback) {

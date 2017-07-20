@@ -40,7 +40,6 @@ exports.renderIndex = function (req, res) {
   } else if(config.enterprise.name){
     res.redirect('/developer')
   } else{
-    console.log(req.user);
     res.render('modules/core/server/views/user-bot', {
       user: req.user
     });

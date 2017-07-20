@@ -257,8 +257,8 @@ exports.list = function(req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      console.log(util.inspect(intents));
-      console.log('-----------3========2=========------')
+      // console.log(util.inspect(intents));
+      // console.log('-----------3========2=========------')
       res.jsonp(intents);
     }
   });

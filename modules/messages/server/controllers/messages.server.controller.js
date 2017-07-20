@@ -145,7 +145,7 @@ exports.sendKakao = function (req, res) {
     if(err) {
       console.log(err.toString());
     } else {
-      console.log('data: ' + data);
+      // console.log('data: ' + data);
       message = data;
 
   mySqlPool.getConnection(function (err, connection) {

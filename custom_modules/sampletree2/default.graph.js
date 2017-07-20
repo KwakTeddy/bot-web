@@ -19,10 +19,15 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"regexp": "/사과/"
+				"text": "ttt"
 			}
 		],
-		"output": "사과레귤러"
+		"output": [
+			{
+				"text": "사과레귤러",
+				"kind": "Text"
+			}
+		]
 	},
 	{
 		"name": "image",
@@ -48,13 +53,20 @@ var dialogs = [
 				"text": "button"
 			}
 		],
-		"output": {
-			"buttons": [
-				{
-					"text": "test"
-				}
-			]
-		}
+		"output": [
+			{
+				"text": "버튼이 표시되는 예제",
+				"buttons": [
+					{
+						"text": "테스트버튼"
+					}
+				],
+				"kind": "Content"
+			}
+		],
+		"buttons": [
+			null
+		]
 	},
 	{
 		"name": "false2",
@@ -109,11 +121,13 @@ var dialogs = [
 		"output": [
 			{
 				"if": "context.dialog.check=='check'",
-				"output": "Success"
+				"output": "Success",
+				"id": "default23_0"
 			},
 			{
 				"if": "context.dialog.check!='check'",
-				"output": "Fail"
+				"output": "Fail",
+				"id": "default23_1"
 			}
 		],
 		"task": "defaultTask"

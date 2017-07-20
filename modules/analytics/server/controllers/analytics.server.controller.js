@@ -44,7 +44,7 @@ exports.list = function (req, res) {
 
   cond.botId = botId;
 
-  console.log(JSON.stringify(cond));
+  // console.log(JSON.stringify(cond));
   UserDialogLog.aggregate(
     [
       {$match: cond},
@@ -76,7 +76,7 @@ exports.dialogList = function (req, res) {
   cond.dialog = {$ne: null, $nin: [":reset user", ":build csdemo reset"]};
   cond.botId = botId;
 
-  console.log(JSON.stringify(cond));
+  // console.log(JSON.stringify(cond));
   UserDialog.aggregate(
     [
       {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" }, inOut: '$inOut', dialog: '$dialog', botId: '$botId'}},
@@ -112,7 +112,7 @@ exports.dialogSuccessList = function (req, res) {
   else if (kind == 'month')
     cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth()+1, inOut: true};
   cond.botId = botId;
-  console.log(JSON.stringify(cond));
+  // console.log(JSON.stringify(cond));
   async.waterfall([
     function(cb) {
       UserDialog.aggregate(
@@ -185,7 +185,7 @@ exports.sessionSuccessList = function (req, res) {
   else if (kind == 'month')
     cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth()+1, inOut: true};
   cond.botId = botId;
-  console.log(JSON.stringify(cond));
+  // console.log(JSON.stringify(cond));
   UserDialog.aggregate(
     [
       {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" }, inOut: '$inOut', dialog: '$dialog', fail:'$fail', botId:"$botId"}},
@@ -270,7 +270,7 @@ var findOne = function(o, res, data) {
   dialog.inputs = o.input;
   dialog.outputs = o.output;
 
-  console.log(JSON.stringify(dialog));
+  // console.log(JSON.stringify(dialog));
   res.jsonp(dialog);
 };
 
@@ -299,10 +299,10 @@ var findChildren = function(object, res, data) {
     });
     data['actionCall'] = true
     // res.end();
-    console.log(JSON.stringify(dialogChildren));
+    // console.log(JSON.stringify(dialogChildren));
     res.jsonp(dialogChildren);
   }else {
-    console.log(util.inspect(object))
+    // console.log(util.inspect(object))
     if (!Array.isArray(object)){
       object = [object];
     }
@@ -334,7 +334,7 @@ var dialogId;
 var originalDialog;
 var targetPreDialog;
 var save = function(o, res, data) {
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
 
   var nlp = require(path.resolve('modules/bot/engine/nlp/processor'));
   var nlpKo = new nlp({
@@ -407,7 +407,7 @@ var save = function(o, res, data) {
       if(err){
         console.log(err)
       }else {
-        console.log(result)
+        // console.log(result)
         res.json(result)
       }
     });
@@ -423,7 +423,7 @@ exports.dialog = function (req, res) {
   dialogs_data = utils.cloneWithoutCycle(global._bots[botId].dialogs);
   var data = {};
 
-  console.log("dialog:" + botId+","+dialogId);
+  // console.log("dialog:" + botId+","+dialogId);
   searchDialog(dialogs_data, dialogId, findOne, res, data);
 
 };
@@ -436,12 +436,12 @@ exports.dialogChildren = function (req, res) {
   global._bots[botId].dialogs.forEach(clear);
   dialogs_data = utils.cloneWithoutCycle(global._bots[botId].dialogs);
   var data = {};
-  console.log(util.inspect(dialogs_data))
+  // console.log(util.inspect(dialogs_data))
 
-  console.log("dialogChildren: " + botId+","+dialogId);
+  // console.log("dialogChildren: " + botId+","+dialogId);
   searchDialog(dialogs_data, dialogId, findChildren, res, data);
-  console.log(util.inspect(data));
-  console.log('----------------');
+  // console.log(util.inspect(data));
+  // console.log('----------------');
   if (!data.actionCall){
     var filteredDialog = [];
     for(var i = 0; i < dialogs_data.length; i++){
@@ -449,7 +449,7 @@ exports.dialogChildren = function (req, res) {
         filteredDialog.push(dialogs_data[i])
       }
     }
-    console.log(util.inspect(filteredDialog));
+    // console.log(util.inspect(filteredDialog));
     findChildren(filteredDialog, res, data);
     res.end()
   }
@@ -461,11 +461,11 @@ exports.save_dialog = function(req, res) {
   originalDialog = req.body.originalDialog;
   targetPreDialog = req.body.targetPreDialog;
   var dialog = {inputs: req.body.inputs, outputs: req.body.outputs};
-  console.log(util.inspect(req.body.outputs));
+  // console.log(util.inspect(req.body.outputs));
 
   dialogs_data = global._bots[botId].dialogs;
 
-  console.log("save: " + botId+","+dialogId);
+  // console.log("save: " + botId+","+dialogId);
   searchDialog(dialogs_data, dialogId, save, res, dialog);
 };
 
@@ -474,7 +474,7 @@ exports.load_bot = function(req, res) {
   var fileName = req.params.fileName;
   botLib.buildBot(botId, null, fileName);
   botLib.loadBot(botId, function(bot) {
-    console.log("loadBot: " + botId);
+    // console.log("loadBot: " + botId);
     res.status(200).send({message: 'done'});
   });
 };
@@ -493,7 +493,7 @@ exports.save_dialogs = function(req, res) {
   // save to dialog.js , buildBot and loadBot
   botLib.buildBot(botId, null, fileName, JSON.stringify(dialogs, null, "\t"),JSON.stringify(commons, null, '\t'));
   botLib.loadBot(botId, function(bot) {
-    console.log("saveAll: " + botId+","+fileName);
+    // console.log("saveAll: " + botId+","+fileName);
     res.status(200).send({message: 'done'});
   });
 };
@@ -515,8 +515,8 @@ var isCyclic = function(obj) {
       var oldindex = stack.indexOf(obj);
       var l1 = keys.join('.') + '.' + key;
       var l2 = keys.slice(0, oldindex + 1).join('.');
-      console.log('CIRCULAR: ' + l1 + ' = ' + l2 + ' = ' + obj);
-      console.log(obj);
+      // console.log('CIRCULAR: ' + l1 + ' = ' + l2 + ' = ' + obj);
+      // console.log(obj);
       detected = true;
       return;
     }
@@ -594,7 +594,7 @@ exports.dialogs = function (req, res) {
         delete d.task;
       });
 
-      console.log("dialog:" + result.botId + "(" + botId + "), " + result.fileName);
+      // console.log("dialog:" + result.botId + "(" + botId + "), " + result.fileName);
       // var json = JSON.stringify(result, function(key, value) {
       //       return (typeof value === 'function' ) ? value.toString() : value;
       //   });
@@ -635,7 +635,7 @@ exports.dialoginfos = function (req, res) {
       result.type_dic = global._bots[botName].types;
       result.commonTypes = Object.keys(global._context.types);
 
-      console.log("dialoginfos:" + result.botId + "(" + botId + "), " + result.fileName);
+      // console.log("dialoginfos:" + result.botId + "(" + botId + "), " + result.fileName);
       return res.jsonp(result);
     }
   ]);
@@ -675,7 +675,7 @@ exports.dialogFailureMaintenanceList = function (req, res) {
     if (err){
       console.log(err)
     }else {
-      console.log(util.inspect(data));
+      // console.log(util.inspect(data));
       //
       // UserDialog.populate(data, {path: 'userDialog'}, function (err, result) {
       //   console.log(util.inspect(err))
@@ -717,7 +717,7 @@ exports.dialogFailureMaintenance = function (req, res) {
 };
 
 exports.dialogFailureMaintenanceUpdate = function (req, res) {
-  console.log(util.inspect(req.query.clearList));
+  // console.log(util.inspect(req.query.clearList));
   // console.log(util.inspect(typeof req.query.clearList));
   // console.log(util.inspect(JSON.parse(req.query.clearList)));
   // console.log(util.inspect(req.query.clearList.length));
@@ -744,7 +744,7 @@ exports.dialogFailureMaintenanceUpdate = function (req, res) {
         if(err){
           console.log(err)
         }else {
-          console.log(result2)
+          // console.log(result2)
           res.json(result2)
         }
       })

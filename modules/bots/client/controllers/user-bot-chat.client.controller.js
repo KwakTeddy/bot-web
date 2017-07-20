@@ -64,7 +64,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     };
 
     Socket.on('send_msg', function (message) {
-      console.log(message)
+      // console.log(message)
       // console.log('out:' + message);
 
       // if(message.startsWith(':log') && !$state.is('home')) return;
@@ -102,8 +102,6 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       if(message.items) addItems(message.items);
       else addBotBubble(message);
 
-
-
       if(vm.tts) {
         var voice = message.voice || message.text || message;
         voice += ',';
@@ -122,7 +120,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         //synthesize(voice);
         speak(voice);
       }
-      console.log(message);
+      // console.log(message);
       $rootScope.$broadcast('onmsg', {message: message});
       $rootScope.$broadcast('sendmsg', {message: sendedMsg});
 
@@ -172,13 +170,13 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
             description: vm.userBot.description,
             picture: location.protocol+'//'+location.hostname+'/'+ vm.userBot.imageFile,
         }, function(response){
-            console.log(response);
+            // console.log(response);
         });
     };
 
     vm.kakaoShare = function () {
         $scope.location = location.href;
-        console.log(vm.userBot.description);
+        // console.log(vm.userBot.description);
         Kakao.Story.share({
             url: $scope.location,
             text: vm.userBot.name+'-'+ vm.userBot.description
@@ -202,9 +200,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
     var textTimer = null;
     var showText = function (target, message, index, interval) {
-      console.log(message)
       if (index < message.length) {
-        console.log(index);
         var char = message[index++];
         if (char == '\n') char = "<br>";
         $(target).append(char);
@@ -216,86 +212,53 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       }
     };
 
-    $scope.$on('onmsg', function(event, arg0) {
-      console.log(event);
-      console.log(arg0);
-      // if (!vm.isAnswer) {
-        // resetOwl();
-      // }
-
-      // resetButtons();
-
-      if (arg0.message.items) {
-        vm.isAnswer = false;
-        addItems(arg0.message.items);
-        return;
-      }
-
-      if(arg0.message.smartReply) {
-        vm.isAnswer = true;
-        addButtons(arg0.message.smartReply);
-      }
-
-      if (arg0.message.image) {
-        vm.isAnswer = false;
-
-        var msg = arg0.message;
-        var innerHTML = '<div class="content" style="><div class="content-text">' + msg.text + '</div>';
-        innerHTML += '<div><img class="message-image" width="35%" height="35%" src="' + msg.image.url +'"/></div>';
-        if(msg.buttons) {
-          for(var i in msg.buttons) {
-            innerHTML += '<div class="bubble-button" style="border-top:none"><a href="' + msg.buttons[i].url + '" target="_blank">' + msg.buttons[i].text + '</a></div>';
-          }
-        }
-        innerHTML += '</div></div>';
-        main.insertAdjacentHTML("afterbegin",innerHTML);
-
-        return;
-      }
-
-      vm.isAnswer = true;
-      var input='';
-      if (typeof arg0.message === 'string') input = arg0.message;
-      else input = arg0.message.text;
-
-      $('#answer').text('');
-      if (textTimer != null)
-        clearTimeout(textTimer);
-      var interval = 40;
-
-      showText('#answer', input, 0, interval);
-
-      // resetNodes();
-      // $resource('/api/user-bots-analytics/nlp', {}).get({input: input}, function(res) {
-      //   if(res.result) {
-      //     var centeredNodes = res.result.split(' ');
-      //     // 이 노드 값들 가운데로 이동함
-      //     if (centeredNodes != undefined) {
-      //       for (var i=0; i < centeredNodes.length; ++i) {
-      //         if (nodes[centeredNodes[i]] != undefined) {
-      //           nodes[centeredNodes[i]].isMain = true;
-      //           nodes[centeredNodes[i]].x = width / 2;
-      //           nodes[centeredNodes[i]].y = height / 2;
-      //           console.log(JSON.stringify(nodes[centeredNodes[i]]));
-      //           break;
-      //         }
-      //       }
-      //     }
-      //   }
-      // });
-      // update();
-      // if (timer3 == null) {
-      //   timer3 = setTimeout(function() { resetNodes(); update(); timer3 = null; }, 3000);
-      // }
-    });
+    // $scope.$on('onmsg', function(event, arg0) {
+    //   if (arg0.message.items) {
+    //     vm.isAnswer = false;
+    //     addItems(arg0.message.items);
+    //     return;
+    //   }
+    //
+    //   if(arg0.message.smartReply) {
+    //     vm.isAnswer = true;
+    //     addButtons(arg0.message.smartReply);
+    //   }
+    //
+    //   if (arg0.message.image) {
+    //     vm.isAnswer = false;
+    //
+    //     var msg = arg0.message;
+    //     var innerHTML = '<div class="content" style="><div class="content-text">' + msg.text + '</div>';
+    //     innerHTML += '<div><img class="message-image" width="35%" height="35%" src="' + msg.image.url +'"/></div>';
+    //     if(msg.buttons) {
+    //       for(var i in msg.buttons) {
+    //         innerHTML += '<div class="bubble-button" style="border-top:none"><a href="' + msg.buttons[i].url + '" target="_blank">' + msg.buttons[i].text + '</a></div>';
+    //       }
+    //     }
+    //     innerHTML += '</div></div>';
+    //     main.insertAdjacentHTML("afterbegin",innerHTML);
+    //
+    //     return;
+    //   }
+    //
+    //   vm.isAnswer = true;
+    //   var input='';
+    //   if (typeof arg0.message === 'string') input = arg0.message;
+    //   else input = arg0.message.text;
+    //
+    //   $('#answer').text('');
+    //   if (textTimer != null)
+    //     clearTimeout(textTimer);
+    //   var interval = 40;
+    //
+    //   showText('#answer', input, 0, interval);
+    // });
 
     $scope.$on('sendMsgFromFarAway', function(event, arg0) {
       vm.sendMsg(arg0);
     });
 
     vm.sendMsg = function (msg) {
-      console.log(msg)
-      console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
       if (!vm.isConnected) return false;
 
       var element = document.getElementById("smart_reply");
@@ -353,8 +316,6 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       clearBubble();
       $resource('/api/bots/byNameId/:botNameId', {botNameId:'@id'}).
       get({botNameId: botId}, function(data) {
-        // console.log(data);
-
         vm.changeBotInfo(data);
         vm.connect();
       }, function(err) {
@@ -406,7 +367,6 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       $rootScope.$broadcast('getInitMsg');
 
       setTimeout(function() {
-        // console.log('init: ' + vm.initMsg);
         if($rootScope.initMsg != undefined && $rootScope.initMsg != null && $rootScope.initMsg != '') emitMsg($rootScope.initMsg);
       }, 200);
 
@@ -415,8 +375,6 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     vm.init = init;
 
     function emitMsg(msg) {
-      console.log('################################################################################')
-      console.log(msg)
       Socket.emit('send_msg', {
         bot: vm.bot,
         user: vm.userId,
@@ -687,14 +645,13 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       }
 
       if(msg.buttons) {
-          for(var i in msg.buttons) {
-            if(msg.buttons[i].url) innerHTML += '<div class="bubble-button"><a href="' + msg.buttons[i].url + '" target="_blank">' + msg.buttons[i].text + '</a></div>';
-            else innerHTML += '<div class="bubble-button"><a ng-click="vm.sendMsg(\'' + msg.buttons[i].text + '\')">' + msg.buttons[i].text + '</a></div>';
-
-          }
+        for(var i in msg.buttons) {
+          if(msg.buttons[i].url) innerHTML += '<div class="bubble-button"><a href="' + msg.buttons[i].url + '" target="_blank">' + msg.buttons[i].text + '</a></div>';
+          else innerHTML += '<div class="bubble-button"><a ng-click="vm.sendMsg(\'' + msg.buttons[i].text + '\')">' + msg.buttons[i].text + '</a></div>';
         }
+      }
 
-        innerHTML += '</div></div>';
+      innerHTML += '</div></div>';
 
       innerHTML += '</div>';
 

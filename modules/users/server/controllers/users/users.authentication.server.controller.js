@@ -47,8 +47,8 @@ exports.signup = function (req, res) {
     //Define email search query
     var emailSearchQuery = {};
     emailSearchQuery['email'] = user.email;
-    console.log(util.inspect(emailSearchQuery));
-    console.log(util.inspect(req.body));
+    // console.log(util.inspect(emailSearchQuery));
+    // console.log(util.inspect(req.body));
 
     User.findOne(emailSearchQuery, function (err, result) {
         if (err) {
@@ -308,7 +308,7 @@ exports.oauthCallback = function (strategy, scope) {
     // Pop redirect URL from session
     var sessionRedirectURL = req.session.redirect_to;
     delete req.session.redirect_to;
-    console.log('callback');
+    // console.log('callback');
 
     passport.authenticate(strategy, scope, function (err, user, redirectURL) {
         console.log(err);
@@ -373,7 +373,7 @@ exports.saveOAuthUserProfile = function (req, providerUserProfile, done) {
     };
 
     User.findOne(searchQuery, function (err, user) {
-      console.log(util.inspect(searchQuery))
+      // console.log(util.inspect(searchQuery))
       if (err) {
         return done(err);
       } else {
