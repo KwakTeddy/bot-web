@@ -12,15 +12,15 @@ var dialogs = [
 
 var commonDialogs = [
 {
-  id: 'default_common0',
-  filename: 'default_common',
+  id: 'defaultcommon0',
+  filename: 'defaultcommon',
   name: '시작',
   input: '시작',
   output: '__bot__ 입니다.'
 },
 {
-  id: 'default_common0',
-  filename: 'default_common',
+  id: 'defaultcommon1',
+  filename: 'defaultcommon',
   name: '상위',
   input: [
     {
@@ -32,9 +32,10 @@ var commonDialogs = [
   ],
   output: {up : 1}
 },
+
 {
-  id: 'default_common1',
-  filename: 'default_common',
+  id: 'defaultcommon2',
+  filename: 'defaultcommon',
   name: '답변없음',
   input: '',
   output: '알아듣지 못했습니다'

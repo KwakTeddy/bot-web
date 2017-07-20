@@ -252,7 +252,7 @@
             <label class="col-sm-3 control-label">봇아이디 <span class="required" aria-required="true">*</span></label>
             <div class="col-sm-7" ng-class="{'has-error':(error.id)}">
               <input type="text" name="id" ng-model="vm.bot.id" class="form-control valid"
-                     placeholder="영어(대문자)와 _의 조합, 추후 변경 불가"
+                     placeholder="영문자, 숫자, _ 가능 추후 변경 불가"
                      required
                      aria-required="true" aria-invalid="false"
                      ng-disabled="vm.bot._id" >

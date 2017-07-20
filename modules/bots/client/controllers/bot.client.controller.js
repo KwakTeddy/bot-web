@@ -316,7 +316,7 @@ angular.module('bots').controller('BotController',
       $scope.$watch('vm.bot.id', function () {
         if (vm.bot.id) {
           vm.bot.id = vm.bot.id.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g,'');
-          vm.bot.id = vm.bot.id.replace(/[0-9]/g,'');
+          vm.bot.id = vm.bot.id.replace(/^[0-9]/g,'');
           vm.bot.id = vm.bot.id.replace(/ /g,'');
           $resource('/api/bot-exist', {}).get({bot_id: vm.bot.id}, function (res) {
             if (res) {

@@ -197,7 +197,6 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         window.open('https://twitter.com/intent/tweet?text='+ vm.userBot.name+'-'+ vm.userBot.description + '&url=' + $scope.location, 'popup', 'width=600, height=400')
     };
 
-
     var textTimer = null;
     var showText = function (target, message, index, interval) {
       if (index < message.length) {
