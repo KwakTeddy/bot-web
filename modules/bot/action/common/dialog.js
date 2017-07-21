@@ -963,7 +963,7 @@ function executeDialog(dialog, context, print, callback, options) {
 
         } else if (typeof output.text == 'string') {
           _output = output.text;
-          var taskText = dialog.task.text;
+          var taskText = (dialog.task ? dialog.task.text : undefined);
           if (dialog.task)
             dialog.task = utils.merge(dialog.task, output);
           else
