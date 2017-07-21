@@ -392,7 +392,7 @@ function matchDialogs(inRaw, inNLP, dialogs, context, print, callback, options) 
                     else {eachMatched2 = false, cb3(true);}
                   });
                 } else {
-                  logger.debug('Type이 없습니다. ' + type1);
+                  console.log('Type이 없습니다. ' + type1, context);
                   eachMatched2 = false, cb3(true);
                 }
 
@@ -638,14 +638,14 @@ exports.matchDialogs = matchDialogs;
 
 function executeDialog(dialog, context, print, callback, options) {
   if(dialog.name || dialog.input) {
-    logger.debug('executeDialog: ' + toDialogString(dialog) + ' options= ' + (options?options.prefix: ''));
+    console.log('executeDialog: ' + toDialogString(dialog) + ' options= ' + (options?options.prefix: ''), context);
 
     var contexts;
     if(context.botUser.contexts) contexts = context.botUser.contexts.map(function(i) { return i.name; });
 
     if(dialog) console.log('[DIALOG_SEL]' + JSON.stringify({id: dialog.id, name: dialog.name, input: dialog.input,
         contexts: contexts, intent: context.botUser.intent,
-        entities: context.botUser.entities}));
+        entities: context.botUser.entities}), context);
   }
 
   // context.botUser.currentDialog = null;
@@ -789,7 +789,7 @@ function executeDialog(dialog, context, print, callback, options) {
             executeDialog(_dialog, context, print, callback, utils.merge(nextOptions, {current: dialog}, true));
             cb(true);
           } else {
-            logger.debug(outputName + ': ' + dialog.output.call + ' Dialog를 찾을 수 없습니다.');
+            console.log(outputName + ': ' + dialog.output.call + ' Dialog를 찾을 수 없습니다.', context);
             if (process.env.NODE_ENV == 'development')
               _output = outputName + ': ' + dialog.output.call + ' Dialog를 찾을 수 없습니다.';
             else

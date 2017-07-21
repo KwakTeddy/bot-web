@@ -35,14 +35,15 @@ var botSocket;
 exports.setBotSocket = function(socket) {botSocket = socket};
 
 // console = {};
-console.log = function(out) {
+console.log = function(out, context) {
   process.stdout.write(out+'\n');
-  // if(botSocket) botSocket.emit('send_msg', ":log \n" + out +"\n");
+  if(context && context.botUser && context.botUser.socket && context.botUser.dev === true)
+    context.botUser.socket.emit('send_msg', ":log \n" + out +"\n");
 }
 
 console.error = function(out) {
   process.stderr.write((out.stack ? out.stack : out) +'\n');
-  if(botSocket) botSocket.emit('send_msg', ":log \n" + (out.stack ? out.stack : out) +"\n");
+  // if(botSocket) botSocket.emit('send_msg', ":log \n" + (out.stack ? out.stack : out) +"\n");
 }
 
 // console.trace = function(out, t) {
@@ -50,14 +51,14 @@ console.error = function(out) {
 //   if(botSocket) botSocket.emit('send_msg', ":log \n" + out +"\n");
 // }
 
-function botProc(botName, channel, user, inTextRaw, json, outCallback, options) {
+function botProc(botName, channel, user, inTextRaw, json, outCallback, options, socket) {
   // TODO 개발용
   dialog = utils.requireNoCache(path.resolve('modules/bot/action/common/dialog'));
 
   var startTime = new Date();
   var print = function(_out, _task) {
     var endTime = new Date();
-    logger.debug("사용자 출력 (" + (endTime-startTime) + 'ms)>> ' + _out + "\n");
+    console.log("사용자 출력 (" + (endTime-startTime) + 'ms)>> ' + _out + "\n", context);
 
     // toneModule.toneSentence(_out, context.botUser.tone || '해요체', function(out) {
     //   _out = out;
@@ -101,16 +102,23 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
     function(cb) {
       contextModule.getContext(botName, channel, user, options, function(_context) {
         context = _context;
+        if(socket && options && options.dev === true) {
+          context.botUser.socket = socket;
+          context.botUser.dev = true;
+        } else {
+          context.botUser.socket = undefined;
+          context.botUser.dev = undefined;
+        }
         cb(null);
       });
     },
 
     function(cb) {
-      logger.debug("사용자 입력>> " + inTextRaw);
+      console.log("사용자 입력>> " + inTextRaw, context);
       var type = utils.requireNoCache(path.resolve('./modules/bot/action/common/type'));
 
       type.processInput(context, inTextRaw, function(_inTextNLP, _inDoc) {
-        logger.debug("자연어 처리>> " + _inTextNLP);
+        console.log("자연어 처리>> " + _inTextNLP, context);
         inTextNLP = _inTextNLP;
         context.task = utils.merge(_inDoc, json);
         cb(null);
@@ -124,7 +132,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
         if(context.bot.useMemoryFacts) {
           factModule.memoryFacts(inTextRaw, context, function (_task, _context) {
             if(_task && _task.numAffected && _task.numAffected.upserted) {
-              console.log('[FACT_ADD]' + JSON.stringify(_task.doc));
+              console.log('[FACT_ADD]' + JSON.stringify(_task.doc), context);
               print('말씀하신 내용을 학습했어요.');
               cb(true);
               return;
@@ -203,7 +211,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
         chatscriptSocket.on('data', function(data) {    // on receive data from chatscriptSocket
           var chatserverOut = data.toString();
 
-          logger.debug("챗서버 답변>> " + chatserverOut);
+          console.log("챗서버 답변>> " + chatserverOut, context);
 
           botProcess.processChatserverOut(context, chatserverOut, inTextNLP, inTextRaw, inDoc, print, print)
         });

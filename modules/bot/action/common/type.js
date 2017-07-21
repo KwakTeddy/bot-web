@@ -302,7 +302,7 @@ function processOutput(task, context, out) {
     out = out.replace(/%2B/g, '+');
 
   } catch(e) {
-    console.log("processOutput:error: " + e);
+    console.log("processOutput:error: " + e, context);
   }
 
   return out;

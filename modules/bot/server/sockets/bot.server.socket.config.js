@@ -18,7 +18,7 @@ var mongoose = require('mongoose'),
 // Create the chat configuration
 module.exports = function (io, socket) {
   console.log('user connected');
-  bot.setBotSocket(socket);
+  // bot.setBotSocket(socket);
 
   socket.on('disconnect', function() {
     console.log('user disconnected')
@@ -38,7 +38,7 @@ module.exports = function (io, socket) {
         socket.emit('send_msg', JSON.stringify(_task));
       }
 
-    }, msg.options);
+    }, msg.options, socket);
 
   })
 };

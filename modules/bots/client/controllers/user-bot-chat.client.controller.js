@@ -374,6 +374,9 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     vm.init = init;
 
     function emitMsg(msg) {
+      if(vm.params) vm.params.dev = true;
+      else vm.params = {dev: true};
+
       Socket.emit('send_msg', {
         bot: vm.bot,
         user: vm.userId,
