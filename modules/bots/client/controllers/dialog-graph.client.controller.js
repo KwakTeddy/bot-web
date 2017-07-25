@@ -2043,7 +2043,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
       if(rightPanelClosed) {
         var main = document.getElementById('main');
-        var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+        var mr = parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
         main.style.marginRight = (mr + 450) + 'px';
         main.style.overflow = 'visible';
       }
@@ -2059,7 +2059,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     $scope.closeEditorTask= function() {
       // if(!rightPanelClosed) {
       //   var main = document.getElementById('main');
-      //   var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+      //   var mr = parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
       //   main.style.marginRight = (mr + 450) + 'px';
       //   main.style.overflow = 'visible';
       // }
@@ -2074,7 +2074,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     $scope.openEditor = function() {
       if(rightPanelClosed) {
         var main = document.getElementById('main');
-        var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+        var mr = parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
         main.style.marginRight = (mr + 450) + 'px';
         main.style.overflow = 'visible';
       }
@@ -2089,7 +2089,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     $scope.closeEditor = function() {
       if(!rightPanelClosed) {
         var main = document.getElementById('main');
-        var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+        var mr = parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
         main.style.marginRight = (mr - 450) + 'px';
         main.style.overflow = '';
       }
@@ -2104,7 +2104,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     $scope.openEditorIntent  = function() {
       if(rightPanelClosed) {
         var main = document.getElementById('main');
-        var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+        var mr = parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
         main.style.marginRight = (mr + 450) + 'px';
         main.style.overflow = 'visible';
       }
@@ -2119,7 +2119,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     $scope.closeEditorIntent= function() {
       // if(!rightPanelClosed) {
       //   var main = document.getElementById('main');
-      //   var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+      //   var mr = parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
       //   main.style.marginRight = (mr + 450) + 'px';
       //   main.style.overflow = 'visible';
       // }
@@ -2133,7 +2133,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     $scope.openEditorEntity = function() {
       if(rightPanelClosed) {
         var main = document.getElementById('main');
-        var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+        var mr = parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
         main.style.marginRight = (mr + 450) + 'px';
         main.style.overflow = 'visible';
       }
@@ -2148,7 +2148,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     $scope.closeEditorEntity = function() {
       // if(!rightPanelClosed) {
       //   var main = document.getElementById('main');
-      //   var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+      //   var mr = parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
       //   main.style.marginRight = (mr + 450) + 'px';
       //   main.style.overflow = 'visible';
       // }
