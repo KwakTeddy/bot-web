@@ -89,6 +89,24 @@ var dialogs = [
 										"text": "욕하지마라 야 넌 나보다 못하는거 다 아는데",
 										"kind": "Text"
 									}
+								],
+								"children": [
+									{
+										"name": "dialog_default11",
+										"id": "default11",
+										"filename": "default",
+										"input": [
+											{
+												"regexp": "(.*)"
+											}
+										],
+										"output": [
+											{
+												"text": "asdfasdf",
+												"kind": "Text"
+											}
+										]
+									}
 								]
 							},
 							{
@@ -112,14 +130,15 @@ var dialogs = [
 								"output": [
 									{
 										"kind": "Action",
-										"up": "1"
+										"up": "1",
+										"type": "Up"
 									}
 								]
 							}
 						]
 					},
 					{
-						"name": "",
+						"name": "dialog_default6",
 						"id": "default6",
 						"filename": "default",
 						"input": [
@@ -194,6 +213,24 @@ var dialogs = [
 								]
 							}
 						]
+					}
+				]
+			},
+			{
+				"name": "엔터티실험",
+				"id": "default12",
+				"filename": "default",
+				"input": [
+					{
+						"entities": [
+							"@도시"
+						]
+					}
+				],
+				"output": [
+					{
+						"text": "도시란다",
+						"kind": "Text"
 					}
 				]
 			}

@@ -1,5 +1,5 @@
 var path = require('path');
-var bot = require(path.resolve('config/lib/bot')).getBot('junabot_1');
+var bot = require(path.resolve('config/lib/bot')).getBot('sangwoobot4explore');
 
 var defaultTask = {
     name: 'defaultTask',
@@ -9,13 +9,3 @@ var defaultTask = {
 };
 bot.setTask("defaultTask", defaultTask);
 
-
-
-var  = {
-  action: function (task,context,callback) {
-    
-    callback(task,context);
-	}
-};
-
-bot.setTask('', );
