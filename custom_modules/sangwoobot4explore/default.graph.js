@@ -15,8 +15,63 @@ var dialogs = [
 		],
 		"output": [
 			{
-				"kind": "Action",
-				"up": "1"
+				"text": "ffffffffffff",
+				"kind": "Text"
+			}
+		],
+		"children": [
+			{
+				"name": "",
+				"id": "default8",
+				"filename": "default",
+				"input": [],
+				"output": []
+			},
+			{
+				"name": "",
+				"id": "default9",
+				"filename": "default",
+				"input": [],
+				"output": []
+			},
+			{
+				"name": "",
+				"id": "default6",
+				"filename": "default",
+				"input": [],
+				"output": [],
+				"children": [
+					{
+						"name": "",
+						"id": "default7",
+						"filename": "default",
+						"input": [],
+						"output": []
+					}
+				]
+			}
+		]
+	},
+	{
+		"name": "",
+		"id": "default5",
+		"filename": "default",
+		"input": [],
+		"output": []
+	},
+	{
+		"name": "",
+		"id": "default4",
+		"filename": "default",
+		"input": [],
+		"output": [],
+		"children": [
+			{
+				"name": "",
+				"id": "default11",
+				"filename": "default",
+				"input": [],
+				"output": []
 			}
 		]
 	}
