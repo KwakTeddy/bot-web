@@ -265,7 +265,8 @@ var dialogs = [
 				"output": [
 					{
 						"kind": "Action",
-						"call": "dialog_default11"
+						"call": "dialog_default11",
+						"type": "Call"
 					}
 				]
 			},
@@ -281,7 +282,8 @@ var dialogs = [
 				"output": [
 					{
 						"kind": "Action",
-						"up": "1"
+						"up": "1",
+						"type": "Up"
 					}
 				]
 			},
@@ -316,7 +318,8 @@ var dialogs = [
 						"repeat": "1",
 						"options": {
 							"output": "다시 입력해주세요."
-						}
+						},
+						"type": "Repeat"
 					}
 				]
 			}

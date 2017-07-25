@@ -1,0 +1,9 @@
+var path = require('path');
+var botlib = require(path.resolve('config/lib/bot'));
+
+var edu4 = {
+  use: true
+};
+
+botlib.makeBot('edu4', edu4);
+
