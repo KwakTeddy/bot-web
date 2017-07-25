@@ -612,7 +612,7 @@ angular.module('bots').controller('BotController',
       var schema = {};
 
       try {
-        if(!parsed) jsonSchema = JSON.parse(dataSchema);
+        if(!parsed || (typeof dataSchema == 'string')) jsonSchema = JSON.parse(dataSchema);
         else jsonSchema = dataSchema;
       } catch(e) {
         alert("invalid schema" + e.message);
