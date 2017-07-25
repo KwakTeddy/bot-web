@@ -113,7 +113,7 @@
 
   </div>
 
-  <div class="bot-content" ng-show="vm.type.startsWith('edit')">
+  <div class="bot-content" ng-show="vm.type.substring(0, 4) == 'edit'">
 
     <form name="botForm" class="form-bordered" novalidate="novalidate">
 

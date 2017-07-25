@@ -20,6 +20,7 @@ angular.module('bots').controller('BotController',
     var vm = this;
     vm.user = Authentication.user;
     vm.bot = bot;
+    console.log(vm.bot);
     $timeout(function () {
       console.log('type : ' + vm.type);
       console.log('state : ' + vm.state);
@@ -382,7 +383,6 @@ angular.module('bots').controller('BotController',
         }
         vm.bot.template = vm.selectedTemplate;
         vm.bot.template.templateData = editor.getValue();
-        console.log(JSON.stringify(vm.bot.template.templateData));
       } else {
         if (vm.bot.template) {
           vm.bot.template = null;
@@ -416,10 +416,8 @@ angular.module('bots').controller('BotController',
         return false;
       }
       if (!vm.checkTemplate()) return false;
-
-
       vm.learning = true;
-      vm.type = 'connect';
+      // vm.type = 'connect';
 
       if(!vm.bot.imageFile) vm.bot.imageFile = "/files/default.png";
 
@@ -608,19 +606,18 @@ angular.module('bots').controller('BotController',
       },
     };
 
-    vm.parseSchema = function(dataSchema) {
+    vm.parseSchema = function(dataSchema, parsed) {
+      console.log(dataSchema);
       var jsonSchema;
+      var schema = {};
+
       try {
-        jsonSchema = JSON.parse(dataSchema);
+        if(!parsed) jsonSchema = JSON.parse(dataSchema);
+        else jsonSchema = dataSchema;
       } catch(e) {
         alert("invalid schema" + e.message);
         return;
       }
-
-      console.log(jsonSchema);
-
-      var schema = {};
-
       Object.keys(jsonSchema).forEach(function(key) {
         if (jsonSchema[key].hidden) return;
         var type = jsonSchema[key].type.toLowerCase();
@@ -630,6 +627,12 @@ angular.module('bots').controller('BotController',
               schema[key] = {type: "string", options:{grid_columns:3}, enum: jsonSchema[key].data};
               break;
             case "list":
+              var properties;
+              if(typeof jsonSchema[key].schema == "String") properties =  vm.parseSchema(jsonSchema[key].schema);
+              else properties =  vm.parseSchema(jsonSchema[key].schema, true);
+
+              console.log(properties);
+
               schema[key] = {
                 type: "array",
                 format: "table",
@@ -639,7 +642,8 @@ angular.module('bots').controller('BotController',
                   type: "object",
                   title: jsonSchema[key]['item_title'] ? jsonSchema[key]['item_title'] : "항목",
                   /*format:"grid",*/
-                  "properties": vm.parseSchema(jsonSchema[key].schema)}
+                  "properties": properties
+                }
               };
               break;
             default:
@@ -673,8 +677,7 @@ angular.module('bots').controller('BotController',
       vm.selectedTemplate = template;
 
       // default public:true for template bot
-      if (vm.bot && !vm.bot._id)
-        vm.bot.public = true;
+      if (vm.bot && !vm.bot._id) vm.bot.public = true;
 
       // init json editor
       JSONEditor.defaults.options.theme = 'bootstrap3';
@@ -685,7 +688,7 @@ angular.module('bots').controller('BotController',
       JSONEditor.defaults.language = "kr";
       JSONEditor.defaults.languages.kr = {
         error_uniqueItems: "리스트에 중복된 항목이 있습니다",
-        button_add_row_title: "{{0}} 추가",
+        button_add_row_title: "{{0}} 추가"
       };
       //JSONEditor.defaults.options.show_erros = 'change';
 
@@ -743,9 +746,7 @@ angular.module('bots').controller('BotController',
         return errors;
       };
 
-      if (JSONEditor.defaults.custom_validators.length == 0) {
-        JSONEditor.defaults.custom_validators.push(custom_validator);
-      }
+      if (JSONEditor.defaults.custom_validators.length == 0) JSONEditor.defaults.custom_validators.push(custom_validator);
 
       $scope.ierror = {};
       $scope.isuccess = {};
@@ -754,16 +755,14 @@ angular.module('bots').controller('BotController',
         type: "object",
         title: template.name,
         properties: {},
-        format: "grid",
+        format: "grid"
       };
+      console.log(schema);
 
       schema.properties = vm.parseSchema(template.dataSchema);
-
+      console.log(schema);
       console.log("schema="+ JSON.stringify(schema));
-
-      if (editor) {
-        editor.destroy();
-      }
+      if (editor) editor.destroy();
 
       editor = new JSONEditor(document.getElementById('editor_holder'), {
         schema: schema,
@@ -771,7 +770,7 @@ angular.module('bots').controller('BotController',
         disable_properties: true,
         disable_edit_json: true,
         disable_array_reorder: true,
-        grid_columns: 3,
+        grid_columns: 3
       });
 
       // special handling for address
@@ -810,6 +809,7 @@ angular.module('bots').controller('BotController',
       editor.on('change', function() {
         console.log('editor.onchange -> $compile editor');
         var inputList = document.getElementsByName("mine");
+        console.log(inputList);
         var compileList = [];
         for (var idx=0; idx < inputList.length; ++idx) {
           var input = inputList[idx];

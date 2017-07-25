@@ -102,8 +102,7 @@ if (_platform !== 'mobile'){
         $rootScope.$broadcast('setUserBot', userBot);
       };
 
-      if ($stateParams.noGraph)
-        $scope.nograph = true;
+      if ($stateParams.noGraph) $scope.nograph = true;
       vm.startChat = function() {
         if ($cookies.get("nograph") == undefined && !$scope.nograph) {
           $state.go('user-bots-web.graph', {userBotId: vm.userBot._id}, {location:'replace'});
@@ -573,7 +572,6 @@ if (_platform !== 'mobile'){
         }
       });
 
-
       vm.unselectTemplate = function() {
         vm.userBot.public = false;
         vm.selectedTemplate = undefined;
@@ -667,8 +665,7 @@ if (_platform !== 'mobile'){
         vm.selectedTemplate = template;
 
         // default public:true for template bot
-        if (vm.userBot && !vm.userBot._id)
-          vm.userBot.public = true;
+        if (vm.userBot && !vm.userBot._id) vm.userBot.public = true;
 
         // init json editor
         JSONEditor.defaults.options.theme = 'bootstrap3';
@@ -679,7 +676,7 @@ if (_platform !== 'mobile'){
         JSONEditor.defaults.language = "kr";
         JSONEditor.defaults.languages.kr = {
           error_uniqueItems: "리스트에 중복된 항목이 있습니다",
-          button_add_row_title: "{{0}} 추가",
+          button_add_row_title: "{{0}} 추가"
         };
         //JSONEditor.defaults.options.show_erros = 'change';
 
@@ -737,9 +734,7 @@ if (_platform !== 'mobile'){
           return errors;
         };
 
-        if (JSONEditor.defaults.custom_validators.length == 0) {
-          JSONEditor.defaults.custom_validators.push(custom_validator);
-        }
+        if (JSONEditor.defaults.custom_validators.length == 0) JSONEditor.defaults.custom_validators.push(custom_validator);
 
         $scope.ierror = {};
         $scope.isuccess = {};
@@ -748,16 +743,14 @@ if (_platform !== 'mobile'){
           type: "object",
           title: template.name,
           properties: {},
-          format: "grid",
+          format: "grid"
         };
 
         schema.properties = vm.parseSchema(template.dataSchema);
 
         console.log("schema="+ JSON.stringify(schema));
 
-        if (editor) {
-          editor.destroy();
-        }
+        if (editor) editor.destroy();
 
         editor = new JSONEditor(document.getElementById('editor_holder'), {
           schema: schema,
@@ -765,7 +758,7 @@ if (_platform !== 'mobile'){
           disable_properties: true,
           disable_edit_json: true,
           disable_array_reorder: true,
-          grid_columns: 3,
+          grid_columns: 3
         });
 
         // special handling for address

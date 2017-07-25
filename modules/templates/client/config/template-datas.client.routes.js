@@ -23,7 +23,8 @@
         controller: 'TemplateDatasListController',
         controllerAs: 'vm',
         resolve: {
-          templateDatasResolve: getTemplateDatas
+          templateDatasResolve: getTemplateDatas,
+          templateResolve: getTemplate
         },
         data: {
           pageTitle: 'Custom actions List'
@@ -82,10 +83,10 @@
   getTemplateDatas.$inject = ['$stateParams', 'TemplateDatasService'];
   function getTemplateDatas($stateParams, TemplateDatasService) {
     return TemplateDatasService.query({
-        templateId: $stateParams.templateId,
-        listName: $stateParams.listName,
-        upTemplateId: $stateParams.upTemplateId
-      }).$promise;
+      templateId: $stateParams.templateId,
+      listName: $stateParams.listName,
+      upTemplateId: $stateParams.upTemplateId
+    }).$promise;
   }
 
   getTemplateData.$inject = ['$stateParams', 'TemplateDatasService'];
