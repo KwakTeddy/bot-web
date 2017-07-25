@@ -798,7 +798,7 @@ function executeDialog(dialog, context, print, callback, options) {
           }
         }
 
-        if(dialog.output.return === 1 && context.botUser.returnCall) {
+        if(dialog.output.return == 1 && context.botUser.returnCall) {
           _dialog = context.botUser.returnCall.returnDialog;
 
           if(!nextOptions) nextOptions = {};
