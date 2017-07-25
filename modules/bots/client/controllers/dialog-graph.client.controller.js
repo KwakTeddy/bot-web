@@ -184,6 +184,13 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
           scope: $scope
         });
         $scope.yes = function () {
+          if(!rightPanelClosed) {
+            var main = document.getElementById('main');
+            var mr = parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+            main.style.marginRight = (mr - 450) + 'px';
+            main.style.overflow = '';
+          }
+
           vm.isChanged = false;
           modalInstance.dismiss();
           $state.go(toState.name);

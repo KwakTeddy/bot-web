@@ -233,6 +233,24 @@ var dialogs = [
 						"text": "Child",
 						"kind": "Text"
 					}
+				],
+				"children": [
+					{
+						"name": "returnChild",
+						"id": "default28",
+						"filename": "default",
+						"input": [
+							{
+								"text": "returnChild"
+							}
+						],
+						"output": [
+							{
+								"kind": "Action",
+								"return": "1"
+							}
+						]
+					}
 				]
 			},
 			{
@@ -264,6 +282,22 @@ var dialogs = [
 					{
 						"kind": "Action",
 						"up": "1"
+					}
+				]
+			},
+			{
+				"name": "",
+				"id": "default29",
+				"filename": "default",
+				"input": [
+					{
+						"text": "return"
+					}
+				],
+				"output": [
+					{
+						"kind": "Action",
+						"returnCall": "dialog_default13"
 					}
 				]
 			},
@@ -326,7 +360,7 @@ var dialogs = [
 				}
 			},
 			{
-				"name": "",
+				"name": "dialog_default26",
 				"id": "default26",
 				"filename": "default",
 				"input": [
@@ -344,7 +378,7 @@ var dialogs = [
 				],
 				"children": [
 					{
-						"name": "",
+						"name": "dialog_default27",
 						"id": "default27",
 						"filename": "default",
 						"input": [
