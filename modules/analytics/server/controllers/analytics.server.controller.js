@@ -475,7 +475,7 @@ exports.load_bot = function(req, res) {
   botLib.buildBot(botId, null, fileName);
   botLib.loadBot(botId, function(bot) {
     // console.log("loadBot: " + botId);
-    res.status(200).send({message: 'done'});
+    res.status(200).send(bot);
   });
 };
 
@@ -494,7 +494,7 @@ exports.save_dialogs = function(req, res) {
   botLib.buildBot(botId, null, fileName, JSON.stringify(dialogs, null, "\t"),JSON.stringify(commons, null, '\t'));
   botLib.loadBot(botId, function(bot) {
     // console.log("saveAll: " + botId+","+fileName);
-    res.status(200).send({message: 'done'});
+    res.status(200).send(bot);
   });
 };
 

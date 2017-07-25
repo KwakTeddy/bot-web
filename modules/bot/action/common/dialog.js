@@ -1121,9 +1121,13 @@ function executeType(inRaw, inNLP, type, task, context, callback) {
   async.waterfall([
     function(cb4) {
       if(type.preType) {
-        type.preType(task, context, type, function (_task, _context, _type) {
-          cb4(null);
-        });
+        try {
+          type.preType(task, context, type, function (_task, _context, _type) {
+            cb4(null);
+          });
+        } catch (e) {
+          console.log(e.stack, context);
+        }
       } else {
         cb4(null);
       }
@@ -1144,38 +1148,42 @@ function executeType(inRaw, inNLP, type, task, context, callback) {
           inText = (type.raw) ? inRaw : inNLP;
         }
 
-        type.typeCheck(inText, type, task, context, function (inNLP, task, _matched) {
+        try {
+          type.typeCheck(inText, type, task, context, function (inNLP, task, _matched) {
 
-          // logger.debug('matchDialogs: [TYPE] ' + toDialogString(dialog) +
-          //   ' CHECK TYPE=' + type.name + ' ' + (_matched ? 'matched' : 'not matched'));
+            // logger.debug('matchDialogs: [TYPE] ' + toDialogString(dialog) +
+            //   ' CHECK TYPE=' + type.name + ' ' + (_matched ? 'matched' : 'not matched'));
 
-          if (_matched) {
-            if(task[type.name]) {
-              if(type.save == undefined || type.save == true) {
-                context.dialog[type.name] = task[type.name];
-                context.dialog.typeMatches[type.name] = task[type.name];
+            if (_matched) {
+              if (task[type.name]) {
+                if (type.save == undefined || type.save == true) {
+                  context.dialog[type.name] = task[type.name];
+                  context.dialog.typeMatches[type.name] = task[type.name];
+                }
               }
-            }
 
-            if (type.context) {
-              context.user[type.name] = task[type.name];
-              context.user.updates = [type.name];
-              botUser.updateUserContext(context.user, context, function () {
-                context.user.updates = null;
+              if (type.context) {
+                context.user[type.name] = task[type.name];
+                context.user.updates = [type.name];
+                botUser.updateUserContext(context.user, context, function () {
+                  context.user.updates = null;
+                  cb4(null, true);
+                });
+              } else {
                 cb4(null, true);
-              });
-            } else {
-              cb4(null, true);
-            }
+              }
 
-          } else {
-            if(type.failSave == undefined || type.failSave == true) {
-              context.dialog[type.name] = null;
+            } else {
+              if (type.failSave == undefined || type.failSave == true) {
+                context.dialog[type.name] = null;
+              }
+              eachMatched2 = false;
+              cb4(true, false);
             }
-            eachMatched2 = false;
-            cb4(true, false);
-          }
-        });
+          });
+        } catch (e) {
+          console.log(e.stack, context);
+        }
       } else if (context.dialog.typeMatches[type.name] != undefined) {
         if(type.save == undefined || type.save == true) task[type.name] = context.dialog.typeMatches[type.name];
         cb4(null, true);

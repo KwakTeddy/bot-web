@@ -78,6 +78,7 @@ function loadBot(botName, callback) {
       BotModel.findOne({id: botName}).lean().exec(function(err, doc) {
         if(doc != undefined) {
           bot = new Bot(doc);
+          bot.error = [];
           // bot = doc;
           global._bots[botName] = bot;
           cb(null);
@@ -133,6 +134,8 @@ function loadBot(botName, callback) {
             files = files.filter(fileFilter);
           } catch(e) {
             console.log('loadBot: ' + botDir + ' 경로 없음');
+            bot.error.push(e.stack);
+            if(bot.error.length === 0) delete bot.error;
             return;
           }
 
@@ -189,6 +192,7 @@ function loadBot(botName, callback) {
               } catch(e) {
                 console.log('\tloading file: ' + file + ' error or not found');
                 console.error(e);
+                bot.error.push(e.stack);
               }
             }
           }
@@ -209,6 +213,8 @@ function loadBot(botName, callback) {
             files = files.filter(fileFilter);
           } catch(e) {
             console.log('loadBot: ' + botDir + ' 경로 없음');
+            bot.error.push(e.stack);
+            if(bot.error.length === 0) delete bot.error;
             return;
           }
 
@@ -222,6 +228,7 @@ function loadBot(botName, callback) {
               utils.requireNoCache(file, true);
             } catch(e) {
               console.error(e);
+              bot.error.push(e.stack);
             }
           }
 
@@ -255,6 +262,8 @@ function loadBot(botName, callback) {
           } catch(e) {
             console.log('loadBot: ' + botDir + ' 경로 없음');
             console.log(e);
+            bot.error.push(e.stack);
+            if(bot.error.length === 0) delete bot.error;
             return;
           }
 
@@ -268,6 +277,7 @@ function loadBot(botName, callback) {
               utils.requireNoCache(file, true);
             } catch(e) {
               console.error(e);
+              bot.error.push(e.stack);
             }
           }
 
@@ -373,6 +383,7 @@ function loadBot(botName, callback) {
     }
 
   ], function(err) {
+    if(bot.error.length === 0) delete bot.error;
     if(callback) callback(bot);
   });
 

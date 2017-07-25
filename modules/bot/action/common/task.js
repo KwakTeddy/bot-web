@@ -291,11 +291,14 @@ function executeTask(task, context, callback, print, options) {
               function(callback) {
                 if(task.preCallback) {
                   logger.debug(logPrefix + ' preCallback start');
-
-                  task.preCallback(task, context, function(_task, _context) {
-                    logger.debug(logPrefix + ' preCallback end');
-                    callback(null, _task, _context);
-                  });
+                  try {
+                    task.preCallback(task, context, function (_task, _context) {
+                      logger.debug(logPrefix + ' preCallback end');
+                      callback(null, _task, _context);
+                    });
+                  } catch (e) {
+                    console.log(e.stack, context);
+                  }
                 } else {
                   callback(null, task, context);
                 }
@@ -321,19 +324,27 @@ function executeTask(task, context, callback, print, options) {
                   }
 
                   if(task.action instanceof Function) {
-                    task.action(_task, _context, function (_task, _context) {
-                      callback(null, _task, _context);
-                    });
+                    try {
+                      task.action(_task, _context, function (_task, _context) {
+                        callback(null, _task, _context);
+                      });
+                    } catch(e) {
+                      console.log(e.stack, context);
+                    }
                   // } else if(taskModule && taskModule[task.action] instanceof Function) {
                   //   taskModule[task.action](_task, _context, function(_task, _context) {
                   //     callback(null, _task, _context);
                   //   });
                   } else if(module && module.execute instanceof Function) {
-                    module.execute(_task, _context, function(_task, _context) {
-                      callback(null, _task, _context);
-                    });
+                    try {
+                      module.execute(_task, _context, function (_task, _context) {
+                        callback(null, _task, _context);
+                      });
+                    } catch (e) {
+                      console.log(e.stack, context);
+                    }
                   } else {
-                    logger.error(logPrefix + ' action not exist.');
+                    console.log(logPrefix + ' action not exist.', context);
                     task.err = new Error(logPrefix + ' action not exist.');
                     callback(task, context);
 
@@ -347,10 +358,14 @@ function executeTask(task, context, callback, print, options) {
               function(_task, _context, callback) {
                 if(task.postCallback) {
                   logger.debug(logPrefix + ' postCallback end');
-                  task.postCallback(_task, _context, function(_task, _context) {
-                    logger.debug(logPrefix + ' postCallback end');
-                    callback(null, _task, _context);
-                  });
+                  try {
+                    task.postCallback(_task, _context, function (_task, _context) {
+                      logger.debug(logPrefix + ' postCallback end');
+                      callback(null, _task, _context);
+                    });
+                  } catch (e) {
+                    console.log(e.stack, context);
+                  }
                 } else {
                   callback(null, _task, _context);
                 }
@@ -361,7 +376,7 @@ function executeTask(task, context, callback, print, options) {
               logger.debug(logPrefix + ' end');
 
               if(!_task || !_context) {
-                logger.error(logPrefix + ' Wrong postCallback. Check callback(task, context)');
+                console.log(logPrefix + ' Wrong postCallback. Check callback(task, context)', context);
                 task.err = new Error(logPrefix + ' Wrong postCallback. Check callback(task, context)');
                 callback(task, context);
               }
@@ -385,7 +400,7 @@ function executeTask(task, context, callback, print, options) {
 
 
   } else {
-    logger.error(logPrefix + ' Module not exist.');
+    console.log(logPrefix + ' Module not exist.', context);
     task.err = new Error(logPrefix + ' Module not exist.');
     callback(task, context);
     return false;

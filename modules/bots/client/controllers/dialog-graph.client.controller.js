@@ -731,8 +731,33 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       new BotFilesService({botId: vm.bot_id, _id: vm.currentTab.file_id, fileData: vm.currentTab.data}).$save(function (botFile) {
         $resource('/api/loadBot/:bot_id/:fileName', {}).get({bot_id: vm.botId, fileName: vm.fileName}, function(res) {
 
-          notificationService.success('저장되었습니다');
+          if(res.error) {
+            showLogPanel();
 
+            var logUpdated = ''; var errorLine;
+            for(var i = 0; i < res.error.length; i++) {
+              logUpdated += res.error[i];
+            }
+
+            logUpdated = logUpdated.replace(/\s*at .*/g, '');
+            logUpdated = logUpdated.replace(/\/.*\/([^\/\.]+\.js):(\d+)/g, function(match, p1, p2) {
+              try {errorLine = parseInt(p2);} catch(error) {};
+              return 'Error at ' + p1 + ', line ' + p2;
+            });
+            $rootScope.logUpdated = logUpdated;
+            $rootScope.$broadcast('updateLog');
+
+            notificationService.success('Javascript Error: line ' + errorLine);
+
+            if(errorLine) {
+              vm.editor.focus();
+              $timeout(function () {
+                vm.editor.setCursor({line: errorLine - 1, ch: 0});
+              })
+            }
+          } else {
+            notificationService.success('저장되었습니다');
+          }
         });
       }, function (err) {
         CoreUtils.showConfirmAlert(err.data.message);
