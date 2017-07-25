@@ -1728,11 +1728,11 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
     $scope.getInputType2 = function(str) {
       if(str) {
-        if(str.startsWith('#')) return 'Intent';
-        else if(str.startsWith('@')) return 'Entity';
-        else if(str.startsWith('/')) return 'RegExp';
-        else if(str.startsWith('$')) return 'Type';
-        else if(str.startsWith('if (')) return 'If';
+        if(str.indexOf('#') ===0) return 'Intent';
+        else if(str.indexOf('@') === 0) return 'Entity';
+        else if(str.indexOf('/') === 0) return 'RegExp';
+        else if(str.indexOf('$') === 0) return 'Type';
+        else if(str.indexOf('if (') === 0) return 'If';
         else if(str.length > 0) return 'Keyword';
       } else return null;
     };
@@ -2272,7 +2272,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         if (obj instanceof Object) {
           copy = {};
           for (var attr in obj) {
-            if(attr.startsWith('parent') || attr.startsWith('top')) copy[attr] = obj[attr];
+            if(attr.indexOf('parent') === 0 || attr.indexOf('top') === 0) copy[attr] = obj[attr];
             else if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
           }
           return copy;
@@ -4084,7 +4084,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
           }
         });
         vm.matchedEntities = topicList;
-      }else if(target == 'intent' || vm.curI.str.startsWith('#')){
+      }else if(target == 'intent' || vm.curI.str.indexOf('#') === 0){
         topicList.push('새로만들기');
         angular.forEach(vm.intents, function(item) {
           if (item.toUpperCase().indexOf(topicTerm.toUpperCase()) >= 0) {
@@ -4538,6 +4538,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     }
 
     function drawDialogLines(target) {
+      if(target === undefined) return;
       var svgNode = target.childNodes[0];
       svgNode.innerHTML = '';
 
