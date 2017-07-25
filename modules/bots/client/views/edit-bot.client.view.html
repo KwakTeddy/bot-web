@@ -113,7 +113,7 @@
 
   </div>
 
-  <div class="bot-content" ng-show="vm.type.startsWith('edit')">
+  <div class="bot-content" ng-show="vm.type.substring(0, 4) == 'edit'">
 
     <form name="botForm" class="form-bordered" novalidate="novalidate">
 
@@ -174,7 +174,7 @@
                 <div class="thumbnail" style="text-align: center;height: 190px;">
                   <img src={{vm.getImage(template)}} style="height: 100px;">
                   <div class="caption">
-                    <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit'); vm.selectTemplate(template);">{{template.name}}</a></p>
+                    <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit'); vm.selectTemplate(template);vm.selectedBot = 'template'">{{template.name}}</a></p>
                   </div>
                 </div>
               </div>
@@ -185,7 +185,7 @@
                 <div class="thumbnail" style="text-align: center;height: 190px;">
                   <img src={{vm.getImage(template)}} style="height: 100px;">
                   <div class="caption">
-                    <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
+                    <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit'); vm.selectTemplate(template);vm.selectedBot = 'template'">{{template.name}}</a></p>
                   </div>
                 </div>
               </div>
@@ -196,7 +196,7 @@
                 <div class="thumbnail" style="text-align: center;height: 190px;">
                   <img src={{vm.getImage(template)}} style="height: 100px;">
                   <div class="caption">
-                    <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
+                    <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit'); vm.selectTemplate(template);vm.selectedBot = 'template'">{{template.name}}</a></p>
                   </div>
                 </div>
               </div>
@@ -207,7 +207,7 @@
                 <div class="thumbnail" style="text-align: center;height: 190px;">
                   <img src={{vm.getImage(template)}} style="height: 100px;">
                   <div class="caption">
-                    <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
+                    <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit'); vm.selectTemplate(template);vm.selectedBot = 'template'">{{template.name}}</a></p>
                   </div>
                 </div>
               </div>
@@ -217,7 +217,7 @@
                 <div class="thumbnail" style="text-align: center;height: 190px;">
                   <img src={{vm.getImage(template)}} style="height: 100px;">
                   <div class="caption">
-                    <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
+                    <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit'); vm.selectTemplate(template);vm.selectedBot = 'template'">{{template.name}}</a></p>
                   </div>
                 </div>
               </div>
@@ -227,7 +227,7 @@
                 <div class="thumbnail" style="text-align: center;height: 190px;">
                   <img src={{vm.getImage(template)}} style="height: 100px;">
                   <div class="caption">
-                    <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
+                    <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit'); vm.selectTemplate(template);vm.selectedBot = 'template'">{{template.name}}</a></p>
                   </div>
                 </div>
               </div>
@@ -238,7 +238,7 @@
                 <div class="thumbnail" style="text-align: center;height: 190px;">
                   <img src={{vm.getImage(template)}} style="height: 100px;">
                   <div class="caption">
-                    <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit-detail'); vm.selectTemplate(template);">{{template.name}}</a></p>
+                    <p><a href="#" class="btn btn-default" role="button" ng-click="vm.setEditType('template'); vm.changeType('edit'); vm.selectTemplate(template);vm.selectedBot = 'template'">{{template.name}}</a></p>
                   </div>
                 </div>
               </div>

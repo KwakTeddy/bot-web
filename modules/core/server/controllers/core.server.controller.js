@@ -32,7 +32,7 @@ exports.renderIndex = function (req, res) {
     res.render('modules/core/server/views/nomenu-index', {
       user: req.user
     });
-  } else if(path[1] == 'developer') {
+  } else if(path[1] == 'developer' || path[1] == 'admin') {
     req.session._platform = "web";
     res.render('modules/core/server/views/index', {
       user: req.user || null

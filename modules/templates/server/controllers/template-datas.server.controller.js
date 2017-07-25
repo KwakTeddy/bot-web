@@ -9,6 +9,8 @@ var path = require('path'),
   _ = require('lodash');
   var mongoModule = require(path.resolve('./modules/bot/action/common/mongo'));
 
+var util = require('util');
+
 /**
  * Create a Custom action
  */
@@ -24,10 +26,11 @@ exports.create = function(req, res) {
   });
 };
 
-
 function createTemplateData(template, listName, upTemplateId, content, user, callback) {
   var TemplateData = getTemplateDataModel(template.dataSchema, listName);
-
+  if (upTemplateId && upTemplateId != 'null') {
+    upTemplateId = mongoose.Types.ObjectId(upTemplateId);
+  }
   var _data;
   try {
     _data = JSON.parse(content);
@@ -84,11 +87,13 @@ exports.update = function(req, res) {
       } else {
         res.jsonp(templateData);
       }
-  });
+  }, req.params);
 };
 
-function updateTemplateData(templateData, templateId, listName, upTemplateId, _content, user, callback) {
+function updateTemplateData(templateData, templateId, listName, upTemplateId, _content, user, callback, params) {
+  var TemplateDataModel = mongoose.model('TemplateMenu');
   var _data;
+  upTemplateId = mongoose.Types.ObjectId(upTemplateId);
   try {
     _data = JSON.parse(_content);
 
@@ -99,7 +104,12 @@ function updateTemplateData(templateData, templateId, listName, upTemplateId, _c
   }
 
   templateData = _.extend(templateData , _data);
+  templateData._doc = _.extend(templateData._doc , _data);
   templateData.user = user;
+  var keys = Object.keys(_data);
+  keys.forEach(function (key) {
+    templateData.markModified(key);
+  });
 
   templateData.save(function(err) {
     callback(templateData, err);
@@ -137,30 +147,49 @@ exports.deleteTemplateData = function(templateDataId, dataSchema, listName, call
  * List of Custom actions
  */
 exports.list = function(req, res) {
-  console.log(JSON.stringify(req.params))
-  listTemplateData(req.template, req.params.listName, mongoose.Types.ObjectId(req.params.upTemplateId), function(templateDatas, err) {
+  var upTemplateObjectId = mongoose.Types.ObjectId(req.params.upTemplateId);
+  listTemplateData(req.template, req.params.listName, upTemplateObjectId, function(templateDatas, err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.jsonp(templateDatas);
+      return res.jsonp(templateDatas);
     }
-  });
+  }, req.query);
 };
 
 
-function listTemplateData(template, listName, upTemplateId, callback) {
+function listTemplateData(template, listName, upTemplateId, callback, reqQuery) {
   var TemplateData = getTemplateDataModel(template.dataSchema, listName);
 
   var query = {};
+  var sort = {};
   if(upTemplateId && upTemplateId != 'null') query.upTemplateId = upTemplateId;
-  else query.templateId = template._id;
+  else                                       query.templateId = template._id;
+  if(reqQuery && reqQuery.sortCol && reqQuery.sortDir) sort[reqQuery.sortCol] = reqQuery.sortDir;
+  if(reqQuery && reqQuery.search) {
+    query = {$and: [
+      query,
+      {$or:[]}
+    ]};
+    console.log(util.inspect(TemplateData));
+    var keys = Object.keys(TemplateData.schema.paths);
+    keys.forEach(function (key) {
+      if((TemplateData.schema.paths[key].instance == "String") && (TemplateData.schema.paths[key].path != "image") && (key.substring(0, 1) != '_')){
+        var obj = {};
+        obj[key] = new RegExp(reqQuery.search);
+        query.$and[1].$or.push(obj)
+      }
+    });
+  };
 
-  console.log(JSON.stringify(query))
-
-  TemplateData.find(query).sort('-created').populate('user', 'displayName').exec(function(err, templateDatas) {
-    callback(templateDatas, err);
+  console.log(util.inspect(query, {showHidden: false, depth: null}));
+  TemplateData.find(query).sort(sort).populate('user', 'displayName').exec(function(err, templateDatas) {
+    if(err) console.log(err);
+    else {
+      callback(templateDatas, err);
+    }
   });
 };
 
@@ -200,7 +229,6 @@ function getTemplateLists(dataSchema) {
     for(var i = 0; i < keys.length; i++) {
       var key = keys[i];
       var val = TemplateSchema[key];
-
       var type;
       if (val.type) type = val.type;
       else type = val;
@@ -220,7 +248,9 @@ exports.getTemplateLists = getTemplateLists;
 function getTemplateDataModel(dataSchema, TemplateDataModelName) {
   var TemplateSchema;
   try {
-    TemplateSchema= eval('TemplateSchema = '+ dataSchema);
+    if(typeof dataSchema == "string") TemplateSchema= eval('TemplateSchema = '+ dataSchema);
+    else                              TemplateSchema= dataSchema;
+
 
     var keys = Object.keys(TemplateSchema);
     for(var i = 0; i < keys.length; i++) {
@@ -260,7 +290,8 @@ function getTemplateDataModel(dataSchema, TemplateDataModelName) {
 
   if(TemplateDataModelName && TemplateDataModelName != 'null') {
     // return getModel(TemplateDataModelName, TemplateSchema);
-    return mongoModule.getModel(TemplateDataModelName);
+    // return mongoModule.getModel(TemplateDataModelName);
+    return mongoModule.getModel(TemplateDataModelName, TemplateSchema, {strict : false});
   } else {
     // return getModel(TemplateDataModelName, TemplateSchema);
     return mongoModule.getModel('TemplateData');

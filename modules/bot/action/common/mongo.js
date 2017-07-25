@@ -571,7 +571,6 @@ function getModel(modelName, schema, options) {
   } else {
     _schema = schema;
   }
-
   if (mongoose.models[modelName]) {
     model = mongoose.model(modelName);
   } else if(options !== undefined) {
@@ -580,7 +579,7 @@ function getModel(modelName, schema, options) {
     model = mongoose.model(modelName, new mongoose.Schema(_schema));
   }
 
-  return model;
+  return model
 }
 
  exports.getModel = getModel;
