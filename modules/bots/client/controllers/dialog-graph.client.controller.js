@@ -184,6 +184,13 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
           scope: $scope
         });
         $scope.yes = function () {
+          if(!rightPanelClosed) {
+            var main = document.getElementById('main');
+            var mr = parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+            main.style.marginRight = (mr - 450) + 'px';
+            main.style.overflow = '';
+          }
+
           vm.isChanged = false;
           modalInstance.dismiss();
           $state.go(toState.name);
@@ -731,8 +738,33 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       new BotFilesService({botId: vm.bot_id, _id: vm.currentTab.file_id, fileData: vm.currentTab.data}).$save(function (botFile) {
         $resource('/api/loadBot/:bot_id/:fileName', {}).get({bot_id: vm.botId, fileName: vm.fileName}, function(res) {
 
-          notificationService.success('저장되었습니다');
+          if(res.error) {
+            showLogPanel();
 
+            var logUpdated = ''; var errorLine;
+            for(var i = 0; i < res.error.length; i++) {
+              logUpdated += res.error[i];
+            }
+
+            logUpdated = logUpdated.replace(/\s*at .*/g, '');
+            logUpdated = logUpdated.replace(/\/.*\/([^\/\.]+\.js):(\d+)/g, function(match, p1, p2) {
+              try {errorLine = parseInt(p2);} catch(error) {};
+              return 'Error at ' + p1 + ', line ' + p2;
+            });
+            $rootScope.logUpdated = logUpdated;
+            $rootScope.$broadcast('updateLog');
+
+            notificationService.success('Javascript Error: line ' + errorLine);
+
+            if(errorLine) {
+              vm.editor.focus();
+              $timeout(function () {
+                vm.editor.setCursor({line: errorLine - 1, ch: 0});
+              })
+            }
+          } else {
+            notificationService.success('저장되었습니다');
+          }
         });
       }, function (err) {
         CoreUtils.showConfirmAlert(err.data.message);
@@ -1703,11 +1735,11 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
     $scope.getInputType2 = function(str) {
       if(str) {
-        if(str.startsWith('#')) return 'Intent';
-        else if(str.startsWith('@')) return 'Entity';
-        else if(str.startsWith('/')) return 'RegExp';
-        else if(str.startsWith('$')) return 'Type';
-        else if(str.startsWith('if (')) return 'If';
+        if(str.indexOf('#') ===0) return 'Intent';
+        else if(str.indexOf('@') === 0) return 'Entity';
+        else if(str.indexOf('/') === 0) return 'RegExp';
+        else if(str.indexOf('$') === 0) return 'Type';
+        else if(str.indexOf('if (') === 0) return 'If';
         else if(str.length > 0) return 'Keyword';
       } else return null;
     };
@@ -2018,7 +2050,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
       if(rightPanelClosed) {
         var main = document.getElementById('main');
-        var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+        var mr = parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
         main.style.marginRight = (mr + 450) + 'px';
         main.style.overflow = 'visible';
       }
@@ -2034,7 +2066,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     $scope.closeEditorTask= function() {
       // if(!rightPanelClosed) {
       //   var main = document.getElementById('main');
-      //   var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+      //   var mr = parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
       //   main.style.marginRight = (mr + 450) + 'px';
       //   main.style.overflow = 'visible';
       // }
@@ -2049,7 +2081,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     $scope.openEditor = function() {
       if(rightPanelClosed) {
         var main = document.getElementById('main');
-        var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+        var mr = parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
         main.style.marginRight = (mr + 450) + 'px';
         main.style.overflow = 'visible';
       }
@@ -2064,7 +2096,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     $scope.closeEditor = function() {
       if(!rightPanelClosed) {
         var main = document.getElementById('main');
-        var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+        var mr = parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
         main.style.marginRight = (mr - 450) + 'px';
         main.style.overflow = '';
       }
@@ -2079,7 +2111,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     $scope.openEditorIntent  = function() {
       if(rightPanelClosed) {
         var main = document.getElementById('main');
-        var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+        var mr = parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
         main.style.marginRight = (mr + 450) + 'px';
         main.style.overflow = 'visible';
       }
@@ -2094,7 +2126,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     $scope.closeEditorIntent= function() {
       // if(!rightPanelClosed) {
       //   var main = document.getElementById('main');
-      //   var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+      //   var mr = parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
       //   main.style.marginRight = (mr + 450) + 'px';
       //   main.style.overflow = 'visible';
       // }
@@ -2108,7 +2140,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     $scope.openEditorEntity = function() {
       if(rightPanelClosed) {
         var main = document.getElementById('main');
-        var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+        var mr = parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
         main.style.marginRight = (mr + 450) + 'px';
         main.style.overflow = 'visible';
       }
@@ -2123,7 +2155,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     $scope.closeEditorEntity = function() {
       // if(!rightPanelClosed) {
       //   var main = document.getElementById('main');
-      //   var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+      //   var mr = parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
       //   main.style.marginRight = (mr + 450) + 'px';
       //   main.style.overflow = 'visible';
       // }
@@ -2247,7 +2279,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         if (obj instanceof Object) {
           copy = {};
           for (var attr in obj) {
-            if(attr.startsWith('parent') || attr.startsWith('top')) copy[attr] = obj[attr];
+            if(attr.indexOf('parent') === 0 || attr.indexOf('top') === 0) copy[attr] = obj[attr];
             else if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
           }
           return copy;
@@ -4059,7 +4091,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
           }
         });
         vm.matchedEntities = topicList;
-      }else if(target == 'intent' || vm.curI.str.startsWith('#')){
+      }else if(target == 'intent' || vm.curI.str.indexOf('#') === 0){
         topicList.push('새로만들기');
         angular.forEach(vm.intents, function(item) {
           if (item.toUpperCase().indexOf(topicTerm.toUpperCase()) >= 0) {
@@ -4513,6 +4545,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     }
 
     function drawDialogLines(target) {
+      if(target === undefined) return;
       var svgNode = target.childNodes[0];
       svgNode.innerHTML = '';
 

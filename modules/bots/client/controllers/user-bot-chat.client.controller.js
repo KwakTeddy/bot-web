@@ -29,8 +29,9 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     vm.stt = false;
     vm.tts = false;
 
-    vm.openChatModal = function () {
-      vm.connectUserBot('Shinhancard');
+    vm.openChatModal = function (botId) {
+      vm.connectUserBot(botId);
+      console.log(botId);
       vm.sendMsg('시작');
       vm.modalInstance = $uibModal.open({
         templateUrl: 'modules/bots/client/views/bot-graph-knowledge.client.view.html',
@@ -897,7 +898,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
 function closeChatPanel() {
   var main = document.getElementById('main');
-  var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+  var mr = parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
   main.style.marginRight = (mr - 330) + 'px';
 
   var chatPanel = document.getElementById('chat-include');
@@ -911,7 +912,7 @@ function closeChatPanel() {
 
 function openChatPanel() {
   var main = document.getElementById('main');
-  var mr = Number.parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
+  var mr = parseInt((main.currentStyle || window.getComputedStyle(main)).marginRight)
   main.style.marginRight = (mr + 330) + 'px';
 
 

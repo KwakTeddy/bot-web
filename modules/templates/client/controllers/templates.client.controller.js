@@ -20,15 +20,26 @@
     vm.categorys = [
       '요식업', '숙박여행', '의료건강', '교육', '뷰티', '온라인쇼핑', '오픈마켓', '비지니스'
     ];
+    var schema = JSON.parse(vm.template.dataSchema);
+    var keys = Object.keys(schema);
+    keys.forEach(function (key) {
+      if(schema[key].schema && (typeof schema[key].schema == "String")){
+        schema[key].schema = JSON.parse(schema[key].schema);
+      }
+    });
+    // vm.template.dataSchema = JSON.stringify(schema);
 
     // create the editor
     var container = document.getElementById("jsoneditor");
-    var options = {name: vm.template.id, sortObjectKeys: true, mode: 'tree'};
+    var options = {name: vm.template.id, mode: 'tree'};
     var editor = new JSONEditor2(container, options);
-    if(vm.template.dataSchema){
-      vm.template.dataSchema = JSON.parse(vm.template.dataSchema);
-      editor.set(vm.template.dataSchema);
-    }
+    // if(vm.template.dataSchema){
+    //   console.log(vm.template.dataSchema);
+    //   vm.template.dataSchema = JSON.parse(vm.template.dataSchema);
+    //   editor.set(vm.template.dataSchema);
+    // }
+    if(schema) editor.set(schema);
+
 
     vm.toTree = function () {
       editor.destroy();
