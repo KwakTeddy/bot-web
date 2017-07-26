@@ -7,16 +7,33 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-                "types": [
-                	"myname"
+				"types": [
+					"myname"
 				]
-            }
+			}
 		],
 		"output": {
 			"text": "안녕하세요1 +myname+",
 			"kind": "Text"
 		},
-		"name": "대답"
+		"name": "대답",
+		"task": "savename",
+		"children": [
+			{
+				"name": "dialog_default1",
+				"id": "default1",
+				"filename": "default",
+				"input": [
+					{
+						"if": " true"
+					}
+				],
+				"output": {
+					"text": "+myname+",
+					"kind": "Text"
+				}
+			}
+		]
 	}
 ];
 

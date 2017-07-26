@@ -1,6 +1,8 @@
 var path = require('path');
 var bot = require(path.resolve('config/lib/bot')).getBot('bot_prac');
 var logger = require(path.resolve('./config/lib/logger'));
+// var regexpTypeCheck = require(path.resolve('./modules/bot/global/type/common.type'));
+
 
 const IN_TAG_START = '{';
 const IN_TAG_END = '}';
@@ -20,8 +22,7 @@ var myname = {
     name: 'myname',
     typeCheck: regexpTypeCheck,
     regexp: /(.*)/,
-    raw: true,
-    context: true
+    raw: true
 };
 bot.setType("myname", myname);
 
@@ -51,15 +52,3 @@ function regexpTypeCheck (text, type, task, context, callback) {
 
     callback(text, task, matched);
 };
-
-
-
-
-
-// var savename = {
-//     name: 'savename',
-//     action: function(task, context, callback) {
-//
-//         callback(task,context);
-//     }
-// }

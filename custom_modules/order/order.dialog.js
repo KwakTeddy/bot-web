@@ -13,7 +13,7 @@ var address = require(path.resolve('modules/bot/action/common/address'));
 var orderData = utils.requireNoCache(path.resolve('custom_modules/order/data'));
 
 var messages = require(path.resolve('modules/messages/server/controllers/messages.server.controller'));
-var botUser= require(path.resolve('modules/bot-users/server/controllers/bot-users.server.controller'))
+var botUser= require(path.resolve('modules/bot-users/server/controllers/bot-users.server.controller'));
 
 var commonDialogs = [
   { name: '시작',

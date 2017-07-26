@@ -155,7 +155,6 @@ var mobileType = {
         else return '휴대폰전화번호 형식으로 입력해 주세요';
     }
 };
-
 bot.setType("mobile", mobileType);
 
 function regexpTypeCheck (text, type, task, context, callback) {
