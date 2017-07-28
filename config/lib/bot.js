@@ -230,7 +230,7 @@ function loadBot(botName, callback) {
           fileFilter = function(file) {
             if(bot && bot.dialogFiles && _.includes(filePaths, file)) return false;
 
-            else if(file.endsWith('.js') && !file.endsWith('.dialog.js') && !file.endsWith('.bot.js')) {
+            else if(file.endsWith('.js') && !file.endsWith('.dialog.js') && !file.endsWith('.test.js') && !file.endsWith('.bot.js')) {
               // var jsPath = path.resolve('custom_modules/' + botName + '/' + file);
               // var info = path.parse(jsPath);
               // var dlgPath = path.resolve('custom_modules/' + botName + '/' + info.name + '.dlg');

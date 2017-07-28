@@ -102,16 +102,14 @@ function receivedMessage(event) {
   messageId = message.mid,
   messageText = message.text,
   messageAttachments = message.attachments,
-  imageData = '';
+  attachmentData = '';
 
   if (messageAttachments){
-    imageData = JSON.parse(JSON.stringify(messageAttachments));
-    // message = {};
-    if (imageData[0].type == 'image'){
-      imageData[0].type = 'photo'
-    }
-    message['inputType'] =  imageData[0].type;
-    message.url = imageData[0].payload.url;
+    attachmentData = JSON.parse(JSON.stringify(messageAttachments));
+    if (attachmentData[0].type == 'image') attachmentData[0].type = 'photo';
+    if (attachmentData[0].type == 'fallback') return true;
+    if (attachmentData[0].payload && attachmentData[0].payload.url) message.url = attachmentData[0].payload.url;
+    message['inputType'] =  attachmentData[0].type;
     messageText='fbImage';
   }
 
@@ -126,7 +124,7 @@ function receivedMessage(event) {
               contextModule.getContext(data.userBotId, 'facebook', recipientID, null, function(context) {
                 console.log(util.inspect(context.user));
                 context.user.liveChat = 3;
-                return done(null);
+                return done(true);
               })
             }
           });

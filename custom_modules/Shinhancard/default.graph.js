@@ -15,8 +15,8 @@ var dialogs = [
 		"task": {
 			"name": "setcount"
 		},
-		"inRaw": "현대",
-		"inNLP": "현대",
+		"inRaw": "퀴즈",
+		"inNLP": "퀴즈",
 		"children": [
 			{
 				"name": "정답1",
@@ -31,8 +31,8 @@ var dialogs = [
 				"task": {
 					"name": "resetcount"
 				},
-				"inRaw": "바보야",
-				"inNLP": "바보 야",
+				"inRaw": "신학카드",
+				"inNLP": "신학 카드",
 				"children": [
 					{
 						"name": "퀴즈2",
@@ -55,7 +55,9 @@ var dialogs = [
 									}
 								],
 								"output": "정답입니다! \n\n'그리고' 라고 입력하시면 마지막 퀴즈를 낼게요.",
-								"task": "resetcount",
+								"task": {
+									"name": "resetcount"
+								},
 								"children": [
 									{
 										"name": "퀴즈3",
@@ -179,8 +181,8 @@ var dialogs = [
 												"task": "quizcount"
 											}
 										],
-										"inRaw": "왜?",
-										"inNLP": "왜"
+										"inRaw": "그리구",
+										"inNLP": "그리다"
 									},
 									{
 										"name": "퀴즈3(이어짐실패)",
@@ -198,7 +200,9 @@ var dialogs = [
 											}
 										}
 									}
-								]
+								],
+								"inRaw": "페이스톡, 카타오, 네이버",
+								"inNLP": "페이 스톡 카 타오 네이버"
 							},
 							{
 								"name": "정답한계2",
@@ -259,8 +263,8 @@ var dialogs = [
 								}
 							}
 						],
-						"inRaw": "몰ㄹ",
-						"inNLP": "몰다 ㄹ"
+						"inRaw": "톡",
+						"inNLP": "톡"
 					},
 					{
 						"name": "퀴즈2(이어감실패)",
@@ -344,12 +348,41 @@ var dialogs = [
 				},
 				{
 					"text": "신한 FAN 납부 서비스"
+				},
+				{
+					"text": "이전"
+				},
+				{
+					"text": "처음"
 				}
 			]
 		},
 		"name": "신한 FAN 플랫폼 소개",
-		"inRaw": "FAN",
-		"inNLP": "FAN",
+		"inRaw": "판",
+		"inNLP": "판",
+		"task": {
+			"output": "오우, FAN 을 선택해 주셨군요! 원하는 서비스를 선택해 주세요.\n \n 1. 신한 FAN에 가입하고 싶어요!\n 2. 신한 FAN은 어떤 혜택이 있나요?\n 3. 신한 FAN 활용 꿀팁 좀 알려주세요!\n 4. FAN으로 납부서비스도 한다구요?",
+			"buttons": [
+				{
+					"text": "신한 FAN 가입"
+				},
+				{
+					"text": "신한 FAN 혜택보기"
+				},
+				{
+					"text": "신한 FAN 활용꿀팁"
+				},
+				{
+					"text": "신한 FAN 납부 서비스"
+				},
+				{
+					"text": "이전"
+				},
+				{
+					"text": "처음"
+				}
+			]
+		},
 		"children": [
 			{
 				"name": "FAN 가입_",
@@ -375,7 +408,13 @@ var dialogs = [
 					"buttons": [
 						{
 							"text": "가입하고 경품타자",
-							"url": "https://newm.shinhancard.com/event/2015/pt06.jsp?prm=facebook"
+							"url": "https://newm.shinhancard.com/event/2015/pt06.jsp?prm=kakao"
+						},
+						{
+							"text": "이전"
+						},
+						{
+							"text": "처음"
 						}
 					],
 					"output": "현명한 선택! 결제+혜택+재미가 있는 신한 FAN 입니다. \n\n✔ 신한 FAN은 신한카드가 없어도 가입가능!  \n✔ 신한 FAN에 가입 하시면 다양한 경품이 가득! \n✔ 신규 고객이라면 100% 당첨 경품 제공!",
@@ -510,7 +549,7 @@ var dialogs = [
 							}
 						],
 						"output": {
-							"output": "신한 FAN 에서 매월 다양한 이벤트를 준비하고 여러분을 기다려요!\n \n✔ 6월 FAN 신규가입 이벤트\n✔ 6월 FAN 여름맞이 이벤트\n✔ 6월 FAN 추가포인트 적립 이벤트\n\n신한 FAN 고객이라면 바로 참여하러 고고. \n\n아직 가입 전이라면 '가입하기'부터!",
+							"output": "신한 FAN 에서 매월 다양한 이벤트를 준비하고 여러분을 기다려요!\n \n✔ 7월 FAN 신규가입 이벤트\n✔ 7월 FAN 여름맞이 이벤트\n✔ 7월 FAN 추가포인트 적립 이벤트\n\n신한 FAN 고객이라면 바로 참여하러 고고. \n\n아직 가입 전이라면 '가입하기'부터!",
 							"buttons": [
 								{
 									"text": "이벤트 참여하기",
@@ -1564,13 +1603,13 @@ var dialogs = [
 											}
 										],
 										"output": {
-											"output": "여행 즐기시는 고객님께서 좋아하실만한 신용카드가 3가지나 있네요. 아래 3가지 카드 중에서 관심 자세히 보고 싶으신 카드를 선택해주세요. \n \n 1. 항공 마일리지에 다양한 포인트 적립까지 제공합니다 [신한카드 Air Platinum#]\n\n 2. 아시아나 마일리지 적립의 끝판왕 [신한카드 아시아나 Air1.5]\n\n 3. 항공 마일리지 적립, PP카드와 Gift Option 제공 [신한카드 The Classic+ 카드]",
+											"output": "여행 즐기시는 고객님께서 좋아하실만한 신용카드가 3가지나 있네요. 아래 3가지 카드 중에서 관심 자세히 보고 싶으신 카드를 선택해주세요. \n \n 1. 아시아나 마일리지 적립의 끝판왕 [신한카드 아시아나 Air1.5]\n\n 2. 항공 마일리지에 다양한 포인트 적립까지 제공합니다 [신한카드 Air Platinum#]\n\n 3. 항공 마일리지 적립, PP카드와 Gift Option 제공 [신한카드 The Classic+ 카드]",
 											"buttons": [
 												{
-													"text": "Air Platinum#"
+													"text": "아시아나 Air1.5"
 												},
 												{
-													"text": "아시아나 Air 1.5"
+													"text": "Air Platinum#"
 												},
 												{
 													"text": "The Classic+"
@@ -1579,39 +1618,15 @@ var dialogs = [
 										},
 										"children": [
 											{
-												"name": "Air Platinum#",
-												"id": "default155",
-												"filename": "default",
-												"input": [
-													{
-														"text": "1"
-													},
-													{
-														"text": "Air Platinum"
-													}
-												],
-												"output": {
-													"output": "(광고) [신한카드 Air Platinum#]\n마일리지와 포인트를 동시에!\n\n✔ 항공 마일리지 적립\n✔ 포인트 추가 적립\n✔ 무료 주차/발렛파킹 \n\n-연회비\nVISA 4만원\nMaster 4만원\nURS 3만 7천원\n가족카드 5천원(별도)\n\n자세한 내용을 보시려면 카드 아래의 바로가기를 클릭해주세요.\n\n[유의사항]\n- 계약 체결 전 상품에 관한 상세한 사항은 상품설명서 및 약관을 읽어보시기 바랍니다.\n- 연체 이자율은 연체일수 및 약정금리에 따라 23.0~27.9%가 적용됩니다.\n- 신용카드 남용은 가계경제에 위협이 됩니다.\n- 수신거부 080-800-8114(무료)\n- 여신협회 심의필번호 제 2017-c1f-07715호(2017.06.27~2018.06.26)",
-													"image": {
-														"url": "/files/Shinhancard1497430841837.jpg",
-														"displayname": "card17.jpg"
-													}
-												},
-												"task": "Air"
-											},
-											{
 												"name": "Asiana",
 												"id": "default156",
 												"filename": "default",
 												"input": [
 													{
-														"text": "2"
+														"intent": "아시아나 Air"
 													},
 													{
-														"text": "아시아나 Air 1 5"
-													},
-													{
-														"text": "아시아나"
+														"text": "1"
 													}
 												],
 												"output": {
@@ -1622,6 +1637,27 @@ var dialogs = [
 													}
 												},
 												"task": "Air15"
+											},
+											{
+												"name": "Air Platinum#",
+												"id": "default155",
+												"filename": "default",
+												"input": [
+													{
+														"intent": "Air Platinum#"
+													},
+													{
+														"text": "2"
+													}
+												],
+												"output": {
+													"output": "(광고) [신한카드 Air Platinum#]\n마일리지와 포인트를 동시에!\n\n✔ 항공 마일리지 적립\n✔ 포인트 추가 적립\n✔ 무료 주차/발렛파킹 \n\n-연회비\nVISA 4만원\nMaster 4만원\nURS 3만 7천원\n가족카드 5천원(별도)\n\n자세한 내용을 보시려면 카드 아래의 바로가기를 클릭해주세요.\n\n[유의사항]\n- 계약 체결 전 상품에 관한 상세한 사항은 상품설명서 및 약관을 읽어보시기 바랍니다.\n- 연체 이자율은 연체일수 및 약정금리에 따라 23.0~27.9%가 적용됩니다.\n- 신용카드 남용은 가계경제에 위협이 됩니다.\n- 수신거부 080-800-8114(무료)\n- 여신협회 심의필번호 제 2017-c1f-07715호(2017.06.27~2018.06.26)",
+													"image": {
+														"url": "/files/Shinhancard1497430841837.jpg",
+														"displayname": "card17.jpg"
+													}
+												},
+												"task": "Air"
 											},
 											{
 												"name": "TheClassic+",
@@ -2033,7 +2069,9 @@ var dialogs = [
 												"displayname": "card29.jpg"
 											}
 										},
-										"task": "MainCheck",
+										"task": {
+											"name": "MainCheck"
+										},
 										"inRaw": "슈퍼실속파",
 										"inNLP": "슈퍼 실속 파"
 									},
@@ -2072,8 +2110,8 @@ var dialogs = [
 										}
 									}
 								],
-								"inRaw": "이전",
-								"inNLP": "이전",
+								"inRaw": "아니요 좀 더 찾아주세요",
+								"inNLP": "아니다 좀 더 찾다",
 								"task": {
 									"output": "그렇다면 고객님의 소비성향을 알려주세요. \n\n1. 주유, 쇼핑 등 생활 혜택에 관심이 있으신 알뜰 실속파\n2. 해외에서도 혜택은 챙기는 센스실속파\n3. 주거래 계좌 연결하시면 기본+추가+특별 적립이 한번에! 슈퍼 실속파",
 									"buttons": [
@@ -2650,6 +2688,43 @@ var dialogs = [
 								}
 							},
 							{
+								"name": "일상대화_바쁨",
+								"id": "default31322340",
+								"filename": "default",
+								"input": [
+									{
+										"text": "바쁘다"
+									},
+									{
+										"text": "오늘 바쁘다"
+									},
+									{
+										"text": "바쁘다 가요"
+									}
+								],
+								"output": "아무리 바쁘셔도 건강은 꼭 챙기세요.\n지금 기지개 한번 쭉~ 펴보시는 건 어떠세요?\n\n원하시는 질문 입력하시면 전 답을 열심히 찾아보도록 하겠습니다."
+							},
+							{
+								"name": "일상대화_짜증",
+								"id": "default31322341",
+								"filename": "default",
+								"input": [
+									{
+										"text": "짜증 나다"
+									},
+									{
+										"text": "미치다"
+									},
+									{
+										"text": "화나다"
+									},
+									{
+										"text": "빡치다"
+									}
+								],
+								"output": "저는 그럴 때 달달한 걸 먹거나, 푹 잡니다.\n스트레스를 담아두고 계시면 건강에도 좋지 않으니 고객님께 맞는 해소 방법을 꼭 찾으시길 바래요."
+							},
+							{
 								"name": "미검색",
 								"id": "default1322331",
 								"filename": "default",
@@ -3041,6 +3116,46 @@ var dialogs = [
 						}
 					},
 					{
+						"name": "일상대화_바쁨",
+						"id": "default31322338",
+						"filename": "default",
+						"input": [
+							{
+								"text": "바쁘다"
+							},
+							{
+								"text": "오늘 바쁘다"
+							},
+							{
+								"text": "바쁘다 가요"
+							}
+						],
+						"output": "아무리 바쁘셔도 건강은 꼭 챙기세요.\n지금 기지개 한번 쭉~ 펴보시는 건 어떠세요?\n\n원하시는 질문 입력하시면 전 답을 열심히 찾아보도록 하겠습니다."
+					},
+					{
+						"name": "일상대화_짜증",
+						"id": "default31322339",
+						"filename": "default",
+						"input": [
+							{
+								"text": "짜증 나다"
+							},
+							{
+								"text": "미치다"
+							},
+							{
+								"text": "화나다"
+							},
+							{
+								"text": "빡치다"
+							},
+							{
+								"text": "짜증"
+							}
+						],
+						"output": "저는 그럴 때 달달한 걸 먹거나, 푹 잡니다.\n스트레스를 담아두고 계시면 건강에도 좋지 않으니 고객님께 맞는 해소 방법을 꼭 찾으시길 바래요."
+					},
+					{
 						"name": "미선택",
 						"id": "default275",
 						"filename": "default",
@@ -3417,6 +3532,46 @@ var dialogs = [
 				}
 			},
 			{
+				"name": "일상대화_바쁨",
+				"id": "default31322336",
+				"filename": "default",
+				"input": [
+					{
+						"text": "바쁘다"
+					},
+					{
+						"text": "오늘 바쁘다"
+					},
+					{
+						"text": "바쁘다 가요"
+					}
+				],
+				"output": "아무리 바쁘셔도 건강은 꼭 챙기세요.\n지금 기지개 한번 쭉~ 펴보시는 건 어떠세요?\n\n원하시는 질문 입력하시면 전 답을 열심히 찾아보도록 하겠습니다."
+			},
+			{
+				"name": "일상대화_짜증",
+				"id": "default31322337",
+				"filename": "default",
+				"input": [
+					{
+						"text": "짜증 나다"
+					},
+					{
+						"text": "미치다"
+					},
+					{
+						"text": "화나다"
+					},
+					{
+						"text": "빡치다"
+					},
+					{
+						"text": "짜증"
+					}
+				],
+				"output": "저는 그럴 때 달달한 걸 먹거나, 푹 잡니다.\n스트레스를 담아두고 계시면 건강에도 좋지 않으니 고객님께 맞는 해소 방법을 꼭 찾으시길 바래요."
+			},
+			{
 				"name": "미검색",
 				"id": "default274",
 				"filename": "default",
@@ -3448,10 +3603,8 @@ var dialogs = [
 				"if": " context.user.channel == 'facebook'"
 			}
 		],
-		"output": "페북지기에게 남기시고 싶은 말씀을 남겨주세요.\n남기고 싶으신 말씀을 다 남긴후에는 '시작'이라고 입력해주세요.\n감사합니다! \n\n*이후 '시작' 메세지 입력 전까지 챗봇은 작동하지 않습니다.",
-		"task": {
-			"name": "liveChat"
-		}
+		"output": "페북지기에게 메시지를 자유롭게 남겨주세요.\n자유 메시지는 바로 응답되지 않지만, 페북지기가 영업시간내 모두 확인합니다.\n\n메시지를 모두 남기신 후, 챗봇으로 돌아가시려면 '시작'이라고 입력해 주세요.",
+		"task": "liveChat"
 	},
 	{
 		"name": "정치",
@@ -3554,9 +3707,6 @@ var dialogs = [
 				"text": "죽다 버리다"
 			},
 			{
-				"text": "짜증"
-			},
-			{
 				"text": "꺼지다"
 			},
 			{
@@ -3567,9 +3717,6 @@ var dialogs = [
 			},
 			{
 				"text": "ㅅㅂㄴ"
-			},
-			{
-				"text": "미치다"
 			},
 			{
 				"text": "눈 까다"
@@ -3760,37 +3907,79 @@ var dialogs = [
 			}
 		],
 		"output": "저.. 저도요.. (부끄) \n저 사랑에 죄송한데 초면해도 될까요? ♥\n\n궁금하신 다른 키워드를 입력해 주세요. 알파고처럼 대답하겠습니다."
+	},
+	{
+		"name": "일상대화_바쁨",
+		"id": "default31322334",
+		"filename": "default",
+		"input": [
+			{
+				"text": "바쁘다"
+			},
+			{
+				"text": "오늘 바쁘다"
+			},
+			{
+				"text": "바쁘다 가요"
+			}
+		],
+		"output": "아무리 바쁘셔도 건강은 꼭 챙기세요.\n지금 기지개 한번 쭉~ 펴보시는 건 어떠세요?\n\n원하시는 질문 입력하시면 전 답을 열심히 찾아보도록 하겠습니다."
+	},
+	{
+		"name": "일상대화_짜증",
+		"id": "default31322335",
+		"filename": "default",
+		"input": [
+			{
+				"text": "짜증 나다"
+			},
+			{
+				"text": "짜증"
+			},
+			{
+				"text": "미치다"
+			},
+			{
+				"text": "화나다"
+			},
+			{
+				"text": "빡치다"
+			}
+		],
+		"output": "저는 그럴 때 달달한 걸 먹거나, 푹 잡니다.\n스트레스를 담아두고 계시면 건강에도 좋지 않으니 고객님께 맞는 해소 방법을 꼭 찾으시길 바래요."
 	}
 ];
 
 var commonDialogs = [
-  {
-    "id": "defaultcommon0",
-    "filename": "defaultcommon",
-    "name": "시작",
-    "input": [
-      {
-        "text": "시작"
-      }
-    ],
-    "task": "startTask",
-    "output": {
-      "output": "안녕하세요, 신한카드입니다. \n저는 전화, 홈페이지 보다 메신저가 편한 고객님들을 위해 새롭게 선보이는 신한카드 자동채팅 서비스입니다.\n결제\\+혜택\\+재미=신한 FAN 과 카드에 대해 알려드리겠습니다.\n많이 이용해 주실꺼죠?\n\n신한 FAN, 카드 추천, 자주 묻는 질문(FAQ) 중 하나를 선택해 주세요.\n\n1. 신한 FAN을 알려줘요\n2. 내게 꼭 맞는 카드를 추천해줘요\n3. 궁금한게 있는데요(FAQ)",
-      "buttons": [
-        {
-          "text": "신한 FAN을 알려줘요"
-        },
-        {
-          "text": "내게 꼭 맞는 카드를 추천해줘요"
-        },
-        {
-          "text": "궁금한게 있는데요(FAQ)"
-        }
-      ]
-    },
-    "inRaw": "처음",
-    "inNLP": "처음"
-  },
+	{
+		"id": "defaultcommon0",
+		"filename": "defaultcommon",
+		"name": "시작",
+		"input": [
+			{
+				"text": "시작"
+			}
+		],
+		"output": {
+			"output": "안녕하세요, 신한카드입니다. \n저는 전화, 홈페이지 보다 메신저가 편한 고객님들을 위해 새롭게 선보이는 신한카드 자동채팅 서비스입니다.\n결제+혜택+재미=신한 FAN 과 카드에 대해 알려드리겠습니다.\n많이 이용해 주실꺼죠?\n\n신한 FAN, 카드 추천, 자주 묻는 질문(FAQ) 중 하나를 선택해 주세요.\n\n1. 신한 FAN을 알려줘요\n2. 내게 꼭 맞는 카드를 추천해줘요\n3. 궁금한게 있는데요(FAQ)",
+			"buttons": [
+				{
+					"text": "신한 FAN을 알려줘요"
+				},
+				{
+					"text": "내게 꼭 맞는 카드를 추천해줘요"
+				},
+				{
+					"text": "궁금한게 있는데요(FAQ)"
+				}
+			]
+		},
+		"inRaw": "반가워요, 신한카드",
+		"inNLP": "반갑다 신한카드",
+		"task": {
+			"name": "startTask"
+		}
+	},
 	{
 		"id": "defaultcommon1",
 		"filename": "defaultcommon",
@@ -3901,9 +4090,7 @@ var commonDialogs = [
 				"text": "퀴즈"
 			}
 		],
-		"output": {
-			"call": "퀴즈"
-		}
+		"output": "아쉽게도 퀴즈 이벤트는 종료되었습니다. \n하지만 다른 궁금하신 부분에 대해 답변할 준비는 되어 있습니다!"
 	},
 	{
 		"name": "dialog_commondefault31322334",
