@@ -1,9 +1,9 @@
 var path = require('path');
 var botlib = require(path.resolve('config/lib/bot'));
 
-var botexp2 = {
+var bot_exp5 = {
   use: true
 };
 
-botlib.makeBot('botexp2', botexp2);
+botlib.makeBot('bot_exp5', bot_exp5);
 

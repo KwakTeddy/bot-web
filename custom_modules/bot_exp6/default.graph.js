@@ -7,61 +7,52 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "안녕"
+				"text": "1"
 			}
 		],
 		"output": [
 			{
-				"text": "번호 입력해라",
+				"text": "#option#+content+#",
 				"kind": "Text"
 			}
 		],
 		"name": "dialog_default0",
+		"task": {
+			"name": "optionStart"
+		},
 		"children": [
 			{
-				"name": "문자발송",
-				"id": "default2",
+				"name": "",
+				"id": "default1",
 				"filename": "default",
 				"input": [
 					{
 						"types": [
-							"mobile"
+							"listType"
 						]
 					}
 				],
 				"output": [
 					{
-						"text": "보냈다. 번호 입력해라",
+						"if": "!context.dialog.done",
+						"kind": "Action",
+						"repeat": "1",
+						"options": {
+							"output": "+optionStr+\n\n#option#+content+#"
+						}
+					},
+					{
+						"text": "asdf",
+						"kind": "Text"
+					},
+					{
+						"text": "ㅗㅎ롤호",
 						"kind": "Text"
 					}
 				],
-				"task": "sms",
-				"children": [
-					{
-						"name": "",
-						"id": "default3",
-						"filename": "default",
-						"input": [
-							{
-								"regexp": "(.*)"
-							}
-						],
-						"output": [
-							{
-								"if": "dialog.inRaw == dialog.context.smsAuth",
-								"text": "맞았어",
-								"kind": "Text",
-								"id": "default3_0"
-							},
-							{
-								"if": "true",
-								"text": "틀렸어",
-								"kind": "Text",
-								"id": "default3_1"
-							}
-						]
-					}
-				]
+				"task": {
+					"name": "testTask"
+				}
 			}
 		]
 	}
@@ -77,7 +68,7 @@ var commonDialogs = [
 				"text": "시작"
 			}
 		],
-		"output": "botexp2 바꾼당ㄴㄹ"
+		"output": "bot_exp6 입니다."
 	},
 	{
 		"id": "defaultcommon1",
@@ -103,6 +94,6 @@ var commonDialogs = [
 		"output": "알아듣지 못했습니다"
 	}
 ];
-var _bot = require(require('path').resolve("config/lib/bot")).getBot('botexp2');
+var _bot = require(require('path').resolve("config/lib/bot")).getBot('bot_exp6');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

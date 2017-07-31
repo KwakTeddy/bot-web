@@ -47,18 +47,18 @@ exports.coupangOrderInquiry = {
 
         var key = Hmac.generateSync(method, uri, secretKey, accessKey);
 
-        request({
-            url: host + uri,
-            method: 'get',
-            headers: {
-                "Authorization" : key
-            }
-        }, function (error, response, body) {
-            console.log(body);
-            if (!error && response.statusCode == 200) {
+            request({
+                url: host + uri,
+                method: 'get',
+                headers: {
+                    "Authorization" : key
+                }
+            }, function (error, response, body) {
+                console.log(body);
+                if (!error && response.statusCode == 200) {
 
-            }
-            callback(task, context);
+                }
+                callback(task, context);
 
         });
         callback(task, context);

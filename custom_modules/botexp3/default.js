@@ -22,9 +22,9 @@ var test = {
 bot.setType('test', test);
 
 var options = [
-  {name:"color", kind:['white', 'grey', 'black']},
-  {name:"width", kind:['30', '32', '34']},
-  {name:"length", kind:['90', '95', '100']},
+  {name:"color", kind:[{content:'white'}, {content:'grey'}, {content:'black'}]},
+  {name:"width", kind:[{content:'30'}, {content:'32'}, {content:'34'}]},
+  {name:"length", kind:[{content:'90'}, {content:'95'}, {content:'100'}]},
 ];
 
 var optionList = {
@@ -37,12 +37,13 @@ bot.setType('optionList', optionList);
 var makeOption = {
   action: function (task,context,callback) {
     context.dialog.optionIndex++;
-    if (optionIndex == options.length) { 
+    if (context.dialog.optionIndex == options.length) { 
       context.dialog.optionDone = true; 
       callback(task,context); 
     };
-    context.dialog.optionStr += context.dialog.optionList + ', ';
-    context.dialog.option = options[context.dialog.optionIndex];
+    context.dialog.optionStr += context.dialog.optionList.content + ', ';
+    //context.dialog.option = options[context.dialog.optionIndex];
+    //context.dialog.option = options[context.dialog.optionIndex].kind;
     callback(task,context);
 	}
 };
@@ -54,9 +55,10 @@ var OptionStart = {
     if(!context.dialog.optionIndex) 
     {
       context.dialog.optionIndex = 0;
-      context.dialog.option = options[0];
+      context.dialog.optionStr = '';
+      //context.dialog.option = options[0];
     };
-    context.dialog.option = 
+    context.dialog.option = options[context.dialog.optionIndex].kind;
     callback(task,context);
 	}
 };
