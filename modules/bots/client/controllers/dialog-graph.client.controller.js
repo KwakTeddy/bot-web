@@ -774,7 +774,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     // graph edit
     vm.setChanged = function(c, updateScope, isReplace) {
       if (c == true) {
-        vm.changeHistory.push({source:angular.copy(selectedNode),  dialogs:angular.copy(dialogs), isReplace: isReplace});
+        vm.changeHistory.push({source:angular.copy(selectedNode),  dialogs:angular.copy(dialogs), updateScope: updateScope, isReplace: isReplace});
       }
       vm.isChanged = c;
 
@@ -851,6 +851,8 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
       if(index != -1) {
         var json = $rootScope.logUpdated.substring('[DIALOG_SEL]'.length);
+
+        if(vm.edit != undefined &&  vm.edit != false) return;
 
         // console.log(json);
         currentNode = null;
@@ -1010,7 +1012,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       event.preventDefault();
 
       if (event.keyCode == 45 || (event.shiftKey && event.keyCode == 187)) { // insert, +
-        addChild(selectedNode);
+          addChild(selectedNode);
       } else if (event.keyCode == 46) { // del
         deleteNode(selectedNode);
       } else if (event.keyCode == 32) { // space
@@ -2224,7 +2226,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
     // 전체 dialog 저장
     $scope.save = function(func) {
-      //vm.changeHistory = [];
+      vm.changeHistory = [];
       vm.setChanged(false);
       var clear = function(node)
       {
@@ -4223,7 +4225,8 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         dlgGroup = dlg.parentNode;
       } else {
         var dlgGroup = document.createElement('div');
-        parent.appendChild(dlgGroup);
+        if(parent == undefined && dialog.parent) parent = document.getElementById(dialog.parent.id);
+        if(parent) parent.appendChild(dlgGroup);
 
         dlgGroup.className = 'dlg-group';
         if(vm.oneline) {
@@ -4266,19 +4269,24 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       }
 
       dlg.onclick = function (e) {
-        updateSelected(dialog);
+        updateSelected(realDialog(dialog));
       };
 
       if(!dialog.if) {
         dlg.ondblclick = function (e) {
-          edit(dialog);
+          edit(realDialog(dialog));
         };
       }
 
       // console.log(dialog.id + ':' + dialog.parent + ',' + dialog.children);
 
       if(dialog.children) {
-        var dlgChildren = document.createElement('div');
+        var dlgChildren;
+        if((dlgChildren = document.getElementById(dialog.id + '_children')) != undefined) {
+          dlgChildren.parentNode.removeChild(dlgChildren);
+        }
+
+        dlgChildren = document.createElement('div');
         dlgGroup.appendChild(dlgChildren);
         dlgChildren.id = dialog.id + '_children';
         dlgChildren.className = 'dlg-children';
@@ -4289,6 +4297,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         } else {
           dlgChildren.innerHTML += '<svg width="20" height="100"></svg>';
         }
+
 
         for (var j = 0; j < dialog.children.length; j++) {
           _update(dialog.children[j], dlgChildren);
@@ -4485,7 +4494,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
           actionGroup.appendChild(goUpBtn);
           goUpBtn.innerHTML = '<i class="fa fa-arrow-up"></i>';
           goUpBtn.onclick = function(e) {
-            goUp(dialog);
+            goUp(realDialog(dialog));
           };
         }
 
@@ -4495,7 +4504,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
           actionGroup.appendChild(goDownBtn);
           goDownBtn.innerHTML = '<i class="fa fa-arrow-down"></i>';
           goDownBtn.onclick = function(e) {
-            goDown(dialog);
+            goDown(realDialog(dialog));
           };
         }
       }
@@ -4519,7 +4528,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         actionGroup.appendChild(deleteBtn);
         deleteBtn.innerHTML = '<i class="fa fa-close"></i>';
         deleteBtn.onclick = function(e) {
-          deleteNode(dialog);
+          deleteNode(realDialog(dialog));
           e.stopPropagation();
         };
       }
@@ -4529,7 +4538,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       actionGroup.appendChild(addBtn);
       addBtn.innerHTML = '<i class="fa fa-plus"></i>';
       addBtn.onclick = function(e) {
-        addChild(dialog);
+        addChild(realDialog(dialog));
         e.stopPropagation();
       };
 
@@ -4539,9 +4548,21 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         actionGroup.appendChild(editBtn);
         editBtn.innerHTML = '<i class="fa fa-edit"></i>';
         editBtn.onclick = function(e) {
-          edit(dialog);
+          edit(realDialog(dialog));
         };
       }
+    }
+
+    function realDialog(dialog) {
+      var _dialog;
+      visit(treeData, function(d) {
+        if (d.id == dialog.id)
+          _dialog = d;
+      }, function (d) {
+        return d.children && d.children.length > 0 ? d.children : null;
+      });
+
+      return _dialog || dialog;
     }
 
     function drawDialogLines(target) {
@@ -4880,29 +4901,29 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         }
       }
 
-      if(d.children) {
-        var dlgChildren = document.getElementById(d.id + '_children');
-
-        if(!dlgChildren) {
-          var dlgGroup = document.getElementById(d.id).parentNode;
-          dlgChildren = document.createElement('div');
-          dlgGroup.appendChild(dlgChildren);
-          dlgChildren.id = d.id + '_children';
-          dlgChildren.className = 'dlg-children';
-
-          if(vm.oneline) {
-            dlgChildren.innerHTML +='<svg width="10" height="100"></svg>';
-          } else {
-            dlgChildren.innerHTML +='<svg width="20" height="100"></svg>';
-          }
-        }
-
-        // addObserver(dlgChildren);
-        _update(newDialog, dlgChildren);
-      } else if(document.getElementById(dialog.id + '_children')) {
-        var elem = document.getElementById(dialog.id + '_children');
-        elem.parentNode.removeChild(elem);
-      }
+      // if(d.children) {
+      //   var dlgChildren = document.getElementById(d.id + '_children');
+      //
+      //   if(!dlgChildren) {
+      //     var dlgGroup = document.getElementById(d.id).parentNode;
+      //     dlgChildren = document.createElement('div');
+      //     dlgGroup.appendChild(dlgChildren);
+      //     dlgChildren.id = d.id + '_children';
+      //     dlgChildren.className = 'dlg-children';
+      //
+      //     if(vm.oneline) {
+      //       dlgChildren.innerHTML +='<svg width="10" height="100"></svg>';
+      //     } else {
+      //       dlgChildren.innerHTML +='<svg width="20" height="100"></svg>';
+      //     }
+      //   }
+      //
+      //   // addObserver(dlgChildren);
+      //   _update(newDialog, dlgChildren);
+      // } else if(document.getElementById(dialog.id + '_children')) {
+      //   var elem = document.getElementById(dialog.id + '_children');
+      //   elem.parentNode.removeChild(elem);
+      // }
 
       _update(d);
 
@@ -4924,8 +4945,21 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
           //     return true;
           // });
           // svg.remove();
+
+          // var srcElement = document.getElementById(history.source.id).parentNode;
+          // srcElement.parentNode.removeChild(srcElement);
           initSelect();
-          _update(history.source);
+
+          // if(selectedNode) {
+          //   if(selectedNode.id == history.source.parent.id) selectedNode = history.source.parent;
+          //   else if(selectedNode.id == history.source.id) selectedNode = history.source;
+          // }
+
+          if(history.updateScope) {
+            _update(history.source.parent);
+          } else {
+            _update(history.source);
+          }
         } else {
           // d3.selectAll('path').remove();
           // d3.selectAll('.node').remove();

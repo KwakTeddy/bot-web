@@ -782,8 +782,8 @@ function executeDialog(dialog, context, print, callback, options) {
         var _dialog, _output;
 
         var _execDialog = function(_dialog, outputName) {
-          if(_dialog) {
-            if(dialog.output.options) nextOptions = utils.mergeWithClone(dialog.output.options, nextOptions);
+          if(_dialog || (_dialog = context.bot.startDialog)) {
+            if (dialog.output.options) nextOptions = utils.mergeWithClone(dialog.output.options, nextOptions);
             // else if(dialog.output.options) nextOptions = utils.clone(dialog.output.options);
 
             executeDialog(_dialog, context, print, callback, utils.merge(nextOptions, {current: dialog}, true));
