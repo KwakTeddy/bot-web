@@ -717,10 +717,10 @@ function executeDialog(dialog, context, print, callback, options) {
             else taskname = dialog.task;
 
             var _task = context.bot.tasks[taskname];
-            if(_task) dialog.task = utils.clone(_task);
+            if(_task) dialog.task = utils.mergeWithClone(_task, dialog.task);
             else {
               _task = context.global.tasks[taskname];
-              if(_task) dialog.task = utils.clone(_task);
+              if(_task) dialog.task = utils.mergeWithClone(_task, dialog.task);
             }
           }
         }

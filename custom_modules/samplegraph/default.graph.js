@@ -286,7 +286,7 @@ var dialogs = [
 				]
 			},
 			{
-				"name": "",
+				"name": "dialog_default29",
 				"id": "default29",
 				"filename": "default",
 				"input": [
@@ -435,6 +435,25 @@ var dialogs = [
 						]
 					}
 				]
+			},
+			{
+				"name": "dialog_default30",
+				"id": "default30",
+				"filename": "default",
+				"input": [
+					{
+						"regexp": "(.?) 번"
+					}
+				],
+				"output": [
+					{
+						"text": "이미지 task 로 표시 +1+",
+						"kind": "Text"
+					}
+				],
+				"task": {
+					"name": "uiTask"
+				}
 			}
 		]
 	}
