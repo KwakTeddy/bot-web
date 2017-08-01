@@ -22,7 +22,7 @@ var dialogs = [
 		},
 		"children": [
 			{
-				"name": "",
+				"name": "dialog_default1",
 				"id": "default1",
 				"filename": "default",
 				"input": [
@@ -42,17 +42,26 @@ var dialogs = [
 						}
 					},
 					{
-						"text": "asdf",
-						"kind": "Text"
-					},
-					{
-						"text": "ㅗㅎ롤호",
-						"kind": "Text"
+						"kind": "Action",
+						"if": "context.dialog.done",
+						"call": "완료"
 					}
 				],
-				"task": {
-					"name": "testTask"
-				}
+				"task": "testTask"
+			},
+			{
+				"name": "완료",
+				"id": "default2",
+				"filename": "default",
+				"input": [
+					{}
+				],
+				"output": [
+					{
+						"text": "완료",
+						"kind": "Text"
+					}
+				]
 			}
 		]
 	}

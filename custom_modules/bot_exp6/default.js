@@ -35,6 +35,7 @@ var testTask = {
     //context.dialog.option = options[context.dialog.index].kind;
     //context.dialog.option = options[0].kind;
     //context.dialog.option = struct.list;
+    console.log('testTask', context);
     callback(task,context);
 	}
 };
@@ -50,6 +51,7 @@ bot.setType('listType', listType);
 
 var optionStart = {
   action: function (task,context,callback) {
+    console.log('optionStart', context);
     if(!context.dialog.index) 
     {
       context.dialog.index = 0;
