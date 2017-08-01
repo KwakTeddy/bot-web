@@ -112,8 +112,8 @@ bot.setType('listType2', listType2);
 
 var uiTask = {
   action: function (task,context,callback) {
-    task.text = 'task로 텍스트, 이미지, 버튼 변경\n' + task[1] + '번 선택하였습니다';
-    if(task[1] == 1) {
+    task.text = 'task로 텍스트, 이미지, 버튼 변경\n' + task['1'] + '번 선택하였습니다';
+    if(task['1'] == '1') {
       task.image = {url: 'http://moneybrain.ai/img/dark-logo.jpg'};
       task.buttons = [
         {text: '머니브레인 연결', url: 'https://www.moneybrain.ai'}
