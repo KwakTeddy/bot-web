@@ -18,7 +18,7 @@ function userCheck (task, context, callback) {
     query['messengerIds'] = {};
     query['messengerIds'][channel] = {userId: userKey};
     User.find(query).lean().exec(function (err,docs) {
-        console.log(docs);
+        // console.log(docs);
         if (docs.length != 0) {
             context.user.check = true;
         } else {
@@ -192,7 +192,7 @@ function followbotlist (task,context,callback) {
     query['botUserId'] = context.user.playchatId;
     query['followed'] = true;
     UserBotFollow.find(query).populate('Bot').sort('-created').lean().exec(function (err, docs) {
-        console.log(docs);
+        // console.log(docs);
         context.dialog.followbot = [];
         for (var i in docs) {
             var doc = docs[i];
