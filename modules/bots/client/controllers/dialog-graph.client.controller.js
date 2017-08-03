@@ -4668,10 +4668,8 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
           var childOffset = getOffset(child);
           var newdiv = document.createElement("div");
           console.log(svgNode);
-          svgNode.insertAdjacentHTML += '<line x1="' + 0 + '" y1="' + (childOffset.top - targetOffset.top + (vm.oneline? 15 : 25)) +
+          svgNode.innerHTML += '<line x1="' + 0 + '" y1="' + (childOffset.top - targetOffset.top + (vm.oneline? 15 : 25)) +
             '" x2="' + 10  + '" y2="' + (childOffset.top - targetOffset.top + (vm.oneline? 15 : 25)) + '" stroke="black"/>';
-          // svgNode.innerHTML += '<line x1="' + 0 + '" y1="' + (childOffset.top - targetOffset.top + (vm.oneline? 15 : 25)) +
-          //   '" x2="' + 10  + '" y2="' + (childOffset.top - targetOffset.top + (vm.oneline? 15 : 25)) + '" stroke="black"/>';
         }
 
         last = inner.childNodes[inner.childNodes.length -1];
@@ -4691,20 +4689,12 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       // line.setAttribute('stroke', 'black');
       // svgNode.appendChild(line);
 
-
-      svgNode.insertAdjacentHTML('beforeend', '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="black"/>');
+      svgNode.innerHTML += '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="black"/>';
       if(vm.oneline)
-        svgNode.insertAdjacentHTML('beforeend', '<line x1="' + (x1 - 10) + '" y1="' + y1 + '" x2="' + x1+ '" y2="' + y1+'" stroke="black"/>');
+        svgNode.innerHTML += '<line x1="' + (x1 - 10) + '" y1="' + y1 + '" x2="' + x1+ '" y2="' + y1+'" stroke="black"/>';
       else
-        svgNode.insertAdjacentHTML('beforeend', '<line x1="' + (x1 - 10) + '" y1="' + y1 + '" x2="' + x1+ '" y2="' + y1+'" stroke="black"/>');
-
-      // svgNode.innerHTML += '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="black"/>';
-      // if(vm.oneline)
-      //   svgNode.innerHTML += '<line x1="' + (x1 - 10) + '" y1="' + y1 + '" x2="' + x1+ '" y2="' + y1+'" stroke="black"/>';
-      // else
-      //   svgNode.innerHTML += '<line x1="' + (x1 - 10) + '" y1="' + y1 + '" x2="' + x1+ '" y2="' + y1+'" stroke="black"/>';
-      // svgNode.style.height = y2;
-
+        svgNode.innerHTML += '<line x1="' + (x1 - 10) + '" y1="' + y1 + '" x2="' + x1+ '" y2="' + y1+'" stroke="black"/>';
+      svgNode.style.height = y2;
     }
 
     function drawSelectDialogLine(node) {
