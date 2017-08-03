@@ -58,7 +58,7 @@ var optionStart = {
       context.dialog.optionStr = '';
       //context.dialog.option = options[0];
     };    
-    context.dialog.option = options[context.dialog.index].kind;
+    if(!context.dialog.done) context.dialog.option = options[context.dialog.index].kind;
     callback(task,context);
 	}
 };

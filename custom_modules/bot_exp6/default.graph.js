@@ -43,7 +43,7 @@ var dialogs = [
 					},
 					{
 						"kind": "Action",
-						"if": "context.dialog.done",
+						"if": "",
 						"call": "완료"
 					}
 				],

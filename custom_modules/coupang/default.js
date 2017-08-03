@@ -13,7 +13,7 @@ var host = "https://api-gateway.coupang.com";
 var defaultTask = {
     name: 'defaultTask',
     action: function(task, context, callback) {
-        var shipmentBoxId = 102390424;
+        //var shipmentBoxId = 102390424;
         var vendorID = 'A00132910';
 
         var uri = "/v2/providers/openapi/apis/api/v4/vendors/" + vendorID + "/outboundShippingCenters?searchType=FULL";
@@ -45,7 +45,7 @@ bot.setTask("defaultTask", defaultTask);
 var defaultTask2 = {
     name: 'defaultTask',
     action: function(task, context, callback) {
-        var shipmentBoxId = 102390424;
+        //var shipmentBoxId = 102390424;
         var vendorID = 'A00132910';
 
         var uri1 = "/v2/providers/openapi/apis/api/v4/vendors/" + vendorID + "/ordersheets?searchType=timeFrame&createdAtFrom=2017-07-28T00:16&createdAtTo=2017-07-29T00:00&status=ACCEPT";
@@ -70,9 +70,13 @@ var defaultTask2 = {
                         "Authorization" : Hmac.generateSync(method, uri1, secretKey, accessKey)
                     }
                 }, function (error, response, body) {
-                    //console.log(body);
-                    //console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
                     var obj = JSON.parse(body);
+                    for(i = 0; i < obj.data.length; i++) {
+                        // console.log('-----------------------------------------------------------');
+                        // console.log(obj.data[i].orderId);
+                        // console.log(obj.data[i].orderItems[0].vendorItemName);
+                        obj.data[i].text = obj.data[i].orderItems[0].vendorItemName;
+                    }
                     context.dialog.order = context.dialog.order.concat(obj.data);
                     if (!error && response.statusCode == 200) {
 
@@ -89,9 +93,13 @@ var defaultTask2 = {
                         "Authorization" : Hmac.generateSync(method, uri2, secretKey, accessKey)
                     }
                 }, function (error, response, body) {
-                    //console.log(body);
-                    // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
                     var obj = JSON.parse(body);
+                    for(i = 0; i < obj.data.length; i++) {
+                        // console.log('-----------------------------------------------------------');
+                        // console.log(obj.data[i].orderId);
+                        // console.log(obj.data[i].orderItems[0].vendorItemName);
+                        obj.data[i].text = obj.data[i].orderItems[0].vendorItemName;
+                    }
                     context.dialog.order = context.dialog.order.concat(obj.data);
                     if (!error && response.statusCode == 200) {
 
@@ -108,22 +116,11 @@ var defaultTask2 = {
                         "Authorization" : Hmac.generateSync(method, uri3, secretKey, accessKey)
                     }
                 }, function (error, response, body) {
-                    //console.log(body);
-                    //console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
                     var obj = JSON.parse(body);
-                    // for(obj in objs.data) {
-                    //     //obj.text = obj.orderItems[0].sellerProductName;
-                    //     console.log('-----------------------------------------------------------')
-                    //     console.log(objs.data);
-                    //     console.log(obj);
-                    //     console.log(obj.orderItems);
-                    // };
-
-                    //console.log(objs.data[0].orderId);
                     for(i = 0; i < obj.data.length; i++) {
-                        console.log('-----------------------------------------------------------');
-                        console.log(obj.data[i].orderId);
-                        console.log(obj.data[i].orderItems[0].vendorItemName);
+                        // console.log('-----------------------------------------------------------');
+                        // console.log(obj.data[i].orderId);
+                        // console.log(obj.data[i].orderItems[0].vendorItemName);
                         obj.data[i].text = obj.data[i].orderItems[0].vendorItemName;
                     }
                     context.dialog.order = context.dialog.order.concat(obj.data);
@@ -145,6 +142,12 @@ var defaultTask2 = {
                     // console.log(body);
                     // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
                     var obj = JSON.parse(body);
+                    for(i = 0; i < obj.data.length; i++) {
+                        // console.log('-----------------------------------------------------------');
+                        // console.log(obj.data[i].orderId);
+                        // console.log(obj.data[i].orderItems[0].vendorItemName);
+                        obj.data[i].text = obj.data[i].orderItems[0].vendorItemName;
+                    }
                     context.dialog.order = context.dialog.order.concat(obj.data);
                     if (!error && response.statusCode == 200) {
 
@@ -164,6 +167,12 @@ var defaultTask2 = {
                     // console.log(body);
                     // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
                     var obj = JSON.parse(body);
+                    for(i = 0; i < obj.data.length; i++) {
+                        // console.log('-----------------------------------------------------------');
+                        // console.log(obj.data[i].orderId);
+                        // console.log(obj.data[i].orderItems[0].vendorItemName);
+                        obj.data[i].text = obj.data[i].orderItems[0].vendorItemName;
+                    }
                     context.dialog.order = context.dialog.order.concat(obj.data);
                     if (!error && response.statusCode == 200) {
 
@@ -183,6 +192,12 @@ var defaultTask2 = {
                     // console.log(body);
                     // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
                     var obj = JSON.parse(body);
+                    for(i = 0; i < obj.data.length; i++) {
+                        // console.log('-----------------------------------------------------------');
+                        // console.log(obj.data[i].orderId);
+                        // console.log(obj.data[i].orderItems[0].vendorItemName);
+                        obj.data[i].text = obj.data[i].orderItems[0].vendorItemName;
+                    }
                     context.dialog.order = context.dialog.order.concat(obj.data);
                     if (!error && response.statusCode == 200) {
 
@@ -194,6 +209,8 @@ var defaultTask2 = {
         ];
 
         async.waterfall(tasks, function (err, results) {
+            context.dialog.exp = context.dialog.order[0].orderItems[0].estimatedShippingDate;
+            context.dialog.exp2 = 0;
             callback(task, context);
         });
     }
