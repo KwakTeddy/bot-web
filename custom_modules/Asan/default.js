@@ -29,3 +29,13 @@ var 빈소Type = {
 }
 
 bot.setType('빈소Type',빈소Type);
+
+
+var binsoTask = {
+  action: function (task,context,callback) {
+    task.image = 'http://cfile29.uf.tistory.com/image/2573C6425266286E348CD9';
+    callback(task,context);
+	}
+};
+
+bot.setTask('binsoTask', binsoTask);

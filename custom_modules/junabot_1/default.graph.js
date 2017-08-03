@@ -8,6 +8,15 @@ var dialogs = [
 		"input": [
 			{
 				"intent": "인사"
+			},
+			{
+				"intent": "다섯 단어 문장"
+			},
+			{
+				"intent": "스무 단어 문장"
+			},
+			{
+				"intent": "한글자긍정"
 			}
 		],
 		"output": [
@@ -102,7 +111,7 @@ var dialogs = [
 										],
 										"output": [
 											{
-												"text": "asdfasdf",
+												"text": "닥쵸닥쵸",
 												"kind": "Text"
 											}
 										]
@@ -229,8 +238,31 @@ var dialogs = [
 				],
 				"output": [
 					{
-						"text": "도시란다",
+						"text": "그 도시에 누가 사는 줄 아니~~",
 						"kind": "Text"
+					}
+				],
+				"children": [
+					{
+						"name": "Task",
+						"id": "default13",
+						"filename": "default",
+						"input": [
+							{
+								"types": [
+									"listType"
+								]
+							}
+						],
+						"output": [
+							{
+								"text": "+listType.value+",
+								"kind": "Text"
+							}
+						],
+						"task": {
+							"name": "testTask"
+						}
 					}
 				]
 			}

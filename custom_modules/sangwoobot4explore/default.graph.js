@@ -3,75 +3,39 @@
 
 var dialogs = [
 	{
-		"name": "ㄹㄹㄹ",
-		"id": "default3",
+		"name": "인텐트 분석",
+		"id": "default16",
 		"filename": "default",
 		"input": [
 			{
-				"types": [
-					"mobile"
-				]
+				"intent": "와우"
 			}
 		],
 		"output": [
 			{
-				"text": "ffffffffffff",
+				"text": "성공ddddddd",
 				"kind": "Text"
-			}
-		],
-		"children": [
-			{
-				"name": "",
-				"id": "default8",
-				"filename": "default",
-				"input": [],
-				"output": []
-			},
-			{
-				"name": "",
-				"id": "default9",
-				"filename": "default",
-				"input": [],
-				"output": []
-			},
-			{
-				"name": "",
-				"id": "default6",
-				"filename": "default",
-				"input": [],
-				"output": [],
-				"children": [
-					{
-						"name": "",
-						"id": "default7",
-						"filename": "default",
-						"input": [],
-						"output": []
-					}
-				]
 			}
 		]
 	},
 	{
-		"name": "",
-		"id": "default5",
+		"name": "dialog_default17",
+		"id": "default17",
 		"filename": "default",
 		"input": [],
 		"output": []
 	},
 	{
-		"name": "",
-		"id": "default4",
+		"name": "dialog_default18",
+		"id": "default18",
 		"filename": "default",
-		"input": [],
-		"output": [],
-		"children": [
+		"input": [
+			{}
+		],
+		"output": [
 			{
-				"name": "",
-				"id": "default11",
-				"filename": "default",
-				"input": [],
-				"output": []
+				"text": "dddd",
+				"kind": "Text"
 			}
 		]
 	}
@@ -88,7 +52,7 @@ var commonDialogs = [
 			}
 		],
 		"output": {
-			"text": "fff.",
+			"text": "입력하시오",
 			"kind": "Text"
 		}
 	},

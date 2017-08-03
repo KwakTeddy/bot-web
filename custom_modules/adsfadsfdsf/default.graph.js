@@ -3,20 +3,23 @@
 
 var dialogs = [
 	{
-		"id": "default0",
+		"name": "test",
+		"id": "default3",
 		"filename": "default",
 		"input": [
 			{
-				"text": "안녕"
+				"text": "똥똥"
+			},
+			{
+				"text": "빵빵"
 			}
 		],
 		"output": [
 			{
-				"text": "sdfgdfsgdf",
-				"kind": "Content"
+				"text": "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",
+				"kind": "Text"
 			}
-		],
-		"name": "dialog_default0"
+		]
 	}
 ];
 
@@ -30,7 +33,7 @@ var commonDialogs = [
 				"text": "시작"
 			}
 		],
-		"output": "pracprac 입니다."
+		"output": "adsfadsfdsf 입니다."
 	},
 	{
 		"id": "defaultcommon1",
@@ -56,6 +59,6 @@ var commonDialogs = [
 		"output": "알아듣지 못했습니다"
 	}
 ];
-var _bot = require(require('path').resolve("config/lib/bot")).getBot('pracprac');
+var _bot = require(require('path').resolve("config/lib/bot")).getBot('adsfadsfdsf');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);
