@@ -321,7 +321,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       if(!$scope.intent.content){
         $scope.intent['content'] = [];
       }
-      if ($scope.intentContent){
+      if ($scope.intentContent && $scope.intentContent != ''){
         for(var i = 0; i < $scope.intent.content.length; i++){
           if ($scope.intent.content[i].name == $scope.intentContent){
             $scope.contentError = '동일한 내용이 존재합니다';
@@ -332,7 +332,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         $scope.intentContent = '';
         $scope.contentError = ''
       }else {
-        $scope.contentError = '내용을 입력해주세요'
+        // $scope.contentError = '내용을 입력해주세요'
       }
     };
 
@@ -385,7 +385,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       if(!$scope.entity.content){
         $scope.entity['content'] = [];
       }
-      if ($scope.entityContent){
+      if ($scope.entityContent && $scope.entityContent != ''){
         for(var i = 0; i < $scope.entity.content.length; i++){
           if ($scope.entity.content[i].name == $scope.entityContent){
             $scope.contentError = '동일한 내용이 존재합니다';
@@ -397,9 +397,8 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         $scope.entityContent = '';
         $scope.contentError = ''
         $scope.contentListError = null;
-
       }else {
-        $scope.contentError = '내용을 입력해주세요'
+        // $scope.contentError = '내용을 입력해주세요'
       }
     };
 
@@ -537,6 +536,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       if(vm.curI) vm.curI.str = '';
       $scope.processedInput = '';
       $scope.closeEditor();
+      vm.newDialog = null;
     };
 
     var vm = this;
@@ -912,7 +912,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     };
 
     var keydown = function(event) {
-      // console.log(event.keyCode);
+      console.log(event.keyCode);
 
       // search 인풋필드나 filetree에 포커스 있는 경우 스킵
       if (document.activeElement == document.getElementById('inputbox') ||
@@ -931,14 +931,11 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       }
 
       if (event.keyCode == 27) { // esc
+        if(vm.curInputMention == true) return false;
+
         if (vm.edit === 'dialog') {
-          if (event.keyCode == 27) { // esc
-            event.preventDefault();
-            $scope.closeEdit();
-          } else if (event.ctrlKey && event.keyCode == 13) { // ctrl+enter
-            $scope.update(true);
-            $scope.closeEdit();
-          }
+          event.preventDefault();
+          $scope.closeEdit();
           return false;
         } else if (vm.edit === 'task') {
           event.preventDefault();
@@ -951,6 +948,15 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         }
       }
 
+      if (vm.edit === 'dialog') {
+        if (event.ctrlKey && event.keyCode == 13) { // ctrl+enter
+          event.preventDefault();
+          $scope.update(true);
+          $scope.closeEdit();
+          return false;
+        }
+      }
+
       if (event.ctrlKey && event.keyCode == 82) { // ctrl+r
         event.preventDefault();
         vm.isReplace = !vm.isReplace;
@@ -958,6 +964,22 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
           document.getElementById('search').focus();
         $scope.safeApply();
         return;
+      }
+
+      if(event.keyCode == 13) {
+        if(document.activeElement == document.getElementById('intentContent')) {
+          event.preventDefault();
+          $timeout(function() {
+            $scope.saveIntentContent();
+          })
+          return false;
+        } else if(document.activeElement == document.getElementById('entityContent')) {
+          event.preventDefault();
+          $timeout(function() {
+            $scope.saveEntityContent();
+          });
+          return false;
+        }
       }
 
       if (document.activeElement == document.getElementById('search') ||
@@ -983,7 +1005,13 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       } else if (event.ctrlKey && event.keyCode == 80) { // ctrl+p
         toggleFileTree(event);
         return;
-      } else if (event.keyCode == 191) { //  /
+      }
+
+      // to prevent keydown event from filetree
+      if (document.activeElement != document.getElementById('mainpage'))
+        return;
+
+      if (event.keyCode == 191) { //  /
         if (event.shiftKey) {
           event.preventDefault();
           // shortcut help
@@ -1002,16 +1030,12 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       if (!selectedNode)
         return false;
 
-      // to prevent keydown event from filetree
-      if (document.activeElement != document.getElementById('mainpage'))
-        return;
-
-      if ([45,46,32,13, 37,38,39,40, 187].indexOf(event.keyCode) == -1)
+      if ([45,46,32,13, 37,38,39,40, 187].indexOf(event.keyCode) == -1 || event.metaKey)
         return false;
 
       event.preventDefault();
 
-      if (event.keyCode == 45 || (event.shiftKey && event.keyCode == 187)) { // insert, +
+      if (event.keyCode == 45 || (!event.metaKey && event.shiftKey && event.keyCode == 187)) { // insert, +
           addChild(selectedNode);
       } else if (event.keyCode == 46) { // del
         deleteNode(selectedNode);
@@ -1585,7 +1609,10 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     };
 
     $scope.removeInput = function(input) {
-      $scope.dialog.input.splice($scope.dialog.input.indexOf(input),1);
+      // $scope.dialog.input.splice($scope.dialog.input.indexOf(input),1);
+      console.log('length 0:' + $scope.dialog.input.length);
+      $scope.dialog.input.splice(input,1);
+      console.log('length 1:' + $scope.dialog.input.length);
 
       $scope.initButton();
     };
@@ -1930,9 +1957,11 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         $('.modal-with-alert').click();
         $('#changeConfirm').on('click', function (e) {
           e.preventDefault();
-          change();
           $('#changeConfirm').off('click');
           $.magnificPopup.close();
+          $timeout(function() {
+            change();
+          });
         });
       } else {
         change();
@@ -2039,6 +2068,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
       $scope.safeApply();
       $timeout(function() {
+        $scope.dialogError = null;
         $scope.openEditor();
         $scope.initButton();
         document.getElementById('name').focus();
@@ -2122,6 +2152,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       // $('#content').css('padding-right', '450px');
       $('#modalIntentForm').show();
       rightPanelClosed = false;
+      document.getElementById('intentName').focus();
     };
 
     // deprecated
@@ -2151,6 +2182,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       // $('#content').css('padding-right', '450px');
       $('#modalEntityForm').show();
       rightPanelClosed = false;
+      document.getElementById('entityName').focus();
     };
 
     // deprecated
@@ -2188,21 +2220,37 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
     // 수정한 node dialog에 저장
     $scope.update = function (isValid) {
+      if($scope.dialog.input && $scope.dialog.input.length == 1 && $scope.dialog.input[0].length == 0) {
+        $scope.dialog.input[0].push({type: 'Keyword', str: ($scope.processedInput || '')});
+        if(vm.curI) vm.curI.str = '';
+        $scope.processedInput = '';
+      }
+
+      $scope.error = null;
+      if (/*$scope.dialog.input[0].length == 0 && */$scope.dialog.output[0].text == undefined /*!isValid*/) {
+        // $event.stopPropagation();
+        // $scope.$broadcast('show-errors-check-validity', 'dialogForm');
+        $scope.dialogError = '필수항목을 입력해 주세요.';
+        return false;
+      }
 
       vm.edit = false;
       vm.setChanged(true);
 
-      // $scope.error = null;
-      // if (!isValid) {
-      //   $event.stopPropagation();
-      //   $scope.$broadcast('show-errors-check-validity', 'dialogForm');
-      //   return false;
-      // }
+      if(vm.newDialog) {
+        if(vm.newDialog.parent) {
+          (vm.newDialog.parent.children || (vm.newDialog.parent.children = [])).push(vm.newDialog);
 
-      if($scope.dialog.input && $scope.dialog.input.length == 1 && $scope.dialog.input[0].length == 0) {
-        $scope.dialog.input[0].push({type: 'Keyword', str: $scope.processedInput});
-        vm.curI.str = '';
-        $scope.processedInput = '';
+          if (vm.newDialog.parent && vm.newDialog.parent.parent == undefined /*d.depth === 0*/) {
+            if (vm.dialog) {
+              dialogs.push(vm.newDialog);
+            } else {
+              common_dialogs.push(vm.newDialog);
+            }
+          }
+        }
+
+        selectedNode = vm.newDialog;
       }
 
       selectedNode.name = $scope.dialog.name;
@@ -2217,10 +2265,13 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       // selectedSVG.remove();
       selectedSVG = null;
 
-      _update(selectedNode);
+      if(vm.newDialog) _update(selectedNode.parent);
+      else _update(selectedNode);
+
       updateSelected(selectedNode);
 
       $scope.closeEditor();
+      vm.newDialog = null;
       //Dialogs.update(dialog);
     };
 
@@ -2414,10 +2465,10 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
           text.push('[return] ' + output.return);
         }
         if (output.image) {
-          dialog.image_text = '/files/' + output.image;
+          dialog.image_text = output.image.url;
         }
         if (output.buttons) {
-          dialog.buttons = output.buttons.map(function(b) { return b.name });
+          dialog.buttons = output.buttons;
         }
         if (output.list)
           text.push('[리스트] ' + output.list.map(function(item) { return item.title; }));
@@ -4083,9 +4134,11 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       })
     };
 
+    vm.curInputMention = false;
     vm.searchTopic = function(topicTerm, target) {
       var topicList = [];
       if(target == 'entity'){
+        vm.curInputMention = true;
         topicList.push('새로만들기');
         angular.forEach(vm.entities, function(item) {
           if (item.toUpperCase().indexOf(topicTerm.toUpperCase()) >= 0) {
@@ -4094,6 +4147,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         });
         vm.matchedEntities = topicList;
       }else if(target == 'intent' || vm.curI.str.indexOf('#') === 0){
+        vm.curInputMention = true;
         topicList.push('새로만들기');
         angular.forEach(vm.intents, function(item) {
           if (item.toUpperCase().indexOf(topicTerm.toUpperCase()) >= 0) {
@@ -4102,6 +4156,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         });
         vm.matchedIntents = topicList;
       }else if(target == 'type'){
+        vm.curInputMention = true;
         topicList.push('새로만들기');
         angular.forEach(vm.types, function(item) {
           if (item.toUpperCase().indexOf(topicTerm.toUpperCase()) >= 0) {
@@ -4115,11 +4170,13 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     vm.curInlineInput;
     vm.getTopicTextRaw = function(topic, inlineInput) {
       if(vm.curI.str.indexOf('@') > -1){
+        vm.curInputMention = false;
         if(topic == '새로만들기') {
           vm.curInlineInput = inlineInput;
           $scope.openEntity();
         } else inlineInput.push({type: 'Entity', str: topic});
       }else if(vm.curI.str.indexOf('#') > -1){
+        vm.curInputMention = false;
         if(topic == '새로만들기') {
           vm.curInlineInput = inlineInput;
           $scope.openIntent();
@@ -4127,6 +4184,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       }else if(vm.curI.str.indexOf('/') == 0){
         inlineInput.push({type: 'RegExp', str: topic});
       }else if(vm.curI.str.indexOf('$') == 0){
+        vm.curInputMention = false;
         if(topic == '새로만들기') {
           vm.curInlineInput = inlineInput;
           var typeName = vm.curI.str.substring(1);
@@ -4151,7 +4209,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
           console.log(err);
         });
       }
-      if(event.keyCode == 13 && (vm.curI.str.indexOf('/') == 0)){
+      if((event.keyCode == 13 || event.keyCode == 191) && (vm.curI.str.indexOf('/') == 0)){
         vm.curI.str = vm.curI.str.slice(1);
         inlineInput.push({type: 'RegExp', str: vm.curI.str});
         vm.curI.str = '';
@@ -4159,7 +4217,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         event.preventDefault();
         event.stopPropagation();
       }
-      if(event.keyCode == 13 && (vm.curI.str.indexOf('if (') == 0)){
+      if((event.keyCode == 13 || (event.shiftKey && event.keyCode == 48)) && (vm.curI.str.indexOf('if (') == 0)){
         vm.curI.str = vm.curI.str.slice(4);
         inlineInput.push({type: 'If', str: vm.curI.str});
         vm.curI.str = '';
@@ -4174,10 +4232,19 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         event.stopPropagation();
       }
 
-      if(event.keyCode == 191) {
+      if(event.keyCode == 191) {      // /
         // event.preventDefault();
         event.stopPropagation();
       }
+
+      if(event.keyCode == 27) {      // esc
+        // event.preventDefault();
+        // event.stopPropagation();
+        $timeout(function() {
+          vm.curInputMention = false;
+        })
+      }
+
     };
 
     /******************** grid graph **************************/
@@ -4253,10 +4320,14 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         if(input) dlg.innerHTML += '<div class="dlg-input">' + input + '</div>';
         dlg.innerHTML += '<div class="dlg-output">' + output.replace(/\\n/g, '\n') + '</div>';
 
-        if(dialog.output && dialog.output.buttons) {
-          for(var i in dialog.output.buttons) {
-            if(dialog.output.buttons[i].url) dlg.innerHTML += '<div class="bubble-button"><a href="' + dialog.output.buttons[i].url + '" target="_blank">' + dialog.output.buttons[i].text + '</a></div>';
-            else dlg.innerHTML += '<div class="bubble-button"><a ng-click="vm.sendMsg(\'' + dialog.output.buttons[i].text + '\')">' + dialog.output.buttons[i].text + '</a></div>';
+        if(dialog.image_text) {
+          dlg.innerHTML += '<div><img src="' + dialog.image_text + '" width="100%"/></div>';
+        }
+
+        if(dialog.buttons) {
+          for(var i in dialog.buttons) {
+            if(dialog.buttons[i].url) dlg.innerHTML += '<div class="bubble-button"><a href="' + dialog.buttons[i].url + '" target="_blank">' + dialog.buttons[i].text + '</a></div>';
+            else dlg.innerHTML += '<div class="bubble-button"><a ng-click="vm.sendMsg(\'' + dialog.buttons[i].text + '\')">' + dialog.buttons[i].text + '</a></div>';
           }
         }
 
@@ -4273,9 +4344,12 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       };
 
       if(!dialog.if) {
-        dlg.ondblclick = function (e) {
+        dlg.addEventListener("dblclick", function (e) {
           edit(realDialog(dialog));
-        };
+        });
+        // dlg.ondblclick = function (e) {
+        //   edit(realDialog(dialog));
+        // };
       }
 
       // console.log(dialog.id + ':' + dialog.parent + ',' + dialog.children);
@@ -4492,6 +4566,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         if(idx > 0) {
           var goUpBtn = document.createElement('div');
           actionGroup.appendChild(goUpBtn);
+          goUpBtn.style.cursor = "pointer";
           goUpBtn.innerHTML = '<i class="fa fa-arrow-up"></i>';
           goUpBtn.onclick = function(e) {
             goUp(realDialog(dialog));
@@ -4502,6 +4577,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         if(idx < dialog.parent.children.length - 1) {
           var goDownBtn = document.createElement('div');
           actionGroup.appendChild(goDownBtn);
+          goDownBtn.style.cursor = "pointer";
           goDownBtn.innerHTML = '<i class="fa fa-arrow-down"></i>';
           goDownBtn.onclick = function(e) {
             goDown(realDialog(dialog));
@@ -4512,6 +4588,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       if(dialog.children || dialog._children || (Array.isArray(dialog.output) && dialog.output.length > 0 && dialog.output[0].if) || dialog._output) {
         var toggleBtn = document.createElement('div');
         toggleBtn.style.float = 'right';
+        toggleBtn.style.cursor = "pointer";
         actionGroup.appendChild(toggleBtn);
         if (dialog.children || (Array.isArray(dialog.output) && dialog.output.length > 0 && dialog.output[0].if))
           toggleBtn.innerHTML = '<i class="fa fa-chevron-left"></i>';
@@ -4525,6 +4602,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       if(dialog.if == undefined) {
         var deleteBtn = document.createElement('div');
         deleteBtn.style.float = 'right';
+        deleteBtn.style.cursor = "pointer";
         actionGroup.appendChild(deleteBtn);
         deleteBtn.innerHTML = '<i class="fa fa-close"></i>';
         deleteBtn.onclick = function(e) {
@@ -4535,6 +4613,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
       var addBtn = document.createElement('div');
       addBtn.style.float = 'right';
+      addBtn.style.cursor = "pointer";
       actionGroup.appendChild(addBtn);
       addBtn.innerHTML = '<i class="fa fa-plus"></i>';
       addBtn.onclick = function(e) {
@@ -4545,6 +4624,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       if(dialog.if == undefined) {
         var editBtn = document.createElement('div');
         editBtn.style.float = 'right';
+        editBtn.style.cursor = "pointer";
         actionGroup.appendChild(editBtn);
         editBtn.innerHTML = '<i class="fa fa-edit"></i>';
         editBtn.onclick = function(e) {
@@ -4571,9 +4651,9 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       svgNode.innerHTML = '';
 
       var x1 = 0;
-      var y1 = 35;
-      if(vm.oneline) y1 = 20;
-      else y1 = 35;
+      var y1 = 45;
+      if(vm.oneline) y1 = 25;
+      else y1 = 45;
 
       var targetOffset = getOffset(target);
       var last = target.childNodes[target.childNodes.length -1].childNodes[1];
@@ -4594,8 +4674,16 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       var off2 = getOffset(last);
       var x2 = 0;
       var y2;
-      if(vm.oneline) y2 = off2.top - targetOffset.top + 15;
-      else y2 = off2.top - targetOffset.top + 25;
+      if(vm.oneline) y2 = off2.top - targetOffset.top + 20;
+      else y2 = off2.top - targetOffset.top + 35;
+
+      // var line = document.createElement('line');
+      // line.setAttribute('x1', x1);
+      // line.setAttribute('y1', y1);
+      // line.setAttribute('x2', x2);
+      // line.setAttribute('y2', y2);
+      // line.setAttribute('stroke', 'black');
+      // svgNode.appendChild(line);
 
       svgNode.innerHTML += '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="black"/>';
       if(vm.oneline)
@@ -4603,6 +4691,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       else
         svgNode.innerHTML += '<line x1="' + (x1 - 10) + '" y1="' + y1 + '" x2="' + x1+ '" y2="' + y1+'" stroke="black"/>';
       svgNode.style.height = y2;
+
     }
 
     function drawSelectDialogLine(node) {
@@ -4840,6 +4929,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         panel.scrollLeft = aimLeft;
     }
 
+    vm.newDialog;
     function addChild(d) {
       var isCallNode = false;
       if (d.output) {
@@ -4891,15 +4981,16 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       }
       var newDialog = {name:"", id:(!vm.dialog ? "common" : "") + vm.fileName + (++vm.maxId),
         filename:vm.fileName+(!vm.dialog?"common" : "") , input:[], output:[]};
-      (d.children || (d.children = [])).push(newDialog);
+      // (d.children || (d.children = [])).push(newDialog);
       newDialog.parent = (d.if ? d.parent : d);
-      if ((d.if ? d.parent : d).parent == undefined /*d.depth === 0*/) {
-        if (vm.dialog) {
-          dialogs.push(newDialog);
-        } else {
-          common_dialogs.push(newDialog);
-        }
-      }
+
+      // if ((d.if ? d.parent : d).parent == undefined /*d.depth === 0*/) {
+      //   if (vm.dialog) {
+      //     dialogs.push(newDialog);
+      //   } else {
+      //     common_dialogs.push(newDialog);
+      //   }
+      // }
 
       // if(d.children) {
       //   var dlgChildren = document.getElementById(d.id + '_children');
@@ -4925,11 +5016,13 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       //   elem.parentNode.removeChild(elem);
       // }
 
-      _update(d);
-
-      updateSelected(newDialog);
-
-      edit(selectedNode);
+      // _update(d);
+      //
+      // updateSelected(newDialog);
+      //
+      // edit(selectedNode);
+      vm.newDialog = newDialog;
+      edit(vm.newDialog);
     }
 
     // undo, changeHistoryd에 정보가 있으면 pop해서 복원
@@ -5096,7 +5189,6 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
 
     function pointerDown(ev) {
-      ev.stopPropagation();
       // ev.preventDefault();
 
       dialogGraph.addEventListener("pointermove", pointerMove);
@@ -5104,13 +5196,12 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
       dragStartX = ev.pageX; dragStartY = ev.pageY;
       // console.log('pointerDown ' + dragStartX);
+
+      ev.stopPropagation();
     }
 
     function pointerMove(ev) {
-      ev.stopPropagation();
-      ev.preventDefault();
       // console.log('pointerMove ' + dragStartX + ', ' + ev.pageX + ', ' + main.scrollLeft);
-
       contentPanel.scrollTop = contentPanel.scrollTop - (ev.pageY - dragStartY);
       dragStartY  = ev.pageY;
 
@@ -5120,16 +5211,20 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       // handle.style.transform = "translate3d(" +
       //   (x + ev.pageX - dragStartX) + "px, " +
       //   (y + ev.pageY - dragStartY) + "px, 0)";
+
+      ev.stopPropagation();
+      ev.preventDefault();
     }
 
     function pointerUp(ev) {
-      ev.stopPropagation();
-      ev.preventDefault();
+      // console.log('pointerUp');
       dialogGraph.removeEventListener("pointermove", pointerMove);
       dialogGraph.removeEventListener("pointerup", pointerUp);
 
       // x = x + ev.pageX - dragStartX;
       // y = y + ev.pageY - dragStartY;
+      ev.stopPropagation();
+      ev.preventDefault();
     }
 
     var x = 0;
