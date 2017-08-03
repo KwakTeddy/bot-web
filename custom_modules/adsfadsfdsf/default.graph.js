@@ -19,6 +19,40 @@ var dialogs = [
 				"text": "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",
 				"kind": "Text"
 			}
+		],
+		"children": [
+			{
+				"name": "dddddddddd",
+				"id": "default4",
+				"filename": "default",
+				"input": [
+					{
+						"text": "ddddd"
+					}
+				],
+				"output": [
+					{
+						"text": "ddddddd",
+						"kind": "Text"
+					}
+				]
+			},
+			{
+				"name": "dddddddddd",
+				"id": "default4",
+				"filename": "default",
+				"input": [
+					{
+						"text": "ddddd"
+					}
+				],
+				"output": [
+					{
+						"text": "ddddddd",
+						"kind": "Text"
+					}
+				]
+			}
 		]
 	}
 ];

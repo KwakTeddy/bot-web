@@ -3,14 +3,30 @@
 
 var dialogs = [
 	{
-		"name": "dialog_default20",
-		"id": "default20",
+		"name": "dialog_default2",
+		"id": "default2",
 		"filename": "default",
 		"input": [
 			{
 				"entities": [
-					"@동물"
+					"@과일"
 				]
+			}
+		],
+		"output": [
+			{
+				"text": "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",
+				"kind": "Text"
+			}
+		]
+	},
+	{
+		"name": "dialog_default2",
+		"id": "default2",
+		"filename": "default",
+		"input": [
+			{
+				"intent": "머리"
 			}
 		],
 		"output": [
