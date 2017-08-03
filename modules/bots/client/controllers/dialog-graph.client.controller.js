@@ -4657,6 +4657,8 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
       var targetOffset = getOffset(target);
       var last = target.childNodes[target.childNodes.length -1].childNodes[1];
+      console.log(svgNode);
+      console.log(target);
 
       if(target.childNodes[1].childNodes[1].className == 'dlg-inner') {
         var inner = target.childNodes[1].childNodes[1];
@@ -4664,6 +4666,8 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         for(var i = 0; i < inner.childNodes.length; i++) {
           var child = inner.childNodes[i];
           var childOffset = getOffset(child);
+          var newdiv = document.createElement("div");
+          console.log(svgNode);
           svgNode.innerHTML += '<line x1="' + 0 + '" y1="' + (childOffset.top - targetOffset.top + (vm.oneline? 15 : 25)) +
             '" x2="' + 10  + '" y2="' + (childOffset.top - targetOffset.top + (vm.oneline? 15 : 25)) + '" stroke="black"/>';
         }
@@ -4691,7 +4695,6 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       else
         svgNode.innerHTML += '<line x1="' + (x1 - 10) + '" y1="' + y1 + '" x2="' + x1+ '" y2="' + y1+'" stroke="black"/>';
       svgNode.style.height = y2;
-
     }
 
     function drawSelectDialogLine(node) {
