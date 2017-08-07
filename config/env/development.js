@@ -51,8 +51,8 @@ module.exports = {
     callbackURL: '/api/auth/twitter/callback'
   },
   kakao: {
-      clientID: process.env.KAKAO_KEY || '25009b49de426e1ad0b8da2631b52cc5',
-      clientJSID: process.env.KAKAO_JSID || 'f1eb73f3491e5c1e1178b3b8c12b10e5',
+      clientID: process.env.KAKAO_KEY || '482579e97a7f46badd2c88a3a66ba862',
+      clientJSID: process.env.KAKAO_JSID || 'ca71056a613942b6ebcf53801a7abb65',
       callbackURL: '/api/auth/kakao/callback'
   },
   google: {

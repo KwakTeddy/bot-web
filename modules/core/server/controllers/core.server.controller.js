@@ -84,12 +84,7 @@ exports.renderNotFound = function (req, res) {
 * get config
 */
 exports.getConfig = function (req, res) {
-  console.log(util.inspect(process.env))
   var configData = {};
-  configData['facebook'] = {};
-  configData['kakao'] = {};
-  configData.facebook['clientID'] = config.facebook.clientID;
-  configData.kakao['clientJSID'] = config.kakao.clientJSID;
   configData['enterprise'] = config.enterprise;
   res.json(configData);
 };

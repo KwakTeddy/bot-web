@@ -45,9 +45,9 @@ module.exports = {
     }
   },
   enterprise: {
-    logo: '/images/' + process.env.ENTERPRISE + '.png',
-    name: process.env.ENTERPRISE,
-    title: process.env.ENTERPRISETITLE
+    logo: process.env.ENTERPRISE ? '/images/' + process.env.ENTERPRISE + '.png' : undefined,
+    name: process.env.ENTERPRISE || 'moneybrain',
+    title: process.env.ENTERPRISETITLE || 'PlayChat'
   },
   chatServer: '../bot-server/',
   callcenter: '15777314'
