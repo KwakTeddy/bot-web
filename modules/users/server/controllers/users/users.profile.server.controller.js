@@ -38,6 +38,7 @@ exports.update = function (req, res) {
           if (err) {
             res.status(400).send(err);
           } else {
+            res.cookie('login', true);
             res.json(user);
           }
         });
@@ -81,6 +82,7 @@ exports.changeProfilePicture = function (req, res) {
               if (err) {
                 res.status(400).send(err);
               } else {
+                res.cookie('login', true);
                 res.json(user);
               }
             });

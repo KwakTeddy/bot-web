@@ -251,6 +251,7 @@ exports.signin = function (req, res, next) {
                     if (err) {
                       res.status(400).send(err);
                     } else {
+                      res.cookie('login', true);
                       res.json(user);
                     }
                 });
@@ -485,6 +486,7 @@ exports.removeOAuthProvider = function (req, res, next) {
         if (err) {
           return res.status(400).send(err);
         } else {
+          res.cookie('login', true);
           return res.json(user);
         }
       });
@@ -520,7 +522,8 @@ exports.validateEmailConfirmToken = function (req, res) {
                     if (err) {
                         res.status(400).send(err);
                     } else {
-                        res.redirect('/');
+                      res.cookie('login', true);
+                      res.redirect('/developer');
                     }
                 });
             }

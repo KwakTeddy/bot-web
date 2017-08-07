@@ -7,10 +7,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
     $scope.authentication = Authentication;
     $scope.popoverMsg = PasswordValidator.getPopoverMsg();
     $scope.credentials = {};
-
-      // Get an eventual error defined in the URL query string:
     $scope.error = $location.search().err;
-    //routing
+
     var stingParser = $state.current.name;
     var parsedString = stingParser.split('.');
     if (parsedString[0] == 'user-bots-web') {

@@ -51,6 +51,7 @@
             <input type="password" name="pwd" class="form-control input-lg" ng-model="credentials.password"
                    ng-minlength="6"
                    required
+                   equals="{{credentials.confirmPassword}}"
                    mongoose-error/>
             <p class="help-block"
                ng-show="(userForm.pwd.$error.minlength || userForm.pwd.$error.required) && submitted">
@@ -67,10 +68,10 @@
           'has-error': userForm.confirmPassword.$invalid && submitted }">
             <label>비밀번호 확인</label>
             <input type="password" name="confirmPassword" class="form-control input-lg" ng-model="credentials.confirmPassword"
-              password-verify="credentials.password"
-              required/>
+                   equals="{{credentials.password}}"
+                   required/>
             <p class="help-block"
-              ng-show="userForm.confirmPassword.$error.passwordVerify && submitted">
+              ng-show="userForm.confirmPassword.$error.equals && submitted">
               비밀번호가 일치하지 않았네요
             </p>
           </div>
