@@ -88,7 +88,7 @@ exports.getConfig = function (req, res) {
   configData['facebook'] = {};
   configData['kakao'] = {};
   configData.facebook['clientID'] = config.facebook.clientID;
-  configData.kakao['clientID'] = config.kakao.clientID;
+  configData.kakao['clientJSID'] = config.kakao.clientJSID;
   configData['enterprise'] = config.enterprise;
   res.json(configData);
 };
