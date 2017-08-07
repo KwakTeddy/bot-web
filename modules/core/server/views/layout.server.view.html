@@ -751,6 +751,7 @@
 <!--<script src="https://connect.facebook.net/en_US/sdk.js"></script>-->
 <script>
   $.get('/config', function (config) {
+    console.log(JSON.stringify(config.kakao))
     window.fbAsyncInit = function() {
       FB.init({
         appId      : config.facebook.clientID,
