@@ -84,6 +84,7 @@ exports.renderNotFound = function (req, res) {
 * get config
 */
 exports.getConfig = function (req, res) {
+  console.log(util.inspect(process.env))
   var configData = {};
   configData['facebook'] = {};
   configData['kakao'] = {};
