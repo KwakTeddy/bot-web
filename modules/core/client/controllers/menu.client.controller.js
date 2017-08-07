@@ -7,41 +7,40 @@ angular.module('core').controller('MenuController', ['$scope', '$state', 'Authen
     $scope.authentication = Authentication;
     $scope.currentBot;
     $scope.listContents = [];
-
-    $http.get('/api/bots/byNameId/' + $cookies.get('default_bot')).then(function (result) {
-      $scope.currentBot = result.data;
-      $http.get('/api/templates/' + result.data.templateId).then(function (result2) {
-        var templateSchema = JSON.parse(result2.data.dataSchema);
-        var keys = Object.keys(templateSchema);
-        var html = '' +
-          '<li>' +
-          '<a href="#" ng-click="goTemplateBasicContent()">' +
-          '<i class="fa fa-cube" aria-hidden="true"></i>' +
-          '<span>' + '기본정보' + '</span>' +
-          '</a>' +
-          '</li>';
-        angular.element('#contentsManagement').append(html);
-        keys.forEach(function (key) {
-          if(templateSchema[key].schema && !templateSchema[key].hidden){
-            var element = '' +
-              '<li>' +
-              '<a href="#" ng-click="goTemplateListContent(\'' + key + '\')">' +
-              '<i class="fa fa-cube" aria-hidden="true"></i>' +
-              '<span>' + templateSchema[key].item_title + '</span>' +
-              '</a>' +
-              '</li>';
-            angular.element('#contentsManagement').append(element);
-          }
+    if($scope.authentication && $scope.authentication.user){
+      $http.get('/api/bots/byNameId/' + $cookies.get('default_bot')).then(function (result) {
+        $scope.currentBot = result.data;
+        $http.get('/api/templates/' + result.data.templateId).then(function (result2) {
+          var templateSchema = JSON.parse(result2.data.dataSchema);
+          var keys = Object.keys(templateSchema);
+          var html = '' +
+            '<li>' +
+            '<a href="#" ng-click="goTemplateBasicContent()">' +
+            '<i class="fa fa-cube" aria-hidden="true"></i>' +
+            '<span>' + '기본정보' + '</span>' +
+            '</a>' +
+            '</li>';
+          angular.element('#contentsManagement').append(html);
+          keys.forEach(function (key) {
+            if(templateSchema[key].schema && !templateSchema[key].hidden){
+              var element = '' +
+                '<li>' +
+                '<a href="#" ng-click="goTemplateListContent(\'' + key + '\')">' +
+                '<i class="fa fa-cube" aria-hidden="true"></i>' +
+                '<span>' + templateSchema[key].item_title + '</span>' +
+                '</a>' +
+                '</li>';
+              angular.element('#contentsManagement').append(element);
+            }
+          });
+          $compile(angular.element('#contentsManagement').contents())($scope);
+        }, function (err1) {
+          console.log(err1)
         });
-        $compile(angular.element('#contentsManagement').contents())($scope);
-      }, function (err1) {
-        console.log(err1)
+      }, function (err) {
+        console.log(err);
       });
-    }, function (err) {
-      console.log(err);
-    });
-
-
+    }
 
     $scope.goTemplateListContent = function (kind) {
       $state.go('template-datas.list', {

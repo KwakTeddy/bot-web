@@ -4,7 +4,6 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
     '$ionicModal', '$rootScope', '$ionicSideMenuDelegate', '$stateParams', '$ionicPopup', '$cookies', '$timeout',
   function ($scope, $state, $http, $location, $window, Authentication, PasswordValidator, $uibModal, $ionicModal, $rootScope, $ionicSideMenuDelegate, $stateParams, $ionicPopup, $cookies, $timeout) {
     var vm = this;
-
     $scope.authentication = Authentication;
     $scope.popoverMsg = PasswordValidator.getPopoverMsg();
     $scope.credentials = {};
@@ -32,7 +31,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
     }
 
     // If user is signed in then redirect back home
-    if ($scope.authentication.user) {
+    if ($scope.authentication.user || $cookies.get("login")) {
         if (_platform == 'mobile'){
             $state.go('homeMobile')
         }else {
@@ -154,29 +153,22 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
     };
 
     $scope.signin = function (isValid) {
-        $scope.error = null;
+      $scope.error = null;
       $scope.submitted = true;
 
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'userForm');
-
         return false;
       }
       $http.post('/api/auth/signin?redirect_to=' + encodeURIComponent($state.previous.href), $scope.credentials).success(function (response) {
-        // If successful we assign the response to the global user model
         $scope.authentication.user = response;
-        // And redirect to the previous or home page
+        $cookies.put('login', true);
         if (_platform == 'mobile'){
             $rootScope.closeSigninModal();
             $state.go($state.previous.state.name || 'homeMobile', $state.previous.params);
         }else {
-          console.log(window.location.href);
-          console.log(window.location.href.indexOf('developer'));
-          if(window.location.href.indexOf('developer') > -1){
-            $state.go('developer-home')
-          }else {
-            $state.go($state.previous.state.name || 'home', $state.previous.params);
-          }
+          if(window.location.href.indexOf('developer') > -1) $state.go('developer-home');
+          else                                               $state.go($state.previous.state.name || 'home', $state.previous.params);
         }
       }).error(function (response) {
         console.log(response);
@@ -288,8 +280,6 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
       if (window.location.href.indexOf('developer') > -1){
         url += '?redirect_to=/developer';
       }
-      // Effectively call OAuth authentication route:
-        console.log(url);
       $window.location.href = url;
     };
 

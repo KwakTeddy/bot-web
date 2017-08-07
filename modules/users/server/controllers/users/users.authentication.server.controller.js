@@ -15,6 +15,7 @@ var path = require('path'),
     crypto = require('crypto'),
     config = require(path.resolve('./config/config'));
 
+var http = require('http');
 var smtpTransport = nodemailer.createTransport(config.mailer.options);
 var util = require('util');
 // URLs for which user can't be redirected on signin
@@ -248,24 +249,9 @@ exports.signin = function (req, res, next) {
 
                 req.login(user, function (err) {
                     if (err) {
-                        res.status(400).send(err);
+                      res.status(400).send(err);
                     } else {
-                      // if (req.query.redirect_to.indexOf('developer') > -1){
-                      //   Bot.find({user: req.user._id}).exec(function (err, data) {
-                      //     if (err){
-                      //       return res.redirect('/authentication/signin')
-                      //     }
-                      //     if (data.length){
-                      //       res.cookie('default_bot', data[0].id);
-                      //       res.json(user);
-                      //     }else {
-                      //       res.cookie('default_bot', null);
-                      //       res.json(user);
-                      //     }
-                      //   });
-                      // }else {
-                        res.json(user);
-                      // }
+                      res.json(user);
                     }
                 });
             }
@@ -279,9 +265,10 @@ exports.signin = function (req, res, next) {
 exports.signout = function (req, res) {
   req.logout();
   req.session.destroy();
+  res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
 
   if(req.query['path']) res.redirect(req.query['path']);
-  else if (req.query['redirect_to']) res.redirect((req.query['redirect_to']))
+  else if (req.query['redirect_to']) res.redirect((req.query['redirect_to']));
   else res.redirect('/');
 };
 
@@ -334,12 +321,10 @@ exports.oauthCallback = function (strategy, scope) {
             return res.redirect('/authentication/signin');
           }
         }
-        if (sessionRedirectURL && sessionRedirectURL.indexOf('developer') > -1){
-          return res.redirect('/developer');
-        }else {
-          return res.redirect('/');
-        }
-        // return res.redirect(redirectURL.redirect_to || sessionRedirectURL || '/');
+        res.cookie('login', true);
+
+        if (sessionRedirectURL && sessionRedirectURL.indexOf('developer') > -1) return res.redirect('/developer');
+        else                                                                    return res.redirect('/');
       });
     })(req, res, next);
   };
