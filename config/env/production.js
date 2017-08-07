@@ -50,8 +50,8 @@ module.exports = {
   },
   kakao: {
       clientID: process.env.KAKAO_KEY || '25009b49de426e1ad0b8da2631b52cc5',
-      callbackURL: '/api/auth/kakao/callback',
-      clientJSID: 'f1eb73f3491e5c1e1178b3b8c12b10e5'
+      clientJSID: process.env.KAKAO_JSID || 'f1eb73f3491e5c1e1178b3b8c12b10e5',
+      callbackURL: '/api/auth/kakao/callback'
   },
   google: {
       clientID: process.env.GOOGLE_ID || '567723322080-pofpo61olppueufq2r57j2cufgb65tg3.apps.googleusercontent.com',
