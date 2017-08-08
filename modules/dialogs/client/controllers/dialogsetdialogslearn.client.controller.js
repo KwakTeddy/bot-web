@@ -38,6 +38,17 @@
       })
     }
 
+    for(var i = 0; i < vm.dialogs.length; i++){
+      if(vm.dialogs[i].parent){
+        for(var j = 0; j < vm.dialogs.length; j++){
+          if(vm.dialogs[j]._id == vm.dialogs[i].parent){
+            vm.dialogs.splice(j+1, 0, vm.dialogs[i]);
+            vm.dialogs.splice(i+1, 1)
+          }
+        }
+      }
+    }
+
     // if(vm.dialogs.length){
     //   for(var i = vm.dialogs.length - 1; i >= 0; i--){
     //     if(vm.dialogs[i].parent){
@@ -233,7 +244,6 @@
     vm.updateDialog = function (dialog) {
       dialog.userBotId = vm.bot.id;
       dialog.$update(function(response) {
-        console.log(response);
       });
     };
 
@@ -249,29 +259,30 @@
     vm.removeDialog = function(dialog) {
       dialog.userBotId = vm.bot.id;
       dialog.$remove(function(response) {
-        console.log(response);
         dialog.deleted = 'true';
-
-
-        // for(var i = 0; i < vm.dialogs.length; i++){
-        //   if(vm.dialogs[i].parent == dialog._id){
-        //     vm.dialogs[i].deleted = 'true';
-        //   }
-        // }
-
+        vm.removeChildDialog(dialog);
       });
+    };
+    vm.removeChildDialog = function (dialog) {
+      for(var i = 0; i < vm.dialogs.length; i++){
+        if(vm.dialogs[i].parent == dialog._id){
+          vm.dialogs[i].deleted = 'true';
+          vm.dialogs[i].$remove(function (response) {
+            response.deleted = 'true';
+            vm.removeChildDialog(response);
+          });
+        }
+      }
     };
 
 
 
 
     vm.createDepthDialog = function(parent, index) {
-      console.log(parent)
       vm.childDialog['parent'] = parent._id;
       vm.childDialog['depth'] = parent.depth + 1;
 
       vm.childDialog.$save(function (response) {
-        console.log(response)
         vm.dialogs.splice(index+1, 0, response);
         vm.childDialog = new UserBotDialogService({user: vm.authentication.user, userBot: vm.bot, botId: vm.bot.id});
       }, function (err) {
