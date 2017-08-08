@@ -2,8 +2,10 @@
 
 angular.module('users').controller('EditProfileController', ['$scope', '$http', '$location', 'Users', 'Authentication',
   function ($scope, $http, $location, Users, Authentication) {
-    $scope.user = Authentication.user;
-    // Update a user profile
+
+
+    $scope.user = angular.copy(Authentication.user);
+    $scope.snsList = Object.keys($scope.user.additionalProvidersData);
     $scope.updateUserProfile = function (isValid) {
       $scope.success = $scope.error = null;
 
@@ -12,14 +14,12 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
 
         return false;
       }
-
       var user = new Users($scope.user);
-
       user.$update(function (response) {
         $scope.$broadcast('show-errors-reset', 'userForm');
-
         $scope.success = true;
-        Authentication.user = response;
+        $scope.user = response;
+        Authentication.user = angular.copy(response);
       }, function (response) {
         $scope.error = response.data.message;
       });
