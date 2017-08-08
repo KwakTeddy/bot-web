@@ -299,8 +299,8 @@ exports.oauthCallback = function (strategy, scope) {
     // console.log('callback');
 
     passport.authenticate(strategy, scope, function (err, user, redirectURL) {
-        console.log(err);
       if (err) {
+        console.log(err);
         if (sessionRedirectURL && sessionRedirectURL.indexOf('developer') > -1) {
           return res.redirect('/developer/authentication/signin?err=' + encodeURIComponent(errorHandler.getErrorMessage(err)));
         }else {
@@ -316,14 +316,10 @@ exports.oauthCallback = function (strategy, scope) {
       }
       req.login(user, function (err) {
         if (err) {
-          if (sessionRedirectURL && sessionRedirectURL.indexOf('developer') > -1){
-            return res.redirect('/developer/authentication/signin');
-          }else {
-            return res.redirect('/authentication/signin');
-          }
+          if (sessionRedirectURL && sessionRedirectURL.indexOf('developer') > -1) return res.redirect('/developer/authentication/signin');
+          else                                                                    return res.redirect('/authentication/signin');
         }
         res.cookie('login', true);
-
         if (sessionRedirectURL && sessionRedirectURL.indexOf('developer') > -1) return res.redirect('/developer');
         else                                                                    return res.redirect('/');
       });
@@ -349,66 +345,51 @@ exports.saveOAuthUserProfile = function (req, providerUserProfile, done) {
     var additionalProviderSearchQuery = {};
     additionalProviderSearchQuery[searchAdditionalProviderIdentifierField] = providerUserProfile.providerData[providerUserProfile.providerIdentifierField];
 
-    //Define email search query
-    var emailSearchQuery = {};
-    emailSearchQuery['email'] = providerUserProfile.email;
-
     // Define a search query to find existing user with current provider profile
     var searchQuery = {
-        $or: [mainProviderSearchQuery, additionalProviderSearchQuery, emailSearchQuery]
+      $or: [mainProviderSearchQuery, additionalProviderSearchQuery]
     };
 
+    //Define email search query
+    if(providerUserProfile.email){
+      var emailSearchQuery = {};
+      emailSearchQuery['email'] = providerUserProfile.email;
+      searchQuery.$or.push(emailSearchQuery);
+    }
+
     User.findOne(searchQuery, function (err, user) {
-      // console.log(util.inspect(searchQuery))
       if (err) {
         return done(err);
       } else {
         if (!user) {
           var possibleUsername = providerUserProfile.username || ((providerUserProfile.email) ? providerUserProfile.email.split('@')[0] : '');
-
-          User.findUniqueUsername(possibleUsername, null, function (availableUsername) {
-            user = new User({
-              firstName: providerUserProfile.firstName,
-              lastName: providerUserProfile.lastName,
-              username: availableUsername,
-              displayName: providerUserProfile.displayName,
-              email: providerUserProfile.email,
-              profileImageURL: providerUserProfile.profileImageURL,
-              provider: providerUserProfile.provider,
-              providerData: providerUserProfile.providerData
-            });
-
-            // And save the user
-            user.save(function (err) {
-              return done(err, user);
-            });
+          user = new User({
+            // firstName: providerUserProfile.firstName,
+            // lastName: providerUserProfile.lastName,
+            username: possibleUsername,
+            displayName: providerUserProfile.displayName,
+            email: providerUserProfile.email,
+            profileImageURL: providerUserProfile.profileImageURL,
+            provider: providerUserProfile.provider,
+            providerData: providerUserProfile.providerData
+          });
+          user.save(function (err) {
+            return done(err, user);
           });
         } else {
-          // Check if user exists, is not signed in using this provider, and doesn't have that provider data already configured
-          if (user.provider !== providerUserProfile.provider && (!user.additionalProvidersData || !user.additionalProvidersData[providerUserProfile.provider])) {
-              // Add the provider data to the additional provider data field
-              if (!user.additionalProvidersData) {
-                  user.additionalProvidersData = {};
-              }
-
+          // if (user.provider !== providerUserProfile.provider && (!user.additionalProvidersData || !user.additionalProvidersData[providerUserProfile.provider])) {
+          if (user.provider != providerUserProfile.provider) {
+              if (!user.additionalProvidersData) user.additionalProvidersData = {};
               user.additionalProvidersData[providerUserProfile.provider] = providerUserProfile.providerData;
-
-              // Then tell mongoose that we've updated the additionalProvidersData field
               user.markModified('additionalProvidersData');
-
-              // And save the user
               user.save(function (err) {
                 console.log(err);
-                  return done(err, user, '/settings/accounts');
+                return done(err, user);
+                // return done(err, user, '/settings/accounts');
               });
           } else {
-            if (user.provider == 'facebook'){
-              user.markModified('additionalProvidersData');
-              user.providerData.accessToken = providerUserProfile.providerData.accessToken;
-            }else {
-              user.markModified('additionalProvidersData');
-              // user.additionalProvidersData.facebook.accessToken = providerUserProfile.providerData.accessToken;
-            }
+            user.providerData = providerUserProfile.providerData;
+            user.markModified('providerData');
             user.save(function (err) {
               if (err) console.log(err);
               return done(err, user);
@@ -418,33 +399,18 @@ exports.saveOAuthUserProfile = function (req, providerUserProfile, done) {
       }
     });
   } else {
-    // User is already logged in, join the provider data to the existing user
     var user = req.user;
-
-    // Check if user exists, is not signed in using this provider, and doesn't have that provider data already configured
     if (user.provider !== providerUserProfile.provider && (!user.additionalProvidersData || !user.additionalProvidersData[providerUserProfile.provider])) {
       // Add the provider data to the additional provider data field
-      if (!user.additionalProvidersData) {
-        user.additionalProvidersData = {};
-      }
-
+      if (!user.additionalProvidersData) user.additionalProvidersData = {};
       user.additionalProvidersData[providerUserProfile.provider] = providerUserProfile.providerData;
-
-      // Then tell mongoose that we've updated the additionalProvidersData field
       user.markModified('additionalProvidersData');
-
-      // And save the user
       user.save(function (err) {
         return done(err, user, '/settings/accounts');
       });
     } else {
-      if (user.provider == 'facebook'){
-        user.markModified('additionalProvidersData');
-        user.providerData.accessToken = providerUserProfile.providerData.accessToken;
-      }else {
-        user.markModified('additionalProvidersData');
-        user.additionalProvidersData.facebook.accessToken = providerUserProfile.providerData.accessToken;
-      }
+      user.providerData = providerUserProfile.providerData;
+      user.markModified('providerData');
       user.save(function (err) {
         if (err) console.log(err);
         return done(new Error('User is already connected using this provider'), user);

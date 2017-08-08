@@ -19,22 +19,20 @@ module.exports = function (config) {
   },
   function (req, accessToken, refreshToken, profile, done) {
     // Set the provider data and include tokens
-    console.log(util.inspect(accessToken));
-
     request({
       url: 'https://graph.facebook.com/v2.9/oauth/access_token?grant_type=fb_exchange_token&client_id=' + config.facebook.clientID + '&client_secret=' + config.facebook.clientSecret + '&fb_exchange_token='+ accessToken,
       method: 'GET'
     }, function (error, response, body) {
       if (!error && response.statusCode == 200) {
-        body = JSON.parse(body)
+        body = JSON.parse(body);
         var providerData = profile._json;
         providerData.accessToken = body.access_token;
         providerData.refreshToken = refreshToken;
 
         // Create the user OAuth profile
         var providerUserProfile = {
-          firstName: profile.name.givenName,
-          lastName: profile.name.familyName,
+          // firstName: profile.name.givenName,
+          // lastName: profile.name.familyName,
           displayName: profile.displayName,
           email: profile.emails ? profile.emails[0].value : undefined,
           username: profile.username || generateUsername(profile),
