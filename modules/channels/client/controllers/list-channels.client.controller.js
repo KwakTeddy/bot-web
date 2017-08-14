@@ -172,6 +172,9 @@
             $window.location.href = url;             //register through local not facebook(getting Token)
           }
         });
+      }else if((channel == 'wechat') && (method !== 'easy')){
+        $scope.wcLoading = true;
+        $scope.noAccount = false;
       }
       $scope.close = function () {
         modalInstance.dismiss();

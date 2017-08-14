@@ -17,7 +17,7 @@ exports.messageGet = function(req, res) {
 
   res.write(echostr);
   res.end();
-}
+};
 
 exports.message =  function(req, res) {
   var body = '';
@@ -38,7 +38,7 @@ exports.message =  function(req, res) {
       res.end();
     }
   });
-}
+};
 
 function receivedMessage(req, res, json) {
   var from = json.xml.FromUserName[0];
@@ -51,6 +51,7 @@ function receivedMessage(req, res, json) {
 }
 
 function respondMessage(res, text, json) {
+
   var result = {
     ToUserName: json.xml.FromUserName[0],
     FromUserName: json.xml.ToUserName[0],
@@ -60,9 +61,38 @@ function respondMessage(res, text, json) {
   };
 
   var xml = js2xmlparser.parse("xml", result);
+  console.log(JSON.stringify(json));
   console.log('============================================');
   console.log(xml);
 
   res.write(xml);
   res.end();
+}
+
+function sendTextMessage(recipientId, text, task, token) {
+
+}
+
+function sendImageMessage(recipientId, text, task, token) {
+
+}
+
+function sendLocationMessage(recipientId, text, task, token) {
+
+}
+
+function sendLinkMessage(recipientId, text, task, token) {
+
+}
+
+function sendEventMessage(recipientId, text, task, token) {
+
+}
+
+function sendMusicMessage(recipientId, text, task, token) {
+
+}
+
+function sendRichMediaMessage(recipientId, text, task, token) {
+
 }
