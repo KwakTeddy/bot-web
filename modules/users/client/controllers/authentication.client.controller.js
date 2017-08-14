@@ -118,7 +118,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                     console.log(response)
                 })
             };
-            modalInstance.result.then(function (response) {
+            return modalInstance.result.then(function (response) {
                 console.log(response);
             });
         }
@@ -127,13 +127,13 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         document.getElementById('loading-screen').style.setProperty("display", "none", "important");
         console.log(response);
         if(response.message.match('가입되어 있는 E-mail이네요')){
-            $scope.error.email = response.message;
+          return $scope.error.email = response.message;
         } else if(response.message.match('SNS')) {
-            $scope.error.email = response.message;
+          return $scope.error.email = response.message;
         } else if(response.message.match('Failure sending email')) {
-          $scope.error.email = '회원가입은 되었지만 E-mail 인증 메일 보내기에 실패했어요. 관리자에게 문의해주세요.'
+          return $scope.error.email = '회원가입은 되었지만 E-mail 인증 메일 보내기에 실패했어요. 관리자에게 문의해주세요.'
         } else if(response.message.match('valid email')){
-          $scope.error.email = '유효한 형식의 이메일이 아니에요'
+          return $scope.error.email = '유효한 형식의 이메일이 아니에요'
         }
       });
     };
