@@ -64,6 +64,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         return false;
       }
       document.getElementById('loading-screen').style.setProperty("display", "block", "important");
+      console.log('transferServerTime')
 
       $http.post('/api/auth/signup', $scope.credentials).success(function (response) {
           console.log(response);
