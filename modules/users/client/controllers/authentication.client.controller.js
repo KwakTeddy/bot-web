@@ -46,8 +46,6 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
     }
 
     $scope.signup = function (isValid) {
-      console.log('twice????')
-      return false;
 
       if ($scope.authentication.user) {
           if (_platform == 'mobile'){
