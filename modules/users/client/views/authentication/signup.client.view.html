@@ -82,7 +82,7 @@
             <a href="#" ng-click="privacy()">약관</a>에 동의해요
           </div>
           <div class="col-sm-4 text-right">
-            <button ng-click="signup(userForm.$valid)" class="btn btn-primary hidden-xs" style="width: 100px;">가입</button>
+            <!--<button ng-click="signup(userForm.$valid)" class="btn btn-primary hidden-xs" style="width: 100px;">가입</button>-->
             <!--<button type="submit" class="btn btn-primary btn-block btn-lg visible-xs mt-lg" style="width: 100px;">가입</button>-->
           </div>
           <div class="col-sm-8">
@@ -91,6 +91,7 @@
             </p>
           </div>
         </div>
+        <button ng-click="signup(userForm.$valid)" class="btn btn-primary hidden-xs" style="width: 100px;">가입</button>
 
         <p class="text-center">이미 가입 했나요? <a ui-sref="{{authenticationSignin}}" style="font-weight: bold;">로그인하세요!</a></p>
       </form>
