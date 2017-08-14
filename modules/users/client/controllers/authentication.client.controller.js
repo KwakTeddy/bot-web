@@ -27,6 +27,9 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
       $scope.authenticationSignup = 'authentication.signup';
       $scope.authenticationSignin = 'authentication.signin';
     }
+    $timeout(function () {
+      document.getElementById("main").style.setProperty("margin", 0, "important")
+    });
 
     // If user is signed in then redirect back home
     if ($scope.authentication.user || $cookies.get("login")) {
