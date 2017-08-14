@@ -8,6 +8,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
     $scope.popoverMsg = PasswordValidator.getPopoverMsg();
     $scope.credentials = {};
     $scope.error = $location.search().err;
+    console.log("AuthenticationController");
 
     var stingParser = $state.current.name;
     var parsedString = stingParser.split('.');
