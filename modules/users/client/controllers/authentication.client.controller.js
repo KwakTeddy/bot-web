@@ -79,7 +79,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                 $state.go('homeMobile');
             });
         } else {
-            document.getElementById('loading-screen').style.setProperty("display", "none", "important")
+            document.getElementById('loading-screen').style.setProperty("display", "none", "important");
             var modalInstance = $uibModal.open({
                 templateUrl: 'modules/users/client/views/authentication/email.confirm.modal.html',
                 backdrop: 'static',
@@ -92,7 +92,6 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                 }else {
                   $state.go($state.previous.state.name || 'home', $state.previous.params);
                 }
-
             };
             $scope.resend = function () {
                 modalInstance.dismiss();
@@ -123,7 +122,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         }
 
       }).error(function (response) {
-        document.getElementById('loading-screen').style.setProperty("display", "none", "important")
+        document.getElementById('loading-screen').style.setProperty("display", "none", "important");
         console.log(response);
         if(response.message.match('가입되어 있는 E-mail이네요')){
             $scope.error.email = response.message;

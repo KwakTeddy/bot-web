@@ -53,7 +53,7 @@ exports.signup = function (req, res) {
 
     User.findOne(emailSearchQuery, function (err, result) {
         if (err) {
-            return err;
+            return res.status(400).send(err);
         } else {
             if (result && (result.provider == 'local')){
                 return res.status(400).send({
