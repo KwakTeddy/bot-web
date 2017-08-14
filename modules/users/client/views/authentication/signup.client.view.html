@@ -8,7 +8,7 @@
       <!--<h2 class="title text-uppercase text-weight-bold m-none"><i class="fa fa-user mr-xs"></i> Sign Up</h2>-->
     </div>
     <div class="panel-body">
-      <form name="userForm" ng-submit="signup(userForm.$valid)" novalidate>
+      <form name="userForm" novalidate>
 
         <div class="form-group mb-lg" ng-class="{ 'has-success': userForm.name.$valid && submitted,
                                           'has-error': (error.username || userForm.name.$invalid) && submitted }">
@@ -82,7 +82,7 @@
             <a href="#" ng-click="privacy()">약관</a>에 동의해요
           </div>
           <div class="col-sm-4 text-right">
-            <button type="submit" class="btn btn-primary hidden-xs" style="width: 100px;">가입</button>
+            <button ng-click="signup(userForm.$valid)" class="btn btn-primary hidden-xs" style="width: 100px;">가입</button>
             <!--<button type="submit" class="btn btn-primary btn-block btn-lg visible-xs mt-lg" style="width: 100px;">가입</button>-->
           </div>
           <div class="col-sm-8">
