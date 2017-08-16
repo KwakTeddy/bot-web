@@ -2227,7 +2227,9 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       }
 
       $scope.error = null;
-      if (/*$scope.dialog.input[0].length == 0 && */$scope.dialog.output[0].text == undefined /*!isValid*/) {
+      if (/*$scope.dialog.input[0].length == 0 && */
+        ($scope.dialog.output[0].kind == 'Text' || $scope.dialog.output[0].kind == 'Content') &&
+        ($scope.dialog.output[0].text == undefined || $scope.dialog.output[0].text == '') /*!isValid*/) {
         // $event.stopPropagation();
         // $scope.$broadcast('show-errors-check-validity', 'dialogForm');
         $scope.dialogError = '필수항목을 입력해 주세요.';
