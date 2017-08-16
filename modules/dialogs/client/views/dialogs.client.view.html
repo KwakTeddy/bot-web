@@ -20,7 +20,7 @@
       <textarea type="text" id="answer" name="answer" ng-model="vm.dialog.output" class="form-control valid" placeholder="답변" rows="2"
              aria-invalid="false" ng-blur="vm.textareaFocus(null, null, 'blur', 'answer')" ng-focus="vm.textareaFocus(null, null, 'focus', 'answer')" style="width: 43%;float: left;margin-right: 5px;resize: none">
       </textarea>
-      <a class="btn btn-primary" ng-click="vm.createDialog()" style="height: 50px">추가</a>
+      <button class="btn btn-primary" ng-click="vm.createDialog()" style="height: 50px">추가</button>
     </div>
 
     <div ng-repeat="dialog in vm.dialogs track by $index" ng-show="dialog.deleted == undefined" style="margin-bottom: 5px;overflow: hidden">
