@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('user-bots').controller('UserBotChatController', ['$state', '$rootScope', '$scope', '$stateParams', '$document', '$location', '$compile', '$resource', '$cookies', 'Socket', '$uibModal', 'Authentication',
-  'UserBotsService', '$ionicModal', '$ionicScrollDelegate', '$http',
+  'UserBotsService', '$ionicModal', '$ionicScrollDelegate', '$http', '$window',
   function ($state, $rootScope, $scope, $stateParams, $document, $location, $compile, $resource, $cookies, Socket, $uibModal, Authentication,
-            UserBotsService, $ionicModal, $ionicScrollDelegate, $http) {
+            UserBotsService, $ionicModal, $ionicScrollDelegate, $http, $window) {
     // if (!Socket.socket) {
     //   Socket.connect();
     // }
@@ -31,7 +31,6 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
     vm.openChatModal = function (botId) {
       vm.connectUserBot(botId);
-      console.log(botId);
       vm.sendMsg('시작');
       vm.modalInstance = $uibModal.open({
         templateUrl: 'modules/bots/client/views/bot-graph-knowledge.client.view.html',
@@ -51,7 +50,6 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       if (!Socket.socket) {
         Socket.connect();
       }
-
       $cookies.put('default_bot', vm.bot);
       // $http.get('/api/bots/byNameId/'+vm.bot).then(function (result) {
       //   console.log(result);
@@ -65,7 +63,6 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     };
 
     Socket.on('send_msg', function (message) {
-      // console.log(message)
       // console.log('out:' + message);
 
       // if(message.startsWith(':log') && !$state.is('home')) return;
@@ -121,7 +118,6 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         //synthesize(voice);
         speak(voice);
       }
-      // console.log(message);
       $rootScope.$broadcast('onmsg', {message: message});
       $rootScope.$broadcast('sendmsg', {message: sendedMsg});
 
@@ -212,47 +208,48 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       }
     };
 
-    // $scope.$on('onmsg', function(event, arg0) {
-    //   if (arg0.message.items) {
-    //     vm.isAnswer = false;
-    //     addItems(arg0.message.items);
-    //     return;
-    //   }
-    //
-    //   if(arg0.message.smartReply) {
-    //     vm.isAnswer = true;
-    //     addButtons(arg0.message.smartReply);
-    //   }
-    //
-    //   if (arg0.message.image) {
-    //     vm.isAnswer = false;
-    //
-    //     var msg = arg0.message;
-    //     var innerHTML = '<div class="content" style="><div class="content-text">' + msg.text + '</div>';
-    //     innerHTML += '<div><img class="message-image" width="35%" height="35%" src="' + msg.image.url +'"/></div>';
-    //     if(msg.buttons) {
-    //       for(var i in msg.buttons) {
-    //         innerHTML += '<div class="bubble-button" style="border-top:none"><a href="' + msg.buttons[i].url + '" target="_blank">' + msg.buttons[i].text + '</a></div>';
-    //       }
-    //     }
-    //     innerHTML += '</div></div>';
-    //     main.insertAdjacentHTML("afterbegin",innerHTML);
-    //
-    //     return;
-    //   }
-    //
-    //   vm.isAnswer = true;
-    //   var input='';
-    //   if (typeof arg0.message === 'string') input = arg0.message;
-    //   else input = arg0.message.text;
-    //
-    //   $('#answer').text('');
-    //   if (textTimer != null)
-    //     clearTimeout(textTimer);
-    //   var interval = 40;
-    //
-    //   showText('#answer', input, 0, interval);
-    // });
+    if ($window.location.href.indexOf('developer') == -1){
+      $scope.$on('onmsg', function(event, arg0) {
+        if (arg0.message.items) {
+          vm.isAnswer = false;
+          addItems(arg0.message.items);
+          return;
+        }
+
+        if(arg0.message.smartReply) {
+          vm.isAnswer = true;
+          addButtons(arg0.message.smartReply);
+        }
+
+        if (arg0.message.image) {
+          vm.isAnswer = false;
+
+          var msg = arg0.message;
+          var innerHTML = '<div class="content" style="><div class="content-text">' + msg.text + '</div>';
+          innerHTML += '<div><img class="message-image" width="35%" height="35%" src="' + msg.image.url +'"/></div>';
+          if(msg.buttons) {
+            for(var i in msg.buttons) {
+              innerHTML += '<div class="bubble-button" style="border-top:none"><a href="' + msg.buttons[i].url + '" target="_blank">' + msg.buttons[i].text + '</a></div>';
+            }
+          }
+          innerHTML += '</div></div>';
+          main.insertAdjacentHTML("afterbegin",innerHTML);
+
+          return;
+        }
+
+        vm.isAnswer = true;
+        var input='';
+        if (typeof arg0.message === 'string') input = arg0.message;
+        else input = arg0.message.text;
+
+        $('#answer').text('');
+        if (textTimer != null)
+          clearTimeout(textTimer);
+        var interval = 40;
+        showText('#answer', input, 0, interval);
+      });
+    }
 
     $scope.$on('sendMsgFromFarAway', function(event, arg0) {
       vm.sendMsg(arg0);
@@ -279,7 +276,6 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         return false;
       }
       vm.question = '';
-
       addUserBubble(msg);
       emitMsg(msg);
 
@@ -669,6 +665,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     }
 
     function addButtons(replies) {
+      console.log(replies);
       if(replies == undefined) return;
 
 
@@ -683,39 +680,64 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
       innerHTML += '</div>';
 
-      var main;
+      if ($window.location.href.indexOf('developer') == -1){
+        // main = document.getElementById('chat_main');
+        // $('#buttons').append(innerHTML);
+        // $('#buttons').css('padding', '10px 0px 30px 0px');
+        // // buttons.style.padding = '10px 0px 30px 0px';
+        // // buttons.insertAdjacentHTML('beforeend', innerHTML);
+        // var replies = $('#smart_reply').childNodes;
+        // console.log(replies);
+        // for(var i in replies) {
+        //   var child = replies[i].firstChild;
+        //   if(child && child.style) child.style.width = (child.offsetWidth + 5 ) + 'px';
+        // }
+        //
+        // var element = angular.element('#smart_reply');
+        // $compile(element.contents())($scope);
+        //
+        // console.log($('.smart_reply'));
+        // $('.smart_reply').owlCarousel({
+        //   loop:false,
+        //   nav:false,
+        //   dots: false,
+        //   items: 4,
+        //   margin: 3,
+        //   autoWidth: true
+        // });
+      }else {
+        var main;
 
-      if(_platform == 'mobile') {
-        main = document.getElementsByTagName('ion-content')[0];
-      } else {
-        main = document.getElementById('chat_main');
-        main.style.padding = '10px 0px 30px 0px';
+        if(_platform == 'mobile') {
+          main = document.getElementsByTagName('ion-content')[0];
+        } else {
+          main = document.getElementById('chat_main');
+          main.style.padding = '10px 0px 30px 0px';
 
-        // reset owl
-        while (main.hasChildNodes()) {
-          main.removeChild(main.firstChild);
+          // reset owl
+          while (main.hasChildNodes()) {
+            main.removeChild(main.firstChild);
+          }
         }
+        main.insertAdjacentHTML('beforeend', innerHTML);
+        var replies = document.getElementById('smart_reply').childNodes;
+        for(var i in replies) {
+          var child = replies[i].firstChild;
+          if(child && child.style) child.style.width = (child.offsetWidth + 5 ) + 'px';
+        }
+
+        var element = angular.element(document.querySelector('#smart_reply'));
+        $compile(element.contents())($scope);
+        console.log($('.smart_reply'))
+        $('.smart_reply').owlCarousel({
+          loop:false,
+          nav:false,
+          dots: false,
+          items: 4,
+          margin: 3,
+          autoWidth: true
+        });
       }
-
-      main.insertAdjacentHTML('beforeend', innerHTML);
-
-      var replies = document.getElementById('smart_reply').childNodes;
-      for(var i in replies) {
-        var child = replies[i].firstChild;
-        if(child && child.style) child.style.width = (child.offsetWidth + 5 ) + 'px';
-      }
-
-      var element = angular.element(document.querySelector('#smart_reply'));
-      $compile(element.contents())($scope);
-
-      $('.smart_reply').owlCarousel({
-        loop:false,
-        nav:false,
-        dots: false,
-        items: 4,
-        margin: 3,
-        autoWidth: true
-      });
     }
 
     var itemsCnt = 0;
@@ -764,7 +786,6 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
     function addUserBubble(msg) {
       var main = document.getElementById('chat_main');
-
       var d = new Date();
       var datetext = d.getHours() + ':' + d.getMinutes();
 
@@ -852,7 +873,6 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     }
 
     function playVideo(videoUrl, isFull, isLoop, callback) {
-      console.log(videoUrl);
 
       if(!vm.videoPlay) {
         document.getElementById('videoSection').style.visibility = 'visible';
@@ -873,8 +893,6 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         source.setAttribute('type', 'video/mp4');
 
         var video = document.getElementById(playerName);
-        console.log(video);
-        console.log(playerName);
         if(video) {
           // if(isFull) video.className = 'video-full';
           // else video.className = 'video-inline';

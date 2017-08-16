@@ -16,10 +16,9 @@
           <li><a href="#customers" class="smooth-scroll">Examples</a></li>
           <li><a href="#contact" class="smooth-scroll">Price</a></li>
           <li><a href="#contact" class="smooth-scroll">Contact</a></li>
-          <li><a onclick="window.location =  window.location.href.toString() + 'developer'">디벨로퍼</a></li>
-          <li ng-hide="authentication && authentication.user"><a onclick="window.location= window.location.href + 'developer/authentication/signin'">로그인</a></li>
-          <li ng-show="authentication && authentication.user"><a>반가워요</a></li>
-
+          <li><a style="cursor: pointer" onclick="window.location =  window.location.origin + '/developer'">디벨로퍼</a></li>
+          <li ng-hide="authentication && authentication.user"><a style="cursor: pointer" onclick="window.location = window.location.origin + '/developer/authentication/signin'">로그인</a></li>
+          <li ng-show="authentication && authentication.user"><a style="cursor: pointer">반가워요</a></li>
         </ul>
       </nav>
       <!-- Toggle menu -->
@@ -256,7 +255,7 @@
             </div>
           </div>
           <!-- Block item -->
-          <div class="col-md-3" ng-click="vm.openChatModal()">
+          <div class="col-md-3" ng-click="vm.openChatModal('restaurant_new')">
             <div class="item-screenshots">
               <div class="preview-container">
                 <div class="button-preview icon-circle">
@@ -267,7 +266,7 @@
             </div>
           </div>
           <!-- Block item -->
-          <div class="col-md-3" ng-click="vm.openChatModal()">
+          <div class="col-md-3" ng-click="vm.openChatModal('Asan')">
             <div class="item-screenshots">
               <div class="preview-container">
                 <div class="button-preview icon-circle">

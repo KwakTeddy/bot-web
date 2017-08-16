@@ -25,6 +25,7 @@
         <label class="item item-input form-group">
             <input type="password" id="password" name="password"
                    ng-model="credentials.password"
+                   equals="{{credentials.verifyPassword}}"
                    placeholder="비밀번호를 입력하세요." required>
         </label>
         <div ng-messages="userForm.password.$error" ng-show="userForm.password.$error.required && submitted" role="alert">
@@ -34,12 +35,12 @@
             <input type="password" id="verifyPassword" name="verifyPassword"
                    ng-model="credentials.verifyPassword"
                    placeholder="비밀번호를 한 번 더 입력하세요."
-                   password-verify="credentials.password" required>
+                   equals="{{credentials.password}}" required>
         </label>
         <div ng-messages="userForm.verifyPassword.$error" role="alert">
           <p class="help-block error-text c_red" ng-message="required" ng-show="userForm.verifyPassword.$error.required && submitted"><b>비밀번호를 한 번 더 입력하세요.</b>
           </p>
-          <p class="help-block error-text c_red" ng-message="passwordVerify"><b>비밀번호가 일치하지 않습니다.</b></p>
+          <p class="help-block error-text c_red" ng-message="equals"><b>비밀번호가 일치하지 않습니다.</b></p>
         </div>
         <!--<div class="form-group" show-errors>-->
         <!--<ion-checkbox ng-model="credentials.agreeterms"><a ng-click="privacy()">약관</a>에 동의해요</ion-checkbox>-->

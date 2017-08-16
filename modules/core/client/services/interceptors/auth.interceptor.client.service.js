@@ -16,6 +16,7 @@ angular.module('core').factory('authInterceptor', ['$q', '$injector',
         }
         // otherwise, default behaviour
         return $q.reject(rejection);
+
       }
     };
   }

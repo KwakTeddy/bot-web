@@ -4,14 +4,12 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
     '$ionicModal', '$rootScope', '$ionicSideMenuDelegate', '$stateParams', '$ionicPopup', '$cookies', '$timeout',
   function ($scope, $state, $http, $location, $window, Authentication, PasswordValidator, $uibModal, $ionicModal, $rootScope, $ionicSideMenuDelegate, $stateParams, $ionicPopup, $cookies, $timeout) {
     var vm = this;
-
     $scope.authentication = Authentication;
     $scope.popoverMsg = PasswordValidator.getPopoverMsg();
     $scope.credentials = {};
-
-      // Get an eventual error defined in the URL query string:
     $scope.error = $location.search().err;
-    //routing
+    console.log("AuthenticationController");
+
     var stingParser = $state.current.name;
     var parsedString = stingParser.split('.');
     if (parsedString[0] == 'user-bots-web') {
@@ -30,9 +28,12 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
       $scope.authenticationSignup = 'authentication.signup';
       $scope.authenticationSignin = 'authentication.signin';
     }
+    $timeout(function () {
+      document.getElementById("main").style.setProperty("margin", 0, "important")
+    });
 
     // If user is signed in then redirect back home
-    if ($scope.authentication.user) {
+    if ($scope.authentication.user || $cookies.get("login")) {
         if (_platform == 'mobile'){
             $state.go('homeMobile')
         }else {
@@ -64,6 +65,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         return false;
       }
       document.getElementById('loading-screen').style.setProperty("display", "block", "important");
+      console.log('transferServerTime')
 
       $http.post('/api/auth/signup', $scope.credentials).success(function (response) {
           console.log(response);
@@ -79,7 +81,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                 $state.go('homeMobile');
             });
         } else {
-            document.getElementById('loading-screen').style.setProperty("display", "none", "important")
+            document.getElementById('loading-screen').style.setProperty("display", "none", "important");
             var modalInstance = $uibModal.open({
                 templateUrl: 'modules/users/client/views/authentication/email.confirm.modal.html',
                 backdrop: 'static',
@@ -92,7 +94,6 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                 }else {
                   $state.go($state.previous.state.name || 'home', $state.previous.params);
                 }
-
             };
             $scope.resend = function () {
                 modalInstance.dismiss();
@@ -123,12 +124,12 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         }
 
       }).error(function (response) {
-        document.getElementById('loading-screen').style.setProperty("display", "none", "important")
+        document.getElementById('loading-screen').style.setProperty("display", "none", "important");
         console.log(response);
         if(response.message.match('가입되어 있는 E-mail이네요')){
-            $scope.error.email = response.message;
+          $scope.error.email = response.message;
         } else if(response.message.match('SNS')) {
-            $scope.error.email = response.message;
+          $scope.error.email = response.message;
         } else if(response.message.match('Failure sending email')) {
           $scope.error.email = '회원가입은 되었지만 E-mail 인증 메일 보내기에 실패했어요. 관리자에게 문의해주세요.'
         } else if(response.message.match('valid email')){
@@ -154,29 +155,22 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
     };
 
     $scope.signin = function (isValid) {
-        $scope.error = null;
+      $scope.error = null;
       $scope.submitted = true;
 
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'userForm');
-
         return false;
       }
       $http.post('/api/auth/signin?redirect_to=' + encodeURIComponent($state.previous.href), $scope.credentials).success(function (response) {
-        // If successful we assign the response to the global user model
         $scope.authentication.user = response;
-        // And redirect to the previous or home page
+        $cookies.put('login', true);
         if (_platform == 'mobile'){
             $rootScope.closeSigninModal();
             $state.go($state.previous.state.name || 'homeMobile', $state.previous.params);
         }else {
-          console.log(window.location.href);
-          console.log(window.location.href.indexOf('developer'));
-          if(window.location.href.indexOf('developer') > -1){
-            $state.go('developer-home')
-          }else {
-            $state.go($state.previous.state.name || 'home', $state.previous.params);
-          }
+          if(window.location.href.indexOf('developer') > -1) $state.go('developer-home');
+          else                                               $state.go($state.previous.state.name || 'home', $state.previous.params);
         }
       }).error(function (response) {
         console.log(response);
@@ -288,8 +282,6 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
       if (window.location.href.indexOf('developer') > -1){
         url += '?redirect_to=/developer';
       }
-      // Effectively call OAuth authentication route:
-        console.log(url);
       $window.location.href = url;
     };
 

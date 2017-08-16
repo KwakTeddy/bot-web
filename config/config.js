@@ -91,11 +91,9 @@ var validateSecureMode = function (config) {
  * Validate Session Secret parameter is not set to default in production
  */
 var validateSessionSecret = function (config, testing) {
-
   if (process.env.NODE_ENV !== 'production') {
     return true;
   }
-
   if (config.sessionSecret === 'MEAN') {
     if (!testing) {
       console.log(chalk.red('+ WARNING: It is strongly recommended that you change sessionSecret config while running in production!'));

@@ -1,9 +1,18 @@
 'use strict';
 
 angular.module('users').controller('PasswordController', ['$scope', '$stateParams', '$http', '$location', 'Authentication',
-  'PasswordValidator', '$state', '$ionicModal', '$ionicPopup',
-  function ($scope, $stateParams, $http, $location, Authentication, PasswordValidator, $state, $ionicModal, $ionicPopup) {
+  'PasswordValidator', '$state', '$ionicModal', '$ionicPopup', '$timeout',
+  function ($scope, $stateParams, $http, $location, Authentication, PasswordValidator, $state, $ionicModal, $ionicPopup, $timeout) {
     var vm = this;
+
+    $timeout(function () {
+      document.getElementById('sidebar-left').style.display = 'none';
+      document.getElementById('chat-include').style.display = 'none';
+      document.getElementById('log-button').style.display = 'none';
+      document.getElementById('intent-button').style.display = 'none';
+      document.getElementById('main').classList.remove('content-body');
+    });
+
     $scope.authentication = Authentication;
     $scope.popoverMsg = PasswordValidator.getPopoverMsg();
     $scope.forgotPasswordForm = {};

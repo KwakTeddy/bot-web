@@ -29,6 +29,7 @@ module.exports = function (config) {
       // displayName: profile.username,
       username: providerData.properties.nickname,
       displayName: providerData.properties.nickname,
+      email: providerData.kaccount_email ? providerData.kaccount_email : undefined,
       profileImageURL: providerData.properties.profile_image,
       provider: 'kakao',
       providerIdentifierField: 'id',

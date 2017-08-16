@@ -157,9 +157,8 @@ exports.reset = function (req, res, next) {
                     // Remove sensitive data before return authenticated user
                     user.password = undefined;
                     user.salt = undefined;
-
+                    res.cookie('login', true);
                     res.json(user);
-
                     done(err, user);
                   }
                 });
@@ -231,6 +230,7 @@ exports.changePassword = function (req, res, next) {
                     if (err) {
                       res.status(400).send(err);
                     } else {
+                      res.cookie('login', true);
                       res.send({
                         message: '비밀번호가 성공적으로 변경되었어요'
                       });
