@@ -1825,7 +1825,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
             } else if (r.type === 'Entity') {
               (obj.entities || (obj.entities = [])).push(r.str);
             } else if (r.type === 'RegExp') {
-              obj.regexp = r.str;
+              obj.regexp = r.str.replace(/\\/g, '\\\\');
             } else if (r.type === 'Intent') {
               obj.intent= r.str;
             } else if (r.type === 'If') {
