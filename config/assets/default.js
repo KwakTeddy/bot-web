@@ -36,8 +36,8 @@ module.exports = {
         'public/lib/jstree/dist/jstree.js',
         'public/lib/pnotify/dist/pnotify.js',
         'public/lib/angular-pnotify/src/angular-pnotify.js',
-        'public/lib/ment.io/dist/mentio.js',
-        'public/lib/innersvg-polyfill/innersvg.js'
+        'public/lib/ment.io/dist/mentio.js'
+        // 'public/lib/innersvg-polyfill/innersvg.js'
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
     },

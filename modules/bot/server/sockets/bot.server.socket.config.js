@@ -9,12 +9,12 @@ var bot = require('../controllers/bot.server.controller');
 var tough = require('tough-cookie');
 var utils = require(path.resolve('./modules/bot/action/common/utils'));
 var util = require('util')
+
 // var chatscriptConfig = {port: 0, host: '', allowHalfOpen: true};
 var defaultOptions = {};
 
 var mongoose = require('mongoose'),
   BotUser = mongoose.model('BotUser');
-
 // Create the chat configuration
 module.exports = function (io, socket) {
   console.log('user connected');
@@ -41,4 +41,6 @@ module.exports = function (io, socket) {
     }, msg.options, socket);
 
   })
+
 };
+

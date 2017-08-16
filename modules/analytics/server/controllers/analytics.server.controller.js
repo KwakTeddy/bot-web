@@ -432,7 +432,7 @@ exports.dialog = function (req, res) {
 exports.dialogChildren = function (req, res) {
   var botId = req.params.bId;
   var dialogId = req.params.dialogId;
-  isCyclic(global._bots[botId].dialogs)
+  isCyclic(global._bots[botId].dialogs);
   global._bots[botId].dialogs.forEach(clear);
   dialogs_data = utils.cloneWithoutCycle(global._bots[botId].dialogs);
   var data = {};

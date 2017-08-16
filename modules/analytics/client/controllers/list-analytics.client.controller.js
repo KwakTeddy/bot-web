@@ -93,7 +93,8 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
       $scope.selected.inputs.push({str:""});
     };
     $scope.addOutput= function() {
-      $scope.selected.outputs.push({str:""});
+      $scope.selected.outputs.push({str:{text: "", kind: "Text"}});
+      console.log($scope.selected.outputs);
     };
 
     $scope.dialogFailureClear = function (target) {
@@ -158,10 +159,11 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
           $scope.dialogs = dialogs;
           $scope.selected = $scope.dialogs[0];
 
-          console.log($scope.dialogs)
-          console.log($scope.selected)
+          console.log($scope.dialogs);
+          console.log($scope.selected);
 
-          $('.modal-with-form').click(); 
+          $('#modalForm').css('display', 'block');
+          $('.modal-with-form').click();
         }else {
           alert('시작 다이얼로그 입니다')
         }

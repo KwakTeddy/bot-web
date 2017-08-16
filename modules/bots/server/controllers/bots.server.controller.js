@@ -1308,12 +1308,11 @@ exports.deleteDialog = function (req, res) {
 };
 
 exports.listDialog = function (req, res) {
-  var sort = req.query.sort || '-created';
+  var sort = req.query.sort || '+created';
   var user = req.user;
   var query = {};
 
-  if (user)
-    query['user'] =  user._id;
+  if (user) query['user'] =  user._id;
   if(req.params.dBotId) query['botId'] =  req.params.dBotId;
   // query['input'] = {"$ne":""};
   // query['output'] = {"$ne":""};

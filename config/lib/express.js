@@ -32,8 +32,10 @@ module.exports.initLocalVariables = function (app) {
     app.locals.secure = config.secure.ssl;
   }
   app.locals.keywords = config.app.keywords;
+  app.locals.enterprise = config.enterprise;
   app.locals.googleAnalyticsTrackingID = config.app.googleAnalyticsTrackingID;
   app.locals.facebookAppId = config.facebook.clientID;
+  app.locals.kakaoJSID = config.kakao.clientJSID;
   app.locals.jsFiles = config.files.client.js;
   app.locals.cssFiles = config.files.client.css;
   app.locals.mobileJsFiles = config.files.mobile.js;

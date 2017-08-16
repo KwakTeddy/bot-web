@@ -85,8 +85,6 @@ exports.renderNotFound = function (req, res) {
 */
 exports.getConfig = function (req, res) {
   var configData = {};
-  configData['facebook'] = {};
-  configData.facebook['clientID'] = config.facebook.clientID;
   configData['enterprise'] = config.enterprise;
   res.json(configData);
 };

@@ -26,7 +26,7 @@ exports.update = function (req, res) {
     // Merge existing user
     user = _.extend(user, req.body);
     user.updated = Date.now();
-    user.displayName = user.firstName + ' ' + user.lastName;
+    // user.displayName = user.firstName + ' ' + user.lastName;
 
     user.save(function (err) {
       if (err) {
@@ -38,6 +38,7 @@ exports.update = function (req, res) {
           if (err) {
             res.status(400).send(err);
           } else {
+            res.cookie('login', true);
             res.json(user);
           }
         });
@@ -81,6 +82,7 @@ exports.changeProfilePicture = function (req, res) {
               if (err) {
                 res.status(400).send(err);
               } else {
+                res.cookie('login', true);
                 res.json(user);
               }
             });

@@ -15,6 +15,7 @@ var path = require('path'),
     crypto = require('crypto'),
     config = require(path.resolve('./config/config'));
 
+var http = require('http');
 var smtpTransport = nodemailer.createTransport(config.mailer.options);
 var util = require('util');
 // URLs for which user can't be redirected on signin
@@ -52,7 +53,7 @@ exports.signup = function (req, res) {
 
     User.findOne(emailSearchQuery, function (err, result) {
         if (err) {
-            return err;
+            return res.status(400).send(err);
         } else {
             if (result && (result.provider == 'local')){
                 return res.status(400).send({
@@ -248,24 +249,10 @@ exports.signin = function (req, res, next) {
 
                 req.login(user, function (err) {
                     if (err) {
-                        res.status(400).send(err);
+                      res.status(400).send(err);
                     } else {
-                      // if (req.query.redirect_to.indexOf('developer') > -1){
-                      //   Bot.find({user: req.user._id}).exec(function (err, data) {
-                      //     if (err){
-                      //       return res.redirect('/authentication/signin')
-                      //     }
-                      //     if (data.length){
-                      //       res.cookie('default_bot', data[0].id);
-                      //       res.json(user);
-                      //     }else {
-                      //       res.cookie('default_bot', null);
-                      //       res.json(user);
-                      //     }
-                      //   });
-                      // }else {
-                        res.json(user);
-                      // }
+                      res.cookie('login', true);
+                      res.json(user);
                     }
                 });
             }
@@ -279,9 +266,10 @@ exports.signin = function (req, res, next) {
 exports.signout = function (req, res) {
   req.logout();
   req.session.destroy();
+  res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
 
   if(req.query['path']) res.redirect(req.query['path']);
-  else if (req.query['redirect_to']) res.redirect((req.query['redirect_to']))
+  else if (req.query['redirect_to']) res.redirect((req.query['redirect_to']));
   else res.redirect('/');
 };
 
@@ -311,8 +299,8 @@ exports.oauthCallback = function (strategy, scope) {
     // console.log('callback');
 
     passport.authenticate(strategy, scope, function (err, user, redirectURL) {
-        console.log(err);
       if (err) {
+        console.log(err);
         if (sessionRedirectURL && sessionRedirectURL.indexOf('developer') > -1) {
           return res.redirect('/developer/authentication/signin?err=' + encodeURIComponent(errorHandler.getErrorMessage(err)));
         }else {
@@ -328,18 +316,12 @@ exports.oauthCallback = function (strategy, scope) {
       }
       req.login(user, function (err) {
         if (err) {
-          if (sessionRedirectURL && sessionRedirectURL.indexOf('developer') > -1){
-            return res.redirect('/developer/authentication/signin');
-          }else {
-            return res.redirect('/authentication/signin');
-          }
+          if (sessionRedirectURL && sessionRedirectURL.indexOf('developer') > -1) return res.redirect('/developer/authentication/signin');
+          else                                                                    return res.redirect('/authentication/signin');
         }
-        if (sessionRedirectURL && sessionRedirectURL.indexOf('developer') > -1){
-          return res.redirect('/developer');
-        }else {
-          return res.redirect('/');
-        }
-        // return res.redirect(redirectURL.redirect_to || sessionRedirectURL || '/');
+        res.cookie('login', true);
+        if (sessionRedirectURL && sessionRedirectURL.indexOf('developer') > -1) return res.redirect('/developer');
+        else                                                                    return res.redirect('/');
       });
     })(req, res, next);
   };
@@ -363,66 +345,51 @@ exports.saveOAuthUserProfile = function (req, providerUserProfile, done) {
     var additionalProviderSearchQuery = {};
     additionalProviderSearchQuery[searchAdditionalProviderIdentifierField] = providerUserProfile.providerData[providerUserProfile.providerIdentifierField];
 
-    //Define email search query
-    var emailSearchQuery = {};
-    emailSearchQuery['email'] = providerUserProfile.email;
-
     // Define a search query to find existing user with current provider profile
     var searchQuery = {
-        $or: [mainProviderSearchQuery, additionalProviderSearchQuery, emailSearchQuery]
+      $or: [mainProviderSearchQuery, additionalProviderSearchQuery]
     };
 
+    //Define email search query
+    if(providerUserProfile.email){
+      var emailSearchQuery = {};
+      emailSearchQuery['email'] = providerUserProfile.email;
+      searchQuery.$or.push(emailSearchQuery);
+    }
+
     User.findOne(searchQuery, function (err, user) {
-      // console.log(util.inspect(searchQuery))
       if (err) {
         return done(err);
       } else {
         if (!user) {
           var possibleUsername = providerUserProfile.username || ((providerUserProfile.email) ? providerUserProfile.email.split('@')[0] : '');
-
-          User.findUniqueUsername(possibleUsername, null, function (availableUsername) {
-            user = new User({
-              firstName: providerUserProfile.firstName,
-              lastName: providerUserProfile.lastName,
-              username: availableUsername,
-              displayName: providerUserProfile.displayName,
-              email: providerUserProfile.email,
-              profileImageURL: providerUserProfile.profileImageURL,
-              provider: providerUserProfile.provider,
-              providerData: providerUserProfile.providerData
-            });
-
-            // And save the user
-            user.save(function (err) {
-              return done(err, user);
-            });
+          user = new User({
+            // firstName: providerUserProfile.firstName,
+            // lastName: providerUserProfile.lastName,
+            username: possibleUsername,
+            displayName: providerUserProfile.displayName,
+            email: providerUserProfile.email,
+            profileImageURL: providerUserProfile.profileImageURL,
+            provider: providerUserProfile.provider,
+            providerData: providerUserProfile.providerData
+          });
+          user.save(function (err) {
+            return done(err, user);
           });
         } else {
-          // Check if user exists, is not signed in using this provider, and doesn't have that provider data already configured
-          if (user.provider !== providerUserProfile.provider && (!user.additionalProvidersData || !user.additionalProvidersData[providerUserProfile.provider])) {
-              // Add the provider data to the additional provider data field
-              if (!user.additionalProvidersData) {
-                  user.additionalProvidersData = {};
-              }
-
+          // if (user.provider !== providerUserProfile.provider && (!user.additionalProvidersData || !user.additionalProvidersData[providerUserProfile.provider])) {
+          if (user.provider != providerUserProfile.provider) {
+              if (!user.additionalProvidersData) user.additionalProvidersData = {};
               user.additionalProvidersData[providerUserProfile.provider] = providerUserProfile.providerData;
-
-              // Then tell mongoose that we've updated the additionalProvidersData field
               user.markModified('additionalProvidersData');
-
-              // And save the user
               user.save(function (err) {
                 console.log(err);
-                  return done(err, user, '/settings/accounts');
+                return done(err, user);
+                // return done(err, user, '/settings/accounts');
               });
           } else {
-            if (user.provider == 'facebook'){
-              user.markModified('additionalProvidersData');
-              user.providerData.accessToken = providerUserProfile.providerData.accessToken;
-            }else {
-              user.markModified('additionalProvidersData');
-              // user.additionalProvidersData.facebook.accessToken = providerUserProfile.providerData.accessToken;
-            }
+            user.providerData = providerUserProfile.providerData;
+            user.markModified('providerData');
             user.save(function (err) {
               if (err) console.log(err);
               return done(err, user);
@@ -432,33 +399,18 @@ exports.saveOAuthUserProfile = function (req, providerUserProfile, done) {
       }
     });
   } else {
-    // User is already logged in, join the provider data to the existing user
     var user = req.user;
-
-    // Check if user exists, is not signed in using this provider, and doesn't have that provider data already configured
     if (user.provider !== providerUserProfile.provider && (!user.additionalProvidersData || !user.additionalProvidersData[providerUserProfile.provider])) {
       // Add the provider data to the additional provider data field
-      if (!user.additionalProvidersData) {
-        user.additionalProvidersData = {};
-      }
-
+      if (!user.additionalProvidersData) user.additionalProvidersData = {};
       user.additionalProvidersData[providerUserProfile.provider] = providerUserProfile.providerData;
-
-      // Then tell mongoose that we've updated the additionalProvidersData field
       user.markModified('additionalProvidersData');
-
-      // And save the user
       user.save(function (err) {
         return done(err, user, '/settings/accounts');
       });
     } else {
-      if (user.provider == 'facebook'){
-        user.markModified('additionalProvidersData');
-        user.providerData.accessToken = providerUserProfile.providerData.accessToken;
-      }else {
-        user.markModified('additionalProvidersData');
-        user.additionalProvidersData.facebook.accessToken = providerUserProfile.providerData.accessToken;
-      }
+      user.providerData = providerUserProfile.providerData;
+      user.markModified('providerData');
       user.save(function (err) {
         if (err) console.log(err);
         return done(new Error('User is already connected using this provider'), user);
@@ -500,6 +452,7 @@ exports.removeOAuthProvider = function (req, res, next) {
         if (err) {
           return res.status(400).send(err);
         } else {
+          res.cookie('login', true);
           return res.json(user);
         }
       });
@@ -535,7 +488,8 @@ exports.validateEmailConfirmToken = function (req, res) {
                     if (err) {
                         res.status(400).send(err);
                     } else {
-                        res.redirect('/');
+                      res.cookie('login', true);
+                      res.redirect('/developer');
                     }
                 });
             }

@@ -117,8 +117,8 @@
             <label class="col-sm-3 control-label">답변 <span class="required" aria-required="true">*</span></label>
             <div class="col-sm-9">
               <div class="input-group input-group-icon" ng-repeat="output in selected.outputs track by $index">
-                <input type="text" data-ng-if="!output.str.output" id="output" name="output" ng-model="output.str" class="form-control valid mb-xs" placeholder="답변을 입력해주세요" required="" aria-required="true" aria-invalid="false">
-                <input type="text" data-ng-if="output.str.output" name="output" ng-model="output.str.output" class="form-control valid mb-xs" placeholder="답변을 입력해주세요" required="" aria-required="true" aria-invalid="false">
+                <input type="text" data-ng-if="output.str.text == undefined" id="output" name="output" ng-model="output.str" class="form-control valid mb-xs" placeholder="답변을 입력해주세요" required="" aria-required="true" aria-invalid="false">
+                <input type="text" data-ng-if="output.str.text != undefined" name="output" ng-model="output.str.text" class="form-control valid mb-xs" placeholder="답변을 입력해주세요" required="" aria-required="true" aria-invalid="false">
               </div>
               <button type="button" ng-click="addOutput()" class="mb-xs mr-xs btn btn-sm btn-info"><i class="glyphicon glyphicon-plus"></i> 답변추가</button>
             </div>

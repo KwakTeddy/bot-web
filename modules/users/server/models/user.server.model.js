@@ -37,9 +37,6 @@ var UserSchema = new Schema({
     unique: true,
     lowercase: true,
     trim: true,
-    // default: function () {
-    //     return Date.now + Math.random();
-    // },
     validate: [validateLocalStrategyEmail, 'Please fill a valid email address']
   },
   username: {

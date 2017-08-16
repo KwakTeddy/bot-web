@@ -2,7 +2,7 @@
 
 module.exports = {
   app: {
-    title: 'MEAN.JS',
+    title: 'PlayChat',
     description: 'Full-Stack JavaScript with MongoDB, Express, AngularJS, and Node.js',
     keywords: 'mongodb, express, angularjs, node.js, mongoose, passport',
     googleAnalyticsTrackingID: process.env.GOOGLE_ANALYTICS_TRACKING_ID || 'GOOGLE_ANALYTICS_TRACKING_ID'
@@ -45,9 +45,9 @@ module.exports = {
     }
   },
   enterprise: {
-    logo: '/images/' + process.env.ENTERPRISE + '.png',
-    name: process.env.ENTERPRISE,
-    title: process.env.ENTERPRISETITLE
+    logo: process.env.ENTERPRISE ? '/images/' + process.env.ENTERPRISE + '.png' : undefined,
+    name: process.env.ENTERPRISE || 'moneybrain',
+    title: process.env.ENTERPRISETITLE || 'PlayChat'
   },
   chatServer: '../bot-server/',
   callcenter: '15777314'
