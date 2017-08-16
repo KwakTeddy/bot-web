@@ -18,7 +18,7 @@ var dialogs = [
 		],
 		"name": "dialog_default0",
 		"task": {
-			"name": "defaultTask"
+			"name": "defaultTask2"
 		}
 	}
 ];

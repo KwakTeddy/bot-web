@@ -3,6 +3,48 @@
 
 var dialogs = [
 	{
+		"name": "ㄴㅇㅁㄹㅇㄴㄹ",
+		"id": "default4",
+		"filename": "default",
+		"input": [
+			{
+				"entities": [
+					"@빈소1"
+				]
+			}
+		],
+		"output": [
+			{
+				"text": "ㅁㄴㅇㄹ",
+				"kind": "Text"
+			}
+		],
+		"task": {
+			"name": "defaultTask"
+		}
+	},
+	{
+		"name": "빈소2 다이얼로그",
+		"id": "default6",
+		"filename": "default",
+		"input": [
+			{
+				"entities": [
+					"@빈소2"
+				]
+			}
+		],
+		"output": [
+			{
+				"text": "빈소2 엔티티",
+				"kind": "Text"
+			}
+		],
+		"task": {
+			"name": "defaultTask"
+		}
+	},
+	{
 		"id": "default0",
 		"filename": "default",
 		"input": [
@@ -73,6 +115,25 @@ var dialogs = [
 				"task": "testTask"
 			}
 		]
+	},
+	{
+		"name": "ㅁㅇㄴ러ㅐ",
+		"id": "default5",
+		"filename": "default",
+		"input": [
+			{
+				"intent": "테스트"
+			}
+		],
+		"output": [
+			{
+				"text": "테스트 인텐트",
+				"kind": "Text"
+			}
+		],
+		"task": {
+			"name": "defaultTask"
+		}
 	}
 ];
 

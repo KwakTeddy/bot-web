@@ -1790,7 +1790,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
             });
           }
           if (d.regexp) {
-            r.push({type: 'RegExp', str: d.regexp});
+            r.push({type: 'RegExp', str: d.regexp.replace(/\\\\/g, '\\')});
           }
           if (d.intent) {
             r.push({type: 'Intent', str: d.intent});
