@@ -5,9 +5,7 @@
  */
 var dialogsetsPolicy = require('../policies/dialogsets.server.policy'),
   dialogsets = require('../controllers/dialogsets.server.controller'),
-  dialogsetDialogs = require('../controllers/dialogsetDialogs.server.controller'),
-  mongo = require('../../../../custom_modules/Shinhancard/mongodump');
-
+  dialogsetDialogs = require('../controllers/dialogsetDialogs.server.controller');
 
 var concept = require('../../../bot/engine/concept/concept.js');
 
@@ -42,9 +40,6 @@ module.exports = function(app) {
 
   app.route('/api/generalconcepts')
     .get(concept.getConcepts);
-
-  app.route('/api/mongodump')
-    .get(mongo.mongodump)
 
   // Finish by binding the Custom action middleware
   app.param('dialogsetId', dialogsets.dialogsetByID);
