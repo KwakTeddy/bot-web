@@ -66,11 +66,13 @@
   .dlg-name {
     border-bottom: 1px solid;
     overflow: hidden;
+    white-space: pre-line;
   }
 
   .dlg-input {
     border-bottom: 1px solid;
     overflow: hidden;
+    white-space: pre-line;
   }
 
   .dlg-output {
@@ -170,7 +172,7 @@
   .output-box {
     padding: 10px 0 20px 0;
     /*position: absolute;*/
-    /*width: 320px;*/
+    width: 320px;
     /*border: 1px solid gray;*/
     /*border-radius: 5px;*/
     /*border-right: 1px solid #ddd;*/
@@ -483,16 +485,16 @@
           <div class="col-sm-3">
             <!--<label class="col-sm-2 control-label">Depth: </label>-->
             <div class="input-group mt-xs pull-right" style="float: left;">
-              <input class="form-control" type="text" ng-model="vm.depth" readonly>
+              <!--<input class="form-control" type="text" ng-model="vm.depth" readonly>-->
               <span class="input-group-btn">
-                                <button class="btn btn-default" ng-click="vm.addDepth()"><i
-                                  class="fa fa-plus"></i></button>
-                                <button class="btn btn-default" ng-click="vm.minusDepth()"><i
-                                  class="fa fa-minus"></i></button>
-                                <button class="btn btn-default" ng-click="vm.expandAll()"><i
-                                  class="fa fa-expand"></i></button>
-                                <button class="btn btn-default" ng-click="vm.collapseAll()"><i
-                                  class="fa fa-compress"></i></button>
+                                <!--<button class="btn btn-default" ng-click="vm.addDepth()"><i-->
+                                  <!--class="fa fa-plus"></i></button>-->
+                                <!--<button class="btn btn-default" ng-click="vm.minusDepth()"><i-->
+                                  <!--class="fa fa-minus"></i></button>-->
+                                <!--<button class="btn btn-default" ng-click="vm.expandAll()"><i-->
+                                  <!--class="fa fa-expand"></i></button>-->
+                                <!--<button class="btn btn-default" ng-click="vm.collapseAll()"><i-->
+                                  <!--class="fa fa-compress"></i></button>-->
                                 <button class="btn btn-default" ng-click="vm.zoomin()"><i
                                   class="fa fa-plus"></i></button>
                                 <button class="btn btn-default" ng-click="vm.zoomout()"><i
@@ -508,12 +510,12 @@
               <button class="mt-xs mr-xs btn btn-default pull-right" ng-disabled="vm.changeHistory.length == 0"
                       ng-click="undo()"><i class="fa fa-undo"></i></button>
             </form>
-            <button class="mt-xs mr-xs btn btn-default pull-right"
-                    ng-show="!vm.show_link"
-                    ng-click="vm.showLink()"><i class="fa fa-arrows-alt"> show</i></button>
-            <button class="mt-xs mr-xs btn btn-default pull-right"
-                    ng-show="vm.show_link"
-                    ng-click="vm.hideLink()"><i class="fa fa-arrows-alt"> hide</i></button>
+            <!--<button class="mt-xs mr-xs btn btn-default pull-right"-->
+                    <!--ng-show="!vm.show_link"-->
+                    <!--ng-click="vm.showLink()"><i class="fa fa-arrows-alt"> show</i></button>-->
+            <!--<button class="mt-xs mr-xs btn btn-default pull-right"-->
+                    <!--ng-show="vm.show_link"-->
+                    <!--ng-click="vm.hideLink()"><i class="fa fa-arrows-alt"> hide</i></button>-->
             <button class="mt-xs mr-xs btn btn-default pull-right"
                     ng-show="!vm.oneline"
                     ng-click="vm.showOneline()"><i class="fa fa-minus-square-o"> compact</i></button>
@@ -660,7 +662,7 @@
             <div class="col-sm-9">
               <input type="text" id="name" class="form-control mb-xs"
                      ng-readonly="vm.isStartNode"
-                     ng-model="dialog.name" placeholder="이름을 입력해주세요">
+                     ng-model="dialog.name" placeholder="이름을 입력해주세요" >
             </div>
           </div>
           <!--<hr>-->
@@ -668,7 +670,7 @@
             <div class="form-group">
               <div>
                 <label class="col-sm-2 control-label">Input <span class="required" aria-required="true">*</span></label>
-                <div class="col-sm-9">
+                <div class="col-sm-10">
                   <div ng-repeat="input in dialog.input track by $index">
                     <div class="input-group mb-xs" ng-show="vm.inputMode && vm.curInput == input">
                       <div class="input-group-btn">
@@ -745,7 +747,7 @@
                     </div>
                     <div ng-show="!vm.inputMode || vm.curInput != input">
                       <div >
-                        <div class="col-sm-8 form-control mb-xs" style="height:auto;margin-top: 0px;width: 90%; padding: 4px 4px 0px 4px;min-height: 35px;"
+                        <div class="col-sm-8 form-control mb-xs" style="height:auto;margin-top: 0px; margin-right: 5px; width: 277px; padding: 4px 4px 0px 4px;min-height: 35px;"
                              ng-click="vm.selectedContent = $index; vm.inlineInputFocus($index, 'focus')">
                       <span ng-repeat="i in input track by $index" style="display: inline-block;margin-bottom: 5px;">
                         <button id="inlineButton" class="btn btn-sm" ng-click="openEdit(i,input)"
@@ -835,17 +837,22 @@
                               </li>
                             </ul>
                           </script>
-
                         </div>
 
-                        <button class="btn btn-default" id="removeButton"
-                                style="margin-left: -2px; padding-left: 8px" tabindex="-1"><i ng-click="removeInput(input)"
-                                                                                id="removeIcon"
-                                                                                class="fa fa-remove"
-                                                                                style="color: tomato"></i>
-                        </button>
+                        <div style="width: 63px; float: right;">
+                          <button class="btn btn-default" id="removeButton"
+                                  style="padding: 6px 8px;" tabindex="-1"><i ng-click="removeInput($index)"
+                                                                                  id="removeIcon"
+                                                                                  class="fa fa-remove"
+                                                                                  style="color: tomato"></i>
+                          </button>
+
+                          <button type="button"
+                                  ng-click="addInput();vm.selectedContent = dialog.input.length - 1; vm.inlineInputFocus(dialog.input.length - 1, 'focus')"
+                                  class="mb-xs mr-xs btn btn-sm btn-default" style="padding: 5px; margin: 5px 2px;border: none" tabindex="-1"><i class="glyphicon glyphicon-plus"></i></button>
+                        </div>
                       </div>
-                      <div class="row">
+                      <div class="row" data-ng-if="vm.selectedContent == $index">
                         <div class="col-sm-8" style="width: 90%">
                           <div data-ng-if="processedInput" data-ng-hide="(vm.curI.str.trim().length == 0 || vm.curI.str.indexOf('if') == 0 || vm.curI.str.indexOf('/') == 0)">자연어처리 결과 :
                             {{processedInput}}
@@ -861,15 +868,15 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-sm-1" style="padding-left: 0;padding-top: 3px; margin-left: -10px;">
-                  <button type="button"
-                          ng-click="addInput();vm.selectedContent = dialog.input.length - 1; vm.inlineInputFocus(dialog.input.length - 1, 'focus')"
-                          class="mb-xs mr-xs btn btn-sm btn-default" style="border: none" tabindex="-1"><i class="glyphicon glyphicon-plus"></i></button>
+                <!--<div class="col-sm-1" style="padding-left: 0;padding-top: 3px; margin-left: -10px;">-->
+                  <!--<button type="button"-->
+                          <!--ng-click="addInput();vm.selectedContent = dialog.input.length - 1; vm.inlineInputFocus(dialog.input.length - 1, 'focus')"-->
+                          <!--class="mb-xs mr-xs btn btn-sm btn-default" style="border: none" tabindex="-1"><i class="glyphicon glyphicon-plus"></i></button>-->
 
-                </div>
-                <!--<div ng-show="inputError" class="text-danger text-center">-->
-                  <!--<strong ng-bind="inputError"></strong>-->
                 <!--</div>-->
+                <div ng-show="inputError" class="text-danger text-center">
+                  <strong ng-bind="inputError"></strong>
+                </div>
               </div>
 
               <!--<div class="col-sm-2">-->
@@ -927,14 +934,14 @@
             </div>
           </div>
 
-          <hr style="margin: 20px; height: 0px;">
+          <hr style="margin: 10px; height: 0px;">
 
           <div class="form-group" style="margin-bottom: 15px">
             <label class="col-sm-2 control-label">Output <span class="required" aria-required="true">*</span></label>
-            <div class="col-sm-9" style="">
-              <div ng-repeat="output in dialog.output">
-                <div>
-                  <ul class="nav nav-tabs" style="display: inline-block;">
+            <div class="col-sm-10" >
+              <div ng-repeat="output in dialog.output" >
+                <div >
+                  <ul class="nav nav-tabs" style=" display: inline-block; margin-top: 10px">
                     <li role="presentation"
                         ng-repeat="kind in vm.outputKind track by $index"
                         ng-click="vm.changeOutputKind(output,kind)"
@@ -943,15 +950,13 @@
                     </li>
                   </ul>
 
-                  <button class="btn btn-default"
-                  style="display: inline-block; float: right; margin-top: 3px; padding-left: 8px" tabindex="-1"><i ng-click="removeOutput(output)"
-                  id="removeIcon"
-                  class="fa fa-remove"
-                  style="color: tomato"></i>
-                  </button>
+                  <button type="button" ng-click="addOutput()" class="mb-xs mr-xs btn btn-sm btn-default" style="float: right; border: none; padding: 10px 10px; margin: 10px 5px 0 0 !important;" tabindex="-1">
+                    <i class="glyphicon glyphicon-plus"></i></button>
+                  <button class="btn btn-default" style="float: right; display: inline-block; margin-top: 13px; padding: 6px 8px" tabindex="-1"><i ng-click="removeOutput(output)" id="removeIcon"
+                    class="fa fa-remove" style="color: tomato"></i></button>
                 </div>
 
-                <div ng-show="vm.getOutputKind(output) == 'Text'" class="output-box" autofocus>
+                <div ng-show="vm.getOutputKind(output) == 'Text'" class="output-box" autofocus >
                   <label class="col-sm-2 control-label">If</label>
                   <div class="col-sm-10 mb-xs">
                     <input type="text" id="if" name="if" ng-model="output.if" class="form-control" tabindex="-1">
@@ -1137,18 +1142,22 @@
                     </div>
                   </div>
                 </div>
-                <div class="text-center">&nbsp;</div>
+                <div style="float: right;">&nbsp;</div>
               </div>
             </div>
-            <div class="col-sm-1" style="padding-left: 0;padding-top: 3px; margin-left: -10px;">
-              <button type="button" ng-click="addOutput()" class="mb-xs mr-xs btn btn-sm btn-default" style="border: none" tabindex="-1">
-                <i class="glyphicon glyphicon-plus"></i></button>
-            </div>
+            <!--<div class="col-sm-1" style="padding-left: 0;padding-top: 3px; margin-left: -10px;">-->
+              <!--<button type="button" ng-click="addOutput()" class="mb-xs mr-xs btn btn-sm btn-default" style="border: none" tabindex="-1">-->
+                <!--<i class="glyphicon glyphicon-plus"></i></button>-->
+            <!--</div>-->
           </div>
         </div>
         <footer class="panel-footer">
+
           <div class="row">
-            <div class="col-md-12 text-right">
+            <div ng-show="dialogError" class="text-danger text-center" style="float: left;">
+              <strong ng-bind="dialogError"></strong>
+            </div>
+            <div class="text-right" style="float: right">
               <button class="btn btn-primary modal-confirm" ng-click="update(dialogForm.$valid)">저장</button>
               <button class="btn btn-default" ng-click="closeEdit();">취소</button>
             </div>
@@ -1214,7 +1223,7 @@
             <label class="col-sm-2" >이름 <span class="required"
                                                                         aria-required="true">*</span></label>
             <div class="col-sm-9">
-              <input type="text" name="name" ng-model="entity.name" class="form-control valid"
+              <input type="text" id="entityName" name="name" ng-model="entity.name" class="form-control valid"
                      placeholder="엔터티의 이름을 지정해주세요"
                      required=""
                      aria-required="true" aria-invalid="false">
@@ -1227,7 +1236,7 @@
           <div class="form-group" style="margin-top: 15px;">
             <label class="col-sm-2">내용</label>
             <div class="col-sm-8">
-              <input type="text" name="entityContent" ng-model="entityContent" class="form-control valid"
+              <input type="text" id="entityContent" name="entityContent" ng-model="entityContent" class="form-control valid"
                      placeholder="엔터티에 속하는 내용을 적어주세요"
                      required=""
                      id='entityModalForm'
@@ -1235,7 +1244,7 @@
                      aria-required="true" aria-invalid="false">
             </div>
             <div class="col-sm-1" style="padding-right: 0;right: 15px">
-              <button ng-click="saveEntityContent()" class="btn btn-default btn-block">+
+              <button ng-click="saveEntityContent()" class="btn btn-default btn-block" tabindex="-1" >+
               </button>
             </div>
           </div>
@@ -1286,7 +1295,7 @@
                   <!--<td class="text-center">{{entity.bot.id}}</td>-->
                   <td class="text-center" ng-click="selectedContent = $index" style="position: relative;">
                     <input type="text" data-ng-model="content.name" class="text-center"
-                           style="border: none; width: 100%; height: 100%; position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%)">
+                           style="border: none; width: 100%; height: 100%; position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%)" tabindex="-1">
                   </td>
                   <td ng-click="selectedContent = $index">
                     <div data-ng-repeat="syn in content.syn track by $index"
@@ -1294,11 +1303,11 @@
                          style="display: inline-block; padding: 10px; border: 1px solid; border-color: gainsboro; margin: 2px">
                       <span>{{syn.name}}</span>
                       <a href="#" ng-click="contentSynRemoveBeforeSave(content, syn)" id="synTrashIcon"
-                         style="padding-left: 5px"><i class="fa fa-times" aria-hidden="true" style="right: 5px"></i></a>
+                         style="padding-left: 5px" tabindex="-1"><i class="fa fa-times" aria-hidden="true" style="right: 5px"  ></i></a>
                     </div>
                     <input type="text" placeholder="동의어 입력(Enter)" style="border: none; height: 40px; margin: 2px"
                            data-ng-model="vm.entityContentSyn" ng-keydown="synInputKeyDown($event, content)"
-                           data-ng-if="selectedContent == $index">
+                           data-ng-if="selectedContent == $index" tabindex="-1">
                     <!--<a href="#" ng-click="vm.contentSynSave(content)" data-ng-if="vm.selectedContent == $index"><i class="fa fa-plus" aria-hidden="true"></i></a>-->
                   </td>
                   <!--<td class="text-center">{{entity.words}}</td>-->
@@ -1308,11 +1317,11 @@
                   <td style="position: relative">
                     <a data-ng-if="entity._id" class="btn btn-default btn-block btn-xs"
                        ng-click="contentRemove(content)"
-                       style="border: 0!important; position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%)">
+                       style="border: 0!important; position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%)"  tabindex="-1">
                       <i class="glyphicon glyphicon-trash"></i>
                     </a>
                     <a data-ng-if="!entity._id" class="btn btn-default btn-block btn-xs"
-                       ng-click="contentRemoveBeforeSave(content)" style="border: 0!important;">
+                       ng-click="contentRemoveBeforeSave(content)" style="border: 0!important;"  tabindex="-1">
                       <i class="fa fa-minus" aria-hidden="true"></i>
                     </a>
                   </td>
@@ -1351,7 +1360,7 @@
             <label class="col-sm-2" >이름 <span class="required"
                                                                         aria-required="true">*</span></label>
             <div class="col-sm-9">
-              <input type="text" name="name" ng-model="intent.name" class="form-control valid"
+              <input type="text" id="intentName" name="name" ng-model="intent.name" class="form-control valid"
                      placeholder="인텐트의 이름을 지정해주세요"
                      required=""
                      aria-required="true" aria-invalid="false">
@@ -1364,13 +1373,13 @@
           <div class="form-group" style="margin-top: 15px;">
             <label class="col-sm-2" >내용</label>
             <div class="col-sm-8">
-              <input type="text" name="intentContent" ng-model="intentContent" class="form-control valid"
+              <input type="text" id="intentContent" name="intentContent" ng-model="intentContent" class="form-control valid"
                      placeholder="인텐트에 속하는 내용을 적어주세요2"
                      required=""
                      aria-required="true" aria-invalid="false">
             </div>
             <div class="col-sm-1" style="padding-right: 0;right: 15px">
-              <button ng-click="saveIntentContent()" class="btn btn-default btn-block">+
+              <button ng-click="saveIntentContent()" class="btn btn-default btn-block" tabindex="-1" >+
               </button>
             </div>
           </div>

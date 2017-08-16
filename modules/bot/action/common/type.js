@@ -1511,7 +1511,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
       async.eachSeries((topicKeywords.length > 0 ? topicKeywords : _nlps), function (word, _callback){
          word = word.text ? RegExp.escape(word.text): word;
 
-        if(word.length <= 1) {
+        if(false/*word.length <= 1*/) {
           _callback(null);
         } else {
           var query = {};
@@ -1520,9 +1520,11 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
 
           for(var j = 0; j < format.mongo.queryFields.length; j++) {
             try {
-              if(!(format.exclude && _.includes(format.exclude, word)))
-                query[format.mongo.queryFields[j]] = new RegExp('(?:^|\\s)' + word + '(?:$|\\s)', 'i');
-              else
+              if(!(format.exclude && _.includes(format.exclude, word))) {
+                if(word.length == 1) query[format.mongo.queryFields[j]] = word;
+                else query[format.mongo.queryFields[j]] = new RegExp('(?:^|\\s)' + word + '(?:$|\\s)', 'i');
+
+              } else
                 excluded.push(word);
             } catch(e) {}
           }

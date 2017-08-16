@@ -103,6 +103,9 @@ exports.create = function (req, res) {
 
         cb(null);
       } else {
+        createFile(bot.id + '.bot.js', bot.user, bot);
+        createFile('default.js', bot.user, bot);
+        createFile('default.graph.js', bot.user, bot);
         cb(null);
       }
     }, 
