@@ -13,15 +13,17 @@
 
   <div class="panel-body" data-ng-if="vm.type == 'defaultDialogset'">
 
-    <div style="margin-bottom: 15px;overflow: hidden">
+    <form ng-submit="vm.createDialog();" novalidate>
+      <div style="margin-bottom: 15px;overflow: hidden">
       <textarea type="text" id="question" name="question" ng-model="vm.dialog.inputRaw" class="form-control valid" placeholder="질문" rows="2"
-             aria-invalid="false" ng-blur="vm.textareaFocus(null, null, 'blur', 'question')" ng-focus="vm.textareaFocus(null, null, 'focus', 'question')" style="width: 43%;float: left;margin-right: 5px;resize: none">
+                aria-invalid="false" ng-blur="vm.textareaFocus(null, null, 'blur', 'question')" ng-focus="vm.textareaFocus(null, null, 'focus', 'question')" style="width: 43%;float: left;margin-right: 5px;resize: none">
       </textarea>
-      <textarea type="text" id="answer" name="answer" ng-model="vm.dialog.output" class="form-control valid" placeholder="답변" rows="2"
-             aria-invalid="false" ng-blur="vm.textareaFocus(null, null, 'blur', 'answer')" ng-focus="vm.textareaFocus(null, null, 'focus', 'answer')" style="width: 43%;float: left;margin-right: 5px;resize: none">
+        <textarea type="text" id="answer" name="answer" ng-model="vm.dialog.output" class="form-control valid" placeholder="답변" rows="2"
+                  aria-invalid="false" ng-blur="vm.textareaFocus(null, null, 'blur', 'answer')" ng-focus="vm.textareaFocus(null, null, 'focus', 'answer')" style="width: 43%;float: left;margin-right: 5px;resize: none">
       </textarea>
-      <button class="btn btn-primary" ng-click="vm.createDialog()" style="height: 50px">추가</button>
-    </div>
+      <button type="submit" class="btn btn-primary" style="height: 50px" onclick="">추가</button>
+      </div>
+    </form>
 
     <div ng-repeat="dialog in vm.dialogs track by $index" ng-show="dialog.deleted == undefined" style="margin-bottom: 5px;overflow: hidden">
       <span style="width: 43%;float: left;margin-right: 5px;position: relative">
@@ -110,7 +112,6 @@
             연결끊기
           </a>
         </td>
-
       </tr>
 
       <!--<tr ng-repeat="dialogset in vm.dialogsets" ng-if="(vm.listType == 'public') && dialogset.public">-->
@@ -137,9 +138,3 @@
   </div>
 
 </section>
-
-
-<script>
-
-</script>
-
