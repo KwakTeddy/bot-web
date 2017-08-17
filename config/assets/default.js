@@ -28,7 +28,6 @@ module.exports = {
         'public/lib/dropzone/downloads/dropzone.js',
         'public/lib/angular-dropzone/lib/angular-dropzone.js',
         'public/lib/ngInfiniteScroll/build/ng-infinite-scroll.js',
-        'public/lib/angular-dropzone/lib/angular-dropzone.js',
         'public/lib/d3/d3.min.js',
         'public/lib/d3-tip/index.js',
         'public/js/jsoneditor/dist/jsoneditor.js',
@@ -36,8 +35,8 @@ module.exports = {
         'public/lib/jstree/dist/jstree.js',
         'public/lib/pnotify/dist/pnotify.js',
         'public/lib/angular-pnotify/src/angular-pnotify.js',
-        'public/lib/ment.io/dist/mentio.js'
-        // 'public/lib/innersvg-polyfill/innersvg.js'
+        'public/lib/ment.io/dist/mentio.js',
+        'public/lib/innersvg-polyfill/innersvg.js'
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
     },
@@ -46,7 +45,7 @@ module.exports = {
       'public/lib/codemirror/lib/codemirror.css',
       'public/lib/dropzone/downloads/css/dropzone.css',
       'public/lib/angular-ui-select/dist/select.css',
-      'public/lib/pnotify/dist/pnotify.css',
+      'public/lib/pnotify/dist/pnotify.css'
 
     ],
     less: [

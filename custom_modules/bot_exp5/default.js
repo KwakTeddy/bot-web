@@ -1,9 +1,35 @@
 var path = require('path');
 var bot = require(path.resolve('config/lib/bot')).getBot('bot_exp5');
 
+
+
+
+
+
+var entityToImage = {
+    "ceme1" : "빈소1 url",
+    "ceme2" : "빈소2 url"
+}
+
+function findUrl(str) {
+    // console.log(window[str]);
+    var url='';
+    eval('url = entityToImage.' + str);
+    console.log(url);
+    return url;
+    // return entityToImage.ceme1;
+}
+
+
 var defaultTask = {
     name: 'defaultTask',
     action: function(task, context, callback) {
+        console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+        console.log(context.bot.entities[context.bot.entities.length -1].name.split("@")[1]);
+        var url = findUrl(  context.bot.entities[context.bot.entities.length -1].name.split("@")[1]  );
+        // var urltest = findUrl("ceme1");
+        // var urltest = entityToImage.ceme1;
+        console.log(url);
         callback(task, context);
     }
 };
@@ -62,3 +88,4 @@ var optionStart = {
 };
 
 bot.setTask('optionStart', optionStart);
+

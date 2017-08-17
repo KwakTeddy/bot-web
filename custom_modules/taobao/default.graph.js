@@ -129,10 +129,12 @@ var dialogs = [
 								"input": [
 									{}
 								],
-								"output": {
-									"text": "[+mobile+님의 주문 목록]\n\n#order#+index+. [+status+] +text+\n#\n상세한 정보를 보고싶으신 항목을 선택해주세요.\n목록에 없는 상품은 1:1문의로 문의 주세요.",
-									"kind": "Text"
-								},
+								"output": [
+									{
+										"text": "[+mobile+님의 주문 목록]\n\n#order#+index+. [+status+] +text+\n#\n상세한 정보를 보고싶으신 항목을 선택해주세요.\n목록에 없는 상품은 1:1문의로 문의 주세요.",
+										"kind": "Text"
+									}
+								],
 								"task": {
 									"name": "orderList",
 									"kind": "Text"
@@ -486,12 +488,12 @@ var dialogs = [
 												]
 											}
 										],
-										"inRaw": "1",
-										"inNLP": "1"
+										"inRaw": "3",
+										"inNLP": "3"
 									}
 								],
-								"inRaw": "2",
-								"inNLP": "2"
+								"inRaw": "6096",
+								"inNLP": "6096"
 							},
 							{
 								"name": "인증실패",
@@ -655,6 +657,6 @@ var commonDialogs = [
 		"output": "알아듣지 못했습니다"
 	}
 ];
-var _bot = require(require('path').resolve("config/lib/bot")).getBot('coupang2');
+var _bot = require(require('path').resolve("config/lib/bot")).getBot('taobao');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

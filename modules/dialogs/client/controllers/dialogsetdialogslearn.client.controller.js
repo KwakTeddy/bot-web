@@ -212,8 +212,7 @@
     vm.disconnectBot = function (target) {
       vm.bot.dialogsets.splice(vm.bot.dialogsets.indexOf(target._id), 1);
       vm.bot.$update(function (response) {
-        console.log(response)
-        vm.bot=response
+        vm.bot=response;
         delete target.connect
       }, function (err) {
         console.log(err)
