@@ -1790,7 +1790,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
             });
           }
           if (d.regexp) {
-            r.push({type: 'RegExp', str: d.regexp.replace(/\\\\/g, '\\')});
+            r.push({type: 'RegExp', str: d.regexp});
           }
           if (d.intent) {
             r.push({type: 'Intent', str: d.intent});
@@ -1825,7 +1825,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
             } else if (r.type === 'Entity') {
               (obj.entities || (obj.entities = [])).push(r.str);
             } else if (r.type === 'RegExp') {
-              obj.regexp = r.str.replace(/\\/g, '\\\\');
+              obj.regexp = r.str;
             } else if (r.type === 'Intent') {
               obj.intent= r.str;
             } else if (r.type === 'If') {
@@ -2291,6 +2291,8 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         delete node.input_text;
         delete node.output_text;
         delete node.image_text;
+        delete node.inRaw;
+        delete node.inNLP;
         // delete node.buttons;
         delete node.depth;
 
@@ -2312,6 +2314,12 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         }
 
         delete node._output;
+
+        for(var i = 0; node.input && i < node.input.length; i++) {
+          if(node.input[i].regexp) {
+            node.input[i].regexp = node.input[i].regexp.replace(/\\/g, '\\\\');
+          }
+        }
 
         if (node.children)
           node.children.forEach(clear);
@@ -4211,7 +4219,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
           console.log(err);
         });
       }
-      if((event.keyCode == 13 || event.keyCode == 191) && (vm.curI.str.indexOf('/') == 0)){
+      if((event.keyCode == 13 || event.keyCode == 191) && (vm.curI && vm.curI.str.indexOf('/') == 0)){
         vm.curI.str = vm.curI.str.slice(1);
         inlineInput.push({type: 'RegExp', str: vm.curI.str});
         vm.curI.str = '';
