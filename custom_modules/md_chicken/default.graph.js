@@ -34,12 +34,10 @@ var dialogs = [
 						"text": "치킨"
 					}
 				],
-				"output": [
-					{
-						"text": "[주문목록]\n#orderList#+name+ - +price+\n#\n\n주문을 완료하시려면 '완료'를, 주문을 추가하시려면 추가하실 메뉴명을 입력해주세요.\n\n*처음으로 가려면 '시작',\n이전으로 가려면 '이전' 을 입력해주세요.",
-						"kind": "Text"
-					}
-				],
+				"output": {
+					"text": "[주문목록]\n#orderList#+name+ - +price+\n#\n\n주문을 완료하시려면 '완료'를, 주문을 추가하시려면 추가하실 메뉴명을 입력해주세요.\n\n*처음으로 가려면 '시작',\n이전으로 가려면 '이전' 을 입력해주세요.",
+					"kind": "Text"
+				},
 				"children": [
 					{
 						"name": "추가주문2",
@@ -93,12 +91,13 @@ var dialogs = [
 						],
 						"output": [
 							{
-								"text": "[+detailMenuName+]\n\n#detailMenu#+index+. +name+ - +price+\n#",
+								"text": "[+detailMenuName+] \n원하시는 메뉴번호를 입력하세요\n\n#detailMenu#+index+. +name+ - +price+\n#",
 								"kind": "Text"
 							}
 						],
 						"task": {
-							"name": "selectMenu"
+							"name": "selectMenu",
+							"kind": "Text"
 						},
 						"children": [
 							{
@@ -147,13 +146,23 @@ var dialogs = [
 								"output": {
 									"kind": "Action",
 									"if": "!context.user.mobile",
-									"call": "전번등록"
+									"call": "전번등록",
+									"output": {
+										"kind": "Action",
+										"if": "!context.user.mobile",
+										"call": "전번등록"
+									}
 								}
 							},
 							{
 								"if": "true",
 								"kind": "Action",
-								"call": "주소번호만족"
+								"call": "주소번호만족",
+								"output": {
+									"if": "true",
+									"kind": "Action",
+									"call": "주소번호만족"
+								}
 							}
 						]
 					},
@@ -188,12 +197,10 @@ var dialogs = [
 								"text": ""
 							}
 						],
-						"output": [
-							{
-								"text": "[주문내용]\n#orderList#+name+ - +price+\n#\n\n*배달주소 : +address+\n*주문자 전화번호 : +mobile+\n\n위 내용대로 주문하시겠습니까?",
-								"kind": "Text"
-							}
-						],
+						"output": {
+							"text": "[주문내용]\n#orderList#+name+ - +price+\n#\n\n*배달주소 : +address+\n*주문자 전화번호 : +mobile+\n\n위 내용대로 주문하시겠습니까?",
+							"kind": "Text"
+						},
 						"children": [
 							{
 								"name": "주문최종완료",
@@ -246,9 +253,15 @@ var dialogs = [
 									}
 								]
 							}
-						]
+						],
+						"task": {
+							"kind": "Text"
+						}
 					}
-				]
+				],
+				"task": {
+					"kind": "Text"
+				}
 			}
 		]
 	},
@@ -290,12 +303,10 @@ var dialogs = [
 				"text": "주소 등록"
 			}
 		],
-		"output": [
-			{
-				"text": "지번 또는 도로명을 포함한 상세주소를 말씀해주세요.",
-				"kind": "Text"
-			}
-		],
+		"output": {
+			"text": "지번 또는 도로명을 포함한 상세주소를 말씀해주세요.",
+			"kind": "Text"
+		},
 		"children": [
 			{
 				"name": "주소입력",
@@ -320,7 +331,10 @@ var dialogs = [
 				],
 				"task": "saveAddress"
 			}
-		]
+		],
+		"task": {
+			"kind": "Text"
+		}
 	},
 	{
 		"name": "전번확인",
@@ -366,12 +380,10 @@ var dialogs = [
 				"text": "핸드폰 등록"
 			}
 		],
-		"output": [
-			{
-				"text": "핸드폰번호를 입력해주세요",
-				"kind": "Text"
-			}
-		],
+		"output": {
+			"text": "핸드폰번호를 입력해주세요",
+			"kind": "Text"
+		},
 		"children": [
 			{
 				"name": "핸드폰번호입력",
@@ -417,7 +429,10 @@ var dialogs = [
 					}
 				]
 			}
-		]
+		],
+		"task": {
+			"kind": "Text"
+		}
 	},
 	{
 		"name": "치킨상세",
@@ -445,7 +460,7 @@ var dialogs = [
 		],
 		"output": [
 			{
-				"text": "[+detailMenuName+]\n\n#detailMenu#+index+. +name+ - +price+\n#",
+				"text": "[+detailMenuName+]\n원하시는 메뉴번호를 입력하세요\n\n#detailMenu#+index+. +name+ - +price+\n#",
 				"kind": "Text"
 			}
 		],
