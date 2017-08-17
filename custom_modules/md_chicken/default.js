@@ -14,94 +14,95 @@ var menu = {
     "후라이드": [
         {
             'name': '후라이드 특대',
-            'price': '16000'
+            'price': 16000
         },
         {
             'name': '후라이드 중',
-            'price': '13000'
+            'price': 13000
         },
         {
             'name': '후라이드 순살',
-            'price': '16000'
+            'price': 16000
         }
     ],
     "양념치킨": [
         {
             'name': '양념치킨 특대',
-            'price': '17000'
+            'price': 17000
         },
         {
             'name': '양념치킨 중',
-            'price': '14000'
+            'price': 14000
         },
         {
             'name': '양념치킨 순살',
-            'price': '17000'
+            'price': 17000
         }
     ],
     "간장치킨": [
         {
             'name': '간장치킨 특대',
-            'price': '17000'
+            'price': 17000
         },
         {
             'name': '간장치킨 중',
-            'price': '14000'
+            'price': 14000
         },
         {
             'name': '간장치킨 순살',
-            'price': '17000'
+            'price': 17000
         }
     ],
     "반반치킨": [
         {
             'name': '반반치킨 특대',
-            'price': '17000'
+            'price': 17000
         },
         {
             'name': '반반치킨 중',
-            'price': '14000'
+            'price': 14000
         },
         {
             'name': '반반치킨 순살',
-            'price': '17000'
+            'price': 17000
         }
     ],
     "두마리치킨": [
         {
             'name': '두마리 후라이드 후라이드',
-            'price': '19000'
+            'price': 19000
         },
         {
             'name': '두마리 후라이드 양념치킨',
-            'price': '20000'
+            'price': 20000
         },
         {
             'name': '두마리 후라이드 간장치킨',
-            'price': '20000'
+            'price': 20000
         },
         {
             'name': '두마리 간장치킨 양념치킨',
-            'price': '21000'
+            'price': 21000
         }
     ],
     "부위별치킨": [
         {
             'name': '다리 8개',
-            'price': '17000'
+            'price': 17000
         },
         {
             'name': '통날개 10개',
-            'price': '17000'
+            'price': 17000
         },
         {
             'name': '다리 + 통날개',
-            'price': '17000'
+            'price': 17000
         }
     ]
-}
+};
 
 var detailMenu = [];
+var totalprice = 0;
 
 function findName(list, word) {
     for(var key in list)
@@ -112,7 +113,21 @@ function findName(list, word) {
     }
 }
 
+function addOrder(list, menuObj) {
+    for(i=0; i<list.length; i++){
+        if (list[i].name == menuObj.name){
+            if (typeof list[i].quant == 'undefined') list[i].quant = 2;
+            else list[i].quant++;
+            list[i].price += menuObj.price;
+            break;
+        }
+        if (i == list.length - 1) list.push(menuObj);
+    }
 
+        for(i=0; i<list.length; i++){
+            totalprice += list[i].price;
+        }
+}
 
 
 
@@ -203,3 +218,22 @@ var noMenusave = {
 };
 
 bot.setTask('noMenusave', noMenusave);
+
+
+var numberMatch = {
+    action: function (task,context,callback) {
+        var num = task['1'];
+        if(num == '1') context.dialog.detailMenuName = '후라이드';
+        if(num == '2') context.dialog.detailMenuName = '양념치킨';
+        if(num == '3') context.dialog.detailMenuName = '간장치킨';
+        if(num == '4') context.dialog.detailMenuName = '반반치킨';
+        if(num == '5') context.dialog.detailMenuName = '두마리치킨';
+        if(num == '6') context.dialog.detailMenuName = '부위별치킨';
+        eval('context.dialog.detailMenu = menu.' + context.dialog.detailMenuName);
+
+
+        callback(task,context);
+    }
+};
+
+bot.setTask('numberMatch', numberMatch);
