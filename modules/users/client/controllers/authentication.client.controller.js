@@ -222,7 +222,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
               });
               $scope.close = function () {
                 console.log(window.location.href);
-                  modalInstance.dismiss();
+                modalInstance.dismiss();
                 if(window.location.href.indexOf('developer') > -1){
                   $state.go('developer-home')
                 }else {
