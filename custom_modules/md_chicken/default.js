@@ -55,33 +55,33 @@ var menu = {
     ],
     "반반치킨": [
         {
-            'name': '간장치킨 특대',
+            'name': '반반치킨 특대',
             'price': '17000'
         },
         {
-            'name': '간장치킨 중',
+            'name': '반반치킨 중',
             'price': '14000'
         },
         {
-            'name': '간장치킨 순살',
+            'name': '반반치킨 순살',
             'price': '17000'
         }
     ],
     "두마리치킨": [
         {
-            'name': '후라이드 후라이드',
+            'name': '두마리 후라이드 후라이드',
             'price': '19000'
         },
         {
-            'name': '후라이드 양념치킨',
+            'name': '두마리 후라이드 양념치킨',
             'price': '20000'
         },
         {
-            'name': '후라이드 간장치킨',
+            'name': '두마리 후라이드 간장치킨',
             'price': '20000'
         },
         {
-            'name': '간장치킨 양념치킨',
+            'name': '두마리 간장치킨 양념치킨',
             'price': '21000'
         }
     ],
@@ -106,6 +106,8 @@ var detailMenu = [];
 function findName(list, word) {
     for(var key in list)
     {
+        if(word == "부위 별") return "부위별치킨";
+        if(word == "두 마리") return "두마리치킨";
         if(key.search(word) != -1) return key;
     }
 }
@@ -191,3 +193,13 @@ var detailSelect = {
 };
 
 bot.setTask('detailSelect', detailSelect);
+
+
+var noMenusave = {
+  action: function (task,context,callback) {
+    context.dialog.noMenu = task['1'];
+    callback(task,context);
+	}
+};
+
+bot.setTask('noMenusave', noMenusave);

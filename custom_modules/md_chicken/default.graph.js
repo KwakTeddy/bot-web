@@ -13,7 +13,7 @@ var dialogs = [
 				"regexp": "(두\\s?마리)(?:치킨)?\\s?(후라이드\\s?\\+?\\s?후라이드|후라이드\\s?\\+?\\s?간장(?:치킨)?|후라이드\\s?\\+?\\s?양념(?:치킨)?|간장(?:치킨)?\\s?\\+?\\s?양념(?:치킨)?)"
 			},
 			{
-				"regexp": "(부위별)?(?:치킨)?\\s?(다리\\s?8개?|통날개\\s?(?:10개)?|다리\\s?\\+?\\s?통날개)"
+				"regexp": "(부위\\s?별)?(?:치킨)?\\s?(다리\\s?8개?|통날개\\s?(?:10개)?|다리\\s?\\+?\\s?통날개)"
 			}
 		],
 		"output": [
@@ -34,36 +34,33 @@ var dialogs = [
 						"text": "치킨"
 					}
 				],
-				"output": [
-					{
-						"text": "[주문목록]\n#orderList#+name+ - +price+\n#\n\n주문을 완료하시려면 '완료'를, 주문을 추가하시려면 추가하실 메뉴명을 입력해주세요.",
-						"kind": "Text"
-					}
-				],
+				"output": {
+					"text": "[주문목록]\n#orderList#+name+ - +price+\n#\n주문을 완료하시려면 '완료'를, 주문을 추가하시려면 추가하실 메뉴명을 입력해주세요.",
+					"kind": "Text"
+				},
 				"children": [
 					{
 						"name": "추가주문2",
 						"id": "default9",
 						"filename": "default",
 						"input": [
-                            {
-                                "regexp": "(후라이드|양념|간장|반반)\\s?(?:치킨)?\\s?특?(대|중|순살)"
-                            },
-                            {
-                                "regexp": "(두\\s?마리)(?:치킨)?\\s?(후라이드\\s?\\+?\\s?후라이드|후라이드\\s?\\+?\\s?간장(?:치킨)?|후라이드\\s?\\+?\\s?양념(?:치킨)?|간장(?:치킨)?\\s?\\+?\\s?양념(?:치킨)?)"
-                            },
-                            {
-                                "regexp": "(부위별)?(?:치킨)?\\s?(다리\\s?8개?|통날개\\s?(?:10개)?|다리\\s?\\+?\\s?통날개)"
-                            }
+							{
+								"regexp": "(후라이드|양념|간장|반반)\\s?(?:치킨)?\\s?특?(대|중|순살)"
+							},
+							{
+								"regexp": "(두\\s?마리)(?:치킨)?\\s?(후라이드\\s?\\+?\\s?후라이드|후라이드\\s?\\+?\\s?간장(?:치킨)?|후라이드\\s?\\+?\\s?양념(?:치킨)?|간장(?:치킨)?\\s?\\+?\\s?양념(?:치킨)?)"
+							},
+							{
+								"regexp": "(부위\\s?별)?(?:치킨)?\\s?(다리\\s?8개?|통날개\\s?(?:10개)?|다리\\s?\\+?\\s?통날개)"
+							}
 						],
 						"output": [
 							{
 								"kind": "Action",
 								"repeat": "1",
 								"options": {
-									"output": "[주문목록] \n#orderList#+name+\n#\n주문을 완료하시려면 '완료'를, 주문을 추가하시려면 추가하실 메뉴명을 입력해주세요."
-								},
-								"type": "Repeat"
+									"output": "[주문목록]\n#orderList#+name+ - +price+\n#\n주문을 완료하시려면 '완료'를, 주문을 추가하시려면 추가하실 메뉴명을 입력해주세요."
+								}
 							}
 						],
 						"task": "orderSave"
@@ -78,6 +75,18 @@ var dialogs = [
 							},
 							{
 								"regexp": "(양념)"
+							},
+							{
+								"regexp": "(간장)"
+							},
+							{
+								"regexp": "(반반)"
+							},
+							{
+								"regexp": "(부위s?별)"
+							},
+							{
+								"regexp": "(두s?마리)"
 							}
 						],
 						"output": [
@@ -155,7 +164,7 @@ var dialogs = [
 						"filename": "default",
 						"input": [
 							{
-								"if": "true"
+								"regexp": "(.*)"
 							}
 						],
 						"output": [
@@ -163,10 +172,13 @@ var dialogs = [
 								"kind": "Action",
 								"repeat": "1",
 								"options": {
-									"output": "올바른 메뉴명을 입력하세요"
+									"output": "\"+noMenu+\"은(는) 메뉴에 없는 단어입니다. \n\n올바른 메뉴명을 입력하세요.\n'시작'을 입력하면 처음으로 돌아가고 주문목록이 초기화 됩니다."
 								}
 							}
-						]
+						],
+						"task": {
+							"name": "noMenusave"
+						}
 					},
 					{
 						"name": "주소번호만족",
@@ -179,7 +191,7 @@ var dialogs = [
 						],
 						"output": [
 							{
-								"text": "주문내용\n#orderList#+name+#\n\n배달주소 : +address+\n주문자 전화번호 : +mobile+\n\n위 내용대로 주문하시겠습니까?",
+								"text": "[주문내용]\n#orderList#+name+ - +price+\n#\n\n*배달주소 : +address+\n*주문자 전화번호 : +mobile+\n\n위 내용대로 주문하시겠습니까?",
 								"kind": "Text"
 							}
 						],
@@ -222,8 +234,11 @@ var dialogs = [
 						]
 					}
 				],
-				"inRaw": "부위별 다리 8개",
-				"inNLP": "부위 별 다리 8 개"
+				"inRaw": "후라이드 대",
+				"inNLP": "후라이드 대다",
+				"task": {
+					"kind": "Text"
+				}
 			}
 		]
 	},
@@ -234,12 +249,43 @@ var dialogs = [
 		"input": [
 			{
 				"regexp": "주소.*(?:확인|무엇|뭐|알다)"
+			},
+			{
+				"text": "2"
 			}
 		],
 		"output": [
 			{
-				"text": "현재 주소는 +address+ 입니다.",
-				"kind": "Text"
+				"if": "context.user.address",
+				"text": [
+					{
+						"if": "context.user.address",
+						"text": "현재 등록된 주소는 \n\"+address+\" \n입니다.\n주소 변경을 원하시면 '주소 변경'을 입력해주세요~",
+						"kind": "Text",
+						"id": "default10_0_0"
+					},
+					{
+						"text": "현재 입력된 주소지가 없습니다. 주소 등록을 원하시면 '주소 등록'을 입력하여 주소지를 등록해주세요~",
+						"kind": "Text",
+						"id": "default10_0_1"
+					}
+				],
+				"kind": "Text",
+				"id": "default10_0",
+				"name": "주소확인",
+				"input": [
+					{
+						"regexp": "주소.*(?:확인|무엇|뭐|알다)"
+					},
+					{
+						"text": "2"
+					}
+				]
+			},
+			{
+				"text": "현재 입력된 주소지가 없습니다. 주소 등록을 원하시면 '주소 등록'을 입력하여 주소지를 등록해주세요~",
+				"kind": "Text",
+				"id": "default10_1"
 			}
 		]
 	},
@@ -252,7 +298,7 @@ var dialogs = [
 				"regexp": "주소.*~변경"
 			},
 			{
-				"text": "3"
+				"text": "주소 등록"
 			}
 		],
 		"output": [
@@ -294,13 +340,23 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "핸드폰 번호 확인"
+				"text": "3"
+			},
+			{
+				"text": "번호 확인"
 			}
 		],
 		"output": [
 			{
-				"text": "현재 등록된 핸드폰 번호는\n\n+mobile+\n\n입니다.",
-				"kind": "Text"
+				"if": "context.user.mobile",
+				"text": "현재 등록된 핸드폰 번호는\n\n+mobile+\n\n입니다. 번호 변경을 원하시면 '번호 변경'을 입력해주세요~",
+				"kind": "Text",
+				"id": "default14_0"
+			},
+			{
+				"text": "현재 입력된 번호가 없습니다. 번호 등록을 원하시면 '번호 등록'을 입력하여 핸드폰 번호를 등록해주세요~",
+				"kind": "Text",
+				"id": "default14_1"
 			}
 		]
 	},
@@ -310,7 +366,16 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "핸드폰 번호 변경"
+				"text": "번호 변경"
+			},
+			{
+				"text": "번호 등록"
+			},
+			{
+				"text": "핸드폰 변경"
+			},
+			{
+				"text": "핸드폰 등록"
 			}
 		],
 		"output": [
@@ -335,7 +400,8 @@ var dialogs = [
 					{
 						"kind": "Action",
 						"if": "context.dialog.ordering",
-						"call": "주문완료"
+						"call": "주문완료",
+						"type": "Call"
 					},
 					{
 						"text": "핸드폰번호가\n\n+mobile+\n\n로 변경되었습니다.",
@@ -343,6 +409,25 @@ var dialogs = [
 					}
 				],
 				"task": "saveMobile"
+			},
+			{
+				"name": "번호아님",
+				"id": "default30",
+				"filename": "default",
+				"input": [
+					{
+						"if": "true"
+					}
+				],
+				"output": [
+					{
+						"kind": "Action",
+						"repeat": "1",
+						"options": {
+							"output": "핸드폰 번호 형식을 입력해주세요.\n(ex 010-2222-3333 or 01044445555)"
+						}
+					}
+				]
 			}
 		],
 		"inRaw": "서울시",
@@ -358,6 +443,18 @@ var dialogs = [
 			},
 			{
 				"regexp": "(양념)"
+			},
+			{
+				"regexp": "(간장)"
+			},
+			{
+				"regexp": "(반반)"
+			},
+			{
+				"regexp": "(부위s?별)"
+			},
+			{
+				"regexp": "(두s?마리)"
 			}
 		],
 		"output": [
@@ -399,12 +496,27 @@ var dialogs = [
 		"input": [
 			{
 				"text": "메뉴"
+			},
+			{
+				"text": "1"
 			}
 		],
 		"output": [
 			{
-				"text": "f",
+				"text": "아래 '메뉴보기' 버튼을 눌러 큰 이미지로 확인하세요~",
+				"buttons": [
+					{
+						"text": "메뉴보기",
+						"url": "http://52.78.35.72/img/md_chicken.jpg"
+					}
+				],
 				"kind": "Content"
+			}
+		],
+		"buttons": [
+			{
+				"text": "메뉴보기",
+				"url": "http://52.78.35.72/img/md_chicken.jpg"
 			}
 		]
 	}
@@ -421,7 +533,7 @@ var commonDialogs = [
 			}
 		],
 		"output": {
-			"text": "안녕하세요 저는 무등치킨이에요! 먹고 싶은 메뉴가 있다면 바로 말씀해주세요~\n\n1. 바로주문(메뉴명 입력)\n2. 메뉴보기\n3. 주소 확인/변경\n4. 핸드폰번호 확인/변경",
+			"text": "안녕하세요 저는 무등치킨이에요! 먹고 싶은 메뉴가 있다면 바로 말씀해주세요~\n(ex 후라이드 특대)\n\n1. 메뉴보기\n2. 주소 확인/변경\n3. 핸드폰번호 확인/변경",
 			"kind": "Text"
 		}
 	},
