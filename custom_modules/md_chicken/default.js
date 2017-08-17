@@ -113,21 +113,21 @@ function findName(list, word) {
     }
 }
 
-function addOrder(list, menuObj) {
-    for(i=0; i<list.length; i++){
-        if (list[i].name == menuObj.name){
-            if (typeof list[i].quant == 'undefined') list[i].quant = 2;
-            else list[i].quant++;
-            list[i].price += menuObj.price;
-            break;
-        }
-        if (i == list.length - 1) list.push(menuObj);
-    }
-
-        for(i=0; i<list.length; i++){
-            totalprice += list[i].price;
-        }
-}
+// function addOrder(list, menuObj) {
+//     for(i=0; i<list.length; i++){
+//         if ((typeof list[i].name != 'undefined') && list[i].name == menuObj.name){
+//             if (typeof list[i].quant == 'undefined') list[i].quant = 2;
+//             else list[i].quant++;
+//             list[i].price += menuObj.price;
+//             break;
+//         }
+//         if (i == (list.length - 1)) list.push(menuObj);
+//     }
+//
+//         for(i=0; i<list.length; i++){
+//             totalprice += list[i].price;
+//         }
+// }
 
 
 
@@ -150,6 +150,7 @@ var orderSave = {
     }
     for(i=0; i < bigmenu.length; i++){
         if(bigmenu[i].name.search(task['2']) != -1) context.dialog.orderList.push(bigmenu[i]);
+        // if(bigmenu[i].name.search(task['2']) != -1) addOrder(context.dialog.orderList, bigmenu[i]);
     }
       callback(task,context);
 	}
@@ -177,8 +178,10 @@ bot.setTask('saveMobile', saveMobile);
 
 var selectMenu = {
     action: function (task,context,callback) {
-        context.dialog.detailMenuName = findName(menu, task['1']);
-        eval('context.dialog.detailMenu = menu.' + context.dialog.detailMenuName);
+        if(task['1']){
+            context.dialog.detailMenuName = findName(menu, task['1']);
+            eval('context.dialog.detailMenu = menu.' + context.dialog.detailMenuName);
+        }
         detailMenu = context.dialog.detailMenu;
         callback(task,context);
     }
@@ -203,7 +206,8 @@ var detailSelect = {
       context.dialog.ordering = true;
     }
     context.dialog.orderList.push(context.dialog.detailList);
-    callback(task,context);
+    // addOrder(context.dialog.orderList, context.dialog.detailList);
+      callback(task,context);
 	}
 };
 
@@ -223,6 +227,8 @@ bot.setTask('noMenusave', noMenusave);
 var numberMatch = {
     action: function (task,context,callback) {
         var num = task['1'];
+        // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        // console.log(num);
         if(num == '1') context.dialog.detailMenuName = '후라이드';
         if(num == '2') context.dialog.detailMenuName = '양념치킨';
         if(num == '3') context.dialog.detailMenuName = '간장치킨';
@@ -230,6 +236,7 @@ var numberMatch = {
         if(num == '5') context.dialog.detailMenuName = '두마리치킨';
         if(num == '6') context.dialog.detailMenuName = '부위별치킨';
         eval('context.dialog.detailMenu = menu.' + context.dialog.detailMenuName);
+        // console.log(context.dialog.detailMenu);
 
 
         callback(task,context);
