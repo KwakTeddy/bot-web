@@ -223,13 +223,11 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
 
     $scope.dashboard = function() {
       $scope.find_dialog();
-      var userCounts = AnalyticsService.query(
-        {
+      var userCounts = AnalyticsService.query({
           bId: $cookies.get('default_bot'),
           kind: "all",
           arg: "empty"
         }, function() {
-          console.log(userCounts);
 
           var val = [];
           for (var i=0; i < userCounts.length && i < 10; ++i) {
@@ -269,8 +267,7 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
           console.log(err);
         });
 
-      var calcRate = function(list)
-      {
+      var calcRate = function(list) {
         var success = 0, fail = 0;
         list.forEach(function(obj) {
           success += obj.success_count;
@@ -292,7 +289,7 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
           drawLiquid("#meterYear", calcRate(dialogSuccessYear), '#0088cc');
         }, function(err) {
           console.log(err);
-        });
+      });
 
       var dialogSuccessMonth = DialogSuccessService.query(
         {
@@ -304,7 +301,7 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
           drawLiquid("#meterMonth", calcRate(dialogSuccessMonth), '#2baab1');
         }, function(err) {
           console.log(err);
-        });
+      });
 
     };
 
@@ -315,7 +312,9 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
           series: {
             lines: {
               show: true,
-              lineWidth: 2
+              lineWidth: 2,
+              // fill : true,
+              // fillColor: "rgba(255, 255, 255, 0.8)"
             },
             points: {
               show: true
@@ -354,8 +353,7 @@ angular.module('analytics').controller('AnalyticsListController', ['$scope', '$r
       }).apply(this, [jQuery]);
     };
 
-    var drawLiquid = function(name, value, color)
-    {
+    var drawLiquid = function(name, value, color) {
       $(name)[0].value = parseInt(value ,10);
       (function($) {
         'use strict';

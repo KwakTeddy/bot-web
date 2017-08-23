@@ -1,0 +1,149 @@
+<header class="page-header">
+    <h2>이용자</h2>
+
+    <div class="right-wrapper pull-right">
+        <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+    </div>
+</header>
+<!-- start: page -->
+
+<section class="panel" data-ng-init="init()">
+    <div class="row" >
+        <div class="col-md-12">
+            <header class="panel-heading">
+                <h2 class="panel-title text-center">조회 기준</h2>
+            </header>
+            <div class="panel-body" >
+                <div class="col-md-12 row">
+                    <div class="col-md-3">
+                        DATA 기준
+                    </div>
+                    <div class="col-md-9 row">
+                        <span class="col-md-3">
+                            <input  type="radio" data-ng-model="date" value="month"> 월
+                        </span>
+                        <span class="col-md-3">
+                            <input  type="radio" data-ng-model="date" value="week"> 주
+                        </span>
+                        <span class="col-md-3">
+                            <input  type="radio" data-ng-model="date" value="day"> 일
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-12 row">
+                    <div class="col-md-3">
+                        유형
+                    </div>
+                    <div class="col-md-9 row">
+                        <span class="col-md-3">
+                            <input  type="radio" data-ng-model="userType" value="total"> 전체
+                        </span>
+                        <span class="col-md-3">
+                            <input  type="radio" data-ng-model="userType" value="new"> 신규
+                        </span>
+                        <span class="col-md-3">
+                            <input  type="radio" data-ng-model="userType" value="revisit"> 재방문
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-12 row">
+                    <div class="col-md-3">
+                        채널
+                    </div>
+                    <div class="col-md-9 row">
+                        <span class="col-md-3">
+                            <input  type="radio" data-ng-model="channel" value="total"> 전체
+                        </span>
+                        <span class="col-md-3">
+                            <input  type="radio" data-ng-model="channel" value="kakao"> 카카오
+                        </span>
+                        <span class="col-md-3">
+                            <input  type="radio" data-ng-model="channel" value="facebook"> 페이스북
+                        </span>
+                        <span class="col-md-3">
+                            <input  type="radio" data-ng-model="channel" value="navertalk"> 네이버톡톡
+                        </span>
+
+                    </div>
+                </div>
+                <div class="col-md-12 row">
+                    <div class="col-md-3">
+                        기간
+                    </div>
+                    <div class="col-md-9 row">
+                        <span class="col-md-9">
+                            {{startDate}} ~ {{endDate}}
+                        </span>
+                        <span class="col-md-3">
+                            <button type="button" class="btn btn-default" ng-click="update()">조회</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" >
+        <div class="col-md-12">
+            <header class="panel-heading">
+                <h2 class="panel-title text-center">기간별 이용자</h2>
+                <button type="button" class="btn btn-default" style="position: absolute;top: 10px;right: 10px" ng-click="exelDownload()">엑셀 다운로드</button>
+            </header>
+            <div class="panel-body" >
+                <div>
+                    <canvas id="dailyUser" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" >
+        <div class="col-md-12">
+            <div style="display: flex">
+                <div style="flex: 1">
+                    <header class="panel-heading">
+                        <h2 class="panel-title text-center">채널별 이용자 비율</h2>
+                    </header>
+                    <div class="panel-body" >
+                        <div>
+                            <canvas id="userRatioByChannel" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div style="flex: 1">
+                    <table class="table table-striped mb-none">
+                        <thead>
+                        <tr>
+                            <th class="text-center">채널</th>
+                            <th class="text-center">비율</th>
+                            <th class="text-center">이용자수</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="text-center">카카오톡</td>
+                            <td class="text-center">{{kakao*100/(kakao + facebook + navertalk)| number:1}}%</td>
+                            <td class="text-center">{{kakao}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">페이스북</td>
+                            <td class="text-center">{{facebook*100/(kakao + facebook + navertalk)| number:1}}%</td>
+                            <td class="text-center">{{facebook}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">네이버톡톡</td>
+                            <td class="text-center">{{navertalk*100/(kakao + facebook + navertalk)| number:1}}%</td>
+                            <td class="text-center">{{navertalk}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script src="/lib/chart.js/dist/Chart.js"></script>
+
+<script>
+
+</script>

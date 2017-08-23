@@ -28,6 +28,12 @@ var clear = function(d) {
   }
 };
 
+
+exports.exelDownload = function (req, res) {
+
+};
+
+
 /**
  * List of User count
  */
@@ -43,13 +49,15 @@ exports.list = function (req, res) {
     cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth()+1 };
 
   cond.botId = botId;
+  cond.channel = {$ne: "socket"};
 
-  // console.log(JSON.stringify(cond));
+  console.log(JSON.stringify(cond));
   UserDialogLog.aggregate(
     [
       {$match: cond},
       {$group: {_id: {year: '$year', month: '$month', date: '$date'}, date: {$first: '$date'}, count: {$sum: 1}}},
       {$sort: {_id:-1,  date: -1}},
+      {$limit: 31}
     ]
   ).exec(function (err, userCounts) {
     if (err) {
@@ -62,28 +70,55 @@ exports.list = function (req, res) {
   });
 };
 
-exports.dialogList = function (req, res) {
-  var kind = req.params.kind;
-  var arg = req.params.arg;
-  var botId = req.params.bId;
+exports.failDailogs = function (req, res) {
+  var cond = {inOut: true, channel : {$ne: "socket"}, fail: true};
+  if(req.body.botId) cond.botId = req.body.botId;
 
-  var cond = { inOut: true};
-  if (kind == 'year') {
-    cond = {year: parseInt(arg), inOut: true};
-  } else if (kind == 'month') {
-    cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth() + 1, inOut: true}
-  }
-  cond.dialog = {$ne: null, $nin: [":reset user", ":build csdemo reset"]};
-  cond.botId = botId;
-
-  // console.log(JSON.stringify(cond));
   UserDialog.aggregate(
     [
-      {$project:{year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" }, inOut: '$inOut', dialog: '$dialog', botId: '$botId'}},
       {$match: cond},
-      {$group: {_id: '$dialog', count: {$sum: 1}}},
+      {$group: {_id: {dialog: "$dialog"}, count: {$sum: 1}}},
       {$sort: {count: -1}},
-      {$limit: 300}
+      {$limit: 10}
+    ]
+  ).exec(function (err, failDialog) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.jsonp(failDialog);
+    }
+  });
+};
+
+exports.userCount = function (req, res) {
+  var cond = {botId: req.params.bId};
+  var year =  new Date().getFullYear();
+  var month = new Date().getMonth() + 1;
+  var day =   new Date().getDate();
+  switch (req.body.date){
+    case "month": cond.$or = [{year: year, month: month, date: {$lte: day}}, {year: year, month: month -1, date: {$gt: day}}]; break;
+    case "week": cond.$and = [{year: year, month: month, date: {$lte: day}}, {year: year, month: month, date: {$gt: day-7}}]; break;
+    case "day": cond = {year: year, month: month, date: day}; break;
+    default : cond.$or = [{year: year, month: month, date: {$lte: day}}, {year: year, month: month -1, date: {$gt: day}}];
+  }
+  switch (req.body.channel){
+    case "facebook": cond.channel = "facebook"; break;
+    case "kakao": cond.channel = "kakao"; break;
+    case "navertalk": cond.channel = "navertalk"; break;
+    default : cond.channel = {$ne: "socket"}; break;
+  }
+  switch (req.body.userType){
+    case  "new": console.log(1); break;
+    case  "revisit": console.log(1); break;
+  }
+  UserDialogLog.aggregate(
+    [
+    {$project: {_id: 0, botId:1, inOut: 1, channel: 1, year: 1, month: 1,date: 1, kakao: {$cond:[{$eq: ["$channel", "kakao"]}, 1,0]}, facebook: {$cond:[{$eq: ["$channel", "facebook"]}, 1,0]}, navertalk: {$cond:[{$eq: ["$channel", "navertalk"]}, 1,0]}}},
+    {$match: cond},
+    {$group: {_id: {year: '$year', month: '$month', day: '$date'}, total: {$sum: 1},kakao: {$sum: "$kakao"}, facebook: {$sum: "$facebook"}, navertalk: {$sum: "$navertalk"}}},
+    {$sort: {_id:-1,  date: -1}}
     ]
   ).exec(function (err, userCounts) {
     if (err) {
@@ -91,12 +126,205 @@ exports.dialogList = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
+      res.json(userCounts);
+    }
+  });
+};
+
+exports.userDialogCumulativeCount = function (req, res) {
+  var cond = {};
+  cond.botId = req.params.bId;
+  cond.channel = {$ne: "socket"};
+  UserDialog.count(cond).exec(function (err, dialogTotalCount) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json(dialogTotalCount);
+    }
+  });
+};
+
+exports.dailyDialogUsage = function (req, res) {
+  var cond = {inOut: true, channel : {$ne: "socket"}};
+  if(req.body.botId) cond.botId = req.body.botId;
+  var year =  new Date().getFullYear();
+  var month = new Date().getMonth();
+  var day =   new Date().getDate();
+  switch (req.body.date){
+    case "month": cond.$or = [{year: year, month: month, day: {$lte: day}}, {year: year, month: month -1, day: {$gt: day}}]; break;
+    case "week":
+      cond.year = year;
+      cond.month = month;
+      cond.day = {$gt: day-7, $lte: day};
+      break;
+    case "day": cond = {year: year, month: month, day: day}; break;
+    default : cond.$or = [{year: year, month: month, day: {$lte: day}}, {year: year, month: month -1, day: {$gt: day}}];
+  }
+  UserDialog.aggregate(
+    [
+      {$project:
+        {
+          _id: 0,
+          botId:1,
+          inOut: 1,
+          channel: 1,
+          year: { $year: "$created" },
+          month: { $month: "$created" },
+          day: { $dayOfMonth: "$created" },
+          fail: {$cond:[{$eq: ["$fail", true]}, 1,0]},
+          kakao: {$cond:[{$eq: ["$channel", "kakao"]}, 1,0]},
+          facebook: {$cond:[{$eq: ["$channel", "facebook"]}, 1,0]},
+          navertalk: {$cond:[{$eq: ["$channel", "navertalk"]}, 1,0]}
+        }
+      },
+      {$match: cond},
+      {$group:
+        {
+          _id: {year: '$year', month: '$month', day: '$day'},
+          total: {$sum: 1},
+          fail: {$sum: "$fail"},
+          kakao: {$sum: "$kakao"},
+          facebook: {$sum: "$facebook"},
+          navertalk: {$sum: "$navertalk"}
+        }
+      },
+      {$sort: {_id:-1,  day: -1}}
+    ]
+  ).exec(function (err, dailyDialog) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
       // replace ";reset user" to 시작
-      userCounts.forEach(function(item) {
+      dailyDialog.forEach(function(item) {
         if (item._id == ":reset user")
           item._id = "시작";
       });
-      res.jsonp(userCounts);
+      res.jsonp(dailyDialog);
+    }
+  });
+};
+
+exports.senarioUsage = function (req, res) {
+  var query;
+  var cond = {inOut: true, channel : {$ne: "socket"}, dialogName: {$nin: ["시작", "답변없음"]}, botId: "Shinhancard"};
+  var limit;
+  if(req.params.bId) cond.botId = req.params.bId;
+  var month = 7;
+  var date = 20;
+  cond.$or = [{month: month, date: {$lte: date}}, {month: month -1, day: {$gt: date}}];
+
+  query = [
+    {$project:
+      {
+        _id: 0,
+        botId:1,
+        inOut: 1,
+        channel: 1,
+        dialogName:1,
+        year: { $year: "$created" },
+        month: { $month: "$created" },
+        day: { $dayOfMonth: "$created" },
+        kakao: {$cond:[{$eq: ["$channel", "kakao"]}, 1,0]},
+        facebook: {$cond:[{$eq: ["$channel", "facebook"]}, 1,0]},
+        navertalk: {$cond:[{$eq: ["$channel", "navertalk"]}, 1,0]}
+      }
+    },
+    {$match: cond},
+    {$group:
+      {
+        _id: {dialogName: '$dialogName'},
+        total: {$sum: 1},
+        kakao: {$sum: "$kakao"},
+        facebook: {$sum: "$facebook"},
+        navertalk: {$sum: "$navertalk"}
+      }
+    },
+    {$sort: {total: -1}}
+  ];
+  if(req.body.limit) query.push({$limit: req.body.limit});
+  UserDialog.aggregate(query).exec(function (err, senarioUsage) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      var result = {};
+      if(global._bot && global._bot[req.params.bId]){
+        result["senarioUsage"] = senarioUsage;
+        result["botSenario"] = global._bot[req.params.bId];
+        res.jsonp(result);
+      }else {
+        botLib.loadBot(req.params.bId, function (realbot) {
+          result["senarioUsage"] = senarioUsage;
+          result["botSenario"] = realbot.dialogs;
+          res.jsonp(result);
+        })
+      }
+    }
+  });
+};
+
+exports.userInputStatistics = function (req, res) {
+  var cond = {
+    inOut: true,
+    botId: req.params.bId,
+    dialog:
+      {
+        $ne: null
+        // $nin: [":reset user", ":build csdemo reset"]
+      }
+  };
+  // if (req.body.date == 'year')       cond = {year: parseInt(arg), inOut: true};
+  // else if (req.body.date == 'month') cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth() + 1, inOut: true};
+
+  UserDialog.aggregate(
+    [
+      {$project:{_id:0, year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" }, inOut: '$inOut', dialog: '$dialog', botId: '$botId'}},
+      {$match: cond},
+      {$group: {_id: {dialog: '$dialog'}, count: {$sum: 1}}},
+      {$sort: {count: -1}},
+      {$limit: 100}
+    ]
+  ).exec(function (err, userInputCounts) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      // replace ";reset user" to 시작
+      // userCounts.forEach(function(item) {
+      //   if (item._id == ":reset user")
+      //     item._id = "시작";
+      // });
+      res.jsonp(userInputCounts);
+    }
+  });
+};
+
+exports.dialogIsFail = function (req, res) {
+  var cond = { inOut: true, channel: {$ne: "socket"}};
+  var year = 2017;
+  var month = 7;
+  var date = 20;
+  cond.botId = req.params.bId;
+  cond.$or = [{year: year, month: month, date: {$lte: date}}, {year: year, month: month -1, date: {$gt: date}}];
+  UserDialog.aggregate(
+    [
+      {$project:{year: { $year: "$created" }, month: { $month: "$created" },date: { $dayOfMonth: "$created" }, channel: 1,inOut: 1, botId: 1, fail: {$cond:[{$eq:["$fail", true]}, 1, 0]}}},
+      {$match: cond},
+      {$group: {_id: {isFail: "$fail"}, count: {$sum: 1}, isFail: {$sum: "$fail"}}},
+    ]
+  ).exec(function (err, userCounts) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json(userCounts)
     }
   });
 };

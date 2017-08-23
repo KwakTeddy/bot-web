@@ -14,8 +14,28 @@ angular.module('analytics').config(['$stateProvider',
       .state('analytics.dashboard', {
         url: '',
         templateUrl: 'modules/analytics/client/views/dashboard.client.view.html',
-        controller: 'AnalyticsListController',
+        controller: 'DashboardController',
         controllerAs: 'vm'
+      })
+      .state('analytics.user-statistics', {
+        url: '/user-statistics',
+        templateUrl: 'modules/analytics/client/views/user-statistics.client.view.html',
+        controller: 'UserStatisticsController'
+      })
+      .state('analytics.dialog-amount-statistics', {
+        url: '/dialog-amount-statistics',
+        templateUrl: 'modules/analytics/client/views/dialog-amount-statistics.client.view.html',
+        controller: 'DialogAmountStatisticsController'
+      })
+      .state('analytics.senario-usage-statistics', {
+        url: '/senario-usage-statistics',
+        templateUrl: 'modules/analytics/client/views/senario-usage-statistics.client.view.html',
+        controller: 'SenarioUsageStatisticsController'
+      })
+      .state('analytics.user-input-statistics', {
+        url: '/user-input-statistics',
+        templateUrl: 'modules/analytics/client/views/user-input-statistics.client.view.html',
+        controller: 'UserInputStatisticsController'
       })
       .state('analytics.user-count', {
         url: '/user-count',

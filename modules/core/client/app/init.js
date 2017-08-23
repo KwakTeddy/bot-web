@@ -194,7 +194,7 @@ function appRun($rootScope, $state, Authentication, BotsService, $cookies) {
         var parsedString = stingParser.split('.');
 
         if (Authentication.user !== undefined && typeof Authentication.user === 'object') {
-          if(!$cookies.get('login')) window.location.reload();
+          if(!$cookies.get('login')) return window.location.reload();
 
           if (parsedString[0] == 'user-bots-web') {
             $state.go('user-bots-web.forbidden');

@@ -37,7 +37,8 @@
     "angular-ui-notification": "^0.3.6",
     "angular-pnotify": "^0.1.2",
     "ment.io": "^0.9.24",
-    "innersvg-polyfill": "^0.0.2"
+    "innersvg-polyfill": "^0.0.2",
+    "chart.js": "^2.6.0"
   },
   "resolutions": {
     "angular": "1.5.3",

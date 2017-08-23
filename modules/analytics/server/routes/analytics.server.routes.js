@@ -14,8 +14,26 @@ module.exports = function(app) {
   app.route('/api/user-count/:bId/:kind/:arg')//all(analyticsPolicy.isAllowed)
     .get(analytics.list);
 
-  app.route('/api/dialog-usage/:bId/:kind/:arg')//all(analyticsPolicy.isAllowed)
-    .get(analytics.dialogList);
+  app.route('/api/user-input-statistics/:bId')//all(analyticsPolicy.isAllowed)
+    .post(analytics.userInputStatistics);
+
+  app.route('/api/userCount/:bId')//all(analyticsPolicy.isAllowed)
+    .post(analytics.userCount);
+
+  app.route('/api/senarioUsage/:bId')//all(analyticsPolicy.isAllowed)
+    .post(analytics.senarioUsage);
+
+  app.route('/api/failDailogs/:bId')//all(analyticsPolicy.isAllowed)
+    .get(analytics.failDailogs);
+
+ app.route('/api/userDialogCumulativeCount/:bId')//all(analyticsPolicy.isAllowed)
+    .get(analytics.userDialogCumulativeCount);
+
+  app.route('/api/daily-dialog-usage')//all(analyticsPolicy.isAllowed)
+    .post(analytics.dailyDialogUsage);
+
+  app.route('/api/dialog-isFail/:bId')//all(analyticsPolicy.isAllowed)
+    .get(analytics.dialogIsFail);
 
   app.route('/api/dialog-success/:bId/:kind/:arg')//all(analyticsPolicy.isAllowed)
     .get(analytics.dialogSuccessList);
@@ -61,4 +79,6 @@ module.exports = function(app) {
     .get(analytics.dialogFailureMaintenance)
     .put(analytics.dialogFailureMaintenanceUpdate);
 
+  app.route('/api/analytics/statistics/exel-download')
+    .post(analytics.exelDownload)
 };

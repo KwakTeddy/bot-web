@@ -3,317 +3,6 @@
 
 var dialogs = [
 	{
-		"name": "퀴즈",
-		"id": "default213",
-		"filename": "default",
-		"input": [
-			{
-				"intent": "퀴즈"
-			}
-		],
-		"output": "자~퀴즈 이벤트를 시작합니다.\n\n고객님께서 젤 좋아하는 카드사는?\n힌트. 접니다.",
-		"task": {
-			"name": "setcount"
-		},
-		"inRaw": "퀴즈",
-		"inNLP": "퀴즈",
-		"children": [
-			{
-				"name": "정답1",
-				"id": "default214",
-				"filename": "default",
-				"input": [
-					{
-						"intent": "정답1"
-					}
-				],
-				"output": "정답입니다! 저도 고객님을 젤 좋아합니다 ♥♥ \n\n'나도' 라고 입력하시면 다음 퀴즈를 낼게요.",
-				"children": [
-					{
-						"name": "퀴즈2",
-						"id": "default217",
-						"filename": "default",
-						"input": [
-							{
-								"text": "나다"
-							}
-						],
-						"output": "두번째 퀴즈입니다.\n\n신한카드 챗봇을 만날 수 있는 곳은 어디일까요?\n힌트. 페이스O, 카카O, 네이O",
-						"children": [
-							{
-								"name": "정답2",
-								"id": "default258",
-								"filename": "default",
-								"input": [
-									{
-										"text": "페이스북 카카오 네이버"
-									}
-								],
-								"output": "정답입니다! \n\n'그리고' 라고 입력하시면 마지막 퀴즈를 낼게요.",
-								"task": "resetcount",
-								"children": [
-									{
-										"name": "퀴즈3",
-										"id": "default266",
-										"filename": "default",
-										"input": [
-											{
-												"text": "그리고"
-											}
-										],
-										"output": "마지막 퀴즈입니다.\n\n고객님의 '신한카드 애정지수(1~10) X 호감도(1~10) X 소지한 신한카드 개수'를 곱하면? \n\n아라비아 숫자로 써주세요.\n애정은 자고로 숫자로 표현해야 제 맛이죠.",
-										"children": [
-											{
-												"name": "정답3",
-												"id": "default268",
-												"filename": "default",
-												"input": [
-													{
-														"types": [
-															"numType"
-														]
-													}
-												],
-												"output": [
-													{
-														"if": "context.dialog.numstep == 1",
-														"output": {
-															"output": "아… 제가 너무 부족하군요. 오늘부터 더욱 열일모드 장착!\n✔ 대화 화면 캡쳐 → 아래 '이벤트 응모하기' 클릭 → 페이스북에 댓글 응모",
-															"buttons": [
-																{
-																	"text": "이벤트 응모하기",
-																	"url": "https://www.facebook.com/shinhancard"
-																}
-															],
-															"image": {
-																"url": "/files/Shinhancard1498183019764.jpg",
-																"displayname": "이벤트.jpg"
-															}
-														}
-													},
-													{
-														"if": "context.dialog.numstep == 2",
-														"output": {
-															"output": "좀더 노력해서 고객님 마음에 쏘옥 들게 해볼게요! 불끈~\n✔ 대화 화면 캡쳐 → 아래 '이벤트 응모하기' 클릭 → 페이스북에 댓글 응모",
-															"buttons": [
-																{
-																	"text": "이벤트 응모하기",
-																	"url": "https://www.facebook.com/shinhancard"
-																}
-															],
-															"image": {
-																"url": "/files/Shinhancard1498183086948.jpg",
-																"displayname": "이벤트.jpg"
-															}
-														}
-													},
-													{
-														"if": "context.dialog.numstep == 3",
-														"output": {
-															"output": "우앙굿! 이런 점수 초등학교 이후로 처음입니다. 감사해요!\n✔ 대화 화면 캡쳐 → 아래 '이벤트 응모하기' 클릭 → 페이스북에 댓글 응모",
-															"buttons": [
-																{
-																	"text": "이벤트 응모하기",
-																	"url": "https://www.facebook.com/shinhancard"
-																}
-															],
-															"image": {
-																"url": "/files/Shinhancard1498183111345.jpg",
-																"displayname": "이벤트.jpg"
-															}
-														}
-													},
-													{
-														"if": "context.dialog.numstep == 4",
-														"output": {
-															"output": "내 안에 너 있다? 내 지갑 안에 신한카드 있다?! \n감동의 물결. 고맙습니다. \n✔ 대화 화면 캡쳐 → 아래 '이벤트 응모하기' 클릭 → 페이스북에 댓글 응모",
-															"buttons": [
-																{
-																	"text": "이벤트 응모하기",
-																	"url": "https://www.facebook.com/shinhancard"
-																}
-															],
-															"image": {
-																"url": "/files/Shinhancard1498183124744.jpg",
-																"displayname": "이벤트.jpg"
-															}
-														}
-													}
-												],
-												"task": "resetcount"
-											},
-											{
-												"name": "정답한계3",
-												"id": "default273",
-												"filename": "default",
-												"input": [
-													{
-														"if": " context.dialog.quizcount == 2"
-													}
-												],
-												"output": "고객님, 죄송해요. 오늘 저랑 퀴즈 놀이를 할 기분이 아니신거 같아요. 깜짝 퀴즈이벤트는 여기서 끝내도록 할께요.\n 처음으로 돌아가고 싶으시면 '처음', 다시 퀴즈를 풀고 싶으시면 '퀴즈'라고 입력해주세요~! ^^ 감사합니다!!",
-												"task": {
-													"name": "resetcount"
-												}
-											},
-											{
-												"name": "오답3",
-												"id": "default272",
-												"filename": "default",
-												"input": [
-													{
-														"if": " true"
-													}
-												],
-												"output": {
-													"repeat": "1",
-													"options": {
-														"output": "이런.. 숫자로 입력해주시겠어요?"
-													}
-												},
-												"task": "quizcount"
-											}
-										]
-									},
-									{
-										"name": "퀴즈3(이어짐실패)",
-										"id": "default267",
-										"filename": "default",
-										"input": [
-											{
-												"if": " true"
-											}
-										],
-										"output": {
-											"call": "퀴즈3",
-											"options": {
-												"output": "ㅠ_ㅠ '그리고'를 입력해주시길 바랬는데, 쉬크하신 고객님 ㅋㅋ. 뭐 어쨌든 제일 중요한건 마지막 문제니까요.\n\n마지막 퀴즈입니다.\n\n고객님의 '신한카드 애정지수(1~10) X 호감도(1~10) X 소지한 신한카드 개수'를 곱하면? \n\n아라비아 숫자로 써주세요.\n애정은 자고로 숫자로 표현해야 제 맛이죠."
-											}
-										}
-									}
-								]
-							},
-							{
-								"name": "정답한계2",
-								"id": "default261",
-								"filename": "default",
-								"input": [
-									{
-										"if": " context.dialog.quizcount == 2"
-									}
-								],
-								"output": {
-									"call": "정답2",
-									"options": {
-										"output": "정답은 페이스북, 카카오, 네이버랍니다. 퀴즈 틀릴수도 있어요. 제일 중요한건 맨 마지막 문제에요. 자자 마지막 문제로 넘어갈게요\n'그리고'라고 입력해주세요~"
-									}
-								}
-							},
-							{
-								"name": "오답2_1",
-								"id": "default259",
-								"filename": "default",
-								"input": [
-									{
-										"text": "페이스북"
-									},
-									{
-										"text": "카카오"
-									},
-									{
-										"text": "네이버"
-									}
-								],
-								"output": {
-									"repeat": "1",
-									"options": {
-										"output": "힌트. 페이스O, 카카O, 네이O 랍니다. 3개를 모두 한번에 입력해 주세요."
-									}
-								},
-								"task": "quizcount"
-							},
-							{
-								"name": "오답2_2",
-								"id": "default260",
-								"filename": "default",
-								"input": [
-									{
-										"if": " true"
-									}
-								],
-								"output": {
-									"repeat": "1",
-									"options": {
-										"output": "힌트. 페이스O, 카카O, 네이O 랍니다. 다시 한번 입력해 주세요."
-									}
-								},
-								"task": {
-									"name": "quizcount"
-								}
-							}
-						]
-					},
-					{
-						"name": "퀴즈2(이어감실패)",
-						"id": "default216",
-						"filename": "default",
-						"input": [
-							{
-								"if": " true"
-							}
-						],
-						"output": {
-							"call": "퀴즈2",
-							"options": {
-								"output": "이런 저 혼자만의 짝사랑이었군요. 뭐 그래도 좋아요. 어쨌든 다음 문제로 넘어갈께요~\n\n두번째 퀴즈입니다.\n\n신한카드 챗봇을 만날 수 있는 곳은 어디일까요?\n힌트. 페이스O, 카카O, 네이O"
-							}
-						},
-						"inRaw": "ㅇ",
-						"inNLP": "ㅇ"
-					}
-				],
-				"task": {
-					"name": "resetcount"
-				}
-			},
-			{
-				"name": "정답한계1",
-				"id": "default255",
-				"filename": "default",
-				"input": [
-					{
-						"if": " context.dialog.quizcount == 2"
-					}
-				],
-				"output": {
-					"call": "정답1",
-					"options": {
-						"output": "이런, 정답은 신한카드에요. 이번 퀴즈는 제가 대신 맞춰드렸어요. \n저는 고객님을 좋아하니까요. 고객님도 좋아하시지요?\n다음퀴즈로 넘어가고 싶으시면 '나도'라고 입력하시면 다음 퀴즈를 낼께요."
-					}
-				}
-			},
-			{
-				"name": "오답1",
-				"id": "default254",
-				"filename": "default",
-				"input": [
-					{
-						"if": " true"
-					}
-				],
-				"output": {
-					"repeat": "1",
-					"options": {
-						"output": "와! (리액션하기 곤란하네) 다시 한번 입력해 주세요"
-					}
-				},
-				"task": {
-					"name": "quizcount"
-				}
-			}
-		]
-	},
-	{
 		"id": "default0",
 		"filename": "default",
 		"input": [
@@ -2982,6 +2671,317 @@ var dialogs = [
 					"options": {
 						"output": "죄송합니다. 검색결과가 없습니다.\n다시 한번 말씀해주세요~\n처음으로 돌아가시려면 '처음'이라고 말씀해주세요"
 					}
+				}
+			}
+		]
+	},
+	{
+		"name": "퀴즈",
+		"id": "default213",
+		"filename": "default",
+		"input": [
+			{
+				"intent": "퀴즈"
+			}
+		],
+		"output": "자~퀴즈 이벤트를 시작합니다.\n\n고객님께서 젤 좋아하는 카드사는?\n힌트. 접니다.",
+		"task": {
+			"name": "setcount"
+		},
+		"inRaw": "퀴즈",
+		"inNLP": "퀴즈",
+		"children": [
+			{
+				"name": "정답1",
+				"id": "default214",
+				"filename": "default",
+				"input": [
+					{
+						"intent": "정답1"
+					}
+				],
+				"output": "정답입니다! 저도 고객님을 젤 좋아합니다 ♥♥ \n\n'나도' 라고 입력하시면 다음 퀴즈를 낼게요.",
+				"children": [
+					{
+						"name": "퀴즈2",
+						"id": "default217",
+						"filename": "default",
+						"input": [
+							{
+								"text": "나다"
+							}
+						],
+						"output": "두번째 퀴즈입니다.\n\n신한카드 챗봇을 만날 수 있는 곳은 어디일까요?\n힌트. 페이스O, 카카O, 네이O",
+						"children": [
+							{
+								"name": "정답2",
+								"id": "default258",
+								"filename": "default",
+								"input": [
+									{
+										"text": "페이스북 카카오 네이버"
+									}
+								],
+								"output": "정답입니다! \n\n'그리고' 라고 입력하시면 마지막 퀴즈를 낼게요.",
+								"task": "resetcount",
+								"children": [
+									{
+										"name": "퀴즈3",
+										"id": "default266",
+										"filename": "default",
+										"input": [
+											{
+												"text": "그리고"
+											}
+										],
+										"output": "마지막 퀴즈입니다.\n\n고객님의 '신한카드 애정지수(1~10) X 호감도(1~10) X 소지한 신한카드 개수'를 곱하면? \n\n아라비아 숫자로 써주세요.\n애정은 자고로 숫자로 표현해야 제 맛이죠.",
+										"children": [
+											{
+												"name": "정답3",
+												"id": "default268",
+												"filename": "default",
+												"input": [
+													{
+														"types": [
+															"numType"
+														]
+													}
+												],
+												"output": [
+													{
+														"if": "context.dialog.numstep == 1",
+														"output": {
+															"output": "아… 제가 너무 부족하군요. 오늘부터 더욱 열일모드 장착!\n✔ 대화 화면 캡쳐 → 아래 '이벤트 응모하기' 클릭 → 페이스북에 댓글 응모",
+															"buttons": [
+																{
+																	"text": "이벤트 응모하기",
+																	"url": "https://www.facebook.com/shinhancard"
+																}
+															],
+															"image": {
+																"url": "/files/Shinhancard1498183019764.jpg",
+																"displayname": "이벤트.jpg"
+															}
+														}
+													},
+													{
+														"if": "context.dialog.numstep == 2",
+														"output": {
+															"output": "좀더 노력해서 고객님 마음에 쏘옥 들게 해볼게요! 불끈~\n✔ 대화 화면 캡쳐 → 아래 '이벤트 응모하기' 클릭 → 페이스북에 댓글 응모",
+															"buttons": [
+																{
+																	"text": "이벤트 응모하기",
+																	"url": "https://www.facebook.com/shinhancard"
+																}
+															],
+															"image": {
+																"url": "/files/Shinhancard1498183086948.jpg",
+																"displayname": "이벤트.jpg"
+															}
+														}
+													},
+													{
+														"if": "context.dialog.numstep == 3",
+														"output": {
+															"output": "우앙굿! 이런 점수 초등학교 이후로 처음입니다. 감사해요!\n✔ 대화 화면 캡쳐 → 아래 '이벤트 응모하기' 클릭 → 페이스북에 댓글 응모",
+															"buttons": [
+																{
+																	"text": "이벤트 응모하기",
+																	"url": "https://www.facebook.com/shinhancard"
+																}
+															],
+															"image": {
+																"url": "/files/Shinhancard1498183111345.jpg",
+																"displayname": "이벤트.jpg"
+															}
+														}
+													},
+													{
+														"if": "context.dialog.numstep == 4",
+														"output": {
+															"output": "내 안에 너 있다? 내 지갑 안에 신한카드 있다?! \n감동의 물결. 고맙습니다. \n✔ 대화 화면 캡쳐 → 아래 '이벤트 응모하기' 클릭 → 페이스북에 댓글 응모",
+															"buttons": [
+																{
+																	"text": "이벤트 응모하기",
+																	"url": "https://www.facebook.com/shinhancard"
+																}
+															],
+															"image": {
+																"url": "/files/Shinhancard1498183124744.jpg",
+																"displayname": "이벤트.jpg"
+															}
+														}
+													}
+												],
+												"task": "resetcount"
+											},
+											{
+												"name": "정답한계3",
+												"id": "default273",
+												"filename": "default",
+												"input": [
+													{
+														"if": " context.dialog.quizcount == 2"
+													}
+												],
+												"output": "고객님, 죄송해요. 오늘 저랑 퀴즈 놀이를 할 기분이 아니신거 같아요. 깜짝 퀴즈이벤트는 여기서 끝내도록 할께요.\n 처음으로 돌아가고 싶으시면 '처음', 다시 퀴즈를 풀고 싶으시면 '퀴즈'라고 입력해주세요~! ^^ 감사합니다!!",
+												"task": {
+													"name": "resetcount"
+												}
+											},
+											{
+												"name": "오답3",
+												"id": "default272",
+												"filename": "default",
+												"input": [
+													{
+														"if": " true"
+													}
+												],
+												"output": {
+													"repeat": "1",
+													"options": {
+														"output": "이런.. 숫자로 입력해주시겠어요?"
+													}
+												},
+												"task": "quizcount"
+											}
+										]
+									},
+									{
+										"name": "퀴즈3(이어짐실패)",
+										"id": "default267",
+										"filename": "default",
+										"input": [
+											{
+												"if": " true"
+											}
+										],
+										"output": {
+											"call": "퀴즈3",
+											"options": {
+												"output": "ㅠ_ㅠ '그리고'를 입력해주시길 바랬는데, 쉬크하신 고객님 ㅋㅋ. 뭐 어쨌든 제일 중요한건 마지막 문제니까요.\n\n마지막 퀴즈입니다.\n\n고객님의 '신한카드 애정지수(1~10) X 호감도(1~10) X 소지한 신한카드 개수'를 곱하면? \n\n아라비아 숫자로 써주세요.\n애정은 자고로 숫자로 표현해야 제 맛이죠."
+											}
+										}
+									}
+								]
+							},
+							{
+								"name": "정답한계2",
+								"id": "default261",
+								"filename": "default",
+								"input": [
+									{
+										"if": " context.dialog.quizcount == 2"
+									}
+								],
+								"output": {
+									"call": "정답2",
+									"options": {
+										"output": "정답은 페이스북, 카카오, 네이버랍니다. 퀴즈 틀릴수도 있어요. 제일 중요한건 맨 마지막 문제에요. 자자 마지막 문제로 넘어갈게요\n'그리고'라고 입력해주세요~"
+									}
+								}
+							},
+							{
+								"name": "오답2_1",
+								"id": "default259",
+								"filename": "default",
+								"input": [
+									{
+										"text": "페이스북"
+									},
+									{
+										"text": "카카오"
+									},
+									{
+										"text": "네이버"
+									}
+								],
+								"output": {
+									"repeat": "1",
+									"options": {
+										"output": "힌트. 페이스O, 카카O, 네이O 랍니다. 3개를 모두 한번에 입력해 주세요."
+									}
+								},
+								"task": "quizcount"
+							},
+							{
+								"name": "오답2_2",
+								"id": "default260",
+								"filename": "default",
+								"input": [
+									{
+										"if": " true"
+									}
+								],
+								"output": {
+									"repeat": "1",
+									"options": {
+										"output": "힌트. 페이스O, 카카O, 네이O 랍니다. 다시 한번 입력해 주세요."
+									}
+								},
+								"task": {
+									"name": "quizcount"
+								}
+							}
+						]
+					},
+					{
+						"name": "퀴즈2(이어감실패)",
+						"id": "default216",
+						"filename": "default",
+						"input": [
+							{
+								"if": " true"
+							}
+						],
+						"output": {
+							"call": "퀴즈2",
+							"options": {
+								"output": "이런 저 혼자만의 짝사랑이었군요. 뭐 그래도 좋아요. 어쨌든 다음 문제로 넘어갈께요~\n\n두번째 퀴즈입니다.\n\n신한카드 챗봇을 만날 수 있는 곳은 어디일까요?\n힌트. 페이스O, 카카O, 네이O"
+							}
+						},
+						"inRaw": "ㅇ",
+						"inNLP": "ㅇ"
+					}
+				],
+				"task": {
+					"name": "resetcount"
+				}
+			},
+			{
+				"name": "정답한계1",
+				"id": "default255",
+				"filename": "default",
+				"input": [
+					{
+						"if": " context.dialog.quizcount == 2"
+					}
+				],
+				"output": {
+					"call": "정답1",
+					"options": {
+						"output": "이런, 정답은 신한카드에요. 이번 퀴즈는 제가 대신 맞춰드렸어요. \n저는 고객님을 좋아하니까요. 고객님도 좋아하시지요?\n다음퀴즈로 넘어가고 싶으시면 '나도'라고 입력하시면 다음 퀴즈를 낼께요."
+					}
+				}
+			},
+			{
+				"name": "오답1",
+				"id": "default254",
+				"filename": "default",
+				"input": [
+					{
+						"if": " true"
+					}
+				],
+				"output": {
+					"repeat": "1",
+					"options": {
+						"output": "와! (리액션하기 곤란하네) 다시 한번 입력해 주세요"
+					}
+				},
+				"task": {
+					"name": "quizcount"
 				}
 			}
 		]
