@@ -30,8 +30,139 @@ var clear = function(d) {
 
 
 exports.exelDownload = function (req, res) {
+  function datenum(v, date1904) {
+    if(date1904) v+=1462;
+    var epoch = Date.parse(v);
+    return (epoch - new Date(Date.UTC(1899, 11, 30))) / (24 * 60 * 60 * 1000);
+  }
+
+  // function sheet_from_array_of_arrays(data, opts) {
+  //   var ws = {};
+  //   var range = {s: {c:10000000, r:10000000}, e: {c:0, r:0 }};
+  //   for(var C = 0; C != data.length; ++C) {
+  //     for(var R = 0; R < data[C].length; ++R) {
+  //       if(range.s.r > R) range.s.r = R;
+  //       if(range.s.c > C) range.s.c = C;
+  //       if(range.e.r < R) range.e.r = R;
+  //       if(range.e.c < C) range.e.c = C;
+  //       var cell = {v: data[C][R] };
+  //       if(cell.v == null) continue;
+  //       var cell_ref = XLSX.utils.encode_cell({c:C,r:R});
+  //
+  //       if(typeof cell.v === 'number') cell.t = 'n';
+  //       else if(typeof cell.v === 'boolean') cell.t = 'b';
+  //       else if(cell.v instanceof Date) {
+  //         cell.t = 'n';
+  //         cell.z = XLSX.SSF._table[14];
+  //         cell.v = datenum(cell.v);
+  //       }
+  //       else cell.t = 's';
+  //
+  //       ws[cell_ref] = cell;
+  //     }
+  //   }
+  //   if(range.s.c < 10000000) ws['!ref'] = XLSX.utils.encode_range(range);
+  //   return ws;
+  // }
+
+  function sheet_from_array_of_arrays(data, opts) {
+    var ws = {};
+    var range = {s: {c:10000000, r:10000000}, e: {c:0, r:0 }};
+    for(var R = 0; R != data.length; ++R) {
+      for(var C = 0; C != data[R].length; ++C) {
+        if(range.s.r > R) range.s.r = R;
+        if(range.s.c > C) range.s.c = C;
+        if(range.e.r < R) range.e.r = R;
+        if(range.e.c < C) range.e.c = C;
+        var cell = {v: data[R][C] };
+        if(cell.v == null) continue;
+        var cell_ref = XLSX.utils.encode_cell({c:C,r:R});
+
+        if(typeof cell.v === 'number') cell.t = 'n';
+        else if(typeof cell.v === 'boolean') cell.t = 'b';
+        else if(cell.v instanceof Date) {
+          cell.t = 'n'; cell.z = XLSX.SSF._table[22];
+          cell.v = datenum(cell.v);
+        }
+        else cell.t = 's';
+
+        ws[cell_ref] = cell;
+      }
+    }
+    if(range.s.c < 10000000) ws['!ref'] = XLSX.utils.encode_range(range);
+    return ws;
+  }
+
+  /* original data */
+  var data = [];
+  var ws_name = "LiveTalk";
+  function Workbook() {
+    if(!(this instanceof Workbook)) return new Workbook();
+    this.SheetNames = [];
+    this.Sheets = {};
+  }
+  var query = {};
+  query['botId'] = req.body.botId;
+  query['liveChat'] = true;
+  query['channel'] = {$ne: "socket"};
+  UserDialog.aggregate(
+    [
+      {$match: query},
+      {$group: {
+        _id: {userKey: "$userId", channel: "$channel"},
+        dialogDatas: {$push: {dialog: "$dialog", created: "$created", inOut: "$inOut"}},
+        count: {$sum: 1},
+        maxDate: {$max: "$created"}
+      }
+      }
+    ]
+  ).exec(function (err, dialogs) {
+    if(err) console.log(err);
+    else {
+      // dialogs.forEach(function (dialog) {
+      //   data.push([dialog._id.channel, dialog._id.userKey, dialog.count, dialog.maxDate]);
+      //   data.push([" ", " ", " ", " "]);
+      //   data.push([" ", " ", " ", " "]);
+      //   dialog.dialogDatas.forEach(function (dialogData) {
+      //     data[data.length - 3].push(dialogData.dialog)
+      //     data[data.length - 2].push(dialogData.inOut)
+      //     data[data.length - 1].push(dialogData.created)
+      //   })
+      // });
+      dialogs.forEach(function (dialog) {
+        data.push(['channel', dialog._id.channel]);
+        data.push(['userKey', dialog._id.userKey]);
+        data.push(['dialogNum', dialog.count]);
+        data.push(['recent', dialog.maxDate]);
+        data.push(['dialog', '사용자', '관리자', '시간']);
+        dialog.dialogDatas.forEach(function (dialogData) {
+          if(dialogData.dialog){
+            if(dialogData.inOut){
+              data.push([" ", dialogData.dialog, " ", dialogData.created])
+            }else {
+              data.push([" ", " ", dialogData.dialog, dialogData.created])
+            }
+          }
+        });
+      });
+
+      console.log(util.inspect(data));
+      var wb = new Workbook();
+      var ws = sheet_from_array_of_arrays(data);
+      var fileName = req.body.botId + '_liveChat_' + Date.now() + '.xlsx';
+      /* add worksheet to workbook */
+      wb.SheetNames.push(ws_name);
+      wb.Sheets[ws_name] = ws;
+      console.log(util.inspect(wb));
+
+      /* write file */
+      XLSX.writeFile(wb, './public/files/' + fileName );
+      res.json(fileName);
+    }
+  });
 
 };
+
 
 
 /**
