@@ -10,6 +10,7 @@ var path = require('path'),
   BotDialog = mongoose.model('BotDialog'),
   BotFile = mongoose.model('BotFile'),
   BotFollow = mongoose.model('BotFollow'),
+  BotAuth = mongoose.model('BotAuth'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   config = require(path.resolve('./config/config')),
   _ = require('lodash'),
@@ -654,6 +655,28 @@ exports.botExist = function(req, res) {
   });
 };
 
+exports.sharedBotList = function (req, res) {
+  BotAuth.aggregate(
+    [
+      {$match: {user: req.user._id}},
+      {$group: {_id: {bot: "$bot"}}}
+    ]
+  ).exec(function (err, doc) {
+    if(err){
+      console.log(err);
+      return false
+    }else {
+      if(!doc){
+        return false
+      }else {
+        Bot.populate(doc, {path: "_id.bot"}, function (err, result) {
+          res.json(result);
+        });
+      }
+    }
+  })
+};
+
 exports.nluProcess = function(req, res) {
   var input = '';
   var nlp = require(path.resolve('modules/bot/engine/nlp/processor'));
@@ -906,6 +929,8 @@ exports.fileByID = function (req, res, next, id) {
 
 
 exports.listFile = function (req, res) {
+  console.log(util.inspect(req.bot));
+  console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
   BotFile.find({bot: req.bot._id}).populate('user', 'displayName').populate('bot').exec(function (err, files) {
     if (err) {
       return res.status(400).send({

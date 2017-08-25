@@ -91,6 +91,9 @@ module.exports = function (app) {
   app.route('/api/nluprocess/:input')
     .get(bots.nluProcess);
 
+  app.route("/api/bot-shared")
+    .get(bots.sharedBotList);
+
   // Finish by binding the bot middleware
   app.param('botId', bots.botByID);
   app.param('botNameId', bots.botByNameID);

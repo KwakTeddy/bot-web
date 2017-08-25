@@ -59,6 +59,10 @@ var DialogsetSchema = new Schema({
   created: {
     type: Date,
     default: Date.now
+  },
+  bot:{
+    type: Schema.ObjectId,
+    ref: 'Bot'
   }
 });
 

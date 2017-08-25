@@ -7,11 +7,12 @@
     .controller('DialogsetDialogsLearnController', DialogsetDialogsLearnController);
 
   DialogsetDialogsLearnController.$inject = ['$scope', '$http', '$state', '$stateParams', '$window', 'Authentication', 'UserBotDialogService', 'dialogsResolve', 'botResolve',
-    '$cookies', '$timeout', 'DTOptionsBuilder', '$compile', 'dialogsetsResolve', 'DialogsetsService', '$uibModal', 'FileUploader'];
+    '$cookies', '$timeout', 'DTOptionsBuilder', '$compile', 'dialogsetsResolve', 'DialogsetsService', '$uibModal', 'FileUploader', "$rootScope"];
 
   function DialogsetDialogsLearnController($scope, $http, $state, $stateParams, $window, Authentication, UserBotDialogService, getDialogs, botResolve, $cookies, $timeout,
-                                           DTOptionsBuilder, $compile, dialogsetsResolve, DialogsetsService, $uibModal, FileUploader) {
+                                           DTOptionsBuilder, $compile, dialogsetsResolve, DialogsetsService, $uibModal, FileUploader, $rootScope) {
     var vm = this;
+    vm.auth = $cookies.getObject("auth");
     vm.authentication = Authentication;
     vm.bot = botResolve;
 
@@ -88,6 +89,7 @@
 
     // Save Custom action
     vm.save =function save(isValid) {
+      vm.dialogset["bot"] = $cookies.get("botObjectId");
       console.log(vm.dialogset)
       if (vm.modalType == 'bulk'){
         if (!isValid) {

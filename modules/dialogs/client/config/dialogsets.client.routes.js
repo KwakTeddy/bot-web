@@ -100,9 +100,10 @@
       })
   }
 
-  getDialogsets.$inject = ['DialogsetsService'];
-  function getDialogsets(DialogsetsService) {
-    return DialogsetsService.query().$promise;
+  getDialogsets.$inject = ['DialogsetsService', "$cookies"];
+  function getDialogsets(DialogsetsService, $cookies) {
+    console.log($cookies.get("botObjectId"))
+    return DialogsetsService.query({bId: $cookies.get("botObjectId")}).$promise;
   }
 
   getDialogset.$inject = ['$stateParams', 'DialogsetsService'];

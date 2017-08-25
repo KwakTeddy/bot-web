@@ -19,6 +19,15 @@ angular.module('core').controller('LandingBotsController', ['$scope', '$state', 
   }, function (err) {
     console.log(err)
   });
+  $http.get("/api/bot-shared").then(function (doc) {
+    var result = [];
+    doc.data.forEach(function (_doc) {
+      result.push(_doc._id.bot);
+    });
+    $scope.sharedBots = result;
+  }, function (err) {
+    console.log(err);
+  });
   $scope.newBot =  new BotsService();
 
   $scope.$watch('newBot.id', function () {
@@ -185,10 +194,30 @@ angular.module('core').controller('LandingBotsController', ['$scope', '$state', 
   $scope.selectBot = function (bot) {
     $cookies.put('default_bot', bot.id);
     $cookies.put('botObjectId', bot._id);
-    document.getElementById('loading-screen').style.setProperty("display", "block", "important");
+    // document.getElementById('loading-screen').style.setProperty("display", "block", "important");
     $state.go('dialogsets.dialogsLearn');
     $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
       $window.location.reload();
+    });
+  };
+
+  $scope.selectSharedBot = function (bot) {
+    $http.post("/api/bot-auths/getAuth", {bId: bot._id}).then(function (doc) {
+      console.log(doc.data)
+        var auth = {};
+        doc.data.forEach(function (_doc) {
+          if(!auth[_doc.subjectSchema]) auth[_doc.subjectSchema] = {};
+          if(_doc.subject.title) {
+            auth[_doc.subjectSchema][_doc.subject.title] = {view: true, edit : _doc.edit};
+          }
+          if(_doc.subject.name) {
+            auth[_doc.subjectSchema][_doc.subject.name] = {view: true, edit: _doc.edit};
+          }
+        });
+      $cookies.putObject("auth", auth);
+      $scope.selectBot(bot);
+    }, function (err) {
+      console.log(err);
     });
   };
 

@@ -118,5 +118,10 @@ angular.module('core').controller('MenuController', ['$scope', '$state', 'Authen
     $scope.$on('$stateChangeSuccess', function () {
       $scope.isCollapsed = false;
     });
+
+    $scope.botAuth = $cookies.getObject("auth");
+
+    console.log($scope.botAuth);
+
   }
 ]);

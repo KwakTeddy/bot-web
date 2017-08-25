@@ -79,6 +79,9 @@ module.exports = function(app) {
     .get(analytics.dialogFailureMaintenance)
     .put(analytics.dialogFailureMaintenanceUpdate);
 
-  app.route('/api/analytics/statistics/exel-download')
-    .post(analytics.exelDownload)
+  app.route('/api/analytics/statistics/exel-download/:bId')
+    .post(analytics.exelDownload);
+
+  app.route('/api/analytics/statistics/senario/exel-download/:bId')
+    .post(analytics.senarioExelDownload)
 };

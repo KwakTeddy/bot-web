@@ -6,6 +6,8 @@ angular.module("analytics").controller("DialogAmountStatisticsController", ["$sc
   $scope.kakao = 0;
   $scope.facebook = 0;
   $scope.navertalk = 0;
+  var dataBackup;
+
   var color = {
     background:{
       kakao: '#fdf3db',
@@ -143,6 +145,7 @@ angular.module("analytics").controller("DialogAmountStatisticsController", ["$sc
   var dialogCount = function (date, userType, channel, update) {
     $http.post("/api/daily-dialog-usage", {botId: $cookies.get('default_bot'), date: date, userType: userType, channel: channel}).then(function (doc) {
       console.log(doc);
+      dataBackup = angular.copy(doc.data);
       if(update){
         pieData = angular.copy(pieDataTemplate);
         barData = angular.copy(barDataTemplate);
@@ -197,7 +200,29 @@ angular.module("analytics").controller("DialogAmountStatisticsController", ["$sc
   $scope.update = function () {
     console.log($scope.date);
     dialogCount($scope.date, $scope.userType, $scope.channel, true);
-  }
+  };
+
+  $scope.exelDownload = function () {
+
+    dataBackup.forEach(function (doc) {
+      Object.keys(doc._id).forEach(function (key) {
+        doc[key] = doc._id[key]
+      });
+      delete doc._id;
+    });
+    var exelDataTemplate = {
+      filename: "기간별 이용자 통계",
+      sheetName: "기간별 이용자 통계",
+      columnOrder: ["year", "month", "day", "kakao", "facebook","navertalk", "total", "fail"],
+      orderedData: dataBackup
+    };
+
+    $http.post('/api/analytics/statistics/exel-download/' + $cookies.get("default_bot"), {data: exelDataTemplate}).then(function (doc) {
+
+    }, function (err) {
+      console.log(err);
+    });
+  };
 
 
 }]);

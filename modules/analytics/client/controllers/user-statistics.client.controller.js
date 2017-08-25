@@ -103,7 +103,7 @@ angular.module("analytics").controller("UserStatisticsController", ['$scope', "$
 
   var userCount = function (date, userType, channel, update) {
     $http.post("/api/userCount/" + $cookies.get('default_bot'), {date: date, userType: userType, channel: channel}).then(function (doc) {
-      dataBackup = angular.copy(doc);
+      dataBackup = angular.copy(doc.data);
       if(update){
         pieData = angular.copy(pieDataTemplate);
         barData = angular.copy(barDataTemplate);
@@ -149,7 +149,48 @@ angular.module("analytics").controller("UserStatisticsController", ['$scope', "$
 
   $scope.exelDownload = function () {
     console.log(dataBackup);
-    $http.post('/api/analytics/statistics/exel-download', {data: dataBackup}).then(function (doc) {
+    // dataBackup.forEach(function (doc) {
+    //   Object.keys(doc).forEach(function (key) {
+    //     if(typeof doc[key] == "Object"){
+    //       if(Array.isArray(dataBackup[doc])){
+    //
+    //       }else {
+    //         Object.keys(doc[key]).forEach(function (_key) {
+    //           doc[_key] = doc[key][_key]
+    //         })
+    //       }
+    //     }
+    //   });
+    // });
+    //
+    //
+    //
+    // Object.keys(dataBackup).forEach(function (doc) {
+    //   if(typeof dataBackup[doc] == "Object"){
+    //     if(Array.isArray(dataBackup[doc])){
+    //       dataBackup[doc].forEach(function () {
+    //
+    //       })
+    //     }else {
+    //
+    //     }
+    //   }
+    // });
+
+    dataBackup.forEach(function (doc) {
+      Object.keys(doc._id).forEach(function (key) {
+        doc[key] = doc._id[key]
+      });
+      delete doc._id;
+    });
+    var exelDataTemplate = {
+      filename: "사용자 통계",
+      sheetName: "사용자 통계",
+      columnOrder: ["year", "month", "day", "kakao", "facebook","navertalk", "total"],
+      orderedData: dataBackup
+    };
+
+    $http.post('/api/analytics/statistics/exel-download/' + $cookies.get("default_bot"), {data: exelDataTemplate}).then(function (doc) {
 
     }, function (err) {
       console.log(err);

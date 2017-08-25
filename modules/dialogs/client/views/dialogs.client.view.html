@@ -21,7 +21,7 @@
         <textarea type="text" id="answer" name="answer" ng-model="vm.dialog.output" class="form-control valid" placeholder="답변" rows="2"
                   aria-invalid="false" ng-blur="vm.textareaFocus(null, null, 'blur', 'answer')" ng-focus="vm.textareaFocus(null, null, 'focus', 'answer')" style="width: 43%;float: left;margin-right: 5px;resize: none">
       </textarea>
-      <button type="submit" class="btn btn-primary" style="height: 50px" onclick="">추가</button>
+      <button type="submit" class="btn btn-primary" style="height: 50px" data-ng-if="vm.auth.edit[0] == 'default.js'">추가</button>
       </div>
     </form>
 
@@ -100,7 +100,7 @@
         <td class="text-center">{{dialogset.user ? dialogset.user.displayName : '장세영'}}</td>
         <td class="text-center">{{dialogset.created | date: 'yyyy-MM-dd HH:mm'}}</td>
         <td>
-          <a class="btn btn-default btn-sm btn-block" ui-sref="dialogsets.dialogs({dialogsetId: dialogset._id})" style="border: none">
+          <a class="btn btn-default btn-sm btn-block" ui-sref="dialogsets.dialogs({dialogsetId: dialogset._id})" ng-disabled="!vm.auth.Dialogset[dialogset.title]" style="border: none">
             <i class="glyphicon glyphicon-edit"></i> 대화관리
           </a>
         </td>

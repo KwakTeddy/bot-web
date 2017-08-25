@@ -9,6 +9,7 @@ angular.module("analytics").controller("SenarioUsageStatisticsController", ["$sc
     senarioCount();
   };
   $scope.senarioIndex = {};
+  var dataBackup;
   var depth = "1";
   var indexing = function (senario, depth, index) {
     var newDepth;
@@ -62,5 +63,14 @@ angular.module("analytics").controller("SenarioUsageStatisticsController", ["$sc
 
   $scope.update = function () {
     senarioCount();
-  }
+  };
+
+  $scope.exelDownload = function () {
+
+    $http.post('/api/analytics/statistics/senario/exel-download/' + $cookies.get("default_bot")).then(function (doc) {
+
+    }, function (err) {
+      console.log(err);
+    });
+  };
 }]);

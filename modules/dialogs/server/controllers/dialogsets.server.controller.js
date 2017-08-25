@@ -232,11 +232,28 @@ exports.delete = function(req, res) {
   });
 };
 
+
+/**
+ * List of Custom actions
+ */
+exports.listByBot = function(req, res) {
+  Dialogset.find({bot: req.bot._id}).sort('-created').populate('user', 'displayName').exec(function(err, dialogsets) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      // console.log(dialogsets);
+      res.jsonp(dialogsets);
+    }
+  });
+};
+
 /**
  * List of Custom actions
  */
 exports.list = function(req, res) {
-  Dialogset.find({user: req.user._id}).sort('-created').populate('user', 'displayName').exec(function(err, dialogsets) {
+  Dialogset.find({bot: req.query.bId}).sort('-created').populate('user', 'displayName').exec(function(err, dialogsets) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
