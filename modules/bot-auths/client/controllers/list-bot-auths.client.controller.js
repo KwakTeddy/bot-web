@@ -5,27 +5,19 @@
     .module('bot-auths')
     .controller('BotAuthsListController', BotAuthsListController);
 
-  BotAuthsListController.$inject = ['BotAuthsService', 'DTOptionsBuilder', '$compile', '$scope', '$cookies'];
+  BotAuthsListController.$inject = ['BotAuthsService', 'DTOptionsBuilder', '$compile', '$scope', '$cookies', "$timeout", "$stateParams"];
 
-  function BotAuthsListController(BotAuthsService, DTOptionsBuilder, $compile, $scope, $cookies) {
+  function BotAuthsListController(BotAuthsService, DTOptionsBuilder, $compile, $scope, $cookies, $timeout, $stateParams) {
+    console.log($cookies.getAll());
+    $timeout(function () {
+      document.getElementById('sidebar-left').style.display = 'none';
+      document.getElementById('chat-include').style.display = 'none';
+      document.getElementById('log-button').style.display = 'none';
+      document.getElementById('intent-button').style.display = 'none';
+      document.getElementById('main').classList.remove('content-body');
+    });
     var vm = this;
-    $scope.botId = $cookies.get('botObjectId');
-
-    vm.botAuths = BotAuthsService.query({botId: $cookies.get('botObjectId')});
-    console.log(vm.botAuths);
-
-    vm.remove = function (target) {
-      if (confirm('\'' + target.name + '\' ' + '정말 삭제하시겠습니까?')) {
-        target.$remove({botName: $rootScope.botId}, function (response) {
-          BotAuthsService.query({botName: $cookies.get('botId')}).$promise.then(function (data) {
-            vm.botAuths = data;
-          }, function (err) {
-            console.log(err)
-          })
-        });
-      }
-    };
-
+    vm.botAuths = BotAuthsService.query({botId: $cookies.get('authManageId')});
     vm.dtOptions = DTOptionsBuilder.newOptions()
       .withOption('bLengthChange', false)
       .withOption('info', false)

@@ -24,7 +24,7 @@ exports.getAuth = function (req, res) {
       }else {
         var result = [];
         async.eachSeries(doc, function (_doc, cb) {
-          BotAuth.findOne({_id: _doc._id}).populate("subject", null, _doc.subjectSchema).lean().exec(function (err2, data) {
+          BotAuth.findOne({_id: _doc._id}).populate("subject", null, _doc.subjectSchema).populate("user").lean().exec(function (err2, data) {
             if(err2){
               return false
             }else {
@@ -51,28 +51,49 @@ exports.create = function(req, res) {
   User.findOne({email: req.body.email}).exec(function (err, doc) {
     if(err){
       console.log(err);
-      return false;
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
     }else {
       if(!doc){
-        return res.send({
+        return res.status(400).send({
           message: "해당하는 사용자가 없습니다"
         });
       }else {
-        async.eachSeries(req.body.authData, function (data, cb) {
-          var botAuth = new BotAuth(data);
-          botAuth.giver = req.user._id;
-          botAuth.user = doc._id;
-          botAuth.save(function(err) {
-            if (err) {
+        BotAuth.findOne({user: doc._id, bot: req.body.authData[0].bot}).exec(function (err2, doc2) {
+          if(err2){
+            console.log(err);
+            return res.status(400).send({
+              message: errorHandler.getErrorMessage(err)
+            });
+          }else {
+            if(doc2){
               return res.status(400).send({
-                message: errorHandler.getErrorMessage(err)
+                message: "권한을 이미 부여받은 사용자입니다"
               });
-            } else {
-              cb(null)
+            }else {
+              async.eachSeries(req.body.authData, function (data, cb) {
+                if(data.view){
+                  var botAuth = new BotAuth(data);
+                  botAuth.giver = req.user._id;
+                  botAuth.user = doc._id;
+                  botAuth.save(function(err) {
+                    if (err) {
+                      return res.status(400).send({
+                        message: errorHandler.getErrorMessage(err)
+                      });
+                    } else {
+                      cb(null)
+                    }
+                  });
+                }else {
+                  cb(null);
+                }
+              }, function (err) {
+                res.end();
+              });
             }
-          });
-        }, function (err) {
-          res.end();
+          }
         });
       }
     }
@@ -91,17 +112,73 @@ exports.read = function(req, res) {
  * Update a Bot auth
  */
 exports.update = function(req, res) {
-  var botAuth = req.botAuth;
+  console.log(util.inspect(req.body));
+  console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
 
-  botAuth = _.extend(botAuth, req.body);
-
-  botAuth.save(function(err) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.jsonp(botAuth);
+  BotAuth.find({bot: req.params.botId, user: req.params.userId}).exec(function (err, data) {
+    if(err){
+      console.log(err);
+      return false
+    }else {
+      if(data){
+        async.eachSeries(req.body.authData, function (input, cb) {
+          var create = false;
+          var update = false;
+          var remove = false;
+          data.forEach(function (doc) {
+            if((input.subject == doc.subject) && (input.subjectSchema == doc.subjectSchema)){
+              if(input.view) update = true;
+              else remove = true;
+            }else {
+              if(input.view) create = true;
+            }
+          });
+          if(update){
+            BotAuth.update({subject: input.subject, subjectSchema: input.subjectSchema}, {edit: input.edit}, {upsert: true}).exec(function (err, doc) {
+              if(err){
+                console.log(err);
+                return res.status(400).send({
+                  message: errorHandler.getErrorMessage(err)
+                });
+              }else {
+                cb(null);
+              }
+            });
+          }else if(create){
+            var botAuth = new BotAuth(input);
+            botAuth.giver = req.user._id;
+            botAuth.user = req.params.userId;
+            botAuth.save(function(err) {
+              if (err) {
+                return res.status(400).send({
+                  message: errorHandler.getErrorMessage(err)
+                });
+              } else {
+                cb(null)
+              }
+            });
+          }else if(remove){
+            BotAuth.remove({subject: input.subject, subjectSchema: input.subjectSchema}).exec(function (err, doc) {
+              if(err){
+                console.log(err);
+                return res.status(400).send({
+                  message: errorHandler.getErrorMessage(err)
+                });
+              }else {
+                cb(null)
+              }
+            });
+          }else {
+            cb(null)
+          }
+        }, function (err) {
+          res.json("완료")
+        });
+      }else {
+        return res.send({
+          message: "권한이 주어지지 않았어요"
+        });
+      }
     }
   });
 };
@@ -110,15 +187,14 @@ exports.update = function(req, res) {
  * Delete an Bot auth
  */
 exports.delete = function(req, res) {
-  var botAuth = req.botAuth;
-
-  botAuth.remove(function(err) {
-    if (err) {
+  BotAuth.remove({bot: req.params.botId, user: req.params.userId}).exec(function (err, doc) {
+    if(err){
+      console.log(err);
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
-    } else {
-      res.jsonp(botAuth);
+    }else {
+      res.json(doc);
     }
   });
 };

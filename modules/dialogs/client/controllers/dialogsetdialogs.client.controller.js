@@ -6,12 +6,21 @@
     .module('dialogsets')
     .controller('DialogsetDialogsController', DialogsetDialogsController);
 
-  DialogsetDialogsController.$inject = ['$scope', '$state', '$stateParams', '$window', 'Authentication', 'dialogsetResolve', 'dialogsetDialogResolve', 'DialogsetDialogsService', '$timeout'];
+  DialogsetDialogsController.$inject =
+    [
+      '$scope', '$state', '$stateParams', '$window', 'Authentication', 'dialogsetResolve',
+      'dialogsetDialogResolve', 'DialogsetDialogsService', '$timeout', "botResolve", "$cookies"
+    ];
 
-  function DialogsetDialogsController($scope, $state, $stateParams, $window, Authentication, dialogset, dialogsetDialogs, DialogsetDialogsService, $timeout) {
+  function DialogsetDialogsController(
+    $scope, $state, $stateParams, $window, Authentication, dialogset,
+    dialogsetDialogs, DialogsetDialogsService, $timeout, botResolve, $cookies) {
     var vm = this;
 
     vm.authentication = Authentication;
+    vm.bot = botResolve;
+    vm.auth = $cookies.getObject("auth");
+
     vm.dialogset = dialogset;
     vm.dialogsetDialogs = dialogsetDialogs;
     vm.filterDialogs = angular.copy(vm.dialogsetDialogs);
@@ -19,7 +28,6 @@
 
     vm.childDialog = new DialogsetDialogsService({user: vm.authentication, dialogset: vm.dialogset._id});
     vm.newDialog = new DialogsetDialogsService({user: vm.authentication, dialogset: vm.dialogset._id});
-    console.log(vm.dialogsetDialogs);
 
     for(var i = 0; i < vm.dialogsetDialogs.length; i++){
       if(vm.dialogsetDialogs[i].parent){
@@ -31,30 +39,24 @@
         }
       }
     }
+    vm.checkAuth = function (subjectSchema, target, kind, noti) {
+      var result = false;
+      if(vm.authentication.user._id == vm.bot.user._id) return true;
 
-
-
-
-
-    // if(vm.dialogsetDialogs.length){
-    //   for(var i = vm.dialogsetDialogs.length - 1; i >= 0; i--){
-    //     if(vm.dialogsetDialogs[i].parent){
-    //       vm.hasParentDialogs.push(vm.filterDialogs[i]);
-    //       vm.dialogsetDialogs.splice(i, 1)
-    //     }
-    //   }
-    // }
-    //
-    // if(vm.hasParentDialogs.length){
-    //   for (var k = 0; k < vm.hasParentDialogs.length; k++){
-    //     for(var j = 0; j < vm.dialogsetDialogs.length; j++){
-    //       if (vm.dialogsetDialogs[j]._id == vm.hasParentDialogs[k].parent){
-    //         vm.dialogsetDialogs.splice(j+1, 0, vm.hasParentDialogs[k])
-    //         break;
-    //       }
-    //     }
-    //   }
-    // }
+      if(kind == "edit"){
+        if(vm.auth[subjectSchema] && vm.auth[subjectSchema][target] && vm.auth[subjectSchema][target][kind]){
+          return true;
+        }else{
+          if(noti) alert("수정 권한이 없습니다");
+          else return false
+        }
+      }else{
+        if(vm.auth[subjectSchema] && vm.auth[subjectSchema][target]){
+          return true;
+        }
+      }
+      return result;
+    };
 
     vm.error = null;
     vm.currentPage = 1;

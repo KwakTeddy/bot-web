@@ -44,10 +44,10 @@ angular.module('bots').filter('taskFilter', ['$filter', function($filter) {
 angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScope', '$state', '$window','$timeout',
   '$stateParams', '$resource', 'Dialogs', 'DialogSaveService', 'OpenTasksService', 'FileUploader','$document',
   'fileResolve', 'BotFilesService', 'CoreUtils', 'botFilesResolve', 'Socket', '$uibModal', '$compile', '$cookies', '$http','IntentsService', 'EntitysService', 'EntityContentsService',
-  'notificationService',
+  'notificationService', 'Authentication', 'botResolve',
   function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, Dialogs, DialogSaveService,
             OpenTasksService, FileUploader, $document, file, BotFilesService, CoreUtils, files, Socket,
-            $uibModal, $compile, $cookies, $http, IntentsService, EntitysService, EntityContentsService, notificationService
+            $uibModal, $compile, $cookies, $http, IntentsService, EntitysService, EntityContentsService, notificationService, Authentication, botResolve
   ) {
     (function($) {
       'use strict';
@@ -170,6 +170,33 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       });
 
     }).apply(this, [jQuery]);
+
+    var vm = this;
+    vm.authentication = Authentication;
+    vm.bot = botResolve;
+    vm.auth = $cookies.getObject("auth");
+    vm.checkAuth = function (subjectSchema, target, kind, noti) {
+      var result = false;
+      if(vm.authentication.user._id == vm.bot.user._id) return true;
+
+      if(kind == "edit"){
+        if(vm.auth[subjectSchema] && vm.auth[subjectSchema][target] && vm.auth[subjectSchema][target][kind]){
+          return true;
+        }else{
+          if(noti) alert("수정 권한이 없습니다");
+          else return false
+        }
+      }else{
+        if(vm.auth[subjectSchema] && vm.auth[subjectSchema][target]){
+          return true;
+        }
+      }
+      return result;
+    };
+    if(!vm.checkAuth("BotFile", $stateParams.fileId ? $stateParams.fileId : file._id)){
+      alert("보기 권한이 없습니다");
+      return $state.go($rootScope.previousState || "developer-home")
+    };
 
     $scope.$state = $state;
 
@@ -315,7 +342,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
           $scope.intentError = '\'' + res.data.message.op.name + '\'' +' 이름의 인텐트가 존재합니다. 다른 이름으로 생성해주세요'
         }
       }
-    }
+    };
 
     $scope.saveIntentContent = function (isValid) {
       if(!$scope.intent.content){
@@ -342,7 +369,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       if(index > -1){
         $scope.intent.content.splice(index, 1)
       }
-    }
+    };
 
 
 
@@ -379,7 +406,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
           $scope.entityError = '\'' + res.data.message.op.name + '\'' +' 이름의 엔터티가 존재합니다. 다른 이름으로 생성해주세요'
         }
       }
-    }
+    };
 
     $scope.saveEntityContent = function (isValid) {
       if(!$scope.entity.content){
@@ -395,7 +422,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         $scope.entity.content.unshift({name: $scope.entityContent, syn:[{name: $scope.entityContent}]});
 
         $scope.entityContent = '';
-        $scope.contentError = ''
+        $scope.contentError = '';
         $scope.contentListError = null;
       }else {
         // $scope.contentError = '내용을 입력해주세요'
@@ -431,7 +458,6 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
           }
         }
         target.syn.push({name: vm.entityContentSyn});
-        console.log(target)
         vm.entityContentSyn = '';
       }
     };
@@ -539,7 +565,6 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       vm.newDialog = null;
     };
 
-    var vm = this;
     vm.showTree = true;
     vm.userId = $rootScope.userId;
     vm.bot_id = $stateParams.botId ? $stateParams.botId : $cookies.get('botObjectId');
@@ -551,6 +576,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
     // undo를 위한 data
     vm.isChanged = false;
     vm.changeHistory = [];
+
 
     // tab handling
     vm.botName = file.botName;
@@ -707,7 +733,6 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       vm.tabs.splice(idx,1);
       vm.changeTab(vm.tabs[idx-1]);
     };
-
     vm.tabs = [{name:vm.name, data:vm.data, file_id:vm.file_id, active:true}];
     vm.currentTab = vm.tabs[0];
     vm.addTab(vm.name.split('.')[0]+'.js');
@@ -4506,7 +4531,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         var elem = document.getElementById(dialog.id + '_children');
         elem.parentNode.removeChild(elem);
       }
-    }
+    };
 
     function addInner(_dialog, parent) {
       var input = handleInput(_dialog.input);
@@ -4608,38 +4633,39 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
           toggleAndCenter(dialog)
         };
       }
+      if((vm.authentication.user._id == vm.bot.user._id) || (vm.auth.BotFile && vm.auth.BotFile[vm.currentTab.file_id] && vm.auth.BotFile[vm.currentTab.file_id].edit)){
+        if(dialog.if == undefined) {
+          var deleteBtn = document.createElement('div');
+          deleteBtn.style.float = 'right';
+          deleteBtn.style.cursor = "pointer";
+          actionGroup.appendChild(deleteBtn);
+          deleteBtn.innerHTML = '<i class="fa fa-close"></i>';
+          deleteBtn.onclick = function(e) {
+            deleteNode(realDialog(dialog));
+            e.stopPropagation();
+          };
+        }
 
-      if(dialog.if == undefined) {
-        var deleteBtn = document.createElement('div');
-        deleteBtn.style.float = 'right';
-        deleteBtn.style.cursor = "pointer";
-        actionGroup.appendChild(deleteBtn);
-        deleteBtn.innerHTML = '<i class="fa fa-close"></i>';
-        deleteBtn.onclick = function(e) {
-          deleteNode(realDialog(dialog));
+        var addBtn = document.createElement('div');
+        addBtn.style.float = 'right';
+        addBtn.style.cursor = "pointer";
+        actionGroup.appendChild(addBtn);
+        addBtn.innerHTML = '<i class="fa fa-plus"></i>';
+        addBtn.onclick = function(e) {
+          addChild(realDialog(dialog));
           e.stopPropagation();
         };
-      }
 
-      var addBtn = document.createElement('div');
-      addBtn.style.float = 'right';
-      addBtn.style.cursor = "pointer";
-      actionGroup.appendChild(addBtn);
-      addBtn.innerHTML = '<i class="fa fa-plus"></i>';
-      addBtn.onclick = function(e) {
-        addChild(realDialog(dialog));
-        e.stopPropagation();
-      };
-
-      if(dialog.if == undefined) {
-        var editBtn = document.createElement('div');
-        editBtn.style.float = 'right';
-        editBtn.style.cursor = "pointer";
-        actionGroup.appendChild(editBtn);
-        editBtn.innerHTML = '<i class="fa fa-edit"></i>';
-        editBtn.onclick = function(e) {
-          edit(realDialog(dialog));
-        };
+        if(dialog.if == undefined) {
+          var editBtn = document.createElement('div');
+          editBtn.style.float = 'right';
+          editBtn.style.cursor = "pointer";
+          actionGroup.appendChild(editBtn);
+          editBtn.innerHTML = '<i class="fa fa-edit"></i>';
+          editBtn.onclick = function(e) {
+            edit(realDialog(dialog));
+          };
+        }
       }
     }
 

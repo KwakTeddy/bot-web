@@ -13,9 +13,9 @@ module.exports = function(app) {
     .post(botAuths.create);
 
   app.route('/api/bot-auths/getAuth')//.all(botAuthsPolicy.isAllowed)
-    .post(botAuths.getAuth)
+    .post(botAuths.getAuth);
 
-  app.route('/api/bot-auths/:botId/:userId').all(botAuthsPolicy.isAllowed)
+  app.route('/api/bot-auths/:botId/:userId')//.all(botAuthsPolicy.isAllowed)
     .get(botAuths.read)
     .put(botAuths.update)
     .delete(botAuths.delete);

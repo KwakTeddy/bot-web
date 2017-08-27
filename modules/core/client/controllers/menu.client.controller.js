@@ -3,6 +3,13 @@
 angular.module('core').controller('MenuController', ['$scope', '$state', 'Authentication', 'Menus', '$cookies', '$http', '$rootScope', 'Socket', '$location', '$window', 'BotsService', '$compile',
   function ($scope, $state, Authentication, Menus, $cookies, $http, $rootScope, Socket, $location, $window, BotsService, $compile) {
     // Expose view variables
+    $http.get("/api/menu-navigations").then(function (doc) {
+      console.log(doc.data)
+      $scope.menuList = doc.data;
+    }, function (err) {
+      console.log(err);
+    });
+
     $scope.$state = $state;
     $scope.authentication = Authentication;
     $scope.currentBot;

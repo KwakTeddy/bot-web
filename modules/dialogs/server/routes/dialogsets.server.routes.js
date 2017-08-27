@@ -15,8 +15,8 @@ module.exports = function(app) {
     .get(dialogsets.list)
     .post(dialogsets.create);
 
-  app.route('/api/dialogsets/:botId')//all(dialogsetsPolicy.isAllowed)
-    .get(dialogsets.listByBot)
+  // app.route('/api/dialogsets/:botId')//all(dialogsetsPolicy.isAllowed)
+  //   .get(dialogsets.listByBot)
 
   app.route('/api/dialogsets/:dialogsetId')//all(dialogsetsPolicy.isAllowed)
     .get(dialogsets.read)

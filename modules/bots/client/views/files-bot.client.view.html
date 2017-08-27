@@ -34,11 +34,11 @@
         <th class="text-center">작성자</th>
         <th class="text-center">수정일</th>
         <th class="text-center">등록일</th>
-        <th class="text-center">관리</th>
+        <th class="text-center" >관리</th>
       </tr>
       </thead>
       <tbody>
-      <tr ng-repeat="file in vm.files track by $index">
+      <tr ng-repeat="file in vm.files track by $index" data-ng-if="vm.checkAuth('BotFile', file._id)">
         <td name="fileName" class="text-center">
           <div ng-show="!file.edit">
             {{file.name}}
@@ -52,13 +52,13 @@
         <td class="text-center">{{file.updated | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
         <td class="text-center">{{file.created | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
         <td class="actions">
-          <a ng-click="vm.edit($index, false)" ng-show="file.edit"><i class="fa fa-times"></i></a>
-          <a ng-click="vm.rename($index)" ng-show="file.edit"><i class="fa fa-save"></i></a>
-          <a ng-click="vm.edit($index, true)" ng-show="!file.edit"><i class="fa fa-pencil"></i></a>
-          <a ui-sref="bots.ide({botId: file.bot._id, fileId: file._id})" ng-show="!file.edit && vm.isIde(file.name)"><i class="fa fa-edit"></i></a>
-          <a ui-sref="bots.dialog-tree({botId: file.bot._id, fileId: file._id})" ng-show="!file.edit && !vm.isIde(file.name)"><i class="fa fa-edit"></i></a>
+          <a ng-click="vm.edit($index, false)" ng-show="file.edit" data-ng-if="vm.checkAuth('BotFile', file._id, 'edit')"><i class="fa fa-times"></i></a>
+          <a ng-click="vm.rename($index)" ng-show="file.edit" data-ng-if="vm.checkAuth('BotFile', file._id, 'edit')"><i class="fa fa-save"></i></a>
+          <a ng-click="vm.edit($index, true)" data-ng-if="vm.checkAuth('BotFile', file._id, 'edit')" ng-show="!file.edit"><i class="fa fa-pencil"></i></a>
+          <a ui-sref="bots.ide({botId: file.bot._id, fileId: file._id})" data-ng-if="vm.checkAuth('BotFile', file._id, 'edit')" ng-show="!file.edit && vm.isIde(file.name)"><i class="fa fa-edit"></i></a>
+          <a ui-sref="bots.dialog-tree({botId: file.bot._id, fileId: file._id})" data-ng-if="vm.checkAuth('BotFile', file._id, 'edit')" ng-show="!file.edit && !vm.isIde(file.name)"><i class="fa fa-edit"></i></a>
           <!--<a ui-sref="bots.dialog-graph({botId: file.bot._id, fileId: file._id})" ng-show="!file.edit && !vm.isIde(file.name)"><i class="fa fa-edit"></i>new</a>-->
-          <a ng-click="vm.remove($index)" ng-show="!file.edit"><i class="fa fa-trash-o"></i></a>
+          <a ng-click="vm.remove($index)" data-ng-if="vm.checkAuth('BotFile', file._id, 'edit')" ng-show="!file.edit"><i class="fa fa-trash-o"></i></a>
           <!--<a ui-sref="bots.graph-dialog({botId: file.bot._id, fileId: file._id})" ng-show="!file.edit">Dialog Graph</a>-->
         </td>
       </tr>

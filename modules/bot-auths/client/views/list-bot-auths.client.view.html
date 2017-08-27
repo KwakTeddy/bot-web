@@ -1,11 +1,12 @@
-<header class="page-header">
-  <h2>챗봇 권한 관리</h2>
-  <div class="right-wrapper pull-right">
-    <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-down"></i></a>
-  </div>
-</header>
+<!--<header class="page-header">-->
+  <!--<h2>챗봇 권한 관리</h2>-->
+  <!--<div class="right-wrapper pull-right">-->
+    <!--<a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-down"></i></a>-->
+  <!--</div>-->
+<!--</header>-->
 
 <section class="panel">
+
   <div class="panel-body">
     <table id="dt" datatable="ng" dt-options="vm.dtOptions" class="table table-bordered table-hover mb-none">
       <thead>
@@ -17,16 +18,16 @@
       </tr>
       </thead>
       <tbody>
-      <tr ng-repeat="authUser in vm.botAuths">
+      <tr ng-repeat="authUser in vm.botAuths track by $index">
         <td class="text-center">{{authUser._id.user.email}}</td>
         <td class="text-center">{{authUser._id.user.displayName}}</td>
         <td class="text-center">
-          <span data-ng-repeat="subject in authUser.subjectSchema">
+          <span data-ng-repeat="subject in authUser.subjectSchema | orderBy: '-1'">
            {{subject}}
           </span>
         </td>
         <td>
-          <a class="btn btn-default btn-block" data-ui-sref="bot-auths.edit({botId: botId, userId: authUser._id.user._id})">상세
+          <a class="btn btn-default btn-block" data-ui-sref="bot-auths.edit({botId: botId, userId: authUser._id.user._id, email: authUser._id.user.email})">상세
           </a>
         </td>
       </tr>

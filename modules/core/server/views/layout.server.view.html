@@ -148,6 +148,15 @@
                 <!--</a>-->
               <!--</li>-->
 
+              <!--<li class="nav-parent" data-ng-repeat="menu in menuList track by $index">-->
+                <!--<a>-->
+                  <!--<i class="fa fa-cub" aria-hidden="true"></i>-->
+                  <!--<span data-ng-bind="menu.title"></span>-->
+                <!--</a>-->
+                <!--<ul class="nav nav-children" id="contentsManagement">-->
+                <!--</ul>-->
+              <!--</li>-->
+
               <li class="nav-parent">
                 <a>
                   <i class="fa fa-cube" aria-hidden="true"></i>
@@ -170,6 +179,12 @@
                     <a ui-sref="bots.dialog-graph2({botId: $cookies.get('default_bot'), fileId: 'null'})">
                       <i class="fa fa-cube" aria-hidden="true"></i>
                       <span>대화 시나리오2</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a ui-sref="bots.files({botId: $cookies.get('default_bot')})">
+                      <i class="fa fa-cube" aria-hidden="true"></i>
+                      <span>추가 시나리오</span>
                     </a>
                   </li>
                   <li>

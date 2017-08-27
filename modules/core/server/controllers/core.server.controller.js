@@ -36,7 +36,7 @@ exports.renderIndex = function (req, res) {
   } else if(path[1] == 'developer' || path[1] == 'admin') {
     req.session._platform = "web";
     res.render('modules/core/server/views/index', {
-      user: req.user || null
+      user: req.user || null,
     });
   } else if(process.env.ENTERPRISE){
     res.redirect('/developer')

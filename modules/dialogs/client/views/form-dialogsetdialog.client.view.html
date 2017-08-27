@@ -29,8 +29,7 @@
       <!--<h4>설명 : {{vm.dialogset.content}}</h4>-->
     <!--</div>-->
 
-    <div class="panel-body">
-
+    <fieldset class="panel-body" ng-disabled="!vm.checkAuth('Dialogset', vm.dialogset._id, 'edit')">
       <div style="margin-bottom: 20px">
         <span style="width: 44%;float: left;margin-right: 5px;">
           &nbsp
@@ -143,7 +142,7 @@
         <!--</div>-->
       <!--</div>-->
 
-    </div>
+    </fieldset>
 
 </section>
 

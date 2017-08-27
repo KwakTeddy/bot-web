@@ -69,6 +69,8 @@ exports.create = function(req, res) {
  * Show the current Custom action
  */
 exports.read = function(req, res) {
+  console.log(util.inspect(req.dialogset))
+  console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@")
   // convert mongoose document to JSON
   var dialogset = req.dialogset ? req.dialogset.toJSON() : {};
 
@@ -259,7 +261,6 @@ exports.list = function(req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      // console.log(dialogsets);
       res.jsonp(dialogsets);
     }
   });
@@ -275,7 +276,6 @@ exports.dialogsetByID = function(req, res, next, id) {
       message: 'Custom action is invalid'
     });
   }
-
   Dialogset.findById(id).populate('user', 'displayName').exec(function (err, dialogset) {
     if (err) {
       return next(err);

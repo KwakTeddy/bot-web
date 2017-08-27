@@ -138,7 +138,7 @@
           vm.dialogset['type'] = 'oneByOne';
           console.log(vm.dialogset);
           vm.dialogset.$save(function (result) {
-            DialogsetsService.query().$promise.then(function (result) {
+            DialogsetsService.query({bId: $cookies.get("botObjectId")}).$promise.then(function (result) {
               vm.dialogsets = result;
               vm.createModalInstance.dismiss();
             }, function (err) {
@@ -378,6 +378,24 @@
       // $scope.imageURL = $scope.user.profileImageURL;
     };
 
+    vm.checkAuth = function (subjectSchema, target, kind, noti) {
+      var result = false;
+      if(vm.authentication.user._id == vm.bot.user._id) return true;
+
+      if(kind == "edit"){
+        if(vm.auth[subjectSchema] && vm.auth[subjectSchema][target] && vm.auth[subjectSchema][target][kind]){
+          return true;
+        }else{
+          if(noti) alert("수정 권한이 없습니다");
+          else return false
+        }
+      }else{
+        if(vm.auth[subjectSchema] && vm.auth[subjectSchema][target]){
+          return true;
+        }
+      }
+      return result;
+    };
 
     vm.dtOptions = DTOptionsBuilder.newOptions()
       .withOption('bLengthChange', false)
@@ -385,7 +403,7 @@
       .withOption('dom', 'l<"toolbar">frtip')
       .withOption('initComplete', function(settings, json) {
         $('#dt_filter > label > input[type="search"]').addClass('form-control').attr('placeholder', 'Search');
-        $("div.toolbar").html('<button id="addToTable" class="btn btn-primary" ng-click="vm.openCreateModal()"><i class="fa fa-plus"></i> 신규등록</button>');
+        $("div.toolbar").html('<button id="addToTable" class="btn btn-primary" ng-click="vm.openCreateModal()" ng-if="vm.authentication.user._id == vm.bot.user._id"><i class="fa fa-plus"></i> 신규등록</button>');
         $compile(angular.element(document.querySelector('div.toolbar')).contents())($scope);
       })
 

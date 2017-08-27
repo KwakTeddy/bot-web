@@ -79,6 +79,7 @@
         controller: 'DialogsetDialogsController',
         controllerAs: 'vm',
         resolve: {
+          botResolve : getBot,
           dialogsetResolve: getDialogset,
           dialogsetDialogResolve: getDialogsetDialogs
         },

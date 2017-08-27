@@ -1,39 +1,41 @@
-<header class="page-header">
-    <h2>챗봇 권한 관리</h2>
-    <div class="right-wrapper pull-right">
-        <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-down"></i></a>
-    </div>
-</header>
+<!--<header class="page-header">-->
+    <!--<h2>챗봇 권한 관리</h2>-->
+    <!--<div class="right-wrapper pull-right">-->
+        <!--<a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-down"></i></a>-->
+    <!--</div>-->
+<!--</header>-->
 
 
-<section class="panel">
+<section class="panel" data-ng-init="init()">
     <form name="authForm" class="form-horizontal form-bordered" novalidate="novalidate">
         <div class="panel-body">
             <div class="form-group" show-errors>
                 <div class="row">
                     <label class="col-sm-2 control-label">사용자 <span class="required" aria-required="true">*</span></label>
                     <div class="col-sm-9">
-                        <input type="text" name="email" ng-model="email" class="form-control valid"
+                        <input type="text" name="email" ng-model="authUser.email" class="form-control valid"
                                placeholder="이메일을 입력해주세요"
                                ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/"
-                               required=""
+                               required
+                               ng-disabled="authUser._id"
+                               ng-change="inputEmailChange()"
                                aria-required="true" aria-invalid="false">
                     </div>
                 </div>
-                <div ng-show="vm.error" class="text-danger text-center row">
+                <div class="text-danger text-center">
                     <p class="help-block" ng-show="(authForm.email.$error.email || authForm.email.$error.pattern) && submitted">
                         E-mail 주소가 아닌 것 같아요
                     </p>
                     <p class="help-block" ng-show="authForm.email.$error.required && submitted">
                         E-mail을 입력하세요
                     </p>
-                    <p class="help-block" ng-show="error.email">
-                        {{ error.email }}
+                    <p class="help-block" ng-show="error">
+                        {{ error}}
                     </p>
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" data-ng-if="menuList.length">
                 <div class="row">
                     <label class="col-sm-2 control-label">메뉴 권한<span class="required" aria-required="true">*</span></label>
                     <div class="col-sm-9">
@@ -42,7 +44,7 @@
                             <tr>
                                 <th class="text-center">내용</th>
                                 <th class="text-center">보기 권한</th>
-                                <th class="text-center">수정 권한</th>
+                                <th class="text-center">보기/수정 권한</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -51,10 +53,10 @@
                                     {{menu.title}}
                                 </td>
                                 <td class="text-center">
-                                    <input type="checkbox" data-ng-model="menu.view">
+                                    <input type="checkbox" data-ng-model="menu.view" ng-change="viewSelect(menu)">
                                 </td>
                                 <td class="text-center">
-                                    <input type="checkbox" data-ng-model="menu.edit">
+                                    <input type="checkbox" ng-model="menu.edit" ng-change="editSelect(menu)">
                                 </td>
                             </tr>
                             </tbody>
@@ -68,7 +70,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" data-ng-if="botFiles.length">
                 <div class="row">
                     <label class="col-sm-2 control-label">봇파일 권한<span class="required" aria-required="true">*</span></label>
                     <div class="col-sm-9">
@@ -77,7 +79,7 @@
                             <tr>
                                 <th class="text-center">내용</th>
                                 <th class="text-center">보기 권한</th>
-                                <th class="text-center">수정 권한</th>
+                                <th class="text-center">보기/수정 권한</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -86,10 +88,10 @@
                                     {{botFile.name}}
                                 </td>
                                 <td class="text-center">
-                                    <input type="checkbox" data-ng-model="botFile.view">
+                                    <input type="checkbox" data-ng-model="botFile.view" ng-change="viewSelect(botFile)">
                                 </td>
                                 <td class="text-center">
-                                    <input type="checkbox" data-ng-model="botFile.edit">
+                                    <input type="checkbox" data-ng-model="botFile.edit" ng-change="editSelect(botFile)">
                                 </td>
                             </tr>
                             </tbody>
@@ -103,7 +105,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" data-ng-if="botDialogsets.length">
                 <div class="row">
                     <label class="col-sm-2 control-label">대화파일 권한<span class="required" aria-required="true">*</span></label>
                     <div class="col-sm-9">
@@ -121,41 +123,40 @@
                                     {{dialogset.title}}
                                 </td>
                                 <td class="text-center">
-                                    <input type="checkbox" data-ng-model="dialogset.view">
+                                    <input type="checkbox" data-ng-model="dialogset.view" ng-change="viewSelect(dialogset)">
                                 </td>
                                 <td class="text-center">
-                                    <input type="checkbox" data-ng-model="dialogset.edit">
+                                    <input type="checkbox" data-ng-model="dialogset.edit" ng-change="editSelect(dialogset)">
                                 </td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <div>
-                    <div ng-show="vm.contentListError" class="text-danger text-center">
-                        <strong ng-bind="vm.contentListError"></strong>
-                    </div>
-                </div>
             </div>
+        </div>
+
+        <div>
+
         </div>
 
 
         <footer class="panel-footer">
             <div class="row">
-                <div class="col-sm-12 text-center">
+                <div class="col-sm-12 text-center" data-ng-hide="authUser._id">
                     <a class="btn btn-primary" ng-click="save(authForm.$valid)">
                         <i class="glyphicon glyphicon-edit"></i> 권한주기
                     </a>
                     <button type="button" class="btn btn-danger" ui-sref="bot-auths.list">취소</button>
                 </div>
-                <div class="col-sm-12 text-center" ng-show="vm.entity && vm.entity._id">
-                    <div class="col-sm-2">
-                    </div>
-                    <div class="col-sm-9">
-                        <a class="btn btn-danger pull-left btn-sm" ng-click="vm.remove()">
-                            <i class="glyphicon glyphicon-trash"></i> 삭제
-                        </a>
-                    </div>
+                <div class="col-sm-12 text-center" data-ng-show="authUser._id">
+                    <a class="btn btn-default" ng-click="update(authUser)">
+                        수정
+                    </a>
+                    <a class="btn btn-danger btn-sm pull-left" ng-click="remove(authUser)">
+                        <i class="glyphicon glyphicon-trash"></i> 삭제
+                    </a>
+                    <button type="button" class="btn btn-default" ui-sref="bot-auths.list">취소</button>
                 </div>
             </div>
         </footer>

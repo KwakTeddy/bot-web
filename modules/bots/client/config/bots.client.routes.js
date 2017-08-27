@@ -106,6 +106,7 @@ angular.module('bots').config(['$stateProvider',
         controller: 'DialogGraphController',
         controllerAs: 'vm',
         resolve: {
+          botResolve: getBot,
           botFilesResolve: getBotFiles,
           fileResolve: readBotFile
         }
@@ -128,10 +129,10 @@ function getBots(BotsService, Authentication) {
   return BotsService.query({my: 1, developer: true, role: Authentication.user.roles}).$promise;
 }
 
-getBot.$inject = ['BotsService', '$stateParams'];
-function getBot(BotsService, $stateParams) {
+getBot.$inject = ['BotsService', '$stateParams', '$cookies'];
+function getBot(BotsService, $stateParams, $cookies) {
   return BotsService.get({
-    botId: $stateParams.botId
+    botId: $stateParams.botId || $cookies.get("botObjectId")
   }).$promise;
 }
 

@@ -505,7 +505,7 @@
           </div>
           <div class="col-sm-6">
             <form>
-              <button class="mt-xs mr-xs btn btn-default pull-right" ng-disabled="!vm.isChanged" ng-click="save()"><i
+              <button class="mt-xs mr-xs btn btn-default pull-right" ng-disabled = "!vm.checkAuth('BotFile',vm.currentTab.file_id, 'edit') || !vm.isChanged" ng-click="save()"><i
                 class="fa fa-save"></i></button>
               <button class="mt-xs mr-xs btn btn-default pull-right" ng-disabled="vm.changeHistory.length == 0"
                       ng-click="undo()"><i class="fa fa-undo"></i></button>
@@ -651,7 +651,7 @@
   <div id="rightPanel">
 
     <!-- Modal Form for dialog -->
-    <div id="modalForm" class="panel-modal col-md-1 pull-right">
+    <fieldset id="modalForm" class="panel-modal col-md-1 pull-right" ng-disabled = "!vm.checkAuth('BotFile',vm.currentTab.file_id, 'edit')">
       <form id="dialogFormId" name="dialogForm" class="panel-form form-horizontal" novalidate="novalidate">
       <header class="panel-heading">
         <h2 class="panel-title">Dialog 수정</h2>
@@ -902,7 +902,7 @@
                              allow-clear
                              theme="bootstrap"
                              autofocus="true"
-                             ng-disabled="vm.tasks.length == 0"
+                             ng-disabled="!vm.checkAuth('BotFile',vm.currentTab.file_id, 'edit') || (vm.tasks.length == 0)"
                              reset-search-input="true"
                              title="Task를 선택하세요">
                     <ui-select-match placeholder="Task 이름을 입력해주세요" id="taskNameInput">{{$select.selected.name}}</ui-select-match>
@@ -944,7 +944,7 @@
                   <ul class="nav nav-tabs" style=" display: inline-block; margin-top: 10px">
                     <li role="presentation"
                         ng-repeat="kind in vm.outputKind track by $index"
-                        ng-click="vm.changeOutputKind(output,kind)"
+                        ng-click="!vm.checkAuth('BotFile',vm.currentTab.file_id, 'edit') || vm.changeOutputKind(output,kind)"
                         ng-class="{active: vm.getOutputKind(output) === kind.name}">
                       <a href="#" tabindex="-1"><span>{{kind.name}}</span></a>
                     </li>
@@ -1164,7 +1164,7 @@
           </div>
         </footer>
       </form>
-    </div>
+    </fieldset>
 
 
     <!-- Modal Form for task detail -->

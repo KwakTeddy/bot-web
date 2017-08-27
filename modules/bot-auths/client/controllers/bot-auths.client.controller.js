@@ -1,112 +1,164 @@
 "user strict";
-angular.module("bots").controller("BotAuthsController", ["$scope", "$timeout", "$http", "$cookies", "$state", "$stateParams",
-  function ($scope, $timeout, $http, $cookies, $state, $stateParams) {
-  // $timeout(function () {
-  //   document.getElementById('sidebar-left').style.display = 'none';
-  //   document.getElementById('chat-include').style.display = 'none';
-  //   document.getElementById('log-button').style.display = 'none';
-  //   document.getElementById('intent-button').style.display = 'none';
-  //   document.getElementById('main').classList.remove('content-body');
-  // });
-  $http.get("/api/bots/files/" + $cookies.get("botObjectId")).then(function (doc) {
-    $scope.botFiles = doc.data
-  }, function (err) {
-    console.log(err)
+angular.module("bots").controller("BotAuthsController", ["$scope", "$timeout", "$http", "$cookies", "$state", "$stateParams", "$window",
+  function ($scope, $timeout, $http, $cookies, $state, $stateParams, $window) {
+  $timeout(function () {
+    document.getElementById('sidebar-left').style.display = 'none';
+    document.getElementById('chat-include').style.display = 'none';
+    document.getElementById('log-button').style.display = 'none';
+    document.getElementById('intent-button').style.display = 'none';
+    document.getElementById('main').classList.remove('content-body');
   });
+  var vm = this;
+  $scope.authData = [];
+  $scope.authUser = {email: ""};
 
-  $http.get("/api/dialogsets/" + $cookies.get("botObjectId")).then(function (doc) {
-    console.log(doc);
-    $scope.botDialogsets = doc.data;
-  }, function (err) {
-    console.log(err)
-  });
+  var getBotFiles = function () {
+    $http.get("/api/bots/files/" + $cookies.get('authManageId')).then(function (doc) {
+      $scope.botFiles = doc.data
+    }, function (err) {
+      console.log(err)
+    });
+  };
 
-  $http.get("/api/menu-navigations").then(function (doc) {
-    console.log(doc);
-    $scope.menuList = doc.data;
-  }, function (err) {
-    console.log(err)
-  });
-  $scope.save = function () {
-    $scope.authData = [];
+  var getDialogsets = function () {
+    $http.get("/api/dialogsets", {params: {bId : $cookies.get("authManageId")}}).then(function (doc) {
+      $scope.botDialogsets = doc.data;
+    }, function (err) {
+      console.log(err)
+    });
+  };
+
+  var getMenus = function () {
+    $http.get("/api/menu-navigations").then(function (doc) {
+      $scope.menuList = doc.data;
+    }, function (err) {
+      console.log(err)
+    });
+  };
+
+  var processAuthData = function () {
+    var authData = [];
     $scope.menuList.forEach(function (doc) {
-      if(doc.view) {
         var data = {
           subjectSchema: "MenuNavigation",
           subject: doc._id,
-          bot: $cookies.get("botObjectId"),
-          edit: doc.edit
+          bot: $cookies.get("authManageId"),
+          edit: doc.edit,
+          view: doc.view
         };
-        $scope.authData.push(data);
-      }
+        authData.push(data);
     });
 
     $scope.botFiles.forEach(function (doc) {
-      if(doc.view) {
         var data = {
           subjectSchema: "BotFile",
           subject: doc._id,
-          bot: $cookies.get("botObjectId"),
-          edit: doc.edit
+          bot: $cookies.get("authManageId"),
+          edit: doc.edit,
+          view: doc.view
         };
-        $scope.authData.push(data);
-      }
+        authData.push(data);
     });
     $scope.botDialogsets.forEach(function (doc) {
-      if(doc.view) {
         var data = {
           subjectSchema: "Dialogset",
           subject: doc._id,
-          bot: $cookies.get("botObjectId"),
-          edit: doc.edit
+          bot: $cookies.get("authManageId"),
+          edit: doc.edit,
+          view: doc.view
         };
-        $scope.authData.push(data);
-      }
+        authData.push(data);
     });
-    console.log($scope.authData)
-    console.log($scope.email)
+    return authData;
+  };
 
-    $http.post("/api/bot-auths", {authData: $scope.authData, email: $scope.email}).then(function (doc) {
-      console.log(doc);
+  var getAuth = function () {
+      $http.post("/api/bot-auths/getAuth", {bId: $cookies.get("authManageId"), user: $stateParams.userId}).then(function (doc) {
+        if(doc.data.length) $scope.authUser = doc.data[0].user;
+        doc.data.forEach(function (_doc) {
+          $scope.menuList.forEach(function (menu) {
+            if(_doc.subject && _doc.subject.title == menu.title) {
+              menu.view = true;
+              menu.edit = _doc.edit
+            }
+          });
+
+          $scope.botFiles.forEach(function (botFile) {
+            if(_doc.subject && _doc.subject.name == botFile.name) {
+              botFile.view = true;
+              botFile.edit = _doc.edit
+            }
+          });
+
+          $scope.botDialogsets.forEach(function (dialogset) {
+            if(_doc.subject && _doc.subject.title == dialogset.title) {
+              dialogset.view = true;
+              dialogset.edit = _doc.edit
+            }
+          });
+        })
+      }, function (err) {
+        console.log(err);
+      });
+    };
+
+  $scope.init = function () {
+    getBotFiles();
+    getDialogsets();
+    getMenus();
+    getAuth();
+  };
+
+  $scope.save = function (isValid) {
+    $scope.submitted = true;
+    if (!isValid){
+      vm.error = null;
+      $scope.$broadcast('show-errors-check-validity', 'authForm');
+      return false;
+    }
+    var authData= processAuthData();
+
+    var allow = false;
+    authData.forEach(function (doc) {
+      if(doc.view) allow = true
+    });
+    if(!allow){
+      $scope.error = "적어도 하나의 권한을 선택하세요";
+      return false;
+    }
+
+    $http.post("/api/bot-auths", {authData: authData, email: $scope.authUser.email}).then(function (doc) {
       $state.go("bot-auths.list")
+    }, function (err) {
+      $scope.error = err.data.message;
+      console.log(err);
+    })
+  };
+  $scope.update = function (user) {
+    var authData= processAuthData();
+    $http.put("/api/bot-auths/" + $cookies.get("authManageId") + "/" + user._id, {authData: authData}).then(function (doc) {
+      $state.go("bot-auths.list");
     }, function (err) {
       console.log(err);
     })
   };
+  $scope.remove = function (user) {
+    if($window.confirm("정말 삭제하시겠습니까?")){
+      $http.delete("/api/bot-auths/" + $cookies.get("authManageId") + "/" + user._id).then(function (doc) {
+        $state.go("bot-auths.list");
+      }, function (err) {
+        console.log(err);
+      })
+    }
+  };
 
-  $http.post("/api/bot-auths/getAuth", {bId: $cookies.get("botObjectId"), user: $stateParams.userId}).then(function (doc) {
-    console.log(doc)
-    doc.data.forEach(function (_doc) {
-      $scope.menuList.forEach(function (menu) {
-        if(_doc.subject.title == menu.title) {
-          menu.view = true;
-          menu.edit = _doc.edit
-        }
-
-      });
-
-      $scope.botFiles.forEach(function (botFile) {
-        if(_doc.subject.title == botFile.title) {
-          botFile.view = true;
-          botFile.edit = _doc.edit
-        }
-
-      });
-
-      $scope.botDialogsets.forEach(function (dialogset) {
-        if(_doc.subject.title == dialogset.title) {
-          dialogset.view = true;
-          dialogset.edit = _doc.edit
-        }
-
-      });
-    })
-
-
-  }, function (err) {
-    console.log(err);
-  });
-  console.log($cookies.get("botObjectId"))
-
-
+  $scope.editSelect = function (target) {
+    if(!target.view) target.view = true;
+  };
+  $scope.viewSelect = function (target) {
+    if(target.edit) target.edit = false;
+  };
+  $scope.inputEmailChange = function () {
+    if($scope.error) $scope.error = null;
+  }
 }]);

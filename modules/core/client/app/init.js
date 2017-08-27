@@ -161,18 +161,19 @@ if (_platform == "mobile") {
 
 
 } else {
-  angular.module(ApplicationConfiguration.applicationModuleName).run(function ($rootScope, $state, Authentication, BotsService, $cookies) {
-    appRun($rootScope, $state, Authentication, BotsService, $cookies);
+  angular.module(ApplicationConfiguration.applicationModuleName).run(function ($rootScope, $state, Authentication, $cookies) {
+    appRun($rootScope, $state, Authentication, $cookies);
   });
 }
 
 
-function appRun($rootScope, $state, Authentication, BotsService, $cookies) {
+function appRun($rootScope, $state, Authentication, $cookies) {
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
     // if (($cookies.get("login")) && (toState.name == "authentication.signin" || toState.name == "authentication.signup" || toState.name == "authentication.signin" || toState.name == "password.forgot")){
     //   return $state.go('developer-home');
     // }
-
+    $rootScope.previousState = fromState.name;
+    $rootScope.currentState = toState.name;
     if (toState.data && toState.data.roles && toState.data.roles.length > 0) {
 
       var allowed = false;

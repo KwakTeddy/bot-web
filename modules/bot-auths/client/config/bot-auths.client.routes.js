@@ -18,10 +18,7 @@
         url: '',
         templateUrl: 'modules/bot-auths/client/views/list-bot-auths.client.view.html',
         controller: 'BotAuthsListController',
-        controllerAs: 'vm',
-        data: {
-          pageTitle: 'Bot auths List'
-        }
+        controllerAs: 'vm'
       })
       .state('bot-auths.create', {
         url: '/create',

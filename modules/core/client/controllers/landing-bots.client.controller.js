@@ -11,6 +11,7 @@ angular.module('core').controller('LandingBotsController', ['$scope', '$state', 
     document.getElementById('intent-button').style.display = 'none';
     document.getElementById('main').classList.remove('content-body');
   });
+  console.log($cookies.getAll());
   $scope.myBot = '';
   $scope.copyTargetBot = {};
   $scope.deleteInput = '';
@@ -201,25 +202,31 @@ angular.module('core').controller('LandingBotsController', ['$scope', '$state', 
     });
   };
 
+  var putAuthCookies = function (doc) {
+    var auth = {};
+    doc.forEach(function (_doc) {
+      if(!auth[_doc.subjectSchema]) auth[_doc.subjectSchema] = {};
+      if(_doc.subject && _doc.subject._id) auth[_doc.subjectSchema][_doc.subject._id] = {view: true, edit : _doc.edit};
+
+      // if(_doc.subject && _doc.subject.title) {
+      //   auth[_doc.subjectSchema][_doc.subject.title] = {view: true, edit : _doc.edit};
+      // }
+      // if(_doc.subject && _doc.subject.name) {
+      //   auth[_doc.subjectSchema][_doc.subject.name] = {view: true, edit: _doc.edit};
+      // }
+    });
+    $cookies.putObject("auth", auth);
+  };
+
   $scope.selectSharedBot = function (bot) {
     $http.post("/api/bot-auths/getAuth", {bId: bot._id}).then(function (doc) {
-      console.log(doc.data)
-        var auth = {};
-        doc.data.forEach(function (_doc) {
-          if(!auth[_doc.subjectSchema]) auth[_doc.subjectSchema] = {};
-          if(_doc.subject.title) {
-            auth[_doc.subjectSchema][_doc.subject.title] = {view: true, edit : _doc.edit};
-          }
-          if(_doc.subject.name) {
-            auth[_doc.subjectSchema][_doc.subject.name] = {view: true, edit: _doc.edit};
-          }
-        });
-      $cookies.putObject("auth", auth);
+      putAuthCookies(doc.data);
       $scope.selectBot(bot);
     }, function (err) {
       console.log(err);
     });
   };
+
 
   $scope.deleteBot = function (bot) {
     if (bot && bot._id) {
@@ -312,6 +319,10 @@ angular.module('core').controller('LandingBotsController', ['$scope', '$state', 
     $scope.cancelImageUpload = function () {
       $scope.imageUploader.clearQueue();
       // $scope.imageURL = $scope.user.profileImageURL;
+    };
+
+    $scope.putCookies =function (bot) {
+      $cookies.put("authManageId", bot._id)
     };
 
 }
