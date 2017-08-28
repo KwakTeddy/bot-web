@@ -243,14 +243,62 @@ exports.botUserByUserKey = function (req, res, next, userKey) {
 };
 
 
+var botUserCache = [];
+var botUserCacheLock = false;
+var MAX_CACHE_DIALOG = 10000;
+var LIMIT_CACHE_DIALOG = 1000000;
+var BOTUSER_CACHE_INTERVAL = 60;
+
+function updateCacheBotUser() {
+  if(botUserCacheLock) return;
+  botUserCacheLock = true;
+
+  try {
+    BotUser.collection.insert(botUserCache, function(err, docs) {
+      botUserCacheLock = false;
+
+      if(docs && docs.insertedCount) {
+        botUserCache.splice(0, docs.insertedCount);
+        console.log('botUsers: ' + docs.insertedCount + ' inserted')
+      }
+    });
+  } catch(e) {
+    botUserCacheLock = false;
+  }
+}
+
+// insert userdialog cache every minute
+setInterval(function() {
+  console.log('processing botuser cache check: ' + (new Date()));
+
+  if (!botUserCacheLock && botUserCache.length > 0) {
+    console.log('processing botuser cache: ' + botUserCache.length);
+
+    updateCacheBotUser();
+  }
+}, BOTUSER_CACHE_INTERVAL*1000);
+
 function getUserContext(task, context, callback) {
   var botExist;
   BotUser.findOne({userKey: task.userId}, function(err, doc) {
     if(doc == undefined) {
-      BotUser.create({userKey: task.userId, channel: task.channel, creaated: Date.now(), botId: task.bot}, function(err, _doc) {
-        task.doc = _doc;
+      if(false) {
+        BotUser.create({userKey: task.userId, channel: task.channel, creaated: Date.now(), botId: task.bot}, function(err, _doc) {
+          task.doc = _doc;
+          callback(task, context);
+        });
+      } else {
+        if(botUserCache.length < LIMIT_CACHE_DIALOG) {
+          botUserCache.push({userKey: task.userId, channel: task.channel, created: new Date()});
+        }
+
+        if(!botUserCacheLock &&
+          botUserCache.length >= MAX_CACHE_DIALOG) {
+          updateCacheBotUser();
+        }
+
         callback(task, context);
-      });
+      }
     } else {
       doc.botId.forEach(function (botId) {
         if(botId == task.bot) botExist = true

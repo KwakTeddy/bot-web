@@ -77,13 +77,13 @@ function respondMessage(res, text, json) {
     }
   };
 
-  if(json && json.photoUrl) {
-    sendMsg.message.photo = {
-      "url": json.photoUrl,
-      "width": json.photoWidth || 640,
-      "height":json.photoHeight || 480
-    }
-  }
+  // if(json && json.photoUrl) {
+  //   sendMsg.message.photo = {
+  //     "url": json.photoUrl,
+  //     "width": json.photoWidth || 640,
+  //     "height":json.photoHeight || 480
+  //   }
+  // }
 
   if(json && json.result && json.result.image) {
     sendMsg.message.photo = {

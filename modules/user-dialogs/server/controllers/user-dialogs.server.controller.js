@@ -220,6 +220,14 @@ exports.liveChat = function (req, res) {
 
 
 
+var redis = require('redis');
+var dialogCache = [];
+var dialoglogCache = [];
+var dialogCacheLock = false;
+var MAX_CACHE_DIALOG = 10000;
+var LIMIT_CACHE_DIALOG = 1000000;
+var DIALOG_CACHE_INTERVAL = 60;
+
 /**
  * List of Bot users
  */
@@ -267,7 +275,8 @@ function addDialog(inText, outText, isFail, dialog, context, callback) {
     dialogId: dialogId,
     dialogName: dialogName,
     preDialogId: preDialogId,
-    preDialogName: preDialogName
+    preDialogName: preDialogName,
+    created: new Date()
   };
 
   var outQuery = {
@@ -280,37 +289,114 @@ function addDialog(inText, outText, isFail, dialog, context, callback) {
     dialogId: dialogId,
     dialogName: dialogName,
     preDialogId: preDialogId,
-    preDialogName: preDialogName
+    preDialogName: preDialogName,
+    created: new Date()
   };
   if(context.user.liveChat >= 1){
     inQuery['liveChat'] = true;
     outQuery = {};
   }
 
-  UserDialog.create([inQuery, outQuery], function(err) {
-    if(err) {}
-    else {}
+  if (false) {
+    UserDialog.create([inQuery, outQuery], function (err) {
+      if (err) {
+      }
+      else {
+      }
+
+      var query = {
+        botId: context.bot.botName,
+        userId: context.user.userKey,
+        channel: context.channel.name,
+        year: (new Date()).getYear() + 1900,
+        month: (new Date()).getMonth() + 1,
+        date: (new Date()).getDate()
+      };
+
+      UserDialogLog.update(query, query, {upsert: true}, function (err) {
+        if (err) {
+        }
+        else {
+        }
+
+        callback();
+      });
+
+    });
+  } else {
+    if(dialogCache.length < LIMIT_CACHE_DIALOG) {
+      dialogCache.push(inQuery);
+      dialogCache.push(outQuery);
+    }
 
     var query = {
       botId: context.bot.botName,
-      userId : context.user.userKey,
+      userId: context.user.userKey,
       channel: context.channel.name,
       year: (new Date()).getYear() + 1900,
       month: (new Date()).getMonth() + 1,
       date: (new Date()).getDate()
     };
 
-    UserDialogLog.update(query, query, {upsert: true}, function(err) {
-      if(err) {}
-      else {}
+    if(dialoglogCache.length < LIMIT_CACHE_DIALOG) {
+      dialoglogCache.push(query);
+    }
 
-      callback();
-    });
+    if(!dialogCacheLock &&
+      (dialogCache.length >= MAX_CACHE_DIALOG || dialoglogCache.length >= MAX_CACHE_DIALOG)) {
+      updateCacheLog();
+    }
 
-    // callback();
-  });
+    callback();
+
+  }
 }
+
 exports.addDialog = addDialog;
+
+function updateCacheLog() {
+  if(dialogCacheLock) return;
+
+  dialogCacheLock = true;
+
+  try {
+    UserDialog.collection.insert(dialogCache, function(err, docs) {
+
+      if(docs && docs.insertedCount) {
+        dialogCache.splice(0, docs.insertedCount);
+        console.log('userdialogs: ' + docs.insertedCount + ' inserted')
+      }
+
+      var bulk = UserDialogLog.collection.initializeOrderedBulkOp();
+      for(var i = 0; i < dialoglogCache.length; i++) {
+        bulk.find(dialoglogCache[i]).upsert().updateOne(dialoglogCache[i]);
+      }
+      bulk.execute(function(err, data) {
+        dialogCacheLock = false;
+
+        if(!err) {
+          dialoglogCache.splice(0, data.nMatched);
+          console.log('userdialoglogs: ' + data.nMatched + ' updated')
+        }
+
+      })
+
+    });
+  } catch(e) {
+    dialogCacheLock = false;
+  }
+}
+
+// insert userdialog cache every minute
+setInterval(function() {
+  console.log('processing userdialogs cache check: ' + (new Date()));
+
+  if (!dialogCacheLock && dialogCache.length > 0) {
+    console.log('processing userdialogs cache: ' + dialogCache.length);
+
+    updateCacheLog();
+  }
+}, DIALOG_CACHE_INTERVAL*1000);
 
 exports.update = function (req, res) {
   UserDialog.update({preDialogId : req.body._id.preDialogId, dialog : req.body._id.dialog, fail: true, inOut: true}, {clear: true}, {multi: true}, function (err, result) {

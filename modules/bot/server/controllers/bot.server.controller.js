@@ -23,6 +23,9 @@ var chatSocketConfig = {port: 1024, host: 'localhost', allowHalfOpen: true};
 var mongoose = require('mongoose'),
   BotUser = mongoose.model('BotUser');
 
+var redis = require('redis');
+var cache = redis.createClient(6379,'127.0.0.1');
+
 exports.write = write;
 function write(channel, from, to, text, json, successCallback, errorCallback, endCallback) {
   botProc(to, channel, from, text, json, successCallback, chatSocketConfig);
@@ -56,15 +59,20 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
 
   var startTime = new Date();
   var print = function(_out, _task) {
+    // var botUserStr = JSON.stringify(context.botUser, utils.censor(context.botUser));
+    // cache.set(context.botUser.botUserName, botUserStr, function(err, data) {
+    //   cb(null);
+    // });
+
     var endTime = new Date();
     logger.debug("사용자 출력 (" + (endTime-startTime) + 'ms)>> ' + _out + "\n");
 
     // toneModule.toneSentence(_out, context.botUser.tone || '해요체', function(out) {
     //   _out = out;
 
-      if(_task && _task.photoUrl && !_task.photoUrl.startsWith('http')) {
-        _task.photoUrl = (process.env.HTTP_HOST ? process.env.HTTP_HOST : '') + _task.photoUrl;
-      }
+    // if(_task && _task.photoUrl && !_task.photoUrl.startsWith('http')) {
+    //   _task.photoUrl = (process.env.HTTP_HOST ? process.env.HTTP_HOST : '') + _task.photoUrl;
+    // }
 
     if(_task && context && context.bot && context.bot.commonButtons &&
       context.botUser && context.botUser._currentDialog &&
@@ -188,6 +196,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
             else cb(null);
 
           })
+
         }
       } else {
         cb(null);

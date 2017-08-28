@@ -441,7 +441,7 @@ exports.delete = function (req, res) {
  * List of UserBots
  */
 exports.list = function (req, res) {
-    console.log(util.inspect(req.query))
+    // console.log(util.inspect(req.query))
     var sort = req.query.sort || '-created';
     var perPage = req.body.perPage || 10;
     if(req.query.developer){
@@ -460,7 +460,7 @@ exports.list = function (req, res) {
         query['user'] =  req.user._id;
     }
     if(req.body.query) query['name'] = new RegExp(req.body.query, 'i');
-    console.log(util.inspect(query));
+    // console.log(util.inspect(query));
     if(req.query.role && (req.query.role == 'admin')){
       query = {};
     }
@@ -492,7 +492,7 @@ exports.followList = function (req, res) {
   search['public'] = true;
   var populateQuery = [];
 
-  console.log(util.inspect(query));
+  // console.log(util.inspect(query));
 
   // BotFollow.find(query).populate({path: 'bot', match: {public: 'true'}}).sort('-created').exec(function (err, follows) {
   BotFollow.find(query).populate('bot', null, search).sort('-created').skip(req.body.currentPage * perPage).limit(perPage).exec(function (err, follows) {
@@ -706,7 +706,7 @@ exports.nluProcess = function(req, res) {
  * Bot middleware
  */
 exports.botByID = function (req, res, next, id) {
-  console.log(id);
+  // console.log(id);
   // if (!mongoose.Types.ObjectId.isValid(id)) {
   //   return res.status(400).send({
   //     message: 'Bot is invalid'
@@ -869,14 +869,13 @@ exports.botByNameID = function (req, res, next, id) {
 };
 
 exports.fileByID = function (req, res, next, id) {
-  console.log(util.inspect(req.bot));
-  console.log('************')
+  // console.log(util.inspect(req.bot));
   async.waterfall([
     function(cb) {
       if (id == 'none') {
         BotFile.find({bot: req.bot._id}).exec(function (err, files) {
-          console.log(util.inspect(err))
-          console.log(util.inspect(files))
+          // console.log(util.inspect(err))
+          // console.log(util.inspect(files))
           if (err) {
             return res.status(400).send({
               message: errorHandler.getErrorMessage(err)
@@ -916,7 +915,7 @@ exports.fileByID = function (req, res, next, id) {
       }
     }
   ], function(err) {
-    console.log(id)
+    // console.log(id)
     BotFile.findById(id).populate('user', 'displayName').populate('bot').exec(function (err, file) {
       if (err) {
         return next(err);
@@ -934,8 +933,8 @@ exports.fileByID = function (req, res, next, id) {
 
 
 exports.listFile = function (req, res) {
-  console.log(util.inspect(req.bot));
-  console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+  // console.log(util.inspect(req.bot));
+  // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
   BotFile.find({bot: req.bot._id}).populate('user', 'displayName').populate('bot').exec(function (err, files) {
     if (err) {
       return res.status(400).send({
@@ -995,7 +994,7 @@ exports.createFile = function (req, res) {
         //   }
         // })
         res.json(botFile);
-        console.log('res.json');
+        // console.log('res.json');
       }
     });
   });
@@ -1353,7 +1352,7 @@ exports.listDialog = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      console.log(util.inspect(dialogs))
+      // console.log(util.inspect(dialogs))
       res.json(dialogs);
     }
   });
@@ -1421,7 +1420,7 @@ exports.contextAnalytics = function (req, res) {
     type.executeType(_input, faqType, {}, context, function(_text, _result) {
       _result.context = {botUser: {nlp: context.botUser.nlp, topic: context.botUser.topic}};
       res.json(_result);
-      console.log('context analytics: ');
+      // console.log('context analytics: ');
     });
   });
 
@@ -1469,7 +1468,7 @@ exports.speech = function (req, res) {
   var api_url = 'https://openapi.naver.com/v1/voice/tts.bin';
   var request = require('request');
 
-  console.log(req.params.msg);
+  // console.log(req.params.msg);
   var options = {
     url: api_url,
     form: {'speaker':'jinho', 'speed':'0', 'text':req.params.msg},

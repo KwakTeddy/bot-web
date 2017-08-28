@@ -6,6 +6,8 @@ var dialog = require(path.resolve('modules/bot/action/common/dialog'));
 var utils = require(path.resolve('./modules/bot/action/common/utils'));
 var util = require('util');
 
+var redis = require('redis');
+var cache = redis.createClient(6379,'127.0.0.1');
 
 exports.getContext = getContext;
 function getContext(botName, channel, user, options, callback) {
@@ -25,13 +27,11 @@ function getContext(botName, channel, user, options, callback) {
       if (user == undefined) {
         cb(null);
       } else if (!global._users[user]) {
-      // } else{
         var botUser = require(path.resolve('./modules/bot-users/server/controllers/bot-users.server.controller'));
         var _user = {userId: user, channel: channel, bot: botName};
         botUser.getUserContext(_user, null, function (_user, _context) {
           userContext = {userId: user, channel: channel, bot: botName};
-          // if(global._users[user] && global._users[user].liveChat) userContext['liveChat'] = global._users[user].liveChat;
-          userContext = utils.merge(userContext, _user.doc._doc);
+          // userContext = utils.merge(userContext, _user.doc._doc);
 
           if (userContext.address)
             userContext.addressCompact = userContext.address.지번주소.replace(/^([가-힣]+\s*)/, function (matched, p1) {
@@ -42,8 +42,7 @@ function getContext(botName, channel, user, options, callback) {
           global._users[user] = userContext;
           cb(null);
         });
-      }
-      else {
+      } else {
         userContext = global._users[user];
         cb(null);
       }
@@ -51,9 +50,30 @@ function getContext(botName, channel, user, options, callback) {
       if(user != undefined) {
         var botUserName;
         botUserName = botName + '_' + user;
+
+        // cache.get(botUserName, function(err, data) {
+        //   if (data) {
+        //     botUserContext = JSON.parse(data);
+        //   } else  {
+        //     botUserContext = {botUserName: botName + '_' + user};
+        //   }
+        //
+        //   botUserContext.orgBot = global._bots[botName];
+        //
+        //   if(!botUserContext._dialog) botUserContext._dialog = {};
+        //   if(!botUserContext._task) botUserContext._task = {};
+        //
+        //   if(options) botUserContext.options = options;
+        //
+        //   // console.log('changeBot: '  + botUserContext.curBotId + ' ' + botUserContext.curBotName);
+        //   if(botUserContext.curBotId) botName = botUserContext.curBotId;
+        //
+        //   cb(null);
+        // })
+
         if(!global._botusers[botUserName]) global._botusers[botUserName] = {};
         botUserContext = global._botusers[botUserName];
-        
+
         botUserContext.orgBot = global._bots[botName];
 
         if(!botUserContext._dialog) botUserContext._dialog = {};
@@ -66,6 +86,7 @@ function getContext(botName, channel, user, options, callback) {
       }
 
       cb(null);
+      // else cb(null);
     }, function(cb) {
       getBotContext(botName, function(_botContext) {
         botContext = _botContext;
