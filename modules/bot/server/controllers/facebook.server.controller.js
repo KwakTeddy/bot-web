@@ -4,6 +4,7 @@ var path = require('path');
 var chat = require(path.resolve('modules/bot/server/controllers/bot.server.controller'));
 var contextModule = require(path.resolve('modules/bot/engine/common/context'));
 var config = require(path.resolve('config/config'));
+var async = require('async');
 
 var subscribe = '';
 var subscribePageToken = '';
@@ -11,10 +12,13 @@ var mongoose = require('mongoose');
 var UserBotFbPage = mongoose.model('UserBotFbPage');
 var botLib = require(path.resolve('config/lib/bot'));
 var utils = require(path.resolve('modules/bot/action/common/utils'));
-
+var crypto = require('crypto');
+var UserDialog = mongoose.model('UserDialog');
+var UserDialogLog = mongoose.model('UserDialogLog');
 
 var util =require('util'); //temporary
 var botContext = '';
+var bot = "";
  
 
 exports.messageGet =  function(req, res) {
@@ -59,85 +63,128 @@ exports.message = function (req, res) {
   }
 };
 
-function receivedMessage(event) {
-  var senderID = event.sender.id;
-  var recipientID = event.recipient.id;
-  var message = event.message;
-  if (event.botId == "subscribeBot"){
-    console.log('Subscribe Coming In');
-      UserBotFbPage.findOne({pageId: event.recipient.id}, function (err, data) {
-          if (err){
-              console.log(err);
-          }else {
-              subscribe = true;
-              subscribePageToken = data.accessToken;
-              event.botId = data.userBotId;
-              contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
-                botContext = context;
-                if(recipientID == data.pageId) {
-                  var messageId = message.mid;
-                  var messageText = message.text;
-                  var messageAttachments = message.attachments;
-                  if (messageAttachments){
-                      var imageData = JSON.parse(JSON.stringify(messageAttachments));
-                      message = {};
-                      if (imageData[0].type == 'image'){
-                        imageData[0].type = 'photo'
-                      }
-                      message['inputType'] =  imageData[0].type;
-                      message.url = imageData[0].payload.url;
-                      messageText='fbImage';
-                  }
-                  chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
-                      respondMessage(senderID, retText, event.botId, task);
-                  });
-                }
-              });
-          }
+function liveChatAddDialog(botId, message , userId, inOut) {
+  var query = {
+    botId: botId,
+    userId : userId,
+    channel: "facebook",
+    dialog: message,
+    inOut: inOut,
+    fail: false,
+    liveChat: true
+  };
+  UserDialog.create(query, function(err, data) {
+    if(err) console.log(err);
+    else {
+      var query = {
+        botId: botId,
+        userId : userId,
+        channel: "facebook",
+        year: (new Date()).getYear() + 1900,
+        month: (new Date()).getMonth() + 1,
+        date: (new Date()).getDate()
+      };
+      UserDialogLog.update(query, query, {upsert: true}, function(err2, data2) {
+        if(err2) console.log(err2);
+        else return true
       });
-  }else {
-      if (!global._bots[event.botId]){
-        botLib.loadBot(event.botId, function (realbot) {
-          if(recipientID == global._bots[event.botId].facebook.id) {
-            contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
-              //console.log('receivedMessage: ', event);
+    }
+  });
+}
 
-              bot = context.botUser.orgBot || context.bot;
-              if(recipientID == bot.facebook.id) {
-                console.log('2 senderID: ' + senderID + ', recipientID: ' + recipientID);
+function receivedMessage(event) {
+  var senderID = event.sender.id,
+  recipientID = event.recipient.id,
+  message = event.message,
+  messageId = message.mid,
+  messageText = message.text,
+  messageAttachments = message.attachments,
+  attachmentData = '';
 
-                var messageId = message.mid;
-                var messageText = message.text;
-                var messageAttachments = message.attachments;
+  if (messageAttachments){
+    attachmentData = JSON.parse(JSON.stringify(messageAttachments));
+    if (attachmentData[0].type == 'image') attachmentData[0].type = 'photo';
+    if (attachmentData[0].type == 'fallback') return true;
+    if (attachmentData[0].payload && attachmentData[0].payload.url) message.url = attachmentData[0].payload.url;
+    message['inputType'] =  attachmentData[0].type;
+    messageText='fbImage';
+  }
 
-                chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
-                  respondMessage(senderID, retText, event.botId, task);
-                });
-              }
-            });
+  async.waterfall([
+    function (done) {
+      if(message.is_echo){
+        if(!message.metadata){
+          UserBotFbPage.findOne({pageId: senderID}, function (err, data) {
+            if (err) console.log(err);
+            else {
+              liveChatAddDialog(data.userBotId, messageText, recipientID, false);
+              contextModule.getContext(data.userBotId, 'facebook', recipientID, null, function(context) {
+                console.log(util.inspect(context.user));
+                context.user.liveChat = 3;
+                return done(true);
+              })
+            }
+          });
+        }else {
+          return done(true);
+        }
+      }else {
+        return done(null);
+      }
+    },
+    function (done) {
+      if (event.botId == "subscribeBot"){
+        console.log('Subscribe Coming In');
+        UserBotFbPage.findOne({pageId: event.recipient.id}, function (err, data) {
+          if (err){
+            console.log(err);
+            return done(err);
+          }else {
+            if(recipientID != data.pageId) return true;
+            subscribe = true;
+            subscribePageToken = data.accessToken;
+            event.botId = data.userBotId;
+            return done(null);
           }
         });
       }else {
-        if(recipientID == global._bots[event.botId].facebook.id) {
-          contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
-            //console.log('receivedMessage: ', event);
-
-            bot = context.botUser.orgBot || context.bot;
-            if(recipientID == bot.facebook.id) {
-              console.log('2 senderID: ' + senderID + ', recipientID: ' + recipientID);
-
-              var messageId = message.mid;
-              var messageText = message.text;
-              var messageAttachments = message.attachments;
-
-              chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
-                respondMessage(senderID, retText, event.botId, task);
-              });
-            }
+        if (recipientID != bot.facebook.id){
+         return done(true)
+        }
+        if (!global._bots[event.botId]){
+          botLib.loadBot(event.botId, function (realbot) {
+            return done(null);
           });
+        }else {
+          return done(null);
         }
       }
-  }
+    },
+    function (done) {
+      chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
+        contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
+          botContext = context;
+          bot = botContext.botUser.orgBot || botContext.bot;
+          switch(true) {
+          case botContext.user.liveChat == 1 :
+            botContext.user.liveChat++;
+            break;
+
+          case botContext.user.liveChat > 1 :
+            botContext.user.liveChat++;
+            // liveChatAddDialog(event.botId, messageText , senderID, true);
+            return true;
+          }
+          respondMessage(senderID, retText, event.botId, task);
+          return done(null);
+        });
+      });
+    }
+  ], function (err) {
+    if (err) {
+      return true;
+    }
+  });
 }
 
 /*
@@ -244,7 +291,6 @@ function receivedAuthentication(event) {
 
 function respondMessage(to, text, botId, task) {
   var tokenData = '';
-  var bot = botContext.botUser.orgBot || botContext.bot;
 
   if (subscribe) tokenData = subscribePageToken;
   else tokenData = bot.facebook.PAGE_ACCESS_TOKEN;
@@ -689,11 +735,42 @@ function smartReplyMessage(recipientId, text, task, token) {
     }
   };
 
+  if(task.buttons){
+    var smartReplies = [];
+    for(var i = 0; i < task.buttons.length; i++){
+      var repl = {content_type:"text"};
+      repl['title'] = i+1;
+      repl['payload'] = i+1;
+      smartReplies.push(repl);
+    }
+    messageData.message.quick_replies = smartReplies;
+  }
   callSendAPI(messageData, token);
 }
 
 function callSendAPI(messageData, PAGE_ACCESS_TOKEN, cb) {
-  console.log(util.inspect(messageData, {showHidden: false, depth: null}));
+  if(messageData.message) messageData.message['metadata'] = "sentByChatBot";
+
+  if(bot && bot.commonQuickReplies && bot.commonQuickReplies.length
+    && botContext.botUser._currentDialog.name && !botContext.user.liveChat
+    && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)
+    && (botContext.botUser._currentDialog.name != botContext.bot.noDialog.name)){
+    var quick_replies = [];
+    if(!messageData.message['quick_replies']) messageData.message['quick_replies']= [];
+
+    bot.commonQuickReplies.forEach(function (b) {
+      var btn = {content_type: "text"};
+      btn['title'] = b.text;
+      btn['payload'] = b.text;
+      messageData.message.quick_replies.push(btn);
+    });
+  }
+
+  if(bot && bot.commonQuickReplies && bot.commonQuickReplies.length
+    && botContext.botUser._currentDialog.name
+    && (botContext.botUser._currentDialog.name == botContext.bot.noDialog.name)){
+    messageData.message['quick_replies'] = [{content_type: "text", title: "시작메뉴", payload: "시작메뉴"}]
+  }
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: PAGE_ACCESS_TOKEN },

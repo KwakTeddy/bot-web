@@ -14,8 +14,7 @@ var BotUserSchema = new Schema({
     type: String
   },
   channel: {
-    type: String,
-    default: '카카오톡'
+    type: String
   },
   name: {
     type: String
@@ -39,11 +38,9 @@ var BotUserSchema = new Schema({
     type: Date,
     default: Date.now
   },
-
   confirmTerms: Boolean,
-  botId: {
-    type: String
-  }
+  botId: []
+
 });
 
 mongoose.model('BotUser', BotUserSchema);

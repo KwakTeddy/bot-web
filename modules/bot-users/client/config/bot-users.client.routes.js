@@ -19,9 +19,9 @@
         templateUrl: 'modules/bot-users/client/views/list-bot-users.client.view.html',
         controller: 'BotUsersListController',
         controllerAs: 'vm',
-        resolve: {
-          botUsersResolve: getBotUsers
-        },
+        // resolve: {
+        //   botUsersResolve: getBotUsers
+        // },
         data: {
           roles: ['user', 'enterprise', 'admin'],
           pageTitle: 'Bot users List'
@@ -70,6 +70,7 @@
 
   getBotUsers.$inject = ['BotUsersService', '$cookies', 'Authentication'];
   function getBotUsers(BotUsersService, $cookies, Authentication) {
+
     return BotUsersService.query({botId: $cookies.get('default_bot'), role: Authentication.user.roles}).$promise;
   }
 

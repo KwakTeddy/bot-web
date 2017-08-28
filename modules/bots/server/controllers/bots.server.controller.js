@@ -869,10 +869,14 @@ exports.botByNameID = function (req, res, next, id) {
 };
 
 exports.fileByID = function (req, res, next, id) {
+  console.log(util.inspect(req.bot));
+  console.log('************')
   async.waterfall([
     function(cb) {
       if (id == 'none') {
         BotFile.find({bot: req.bot._id}).exec(function (err, files) {
+          console.log(util.inspect(err))
+          console.log(util.inspect(files))
           if (err) {
             return res.status(400).send({
               message: errorHandler.getErrorMessage(err)
@@ -912,6 +916,7 @@ exports.fileByID = function (req, res, next, id) {
       }
     }
   ], function(err) {
+    console.log(id)
     BotFile.findById(id).populate('user', 'displayName').populate('bot').exec(function (err, file) {
       if (err) {
         return next(err);

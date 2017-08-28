@@ -25,7 +25,7 @@ var mongoose = require('mongoose'),
 
 exports.write = write;
 function write(channel, from, to, text, json, successCallback, errorCallback, endCallback) {
-    botProc(to, channel, from, text, json, successCallback, chatSocketConfig);
+  botProc(to, channel, from, text, json, successCallback, chatSocketConfig);
 };
 
 exports.botProc = botProc;
@@ -35,15 +35,14 @@ var botSocket;
 exports.setBotSocket = function(socket) {botSocket = socket};
 
 // console = {};
-console.log = function(out, context) {
+console.log = function(out) {
   process.stdout.write(out+'\n');
-  if(context && context.botUser && context.botUser.socket && context.botUser.dev === true)
-    context.botUser.socket.emit('send_msg', ":log \n" + out +"\n");
+  if(botSocket) botSocket.emit('send_msg', ":log \n" + out +"\n");
 }
 
 console.error = function(out) {
   process.stderr.write((out.stack ? out.stack : out) +'\n');
-  // if(botSocket) botSocket.emit('send_msg', ":log \n" + (out.stack ? out.stack : out) +"\n");
+  if(botSocket) botSocket.emit('send_msg', ":log \n" + (out.stack ? out.stack : out) +"\n");
 }
 
 // console.trace = function(out, t) {
@@ -51,14 +50,14 @@ console.error = function(out) {
 //   if(botSocket) botSocket.emit('send_msg', ":log \n" + out +"\n");
 // }
 
-function botProc(botName, channel, user, inTextRaw, json, outCallback, options, socket) {
+function botProc(botName, channel, user, inTextRaw, json, outCallback, options) {
   // TODO 개발용
   dialog = utils.requireNoCache(path.resolve('modules/bot/action/common/dialog'));
 
   var startTime = new Date();
   var print = function(_out, _task) {
     var endTime = new Date();
-    console.log("사용자 출력 (" + (endTime-startTime) + 'ms)>> ' + _out + "\n", context);
+    logger.debug("사용자 출력 (" + (endTime-startTime) + 'ms)>> ' + _out + "\n");
 
     // toneModule.toneSentence(_out, context.botUser.tone || '해요체', function(out) {
     //   _out = out;
@@ -82,7 +81,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options, 
     var pre = (context.botUser.curBotId && context.botUser.curBotName && context.botUser.curBotId != botName ?
         context.botUser.curBotName + ': ' : undefined);
 
-    // if(_task && _task.text) _out = _task.text;
+    if(_task && _task.text) _out = _task.text;
 
       if(channel == 'ios' || channel == 'android') {
         outCallback(_out, _task);
@@ -102,23 +101,16 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options, 
     function(cb) {
       contextModule.getContext(botName, channel, user, options, function(_context) {
         context = _context;
-        if(socket && options && options.dev === true) {
-          context.botUser.socket = socket;
-          context.botUser.dev = true;
-        } else {
-          context.botUser.socket = undefined;
-          context.botUser.dev = undefined;
-        }
         cb(null);
       });
     },
 
     function(cb) {
-      console.log("사용자 입력>> " + inTextRaw, context);
+      logger.debug("사용자 입력>> " + inTextRaw);
       var type = utils.requireNoCache(path.resolve('./modules/bot/action/common/type'));
 
       type.processInput(context, inTextRaw, function(_inTextNLP, _inDoc) {
-        console.log("자연어 처리>> " + _inTextNLP, context);
+        logger.debug("자연어 처리>> " + _inTextNLP);
         inTextNLP = _inTextNLP;
         context.task = utils.merge(_inDoc, json);
         cb(null);
@@ -132,7 +124,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options, 
         if(context.bot.useMemoryFacts) {
           factModule.memoryFacts(inTextRaw, context, function (_task, _context) {
             if(_task && _task.numAffected && _task.numAffected.upserted) {
-              console.log('[FACT_ADD]' + JSON.stringify(_task.doc), context);
+              console.log('[FACT_ADD]' + JSON.stringify(_task.doc));
               print('말씀하신 내용을 학습했어요.');
               cb(true);
               return;
@@ -183,11 +175,11 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options, 
         } else {
           dialog.matchGlobalDialogs(inTextRaw, inTextNLP, context.bot.dialogs, context, print, function(matched, _dialog) {
             if(matched) {
-              // if(_dialog) console.log('[DIALOG_SEL]' + JSON.stringify({id: _dialog.id, name: _dialog.name, input: _dialog.input,
-              //   context: context.botUser.context ? context.botUser.context.path : '', intent: context.botUser.intent,
-              //   entities: context.botUser.entities}));
+              if(_dialog) console.log('[DIALOG_SEL]' + JSON.stringify({id: _dialog.id, name: _dialog.name, input: _dialog.input,
+                context: context.botUser.context ? context.botUser.context.path : '', intent: context.botUser.intent,
+                entities: context.botUser.entities}));
 
-              if(_dialog && context.bot.startDialog && context.bot.startDialog.name == _dialog.name) {
+              if(_dialog && context.bot.startDialog.name == _dialog.name) {
                 context.botUser.currentDialog = null;
               }
 
@@ -211,7 +203,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options, 
         chatscriptSocket.on('data', function(data) {    // on receive data from chatscriptSocket
           var chatserverOut = data.toString();
 
-          console.log("챗서버 답변>> " + chatserverOut, context);
+          logger.debug("챗서버 답변>> " + chatserverOut);
 
           botProcess.processChatserverOut(context, chatserverOut, inTextNLP, inTextRaw, inDoc, print, print)
         });

@@ -144,7 +144,7 @@ function newBot(BotsService) {
 getBotFiles.$inject = ['BotFilesService', '$stateParams', '$rootScope', '$cookies'];
 function getBotFiles(BotFilesService, $stateParams, $rootScope, $cookies) {
   var _botId = $stateParams.botId ? $stateParams.botId : $cookies.get('botObjectId');
-
+  console.log(_botId);
   return BotFilesService.query({
     botId: _botId
   }).$promise;

@@ -16,7 +16,7 @@
       })
       .state('user-dialogs.list', {
         // url: '',
-        url: '/:botId/:userKey',
+        url: '/:botId/:userKey/:liveChat',
         templateUrl: 'modules/user-dialogs/client/views/list-user-dialogs.client.view.html',
         controller: 'UserDialogsListController',
         controllerAs: 'vm',
@@ -32,7 +32,8 @@
 
   getUserDialogs.$inject = ['$stateParams', 'UserDialogsService'];
   function getUserDialogs($stateParams, UserDialogsService) {
-    return UserDialogsService.query({botId: $stateParams.botId, userKey: $stateParams.userKey}).$promise;
+    console.log($stateParams)
+    return UserDialogsService.query({botId: $stateParams.botId, userKey: $stateParams.userKey, liveChat: $stateParams.liveChat}).$promise;
   }
 
 })();

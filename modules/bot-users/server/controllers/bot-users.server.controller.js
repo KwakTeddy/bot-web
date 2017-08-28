@@ -6,10 +6,16 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   BotUser = mongoose.model('BotUser'),
+  UserBotFbPage = mongoose.model('UserBotFbPage'),
   Bank = mongoose.model('Bank'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash'),
-  util = require('util');
+  request = require('request'),
+  async = require('async'),
+  util = require('util'),
+  utils = require(path.resolve('modules/bot/action/common/utils'));
+
+
 
 /**
  * Create a Bot user
@@ -120,18 +126,84 @@ exports.delete = function (req, res) {
  * List of Bot users
  */
 exports.list = function (req, res) {
+  console.log(util.inspect(req.query, {showHidden: false, depth: null}));
   var query = {};
   query['botId'] = req.query.botId;
-  if(req.query.role && (req.query.role == 'admin')){
-    query = {};
-  }
-  BotUser.find(query).sort('-created').populate('currentBank').exec(function (err, botUsers) {
+  query['channel'] = {$ne: "socket"};
+  var currentPage = 0;
+  var perPage = 10;
+  var sort = {};
+  // if(req.query.role && (req.query.role == 'admin')){
+  //   query = {};
+  // }
+  if(req.query.currentPage) currentPage = req.query.currentPage;
+  if(req.query.perPage) perPage = req.query.perPage;
+  if(req.query.sortDir && req.query.sortCol) sort[req.query.sortCol] = req.query.sortDir;
+  if(req.query.search){
+    var searchQuery = {};
+    searchQuery['$and'] = [];
+    searchQuery.$and.push(query);
+    searchQuery.$and.push({
+      $or : [
+        {channel: { $regex: req.query.search}},
+        {userKey: { $regex: req.query.search}}
+        ]
+    })
+    query = searchQuery;
+  };
+  console.log(util.inspect(currentPage));
+  console.log(util.inspect(sort));
+  console.log(util.inspect(query));
+  console.log(util.inspect('+++++++++++++++++++++++++++++++++++++'));
+
+  BotUser.find(query).sort(sort).skip(currentPage*perPage).limit(perPage).exec(function (err, botUsers) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.jsonp(botUsers);
+      if(botUsers.length){
+        var botUsers = JSON.parse(JSON.stringify(botUsers));
+        BotUser.count(query, function (err2, count) {
+          if (err2) console.log(err2);
+          else {
+            async.eachSeries(botUsers, function(botUser, cb) {
+              if(false) {
+                UserBotFbPage.findOne({pageId: '1886604644926791'}).exec(function (err3, data) {
+                  if(err3) {
+                    console.log(err3);
+                  }else {
+                    request({
+                      uri: 'https://graph.facebook.com/v2.6/' + botUser.userKey,
+                      qs: { access_token: data.accessToken },
+                      method: 'GET'
+                    }, function (error, response, body) {
+                      if (!error && response.statusCode == 200) {
+                        botUser['facebookData'] = body;
+                        botUser.facebookData = JSON.parse(botUser.facebookData);
+                        cb(null)
+                      } else {
+                        cb(null);
+                        console.log(error);
+                      }
+                    });
+                  }
+                })
+              }else {
+                cb(null)
+              }
+            }, function (err) {
+              if(err) console.log(err);
+              var result = [{data: botUsers, recordsTotal: count}];
+              res.jsonp(result);
+            });
+
+          }
+        });
+      }else {
+        var result = [{data: [], recordsTotal: 0}];
+        res.jsonp(result);
+      }
     }
   });
 };
@@ -172,15 +244,33 @@ exports.botUserByUserKey = function (req, res, next, userKey) {
 
 
 function getUserContext(task, context, callback) {
+  var botExist;
   BotUser.findOne({userKey: task.userId}, function(err, doc) {
     if(doc == undefined) {
-      BotUser.create({userKey: task.userId, channel: task.channel, creaated: Date.now()}, function(err, _doc) {
+      BotUser.create({userKey: task.userId, channel: task.channel, creaated: Date.now(), botId: task.bot}, function(err, _doc) {
         task.doc = _doc;
         callback(task, context);
       });
     } else {
-      task.doc = doc;
-      callback(task, context);
+      doc.botId.forEach(function (botId) {
+        if(botId == task.bot) botExist = true
+      });
+      if(!botExist){
+       doc.botId.push(task.bot);
+       doc.markModified('botId');
+       doc.save(function (err) {
+         if(err) console.log(err);
+         else {
+           task.doc = doc;
+           callback(task, context);
+         }
+       })
+      }else {
+        task.doc = doc;
+        callback(task, context);
+      }
+      // task.doc = doc;
+      // callback(task, context);
     }
   });
 }
