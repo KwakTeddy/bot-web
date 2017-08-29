@@ -1,11 +1,16 @@
 'use strict';
 angular.module("analytics").controller("UserStatisticsController", ['$scope', "$http", '$cookies', function ($scope, $http, $cookies) {
-  $scope.date = "month";
+  $scope.date = {
+    start: "",
+    end: ""
+  };
+  $scope.quickDate = "month";
   $scope.userType = "total";
   $scope.channel = "total";
   $scope.kakao = 0;
   $scope.facebook = 0;
   $scope.navertalk = 0;
+
   var dataBackup;
   var color = {
     background:{
@@ -64,7 +69,6 @@ angular.module("analytics").controller("UserStatisticsController", ['$scope', "$
   };
   var pieData = angular.copy(pieDataTemplate);
   var barData = angular.copy(barDataTemplate);
-
   var pieContext = document.getElementById("userRatioByChannel").getContext('2d');
   var barContext = document.getElementById("dailyUser").getContext('2d');
 
@@ -83,10 +87,25 @@ angular.module("analytics").controller("UserStatisticsController", ['$scope', "$
             stacked: true
           }],
           yAxes: [{
-            stacked: true
+            stacked: true,
+            ticks: {
+              beginAtZero:true
+            }
           }]
         }
-      }
+      },
+      plugins: [
+        {
+          afterInit: function() {
+            document.getElementById('loading-screen').style.setProperty("display", "none", "important")
+          }
+        },
+        {
+          afterRender: function () {
+            document.getElementById('loading-screen').style.setProperty("display", "none", "important")
+          }
+        }
+      ]
     });
   };
 
@@ -95,10 +114,6 @@ angular.module("analytics").controller("UserStatisticsController", ['$scope', "$
     barChart.update();
     pieChart.data = pieData;
     pieChart.update();
-  };
-
-  $scope.init = function () {
-    userCount($scope.date, $scope.userType, $scope.channel, false);
   };
 
   var userCount = function (date, userType, channel, update) {
@@ -111,12 +126,49 @@ angular.module("analytics").controller("UserStatisticsController", ['$scope', "$
         $scope.facebook = 0;
         $scope.navertalk = 0;
       }
-      for (var i = 0; i < doc.data.length; i++) {
-        barData.labels.unshift(doc.data[i]._id.month + "/" + doc.data[i]._id.day);
-        barData.datasets[0].data.push(doc.data[i].kakao);
-        barData.datasets[1].data.push(doc.data[i].facebook);
-        barData.datasets[2].data.push(doc.data[i].navertalk);
+      var array = [];
+      var startYear =  parseInt($scope.date.start.split('/')[0]);
+      var startMonth = parseInt($scope.date.start.split('/')[1]);
+      var startDay =   parseInt($scope.date.start.split('/')[2]);
+      var endYear =  parseInt($scope.date.end.split('/')[0]);
+      var endMonth = parseInt($scope.date.end.split('/')[1]);
+      var endDay =   parseInt($scope.date.end.split('/')[2]);
+      var year;
+      var month;
+      var day = startDay;
 
+      for(var i = startDay;((day != endDay) || (month != endMonth) ||  (year != endYear)) && i<100; i++){
+        var date = new Date(startYear, startMonth - 1, i);
+        year = date.getFullYear();
+        month = date.getMonth() + 1;
+        day = date.getDate();
+        array.push(year + '/'+ month + '/' + day)
+      }
+      barData.labels = array;
+
+      array.forEach(function (date, index) {
+        var Year =  parseInt(date.split('/')[0]);
+        var Month = parseInt(date.split('/')[1]);
+        var Day =   parseInt(date.split('/')[2]);
+        var exist = false;
+        for (var i = 0; i < doc.data.length; i++) {
+          if((doc.data[i]._id.year == Year) && (doc.data[i]._id.month == Month) && (doc.data[i]._id.day == Day)){
+            exist = true;
+            barData.datasets[0].data.push(doc.data[i].kakao);
+            barData.datasets[1].data.push(doc.data[i].facebook);
+            barData.datasets[2].data.push(doc.data[i].navertalk);
+
+            $scope.kakao = $scope.kakao + doc.data[i].kakao;
+            $scope.facebook = $scope.facebook + doc.data[i].facebook;
+            $scope.navertalk = $scope.navertalk + doc.data[i].navertalk;
+            break;
+          }
+        }
+        if(!exist){
+          barData.datasets[0].data.push(0);
+          barData.datasets[1].data.push(0);
+          barData.datasets[2].data.push(0);
+        }
         barData.datasets[0].backgroundColor.push(color.background.kakao);
         barData.datasets[1].backgroundColor.push(color.background.facebook);
         barData.datasets[2].backgroundColor.push(color.background.navertalk);
@@ -124,17 +176,10 @@ angular.module("analytics").controller("UserStatisticsController", ['$scope', "$
         barData.datasets[0].borderColor.push(color.border.kakao);
         barData.datasets[1].borderColor.push(color.border.facebook);
         barData.datasets[2].borderColor.push(color.border.navertalk);
-
-        $scope.kakao = $scope.kakao + doc.data[i].kakao;
-        $scope.facebook = $scope.facebook + doc.data[i].facebook;
-        $scope.navertalk = $scope.navertalk + doc.data[i].navertalk;
-      }
+      });
       pieData.datasets[0].data.push($scope.kakao);
       pieData.datasets[0].data.push($scope.facebook);
       pieData.datasets[0].data.push($scope.navertalk);
-
-      $scope.startDate = barData.labels[0];
-      $scope.endDate = barData.labels[barData.labels.length - 1];
 
       if(!update) initChart();
       else        updateChart();
@@ -142,10 +187,28 @@ angular.module("analytics").controller("UserStatisticsController", ['$scope', "$
       console.log(err);
     });
   };
+
+  var formatDate = function (doc) {
+    var start = new Date();
+    var end = new Date();
+    if(doc == "month")     start.setMonth(end.getMonth() - 1);
+    else if(doc == "week") start.setDate(end.getDate() - 6);
+    $scope.date.start = start.getFullYear() + '/' + (start.getMonth() +1) + '/' + start.getDate();
+    $scope.date.end = end.getFullYear() + '/' + (end.getMonth() +1) + '/' + end.getDate();
+  };
+
+  $scope.$watch("quickDate", function (doc) {
+    formatDate(doc);
+  });
+
+  $scope.init = function () {
+    formatDate($scope.quickDate);
+    userCount($scope.date, $scope.userType, $scope.channel, false);
+  };
+
   $scope.update = function () {
     userCount($scope.date, $scope.userType, $scope.channel, true);
   };
-
 
   $scope.exelDownload = function () {
     console.log(dataBackup);
@@ -189,6 +252,7 @@ angular.module("analytics").controller("UserStatisticsController", ['$scope', "$
       columnOrder: ["year", "month", "day", "kakao", "facebook","navertalk", "total"],
       orderedData: dataBackup
     };
+    console.log(exelDataTemplate);
 
     $http.post('/api/analytics/statistics/exel-download/' + $cookies.get("default_bot"), {data: exelDataTemplate}).then(function (doc) {
 

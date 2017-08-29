@@ -7,7 +7,7 @@
 </header>
 <!-- start: page -->
 
-<section class="panel">
+<section class="panel" data-ng-init="init()">
 	<div class="row" >
 		<div class="col-md-12" style="display: flex">
 			<div style="flex: 1;" >
@@ -25,7 +25,7 @@
 			<div style="flex: 1" >
 				<div class="panel-body">
 					<h6>이용자당 평균대화</h6>
-					<h4>{{totalDialogUsage/totalUserCount| number: 2}} </h4>
+					<h4>{{totalDialogUsage/totalUserCount| number: 2}} 회</h4>
 				</div>
 			</div>
 			<div style="flex: 1" >
@@ -54,7 +54,7 @@
 				<h2 class="panel-title text-center">채널별 이용자 분포</h2>
 			</header>
 			<div class="panel-body">
-				<canvas id="botUserByChannel" width="400" height="400"></canvas>
+				<canvas id="botUserByChannel" width="400" height="250"></canvas>
 			</div>
 		</div>
 		<div class="col-md-6" >
@@ -62,7 +62,7 @@
 				<h2 class="panel-title text-center">대화 성공률</h2>
 			</header>
 			<div class="panel-body">
-				<canvas id="dialogSuccessRate" width="400" height="400"></canvas>
+				<canvas id="dialogSuccessRate" width="400" height="250"></canvas>
 			</div>
 		</div>
 	</div>
@@ -72,9 +72,9 @@
 			<div class="row">
 				<div class="col-md-6" >
 					<header class="panel-heading">
-						<h2 class="panel-title text-center">질문 top</h2>
+						<h2 class="panel-title text-center">사용자 입력 top</h2>
 					</header>
-					<div class="panel-body">
+					<div class="panel-body" style="overflow: scroll">
 						<table class="table table-striped mb-none">
 							<thead>
 							<tr>
@@ -83,9 +83,9 @@
 							</tr>
 							</thead>
 							<tbody>
-							<tr ng-repeat="dialogUsage in dialogUsages | limitTo: 10">
-								<td class="text-center">{{dialogUsage._id}}</td>
-								<td class="text-center">{{dialogUsage.count}}</td>
+							<tr ng-repeat="userInput in userInputUsageList">
+								<td class="text-center">{{userInput._id.dialog}}</td>
+								<td class="text-center">{{userInput.count}}</td>
 							</tr>
 							</tbody>
 						</table>

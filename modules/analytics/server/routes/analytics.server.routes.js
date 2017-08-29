@@ -24,7 +24,7 @@ module.exports = function(app) {
     .post(analytics.senarioUsage);
 
   app.route('/api/failDailogs/:bId')//all(analyticsPolicy.isAllowed)
-    .get(analytics.failDailogs);
+    .post(analytics.failDailogs);
 
  app.route('/api/userDialogCumulativeCount/:bId')//all(analyticsPolicy.isAllowed)
     .get(analytics.userDialogCumulativeCount);
