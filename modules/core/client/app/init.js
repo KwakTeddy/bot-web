@@ -169,6 +169,8 @@ if (_platform == "mobile") {
 
 function appRun($rootScope, $state, Authentication, $cookies) {
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+    console.log(toState.name)
+    // if(toState.name == "")
     // document.getElementById('loading-screen').style.setProperty("display", "block", "important");
     // if (($cookies.get("login")) && (toState.name == "authentication.signin" || toState.name == "authentication.signup" || toState.name == "authentication.signin" || toState.name == "password.forgot")){
     //   return $state.go('developer-home');
