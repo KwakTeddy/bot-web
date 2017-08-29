@@ -8,11 +8,11 @@ var menuNavigationsPolicy = require('../policies/menu-navigations.server.policy'
 
 module.exports = function(app) {
   // Menu navigations Routes
-  app.route('/api/menu-navigations').all(menuNavigationsPolicy.isAllowed)
+  app.route('/api/menu-navigations')//.all(menuNavigationsPolicy.isAllowed)
     .get(menuNavigations.list)
     .post(menuNavigations.create);
 
-  app.route('/api/menu-navigations/:menuNavigationId').all(menuNavigationsPolicy.isAllowed)
+  app.route('/api/menu-navigations/:menuNavigationId')//.all(menuNavigationsPolicy.isAllowed)
     .get(menuNavigations.read)
     .put(menuNavigations.update)
     .delete(menuNavigations.delete);

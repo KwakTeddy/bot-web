@@ -201,17 +201,23 @@ exports.list = function (req, res) {
 };
 
 exports.failDailogs = function (req, res) {
-  var cond = {inOut: true, channel : {$ne: "socket"}, fail: true};
-  if(req.body.botId) cond.botId = req.body.botId;
+  var cond = {botId: req.params.bId, inOut: true, fail: true, channel : {$ne: "socket"}};
+  var startYear =  parseInt(req.body.date.start.split('/')[0]);
+  var startMonth = parseInt(req.body.date.start.split('/')[1]);
+  var startDay =   parseInt(req.body.date.start.split('/')[2]);
+  var endYear =  parseInt(req.body.date.end.split('/')[0]);
+  var endMonth = parseInt(req.body.date.end.split('/')[1]);
+  var endDay =   parseInt(req.body.date.end.split('/')[2]);
+  cond['created'] = {$gte: new Date(startYear, startMonth - 1, startDay), $lte: new Date(endYear, endMonth - 1, endDay, 23, 59, 59, 999)};
 
-  UserDialog.aggregate(
-    [
-      {$match: cond},
-      {$group: {_id: {dialog: "$dialog"}, count: {$sum: 1}}},
-      {$sort: {count: -1}},
-      {$limit: 10}
-    ]
-  ).exec(function (err, failDialog) {
+  var query = [
+    {$match: cond},
+    {$group: {_id: {dialog: "$dialog"}, count: {$sum: 1}}},
+    {$sort: {count: -1}}
+  ];
+
+  if(req.body.limit) query.push({$limit: req.body.limit});
+  UserDialog.aggregate(query).exec(function (err, failDialog) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -223,16 +229,15 @@ exports.failDailogs = function (req, res) {
 };
 
 exports.userCount = function (req, res) {
-  var cond = {botId: req.params.bId};
-  var year =  new Date().getFullYear();
-  var month = new Date().getMonth() + 1;
-  var day =   new Date().getDate();
-  switch (req.body.date){
-    case "month": cond.$or = [{year: year, month: month, date: {$lte: day}}, {year: year, month: month -1, date: {$gt: day}}]; break;
-    case "week": cond.$and = [{year: year, month: month, date: {$lte: day}}, {year: year, month: month, date: {$gt: day-7}}]; break;
-    case "day": cond = {year: year, month: month, date: day}; break;
-    default : cond.$or = [{year: year, month: month, date: {$lte: day}}, {year: year, month: month -1, date: {$gt: day}}];
-  }
+  var cond = {botId: req.params.bId, inOut: true};
+  var startYear =  parseInt(req.body.date.start.split('/')[0]);
+  var startMonth = parseInt(req.body.date.start.split('/')[1]);
+  var startDay =   parseInt(req.body.date.start.split('/')[2]);
+  var endYear =  parseInt(req.body.date.end.split('/')[0]);
+  var endMonth = parseInt(req.body.date.end.split('/')[1]);
+  var endDay =   parseInt(req.body.date.end.split('/')[2]);
+  cond['created'] = {$gte: new Date(startYear, startMonth - 1, startDay), $lte: new Date(endYear, endMonth - 1, endDay, 23, 59, 59, 999)};
+
   switch (req.body.channel){
     case "facebook": cond.channel = "facebook"; break;
     case "kakao": cond.channel = "kakao"; break;
@@ -243,12 +248,53 @@ exports.userCount = function (req, res) {
     case  "new": console.log(1); break;
     case  "revisit": console.log(1); break;
   }
-  UserDialogLog.aggregate(
+
+  UserDialog.aggregate(
     [
-    {$project: {_id: 0, botId:1, inOut: 1, channel: 1, year: 1, month: 1,date: 1, kakao: {$cond:[{$eq: ["$channel", "kakao"]}, 1,0]}, facebook: {$cond:[{$eq: ["$channel", "facebook"]}, 1,0]}, navertalk: {$cond:[{$eq: ["$channel", "navertalk"]}, 1,0]}}},
-    {$match: cond},
-    {$group: {_id: {year: '$year', month: '$month', day: '$date'}, total: {$sum: 1},kakao: {$sum: "$kakao"}, facebook: {$sum: "$facebook"}, navertalk: {$sum: "$navertalk"}}},
-    {$sort: {_id:-1,  date: -1}}
+      {$match: cond},
+      {$project:
+        {
+          _id: 0,
+          botId:1,
+          inOut: 1,
+          channel: 1,
+          userId: 1,
+          created: {$add:["$created", 9*60*60*1000]}
+        }
+      },
+      {$group:
+        {
+          _id: {
+            year: { $year: "$created" },
+            month: { $month: "$created" },
+            day: { $dayOfMonth: "$created" },
+            userId: '$userId',
+            channel: "$channel"
+          }
+        }
+      },
+      {$project:
+        {
+          _id: 1,
+          kakao: {$cond:[{$eq: ["$_id.channel", "kakao"]}, 1,0]},
+          facebook: {$cond:[{$eq: ["$_id.channel", "facebook"]}, 1,0]},
+          navertalk: {$cond:[{$eq: ["$_id.channel", "navertalk"]}, 1,0]}
+        }
+      },
+      {$group:
+        {
+          _id: {
+            year: '$_id.year',
+            month: '$_id.month',
+            day: '$_id.day'
+          },
+          total: {$sum: 1},
+          kakao: {$sum: "$kakao"},
+          facebook: {$sum: "$facebook"},
+          navertalk: {$sum: "$navertalk"}
+        }
+      },
+      {$sort: {_id:-1,  date: -1}}
     ]
   ).exec(function (err, userCounts) {
     if (err) {
@@ -259,6 +305,23 @@ exports.userCount = function (req, res) {
       res.json(userCounts);
     }
   });
+
+  // UserDialogLog.aggregate(
+  //   [
+  //   {$project: {_id: 0, botId:1, inOut: 1, channel: 1, year: 1, month: 1,date: 1, kakao: {$cond:[{$eq: ["$channel", "kakao"]}, 1,0]}, facebook: {$cond:[{$eq: ["$channel", "facebook"]}, 1,0]}, navertalk: {$cond:[{$eq: ["$channel", "navertalk"]}, 1,0]}}},
+  //   {$match: cond},
+  //   {$group: {_id: {year: '$year', month: '$month', day: '$date'}, total: {$sum: 1},kakao: {$sum: "$kakao"}, facebook: {$sum: "$facebook"}, navertalk: {$sum: "$navertalk"}}},
+  //   {$sort: {_id:-1,  date: -1}}
+  //   ]
+  // ).exec(function (err, userCounts) {
+  //   if (err) {
+  //     return res.status(400).send({
+  //       message: errorHandler.getErrorMessage(err)
+  //     });
+  //   } else {
+  //     res.json(userCounts);
+  //   }
+  // });
 };
 
 exports.userDialogCumulativeCount = function (req, res) {
@@ -277,42 +340,36 @@ exports.userDialogCumulativeCount = function (req, res) {
 };
 
 exports.dailyDialogUsage = function (req, res) {
-  var cond = {inOut: true, channel : {$ne: "socket"}};
-  if(req.body.botId) cond.botId = req.body.botId;
-  var year =  new Date().getFullYear();
-  var month = new Date().getMonth();
-  var day =   new Date().getDate();
-  switch (req.body.date){
-    case "month": cond.$or = [{year: year, month: month, day: {$lte: day}}, {year: year, month: month -1, day: {$gt: day}}]; break;
-    case "week":
-      cond.year = year;
-      cond.month = month;
-      cond.day = {$gt: day-7, $lte: day};
-      break;
-    case "day": cond = {year: year, month: month, day: day}; break;
-    default : cond.$or = [{year: year, month: month, day: {$lte: day}}, {year: year, month: month -1, day: {$gt: day}}];
+  var cond = {botId: req.body.botId, inOut: true};
+  var startYear =  parseInt(req.body.date.start.split('/')[0]);
+  var startMonth = parseInt(req.body.date.start.split('/')[1]);
+  var startDay =   parseInt(req.body.date.start.split('/')[2]);
+  var endYear =  parseInt(req.body.date.end.split('/')[0]);
+  var endMonth = parseInt(req.body.date.end.split('/')[1]);
+  var endDay =   parseInt(req.body.date.end.split('/')[2]);
+  cond['created'] = {$gte: new Date(startYear, startMonth - 1, startDay), $lte: new Date(endYear, endMonth - 1, endDay, 23, 59, 59, 999)};
+  switch (req.body.channel){
+    case "facebook": cond.channel = "facebook"; break;
+    case "kakao": cond.channel = "kakao"; break;
+    case "navertalk": cond.channel = "navertalk"; break;
+    default : cond.channel = {$ne: "socket"}; break;
   }
   UserDialog.aggregate(
     [
+      {$match: cond},
       {$project:
         {
           _id: 0,
-          botId:1,
-          inOut: 1,
-          channel: 1,
-          year: { $year: "$created" },
-          month: { $month: "$created" },
-          day: { $dayOfMonth: "$created" },
+          created: {$add:["$created", 9*60*60*1000]},
           fail: {$cond:[{$eq: ["$fail", true]}, 1,0]},
           kakao: {$cond:[{$eq: ["$channel", "kakao"]}, 1,0]},
           facebook: {$cond:[{$eq: ["$channel", "facebook"]}, 1,0]},
           navertalk: {$cond:[{$eq: ["$channel", "navertalk"]}, 1,0]}
         }
       },
-      {$match: cond},
       {$group:
         {
-          _id: {year: '$year', month: '$month', day: '$day'},
+          _id: {year: { $year: "$created" }, month: { $month: "$created" }, day: { $dayOfMonth: "$created" }},
           total: {$sum: 1},
           fail: {$sum: "$fail"},
           kakao: {$sum: "$kakao"},
@@ -329,10 +386,10 @@ exports.dailyDialogUsage = function (req, res) {
       });
     } else {
       // replace ";reset user" to 시작
-      dailyDialog.forEach(function(item) {
-        if (item._id == ":reset user")
-          item._id = "시작";
-      });
+      // dailyDialog.forEach(function(item) {
+      //   if (item._id == ":reset user")
+      //     item._id = "시작";
+      // });
       res.jsonp(dailyDialog);
     }
   });
@@ -340,19 +397,25 @@ exports.dailyDialogUsage = function (req, res) {
 
 exports.senarioUsage = function (req, res) {
   var query;
-  var cond = {inOut: true, channel : {$ne: "socket"}, dialogName: {$nin: ["시작", "답변없음"]}, botId: "Shinhancard"};
-  var limit;
-  if(req.params.bId) cond.botId = req.params.bId;
-  var month = 7;
-  var date = 20;
-  cond.$or = [{month: month, date: {$lte: date}}, {month: month -1, day: {$gt: date}}];
-
+  var cond = {inOut: true, dialogName: {$nin: ["시작", "답변없음"]}, botId: req.params.bId};
+  var startYear =  parseInt(req.body.date.start.split('/')[0]);
+  var startMonth = parseInt(req.body.date.start.split('/')[1]);
+  var startDay =   parseInt(req.body.date.start.split('/')[2]);
+  var endYear =  parseInt(req.body.date.end.split('/')[0]);
+  var endMonth = parseInt(req.body.date.end.split('/')[1]);
+  var endDay =   parseInt(req.body.date.end.split('/')[2]);
+  cond['created'] = {$gte: new Date(startYear, startMonth - 1, startDay), $lte: new Date(endYear, endMonth - 1, endDay, 23, 59, 59, 999)};
+  switch (req.body.channel){
+    case "facebook": cond.channel = "facebook"; break;
+    case "kakao": cond.channel = "kakao"; break;
+    case "navertalk": cond.channel = "navertalk"; break;
+    default : cond.channel = {$ne: "socket"}; break;
+  }
   query = [
+    {$match: cond},
     {$project:
       {
         _id: 0,
-        botId:1,
-        inOut: 1,
         channel: 1,
         dialogName:1,
         year: { $year: "$created" },
@@ -363,7 +426,6 @@ exports.senarioUsage = function (req, res) {
         navertalk: {$cond:[{$eq: ["$channel", "navertalk"]}, 1,0]}
       }
     },
-    {$match: cond},
     {$group:
       {
         _id: {dialogName: '$dialogName'},
@@ -399,37 +461,40 @@ exports.senarioUsage = function (req, res) {
 };
 
 exports.userInputStatistics = function (req, res) {
-  var cond = {
-    inOut: true,
-    botId: req.params.bId,
-    dialog:
-      {
-        $ne: null
-        // $nin: [":reset user", ":build csdemo reset"]
-      }
-  };
-  // if (req.body.date == 'year')       cond = {year: parseInt(arg), inOut: true};
-  // else if (req.body.date == 'month') cond = {year: new Date(arg).getFullYear(), month: new Date(arg).getMonth() + 1, inOut: true};
+  var cond = {inOut: true, dialog: {$ne: null}, botId: req.params.bId};
+  var startYear =  parseInt(req.body.date.start.split('/')[0]);
+  var startMonth = parseInt(req.body.date.start.split('/')[1]);
+  var startDay =   parseInt(req.body.date.start.split('/')[2]);
+  var endYear =  parseInt(req.body.date.end.split('/')[0]);
+  var endMonth = parseInt(req.body.date.end.split('/')[1]);
+  var endDay =   parseInt(req.body.date.end.split('/')[2]);
+  cond['created'] = {$gte: new Date(startYear, startMonth - 1, startDay), $lte: new Date(endYear, endMonth - 1, endDay, 23, 59, 59, 999)};
+  switch (req.body.channel){
+    case "facebook": cond.channel = "facebook"; break;
+    case "kakao": cond.channel = "kakao"; break;
+    case "navertalk": cond.channel = "navertalk"; break;
+    default : cond.channel = {$ne: "socket"}; break;
+  }
 
-  UserDialog.aggregate(
-    [
-      {$project:{_id:0, year: { $year: "$created" }, month: { $month: "$created" },day: { $dayOfMonth: "$created" }, inOut: '$inOut', dialog: '$dialog', botId: '$botId'}},
-      {$match: cond},
-      {$group: {_id: {dialog: '$dialog'}, count: {$sum: 1}}},
-      {$sort: {count: -1}},
-      {$limit: 100}
-    ]
-  ).exec(function (err, userInputCounts) {
+  var query = [
+    {$match: cond},
+    {$group:
+      {
+        _id: {
+          dialog: '$dialog'}, count: {$sum: 1}
+      }
+    },
+    {$sort: {count: -1}}
+  ];
+
+  if(req.body.limit) query.push({$limit: req.body.limit});
+
+  UserDialog.aggregate(query).exec(function (err, userInputCounts) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      // replace ";reset user" to 시작
-      // userCounts.forEach(function(item) {
-      //   if (item._id == ":reset user")
-      //     item._id = "시작";
-      // });
       res.jsonp(userInputCounts);
     }
   });

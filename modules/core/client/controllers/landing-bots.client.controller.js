@@ -193,9 +193,9 @@ angular.module('core').controller('LandingBotsController', ['$scope', '$state', 
   };
     
   $scope.selectBot = function (bot) {
+    document.getElementById('loading-screen').style.setProperty("display", "block", "important");
     $cookies.put('default_bot', bot.id);
     $cookies.put('botObjectId', bot._id);
-    // document.getElementById('loading-screen').style.setProperty("display", "block", "important");
     $state.go('dialogsets.dialogsLearn');
     $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
       $window.location.reload();
@@ -219,6 +219,7 @@ angular.module('core').controller('LandingBotsController', ['$scope', '$state', 
   };
 
   $scope.selectSharedBot = function (bot) {
+    document.getElementById('loading-screen').style.setProperty("display", "block", "important");
     $http.post("/api/bot-auths/getAuth", {bId: bot._id}).then(function (doc) {
       putAuthCookies(doc.data);
       $scope.selectBot(bot);

@@ -15,8 +15,8 @@ var config = require(path.resolve('./config/config'));
 var async = require('async');
 
 var mySqlPool = mysql.createPool({
- host: 'localhost',
-//   host: '172.31.15.9',
+ // host: 'localhost',
+  host: '172.31.15.9',
   port: '3306',
   user: 'root',
   password: 'Make01mb!',
@@ -283,7 +283,8 @@ function sendVMS(task, context, callback) {
 
   mySqlPool.getConnection(function (err, connection) {
     if(err) {
-      console.log(err);
+      console.log("@@@@@"+err);
+      console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
 
       callback(task, context);
     } else {

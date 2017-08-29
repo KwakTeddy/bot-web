@@ -1,4 +1,7 @@
 var path = require('path');
+var request = require('request');
+
+var messages = require(path.resolve('modules/messages/server/controllers/messages.server.controller'));
 var bot = require(path.resolve('config/lib/bot')).getBot('md_chicken_upgr2');
 
 var defaultTask = {
@@ -160,7 +163,7 @@ bot.setTask('orderSave', orderSave);
 
 var saveAddress = {
     action: function (task,context,callback) {
-        context.user.address = task['1'];
+        context.user.address = context.dialog.inCurRaw;
         callback(task,context);
     }
 };
@@ -265,3 +268,72 @@ var saveRequest = {
 };
 
 bot.setTask('saveRequest', saveRequest);
+
+
+var sendMessage = {
+    action: function (task,context,callback) {
+
+        var message = '[주문내용]\n';
+
+        for(i=0; i<context.dialog.orderList.length; i++){
+            message += context.dialog.orderList[i].name + ', ' + context.dialog.orderList[i].price + '\n';
+        }
+
+
+        message += '\n주소: ' + context.user.address + '\n';
+        message += '번호: ' + context.user.mobile + '\n';
+        message += '결제방법: ' + context.dialog.pay + '\n';
+        message += '요청사항: ' + context.dialog.request + '\n';
+
+        var mess = [];
+        mess[0] = message;
+
+        if (message.length > 60) {
+            mess[0] = message.slice(0,60);
+            mess[1] = message.slice(60,120);
+        }
+
+        // sendSMS("01026548343", mess[0]);
+        // sendSMS("01026548343", mess[1]);
+        sendSMS("01026548343", mess[0]);
+        // setTimeout(sendSMS("01092597716", mess[1]), 5000);
+
+        // for(i=0; i<mess.length; i++) {
+        //
+        // }
+
+        // task.phone = "01092597716";
+        // task.message = message;
+        //
+        // messages.sendVMS (task, context, function(task, context) {
+        //     callback(task,context);
+        // });
+
+
+        callback(task,context);
+
+        setTimeout(sendSMS("01026548343", mess[1]), 5000);
+    }
+};
+
+bot.setTask('sendMessage', sendMessage);
+
+
+
+function sendSMS(phone, message) {
+    request.post(
+        'https://bot.moneybrain.ai/api/messages/sms/send',
+        // 'http://dev.moneybrain.ai:8443/api/messages/sms/send',
+        {json: {callbackPhone: "15777314", phone: phone, message: message}},
+        function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                console.log(response);
+                console.log(body);
+            } else {
+                // task._result = 'FAIL';
+                // task._resultMessage = 'HTTP ERROR';
+                console.log(error);
+            }
+        }
+    );
+}

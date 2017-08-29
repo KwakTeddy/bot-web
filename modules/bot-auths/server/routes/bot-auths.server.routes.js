@@ -8,7 +8,7 @@ var botAuthsPolicy = require('../policies/bot-auths.server.policy'),
 
 module.exports = function(app) {
   // Bot auths Routes
-  app.route('/api/bot-auths').all(botAuthsPolicy.isAllowed)
+  app.route('/api/bot-auths')//.all(botAuthsPolicy.isAllowed)
     .get(botAuths.list)
     .post(botAuths.create);
 

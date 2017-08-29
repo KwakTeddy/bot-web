@@ -15,7 +15,7 @@ var dialogs = [
 		],
 		"output": [
 			{
-				"text": "주문하실 메뉴명을 말씀해주세요!",
+				"text": "주문하실 메뉴명을 말씀해주세요!\n(메뉴판: 'ㅁㄴㅍ'입력)",
 				"kind": "Text"
 			}
 		],
@@ -41,7 +41,7 @@ var dialogs = [
 						"kind": "Action",
 						"repeat": "1",
 						"options": {
-							"output": "[주문목록]\n#orderList#+name+ - +price+\n#\n주문을 완료하시려면 '완료'를, 주문을 추가하시려면 추가하실 메뉴명을 입력해주세요.\n\n*처음으로 가려면 '시작', 이전으로 가려면 '이전' 을 입력해주세요."
+							"output": "[주문목록]\n#orderList#+name+ - +price+\n#\n주문을 완료하시려면 '완료'를, 주문을 추가하시려면 추가하실 메뉴명을 입력해주세요.(메뉴판: 'ㅁㄴㅍ'입력)\n\n*주문을 중단하려면 '중단', 이전으로 가려면 '이전' 을 입력해주세요."
 						},
 						"type": "Repeat"
 					}
@@ -72,12 +72,10 @@ var dialogs = [
 						"regexp": "(두\\s?마리)"
 					}
 				],
-				"output": [
-					{
-						"text": "[+detailMenuName+] \n원하시는 메뉴번호를 입력하세요\n\n#detailMenu#+index+. +name+ - +price+\n#",
-						"kind": "Text"
-					}
-				],
+				"output": {
+					"text": "[+detailMenuName+] \n원하시는 메뉴번호를 입력하세요\n\n#detailMenu#+index+. +name+ - +price+\n#",
+					"kind": "Text"
+				},
 				"task": {
 					"name": "selectMenu",
 					"kind": "Text"
@@ -99,7 +97,7 @@ var dialogs = [
 								"kind": "Action",
 								"call": "주문하기",
 								"options": {
-									"output": "[주문목록]\n#orderList#+name+ - +price+\n#\n주문을 완료하시려면 '완료'를, 주문을 추가하시려면 추가하실 메뉴명을 입력해주세요.\n\n*처음으로 가려면 '시작', 이전으로 가려면 '이전' 을 입력해주세요."
+									"output": "[주문목록]\n#orderList#+name+ - +price+\n#\n주문을 완료하시려면 '완료'를, 주문을 추가하시려면 추가하실 메뉴명을 입력해주세요.(메뉴판: 'ㅁㄴㅍ'입력)\n\n*주문을 중단하려면 '중단', 이전으로 가려면 '이전' 을 입력해주세요."
 								}
 							}
 						],
@@ -136,22 +134,67 @@ var dialogs = [
 					{
 						"if": "!context.user.address",
 						"kind": "Action",
-						"call": "주소등록"
+						"call": "주소등록",
+						"type": "Call"
 					},
 					{
 						"kind": "Action",
 						"if": "!context.user.mobile",
-						"call": "전번등록"
+						"call": "전번등록",
+						"type": "Call"
 					},
 					{
 						"if": "true",
 						"kind": "Action",
-						"call": "주소번호만족"
+						"call": "주소번호만족",
+						"type": "Call"
 					}
 				],
 				"task": {
 					"name": "defaultTask"
 				}
+			},
+			{
+				"name": "메뉴호출",
+				"id": "default44",
+				"filename": "default",
+				"input": [
+					{
+						"text": "메뉴"
+					},
+					{
+						"text": "ㅁㄴ"
+					},
+					{
+						"text": "ㅁㄴㅍ"
+					}
+				],
+				"output": [
+					{
+						"kind": "Action",
+						"call": "메뉴보기"
+					}
+				]
+			},
+			{
+				"name": "메뉴다시",
+				"id": "default43",
+				"filename": "default",
+				"input": [
+					{
+						"text": ""
+					}
+				],
+				"output": [
+					{
+						"kind": "Action",
+						"repeat": "1",
+						"options": {
+							"output": "메뉴에 있는 올바른 메뉴명을 입력해주세요!"
+						},
+						"type": "Repeat"
+					}
+				]
 			},
 			{
 				"name": "주소번호만족",
@@ -162,12 +205,10 @@ var dialogs = [
 						"text": ""
 					}
 				],
-				"output": [
-					{
-						"text": "[주문내용]\n#orderList#+name+ - +price+\n#\n\n*배달주소 : +address+\n*주문자 전화번호 : +mobile+\n\n위 내용이 맞습니까?\n1. 이대로 주문\n2. 주문 취소\n3. 주소 변경\n4. 전화번호 변경",
-						"kind": "Text"
-					}
-				],
+				"output": {
+					"text": "[주문내용]\n#orderList#+name+ - +price+\n#\n\n*배달주소 : +address+\n*주문자 전화번호 : +mobile+\n\n위 내용이 맞습니까?\n1. 이대로 주문\n2. 주문 취소\n3. 주소 변경\n4. 전화번호 변경",
+					"kind": "Text"
+				},
 				"children": [
 					{
 						"name": "주소변경",
@@ -268,7 +309,7 @@ var dialogs = [
 										],
 										"output": [
 											{
-												"text": "[주문최종확인]\n#orderList#+name+ - +price+\n#\n\n*배달주소 : +address+\n*주문자 전화번호 : +mobile+\n*결제 : +pay+*\n*요청사항 : +request+\n\n위 내용대로 주문하시겠습니까?\n1. 주문\n2. 취소",
+												"text": "[주문최종확인]\n#orderList#+name+ - +price+\n#\n\n*배달주소 : +address+\n*주문자 전화번호 : +mobile+\n*결제 : +pay+\n*요청사항 : +request+\n\n위 내용대로 주문하시겠습니까?\n1. 주문\n2. 취소",
 												"kind": "Text"
 											}
 										],
@@ -290,10 +331,11 @@ var dialogs = [
 												],
 												"output": [
 													{
-														"text": "주문이 완료되었습니닭!\n\n처음으로 돌아가시려면 '0' 또는 '시작'을 입력해주세요.",
+														"text": "주문이 완료되었습니닭!\n\n배달은 20분~40분 가량 소요될 예정입니다.\n\n처음으로 돌아가시려면 '0' 또는 '시작'을 입력해주세요.",
 														"kind": "Text"
 													}
-												]
+												],
+												"task": "sendMessage"
 											},
 											{
 												"name": "주문최종취소",
@@ -327,7 +369,10 @@ var dialogs = [
 							}
 						]
 					}
-				]
+				],
+				"task": {
+					"kind": "Text"
+				}
 			}
 		]
 	},
@@ -341,14 +386,17 @@ var dialogs = [
 			},
 			{
 				"text": "메뉴"
+			},
+			{
+				"text": "ㅁㄴ"
 			}
 		],
 		"output": [
 			{
-				"text": "[메뉴판] \n원하시는 상세 메뉴의 번호나 이름을 입력하세요.\n\n1. 후라이드 치킨\n2. 양념치킨\n3. 간장치킨\n4. 반반(후라이드 + 양념) 치킨\n5. 두마리치킨\n6. 부위별치킨\n\n이전으로 가려면 '9' 또는 '이전', \n처음으로 가려면 '0' 또는 '시작'\n을 입력해주세요.",
+				"text": "[메뉴판] \n원하시는 상세 메뉴의 번호나 이름을 입력하세요.\n\n1. 후라이드 치킨\n2. 양념치킨\n3. 간장치킨\n4. 반반(후라이드 + 양념) 치킨\n5. 두마리치킨\n6. 부위별치킨\n\n이전으로 가려면 '9' 또는 '이전', \n처음으로 가려면 '0' 또는 '시작'\n을 입력해주세요.('완료'를 입력하면 주문이 완료됩니다.)",
 				"buttons": [
 					{
-						"text": "사진으로보기(클릭!)",
+						"text": "메뉴 이미지 보기(클릭!)",
 						"url": "http://52.78.35.72/img/md_chicken.jpg"
 					}
 				],
@@ -368,15 +416,49 @@ var dialogs = [
 				"output": [
 					{
 						"kind": "Action",
-						"call": "추가주문상세"
+						"call": "추가주문상세",
+						"type": "Call"
 					}
 				],
 				"task": "numberMatch"
+			},
+			{
+				"name": "메뉴에서완료",
+				"id": "default45",
+				"filename": "default",
+				"input": [
+					{
+						"text": "완료"
+					}
+				],
+				"output": [
+					{
+						"kind": "Action",
+						"call": "주문완료",
+						"type": "Call"
+					}
+				]
+			},
+			{
+				"name": "메뉴에서주문",
+				"id": "default46",
+				"filename": "default",
+				"input": [
+					{
+						"if": "true"
+					}
+				],
+				"output": [
+					{
+						"kind": "Action",
+						"callChild": "주문하기"
+					}
+				]
 			}
 		],
 		"buttons": [
 			{
-				"text": "사진으로보기(클릭!)",
+				"text": "메뉴 이미지 보기(클릭!)",
 				"url": "http://52.78.35.72/img/md_chicken.jpg"
 			}
 		]
@@ -439,7 +521,7 @@ var dialogs = [
 						"type": "Call"
 					},
 					{
-						"text": "주소가\n\n+1+\n\n로 변경되었습니다.\n\n*처음으로 가려면 '시작',\n이전으로 가려면 '이전' 을 입력해주세요.",
+						"text": "주소가\n\n+inCurRaw+\n\n로 변경되었습니다.\n\n*주문을 중단하려면 '중단',\n이전으로 가려면 '이전' 을 입력해주세요.",
 						"kind": "Text"
 					}
 				],
@@ -491,7 +573,7 @@ var dialogs = [
 						"type": "Call"
 					},
 					{
-						"text": "핸드폰번호가\n\n+mobile+\n\n로 변경되었습니다.\n\n*처음으로 가려면 '시작',\n이전으로 가려면 '이전' 을 입력해주세요.",
+						"text": "핸드폰번호가\n\n+mobile+\n\n로 변경되었습니다.\n\n*주문을 중단하려면 '중단',\n이전으로 가려면 '이전' 을 입력해주세요.",
 						"kind": "Text"
 					}
 				],

@@ -22,7 +22,7 @@ exports.invokeRolesPolicies = function () {
       permissions: '*'
     }]
   }, {
-    roles: ['user'],
+    roles: ['enterprise'],
     allows: [{
       resources: '/api/bot-auths',
       permissions: ['get', 'post']
@@ -31,10 +31,10 @@ exports.invokeRolesPolicies = function () {
       permissions: ['get']
     }]
   }, {
-    roles: ['guest'],
+    roles: ['user'],
     allows: [{
       resources: '/api/bot-auths',
-      permissions: ['get']
+      permissions: ['get', 'post']
     }, {
       resources: '/api/bot-auths/:botAuthId',
       permissions: ['get']

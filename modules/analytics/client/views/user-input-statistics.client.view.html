@@ -14,23 +14,23 @@
                 <h2 class="panel-title text-center">조회 기준</h2>
             </header>
             <div class="panel-body" >
-                <div class="col-md-12 row">
+                <div class="col-md-12 row" style="margin: 10px">
                     <div class="col-md-3">
                         DATA 기준
                     </div>
                     <div class="col-md-9 row">
                         <span class="col-md-3">
-                            <input  type="radio" data-ng-model="date" value="month"> 월
+                            <input  type="radio" data-ng-model="quickDate" value="month"> 월
                         </span>
                         <span class="col-md-3">
-                            <input  type="radio" data-ng-model="date" value="week"> 주
+                            <input  type="radio" data-ng-model="quickDate" value="week"> 주
                         </span>
                         <span class="col-md-3">
-                            <input  type="radio" data-ng-model="date" value="day"> 일
+                            <input  type="radio" data-ng-model="quickDate" value="day"> 일
                         </span>
                     </div>
                 </div>
-                <div class="col-md-12 row">
+                <div class="col-md-12 row" style="margin: 10px">
                     <div class="col-md-3">
                         유형
                     </div>
@@ -39,43 +39,49 @@
                             <input  type="radio" data-ng-model="userType" value="total"> 전체
                         </span>
                         <span class="col-md-3">
-                            <input  type="radio" data-ng-model="userType" value="new"> 신규
+                            <input  type="radio" data-ng-model="userType" value="new" ng-disabled = "true"> 신규
                         </span>
                         <span class="col-md-3">
-                            <input  type="radio" data-ng-model="userType" value="revisit"> 재방문
+                            <input  type="radio" data-ng-model="userType" value="revisit" ng-disabled = "true"> 재방문
                         </span>
                     </div>
                 </div>
-                <div class="col-md-12 row">
-                    <div class="col-md-3">
-                        채널
-                    </div>
-                    <div class="col-md-9 row">
-                        <span class="col-md-3">
-                            <input  type="radio" data-ng-model="channel" value="total"> 전체
-                        </span>
-                        <span class="col-md-3">
-                            <input  type="radio" data-ng-model="channel" value="kakao"> 카카오
-                        </span>
-                        <span class="col-md-3">
-                            <input  type="radio" data-ng-model="channel" value="facebook"> 페이스북
-                        </span>
-                        <span class="col-md-3">
-                            <input  type="radio" data-ng-model="channel" value="navertalk"> 네이버톡톡
-                        </span>
+                <!--<div class="col-md-12 row">-->
+                    <!--<div class="col-md-3">-->
+                        <!--채널-->
+                    <!--</div>-->
+                    <!--<div class="col-md-9 row">-->
+                        <!--<span class="col-md-3">-->
+                            <!--<input  type="radio" data-ng-model="channel" value="total"> 전체-->
+                        <!--</span>-->
+                        <!--<span class="col-md-3">-->
+                            <!--<input  type="radio" data-ng-model="channel" value="kakao"> 카카오-->
+                        <!--</span>-->
+                        <!--<span class="col-md-3">-->
+                            <!--<input  type="radio" data-ng-model="channel" value="facebook"> 페이스북-->
+                        <!--</span>-->
+                        <!--<span class="col-md-3">-->
+                            <!--<input  type="radio" data-ng-model="channel" value="navertalk"> 네이버톡톡-->
+                        <!--</span>-->
 
-                    </div>
-                </div>
-                <div class="col-md-12 row">
+                    <!--</div>-->
+                <!--</div>-->
+                <div class="col-md-12 row" style="margin: 10px">
                     <div class="col-md-3">
                         기간
                     </div>
                     <div class="col-md-9 row">
                         <span class="col-md-9">
-                            {{startDate}} ~ {{endDate}}
+                            <div id="sandbox-container">
+                                <div class="input-daterange input-group" id="datepicker">
+                                    <input type="text" class="input-sm form-control" name="start" data-ng-model="date.start"/>
+                                    <span class="input-group-addon"> ~ </span>
+                                    <input type="text" class="input-sm form-control" name="end" data-ng-model="date.end"/>
+                                </div>
+                            </div>
                         </span>
                         <span class="col-md-3">
-                            <button type="button" class="btn btn-default" ng-click="test()">조회</button>
+                            <button type="button" class="btn btn-default" style="position: absolute;right: -40px" ng-click="update()">조회</button>
                         </span>
                     </div>
                 </div>
@@ -108,8 +114,15 @@
 
 </section>
 
-<script src="/lib/chart.js/dist/Chart.js"></script>
-
 <script>
-
+  $('#sandbox-container .input-daterange').datepicker({
+    language: "kr",
+    format: "yyyy/mm/dd",
+    todayBtn: "linked",
+    clearBtn: true,
+    orientation: "auto",
+    todayHighlight: true,
+    autoclose: true
+  })
 </script>
+<script src="/lib/chart.js/dist/Chart.js"></script>
