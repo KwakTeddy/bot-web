@@ -22,7 +22,7 @@ exports.invokeRolesPolicies = function () {
       permissions: '*'
     }]
   }, {
-    roles: ['user'],
+    roles: ['enterprise'],
     allows: [{
       resources: '/api/menu-navigations',
       permissions: ['get', 'post']
@@ -30,11 +30,12 @@ exports.invokeRolesPolicies = function () {
       resources: '/api/menu-navigations/:menuNavigationId',
       permissions: ['get']
     }]
-  }, {
-    roles: ['guest'],
+  }
+  , {
+    roles: ['user'],
     allows: [{
       resources: '/api/menu-navigations',
-      permissions: ['get']
+      permissions: ['get', 'post']
     }, {
       resources: '/api/menu-navigations/:menuNavigationId',
       permissions: ['get']
