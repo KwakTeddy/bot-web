@@ -434,7 +434,24 @@ var dialogs = [
 				"output": [
 					{
 						"kind": "Action",
-						"call": "주문완료"
+						"call": "주문완료",
+						"type": "Call"
+					}
+				]
+			},
+			{
+				"name": "메뉴에서주문",
+				"id": "default46",
+				"filename": "default",
+				"input": [
+					{
+						"if": "true"
+					}
+				],
+				"output": [
+					{
+						"kind": "Action",
+						"callChild": "주문하기"
 					}
 				]
 			}
