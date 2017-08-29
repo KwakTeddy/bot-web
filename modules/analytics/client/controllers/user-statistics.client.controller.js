@@ -96,14 +96,9 @@ angular.module("analytics").controller("UserStatisticsController", ['$scope', "$
       },
       plugins: [
         {
-          afterInit: function() {
-            document.getElementById('loading-screen').style.setProperty("display", "none", "important")
-          }
-        },
-        {
-          afterRender: function () {
-            document.getElementById('loading-screen').style.setProperty("display", "none", "important")
-          }
+           afterInit: function() {
+             document.getElementById('loading-screen').style.setProperty("display", "none", "important")
+           }
         }
       ]
     });

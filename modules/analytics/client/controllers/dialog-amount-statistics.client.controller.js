@@ -117,7 +117,14 @@ angular.module("analytics").controller("DialogAmountStatisticsController", ["$sc
             }
           }]
         }
-      }
+      },
+      plugins: [
+        {
+          afterInit: function() {
+            document.getElementById('loading-screen').style.setProperty("display", "none", "important")
+          }
+        }
+      ]
     });
     isFailBarChart = new Chart(isFailBarContext, {
       type: 'bar',
