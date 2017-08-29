@@ -33,6 +33,7 @@ angular.module("analytics").controller("UserInputStatisticsController", ["$scope
   var userInputCount = function () {
     $http.post('/api/user-input-statistics/' + $cookies.get("default_bot"), {date: $scope.date, channel: $scope.channel, limit: 10}).then(function (doc) {
        $scope.userInputUsageList = doc.data;
+      document.getElementById('loading-screen').style.setProperty("display", "none", "important")
     }, function (err) {
       console.log(err);
     });

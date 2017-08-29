@@ -72,7 +72,8 @@ angular.module("analytics").controller("SenarioUsageStatisticsController", ["$sc
         })
       }
       var result = [];
-      result.push.apply($scope.senarioUsageList, doc.data.senarioUsage)
+      result.push.apply($scope.senarioUsageList, doc.data.senarioUsage);
+      document.getElementById('loading-screen').style.setProperty("display", "none", "important")
     }, function (err) {
       console.log(err);
     });

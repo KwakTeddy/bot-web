@@ -189,7 +189,14 @@ angular.module('analytics').controller('DashboardController', ['$scope', 'Authen
                 }
               }]
             }
-          }
+          },
+          plugins: [
+            {
+              afterInit: function() {
+                document.getElementById('loading-screen').style.setProperty("display", "none", "important")
+              }
+            }
+          ]
         });
         var pieChart = new Chart(pieContext, {
           type: 'pie',
