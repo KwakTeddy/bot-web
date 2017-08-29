@@ -285,29 +285,22 @@ var sendMessage = {
         message += '결제방법: ' + context.dialog.pay + '\n';
         message += '요청사항: ' + context.dialog.request + '\n';
 
+        var mess = [];
+        mess[0] = message;
+
         if (message.length > 60) {
-            var mess = [];
             mess[0] = message.slice(0,60);
             mess[1] = message.slice(60,120);
         }
 
-        for(i=0; i<mess.length; i++) {
-            request.post(
-                'https://bot.moneybrain.ai/api/messages/sms/send',
-                // 'http://dev.moneybrain.ai:8443/api/messages/sms/send',
-                {json: {callbackPhone: "15777314", phone: "01092597716", message: mess[i]}},
-                function (error, response, body) {
-                    if (!error && response.statusCode == 200) {
-                        console.log(response);
-                        console.log(body);
-                    } else {
-                        // task._result = 'FAIL';
-                        // task._resultMessage = 'HTTP ERROR';
-                        console.log(error);
-                    }
-                }
-            );
-        }
+        // sendSMS("01026548343", mess[0]);
+        // sendSMS("01026548343", mess[1]);
+        sendSMS("01026548343", mess[0]);
+        // setTimeout(sendSMS("01092597716", mess[1]), 5000);
+
+        // for(i=0; i<mess.length; i++) {
+        //
+        // }
 
         // task.phone = "01092597716";
         // task.message = message;
@@ -318,7 +311,29 @@ var sendMessage = {
 
 
         callback(task,context);
+
+        setTimeout(sendSMS("01026548343", mess[1]), 5000);
     }
 };
 
 bot.setTask('sendMessage', sendMessage);
+
+
+
+function sendSMS(phone, message) {
+    request.post(
+        'https://bot.moneybrain.ai/api/messages/sms/send',
+        // 'http://dev.moneybrain.ai:8443/api/messages/sms/send',
+        {json: {callbackPhone: "15777314", phone: phone, message: message}},
+        function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                console.log(response);
+                console.log(body);
+            } else {
+                // task._result = 'FAIL';
+                // task._resultMessage = 'HTTP ERROR';
+                console.log(error);
+            }
+        }
+    );
+}
