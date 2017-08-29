@@ -8,14 +8,14 @@ var botAuthsPolicy = require('../policies/bot-auths.server.policy'),
 
 module.exports = function(app) {
   // Bot auths Routes
-  app.route('/api/bot-auths').all(botAuthsPolicy.isAllowed)
+  app.route('/api/bot-auths')//.all(botAuthsPolicy.isAllowed)
     .get(botAuths.list)
     .post(botAuths.create);
 
-  app.route('/api/bot-auths/getAuth').all(botAuthsPolicy.isAllowed)
+  app.route('/api/bot-auths/getAuth')//.all(botAuthsPolicy.isAllowed)
     .post(botAuths.getAuth);
 
-  app.route('/api/bot-auths/:botId/:userId').all(botAuthsPolicy.isAllowed)
+  app.route('/api/bot-auths/:botId/:userId')//.all(botAuthsPolicy.isAllowed)
     .get(botAuths.read)
     .put(botAuths.update)
     .delete(botAuths.delete);
