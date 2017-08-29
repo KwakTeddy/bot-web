@@ -269,7 +269,7 @@ function updateCacheBotUser() {
 
 // insert userdialog cache every minute
 setInterval(function() {
-  console.log('processing botuser cache check: ' + (new Date()));
+  // console.log('processing botuser cache check: ' + (new Date()));
 
   if (!botUserCacheLock && botUserCache.length > 0) {
     console.log('processing botuser cache: ' + botUserCache.length);

@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 var Media = mongoose.model('Media');
 var fs = require('fs');
 var config = require(path.resolve('config/config'));
+var loadbalancer = require(path.resolve('modules/bot/engine/loadbalancer/loadbalancer'));
 
 
 var util = require('util');
@@ -25,7 +26,7 @@ exports.keyboard = function (req, res) {
 
 exports.message = function (req, res) {
   console.log("kakao message");
-  console.log(JSON.stringify(req.body));
+  // console.log(JSON.stringify(req.body));
 
   if(req.body && req.body.user_key && req.body.content) {
     var from = req.body.user_key;
@@ -37,10 +38,19 @@ exports.message = function (req, res) {
       req.body.url = req.body.content;
       delete req.body.content;
     }
-    console.log(JSON.stringify(req.params));
-    chat.write('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
-      respondMessage(res, serverText, json)
-    });
+
+    // console.log(JSON.stringify(req.params));
+
+    if(loadbalancer.isUse() && loadbalancer.isMaster()) {
+      loadbalancer.balance('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
+        respondMessage(res, serverText, json)
+      });
+    } else {
+      chat.write('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
+        respondMessage(res, serverText, json)
+      });
+    }
+
   }
 };
 

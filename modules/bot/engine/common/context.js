@@ -5,9 +5,16 @@ var botModule = require(path.resolve('./config/lib/bot'));
 var dialog = require(path.resolve('modules/bot/action/common/dialog'));
 var utils = require(path.resolve('./modules/bot/action/common/utils'));
 var util = require('util');
+var config = require(path.resolve('./config/config'));
 
 var redis = require('redis');
-var cache = redis.createClient(6379,'127.0.0.1');
+var cache;
+// try {
+//   cache = redis.createClient(config.redis.port, config.redis.host);
+// } catch(e) {
+//
+// }
+
 
 exports.getContext = getContext;
 function getContext(botName, channel, user, options, callback) {

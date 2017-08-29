@@ -24,7 +24,11 @@ var mongoose = require('mongoose'),
   BotUser = mongoose.model('BotUser');
 
 var redis = require('redis');
-var cache = redis.createClient(6379,'127.0.0.1');
+var cache;
+// try {
+//   cache = redis.createClient(config.redis.port, config.redis.host);
+// } catch(e) {
+// }
 
 exports.write = write;
 function write(channel, from, to, text, json, successCallback, errorCallback, endCallback) {

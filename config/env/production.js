@@ -8,6 +8,15 @@ module.exports = {
     privateKey: './config/sslcerts/ssl.key',
     certificate: './config/sslcerts/ssl.crt'
   },
+  redis: {
+    host: '127.0.0.1',
+    port: 6379
+  },
+  loadBalance: {
+    use: process.env.useLoadBalance || false,
+    isMaster: process.env.isMaster || false,
+    isSlave: process.env.isSlave || false
+  },
   host: process.env.HOST || 'https://localhost',
   port: process.env.PORT || 443,
   db: {

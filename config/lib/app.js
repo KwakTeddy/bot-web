@@ -1,6 +1,7 @@
 'use strict';
 var path = require('path');
 var logger = require(path.resolve('./config/lib/logger'));
+var loadbalancer = require(path.resolve('modules/bot/engine/loadbalancer/loadbalancer'));
 
 process.binding('http_parser').HTTPParser = require('http-parser-js').HTTPParser;
 
@@ -59,6 +60,8 @@ module.exports.start = function start(callback) {
   // bot.loadBots();
 
   _this.init(function (app, db, config) {
+
+    if(config.loadBalance) loadbalancer.init();
 
     // Start the app by listening on <port>
     app.listen(config.port, function () {

@@ -219,8 +219,7 @@ exports.liveChat = function (req, res) {
 };
 
 
-
-var redis = require('redis');
+var config = require(path.resolve('./config/config'));
 var dialogCache = [];
 var dialoglogCache = [];
 var dialogCacheLock = false;
@@ -389,7 +388,7 @@ function updateCacheLog() {
 
 // insert userdialog cache every minute
 setInterval(function() {
-  console.log('processing userdialogs cache check: ' + (new Date()));
+  // console.log('processing userdialogs cache check: ' + (new Date()));
 
   if (!dialogCacheLock && dialogCache.length > 0) {
     console.log('processing userdialogs cache: ' + dialogCache.length);

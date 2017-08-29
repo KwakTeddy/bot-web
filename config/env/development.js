@@ -12,6 +12,15 @@ module.exports = {
     // Enable mongoose debug mode
     debug: process.env.MONGODB_DEBUG || false
   },
+  redis: {
+    host: '127.0.0.1',
+    port: 6379
+  },
+  loadBalance: {
+    use: process.env.useLoadBalance || false,
+    isMaster: process.env.isMaster || false,
+    isSlave: process.env.isSlave || false
+  },
   host: process.env.HOST || 'http://localhost',
   log: {
     level: process.env.LOG_LEVEL || 'debug',
