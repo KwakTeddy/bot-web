@@ -8,7 +8,6 @@ angular.module('analytics').controller('DashboardController', ['$scope', 'Authen
       start: "",
       end: ""
     };
-    $scope.quickDate = "month";
     $scope.userType = "total";
     $scope.channel = "total";
 
@@ -21,6 +20,22 @@ angular.module('analytics').controller('DashboardController', ['$scope', 'Authen
     $scope.isFailDialogCount = 0;
     $scope.isSuccessDialogCount = 0;
 
+    var color = {
+      background:{
+        kakao: 'rgba(251, 230, 0, 0.70)',
+        facebook: 'rgba(59, 89, 152, 0.70)',
+        navertalk: 'rgba(0, 199, 60, 0.70)',
+        success: "rgba(66, 133, 244, 0.70)",
+        fail: "rgba(221, 81, 68, 0.70)"
+      }, border:{
+        kakao: '#ede500',
+        facebook: '#29487d',
+        navertalk: '#00af35',
+        success: "rgb(51, 126, 248)",
+        fail: "rgb(147, 75, 61)"
+      }
+    };
+
     var userDialogCumulativeCount = function () {
       $http.get("/api/userDialogCumulativeCount/" + $cookies.get('default_bot')).then(function (doc) {
         $scope.userDialogCumulativeCount = doc.data
@@ -31,7 +46,6 @@ angular.module('analytics').controller('DashboardController', ['$scope', 'Authen
 
     var userCount = function (date, userType, channel, update) {
       $http.post("/api/userCount/" + $cookies.get('default_bot'), {date: date, userType: userType, channel: channel}).then(function (doc) {
-        console.log(doc);
         doc.data.forEach(function (data) {
           $scope.facebookUserCount += data.facebook;
           $scope.kakaoUserCount += data.kakao ;
@@ -45,14 +59,14 @@ angular.module('analytics').controller('DashboardController', ['$scope', 'Authen
           datasets: [{
             data: [],
             backgroundColor: [
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(75, 192, 192, 0.2)'
+              color.background.kakao,
+              color.background.facebook,
+              color.background.navertalk
             ],
             borderColor: [
-              'rgba(255, 206, 86, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(75, 192, 192, 1)'
+              color.border.kakao,
+              color.border.facebook,
+              color.border.navertalk
             ],
             borderWidth: 1
           }]
@@ -82,28 +96,32 @@ angular.module('analytics').controller('DashboardController', ['$scope', 'Authen
           datasets: [
             {
               label: "카카오톡",
-              borderColor: "rgb(55, 199, 132)",
+              backgroundColor: color.border.kakao,
+              borderColor: color.background.kakao,
               data: [],
               lineTension: 0,
               fill:false
             },
             {
               label: "페이스북",
-              borderColor: "rgb(255, 99, 132)",
+              backgroundColor: color.border.facebook,
+              borderColor: color.background.facebook,
               data: [],
               lineTension: 0,
               fill:false
             },
             {
               label: "네이버톡톡",
-              borderColor: "rgb(55, 99, 232)",
+              backgroundColor: color.border.navertalk,
+              borderColor: color.background.navertalk,
               data: [],
               lineTension: 0,
               fill:false
             },
             {
               label: "합계",
-              borderColor: "rgb(55, 99, 32)",
+              backgroundColor: "#444444",
+              borderColor: "#444444",
               data: [],
               lineTension: 0,
               fill:false
@@ -117,24 +135,24 @@ angular.module('analytics').controller('DashboardController', ['$scope', 'Authen
           datasets: [{
             data: [],
             backgroundColor: [
-              'rgba(255, 159, 64, 0.2)',
-              'rgba(255, 99, 132, 0.2)'
+              "#3367d6",
+              "#ca0a13"
             ],
             borderColor: [
-              'rgba(255, 159, 64, 1)',
-              'rgba(255,99,132,1)'
+              "rgb(51, 126, 248)",
+              "rgb(147, 75, 61)"
             ],
             borderWidth: 1
           }]
         };
 
         var array = [];
-        var startYear =  parseInt($scope.date.start.split('/')[0]);
-        var startMonth = parseInt($scope.date.start.split('/')[1]);
-        var startDay =   parseInt($scope.date.start.split('/')[2]);
-        var endYear =  parseInt($scope.date.end.split('/')[0]);
-        var endMonth = parseInt($scope.date.end.split('/')[1]);
-        var endDay =   parseInt($scope.date.end.split('/')[2]);
+        var startYear =  $scope.date.start.getFullYear();
+        var startMonth = $scope.date.start.getMonth() + 1;
+        var startDay =   $scope.date.start.getDate();
+        var endYear =  $scope.date.end.getFullYear();
+        var endMonth = $scope.date.end.getMonth() + 1;
+        var endDay =   $scope.date.end.getDate();
         var year;
         var month;
         var day = startDay;
@@ -193,7 +211,10 @@ angular.module('analytics').controller('DashboardController', ['$scope', 'Authen
           plugins: [
             {
               afterInit: function() {
-                document.getElementById('loading-screen').style.setProperty("display", "none", "important")
+                document.getElementsByName('dataLoading')[0].style.setProperty("display", "none", "important");
+                document.getElementsByName('dataLoading')[1].style.setProperty("display", "none", "important");
+                document.getElementsByName('dataLoading')[2].style.setProperty("display", "none", "important");
+                document.getElementsByName('dataLoading')[3].style.setProperty("display", "none", "important");
               }
             }
           ]
@@ -211,83 +232,47 @@ angular.module('analytics').controller('DashboardController', ['$scope', 'Authen
     };
 
     var senarioUsage = function (date, userType, channel, update) {
-      $http.post('/api/senarioUsage/' + $cookies.get("default_bot"), {limit : 5, date: date, userType: userType, channel: channel}).then(function (doc) {
+      $http.post('/api/senarioUsage/' + $cookies.get("default_bot"), {limit : 10, date: date, userType: userType, channel: channel}).then(function (doc) {
         $scope.senarioUsageList = doc.data.senarioUsage;
-        var context = document.getElementById("senarioUsage").getContext('2d');
-        var data = {
-          labels: [],
-          datasets: [{
-            data: [],
-            backgroundColor: [
-              'rgba(255, 159, 64, 0.2)',
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(25, 99, 132, 22)',
-              'rgba(25, 99, 12, 222)',
-              'rgba(25, 9, 132, 222)'
-            ],
-            borderColor: [
-              'rgba(255, 159, 64, 1)',
-              'rgba(255,99,132,1)',
-              'rgba(25,99,132,11)',
-              'rgba(25,99,12,111)',
-              'rgba(25,9,132,111)'
-            ]
-          }]
-        };
-        var options = {
-        };
-        doc.data.senarioUsage.forEach(function (senario) {
-          data.labels.push(senario._id.dialogName);
-          data.datasets[0].data.push(senario.total);
-        });
-        var myChart = new Chart(context, {
-          type: 'pie',
-          data: data,
-          options: options
-        });
+        // var context = document.getElementById("senarioUsage").getContext('2d');
+        // var data = {
+        //   labels: [],
+        //   datasets: [{
+        //     data: [],
+        //     backgroundColor: [
+        //       'rgba(255, 159, 64, 0.2)',
+        //       'rgba(255, 99, 132, 0.2)',
+        //       'rgba(25, 99, 132, 22)',
+        //       'rgba(25, 99, 12, 222)',
+        //       'rgba(25, 9, 132, 222)'
+        //     ],
+        //     borderColor: [
+        //       'rgba(255, 159, 64, 1)',
+        //       'rgba(255,99,132,1)',
+        //       'rgba(25,99,132,11)',
+        //       'rgba(25,99,12,111)',
+        //       'rgba(25,9,132,111)'
+        //     ]
+        //   }]
+        // };
+        // var options = {
+        // };
+        // doc.data.senarioUsage.forEach(function (senario) {
+        //   data.labels.push(senario._id.dialogName);
+        //   data.datasets[0].data.push(senario.total);
+        // });
+        // var myChart = new Chart(context, {
+        //   type: 'pie',
+        //   data: data,
+        //   options: options
+        // });
       }, function (err) {
         console.log(err);
       });
     };
 
-    // var dialogIsFail = function (date, userType, channel, update) {
-    //   $http.get("/api/dialog-isFail/" + $cookies.get("default_bot")).then(function (doc) {
-    //     doc.data.forEach(function (data) {
-    //       if(data.isFail) $scope.isFailDialogCount = data.count;
-    //       else            $scope.isSuccessDialogCount = data.count;
-    //     });
-    //     var context = document.getElementById("dialogSuccessRate").getContext('2d');
-    //     var data = {
-    //       labels: ["성공", "실패"],
-    //       datasets: [{
-    //         data: [$scope.isSuccessDialogCount, $scope.isFailDialogCount],
-    //         backgroundColor: [
-    //           'rgba(255, 159, 64, 0.2)',
-    //           'rgba(255, 99, 132, 0.2)',
-    //         ],
-    //         borderColor: [
-    //           'rgba(255, 159, 64, 1)',
-    //           'rgba(255,99,132,1)',
-    //         ],
-    //         borderWidth: 1
-    //       }]
-    //     };
-    //     var options = {
-    //     };
-    //     var myChart = new Chart(context, {
-    //       type: 'pie',
-    //       data: data,
-    //       options: options
-    //     });
-    //
-    //   }, function (err) {
-    //     console.log(err);
-    //   });
-    // };
-
     var failDailogs = function (date, userType, channel, update) {
-      $http.post('/api/failDailogs/' + $cookies.get("default_bot"), {date: $scope.date, channel: $scope.channel, limit: 10}).then(function (doc) {
-        console.log(doc);
+      $http.post('/api/failDailogs/' + $cookies.get("default_bot"), {date: date, channel: channel, limit: 10}).then(function (doc) {
         $scope.failDialogList = doc.data;
       }, function (err) {
         console.log(err);
@@ -295,44 +280,107 @@ angular.module('analytics').controller('DashboardController', ['$scope', 'Authen
     };
 
     var userInputCount = function (date, userType, channel, update) {
-      $http.post('/api/user-input-statistics/' + $cookies.get("default_bot"), {date: $scope.date, channel: $scope.channel, limit: 10}).then(function (doc) {
+      $http.post('/api/user-input-statistics/' + $cookies.get("default_bot"), {date: date, channel: channel, limit: 10}).then(function (doc) {
         $scope.userInputUsageList = doc.data;
       }, function (err) {
         console.log(err);
       });
     };
 
-    var formatDate = function (doc) {
-      var start = new Date();
-      var end = new Date();
-      if(doc == "month")     start.setMonth(end.getMonth() - 1);
-      else if(doc == "week") start.setDate(end.getDate() - 6);
-      $scope.date.start = start.getFullYear() + '/' + (start.getMonth() + 1) + '/' + start.getDate();
-      $scope.date.end = end.getFullYear() + '/' + (end.getMonth() +1 ) + '/' + end.getDate();
+    var formatDate = function (start, end) {
+      var date = {start: "", end: ""};
+      date.start = start.getFullYear() + '/' + (start.getMonth() +1) + '/' + start.getDate();
+      date.end = end.getFullYear() + '/' + (end.getMonth() +1) + '/' + end.getDate();
+      return date;
     };
 
-    $scope.$watch("quickDate", function (doc) {
-      formatDate(doc);
-    });
-
     $scope.init = function () {
-      formatDate($scope.quickDate);
-      userDialogCumulativeCount($scope.date, $scope.userType, $scope.channel, false);
-      userCount($scope.date, $scope.userType, $scope.channel, false);
-      dailyDialogUsage($scope.date, $scope.userType, $scope.channel, false);
-      failDailogs($scope.date, $scope.userType, $scope.channel, false);
-      senarioUsage($scope.date, $scope.userType, $scope.channel, false);
-      userInputCount($scope.date, $scope.userType, $scope.channel, false);
+      userDialogCumulativeCount(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, false);
+      userCount(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, false);
+      failDailogs(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, false);
+      senarioUsage(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, false);
+      userInputCount(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, false);
+      dailyDialogUsage(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, false);
     };
 
     $scope.update = function () {
-      userDialogCumulativeCount($scope.date, $scope.userType, $scope.channel, true);
-      userCount($scope.date, $scope.userType, $scope.channel, true);
-      dailyDialogUsage($scope.date, $scope.userType, $scope.channel, true);
-      failDailogs($scope.date, $scope.userType, $scope.channel, true);
-      senarioUsage($scope.date, $scope.userType, $scope.channel, true);
-      userInputCount($scope.date, $scope.userType, $scope.channel, true);
+      document.getElementsByName('dataLoading')[0].style.setProperty("display", "block", "important");
+      document.getElementsByName('dataLoading')[1].style.setProperty("display", "block", "important");
+      document.getElementsByName('dataLoading')[2].style.setProperty("display", "block", "important");
+      document.getElementsByName('dataLoading')[3].style.setProperty("display", "block", "important");
+      userDialogCumulativeCount(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, true);
+      userCount(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, true);
+      failDailogs(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, true);
+      senarioUsage(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, true);
+      userInputCount(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, true);
+      dailyDialogUsage(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, true);
     };
+
+    $(function() {
+
+      var start = moment().subtract(29, 'days');
+      var end = moment();
+
+      function cb(start, end) {
+        $scope.date.start = start._d;
+        $scope.date.end = end._d;
+        $('#reportrange span').html(start.format('YYYY/MM/DD') + ' - ' + end.format('YYYY/MM/DD'));
+        if($scope.first) $scope.update();
+        $scope.first = true;
+      }
+
+      $('#reportrange').daterangepicker({
+        parentEl: "#date-container",
+        startDate: start,
+        endDate: end,
+        opens: "left",
+        minDate : moment().subtract(62, 'days'),
+        maxDate : moment().endOf('month'),
+        ranges: {
+          '오늘': [moment(), moment()],
+          '어제': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          '지난 7 일': [moment().subtract(6, 'days'), moment()],
+          '지난 30 일': [moment().subtract(29, 'days'), moment()],
+          '이번 달': [moment().startOf('month'), moment().endOf('month')],
+          '지난 달': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        locale: {
+          "format": "YYYY/MM/DD",
+          "separator": " - ",
+          "applyLabel": "적용",
+          "cancelLabel": "취소",
+          "fromLabel": "부터",
+          "toLabel": "까지",
+          "customRangeLabel": "날짜 직접 선택",
+          "weekLabel": "주",
+          "daysOfWeek": [
+            "일",
+            "월",
+            "화",
+            "수",
+            "목",
+            "금",
+            "토"
+          ],
+          monthNames: [
+            "1월",
+            "2월",
+            "3월",
+            "4월",
+            "5월",
+            "6월",
+            "7월",
+            "8월",
+            "9월",
+            "10월",
+            "11월",
+            "12월"
+          ],
+          "firstDay": 1
+        }
+      }, cb);
+      cb(start, end);
+    });
 
   }
 ]);

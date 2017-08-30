@@ -257,7 +257,6 @@ angular.module("analytics").controller("DialogAmountStatisticsController", ["$sc
   };
 
   $scope.update = function () {
-    console.log(123123)
     document.getElementsByName('dataLoading')[0].style.setProperty("display", "block", "important");
     document.getElementsByName('dataLoading')[1].style.setProperty("display", "block", "important");
     document.getElementsByName('dataLoading')[2].style.setProperty("display", "block", "important");
