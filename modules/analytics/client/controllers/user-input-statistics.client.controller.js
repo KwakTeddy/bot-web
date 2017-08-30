@@ -8,7 +8,7 @@ angular.module("analytics").controller("UserInputStatisticsController", ["$scope
   $scope.quickDate = "month";
   $scope.userType = "total";
   $scope.channel = "total";
-
+  var dataBackup;
   var formatDate = function (doc) {
     var start = new Date();
     var end = new Date();
@@ -31,9 +31,30 @@ angular.module("analytics").controller("UserInputStatisticsController", ["$scope
   };
 
   var userInputCount = function () {
-    $http.post('/api/user-input-statistics/' + $cookies.get("default_bot"), {date: $scope.date, channel: $scope.channel, limit: 10}).then(function (doc) {
-       $scope.userInputUsageList = doc.data;
+    $http.post('/api/user-input-statistics/' + $cookies.get("default_bot"), {date: $scope.date, channel: $scope.channel, limit: 100}).then(function (doc) {
+      dataBackup = angular.copy(doc.data);
+      $scope.userInputUsageList = doc.data;
       document.getElementById('loading-screen').style.setProperty("display", "none", "important")
+    }, function (err) {
+      console.log(err);
+    });
+  };
+
+  $scope.exelDownload = function () {
+    dataBackup.forEach(function (doc) {
+      Object.keys(doc._id).forEach(function (key) {
+        doc[key] = doc._id[key]
+      });
+      delete doc._id;
+    });
+    var exelDataTemplate = {
+      filename: "사용자 입력 통계",
+      sheetName: "사용자 입력 통계",
+      columnOrder: ["dialog", "count"],
+      orderedData: dataBackup
+    };
+    $http.post('/api/analytics/statistics/exel-download/' + $cookies.get("default_bot"), {data: exelDataTemplate}).then(function (doc) {
+
     }, function (err) {
       console.log(err);
     });

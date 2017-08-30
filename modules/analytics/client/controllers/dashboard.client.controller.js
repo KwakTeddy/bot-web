@@ -175,8 +175,8 @@ angular.module('analytics').controller('DashboardController', ['$scope', 'Authen
             data.datasets[3].data.push(0);
           }
         });
-        pieData.datasets[0].data.push($scope.isFailDialogCount);
         pieData.datasets[0].data.push($scope.isSuccessDialogCount);
+        pieData.datasets[0].data.push($scope.isFailDialogCount);
 
         var myChart = new Chart(context, {
           type: 'line',

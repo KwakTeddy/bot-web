@@ -128,8 +128,8 @@ angular.module("analytics").controller("UserStatisticsController", ['$scope', "$
       var endYear =  parseInt($scope.date.end.split('/')[0]);
       var endMonth = parseInt($scope.date.end.split('/')[1]);
       var endDay =   parseInt($scope.date.end.split('/')[2]);
-      var year;
-      var month;
+      var year = startYear;
+      var month = startMonth;
       var day = startDay;
 
       for(var i = startDay;((day != endDay) || (month != endMonth) ||  (year != endYear)) && i<100; i++){
@@ -206,35 +206,6 @@ angular.module("analytics").controller("UserStatisticsController", ['$scope', "$
   };
 
   $scope.exelDownload = function () {
-    console.log(dataBackup);
-    // dataBackup.forEach(function (doc) {
-    //   Object.keys(doc).forEach(function (key) {
-    //     if(typeof doc[key] == "Object"){
-    //       if(Array.isArray(dataBackup[doc])){
-    //
-    //       }else {
-    //         Object.keys(doc[key]).forEach(function (_key) {
-    //           doc[_key] = doc[key][_key]
-    //         })
-    //       }
-    //     }
-    //   });
-    // });
-    //
-    //
-    //
-    // Object.keys(dataBackup).forEach(function (doc) {
-    //   if(typeof dataBackup[doc] == "Object"){
-    //     if(Array.isArray(dataBackup[doc])){
-    //       dataBackup[doc].forEach(function () {
-    //
-    //       })
-    //     }else {
-    //
-    //     }
-    //   }
-    // });
-
     dataBackup.forEach(function (doc) {
       Object.keys(doc._id).forEach(function (key) {
         doc[key] = doc._id[key]
