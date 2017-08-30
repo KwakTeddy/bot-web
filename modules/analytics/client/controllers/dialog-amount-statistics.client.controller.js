@@ -259,8 +259,8 @@ angular.module("analytics").controller("DialogAmountStatisticsController", ["$sc
   };
 
   $scope.exelDownload = function () {
-
-    dataBackup.forEach(function (doc) {
+    var dataBackup1 = angular.copy(dataBackup);
+    dataBackup1.forEach(function (doc) {
       Object.keys(doc._id).forEach(function (key) {
         doc[key] = doc._id[key]
       });
@@ -270,7 +270,7 @@ angular.module("analytics").controller("DialogAmountStatisticsController", ["$sc
       filename: "기간별 이용자 통계",
       sheetName: "기간별 이용자 통계",
       columnOrder: ["year", "month", "day", "kakao", "facebook","navertalk", "total", "fail"],
-      orderedData: dataBackup
+      orderedData: dataBackup1
     };
 
     $http.post('/api/analytics/statistics/exel-download/' + $cookies.get("default_bot"), {data: exelDataTemplate}).then(function (doc) {

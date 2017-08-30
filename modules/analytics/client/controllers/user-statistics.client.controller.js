@@ -206,7 +206,8 @@ angular.module("analytics").controller("UserStatisticsController", ['$scope', "$
   };
 
   $scope.exelDownload = function () {
-    dataBackup.forEach(function (doc) {
+    var dataBackup1 = angular.copy(dataBackup);
+    dataBackup1.forEach(function (doc) {
       Object.keys(doc._id).forEach(function (key) {
         doc[key] = doc._id[key]
       });
@@ -216,7 +217,7 @@ angular.module("analytics").controller("UserStatisticsController", ['$scope', "$
       filename: "사용자 통계",
       sheetName: "사용자 통계",
       columnOrder: ["year", "month", "day", "kakao", "facebook","navertalk", "total"],
-      orderedData: dataBackup
+      orderedData: dataBackup1
     };
     console.log(exelDataTemplate);
 
