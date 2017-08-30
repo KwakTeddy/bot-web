@@ -7,7 +7,8 @@ module.exports = {
         'public/lib/bootstrap/dist/css/bootstrap.css',
         'public/lib/bootstrap/dist/css/bootstrap-theme.css',
         'public/lib/angular-ui-select/dist/select.css',
-        'public/lib/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css'
+        // 'public/lib/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css',
+        // 'public/lib/bootstrap-daterangepicker/daterangepicker.css'
       ],
       js: [
         'public/lib/ionic/js/ionic.bundle.js',
@@ -38,8 +39,8 @@ module.exports = {
         'public/lib/angular-pnotify/src/angular-pnotify.js',
         'public/lib/ment.io/dist/mentio.js',
         'public/lib/innersvg-polyfill/innersvg.js',
-        'public/lib/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
-        'public/lib/bootstrap-datepicker/dist/locales/bootstrap-datepicker.kr.min.js'
+        'public/lib/moment/moment.js',
+        'public/lib/bootstrap-daterangepicker/daterangepicker.js'
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
     },

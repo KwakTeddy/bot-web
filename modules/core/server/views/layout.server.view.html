@@ -73,6 +73,8 @@
   <link rel="stylesheet" href="/lib/pnotify/dist/pnotify.css">
   <link rel="stylesheet" href="/lib/pnotify/dist/pnotify.buttons.css">
 
+  <link rel="stylesheet" href='/lib/bootstrap-daterangepicker/daterangepicker.css'>
+
   <style>
     @keyframes blink {
       0% { opacity: 1; }
@@ -709,7 +711,7 @@
 
     <!--<section id="main" role="main" class="content-body" style="overflow: inherit">-->
     <section id="main" role="main" class="content-body" style="overflow: scroll;">
-      {% block content %}{% endblock %}
+        {% block content %}{% endblock %}
     </section>
 
     <div id="intent-button" class="intent-button" onClick="javascript: showIntentPanel();" >분석</div>
