@@ -372,42 +372,53 @@ exports.respondMessage = respondMessage;
  *
  */
 function sendTextMessage(recipientId, text, task, token) {
-  if(text.length > 640){
-    var subtext = text.substring(0, 639);
-    var buttons = [{
-      "type":"web_url",
-      "url": config.host,
-      "title":"전문 보기"
-    }];
-
-    var messageData = {
-      recipient: {
-        id: recipientId
-      },
-      message: {
-        attachment: {
-          type: "template",
-          payload: {
-            template_type: "button",
-            text: subtext,
-            buttons: buttons
-          }
-        }
-      }
-    };
-
-
-  }else {
-    var messageData = {
-      recipient: {
-        id: recipientId
-      },
-      message: {
-        text: text
-      }
-    };
-    callSendAPI(messageData, token);
-  }
+    if(text.length > 640){
+        var subtext = text.substring(0, 639);
+        var buttons = [{
+            "type":"web_url",
+            "url": config.host + '/facebookOvertext/',
+            "title":"전문 보기"
+        }];
+        var messageData = {
+            recipient: {
+                id: recipientId
+            },
+            message: {
+                attachment: {
+                    type: "template",
+                    payload: {
+                        template_type: "button",
+                        text: subtext,
+                        buttons: buttons
+                    }
+                }
+            }
+        };
+        crypto.randomBytes(20, function (err, buffer) {
+            var index = buffer.toString('hex');
+            buttons[0].url = buttons[0].url + index;
+            var overTextLink = new OverTextLink();
+            overTextLink['text'] = text;
+            overTextLink['index'] = index;
+            overTextLink.save(function (err) {
+                if(err){
+                    console.log(err)
+                }else {
+                    callSendAPI(messageData, token);
+                }
+            })
+        });
+    }else {
+        var messageData = {
+            recipient: {
+                id: recipientId
+            },
+            message: {
+                text: text
+            }
+        };
+        callSendAPI(messageData, token);
+    }
 }
 
 
