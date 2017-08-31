@@ -346,6 +346,9 @@ function addDialog(inText, outText, isFail, dialog, context, callback) {
     //   updateCacheLog();
     // }
 
+    var m = process.memoryUsage();
+    console.log('Memory: ' + m.heapUsed + '/' + m.heapTotal + '=' + m.heapUsed/m.heapTotal);
+
     callback();
 
   }
