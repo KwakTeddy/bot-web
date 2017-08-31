@@ -2,7 +2,7 @@ var async = require('async');
 var request = require('request');
 
 
-var host = '13.124.210.218';
+var host = '13.124.127.166';
 var bot = 'Shinhancard';
 var user = 'QRtjQoQse8CX';
 
@@ -33,7 +33,7 @@ var _request = function(json, _ecb, _cb) {
     if (error) {
       errorCount ++;
       console.log('response: ' + total + '/' + numOfThread*texts.length*numOfRepeat + ', error= ' + errorCount + ', ' + responseTime + 'ms ' + json.content + ' error=' + error.code);
-      _ecb(true);
+      if(_ecb) _ecb(true);
     }
     else {
       console.log('response: ' + total + '/' + numOfThread*texts.length*numOfRepeat + ', error= ' + errorCount + ', ' + responseTime + 'ms ' + json.content/* + ' ' + body*/);
@@ -63,9 +63,13 @@ function stress(user1, cb) {
         function(callback2) {
           var json = {"user_key": user1, "type": "text", "content": texts[textId++]};
           setTimeout(function() {
+            // _request(json, function() {
+            //   callback2();
+            // }, callback2);
+
             _request(json, function() {
-              callback2();
-            }, callback2);
+            }, null);
+            callback2()
           } , requestInterval);
         },
 
