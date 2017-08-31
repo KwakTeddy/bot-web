@@ -120,13 +120,13 @@ function balance(channel, user, bot, text, json, callback) {
         }
       } else {
         console.log("Unable to send message.");
-        console.log(JSON.stringify(response.body.error));
+        // console.log(JSON.stringify(response.body.error));
         console.log(error);
 
         for(var i = 0; i < servers.length; i++) {
           if(servers[i].server == server) servers[i].fail++;
         }
-        callback(JSON.stringify(response.body.error));
+        callback(JSON.stringify(error));
       }
     });
   };
