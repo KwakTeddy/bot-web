@@ -8,8 +8,7 @@ var FAIL_OUT = 100;
 var SERVER_UPDATE_INTERVAL = 60;
 
 var servers = [
-  // {server: config.host + ':' + config.port, count: 0, fail: 0},
-  {server: config.host + ':3000', count: 0, fail: 0}
+  {server: config.host + ':' + config.port, count: 0, fail: 0}
 ];
 
 var bUse = false;
@@ -83,7 +82,11 @@ function init() {
   bSlave = config.loadBalance.isSlave;
 
   if(bUse) {
-    cache = redis.createClient(config.redis.port, config.redis.host);
+    try {
+      cache = redis.createClient(config.redis.port, config.redis.host);
+    } catch(e) {
+
+    }
   }
 
   if(bUse && bSlave) {
@@ -135,7 +138,7 @@ function balance(channel, user, bot, text, json, callback) {
     text: text
   };
 
-  if(cache) {
+  if(cache && cache.connected) {
     try {
       cache.get(channel + user, function (err, data) {
         server = data;
