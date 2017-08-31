@@ -2,7 +2,7 @@ var async = require('async');
 var request = require('request');
 
 
-var host = '13.124.127.166';
+var host = (process.argv[2] || 'localhost');
 var bot = 'Shinhancard';
 var user = 'QRtjQoQse8CX';
 
@@ -12,7 +12,7 @@ var texts = [
   "신한 FAN 가입"
 ];
 
-var numOfThread = (process.argv[2] || 10), countOfThread = 0, numOfRepeat = (process.argv[3] ||  10), requestInterval = (process.argv[4] || 100), total = 0, totalTime = 0, errorCount = 0;
+var numOfThread = (process.argv[3] || 10), countOfThread = 0, numOfRepeat = (process.argv[4] ||  10), requestInterval = (process.argv[5] || 100), total = 0, totalTime = 0, errorCount = 0;
 var _request = function(json, _ecb, _cb) {
   var start1 = new Date();
   // console.log('request: ' + total + '/' + numOfThread*texts.length*numOfRepeat + ' ' + json.content);
