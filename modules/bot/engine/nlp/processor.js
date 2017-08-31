@@ -11,8 +11,8 @@ java.classpath.push(path.resolve(__dirname, '../../../../external_modules/twitte
 java.classpath.push(path.resolve(__dirname, '../../../../external_modules/korean-text-3.0.jar'));
 
 
-java.options.push('-Xmx1024m');
 java.options.push('-Xmx2048m');
+java.options.push('-Xmx4096m');
 
 var processor = function(options) {
   var procBuilder;
