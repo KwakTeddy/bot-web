@@ -65,13 +65,13 @@ function stress(user1, cb) {
         function(callback2) {
           var json = {"user_key": user1, "type": "text", "content": texts[textId++]};
           setTimeout(function() {
-            _request(json, function() {
-              callback2();
-            }, callback2);
-
             // _request(json, function() {
-            // }, null);
-            // callback2()
+            //   callback2();
+            // }, callback2);
+
+            _request(json, function() {
+            }, null);
+            callback2()
           } , requestInterval);
         },
 
