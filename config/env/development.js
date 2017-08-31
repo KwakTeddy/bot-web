@@ -13,8 +13,8 @@ module.exports = {
         readPreference: "secondaryPreferred"
       },
       replset: {
-        rs_name: 'rs0'
-        // debug: true
+        rs_name: 'rs0',
+        debug: true
       }
     },
     // Enable mongoose debug mode
