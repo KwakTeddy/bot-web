@@ -10,7 +10,9 @@ java.classpath.push(path.resolve(__dirname, '../../../../external_modules/scala-
 java.classpath.push(path.resolve(__dirname, '../../../../external_modules/twitter-text-1.11.1.jar'));
 java.classpath.push(path.resolve(__dirname, '../../../../external_modules/korean-text-3.0.jar'));
 
-java.options.push('-Xmx4096m');
+
+java.options.push('-Xmx1024m');
+java.options.push('-Xmx2048m');
 
 var processor = function(options) {
   var procBuilder;
