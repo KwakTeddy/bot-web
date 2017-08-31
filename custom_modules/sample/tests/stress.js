@@ -19,6 +19,7 @@ var _request = function(json, _ecb, _cb) {
 
   request.post({
     url: 'http://' + host + ':3000/kakao/' + bot + '/message',
+    'pool.maxSockets': 'Inifinity',
     headers: {
       'Accept': '*/*',
       'Cache-Control': 'no-cache',
@@ -32,7 +33,6 @@ var _request = function(json, _ecb, _cb) {
     total++;
     if (error) {
       errorCount ++;
-      console.log(error);
       console.log('response: ' + total + '/' + numOfThread*texts.length*numOfRepeat + ', error= ' + errorCount + ', ' + responseTime + 'ms ' + json.content + ' error=' + error.code);
       if(_ecb) _ecb(true);
     }
