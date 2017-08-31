@@ -5,76 +5,87 @@
     <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
   </div>
 </header>
-<!-- start: page -->
 
 <section class="panel" data-ng-init="init()">
-	<div class="row" >
-		<div class="col-md-12" style="display: flex">
-			<div style="flex: 1;" >
-				<div class="panel-body">
-					<h6>대화량</h6>
-					<h4>{{totalDialogUsage | number:0}} 회</h4>
+	<div class="row" style="margin-bottom: 20px;margin-top: 20px">
+		<div class="col-md-12">
+			<div class="panel-body" style="display: flex">
+				<div name="dataLoading" style="background: white;position: absolute; top: 0;left: 0;height: 100%;width: 100%;z-index: 99999;opacity: 1; transition: opacity .5s ease">
+					<div class="logo" style="display: block;width: 80px;height: 80px;background-repeat: no-repeat;background-image: url(images/loading_icon3.gif);background-size: contain;position:absolute; top: 50%;left: 50%;margin: -40px 0 0 -40px; animation: blink normal 2s infinite ease-in-out"></div>
 				</div>
-			</div>
-			<div style="flex: 1" >
-				<div class="panel-body">
-					<h6>이용자</h6>
-					<h4>{{totalUserCount| number:0}} 명</h4>
+				<div style="flex: 1;display: flex;align-items: center;justify-content: center" >
+					<h4>대화량</h4>&nbsp;&nbsp;
+					<h4>{{totalDialogUsage | number:0}}회</h4>
 				</div>
-			</div>
-			<div style="flex: 1" >
-				<div class="panel-body">
-					<h6>이용자당 평균대화</h6>
-					<h4>{{totalDialogUsage/totalUserCount| number: 2}} 회</h4>
+				<div style="flex: 1;display: flex;align-items: center;justify-content: center" >
+					<h4>이용자</h4>&nbsp;&nbsp;
+					<h4>{{totalUserCount| number:0}}명</h4>
 				</div>
-			</div>
-			<div style="flex: 1" >
-				<div class="panel-body">
-					<h6>누적 대화량</h6>
-					<h4>{{userDialogCumulativeCount| number:0}} 회</h4>
+				<div style="flex: 1;display: flex;align-items: center;justify-content: center" >
+					<h4>이용자당 평균대화</h4>&nbsp;&nbsp;
+					<h4>{{totalDialogUsage/totalUserCount| number: 2}}회</h4>
+				</div>
+				<div style="flex: 1;display: flex;align-items: center;justify-content: center" >
+					<h4>누적 대화량</h4>&nbsp;&nbsp;
+					<h4>{{userDialogCumulativeCount| number:0}}회</h4>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="row" >
+	<div class="row" style="margin-bottom: 20px">
 		<div class="col-md-12">
-			<header class="panel-heading">
+			<header class="panel-heading" style="background-color: white">
 				<h2 class="panel-title text-center">일자별 대화량</h2>
 			</header>
 			<div class="panel-body" >
+				<div name="dataLoading" style="background: white;position: absolute; top: 0;left: 0;height: 100%;width: 100%;z-index: 99999;opacity: 1; transition: opacity .5s ease">
+					<div class="logo" style="display: block;width: 80px;height: 80px;background-repeat: no-repeat;background-image: url(images/loading_icon3.gif);background-size: contain;position:absolute; top: 50%;left: 50%;margin: -40px 0 0 -40px; animation: blink normal 2s infinite ease-in-out"></div>
+				</div>
 				<div>
 					<canvas id="dailyDialogUsage" width="400" height="200"></canvas>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="row" >
-		<div class="col-md-6" >
-			<header class="panel-heading">
-				<h2 class="panel-title text-center">채널별 이용자 분포</h2>
-			</header>
-			<div class="panel-body">
-				<canvas id="botUserByChannel" width="400" height="250"></canvas>
+	<div class="row" style="margin-bottom: 20px">
+		<div class="col-md-12" style="display: flex">
+			<div style="flex: 1">
+				<header class="panel-heading" style="background-color: white">
+					<h2 class="panel-title text-center">채널별 이용자 분포</h2>
+				</header>
+				<div class="panel-body">
+					<div name="dataLoading" style="background: white;position: absolute; top: 0;left: 0;height: 100%;width: 100%;z-index: 99999;opacity: 1; transition: opacity .5s ease">
+						<div class="logo" style="display: block;width: 80px;height: 80px;background-repeat: no-repeat;background-image: url(images/loading_icon3.gif);background-size: contain;position:absolute; top: 50%;left: 50%;margin: -40px 0 0 -40px; animation: blink normal 2s infinite ease-in-out"></div>
+					</div>
+					<div>
+						<canvas id="botUserByChannel" width="300" height="250"></canvas>
+					</div>
+				</div>
 			</div>
-		</div>
-		<div class="col-md-6" >
-			<header class="panel-heading">
-				<h2 class="panel-title text-center">대화 성공률</h2>
-			</header>
-			<div class="panel-body">
-				<canvas id="dialogSuccessRate" width="400" height="250"></canvas>
+			<div style="flex: 1">
+				<header class="panel-heading" style="background-color: white">
+					<h2 class="panel-title text-center">대화 성공률</h2>
+				</header>
+				<div class="panel-body">
+					<div>
+						<canvas id="dialogSuccessRate" width="300" height="250"></canvas>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 
 	<div class="row" >
-		<div class="col-md-6">
-			<div class="row">
-				<div class="col-md-6" >
-					<header class="panel-heading">
+		<div class="col-md-12" style="display: flex">
+			<div style="flex: 1">
+				<div style="height: 100%">
+					<header class="panel-heading" style="background-color: white">
 						<h2 class="panel-title text-center">사용자 입력 top</h2>
 					</header>
-					<div class="panel-body" style="overflow: scroll">
+					<div class="panel-body">
+						<div name="dataLoading" style="background: white;position: absolute; top: 0;left: 0;height: 100%;width: 100%;z-index: 99999;opacity: 1; transition: opacity .5s ease">
+							<div class="logo" style="display: block;width: 80px;height: 80px;background-repeat: no-repeat;background-image: url(images/loading_icon3.gif);background-size: contain;position:absolute; top: 50%;left: 50%;margin: -40px 0 0 -40px; animation: blink normal 2s infinite ease-in-out"></div>
+						</div>
 						<table class="table table-striped mb-none">
 							<thead>
 							<tr>
@@ -91,11 +102,13 @@
 						</table>
 					</div>
 				</div>
-				<div class="col-md-6" >
-					<header class="panel-heading">
+			</div>
+			<div style="flex: 1">
+				<div style="height: 100%">
+					<header class="panel-heading" style="background-color: white">
 						<h2 class="panel-title text-center">대화 실패 top</h2>
 					</header>
-					<div class="panel-body" style="overflow: scroll">
+					<div class="panel-body">
 						<table class="table table-striped mb-none">
 							<thead>
 							<tr>
@@ -113,17 +126,12 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="col-md-6" >
-			<header class="panel-heading">
-				<h2 class="panel-title text-center">시나리오 사용량</h2>
-			</header>
-			<div class="panel-body">
-				<div class="row">
-					<div class="col-md-6">
-						<canvas id="senarioUsage" width="400"></canvas>
-					</div>
-					<div class="col-md-6">
+			<div style="flex: 1">
+				<div style="height: 100%">
+					<header class="panel-heading" style="background-color: white">
+						<h2 class="panel-title text-center">시나리오 사용량</h2>
+					</header>
+					<div class="panel-body">
 						<table class="table table-striped mb-none">
 							<thead>
 							<tr>

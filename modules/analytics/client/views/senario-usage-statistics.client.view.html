@@ -1,5 +1,5 @@
 <header class="page-header">
-    <h2>대화량</h2>
+    <h2>시나리오 사용 통계</h2>
 
     <div class="right-wrapper pull-right">
         <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
@@ -10,91 +10,30 @@
 <section class="panel" data-ng-init="init()">
     <div class="row" >
         <div class="col-md-12">
-            <header class="panel-heading">
-                <h2 class="panel-title text-center">조회 기준</h2>
-            </header>
-            <div class="panel-body" >
-                <div class="col-md-12 row" style="margin: 10px">
-                    <div class="col-md-3">
-                        DATA 기준
+            <div style="display: flex;margin-bottom: 20px">
+                <span style="flex: 5"></span>
+                <span class="btn btn-default" style="flex: 2; display: flex; align-items: center; justify-content: center;cursor: pointer" ng-click="exelDownload('dailyUser')">
+                    <a >Exel 다운로드
+                    </a>
+                </span>
+                <span id="date-container" style="flex: 3">
+                    <div id="reportrange" class="pull-right text-center" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%; border-radius: 5px">
+                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                        <span style="color: black"></span> <b class="caret"></b>
                     </div>
-                    <div class="col-md-9 row">
-                        <span class="col-md-3">
-                            <input  type="radio" data-ng-model="quickDate" value="month"> 월
-                        </span>
-                        <span class="col-md-3">
-                            <input  type="radio" data-ng-model="quickDate" value="week"> 주
-                        </span>
-                        <span class="col-md-3">
-                            <input  type="radio" data-ng-model="quickDate" value="day"> 일
-                        </span>
-                    </div>
-                </div>
-                <div class="col-md-12 row" style="margin: 10px">
-                    <div class="col-md-3">
-                        유형
-                    </div>
-                    <div class="col-md-9 row">
-                        <span class="col-md-3">
-                            <input  type="radio" data-ng-model="userType" value="total"> 전체
-                        </span>
-                        <span class="col-md-3">
-                            <input  type="radio" data-ng-model="userType" value="new" ng-disabled="true"> 신규
-                        </span>
-                        <span class="col-md-3">
-                            <input  type="radio" data-ng-model="userType" value="revisit" ng-disabled="true"> 재방문
-                        </span>
-                    </div>
-                </div>
-                <!--<div class="col-md-12 row">-->
-                    <!--<div class="col-md-3">-->
-                        <!--채널-->
-                    <!--</div>-->
-                    <!--<div class="col-md-9 row">-->
-                        <!--<span class="col-md-3">-->
-                            <!--<input  type="radio" data-ng-model="channel" value="total"> 전체-->
-                        <!--</span>-->
-                        <!--<span class="col-md-3">-->
-                            <!--<input  type="radio" data-ng-model="channel" value="kakao"> 카카오-->
-                        <!--</span>-->
-                        <!--<span class="col-md-3">-->
-                            <!--<input  type="radio" data-ng-model="channel" value="facebook"> 페이스북-->
-                        <!--</span>-->
-                        <!--<span class="col-md-3">-->
-                            <!--<input  type="radio" data-ng-model="channel" value="navertalk"> 네이버톡톡-->
-                        <!--</span>-->
-
-                    <!--</div>-->
-                <!--</div>-->
-                <div class="col-md-12 row" style="margin: 10px">
-                    <div class="col-md-3">
-                        기간
-                    </div>
-                    <div class="col-md-9 row">
-                        <span class="col-md-9">
-                            <div id="sandbox-container">
-                                <div class="input-daterange input-group" id="datepicker">
-                                    <input type="text" class="input-sm form-control" name="start" data-ng-model="date.start"/>
-                                    <span class="input-group-addon"> ~ </span>
-                                    <input type="text" class="input-sm form-control" name="end" data-ng-model="date.end"/>
-                                </div>
-                            </div>
-                        </span>
-                        <span class="col-md-3">
-                            <button type="button" class="btn btn-default" style="position: absolute;right: -40px" ng-click="update()">조회</button>
-                        </span>
-                    </div>
-                </div>
+                </span>
             </div>
         </div>
     </div>
     <div class="row" >
         <div class="col-md-12">
-            <header class="panel-heading">
-                <h2 class="panel-title text-center">서비스별 대화량</h2>
-                <button type="button" class="btn btn-default" style="position: absolute;top: 10px;right: 10px" ng-click="exelDownload()">엑셀 다운로드</button>
+            <header class="panel-heading" style="background-color: white">
+                <h2 class="panel-title text-center">시나리오 사용 통계</h2>
             </header>
-            <div class="panel-body" >
+            <div class="panel-body" style="position: relative;min-height: 100px">
+                <div name="dataLoading" style="background: white;position: absolute; top: 0;left: 0;height: 100%;width: 100%;z-index: 99999;opacity: 1; transition: opacity .5s ease">
+                    <div class="logo" style="display: block;width: 80px;height: 80px;background-repeat: no-repeat;background-image: url(images/loading_icon3.gif);background-size: contain;position:absolute; top: 50%;left: 50%;margin: -40px 0 0 -40px; animation: blink normal 2s infinite ease-in-out"></div>
+                </div>
                 <table class="table table-striped mb-none">
                     <thead>
                     <tr>
@@ -122,17 +61,3 @@
     </div>
 
 </section>
-
-<script>
-  $('#sandbox-container .input-daterange').datepicker({
-    language: "kr",
-    format: "yyyy/mm/dd",
-    todayBtn: "linked",
-    clearBtn: true,
-    orientation: "auto",
-    todayHighlight: true,
-    autoclose: true
-  })
-</script>
-
-<script src="/lib/chart.js/dist/Chart.js"></script>

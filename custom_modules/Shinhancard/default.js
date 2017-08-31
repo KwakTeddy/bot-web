@@ -5,50 +5,119 @@ var async = require('async');
 var mongo = require(path.resolve('./modules/bot/action/common/mongo'));
 var type = require(path.resolve('./modules/bot/action/common/type'));
 var ObjectId = mongoose.Types.ObjectId;
+var bots = mongo.getModel('bots');
+var dialogsets = [];
 
-var dialogsType1 = {
-    name: 'dialogsType1',
-    typeCheck: type.dialogTypeCheck, //type.mongoDbTypeCheck,
-    preType: function(task, context, type, callback) {
-        // if(context.bot.dialogsets) {
-        //     if(type.mongo.queryStatic.$or.length == 0) type.mongo.queryStatic = {dialogset: ''};
-        // } else {
-        //     type.mongo.queryStatic = {dialogset: ''};
-        // }
-        callback(task, context);
-    },
-    limit: 8,
-    matchRate: 0.34,
-    matchCount: 3,
-    exclude: ['하다', '이다'],
-    mongo: {
-        model: 'dialogsetdialogs',
-        queryStatic: {dialogset: ObjectId("5949dd8dc7120e5e7dd468b8")}, //server
-       // queryStatic: {dialogset: ObjectId("59478cf17a294c58195c9cf2")},  //local
-       queryFields: ['input'],
-        fields: 'dialogset input inputRaw output context id' ,
-        taskFields: ['input', 'inputRaw', 'output', 'matchCount', 'matchRate', 'dialogset', 'context'],
-        minMatch: 1,
-        schema: {
-            dialogset: {
-                type: mongoose.Schema.ObjectId,
-                ref: 'Dialogset'
+
+
+
+bots.find({id: "Shinhancard"}).lean().exec(function(err, docs) {
+    if (err) {
+        console.log(err);
+    } else {
+
+        //console.log(docs[0].dialogsets[0]+'1111');
+        dialogsets = docs[0].dialogsets;
+        var queryList = [];
+        for (i=0; i<dialogsets.length; i++){
+            queryList.push({dialogset:ObjectId(dialogsets[i])})
+        };
+        var dialogsType1 = {
+            name: 'dialogsType1',
+            typeCheck: type.dialogTypeCheck, //type.mongoDbTypeCheck,
+            preType: function(task, context, type, callback) {
+                // if(context.bot.dialogsets) {
+                //     if(type.mongo.queryStatic.$or.length == 0) type.mongo.queryStatic = {dialogset: ''};
+                // } else {
+                //     type.mongo.queryStatic = {dialogset: ''};
+                // }
+                callback(task, context);
             },
-            id: Number,
-            input: mongoose.Schema.Types.Mixed,
-            inputRaw: mongoose.Schema.Types.Mixed,
-            output: mongoose.Schema.Types.Mixed,
-            tag: [String],
-            parent: mongoose.Schema.Types.Mixed,
-            context: {
-                type: mongoose.Schema.ObjectId,
-                ref: 'CustomContext'
+            limit: 8,
+            matchRate: 0.34,
+            matchCount: 3,
+            exclude: ['하다', '이다'],
+            mongo: {
+                model: 'dialogsetdialogs',
+                queryStatic: {$or: queryList},
+                // queryStatic: {$or: [{dialogset:ObjectId(dialogsets[0])}, {dialogset:ObjectId(dialogsets[1])} ]}, //test
+                // queryStatic: {$or: [{dialogset:ObjectId("59a7901c45ca9ab143f54c94")}, {dialogset:ObjectId("59a79a9c45ca9ab143f54cfb")} ]}, //test2
+                // queryStatic: {dialogset: ObjectId("5949dd8dc7120e5e7dd468b8")}, //server
+                // queryStatic: {dialogset: ObjectId("59478cf17a294c58195c9cf2")},  //local
+                queryFields: ['input'],
+                fields: 'dialogset input inputRaw output context id' ,
+                taskFields: ['input', 'inputRaw', 'output', 'matchCount', 'matchRate', 'dialogset', 'context'],
+                minMatch: 1,
+                schema: {
+                    dialogset: {
+                        type: mongoose.Schema.ObjectId,
+                        ref: 'Dialogset'
+                    },
+                    id: Number,
+                    input: mongoose.Schema.Types.Mixed,
+                    inputRaw: mongoose.Schema.Types.Mixed,
+                    output: mongoose.Schema.Types.Mixed,
+                    tag: [String],
+                    parent: mongoose.Schema.Types.Mixed,
+                    context: {
+                        type: mongoose.Schema.ObjectId,
+                        ref: 'CustomContext'
+                    }
+                }
             }
-        }
-    }
-};
+        };
 
-bot.setType("dialogsType1", dialogsType1);
+        bot.setType("dialogsType1", dialogsType1);
+    }
+});
+
+
+// var dialogsType1 = {
+//     name: 'dialogsType1',
+//     typeCheck: type.dialogTypeCheck, //type.mongoDbTypeCheck,
+//     preType: function(task, context, type, callback) {
+//         // if(context.bot.dialogsets) {
+//         //     if(type.mongo.queryStatic.$or.length == 0) type.mongo.queryStatic = {dialogset: ''};
+//         // } else {
+//         //     type.mongo.queryStatic = {dialogset: ''};
+//         // }
+//         callback(task, context);
+//     },
+//     limit: 8,
+//     matchRate: 0.34,
+//     matchCount: 3,
+//     exclude: ['하다', '이다'],
+//     mongo: {
+//         model: 'dialogsetdialogs',
+//         queryStatic: {$or: [{dialogset:ObjectId(dialogsets[0])}, {dialogset:ObjectId(dialogsets[1])} ]}, //test
+//         // queryStatic: {$or: [{dialogset:ObjectId("59a7901c45ca9ab143f54c94")}, {dialogset:ObjectId("59a79a9c45ca9ab143f54cfb")} ]}, //test2
+//         //queryStatic: {dialogset: ObjectId("59a7901c45ca9ab143f54c94")},
+//         // queryStatic: {dialogset: ObjectId("5949dd8dc7120e5e7dd468b8")}, //server
+//        // queryStatic: {dialogset: ObjectId("59478cf17a294c58195c9cf2")},  //local
+//        queryFields: ['input'],
+//         fields: 'dialogset input inputRaw output context id' ,
+//         taskFields: ['input', 'inputRaw', 'output', 'matchCount', 'matchRate', 'dialogset', 'context'],
+//         minMatch: 1,
+//         schema: {
+//             dialogset: {
+//                 type: mongoose.Schema.ObjectId,
+//                 ref: 'Dialogset'
+//             },
+//             id: Number,
+//             input: mongoose.Schema.Types.Mixed,
+//             inputRaw: mongoose.Schema.Types.Mixed,
+//             output: mongoose.Schema.Types.Mixed,
+//             tag: [String],
+//             parent: mongoose.Schema.Types.Mixed,
+//             context: {
+//                 type: mongoose.Schema.ObjectId,
+//                 ref: 'CustomContext'
+//             }
+//         }
+//     }
+// };
+//
+// bot.setType("dialogsType1", dialogsType1);
 
 var faqTask = {
   action: function(task, context, callback) {
@@ -433,18 +502,20 @@ bot.setTask("te", te);
 var task1 = {
     name: 'task1',
     action: function (task, context, callback) {
+        var host = "https://m.shinhancard.com/mob/MOBFM206N/MOBFM206C01.shc"
+
         if (context.user.channel == 'navertalk' || context.user.channel == 'socket') {
             task.buttons = [
                 {
                     text: "가입하고 경품타자",
-                    url: "https://newm.shinhancard.com/event/2015/pt06.jsp?prm=naver"
+                    url: host + "?prm=naver"
                 }
             ]
         } else if (context.user.channel == 'facebook') {
             task.buttons = [
                 {
                     text: "가입하고 경품타자",
-                    url: "https://newm.shinhancard.com/event/2015/pt06.jsp?prm=facebook"
+                    url: host + "?prm=facebook"
                 }
             ]
 
@@ -452,7 +523,7 @@ var task1 = {
             task.buttons = [
                 {
                     text: "가입하고 경품타자",
-                    url: "https://newm.shinhancard.com/event/2015/pt06.jsp?prm=kakao"
+                    url: host + "?prm=kakao"
                 }
             ]
 
@@ -2409,3 +2480,4 @@ var startTask = {
 };
 
 bot.setTask('startTask', startTask);
+
