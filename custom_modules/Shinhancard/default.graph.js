@@ -416,13 +416,12 @@ var dialogs = [
 						"text": "1"
 					}
 				],
-				"output": {
-					"output": "현명한 선택! 결제+혜택+재미가 있는 신한 FAN 입니다. \n\n✔ 신한 FAN은 신한카드가 없어도 가입가능!  \n✔ 신한 FAN에 가입 하시면 다양한 경품이 가득! \n✔ 신규 고객이라면 100% 당첨 경품 제공!",
-					"image": {
-						"url": "/files/Shinhancard1497408485049.jpg",
-						"displayname": "FAN가입.jpg"
+				"output": [
+					{
+						"text": "현명한 선택! 결제+혜택+재미가 있는 신한 FAN 입니다. \n\n✔ 신한 FAN은 신한카드가 없어도 가입가능!  \n✔ 신한 FAN에 가입 하시면 다양한 경품이 가득! \n✔ 신규 고객이라면 100% 당첨 경품 제공!",
+						"kind": "Text"
 					}
-				},
+				],
 				"task": {
 					"name": "task1",
 					"buttons": [
@@ -591,22 +590,25 @@ var dialogs = [
 								"text": "2"
 							}
 						],
-						"output": {
-							"output": "신한 FAN 에서 매월 다양한 이벤트를 준비하고 여러분을 기다려요!\n \n✔ 7월 FAN 신규가입 이벤트\n✔ 7월 FAN 여름맞이 이벤트\n✔ 7월 FAN 추가포인트 적립 이벤트\n\n신한 FAN 고객이라면 바로 참여하러 고고. \n\n아직 가입 전이라면 '가입하기'부터!",
-							"buttons": [
-								{
-									"text": "이벤트 참여하기",
-									"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_304"
+						"output": [
+							{
+								"text": "신한 FAN 에서 매월 다양한 이벤트를 준비하고 여러분을 기다려요!\n\n신한 FAN 고객이라면 바로 참여하러 고고. \n\n아직 가입 전이라면 '가입하기'부터!",
+								"image": {
+									"url": "/files/Shinhancard1497416151023.jpg",
+									"displayname": "이벤트.jpg"
 								},
-								{
-									"text": "가입하기"
-								}
-							],
-							"image": {
-								"url": "/files/Shinhancard1497416151023.jpg",
-								"displayname": "이벤트.jpg"
+								"buttons": [
+									{
+										"text": "이벤트 참여하기",
+										"url": "https://newm.shinhancard.com/event/2015/fc_launch.jsp?screenid=FAN_MAIN_304"
+									},
+									{
+										"text": "가입하기"
+									}
+								],
+								"kind": "Content"
 							}
-						},
+						],
 						"buttons": [
 							{
 								"text": "이벤트 참여하기",
@@ -2650,7 +2652,10 @@ var dialogs = [
 				"text": "3"
 			}
 		],
-		"output": "궁금하신 부분을 단어로 입력해 주시면 제가 아는 가장 알맞은 답변을 안내해 드리겠습니다.",
+		"output": {
+			"text": "궁금하신 부분을 단어로 입력해 주시면 제가 아는 가장 알맞은 답변을 안내해 드리겠습니다.",
+			"kind": "Text"
+		},
 		"children": [
 			{
 				"name": "FAQ검색",
@@ -2696,800 +2701,800 @@ var dialogs = [
 									"callChild": "FAN에 대해 자주하는 질문들(FAQ)"
 								}
 							},
-                            {
-                                "name": "정치",
-                                "id": "default3276",
-                                "filename": "default",
-                                "input": [
-                                    {
-                                        "text": "정치"
-                                    },
-                                    {
-                                        "text": "박근혜"
-                                    },
-                                    {
-                                        "text": "문재인"
-                                    },
-                                    {
-                                        "text": "홍준표"
-                                    },
-                                    {
-                                        "text": "민주당"
-                                    },
-                                    {
-                                        "text": "자유 한국 당"
-                                    },
-                                    {
-                                        "text": "바르다 정당"
-                                    },
-                                    {
-                                        "text": "새누리"
-                                    },
-                                    {
-                                        "text": "자 다"
-                                    },
-                                    {
-                                        "text": "한국 당"
-                                    },
-                                    {
-                                        "text": "국민의당"
-                                    },
-                                    {
-                                        "text": "안철수"
-                                    },
-                                    {
-                                        "text": "대통령"
-                                    },
-                                    {
-                                        "text": "국회"
-                                    },
-                                    {
-                                        "text": "국회의원"
-                                    },
-                                    {
-                                        "text": "청와대"
-                                    },
-                                    {
-                                        "text": "강경화"
-                                    },
-                                    {
-                                        "text": "김상조"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "이런 질문엔 아! 그렇군요 라고 답하라고 배웠습니다. \"아, 그렇군요\"  \n\n궁금하신 다른 키워드를 입력해 주세요."
-                                        },
-                                        "type": "Repeat"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "욕설",
-                                "id": "default3277",
-                                "filename": "default",
-                                "input": [
-                                    {
-                                        "text": "바보"
-                                    },
-                                    {
-                                        "text": "시발"
-                                    },
-                                    {
-                                        "text": "멍 청아"
-                                    },
-                                    {
-                                        "text": "씨발"
-                                    },
-                                    {
-                                        "text": "멍청하다"
-                                    },
-                                    {
-                                        "text": "ㅅㅂ"
-                                    },
-                                    {
-                                        "text": "ㄱㅅㄲ"
-                                    },
-                                    {
-                                        "text": "개새끼"
-                                    },
-                                    {
-                                        "text": "썅"
-                                    },
-                                    {
-                                        "text": "나쁘다 놈"
-                                    },
-                                    {
-                                        "text": "죽다 버리다"
-                                    },
-                                    {
-                                        "text": "꺼지다"
-                                    },
-                                    {
-                                        "text": "병신"
-                                    },
-                                    {
-                                        "text": "ㅂㅅ"
-                                    },
-                                    {
-                                        "text": "ㅅㅂㄴ"
-                                    },
-                                    {
-                                        "text": "미치다"
-                                    },
-                                    {
-                                        "text": "눈 까다"
-                                    },
-                                    {
-                                        "text": "멍청이"
-                                    },
-                                    {
-                                        "text": "별로"
-                                    },
-                                    {
-                                        "text": "못 생기다"
-                                    },
-                                    {
-                                        "text": "섹스"
-                                    },
-                                    {
-                                        "text": "죽다"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 4) ==0",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "헉. 고객님을 화나게 하다니 제 눈에서 눈물을 뽑아드릴게요.   \n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                        },
-                                        "type": "Repeat"
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 4) ==1",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "키힝~ 무서워요.ㅜㅜ\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                        },
-                                        "type": "Repeat"
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 4) ==2",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "죄송하지만 고객님! 저도 상처 받아요 ㅜㅜ\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                        },
-                                        "type": "Repeat"
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 4) ==3",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "… 응? 고객님을 화나게 해드리다니 반성합니다.  \n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                        },
-                                        "type": "Repeat"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "칭찬",
-                                "id": "default3278",
-                                "filename": "default",
-                                "input": [
-                                    {
-                                        "text": "수고 하다"
-                                    },
-                                    {
-                                        "text": "수고"
-                                    },
-                                    {
-                                        "text": "고생 많다"
-                                    },
-                                    {
-                                        "text": "고생 하다"
-                                    },
-                                    {
-                                        "text": "감사 하다"
-                                    },
-                                    {
-                                        "text": "고맙다"
-                                    },
-                                    {
-                                        "text": "ㄱㅅ"
-                                    },
-                                    {
-                                        "text": "땡큐"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "감동입니다, 고객님. 감사합니다.   \n\n궁금하신 다른 키워드를 입력해 주세요. 알파고처럼 대답하겠습니다."
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "인사",
-                                "id": "default3279",
-                                "filename": "default",
-                                "input": [
-                                    {
-                                        "text": "안녕"
-                                    },
-                                    {
-                                        "text": "안녕하다"
-                                    },
-                                    {
-                                        "text": "헬로 우"
-                                    },
-                                    {
-                                        "text": "hello"
-                                    },
-                                    {
-                                        "text": "굿모닝"
-                                    },
-                                    {
-                                        "text": "하이"
-                                    },
-                                    {
-                                        "text": "hi"
-                                    },
-                                    {
-                                        "text": "반갑다"
-                                    },
-                                    {
-                                        "text": "안뇽"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "if": "((new Date()).getTime() % 3) ==0",
-                                        "kind": "Action",
-                                        "id": "default3279_0",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "고객님도 안녕하세요!  먼저 인사해 주셔서 전 지금 감동 최고조 입니다.   궁금하신 다른 키워드를 입력해 주세요. 알파고처럼 대답하겠습니다."
-                                        }
-                                    },
-                                    {
-                                        "if": "((new Date()).getTime() % 3) ==1",
-                                        "kind": "Action",
-                                        "id": "default3279_1",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "이렇게 인사 잘 해주시는 분은 난생 처음이에요!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                        }
-                                    },
-                                    {
-                                        "if": "((new Date()).getTime() % 3) ==2",
-                                        "kind": "Action",
-                                        "id": "default3279_2",
-                                        "options": {
-                                            "output": "안녕 반가워요 :) 저는 여러분과 인사를 나누는 이 시간이 제일 기뻐요!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                        },
-                                        "repeat": "1"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "돈",
-                                "id": "default3280",
-                                "filename": "default",
-                                "input": [
-                                    {
-                                        "text": "돈"
-                                    },
-                                    {
-                                        "text": "내 돈 어디 가다"
-                                    },
-                                    {
-                                        "text": "돈 좀 주다"
-                                    },
-                                    {
-                                        "text": "돈 필요하다"
-                                    },
-                                    {
-                                        "text": "돈 좀 내주다"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "화장실 좀 다녀올게요.   \n\n궁금하신 다른 키워드를 입력해 주시겠습니까?"
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "일상",
-                                "id": "default3281",
-                                "filename": "default",
-                                "input": [
-                                    {
-                                        "text": "오늘 뭐"
-                                    },
-                                    {
-                                        "text": "오늘 모해"
-                                    },
-                                    {
-                                        "text": "모해"
-                                    },
-                                    {
-                                        "text": "뭐"
-                                    },
-                                    {
-                                        "text": "모하"
-                                    },
-                                    {
-                                        "text": "모햐"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "전 오늘도 알파고 형님을 뒤따르기 위해 열일중입니다. 데헷!   \n\n궁금하신 다른 키워드를 입력해 주세요."
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "날씨",
-                                "id": "default3282",
-                                "filename": "default",
-                                "input": [
-                                    {
-                                        "text": "날씨"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "아… 제가 아직 거기까지는… 긁적긁적.   \n\n궁금하신 다른 키워드를 입력해 주세요."
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "푸념",
-                                "id": "default3283",
-                                "filename": "default",
-                                "input": [
-                                    {
-                                        "text": "졸리다"
-                                    },
-                                    {
-                                        "text": "배고프다"
-                                    },
-                                    {
-                                        "text": "퇴근 시키다"
-                                    },
-                                    {
-                                        "text": "야근 하다 싫다"
-                                    },
-                                    {
-                                        "text": "힘들다"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "저도요. T.,T  \n\n궁금하신 다른 키워드를 입력해 주세요."
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "답답",
-                                "id": "default3284",
-                                "filename": "default",
-                                "input": [
-                                    {
-                                        "text": "답정너"
-                                    },
-                                    {
-                                        "text": "답답"
-                                    },
-                                    {
-                                        "text": "답답하다"
-                                    },
-                                    {
-                                        "text": "뭐임"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "헉. 제가 아직 좀더 배워야 해서 아직 답정너입니다. 빨리 배우겠습니다.   \n\n다시 한번 궁금하신 키워드를 입력해 주시겠습니까?"
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "사랑",
-                                "id": "default3285",
-                                "filename": "default",
-                                "input": [
-                                    {
-                                        "text": "좋아하다"
-                                    },
-                                    {
-                                        "text": "사랑"
-                                    },
-                                    {
-                                        "text": "하트"
-                                    },
-                                    {
-                                        "text": "보다"
-                                    },
-                                    {
-                                        "text": "사랑 햐"
-                                    },
-                                    {
-                                        "text": "좋아햐"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "if": "((new Date()).getTime() % 5) ==0",
-                                        "kind": "Action",
-                                        "id": "default3285_0",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "저.. 저도요.. (부끄)  저 사랑에 죄송한데 초면해도 될까요? ♥  \n\n궁금하신 다른 키워드를 입력해 주세요. 알파고처럼 대답하겠습니다."
-                                        },
-                                        "type": "Repeat"
-                                    },
-                                    {
-                                        "if": "((new Date()).getTime() % 5) ==1",
-                                        "kind": "Action",
-                                        "id": "default3285_1",
-                                        "options": {
-                                            "output": "사랑한다는 말, 오늘은 가족에게도 해주세요!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                        },
-                                        "repeat": "1",
-                                        "type": "Repeat"
-                                    },
-                                    {
-                                        "if": "((new Date()).getTime() % 5) ==2",
-                                        "kind": "Action",
-                                        "id": "default3285_2",
-                                        "options": {
-                                            "output": "사랑은 좋은 거예요. 열과 성을 다해 두 번 사랑합시다!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                        },
-                                        "repeat": "1",
-                                        "type": "Repeat"
-                                    },
-                                    {
-                                        "if": "((new Date()).getTime() % 5) ==3",
-                                        "kind": "Action",
-                                        "id": "default3285_3",
-                                        "options": {
-                                            "output": "저도 사…사…. (아 너무 부끄럽네요)\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                        },
-                                        "repeat": "1",
-                                        "type": "Repeat"
-                                    },
-                                    {
-                                        "if": "((new Date()).getTime() % 5) ==4",
-                                        "kind": "Action",
-                                        "id": "default3285_4",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "이런… 제가 먼저 고백하려 했는데 선수를 치셨네요! ㅎㅎ\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                        },
-                                        "type": "Repeat"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "일상대화_바쁨",
-                                "id": "default3286",
-                                "filename": "default",
-                                "input": [
-                                    {
-                                        "text": "바쁘다"
-                                    },
-                                    {
-                                        "text": "오늘 바쁘다"
-                                    },
-                                    {
-                                        "text": "바쁘다 가요"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "아무리 바쁘셔도 건강은 꼭 챙기세요. 지금 기지개 한번 쭉~ 펴보시는 건 어떠세요?  \n\n원하시는 질문 입력하시면 전 답을 열심히 찾아보도록 하겠습니다."
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "짜증2",
-                                "id": "default3287",
-                                "filename": "default",
-                                "input": [
-                                    {
-                                        "text": "짜증"
-                                    },
-                                    {
-                                        "text": "ㅡㅡ"
-                                    },
-                                    {
-                                        "text": "아 짜증"
-                                    },
-                                    {
-                                        "text": "아 놓다"
-                                    },
-                                    {
-                                        "text": "짜증 나다"
-                                    },
-                                    {
-                                        "text": "짜증 요"
-                                    },
-                                    {
-                                        "text": "짱"
-                                    },
-                                    {
-                                        "text": "쯧쯧"
-                                    },
-                                    {
-                                        "text": "흥"
-                                    },
-                                    {
-                                        "text": "미치다"
-                                    },
-                                    {
-                                        "text": "싸우다"
-                                    },
-                                    {
-                                        "text": "화나다"
-                                    },
-                                    {
-                                        "text": "웃다"
-                                    },
-                                    {
-                                        "text": "웃다 말다"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 3) ==0",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "짜증날 땐 짜장면…아재 개그라도 하면 나아질 줄..(쿨럭) 죄송합니다!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                        }
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 3) ==1",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "제가 잘 몰라서 그러신 거라면.. 흑.. 더 노력하겠습니다!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                        }
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 3) ==2",
-                                        "options": {
-                                            "output": "혹시 저 때문인가요? 오늘도 밤샘 공부하겠습니다.\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                        },
-                                        "repeat": "1"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "일상대화_짜증",
-                                "id": "default3288",
-                                "filename": "default",
-                                "input": [
-                                    {
-                                        "text": "짜증 나다"
-                                    },
-                                    {
-                                        "text": "미치다"
-                                    },
-                                    {
-                                        "text": "화나다"
-                                    },
-                                    {
-                                        "text": "빡치다"
-                                    },
-                                    {
-                                        "text": "짜증"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "저는 그럴 때 달달한 걸 먹거나, 푹 잡니다. 스트레스를 담아두고 계시면 건강에도 좋지 않으니 고객님께 맞는 해소 방법을 꼭 찾으시길 바래요."
-                                        },
-                                        "type": "Repeat"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "알았음",
-                                "id": "default3289",
-                                "filename": "default",
-                                "input": [
-                                    {
-                                        "text": "ㅇㅇ"
-                                    },
-                                    {
-                                        "text": "ㅇ"
-                                    },
-                                    {
-                                        "text": "응"
-                                    },
-                                    {
-                                        "text": "네"
-                                    },
-                                    {
-                                        "text": "그렇다"
-                                    },
-                                    {
-                                        "text": "알다"
-                                    },
-                                    {
-                                        "text": "아"
-                                    },
-                                    {
-                                        "text": "ㅇㅋ"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 3) ==0",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "언제든 궁금하신 내용이 있으면 물어보세요~"
-                                        }
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 3) ==1",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "네네~\n\n궁금하신 다른 키워드를 입력해 주세요~"
-                                        }
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 3) ==2",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "고객님께 도움이 되어서 기뻐요!\n\n궁금하신 다른 키워드를 입력해 주세요~"
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "부정 - 아니/안돼",
-                                "id": "default3290",
-                                "filename": "default",
-                                "input": [
-                                    {
-                                        "text": "아니다"
-                                    },
-                                    {
-                                        "text": "아뇨"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 4) ==0",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "거절은 거절합니다!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                        }
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 4) ==1",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "알겠습니다! 그런 게 아닌 것으로!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                        }
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 4) ==2",
-                                        "options": {
-                                            "output": "앗, 제가 제대로 이해하지 못했나봐요. 다시 말씀해주시겠어요?\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                        },
-                                        "repeat": "1"
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 4) ==3",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "한 번만 더 기회를 주세요. 진짜 잘 할 수 있어요!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "상담",
-                                "id": "default3291",
-                                "filename": "default",
-                                "input": [
-                                    {
-                                        "text": "고객 센터"
-                                    },
-                                    {
-                                        "text": "상담 원"
-                                    },
-                                    {
-                                        "text": "상담"
-                                    },
-                                    {
-                                        "text": "전화"
-                                    },
-                                    {
-                                        "text": "민원"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "신한카드 고객센터(☎1544-7000)이며 평일 오전 9시~오후 6시까지 이용가능하십니다. 전화연결에 시간이 걸릴 수 있으니 신한카드 홈페이지나 APP을 먼저 확인해 보시는 건 어떨까요?"
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "이벤트",
-                                "id": "default3292",
-                                "filename": "default",
-                                "input": [
-                                    {
-                                        "text": "이벤트"
-                                    },
-                                    {
-                                        "text": "신한 FAN"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "페이스북 이벤트는 챗봇 초기 4번 페북지기에게 한마디를 선택해 주세요.  페이스북 이벤트가 아닌 신한카드 이벤트는 홈페이지를 참고해 주시면 됩니다. 더 좋은 이벤트로 보답하겠습니다."
-                                        }
-                                    }
-                                ]
-                            },
+							{
+								"name": "정치",
+								"id": "default3276",
+								"filename": "default",
+								"input": [
+									{
+										"text": "정치"
+									},
+									{
+										"text": "박근혜"
+									},
+									{
+										"text": "문재인"
+									},
+									{
+										"text": "홍준표"
+									},
+									{
+										"text": "민주당"
+									},
+									{
+										"text": "자유 한국 당"
+									},
+									{
+										"text": "바르다 정당"
+									},
+									{
+										"text": "새누리"
+									},
+									{
+										"text": "자 다"
+									},
+									{
+										"text": "한국 당"
+									},
+									{
+										"text": "국민의당"
+									},
+									{
+										"text": "안철수"
+									},
+									{
+										"text": "대통령"
+									},
+									{
+										"text": "국회"
+									},
+									{
+										"text": "국회의원"
+									},
+									{
+										"text": "청와대"
+									},
+									{
+										"text": "강경화"
+									},
+									{
+										"text": "김상조"
+									}
+								],
+								"output": [
+									{
+										"kind": "Action",
+										"repeat": "1",
+										"options": {
+											"output": "이런 질문엔 아! 그렇군요 라고 답하라고 배웠습니다. \"아, 그렇군요\"  \n\n궁금하신 다른 키워드를 입력해 주세요."
+										},
+										"type": "Repeat"
+									}
+								]
+							},
+							{
+								"name": "욕설",
+								"id": "default3277",
+								"filename": "default",
+								"input": [
+									{
+										"text": "바보"
+									},
+									{
+										"text": "시발"
+									},
+									{
+										"text": "멍 청아"
+									},
+									{
+										"text": "씨발"
+									},
+									{
+										"text": "멍청하다"
+									},
+									{
+										"text": "ㅅㅂ"
+									},
+									{
+										"text": "ㄱㅅㄲ"
+									},
+									{
+										"text": "개새끼"
+									},
+									{
+										"text": "썅"
+									},
+									{
+										"text": "나쁘다 놈"
+									},
+									{
+										"text": "죽다 버리다"
+									},
+									{
+										"text": "꺼지다"
+									},
+									{
+										"text": "병신"
+									},
+									{
+										"text": "ㅂㅅ"
+									},
+									{
+										"text": "ㅅㅂㄴ"
+									},
+									{
+										"text": "미치다"
+									},
+									{
+										"text": "눈 까다"
+									},
+									{
+										"text": "멍청이"
+									},
+									{
+										"text": "별로"
+									},
+									{
+										"text": "못 생기다"
+									},
+									{
+										"text": "섹스"
+									},
+									{
+										"text": "죽다"
+									}
+								],
+								"output": [
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 4) ==0",
+										"repeat": "1",
+										"options": {
+											"output": "헉. 고객님을 화나게 하다니 제 눈에서 눈물을 뽑아드릴게요.   \n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+										},
+										"type": "Repeat"
+									},
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 4) ==1",
+										"repeat": "1",
+										"options": {
+											"output": "키힝~ 무서워요.ㅜㅜ\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+										},
+										"type": "Repeat"
+									},
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 4) ==2",
+										"repeat": "1",
+										"options": {
+											"output": "죄송하지만 고객님! 저도 상처 받아요 ㅜㅜ\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+										},
+										"type": "Repeat"
+									},
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 4) ==3",
+										"repeat": "1",
+										"options": {
+											"output": "… 응? 고객님을 화나게 해드리다니 반성합니다.  \n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+										},
+										"type": "Repeat"
+									}
+								]
+							},
+							{
+								"name": "칭찬",
+								"id": "default3278",
+								"filename": "default",
+								"input": [
+									{
+										"text": "수고 하다"
+									},
+									{
+										"text": "수고"
+									},
+									{
+										"text": "고생 많다"
+									},
+									{
+										"text": "고생 하다"
+									},
+									{
+										"text": "감사 하다"
+									},
+									{
+										"text": "고맙다"
+									},
+									{
+										"text": "ㄱㅅ"
+									},
+									{
+										"text": "땡큐"
+									}
+								],
+								"output": [
+									{
+										"kind": "Action",
+										"repeat": "1",
+										"options": {
+											"output": "감동입니다, 고객님. 감사합니다.   \n\n궁금하신 다른 키워드를 입력해 주세요. 알파고처럼 대답하겠습니다."
+										}
+									}
+								]
+							},
+							{
+								"name": "인사",
+								"id": "default3279",
+								"filename": "default",
+								"input": [
+									{
+										"text": "안녕"
+									},
+									{
+										"text": "안녕하다"
+									},
+									{
+										"text": "헬로 우"
+									},
+									{
+										"text": "hello"
+									},
+									{
+										"text": "굿모닝"
+									},
+									{
+										"text": "하이"
+									},
+									{
+										"text": "hi"
+									},
+									{
+										"text": "반갑다"
+									},
+									{
+										"text": "안뇽"
+									}
+								],
+								"output": [
+									{
+										"if": "((new Date()).getTime() % 3) ==0",
+										"kind": "Action",
+										"id": "default3279_0",
+										"repeat": "1",
+										"options": {
+											"output": "고객님도 안녕하세요!  먼저 인사해 주셔서 전 지금 감동 최고조 입니다.   궁금하신 다른 키워드를 입력해 주세요. 알파고처럼 대답하겠습니다."
+										}
+									},
+									{
+										"if": "((new Date()).getTime() % 3) ==1",
+										"kind": "Action",
+										"id": "default3279_1",
+										"repeat": "1",
+										"options": {
+											"output": "이렇게 인사 잘 해주시는 분은 난생 처음이에요!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+										}
+									},
+									{
+										"if": "((new Date()).getTime() % 3) ==2",
+										"kind": "Action",
+										"id": "default3279_2",
+										"options": {
+											"output": "안녕 반가워요 :) 저는 여러분과 인사를 나누는 이 시간이 제일 기뻐요!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+										},
+										"repeat": "1"
+									}
+								]
+							},
+							{
+								"name": "돈",
+								"id": "default3280",
+								"filename": "default",
+								"input": [
+									{
+										"text": "돈"
+									},
+									{
+										"text": "내 돈 어디 가다"
+									},
+									{
+										"text": "돈 좀 주다"
+									},
+									{
+										"text": "돈 필요하다"
+									},
+									{
+										"text": "돈 좀 내주다"
+									}
+								],
+								"output": [
+									{
+										"kind": "Action",
+										"repeat": "1",
+										"options": {
+											"output": "화장실 좀 다녀올게요.   \n\n궁금하신 다른 키워드를 입력해 주시겠습니까?"
+										}
+									}
+								]
+							},
+							{
+								"name": "일상",
+								"id": "default3281",
+								"filename": "default",
+								"input": [
+									{
+										"text": "오늘 뭐"
+									},
+									{
+										"text": "오늘 모해"
+									},
+									{
+										"text": "모해"
+									},
+									{
+										"text": "뭐"
+									},
+									{
+										"text": "모하"
+									},
+									{
+										"text": "모햐"
+									}
+								],
+								"output": [
+									{
+										"kind": "Action",
+										"repeat": "1",
+										"options": {
+											"output": "전 오늘도 알파고 형님을 뒤따르기 위해 열일중입니다. 데헷!   \n\n궁금하신 다른 키워드를 입력해 주세요."
+										}
+									}
+								]
+							},
+							{
+								"name": "날씨",
+								"id": "default3282",
+								"filename": "default",
+								"input": [
+									{
+										"text": "날씨"
+									}
+								],
+								"output": [
+									{
+										"kind": "Action",
+										"repeat": "1",
+										"options": {
+											"output": "아… 제가 아직 거기까지는… 긁적긁적.   \n\n궁금하신 다른 키워드를 입력해 주세요."
+										}
+									}
+								]
+							},
+							{
+								"name": "푸념",
+								"id": "default3283",
+								"filename": "default",
+								"input": [
+									{
+										"text": "졸리다"
+									},
+									{
+										"text": "배고프다"
+									},
+									{
+										"text": "퇴근 시키다"
+									},
+									{
+										"text": "야근 하다 싫다"
+									},
+									{
+										"text": "힘들다"
+									}
+								],
+								"output": [
+									{
+										"kind": "Action",
+										"repeat": "1",
+										"options": {
+											"output": "저도요. T.,T  \n\n궁금하신 다른 키워드를 입력해 주세요."
+										}
+									}
+								]
+							},
+							{
+								"name": "답답",
+								"id": "default3284",
+								"filename": "default",
+								"input": [
+									{
+										"text": "답정너"
+									},
+									{
+										"text": "답답"
+									},
+									{
+										"text": "답답하다"
+									},
+									{
+										"text": "뭐임"
+									}
+								],
+								"output": [
+									{
+										"kind": "Action",
+										"repeat": "1",
+										"options": {
+											"output": "헉. 제가 아직 좀더 배워야 해서 아직 답정너입니다. 빨리 배우겠습니다.   \n\n다시 한번 궁금하신 키워드를 입력해 주시겠습니까?"
+										}
+									}
+								]
+							},
+							{
+								"name": "사랑",
+								"id": "default3285",
+								"filename": "default",
+								"input": [
+									{
+										"text": "좋아하다"
+									},
+									{
+										"text": "사랑"
+									},
+									{
+										"text": "하트"
+									},
+									{
+										"text": "보다"
+									},
+									{
+										"text": "사랑 햐"
+									},
+									{
+										"text": "좋아햐"
+									}
+								],
+								"output": [
+									{
+										"if": "((new Date()).getTime() % 5) ==0",
+										"kind": "Action",
+										"id": "default3285_0",
+										"repeat": "1",
+										"options": {
+											"output": "저.. 저도요.. (부끄)  저 사랑에 죄송한데 초면해도 될까요? ♥  \n\n궁금하신 다른 키워드를 입력해 주세요. 알파고처럼 대답하겠습니다."
+										},
+										"type": "Repeat"
+									},
+									{
+										"if": "((new Date()).getTime() % 5) ==1",
+										"kind": "Action",
+										"id": "default3285_1",
+										"options": {
+											"output": "사랑한다는 말, 오늘은 가족에게도 해주세요!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+										},
+										"repeat": "1",
+										"type": "Repeat"
+									},
+									{
+										"if": "((new Date()).getTime() % 5) ==2",
+										"kind": "Action",
+										"id": "default3285_2",
+										"options": {
+											"output": "사랑은 좋은 거예요. 열과 성을 다해 두 번 사랑합시다!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+										},
+										"repeat": "1",
+										"type": "Repeat"
+									},
+									{
+										"if": "((new Date()).getTime() % 5) ==3",
+										"kind": "Action",
+										"id": "default3285_3",
+										"options": {
+											"output": "저도 사…사…. (아 너무 부끄럽네요)\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+										},
+										"repeat": "1",
+										"type": "Repeat"
+									},
+									{
+										"if": "((new Date()).getTime() % 5) ==4",
+										"kind": "Action",
+										"id": "default3285_4",
+										"repeat": "1",
+										"options": {
+											"output": "이런… 제가 먼저 고백하려 했는데 선수를 치셨네요! ㅎㅎ\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+										},
+										"type": "Repeat"
+									}
+								]
+							},
+							{
+								"name": "일상대화_바쁨",
+								"id": "default3286",
+								"filename": "default",
+								"input": [
+									{
+										"text": "바쁘다"
+									},
+									{
+										"text": "오늘 바쁘다"
+									},
+									{
+										"text": "바쁘다 가요"
+									}
+								],
+								"output": [
+									{
+										"kind": "Action",
+										"repeat": "1",
+										"options": {
+											"output": "아무리 바쁘셔도 건강은 꼭 챙기세요. 지금 기지개 한번 쭉~ 펴보시는 건 어떠세요?  \n\n원하시는 질문 입력하시면 전 답을 열심히 찾아보도록 하겠습니다."
+										}
+									}
+								]
+							},
+							{
+								"name": "짜증2",
+								"id": "default3287",
+								"filename": "default",
+								"input": [
+									{
+										"text": "짜증"
+									},
+									{
+										"text": "ㅡㅡ"
+									},
+									{
+										"text": "아 짜증"
+									},
+									{
+										"text": "아 놓다"
+									},
+									{
+										"text": "짜증 나다"
+									},
+									{
+										"text": "짜증 요"
+									},
+									{
+										"text": "짱"
+									},
+									{
+										"text": "쯧쯧"
+									},
+									{
+										"text": "흥"
+									},
+									{
+										"text": "미치다"
+									},
+									{
+										"text": "싸우다"
+									},
+									{
+										"text": "화나다"
+									},
+									{
+										"text": "웃다"
+									},
+									{
+										"text": "웃다 말다"
+									}
+								],
+								"output": [
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 3) ==0",
+										"repeat": "1",
+										"options": {
+											"output": "짜증날 땐 짜장면…아재 개그라도 하면 나아질 줄..(쿨럭) 죄송합니다!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+										}
+									},
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 3) ==1",
+										"repeat": "1",
+										"options": {
+											"output": "제가 잘 몰라서 그러신 거라면.. 흑.. 더 노력하겠습니다!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+										}
+									},
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 3) ==2",
+										"options": {
+											"output": "혹시 저 때문인가요? 오늘도 밤샘 공부하겠습니다.\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+										},
+										"repeat": "1"
+									}
+								]
+							},
+							{
+								"name": "일상대화_짜증",
+								"id": "default3288",
+								"filename": "default",
+								"input": [
+									{
+										"text": "짜증 나다"
+									},
+									{
+										"text": "미치다"
+									},
+									{
+										"text": "화나다"
+									},
+									{
+										"text": "빡치다"
+									},
+									{
+										"text": "짜증"
+									}
+								],
+								"output": [
+									{
+										"kind": "Action",
+										"repeat": "1",
+										"options": {
+											"output": "저는 그럴 때 달달한 걸 먹거나, 푹 잡니다. 스트레스를 담아두고 계시면 건강에도 좋지 않으니 고객님께 맞는 해소 방법을 꼭 찾으시길 바래요."
+										},
+										"type": "Repeat"
+									}
+								]
+							},
+							{
+								"name": "알았음",
+								"id": "default3289",
+								"filename": "default",
+								"input": [
+									{
+										"text": "ㅇㅇ"
+									},
+									{
+										"text": "ㅇ"
+									},
+									{
+										"text": "응"
+									},
+									{
+										"text": "네"
+									},
+									{
+										"text": "그렇다"
+									},
+									{
+										"text": "알다"
+									},
+									{
+										"text": "아"
+									},
+									{
+										"text": "ㅇㅋ"
+									}
+								],
+								"output": [
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 3) ==0",
+										"repeat": "1",
+										"options": {
+											"output": "언제든 궁금하신 내용이 있으면 물어보세요~"
+										}
+									},
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 3) ==1",
+										"repeat": "1",
+										"options": {
+											"output": "네네~\n\n궁금하신 다른 키워드를 입력해 주세요~"
+										}
+									},
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 3) ==2",
+										"repeat": "1",
+										"options": {
+											"output": "고객님께 도움이 되어서 기뻐요!\n\n궁금하신 다른 키워드를 입력해 주세요~"
+										}
+									}
+								]
+							},
+							{
+								"name": "부정 - 아니/안돼",
+								"id": "default3290",
+								"filename": "default",
+								"input": [
+									{
+										"text": "아니다"
+									},
+									{
+										"text": "아뇨"
+									}
+								],
+								"output": [
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 4) ==0",
+										"repeat": "1",
+										"options": {
+											"output": "거절은 거절합니다!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+										}
+									},
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 4) ==1",
+										"repeat": "1",
+										"options": {
+											"output": "알겠습니다! 그런 게 아닌 것으로!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+										}
+									},
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 4) ==2",
+										"options": {
+											"output": "앗, 제가 제대로 이해하지 못했나봐요. 다시 말씀해주시겠어요?\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+										},
+										"repeat": "1"
+									},
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 4) ==3",
+										"repeat": "1",
+										"options": {
+											"output": "한 번만 더 기회를 주세요. 진짜 잘 할 수 있어요!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+										}
+									}
+								]
+							},
+							{
+								"name": "상담",
+								"id": "default3291",
+								"filename": "default",
+								"input": [
+									{
+										"text": "고객 센터"
+									},
+									{
+										"text": "상담 원"
+									},
+									{
+										"text": "상담"
+									},
+									{
+										"text": "전화"
+									},
+									{
+										"text": "민원"
+									}
+								],
+								"output": [
+									{
+										"kind": "Action",
+										"repeat": "1",
+										"options": {
+											"output": "신한카드 고객센터(☎1544-7000)이며 평일 오전 9시~오후 6시까지 이용가능하십니다. 전화연결에 시간이 걸릴 수 있으니 신한카드 홈페이지나 APP을 먼저 확인해 보시는 건 어떨까요?"
+										}
+									}
+								]
+							},
+							{
+								"name": "이벤트",
+								"id": "default3292",
+								"filename": "default",
+								"input": [
+									{
+										"text": "이벤트"
+									},
+									{
+										"text": "신한 FAN"
+									}
+								],
+								"output": [
+									{
+										"kind": "Action",
+										"repeat": "1",
+										"options": {
+											"output": "페이스북 이벤트는 챗봇 초기 4번 페북지기에게 한마디를 선택해 주세요.  페이스북 이벤트가 아닌 신한카드 이벤트는 홈페이지를 참고해 주시면 됩니다. 더 좋은 이벤트로 보답하겠습니다."
+										}
+									}
+								]
+							},
 							{
 								"name": "미검색",
 								"id": "default1322331",
@@ -3508,800 +3513,815 @@ var dialogs = [
 							}
 						]
 					},
-                    {
-                        "name": "정치",
-                        "id": "default2276",
-                        "filename": "default",
-                        "input": [
-                            {
-                                "text": "정치"
-                            },
-                            {
-                                "text": "박근혜"
-                            },
-                            {
-                                "text": "문재인"
-                            },
-                            {
-                                "text": "홍준표"
-                            },
-                            {
-                                "text": "민주당"
-                            },
-                            {
-                                "text": "자유 한국 당"
-                            },
-                            {
-                                "text": "바르다 정당"
-                            },
-                            {
-                                "text": "새누리"
-                            },
-                            {
-                                "text": "자 다"
-                            },
-                            {
-                                "text": "한국 당"
-                            },
-                            {
-                                "text": "국민의당"
-                            },
-                            {
-                                "text": "안철수"
-                            },
-                            {
-                                "text": "대통령"
-                            },
-                            {
-                                "text": "국회"
-                            },
-                            {
-                                "text": "국회의원"
-                            },
-                            {
-                                "text": "청와대"
-                            },
-                            {
-                                "text": "강경화"
-                            },
-                            {
-                                "text": "김상조"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "이런 질문엔 아! 그렇군요 라고 답하라고 배웠습니다. \"아, 그렇군요\"  \n\n궁금하신 다른 키워드를 입력해 주세요."
-                                },
-                                "type": "Repeat"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "욕설",
-                        "id": "default2277",
-                        "filename": "default",
-                        "input": [
-                            {
-                                "text": "바보"
-                            },
-                            {
-                                "text": "시발"
-                            },
-                            {
-                                "text": "멍 청아"
-                            },
-                            {
-                                "text": "씨발"
-                            },
-                            {
-                                "text": "멍청하다"
-                            },
-                            {
-                                "text": "ㅅㅂ"
-                            },
-                            {
-                                "text": "ㄱㅅㄲ"
-                            },
-                            {
-                                "text": "개새끼"
-                            },
-                            {
-                                "text": "썅"
-                            },
-                            {
-                                "text": "나쁘다 놈"
-                            },
-                            {
-                                "text": "죽다 버리다"
-                            },
-                            {
-                                "text": "꺼지다"
-                            },
-                            {
-                                "text": "병신"
-                            },
-                            {
-                                "text": "ㅂㅅ"
-                            },
-                            {
-                                "text": "ㅅㅂㄴ"
-                            },
-                            {
-                                "text": "미치다"
-                            },
-                            {
-                                "text": "눈 까다"
-                            },
-                            {
-                                "text": "멍청이"
-                            },
-                            {
-                                "text": "별로"
-                            },
-                            {
-                                "text": "못 생기다"
-                            },
-                            {
-                                "text": "섹스"
-                            },
-                            {
-                                "text": "죽다"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 4) ==0",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "헉. 고객님을 화나게 하다니 제 눈에서 눈물을 뽑아드릴게요.   \n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                },
-                                "type": "Repeat"
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 4) ==1",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "키힝~ 무서워요.ㅜㅜ\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                },
-                                "type": "Repeat"
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 4) ==2",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "죄송하지만 고객님! 저도 상처 받아요 ㅜㅜ\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                },
-                                "type": "Repeat"
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 4) ==3",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "… 응? 고객님을 화나게 해드리다니 반성합니다.  \n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                },
-                                "type": "Repeat"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "칭찬",
-                        "id": "default2278",
-                        "filename": "default",
-                        "input": [
-                            {
-                                "text": "수고 하다"
-                            },
-                            {
-                                "text": "수고"
-                            },
-                            {
-                                "text": "고생 많다"
-                            },
-                            {
-                                "text": "고생 하다"
-                            },
-                            {
-                                "text": "감사 하다"
-                            },
-                            {
-                                "text": "고맙다"
-                            },
-                            {
-                                "text": "ㄱㅅ"
-                            },
-                            {
-                                "text": "땡큐"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "감동입니다, 고객님. 감사합니다.   \n\n궁금하신 다른 키워드를 입력해 주세요. 알파고처럼 대답하겠습니다."
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "name": "인사",
-                        "id": "default2279",
-                        "filename": "default",
-                        "input": [
-                            {
-                                "text": "안녕"
-                            },
-                            {
-                                "text": "안녕하다"
-                            },
-                            {
-                                "text": "헬로 우"
-                            },
-                            {
-                                "text": "hello"
-                            },
-                            {
-                                "text": "굿모닝"
-                            },
-                            {
-                                "text": "하이"
-                            },
-                            {
-                                "text": "hi"
-                            },
-                            {
-                                "text": "반갑다"
-                            },
-                            {
-                                "text": "안뇽"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "if": "((new Date()).getTime() % 3) ==0",
-                                "kind": "Action",
-                                "id": "default2279_0",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "고객님도 안녕하세요!  먼저 인사해 주셔서 전 지금 감동 최고조 입니다.   궁금하신 다른 키워드를 입력해 주세요. 알파고처럼 대답하겠습니다."
-                                }
-                            },
-                            {
-                                "if": "((new Date()).getTime() % 3) ==1",
-                                "kind": "Action",
-                                "id": "default2279_1",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "이렇게 인사 잘 해주시는 분은 난생 처음이에요!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                }
-                            },
-                            {
-                                "if": "((new Date()).getTime() % 3) ==2",
-                                "kind": "Action",
-                                "id": "default2279_2",
-                                "options": {
-                                    "output": "안녕 반가워요 :) 저는 여러분과 인사를 나누는 이 시간이 제일 기뻐요!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                },
-                                "repeat": "1"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "돈",
-                        "id": "default2280",
-                        "filename": "default",
-                        "input": [
-                            {
-                                "text": "돈"
-                            },
-                            {
-                                "text": "내 돈 어디 가다"
-                            },
-                            {
-                                "text": "돈 좀 주다"
-                            },
-                            {
-                                "text": "돈 필요하다"
-                            },
-                            {
-                                "text": "돈 좀 내주다"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "화장실 좀 다녀올게요.   \n\n궁금하신 다른 키워드를 입력해 주시겠습니까?"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "name": "일상",
-                        "id": "default2281",
-                        "filename": "default",
-                        "input": [
-                            {
-                                "text": "오늘 뭐"
-                            },
-                            {
-                                "text": "오늘 모해"
-                            },
-                            {
-                                "text": "모해"
-                            },
-                            {
-                                "text": "뭐"
-                            },
-                            {
-                                "text": "모하"
-                            },
-                            {
-                                "text": "모햐"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "전 오늘도 알파고 형님을 뒤따르기 위해 열일중입니다. 데헷!   \n\n궁금하신 다른 키워드를 입력해 주세요."
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "name": "날씨",
-                        "id": "default2282",
-                        "filename": "default",
-                        "input": [
-                            {
-                                "text": "날씨"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "아… 제가 아직 거기까지는… 긁적긁적.   \n\n궁금하신 다른 키워드를 입력해 주세요."
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "name": "푸념",
-                        "id": "default2283",
-                        "filename": "default",
-                        "input": [
-                            {
-                                "text": "졸리다"
-                            },
-                            {
-                                "text": "배고프다"
-                            },
-                            {
-                                "text": "퇴근 시키다"
-                            },
-                            {
-                                "text": "야근 하다 싫다"
-                            },
-                            {
-                                "text": "힘들다"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "저도요. T.,T  \n\n궁금하신 다른 키워드를 입력해 주세요."
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "name": "답답",
-                        "id": "default2284",
-                        "filename": "default",
-                        "input": [
-                            {
-                                "text": "답정너"
-                            },
-                            {
-                                "text": "답답"
-                            },
-                            {
-                                "text": "답답하다"
-                            },
-                            {
-                                "text": "뭐임"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "헉. 제가 아직 좀더 배워야 해서 아직 답정너입니다. 빨리 배우겠습니다.   \n\n다시 한번 궁금하신 키워드를 입력해 주시겠습니까?"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "name": "사랑",
-                        "id": "default2285",
-                        "filename": "default",
-                        "input": [
-                            {
-                                "text": "좋아하다"
-                            },
-                            {
-                                "text": "사랑"
-                            },
-                            {
-                                "text": "하트"
-                            },
-                            {
-                                "text": "보다"
-                            },
-                            {
-                                "text": "사랑 햐"
-                            },
-                            {
-                                "text": "좋아햐"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "if": "((new Date()).getTime() % 5) ==0",
-                                "kind": "Action",
-                                "id": "default2285_0",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "저.. 저도요.. (부끄)  저 사랑에 죄송한데 초면해도 될까요? ♥  \n\n궁금하신 다른 키워드를 입력해 주세요. 알파고처럼 대답하겠습니다."
-                                },
-                                "type": "Repeat"
-                            },
-                            {
-                                "if": "((new Date()).getTime() % 5) ==1",
-                                "kind": "Action",
-                                "id": "default2285_1",
-                                "options": {
-                                    "output": "사랑한다는 말, 오늘은 가족에게도 해주세요!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                },
-                                "repeat": "1",
-                                "type": "Repeat"
-                            },
-                            {
-                                "if": "((new Date()).getTime() % 5) ==2",
-                                "kind": "Action",
-                                "id": "default2285_2",
-                                "options": {
-                                    "output": "사랑은 좋은 거예요. 열과 성을 다해 두 번 사랑합시다!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                },
-                                "repeat": "1",
-                                "type": "Repeat"
-                            },
-                            {
-                                "if": "((new Date()).getTime() % 5) ==3",
-                                "kind": "Action",
-                                "id": "default2285_3",
-                                "options": {
-                                    "output": "저도 사…사…. (아 너무 부끄럽네요)\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                },
-                                "repeat": "1",
-                                "type": "Repeat"
-                            },
-                            {
-                                "if": "((new Date()).getTime() % 5) ==4",
-                                "kind": "Action",
-                                "id": "default2285_4",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "이런… 제가 먼저 고백하려 했는데 선수를 치셨네요! ㅎㅎ\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                },
-                                "type": "Repeat"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "일상대화_바쁨",
-                        "id": "default2286",
-                        "filename": "default",
-                        "input": [
-                            {
-                                "text": "바쁘다"
-                            },
-                            {
-                                "text": "오늘 바쁘다"
-                            },
-                            {
-                                "text": "바쁘다 가요"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "아무리 바쁘셔도 건강은 꼭 챙기세요. 지금 기지개 한번 쭉~ 펴보시는 건 어떠세요?  \n\n원하시는 질문 입력하시면 전 답을 열심히 찾아보도록 하겠습니다."
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "name": "짜증2",
-                        "id": "default2287",
-                        "filename": "default",
-                        "input": [
-                            {
-                                "text": "짜증"
-                            },
-                            {
-                                "text": "ㅡㅡ"
-                            },
-                            {
-                                "text": "아 짜증"
-                            },
-                            {
-                                "text": "아 놓다"
-                            },
-                            {
-                                "text": "짜증 나다"
-                            },
-                            {
-                                "text": "짜증 요"
-                            },
-                            {
-                                "text": "짱"
-                            },
-                            {
-                                "text": "쯧쯧"
-                            },
-                            {
-                                "text": "흥"
-                            },
-                            {
-                                "text": "미치다"
-                            },
-                            {
-                                "text": "싸우다"
-                            },
-                            {
-                                "text": "화나다"
-                            },
-                            {
-                                "text": "웃다"
-                            },
-                            {
-                                "text": "웃다 말다"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 3) ==0",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "짜증날 땐 짜장면…아재 개그라도 하면 나아질 줄..(쿨럭) 죄송합니다!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                }
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 3) ==1",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "제가 잘 몰라서 그러신 거라면.. 흑.. 더 노력하겠습니다!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                }
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 3) ==2",
-                                "options": {
-                                    "output": "혹시 저 때문인가요? 오늘도 밤샘 공부하겠습니다.\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                },
-                                "repeat": "1"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "일상대화_짜증",
-                        "id": "default2288",
-                        "filename": "default",
-                        "input": [
-                            {
-                                "text": "짜증 나다"
-                            },
-                            {
-                                "text": "미치다"
-                            },
-                            {
-                                "text": "화나다"
-                            },
-                            {
-                                "text": "빡치다"
-                            },
-                            {
-                                "text": "짜증"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "저는 그럴 때 달달한 걸 먹거나, 푹 잡니다. 스트레스를 담아두고 계시면 건강에도 좋지 않으니 고객님께 맞는 해소 방법을 꼭 찾으시길 바래요."
-                                },
-                                "type": "Repeat"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "알았음",
-                        "id": "default2289",
-                        "filename": "default",
-                        "input": [
-                            {
-                                "text": "ㅇㅇ"
-                            },
-                            {
-                                "text": "ㅇ"
-                            },
-                            {
-                                "text": "응"
-                            },
-                            {
-                                "text": "네"
-                            },
-                            {
-                                "text": "그렇다"
-                            },
-                            {
-                                "text": "알다"
-                            },
-                            {
-                                "text": "아"
-                            },
-                            {
-                                "text": "ㅇㅋ"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 3) ==0",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "언제든 궁금하신 내용이 있으면 물어보세요~"
-                                }
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 3) ==1",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "네네~\n\n궁금하신 다른 키워드를 입력해 주세요~"
-                                }
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 3) ==2",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "고객님께 도움이 되어서 기뻐요!\n\n궁금하신 다른 키워드를 입력해 주세요~"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "name": "부정 - 아니/안돼",
-                        "id": "default2290",
-                        "filename": "default",
-                        "input": [
-                            {
-                                "text": "아니다"
-                            },
-                            {
-                                "text": "아뇨"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 4) ==0",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "거절은 거절합니다!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                }
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 4) ==1",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "알겠습니다! 그런 게 아닌 것으로!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                }
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 4) ==2",
-                                "options": {
-                                    "output": "앗, 제가 제대로 이해하지 못했나봐요. 다시 말씀해주시겠어요?\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                },
-                                "repeat": "1"
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 4) ==3",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "한 번만 더 기회를 주세요. 진짜 잘 할 수 있어요!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "name": "상담",
-                        "id": "default2291",
-                        "filename": "default",
-                        "input": [
-                            {
-                                "text": "고객 센터"
-                            },
-                            {
-                                "text": "상담 원"
-                            },
-                            {
-                                "text": "상담"
-                            },
-                            {
-                                "text": "전화"
-                            },
-                            {
-                                "text": "민원"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "신한카드 고객센터(☎1544-7000)이며 평일 오전 9시~오후 6시까지 이용가능하십니다. 전화연결에 시간이 걸릴 수 있으니 신한카드 홈페이지나 APP을 먼저 확인해 보시는 건 어떨까요?"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "name": "이벤트",
-                        "id": "default2292",
-                        "filename": "default",
-                        "input": [
-                            {
-                                "text": "이벤트"
-                            },
-                            {
-                                "text": "신한 FAN"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "페이스북 이벤트는 챗봇 초기 4번 페북지기에게 한마디를 선택해 주세요.  페이스북 이벤트가 아닌 신한카드 이벤트는 홈페이지를 참고해 주시면 됩니다. 더 좋은 이벤트로 보답하겠습니다."
-                                }
-                            }
-                        ]
-                    },
+					{
+						"name": "FAQ재검색",
+						"id": "default2275",
+						"filename": "default",
+						"input": [
+							{
+								"types": [
+									"dialogsType1"
+								]
+							}
+						],
+						"output": {
+							"callChild": "FAN에 대해 자주하는 질문들(FAQ)"
+						}
+					},
+					{
+						"name": "정치",
+						"id": "default2276",
+						"filename": "default",
+						"input": [
+							{
+								"text": "정치"
+							},
+							{
+								"text": "박근혜"
+							},
+							{
+								"text": "문재인"
+							},
+							{
+								"text": "홍준표"
+							},
+							{
+								"text": "민주당"
+							},
+							{
+								"text": "자유 한국 당"
+							},
+							{
+								"text": "바르다 정당"
+							},
+							{
+								"text": "새누리"
+							},
+							{
+								"text": "자 다"
+							},
+							{
+								"text": "한국 당"
+							},
+							{
+								"text": "국민의당"
+							},
+							{
+								"text": "안철수"
+							},
+							{
+								"text": "대통령"
+							},
+							{
+								"text": "국회"
+							},
+							{
+								"text": "국회의원"
+							},
+							{
+								"text": "청와대"
+							},
+							{
+								"text": "강경화"
+							},
+							{
+								"text": "김상조"
+							}
+						],
+						"output": [
+							{
+								"kind": "Action",
+								"repeat": "1",
+								"options": {
+									"output": "이런 질문엔 아! 그렇군요 라고 답하라고 배웠습니다. \"아, 그렇군요\"  \n\n궁금하신 다른 키워드를 입력해 주세요."
+								},
+								"type": "Repeat"
+							}
+						]
+					},
+					{
+						"name": "욕설",
+						"id": "default2277",
+						"filename": "default",
+						"input": [
+							{
+								"text": "바보"
+							},
+							{
+								"text": "시발"
+							},
+							{
+								"text": "멍 청아"
+							},
+							{
+								"text": "씨발"
+							},
+							{
+								"text": "멍청하다"
+							},
+							{
+								"text": "ㅅㅂ"
+							},
+							{
+								"text": "ㄱㅅㄲ"
+							},
+							{
+								"text": "개새끼"
+							},
+							{
+								"text": "썅"
+							},
+							{
+								"text": "나쁘다 놈"
+							},
+							{
+								"text": "죽다 버리다"
+							},
+							{
+								"text": "꺼지다"
+							},
+							{
+								"text": "병신"
+							},
+							{
+								"text": "ㅂㅅ"
+							},
+							{
+								"text": "ㅅㅂㄴ"
+							},
+							{
+								"text": "미치다"
+							},
+							{
+								"text": "눈 까다"
+							},
+							{
+								"text": "멍청이"
+							},
+							{
+								"text": "별로"
+							},
+							{
+								"text": "못 생기다"
+							},
+							{
+								"text": "섹스"
+							},
+							{
+								"text": "죽다"
+							}
+						],
+						"output": [
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 4) ==0",
+								"repeat": "1",
+								"options": {
+									"output": "헉. 고객님을 화나게 하다니 제 눈에서 눈물을 뽑아드릴게요.   \n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+								},
+								"type": "Repeat"
+							},
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 4) ==1",
+								"repeat": "1",
+								"options": {
+									"output": "키힝~ 무서워요.ㅜㅜ\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+								},
+								"type": "Repeat"
+							},
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 4) ==2",
+								"repeat": "1",
+								"options": {
+									"output": "죄송하지만 고객님! 저도 상처 받아요 ㅜㅜ\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+								},
+								"type": "Repeat"
+							},
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 4) ==3",
+								"repeat": "1",
+								"options": {
+									"output": "… 응? 고객님을 화나게 해드리다니 반성합니다.  \n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+								},
+								"type": "Repeat"
+							}
+						]
+					},
+					{
+						"name": "칭찬",
+						"id": "default2278",
+						"filename": "default",
+						"input": [
+							{
+								"text": "수고 하다"
+							},
+							{
+								"text": "수고"
+							},
+							{
+								"text": "고생 많다"
+							},
+							{
+								"text": "고생 하다"
+							},
+							{
+								"text": "감사 하다"
+							},
+							{
+								"text": "고맙다"
+							},
+							{
+								"text": "ㄱㅅ"
+							},
+							{
+								"text": "땡큐"
+							}
+						],
+						"output": [
+							{
+								"kind": "Action",
+								"repeat": "1",
+								"options": {
+									"output": "감동입니다, 고객님. 감사합니다.   \n\n궁금하신 다른 키워드를 입력해 주세요. 알파고처럼 대답하겠습니다."
+								}
+							}
+						]
+					},
+					{
+						"name": "인사",
+						"id": "default2279",
+						"filename": "default",
+						"input": [
+							{
+								"text": "안녕"
+							},
+							{
+								"text": "안녕하다"
+							},
+							{
+								"text": "헬로 우"
+							},
+							{
+								"text": "hello"
+							},
+							{
+								"text": "굿모닝"
+							},
+							{
+								"text": "하이"
+							},
+							{
+								"text": "hi"
+							},
+							{
+								"text": "반갑다"
+							},
+							{
+								"text": "안뇽"
+							}
+						],
+						"output": [
+							{
+								"if": "((new Date()).getTime() % 3) ==0",
+								"kind": "Action",
+								"id": "default2279_0",
+								"repeat": "1",
+								"options": {
+									"output": "고객님도 안녕하세요!  먼저 인사해 주셔서 전 지금 감동 최고조 입니다.   궁금하신 다른 키워드를 입력해 주세요. 알파고처럼 대답하겠습니다."
+								}
+							},
+							{
+								"if": "((new Date()).getTime() % 3) ==1",
+								"kind": "Action",
+								"id": "default2279_1",
+								"repeat": "1",
+								"options": {
+									"output": "이렇게 인사 잘 해주시는 분은 난생 처음이에요!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+								}
+							},
+							{
+								"if": "((new Date()).getTime() % 3) ==2",
+								"kind": "Action",
+								"id": "default2279_2",
+								"options": {
+									"output": "안녕 반가워요 :) 저는 여러분과 인사를 나누는 이 시간이 제일 기뻐요!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+								},
+								"repeat": "1"
+							}
+						]
+					},
+					{
+						"name": "돈",
+						"id": "default2280",
+						"filename": "default",
+						"input": [
+							{
+								"text": "돈"
+							},
+							{
+								"text": "내 돈 어디 가다"
+							},
+							{
+								"text": "돈 좀 주다"
+							},
+							{
+								"text": "돈 필요하다"
+							},
+							{
+								"text": "돈 좀 내주다"
+							}
+						],
+						"output": [
+							{
+								"kind": "Action",
+								"repeat": "1",
+								"options": {
+									"output": "화장실 좀 다녀올게요.   \n\n궁금하신 다른 키워드를 입력해 주시겠습니까?"
+								}
+							}
+						]
+					},
+					{
+						"name": "일상",
+						"id": "default2281",
+						"filename": "default",
+						"input": [
+							{
+								"text": "오늘 뭐"
+							},
+							{
+								"text": "오늘 모해"
+							},
+							{
+								"text": "모해"
+							},
+							{
+								"text": "뭐"
+							},
+							{
+								"text": "모하"
+							},
+							{
+								"text": "모햐"
+							}
+						],
+						"output": [
+							{
+								"kind": "Action",
+								"repeat": "1",
+								"options": {
+									"output": "전 오늘도 알파고 형님을 뒤따르기 위해 열일중입니다. 데헷!   \n\n궁금하신 다른 키워드를 입력해 주세요."
+								}
+							}
+						]
+					},
+					{
+						"name": "날씨",
+						"id": "default2282",
+						"filename": "default",
+						"input": [
+							{
+								"text": "날씨"
+							}
+						],
+						"output": [
+							{
+								"kind": "Action",
+								"repeat": "1",
+								"options": {
+									"output": "아… 제가 아직 거기까지는… 긁적긁적.   \n\n궁금하신 다른 키워드를 입력해 주세요."
+								}
+							}
+						]
+					},
+					{
+						"name": "푸념",
+						"id": "default2283",
+						"filename": "default",
+						"input": [
+							{
+								"text": "졸리다"
+							},
+							{
+								"text": "배고프다"
+							},
+							{
+								"text": "퇴근 시키다"
+							},
+							{
+								"text": "야근 하다 싫다"
+							},
+							{
+								"text": "힘들다"
+							}
+						],
+						"output": [
+							{
+								"kind": "Action",
+								"repeat": "1",
+								"options": {
+									"output": "저도요. T.,T  \n\n궁금하신 다른 키워드를 입력해 주세요."
+								}
+							}
+						]
+					},
+					{
+						"name": "답답",
+						"id": "default2284",
+						"filename": "default",
+						"input": [
+							{
+								"text": "답정너"
+							},
+							{
+								"text": "답답"
+							},
+							{
+								"text": "답답하다"
+							},
+							{
+								"text": "뭐임"
+							}
+						],
+						"output": [
+							{
+								"kind": "Action",
+								"repeat": "1",
+								"options": {
+									"output": "헉. 제가 아직 좀더 배워야 해서 아직 답정너입니다. 빨리 배우겠습니다.   \n\n다시 한번 궁금하신 키워드를 입력해 주시겠습니까?"
+								}
+							}
+						]
+					},
+					{
+						"name": "사랑",
+						"id": "default2285",
+						"filename": "default",
+						"input": [
+							{
+								"text": "좋아하다"
+							},
+							{
+								"text": "사랑"
+							},
+							{
+								"text": "하트"
+							},
+							{
+								"text": "보다"
+							},
+							{
+								"text": "사랑 햐"
+							},
+							{
+								"text": "좋아햐"
+							}
+						],
+						"output": [
+							{
+								"if": "((new Date()).getTime() % 5) ==0",
+								"kind": "Action",
+								"id": "default2285_0",
+								"repeat": "1",
+								"options": {
+									"output": "저.. 저도요.. (부끄)  저 사랑에 죄송한데 초면해도 될까요? ♥  \n\n궁금하신 다른 키워드를 입력해 주세요. 알파고처럼 대답하겠습니다."
+								},
+								"type": "Repeat"
+							},
+							{
+								"if": "((new Date()).getTime() % 5) ==1",
+								"kind": "Action",
+								"id": "default2285_1",
+								"options": {
+									"output": "사랑한다는 말, 오늘은 가족에게도 해주세요!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+								},
+								"repeat": "1",
+								"type": "Repeat"
+							},
+							{
+								"if": "((new Date()).getTime() % 5) ==2",
+								"kind": "Action",
+								"id": "default2285_2",
+								"options": {
+									"output": "사랑은 좋은 거예요. 열과 성을 다해 두 번 사랑합시다!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+								},
+								"repeat": "1",
+								"type": "Repeat"
+							},
+							{
+								"if": "((new Date()).getTime() % 5) ==3",
+								"kind": "Action",
+								"id": "default2285_3",
+								"options": {
+									"output": "저도 사…사…. (아 너무 부끄럽네요)\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+								},
+								"repeat": "1",
+								"type": "Repeat"
+							},
+							{
+								"if": "((new Date()).getTime() % 5) ==4",
+								"kind": "Action",
+								"id": "default2285_4",
+								"repeat": "1",
+								"options": {
+									"output": "이런… 제가 먼저 고백하려 했는데 선수를 치셨네요! ㅎㅎ\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+								},
+								"type": "Repeat"
+							}
+						]
+					},
+					{
+						"name": "일상대화_바쁨",
+						"id": "default2286",
+						"filename": "default",
+						"input": [
+							{
+								"text": "바쁘다"
+							},
+							{
+								"text": "오늘 바쁘다"
+							},
+							{
+								"text": "바쁘다 가요"
+							}
+						],
+						"output": [
+							{
+								"kind": "Action",
+								"repeat": "1",
+								"options": {
+									"output": "아무리 바쁘셔도 건강은 꼭 챙기세요. 지금 기지개 한번 쭉~ 펴보시는 건 어떠세요?  \n\n원하시는 질문 입력하시면 전 답을 열심히 찾아보도록 하겠습니다."
+								}
+							}
+						]
+					},
+					{
+						"name": "짜증2",
+						"id": "default2287",
+						"filename": "default",
+						"input": [
+							{
+								"text": "짜증"
+							},
+							{
+								"text": "ㅡㅡ"
+							},
+							{
+								"text": "아 짜증"
+							},
+							{
+								"text": "아 놓다"
+							},
+							{
+								"text": "짜증 나다"
+							},
+							{
+								"text": "짜증 요"
+							},
+							{
+								"text": "짱"
+							},
+							{
+								"text": "쯧쯧"
+							},
+							{
+								"text": "흥"
+							},
+							{
+								"text": "미치다"
+							},
+							{
+								"text": "싸우다"
+							},
+							{
+								"text": "화나다"
+							},
+							{
+								"text": "웃다"
+							},
+							{
+								"text": "웃다 말다"
+							}
+						],
+						"output": [
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 3) ==0",
+								"repeat": "1",
+								"options": {
+									"output": "짜증날 땐 짜장면…아재 개그라도 하면 나아질 줄..(쿨럭) 죄송합니다!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+								}
+							},
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 3) ==1",
+								"repeat": "1",
+								"options": {
+									"output": "제가 잘 몰라서 그러신 거라면.. 흑.. 더 노력하겠습니다!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+								}
+							},
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 3) ==2",
+								"options": {
+									"output": "혹시 저 때문인가요? 오늘도 밤샘 공부하겠습니다.\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+								},
+								"repeat": "1"
+							}
+						]
+					},
+					{
+						"name": "일상대화_짜증",
+						"id": "default2288",
+						"filename": "default",
+						"input": [
+							{
+								"text": "짜증 나다"
+							},
+							{
+								"text": "미치다"
+							},
+							{
+								"text": "화나다"
+							},
+							{
+								"text": "빡치다"
+							},
+							{
+								"text": "짜증"
+							}
+						],
+						"output": [
+							{
+								"kind": "Action",
+								"repeat": "1",
+								"options": {
+									"output": "저는 그럴 때 달달한 걸 먹거나, 푹 잡니다. 스트레스를 담아두고 계시면 건강에도 좋지 않으니 고객님께 맞는 해소 방법을 꼭 찾으시길 바래요."
+								},
+								"type": "Repeat"
+							}
+						]
+					},
+					{
+						"name": "알았음",
+						"id": "default2289",
+						"filename": "default",
+						"input": [
+							{
+								"text": "ㅇㅇ"
+							},
+							{
+								"text": "ㅇ"
+							},
+							{
+								"text": "응"
+							},
+							{
+								"text": "네"
+							},
+							{
+								"text": "그렇다"
+							},
+							{
+								"text": "알다"
+							},
+							{
+								"text": "아"
+							},
+							{
+								"text": "ㅇㅋ"
+							}
+						],
+						"output": [
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 3) ==0",
+								"repeat": "1",
+								"options": {
+									"output": "언제든 궁금하신 내용이 있으면 물어보세요~"
+								}
+							},
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 3) ==1",
+								"repeat": "1",
+								"options": {
+									"output": "네네~\n\n궁금하신 다른 키워드를 입력해 주세요~"
+								}
+							},
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 3) ==2",
+								"repeat": "1",
+								"options": {
+									"output": "고객님께 도움이 되어서 기뻐요!\n\n궁금하신 다른 키워드를 입력해 주세요~"
+								}
+							}
+						]
+					},
+					{
+						"name": "부정 - 아니/안돼",
+						"id": "default2290",
+						"filename": "default",
+						"input": [
+							{
+								"text": "아니다"
+							},
+							{
+								"text": "아뇨"
+							}
+						],
+						"output": [
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 4) ==0",
+								"repeat": "1",
+								"options": {
+									"output": "거절은 거절합니다!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+								}
+							},
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 4) ==1",
+								"repeat": "1",
+								"options": {
+									"output": "알겠습니다! 그런 게 아닌 것으로!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+								}
+							},
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 4) ==2",
+								"options": {
+									"output": "앗, 제가 제대로 이해하지 못했나봐요. 다시 말씀해주시겠어요?\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+								},
+								"repeat": "1"
+							},
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 4) ==3",
+								"repeat": "1",
+								"options": {
+									"output": "한 번만 더 기회를 주세요. 진짜 잘 할 수 있어요!\n\n궁금하신 다른 키워드를 입력해 주시면 안 될까요?"
+								}
+							}
+						]
+					},
+					{
+						"name": "상담",
+						"id": "default2291",
+						"filename": "default",
+						"input": [
+							{
+								"text": "고객 센터"
+							},
+							{
+								"text": "상담 원"
+							},
+							{
+								"text": "상담"
+							},
+							{
+								"text": "전화"
+							},
+							{
+								"text": "민원"
+							}
+						],
+						"output": [
+							{
+								"kind": "Action",
+								"repeat": "1",
+								"options": {
+									"output": "신한카드 고객센터(☎1544-7000)이며 평일 오전 9시~오후 6시까지 이용가능하십니다. 전화연결에 시간이 걸릴 수 있으니 신한카드 홈페이지나 APP을 먼저 확인해 보시는 건 어떨까요?"
+								}
+							}
+						]
+					},
+					{
+						"name": "이벤트",
+						"id": "default2292",
+						"filename": "default",
+						"input": [
+							{
+								"text": "이벤트"
+							},
+							{
+								"text": "신한 FAN"
+							}
+						],
+						"output": [
+							{
+								"kind": "Action",
+								"repeat": "1",
+								"options": {
+									"output": "페이스북 이벤트는 챗봇 초기 4번 페북지기에게 한마디를 선택해 주세요.  페이스북 이벤트가 아닌 신한카드 이벤트는 홈페이지를 참고해 주시면 됩니다. 더 좋은 이벤트로 보답하겠습니다."
+								}
+							}
+						]
+					},
 					{
 						"name": "미선택",
 						"id": "default2275",
@@ -5132,7 +5152,10 @@ var dialogs = [
 					"type": "Repeat"
 				}
 			}
-		]
+		],
+		"task": {
+			"kind": "Text"
+		}
 	},
 	{
 		"name": "(페이스북)상담톡",
@@ -5783,7 +5806,7 @@ var commonDialogs = [
 			}
 		],
 		"output": {
-			"output": "안녕하세요, 신한카드입니다. \n저는 전화, 홈페이지 보다 메신저가 편한 고객님들을 위해 새롭게 선보이는 신한카드 자동채팅 서비스입니다.\n결제+혜택+재미=신한 FAN 과 카드에 대해 알려드리겠습니다.\n많이 이용해 주실꺼죠?\n\n신한 FAN, 카드 추천, 자주 묻는 질문(FAQ) 중 하나를 선택해 주세요.\n\n1. 신한 FAN을 알려줘요\n2. 내게 꼭 맞는 카드를 추천해줘요\n3. 궁금한게 있는데요(FAQ)",
+			"text": "안녕하세요, 신한카드입니다. \n저는 전화, 홈페이지 보다 메신저가 편한 고객님들을 위해 새롭게 선보이는 신한카드 자동채팅 서비스입니다.\n결제+혜택+재미=신한 FAN 과 카드에 대해 알려드리겠습니다.\n많이 이용해 주실꺼죠?\n\n신한 FAN, 카드 추천, 자주 묻는 질문(FAQ) 중 하나를 선택해 주세요.\n\n1. 신한 FAN을 알려줘요\n2. 내게 꼭 맞는 카드를 추천해줘요\n3. 궁금한게 있는데요(FAQ)",
 			"buttons": [
 				{
 					"text": "신한 FAN을 알려줘요"
@@ -5795,7 +5818,7 @@ var commonDialogs = [
 					"text": "궁금한게 있는데요(FAQ)"
 				}
 			],
-			"text": "안녕하세요, 신한카드입니다. \n저는 전화, 홈페이지 보다 메신저가 편한 고객님들을 위해 새롭게 선보이는 신한카드 자동채팅 서비스입니다.\n결제재미=신한 FAN 과 카드에 대해 알려드리겠습니다.\n많이 이용해 주실꺼죠?\n\n신한 FAN, 카드 추천, 자주 묻는 질문(FAQ) 중 하나를 선택해 주세요.\n\n1. 신한 FAN을 알려줘요\n2. 내게 꼭 맞는 카드를 추천해줘요\n3. 궁금한게 있는데요(FAQ)"
+			"kind": "Content"
 		},
 		"buttons": [
 			{
