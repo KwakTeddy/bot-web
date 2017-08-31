@@ -404,6 +404,8 @@ function sendTextMessage(recipientId, text, task, token) {
                 if(err){
                     console.log(err)
                 }else {
+                    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@############################")
+                    console.log(util.inspect(messageData, {showHidden: false, depth: null}));
                     callSendAPI(messageData, token);
                 }
             })

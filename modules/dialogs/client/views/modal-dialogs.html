@@ -1,6 +1,9 @@
 <div data-ng-if="vm.modalMode == 'info'">
   <div class="modal-header">
     <h4 class="modal-title text-center" >대화셋 정보</h4>
+    <span style="position: absolute;top:15px;right: 10px; cursor: pointer;color: red" ng-click="vm.remove()">
+      삭제하기
+    </span>
   </div>
   <div class="modal-body">
     <form name="dialogsetForm" class="form-horizontal form-bordered" ng-submit="vm.save(dialogsetForm.$valid)" novalidate="novalidate">
@@ -168,9 +171,7 @@
             <button class="btn btn-primary" type="submit">
               <i class="glyphicon glyphicon-edit"></i> 수정
             </button>
-            <a class="btn btn-danger" ng-click="vm.remove()">
-              <i class="glyphicon glyphicon-trash"></i> 삭제
-            </a>
+            <button type="button" class="btn btn-default" ng-click="vm.closeModal('info')">취소</button>
           </div>
         </div>
       </footer>
@@ -268,22 +269,24 @@
               <div class="radio" style="float:left; margin-right: 10px;">
                 <label>
                   <input type="radio" name="type" id="type1" value="csv" checked="" ng-model="vm.dialogset.type" >
-                  대화목록(csv)
-                </label>
-              </div>
-              <div class="radio" style="float:left; margin-right: 10px;">
-                <label>
-                  <input type="radio" name="type" id="type2" value="kakao" ng-model="vm.dialogset.type" >
-                  카카오톡 내보내기 파일
+                  대화목록 (csv 또는 xlsx)
                 </label>
               </div>
 
-              <div class="radio" style="float:left; margin-right: 10px;">
-                <label>
-                  <input type="radio" name="type" id="type3" value="smi" ng-model="vm.dialogset.type" >
-                  자막파일 (smi)
-                </label>
-              </div>
+              <!--<div class="radio" style="float:left; margin-right: 10px;">-->
+                <!--<label>-->
+                  <!--<input type="radio" name="type" id="type2" value="kakao" ng-model="vm.dialogset.type" >-->
+                  <!--카카오톡 내보내기 파일-->
+                <!--</label>-->
+              <!--</div>-->
+
+              <!--<div class="radio" style="float:left; margin-right: 10px;">-->
+                <!--<label>-->
+                  <!--<input type="radio" name="type" id="type3" value="smi" ng-model="vm.dialogset.type" >-->
+                  <!--자막파일 (smi)-->
+                <!--</label>-->
+              <!--</div>-->
+
               <input type="text" name="type" ng-model="vm.dialogset.type" class="form-control valid"  required="" aria-required="true" aria-invalid="false" data-ng-if="!vm.dialogset.filename && vm.dialogset._id" ng-disabled="true">
 
               <!--<input type="text" id="type" name="type" ng-model="vm.dialogset.type" class="form-control valid" required="" aria-required="true" aria-invalid="false">-->

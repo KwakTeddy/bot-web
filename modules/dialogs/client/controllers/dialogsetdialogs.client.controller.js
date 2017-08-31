@@ -246,10 +246,12 @@
     };
 
     vm.removeDialog = function(dialog) {
-      dialog.$remove(function(response) {
-        console.log(response);
-        dialog.deleted = 'true';
-      });
+      if (confirm('삭제하시겠습니까?')) {
+        dialog.$remove(function(response) {
+          console.log(response);
+          dialog.deleted = 'true';
+        });
+      }
     };
   }
 })();

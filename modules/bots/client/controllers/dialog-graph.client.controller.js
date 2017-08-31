@@ -197,6 +197,12 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       alert("보기 권한이 없습니다");
       return $state.go($rootScope.previousState || "developer-home")
     };
+    for(var i = files.length - 1; i > -1; i--){
+      if(!vm.checkAuth("BotFile", files[i]._id)){
+        files.splice(i, 1);
+      }
+    }
+
 
     $scope.$state = $state;
 
@@ -594,8 +600,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
     // initialize file tree
     vm.initTree = function() {
-      if (vm.initialized)
-        return;
+      if (vm.initialized) return;
       vm.initialized = true;
 
       vm.files.forEach(function(f) {
@@ -734,14 +739,14 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
       vm.changeTab(vm.tabs[idx-1]);
     };
     vm.tabs = [{name:vm.name, data:vm.data, file_id:vm.file_id, active:true}];
-    vm.currentTab = vm.tabs[0];
     vm.addTab(vm.name.split('.')[0]+'.js');
+    vm.currentTab = vm.tabs[0];
 
     // ide
     vm.codemirrorOpts = {
       lineWrapping: true,
       lineNumbers: true,
-      mode: 'javascript',
+      mode: 'javascript'
     };
 
     $scope.codeLoaded = function(_editor) {
