@@ -8,7 +8,8 @@ var FAIL_OUT = 100;
 var SERVER_UPDATE_INTERVAL = 60;
 
 var servers = [
-  {server: config.host + ':' + config.port, count: 0, fail: 0}
+  // {server: config.host + ':' + config.port, count: 0, fail: 0},
+  {server: config.host + ':3000', count: 0, fail: 0}
 ];
 
 var bUse = false;
