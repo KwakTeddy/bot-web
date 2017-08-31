@@ -4,10 +4,18 @@ var defaultEnvConfig = require('./default');
 
 module.exports = {
   db: {
-    uri: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://' + (process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost') + '/bot-dev',
+    // uri: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://' + (process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost') + '/bot-dev',
+    uri: 'mongodb://127.0.0.1:37017,127.0.0.1:47017/bot-dev',
     options: {
       user: '',
-      pass: ''
+      pass: '',
+      db: {
+        readPreference: "secondaryPreferred"
+      },
+      replset: {
+        rs_name: 'rs0'
+        // debug: true
+      }
     },
     // Enable mongoose debug mode
     debug: process.env.MONGODB_DEBUG || false
