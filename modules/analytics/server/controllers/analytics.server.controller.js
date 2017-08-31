@@ -472,7 +472,8 @@ exports.failDialogStatistics = function (req, res) {
       fail: true,
       dialog: {$nin: [":reset user", null]},
       preDialogId :{ $exists:true, $ne: null },
-      clear : {$ne: true}
+      clear : {$ne: true},
+      channel: {$ne: "socket"}
     };
   cond['created'] = {$gte: new Date(startYear, startMonth - 1, startDay), $lte: new Date(endYear, endMonth - 1, endDay, 23, 59, 59, 999)};
   var query = [

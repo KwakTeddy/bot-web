@@ -138,11 +138,10 @@ exports.download = function (req, res) {
       /* add worksheet to workbook */
       wb.SheetNames.push(ws_name);
       wb.Sheets[ws_name] = ws;
-      console.log(util.inspect(wb));
 
-      /* write file */
-      XLSX.writeFile(wb, './public/files/' + fileName );
-      res.json(fileName);
+      var wopts = { bookType:'xlsx', bookSST:false, type:'binary' };
+      var wbout = XLSX.write(wb, wopts);
+      res.json(wbout);
     }
   });
 

@@ -70,7 +70,7 @@
       var sortCol = aoData[1].value[aoData[2].value[0].column].data;
       var sort = {target: sortCol, dir: sortDir};
       if(aoData[0].value == 1) {
-        sortDir = 'asc';
+        sortDir = 'desc';
         sortCol = 'created';
       }
       $http({
@@ -151,9 +151,17 @@
         $compile(angular.element(document.querySelector('div.toolbar')).contents())($scope);
         $compile(angular.element('#' + settings.sTableId).contents())($scope);
       });
+
     vm.downloadUserDilaogsLiveChat = function () {
       $http({method: 'POST', url:'/api/user-dialogs/download',data: {botId: $scope.botId}}).then(function (result) {
-        window.open('/files/' + result.data);
+        var fileName = $cookies.get("default_bot") + '_' + "수동 대화 내역" + '.xlsx';
+        function s2ab(s) {
+          var buf = new ArrayBuffer(s.length);
+          var view = new Uint8Array(buf);
+          for (var i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+          return buf;
+        }
+        saveAs(new Blob([s2ab(result.data)],{type:"application/octet-stream"}), fileName);
       }, function (err) {
         console.log(err)
       })
