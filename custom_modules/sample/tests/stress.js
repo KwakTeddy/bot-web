@@ -2,7 +2,7 @@ var async = require('async');
 var request = require('request');
 
 
-var host = 'localhost';
+var host = '13.124.210.218';
 var bot = 'Shinhancard';
 var user = 'QRtjQoQse8CX';
 
