@@ -367,7 +367,6 @@ angular.module("analytics").controller("DialogAmountStatisticsController", ["$sc
     });
   
     var exelDataTemplate = {
-      filename: "일별 대화량 통계",
       sheetName: "일별 대화량 통계",
       columnOrder: ["year", "month", "day", "kakao", "facebook","navertalk", "total", "fail"],
       orderedData: data
@@ -383,11 +382,16 @@ angular.module("analytics").controller("DialogAmountStatisticsController", ["$sc
       end: endYear + "/" + endMonth + "/" + endDay
     };
     $http.post('/api/analytics/statistics/exel-download/' + $cookies.get("default_bot"), {data: exelDataTemplate, date: date}).then(function (doc) {
-      console.log(doc);
+      var fileName = $cookies.get("default_bot") + '_' + "일별 대화량 통계" + '_' + startYear + '-' + startMonth + '-' + startDay + '~' + endYear + '-' + endMonth + '-' + endDay + '_' + '.xlsx';
+      function s2ab(s) {
+        var buf = new ArrayBuffer(s.length);
+        var view = new Uint8Array(buf);
+        for (var i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+        return buf;
+      }
+      saveAs(new Blob([s2ab(doc.data)],{type:"application/octet-stream"}), fileName);
     }, function (err) {
       console.log(err);
     });
   };
-
-
 }]);

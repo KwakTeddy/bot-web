@@ -32,6 +32,9 @@ module.exports = function(app) {
   app.route('/api/daily-dialog-usage')//all(analyticsPolicy.isAllowed)
     .post(analytics.dailyDialogUsage);
 
+  app.route('/api/fail-dialog-statistics/:bId')//all(analyticsPolicy.isAllowed)
+    .post(analytics.failDialogStatistics);
+
   app.route('/api/dialog-isFail/:bId')//all(analyticsPolicy.isAllowed)
     .get(analytics.dialogIsFail);
 

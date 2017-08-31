@@ -40,7 +40,8 @@
     "chart.js": "^2.6.0",
     "bootstrap-datepicker": "^1.7.1",
     "moment": "^2.18.1",
-    "bootstrap-daterangepicker": "^2.1.25"
+    "bootstrap-daterangepicker": "^2.1.25",
+    "FileSaver.js": "filesaver.js#^0.0.2"
   },
   "resolutions": {
     "angular": "1.5.3",

@@ -172,7 +172,14 @@ angular.module("analytics").controller("SenarioUsageStatisticsController", ["$sc
       end: endYear + "/" + endMonth + "/" + endDay
     };
     $http.post('/api/analytics/statistics/senario/exel-download/' + $cookies.get("default_bot"), {date: date}).then(function (doc) {
-
+      var fileName = $cookies.get("default_bot") + '_' + "시나리오 사용 통계" + '_' + startYear + '-' + startMonth + '-' + startDay + '~' + endYear + '-' + endMonth + '-' + endDay + '_' + '.xlsx';
+      function s2ab(s) {
+        var buf = new ArrayBuffer(s.length);
+        var view = new Uint8Array(buf);
+        for (var i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+        return buf;
+      }
+      saveAs(new Blob([s2ab(doc.data)],{type:"application/octet-stream"}), fileName);
     }, function (err) {
       console.log(err);
     });

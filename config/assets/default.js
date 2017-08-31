@@ -40,7 +40,8 @@ module.exports = {
         'public/lib/ment.io/dist/mentio.js',
         'public/lib/innersvg-polyfill/innersvg.js',
         'public/lib/moment/moment.js',
-        'public/lib/bootstrap-daterangepicker/daterangepicker.js'
+        'public/lib/bootstrap-daterangepicker/daterangepicker.js',
+        'public/lib/FileSaver.js/FileSaver.min.js'
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
     },

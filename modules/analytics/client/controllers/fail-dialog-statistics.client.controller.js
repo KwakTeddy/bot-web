@@ -1,6 +1,7 @@
 "user strict"
 
-angular.module("analytics").controller("UserInputStatisticsController", ["$scope","$http", "$cookies", "$timeout", function ($scope, $http, $cookies, $timeout) {
+angular.module("analytics").controller("FailDialogStatisticsController", ["$scope","$http", "$cookies", "$timeout", "DialogChildren", "$uibModal", "Dialogs",
+  function ($scope, $http, $cookies, $timeout, DialogChildren, $uibModal, Dialogs) {
   $scope.date = {
     start: "",
     end: ""
@@ -16,19 +17,122 @@ angular.module("analytics").controller("UserInputStatisticsController", ["$scope
     return date;
   };
 
+  $scope.addInput = function() {
+    $scope.selected.inputs.push({str:""});
+  };
+  $scope.addOutput= function() {
+    $scope.selected.outputs.push({str:{text: "", kind: "Text"}});
+    console.log($scope.selected.outputs);
+  };
+  $scope.selectDialog = function (target) {
+    $scope.selected = target
+  };
+
+  $scope.dialogFailureClear = function (target, index) {
+    if(confirm("정말 삭제하시겠습니까?")){
+      $scope.failDialogList.splice(index, 1);
+      $http.put('/api/user-dialogs/failedDialog', target).then(function (result) {
+      }, function (err) {
+        console.log(err)
+      })
+    }
+  };
+
+  $scope.updateDialog = function (isValid, target) {
+    $scope.modalInstance.dismiss();
+    console.log($scope.modalIndex);
+    $scope.failDialogList.splice($scope.modalIndex, 1);
+    $scope.error = null;
+    if (!isValid) {
+      $scope.$broadcast('show-errors-check-validity', 'dialogForm');
+      return false;
+    }
+    var unMake = function(obj) {
+      if (Array.isArray(obj)) {
+        return obj.map(function (o) { return o['str']; });
+      }
+    };
+    var dialog = $scope.selected;
+    dialog.botId = $cookies.get("default_bot");
+    dialog.inputs = unMake(dialog.inputs);
+    dialog.outputs = unMake(dialog.outputs);
+    dialog.originalDialog = $scope.targetDialog;
+    dialog.targetPreDialog = $scope.targetPreDialog;
+    console.log(dialog);
+    console.log($scope.selected);
+
+    Dialogs.update(dialog, function (result) {
+    }, function (err) {
+      console.log(err);
+    });
+
+
+  };
+
+  $scope.findChildren = function (dialogId, newDialog, index) {
+    var botId = $cookies.get("default_bot");
+    $scope.modalIndex = index;
+    $scope.targetDialog = newDialog;
+    $scope.targetPreDialog = dialogId;
+    console.log(dialogId)
+
+    var makeStr = function(obj) {
+      if (Array.isArray(obj)) {
+        return obj.map(function (o) { return {str: o}; });
+      }
+      return [{str: obj}];
+    };
+
+    var dialogs = DialogChildren.query({
+      botId: botId,
+      dialogId: dialogId
+    }, function() {
+      console.log(dialogs);
+      if (dialogs.length){
+        dialogs.forEach(function(obj, i) {
+          obj.idx = i;
+          obj.inputs = makeStr(obj.inputs);
+          obj.outputs = makeStr(obj.outputs);
+          obj.inputs.push({str:newDialog});
+        });
+        $scope.dialogs = dialogs;
+        $scope.selected = $scope.dialogs[0];
+
+        console.log($scope.dialogs);
+        console.log($scope.selected);
+
+        $scope.modalInstance = $uibModal.open({
+          templateUrl: 'modules/analytics/client/views/modal-fail-dialog.html',
+          scope: $scope
+        });
+        $scope.modalInstance.result.then(function (response) {
+          console.log(response);
+        });
+        $scope.modalDismiss = function () {
+          $scope.modalInstance.dismiss();
+        }
+      }else {
+        alert('시작 다이얼로그 입니다')
+      }
+    }, function(err) {
+      console.log(err);
+    });
+  };
+
   $scope.init = function () {
-    userInputCount(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, false);
+    failDialogCount(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, false);
   };
 
   $scope.update = function () {
     document.getElementsByName('dataLoading')[0].style.setProperty("display", "block", "important");
-    userInputCount(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, true);
+    failDialogCount(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, true);
   };
 
-  var userInputCount = function (date, userType, channel, update) {
-    $http.post('/api/user-input-statistics/' + $cookies.get("default_bot"), {date: date, channel: channel, limit: 100}).then(function (doc) {
+  var failDialogCount = function (date, userType, channel, update) {
+    $http.post('/api/fail-dialog-statistics/' + $cookies.get("default_bot"), {date: date, channel: channel, limit: 100}).then(function (doc) {
+      console.log(doc);
       dataBackup = angular.copy(doc.data);
-      $scope.userInputUsageList = doc.data;
+      $scope.failDialogList = doc.data;
       document.getElementById('loading-screen').style.setProperty("display", "none", "important");
       document.getElementsByName('dataLoading')[0].style.setProperty("display", "none", "important");
     }, function (err) {
@@ -111,7 +215,7 @@ angular.module("analytics").controller("UserInputStatisticsController", ["$scope
       delete doc._id;
     });
     var exelDataTemplate = {
-      sheetName: "사용자 입력 통계",
+      sheetName: "실패 대화 통계",
       columnOrder: ["dialog", "count"],
       orderedData: dataBackup1
     };
@@ -126,7 +230,7 @@ angular.module("analytics").controller("UserInputStatisticsController", ["$scope
       end: endYear + "/" + endMonth + "/" + endDay
     };
     $http.post('/api/analytics/statistics/exel-download/' + $cookies.get("default_bot"), {data: exelDataTemplate, date: date, transpose: true}).then(function (doc) {
-      var fileName = $cookies.get("default_bot") + '_' + "사용자 입력 통계" + '_' + startYear + '-' + startMonth + '-' + startDay + '~' + endYear + '-' + endMonth + '-' + endDay + '_' + '.xlsx';
+      var fileName = $cookies.get("default_bot") + '_' + "실패 대화 통계" + '_' + startYear + '-' + startMonth + '-' + startDay + '~' + endYear + '-' + endMonth + '-' + endDay + '_' + '.xlsx';
       function s2ab(s) {
         var buf = new ArrayBuffer(s.length);
         var view = new Uint8Array(buf);

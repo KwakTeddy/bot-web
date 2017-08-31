@@ -291,9 +291,9 @@ exports.senarioExelDownload = function (req, res) {
           merges.push({ s: alphabetFunc(kakaoLength + 1) + '1', e: alphabetFunc(facebookLength) + '1' });
           merges.push({ s: alphabetFunc(facebookLength + 1) + '1', e: alphabetFunc(navertalkLength) + '1' });
 
-          var fileName = req.params.bId + '_' + "시나리오" + '_' + startYear + '-' + startMonth + '-' + startDay + '~' + endYear + '-' + endMonth + '-' + endDay + '_' + Date.now() + '.xlsx';
-          XLSX.writeFile(wb, './public/files/' + fileName );
-          res.json(fileName);
+          var wopts = { bookType:'xlsx', bookSST:false, type:'binary' };
+          var wbout = XLSX.write(wb, wopts);
+          res.json(wbout);
           cb(null)
         }
       ], function (err) {
@@ -388,9 +388,9 @@ exports.exelDownload = function (req, res) {
   wb.SheetNames.push(ws_name);
   wb.Sheets[ws_name] = ws;
 
-  var fileName = req.params.bId + '_' + req.body.data.filename + '_' + startYear + '-' + startMonth + '-' + startDay + '~' + endYear + '-' + endMonth + '-' + endDay + '_' + Date.now() + '.xlsx';
-  XLSX.writeFile(wb, './public/files/' + fileName );
-  res.json(fileName);
+  var wopts = { bookType:'xlsx', bookSST:false, type:'binary' };
+  var wbout = XLSX.write(wb, wopts);
+  res.json(wbout);
 };
 
 
@@ -454,6 +454,40 @@ exports.failDailogs = function (req, res) {
       });
     } else {
       res.jsonp(failDialog);
+    }
+  });
+};
+
+exports.failDialogStatistics = function (req, res) {
+  var startYear =  parseInt(req.body.date.start.split('/')[0]);
+  var startMonth = parseInt(req.body.date.start.split('/')[1]);
+  var startDay =   parseInt(req.body.date.start.split('/')[2]);
+  var endYear =  parseInt(req.body.date.end.split('/')[0]);
+  var endMonth = parseInt(req.body.date.end.split('/')[1]);
+  var endDay =   parseInt(req.body.date.end.split('/')[2]);
+  var cond =
+    {
+      botId: req.params.bId,
+      inOut: true,
+      fail: true,
+      dialog: {$nin: [":reset user", null]},
+      preDialogId :{ $exists:true, $ne: null },
+      clear : {$ne: true}
+    };
+  cond['created'] = {$gte: new Date(startYear, startMonth - 1, startDay), $lte: new Date(endYear, endMonth - 1, endDay, 23, 59, 59, 999)};
+  var query = [
+    {$match: cond},
+    {$group: {_id: {dialog:'$dialog', preDialogId: '$preDialogId', preDialogName: '$preDialogName'}, count: {$sum: 1}}},
+    {$sort: {count: -1}}
+  ];
+  if(req.body.limit) query.push({$limit: req.body.limit});
+  UserDialog.aggregate(query).exec(function (err, failDialogs) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json(failDialogs);
     }
   });
 };
