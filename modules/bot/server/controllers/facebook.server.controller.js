@@ -10,6 +10,7 @@ var subscribe = '';
 var subscribePageToken = '';
 var mongoose = require('mongoose');
 var UserBotFbPage = mongoose.model('UserBotFbPage');
+var OverTextLink = mongoose.model('OverTextLink');
 var botLib = require(path.resolve('config/lib/bot'));
 var utils = require(path.resolve('modules/bot/action/common/utils'));
 var crypto = require('crypto');
@@ -295,6 +296,11 @@ function respondMessage(to, text, botId, task) {
   if (subscribe) tokenData = subscribePageToken;
   else tokenData = bot.facebook.PAGE_ACCESS_TOKEN;
 
+  if(bot && bot.commonButtons && bot.commonButtons.length && botContext.botUser._currentDialog.name && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)){
+    if(task && task.buttons) task.buttons =  task.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
+    else if(task && task.result && task.result.buttons) task.result.buttons =  task.result.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
+  }
+
   if (task && task.result) {
     var result = task.result;
 
@@ -307,7 +313,11 @@ function respondMessage(to, text, botId, task) {
         sendGenericMessage(to, text, result, tokenData);
         break;
       case 'buttons':
-        sendButtonMessage(to, text, result, tokenData);
+        if(config.enterprise.name){
+          smartReplyMessage(to, text, result, tokenData);
+        }else {
+          sendButtonMessage(to, text, result, tokenData);
+        }
         break;
 
       case 'items':
@@ -340,8 +350,11 @@ function respondMessage(to, text, botId, task) {
       }else {
         if (task && task.hasOwnProperty('buttons')){
           //text && buttons
-          sendButtonMessage(to, text, task, tokenData);
-
+          if(config.enterprise.name){
+            smartReplyMessage(to, text, task, tokenData);
+          }else {
+            sendButtonMessage(to, text, task, tokenData);
+          }
         }else {
           //text
           sendTextMessage(to, text, task, tokenData);
@@ -372,53 +385,53 @@ exports.respondMessage = respondMessage;
  *
  */
 function sendTextMessage(recipientId, text, task, token) {
-    if(text.length > 640){
-        var subtext = text.substring(0, 639);
-        var buttons = [{
-            "type":"web_url",
-            "url": config.host + '/facebookOvertext/',
-            "title":"전문 보기"
-        }];
-        var messageData = {
-            recipient: {
-                id: recipientId
-            },
-            message: {
-                attachment: {
-                    type: "template",
-                    payload: {
-                        template_type: "button",
-                        text: subtext,
-                        buttons: buttons
-                    }
-                }
-            }
-        };
-        crypto.randomBytes(20, function (err, buffer) {
-            var index = buffer.toString('hex');
-            buttons[0].url = buttons[0].url + index;
-            var overTextLink = new OverTextLink();
-            overTextLink['text'] = text;
-            overTextLink['index'] = index;
-            overTextLink.save(function (err) {
-                if(err){
-                    console.log(err)
-                }else {
-                    callSendAPI(messageData, token);
-                }
-            })
-        });
-    }else {
-        var messageData = {
-            recipient: {
-                id: recipientId
-            },
-            message: {
-                text: text
-            }
-        };
-        callSendAPI(messageData, token);
-    }
+  if(text.length > 640){
+    var subtext = text.substring(0, 639);
+    var buttons = [{
+      "type":"web_url",
+      "url": config.host + '/facebookOvertext/',
+      "title":"전문 보기"
+    }];
+    var messageData = {
+      recipient: {
+        id: recipientId
+      },
+      message: {
+        attachment: {
+          type: "template",
+          payload: {
+            template_type: "button",
+            text: subtext,
+            buttons: buttons
+          }
+        }
+      }
+    };
+    crypto.randomBytes(20, function (err, buffer) {
+      var index = buffer.toString('hex');
+      buttons[0].url = buttons[0].url + index;
+      var overTextLink = new OverTextLink();
+      overTextLink['text'] = text;
+      overTextLink['index'] = index;
+      overTextLink.save(function (err) {
+        if(err){
+          console.log(err)
+        }else {
+          callSendAPI(messageData, token);
+        }
+      })
+    });
+  }else {
+    var messageData = {
+      recipient: {
+        id: recipientId
+      },
+      message: {
+        text: text
+      }
+    };
+    callSendAPI(messageData, token);
+  }
 }
 
 
@@ -456,11 +469,6 @@ function sendImageMessage(recipientId, text, task, token) {
 function sendButtonMessage(recipientId, text, task, token) {
   var bot = botContext.botUser.orgBot || botContext.bot;
   var buttons = [];
-
-  if(bot && bot.commonButtons && bot.commonButtons.length && botContext.botUser._currentDialog.name && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)){
-    if(task.buttons) task.buttons =  task.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
-    else if(task.result.buttons) task.result.buttons =  task.result.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
-  }
 
   if(task.buttons.length > 3){
   var messageData = {
@@ -661,6 +669,132 @@ function sendGenericMessage(recipientId, text, task, token) {
 }
 
 /*
+ * Send a list message using the Send API.
+ *
+ */
+function listMessage(recipientId, text, task, token) {
+
+  var elements = [];
+  for(var i = 0; i < task.buttons.length; i++){
+    var elm = {};
+    elm['title']
+  }
+
+  var messageData = {
+    "recipient":{
+      "id": recipientId
+    }, "message": {
+      "attachment": {
+        "type": "template",
+        "payload": {
+          "template_type": "list",
+          "elements": [
+            {
+              "title": "Classic T-Shirt Collection",
+              "image_url": "https://peterssendreceiveapp.ngrok.io/img/collection.png",
+              "subtitle": "See all our colors",
+              "default_action": {
+                "type": "web_url",
+                "url": "https://peterssendreceiveapp.ngrok.io/shop_collection",
+                "messenger_extensions": true,
+                "webview_height_ratio": "tall",
+                "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+              },
+              "buttons": [
+                {
+                  "title": "View",
+                  "type": "web_url",
+                  "url": "https://peterssendreceiveapp.ngrok.io/collection",
+                  "messenger_extensions": true,
+                  "webview_height_ratio": "tall",
+                  "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                }
+              ]
+            },
+            {
+              "title": "Classic White T-Shirt",
+              "image_url": "https://peterssendreceiveapp.ngrok.io/img/white-t-shirt.png",
+              "subtitle": "100% Cotton, 200% Comfortable",
+              "default_action": {
+                "type": "web_url",
+                "url": "https://peterssendreceiveapp.ngrok.io/view?item=100",
+                "messenger_extensions": true,
+                "webview_height_ratio": "tall",
+                "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+              },
+              "buttons": [
+                {
+                  "title": "Shop Now",
+                  "type": "web_url",
+                  "url": "https://peterssendreceiveapp.ngrok.io/shop?item=100",
+                  "messenger_extensions": true,
+                  "webview_height_ratio": "tall",
+                  "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                }
+              ]
+            },
+            {
+              "title": "Classic Blue T-Shirt",
+              "image_url": "https://peterssendreceiveapp.ngrok.io/img/blue-t-shirt.png",
+              "subtitle": "100% Cotton, 200% Comfortable",
+              "default_action": {
+                "type": "web_url",
+                "url": "https://peterssendreceiveapp.ngrok.io/view?item=101",
+                "messenger_extensions": true,
+                "webview_height_ratio": "tall",
+                "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+              },
+              "buttons": [
+                {
+                  "title": "Shop Now",
+                  "type": "web_url",
+                  "url": "https://peterssendreceiveapp.ngrok.io/shop?item=101",
+                  "messenger_extensions": true,
+                  "webview_height_ratio": "tall",
+                  "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                }
+              ]
+            },
+            {
+              "title": "Classic Black T-Shirt",
+              "image_url": "https://peterssendreceiveapp.ngrok.io/img/black-t-shirt.png",
+              "subtitle": "100% Cotton, 200% Comfortable",
+              "default_action": {
+                "type": "web_url",
+                "url": "https://peterssendreceiveapp.ngrok.io/view?item=102",
+                "messenger_extensions": true,
+                "webview_height_ratio": "tall",
+                "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+              },
+              "buttons": [
+                {
+                  "title": "Shop Now",
+                  "type": "web_url",
+                  "url": "https://peterssendreceiveapp.ngrok.io/shop?item=102",
+                  "messenger_extensions": true,
+                  "webview_height_ratio": "tall",
+                  "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                }
+              ]
+            }
+          ],
+          "buttons": [
+            {
+              "title": "View More",
+              "type": "postback",
+              "payload": "payload"
+            }
+          ]
+        }
+      }
+    }
+
+  };
+  callSendAPI(messageData, token);
+}
+
+
+/*
  * Send a receipt message using the Send API.
  *
  */
@@ -731,20 +865,23 @@ function sendReceiptMessage(recipientId, text, task, token) {
  *
  */
 function smartReplyMessage(recipientId, text, task, token) {
-  for (var i = 0; i < task.smartReply.length; i++){
-    task.smartReply[i] = {"title" : task.smartReply[i]};
-    task.smartReply[i]['content_type'] = 'text';
-    task.smartReply[i]['payload'] = task.smartReply[i].title;
-  }
   var messageData = {
     recipient: {
       id: recipientId
     },
     message:{
       "text": text,
-      "quick_replies": task.smartReply
+      "quick_replies": ''
     }
   };
+  if(task.smartReply && task.smartReply.length){
+    for (var i = 0; i < task.smartReply.length; i++){
+      task.smartReply[i] = {"title" : task.smartReply[i]};
+      task.smartReply[i]['content_type'] = 'text';
+      task.smartReply[i]['payload'] = task.smartReply[i].title;
+    }
+    messageData.message.quick_replies = task.smartReply;
+  }
 
   if(task.buttons){
     var smartReplies = [];

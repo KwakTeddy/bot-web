@@ -625,7 +625,7 @@
               <a class="btn btn-default" ng-show="vm.fromTask" ng-click="gotoTree()">
                 돌아가기
               </a>
-              <a class="btn btn-primary" ng-click="vm.saveFile()">
+              <a class="btn btn-primary"ng-if="vm.checkAuth('BotFile',vm.currentTab.file_id, 'edit')" ng-click="vm.saveFile()">
                 저장하기
               </a>
             </div>
@@ -639,7 +639,8 @@
                 id='codemirror'
                 ui-codemirror-opts="vm.codemirrorOpts"
                 ui-codemirror="{ onLoad: codeLoaded}"
-                ng-model="vm.currentTab.data" ui-refresh='refreshCodemirror'></ui-codemirror>
+                ng-model="vm.currentTab.data" ui-refresh='refreshCodemirror'>
+              </ui-codemirror>
             </div>
           </form>
         </div>

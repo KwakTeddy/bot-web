@@ -15,6 +15,7 @@
     vm.auth = $cookies.getObject("auth");
     vm.authentication = Authentication;
     vm.bot = botResolve;
+    console.log(vm.bot);
 
     vm.dialogsets = dialogsetsResolve;
     vm.dialogs = getDialogs;
@@ -69,11 +70,11 @@
     //     }
     //   }
     // }
-
+    console.log(vm.dialogsets)
 
     vm.remove = function () {
       console.log(vm.dialogset)
-      if (confirm('Are you sure you want to delete?')) {
+      if (confirm('삭제하시겠습니까?')) {
         vm.dialogset.$remove(function (result) {
           DialogsetsService.query().$promise.then(function (result) {
             vm.dialogsets = result;
@@ -99,7 +100,7 @@
 
         // TODO: move create/update logic to service
         function successCallback(res) {
-          DialogsetsService.query().$promise.then(function (result) {
+          DialogsetsService.query({bId: $cookies.get("botObjectId")}).$promise.then(function (result) {
             vm.dialogsets = result;
             vm.createModalInstance.dismiss();
           }, function (err) {
@@ -121,7 +122,7 @@
             return false;
           }
           vm.dialogset.$update(function (result) {
-            DialogsetsService.query().$promise.then(function (result) {
+            DialogsetsService.query({bId: $cookies.get("botObjectId")}).$promise.then(function (result) {
               vm.dialogsets = result;
               vm.InfoModalInstance.dismiss();
             }, function (err) {
@@ -198,24 +199,26 @@
       })
     };
     vm.closeModal = function (target) {
-      vm.createModalInstance.dismiss();
+      if(target == "create") vm.createModalInstance.dismiss();
+      else if(target == "info") vm.InfoModalInstance.dismiss();
     };
 
     vm.connectBot = function (dialogset) {
-      vm.bot.dialogsets.push(dialogset._id);
+      vm.bot.dialogsets.push({_id: dialogset._id});
       vm.bot.$update(function (response) {
-        console.log(response)
-        vm.bot=response
-        dialogset['connect'] = true
+        vm.bot=response;
+        dialogset['connect'] = true;
       }, function (err) {
         console.log(err)
       })
     };
     vm.disconnectBot = function (target) {
-      vm.bot.dialogsets.splice(vm.bot.dialogsets.indexOf(target._id), 1);
+      for(var i = vm.bot.dialogsets.length - 1; i > -1; i--){
+        if(vm.bot.dialogsets[i]._id == target._id) vm.bot.dialogsets.splice(i, 1);
+      }
       vm.bot.$update(function (response) {
         vm.bot=response;
-        delete target.connect
+        target.connect = false;
       }, function (err) {
         console.log(err)
       })

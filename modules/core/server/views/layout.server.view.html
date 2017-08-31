@@ -171,6 +171,12 @@
                       <span>대화 학습</span>
                     </a>
                   </li>
+                  <!--<li>-->
+                    <!--<a ui-sref="dialogsets.dialogsLearn({botNameId: currentBot.id})">-->
+                      <!--<i class="fa fa-cube" aria-hidden="true"></i>-->
+                      <!--<span>대화셋 관리</span>-->
+                    <!--</a>-->
+                  <!--</li>-->
                   <li>
                     <a ui-sref="bots.dialog-tree2({botId: $cookies.get('default_bot'), fileId: 'null'})">
                       <i class="fa fa-cube" aria-hidden="true"></i>
@@ -710,7 +716,7 @@
     </aside>
 
     <!--<section id="main" role="main" class="content-body" style="overflow: inherit">-->
-    <section id="main" role="main" class="content-body" style="overflow: scroll;">
+    <section id="main" role="main" class="content-body" style="overflow: scroll; height: 100%">
         {% block content %}{% endblock %}
     </section>
 

@@ -54,7 +54,7 @@
         <td class="actions">
           <a ng-click="vm.edit($index, false)" ng-show="file.edit" data-ng-if="vm.checkAuth('BotFile', file._id, 'edit')"><i class="fa fa-times"></i></a>
           <a ng-click="vm.rename($index)" ng-show="file.edit" data-ng-if="vm.checkAuth('BotFile', file._id, 'edit')"><i class="fa fa-save"></i></a>
-          <a ng-click="vm.edit($index, true)" data-ng-if="vm.checkAuth('BotFile', file._id, 'edit')" ng-show="!file.edit"><i class="fa fa-pencil"></i></a>
+          <!--<a ng-click="vm.edit($index, true)" data-ng-if="vm.checkAuth('BotFile', file._id, 'edit')" ng-show="!file.edit"><i class="fa fa-pencil"></i></a>-->
           <a ui-sref="bots.ide({botId: file.bot._id, fileId: file._id})" data-ng-if="vm.checkAuth('BotFile', file._id, 'edit')" ng-show="!file.edit && vm.isIde(file.name)"><i class="fa fa-edit"></i></a>
           <a ui-sref="bots.dialog-tree({botId: file.bot._id, fileId: file._id})" data-ng-if="vm.checkAuth('BotFile', file._id, 'edit')" ng-show="!file.edit && !vm.isIde(file.name)"><i class="fa fa-edit"></i></a>
           <!--<a ui-sref="bots.dialog-graph({botId: file.bot._id, fileId: file._id})" ng-show="!file.edit && !vm.isIde(file.name)"><i class="fa fa-edit"></i>new</a>-->
