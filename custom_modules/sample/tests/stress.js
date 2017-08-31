@@ -19,7 +19,8 @@ var _request = function(json, _ecb, _cb) {
 
   request.post({
     url: 'http://' + host + ':3000/kakao/' + bot + '/message',
-    // 'pool.maxSockets': 'Inifinity',
+    'pool.maxSockets': 100000,
+    agent: false,
     headers: {
       'Accept': '*/*',
       'Cache-Control': 'no-cache',
