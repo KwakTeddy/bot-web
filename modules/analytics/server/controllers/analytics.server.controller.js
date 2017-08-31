@@ -291,7 +291,7 @@ exports.senarioExelDownload = function (req, res) {
           merges.push({ s: alphabetFunc(kakaoLength + 1) + '1', e: alphabetFunc(facebookLength) + '1' });
           merges.push({ s: alphabetFunc(facebookLength + 1) + '1', e: alphabetFunc(navertalkLength) + '1' });
 
-          var fileName = Date.now() + req.params.bId + '_' + "senario" + '_' + startYear + '-' + startMonth + '-' + startDay + '~' + endYear + '-' + endMonth + '-' + endDay + '.xlsx';
+          var fileName = req.params.bId + '_' + "시나리오" + '_' + startYear + '-' + startMonth + '-' + startDay + '~' + endYear + '-' + endMonth + '-' + endDay + '_' + Date.now() + '.xlsx';
           XLSX.writeFile(wb, './public/files/' + fileName );
           res.json(fileName);
           cb(null)
@@ -303,33 +303,65 @@ exports.senarioExelDownload = function (req, res) {
 };
 
 exports.exelDownload = function (req, res) {
+  var startYear =  parseInt(req.body.date.start.split('/')[0]);
+  var startMonth = parseInt(req.body.date.start.split('/')[1]);
+  var startDay =   parseInt(req.body.date.start.split('/')[2]);
+  var endYear =  parseInt(req.body.date.end.split('/')[0]);
+  var endMonth = parseInt(req.body.date.end.split('/')[1]);
+  var endDay =   parseInt(req.body.date.end.split('/')[2]);
+
   function datenum(v, date1904) {
     if(date1904) v+=1462;
     var epoch = Date.parse(v);
     return (epoch - new Date(Date.UTC(1899, 11, 30))) / (24 * 60 * 60 * 1000);
   }
+  
   function sheet_from_array_of_arrays(data, opts) {
     var ws = {};
     var range = {s: {c:10000000, r:10000000}, e: {c:0, r:0 }};
-    for(var R = 0; R != data.length; ++R) {
-      for(var C = 0; C != data[R].length; ++C) {
-        if(range.s.r > R) range.s.r = R;
-        if(range.s.c > C) range.s.c = C;
-        if(range.e.r < R) range.e.r = R;
-        if(range.e.c < C) range.e.c = C;
-        var cell = {v: data[R][C] };
-        if(cell.v == null) continue;
-        var cell_ref = XLSX.utils.encode_cell({c:C,r:R});
+    if(opts){
+      for(var C = 0; C != data.length; ++C) {
+        for(var R = 0; R != data[C].length; ++R) {
+          if(range.s.r > R) range.s.r = R;
+          if(range.s.c > C) range.s.c = C;
+          if(range.e.r < R) range.e.r = R;
+          if(range.e.c < C) range.e.c = C;
+          var cell = {v: data[C][R] };
+          if(cell.v == null) continue;
+          var cell_ref = XLSX.utils.encode_cell({c:C,r:R});
 
-        if(typeof cell.v === 'number') cell.t = 'n';
-        else if(typeof cell.v === 'boolean') cell.t = 'b';
-        else if(cell.v instanceof Date) {
-          cell.t = 'n'; cell.z = XLSX.SSF._table[22];
-          cell.v = datenum(cell.v);
+          if(typeof cell.v === 'number') cell.t = 'n';
+          else if(typeof cell.v === 'boolean') cell.t = 'b';
+          else if(cell.v instanceof Date) {
+            cell.t = 'n'; cell.z = XLSX.SSF._table[22];
+            cell.v = datenum(cell.v);
+          }
+          else cell.t = 's';
+
+          ws[cell_ref] = cell;
         }
-        else cell.t = 's';
+      }
+    }else {
+      for(var R = 0; R != data.length; ++R) {
+        for(var C = 0; C != data[R].length; ++C) {
+          if(range.s.r > R) range.s.r = R;
+          if(range.s.c > C) range.s.c = C;
+          if(range.e.r < R) range.e.r = R;
+          if(range.e.c < C) range.e.c = C;
+          var cell = {v: data[R][C] };
+          if(cell.v == null) continue;
+          var cell_ref = XLSX.utils.encode_cell({c:C,r:R});
 
-        ws[cell_ref] = cell;
+          if(typeof cell.v === 'number') cell.t = 'n';
+          else if(typeof cell.v === 'boolean') cell.t = 'b';
+          else if(cell.v instanceof Date) {
+            cell.t = 'n'; cell.z = XLSX.SSF._table[22];
+            cell.v = datenum(cell.v);
+          }
+          else cell.t = 's';
+
+          ws[cell_ref] = cell;
+        }
       }
     }
     if(range.s.c < 10000000) ws['!ref'] = XLSX.utils.encode_range(range);
@@ -350,17 +382,13 @@ exports.exelDownload = function (req, res) {
       _doc.push(doc[_doc[0]])
     });
   });
-  console.log(util.inspect(data, {showHidden: false, depth: null}))
   var wb = new Workbook();
-  var ws = sheet_from_array_of_arrays(data);
+  var ws = sheet_from_array_of_arrays(data, req.body.transpose);
   var ws_name = req.body.data.sheetName;
   wb.SheetNames.push(ws_name);
   wb.Sheets[ws_name] = ws;
-  var year = new Date().getFullYear();
-  var month = new Date().getMonth() + 1;
-  var day = new Date().getDate();
 
-  var fileName = req.params.bId + '_' + req.body.data.filename + '_' + year + '_' + month + '_' + day + '.xlsx';
+  var fileName = req.params.bId + '_' + req.body.data.filename + '_' + startYear + '-' + startMonth + '-' + startDay + '~' + endYear + '-' + endMonth + '-' + endDay + '_' + Date.now() + '.xlsx';
   XLSX.writeFile(wb, './public/files/' + fileName );
   res.json(fileName);
 };
@@ -507,23 +535,6 @@ exports.userCount = function (req, res) {
       res.json(userCounts);
     }
   });
-
-  // UserDialogLog.aggregate(
-  //   [
-  //   {$project: {_id: 0, botId:1, inOut: 1, channel: 1, year: 1, month: 1,date: 1, kakao: {$cond:[{$eq: ["$channel", "kakao"]}, 1,0]}, facebook: {$cond:[{$eq: ["$channel", "facebook"]}, 1,0]}, navertalk: {$cond:[{$eq: ["$channel", "navertalk"]}, 1,0]}}},
-  //   {$match: cond},
-  //   {$group: {_id: {year: '$year', month: '$month', day: '$date'}, total: {$sum: 1},kakao: {$sum: "$kakao"}, facebook: {$sum: "$facebook"}, navertalk: {$sum: "$navertalk"}}},
-  //   {$sort: {_id:-1,  date: -1}}
-  //   ]
-  // ).exec(function (err, userCounts) {
-  //   if (err) {
-  //     return res.status(400).send({
-  //       message: errorHandler.getErrorMessage(err)
-  //     });
-  //   } else {
-  //     res.json(userCounts);
-  //   }
-  // });
 };
 
 exports.userDialogCumulativeCount = function (req, res) {

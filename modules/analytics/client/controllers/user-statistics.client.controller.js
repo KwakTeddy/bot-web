@@ -142,6 +142,8 @@ angular.module("analytics").controller("UserStatisticsController", ['$scope', "$
         array.push(year + '/'+ month + '/' + day)
       }
       barData.labels = array;
+      $scope.dateArray = array;
+
       array.forEach(function (date) {
         var Year =  parseInt(date.split('/')[0]);
         var Month = parseInt(date.split('/')[1]);
@@ -268,22 +270,60 @@ angular.module("analytics").controller("UserStatisticsController", ['$scope', "$
 
   $scope.exelDownload = function () {
     var dataBackup1 = angular.copy(dataBackup);
-    dataBackup1.forEach(function (doc) {
-      Object.keys(doc._id).forEach(function (key) {
-        doc[key] = doc._id[key]
-      });
-      delete doc._id;
+    var data = [];
+    $scope.dateArray.forEach(function (date) {
+      var year =  parseInt(date.split('/')[0]);
+      var month = parseInt(date.split('/')[1]);
+      var day =   parseInt(date.split('/')[2]);
+      var exist = false;
+      for(var i = 0; i < dataBackup1.length; i++){
+        if(dataBackup1[i]._id && (dataBackup1[i]._id.year == year) && (dataBackup1[i]._id.month == month) && (dataBackup1[i]._id.day == day)){
+          Object.keys(dataBackup1[i]._id).forEach(function (key) {
+            dataBackup1[i][key] = dataBackup1[i]._id[key]
+          });
+          delete dataBackup1[i]._id;
+          data.push(dataBackup1[i]);
+          exist = true;
+          break;
+        }
+      }
+      if(!exist){
+        data.push(
+          {
+            year: year,
+            month: month,
+            day: day,
+            kakao: 0,
+            facebook: 0,
+            navertalk: 0
+          }
+        )
+      }
     });
+
+
     var exelDataTemplate = {
       filename: "사용자 통계",
       sheetName: "사용자 통계",
-      columnOrder: ["year", "month", "day", "kakao", "facebook","navertalk", "total"],
-      orderedData: dataBackup1
+      columnOrder: ["year", "month", "day", "kakao", "facebook","navertalk"],
+      orderedData: data
     };
-    $http.post('/api/analytics/statistics/exel-download/' + $cookies.get("default_bot"), {data: exelDataTemplate}).then(function (doc) {
+    var startYear =  $scope.date.start.getFullYear();
+    var startMonth = $scope.date.start.getMonth() + 1;
+    var startDay =   $scope.date.start.getDate();
+    var endYear =  $scope.date.end.getFullYear();
+    var endMonth = $scope.date.end.getMonth() + 1;
+    var endDay =   $scope.date.end.getDate();
+    var date = {
+      start: startYear + "/" + startMonth + "/" + startDay,
+      end: endYear + "/" + endMonth + "/" + endDay
+    };
+
+    $http.post('/api/analytics/statistics/exel-download/' + $cookies.get("default_bot"), {data: exelDataTemplate, date : date}).then(function (doc) {
 
     }, function (err) {
       console.log(err);
     });
   };
+
 }]);

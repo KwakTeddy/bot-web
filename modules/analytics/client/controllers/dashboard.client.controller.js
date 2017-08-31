@@ -27,7 +27,8 @@ angular.module('analytics').controller('DashboardController', ['$scope', 'Authen
         navertalk: 'rgba(0, 199, 60, 0.70)',
         success: "rgba(66, 133, 244, 0.70)",
         fail: "rgba(221, 81, 68, 0.70)"
-      }, border:{
+      },
+      border:{
         kakao: '#ede500',
         facebook: '#29487d',
         navertalk: '#00af35',

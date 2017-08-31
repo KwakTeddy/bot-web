@@ -161,7 +161,17 @@ angular.module("analytics").controller("SenarioUsageStatisticsController", ["$sc
   });
 
   $scope.exelDownload = function () {
-    $http.post('/api/analytics/statistics/senario/exel-download/' + $cookies.get("default_bot"), {date: $scope.date}).then(function (doc) {
+    var startYear =  $scope.date.start.getFullYear();
+    var startMonth = $scope.date.start.getMonth() + 1;
+    var startDay =   $scope.date.start.getDate();
+    var endYear =  $scope.date.end.getFullYear();
+    var endMonth = $scope.date.end.getMonth() + 1;
+    var endDay =   $scope.date.end.getDate();
+    var date = {
+      start: startYear + "/" + startMonth + "/" + startDay,
+      end: endYear + "/" + endMonth + "/" + endDay
+    };
+    $http.post('/api/analytics/statistics/senario/exel-download/' + $cookies.get("default_bot"), {date: date}).then(function (doc) {
 
     }, function (err) {
       console.log(err);
