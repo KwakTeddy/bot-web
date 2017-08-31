@@ -19,7 +19,7 @@ var _request = function(json, _ecb, _cb) {
 
   request.post({
     url: 'http://' + host + ':3000/kakao/' + bot + '/message',
-    'pool.maxSockets': 'Inifinity',
+    // 'pool.maxSockets': 'Inifinity',
     headers: {
       'Accept': '*/*',
       'Cache-Control': 'no-cache',
@@ -64,13 +64,13 @@ function stress(user1, cb) {
         function(callback2) {
           var json = {"user_key": user1, "type": "text", "content": texts[textId++]};
           setTimeout(function() {
-            // _request(json, function() {
-            //   callback2();
-            // }, callback2);
-
             _request(json, function() {
-            }, null);
-            callback2()
+              callback2();
+            }, callback2);
+
+            // _request(json, function() {
+            // }, null);
+            // callback2()
           } , requestInterval);
         },
 
