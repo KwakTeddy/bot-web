@@ -26,7 +26,7 @@ var _request = function(json, _ecb, _cb) {
       'Cache-Control': 'no-cache',
       'Content-Type': 'application/json; charset=utf-8'
     },
-    timeout: (Number(process.argv[5]) || 10000),
+    timeout: (Number(process.argv[6]) || 10000),
     body: JSON.stringify(json)
   }, function (error, response, body) {
     var responseTime = (new Date()) - start1;
