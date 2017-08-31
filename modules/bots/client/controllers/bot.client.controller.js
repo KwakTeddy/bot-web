@@ -421,27 +421,27 @@ angular.module('bots').controller('BotController',
 
       if(!vm.bot.imageFile) vm.bot.imageFile = "/files/default.png";
 
-      console.log(vm.bot)
       vm.bot['isMakeFile'] = true;
 
       vm.bot.$save(function (response) {
-        vm.learning = false;
-        var modalInstance = $uibModal.open({
-          templateUrl: 'modules/bots/client/views/modal-user-bots.client.learning.html',
-          scope: $scope
-        });
-        $scope.close = function () {
-          modalInstance.dismiss();
-        };
-        modalInstance.result.then(function (response) {
-          console.log(response);
-        });
+        // vm.learning = false;
+        // var modalInstance = $uibModal.open({
+        //   templateUrl: 'modules/bots/client/views/modal-user-bots.client.learning.html',
+        //   scope: $scope
+        // });
+        // $scope.close = function () {
+        //   modalInstance.dismiss();
+        // };
+        // modalInstance.result.then(function (response) {
+        //   console.log(response);
+        // });
 
         if($state.is('bots.create') || $state.is('bots.edit')) {
           $rootScope.$broadcast('setbot', vm.bot);
         }
 
         vm.saved = true;
+        $state.go("developer-home")
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
       });

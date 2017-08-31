@@ -89,7 +89,7 @@
 
 
     // Save Custom action
-    vm.save =function save(isValid) {
+    vm.save =function (isValid) {
       vm.dialogset["bot"] = $cookies.get("botObjectId");
       console.log(vm.dialogset)
       if (vm.modalType == 'bulk'){

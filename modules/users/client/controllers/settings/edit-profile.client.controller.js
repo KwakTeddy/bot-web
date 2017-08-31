@@ -5,7 +5,7 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
 
 
     $scope.user = angular.copy(Authentication.user);
-    $scope.snsList = Object.keys($scope.user.additionalProvidersData);
+    if($scope.user.additionalProvidersData) $scope.snsList = Object.keys($scope.user.additionalProvidersData);
     $scope.updateUserProfile = function (isValid) {
       $scope.success = $scope.error = null;
 
