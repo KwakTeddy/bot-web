@@ -37,6 +37,11 @@ angular.module('analytics').config(['$stateProvider',
         templateUrl: 'modules/analytics/client/views/user-input-statistics.client.view.html',
         controller: 'UserInputStatisticsController'
       })
+      .state('analytics.fail-dialog-statistics', {
+        url: '/fail-dialog-statistics',
+        templateUrl: 'modules/analytics/client/views/fail-dialog-statistics.client.view.html',
+        controller: 'FailDialogStatisticsController'
+      })
       .state('analytics.user-count', {
         url: '/user-count',
         templateUrl: 'modules/analytics/client/views/user-count.client.view.html',

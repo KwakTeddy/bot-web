@@ -153,7 +153,6 @@
       });
     vm.downloadUserDilaogsLiveChat = function () {
       $http({method: 'POST', url:'/api/user-dialogs/download',data: {botId: $scope.botId}}).then(function (result) {
-        console.log(result)
         window.open('/files/' + result.data);
       }, function (err) {
         console.log(err)
