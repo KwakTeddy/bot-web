@@ -59,10 +59,11 @@ function initServer() {
 exports.initServer = initServer;
 
 function addServer() {
-  console.log('Load Balancer: addServer');
+  console.log('Load Balancer: addServer ' + cache);
   if(cache == undefined) return;
 
   cache.lrange('servers', 0, -1, function(err, ss) {
+    console.log(err, ss);
     var server = config.host + ':' + config.port;
 
     var bExist = false;
