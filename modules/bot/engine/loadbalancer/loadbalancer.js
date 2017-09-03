@@ -4,7 +4,7 @@ var config = require(path.resolve('./config/config'));
 var redis = require('redis');
 var cache;
 
-var FAIL_OUT = 100;
+var FAIL_OUT = 10;
 var SERVER_UPDATE_INTERVAL = 60;
 
 var servers = [
@@ -38,17 +38,23 @@ function loadServers() {
   cache.lrange('servers', 0, -1, function(err, data) {
     console.log('processing load redis=' + data);
 
-    servers = [];
     for(var i = 0; i < data.length; i++) {
-      servers.push({server: data[i], count: 0, fail: 0});
+      var bExist = false;
+      for(var j = 0; j < servers.length; j++) {
+        if(servers[j].server == data[i]) {
+          if(servers[i].fail >= FAIL_OUT) cache.lrem('servers', 0, data[i]);
+          bExist = true;
+        }
+      }
+      if(!bExist) servers.push({server: data[i], count: 0, fail: 0});
     }
 
     console.log('processing load servers=' + JSON.stringify(servers));
   });
-
 }
 
 function initServer() {
+  servers = [];
   loadServers();
   
   setInterval(function() {
@@ -176,8 +182,10 @@ function balance(channel, user, bot, text, json, callback) {
             }
           }
 
-          server = servers[minServer].server;
-          cache.set(channel + user, server);
+          if(minLoad != -1) {
+            server = servers[minServer].server;
+            cache.set(channel + user, server);
+          }
         }
 
         _request();

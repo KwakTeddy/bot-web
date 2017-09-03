@@ -4,7 +4,7 @@ var request = require('request');
 
 var host = (process.argv[2] || 'lb1.moneybrain.ai');
 var bot = 'Shinhancard';
-var user = 'null';
+var user = 'lbtest';
 
 var texts = [
   "시작",
