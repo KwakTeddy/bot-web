@@ -35,15 +35,17 @@ exports.isSlave = isSlave;
 function loadServers() {
   if(cache == undefined) return;
 
-  console.log('processing load servers');
-
 
   var ss = cache.lrange('servers', 0, -1);
+
+  console.log('processing load redis=' + ss);
 
   servers = [];
   for(var i = 0; i < ss.length; i++) {
     servers.push({server: ss[i].server, count: 0, fail: 0});
   }
+
+  console.log('processing load servers=' + servers);
 }
 
 function initServer() {
@@ -156,11 +158,13 @@ function balance(channel, user, bot, text, json, callback) {
     try {
       cache.get(channel + user, function (err, data) {
         server = data;
+        console.log('loadbalancer:balance1:' + server);
         if (server) {
           for (var i = 0; i < servers.length; i++) {
             if (servers[i].server == server && servers[i].fail >= FAIL_OUT) server = undefined;
           }
         }
+        console.log('loadbalancer:balance2:' + server);
 
         if (!server) {
           var minLoad = -1, minServer;
@@ -171,6 +175,7 @@ function balance(channel, user, bot, text, json, callback) {
             }
           }
 
+          console.log('loadbalancer:balance3:' + server);
           server = servers[minServer].server;
           cache.set(channel + user, server);
         }
