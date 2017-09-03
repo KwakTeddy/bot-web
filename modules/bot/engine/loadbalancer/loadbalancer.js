@@ -69,7 +69,10 @@ function addServer() {
       if(ss[i] == server) bExist = true;
     }
 
-    if(!bExist) cache.lpush('servers', server);
+    if(!bExist) {
+      cache.lpush('servers', server);
+      console.log('Load Balancer: addServer ' + server);
+    }
   });
 
 }
@@ -81,9 +84,12 @@ function init() {
   bMaster = config.loadBalance.isMaster;
   bSlave = config.loadBalance.isSlave;
 
+  console.log('Load Balancer: init Use=' + bUse + ', Master=' + bMaster + ', Slave=' + bSlave);
+
   if(bUse) {
     try {
       cache = redis.createClient(config.redis.port, config.redis.host);
+      console.log('Load Balancer: Redis Connected' + config.redis.host + ':' + config.redis.port);
     } catch(e) {
 
     }
