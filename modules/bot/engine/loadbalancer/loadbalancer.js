@@ -40,7 +40,7 @@ function loadServers() {
 
     servers = [];
     for(var i = 0; i < data.length; i++) {
-      servers.push({server: data[i].server, count: 0, fail: 0});
+      servers.push({server: data[i], count: 0, fail: 0});
     }
 
     console.log('processing load servers=' + JSON.stringify(servers));
