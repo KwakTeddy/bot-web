@@ -94,6 +94,7 @@ function init() {
 
   if(bUse) {
     try {
+      console.log('Load Balancer: Redis Connecting ' + config.redis.host + ':' + config.redis.port);
       cache = redis.createClient(config.redis.port, config.redis.host);
 
       cache.on('connect', function() {
