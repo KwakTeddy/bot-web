@@ -95,14 +95,17 @@ function init() {
   if(bUse) {
     try {
       cache = redis.createClient(config.redis.port, config.redis.host);
-      console.log('Load Balancer: Redis Connected ' + config.redis.host + ':' + config.redis.port);
+
+      cache.on('connect', function() {
+        console.log('Load Balancer: Redis Connected ' + config.redis.host + ':' + config.redis.port);
+
+        if(bUse && bSlave) {
+          addServer();
+        }
+      })
     } catch(e) {
       console.log(e);
     }
-  }
-
-  if(bUse && bSlave) {
-    addServer();
   }
 }
 
