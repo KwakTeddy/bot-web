@@ -24,9 +24,9 @@ function loadCustomContext(bot, callback) {
             }
 
             if(docs[i].parent.children == undefined) {
-              docs[i].parent.children = [docs[i]];
+              //docs[i].parent.children = [docs[i]];
             } else {
-              docs[i].parent.children.push(docs[i]);
+              //docs[i].parent.children.push(docs[i]);
             }
           }
         }
@@ -121,9 +121,9 @@ function loadCustomContext(bot, callback) {
                  }
 
                  if(docs[i].parent.children == undefined) {
-                   docs[i].parent.children = [docs[i]];
+                   //docs[i].parent.children = [docs[i]];
                  } else {
-                   docs[i].parent.children.push(docs[i]);
+                   //docs[i].parent.children.push(docs[i]);
                  }
                }
              }
