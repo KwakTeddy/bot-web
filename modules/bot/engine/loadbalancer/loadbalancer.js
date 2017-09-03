@@ -62,24 +62,21 @@ function addServer() {
   console.log('Load Balancer: addServer ' + cache);
   if(cache == undefined) return;
 
-  console.log('Load Balancer: addServer 0');
   cache.lrange('servers', 0, -1, function(err, ss) {
-    console.log('Load Balancer: addServer 1');
-    console.log(err, ss);
+    console.log(ss);
     var server = config.host + ':' + config.port;
 
+    console.log('Load Balancer: addServer adding ' + server);
     var bExist = false;
     for(var i = 0; i < ss.length; i++) {
       if(ss[i] == server) bExist = true;
     }
 
-    console.log('Load Balancer: addServer 11');
     if(!bExist) {
       cache.lpush('servers', server);
-      console.log('Load Balancer: addServer ' + server);
+      console.log('Load Balancer: addServer added ' + server);
     }
   });
-  console.log('Load Balancer: addServer 2');
 
 }
 
