@@ -32,7 +32,9 @@ module.exports = {
   loadBalance: {
     use: process.env.LB_USE || false,
     isMaster: process.env.LB_MASTER || false,
-    isSlave: process.env.LB_SLAVE || false
+    isSlave: process.env.LB_SLAVE || false,
+    host: process.env.LB_HOST || 'http://localhost',
+    port: process.env.LB_PORT || 3000
   },
   log: {
     level: process.env.LOG_LEVEL || 'debug',

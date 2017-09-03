@@ -64,7 +64,7 @@ function addServer() {
 
   cache.lrange('servers', 0, -1, function(err, ss) {
     console.log('Load Balancer: addServer redis=' + ss);
-    var server = config.host + ':' + config.port;
+    var server = config.loadBalance.host + ':' + config.loadBalance.port;
 
     console.log('Load Balancer: addServer check=' + server);
     var bExist = false;
@@ -112,7 +112,7 @@ exports.init = init;
 function balance(channel, user, bot, text, json, callback) {
   var server;
   var _request = function() {
-    if(!server) server = config.host + ':' + config.port;
+    if(!server) server = config.loadBalance.host + ':' + config.loadBalance.port;
 
     request({
       uri: server + '/chat/' + bot + '/message',
