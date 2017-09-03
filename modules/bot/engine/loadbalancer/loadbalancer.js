@@ -101,6 +101,8 @@ function init() {
 
         if(bSlave === 'true') {
           addServer();
+        } else {
+          initServer();
         }
       })
     } catch(e) {
