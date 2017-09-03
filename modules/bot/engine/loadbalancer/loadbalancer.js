@@ -35,17 +35,17 @@ exports.isSlave = isSlave;
 function loadServers() {
   if(cache == undefined) return;
 
+  cache.lrange('servers', 0, -1, function(err, data) {
+    console.log('processing load redis=' + data);
 
-  var ss = cache.lrange('servers', 0, -1);
+    servers = [];
+    for(var i = 0; i < data.length; i++) {
+      servers.push({server: data[i].server, count: 0, fail: 0});
+    }
 
-  console.log('processing load redis=' + ss);
+    console.log('processing load servers=' + servers);
+  });
 
-  servers = [];
-  for(var i = 0; i < ss.length; i++) {
-    servers.push({server: ss[i].server, count: 0, fail: 0});
-  }
-
-  console.log('processing load servers=' + servers);
 }
 
 function initServer() {
