@@ -175,6 +175,8 @@ function balance(channel, user, bot, text, json, callback) {
           }
         }
 
+        console.log('loadbalancer:balance: server0=' + server);
+
         if (!server) {
           var minLoad = -1, minServer;
           for (var i = 0; i < servers.length; i++) {
@@ -189,6 +191,8 @@ function balance(channel, user, bot, text, json, callback) {
             cache.set(channel + user, server);
           }
         }
+
+        console.log('loadbalancer:balance: server1=' + server);
 
         _request();
       });
