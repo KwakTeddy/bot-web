@@ -13,20 +13,19 @@ module.exports = {
       },
       replset: {
         rs_name: 'rs0',
-        debug: true
+        debug: false
       }
     },
-    // Enable mongoose debug mode
     debug: process.env.MONGODB_DEBUG || false
   },
   redis: {
-    host: '127.0.0.1',
+    host: process.env.REDIS ||  '127.0.0.1',
     port: 6379
   },
   loadBalance: {
-    use: process.env.useLoadBalance || true,
-    isMaster: process.env.isMaster || true,
-    isSlave: process.env.isSlave || false
+    use: process.env.LB_USE || false,
+    isMaster: process.env.LB_MASTER || false,
+    isSlave: process.env.LB_SLAVE || false
   },
   host: process.env.HOST || 'http://localhost',
   log: {

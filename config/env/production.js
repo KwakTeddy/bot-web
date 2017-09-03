@@ -8,15 +8,6 @@ module.exports = {
     privateKey: './config/sslcerts/ssl.key',
     certificate: './config/sslcerts/ssl.crt'
   },
-  redis: {
-    host: '127.0.0.1',
-    port: 6379
-  },
-  loadBalance: {
-    use: process.env.useLoadBalance || false,
-    isMaster: process.env.isMaster || false,
-    isSlave: process.env.isSlave || false
-  },
   host: process.env.HOST || 'https://localhost',
   port: process.env.PORT || 443,
   db: {
@@ -29,11 +20,19 @@ module.exports = {
       },
       replset: {
         rs_name: 'rs0',
-        debug: true
+        debug: false
       }
     },
-    // Enable mongoose debug mode
     debug: process.env.MONGODB_DEBUG || false
+  },
+  redis: {
+    host: process.env.REDIS ||  '13.124.229.118',
+    port: 6379
+  },
+  loadBalance: {
+    use: process.env.LB_USE || false,
+    isMaster: process.env.LB_MASTER || false,
+    isSlave: process.env.LB_SLAVE || false
   },
   log: {
     level: process.env.LOG_LEVEL || 'debug',
