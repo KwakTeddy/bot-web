@@ -63,10 +63,10 @@ function addServer() {
   if(cache == undefined) return;
 
   cache.lrange('servers', 0, -1, function(err, ss) {
-    console.log(ss);
+    console.log('Load Balancer: addServer redis=' + ss);
     var server = config.host + ':' + config.port;
 
-    console.log('Load Balancer: addServer adding ' + server);
+    console.log('Load Balancer: addServer adding=' + server);
     var bExist = false;
     for(var i = 0; i < ss.length; i++) {
       if(ss[i] == server) bExist = true;
@@ -74,7 +74,7 @@ function addServer() {
 
     if(!bExist) {
       cache.lpush('servers', server);
-      console.log('Load Balancer: addServer added ' + server);
+      console.log('Load Balancer: addServer added=' + server);
     }
   });
 
