@@ -59,6 +59,7 @@ function initServer() {
 exports.initServer = initServer;
 
 function addServer() {
+  console.log('Load Balancer: addServer Start');
   if(cache == undefined) return;
 
   cache.lrange('servers', 0, -1, function(err, ss) {
