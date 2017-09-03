@@ -97,7 +97,7 @@ function init() {
         console.log('Load Balancer: Redis Connected ' + config.redis.host + ':' + config.redis.port);
 
         console.log('Load Balancer: init Use=' + bUse + ', Master=' + bMaster + ', Slave=' + bSlave);
-        if(bSlave == true) {
+        if(bSlave === true) {
           addServer();
         }
       })
