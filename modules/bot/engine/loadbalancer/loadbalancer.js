@@ -168,7 +168,7 @@ function balance(channel, user, bot, text, json, callback) {
         console.log('loadbalancer:balance: ' + (channel + user) + '=' + data);
         if (data) {
           for (var i = 0; i < servers.length; i++) {
-            if (servers[i].server == server) {
+            if (servers[i].server == data) {
               if(servers[i].fail >= FAIL_OUT) server = undefined;
               else server = data;
             }
