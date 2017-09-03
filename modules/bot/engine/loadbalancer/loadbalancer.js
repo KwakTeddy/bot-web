@@ -59,14 +59,13 @@ function initServer() {
 exports.initServer = initServer;
 
 function addServer() {
-  console.log('Load Balancer: addServer ' + cache);
   if(cache == undefined) return;
 
   cache.lrange('servers', 0, -1, function(err, ss) {
     console.log('Load Balancer: addServer redis=' + ss);
     var server = config.host + ':' + config.port;
 
-    console.log('Load Balancer: addServer adding=' + server);
+    console.log('Load Balancer: addServer check=' + server);
     var bExist = false;
     for(var i = 0; i < ss.length; i++) {
       if(ss[i] == server) bExist = true;
@@ -97,7 +96,7 @@ function init() {
       cache.on('connect', function() {
         console.log('Load Balancer: Redis Connected ' + config.redis.host + ':' + config.redis.port);
 
-        if(bUse && bSlave) {
+        if(bSlave) {
           addServer();
         }
       })
