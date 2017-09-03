@@ -114,6 +114,7 @@ function balance(channel, user, bot, text, json, callback) {
   var _request = function() {
     if(!server) server = config.loadBalance.host + ':' + config.loadBalance.port;
 
+    console.log('loadbalancer:balance:' + server);
     request({
       uri: server + '/chat/' + bot + '/message',
       method: 'POST',
