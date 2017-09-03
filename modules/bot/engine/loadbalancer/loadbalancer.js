@@ -166,7 +166,6 @@ function balance(channel, user, bot, text, json, callback) {
             if (servers[i].server == server && servers[i].fail >= FAIL_OUT) server = undefined;
           }
         }
-        console.log('loadbalancer:balance2:' + server);
 
         if (!server) {
           var minLoad = -1, minServer;
@@ -177,7 +176,6 @@ function balance(channel, user, bot, text, json, callback) {
             }
           }
 
-          console.log('loadbalancer:balance3:' + server);
           server = servers[minServer].server;
           cache.set(channel + user, server);
         }

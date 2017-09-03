@@ -2,9 +2,9 @@ var async = require('async');
 var request = require('request');
 
 
-var host = (process.argv[2] || 'localhost');
+var host = (process.argv[2] || 'lb1.moneybrain.ai');
 var bot = 'Shinhancard';
-var user = 'QRtjQoQse8CX';
+var user = 'null';
 
 var texts = [
   "시작",
