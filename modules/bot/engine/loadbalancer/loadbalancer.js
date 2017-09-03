@@ -43,7 +43,7 @@ function loadServers() {
       servers.push({server: data[i].server, count: 0, fail: 0});
     }
 
-    console.log('processing load servers=' + servers);
+    console.log('processing load servers=' + JSON.stringify(servers));
   });
 
 }
@@ -160,7 +160,7 @@ function balance(channel, user, bot, text, json, callback) {
     try {
       cache.get(channel + user, function (err, data) {
         server = data;
-        console.log('loadbalancer:balance1:' + server);
+        console.log('loadbalancer:balance: ' + (channel + user) + '=' + server);
         if (server) {
           for (var i = 0; i < servers.length; i++) {
             if (servers[i].server == server && servers[i].fail >= FAIL_OUT) server = undefined;
