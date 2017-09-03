@@ -26,7 +26,7 @@ module.exports = {
     debug: process.env.MONGODB_DEBUG || false
   },
   redis: {
-    host: process.env.REDIS ||  '13.124.229.118',
+    host: process.env.REDIS ||  '172.31.26.141',
     port: 6379
   },
   loadBalance: {
