@@ -180,7 +180,7 @@ function balance(channel, user, bot, text, json, callback) {
         if (!server) {
           var minLoad = -1, minServer;
           for (var i = 0; i < servers.length; i++) {
-            if (minLoad == -1 || (servers[i].count < minLoad && servers[i].fail < FAIL_OUT)) {
+            if ((minLoad == -1 || servers[i].count < minLoad) && servers[i].fail < FAIL_OUT) {
               minLoad = servers[i].count;
               minServer = i;
             }
