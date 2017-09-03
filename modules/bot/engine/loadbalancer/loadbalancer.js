@@ -165,11 +165,13 @@ function balance(channel, user, bot, text, json, callback) {
   if(cache && cache.connected) {
     try {
       cache.get(channel + user, function (err, data) {
-        server = data;
-        console.log('loadbalancer:balance: ' + (channel + user) + '=' + server);
-        if (server) {
+        console.log('loadbalancer:balance: ' + (channel + user) + '=' + data);
+        if (data) {
           for (var i = 0; i < servers.length; i++) {
-            if (servers[i].server == server && servers[i].fail >= FAIL_OUT) server = undefined;
+            if (servers[i].server == server) {
+              if(servers[i].fail >= FAIL_OUT) server = undefined;
+              else server = data;
+            }
           }
         }
 
