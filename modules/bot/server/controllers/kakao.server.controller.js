@@ -42,10 +42,12 @@ exports.message = function (req, res) {
     // console.log(JSON.stringify(req.params));
 
     if(loadbalancer.isUse() && loadbalancer.isMaster()) {
+      console.log('message: 0');
       loadbalancer.balance('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
         respondMessage(res, serverText, json)
       });
     } else {
+      console.log('message: 1');
       chat.write('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
         respondMessage(res, serverText, json)
       });
