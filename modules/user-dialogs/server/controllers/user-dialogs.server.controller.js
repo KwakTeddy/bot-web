@@ -322,28 +322,28 @@ function addDialog(inText, outText, isFail, dialog, context, callback) {
 
     });
   } else {
-    // if(dialogCache.length < LIMIT_CACHE_DIALOG) {
-    //   dialogCache.push(inQuery);
-    //   dialogCache.push(outQuery);
-    // }
-    //
-    // var query = {
-    //   botId: context.bot.botName,
-    //   userId: context.user.userKey,
-    //   channel: context.channel.name,
-    //   year: (new Date()).getYear() + 1900,
-    //   month: (new Date()).getMonth() + 1,
-    //   date: (new Date()).getDate()
-    // };
-    //
-    // if(dialoglogCache.length < LIMIT_CACHE_DIALOG) {
-    //   dialoglogCache.push(query);
-    // }
-    //
-    // if(!dialogCacheLock &&
-    //   (dialogCache.length >= MAX_CACHE_DIALOG || dialoglogCache.length >= MAX_CACHE_DIALOG)) {
-    //   updateCacheLog();
-    // }
+    if(dialogCache.length < LIMIT_CACHE_DIALOG) {
+      dialogCache.push(inQuery);
+      dialogCache.push(outQuery);
+    }
+
+    var query = {
+      botId: context.bot.botName,
+      userId: context.user.userKey,
+      channel: context.channel.name,
+      year: (new Date()).getYear() + 1900,
+      month: (new Date()).getMonth() + 1,
+      date: (new Date()).getDate()
+    };
+
+    if(dialoglogCache.length < LIMIT_CACHE_DIALOG) {
+      dialoglogCache.push(query);
+    }
+
+    if(!dialogCacheLock &&
+      (dialogCache.length >= MAX_CACHE_DIALOG || dialoglogCache.length >= MAX_CACHE_DIALOG)) {
+      updateCacheLog();
+    }
 
     // var m = process.memoryUsage();
     // console.log('Memory: ' + m.heapUsed + '/' + m.heapTotal + '=' + m.heapUsed/m.heapTotal);

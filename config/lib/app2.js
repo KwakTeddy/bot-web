@@ -6,6 +6,7 @@ module.exports.start = function() {
   var app = express();
   var http = require('http');
   var bodyParser = require('body-parser');
+  var rest = require('../../modules/bot/server/controllers/rest.server.controller');
   var kakao = require('../../modules/bot/server/controllers/kakao.server.controller');
   var wechat = require('../../modules/bot/server/controllers/wechat.server.controller');
   var action = require('../../modules/bot/server/controllers/_action.server.controller');
@@ -32,6 +33,8 @@ module.exports.start = function() {
   httpsServer.listen(3000, function() {
     console.log('listening on *:3000')
   });
+
+  app.route('/chat/:bot/message').post(rest.message);
 
   app.route('/kakao/:bot/keyboard').get(kakao.keyboard);
   app.route('/kakao/:bot/message').post(kakao.message);

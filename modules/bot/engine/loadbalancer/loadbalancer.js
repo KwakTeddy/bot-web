@@ -4,7 +4,7 @@ var config = require(path.resolve('./config/config'));
 var redis = require('redis');
 var cache;
 
-var FAIL_OUT = 100;
+var FAIL_OUT = 10;
 var SERVER_UPDATE_INTERVAL = 60;
 
 var servers = [
@@ -35,18 +35,26 @@ exports.isSlave = isSlave;
 function loadServers() {
   if(cache == undefined) return;
 
-  console.log('processing load servers');
+  cache.lrange('servers', 0, -1, function(err, data) {
+    console.log('processing load redis=' + data);
 
+    for(var i = 0; i < data.length; i++) {
+      var bExist = false;
+      for(var j = 0; j < servers.length; j++) {
+        if(servers[j].server == data[i]) {
+          if(servers[i].fail >= FAIL_OUT) cache.lrem('servers', 0, data[i]);
+          bExist = true;
+        }
+      }
+      if(!bExist) servers.push({server: data[i], count: 0, fail: 0});
+    }
 
-  var ss = cache.lrange('servers', 0, -1);
-
-  servers = [];
-  for(var i = 0; i < ss.length; i++) {
-    servers.push({server: ss[i].server, count: 0, fail: 0});
-  }
+    console.log('processing load servers=' + JSON.stringify(servers));
+  });
 }
 
 function initServer() {
+  servers = [];
   loadServers();
   
   setInterval(function() {
@@ -59,17 +67,23 @@ function initServer() {
 exports.initServer = initServer;
 
 function addServer() {
+  console.log('Load Balancer: addServer Start');
   if(cache == undefined) return;
 
   cache.lrange('servers', 0, -1, function(err, ss) {
-    var server = config.host + ':' + config.port;
+    console.log('Load Balancer: addServer redis=' + ss);
+    var server = config.loadBalance.host + ':' + config.loadBalance.port;
 
+    console.log('Load Balancer: addServer check=' + server);
     var bExist = false;
     for(var i = 0; i < ss.length; i++) {
       if(ss[i] == server) bExist = true;
     }
 
-    if(!bExist) cache.lpush('servers', server);
+    if(!bExist) {
+      cache.lpush('servers', server);
+      console.log('Load Balancer: addServer added=' + server);
+    }
   });
 
 }
@@ -81,16 +95,25 @@ function init() {
   bMaster = config.loadBalance.isMaster;
   bSlave = config.loadBalance.isSlave;
 
-  if(bUse) {
+  console.log('Load Balancer: init Use=' + bUse + ', Master=' + bMaster + ', Slave=' + bSlave);
+
+  if(bUse === 'true') {
     try {
+      console.log('Load Balancer: Redis Connecting ' + config.redis.host + ':' + config.redis.port);
       cache = redis.createClient(config.redis.port, config.redis.host);
+
+      cache.on('connect', function() {
+        console.log('Load Balancer: Redis Connected ' + config.redis.host + ':' + config.redis.port);
+
+        if(bSlave === 'true') {
+          addServer();
+        } else {
+          initServer();
+        }
+      })
     } catch(e) {
-
+      console.log(e);
     }
-  }
-
-  if(bUse && bSlave) {
-    addServer();
   }
 }
 
@@ -99,8 +122,9 @@ exports.init = init;
 function balance(channel, user, bot, text, json, callback) {
   var server;
   var _request = function() {
-    if(!server) server = config.host + ':' + config.port;
+    if(!server) server = config.loadBalance.host + ':' + config.loadBalance.port;
 
+    console.log('loadbalancer:balance:' + server);
     request({
       uri: server + '/chat/' + bot + '/message',
       method: 'POST',
@@ -141,25 +165,34 @@ function balance(channel, user, bot, text, json, callback) {
   if(cache && cache.connected) {
     try {
       cache.get(channel + user, function (err, data) {
-        server = data;
-        if (server) {
+        console.log('loadbalancer:balance: ' + (channel + user) + '=' + data);
+        if (data) {
           for (var i = 0; i < servers.length; i++) {
-            if (servers[i].server == server && servers[i].fail >= FAIL_OUT) server = undefined;
+            if (servers[i].server == data) {
+              if(servers[i].fail >= FAIL_OUT) server = undefined;
+              else server = data;
+            }
           }
         }
+
+        console.log('loadbalancer:balance: server0=' + server);
 
         if (!server) {
           var minLoad = -1, minServer;
           for (var i = 0; i < servers.length; i++) {
-            if (minLoad == -1 || (servers[i].count < minLoad && servers[i].fail < FAIL_OUT)) {
+            if ((minLoad == -1 || servers[i].count < minLoad) && servers[i].fail < FAIL_OUT) {
               minLoad = servers[i].count;
               minServer = i;
             }
           }
 
-          server = servers[minServer].server;
-          cache.set(channel + user, server);
+          if(minLoad != -1) {
+            server = servers[minServer].server;
+            cache.set(channel + user, server);
+          }
         }
+
+        console.log('loadbalancer:balance: server1=' + server);
 
         _request();
       });

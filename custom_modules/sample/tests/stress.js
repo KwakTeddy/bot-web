@@ -2,9 +2,9 @@ var async = require('async');
 var request = require('request');
 
 
-var host = (process.argv[2] || 'localhost');
+var host = (process.argv[2] || 'lb1.moneybrain.ai');
 var bot = 'Shinhancard';
-var user = 'QRtjQoQse8CX';
+var user = 'lbtest';
 
 var texts = [
   "시작",
@@ -26,7 +26,7 @@ var _request = function(json, _ecb, _cb) {
       'Cache-Control': 'no-cache',
       'Content-Type': 'application/json; charset=utf-8'
     },
-    timeout: (Number(process.argv[5]) || 10000),
+    timeout: (Number(process.argv[6]) || 10000),
     body: JSON.stringify(json)
   }, function (error, response, body) {
     var responseTime = (new Date()) - start1;
@@ -38,7 +38,7 @@ var _request = function(json, _ecb, _cb) {
       if(_ecb) _ecb(true);
     }
     else {
-      console.log('response: ' + total + '/' + numOfThread*texts.length*numOfRepeat + ', error= ' + errorCount + ', ' + responseTime + 'ms ' + json.content/* + ' ' + body*/);
+      console.log('response: ' + total + '/' + numOfThread*texts.length*numOfRepeat + ', error= ' + errorCount + ', ' + responseTime + 'ms ' + json.content /*+ ' \t' + body*/);
     }
 
     if(_cb) _cb(null);
