@@ -97,7 +97,7 @@ function init() {
 
   console.log('Load Balancer: init Use=' + bUse + ', Master=' + bMaster + ', Slave=' + bSlave);
 
-  if(bUse === 'true') {
+  if(bUse) {
     try {
       console.log('Load Balancer: Redis Connecting ' + config.redis.host + ':' + config.redis.port);
       cache = redis.createClient(config.redis.port, config.redis.host);
