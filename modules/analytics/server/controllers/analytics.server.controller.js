@@ -645,7 +645,7 @@ exports.dailyDialogUsage = function (req, res) {
 
 exports.senarioUsage = function (req, res) {
   var query;
-  var cond = {inOut: true, dialogName: {$nin: ["시작", "답변없음"]}, botId: req.params.bId};
+  var cond = {inOut: true, dialogName: {$nin: ["답변없음"]}, botId: req.params.bId};
   var startYear =  parseInt(req.body.date.start.split('/')[0]);
   var startMonth = parseInt(req.body.date.start.split('/')[1]);
   var startDay =   parseInt(req.body.date.start.split('/')[2]);
