@@ -5,7 +5,7 @@ var redis = require('redis');
 var cache;
 
 var FAIL_OUT = 10;
-var SERVER_UPDATE_INTERVAL = 60;
+var SERVER_UPDATE_INTERVAL = 6000;
 
 var servers = [
   {server: config.host + ':' + config.port, count: 0, fail: 0}
