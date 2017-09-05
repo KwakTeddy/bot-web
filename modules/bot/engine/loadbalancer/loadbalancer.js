@@ -105,7 +105,7 @@ function init() {
       cache.on('connect', function() {
         console.log('Load Balancer: Redis Connected ' + config.redis.host + ':' + config.redis.port);
 
-        if(bSlave === 'true') {
+        if(bSlave) {
           addServer();
         } else {
           initServer();
