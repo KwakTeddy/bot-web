@@ -19,7 +19,7 @@ module.exports = {
         readPreference: "secondaryPreferred"
       },
       replset: {
-        rs_name: 'rs0',
+        rs_name: process.env.MONGO_RSNAME || 'rs0',
         debug: false
       }
     },
