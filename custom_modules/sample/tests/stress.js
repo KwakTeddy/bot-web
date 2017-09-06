@@ -87,6 +87,8 @@ function stress(user1, cb) {
         },
 
         function (err) {
+          user1 = user + generateUUID();
+
           callback(null);
         }
       )
