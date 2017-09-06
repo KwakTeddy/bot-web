@@ -47,11 +47,11 @@ function loadServers() {
 
             var _server = servers[j];
             request({
-              uri: servers[j].server + '/kakao/test/keyboard',
+              uri: _server.server + '/kakao/test/keyboard',
               method: 'GET'
             }, function (error, response, body) {
               if (!error && response.statusCode == 200) {
-                servers[j].fail = 0;
+                _server.fail = 0;
               }
             });
           }
