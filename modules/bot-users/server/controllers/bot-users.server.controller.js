@@ -245,7 +245,7 @@ exports.botUserByUserKey = function (req, res, next, userKey) {
 
 var botUserCache = [];
 var botUserCacheLock = false;
-var MAX_CACHE_DIALOG = 10000;
+var MAX_CACHE_DIALOG = 500;
 var LIMIT_CACHE_DIALOG = 1000000;
 var BOTUSER_CACHE_INTERVAL = 60;
 
