@@ -5,7 +5,7 @@ var redis = require('redis');
 var cache;
 
 var FAIL_OUT = 10;
-var SERVER_UPDATE_INTERVAL = 6000;
+var SERVER_UPDATE_INTERVAL = 10;
 
 var servers = [
   {server: config.host + ':' + config.port, count: 0, fail: 0}
@@ -42,7 +42,20 @@ function loadServers() {
       var bExist = false;
       for(var j = 0; j < servers.length; j++) {
         if(servers[j].server == data[i]) {
-          if(servers[i].fail >= FAIL_OUT) cache.lrem('servers', 0, data[i]);
+          if(servers[j].fail >= FAIL_OUT) {
+            // cache.lrem('servers', 0, data[i]);
+
+            request({
+              uri: servers[i].server + '/kakao/test/keyboard',
+              method: 'GET'
+            }, function (error, response, body) {
+              if (!error && response.statusCode == 200) {
+                servers[j].fail = 0;
+              }
+            });
+          }
+
+          servers[j].count = 0;
           bExist = true;
         }
       }
@@ -124,7 +137,6 @@ function balance(channel, user, bot, text, json, callback) {
   var _request = function() {
     if(!server) server = config.loadBalance.host + ':' + config.loadBalance.port;
 
-    console.log('loadbalancer:balance:' + server);
     request({
       uri: server + '/chat/' + bot + '/message',
       method: 'POST',
@@ -140,15 +152,18 @@ function balance(channel, user, bot, text, json, callback) {
         callback(json ? json.text : body, json);
 
         for(var i = 0; i < servers.length; i++) {
-          if(servers[i].server == server) servers[i].count++;
+          if(servers[i].server == server) {
+            servers[i].count++;
+            console.log('loadbalancer:balance: ' + server + '[' + servers[i].count + ']');
+          }
         }
-      } else {
-        console.log("Unable to send message.");
-        // console.log(JSON.stringify(response.body.error));
-        console.log(error);
 
+      } else {
         for(var i = 0; i < servers.length; i++) {
-          if(servers[i].server == server) servers[i].fail++;
+          if(servers[i].server == server) {
+            servers[i].fail++;
+            console.log('loadbalancer:balance: ' + server + '[' + servers[i].count + '] ' + error);
+          }
         }
         callback(JSON.stringify(error));
       }
