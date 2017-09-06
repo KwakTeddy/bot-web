@@ -57,7 +57,7 @@ var _request = function(json, _ecb, _cb) {
   });
 };
 
-function stress(user1, cb) {
+function stress(cb) {
   var count = 0;
   async.whilst(
     function () {
@@ -66,6 +66,7 @@ function stress(user1, cb) {
 
     function (callback) {
       count++;
+      var user1 = user + generateUUID();
 
       var textId = 0;
       async.whilst(
@@ -87,7 +88,6 @@ function stress(user1, cb) {
         },
 
         function (err) {
-          user1 = user + generateUUID();
 
           callback(null);
         }
@@ -135,8 +135,7 @@ async.whilst(
 
   function (callback) {
     ++countOfThread;
-    var user1 = user + generateUUID();
-    stress(user1, function() {
+    stress(function() {
       if(countOfThread >= numOfThread) {
         reqEnd = new Date();
       }
