@@ -45,8 +45,9 @@ function loadServers() {
           if(servers[j].fail >= FAIL_OUT) {
             // cache.lrem('servers', 0, data[i]);
 
+            var _server = servers[j];
             request({
-              uri: servers[i].server + '/kakao/test/keyboard',
+              uri: servers[j].server + '/kakao/test/keyboard',
               method: 'GET'
             }, function (error, response, body) {
               if (!error && response.statusCode == 200) {
