@@ -109,12 +109,6 @@ function addServer() {
 exports.addServer = addServer;
 
 function addMongoReplica(callback) {
-  var ifs = require('os').networkInterfaces();
-  var localhost = Object.keys(ifs)
-      .map(x => [x, ifs[x].filter(x => x.family === 'IPv4')[0]])
-      .filter(x => x[1])
-      .map(x => x[1].address);
-
   console.log('Load Balancer: addMongoReplica Start ' + JSON.stringify(localhost));
 
   MongoClient.connect('mongodb://172.31.23.169:27017/test', function(err, db) {
