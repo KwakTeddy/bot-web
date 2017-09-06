@@ -362,3 +362,24 @@ function censor(censor) {
 }
 
 exports.censor = censor;
+
+var os = require('os');
+function getLocalIPAddress() {
+
+  var address = '127.0.0.1';
+  var interfaces = os.networkInterfaces();
+  var addresses = [];
+  for (var k in interfaces) {
+    for (var k2 in interfaces[k]) {
+      var address = interfaces[k][k2];
+      if (address.family === 'IPv4' && !address.internal) {
+        address = address.address;
+        // addresses.push(address.address);
+      }
+    }
+  }
+
+  return address;
+}
+
+exports.getLocalIPAddress = getLocalIPAddress;

@@ -3,6 +3,9 @@ var request = require('request');
 var config = require(path.resolve('./config/config'));
 var redis = require('redis');
 var cache;
+var MongoClient = require('mongodb').MongoClient;
+var utils = require(path.resolve('./modules/bot/action/common/utils'));
+var localhost = utils.getLocalIPAddress();
 
 var FAIL_OUT = 10;
 var SERVER_UPDATE_INTERVAL = 10;
@@ -86,7 +89,8 @@ function addServer() {
 
   cache.lrange('servers', 0, -1, function(err, ss) {
     console.log('Load Balancer: addServer redis=' + ss);
-    var server = config.loadBalance.host + ':' + config.loadBalance.port;
+    // var server = config.loadBalance.host + ':' + config.loadBalance.port;
+    var server = 'http://' + localhost + ':3000';
 
     console.log('Load Balancer: addServer check=' + server);
     var bExist = false;
@@ -104,6 +108,26 @@ function addServer() {
 
 exports.addServer = addServer;
 
+function addMongoReplica(callback) {
+  console.log('Load Balancer: addMongoReplica Start ' + localhost);
+
+  MongoClient.connect('mongodb://52.78.194.110:27017/test', function(err, db) {
+    var adminDb = db.admin();
+
+    adminDb.command( { replSetGetConfig: 1 } , function(err, _conf) {
+      var conf = _conf.config;
+      conf.members.push({_id: conf.members.length, host: localhost + ':27017'});
+      conf.version = conf.version + 1;
+      adminDb.command({replSetReconfig: conf}, function(err, info) {
+        if(err) console.log(err);
+        else console.log(JSON.stringify(info));
+
+        callback();
+      });
+    });
+  });
+}
+
 function init() {
   bUse = config.loadBalance.use;
   bMaster = config.loadBalance.isMaster;
@@ -120,7 +144,9 @@ function init() {
         console.log('Load Balancer: Redis Connected ' + config.redis.host + ':' + config.redis.port);
 
         if(bSlave) {
-          addServer();
+          addMongoReplica(function() {
+            addServer();
+          });
         } else {
           initServer();
         }
@@ -136,7 +162,8 @@ exports.init = init;
 function balance(channel, user, bot, text, json, callback) {
   var server;
   var _request = function() {
-    if(!server) server = config.loadBalance.host + ':' + config.loadBalance.port;
+    // if(!server) server = config.loadBalance.host + ':' + config.loadBalance.port;
+    if(!server) server = 'http://' + localhost + ':3000';
 
     request({
       uri: server + '/chat/' + bot + '/message',
