@@ -163,6 +163,8 @@ function balance(channel, user, bot, text, json, callback) {
   };
 
   if(cache && cache.connected) {
+    console.log('loadbalancer:balance: server=' + JSON.stringify(servers));
+
     try {
       cache.get(channel + user, function (err, data) {
         console.log('loadbalancer:balance: ' + (channel + user) + '=' + data);
