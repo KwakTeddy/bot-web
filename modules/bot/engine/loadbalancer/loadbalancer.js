@@ -110,9 +110,10 @@ exports.addServer = addServer;
 
 function addMongoReplica(callback) {
   var ifs = require('os').networkInterfaces();
-  var localhost = Object.keys(ifs)
-      .map(x => ifs[x].filter(x => x.family === 'IPv4' && !x.internal)[0])
-      .filter(x => x)[0].address;
+  var address = Object.keys(ifs)
+      .map(x => [x, ifs[x].filter(x => x.family === 'IPv4')[0]])
+      .filter(x => x[1])
+      .map(x => x[1].address);
 
   console.log('Load Balancer: addMongoReplica Start ' + JSON.stringify(localhost));
 
