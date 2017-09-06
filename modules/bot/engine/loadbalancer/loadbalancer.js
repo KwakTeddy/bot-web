@@ -109,7 +109,7 @@ function addServer() {
 exports.addServer = addServer;
 
 function addMongoReplica(callback) {
-  console.log('Load Balancer: addMongoReplica Start ' + localhost);
+  console.log('Load Balancer: addMongoReplica Start ' + JSON.stringify(localhost));
 
   MongoClient.connect('mongodb://172.31.23.169:27017/test', function(err, db) {
     var adminDb = db.admin();
