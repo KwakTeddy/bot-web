@@ -120,7 +120,7 @@ function addMongoReplica(callback) {
       conf.version = conf.version + 1;
       adminDb.command({replSetReconfig: conf}, function(err, info) {
         if(err) console.log(err);
-        else console.log(JSON.stringify(info));
+        else console.log('Load Balancer: addMongoReplica: ' + JSON.stringify(info));
 
         callback();
       });
