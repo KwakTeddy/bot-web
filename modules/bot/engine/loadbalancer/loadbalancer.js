@@ -109,21 +109,41 @@ function addServer() {
 exports.addServer = addServer;
 
 function addMongoReplica(callback) {
-  console.log('Load Balancer: addMongoReplica Start ' + JSON.stringify(localhost));
+  console.log('Load Balancer: addMongoReplica Start ' + localhost);
 
   MongoClient.connect('mongodb://172.31.23.169:27017/test', function(err, db) {
+    console.log('Load Balancer: addMongoReplica Connected');
     var adminDb = db.admin();
 
     adminDb.command( { replSetGetConfig: 1 } , function(err, _conf) {
       var conf = _conf.config;
-      conf.members.push({_id: conf.members.length, host: localhost + ':27017'});
-      conf.version = conf.version + 1;
-      adminDb.command({replSetReconfig: conf}, function(err, info) {
-        if(err) console.log(err);
-        else console.log('Load Balancer: addMongoReplica: ' + JSON.stringify(info));
 
-        callback();
-      });
+      var bExist = false;
+      for(var i = 0; i < conf.members.length; i++) {
+        if(conf.members[i].host == localhost + ':27017') bExist = true;
+      }
+
+      if(!bExist) {
+        conf.members.push({_id: conf.members.length, host: localhost + ':27017'});
+        conf.version = conf.version + 1;
+        adminDb.command({replSetReconfig: conf}, function(err, info) {
+          if(err) console.log(err);
+          else console.log('Load Balancer: addMongoReplica: ' + JSON.stringify(info));
+
+
+          adminDb.command({"replSetGetStatus":1 },function(err,result) {
+            console.log( JSON.stringify(result) );
+          });
+
+          // callback();
+        });
+      } else {
+        adminDb.command({"replSetGetStatus":1 },function(err,result) {
+          console.log( JSON.stringify(result) );
+        });
+
+        // callback();
+      }
     });
   });
 }
