@@ -180,14 +180,13 @@ angular.module("analytics").controller("DialogAmountStatisticsController", ["$sc
       var endYear =  $scope.date.end.getFullYear();
       var endMonth = $scope.date.end.getMonth() + 1;
       var endDay =   $scope.date.end.getDate();
-      var year;
-      var month;
+      var year = startYear;
+      var month = startMonth;
       var day = startDay;
-
       if((startDay == endDay) || (startMonth == endMonth) ||  (startYear == endYear)){
         array.push(startYear + '/'+ startMonth + '/' + startDay)
       }
-      for(var i = startDay;((day != endDay) || (month != endMonth) ||  (year != endYear)) && i<100; i++){
+      for(var i = startDay;(day != endDay) || (month != endMonth) ||  (year != endYear); i++){
         var date = new Date(startYear, startMonth - 1, i);
         year = date.getFullYear();
         month = date.getMonth() + 1;
