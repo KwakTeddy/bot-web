@@ -37,12 +37,16 @@
                 <table class="table table-striped mb-none">
                     <thead>
                         <tr>
+                            <th class="text-center">시나리오</th>
+                            <th class="text-center">시나리오 ID</th>
                             <th class="text-center">이용자 입력</th>
                             <th class="text-center">개수</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr data-ng-repeat="userInput in userInputUsageList">
+                            <td class="text-center">{{userInput._id.dialogName}}</td>
+                            <td class="text-center">{{userInput._id.dialogId}}</td>
                             <td class="text-center">{{userInput._id.dialog}}</td>
                             <td class="text-center">{{userInput.count}}</td>
                         </tr>

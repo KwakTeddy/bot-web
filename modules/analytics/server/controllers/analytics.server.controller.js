@@ -725,12 +725,8 @@ exports.userInputStatistics = function (req, res) {
 
   var query = [
     {$match: cond},
-    {$group:
-      {
-        _id: {
-          dialog: '$dialog'}, count: {$sum: 1}
-      }
-    },
+    {$group: {_id: {dialog:'$dialog', dialogName: '$dialogName', dialogId:"$dialogId"}, count: {$sum: 1}}},
+
     {$sort: {count: -1}}
   ];
 
