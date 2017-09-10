@@ -101,6 +101,11 @@ angular.module('analytics').config(['$stateProvider',
         controller: 'IntentFailMaintenanceController',
         controllerAs: 'vm'
       })
+      .state('analytics.user-input-statistics-faq', {
+        url: '/user-input-statistics-faq',
+        templateUrl: 'modules/analytics/client/views/user-input-statistics-faq.client.view.html',
+        controller: 'UserInputStatisticsFaqController'
+      })
   }
 ]);
 

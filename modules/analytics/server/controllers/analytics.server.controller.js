@@ -1417,3 +1417,40 @@ exports.dialogFailureMaintenanceUpdate = function (req, res) {
     }
   });
 };
+
+exports.userInputStatisticsFaq = function (req, res) {
+  var cond = {inOut: true, dialog: {$nin: ["궁금한게 있는데요(FAQ)", "신한 FAN을 알려줘요", "1", "2", "3", "4"]}, dialogName: {$in: ["FAQ검색","FAQ재검색2", "FAN에 대해 자주하는 질문들(FAQ)"]}, botId: req.params.bId};
+  var startYear =  parseInt(req.body.date.start.split('/')[0]);
+  var startMonth = parseInt(req.body.date.start.split('/')[1]);
+  var startDay =   parseInt(req.body.date.start.split('/')[2]);
+  var endYear =  parseInt(req.body.date.end.split('/')[0]);
+  var endMonth = parseInt(req.body.date.end.split('/')[1]);
+  var endDay =   parseInt(req.body.date.end.split('/')[2]);
+  var paging;
+  if(req.body.paging) paging =  req.body.paging;
+  else  paging = {page: 0, perNum: 50};
+  cond['created'] = {$gte: moment.utc([startYear, startMonth - 1, startDay]).subtract(9*60*60, "seconds").toDate(), $lte: moment.utc([endYear, endMonth - 1, endDay,  23, 59, 59, 999]).subtract(9*60*60, "seconds").toDate()};
+  switch (req.body.channel){
+    case "facebook": cond.channel = "facebook"; break;
+    case "kakao": cond.channel = "kakao"; break;
+    case "navertalk": cond.channel = "navertalk"; break;
+    default : cond.channel = {$ne: "socket"}; break;
+  }
+  var query = [
+    {$match: cond},
+    {$group: {_id: {dialog:'$dialog', dialogName: '$dialogName', dialogId:"$dialogId"}, count: {$sum: 1}}},
+    {$sort: {count: -1, _id: 1}},
+    {$skip: paging.page * paging.perNum},
+    {$limit: paging.perNum}
+  ];
+
+  UserDialog.aggregate(query).exec(function (err, userInputCounts) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.jsonp(userInputCounts);
+    }
+  });
+};

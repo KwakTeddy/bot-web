@@ -1,0 +1,67 @@
+<header class="page-header">
+    <h2>사용자 입력 통계(FAQ)</h2>
+
+    <div class="right-wrapper pull-right">
+        <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+    </div>
+</header>
+<!-- start: page -->
+
+<section class="panel" data-ng-init="init()">
+    <div class="row" >
+        <div class="col-md-12">
+            <div style="display: flex;margin-bottom: 20px">
+                <span style="flex: 5"></span>
+                <span class="btn btn-default" ng-click="exelDownload('dailyUser')" style="flex: 2; display: flex; align-items: center; justify-content: center;cursor: pointer" >
+                    <a>Exel 다운로드
+                    </a>
+                </span>
+                <span id="date-container" style="flex: 3">
+                    <div id="reportrange" class="pull-right text-center" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%; border-radius: 5px">
+                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                        <span style="color: black"></span> <b class="caret"></b>
+                    </div>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <header class="panel-heading" style="background-color: white">
+                <h2 class="panel-title text-center">사용자 입력 통계(FAQ)</h2>
+            </header>
+            <div class="panel-body" style="position: relative;min-height: 100px">
+                <div name="dataLoading" style="background: white;position: absolute; top: 0;left: 0;height: 100%;width: 100%;z-index: 99999;opacity: 1; transition: opacity .5s ease">
+                    <div class="logo" style="display: block;width: 80px;height: 80px;background-repeat: no-repeat;background-image: url(images/loading_icon3.gif);background-size: contain;position:absolute; top: 50%;left: 50%;margin: -40px 0 0 -40px; animation: blink normal 2s infinite ease-in-out"></div>
+                </div>
+                <table class="table table-striped mb-none">
+                    <thead>
+                        <tr>
+                            <th class="text-center">시나리오</th>
+                            <th class="text-center">시나리오 ID</th>
+                            <th class="text-center">이용자 입력</th>
+                            <th class="text-center">개수</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-ng-repeat="userInput in userInputUsageList">
+                            <td class="text-center">{{userInput._id.dialogName}}</td>
+                            <td class="text-center">{{userInput._id.dialogId}}</td>
+                            <td class="text-center">{{userInput._id.dialog}}</td>
+                            <td class="text-center">{{userInput.count}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div data-ng-if="pagingEnd" class="text-center">
+        더 이상 데이터가 없습니다
+    </div>
+
+    <div infinite-scroll="nextPage()"
+         infinite-scroll-distance="0"
+         infinite-scroll-disabled="pagingEnd"
+         infinite-scroll-container='"#main"'>
+    </div>
+</section>
