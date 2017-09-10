@@ -41,8 +41,9 @@ exports.senarioExelDownload = function (req, res) {
     inOut: true,
     botId: req.params.bId,
     channel: {$ne: "socket"},
-    created: {$gte: new Date(startYear, startMonth - 1, startDay), $lte: new Date(endYear, endMonth - 1, endDay, 23, 59, 59, 999)}
-  };
+    created: {$gte: moment.utc([startYear, startMonth - 1, startDay]).subtract(9*60*60, "seconds").toDate(), $lte: moment.utc([endYear, endMonth - 1, endDay,  23, 59, 59, 999]).subtract(9*60*60, "seconds").toDate()},
+
+};
   UserDialog.aggregate([
     {$match: cond},
     {$project:
@@ -439,7 +440,7 @@ exports.failDailogs = function (req, res) {
   var endYear =  parseInt(req.body.date.end.split('/')[0]);
   var endMonth = parseInt(req.body.date.end.split('/')[1]);
   var endDay =   parseInt(req.body.date.end.split('/')[2]);
-  cond['created'] = {$gte: new Date(startYear, startMonth - 1, startDay), $lte: new Date(endYear, endMonth - 1, endDay, 23, 59, 59, 999)};
+  cond['created'] = {$gte: moment.utc([startYear, startMonth - 1, startDay]).subtract(9*60*60, "seconds").toDate(), $lte: moment.utc([endYear, endMonth - 1, endDay,  23, 59, 59, 999]).subtract(9*60*60, "seconds").toDate()};
 
   var query = [
     {$match: cond},
@@ -476,7 +477,7 @@ exports.failDialogStatistics = function (req, res) {
       clear : {$ne: true},
       channel: {$ne: "socket"}
     };
-  cond['created'] = {$gte: new Date(startYear, startMonth - 1, startDay), $lte: new Date(endYear, endMonth - 1, endDay, 23, 59, 59, 999)};
+  cond['created'] = {$gte: moment.utc([startYear, startMonth - 1, startDay]).subtract(9*60*60, "seconds").toDate(), $lte: moment.utc([endYear, endMonth - 1, endDay,  23, 59, 59, 999]).subtract(9*60*60, "seconds").toDate()};
   var query = [
     {$match: cond},
     {$group: {_id: {dialog:'$dialog', preDialogId: '$preDialogId', preDialogName: '$preDialogName'}, count: {$sum: 1}}},
@@ -502,10 +503,7 @@ exports.userCount = function (req, res) {
   var endYear =  parseInt(req.body.date.end.split('/')[0]);
   var endMonth = parseInt(req.body.date.end.split('/')[1]);
   var endDay =   parseInt(req.body.date.end.split('/')[2]);
-  // cond['created'] = {$gte: new Date(startYear, startMonth - 1, startDay), $lte: new Date(endYear, endMonth - 1, endDay, 23, 59, 59, 999)};
   cond['created'] = {$gte: moment.utc([startYear, startMonth - 1, startDay]).subtract(9*60*60, "seconds").toDate(), $lte: moment.utc([endYear, endMonth - 1, endDay,  23, 59, 59, 999]).subtract(9*60*60, "seconds").toDate()};
-  console.log(moment.utc([startYear, startMonth - 1, startDay]).subtract(9*60*60, "seconds").toDate());
-  console.log(util.inspect(cond.created));
 
   switch (req.body.channel){
     case "facebook": cond.channel = "facebook"; break;
@@ -517,8 +515,6 @@ exports.userCount = function (req, res) {
     case  "new": console.log(1); break;
     case  "revisit": console.log(1); break;
   }
-  console.log(util.inspect(cond));
-  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
   UserDialog.aggregate(
     [
       {$match: cond},
@@ -601,7 +597,7 @@ exports.dailyDialogUsage = function (req, res) {
   var endYear =  parseInt(req.body.date.end.split('/')[0]);
   var endMonth = parseInt(req.body.date.end.split('/')[1]);
   var endDay =   parseInt(req.body.date.end.split('/')[2]);
-  cond['created'] = {$gte: new Date(startYear, startMonth - 1, startDay), $lte: new Date(endYear, endMonth - 1, endDay, 23, 59, 59, 999)};
+  cond['created'] = {$gte: moment.utc([startYear, startMonth - 1, startDay]).subtract(9*60*60, "seconds").toDate(), $lte: moment.utc([endYear, endMonth - 1, endDay,  23, 59, 59, 999]).subtract(9*60*60, "seconds").toDate()};
   switch (req.body.channel){
     case "facebook": cond.channel = "facebook"; break;
     case "kakao": cond.channel = "kakao"; break;
@@ -658,7 +654,7 @@ exports.senarioUsage = function (req, res) {
   var endYear =  parseInt(req.body.date.end.split('/')[0]);
   var endMonth = parseInt(req.body.date.end.split('/')[1]);
   var endDay =   parseInt(req.body.date.end.split('/')[2]);
-  cond['created'] = {$gte: new Date(startYear, startMonth - 1, startDay), $lte: new Date(endYear, endMonth - 1, endDay, 23, 59, 59, 999)};
+  cond['created'] = {$gte: moment.utc([startYear, startMonth - 1, startDay]).subtract(9*60*60, "seconds").toDate(), $lte: moment.utc([endYear, endMonth - 1, endDay,  23, 59, 59, 999]).subtract(9*60*60, "seconds").toDate()};
   switch (req.body.channel){
     case "facebook": cond.channel = "facebook"; break;
     case "kakao": cond.channel = "kakao"; break;
@@ -719,7 +715,7 @@ exports.userInputStatistics = function (req, res) {
   var endYear =  parseInt(req.body.date.end.split('/')[0]);
   var endMonth = parseInt(req.body.date.end.split('/')[1]);
   var endDay =   parseInt(req.body.date.end.split('/')[2]);
-  cond['created'] = {$gte: new Date(startYear, startMonth - 1, startDay), $lte: new Date(endYear, endMonth - 1, endDay, 23, 59, 59, 999)};
+  cond['created'] = {$gte: moment.utc([startYear, startMonth - 1, startDay]).subtract(9*60*60, "seconds").toDate(), $lte: moment.utc([endYear, endMonth - 1, endDay,  23, 59, 59, 999]).subtract(9*60*60, "seconds").toDate()};
   switch (req.body.channel){
     case "facebook": cond.channel = "facebook"; break;
     case "kakao": cond.channel = "kakao"; break;
