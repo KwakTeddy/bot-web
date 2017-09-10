@@ -502,7 +502,7 @@ exports.userCount = function (req, res) {
   var endMonth = parseInt(req.body.date.end.split('/')[1]);
   var endDay =   parseInt(req.body.date.end.split('/')[2]);
   cond['created'] = {$gte: new Date(startYear, startMonth - 1, startDay), $lte: new Date(endYear, endMonth - 1, endDay, 23, 59, 59, 999)};
-  console.log(new Date(startYear, startMonth - 1, startDay))
+  console.log(new Date(startYear, startMonth - 1, startDay).getTimezoneOffset());
   console.log(util.inspect(cond.created));
   console.log(cond.created.$gte.getHours());
 
