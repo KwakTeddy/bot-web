@@ -502,6 +502,9 @@ exports.userCount = function (req, res) {
   var endMonth = parseInt(req.body.date.end.split('/')[1]);
   var endDay =   parseInt(req.body.date.end.split('/')[2]);
   cond['created'] = {$gte: new Date(startYear, startMonth - 1, startDay), $lte: new Date(endYear, endMonth - 1, endDay, 23, 59, 59, 999)};
+  console.log(new Date(startYear, startMonth - 1, startDay))
+  console.log(util.inspect(cond.created));
+  console.log(cond.created.$gte.getHours());
 
   switch (req.body.channel){
     case "facebook": cond.channel = "facebook"; break;
@@ -514,6 +517,7 @@ exports.userCount = function (req, res) {
     case  "revisit": console.log(1); break;
   }
   console.log(util.inspect(cond));
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
   UserDialog.aggregate(
     [
       {$match: cond},
@@ -527,24 +531,12 @@ exports.userCount = function (req, res) {
           created: {$add:["$created", 9*60*60*1000]}
         }
       },
-      {$project:
-        {
-          _id: 0,
-          botId:1,
-          inOut: 1,
-          channel: 1,
-          userId: 1,
-          year: { $year: "$created" },
-          month: { $month: "$created" },
-          day: { $dayOfMonth: "$created" }
-        }
-      },
       {$group:
         {
           _id: {
-            year: "$year",
-            month: "$month",
-            day: "$day",
+            year: { $year: "$created" },
+            month: { $month: "$created" },
+            day: { $dayOfMonth: "$created" },
             userId: '$userId',
             channel: "$channel"
           }
