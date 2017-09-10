@@ -513,7 +513,7 @@ exports.userCount = function (req, res) {
     case  "new": console.log(1); break;
     case  "revisit": console.log(1); break;
   }
-
+  console.log(util.inspect(cond));
   UserDialog.aggregate(
     [
       {$match: cond},
