@@ -524,15 +524,15 @@ exports.userCount = function (req, res) {
           inOut: 1,
           channel: 1,
           userId: 1,
-          created: {$add:["$created", 9*60*60*1000]}
+          localCreated: {$add:["$created", 9*60*60*1000]}
         }
       },
       {$group:
         {
           _id: {
-            year: { $year: "$created" },
-            month: { $month: "$created" },
-            day: { $dayOfMonth: "$created" },
+            year: { $year: "$localCreated" },
+            month: { $month: "$localCreated" },
+            day: { $dayOfMonth: "$localCreated" },
             userId: '$userId',
             channel: "$channel"
           }
