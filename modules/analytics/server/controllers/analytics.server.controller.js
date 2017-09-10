@@ -567,6 +567,7 @@ exports.userCount = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
+      console.log(util.inspect(userCounts, {showHidden: false, depth: null}))
       res.json(userCounts);
     }
   });

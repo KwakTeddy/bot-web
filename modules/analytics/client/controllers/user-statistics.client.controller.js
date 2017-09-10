@@ -115,7 +115,7 @@ angular.module("analytics").controller("UserStatisticsController", ['$scope', "$
 
   var userCount = function (date, userType, channel, update) {
     $http.post("/api/userCount/" + $cookies.get('default_bot'), {date: date, userType: userType, channel: channel}).then(function (doc) {
-      console.log(doc.data)
+      console.log(doc.data);
       dataBackup = angular.copy(doc.data);
       if(update){
         pieData = angular.copy(pieDataTemplate);
