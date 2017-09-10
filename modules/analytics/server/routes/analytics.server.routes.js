@@ -87,4 +87,7 @@ module.exports = function(app) {
 
   app.route('/api/analytics/statistics/senario/exel-download/:bId')
     .post(analytics.senarioExelDownload)
+
+  app.route('/api/user-input-statistics-faq/:bId')//all(analyticsPolicy.isAllowed)
+    .post(analytics.userInputStatisticsFaq);
 };
