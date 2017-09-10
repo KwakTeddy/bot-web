@@ -524,7 +524,7 @@ exports.userCount = function (req, res) {
           inOut: 1,
           channel: 1,
           userId: 1,
-          created: {$add:["$created", 9*60*60*1000]}
+          created: 1
         }
       },
       {$group:
