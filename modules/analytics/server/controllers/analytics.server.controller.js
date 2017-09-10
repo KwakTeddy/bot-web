@@ -16,7 +16,8 @@ var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash'),
   utils = require(path.resolve('modules/bot/action/common/utils')),
-  XLSX = require('xlsx');
+  XLSX = require('xlsx'),
+  moment = require('moment');
 
 var async = require('async');
 var BotFile = mongoose.model('BotFile');
@@ -501,10 +502,10 @@ exports.userCount = function (req, res) {
   var endYear =  parseInt(req.body.date.end.split('/')[0]);
   var endMonth = parseInt(req.body.date.end.split('/')[1]);
   var endDay =   parseInt(req.body.date.end.split('/')[2]);
-  cond['created'] = {$gte: new Date(startYear, startMonth - 1, startDay), $lte: new Date(endYear, endMonth - 1, endDay, 23, 59, 59, 999)};
-  console.log(new Date(startYear, startMonth - 1, startDay).getTimezoneOffset());
+  // cond['created'] = {$gte: new Date(startYear, startMonth - 1, startDay), $lte: new Date(endYear, endMonth - 1, endDay, 23, 59, 59, 999)};
+  cond['created'] = {$gte: moment.utc([startYear, startMonth - 1, startDay]).subtract(9*60*60, "seconds").toDate(), $lte: moment.utc([endYear, endMonth - 1, endDay,  23, 59, 59, 999]).subtract(9*60*60, "seconds").toDate()};
+  console.log(moment.utc([startYear, startMonth - 1, startDay]).subtract(9*60*60, "seconds").toDate());
   console.log(util.inspect(cond.created));
-  console.log(cond.created.$gte.getHours());
 
   switch (req.body.channel){
     case "facebook": cond.channel = "facebook"; break;
