@@ -115,7 +115,6 @@ angular.module("analytics").controller("UserStatisticsController", ['$scope', "$
 
   var userCount = function (date, userType, channel, update) {
     $http.post("/api/userCount/" + $cookies.get('default_bot'), {date: date, userType: userType, channel: channel}).then(function (doc) {
-      console.log(doc.data);
       dataBackup = angular.copy(doc.data);
       if(update){
         pieData = angular.copy(pieDataTemplate);
@@ -134,8 +133,10 @@ angular.module("analytics").controller("UserStatisticsController", ['$scope', "$
       var year = startYear;
       var month = startMonth;
       var day = startDay;
-
-      for(var i = startDay;((day != endDay) || (month != endMonth) ||  (year != endYear)) && i<100; i++){
+      if((startDay == endDay) || (startMonth == endMonth) ||  (startYear == endYear)){
+        array.push(startYear + '/'+ startMonth + '/' + startDay)
+      }
+      for(var i = startDay;(day != endDay) || (month != endMonth) ||  (year != endYear); i++){
         var date = new Date(startYear, startMonth - 1, i);
         year = date.getFullYear();
         month = date.getMonth() + 1;
