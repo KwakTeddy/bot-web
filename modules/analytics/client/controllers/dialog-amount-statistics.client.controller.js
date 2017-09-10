@@ -184,6 +184,9 @@ angular.module("analytics").controller("DialogAmountStatisticsController", ["$sc
       var month;
       var day = startDay;
 
+      if((startDay == endDay) || (startMonth == endMonth) ||  (startYear == endYear)){
+        array.push(startYear + '/'+ startMonth + '/' + startDay)
+      }
       for(var i = startDay;((day != endDay) || (month != endMonth) ||  (year != endYear)) && i<100; i++){
         var date = new Date(startYear, startMonth - 1, i);
         year = date.getFullYear();
