@@ -44,7 +44,7 @@
     "FileSaver.js": "filesaver.js#^0.0.2"
   },
   "resolutions": {
-    "angular": "1.5.3",
+    "angular": "1.5.11",
     "dropzone": "~3.10.2",
     "angular-ui-router": "0.2.13",
     "angular-sanitize": "1.5.3",
