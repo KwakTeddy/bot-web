@@ -8,40 +8,10 @@ angular.module('analytics').config(['$stateProvider',
         url: '/developer/analytics',
         template: '<ui-view/>',
         data: {
-          roles: ['user', 'enterprise', 'admin'],
+          roles: ['user', 'enterprise', 'admin']
         }
       })
-      .state('analytics.dashboard', {
-        url: '',
-        templateUrl: 'modules/analytics/client/views/dashboard.client.view.html',
-        controller: 'DashboardController',
-        controllerAs: 'vm'
-      })
-      .state('analytics.user-statistics', {
-        url: '/user-statistics',
-        templateUrl: 'modules/analytics/client/views/user-statistics.client.view.html',
-        controller: 'UserStatisticsController'
-      })
-      .state('analytics.dialog-amount-statistics', {
-        url: '/dialog-amount-statistics',
-        templateUrl: 'modules/analytics/client/views/dialog-amount-statistics.client.view.html',
-        controller: 'DialogAmountStatisticsController'
-      })
-      .state('analytics.senario-usage-statistics', {
-        url: '/senario-usage-statistics',
-        templateUrl: 'modules/analytics/client/views/senario-usage-statistics.client.view.html',
-        controller: 'SenarioUsageStatisticsController'
-      })
-      .state('analytics.user-input-statistics', {
-        url: '/user-input-statistics',
-        templateUrl: 'modules/analytics/client/views/user-input-statistics.client.view.html',
-        controller: 'UserInputStatisticsController'
-      })
-      .state('analytics.fail-dialog-statistics', {
-        url: '/fail-dialog-statistics',
-        templateUrl: 'modules/analytics/client/views/fail-dialog-statistics.client.view.html',
-        controller: 'FailDialogStatisticsController'
-      })
+      //장원준 작업
       .state('analytics.user-count', {
         url: '/user-count',
         templateUrl: 'modules/analytics/client/views/user-count.client.view.html',
@@ -84,6 +54,39 @@ angular.module('analytics').config(['$stateProvider',
         controller: 'ManageBatchController',
         controllerAs: 'vm'
       })
+      //박준하 작업
+      .state('analytics.dashboard', {
+        url: '',
+        templateUrl: 'modules/analytics/client/views/dashboard.client.view.html',
+        controller: 'DashboardController',
+        controllerAs: 'vm'
+      })
+      .state('analytics.user-statistics', {
+        url: '/user-statistics',
+        templateUrl: 'modules/analytics/client/views/user-statistics.client.view.html',
+        controller: 'UserStatisticsController'
+      })
+      .state('analytics.dialog-amount-statistics', {
+        url: '/dialog-amount-statistics',
+        templateUrl: 'modules/analytics/client/views/dialog-amount-statistics.client.view.html',
+        controller: 'DialogAmountStatisticsController'
+      })
+      .state('analytics.senario-usage-statistics', {
+        url: '/senario-usage-statistics',
+        templateUrl: 'modules/analytics/client/views/senario-usage-statistics.client.view.html',
+        controller: 'SenarioUsageStatisticsController'
+      })
+      .state('analytics.user-input-statistics', {
+        url: '/user-input-statistics',
+        templateUrl: 'modules/analytics/client/views/user-input-statistics.client.view.html',
+        controller: 'UserInputStatisticsController'
+      })
+      .state('analytics.fail-dialog-statistics', {
+        url: '/fail-dialog-statistics',
+        templateUrl: 'modules/analytics/client/views/fail-dialog-statistics.client.view.html',
+        controller: 'FailDialogStatisticsController'
+      })
+      //의도 대화학습
       .state('analytics.dialog-failure-maintenance', {
         url: '/dialog-failure-maintenance',
         abstract: true,
@@ -101,6 +104,8 @@ angular.module('analytics').config(['$stateProvider',
         controller: 'IntentFailMaintenanceController',
         controllerAs: 'vm'
       })
+
+      //신한카드 전용
       .state('analytics.user-input-statistics-faq', {
         url: '/user-input-statistics-faq',
         templateUrl: 'modules/analytics/client/views/user-input-statistics-faq.client.view.html',

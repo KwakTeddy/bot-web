@@ -11,7 +11,6 @@ angular.module('core').controller('LandingBotsController', ['$scope', '$state', 
     document.getElementById('intent-button').style.display = 'none';
     document.getElementById('main').classList.remove('content-body');
   });
-  console.log($cookies.getAll());
   $scope.myBot = '';
   $scope.copyTargetBot = {};
   $scope.deleteInput = '';
@@ -85,8 +84,6 @@ angular.module('core').controller('LandingBotsController', ['$scope', '$state', 
       console.log(response);
     })
   };
-
-  var test= '[신한카드 YOLO ⓘ]\n카드가 딱이네요!\n\n✔ 6개 선택처 할인율 선택(커피,택시,편의점,베이커리,소셜커머스,영화)\n✔ 카드 디자인 선택\n✔ 분기별 Bonus 모바일 쿠폰\n\n자세한 내용을 보시려면 아래의 링크를 클릭해 주세요.\n\n <a href="www.moneybrain.ai">유의사항</a>'
 
   $scope.openCopyModal = function (bot) {
     $scope.copyTargetBot['name'] = bot.name + ' 복제봇';
@@ -202,7 +199,7 @@ angular.module('core').controller('LandingBotsController', ['$scope', '$state', 
     });
   };
 
-  var putAuthCookies = function (doc) {
+  var putAuthCookies = function (doc) { //공유된 봇 선택시 권한을 쿠키에 저장하는 함수 - 추후 jwt로 암호화 필요
     var auth = {};
     doc.forEach(function (_doc) {
       if(!auth[_doc.subjectSchema]) auth[_doc.subjectSchema] = {};

@@ -63,7 +63,7 @@ exports.message = function (req, res) {
     return false;
   }
 };
-
+//수동 대화내역을 저장하는 함수
 function liveChatAddDialog(botId, message , userId, inOut) {
   var query = {
     botId: botId,
@@ -97,11 +97,11 @@ function receivedMessage(event) {
   var senderID = event.sender.id,
   recipientID = event.recipient.id,
   message = event.message,
-  messageId = message.mid,
   messageText = message.text,
   messageAttachments = message.attachments,
   attachmentData = '';
 
+  //attachment데이터 처리 - 사용자가 이미지 동영상 등을 보냈을 때
   if (messageAttachments){
     attachmentData = JSON.parse(JSON.stringify(messageAttachments));
     if (attachmentData[0].type == 'image') attachmentData[0].type = 'photo';
@@ -113,14 +113,13 @@ function receivedMessage(event) {
 
   async.waterfall([
     function (done) {
-      if(message.is_echo){
+      if(message.is_echo){ //에코 메세지 처리 - 수동대화 저장
         if(!message.metadata){
           UserBotFbPage.findOne({pageId: senderID}, function (err, data) {
             if (err) console.log(err);
             else {
               liveChatAddDialog(data.userBotId, messageText, recipientID, false);
               contextModule.getContext(data.userBotId, 'facebook', recipientID, null, function(context) {
-                console.log(util.inspect(context.user));
                 context.user.liveChat = 3;
                 return done(true);
               })
@@ -134,38 +133,53 @@ function receivedMessage(event) {
       }
     },
     function (done) {
-      if (event.botId == "subscribeBot"){
-        console.log('Subscribe Coming In');
-        UserBotFbPage.findOne({pageId: event.recipient.id}, function (err, data) {
+      if (event.botId == "subscribeBot"){ //subscribeBot - ui로 연결 / else - 직접 facebook app을 통해 연결
+        UserBotFbPage.findOne({pageId: event.recipient.id}, function (err, data) { //accessToken가져오기
           if (err){
             console.log(err);
             return done(err);
           }else {
             if(recipientID != data.pageId) return true;
-            subscribe = true;
-            subscribePageToken = data.accessToken;
+            var accessToken = data.accessToken;
             event.botId = data.userBotId;
-            return done(null);
+            return done(null, accessToken);
           }
         });
       }else {
-        if (recipientID != bot.facebook.id){
-         return done(true)
-        }
         if (!global._bots[event.botId]){
           botLib.loadBot(event.botId, function (realbot) {
-            return done(null);
+            if(recipientID == global._bots[event.botId].facebook.id) {
+              contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
+                var bot = context.botUser.orgBot || context.bot;
+                var accessToken = bot.facebook.PAGE_ACCESS_TOKEN;
+                if(recipientID == bot.facebook.id) {
+                  chat.write('facebook', senderID, event.botId, payload, null, function (retText, task) {
+                    respondMessage(senderID, retText, event.botId, task, accessToken, context);
+                    return done(true);
+                  });
+                }
+              });
+            }
           });
         }else {
-          return done(null);
+          if(recipientID == global._bots[event.botId].facebook.id) {
+            contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
+              var bot = context.botUser.orgBot || context.bot;
+              var accessToken = bot.facebook.PAGE_ACCESS_TOKEN;
+              if(recipientID == bot.facebook.id) {
+                chat.write('facebook', senderID, event.botId, payload, null, function (retText, task) {
+                  respondMessage(senderID, retText, event.botId, task, accessToken, context);
+                  return done(true);
+                });
+              }
+            });
+          }
         }
       }
     },
-    function (done) {
+    function (accessToken, done) {
       chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
         contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
-          botContext = context;
-          bot = botContext.botUser.orgBot || botContext.bot;
           switch(true) {
           case botContext.user.liveChat == 1 :
             botContext.user.liveChat++;
@@ -176,7 +190,7 @@ function receivedMessage(event) {
             // liveChatAddDialog(event.botId, messageText , senderID, true);
             return true;
           }
-          respondMessage(senderID, retText, event.botId, task);
+          respondMessage(senderID, retText, event.botId, task, accessToken, context);
           return done(null);
         });
       });
@@ -201,28 +215,26 @@ function receivedPostback(event) {
       if (err){
         console.log(err);
       }else {
-        subscribe = true;
-        subscribePageToken = data.accessToken;
+        var accessToken = data.accessToken;
         event.botId = data.userBotId;
         contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
-          botContext = context;
           console.log("Received postback");
           chat.write('facebook', senderID, event.botId, payload, null, function (retText, task) {
-            respondMessage(senderID, retText, event.botId, task);
+            respondMessage(senderID, retText, event.botId, task, accessToken, context);
           });
         });
       }
     });
   }else {
-
     if (!global._bots[event.botId]){
       botLib.loadBot(event.botId, function (realbot) {
         if(recipientID == global._bots[event.botId].facebook.id) {
           contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
-            botContext = context;
+            var bot = context.botUser.orgBot || context.bot;
+            var accessToken = bot.facebook.PAGE_ACCESS_TOKEN;
             if(recipientID == bot.facebook.id) {
               chat.write('facebook', senderID, event.botId, payload, null, function (retText, task) {
-                respondMessage(senderID, retText, event.botId, task);
+                respondMessage(senderID, retText, event.botId, task, accessToken, context);
               });
             }
           });
@@ -231,10 +243,11 @@ function receivedPostback(event) {
     }else {
       if(recipientID == global._bots[event.botId].facebook.id) {
         contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
-          botContext = context;
+          var bot = context.botUser.orgBot || context.bot;
+          var accessToken = bot.facebook.PAGE_ACCESS_TOKEN;
           if(recipientID == bot.facebook.id) {
             chat.write('facebook', senderID, event.botId, payload, null, function (retText, task) {
-              respondMessage(senderID, retText, event.botId, task);
+              respondMessage(senderID, retText, event.botId, task, accessToken, context);
             });
           }
         });
@@ -260,8 +273,6 @@ function receivedDeliveryConfirmation(event) {
       //   messageID);
     });
   }
-
-  // console.log("All message before %d were delivered.", watermark);
 }
 
 
@@ -290,38 +301,43 @@ function receivedAuthentication(event) {
 }
 
 
-function respondMessage(to, text, botId, task) {
-  var tokenData = '';
+function respondMessage(to, text, botId, task, accessToken, context) {
+  var tokenData = accessToken;
+  var bot = context.botUser.orgBot || context.bot;
+  var botContext = context;
 
-  if (subscribe) tokenData = subscribePageToken;
-  else tokenData = bot.facebook.PAGE_ACCESS_TOKEN;
-
-  if(bot && bot.commonButtons && bot.commonButtons.length && botContext.botUser._currentDialog.name && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)){
-    if(task && task.buttons) task.buttons =  task.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
+  if( //공통 버튼 처리
+    bot &&
+    bot.commonButtons &&
+    bot.commonButtons.length &&
+    botContext.botUser._currentDialog.name &&
+    (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)
+  ){
+    if(task && task.buttons)                            task.buttons =  task.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
     else if(task && task.result && task.result.buttons) task.result.buttons =  task.result.buttons.slice(0, task.buttons.length - bot.commonButtons.length);
   }
 
-  if (task && task.result) {
+  if (task && task.result) { //task 데이터 형식 분기
     var result = task.result;
 
     switch (Object.keys(result).toString()) {
       case 'image':
-        sendGenericMessage(to, text, result, tokenData);
+        sendGenericMessage(to, text, result, tokenData, context);
         break;
 
       case 'image,buttons':
-        sendGenericMessage(to, text, result, tokenData);
+        sendGenericMessage(to, text, result, tokenData, context);
         break;
       case 'buttons':
-        if(config.enterprise.name){
-          smartReplyMessage(to, text, result, tokenData);
+        if(config.enterprise.name){ //신한카드 - 버튼을 스마트 리플라이로 하기 - 수정 요망
+          smartReplyMessage(to, text, result, tokenData, context);
         }else {
-          sendButtonMessage(to, text, result, tokenData);
+          sendButtonMessage(to, text, result, tokenData, context);
         }
         break;
 
       case 'items':
-        sendGenericMessage(to, text, result, tokenData);
+        sendGenericMessage(to, text, result, tokenData, context);
         break;
 
       case 'receipt':
@@ -329,35 +345,35 @@ function respondMessage(to, text, botId, task) {
         break;
 
       case 'smartReply':
-        smartReplyMessage(to, text, result, tokenData);
+        smartReplyMessage(to, text, result, tokenData, context);
         break;
 
       default:
-        sendTextMessage(to, text, result, tokenData);
+        sendTextMessage(to, text, result, tokenData, context);
     }
   }else {
     if(text){
       if (task && task.hasOwnProperty('image')){
         if (task.hasOwnProperty('buttons')){
           //text && image && buttons
-          sendGenericMessage(to, text, task, tokenData);
+          sendGenericMessage(to, text, task, tokenData, context);
 
         }else {
           //text && image
-          sendGenericMessage(to, text, task, tokenData);
+          sendGenericMessage(to, text, task, tokenData, context);
 
         }
       }else {
         if (task && task.hasOwnProperty('buttons')){
           //text && buttons
-          if(config.enterprise.name){
-            smartReplyMessage(to, text, task, tokenData);
+          if(config.enterprise.name){//신한카드 - 버튼을 스마트 리플라이로 하기 - 수정 요망
+            smartReplyMessage(to, text, task, tokenData, context);
           }else {
-            sendButtonMessage(to, text, task, tokenData);
+            sendButtonMessage(to, text, task, tokenData, context);
           }
         }else {
           //text
-          sendTextMessage(to, text, task, tokenData);
+          sendTextMessage(to, text, task, tokenData, context);
         }
       }
     }else {
@@ -367,7 +383,7 @@ function respondMessage(to, text, botId, task) {
           console.log('only image and buttons. No TEXT!')
         }else {
           //image
-          sendImageMessage(to, text, task, tokenData);
+          sendImageMessage(to, text, task, tokenData, context);
 
         }
       }else {
@@ -384,8 +400,8 @@ exports.respondMessage = respondMessage;
  * Send a text message using the Send API.
  *
  */
-function sendTextMessage(recipientId, text, task, token) {
-  if(text.length > 640){
+function sendTextMessage(recipientId, text, task, token, context) {
+  if(text.length > 640){ // 텍스트 크기가 너무 클시 inApp 브라우져 뛰우기
     var subtext = text.substring(0, 639);
     var buttons = [{
       "type":"web_url",
@@ -417,7 +433,7 @@ function sendTextMessage(recipientId, text, task, token) {
         if(err){
           console.log(err)
         }else {
-          callSendAPI(messageData, token);
+          callSendAPI(messageData, token, context);
         }
       })
     });
@@ -430,7 +446,7 @@ function sendTextMessage(recipientId, text, task, token) {
         text: text
       }
     };
-    callSendAPI(messageData, token);
+    callSendAPI(messageData, token, context);
   }
 }
 
@@ -439,7 +455,7 @@ function sendTextMessage(recipientId, text, task, token) {
  * Send a message with an using the Send API.
  *
  */
-function sendImageMessage(recipientId, text, task, token) {
+function sendImageMessage(recipientId, text, task, token, context) {
   if(task.image){
     if (task.image.url.substring(0,4) !== 'http'){
       task.image.url = config.host + task.image.url
@@ -459,29 +475,26 @@ function sendImageMessage(recipientId, text, task, token) {
       }
     }
   };
-  callSendAPI(messageData, token);
+  callSendAPI(messageData, token, context);
 }
 
 /*
  * Send a button message using the Send API.
  *
  */
-function sendButtonMessage(recipientId, text, task, token) {
-  var bot = botContext.botUser.orgBot || botContext.bot;
+function sendButtonMessage(recipientId, text, task, token, context) {
   var buttons = [];
 
-  if(task.buttons.length > 3){
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      text: text
-    }
-  };
-
-  callSendAPI(messageData, token);
-
+  if(task.buttons.length > 3){ //버튼이 3개 넘을 시 텍스트만 보냄 - 기업용에서 텍스트만 보내고 스마트 리플라이로 변환
+    var messageData = {
+      recipient: {
+        id: recipientId
+      },
+      message: {
+        text: text
+      }
+    };
+    callSendAPI(messageData, token, context);
   }else {
     for(var i = 0; i < task.buttons.length; i++){
       var btn = {};
@@ -511,7 +524,7 @@ function sendButtonMessage(recipientId, text, task, token) {
         }
       }
     };
-    callSendAPI(messageData, token);
+    callSendAPI(messageData, token, context);
   }
 }
 
@@ -519,12 +532,12 @@ function sendButtonMessage(recipientId, text, task, token) {
  * Send a Structured Message (Generic Message type) using the Send API.
  *
  */
-function sendGenericMessage(recipientId, text, task, token) {
-  if (task.items){
+function sendGenericMessage(recipientId, text, task, token, context) {
+  if (task.items){ //복수 데이터
     task = task.items;
     var elements = [];
     var elementsLength;
-    if (task.length > 10) elementsLength = 10;
+    if (task.length > 10) elementsLength = 10; // 최대 카드 10개까지
     else elementsLength = task.length;
 
     for(var i =0; i < elementsLength; i++){
@@ -543,7 +556,7 @@ function sendGenericMessage(recipientId, text, task, token) {
         var buttons = [];
         var buttonLength;
 
-        if (task[i].buttons.length > 3) buttonLength = 3;
+        if (task[i].buttons.length > 3) buttonLength = 3; // 최대 버튼 3개
         else buttonLength = task[i].buttons.length;
 
         for (var j = 0; j < buttonLength; j++) {
@@ -577,7 +590,7 @@ function sendGenericMessage(recipientId, text, task, token) {
         }
       }
     };
-    callSendAPI(messageData, token);
+    callSendAPI(messageData, token, context);
 
   }else {
     var imageUrl = "";
@@ -609,7 +622,7 @@ function sendGenericMessage(recipientId, text, task, token) {
       }
     }
 
-    if(true){
+    if(true){ // 제너릭 메세지를 이미지와 버튼으로 나누어 보냄 - 텍스트 용량 때문
       var messageData1 = {
         recipient: {
           id: recipientId
@@ -640,7 +653,7 @@ function sendGenericMessage(recipientId, text, task, token) {
         }
       };
 
-      callSendAPI(messageData1, token, function () {
+      callSendAPI(messageData1, token, context, function () {
         callSendAPI(messageData2, token)
       });
     }else {
@@ -663,7 +676,7 @@ function sendGenericMessage(recipientId, text, task, token) {
           }
         }
       };
-      callSendAPI(messageData, token);
+      callSendAPI(messageData, token, context);
     }
   }
 }
@@ -798,7 +811,7 @@ function listMessage(recipientId, text, task, token) {
  * Send a receipt message using the Send API.
  *
  */
-function sendReceiptMessage(recipientId, text, task, token) {
+function sendReceiptMessage(recipientId, text, task, token, context) {
   // Generate a random receipt ID as the API requires a unique ID
   var receiptId = "order" + Math.floor(Math.random()*1000);
 
@@ -864,7 +877,7 @@ function sendReceiptMessage(recipientId, text, task, token) {
  * Send a receipt message using the Send API.
  *
  */
-function smartReplyMessage(recipientId, text, task, token) {
+function smartReplyMessage(recipientId, text, task, token, context) {
   var messageData = {
     recipient: {
       id: recipientId
@@ -893,32 +906,35 @@ function smartReplyMessage(recipientId, text, task, token) {
     }
     messageData.message.quick_replies = smartReplies;
   }
-  callSendAPI(messageData, token);
+  callSendAPI(messageData, token, context);
 }
 
-function callSendAPI(messageData, PAGE_ACCESS_TOKEN, cb) {
+function callSendAPI(messageData, PAGE_ACCESS_TOKEN, context, cb) {
   if(messageData.message) messageData.message['metadata'] = "sentByChatBot";
+  var bot = context.botUser.orgBot || context.bot;
+  var botContext = context;
+  if(
+    bot &&
+    bot.commonQuickReplies &&
+    bot.commonQuickReplies.length &&
+    botContext.botUser._currentDialog.name &&
+    !botContext.user.liveChat
+  ){
+    if(botContext.botUser._currentDialog.name == botContext.bot.noDialog.name){//답변없음일때 커먼 퀵리플라이
+      messageData.message['quick_replies'] = [{content_type: "text", title: "시작메뉴", payload: "시작메뉴"}]
+    }else if(botContext.botUser._currentDialog.name != botContext.bot.startDialog.name){//!시작 && !답변없음 커먼 퀵리플라이
+      var quick_replies = [];
+      if(!messageData.message['quick_replies']) messageData.message['quick_replies']= [];
 
-  if(bot && bot.commonQuickReplies && bot.commonQuickReplies.length
-    && botContext.botUser._currentDialog.name && !botContext.user.liveChat
-    && (botContext.botUser._currentDialog.name != botContext.bot.startDialog.name)
-    && (botContext.botUser._currentDialog.name != botContext.bot.noDialog.name)){
-    var quick_replies = [];
-    if(!messageData.message['quick_replies']) messageData.message['quick_replies']= [];
-
-    bot.commonQuickReplies.forEach(function (b) {
-      var btn = {content_type: "text"};
-      btn['title'] = b.text;
-      btn['payload'] = b.text;
-      messageData.message.quick_replies.push(btn);
-    });
+      bot.commonQuickReplies.forEach(function (b) {
+        var btn = {content_type: "text"};
+        btn['title'] = b.text;
+        btn['payload'] = b.text;
+        messageData.message.quick_replies.push(btn);
+      });
+    }
   }
 
-  if(bot && bot.commonQuickReplies && bot.commonQuickReplies.length
-    && botContext.botUser._currentDialog.name
-    && (botContext.botUser._currentDialog.name == botContext.bot.noDialog.name)){
-    messageData.message['quick_replies'] = [{content_type: "text", title: "시작메뉴", payload: "시작메뉴"}]
-  }
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: PAGE_ACCESS_TOKEN },
@@ -927,7 +943,6 @@ function callSendAPI(messageData, PAGE_ACCESS_TOKEN, cb) {
 
   }, function (error, response, body) {
     if (!error && response.statusCode == 200) {
-      console.log("Successfully sent message");
       if(cb) cb();
     } else {
       console.log("Unable to send message.");

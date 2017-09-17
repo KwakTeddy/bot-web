@@ -79,7 +79,6 @@ exports.message =  function(req, res) {
 
 function respondMessage(response, text, task, res) {
   if (task && task.result) {
-    console.log(util.inspect(task.result.items), {showHidden: false, depth: null});
     switch (Object.keys(task.result).toString()) {
       case 'image':
         sendImageMessage(response, text, task.result, res);
@@ -141,7 +140,6 @@ function respondMessage(response, text, task, res) {
 function sendTextMessage(response, text, task, res) {
   response.request['textContent'] = {text: ''};
   response.request.textContent.text = text;
-  console.log(util.inspect(response, {showHidden: false, depth: null}))
   res.json(response)
 }
 
@@ -151,7 +149,6 @@ function sendImageMessage(response, text, task, res) {
   }
   response.request['imageContent'] = {imageUrl: '', height: '594', width: '420'};
   response.request.imageContent.imageUrl = task.image.url;
-  console.log(util.inspect(response, {showHidden: false, depth: null}))
   res.json(response)
 }
 
@@ -263,8 +260,8 @@ function sendCompositeMessage(response, text, task, res) {
     }
     response.request.compositeContent.compositeList.push(composit);
     console.log(util.inspect(response), {showHidden: false, depth: null})
-    console.log(util.inspect(response.request.compositeContent.compositeList), {showHidden: false, depth: null})
-    console.log(util.inspect(response.request.compositeContent.compositeList[0]), {showHidden: false, depth: null})
+    // console.log(util.inspect(response.request.compositeContent.compositeList), {showHidden: false, depth: null})
+    // console.log(util.inspect(response.request.compositeContent.compositeList[0]), {showHidden: false, depth: null})
     res.json(response);
   }
 }

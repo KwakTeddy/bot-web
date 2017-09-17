@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  // Custom actions controller
+  //대화셋 개별 대화내용 컨트롤러
   angular
     .module('dialogsets')
     .controller('DialogsetDialogsController', DialogsetDialogsController);
@@ -20,15 +20,10 @@
     vm.authentication = Authentication;
     vm.bot = botResolve;
     vm.auth = $cookies.getObject("auth");
-
     vm.dialogset = dialogset;
     vm.dialogsetDialogs = dialogsetDialogs;
-    vm.filterDialogs = angular.copy(vm.dialogsetDialogs);
-    vm.hasParentDialogs = [];
-
     vm.childDialog = new DialogsetDialogsService({user: vm.authentication, dialogset: vm.dialogset._id});
-    vm.newDialog = new DialogsetDialogsService({user: vm.authentication, dialogset: vm.dialogset._id});
-
+    //대화셋의 개별 대화를 ordering 해주는 과정 - 개선 필요
     for(var i = 0; i < vm.dialogsetDialogs.length; i++){
       if(vm.dialogsetDialogs[i].parent){
         for(var j = 0; j < vm.dialogsetDialogs.length; j++){
@@ -39,9 +34,10 @@
         }
       }
     }
+    //권한 여부 확인
     vm.checkAuth = function (subjectSchema, target, kind, noti) {
       var result = false;
-      if(vm.authentication.user._id == vm.bot.user._id) return true;
+      if(vm.authentication.user._id == vm.bot.user._id) return true; //봇 주인
 
       if(kind == "edit"){
         if(vm.auth[subjectSchema] && vm.auth[subjectSchema][target] && vm.auth[subjectSchema][target][kind]){
@@ -73,6 +69,7 @@
     //   return $sce.trustAsHtml(text.replace(new RegExp(search, 'gi'), '<span class="highlightedText">$&</span>'));
     // };
 
+    //랜덤 답변 구현 중
     vm.addRandomQuestion = function (dialog, index) {
 
       if(dialog.parent) vm.dialog['parent'] = dialog.parent;
@@ -89,7 +86,7 @@
       })
 
     };
-
+    //랜덤 답변 구현 중
     vm.addRandomAnswer = function (dialog) {
       console.log(dialog)
 

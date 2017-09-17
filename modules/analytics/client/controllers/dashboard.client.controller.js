@@ -36,7 +36,7 @@ angular.module('analytics').controller('DashboardController', ['$scope', 'Authen
         fail: "rgb(147, 75, 61)"
       }
     };
-
+    //누적 총 대화량
     var userDialogCumulativeCount = function () {
       $http.get("/api/userDialogCumulativeCount/" + $cookies.get('default_bot')).then(function (doc) {
         $scope.userDialogCumulativeCount = doc.data
@@ -44,7 +44,7 @@ angular.module('analytics').controller('DashboardController', ['$scope', 'Authen
         console.log(err);
       });
     };
-
+    //이용자 통계
     var userCount = function (date, userType, channel, update) {
       $http.post("/api/userCount/" + $cookies.get('default_bot'), {date: date, userType: userType, channel: channel}).then(function (doc) {
         doc.data.forEach(function (data) {
@@ -53,7 +53,7 @@ angular.module('analytics').controller('DashboardController', ['$scope', 'Authen
           $scope.navertalkUserCount += data.navertalk;
           $scope.totalUserCount += data.total;
         });
-
+        //Chart.js 그래프 그리는 스크립트
         var context = document.getElementById("botUserByChannel").getContext('2d');
         var data = {
           labels: ["KakaoTalk", "Facebook", "NaverTalkTalk"],
@@ -86,10 +86,10 @@ angular.module('analytics').controller('DashboardController', ['$scope', 'Authen
         console.log(err);
       });
     };
-
+    //일별 사용량
     var dailyDialogUsage = function (date, userType, channel, update) {
       $http.post("/api/daily-dialog-usage", {botId: $cookies.get('default_bot'), date: date, userType: userType, channel: channel}).then(function (doc) {
-        console.log(doc);
+        //Chart.js 그래프 그리는 스크립트
         var context = document.getElementById("dailyDialogUsage").getContext('2d');
         var pieContext = document.getElementById("dialogSuccessRate").getContext('2d');
         var data = {
@@ -157,7 +157,7 @@ angular.module('analytics').controller('DashboardController', ['$scope', 'Authen
         var year;
         var month;
         var day = startDay;
-
+        //데이터에 없는 날짜도 표시될 수 있게 날짜 array를 만듦
         for(var i = startDay;((day != endDay) || (month != endMonth) ||  (year != endYear)) && i<100; i++){
           var date = new Date(startYear, startMonth - 1, i);
           year = date.getFullYear();
@@ -166,7 +166,7 @@ angular.module('analytics').controller('DashboardController', ['$scope', 'Authen
           array.push(year + '/'+ month + '/' + day)
         }
         data.labels = array;
-
+        //날짜별로 그래프에 데이터 넣어주기
         array.forEach(function (date, index) {
           var Year =  parseInt(date.split('/')[0]);
           var Month = parseInt(date.split('/')[1]);
@@ -212,6 +212,7 @@ angular.module('analytics').controller('DashboardController', ['$scope', 'Authen
           plugins: [
             {
               afterInit: function() {
+                //로딩 화면
                 document.getElementsByName('dataLoading')[0].style.setProperty("display", "none", "important");
                 document.getElementsByName('dataLoading')[1].style.setProperty("display", "none", "important");
                 document.getElementsByName('dataLoading')[2].style.setProperty("display", "none", "important");
@@ -231,47 +232,15 @@ angular.module('analytics').controller('DashboardController', ['$scope', 'Authen
         console.log(err);
       });
     };
-
+    //시나리오 사용량
     var senarioUsage = function (date, userType, channel, update) {
       $http.post('/api/senarioUsage/' + $cookies.get("default_bot"), {limit : 10, date: date, userType: userType, channel: channel}).then(function (doc) {
         $scope.senarioUsageList = doc.data.senarioUsage;
-        // var context = document.getElementById("senarioUsage").getContext('2d');
-        // var data = {
-        //   labels: [],
-        //   datasets: [{
-        //     data: [],
-        //     backgroundColor: [
-        //       'rgba(255, 159, 64, 0.2)',
-        //       'rgba(255, 99, 132, 0.2)',
-        //       'rgba(25, 99, 132, 22)',
-        //       'rgba(25, 99, 12, 222)',
-        //       'rgba(25, 9, 132, 222)'
-        //     ],
-        //     borderColor: [
-        //       'rgba(255, 159, 64, 1)',
-        //       'rgba(255,99,132,1)',
-        //       'rgba(25,99,132,11)',
-        //       'rgba(25,99,12,111)',
-        //       'rgba(25,9,132,111)'
-        //     ]
-        //   }]
-        // };
-        // var options = {
-        // };
-        // doc.data.senarioUsage.forEach(function (senario) {
-        //   data.labels.push(senario._id.dialogName);
-        //   data.datasets[0].data.push(senario.total);
-        // });
-        // var myChart = new Chart(context, {
-        //   type: 'pie',
-        //   data: data,
-        //   options: options
-        // });
       }, function (err) {
         console.log(err);
       });
     };
-
+    //실패 대화
     var failDailogs = function (date, userType, channel, update) {
       $http.post('/api/failDailogs/' + $cookies.get("default_bot"), {date: date, channel: channel, limit: 10}).then(function (doc) {
         $scope.failDialogList = doc.data;
@@ -279,7 +248,7 @@ angular.module('analytics').controller('DashboardController', ['$scope', 'Authen
         console.log(err);
       });
     };
-
+    //사용자 입력
     var userInputCount = function (date, userType, channel, update) {
       $http.post('/api/user-input-statistics/' + $cookies.get("default_bot"), {date: date, channel: channel, limit: 10}).then(function (doc) {
         $scope.userInputUsageList = doc.data;
@@ -287,14 +256,14 @@ angular.module('analytics').controller('DashboardController', ['$scope', 'Authen
         console.log(err);
       });
     };
-
+    //시간 데이터를 String으로 바꿔주는 함수
     var formatDate = function (start, end) {
       var date = {start: "", end: ""};
       date.start = start.getFullYear() + '/' + (start.getMonth() +1) + '/' + start.getDate();
       date.end = end.getFullYear() + '/' + (end.getMonth() +1) + '/' + end.getDate();
       return date;
     };
-
+    //컨트롤러 시작할 때 불리는 함수
     $scope.init = function () {
       userDialogCumulativeCount(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, false);
       userCount(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, false);
@@ -303,8 +272,9 @@ angular.module('analytics').controller('DashboardController', ['$scope', 'Authen
       userInputCount(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, false);
       dailyDialogUsage(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, false);
     };
-
+    //그래프 업데이트하는 함수
     $scope.update = function () {
+      //로딩 화면
       document.getElementsByName('dataLoading')[0].style.setProperty("display", "block", "important");
       document.getElementsByName('dataLoading')[1].style.setProperty("display", "block", "important");
       document.getElementsByName('dataLoading')[2].style.setProperty("display", "block", "important");
@@ -316,7 +286,7 @@ angular.module('analytics').controller('DashboardController', ['$scope', 'Authen
       userInputCount(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, true);
       dailyDialogUsage(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, true);
     };
-
+    //DatePicker 모듈 스크립트
     $(function() {
 
       var start = moment().subtract(29, 'days');

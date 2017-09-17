@@ -65,10 +65,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         return false;
       }
       document.getElementById('loading-screen').style.setProperty("display", "block", "important");
-      console.log('transferServerTime')
 
       $http.post('/api/auth/signup', $scope.credentials).success(function (response) {
-          console.log(response);
         if (_platform == 'mobile'){
             var alertPopup = $ionicPopup.alert({
                 title: '반가워요 ' + $scope.credentials.username + '님!',
@@ -125,7 +123,6 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
       }).error(function (response) {
         document.getElementById('loading-screen').style.setProperty("display", "none", "important");
-        console.log(response);
         if(response.message.match('가입되어 있는 E-mail이네요')){
           $scope.error.email = response.message;
         } else if(response.message.match('SNS')) {
@@ -173,7 +170,6 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
           else                                               $state.go($state.previous.state.name || 'home', $state.previous.params);
         }
       }).error(function (response) {
-        console.log(response);
         $scope.error = response.message;
         if (response.message.match('E-mail 확인절차')){
           if (_platform == 'mobile'){
@@ -208,10 +204,6 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                       }
                   ]
               });
-
-              // $timeout(function() {
-              //     myPopup.close(); //close the popup after 3 seconds for some reason
-              // }, 3000);
           } else {
               var modalInstance = $uibModal.open({
                   templateUrl: 'modules/users/client/views/authentication/email.confirm.modal.html',

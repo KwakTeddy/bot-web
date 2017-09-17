@@ -110,8 +110,6 @@ exports.list = function (req, res) {
     query.$and.push(searchQuery)
 
   }
-  console.log(util.inspect(query));
-  console.log(util.inspect(sort));
   DialogsetDialog.find(query).skip(currentPage*perPage).limit(perPage).lean().sort(sort).exec(function (err, dialogs) {
   // DialogsetDialog.aggregate([
   //   {$match: query},

@@ -24,13 +24,51 @@ angular.module("analytics").controller("UserInputStatisticsController", ["$scope
     document.getElementsByName('dataLoading')[0].style.setProperty("display", "block", "important");
     userInputCount(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, true);
   };
-
+  //사용자 입력 데이터 불러오는 함수
   var userInputCount = function (date, userType, channel, update) {
     $http.post('/api/user-input-statistics/' + $cookies.get("default_bot"), {date: date, channel: channel, limit: 100}).then(function (doc) {
       dataBackup = angular.copy(doc.data);
       $scope.userInputUsageList = doc.data;
       document.getElementById('loading-screen').style.setProperty("display", "none", "important");
       document.getElementsByName('dataLoading')[0].style.setProperty("display", "none", "important");
+    }, function (err) {
+      console.log(err);
+    });
+  };
+
+  $scope.exelDownload = function () {
+    var dataBackup1 = angular.copy(dataBackup);
+
+    dataBackup1.forEach(function (doc) {
+      Object.keys(doc._id).forEach(function (key) {
+        doc[key] = doc._id[key]
+      });
+      delete doc._id;
+    });
+    var exelDataTemplate = {
+      sheetName: "사용자 입력 통계",
+      columnOrder: ["dialog", "count"],
+      orderedData: dataBackup1
+    };
+    var startYear =  $scope.date.start.getFullYear();
+    var startMonth = $scope.date.start.getMonth() + 1;
+    var startDay =   $scope.date.start.getDate();
+    var endYear =  $scope.date.end.getFullYear();
+    var endMonth = $scope.date.end.getMonth() + 1;
+    var endDay =   $scope.date.end.getDate();
+    var date = {
+      start: startYear + "/" + startMonth + "/" + startDay,
+      end: endYear + "/" + endMonth + "/" + endDay
+    };
+    $http.post('/api/analytics/statistics/exel-download/' + $cookies.get("default_bot"), {data: exelDataTemplate, date: date, transpose: true}).then(function (doc) {
+      var fileName = $cookies.get("default_bot") + '_' + "사용자 입력 통계" + '_' + startYear + '-' + startMonth + '-' + startDay + '~' + endYear + '-' + endMonth + '-' + endDay + '_' + '.xlsx';
+      function s2ab(s) {
+        var buf = new ArrayBuffer(s.length);
+        var view = new Uint8Array(buf);
+        for (var i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+        return buf;
+      }
+      saveAs(new Blob([s2ab(doc.data)],{type:"application/octet-stream"}), fileName);
     }, function (err) {
       console.log(err);
     });
@@ -100,42 +138,4 @@ angular.module("analytics").controller("UserInputStatisticsController", ["$scope
     }, cb);
     cb(start, end);
   });
-
-  $scope.exelDownload = function () {
-    var dataBackup1 = angular.copy(dataBackup);
-
-    dataBackup1.forEach(function (doc) {
-      Object.keys(doc._id).forEach(function (key) {
-        doc[key] = doc._id[key]
-      });
-      delete doc._id;
-    });
-    var exelDataTemplate = {
-      sheetName: "사용자 입력 통계",
-      columnOrder: ["dialog", "count"],
-      orderedData: dataBackup1
-    };
-    var startYear =  $scope.date.start.getFullYear();
-    var startMonth = $scope.date.start.getMonth() + 1;
-    var startDay =   $scope.date.start.getDate();
-    var endYear =  $scope.date.end.getFullYear();
-    var endMonth = $scope.date.end.getMonth() + 1;
-    var endDay =   $scope.date.end.getDate();
-    var date = {
-      start: startYear + "/" + startMonth + "/" + startDay,
-      end: endYear + "/" + endMonth + "/" + endDay
-    };
-    $http.post('/api/analytics/statistics/exel-download/' + $cookies.get("default_bot"), {data: exelDataTemplate, date: date, transpose: true}).then(function (doc) {
-      var fileName = $cookies.get("default_bot") + '_' + "사용자 입력 통계" + '_' + startYear + '-' + startMonth + '-' + startDay + '~' + endYear + '-' + endMonth + '-' + endDay + '_' + '.xlsx';
-      function s2ab(s) {
-        var buf = new ArrayBuffer(s.length);
-        var view = new Uint8Array(buf);
-        for (var i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
-        return buf;
-      }
-      saveAs(new Blob([s2ab(doc.data)],{type:"application/octet-stream"}), fileName);
-    }, function (err) {
-      console.log(err);
-    });
-  };
 }]);

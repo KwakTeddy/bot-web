@@ -9,14 +9,9 @@ angular.module("analytics").controller("DialogAmountStatisticsController", ["$sc
   $scope.kakao = 0;
   $scope.facebook = 0;
   $scope.navertalk = 0;
-  var dataBackup;
-
+  var dataBackup; //엑셀다운로드를 위한 백업
   var color = {
     background:{
-      // kakao: '#fff5dd',
-      // kakao: '#fbe600',
-      // facebook: '#3b5998',
-      // navertalk: '#00c73c',
       kakao: 'rgba(251, 230, 0, 0.70)',
       facebook: 'rgba(59, 89, 152, 0.70)',
       navertalk: 'rgba(0, 199, 60, 0.70)',
@@ -98,7 +93,7 @@ angular.module("analytics").controller("DialogAmountStatisticsController", ["$sc
   var pieContext = document.getElementById("dialogRatioByChannel").getContext('2d');
   var barContext = document.getElementById("dailyDialog").getContext('2d');
   var isFailBarContext = document.getElementById("isFailDialog").getContext('2d');
-
+  //처음 그래프 그리는 함수
   var initChart = function () {
     pieChart = new Chart(pieContext, {
       type: 'doughnut',
@@ -149,7 +144,7 @@ angular.module("analytics").controller("DialogAmountStatisticsController", ["$sc
       }
     });
   };
-
+  //그래프 업데이트 함수
   var updateChart = function () {
     barChart.data = barData;
     barChart.update();
@@ -161,7 +156,7 @@ angular.module("analytics").controller("DialogAmountStatisticsController", ["$sc
     document.getElementsByName('dataLoading')[1].style.setProperty("display", "none", "important");
     document.getElementsByName('dataLoading')[2].style.setProperty("display", "none", "important");
   };
-
+  //대화수 데이터 불러오는 함수
   var dialogCount = function (date, userType, channel, update) {
     $http.post("/api/daily-dialog-usage", {botId: $cookies.get('default_bot'), date: date, userType: userType, channel: channel}).then(function (doc) {
       dataBackup = angular.copy(doc.data);
@@ -183,6 +178,7 @@ angular.module("analytics").controller("DialogAmountStatisticsController", ["$sc
       var year = startYear;
       var month = startMonth;
       var day = startDay;
+      //단일 데이터 요구할 시
       if((startDay == endDay) || (startMonth == endMonth) ||  (startYear == endYear)){
         array.push(startYear + '/'+ startMonth + '/' + startDay)
       }
@@ -247,26 +243,25 @@ angular.module("analytics").controller("DialogAmountStatisticsController", ["$sc
       console.log(err);
     });
   };
-
+  //시간 데이터를 string으로 바꿔주는 함수
   var formatDate = function (start, end) {
     var date = {start: "", end: ""};
     date.start = start.getFullYear() + '/' + (start.getMonth() +1) + '/' + start.getDate();
     date.end = end.getFullYear() + '/' + (end.getMonth() +1) + '/' + end.getDate();
     return date;
   };
-
+  //시작할 때 불리는 함수 - html에서 부름
   $scope.init = function () {
     dialogCount(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, false);
   };
-
+  //업데이트 함수
   $scope.update = function () {
     document.getElementsByName('dataLoading')[0].style.setProperty("display", "block", "important");
     document.getElementsByName('dataLoading')[1].style.setProperty("display", "block", "important");
     document.getElementsByName('dataLoading')[2].style.setProperty("display", "block", "important");
     dialogCount(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, true);
   };
-
-
+  //Datepicker 스크립트
   $(function() {
 
     var start = moment().subtract(29, 'days');
@@ -332,7 +327,7 @@ angular.module("analytics").controller("DialogAmountStatisticsController", ["$sc
     }, cb);
     cb(start, end);
   });
-
+  //엑셀 다운받는 함수
   $scope.exelDownload = function () {
     var dataBackup1 = angular.copy(dataBackup);
     var data = [];
@@ -341,6 +336,7 @@ angular.module("analytics").controller("DialogAmountStatisticsController", ["$sc
       var month = parseInt(date.split('/')[1]);
       var day =   parseInt(date.split('/')[2]);
       var exist = false;
+      //데이터 형식을 엑셀 만들기 위한 형식으로 변환
       for(var i = 0; i < dataBackup1.length; i++){
         if(dataBackup1[i]._id && (dataBackup1[i]._id.year == year) && (dataBackup1[i]._id.month == month) && (dataBackup1[i]._id.day == day)){
           Object.keys(dataBackup1[i]._id).forEach(function (key) {
@@ -385,6 +381,7 @@ angular.module("analytics").controller("DialogAmountStatisticsController", ["$sc
     };
     $http.post('/api/analytics/statistics/exel-download/' + $cookies.get("default_bot"), {data: exelDataTemplate, date: date}).then(function (doc) {
       var fileName = $cookies.get("default_bot") + '_' + "일별 대화량 통계" + '_' + startYear + '-' + startMonth + '-' + startDay + '~' + endYear + '-' + endMonth + '-' + endDay + '_' + '.xlsx';
+      //엑셀 다운로드 함수-Filesaver.js 모듈 이용
       function s2ab(s) {
         var buf = new ArrayBuffer(s.length);
         var view = new Uint8Array(buf);

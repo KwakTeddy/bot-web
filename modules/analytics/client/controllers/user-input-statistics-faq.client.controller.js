@@ -1,5 +1,5 @@
 "user strict"
-
+//신한카드 전용 faq 사용자입력
 angular.module("analytics").controller("UserInputStatisticsFaqController", ["$scope","$http", "$cookies", "$timeout", function ($scope, $http, $cookies, $timeout) {
   $scope.date = {
     start: "",
@@ -154,7 +154,7 @@ angular.module("analytics").controller("UserInputStatisticsFaqController", ["$sc
       console.log(err);
     });
   };
-
+  //무한 스크롤시 불리는 함수
   $scope.nextPage = function () {
     if($scope.dataLoadingEnd){
       $scope.dataLoadingEnd = false;

@@ -8,7 +8,6 @@
   BotAuthsListController.$inject = ['BotAuthsService', 'DTOptionsBuilder', '$compile', '$scope', '$cookies', "$timeout", "$stateParams"];
 
   function BotAuthsListController(BotAuthsService, DTOptionsBuilder, $compile, $scope, $cookies, $timeout, $stateParams) {
-    console.log($cookies.getAll());
     $timeout(function () {
       document.getElementById('sidebar-left').style.display = 'none';
       document.getElementById('chat-include').style.display = 'none';
@@ -17,7 +16,7 @@
       document.getElementById('main').classList.remove('content-body');
     });
     var vm = this;
-    vm.botAuths = BotAuthsService.query({botId: $cookies.get('authManageId')});
+    vm.botAuths = BotAuthsService.query({botId: $cookies.get('authManageId')}); //봇 선택 화면에서 권한 설정 선택한 봇의 id
     vm.dtOptions = DTOptionsBuilder.newOptions()
       .withOption('bLengthChange', false)
       .withOption('info', false)

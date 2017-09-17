@@ -18,8 +18,6 @@ var util = require('util'); //temporary
  * Create a Custom action
  */
 exports.create = function(req, res) {
-  console.log('----------------------------');
-
   var query = {botId: req.body.botName, user: req.user._id, name: req.body.name};
   Entity.findOne(query, function (err, result) {
     if (err) {
@@ -53,6 +51,7 @@ exports.create = function(req, res) {
                     synonym.push(unit);
                   }
                 }
+                //엔터티 컨텐트 필드 추가
                 req.body.content[i]['entityId'] = entity._id ;
                 req.body.content[i]['botId'] = req.body.botName;
                 req.body.content[i]['user'] = req.user._id;
@@ -100,11 +99,8 @@ exports.create = function(req, res) {
 exports.read = function(req, res) {
   // convert mongoose document to JSON
   var entity = req.entity ? req.entity.toJSON() : {};
-  console.log(util.inspect(entity));
 
   if (/*req.user && entity.user && (String(req.user._id) == String(entity.user._id)) && */(req.entity.botId == req.params.botName)) {
-    // Add a custom field to the Article, for determining if the current User is the "owner".
-    // NOTE: This field is NOT persisted to the database, since it doesn't exist in the Article model.
     entity.isCurrentUserOwner = req.user && entity.user && entity.user._id.toString() === req.user._id.toString() ? true : false;
 
     EntityContent.find({entityId: entity._id}, function (err, result) {
@@ -113,23 +109,18 @@ exports.read = function(req, res) {
           message: errorHandler.getErrorMessage(err)
         });
       }else {
-        var contentIds = []
+        var contentIds = [];
         for(var k = 0; k < result.length; k++){
           contentIds.push(result[k]._id)
         }
-        console.log(util.inspect(contentIds));
         EntityContentSynonym.find({contentId: {$in : contentIds}}, function (err2, result2) {
           if(err2){
             return res.status(400).send({
               message: errorHandler.getErrorMessage(err2)
             });
           }else {
-            console.log(util.inspect(result));
-            console.log(util.inspect(result2));
-            console.log('9494949494--===========================')
             for(var i = 0; i < result.length; i++){
               for(var j = 0; j < result2.length; j++){
-                console.log(result2[j].contentId)
                 if (result2[j].contentId.toString() == result[i]._id.toString()){
                   if(!result[i].syn){
                     result[i]['syn'] = [];
@@ -138,7 +129,6 @@ exports.read = function(req, res) {
                 }
               }
             }
-            console.log(util.inspect(result))
             entity.content = result;
             res.jsonp(entity);
           }
@@ -197,7 +187,6 @@ exports.updateContent = function(req, res) {
       entityId: req.body.entityId,
       _id: {$ne: req.body._id}
     }).exec(function (error, result) {
-      console.log(util.inspect(result));
       if (error) {
         console.log(error)
       } else {
@@ -210,7 +199,7 @@ exports.updateContent = function(req, res) {
             if (err) {
               console.log(err)
             } else {
-              if (data.name !== req.body.name){
+              if (data.name != req.body.name){
                 data.name = req.body.name;
                 data.save(function (err) {
                   if (err) {
@@ -220,14 +209,11 @@ exports.updateContent = function(req, res) {
                   }
                 })
               }else {
-                console.log(util.inspect(data));
-                console.log('-------------------------------------------')
                 EntityContentSynonym.find({contentId: data._id}).exec(function (err2, data2) {
                   if(err2){
                     console.log(err2)
                   }else {
-                    console.log(util.inspect(data2));
-                    if (data2.length !== req.body.syn.length){
+                    if (data2.length != req.body.syn.length){
                       if ( data2.length > req.body.syn.length){
                         // var deleteId = [];
                         // for(var j = 0; j < data2.length; j++){
@@ -248,7 +234,7 @@ exports.updateContent = function(req, res) {
 
                         var deleteId = data2.filter(function (i) {
                           return req.body.syn.indexOf(i) < 0;
-                        })
+                        });
                         EntityContentSynonym.remove({_id: {$in: deleteId}}).exec(function (err5, data5 ) {
                           if(err5){
                             console.log(err5)
@@ -259,10 +245,10 @@ exports.updateContent = function(req, res) {
 
                       }else {
                         var entityContentSynonym = new EntityContentSynonym;
-                        entityContentSynonym.botId = req.body.botId
-                        entityContentSynonym.entityId = req.body.entityId
-                        entityContentSynonym.contentId = req.body._id
-                        entityContentSynonym.name = req.body.syn[req.body.syn.length - 1].name
+                        entityContentSynonym.botId = req.body.botId;
+                        entityContentSynonym.entityId = req.body.entityId;
+                        entityContentSynonym.contentId = req.body._id;
+                        entityContentSynonym.name = req.body.syn[req.body.syn.length - 1].name;
                         entityContentSynonym.save(function (err3, data3) {
                           if(err3){
                             console.log(err3)
@@ -272,7 +258,7 @@ exports.updateContent = function(req, res) {
                         })
                       }
 
-                    }else {
+                    }else {//동의어 변경 로직 필요
                       for(var i = 0; i < data2.length; i++){
                         if(data2[i].name == req.body.syn[i].name){
                           data2[i].name = req.body.syn[i].name

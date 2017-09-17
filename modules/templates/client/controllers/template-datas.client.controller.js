@@ -112,6 +112,7 @@
     };
 
     /********************* html Rendering *********************/
+    //템플릿봇 만들시 스키마에 따라 개별 html 만들기
     angular.element('#templateDataForm').append(
       '<form name="templateDataForm" class="form-horizontal form-bordered" ng-submit="vm.save(templateDataForm.$valid)"novalidate="novalidate">' +
         '<div class="panel-body" id="templateDataGroup">' +

@@ -14,10 +14,8 @@ angular.module('analytics').controller('IntentFailMaintenanceController', ['$sco
     $scope.msg = '';
     $scope.failedIntentDialog = '';
     $scope.failedIntent = $stateParams.intentId;
-    console.log($stateParams.intentId)
 
     DialogFailureMaintenanceService.query({intentId: $stateParams.intentId, botId: $cookies.get('default_bot')}, function (result) {
-      console.log(result);
       $scope.failedIntentDialog = result;
     }, function (err) {
       console.log(err)

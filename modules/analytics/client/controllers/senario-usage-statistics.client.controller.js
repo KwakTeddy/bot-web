@@ -10,6 +10,7 @@ angular.module("analytics").controller("SenarioUsageStatisticsController", ["$sc
   $scope.senarioIndex = {};
   $scope.senarioUsageList = [];
   var dataBackup;
+  //시나리오 뎁스 인덱스 만드는 함수
   var indexing = function (senario, depth, index) {
     var newDepth;
     newDepth = depth + "-" + index;
@@ -22,7 +23,7 @@ angular.module("analytics").controller("SenarioUsageStatisticsController", ["$sc
       })
     }
   };
-
+  //시나리오 사용량 불러오는 함수
   var senarioCount = function (date, userType, channel, update) {
     $http.post('/api/senarioUsage/' + $cookies.get("default_bot"), {date: date, userType: userType, channel: channel}).then(function (doc) {
       $scope.senarioIndex = {};
@@ -95,6 +96,31 @@ angular.module("analytics").controller("SenarioUsageStatisticsController", ["$sc
     senarioCount(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, true);
   };
 
+  $scope.exelDownload = function () {
+    var startYear =  $scope.date.start.getFullYear();
+    var startMonth = $scope.date.start.getMonth() + 1;
+    var startDay =   $scope.date.start.getDate();
+    var endYear =  $scope.date.end.getFullYear();
+    var endMonth = $scope.date.end.getMonth() + 1;
+    var endDay =   $scope.date.end.getDate();
+    var date = {
+      start: startYear + "/" + startMonth + "/" + startDay,
+      end: endYear + "/" + endMonth + "/" + endDay
+    };
+    $http.post('/api/analytics/statistics/senario/exel-download/' + $cookies.get("default_bot"), {date: date}).then(function (doc) {
+      var fileName = $cookies.get("default_bot") + '_' + "시나리오 사용 통계" + '_' + startYear + '-' + startMonth + '-' + startDay + '~' + endYear + '-' + endMonth + '-' + endDay + '_' + '.xlsx';
+      function s2ab(s) {
+        var buf = new ArrayBuffer(s.length);
+        var view = new Uint8Array(buf);
+        for (var i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+        return buf;
+      }
+      saveAs(new Blob([s2ab(doc.data)],{type:"application/octet-stream"}), fileName);
+    }, function (err) {
+      console.log(err);
+    });
+  };
+
   $(function() {
     var start = moment().subtract(29, 'days');
     var end = moment();
@@ -159,29 +185,4 @@ angular.module("analytics").controller("SenarioUsageStatisticsController", ["$sc
     }, cb);
     cb(start, end);
   });
-
-  $scope.exelDownload = function () {
-    var startYear =  $scope.date.start.getFullYear();
-    var startMonth = $scope.date.start.getMonth() + 1;
-    var startDay =   $scope.date.start.getDate();
-    var endYear =  $scope.date.end.getFullYear();
-    var endMonth = $scope.date.end.getMonth() + 1;
-    var endDay =   $scope.date.end.getDate();
-    var date = {
-      start: startYear + "/" + startMonth + "/" + startDay,
-      end: endYear + "/" + endMonth + "/" + endDay
-    };
-    $http.post('/api/analytics/statistics/senario/exel-download/' + $cookies.get("default_bot"), {date: date}).then(function (doc) {
-      var fileName = $cookies.get("default_bot") + '_' + "시나리오 사용 통계" + '_' + startYear + '-' + startMonth + '-' + startDay + '~' + endYear + '-' + endMonth + '-' + endDay + '_' + '.xlsx';
-      function s2ab(s) {
-        var buf = new ArrayBuffer(s.length);
-        var view = new Uint8Array(buf);
-        for (var i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
-        return buf;
-      }
-      saveAs(new Blob([s2ab(doc.data)],{type:"application/octet-stream"}), fileName);
-    }, function (err) {
-      console.log(err);
-    });
-  };
 }]);

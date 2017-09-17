@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  // Custom actions controller
+  //기본 대화셋 + 다이얼로그셋 리스트 controller
   angular
     .module('dialogsets')
     .controller('DialogsetDialogsLearnController', DialogsetDialogsLearnController);
@@ -15,22 +15,18 @@
     vm.auth = $cookies.getObject("auth");
     vm.authentication = Authentication;
     vm.bot = botResolve;
-    console.log(vm.bot);
-
     vm.dialogsets = dialogsetsResolve;
     vm.dialogs = getDialogs;
     vm.dialog = new UserBotDialogService({user: vm.authentication.user, userBot: vm.bot, botId: vm.bot.id, depth: 0});
     vm.childDialog = new UserBotDialogService({user: vm.authentication.user, userBot: vm.bot, botId: vm.bot.id, depth: 0});
     vm.error = null;
-    vm.filterDialogs = angular.copy(vm.dialogs);
-    vm.hasParentDialogs = [];
     vm.modalMode = '';
     vm.modalType = 'oneByOne';
 
-    if($stateParams.listType && ($stateParams.listType == 'additional')) vm.type = 'additionalDialogset';
+    if($stateParams.listType && ($stateParams.listType == 'additional')) vm.type = 'additionalDialogset'; //탭
     else vm.type = 'defaultDialogset';
 
-    if(vm.dialogsets && vm.dialogsets.length &&vm.bot.dialogsets && vm.bot.dialogsets.length){
+    if(vm.dialogsets && vm.dialogsets.length && vm.bot.dialogsets && vm.bot.dialogsets.length){ //봇 연결 연부 확인
       vm.dialogsets.forEach(function (dialogset) {
         vm.bot.dialogsets.forEach(function (connectedDialogset) {
           if(dialogset._id == connectedDialogset._id){
@@ -40,6 +36,7 @@
       })
     }
 
+    //다이얼로그 오더링
     for(var i = 0; i < vm.dialogs.length; i++){
       if(vm.dialogs[i].parent){
         for(var j = 0; j < vm.dialogs.length; j++){
@@ -51,29 +48,7 @@
       }
     }
 
-    // if(vm.dialogs.length){
-    //   for(var i = vm.dialogs.length - 1; i >= 0; i--){
-    //     if(vm.dialogs[i].parent){
-    //       vm.hasParentDialogs.push(vm.filterDialogs[i]);
-    //       vm.dialogs.splice(i, 1)
-    //     }
-    //   }
-    // }
-    //
-    // if(vm.hasParentDialogs.length){
-    //   for (var k = 0; k < vm.hasParentDialogs.length; k++){
-    //     for(var j = 0; j < vm.dialogs.length; j++){
-    //       if (vm.dialogs[j]._id == vm.hasParentDialogs[k].parent){
-    //         vm.dialogs.splice(j+1, 0, vm.hasParentDialogs[k])
-    //         break;
-    //       }
-    //     }
-    //   }
-    // }
-    console.log(vm.dialogsets)
-
     vm.remove = function () {
-      console.log(vm.dialogset)
       if (confirm('삭제하시겠습니까?')) {
         vm.dialogset.$remove(function (result) {
           DialogsetsService.query().$promise.then(function (result) {
@@ -81,7 +56,8 @@
             vm.InfoModalInstance.dismiss();
           }, function (err) {
             console.log(err)
-          });        }, function (err) {
+          });        }
+          , function (err) {
           console.log(err)
         });
       }

@@ -12,6 +12,42 @@ angular.module("bots").controller("BotAuthsController", ["$scope", "$timeout", "
   $scope.authData = [];
   $scope.authUser = {email: ""};
 
+  var processAuthData = function () {
+    var authData = [];
+    $scope.menuList.forEach(function (doc) {
+      var data = {
+        subjectSchema: "MenuNavigation",
+        subject: doc._id,
+        bot: $cookies.get("authManageId"),
+        edit: doc.edit,
+        view: doc.view
+      };
+      authData.push(data);
+    });
+
+    $scope.botFiles.forEach(function (doc) {
+      var data = {
+        subjectSchema: "BotFile",
+        subject: doc._id,
+        bot: $cookies.get("authManageId"),
+        edit: doc.edit,
+        view: doc.view
+      };
+      authData.push(data);
+    });
+    $scope.botDialogsets.forEach(function (doc) {
+      var data = {
+        subjectSchema: "Dialogset",
+        subject: doc._id,
+        bot: $cookies.get("authManageId"),
+        edit: doc.edit,
+        view: doc.view
+      };
+      authData.push(data);
+    });
+    return authData;
+  };
+
   var getBotFiles = function () {
     $http.get("/api/bots/files/" + $cookies.get('authManageId')).then(function (doc) {
       $scope.botFiles = doc.data
@@ -35,43 +71,7 @@ angular.module("bots").controller("BotAuthsController", ["$scope", "$timeout", "
       console.log(err)
     });
   };
-
-  var processAuthData = function () {
-    var authData = [];
-    $scope.menuList.forEach(function (doc) {
-        var data = {
-          subjectSchema: "MenuNavigation",
-          subject: doc._id,
-          bot: $cookies.get("authManageId"),
-          edit: doc.edit,
-          view: doc.view
-        };
-        authData.push(data);
-    });
-
-    $scope.botFiles.forEach(function (doc) {
-        var data = {
-          subjectSchema: "BotFile",
-          subject: doc._id,
-          bot: $cookies.get("authManageId"),
-          edit: doc.edit,
-          view: doc.view
-        };
-        authData.push(data);
-    });
-    $scope.botDialogsets.forEach(function (doc) {
-        var data = {
-          subjectSchema: "Dialogset",
-          subject: doc._id,
-          bot: $cookies.get("authManageId"),
-          edit: doc.edit,
-          view: doc.view
-        };
-        authData.push(data);
-    });
-    return authData;
-  };
-
+  //bot권한 관련 데이터를 불러와 메뉴 봇파일 다이얼로그셋 별로 view edit 가능 여부 데이터 넣어주는 함수
   var getAuth = function () {
       $http.post("/api/bot-auths/getAuth", {bId: $cookies.get("authManageId"), user: $stateParams.userId}).then(function (doc) {
         if(doc.data.length) $scope.authUser = doc.data[0].user;

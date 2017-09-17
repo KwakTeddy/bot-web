@@ -12,9 +12,7 @@
     var vm = this;
 
     vm.authentication = Authentication;
-    vm.entity = entity;
-    $scope.entity = vm.entity;
-    console.log(vm.entity)
+    vm.entity = $scope.entity = entity;
     vm.entityContent = '';
     vm.entityContentSyn = '';
     vm.error = null;
@@ -40,17 +38,16 @@
       $scope.$watch('entity.content', function (newVal, oldVal) {
         if (newVal && (newVal.length == oldVal.length)) {
           for (var i = 0; i < newVal.length; i++) {
-            if (newVal[i].name !== oldVal[i].name) {
-              console.log(newVal[i]);
-              newVal[i].botId = $cookies.get('default_bot')
+            if (newVal[i].name != oldVal[i].name) {//새로운 컨텐츠 추가
+              newVal[i].botId = $cookies.get('default_bot');
               return $http.post('/api/entitysContent/' + newVal[i].entityId, newVal[i]).then(function (result) {
                 vm.contentListError = null;
               }, function (err) {
                 vm.contentListError = err.data.message;
               })
             }else {
-              if(newVal[i].syn && (newVal[i].syn.length !== oldVal[i].syn.length)){
-                newVal[i].botId = $cookies.get('default_bot')
+              if(newVal[i].syn && (newVal[i].syn.length != oldVal[i].syn.length)){ //새로운 동의어 추가
+                newVal[i].botId = $cookies.get('default_bot');
                 return $http.post('/api/entitysContent/' + newVal[i].entityId, newVal[i]).then(function (result) {
                   vm.contentListError = null;
                 }, function (err) {
@@ -59,8 +56,8 @@
               }else {
                 if (newVal[i].syn){
                   for(var j = 0; j < newVal[i].syn.length; j++){
-                    if(newVal[i].syn[j].name !== oldVal[i].syn[j].name){
-                      newVal[i].botId = $cookies.get('default_bot')
+                    if(newVal[i].syn[j].name != oldVal[i].syn[j].name){ //기존 동의어 변경
+                      newVal[i].botId = $cookies.get('default_bot');
                       return $http.post('/api/entitysContent/' + newVal[i].entityId, newVal[i]).then(function (result) {
                         vm.contentListError = null;
                       }, function (err) {
@@ -77,7 +74,7 @@
     }
     if (vm.entity._id) {
       $scope.$watch('entity', function (newVal, oldVal) {
-        if (newVal.name !== oldVal.name) {
+        if (newVal.name != oldVal.name) { //엔터티 추가
           $http.put('/api/entitys/' + $rootScope.botId + '/' + newVal._id, newVal).then(function (result) {
             vm.error = null;
           }, function (err) {
@@ -135,8 +132,6 @@
     }
 
     vm.contentSave = function(isValid){
-      console.log($rootScope);
-      console.log(isValid);
       if (!isValid || !vm.entityContent) {
         if (!vm.entityContent){
           return vm.contentError = '내용을 입력해주세요'
@@ -147,14 +142,10 @@
         }
       }
       if (vm.entity._id){
-        console.log(vm.entity._id);
-
         $resource('/api/entitysContent').save({content: vm.entityContent, entityId: vm.entity._id, botId: $rootScope.botId}, function (result) {
           console.log(result);
           vm.entity.content.unshift(result);
           vm.entityContent = '';
-          // console.log(document.getElementById('contentForm').classList.value)
-          // document.getElementById('contentForm').classList;
           vm.contentError = '';
           vm.contentListError = null;
         }, function (err) {
@@ -211,7 +202,6 @@
     };
 
     vm.contentSynSave = function (target) {
-      console.log('mauauau')
       if(vm.entityContentSyn){
         if(!target.syn){
           target['syn'] = [];

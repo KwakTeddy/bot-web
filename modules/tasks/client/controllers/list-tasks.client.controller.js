@@ -14,7 +14,6 @@
     vm.openTasks = openTasksResolve;
     vm.currentBot = $cookies.get('default_bot');
     vm.user = Authentication.user;
-    console.log(vm.user.displayName)
     for(var i = 0; i < vm.tasks.length; i++){
       for(var j = 0; j < vm.openTasks.length; j++){
         if (vm.tasks[i].name == vm.openTasks[j].name){
@@ -25,8 +24,6 @@
         }
       }
     }
-    console.log(vm.tasks);
-    console.log(vm.openTasks);
 
     vm.closeTask = function (target) {
       console.log(target);
@@ -63,7 +60,7 @@
 
     vm.changeType = function (type) {
       vm.type = type
-    }
+    };
 
     var abc = "\"tasks.create({listType: 'all', taskId: 'new'})\"";
 

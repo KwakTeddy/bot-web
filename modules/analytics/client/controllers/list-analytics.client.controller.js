@@ -1,6 +1,6 @@
 'use strict';
 
-// Analytics controller
+// 분석 관련된 장원준 코드
 angular.module('analytics').controller('AnalyticsListController', ['$scope', '$rootScope', '$stateParams', '$location', '$window', '$http', '$cookies', 'Authentication', 'AnalyticsService',
   'DialogUsageService', 'DialogSuccessService', 'SessionSuccessService', 'DialogFailureService', 'Dialogs','DialogChildren', 'DialogFailureMaintenanceService','DTOptionsBuilder', '$compile',
   function ($scope, $rootScope, $stateParams, $location, $window, $http, $cookies, Authentication, AnalyticsService, DialogUsageService, DialogSuccessService, SessionSuccessService,

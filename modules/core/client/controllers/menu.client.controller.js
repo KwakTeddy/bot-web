@@ -14,7 +14,7 @@ angular.module('core').controller('MenuController', ['$scope', '$state', 'Authen
     $scope.authentication = Authentication;
     $scope.currentBot;
     $scope.listContents = [];
-    if($scope.authentication && $scope.authentication.user){
+    if($scope.authentication && $scope.authentication.user){ //템플릿 관련 메뉴 생성 여부
       $http.get('/api/bots/byNameId/' + $cookies.get('default_bot')).then(function (result) {
         $scope.currentBot = result.data;
         if(result.data.templateId){

@@ -48,8 +48,6 @@ exports.signup = function (req, res) {
     //Define email search query
     var emailSearchQuery = {};
     emailSearchQuery['email'] = user.email;
-    // console.log(util.inspect(emailSearchQuery));
-    // console.log(util.inspect(req.body));
 
     User.findOne(emailSearchQuery, function (err, result) {
         if (err) {

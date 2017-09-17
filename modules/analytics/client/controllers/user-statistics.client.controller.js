@@ -70,7 +70,7 @@ angular.module("analytics").controller("UserStatisticsController", ['$scope', "$
   var barData = angular.copy(barDataTemplate);
   var pieContext = document.getElementById("userRatioByChannel").getContext('2d');
   var barContext = document.getElementById("dailyUser").getContext('2d');
-
+  //그래프 처음 그리는 함수
   var initChart = function () {
     pieChart = new Chart(pieContext, {
       type: 'doughnut',
@@ -103,7 +103,7 @@ angular.module("analytics").controller("UserStatisticsController", ['$scope', "$
       ]
     });
   };
-
+  //그래프 업데이트 함수
   var updateChart = function () {
     barChart.data = barData;
     barChart.update();
@@ -112,7 +112,7 @@ angular.module("analytics").controller("UserStatisticsController", ['$scope', "$
     document.getElementsByName('dataLoading')[0].style.setProperty("display", "none", "important");
     document.getElementsByName('dataLoading')[1].style.setProperty("display", "none", "important");
   };
-
+  //사용자 데이터 가져오는 함수
   var userCount = function (date, userType, channel, update) {
     $http.post("/api/userCount/" + $cookies.get('default_bot'), {date: date, userType: userType, channel: channel}).then(function (doc) {
       dataBackup = angular.copy(doc.data);
@@ -187,24 +187,24 @@ angular.module("analytics").controller("UserStatisticsController", ['$scope', "$
       console.log(err);
     });
   };
-
+  //Date 데이터를 String으로 변환 함수
   var formatDate = function (start, end) {
     var date = {start: "", end: ""};
     date.start = start.getFullYear() + '/' + (start.getMonth() +1) + '/' + start.getDate();
     date.end = end.getFullYear() + '/' + (end.getMonth() +1) + '/' + end.getDate();
     return date;
   };
-
+  //시작할 때 불리는 함수
   $scope.init = function () {
     userCount(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, false);
   };
-
+  //데이터 엡데이트시 불리는 함수
   $scope.update = function () {
     document.getElementsByName('dataLoading')[0].style.setProperty("display", "block", "important");
     document.getElementsByName('dataLoading')[1].style.setProperty("display", "block", "important");
     userCount(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, true);
   };
-
+  //Datepicker 함수
   $(function() {
     var start = moment().subtract(29, 'days');
     var end = moment();
@@ -269,7 +269,7 @@ angular.module("analytics").controller("UserStatisticsController", ['$scope', "$
     }, cb);
     cb(start, end);
   });
-
+  //엑셀 다운로드 함수
   $scope.exelDownload = function () {
     var dataBackup1 = angular.copy(dataBackup);
     var data = [];

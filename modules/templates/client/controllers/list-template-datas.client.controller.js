@@ -15,7 +15,7 @@
     $scope.botId = $cookies.get('default_bot');
     vm.dtColumns = [ ];
     var keys = Object.keys(dataSchema);
-    keys.forEach(function (key) {
+    keys.forEach(function (key) { //데이터 스키마에 따라 테이블 컬럼 만들어주기
       var html;
       vm.dtColumns.push(
         DTColumnBuilder.newColumn(key, dataSchema[key].title).renderWith(function(data, type, full) {
@@ -27,23 +27,6 @@
           else return null
         })
       );
-      // if(key == 'image'){
-      //   vm.dtColumns.push(
-      //     DTColumnBuilder.newColumn(key, dataSchema[key].title).renderWith(function(data, type, full) {
-      //       if(data) {
-      //         return '<img src="' + data + '" style="width: 100px">'
-      //       }
-      //       else return null
-      //     })
-      //   )
-      // }else {
-      //   vm.dtColumns.push(
-      //     DTColumnBuilder.newColumn(key, dataSchema[key].title).renderWith(function(data, type, full) {
-      //       if(data) return data;
-      //       else return null
-      //     })
-      //   )
-      // }
     });
     vm.dtColumns.push(
       DTColumnBuilder.newColumn(null).withTitle('관리').notSortable() 
