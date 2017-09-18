@@ -753,6 +753,7 @@ exports.botByID = function (req, res, next, id) {
               var templateDataModel = templateDatas.getTemplateDataModel(template.dataSchema);
               templateDataModel.findOne({_id: bot.templateDataId}).lean().exec(function (err, data) {
 
+                  data = (data || {});
                 async.eachSeries(lists, function(list, cb1) {
                   templateDatas.listTemplateData(template, list._key, bot.templateDataId, function(listData) {
                     data[list._key] = [];
@@ -834,6 +835,7 @@ exports.botByNameID = function (req, res, next, id) {
                 // console.log(util.inspect(lists));
                 // console.log(util.inspect(data));
                 // console.log('###################################')
+                  data = (data || {});
                 async.eachSeries(lists, function(list, cb1) {
                   templateDatas.listTemplateData(template, list._key, bot.templateDataId, function(listData) {
                     data[list._key] = [];

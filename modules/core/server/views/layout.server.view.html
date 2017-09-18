@@ -830,6 +830,22 @@
 
 <script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
 
+<script>
+  $(document).ready(function()
+  {
+    var list = [];
+    $('script').each(function()
+    {
+      var src = $(this).attr('src');
+      if(src)
+        list.push(src);
+    });
+
+    list = list.sort();
+
+    console.log(list.join('\n'));
+  });
+</script>
 </body>
 </html>
 
