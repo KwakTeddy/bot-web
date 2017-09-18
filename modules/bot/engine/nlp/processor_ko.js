@@ -108,7 +108,7 @@ function processInput(context, inRaw, callback) {
         // 사용자 사전 경로: ./external_module/resources/ko/user.pos
         function(cb) {
             var sentenceInfo = new SentenceInfo();
-            var value = sentenceInfo.analyze(context);
+            var value = sentenceInfo.analyze("ko", context.botUser.nlu.pos);
             context.botUser.nlu["sentenceInfo"] = value;
 
             cb(null);

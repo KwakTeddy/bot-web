@@ -416,6 +416,7 @@ SentenceInfo.prototype.analyzeJA = function (posJson) {
 }
 
 SentenceInfo.prototype.analyze = function (language, posJson) {
+    posJson = eval("("+posJson+")");
     str = String(posJson.sentence.str);
 
     // 1. 문장 부호 확인

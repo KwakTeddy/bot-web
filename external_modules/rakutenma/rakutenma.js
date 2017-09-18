@@ -398,7 +398,7 @@ RakutenMA.prototype.tokens2json = function (text, tokens) {
     // convert tsent to a json representation
     var i, ret = '';
 
-    ret  = '{"sentence" : {"st":"' + text + '"}';
+    ret  = '{"sentence" : {"str":"' + text + '"}';
     ret += ',"morpheme":[';
     for (i = 0; i < tokens.length; i ++) {
         ret += '{"str":"'+tokens[i][0]+'", "pos":"'+tokens[i][1]+'"}';

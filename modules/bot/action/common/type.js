@@ -50,7 +50,7 @@ function processInput(context, inRaw, callback) {
     async.waterfall([
 
         function(cb) {
-            context.botUser["language"] = "ko";
+            context.botUser["language"] = "zh";
 
             if (context.botUser.language=="en") {
                 enNLP.processInput(context, inRaw, function(_inTextNLP, _inDoc) {
@@ -58,23 +58,15 @@ function processInput(context, inRaw, callback) {
                     nlpAll = context.botUser.nlpAll;
                 });
             } else if (context.botUser.language=="zh") {
-                var processorZH = new zhNLP;
-                var nlpJsonPOS= processorZH.analyzePOS(inRaw);
-
-                context.botUser["nlu"] = {};
-                context.botUser.nlu["sentence"] = inRaw;
-                context.botUser.nlu["pos"] = nlpJsonPOS;
-
-                context.botUser["inNLP"] = inRaw;
-                context.botUser.nlpAll = nlpJsonPOS;
-                context.botUser.nlp = nlpJsonPOS;
+                zhNLP.processInput(context, inRaw, function(_inTextNLP, _inDoc) {
+                    inNLP = context.botUser.inNLP;
+                    nlpAll = context.botUser.nlpAll;
+                });
             } else if (context.botUser.language=="ja") {
-                var processorJA = new jaNLP;
-                var nlpJsonPOS= processorJA.analyzePOS(inRaw.replace('。', ''));
-
-                context.botUser["nlu"] = {};
-                context.botUser.nlu["sentence"] = inRaw;
-                context.botUser.nlu["pos"] = nlpJsonPOS;
+                jaNLP.processInput(context, inRaw, function(_inTextNLP, _inDoc) {
+                    inNLP = context.botUser.inNLP;
+                    nlpAll = context.botUser.nlpAll;
+                });
             } else {
                 koNLP.processInput(context, inRaw, function(_inTextNLP, _inDoc) {
                     inNLP = context.botUser.inNLP;
