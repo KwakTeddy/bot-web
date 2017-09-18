@@ -40,7 +40,6 @@ SentenceInfo.prototype.toKorChars = function(str) {
 }
 
 SentenceInfo.prototype.analyzeKO = function (posJson) {
-    console.log(posJson);
     str = String(posJson.sentence.str);
     morphemes = posJson.morpheme;
 
@@ -176,7 +175,6 @@ SentenceInfo.prototype.isInterrogative = function (str) {
     return false;
 }
 SentenceInfo.prototype.analyzeEN = function (posJson) {
-    console.log(posJson);
     str = String(posJson.sentence.str);
     morphemes = posJson.morpheme;
 
@@ -261,7 +259,6 @@ SentenceInfo.prototype.analyzeEN = function (posJson) {
 }
 
 SentenceInfo.prototype.analyzeZH = function (posJson) {
-    console.log(posJson);
     str = String(posJson.sentence.str);
     morphemes = posJson.morpheme;
 
@@ -356,7 +353,6 @@ SentenceInfo.prototype.analyzeZH = function (posJson) {
 }
 
 SentenceInfo.prototype.analyzeJA = function (posJson) {
-    console.log(posJson);
     str = String(posJson.sentence.str);
     morphemes = posJson.morpheme;
 
