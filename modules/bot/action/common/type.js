@@ -50,7 +50,7 @@ function processInput(context, inRaw, callback) {
     async.waterfall([
 
         function(cb) {
-            context.botUser["language"] = "zh";
+            context.botUser["language"] = "ko";
 
             if (context.botUser.language=="en") {
                 enNLP.processInput(context, inRaw, function(_inTextNLP, _inDoc) {
