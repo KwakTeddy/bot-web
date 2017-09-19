@@ -9,6 +9,8 @@ var RakutenMA = require(path.resolve('./external_modules/rakutenma/rakutenma.js'
 var CBTags = require(path.resolve('./modules/bot/engine/nlp/cbTags.js'));
 var UserDictionary = require(path.resolve('./modules/bot/engine/nlp/userDictionary.js'));
 var SentenceInfo = require(path.resolve('./modules/bot/engine/nlp/sentenceInfo.js'));
+var TurnTaking = require(path.resolve('./modules/bot/engine/nlp/turnTaking.js'));
+
 
 function processInput(context, inRaw, callback) {
 
@@ -67,8 +69,18 @@ function processInput(context, inRaw, callback) {
         // 사용자 사전 경로: ./external_module/resources/ko/user.pos
         function(cb) {
             var sentenceInfo = new SentenceInfo();
-            var value = sentenceInfo.analyze("ja", context.botUser.nlu.pos);
+            var value = sentenceInfo.analyze("ja", context.botUser.nlu);
             context.botUser.nlu["sentenceInfo"] = value;
+
+            cb(null);
+        },
+        // turn taking할지 분석 (0: 사용자가 계속 말하게 둔다. 1: 봇이 발화한다.
+        // dsyoon (2017. 09. 19.)
+        // 사용자 사전 경로: ./external_module/resources/ko/user.pos
+        function(cb) {
+            var turnTaking = new TurnTaking();
+            var value = turnTaking.analyze("ja", context.botUser.nlu);
+            context.botUser.nlu["turnTaking"] = value;
 
             cb(null);
         }
