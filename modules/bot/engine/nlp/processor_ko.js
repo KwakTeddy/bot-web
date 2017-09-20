@@ -60,6 +60,13 @@ function processInput(context, inRaw, callback) {
                 spamfilter: false     // (optional default: false)
             });
 
+            var lastChar = inRaw.charAt(inRaw.length-1);
+            if (lastChar == "." || lastChar == "?" || lastChar != "!") {
+                inRaw = inRaw.substring(0, inRaw.length-1);
+            } else {
+                lastChar = "";
+            }
+
             var dicResult = userDictionary.applyUserDic('KO', inRaw);
             var temp_inRaw = dicResult[0];
             var mb_user_str = dicResult[1];
@@ -99,6 +106,7 @@ function processInput(context, inRaw, callback) {
                 var nlpJsonPOS = nlpUtil.convertJSON(temp_inRaw, nlpAll);
                 context.botUser["nlu"] = {};
                 context.botUser.nlu["sentence"] = inRaw;
+                context.botUser.nlu["lastChar"] = lastChar;
                 context.botUser.nlu["pos"] = nlpJsonPOS;
 
                 cb(null);
