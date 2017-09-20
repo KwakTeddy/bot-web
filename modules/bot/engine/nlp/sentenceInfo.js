@@ -100,6 +100,13 @@ SentenceInfo.prototype.analyzeKO = function (posJson) {
                 return this.type.imperative;
             }
         }
+        // 체크 3: 가져와봐.
+        if (morphemes.length > 1) {
+            var lastIndex = morphemes.length - 1;
+            if (morphemes[lastIndex-1].pos == "Verb" && morphemes[lastIndex].str == "봐") {
+                return PC_SentenceInfoType.imperative;
+            }
+        }
 
         // 3. 감탄문: -구나, -군, -구먼, -구려‟
         // 체크 1: 했구나, 했군
