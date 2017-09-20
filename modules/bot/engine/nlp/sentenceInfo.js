@@ -67,9 +67,11 @@ SentenceInfo.prototype.analyzeKO = function (posJson) {
     if (wasSuffix == true) {
         // 1. 의문문: -느냐, -니, -아/-어, -나/-은가, -오/-소, -어요/-아요, -습니까/-ㅂ니까
         // 체크 1: 없습니까, 먹었습니까
-        var lastStr = suffix.substr(1,3);
-        if (lastStr == "습니까" || lastStr == "읍니까") {
-            return this.type.interrogative;
+        if (suffix.length > 3) {
+            var lastStr = suffix.substr(1, 3);
+            if (lastStr == "습니까" || lastStr == "읍니까") {
+                return this.type.interrogative;
+            }
         }
         // 체크 2: 없니, 없냐, 먹어줄래
         if (morphemes[suffixIndex-1].pos=="Verb") {
@@ -78,14 +80,16 @@ SentenceInfo.prototype.analyzeKO = function (posJson) {
             }
         }
         // 체크 3: 갔었니, 먹었니
-        if (morphemes[suffixIndex-2].pos=="Verb" && morphemes[suffixIndex-1].pos=="Suffix") {
-            if (morphemes[suffixIndex-1].str == "었" || morphemes[suffixIndex-1].str == "았") {
-                if (suffix == "니" || suffix == "냐") {
+        if (suffixIndex - 2 > 0) {
+            if (morphemes[suffixIndex - 2].pos == "Verb" && morphemes[suffixIndex - 1].pos == "Suffix") {
+                if (morphemes[suffixIndex - 1].str == "었" || morphemes[suffixIndex - 1].str == "았") {
+                    if (suffix == "니" || suffix == "냐") {
+                        return this.type.interrogative;
+                    }
+                }
+                if (suffix == "래") {
                     return this.type.interrogative;
                 }
-            }
-            if (suffix == "래") {
-                return this.type.interrogative;
             }
         }
 
@@ -105,10 +109,12 @@ SentenceInfo.prototype.analyzeKO = function (posJson) {
             }
         }
         // 체크 2: 먹었구나, 먹었군
-        if (morphemes[suffixIndex-2].pos=="Verb" && morphemes[suffixIndex-1].pos=="Suffix") {
-            if (morphemes[suffixIndex-1].str == "었" || morphemes[suffixIndex-1].str == "았") {
-                if (suffix == "구나" || suffix == "군") {
-                    return this.type.exclamation;
+        if (suffixIndex - 2 > 0) {
+            if (morphemes[suffixIndex - 2].pos == "Verb" && morphemes[suffixIndex - 1].pos == "Suffix") {
+                if (morphemes[suffixIndex - 1].str == "었" || morphemes[suffixIndex - 1].str == "았") {
+                    if (suffix == "구나" || suffix == "군") {
+                        return this.type.exclamation;
+                    }
                 }
             }
         }
