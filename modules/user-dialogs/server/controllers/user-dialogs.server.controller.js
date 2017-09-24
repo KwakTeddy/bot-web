@@ -221,7 +221,7 @@ exports.liveChat = function (req, res) {
 var config = require(path.resolve('./config/config'));
 var dialogCache = [];
 var dialoglogCache = [];
-var dialogCacheLock = false;
+var dialogCacheLock = true;
 var MAX_CACHE_DIALOG = 500;
 var LIMIT_CACHE_DIALOG = 1000000;
 var DIALOG_CACHE_INTERVAL = 60;
@@ -395,7 +395,7 @@ setInterval(function() {
   if (!dialogCacheLock && dialogCache.length > 0) {
     console.log('processing userdialogs cache: ' + dialogCache.length);
 
-    // updateCacheLog();
+    updateCacheLog();
   }
 }, DIALOG_CACHE_INTERVAL*1000);
 
