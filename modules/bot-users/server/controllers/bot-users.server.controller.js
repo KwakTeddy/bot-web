@@ -254,16 +254,31 @@ function updateCacheBotUser() {
   botUserCacheLock = true;
 
   try {
-    BotUser.collection.insert(botUserCache, function(err, docs) {
+    // BotUser.collection.insert(botUserCache, function(err, docs) {
+    //   botUserCacheLock = false;
+    //
+    //   console.log('updateCacheBotUser err: ' + err);
+    //
+    //   if(docs && docs.insertedCount) {
+    //     botUserCache.splice(0, docs.insertedCount);
+    //     console.log('botUsers: ' + docs.insertedCount + ' inserted')
+    //   }
+    // });
+
+    var bulk = BotUser.collection.initializeOrderedBulkOp();
+    for(var i = 0; i < botUserCache.length; i++) {
+      bulk.find({userKey: botUserCache[i].userKey}).upsert().updateOne(botUserCache[i]);
+    }
+    bulk.execute(function(err, data) {
       botUserCacheLock = false;
 
-      console.log('updateCacheBotUser err: ' + err);
-
-      if(docs && docs.insertedCount) {
-        botUserCache.splice(0, docs.insertedCount);
-        console.log('botUsers: ' + docs.insertedCount + ' inserted')
+      if(!err) {
+        botUserCacheLock.splice(0, data.nMatched);
+        console.log('botUsers: ' + data.nMatched + ' updated')
       }
-    });
+
+    })
+
   } catch(e) {
     botUserCacheLock = false;
     console.log('updateCacheBotUser Err: ' + e);
