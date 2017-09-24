@@ -257,10 +257,7 @@ function updateCacheBotUser() {
     BotUser.collection.insert(botUserCache, function(err, docs) {
       botUserCacheLock = false;
 
-      console.log('updateCacheBotUser');
-      console.log('err: ' + err);
-      console.log('docs: ' + JSON.stringify(docs));
-      console.log('insertedCount: ' + docs.insertedCount);
+      console.log('updateCacheBotUser err: ' + err);
 
       if(docs && docs.insertedCount) {
         botUserCache.splice(0, docs.insertedCount);
@@ -269,7 +266,7 @@ function updateCacheBotUser() {
     });
   } catch(e) {
     botUserCacheLock = false;
-    console.log(e);
+    console.log('updateCacheBotUser Err: ' + e);
   }
 }
 
