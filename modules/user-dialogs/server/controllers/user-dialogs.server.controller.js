@@ -395,7 +395,7 @@ setInterval(function() {
   if (!dialogCacheLock && dialogCache.length > 0) {
     console.log('processing userdialogs cache: ' + dialogCache.length);
 
-    updateCacheLog();
+    // updateCacheLog();
   }
 }, DIALOG_CACHE_INTERVAL*1000);
 
