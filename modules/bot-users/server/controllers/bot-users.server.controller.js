@@ -282,7 +282,7 @@ function getUserContext(task, context, callback) {
   var botExist;
   BotUser.findOne({userKey: task.userId}, function(err, doc) {
     if(doc == undefined) {
-      if(false) {
+      if(true) {
         BotUser.create({userKey: task.userId, channel: task.channel, creaated: Date.now(), botId: task.bot}, function(err, _doc) {
           task.doc = _doc;
           callback(task, context);

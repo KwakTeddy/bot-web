@@ -295,7 +295,7 @@ function addDialog(inText, outText, isFail, dialog, context, callback) {
     outQuery = {};
   }
 
-  if (false) {
+  if (true) {
     UserDialog.create([inQuery, outQuery], function (err) {
       if (err) {
       }
