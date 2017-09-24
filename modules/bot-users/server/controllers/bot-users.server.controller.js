@@ -257,8 +257,10 @@ function updateCacheBotUser() {
     BotUser.collection.insert(botUserCache, function(err, docs) {
       botUserCacheLock = false;
 
-      console.log(err);
-      console.log(JSON.stringify(docs));
+      console.log('updateCacheBotUser');
+      console.log('err: ' + err);
+      console.log('docs: ' + JSON.stringify(docs));
+      console.log('insertedCount: ' + docs.insertedCount);
 
       if(docs && docs.insertedCount) {
         botUserCache.splice(0, docs.insertedCount);
@@ -287,7 +289,7 @@ function getUserContext(task, context, callback) {
   BotUser.findOne({userKey: task.userId}, function(err, doc) {
     if(doc == undefined) {
       if(false) {
-        BotUser.create({userKey: task.userId, channel: task.channel, creaated: Date.now(), botId: task.bot}, function(err, _doc) {
+        BotUser.create({userKey: task.userId, channel: task.channel, created: Date.now(), botId: task.bot}, function(err, _doc) {
           task.doc = _doc;
           callback(task, context);
         });
