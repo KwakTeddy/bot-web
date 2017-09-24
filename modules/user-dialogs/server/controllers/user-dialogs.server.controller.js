@@ -367,6 +367,7 @@ function updateCacheLog() {
         dialogCache.splice(0, docs.insertedCount);
         console.log('userdialogs: ' + docs.insertedCount + ' inserted')
       }
+      dialogCacheLock = false;
 
       // var bulk = UserDialogLog.collection.initializeOrderedBulkOp();
       // for(var i = 0; i < dialoglogCache.length; i++) {
