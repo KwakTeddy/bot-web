@@ -273,7 +273,7 @@ function updateCacheBotUser() {
       botUserCacheLock = false;
 
       if(!err) {
-        botUserCacheLock.splice(0, data.nMatched);
+        botUserCache.splice(0, data.nMatched);
         console.log('botUsers: ' + data.nMatched + ' updated')
       }
 
