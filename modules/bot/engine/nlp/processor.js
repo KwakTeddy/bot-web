@@ -14,21 +14,30 @@ java.classpath.push(path.resolve(__dirname, '../../../../external_modules/korean
 java.options.push('-Xmx2048m');
 java.options.push('-Xmx4096m');
 
+var procBuilder;
+java.newInstance('com.twitter.penguin.korean.TwitterKoreanProcessorJava$Builder', function(err, proc) {
+  // if (err)
+  //   return callback(err);
+
+  procBuilder = proc;
+  // callback();
+});
+
 var processor = function(options) {
-  var procBuilder;
+  // var procBuilder;
   var self = this;
   var done = false;
 
   async.waterfall([
-    function(callback) {
-      java.newInstance('com.twitter.penguin.korean.TwitterKoreanProcessorJava$Builder', function(err, proc) {
-        if (err)
-          return callback(err);
-
-        procBuilder = proc;
-        callback();
-      });
-    },
+    // function(callback) {
+    //   java.newInstance('com.twitter.penguin.korean.TwitterKoreanProcessorJava$Builder', function(err, proc) {
+    //     if (err)
+    //       return callback(err);
+    //
+    //     procBuilder = proc;
+    //     callback();
+    //   });
+    // },
     function(callback) {
       if (options && options.normalizer === false)
         return procBuilder.disableNormalizer(function(err) {
