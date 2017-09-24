@@ -244,7 +244,7 @@ exports.botUserByUserKey = function (req, res, next, userKey) {
 
 
 var botUserCache = [];
-var botUserCacheLock = true;
+var botUserCacheLock = false;
 var MAX_CACHE_DIALOG = 500;
 var LIMIT_CACHE_DIALOG = 1000000;
 var BOTUSER_CACHE_INTERVAL = 60;
@@ -282,7 +282,7 @@ function getUserContext(task, context, callback) {
   var botExist;
   BotUser.findOne({userKey: task.userId}, function(err, doc) {
     if(doc == undefined) {
-      if(true) {
+      if(false) {
         BotUser.create({userKey: task.userId, channel: task.channel, creaated: Date.now(), botId: task.bot}, function(err, _doc) {
           task.doc = _doc;
           callback(task, context);
