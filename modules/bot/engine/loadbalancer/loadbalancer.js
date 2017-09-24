@@ -135,14 +135,14 @@ function addMongoReplica(callback) {
             console.log( JSON.stringify(result) );
           });
 
-          // callback();
+          callback();
         });
       } else {
         adminDb.command({"replSetGetStatus":1 },function(err,result) {
           console.log( JSON.stringify(result) );
         });
 
-        // callback();
+        callback();
       }
     });
   });
