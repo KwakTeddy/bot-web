@@ -368,19 +368,19 @@ function updateCacheLog() {
         console.log('userdialogs: ' + docs.insertedCount + ' inserted')
       }
 
-      var bulk = UserDialogLog.collection.initializeOrderedBulkOp();
-      for(var i = 0; i < dialoglogCache.length; i++) {
-        bulk.find(dialoglogCache[i]).upsert().updateOne(dialoglogCache[i]);
-      }
-      bulk.execute(function(err, data) {
-        dialogCacheLock = false;
-
-        if(!err) {
-          dialoglogCache.splice(0, data.nMatched);
-          console.log('userdialoglogs: ' + data.nMatched + ' updated')
-        }
-
-      })
+      // var bulk = UserDialogLog.collection.initializeOrderedBulkOp();
+      // for(var i = 0; i < dialoglogCache.length; i++) {
+      //   bulk.find(dialoglogCache[i]).upsert().updateOne(dialoglogCache[i]);
+      // }
+      // bulk.execute(function(err, data) {
+      //   dialogCacheLock = false;
+      //
+      //   if(!err) {
+      //     dialoglogCache.splice(0, data.nMatched);
+      //     console.log('userdialoglogs: ' + data.nMatched + ' updated')
+      //   }
+      //
+      // })
 
     });
   } catch(e) {
