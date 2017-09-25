@@ -20,6 +20,7 @@ module.exports = {
       },
       replset: {
         rs_name: process.env.MONGO_RSNAME || 'rs0',
+        poolSize: process.env.MONGO_POOL || 12,
         debug: false
       }
     },
