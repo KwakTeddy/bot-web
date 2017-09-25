@@ -41,10 +41,9 @@ exports.message = function (req, res) {
         respondMessage(res, serverText, json)
       });
     } else {
-      respondMessage(res, text, null);
-      // chat.write('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
-      //   respondMessage(res, serverText, json)
-      // });
+      chat.write('kakao', from, req.params.bot, text, req.body, function (serverText, json) {
+        respondMessage(res, serverText, json)
+      });
     }
 
   }

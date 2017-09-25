@@ -121,12 +121,19 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
       logger.debug("사용자 입력>> " + inTextRaw);
       var type = utils.requireNoCache(path.resolve('./modules/bot/action/common/type'));
 
-      type.processInput(context, inTextRaw, function(_inTextNLP, _inDoc) {
-        logger.debug("자연어 처리>> " + _inTextNLP);
-        inTextNLP = _inTextNLP;
-        context.task = utils.merge(_inDoc, json);
-        cb(null);
-      });
+      // type.processInput(context, inTextRaw, function(_inTextNLP, _inDoc) {
+      //   logger.debug("자연어 처리>> " + _inTextNLP);
+      //   inTextNLP = _inTextNLP;
+      //   context.task = utils.merge(_inDoc, json);
+      //   cb(null);
+      // });
+      
+      inTextNLP = '시작';
+      context.botUser.nlpAll = [{pos: 'Noun', text: '시작'}];
+      context.botUser.nlp = [{pos: 'Noun', text: '시작'}];
+
+      cb(null);
+
     },
 
     function(cb) {
