@@ -230,16 +230,13 @@ var DIALOG_CACHE_INTERVAL = 60;
  * List of Bot users
  */
 exports.list = function (req, res) {
-  console.log(util.inspect(req.params))
-  console.log(util.inspect(req.query))
   var query = {};
   if(req.params.botName && req.params.botName != '') query.botId = req.params.botName;
   if(req.query.liveChat) query['liveChat'] = req.query.liveChat;
   // if(req.params.botName && req.params.botName == '') query.botId = 'csdemo';
   query.userId = req.params.userKey;
-  console.log(util.inspect(query));
 
-  UserDialog.find(query).sort('+created').exec(function (err, userDialogs) {
+  UserDialog.find(query).sort({created: 1}).exec(function (err, userDialogs) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)

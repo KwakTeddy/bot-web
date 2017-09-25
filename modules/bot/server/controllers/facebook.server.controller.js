@@ -181,12 +181,12 @@ function receivedMessage(event) {
       chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
         contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
           switch(true) {
-          case botContext.user.liveChat == 1 :
-            botContext.user.liveChat++;
+          case context.user.liveChat == 1 :
+            context.user.liveChat++;
             break;
 
-          case botContext.user.liveChat > 1 :
-            botContext.user.liveChat++;
+          case context.user.liveChat > 1 :
+            context.user.liveChat++;
             // liveChatAddDialog(event.botId, messageText , senderID, true);
             return true;
           }
@@ -654,7 +654,7 @@ function sendGenericMessage(recipientId, text, task, token, context) {
       };
 
       callSendAPI(messageData1, token, context, function () {
-        callSendAPI(messageData2, token)
+        callSendAPI(messageData2, token, context)
       });
     }else {
       var messageData = {

@@ -3496,6 +3496,45 @@ var dialogs = [
                 ]
               },
               {
+                "name": "웃음",
+                "id": "default3999",
+                "filename": "default",
+                "input": [
+                  {
+                    "text": "ㅋㅋ"
+                  },
+                  {
+                    "text": "ㅎㅎ"
+                  }
+                ],
+                "output": [
+                  {
+                    "kind": "Action",
+                    "if": "((new Date()).getTime() % 3) ==0",
+                    "repeat": "1",
+                    "options": {
+                      "output": "ㅋㅋㅋ 저도 웃지요"
+                    }
+                  },
+                  {
+                    "kind": "Action",
+                    "if": "((new Date()).getTime() % 3) ==1",
+                    "repeat": "1",
+                    "options": {
+                      "output": "고객님이 웃으시니 뿌듯합니다^^"
+                    }
+                  },
+                  {
+                    "kind": "Action",
+                    "if": "((new Date()).getTime() % 3) ==2",
+                    "options": {
+                      "output": "하하하 웃으면 복이와요!"
+                    },
+                    "repeat": "1"
+                  }
+                ]
+              },
+              {
                 "name": "미검색",
                 "id": "default1322331",
                 "filename": "default",
@@ -4320,6 +4359,45 @@ var dialogs = [
             ]
           },
           {
+            "name": "웃음",
+            "id": "default2999",
+            "filename": "default",
+            "input": [
+              {
+                "text": "ㅋㅋ"
+              },
+              {
+                "text": "ㅎㅎ"
+              }
+            ],
+            "output": [
+              {
+                "kind": "Action",
+                "if": "((new Date()).getTime() % 3) ==0",
+                "repeat": "1",
+                "options": {
+                  "output": "ㅋㅋㅋ 저도 웃지요"
+                }
+              },
+              {
+                "kind": "Action",
+                "if": "((new Date()).getTime() % 3) ==1",
+                "repeat": "1",
+                "options": {
+                  "output": "고객님이 웃으시니 뿌듯합니다^^"
+                }
+              },
+              {
+                "kind": "Action",
+                "if": "((new Date()).getTime() % 3) ==2",
+                "options": {
+                  "output": "하하하 웃으면 복이와요!"
+                },
+                "repeat": "1"
+              }
+            ]
+          },
+          {
             "name": "미선택",
             "id": "default2275",
             "filename": "default",
@@ -5129,6 +5207,45 @@ var dialogs = [
         ]
       },
       {
+        "name": "웃음",
+        "id": "default1999",
+        "filename": "default",
+        "input": [
+          {
+            "text": "ㅋㅋ"
+          },
+          {
+            "text": "ㅎㅎ"
+          }
+        ],
+        "output": [
+          {
+            "kind": "Action",
+            "if": "((new Date()).getTime() % 3) ==0",
+            "repeat": "1",
+            "options": {
+              "output": "ㅋㅋㅋ 저도 웃지요"
+            }
+          },
+          {
+            "kind": "Action",
+            "if": "((new Date()).getTime() % 3) ==1",
+            "repeat": "1",
+            "options": {
+              "output": "고객님이 웃으시니 뿌듯합니다^^"
+            }
+          },
+          {
+            "kind": "Action",
+            "if": "((new Date()).getTime() % 3) ==2",
+            "options": {
+              "output": "하하하 웃으면 복이와요!"
+            },
+            "repeat": "1"
+          }
+        ]
+      },
+      {
         "name": "미검색",
         "id": "default274",
         "filename": "default",
@@ -5780,6 +5897,33 @@ var dialogs = [
     "output": [
       {
         "text": "페이스북 이벤트는 챗봇 초기 4번 페북지기에게 한마디를 선택해 주세요.  페이스북 이벤트가 아닌 신한카드 이벤트는 홈페이지를 참고해 주시면 됩니다. 더 좋은 이벤트로 보답하겠습니다.",
+        "kind": "Text"
+      }
+    ]
+  },
+  {
+    "name": "웃음",
+    "id": "default999",
+    "filename": "default",
+    "input": [
+      {
+        "text": "ㅋㅋ"
+      },
+      {
+        "text": "ㅎㅎ"
+      }
+    ],
+    "output": [
+      {
+        "text": "ㅋㅋㅋ 저도 웃지요",
+        "kind": "Text"
+      },
+      {
+        "text": "고객님이 웃으시니 뿌듯합니다^^",
+        "kind": "Text"
+      },
+      {
+        "text": "하하하 웃으면 복이와요!",
         "kind": "Text"
       }
     ]
