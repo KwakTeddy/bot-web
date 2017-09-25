@@ -43,44 +43,37 @@ function processInput(context, inRaw, callback) {
 
   async.waterfall([
     function(cb) {
-      // var nlpKo = new nlp({
-      //   stemmer: true,      // (optional default: true)
-      //   normalizer: true,   // (optional default: true)
-      //   spamfilter: true     // (optional default: false)
-      // });
-      //
-      // nlpKo.tokenize/*ToStrings*/(inRaw, function(err, result) {
-      //
-      //   var _inNLP = [];
-      //   if(!result) result = inRaw;
-      //   for (var i = 0; i < result.length; i++) {
-      //     if(result[i].pos == 'Alpha') result[i].pos = 'Noun';
-      //     // var word = result[i].text;
-      //     // if(word.search(/^(은|는|이|가|을|를)$/) == -1) result2.push(word);
-      //
-      //     // /*if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') */_nlp.push(result[i]);
-      //     // if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _inNLP.push(result[i].text);
-      //     nlpAll.push(result[i]);
-      //     if(result[i].text && result[i].text.search(/^(은|는|이|가|을|를)$/) == -1 && result[i].pos !== 'Punctuation') _nlp.push(result[i]);
-      //     if(result[i].text && result[i].text.search(/^(은|는|이|가|을|를)$/) == -1 && result[i].pos !== 'Punctuation') _inNLP.push(result[i].text);
-      //   }
-      //
-      //   inNLP = _inNLP.join(' ');
-      //   inNLP = inNLP.replace(/(?:\{ | \})/g, '+');
-      //   if(inNLP == '') inNLP = inRaw;
-      //
-      //   context.botUser.nlpAll = nlpAll;
-      //   context.botUser.nlp = _nlp;
-      //
-      //   cb(null);
-      // })
+      var nlpKo = new nlp({
+        stemmer: true,      // (optional default: true)
+        normalizer: true,   // (optional default: true)
+        spamfilter: true     // (optional default: false)
+      });
 
+      nlpKo.tokenize/*ToStrings*/(inRaw, function(err, result) {
 
-      inNLP = '시작';
-      context.botUser.nlpAll = [{pos: 'Noun', text: '시작'}];
-      context.botUser.nlp = [{pos: 'Noun', text: '시작'}];
+        var _inNLP = [];
+        if(!result) result = inRaw;
+        for (var i = 0; i < result.length; i++) {
+          if(result[i].pos == 'Alpha') result[i].pos = 'Noun';
+          // var word = result[i].text;
+          // if(word.search(/^(은|는|이|가|을|를)$/) == -1) result2.push(word);
 
-      cb(null);
+          // /*if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') */_nlp.push(result[i]);
+          // if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _inNLP.push(result[i].text);
+          nlpAll.push(result[i]);
+          if(result[i].text && result[i].text.search(/^(은|는|이|가|을|를)$/) == -1 && result[i].pos !== 'Punctuation') _nlp.push(result[i]);
+          if(result[i].text && result[i].text.search(/^(은|는|이|가|을|를)$/) == -1 && result[i].pos !== 'Punctuation') _inNLP.push(result[i].text);
+        }
+
+        inNLP = _inNLP.join(' ');
+        inNLP = inNLP.replace(/(?:\{ | \})/g, '+');
+        if(inNLP == '') inNLP = inRaw;
+
+        context.botUser.nlpAll = nlpAll;
+        context.botUser.nlp = _nlp;
+
+        cb(null);
+      })
     },
 
     // function(cb) {
