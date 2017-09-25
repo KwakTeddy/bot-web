@@ -181,12 +181,12 @@ function receivedMessage(event) {
       chat.write('facebook', senderID, event.botId, messageText, message, function (retText, task) {
         contextModule.getContext(event.botId, 'facebook', senderID, null, function(context) {
           switch(true) {
-          case botContext.user.liveChat == 1 :
-            botContext.user.liveChat++;
+          case context.user.liveChat == 1 :
+            context.user.liveChat++;
             break;
 
-          case botContext.user.liveChat > 1 :
-            botContext.user.liveChat++;
+          case context.user.liveChat > 1 :
+            context.user.liveChat++;
             // liveChatAddDialog(event.botId, messageText , senderID, true);
             return true;
           }
