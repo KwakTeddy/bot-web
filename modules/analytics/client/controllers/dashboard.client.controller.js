@@ -238,7 +238,6 @@ angular.module('analytics').controller('DashboardController', ['$scope', 'Authen
         $scope.senarioUsageList = doc.data.senarioUsage;
       }, function (err) {
         console.log(err);
-        console.log(err);
       });
     };
     //실패 대화
