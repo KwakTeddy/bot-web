@@ -654,7 +654,7 @@ function sendGenericMessage(recipientId, text, task, token, context) {
       };
 
       callSendAPI(messageData1, token, context, function () {
-        callSendAPI(messageData2, token)
+        callSendAPI(messageData2, token, context)
       });
     }else {
       var messageData = {
