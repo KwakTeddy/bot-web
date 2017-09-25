@@ -11,7 +11,7 @@ var FAIL_OUT = 10;
 var SERVER_UPDATE_INTERVAL = 10;
 
 var servers = [
-  {server: config.host + ':' + config.port, count: 0, fail: 0}
+  {server: config.host + ':' + config.port, count: 0, fail: 0, time: 0}
 ];
 
 var bUse = false;
@@ -64,7 +64,7 @@ function loadServers() {
           bExist = true;
         }
       }
-      if(!bExist) servers.push({server: data[i], count: 0, fail: 0});
+      if(!bExist) servers.push({server: data[i], count: 0, fail: 0, time: 0});
     }
 
     console.log('processing load servers=' + JSON.stringify(servers));
@@ -186,6 +186,8 @@ function balance(channel, user, bot, text, json, callback) {
     // if(!server) server = config.loadBalance.host + ':' + config.loadBalance.port;
     if(!server) server = 'http://' + localhost + ':3000';
 
+    var t0 = new Date();
+
     request({
       uri: server + '/chat/' + bot + '/message',
       method: 'POST',
@@ -203,6 +205,12 @@ function balance(channel, user, bot, text, json, callback) {
         for(var i = 0; i < servers.length; i++) {
           if(servers[i].server == server) {
             servers[i].count++;
+
+            var t1 = new Date();
+            servers[i].time = t1-t0;
+
+            console.log('loadbalancer:balance: time' + servers[i].time);
+
             // console.log('loadbalancer:balance: ' + server + '[' + servers[i].count + ']');
           }
         }
@@ -211,6 +219,7 @@ function balance(channel, user, bot, text, json, callback) {
         for(var i = 0; i < servers.length; i++) {
           if(servers[i].server == server) {
             servers[i].fail++;
+            servers[i].time = -1;
             console.log('loadbalancer:balance: ' + server + '[' + servers[i].count + '] ' + error);
           }
         }
@@ -243,10 +252,12 @@ function balance(channel, user, bot, text, json, callback) {
         // console.log('loadbalancer:balance: server0=' + server);
 
         if (!server) {
-          var minLoad = -1, minServer;
+          var minLoad = -1, minTime = 10000, minServer;
           for (var i = 0; i < servers.length; i++) {
-            if ((minLoad == -1 || servers[i].count < minLoad) && servers[i].fail < FAIL_OUT) {
+            // if ((minLoad == -1 || servers[i].count < minLoad) && servers[i].fail < FAIL_OUT) {
+            if ((minTime == 10000 || (servers[i].time != -1 && servers[i].time < minTime)) && servers[i].fail < FAIL_OUT) {
               minLoad = servers[i].count;
+              minTime = servers[i].time;
               minServer = i;
             }
           }
@@ -257,9 +268,8 @@ function balance(channel, user, bot, text, json, callback) {
           }
         }
 
-        // console.log('loadbalancer:balance: server1=' + server);
 
-        console.log('loadbalancer:balance: server=' + JSON.stringify(servers));
+        // console.log('loadbalancer:balance: server=' + JSON.stringify(servers));
 
         _request();
       });
