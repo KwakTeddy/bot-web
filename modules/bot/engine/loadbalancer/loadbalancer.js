@@ -245,20 +245,20 @@ function balance(channel, user, bot, text, json, callback) {
 
         // console.log('loadbalancer:balance: server0=' + server);
 
-        if (!server) {
-          var minLoad = -1, minTime = 10000, minServer;
-          for (var i = 1; i < servers.length; i++) {
-            if ((minLoad == -1 || servers[i].count < minLoad) && servers[i].fail < FAIL_OUT) {
-              minLoad = servers[i].count;
-              minServer = i;
-            }
-          }
-
-          if(minLoad != -1) {
-            server = servers[minServer].server;
-            cache.set(channel + user, server);
-          }
-        }
+        // if (!server) {
+        //   var minLoad = -1, minTime = 10000, minServer;
+        //   for (var i = 1; i < servers.length; i++) {
+        //     if ((minLoad == -1 || servers[i].count < minLoad) && servers[i].fail < FAIL_OUT) {
+        //       minLoad = servers[i].count;
+        //       minServer = i;
+        //     }
+        //   }
+        //
+        //   if(minLoad != -1) {
+        //     server = servers[minServer].server;
+        //     cache.set(channel + user, server);
+        //   }
+        // }
 
         if (!server) {
 
