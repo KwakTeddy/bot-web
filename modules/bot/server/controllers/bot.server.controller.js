@@ -127,6 +127,9 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
         context.task = utils.merge(_inDoc, json);
         cb(null);
       });
+      
+      cb(null);
+
     },
 
     function(cb) {

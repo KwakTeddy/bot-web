@@ -39,7 +39,6 @@ function loadServers() {
   if(cache == undefined) return;
 
   cache.lrange('servers', 0, -1, function(err, data) {
-    console.log('processing load redis=' + data);
 
     for(var i = 0; i < data.length; i++) {
       var bExist = false;
@@ -47,6 +46,8 @@ function loadServers() {
         if(servers[j].server == data[i]) {
           if(servers[j].fail >= FAIL_OUT) {
             // cache.lrem('servers', 0, data[i]);
+
+            console.log('processing fail check server=' + servers[j].server + ', fail=' + servers[j].fail);
 
             var _server = servers[j];
             request({
@@ -63,7 +64,7 @@ function loadServers() {
           bExist = true;
         }
       }
-      if(!bExist) servers.push({server: data[i], count: 0, fail: 0});
+      if(!bExist) servers.push({server: data[i], count: 0, fail: 11});
     }
 
     console.log('processing load servers=' + JSON.stringify(servers));
@@ -75,7 +76,7 @@ function initServer() {
   loadServers();
   
   setInterval(function() {
-    console.log('processing update server check: ' + (new Date()));
+    // console.log('processing update server check: ' + (new Date()));
 
     loadServers();
   }, SERVER_UPDATE_INTERVAL*1000);
@@ -202,7 +203,7 @@ function balance(channel, user, bot, text, json, callback) {
         for(var i = 0; i < servers.length; i++) {
           if(servers[i].server == server) {
             servers[i].count++;
-            console.log('loadbalancer:balance: ' + server + '[' + servers[i].count + ']');
+            // console.log('loadbalancer:balance: ' + server + '[' + servers[i].count + ']');
           }
         }
 
@@ -226,11 +227,11 @@ function balance(channel, user, bot, text, json, callback) {
   };
 
   if(cache && cache.connected) {
-    console.log('loadbalancer:balance: server=' + JSON.stringify(servers));
+    // console.log('loadbalancer:balance: server=' + JSON.stringify(servers));
 
     try {
       cache.get(channel + user, function (err, data) {
-        console.log('loadbalancer:balance: ' + (channel + user) + '=' + data);
+        // console.log('loadbalancer:balance: ' + (channel + user) + '=' + data);
         if (data) {
           for (var i = 0; i < servers.length; i++) {
             if (servers[i].server == data) {
@@ -240,7 +241,7 @@ function balance(channel, user, bot, text, json, callback) {
           }
         }
 
-        console.log('loadbalancer:balance: server0=' + server);
+        // console.log('loadbalancer:balance: server0=' + server);
 
         if (!server) {
           var minLoad = -1, minServer;
@@ -257,7 +258,7 @@ function balance(channel, user, bot, text, json, callback) {
           }
         }
 
-        console.log('loadbalancer:balance: server1=' + server);
+        // console.log('loadbalancer:balance: server1=' + server);
 
         _request();
       });

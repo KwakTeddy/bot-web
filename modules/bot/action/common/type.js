@@ -170,8 +170,8 @@ function processInput(context, inRaw, callback) {
         else context.botUser.dialogsetDialogs = undefined;
         cb(null);
       });
-    }, 
-    
+    },
+
     function(cb) {
       var bestDialog;
 
