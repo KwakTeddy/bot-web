@@ -261,7 +261,7 @@ function balance(channel, user, bot, text, json, callback) {
         // }
 
         if (!server) {
-          for (var i = 1; i < servers.length; i++) {
+          for (var i = 0; i < servers.length; i++) {
             serverNum = (++serverNum) % servers.length;
             if(serverNum != 0 && servers[serverNum].fail < FAIL_OUT) break;
           }
