@@ -261,17 +261,13 @@ function balance(channel, user, bot, text, json, callback) {
         // }
 
         if (!server) {
-
-          var i = 0;
-          i = (++serverNum) % servers.length;
-          if (i == 0) i = 1;
-
-          if (i < servers.length) {
-            server = servers[i].server;
-            cache.set(channel + user, server);
-          } else {
-            if(servers.length > 0) server = servers[0].server;
+          for (var i = 1; i < servers.length; i++) {
+            serverNum = (++serverNum) % servers.length;
+            if(serverNum != 0 && servers[serverNum].fail < FAIL_OUT) break;
           }
+
+          server = servers[serverNum].server;
+          cache.set(channel + user, server);
         }
 
         // console.log('loadbalancer:balance: server=' + JSON.stringify(servers));
