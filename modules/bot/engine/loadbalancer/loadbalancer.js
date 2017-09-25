@@ -269,14 +269,13 @@ function balance(channel, user, bot, text, json, callback) {
           if (i < servers.length) {
             server = servers[i].server;
             cache.set(channel + user, server);
-            _request();
           } else {
             if(servers.length > 0) server = servers[0].server;
-            _request();
           }
         }
 
         // console.log('loadbalancer:balance: server=' + JSON.stringify(servers));
+        _request();
 
       });
     } catch(e) {
