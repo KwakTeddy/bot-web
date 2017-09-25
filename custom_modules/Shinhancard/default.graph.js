@@ -3497,7 +3497,7 @@ var dialogs = [
               },
               {
                 "name": "웃음",
-                "id": "default999",
+                "id": "default3999",
                 "filename": "default",
                 "input": [
                   {
@@ -3509,8 +3509,28 @@ var dialogs = [
                 ],
                 "output": [
                   {
-                    "text": "ㅋㅋㅋㅋ저도 웃지요",
-                    "kind": "Text"
+                    "kind": "Action",
+                    "if": "((new Date()).getTime() % 3) ==0",
+                    "repeat": "1",
+                    "options": {
+                      "output": "ㅋㅋㅋ 저도 웃지요"
+                    }
+                  },
+                  {
+                    "kind": "Action",
+                    "if": "((new Date()).getTime() % 3) ==1",
+                    "repeat": "1",
+                    "options": {
+                      "output": "고객님이 웃으시니 뿌듯합니다^^"
+                    }
+                  },
+                  {
+                    "kind": "Action",
+                    "if": "((new Date()).getTime() % 3) ==2",
+                    "options": {
+                      "output": "하하하 웃으면 복이와요!"
+                    },
+                    "repeat": "1"
                   }
                 ]
               },
@@ -4340,7 +4360,7 @@ var dialogs = [
           },
           {
             "name": "웃음",
-            "id": "default999",
+            "id": "default2999",
             "filename": "default",
             "input": [
               {
@@ -4352,8 +4372,28 @@ var dialogs = [
             ],
             "output": [
               {
-                "text": "ㅋㅋㅋㅋ저도 웃지요",
-                "kind": "Text"
+                "kind": "Action",
+                "if": "((new Date()).getTime() % 3) ==0",
+                "repeat": "1",
+                "options": {
+                  "output": "ㅋㅋㅋ 저도 웃지요"
+                }
+              },
+              {
+                "kind": "Action",
+                "if": "((new Date()).getTime() % 3) ==1",
+                "repeat": "1",
+                "options": {
+                  "output": "고객님이 웃으시니 뿌듯합니다^^"
+                }
+              },
+              {
+                "kind": "Action",
+                "if": "((new Date()).getTime() % 3) ==2",
+                "options": {
+                  "output": "하하하 웃으면 복이와요!"
+                },
+                "repeat": "1"
               }
             ]
           },
@@ -5168,7 +5208,7 @@ var dialogs = [
       },
       {
         "name": "웃음",
-        "id": "default999",
+        "id": "default1999",
         "filename": "default",
         "input": [
           {
@@ -5180,8 +5220,28 @@ var dialogs = [
         ],
         "output": [
           {
-            "text": "ㅋㅋㅋㅋ저도 웃지요",
-            "kind": "Text"
+            "kind": "Action",
+            "if": "((new Date()).getTime() % 3) ==0",
+            "repeat": "1",
+            "options": {
+              "output": "ㅋㅋㅋ 저도 웃지요"
+            }
+          },
+          {
+            "kind": "Action",
+            "if": "((new Date()).getTime() % 3) ==1",
+            "repeat": "1",
+            "options": {
+              "output": "고객님이 웃으시니 뿌듯합니다^^"
+            }
+          },
+          {
+            "kind": "Action",
+            "if": "((new Date()).getTime() % 3) ==2",
+            "options": {
+              "output": "하하하 웃으면 복이와요!"
+            },
+            "repeat": "1"
           }
         ]
       },
@@ -5855,7 +5915,15 @@ var dialogs = [
     ],
     "output": [
       {
-        "text": "ㅋㅋㅋㅋ저도 웃지요",
+        "text": "ㅋㅋㅋ 저도 웃지요",
+        "kind": "Text"
+      },
+      {
+        "text": "고객님이 웃으시니 뿌듯합니다^^",
+        "kind": "Text"
+      },
+      {
+        "text": "하하하 웃으면 복이와요!",
         "kind": "Text"
       }
     ]
