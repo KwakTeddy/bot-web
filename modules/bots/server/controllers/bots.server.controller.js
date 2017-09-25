@@ -457,7 +457,8 @@ exports.list = function (req, res) {
     }
     if(req.query.my) {
         delete query.public;
-        query['user'] =  req.user._id;
+        if(req.user) query['user'] =  req.user._id;
+        else query['user'] = 'xxx';
     }
     if(req.body.query) query['name'] = new RegExp(req.body.query, 'i');
     // console.log(util.inspect(query));
