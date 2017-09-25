@@ -191,13 +191,13 @@ function balance(channel, user, bot, text, json, callback) {
       json: query
     }, function (error, response, body) {
       if (!error && response.statusCode == 200) {
-        var json;
-        try {
-          json = JSON.parse(body);
-        } catch(e) {
-        }
+        // var json;
+        // try {
+        //   json = JSON.parse(body);
+        // } catch(e) {
+        // }
 
-        callback(json ? json.text : body, json);
+        callback(body.text? body.text:body, body);
 
         for(var i = 0; i < servers.length; i++) {
           if(servers[i].server == server) {
