@@ -74,131 +74,131 @@ function processInput(context, inRaw, callback) {
 
         cb(null);
       })
-    },
+    }
 
+    // // function(cb) {
+    // //   var sp = inRaw.split(' ');
+    // //   for(var i = 0; i < sp.length; i++) {
+    // //     _nlp.push({text: sp[i], pos: 'Noun'});
+    // //   }
+    // //
+    // //   inNLP = inRaw;
+    // //   context.botUser.nlpAll = _nlp;
+    // //   context.botUser.nlp = _nlp;
+    // //
+    // //   cb(null);
+    // // },
+    //
     // function(cb) {
-    //   var sp = inRaw.split(' ');
-    //   for(var i = 0; i < sp.length; i++) {
-    //     _nlp.push({text: sp[i], pos: 'Noun'});
+    //   entity.matchDictionaryEntities(inRaw, commonTypes, doc, context, function(_inRaw, _entities) {
+    //     // doc.entities = doc.entities.concat(_doc.entities)
+    //     doc.entities = utils.merge(doc.entities, _entities);
+    //
+    //     console.log('entities: ' + JSON.stringify(_entities));
+    //
+    //     cb(null);
+    //   });
+    // },
+    //
+    // function(cb) {
+    //   checkTypes(inRaw, commonTypes, {}, context, function(_inRaw, _entities) {
+    //     // doc.entities = doc.entities.concat(_entities)
+    //     doc.entities = utils.merge(doc.entities, _entities);
+    //     context.botUser.entities = doc.entities;
+    //     cb(null);
+    //   });
+    // },
+    //
+    // // function(cb) {
+    // //   concept.processConcept(inRaw, inNLP, _nlp, function(inRaw, _in2, _nlp2) {
+    // //     _nlp = _nlp2;
+    // //     cb(null);
+    // //   });
+    // // },
+    // //
+    // // function(cb) {
+    // //   concept.processCustomConcept(inRaw, inNLP, _nlp, context, function(inRaw, _in2, _nlp2) {
+    // //     _nlp = _nlp2;
+    // //     cb(null);
+    // //   });
+    // // },
+    //
+    // function(cb) {
+    //   if(context.bot.intentOption == undefined || context.bot.intentOption.useIntent != false) {
+    //     intent.matchIntent(inRaw, inNLP, context, function(matched, _intent, _dialog) {
+    //       if(_intent) {
+    //         doc.intent = _intent;
+    //         context.botUser.intent = _intent;
+    //       } else {
+    //         doc.intent = undefined;
+    //         context.botUser.intent = undefined;
+    //       }
+    //
+    //       if(_dialog) {
+    //         doc.intentDialog = _dialog;
+    //         context.botUser.intentDialog = _dialog;
+    //       } else {
+    //         doc.intentDialog = undefined;
+    //         context.botUser.intentDialog = undefined;
+    //       }
+    //
+    //       console.log('intent: ' + JSON.stringify(_intent));
+    //       cb(null);
+    //     })
+    //   } else {
+    //     cb(null);
+    //   }
+    // },
+    //
+    // function(cb) {
+    //   var dialogModule = require(path.resolve('modules/bot/action/common/dialog'));
+    //   var globalDialogs = require(path.resolve('custom_modules/global/global-dialogs'));
+    //
+    //   dialogModule.executeType(inRaw, inNLP, globalDialogs.userDialogType, {}, context, function(inNLP, task, matched) {
+    //     if(matched) context.botUser.userDialogs = task.typeDoc;
+    //     else context.botUser.userDialogs = undefined;
+    //     cb(null);
+    //   });
+    // },
+    //
+    // function(cb) {
+    //   var dialogModule = require(path.resolve('modules/bot/action/common/dialog'));
+    //   var globalDialogs = require(path.resolve('custom_modules/global/global-dialogs'));
+    //
+    //   dialogModule.executeType(inRaw, inNLP, globalDialogs.dialogsType, {}, context, function(inNLP, task, matched) {
+    //     if(matched) context.botUser.dialogsetDialogs = task.typeDoc;
+    //     else context.botUser.dialogsetDialogs = undefined;
+    //     cb(null);
+    //   });
+    // },
+    //
+    // function(cb) {
+    //   var bestDialog;
+    //
+    //   if(context.botUser.intentDialog) {
+    //     bestDialog = context.botUser.intentDialog;
     //   }
     //
-    //   inNLP = inRaw;
-    //   context.botUser.nlpAll = _nlp;
-    //   context.botUser.nlp = _nlp;
+    //   if(context.botUser.userDialogs) {
+    //     var userDialog = context.botUser.userDialogs[0];
+    //     if(!bestDialog || userDialog.matchRate > bestDialog.matchRate || userDialog.matchCount > bestDialog.matchCount) {
+    //       bestDialog = userDialog;
+    //     }
+    //   }
+    //
+    //   if(context.botUser.dialogsetDialogs) {
+    //     var dialogsetDialog = context.botUser.dialogsetDialogs[0];
+    //     if(!bestDialog || dialogsetDialog.matchRate > bestDialog.matchRate || dialogsetDialog.matchCount > bestDialog.matchCount) {
+    //       bestDialog = dialogsetDialog;
+    //     }
+    //   }
+    //
+    //   if(bestDialog) {
+    //     context.botUser.bestDialog = bestDialog;
+    //   }
     //
     //   cb(null);
-    // },
-
-    function(cb) {
-      entity.matchDictionaryEntities(inRaw, commonTypes, doc, context, function(_inRaw, _entities) {
-        // doc.entities = doc.entities.concat(_doc.entities)
-        doc.entities = utils.merge(doc.entities, _entities);
-
-        console.log('entities: ' + JSON.stringify(_entities));
-
-        cb(null);
-      });
-    },
-
-    function(cb) {
-      checkTypes(inRaw, commonTypes, {}, context, function(_inRaw, _entities) {
-        // doc.entities = doc.entities.concat(_entities)
-        doc.entities = utils.merge(doc.entities, _entities);
-        context.botUser.entities = doc.entities;
-        cb(null);
-      });
-    },
-
-    // function(cb) {
-    //   concept.processConcept(inRaw, inNLP, _nlp, function(inRaw, _in2, _nlp2) {
-    //     _nlp = _nlp2;
-    //     cb(null);
-    //   });
-    // },
-    //
-    // function(cb) {
-    //   concept.processCustomConcept(inRaw, inNLP, _nlp, context, function(inRaw, _in2, _nlp2) {
-    //     _nlp = _nlp2;
-    //     cb(null);
-    //   });
-    // },
-
-    function(cb) {
-      if(context.bot.intentOption == undefined || context.bot.intentOption.useIntent != false) {
-        intent.matchIntent(inRaw, inNLP, context, function(matched, _intent, _dialog) {
-          if(_intent) {
-            doc.intent = _intent;
-            context.botUser.intent = _intent;
-          } else {
-            doc.intent = undefined;
-            context.botUser.intent = undefined;
-          }
-
-          if(_dialog) {
-            doc.intentDialog = _dialog;
-            context.botUser.intentDialog = _dialog;
-          } else {
-            doc.intentDialog = undefined;
-            context.botUser.intentDialog = undefined;
-          }
-
-          console.log('intent: ' + JSON.stringify(_intent));
-          cb(null);
-        })
-      } else {
-        cb(null);
-      }
-    },
-
-    function(cb) {
-      var dialogModule = require(path.resolve('modules/bot/action/common/dialog'));
-      var globalDialogs = require(path.resolve('custom_modules/global/global-dialogs'));
-
-      dialogModule.executeType(inRaw, inNLP, globalDialogs.userDialogType, {}, context, function(inNLP, task, matched) {
-        if(matched) context.botUser.userDialogs = task.typeDoc;
-        else context.botUser.userDialogs = undefined;
-        cb(null);
-      });
-    },
-
-    function(cb) {
-      var dialogModule = require(path.resolve('modules/bot/action/common/dialog'));
-      var globalDialogs = require(path.resolve('custom_modules/global/global-dialogs'));
-
-      dialogModule.executeType(inRaw, inNLP, globalDialogs.dialogsType, {}, context, function(inNLP, task, matched) {
-        if(matched) context.botUser.dialogsetDialogs = task.typeDoc;
-        else context.botUser.dialogsetDialogs = undefined;
-        cb(null);
-      });
-    }, 
-    
-    function(cb) {
-      var bestDialog;
-
-      if(context.botUser.intentDialog) {
-        bestDialog = context.botUser.intentDialog;
-      }
-
-      if(context.botUser.userDialogs) {
-        var userDialog = context.botUser.userDialogs[0];
-        if(!bestDialog || userDialog.matchRate > bestDialog.matchRate || userDialog.matchCount > bestDialog.matchCount) {
-          bestDialog = userDialog;
-        }
-      }
-
-      if(context.botUser.dialogsetDialogs) {
-        var dialogsetDialog = context.botUser.dialogsetDialogs[0];
-        if(!bestDialog || dialogsetDialog.matchRate > bestDialog.matchRate || dialogsetDialog.matchCount > bestDialog.matchCount) {
-          bestDialog = dialogsetDialog;
-        }
-      }
-
-      if(bestDialog) {
-        context.botUser.bestDialog = bestDialog;
-      }
-
-      cb(null);
-    }
+    // }
 
   ], function(err) {
     context.botUser.nlpCorrection = undefined;
