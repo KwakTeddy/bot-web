@@ -64,7 +64,7 @@ function loadServers() {
           bExist = true;
         }
       }
-      if(!bExist) servers.push({server: data[i], count: 0, fail: 11});
+      if(!bExist) servers.push({server: data[i], count: 0, fail: 0});
     }
 
     console.log('processing load servers=' + JSON.stringify(servers));
