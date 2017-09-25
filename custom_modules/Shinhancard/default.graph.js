@@ -3496,6 +3496,25 @@ var dialogs = [
                 ]
               },
               {
+                "name": "웃음",
+                "id": "default999",
+                "filename": "default",
+                "input": [
+                  {
+                    "text": "ㅋㅋ"
+                  },
+                  {
+                    "text": "ㅎㅎ"
+                  }
+                ],
+                "output": [
+                  {
+                    "text": "ㅋㅋㅋㅋ저도 웃지요",
+                    "kind": "Text"
+                  }
+                ]
+              },
+              {
                 "name": "미검색",
                 "id": "default1322331",
                 "filename": "default",
@@ -4320,6 +4339,25 @@ var dialogs = [
             ]
           },
           {
+            "name": "웃음",
+            "id": "default999",
+            "filename": "default",
+            "input": [
+              {
+                "text": "ㅋㅋ"
+              },
+              {
+                "text": "ㅎㅎ"
+              }
+            ],
+            "output": [
+              {
+                "text": "ㅋㅋㅋㅋ저도 웃지요",
+                "kind": "Text"
+              }
+            ]
+          },
+          {
             "name": "미선택",
             "id": "default2275",
             "filename": "default",
@@ -5129,6 +5167,25 @@ var dialogs = [
         ]
       },
       {
+        "name": "웃음",
+        "id": "default999",
+        "filename": "default",
+        "input": [
+          {
+            "text": "ㅋㅋ"
+          },
+          {
+            "text": "ㅎㅎ"
+          }
+        ],
+        "output": [
+          {
+            "text": "ㅋㅋㅋㅋ저도 웃지요",
+            "kind": "Text"
+          }
+        ]
+      },
+      {
         "name": "미검색",
         "id": "default274",
         "filename": "default",
@@ -5780,6 +5837,25 @@ var dialogs = [
     "output": [
       {
         "text": "페이스북 이벤트는 챗봇 초기 4번 페북지기에게 한마디를 선택해 주세요.  페이스북 이벤트가 아닌 신한카드 이벤트는 홈페이지를 참고해 주시면 됩니다. 더 좋은 이벤트로 보답하겠습니다.",
+        "kind": "Text"
+      }
+    ]
+  },
+  {
+    "name": "웃음",
+    "id": "default999",
+    "filename": "default",
+    "input": [
+      {
+        "text": "ㅋㅋ"
+      },
+      {
+        "text": "ㅎㅎ"
+      }
+    ],
+    "output": [
+      {
+        "text": "ㅋㅋㅋㅋ저도 웃지요",
         "kind": "Text"
       }
     ]
