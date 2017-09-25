@@ -3483,9 +3483,6 @@ var dialogs = [
                 "input": [
                   {
                     "text": "이벤트"
-                  },
-                  {
-                    "text": "신한 FAN"
                   }
                 ],
                 "output": [
@@ -4310,9 +4307,6 @@ var dialogs = [
             "input": [
               {
                 "text": "이벤트"
-              },
-              {
-                "text": "신한 FAN"
               }
             ],
             "output": [
@@ -5122,9 +5116,6 @@ var dialogs = [
         "input": [
           {
             "text": "이벤트"
-          },
-          {
-            "text": "신한 FAN"
           }
         ],
         "output": [
@@ -5784,9 +5775,6 @@ var dialogs = [
     "input": [
       {
         "text": "이벤트"
-      },
-      {
-        "text": "신한 FAN"
       }
     ],
     "output": [
