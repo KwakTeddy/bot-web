@@ -43,7 +43,7 @@
   <div ng-if="!vm.userDialogs.length"><h3>대화 내역이 없습니다</h3></div>
 
   <div class="panel-body col-md-7" style="background-color: #ddd" ng-if="vm.userDialogs.length">
-    <div ng-repeat="userDialog in vm.userDialogs" ng-class="!userDialog.inOut ?'item item-avatar b-none friend':'item item-avatar-right b-none me'">
+    <div ng-repeat="userDialog in vm.userDialogs | orderBy: 'created'" ng-class="!userDialog.inOut ?'item item-avatar b-none friend':'item item-avatar-right b-none me'">
       <div class="text-xs">
         <span class="font-bold m-r-sm" data-ng-if="!userDialog.inOut">{{userDialog.botId}}</span>
         <span class="color-grey-500">{{userDialog.created | date:'yy/MM/dd/HH:mm'}}</span>
