@@ -50,10 +50,6 @@
 
 @media screen and (max-width: 420px)
 {
-    .top-bar .system
-    {
-    }
-
     .top-bar .store-btn
     {
         background:#fff url(../img/cart.gif) no-repeat 0px;
