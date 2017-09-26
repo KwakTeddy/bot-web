@@ -2,7 +2,7 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat').controller('SimulatorController', ['$window', '$scope', function ($window, $scope)
+angular.module('playchat.simulator').controller('SimulatorController', ['$window', '$scope', function ($window, $scope)
 {
     $scope.$parent.loaded('simulator');
 

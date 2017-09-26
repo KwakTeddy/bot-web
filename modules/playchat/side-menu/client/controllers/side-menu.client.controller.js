@@ -2,7 +2,7 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat').controller('SideMenuController', ['$window', '$scope', function ($window, $scope)
+angular.module('playchat.side-menu').controller('SideMenuController', ['$window', '$scope', function ($window, $scope)
 {
     $scope.$parent.loaded('side-menu');
 
