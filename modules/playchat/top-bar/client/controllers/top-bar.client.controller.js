@@ -4,6 +4,5 @@
 
 angular.module('playchat').controller('TopBarController', ['$window', '$scope', function ($window, $scope)
 {
-    $scope.$parent.loaded();
-
+    $scope.$parent.loaded('top-bar');
 }]);

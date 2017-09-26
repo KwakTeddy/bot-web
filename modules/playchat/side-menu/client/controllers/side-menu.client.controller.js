@@ -4,12 +4,12 @@
 
 angular.module('playchat').controller('SideMenuController', ['$window', '$scope', function ($window, $scope)
 {
-    $scope.$parent.loaded();
+    $scope.$parent.loaded('side-menu');
 
-    $window.addEventListener('resize', function(e)
+    $scope.$on('window.resize', function(e)
     {
         //사이드메뉴 강제로 접고 펼쳤던것 원상복구
-        var link = angular.element('#side-menu-1024-css');
+        var link = angular.element('#side-menu-responsive-css');
         link.removeAttr('disabled');
         if(link.attr('prev-media'))
             link.attr('media', link.attr('prev-media'));
@@ -31,7 +31,6 @@ angular.module('playchat').controller('SideMenuController', ['$window', '$scope'
         if(e && e.currentTarget.className == 'logo-min' && getComputedStyle(e.currentTarget).backgroundImage == 'none')
             return;
 
-        console.log(style.width);
         if(style.width == '250px')
         {
             //펼쳐진 상태이므로 접어야 한다.

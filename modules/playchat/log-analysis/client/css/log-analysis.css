@@ -1,0 +1,78 @@
+.log-analysis
+{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height:210px;
+    overflow: auto;
+    background: #fff;
+}
+
+.log-analysis .logHeader
+{
+    height: 39px;
+    background:#e8ebf0;
+    border-bottom: #e7e7e7 solid 1px;
+    border-top: #e7e7e7 solid 1px;
+}
+
+.log-analysis .logTab
+{
+    line-height: 24px;
+    padding: 6px 30px;
+    cursor: pointer;
+    float: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: 0.1px;
+}
+
+.log-analysis .tab
+{
+    font-weight: 500;
+    height: 100%;
+    width: 100%;
+}
+
+.log-analysis .select
+{
+    border-bottom:#038eda solid 3px;
+}
+
+.log-analysis .logsystem
+{
+    position: absolute;
+    right: 14px;
+    top: 15px;
+}
+
+.log-analysis .logsystem > a
+{
+    padding: 13px 4px;
+}
+
+@media screen and (max-width: 1480px)
+{
+    .log-analysis .logTab
+    {
+        padding: 6px 25px;
+    }
+}
+
+@media screen and (max-width: 1024px)
+{
+    .log-analysis .logTab
+    {
+        padding: 6px 15px;
+    }
+}
+
+@media screen and (max-width: 500px)
+{
+    .log-analysis
+    {
+        display: none;
+    }
+}

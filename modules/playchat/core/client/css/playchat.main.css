@@ -25,3 +25,26 @@
     bottom: 0;
     height: 100%;
 }
+
+.worksheet
+{
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.workspace
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 367px;
+    bottom: 0;
+}
+
+.workspace.full
+{
+    right: 0;
+}

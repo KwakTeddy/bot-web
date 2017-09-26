@@ -103,3 +103,71 @@
     margin-right:10px;
 }
 
+@media screen and (max-width: 800px)
+{
+    .top-bar .system
+    {
+        position: absolute;
+        top: 17px;
+        right: 20px;
+        white-space: nowrap;
+    }
+
+    .top-bar .notify
+    {
+        margin-right: 20px;
+    }
+
+    .top-bar .login
+    {
+        margin:0;
+    }
+
+    .top-bar .store-btn
+    {
+        margin-right:15px;
+    }
+}
+
+@media screen and (max-width: 500px)
+{
+    .top-bar .notify
+    {
+        margin-right: 20px;
+    }
+
+    .top-bar .login
+    {
+        margin: 0;
+    }
+
+    .top-bar .current
+    {
+        font-size: 16px;
+        line-height: 1.24;
+    }
+
+    .top-bar .menu-name-icon
+    {
+        margin: 20px 15px 14px 19px;
+    }
+}
+
+@media screen and (max-width: 420px)
+{
+    .top-bar .store-btn
+    {
+        background:#fff url(../img/cart.gif) no-repeat 0px;
+        width: 20px;
+        height: 29px;
+        margin-right: 16px;
+
+    }
+
+    .top-bar .store-btn span
+    {
+        display: none;
+    }
+}
+
+

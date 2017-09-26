@@ -1,0 +1,14 @@
+.simulator
+{
+    right: -367px;
+}
+
+.simulator .simulator-btn
+{
+    display: block !important;
+}
+
+.workspace
+{
+    right: 0;
+}

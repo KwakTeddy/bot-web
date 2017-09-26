@@ -9,6 +9,16 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', function 
         $injector.get('$state').transitionTo('not-found', null, { location: false });
     });
 
+    $stateProvider.state('not-found', {
+        url: '/not-found',
+        views: {
+            'content@': {
+                templateUrl: 'modules/core/client/views/404.client.view.html',
+                controller: 'CommonErrorController'
+            }
+        }
+    });
+
     //
     // var developerState = {
     //     url: '/developer',
