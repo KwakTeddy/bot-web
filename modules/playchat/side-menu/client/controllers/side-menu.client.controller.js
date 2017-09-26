@@ -24,7 +24,7 @@ angular.module('playchat').controller('SideMenuController', ['$window', '$scope'
         if(!sidenav)
             return;
 
-        var link = angular.element('#side-menu-1024-css');
+        var link = angular.element('#side-menu-responsive-css');
         var style = getComputedStyle(sidenav);
 
         //PlayChat 로고를 클릭해서 메뉴가 접히는 현상을 막기 위함

@@ -21,55 +21,6 @@
 	section#mainBoard #logroom .logTab{
 		padding: 6px 15px;
 	}
-	section#topMenu>div .header{
-		width:72px;
-		padding: 0;
-		height:64px;
-	}
-	section#topMenu>div .header img{
-		display: none;
-	}
-	section#topMenu>div .Menuclose{
-		display: none;
-	}
-	section#topMenu>nav .BotDetail{
-		display: none;
-	}
-	section#topMenu>div .header .logo_min{
-		background:#363636 url(../img/hamburger.png) no-repeat 24px;
-		width: 72px;
-		height: 60px;
-	}
-	section#topMenu>nav .nameBotS img{
-		display: none;
-	}
-	section#topMenu>nav .nameBotS{
-		background:#424242 url(../img/modify_fold.png) no-repeat 46px;
-		width: 72px;
-		height: 32px;
-		right: 22px;
-	}
-	section#topMenu>nav{
-   		width: 72px;
-	}
-	section#topMenu>nav span{
-		display: none;
-	}
-	section#topMenu>nav .close{
-		display: none;
-	}
-	section#topMenu>nav ul li{
-		padding: 0px 24px;
-	}
-	section#topMenu>nav ul li.sublist{
-		padding: 0px 24px;
-	}
-	section#topMenu>nav ul li.select_list{
-		padding: 0px 24px;
-	}
-	section#topMenu>nav ul li.menulist{
-		padding: 0px 24px;
-	}
 	section#mainBoard #worksheet{
 		left: 72px;
 	}
@@ -117,19 +68,5 @@
 		overflow-x: hidden;
 	}
 	
-	section#topMenu>div .notify{
-		margin-right: 20px;
-	}
-	section#topMenu>div .login{
-		margin:0;
-	}
-	section#topMenu>div .current{
-		font-size: 16px;
-		line-height: 1.24;
-	}
-	section#topMenu>div .adminN{
-		
-   	 margin: 20px 15px 14px 19px;
-		
-	}
+
 }
