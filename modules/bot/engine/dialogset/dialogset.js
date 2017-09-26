@@ -178,7 +178,7 @@ exports.insertDailogsetDialog = insertDailogsetDialog;
 
 function insertDialogsetContext(dialogset, contexts, callback) {
   var parent = null;
-  var CustomContext = mongoose.model('CustomContext');
+  var CustomContext = mongoose.model('customcontext');
   async.eachSeries(contexts, function(context, cb) {
     async.waterfall([
 
@@ -350,7 +350,7 @@ function insertExcelFile(infile, dialogset, callback) {
 
         function(cb2) {
           if(R == 1) {
-            var CustomContext = mongoose.model('CustomContext');
+            var CustomContext = mongoose.model('customcontext');
             CustomContext.remove({dialogset: dialogset._id}, function(err, result) {
               cb2(null);
             })
@@ -374,7 +374,7 @@ function insertExcelFile(infile, dialogset, callback) {
 
           } else {
             cb2(null);
-          }
+          }25
         },
 
         function(cb2) {

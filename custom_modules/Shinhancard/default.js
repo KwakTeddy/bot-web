@@ -61,7 +61,7 @@ bots.find({id: "Shinhancard"}).lean().exec(function(err, docs) {
                     parent: mongoose.Schema.Types.Mixed,
                     context: {
                         type: mongoose.Schema.ObjectId,
-                        ref: 'CustomContext'
+                        ref: 'customcontext'
                     }
                 }
             }

@@ -119,7 +119,7 @@ var dialogsStartType = {
       parent: mongoose.Schema.Types.Mixed,
       context: {
         type: mongoose.Schema.ObjectId,
-        ref: 'CustomContext'
+        ref: 'customcontext'
       }
     }
   }
@@ -386,7 +386,8 @@ var dialogsType = {
       parent: mongoose.Schema.Types.Mixed,
       context: {
         type: mongoose.Schema.ObjectId,
-        ref: 'CustomContext'
+        //ref: 'CustomContext'
+          ref: 'customcontext'
       }
     }
   }
