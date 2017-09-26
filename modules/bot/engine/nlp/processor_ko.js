@@ -61,7 +61,7 @@ function processInput(context, inRaw, callback) {
             });
 
             var lastChar = inRaw.charAt(inRaw.length-1);
-            if (lastChar == "." || lastChar == "?" || lastChar != "!") {
+            if (lastChar == '.' || lastChar == '?' || lastChar == '!') {
                 inRaw = inRaw.substring(0, inRaw.length-1);
             } else {
                 lastChar = "";
