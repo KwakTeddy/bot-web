@@ -38,8 +38,6 @@ module.exports.initLocalVariables = function (app) {
   app.locals.kakaoJSID = config.kakao.clientJSID;
   app.locals.jsFiles = config.files.client.js;
   app.locals.cssFiles = config.files.client.css;
-  app.locals.mobileJsFiles = config.files.mobile.js;
-  app.locals.mobileCssFiles = config.files.mobile.css;
   app.locals.livereload = config.livereload;
   app.locals.logo = config.logo;
   app.locals.favicon = config.favicon;
@@ -109,11 +107,11 @@ module.exports.initMiddleware = function (app) {
  */
 module.exports.initViewEngine = function (app) {
   // Set swig as the template engine
-  app.engine('server.view.html', consolidate[config.templateEngine]);
+    app.engine('server.view.html', consolidate[config.templateEngine]);
 
-  // Set views path and view engine
-  app.set('view engine', 'server.view.html');
-  app.set('views', './');
+    // Set views path and view engine
+    app.set('view engine', 'server.view.html');
+    app.set('views', './');
 };
 
 /**

@@ -1,0 +1,17 @@
+@media screen and (max-width: 800px){
+    section#topMenu>div .system{
+        position: absolute;
+        top: 17px;
+        right: 20px;
+        white-space: nowrap;
+    }
+    section#topMenu>div .notify{
+        margin-right: 20px;
+    }
+    section#topMenu>div .login{
+        margin:0;
+    }
+    section#topMenu>div .StoreBtn{
+        margin-right:15px;
+    }
+}

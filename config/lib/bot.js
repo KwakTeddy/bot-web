@@ -11,7 +11,7 @@ var config = require('../config'),
   _ = require('lodash');
 
   var async = require('async');
-  var TemplateDataModule = require(path.resolve('modules/templates/server/controllers/template-datas.server.controller'));
+  var TemplateDataModule = require(path.resolve('modules/bot/templates/server/controllers/template-datas.server.controller'));
 
 function buildBot(botName, botPath, fileName, dialogs, commons) {
   console.log('Building Bot: ' + botName + botPath);

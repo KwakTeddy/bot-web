@@ -1,7 +1,7 @@
 'use strict';
 var path = require('path');
 var logger = require(path.resolve('./config/lib/logger'));
-var loadbalancer = require(path.resolve('modules/bot/engine/loadbalancer/loadbalancer'));
+// var loadbalancer = require(path.resolve('modules/bot/engine/loadbalancer/loadbalancer'));
 
 process.binding('http_parser').HTTPParser = require('http-parser-js').HTTPParser;
 
@@ -47,21 +47,21 @@ module.exports.init = function init(callback) {
 module.exports.start = function start(callback) {
   var _this = this;
 
-  var globals = require(path.resolve('modules/bot/engine/common/globals'));
-  globals.initGlobals();
-  var concept = require(path.resolve('modules/bot/engine/concept/concept'));
-  // concept.loadConcept();
-  // concept.batchConcept('ddbot');
-  var autoCorrection = require(path.resolve('modules/bot/engine/nlp/autoCorrection'));
-  autoCorrection.loadWordCorrections();
-
-  var bot = require('./bot');
+  // var globals = require(path.resolve('modules/bot/engine/common/globals'));
+  // globals.initGlobals();
+  // var concept = require(path.resolve('modules/bot/engine/concept/concept'));
+  // // concept.loadConcept();
+  // // concept.batchConcept('ddbot');
+  // var autoCorrection = require(path.resolve('modules/bot/engine/nlp/autoCorrection'));
+  // autoCorrection.loadWordCorrections();
+  //
+  // var bot = require('./bot');
 
   // bot.loadBots();
 
   _this.init(function (app, db, config) {
 
-    if(config.loadBalance) loadbalancer.init();
+    // if(config.loadBalance) loadbalancer.init();
 
     // Start the app by listening on <port>
     app.listen(config.port, function () {

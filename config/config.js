@@ -114,12 +114,11 @@ var initGlobalConfigFolders = function (config, assets) {
   // Appending files
   config.folders = {
     server: {},
-    client: {},
-    mobile: {}
+    client: {}
   };
 
   // Setting globbed client paths
-  config.folders.client = getGlobbedPaths(path.join(process.cwd(), 'modules/*/client/'), process.cwd().replace(new RegExp(/\\/g), '/'));
+    config.folders.client = _.union(getGlobbedPaths(path.join(process.cwd(), 'modules/*/client/'), process.cwd().replace(new RegExp(/\\/g), '/')), config.folders.client, getGlobbedPaths(path.join(process.cwd(), 'modules/playchat/*/client/'), process.cwd().replace(new RegExp(/\\/g), '/')));
 };
 
 /**
@@ -129,8 +128,7 @@ var initGlobalConfigFiles = function (config, assets) {
   // Appending files
   config.files = {
     server: {},
-    client: {},
-    mobile: {}
+    client: {}
   };
 
   // Setting Globbed model files
@@ -149,16 +147,10 @@ var initGlobalConfigFiles = function (config, assets) {
   config.files.server.policies = getGlobbedPaths(assets.server.policies);
 
   // Setting Globbed js files
-  config.files.client.js = getGlobbedPaths(assets.client.lib.js, 'public/').concat(getGlobbedPaths(assets.client.js, ['public/']));
+  config.files.client.js = getGlobbedPaths(assets.client.js, ['public/']);
 
   // Setting Globbed css files
-  config.files.client.css = getGlobbedPaths(assets.client.lib.css, 'public/').concat(getGlobbedPaths(assets.client.css, ['public/']));
-
-  // Setting Globbed js files
-  config.files.mobile.js = getGlobbedPaths(assets.mobile.lib.js, 'public/').concat(getGlobbedPaths(assets.mobile.js, ['public/']));
-
-  // Setting Globbed css files
-  config.files.mobile.css = getGlobbedPaths(assets.mobile.lib.css, 'public/').concat(getGlobbedPaths(assets.mobile.css, ['public/']));
+  config.files.client.css = getGlobbedPaths(assets.client.css, ['public/']);
 
   // Setting Globbed test files
   config.files.client.tests = getGlobbedPaths(assets.client.tests);

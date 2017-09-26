@@ -649,9 +649,9 @@ function mongoTypeCheck(text, format, inDoc, context, callback) {
 
 function restaurantTypeCheck(text, format, inDoc, context, callback) {
   // try {
-  //   logger.debug('type.js:restaurantTypeCheck: START ' + format.name + ' "' + text + '" inDoc: ' + JSON.stringify(inDoc));
+  //   logger.debug('type.old.js:restaurantTypeCheck: START ' + format.name + ' "' + text + '" inDoc: ' + JSON.stringify(inDoc));
   // } catch(e) {
-  //   logger.debug('type.js:restaurantTypeCheck: START ' + format.name + ' "' + text + '"');
+  //   logger.debug('type.old.js:restaurantTypeCheck: START ' + format.name + ' "' + text + '"');
   // }
 
   var address, lng, lat;

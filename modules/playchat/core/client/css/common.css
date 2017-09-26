@@ -1,0 +1,72 @@
+@charset "utf-8";
+/* CSS Document */
+/*total*/
+body,html{
+	height: 100%;
+	overflow: hidden;
+}
+html, body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fieldset, legend, input, textarea, button, select, pre {
+  -webkit-text-size-adjust:none; 
+	font-size:14px; 
+	letter-spacing: -0.02em; 
+	font-weight:normal; 
+	color:#393939; 
+	font-family:'Noto Sans', 'nanumsquare', 'Nanum Gothic', 'Malgun Gothic', 'AppleSDGothicNeo-Light', 'AppleSDGothicNeo', sans-serif, Arial,dotum,'돋움';
+} 
+
+
+/*-webkit-text-size-adjust: none(글자크기 자동조정 방지) , auto (화면의 폭에 맞추어서 텍스트의 크기를 자동으로 조절 , 100%(폰트크기를 지정된사이즈로 변경);*/ 
+html, body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, table , tr , td , dl, dt, dd, a ,img,input,button, select,textarea { margin: 0px; padding: 0px; list-style:none; }
+address, cite, dfn, em, var { font-style: normal; }
+code, kbd, samp { font-family:dotum,'돋움', courier new, courier, monospace; }
+header, hgroup, article, nav, footer, figure, figcaption, canvas, section , menu { display: block; margin:0; padding:0; }
+img{box-sizing: content-box;}
+img,fieldset,iframe{border:0 none;}
+img { border: 0px; vertical-align:top; }
+table{/* border-collapse:collapse;table-layout:fixed; */border-collapse:collapse;border-spacing:0}
+a:link { text-decoration: none; color:#393939; }
+a:visited { text-decoration: none; color:#393939; }
+a:hover { text-decoration: none; color:#393939; }
+a:active { text-decoration: none; color:#393939; }
+
+
+/*clear*/
+.clearfix:after { display: block; visibility: hidden; clear:both; height:0; content:'\020'; }
+.clearfix { zoom: 1; }
+
+.clear, .clearfix { clear: both; height:0; }
+
+.clearafter { *zoom:1;}
+.clearafter:after { content: ''; clear: both; display: block; height: 0px; line-height: 0px; }
+
+.blind, legend { visibility: hidden; overflow: hidden; position: absolute; top: 0; left: 0; width: 0; height: 0; font-size: 0; line-height: 0; }
+
+
+/*detail*/
+form { margin: 0px; padding: 0px; }
+fieldset { padding: 0; border: none; }
+caption { display: none; }
+label { font-family: 'Noto sans'; font-size: 14px; }
+input, button { vertical-align: middle; border:none; background: none; }
+select { border:1px solid #bababa; vertical-align:middle; padding:3px 0 5px; background:#fff;}
+input { margin:0; padding:0; }
+button { cursor:pointer; }
+
+input[type="checkbox"],input[type="radio"] { padding:0; vertical-align:middle; margin-top:-1px; *margin-top:-2px; }
+input[type="text"] ,input[type="password"] , input[type="file"] , input[type="tel"] , input[type="email"] { padding:4px 0 4px 4px; }
+input[type="button"] ,input[type="submit"] { cursor:pointer; }
+
+textarea { font-size: 12px; border:1px solid #e5e5e5; padding:5px; }
+
+input {
+    border-style: none;
+    background: transparent;
+    outline: none;
+}
+
+button, input, optgroup, select, textarea {
+    font-family: noto sans;
+    font-size: 100%;
+    line-height: 1.15;
+    margin: 0;
+}

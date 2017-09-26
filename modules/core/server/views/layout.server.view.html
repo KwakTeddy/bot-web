@@ -1,834 +1,230 @@
 <!doctype html>
-<html class="fixed" id="html">
+
+<html>
 <head ng-controller="TitleController">
-  <base href="/">
+<base href="/">
+<!-- Basic -->
+<meta charset="UTF-8">
+<title data-ng-bind="enterpriseTitle"></title>
+<meta name="keywords" content="인공지능 AI 챗봇 Chatbot 딥러닝 Deep Learning"/>
+<meta name="description" content="NLP 자연어처리 NLU 자연어 이해 대화관리 Dialog Management 딥러닝 Deep Learning 인텐트 Intent 엔터티 Entity">
+<meta name="author" content="MoneyBrain">
 
-  <!-- Basic -->
-  <meta charset="UTF-8">
+<!-- Mobile Metas -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
-  <title data-ng-bind="enterpriseTitle"></title>
-  <meta name="keywords" content="인공지능 AI 챗봇 Chatbot 딥러닝 Deep Learning"/>
-  <meta name="description" content="NLP 자연어처리 NLU 자연어 이해 대화관리 Dialog Management 딥러닝 Deep Learning 인텐트 Intent 엔터티 Entity">
-  <meta name="author" content="MoneyBrain">
+<!-- Web Fonts  -->
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
 
-  <!-- Mobile Metas -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<!-- 필요한 라이브러리 CSS -->
+<link href="/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 
-  <!-- Web Fonts  -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet"
-        type="text/css">
+<!-- 모듈 CSS 파일 -->
+<link href="modules/core/client/css/core.css" rel="stylesheet" type="text/css" />
+<link href="modules/core/client/css/signin.css" rel="stylesheet" type="text/css" />
 
-  <!-- Vendor CSS -->
-  <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.css"/>
+<script>
+window.__CONFIG = {};
+//window.__CONFIG.platform = 'web';
+//if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) )
+//{
+//    window.__CONFIG.platform = 'mobile';
+//}
+//window.__CONFIG.os = '';
+//window.__CONFIG.facebookAppId = "{{facebookAppId}}";
+//window.__CONFIG.kakaoJSId = "{{kakaoJSAppId}}";
+//window.__CONFIG.ogTitle = "{{title}}";
+//window.__CONFIG.ogDescription = "{{description}}";
+//window.__CONFIG.ogUrl = "{{url}}";
+//window.__CONFIG.ogLogo = "{{logo}}";
 
-  <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.css"/>
-  <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css"/>
-  <link rel="stylesheet" href="/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.css"/>
+window.__CONFIG.PLATFORM = '{{ platform }}';
+window.__CONFIG.user = {{ user | json | safe }};
+</script>
 
-  <link href="/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
-  <link href="/vendor/owl.carousel/assets/owl.theme.default.min.css" rel="stylesheet">
-
-  <!-- Specific Page Vendor CSS -->
-  <!--<link rel="stylesheet" href="/vendor/jquery-ui/jquery-ui.css" />-->
-  <!--<link rel="stylesheet" href="/vendor/jquery-ui/jquery-ui.theme.css" />-->
-  <!--<link rel="stylesheet" href="/vendor/bootstrap-multiselect/bootstrap-multiselect.css" />-->
-  <!--<link rel="stylesheet" href="/vendor/morris.js/morris.css" />-->
-
-  <link rel="stylesheet" href="/vendor/select2/css/select2.css"/>
-  <link rel="stylesheet" href="/vendor/select2-bootstrap-theme/select2-bootstrap.css"/>
-  <link rel="stylesheet" href="/vendor/jquery-datatables-bs3/assets/css/datatables.css"/>
-  <link rel="stylesheet" href="/vendor/dropzone/basic.css" />
-  <!--<link rel="stylesheet" href="/vendor/dropzone/dropzone.css" />-->
-
-  <!-- Specific Page Vendor CSS 코드에디터 -->
-  <link rel="stylesheet" href="/vendor/codemirror/lib/codemirror.css"/>
-  <link rel="stylesheet" href="/vendor/codemirror/theme/monokai.css"/>
-
-  <!--<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.css">-->
-
-  <!--select css-->
-  <link rel="stylesheet" href="/lib/angular-ui-select/dist/select.css">
-  <link rel="stylesheet" href="/lib/select2/select2.css">
-
-
-  <!-- Theme CSS -->
-  <link rel="stylesheet" href="/css/theme.css"/>
-
-  <!-- Skin CSS -->
-  <link rel="stylesheet" href="/css/skins/default.css"/>
-
-  <!-- Theme Custom CSS -->
-  <link rel="stylesheet" href="/css/theme-custom.css">
-
-  <link rel="stylesheet" href="/css/custom.css">
-
-  <!--jsoneditor-->
-  <link href="/js/jsoneditor/dist/jsoneditor.css" rel="stylesheet" type="text/css">
-  <!--<link rel="stylesheet" href="/lib/angular-ui-notification/dist/angular-ui-notification.css">-->
-
-  <!-- Head Libs -->
-  <script src="/vendor/modernizr/modernizr.js"></script>
-
-  <!-- pnotify-->
-  <link rel="stylesheet" href="/lib/pnotify/dist/pnotify.css">
-  <link rel="stylesheet" href="/lib/pnotify/dist/pnotify.buttons.css">
-
-  <link rel="stylesheet" href='/lib/bootstrap-daterangepicker/daterangepicker.css'>
-
-  <style>
-    @keyframes blink {
-      0% { opacity: 1; }
-      50% { opacity: 0.0; }
-      100% { opacity: 1; }
-    }
-  </style>
-
-  <script>
-    var mobileKeyWords = new Array('iPhone', 'iPod', 'BlackBerry', 'Android', 'Windows CE', 'LG', 'MOT', 'SAMSUNG', 'SonyEricsson');
-    //    for (var word in mobileKeyWords){
-    //      if (navigator.userAgent.match(mobileKeyWords[word]) != null){
-    //        location.href = '/?_p=m';
-    //        break;
-    //      }
-    //    }
-    var _platform = "web";
-    var _os = '';
-    var _facebookAppId = "{{facebookAppId}}";
-    var _kakaoJSId = "{{kakaoJSAppId}}";
-    var _ogTitle = "{{title}}";
-    var _ogDescription = "{{description}}";
-    var _ogUrl = "{{url}}";
-    var _ogLogo = "{{logo}}";
-  </script>
-
-  <script>
+<script>
+if('{{env}}' == 'production')
+{
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
     ga('create', 'UA-93998259-1', 'auto');
     ga('send', 'pageview');
-
-  </script>
-
-</head>
-<body>
-<div data-ng-controller="LoadingSecreenController" data-ng-hide="loadingFinished" id="loading-screen" style="background: white;position: fixed; top: 0;left: 0;height: 100%;width: 100%;z-index: 999999;opacity: 1; transition: opacity .5s ease">
-  <div class="logo" style="display: block;width: 209px;height: 80px;background-repeat: no-repeat;background-image: url(images/playchat/playchat_logo.png);background-size: contain;position:absolute; top: 50%;left: 50%;margin: -40px 0 0 -105px; animation: blink normal 2s infinite ease-in-out"></div>
-</div>
-<section id = 'developer-body' class="body" >
-  <section ng-include="'/modules/core/client/views/header.client.view.html'"></section>
-  <div class="inner-wrapper">
-    <!--<section ng-include="'/modules/core/client/views/menu.client.view.html'"></section>-->
-
-    <aside id="sidebar-left" class="sidebar-left" ng-controller="MenuController">
-
-      <div class="sidebar-header">
-        <div class="sidebar-title">
-          <strong style="color: #abb4be; padding: 15px" data-ng-bind="currentBot.name"></strong>
-        </div>
-        <div class="sidebar-toggle hidden-xs" data-toggle-class="sidebar-left-collapsed" data-target="html"
-             data-fire-event="sidebar-left-toggle">
-          <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
-        </div>
-      </div>
-      <div class="nano">
-        <div class="nano-content">
-          <nav id="menu" class="nav-main" role="navigation">
-            <ul class="nav nav-main">
-              <!--<li class="nav-active">-->
-              <!--<a ui-sref="developer-home">-->
-              <!--<i class="fa fa-comments-o" aria-hidden="true"></i>-->
-              <!--<span>대화하기</span>-->
-              <!--</a>-->
-              <!--</li>-->
-              <!--<li class="nav-active">-->
-                <!--<a ui-sref="bots.dialog-tree2({botId: $cookies.get('default_bot'), fileId: 'null'})" >-->
-                  <!--<i class="fa fa-cube" aria-hidden="true"></i>-->
-                  <!--<span>챗봇 개발</span>-->
-                <!--</a>-->
-              <!--</li>-->
-
-              <!--<li class="nav-parent" data-ng-repeat="menu in menuList track by $index">-->
-                <!--<a>-->
-                  <!--<i class="fa fa-cub" aria-hidden="true"></i>-->
-                  <!--<span data-ng-bind="menu.title"></span>-->
-                <!--</a>-->
-                <!--<ul class="nav nav-children" id="contentsManagement">-->
-                <!--</ul>-->
-              <!--</li>-->
-
-              <li class="nav-parent">
-                <a>
-                  <i class="fa fa-cube" aria-hidden="true"></i>
-                  <span>챗봇 개발</span>
-                </a>
-                <ul class="nav nav-children">
-                  <li>
-                    <a ui-sref="dialogsets.dialogsLearn({botNameId: currentBot.id})">
-                      <i class="fa fa-cube" aria-hidden="true"></i>
-                      <span>대화 학습</span>
-                    </a>
-                  </li>
-                  <!--<li>-->
-                    <!--<a ui-sref="dialogsets.dialogsLearn({botNameId: currentBot.id})">-->
-                      <!--<i class="fa fa-cube" aria-hidden="true"></i>-->
-                      <!--<span>대화셋 관리</span>-->
-                    <!--</a>-->
-                  <!--</li>-->
-                  <li>
-                    <a ui-sref="bots.dialog-tree2({botId: $cookies.get('default_bot'), fileId: 'null'})">
-                      <i class="fa fa-cube" aria-hidden="true"></i>
-                      <span>대화 시나리오</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a ui-sref="bots.dialog-graph2({botId: $cookies.get('default_bot'), fileId: 'null'})">
-                      <i class="fa fa-cube" aria-hidden="true"></i>
-                      <span>대화 시나리오2</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a ui-sref="bots.files({botId: $cookies.get('default_bot')})">
-                      <i class="fa fa-cube" aria-hidden="true"></i>
-                      <span>추가 시나리오</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a ui-sref="entitys.list">
-                      <i class="fa fa-cube" aria-hidden="true"></i>
-                      <span>엔터티(ENTITY)</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a ui-sref="intents.list">
-                      <i class="fa fa-cube" aria-hidden="true"></i>
-                      <span>인텐트(INTENT)</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a ui-sref="tasks.list({listType: 'all'})">
-                      <i class="fa fa-cube" aria-hidden="true"></i>
-                      <span>테스크(TASK)</span>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-
-
-              <li class="nav-parent">
-                <a>
-                  <i class="fa fa-cube" aria-hidden="true"></i>
-                  <span>컨텐츠 관리</span>
-                </a>
-                <ul class="nav nav-children" id="contentsManagement">
-                </ul>
-              </li>
-
-              <li class="nav-active">
-                <a ui-sref="channels.list" >
-                  <i class="fa fa-cube" aria-hidden="true"></i>
-                  <span>채널 관리</span>
-                </a>
-              </li>
-
-
-              <li class="nav-parent">
-                <a>
-                  <i class="fa fa-language" aria-hidden="true"></i>
-                  <span>운영/분석</span>
-                </a>
-                <ul class="nav nav-children">
-                  <li>
-                    <a ui-sref="analytics.dashboard">
-                      <i class="fa fa-cube" aria-hidden="true"></i>
-                      <span>Dashboard</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a ui-sref="analytics.user-statistics">
-                      <i class="fa fa-cube" aria-hidden="true"></i>
-                      <span>사용자 통계</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a ui-sref="analytics.dialog-amount-statistics">
-                      <i class="fa fa-cube" aria-hidden="true"></i>
-                      <span>대화량 통계</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a ui-sref="analytics.senario-usage-statistics">
-                      <i class="fa fa-cube" aria-hidden="true"></i>
-                      <span>시나리오 사용 통계</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a ui-sref="analytics.user-input-statistics">
-                      <i class="fa fa-cube" aria-hidden="true"></i>
-                      <span>사용자 입력 통계</span>
-                    </a>
-                  </li>
-                  <li>
-                  <li>
-                    <a ui-sref="analytics.user-input-statistics-faq">
-                      <i class="fa fa-cube" aria-hidden="true"></i>
-                      <span>사용자 입력 통계(FAQ)</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a ui-sref="analytics.fail-dialog-statistics">
-                      <i class="fa fa-cube" aria-hidden="true"></i>
-                      <span>실패 대화 통계</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a ui-sref="analytics.dialog-failure-maintenance.list" >
-                      <i class="fa fa-cube" aria-hidden="true"></i>
-                      <span>인텐트 대화학습</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a ui-sref="bot-users.list">
-                      <i class="fa fa-cube" aria-hidden="true"></i>
-                      <span>챗봇 대화 내역</span>
-                    </a>
-                  </li>
-
-                  <!--<li>-->
-                    <!--<a ui-sref="analytics.user-count">-->
-                      <!--<i class="fa fa-cube" aria-hidden="true"></i>-->
-                      <!--<span>사용자 수 분석</span>-->
-                    <!--</a>-->
-                  <!--</li>-->
-                  <!--<li>-->
-                    <!--<a ui-sref="analytics.dialog-usage">-->
-                      <!--<i class="fa fa-cube" aria-hidden="true"></i>-->
-                      <!--<span>대화별 사용량</span>-->
-                    <!--</a>-->
-                  <!--</li>-->
-                  <!--<li>-->
-                    <!--<a ui-sref="analytics.dialog-success">-->
-                      <!--<i class="fa fa-cube" aria-hidden="true"></i>-->
-                      <!--<span>문장 성공률</span>-->
-                    <!--</a>-->
-                  <!--</li>-->
-                  <li>
-                    <a ui-sref="user-bots.context-analytics">
-                      <i class="fa fa-cube" aria-hidden="true"></i>
-                      <span>Context 분석</span>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-
-              <li class="nav-active" data-ng-if="authentication.user.roles[0] == 'admin'">
-                <a ui-sref="admin.users" >
-                  <i class="fa fa-cube" aria-hidden="true"></i>
-                  <span>사용자 관리</span>
-                </a>
-              </li>
-
-              <li class="nav-active" data-ng-if="authentication.user.roles[0] == 'admin'">
-                <a ui-sref="templates.list" >
-                  <i class="fa fa-cube" aria-hidden="true"></i>
-                  <span>템플릿 관리</span>
-                </a>
-              </li>
-
-
-              <!--<li class="nav-parent" data-ng-if="authentication.user.roles[0] == 'admin'">-->
-                <!--<a>-->
-                  <!--<i class="fa fa-list-alt" aria-hidden="true"></i>-->
-                  <!--<span>권한 관리</span>-->
-                <!--</a>-->
-                <!--<ul class="nav nav-children">-->
-                  <!--<li>-->
-                    <!--<a ui-sref="admin.users">-->
-                      <!--<i class="fa fa-cube" aria-hidden="true"></i>-->
-                      <!--<span>사용자 관리</span>-->
-                    <!--</a>-->
-                  <!--</li>-->
-                  <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                  <!--&lt;!&ndash;<a ui-sref="admin.user-menu">&ndash;&gt;-->
-                  <!--&lt;!&ndash;권한별 메뉴 관리&ndash;&gt;-->
-                  <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                  <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                <!--</ul>-->
-              <!--</li>-->
-
-              <!--<li class="nav-parent">-->
-                <!--<a>-->
-                  <!--<i class="fa fa-tasks" aria-hidden="true"></i>-->
-                  <!--<span>태스크(TASK)</span>-->
-                <!--</a>-->
-                <!--<ul class="nav nav-children">-->
-                  <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                  <!--&lt;!&ndash;<a>&ndash;&gt;-->
-                  <!--&lt;!&ndash;공통 테스크 목록&ndash;&gt;-->
-                  <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                  <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                  <!--<li>-->
-                    <!--<a ui-sref="tasks.list({listType: 'all'})">-->
-                      <!--태스크 리스트-->
-                    <!--</a>-->
-                  <!--</li>-->
-                  <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                  <!--&lt;!&ndash;<a ui-sref="tasks.graph">&ndash;&gt;-->
-                  <!--&lt;!&ndash;테스크 그래프&ndash;&gt;-->
-                  <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                  <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                <!--</ul>-->
-              <!--</li>-->
-
-
-              <!--<li class="nav-parent">-->
-              <!--<a>-->
-              <!--<i class="fa fa-table" aria-hidden="true"></i>-->
-              <!--<span>지식DB 관리</span>-->
-              <!--</a>-->
-              <!--<ul class="nav nav-children">-->
-              <!--<li>-->
-              <!--<a ui-sref="dicts.list">-->
-              <!--사전-->
-              <!--</a>-->
-              <!--</li>-->
-              <!--<li>-->
-              <!--<a ui-sref="dialogsets.concepts({kind: 'general'})">-->
-              <!--일반개념-->
-              <!--</a>-->
-              <!--</li>-->
-              <!--<li>-->
-              <!--<a ui-sref="dialogsets.concepts({kind: 'faq'})">-->
-              <!--개념-->
-              <!--</a>-->
-              <!--</li>-->
-              <!--<li>-->
-              <!--<a ui-sref="canonicals.list">-->
-              <!--기본형-->
-              <!--</a>-->
-              <!--</li>-->
-              <!--<li>-->
-              <!--<a ui-sref="facts.list">-->
-              <!--지식-->
-              <!--</a>-->
-              <!--</li>-->
-              <!--</ul>-->
-              <!--</li>-->
-
-              <!--<li class="nav-parent">-->
-                <!--<a>-->
-                  <!--<i class="fa fa-comments-o" aria-hidden="true"></i>-->
-                  <!--<span>대화 관리</span>-->
-                <!--</a>-->
-                <!--<ul class="nav nav-children">-->
-                  <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                  <!--&lt;!&ndash;<a ui-sref="dialogsets.list">&ndash;&gt;-->
-                  <!--&lt;!&ndash;공통 Dialog&ndash;&gt;-->
-                  <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                  <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                  <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                  <!--&lt;!&ndash;<a ui-sref="dialogsets.list({listType : 'public'})">&ndash;&gt;-->
-                  <!--&lt;!&ndash;공통 DialogSet&ndash;&gt;-->
-                  <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                  <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                  <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                  <!--&lt;!&ndash;<a ui-sref="dialogsets.list">&ndash;&gt;-->
-                  <!--&lt;!&ndash;개별 Dialog&ndash;&gt;-->
-                  <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                  <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                  <!--<li>-->
-                    <!--<a ui-sref="dialogsets.list({listType: 'all'})">-->
-                      <!--대화셋 관리-->
-                    <!--</a>-->
-                  <!--</li>-->
-                  <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                  <!--&lt;!&ndash;<a>&ndash;&gt;-->
-                  <!--&lt;!&ndash;대화 그래프&ndash;&gt;-->
-                  <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                  <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                <!--</ul>-->
-              <!--</li>-->
-
-              <!--<li class="nav-parent">-->
-                <!--<a>-->
-                  <!--<i class="fa fa-book" aria-hidden="true"></i>-->
-                  <!--<span>지식/온톨로지</span>-->
-                <!--</a>-->
-                <!--<ul class="nav nav-children">-->
-                  <!--<li>-->
-                    <!--<a ui-sref="dialogsets.concepts({kind: 'general'})">-->
-                      <!--공통 컨셉-->
-                    <!--</a>-->
-                  <!--</li>-->
-                  <!--<li>-->
-                    <!--<a ui-sref="dialogsets.concepts({kind: 'faq'})">-->
-                      <!--커스텀 컨셉-->
-                    <!--</a>-->
-                  <!--</li>-->
-                  <!--<li>-->
-                    <!--<a ui-sref="bots.graph-knowledge({botId: bot._id})">-->
-                      <!--지식 그래프-->
-                    <!--</a>-->
-                  <!--</li>-->
-                  <!--<li>-->
-                  <!--<a ui-sref="facts.list">-->
-                  <!--공통 지식-->
-                  <!--</a>-->
-                  <!--</li>-->
-                  <!--<li>-->
-                  <!--<a ui-sref="dicts.list">-->
-                  <!--공통 사전-->
-                  <!--</a>-->
-                  <!--</li>-->
-                  <!--<li>-->
-                  <!--<a ui-sref="canonicals.list">-->
-                  <!--canonicals-->
-                  <!--</a>-->
-                  <!--</li>-->
-                  <!--<li>-->
-                  <!--<a>-->
-                  <!--공통 Corpus-->
-                  <!--</a>-->
-                  <!--</li>-->
-                <!--</ul>-->
-              <!--</li>-->
-
-              <!--<li class="nav-active" id="menuTest">-->
-                <!--<a ui-sref="bot-users.list">-->
-                  <!--<i class="fa fa-user" aria-hidden="true"></i>-->
-                  <!--<span>사용자 관리</span>-->
-                <!--</a>-->
-              <!--</li>-->
-
-
-
-              <!--<li class="nav-parent">-->
-                <!--<a>-->
-                  <!--<i class="fa fa-archive" aria-hidden="true"></i>-->
-                  <!--<span>챗봇 관리</span>-->
-                <!--</a>-->
-                <!--<ul class="nav nav-children">-->
-                  <!--<li>-->
-                    <!--<a ui-sref="bots.list">-->
-                      <!--챗봇 리스트-->
-                    <!--</a>-->
-                  <!--</li>-->
-                  <!--<li data-ng-show="authentication.user.roles[0] == 'admin'">-->
-                    <!--<a ui-sref="templates.list">-->
-                      <!--템플릿 관리-->
-                    <!--</a>-->
-                  <!--</li>-->
-                <!--</ul>-->
-              <!--</li>-->
-
-              <!--<li class="nav-parent">-->
-                <!--<a>-->
-                  <!--<i class="fa fa-align-left" aria-hidden="true"></i>-->
-                  <!--<span>운영 관리</span>-->
-                <!--</a>-->
-                <!--<ul class="nav nav-children">-->
-                  <!--<li>-->
-                    <!--<a ui-sref="analytics.dialog-failure-maintenance.list">의도분석 대화학습</a>-->
-                  <!--</li>-->
-                  <!--<li>-->
-                    <!--<a ui-sref="analytics.dialog-failure">Dialog 대화학습</a>-->
-                  <!--</li>-->
-                  <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<a ui-sref="analytics.dialog-intent">대화 인텐트 분석</a>&ndash;&gt;-->
-                  <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                  <!--<li>-->
-                    <!--<a ui-sref="analytics.manage-batch">배치 관리</a>-->
-                  <!--</li>-->
-
-                <!--</ul>-->
-              <!--</li>-->
-
-              <!--<li class="nav-parent">-->
-                <!--<a ui-sref="analytics.dashboard">-->
-                  <!--<i class="fa fa-area-chart" aria-hidden="true"></i>-->
-                  <!--<span>분석</span>-->
-                <!--</a>-->
-                <!--<ul class="nav nav-children">-->
-                  <!--<li>-->
-                    <!--<a ui-sref="analytics.dashboard">Dashboard</a>-->
-                  <!--</li>-->
-                  <!--<li>-->
-                    <!--<a ui-sref="analytics.user-count">사용자수 분석</a>-->
-                  <!--</li>-->
-                  <!--<li>-->
-                    <!--<a ui-sref="analytics.dialog-usage">대화별 사용량</a>-->
-                  <!--</li>-->
-                  <!--<li>-->
-                    <!--<a ui-sref="analytics.dialog-success">문장 성공률</a>-->
-                  <!--</li>-->
-                  <!--<li>-->
-                    <!--<a ui-sref="user-bots.context-analytics">Context 분석</a>-->
-                  <!--</li>-->
-                  <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                  <!--&lt;!&ndash;<a ui-sref="user-bots.context-learning">Context 학습</a>&ndash;&gt;-->
-                  <!--&lt;!&ndash;</li>&ndash;&gt;-->
-
-
-                  <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<a ui-sref="analytics.session-success">대화(세션) 성공률</a>&ndash;&gt;-->
-                  <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                <!--</ul>-->
-              <!--</li>-->
-
-
-              <!--<li class="nav">-->
-              <!--<a ui-sref="bot-users.list">-->
-              <!--<i class="fa fa-users" aria-hidden="true"></i>-->
-              <!--<span>친구 목록</span>-->
-              <!--</a>-->
-              <!--</li>-->
-
-              <!--<li class="nav-parent">-->
-              <!--<a>-->
-              <!--<i class="fa fa-copy" aria-hidden="true"></i>-->
-              <!--<span>대화 관리</span>-->
-              <!--</a>-->
-              <!--<ul class="nav nav-children">-->
-              <!--<li>-->
-              <!--<a ui-sref="dialogsets.list">-->
-              <!--대화Set 관리-->
-              <!--</a>-->
-              <!--</li>-->
-              <!--<li>-->
-              <!--<a href="pages-signin.html">-->
-              <!--테스크 관리-->
-              <!--</a>-->
-              <!--</li>-->
-              <!--</ul>-->
-              <!--</li>-->
-
-
-              <!--<li class="nav">-->
-              <!--<a ui-sref="learnings.create">-->
-              <!--<i class="fa fa-users" aria-hidden="true"></i>-->
-              <!--<span>대화학습</span>-->
-              <!--</a>-->
-              <!--</li>-->
-
-              <!--<li class="nav-parent">-->
-              <!--<a>-->
-              <!--<i class="fa fa-asterisk" aria-hidden="true"></i>-->
-              <!--<span>연동 인터페이스</span>-->
-              <!--</a>-->
-              <!--<ul class="nav nav-children">-->
-              <!--<li>-->
-              <!--<a ui-sref="common-actions.list">-->
-              <!--Common Action 관리-->
-              <!--</a>-->
-              <!--</li>-->
-              <!--<li>-->
-              <!--<a ui-sref="custom-actions.list">-->
-              <!--Custom Action 관리-->
-              <!--</a>-->
-              <!--</li>-->
-              <!--</ul>-->
-              <!--</li>-->
-
-              <!--<li class="nav">-->
-              <!--<a ui-sref="campaigns.list">-->
-              <!--<i class="fa fa-calendar-o" aria-hidden="true"></i>-->
-              <!--<span>캠페인 관리</span>-->
-              <!--</a>-->
-              <!--</li>-->
-              <!--<li class="nav-parent">-->
-              <!--<a>-->
-              <!--<i class="fa fa-paper-plane-o" aria-hidden="true"></i>-->
-              <!--<span>메시지 발송</span>-->
-              <!--</a>-->
-              <!--<ul class="nav nav-children">-->
-              <!--<li>-->
-              <!--<a ui-sref="messages.send">-->
-              <!--발송하기-->
-              <!--</a>-->
-              <!--</li>-->
-              <!--<li>-->
-              <!--<a ui-sref="messages.list">-->
-              <!--발송내역-->
-              <!--</a>-->
-              <!--</li>-->
-              <!--</ul>-->
-              <!--</li>-->
-
-
-              <!--<li class="nav-parent">-->
-              <!--<a>-->
-              <!--<i class="fa fa-align-left" aria-hidden="true"></i>-->
-              <!--<span>분석도구</span>-->
-              <!--</a>-->
-              <!--<ul class="nav nav-children">-->
-              <!--<li>-->
-              <!--<a>사용자 대화 분석</a>-->
-              <!--</li>-->
-              <!--<li>-->
-              <!--<a>사용자 실패율 분석</a>-->
-              <!--</li>-->
-              <!--<li>-->
-              <!--<a>분석 최적화</a>-->
-              <!--</li>-->
-              <!--</ul>-->
-              <!--</li>-->
-
-              <!--<li class="nav-parent" ng-show="false">-->
-              <!--<a>-->
-              <!--<i class="fa fa-align-left" aria-hidden="true"></i>-->
-              <!--<span>배달봇</span>-->
-              <!--</a>-->
-              <!--<ul class="nav nav-children">-->
-              <!--<li>-->
-              <!--<a ui-sref="restaurants.list">음식점관리</a>-->
-              <!--</li>-->
-              <!--<li>-->
-              <!--<a ui-sref="franchises.list">프랜차이즈관리</a>-->
-              <!--</li>-->
-              <!--<li>-->
-              <!--<a ui-sref="deliveryOrders.list">주문관리</a>-->
-              <!--</li>-->
-              <!--</ul>-->
-              <!--</li>-->
-              <!--<li class="nav">-->
-              <!--<a ui-sref="convergences.list">-->
-              <!--<i class="fa fa-plug" aria-hidden="true"></i>-->
-              <!--<span>컨버젼스</span>-->
-              <!--</a>-->
-              <!--</li>-->
-
-            </ul>
-          </nav>
-
-
-          <script>
-            // Preserve Scroll Position
-            if (typeof localStorage !== 'undefined') {
-              if (localStorage.getItem('sidebar-left-position') !== null) {
-                var initialPosition = localStorage.getItem('sidebar-left-position'),
-                  sidebarLeft = document.querySelector('#sidebar-left .nano-content');
-
-                sidebarLeft.scrollTop = initialPosition;
-              }
-            }
-          </script>
-
-        </div>
-      </div>
-
-    </aside>
-
-    <aside id="sidebar-left-docs" >
-    </aside>
-
-    <!--<section id="main" role="main" class="content-body" style="overflow: inherit">-->
-    <section id="main" role="main" class="content-body" style="overflow: scroll; height: 100%">
-        {% block content %}{% endblock %}
-    </section>
-
-    <div id="intent-button" class="intent-button" onClick="javascript: showIntentPanel();" >분석</div>
-    <section id="intent-include" class="hide-intent" style="z-index: 10"
-             ng-include="'/modules/analytics/client/views/dialog-intent.client.view.html'"></section>
-
-    <div id="log-button" class="log-button" onClick="javascript: showLogPanel();" >Log</div>
-    <section id="log-include" class="hide-log" style="z-index: 10"
-             ng-include="'/modules/bots/client/views/log.client.view.html'"></section>
-
-    <aside id="chat-include" class="sidebar-right" style="z-index: 11;" ng-include="'/modules/bots/client/views/chat-user-bot.client.view.html'"></aside>
-
-    <!--<section id="chat-include" ng-include="'/modules/bots/client/views/chat-user-bot.client.view.html'"></section>-->
-
-  </div>
-</section>
-
-<!-- Vendor -->
-<script src="/vendor/jquery/jquery.js"></script>
-<script src="/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
-<script src="/vendor/bootstrap/js/bootstrap.js"></script>
-<script src="/vendor/nanoscroller/nanoscroller.js"></script>
-<script src="/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-<script src="/vendor/magnific-popup/jquery.magnific-popup.js"></script>
-<script src="/vendor/jquery-placeholder/jquery-placeholder.js"></script>
-
-<!-- Specific Page Vendor -->
-<script src="/vendor/jquery-ui/jquery-ui.js"></script>
-<script src="/vendor/jqueryui-touch-punch/jqueryui-touch-punch.js"></script>
-<script src="/vendor/jquery-appear/jquery-appear.js"></script>
-<script src="/vendor/bootstrap-multiselect/bootstrap-multiselect.js"></script>
-<script src="/vendor/select2/js/select2.js"></script>
-<script src="/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
-<script src="/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
-<script src="/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
-<script src="/vendor/jquery-maskedinput/jquery.maskedinput.js"></script>
-<script src="/vendor/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
-<script src="/vendor/owl.carousel/owl.carousel.min.js"></script>
-<!--<script src="/vendor/dropzone/dropzone.js"></script>-->
-
-<!--&lt;!&ndash; Theme Base, Components and Settings &ndash;&gt;-->
-<script src="/js/theme.js"></script>
-
-<!--&lt;!&ndash; Theme Custom &ndash;&gt;-->
-<script src="/js/theme.custom.js"></script>
-
-<!--&lt;!&ndash; Theme Initialization Files &ndash;&gt;-->
-<script src="/js/theme.init.js"></script>
-
-<!--Embedding The User Object-->
-<script type="text/javascript">
-  var user = {{ user | json | safe }};
-  var enterprise = {{ enterprise | json | safe }};
+}
 </script>
 
-<!--Load The Socket.io File-->
-<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+</head>
+<body ng-controller="MainController">
 
-<!--Application JavaScript Files-->
+
+<div ng-show="loading" class="main-logo-background test">
+    <div class="logo"></div>
+</div>
+
+<!--<section ng-include="'/modules/core/client/views/header.client.view.html'"></section>-->
+
+<section id="main" role="main">
+    <section ui-view style="height: 100%;"></section>
+</section>
+
+<!--<aside id="chat-include" class="sidebar-right" style="z-index: 11;" ng-include="'/modules/bots/client/views/chat-user-bot.client.view.html'"></aside>-->
+
+
+
+
+
+{% if env == 'development' %}
+<!-- 필요한 라이브러리 import -->
+<script src="/lib/jquery/dist/jquery.js"></script>
+<script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/lib/angular/angular.js"></script>
+<!--<script src="/lib/datatables.net/js/jquery.dataTables.js"></script>-->
+<!--<script src="/lib/angular-animate/angular-animate.js"></script>-->
+<script src="/lib/angular-bootstrap/ui-bootstrap.js"></script>
+<script src="/lib/angular-cookies/angular-cookies.js"></script>
+<!--<script src="/lib/angular-datatables/dist/angular-datatables.js"></script>-->
+<!--<script src="/lib/angular-dropzone/lib/angular-dropzone.js"></script>-->
+<script src="/lib/angular-file-upload/dist/angular-file-upload.min.js"></script>
+<!--<script src="/lib/angular-messages/angular-messages.js"></script>-->
+<!--<script src="/lib/angular-pnotify/src/angular-pnotify.js"></script>-->
+<script src="/lib/angular-resource/angular-resource.js"></script>
+<!--<script src="/lib/angular-sanitize/angular-sanitize.js"></script>-->
+<!--<script src="/lib/angular-ui-codemirror/ui-codemirror.js"></script>-->
+<script src="/lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+<!--<script src="/lib/angular-ui-select/dist/select.js"></script>-->
+<!--<script src="/lib/angular-ui-utils/ui-utils.js"></script>-->
+<!--<script src="/lib/ment.io/dist/mentio.js"></script>-->
+{% endif %}
+
+
+
+
+<!-- config 정리될때까지 angular 모듈 임시로 -->
+<!-- Core -->
+<script src="modules/core/client/config/config.js"></script>
+<script src="modules/core/client/config/init.js"></script>
+<script src="modules/core/client/config/modules.js"></script>
+
+<script src="modules/core/client/services/interceptors/auth.interceptor.client.service.js"></script>
+<!--<script src="modules/core/client/services/menus.client.service.js"></script>-->
+
+<script src="modules/core/client/controllers/title.client.controller.js"></script>
+<script src="modules/core/client/controllers/main.client.controller.js"></script>
+
+<script src="modules/core/client/config/core.client.routes.js"></script>
+
+<!-- PlayChat core -->
+<script src="modules/playchat/core/client/controllers/playchat.client.controller.js"></script>
+<script src="modules/playchat/core/client/config/playchat.main.routes.js"></script>
+
+<!-- PlayChat SideMenu -->
+<script src="modules/playchat/side-menu/client/controllers/side-menu.client.controller.js"></script>
+
+<!-- PlayChat TopBar -->
+<script src="modules/playchat/top-bar/client/controllers/top-bar.client.controller.js"></script>
+
+
+<!-- Header -->
+<!--<script src="modules/header/client/controllers/header.client.controller.js"></script>-->
+
+<!-- Authentication -->
+<!--<script src="modules/authentication/client/config/authentication.client.route.js"></script>-->
+
+<!--<script src="modules/authentication/client/controllers/authentication.client.controller.js"></script>-->
+
+<!--<script src="modules/authentication/client/services/authentication.client.service.js"></script>-->
+<!--<script src="modules/authentication/client/services/password-validator.client.service.js"></script>-->
+
+
+<!-- Chatbot -->
+<!--<script src="modules/chatbot-list/client/config/chatbot.client.route.js"></script>-->
+<!--<script src="modules/chatbot-list/client/controllers/chatbot.client.controller.js"></script>-->
+
+<!-- Users -->
+<!--<script src="modules/users/client/users.client.module.js"></script>-->
+<!--<script src="modules/users/client/config/users.client.routes.js"></script>-->
+
+
+
+<!--<script src="modules/core/client/directives/show-errors.client.directives.js"></script>-->
+<!--<script src="modules/core/client/services/menus.client.service.js"></script>-->
+<!--<script src="modules/core/client/services/socket.io.client.service.js"></script>-->
+
+<!--<script src="modules/core/client/config/core.client.routes.js"></script>-->
+
+<!--<script src="modules/core/client/controllers/landing-bots.client.controller.js"></script>-->
+
+<!--<script src="modules/core/client/controllers/header.client.controller.js"></script>-->
+
+<!--<script src="modules/bots/client/bots.client.module.js"></script>-->
+<!--<script src="modules/bots/client/user-bots.client.module.js"></script>-->
+<!--<script src="modules/bots/client/config/bots.client.config.js"></script>-->
+<!--<script src="modules/bots/client/config/bots.client.routes.js"></script>-->
+<!--<script src="modules/bots/client/services/bots.client.service.js"></script>-->
+<!--<script src="modules/bots/client/services/user-bots.client.service.js"></script>-->
+
+<!--<script src="modules/bots/client/controllers/user-bot-chat.client.controller.js"></script>-->
+
+
+<!--&lt;!&ndash; users &ndash;&gt;-->
+<!--<script src="modules/users/client/users.client.module.js"></script>-->
+<!--<script src="modules/users/client/config/users.client.config.js"></script>-->
+<!--<script src="modules/users/client/config/users.client.routes.js"></script>-->
+<!--<script src="modules/users/client/services/authentication.client.service.js"></script>-->
+<!--<script src="modules/users/client/services/users.client.service.js"></script>-->
+
+
+
+
+<!-- 로컬개발시 angular 모듈 import -->
 {% for jsFile in jsFiles %}
 <script type="text/javascript" src="{{jsFile}}"></script>
 {% endfor %}
+
+
+
+
 
 {% if env == 'production' %}
 <script type="text/javascript" src="dist/application.min.js?rel={{app_version}}"></script>
 {% endif %}
 
-{% if livereload %}
-<!--Livereload script rendered -->
-<script type="text/javascript" src="{{host}}:35729/livereload.js"></script>
-{% endif %}
 
+
+
+
+
+
+
+
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 <script src="https://connect.facebook.net/en_US/all.js"></script>
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script>
-  var facebookAppId = {{ facebookAppId | json | safe }};
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : facebookAppId,
-      status     : true,
-      xfbml      : true,
-      version    : 'v2.8'
-    });
-  };
-  (function(d, s, id){
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) {return;}
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
+if('{{env}}' == 'production')
+{
+    var facebookAppId = {{ facebookAppId | json | safe }};
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : facebookAppId,
+            status     : true,
+            xfbml      : true,
+            version    : 'v2.8'
+        });
+    };
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
 
-
+    var kakaoJSID = {{ kakaoJSID | json | safe }};
+    Kakao.init(kakaoJSID);  // 사용할 앱의 JavaScript 키를 설정해 주세요.
+}
 </script>
-<script>
-  var kakaoJSID = {{ kakaoJSID | json | safe }};
-  Kakao.init(kakaoJSID);  // 사용할 앱의 JavaScript 키를 설정해 주세요.
-</script>
-
-<!--line-->
-<script src="https://d.line-scdn.net/r/web/social-plugin/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
-
-<script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
 </body>
 </html>
-
