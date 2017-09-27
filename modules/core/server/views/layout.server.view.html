@@ -19,9 +19,34 @@
 <!-- 필요한 라이브러리 CSS -->
 <link href="/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 
-<!-- 모듈 CSS 파일 -->
+
+{% if env == 'development' %}
+<!-- Core -->
 <link href="modules/core/client/css/core.css" rel="stylesheet" type="text/css" />
-<link href="modules/core/client/css/signin.css" rel="stylesheet" type="text/css" />
+
+<link href="modules/authentication/client/css/signin.css" rel="stylesheet" type="text/css" />
+
+<!-- PlayChat Core -->
+
+<!-- PlayChat Core Layout -->
+<link href="/modules/playchat/core/layout/client/css/layout.css" rel="stylesheet" type="text/css">
+<link href="/modules/playchat/core/layout/client/css/styleCustom.css" rel="stylesheet" type="text/css">
+<link href="/modules/playchat/core/layout/client/css/common.css" rel="stylesheet" type="text/css">
+
+<!-- PlayChat Global Navigation Bar -->
+<link href="/modules/playchat/gnb/client/css/gnb.css" rel="stylesheet" type="text/css">
+<link href="/modules/playchat/gnb/client/css/gnb-responsive.css" rel="stylesheet" type="text/css" media="only screen and (max-width: 1024px)" id="gnb-responsive-css">
+
+<!-- PlayChat TopBar -->
+<link href="/modules/playchat/top-bar/client/css/top-bar.css" rel="stylesheet" type="text/css" id="topbar-css">
+
+<!-- PlayChat Simulator -->
+<link href="/modules/playchat/simulator/client/css/simulator.css" rel="stylesheet" type="text/css">
+<link href="/modules/playchat/simulator/client/css/simulator-responsive.css" rel="stylesheet" type="text/css" media="only screen and (max-width: 900px)" id="simulator-responsive-css">
+
+<!-- PlayChat LogAnalysis -->
+<link href="/modules/playchat/log-analysis/client/css/log-analysis.css" rel="stylesheet" type="text/css">
+{% endif %}
 
 <script>
 window.__CONFIG = {};
@@ -75,33 +100,18 @@ if('{{env}}' == 'production')
 
 
 
-{% if env == 'development' %}
+
 <!-- 필요한 라이브러리 import -->
 <script src="/lib/jquery/dist/jquery.js"></script>
-<script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="/lib/angular/angular.js"></script>
-<!--<script src="/lib/datatables.net/js/jquery.dataTables.js"></script>-->
-<!--<script src="/lib/angular-animate/angular-animate.js"></script>-->
-<script src="/lib/angular-bootstrap/ui-bootstrap.js"></script>
-<script src="/lib/angular-cookies/angular-cookies.js"></script>
-<!--<script src="/lib/angular-datatables/dist/angular-datatables.js"></script>-->
-<!--<script src="/lib/angular-dropzone/lib/angular-dropzone.js"></script>-->
-<script src="/lib/angular-file-upload/dist/angular-file-upload.min.js"></script>
-<!--<script src="/lib/angular-messages/angular-messages.js"></script>-->
-<!--<script src="/lib/angular-pnotify/src/angular-pnotify.js"></script>-->
 <script src="/lib/angular-resource/angular-resource.js"></script>
-<!--<script src="/lib/angular-sanitize/angular-sanitize.js"></script>-->
-<!--<script src="/lib/angular-ui-codemirror/ui-codemirror.js"></script>-->
 <script src="/lib/angular-ui-router/release/angular-ui-router.min.js"></script>
-<!--<script src="/lib/angular-ui-select/dist/select.js"></script>-->
-<!--<script src="/lib/angular-ui-utils/ui-utils.js"></script>-->
-<!--<script src="/lib/ment.io/dist/mentio.js"></script>-->
-{% endif %}
+<script src="/lib/angular-cookies/angular-cookies.js"></script>
+<!--<script src="/lib/angular-file-upload/dist/angular-file-upload.min.js"></script>-->
 
 
 
-
-<!-- config 정리될때까지 angular 모듈 임시로 -->
+{% if env == 'development' %}
 <!-- Core -->
 <script src="modules/core/client/config/config.js"></script>
 <script src="modules/core/client/config/init.js"></script>
@@ -116,14 +126,32 @@ if('{{env}}' == 'production')
 
 <script src="modules/core/client/config/core.client.routes.js"></script>
 
-<!-- PlayChat core -->
-<script src="modules/playchat/core/client/config/modules.js"></script>
-<script src="modules/playchat/core/client/controllers/playchat.client.controller.js"></script>
-<script src="modules/playchat/core/client/services/playchat.client.service.js"></script>
-<script src="modules/playchat/core/client/config/playchat.main.routes.js"></script>
+
+
+<!-- Authentication -->
+<script src="modules/authentication/client/controllers/authentication.client.controller.js"></script>
+<script src="modules/authentication/client/services/authentication.client.service.js"></script>
+<script src="modules/authentication/client/services/password-validator.client.service.js"></script>
+<script src="modules/authentication/client/config/authentication.client.route.js"></script>
+
+
+
+<!-- chatbot-list -->
+<script src="modules/chatbot-list/client/config/chatbot.client.route.js"></script>
+<script src="modules/chatbot-list/client/controllers/chatbot.client.controller.js"></script>
+
+
+
+<!-- PlayChat Core -->
+
+<!-- PlayChat Core Layout -->
+<script src="modules/playchat/core/layout/client/config/modules.js"></script>
+<script src="modules/playchat/core/layout/client/controllers/layout.client.controller.js"></script>
+<script src="modules/playchat/core/layout/client/services/layout.client.service.js"></script>
+<script src="modules/playchat/core/layout/client/config/layout.routes.js"></script>
 
 <!-- PlayChat SideMenu -->
-<script src="modules/playchat/side-menu/client/controllers/side-menu.client.controller.js"></script>
+<script src="modules/playchat/gnb/client/controllers/gnb.client.controller.js"></script>
 
 <!-- PlayChat TopBar -->
 <script src="modules/playchat/top-bar/client/controllers/top-bar.client.controller.js"></script>
@@ -133,65 +161,7 @@ if('{{env}}' == 'production')
 
 <!-- PlayChat LogAnalysis -->
 <script src="modules/playchat/log-analysis/client/controllers/log-analysis.client.controller.js"></script>
-
-
-<!-- Header -->
-<!--<script src="modules/header/client/controllers/header.client.controller.js"></script>-->
-
-<!-- Authentication -->
-<!--<script src="modules/authentication/client/config/authentication.client.route.js"></script>-->
-
-<!--<script src="modules/authentication/client/controllers/authentication.client.controller.js"></script>-->
-
-<!--<script src="modules/authentication/client/services/authentication.client.service.js"></script>-->
-<!--<script src="modules/authentication/client/services/password-validator.client.service.js"></script>-->
-
-
-<!-- Chatbot -->
-<!--<script src="modules/chatbot-list/client/config/chatbot.client.route.js"></script>-->
-<!--<script src="modules/chatbot-list/client/controllers/chatbot.client.controller.js"></script>-->
-
-<!-- Users -->
-<!--<script src="modules/users/client/users.client.module.js"></script>-->
-<!--<script src="modules/users/client/config/users.client.routes.js"></script>-->
-
-
-
-<!--<script src="modules/core/client/directives/show-errors.client.directives.js"></script>-->
-<!--<script src="modules/core/client/services/menus.client.service.js"></script>-->
-<!--<script src="modules/core/client/services/socket.io.client.service.js"></script>-->
-
-<!--<script src="modules/core/client/config/core.client.routes.js"></script>-->
-
-<!--<script src="modules/core/client/controllers/landing-bots.client.controller.js"></script>-->
-
-<!--<script src="modules/core/client/controllers/header.client.controller.js"></script>-->
-
-<!--<script src="modules/bots/client/bots.client.module.js"></script>-->
-<!--<script src="modules/bots/client/user-bots.client.module.js"></script>-->
-<!--<script src="modules/bots/client/config/bots.client.config.js"></script>-->
-<!--<script src="modules/bots/client/config/bots.client.routes.js"></script>-->
-<!--<script src="modules/bots/client/services/bots.client.service.js"></script>-->
-<!--<script src="modules/bots/client/services/user-bots.client.service.js"></script>-->
-
-<!--<script src="modules/bots/client/controllers/user-bot-chat.client.controller.js"></script>-->
-
-
-<!--&lt;!&ndash; users &ndash;&gt;-->
-<!--<script src="modules/users/client/users.client.module.js"></script>-->
-<!--<script src="modules/users/client/config/users.client.config.js"></script>-->
-<!--<script src="modules/users/client/config/users.client.routes.js"></script>-->
-<!--<script src="modules/users/client/services/authentication.client.service.js"></script>-->
-<!--<script src="modules/users/client/services/users.client.service.js"></script>-->
-
-
-
-
-<!-- 로컬개발시 angular 모듈 import -->
-{% for jsFile in jsFiles %}
-<script type="text/javascript" src="{{jsFile}}"></script>
-{% endfor %}
-
+{% endif %}
 
 
 

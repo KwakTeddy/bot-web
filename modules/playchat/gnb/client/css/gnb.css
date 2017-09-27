@@ -1,0 +1,227 @@
+.playchat-background .gnb ul li a
+{
+    display:inline-block;
+    cursor: pointer;
+    line-height: 24px;
+    height: 24px;
+}
+
+.playchat-background .gnb li
+{
+    position: relative;
+}
+
+
+
+
+
+.playchat-background .gnb .gnb-header
+{
+    height: 44px;
+    background: #363636;
+    padding: 10px 23px;
+    position: relative;
+}
+
+.playchat-background .gnb .gnb-header .gnb-open
+{
+    display: none;
+    position: absolute;
+    right: 20px;
+    top: 23px;
+    width: 28px;
+    height: 26px;
+}
+
+.playchat-background .gnb .gnb-header .gnb-close
+{
+    position: absolute;
+    right: 17px;
+    top: 19px;
+    width: 28px;
+    height: 26px;
+}
+
+.playchat-background .gnb .gnb-header .gnb-close:before, .playchat-background .gnb .gnb-header .gnb-close:after
+{
+    position: absolute;
+    left: 14px;
+    content: ' ';
+    height: 25px;
+    width: 1px;
+    background-color: #fff;
+}
+
+.playchat-background .gnb .gnb-header .gnb-close:hover
+{
+    opacity: 0.3;
+}
+
+.playchat-background .gnb .gnb-header .gnb-close:before
+{
+    transform: rotate(45deg);
+}
+
+.playchat-background .gnb .gnb-header .gnb-close:after
+{
+    transform: rotate(-45deg);
+}
+
+
+
+
+.playchat-background .gnb .gnb-bot-name
+{
+    background: #424242;
+    color: #fff;
+    font-size:17px;
+    font-weight: 500;
+    letter-spacing: 0.1px;
+    padding: 0px 30px;
+    height: 48px;
+    line-height: 46px;
+}
+
+.playchat-background .gnb .gnb-bot-name .gnb-bot-name-modify
+{
+    padding-top: 16px;
+    position: absolute;
+    right: 46px;
+}
+
+.playchat-background .gnb .gnb-bot-name .gnb-bot-name-detail
+{
+    padding-top: 22px;
+    position: absolute;
+    right: 16px;
+}
+
+
+
+
+.playchat-background .gnb .menu-item-list{
+    padding: 0;
+    margin: 0;
+    position: relative;
+    min-height: 604px;
+    height: 100%;
+    white-space: nowrap;
+}
+.playchat-background .gnb .menu-item-list li{
+    display: block;
+    vertical-align: top;
+    letter-spacing: 0.3px;
+    font-weight: 600;
+}
+
+.playchat-background .gnb .menu-item-list li.menu-item-group
+{
+    overflow: hidden;
+}
+
+.playchat-background .gnb .menu-item-list li.menu-item-group .menu-item
+{
+    padding: 3px 30px;
+    font-size: 14px;
+    font-weight:400;
+    height: 48px;
+    line-height: 48px;
+}
+
+.playchat-background .gnb .menu-item-list li.menu-item-group a
+{
+    color: #fff;
+}
+
+.playchat-background .gnb .menu-item-group .close
+{
+    position: absolute;
+    top: 22px;
+    right: 14px;
+
+    width: 14px;
+    height: 9px;
+
+    background-image: url(../img/down.png);
+}
+
+.playchat-background .gnb .menu-item-group .open .close
+{
+    background-image: url(../img/up.png);
+}
+
+.playchat-background .gnb .menu-item-list .sub-menu-item-group
+{
+    height: 0;
+    padding: 0;
+}
+
+.playchat-background .gnb .menu-item-list .open+.sub-menu-item-group
+{
+    height: 100%;
+    padding: 10px 0;
+    background: #424242;
+    overflow: hidden;
+}
+
+.playchat-background .gnb .menu-item-list .sub-menu-item-group li.sub-menu-item
+{
+    padding: 0 42px;
+    font-size: 14px;
+    font-weight:400;
+    height: 34px;
+    line-height: 34px;
+}
+
+.playchat-background .gnb .menu-item-list .sub-menu-item-group li.sub-menu-item a
+{
+    color: #b7bbc4;
+}
+
+.playchat-background .gnb .menu-item-list .sub-menu-item-group li.selected
+{
+    background: #038eda;
+    padding: 2px 42px;
+    font-size: 14px;
+    font-weight:400;
+
+    height: 48px;
+    line-height: 48px;
+}
+
+.playchat-background .gnb .menu-item-list .sub-menu-item-group li.selected a
+{
+    color: #fff;
+}
+
+
+
+
+.playchat-background .gnb .bottom-list > li
+{
+    padding: 0px 30px;
+    font-size: 14px;
+    font-weight:400;
+    height: 40px;
+    line-height: 40px;
+}
+
+.playchat-background .gnb .bottom-list > li a
+{
+    color: #fff;
+}
+
+
+.playchat-background .gnb .bottom-list
+{
+    position: absolute;
+    display: inline-block;
+    width: 100%;
+    bottom: 35px;
+}
+
+.playchat-background .gnb .bottom-list img
+{
+    padding-top: 5px;
+    padding-right: 8px;
+}

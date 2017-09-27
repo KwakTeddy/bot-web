@@ -1,7 +1,9 @@
 'use strict';
 
-angular.module('authentication').controller('AuthenticationController', ['$scope', '$state', '$http', '$location', '$window', 'Authentication', 'PasswordValidator', '$uibModal', '$rootScope', '$stateParams', '$cookies', '$timeout',
-  function ($scope, $state, $http, $location, $window, Authentication, PasswordValidator, $uibModal, $rootScope, $stateParams, $cookies, $timeout) {
+angular.module('authentication').controller('AuthenticationController', ['$scope', '$state', '$http', '$location', '$window', 'Authentication', 'PasswordValidator', '$uibModal', '$rootScope', '$stateParams', '$cookies', '$timeout', function ($scope, $state, $http, $location, $window, Authentication, PasswordValidator, $uibModal, $rootScope, $stateParams, $cookies, $timeout)
+{
+    $scope.$parent.loading = false;
+
     var vm = this;
     $scope.authentication = Authentication;
     $scope.popoverMsg = PasswordValidator.getPopoverMsg();

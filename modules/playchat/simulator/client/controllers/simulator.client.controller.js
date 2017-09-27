@@ -6,47 +6,25 @@ angular.module('playchat.simulator').controller('SimulatorController', ['$window
 {
     $scope.$parent.loaded('simulator');
 
-    $scope.isClosed = false;
-
-    var workspace = angular.element('.workspace');
-    $scope.$on('window.resize', function(a, b)
+    // --------- Simulator 접기 펼치기 기능.
+    (function()
     {
-        $scope.$apply(function()
+        $scope.isClosed = false;
+        $scope.toggle = function(e)
         {
-            workspace.removeClass('full');
+            $scope.isClosed = angular.element('.simulator-btn').is(':visible');
+
             var link = angular.element('#simulator-responsive-css');
-            link.removeAttr('disabled');
-            if(link.attr('prev-media'))
-                link.attr('media', link.attr('prev-media'));
-        });
-    });
-
-    $scope.toggle = function(e)
-    {
-        if(e.currentTarget.className.indexOf('simulator-btn') != -1)
-            $scope.isClosed = true;
-
-        var link = angular.element('#simulator-responsive-css');
-
-        if(!$scope.isClosed)
-        {
-            $scope.isClosed = true;
-
-            //시뮬레이터를 안보이게 하는 부분
-            workspace.addClass('full');
-
-            link.removeAttr('disabled');
-            var media = link.attr('media');
-            link.attr('prev-media', media);
-            link.removeAttr('media');
-        }
-        else
-        {
-            $scope.isClosed = false;
-
-            //시뮬레이터가 보이게 하는 부분
-            workspace.removeClass('full');
-            link.attr('disabled', '');
-        }
-    };
+            if(!$scope.isClosed)
+            {
+                //접기
+                link.attr('data-media', link.attr('media')).removeAttr('media').removeAttr('disabled');
+            }
+            else
+            {
+                //시뮬레이터가 보이게 하는 부분
+                link.attr('media', link.attr('data-media')).attr('disabled', '');
+            }
+        };
+    })();
 }]);

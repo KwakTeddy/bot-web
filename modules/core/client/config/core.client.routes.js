@@ -11,11 +11,15 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', function 
 
     $stateProvider.state('not-found', {
         url: '/not-found',
-        views: {
-            'content@': {
-                templateUrl: 'modules/core/client/views/404.client.view.html',
-                controller: 'CommonErrorController'
-            }
+        templateUrl: 'modules/core/client/views/404.client.view.html',
+        controller: 'CommonErrorController'
+    });
+
+    $stateProvider.state('home', {
+        url: '/',
+        controller: function($state, $stateParams)
+        {
+            $state.go('playchat');
         }
     });
 

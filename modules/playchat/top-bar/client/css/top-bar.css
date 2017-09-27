@@ -1,11 +1,3 @@
-.top-bar
-{
-    width: 100%;
-    height: 64px;
-
-    border-bottom: #e7e7e7 solid 1px;
-}
-
 .top-bar .breadcrumbs
 {
     position: relative;

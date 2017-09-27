@@ -118,7 +118,15 @@ var initGlobalConfigFolders = function (config, assets) {
   };
 
   // Setting globbed client paths
-    config.folders.client = _.union(getGlobbedPaths(path.join(process.cwd(), 'modules/*/client/'), process.cwd().replace(new RegExp(/\\/g), '/')), config.folders.client, getGlobbedPaths(path.join(process.cwd(), 'modules/playchat/*/client/'), process.cwd().replace(new RegExp(/\\/g), '/')));
+    var cwd = process.cwd();
+    var replacedCwd = cwd.replace(new RegExp(/\\/g), '/');
+
+    config.folders.client = _.union(
+        getGlobbedPaths(path.join(cwd, 'modules/*/client/'), replacedCwd),
+        getGlobbedPaths(path.join(cwd, 'modules/*/*/client/'), replacedCwd),
+        getGlobbedPaths(path.join(cwd, 'modules/*/*/*/client/'), replacedCwd),
+        config.folders.client
+    );
 };
 
 /**

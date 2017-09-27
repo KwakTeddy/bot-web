@@ -1,0 +1,13 @@
+<section class="playchat-background">
+    <nav class="gnb" ng-include="'/modules/playchat/gnb/client/views/gnb.client.view.html'" ng-controller="GnbController"></nav>
+    <div>
+        <section class="top-bar" ng-include="'/modules/playchat/top-bar/client/views/top-bar.client.view.html'" ng-controller="TopBarController"></section>
+        <div>
+            <div>
+                <section class="working-ground" ng-include="page"></section>
+                <section class="log-analysis" ng-include="'/modules/playchat/log-analysis/client/views/log-analysis.client.view.html'" ng-controller="LogAnalysisController"></section>
+            </div>
+            <section class="simulator" ng-include="'/modules/playchat/simulator/client/views/simulator.client.view.html'" ng-controller="SimulatorController"></section>
+        </div>
+    </div>
+</section>

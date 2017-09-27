@@ -1,14 +1,3 @@
-.simulator
-{
-    position: absolute;
-    top: 1px;
-    right: 0;
-    bottom: 0;
-    width:367px;
-    background:#f8f8f8;
-    border-left: #e7e7e7 solid 1px;
-}
-
 .simulator .simulator-header
 {
     height: 64px;
