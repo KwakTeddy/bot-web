@@ -17,7 +17,8 @@
     width: 100%;
     z-index: 999999;
     opacity: 1;
-    transition: opacity .5s ease;
+
+    transition: opacity 2s;
 }
 
 .main-logo-background > .logo
@@ -51,3 +52,15 @@
     100% {}
 }
 
+@-moz-keyframes logo-hide {
+    0% {}
+    100% { opacity: 0; }
+}
+@-webkit-keyframes logo-hide {
+    0% {}
+    100% { opacity: 0; }
+}
+@keyframes logo-hide {
+    0% {}
+    100% { opacity: 0; }
+}
