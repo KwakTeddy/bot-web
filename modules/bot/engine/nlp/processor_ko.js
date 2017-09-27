@@ -99,12 +99,22 @@ function processInput(context, inRaw, callback) {
                 inNLP = _inNLP.join(' ');
                 inNLP = inNLP.replace(/(?:\{ | \})/g, '+');
                 if(inNLP == '') inNLP = inRaw;
+
+                if (context == null) {
+                    context = {};
+                }
+                if (!("botUser" in context)) {
+                    context["botUser"] = {}
+                }
+                if (!("nlu" in context["botUser"])) {
+                    context.botUser["nlu"] = {};
+                }
+
                 context.botUser["inNLP"] = inNLP;
-                context.botUser.nlpAll = nlpAll;
-                context.botUser.nlp = _nlp;
+                context.botUser["nlpAll"] = nlpAll;
+                context.botUser["nlp"] = _nlp;
 
                 var nlpJsonPOS = nlpUtil.convertJSON(temp_inRaw, nlpAll);
-                context.botUser["nlu"] = {};
                 context.botUser.nlu["sentence"] = inRaw;
                 context.botUser.nlu["lastChar"] = lastChar;
                 context.botUser.nlu["pos"] = nlpJsonPOS;

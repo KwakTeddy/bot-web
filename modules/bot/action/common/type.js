@@ -5,7 +5,6 @@ var _ = require('lodash');
 var async = require('async');
 
 var logger = require(path.resolve('./config/lib/logger'));
-var nlp = require(path.resolve('./modules/bot/engine/nlp/processor'));
 var koNLP = require(path.resolve('./modules/bot/engine/nlp/processor_ko'));
 var enNLP = require(path.resolve('./modules/bot/engine/nlp/processor_en'));
 var jaNLP = require(path.resolve('./modules/bot/engine/nlp/processor_ja'));

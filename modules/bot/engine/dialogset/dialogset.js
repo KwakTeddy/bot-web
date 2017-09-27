@@ -17,6 +17,11 @@ var XLSX = require('xlsx');
 
 var _ = require('lodash');
 
+var koNLP = require(path.resolve('./modules/bot/engine/nlp/processor_ko'));
+var enNLP = require(path.resolve('./modules/bot/engine/nlp/processor_en'));
+var jaNLP = require(path.resolve('./modules/bot/engine/nlp/processor_ja'));
+var zhNLP = require(path.resolve('./modules/bot/engine/nlp/processor_zh'));
+
 var commonWords = ['하나요', '경우', '에서', '어디', '무엇', '까지', '뭔가', '언제', '알다', '확인', '얼마나', '얼마', '자도', '누가'];
 
 //TODO: should be replace with convertDialogset1
@@ -788,6 +793,7 @@ exports.insertDatasetDir = insertDatasetDir;
 // bot.setTask('insertDatasetDirTask', insertDatasetDirTask);
 
 
+/*
 function processInput(context, inRaw, callback) {
   var nlpKo = new nlp({
     stemmer: true,      // (optional default: true)
@@ -810,6 +816,42 @@ function processInput(context, inRaw, callback) {
 
     callback(_in, {_nlp: _nlpRaw});
   });
+}
+*/
+
+// dsyoon (2017. 09. 26)
+// processInput(null, input, function(_input, _json);
+function processInput(context, inRaw, callback) {
+    var _in = '';
+    var _nlpRaw = [];
+
+    var language = "ko";
+    var result = {};
+    if (language=="en") {
+        enNLP.processInput(result, inRaw, function(_inTextNLP, _inDoc) {
+            _in = result.botUser.inNLP;
+            _nlpRaw = result.botUser.nlp;
+            callback(_in, {_nlp: _nlpRaw});
+        });
+    } else if (language=="zh") {
+        zhNLP.processInput(result, inRaw, function(_inTextNLP, _inDoc) {
+            _in = result.botUser.inNLP;
+            _nlpRaw = result.botUser.nlpAll;
+            callback(_in, {_nlp: _nlpRaw});
+        });
+    } else if (language=="ja") {
+        jaNLP.processInput(result, inRaw, function(_inTextNLP, _inDoc) {
+            _in = result.botUser.inNLP;
+            _nlpRaw = result.botUser.nlpAll;
+            callback(_in, {_nlp: _nlpRaw});
+        });
+    } else {
+        koNLP.processInput(result, inRaw, function(_inTextNLP, _inDoc) {
+            _in = result.botUser.inNLP;
+            _nlpRaw = result.botUser.nlpAll;
+            callback(_in, {_nlp: _nlpRaw});
+        });
+    }
 }
 
 exports.processInput = processInput;

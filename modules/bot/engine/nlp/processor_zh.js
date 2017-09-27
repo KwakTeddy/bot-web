@@ -12,9 +12,41 @@ var UserDictionary = require(path.resolve('./modules/bot/engine/nlp/userDictiona
 var SentenceInfo = require(path.resolve('./modules/bot/engine/nlp/sentenceInfo.js'));
 var TurnTaking = require(path.resolve('./modules/bot/engine/nlp/turnTaking.js'));
 
+var loadZhDictionary = undefined;
+(function()
+{
+    var result = undefined;
+    loadZhDictionary = function()
+    {
+        if(result) {
+            return result;
+        }
+        else
+        {
+            var userDictionary = new UserDictionary(path.resolve('./external_modules/resources/zh/user.pos'));
+            var model = JSON.parse(fs.readFileSync(path.resolve('./external_modules/rakutenma/model_zh.json')));
+            var rma = new RakutenMA(model, 1024, 0.007812);
+            rma.featset = RakutenMA.default_featset_zh;
+            rma.hash_func = RakutenMA.create_hash_func(15);
+            var zh_CharDic = new ZH_CharDic();
+            rma.ctype_func = RakutenMA.create_ctype_chardic_func(zh_CharDic.get());
+
+            result = {
+                userDictionary: userDictionary,
+                rma: rma
+            };
+
+            return result;
+        }
+    }
+})();
 
 
 function processInput(context, inRaw, callback) {
+
+    var data = loadZhDictionary();
+    var userDictionary = data.userDictionary;
+    var rma = data.rma;
 
     var inNLP, nlpAll = [], _nlp = [];
 
@@ -24,14 +56,6 @@ function processInput(context, inRaw, callback) {
         // dsyoon (2017. 09. 13.)
         // 사용자 사전 경로: ./external_module/resources/ja/user.pos
         function(cb) {
-            var userDictionary = new UserDictionary(path.resolve('./external_modules/resources/zh/user.pos'));
-            var model = JSON.parse(fs.readFileSync(path.resolve('./external_modules/rakutenma/model_zh.json')));
-            var rma = new RakutenMA(model, 1024, 0.007812);
-            rma.featset = RakutenMA.default_featset_zh;
-            rma.hash_func = RakutenMA.create_hash_func(15);
-            var zh_CharDic = new ZH_CharDic();
-            rma.ctype_func = RakutenMA.create_ctype_chardic_func(zh_CharDic.get());
-
             var cbTags = new CBTags();
 
             var dicResult = userDictionary.applyUserDic('zh', inRaw);
@@ -43,6 +67,7 @@ function processInput(context, inRaw, callback) {
             var tokens = rma.tokenize(text);
 
             var temp = '';
+            var _inNLP = [];
             // restore user dictionary from POS
             for(var i=0; i<tokens.length; i++) {
                 if ((tokens[i][0] in mb_user_str) && (tokens[i][1]=='NR')) {
@@ -51,15 +76,30 @@ function processInput(context, inRaw, callback) {
                     tokens[i][1] = mb_user_tag[temp];
                 }
                 tokens[i][1] = cbTags.normalizeTag('zh', tokens[i][1]);
+
+                var entry = {};
+                entry["text"] = tokens[i][0];
+                entry["pos"] = tokens[i][1];
+                _nlp.push(entry);
+                _inNLP.push(entry["text"]);
             }
 
-            if(inNLP == '') inNLP = inRaw;
+            inNLP = _inNLP.join(' ');
+
+            if (context == null) {
+                context = {};
+            }
+            if (!("botUser" in context)) {
+                context["botUser"] = {}
+            }
+            if (!("nlu" in context["botUser"])) {
+                context.botUser["nlu"] = {};
+            }
 
             context.botUser["inNLP"] = inNLP;
-            context.botUser.nlpAll = tokens;
-            context.botUser.nlp = tokens;
+            context.botUser.nlpAll = _nlp;
+            context.botUser.nlp = _nlp;
 
-            context.botUser["nlu"] = {};
             context.botUser.nlu["sentence"] = inRaw;
             var nlpJsonPOS = rma.tokens2json(inRaw, tokens);;
             context.botUser.nlu["pos"] = nlpJsonPOS;
