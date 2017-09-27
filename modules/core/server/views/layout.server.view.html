@@ -46,6 +46,9 @@
 
 <!-- PlayChat LogAnalysis -->
 <link href="/modules/playchat/log-analysis/client/css/log-analysis.css" rel="stylesheet" type="text/css">
+
+
+<script src="/js/witch/witch.js"></script>
 {% endif %}
 
 <script>
@@ -176,11 +179,16 @@ if('{{env}}' == 'production')
 
 
 
-
+<script>
+$.ajaxPrefilter(function( options, original_Options, jqXHR )
+{
+    options.async = true;
+});
+</script>
 
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-<script src="https://connect.facebook.net/en_US/all.js"></script>
-<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+<script src="https://connect.facebook.net/en_US/all.js" async></script>
+<script src="//developers.kakao.com/sdk/js/kakao.min.js" async></script>
 <script>
 if('{{env}}' == 'production')
 {
