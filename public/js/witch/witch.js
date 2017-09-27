@@ -2,7 +2,12 @@ var Witch = (function()
 {
     function forEach(list, callback, done)
     {
-        var index = 0;
+        var index = 0
+
+        if(!list || list.length == 0)
+        {
+            return done();
+        }
 
         var next = function()
         {
@@ -57,11 +62,11 @@ var Witch = (function()
         {
             throw new WitchError('Type of source must be string or object.');
         }
-    
+
         if(typeof source == 'string')
         {
             var split = source.split('::');
-            
+
             if(split.length != 2)
             {
                 throw new WitchError('Pattern of source must be selector::event');
@@ -77,16 +82,16 @@ var Witch = (function()
             }
 
             throw new WitchError('Selector, event of source must be not null.');
-        }    
+        }
     };
-    
+
     function getTarget(target)
     {
         if(typeof target != 'string')
         {
             return console.error('Type of target must be string.');
         }
-    
+
         var split = target.split('::');
         var targetElement = document.querySelector(split[0]);
         for(var i=1, l=split.length; i<l; i++)
@@ -100,24 +105,24 @@ var Witch = (function()
                 targetElement = targetElement.nextElementSibling;
             }
         }
-    
+
         return targetElement;
     };
-    
+
     function getCondition(condition)
     {
         if(typeof condition != 'string')
         {
             return console.error('Type of condition must be string.');
         }
-    
+
         var split = condition.split('::');
-    
+
         if(split.length != 4)
         {
             throw new WitchError('Pattern of condition must be property::type::value::result');
         }
-    
+
         var prop = split[0];
         if(prop == 'text')
         {
@@ -224,23 +229,23 @@ var Witch = (function()
 
         (privateData.scenarios[this.scenarioName || 'default'] = privateData.scenarios[this.scenarioName] || []).push({ name: name, source: s, target: t, condition: c, options: options || {} });
     };
-    
+
     Witch.prototype.start = function(scenarioName)
     {
-        console.log('%c[Witch] %cTest Scenario ' + '%c' + scenarioName + '%c is started.', 'color: #ccc;', 'color: blue;', 'color: red;', 'color: blue;');
-
         scenarioName = scenarioName || 'default';
+
+        console.log('%c[Witch] %cTest Scenario ' + '%c' + scenarioName + '%c is started.', 'color: #ccc;', 'color: blue;', 'color: red;', 'color: blue;');
 
         var list = privateData.scenarios[scenarioName];
 
         forEach(list, function(item, index, done)
-        {
-            test(item, done);
-        },
-        function()
-        {
-            console.log('%c[Witch] %cTest Scenario ' + '%c' + scenarioName + '%c is done.', 'color: #ccc;', 'color: blue;', 'color: red;', 'color: blue;');
-        });
+            {
+                test(item, done);
+            },
+            function()
+            {
+                console.log('%c[Witch] %cTest Scenario ' + '%c' + scenarioName + '%c is done.', 'color: #ccc;', 'color: blue;', 'color: red;', 'color: blue;');
+            });
     };
 
     return new Witch();
