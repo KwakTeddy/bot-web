@@ -7,6 +7,15 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
         //vm.user = Authentication.user;
         vm.userId = $rootScope.userId;
 
+        var botId = $rootScope.botId;
+        var botObjectrId = $rootScope.botObjectId;
+        if (botId == undefined || botId == null) {
+            botId = $stateParams.botId;
+        }
+        if (botObjectrId == undefined || botObjectrId == null) {
+            botObjectrId = $stateParams.botId;
+        }
+
         // if(vm.userBot && vm.userBot._id)
         //   $rootScope.$broadcast('setUserBot', vm.userBot);
 
@@ -46,7 +55,7 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
             }
         };
 
-        $resource('/api/factLinks/find/:factUserID', {}).query({factUserID: vm.userId}, function(res) {
+        $resource('/api/factLinks/findByBotId/:botId', {}).query({botId: botId /* or botObjectId */}, function(res) {
             for(var i = 0; i < res.length; i++) {
                 addLink(res[i]);
             }

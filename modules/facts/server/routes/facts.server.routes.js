@@ -39,7 +39,7 @@ module.exports = function(app) {
   app.route('/api/factLinks/find/:factBotUserId')//all(factsPolicy.isAllowed)
     .get(factLinks.find);
 
-  app.route('/api/factLinks/findByBotId/:factBotUserId/:bot_id')//all(factsPolicy.isAllowed)
+  app.route('/api/factLinks/findByBotId/:bot_id')//all(factsPolicy.isAllowed)
     .get(factLinks.findByBotId);
 
   app.route('/api/factLinks/:factLinkId')//all(factsPolicy.isAllowed)

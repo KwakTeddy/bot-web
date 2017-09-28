@@ -1387,7 +1387,8 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
 
     // deprecated
     $scope.printOutput= function(o) {
-      return 'deprecated';
+      // by dsyoon
+      //return 'deprecated';
       if (vm.typeClass[o.type].input === 'button')
         return '';
       else

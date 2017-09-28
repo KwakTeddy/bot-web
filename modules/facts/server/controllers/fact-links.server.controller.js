@@ -107,7 +107,7 @@ exports.findByBotId = function(req, res) {
 
 exports.find = function(req, res) {
   FactLink.remove({botUser: req.params.factBotUserId}, function(err) {
-    FactLink.find({}).limit(500).sort('-created').exec(function(err, factLinks) {
+    FactLink.find({bot_id: req.params.factBotUserId}).limit(500).sort('-created').exec(function(err, factLinks) {
       if (err) {
         return res.status(400).send({
           message: errorHandler.getErrorMessage(err)
