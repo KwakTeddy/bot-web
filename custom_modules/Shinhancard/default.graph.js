@@ -3171,300 +3171,300 @@ var dialogs = [
 									}
 								]
 							},
-                            {
-                                "name": "욕설-바보",
-                                "id": "default3294",
-                                "filename": "default",
-                                "input": [
-                                    {
-                                        "text": "바부"
-                                    },
-                                    {
-                                        "text": "멍처하"
-                                    },
-                                    {
-                                        "text": "멍청이야"
-                                    },
-                                    {
-                                        "text": "멍충이"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 4) ==0",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "맞아요. 바보. 고객님밖에 모르는 바보…♥ 다른 건 배워나가면 되죠!"
-                                        }
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 4) ==1",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "매일 새로운 말을 학습 중이랍니다. 멋지게 성장할 거예요~ 대화창 고정!"
-                                        }
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 4) ==2",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "고객님께 걸맞는 챗봇이 되는 그 날까지…! 뚜벅뚜벅 나아갈 거예요"
-                                        }
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 4) ==3",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "다들 너무 똑똑하셔서 상대적으로 그래 보이는 거예요. (슬픔)"
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "없다",
-                                "id": "default3295",
-                                "filename": "default",
-                                "input": [
-                                    {
-                                        "text": "없다"
-                                    },
-                                    {
-                                        "text": "몰르다"
-                                    },
-                                    {
-                                        "text": "이해 잘 안 되다"
-                                    },
-                                    {
-                                        "text": "이해 자다 안 돼다"
-                                    },
-                                    {
-                                        "text": "모르다"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 2) ==0",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "찾으시는 답변이 없으시다면 다른 키워드를 입력해 주시겠어요?"
-                                        }
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 2) ==1",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "혹시 신한카드가 없으시다면 '처음'을 입력하시고 '카드추천' 메뉴를 이용해 보시는건 어떠세요?"
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "부정-탄식",
-                                "id": "default3296",
-                                "filename": "default",
-                                "input": [
-                                    {
-                                        "text": "허다"
-                                    },
-                                    {
-                                        "text": "아오"
-                                    },
-                                    {
-                                        "text": "엥"
-                                    },
-                                    {
-                                        "text": "이렇다"
-                                    },
-                                    {
-                                        "text": "칫"
-                                    },
-                                    {
-                                        "text": "뭐임"
-                                    },
-                                    {
-                                        "text": "아이"
-                                    },
-                                    {
-                                        "text": "에고"
-                                    },
-                                    {
-                                        "text": "음"
-                                    },
-                                    {
-                                        "text": "이렇다 뇨"
-                                    },
-                                    {
-                                        "text": "헉"
-                                    },
-                                    {
-                                        "text": "흠"
-                                    },
-                                    {
-                                        "text": "첨"
-                                    },
-                                    {
-                                        "text": "하"
-                                    },
-                                    {
-                                        "text": "아이구"
-                                    },
-                                    {
-                                        "text": "어허"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 2) ==0",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "아잉~ 근데 왜요?? "
-                                        }
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 2) ==1",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "아하… (흠흠)  "
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "감사",
-                                "id": "default3297",
-                                "filename": "default",
-                                "input": [
-                                    {
-                                        "text": "감사"
-                                    },
-                                    {
-                                        "text": "고마 웡"
-                                    },
-                                    {
-                                        "text": "오케이"
-                                    },
-                                    {
-                                        "text": "편하다"
-                                    },
-                                    {
-                                        "text": "thank"
-                                    },
-                                    {
-                                        "text": "감동"
-                                    },
-                                    {
-                                        "text": "고맙다"
-                                    },
-                                    {
-                                        "text": "괜찮다"
-                                    },
-                                    {
-                                        "text": "금사"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 3) ==0",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "감동… 하루 피로가 싹 사라지는 느낌이에요."
-                                        }
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 3) ==1",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "고객님 말씀듣고 충전 완료! 24시간 근무도 거뜬하겠는걸요!"
-                                        }
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 3) ==2",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "감사합니다. 고객님! 힘이 솟아나는 기분이에요"
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "이름/누구",
-                                "id": "default3298",
-                                "filename": "default",
-                                "input": [
-                                    {
-                                        "text": "이름"
-                                    },
-                                    {
-                                        "text": "알파"
-                                    },
-                                    {
-                                        "text": "누구"
-                                    },
-                                    {
-                                        "text": "너 뭐"
-                                    },
-                                    {
-                                        "text": "너 애기"
-                                    },
-                                    {
-                                        "text": "뉘귀"
-                                    },
-                                    {
-                                        "text": "너 대해"
-                                    },
-                                    {
-                                        "text": "알파 거"
-                                    },
-                                    {
-                                        "text": "누가"
-                                    },
-                                    {
-                                        "text": "인공 지능"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 3) ==0",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "저는 아직 많이 부족한 초초초보 챗봇에요. 열심히 공부하겠습니다. "
-                                        }
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 3) ==1",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "네 제가 바로 신한의 자동응답형 챗봇입니다. 데헷~ "
-                                        }
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 3) ==2",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "저에 대해 궁금하신가요? 우리 차차 알아가기로 해요"
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "부정-기능무시",
-                                "id": "default3299",
-                                "filename": "default",
-                                "input": [
+							{
+								"name": "욕설-바보",
+								"id": "default3294",
+								"filename": "default",
+								"input": [
+									{
+										"text": "바부"
+									},
+									{
+										"text": "멍처하"
+									},
+									{
+										"text": "멍청이야"
+									},
+									{
+										"text": "멍충이"
+									}
+								],
+								"output": [
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 4) ==0",
+										"repeat": "1",
+										"options": {
+											"output": "맞아요. 바보. 고객님밖에 모르는 바보…♥ 다른 건 배워나가면 되죠!"
+										}
+									},
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 4) ==1",
+										"repeat": "1",
+										"options": {
+											"output": "매일 새로운 말을 학습 중이랍니다. 멋지게 성장할 거예요~ 대화창 고정!"
+										}
+									},
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 4) ==2",
+										"repeat": "1",
+										"options": {
+											"output": "고객님께 걸맞는 챗봇이 되는 그 날까지…! 뚜벅뚜벅 나아갈 거예요"
+										}
+									},
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 4) ==3",
+										"repeat": "1",
+										"options": {
+											"output": "다들 너무 똑똑하셔서 상대적으로 그래 보이는 거예요. (슬픔)"
+										}
+									}
+								]
+							},
+							{
+								"name": "없다",
+								"id": "default3295",
+								"filename": "default",
+								"input": [
+									{
+										"text": "없다"
+									},
+									{
+										"text": "몰르다"
+									},
+									{
+										"text": "이해 잘 안 되다"
+									},
+									{
+										"text": "이해 자다 안 돼다"
+									},
+									{
+										"text": "모르다"
+									}
+								],
+								"output": [
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 2) ==0",
+										"repeat": "1",
+										"options": {
+											"output": "찾으시는 답변이 없으시다면 다른 키워드를 입력해 주시겠어요?"
+										}
+									},
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 2) ==1",
+										"repeat": "1",
+										"options": {
+											"output": "혹시 신한카드가 없으시다면 '처음'을 입력하시고 '카드추천' 메뉴를 이용해 보시는건 어떠세요?"
+										}
+									}
+								]
+							},
+							{
+								"name": "부정-탄식",
+								"id": "default3296",
+								"filename": "default",
+								"input": [
+									{
+										"text": "허다"
+									},
+									{
+										"text": "아오"
+									},
+									{
+										"text": "엥"
+									},
+									{
+										"text": "이렇다"
+									},
+									{
+										"text": "칫"
+									},
+									{
+										"text": "뭐임"
+									},
+									{
+										"text": "아이"
+									},
+									{
+										"text": "에고"
+									},
+									{
+										"text": "음"
+									},
+									{
+										"text": "이렇다 뇨"
+									},
+									{
+										"text": "헉"
+									},
+									{
+										"text": "흠"
+									},
+									{
+										"text": "첨"
+									},
+									{
+										"text": "하"
+									},
+									{
+										"text": "아이구"
+									},
+									{
+										"text": "어허"
+									}
+								],
+								"output": [
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 2) ==0",
+										"repeat": "1",
+										"options": {
+											"output": "아잉~ 근데 왜요?? "
+										}
+									},
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 2) ==1",
+										"repeat": "1",
+										"options": {
+											"output": "아하… (흠흠)  "
+										}
+									}
+								]
+							},
+							{
+								"name": "감사",
+								"id": "default3297",
+								"filename": "default",
+								"input": [
+									{
+										"text": "감사"
+									},
+									{
+										"text": "고마 웡"
+									},
+									{
+										"text": "오케이"
+									},
+									{
+										"text": "편하다"
+									},
+									{
+										"text": "thank"
+									},
+									{
+										"text": "감동"
+									},
+									{
+										"text": "고맙다"
+									},
+									{
+										"text": "괜찮다"
+									},
+									{
+										"text": "금사"
+									}
+								],
+								"output": [
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 3) ==0",
+										"repeat": "1",
+										"options": {
+											"output": "감동… 하루 피로가 싹 사라지는 느낌이에요."
+										}
+									},
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 3) ==1",
+										"repeat": "1",
+										"options": {
+											"output": "고객님 말씀듣고 충전 완료! 24시간 근무도 거뜬하겠는걸요!"
+										}
+									},
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 3) ==2",
+										"repeat": "1",
+										"options": {
+											"output": "감사합니다. 고객님! 힘이 솟아나는 기분이에요"
+										}
+									}
+								]
+							},
+							{
+								"name": "이름/누구",
+								"id": "default3298",
+								"filename": "default",
+								"input": [
+									{
+										"text": "이름"
+									},
+									{
+										"text": "알파"
+									},
+									{
+										"text": "누구"
+									},
+									{
+										"text": "너 뭐"
+									},
+									{
+										"text": "너 애기"
+									},
+									{
+										"text": "뉘귀"
+									},
+									{
+										"text": "너 대해"
+									},
+									{
+										"text": "알파 거"
+									},
+									{
+										"text": "누가"
+									},
+									{
+										"text": "인공 지능"
+									}
+								],
+								"output": [
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 3) ==0",
+										"repeat": "1",
+										"options": {
+											"output": "저는 아직 많이 부족한 초초초보 챗봇에요. 열심히 공부하겠습니다. "
+										}
+									},
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 3) ==1",
+										"repeat": "1",
+										"options": {
+											"output": "네 제가 바로 신한의 자동응답형 챗봇입니다. 데헷~ "
+										}
+									},
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 3) ==2",
+										"repeat": "1",
+										"options": {
+											"output": "저에 대해 궁금하신가요? 우리 차차 알아가기로 해요"
+										}
+									}
+								]
+							},
+							{
+								"name": "부정-기능무시",
+								"id": "default3299",
+								"filename": "default",
+								"input": [
                                     {
                                         "text": "알다 게 없다"
                                     },
@@ -3475,7 +3475,7 @@ var dialogs = [
                                         "text": "가능하다 게"
                                     },
                                     {
-                                        "text": "공부 하다 오다"
+                                        "text": "공부 많이"
                                     },
                                     {
                                         "text": "그냥 기사"
@@ -3541,165 +3541,168 @@ var dialogs = [
                                         "text": "실망"
                                     },
                                     {
-                                        "text": "이 뭔가"
+                                        "text": "뭔가"
+                                    },
+                                    {
+                                        "regexp": "다야"
                                     }
                                 ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 4) ==0",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "아직 부족해서 죄송해요. 매일 더 나아지려 노력하고 있어요!"
-                                        }
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 4) ==1",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "제가 태어난 지 얼마 안 됐거든요… 더 열심히 공부할게요!"
-                                        }
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 4) ==2",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "제가 아직 배우는 중이라 조금 부족해도 이해해주세용~"
-                                        }
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 4) ==3",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "오늘 컨디션이 별로라서… 흠흠.. 다음엔 꼭 답변해드릴게요!"
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "나",
-                                "id": "default3300",
-                                "filename": "default",
-                                "input": [
-                                    {
-                                        "text": "나다"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 2) ==0",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "고객님이 좋으면 저는 더 좋아요~ 촤하하^^"
-                                        }
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 2) ==1",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "나도나도~ 저도요 저도요~ (근데.. 뭐가??) "
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "시비",
-                                "id": "default3301",
-                                "filename": "default",
-                                "input": [
-                                    {
-                                        "text": "재미있다"
-                                    },
-                                    {
-                                        "text": "재다"
-                                    },
-                                    {
-                                        "text": "재밌다"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 2) ==0",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "고객님과 대화하는 건 항상 즐겁습니다.  :) "
-                                        }
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 2) ==1",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "유머도 장착하겠습니다. "
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "시비2",
-                                "id": "default3302",
-                                "filename": "default",
-                                "input": [
-                                    {
-                                        "text": "라이벌"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 2) ==0",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "저는 제 할 일을 했을 뿐인걸요!"
-                                        }
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 2) ==1",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "깝치는 게 뭘까요?"
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "물음표",
-                                "id": "default3303",
-                                "filename": "default",
-                                "input": [
-                                    {
-                                        "text": "?"
-                                    },
-                                    {
-                                        "text": "??"
-                                    }
-                                ],
-                                "output": [
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 2) ==0",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "뭐가 그리 궁금하신가요?"
-                                        }
-                                    },
-                                    {
-                                        "kind": "Action",
-                                        "if": "((new Date()).getTime() % 2) ==1",
-                                        "repeat": "1",
-                                        "options": {
-                                            "output": "!!!"
-                                        }
-                                    }
-                                ]
-                            },
+								"output": [
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 4) ==0",
+										"repeat": "1",
+										"options": {
+											"output": "아직 부족해서 죄송해요. 매일 더 나아지려 노력하고 있어요!"
+										}
+									},
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 4) ==1",
+										"repeat": "1",
+										"options": {
+											"output": "제가 태어난 지 얼마 안 됐거든요… 더 열심히 공부할게요!"
+										}
+									},
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 4) ==2",
+										"repeat": "1",
+										"options": {
+											"output": "제가 아직 배우는 중이라 조금 부족해도 이해해주세용~"
+										}
+									},
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 4) ==3",
+										"repeat": "1",
+										"options": {
+											"output": "오늘 컨디션이 별로라서… 흠흠.. 다음엔 꼭 답변해드릴게요!"
+										}
+									}
+								]
+							},
+							{
+								"name": "나",
+								"id": "default3300",
+								"filename": "default",
+								"input": [
+									{
+										"text": "나다"
+									}
+								],
+								"output": [
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 2) ==0",
+										"repeat": "1",
+										"options": {
+											"output": "고객님이 좋으면 저는 더 좋아요~ 촤하하^^"
+										}
+									},
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 2) ==1",
+										"repeat": "1",
+										"options": {
+											"output": "나도나도~ 저도요 저도요~ (근데.. 뭐가??) "
+										}
+									}
+								]
+							},
+							{
+								"name": "시비",
+								"id": "default3301",
+								"filename": "default",
+								"input": [
+									{
+										"text": "재미있다"
+									},
+									{
+										"text": "재다"
+									},
+									{
+										"text": "재밌다"
+									}
+								],
+								"output": [
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 2) ==0",
+										"repeat": "1",
+										"options": {
+											"output": "고객님과 대화하는 건 항상 즐겁습니다.  :) "
+										}
+									},
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 2) ==1",
+										"repeat": "1",
+										"options": {
+											"output": "유머도 장착하겠습니다. "
+										}
+									}
+								]
+							},
+							{
+								"name": "시비2",
+								"id": "default3302",
+								"filename": "default",
+								"input": [
+									{
+										"text": "라이벌"
+									}
+								],
+								"output": [
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 2) ==0",
+										"repeat": "1",
+										"options": {
+											"output": "저는 제 할 일을 했을 뿐인걸요!"
+										}
+									},
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 2) ==1",
+										"repeat": "1",
+										"options": {
+											"output": "깝치는 게 뭘까요?"
+										}
+									}
+								]
+							},
+							{
+								"name": "물음표",
+								"id": "default3303",
+								"filename": "default",
+								"input": [
+									{
+										"text": "?"
+									},
+									{
+										"text": "??"
+									}
+								],
+								"output": [
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 2) ==0",
+										"repeat": "1",
+										"options": {
+											"output": "뭐가 그리 궁금하신가요?"
+										}
+									},
+									{
+										"kind": "Action",
+										"if": "((new Date()).getTime() % 2) ==1",
+										"repeat": "1",
+										"options": {
+											"output": "!!!"
+										}
+									}
+								]
+							},
 							{
 								"name": "미검색",
 								"id": "default1322331",
@@ -4563,300 +4566,300 @@ var dialogs = [
 							}
 						]
 					},
-                    {
-                        "name": "욕설-바보",
-                        "id": "default2294",
-                        "filename": "default",
-                        "input": [
-                            {
-                                "text": "바부"
-                            },
-                            {
-                                "text": "멍처하"
-                            },
-                            {
-                                "text": "멍청이야"
-                            },
-                            {
-                                "text": "멍충이"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 4) ==0",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "맞아요. 바보. 고객님밖에 모르는 바보…♥ 다른 건 배워나가면 되죠!"
-                                }
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 4) ==1",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "매일 새로운 말을 학습 중이랍니다. 멋지게 성장할 거예요~ 대화창 고정!"
-                                }
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 4) ==2",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "고객님께 걸맞는 챗봇이 되는 그 날까지…! 뚜벅뚜벅 나아갈 거예요"
-                                }
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 4) ==3",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "다들 너무 똑똑하셔서 상대적으로 그래 보이는 거예요. (슬픔)"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "name": "없다",
-                        "id": "default2295",
-                        "filename": "default",
-                        "input": [
-                            {
-                                "text": "없다"
-                            },
-                            {
-                                "text": "몰르다"
-                            },
-                            {
-                                "text": "이해 잘 안 되다"
-                            },
-                            {
-                                "text": "이해 자다 안 돼다"
-                            },
-                            {
-                                "text": "모르다"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 2) ==0",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "찾으시는 답변이 없으시다면 다른 키워드를 입력해 주시겠어요?"
-                                }
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 2) ==1",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "혹시 신한카드가 없으시다면 '처음'을 입력하시고 '카드추천' 메뉴를 이용해 보시는건 어떠세요?"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "name": "부정-탄식",
-                        "id": "default2296",
-                        "filename": "default",
-                        "input": [
-                            {
-                                "text": "허다"
-                            },
-                            {
-                                "text": "아오"
-                            },
-                            {
-                                "text": "엥"
-                            },
-                            {
-                                "text": "이렇다"
-                            },
-                            {
-                                "text": "칫"
-                            },
-                            {
-                                "text": "뭐임"
-                            },
-                            {
-                                "text": "아이"
-                            },
-                            {
-                                "text": "에고"
-                            },
-                            {
-                                "text": "음"
-                            },
-                            {
-                                "text": "이렇다 뇨"
-                            },
-                            {
-                                "text": "헉"
-                            },
-                            {
-                                "text": "흠"
-                            },
-                            {
-                                "text": "첨"
-                            },
-                            {
-                                "text": "하"
-                            },
-                            {
-                                "text": "아이구"
-                            },
-                            {
-                                "text": "어허"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 2) ==0",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "아잉~ 근데 왜요?? "
-                                }
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 2) ==1",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "아하… (흠흠)  "
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "name": "감사",
-                        "id": "default2297",
-                        "filename": "default",
-                        "input": [
-                            {
-                                "text": "감사"
-                            },
-                            {
-                                "text": "고마 웡"
-                            },
-                            {
-                                "text": "오케이"
-                            },
-                            {
-                                "text": "편하다"
-                            },
-                            {
-                                "text": "thank"
-                            },
-                            {
-                                "text": "감동"
-                            },
-                            {
-                                "text": "고맙다"
-                            },
-                            {
-                                "text": "괜찮다"
-                            },
-                            {
-                                "text": "금사"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 3) ==0",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "감동… 하루 피로가 싹 사라지는 느낌이에요."
-                                }
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 3) ==1",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "고객님 말씀듣고 충전 완료! 24시간 근무도 거뜬하겠는걸요!"
-                                }
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 3) ==2",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "감사합니다. 고객님! 힘이 솟아나는 기분이에요"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "name": "이름/누구",
-                        "id": "default2298",
-                        "filename": "default",
-                        "input": [
-                            {
-                                "text": "이름"
-                            },
-                            {
-                                "text": "알파"
-                            },
-                            {
-                                "text": "누구"
-                            },
-                            {
-                                "text": "너 뭐"
-                            },
-                            {
-                                "text": "너 애기"
-                            },
-                            {
-                                "text": "뉘귀"
-                            },
-                            {
-                                "text": "너 대해"
-                            },
-                            {
-                                "text": "알파 거"
-                            },
-                            {
-                                "text": "누가"
-                            },
-                            {
-                                "text": "인공 지능"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 3) ==0",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "저는 아직 많이 부족한 초초초보 챗봇에요. 열심히 공부하겠습니다. "
-                                }
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 3) ==1",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "네 제가 바로 신한의 자동응답형 챗봇입니다. 데헷~ "
-                                }
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 3) ==2",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "저에 대해 궁금하신가요? 우리 차차 알아가기로 해요"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "name": "부정-기능무시",
-                        "id": "default2299",
-                        "filename": "default",
-                        "input": [
+					{
+						"name": "욕설-바보",
+						"id": "default2294",
+						"filename": "default",
+						"input": [
+							{
+								"text": "바부"
+							},
+							{
+								"text": "멍처하"
+							},
+							{
+								"text": "멍청이야"
+							},
+							{
+								"text": "멍충이"
+							}
+						],
+						"output": [
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 4) ==0",
+								"repeat": "1",
+								"options": {
+									"output": "맞아요. 바보. 고객님밖에 모르는 바보…♥ 다른 건 배워나가면 되죠!"
+								}
+							},
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 4) ==1",
+								"repeat": "1",
+								"options": {
+									"output": "매일 새로운 말을 학습 중이랍니다. 멋지게 성장할 거예요~ 대화창 고정!"
+								}
+							},
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 4) ==2",
+								"repeat": "1",
+								"options": {
+									"output": "고객님께 걸맞는 챗봇이 되는 그 날까지…! 뚜벅뚜벅 나아갈 거예요"
+								}
+							},
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 4) ==3",
+								"repeat": "1",
+								"options": {
+									"output": "다들 너무 똑똑하셔서 상대적으로 그래 보이는 거예요. (슬픔)"
+								}
+							}
+						]
+					},
+					{
+						"name": "없다",
+						"id": "default2295",
+						"filename": "default",
+						"input": [
+							{
+								"text": "없다"
+							},
+							{
+								"text": "몰르다"
+							},
+							{
+								"text": "이해 잘 안 되다"
+							},
+							{
+								"text": "이해 자다 안 돼다"
+							},
+							{
+								"text": "모르다"
+							}
+						],
+						"output": [
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 2) ==0",
+								"repeat": "1",
+								"options": {
+									"output": "찾으시는 답변이 없으시다면 다른 키워드를 입력해 주시겠어요?"
+								}
+							},
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 2) ==1",
+								"repeat": "1",
+								"options": {
+									"output": "혹시 신한카드가 없으시다면 '처음'을 입력하시고 '카드추천' 메뉴를 이용해 보시는건 어떠세요?"
+								}
+							}
+						]
+					},
+					{
+						"name": "부정-탄식",
+						"id": "default2296",
+						"filename": "default",
+						"input": [
+							{
+								"text": "허다"
+							},
+							{
+								"text": "아오"
+							},
+							{
+								"text": "엥"
+							},
+							{
+								"text": "이렇다"
+							},
+							{
+								"text": "칫"
+							},
+							{
+								"text": "뭐임"
+							},
+							{
+								"text": "아이"
+							},
+							{
+								"text": "에고"
+							},
+							{
+								"text": "음"
+							},
+							{
+								"text": "이렇다 뇨"
+							},
+							{
+								"text": "헉"
+							},
+							{
+								"text": "흠"
+							},
+							{
+								"text": "첨"
+							},
+							{
+								"text": "하"
+							},
+							{
+								"text": "아이구"
+							},
+							{
+								"text": "어허"
+							}
+						],
+						"output": [
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 2) ==0",
+								"repeat": "1",
+								"options": {
+									"output": "아잉~ 근데 왜요?? "
+								}
+							},
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 2) ==1",
+								"repeat": "1",
+								"options": {
+									"output": "아하… (흠흠)  "
+								}
+							}
+						]
+					},
+					{
+						"name": "감사",
+						"id": "default2297",
+						"filename": "default",
+						"input": [
+							{
+								"text": "감사"
+							},
+							{
+								"text": "고마 웡"
+							},
+							{
+								"text": "오케이"
+							},
+							{
+								"text": "편하다"
+							},
+							{
+								"text": "thank"
+							},
+							{
+								"text": "감동"
+							},
+							{
+								"text": "고맙다"
+							},
+							{
+								"text": "괜찮다"
+							},
+							{
+								"text": "금사"
+							}
+						],
+						"output": [
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 3) ==0",
+								"repeat": "1",
+								"options": {
+									"output": "감동… 하루 피로가 싹 사라지는 느낌이에요."
+								}
+							},
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 3) ==1",
+								"repeat": "1",
+								"options": {
+									"output": "고객님 말씀듣고 충전 완료! 24시간 근무도 거뜬하겠는걸요!"
+								}
+							},
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 3) ==2",
+								"repeat": "1",
+								"options": {
+									"output": "감사합니다. 고객님! 힘이 솟아나는 기분이에요"
+								}
+							}
+						]
+					},
+					{
+						"name": "이름/누구",
+						"id": "default2298",
+						"filename": "default",
+						"input": [
+							{
+								"text": "이름"
+							},
+							{
+								"text": "알파"
+							},
+							{
+								"text": "누구"
+							},
+							{
+								"text": "너 뭐"
+							},
+							{
+								"text": "너 애기"
+							},
+							{
+								"text": "뉘귀"
+							},
+							{
+								"text": "너 대해"
+							},
+							{
+								"text": "알파 거"
+							},
+							{
+								"text": "누가"
+							},
+							{
+								"text": "인공 지능"
+							}
+						],
+						"output": [
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 3) ==0",
+								"repeat": "1",
+								"options": {
+									"output": "저는 아직 많이 부족한 초초초보 챗봇에요. 열심히 공부하겠습니다. "
+								}
+							},
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 3) ==1",
+								"repeat": "1",
+								"options": {
+									"output": "네 제가 바로 신한의 자동응답형 챗봇입니다. 데헷~ "
+								}
+							},
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 3) ==2",
+								"repeat": "1",
+								"options": {
+									"output": "저에 대해 궁금하신가요? 우리 차차 알아가기로 해요"
+								}
+							}
+						]
+					},
+					{
+						"name": "부정-기능무시",
+						"id": "default2299",
+						"filename": "default",
+						"input": [
                             {
                                 "text": "알다 게 없다"
                             },
@@ -4867,7 +4870,7 @@ var dialogs = [
                                 "text": "가능하다 게"
                             },
                             {
-                                "text": "공부 하다 오다"
+                                "text": "공부 많이"
                             },
                             {
                                 "text": "그냥 기사"
@@ -4933,165 +4936,168 @@ var dialogs = [
                                 "text": "실망"
                             },
                             {
-                                "text": "이 뭔가"
+                                "text": "뭔가"
+                            },
+                            {
+                                "regexp": "다야"
                             }
                         ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 4) ==0",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "아직 부족해서 죄송해요. 매일 더 나아지려 노력하고 있어요!"
-                                }
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 4) ==1",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "제가 태어난 지 얼마 안 됐거든요… 더 열심히 공부할게요!"
-                                }
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 4) ==2",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "제가 아직 배우는 중이라 조금 부족해도 이해해주세용~"
-                                }
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 4) ==3",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "오늘 컨디션이 별로라서… 흠흠.. 다음엔 꼭 답변해드릴게요!"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "name": "나",
-                        "id": "default2300",
-                        "filename": "default",
-                        "input": [
-                            {
-                                "text": "나다"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 2) ==0",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "고객님이 좋으면 저는 더 좋아요~ 촤하하^^"
-                                }
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 2) ==1",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "나도나도~ 저도요 저도요~ (근데.. 뭐가??) "
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "name": "시비",
-                        "id": "default2301",
-                        "filename": "default",
-                        "input": [
-                            {
-                                "text": "재미있다"
-                            },
-                            {
-                                "text": "재다"
-                            },
-                            {
-                                "text": "재밌다"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 2) ==0",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "고객님과 대화하는 건 항상 즐겁습니다.  :) "
-                                }
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 2) ==1",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "유머도 장착하겠습니다. "
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "name": "시비2",
-                        "id": "default2302",
-                        "filename": "default",
-                        "input": [
-                            {
-                                "text": "라이벌"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 2) ==0",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "저는 제 할 일을 했을 뿐인걸요!"
-                                }
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 2) ==1",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "깝치는 게 뭘까요?"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "name": "물음표",
-                        "id": "default2303",
-                        "filename": "default",
-                        "input": [
-                            {
-                                "text": "?"
-                            },
-                            {
-                                "text": "??"
-                            }
-                        ],
-                        "output": [
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 2) ==0",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "뭐가 그리 궁금하신가요?"
-                                }
-                            },
-                            {
-                                "kind": "Action",
-                                "if": "((new Date()).getTime() % 2) ==1",
-                                "repeat": "1",
-                                "options": {
-                                    "output": "!!!"
-                                }
-                            }
-                        ]
-                    },
+						"output": [
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 4) ==0",
+								"repeat": "1",
+								"options": {
+									"output": "아직 부족해서 죄송해요. 매일 더 나아지려 노력하고 있어요!"
+								}
+							},
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 4) ==1",
+								"repeat": "1",
+								"options": {
+									"output": "제가 태어난 지 얼마 안 됐거든요… 더 열심히 공부할게요!"
+								}
+							},
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 4) ==2",
+								"repeat": "1",
+								"options": {
+									"output": "제가 아직 배우는 중이라 조금 부족해도 이해해주세용~"
+								}
+							},
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 4) ==3",
+								"repeat": "1",
+								"options": {
+									"output": "오늘 컨디션이 별로라서… 흠흠.. 다음엔 꼭 답변해드릴게요!"
+								}
+							}
+						]
+					},
+					{
+						"name": "나",
+						"id": "default2300",
+						"filename": "default",
+						"input": [
+							{
+								"text": "나다"
+							}
+						],
+						"output": [
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 2) ==0",
+								"repeat": "1",
+								"options": {
+									"output": "고객님이 좋으면 저는 더 좋아요~ 촤하하^^"
+								}
+							},
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 2) ==1",
+								"repeat": "1",
+								"options": {
+									"output": "나도나도~ 저도요 저도요~ (근데.. 뭐가??) "
+								}
+							}
+						]
+					},
+					{
+						"name": "시비",
+						"id": "default2301",
+						"filename": "default",
+						"input": [
+							{
+								"text": "재미있다"
+							},
+							{
+								"text": "재다"
+							},
+							{
+								"text": "재밌다"
+							}
+						],
+						"output": [
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 2) ==0",
+								"repeat": "1",
+								"options": {
+									"output": "고객님과 대화하는 건 항상 즐겁습니다.  :) "
+								}
+							},
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 2) ==1",
+								"repeat": "1",
+								"options": {
+									"output": "유머도 장착하겠습니다. "
+								}
+							}
+						]
+					},
+					{
+						"name": "시비2",
+						"id": "default2302",
+						"filename": "default",
+						"input": [
+							{
+								"text": "라이벌"
+							}
+						],
+						"output": [
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 2) ==0",
+								"repeat": "1",
+								"options": {
+									"output": "저는 제 할 일을 했을 뿐인걸요!"
+								}
+							},
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 2) ==1",
+								"repeat": "1",
+								"options": {
+									"output": "깝치는 게 뭘까요?"
+								}
+							}
+						]
+					},
+					{
+						"name": "물음표",
+						"id": "default2303",
+						"filename": "default",
+						"input": [
+							{
+								"text": "?"
+							},
+							{
+								"text": "??"
+							}
+						],
+						"output": [
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 2) ==0",
+								"repeat": "1",
+								"options": {
+									"output": "뭐가 그리 궁금하신가요?"
+								}
+							},
+							{
+								"kind": "Action",
+								"if": "((new Date()).getTime() % 2) ==1",
+								"repeat": "1",
+								"options": {
+									"output": "!!!"
+								}
+							}
+						]
+					},
 					{
 						"name": "미선택",
 						"id": "default2304",
@@ -5940,300 +5946,300 @@ var dialogs = [
 					}
 				]
 			},
-            {
-                "name": "욕설-바보",
-                "id": "default1294",
-                "filename": "default",
-                "input": [
-                    {
-                        "text": "바부"
-                    },
-                    {
-                        "text": "멍처하"
-                    },
-                    {
-                        "text": "멍청이야"
-                    },
-                    {
-                        "text": "멍충이"
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "if": "((new Date()).getTime() % 4) ==0",
-                        "repeat": "1",
-                        "options": {
-                            "output": "맞아요. 바보. 고객님밖에 모르는 바보…♥ 다른 건 배워나가면 되죠!"
-                        }
-                    },
-                    {
-                        "kind": "Action",
-                        "if": "((new Date()).getTime() % 4) ==1",
-                        "repeat": "1",
-                        "options": {
-                            "output": "매일 새로운 말을 학습 중이랍니다. 멋지게 성장할 거예요~ 대화창 고정!"
-                        }
-                    },
-                    {
-                        "kind": "Action",
-                        "if": "((new Date()).getTime() % 4) ==2",
-                        "repeat": "1",
-                        "options": {
-                            "output": "고객님께 걸맞는 챗봇이 되는 그 날까지…! 뚜벅뚜벅 나아갈 거예요"
-                        }
-                    },
-                    {
-                        "kind": "Action",
-                        "if": "((new Date()).getTime() % 4) ==3",
-                        "repeat": "1",
-                        "options": {
-                            "output": "다들 너무 똑똑하셔서 상대적으로 그래 보이는 거예요. (슬픔)"
-                        }
-                    }
-                ]
-            },
-            {
-                "name": "없다",
-                "id": "default1295",
-                "filename": "default",
-                "input": [
-                    {
-                        "text": "없다"
-                    },
-                    {
-                        "text": "몰르다"
-                    },
-                    {
-                        "text": "이해 잘 안 되다"
-                    },
-                    {
-                        "text": "이해 자다 안 돼다"
-                    },
-                    {
-                        "text": "모르다"
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "if": "((new Date()).getTime() % 2) ==0",
-                        "repeat": "1",
-                        "options": {
-                            "output": "찾으시는 답변이 없으시다면 다른 키워드를 입력해 주시겠어요?"
-                        }
-                    },
-                    {
-                        "kind": "Action",
-                        "if": "((new Date()).getTime() % 2) ==1",
-                        "repeat": "1",
-                        "options": {
-                            "output": "혹시 신한카드가 없으시다면 '처음'을 입력하시고 '카드추천' 메뉴를 이용해 보시는건 어떠세요?"
-                        }
-                    }
-                ]
-            },
-            {
-                "name": "부정-탄식",
-                "id": "default1296",
-                "filename": "default",
-                "input": [
-                    {
-                        "text": "허다"
-                    },
-                    {
-                        "text": "아오"
-                    },
-                    {
-                        "text": "엥"
-                    },
-                    {
-                        "text": "이렇다"
-                    },
-                    {
-                        "text": "칫"
-                    },
-                    {
-                        "text": "뭐임"
-                    },
-                    {
-                        "text": "아이"
-                    },
-                    {
-                        "text": "에고"
-                    },
-                    {
-                        "text": "음"
-                    },
-                    {
-                        "text": "이렇다 뇨"
-                    },
-                    {
-                        "text": "헉"
-                    },
-                    {
-                        "text": "흠"
-                    },
-                    {
-                        "text": "첨"
-                    },
-                    {
-                        "text": "하"
-                    },
-                    {
-                        "text": "아이구"
-                    },
-                    {
-                        "text": "어허"
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "if": "((new Date()).getTime() % 2) ==0",
-                        "repeat": "1",
-                        "options": {
-                            "output": "아잉~ 근데 왜요?? "
-                        }
-                    },
-                    {
-                        "kind": "Action",
-                        "if": "((new Date()).getTime() % 2) ==1",
-                        "repeat": "1",
-                        "options": {
-                            "output": "아하… (흠흠)  "
-                        }
-                    }
-                ]
-            },
-            {
-                "name": "감사",
-                "id": "default1297",
-                "filename": "default",
-                "input": [
-                    {
-                        "text": "감사"
-                    },
-                    {
-                        "text": "고마 웡"
-                    },
-                    {
-                        "text": "오케이"
-                    },
-                    {
-                        "text": "편하다"
-                    },
-                    {
-                        "text": "thank"
-                    },
-                    {
-                        "text": "감동"
-                    },
-                    {
-                        "text": "고맙다"
-                    },
-                    {
-                        "text": "괜찮다"
-                    },
-                    {
-                        "text": "금사"
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "if": "((new Date()).getTime() % 3) ==0",
-                        "repeat": "1",
-                        "options": {
-                            "output": "감동… 하루 피로가 싹 사라지는 느낌이에요."
-                        }
-                    },
-                    {
-                        "kind": "Action",
-                        "if": "((new Date()).getTime() % 3) ==1",
-                        "repeat": "1",
-                        "options": {
-                            "output": "고객님 말씀듣고 충전 완료! 24시간 근무도 거뜬하겠는걸요!"
-                        }
-                    },
-                    {
-                        "kind": "Action",
-                        "if": "((new Date()).getTime() % 3) ==2",
-                        "repeat": "1",
-                        "options": {
-                            "output": "감사합니다. 고객님! 힘이 솟아나는 기분이에요"
-                        }
-                    }
-                ]
-            },
-            {
-                "name": "이름/누구",
-                "id": "default1298",
-                "filename": "default",
-                "input": [
-                    {
-                        "text": "이름"
-                    },
-                    {
-                        "text": "알파"
-                    },
-                    {
-                        "text": "누구"
-                    },
-                    {
-                        "text": "너 뭐"
-                    },
-                    {
-                        "text": "너 애기"
-                    },
-                    {
-                        "text": "뉘귀"
-                    },
-                    {
-                        "text": "너 대해"
-                    },
-                    {
-                        "text": "알파 거"
-                    },
-                    {
-                        "text": "누가"
-                    },
-                    {
-                        "text": "인공 지능"
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "if": "((new Date()).getTime() % 3) ==0",
-                        "repeat": "1",
-                        "options": {
-                            "output": "저는 아직 많이 부족한 초초초보 챗봇에요. 열심히 공부하겠습니다. "
-                        }
-                    },
-                    {
-                        "kind": "Action",
-                        "if": "((new Date()).getTime() % 3) ==1",
-                        "repeat": "1",
-                        "options": {
-                            "output": "네 제가 바로 신한의 자동응답형 챗봇입니다. 데헷~ "
-                        }
-                    },
-                    {
-                        "kind": "Action",
-                        "if": "((new Date()).getTime() % 3) ==2",
-                        "repeat": "1",
-                        "options": {
-                            "output": "저에 대해 궁금하신가요? 우리 차차 알아가기로 해요"
-                        }
-                    }
-                ]
-            },
-            {
-                "name": "부정-기능무시",
-                "id": "default1299",
-                "filename": "default",
-                "input": [
+			{
+				"name": "욕설-바보",
+				"id": "default1294",
+				"filename": "default",
+				"input": [
+					{
+						"text": "바부"
+					},
+					{
+						"text": "멍처하"
+					},
+					{
+						"text": "멍청이야"
+					},
+					{
+						"text": "멍충이"
+					}
+				],
+				"output": [
+					{
+						"kind": "Action",
+						"if": "((new Date()).getTime() % 4) ==0",
+						"repeat": "1",
+						"options": {
+							"output": "맞아요. 바보. 고객님밖에 모르는 바보…♥ 다른 건 배워나가면 되죠!"
+						}
+					},
+					{
+						"kind": "Action",
+						"if": "((new Date()).getTime() % 4) ==1",
+						"repeat": "1",
+						"options": {
+							"output": "매일 새로운 말을 학습 중이랍니다. 멋지게 성장할 거예요~ 대화창 고정!"
+						}
+					},
+					{
+						"kind": "Action",
+						"if": "((new Date()).getTime() % 4) ==2",
+						"repeat": "1",
+						"options": {
+							"output": "고객님께 걸맞는 챗봇이 되는 그 날까지…! 뚜벅뚜벅 나아갈 거예요"
+						}
+					},
+					{
+						"kind": "Action",
+						"if": "((new Date()).getTime() % 4) ==3",
+						"repeat": "1",
+						"options": {
+							"output": "다들 너무 똑똑하셔서 상대적으로 그래 보이는 거예요. (슬픔)"
+						}
+					}
+				]
+			},
+			{
+				"name": "없다",
+				"id": "default1295",
+				"filename": "default",
+				"input": [
+					{
+						"text": "없다"
+					},
+					{
+						"text": "몰르다"
+					},
+					{
+						"text": "이해 잘 안 되다"
+					},
+					{
+						"text": "이해 자다 안 돼다"
+					},
+					{
+						"text": "모르다"
+					}
+				],
+				"output": [
+					{
+						"kind": "Action",
+						"if": "((new Date()).getTime() % 2) ==0",
+						"repeat": "1",
+						"options": {
+							"output": "찾으시는 답변이 없으시다면 다른 키워드를 입력해 주시겠어요?"
+						}
+					},
+					{
+						"kind": "Action",
+						"if": "((new Date()).getTime() % 2) ==1",
+						"repeat": "1",
+						"options": {
+							"output": "혹시 신한카드가 없으시다면 '처음'을 입력하시고 '카드추천' 메뉴를 이용해 보시는건 어떠세요?"
+						}
+					}
+				]
+			},
+			{
+				"name": "부정-탄식",
+				"id": "default1296",
+				"filename": "default",
+				"input": [
+					{
+						"text": "허다"
+					},
+					{
+						"text": "아오"
+					},
+					{
+						"text": "엥"
+					},
+					{
+						"text": "이렇다"
+					},
+					{
+						"text": "칫"
+					},
+					{
+						"text": "뭐임"
+					},
+					{
+						"text": "아이"
+					},
+					{
+						"text": "에고"
+					},
+					{
+						"text": "음"
+					},
+					{
+						"text": "이렇다 뇨"
+					},
+					{
+						"text": "헉"
+					},
+					{
+						"text": "흠"
+					},
+					{
+						"text": "첨"
+					},
+					{
+						"text": "하"
+					},
+					{
+						"text": "아이구"
+					},
+					{
+						"text": "어허"
+					}
+				],
+				"output": [
+					{
+						"kind": "Action",
+						"if": "((new Date()).getTime() % 2) ==0",
+						"repeat": "1",
+						"options": {
+							"output": "아잉~ 근데 왜요?? "
+						}
+					},
+					{
+						"kind": "Action",
+						"if": "((new Date()).getTime() % 2) ==1",
+						"repeat": "1",
+						"options": {
+							"output": "아하… (흠흠)  "
+						}
+					}
+				]
+			},
+			{
+				"name": "감사",
+				"id": "default1297",
+				"filename": "default",
+				"input": [
+					{
+						"text": "감사"
+					},
+					{
+						"text": "고마 웡"
+					},
+					{
+						"text": "오케이"
+					},
+					{
+						"text": "편하다"
+					},
+					{
+						"text": "thank"
+					},
+					{
+						"text": "감동"
+					},
+					{
+						"text": "고맙다"
+					},
+					{
+						"text": "괜찮다"
+					},
+					{
+						"text": "금사"
+					}
+				],
+				"output": [
+					{
+						"kind": "Action",
+						"if": "((new Date()).getTime() % 3) ==0",
+						"repeat": "1",
+						"options": {
+							"output": "감동… 하루 피로가 싹 사라지는 느낌이에요."
+						}
+					},
+					{
+						"kind": "Action",
+						"if": "((new Date()).getTime() % 3) ==1",
+						"repeat": "1",
+						"options": {
+							"output": "고객님 말씀듣고 충전 완료! 24시간 근무도 거뜬하겠는걸요!"
+						}
+					},
+					{
+						"kind": "Action",
+						"if": "((new Date()).getTime() % 3) ==2",
+						"repeat": "1",
+						"options": {
+							"output": "감사합니다. 고객님! 힘이 솟아나는 기분이에요"
+						}
+					}
+				]
+			},
+			{
+				"name": "이름/누구",
+				"id": "default1298",
+				"filename": "default",
+				"input": [
+					{
+						"text": "이름"
+					},
+					{
+						"text": "알파"
+					},
+					{
+						"text": "누구"
+					},
+					{
+						"text": "너 뭐"
+					},
+					{
+						"text": "너 애기"
+					},
+					{
+						"text": "뉘귀"
+					},
+					{
+						"text": "너 대해"
+					},
+					{
+						"text": "알파 거"
+					},
+					{
+						"text": "누가"
+					},
+					{
+						"text": "인공 지능"
+					}
+				],
+				"output": [
+					{
+						"kind": "Action",
+						"if": "((new Date()).getTime() % 3) ==0",
+						"repeat": "1",
+						"options": {
+							"output": "저는 아직 많이 부족한 초초초보 챗봇에요. 열심히 공부하겠습니다. "
+						}
+					},
+					{
+						"kind": "Action",
+						"if": "((new Date()).getTime() % 3) ==1",
+						"repeat": "1",
+						"options": {
+							"output": "네 제가 바로 신한의 자동응답형 챗봇입니다. 데헷~ "
+						}
+					},
+					{
+						"kind": "Action",
+						"if": "((new Date()).getTime() % 3) ==2",
+						"repeat": "1",
+						"options": {
+							"output": "저에 대해 궁금하신가요? 우리 차차 알아가기로 해요"
+						}
+					}
+				]
+			},
+			{
+				"name": "부정-기능무시",
+				"id": "default1299",
+				"filename": "default",
+				"input": [
                     {
                         "text": "알다 게 없다"
                     },
@@ -6244,7 +6250,7 @@ var dialogs = [
                         "text": "가능하다 게"
                     },
                     {
-                        "text": "공부 하다 오다"
+                        "text": "공부 많이"
                     },
                     {
                         "text": "그냥 기사"
@@ -6310,166 +6316,169 @@ var dialogs = [
                         "text": "실망"
                     },
                     {
-                        "text": "이 뭔가"
+                        "text": "뭔가"
+                    },
+                    {
+                        "regexp": "다야"
                     }
                 ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "if": "((new Date()).getTime() % 4) ==0",
-                        "repeat": "1",
-                        "options": {
-                            "output": "아직 부족해서 죄송해요. 매일 더 나아지려 노력하고 있어요!"
-                        }
-                    },
-                    {
-                        "kind": "Action",
-                        "if": "((new Date()).getTime() % 4) ==1",
-                        "repeat": "1",
-                        "options": {
-                            "output": "제가 태어난 지 얼마 안 됐거든요… 더 열심히 공부할게요!"
-                        }
-                    },
-                    {
-                        "kind": "Action",
-                        "if": "((new Date()).getTime() % 4) ==2",
-                        "repeat": "1",
-                        "options": {
-                            "output": "제가 아직 배우는 중이라 조금 부족해도 이해해주세용~"
-                        }
-                    },
-                    {
-                        "kind": "Action",
-                        "if": "((new Date()).getTime() % 4) ==3",
-                        "repeat": "1",
-                        "options": {
-                            "output": "오늘 컨디션이 별로라서… 흠흠.. 다음엔 꼭 답변해드릴게요!"
-                        }
-                    }
-                ]
-            },
-            {
-                "name": "나",
-                "id": "default1300",
-                "filename": "default",
-                "input": [
-                    {
-                        "text": "나다"
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "if": "((new Date()).getTime() % 2) ==0",
-                        "repeat": "1",
-                        "options": {
-                            "output": "고객님이 좋으면 저는 더 좋아요~ 촤하하^^"
-                        }
-                    },
-                    {
-                        "kind": "Action",
-                        "if": "((new Date()).getTime() % 2) ==1",
-                        "repeat": "1",
-                        "options": {
-                            "output": "나도나도~ 저도요 저도요~ (근데.. 뭐가??) "
-                        }
-                    }
-                ]
-            },
-            {
-                "name": "시비",
-                "id": "default1301",
-                "filename": "default",
-                "input": [
-                    {
-                        "text": "재미있다"
-                    },
-                    {
-                        "text": "재다"
-                    },
-                    {
-                        "text": "재밌다"
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "if": "((new Date()).getTime() % 2) ==0",
-                        "repeat": "1",
-                        "options": {
-                            "output": "고객님과 대화하는 건 항상 즐겁습니다.  :) "
-                        }
-                    },
-                    {
-                        "kind": "Action",
-                        "if": "((new Date()).getTime() % 2) ==1",
-                        "repeat": "1",
-                        "options": {
-                            "output": "유머도 장착하겠습니다. "
-                        }
-                    }
-                ]
-            },
-            {
-                "name": "시비2",
-                "id": "default1302",
-                "filename": "default",
-                "input": [
-                    {
-                        "text": "라이벌"
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "if": "((new Date()).getTime() % 2) ==0",
-                        "repeat": "1",
-                        "options": {
-                            "output": "저는 제 할 일을 했을 뿐인걸요!"
-                        }
-                    },
-                    {
-                        "kind": "Action",
-                        "if": "((new Date()).getTime() % 2) ==1",
-                        "repeat": "1",
-                        "options": {
-                            "output": "깝치는 게 뭘까요?"
-                        }
-                    }
-                ]
-            },
-            {
-                "name": "물음표",
-                "id": "default1303",
-                "filename": "default",
-                "input": [
-                    {
-                        "text": "?"
-                    },
-                    {
-                        "text": "??"
-                    }
-                ],
-                "output": [
-                    {
-                        "kind": "Action",
-                        "if": "((new Date()).getTime() % 2) ==0",
-                        "repeat": "1",
-                        "options": {
-                            "output": "뭐가 그리 궁금하신가요?"
-                        }
-                    },
-                    {
-                        "kind": "Action",
-                        "if": "((new Date()).getTime() % 2) ==1",
-                        "repeat": "1",
-                        "options": {
-                            "output": "!!!"
-                        }
-                    }
-                ]
-            },
-            {
+				"output": [
+					{
+						"kind": "Action",
+						"if": "((new Date()).getTime() % 4) ==0",
+						"repeat": "1",
+						"options": {
+							"output": "아직 부족해서 죄송해요. 매일 더 나아지려 노력하고 있어요!"
+						}
+					},
+					{
+						"kind": "Action",
+						"if": "((new Date()).getTime() % 4) ==1",
+						"repeat": "1",
+						"options": {
+							"output": "제가 태어난 지 얼마 안 됐거든요… 더 열심히 공부할게요!"
+						}
+					},
+					{
+						"kind": "Action",
+						"if": "((new Date()).getTime() % 4) ==2",
+						"repeat": "1",
+						"options": {
+							"output": "제가 아직 배우는 중이라 조금 부족해도 이해해주세용~"
+						}
+					},
+					{
+						"kind": "Action",
+						"if": "((new Date()).getTime() % 4) ==3",
+						"repeat": "1",
+						"options": {
+							"output": "오늘 컨디션이 별로라서… 흠흠.. 다음엔 꼭 답변해드릴게요!"
+						}
+					}
+				]
+			},
+			{
+				"name": "나",
+				"id": "default1300",
+				"filename": "default",
+				"input": [
+					{
+						"text": "나다"
+					}
+				],
+				"output": [
+					{
+						"kind": "Action",
+						"if": "((new Date()).getTime() % 2) ==0",
+						"repeat": "1",
+						"options": {
+							"output": "고객님이 좋으면 저는 더 좋아요~ 촤하하^^"
+						}
+					},
+					{
+						"kind": "Action",
+						"if": "((new Date()).getTime() % 2) ==1",
+						"repeat": "1",
+						"options": {
+							"output": "나도나도~ 저도요 저도요~ (근데.. 뭐가??) "
+						}
+					}
+				]
+			},
+			{
+				"name": "시비",
+				"id": "default1301",
+				"filename": "default",
+				"input": [
+					{
+						"text": "재미있다"
+					},
+					{
+						"text": "재다"
+					},
+					{
+						"text": "재밌다"
+					}
+				],
+				"output": [
+					{
+						"kind": "Action",
+						"if": "((new Date()).getTime() % 2) ==0",
+						"repeat": "1",
+						"options": {
+							"output": "고객님과 대화하는 건 항상 즐겁습니다.  :) "
+						}
+					},
+					{
+						"kind": "Action",
+						"if": "((new Date()).getTime() % 2) ==1",
+						"repeat": "1",
+						"options": {
+							"output": "유머도 장착하겠습니다. "
+						}
+					}
+				]
+			},
+			{
+				"name": "시비2",
+				"id": "default1302",
+				"filename": "default",
+				"input": [
+					{
+						"text": "라이벌"
+					}
+				],
+				"output": [
+					{
+						"kind": "Action",
+						"if": "((new Date()).getTime() % 2) ==0",
+						"repeat": "1",
+						"options": {
+							"output": "저는 제 할 일을 했을 뿐인걸요!"
+						}
+					},
+					{
+						"kind": "Action",
+						"if": "((new Date()).getTime() % 2) ==1",
+						"repeat": "1",
+						"options": {
+							"output": "깝치는 게 뭘까요?"
+						}
+					}
+				]
+			},
+			{
+				"name": "물음표",
+				"id": "default1303",
+				"filename": "default",
+				"input": [
+					{
+						"text": "?"
+					},
+					{
+						"text": "??"
+					}
+				],
+				"output": [
+					{
+						"kind": "Action",
+						"if": "((new Date()).getTime() % 2) ==0",
+						"repeat": "1",
+						"options": {
+							"output": "뭐가 그리 궁금하신가요?"
+						}
+					},
+					{
+						"kind": "Action",
+						"if": "((new Date()).getTime() % 2) ==1",
+						"repeat": "1",
+						"options": {
+							"output": "!!!"
+						}
+					}
+				]
+			},
+			{
 				"name": "미검색",
 				"id": "default274",
 				"filename": "default",
@@ -7168,23 +7177,23 @@ var dialogs = [
 			}
 		],
 		"output": [
-            {
-                "text": "맞아요. 바보. 고객님밖에 모르는 바보…♥ 다른 건 배워나가면 되죠!",
-                "kind": "Text"
-            },
-            {
-                "text": "매일 새로운 말을 학습 중이랍니다. 멋지게 성장할 거예요~ 대화창 고정!",
-                "kind": "Text"
-            },
-            {
-                "text": "고객님께 걸맞는 챗봇이 되는 그 날까지…! 뚜벅뚜벅 나아갈 거예요",
-                "kind": "Text"
-            },
-            {
-                "text": "다들 너무 똑똑하셔서 상대적으로 그래 보이는 거예요. (슬픔)",
-                "kind": "Text"
-            }
-        ]
+			{
+				"text": "맞아요. 바보. 고객님밖에 모르는 바보…♥ 다른 건 배워나가면 되죠!",
+				"kind": "Text"
+			},
+			{
+				"text": "매일 새로운 말을 학습 중이랍니다. 멋지게 성장할 거예요~ 대화창 고정!",
+				"kind": "Text"
+			},
+			{
+				"text": "고객님께 걸맞는 챗봇이 되는 그 날까지…! 뚜벅뚜벅 나아갈 거예요",
+				"kind": "Text"
+			},
+			{
+				"text": "다들 너무 똑똑하셔서 상대적으로 그래 보이는 거예요. (슬픔)",
+				"kind": "Text"
+			}
+		]
 	},
 	{
 		"name": "없다",
@@ -7208,15 +7217,15 @@ var dialogs = [
 			}
 		],
 		"output": [
-            {
-                "text": "찾으시는 답변이 없으시다면 다른 키워드를 입력해 주시겠어요?",
-                "kind": "Text"
-            },
-            {
-                "text": "혹시 신한카드가 없으시다면 '처음'을 입력하시고 '카드추천' 메뉴를 이용해 보시는건 어떠세요?",
-                "kind": "Text"
-            }
-        ]
+			{
+				"text": "찾으시는 답변이 없으시다면 다른 키워드를 입력해 주시겠어요?",
+				"kind": "Text"
+			},
+			{
+				"text": "혹시 신한카드가 없으시다면 '처음'을 입력하시고 '카드추천' 메뉴를 이용해 보시는건 어떠세요?",
+				"kind": "Text"
+			}
+		]
 	},
 	{
 		"name": "부정-탄식",
@@ -7273,15 +7282,15 @@ var dialogs = [
 			}
 		],
 		"output": [
-            {
-                "text": "아잉~ 근데 왜요?? ",
-                "kind": "Text"
-            },
-            {
-                "text": "아하… (흠흠)  ",
-                "kind": "Text"
-            }
-        ]
+			{
+				"text": "아잉~ 근데 왜요?? ",
+				"kind": "Text"
+			},
+			{
+				"text": "아하… (흠흠)  ",
+				"kind": "Text"
+			}
+		]
 	},
 	{
 		"name": "감사",
@@ -7317,19 +7326,19 @@ var dialogs = [
 			}
 		],
 		"output": [
-            {
-                "text": "감동… 하루 피로가 싹 사라지는 느낌이에요.",
-                "kind": "Text"
-            },
-            {
-                "text": "고객님 말씀듣고 충전 완료! 24시간 근무도 거뜬하겠는걸요!",
-                "kind": "Text"
-            },
-            {
-                "text": "감사합니다. 고객님! 힘이 솟아나는 기분이에요",
-                "kind": "Text"
-            }
-        ]
+			{
+				"text": "감동… 하루 피로가 싹 사라지는 느낌이에요.",
+				"kind": "Text"
+			},
+			{
+				"text": "고객님 말씀듣고 충전 완료! 24시간 근무도 거뜬하겠는걸요!",
+				"kind": "Text"
+			},
+			{
+				"text": "감사합니다. 고객님! 힘이 솟아나는 기분이에요",
+				"kind": "Text"
+			}
+		]
 	},
 	{
 		"name": "이름/누구",
@@ -7368,19 +7377,19 @@ var dialogs = [
 			}
 		],
 		"output": [
-            {
-                "text": "저는 아직 많이 부족한 초초초보 챗봇에요. 열심히 공부하겠습니다. ",
-                "kind": "Text"
-            },
-            {
-                "text": "네 제가 바로 신한의 자동응답형 챗봇입니다. 데헷~ ",
-                "kind": "Text"
-            },
-            {
-                "text": "저에 대해 궁금하신가요? 우리 차차 알아가기로 해요",
-                "kind": "Text"
-            }
-        ]
+			{
+				"text": "저는 아직 많이 부족한 초초초보 챗봇에요. 열심히 공부하겠습니다. ",
+				"kind": "Text"
+			},
+			{
+				"text": "네 제가 바로 신한의 자동응답형 챗봇입니다. 데헷~ ",
+				"kind": "Text"
+			},
+			{
+				"text": "저에 대해 궁금하신가요? 우리 차차 알아가기로 해요",
+				"kind": "Text"
+			}
+		]
 	},
 	{
 		"name": "부정-기능무시",
@@ -7397,7 +7406,7 @@ var dialogs = [
 				"text": "가능하다 게"
 			},
 			{
-				"text": "공부 하다 오다"
+				"text": "공부 많이"
 			},
 			{
 				"text": "그냥 기사"
@@ -7463,27 +7472,16 @@ var dialogs = [
 				"text": "실망"
 			},
 			{
-				"text": "이 뭔가"
+				"text": "뭔가"
+			},
+			{
+				"regexp": "다야"
 			}
 		],
-		"output": [
-            {
-                "text": "아직 부족해서 죄송해요. 매일 더 나아지려 노력하고 있어요!",
-                "kind": "Text"
-            },
-            {
-                "text": "제가 태어난 지 얼마 안 됐거든요… 더 열심히 공부할게요!",
-                "kind": "Text"
-            },
-            {
-                "text": "제가 아직 배우는 중이라 조금 부족해도 이해해주세용~",
-                "kind": "Text"
-            },
-            {
-                "text": "오늘 컨디션이 별로라서… 흠흠.. 다음엔 꼭 답변해드릴게요!",
-                "kind": "Text"
-            }
-        ]
+		"output": {
+			"text": "아직 부족해서 죄송해요. 매일 더 나아지려 노력하고 있어요!",
+			"kind": "Text"
+		}
 	},
 	{
 		"name": "나",
@@ -7495,15 +7493,15 @@ var dialogs = [
 			}
 		],
 		"output": [
-            {
-                "text": "고객님이 좋으면 저는 더 좋아요~ 촤하하^^",
-                "kind": "Text"
-            },
-            {
-                "text": "나도나도~ 저도요 저도요~ (근데.. 뭐가??) ",
-                "kind": "Text"
-            }
-        ]
+			{
+				"text": "고객님이 좋으면 저는 더 좋아요~ 촤하하^^",
+				"kind": "Text"
+			},
+			{
+				"text": "나도나도~ 저도요 저도요~ (근데.. 뭐가??) ",
+				"kind": "Text"
+			}
+		]
 	},
 	{
 		"name": "시비",
@@ -7521,15 +7519,15 @@ var dialogs = [
 			}
 		],
 		"output": [
-            {
-                "text": "고객님과 대화하는 건 항상 즐겁습니다.  :) ",
-                "kind": "Text"
-            },
-            {
-                "text": "유머도 장착하겠습니다. ",
-                "kind": "Text"
-            }
-        ]
+			{
+				"text": "고객님과 대화하는 건 항상 즐겁습니다.  :) ",
+				"kind": "Text"
+			},
+			{
+				"text": "유머도 장착하겠습니다. ",
+				"kind": "Text"
+			}
+		]
 	},
 	{
 		"name": "시비2",
@@ -7541,15 +7539,15 @@ var dialogs = [
 			}
 		],
 		"output": [
-            {
-                "text": "저는 제 할 일을 했을 뿐인걸요!",
-                "kind": "Text"
-            },
-            {
-                "text": "깝치는 게 뭘까요?",
-                "kind": "Text"
-            }
-        ]
+			{
+				"text": "저는 제 할 일을 했을 뿐인걸요!",
+				"kind": "Text"
+			},
+			{
+				"text": "깝치는 게 뭘까요?",
+				"kind": "Text"
+			}
+		]
 	},
 	{
 		"name": "물음표",
@@ -7564,17 +7562,18 @@ var dialogs = [
 			}
 		],
 		"output": [
-            {
-                "text": "뭐가 그리 궁금하신가요?",
-                "kind": "Text"
-            },
-            {
-                "text": "!!!",
-                "kind": "Text"
-            }
-        ]
+			{
+				"text": "뭐가 그리 궁금하신가요?",
+				"kind": "Text"
+			},
+			{
+				"text": "!!!",
+				"kind": "Text"
+			}
+		]
 	}
 ];
+
 var commonDialogs = [
 	{
 		"id": "defaultcommon0",
