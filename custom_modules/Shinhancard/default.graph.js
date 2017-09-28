@@ -7478,10 +7478,40 @@ var dialogs = [
 				"regexp": "다야"
 			}
 		],
-		"output": {
-			"text": "아직 부족해서 죄송해요. 매일 더 나아지려 노력하고 있어요!",
-			"kind": "Text"
-		}
+        "output": [
+            {
+                "kind": "Action",
+                "if": "((new Date()).getTime() % 4) ==0",
+                "repeat": "1",
+                "options": {
+                    "output": "아직 부족해서 죄송해요. 매일 더 나아지려 노력하고 있어요!"
+                }
+            },
+            {
+                "kind": "Action",
+                "if": "((new Date()).getTime() % 4) ==1",
+                "repeat": "1",
+                "options": {
+                    "output": "제가 태어난 지 얼마 안 됐거든요… 더 열심히 공부할게요!"
+                }
+            },
+            {
+                "kind": "Action",
+                "if": "((new Date()).getTime() % 4) ==2",
+                "repeat": "1",
+                "options": {
+                    "output": "제가 아직 배우는 중이라 조금 부족해도 이해해주세용~"
+                }
+            },
+            {
+                "kind": "Action",
+                "if": "((new Date()).getTime() % 4) ==3",
+                "repeat": "1",
+                "options": {
+                    "output": "오늘 컨디션이 별로라서… 흠흠.. 다음엔 꼭 답변해드릴게요!"
+                }
+            }
+        ]
 	},
 	{
 		"name": "나",
