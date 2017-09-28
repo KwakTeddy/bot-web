@@ -56,6 +56,9 @@ function processInput(context, inRaw, callback) {
         // dsyoon (2017. 09. 13.)
         // 사용자 사전 경로: ./external_module/resources/ja/user.pos
         function(cb) {
+            if (inRaw == undefined || inRaw == null) {
+                cb(null);
+            }
             var cbTags = new CBTags();
 
             var dicResult = userDictionary.applyUserDic('zh', inRaw);

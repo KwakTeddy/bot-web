@@ -954,7 +954,7 @@ function processInput(context, inRaw, callback) {
     var _in = '';
     var _nlpRaw = [];
 
-    var language = "zh";
+    var language = "ko";
     var result = {};
     if (language=="en") {
         enNLP.processInput(result, inRaw, function(_inTextNLP, _inDoc) {
