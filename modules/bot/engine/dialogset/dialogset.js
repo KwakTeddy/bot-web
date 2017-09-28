@@ -54,6 +54,8 @@ function convertDialogset1(dialogset, bot_id, callback) {
   var dir = path.resolve('public/files/');
   var filepath = path.join(dir, dialogset.filename);
 
+  // 봇 id 추가 by dsyoon (2017. 09. 28)
+  dialogset._doc["bot_id"] = bot_id;
   async.waterfall([
     function(cb) {
       var info = path.parse(dialogset.originalFilename);
@@ -159,6 +161,12 @@ function insertDailogsetDialog(dialogset, countId, input, output, context, callb
   } else {
     processInput(null, input, function(_input, _json) {
       console.log(countId + ">> " + input + ' || ' + _input + ' || ' + output);
+
+      // 엑셀 업로드 후 지식맵 by dsyoon (2017. 09. 28)
+      analyzeKnowledgeMap(dialogset, _json, function(err) {
+          if (err) console.log(err);
+          callback();
+      });
 
       var dialogsetDialog = new DialogsetDialog({
         dialogset: dialogset,
@@ -377,9 +385,11 @@ function insertExcelFile(infile, dialogset, callback) {
               cb2(null);
             });
 
+            (dialogset, callback);
+
           } else {
             cb2(null);
-          }25
+          }
         },
 
         function(cb2) {
@@ -709,6 +719,7 @@ function analyzeKnowledgeDialog(dialogs, bot_id, result, callback) {
 }
 exports.analyzeKnowledgeDialog = analyzeKnowledgeDialog;
 
+
 function analyzeKnowledge(dialogset, bot_id, result, callback) {
   var model = mongoModule.getModel('DialogsetDialog');
 
@@ -720,8 +731,126 @@ function analyzeKnowledge(dialogset, bot_id, result, callback) {
     });
   });
 }
-
 exports.analyzeKnowledge = analyzeKnowledge;
+
+
+/* Knowledge Graph 구축 함수, by dsyoon: controllers/dialogset.js에서 가져왔음 */
+function analyzeKnowledgeMap(dialogset, json, callback) {
+    var model = mongoModule.getModel('DialogsetDialog');
+
+    model.find({dialogset: dialogset}, function(err, docs) {
+        var nlp = json._nlp;
+        var node1, node2, link;
+        for(var i = 0; i < nlp.length; i++) {
+            if(nlp[i].pos == 'Noun') {
+                node1 = nlp[i].text;
+                break;
+            }
+        }
+
+        if(node1) {
+            for(var i = nlp.length -1 ; i >= 0; i--) {
+                if(node2 && link) break;
+                if(nlp[i].pos == 'Noun' && nlp[i].text != node1) {
+                    node2 = nlp[i].text;
+                } else if(nlp[i].pos == 'Verb' || nlp[i].pos == 'Adjective') {
+                    link = nlp[i].text;
+                }
+            }
+        }
+
+        console.log(">> " + node1 + ', ' + node2 + ' ' + link);
+
+        if(node1 && node2 && link) {
+            var task = {
+                doc:{
+                    botUser: null,
+                    node1: node1,
+                    node2: node2,
+                    link: link,
+                    bot_id: dialogset._doc.bot_id
+                },
+
+                mongo: {
+                    model: 'FactLink',
+                    query: {node1: '', node2: '', link: ''},
+                    options: {upsert: true}
+                }
+            };
+
+            mongoModule.update(task, null, function(_task, _context) {
+                callback();
+            })
+        } else {
+            callback();
+        }
+    }, function(err) {
+        callback();
+    });
+}
+/*
+function analyzeKnowledgeMap(dialogset, json, callback) {
+    var model = mongoModule.getModel('DialogsetDialog');
+
+    model.find({dialogset: dialogset}, function(err, docs) {
+        async.eachSeries(docs, json, function(doc, cb) {
+            processInput(null, doc._doc.input, function(_input, _json) {
+                console.log(">> " + doc._doc.input);
+
+                var nlp = _json._nlp;
+                var node1, node2, link;
+                for(var i = 0; i < nlp.length; i++) {
+                    if(nlp[i].pos == 'Noun') {
+                        node1 = nlp[i].text;
+                        break;
+                    }
+                }
+
+                if(node1) {
+                    for(var i = nlp.length -1 ; i >= 0; i--) {
+                        if(node2 && link) break;
+                        if(nlp[i].pos == 'Noun' && nlp[i].text != node1) {
+                            node2 = nlp[i].text;
+                        } else if(nlp[i].pos == 'Verb' || nlp[i].pos == 'Adjective') {
+                            link = nlp[i].text;
+                        }
+                    }
+                }
+
+                console.log(">> " + node1 + ', ' + node2 + ' ' + link);
+
+                if(node1 && node2 && link) {
+                    var task = {
+                        doc:{
+                            botUser: null,
+                            node1: node1,
+                            node2: node2,
+                            link: link
+                        },
+
+                        mongo: {
+                            model: 'FactLink',
+                            query: {node1: '', node2: '', link: ''},
+                            options: {upsert: true}
+                        }
+                    };
+
+                    mongoModule.update(task, null, function(_task, _context) {
+                        cb();
+                    })
+                } else {
+                    cb();
+                }
+
+            })
+        }, function(err) {
+            callback();
+        });
+    });
+}
+ */
+exports.analyzeKnowledgeMap = analyzeKnowledgeMap;
+/* by dsyoon: controllers/dialogset.js에서 가져왔음 */
 
 
 // var insertDatasetTask = {
@@ -825,7 +954,7 @@ function processInput(context, inRaw, callback) {
     var _in = '';
     var _nlpRaw = [];
 
-    var language = "ko";
+    var language = "zh";
     var result = {};
     if (language=="en") {
         enNLP.processInput(result, inRaw, function(_inTextNLP, _inDoc) {
