@@ -314,21 +314,21 @@ SentenceInfo.prototype.analyzeZH = function (posJson) {
     for (var i=0; i<morphemes.length; i++) {
         if (morphemes[i].str.indexOf("不要") > -1) {
             if (morphemes[i].pos == "Adjective") {
-                return type.imperative;
+                return this.type.imperative;
             }
             if (i<morphemes.length-1) {
                 if (morphemes[i+1].pos == "Verb") {
-                    return type.imperative;
+                    return this.type.imperative;
                 }
             }
         }
         if (morphemes[i].str.indexOf("别") > -1) {
             if (morphemes[i].pos == "Adjective") {
-                return type.imperative;
+                return this.type.imperative;
             }
             if (i<morphemes.length-1) {
                 if (morphemes[i+1].pos == "Verb") {
-                    return type.imperative;
+                    return this.type.imperative;
                 }
             }
         }
@@ -341,7 +341,7 @@ SentenceInfo.prototype.analyzeZH = function (posJson) {
         str.indexOf("祝您健康长寿")>-1 ||
         str.indexOf("祝你生日快乐")>-1 ||
         str.indexOf("旅行快乐")>-1) {
-        return type.exclamation;
+        return this.type.exclamation;
     }
 
     // 체크2.
@@ -349,16 +349,16 @@ SentenceInfo.prototype.analyzeZH = function (posJson) {
         for (var i=2; i<morphemes.length; i++) {
             // ‘多(么)+형용사+啊’
             if ((morphemes[i-2].str == "多" || morphemes[i-2].str == "么") && morphemes[i-1].pos == "Adjective" && morphemes[i].str == "啊") {
-                return type.exclamation;
+                return this.type.exclamation;
             }
             // ‘多(么)’ 앞에 ‘该’가 오는 경우
             if (morphemes[i-1].str == "该" && (morphemes[i].str == "多" || morphemes[i].str == "么")) {
-                return type.exclamation;
+                return this.type.exclamation;
             }
         }
         // ‘太…了’를 사용
         if (morphemes[0].str == "太" && morphemes[morphemes.length-1].str == "了") {
-            return type.exclamation;
+            return this.type.exclamation;
         }
     }
 
