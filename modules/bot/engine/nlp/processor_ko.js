@@ -64,24 +64,24 @@ function processInput(context, inRaw, callback) {
                 spamfilter: false     // (optional default: false)
             });
 
-
-            var lastChar = inRaw.charAt(inRaw.length-1);
+            var _inRaw = inRaw;
+            var lastChar = _inRaw.charAt(_inRaw.length-1);
             if (lastChar == '.' || lastChar == '?' || lastChar == '!') {
-                inRaw = inRaw.substring(0, inRaw.length-1);
+                _inRaw = _inRaw.substring(0, _inRaw.length-1);
             } else {
                 lastChar = "";
             }
 
-            var dicResult = userDictionary.applyUserDic('KO', inRaw);
+            var dicResult = userDictionary.applyUserDic('KO', _inRaw);
             var temp_inRaw = dicResult[0];
             var mb_user_str = dicResult[1];
             var mb_user_tag = dicResult[2];
 
             nlpKo.tokenize(temp_inRaw, function(err, result) {
                 var _inNLP = [];
-                if(!result) result = inRaw;
+                if(!result) result = _inRaw;
                 if(!result) {
-                    result = inRaw;
+                    result = _inRaw;
                 }
 
                 // 사용자 사전 적용
@@ -119,7 +119,7 @@ function processInput(context, inRaw, callback) {
                 context.botUser["nlpAll"] = nlpAll;
                 context.botUser["nlp"] = _nlp;
 
-                var nlpJsonPOS = nlpUtil.convertJSON(temp_inRaw, nlpAll);
+                var nlpJsonPOS = nlpUtil.convertJSON(inRaw, nlpAll);
                 context.botUser.nlu["sentence"] = inRaw;
                 context.botUser.nlu["lastChar"] = lastChar;
                 context.botUser.nlu["pos"] = nlpJsonPOS;
