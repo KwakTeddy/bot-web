@@ -1,8 +1,8 @@
 'use strict';
 
 // Bots controller
-angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootScope', '$state', '$window','$timeout', '$stateParams', '$resource',
-    function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, Authentication) {
+angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootScope', '$state', '$window','$timeout', '$stateParams', '$resource', 'Socket',
+    function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, Authentication, Socket) {
         var vm = this;
         //vm.user = Authentication.user;
         vm.userId = $rootScope.userId;
@@ -54,6 +54,8 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
                 nodes[key].isMain = false;
             }
         };
+
+
 
         $resource('/api/factLinks/findByBotId/:botId', {}).query({botId: botId /* or botObjectId */}, function(res) {
             for(var i = 0; i < res.length; i++) {
@@ -319,6 +321,18 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
                 .start();
         }
         update();
+
+        $rootScope.graphUpdate = function(){
+            console.log('업데이트');
+            $resource('/api/factLinks/findByBotId/:botId', {}).query({botId: botId /* or botObjectId */}, function(res) {
+                for(var i = 0; i < res.length; i++) {
+                    addLink(res[i]);
+                }
+                console.log(nodes);
+                console.log(links);
+                update();
+            });
+        };
 
     }]
 );

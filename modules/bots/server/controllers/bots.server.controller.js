@@ -702,6 +702,8 @@ exports.nluProcess = function(req, res) {
   });
 };
 */
+
+// 엔터티 입력 시 실시간 분석 결과 by dsyoon (2017. 09. 29.)
 exports.nluProcess = function(req, res) {
     var koNLP = require(path.resolve('./modules/bot/engine/nlp/processor_ko'));
     var enNLP = require(path.resolve('./modules/bot/engine/nlp/processor_en'));

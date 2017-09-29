@@ -68,6 +68,8 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       // if(message.startsWith(':log') && !$state.is('home')) return;
       //   console.log(message.lastIndexOf(':log'));
 
+            $rootScope.graphUpdate();
+
       if(message.lastIndexOf(':log') == 0) {
         // if(!$state.is('developer-home') && !$state.is('user-bots.context-analytics') &&
         //   !$state.is('bots.graph-knowledge') && !$state.is('bots.graph-dialog') &&
