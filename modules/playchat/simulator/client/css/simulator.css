@@ -176,6 +176,11 @@
     border-right: 10px solid transparent;
 }
 
+.simulator .question em.tail+div
+{
+    text-align: right;
+}
+
 .simulator .question .speech
 {
     background: #dfdfdf;
@@ -186,7 +191,8 @@
     line-height: 17px;
     white-space: normal;
     position: relative;
-    margin: 4px 0px 0 205px;
+    margin-top: 4px;
+    right: 25px;
 }
 
 .simulator .question .speech .speech-text

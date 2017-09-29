@@ -1,5 +1,5 @@
 var path = require('path');
-var globals = require(path.resolve('modules/bot/engine/common/globals'));
+var globals = require(path.resolve('./engine/core/engine/common/globals.js'));
 
 var messages = {
   // typeExit: '\n처음으로 돌아가기: \'ㄱ\'',

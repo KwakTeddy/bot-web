@@ -7,7 +7,7 @@ var type = require(path.resolve('modules/bot/action/common/type'));
 var orderTasks = utils.requireNoCache(path.resolve('custom_modules/order/order.task'));
 var orderTypes = utils.requireNoCache(path.resolve('custom_modules/order/order.type'));
 var mongoose = require('mongoose');
-var bot = require(path.resolve('config/lib/bot')).getBot('order');
+var bot = require(path.resolve('./engine/core/bot')).getBot('order');
 
 var address = require(path.resolve('modules/bot/action/common/address'));
 var orderData = utils.requireNoCache(path.resolve('custom_modules/order/data'));

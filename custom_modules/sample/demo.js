@@ -1,14 +1,14 @@
 var path = require('path');
-var http = require(path.resolve('modules/bot/action/common/http'));
-var task = require(path.resolve('modules/bot/action/common/task'));
-var bot = require(path.resolve('config/lib/bot')).getBot('sample');
+var http = require(path.resolve('./engine/core/action/common/http'));
+var task = require(path.resolve('./engine/core/action/common/task'));
+var bot = require(path.resolve('./engine/core/bot')).getBot('sample');
 var xpath = require('xpath');
 var dom = require('xmldom').DOMParser;
 var tough = require('tough-cookie');
 
 var async = require('async');
 var webdriverio = require('webdriverio');
-var utils = require(path.resolve('modules/bot/action/common/utils'));
+var utils = require(path.resolve('./engine/core/action/common/utils'));
 var config = require(path.resolve('./config/config'));
 
 var options = {

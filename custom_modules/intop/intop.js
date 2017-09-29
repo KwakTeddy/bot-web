@@ -1,6 +1,6 @@
 var path = require('path');
 var mongo = require(path.resolve('./modules/bot/action/common/mongo'));
-var bot = require(path.resolve('config/lib/bot')).getBot('intop');
+var bot = require(path.resolve('./engine/core/bot')).getBot('intop');
 var async = require('async');
 
 var searchCategory = {

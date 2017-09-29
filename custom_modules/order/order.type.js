@@ -1,5 +1,5 @@
 var path = require('path');
-var botlib = require(path.resolve('config/lib/bot'));
+var botlib = require(path.resolve('./engine/core/bot'));
 var bot = botlib.getBot('order');
 
 function menuCategoryCheck(inRaw, inNLP, dialog, context, callback) {

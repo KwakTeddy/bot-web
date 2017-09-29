@@ -112,6 +112,14 @@ if('{{env}}' == 'production')
 <script src="/lib/angular-cookies/angular-cookies.js"></script>
 <!--<script src="/lib/angular-file-upload/dist/angular-file-upload.min.js"></script>-->
 
+<script>
+// UI 공통 에러 구현.. 임시로 여기 위치.
+var Beagle = {};
+Beagle.error = function(e)
+{
+    console.error(e);
+};
+</script>
 
 
 {% if env == 'development' %}
@@ -121,6 +129,7 @@ if('{{env}}' == 'production')
 <script src="modules/core/client/config/modules.js"></script>
 
 <script src="modules/core/client/services/interceptors/auth.interceptor.client.service.js"></script>
+<script src="modules/core/client/services/socket.io.client.service.js"></script>
 <!--<script src="modules/core/client/services/menus.client.service.js"></script>-->
 
 <script src="modules/core/client/controllers/title.client.controller.js"></script>

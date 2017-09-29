@@ -1,9 +1,7 @@
 var path = require('path');
 var mongoose = require('mongoose');
-var mongoModule = require(path.resolve('modules/bot/action/common/mongo'));
-// var typelib = require(path.resolve('modules/bot/action/common/type'));
-var toneModule = require(path.resolve('modules/bot/action/common/tone'));
-var core = require(path.resolve('custom_modules/playchat/core'));
+var mongoModule = require(path.resolve('./engine/core/action/common/mongo'));
+var toneModule = require(path.resolve('./engine/core/action/common/tone'));
 
 function factsTypeCheck(text, format, inDoc, context, callback) {
   if(!context.bot.useMemoryFacts || context.botUser.sentenceInfo.sentenceType != 1 || context.botUser.sentenceInfo.verbToken == undefined) {

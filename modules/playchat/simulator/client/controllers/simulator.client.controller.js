@@ -1,10 +1,90 @@
 'use strict';
 
-//플레이챗 전반적인 관리
-
-angular.module('playchat.simulator').controller('SimulatorController', ['$window', '$scope', function ($window, $scope)
+angular.module('playchat.simulator').controller('SimulatorController', ['$window', '$scope', '$cookies', '$resource', 'Socket',
+function ($window, $scope, $cookies, $resource, Socket)
 {
     $scope.$parent.loaded('simulator');
+
+    (function()
+    {
+        var chatbot = $cookies.getObject('chatbot');
+        var user = $cookies.getObject('user');
+
+        var simulatorBody = undefined;
+
+        var getCurrentTime = function()
+        {
+            var date = new Date();
+
+            var hour = date.getHours();
+            var min = date.getMinutes();
+
+            hour = hour < 10 ? '0' + hour : hour;
+            min = min < 10 ? '0' + min : min;
+
+            return hour + ':' + min;
+        };
+
+        var addBotBubble = function(text)
+        {
+            var template = angular.element('#botAnswerTemplate').html();
+            template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', text);
+            simulatorBody.append(template);
+        };
+
+        var addUserBubble = function(text)
+        {
+            var template = angular.element('#userAnswerTemplate').html();
+            template = template.replace('{time}', getCurrentTime()).replace('{text}', text);
+            simulatorBody.append(template);
+        };
+
+        var emitMsg = function(msg, isUser)
+        {
+            var options = { dev: true };
+
+            var params = {};
+            params.bot = chatbot.id;
+            params.user = user._id;
+            params.msg = msg;
+            params.options = options;
+
+            Socket.emit('send_msg', params);
+
+            if(isUser)
+            {
+                addUserBubble(msg);
+            }
+        };
+
+        //event handling
+        Socket.on('send_msg', function(data)
+        {
+            addBotBubble(data);
+        });
+
+        $scope.sendMessage = function(e)
+        {
+            if(e.keyCode == 13)
+            {
+                var value = e.currentTarget.value;
+                emitMsg(value, true);
+                e.currentTarget.value = '';
+            }
+        };
+
+        $scope.init = function()
+        {
+            simulatorBody = angular.element('#simulatorBody');
+            // init
+            simulatorBody.html('');
+            $resource('/api/chatbots/:id', { id: '@id' }).get({ id: chatbot.id }, function(data)
+            {
+                $scope.chatbotName = data.name;
+                emitMsg(':reset user', false);
+            }, Beagle.error);
+        };
+    })();
 
     // --------- Simulator 접기 펼치기 기능.
     (function()

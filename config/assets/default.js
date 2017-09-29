@@ -17,7 +17,7 @@ module.exports = {
         gruntConfig: 'gruntfile.js',
         gulpConfig: 'gulpfile.js',
         allJS: ['server.js', 'config/**/*.js', 'modules/*/server/**/*.js'],
-        models: ['modules/*/server/models/**/*.js'],
+        models: ['modules/**/server/models/**/*.js'],
         routes: ['modules/*/server/routes/**/*.js'],
         sockets: 'modules/*/server/sockets/**/*.js',
         config: 'modules/*/server/config/*.js',

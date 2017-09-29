@@ -1,5 +1,5 @@
 var path = require('path');
-var bot = require(path.resolve('config/lib/bot')).getBot('lgdemo');
+var bot = require(path.resolve('./engine/core/bot')).getBot('lgdemo');
 
 var concepts = {
   '서비스센터': ['센터', '쎈터', '수리점', '센타', '쎈타', '대리점', '영업점', '고객 센터'],

@@ -5960,6 +5960,6 @@ var commonDialogs = [
 		"output": []
 	}
 ];
-var _bot = require(require('path').resolve("config/lib/bot")).getBot('Shinhancard');
+var _bot = require(require('path').resolve("./engine/core/bot")).getBot('Shinhancard');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

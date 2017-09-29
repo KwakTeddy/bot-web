@@ -1,5 +1,5 @@
 var path = require('path');
-var bot = require(path.resolve('config/lib/bot')).getBot('bot_prac');
+var bot = require(path.resolve('./engine/core/bot')).getBot('bot_prac');
 var logger = require(path.resolve('./config/lib/logger'));
 // var regexpTypeCheck = require(path.resolve('./modules/bot/global/type/common.type'));
 

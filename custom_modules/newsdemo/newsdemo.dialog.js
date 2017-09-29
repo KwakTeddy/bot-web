@@ -148,7 +148,7 @@ var commonDialogs = [
 ];
 
 
-var _bot = require(require('path').resolve("config/lib/bot")).getBot('newsdemo');
+var _bot = require(require('path').resolve("./engine/core/bot")).getBot('newsdemo');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);
 

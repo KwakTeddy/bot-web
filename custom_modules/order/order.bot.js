@@ -48,5 +48,5 @@ var orderBot = {
   ]
 };
 
-var botlib = require(path.resolve('config/lib/bot'));
+var botlib = require(path.resolve('./engine/core/bot'));
 botlib.makeBot('order', orderBot);

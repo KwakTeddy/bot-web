@@ -7,7 +7,7 @@
                 <section class="working-ground" ng-include="page"></section>
                 <section class="log-analysis" ng-include="'/modules/playchat/log-analysis/client/views/log-analysis.client.view.html'" ng-controller="LogAnalysisController"></section>
             </div>
-            <section class="simulator" ng-include="'/modules/playchat/simulator/client/views/simulator.client.view.html'" ng-controller="SimulatorController"></section>
+            <section class="simulator" ng-include="'/modules/playchat/simulator/client/views/simulator.client.view.html'" ng-controller="SimulatorController" onload="init();"></section>
         </div>
     </div>
 </section>

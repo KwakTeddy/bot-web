@@ -1,7 +1,7 @@
 var path = require('path');
 var utils = require(path.resolve('modules/bot/action/common/utils'));
 var mongoose = require('mongoose');
-var bot = require(path.resolve('config/lib/bot')).getBot('order');
+var bot = require(path.resolve('./engine/core/bot')).getBot('order');
 var _ = require('lodash');
 
 var restaurantCategory = [

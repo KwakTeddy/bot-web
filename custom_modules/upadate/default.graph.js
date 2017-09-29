@@ -28,6 +28,6 @@ var commonDialogs = [
 ];
 
 
-var _bot = require(require('path').resolve("config/lib/bot")).getBot('upadate');
+var _bot = require(require('path').resolve("./engine/core/bot")).getBot('upadate');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

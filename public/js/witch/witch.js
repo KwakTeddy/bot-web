@@ -211,7 +211,10 @@ var Witch = (function()
     Witch.prototype.createScenario = function(name, callback)
     {
         if(privateData.scenarios[name] && privateData.scenarios[name].length > 0)
-            throw new WitchError(name + ' scenario is already created.');
+        {
+            return;
+        }
+            // throw new WitchError(name + ' scenario is already created.');
 
         callback.call({
             createTest : this.createTest.bind({ scenarioName: name })
@@ -239,13 +242,13 @@ var Witch = (function()
         var list = privateData.scenarios[scenarioName];
 
         forEach(list, function(item, index, done)
-            {
-                test(item, done);
-            },
-            function()
-            {
-                console.log('%c[Witch] %cTest Scenario ' + '%c' + scenarioName + '%c is done.', 'color: #ccc;', 'color: blue;', 'color: red;', 'color: blue;');
-            });
+        {
+            test(item, done);
+        },
+        function()
+        {
+            console.log('%c[Witch] %cTest Scenario ' + '%c' + scenarioName + '%c is done.', 'color: #ccc;', 'color: blue;', 'color: red;', 'color: blue;');
+        });
     };
 
     return new Witch();

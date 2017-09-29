@@ -2,7 +2,7 @@
 var path = require('path');
 var address = require(path.resolve('./modules/bot/action/common/address'));
 var taskModule = require(path.resolve('./modules/bot/action/common/task'));
-var bot = require(path.resolve('config/lib/bot')).getBot('moneybot');
+var bot = require(path.resolve('./engine/core/bot')).getBot('moneybot');
 /*
 execute "taskName in bot"
 execute "module.task"
@@ -41,6 +41,6 @@ var commonDialogs = [
 ];
 
 
-var _bot = require(require('path').resolve("config/lib/bot")).getBot('moneybot');
+var _bot = require(require('path').resolve("./engine/core/bot")).getBot('moneybot');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

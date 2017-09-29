@@ -133,6 +133,6 @@ var commonDialogs = [
 ];
 
 
-var _bot = require(require('path').resolve("config/lib/bot")).getBot('lgdemo_en');
+var _bot = require(require('path').resolve("./engine/core/bot")).getBot('lgdemo_en');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

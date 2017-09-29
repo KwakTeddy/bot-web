@@ -1,7 +1,7 @@
 var path = require('path');
 var mongo = require(path.resolve('./modules/bot/action/common/mongo'));
 var addressModule = require(path.resolve('modules/bot/action/common/address'));
-var bot = require(path.resolve('config/lib/bot')).getBot('csdemo');
+var bot = require(path.resolve('./engine/core/bot')).getBot('csdemo');
 var async = require('async');
 
 var asCategory = [

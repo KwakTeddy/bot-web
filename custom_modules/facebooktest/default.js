@@ -1,5 +1,5 @@
 var path = require('path');
-var bot = require(path.resolve('config/lib/bot')).getBot('facebooktest');
+var bot = require(path.resolve('./engine/core/bot')).getBot('facebooktest');
 
 var defaultTask = {
     name: 'defaultTask',

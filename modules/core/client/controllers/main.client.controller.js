@@ -2,9 +2,9 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('core').controller('MainController', ['$scope', 'Authentication', '$location', '$timeout', function ($scope, Authentication, $location, $timeout)
+angular.module('core').controller('MainController', ['$scope', '$location', '$timeout', '$cookies', 'Authentication', function ($scope, $location, $timeout, $cookies, Authentication)
 {
-    console.log('로그인 : ', Authentication.user);
+    console.log('로그인 : ', Authentication);
 
     $scope.loading = true;
 
@@ -16,7 +16,7 @@ angular.module('core').controller('MainController', ['$scope', 'Authentication',
             $timeout(function()
             {
                 angular.element('.main-logo-background').css('display', 'none');
-            }, 2100);
+            }, 1200);
         }
         else if(!before && after)
         {
@@ -30,5 +30,9 @@ angular.module('core').controller('MainController', ['$scope', 'Authentication',
     if(!Authentication.user)
     {
         $location.url('/signin');
+    }
+    else
+    {
+        $cookies.putObject('user', Authentication.user);
     }
 }]);

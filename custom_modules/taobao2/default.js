@@ -1,5 +1,5 @@
 var path = require('path');
-var bot = require(path.resolve('config/lib/bot')).getBot('taobao2');
+var bot = require(path.resolve('./engine/core/bot')).getBot('taobao2');
 
 var appkey = '24571416';
 var appsecret = '5fe3cf3a2f4b5440236ab73f3b7ab856';

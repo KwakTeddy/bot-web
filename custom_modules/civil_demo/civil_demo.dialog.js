@@ -173,6 +173,6 @@ var commonDialogs = [
 ];
 
 
-var _bot = require(require('path').resolve("config/lib/bot")).getBot('civil_demo');
+var _bot = require(require('path').resolve("./engine/core/bot")).getBot('civil_demo');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

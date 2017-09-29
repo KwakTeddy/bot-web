@@ -1,5 +1,5 @@
 var path = require('path');
-var bot = require(path.resolve('config/lib/bot')).getBot('Shopping_bot_upgr2');
+var bot = require(path.resolve('./engine/core/bot')).getBot('Shopping_bot_upgr2');
 var logger = require(path.resolve('./config/lib/logger'));
 
 var defaultTask = {

@@ -1,6 +1,6 @@
 var path = require('path');
 var ahk = require(path.resolve('./modules/bot/action/common/ahk'));
-var bot = require(path.resolve('config/lib/bot')).getBot('moneybot');
+var bot = require(path.resolve('./engine/core/bot')).getBot('moneybot');
 
 var wooribank = {
   // module: 'automation',

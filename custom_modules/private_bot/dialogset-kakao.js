@@ -4,7 +4,7 @@ var async = require('async');
 var fileutil = require(path.resolve('modules/bot/action/common/fileutil.js'));
 var mongoModule = require(path.resolve('modules/bot/action/common/mongo.js'));
 
-var bot = require(path.resolve('config/lib/bot')).getBot('private_bot');
+var bot = require(path.resolve('./engine/core/bot')).getBot('private_bot');
 
 var baseDir = path.resolve('custom_modules/private_bot/_data/');
 

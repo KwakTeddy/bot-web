@@ -16,6 +16,6 @@ var commonDialogs = [
 ];
 
 
-var _bot = require(require('path').resolve("config/lib/bot")).getBot('subscribeBot');
+var _bot = require(require('path').resolve("./engine/core/bot")).getBot('subscribeBot');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

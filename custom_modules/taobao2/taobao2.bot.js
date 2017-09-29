@@ -1,5 +1,5 @@
 var path = require('path');
-var botlib = require(path.resolve('config/lib/bot'));
+var botlib = require(path.resolve('./engine/core/bot'));
 
 var taobao2 = {
   use: true

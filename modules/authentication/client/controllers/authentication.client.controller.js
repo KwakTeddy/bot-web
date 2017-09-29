@@ -172,6 +172,7 @@ angular.module('authentication').controller('AuthenticationController', ['$scope
       }
       $http.post('/api/auth/signin?redirect_to=' + encodeURIComponent($state.previous.href), $scope.credentials).success(function (response) {
         $scope.authentication.user = response;
+        $cookies.putObject('user', response);
         $cookies.put('login', true);
         if ($window.__CONFIG.platform == 'mobile'){
             $rootScope.closeSigninModal();

@@ -19,7 +19,7 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', function 
         url: '/',
         controller: function($state, $stateParams)
         {
-            $state.go('playchat');
+            $state.go('chatbot-list');
         }
     });
 

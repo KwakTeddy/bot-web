@@ -1,6 +1,6 @@
 var path = require('path');
 var mongo = require(path.resolve('./modules/bot/action/common/mongo'));
-var bot = require(path.resolve('config/lib/bot')).getBot('playchat');
+var bot = require(path.resolve('./engine/core/bot')).getBot('playchat');
 var util = require('util');
 var async = require('async');
 var nodemailer = require('nodemailer');

@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var ChatBot = mongoose.model('Bot');
 
-exports.list = function (req, res)
+exports.find = function (req, res)
 {
     var sort = req.query.sort || '-created';
     var perPage = req.body.perPage || 10;
@@ -49,6 +49,21 @@ exports.list = function (req, res)
         else
         {
             res.json(bots);
+        }
+    });
+};
+
+exports.findOne = function(req, res)
+{
+    ChatBot.findOne({ id: req.params.id }).exec(function(err, item)
+    {
+        if(err)
+        {
+            return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+        }
+        else
+        {
+            res.json(item);
         }
     });
 };

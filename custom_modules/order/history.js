@@ -3,7 +3,7 @@ var utils = require(path.resolve('modules/bot/action/common/utils'));
 var mongoose = require('mongoose');
 var dateformat = require('dateformat');
 var orderTypes = utils.requireNoCache(path.resolve('custom_modules/order/order.type'));
-var bot = require(path.resolve('config/lib/bot')).getBot('order');
+var bot = require(path.resolve('./engine/core/bot')).getBot('order');
 
 var orderHistoryTask = {
   action: orderHistory
