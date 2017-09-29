@@ -3,9 +3,9 @@ var nlp = require(path.resolve('modules/bot/engine/nlp/processor'));
 var mongoose = require('mongoose');
 var mongoModule = require(path.resolve('modules/bot/action/common/mongo.js'));
 
-
 function memoryFacts(inRaw, context, callback) {
-  if(context.botUser.sentenceInfo.sentenceType == 1) {
+  if(context.botUser.sentenceInfo.sentenceType == 1 || context.botUser.nlu.sentenceInfo != 0) {
+      // 평서문이 아니라면 종료
     callback(null, context);
 
     return;
