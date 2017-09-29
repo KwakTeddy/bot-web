@@ -56,6 +56,9 @@ UserDictionary.prototype.applyUserDic = function (lang, text) {
     var mb_user_tag = {};
     var index = 0;
 
+    if (text == undefined || text == null || Array.isArray(text)) {
+        return ["", mb_user_str, mb_user_tag];
+    }
     for (var i in this.dictionary) {
         var str = this.dictionary[i][0];
         var tag = this.dictionary[i][1];

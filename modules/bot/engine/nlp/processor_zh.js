@@ -56,7 +56,7 @@ function processInput(context, inRaw, callback) {
         // dsyoon (2017. 09. 13.)
         // 사용자 사전 경로: ./external_module/resources/ja/user.pos
         function(cb) {
-            if (inRaw == undefined || inRaw == null) {
+            if (inRaw == undefined || inRaw == null || Array.isArray(inRaw)) {
                 cb(null);
             }
             var cbTags = new CBTags();
@@ -138,5 +138,68 @@ function processInput(context, inRaw, callback) {
     });
 
 }
-
 exports.processInput = processInput;
+
+
+function processLiveInput(inRaw, callback) {
+
+    var data = loadZhDictionary();
+    var userDictionary = data.userDictionary;
+    var rma = data.rma;
+
+    var _nlp = [], _in;
+
+    // 형태소 분석기
+    async.waterfall([
+        // 사용자 사전 적용된 한국어 형태소 분석기
+        // dsyoon (2017. 09. 13.)
+        // 사용자 사전 경로: ./external_module/resources/ja/user.pos
+        function(cb) {
+            if (inRaw == undefined || inRaw == null || Array.isArray(inRaw)) {
+                cb(null);
+            }
+            var cbTags = new CBTags();
+
+            var dicResult = userDictionary.applyUserDic('zh', inRaw);
+            var text = dicResult[0];
+            var mb_user_str = dicResult[1];
+            var mb_user_tag = dicResult[2];
+
+            // analyze POS
+            var tokens = rma.tokenize(text);
+
+            var temp = '';
+            // restore user dictionary from POS
+            for(var i=0; i<tokens.length; i++) {
+                if ((tokens[i][0] in mb_user_str) && (tokens[i][1]=='NR')) {
+                    temp = tokens[i][0]
+                    tokens[i][0] = mb_user_str[temp];
+                    tokens[i][1] = mb_user_tag[temp];
+                }
+                tokens[i][1] = cbTags.normalizeTag('zh', tokens[i][1]);
+
+                var entry = {};
+                entry["text"] = tokens[i][0];
+                entry["pos"] = tokens[i][1];
+                if(entry.pos !== 'AuxVerb' &&
+                    entry.pos !== 'Determiner' &&
+                    entry.pos !== 'Conjunction' &&
+                    entry.pos !== 'Determiner' &&
+                    entry.pos !== 'Interjection' &&
+                    entry.pos !== 'Prefix' &&
+                    entry.pos !== 'Preposition' &&
+                    entry.pos !== 'Suffix' &&
+                    entry.pos !== 'Unknown' &&
+                    entry.pos !== 'Punctuation') {
+                    _nlp.push(entry.text);
+                }
+            }
+
+            _in = _nlp.join(' ');
+            cb(null, _in);
+        }
+    ], function(err) {
+        callback(null, _in);
+    });
+}
+exports.processLiveInput = processLiveInput;

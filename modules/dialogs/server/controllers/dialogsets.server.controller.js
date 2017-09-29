@@ -36,7 +36,7 @@ exports.create = function(req, res) {
     } else {
       res.jsonp(dialogset);
       if(dialogset.filename && dialogset.path){
-        dialogsetModule.convertDialogset1(dialogset, req.body.bot, function(result) {
+        dialogsetModule.convertDialogset1(dialogset, req.body.bot, req.body.content, function(result) {
           console.log(dialogset.filename + ' converted');
         })
       }else {

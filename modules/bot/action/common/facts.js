@@ -39,6 +39,7 @@ function memoryFacts(inRaw, context, callback) {
     var _task = {
       doc:{
         botUser: context.user.userKey,
+        bot_id: context.user.bot,
         node1: node1,
         node2: node2,
         link: link,

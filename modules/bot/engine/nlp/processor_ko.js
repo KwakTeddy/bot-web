@@ -54,11 +54,16 @@ function processInput(context, inRaw, callback) {
             var userDictionary = new UserDictionary(path.resolve('./external_modules/resources/ko/user.pos'));
             var nlpUtil = new NLPUtil();
 
+            if (inRaw == undefined || inRaw == null || Array.isArray(inRaw)) {
+                cb(null);
+            }
+
             var nlpKo = new nlp({
                 stemmer: false,      // (optional default: true)
                 normalizer: false,   // (optional default: true)
                 spamfilter: false     // (optional default: false)
             });
+
 
             var lastChar = inRaw.charAt(inRaw.length-1);
             if (lastChar == '.' || lastChar == '?' || lastChar == '!') {
@@ -126,6 +131,10 @@ function processInput(context, inRaw, callback) {
         // dsyoon (2017. 09. 13.)
         // 사용자 사전 경로: ./external_module/resources/ko/user.pos
         function(cb) {
+            if (!("botUser" in context) && !("nlu" in context["botUser"])) {
+                cb(null);
+            }
+
             var sentenceInfo = new SentenceInfo();
             var value = sentenceInfo.analyze("ko", context.botUser.nlu);
             context.botUser.nlu["sentenceInfo"] = value;
@@ -136,6 +145,10 @@ function processInput(context, inRaw, callback) {
         // dsyoon (2017. 09. 19.)
         // 사용자 사전 경로: ./external_module/resources/ko/user.pos
         function(cb) {
+            if (!("botUser" in context) && !("nlu" in context["botUser"])) {
+                cb(null);
+            }
+
             var turnTaking = new TurnTaking();
             var value = turnTaking.analyze("ko", context.botUser.nlu);
             context.botUser.nlu["turnTaking"] = value;
@@ -149,7 +162,85 @@ function processInput(context, inRaw, callback) {
 
         callback(inNLP, null, null);
     });
-
 }
-
 exports.processInput = processInput;
+
+function processLiveInput(inRaw, callback) {
+
+    var _nlp = [], _in;
+
+    // 한국어 형태소 분석기
+    async.waterfall([
+        // 사용자 사전 적용된 한국어 형태소 분석기
+        // dsyoon (2017. 09. 13.)
+        // 사용자 사전 경로: ./external_module/resources/ko/user.pos
+        function(cb) {
+            var cbTags = new CBTags();
+            var userDictionary = new UserDictionary(path.resolve('./external_modules/resources/ko/user.pos'));
+            var nlpUtil = new NLPUtil();
+
+            if (inRaw == undefined || inRaw == null || Array.isArray(inRaw)) {
+                cb(null);
+            }
+
+            var nlpKo = new nlp({
+                stemmer: false,      // (optional default: true)
+                normalizer: false,   // (optional default: true)
+                spamfilter: false     // (optional default: false)
+            });
+
+
+            var lastChar = inRaw.charAt(inRaw.length-1);
+            if (lastChar == '.' || lastChar == '?' || lastChar == '!') {
+                inRaw = inRaw.substring(0, inRaw.length-1);
+            } else {
+                lastChar = "";
+            }
+
+            var dicResult = userDictionary.applyUserDic('KO', inRaw);
+            var temp_inRaw = dicResult[0];
+            var mb_user_str = dicResult[1];
+            var mb_user_tag = dicResult[2];
+
+            nlpKo.tokenize(temp_inRaw, function(err, result) {
+                if(!result) result = inRaw;
+                if(!result) {
+                    result = inRaw;
+                }
+
+                // 사용자 사전 적용
+                for (var i=0; i<result.length; i++) {
+                    var entry = result[i];
+                    var position = entry.text.search("MBNOUN[A-Z]");
+                    if (position >= 0 && entry.pos == 'Alpha') {
+                        var info2replace = userDictionary.getTag(entry.text, dicResult);
+                        temp_inRaw = temp_inRaw.replace(new RegExp(entry.text,'gi'),info2replace[0]);
+                        entry.text = info2replace[0];
+                        entry.pos = info2replace[1];
+                    }
+                    entry.pos = cbTags.normalizeTag('ko', entry.pos);
+
+                    if(entry.pos == 'Alpha') entry.pos = 'Noun';
+
+                    if(entry.pos !== 'AuxVerb' &&
+                        entry.pos !== 'Determiner' &&
+                        entry.pos !== 'Conjunction' &&
+                        entry.pos !== 'Determiner' &&
+                        entry.pos !== 'Interjection' &&
+                        entry.pos !== 'Prefix' &&
+                        entry.pos !== 'Preposition' &&
+                        entry.pos !== 'Suffix' &&
+                        entry.pos !== 'Unknown' &&
+                        entry.pos !== 'Punctuation') {
+                        _nlp.push(entry.text);
+                    }
+                }
+                _in = _nlp.join(' ');
+                cb(null, _in);
+            })
+        },
+    ], function(err) {
+        callback(null, _in);
+    });
+}
+exports.processLiveInput = processLiveInput;

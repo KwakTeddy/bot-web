@@ -677,6 +677,7 @@ exports.sharedBotList = function (req, res) {
   })
 };
 
+/*
 exports.nluProcess = function(req, res) {
   var input = '';
   var nlp = require(path.resolve('modules/bot/engine/nlp/processor'));
@@ -686,7 +687,7 @@ exports.nluProcess = function(req, res) {
     spamfilter: true     // (optional default: false)
   });
 
-  nlpKo.tokenize/*ToStrings*/(req.params.input, function(err, result) {
+  nlpKo.tokenize(req.params.input, function(err, result) {
     var _nlp = [], _in;
     for (var i = 0; i < result.length; i++) {
 
@@ -700,7 +701,38 @@ exports.nluProcess = function(req, res) {
     res.json(input);
   });
 };
+*/
+exports.nluProcess = function(req, res) {
+    var koNLP = require(path.resolve('./modules/bot/engine/nlp/processor_ko'));
+    var enNLP = require(path.resolve('./modules/bot/engine/nlp/processor_en'));
+    var jaNLP = require(path.resolve('./modules/bot/engine/nlp/processor_ja'));
+    var zhNLP = require(path.resolve('./modules/bot/engine/nlp/processor_zh'));
 
+    var language = "ko";
+    var input = '';
+
+    if (language=="en") {
+        enNLP.processLiveInput(req.params.input, function(err, result) {
+            input = result;
+            res.json(input);
+        });
+    } else if (language=="zh") {
+        zhNLP.processLiveInput(req.params.input, function(err, result) {
+            input = result;
+            res.json(input);
+        });
+    } else if (language=="ja") {
+        jaNLP.processLiveInput(req.params.input, function(err, result) {
+            input = result;
+            res.json(input);
+        });
+    } else {
+        koNLP.processLiveInput(req.params.input, function(err, result) {
+            input = result;
+            res.json(input);
+        });
+    }
+};
 
 /**
  * Bot middleware

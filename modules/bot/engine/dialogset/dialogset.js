@@ -49,13 +49,14 @@ function convertDialogset(original, callback) {
 
 exports.convertDialogset = convertDialogset;
 
-function convertDialogset1(dialogset, bot_id, callback) {
+function convertDialogset1(dialogset, bot_id, bot_name, callback) {
   var dialogType = dialogset.type;
   var dir = path.resolve('public/files/');
   var filepath = path.join(dir, dialogset.filename);
 
   // 봇 id 추가 by dsyoon (2017. 09. 28)
   dialogset._doc["bot_id"] = bot_id;
+  dialogset._doc["bot_name"] = bot_name;
   async.waterfall([
     function(cb) {
       var info = path.parse(dialogset.originalFilename);
@@ -116,7 +117,7 @@ function convertDialogset1(dialogset, bot_id, callback) {
     
     function(cb) {
       if (bot_id != null) {
-        analyzeKnowledge(dialogset, bot_id, 'result', function() {
+        analyzeKnowledge(dialogset, bot_id, bot_name, 'result', function() {
           cb(null);
         });
       } else {
@@ -138,7 +139,14 @@ function insertDailogsetDialog(dialogset, countId, input, output, context, callb
     async.eachSeries(input, function(i, cb) {
       processInput(null, i, function(_input, _json) {
         inputRaw.push(_input);
-        cb(null);
+          /*
+          // 엑셀 업로드 후 지식맵 by dsyoon (2017. 09. 28)
+          analyzeKnowledgeMap(dialogset, _json, function(err) {
+              if (err) console.log(err);
+              callback();
+          });
+          */
+          cb(null);
       });
     }, function(err) {
       console.log(countId + ">> " + input + ' || ' + inputRaw + ' || ' + output);
@@ -162,12 +170,13 @@ function insertDailogsetDialog(dialogset, countId, input, output, context, callb
     processInput(null, input, function(_input, _json) {
       console.log(countId + ">> " + input + ' || ' + _input + ' || ' + output);
 
+      /*
       // 엑셀 업로드 후 지식맵 by dsyoon (2017. 09. 28)
       analyzeKnowledgeMap(dialogset, _json, function(err) {
           if (err) console.log(err);
           callback();
       });
-
+        */
       var dialogsetDialog = new DialogsetDialog({
         dialogset: dialogset,
         id: countId,
@@ -632,7 +641,8 @@ function insertDatasetFile(infile, callback, dialogset) {
 
 exports.insertDatasetFile = insertDatasetFile;
 
-function analysisDoc(doc, bot_id, cb) {
+// analyzer가 ko일때 KnowlegeMap
+function analysisDoc(doc, bot_id, bot_name, cb) {
   processInput(null, doc.input, function(_input, _json) {
     console.log(">> " + doc.input);
 
@@ -656,16 +666,16 @@ function analysisDoc(doc, bot_id, cb) {
       }
     }
 
-    console.log(">> " + node1 + ', ' + node2 + ' ' + link);
-
     if(node1 && node2 && link) {
+        console.log(">> " + node1 + ', ' + node2 + ' <-> ' + link);
       var task = {
         doc:{
-          bot_id: bot_id,
-          botUser: null,
+          bot_id: bot_name,
+          botUser: bot_id,
           node1: node1,
           node2: node2,
-          link: link
+          link: link,
+          created: new Date()
         },
 
         mongo: {
@@ -720,12 +730,12 @@ function analyzeKnowledgeDialog(dialogs, bot_id, result, callback) {
 exports.analyzeKnowledgeDialog = analyzeKnowledgeDialog;
 
 
-function analyzeKnowledge(dialogset, bot_id, result, callback) {
+function analyzeKnowledge(dialogset, bot_id, bot_name, result, callback) {
   var model = mongoModule.getModel('DialogsetDialog');
 
   model.find({dialogset: dialogset}).lean().exec(function(err, docs) {
     async.eachSeries(docs, function(doc,cb) {
-      analysisDoc(doc, bot_id, cb);
+      analysisDoc(doc, bot_id, bot_name, cb);
     }, function(err) {
       callback(result);
     });
@@ -741,46 +751,51 @@ function analyzeKnowledgeMap(dialogset, json, callback) {
     model.find({dialogset: dialogset}, function(err, docs) {
         var nlp = json._nlp;
         var node1, node2, link;
-        for(var i = 0; i < nlp.length; i++) {
-            if(nlp[i].pos == 'Noun') {
+        for (var i = 0; i < nlp.length; i++) {
+            if (nlp[i].pos == 'Noun') {
                 node1 = nlp[i].text;
                 break;
             }
         }
 
-        if(node1) {
-            for(var i = nlp.length -1 ; i >= 0; i--) {
-                if(node2 && link) break;
-                if(nlp[i].pos == 'Noun' && nlp[i].text != node1) {
+        if (node1) {
+            for (var i = nlp.length - 1; i >= 0; i--) {
+                if (node2 && link) break;
+                if (nlp[i].pos == 'Noun' && nlp[i].text != node1) {
                     node2 = nlp[i].text;
-                } else if(nlp[i].pos == 'Verb' || nlp[i].pos == 'Adjective') {
+                } else if (nlp[i].pos == 'Verb' || nlp[i].pos == 'Adjective') {
                     link = nlp[i].text;
                 }
             }
         }
 
-        console.log(">> " + node1 + ', ' + node2 + ' ' + link);
+        if (node1 != undefined && node2 != undefined && link != undefined ) {
+            console.log(">> " + node1 + ', ' + node2 + ' -> ' + link);
 
-        if(node1 && node2 && link) {
-            var task = {
-                doc:{
-                    botUser: null,
-                    node1: node1,
-                    node2: node2,
-                    link: link,
-                    bot_id: dialogset._doc.bot_id
-                },
+            if (node1 && node2 && link) {
+                var task = {
+                    doc: {
+                        botUser: null,
+                        node1: node1,
+                        node2: node2,
+                        link: link,
+                        // bot_id: dialogset._doc.bot_id
+                        bot_id: dialogset._doc.bot_name
+                    },
 
-                mongo: {
-                    model: 'FactLink',
-                    query: {node1: '', node2: '', link: ''},
-                    options: {upsert: true}
-                }
-            };
+                    mongo: {
+                        model: 'FactLink',
+                        query: {node1: '', node2: '', link: ''},
+                        options: {upsert: true}
+                    }
+                };
 
-            mongoModule.update(task, null, function(_task, _context) {
+                mongoModule.update(task, null, function (_task, _context) {
+                    callback();
+                })
+            } else {
                 callback();
-            })
+            }
         } else {
             callback();
         }
