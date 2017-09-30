@@ -2144,6 +2144,6 @@ var commonDialogs = [
 ];
 
 
-var _bot = require(require('path').resolve("./engine/core/bot")).getBot('moneybotdemo');
+var _bot = require(require('path').resolve("./bot-engine/bot")).getBot('moneybotdemo');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

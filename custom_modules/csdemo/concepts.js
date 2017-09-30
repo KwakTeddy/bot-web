@@ -1,5 +1,5 @@
 var path = require('path');
-var bot = require(path.resolve('./engine/core/bot')).getBot('csdemo');
+var bot = require(path.resolve('./bot-engine/bot')).getBot('csdemo');
 
 var concepts = {
   '서비스센터': ['서비스센터', '서비스 센터', '센터', '쎈터', '수리점', '센타', '쎈타', '대리점', '영업점', '곳', '센서'],

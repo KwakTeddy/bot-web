@@ -116,7 +116,7 @@ function end() {
 }
 
 var start = new Date(), reqEnd;
-console.log('[START] ' + start + ', numOfThread=' + numOfThread + ', numOfRepeat=' + numOfRepeat + ', requestInterval=' + requestInterval);
+// console.log('[START] ' + start + ', numOfThread=' + numOfThread + ', numOfRepeat=' + numOfRepeat + ', requestInterval=' + requestInterval);
 
 // for(var i = 0; i < numOfThread; i++) {
 //   var user1 = user + i;

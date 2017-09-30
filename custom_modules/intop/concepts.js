@@ -1,5 +1,5 @@
 var path = require('path');
-var bot = require(path.resolve('./engine/core/bot')).getBot('intop');
+var bot = require(path.resolve('./bot-engine/bot')).getBot('intop');
 
 var concepts = {
   '찾다': ['찾다','알다', '궁금하다', '가르치다', '가리키다', '가르다 켜다'], //아르키다 아르 켜다 안됨

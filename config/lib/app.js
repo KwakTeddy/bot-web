@@ -59,7 +59,7 @@ module.exports.start = function start(callback)
         // Add an event listener to the 'connection' event
         io.on('connection', function (socket)
         {
-            require(path.resolve('./engine/engine.js')).initialize(io, socket);
+            require(path.resolve('./bot-engine/core.js')).initialize(io, socket);
         });
 
         app.server.listen(config.port, function ()

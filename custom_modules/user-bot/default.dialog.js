@@ -1,6 +1,6 @@
 
 var path = require('path');
-var bot = require(path.resolve('./engine/core/bot')).getBot('private_bot');
+var bot = require(path.resolve('./bot-engine/bot')).getBot('private_bot');
 var taskModule = require(path.resolve('./modules/bot/action/common/task'));
 var executeAction = function(task, context, callback) {
   var words = context.dialog.inRaw.split(' ');
@@ -37,6 +37,6 @@ var commonDialogs = [
 ];
 
 
-var _bot = require(require('path').resolve("./engine/core/bot")).getBot('private_bot');
+var _bot = require(require('path').resolve("./bot-engine/bot")).getBot('private_bot');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

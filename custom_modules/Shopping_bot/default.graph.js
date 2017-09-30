@@ -452,6 +452,6 @@ var commonDialogs = [
 		}
 	}
 ];
-var _bot = require(require('path').resolve("./engine/core/bot")).getBot('Shopping_bot');
+var _bot = require(require('path').resolve("./bot-engine/bot")).getBot('Shopping_bot');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

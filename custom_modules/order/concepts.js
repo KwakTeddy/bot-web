@@ -1,5 +1,5 @@
 var path = require('path');
-var bot = require(path.resolve('./engine/core/bot')).getBot('order');
+var bot = require(path.resolve('./bot-engine/bot')).getBot('order');
 
 var concepts = {
   '배달': ['주문', '시키다', '보내다'],

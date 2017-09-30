@@ -1,6 +1,6 @@
 var path = require('path');
 var mongo = require(path.resolve('./modules/bot/action/common/mongo'));
-var bot = require(path.resolve('./engine/core/bot')).getBot('athena');
+var bot = require(path.resolve('./bot-engine/bot')).getBot('athena');
 var addressModule = require(path.resolve('modules/bot/action/common/address'));
 var async = require('async');
 var yahooFinance = require('yahoo-finance');

@@ -2288,6 +2288,6 @@ var commonDialogs = [
 ];
 
 
-var _bot = require(require('path').resolve("./engine/core/bot")).getBot('athena');
+var _bot = require(require('path').resolve("./bot-engine/bot")).getBot('athena');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

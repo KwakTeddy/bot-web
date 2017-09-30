@@ -1,6 +1,6 @@
 var path = require('path');
-var botlib = require(path.resolve('./engine/core/bot'));
-var typelib = require(path.resolve('./engine/core/action/common/type'));
+var botlib = require(path.resolve('./bot-engine/bot'));
+var typelib = require(path.resolve('./bot-engine/action/common/type'));
 
 var sampleBot = {
   use: true

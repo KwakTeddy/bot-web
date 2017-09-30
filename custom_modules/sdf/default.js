@@ -1,5 +1,5 @@
 var path = require('path');
-var bot = require(path.resolve('./engine/core/bot')).getBot('sdf');
+var bot = require(path.resolve('./bot-engine/bot')).getBot('sdf');
 
 var defaultTask = {
     name: 'defaultTask',

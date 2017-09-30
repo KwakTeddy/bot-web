@@ -38,7 +38,7 @@ describe('Bot', function () {
         var app = require(path.resolve('config/lib/app.js'));
         app.start();
 
-        bot_server = require(path.resolve('./engine/core/bot.js'));
+        bot_server = require(path.resolve('./bot-engine/bot.js'));
         bot = require(path.resolve('modules/bot/server/controllers/bot.server.controller'));
     });
 

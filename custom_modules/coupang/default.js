@@ -1,5 +1,5 @@
 var path = require('path');
-var bot = require(path.resolve('./engine/core/bot')).getBot('coupang');
+var bot = require(path.resolve('./bot-engine/bot')).getBot('coupang');
 var java = require('java');
 var request = require('request');
 var util = require('util');

@@ -1,5 +1,6 @@
 var Witch = (function()
 {
+    /** 공통 모듈. ----------------------------------------------------------------------------- */
     function forEach(list, callback, done)
     {
         var index = 0
@@ -22,182 +23,303 @@ var Witch = (function()
         };
 
         callback(list[index], index, next);
-    }
+    };
 
     function WitchError(message)
     {
         this.message = (message || '');
-    }
+    };
 
     WitchError.prototype = Error.prototype;
 
-    function getCompareValue(obj)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /** Text 객체 ----------------------------------------------------------------------------- */
+    var Test = function(name, actions, compareActions)
     {
-        var target = undefined;
-        if(/style.[a-zA-Z]*/gi.test(obj.condition.prop))
+        this.name = name;
+        this.actions = actions || [];
+        this.compareActions = compareActions || [];
+    };
+
+    Test.prototype.setName = function(name)
+    {
+        this.name = name;
+        return this;
+    };
+
+    Test.prototype.addAction = function(selector, event, params)
+    {
+        this.actions.push({ selector: selector, event: event, params: params });
+        return this;
+    };
+
+    Test.prototype.addCompareAction = function(selector, property, compareType, compareValue, expectedValue)
+    {
+        this.compareActions.push({ selector: selector, property: property, compareType: compareType, compareValue: compareValue, expectedValue: expectedValue });
+        return this;
+    };
+
+    Test.prototype.execAction = function(element, event, params)
+    {
+        if(params && typeof params != 'object')
+            throw new WitchError('Action parameters is not object.');
+
+        if(event == 'typing')
         {
-            var split = obj.condition.prop.split('.');
+            var text = params.text;
+            if(element.value !== undefined)
+                element.value = text;
+            else
+                element.innerText = text;
+        }
+        else if(event == 'keydown' || event == 'keyup')
+        {
+            var e = new CustomEvent(event);
+            e.keyCode = params.keyCode;
+
+            element.dispatchEvent(e);
+        }
+        else
+        {
+            var e = new CustomEvent(event);
+            element.dispatchEvent(e);
+        }
+
+        return this;
+    };
+
+    Test.prototype.getCompareTargetValue = function(element, property)
+    {
+        if(/style.[a-zA-Z]*/gi.test(property))
+        {
+            var split = property.split('.');
             var key = split[1].split(' ');
 
             var isDeep = (key[1] == 'deep');
             key = key[0];
 
-            var style = obj.target.style;
+            var style = element.style;
             if(isDeep)
-                style = window.getComputedStyle(obj.target);
+                style = window.getComputedStyle(element);
 
-            target = style[key];
+            return style[key];
         }
-        else if(typeof obj.condition.prop == 'string')
+        else if(property == 'text')
         {
-            target = obj.target[obj.condition.prop];
+            return element.innerText;
+        }
+        else if(property == 'html')
+        {
+            return element.innerHTML;
         }
 
-        return target;
+        return null;
     };
 
-    function getSource(source)
+    var checkListLength = function(elements, compareType, compareValue, expectedValue)
     {
-        if(typeof source != 'string' && typeof source != 'object')
+        var length = elements.length;
+        var result = undefined;
+        if(compareType == '>=')
         {
-            throw new WitchError('Type of source must be string or object.');
+            result = (length >= compareValue);
+        }
+        else if(compareType == '<=')
+        {
+            result = (length <= compareValue);
+        }
+        else if(compareType == '==')
+        {
+            result = (length == compareValue);
+        }
+        else if(compareType == '>')
+        {
+            result = (length > compareValue);
+        }
+        else if(compareType == '<')
+        {
+            result = (length > compareValue);
         }
 
-        if(typeof source == 'string')
+        if(result === undefined)
         {
-            var split = source.split('::');
-
-            if(split.length != 2)
-            {
-                throw new WitchError('Pattern of source must be selector::event');
-            }
-
-            return { element: document.querySelector(split[0]), event: split[1] };
+            throw new WitchError('Type of condition "' + compareType + '" is not supported.');
         }
-        else if(typeof source == 'object')
+        else if(result !== expectedValue)
         {
-            if(source.selector && source.event)
-            {
-                return { element: document.querySelector(source.selector), event: source.event };
-            }
-
-            throw new WitchError('Selector, event of source must be not null.');
+            return { result: false, compareTargetValue: length };
         }
-    };
 
-    function getTarget(target)
+        return { result: true };
+    }
+
+    Test.prototype.execCompare = function(elements, property, compareType, compareValue, expectedValue)
     {
-        if(typeof target != 'string')
+        if(property == 'list.length')
         {
-            return console.error('Type of target must be string.');
+            return checkListLength(elements, compareType, compareValue, expectedValue);
         }
 
-        var split = target.split('::');
-        var targetElement = document.querySelector(split[0]);
-        for(var i=1, l=split.length; i<l; i++)
+        for(var i=0, l=elements.length; i<l; i++)
         {
-            if(split[i] == 'prev')
-            {
-                targetElement = targetElement.previousElementSibling;
-            }
-            else if(split[i] == 'next')
-            {
-                targetElement = targetElement.nextElementSibling;
-            }
-        }
+            var element = elements.get(i);
 
-        return targetElement;
-    };
-
-    function getCondition(condition)
-    {
-        if(typeof condition != 'string')
-        {
-            return console.error('Type of condition must be string.');
-        }
-
-        var split = condition.split('::');
-
-        if(split.length != 4)
-        {
-            throw new WitchError('Pattern of condition must be property::type::value::result');
-        }
-
-        var prop = split[0];
-        if(prop == 'text')
-        {
-            prop = 'innerText';
-        }
-        else if(prop == 'html')
-        {
-            prop = 'innerHTML';
-        }
-
-        return { prop: prop, type: split[1], value: split[2], result: !!split[3] };
-    };
-
-    function test(test, done)
-    {
-        var tryCount = 0;
-        var f = function()
-        {
-            var compareValue = getCompareValue(test);
+            var compareTargetValue = element[property.replace('text', 'innerText').replace('html', 'innerHTML')];
 
             var result = undefined;
-            if(test.condition.type == 'equals')
+            if(compareType == 'equals')
             {
-                result = (compareValue == test.condition.value);
+                result = (compareTargetValue == compareValue);
             }
-            else if(test.condition.type == 'contains')
+            else if(compareType == 'contains')
             {
-                result = (compareValue.indexOf(test.condition.value) != -1);
+                result = (compareTargetValue.indexOf(compareValue) != -1);
             }
-
-            test.result = result;
+            else if(compareType == 'typeof')
+            {
+                result = (typeof compareTargetValue == compareValue);
+            }
 
             if(result === undefined)
             {
-                throw new WitchError('Type of condition "' + test.condition.type + '" is not supported.');
+                throw new WitchError('Type of condition "' + compareType + '" is not supported.');
             }
-            else if(result === test.condition.result)
+            else if(result !== expectedValue)
             {
-                pass(test);
-                return done();
+                return { result: false, compareTargetValue: compareTargetValue };
+            }
+        }
+
+        return { result: true };
+    };
+
+    Test.prototype.startAction = function()
+    {
+        for(var i=0, l=this.actions.length; i<l; i++)
+        {
+            var action = this.actions[i];
+            var selector = action.selector;
+            var event = action.event;
+            var params = action.params;
+
+            var element = $(selector).get(0);
+            if(!element)
+            {
+                throw new WitchError(selector + ' is not found any element.');
             }
 
-            if(tryCount == 5)
+            if(!event)
             {
-                fail(test, { compareValue: compareValue, result: result });
-                done();
+                throw new WitchError(event + ' of ' + selector + ' is undefined.');
             }
-            else if(tryCount > 0)
+
+            this.execAction(element, event, params);
+        }
+    };
+
+    Test.prototype.startCompare = function(index, count, done)
+    {
+        for(var i=index, l=this.compareActions.length; i<l; i++)
+        {
+            var action = this.compareActions[i];
+
+            var selector = action.selector;
+            var property = action.property;
+            var compareType = action.compareType;
+            var compareValue = action.compareValue;
+            var expectedValue = action.expectedValue;
+
+            var elements = $(selector);
+            if(elements.length <= 0)
             {
-                setTimeout(f, 1000);
+                if(count == 3)
+                {
+                    throw new WitchError(selector + ' is not found any element.');
+                }
+                else
+                {
+                    var that = this;
+                    setTimeout(function()
+                    {
+                        that.startCompare(index, count+1, done);
+                    }, 1000);
+
+                    return;
+                }
+            }
+
+            var result = this.execCompare(elements, property, compareType, compareValue, expectedValue);
+            if(!result.result)
+            {
+                if(count == 3)
+                {
+                    return done(false, {compareTargetValue: result.compareTargetValue, compareType: compareType, compareValue: compareValue});
+                }
+
+                var that = this;
+                setTimeout(function()
+                {
+                    that.startCompare(index, count+1, done);
+                }, 1000);
+
+                return;
+            }
+        }
+
+        done(true);
+    };
+
+    Test.prototype.start = function(next, done)
+    {
+        if(!this.actions || this.actions.length == 0)
+            throw new WitchError('Actions are undefined.');
+
+        this.startAction();
+
+        if(!this.compareActions || this.compareActions.length == 0)
+            throw new WitchError('CompareActions are undefined.');
+
+        var that = this;
+        this.startCompare(0, 0, function(result, cause)
+        {
+            if(result)
+            {
+                console.log('%c[Witch] %c' + that.name + ' %c[PASS]', 'color: #ccc;', 'color: blue;', 'color: green;');
+                next();
             }
             else
             {
-                tryCount++;
-                f();
+                console.log('%c[Witch] %c' + that.name + ' %c[FAIL] - ' + cause.compareTargetValue + ' ' + cause.compareType + ' ' + cause.compareValue, 'color: #ccc;', 'color: blue;', 'color: red;');
+                done();
             }
-        };
-
-        test.source.element.addEventListener(test.source.event, f);
-
-        var event = new CustomEvent(test.source.event);
-        test.source.element.dispatchEvent(event);
-        test.source.element.removeEventListener(test.source.event, f);
+        });
     };
 
-    function pass(test)
-    {
-        console.log(test.name + ' - 성공');
-    };
 
-    function fail(test, cause)
-    {
-        console.log(test.name + ' - 실패 : ',  test, cause);
-    };
 
+
+
+
+
+
+
+
+
+    /** Witch 메인 모듈 ----------------------------------------------------------------------------- */
     var privateData = {
         scenarios: {
             default: []
@@ -206,49 +328,50 @@ var Witch = (function()
 
     var Witch = function()
     {
+        this.Test = Test;
     };
 
     Witch.prototype.createScenario = function(name, callback)
     {
         if(privateData.scenarios[name] && privateData.scenarios[name].length > 0)
         {
-            return;
+            throw new WitchError(name + ' scenario is already created.');
         }
-            // throw new WitchError(name + ' scenario is already created.');
 
         callback.call({
-            createTest : this.createTest.bind({ scenarioName: name })
-        })
+            addTest : this.addTest.bind({ scenarioName: name })
+        });
     };
 
-    Witch.prototype.createTest = function(name, source, target, condition, options)
+    Witch.prototype.addTest = function(name)
     {
-        var s = getSource(source);
-        if(!s.element)
-            throw new WitchError('Source [' + source + '] is undefined.');
+        var t = new Test(name);
+        (privateData.scenarios[this.scenarioName || 'default'] = privateData.scenarios[this.scenarioName] || []).push(t);
 
-        var t = getTarget(target);
-        var c = getCondition(condition);
-
-        (privateData.scenarios[this.scenarioName || 'default'] = privateData.scenarios[this.scenarioName] || []).push({ name: name, source: s, target: t, condition: c, options: options || {} });
+        return t;
     };
 
     Witch.prototype.start = function(scenarioName)
     {
         scenarioName = scenarioName || 'default';
 
+        var list = privateData.scenarios[scenarioName];
+        if(!list || list.length == 0)
+        {
+            return console.log('%c[Witch] %cTest Scenario ' + '%c' + scenarioName + '%c is empty.', 'color: #ccc;', 'color: blue;', 'color: red;', 'color: blue;');
+        }
+
         console.log('%c[Witch] %cTest Scenario ' + '%c' + scenarioName + '%c is started.', 'color: #ccc;', 'color: blue;', 'color: red;', 'color: blue;');
 
-        var list = privateData.scenarios[scenarioName];
-
-        forEach(list, function(item, index, done)
-        {
-            test(item, done);
-        },
-        function()
+        var done = function()
         {
             console.log('%c[Witch] %cTest Scenario ' + '%c' + scenarioName + '%c is done.', 'color: #ccc;', 'color: blue;', 'color: red;', 'color: blue;');
-        });
+        };
+
+        forEach(list, function(test, index, next)
+        {
+            test.start(next, done);
+        }, done);
     };
 
     return new Witch();

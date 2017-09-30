@@ -85,6 +85,6 @@ var commonDialogs = [
 		"output": "알아듣지 못했습니다"
 	}
 ];
-var _bot = require(require('path').resolve("./engine/core/bot")).getBot('coupang');
+var _bot = require(require('path').resolve("./bot-engine/bot")).getBot('coupang');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

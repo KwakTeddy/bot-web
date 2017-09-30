@@ -1,7 +1,7 @@
 var path = require('path');
 var address = require(path.resolve('./modules/bot/action/common/address'));
 var taskModule = require(path.resolve('./modules/bot/action/common/task'));
-var bot = require(path.resolve('./engine/core/bot')).getBot('moneybot');
+var bot = require(path.resolve('./bot-engine/bot')).getBot('moneybot');
 
 /*
 execute "taskName in bot"

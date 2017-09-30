@@ -9,7 +9,7 @@ var Schema = mongoose.Schema;
 /**
  * Bot Schema
  */
-var CahtBotSchema = new Schema(
+var BotSchema = new Schema(
 {
     id: { type: String },
     name: { type: String },
@@ -32,4 +32,4 @@ var CahtBotSchema = new Schema(
     created: { type: Date, default: Date.now }
 });
 
-mongoose.model('Bot', CahtBotSchema);
+mongoose.model('Bot', BotSchema);

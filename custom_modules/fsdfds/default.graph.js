@@ -98,6 +98,6 @@ var commonDialogs = [
 		}
 	}
 ];
-var _bot = require(require('path').resolve("./engine/core/bot")).getBot('fsdfds');
+var _bot = require(require('path').resolve("./bot-engine/bot")).getBot('fsdfds');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

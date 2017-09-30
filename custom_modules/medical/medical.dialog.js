@@ -321,6 +321,6 @@ var commonDialogs = [
 ];
 
 
-var _bot = require(require('path').resolve("./engine/core/bot")).getBot('medical');
+var _bot = require(require('path').resolve("./bot-engine/bot")).getBot('medical');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

@@ -605,6 +605,6 @@ var commonDialogs = [
 		"output": "알아듣지 못했습니다"
 	}
 ];
-var _bot = require(require('path').resolve("./engine/core/bot")).getBot('botexp3');
+var _bot = require(require('path').resolve("./bot-engine/bot")).getBot('botexp3');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

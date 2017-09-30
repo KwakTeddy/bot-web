@@ -85,6 +85,6 @@ var commonDialogs = [
 ];
 
 
-var _bot = require(require('path').resolve("./engine/core/bot")).getBot('private_bot');
+var _bot = require(require('path').resolve("./bot-engine/bot")).getBot('private_bot');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

@@ -1,5 +1,5 @@
 var path = require('path');
-var bot = require(path.resolve('./engine/core/bot')).getBot('botexp3');
+var bot = require(path.resolve('./bot-engine/bot')).getBot('botexp3');
 
 var defaultTask = {
     name: 'defaultTask',

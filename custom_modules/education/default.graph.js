@@ -158,6 +158,6 @@ var commonDialogs = [
 		"output": "공통피자입니다"
 	}
 ];
-var _bot = require(require('path').resolve("./engine/core/bot")).getBot('education');
+var _bot = require(require('path').resolve("./bot-engine/bot")).getBot('education');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

@@ -5,7 +5,7 @@ var fileutil = require(path.resolve('modules/bot/action/common/fileutil.js'));
 var mongoModule = require(path.resolve('modules/bot/action/common/mongo.js'));
 var type = require(path.resolve('modules/bot/action/common/type'));
 
-var bot = require(path.resolve('./engine/core/bot')).getBot('private_bot');
+var bot = require(path.resolve('./bot-engine/bot')).getBot('private_bot');
 
 function insertDatasetFile(infile, callback) {
   var info = path.parse(infile);

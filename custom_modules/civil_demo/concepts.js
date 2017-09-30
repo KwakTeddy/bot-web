@@ -1,5 +1,5 @@
 var path = require('path');
-var bot = require(path.resolve('./engine/core/bot')).getBot('civil_demo');
+var bot = require(path.resolve('./bot-engine/bot')).getBot('civil_demo');
 
 var concepts = {
   '센터': ['주민센터', '주민 센터'],

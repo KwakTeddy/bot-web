@@ -1,5 +1,5 @@
 var path = require('path');
-var bot = require(path.resolve('./engine/core/bot')).getBot('taobao');
+var bot = require(path.resolve('./bot-engine/bot')).getBot('taobao');
 var messages = require(path.resolve('modules/messages/server/controllers/messages.server.controller'));
 var java = require('java');
 var request = require('request');

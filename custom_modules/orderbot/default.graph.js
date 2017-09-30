@@ -363,6 +363,6 @@ var commonDialogs = [
 		}
 	}
 ];
-var _bot = require(require('path').resolve("./engine/core/bot")).getBot('orderbot');
+var _bot = require(require('path').resolve("./bot-engine/bot")).getBot('orderbot');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

@@ -1,6 +1,6 @@
 var path = require('path');
 var path = require('path');
-var bot = require(path.resolve('./engine/core/bot')).getBot('Shopping_bot_ch');
+var bot = require(path.resolve('./bot-engine/bot')).getBot('Shopping_bot_ch');
 var messages = require(path.resolve('modules/messages/server/controllers/messages.server.controller'));
 var type = require(path.resolve('./modules/bot/action/common/type'));
 var logger = require(path.resolve('./config/lib/logger'));

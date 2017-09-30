@@ -28,6 +28,6 @@ var commonDialogs = [
 ];
 
 
-var _bot = require(require('path').resolve("./engine/core/bot")).getBot('sdf');
+var _bot = require(require('path').resolve("./bot-engine/bot")).getBot('sdf');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

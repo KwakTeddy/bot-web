@@ -4,7 +4,7 @@ var async = require('async');
 var mongoose = require('mongoose');
 var XLSX = require('xlsx');
 var utils = require(path.resolve('./modules/bot/action/common/utils'));
-var bot = require(path.resolve('./engine/core/bot')).getBot('order');
+var bot = require(path.resolve('./bot-engine/bot')).getBot('order');
 
 exports.dumpFolder = function(task, context, successCallback, errorCallback) {
   // var fs = require('fs');

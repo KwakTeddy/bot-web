@@ -1,5 +1,5 @@
 var path = require('path');
-var bot = require(path.resolve('./engine/core/bot')).getBot('orderbot');
+var bot = require(path.resolve('./bot-engine/bot')).getBot('orderbot');
 
 var defaultTask = {
     name: 'defaultTask',

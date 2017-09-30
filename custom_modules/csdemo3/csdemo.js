@@ -1,7 +1,7 @@
 var path = require('path');
 var mongo = require(path.resolve('./modules/bot/action/common/mongo'));
 var addressModule = require(path.resolve('modules/bot/action/common/address'));
-var bot = require(path.resolve('./engine/core/bot')).getBot('csdemo3');
+var bot = require(path.resolve('./bot-engine/bot')).getBot('csdemo3');
 var async = require('async');
 
 var checktorefri = {

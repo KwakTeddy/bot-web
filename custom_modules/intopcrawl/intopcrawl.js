@@ -1,6 +1,6 @@
 var path = require('path');
 var mongo = require(path.resolve('./modules/bot/action/common/mongo'));
-var bot = require(path.resolve('./engine/core/bot')).getBot('intopcrawl');
+var bot = require(path.resolve('./bot-engine/bot')).getBot('intopcrawl');
 var async = require('async');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;

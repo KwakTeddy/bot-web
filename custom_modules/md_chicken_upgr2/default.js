@@ -2,7 +2,7 @@ var path = require('path');
 var request = require('request');
 
 var messages = require(path.resolve('modules/messages/server/controllers/messages.server.controller'));
-var bot = require(path.resolve('./engine/core/bot')).getBot('md_chicken_upgr2');
+var bot = require(path.resolve('./bot-engine/bot')).getBot('md_chicken_upgr2');
 
 var defaultTask = {
     name: 'defaultTask',
