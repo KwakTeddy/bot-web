@@ -722,7 +722,7 @@ function analyzeKnowledgeDialog(dialogs, bot_id, result, callback) {
   }
 
   async.eachSeries(docs, function(doc, cb) {
-    analysisDoc(doc,bot_id, cb);
+    analysisDoc(doc,bot_id, '', cb);
   } , function(err) {
     callback(result);
   });
@@ -969,7 +969,7 @@ function processInput(context, inRaw, callback) {
     var _in = '';
     var _nlpRaw = [];
 
-    var language = "ko";
+    var language = "zh";
     var result = {};
     if (language=="en") {
         enNLP.processInput(result, inRaw, function(_inTextNLP, _inDoc) {
