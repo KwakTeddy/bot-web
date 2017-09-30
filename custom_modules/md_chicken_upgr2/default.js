@@ -186,6 +186,7 @@ var selectMenu = {
             eval('context.dialog.detailMenu = menu.' + context.dialog.detailMenuName);
         }
         detailMenu = context.dialog.detailMenu;
+        // detailMenu = context.dialog.detailMenu;
         callback(task,context);
     }
 };
