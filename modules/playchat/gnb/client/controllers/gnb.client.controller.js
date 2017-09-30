@@ -6,6 +6,32 @@ angular.module('playchat.gnb').controller('GnbController', ['$window', '$scope',
 {
     $scope.$parent.loaded('side-menu');
 
+    (function()
+    {
+        // 최초 메뉴 초기화
+        $scope.menus = [];
+
+        $scope.menus.push({ name: 'Dashboard', icon: 'develop.png' });
+        $scope.menus.push({ name: 'Development', icon: '', childMenus: [
+            { name: 'Dialog Set', url: '', icon: '' },
+            { name: 'Dialog Graph', url: '', icon: '' }
+        ] });
+        $scope.menus.push({ name: 'Management', icon: '', childMenus: [
+            { name: 'Dialog Set', url: '',  icon: '' },
+            { name: 'Dialog Graph', url: '',  icon: '' },
+            { name: 'Entity', url: '',  icon: '' },
+            { name: 'Intent', url: '',  icon: '' },
+            { name: 'Task', url: '',  icon: '' }
+        ] });
+        $scope.menus.push({ name: 'Contents', icon: '' });
+        $scope.menus.push({ name: 'Channel', icon: '' });
+        $scope.menus.push({ name: 'Operating', icon: '' });
+        $scope.menus.push({ name: 'Analysis', icon: '' });
+        $scope.menus.push({ name: 'Setting', icon: '' });
+
+        console.log('메뉴 : ', $scope.menus);
+    })();
+
     // --------- Gnb 접기 펼치기 기능.
     (function()
     {
