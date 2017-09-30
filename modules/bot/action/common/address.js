@@ -156,7 +156,7 @@ exports.updateRestaurantAddress = updateRestaurantAddress;
 
 function searchAddress(task, context, callback) {
 
-  var model = mongo.getModel('건물정보', 건물정보스키마);
+  var model = mongo.getModel('buildingdata', 건물정보스키마);
 
   var query = {};
   var 시도명, 시군구명, 읍면동명, 행정동명, 도로명, 리명, 본번, 부번, 상세주소, 도로명상세주소, 건물명;
