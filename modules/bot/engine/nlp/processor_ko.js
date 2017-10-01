@@ -92,7 +92,7 @@ function processInput(context, inRaw, callback) {
                             entry.text = info2replace[0];
                             entry.pos = info2replace[1];
                         }
-                        entry.pos = cbTags.normalizeTag('ko', entry.pos);
+                        entry.pos = cbTags.normalizeTag('ko', entry.text, entry.pos);
 
                         if (entry.pos == 'Alpha') entry.pos = 'Noun';
                         nlpAll.push(entry);

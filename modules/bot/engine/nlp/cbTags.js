@@ -131,7 +131,21 @@ CBTags.prototype.setNormalizeTag = function() {
     this.tagDictionary['zh'] = zhDictionary;
 }
 
-CBTags.prototype.normalizeTag = function (language, tag) {
+CBTags.prototype.normalizeTag = function (language, word, tag) {
+    if (language != "en") {
+        var otherChar = 0;
+        for (var i=0; i<word.length; i++)  {
+            var chk = word.substring(i,i+1);
+            if(!chk.match(/[a-z]|[A-Z]/)) {
+                otherChar = otherChar + 1;
+            }
+        }
+        console.log(otherChar + " / " + word.length);
+        if (otherChar == 0) {
+            return "Foreign";
+        }
+    }
+
     if (typeof this.tagDictionary[language][tag] == 'undefined') {
         return tag;
     }

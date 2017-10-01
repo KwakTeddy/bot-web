@@ -213,7 +213,7 @@ function processLiveInput(inRaw, callback) {
                         tokens[i][0] = mb_user_str[temp];
                         tokens[i][1] = mb_user_tag[temp];
                     }
-                    tokens[i][1] = cbTags.normalizeTag('zh', tokens[i][1]);
+                    tokens[i][1] = cbTags.normalizeTag('zh', tokens[i][0], tokens[i][1]);
 
                     var entry = {};
                     entry["text"] = tokens[i][0];
