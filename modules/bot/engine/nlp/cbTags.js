@@ -141,7 +141,6 @@ CBTags.prototype.normalizeTag = function (language, word, tag) {
                 otherChar = otherChar + 1;
             }
         }
-        console.log(otherChar + " / " + word.length);
         if (otherChar == 0) {
             return "Foreign";
         }

@@ -130,6 +130,7 @@ function processInput(context, inRaw, callback) {
 
                 context.botUser.nlu["sentence"] = "";
                 context.botUser.nlu["pos"] = "";
+                cb(null);
             } else {
                 cb(null);
             }

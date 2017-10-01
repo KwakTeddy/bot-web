@@ -65,11 +65,10 @@ UserDictionary.prototype.applyUserDic = function (lang, text) {
         var position = text.search(str);
         if (position >= 0) {
             if (lang == 'ja') {
-                //replaceTag = this.convert("PC"+tag+this.mapUserKeywordOrder[index++]);
                 replaceTag = " " + this.convert(this.mapUserKeywordOrder[index++]) + " ";
             } else {
-                //replaceTag = "PC"+tag+this.mapUserKeywordOrder[index++];
-                replaceTag =  " " + this.mapUserKeywordOrder[index++] + " ";
+                //replaceTag =  " " + this.mapUserKeywordOrder[index++] + " ";
+                replaceTag =  this.mapUserKeywordOrder[index++];
             }
 
             mb_user_str[replaceTag] = str;

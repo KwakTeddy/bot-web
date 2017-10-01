@@ -60,59 +60,77 @@ function processInput(context, inRaw, callback) {
 
             var cbTags = new CBTags();
 
-            if (inRaw == undefined || inRaw == null || Array.isArray(inRaw)) {
+            if (inRaw != undefined && inRaw != null && !Array.isArray(inRaw)) {
+                inRaw = inRaw.replace('。', '');
+                var dicResult = userDictionary.applyUserDic('ja', inRaw);
+                var text = dicResult[0];
+                var mb_user_str = dicResult[1];
+                var mb_user_tag = dicResult[2];
+
+                // analyze POS
+                text = userDictionary.convert(text);
+                var tokens = rma.tokenize(text);
+
+                var temp = '';
+                var _inNLP = [];
+                // restore user dictionary from POS
+                for (var i = 0; i < tokens.length; i++) {
+                    if ((tokens[i][0] in mb_user_str) && ((tokens[i][1] == 'N-pn') || (tokens[i][1] == 'N-nc'))) {
+                        temp = tokens[i][0];
+                        tokens[i][0] = mb_user_str[temp];
+                        tokens[i][1] = mb_user_tag[temp];
+                    }
+                    tokens[i][1] = cbTags.normalizeTag('ja', tokens[i][0], tokens[i][1]);
+
+                    var entry = {};
+                    entry["text"] = tokens[i][0];
+                    entry["pos"] = tokens[i][1];
+                    _nlp.push(entry);
+                    _inNLP.push(entry["text"]);
+                }
+
+                inNLP = _inNLP.join(' ');
+
+                if (context == null) {
+                    context = {};
+                }
+                if (!("botUser" in context)) {
+                    context["botUser"] = {}
+                }
+                if (!("nlu" in context["botUser"])) {
+                    context.botUser["nlu"] = {};
+                }
+
+                context.botUser["inNLP"] = inNLP;
+                context.botUser.nlpAll = _nlp;
+                context.botUser.nlp = _nlp;
+
+                context.botUser.nlu["sentence"] = inRaw;
+                var nlpJsonPOS = rma.tokens2json(inRaw, tokens);
+                context.botUser.nlu["pos"] = nlpJsonPOS;
+
+                cb(null);
+            } else if (Array.isArray(inRaw)) {
+                if (context == null) {
+                    context = {};
+                }
+                if (!("botUser" in context)) {
+                    context["botUser"] = {}
+                }
+                if (!("nlu" in context["botUser"])) {
+                    context.botUser["nlu"] = {};
+                }
+
+                context.botUser["inNLP"] = "";
+                context.botUser.nlpAll = "";
+                context.botUser.nlp = "";
+
+                context.botUser.nlu["sentence"] = "";
+                context.botUser.nlu["pos"] = "";
+                cb(null);
+            } else {
                 cb(null);
             }
-
-            inRaw = inRaw.replace('。', '');
-            var dicResult = userDictionary.applyUserDic('ja', inRaw);
-            var text = dicResult[0];
-            var mb_user_str = dicResult[1];
-            var mb_user_tag = dicResult[2];
-
-            // analyze POS
-            text = userDictionary.convert(text);
-            var tokens = rma.tokenize(text);
-
-            var temp = '';
-            var _inNLP = [];
-            // restore user dictionary from POS
-            for(var i=0; i<tokens.length; i++) {
-                if ((tokens[i][0] in mb_user_str) && ((tokens[i][1]=='N-pn') || (tokens[i][1]=='N-nc'))) {
-                    temp = tokens[i][0];
-                    tokens[i][0] = mb_user_str[temp];
-                    tokens[i][1] = mb_user_tag[temp];
-                }
-                tokens[i][1] = cbTags.normalizeTag('ja', tokens[i][0], tokens[i][1]);
-
-                var entry = {};
-                entry["text"] = tokens[i][0];
-                entry["pos"] = tokens[i][1];
-                _nlp.push(entry);
-                _inNLP.push(entry["text"]);
-            }
-
-            inNLP = _inNLP.join(' ');
-
-            if (context == null) {
-                context = {};
-            }
-            if (!("botUser" in context)) {
-                context["botUser"] = {}
-            }
-            if (!("nlu" in context["botUser"])) {
-                context.botUser["nlu"] = {};
-            }
-
-            context.botUser["inNLP"] = inNLP;
-            context.botUser.nlpAll = _nlp;
-            context.botUser.nlp = _nlp;
-
-            context.botUser.nlu["sentence"] = inRaw;
-            var nlpJsonPOS = rma.tokens2json(inRaw, tokens);
-            context.botUser.nlu["pos"] = nlpJsonPOS;
-
-            cb(null);
         },
         // 문장의 형식 찾기
         // dsyoon (2017. 09. 13.)

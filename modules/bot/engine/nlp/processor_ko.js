@@ -57,7 +57,7 @@ function processInput(context, inRaw, callback) {
                 var nlpUtil = new NLPUtil();
 
                 var nlpKo = new nlp({
-                    stemmer: false,      // (optional default: true)
+                    stemmer: true,      // (optional default: true)
                     normalizer: false,   // (optional default: true)
                     spamfilter: false     // (optional default: false)
                 });
@@ -74,6 +74,7 @@ function processInput(context, inRaw, callback) {
                 var temp_inRaw = dicResult[0];
                 var mb_user_str = dicResult[1];
                 var mb_user_tag = dicResult[2];
+                var position = -1;
 
                 nlpKo.tokenize(temp_inRaw, function (err, result) {
                     var _inNLP = [];
@@ -83,21 +84,24 @@ function processInput(context, inRaw, callback) {
                     }
 
                     // 사용자 사전 적용
-                    for (var i = 0; i < result.length; i++) {
+                    for (var i=0; i<result.length; i++) {
                         var entry = result[i];
-                        var position = entry.text.search("MBNOUN[A-Z]");
-                        if (position >= 0 && entry.pos == 'Alpha') {
-                            var info2replace = userDictionary.getTag(entry.text, dicResult);
-                            temp_inRaw = temp_inRaw.replace(new RegExp(entry.text, 'gi'), info2replace[0]);
-                            entry.text = info2replace[0];
-                            entry.pos = info2replace[1];
+                        for (var key in dicResult[1]) {
+                            position = entry.text.indexOf(key);
+                            if (position >= 0) {
+                                entry.text = (entry.text).replace(new RegExp(key,'gi'), dicResult[1][key]);
+                                if (entry.text == key) {
+                                    entry.pos = mb_user_tag[key];
+                                }
+                            }
                         }
+
                         entry.pos = cbTags.normalizeTag('ko', entry.text, entry.pos);
 
-                        if (entry.pos == 'Alpha') entry.pos = 'Noun';
+                        if(entry.pos == 'Alpha') entry.pos = 'Noun';
                         nlpAll.push(entry);
-                        if (entry.text && entry.text.search(/^(은|는|이|가|을|를)$/) == -1 && entry.pos !== 'Punctuation') _nlp.push(entry);
-                        if (entry.text && entry.text.search(/^(은|는|이|가|을|를)$/) == -1 && entry.pos !== 'Punctuation') _inNLP.push(entry.text);
+                        if(entry.text && entry.text.search(/^(은|는|이|가|을|를)$/) == -1 && entry.pos !== 'Punctuation') _nlp.push(entry);
+                        if(entry.text && entry.text.search(/^(은|는|이|가|을|를)$/) == -1 && entry.pos !== 'Punctuation') _inNLP.push(entry.text);
                     }
                     inNLP = _inNLP.join(' ');
                     inNLP = inNLP.replace(/(?:\{ | \})/g, '+');
@@ -141,6 +145,7 @@ function processInput(context, inRaw, callback) {
 
                 context.botUser.nlu["sentence"] = "";
                 context.botUser.nlu["pos"] = "";
+                cb(null);
             } else {
                 cb(null);
             }
@@ -204,7 +209,7 @@ function processLiveInput(inRaw, callback) {
             }
 
             var nlpKo = new nlp({
-                stemmer: false,      // (optional default: true)
+                stemmer: true,      // (optional default: true)
                 normalizer: false,   // (optional default: true)
                 spamfilter: false     // (optional default: false)
             });
@@ -221,6 +226,7 @@ function processLiveInput(inRaw, callback) {
             var temp_inRaw = dicResult[0];
             var mb_user_str = dicResult[1];
             var mb_user_tag = dicResult[2];
+            var position  = -1;
 
             nlpKo.tokenize(temp_inRaw, function(err, result) {
                 if(!result) result = inRaw;
@@ -231,13 +237,16 @@ function processLiveInput(inRaw, callback) {
                 // 사용자 사전 적용
                 for (var i=0; i<result.length; i++) {
                     var entry = result[i];
-                    var position = entry.text.search("MBNOUN[A-Z]");
-                    if (position >= 0 && entry.pos == 'Alpha') {
-                        var info2replace = userDictionary.getTag(entry.text, dicResult);
-                        temp_inRaw = temp_inRaw.replace(new RegExp(entry.text,'gi'),info2replace[0]);
-                        entry.text = info2replace[0];
-                        entry.pos = info2replace[1];
+                    for (var key in dicResult[1]) {
+                        position = entry.text.indexOf(key);
+                        if (position >= 0) {
+                            entry.text = (entry.text).replace(new RegExp(key,'gi'), dicResult[1][key]);
+                            if (entry.text == key) {
+                                entry.pos = mb_user_tag[key];
+                            }
+                        }
                     }
+
                     entry.pos = cbTags.normalizeTag('ko', entry.text, entry.pos);
 
                     if(entry.pos == 'Alpha') entry.pos = 'Noun';
