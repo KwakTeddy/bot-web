@@ -695,7 +695,7 @@ function analysisDoc(doc, bot_id, bot_name, cb) {
   })
 }
 
-function analyzeKnowledgeDialog(dialogs, bot_id, result, callback) {
+function analyzeKnowledgeDialog(dialogs, bot_id, bot_name, result, callback) {
   var model = mongoModule.getModel('DialogsetDialog');
   var docs = [];
   for (var i=0; i < dialogs.length; ++i) {
@@ -722,7 +722,7 @@ function analyzeKnowledgeDialog(dialogs, bot_id, result, callback) {
   }
 
   async.eachSeries(docs, function(doc, cb) {
-    analysisDoc(doc,bot_id, '', cb);
+    analysisDoc(doc,bot_id, bot_name, cb);
   } , function(err) {
     callback(result);
   });
@@ -969,21 +969,20 @@ function processInput(context, inRaw, callback) {
     var _in = '';
     var _nlpRaw = [];
 
-    var language = "zh";
     var result = {};
-    if (language=="en") {
+    if (context.botUser.language=="en") {
         enNLP.processInput(result, inRaw, function(_inTextNLP, _inDoc) {
             _in = result.botUser.inNLP;
             _nlpRaw = result.botUser.nlp;
             callback(_in, {_nlp: _nlpRaw});
         });
-    } else if (language=="zh") {
+    } else if (context.botUser.language=="zh") {
         zhNLP.processInput(result, inRaw, function(_inTextNLP, _inDoc) {
             _in = result.botUser.inNLP;
             _nlpRaw = result.botUser.nlpAll;
             callback(_in, {_nlp: _nlpRaw});
         });
-    } else if (language=="ja") {
+    } else if (context.botUser.language=="ja") {
         jaNLP.processInput(result, inRaw, function(_inTextNLP, _inDoc) {
             _in = result.botUser.inNLP;
             _nlpRaw = result.botUser.nlpAll;

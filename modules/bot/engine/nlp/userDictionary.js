@@ -12,32 +12,31 @@ var UserDictionary = function (userDicFile) {
 };
 
 UserDictionary.prototype.init = function() {
-    this.mapUserKeywordOrder.push("A");
-    this.mapUserKeywordOrder.push("B");
-    this.mapUserKeywordOrder.push("C");
-    this.mapUserKeywordOrder.push("D");
-    this.mapUserKeywordOrder.push("E");
-    this.mapUserKeywordOrder.push("F");
-    this.mapUserKeywordOrder.push("G");
-    this.mapUserKeywordOrder.push("H");
-    this.mapUserKeywordOrder.push("I");
-    this.mapUserKeywordOrder.push("J");
-    this.mapUserKeywordOrder.push("K");
-    this.mapUserKeywordOrder.push("L");
-    this.mapUserKeywordOrder.push("M");
-    this.mapUserKeywordOrder.push("N");
-    this.mapUserKeywordOrder.push("O");
-    this.mapUserKeywordOrder.push("P");
-    this.mapUserKeywordOrder.push("Q");
-    this.mapUserKeywordOrder.push("R");
-    this.mapUserKeywordOrder.push("S");
-    this.mapUserKeywordOrder.push("T");
-    this.mapUserKeywordOrder.push("U");
-    this.mapUserKeywordOrder.push("V");
-    this.mapUserKeywordOrder.push("W");
-    this.mapUserKeywordOrder.push("X");
-    this.mapUserKeywordOrder.push("Y");
-    this.mapUserKeywordOrder.push("Z");
+    this.mapUserKeywordOrder.push("AA");
+    this.mapUserKeywordOrder.push("BB");
+    this.mapUserKeywordOrder.push("CC");
+    this.mapUserKeywordOrder.push("DD");
+    this.mapUserKeywordOrder.push("EE");
+    this.mapUserKeywordOrder.push("FF");
+    this.mapUserKeywordOrder.push("HH");
+    this.mapUserKeywordOrder.push("II");
+    this.mapUserKeywordOrder.push("JJ");
+    this.mapUserKeywordOrder.push("KK");
+    this.mapUserKeywordOrder.push("LL");
+    this.mapUserKeywordOrder.push("MM");
+    this.mapUserKeywordOrder.push("NN");
+    this.mapUserKeywordOrder.push("OO");
+    this.mapUserKeywordOrder.push("PP");
+    this.mapUserKeywordOrder.push("QQ");
+    this.mapUserKeywordOrder.push("RR");
+    this.mapUserKeywordOrder.push("SS");
+    this.mapUserKeywordOrder.push("TT");
+    this.mapUserKeywordOrder.push("UU");
+    this.mapUserKeywordOrder.push("VV");
+    this.mapUserKeywordOrder.push("WW");
+    this.mapUserKeywordOrder.push("XX");
+    this.mapUserKeywordOrder.push("YY");
+    this.mapUserKeywordOrder.push("ZZ");
 }
 
 UserDictionary.prototype.parse = function (userDicFile) {
@@ -66,14 +65,17 @@ UserDictionary.prototype.applyUserDic = function (lang, text) {
         var position = text.search(str);
         if (position >= 0) {
             if (lang == 'ja') {
-                replaceTag = this.convert("MB"+tag+this.mapUserKeywordOrder[index++]);
+                //replaceTag = this.convert("PC"+tag+this.mapUserKeywordOrder[index++]);
+                replaceTag = " " + this.convert(this.mapUserKeywordOrder[index++]) + " ";
             } else {
-                replaceTag = "MB"+tag+this.mapUserKeywordOrder[index++];
+                //replaceTag = "PC"+tag+this.mapUserKeywordOrder[index++];
+                replaceTag =  " " + this.mapUserKeywordOrder[index++] + " ";
             }
 
             mb_user_str[replaceTag] = str;
             mb_user_tag[replaceTag] = tag;
-            text = text.replace(new RegExp(str,'gi'),replaceTag);
+            //text = text.replace(new RegExp(str,'gi'), " "+replaceTag+" ");
+            text = text.replace(new RegExp(str,'gi'), replaceTag);
         }
     }
     if (lang == 'ja') {

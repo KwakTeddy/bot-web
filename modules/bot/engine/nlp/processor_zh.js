@@ -56,83 +56,120 @@ function processInput(context, inRaw, callback) {
         // dsyoon (2017. 09. 13.)
         // 사용자 사전 경로: ./external_module/resources/ja/user.pos
         function(cb) {
-            if (inRaw == undefined || inRaw == null || Array.isArray(inRaw)) {
+            if (inRaw != undefined && inRaw != null && !Array.isArray(inRaw)) {
+                var cbTags = new CBTags();
+
+                var dicResult = userDictionary.applyUserDic('zh', inRaw);
+                var text = dicResult[0];
+                var mb_user_str = dicResult[1];
+                var mb_user_tag = dicResult[2];
+
+                var position = -1;
+                // analyze POS
+                var tokens = rma.tokenize(inRaw);
+
+                var temp = '';
+                var _inNLP = [];
+                // restore user dictionary from POS
+                for (var i = 0; i < tokens.length; i++) {
+                    for (var key in dicResult[1]) {
+                        position = tokens[i][0].indexOf(key);
+                        if (position >= 0) {
+                            tokens[i][0] = (" " + tokens[i][0] + " ").replace(new RegExp(key, 'gi'), dicResult[1][key]);
+                            if (tokens[i][0] == key) {
+                                tokens[i][1] = mb_user_tag[key];
+                            }
+                        }
+                    }
+                    tokens[i][1] = cbTags.normalizeTag('zh', tokens[i][1]);
+                    var entry = {};
+                    entry["text"] = tokens[i][0];
+                    entry["pos"] = tokens[i][1];
+                    _nlp.push(entry);
+                    _inNLP.push(entry["text"]);
+                }
+
+                inNLP = _inNLP.join(' ');
+                while (inNLP.search(/^ /) >= 0 || inNLP.search(/ $/) >= 0) {
+                    inNLP = inNLP.replace(new RegExp(/^ /, 'gi'), "").replace(new RegExp(" $", 'gi'), "");
+                }
+
+                if (context == null) {
+                    context = {};
+                }
+                if (!("botUser" in context)) {
+                    context["botUser"] = {}
+                }
+                if (!("nlu" in context["botUser"])) {
+                    context.botUser["nlu"] = {};
+                }
+
+                context.botUser["inNLP"] = inNLP;
+                context.botUser.nlpAll = _nlp;
+                context.botUser.nlp = _nlp;
+
+                context.botUser.nlu["sentence"] = inRaw;
+                var nlpJsonPOS = rma.tokens2json(inRaw, tokens);
+                context.botUser.nlu["pos"] = nlpJsonPOS;
+
+                cb(null);
+            } else if (Array.isArray(inRaw)) {
+                if (context == null) {
+                    context = {};
+                }
+                if (!("botUser" in context)) {
+                    context["botUser"] = {}
+                }
+                if (!("nlu" in context["botUser"])) {
+                    context.botUser["nlu"] = {};
+                }
+
+                context.botUser["inNLP"] = "";
+                context.botUser.nlpAll = "";
+                context.botUser.nlp = "";
+
+                context.botUser.nlu["sentence"] = "";
+                context.botUser.nlu["pos"] = "";
+            } else {
                 cb(null);
             }
-            var cbTags = new CBTags();
 
-            var dicResult = userDictionary.applyUserDic('zh', inRaw);
-            var text = dicResult[0];
-            var mb_user_str = dicResult[1];
-            var mb_user_tag = dicResult[2];
 
-            // analyze POS
-            var tokens = rma.tokenize(text);
-
-            var temp = '';
-            var _inNLP = [];
-            // restore user dictionary from POS
-            for(var i=0; i<tokens.length; i++) {
-                if ((tokens[i][0] in mb_user_str) && (tokens[i][1]=='NR')) {
-                    temp = tokens[i][0]
-                    tokens[i][0] = mb_user_str[temp];
-                    tokens[i][1] = mb_user_tag[temp];
-                }
-                tokens[i][1] = cbTags.normalizeTag('zh', tokens[i][1]);
-
-                var entry = {};
-                entry["text"] = tokens[i][0];
-                entry["pos"] = tokens[i][1];
-                _nlp.push(entry);
-                _inNLP.push(entry["text"]);
-            }
-
-            inNLP = _inNLP.join(' ');
-
-            if (context == null) {
-                context = {};
-            }
-            if (!("botUser" in context)) {
-                context["botUser"] = {}
-            }
-            if (!("nlu" in context["botUser"])) {
-                context.botUser["nlu"] = {};
-            }
-
-            context.botUser["inNLP"] = inNLP;
-            context.botUser.nlpAll = _nlp;
-            context.botUser.nlp = _nlp;
-
-            context.botUser.nlu["sentence"] = inRaw;
-            var nlpJsonPOS = rma.tokens2json(inRaw, tokens);;
-            context.botUser.nlu["pos"] = nlpJsonPOS;
-
-            cb(null);
         },
         // 문장의 형식 찾기
         // dsyoon (2017. 09. 13.)
         // 사용자 사전 경로: ./external_module/resources/ko/user.pos
         function(cb) {
-            var sentenceInfo = new SentenceInfo();
-            var value = sentenceInfo.analyze("zh", context.botUser.nlu);
-            context.botUser.nlu["sentenceInfo"] = value;
+            if (inRaw != undefined && inRaw != null && !Array.isArray(inRaw)) {
+                var sentenceInfo = new SentenceInfo();
+                var value = sentenceInfo.analyze("zh", context.botUser.nlu);
+                context.botUser.nlu["sentenceInfo"] = value;
 
-            cb(null);
+                cb(null);
+            } else {
+                cb(null);
+            }
         },
         // turn taking할지 분석 (0: 사용자가 계속 말하게 둔다. 1: 봇이 발화한다.
         // dsyoon (2017. 09. 19.)
         // 사용자 사전 경로: ./external_module/resources/ko/user.pos
         function(cb) {
-            var turnTaking = new TurnTaking();
-            var value = turnTaking.analyze("zh", context.botUser.nlu);
-            context.botUser.nlu["turnTaking"] = value;
+            if (inRaw != undefined && inRaw != null && !Array.isArray(inRaw)) {
+                var turnTaking = new TurnTaking();
+                var value = turnTaking.analyze("zh", context.botUser.nlu);
+                context.botUser.nlu["turnTaking"] = value;
 
-            cb(null);
+                cb(null);
+            } else {
+                cb(null);
+            }
         }
     ], function(err) {
-        context.botUser.nlpCorrection = undefined;
-        context.botUser.inRawCorrection = undefined;
-        context.botUser.wordCorrection = undefined;
+        if (inRaw != undefined && inRaw != null && !Array.isArray(inRaw)) {
+            context.botUser.nlpCorrection = undefined;
+            context.botUser.inRawCorrection = undefined;
+            context.botUser.wordCorrection = undefined;
+        }
 
         callback(inNLP, null, null);
     });
@@ -157,46 +194,47 @@ function processLiveInput(inRaw, callback) {
         function(cb) {
             if (inRaw == undefined || inRaw == null || Array.isArray(inRaw)) {
                 cb(null);
-            }
-            var cbTags = new CBTags();
+            } else {
+                var cbTags = new CBTags();
 
-            var dicResult = userDictionary.applyUserDic('zh', inRaw);
-            var text = dicResult[0];
-            var mb_user_str = dicResult[1];
-            var mb_user_tag = dicResult[2];
+                var dicResult = userDictionary.applyUserDic('zh', inRaw);
+                var text = dicResult[0];
+                var mb_user_str = dicResult[1];
+                var mb_user_tag = dicResult[2];
 
-            // analyze POS
-            var tokens = rma.tokenize(text);
+                // analyze POS
+                var tokens = rma.tokenize(text);
 
-            var temp = '';
-            // restore user dictionary from POS
-            for(var i=0; i<tokens.length; i++) {
-                if ((tokens[i][0] in mb_user_str) && (tokens[i][1]=='NR')) {
-                    temp = tokens[i][0]
-                    tokens[i][0] = mb_user_str[temp];
-                    tokens[i][1] = mb_user_tag[temp];
+                var temp = '';
+                // restore user dictionary from POS
+                for (var i = 0; i < tokens.length; i++) {
+                    if ((tokens[i][0] in mb_user_str) && (tokens[i][1] == 'NR')) {
+                        temp = tokens[i][0]
+                        tokens[i][0] = mb_user_str[temp];
+                        tokens[i][1] = mb_user_tag[temp];
+                    }
+                    tokens[i][1] = cbTags.normalizeTag('zh', tokens[i][1]);
+
+                    var entry = {};
+                    entry["text"] = tokens[i][0];
+                    entry["pos"] = tokens[i][1];
+                    if (entry.pos !== 'AuxVerb' &&
+                        entry.pos !== 'Determiner' &&
+                        entry.pos !== 'Conjunction' &&
+                        entry.pos !== 'Determiner' &&
+                        entry.pos !== 'Interjection' &&
+                        entry.pos !== 'Prefix' &&
+                        entry.pos !== 'Preposition' &&
+                        entry.pos !== 'Suffix' &&
+                        entry.pos !== 'Unknown' &&
+                        entry.pos !== 'Punctuation') {
+                        _nlp.push(entry.text);
+                    }
                 }
-                tokens[i][1] = cbTags.normalizeTag('zh', tokens[i][1]);
 
-                var entry = {};
-                entry["text"] = tokens[i][0];
-                entry["pos"] = tokens[i][1];
-                if(entry.pos !== 'AuxVerb' &&
-                    entry.pos !== 'Determiner' &&
-                    entry.pos !== 'Conjunction' &&
-                    entry.pos !== 'Determiner' &&
-                    entry.pos !== 'Interjection' &&
-                    entry.pos !== 'Prefix' &&
-                    entry.pos !== 'Preposition' &&
-                    entry.pos !== 'Suffix' &&
-                    entry.pos !== 'Unknown' &&
-                    entry.pos !== 'Punctuation') {
-                    _nlp.push(entry.text);
-                }
+                _in = _nlp.join(' ');
+                cb(null, _in);
             }
-
-            _in = _nlp.join(' ');
-            cb(null, _in);
         }
     ], function(err) {
         callback(null, _in);
