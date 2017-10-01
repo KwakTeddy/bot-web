@@ -81,7 +81,7 @@ function processInput(context, inRaw, callback) {
                             }
                         }
                     }
-                    tokens[i][1] = cbTags.normalizeTag('zh', tokens[i][1]);
+                    tokens[i][1] = cbTags.normalizeTag('zh', tokens[i][0], tokens[i][1]);
                     var entry = {};
                     entry["text"] = tokens[i][0];
                     entry["pos"] = tokens[i][1];
