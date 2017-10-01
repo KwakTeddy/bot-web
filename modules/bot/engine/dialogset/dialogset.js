@@ -641,7 +641,6 @@ function insertDatasetFile(infile, callback, dialogset) {
 
 exports.insertDatasetFile = insertDatasetFile;
 
-// analyzer가 ko일때 KnowlegeMap
 function analysisDoc(doc, bot_id, bot_name, cb) {
   processInput(null, doc.input, function(_input, _json) {
     console.log(">> " + doc.input);
@@ -970,6 +969,10 @@ function processInput(context, inRaw, callback) {
     var _nlpRaw = [];
 
     var result = {};
+    if (!("botUser" in context)) {context["botUser"] = {};}
+    if (!("language" in context)) {context.botUser["language"] = "ko";}
+    context.botUser.language = "zh";
+
     if (context.botUser.language=="en") {
         enNLP.processInput(result, inRaw, function(_inTextNLP, _inDoc) {
             _in = result.botUser.inNLP;

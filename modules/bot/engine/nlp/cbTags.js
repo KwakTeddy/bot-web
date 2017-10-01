@@ -119,6 +119,7 @@ CBTags.prototype.setNormalizeTag = function() {
     zhDictionary["DEG"] = "Suffix";
     zhDictionary["DEC"] = "Suffix";
     zhDictionary["VV"] = "Verb";
+    zhDictionary["VC"] = "Verb";
     zhDictionary["MSP"] = "Suffix";
     zhDictionary["LS"] = "Noun";
     zhDictionary["LC"] = "Noun";

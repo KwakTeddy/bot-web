@@ -49,6 +49,9 @@ function processInput(context, inRaw, callback) {
     async.waterfall([
 
         function(cb) {
+            if (!("botUser" in context)) {context["botUser"] = {};}
+            if (!("language" in context)) {context.botUser["language"] = "ko";}
+            context.botUser.language = "zh";
 
             if (context.botUser.language=="en") {
                 enNLP.processInput(context, inRaw, function(_inTextNLP, _inDoc) {

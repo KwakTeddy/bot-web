@@ -35,7 +35,7 @@ function getContext(botName, channel, user, options, callback) {
         cb(null);
       } else if (!global._users[user]) {
         var botUser = require(path.resolve('./modules/bot-users/server/controllers/bot-users.server.controller'));
-        var _user = {userId: user, channel: channel, bot: botName, language: 'zh'};
+        var _user = {userId: user, channel: channel, bot: botName};
         botUser.getUserContext(_user, null, function (_user, _context) {
           userContext = {userId: user, channel: channel, bot: botName};
           // userContext = utils.merge(userContext, _user.doc._doc);

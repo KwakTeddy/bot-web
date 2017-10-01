@@ -308,6 +308,15 @@ SentenceInfo.prototype.analyzeZH = function (posJson) {
             return this.type.interrogative;
         }
     }
+    // 체크2. 谁 (누가), 什么 (무엇), 当 (언제), 如何 (어떻게), 为什么 (왜), 哪里 (어디)
+    if (str.indexOf("谁") != -1 ||
+        str.indexOf("什么") != -1 ||
+        str.indexOf("当") != -1 ||
+        str.indexOf("如何") != -1 ||
+        str.indexOf("为什么") != -1 ||
+        str.indexOf("哪里") != -1) {
+        return this.type.interrogative;
+    }
 
     // 2. 명령문
     // 체크1. 不要 + 동사인 경우, 别 + 동사인 경우
@@ -430,7 +439,7 @@ SentenceInfo.prototype.analyze = function (language, nlu) {
 
     // 1. 문장 부호 확인
     lastStr = str.charAt(str.length-1);
-    if (lastStr == "?") {
+    if (lastStr == "?" || lastStr == "？") {
         return this.type.interrogative;
     } else if (lastStr == "!") {
         return this.type.exclamation;
