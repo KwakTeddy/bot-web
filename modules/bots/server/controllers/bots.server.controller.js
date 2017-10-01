@@ -347,7 +347,7 @@ exports.update = function (req, res) {
           async.waterfall([
             function (cb) {
               async.eachSeries(realbot.dialogsets, function(dialogset, cb2) {
-                dialogsetModule.analyzeKnowledge(dialogset, bot.id, result, function () {
+                dialogsetModule.analyzeKnowledge(dialogset, bot.id, bot.id, result, function () {
                   cb2();
                 });
               }, function(err) {
@@ -355,7 +355,7 @@ exports.update = function (req, res) {
               });
             },
             function (cb) {
-              dialogsetModule.analyzeKnowledgeDialog(realbot.dialogs, bot.id, result, function() {
+              dialogsetModule.analyzeKnowledgeDialog(realbot.dialogs, bot.id, bot.id, result, function() {
                 cb(null);
               });
             },
@@ -710,20 +710,25 @@ exports.nluProcess = function(req, res) {
     var jaNLP = require(path.resolve('./modules/bot/engine/nlp/processor_ja'));
     var zhNLP = require(path.resolve('./modules/bot/engine/nlp/processor_zh'));
 
-    var language = "ko";
+    if (context == null || context == undefined) context = {};
+    if (!("botUser" in context)) {context["botUser"] = {};}
+    if (!("language" in context)) {context.botUser["language"] = "ko";}
+    //context.botUser.language = "zh";
+    context.botUser.language = "ko";
+
     var input = '';
 
-    if (language=="en") {
+    if (context.botUser.language=="en") {
         enNLP.processLiveInput(req.params.input, function(err, result) {
             input = result;
             res.json(input);
         });
-    } else if (language=="zh") {
+    } else if (context.botUser.language=="zh") {
         zhNLP.processLiveInput(req.params.input, function(err, result) {
             input = result;
             res.json(input);
         });
-    } else if (language=="ja") {
+    } else if (context.botUser.language=="ja") {
         jaNLP.processLiveInput(req.params.input, function(err, result) {
             input = result;
             res.json(input);
