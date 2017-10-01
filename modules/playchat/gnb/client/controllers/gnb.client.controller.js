@@ -11,23 +11,23 @@ angular.module('playchat.gnb').controller('GnbController', ['$window', '$scope',
         // 최초 메뉴 초기화
         $scope.menus = [];
 
-        $scope.menus.push({ name: 'Dashboard', icon: 'develop.png' });
-        $scope.menus.push({ name: 'Development', icon: '', childMenus: [
-            { name: 'Dialog Set', url: '', icon: '' },
-            { name: 'Dialog Graph', url: '', icon: '' }
+        $scope.menus.push({ name: 'Dashboard', icon: 'dashboard.png' });
+        $scope.menus.push({ name: 'Development', icon: 'develop.png', childMenus: [
+            { name: 'Dialog Set', url: '', icon: 'speech.png' },
+            { name: 'Dialog Graph', url: '', icon: 'scenario.png' }
         ] });
-        $scope.menus.push({ name: 'Management', icon: '', childMenus: [
+        $scope.menus.push({ name: 'Management', icon: 'Managemant.png', childMenus: [
             { name: 'Dialog Set', url: '',  icon: '' },
             { name: 'Dialog Graph', url: '',  icon: '' },
             { name: 'Entity', url: '',  icon: '' },
             { name: 'Intent', url: '',  icon: '' },
             { name: 'Task', url: '',  icon: '' }
         ] });
-        $scope.menus.push({ name: 'Contents', icon: '' });
-        $scope.menus.push({ name: 'Channel', icon: '' });
-        $scope.menus.push({ name: 'Operating', icon: '' });
-        $scope.menus.push({ name: 'Analysis', icon: '' });
-        $scope.menus.push({ name: 'Setting', icon: '' });
+        $scope.menus.push({ name: 'Contents', icon: 'contents.png' });
+        $scope.menus.push({ name: 'Channel', icon: 'channel.png' });
+        $scope.menus.push({ name: 'Operating', icon: 'operating.png' });
+        $scope.menus.push({ name: 'Analysis', icon: 'analysis.png' });
+        $scope.menus.push({ name: 'Setting', icon: 'setting.png' });
 
         console.log('메뉴 : ', $scope.menus);
     })();

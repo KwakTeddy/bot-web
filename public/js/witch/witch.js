@@ -130,30 +130,49 @@ var Witch = (function()
         return null;
     };
 
-    var checkListLength = function(elements, compareType, compareValue, expectedValue)
+    Test.prototype.getCompareResult = function(compareType, compareTargetValue, compareValue)
     {
-        var length = elements.length;
         var result = undefined;
-        if(compareType == '>=')
+        if(compareType == 'equals')
         {
-            result = (length >= compareValue);
+            result = (compareTargetValue == compareValue);
+        }
+        else if(compareType == 'contains')
+        {
+            result = (compareTargetValue.indexOf(compareValue) != -1);
+        }
+        else if(compareType == 'typeof')
+        {
+            result = (typeof compareTargetValue == compareValue);
+        }
+        else if(compareType == '>=')
+        {
+            result = (compareTargetValue >= compareValue);
         }
         else if(compareType == '<=')
         {
-            result = (length <= compareValue);
+            result = (compareTargetValue <= compareValue);
         }
         else if(compareType == '==')
         {
-            result = (length == compareValue);
+            result = (compareTargetValue == compareValue);
         }
         else if(compareType == '>')
         {
-            result = (length > compareValue);
+            result = (compareTargetValue > compareValue);
         }
         else if(compareType == '<')
         {
-            result = (length > compareValue);
+            result = (compareTargetValue > compareValue);
         }
+
+        return result;
+    };
+
+    Test.prototype.checkListLength = function(elements, compareType, compareValue, expectedValue)
+    {
+        var length = elements.length;
+        var result = this.getCompareResult(compareType, length, compareValue);
 
         if(result === undefined)
         {
@@ -165,7 +184,7 @@ var Witch = (function()
         }
 
         return { result: true };
-    }
+    };
 
     Test.prototype.execCompare = function(elements, property, compareType, compareValue, expectedValue)
     {
@@ -178,21 +197,9 @@ var Witch = (function()
         {
             var element = elements.get(i);
 
-            var compareTargetValue = element[property.replace('text', 'innerText').replace('html', 'innerHTML')];
+            var compareTargetValue = this.getCompareTargetValue(element,  property);
 
-            var result = undefined;
-            if(compareType == 'equals')
-            {
-                result = (compareTargetValue == compareValue);
-            }
-            else if(compareType == 'contains')
-            {
-                result = (compareTargetValue.indexOf(compareValue) != -1);
-            }
-            else if(compareType == 'typeof')
-            {
-                result = (typeof compareTargetValue == compareValue);
-            }
+            var result = this.getCompareResult(compareType, compareTargetValue, compareValue);
 
             if(result === undefined)
             {
