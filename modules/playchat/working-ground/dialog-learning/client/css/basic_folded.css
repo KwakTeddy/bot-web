@@ -1,0 +1,80 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*chatroom이 접혔을 경우*/
+section#mainBoard #workspaceOR{
+	position: absolute;
+	top:68px;
+    left: 253px;
+	margin: 14px;
+	width: 82%;
+}
+section#mainBoard #logroomOR {
+    position: fixed;
+    bottom: 0;
+    width: 87%;
+    height: 210px;
+    overflow: auto;
+    background: #fff;
+    left: 250px;
+}
+section#mainBoard #logroomOR .logHeader{
+	height: 39px;
+	background:#e8ebf0;
+	border-bottom: #e7e7e7 solid 1px;
+	border-top: #e7e7e7 solid 1px;
+}
+section#mainBoard #logroomOR .logTab{
+	line-height: 24px;
+    padding: 6px 30px;
+    cursor: pointer;
+    float: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+	letter-spacing: 0.1px;
+}
+section#mainBoard #logroomOR .tab{
+	font-weight: 500;
+    height: 100%;
+    width: 100%;
+}
+section#mainBoard #logroomOR .select{
+	border-bottom:#038eda solid 3px;
+}
+section#mainBoard #logroomOR .logsystem{
+	/*text-align: right;
+	padding: 13px 14px;*/
+	position: absolute;
+    right: 14px;
+    top: 15px;
+}
+section#mainBoard #logroomOR .logsystem>a{
+	padding: 13px 4px;
+}
+section#mainBoard #logroomOR .logsystem {
+    position: absolute;
+    right: 24px;
+    top: 15px;
+}
+.chatbtn{
+	width: 60px;
+	height: 32px;
+	background: #424242;
+	cursor: pointer;
+	-webkit-border-radius: 4px 4px 0px 0px;
+	-moz-border-radius: 4px 4px 0px 0px;
+	border-radius: 4px 4px 0px 0px;
+	padding: 10px 16px 0px;
+	position: fixed;
+	right: -25px;
+	top: 109px;
+	-ms-transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+	text-align: center;
+}
+.chatbtn>a{
+	color: #fff;
+    
+}

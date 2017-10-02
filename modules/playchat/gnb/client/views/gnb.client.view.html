@@ -1,55 +1,57 @@
-<div class="gnb-header">
-    <a href="/playchat" class="logo-min"><img src="/modules/playchat/gnb/client/img/logo.png"></a>
-    <a href="#" class="gnb-close" ng-click="toggleGnb($event);"></a>
-</div>
+<div ng-controller="GnbController">
+    <div class="gnb-header">
+        <a href="/playchat" class="logo-min"><img src="/modules/playchat/gnb/client/img/logo.png"></a>
+        <a href="#" class="gnb-close" ng-click="toggleGnb($event);"></a>
+    </div>
 
-<div class="gnb-bot-name">
-    <span>TestBot</span>
-    <a href="#" class="gnb-bot-name-modify">
-        <img src="/modules/playchat/gnb/client/img/modify.png">
-    </a>
-    <a href="#" class="gnb-bot-name-detail">
-        <img src="/modules/playchat/gnb/client/img/testbotDown.png">
-    </a>
-</div>
+    <div class="gnb-bot-name">
+        <span>TestBot</span>
+        <a href="#" class="gnb-bot-name-modify">
+            <img src="/modules/playchat/gnb/client/img/modify.png">
+        </a>
+        <a href="#" class="gnb-bot-name-detail">
+            <img src="/modules/playchat/gnb/client/img/testbotDown.png">
+        </a>
+    </div>
 
-<ul class="menu-item-list">
-    <li class="menu-item-group" ng-repeat="menu in menus">
-        <div class="menu-item">
-            <a href="" ng-click="toggleMenuItem($event);">
-                <img src="/modules/playchat/gnb/client/img/{{ menu.icon }}">
-                <span>{{ menu.name }}</span>
-            </a>
-            <a href="#" class="close" ng-click="toggleMenuItem($event);"></a>
-        </div>
-        <ul class="sub-menu-item-group" ng-if="menu.childMenus">
-            <li class="sub-menu-item" ng-repeat="child in menu.childMenus">
-                <a ui-sref="{{ child.url }}">
-                    <img src="/modules/playchat/gnb/client/img/{{ child.icon }}">
-                    <span>{{ child.name }}</span>
+    <ul class="menu-item-list">
+        <li class="menu-item-group" ng-repeat="menu in menus">
+            <div class="menu-item">
+                <a href="" ng-click="toggleMenuItem($event);">
+                    <img src="/modules/playchat/gnb/client/img/{{ menu.icon }}">
+                    <span>{{ menu.name }}</span>
                 </a>
-            </li>
-        </ul>
-    </li>
-</ul>
+                <a href="#" class="close" ng-click="toggleMenuItem($event);"></a>
+            </div>
+            <ul class="sub-menu-item-group" ng-if="menu.childMenus">
+                <li class="sub-menu-item" ng-repeat="child in menu.childMenus">
+                    <a href="/playchat{{ child.url }}">
+                        <img src="/modules/playchat/gnb/client/img/{{ child.icon }}">
+                        <span>{{ child.name }}</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
 
-<ul class="bottom-list">
-    <li>
-        <a href="#">
-            <img src="/modules/playchat/gnb/client/img/docs.png">
-            <span>Docs</span>
-        </a>
-    </li>
-    <li>
-        <a href="#">
-            <img src="/modules/playchat/gnb/client/img/forum.png">
-            <span>Forum</span>
-        </a>
-    </li>
-    <li>
-        <a href="#">
-            <img src="/modules/playchat/gnb/client/img/support.png">
-            <span>Support</span>
-        </a>
-    </li>
-</ul>
+    <ul class="bottom-list">
+        <li>
+            <a href="#">
+                <img src="/modules/playchat/gnb/client/img/docs.png">
+                <span>Docs</span>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <img src="/modules/playchat/gnb/client/img/forum.png">
+                <span>Forum</span>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <img src="/modules/playchat/gnb/client/img/support.png">
+                <span>Support</span>
+            </a>
+        </li>
+    </ul>
+</div>

@@ -84,6 +84,8 @@ function ($window, $scope, $cookies, $resource, Socket)
                 emitMsg(':reset user', false);
             }, Beagle.error);
         };
+
+        $scope.init();
     })();
 
     // --------- Simulator 접기 펼치기 기능.

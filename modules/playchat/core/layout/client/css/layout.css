@@ -70,6 +70,8 @@
     right: 0;
     bottom: 211px;
 
+    padding: 14px;
+
     overflow: auto;
 }
 

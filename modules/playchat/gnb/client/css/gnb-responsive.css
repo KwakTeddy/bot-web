@@ -71,6 +71,11 @@
     padding: 0px 24px;
 }
 
+.playchat-background .gnb .menu-item-list li.menu-item-group .menu-item .close
+{
+    display: none;
+}
+
 .playchat-background .gnb .menu-item-list .sub-menu-item-group li.sub-menu-item
 {
     padding: 0px 24px;

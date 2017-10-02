@@ -12,7 +12,7 @@ angular.module('playchat').config(['$stateProvider', '$urlRouterProvider', funct
     });
 
     $stateProvider.state('playchat-page', {
-        url: '/playchat/:page',
+        url: '/playchat/:menu/:page',
         templateUrl: 'modules/playchat/core/layout/client/views/layout.client.view.html',
         controller: 'PlayChatController',
         data: {

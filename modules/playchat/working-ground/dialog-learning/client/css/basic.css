@@ -1,0 +1,517 @@
+@charset "utf-8";
+/* CSS Document */
+body{	
+	min-width: 860px;
+    min-height: 100%;
+    height: 100%;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+	display: block;
+}
+section#topMenu {
+    position: fixed;
+    z-index:100000;
+	height: 64px;
+	background-color:#fff;
+	border-bottom: #e7e7e7 solid 1px;
+	top: 0;
+	width: 100%;
+}
+#gnb{
+    position:relative;
+    height: 64px;
+	width: 100%;
+}
+section#topMenu>div .header{
+    display: inline-block;
+    width:204px;
+    height:44px;
+    background: #363636;
+	padding: 10px 23px;
+	position: relative;
+}
+section#topMenu>div .header .logo_min{
+	width: 100px;
+    height: 38px;
+	vertical-align: middle;
+	float: left;
+}
+section#topMenu>div .Menuclose{
+	position: absolute;
+    right: 25px;
+    top: 19px;
+    width: 28px;
+    height: 26px;
+	background: url(../images/hamburger.png) no-repeat center center;
+	background-size: 23px 17px;
+}
+section#topMenu>div .adminName {
+    position: relative;
+    top: 0;
+    font-weight: 400;
+    display: inline-block;
+    font-size: 0;
+    height: 64px;
+    vertical-align: top;
+}
+section#topMenu>div .adminN{
+    vertical-align: top;
+    cursor: auto;
+    margin: 20px 10px 14px 32px;
+}
+section#topMenu>div .label{
+    display: inline-block;
+    height: 64px;
+}
+section#topMenu>div .label span{
+	vertical-align: top;
+}
+section#topMenu>div .current{
+	display: block;
+	line-height: 1.25;
+	margin-top: 20px;
+	max-width: 400px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-size: 17px;
+	color: #494949;
+}
+section#topMenu>div .system{
+	position: absolute;
+    top: 17px;
+    right: 30px;
+	font-weight: 600;
+    white-space: nowrap;
+}
+section#topMenu>div .StoreBtn{
+	position: relative;
+    display: inline-block;
+    vertical-align: top;
+    width: 66px;
+    height: 32px;
+    border-radius:4px;
+    overflow: hidden;
+    background-color: #eef4ff;
+    background-size: 18px 18px;
+    transition: box-shadow 80ms ease,background-color 80ms ease;
+	margin-right:22px;
+	color:#038eda; 
+	padding: 0px 10px 0 7px;
+}
+section#topMenu>div .StoreBtn span{
+	line-height: 30px;
+}
+section#topMenu>div .StoreBtn img{
+	padding: 7px 4px;
+}
+section#topMenu>div .StoreBtn:hover{
+	background-color: #c4e6f8;
+}
+section#topMenu>div .notify{
+	position: relative;
+    display: inline-block;
+    vertical-align: top;
+	background: url(../images/notify.png) no-repeat 0px;
+	width: 16px;
+	height: 19px;
+	margin-right:34px;
+    padding-top:10px;
+}
+section#topMenu>div .login{
+	position: relative;
+    display: inline-block;
+    vertical-align: top;
+	background: url(../images/log.png) no-repeat 0px;
+	width: 16px;
+	height: 19px;
+    padding-top:10px;
+	margin-right:10px;
+}
+section#topMenu>nav{
+	position: fixed;
+    top: 64px;
+    height: 100%;
+    z-index: 2;
+    width:250px;
+    background-color: #363636;
+}
+section#topMenu>nav .sidenav{
+	text-transform: capitalize;
+}
+section#topMenu>div nav ul{
+	padding: 0;
+    margin: 0;
+    position: relative;
+    min-height: 604px;
+    height: 100%;
+    white-space: nowrap;
+}
+section#topMenu>nav ul li{
+	display: block;
+    vertical-align: top;
+    letter-spacing: 0.3px;
+    font-weight: 600;
+}
+section#topMenu>nav ul li.menulist{
+	padding: 3px 30px;
+	font-size: 14px;
+    font-weight:400;
+	height: 38px;
+	line-height: 48px;
+}
+section#topMenu>nav ul li.menulist a{
+	color: #fff;
+}
+section#topMenu>nav ul li.sublist{
+	background: #424242;
+	padding: 0 42px;
+	font-size: 14px;
+    font-weight:400;
+	height: 34px;
+	line-height: 34px;
+}
+section#topMenu>nav ul li.sublist a{
+	color: #b7bbc4;
+}
+section#topMenu>nav ul li.select_list{
+	background: #038eda;
+	padding: 2px 42px;
+	font-size: 14px;
+    font-weight:400;
+	height: 48px;
+	line-height: 48px;
+}
+section#topMenu>nav ul li.select_list a{
+	color: #fff;
+}
+section#topMenu>nav .bottom_list>li{
+	padding: 0px 30px;
+	font-size: 14px;
+    font-weight:400;
+	height: 40px;
+	line-height: 40px;
+}
+section#topMenu>nav .bottom_list>li a{
+	color: #fff;
+}
+section#topMenu>nav ul li>a{
+	display:inline-block;
+    cursor: pointer;
+	line-height: 24px;
+    height: 24px;
+}
+section#topMenu>nav .nameBot{
+	background: #424242;
+	color: #fff;
+	font-size:17px;
+	font-weight: 500;
+	letter-spacing: 0.1px;
+	padding: 0px 30px;
+	height: 48px;
+	line-height: 46px;
+}
+section#topMenu>nav .nameBotS{
+	padding-top: 16px;
+	position: absolute;
+    right: 46px;		
+}
+section#topMenu>nav .BotDetail{
+	padding-top: 22px;
+	position: absolute;
+    right: 16px;
+}
+section#topMenu>nav li .close{
+	position: absolute;
+    right: 14px;
+    padding-top: 20px;
+}
+section#topMenu>nav li img{
+	padding-right: 11px;
+}
+section#topMenu>nav .bottom_list{
+	position: absolute;
+    display: inline-block;
+    width: 100%;
+    bottom: 96px;
+}
+section#topMenu>nav .bottom_list img{
+	padding-top: 5px;
+	padding-right: 8px;
+}
+.bottom_list ui li{
+	height: 45px;
+	line-height: 45px;
+}
+section#mainBoard{
+    height: 100%;
+    background-color: #fff;
+	position: relative;
+	min-height: 800px;
+	width: 100%;
+}
+section#mainBoard>div{
+	height: 100%;
+	display: inline-block;
+}
+section#mainBoard #worksheet{
+	/*position: absolute;
+    z-index: 20;
+    top:65px;
+    left:250px;
+    width:68%;
+    min-height:884px;
+    overflow-y: auto;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color:purple;*/
+}
+section#mainBoard #workspace{
+	position: absolute;
+	top:68px;
+    left: 253px;
+	margin: 14px;
+	width: 66%;
+}
+section#mainBoard #logroom{
+	position: fixed;
+	bottom: 0;
+    width: 67.8%;
+	height:210px;
+	overflow: auto;
+	background: #fff;
+	left: 250px;
+}
+section#mainBoard #logroom.close{
+	height: 40px;
+	overflow: hidden;
+}
+section#mainBoard #logroom .logHeader{
+	height: 39px;
+	background:#e8ebf0;
+	border-bottom: #e7e7e7 solid 1px;
+	border-top: #e7e7e7 solid 1px;
+}
+section#mainBoard #logroom .logTab{
+	line-height: 24px;
+    padding: 6px 30px;
+    cursor: pointer;
+    float: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+	letter-spacing: 0.1px;
+}
+section#mainBoard #logroom .tab{
+	font-weight: 500;
+    height: 100%;
+    width: 100%;
+}
+section#mainBoard #logroom .select{
+	border-bottom:#038eda solid 3px;
+}
+section#mainBoard #logroom .logsystem{
+	/*text-align: right;
+	padding: 13px 14px;*/
+	position: absolute;
+    right: 14px;
+    top: 15px;
+}
+section#mainBoard #logroom .logsystem>a{
+	padding: 13px 4px;
+}
+section#mainBoard .chatroom{
+    position: absolute;
+    right: 0;
+    width:367px;
+    min-height: 884px;
+	top: 65px;
+	background:#f8f8f8;
+	border-left: #e7e7e7 solid 1px;	
+}
+section#mainBoard .chatroom .header{
+	height: 64px;
+	background: #f8f8f8;
+}
+section#mainBoard .chatroom p{
+	font-size: 17px;
+	font-weight: 600;
+	text-align: center;
+	line-height: 65px;
+}
+section#mainBoard .chclose{
+	position: absolute;
+  	right: 20px;
+  	top: 25px;
+ 	width: 28px;
+ 	height: 26px;
+}
+section#mainBoard .chclose:before, .chclose:after{
+	position: absolute;
+  	left: 14px;
+  	content: ' ';
+  	height: 18px;
+  	width: 1px;
+  	background-color: #424242;
+	border-radius: 10px;
+}
+section#mainBoard .chclose:hover {
+    opacity: 0.3;
+}
+section#mainBoard .chclose:before {
+    transform: rotate(45deg);
+}
+section#mainBoard .chclose:after {
+    transform: rotate(-45deg);
+}
+section#mainBoard .chatroom .chatContents{
+	padding: 10px 0 0 0;
+	overflow-y:auto;
+	overflow-x: hidden;
+}
+section#mainBoard .answer{
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    position: relative;
+    z-index: 2;
+    display: block;
+    margin: 0 10px;
+    font-size: 16px;
+	
+}
+section#mainBoard .answer img{
+	position: absolute;
+    top: 16px;
+    left: 12px;
+}
+section#mainBoard .answer .systemText{
+	font-size: 12px;
+	margin-left: 50px;
+}
+section#mainBoard .answer span.name{
+	font-weight: 700;
+    margin-right: 10px;
+}
+section#mainBoard .answer span.time{
+	font-size: 12px;
+}
+section#mainBoard .answer .bubble{
+	position: relative;
+    margin-bottom: 8px;
+}
+section#mainBoard .answer em.tail{
+	border-top: 10px solid #ececec;
+    position: absolute;
+    left: 46px;
+	top: 4px;
+    border-left: 10px solid transparent;
+}
+section#mainBoard .answer .speech{
+	background: #ececec;
+    display: inline-block;
+    border-radius: 4px;
+    padding: 7px 10px 0px 10px;
+    font-size: 14px;
+    line-height: 17px;
+    white-space: normal;
+    position: relative;
+	margin: 4px 52px;
+}
+section#mainBoard .answer .speech .speech_text{
+	padding: 0px 0px 10px 0px;
+}
+section#mainBoard .question{
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    position: relative;
+    z-index: 2;
+    display: block;
+    margin: 0 10px;
+    font-size: 16px;
+	
+}
+section#mainBoard .question img{
+	position: absolute;
+    top: 16px;
+    right: 12px;
+}
+section#mainBoard .question .systemText{
+	font-size: 12px;
+	margin-right: 26px;
+    text-align: right;
+}
+section#mainBoard .question span.name{
+	font-weight: 700;
+    margin-right: 10px;
+}
+section#mainBoard .question span.time{
+	font-size: 12px;
+}
+section#mainBoard .question .bubble{
+	position: relative;
+    margin-bottom: 8px;
+}
+section#mainBoard .question em.tail{
+	border-top: 10px solid #ececec;
+    position: absolute;
+    right: 17px;
+	top: 4px;
+    border-right: 10px solid transparent;
+}
+section#mainBoard .question .speech{
+	background: #ececec;
+    display: inline-block;
+    border-radius: 4px;
+    padding: 7px 10px 0px 10px;
+    font-size: 14px;
+    line-height: 17px;
+    white-space: normal;
+    position: relative;
+	margin: 4px 0px 0 205px;
+}
+section#mainBoard .question .speech .speech_text{
+	padding: 0px 0px 10px 0px;
+}
+section#mainBoard .chatroom .inputBox{
+	background: #fff;
+    padding: 10px 16px;
+    border-radius:4px;
+    width: 300px;
+    max-width: 400px;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+	position: fixed;
+	bottom: 16px;
+	right: 18px;
+	box-shadow: 0 1px 11px rgba(0, 0, 0, 0.1), 0 1px 11px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+section#mainBoard .chatroom .inputBox:hover{
+	box-shadow: 0 14px 28px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.15);
+}
+section#mainBoard .inputBox input{
+	-webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    font-size: 16px;
+    line-height: 16px;
+    vertical-align: middle;
+}
+section#mainBoard .inputBox input::-webkit-input-placeholder { color:#cacaca; font-size: 14px;}
+section#mainBoard .inputBox input::-moz-placeholder { color:#cacaca; font-size: 14px;}
+
+/*boxbar*/
+.boxbar{
+	margin-top: 14px;
+}
+.topicswitch{
+	width:100%;
+	display: block;
+	text-align: right;
+	margin-top: 10px;
+}

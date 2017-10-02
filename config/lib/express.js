@@ -237,8 +237,17 @@ module.exports.initModulesServerRoutes = function (app)
     // Globbing routing files
     config.files.server.routes.forEach(function (routePath)
     {
-        require(path.resolve(routePath))(app);
+        if(routePath.indexOf('core/server/routes/core.server.routes') == -1)
+            require(path.resolve(routePath))(app);
     });
+
+    require(path.resolve('modules/core/server/routes/core.server.routes.js'))(app);
+
+    for(var i=0; i<app._router.stack.length; i++)
+    {
+        if(app._router.stack[i].route)
+            console.log(app._router.stack[i].route.path);
+    }
 
     console.log();
     logger.systemInfo('=============== Server Routes require modules - express.js ==========');
