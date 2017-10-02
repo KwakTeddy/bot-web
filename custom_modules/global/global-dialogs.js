@@ -6,55 +6,109 @@ var toneModule = require(path.resolve('modules/bot/action/common/tone'));
 var core = require(path.resolve('custom_modules/playchat/core'));
 
 function factsTypeCheck(text, format, inDoc, context, callback) {
-  if(!context.bot.useMemoryFacts || context.botUser.sentenceInfo.sentenceType != 1 || context.botUser.sentenceInfo.verbToken == undefined) {
-    callback(text, inDoc, false);
-    return;
-  }
+    if (context.botUser.language == "zh") {
+        // 중국어
+        if (!context.bot.useMemoryFacts || context.botUser.nlu.sentenceInfo != 2 || context.botUser.sentenceInfo.verbToken == undefined) {
+            callback(text, inDoc, false);
+            return;
+        }
 
-  var node1;
-  for (var j = 0; j < context.botUser.nlp.length; j++) {
-    var token1 = context.botUser.nlp[j];
-    if(token1.pos == 'Noun') {
-      node1  = token1.text;
-      break;
-    }
-  }
+        var node1;
+        for (var j = 0; j < context.botUser.nlp.length; j++) {
+            var token1 = context.botUser.nlp[j];
+            if (token1.pos == 'Noun' || token1.pos == 'Pronoun') {
+                node1 = token1.text;
+                break;
+            }
+        }
 
-  var edge = context.botUser.sentenceInfo.verbToken.text;
-  var edges = [{link: edge}];
-  if(edge == '지' || edge == '야') edges.push({link: '이다'});
+        var edge = context.botUser.sentenceInfo.verbToken.text;
+        var edges = [{link: edge}];
 
-  var query = {botUser: {$ne: null}};
-  if(edges.length == 1) query = edges[0];
-  else {
-    query = {$or: []};
-    for(var i = 0; i < edges.length; i++) {
-      query.$or.push(edges[i]);
-    }
-  }
+        var query = {botUser: {$ne: null}};
+        if (edges.length == 1) query = edges[0];
+        else {
+            query = {$or: []};
+            for (var i = 0; i < edges.length; i++) {
+                query.$or.push(edges[i]);
+            }
+        }
 
-  query['botUser'] = context.user.userKey;
+        query['botUser'] = context.user.userKey;
 
-  var model = mongoModule.getModel('factlink', undefined);
-  model.find(query, null, {sort: {created: -1}}, function(err, docs) {
-    if(docs && docs.length > 0) {
-      var _node1 = docs[0]._doc.node1;
-      var _node2 = docs[0]._doc.node2;
-      var _link = docs[0]._doc.link;
+        var model = mongoModule.getModel('factlink', undefined);
+        model.find(query, null, {sort: {created: -1}}, function (err, docs) {
+            if (docs && docs.length > 0) {
+                var _node1 = docs[0]._doc.node1;
+                var _node2 = docs[0]._doc.node2;
+                var _link = docs[0]._doc.link;
 
-      if(_node1 == '나' || _node1 == '내') _node1 = '고객님은';
-      inDoc._output = _node1 + ' ' + _node2 + ' ' + _link;
+                if (_node1 == '我') _node1 = '顧客';
+                inDoc._output = _node1 + '' + _link + '' + _node2;
 
-      toneModule.toneSentence(inDoc._output, context.botUser.tone || '해요체', function(out) {
-        inDoc._output = out;
+                toneModule.toneSentence(inDoc._output, context.botUser.tone || '해요체', function (out) {
+                    inDoc._output = out;
 
-        callback(text, inDoc, true);
-      });
+                    callback(text, inDoc, true);
+                });
 
+            } else {
+                callback(text, inDoc, false);
+            }
+        });
     } else {
-      callback(text, inDoc, false);
+        // 한국어
+        //if(!context.bot.useMemoryFacts || context.botUser.sentenceInfo.sentenceType != 1 || context.botUser.sentenceInfo.verbToken == undefined) {
+        if (!context.bot.useMemoryFacts || context.botUser.nlu.sentenceInfo != 2 || context.botUser.sentenceInfo.verbToken == undefined) {
+            callback(text, inDoc, false);
+            return;
+        }
+
+        var node1;
+        for (var j = 0; j < context.botUser.nlp.length; j++) {
+            var token1 = context.botUser.nlp[j];
+            if (token1.pos == 'Noun') {
+                node1 = token1.text;
+                break;
+            }
+        }
+
+        var edge = context.botUser.sentenceInfo.verbToken.text;
+        var edges = [{link: edge}];
+        if (edge == '지' || edge == '야') edges.push({link: '이다'});
+
+        var query = {botUser: {$ne: null}};
+        if (edges.length == 1) query = edges[0];
+        else {
+            query = {$or: []};
+            for (var i = 0; i < edges.length; i++) {
+                query.$or.push(edges[i]);
+            }
+        }
+
+        query['botUser'] = context.user.userKey;
+
+        var model = mongoModule.getModel('factlink', undefined);
+        model.find(query, null, {sort: {created: -1}}, function (err, docs) {
+            if (docs && docs.length > 0) {
+                var _node1 = docs[0]._doc.node1;
+                var _node2 = docs[0]._doc.node2;
+                var _link = docs[0]._doc.link;
+
+                if (_node1 == '나' || _node1 == '내') _node1 = '고객님은';
+                inDoc._output = _node1 + ' ' + _node2 + ' ' + _link;
+
+                toneModule.toneSentence(inDoc._output, context.botUser.tone || '해요체', function (out) {
+                    inDoc._output = out;
+
+                    callback(text, inDoc, true);
+                });
+
+            } else {
+                callback(text, inDoc, false);
+            }
+        });
     }
-  });
 }
 
 var userDialogType = {

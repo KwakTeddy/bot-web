@@ -137,15 +137,9 @@ function insertDailogsetDialog(dialogset, countId, input, output, context, callb
   if(Array.isArray(input)) {
     var inputRaw = [];
     async.eachSeries(input, function(i, cb) {
-      processInput(null, i, function(_input, _json) {
+      processInput(null, i, function(_input, _nlu, _json) {
         inputRaw.push(_input);
-          /*
-          // 엑셀 업로드 후 지식맵 by dsyoon (2017. 09. 28)
-          analyzeKnowledgeMap(dialogset, _json, function(err) {
-              if (err) console.log(err);
-              callback();
-          });
-          */
+          console.log(countId + ">> " + input + ' || ' + _input + ' || ' + output);
           cb(null);
       });
     }, function(err) {
@@ -167,16 +161,9 @@ function insertDailogsetDialog(dialogset, countId, input, output, context, callb
       });
     });
   } else {
-    processInput(null, input, function(_input, _json) {
+    processInput(null, input, function(_input, _nlu, _json) {
       console.log(countId + ">> " + input + ' || ' + _input + ' || ' + output);
 
-      /*
-      // 엑셀 업로드 후 지식맵 by dsyoon (2017. 09. 28)
-      analyzeKnowledgeMap(dialogset, _json, function(err) {
-          if (err) console.log(err);
-          callback();
-      });
-        */
       var dialogsetDialog = new DialogsetDialog({
         dialogset: dialogset,
         id: countId,
@@ -609,7 +596,7 @@ function insertDatasetFile(infile, callback, dialogset) {
         //   outputs.push(p1);
         // });
 
-        processInput(null, input, function(_input, _json) {
+        processInput(null, input, function(_input, _nlu, _json) {
           console.log(count + ">> " + input + ' || ' + _input + ' || ' + (outputs.length > 0 ? outputs: output));
 
           var dialogsetDialog = new DialogsetDialog({
@@ -642,56 +629,195 @@ function insertDatasetFile(infile, callback, dialogset) {
 exports.insertDatasetFile = insertDatasetFile;
 
 function analysisDoc(doc, bot_id, bot_name, cb) {
-  processInput(null, doc.input, function(_input, _json) {
-    console.log(">> " + doc.input);
+    if(Array.isArray(doc.output)) {
+        async.eachSeries(doc.output, function(input, _cb) {
+            // 엑셀의 답변으로 학습되도록 수정
+            //processInput(null, doc.input, function(_input, _nlu, _json) {
+            processInput(null, input, function (_input, _nlu, _json) {
+                console.log("analysisDoc (dialogset.js) >> " + _input);
 
-    var nlp = _json._nlp;
-    var node1, node2, link;
-    for(var i = 0; i < nlp.length; i++) {
-      if(nlp[i].pos == 'Noun') {
-        node1 = nlp[i].text;
-        break;
-      }
-    }
+                var nlp = _json._nlp;
+                var nlu = _nlu._nlu;
+                var node1, node2, link;
+                var context = null;
 
-    if(node1) {
-      for(var i = nlp.length -1 ; i >= 0; i--) {
-        if(node2 && link) break;
-        if(nlp[i].pos == 'Noun' && nlp[i].text != node1) {
-          node2 = nlp[i].text;
-        } else if(nlp[i].pos == 'Verb' || nlp[i].pos == 'Adjective') {
-          link = nlp[i].text;
-        }
-      }
-    }
+                if (context == null || context == undefined) context = {};
+                if (!("botUser" in context)) {
+                    context["botUser"] = {};
+                }
 
-    if(node1 && node2 && link) {
-        console.log(">> " + node1 + ', ' + node2 + ' <-> ' + link);
-      var task = {
-        doc:{
-          bot_id: bot_name,
-          botUser: bot_id,
-          node1: node1,
-          node2: node2,
-          link: link,
-          created: new Date()
-        },
+                if (!("language" in context)) {
+                    context.botUser["language"] = "zh";
+                }
 
-        mongo: {
-          model: 'FactLink',
-          query: {node1: '', node2: '', link: ''},
-          options: {upsert: true}
-        }
-      };
+                if (nlu.sentenceInfo == 0) {
+                    // 평서문이라면 확인
+                    if (context.botUser.language == "zh") {
+                        var mode = 0; // 1: the first noun, 2: verb, 3: the second noun
+                        for (var i = 0; i < nlp.length - 1; i++) {
+                            var token = nlp[i];
+                            if (mode == 0) {
+                                if (token.pos == 'Noun' || token.pos == 'Pronoun' || token.pos == 'Foreign') {
+                                    node1 = token.text;
+                                    mode = 1;
+                                }
+                            } else if (mode == 1) {
+                                if (token.pos == 'Adjective' || token.pos == 'Verb') {
+                                    link = token.text;
+                                    mode = 2;
+                                }
+                            } else if (mode == 2) {
+                                if (token.pos == 'Noun' || token.pos == 'Pronoun' || token.pos == 'Foreign') {
+                                    node2 = token.text;
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        for (var i = 0; i < nlp.length; i++) {
+                            if (nlp[i].pos == 'Noun') {
+                                node1 = nlp[i].text;
+                                break;
+                            }
+                        }
 
-      mongoModule.update(task, null, function(_task, _context) {
-        cb();
-      })
+                        if (node1) {
+                            for (var i = nlp.length - 1; i >= 0; i--) {
+                                if (node2 && link) break;
+                                if (nlp[i].pos == 'Noun' && nlp[i].text != node1) {
+                                    node2 = nlp[i].text;
+                                } else if (nlp[i].pos == 'Verb' || nlp[i].pos == 'Adjective') {
+                                    link = nlp[i].text;
+                                }
+                            }
+                        }
+                    }
+
+                    if (node1 && node2 && link) {
+                        console.log("factLink (dialogset.js)>> " + node1 + ', ' + node2 + ' <-> ' + link);
+                        var task = {
+                            doc: {
+                                bot_id: bot_name,
+                                botUser: bot_id,
+                                node1: node1,
+                                node2: node2,
+                                link: link,
+                                created: new Date()
+                            },
+
+                            mongo: {
+                                model: 'FactLink',
+                                query: {node1: '', node2: '', link: ''},
+                                options: {upsert: true}
+                            }
+                        };
+
+                        mongoModule.update(task, null, function (_task, _context) {
+                            _cb();
+                        })
+                    } else {
+                        _cb();
+                    }
+                } else {
+                    _cb();
+                }
+            })
+        }, function(err) {
+            cb();
+        })
     } else {
-      cb();
-    }
+        // 엑셀의 답변으로 학습되도록 수정
+        //processInput(null, doc.input, function(_input, _nlu, _json) {
+        processInput(null, doc.output, function (_input, _nlu, _json) {
+            console.log("analysisDoc (dialogset.js) >> " + doc.output);
 
-  })
+            var nlp = _json._nlp;
+            var nlu = _nlu._nlu;
+            var node1, node2, link;
+            var context = null;
+
+            if (context == null || context == undefined) context = {};
+            if (!("botUser" in context)) {
+                context["botUser"] = {};
+            }
+            if (!("language" in context)) {
+                context.botUser["language"] = "zh";
+            }
+            context.botUser.language = "zh";
+
+            if (nlu.sentenceInfo == 0) {
+                // 평서문이라면 확인
+                if (context.botUser.language == "zh") {
+                    var mode = 0; // 1: the first noun, 2: verb, 3: the second noun
+                    for (var i = 0; i < nlp.length - 1; i++) {
+                        var token = nlp[i];
+                        if (mode == 0) {
+                            if (token.pos == 'Noun' || token.pos == 'Pronoun' || token.pos == 'Foreign') {
+                                node1 = token.text;
+                                mode = 1;
+                            }
+                        } else if (mode == 1) {
+                            if (token.pos == 'Adjective' || token.pos == 'Verb') {
+                                link = token.text;
+                                mode = 2;
+                            }
+                        } else if (mode == 2) {
+                            if (token.pos == 'Noun' || token.pos == 'Pronoun' || token.pos == 'Foreign') {
+                                node2 = token.text;
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    for (var i = 0; i < nlp.length; i++) {
+                        if (nlp[i].pos == 'Noun') {
+                            node1 = nlp[i].text;
+                            break;
+                        }
+                    }
+
+                    if (node1) {
+                        for (var i = nlp.length - 1; i >= 0; i--) {
+                            if (node2 && link) break;
+                            if (nlp[i].pos == 'Noun' && nlp[i].text != node1) {
+                                node2 = nlp[i].text;
+                            } else if (nlp[i].pos == 'Verb' || nlp[i].pos == 'Adjective') {
+                                link = nlp[i].text;
+                            }
+                        }
+                    }
+                }
+
+                if (node1 && node2 && link) {
+                    console.log("factLink (dialogset.js)>> " + node1 + ', ' + node2 + ' <-> ' + link);
+                    var task = {
+                        doc: {
+                            bot_id: bot_name,
+                            botUser: bot_id,
+                            node1: node1,
+                            node2: node2,
+                            link: link,
+                            created: new Date()
+                        },
+
+                        mongo: {
+                            model: 'FactLink',
+                            query: {node1: '', node2: '', link: ''},
+                            options: {upsert: true}
+                        }
+                    };
+
+                    mongoModule.update(task, null, function (_task, _context) {
+                        cb();
+                    })
+                } else {
+                    cb();
+                }
+            } else {
+                cb();
+            }
+        })
+    }
 }
 
 function analyzeKnowledgeDialog(dialogs, bot_id, bot_name, result, callback) {
@@ -741,130 +867,6 @@ function analyzeKnowledge(dialogset, bot_id, bot_name, result, callback) {
   });
 }
 exports.analyzeKnowledge = analyzeKnowledge;
-
-
-/* Knowledge Graph 구축 함수, by dsyoon: controllers/dialogset.js에서 가져왔음 */
-function analyzeKnowledgeMap(dialogset, json, callback) {
-    var model = mongoModule.getModel('DialogsetDialog');
-
-    model.find({dialogset: dialogset}, function(err, docs) {
-        var nlp = json._nlp;
-        var node1, node2, link;
-        for (var i = 0; i < nlp.length; i++) {
-            if (nlp[i].pos == 'Noun') {
-                node1 = nlp[i].text;
-                break;
-            }
-        }
-
-        if (node1) {
-            for (var i = nlp.length - 1; i >= 0; i--) {
-                if (node2 && link) break;
-                if (nlp[i].pos == 'Noun' && nlp[i].text != node1) {
-                    node2 = nlp[i].text;
-                } else if (nlp[i].pos == 'Verb' || nlp[i].pos == 'Adjective') {
-                    link = nlp[i].text;
-                }
-            }
-        }
-
-        if (node1 != undefined && node2 != undefined && link != undefined ) {
-            console.log(">> " + node1 + ', ' + node2 + ' -> ' + link);
-
-            if (node1 && node2 && link) {
-                var task = {
-                    doc: {
-                        botUser: null,
-                        node1: node1,
-                        node2: node2,
-                        link: link,
-                        // bot_id: dialogset._doc.bot_id
-                        bot_id: dialogset._doc.bot_name
-                    },
-
-                    mongo: {
-                        model: 'FactLink',
-                        query: {node1: '', node2: '', link: ''},
-                        options: {upsert: true}
-                    }
-                };
-
-                mongoModule.update(task, null, function (_task, _context) {
-                    callback();
-                })
-            } else {
-                callback();
-            }
-        } else {
-            callback();
-        }
-    }, function(err) {
-        callback();
-    });
-}
-/*
-function analyzeKnowledgeMap(dialogset, json, callback) {
-    var model = mongoModule.getModel('DialogsetDialog');
-
-    model.find({dialogset: dialogset}, function(err, docs) {
-        async.eachSeries(docs, json, function(doc, cb) {
-            processInput(null, doc._doc.input, function(_input, _json) {
-                console.log(">> " + doc._doc.input);
-
-                var nlp = _json._nlp;
-                var node1, node2, link;
-                for(var i = 0; i < nlp.length; i++) {
-                    if(nlp[i].pos == 'Noun') {
-                        node1 = nlp[i].text;
-                        break;
-                    }
-                }
-
-                if(node1) {
-                    for(var i = nlp.length -1 ; i >= 0; i--) {
-                        if(node2 && link) break;
-                        if(nlp[i].pos == 'Noun' && nlp[i].text != node1) {
-                            node2 = nlp[i].text;
-                        } else if(nlp[i].pos == 'Verb' || nlp[i].pos == 'Adjective') {
-                            link = nlp[i].text;
-                        }
-                    }
-                }
-
-                console.log(">> " + node1 + ', ' + node2 + ' ' + link);
-
-                if(node1 && node2 && link) {
-                    var task = {
-                        doc:{
-                            botUser: null,
-                            node1: node1,
-                            node2: node2,
-                            link: link
-                        },
-
-                        mongo: {
-                            model: 'FactLink',
-                            query: {node1: '', node2: '', link: ''},
-                            options: {upsert: true}
-                        }
-                    };
-
-                    mongoModule.update(task, null, function(_task, _context) {
-                        cb();
-                    })
-                } else {
-                    cb();
-                }
-
-            })
-        }, function(err) {
-            callback();
-        });
-    });
-}
- */
-exports.analyzeKnowledgeMap = analyzeKnowledgeMap;
-/* by dsyoon: controllers/dialogset.js에서 가져왔음 */
 
 
 // var insertDatasetTask = {
@@ -969,33 +971,51 @@ function processInput(context, inRaw, callback) {
     var _nlpRaw = [];
 
     var result = {};
+    if (context == null || context == undefined) context = {};
     if (!("botUser" in context)) {context["botUser"] = {};}
     if (!("language" in context)) {context.botUser["language"] = "ko";}
     context.botUser.language = "zh";
+    //context.botUser.language = "ko";
 
     if (context.botUser.language=="en") {
         enNLP.processInput(result, inRaw, function(_inTextNLP, _inDoc) {
-            _in = result.botUser.inNLP;
-            _nlpRaw = result.botUser.nlp;
-            callback(_in, {_nlp: _nlpRaw});
+            if (_inTextNLP != undefined && _inTextNLP != null) {
+                _in = result.botUser.inNLP;
+                _nlpRaw = result.botUser.nlp;
+                callback(_in, {_nlu: result.botUser.nlu}, {_nlp: _nlpRaw});
+            } else {
+                callback(_in, {_nlu: ""}, {_nlp: ""});
+            }
         });
     } else if (context.botUser.language=="zh") {
         zhNLP.processInput(result, inRaw, function(_inTextNLP, _inDoc) {
-            _in = result.botUser.inNLP;
-            _nlpRaw = result.botUser.nlpAll;
-            callback(_in, {_nlp: _nlpRaw});
+            if (_inTextNLP != undefined && _inTextNLP != null) {
+                _in = result.botUser.inNLP;
+                _nlpRaw = result.botUser.nlpAll;
+                callback(_in, {_nlu: result.botUser.nlu}, {_nlp: _nlpRaw});
+            } else {
+                callback(_in, {_nlu: ""}, {_nlp: ""});
+            }
         });
     } else if (context.botUser.language=="ja") {
         jaNLP.processInput(result, inRaw, function(_inTextNLP, _inDoc) {
-            _in = result.botUser.inNLP;
-            _nlpRaw = result.botUser.nlpAll;
-            callback(_in, {_nlp: _nlpRaw});
+            if (_inTextNLP != undefined && _inTextNLP != null) {
+                _in = result.botUser.inNLP;
+                _nlpRaw = result.botUser.nlpAll;
+                callback(_in, {_nlu: result.botUser.nlu}, {_nlp: _nlpRaw});
+            } else {
+                callback(_in, {_nlu: ""}, {_nlp: ""});
+            }
         });
     } else {
         koNLP.processInput(result, inRaw, function(_inTextNLP, _inDoc) {
-            _in = result.botUser.inNLP;
-            _nlpRaw = result.botUser.nlpAll;
-            callback(_in, {_nlp: _nlpRaw});
+            if (_inTextNLP != undefined && _inTextNLP != null) {
+                _in = result.botUser.inNLP;
+                _nlpRaw = result.botUser.nlpAll;
+                callback(_in, {_nlu: result.botUser.nlu}, {_nlp: _nlpRaw});
+            } else {
+                callback(_in, {_nlu: ""}, {_nlp: ""});
+            }
         });
     }
 }
@@ -1631,7 +1651,7 @@ function preProcessDialog(dialogset, callback) {
         async.eachSeries(docs, function(doc, cb2) {
           if(Array.isArray(doc.input)) {
             async.eachSeries(doc.input, function(input, cb3) {
-              processInput(null, input, function(_in, result) {
+              processInput(null, input, function(_in, _nlu, result) {
                 wordCountNLPFunc(result._nlp);
                 cb3(null);
               })
@@ -1640,7 +1660,7 @@ function preProcessDialog(dialogset, callback) {
             })
 
           } else {
-            processInput(null, doc.input, function(_in, result) {
+            processInput(null, doc.input, function(_in, _nlu, result) {
               wordCountNLPFunc(result._nlp);
               cb2(null);
             })

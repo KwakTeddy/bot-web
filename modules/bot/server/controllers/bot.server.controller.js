@@ -138,7 +138,11 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
                     factModule.memoryFacts(inTextRaw, context, function (_task, _context) {
                         if(_task && _task.numAffected && _task.numAffected.upserted) {
                             console.log('[FACT_ADD]' + JSON.stringify(_task.doc));
-                            print('말씀하신 내용을 학습했어요.');
+                            if (context.botUser.language == "zh") {
+                                print('我学到了你说的话。');
+                            } else {
+                                print('말씀하신 내용을 학습했어요.');
+                            }
                             cb(true);
                             return;
                         }
