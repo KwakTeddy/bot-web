@@ -400,6 +400,15 @@ var dialogs = [
                         "input": [
                           {
                             "text": "是"
+                          },
+                          {
+                            "text": "是的"
+                          },
+                          {
+                            "text": "好的"
+                          },
+                          {
+                            "text": "好"
                           }
                         ],
                         "output": "新配送地已经更改为配送地."
@@ -435,6 +444,18 @@ var commonDialogs = [
     "input": [
       {
         "text": "开始"
+      },
+      {
+        "text": "主菜单"
+      },
+      {
+        "text": "返回主菜单"
+      },
+      {
+        "text": "返回最开始"
+      },
+      {
+        "text": "最开始"
       }
     ],
     "output": {
@@ -448,12 +469,35 @@ var commonDialogs = [
     "input": [
       {
         "text": "上一步"
+      },
+      {
+        "text": "上一级"
+      },
+      {
+        "text": "返回"
+      },
+      {
+        "text": "返回上一级"
+      },
+      {
+        "text": "前一级"
       }
     ],
     "output": {
       "kind": "Action",
       "up": "1"
     }
+  },
+  {
+    "id": "defaultcommon2",
+    "filename": "defaultcommon",
+    "name": "답변없음",
+    "input": [
+      {
+        "text": ""
+      }
+    ],
+    "output": "还没学过这句话"
   }
 ];
 var _bot = require(require('path').resolve("config/lib/bot")).getBot('Shopping_bot_ch');
