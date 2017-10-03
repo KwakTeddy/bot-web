@@ -58,61 +58,77 @@ function processInput(context, inRaw, callback) {
         function(cb) {
             if (inRaw != undefined && inRaw != null && !Array.isArray(inRaw)) {
                 var cbTags = new CBTags();
+                if (typeof inRaw.replace !== "function") {
+                    if (context == null) {
+                        context = {};
+                    }
+                    if (!("botUser" in context)) {
+                        context["botUser"] = {}
+                    }
+                    if (!("nlu" in context["botUser"])) {
+                        context.botUser["nlu"] = {};
+                    }
+                    context.botUser.nlu["sentence"] = "";
+                    context.botUser.nlu["pos"] = "";
+                    cb(null);
+                } else {
+                    inRaw = inRaw.replace(/(^\s*)|(\s*$)/gi, "");
+                    inRaw = inRaw.replace(/\"/gi, "");
+                    var dicResult = userDictionary.applyUserDic('zh', inRaw);
+                    var text = dicResult[0];
+                    var mb_user_str = dicResult[1];
+                    var mb_user_tag = dicResult[2];
 
-                var dicResult = userDictionary.applyUserDic('zh', inRaw);
-                var text = dicResult[0];
-                var mb_user_str = dicResult[1];
-                var mb_user_tag = dicResult[2];
+                    var position = -1;
+                    // analyze POS
+                    var tokens = rma.tokenize(inRaw);
 
-                var position = -1;
-                // analyze POS
-                var tokens = rma.tokenize(inRaw);
-
-                var temp = '';
-                var _inNLP = [];
-                // restore user dictionary from POS
-                for (var i = 0; i < tokens.length; i++) {
-                    for (var key in dicResult[1]) {
-                        position = tokens[i][0].indexOf(key);
-                        if (position >= 0) {
-                            tokens[i][0] = (" " + tokens[i][0] + " ").replace(new RegExp(key, 'gi'), dicResult[1][key]);
-                            if (tokens[i][0] == key) {
-                                tokens[i][1] = mb_user_tag[key];
+                    var temp = '';
+                    var _inNLP = [];
+                    // restore user dictionary from POS
+                    for (var i = 0; i < tokens.length; i++) {
+                        for (var key in dicResult[1]) {
+                            position = tokens[i][0].indexOf(key);
+                            if (position >= 0) {
+                                tokens[i][0] = (" " + tokens[i][0] + " ").replace(new RegExp(key, 'gi'), dicResult[1][key]);
+                                if (tokens[i][0] == key) {
+                                    tokens[i][1] = mb_user_tag[key];
+                                }
                             }
                         }
+                        tokens[i][1] = cbTags.normalizeTag('zh', tokens[i][0], tokens[i][1]);
+                        var entry = {};
+                        entry["text"] = tokens[i][0];
+                        entry["pos"] = tokens[i][1];
+                        _nlp.push(entry);
+                        _inNLP.push(entry["text"]);
                     }
-                    tokens[i][1] = cbTags.normalizeTag('zh', tokens[i][0], tokens[i][1]);
-                    var entry = {};
-                    entry["text"] = tokens[i][0];
-                    entry["pos"] = tokens[i][1];
-                    _nlp.push(entry);
-                    _inNLP.push(entry["text"]);
-                }
 
-                inNLP = _inNLP.join(' ');
-                while (inNLP.search(/^ /) >= 0 || inNLP.search(/ $/) >= 0) {
-                    inNLP = inNLP.replace(new RegExp(/^ /, 'gi'), "").replace(new RegExp(" $", 'gi'), "");
-                }
+                    inNLP = _inNLP.join(' ');
+                    while (inNLP.search(/^ /) >= 0 || inNLP.search(/ $/) >= 0) {
+                        inNLP = inNLP.replace(new RegExp(/^ /, 'gi'), "").replace(new RegExp(" $", 'gi'), "");
+                    }
 
-                if (context == null) {
-                    context = {};
-                }
-                if (!("botUser" in context)) {
-                    context["botUser"] = {}
-                }
-                if (!("nlu" in context["botUser"])) {
-                    context.botUser["nlu"] = {};
-                }
+                    if (context == null) {
+                        context = {};
+                    }
+                    if (!("botUser" in context)) {
+                        context["botUser"] = {}
+                    }
+                    if (!("nlu" in context["botUser"])) {
+                        context.botUser["nlu"] = {};
+                    }
 
-                context.botUser["inNLP"] = inNLP;
-                context.botUser.nlpAll = _nlp;
-                context.botUser.nlp = _nlp;
+                    context.botUser["inNLP"] = inNLP;
+                    context.botUser.nlpAll = _nlp;
+                    context.botUser.nlp = _nlp;
 
-                context.botUser.nlu["sentence"] = inRaw;
-                var nlpJsonPOS = rma.tokens2json(inRaw, tokens);
-                context.botUser.nlu["pos"] = nlpJsonPOS;
+                    context.botUser.nlu["sentence"] = inRaw;
+                    var nlpJsonPOS = rma.tokens2json(inRaw, tokens);
+                    context.botUser.nlu["pos"] = nlpJsonPOS;
 
-                cb(null);
+                    cb(null);
+                }
             } else if (Array.isArray(inRaw)) {
                 if (context == null) {
                     context = {};
@@ -132,6 +148,10 @@ function processInput(context, inRaw, callback) {
                 context.botUser.nlu["pos"] = "";
                 cb(null);
             } else {
+                context.botUser["nlu"] = {};
+                context.botUser.nlu["sentence"] = "";
+                context.botUser.nlu["pos"] = "";
+
                 cb(null);
             }
 
@@ -142,11 +162,14 @@ function processInput(context, inRaw, callback) {
         // 사용자 사전 경로: ./external_module/resources/ko/user.pos
         function(cb) {
             if (inRaw != undefined && inRaw != null && !Array.isArray(inRaw)) {
-                var sentenceInfo = new SentenceInfo();
-                var value = sentenceInfo.analyze("zh", context.botUser.nlu);
-                context.botUser.nlu["sentenceInfo"] = value;
-
-                cb(null);
+                if ("nlu" in context.botUser) {
+                    var sentenceInfo = new SentenceInfo();
+                    var value = sentenceInfo.analyze("zh", context.botUser.nlu);
+                    context.botUser.nlu["sentenceInfo"] = value;
+                    cb(null);
+                } else {
+                    cb(null);
+                }
             } else {
                 cb(null);
             }
@@ -156,11 +179,15 @@ function processInput(context, inRaw, callback) {
         // 사용자 사전 경로: ./external_module/resources/ko/user.pos
         function(cb) {
             if (inRaw != undefined && inRaw != null && !Array.isArray(inRaw)) {
-                var turnTaking = new TurnTaking();
-                var value = turnTaking.analyze("zh", context.botUser.nlu);
-                context.botUser.nlu["turnTaking"] = value;
+                if ("nlu" in context.botUser) {
+                    var turnTaking = new TurnTaking();
+                    var value = turnTaking.analyze("zh", context.botUser.nlu);
+                    context.botUser.nlu["turnTaking"] = value;
 
-                cb(null);
+                    cb(null);
+                } else {
+                    cb(null);
+                }
             } else {
                 cb(null);
             }
@@ -197,6 +224,8 @@ function processLiveInput(inRaw, callback) {
                 cb(null);
             } else {
                 var cbTags = new CBTags();
+                inRaw = inRaw.replace(/(^\s*)|(\s*$)/gi, "");
+                inRaw = inRaw.replace(/\"/gi, "");
 
                 var dicResult = userDictionary.applyUserDic('zh', inRaw);
                 var text = dicResult[0];

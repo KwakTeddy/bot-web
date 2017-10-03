@@ -434,26 +434,30 @@ SentenceInfo.prototype.analyzeJA = function (posJson) {
 }
 
 SentenceInfo.prototype.analyze = function (language, nlu) {
-    var posJson = eval("("+nlu.pos+")");
-    str = String(posJson.sentence.str);
+    if ("pos" in nlu && nlu.pos != null && nlu.pos != "") {
+        var posJson = eval("(" + nlu.pos + ")");
+        str = String(posJson.sentence.str);
 
-    // 1. 문장 부호 확인
-    lastStr = str.charAt(str.length-1);
-    if (lastStr == "?" || lastStr == "？") {
-        return this.type.interrogative;
-    } else if (lastStr == "!") {
-        return this.type.exclamation;
-    }
+        // 1. 문장 부호 확인
+        lastStr = str.charAt(str.length - 1);
+        if (lastStr == "?" || lastStr == "？") {
+            return this.type.interrogative;
+        } else if (lastStr == "!") {
+            return this.type.exclamation;
+        }
 
-    // 2. 문장의 동사 뒤 어미 확인
-    if (language == "ko") {
-        return this.analyzeKO(posJson);
-    } else if (language == "en") {
-        return this.analyzeEN(posJson);
-    } else if (language == "zh") {
-        return this.analyzeZH(posJson);
-    } else if (language == "ja") {
-        return this.analyzeJA(posJson);
+        // 2. 문장의 동사 뒤 어미 확인
+        if (language == "ko") {
+            return this.analyzeKO(posJson);
+        } else if (language == "en") {
+            return this.analyzeEN(posJson);
+        } else if (language == "zh") {
+            return this.analyzeZH(posJson);
+        } else if (language == "ja") {
+            return this.analyzeJA(posJson);
+        }
+    } else {
+        return this.type.declarative;
     }
 
     return this.type.declarative;

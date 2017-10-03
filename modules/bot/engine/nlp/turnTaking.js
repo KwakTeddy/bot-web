@@ -57,27 +57,31 @@ TurnTaking.prototype.analyzeJA = function (posJson) {
 }
 
 TurnTaking.prototype.analyze = function (language, nlu) {
-    var posJson = eval("("+nlu.pos+")");
-    var sentenceInfoValue = nlu.sentenceInfo;
+    if ("pos" in nlu && nlu.pos != null && nlu.pos != "") {
 
-    switch (sentenceInfoValue) {
-        case sentenceInfo.type.interrogative:
-        case sentenceInfo.type.imperative:
-        case sentenceInfo.type.lets:
-            return this.type.taking;
+        var posJson = eval("(" + nlu.pos + ")");
+        var sentenceInfoValue = nlu.sentenceInfo;
+
+        switch (sentenceInfoValue) {
+            case sentenceInfo.type.interrogative:
+            case sentenceInfo.type.imperative:
+            case sentenceInfo.type.lets:
+                return this.type.taking;
+        }
+
+        if (language == "ko") {
+            return this.analyzeKO(posJson);
+        } else if (language == "en") {
+            return this.analyzeEN(posJson);
+        } else if (language == "zh") {
+            return this.analyzeZH(posJson);
+        } else if (language == "ja") {
+            return this.analyzeJA(posJson);
+        }
+        return this.type.taking;
+    } else {
+        return this.type.taking.not;
     }
-
-    if (language == "ko") {
-        return this.analyzeKO(posJson);
-    } else if (language == "en") {
-        return this.analyzeEN(posJson);
-    } else if (language == "zh") {
-        return this.analyzeZH(posJson);
-    } else if (language == "ja") {
-        return this.analyzeJA(posJson);
-    }
-
-    return this.type.taking;
 }
 
 // for node.js library export

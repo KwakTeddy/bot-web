@@ -16,7 +16,10 @@ function factsTypeCheck(text, format, inDoc, context, callback) {
         var node1;
         for (var j = 0; j < context.botUser.nlp.length; j++) {
             var token1 = context.botUser.nlp[j];
-            if (token1.pos == 'Noun' || token1.pos == 'Pronoun') {
+            if (((token1.text.indexOf("年") < 0) &&
+                    (token1.text.indexOf("月") < 0) &&
+                    (token1.text.indexOf("日") < 0)) &&
+                (token1.pos == 'Noun' || token1.pos == 'Pronoun' || token1.pos == 'Foreign')) {
                 node1 = token1.text;
                 break;
             }
@@ -43,7 +46,7 @@ function factsTypeCheck(text, format, inDoc, context, callback) {
                 var _node2 = docs[0]._doc.node2;
                 var _link = docs[0]._doc.link;
 
-                if (_node1 == '我') _node1 = '顧客';
+                if (_node1 == '我') _node1 = '你';
                 inDoc._output = _node1 + '' + _link + '' + _node2;
 
                 toneModule.toneSentence(inDoc._output, context.botUser.tone || '해요체', function (out) {

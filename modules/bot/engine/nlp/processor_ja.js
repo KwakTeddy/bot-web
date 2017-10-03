@@ -58,9 +58,13 @@ function processInput(context, inRaw, callback) {
             rma.featset = RakutenMA.default_featset_ja;
             rma.hash_func = RakutenMA.create_hash_func(15);
 
+            inRaw = inRaw.replace(/(^\s*)|(\s*$)/gi, "");
+            inRaw = inRaw.replace(/\"/gi, "");
+
             var cbTags = new CBTags();
 
             if (inRaw != undefined && inRaw != null && !Array.isArray(inRaw)) {
+                inRaw = inRaw.replace(/(^\s*)|(\s*$)/gi, "");
                 inRaw = inRaw.replace('。', '');
                 var dicResult = userDictionary.applyUserDic('ja', inRaw);
                 var text = dicResult[0];
@@ -183,6 +187,9 @@ function processLiveInput(inRaw, callback) {
             var rma = new RakutenMA(model, 1024, 0.007812);
             rma.featset = RakutenMA.default_featset_ja;
             rma.hash_func = RakutenMA.create_hash_func(15);
+
+            inRaw = inRaw.replace(/(^\s*)|(\s*$)/gi, "");
+            inRaw = inRaw.replace(/\"/gi, "");
 
             var cbTags = new CBTags();
 

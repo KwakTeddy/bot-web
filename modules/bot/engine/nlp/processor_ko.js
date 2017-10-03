@@ -51,8 +51,10 @@ function processInput(context, inRaw, callback) {
         // 사용자 사전 경로: ./external_module/resources/ko/user.pos
         function(cb) {
             if (inRaw != undefined && inRaw != null && !Array.isArray(inRaw)) {
-
                 var cbTags = new CBTags();
+                inRaw = inRaw.replace(/(^\s*)|(\s*$)/gi, "");
+                inRaw = inRaw.replace(/\"/gi, "");
+
                 var userDictionary = new UserDictionary(path.resolve('./external_modules/resources/ko/user.pos'));
                 var nlpUtil = new NLPUtil();
 
@@ -155,11 +157,15 @@ function processInput(context, inRaw, callback) {
         // 사용자 사전 경로: ./external_module/resources/ko/user.pos
         function(cb) {
             if (inRaw != undefined && inRaw != null && !Array.isArray(inRaw)) {
-                var sentenceInfo = new SentenceInfo();
-                var value = sentenceInfo.analyze("ko", context.botUser.nlu);
-                context.botUser.nlu["sentenceInfo"] = value;
+                if ("nlu" in context.botUser) {
+                    var sentenceInfo = new SentenceInfo();
+                    var value = sentenceInfo.analyze("ko", context.botUser.nlu);
+                    context.botUser.nlu["sentenceInfo"] = value;
 
-                cb(null);
+                    cb(null);
+                } else {
+                    cb(null);
+                }
             } else {
                 cb(null);
             }
@@ -169,11 +175,15 @@ function processInput(context, inRaw, callback) {
         // 사용자 사전 경로: ./external_module/resources/ko/user.pos
         function(cb) {
             if (inRaw != undefined && inRaw != null && !Array.isArray(inRaw)) {
-                var turnTaking = new TurnTaking();
-                var value = turnTaking.analyze("ko", context.botUser.nlu);
-                context.botUser.nlu["turnTaking"] = value;
+                if ("nlu" in context.botUser) {
+                    var turnTaking = new TurnTaking();
+                    var value = turnTaking.analyze("ko", context.botUser.nlu);
+                    context.botUser.nlu["turnTaking"] = value;
 
-                cb(null);
+                    cb(null);
+                } else {
+                    cb(null);
+                }
             } else {
                 cb(null);
             }
@@ -201,6 +211,9 @@ function processLiveInput(inRaw, callback) {
         // 사용자 사전 경로: ./external_module/resources/ko/user.pos
         function(cb) {
             var cbTags = new CBTags();
+            inRaw = inRaw.replace(/(^\s*)|(\s*$)/gi, "");
+            inRaw = inRaw.replace(/\"/gi, "");
+
             var userDictionary = new UserDictionary(path.resolve('./external_modules/resources/ko/user.pos'));
             var nlpUtil = new NLPUtil();
 

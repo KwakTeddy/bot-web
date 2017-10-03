@@ -61,8 +61,11 @@ UserDictionary.prototype.applyUserDic = function (lang, text) {
     for (var i in this.dictionary) {
         var str = this.dictionary[i][0];
         var tag = this.dictionary[i][1];
+        var position = - 1;
         // var position = text.search("(^"+str+"|"+str+" | "+str+"| "+str+"$)");
-        var position = text.search(str);
+        if (typeof text.search === "function") {
+            position = text.search(str);
+        }
         if (position >= 0) {
             if (lang == 'ja') {
                 replaceTag = " " + this.convert(this.mapUserKeywordOrder[index++]) + " ";
