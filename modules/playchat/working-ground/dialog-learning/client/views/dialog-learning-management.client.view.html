@@ -64,14 +64,11 @@
         </table>
         <div class="tablePaging">
             <div class="tablePagingC">
-                <a href="#" class="direction">
+                <a href="/playchat/management/dialog-learning?page={{ pageOptions.prev }}" ng-click="toPage(pageOptions.prev);" class="direction">
                     <img src="modules/playchat/working-ground/dialog-learning/client/img/btn_prev.png" alt="이전페이지이동">
                 </a>
-                <strong>1</strong>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#" class="direction">
+                <a ng-repeat="page in pageOptions.pages" href="/playchat/management/dialog-learning?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
+                <a href="/playchat/management/dialog-learning?page={{ pageOptions.next }}" ng-click="toPage(pageOptions.next);" class="direction">
                     <img src="modules/playchat/working-ground/dialog-learning/client/img/btn_next.png" alt="다음페이지이동">
                 </a>
             </div>

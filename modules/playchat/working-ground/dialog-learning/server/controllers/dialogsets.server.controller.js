@@ -18,13 +18,32 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
 // var utils = require(path.resolve('modules/bot/action/common/utils'));
 // var util = require('util');
 
+exports.findTotalPage = function(req, res)
+{
+    var countPerPage = req.query.countPerPage || 10;
+
+    Dialogset.find({ bot: req.params.botId }).sort('-created').populate('user', 'displayName').count(function(err, count)
+    {
+        if(err)
+        {
+            return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+        }
+        else
+        {
+            res.jsonp({ totalPage: Math.ceil(count / countPerPage) });
+        }
+    });
+};
+
 exports.find = function(req, res)
 {
-    Dialogset.find({ bot: req.params.botId }).sort('-created').populate('user', 'displayName').exec(function(err, dialogsets)
+    var page = req.query.page || 1;
+    var countPerPage = parseInt(req.query.countPerPage) || 10;
+
+    Dialogset.find({ bot: req.params.botId }).sort('-created').populate('user', 'displayName').skip(countPerPage*(page-1)).limit(countPerPage).exec(function(err, dialogsets)
     {
         if (err)
         {
-            console.log(err);
             return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
         }
         else

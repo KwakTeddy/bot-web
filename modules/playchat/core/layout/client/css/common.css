@@ -665,7 +665,9 @@ div.slide>input[type=checkbox]{
 .tablePagingC{
 	padding: 0px 0px 0px;
 }
-.tablePaging .tablePagingC a:link, .tablePagingC a:visited {
+
+.tablePaging .tablePagingC a:link, .tablePagingC a:visited
+{
     display: inline-block;
     position: relative;
     margin: 0 -2px;
@@ -674,16 +676,25 @@ div.slide>input[type=checkbox]{
     text-decoration: none;
 	vertical-align: middle;
 }
-.tablePaging .direction {
+
+.tablePaging .tablePagingC a:hover
+{
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.tablePaging .direction
+{
     font-weight: normal;
     white-space: nowrap;
 }
-.tablePaging .tablePagingC strong{
+
+.tablePaging .tablePagingC strong, .tablePaging .tablePagingC a.selected
+{
 	display: inline-block;
     position: relative;
     margin: 0 -2px;
     padding: 2px 7px;
-    font-weight: bold;
     color: #038eda;
     line-height: normal;
     vertical-align: middle;

@@ -2,21 +2,40 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat.working-ground').controller('DialogLearningManagementController', ['$window', '$scope', '$resource', '$cookies', 'ModalService', 'TabService', 'FormService', function ($window, $scope, $resource, $cookies, ModalService, TabService, FormService)
+angular.module('playchat.working-ground').controller('DialogLearningManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', 'ModalService', 'TabService', 'FormService', 'PagingService', function ($window, $scope, $resource, $cookies, $location, ModalService, TabService, FormService, PagingService)
 {
     $scope.$parent.changeWorkingGroundName('Management > Dialog Learning');
 
     var DialogSetsService = $resource('/api/dialogsets/:botId', { botId: '@botId' }, { update: { method: 'PUT' } });
+    var DialogSetsPageService = $resource('/api/dialogsets/:botId/totalpage', { botId: '@botId' });
 
     (function()
     {
-        // Get Dialogsets
+        //Function definition.
         var chatbot = $cookies.getObject('chatbot');
-        DialogSetsService.query({ botId: chatbot._id }, function(list)
+
+        $scope.getList = function(page)
         {
-            $scope.dialogsets = list;
-            $scope.$parent.loaded('working-ground');
-        });
+            var page = page || $location.search().page || 1;
+            var countPerPage = $location.search().countPerPage || 10;
+
+            DialogSetsPageService.get({ botId: chatbot._id, countPerPage: countPerPage }, function(result)
+            {
+                var totalPage = result.totalPage;
+                $scope.pageOptions = PagingService(page, totalPage);
+            });
+
+            DialogSetsService.query({ botId: chatbot._id, page: page, countPerPage: countPerPage }, function(list)
+            {
+                $scope.dialogsets = list;
+                $scope.$parent.loaded('working-ground');
+            });
+        };
+
+        $scope.toPage = function(page)
+        {
+            $scope.getList(page);
+        };
 
         $scope.save = function()
         {
@@ -110,5 +129,13 @@ angular.module('playchat.working-ground').controller('DialogLearningManagementCo
         {
             $scope.updateTargetItem = undefined;
         });
+    })();
+
+
+    (function()
+    {
+        // initialize
+
+        $scope.getList();
     })();
 }]);

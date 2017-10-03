@@ -2,6 +2,7 @@ var dialogsets = require('../controllers/dialogsets.server.controller');
 
 module.exports = function(app)
 {
+    app.get('/api/dialogsets/:botId/totalpage', dialogsets.findTotalPage);
     app.route('/api/dialogsets/:botId').get(dialogsets.find).post(dialogsets.create).put(dialogsets.update).delete(dialogsets.delete);
     // app.route('/api/dialogsets/:dialogsetId').get(dialogsets.read).put(dialogsets.update).delete(dialogsets.delete);
     //
