@@ -657,10 +657,10 @@ function analysisDoc(doc, bot_id, bot_name, cb) {
                         var mode = 0; // 1: the first noun, 2: verb, 3: the second noun
                         for (var i = 0; i < nlp.length - 1; i++) {
                             var token = nlp[i];
-                            if(isNaN(token.text) == true) continue;
-                            if ((token.text.indexOf("年") < 0) &&
-                                    (token.text.indexOf("月") < 0) &&
-                                    (token.text.indexOf("日") < 0)) continue;
+                            if(isNaN(token.text) != true) continue;
+                            if ((token.text.indexOf("年") >= 0) ||
+                                    (token.text.indexOf("月") >= 0) ||
+                                    (token.text.indexOf("日") >= 0)) continue;
                             if (node1==token.text) continue;
 
                             if (NUMBER_PTN.test(token)) continue;
@@ -759,11 +759,10 @@ function analysisDoc(doc, bot_id, bot_name, cb) {
                     var mode = 0; // 1: the first noun, 2: verb, 3: the second noun
                     for (var i = 0; i < nlp.length - 1; i++) {
                         var token = nlp[i];
-                        var token = nlp[i];
-                        if(isNaN(token.text) == true) continue;
-                        if ((token.text.indexOf("年") < 0) &&
-                            (token.text.indexOf("月") < 0) &&
-                            (token.text.indexOf("日") < 0)) continue;
+                        if(isNaN(token.text) != true) continue;
+                        if ((token.text.indexOf("年") >= 0) ||
+                            (token.text.indexOf("月") >= 0) ||
+                            (token.text.indexOf("日") >= 0)) continue;
                         if (node1==token.text) continue;
 
                         if (mode == 0) {

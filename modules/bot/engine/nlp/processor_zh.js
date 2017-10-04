@@ -56,6 +56,16 @@ function processInput(context, inRaw, callback) {
         // dsyoon (2017. 09. 13.)
         // 사용자 사전 경로: ./external_module/resources/ja/user.pos
         function(cb) {
+            if (context == null) {
+                context = {};
+            }
+            if (!("botUser" in context)) {
+                context["botUser"] = {}
+            }
+            if (!("nlu" in context["botUser"])) {
+                context.botUser["nlu"] = {};
+            }
+
             if (inRaw != undefined && inRaw != null && !Array.isArray(inRaw)) {
                 var cbTags = new CBTags();
                 if (typeof inRaw.replace !== "function") {
@@ -109,16 +119,6 @@ function processInput(context, inRaw, callback) {
                         inNLP = inNLP.replace(new RegExp(/^ /, 'gi'), "").replace(new RegExp(" $", 'gi'), "");
                     }
 
-                    if (context == null) {
-                        context = {};
-                    }
-                    if (!("botUser" in context)) {
-                        context["botUser"] = {}
-                    }
-                    if (!("nlu" in context["botUser"])) {
-                        context.botUser["nlu"] = {};
-                    }
-
                     context.botUser["inNLP"] = inNLP;
                     context.botUser.nlpAll = _nlp;
                     context.botUser.nlp = _nlp;
@@ -130,16 +130,6 @@ function processInput(context, inRaw, callback) {
                     cb(null);
                 }
             } else if (Array.isArray(inRaw)) {
-                if (context == null) {
-                    context = {};
-                }
-                if (!("botUser" in context)) {
-                    context["botUser"] = {}
-                }
-                if (!("nlu" in context["botUser"])) {
-                    context.botUser["nlu"] = {};
-                }
-
                 context.botUser["inNLP"] = "";
                 context.botUser.nlpAll = "";
                 context.botUser.nlp = "";
