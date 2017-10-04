@@ -1,0 +1,203 @@
+.topicswitch
+{
+    width:100%;
+    display: block;
+    text-align: right;
+    margin-top: 10px;
+}
+
+.topic-area
+{
+    display: inline-block;
+    width: 1px;
+    height: 30px;
+    padding-left: 13px;
+    overflow: hidden;
+}
+
+.topic-area > div
+{
+    width: 100%;
+}
+
+.topic-area > div > div
+{
+    display: inline-block;
+    width: 30%;
+    margin: 0 5px;
+}
+
+.topic-area > div > div > p
+{
+    font-size: 12px;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.topic-area > div > div > select
+{
+    width: 100%;
+}
+
+.question-area, .answer-area
+{
+    display: inline-block;
+    width: 44%;
+}
+
+.functions-area
+{
+    display: inline-block;
+    width: 8%;
+}
+
+.functions-area button
+{
+    margin: 3px 0;
+}
+
+.dialog-learning-development-content .question-area input,
+.dialog-learning-development-content .answer-area input
+{
+    margin: 3px 0;
+}
+
+.dialog-learning-development-content.topic-open .topic-area
+{
+    display: inline-block;
+    width: 49%;
+    height: auto;
+}
+
+.dialog-learning-development-content.topic-open .question-area,
+.dialog-learning-development-content.topic-open .answer-area
+{
+    display: inline-block;
+    width: 20%;
+}
+
+.dialog-learning-development-content.topic-open .functions-area
+{
+    display: inline-block;
+    width: 8%;
+}
+
+.dialog-learning-development-title, .dialog-learning-development-content
+{
+    width: 100%;
+    font-size: 0;
+    margin: 10px 0;
+}
+
+.dialog-learning-development-content .data-input
+{
+    box-sizing: border-box;
+    width: 100%;
+    border: 1px solid #d7d7d7;
+    transition: border 0.5s;
+}
+
+.dialog-learning-development-content .data-input:focus
+{
+    border-color: #038eda;
+}
+
+.dialog-learning-development-title span
+{
+    display: inline-block;
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+    width: 50%;
+}
+
+.dialog-learning-development-content div
+{
+    font-size: 12px;
+    padding: 0 5px;
+    box-sizing: border-box;
+}
+
+.dialog-learning-development-content > .dialog-learning-development-content-row
+{
+    border-radius: 6px;
+    padding: 10px 0;
+
+    background: #f8f8f8;
+    border: 1px solid #e8e8e8;
+
+    margin-top: 8px;
+}
+
+.dialog-learning-development-content > .dialog-learning-development-content-row:first-child
+{
+    border-color: #2d9ee0;
+    background: #eaf5fc;
+    padding-top: 0;
+}
+
+.dialog-learning-development-content > .dialog-learning-development-content-row:first-child > p
+{
+    color: #038eda;
+    font-weight: 600;
+    padding: 10px 15px;
+    font-size: 13px;
+}
+
+.dialog-learning-development-content > .dialog-learning-development-content-row:first-child .topic-area
+{
+    border-color: #b1dbf4;
+}
+
+.dialog-learning-development-content > .dialog-learning-development-content-row .data-input
+{
+    background-color: white;
+    color: #343434;
+}
+
+.dialog-learning-development-content > .dialog-learning-development-content-row div
+{
+    position: relative;
+    vertical-align: middle;
+}
+
+.dialog-learning-development-content > .dialog-learning-development-content-row .topic-area
+{
+    border-right: 1px solid #e8e8e8;
+    margin-right: 1px;
+}
+
+.dialog-learning-development-content div .plus-button
+{
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 100%;
+    border: 2px solid #038eda;
+    background: #fff;
+    padding: 1px 3px;
+
+    position: absolute;
+
+    bottom: -9px;
+    left: 48%;
+
+    box-sizing: border-box;
+}
+
+.dialog-learning-development-content div .plus-button:hover
+{
+    background-color: #efefef;
+}
+
+.dialog-learning-development-content div .plus-button:before
+{
+    position: relative;
+    top: -9px;
+    font-size: 20px;
+    content: '+';
+    color: #038eda;
+    left: -1.5px;
+    font-weight: normal;
+}

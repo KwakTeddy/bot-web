@@ -67,7 +67,6 @@ input {
 button, input, optgroup, select, textarea {
     font-family: noto sans;
     font-size: 100%;
-    line-height: 1.15;
     margin: 0;
 }
 
@@ -514,7 +513,6 @@ div.slide>input[type=checkbox]{
 }
 /*input_tybe01*/
 .input_tybe01{
-	width: 96%;
 	border: 1px solid #2d9ee0;
 	border-radius: 6px;
 	background: #eaf5fc;
@@ -555,14 +553,18 @@ div.slide>input[type=checkbox]{
 	width: 366px;
 	float: left;
 }
-.input_tybe01 .boxing02_fold{
+.input_tybe01 .boxing02_fold
+{
 	float: left;
-	width: 45%
+	width: 40%;
 }
-.input_tybe01 .boxing03{
+
+.input_tybe01 .boxing03
+{
 	width: 396px;
 	float: left;
 }
+
 /*input_tybe02*/
 .input_tybe02{
 	width: 96%;
@@ -842,17 +844,40 @@ ul.subject li.third{
 
 .data-input, .form-box
 {
+    position: relative;
+
     outline: 0;
     border: solid 1px #e8ebf0;
     border-radius: 5px;
-    padding: 10px 38px 10px 12px !important;
+    padding: 10px 12px !important;
 
     transition: border 0.5s;
+}
+
+.data-input.ng-invalid
+{
+    border-color: red;
 }
 
 .data-input:focus, .form-box.focused
 {
     border-color: #038eda;
+}
+
+.form-box-progress
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    width: 0;
+
+    background: #038eda;
+    opacity: 0.4;
+    border-radius: 5px;
+
+    transition: width 1s;
 }
 
 .tab-content
@@ -884,6 +909,7 @@ ul.subject li.third{
 
 .form-row label > span
 {
+    display: inline-block;
     font-size: 13px;
     padding-left: 3px;
     padding-bottom: 5px;

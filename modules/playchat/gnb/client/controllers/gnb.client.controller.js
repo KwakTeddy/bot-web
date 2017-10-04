@@ -13,11 +13,11 @@ angular.module('playchat.gnb').controller('GnbController', ['$window', '$scope',
 
         $scope.menus.push({ name: 'Dashboard', icon: 'dashboard.png' });
         $scope.menus.push({ name: 'Development', icon: 'develop.png', childMenus: [
-            { name: 'Dialog Set', url: '', icon: 'speech.png' },
+            { name: 'Dialog Set', url: '/development/dialog-set', icon: 'speech.png' },
             { name: 'Dialog Graph', url: '', icon: 'scenario.png' }
         ] });
         $scope.menus.push({ name: 'Management', icon: 'Managemant.png', childMenus: [
-            { name: 'Dialog Set', url: '/management/dialog-learning', icon: 'speech.png' },
+            { name: 'Dialog Set', url: '/management/dialog-set', icon: 'speech.png' },
             { name: 'Dialog Graph', url: '', icon: '' },
             { name: 'Entity', url: '', icon: '' },
             { name: 'Intent', url: '', icon: '' },

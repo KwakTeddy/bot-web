@@ -1,0 +1,130 @@
+<script type="text/template" id="dialogLearningRowTemplate">
+<div class="dialog-learning-development-content-row">
+    <p class="new-dialog-title">New Dialog</p>
+    <form ng-submit="addDialog($event);">
+        <div class="topic-area">
+            <div>
+                <div>
+                    <p>Topic 1</p>
+                    <select class="data-select"></select>
+                </div>
+                <div>
+                    <p>Topic 1</p>
+                    <select class="data-select"></select>
+                </div>
+                <div>
+                    <p>Topic 1</p>
+                    <select class="data-select"></select>
+                </div>
+            </div>
+        </div>
+        <div class="question-area">
+            <input type="text" class="data-input">
+            <span class="plus-button" ng-click="addInput($event);" ng-required="true"></span>
+        </div>
+        <div class="answer-area">
+            <input type="text" class="data-input">
+            <span class="plus-button" ng-click="addInput($event);" ng-required="true"></span>
+        </div>
+        <div class="functions-area">
+            <button class="blue-button">Add</button>
+        </div>
+    </form>
+</div>
+</script>
+
+<div ng-controller="DialogLearningDevelopmentController">
+    <div class="upSide">
+        <form class="inline-block">
+            <input id="search" name="search" type="search" class="search">
+        </form>
+        <div class="funtionbtn1">
+            <a href="#">
+                <img src="modules/playchat/working-ground/common/client/img/export.png">
+                <span>Export</span>
+                <img src="images/Q.png">
+            </a>
+        </div>
+    </div>
+    <div class="tab01">
+        <ul class="tabs1">
+            <li class="mini"><a href="/playchat/management/dialog-set"><img src="modules/playchat/working-ground/common/client/img/plus.png"></a></li>
+        </ul>
+    </div>
+    <div class="topicswitch">
+        <span class="mr10">topic</span>
+        <div class="slide inline-block">
+            <input type="checkbox" id="topicOpen" ng-model="topicOpened" />
+            <label for="topicOpen"></label>
+        </div>
+    </div>
+
+    <div class="dialog-learning-development-title">
+        <span>Question</span>
+        <span>Answer</span>
+    </span>
+    <div class="dialog-learning-development-content">
+        <div class="dialog-learning-development-content-row">
+            <p class="new-dialog-title">New Dialog</p>
+            <form ng-submit="addDialog($event);">
+                <div class="topic-area">
+                    <div>
+                        <div>
+                            <p>Topic 1</p>
+                            <select class="data-select"></select>
+                        </div>
+                        <div>
+                            <p>Topic 1</p>
+                            <select class="data-select"></select>
+                        </div>
+                        <div>
+                            <p>Topic 1</p>
+                            <select class="data-select"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="question-area">
+                    <input type="text" class="data-input" ng-required="true">
+                    <span class="plus-button" ng-click="addInput($event);"></span>
+                </div>
+                <div class="answer-area">
+                    <input type="text" class="data-input" ng-required="true">
+                    <span class="plus-button" ng-click="addInput($event);"></span>
+                </div>
+                <div class="functions-area">
+                    <button class="blue-button">Add</button>
+                </div>
+            </form>
+        </div>
+        <div class="dialog-learning-development-content-row" ng-repeat="dialog in dialogs">
+            <form ng-submit="addDialog($event);">
+                <div class="topic-area">
+                    <div>
+                        <div>
+                            <p>Topic 1</p>
+                            <select class="data-select"></select>
+                        </div>
+                        <div>
+                            <p>Topic 1</p>
+                            <select class="data-select"></select>
+                        </div>
+                        <div>
+                            <p>Topic 1</p>
+                            <select class="data-select"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="question-area">
+                    <input type="text" class="data-input" ng-repeat="input in dialog.input track by $index" value="{{ input }}">
+                    <span class="plus-button" ng-click="addInput($event);" ng-required="true"></span>
+                </div>
+                <div class="answer-area">
+                    <input type="text" class="data-input" ng-repeat="output in dialog.output track by $index" value="{{ output }}">
+                    <span class="plus-button" ng-click="addInput($event);" ng-required="true"></span>
+                </div>
+                <div class="functions-area">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

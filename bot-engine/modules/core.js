@@ -5,7 +5,6 @@ var processManager = require('./process-manager.js');
 var nlpManager = require('./nlp-manager.js');
 
 var socketReceiver = require(path.resolve('./bot-engine/modules/receiver/socket-receiver.js'));
-
 (function()
 {
     var Core = function()

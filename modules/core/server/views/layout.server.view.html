@@ -43,8 +43,9 @@
 <!-- PlayChat LogAnalysis -->
 <link href="/modules/playchat/log-analysis/client/css/log-analysis.css" rel="stylesheet" type="text/css">
 
-<!-- PlayChat Dialog Learning Management -->
-<link href="/modules/playchat/working-ground/dialog-learning/client/css/dialog-learning-management.css" rel="stylesheet" type="text/css">
+<!-- PlayChat Dialog Learning -->
+<link href="/modules/playchat/working-ground/dialog-set/client/css/dialog-set-management.css" rel="stylesheet" type="text/css">
+<link href="/modules/playchat/working-ground/dialog-set/client/css/dialog-set-development.css" rel="stylesheet" type="text/css">
 
 <script src="/js/witch/witch.js"></script>
 
@@ -111,7 +112,7 @@ if('{{env}}' == 'production')
 <script src="/lib/angular-resource/angular-resource.js"></script>
 <script src="/lib/angular-ui-router/release/angular-ui-router.min.js"></script>
 <script src="/lib/angular-cookies/angular-cookies.js"></script>
-<!--<script src="/lib/angular-file-upload/dist/angular-file-upload.min.js"></script>-->
+<script src="/lib/angular-file-upload/dist/angular-file-upload.js"></script>
 
 <script>
 // UI 공통 에러 구현.. 임시로 여기 위치.
@@ -176,7 +177,11 @@ Beagle.error = function(e)
 <script src="modules/playchat/log-analysis/client/controllers/log-analysis.client.controller.js"></script>
 
 <!-- PlayChat Working Ground -->
-<script src="modules/playchat/working-ground/dialog-learning/client/controllers/dialog-learning-management.client.controller.js"></script>
+<script src="modules/playchat/working-ground/summary/client/controllers/summary.client.controller.js"></script>
+<script src="modules/playchat/working-ground/dialog-set/client/controllers/dialog-set-management.client.controller.js"></script>
+<script src="modules/playchat/working-ground/dialog-set/client/controllers/dialog-set-development.client.controller.js"></script>
+
+
 <script src="modules/playchat/working-ground/common/client/services/modal-service.js"></script>
 <script src="modules/playchat/working-ground/common/client/services/tab-service.js"></script>
 <script src="modules/playchat/working-ground/common/client/services/form-service.js"></script>

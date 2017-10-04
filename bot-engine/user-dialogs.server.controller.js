@@ -3,8 +3,13 @@
 /**
  * Module dependencies.
  */
-var path = require('path'),
-  mongoose = require('mongoose'),
+var path = require('path');
+
+require(path.resolve('./bot-engine/models/user-dialog.model.js'));
+require(path.resolve('./bot-engine/models/fact-link.model.js'));
+require(path.resolve('./bot-engine/models/file-bot.model.js'));
+
+var mongoose = require('mongoose'),
   UserDialog = mongoose.model('UserDialog'),
   UserDialogLog = mongoose.model('UserDialogLog'),
   Bank = mongoose.model('Bank'),

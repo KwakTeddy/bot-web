@@ -5,6 +5,10 @@
  */
 var path = require('path');
 
+require(path.resolve('./bot-engine/models/bot-user.model.js'));
+require(path.resolve('./bot-engine/models/bot.model.js'));
+require(path.resolve('./bot-engine/models/bank.model.js'));
+
 var mongoose = require('mongoose');
 var BotUser = mongoose.model('BotUser');
 var UserBotFbPage = mongoose.model('UserBotFbPage');
