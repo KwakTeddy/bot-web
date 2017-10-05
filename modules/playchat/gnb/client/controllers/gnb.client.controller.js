@@ -2,7 +2,7 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat.gnb').controller('GnbController', ['$window', '$scope', function ($window, $scope)
+angular.module('playchat.gnb').controller('GnbController', ['$window', '$scope', '$location', function ($window, $scope, $location)
 {
     $scope.$parent.loaded('side-menu');
 
@@ -18,16 +18,18 @@ angular.module('playchat.gnb').controller('GnbController', ['$window', '$scope',
         ] });
         $scope.menus.push({ name: 'Management', icon: 'Managemant.png', childMenus: [
             { name: 'Dialog Set', url: '/management/dialog-set', icon: 'speech.png' },
-            { name: 'Dialog Graph', url: '', icon: '' },
-            { name: 'Entity', url: '', icon: '' },
-            { name: 'Intent', url: '', icon: '' },
-            { name: 'Task', url: '', icon: '' }
+            { name: 'Dialog Graph', url: '', icon: 'scenario.png' },
+            { name: 'Entity', url: '', icon: 'entity.png' },
+            { name: 'Intent', url: '', icon: 'intent.png' },
+            { name: 'Task', url: '', icon: 'task.png' }
         ] });
         $scope.menus.push({ name: 'Contents', icon: 'contents.png' });
         $scope.menus.push({ name: 'Channel', icon: 'channel.png' });
         $scope.menus.push({ name: 'Operating', icon: 'operating.png' });
         $scope.menus.push({ name: 'Analysis', icon: 'analysis.png' });
         $scope.menus.push({ name: 'Setting', icon: 'setting.png' });
+
+        $scope.path = $location.path();
     })();
 
     // --------- Gnb 접기 펼치기 기능.

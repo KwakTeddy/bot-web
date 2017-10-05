@@ -28,6 +28,9 @@
         </div>
         <div class="functions-area">
             <button class="blue-button">Add</button>
+            <img src="/modules/playchat/working-ground/dialog-set/client/img/saving.png" class="saving-img" style="display: none;">
+            <img src="/modules/playchat/working-ground/dialog-set/client/img/saved.png" class="saved-img" style="display: none;">
+            <img src="/modules/playchat/working-ground/common/client/img/delete_lighter.png" class="delete-img" style="display: none;">
         </div>
     </form>
 </div>
@@ -93,10 +96,13 @@
                 </div>
                 <div class="functions-area">
                     <button class="blue-button">Add</button>
+                    <img src="/modules/playchat/working-ground/dialog-set/client/img/saving.png" class="saving-img" style="display: none;">
+                    <img src="/modules/playchat/working-ground/dialog-set/client/img/saved.png" class="saved-img" style="display: none;">
+                    <img src="/modules/playchat/working-ground/common/client/img/delete_lighter.png" class="delete-img" style="display: none;">
                 </div>
             </form>
         </div>
-        <div class="dialog-learning-development-content-row" ng-repeat="dialog in dialogs">
+        <div class="dialog-learning-development-content-row" ng-repeat="dialog in dialogs" data-id="{{ dialog._id }}">
             <form ng-submit="addDialog($event);">
                 <div class="topic-area">
                     <div>
@@ -115,14 +121,17 @@
                     </div>
                 </div>
                 <div class="question-area">
-                    <input type="text" class="data-input" ng-repeat="input in dialog.input track by $index" value="{{ input }}">
+                    <input type="text" class="data-input" ng-repeat="input in dialog.inputRaw track by $index" value="{{ input }}" ng-focus="checkModify($event);" ng-keyup="watchModified('input', $event)" ng-blur="saveModified('input', $event)">
                     <span class="plus-button" ng-click="addInput($event);" ng-required="true"></span>
                 </div>
                 <div class="answer-area">
-                    <input type="text" class="data-input" ng-repeat="output in dialog.output track by $index" value="{{ output }}">
+                    <input type="text" class="data-input" ng-repeat="output in dialog.output track by $index" value="{{ output }}" ng-focus="checkModify($event);" ng-keyup="watchModified('output', $event)" ng-blur="saveModified('input', $event)">
                     <span class="plus-button" ng-click="addInput($event);" ng-required="true"></span>
                 </div>
                 <div class="functions-area">
+                    <img src="/modules/playchat/working-ground/dialog-set/client/img/saving.png" class="saving-img" style="display: none;">
+                    <img src="/modules/playchat/working-ground/dialog-set/client/img/saved.png" class="saved-img" style="display: none;">
+                    <img src="/modules/playchat/working-ground/common/client/img/delete_lighter.png" class="delete-img" ng-click="deleteDialog(dialog, $event);">
                 </div>
             </form>
         </div>

@@ -69,3 +69,42 @@ exports.create = function(req, res)
         });
     });
 };
+
+exports.update = function(req, res)
+{
+    DialogsetDialog.findOne({ _id: req.body._id }).exec(function(err, dialog)
+    {
+        if(err)
+        {
+            logger.systemError(err);
+            return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+        }
+
+        dialog.inputRaw = req.body.inputRaw;
+        dialog.output = req.body.output;
+        dialog.save(function(err)
+        {
+            if(err)
+            {
+                logger.systemError(err);
+                return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+            }
+
+            res.jsonp(dialog);
+        });
+    });
+};
+
+exports.delete = function(req, res)
+{
+    DialogsetDialog.remove({ _id: req.params.dialogsetId }).exec(function(err)
+    {
+        if (err)
+        {
+            logger.systemError(err);
+            return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+        }
+
+        res.end();
+    });
+};

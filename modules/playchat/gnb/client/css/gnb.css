@@ -11,6 +11,16 @@
     position: relative;
 }
 
+.playchat-background .gnb li .selected
+{
+    background: #038eda;
+    padding: 2px 42px;
+    font-size: 14px;
+    font-weight: 400;
+    height: 48px;
+    line-height: 48px;
+}
+
 
 
 

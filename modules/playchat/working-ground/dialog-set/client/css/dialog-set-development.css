@@ -49,6 +49,19 @@
 {
     display: inline-block;
     width: 8%;
+
+    text-align: center;
+}
+
+.functions-area > img
+{
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.functions-area > img:hover
+{
+    opacity: 1;
 }
 
 .functions-area button
