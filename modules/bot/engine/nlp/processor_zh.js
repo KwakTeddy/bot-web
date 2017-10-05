@@ -261,3 +261,99 @@ function processLiveInput(inRaw, callback) {
     });
 }
 exports.processLiveInput = processLiveInput;
+
+
+
+function analyzeFactLinks(context, inRaw, callback) {
+
+    var data = loadZhDictionary();
+    var userDictionary = data.userDictionary;
+    var rma = data.rma;
+
+    var node1="", node2="", link="";
+    var nlu = [];
+
+    // 형태소 분석기
+    async.waterfall([
+        // 사용자 사전 적용된 한국어 형태소 분석기
+        // dsyoon (2017. 09. 13.)
+        // 사용자 사전 경로: ./external_module/resources/ja/user.pos
+        function(cb) {
+            var cbTags = new CBTags();
+            inRaw = inRaw.replace(/(^\s*)|(\s*$)/gi, "");
+            inRaw = inRaw.replace(/\"/gi, "");
+            var dicResult = userDictionary.applyUserDic('zh', inRaw);
+            var text = dicResult[0];
+            var mb_user_str = dicResult[1];
+            var mb_user_tag = dicResult[2];
+
+            var position = -1;
+            // analyze POS
+            var tokens = rma.tokenize(inRaw);
+
+            var temp = '';
+            // restore user dictionary from POS
+            for (var i = 0; i < tokens.length; i++) {
+                for (var key in dicResult[1]) {
+                    position = tokens[i][0].indexOf(key);
+                    if (position >= 0) {
+                        tokens[i][0] = (" " + tokens[i][0] + " ").replace(new RegExp(key, 'gi'), dicResult[1][key]);
+                        if (tokens[i][0] == key) {
+                            tokens[i][1] = mb_user_tag[key];
+                        }
+                    }
+                }
+                tokens[i][1] = cbTags.normalizeTag('zh', tokens[i][0], tokens[i][1]);
+                var entry = {};
+                entry["text"] = tokens[i][0];
+                entry["pos"] = tokens[i][1];
+                nlu.push(entry);
+            }
+
+            cb(null);
+        },
+        function(cb) {
+            var sentenceInfo = new SentenceInfo();
+            var value = sentenceInfo.analyze("zh", nlu);
+            if (value != 0) {
+                node1="";
+                node2="";
+                link="";
+            }
+            cb(null);
+        },
+        function(cb) {
+            var mode = 0; // 1: the first noun, 2: verb, 3: the second noun
+            for (var i = 0; i < nlu.length - 1; i++) {
+                var token = nlu[i];
+                if(isNaN(token.text) != true) continue;
+                if ((token.text.indexOf("年") >= 0) ||
+                    (token.text.indexOf("月") >= 0) ||
+                    (token.text.indexOf("日") >= 0)) continue;
+                if (node1==token.text) continue;
+
+                if (mode == 0) {
+                    if (token.pos == 'Noun' || token.pos == 'Pronoun' || token.pos == 'Foreign') {
+                        node1 = token.text;
+                        mode = 1;
+                    }
+                } else if (mode == 1) {
+                    if (token.pos == 'Adjective' || token.pos == 'Verb') {
+                        link = token.text;
+                        mode = 2;
+                    }
+                } else if (mode == 2) {
+                    if (token.pos == 'Noun' || token.pos == 'Pronoun' || token.pos == 'Foreign') {
+                        node2 = token.text;
+                        break;
+                    }
+                }
+            }
+            cb();
+        }
+    ], function(err) {
+        callback(node1, node2, link);
+    });
+
+}
+exports.analyzeFactLinks = analyzeFactLinks;
