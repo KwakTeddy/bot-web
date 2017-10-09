@@ -11,12 +11,15 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     var sendedMsg = '';
     var main = document.getElementById('chat_main');
 
+    var pathBotId = $location.path().split('/');
+      pathBotId= pathBotId[pathBotId.length-1];
+
     $scope.vm = vm;
     vm.authentication = Authentication;
     vm.$stateParams = $stateParams;
     vm.params = $location.search();
     vm.server = 'localhost:1024';
-    vm.bot = $stateParams.userBotId || $cookies.get('default_bot') || 'athena';
+    vm.bot = pathBotId || $stateParams.userBotId || $cookies.get('default_bot') || 'athena';
     vm.userBot = {};
     // vm.userBot = UserBotsService.get({userBotId: ($stateParams.userBotId || '58a33a58dd6b0db01f496a36')}, function(userBot) {
     //   if(userBot.id) vm.bot = userBot.id;
@@ -323,6 +326,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
 
     vm.connectUserBot = function(botId) {
       clearBubble();
+      console.log('요기', botId);
       $resource('/api/bots/byNameId/:botNameId', {botNameId:'@id'}).
       get({botNameId: botId}, function(data) {
         vm.changeBotInfo(data);

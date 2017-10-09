@@ -196,7 +196,7 @@ function appRun($rootScope, $state, Authentication, $cookies) {
         }
       });
 
-      if (toState.name === "user-bots-web.view" || toState.name === "user-bots-web.graph") {
+      if (toState.name === "user-bots-web.view" || toState.name === "user-bots-web.graph" || (toState.name === "bots.graph-knowledge" && toParams.botId == 'MaYun')) {
         allowed = true;
         return true;
       }
