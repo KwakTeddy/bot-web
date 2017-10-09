@@ -539,8 +539,8 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         return;
       }
 
-      recognition.lang = 'ko-KR';
-      // recognition.lang = 'zh-CN';
+      // recognition.lang = 'ko-KR';
+      recognition.lang = 'zh-CN';
       console.log(recognition);
       recognition.start();
 
@@ -578,8 +578,8 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       recognizeStop();
 
       var utterance = new SpeechSynthesisUtterance(message);
-      utterance.lang = 'ko-KR';
-      // utterance.lang = 'zh-CN';
+      // utterance.lang = 'ko-KR';
+      utterance.lang = 'zh-CN';
       // console.log(JSON.stringify(utterance.getVoices()));
       utterance.onstart = function(event) {
         console.log('synthesize start');
