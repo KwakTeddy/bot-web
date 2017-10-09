@@ -26,8 +26,8 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
     vm.msg = '';
     vm.isConnected = false;
     vm.isVoice = false;
-    vm.stt = false;
-    vm.tts = false;
+    vm.tts = true;
+    vm.isExternal = true;
 
     vm.openChatModal = function (botId) {
       vm.connectUserBot(botId);
@@ -98,12 +98,12 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       if(message.smartReply) addButtons(message.smartReply);
 
       if(message.actions) execActions(message.actions);
-      else if(vm.isVoice) recognizeStart();
+      // else if(vm.isVoice) recognizeStart();
 
       if(message.items) addItems(message.items);
       else addBotBubble(message);
 
-      if(vm.tts) {
+      if(vm.isVoice) {
         var voice = message.voice || message.text || message;
         voice += ',';
 
@@ -118,15 +118,25 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
           voice += '여기까지 입니다.'
         }
 
-        //synthesize(voice);
-        speak(voice);
+        synthesize(voice);
+        // speak(voice);
       }
+
+      if(vm.isExternal) {
+        var voice = message.voice || message.text || message;
+        $window.OnMsgExternal(voice);
+      }
+
       $rootScope.$broadcast('onmsg', {message: message});
       $rootScope.$broadcast('sendmsg', {message: sendedMsg});
 
       // var snd = new Audio('/images/doorbell-6.mp3');
       // snd.play();
     });
+
+    $window.SendMsgExternal = function(msg) {
+      vm.sendMsg(msg);
+    }
 
     vm.mobileModal = function () {
       $ionicModal.fromTemplateUrl('my-modal.html', {
@@ -453,7 +463,6 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         console.log('recognition.onresult');
 
         if (ignore_onend) return;
-
         // ignore_onend = false;
 
         var isFinal = false;
@@ -531,8 +540,8 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       }
 
       recognition.lang = 'ko-KR';
+      // recognition.lang = 'zh-CN';
       console.log(recognition);
-      console.log(recognition.start());
       recognition.start();
 
       final_transcript = '';
@@ -562,6 +571,34 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         recognizeStart();
       }
     };
+
+    function synthesize(message) {
+      if(!vm.isVoice) return;
+
+      recognizeStop();
+
+      var utterance = new SpeechSynthesisUtterance(message);
+      utterance.lang = 'ko-KR';
+      // utterance.lang = 'zh-CN';
+      // console.log(JSON.stringify(utterance.getVoices()));
+      utterance.onstart = function(event) {
+        console.log('synthesize start');
+      };
+      utterance.onerror = function(event) {
+        console.log('synthesize error');
+        recognizeStart();
+      };
+      utterance.onend = function(event) {
+        console.log('synthesize end');
+        recognizeStart();
+      };
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function speak(message) {
+      var snd = new Audio('/api/speech/' + message);
+      snd.play();
+    }
 
     // END speech recognition
 
@@ -811,33 +848,6 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
       main.scrollTop = main.scrollHeight - main.clientHeight;
     }
 
-    function synthesize(message) {
-      if(!vm.tts) return;
-
-      recognizeStop();
-
-      var utterance = new SpeechSynthesisUtterance(message);
-      utterance.lang = 'ko-KR';
-      console.log(JSON.stringify(utterance.getVoices()));
-      utterance.onstart = function(event) {
-        console.log('synthesize start');
-      };
-      utterance.onerror = function(event) {
-        console.log('synthesize error');
-        recognizeStart();
-      };
-      utterance.onend = function(event) {
-        console.log('synthesize end');
-        recognizeStart();
-      };
-      window.speechSynthesis.speak(utterance);
-    }
-
-    function speak(message) {
-      var snd = new Audio('/api/speech/' + message);
-      snd.play();
-    }
-
     function generateUUID() {
       var d = new Date().getTime();
       var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -945,3 +955,5 @@ function openChatPanel() {
 
   document.querySelector('.page-header').style.paddingRight = '330px';
 }
+
+

@@ -101,6 +101,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
             if(_out.indexOf('|') == -1) outCallback(pre == undefined ? _out : pre + '"' + _out + '"', _task);
             else {
                 var arr = _out.split('|');
+                _task.voice = arr[1];
                 outCallback(pre == undefined ? arr[0] : pre + '"' + arr[0] + '"', _task);
             }
         }
