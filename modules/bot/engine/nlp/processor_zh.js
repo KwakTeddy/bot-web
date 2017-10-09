@@ -91,7 +91,8 @@ function processInput(context, inRaw, callback) {
 
                     var position = -1;
                     // analyze POS
-                    var tokens = rma.tokenize(inRaw);
+                    //var tokens = rma.tokenize(inRaw);
+                    var tokens = rma.tokenize(text);
 
                     var temp = '';
                     var _inNLP = [];
@@ -100,13 +101,21 @@ function processInput(context, inRaw, callback) {
                         for (var key in dicResult[1]) {
                             position = tokens[i][0].indexOf(key);
                             if (position >= 0) {
-                                tokens[i][0] = (" " + tokens[i][0] + " ").replace(new RegExp(key, 'gi'), dicResult[1][key]);
                                 if (tokens[i][0] == key) {
                                     tokens[i][1] = mb_user_tag[key];
                                 }
+                                tokens[i][0] = tokens[i][0].replace(new RegExp(key, 'gi'), dicResult[1][key]);
                             }
                         }
-                        tokens[i][1] = cbTags.normalizeTag('zh', tokens[i][0], tokens[i][1]);
+                        if (i==1) {
+                            if (tokens[0][0]=="我" && tokens[i][0]=="在") {
+                                tokens[i][1] = "Verb";
+                            } else {
+                                tokens[i][1] = cbTags.normalizeTag('zh', tokens[i][0], tokens[i][1]);
+                            }
+                        } else {
+                            tokens[i][1] = cbTags.normalizeTag('zh', tokens[i][0], tokens[i][1]);
+                        }
                         var entry = {};
                         entry["text"] = tokens[i][0];
                         entry["pos"] = tokens[i][1];

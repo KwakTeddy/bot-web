@@ -70,7 +70,7 @@ UserDictionary.prototype.applyUserDic = function (lang, text) {
             if (lang == 'ja') {
                 replaceTag = " " + this.convert(this.mapUserKeywordOrder[index++]) + " ";
             } else {
-                //replaceTag =  " " + this.mapUserKeywordOrder[index++] + " ";
+                // replaceTag =  " " + this.mapUserKeywordOrder[index++] + " ";
                 replaceTag =  this.mapUserKeywordOrder[index++];
             }
 

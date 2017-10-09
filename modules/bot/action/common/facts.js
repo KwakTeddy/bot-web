@@ -18,7 +18,7 @@ function memoryFacts(inRaw, context, callback) {
         for (var i = 0; i < result.length - 1; i++) {
             var token = result[i];
             if (mode==0) {
-                if (token.pos == 'Noun' || token.pos == 'Pronoun' || token.pos == 'Foreign') {
+                if (token.pos == 'Noun' || token.pos == 'Pronoun' || token.pos == 'Foreign' || token.pos == 'NR') {
                     node1 = token.text;
                     mode=1;
                 }
