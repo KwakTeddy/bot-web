@@ -1,5 +1,3 @@
-
-
 <div ng-controller="EntityManagementController">
     <div class="upSide">
         <form class="inline-block">
@@ -7,9 +5,9 @@
         </form>
         <div class="funtionbtn1">
             <a href="#">
-                <img src="modules/playchat/working-ground/dialog-learning/client/img/export.png">
-                <span>Export</span>
-                <img src="modules/playchat/working-ground/dialog-learning/client/img/Q.png">
+                <img src="modules/playchat/working-ground/common/client/img/export.png">
+                <span ng-click="modal.importModal.open();">Import</span>
+                <img src="modules/playchat/working-ground/common/client/img/Q.png">
             </a>
         </div>
     </div>
@@ -19,7 +17,7 @@
             <li><a href="#">Store</a></li>
             <li><a href="#">Shared</a></li>
         </ul>
-        <div class="btn02 flR" ng-click="modal.open();">
+        <div class="btn02 flR" ng-click="modal.mgmtModal.open();">
             <a href="#" class="">Add New</a>
         </div>
     </div>
@@ -27,121 +25,133 @@
         <table class="tb02">
             <colgroup>
                 <col style="width: 15%;">
-                <col style="width: 25%;">
+                <col style="width: 45%;">
+                <col style="width: 30%;">
                 <col style="width: 10%;">
-                <col style="width: 40%;">
-                <col style="width: 10%;">
+                <!--<col style="width: 10%;">-->
             </colgroup>
             <thead>
             <tr>
-                <th>Graph Name</th>
-                <th>Description</th>
+                <th>Name</th>
+                <th>Content</th>
                 <th>Last Update</th>
                 <th></th>
-                <th>USE</th>
+                <!--<th>Usalbe</th>-->
             </tr>
             </thead>
             <tbody>
-                <tr ng-if="dialogsets.length == 0">
-                    <td colspan="5">empty</td>
-                </tr>
-                <tr ng-repeat="item in dialogsets">
-                    <td>{{ item.title }}</td>
-                    <td>{{ item.content }}</td>
-                    <td>{{ item.user.displayName }}</td>
-                    <td>
-                        <a href="#" class="flR" ng-click="delete(item);"><img src="modules/playchat/working-ground/dialog-learning/client/img/delete_lighter.png"></a>
-                        <a href="#" class="flR mr5" ng-click="modify(item);"><img src="modules/playchat/working-ground/dialog-learning/client/img/modify_lighter.png"></a>
-                    </td>
-                    <td>
-                        <div class="slide on">
-                            <input type="checkbox" id="{{ item._id }}" ng-model="item.usable" />
-                            <label for="{{ item._id }}" ng-click="updateUsable(item);"></label>
-                        </div>
-                    </td>
-                </tr>
+            <tr ng-if="entitys.length == 0">
+                <td colspan="4">empty</td>
+            </tr>
+            <tr ng-repeat="item in entitys">
+                <td>{{ item.title }}</td>
+                <td>{{ item.content }}</td>
+                <td>{{ item.user.displayName }}</td>
+                <td>
+                    <a href="#" class="flR" ng-click="delete(item);"><img src="modules/playchat/working-ground/common/client/img/delete_lighter.png"></a>
+                    <a href="#" class="flR mr5" ng-click="modify(item);"><img src="modules/playchat/working-ground/common/client/img/modify_lighter.png"></a>
+                </td>
+                <!--<td>-->
+                    <!--<div class="slide on">-->
+                        <!--<input type="checkbox" id="{{ item._id }}" ng-model="item.usable" />-->
+                        <!--<label for="{{ item._id }}" ng-click="updateUsable(item);"></label>-->
+                    <!--</div>-->
+                <!--</td>-->
+            </tr>
             </tbody>
         </table>
         <div class="tablePaging">
             <div class="tablePagingC">
-                <a href="/playchat/management/dialog-learning?page={{ pageOptions.prev }}" ng-click="toPage(pageOptions.prev);" class="direction">
-                    <img src="modules/playchat/working-ground/dialog-learning/client/img/btn_prev.png" alt="이전페이지이동">
+                <a href="/playchat/management/entity?page={{ pageOptions.prev }}" ng-click="toPage(pageOptions.prev);" class="direction">
+                    <img src="modules/playchat/working-ground/common/client/img/btn_prev.png" alt="이전페이지이동">
                 </a>
-                <a ng-repeat="page in pageOptions.pages" href="/playchat/management/dialog-learning?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
-                <a href="/playchat/management/dialog-learning?page={{ pageOptions.next }}" ng-click="toPage(pageOptions.next);" class="direction">
-                    <img src="modules/playchat/working-ground/dialog-learning/client/img/btn_next.png" alt="다음페이지이동">
+                <a ng-repeat="page in pageOptions.pages" href="/playchat/management/entity?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
+                <a href="/playchat/management/entity?page={{ pageOptions.next }}" ng-click="toPage(pageOptions.next);" class="direction">
+                    <img src="modules/playchat/working-ground/common/client/img/btn_next.png" alt="다음페이지이동">
                 </a>
             </div>
         </div>
     </div>
 
 
-    <div class="modal-background management-modal" ng-show="modal.isOpened">
+    <div class="modal-background management-modal entity-add-new-modal" ng-show="modal.mgmtModal.isOpened">
         <div class="modal">
-            <div class="tab01">
-                <ul class="tabs1">
-                    <li ng-class="modalTab.isSelectedTab('default') ? 'select_tab' : ''" ng-click="modalTab.selectTab($event, 'default')"><a href="#">대화셋 만들기</a></li>
-                    <li ng-show="!mode || mode.type == 'file'" ng-class="modalTab.isSelectedTab('file') ? 'select_tab' : ''" ng-click="modalTab.selectTab($event, 'file')"><a href="#">대화셋 파일 가져오기</a></li>
-                </ul>
-            </div>
-            <div class="tab-content" ng-show="modalTab.isSelectedTab('default')">
-                <form name="modalFormDefault" ng-submit="save();">
-                    <div class="form-row">
-                        <label class="required">
-                            <span class="form-title">Title</span>
-                            <input type="text" placeholder="대화셋 이름을 입력해주세요" name="title" ng-model="modalForm.title" class="dialogset-title data-input" ng-required="true">
-                        </label>
-                    </div>
-                    <div class="form-row">
-                        <label>
-                            <span>Content</span>
-                            <textarea placeholder="내용을 입력해주세요" name="content" ng-model="modalForm.content" class="data-input"></textarea>
-                        </label>
-                    </div>
-                    <div class="tab-footer">
-                        <button class="blue-button">저장</button>
-                        <button type="button" class="default-button" ng-click="modal.close();">닫기</button>
-                    </div>
-                </form>
-            </div>
-            <div class="tab-content" ng-show="modalTab.isSelectedTab('file') || (mode && mode.type == 'file')">
-                <form name="modalFormFile" ng-submit="save();">
-                    <div class="form-row">
-                        <label class="required">
-                            <span class="form-title">Title</span>
-                            <input type="text" placeholder="대화셋 이름을 입력해주세요" name="title" ng-model="modalForm.title" class="dialogset-title data-input" ng-required="true">
-                        </label>
-                    </div>
-                    <div class="form-row">
-                        <label class="required">
-                            <span class="form-title">Type</span>
-                            <div class="form-box">
-                                <input type="checkbox" name="type" ng-model="modalForm.type" ng-required="true"> <span>대화목록 (csv 또는 xlsx)</span>
-                            </div>
-                        </label>
-                    </div>
-                    <div class="form-row">
-                        <label class="required">
-                            <span class="form-title">File</span>
-                            <div class="form-box">
-                                <input type="file" nv-file-select="" uploader="uploader" ng-modal="modalForm.filename">
-                                <span style="color: red; display: block; font-size: 10px; padding-left: 6px;">{{ modalForm.fileUploadError }}</span>
-                                <div class="form-box-progress"></div>
-                            </div>
-                        </label>
-                    </div>
-                    <div class="form-row">
-                        <label>
-                            <span>Content</span>
-                            <textarea placeholder="내용을 입력해주세요" name="content" ng-model="modalForm.content" class="data-input"></textarea>
-                        </label>
-                    </div>
-                    <div class="tab-footer">
-                        <button class="blue-button">저장</button>
-                        <button type="button" class="default-button" ng-click="modal.close();">닫기</button>
-                    </div>
-                </form>
-            </div>
+            <form name="modalFormDefault" ng-submit="save(modal.mgmtModal);" style="width: 500px;">
+                <div class="form-row">
+                    <label class="required">
+                        <span class="form-title">Name</span>
+                        <input type="text" placeholder="엔티티 이름을 입력해주세요" name="name" ng-model="modal.mgmtModal.data.name" class="entity-title data-input" ng-required="true">
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label>
+                        <span>Content</span>
+                        <div>
+                            <input type="text" placeholder="내용을 추가해주세요" name="content" class="data-input" style="display: inline-block; width: 80%;">
+                            <button type="button" class="default-button" style="width: 19%;" ng-click="addContent($event);">내용추가</button>
+                        </div>
+                    </label>
+                </div>
+                <div class="form-row" style="margin-top: 10px;">
+                    <table class="data-table">
+                        <colgroup>
+                            <col style="width: 20%;">
+                            <col style="width: 70%;">
+                            <col style="width: 10%;">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>내용</th>
+                                <th>동의어</th>
+                                <th>삭제</th>
+                            </tr>
+                        </thead>
+                        <tbody id="entityList">
+                            <tr ng-if="entityList.length == 0">
+                                <td colspan="3" style="text-align: center; padding: 15px 0; font-size: 12px;">내용을 추가해주세요</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-footer">
+                    <button class="blue-button">저장</button>
+                    <button type="button" class="default-button" ng-click="modal.mgmtModal.close();">닫기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-background management-modal" ng-show="modal.importModal.isOpened">
+        <div class="modal">
+            <form name="modalFormDefault" ng-submit="save(modal.importModal);">
+                <div class="form-row">
+                    <label class="required">
+                        <span class="form-title">Name</span>
+                        <input type="text" placeholder="엔티티 이름을 입력해주세요" name="name" ng-model="modal.importModal.data.name" class="entity-title data-input" ng-required="true">
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label class="required">
+                        <span>Type</span>
+                        <div class="form-box">
+                            <input type="radio" checked="true" ng-model="modal.importModal.data.type" ng-required="true">
+                            <span> (csv 또는 xlsx 파일)</span>
+                        </div>
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label class="required">
+                        <span>File</span>
+                        <div class="form-box">
+                            <input type="file" nv-file-select uploader="uploader" ng-required="true" />
+                        </div>
+                    </label>
+                </div>
+                <div class="tab-footer">
+                    <button class="blue-button">저장</button>
+                    <button type="button" class="default-button" ng-click="modal.importModal.close();">닫기</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

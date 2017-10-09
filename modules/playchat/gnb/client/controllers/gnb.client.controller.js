@@ -14,14 +14,14 @@ angular.module('playchat.gnb').controller('GnbController', ['$window', '$scope',
         $scope.menus.push({ name: 'Dashboard', icon: 'dashboard.png' });
         $scope.menus.push({ name: 'Development', icon: 'develop.png', childMenus: [
             { name: 'Dialog Set', url: '/development/dialog-set', icon: 'speech.png' },
-            { name: 'Dialog Graph', url: '', icon: 'scenario.png' }
+            { name: 'Dialog Graph', url: '/development/dialog-graph', icon: 'scenario.png' }
         ] });
         $scope.menus.push({ name: 'Management', icon: 'Managemant.png', childMenus: [
             { name: 'Dialog Set', url: '/management/dialog-set', icon: 'speech.png' },
-            { name: 'Dialog Graph', url: '', icon: 'scenario.png' },
-            { name: 'Entity', url: '', icon: 'entity.png' },
-            { name: 'Intent', url: '', icon: 'intent.png' },
-            { name: 'Task', url: '', icon: 'task.png' }
+            { name: 'Dialog Graph', url: '/management/dialog-graph', icon: 'scenario.png' },
+            { name: 'Entity', url: '/management/entity', icon: 'entity.png' },
+            { name: 'Intent', url: '/management/intent', icon: 'intent.png' },
+            { name: 'Task', url: '/management/task', icon: 'task.png' }
         ] });
         $scope.menus.push({ name: 'Contents', icon: 'contents.png' });
         $scope.menus.push({ name: 'Channel', icon: 'channel.png' });

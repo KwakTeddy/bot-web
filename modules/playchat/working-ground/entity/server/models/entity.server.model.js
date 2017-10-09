@@ -9,12 +9,14 @@ var mongoose = require('mongoose'),
 /**
  * Custom action Schema
  */
-var EntitySchema = new Schema({
+var EntitySchema = new Schema(
+{
     name: { type: String },
     botId: { type: String },
     content: {},
     created: { type: Date, default: Date.now },
-    user: { type: Schema.ObjectId, ref: 'User' }
+    user: { type: Schema.ObjectId, ref: 'User' },
+    usable: Boolean
 });
 
 mongoose.model('Entity', EntitySchema);
@@ -22,7 +24,8 @@ mongoose.model('Entity', EntitySchema);
 /**
  * Custom action Schema
  */
-var EntityContentSchema = new Schema({
+var EntityContentSchema = new Schema(
+{
     name: { type: String },
     botId: { type: String },
     created: { type: Date, default: Date.now },
@@ -37,7 +40,8 @@ mongoose.model('EntityContent', EntityContentSchema);
 /**
  * Custom action Schema
  */
-var EntityContentSynonymSchema = new Schema({
+var EntityContentSynonymSchema = new Schema(
+{
     name: { type: String },
     created: { type: Date, default: Date.now },
     contentId: { type: Schema.ObjectId, ref: 'EntityContent' },

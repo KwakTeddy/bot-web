@@ -24,7 +24,7 @@ exports.findTotalPage = function(req, res)
 {
     var countPerPage = req.query.countPerPage || 10;
 
-    Dialogset.find({ bot: req.params.botId }).count(function(err, count)
+    Dialogset.find({ bot: req.params.botId, user: req.user._id }).count(function(err, count)
     {
         if(err)
         {
@@ -42,7 +42,7 @@ exports.find = function(req, res)
     var page = req.query.page || 1;
     var countPerPage = parseInt(req.query.countPerPage) || 10;
 
-    Dialogset.find({ bot: req.params.botId }).sort('-created').populate('user', 'displayName').skip(countPerPage*(page-1)).limit(countPerPage).exec(function(err, dialogsets)
+    Dialogset.find({ bot: req.params.botId, user: req.user._id }).sort('-created').populate('user', 'displayName').skip(countPerPage*(page-1)).limit(countPerPage).exec(function(err, dialogsets)
     {
         if (err)
         {
@@ -57,7 +57,7 @@ exports.find = function(req, res)
 
 exports.findDialogsetByTitle = function(req, res)
 {
-    Dialogset.findOne({ bot: req.params.botId, title: req.query.title }).exec(function(err, dialogset)
+    Dialogset.findOne({ bot: req.params.botId, user: req.user._id, title: req.query.title }).exec(function(err, dialogset)
     {
         if (err)
         {
@@ -112,7 +112,7 @@ var update = function(dialogset, res)
 
 exports.update = function(req, res)
 {
-    Dialogset.findOne({ _id: req.body._id, bot: req.params.botId }, function(err, dialogset)
+    Dialogset.findOne({ _id: req.body._id, user: req.user._id, bot: req.params.botId }, function(err, dialogset)
     {
         if (err)
         {
@@ -164,7 +164,7 @@ exports.update = function(req, res)
 
 exports.delete = function(req, res)
 {
-    Dialogset.remove({ _id: req.query._id, bot: req.params.botId }, function(err)
+    Dialogset.remove({ _id: req.query._id, user: req.user._id, bot: req.params.botId }, function(err)
     {
         if(err)
         {
@@ -256,7 +256,7 @@ exports.uploadFile = function (req, res)
 
 exports.updateUsable = function(req, res)
 {
-    Dialogset.findOne({ bot: req.params.botId, _id: req.body._id }, function(err, dialogset)
+    Dialogset.findOne({ bot: req.params.botId, user: req.user._id, _id: req.body._id }, function(err, dialogset)
     {
         if(err)
         {
