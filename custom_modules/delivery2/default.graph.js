@@ -918,7 +918,7 @@ var dialogs = [
 				"filename": "default",
 				"input": [
 					{
-						"text": "변 경"
+						"text": "변경"
 					}
 				],
 				"output": [
