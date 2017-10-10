@@ -137,7 +137,9 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
 
                 if(context.bot.useMemoryFacts) {
                     factModule.memoryFacts(inTextRaw, context, function (_task, _context) {
-                        if(_task && _task.numAffected && _task.numAffected.upserted) {
+                        //if(_task && _task.numAffected && _task.numAffected.upserted) {
+                        if(_task && _task.numAffected && (_task.numAffected.ok == 1 && _task.numAffected.n > 0)) {
+                            // _task.numAffected.nModified = 0: insert, _task.numAffected.nModified > 0: update
                             console.log('[FACT_ADD]' + JSON.stringify(_task.doc));
                             if (context.botUser.language == "zh") {
                                 print('我学到了你说的话。');
