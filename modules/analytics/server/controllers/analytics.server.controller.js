@@ -687,16 +687,17 @@ exports.senarioExelDownload = function (req, res) {
     } else {
       async.waterfall([
         function (cb) { // 시나리오 뎁스 인덱스를 만들기위해 global에서 시나리오를 가져옴
+
           if(global._bot && global._bot[req.params.bId]) {
             var botSenario = global._bot[req.params.bId];
-            cb(null, botSenario)
+            cb(null, botSenario, date)
           }else {
             botLib.loadBot(req.params.bId, function (realbot) {
               var botSenario = realbot.dialogs;
-              cb(null, botSenario)
+              cb(null, botSenario, date)
             });
           }
-        }, function (botSenario, cb) {
+        }, function (botSenario, date, cb) {
           var maxDepth = 0; //뎁스의 최대 깊이를 알아야 엑셀 만들시 인덱스 메뉴 칸을 만들기 편함
           var senarioIndex = {};
           var depth = "1";
@@ -757,16 +758,14 @@ exports.senarioExelDownload = function (req, res) {
           //엑셀의 날짜 부분
           var dateObj = {};
           var dateArray = [];
-
           var year = date.start.year;
           var month = date.start.month;
           var day = date.start.day;
-
           for(var i = date.start.day;(day != date.end.day) || (month != date.end.month) ||  (year != date.end.year); i++){
-            var date = new Date(date.start.year, date.start.month - 1, i);
-            year = date.getFullYear();
-            month = date.getMonth() + 1;
-            day = date.getDate();
+            var newDate = new Date(date.start.year, date.start.month - 1, i);
+            year = newDate.getFullYear();
+            month = newDate.getMonth() + 1;
+            day = newDate.getDate();
 
             dateObj[year + '-'+ month + '-' + day] = {};
             dateArray.push(year + '-'+ month + '-' + day);
