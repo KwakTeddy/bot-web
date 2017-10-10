@@ -102,13 +102,13 @@
                         <thead>
                             <tr>
                                 <th>내용</th>
-                                <th>동의어</th>
+                                <th>동의어 <span style="font-size: 11px; color: #aaa;">(입력 enter)</span></th>
                                 <th>삭제</th>
                             </tr>
                         </thead>
                         <tbody id="entityList">
                             <tr ng-if="entityList.length == 0">
-                                <td colspan="3" style="text-align: center; padding: 15px 0; font-size: 12px;">내용을 추가해주세요</td>
+                                <td colspan="3" style="text-align: center; padding: 15px 0; font-size: 12px;">내용을 추가해주세요 <input type="text" style="opacity:0; width:0;" ng-required="true"></td>
                             </tr>
                         </tbody>
                     </table>

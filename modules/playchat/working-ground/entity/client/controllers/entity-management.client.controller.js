@@ -64,32 +64,44 @@ angular.module('playchat.working-ground').controller('EntityManagementController
             params.botId = chatbot._id;
             params.name = modal.data.name;
             params.content = modal.data.content;
+            params.entityContents = [];
             params.user = user._id;
+
+            if(!modal.data.path && !modal.data.filename)
+            {
+                //New Modal인 경우 entityList를 저장해야함.
+                angular.element('#entityList .entity-content').each(function()
+                {
+                    params.entityContents.push(this.innerText);
+                });
+            }
 
             if(modal.data._id)
                 params._id = modal.data._id;
 
-            if(params._id)
-            {
-                EntityService.update(params, function(result)
-                {
-                    for(var key in params)
-                    {
-                        updateTarget[key] = params[key];
-                    }
+            console.log(params);
 
-                    updateTarget = undefined;
-                    modal.close();
-                });
-            }
-            else
-            {
-                EntityService.save(params, function(result)
-                {
-                    $scope.dialogsets.unshift(result);
-                    modal.close();
-                });
-            }
+            // if(params._id)
+            // {
+            //     EntityService.update(params, function(result)
+            //     {
+            //         for(var key in params)
+            //         {
+            //             updateTarget[key] = params[key];
+            //         }
+            //
+            //         updateTarget = undefined;
+            //         modal.close();
+            //     });
+            // }
+            // else
+            // {
+            //     EntityService.save(params, function(result)
+            //     {
+            //         $scope.dialogsets.unshift(result);
+            //         modal.close();
+            //     });
+            // }
         };
 
         $scope.modify = function(item)
@@ -121,9 +133,10 @@ angular.module('playchat.working-ground').controller('EntityManagementController
         // Add New Modal
         var contentTemplate = '<tr>' +
                               '<td>{content}</td>' +
-                              '<td>' +
-                              '  <span class="entity-content" contenteditable="true" ng-keyup="contentPlaceholder($event);">{content} <span contenteditable="false">동의어 입력(enter)</span></span>' +
-                              '  <span class="entity-content placeholder" contenteditable="true" ng-keyup="contentPlaceholder($event);"><span contenteditable="false">동의어 입력(enter)</span></span>' +
+                              '<td style="position:relative;">' +
+                              '  <input type="text" style="width:1px; padding:0; opacity:0; position: absolute; top: 0; left: 10px; z-index: -1000;" required="required">' +
+                              '  <span type="text" class="entity-content" contenteditable="true" ng-keydown="contentediting($event)">{content}</span>' +
+                              '  <span type="text" class="entity-content mother" contenteditable="true" ng-keydown="contentediting($event)"></span>' +
                               '</td>' +
                               '<td></td>' +
                               '</tr>';
@@ -144,29 +157,74 @@ angular.module('playchat.working-ground').controller('EntityManagementController
 
             var t = contentTemplate.replace(/{content}/gi, input.value);
             angular.element('#entityList').append($compile(t)($scope));
+            angular.element('#entityList .entity-content:last').focus();
         };
 
-        $scope.contentPlaceholder = function(e)
+        function placeCaretAtEnd(el)
         {
-            var me = e.currentTarget;
-            if(me.innerText == '')
+            el.focus();
+            if (typeof window.getSelection != "undefined" && typeof document.createRange != "undefined")
             {
-                me.className = 'entity-content placeholder';
+                var range = document.createRange();
+                range.selectNodeContents(el);
+                range.collapse(false);
+                var sel = window.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+            else if (typeof document.body.createTextRange != "undefined")
+            {
+                var textRange = document.body.createTextRange();
+                textRange.moveToElementText(el);
+                textRange.collapse(false);
+                textRange.select();
+            }
+        }
+
+        $scope.contentediting = function(e)
+        {
+            var prev = e.currentTarget.previousElementSibling;
+
+            if(e.keyCode == 13) //enter
+            {
+                var clone = e.currentTarget.cloneNode(true);
+
+                clone.className = 'entity-content';
+
+                e.currentTarget.parentElement.insertBefore($compile(clone)($scope)[0], e.currentTarget);
+                e.currentTarget.innerText = '';
+                e.preventDefault();
+            }
+            else if(e.keyCode == 8) //backspace
+            {
+                if(prev && prev.nodeName.toLowerCase() == 'input')
+                {
+                    // 한글자 남아있으면 이 함수가 끝나고 지워지고 length가 0이된다. 그러면 reuiqred가 필요하므로 추가해줌.
+                    if(e.currentTarget.innerText.length == 1)
+                    {
+                        prev.setAttribute('required', 'required');
+                    }
+                }
+                else if(prev && e.currentTarget.innerText == '')
+                {
+                    //이전 동의어가 있으면 커서를 마지막으로
+                    placeCaretAtEnd(prev);
+                    e.preventDefault();
+
+                    if(e.currentTarget.className.indexOf('mother') == -1)
+                    {
+                        e.currentTarget.parentElement.removeChild(e.currentTarget);
+                    }
+                }
             }
             else
             {
-                me.className = 'entity-content';
+                // 글자가 입력되면 required는 필요 없어지므로 지워버린다.
+                if(prev && prev.nodeName.toLowerCase() == 'input')
+                {
+                    prev.removeAttribute('required');
+                }
             }
-        };
-
-        $scope.placeholderFocusing = function(e)
-        {
-            e.currentTarget.parentElement.className = 'entity-content';
-        };
-
-        $scope.placeholderBlur = function(e)
-        {
-            e.currentTarget.parentElement.className = 'entity-content placeholder';
         };
 
     })();
