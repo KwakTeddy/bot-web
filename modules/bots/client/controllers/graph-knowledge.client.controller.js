@@ -162,8 +162,8 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
             .on("zoom", zoomed);
 
         var svg = d3.select("#canvas").append("svg")
-            .attr("width", width)
-            .attr("height", height)
+            .attr("width", '100%')
+            .attr("height", '100%')
             .call(zoom)
             .append('svg:g');
 
