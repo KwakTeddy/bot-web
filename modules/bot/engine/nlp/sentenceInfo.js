@@ -299,11 +299,13 @@ SentenceInfo.prototype.analyzeZH = function (posJson) {
                 return this.type.interrogative;
             }
         }
+        /*
         if (morphemes[i].str == '是') {
             if ((i+1<morphemes.length) && (morphemes[i-1].pos == "Pronoun" || morphemes[i-1].pos == "Noun") && (morphemes[i+1].pos == "Pronoun" || morphemes[i+1].pos == "Noun")) {
                 return this.type.interrogative;
             }
         }
+        */
         if (morphemes[i].str == '几' || morphemes[i].str == '多少' || morphemes[i].str == '怎么' || morphemes[i].str == '为什么' || morphemes[i].str == '还是') {
             return this.type.interrogative;
         }
