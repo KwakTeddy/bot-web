@@ -650,25 +650,6 @@ var dialogs = [
 						]
 					}
 				]
-			},
-			{
-				"name": "카테고리재선택",
-				"id": "default77",
-				"filename": "default",
-				"input": [
-					{
-						"text": ""
-					}
-				],
-				"output": [
-					{
-						"kind": "Action",
-						"repeat": "1",
-						"options": {
-							"output": "보기중에서 선택해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요."
-						}
-					}
-				]
 			}
 		],
 		"task": "getCategory"
@@ -1001,7 +982,7 @@ var dialogs = [
 		],
 		"output": [
 			{
-				"text": "번호를 입력해주세요",
+				"text": "핸드폰번호를 입력해주세요",
 				"kind": "Text"
 			}
 		],
