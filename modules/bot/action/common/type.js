@@ -1050,8 +1050,11 @@ function findType(type, context) {
 
 
 var addressType = {
-  name: 'address',
-  typeCheck: address.addressTypeCheck
+    name: 'address',
+    typeCheck: address.addressTypeCheck,
+    raw: true,
+    context: true
+
 };
 
 exports.addressType= addressType;
