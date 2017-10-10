@@ -24,16 +24,14 @@
     <div class="downSide">
         <table class="tb02">
             <colgroup>
-                <col style="width: 15%;">
-                <col style="width: 45%;">
+                <col style="width: 55%;">
                 <col style="width: 30%;">
-                <col style="width: 10%;">
+                <col style="width: 15%;">
                 <!--<col style="width: 10%;">-->
             </colgroup>
             <thead>
             <tr>
                 <th>Name</th>
-                <th>Content</th>
                 <th>Last Update</th>
                 <th></th>
                 <!--<th>Usalbe</th>-->
@@ -44,12 +42,11 @@
                 <td colspan="4">empty</td>
             </tr>
             <tr ng-repeat="item in entitys">
-                <td>{{ item.title }}</td>
-                <td>{{ item.content }}</td>
+                <td><a href="#" ng-click="modify(item);">{{ item.name }}</a></td>
                 <td>{{ item.user.displayName }}</td>
                 <td>
-                    <a href="#" class="flR" ng-click="delete(item);"><img src="modules/playchat/working-ground/common/client/img/delete_lighter.png"></a>
-                    <a href="#" class="flR mr5" ng-click="modify(item);"><img src="modules/playchat/working-ground/common/client/img/modify_lighter.png"></a>
+                    <a href="#" class="flR" ng-click="delete(item);"><img src="modules/playchat/working-ground/common/client/img/delete.png" class="delete-img"></a>
+                    <a href="#" class="flR mr5" ng-click="modify(item);"><img src="modules/playchat/working-ground/common/client/img/modify.png" class="modify-img"></a>
                 </td>
                 <!--<td>-->
                     <!--<div class="slide on">-->
@@ -87,7 +84,7 @@
                     <label>
                         <span>Content</span>
                         <div>
-                            <input type="text" placeholder="내용을 추가해주세요" name="content" class="data-input" style="display: inline-block; width: 80%;">
+                            <input type="text" placeholder="내용을 추가해주세요" name="content" class="data-input" style="display: inline-block; width: 80%;" ng-keydown="contentediting($event);">
                             <button type="button" class="default-button" style="width: 19%;" ng-click="addContent($event);">내용추가</button>
                         </div>
                     </label>
@@ -107,7 +104,7 @@
                             </tr>
                         </thead>
                         <tbody id="entityList">
-                            <tr ng-if="entityList.length == 0">
+                            <tr ng-if="!entityContentAdded">
                                 <td colspan="3" style="text-align: center; padding: 15px 0; font-size: 12px;">내용을 추가해주세요 <input type="text" style="opacity:0; width:0;" ng-required="true"></td>
                             </tr>
                         </tbody>

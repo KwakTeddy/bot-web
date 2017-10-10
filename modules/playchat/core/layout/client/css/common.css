@@ -953,3 +953,14 @@ ul.subject li.third{
 {
     padding: 10px;
 }
+
+.delete-img, .modify-img
+{
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.delete-img:hover, .modify-img:hover
+{
+    opacity: 1;
+}
