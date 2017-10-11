@@ -9,7 +9,6 @@ var path = require('path');
 var multer = require('multer');
 var async = require('async');
 var mongoose = require('mongoose');
-var errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 var logger = require(path.resolve('./config/lib/logger.js'));
 
 var Entity = mongoose.model('Entity');
@@ -20,12 +19,17 @@ exports.findTotalPage = function(req, res)
 {
     var countPerPage = req.query.countPerPage || 10;
 
-    Entity.find({ botId: req.params.botId, user: req.user._id }).count(function(err, count)
+    var query = { botId: req.params.botId, user: req.user._id };
+
+    if(req.query.name)
+        query.name = { "$regex": req.query.name, "$options": 'i' };
+
+    Entity.find(query).count(function(err, count)
     {
         if(err)
         {
             logger.systemError(err);
-            return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+            return res.status(400).send({ message: err.stack || err });
         }
         else
         {
@@ -39,12 +43,17 @@ exports.find = function(req, res)
     var page = req.query.page || 1;
     var countPerPage = parseInt(req.query.countPerPage) || 10;
 
-    Entity.find({ botId: req.params.botId, user: req.user._id }).sort('-created').populate('user', 'displayName').skip(countPerPage*(page-1)).limit(countPerPage).exec(function(err, items)
+    var query = { botId: req.params.botId, user: req.user._id };
+
+    if(req.query.name)
+        query.name = { "$regex": req.query.name, "$options": 'i' };
+
+    Entity.find(query).sort('-created').populate('user', 'displayName').skip(countPerPage*(page-1)).limit(countPerPage).exec(function(err, items)
     {
         if (err)
         {
             logger.systemError(err);
-            return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+            return res.status(400).send({ message: err.stack || err });
         }
         else
         {
@@ -53,47 +62,37 @@ exports.find = function(req, res)
     });
 };
 
-exports.findOne = function(req, res)
+exports.findEntityContents = function(req, res)
 {
-    Entity.findOne({ botId: req.params.botId, user: req.user._id, _id: req.params._id }).populate('user', 'displayName').exec(function(err, entity)
+    EntityContent.find({ botId: req.params.botId, user: req.user._id, entityId: req.params.entityId }).exec(function(err, entityContents)
     {
-        var result = {};
-        result.entity = {};
-        result.model = entity;
-
-        EntityContent.find({ botId: req.params.botId, user: req.user._id, entityId: req.params._id }).exec(function(err, entityContents)
+        if(err)
         {
-            if(err)
+            logger.systemError(err);
+            return res.status(400).send({ message: err.stack || err });
+        }
+
+        var list = [];
+        async.each(entityContents, function(entityContent, done)
+        {
+            var json = entityContent.toJSON();
+            EntityContentSynonym.find({ botId: req.params.botId, entityId: req.params.entityId, contentId: entityContent._id }).exec(function(err, entityContentSynonyms)
             {
-                logger.systemError(err);
-                return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
-            }
-
-            result.entity.contents = [];
-            result.entity.models = entityContents;
-
-            async.each(entityContents, function(entityContent, done)
-            {
-                var contents = {};
-                contents.name = entityContent.name;
-                result.entity.contents.push(contents);
-
-                EntityContentSynonym.find({ botId: req.params.botId, entityId: req.params._id, contentId: entityContent._id }).exec(function(err, entityContentSynonyms)
+                if(err)
                 {
-                    if(err)
-                    {
-                        logger.systemError(err);
-                    }
+                    logger.systemError(err);
+                }
 
-                    contents.synonyms = entityContentSynonyms;
+                json.synonyms = entityContentSynonyms;
 
-                    done();
-                });
-            },
-            function()
-            {
-                res.jsonp(result);
+                list.push(json);
+
+                done();
             });
+        },
+        function()
+        {
+            res.jsonp(list);
         });
     });
 };
@@ -186,29 +185,43 @@ function saveEntityContents(botId, user, entityId, contents, callback, errCallba
 
 exports.create = function(req, res)
 {
-    var entity = new Entity(req.body);
-    entity.botId = req.params.botId;
-    entity.user = req.user;
-
-    entity.save(function(err)
+    Entity.findOne({ botId : req.params.botId, user: req.user._id, name: req.body.name}).exec(function(err, item)
     {
         if (err)
         {
             logger.systemError(err);
-            return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+            return res.status(400).send({ message: err.stack || err });
         }
-        else
+
+        if(item)
         {
-            saveEntityContents(req.params.botId, req.user, entity._id, req.body.entityContents, function()
-            {
-                res.jsonp(entity);
-            },
-            function(err)
+            return res.status(400).send({ message: 'Duplicated entity name' });
+        }
+
+        var entity = new Entity(req.body);
+        entity.botId = req.params.botId;
+        entity.user = req.user;
+
+        entity.save(function(err)
+        {
+            if (err)
             {
                 logger.systemError(err);
-                return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
-            });
-        }
+                return res.status(400).send({ message: err.stack || err });
+            }
+            else
+            {
+                saveEntityContents(req.params.botId, req.user, entity._id, req.body.entityContents, function()
+                {
+                    res.jsonp(entity);
+                },
+                function(err)
+                {
+                    logger.systemError(err);
+                    return res.status(400).send({ message: err.stack || err });
+                });
+            }
+        });
     });
 };
 
@@ -219,26 +232,49 @@ exports.update = function(req, res)
         if (err)
         {
             logger.systemError(err);
-            return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+            return res.status(400).send({ message: err.stack || err });
         }
 
         if(item)
         {
-            for(var key in req.body)
+            if(item.name != req.body.name)
             {
-                item[key] = req.body[key];
-            }
-
-            item.save(function(err)
-            {
-                if(err)
+                Entity.findOne({ botId: req.params.botId, user: req.user._id, name: req.body.name }).exec(function(err, duplicatedItem)
                 {
-                    logger.systemError(err);
-                    return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
-                }
+                    if (err)
+                    {
+                        logger.systemError(err);
+                        return res.status(400).send({ message: err.stack || err });
+                    }
 
-                item.user = req.user;
+                    if(duplicatedItem)
+                    {
+                        return res.status(400).send({ message: 'Duplicated entity name'});
+                    }
 
+                    item.name = req.body.name;
+                    item.save(function(err)
+                    {
+                        if (err)
+                        {
+                            logger.systemError(err);
+                            return res.status(400).send({ message: err.stack || err });
+                        }
+
+                        saveEntityContents(req.params.botId, req.user, item._id, req.body.entityContents, function()
+                        {
+                            res.jsonp(item);
+                        },
+                        function(err)
+                        {
+                            logger.systemError(err);
+                            return res.status(400).send({ message: err.stack || err });
+                        });
+                    });
+                });
+            }
+            else
+            {
                 saveEntityContents(req.params.botId, req.user, item._id, req.body.entityContents, function()
                 {
                     res.jsonp(item);
@@ -246,9 +282,9 @@ exports.update = function(req, res)
                 function(err)
                 {
                     logger.systemError(err);
-                    return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+                    return res.status(400).send({ message: err.stack || err });
                 });
-            });
+            }
         }
         else
         {
@@ -259,21 +295,21 @@ exports.update = function(req, res)
 
 exports.delete = function(req, res)
 {
-    Entity.remove({ _id: req.query._id }, function(err)
+    Entity.remove({ _id: req.params.entityId }, function(err)
     {
         if(err)
         {
             logger.systemError(err);
         }
 
-        EntityContent.remove({ botId: req.params.botId, user: req.user._id, entityId: req.query._id }).exec(function(err)
+        EntityContent.remove({ botId: req.params.botId, user: req.user._id, entityId: req.params.entityId }).exec(function(err)
         {
             if(err)
             {
                 logger.systemError(err);
             }
 
-            EntityContentSynonym.remove({ botId: req.params.botId, entityId: req.query._id }).exec(function(err)
+            EntityContentSynonym.remove({ botId: req.params.botId, entityId: req.params.entityId }).exec(function(err)
             {
                 if (err)
                 {

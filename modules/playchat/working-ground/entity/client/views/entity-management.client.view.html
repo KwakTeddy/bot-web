@@ -1,7 +1,7 @@
 <div ng-controller="EntityManagementController">
     <div class="upSide">
         <form class="inline-block">
-            <input id="search" name="search" type="search" class="search">
+            <input id="search" name="search" type="search" class="search" ng-keydown="search($event);">
         </form>
         <div class="funtionbtn1">
             <a href="#">
@@ -84,8 +84,8 @@
                     <label>
                         <span>Content</span>
                         <div>
-                            <input type="text" placeholder="내용을 추가해주세요" name="content" class="data-input" style="display: inline-block; width: 80%;" ng-keydown="contentediting($event);">
-                            <button type="button" class="default-button" style="width: 19%;" ng-click="addContent($event);">내용추가</button>
+                            <input type="text" placeholder="내용을 추가해주세요" name="content" class="data-input" style="display: inline-block; width: 80%;" ng-keydown="contentInputKeydown($event);">
+                            <button type="button" class="default-button" style="width: 19%;" ng-click="addEntityContentClick($event);">내용추가</button>
                         </div>
                     </label>
                 </div>
@@ -99,7 +99,7 @@
                         <thead>
                             <tr>
                                 <th>내용</th>
-                                <th>동의어 <span style="font-size: 11px; color: #aaa;">(입력 enter)</span></th>
+                                <th>동의어</th>
                                 <th>삭제</th>
                             </tr>
                         </thead>

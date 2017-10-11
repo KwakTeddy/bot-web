@@ -6,25 +6,27 @@ angular.module('playchat.working-ground').controller('EntityManagementController
 {
     $scope.$parent.changeWorkingGroundName('Management > Entity');
 
-    var EntityService = $resource('/api/entitys/:botId/:entityId', { botId: '@botId', entityId: '@entityId' }, { update: { method: 'PUT' } });
-    var EntityPageService = $resource('/api/entitys/:botId/totalpage', { botId: '@botId' });
+    var EntityService = $resource('/api/:botId/entitys/:entityId', { botId: '@botId', entityId: '@entityId' }, { update: { method: 'PUT' } });
+    var EntityContentService = $resource('/api/:botId/entitys/:entityId/contents', { botId: '@botId', entityId: '@entityId' });
+    var EntityPageService = $resource('/api/:botId/entitys/totalpage', { botId: '@botId' });
     // var EntityUsableService = $resource('/api/entitys/:botId/usable', { botId: '@botId' }, { update: { method: 'PUT' } });
 
     var chatbot = $cookies.getObject('chatbot');
     var user = $cookies.getObject('user');
+
+    var updateTarget = undefined;
 
     (function()
     {
         $scope.entityContentAdded = false;
 
         // List Page
-        var updateTarget = undefined;
         var mgmtModal = new ModalService('mgmtModal', $scope);
         mgmtModal.setOpenCallback(function()
         {
             $scope.entityList = [];
 
-            angular.element('#entityList .entity-row').remove();
+            angular.element('#entityList .entity-content-row').remove();
 
             setTimeout(function()
             {
@@ -41,18 +43,34 @@ angular.module('playchat.working-ground').controller('EntityManagementController
             }, 100);
         });
 
-        $scope.getList = function(page)
+        $scope.search = function(e)
+        {
+            if(e.keyCode == 13)
+            {
+                $scope.getList(1, e.currentTarget.value);
+            }
+            else if(e.keyCode == 8)
+            {
+                //backspace
+                if(e.currentTarget.value.length == 1)
+                {
+                    $scope.getList(1);
+                }
+            }
+        };
+
+        $scope.getList = function(page, name)
         {
             var page = page || $location.search().page || 1;
             var countPerPage = $location.search().countPerPage || 10;
 
-            EntityPageService.get({ botId: chatbot.id, countPerPage: countPerPage }, function(result)
+            EntityPageService.get({ botId: chatbot.id, countPerPage: countPerPage, name : name }, function(result)
             {
                 var totalPage = result.totalPage;
                 $scope.pageOptions = PagingService(page, totalPage);
             });
 
-            EntityService.query({ botId: chatbot.id, page: page, countPerPage: countPerPage }, function(list)
+            EntityService.query({ botId: chatbot.id, page: page, countPerPage: countPerPage, name : name }, function(list)
             {
                 $scope.entitys = list;
                 $scope.$parent.loaded('working-ground');
@@ -62,6 +80,49 @@ angular.module('playchat.working-ground').controller('EntityManagementController
         $scope.toPage = function(page)
         {
             $scope.getList(page);
+        };
+
+        $scope.updateUsable = function(item)
+        {
+            EntityUsableService.update({ botId: chatbot._id, _id: item._id, usable: item.usable ? false : true }, function(result)
+            {
+            });
+        };
+
+        $scope.modify = function(item)
+        {
+            updateTarget = item;
+            mgmtModal.setData(item);
+            mgmtModal.open();
+
+            EntityContentService.query({ botId: chatbot.id, entityId: item._id }, function(entityContents)
+            {
+                if(entityContents.length > 0)
+                {
+                    $scope.entityContentAdded = true;
+
+                    for(var i=0, l=entityContents.length; i<l; i++)
+                    {
+                        $scope.addEntityContent(entityContents[i]);
+                    }
+                }
+            });
+        };
+
+        $scope.delete = function(item)
+        {
+            if(confirm('정말 삭제하시겠습니까'))
+            {
+                var params = {};
+                params.botId = chatbot.id;
+                params.entityId = item._id;
+
+                EntityService.delete(params, function(result)
+                {
+                    var index = $scope.entitys.indexOf(item);
+                    $scope.entitys.splice(index, 1);
+                });
+            }
         };
 
         $scope.save = function(modal)
@@ -76,17 +137,16 @@ angular.module('playchat.working-ground').controller('EntityManagementController
             if(!modal.data.path && !modal.data.filename)
             {
                 //New Modal인 경우 entityList를 저장해야함.
-                angular.element('#entityList .entity-row').each(function()
+                angular.element('#entityList .entity-content-row').each(function()
                 {
                     var content = {};
                     content._id = angular.element(this).attr('data-id');
                     content.name = angular.element(this).find('td:first').text();
                     content.synonyms = [];
 
-                    angular.element(this).find('.entity-content').each(function()
+                    angular.element(this).find('.entity-content-synonym').each(function()
                     {
-                        if(this.innerText && this.className.indexOf('mother') == -1)
-                            content.synonyms.push(this.innerText);
+                        content.synonyms.push(this.innerText);
                     });
 
                     params.entityContents.push(content);
@@ -96,22 +156,20 @@ angular.module('playchat.working-ground').controller('EntityManagementController
             if(modal.data._id)
                 params._id = modal.data._id;
 
-            console.log(params);
-
             if(params._id)
             {
                 EntityService.update(params, function(result)
                 {
-                    if(result.message)
-                    {
-                        alert(params.name + '을 사용하는 Entity가 존재합니다.');
-                    }
-                    else
-                    {
-                        updateTarget.name = params.name;
+                    updateTarget.name = params.name;
 
-                        updateTarget = undefined;
-                        modal.close();
+                    updateTarget = undefined;
+                    modal.close();
+                },
+                function(err)
+                {
+                    if(err.data.message == 'Duplicated entity name')
+                    {
+                        alert(params.name + '은 중복된 이름 입니다.');
                     }
                 });
             }
@@ -121,123 +179,69 @@ angular.module('playchat.working-ground').controller('EntityManagementController
                 {
                     $scope.entitys.unshift(result);
                     modal.close();
+                },
+                function(err)
+                {
+                    if(err.data.message == 'Duplicated entity name')
+                    {
+                        alert(params.name + '은 중복된 이름 입니다.');
+                    }
                 });
             }
         };
 
-        $scope.modify = function(item)
+        $scope.contentInputKeydown = function(e)
         {
-            updateTarget = item;
-
-            EntityService.get({ botId: chatbot.id, entityId: item._id }, function(result)
+            if(e.keyCode == 13)
             {
-                $scope.entityContentAdded = true
+                $scope.addEntityContent({ name : e.currentTarget.value });
+                e.currentTarget.value = '';
+                e.currentTarget.focus();
+                e.preventDefault();
 
-                var contents = result.entity.contents;
-                console.log(result.entity);
-                for(var i=0, l=contents.length; i<l; i++)
-                {
-                    contents[i]._id = result.entity.models[i]._id;
-                    $scope.addContentAndSynonyms(contents[i]);
-                }
-            });
-
-            mgmtModal.setData(item);
-            mgmtModal.open();
-        };
-
-        $scope.delete = function(item)
-        {
-            if(confirm('정말 삭제하시겠습니까'))
-            {
-                var params = {};
-                params.botId = chatbot.id;
-                params._id = item._id;
-
-                EntityService.delete(params, function(result)
-                {
-                    var index = $scope.entitys.indexOf(item);
-                    $scope.entitys.splice(index, 1);
-                });
+                $scope.entityContentAdded = true;
             }
         };
-    })();
 
-    (function()
-    {
-        // New Modal
-        var contentTemplate = '<tr class="entity-row" data-id="{_id}">' +
-                              '<td>{content}</td>' +
-                              '<td style="position:relative;">' +
-                              '  <input type="text" style="width:1px; padding:0; opacity:0; position: absolute; top: 15px; left: 18px; z-index: -1000;" required="required">' +
-                              '  {synonyms}' +
-                              '  <span class="entity-content mother" contenteditable="true" ng-keydown="contentsynonymediting($event)" ng-blur="contentblur($event);"></span>' +
-                              '</td>' +
-                              '<td>' +
-                              '<img src="/modules/playchat/working-ground/common/client/img/delete.png" class="delete-img" ng-click="deleteEntityContent($event);">' +
-                              '</td>' +
-                              '</tr>';
-
-        $scope.addContentAndSynonyms = function(content)
+        $scope.addEntityContentClick = function(e)
         {
-            var name = content.name;
-            var synonyms = content.synonyms;
-
-            var t = contentTemplate.replace(/{content}/gi, name).replace('{_id}', content._id || '');
-
-            var synonymsTemplate = '';
-            if(synonyms && synonyms.length> 0)
-            {
-                for(var i=0, l=synonyms.length; i<l; i++)
-                {
-                    synonymsTemplate += '<span class="entity-content" contenteditable="true" ng-keydown="contentsynonymediting($event)">' + synonyms[i].name + '</span>'
-                }
-
-                t = t.replace(' required="required"', '');
-            }
-
-            t = t.replace('{synonyms}', synonymsTemplate);
-
-            angular.element('#entityList').append($compile(t)($scope));
-            angular.element('#entityList .entity-content:last').focus();
+            var input = e.currentTarget.previousElementSibling;
+            $scope.addEntityContent({ name: input.value });
+            input.value = '';
+            input.focus();
 
             $scope.entityContentAdded = true;
         };
 
-        $scope.contentediting = function(e)
+        $scope.addEntityContent = function(content)
         {
-            if(e.keyCode == 13)
-            {
-                var input = e.currentTarget;
+            var tr = '<tr class="entity-content-row" data-id="' + (content.id || '') +'">';
+            tr += '<td>' + content.name + '</td>';
+            tr += '<td class="entity-content-synonyms">' +
+                  '    <input type="text" required="required">' +
+                  '    <input type="text" placeholder="동의어입력(enter)" ng-keydown="synonymInputKeydown($event);">' +
+                  '</td>';
+            tr += '<td><img src="/modules/playchat/working-ground/common/client/img/delete.png" class="delete-img" ng-click="deleteEntityContent($event);"></td>';
+            tr += '</tr>';
 
-                if(input.value)
+            tr = $compile(tr)($scope);
+            angular.element('#entityList').append(tr);
+
+            var input = tr.find('.entity-content-synonyms input:last-child').get(0);
+
+            var synonyms = content.synonyms;
+            if(synonyms)
+            {
+                for(var i=0, l=synonyms.length; i<l; i++)
                 {
-                    $scope.addContentAndSynonyms({ name : input.value, synonyms: [] });
-                    input.value = '';
+                    var s = synonyms[i];
+                    var span = addConentSynonym(s.name);
+
+                    input.parentElement.insertBefore(span, input);
                 }
 
-                e.preventDefault();
+                tr.find('.entity-content-synonyms input:first-child').removeAttr('required');
             }
-        };
-
-        $scope.addContent = function(e)
-        {
-            var input = e.currentTarget.previousElementSibling;
-
-            if(!input.value)
-            {
-                input.className = 'data-input ng-invalid';
-                input.focus();
-                return;
-            }
-            else
-            {
-                input.className = 'data-input';
-            }
-
-            $scope.addContentAndSynonyms({ name : input.value, synonyms: [] });
-
-            input.value = '';
         };
 
         function placeCaretAtEnd(el)
@@ -261,51 +265,74 @@ angular.module('playchat.working-ground').controller('EntityManagementController
             }
         }
 
-        $scope.contentsynonymediting = function(e)
+        var addConentSynonym = function(value)
         {
-            var prev = e.currentTarget.previousElementSibling;
-            if(e.keyCode == 13) //enter
+            var span = document.createElement('span');
+            span.className = 'entity-content-synonym';
+            span.setAttribute('contenteditable', 'true');
+            span.innerText = value;
+            span.addEventListener('keydown', function(e)
             {
-                var clone = e.currentTarget.cloneNode(true);
-
-                clone.className = 'entity-content';
-
-                var span = '<span class="entity-content" contenteditable="true" ng-keydown="contentsynonymediting($event)">' + e.currentTarget.innerText + '</span>'
-
-                angular.element($compile(span)($scope)).insertBefore(angular.element(e.currentTarget));
-                // e.currentTarget.parentElement.insertBefore($compile(clone)($scope)[0], e.currentTarget);
-                e.currentTarget.innerText = '';
-                e.preventDefault();
-            }
-            else if(e.keyCode == 8) //backspace
-            {
-                if(prev && prev.nodeName.toLowerCase() == 'input')
+                if(e.keyCode == 8)
                 {
-                    // 한글자 남아있으면 이 함수가 끝나고 지워지고 length가 0이된다. 그러면 reuiqred가 필요하므로 추가해줌.
+                    //backspace
+                    console.log('backspace');
                     if(e.currentTarget.innerText.length == 1)
                     {
-                        prev.setAttribute('required', 'required');
-                    }
-                }
-                else if(prev && e.currentTarget.innerText == '')
-                {
-                    //이전 동의어가 있으면 커서를 마지막으로
-                    placeCaretAtEnd(prev);
-                    e.preventDefault();
+                        var prev = e.currentTarget.previousElementSibling;
+                        var next = e.currentTarget.nextElementSibling;
 
-                    if(e.currentTarget.className.indexOf('mother') == -1)
-                    {
+                        e.preventDefault();
+                        var input = e.currentTarget.parentElement.children[0];
                         e.currentTarget.parentElement.removeChild(e.currentTarget);
+
+                        if(prev.nodeName == 'INPUT')
+                        {
+                            if(next.nodeName == 'INPUT')
+                            {
+                                input.setAttribute('required', 'required');
+                                next.focus();
+                            }
+                            else
+                            {
+                                placeCaretAtEnd(next);
+                            }
+                        }
+                        else
+                        {
+                            placeCaretAtEnd(prev);
+                        }
                     }
                 }
-            }
-            else
-            {
-                // 글자가 입력되면 required는 필요 없어지므로 지워버린다.
-                if(prev && prev.nodeName.toLowerCase() == 'input')
+                else if(e.keyCode == 9)
                 {
-                    prev.removeAttribute('required');
+                    //tab
+                    placeCaretAtEnd(e.currentTarget.nextElementSibling);
                 }
+                else if(e.keyCode == 13)
+                {
+                    //enter
+                    placeCaretAtEnd(e.currentTarget.nextElementSibling);
+                    e.preventDefault();
+                }
+            });
+
+            return span;
+        };
+
+        $scope.synonymInputKeydown = function(e)
+        {
+            if(e.keyCode == 13)
+            {
+                var value = e.currentTarget.value;
+                var span = addConentSynonym(value);
+                e.currentTarget.parentElement.insertBefore(span, e.currentTarget);
+                e.currentTarget.value = '';
+
+                var input = e.currentTarget.parentElement.children[0];
+                input.removeAttribute('required');
+
+                e.preventDefault();
             }
         };
 
@@ -313,32 +340,6 @@ angular.module('playchat.working-ground').controller('EntityManagementController
         {
             var tr = e.currentTarget.parentElement.parentElement;
             tr.parentElement.removeChild(tr);
-        };
-
-        $scope.contentblur = function(e)
-        {
-            var value = e.currentTarget.innerText;
-            if(value)
-            {
-                var clone = e.currentTarget.cloneNode(true);
-
-                clone.className = 'entity-content';
-
-                e.currentTarget.parentElement.insertBefore($compile(clone)($scope)[0], e.currentTarget);
-                e.currentTarget.innerText = '';
-            }
-        };
-
-    })();
-
-    (function()
-    {
-        // Import Modal
-        $scope.updateUsable = function(item)
-        {
-            EntityUsableService.update({ botId: chatbot._id, _id: item._id, usable: item.usable ? false : true }, function(result)
-            {
-            });
         };
 
         $scope.uploader = new FileUploader({
@@ -369,9 +370,6 @@ angular.module('playchat.working-ground').controller('EntityManagementController
         };
     })();
 
-    (function()
-    {
-        // initialize
-        $scope.getList();
-    })();
+    // initialize
+    $scope.getList();
 }]);

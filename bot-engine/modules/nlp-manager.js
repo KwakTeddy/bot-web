@@ -11,19 +11,29 @@ var nlp = require(path.resolve('./bot-engine/engine/nlp/processor.js'));
         this.ko = new NLPKo({ stemmer: true, normalizer: true, spamfilter: true });
     };
 
-    NLPManager.prototype.initialize = function(lan, done)
+    NLPManager.prototype.initialize = function(language, done)
     {
-        this.ko.initialize(done);
-
-        done();
+        if(this[language].isDone)
+            done();
+        else
+            this[language].initialize(done);
     };
 
-    NLPManager.prototype.tokenize = function(userInputText, done)
+    NLPManager.prototype.tokenize = function(language, rawText, done, errCallback)
     {
-        this.ko.tokenize(userInputText, function(result)
+        if(language && typeof rawText == 'function' && !done)
         {
-            done(result);
-        });
+            done = rawText;
+            rawText = language;
+            language = 'ko'; //defualt
+        }
+
+        language = language || 'ko';
+
+        this.initialize(language, function()
+        {
+            this[language].tokenize(rawText, done, errCallback);
+        }.bind(this));
     };
 
     module.exports = new NLPManager();

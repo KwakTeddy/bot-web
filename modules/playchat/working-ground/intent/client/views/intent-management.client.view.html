@@ -1,7 +1,7 @@
 <div ng-controller="IntentManagementController">
     <div class="upSide">
         <form class="inline-block">
-            <input id="search" name="search" type="search" class="search">
+            <input id="search" name="search" type="search" class="search" ng-keydown="search($event);">
         </form>
         <div class="funtionbtn1">
             <a href="#">
@@ -24,16 +24,14 @@
     <div class="downSide">
         <table class="tb02">
             <colgroup>
+                <col style="width: 55%;">
+                <col style="width: 30%;">
                 <col style="width: 15%;">
-                <col style="width: 35%;">
-                <col style="width: 10%;">
-                <col style="width: 40%;">
                 <!--<col style="width: 10%;">-->
             </colgroup>
             <thead>
             <tr>
                 <th>Name</th>
-                <th>Content</th>
                 <th>Last Update</th>
                 <th></th>
                 <!--<th>Usalbe</th>-->
@@ -44,8 +42,7 @@
                 <td colspan="4">empty</td>
             </tr>
             <tr ng-repeat="item in intents">
-                <td>{{ item.title }}</td>
-                <td>{{ item.content }}</td>
+                <td><a href="#" ng-click="modify(item);">{{ item.name }}</a></td>
                 <td>{{ item.user.displayName }}</td>
                 <td>
                     <a href="#" class="flR" ng-click="delete(item);"><img src="modules/playchat/working-ground/common/client/img/delete.png" class="delete-img"></a>
@@ -76,7 +73,7 @@
 
     <div class="modal-background management-modal" ng-show="modal.mgmtModal.isOpened">
         <div class="modal">
-            <form name="modalFormDefault" ng-submit="save(modal.mgmtModal);">
+            <form name="modalFormDefault" ng-submit="save(modal.mgmtModal);" style="width: 500px;">
                 <div class="form-row">
                     <label class="required">
                         <span class="form-title">Name</span>
@@ -84,10 +81,32 @@
                     </label>
                 </div>
                 <div class="form-row">
-                    <label>
+                    <label class="required">
                         <span>Content</span>
-                        <textarea placeholder="내용을 입력해주세요" name="content" ng-model="modal.mgmtModal.data.content" class="data-input"></textarea>
+                        <div>
+                            <input type="text" placeholder="내용을 추가해주세요" name="content" class="data-input" style="display: inline-block; width: 80%;" ng-keydown="addContent($event);">
+                            <button type="button" class="default-button" style="width: 19%;" ng-click="addContent($event);">내용추가</button>
+                        </div>
                     </label>
+                </div>
+                <div class="form-row">
+                    <table class="data-table">
+                        <colgroup>
+                            <col style="width: 85%;">
+                            <col style="width: 15%;">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>내용</th>
+                            <th>삭제</th>
+                        </tr>
+                        </thead>
+                        <tbody id="intentList">
+                            <tr ng-if="!intentContentAdded">
+                                <td colspan="2" style="text-align: center; padding: 15px 0; font-size: 12px;">내용을 추가해주세요 <input type="text" style="opacity:0; width:0;" ng-required="true"></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="tab-footer">
                     <button class="blue-button">저장</button>

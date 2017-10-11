@@ -2,7 +2,7 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat').controller('PlayChatController', ['$location', '$scope', 'WindowResizeService', '$state', '$stateParams', function ($location, $scope, WindowResizeService, $state, $stateParams)
+angular.module('playchat').controller('PlayChatController', ['$location', '$scope', 'EventService', '$state', '$stateParams', function ($location, $scope, EventService, $state, $stateParams)
 {
     $scope.componentsLoaded = {
         'side-menu': false,
@@ -12,7 +12,7 @@ angular.module('playchat').controller('PlayChatController', ['$location', '$scop
         'working-ground': false
     };
 
-    WindowResizeService.subscribeMe();
+    EventService.subscribeMe();
 
     var menu = $stateParams.menu ? $stateParams.menu : '';
     var page = $stateParams.page ? $stateParams.page : 'summary';
@@ -30,6 +30,14 @@ angular.module('playchat').controller('PlayChatController', ['$location', '$scop
         }
 
         $scope.$parent.loading = false;
+
+        angular.element('.working-ground').on('scroll', function(e)
+        {
+            if(e.currentTarget.scrollTop + e.currentTarget.offsetHeight >= e.currentTarget.scrollHeight)
+            {
+                $scope.$broadcast('working-ground-scroll-bottom', e);
+            }
+        });
     };
 
     $scope.changeWorkingGroundName = function(name)

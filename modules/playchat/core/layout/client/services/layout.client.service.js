@@ -3,7 +3,7 @@
 {
     'use strict';
 
-    angular.module('playchat').factory('WindowResizeService', function($window, $rootScope)
+    angular.module('playchat').factory('EventService', function($window, $rootScope)
     {
         function subsFunc()
         {

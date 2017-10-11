@@ -4,9 +4,9 @@ angular.module('playchat.working-ground').controller('DialogSetManagementControl
 {
     $scope.$parent.changeWorkingGroundName('Management > Dialog Set');
 
-    var DialogSetsService = $resource('/api/dialogsets/:botId', { botId: '@botId' }, { update: { method: 'PUT' } });
-    var DialogSetsPageService = $resource('/api/dialogsets/:botId/totalpage', { botId: '@botId' });
-    var DialogSetsUsableService = $resource('/api/dialogsets/:botId/usable', { botId: '@botId' }, { update: { method: 'PUT' } });
+    var DialogSetsService = $resource('/api/:botId/dialogsets/:dialogsetId', { botId: '@botId', dialogsetId: '@dialogsetId' }, { update: { method: 'PUT' } });
+    var DialogSetsPageService = $resource('/api/:botId/dialogsets/totalpage', { botId: '@botId' });
+    var DialogSetsUsableService = $resource('/api/:botId/dialogsets/usable', { botId: '@botId' }, { update: { method: 'PUT' } });
 
     var chatbot = $cookies.getObject('chatbot');
     var user = $cookies.getObject('user');
@@ -32,18 +32,34 @@ angular.module('playchat.working-ground').controller('DialogSetManagementControl
             }, 100);
         });
 
-        $scope.getList = function(page)
+        $scope.search = function(e)
+        {
+            if(e.keyCode == 13)
+            {
+                $scope.getList(1, e.currentTarget.value);
+            }
+            else if(e.keyCode == 8)
+            {
+                //backspace
+                if(e.currentTarget.value.length == 1)
+                {
+                    $scope.getList(1);
+                }
+            }
+        };
+
+        $scope.getList = function(page, title)
         {
             var page = page || $location.search().page || 1;
             var countPerPage = $location.search().countPerPage || 10;
 
-            DialogSetsPageService.get({ botId: chatbot._id, countPerPage: countPerPage }, function(result)
+            DialogSetsPageService.get({ botId: chatbot._id, countPerPage: countPerPage, title: title }, function(result)
             {
                 var totalPage = result.totalPage;
                 $scope.pageOptions = PagingService(page, totalPage);
             });
 
-            DialogSetsService.query({ botId: chatbot._id, page: page, countPerPage: countPerPage }, function(list)
+            DialogSetsService.query({ botId: chatbot._id, page: page, countPerPage: countPerPage, title: title }, function(list)
             {
                 $scope.dialogsets = list;
                 $scope.$parent.loaded('working-ground');
@@ -73,9 +89,9 @@ angular.module('playchat.working-ground').controller('DialogSetManagementControl
             {
                 DialogSetsService.update(params, function(result)
                 {
-                    for(var key in params)
+                    for(var key in result)
                     {
-                        updateTarget[key] = params[key];
+                        updateTarget[key] = result[key];
                     }
 
                     updateTarget = undefined;
@@ -105,7 +121,7 @@ angular.module('playchat.working-ground').controller('DialogSetManagementControl
             {
                 var params = {};
                 params.botId = chatbot._id;
-                params._id = item._id;
+                params.dialogsetId = item._id;
 
                 DialogSetsService.delete(params, function(result)
                 {

@@ -2,16 +2,19 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat.working-ground').controller('IntentManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService', function ($window, $scope, $resource, $cookies, $location, FileUploader, ModalService, TabService, FormService, PagingService)
+angular.module('playchat.working-ground').controller('IntentManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService', function ($window, $scope, $resource, $cookies, $location, $compile, FileUploader, ModalService, TabService, FormService, PagingService)
 {
     $scope.$parent.changeWorkingGroundName('Management > Intent');
 
-    var IntentService = $resource('/api/intents/:botId', { botId: '@botId' }, { update: { method: 'PUT' } });
-    var IntentPageService = $resource('/api/intents/:botId/totalpage', { botId: '@botId' });
+    var IntentService = $resource('/api/:botId/intents/:intentId', { botId: '@botId', intentId: '@intentId' }, { update: { method: 'PUT' } });
+    var IntentContentsService = $resource('/api/:botId/intents/:intentId/contents', { botId: '@botId', intentId: '@intentId' });
+    var IntentPageService = $resource('/api/:botId/intents/totalpage', { botId: '@botId' });
     // var IntentUsableService = $resource('/api/intents/:botId/usable', { botId: '@botId' }, { update: { method: 'PUT' } });
 
     var chatbot = $cookies.getObject('chatbot');
     var user = $cookies.getObject('user');
+
+    $scope.intentContentAdded = false;
 
     (function()
     {
@@ -19,9 +22,12 @@ angular.module('playchat.working-ground').controller('IntentManagementController
         var mgmtModal = new ModalService('mgmtModal', $scope);
         mgmtModal.setOpenCallback(function()
         {
+            $scope.intentContentAdded = false;
+            angular.element('#intentList .intent-content-row').remove();
+
             setTimeout(function()
             {
-                angular.element('.entity-title').focus();
+                angular.element('.intent-title').focus();
             }, 100);
         });
 
@@ -30,22 +36,38 @@ angular.module('playchat.working-ground').controller('IntentManagementController
         {
             setTimeout(function()
             {
-                angular.element('.entity-title').focus();
+                angular.element('.intent-title').focus();
             }, 100);
         });
 
-        $scope.getList = function(page)
+        $scope.search = function(e)
+        {
+            if(e.keyCode == 13)
+            {
+                $scope.getList(1, e.currentTarget.value);
+            }
+            else if(e.keyCode == 8)
+            {
+                //backspace
+                if(e.currentTarget.value.length == 1)
+                {
+                    $scope.getList(1);
+                }
+            }
+        };
+
+        $scope.getList = function(page, name)
         {
             var page = page || $location.search().page || 1;
             var countPerPage = $location.search().countPerPage || 10;
 
-            IntentPageService.get({ botId: chatbot._id, countPerPage: countPerPage }, function(result)
+            IntentPageService.get({ botId: chatbot.id, countPerPage: countPerPage, name: name }, function(result)
             {
                 var totalPage = result.totalPage;
                 $scope.pageOptions = PagingService(page, totalPage);
             });
 
-            IntentService.query({ botId: chatbot._id, page: page, countPerPage: countPerPage }, function(list)
+            IntentService.query({ botId: chatbot.id, page: page, countPerPage: countPerPage, name: name }, function(list)
             {
                 $scope.intents = list;
                 $scope.$parent.loaded('working-ground');
@@ -60,10 +82,16 @@ angular.module('playchat.working-ground').controller('IntentManagementController
         $scope.save = function(modal)
         {
             var params = {};
-            params.botId = chatbot._id;
+            params.botId = chatbot.id;
             params.name = modal.data.name;
-            params.content = modal.data.content;
             params.user = user._id;
+            params.intentContents = [];
+
+            angular.element('#intentList .intent-content-row').each(function()
+            {
+                var content = angular.element(this).find('td:first-child').text();
+                params.intentContents.push(content);
+            });
 
             if(modal.data._id)
                 params._id = modal.data._id;
@@ -72,9 +100,9 @@ angular.module('playchat.working-ground').controller('IntentManagementController
             {
                 IntentService.update(params, function(result)
                 {
-                    for(var key in params)
+                    for(var key in result)
                     {
-                        updateTarget[key] = params[key];
+                        updateTarget[key] = result[key];
                     }
 
                     updateTarget = undefined;
@@ -85,7 +113,7 @@ angular.module('playchat.working-ground').controller('IntentManagementController
             {
                 IntentService.save(params, function(result)
                 {
-                    $scope.dialogsets.unshift(result);
+                    $scope.intents.unshift(result);
                     modal.close();
                 });
             }
@@ -96,6 +124,22 @@ angular.module('playchat.working-ground').controller('IntentManagementController
             updateTarget = item;
             mgmtModal.setData(item);
             mgmtModal.open();
+
+            IntentContentsService.query({ botId: chatbot.id, intentId: item._id }, function(result)
+            {
+                var html = '';
+                for(var i=0, l=result.length; i<l; i++)
+                {
+                    var tr = '<tr class="intent-content-row">';
+                    tr += '<td>' + result[i].name + '</td> <td> <img src="modules/playchat/working-ground/common/client/img/delete.png" class="delete-img" ng-click="deleteContent($event);"> </td>';
+                    tr += '</tr>';
+
+                    html += tr;
+                }
+
+                angular.element('#intentList').append($compile(html)($scope));
+                $scope.intentContentAdded = true;
+            });
         };
 
         $scope.delete = function(item)
@@ -103,20 +147,20 @@ angular.module('playchat.working-ground').controller('IntentManagementController
             if(confirm('정말 삭제하시겠습니까'))
             {
                 var params = {};
-                params.botId = chatbot._id;
-                params._id = item._id;
+                params.botId = chatbot.id;
+                params.intentId = item._id;
 
                 IntentService.delete(params, function(result)
                 {
-                    var index = $scope.dialogsets.indexOf(item);
-                    $scope.dialogsets.splice(index, 1);
+                    var index = $scope.intents.indexOf(item);
+                    $scope.intents.splice(index, 1);
                 });
             }
         };
 
         $scope.updateUsable = function(item)
         {
-            IntentUsableService.update({ botId: chatbot._id, _id: item._id, usable: item.usable ? false : true }, function(result)
+            IntentUsableService.update({ botId: chatbot.id, _id: item._id, usable: item.usable ? false : true }, function(result)
             {
             });
         };
@@ -146,6 +190,50 @@ angular.module('playchat.working-ground').controller('IntentManagementController
         $scope.uploader.onProgressItem = function(fileItem, progress)
         {
             angular.element('.form-box-progress').css('width', progress + '%');
+        };
+
+
+        $scope.addContent = function(e)
+        {
+            var input = undefined;
+            var target = e.currentTarget;
+            if(e.keyCode)
+            {
+                if(e.keyCode == 13)
+                {
+                    input = target;
+                    e.preventDefault();
+                }
+                else
+                {
+                    return;
+                }
+            }
+            else
+            {
+                input = target.previousElementSibling;
+            }
+
+            var tr = '<tr class="intent-content-row">';
+            tr += '<td>' + input.value + '</td> <td> <img src="modules/playchat/working-ground/common/client/img/delete.png" class="delete-img" ng-click="deleteContent($event);"> </td>';
+            tr += '</tr>';
+
+            angular.element('#intentList').append($compile(tr)($scope));
+            $scope.intentContentAdded = true;
+
+            input.value = '';
+        };
+
+        $scope.deleteContent = function(e)
+        {
+            var tr = e.currentTarget.parentElement.parentElement;
+
+            if(tr.parentElement.querySelectorAll('.intent-content-row').length == 1)
+            {
+                $scope.intentContentAdded = false;
+            }
+
+            tr.parentElement.removeChild(tr);
         };
     })();
 

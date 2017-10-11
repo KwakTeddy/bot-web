@@ -2,37 +2,27 @@
 
 angular.module('playchat.working-ground').controller('DialogLearningDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', 'ModalService', 'PagingService', function ($window, $scope, $resource, $cookies, $location, $compile, ModalService, PagingService)
 {
-    var DialogsetsService = $resource('/api/dialogsets/:botId/findbytitle', { botId: '@botId' });
-    var DialogsService = $resource('/api/dialogs/:dialogsetId', { dialogsetId: '@dialogset' }, { update: { method: 'PUT' } });
-    var DialogsPageService = $resource('/api/dialogs/:dialogsetId/totalpage', { dialogsetId: '@dialogsetId' });
+    var DialogsetsService = $resource('/api/:botId/dialogsets/findbytitle', { botId: '@botId' });
+    var DialogsService = $resource('/api/dialogsets/:dialogsetId/dialogs', { dialogsetId: '@dialogset' }, { update: { method: 'PUT' } });
 
     //UI Data
     $scope.topicOpened = false;
 
     var chatbot = $cookies.getObject('chatbot');
     var user = $cookies.getObject('user');
+    var currentPage = 1;
 
     //UI Handling
     (function()
     {
         angular.element('.dialog-learning-development-content input:first').focus();
 
+        var countPerPage = $location.search().countPerPage || 50;
+
         $scope.getDialogs = function(dialogsetId)
         {
-            var page = page || $location.search().page || 1;
-            var countPerPage = $location.search().countPerPage || 50;
-
-            // 페이징 옵션 가져오기.
-            DialogsPageService.get({ dialogsetId: dialogsetId, countPerPage: countPerPage }, function(result)
-            {
-                var totalPage = result.totalPage;
-                $scope.pageOptions = PagingService(page, totalPage);
-
-                // 이후 스크롤이 바닥까지 닿으면 다음 50개를 가져와야함.
-            });
-
             // 현재 페이지에 해당하는 데이터 가져오기.
-            DialogsService.query({ dialogsetId: dialogsetId, page: page, countPerPage: countPerPage }, function(list)
+            DialogsService.query({ dialogsetId: dialogsetId, page: currentPage, countPerPage: countPerPage }, function(list)
             {
                 $scope.dialogs = list;
 
@@ -40,6 +30,28 @@ angular.module('playchat.working-ground').controller('DialogLearningDevelopmentC
                 $scope.$parent.loaded('working-ground');
             });
         };
+
+        $scope.$on('working-ground-scroll-bottom', function(e)
+        {
+            // 다음 페이지에 해당하는 내용 가져오기.
+            angular.element('.more-progress').css('opacity', 1);
+            setTimeout(function()
+            {
+                // 일단 로딩이 너무 빨라서 강제로 timeout을 넣었음.
+                DialogsService.query({ dialogsetId: $scope.currentDialogsetId, page: currentPage+1, countPerPage: countPerPage }, function(list)
+                {
+                    angular.element('.more-progress').css('opacity', 0);
+                    if(list.length > 0)
+                    {
+                        currentPage++;
+                        for(var i=0, l=list.length; i<l; i++)
+                        {
+                            $scope.dialogs.push(list[i]);
+                        }
+                    }
+                });
+            }, 2000);
+        });
 
         $scope.save = function(data, callback)
         {
@@ -99,7 +111,7 @@ angular.module('playchat.working-ground').controller('DialogLearningDevelopmentC
             parent.querySelector('button').parentElement.removeChild(parent.querySelector('button'));
 
             // 삭제 버튼 활성화
-            var deleteButton = parent.querySelector('.functions-area img');
+            var deleteButton = parent.querySelector('.functions-area .delete-img');
             deleteButton.style.display = 'inline';
 
             // input과 output 데이터 가져와서 저장.
@@ -131,6 +143,19 @@ angular.module('playchat.working-ground').controller('DialogLearningDevelopmentC
             clone.focus();
         };
 
+        $scope.inputKeydown = function(e)
+        {
+            var event = e.originalEvent;
+            if(e.keyCode == 13 && (event.ctrlKey || event.metaKey))
+            {
+                var clone = e.currentTarget.cloneNode();
+                clone.value = '';
+
+                e.currentTarget.parentElement.insertBefore(clone, e.currentTarget);
+                clone.focus();
+            }
+        };
+
         $scope.deleteDialog = function(dialog, e)
         {
             if(confirm('정말 삭제하시겠습니까'))
@@ -152,22 +177,27 @@ angular.module('playchat.working-ground').controller('DialogLearningDevelopmentC
         var printSavedImage = function(element)
         {
             //saved 이미지 출력
-            element.querySelector('.saving-img').style.display = 'none';
+            angular.element(element).find('.functions-area img').hide();
             element.querySelector('.saved-img').style.display = 'inline';
 
             setTimeout(function()
             {
-                //saved 이미지 삭제
-                element.querySelector('.saved-img').style.display = 'none';
+                //delete 이미지 출력
+                angular.element(element).find('.functions-area img').hide();
                 element.querySelector('.delete-img').style.display = 'inline';
             }, 1000);
         };
 
         var printSavingImage = function(element)
         {
+            angular.element(element).find('.functions-area img').hide();
             element.querySelector('.saving-img').style.display = 'inline';
-            element.querySelector('.saved-img').style.display = 'none';
-            element.querySelector('.delete-img').style.display = 'none';
+        };
+
+        var printEditingImage = function(element)
+        {
+            angular.element(element).find('.functions-area img').hide();
+            element.querySelector('.editing-img').style.display = 'inline';
         };
 
         $scope.watchModified = function(type, e)
@@ -179,13 +209,14 @@ angular.module('playchat.working-ground').controller('DialogLearningDevelopmentC
                 if(e.currentTarget.watchTimeout)
                     clearTimeout(e.currentTarget.watchTimeout);
 
-                //saving 이미지 출력
+                //editing 이미지 출력
                 var element = e.currentTarget.parentElement.parentElement.parentElement;
-                printSavingImage(element);
+                printEditingImage(element);
 
                 e.currentTarget.watchTimeout = setTimeout(function()
                 {
                     // 타이핑을 멈추고 1초가 지나면 저장.
+                    // printSavingImage(element); 너무 빨라서 의미가 없다.
                     $scope.saveModified(type, e);
                 }, 1000);
             }

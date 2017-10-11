@@ -25,32 +25,33 @@ java.options.push('-Xmx4096m');
         this.builder = undefined;
         this.processor = undefined;
         this.done = undefined;
+        this.isDone = false;
     };
 
-    NLPKo.prototype.initialize = function(done)
+    NLPKo.prototype.initialize = function(done, errCallback)
     {
         this.done = function()
         {
             logger.systemLog(' - NLPKo loaded');
             done();
         };
-        this.getBuilder();
+        this.getBuilder(errCallback);
     };
 
-    NLPKo.prototype.getBuilder = function()
+    NLPKo.prototype.getBuilder = function(errCallback)
     {
         var that = this;
         java.newInstance('com.twitter.penguin.korean.TwitterKoreanProcessorJava$Builder', function(err, builder)
         {
             if (err)
-                return processManager.error(err);
+                return errCallback(err);
 
             that.builder = builder;
-            that.normalize();
+            that.normalize(errCallback);
         });
     };
 
-    NLPKo.prototype.normalize = function()
+    NLPKo.prototype.normalize = function(errCallback)
     {
         var that = this;
         if (this.options && this.options.normalizer === false)
@@ -58,18 +59,18 @@ java.options.push('-Xmx4096m');
             this.builder.disableNormalizer(function(err)
             {
                 if (err)
-                    return processManager.error(err);
+                    return errCallback(err);
 
-                that.steemer();
+                that.steemer(errCallback);
             });
 
             return;
         }
 
-        this.steemer();
+        this.steemer(errCallback);
     };
 
-    NLPKo.prototype.steemer = function()
+    NLPKo.prototype.steemer = function(errCallback)
     {
         var that = this;
         if (this.options && this.options.stemmer === false)
@@ -77,18 +78,18 @@ java.options.push('-Xmx4096m');
             this.builder.disableStemmer(function(err)
             {
                 if (err)
-                    return processManager.error(err);
+                    return errCallback(err);
 
-                that.spamFilter();
+                that.spamFilter(errCallback);
             });
 
             return;
         }
 
-        this.spamFilter();
+        this.spamFilter(errCallback);
     };
 
-    NLPKo.prototype.spamFilter = function()
+    NLPKo.prototype.spamFilter = function(errCallback)
     {
         var that = this;
         if (this.options && this.options.spamfilter === true)
@@ -96,50 +97,53 @@ java.options.push('-Xmx4096m');
             this.builder.enablePhraseExtractorSpamFilter(function(err)
             {
                 if (err)
-                    return processManager.error(err);
+                    return errCallback(err);
 
-                that.build();
+                that.build(errCallback);
             });
 
             return;
         }
 
-        this.build();
+        this.build(errCallback);
     };
 
-    NLPKo.prototype.build = function()
+    NLPKo.prototype.build = function(errCallback)
     {
         var that = this;
         this.builder.build(function(err, processor)
         {
             if (err)
-                return processManager.error(err);
+                return errCallback(err);
 
             that.processor = processor;
-
+            that.isDone = true;
             that.done();
         });
     };
 
-    NLPKo.prototype.tokenize = function(userInputText, done)
+    NLPKo.prototype.tokenize = function(rawText, done, errCallback)
     {
         var that = this;
-        this.processor.tokenize(userInputText, function(err, result)
+        this.processor.tokenize(rawText, function(err, result)
         {
+            if(err)
+                return errCallback(err);
+            
             result.toArray(function(err, tokenArray)
             {
                 async.map(tokenArray, KoreanTokenToJSON, function(err, result)
                 {
                     if(err)
-                        return processManager.error(err);
+                        return errCallback(err);
 
-                    that.afterTokenize(userInputText, result, done);
+                    that.afterTokenize(rawText, result, done);
                 });
             })
         });
     };
 
-    NLPKo.prototype.afterTokenize = function(userInputText, tokenizedText, done)
+    NLPKo.prototype.afterTokenize = function(rawText, tokenizedText, done)
     {
         var result = {};
         result.original = tokenizedText;
@@ -164,7 +168,7 @@ java.options.push('-Xmx4096m');
         nlpedText = nlpedText.replace(/(?:\{ | \})/g, '+');
 
         if(nlpedText == '')
-            nlpedText = userInputText;
+            nlpedText = rawText;
 
         result.nlpedText = nlpedText;
 

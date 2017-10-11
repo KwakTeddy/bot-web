@@ -20,6 +20,7 @@ var consolidate = require('consolidate');
 var fs = require('fs');
 var util = require('util');
 var path = require('path');
+require('./global-path.js')();
 
 /**
  * Initialize local variables

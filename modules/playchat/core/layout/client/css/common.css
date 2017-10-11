@@ -221,6 +221,8 @@ input.search[type="submit"]:hover {
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 10px 15px;
+
+    font-size: 14px;
 }
 
 .default-button:hover, .default-button:focus
@@ -238,7 +240,9 @@ input.search[type="submit"]:hover {
     -moz-border-radius: 5px;
     border-radius: 5px;
 
-    padding: 10px 15px;
+    padding: 10px 12px;
+
+    font-size: 14px;
 
     color: white;
 }
@@ -259,8 +263,8 @@ input.search[type="submit"]:hover {
 
 .blue-button img
 {
-    padding-top: 6px;
-    padding-right: 8px;
+    padding-top: 4px;
+    padding-right: 4px;
 }
 
 /*checkbox*/

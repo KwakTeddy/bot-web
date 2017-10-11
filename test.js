@@ -1,23 +1,25 @@
 var nlp = require('./bot-engine/engine/nlp/processor.js');
 
-var NLPKo = require('./bot-engine/modules/nlp/nlp-ko.js');
-
-// var nlpKo = new nlp({
-//     stemmer: true,      // (optional default: true)
-//     normalizer: true,   // (optional default: true)
-//     spamfilter: true     // (optional default: false)
-// });
-//
-// nlpKo.tokenize('반가워', function(err, result)
-// {
-//     console.log(result);
-// });
-
-var ko = new NLPKo({ stemmer: true, normalizer: true, spamfilter: true });
-ko.initialize(function()
+var nlpManager = require('./bot-engine/modules/nlp-manager');
+nlpManager.tokenize('ko', '테스트로 하겠습니다.', function(result)
 {
-    ko.tokenize('반가워', function(result)
+    console.log(result);
+
+    result = result.processed;
+
+    var nlp = [];
+    for(var i in result)
     {
-        console.log('결과 : ', result);
-    });
+        if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation')
+        {
+            nlp.push(result[i].text);
+        }
+    }
+
+    var input = nlp.join(' ');
+
+    console.log('인풋 : ', input);
+}, function(err)
+{
+    console.log(err);
 });

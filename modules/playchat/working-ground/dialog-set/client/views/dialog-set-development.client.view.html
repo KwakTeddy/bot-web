@@ -19,15 +19,16 @@
             </div>
         </div>
         <div class="question-area">
-            <input type="text" class="data-input">
-            <span class="plus-button" ng-click="addInput($event);" ng-required="true"></span>
+            <input type="text" class="data-input" ng-keydown="inputKeydown($event);" ng-required="true">
+            <span class="plus-button" ng-click="addInput($event);"></span>
         </div>
         <div class="answer-area">
-            <input type="text" class="data-input">
-            <span class="plus-button" ng-click="addInput($event);" ng-required="true"></span>
+            <input type="text" class="data-input" ng-keydown="inputKeydown($event);" ng-required="true">
+            <span class="plus-button" ng-click="addInput($event);"></span>
         </div>
         <div class="functions-area">
-            <button class="blue-button">Add</button>
+            <button class="blue-button"> <img src="/modules/playchat/working-ground/common/client/img/add.png"> Add</button>
+            <img src="/modules/playchat/working-ground/dialog-set/client/img/editing.png" class="editing-img" style="display: none;">
             <img src="/modules/playchat/working-ground/dialog-set/client/img/saving.png" class="saving-img" style="display: none;">
             <img src="/modules/playchat/working-ground/dialog-set/client/img/saved.png" class="saved-img" style="display: none;">
             <img src="/modules/playchat/working-ground/common/client/img/delete.png" class="delete-img" style="display: none;">
@@ -43,9 +44,9 @@
         </form>
         <div class="funtionbtn1">
             <a href="#">
-                <img src="modules/playchat/working-ground/common/client/img/export.png">
-                <span>Export</span>
-                <img src="images/Q.png">
+                <img src="modules/playchat/working-ground/common/client/img/import.png">
+                <span>Import</span>
+                <img src="modules/playchat/working-ground/common/client/img/Q.png">
             </a>
         </div>
     </div>
@@ -63,8 +64,9 @@
     </div>
 
     <div class="dialog-learning-development-title">
-        <span>Question</span>
-        <span>Answer</span>
+        <span ng-class="topicOpened ? 'topicopen-topic' : 'topicclose-topic'">Topic</span>
+        <span ng-class="topicOpened ? 'topicopen-question' : 'topicclose-question'">Question</span>
+        <span ng-class="topicOpened ? 'topicopen-answer' : 'topicclose-answer'">Answer</span>
     </span>
     <div class="dialog-learning-development-content">
         <div class="dialog-learning-development-content-row">
@@ -87,15 +89,16 @@
                     </div>
                 </div>
                 <div class="question-area">
-                    <input type="text" class="data-input" ng-required="true">
+                    <input type="text" class="data-input" ng-required="true" ng-keydown="inputKeydown($event);">
                     <span class="plus-button" ng-click="addInput($event);"></span>
                 </div>
                 <div class="answer-area">
-                    <input type="text" class="data-input" ng-required="true">
+                    <input type="text" class="data-input" ng-required="true" ng-keydown="inputKeydown($event);">
                     <span class="plus-button" ng-click="addInput($event);"></span>
                 </div>
                 <div class="functions-area">
-                    <button class="blue-button">Add</button>
+                    <button class="blue-button"> <img src="/modules/playchat/working-ground/common/client/img/add.png"> Add</button>
+                    <img src="/modules/playchat/working-ground/dialog-set/client/img/editing.png" class="editing-img" style="display: none;">
                     <img src="/modules/playchat/working-ground/dialog-set/client/img/saving.png" class="saving-img" style="display: none;">
                     <img src="/modules/playchat/working-ground/dialog-set/client/img/saved.png" class="saved-img" style="display: none;">
                     <img src="/modules/playchat/working-ground/common/client/img/delete.png" class="delete-img" style="display: none;">
@@ -129,11 +132,15 @@
                     <span class="plus-button" ng-click="addInput($event);" ng-required="true"></span>
                 </div>
                 <div class="functions-area">
+                    <img src="/modules/playchat/working-ground/dialog-set/client/img/editing.png" class="editing-img" style="display: none;">
                     <img src="/modules/playchat/working-ground/dialog-set/client/img/saving.png" class="saving-img" style="display: none;">
                     <img src="/modules/playchat/working-ground/dialog-set/client/img/saved.png" class="saved-img" style="display: none;">
                     <img src="/modules/playchat/working-ground/common/client/img/delete.png" class="delete-img" ng-click="deleteDialog(dialog, $event);">
                 </div>
             </form>
         </div>
+    </div>
+    <div style="text-align: center;">
+        <img src="/modules/playchat/working-ground/dialog-set/client/img/editing.png" class="more-progress" style="opacity: 0;">
     </div>
 </div>

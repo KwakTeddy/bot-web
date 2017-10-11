@@ -10,7 +10,12 @@ exports.findTotalPage = function(req, res)
 {
     var countPerPage = req.query.countPerPage || 50;
 
-    DialogsetDialog.find({ dialogset: req.params.dialogsetId }).count(function(err, count)
+    var query = { dialogset: req.params.dialogsetId };
+
+    if(req.query.name)
+        query.name = { "$regex": req.query.name, "$options": 'i' };
+
+    DialogsetDialog.find(query).count(function(err, count)
     {
         if(err)
         {
@@ -29,7 +34,12 @@ exports.find = function(req, res)
     var page = req.query.page || 1;
     var countPerPage = parseInt(req.query.countPerPage) || 50;
 
-    DialogsetDialog.find({ dialogset: req.params.dialogsetId }).sort('-id').skip(countPerPage*(page-1)).limit(countPerPage).exec(function(err, dialogs)
+    var query = { dialogset: req.params.dialogsetId };
+
+    if(req.query.name)
+        query.name = { "$regex": req.query.name, "$options": 'i' };
+
+    DialogsetDialog.find(query).sort('-id').skip(countPerPage*(page-1)).limit(countPerPage).exec(function(err, dialogs)
     {
         if (err)
         {
