@@ -1,10 +1,12 @@
 var path = require('path');
 var mongoose = require('mongoose');
-var errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
+var async = require('async');
 var logger = require(path.resolve('./config/lib/logger.js'));
 
 var Dialogset = mongoose.model('Dialogset');
 var DialogsetDialog = mongoose.model('DialogsetDialog');
+
+var nlpManager = require(global._botEngineModules.nlpManager);
 
 exports.findTotalPage = function(req, res)
 {
@@ -12,15 +14,15 @@ exports.findTotalPage = function(req, res)
 
     var query = { dialogset: req.params.dialogsetId };
 
-    if(req.query.name)
-        query.name = { "$regex": req.query.name, "$options": 'i' };
+    if(req.query.inputRaw)
+        query.inputRaw = { "$regex": req.query.inputRaw, "$options": 'i' };
 
     DialogsetDialog.find(query).count(function(err, count)
     {
         if(err)
         {
             logger.systemError(err);
-            return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+            return res.status(400).send({ message: err.stack || err });
         }
         else
         {
@@ -36,15 +38,15 @@ exports.find = function(req, res)
 
     var query = { dialogset: req.params.dialogsetId };
 
-    if(req.query.name)
-        query.name = { "$regex": req.query.name, "$options": 'i' };
+    if(req.query.inputRaw)
+        query.inputRaw = { "$regex": req.query.inputRaw, "$options": 'i' };
 
     DialogsetDialog.find(query).sort('-id').skip(countPerPage*(page-1)).limit(countPerPage).exec(function(err, dialogs)
     {
         if (err)
         {
             logger.systemError(err);
-            return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+            return res.status(400).send({ message: err.stack || err });
         }
         else
         {
@@ -62,20 +64,52 @@ exports.create = function(req, res)
         if (err)
         {
             logger.systemError(err);
-            return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+            return res.status(400).send({ message: err.stack || err });
         }
 
         dialog.id = dialogs && dialogs.length > 0 ? dialogs[0].id + 1 : 0;
-        dialog.save(function(err)
+
+        var inputList = [];
+        async.each(dialog.inputRaw, function(inputRaw, done)
         {
-            if (err)
+            nlpManager.tokenize(req.user.language, inputRaw, function(result)
             {
-                return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
-            }
-            else
+                var processed = result.processed;
+
+                var nlp = [];
+                for(var i in processed)
+                {
+                    if(processed[i].pos !== 'Josa' && processed[i].pos !== 'Punctuation')
+                    {
+                        nlp.push(processed[i].text);
+                    }
+                }
+
+                var input = nlp.join(' ');
+                inputList.push(input);
+
+                done();
+            },
+            function(err)
             {
-                res.jsonp(dialog);
-            }
+                logger.systemError(err);
+                return res.status(400).send({ message: err.stack || err });
+            });
+        },
+        function()
+        {
+            dialog.input = inputList;
+            dialog.save(function(err)
+            {
+                if (err)
+                {
+                    return res.status(400).send({ message: err.stack || err });
+                }
+                else
+                {
+                    res.jsonp(dialog);
+                }
+            });
         });
     });
 };
@@ -87,20 +121,40 @@ exports.update = function(req, res)
         if(err)
         {
             logger.systemError(err);
-            return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+            return res.status(400).send({ message: err.stack || err });
         }
 
         dialog.inputRaw = req.body.inputRaw;
         dialog.output = req.body.output;
-        dialog.save(function(err)
+        nlpManager.tokenize(req.user.language, dialog.inputRaw, function(result)
         {
-            if(err)
+            var processed = result.processed;
+
+            var nlp = [];
+            for (var i in processed)
             {
-                logger.systemError(err);
-                return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+                if (processed[i].pos !== 'Josa' && processed[i].pos !== 'Punctuation')
+                {
+                    nlp.push(processed[i].text);
+                }
             }
 
-            res.jsonp(dialog);
+            var input = nlp.join(' ');
+            dialog.input = input;
+            dialog.save(function(err)
+            {
+                if(err)
+                {
+                    logger.systemError(err);
+                    return res.status(400).send({ message: err.stack || err });
+                }
+
+                res.jsonp(dialog);
+            });
+        },
+        function(err)
+        {
+            return res.status(400).send({ message: err.stack || err });
         });
     });
 };
@@ -112,7 +166,7 @@ exports.delete = function(req, res)
         if (err)
         {
             logger.systemError(err);
-            return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+            return res.status(400).send({ message: err.stack || err });
         }
 
         res.end();
