@@ -560,8 +560,6 @@ var customContext = require('./custom-context.js');
 
     module.exports.getBotContext = function(botId, templates, done)
     {
-        var botContext = undefined;
-
         async.waterfall(
         [
             function(next){ loadBot(botId, templates, next); },
@@ -576,7 +574,7 @@ var customContext = require('./custom-context.js');
             loadCustomContext,
             loadDialogsets
         ],
-        function()
+        function(err, botContext)
         {
             if(botContext.error.length === 0)
             {

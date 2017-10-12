@@ -1,7 +1,10 @@
-require('./utils/model-loader.js');
+require('./model-loader.js');
 
 var path = require('path');
+var async = require('async');
 var logger = require(path.resolve('./config/lib/logger.js'));
+var utils = require('./utils/utils.js');
+
 var AsyncProcess = require('./utils/async-process/core.js');
 var nlpManager = require('./nlp-manager.js');
 var contextManager = require('./context-manager.js');
@@ -163,32 +166,36 @@ var socketReceiver = require(path.resolve('./bot-engine/modules/receiver/socket-
 
                     next();
                 },
-                function(cb)
+                function(next)
                 {
-                    var dialogModule = require(path.resolve('./bot-engine/action/common/dialog'));
-                    var globalDialogs = require(path.resolve('custom_modules/global/global-dialogs'));
+                    // var dialogModule = require(path.resolve('./bot-engine/action/common/dialog'));
+                    // var globalDialogs = require(path.resolve('custom_modules/global/global-dialogs'));
+                    //
+                    // dialogModule.executeType(inRaw, inNLP, globalDialogs.userDialogType, {}, context, function(inNLP, task, matched)
+                    // {
+                    //     if(matched) context.botUser.userDialogs = task.typeDoc;
+                    //     else context.botUser.userDialogs = undefined;
+                    //     cb(null);
+                    // });
 
-                    dialogModule.executeType(inRaw, inNLP, globalDialogs.userDialogType, {}, context, function(inNLP, task, matched)
-                    {
-                        if(matched) context.botUser.userDialogs = task.typeDoc;
-                        else context.botUser.userDialogs = undefined;
-                        cb(null);
-                    });
+                    next();
                 },
-                function(cb)
+                function(next)
                 {
-                    var dialogModule = require(path.resolve('./bot-engine/action/common/dialog'));
-                    var globalDialogs = require(path.resolve('custom_modules/global/global-dialogs'));
+                    // var dialogModule = require(path.resolve('./bot-engine/action/common/dialog'));
+                    // var globalDialogs = require(path.resolve('custom_modules/global/global-dialogs'));
+                    //
+                    // dialogModule.executeType(inRaw, inNLP, globalDialogs.dialogsType, {}, context, function(inNLP, task, matched)
+                    // {
+                    //     if(matched) context.botUser.dialogsetDialogs = task.typeDoc;
+                    //     else context.botUser.dialogsetDialogs = undefined;
+                    //     cb(null);
+                    // });
 
-                    dialogModule.executeType(inRaw, inNLP, globalDialogs.dialogsType, {}, context, function(inNLP, task, matched)
-                    {
-                        if(matched) context.botUser.dialogsetDialogs = task.typeDoc;
-                        else context.botUser.dialogsetDialogs = undefined;
-                        cb(null);
-                    });
+                    next();
                 },
 
-                function(cb)
+                function(next)
                 {
                     var bestDialog;
 
@@ -220,7 +227,7 @@ var socketReceiver = require(path.resolve('./bot-engine/modules/receiver/socket-
                         context.botUser.bestDialog = bestDialog;
                     }
 
-                    cb(null);
+                    next();
                 }
             ], function()
             {

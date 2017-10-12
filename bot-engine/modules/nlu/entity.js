@@ -1,6 +1,6 @@
 var async = require('async');
 
-var mongoose = require(_botEngineModules.mongoose);
+var mongoose = require('../utils/mongo-wrapper.js');
 var EntityContentSynonym = mongoose.model('EntityContentSynonym');
 
 var getNouns = function(nlp)
