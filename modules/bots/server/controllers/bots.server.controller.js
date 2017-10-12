@@ -48,7 +48,7 @@ exports.graph = function (req, res) {
         });
       },
       function (cb) {
-        dialogsetModule.analyzeKnowledgeDialog(realbot.dialogs, bot.id, result, function() {
+        dialogsetModule.analyzeKnowledgeDialog(realbot.dialogs, bot.id, bot.id, result, function() {
           cb(null);
         });
       },
@@ -199,7 +199,7 @@ exports.create = function (req, res) {
             });
           },
           function (cb) {
-            dialogsetModule.analyzeKnowledgeDialog(realbot.dialogs, bot.id, result, function() {
+            dialogsetModule.analyzeKnowledgeDialog(realbot.dialogs, bot.id, bot.id, result, function() {
                cb(null);
             });
           },
@@ -714,8 +714,7 @@ exports.nluProcess = function(req, res) {
     if (context == null || context == undefined) context = {};
     if (!("botUser" in context)) {context["botUser"] = {};}
     if (!("language" in context)) {context.botUser["language"] = "ko";}
-    context.botUser.language = "zh";
-    //context.botUser.language = "ko";
+    context.botUser.language = "ko";
 
     var input = '';
 

@@ -48,7 +48,7 @@ function processInput(context, inRaw, callback) {
     var userDictionary = data.userDictionary;
     var rma = data.rma;
 
-    var inNLP, nlpAll = [], _nlp = [];
+    var inNLP = "", nlpAll = [], _nlp = [];
 
     // 형태소 분석기
     async.waterfall([
