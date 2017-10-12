@@ -16,6 +16,9 @@ var ADDRESS_SPACE_DIR = process.env.ADDRESS_SPACE_DIR;
 function addressTypeCheck(text, type, task, context, callback) {
   var address = {};
   address.inRaw = text;
+  // address.inRaw = context.dialog.inCurRaw;
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@22");
+    console.log(text);
   searchAddress(address, context, function() {
     if(address.doc == undefined) {
       logger.debug('nodata: ' + address.inRaw);

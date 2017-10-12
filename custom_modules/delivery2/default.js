@@ -200,8 +200,9 @@ bot.setType('menuElementText', menuElementText);
 var makeOrderList = {
   action: function (task,context,callback) {
     context.dialog.keyword = context.dialog.inRaw;
+    if(context.dialog.inRaw == 1) context.dialog.keyword = context.dialog.inCurRaw;
     context.dialog.menu = {};
-    context.dialog.menu.subMenu = filter(context.dialog.inRaw, mdmenu);
+    context.dialog.menu.subMenu = filter(context.dialog.keyword, context.bot.restaurant.menu);
     if(context.dialog.menu.subMenu.length==1) context.dialog.currentItem = context.dialog.menu.subMenu[0];
     // context.dialog.menuList = filter(context.dialog.inRaw, mdmenu);
 
@@ -276,7 +277,7 @@ var sendMessage = {
         }
 
 
-        message += '\n주소: ' + context.user.address.지번본번 + '\n';
+        message += '\n주소: ' + context.user.address.지번주소 + '\n';
         message += '번호: ' + context.user.mobile + '\n';
         message += '결제방법: ' + context.dialog.pay + '\n';
         message += '요청사항: ' + context.dialog.request + '\n';
@@ -362,7 +363,34 @@ bot.setTask('reserveRequest', reserveRequest);
 
 // -------------------- Functions --------------------------
 
+function transSynonim(word) {
+    var synonims = [
+        {
+            name: "라지",
+            list: ["l", "large", "대"]
+        },
+        {
+            name: "미디움",
+            list: ["m", "medium", "중"]
+        },
+        {
+            name: "후라이드",
+            list: ["프라이드"]
+        }
+    ];
+
+    for(var i=0; i<synonims.length; i++){
+        for(var j=0; j<synonims[i].list.length; j++){
+            word = word.toLowerCase().replace(synonims[i].list[j], synonims[i].name);
+        }
+    };
+    return word;
+
+}
+
 function matchFun(key, word) {
+    word = transSynonim(word.replace( /(\s*)/g, ""));
+    key = transSynonim(key.replace( /(\s*)/g, ""));
     if (word.search(key) >=0 ) return true;
     else return false;
 }
@@ -415,11 +443,9 @@ var checkCondition = {
     context.dialog.deliveryTime = true;
     context.dialog.deliveryDistance = true;
     var totalPrice = getTotalPrice(context.user.cart);
-    // for(var i=0; i<context.user.cart.length; i++){
-    //   totalPrice += context.user.cart[i].price;
-    // }
-    // context.dialog.priceCond = (totalPrice > context.dialog.minimumPrice);
-    context.dialog.priceCond = true;
+    context.dialog.priceCond = (totalPrice > context.bot.restaurant.minPrice);
+    //context.dialog.priceCond = true;
+    context.dialog.totalPrice = totalPrice;
 
     callback(task,context);
 	}
@@ -523,3 +549,19 @@ var deleteCartItem = {
 };
 
 bot.setTask('deleteCartItem', deleteCartItem);
+
+
+var makeOpenTime = {
+  action: function (task,context,callback) {
+    context.dialog.weekday = true;
+    for(var i=0; i<5; i++){
+      if(context.bot.restaurant.openTime[0].time != context.bot.restaurant.openTime[i].time) {
+        context.dialog.weekday = false;
+        break;
+      }
+    }
+    callback(task,context);
+	}
+};
+
+bot.setTask('makeOpenTime', makeOpenTime);
