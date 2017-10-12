@@ -4,6 +4,23 @@
     background: #f8f8f8;
 }
 
+.simulator .simulator-background
+{
+    position: relative;
+    height: 100%;
+}
+
+.simulator .simulator-background .chatContents
+{
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    bottom: 70px;
+
+    overflow: auto;
+}
+
 .simulator p
 {
     font-size: 17px;
