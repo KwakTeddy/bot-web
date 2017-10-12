@@ -889,7 +889,7 @@ var dialogs = [
 						"kind": "Action",
 						"repeat": "1",
 						"options": {
-							"output": "보기중에 선택해주세요. 처음으로 돌아가려면 '"
+							"output": "보기중에 선택해주세요. 처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요."
 						},
 						"type": "Repeat"
 					}
