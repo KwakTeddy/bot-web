@@ -477,12 +477,14 @@ var getOrderHistory = {
   action: function (task,context,callback) {
     var orderList = mongoModule.getModel('orderList');
     orderList.find({user:context.user.userKey}).sort({created:-1}).limit(1).lean().exec(function(err, docs){
-        context.dialog.orderHistory = docs[0];
-        var created = context.dialog.orderHistory.created;
-        context.dialog.orderHistory.time = datePreProc(created);
-        created.setMinutes(created.getMinutes() + 30);
-        context.dialog.expectedTime = datePreProc(created);
-        context.dialog.totalPrice = getTotalPrice(context.dialog.orderHistory.order);
+        if(docs.length != 0){
+            context.dialog.orderHistory = docs[0];
+            var created = context.dialog.orderHistory.created;
+            context.dialog.orderHistory.time = datePreProc(created);
+            created.setMinutes(created.getMinutes() + 30);
+            context.dialog.expectedTime = datePreProc(created);
+            context.dialog.totalPrice = getTotalPrice(context.dialog.orderHistory.order);
+        }
 
         callback(task,context);
     });
