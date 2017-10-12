@@ -1,14 +1,8 @@
 'use strict';
 
-/**
- * Module dependencies.
- */
-var mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
+var mongoose = require('./mongo-wrapper.js');
+var Schema = mongoose.Schema;
 
-/**
- * Custom action Schema
- */
 var EntitySchema = new Schema({
   name: {
     type: String
@@ -29,9 +23,6 @@ var EntitySchema = new Schema({
 
 mongoose.model('Entity', EntitySchema);
 
-/**
- * Custom action Schema
- */
 var EntityContentSchema = new Schema({
   name: {
     type: String
@@ -59,9 +50,6 @@ var EntityContentSchema = new Schema({
 mongoose.model('EntityContent', EntityContentSchema);
 
 
-/**
- * Custom action Schema
- */
 var EntityContentSynonymSchema = new Schema({
   name: {
     type: String

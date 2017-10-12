@@ -35,7 +35,7 @@ function matchDictionaryEntities(inRaw, inNLP, inDoc, context, callback) {
           phraseCnt ++;
           if(phraseCnt > 1) nouns.push(phrase);
         } else {
-          phrase = ''; phraseCnt = 0;
+          phrase = ''; phraseCnt = 0;.
         }
       }
 

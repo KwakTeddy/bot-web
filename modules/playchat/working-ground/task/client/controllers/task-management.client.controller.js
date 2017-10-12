@@ -6,8 +6,8 @@ angular.module('playchat.working-ground').controller('TaskManagementController',
 {
     $scope.$parent.changeWorkingGroundName('Management > Task');
 
-    var TaskService = $resource('/api/tasks/:botId', { botId: '@botId' }, { update: { method: 'PUT' } });
-    var TaskPageService = $resource('/api/tasks/:botId/totalpage', { botId: '@botId' });
+    var TaskService = $resource('/api/:botId/tasks/:taskId', { botId: '@botId', taskId: '@taskId' }, { update: { method: 'PUT' } });
+    var TaskPageService = $resource('/api/:botId/tasks/totalpage', { botId: '@botId' });
     // var TaskUsableService = $resource('/api/tasks/:botId/usable', { botId: '@botId' }, { update: { method: 'PUT' } });
 
     var chatbot = $cookies.getObject('chatbot');
@@ -21,7 +21,7 @@ angular.module('playchat.working-ground').controller('TaskManagementController',
         {
             setTimeout(function()
             {
-                angular.element('.entity-title').focus();
+                angular.element('.task-title').focus();
             }, 100);
         });
 
@@ -30,7 +30,7 @@ angular.module('playchat.working-ground').controller('TaskManagementController',
         {
             setTimeout(function()
             {
-                angular.element('.entity-title').focus();
+                angular.element('.task-title').focus();
             }, 100);
         });
 

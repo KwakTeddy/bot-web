@@ -24,16 +24,14 @@
     <div class="downSide">
         <table class="tb02">
             <colgroup>
+                <col style="width: 55%;">
+                <col style="width: 30%;">
                 <col style="width: 15%;">
-                <col style="width: 35%;">
-                <col style="width: 10%;">
-                <col style="width: 40%;">
                 <!--<col style="width: 10%;">-->
             </colgroup>
             <thead>
             <tr>
                 <th>Name</th>
-                <th>Content</th>
                 <th>Last Update</th>
                 <th></th>
                 <!--<th>Usalbe</th>-->
@@ -41,11 +39,10 @@
             </thead>
             <tbody>
             <tr ng-if="tasks.length == 0">
-                <td colspan="4">empty</td>
+                <td colspan="3">empty</td>
             </tr>
             <tr ng-repeat="item in tasks">
-                <td>{{ item.title }}</td>
-                <td>{{ item.content }}</td>
+                <td>{{ item.name }}</td>
                 <td>{{ item.user.displayName }}</td>
                 <td>
                     <a href="#" class="flR" ng-click="delete(item);"><img src="modules/playchat/working-ground/common/client/img/delete.png" class="delete-img"></a>

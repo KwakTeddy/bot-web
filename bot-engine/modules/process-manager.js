@@ -5,18 +5,18 @@ var logger = require(path.resolve('./config/lib/logger.js'));
 {
     var ProcessManager = function()
     {
-        this.processQueue = [];
-        this.nextProcessIndex = 0;
+        this.nextProcess = undefined;
+        this.processList = {};
     };
 
-    ProcessManager.prototype.addProcess = function(process)
+    ProcessManager.prototype.addProcess = function(name, process)
     {
-        this.processQueue.push(process);
+        this.processList[name] = process;
     };
 
     ProcessManager.prototype.execute = function()
     {
-        this.processQueue[this.nextProcessIndex](arguments);
+        this.processQueue[this.nextProcess](arguments);
     };
 
     ProcessManager.prototype.error = function(err)
