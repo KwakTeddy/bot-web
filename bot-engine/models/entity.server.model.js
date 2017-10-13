@@ -1,6 +1,7 @@
 'use strict';
 
-var mongoose = require('./mongo-wrapper.js');
+var mongoWrapper = require('./mongo-wrapper.js');
+var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var EntitySchema = new Schema({
@@ -21,7 +22,7 @@ var EntitySchema = new Schema({
   }
 });
 
-mongoose.model('Entity', EntitySchema);
+mongoWrapper.model('Entity', EntitySchema);
 
 var EntityContentSchema = new Schema({
   name: {
@@ -47,7 +48,7 @@ var EntityContentSchema = new Schema({
 
 });
 
-mongoose.model('EntityContent', EntityContentSchema);
+mongoWrapper.model('EntityContent', EntityContentSchema);
 
 
 var EntityContentSynonymSchema = new Schema({
@@ -71,4 +72,4 @@ var EntityContentSynonymSchema = new Schema({
   }
 });
 
-mongoose.model('EntityContentSynonym', EntityContentSynonymSchema);
+mongoWrapper.model('EntityContentSynonym', EntityContentSynonymSchema);

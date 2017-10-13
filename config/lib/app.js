@@ -55,8 +55,7 @@ module.exports.start = function start(callback)
 {
     this.init(function (app, db, config)
     {
-        // var io = app.io;
-        require(path.resolve('./bot-engine/modules/core.js')).initialize(app, function()
+        require(path.resolve('./bot-engine2/core.js')).initialize(app, function()
         {
             app.server.listen(config.port, function ()
             {
@@ -84,10 +83,38 @@ module.exports.start = function start(callback)
                     callback(app.server, db, config);
             });
         });
-        // // Add an event listener to the 'connection' event
-        // io.on('connection', function (socket)
+
+        // var io = app.io;
+        // app.server.listen(config.port, function ()
         // {
-        //     require(path.resolve('./bot-engine/core.js')).initialize(io, socket);
+        //     // Add an event listener to the 'connection' event
+        //     io.on('connection', function (socket)
+        //     {
+        //         require(path.resolve('./bot-engine/core.js')).initialize(io, socket);
+        //     });
+        //
+        //     // Logging initialization
+        //     console.log();
+        //     console.log(chalk.green('================= Server Started ==================='));
+        //     console.log(chalk.green(config.app.title));
+        //     console.log(chalk.green('Environment     : ' + process.env.NODE_ENV));
+        //     console.log(chalk.green('Port            : ' + config.port));
+        //     console.log(chalk.green('Database        : ' + config.db.uri));
+        //     if (process.env.NODE_ENV === 'secure')
+        //     {
+        //         console.log(chalk.green('HTTPs           : on'));
+        //     }
+        //
+        //     console.log(chalk.green('App version     : ' + config.meanjs.version));
+        //
+        //     if (config.meanjs['meanjs-version'])
+        //         console.log(chalk.green('MEAN.JS version : ' + config.meanjs['meanjs-version']));
+        //
+        //     console.log(chalk.green('===================================================='));
+        //     console.log();
+        //
+        //     if(callback)
+        //         callback(app.server, db, config);
         // });
     });
 };

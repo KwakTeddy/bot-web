@@ -3,8 +3,9 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
+var mongoWrapper = require('./mongo-wrapper.js');
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 /**
  * Dialogset Schema
@@ -66,7 +67,7 @@ var DialogsetSchema = new Schema({
   }
 });
 
-mongoose.model('Dialogset', DialogsetSchema);
+mongoWrapper.model('Dialogset', DialogsetSchema);
 
 
 var DialogsetDialogSchema = new Schema({
@@ -97,7 +98,7 @@ var DialogsetDialogSchema = new Schema({
   }
 });
 
-mongoose.model('DialogsetDialog', DialogsetDialogSchema);
+mongoWrapper.model('DialogsetDialog', DialogsetDialogSchema);
 DialogsetDialogSchema.index({dialogset: 1, input: 1});
 
 var lgfaqSchema = new Schema({
@@ -121,7 +122,7 @@ var lgfaqSchema = new Schema({
     type: String
   },
 });
-mongoose.model('lgfaq', lgfaqSchema);
+mongoWrapper.model('lgfaq', lgfaqSchema);
 
 var conceptlists = new Schema({
   parent: {
@@ -132,4 +133,4 @@ var conceptlists = new Schema({
     type: String
   },
 });
-mongoose.model('conceptlists', conceptlists);
+mongoWrapper.model('conceptlists', conceptlists);

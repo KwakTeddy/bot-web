@@ -1,14 +1,16 @@
 var path = require('path');
+var logger = require(path.resolve('./config/lib/logger.js'));
 
 var NLPKo = require('./nlp/nlp-ko.js');
-
-var nlp = require(path.resolve('./bot-engine/engine/nlp/processor.js'));
 
 (function()
 {
     var NLPManager = function()
     {
         this.ko = new NLPKo({ stemmer: true, normalizer: true, spamfilter: true });
+        // this.en = new NLPEn();
+        // this.zh = new NLPZh();
+        // this.ja = new NLPJa();
     };
 
     NLPManager.prototype.initialize = function(language, done)
@@ -32,7 +34,11 @@ var nlp = require(path.resolve('./bot-engine/engine/nlp/processor.js'));
 
         this.initialize(language, function()
         {
-            this[language].tokenize(rawText, done, errCallback);
+            this[language].tokenize(rawText, done, function(err)
+            {
+                logger.systemError(err);
+                errCallback(err);
+            });
         }.bind(this));
     };
 

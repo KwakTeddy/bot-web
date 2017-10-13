@@ -1,5 +1,6 @@
 'use strict';
 
+var mongoWrapper = require('./mongo-wrapper.js');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
@@ -20,4 +21,4 @@ var BotUserSchema = new Schema(
     botId: []
 });
 
-module.exports = mongoose.model('BotUser', BotUserSchema);
+module.exports = mongoWrapper.model('BotUser', BotUserSchema);

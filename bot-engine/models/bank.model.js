@@ -3,8 +3,9 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
+var mongoWrapper = require('./mongo-wrapper.js');
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 /**
  * Bank Schema
@@ -33,4 +34,4 @@ var BankSchema = new Schema({
   }
 });
 
-mongoose.model('Bank', BankSchema);
+mongoWrapper.model('Bank', BankSchema);

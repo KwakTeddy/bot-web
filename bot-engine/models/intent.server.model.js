@@ -3,8 +3,9 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
+var mongoWrapper = require('./mongo-wrapper.js');
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 /**
  * Custom action Schema
@@ -27,7 +28,7 @@ var IntentSchema = new Schema({
   }
 });
 
-mongoose.model('Intent', IntentSchema);
+mongoWrapper.model('Intent', IntentSchema);
 
 /**
  * Custom action Schema
@@ -55,7 +56,7 @@ var IntentContentSchema = new Schema({
 
 });
 
-mongoose.model('IntentContent', IntentContentSchema);
+mongoWrapper.model('IntentContent', IntentContentSchema);
 
 var IntentUtteranceSchema = new Schema({
   utterance: {
@@ -81,7 +82,7 @@ var IntentUtteranceSchema = new Schema({
   }
 });
 
-mongoose.model('IntentUtterance', IntentUtteranceSchema);
+mongoWrapper.model('IntentUtterance', IntentUtteranceSchema);
 
 
 var BotIntentSchema = new Schema({
@@ -97,7 +98,7 @@ var BotIntentSchema = new Schema({
   }
 });
 
-mongoose.model('BotIntent', BotIntentSchema);
+mongoWrapper.model('BotIntent', BotIntentSchema);
 
 
 
@@ -118,5 +119,5 @@ var BotIntentFailSchema = new Schema({
   }
 });
 
-mongoose.model('BotIntentFail', BotIntentFailSchema);
+mongoWrapper.model('BotIntentFail', BotIntentFailSchema);
 

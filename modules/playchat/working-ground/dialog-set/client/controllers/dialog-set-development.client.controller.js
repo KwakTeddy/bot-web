@@ -3,13 +3,14 @@
 angular.module('playchat.working-ground').controller('DialogLearningDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', 'ModalService', 'PagingService', function ($window, $scope, $resource, $cookies, $location, $compile, ModalService, PagingService)
 {
     var DialogsetsService = $resource('/api/:botId/dialogsets/findbytitle', { botId: '@botId' });
-    var DialogsService = $resource('/api/dialogsets/:dialogsetId/dialogs', { dialogsetId: '@dialogset' }, { update: { method: 'PUT' } });
+    var DialogsService = $resource('/api/dialogsets/:dialogsetId/dialogs/:dialogsId', { dialogsetId: '@dialogset', dialogsId: '@dialogsId' }, { update: { method: 'PUT' } });
 
     //UI Data
     $scope.topicOpened = false;
 
     var chatbot = $cookies.getObject('chatbot');
     var user = $cookies.getObject('user');
+    var openDialogsets = $cookies.getObject('openDialogsets');
     var currentPage = 1;
 
     //UI Handling
@@ -17,14 +18,32 @@ angular.module('playchat.working-ground').controller('DialogLearningDevelopmentC
     {
         angular.element('.dialog-learning-development-content input:first').focus();
 
+        $scope.search = function(e)
+        {
+            if(e.keyCode == 13)
+            {
+                currentPage = 1;
+                $scope.getDialogs($scope.currentDialogsetId, e.currentTarget.value);
+            }
+            else if(e.keyCode == 8)
+            {
+                //backspace
+                if(e.currentTarget.value.length == 1)
+                {
+                    $scope.getDialogs($scope.currentDialogsetId);
+                }
+            }
+        };
+
         var countPerPage = $location.search().countPerPage || 50;
 
-        $scope.getDialogs = function(dialogsetId)
+        $scope.getDialogs = function(dialogsetId, rawText)
         {
             // 현재 페이지에 해당하는 데이터 가져오기.
-            DialogsService.query({ dialogsetId: dialogsetId, page: currentPage, countPerPage: countPerPage }, function(list)
+            DialogsService.query({ dialogsetId: dialogsetId, page: currentPage, countPerPage: countPerPage, rawText: rawText }, function(list)
             {
                 $scope.dialogs = list;
+                console.log(list);
 
                 // 로딩 끝.
                 $scope.$parent.loaded('working-ground');
@@ -35,22 +54,18 @@ angular.module('playchat.working-ground').controller('DialogLearningDevelopmentC
         {
             // 다음 페이지에 해당하는 내용 가져오기.
             angular.element('.more-progress').css('opacity', 1);
-            setTimeout(function()
+            DialogsService.query({ dialogsetId: $scope.currentDialogsetId, page: currentPage+1, countPerPage: countPerPage, rawText: rawText }, function(list)
             {
-                // 일단 로딩이 너무 빨라서 강제로 timeout을 넣었음.
-                DialogsService.query({ dialogsetId: $scope.currentDialogsetId, page: currentPage+1, countPerPage: countPerPage }, function(list)
+                angular.element('.more-progress').css('opacity', 0);
+                if(list.length > 0)
                 {
-                    angular.element('.more-progress').css('opacity', 0);
-                    if(list.length > 0)
+                    currentPage++;
+                    for(var i=0, l=list.length; i<l; i++)
                     {
-                        currentPage++;
-                        for(var i=0, l=list.length; i<l; i++)
-                        {
-                            $scope.dialogs.push(list[i]);
-                        }
+                        $scope.dialogs.push(list[i]);
                     }
-                });
-            }, 2000);
+                }
+            });
         });
 
         $scope.save = function(data, callback)
@@ -145,14 +160,21 @@ angular.module('playchat.working-ground').controller('DialogLearningDevelopmentC
 
         $scope.inputKeydown = function(e)
         {
+            console.log('어이 : ', e.keyCode);
             var event = e.originalEvent;
             if(e.keyCode == 13 && (event.ctrlKey || event.metaKey))
             {
-                var clone = e.currentTarget.cloneNode();
-                clone.value = '';
+                console.log(e.currentTarget.parentElement.parentElement.parentElement.previousElementSibling);
+                var blur = ' ng-keyup="watchModified(\'output\', $event)" ng-blur="saveModified(\'input\', $event)"';
+                if(!e.currentTarget.parentElement.parentElement.parentElement.previousElementSibling)
+                    blur = '';
 
-                e.currentTarget.parentElement.insertBefore(clone, e.currentTarget);
-                clone.focus();
+                var input = '<input type="text" class="data-input" ng-keydown="inputKeydown($event);" value="" ng-focus="checkModify($event);"' + blur + '>';
+
+                angular.element($compile(input)($scope)).insertBefore(e.currentTarget.nextElementSibling).focus();
+
+
+                // e.currentTarget.parentElement.insertBefore(clone, e.currentTarget.nextElementSibling);
             }
         };
 
@@ -160,7 +182,7 @@ angular.module('playchat.working-ground').controller('DialogLearningDevelopmentC
         {
             if(confirm('정말 삭제하시겠습니까'))
             {
-                DialogsService.delete({ dialogsetId: dialog._id }, function(err, result)
+                DialogsService.delete({ dialogsetId: dialog.dialogset, dialogsId: dialog._id }, function(err, result)
                 {
                     var target = e.currentTarget.parentElement.parentElement.parentElement;
                     target.parentElement.removeChild(target);
@@ -248,6 +270,18 @@ angular.module('playchat.working-ground').controller('DialogLearningDevelopmentC
                 e.currentTarget.prevValue = e.currentTarget.value;
             });
         };
+        
+        $scope.isArray = function(item)
+        {
+            if((typeof item == 'Array' || typeof item == 'object') && item.length)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        };
 
         $scope.$watch('topicOpened', function(after, before)
         {
@@ -264,17 +298,20 @@ angular.module('playchat.working-ground').controller('DialogLearningDevelopmentC
             }
         });
 
-        $scope.selectTab = function(id)
+        $scope.selectTab = function(id, title)
         {
             angular.element('.tabs1 .select_tab').removeClass('select_tab');
             angular.element('.tabs1 li[data-id="' + id + '"]').addClass('select_tab');
             $scope.getDialogs(id);
             angular.element('.dialog-learning-development-content input:first').focus();
+
+            $location.search('dialogsetId', id);
+            $location.search('dialogsetTitle', title);
         };
 
         $scope.createTab = function(id, title)
         {
-            var template = '<li ng-click="selectTab(\'' + id + '\');" data-id="' + id + '"><a href="#">' + title + '</a></li>';
+            var template = '<li ng-click="selectTab(\'' + id + '\', \'' + title + '\');" data-id="' + id + '"><a href="#">' + title + '</a></li>';
             angular.element($compile(template)($scope)).insertBefore(angular.element('.tabs1 > li:last'));
         };
 
@@ -289,56 +326,61 @@ angular.module('playchat.working-ground').controller('DialogLearningDevelopmentC
         $scope.initialize = function()
         {
             //탭 불러오기.
-            $scope.loadTabs(user.opendDialogsets);
+            $scope.loadTabs(openDialogsets);
 
             $scope.currentDialogsetId = $location.search().dialogsetId || 'default';
             $scope.currentDialogsetTitle = $location.search().dialogsetTitle || 'default';
 
             // 만약 다이얼로그셋 id가 default라면..
             if($scope.currentDialogsetId == 'default')
-                $scope.currentDialogsetId = user.opendDialogsets['default']
+                $scope.currentDialogsetId = openDialogsets['default']
 
             // dialogsetId가 현재 열리지 않았다면.
-            if(!user.opendDialogsets.hasOwnProperty($scope.currentDialogsetTitle))
+            if(!openDialogsets.hasOwnProperty($scope.currentDialogsetTitle))
             {
                 //저장하고
-                user.opendDialogsets[$scope.currentDialogsetTitle] = $scope.currentDialogsetId;
+                openDialogsets[$scope.currentDialogsetTitle] = $scope.currentDialogsetId;
                 //쿠기는 string밖에 저장이 안되서 부득이하게
-                user.opendDialogsets = JSON.stringify(user.opendDialogsets);
-                $cookies.putObject('user', user);
-                user.opendDialogsets = JSON.parse(user.opendDialogsets);
+                $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
 
                 //해당 다이얼로그셋 탭 생성.
                 $scope.createTab($scope.currentDialogsetId, $scope.currentDialogsetTitle);
             }
 
+            var title = '';
+            for(var key in openDialogsets)
+            {
+                if(openDialogsets[key] == $scope.currentDialogsetId)
+                {
+                    title = key;
+                    break;
+                }
+            }
             // 탭 셀렉트
-            $scope.selectTab($scope.currentDialogsetId);
+            $scope.selectTab($scope.currentDialogsetId, title);
         };
     })();
 
     // 현재 사용자가 열어둔 다이얼로그셋을 가져온다.
-    if(!user.opendDialogsets)
+    if(!openDialogsets)
     {
-        user.opendDialogsets = {};
+        openDialogsets = {};
     }
     else
     {
-        user.opendDialogsets = JSON.parse(user.opendDialogsets);
+        openDialogsets = JSON.parse(openDialogsets);
     }
 
     //만약 default가 없다면 생성.
-    if(!user.opendDialogsets.hasOwnProperty('default'))
+    if(!openDialogsets.hasOwnProperty('default'))
     {
         DialogsetsService.get({ botId: chatbot._id, title: 'default' }, function(dialogset)
         {
-            user.opendDialogsets['default'] = dialogset._id;
+            openDialogsets['default'] = dialogset._id;
 
             //쿠기는 string밖에 저장이 안되서 부득이하게
-            user.opendDialogsets = JSON.stringify(user.opendDialogsets);
-            $cookies.putObject('user', user);
-            user.opendDialogsets = JSON.parse(user.opendDialogsets);
-            
+            $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
+
             $scope.initialize();
         });
     }

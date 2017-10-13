@@ -3,8 +3,9 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
+var mongoWrapper = require('./mongo-wrapper.js');
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 /**
  * Custom action Schema
@@ -55,4 +56,4 @@ var FactLinkSchema = new Schema({
   }
 });
 
-mongoose.model('FactLink', FactLinkSchema);
+mongoWrapper.model('FactLink', FactLinkSchema);

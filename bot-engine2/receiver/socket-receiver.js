@@ -1,8 +1,6 @@
 var path = require('path');
 var logger = require(path.resolve('./config/lib/logger.js'));
 
-var processManager = require(path.resolve('./bot-engine/modules/process-manager.js'));
-
 (function()
 {
     var SocketReceiver = function()
@@ -26,8 +24,9 @@ var processManager = require(path.resolve('./bot-engine/modules/process-manager.
                 console.log();
                 logger.systemLog('[BotEngine] User Request : ' + JSON.stringify(requestData));
 
-                var responseCallback = function(){
-
+                var responseCallback = function(responseText)
+                {
+                    socket.emit('send_msg', responseText);
                 };
                 core.process(requestData, responseCallback);
                 // bot.botProc(msg.bot, msg.channel || 'socket', msg.user, msg.msg, msg, function(_out, _task)

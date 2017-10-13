@@ -19,16 +19,16 @@
             </div>
         </div>
         <div class="question-area">
-            <input type="text" class="data-input" ng-keydown="inputKeydown($event);" ng-required="true">
+            <textarea type="text" class="data-input" ng-keydown="inputKeydown($event);" ng-required="true"></textarea>
             <span class="plus-button" ng-click="addInput($event);"></span>
         </div>
         <div class="answer-area">
-            <input type="text" class="data-input" ng-keydown="inputKeydown($event);" ng-required="true">
+            <textarea type="text" class="data-input" ng-keydown="inputKeydown($event);" ng-required="true"></textarea>
             <span class="plus-button" ng-click="addInput($event);"></span>
         </div>
         <div class="functions-area">
             <button class="blue-button"> <img src="/modules/playchat/working-ground/common/client/img/add.png"> Add</button>
-            <img src="/modules/playchat/working-ground/dialog-set/client/img/editing.png" class="editing-img" style="display: none;">
+            <img src="/modules/playchat/working-ground/dialog-set/client/img/editing.gif" class="editing-img" style="display: none;">
             <img src="/modules/playchat/working-ground/dialog-set/client/img/saving.png" class="saving-img" style="display: none;">
             <img src="/modules/playchat/working-ground/dialog-set/client/img/saved.png" class="saved-img" style="display: none;">
             <img src="/modules/playchat/working-ground/common/client/img/delete.png" class="delete-img" style="display: none;">
@@ -40,7 +40,7 @@
 <div ng-controller="DialogLearningDevelopmentController">
     <div class="upSide">
         <form class="inline-block">
-            <input id="search" name="search" type="search" class="search">
+            <input id="search" name="search" type="search" class="search" ng-keydown="search($event);">
         </form>
         <div class="funtionbtn1">
             <a href="#">
@@ -89,16 +89,16 @@
                     </div>
                 </div>
                 <div class="question-area">
-                    <input type="text" class="data-input" ng-required="true" ng-keydown="inputKeydown($event);">
+                    <textarea type="text" class="data-input" ng-required="true" ng-keydown="inputKeydown($event);"></textarea>
                     <span class="plus-button" ng-click="addInput($event);"></span>
                 </div>
                 <div class="answer-area">
-                    <input type="text" class="data-input" ng-required="true" ng-keydown="inputKeydown($event);">
+                    <textarea type="text" class="data-input" ng-required="true" ng-keydown="inputKeydown($event);"></textarea>
                     <span class="plus-button" ng-click="addInput($event);"></span>
                 </div>
                 <div class="functions-area">
                     <button class="blue-button"> <img src="/modules/playchat/working-ground/common/client/img/add.png"> Add</button>
-                    <img src="/modules/playchat/working-ground/dialog-set/client/img/editing.png" class="editing-img" style="display: none;">
+                    <img src="/modules/playchat/working-ground/dialog-set/client/img/editing.gif" class="editing-img" style="display: none;">
                     <img src="/modules/playchat/working-ground/dialog-set/client/img/saving.png" class="saving-img" style="display: none;">
                     <img src="/modules/playchat/working-ground/dialog-set/client/img/saved.png" class="saved-img" style="display: none;">
                     <img src="/modules/playchat/working-ground/common/client/img/delete.png" class="delete-img" style="display: none;">
@@ -124,15 +124,17 @@
                     </div>
                 </div>
                 <div class="question-area">
-                    <input type="text" class="data-input" ng-repeat="input in dialog.inputRaw track by $index" value="{{ input }}" ng-focus="checkModify($event);" ng-keyup="watchModified('input', $event)" ng-blur="saveModified('input', $event)">
+                    <textarea type="text" class="data-input" ng-keydown="inputKeydown($event);" ng-if="isArray(dialog.inputRaw);" ng-repeat="input in dialog.inputRaw track by $index" ng-focus="checkModify($event);" ng-keyup="watchModified('input', $event)" ng-blur="saveModified('input', $event)">{{ input }}</textarea>
+                    <textarea type="text" class="data-input" ng-keydown="inputKeydown($event);" ng-if="!isArray(dialog.inputRaw);" ng-focus="checkModify($event);" ng-keyup="watchModified('input', $event)" ng-blur="saveModified('input', $event)">{{ dialog.inputRaw }}</textarea>
                     <span class="plus-button" ng-click="addInput($event);" ng-required="true"></span>
                 </div>
                 <div class="answer-area">
-                    <input type="text" class="data-input" ng-repeat="output in dialog.output track by $index" value="{{ output }}" ng-focus="checkModify($event);" ng-keyup="watchModified('output', $event)" ng-blur="saveModified('input', $event)">
+                    <textarea type="text" class="data-input" ng-keydown="inputKeydown($event);" ng-if="isArray(dialog.inputRaw);" ng-repeat="output in dialog.output track by $index" ng-focus="checkModify($event);" ng-keyup="watchModified('output', $event)" ng-blur="saveModified('input', $event)">{{ output }}</textarea>
+                    <textarea type="text" class="data-input" ng-keydown="inputKeydown($event);" ng-if="!isArray(dialog.inputRaw);" ng-focus="checkModify($event);" ng-keyup="watchModified('output', $event)" ng-blur="saveModified('input', $event)">{{ dialog.output }}</textarea>
                     <span class="plus-button" ng-click="addInput($event);" ng-required="true"></span>
                 </div>
                 <div class="functions-area">
-                    <img src="/modules/playchat/working-ground/dialog-set/client/img/editing.png" class="editing-img" style="display: none;">
+                    <img src="/modules/playchat/working-ground/dialog-set/client/img/editing.gif" class="editing-img" style="display: none;">
                     <img src="/modules/playchat/working-ground/dialog-set/client/img/saving.png" class="saving-img" style="display: none;">
                     <img src="/modules/playchat/working-ground/dialog-set/client/img/saved.png" class="saved-img" style="display: none;">
                     <img src="/modules/playchat/working-ground/common/client/img/delete.png" class="delete-img" ng-click="deleteDialog(dialog, $event);">
@@ -141,6 +143,6 @@
         </div>
     </div>
     <div style="text-align: center;">
-        <img src="/modules/playchat/working-ground/dialog-set/client/img/editing.png" class="more-progress" style="opacity: 0;">
+        <img src="/modules/playchat/working-ground/dialog-set/client/img/editing.gif" class="more-progress" style="opacity: 0;">
     </div>
 </div>

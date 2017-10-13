@@ -6,7 +6,7 @@ var logger = require(path.resolve('./config/lib/logger.js'));
 var Dialogset = mongoose.model('Dialogset');
 var DialogsetDialog = mongoose.model('DialogsetDialog');
 
-var nlpManager = require(global._botEngineModules.nlpManager);
+var nlpManager = require(path.resolve('./bot-engine2/nlp-manager.js'));
 
 exports.findTotalPage = function(req, res)
 {
@@ -14,8 +14,8 @@ exports.findTotalPage = function(req, res)
 
     var query = { dialogset: req.params.dialogsetId };
 
-    if(req.query.inputRaw)
-        query.inputRaw = { "$regex": req.query.inputRaw, "$options": 'i' };
+    if(req.query.rawText)
+        query.inputRaw = { "$regex": req.query.rawText, "$options": 'i' };
 
     DialogsetDialog.find(query).count(function(err, count)
     {
@@ -38,8 +38,8 @@ exports.find = function(req, res)
 
     var query = { dialogset: req.params.dialogsetId };
 
-    if(req.query.inputRaw)
-        query.inputRaw = { "$regex": req.query.inputRaw, "$options": 'i' };
+    if(req.query.rawText)
+        query.inputRaw = { "$regex": req.query.rawText, "$options": 'i' };
 
     DialogsetDialog.find(query).sort('-id').skip(countPerPage*(page-1)).limit(countPerPage).exec(function(err, dialogs)
     {
@@ -126,42 +126,56 @@ exports.update = function(req, res)
 
         dialog.inputRaw = req.body.inputRaw;
         dialog.output = req.body.output;
-        nlpManager.tokenize(req.user.language, dialog.inputRaw, function(result)
+
+        var inputList = [];
+        async.each(dialog.inputRaw, function(inputRaw, done)
         {
-            var processed = result.processed;
-
-            var nlp = [];
-            for (var i in processed)
+            nlpManager.tokenize(req.user.language, inputRaw, function(result)
             {
-                if (processed[i].pos !== 'Josa' && processed[i].pos !== 'Punctuation')
-                {
-                    nlp.push(processed[i].text);
-                }
-            }
+                var processed = result.processed;
 
-            var input = nlp.join(' ');
-            dialog.input = input;
-            dialog.save(function(err)
-            {
-                if(err)
+                var nlp = [];
+                for(var i in processed)
                 {
-                    logger.systemError(err);
-                    return res.status(400).send({ message: err.stack || err });
+                    if(processed[i].pos !== 'Josa' && processed[i].pos !== 'Punctuation')
+                    {
+                        nlp.push(processed[i].text);
+                    }
                 }
 
-                res.jsonp(dialog);
+                var input = nlp.join(' ');
+                inputList.push(input);
+
+                done();
+            },
+            function(err)
+            {
+                logger.systemError(err);
+                return res.status(400).send({ message: err.stack || err });
             });
         },
-        function(err)
+        function()
         {
-            return res.status(400).send({ message: err.stack || err });
+            dialog.input = inputList;
+            dialog.save(function(err)
+            {
+                if (err)
+                {
+                    return res.status(400).send({ message: err.stack || err });
+                }
+                else
+                {
+                    res.jsonp(dialog);
+                }
+            });
         });
+
     });
 };
 
 exports.delete = function(req, res)
 {
-    DialogsetDialog.remove({ _id: req.params.dialogsetId }).exec(function(err)
+    DialogsetDialog.remove({ _id: req.params.dialogsId }).exec(function(err)
     {
         if (err)
         {

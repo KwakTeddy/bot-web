@@ -3,8 +3,9 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
+var mongoWrapper = require('./mongo-wrapper.js');
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 /**
  * Bot user Schema
@@ -62,7 +63,7 @@ var UserDialogSchema = new Schema({
   }
 });
 
-mongoose.model('UserDialog', UserDialogSchema);
+mongoWrapper.model('UserDialog', UserDialogSchema);
 
 
 var UserDialogLogSchema = new Schema({
@@ -97,4 +98,4 @@ var UserDialogLogSchema = new Schema({
   }
 });
 
-mongoose.model('UserDialogLog', UserDialogLogSchema);
+mongoWrapper.model('UserDialogLog', UserDialogLogSchema);

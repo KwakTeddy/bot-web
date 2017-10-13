@@ -3,8 +3,9 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
+var mongoWrapper = require('./mongo-wrapper.js');
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 /**
  * UserBot Schema
@@ -73,7 +74,7 @@ var UserBotSchema = new Schema({
   }
 });
 
-mongoose.model('UserBot', UserBotSchema);
+mongoWrapper.model('UserBot', UserBotSchema);
 
 
 var UserBotDialogFileSchema = new Schema({
@@ -94,7 +95,7 @@ var UserBotDialogFileSchema = new Schema({
   }
 });
 
-mongoose.model('UserBotDialogFile', UserBotDialogFileSchema);
+mongoWrapper.model('UserBotDialogFile', UserBotDialogFileSchema);
 
 
 // var UserBotDialogSchema = new Schema({
@@ -121,7 +122,7 @@ mongoose.model('UserBotDialogFile', UserBotDialogFileSchema);
 //   }
 // });
 //
-// mongoose.model('UserBotDialog', UserBotDialogSchema);
+// mongoWrapper.model('UserBotDialog', UserBotDialogSchema);
 
 
 var UserBotFollowSchema = new Schema({
@@ -142,7 +143,7 @@ var UserBotFollowSchema = new Schema({
   }
 });
 
-mongoose.model('UserBotFollow', UserBotFollowSchema);
+mongoWrapper.model('UserBotFollow', UserBotFollowSchema);
 
 
 var UserBotCommentSchema = new Schema({
@@ -163,7 +164,7 @@ var UserBotCommentSchema = new Schema({
   }
 });
 
-mongoose.model('UserBotComment', UserBotCommentSchema);
+mongoWrapper.model('UserBotComment', UserBotCommentSchema);
 
 
 var UserBotDialogSchema = new Schema({
@@ -192,5 +193,5 @@ var UserBotDialogSchema = new Schema({
   }
 });
 
-mongoose.model('UserBotDialog', UserBotDialogSchema);
+mongoWrapper.model('UserBotDialog', UserBotDialogSchema);
 

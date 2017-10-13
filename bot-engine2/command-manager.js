@@ -1,5 +1,5 @@
 var path = require('path');
-var moduleLoader = require(path.resolve('./bot-engine/modules/common/module-loader.js'));
+var moduleLoader = require('./utils/module-loader.js');
 
 (function()
 {
@@ -13,7 +13,7 @@ var moduleLoader = require(path.resolve('./bot-engine/modules/common/module-load
     CommandManager.prototype.loadCommands = function()
     {
         var that = this;
-        moduleLoader.load(path.resolve('./bot-engine/modules/commands'), { postfix: '-command.js' }, function(fileList)
+        moduleLoader.load(path.resolve('./bot-engine2/commands'), { postfix: '-command.js' }, function(fileList)
         {
             for(var i=0, l=fileList.length; i<l; i++)
             {
@@ -23,9 +23,9 @@ var moduleLoader = require(path.resolve('./bot-engine/modules/common/module-load
         });
     };
 
-    CommandManager.prototype.execute = function(userInputText)
+    CommandManager.prototype.execute = function(commandName, context, done)
     {
-        this.commands[userInputText]();
+        this.commands[commandName](context, done);
     };
 
     module.exports = new CommandManager();

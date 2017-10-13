@@ -6,9 +6,6 @@ var logger = require(path.resolve('./config/lib/logger.js'));
 var java = require('java');
 var async = require('async');
 
-var processManager = require('../process-manager.js');
-
-//
 java.classpath.push(path.resolve('./external_modules/scala-library-2.11.6.jar'));
 java.classpath.push(path.resolve('./external_modules/twitter-text-1.11.1.jar'));
 java.classpath.push(path.resolve('./external_modules/korean-text-3.0.jar'));

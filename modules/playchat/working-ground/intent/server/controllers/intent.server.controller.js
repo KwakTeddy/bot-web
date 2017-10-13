@@ -15,7 +15,7 @@ var IntentContext = mongoose.model('IntentContext');
 
 var errorHandler = require(path.resolve('./modules_old/core/server/controllers/errors.server.controller'));
 
-var nlpManager = require(global._botEngineModules.nlpManager);
+var nlpManager = require(path.resolve('./bot-engine2/nlp-manager.js'));
 
 exports.findTotalPage = function(req, res)
 {

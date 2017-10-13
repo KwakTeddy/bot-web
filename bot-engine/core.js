@@ -5,38 +5,21 @@ var logger = require(path.resolve('./config/lib/logger.js'));
 
 require('./models/dialogset.server.model.js');
 require('./models/intent.server.model.js');
-require('./models/bank.server.model.js');
-require('./models/user-dialog.server.model.js');
-require('./models/fact-link.server.model.js');
-require('./models/file-bot.server.model.js');
+require('./models/bank.model.js');
+require('./models/user-dialog.model.js');
+require('./models/fact-link.model.js');
+require('./models/file-bot.model.js');
 require('./models/user-bot.server.model.js');
 require('./models/bot-user.model.js');
-require('./models/bot.server.model.js');
+require('./models/bot.model.js');
 require('./models/entity.server.model.js');
 
 require(path.resolve('./bot-engine/engine/common/globals.js')).initGlobals();
 
 var bot = require(path.resolve('./bot-engine/bot.server.controller.js'));
 
-// var ContextService = require('./context');
-
 (function()
 {
-    var getContext = function(json)
-    {
-        ContextService.getContext(json.channel, json.botId, json.userId, json.options, function(context)
-        {
-            console.log(context);
-        });
-    };
-
-    var process = function(json, callback)
-    {
-        logger.systemLog('================= Core Process =================');
-        logger.systemLog(JSON.stringify(json));
-        getContext(json, callback);
-    };
-
     var initSocket = function(socket)
     {
         logger.systemLog('[BotEngine] User is connected');
@@ -50,7 +33,7 @@ var bot = require(path.resolve('./bot-engine/bot.server.controller.js'));
         {
             console.log();
             logger.systemLog('[BotEngine] User message : ' + JSON.stringify(msg));
-            bot.botProc(msg.bot, msg.channel || 'socket', msg.user, msg.msg, msg, function(_out, _task)
+            bot.botProc(msg.botId, msg.channel || 'socket', msg.userId, msg.rawText, msg, function(_out, _task)
             {
                 console.log(_out, _task);
                 if(_task == undefined || (_task.result == undefined && _task.image == undefined && _task.buttons == undefined && _task.items == undefined))

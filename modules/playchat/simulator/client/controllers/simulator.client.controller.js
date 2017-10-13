@@ -30,6 +30,9 @@ function ($window, $scope, $cookies, $resource, Socket)
             var template = angular.element('#botAnswerTemplate').html();
             template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', text);
             simulatorBody.append(template);
+
+            var body = angular.element('#simulatorBody').get(0);
+            body.scrollTop = body.scrollHeight;
         };
 
         var addUserBubble = function(text)
@@ -37,6 +40,9 @@ function ($window, $scope, $cookies, $resource, Socket)
             var template = angular.element('#userAnswerTemplate').html();
             template = template.replace('{time}', getCurrentTime()).replace('{text}', text);
             simulatorBody.append(template);
+
+            var body = angular.element('#simulatorBody').get(0);
+            body.scrollTop = body.scrollHeight;
         };
 
         var emitMsg = function(msg, isUser)
@@ -44,7 +50,7 @@ function ($window, $scope, $cookies, $resource, Socket)
             var options = { dev: true };
 
             var params = {};
-            params.botId = chatbot.id;
+            params.botId = chatbot._id;
             params.userId = user._id;
             params.rawText = msg;
             params.options = options;

@@ -7,16 +7,19 @@ var recursiveReader = require('recursive-readdir');
         options = options || {};
         recursiveReader(path, options.ignores || [], function(err, files)
         {
-            for(var i=0, l=files.length; i<l; i++)
+            if(files)
             {
-                var check = false;
-                if(options.postfix && files[i].endsWith(options.postfix))
+                for(var i=0, l=files.length; i<l; i++)
                 {
-                    check = true;
-                }
+                    var check = false;
+                    if(options.postfix && files[i].endsWith(options.postfix))
+                    {
+                        check = true;
+                    }
 
-                if(check)
-                    fileList.push(files[i]);
+                    if(check)
+                        fileList.push(files[i]);
+                }
             }
 
             callback(fileList);

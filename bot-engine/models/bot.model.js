@@ -3,8 +3,9 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
+var mongoWrapper = require('./mongo-wrapper.js');
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 var BotDialogFileSchema = new Schema({
   bot: {
@@ -24,7 +25,7 @@ var BotDialogFileSchema = new Schema({
   }
 });
 
-mongoose.model('BotDialogFile', BotDialogFileSchema);
+mongoWrapper.model('BotDialogFile', BotDialogFileSchema);
 
 
 // var BotDialogSchema = new Schema({
@@ -51,7 +52,7 @@ mongoose.model('BotDialogFile', BotDialogFileSchema);
 //   }
 // });
 //
-// mongoose.model('BotDialog', BotDialogSchema);
+// mongoWrapper.model('BotDialog', BotDialogSchema);
 
 
 var BotFollowSchema = new Schema({
@@ -72,7 +73,7 @@ var BotFollowSchema = new Schema({
   }
 });
 
-mongoose.model('BotFollow', BotFollowSchema);
+mongoWrapper.model('BotFollow', BotFollowSchema);
 
 
 var BotCommentSchema = new Schema({
@@ -93,7 +94,7 @@ var BotCommentSchema = new Schema({
   }
 });
 
-mongoose.model('BotComment', BotCommentSchema);
+mongoWrapper.model('BotComment', BotCommentSchema);
 
 
 var BotDialogSchema = new Schema({
@@ -129,7 +130,7 @@ var BotDialogSchema = new Schema({
   }
 });
 
-mongoose.model('BotDialog', BotDialogSchema);
+mongoWrapper.model('BotDialog', BotDialogSchema);
 
 var UserBotFbPageSchema = new Schema({
     bot: {
@@ -167,4 +168,4 @@ var UserBotFbPageSchema = new Schema({
     }
 });
 
-mongoose.model('UserBotFbPage', UserBotFbPageSchema);
+mongoWrapper.model('UserBotFbPage', UserBotFbPageSchema);

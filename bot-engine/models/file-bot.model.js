@@ -3,8 +3,9 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
+var mongoWrapper = require('./mongo-wrapper.js');
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 /**
  * Bot Schema
@@ -31,6 +32,6 @@ var BotFileSchema = new Schema({
   }
 });
 
-mongoose.model('BotFile', BotFileSchema);
+mongoWrapper.model('BotFile', BotFileSchema);
 
 

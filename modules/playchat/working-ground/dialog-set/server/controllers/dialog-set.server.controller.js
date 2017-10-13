@@ -13,7 +13,7 @@ var logger = require(path.resolve('./config/lib/logger.js'));
 var Dialogset = mongoose.model('Dialogset');
 var DialogsetDialog = mongoose.model('DialogsetDialog');
 
-var nlpManager = require(global._botEngineModules.nlpManager);
+var uploadModule = require('./uploader/dialogset-uploader');
 
 exports.findTotalPage = function(req, res)
 {
@@ -89,15 +89,18 @@ exports.create = function(req, res)
         }
         else
         {
-            res.jsonp(dialogset);
             // 파일업로드 하면 바로 db에 저장하는 코드임.
-            // if(dialogset.filename && dialogset.path)
-            // {
-            //     dialogsetModule.convertDialogset1(dialogset, null, function(result)
-            //     {
-            //         console.log(dialogset.filename + ' converted');
-            //     });
-            // }
+            if(dialogset.filename && dialogset.path)
+            {
+                uploadModule.importFile(req.body.language, dialogset, function()
+                {
+                    res.jsonp(dialogset);
+                });
+                // dialogsetModule.convertDialogset1(dialogset, null, function(result)
+                // {
+                //     console.log(dialogset.filename + ' converted');
+                // });
+            }
         }
     });
 };
