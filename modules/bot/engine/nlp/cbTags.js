@@ -88,6 +88,7 @@ CBTags.prototype.setNormalizeTag = function() {
     koDictionary["Exclamation"] = "Interjection";
     koDictionary["Foreign"] = "Foreign";
     koDictionary["Josa"] = "Suffix";
+    koDictionary["KoreanParticle"] = "Symbol";
     koDictionary["Noun"] = "Noun";
     koDictionary["Number"] = "Number";
     koDictionary["PreEomi"] = "Suffix";
