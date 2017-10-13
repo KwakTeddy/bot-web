@@ -1,5 +1,5 @@
 var path = require('path');
-var bot = require(path.resolve('config/lib/bot')).getBot('delivery2');
+var bot = require(path.resolve('config/lib/bot')).getBot('delivery_md');
 
 var messages = require(path.resolve('modules/messages/server/controllers/messages.server.controller'));
 var mongoose = require('mongoose');
@@ -105,7 +105,7 @@ var startTask = {
         context.user.cart = [];
 
         var restaurant = mongoModule.getModel('restaurantcontent');
-        restaurant.find({_id:ObjectId("59dcd621874f5bbde7a10679")}).lean().exec(function(err, docs) {
+        restaurant.find({_id:ObjectId("59e08720ae20b594f69b8bdd")}).lean().exec(function(err, docs) {
             context.bot.restaurant = docs[0];
             if(!isOpen(context.bot.restaurant.openTime)) context.dialog.notOpen = "\n(**현재는 영업시간이 아닙니다**)\n";
             callback(task,context);

@@ -16,9 +16,6 @@ var ADDRESS_SPACE_DIR = process.env.ADDRESS_SPACE_DIR;
 function addressTypeCheck(text, type, task, context, callback) {
   var address = {};
   address.inRaw = text;
-  // address.inRaw = context.dialog.inCurRaw;
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@22");
-    console.log(text);
   searchAddress(address, context, function() {
     if(address.doc == undefined) {
       logger.debug('nodata: ' + address.inRaw);
@@ -164,7 +161,7 @@ function searchAddress(task, context, callback) {
   var query = {};
   var 시도명, 시군구명, 읍면동명, 행정동명, 도로명, 리명, 본번, 부번, 상세주소, 도로명상세주소, 건물명;
 
-  var 지번Re = /(?:(경기도|경기|강원도|강원|충청북도|충북|충청남도|충남|전라북도|전북|전라남도|전남|경상북도|경북|경상남도|경남|제주특별자치도|제주도|제주|서울특별시|서울시|서울|인천광역시|인천시|인천|대전광역시|대전시|대전|대구광역시|대구시|대구|광주광역시|광주시|광주|부산광역시|부산시|부산|울산광역시|울산시|울산|세종특별자치시|세종특별시|세종시|세종)\s*)?(?:([가-힣]+시|[가-힣]+군|[가-힣]+구)\s*)?(?:[가-힣]+구\s*)?(?:(?:([가-힣]+읍|[가-힣]+면|[가-힣]+동|[가-힣]+[\s0-9]+가)|([가-힣]+\d+읍|[가-힣]+\d+면|[가-힣]+\d+동))|(?:(?:[가-힣]+읍\s+|[가-힣]+면\s+)?([가-힣]+[\s0-9]*번?로[\s0-9]*번?[가나다라마바사아자차카타파하]?길|[가-힣]+[\s0-9]*번?[가나다라마바사아자차카타파하]?길|[가-힣]+[\s0-9]*번?로)))\s*([가-힣]+\d*리)?\s*(\d+)?(?:\s*-\s*(\d+))?(?:(?:\s*,?\s*|\s+)([^\\(]*))?(?:\s*\(([^,\s]+)(?:\s*,?\s*([^\\)]*))?\))?/i;
+  var 지번Re = /(?:(경기도|경기|강원도|강원|충청북도|충북|충청남도|충남|전라북도|전북|전라남도|전남|경상북도|경북|경상남도|경남|제주특별자치도|제주도|제주|서울특별시|서울시|서울|인천광역시|인천시|인천|대전광역시|대전시|대전|대구광역시|대구시|대구|광주광역시|광주시|광주|부산광역시|부산시|부산|울산광역시|울산시|울산|세>종특별자치시|세종특별시|세종시|세종)\s*)?(?:([가-힣]+시|[가-힣]+군|[가-힣]+구)\s*)?(?:[가-힣]+구\s*)?(?:(?:([가-힣]+읍|[가-힣]+면|[가-힣]+동[\s가-힣]+[\s0-9]+가|[가-힣]+동|[가-힣]+[\s0-9]+가)|([가-힣]+\d+읍|[가-힣]+\d+면|[가-힣]+\d+동))|(?:(?:[가-힣]+읍\s+|[가-힣]+면\s+)?([가-힣]+[\s0-9]*번?로[\s0-9]*번?[가나다라마바사아자차카타파하]?길|[가-힣]+[\s0-9]*번?[가나다라마바사아자차카타파하]?길|[가-힣]+[\s0-9]*번?로)))\s*([가-힣]+\d*리)?\s*(\d+)?(?:\s*-\s*(\d+))?(?:(?:\s*,?\s*|\s+)([^\\(]*))?(?:\s*\(([^,\s]+)(?:\s*,?\s*([^\\)]*))?\))?/i;
   var matched = task.inRaw.match(지번Re);
   console.log('matched: ' + matched);
   if(matched != null) {
@@ -200,23 +197,46 @@ function searchAddress(task, context, callback) {
       시도명 = matched[1];
     }
 
-    시군구명 = matched[2];
-    읍면동명 = matched[3];
-    행정동명 = matched[4];
-    도로명 = matched[5];
-    리명 = matched[6];
-    본번 = matched[7];
-    부번 = matched[8];
-    상세주소 = matched[9] ? matched[9].trim() : matched[9];
+      시군구명 = matched[2];
+      읍면동명 = matched[3];
+      행정동명 = matched[4];
+      도로명 = matched[5];
+      리명 = matched[6];
+      본번 = matched[7];
+      부번 = matched[8];
+      상세주소 = matched[9] ? matched[9].trim() : matched[9];
 
-    if(도로명) {
+      // 시도명 = "서울시";
+
+      // 시군구명 = "용산구";
+      // 읍면동명 = "용산동";
+      // 행정동명 = matched[4];
+      // 도로명 = matched[5];
+      // 리명 = matched[6];
+      // 본번 = "5가";
+      // 부번 = matched[8];
+      // 상세주소 = "24번지 101동 101호";
+      //
+      // 시도명 = "서울특별시";
+
+      // 시군구명 = "관악구";
+      // 읍면동명 = "봉천동";
+      // 행정동명 = matched[4];
+      // 도로명 = matched[5];
+      // 리명 = matched[6];
+      // 본번 = "1645";
+      // 부번 = "55";
+      // 상세주소 = "201호";
+
+
+      if(도로명) {
       도로명 = 도로명.replace(/\s/, '');
       query.도로명 = 도로명;
       if(본번) query.건물본번 = 본번;
       if(부번) query.건물부번 = 부번;
       else if(본번) query.건물부번 = '0';
     } else if(읍면동명) {
-      query.법정읍면동명 = 읍면동명;
+      query.법정읍면동명 = 읍면동명.replace(/\s/, '');
       if(리명) query.법정리명 = 리명;
       // else query.법정리명 = '';
       if(본번) query.지번본번 = 본번;
@@ -229,7 +249,6 @@ function searchAddress(task, context, callback) {
       if(부번) query.지번부번 = 부번;
       else if(본번) query.지번부번 = '0';
     }
-
     if(시도명) query.시도명 = 시도명;
     if(시군구명) query.시군구명 = new RegExp(시군구명, 'i');
 
@@ -273,7 +292,7 @@ function searchAddress(task, context, callback) {
 
   task.doc = null;
 
-  // console.log(JSON.stringify(query));
+  // query.시군구명 = "용산구";
 
   if(Object.keys(query).length == 0) {
     callback(task, context);
@@ -1489,7 +1508,8 @@ function searchTest(task, context, callback) {
   async.waterfall([
     function(cb) {
       task.inRaw = '서울 강남구 청담동 35-47';
-      searchAddress(task, context, function() {
+      searchAddress(task, context, function(task, context) {
+
         cb(null);
       });
     },
@@ -1741,17 +1761,17 @@ exports.naverReverseGeocode = naverReverseGeocode;
 
 
 function getDistanceFromGeocode(lat1,lng1,lat2,lng2) {
-  function deg2rad(deg) {
-    return deg * (Math.PI/180)
-  }
+    function deg2rad(deg) {
+        return deg * (Math.PI/180)
+    }
 
-  var R = 6371; // Radius of the earth in km
-  var dLat = deg2rad(lat2-lat1);  // deg2rad below
-  var dLon = deg2rad(lng2-lng1);
-  var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2);
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-  var d = R * c; // Distance in km
-  return d;
+    var R = 6371; // Radius of the earth in km
+    var dLat = deg2rad(lat2-lat1);  // deg2rad below
+    var dLon = deg2rad(lng2-lng1);
+    var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    var d = R * c; // Distance in km
+    return d;
 }
 
 exports.getDistanceFromGeocode = getDistanceFromGeocode;
