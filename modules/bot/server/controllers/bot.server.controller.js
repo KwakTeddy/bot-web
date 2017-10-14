@@ -119,6 +119,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
         },
 
         function(cb) {
+            // 기존 개발 의도는 형태소분석만을 위한 함수였던 것 같다.
             logger.debug("사용자 입력>> " + inTextRaw);
             var type = utils.requireNoCache(path.resolve('./modules/bot/action/common/type'));
 
@@ -133,6 +134,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
 
         function(cb) {
             if (context.botUser && context.botUser.nlp) {
+                // 기존 개발 의도는 분석된 형태소 조합을 이용해서 의미를 찾기 위한 함수였던 것 같다.
                 context.botUser.sentenceInfo = dialogsetModule.analyzeSentence(inTextRaw, null, context.botUser.nlpAll);
 
                 if(context.bot.useMemoryFacts) {

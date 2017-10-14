@@ -340,6 +340,7 @@ function insertExcelFile(infile, dialogset, callback) {
     function(cbr) {
       async.waterfall([
         function(cb2) {
+          // find the cell in the first row
           if(ws[XLSX.utils.encode_cell({c:endOfCol, r:R})]) {
             for(var i = 0; i <= endOfCol; i++) {
               if(ws[XLSX.utils.encode_cell({c:i, r:R})]) values[i] = ws[XLSX.utils.encode_cell({c:i, r:R})].v;
@@ -648,7 +649,7 @@ function analysisDoc(doc, bot_id, bot_name, cb) {
                 }
 
                 if (!("language" in context)) {
-                    context.botUser["language"] = "zh";
+                    context.botUser["language"] = "ko";
                 }
 
                 if (nlu.sentenceInfo == 0) {
@@ -988,8 +989,7 @@ function processInput(context, inRaw, callback) {
     if (context == null || context == undefined) context = {};
     if (!("botUser" in context)) {context["botUser"] = {};}
     if (!("language" in context)) {context.botUser["language"] = "ko";}
-    context.botUser.language = "zh";
-    //context.botUser.language = "ko";
+    context.botUser.language = "ko";
 
     if (context.botUser.language=="en") {
         enNLP.processInput(result, inRaw, function(_inTextNLP, _inDoc) {

@@ -23,7 +23,7 @@ var loadZhDictionary = undefined;
         }
         else
         {
-            var userDictionary = new UserDictionary(path.resolve('./external_modules/resources/zh/user.pos'));
+            var userDictionary = new UserDictionary(path.resolve('./external_modules/resources/zh'));
             var model = JSON.parse(fs.readFileSync(path.resolve('./external_modules/rakutenma/model_zh.json')));
             var rma = new RakutenMA(model, 1024, 0.007812);
             rma.featset = RakutenMA.default_featset_zh;

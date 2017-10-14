@@ -182,7 +182,7 @@ function processLiveInput(inRaw, callback) {
         // dsyoon (2017. 09. 13.)
         // 사용자 사전 경로: ./external_module/resources/ja/user.pos
         function(cb) {
-            var userDictionary = new UserDictionary(path.resolve('./external_modules/resources/ja/user.pos'));
+            var userDictionary = new UserDictionary(path.resolve('./external_modules/resources/ja'));
             var model = JSON.parse(fs.readFileSync(path.resolve('./external_modules/rakutenma/model_ja.json')));
             var rma = new RakutenMA(model, 1024, 0.007812);
             rma.featset = RakutenMA.default_featset_ja;

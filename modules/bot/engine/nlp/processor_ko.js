@@ -55,7 +55,7 @@ function processInput(context, inRaw, callback) {
                 inRaw = inRaw.replace(/(^\s*)|(\s*$)/gi, "");
                 inRaw = inRaw.replace(/\"/gi, "");
 
-                var userDictionary = new UserDictionary(path.resolve('./external_modules/resources/ko/user.pos'));
+                var userDictionary = new UserDictionary(path.resolve('./external_modules/resources/ko'));
                 var nlpUtil = new NLPUtil();
 
                 var nlpKo = new nlp({
@@ -91,10 +91,10 @@ function processInput(context, inRaw, callback) {
                         for (var key in dicResult[1]) {
                             position = entry.text.indexOf(key);
                             if (position >= 0) {
-                                entry.text = (entry.text).replace(new RegExp(key,'gi'), dicResult[1][key]);
                                 if (entry.text == key) {
                                     entry.pos = mb_user_tag[key];
                                 }
+                                entry.text = (entry.text).replace(new RegExp(key,'gi'), mb_user_str[key]);
                             }
                         }
 

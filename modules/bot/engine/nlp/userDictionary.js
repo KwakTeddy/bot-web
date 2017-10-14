@@ -3,7 +3,8 @@ var path = require('path');
 
 var UserDictionary = function (userDicFile) {
     this.mapUserKeywordOrder = [];
-    this.dictionary = [];
+    this.tagDictionary = [];
+    this.typosDictionary = [];
 
     this.init();
     this.parse(userDicFile);
@@ -39,13 +40,22 @@ UserDictionary.prototype.init = function() {
     this.mapUserKeywordOrder.push("ZZ");
 }
 
-UserDictionary.prototype.parse = function (userDicFile) {
-    var data = fs.readFileSync(path.resolve(userDicFile), 'utf8');
-    var entries = data.split('\n');
+UserDictionary.prototype.parse = function (userDicPath) {
+    var data1 = fs.readFileSync(path.resolve(userDicPath+"/user.pos"), 'utf8');
+    var entries = data1.split('\n');
     for (var i in entries) {
         var entry = entries[i].split('\t');
         if (entry[0]!='' && entry[1]!='') {
-            this.dictionary.push([entry[0], entry[1]]);
+            this.tagDictionary.push([entry[0], entry[1]]);
+        }
+    }
+
+    var data2 = fs.readFileSync(path.resolve(userDicPath+"/typos.dic"), 'utf8');
+    var entries = data2.split('\n');
+    for (var i in entries) {
+        var entry = entries[i].split('\t');
+        if (entry[0]!='' && entry[1]!='') {
+            this.typosDictionary.push([entry[0], entry[1]]);
         }
     }
 }
@@ -58,9 +68,18 @@ UserDictionary.prototype.applyUserDic = function (lang, text) {
     if (text == undefined || text == null || Array.isArray(text)) {
         return ["", mb_user_str, mb_user_tag];
     }
-    for (var i in this.dictionary) {
-        var str = this.dictionary[i][0];
-        var tag = this.dictionary[i][1];
+
+    for (var i in this.typosDictionary) {
+        var str = this.typosDictionary[i][0];
+        var replaceStr = this.typosDictionary[i][1];
+
+        text = text.replace(new RegExp(str,'gi'), replaceStr);
+    }
+
+
+    for (var i in this.tagDictionary) {
+        var str = this.tagDictionary[i][0];
+        var tag = this.tagDictionary[i][1];
         var position = - 1;
         // var position = text.search("(^"+str+"|"+str+" | "+str+"| "+str+"$)");
         if (typeof text.search === "function") {

@@ -60,8 +60,10 @@ function memoryFacts(inRaw, context, callback) {
   if(node1 && node2 && link) {
     var _task = {
       doc:{
+        // botUser: context.user.userKey,
+        // bot_id: context.user.bot,
         botUser: context.user.userKey,
-        bot_id: context.user.bot,
+        bot_id: context.bot.id,
         node1: node1,
         node2: node2,
         link: link,
