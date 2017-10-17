@@ -5,6 +5,7 @@ var logger = require(path.resolve('./config/lib/logger.js'));
 
 var Dialogset = mongoose.model('Dialogset');
 var DialogsetDialog = mongoose.model('DialogsetDialog');
+var CustomContext = mongoose.model('CustomContext');
 
 var nlpManager = require(path.resolve('./bot-engine2/nlp-manager.js'));
 
@@ -41,7 +42,7 @@ exports.find = function(req, res)
     if(req.query.rawText)
         query.inputRaw = { "$regex": req.query.rawText, "$options": 'i' };
 
-    DialogsetDialog.find(query).sort('-id').skip(countPerPage*(page-1)).limit(countPerPage).exec(function(err, dialogs)
+    DialogsetDialog.find(query).sort('-id').lean().populate('context').skip(countPerPage*(page-1)).limit(countPerPage).exec(function(err, dialogs)
     {
         if (err)
         {
@@ -50,10 +51,50 @@ exports.find = function(req, res)
         }
         else
         {
-            res.jsonp(dialogs);
+            async.eachSeries(dialogs, function(dialog, next)
+            {
+                if(dialog.context && dialog.context.parent)
+                {
+                    CustomContext.findOne({ _id: dialog.context.parent }).lean().exec(function(err, parent)
+                    {
+                        if(parent)
+                        {
+                            dialog.context.parent = parent;
+                            if(parent.parent)
+                            {
+                                CustomContext.findOne({ _id: parent.parent }).lean().exec(function(err, grandParent)
+                                {
+                                    if(grandParent)
+                                    {
+                                        parent.parent = grandParent;
+                                        next();
+                                    }
+                                });
+                            }
+                            else
+                            {
+                                next();
+                            }
+                        }
+                    });
+                }
+                else
+                {
+                    next();
+                }
+            },
+            function()
+            {
+                res.jsonp(dialogs);
+            });
         }
     });
 };
+//
+// exports.findContexts = function(req, res)
+// {
+//     CustomContext.find({ bot: req.params.botId, user: req.user._id })
+// };
 
 exports.create = function(req, res)
 {

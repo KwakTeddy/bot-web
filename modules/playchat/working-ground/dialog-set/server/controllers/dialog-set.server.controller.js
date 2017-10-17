@@ -229,7 +229,6 @@ exports.uploadFile = function (req, res)
         }
         else
         {
-            console.log('uploadFile:' + req.file.filename);
             var info = path.parse(req.file.filename);
             if (info.ext === ".csv" || info.ext === ".txt" || info.ext === ".xls" || info.ext === ".xlsx")
             {
@@ -243,7 +242,6 @@ exports.uploadFile = function (req, res)
                         if (head === "Date,User,Message" || head.startsWith("Talk_"))
                         {
                             // kakao file
-                            console.log('kakao csv');
                             return res.status(400).send({ message: '카카오 대화파일은 현재 지원되지 않습니다' });
                         }
                         else if ( (head.match(/,/g) || []).length == 1)

@@ -123,6 +123,18 @@ angular.module('playchat.working-ground').controller('DialogSetManagementControl
                 params.botId = chatbot._id;
                 params.dialogsetId = item._id;
 
+                var openDialogsets = $cookies.getObject('openDialogsets');
+                for(var key in openDialogsets)
+                {
+                    if(openDialogsets[key] == item._id)
+                    {
+                        delete openDialogsets[key];
+                        break;
+                    }
+                }
+
+                $cookies.putObject(JSON.stringify(openDialogsets));
+
                 DialogSetsService.delete(params, function(result)
                 {
                     var index = $scope.dialogsets.indexOf(item);

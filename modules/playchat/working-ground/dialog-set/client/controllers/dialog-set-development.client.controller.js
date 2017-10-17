@@ -43,7 +43,6 @@ angular.module('playchat.working-ground').controller('DialogLearningDevelopmentC
             DialogsService.query({ dialogsetId: dialogsetId, page: currentPage, countPerPage: countPerPage, rawText: rawText }, function(list)
             {
                 $scope.dialogs = list;
-                console.log(list);
 
                 // 로딩 끝.
                 $scope.$parent.loaded('working-ground');
@@ -54,7 +53,7 @@ angular.module('playchat.working-ground').controller('DialogLearningDevelopmentC
         {
             // 다음 페이지에 해당하는 내용 가져오기.
             angular.element('.more-progress').css('opacity', 1);
-            DialogsService.query({ dialogsetId: $scope.currentDialogsetId, page: currentPage+1, countPerPage: countPerPage, rawText: rawText }, function(list)
+            DialogsService.query({ dialogsetId: $scope.currentDialogsetId, page: currentPage+1, countPerPage: countPerPage, rawText: angular.element('#search').val() }, function(list)
             {
                 angular.element('.more-progress').css('opacity', 0);
                 if(list.length > 0)

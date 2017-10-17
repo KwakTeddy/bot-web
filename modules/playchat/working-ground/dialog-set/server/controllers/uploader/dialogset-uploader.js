@@ -30,7 +30,6 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
             var nlp = [];
             for(var i in processed)
             {
-                console.log(result);
                 if(processed[i].text.search(/^(은|는|이|가|을|를)$/) == -1 && processed[i].pos !== 'Punctuation') nlp.push(processed[i].text);
             }
 
@@ -139,6 +138,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
             async.waterfall([
                 function(cb2)
                 {
+                    console.log('컨텍스트 네임 : ', parent, context);
                     CustomContext.update({ dialogset: dialogset._id, name: context }, { dialogset: dialogset._id, parent: parent, name: context }, { upsert: true }, function(err, doc)
                     {
                         parent = null;
@@ -191,8 +191,6 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
             },
             function(err)
             {
-                console.log(countId + ">> " + input + ' || ' + inputRaw + ' || ' + output);
-
                 var dialogsetDialog = new DialogsetDialog({
                     dialogset: dialogset,
                     id: countId,
@@ -218,8 +216,6 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
         {
             processInput(language, input, function(result)
             {
-                console.log(countId + ">> " + input + ' || ' + result + ' || ' + output);
-
                 var dialogsetDialog = new DialogsetDialog({
                     dialogset: dialogset,
                     id: countId,
@@ -324,7 +320,6 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
 
                     function(cb2)
                     {
-                        console.log(R + ', ' + range.e.r);
                         if(input != null && output != null && (values[endOfCol - 1] != '' && values[endOfCol] != '') &&  ((Array.isArray(input) && input[input.length-1] != values[endOfCol - 1]) || input != values[endOfCol - 1]) && ((Array.isArray(output) && output[output.length-1] != values[endOfCol]) || output != values[endOfCol]))
                         {
                             count++;
