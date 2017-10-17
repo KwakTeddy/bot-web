@@ -2,7 +2,7 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat.gnb').controller('GnbController', ['$window', '$scope', '$location', function ($window, $scope, $location)
+angular.module('playchat.gnb').controller('GnbController', ['$window', '$scope', '$location', '$cookies', function ($window, $scope, $location, $cookies)
 {
     $scope.$parent.loaded('side-menu');
 
@@ -31,6 +31,10 @@ angular.module('playchat.gnb').controller('GnbController', ['$window', '$scope',
 
         $scope.path = $location.path();
     })();
+
+    var chatbot = $cookies.getObject('chatbot');
+
+    $scope.botName = chatbot.name;
 
     // --------- Gnb 접기 펼치기 기능.
     (function()

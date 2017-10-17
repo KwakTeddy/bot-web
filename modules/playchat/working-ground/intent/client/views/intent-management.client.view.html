@@ -17,7 +17,7 @@
             <li><a href="#">Store</a></li>
             <li><a href="#">Shared</a></li>
         </ul>
-        <div class="btn02 flR" ng-click="modal.mgmtModal.open();">
+        <div class="btn02 flR" ng-click="modal.mgmtModal.open();" id="openNewModal">
             <a href="#" class="">Add New</a>
         </div>
     </div>
@@ -37,24 +37,24 @@
                 <!--<th>Usalbe</th>-->
             </tr>
             </thead>
-            <tbody>
-            <tr ng-if="intents.length == 0">
-                <td colspan="4">empty</td>
-            </tr>
-            <tr ng-repeat="item in intents">
-                <td><a href="#" ng-click="modify(item);">{{ item.name }}</a></td>
-                <td>{{ item.user.displayName }}</td>
-                <td>
-                    <a href="#" class="flR" ng-click="delete(item);"><img src="modules/playchat/working-ground/common/client/img/delete.png" class="delete-img"></a>
-                    <a href="#" class="flR mr5" ng-click="modify(item);"><img src="modules/playchat/working-ground/common/client/img/modify.png" class="modify-img"></a>
-                </td>
-                <!--<td>-->
-                <!--<div class="slide on">-->
-                <!--<input type="checkbox" id="{{ item._id }}" ng-model="item.usable" />-->
-                <!--<label for="{{ item._id }}" ng-click="updateUsable(item);"></label>-->
-                <!--</div>-->
-                <!--</td>-->
-            </tr>
+            <tbody id="intents">
+                <tr ng-if="intents.length == 0">
+                    <td colspan="4">empty</td>
+                </tr>
+                <tr ng-repeat="item in intents">
+                    <td><a href="#" ng-click="modify(item);">{{ item.name }}</a></td>
+                    <td>{{ item.user.displayName }}</td>
+                    <td>
+                        <a href="#" class="flR" ng-click="delete(item);"><img src="modules/playchat/working-ground/common/client/img/delete.png" class="delete-img"></a>
+                        <a href="#" class="flR mr5" ng-click="modify(item);"><img src="modules/playchat/working-ground/common/client/img/modify.png" class="modify-img"></a>
+                    </td>
+                    <!--<td>-->
+                    <!--<div class="slide on">-->
+                    <!--<input type="checkbox" id="{{ item._id }}" ng-model="item.usable" />-->
+                    <!--<label for="{{ item._id }}" ng-click="updateUsable(item);"></label>-->
+                    <!--</div>-->
+                    <!--</td>-->
+                </tr>
             </tbody>
         </table>
         <div class="tablePaging">
@@ -116,9 +116,9 @@
         </div>
     </div>
 
-    <div class="modal-background management-modal" ng-show="modal.importModal.isOpened">
+    <div class="modal-background import-modal" ng-show="modal.importModal.isOpened">
         <div class="modal">
-            <form name="modalFormDefault" ng-submit="save(modal.importModal);">
+            <form name="modalFormDefault" ng-submit="saveByImport(modal.importModal);">
                 <div class="form-row">
                     <label class="required">
                         <span class="form-title">Name</span>
@@ -130,7 +130,7 @@
                         <span>Type</span>
                         <div class="form-box">
                             <input type="radio" checked="true" ng-model="modal.importModal.data.type" ng-required="true">
-                            <span> (csv 또는 xlsx 파일)</span>
+                            <span> (csv, xlsx, txt)</span>
                         </div>
                     </label>
                 </div>
@@ -140,12 +140,6 @@
                         <div class="form-box">
                             <input type="file" nv-file-select uploader="uploader" ng-required="true" />
                         </div>
-                    </label>
-                </div>
-                <div class="form-row">
-                    <label>
-                        <span>Content</span>
-                        <textarea placeholder="내용을 입력해주세요" name="content" ng-model="modal.importModal.data.content" class="data-input"></textarea>
                     </label>
                 </div>
                 <div class="tab-footer">

@@ -1,10 +1,10 @@
-require('./model-loader.js');
+require('./utils/model-loader.js');
 
 var path = require('path');
 var async = require('async');
 var logger = require(path.resolve('./config/lib/logger.js'));
 
-var mongoose = require('./models/mongo-wrapper.js');
+var mongoose = require('./utils/mongo-wrapper.js');
 
 var AsyncProcess = require('./utils/async-process/core.js');
 var contextManager = require('./context-manager.js');
@@ -129,9 +129,25 @@ var socketReceiver = require('./receiver/socket-receiver.js');
         var options = requestData.options || {};
         var rawText = requestData.rawText;
 
-        // 유저 인풋이 커맨드인 경우가 있다. 시스템 커맨드. 그건 NLP 처리 될 필요가 없다.
+        // 1. 컨텍스트
+        // 2. 사용자 입력 분석
+        //   2-1. 자연어처리
+        //   2-2. 공통타입패턴 추출
+        //   2-3. 엔티티 분석
+        //   2-4. 인텐트 분석
 
-        // contextManager.getContext();
+        // 1. 컨텍스트 생성.
+        // 2. 자연어처리
+        // 3. 엔티티 딕셔너리
+        // 4. 공통 타입체크 (모바일, 주소)
+        // - typeExtracter.extract(commonTypes, rawText, function(replacedText, extracted){});
+        // 5. 인텐트 처리
+        // 6. dialogModule.executeType(inRaw, inNLP, globalDialogs.userDialogType
+        // 7. dialogModule.executeType(inRaw, inNLP, globalDialogs.dialogsType
+        // 8. 베스트 다이얼로그 선택
+        // 9. 지식그래프 학습 (optional)
+        // 10. 커맨드 처리
+        // 11. bot.dialogs 매치 체크
 
         if(rawText.startsWith(':'))
         {

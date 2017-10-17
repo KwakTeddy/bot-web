@@ -2,9 +2,15 @@
 
 
 var path = require('path');
-var _ = require('lodash');
 var async = require('async');
 var mongoose = require('mongoose');
+
+var multer = require('multer');
+var fs = require('fs');
+var XLSX = require('xlsx');
+var csv = require('fast-csv');
+
+var logger = require(path.resolve('./config/lib/logger.js'));
 
 // var dialogset = require(path.resolve('modules_old/bot/engine/dialogset/dialogset'));
 // var intentModule = require(path.resolve('modules_old/bot/engine/nlu/intent'));
@@ -145,7 +151,7 @@ var saveIntentContents = function(botId, user, intentId, contents, success, erro
 
         var list = [];
 
-        async.each(contents, function(name, done)
+        async.eachSeries(contents, function(name, done)
         {
             var intentContent = {};
             intentContent.botId = botId;
@@ -195,6 +201,94 @@ var saveIntentContents = function(botId, user, intentId, contents, success, erro
     });
 };
 
+function parseText(text)
+{
+    var intentContents = [];
+    var lines = text.split('\n');
+
+    for(var i=0; i<lines.length; i++)
+    {
+        var value = lines[i].trim();
+        if(value)
+            intentContents.push(value);
+    }
+
+    return intentContents;
+}
+
+function parseXlsx(filepath)
+{
+    var intentContents = [];
+    var workbook = XLSX.readFile(filepath);
+    var first_sheet_name = workbook.SheetNames[0];
+    var ws = workbook.Sheets[first_sheet_name];
+
+    var range = XLSX.utils.decode_range(ws['!ref']);
+
+    console.log(range.s.r, range.e.r);
+
+    for(var r=0; r<=range.e.r; r++)
+    {
+        var cell = ws[XLSX.utils.encode_cell({ c:0, r:r })];
+
+        var value = cell.v;
+
+        if(value)
+            intentContents.push(value);
+    }
+
+    return intentContents;
+}
+
+function parseCsv(filepath, callback)
+{
+    var intentContents = [];
+    var stream = fs.createReadStream(filepath);
+
+    var csvStream = csv().on("data", function(data)
+    {
+        if(data && data[0])
+        {
+            intentContents.push(data[0]);
+        }
+    }).on("end", function()
+    {
+        console.log(intentContents);
+        callback(intentContents);
+    });
+
+    stream.pipe(csvStream);
+}
+
+function getContentFromFile(req, res, callback)
+{
+    var filename = req.body.filename;
+
+    var dir = path.resolve('public/files/');
+    var filepath = path.join(dir, filename);
+
+    if(filepath.endsWith('.txt'))
+    {
+        fs.readFile(filepath, function(err, data)
+        {
+            if(err)
+            {
+                return res.status(400).send({ message: err });
+            }
+
+            callback(parseText(data.toString()));
+        });
+    }
+    else if(filepath.endsWith('.xlsx'))
+    {
+        callback(parseXlsx(filepath));
+    }
+    else if(filepath.endsWith('.csv'))
+    {
+        parseCsv(filepath, callback);
+    }
+};
+
 exports.create = function(req, res)
 {
     if(!req.body.name)
@@ -229,15 +323,39 @@ exports.create = function(req, res)
                 }
                 else
                 {
-                    var contents = req.body.intentContents;
-                    saveIntentContents(req.params.botId, req.user, intent._id, contents, function()
+                    if(req.body.filename && req.body.path)
                     {
-                        res.jsonp(intent);
-                    },
-                    function(err)
+                        getContentFromFile(req, res, function(contents)
+                        {
+                            if(contents.length > 0)
+                            {
+                                saveIntentContents(req.params.botId, req.user, intent._id, contents, function()
+                                {
+                                    res.jsonp(intent);
+                                },
+                                function(err)
+                                {
+                                    return res.status(400).send({ message: err });
+                                });
+                            }
+                            else
+                            {
+                                res.jsonp(intent);
+                            }
+                        });
+                    }
+                    else
                     {
-                        return res.status(400).send({ message: err });
-                    });
+                        var contents = req.body.intentContents;
+                        saveIntentContents(req.params.botId, req.user, intent._id, contents, function()
+                        {
+                            res.jsonp(intent);
+                        },
+                        function(err)
+                        {
+                            return res.status(400).send({ message: err });
+                        });
+                    }
                 }
             });
         }
@@ -309,7 +427,6 @@ exports.update = function(req, res)
     });
 };
 
-
 exports.delete = function(req, res)
 {
     IntentContent.remove({ botId: req.params.botId, intentId: req.params.intentId, user: req.user._id }).exec(function(err)
@@ -328,5 +445,55 @@ exports.delete = function(req, res)
 
             res.end();
         });
+    });
+};
+
+exports.uploadFile = function (req, res)
+{
+    var storage = multer.diskStorage(
+        {
+            destination: function (req, file, cb)
+            {
+                cb(null, './public/files/')
+            },
+            filename: function (req, file, cb)
+            {
+                cb(null, file.originalname);
+            }
+        });
+
+    var upload = multer({ storage: storage }).single('uploadFile');
+
+    upload.fileFilter = function (req, file, cb)
+    {
+        if (file.mimetype !== 'text/plain' && file.mimetype !== 'text/csv')
+        {
+            return cb(new Error('Only txt/csv files are allowed!'), false);
+        }
+
+        cb(null, true);
+    };
+
+    upload(req, res, function (uploadError)
+    {
+        if(uploadError)
+        {
+            return res.status(400).send({ message: 'Error occurred while uploading file' });
+        }
+        else
+        {
+            console.log('uploadFile:' + req.file.filename);
+            var info = path.parse(req.file.filename);
+            if (info.ext === ".csv" || info.ext === ".txt" || info.ext === ".xls" || info.ext === ".xlsx")
+            {
+                var filepath = req.file.destination + req.file.filename;
+                res.json({ result: 'ok', path: req.file.destination, filename: req.file.filename, originalFilename: req.file.originalname });
+            }
+            else
+            {
+                //TODO: need to check other types
+                res.status(400).send({ message: '지원되지 않는 파일 입니다' });
+            }
+        }
     });
 };

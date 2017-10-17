@@ -119,6 +119,22 @@ angular.module('playchat.working-ground').controller('IntentManagementController
             }
         };
 
+        $scope.saveByImport = function(modal)
+        {
+            var params = {};
+            params.botId = chatbot.id;
+            params.name = modal.data.name;
+            params.user = user._id;
+            params.path = modal.data.path;
+            params.filename = modal.data.filename;
+
+            IntentService.save(params, function(result)
+            {
+                $scope.intents.unshift(result);
+                modal.close();
+            });
+        };
+
         $scope.modify = function(item)
         {
             updateTarget = item;

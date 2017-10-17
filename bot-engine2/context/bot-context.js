@@ -5,7 +5,7 @@ var fs = require('fs');
 var logger = require(path.resolve('./config/lib/logger.js'));
 var utils = require('../utils/utils.js');
 
-var commonDialogs = require('../common/common-dialogs.js');
+var commonDialogs = require('../dialogs/common-dialogs.js');
 
 var mongoose = require('../utils/mongo-wrapper.js');
 var BotModel = mongoose.model('Bot');

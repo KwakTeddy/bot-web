@@ -1,14 +1,11 @@
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
 var Intent = mongoose.model('Intent');
 var IntentContent = mongoose.model('IntentContent');
 var BotIntentFail = mongoose.model('BotIntentFail');
 var path = require('path');
 var dialog = require(path.resolve('./bot-engine/action/common/dialog.js'));
-var mongoModule = require(path.resolve('./bot-engine/action/common/mongo'));
-var analytics = require(path.resolve('./bot-engine/analytics.server.controller'));
-var async = require('async');
-var _ = require('lodash');
+
+var typeExtracter = require('../type-extracter.js');
 
 var intentCheck = {
   name: 'intentDoc',
@@ -24,17 +21,25 @@ var intentCheck = {
     taskFields: ['input', 'intentId', 'matchCount', 'matchRate'],
     minMatch: 1
   },
-  preType: function(task, context, type, callback) {
+  preType: function(task, context, type, callback)
+  {
     type.mongo.queryStatic = {};
-    if(type.typeCheck == undefined) type.typeCheck =global._context.typeChecks['dialogTypeCheck'];
+    if(type.typeCheck == undefined)
+    {
+        type.typeCheck = global._context.typeChecks['dialogTypeCheck'];
+    }
 
-    if(context.bot.intents && context.bot.intents.length > 0) {
+    if(context.bot.intents && context.bot.intents.length > 0)
+    {
       var _intents = [];
-      for(var i in context.bot.intents) {
+      for(var i in context.bot.intents)
+      {
         _intents.push(context.bot.intents[i]._id);
       }
       type.mongo.queryStatic = {intentId: {$in: _intents}};
-    } else {
+    }
+    else
+    {
       type.mongo.queryStatic.intentId = null;
     }
 
@@ -69,8 +74,14 @@ var intentTask = {
 
 exports.intentTask = intentTask;
 
-exports.matchIntent = function(inRaw, inNLP, context, callback)
+exports.matchIntent = function(rawText, nlpText, context, callback)
 {
+    // typeExtracter.extract([intentCheck], rawText, function(replacedText, extracted)
+    // {
+    //     var matchCount = 0;
+    //     var matchRate = 0;
+    //     var intentId = undefined;
+    // });
     dialog.executeType(inRaw, inNLP, intentCheck, {}, context, function(inNLP, task, matched)
     {
         if(matched) {

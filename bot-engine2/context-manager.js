@@ -3,7 +3,7 @@ var async = require('async');
 var tough = require('tough-cookie');
 var logger = require(path.resolve('./config/lib/logger.js'));
 
-var commonDialogs = require('./common/common-dialogs.js');
+var commonDialogs = require('./dialogs/common-dialogs.js');
 
 var UserContextManager = require('./context/user-context.js');
 var BotContextManager = require('./context/bot-context.js');

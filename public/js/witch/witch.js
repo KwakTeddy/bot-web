@@ -18,11 +18,11 @@ var Witch = (function()
             }
             else
             {
-                callback(list[index], index, next);
+                callback(list[index], next);
             }
         };
 
-        callback(list[index], index, next);
+        callback(list[index], next);
     };
 
     function WitchError(message)
@@ -51,8 +51,7 @@ var Witch = (function()
     var Test = function(name, actions, compareActions)
     {
         this.name = name;
-        this.actions = actions || [];
-        this.compareActions = compareActions || [];
+        this.tasks = [];
     };
 
     Test.prototype.setName = function(name)
@@ -63,13 +62,13 @@ var Witch = (function()
 
     Test.prototype.addAction = function(selector, event, params)
     {
-        this.actions.push({ selector: selector, event: event, params: params });
+        this.tasks.push({ type: 'action', selector: selector, event: event, params: params });
         return this;
     };
 
-    Test.prototype.addCompareAction = function(selector, property, compareType, compareValue, expectedValue)
+    Test.prototype.addCompareAction = function(selector, property, compareType, compareValue, expectedValue, options)
     {
-        this.compareActions.push({ selector: selector, property: property, compareType: compareType, compareValue: compareValue, expectedValue: expectedValue });
+        this.tasks.push({ type: 'compare', selector: selector, property: property, compareType: compareType, compareValue: compareValue, expectedValue: expectedValue, options: options });
         return this;
     };
 
@@ -126,6 +125,10 @@ var Witch = (function()
         {
             return element.innerHTML;
         }
+        else
+        {
+            return element[property];
+        }
 
         return null;
     };
@@ -136,6 +139,10 @@ var Witch = (function()
         if(compareType == 'equals')
         {
             result = (compareTargetValue == compareValue);
+        }
+        else if(compareType == 'empty')
+        {
+            result = (compareTargetValue == null || compareTargetValue == undefined || compareTargetValue == '');
         }
         else if(compareType == 'contains')
         {
@@ -190,14 +197,14 @@ var Witch = (function()
     {
         if(property == 'list.length')
         {
-            return checkListLength(elements, compareType, compareValue, expectedValue);
+            return this.checkListLength(elements, compareType, compareValue, expectedValue);
         }
 
         for(var i=0, l=elements.length; i<l; i++)
         {
             var element = elements.get(i);
 
-            var compareTargetValue = this.getCompareTargetValue(element,  property);
+            var compareTargetValue = this.getCompareTargetValue(element, property);
 
             var result = this.getCompareResult(compareType, compareTargetValue, compareValue);
 
@@ -238,82 +245,84 @@ var Witch = (function()
         }
     };
 
-    Test.prototype.startCompare = function(index, count, done)
+    Test.prototype.exec = function(done)
     {
-        for(var i=index, l=this.compareActions.length; i<l; i++)
-        {
-            var action = this.compareActions[i];
-
-            var selector = action.selector;
-            var property = action.property;
-            var compareType = action.compareType;
-            var compareValue = action.compareValue;
-            var expectedValue = action.expectedValue;
-
-            var elements = $(selector);
-            if(elements.length <= 0)
-            {
-                if(count == 3)
-                {
-                    throw new WitchError(selector + ' is not found any element.');
-                }
-                else
-                {
-                    var that = this;
-                    setTimeout(function()
-                    {
-                        that.startCompare(index, count+1, done);
-                    }, 1000);
-
-                    return;
-                }
-            }
-
-            var result = this.execCompare(elements, property, compareType, compareValue, expectedValue);
-            if(!result.result)
-            {
-                if(count == 3)
-                {
-                    return done(false, {compareTargetValue: result.compareTargetValue, compareType: compareType, compareValue: compareValue});
-                }
-
-                var that = this;
-                setTimeout(function()
-                {
-                    that.startCompare(index, count+1, done);
-                }, 1000);
-
-                return;
-            }
-        }
-
-        done(true);
-    };
-
-    Test.prototype.start = function(next, done)
-    {
-        if(!this.actions || this.actions.length == 0)
-            throw new WitchError('Actions are undefined.');
-
-        this.startAction();
-
-        if(!this.compareActions || this.compareActions.length == 0)
-            throw new WitchError('CompareActions are undefined.');
-
         var that = this;
-        this.startCompare(0, 0, function(result, cause)
+        forEach(this.tasks, function(task, next)
         {
-            if(result)
-            {
-                console.log('%c[Witch] %c' + that.name + ' %c[PASS]', 'color: #ccc;', 'color: blue;', 'color: green;');
-                next();
-            }
-            else
-            {
-                console.log('%c[Witch] %c' + that.name + ' %c[FAIL] - ' + cause.compareTargetValue + ' ' + cause.compareType + ' ' + cause.compareValue, 'color: #ccc;', 'color: blue;', 'color: red;');
-                done();
-            }
-        });
+            console.log(task);
+            next();
+            // if(task.type == 'action')
+            // {
+            //     var selector = task.selector;
+            //     var event = task.event;
+            //     var params = task.params;
+            //
+            //     var element = $(selector).get(0);
+            //     if(!element)
+            //     {
+            //         throw new WitchError(selector + ' is not found any element.');
+            //     }
+            //
+            //     if(!event)
+            //     {
+            //         throw new WitchError(event + ' of ' + selector + ' is undefined.');
+            //     }
+            //
+            //     that.execAction(element, event, params);
+            //     next();
+            // }
+            // else if(task.type == 'compare')
+            // {
+            //     var selector = task.selector;
+            //     var property = task.property;
+            //     var compareType = task.compareType;
+            //     var compareValue = task.compareValue;
+            //     var expectedValue = task.expectedValue;
+            //
+            //     var elements = $(selector);
+            //     if(elements.length <= 0)
+            //     {
+            //         if(count == 3)
+            //         {
+            //             throw new WitchError(selector + ' is not found any element.');
+            //         }
+            //         else
+            //         {
+            //             setTimeout(function()
+            //             {
+            //                 that.startCompare(index, count+1, done);
+            //             }, 1000);
+            //
+            //             return;
+            //         }
+            //     }
+            //
+            //     var execCompare = function(count)
+            //     {
+            //         var result = that.execCompare(elements, property, compareType, compareValue, expectedValue);
+            //         if(!result.result)
+            //         {
+            //             if(count == 3)
+            //             {
+            //                 return done(false, { result: result.result, compareTargetValue: result.compareTargetValue, compareType: compareType, compareValue: compareValue, expectedValue: expectedValue });
+            //             }
+            //
+            //             setTimeout(function()
+            //             {
+            //                 console.log('%c[Witch] %c' + that.name + ' %c[FAIL AND RETRY]', 'color: #ccc;', 'color: #ccc;', 'color: #ccc;');
+            //                 execCompare(count+1);
+            //             }, 1000);
+            //
+            //             return;
+            //         }
+            //
+            //         next();
+            //     };
+            //
+            //     execCompare(0);
+            // }
+        }, done);
     };
 
 
@@ -375,9 +384,12 @@ var Witch = (function()
             console.log('%c[Witch] %cTest Scenario ' + '%c' + scenarioName + '%c is done.', 'color: #ccc;', 'color: blue;', 'color: red;', 'color: blue;');
         };
 
-        forEach(list, function(test, index, next)
+        forEach(list, function(test, next)
         {
-            test.start(next, done);
+            test.exec(function(result)
+            {
+                next();
+            });
         }, done);
     };
 

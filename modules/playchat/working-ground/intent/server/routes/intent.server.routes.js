@@ -2,6 +2,7 @@ var intent = require('../controllers/intent.server.controller.js');
 
 module.exports = function(app)
 {
+    app.post('/api/intents/uploadfile', intent.uploadFile);
     app.get('/api/:botId/intents/totalpage', intent.findTotalPage);
     app.get('/api/:botId/intents', intent.find);
     app.get('/api/:botId/intents/:intentId/contents', intent.findIntentContent);
