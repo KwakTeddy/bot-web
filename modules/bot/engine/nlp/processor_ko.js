@@ -44,6 +44,40 @@ function processInput(context, inRaw, callback) {
 
     var inNLP, nlpAll = [], _nlp = [];
 
+    function findStemForm(inRaw, context, callback) {
+        var nlpKo = new nlp({
+            stemmer: true,      // (optional default: true)
+            normalizer: false,   // (optional default: true)
+            spamfilter: false     // (optional default: false)
+        });
+
+        var _nlp = context.botUser.nlu.nlp;
+        async.eachSeries(_nlp, function(item, next) {
+            if(item.pos == 'Verb') {
+                nlpKo.tokenize(item.text, function(err, result) {
+                    for(var i=0; i<result.length; i++) {
+                        var entry = result[i];
+                        item["stem"] = entry.text;
+                    }
+                    next();
+                });
+            } else {
+                item["stem"] = item["text"];
+                next();
+            }
+        },
+        function() {
+            context.botUser.nlu["nlp"] = _nlp;
+            var nlpUtil = new NLPUtil();
+            var nlpJsonPOS = nlpUtil.convertJSON(inRaw, _nlp);
+            context.botUser.nlu["json"] = nlpJsonPOS;
+
+            if(callback) {
+                callback();
+            }
+        });
+    };
+
     // 한국어 형태소 분석기
     async.waterfall([
         // 사용자 사전 적용된 한국어 형태소 분석기
@@ -56,10 +90,9 @@ function processInput(context, inRaw, callback) {
                 inRaw = inRaw.replace(/\"/gi, "");
 
                 var userDictionary = new UserDictionary(path.resolve('./external_modules/resources/ko'));
-                var nlpUtil = new NLPUtil();
 
                 var nlpKo = new nlp({
-                    stemmer: true,      // (optional default: true)
+                    stemmer: false,      // (optional default: true)
                     normalizer: false,   // (optional default: true)
                     spamfilter: false     // (optional default: false)
                 });
@@ -77,7 +110,7 @@ function processInput(context, inRaw, callback) {
                 var mb_user_str = dicResult[1];
                 var mb_user_tag = dicResult[2];
                 var position = -1;
-
+                
                 nlpKo.tokenize(temp_inRaw, function (err, result) {
                     var _inNLP = [];
                     if (!result) result = _inRaw;
@@ -123,13 +156,13 @@ function processInput(context, inRaw, callback) {
                     context.botUser["nlpAll"] = nlpAll;
                     context.botUser["nlp"] = _nlp;
 
-                    var nlpJsonPOS = nlpUtil.convertJSON(inRaw, nlpAll);
                     context.botUser.nlu["sentence"] = inRaw;
                     context.botUser.nlu["lastChar"] = lastChar;
                     context.botUser.nlu["nlp"] = _nlp;
-                    context.botUser.nlu["json"] = nlpJsonPOS;
 
-                    cb(null);
+                    findStemForm(inRaw, context, cb);
+
+                    // cb(null);
                 })
             } else if (Array.isArray(inRaw)) {
                 if (context == null) {
