@@ -24,32 +24,32 @@ TurnTaking.prototype.parse = function (language) {
     }
 }
 
-TurnTaking.prototype.analyzeKO = function (posJson) {
-    var str = String(posJson.sentence.str);
+TurnTaking.prototype.analyzeKO = function (nlu) {
+    var str = nlu.sentence;
     if (str in this.dictionary) return this.dictionary[str];
 
     // default로 봇은 행동을 한다.
     return 1;
 }
 
-TurnTaking.prototype.analyzeEN = function (posJson) {
-    var str = String(posJson.sentence.str);
+TurnTaking.prototype.analyzeEN = function (nlu) {
+    var str = nlu.sentence;
     if (str in this.dictionary) return this.dictionary[str];
 
     // default로 봇은 행동을 한다.
     return 1;
 }
 
-TurnTaking.prototype.analyzeZH = function (posJson) {
-    var str = String(posJson.sentence.str);
+TurnTaking.prototype.analyzeZH = function (nlu) {
+    var str = nlu.sentence;
     if (str in this.dictionary) return this.dictionary[str];
 
     // default로 봇은 행동을 한다.
     return 1;
 }
 
-TurnTaking.prototype.analyzeJA = function (posJson) {
-    var str = String(posJson.sentence.str);
+TurnTaking.prototype.analyzeJA = function (nlu) {
+    var str = nlu.sentence;
     if (str in this.dictionary) return this.dictionary[str];
 
     // default로 봇은 행동을 한다.
@@ -57,9 +57,7 @@ TurnTaking.prototype.analyzeJA = function (posJson) {
 }
 
 TurnTaking.prototype.analyze = function (language, nlu) {
-    if ("pos" in nlu && nlu.pos != null && nlu.pos != "") {
-
-        var posJson = eval("(" + nlu.pos + ")");
+    if (nlu != undefined && nlu != null) {
         var sentenceInfoValue = nlu.sentenceInfo;
 
         switch (sentenceInfoValue) {
@@ -70,13 +68,13 @@ TurnTaking.prototype.analyze = function (language, nlu) {
         }
 
         if (language == "ko") {
-            return this.analyzeKO(posJson);
+            return this.analyzeKO(nlu);
         } else if (language == "en") {
-            return this.analyzeEN(posJson);
+            return this.analyzeEN(nlu);
         } else if (language == "zh") {
-            return this.analyzeZH(posJson);
+            return this.analyzeZH(nlu);
         } else if (language == "ja") {
-            return this.analyzeJA(posJson);
+            return this.analyzeJA(nlu);
         }
         return this.type.taking;
     } else {

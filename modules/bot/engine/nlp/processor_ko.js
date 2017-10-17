@@ -126,7 +126,8 @@ function processInput(context, inRaw, callback) {
                     var nlpJsonPOS = nlpUtil.convertJSON(inRaw, nlpAll);
                     context.botUser.nlu["sentence"] = inRaw;
                     context.botUser.nlu["lastChar"] = lastChar;
-                    context.botUser.nlu["pos"] = nlpJsonPOS;
+                    context.botUser.nlu["nlp"] = _nlp;
+                    context.botUser.nlu["json"] = nlpJsonPOS;
 
                     cb(null);
                 })
