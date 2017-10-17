@@ -130,7 +130,6 @@ angular.module('playchat.working-ground').controller('EntityManagementController
             var params = {};
             params.botId = chatbot.id;
             params.name = modal.data.name;
-            params.content = modal.data.content;
             params.entityContents = [];
             params.user = user._id;
 
@@ -188,6 +187,29 @@ angular.module('playchat.working-ground').controller('EntityManagementController
                     }
                 });
             }
+        };
+
+        $scope.saveByImport = function(modal)
+        {
+            var params = {};
+            params.botId = chatbot.id;
+            params.name = modal.data.name;
+            params.user = user._id;
+            params.filename = modal.data.filename;
+            params.path = modal.data.path;
+
+            EntityService.save(params, function(result)
+            {
+                $scope.entitys.unshift(result);
+                modal.close();
+            },
+            function(err)
+            {
+                if(err.data.message == 'Duplicated entity name')
+                {
+                    alert(params.name + '은 중복된 이름 입니다.');
+                }
+            });
         };
 
         $scope.contentInputKeydown = function(e)

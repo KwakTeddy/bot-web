@@ -118,9 +118,9 @@
         </div>
     </div>
 
-    <div class="modal-background management-modal" ng-show="modal.importModal.isOpened">
+    <div class="modal-background import-modal" ng-show="modal.importModal.isOpened">
         <div class="modal">
-            <form name="modalFormDefault" ng-submit="save(modal.importModal);">
+            <form name="modalFormDefault" ng-submit="saveByImport(modal.importModal);">
                 <div class="form-row">
                     <label class="required">
                         <span class="form-title">Name</span>
@@ -132,7 +132,7 @@
                         <span>Type</span>
                         <div class="form-box">
                             <input type="radio" checked="true" ng-model="modal.importModal.data.type" ng-required="true">
-                            <span> (csv 또는 xlsx 파일)</span>
+                            <span> (csv, xlsx, txt)</span>
                         </div>
                     </label>
                 </div>

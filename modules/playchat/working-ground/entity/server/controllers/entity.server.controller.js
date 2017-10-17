@@ -11,6 +11,9 @@ var async = require('async');
 var mongoose = require('mongoose');
 var logger = require(path.resolve('./config/lib/logger.js'));
 
+var XLSX = require('xlsx');
+var csv = require('fast-csv');
+
 var Entity = mongoose.model('Entity');
 var EntityContent = mongoose.model('EntityContent');
 var EntityContentSynonym = mongoose.model('EntityContentSynonym');
@@ -145,7 +148,7 @@ function saveEntityContents(botId, user, entityId, contents, callback, errCallba
 
         var errs = [];
 
-        async.each(contents, function(item, done)
+        async.eachSeries(contents, function(item, done)
         {
             var content = new EntityContent();
             if(item._id)
@@ -183,6 +186,163 @@ function saveEntityContents(botId, user, entityId, contents, callback, errCallba
     });
 };
 
+function parseText(text)
+{
+    var contents = [];
+    var lines = text.split('\n');
+
+    var lastEntityContent = {};
+    for(var i=0; i<lines.length; i++)
+    {
+        var line = lines[i].trim();
+
+        if(!line)
+            continue;
+
+        if(i % 2 == 0)
+        {
+            lastEntityContent.name = line.replace('[', '').replace(']', '');
+            lastEntityContent.synonyms = [];
+        }
+        else
+        {
+            var split = line.split(/\s/gi);
+            for(var j=0; j<split.length; j++)
+            {
+                if(split[j])
+                {
+                    lastEntityContent.synonyms.push(split[j]);
+                }
+            }
+
+            contents.push(lastEntityContent);
+            lastEntityContent = {};
+        }
+    }
+
+    return contents;
+};
+
+function parseXlsx(filepath)
+{
+    var contents = [];
+    var workbook = XLSX.readFile(filepath);
+    var first_sheet_name = workbook.SheetNames[0];
+    var ws = workbook.Sheets[first_sheet_name];
+
+    var range = XLSX.utils.decode_range(ws['!ref']);
+
+    var entity = undefined;
+    for(var r=0; r<=range.e.r; r++)
+    {
+        var name = ws[XLSX.utils.encode_cell({ c:0, r:r })];
+        var synonym = ws[XLSX.utils.encode_cell({ c:1, r:r })];
+
+        name = name ? name.v : undefined;
+        synonym = synonym ? synonym.v : undefined;
+
+        if(name)
+        {
+            if(!entity)
+            {
+                entity = { synonyms: [] };
+            }
+            else
+            {
+                contents.push(entity);
+                entity = { synonyms: [] };
+            }
+
+            entity.name = name;
+
+            if(synonym)
+                entity.synonyms.push(synonym);
+        }
+        else if(synonym)
+        {
+            entity.synonyms.push(synonym);
+        }
+    }
+
+    if(entity)
+        contents.push(entity);
+
+    return contents;
+};
+
+function parseCsv(filepath, callback)
+{
+    var contents = [];
+    var stream = fs.createReadStream(filepath);
+
+    var entity = undefined;
+    var csvStream = csv().on("data", function(data)
+    {
+        var name = data[0];
+        var synonym = data[1];
+
+        if(name)
+        {
+            if(!entity)
+            {
+                entity = { synonyms: [] };
+            }
+            else
+            {
+                contents.push(entity);
+                entity = { synonyms: [] };
+            }
+
+            entity.name = name;
+
+            if(synonym)
+                entity.synonyms.push(synonym);
+        }
+        else if(synonym)
+        {
+            entity.synonyms.push(synonym);
+        }
+
+    }).on("end", function()
+    {
+        if(entity)
+            contents.push(entity);
+
+        callback(contents);
+    });
+
+    stream.pipe(csvStream);
+};
+
+function getContentFromFile(req, res, callback)
+{
+    var filename = req.body.filename;
+
+    var dir = path.resolve('public/files/');
+    var filepath = path.join(dir, filename);
+
+    if(filepath.endsWith('.txt'))
+    {
+        fs.readFile(filepath, function(err, data)
+        {
+            if(err)
+            {
+                return res.status(400).send({ message: err });
+            }
+
+            callback(parseText(data.toString()));
+        });
+    }
+    else if(filepath.endsWith('.xlsx'))
+    {
+        callback(parseXlsx(filepath));
+    }
+    else if(filepath.endsWith('.csv'))
+    {
+        parseCsv(filepath, callback);
+    }
+};
+
 exports.create = function(req, res)
 {
     Entity.findOne({ botId : req.params.botId, user: req.user._id, name: req.body.name}).exec(function(err, item)
@@ -211,15 +371,39 @@ exports.create = function(req, res)
             }
             else
             {
-                saveEntityContents(req.params.botId, req.user, entity._id, req.body.entityContents, function()
+                if(req.body.filename && req.body.path)
                 {
-                    res.jsonp(entity);
-                },
-                function(err)
+                    getContentFromFile(req, res, function(contents)
+                    {
+                        if(contents.length > 0)
+                        {
+                            saveEntityContents(req.params.botId, req.user, entity._id, contents, function()
+                            {
+                                res.jsonp(entity);
+                            },
+                            function(err)
+                            {
+                                return res.status(400).send({ message: err });
+                            });
+                        }
+                        else
+                        {
+                            res.jsonp(entity);
+                        }
+                    });
+                }
+                else
                 {
-                    logger.systemError(err);
-                    return res.status(400).send({ message: err.stack || err });
-                });
+                    saveEntityContents(req.params.botId, req.user, entity._id, req.body.entityContents, function()
+                    {
+                        res.jsonp(entity);
+                    },
+                    function(err)
+                    {
+                        logger.systemError(err);
+                        return res.status(400).send({ message: err.stack || err });
+                    });
+                }
             }
         });
     });
@@ -322,53 +506,51 @@ exports.delete = function(req, res)
     });
 };
 
-// exports.uploadFile = function (req, res)
-// {
-//     var storage = multer.diskStorage(
-//     {
-//         destination: function (req, file, cb)
-//         {
-//             cb(null, './public/files/')
-//         },
-//         filename: function (req, file, cb)
-//         {
-//             cb(null, file.originalname);
-//         }
-//     });
-//
-//     var upload = multer({ storage: storage }).single('uploadFile');
-//
-//     upload.fileFilter = function (req, file, cb)
-//     {
-//         if (file.mimetype !== 'text/plain' && file.mimetype !== 'text/csv')
-//         {
-//             return cb(new Error('Only txt/csv files are allowed!'), false);
-//         }
-//
-//         cb(null, true);
-//     };
-//
-//     upload(req, res, function (uploadError)
-//     {
-//         if(uploadError)
-//         {
-//             return res.status(400).send({ message: 'Error occurred while uploading file' });
-//         }
-//         else
-//         {
-//             console.log('uploadFile:' + req.file.filename);
-//             var info = path.parse(req.file.filename);
-//             if (info.ext === ".csv" || info.ext === ".txt" || info.ext === ".xls" || info.ext === ".xlsx")
-//             {
-//                 var filepath = req.file.destination + req.file.filename;
-//
-//                 // 파일 업로드 후처리
-//             }
-//             else
-//             {
-//                 //TODO: need to check other types
-//                 res.status(400).send({ message: '지원되지 않는 파일 입니다' });
-//             }
-//         }
-//     });
-// };
+exports.uploadFile = function (req, res)
+{
+    var storage = multer.diskStorage(
+        {
+            destination: function (req, file, cb)
+            {
+                cb(null, './public/files/')
+            },
+            filename: function (req, file, cb)
+            {
+                cb(null, file.originalname);
+            }
+        });
+
+    var upload = multer({ storage: storage }).single('uploadFile');
+
+    upload.fileFilter = function (req, file, cb)
+    {
+        if (file.mimetype !== 'text/plain' && file.mimetype !== 'text/csv')
+        {
+            return cb(new Error('Only txt/csv files are allowed!'), false);
+        }
+
+        cb(null, true);
+    };
+
+    upload(req, res, function (uploadError)
+    {
+        if(uploadError)
+        {
+            return res.status(400).send({ message: 'Error occurred while uploading file' });
+        }
+        else
+        {
+            console.log('uploadFile:' + req.file.filename);
+            var info = path.parse(req.file.filename);
+            if (info.ext === ".csv" || info.ext === ".txt" || info.ext === ".xls" || info.ext === ".xlsx")
+            {
+                res.json({ result: 'ok', path: req.file.destination, filename: req.file.filename, originalFilename: req.file.originalname });
+            }
+            else
+            {
+                //TODO: need to check other types
+                res.status(400).send({ message: '지원되지 않는 파일 입니다' });
+            }
+        }
+    });
+};

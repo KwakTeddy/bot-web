@@ -2,6 +2,7 @@ var entity = require('../controllers/entity.server.controller.js');
 
 module.exports = function(app)
 {
+    app.post('/api/entitys/uploadfile', entity.uploadFile);
     app.get('/api/:botId/entitys/totalpage', entity.findTotalPage);
     app.get('/api/:botId/entitys', entity.find);
     app.post('/api/:botId/entitys', entity.create);
