@@ -2,6 +2,8 @@
 
 angular.module('playchat.working-ground').controller('DialogLearningDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', 'ModalService', 'PagingService', function ($window, $scope, $resource, $cookies, $location, $compile, ModalService, PagingService)
 {
+    $scope.$parent.changeWorkingGroundName('Development > Dialog Learning');
+
     var DialogsetsService = $resource('/api/:botId/dialogsets/findbytitle', { botId: '@botId' });
     var DialogsService = $resource('/api/dialogsets/:dialogsetId/dialogs/:dialogsId', { dialogsetId: '@dialogset', dialogsId: '@dialogsId' }, { update: { method: 'PUT' } });
 
