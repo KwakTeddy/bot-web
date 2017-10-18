@@ -250,78 +250,76 @@ var Witch = (function()
         var that = this;
         forEach(this.tasks, function(task, next)
         {
-            console.log(task);
-            next();
-            // if(task.type == 'action')
-            // {
-            //     var selector = task.selector;
-            //     var event = task.event;
-            //     var params = task.params;
-            //
-            //     var element = $(selector).get(0);
-            //     if(!element)
-            //     {
-            //         throw new WitchError(selector + ' is not found any element.');
-            //     }
-            //
-            //     if(!event)
-            //     {
-            //         throw new WitchError(event + ' of ' + selector + ' is undefined.');
-            //     }
-            //
-            //     that.execAction(element, event, params);
-            //     next();
-            // }
-            // else if(task.type == 'compare')
-            // {
-            //     var selector = task.selector;
-            //     var property = task.property;
-            //     var compareType = task.compareType;
-            //     var compareValue = task.compareValue;
-            //     var expectedValue = task.expectedValue;
-            //
-            //     var elements = $(selector);
-            //     if(elements.length <= 0)
-            //     {
-            //         if(count == 3)
-            //         {
-            //             throw new WitchError(selector + ' is not found any element.');
-            //         }
-            //         else
-            //         {
-            //             setTimeout(function()
-            //             {
-            //                 that.startCompare(index, count+1, done);
-            //             }, 1000);
-            //
-            //             return;
-            //         }
-            //     }
-            //
-            //     var execCompare = function(count)
-            //     {
-            //         var result = that.execCompare(elements, property, compareType, compareValue, expectedValue);
-            //         if(!result.result)
-            //         {
-            //             if(count == 3)
-            //             {
-            //                 return done(false, { result: result.result, compareTargetValue: result.compareTargetValue, compareType: compareType, compareValue: compareValue, expectedValue: expectedValue });
-            //             }
-            //
-            //             setTimeout(function()
-            //             {
-            //                 console.log('%c[Witch] %c' + that.name + ' %c[FAIL AND RETRY]', 'color: #ccc;', 'color: #ccc;', 'color: #ccc;');
-            //                 execCompare(count+1);
-            //             }, 1000);
-            //
-            //             return;
-            //         }
-            //
-            //         next();
-            //     };
-            //
-            //     execCompare(0);
-            // }
+            if(task.type == 'action')
+            {
+                var selector = task.selector;
+                var event = task.event;
+                var params = task.params;
+
+                var element = $(selector).get(0);
+                if(!element)
+                {
+                    throw new WitchError(selector + ' is not found any element.');
+                }
+
+                if(!event)
+                {
+                    throw new WitchError(event + ' of ' + selector + ' is undefined.');
+                }
+
+                that.execAction(element, event, params);
+                next();
+            }
+            else if(task.type == 'compare')
+            {
+                var selector = task.selector;
+                var property = task.property;
+                var compareType = task.compareType;
+                var compareValue = task.compareValue;
+                var expectedValue = task.expectedValue;
+
+                var elements = $(selector);
+                if(elements.length <= 0)
+                {
+                    if(count == 3)
+                    {
+                        throw new WitchError(selector + ' is not found any element.');
+                    }
+                    else
+                    {
+                        setTimeout(function()
+                        {
+                            that.startCompare(index, count+1, done);
+                        }, 1000);
+
+                        return;
+                    }
+                }
+
+                var execCompare = function(count)
+                {
+                    var result = that.execCompare(elements, property, compareType, compareValue, expectedValue);
+                    if(!result.result)
+                    {
+                        if(count == 3)
+                        {
+                            return done(false, { result: result.result, compareTargetValue: result.compareTargetValue, compareType: compareType, compareValue: compareValue, expectedValue: expectedValue });
+                        }
+
+                        setTimeout(function()
+                        {
+                            console.log('%c[Witch] %c' + that.name + ' %c[FAIL AND RETRY]', 'color: #ccc;', 'color: #ccc;', 'color: #ccc;');
+                            execCompare(count+1);
+                        }, 1000);
+
+                        return;
+                    }
+
+                    next();
+                };
+
+                execCompare(0);
+            }
         }, done);
     };
 
@@ -388,7 +386,11 @@ var Witch = (function()
         {
             test.exec(function(result)
             {
-                next();
+                if(result !== false)
+                {
+                    console.log('%c[Witch] %c' + test.name + ' %c[SUCCESS]', 'color: #ccc;', 'color: #797979;', 'color: green;');
+                    next();
+                }
             });
         }, done);
     };
