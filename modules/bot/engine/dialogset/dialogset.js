@@ -192,27 +192,31 @@ function insertDialogsetContext(dialogset, contexts, callback) {
     async.waterfall([
 
       function(cb2) {
-        CustomContext.update({
-            // bot: dialogset.bot,
-            dialogset: dialogset._id,
-            name: context
-          },
-          {
-            // bot: dialogset.bot,
-            dialogset: dialogset._id,
-            parent: parent, //(parent ? parent._id : null),
-            name: context
-          },
-          {
-            upsert: true
-          },
-          function(err, doc) {
-            // if(doc.upserted && doc.upserted[0]) parent = doc.upserted[0];
-            // else parent = null;
-            parent = null;
+        if (context != "") {
+            CustomContext.update({
+                    // bot: dialogset.bot,
+                    dialogset: dialogset._id,
+                    name: context
+                },
+                {
+                    // bot: dialogset.bot,
+                    dialogset: dialogset._id,
+                    parent: parent, //(parent ? parent._id : null),
+                    name: context
+                },
+                {
+                    upsert: true
+                },
+                function (err, doc) {
+                    // if(doc.upserted && doc.upserted[0]) parent = doc.upserted[0];
+                    // else parent = null;
+                    parent = null;
+                    cb2(null);
+                }
+            );
+        } else {
             cb2(null);
-          }
-        );
+        }
       },
 
       function(cb2) {
@@ -394,6 +398,11 @@ function insertExcelFile(infile, dialogset, callback) {
           for(var i = endOfCol - 2; i >= 0; i--) {
             if(values[i] != '' && values[i] != contexts[i]) {
               bContext = true;
+              for (var j = i+1; i<=endOfCol - 2; i++) {
+                  if (values[j] == "") {
+                      contexts[j] = "";
+                  }
+              }
               break;
             }
           }
