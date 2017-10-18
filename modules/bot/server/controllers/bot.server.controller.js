@@ -134,7 +134,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
 
         function(cb) {
             if (context.botUser && context.botUser.nlp) {
-                // 기존 개발 의도는 분석된 형태소 조합을 이용해서 의미를 찾기 위한 함수였던 것 같다.
+                // 기존 개발 의도는 분석된 형태소 조합을 이용해서 의미를 찾기위한 함수였던 것 같다.
                 context.botUser.sentenceInfo = dialogsetModule.analyzeSentence(inTextRaw, null, context.botUser.nlpAll);
 
                 if(context.bot.useMemoryFacts) {
@@ -195,6 +195,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
                         cb(true);
                     })
                 } else {
+                    var isFirst = false;
                     dialog.matchGlobalDialogs(inTextRaw, inTextNLP, context.bot.dialogs, context, print, function(matched, _dialog) {
                         if(matched) {
                             if(_dialog) console.log('[DIALOG_SEL]' + JSON.stringify({id: _dialog.id, name: _dialog.name, input: _dialog.input,
@@ -205,12 +206,26 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
                                 context.botUser.currentDialog = null;
                             }
 
-                            cb(true);
+                            // context history 기능 추가: MAX 5개 history만 저장함 (dsyoon)
+                            if (!isFirst && context.botUser.contexts != undefined && context.botUser.contexts != null) {
+                                var MAX_CONTEXTHISTORY_LENGTH = 5;
+                                if (context.botUser['contextsHistory'] == undefined || context.botUser['contextsHistory'] == null) {
+                                    context.botUser['contextsHistory'] = [context.botUser.contexts];
+                                } else {
+                                    context.botUser['contextsHistory'].splice(0, 0, context.botUser.contexts);
+                                    if (context.botUser['contextsHistory'].length > MAX_CONTEXTHISTORY_LENGTH) {
+                                        context.botUser['contextsHistory'].splice(5, 1);
+                                    }
+                                }
+
+                                isFirst = true;
+                            }
+                            console.log(cb);
+                            cb();
                         }
                         else cb(null);
 
                     })
-
                 }
             } else {
                 cb(null);
