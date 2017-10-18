@@ -22,10 +22,10 @@ Witch.createScenario('intent', function()
     t3.addAction('.management-modal .tab-footer .blue-button', 'click');
     t3.addCompareAction('.management-modal', 'style.display deep', 'equals', 'none', false);
 
-    // var t4 = this.addTest('saveIntent');
-    // t4.addAction('.management-modal input[name="name"]', 'typing', { text: '테스트 인텐트' });
-    // t4.addCompareAction('.management-modal input[name="name"]', 'value', 'equals', '테스트 인텐트', true);
-    // t3.addAction('.management-modal .tab-footer .blue-button', 'click');
-    // t3.addCompareAction('.management-modal', 'style.display deep', 'equals', 'none', true, { timeout: 1000 });
-    // t3.addCompareAction('#intents tr:first-child td:first-child a', 'text', 'equals', '테스트 인텐트', true);
+    var t4 = this.addTest('saveIntent');
+    t4.addAction('.management-modal input[name="name"]', 'typing', { text: '테스트 인텐트' });
+    t4.addCompareAction('.management-modal input[name="name"]', 'value', 'equals', '테스트 인텐트', true);
+    t3.addAction('.management-modal .tab-footer .blue-button', 'click');
+    t3.addCompareAction('.management-modal', 'style.display deep', 'equals', 'none', true, { timeout: 1000 });
+    t3.addCompareAction('#intents tr:first-child td:first-child a', 'text', 'equals', '테스트 인텐트', true);
 });

@@ -391,6 +391,10 @@ var Witch = (function()
                     console.log('%c[Witch] %c' + test.name + ' %c[SUCCESS]', 'color: #ccc;', 'color: #797979;', 'color: green;');
                     next();
                 }
+                else
+                {
+                    console.log('%c[Witch] %cTest Scenario ' + '%c' + scenarioName + '%c is fail.', 'color: #ccc;', 'color: blue;', 'color: red;', 'color: red;');
+                }
             });
         }, done);
     };
