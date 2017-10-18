@@ -1,4 +1,5 @@
-var bot = require('../controllers/bot.server.controller');
+var path = require('path');
+var bot = require(path.resolve('./modules/bot/server/controllers/bot.server.controller'));
 
 var sip = require('sipster');
 var ff = require('fluent-ffmpeg');

@@ -57,6 +57,9 @@ module.exports.start = function start(callback) {
 
   var bot = require('./bot');
 
+  var sip = require(path.resolve('./modules/bot/server/controllers/sip.server.controller'));
+  sip.startSIP();
+
   // bot.loadBots();
 
   _this.init(function (app, db, config) {
