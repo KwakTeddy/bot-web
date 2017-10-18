@@ -222,7 +222,7 @@ angular.module("analytics").controller("UserStatisticsController", ['$scope', "$
       startDate: start,
       endDate: end,
       opens: "left",
-      minDate : moment().subtract(62, 'days'),
+      minDate : moment().subtract(93, 'days'),
       maxDate : moment().endOf('month'),
       ranges: {
         '오늘': [moment(), moment()],
