@@ -1,0 +1,372 @@
+.graph-background
+{
+    min-width: 800px;
+    height: 100%;
+    overflow: auto;
+}
+
+.graph-controller
+{
+    height: 40px;
+    padding-top: 15px;
+
+    display: flex;
+}
+
+.graph-controller > div
+{
+    flex: 1;
+}
+
+.graph-controller > div form, .graph-zoom-controller
+{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.graph-controller > div > *
+{
+    vertical-align: middle;
+}
+
+.graph-zoom-controller
+{
+    margin-left: 10px;
+}
+
+.graph-zoom-controller > div
+{
+    display: inline-table;
+    border-radius: 0;
+}
+
+.graph-zoom-controller a
+{
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    box-sizing: border-box;
+    cursor: auto;
+    border: 1px solid #e8e8e8;
+    width: 35px;
+    border-radius: inherit;
+    background: #f8f8f8;
+    height: 35px;
+}
+
+.graph-zoom-controller a.graph-zoom-in
+{
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-right: none;
+}
+
+.graph-zoom-in::before
+{
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: #7e7e7e;
+    height: 40%;
+    width: 2px;
+}
+
+.graph-zoom-in::after
+{
+    content: '';
+    position: absolute;
+    transform: translate(-50%,-50%);
+    height: 2px;
+    width: 41%;
+    background: #7e7e7e;
+    top: 50%;
+    left: 50%;
+}
+
+.graph-zoom-controller a.graph-zoom-out
+{
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+.graph-zoom-out::after
+{
+    content: '';
+    position: absolute;
+    transform: translate(-50%,-50%);
+    height: 2px;
+    width: 41%;
+    background: #7e7e7e;
+    top: 50%;
+    left: 50%;
+}
+
+.graph-controller select
+{
+    border-radius: 6px;
+    border: 1px solid #d7d7d7;
+
+    width: 100px;
+    height: 35px;
+    outline: 0;
+}
+
+.graph-controller .refresh
+{
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    box-sizing: border-box;
+    border: 1px solid #e8e8e8;
+    width: 35px;
+    background: #f8f8f8;
+    height: 35px;
+    border-radius: 6px;
+
+    margin: 0 10px;
+
+    text-align: left;
+}
+
+.graph-controller .refresh img
+{
+    padding-top: 4px;
+    padding-left: 5px;
+}
+
+.graph-controller .save
+{
+    display: inline-block;
+
+    width: 90px;
+    height: 35px;
+    text-align: center;
+    background: #038eda;
+    cursor: pointer;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 4px;
+    vertical-align: top;
+
+    color: #fff;
+    letter-spacing: 0.3px;
+}
+
+
+
+
+.graph-dialog
+{
+    position: relative;
+
+    min-width: 200px;
+    border: 1px solid #d7d7d7;
+    border-radius: 6px;
+    margin-top: 6px;
+    display: inline-block;
+    margin-right: 18px;
+}
+
+.graph-dialog.selected
+{
+    border-color: #bfe3f6;
+}
+
+.graph-dialog .arrow
+{
+    position: absolute;
+    top: 0;
+    right: 22px;
+    bottom: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.graph-dialog-header
+{
+    position: relative;
+    background: #f8f8f8;
+    border-bottom: 1px solid #d7d7d7;
+
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.graph-dialog.selected .graph-dialog-header
+{
+    background: #bfe3f6;
+    border-bottom: 0;
+}
+
+.graph-dialog-header span
+{
+    color: #7e7e7e;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 46px;
+    padding-left: 22px;
+}
+
+.graph-dialog.selected .graph-dialog-header span
+{
+    color: #038eda;
+}
+
+.graph-dialog-header .dialog-more
+{
+    position: absolute;
+    top: 0;
+    right: 22px;
+    bottom: 0;
+
+    width: 24px;
+
+    background-image: url(../imgs/more-black.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.graph-dialog.selected .graph-dialog-header .dialog-more
+{
+    background-image: url(../imgs/more-blue.png);
+}
+
+.graph-dialog-input, .graph-dialog-buttons
+{
+    position: relative;
+    height: 43px;
+    text-align: center;
+    line-height: 43px;
+}
+
+.graph-dialog-input
+{
+    border-bottom: 1px solid #d7d7d7;
+}
+
+.graph-dialog.selected .graph-dialog-input
+{
+    border-color: #b1dbf4;
+}
+
+.graph-dialog-input span, .graph-dialog-output span
+{
+    color: #656565;
+    font-weight: 100;
+    font-size: 13px;
+}
+
+.graph-dialog-output
+{
+    position: relative;
+    border-bottom: 1px solid #d7d7d7;
+    height: 98px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.graph-dialog.selected .graph-dialog-output
+{
+    border-color: #b1dbf4;
+}
+
+.graph-dialog-output span
+{
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.graph-fold
+{
+    position: absolute;
+
+    top: 13px;
+    right: -11px;
+    z-index: 1000;
+
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 100%;
+    background: #d7d7d7 url(../imgs/fold.png) no-repeat 80% 50%;
+}
+
+.graph-dialog.selected .graph-fold
+{
+    background-color: #038eda;
+}
+
+.graph-body .plus
+{
+    width: 40px;
+    height: 38px;
+    cursor: pointer;
+    text-align: center;
+
+    border: 1px solid #d7d7d7;
+    border-radius: 6px;
+    background: #f8f8f8;
+}
+
+.graph-body .plus::before
+{
+    font-size: 24px;
+    line-height: 34px;
+    content: '+';
+    color: #7e7e7e;
+}
+
+.dialog-menu
+{
+    width: 150px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ebebeb;
+    box-shadow: 0 1px 11px rgba(0, 0, 0, 0.1), 0 1px 11px rgba(0, 0, 0, 0.1);
+}
+
+.dialog-menu .menu-title
+{
+    color: #b5b5b5;
+}
+
+.dialog-menu > li
+{
+}
+
+.dialog-menu > li a
+{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+
+    padding: 5px;
+    box-sizing: border-box;
+    border-radius: 6px;
+
+    cursor: pointer;
+}
+
+.dialog-menu > li:hover a
+{
+    background-color: #038eda;
+
+    color: white;
+}
+
+.dialog-menu > li:first-child
+{
+    text-align: center;
+}
+
+.dialog-menu .dialog-menu-divider
+{
+    height: 1px;
+    background-color: #ebebeb;
+    margin: 12px 0;
+}

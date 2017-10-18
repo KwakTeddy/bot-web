@@ -1,4 +1,4 @@
-var dialoggraphs = require('../controllers/dialoggraph.server.controller.js');
+var dialoggraphs = require('../controllers/dialog-graph.server.controller.js');
 
 module.exports = function(app)
 {
