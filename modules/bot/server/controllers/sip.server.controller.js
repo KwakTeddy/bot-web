@@ -76,14 +76,18 @@ function onCall(medias, callId) {
 
 
 function startSIP() {
+  console.log('1');
+
 // initialize pjsip
   sip.init({
     logConfig: {level: 0}
   });
+  console.log('2');
 
 // set up a transport to listen for incoming connections, defaults to UDP
   var transport = new sip.Transport({ port: 5060 });
 
+  console.log('3');
   var acct = new sip.Account({
     idUri: 'sip:' + credential.id + '@' + credential.server,
     regConfig: {
@@ -100,6 +104,7 @@ function startSIP() {
     }
   });
 
+  console.log('4');
   acct.on('registering', function() {
     console.log('=== registering ');
   });
@@ -146,11 +151,17 @@ function startSIP() {
     // answer the call (with default 200 OK)
     call.answer();
   });
+  console.log('5');
 
   acct.setTransport(transport);
+  console.log('6');
+
   acct.setRegistration(true);
+  console.log('7');
 
   sip.start();
+  console.log('8');
+
 }
 
 exports.startSIP = startSIP;
