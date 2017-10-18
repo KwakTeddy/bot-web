@@ -2347,7 +2347,7 @@ angular.module('bots').controller('DialogGraphController', ['$scope', '$rootScop
         delete node._output;
 
         for(var i = 0; node.input && i < node.input.length; i++) {
-          if(node.input[i].regexp) {
+          if(node.input[i].regexp && node.input[i].regexp.replace) {
             node.input[i].regexp = node.input[i].regexp.replace(/\\/g, '\\\\');
           }
         }

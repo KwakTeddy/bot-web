@@ -11,7 +11,25 @@ var dialogs = [
 			}
 		],
 		"output": "안녕하세요",
-		"name": "dialog_default0"
+		"name": "dialog_default0",
+		"children": [
+			{
+				"name": "테스트",
+				"id": "default31",
+				"filename": "default",
+				"input": [
+					{
+						"intent": "테스트인텐트1"
+					}
+				],
+				"output": [
+					{
+						"text": "테스트 인텐트",
+						"kind": "Text"
+					}
+				]
+			}
+		]
 	},
 	{
 		"name": "dialog_default2",
@@ -194,11 +212,15 @@ var dialogs = [
 					],
 					"kind": "Content"
 				},
-				"inRaw": "버튼 호출",
-				"inNLP": "버튼 호출",
 				"buttons": [
-					null,
-					null
+					{
+						"text": "버튼1",
+						"url": ""
+					},
+					{
+						"text": "구글연결",
+						"url": "http://www.google.com"
+					}
 				]
 			}
 		]

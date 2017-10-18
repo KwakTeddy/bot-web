@@ -7,10 +7,15 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "안녕"
+				"regexp": "(.*)"
 			}
 		],
-		"output": "안녕하세요",
+		"output": [
+			{
+				"text": "+context.dialog.1+",
+				"kind": "Text"
+			}
+		],
 		"name": "dialog_default0"
 	}
 ];
@@ -25,12 +30,10 @@ var commonDialogs = [
 				"text": "시작"
 			}
 		],
-		"output": [
-			{
-				"text": "bot_exp11 입니다.asdfasdf.adfgadf\nfg",
-				"kind": "Text"
-			}
-		]
+		"output": {
+			"text": "bot_exp11 입니다.asdfasdf.adfgadf\nfg",
+			"kind": "Text"
+		}
 	},
 	{
 		"id": "defaultcommon1",
