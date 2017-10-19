@@ -1646,7 +1646,7 @@ var commonDialogs = [
         ],
         "output": [
             {
-                "if": "context.dialog.isOwner",
+                "if": "context.botUser.isOwner",
                 "kind": "Action",
                 "call": "사장님주문내역",
                 "type": "Call"
