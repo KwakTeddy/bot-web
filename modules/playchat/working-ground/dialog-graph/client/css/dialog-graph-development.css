@@ -250,11 +250,12 @@
     color: #7e7e7e;
     font-weight: 600;
     font-size: 13px;
-    padding-left: 22px;
+    padding: 10px 45px 10px 20px;
+    box-sizing: border-box;
 
     display: inline-block;
 
-    width: 75%;
+    width: 100%;
 
     text-overflow: ellipsis;
     -o-text-overflow: ellipsis;
@@ -299,6 +300,7 @@
 {
     white-space: normal;
     border-bottom: 1px solid #d7d7d7;
+    padding: 0 10px;
 }
 
 .graph-dialog.selected .graph-dialog-input

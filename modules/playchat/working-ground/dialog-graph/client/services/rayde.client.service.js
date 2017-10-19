@@ -106,10 +106,7 @@
                     var parsed = match[0].replace(/var dialogs[^\[]*/gi, '').replace(';', '');
                     this.rawDatas = JSON.parse(parsed);
 
-                    console.log(this.rawDatas);
-
                     this.drawDialogs(this.canvas, this.rawDatas);
-                    this.refreshSvg();
                     this.drawLines();
 
                     return true;
@@ -199,10 +196,6 @@
             return line;
         };
 
-        Rayde.prototype.refreshSvg = function()
-        {
-        };
-
         Rayde.prototype.drawLines = function()
         {
             var svg = this.svg;
@@ -226,6 +219,7 @@
                     {
                         //직선이 아닌경우. 이미 가로직선은 그어졌으니 세로직선부터 그리면 된다.
                         // x1, y1 에서 x1과 x2의 중간까지 가로 직선을 그린다. -- 이미 그려졌을 것.
+
                         var x1_5 = (x2 - x1)/2 + x1;
                         //x1과 x2의 중간부터 y2까지 세로 직선을 그린다.
                         svg.append(createLine(x1_5, y1, x1_5, y2));
