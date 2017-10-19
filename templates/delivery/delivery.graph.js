@@ -1612,6 +1612,22 @@ var dialogs = [
                 "kind": "Text"
             }
         ]
+    },
+    {
+        "name": "쿠폰",
+        "id": "default85",
+        "filename": "default",
+        "input": [
+            {
+                "if": "false"
+            }
+        ],
+        "output": [
+            {
+                "text": "사장님으로 접속하셨습니다 미처리된 예약내역입니다.\n\n#reserves#+mobile+, +status+",
+                "kind": "Text"
+            }
+        ]
     }
 ];
 
@@ -1629,6 +1645,12 @@ var commonDialogs = [
             }
         ],
         "output": [
+            {
+                "if": "context.dialog.isOwner",
+                "kind": "Action",
+                "call": "사장님주문내역",
+                "type": "Call"
+            },
             {
                 "text": "안녕하세요. \n<+restaurant.name+>입니다.\n\n주문을 하고싶으신 메뉴를 보시려면 메뉴보기를 선택해주세요. \n+notOpen+\n1. 메뉴보기\n2. 배달받을 주소 확인 / 변경\n3. 배달받을 핸드폰번호 확인 / 변경\n4. 내 주문내역 보기\n5. 매장안내\n6. 쿠폰",
                 "kind": "Text"
