@@ -248,7 +248,7 @@ function processLiveInput(inRaw, callback) {
             inRaw = inRaw.replace(/(^\s*)|(\s*$)/gi, "");
             inRaw = inRaw.replace(/\"/gi, "");
 
-            var userDictionary = new UserDictionary(path.resolve('./external_modules/resources/ko/user.pos'));
+            var userDictionary = new UserDictionary(path.resolve('./external_modules/resources/ko'));
             var nlpUtil = new NLPUtil();
 
             if (inRaw == undefined || inRaw == null || Array.isArray(inRaw)) {

@@ -58,24 +58,31 @@ function processInput(context, inRaw, callback) {
                 enNLP.processInput(context, inRaw, function(_inTextNLP, _inDoc) {
                     inNLP = context.botUser.inNLP;
                     nlpAll = context.botUser.nlpAll;
+
+                    cb(null);
                 });
             } else if (context.botUser.language=="zh") {
                 zhNLP.processInput(context, inRaw, function(_inTextNLP, _inDoc) {
                     inNLP = context.botUser.inNLP;
                     nlpAll = context.botUser.nlpAll;
+
+                    cb(null);
                 });
             } else if (context.botUser.language=="ja") {
                 jaNLP.processInput(context, inRaw, function(_inTextNLP, _inDoc) {
                     inNLP = context.botUser.inNLP;
-                    nlpAll = context.botUser.nlpAll;
+                    nlpAll = context.botUser.nlpAll
+
+                    cb(null);
                 });
             } else {
                 koNLP.processInput(context, inRaw, function(_inTextNLP, _inDoc) {
                     inNLP = context.botUser.inNLP;
                     nlpAll = context.botUser.nlpAll;
+
+                    cb(null);
                 });
             }
-            cb(null);
         },
 /*
         function(cb) {

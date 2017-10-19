@@ -125,7 +125,7 @@ angular.module('user-bots').controller('UserBotChatController', ['$state', '$roo
         // speak(voice);
       }
 
-      if(vm.isExternal) {
+      if(vm.isExternal && $window.OnMsgExternal) {
         var voice = message.voice || message.text || message;
         $window.OnMsgExternal(voice);
       }

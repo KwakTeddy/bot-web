@@ -42,6 +42,7 @@ SentenceInfo.prototype.toKorChars = function(str) {
 SentenceInfo.prototype.analyzeKO = function (nlu) {
     var str = nlu.sentence;
     var morphemes = nlu.nlp;
+    if (morphemes.length <= 0) return this.type.declarative;
 
     var suffix = "";
     var suffixIndex = -1;
@@ -73,10 +74,13 @@ SentenceInfo.prototype.analyzeKO = function (nlu) {
                 return this.type.interrogative;
             }
         }
+
         // 체크 2: 없니, 없냐, 먹어줄래
-        if (morphemes[suffixIndex-1].pos=="Verb") {
-            if (suffix == "니" || suffix == "냐" || suffix == "래") {
-                return this.type.interrogative;
+        if (suffixIndex - 1 > 0) {
+            if (morphemes[suffixIndex - 1].pos == "Verb") {
+                if (suffix == "니" || suffix == "냐" || suffix == "래") {
+                    return this.type.interrogative;
+                }
             }
         }
         // 체크 3: 갔었니, 먹었니
@@ -95,9 +99,11 @@ SentenceInfo.prototype.analyzeKO = function (nlu) {
 
         // 2. 명령문: “-아라/-어라, -아/-어, -게, -오/-으오, -아요/-어요, -십시오/-시지요‟
         // 체크 1: 와라, 찾아라, 찾아줘, 찾아죠
-        if (morphemes[suffixIndex-1].pos=="Verb") {
-            if (suffix == "니" || suffix == "냐" || suffix == "라" || suffix == "줘" || suffix == "죠") {
-                return this.type.imperative;
+        if (suffixIndex - 1 > 0) {
+            if (morphemes[suffixIndex-1].pos=="Verb") {
+                if (suffix == "니" || suffix == "냐" || suffix == "라" || suffix == "줘" || suffix == "죠") {
+                    return this.type.imperative;
+                }
             }
         }
         // 체크 3: 가져와봐.
@@ -110,9 +116,11 @@ SentenceInfo.prototype.analyzeKO = function (nlu) {
 
         // 3. 감탄문: -구나, -군, -구먼, -구려‟
         // 체크 1: 했구나, 했군
-        if (morphemes[suffixIndex-1].pos=="Verb") {
-            if (suffix == "구나" || suffix == "군" || suffix == "구만" || suffix == "구먼") {
-                return this.type.exclamation;
+        if (suffixIndex - 1 > 0) {
+            if (morphemes[suffixIndex - 1].pos == "Verb") {
+                if (suffix == "구나" || suffix == "군" || suffix == "구만" || suffix == "구먼") {
+                    return this.type.exclamation;
+                }
             }
         }
         // 체크 2: 먹었구나, 먹었군
