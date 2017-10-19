@@ -1,7 +1,32 @@
+<script type="text/template" id="dialogGraphTemplate">
+    <div class="graph-dialog" data-id="{id}">
+        <div class="graph-dialog-item">
+            <div class="graph-dialog-header">
+                <span>{name}</span>
+                <a href="#" class="dialog-more"></a>
+            </div>
+            <div class="graph-dialog-input">
+                <span>{input}</span>
+                <a href="#" class="arrow"><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/miniarrow.png"></a>
+            </div>
+            <div class="graph-dialog-output">
+                <span>{output}</span>
+                <a class="graph-fold"></a>
+            </div>
+            <div class="graph-dialog-buttons">
+                <a href="#"><span>Button</span></a>
+                <a href="#" class="arrow"><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/miniarrow.png"></a>
+            </div>
+        </div>
+        <div class="graph-dialog-children"></div>
+    </div>
+</script>
+
+
 <div ng-controller="DialogGraphDevelopmentController" class="graph-background">
     <div class="tab01">
         <ul class="tabs1">
-            <li ng-repeat="file in fileList" id="{{ file.name }}" ng-class="currentTabName == file.name ? 'select_tab': ''">
+            <li ng-repeat="file in fileList" id="{{ file.name }}" ng-class="currentTabName == file.name ? 'select_tab' : ''">
                 <a href="#">{{ file.name }}</a>
             </li>
             <li class="mini"><a href="/playchat/management/dialog-set"><img src="modules/playchat/working-ground/common/client/img/plus.png"></a></li>
@@ -30,46 +55,8 @@
         </div>
     </div>
     <div class="graph-body">
-        <div class="graph-dialog-group">
-            <div class="graph-dialog selected">
-                <div class="graph-dialog-header">
-                    <span>Dialog Name</span>
-                    <a href="#" class="dialog-more"></a>
-                </div>
-                <div class="graph-dialog-input">
-                    <span>Input</span>
-                    <a href="#" class="arrow"><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/miniarrow.png"></a>
-                </div>
-                <div class="graph-dialog-output">
-                    <span>Output</span>
-                    <a class="graph-fold"></a>
-                </div>
-                <div class="graph-dialog-buttons">
-                    <a href="#"><span>Button</span></a>
-                    <a href="#" class="arrow"><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/miniarrow.png"></a>
-                </div>
-            </div>
-
-            <div class="graph-dialog-group">
-                <div class="graph-dialog">
-                    <div class="graph-dialog-header">
-                        <span>Dialog Name</span>
-                        <a href="#" class="dialog-more"></a>
-                    </div>
-                    <div class="graph-dialog-input">
-                        <span>Input</span>
-                        <a href="#" class="arrow"><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/miniarrow.png"></a>
-                    </div>
-                    <div class="graph-dialog-output">
-                        <span>Output</span>
-                        <a class="graph-fold"></a>
-                    </div>
-                    <div class="graph-dialog-buttons">
-                        <a href="#"><span>Button</span></a>
-                        <a href="#" class="arrow"><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/miniarrow.png"></a>
-                    </div>
-                </div>
-            </div>
+        <div id="graphDialogCanvas">
+            <svg></svg>
         </div>
 
         <button type="button" class="plus"></button>
