@@ -800,7 +800,7 @@ var reserveOwnerConfirm = {
                     //         message += context.dialog.reserve[field.name] + '/';
                     //     }
                     // }
-                    var cart = context.user.cart;
+                    var cart = context.dialog.order;
                     for(var i=0; i<cart.length; i++){
                         message += cart[i].name +', ' + cart[i].quant + ', ' + cart[i].price + '\n';
                     }
