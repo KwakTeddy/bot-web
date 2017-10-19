@@ -828,3 +828,39 @@ var reserveOwnerConfirm = {
 };
 
 bot.setTask('reserveOwnerConfirm', reserveOwnerConfirm);
+
+
+var reserveOwnerCancel = {
+    action: function (task, context, callback) {
+        if(context.dialog.reserve) {
+            var TemplateReservation = mongoModule.getModel('orderList');
+            TemplateReservation.update({_id: context.dialog.reserve._id}, {$set: {status: '업주취소'}}, function (err) {
+
+                if(!context.bot.testMode) {
+                    var message = '[' + context.bot.restaurant.name + ']' + '\n';
+
+                    message += '\n배달취소: '+
+                        task.inRaw + '\n' +
+                        '매장전화: ' + context.bot.phone;
+
+                    request.post(
+                        'https://bot.moneybrain.ai/api/messages/sms/send',
+                        {json: {callbackPhone: '02-858-5683' || context.bot.phone, phone: context.dialog.reserve.mobile.replace(/,/g, ''), message: message}},
+                        function (error, response, body) {
+                            reserveCheck.action(task, context, function(_task, context) {
+                                callback(task, context);
+                            });
+                        }
+                    );
+                } else {
+                    callback(task, context);
+                }
+            });
+
+        } else {
+            callback(task, context);
+        }
+    }
+};
+
+bot.setTask('reserveOwnerCancel', reserveOwnerCancel);
