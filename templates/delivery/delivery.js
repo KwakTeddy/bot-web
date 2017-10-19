@@ -1,6 +1,9 @@
 var path = require('path');
-var bot = require(path.resolve('config/lib/bot')).getBot('delivery_md');
+// var bot = require(path.resolve('config/lib/bot')).getBot('delivery');
+var bot = require(require('path').resolve("config/lib/bot")).getTemplateBot('delivery');
 
+
+var config = require(path.resolve('./config/config'));
 var messages = require(path.resolve('modules/messages/server/controllers/messages.server.controller'));
 var mongoose = require('mongoose');
 var mongoModule = require(path.resolve('modules/bot/action/common/mongo'));
@@ -103,17 +106,77 @@ var mdmenu = [
 var startTask = {
     action: function (task,context,callback) {
         context.user.cart = [];
+        if(context.bot.authKey != undefined && context.botUser.options && context.bot.authKey == context.botUser.options.authKey) {
+            context.botUser.isOwner = true;
+        }
 
         var restaurant = mongoModule.getModel('restaurantcontent');
-        restaurant.find({_id:ObjectId("59e08720ae20b594f69b8bdd")}).lean().exec(function(err, docs) {
+        restaurant.find({_id:ObjectId("59dcd621874f5bbde7a10679")}).lean().exec(function(err, docs) {
             context.bot.restaurant = docs[0];
             if(!isOpen(context.bot.restaurant.openTime)) context.dialog.notOpen = "\n(**현재는 영업시간이 아닙니다**)\n";
-            callback(task,context);
+
+            if(context.botUser.isOwner) {
+                reserveCheck.action(task, context, function(_task, context) {
+                    callback(task, context);
+                })
+            } else {
+                callback(task, context);
+            }
         })
     }
 };
 
 bot.setTask('startTask', startTask);
+
+var reserveCheck = {
+    action: function (task, context, callback) {
+
+        if(context.botUser.isOwner) {
+            var TemplateReservation = mongoModule.getModel('OrderList');
+            TemplateReservation.find({
+                upTemplateId: context.bot.templateDataId,
+                status: '승인대기중'
+            }).lean().sort({date: -1, time: -1}).exec(function(err, docs) {
+                if(docs && docs.length > 0) {
+                    // for(var i in docs) {
+                    //     docs[i].dateStr = dateformat(docs[i].date + 9 * 60 * 60, 'mm월dd일');
+                    // }
+                    context.dialog.reserves = docs;
+                    context.dialog.reserve = undefined;
+                } else {
+                    context.dialog.reserves = undefined;
+                    context.dialog.reserve = undefined;
+                }
+                callback(task, context);
+            });
+        }
+        // else {
+        //     var TemplateReservation = mongoModule.getModel('TemplateReservation');
+        //     TemplateReservation.find({
+        //         upTemplateId: context.bot.templateDataId,
+        //         userKey: context.user.userKey,
+        //         status: {$ne: '취소'},
+        //         date: {$gte: new Date()}
+        //     }).lean().sort({date: -1, time: -1}).exec(function(err, docs) {
+        //         if(docs && docs.length > 1) {
+        //             for(var i in docs) {
+        //                 docs[i].dateStr = dateformat(docs[i].date + 9 * 60 * 60, 'mm월dd일');
+        //             }
+        //             context.dialog.reserves = docs;
+        //             context.dialog.reserve = undefined;
+        //         } else if(docs && docs.length > 0) {
+        //             docs[0].dateStr = dateformat(docs[0].date + 9 * 60 * 60, 'mm월dd일');
+        //             context.dialog.reserve = docs[0];
+        //             context.dialog.reserves = undefined;
+        //         } else {
+        //             context.dialog.reserves = undefined;
+        //             context.dialog.reserve = undefined;
+        //         }
+        //         callback(task, context);
+        //     })
+        // }
+    }
+};
 
 
 
@@ -134,62 +197,62 @@ bot.setTask('getCategory', getCategory);
 
 
 var menuElement = {
-  typeCheck: 'listTypeCheck',
-  listName: 'menuList'
+    typeCheck: 'listTypeCheck',
+    listName: 'menuList'
 };
 
 bot.setType('menuElement', menuElement);
 
 var menuListUpdate = {
-  action: function (task,context,callback) {
-    context.dialog.menu = context.dialog.menuElement;
-    if(!context.dialog.menu.subMenu) context.dialog.currentItem = context.dialog.menuElement;
-    callback(task,context);
-	}
+    action: function (task,context,callback) {
+        context.dialog.menu = context.dialog.menuElement;
+        if(!context.dialog.menu.subMenu) context.dialog.currentItem = context.dialog.menuElement;
+        callback(task,context);
+    }
 };
 
 bot.setTask('menuListUpdate', menuListUpdate);
 
 
 var category = {
-  typeCheck: 'listTypeCheck',
-  listName: 'category'
+    typeCheck: 'listTypeCheck',
+    listName: 'category'
 };
 
 bot.setType('category', category);
 
 var categoryToMenu = {
-  action: function (task,context,callback) {
-    context.dialog.menu = context.dialog.category;
-    //context.dialog.menuName = context.dialog
-    callback(task,context);
-	}
+    action: function (task,context,callback) {
+        context.dialog.menu = context.dialog.category;
+        //context.dialog.menuName = context.dialog
+        callback(task,context);
+    }
 };
 
 bot.setTask('categoryToMenu', categoryToMenu);
 
 var makeSubMenuList = {
-  action: function (task,context,callback) {
-    context.dialog.menuList = context.dialog.menu.subMenu;
-    callback(task,context);
-	}
+    action: function (task,context,callback) {
+        context.dialog.menuList = context.dialog.menu.subMenu;
+        callback(task,context);
+    }
 };
 
 bot.setTask('makeSubMenuList', makeSubMenuList);
 
 
 var menuElementText = {
-  typeCheck: function (text, type, task, context, callback) {
-    var matched = false;
-    var array = context.dialog.menuList;
-    for(i=0; i<array.length; i++){
-      if (matchFun(text, array[i].name)) {
-        matched = true;
-        task.menuElement = array[i];
-      }; 
-    };    
-    callback(text, task, matched);
-	}
+    typeCheck: function (text, type, task, context, callback) {
+        var matched = false;
+        var array = context.dialog.menuList;
+        for(i=0; i<array.length; i++){
+            if (matchFun(text, array[i].name)) {
+                matched = true;
+                task.menuElement = array[i];
+            };
+        };
+        callback(text, task, matched);
+    }
 };
 
 bot.setType('menuElementText', menuElementText);
@@ -199,16 +262,16 @@ bot.setType('menuElementText', menuElementText);
 
 
 var makeOrderList = {
-  action: function (task,context,callback) {
-    context.dialog.keyword = context.dialog.inRaw;
-    if(context.dialog.inRaw == 1) context.dialog.keyword = context.dialog.inCurRaw;
-    context.dialog.menu = {};
-    context.dialog.menu.subMenu = filter(context.dialog.keyword, context.bot.restaurant.menu);
-    if(context.dialog.menu.subMenu.length==1) context.dialog.currentItem = context.dialog.menu.subMenu[0];
-    // context.dialog.menuList = filter(context.dialog.inRaw, mdmenu);
+    action: function (task,context,callback) {
+        context.dialog.keyword = context.dialog.inRaw;
+        if(context.dialog.inRaw == 1) context.dialog.keyword = context.dialog.inCurRaw;
+        context.dialog.menu = {};
+        context.dialog.menu.subMenu = filter(context.dialog.keyword, context.bot.restaurant.menu);
+        if(context.dialog.menu.subMenu.length==1) context.dialog.currentItem = context.dialog.menu.subMenu[0];
+        // context.dialog.menuList = filter(context.dialog.inRaw, mdmenu);
 
-    callback(task,context);
-	}
+        callback(task,context);
+    }
 };
 
 bot.setTask('makeOrderList', makeOrderList);
@@ -343,8 +406,11 @@ var sendMessage = {
 
 bot.setTask('sendMessage', sendMessage);
 
-
-
+var reserveRequest = {
+    name: 'reserveRequest',
+    action: reserveRequest
+};
+bot.setTask("reserveRequest", reserveRequest);
 
 
 
@@ -363,6 +429,98 @@ bot.setTask('sendMessage', sendMessage);
 
 
 // -------------------- Functions --------------------------
+
+function reserveRequest(task, context, callback) {
+
+    var doc = {
+        // mobile: context.dialog.mobile || context.user.mobile,
+        // time: context.dialog.time,
+        status: '승인대기중',
+        upTemplateId: context.bot.templateDataId,
+        // userKey: context.user.userKey
+
+
+        user: context.user.userKey,
+        mobile: context.user.mobile,
+        address: context.user.address,
+        order: context.user.cart,
+        pay: context.user.pay,
+        request: context.user.request,
+        time: new Date()
+    };
+
+
+    var TemplateReservation = mongoModule.getModel('OrderList');
+    var templateReservation = new TemplateReservation(doc);
+
+    templateReservation.save(function(err) {
+        if(!context.bot.testMode) {
+            var randomNum = '';
+            randomNum += '' + Math.floor(Math.random() * 10);
+            randomNum += '' + Math.floor(Math.random() * 10);
+            randomNum += '' + Math.floor(Math.random() * 10);
+            randomNum += '' + Math.floor(Math.random() * 10);
+
+            var url = config.host + '/mobile#/chat/' + context.bot.id + '?authKey=' + randomNum;
+            context.bot.authKey = randomNum;
+
+            var query = {url: url};
+            var request = require('request');
+
+            request({
+                url: 'https://openapi.naver.com/v1/util/shorturl',
+                method: 'POST',
+                form: query,
+                headers: {
+                    'Host': 'openapi.naver.com',
+                    'Accept': '*/*',
+                    'Content-Type': 'application/json',
+                    'X-Naver-Client-Id': context.bot.naver.clientId,
+                    'X-Naver-Client-Secret': context.bot.naver.clientSecret
+                }
+            }, function(error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    var shorturl;
+                    try {shorturl = JSON.parse(body).result.url; } catch(e) {console.log(e);}
+                    var message = '[플레이챗]' + '\n' +
+                        context.dialog.name + '/' +
+                        context.dialog.dateStr + '/';
+                    // context.dialog.numOfPerson + '명\n' +
+                    if (context.dialog.time) {
+                        messages += context.dialog.time + '/';
+                    }
+
+                    for(var i = 0; i < fields.length; i++) {
+                        var field = fields[i];
+                        if(field.name == 'numOfPerson') {
+                            message +=  context.dialog[field.name] + '명/';
+                        } else {
+                            message += context.dialog[field.name] + '/';
+                        }
+                    }
+
+                    message += '\n' + (context.dialog.mobile || context.user.mobile) + '\n' +
+                        '예약접수(클릭) ' + shorturl;
+
+                    request.post(
+                        'https://bot.moneybrain.ai/api/messages/sms/send',
+                        {json: {callbackPhone: context.bot.phone, phone: context.bot.mobile.replace(/,/g, ''), message: message}},
+                        function (error, response, body) {
+                            callback(task, context);
+                        }
+                    );
+                } else {
+                    callback(task, context);
+                }
+            });
+        } else {
+            callback(task, context);
+        }
+    });
+
+}
+
+
 
 function checkInDistance(str, task, context, callback) {
     var address = {address: str}
@@ -476,28 +634,28 @@ function pushCart(item, cart) {
 
 
 var saveMobile = {
-  action: function (task,context,callback) {
-    context.user.mobile = context.dialog.mobile;
-    callback(task,context);
-	}
+    action: function (task,context,callback) {
+        context.user.mobile = context.dialog.mobile;
+        callback(task,context);
+    }
 };
 
 bot.setTask('saveMobile', saveMobile);
 
 var checkCondition = {
-  action: function (task,context,callback) {
-      console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-    context.dialog.ordering = true;
-    context.dialog.deliveryTime = isOpen(context.bot.restaurant.openTime);
-    context.dialog.deliveryDistance = true;
-    var totalPrice = getTotalPrice(context.user.cart);
-    context.dialog.priceCond = (totalPrice > context.bot.restaurant.minPrice);
-    //context.dialog.priceCond = true;
-    context.dialog.totalPrice = totalPrice;
-    callback(task,context);
+    action: function (task,context,callback) {
+        console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        context.dialog.ordering = true;
+        context.dialog.deliveryTime = isOpen(context.bot.restaurant.openTime);
+        context.dialog.deliveryDistance = true;
+        var totalPrice = getTotalPrice(context.user.cart);
+        context.dialog.priceCond = (totalPrice > context.bot.restaurant.minPrice);
+        //context.dialog.priceCond = true;
+        context.dialog.totalPrice = totalPrice;
+        callback(task,context);
 
-    //if(context.user.address) checkInDistance(context.user.address.지번주소, task, context, callback);
-	}
+        //if(context.user.address) checkInDistance(context.user.address.지번주소, task, context, callback);
+    }
 };
 
 bot.setTask('checkCondition', checkCondition);
@@ -523,21 +681,21 @@ function sendSMS(phone, message) {
 
 
 var getOrderHistory = {
-  action: function (task,context,callback) {
-    var orderList = mongoModule.getModel('orderList');
-    orderList.find({user:context.user.userKey}).sort({created:-1}).limit(1).lean().exec(function(err, docs){
-        if(docs.length != 0){
-            context.dialog.orderHistory = docs[0];
-            var created = context.dialog.orderHistory.created;
-            context.dialog.orderHistory.time = datePreProc(created);
-            created.setMinutes(created.getMinutes() + 30);
-            context.dialog.expectedTime = datePreProc(created);
-            context.dialog.totalPrice = getTotalPrice(context.dialog.orderHistory.order);
-        }
+    action: function (task,context,callback) {
+        var orderList = mongoModule.getModel('orderList');
+        orderList.find({user:context.user.userKey}).sort({created:-1}).limit(1).lean().exec(function(err, docs){
+            if(docs.length != 0){
+                context.dialog.orderHistory = docs[0];
+                var created = context.dialog.orderHistory.created;
+                context.dialog.orderHistory.time = datePreProc(created);
+                created.setMinutes(created.getMinutes() + 30);
+                context.dialog.expectedTime = datePreProc(created);
+                context.dialog.totalPrice = getTotalPrice(context.dialog.orderHistory.order);
+            }
 
-        callback(task,context);
-    });
-	}
+            callback(task,context);
+        });
+    }
 };
 
 bot.setTask('getOrderHistory', getOrderHistory);
@@ -562,29 +720,29 @@ function getTotalPrice(cart) {
 
 
 var cartItem = {
-  typeCheck: 'listTypeCheck',
-  listName: 'cart'
+    typeCheck: 'listTypeCheck',
+    listName: 'cart'
 };
 
 bot.setType('cartItem', cartItem);
 
 var makeCartList = {
-  action: function (task,context,callback) {
-    context.dialog.cart = context.user.cart;
-    callback(task,context);
-	}
+    action: function (task,context,callback) {
+        context.dialog.cart = context.user.cart;
+        callback(task,context);
+    }
 };
 
 bot.setTask('makeCartList', makeCartList);
 
 var changeQuantity = {
-  action: function (task,context,callback) {
-    context.dialog.cartItem.price /= context.dialog.cartItem.quant;
-    context.dialog.cartItem.quant = parseInt(context.dialog.inCurRaw);
-    context.dialog.cartItem.price *= parseInt(context.dialog.inCurRaw);
-      context.dialog.modifying = true;
-    callback(task,context);
-	}
+    action: function (task,context,callback) {
+        context.dialog.cartItem.price /= context.dialog.cartItem.quant;
+        context.dialog.cartItem.quant = parseInt(context.dialog.inCurRaw);
+        context.dialog.cartItem.price *= parseInt(context.dialog.inCurRaw);
+        context.dialog.modifying = true;
+        callback(task,context);
+    }
 };
 
 bot.setTask('changeQuantity', changeQuantity);
@@ -603,16 +761,16 @@ bot.setTask('deleteCartItem', deleteCartItem);
 
 
 var makeOpenTime = {
-  action: function (task,context,callback) {
-    context.dialog.weekday = true;
-    for(var i=0; i<5; i++){
-      if(context.bot.restaurant.openTime[0].time != context.bot.restaurant.openTime[i].time) {
-        context.dialog.weekday = false;
-        break;
-      }
+    action: function (task,context,callback) {
+        context.dialog.weekday = true;
+        for(var i=0; i<5; i++){
+            if(context.bot.restaurant.openTime[0].time != context.bot.restaurant.openTime[i].time) {
+                context.dialog.weekday = false;
+                break;
+            }
+        }
+        callback(task,context);
     }
-    callback(task,context);
-	}
 };
 
 bot.setTask('makeOpenTime', makeOpenTime);

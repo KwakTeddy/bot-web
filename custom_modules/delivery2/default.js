@@ -10,6 +10,7 @@ var ObjectId = mongoose.Types.ObjectId;
 var defaultTask = {
     name: 'defaultTask',
     action: function(task, context, callback) {
+        context.dialog.jiseob = 'jiseob';
         callback(task, context);
     }
 };
@@ -344,8 +345,6 @@ var sendMessage = {
 bot.setTask('sendMessage', sendMessage);
 
 
-var reserveRequest = {action: 'reserveRequest'};
-bot.setTask('reserveRequest', reserveRequest);
 
 
 

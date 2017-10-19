@@ -344,8 +344,6 @@ var sendMessage = {
 bot.setTask('sendMessage', sendMessage);
 
 
-var reserveRequest = {action: 'reserveRequest'};
-bot.setTask('reserveRequest', reserveRequest);
 
 
 
