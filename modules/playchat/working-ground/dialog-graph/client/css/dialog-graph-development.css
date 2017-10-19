@@ -250,8 +250,17 @@
     color: #7e7e7e;
     font-weight: 600;
     font-size: 13px;
-    line-height: 46px;
     padding-left: 22px;
+
+    display: inline-block;
+
+    width: 75%;
+
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    word-wrap: normal !important;
 }
 
 .graph-dialog.selected .graph-dialog-header span
