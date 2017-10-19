@@ -107,7 +107,7 @@
                     this.rawDatas = JSON.parse(parsed);
 
                     this.drawDialogs(this.canvas, this.rawDatas);
-                    this.drawLines();
+                    this.drawLines(this.canvas.find('.graph-dialog'));
 
                     return true;
                 }
@@ -196,45 +196,59 @@
             return line;
         };
 
-        Rayde.prototype.drawLines = function()
+        Rayde.prototype.drawLine = function(src, children)
         {
             var svg = this.svg;
-            this.canvas.children('.graph-dialog').each(function()
+
+            var x1 = src.offsetLeft + src.offsetWidth;
+            var y1 = src.offsetHeight/2 + src.offsetTop;
+
+            src.lines = {};
+
+            for(var i=0, l=children.length; i<l; i++)
             {
-                var src = this.children[0];
+                var dest = children[i].children[0];
 
-                var x1 = src.offsetLeft + src.offsetWidth;
-                var y1 = src.offsetHeight/2 + src.offsetTop;
+                var x2 = dest.offsetLeft;
+                var y2 = dest.offsetHeight/2 + dest.offsetTop;
 
-                var children = this.children[1].children;
-
-                for(var i=0, l=children.length; i<l; i++)
+                if(y1 != y2)
                 {
-                    var dest = children[i].children[0];
+                    //직선이 아닌경우. 이미 가로직선은 그어졌으니 세로직선부터 그리면 된다.
+                    // x1, y1 에서 x1과 x2의 중간까지 가로 직선을 그린다. -- 이미 그려졌을 것.
 
-                    var x2 = dest.offsetLeft;
-                    var y2 = dest.offsetHeight/2 + dest.offsetTop;
-
-                    if(y1 != y2)
+                    var x1_5 = (x2 - x1)/2 + x1;
+                    //x1과 x2의 중간부터 y2까지 세로 직선을 그린다.
+                    if(!src.lines.hasOwnProperty(x1_5 + '-' + y1 + '-' + x1_5 + '-' + y2))
                     {
-                        //직선이 아닌경우. 이미 가로직선은 그어졌으니 세로직선부터 그리면 된다.
-                        // x1, y1 에서 x1과 x2의 중간까지 가로 직선을 그린다. -- 이미 그려졌을 것.
-
-                        var x1_5 = (x2 - x1)/2 + x1;
-                        //x1과 x2의 중간부터 y2까지 세로 직선을 그린다.
-                        svg.append(createLine(x1_5, y1, x1_5, y2));
-
-                        //세로직선 끝에서 원래 dest로 그린다.
-                        svg.append(createLine(x1_5, y2, x2, y2));
+                        svg.append(src.lines[x1_5 + '-' + y1 + '-' + x1_5 + '-' + y2] = createLine(x1_5, y1, x1_5, y2));
                     }
-                    else
+
+                    //세로직선 끝에서 원래 dest로 그린다.
+                    if(!src.lines.hasOwnProperty(x1_5 + '-' + y2 + '-' + x2 + '-' + y2))
                     {
-                        //직선인 경우 그냥 그림.
-                        var line = createLine(x1, y1, x2, y2);
-                        svg.append(line);
+                        svg.append(src.lines[x1_5 + '-' + y2 + '-' + x2 + '-' + y2] = createLine(x1_5, y2, x2, y2));
                     }
                 }
-            });
+                else
+                {
+                    //직선인 경우 그냥 그림.
+                    if(!src.lines.hasOwnProperty(x1 + '-' + y1 + '-' + x2 + y2))
+                    {
+                        var line = createLine(x1, y1, x2, y2);
+                        svg.append(src.lines[x1 + '-' + y1 + '-' + x2 + y2] = line);
+                    }
+                }
+            }
+        };
+
+        Rayde.prototype.drawLines = function(children)
+        {
+            for(var i=0, l=children.length; i<l; i++)
+            {
+                var child = children[i];
+                this.drawLine(child.children[0], child.children[1].children);
+            }
         };
 
         if(!instance)
