@@ -124,7 +124,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
             var type = utils.requireNoCache(path.resolve('./modules/bot/action/common/type'));
 
             // 현재 발화의 대답이 중복인 경우, 중복된 발화의 category들을 저장하는 변수
-            context.botUser.nlu["context"]["ismulti"] = {};
+            // context.botUser.nlu["context"]["ismulti"] = {};
 
             // 현재 발화에 대한 자연어 처리
             type.processInput(context, inTextRaw, function(_inTextNLP, _inDoc) {
