@@ -386,7 +386,7 @@ var sendMessage = {
         var orderList = new OrderList({
             user: context.user.userKey,
             mobile: context.user.mobile,
-            address: context.user.address,
+            address: context.user.address.지번주,
             order: context.user.cart,
             pay: context.user.pay,
             request: context.user.request,
@@ -442,7 +442,7 @@ function reserveRequest(task, context, callback) {
 
         user: context.user.userKey,
         mobile: context.user.mobile,
-        address: context.user.address,
+        address: context.user.address.지번주소,
         order: context.user.cart,
         pay: context.user.pay,
         request: context.user.request,
@@ -761,3 +761,16 @@ var makeOpenTime = {
 };
 
 bot.setTask('makeOpenTime', makeOpenTime);
+
+
+var makeReserve = {
+    action: function (task,context,callback) {
+        task.result = {smartReply: ['예약확정', '예약취소']};
+        context.dialog.reserveTime= datePreProc(context.dialog.reserve.created);
+
+
+        callback(task,context);
+    }
+};
+
+bot.setTask('makeReserve', makeReserve);

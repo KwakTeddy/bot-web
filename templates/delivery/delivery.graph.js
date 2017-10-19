@@ -1623,14 +1623,15 @@ var dialogs = [
             }
         ],
         output: [
-            {if: 'context.botUser.isOwner && context.dialog.reserves != undefined', output: '미처리 예약내역입니다.\n#reserves#+index+. +address.도로명주소+ +created+ [+status+]\n#\n처리할 예약번호를 말씀해주세요.',
+            {if: 'context.botUser.isOwner && context.dialog.reserves != undefined', output: '사장님으로 접속하였습니다. 미처리 예약내역입니다.\n#reserves#+index+. +mobile+,+address+[+status+]\n#\n처리할 예약번호를 말씀해주세요.',
                 children: [
                     {
                         id: 'restaurant30',
                         filename: 'restaurant',
                         input: {types: [{name: 'reserve', listName: 'reserves', typeCheck: 'listTypeCheck'}]},
-                        task:       {action: function(task, context, callback) { task.result = {smartReply: ['예약확정', '예약취소']}; callback(task, context);}},
-                        output: '상세 예약내역입니다.\n상태: +reserve.status+\n예약자명: +reserve.mobile+\n일시: +reserve.created+ \n\n"확정", "취소"를 선택해 주세요.',
+                        // task:       {action: function(task, context, callback) { task.result = {smartReply: ['예약확정', '예약취소']}; callback(task, context);}},
+                        task: "makeReserve",
+                        output: '상세 예약내역입니다.\n상태: +reserve.status+\n예약자명: +reserve.mobile+\n일시: +reserveTime.month+.+reserveTime.date+ +reserveTime.hour+:+reserveTime.minute+ \n#reserve.order#+name+, +quant+, +price+\n#\n\n"확정", "취소"를 선택해 주세요.',
                         children: [
                             {
                                 id: 'restaurant26',
