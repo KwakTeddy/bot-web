@@ -3,6 +3,8 @@
     min-width: 800px;
     height: 100%;
     overflow: auto;
+
+    position: relative;
 }
 
 .graph-controller
@@ -154,7 +156,14 @@
     letter-spacing: 0.3px;
 }
 
-
+.graph-body
+{
+    position: absolute;
+    top: 120px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
 
 
 .graph-dialog
