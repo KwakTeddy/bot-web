@@ -1614,7 +1614,7 @@ var dialogs = [
         ]
     },
     {
-        "name": "쿠폰",
+        "name": "사장님주문내역",
         "id": "default85",
         "filename": "default",
         "input": [
