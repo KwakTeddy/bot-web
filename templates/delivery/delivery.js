@@ -1,5 +1,4 @@
 var path = require('path');
-// var bot = require(path.resolve('config/lib/bot')).getBot('delivery');
 var bot = require(require('path').resolve("config/lib/bot")).getTemplateBot('delivery');
 
 
@@ -17,89 +16,6 @@ var defaultTask = {
     }
 };
 bot.setTask("defaultTask", defaultTask);
-
-
-
-
-
-// var mdmenu = [
-//     {
-//         name:"치킨",
-//         subMenu: [
-//             {
-//                 name: "후라이드 치킨",
-//                 subMenu: [
-//                     {
-//                         name: "후라이드 치킨 L",
-//                         price: 16000
-//                     },
-//                     {
-//                         name: "후라이드 치킨 M",
-//                         price: 14000
-//                     }
-//                 ]
-//             },
-//             {
-//                 name: "양념 치킨",
-//                 subMenu: [
-//                     {
-//                         name: "양념 치킨 L",
-//                         price: 17000
-//                     },
-//                     {
-//                         name: "양념 치킨 M",
-//                         price: 15000
-//                     }
-//                 ]
-//             },
-//             {
-//                 name: "파닭",
-//                 subMenu: [
-//                     {
-//                         name: "순살 파닭",
-//                         subMenu: [
-//                             {
-//                                 name: "순살 파닭 L",
-//                                 price: 17000
-//                             },
-//                             {
-//                                 name: "순살 파닭 M",
-//                                 price: 15000
-//                             }
-//                         ]
-//                     },
-//                     {
-//                         name: "뼈 있는 파닭",
-//                         subMenu: [
-//                             {
-//                                 name: "뼈 있는 파닭 L",
-//                                 price: 17000
-//                             },
-//                             {
-//                                 name: "뼈 있는 파닭 M",
-//                                 price: 15000
-//                             }
-//                         ]
-//                     }
-//                 ]
-//             }
-//         ]
-//     },
-//     {
-//         name:"사이드",
-//         subMenu: [
-//             {
-//                 name: '콜라',
-//                 price: 1000
-//             },
-//             {
-//                 name: '피클',
-//                 price: 1000
-//             }
-//         ]
-//     }
-// ];
-
 
 
 
@@ -150,31 +66,6 @@ var reserveCheck = {
                 callback(task, context);
             });
         }
-        // else {
-        //     var TemplateReservation = mongoModule.getModel('TemplateReservation');
-        //     TemplateReservation.find({
-        //         upTemplateId: context.bot.templateDataId,
-        //         userKey: context.user.userKey,
-        //         status: {$ne: '취소'},
-        //         date: {$gte: new Date()}
-        //     }).lean().sort({date: -1, time: -1}).exec(function(err, docs) {
-        //         if(docs && docs.length > 1) {
-        //             for(var i in docs) {
-        //                 docs[i].dateStr = dateformat(docs[i].date + 9 * 60 * 60, 'mm월dd일');
-        //             }
-        //             context.dialog.reserves = docs;
-        //             context.dialog.reserve = undefined;
-        //         } else if(docs && docs.length > 0) {
-        //             docs[0].dateStr = dateformat(docs[0].date + 9 * 60 * 60, 'mm월dd일');
-        //             context.dialog.reserve = docs[0];
-        //             context.dialog.reserves = undefined;
-        //         } else {
-        //             context.dialog.reserves = undefined;
-        //             context.dialog.reserve = undefined;
-        //         }
-        //         callback(task, context);
-        //     })
-        // }
     }
 };
 
@@ -785,21 +676,6 @@ var reserveOwnerConfirm = {
 
                 if(!context.bot.testMode) {
                     var message = '[' + context.bot.restaurant.name + ']' + '\n';
-                    //     context.dialog.reserve.name + '/' +
-                    //     context.dialog.reserve.dateStr + '/' + context.dialog.reserve.time + '/';
-                    // // context.dialog.reserve.numOfPerson + '명\n' +
-                    // // '예약확정\n'+
-                    // // '매장전화: ' + context.bot.phone;
-                    //
-                    // var fields = context.bot.reserveFields || [];
-                    // for(var i = 0; i < fields.length; i++) {
-                    //     var field = fields[i];
-                    //     if(field.name == 'numOfPerson') {
-                    //         message += context.dialog.reserve[field.name] + '명/';
-                    //     } else {
-                    //         message += context.dialog.reserve[field.name] + '/';
-                    //     }
-                    // }
                     var cart = context.dialog.reserve.order;
                     for(var i=0; i<cart.length; i++){
                         message += cart[i].name +', ' + cart[i].quant + ', ' + cart[i].price + '\n';

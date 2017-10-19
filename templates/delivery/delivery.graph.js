@@ -1631,19 +1631,33 @@ var dialogs = [
                         input: {types: [{name: 'reserve', listName: 'reserves', typeCheck: 'listTypeCheck'}]},
                         // task:       {action: function(task, context, callback) { task.result = {smartReply: ['예약확정', '예약취소']}; callback(task, context);}},
                         task: "makeReserve",
-                        output: '상세 예약내역입니다.\n상태: +reserve.status+\n예약자명: +reserve.mobile+\n일시: +reserveTime.month+.+reserveTime.date+ +reserveTime.hour+:+reserveTime.minute+ \n#reserve.order#+name+, +quant+, +price+\n#\n\n"확정", "취소"를 선택해 주세요.',
+                        output: '상세 예약내역입니다.\n상태: +reserve.status+\n예약자명: +reserve.mobile+\n일시: +reserveTime.month+.+reserveTime.date+ +reserveTime.hour+:+reserveTime.minute+ \n#reserve.order#+name+, +quant+, +price+\n#\n\n1.확정\n2.취소',
                         children: [
                             {
                                 id: 'restaurant26',
                                 filename: 'restaurant',
-                                input: '~확정',
+                                input: [
+                                    {
+                                        "text": "1"
+                                    },
+                                    {
+                                        "text": "확정"
+                                    }
+                                ],
                                 task:           'reserveOwnerConfirm',
                                 output: {call: '예약내역', options: {prefix: '예약이 확정 되었습니다. 고객님에게 문자가 발송되었습니다.\n\n'}}
                             },
                             {
                                 id: 'restaurant28',
                                 filename: 'restaurant',
-                                input: '~취소',
+                                input: [
+                                    {
+                                        "text": "2"
+                                    },
+                                    {
+                                        "text": "취소"
+                                    }
+                                ],
                                 output: '취소 이유를 입력해주세요.',
                                 children: [
                                     {
@@ -1696,7 +1710,7 @@ var dialogs = [
                         task:       'reserveCancel',
                         output: '예약이 취소되었습니다.'
                     }
-                ]}, '고객님의 예약내역이 없습니다.']
+                ]}]
     }
 ];
 
