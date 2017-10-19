@@ -1,4 +1,4 @@
-angular.module('playchat.working-ground').controller('DialogGraphDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', 'Rayde', function ($window, $scope, $resource, $cookies, $location, Rayde)
+angular.module('playchat.working-ground').controller('DialogGraphDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', 'Rayde', function ($window, $scope, $resource, $cookies, $location, $compile, Rayde)
 {
     $scope.$parent.changeWorkingGroundName('Development > Dialog Graph');
 
@@ -13,6 +13,7 @@ angular.module('playchat.working-ground').controller('DialogGraphDevelopmentCont
 
     $scope.currentTabName = fileName;
 
+    Rayde.setScope($compile, $scope);
     Rayde.setDialogTemplate(angular.element('#dialogGraphTemplate').html());
     Rayde.setCanvas('#graphDialogCanvas');
 
@@ -55,6 +56,21 @@ angular.module('playchat.working-ground').controller('DialogGraphDevelopmentCont
             {
                 console.log('에러 : ', err);
             });
+        };
+
+        $scope.toggleChild = function(e)
+        {
+            if(e.currentTarget.className.indexOf('folded') != -1)
+            {
+                e.currentTarget.className = 'graph-fold';
+            }
+            else
+            {
+                e.currentTarget.className = 'graph-fold folded';
+            }
+
+            var target = e.currentTarget.parentElement.nextElementSibling;
+            Rayde.toggleChild(target);
         };
     })();
 

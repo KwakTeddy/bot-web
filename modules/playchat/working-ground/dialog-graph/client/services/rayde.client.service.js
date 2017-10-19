@@ -12,7 +12,15 @@
             this.rawDatas = undefined;
             this.template = undefined;
             this.canvas = undefined;
-            this.svg = undefined;
+
+            this.$compile = undefined;
+            this.$scope = undefined;
+        };
+        
+        Rayde.prototype.setScope = function($compile, $scope)
+        {
+            this.$compile = $compile;
+            this.$scope = $scope;
         };
 
         Rayde.prototype.setDialogTemplate = function(template)
@@ -23,7 +31,6 @@
         Rayde.prototype.setCanvas = function(selector)
         {
             this.canvas = angular.element(selector);
-            this.svg = this.canvas.find('svg');
 
             this.makeCanvasDraggable();
         };
@@ -133,6 +140,61 @@
             }
         };
 
+        var makeInputTemplate = function(input)
+        {
+            var template = '';
+            for(var key in input)
+            {
+                var icon = key.charAt(0).toUpperCase();
+                if(key == 'if')
+                    icon = 'if';
+
+                template += '<span class="graph-dialog-input-span" data-key="' + icon + '" data-content="' + input[key] + '">' + input[key] + '</span>';
+            }
+
+            return template;
+        };
+
+        var makeOutputTemplate = function(output)
+        {
+            if(typeof output == 'string')
+            {
+                return '<div><span>' + output + '</span></div>';
+            }
+            else if(typeof output.output == 'string')
+            {
+                return '<div><span>' + output.output + '</span></div>';
+            }
+            else if(typeof output.output == 'object')
+            {
+                return '<div><span>' + output.output.output ? output.output.output : output.output.text + '</span></div>';
+            }
+            else if(output.text)
+            {
+                return '<div><span>' + output.text + '</span></div>';
+            }
+            else
+            {
+                if(output.options)
+                {
+                    if(typeof output.options.output != 'string')
+                        console.log('텍스트가 아닙니다 : ', output, typeof output.options.output);
+
+                    return '<div><span>' + output.options.output + '</span></div>';
+                }
+                else if(output.call)
+                {
+                    return '<div><span>[call]' + output.call + '</span></div>';
+                }
+                else if(output.callChild)
+                {
+                    return '<div><span>[callChild]' + output.callChild + '</span></div>';
+                }
+
+                console.log('나머지 : ', output);
+            }
+        };
+
         Rayde.prototype.drawDialog = function(parent, dialog)
         {
             var t = this.template.replace('{id}', dialog.id).replace('{name}', dialog.name);
@@ -143,32 +205,41 @@
             for(var i=0; i<dialog.input.length; i++)
             {
                 var input = dialog.input[i];
+                inputTemplate += '<div>' + makeInputTemplate(input) + '</div>';
+            }
 
-                inputTemplate += '<div>';
-                //and
-                for(var key in input)
+            if(typeof dialog.output == 'object')
+            {
+                if(dialog.output.length)
                 {
-                    if(key == 'intent')
+                    for(var i=0; i<dialog.output.length; i++)
                     {
-                        inputTemplate += '<span class="graph-dialog-input-intent">' + input[key] + '</span>'
+                        var output = dialog.output[i];
+
+                        if(output.kind == 'Text')
+                        {
+                            outputTemplate += '<div>' + output.text + '</div>';
+                        }
+                        else
+                        {
+                            outputTemplate += makeOutputTemplate(output);
+                        }
                     }
                 }
-
-                inputTemplate += '</div>';
-            }
-
-            for(var i=0; i<dialog.output.length; i++)
-            {
-                var output = dialog.output[i];
-
-                if(output.kind == 'Text')
+                else
                 {
-                    outputTemplate += '<div><span class="graph-dialog-output-text">' + output.text + '</span></div>';
+                    outputTemplate = makeOutputTemplate(dialog.output);
                 }
             }
+            else
+            {
+                outputTemplate = makeOutputTemplate(dialog.output);
+            }
+
+
 
             t = t.replace('{input}', inputTemplate).replace('{output}', outputTemplate);
-            t = angular.element(t);
+            t = angular.element(this.$compile(t)(this.$scope));
 
             parent.append(t);
 
@@ -190,8 +261,9 @@
             line.setAttribute('y1', y1);
             line.setAttribute('x2', x2);
             line.setAttribute('y2', y2);
-            line.setAttribute('stroke', 'red');
+            line.setAttribute('stroke', '#ddd');
             line.setAttribute('stroke-width', '1px');
+            line.setAttribute('shape-rendering', 'crispEdges');
 
             return line;
         };
@@ -201,54 +273,64 @@
             var svg = this.svg;
 
             var x1 = src.offsetLeft + src.offsetWidth;
-            var y1 = src.offsetHeight/2 + src.offsetTop;
-
-            src.lines = {};
+            var y1 = src.offsetTop + 90;
 
             for(var i=0, l=children.length; i<l; i++)
             {
                 var dest = children[i].children[0];
 
                 var x2 = dest.offsetLeft;
-                var y2 = dest.offsetHeight/2 + dest.offsetTop;
+                var y2 = dest.offsetTop + 90;
 
-                if(y1 != y2)
+                if(i == 0)
                 {
-                    //직선이 아닌경우. 이미 가로직선은 그어졌으니 세로직선부터 그리면 된다.
-                    // x1, y1 에서 x1과 x2의 중간까지 가로 직선을 그린다. -- 이미 그려졌을 것.
-
-                    var x1_5 = (x2 - x1)/2 + x1;
-                    //x1과 x2의 중간부터 y2까지 세로 직선을 그린다.
-                    if(!src.lines.hasOwnProperty(x1_5 + '-' + y1 + '-' + x1_5 + '-' + y2))
-                    {
-                        svg.append(src.lines[x1_5 + '-' + y1 + '-' + x1_5 + '-' + y2] = createLine(x1_5, y1, x1_5, y2));
-                    }
-
-                    //세로직선 끝에서 원래 dest로 그린다.
-                    if(!src.lines.hasOwnProperty(x1_5 + '-' + y2 + '-' + x2 + '-' + y2))
-                    {
-                        svg.append(src.lines[x1_5 + '-' + y2 + '-' + x2 + '-' + y2] = createLine(x1_5, y2, x2, y2));
-                    }
+                    // 가로선
+                    var line = createLine(x1, y1, x2, y2);
+                    svg.appendChild(line);
                 }
                 else
                 {
-                    //직선인 경우 그냥 그림.
-                    if(!src.lines.hasOwnProperty(x1 + '-' + y1 + '-' + x2 + y2))
-                    {
-                        var line = createLine(x1, y1, x2, y2);
-                        svg.append(src.lines[x1 + '-' + y1 + '-' + x2 + y2] = line);
-                    }
+                    // 세로선.
+                    var x1_5 = (x2 - x1)/2 + x1;
+                    var line = createLine(x1_5, y1, x1_5, y2);
+                    svg.appendChild(line);
+
+                    // 가로선.
+                    line = createLine(x1_5, y2, x2, y2);
+                    svg.appendChild(line);
+                    y1 = y2;
                 }
             }
         };
 
         Rayde.prototype.drawLines = function(children)
         {
+            this.canvas.find('svg').remove();
+            this.canvas.prepend('<svg></svg>');
+
+            this.svg = this.canvas.find('svg').get(0);
+
             for(var i=0, l=children.length; i<l; i++)
             {
                 var child = children[i];
-                this.drawLine(child.children[0], child.children[1].children);
+                if(child.children[1].style.display != 'none')
+                    this.drawLine(child.children[0], child.children[1].children);
             }
+        };
+
+        Rayde.prototype.toggleChild = function(child)
+        {
+            if(child.style.display == 'none')
+            {
+                child.style.display = 'inline-block';
+            }
+            else
+            {
+                child.style.display = 'none';
+
+            }
+
+            this.drawLines(this.canvas.find('.graph-dialog'));
         };
 
         if(!instance)

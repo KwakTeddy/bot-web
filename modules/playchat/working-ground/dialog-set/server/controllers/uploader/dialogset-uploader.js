@@ -138,8 +138,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
             async.waterfall([
                 function(cb2)
                 {
-                    console.log('컨텍스트 네임 : ', parent, context);
-                    CustomContext.update({ dialogset: dialogset._id, name: context }, { dialogset: dialogset._id, parent: parent, name: context }, { upsert: true }, function(err, doc)
+                    CustomContext.update({ dialogset: dialogset._id, name: context }, { dialogset: dialogset._id, parent: (parent.name == context ? null : parent), name: context }, { upsert: true }, function(err, doc)
                     {
                         parent = null;
                         cb2(null);

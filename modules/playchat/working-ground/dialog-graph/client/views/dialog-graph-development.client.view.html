@@ -6,17 +6,17 @@
                 <a href="#" class="dialog-more"></a>
             </div>
             <div class="graph-dialog-input">
-                <span>{input}</span>
+                {input}
                 <a href="#" class="arrow"><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/miniarrow.png"></a>
             </div>
             <div class="graph-dialog-output">
-                <span>{output}</span>
-                <a class="graph-fold"></a>
+                {output}
             </div>
             <div class="graph-dialog-buttons">
                 <a href="#"><span>Button</span></a>
                 <a href="#" class="arrow"><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/miniarrow.png"></a>
             </div>
+            <a class="graph-fold" ng-click="toggleChild($event);"></a>
         </div>
         <div class="graph-dialog-children"></div>
     </div>
@@ -55,12 +55,10 @@
         </div>
     </div>
     <div class="graph-body">
-        <div id="graphDialogCanvas">
-            <svg></svg>
-        </div>
+        <div id="graphDialogCanvas"></div>
 
         <button type="button" class="plus"></button>
-        <ul class="dialog-menu">
+        <ul class="dialog-menu" style="display: none;">
             <li><span class="menu-title">More</span></li>
             <li class="dialog-menu-divider"></li>
             <li><a>Add Child</a></li>
