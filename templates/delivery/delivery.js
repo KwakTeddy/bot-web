@@ -775,3 +775,56 @@ var makeReserve = {
 };
 
 bot.setTask('makeReserve', makeReserve);
+
+
+var reserveOwnerConfirm = {
+    action: function (task, context, callback) {
+        if(context.dialog.reserve) {
+            var TemplateReservation = mongoModule.getModel('orderList');
+            TemplateReservation.update({_id: context.dialog.reserve._id}, {$set: {status: '확정'}}, function (err) {
+
+                if(!context.bot.testMode) {
+                    var message = '[' + context.bot.restaurant.name + ']' + '\n';
+                    //     context.dialog.reserve.name + '/' +
+                    //     context.dialog.reserve.dateStr + '/' + context.dialog.reserve.time + '/';
+                    // // context.dialog.reserve.numOfPerson + '명\n' +
+                    // // '예약확정\n'+
+                    // // '매장전화: ' + context.bot.phone;
+                    //
+                    // var fields = context.bot.reserveFields || [];
+                    // for(var i = 0; i < fields.length; i++) {
+                    //     var field = fields[i];
+                    //     if(field.name == 'numOfPerson') {
+                    //         message += context.dialog.reserve[field.name] + '명/';
+                    //     } else {
+                    //         message += context.dialog.reserve[field.name] + '/';
+                    //     }
+                    // }
+                    var cart = context.user.cart;
+                    for(var i=0; i<cart.length; i++){
+                        message += cart[i].name +', ' + cart[i].quant + ', ' + cart[i].price + '\n';
+                    }
+
+                    message += '\n주문접수완료\n'+
+                        '매장전화: ' + context.bot.phone;
+
+                    request.post(
+                        'https://bot.moneybrain.ai/api/messages/sms/send',
+                        {json: {callbackPhone: '02-858-5683' || context.bot.phone, phone: context.dialog.reserve.mobile.replace(/,/g, ''), message: message}},
+                        function (error, response, body) {
+                            reserveCheck.action(task, context, function(_task, context) {
+                                callback(task, context);
+                            })
+                        }
+                    );
+                } else {
+                    callback(task, context);
+                }
+            });
+        } else {
+            callback(task, context);
+        }
+    }
+};
+
+bot.setTask('reserveOwnerConfirm', reserveOwnerConfirm);
