@@ -461,7 +461,8 @@ function reserveRequest(task, context, callback) {
             randomNum += '' + Math.floor(Math.random() * 10);
             randomNum += '' + Math.floor(Math.random() * 10);
 
-            var url = config.host + '/mobile#/chat/' + context.bot.id + '?authKey=' + randomNum;
+            // var url = config.host + '/mobile#/chat/' + context.bot.id + '?authKey=' + randomNum;
+            var url = "https://chicken.moneybrain.ai" + '/mobile#/chat/' + context.bot.id + '?authKey=' + randomNum;
             context.bot.authKey = randomNum;
 
             var query = {url: url};
