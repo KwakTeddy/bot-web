@@ -22,83 +22,83 @@ bot.setTask("defaultTask", defaultTask);
 
 
 
-var mdmenu = [
-    {
-        name:"치킨",
-        subMenu: [
-            {
-                name: "후라이드 치킨",
-                subMenu: [
-                    {
-                        name: "후라이드 치킨 L",
-                        price: 16000
-                    },
-                    {
-                        name: "후라이드 치킨 M",
-                        price: 14000
-                    }
-                ]
-            },
-            {
-                name: "양념 치킨",
-                subMenu: [
-                    {
-                        name: "양념 치킨 L",
-                        price: 17000
-                    },
-                    {
-                        name: "양념 치킨 M",
-                        price: 15000
-                    }
-                ]
-            },
-            {
-                name: "파닭",
-                subMenu: [
-                    {
-                        name: "순살 파닭",
-                        subMenu: [
-                            {
-                                name: "순살 파닭 L",
-                                price: 17000
-                            },
-                            {
-                                name: "순살 파닭 M",
-                                price: 15000
-                            }
-                        ]
-                    },
-                    {
-                        name: "뼈 있는 파닭",
-                        subMenu: [
-                            {
-                                name: "뼈 있는 파닭 L",
-                                price: 17000
-                            },
-                            {
-                                name: "뼈 있는 파닭 M",
-                                price: 15000
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        name:"사이드",
-        subMenu: [
-            {
-                name: '콜라',
-                price: 1000
-            },
-            {
-                name: '피클',
-                price: 1000
-            }
-        ]
-    }
-];
+// var mdmenu = [
+//     {
+//         name:"치킨",
+//         subMenu: [
+//             {
+//                 name: "후라이드 치킨",
+//                 subMenu: [
+//                     {
+//                         name: "후라이드 치킨 L",
+//                         price: 16000
+//                     },
+//                     {
+//                         name: "후라이드 치킨 M",
+//                         price: 14000
+//                     }
+//                 ]
+//             },
+//             {
+//                 name: "양념 치킨",
+//                 subMenu: [
+//                     {
+//                         name: "양념 치킨 L",
+//                         price: 17000
+//                     },
+//                     {
+//                         name: "양념 치킨 M",
+//                         price: 15000
+//                     }
+//                 ]
+//             },
+//             {
+//                 name: "파닭",
+//                 subMenu: [
+//                     {
+//                         name: "순살 파닭",
+//                         subMenu: [
+//                             {
+//                                 name: "순살 파닭 L",
+//                                 price: 17000
+//                             },
+//                             {
+//                                 name: "순살 파닭 M",
+//                                 price: 15000
+//                             }
+//                         ]
+//                     },
+//                     {
+//                         name: "뼈 있는 파닭",
+//                         subMenu: [
+//                             {
+//                                 name: "뼈 있는 파닭 L",
+//                                 price: 17000
+//                             },
+//                             {
+//                                 name: "뼈 있는 파닭 M",
+//                                 price: 15000
+//                             }
+//                         ]
+//                     }
+//                 ]
+//             }
+//         ]
+//     },
+//     {
+//         name:"사이드",
+//         subMenu: [
+//             {
+//                 name: '콜라',
+//                 price: 1000
+//             },
+//             {
+//                 name: '피클',
+//                 price: 1000
+//             }
+//         ]
+//     }
+// ];
 
 
 
@@ -113,7 +113,7 @@ var startTask = {
         var restaurant = mongoModule.getModel('restaurantcontent');
         restaurant.find({_id:ObjectId("59dcd621874f5bbde7a10679")}).lean().exec(function(err, docs) {
             context.bot.restaurant = docs[0];
-            if(!isOpen(context.bot.restaurant.openTime)) context.dialog.notOpen = "\n(**현재는 영업시간이 아닙니다**)\n";
+            if(!isOpen(context.bot.restaurant.openTime)) context.dialog.notOpen = "\n(**현재는 영업시간이 아닙니다**)\n"; else context.dialog.notOpen = "";
 
             if(context.botUser.isOwner) {
                 reserveCheck.action(task, context, function(_task, context) {
@@ -279,7 +279,7 @@ bot.setTask('makeOrderList', makeOrderList);
 var orderble = {
     typeCheck: function (text, type, task, context, callback) {
         var matched = false;
-        if (filter(text, mdmenu).length) matched =  true;
+        if (filter(text, context.bot.restaurant.menu).length) matched =  true;
 
         callback(text, task, matched);
     }
@@ -446,7 +446,7 @@ function reserveRequest(task, context, callback) {
         order: context.user.cart,
         pay: context.user.pay,
         request: context.user.request,
-        time: new Date()
+        created: new Date()
     };
 
 
@@ -482,24 +482,10 @@ function reserveRequest(task, context, callback) {
                 if (!error && response.statusCode == 200) {
                     var shorturl;
                     try {shorturl = JSON.parse(body).result.url; } catch(e) {console.log(e);}
-                    var message = '[플레이챗]' + '\n' +
-                        context.dialog.name + '/' +
-                        context.dialog.dateStr + '/';
-                    // context.dialog.numOfPerson + '명\n' +
-                    if (context.dialog.time) {
-                        messages += context.dialog.time + '/';
-                    }
+                    var message = '배달주문';
 
-                    for(var i = 0; i < fields.length; i++) {
-                        var field = fields[i];
-                        if(field.name == 'numOfPerson') {
-                            message +=  context.dialog[field.name] + '명/';
-                        } else {
-                            message += context.dialog[field.name] + '/';
-                        }
-                    }
 
-                    message += '\n' + (context.dialog.mobile || context.user.mobile) + '\n' +
+                    message += '번호: ' + (context.dialog.mobile || context.user.mobile) + '\n' +
                         '예약접수(클릭) ' + shorturl;
 
                     request.post(
@@ -559,7 +545,8 @@ function getDistanceFromGeocode(lat1,lng1,lat2,lng2) {
 
 function isOpen(opentime) {
     var now = new Date();
-    var nowTime = parseInt(""+now.getHours()+now.getMinutes());
+    // var nowTime = parseInt(""+now.getHours()+now.getMinutes());
+    var nowTime = now.getHours()*100+now.getMinutes();
     // console.log(nowTime);
     var time = opentime[now.getDay()-1].time;
     var open = parseInt(time.substring(0,2) + time.substring(3,5));
