@@ -26,7 +26,7 @@ var startTask = {
             context.botUser.isOwner = true;
         }
 
-        var restaurant = mongoModule.getModel('restaurantcontent');
+        var restaurant = mongoModule.getModel('templatedeliverycontent');
         restaurant.find({_id:ObjectId("59dcd621874f5bbde7a10679")}).lean().exec(function(err, docs) {
             context.bot.restaurant = docs[0];
             if(!isOpen(context.bot.restaurant.openTime)) context.dialog.notOpen = "\n(**현재는 영업시간이 아닙니다**)\n"; else context.dialog.notOpen = "";
@@ -48,7 +48,7 @@ var reserveCheck = {
     action: function (task, context, callback) {
 
         if(context.botUser.isOwner) {
-            var TemplateReservation = mongoModule.getModel('OrderList');
+            var TemplateReservation = mongoModule.getModel('templateorderlist');
             TemplateReservation.find({
                 upTemplateId: context.bot.templateDataId,
                 status: '승인대기중'
@@ -222,80 +222,80 @@ var saveRequest = {
 
 bot.setTask('saveRequest', saveRequest);
 
-var sendMessage = {
-    action: function (task,context,callback) {
-
-        var message = '[주문내용]\n';
-
-        for(i=0; i<context.user.cart.length; i++){
-            message += context.user.cart[i].name + ', ' + context.user.cart[i].price + '\n';
-        }
-
-
-        message += '\n주소: ' + context.user.address.지번주소 + '\n';
-        message += '번호: ' + context.user.mobile + '\n';
-        message += '결제방법: ' + context.dialog.pay + '\n';
-        message += '요청사항: ' + context.dialog.request + '\n';
-
-        var mess = [];
-        mess[0] = message;
-
-        if (message.length > 60) {
-            mess[0] = message.slice(0,60);
-            mess[1] = message.slice(60,120);
-        }
-        sendSMS("01092597716", mess[0]);
-        setTimeout(function() {sendSMS("01092597716", mess[1])}, 2000);
-
-
-        var orderListSchema = mongoose.Schema({
-            user: String,
-            created: {
-                type: Date,
-                default: Date.now
-            },
-            mobile: String,
-            address: mongoose.Schema.Types.Mixed,
-            order: [],
-            pay:String,
-            request:String,
-
-        });
-
-        var OrderList = undefined;
-        if(!mongoose.models['orderList'])
-        {
-            console.log('created schema');
-            OrderList = mongoose.model('orderList', orderListSchema);
-        }
-        else
-        {
-            console.log('read schema');
-            OrderList = mongoose.model('orderList');
-        }
-
-        var orderList = new OrderList({
-            user: context.user.userKey,
-            mobile: context.user.mobile,
-            address: context.user.address.지번주,
-            order: context.user.cart,
-            pay: context.user.pay,
-            request: context.user.request,
-        });
-
-        console.log('orderList: ' + JSON.stringify(orderList));
-
-        orderList.save({setDefaultsOnInsert: true}, function(err){
-            if(err)
-            {
-                console.log('error: ' + JSON.stringify(err));
-            }
-            callback(task,context);
-        });
-    }
-};
-
-bot.setTask('sendMessage', sendMessage);
+// var sendMessage = {
+//     action: function (task,context,callback) {
+//
+//         var message = '[주문내용]\n';
+//
+//         for(i=0; i<context.user.cart.length; i++){
+//             message += context.user.cart[i].name + ', ' + context.user.cart[i].price + '\n';
+//         }
+//
+//
+//         message += '\n주소: ' + context.user.address.지번주소 + '\n';
+//         message += '번호: ' + context.user.mobile + '\n';
+//         message += '결제방법: ' + context.dialog.pay + '\n';
+//         message += '요청사항: ' + context.dialog.request + '\n';
+//
+//         var mess = [];
+//         mess[0] = message;
+//
+//         if (message.length > 60) {
+//             mess[0] = message.slice(0,60);
+//             mess[1] = message.slice(60,120);
+//         }
+//         sendSMS("01092597716", mess[0]);
+//         setTimeout(function() {sendSMS("01092597716", mess[1])}, 2000);
+//
+//
+//         var orderListSchema = mongoose.Schema({
+//             user: String,
+//             created: {
+//                 type: Date,
+//                 default: Date.now
+//             },
+//             mobile: String,
+//             address: mongoose.Schema.Types.Mixed,
+//             order: [],
+//             pay:String,
+//             request:String,
+//
+//         });
+//
+//         var OrderList = undefined;
+//         if(!mongoose.models['orderList'])
+//         {
+//             console.log('created schema');
+//             OrderList = mongoose.model('orderList', orderListSchema);
+//         }
+//         else
+//         {
+//             console.log('read schema');
+//             OrderList = mongoose.model('orderList');
+//         }
+//
+//         var orderList = new OrderList({
+//             user: context.user.userKey,
+//             mobile: context.user.mobile,
+//             address: context.user.address.지번주,
+//             order: context.user.cart,
+//             pay: context.user.pay,
+//             request: context.user.request,
+//         });
+//
+//         console.log('orderList: ' + JSON.stringify(orderList));
+//
+//         orderList.save({setDefaultsOnInsert: true}, function(err){
+//             if(err)
+//             {
+//                 console.log('error: ' + JSON.stringify(err));
+//             }
+//             callback(task,context);
+//         });
+//     }
+// };
+//
+// bot.setTask('sendMessage', sendMessage);
 
 var reserveRequest = {
     name: 'reserveRequest',
@@ -341,7 +341,7 @@ function reserveRequest(task, context, callback) {
     };
 
 
-    var TemplateReservation = mongoModule.getModel('OrderList');
+    var TemplateReservation = mongoModule.getModel('templateorderlist');
     var templateReservation = new TemplateReservation(doc);
 
     templateReservation.save(function(err) {
@@ -561,7 +561,7 @@ function sendSMS(phone, message) {
 
 var getOrderHistory = {
     action: function (task,context,callback) {
-        var orderList = mongoModule.getModel('orderList');
+        var orderList = mongoModule.getModel('templateorderlist');
         orderList.find({user:context.user.userKey}).sort({created:-1}).limit(1).lean().exec(function(err, docs){
             if(docs.length != 0){
                 context.dialog.orderHistory = docs[0];
@@ -671,7 +671,7 @@ bot.setTask('makeReserve', makeReserve);
 var reserveOwnerConfirm = {
     action: function (task, context, callback) {
         if(context.dialog.reserve) {
-            var TemplateReservation = mongoModule.getModel('orderList');
+            var TemplateReservation = mongoModule.getModel('templateorderlist');
             TemplateReservation.update({_id: context.dialog.reserve._id}, {$set: {status: '확정'}}, function (err) {
 
                 if(!context.bot.testMode) {
@@ -709,7 +709,7 @@ bot.setTask('reserveOwnerConfirm', reserveOwnerConfirm);
 var reserveOwnerCancel = {
     action: function (task, context, callback) {
         if(context.dialog.reserve) {
-            var TemplateReservation = mongoModule.getModel('orderList');
+            var TemplateReservation = mongoModule.getModel('templateorderlist');
             TemplateReservation.update({_id: context.dialog.reserve._id}, {$set: {status: '업주취소'}}, function (err) {
 
                 if(!context.bot.testMode) {
