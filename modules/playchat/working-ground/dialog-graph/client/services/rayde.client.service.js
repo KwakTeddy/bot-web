@@ -15,6 +15,8 @@
 
             this.$compile = undefined;
             this.$scope = undefined;
+
+            this.focusedTarget = undefined;
         };
         
         Rayde.prototype.setScope = function($compile, $scope)
@@ -31,8 +33,8 @@
         Rayde.prototype.setCanvas = function(selector)
         {
             this.canvas = angular.element(selector);
-
             this.makeCanvasDraggable();
+            this.bindKeyboardEventToCanvas();
         };
 
         Rayde.prototype.makeCanvasDraggable = function()
@@ -55,7 +57,6 @@
                     return;
 
                 isDragStart = true;
-                canvas.style.cursor = 'all-scroll';
                 e.preventDefault();
             });
 
@@ -63,6 +64,8 @@
             {
                 if(isDragStart)
                 {
+                    canvas.style.cursor = 'all-scroll';
+
                     if(!prevLocation)
                     {
                         prevLocation = { x: e.pageX, y: e.pageY };
@@ -91,6 +94,72 @@
                 canvas.style.cursor = 'default';
                 prevLocation = undefined;
                 e.preventDefault();
+            });
+        };
+
+        Rayde.prototype.bindKeyboardEventToCanvas = function()
+        {
+            var that = this;
+            window.addEventListener('keydown', function(e)
+            {
+                if(e.keyCode == 39) // right
+                {
+                    if(that.focusedTarget.nextElementSibling && that.focusedTarget.nextElementSibling.children.length > 0)
+                    {
+                        if(that.focusedTarget.nextElementSibling.children[0].className.indexOf('plus') != -1)
+                        {
+                            that.focus(that.focusedTarget.nextElementSibling.children[0]);
+                        }
+                        else
+                        {
+                            that.focus(that.focusedTarget.nextElementSibling.children[0].children[0]);
+                        }
+                    }
+
+                    e.preventDefault();
+                }
+                else if(e.keyCode == 40) // down
+                {
+                    if(that.focusedTarget.parentElement.nextElementSibling)
+                    {
+                        if(that.focusedTarget.parentElement.nextElementSibling.className.indexOf('plus') != -1)
+                        {
+                            that.focus(that.focusedTarget.parentElement.nextElementSibling);
+                        }
+                        else
+                        {
+                            that.focus(that.focusedTarget.parentElement.nextElementSibling.children[0]);
+                        }
+                    }
+
+                    e.preventDefault();
+                }
+                else if(e.keyCode == 37) // left
+                {
+                    if(that.focusedTarget.className.indexOf('plus') != -1)
+                    {
+                        that.focus(that.focusedTarget.parentElement.previousElementSibling);
+                    }
+                    else if(that.focusedTarget.parentElement.parentElement.previousElementSibling)
+                    {
+                        that.focus(that.focusedTarget.parentElement.parentElement.previousElementSibling);
+                    }
+
+                    e.preventDefault();
+                }
+                else if(e.keyCode == 38) // up
+                {
+                    if(that.focusedTarget.className.indexOf('plus') != -1)
+                    {
+                        that.focus(that.focusedTarget.previousElementSibling.children[0]);
+                    }
+                    else if(that.focusedTarget.parentElement.previousElementSibling)
+                    {
+                        that.focus(that.focusedTarget.parentElement.previousElementSibling.children[0]);
+                    }
+
+                    e.preventDefault();
+                }
             });
         };
 
@@ -124,6 +193,7 @@
 
                         this.drawDialog(this.canvas, this.rawDatas);
                         this.drawLines(this.canvas.find('.graph-dialog'));
+                        this.focus(this.canvas.find('.graph-dialog:first .graph-dialog-item')[0]);
 
                         return true;
                     }
@@ -210,6 +280,7 @@
 
         Rayde.prototype.drawDialog = function(parent, dialog)
         {
+            var that = this;
             var t = this.template.replace('{id}', dialog.id).replace('{name}', dialog.name);
 
             var inputTemplate = '';
@@ -253,6 +324,12 @@
 
             t = t.replace('{input}', inputTemplate).replace('{output}', outputTemplate);
             t = angular.element(this.$compile(t)(this.$scope));
+
+            t.find('.graph-dialog-header').on('click', function(e)
+            {
+                that.focus(this.parentElement);
+                e.stopPropagation();
+            });
 
             parent.append(t);
 
@@ -406,10 +483,68 @@
             else
             {
                 child.style.display = 'none';
-
             }
 
             this.drawLines(this.canvas.find('.graph-dialog'));
+        };
+
+        Rayde.prototype.focus = function(target)
+        {
+            this.canvas.find('.selected').removeClass('selected');
+            angular.element(target).addClass('selected');
+
+            this.focusedTarget = target;
+
+            this.moveScrollToTarget(target);
+        };
+
+        Rayde.prototype.moveScrollToTarget = function(target)
+        {
+            var canvas = this.canvas.get(0);
+            var graphBody = canvas.parentElement;
+
+            // target이 보이는 부분에 있는지 검사.
+
+            var l = target.offsetLeft;
+            var r = target.offsetLeft + target.offsetWidth;
+            var t = target.offsetTop;
+            var b = target.offsetTop + target.offsetHeight;
+
+            var frameLeft = graphBody.scrollLeft;
+            var frameRight = frameLeft + graphBody.offsetWidth;
+            var frameTop = graphBody.scrollTop;
+            var frameBottom = frameTop + graphBody.offsetHeight;
+
+            if(frameLeft > l || r > frameRight || frameRight < l || frameLeft > r)
+            {
+                // 카드 좌우가 완전히 프레임안으로 들어오지 않았을 경우
+                var value = l - target.offsetWidth / 2;
+                if(value <= 0)
+                {
+                    value = 0;
+                }
+                else if(value + graphBody.offsetWidth > graphBody.scrollWidth)
+                {
+                    value = graphBody.scrollWidth - graphBody.offsetWidth;
+                }
+
+                graphBody.scrollLeft = value;
+            }
+
+            if(frameTop > t || b > frameBottom || frameBottom < t || frameTop > b)
+            {
+                var value = t - target.offsetHeight / 2;
+                if(value <= 0)
+                {
+                    value = 0;
+                }
+                else if(value + graphBody.offsetHeight > graphBody.scrollHeight)
+                {
+                    value = graphBody.scrollHeight - graphBody.offsetHeight;
+                }
+
+                graphBody.scrollTop = value;
+            }
         };
 
         if(!instance)

@@ -218,7 +218,7 @@
     vertical-align: top;
 }
 
-.graph-dialog.selected
+.graph-dialog-item.selected
 {
     border-color: #bfe3f6;
 }
@@ -247,7 +247,7 @@
     border-top-right-radius: 6px;
 }
 
-.graph-dialog.selected .graph-dialog-header
+.graph-dialog-item.selected .graph-dialog-header
 {
     background: #bfe3f6;
     border-bottom: 0;
@@ -272,7 +272,7 @@
     word-wrap: normal !important;
 }
 
-.graph-dialog.selected .graph-dialog-header span
+.graph-dialog-item.selected .graph-dialog-header span
 {
     color: #038eda;
 }
@@ -291,7 +291,7 @@
     background-position: center center;
 }
 
-.graph-dialog.selected .graph-dialog-header .dialog-more
+.graph-dialog-item.selected .graph-dialog-header .dialog-more
 {
     background-image: url(../imgs/more-blue.png);
 }
@@ -307,6 +307,8 @@
 .graph-dialog-input
 {
     height: auto;
+    max-height: 80px;
+    overflow: hidden;
 }
 
 .graph-dialog-input
@@ -316,7 +318,7 @@
     padding: 0 10px;
 }
 
-.graph-dialog.selected .graph-dialog-input
+.graph-dialog-item.selected .graph-dialog-input
 {
     border-color: #b1dbf4;
 }
@@ -346,7 +348,7 @@
     font-size: 12px;
 }
 
-.graph-dialog.selected .graph-dialog-output
+.graph-dialog-item.selected .graph-dialog-output
 {
     border-color: #b1dbf4;
 }
@@ -373,7 +375,7 @@
     transform: rotate(180deg);
 }
 
-.graph-dialog.selected .graph-fold
+.graph-dialog-item.selected .graph-fold
 {
     background-color: #038eda;
 }
@@ -422,6 +424,17 @@
     line-height: 34px;
     content: '+';
     color: #7e7e7e;
+}
+
+.graph-body .plus.selected
+{
+    background: white;
+    border-color: #038eda;
+}
+
+.graph-body .plus.selected:hover
+{
+    background: #00a6ff;
 }
 
 .dialog-menu
