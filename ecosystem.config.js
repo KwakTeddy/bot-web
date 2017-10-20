@@ -6,14 +6,14 @@ module.exports =
             name: "playchat",
             script: "./server.js",
             watch: false,
-            env:
+            env_dev:
             {
-                "PORT": 8443,
+                "PORT": 443,
                 "FACEBOOK_ID": "",
                 "FACEBOOK_SECRET": "",
                 "KAKAO_KEY": "",
                 "KAKAO_JSID": "",
-                "HOST": "https://localhost:8443",
+                "HOST": "https://remaster.moneybrain.ai",
                 "MONGOLAB_URI": "mongodb://localhost:27017/bot-dev",
                 "MONGO_RSNAME": "rs1",
                 "REDIS": "",
