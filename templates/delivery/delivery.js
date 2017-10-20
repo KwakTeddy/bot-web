@@ -25,7 +25,7 @@ var startTask = {
         if(context.bot.authKey != undefined && context.botUser.options && context.bot.authKey == context.botUser.options.authKey) {
             context.botUser.isOwner = true;
         }
-        //context.botUser.isOwner = true;
+        context.botUser.isOwner = true;
 
         var restaurant = mongoModule.getModel('templatedeliverycontent');
         restaurant.find({_id:ObjectId("59dcd621874f5bbde7a10679")}).lean().exec(function(err, docs) {
