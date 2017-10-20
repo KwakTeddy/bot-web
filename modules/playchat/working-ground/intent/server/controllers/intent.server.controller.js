@@ -19,8 +19,6 @@ var Intent = mongoose.model('Intent');
 var IntentContent = mongoose.model('IntentContent');
 var IntentContext = mongoose.model('IntentContext');
 
-var errorHandler = require(path.resolve('./modules_old/core/server/controllers/errors.server.controller'));
-
 var nlpManager = require(path.resolve('./bot-engine2/nlp-manager.js'));
 
 exports.findTotalPage = function(req, res)
@@ -37,7 +35,7 @@ exports.findTotalPage = function(req, res)
         if(err)
         {
             logger.systemError(err);
-            return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+            return res.status(400).send({ message: err.stack || err });
         }
         else
         {
@@ -61,7 +59,7 @@ exports.find = function(req, res)
         if (err)
         {
             logger.systemError(err);
-            return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+            return res.status(400).send({ message: err.stack || err });
         }
         else
         {
@@ -77,7 +75,7 @@ exports.findIntentContent = function(req, res)
         if(err)
         {
             logger.systemError(err);
-            return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+            return res.status(400).send({ message: err.stack || err });
         }
 
         res.jsonp(items);
