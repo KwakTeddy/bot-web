@@ -22,7 +22,7 @@ module.exports =
                 "LB_SLAVE": "",
                 "LB_HOST": "",
                 "LB_PORT": "",
-                "NODE_ENV": "dev"
+                "NODE_ENV": "development"
             },
             env_production:
             {
