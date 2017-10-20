@@ -8,20 +8,12 @@ module.exports =
             watch: false,
             env_dev:
             {
+                "PORT": 8443,
+                "NODE_ENV": "development"
+            },
+            env_staging:
+            {
                 "PORT": 443,
-                "FACEBOOK_ID": "",
-                "FACEBOOK_SECRET": "",
-                "KAKAO_KEY": "",
-                "KAKAO_JSID": "",
-                "HOST": "https://remaster.moneybrain.ai",
-                "MONGOLAB_URI": "mongodb://localhost:27017/bot-dev",
-                "MONGO_RSNAME": "rs1",
-                "REDIS": "",
-                "LB_USE": "false",
-                "LB_MASTER": "",
-                "LB_SLAVE": "",
-                "LB_HOST": "",
-                "LB_PORT": "",
                 "NODE_ENV": "development"
             },
             env_production:
