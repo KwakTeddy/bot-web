@@ -107,20 +107,30 @@
 
                 this.originalFileData = data;
 
-                var match = data.match(/var dialogs[^;]*;/gi);
-                if(match && match.length == 1)
+                var commandMatch = data.match(/var commonDialogs[^;]*;/gi);
+                if(commandMatch && commandMatch.length == 1)
                 {
-                    var parsed = match[0].replace(/var dialogs[^\[]*/gi, '').replace(';', '');
-                    this.rawDatas = JSON.parse(parsed);
+                    var parsed = commandMatch[0].replace(/var commonDialogs[^\[]*/gi, '').replace(';', '');
 
-                    this.drawDialogs(this.canvas, this.rawDatas);
-                    this.drawLines(this.canvas.find('.graph-dialog'));
+                    var startDialog = JSON.parse(parsed)[0];
 
-                    return true;
-                }
-                else
-                {
-                    return false;
+                    var match = data.match(/var dialogs[^;]*;/gi);
+                    if(match && match.length == 1)
+                    {
+                        parsed = match[0].replace(/var dialogs[^\[]*/gi, '').replace(';', '');
+
+                        startDialog.children = JSON.parse(parsed);
+                        this.rawDatas = startDialog;
+
+                        this.drawDialog(this.canvas, this.rawDatas);
+                        this.drawLines(this.canvas.find('.graph-dialog'));
+
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
             }
             catch(err)
@@ -138,6 +148,9 @@
                 var dialog = list[i];
                 this.drawDialog(parent, dialog);
             }
+
+            //plus 버튼을 여기서 붙여주면..
+            parent.append('<button type="button" class="plus"></button>');
         };
 
         var makeInputTemplate = function(input)
@@ -246,6 +259,8 @@
             if(!dialog.children || dialog.children.length == 0)
             {
                 t.find('.graph-fold').hide();
+                var target = t.find('.graph-dialog-item').get(0);
+                t.find('.graph-dialog-children').append('<button type="button" class="plus" style="margin-left: 0; margin-top: ' + (target.offsetHeight / 2 - 19 + 20) + 'px"></button>');
             }
             else
             {
@@ -268,6 +283,32 @@
             return line;
         };
 
+        Rayde.prototype.drawHorizontalLineForPlusButton = function(src, dest)
+        {
+            var x1 = src.offsetLeft + src.offsetWidth;
+            var y1 = src.offsetTop + src.offsetHeight / 2;
+
+            var x2 = dest.offsetLeft;
+            var y2 = dest.offsetTop + dest.offsetHeight / 2;
+
+            var line = createLine(x1, y1, x2, y2);
+
+            this.svg.appendChild(line);
+        };
+
+        Rayde.prototype.drawVerticalLineForPlusButton = function(src, dest)
+        {
+            var x1 = src.offsetLeft + src.offsetWidth / 2;
+            var y1 = src.offsetTop + src.offsetHeight;
+
+            var x2 = dest.offsetLeft + dest.offsetWidth / 2;
+            var y2 = dest.offsetTop;
+
+            var line = createLine(x1, y1, x2, y2);
+
+            this.svg.appendChild(line);
+        };
+
         Rayde.prototype.drawLine = function(src, children)
         {
             var svg = this.svg;
@@ -277,28 +318,65 @@
 
             for(var i=0, l=children.length; i<l; i++)
             {
+                var x2 = undefined;
+                var y2 = undefined;
+
                 var dest = children[i].children[0];
-
-                var x2 = dest.offsetLeft;
-                var y2 = dest.offsetTop + 90;
-
-                if(i == 0)
+                if(!dest)
                 {
-                    // 가로선
-                    var line = createLine(x1, y1, x2, y2);
-                    svg.appendChild(line);
+                    //plus 버튼들.
+                    if(i == 0)
+                    {
+                        //children plus
+                        this.drawHorizontalLineForPlusButton(children[i].parentElement.previousElementSibling, children[i]);
+                        continue;
+                    }
+                    else
+                    {
+                        //sibling plus
+                        // 바로 위 다이얼로그에서 세로선 그리는 방법
+                        // this.drawVerticalLineForPlusButton(children[i-1].children[0], children[i]);
+                        // continue;
+
+                        // 상위 다이얼로그에서 선 그리는 방법.
+                        dest = children[i];
+                        x2 = dest.offsetLeft - 80;
+                        y2 = dest.offsetTop + dest.offsetHeight / 2;
+
+                        // 세로선.
+                        var x1_5 = (x2 - x1)/2 + x1;
+                        var line = createLine(x1_5, y1, x1_5, y2);
+                        svg.appendChild(line);
+
+                        // 가로선.
+                        line = createLine(x1_5, y2, x2 + 80, y2);
+                        svg.appendChild(line);
+                    }
                 }
                 else
                 {
-                    // 세로선.
-                    var x1_5 = (x2 - x1)/2 + x1;
-                    var line = createLine(x1_5, y1, x1_5, y2);
-                    svg.appendChild(line);
+                    //일반 다이얼로그
+                    x2 = dest.offsetLeft;
+                    y2 = dest.offsetTop + 90;
 
-                    // 가로선.
-                    line = createLine(x1_5, y2, x2, y2);
-                    svg.appendChild(line);
-                    y1 = y2;
+                    if(i == 0)
+                    {
+                        // 가로선
+                        var line = createLine(x1, y1, x2, y2);
+                        svg.appendChild(line);
+                    }
+                    else
+                    {
+                        // 세로선.
+                        var x1_5 = (x2 - x1)/2 + x1;
+                        var line = createLine(x1_5, y1, x1_5, y2);
+                        svg.appendChild(line);
+
+                        // 가로선.
+                        line = createLine(x1_5, y2, x2, y2);
+                        svg.appendChild(line);
+                        y1 = y2;
+                    }
                 }
             }
         };
@@ -306,9 +384,8 @@
         Rayde.prototype.drawLines = function(children)
         {
             this.canvas.find('svg').remove();
-            this.canvas.prepend('<svg></svg>');
 
-            this.svg = this.canvas.find('svg').get(0);
+            this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 
             for(var i=0, l=children.length; i<l; i++)
             {
@@ -316,6 +393,8 @@
                 if(child.children[1].style.display != 'none')
                     this.drawLine(child.children[0], child.children[1].children);
             }
+
+            this.canvas.prepend(this.svg);
         };
 
         Rayde.prototype.toggleChild = function(child)

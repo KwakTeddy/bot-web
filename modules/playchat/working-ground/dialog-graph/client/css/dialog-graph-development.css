@@ -178,6 +178,8 @@
     -ms-user-select: none; /* Internet Explorer/Edge */
     user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
+
+    display: inline-block;
 }
 
 #graphDialogCanvas svg
@@ -188,6 +190,10 @@
 
     width: 100%;
     height: 100%;
+
+    display: inline-block;
+
+    z-index: -1;
 }
 
 .graph-dialog-item
@@ -393,9 +399,21 @@
 
     border: 1px solid #d7d7d7;
     border-radius: 6px;
+    outline: 0;
     background: #f8f8f8;
 
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 80px;
+
     box-shadow: 0 1px 11px rgba(0, 0, 0, 0.1), 0 1px 11px rgba(0, 0, 0, 0.1);
+
+    cursor: pointer;
+}
+
+.graph-body .plus:hover
+{
+    background: #dedede;
 }
 
 .graph-body .plus::before
@@ -463,11 +481,11 @@
 
 .graph-dialog-input-span::before
 {
-    content: attr(data-key);
-    border-radius: 100%;
-    font-size: 10px;
-    padding: 1px 6px;
-    color: #fff;
-    background-color: #5cb85c;
-    margin-right: 5px;
+    /*content: attr(data-key);*/
+    /*border-radius: 100%;*/
+    /*font-size: 10px;*/
+    /*padding: 1px 6px;*/
+    /*color: #fff;*/
+    /*background-color: #5cb85c;*/
+    /*margin-right: 5px;*/
 }
