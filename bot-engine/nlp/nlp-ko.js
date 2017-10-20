@@ -29,7 +29,7 @@ java.options.push('-Xmx4096m');
     {
         this.done = function()
         {
-            logger.systemLog(' - NLPKo loaded');
+            //logger.systemLog(' - NLPKo loaded');
             done();
         };
         this.getBuilder(errCallback);
@@ -138,6 +138,14 @@ java.options.push('-Xmx4096m');
                 });
             })
         });
+    };
+
+    NLPKo.prototype.tokenize2 = function(rawText, done, errCallback)
+    {
+        this.tokenize(rawText, function(result)
+        {
+
+        }, errCallback);
     };
 
     NLPKo.prototype.afterTokenize = function(rawText, tokenizedText, done)

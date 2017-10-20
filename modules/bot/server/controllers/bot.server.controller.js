@@ -123,8 +123,13 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
             logger.debug("사용자 입력>> " + inTextRaw);
             var type = utils.requireNoCache(path.resolve('./modules/bot/action/common/type'));
 
-            // 현재 발화의 대답이 중복인 경우, 중복된 발화의 category들을 저장하는 변수
-            // context.botUser.nlu["context"]["ismulti"] = {};
+            // 현재 발화의 대답이 중복인 경우, 중복된 발화의 category들을 저장하는 변수 (dsyoon)
+            if (context.botUser.nlu == undefined || context.botUser.nlu == null) context.botUser.nlu = {};
+            if (context.botUser.nlu["contextinfo"] == undefined || context.botUser.nlu["contextinfo"] == null) context.botUser.nlu["contextinfo"] = {};
+            if (context.botUser["nlg"] == undefined || context.botUser["nlg"] == null) context.botUser["nlg"] = {};
+
+            if (context.botUser.nlg["context"] == undefined || context.botUser.nlg["context"] == null) context.botUser.nlg["context"] = {};
+            context.botUser.nlg["context"] = {};
 
             // 현재 발화에 대한 자연어 처리
             type.processInput(context, inTextRaw, function(_inTextNLP, _inDoc) {
@@ -199,7 +204,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
                         cb(true);
                     })
                 } else {
-                    var isFirst = false;
+                    // var isFirst = false;
                     dialog.matchGlobalDialogs(inTextRaw, inTextNLP, context.bot.dialogs, context, print, function(matched, _dialog) {
                         if(matched) {
                             if(_dialog) console.log('[DIALOG_SEL]' + JSON.stringify({id: _dialog.id, name: _dialog.name, input: _dialog.input,
@@ -211,19 +216,22 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
                             }
 
                             // context history 기능 추가: MAX 5개 history만 저장함 (dsyoon)
-                            if (!isFirst && context.botUser.contexts != undefined && context.botUser.contexts != null) {
+                            /*
+                            if (!isFirst && context.botUser.nlu.contextinfo != undefined && context.botUser.nlu.contextinfo != null) {
                                 var MAX_CONTEXTHISTORY_LENGTH = 5;
-                                if (context.botUser['contextsHistory'] == undefined || context.botUser['contextsHistory'] == null) {
-                                    context.botUser['contextsHistory'] = [context.botUser.contexts];
+                                if (context.botUser.nlu["contextinfo"] == undefined || context.botUser.nlu["contextinfo"] == null) context.botUser.nlu["contextinfo"] = {};
+                                if (context.botUser.nlu.contextinfo["contextHistory"] == undefined || context.botUser.nlu.contextinfo["contextHistory"] == null) {
+                                    context.botUser.nlu.contextinfo["contextHistory"] = [context.botUser.contexts];
                                 } else {
-                                    context.botUser['contextsHistory'].splice(0, 0, context.botUser.contexts);
-                                    if (context.botUser['contextsHistory'].length > MAX_CONTEXTHISTORY_LENGTH) {
-                                        context.botUser['contextsHistory'].splice(5, 1);
+                                    context.botUser.nlu.contextinfo["contextHistory"].splice(0, 0, context.botUser.contexts);
+                                    if (context.botUser.nlu.contextinfo["contextHistory"].length > MAX_CONTEXTHISTORY_LENGTH) {
+                                        context.botUser.nlu.contextinfo["contextHistory"].splice(5, 1);
                                     }
                                 }
 
                                 isFirst = true;
                             }
+                            */
                             cb();
                         }
                         else cb(null);

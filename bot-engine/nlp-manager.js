@@ -42,5 +42,26 @@ var NLPKo = require('./nlp/nlp-ko.js');
         }.bind(this));
     };
 
+    NLPManager.prototype.tokenize2 = function(language, rawText, done, errCallback)
+    {
+        if(language && typeof rawText == 'function' && !done)
+        {
+            done = rawText;
+            rawText = language;
+            language = 'ko'; //defualt
+        }
+
+        language = language || 'ko';
+
+        this.initialize(language, function()
+        {
+            this[language].tokenize2(rawText, done, function(err)
+            {
+                logger.systemError(err);
+                errCallback(err);
+            });
+        }.bind(this));
+    };
+
     module.exports = new NLPManager();
 })();

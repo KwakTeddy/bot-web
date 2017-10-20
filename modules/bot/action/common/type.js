@@ -17,6 +17,8 @@ var concept = require(path.resolve('modules/bot/engine/concept/concept.js'));
 var entity = utils.requireNoCache(path.resolve('modules/bot/engine/nlu/entity'));
 var intent = utils.requireNoCache(path.resolve('modules/bot/engine/nlu/intent'));
 
+var nlpManager = require(path.resolve('./bot-engine/nlp-manager.js'));
+
 const TAG_START = '\\+';
 const TAG_END = '\\+';
 const ARRAY_TAG_START = '#';
@@ -58,28 +60,24 @@ function processInput(context, inRaw, callback) {
                 enNLP.processInput(context, inRaw, function(_inTextNLP, _inDoc) {
                     inNLP = context.botUser.inNLP;
                     nlpAll = context.botUser.nlpAll;
-
                     cb(null);
                 });
             } else if (context.botUser.language=="zh") {
                 zhNLP.processInput(context, inRaw, function(_inTextNLP, _inDoc) {
                     inNLP = context.botUser.inNLP;
                     nlpAll = context.botUser.nlpAll;
-
                     cb(null);
                 });
             } else if (context.botUser.language=="ja") {
                 jaNLP.processInput(context, inRaw, function(_inTextNLP, _inDoc) {
                     inNLP = context.botUser.inNLP;
-                    nlpAll = context.botUser.nlpAll
-
+                    nlpAll = context.botUser.nlpAll;
                     cb(null);
                 });
             } else {
                 koNLP.processInput(context, inRaw, function(_inTextNLP, _inDoc) {
                     inNLP = context.botUser.inNLP;
                     nlpAll = context.botUser.nlpAll;
-
                     cb(null);
                 });
             }
@@ -358,7 +356,32 @@ function processOutput(task, context, out) {
             // return p1;
         });
 
-        out = out.replace(/%2B/g, '+');
+        // context 확인을 위한 발화 출력 (dsyoon)
+        var contextNames = Object.keys(context.botUser.nlg.context);
+        if ((contextNames.length>1) &&
+            (context.botUser.nlu.contextinfo["contextHistory"] == undefined || context.botUser.nlu.contextinfo["contextHistory"] == null)) {
+            out = '';
+            for (var i=0; i<contextNames.length; i++) {
+                out += " " + contextNames[i]+'? ';
+            }
+        } else {
+            out = out.replace(/%2B/g, '+');
+        }
+
+        if (context.botUser.contexts != undefined && context.botUser.contexts != null) {
+            if (context.botUser.nlu.contextinfo != undefined && context.botUser.nlu.contextinfo != null) {
+                var MAX_CONTEXTHISTORY_LENGTH = 5;
+                if (context.botUser.nlu["contextinfo"] == undefined || context.botUser.nlu["contextinfo"] == null) context.botUser.nlu["contextinfo"] = {};
+                if (context.botUser.nlu.contextinfo["contextHistory"] == undefined || context.botUser.nlu.contextinfo["contextHistory"] == null) {
+                    context.botUser.nlu.contextinfo["contextHistory"] = [context.botUser.contexts];
+                } else {
+                    context.botUser.nlu.contextinfo["contextHistory"].splice(0, 0, context.botUser.contexts);
+                    if (context.botUser.nlu.contextinfo["contextHistory"].length > MAX_CONTEXTHISTORY_LENGTH) {
+                        context.botUser.nlu.contextinfo["contextHistory"].splice(5, 1);
+                    }
+                }
+            }
+        }
 
     } catch(e) {
         console.log("processOutput:error: " + e, context);
@@ -1418,7 +1441,6 @@ function mongoTypeCheck(text, format, inDoc, context, callback) {
 exports.mongoTypeCheck = mongoTypeCheck;
 globals.setGlobalTypeCheck('mongoTypeCheck', mongoTypeCheck);
 
-
 function dialogTypeCheck(text, format, inDoc, context, callback) {
     // logger.debug('');
     // try {
@@ -1446,7 +1468,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
     var matchedDoc = [];
     var /*nlps = text.split(' '), */nlpsCount = 0;
 
-    var nlps = context.botUser.nlp;
+    var nlps = context.botUser.nlu.nlp;
 
     var nlpMatchLength = 0;
     for(var i = 0; i < nlps.length; i++) {
@@ -1604,9 +1626,35 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                         if (err || !docs || docs.length <= 0) {
                             //callback(text, inDoc);
                         } else {
+                            // context 재질의를 위해서 대답의 모든 context 저장 (dsyoon)
+                            var previous_contextNames = "";
+                            if (context.botUser.nlu.contextinfo["contextHistory"] != undefined && context.botUser.nlu.contextinfo["contextHistory"] != null) {
+                                if (docs.length>1) {
+                                    for (var k = 0; k < docs.length; k++) {
+                                        var doc = docs[k];
+                                        var last_contextNames = "";
+                                        for (var l = context.botUser.nlu.contextinfo["contextHistory"][0].length - 1; l >= 0; l--) {
+                                            if (context.botUser.nlu.contextinfo["contextHistory"][0][l].name != '') {
+                                                last_contextNames = context.botUser.nlu.contextinfo["contextHistory"][0][l].name;
+                                                break;
+                                            }
+                                        }
+                                        if (last_contextNames != '' && last_contextNames == doc.context.name) {
+                                            previous_contextNames = doc.context.name;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
 
                             for(var k = 0; k < docs.length; k++) {
                                 var doc = docs[k];
+                                // context 재질의를 위해서 대답의 모든 context 저장 (dsyoon)
+                                if (previous_contextNames != "") {
+                                    if (doc.context.name != previous_contextNames) {
+                                        continue;
+                                    }
+                                }
 
                                 var matchCount = 0, matchCount1 = 0, matchTotal = 0, matchNLP = [];
                                 matchedWord = '';
@@ -1625,7 +1673,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                                 for(var l = 0; l < format.mongo.queryFields.length; l++) {
                                     var bMatchTotal = false;
                                     for(var m = 0; m < _nlps.length; m++) {
-                                        if(_nlps[m].pos == 'Josa') continue;
+                                        if(_nlps[m].pos == 'Josa' || _nlps[m].pos == 'Suffix') continue;
 
                                         var _word = _nlps[m].text;
                                         _word = RegExp.escape(_word);
@@ -1637,7 +1685,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
 
                                                 if(_matchIndex[n] != -1) {
                                                     if(context.bot.topicKeywords && _.includes(context.bot.topicKeywords, _nlps[m].text)) {_matchCount[n]++; _matchCount1[n] +=3;}
-                                                    else if(_nlps[m].pos == 'Noun') {_matchCount[n]++;_matchCount1[n]+=2;}
+                                                    else if(_nlps[m].pos == 'Noun') {_matchCount[n]+=2;_matchCount1[n]+=2;}
                                                     else {_matchCount[n]++;_matchCount1[n]++;}
 
                                                     // console.log(word + ' ' + _word + ' ' + doc[format.mongo.queryFields[l]][n] + ' ' +_matchCount[n]);
@@ -1674,7 +1722,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
 
                                             if(matchIndex != -1) {
                                                 if((!context.bot.dialogsetOption || context.bot.dialogsetOption.useTopic !== false) && context.bot.topicKeywords && _.includes(context.bot.topicKeywords, _nlps[m].text)) {matchCount++; matchCount1 +=3;}
-                                                else if(_nlps[m].pos == 'Noun') {matchCount++; matchCount1+=2;}
+                                                else if(_nlps[m].pos == 'Noun') {matchCount+=2; matchCount1+=2;}
                                                 else {matchCount++; matchCount1++;}
                                                 // console.log(word + ' ' + _word + ' ' + doc[format.mongo.queryFields[l]] + ' ' +matchCount);
 
@@ -1730,6 +1778,19 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                                         // doc.matchRate = matchCount / matchTotal;
 
                                         matchedDoc.push(doc);
+                                        if (context.botUser.nlu["contextinfo"] == undefined || context.botUser.nlu["contextinfo"] == null) context.botUser.nlu["contextinfo"] = {};
+                                        if (context.botUser.nlu.contextinfo["context"] == undefined || context.botUser.nlu.contextinfo["context"] == null) context.botUser.nlu.contextinfo["context"] = {};
+                                        context.botUser.nlu.contextinfo.context = doc.context;
+                                    }
+
+                                    // 멀티 Answer에 대해서 Context 확인 (dsyoon)
+                                    if(((nlps.length <= 2 && (matchCount == matchTotal ||
+                                            (matchCount / nlpMatchLength >= format.matchRate || matchCount1 >= format.matchCount))) ||
+                                            (nlps.length > 2 && (matchCount / nlpMatchLength >= format.matchRate ||
+                                                matchCount1 >= format.matchCount)))) {
+                                        if (context.botUser.nlu["contextinfo"] == undefined || context.botUser.nlu["contextinfo"] == null) context.botUser.nlu["contextinfo"] = {};
+                                        if (context.botUser.nlg["context"] == undefined || context.botUser.nlg["context"] == null) context.botUser.nlg["context"] = {};
+                                        context.botUser.nlg["context"][doc.context.name] = doc.context;
                                     }
                                 }
                             }
