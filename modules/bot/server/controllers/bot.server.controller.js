@@ -117,18 +117,17 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
                 cb(null);
             });
         },
-
         function(cb) {
-            // 기존 개발 의도는 형태소분석만을 위한 함수였던 것 같다.
+            // 초기화
             logger.debug("사용자 입력>> " + inTextRaw);
-            var type = utils.requireNoCache(path.resolve('./modules/bot/action/common/type'));
 
             // 현재 발화의 대답이 중복인 경우, 중복된 발화의 category들을 저장하는 변수 (dsyoon)
             if (context.botUser["nlu"] == undefined || context.botUser["nlu"] == null) context.botUser["nlu"] = {};
             if (context.botUser.nlu["contextinfo"] == undefined || context.botUser.nlu["contextinfo"] == null) context.botUser.nlu["contextinfo"] = {};
 
             if (context.botUser["nlg"] == undefined || context.botUser["nlg"] == null) context.botUser["nlg"] = {};
-            if (context.botUser.nlg["context"] == undefined || context.botUser.nlg["context"] == null) context.botUser.nlg["context"] = {};
+            //if (context.botUser.nlg["context"] == undefined || context.botUser.nlg["context"] == null) context.botUser.nlg["context"] = {};
+            context.botUser.nlg["context"] = {};
 
             // 발화의 상태를 history로 저장한다 (일반, 멀티context 등..)
             if (context.botUser.nlu.contextinfo["contextStateHistory"] == undefined || context.botUser.nlu.contextinfo["contextStateHistory"] == null) context.botUser.nlu.contextinfo["contextStateHistory"] = [];
@@ -145,8 +144,6 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
                 context.botUser.nlu.multicontext["context"] = "";
             }
 
-
-
             // 이전 발화가 multi context였다면,
             if (context.botUser.nlu.contextinfo["contextStateHistory"][0] != undefined && context.botUser.nlu.contextinfo["contextStateHistory"][0] != null) {
                 if (inTextRaw in context.botUser.nlu.contextinfo["contextStateHistory"][0]) {
@@ -159,7 +156,11 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
                 context.botUser.nlu.multicontext["context"] = "";
             }
 
+            cb(null);
+        },
+        function(cb) {
             // 현재 발화에 대한 자연어 처리
+            var type = utils.requireNoCache(path.resolve('./modules/bot/action/common/type'));
             type.processInput(context, inTextRaw, function(_inTextNLP, _inDoc) {
                 logger.debug("자연어 처리>> " + _inTextNLP);
                 logger.debug(context.botUser.nlu);
