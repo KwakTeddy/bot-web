@@ -1802,7 +1802,10 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                                                 matchCount1 >= format.matchCount)))) {
                                         if (context.botUser.nlu["contextinfo"] == undefined || context.botUser.nlu["contextinfo"] == null) context.botUser.nlu["contextinfo"] = {};
                                         if (context.botUser.nlg["context"] == undefined || context.botUser.nlg["context"] == null) context.botUser.nlg["context"] = {};
-                                        context.botUser.nlg["context"][doc.context.name] = doc.context;
+                                        if(doc.context)
+                                        {
+                                            context.botUser.nlg["context"][doc.context.name] = doc.context;
+                                        }
                                     }
                                 }
                             }
