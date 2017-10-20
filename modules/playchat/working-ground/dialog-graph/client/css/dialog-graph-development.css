@@ -323,11 +323,11 @@
     border-color: #b1dbf4;
 }
 
-.graph-dialog-input span, .graph-dialog-output span
+.graph-dialog-input span, .graph-dialog-output span, .graph-dialog-output div
 {
     color: #656565;
     font-weight: 100;
-    font-size: 13px;
+    font-size: 11px;
 }
 
 .graph-dialog-output

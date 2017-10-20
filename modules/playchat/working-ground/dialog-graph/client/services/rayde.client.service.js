@@ -278,6 +278,25 @@
             }
         };
 
+        var makeDialogDraggble = function(item)
+        {
+
+            item.addEventListener('mousedown', function(e)
+            {
+
+            });
+
+            window.addEventListener('mousemove', function(e)
+            {
+                console.log('마우스 무빙');
+            });
+
+            window.addEventListener('mouseup', function(e)
+            {
+                console.log('마우스업');
+            });
+        };
+
         Rayde.prototype.drawDialog = function(parent, dialog)
         {
             var that = this;
@@ -330,6 +349,8 @@
                 that.focus(this.parentElement);
                 e.stopPropagation();
             });
+
+            makeDialogDraggble(t.find('.graph-dialog-item').get(0));
 
             parent.append(t);
 
