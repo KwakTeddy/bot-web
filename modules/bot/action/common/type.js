@@ -71,7 +71,7 @@ function processInput(context, inRaw, callback) {
             } else if (context.botUser.language=="ja") {
                 jaNLP.processInput(context, inRaw, function(_inTextNLP, _inDoc) {
                     inNLP = context.botUser.inNLP;
-                    nlpAll = context.botUser.nlpAll;
+                    nlpAll = context.botUser.nlpAll
                     cb(null);
                 });
             } else {
@@ -82,43 +82,43 @@ function processInput(context, inRaw, callback) {
                 });
             }
         },
-/*
-        function(cb) {
-            var nlpKo = new nlp({
-                stemmer: true,      // (optional default: true)
-                normalizer: true,   // (optional default: true)
-                spamfilter: true     // (optional default: false)
-            });
+        /*
+                function(cb) {
+                    var nlpKo = new nlp({
+                        stemmer: true,      // (optional default: true)
+                        normalizer: true,   // (optional default: true)
+                        spamfilter: true     // (optional default: false)
+                    });
 
-            // ToStrings
-            nlpKo.tokenize(inRaw, function(err, result) {
+                    // ToStrings
+                    nlpKo.tokenize(inRaw, function(err, result) {
 
-                var _inNLP = [];
-                if(!result) result = inRaw;
-                for (var i = 0; i < result.length; i++) {
-                    if(result[i].pos == 'Alpha') result[i].pos = 'Noun';
-                    // var word = result[i].text;
-                    // if(word.search(/^(은|는|이|가|을|를)$/) == -1) result2.push(word);
+                        var _inNLP = [];
+                        if(!result) result = inRaw;
+                        for (var i = 0; i < result.length; i++) {
+                            if(result[i].pos == 'Alpha') result[i].pos = 'Noun';
+                            // var word = result[i].text;
+                            // if(word.search(/^(은|는|이|가|을|를)$/) == -1) result2.push(word);
 
-                    // if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation')
-                    _nlp.push(result[i]);
-                    // if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _inNLP.push(result[i].text);
-                    nlpAll.push(result[i]);
-                    if(result[i].text && result[i].text.search(/^(은|는|이|가|을|를)$/) == -1 && result[i].pos !== 'Punctuation') _nlp.push(result[i]);
-                    if(result[i].text && result[i].text.search(/^(은|는|이|가|을|를)$/) == -1 && result[i].pos !== 'Punctuation') _inNLP.push(result[i].text);
-                }
+                            // if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation')
+                            _nlp.push(result[i]);
+                            // if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _inNLP.push(result[i].text);
+                            nlpAll.push(result[i]);
+                            if(result[i].text && result[i].text.search(/^(은|는|이|가|을|를)$/) == -1 && result[i].pos !== 'Punctuation') _nlp.push(result[i]);
+                            if(result[i].text && result[i].text.search(/^(은|는|이|가|을|를)$/) == -1 && result[i].pos !== 'Punctuation') _inNLP.push(result[i].text);
+                        }
 
-                inNLP = _inNLP.join(' ');
-                inNLP = inNLP.replace(/(?:\{ | \})/g, '+');
-                if(inNLP == '') inNLP = inRaw;
+                        inNLP = _inNLP.join(' ');
+                        inNLP = inNLP.replace(/(?:\{ | \})/g, '+');
+                        if(inNLP == '') inNLP = inRaw;
 
-                context.botUser.nlpAll = nlpAll;
-                context.botUser.nlp = _nlp;
+                        context.botUser.nlpAll = nlpAll;
+                        context.botUser.nlp = _nlp;
 
-                cb(null);
-            })
-        },
-*/
+                        cb(null);
+                    })
+                },
+        */
 
         // function(cb) {
         //   var sp = inRaw.split(' ');
@@ -362,7 +362,7 @@ function processOutput(task, context, out) {
             (context.botUser.nlu.contextinfo["contextHistory"] == undefined || context.botUser.nlu.contextinfo["contextHistory"] == null)) {
             out = '';
             for (var i=0; i<contextNames.length; i++) {
-                out += " " + contextNames[i]+'? ';
+                out += " \"" + contextNames[i]+"\"? ";
             }
         } else {
             out = out.replace(/%2B/g, '+');
@@ -374,10 +374,16 @@ function processOutput(task, context, out) {
                 if (context.botUser.nlu["contextinfo"] == undefined || context.botUser.nlu["contextinfo"] == null) context.botUser.nlu["contextinfo"] = {};
                 if (context.botUser.nlu.contextinfo["contextHistory"] == undefined || context.botUser.nlu.contextinfo["contextHistory"] == null) {
                     context.botUser.nlu.contextinfo["contextHistory"] = [context.botUser.contexts];
+                    context.botUser.nlu.contextinfo["contextStateHistory"] = [context.botUser.nlg.context];
+                    context.botUser.nlu.contextinfo["queryHistory"] = [context.botUser.nlu.sentence];
                 } else {
                     context.botUser.nlu.contextinfo["contextHistory"].splice(0, 0, context.botUser.contexts);
+                    context.botUser.nlu.contextinfo["contextStateHistory"].splice(0, 0, context.botUser.nlg.contextinfo);
+                    context.botUser.nlu.contextinfo["queryHistory"].splice(0, 0, context.botUser.nlu.sentence);
                     if (context.botUser.nlu.contextinfo["contextHistory"].length > MAX_CONTEXTHISTORY_LENGTH) {
                         context.botUser.nlu.contextinfo["contextHistory"].splice(5, 1);
+                        context.botUser.nlu.contextinfo["contextStateHistory"].splice(5, 1);
+                        context.botUser.nlu.contextinfo["queryHistory"].splice(5, 1);
                     }
                 }
             }
@@ -1646,6 +1652,12 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                                     }
                                 }
                             }
+
+                            // 이전 발화가 multi context였다면,
+                            if (context.botUser.nlu.multicontext.sentence != "" && context.botUser.nlu.multicontext.context != "") {
+                                previous_contextNames = context.botUser.nlu.multicontext.context;
+                            }
+
 
                             for(var k = 0; k < docs.length; k++) {
                                 var doc = docs[k];

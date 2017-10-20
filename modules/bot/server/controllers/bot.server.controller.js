@@ -124,12 +124,40 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
             var type = utils.requireNoCache(path.resolve('./modules/bot/action/common/type'));
 
             // 현재 발화의 대답이 중복인 경우, 중복된 발화의 category들을 저장하는 변수 (dsyoon)
-            if (context.botUser.nlu == undefined || context.botUser.nlu == null) context.botUser.nlu = {};
+            if (context.botUser["nlu"] == undefined || context.botUser["nlu"] == null) context.botUser["nlu"] = {};
             if (context.botUser.nlu["contextinfo"] == undefined || context.botUser.nlu["contextinfo"] == null) context.botUser.nlu["contextinfo"] = {};
-            if (context.botUser["nlg"] == undefined || context.botUser["nlg"] == null) context.botUser["nlg"] = {};
 
+            if (context.botUser["nlg"] == undefined || context.botUser["nlg"] == null) context.botUser["nlg"] = {};
             if (context.botUser.nlg["context"] == undefined || context.botUser.nlg["context"] == null) context.botUser.nlg["context"] = {};
-            context.botUser.nlg["context"] = {};
+
+            // 발화의 상태를 history로 저장한다 (일반, 멀티context 등..)
+            if (context.botUser.nlu.contextinfo["contextStateHistory"] == undefined || context.botUser.nlu.contextinfo["contextStateHistory"] == null) context.botUser.nlu.contextinfo["contextStateHistory"] = [];
+            // 사용자 발화를 history로 저장한다
+            if (context.botUser.nlu.contextinfo["queryHistory"] == undefined || context.botUser.nlu.contextinfo["queryHistory"] == null) context.botUser.nlu.contextinfo["queryHistory"] = [];
+
+            if (context.botUser.nlu["multicontext"] == undefined || context.botUser.nlu["multicontext"] == null) {
+                context.botUser.nlu["multicontext"] = {};
+            }
+            if (context.botUser.nlu.multicontext["sentence"] == undefined || context.botUser.nlu.multicontext["sentence"] == null) {
+                context.botUser.nlu.multicontext["sentence"] = "";
+            }
+            if (context.botUser.nlu.multicontext["context"] == undefined || context.botUser.nlu.multicontext["context"] == null) {
+                context.botUser.nlu.multicontext["context"] = "";
+            }
+
+
+
+            // 이전 발화가 multi context였다면,
+            if (context.botUser.nlu.contextinfo["contextStateHistory"][0] != undefined && context.botUser.nlu.contextinfo["contextStateHistory"][0] != null) {
+                if (inTextRaw in context.botUser.nlu.contextinfo["contextStateHistory"][0]) {
+                    context.botUser.nlu.multicontext["sentence"] = context.botUser.nlu.contextinfo["queryHistory"][0];
+                    context.botUser.nlu.multicontext["context"] = inTextRaw;
+                    inTextRaw =  context.botUser.nlu.contextinfo["queryHistory"][0];
+                }
+            } else {
+                context.botUser.nlu.multicontext["sentence"] = "";
+                context.botUser.nlu.multicontext["context"] = "";
+            }
 
             // 현재 발화에 대한 자연어 처리
             type.processInput(context, inTextRaw, function(_inTextNLP, _inDoc) {
