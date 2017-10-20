@@ -222,80 +222,6 @@ var saveRequest = {
 
 bot.setTask('saveRequest', saveRequest);
 
-// var sendMessage = {
-//     action: function (task,context,callback) {
-//
-//         var message = '[주문내용]\n';
-//
-//         for(i=0; i<context.user.cart.length; i++){
-//             message += context.user.cart[i].name + ', ' + context.user.cart[i].price + '\n';
-//         }
-//
-//
-//         message += '\n주소: ' + context.user.address.지번주소 + '\n';
-//         message += '번호: ' + context.user.mobile + '\n';
-//         message += '결제방법: ' + context.dialog.pay + '\n';
-//         message += '요청사항: ' + context.dialog.request + '\n';
-//
-//         var mess = [];
-//         mess[0] = message;
-//
-//         if (message.length > 60) {
-//             mess[0] = message.slice(0,60);
-//             mess[1] = message.slice(60,120);
-//         }
-//         sendSMS("01092597716", mess[0]);
-//         setTimeout(function() {sendSMS("01092597716", mess[1])}, 2000);
-//
-//
-//         var orderListSchema = mongoose.Schema({
-//             user: String,
-//             created: {
-//                 type: Date,
-//                 default: Date.now
-//             },
-//             mobile: String,
-//             address: mongoose.Schema.Types.Mixed,
-//             order: [],
-//             pay:String,
-//             request:String,
-//
-//         });
-//
-//         var OrderList = undefined;
-//         if(!mongoose.models['orderList'])
-//         {
-//             console.log('created schema');
-//             OrderList = mongoose.model('orderList', orderListSchema);
-//         }
-//         else
-//         {
-//             console.log('read schema');
-//             OrderList = mongoose.model('orderList');
-//         }
-//
-//         var orderList = new OrderList({
-//             user: context.user.userKey,
-//             mobile: context.user.mobile,
-//             address: context.user.address.지번주,
-//             order: context.user.cart,
-//             pay: context.user.pay,
-//             request: context.user.request,
-//         });
-//
-//         console.log('orderList: ' + JSON.stringify(orderList));
-//
-//         orderList.save({setDefaultsOnInsert: true}, function(err){
-//             if(err)
-//             {
-//                 console.log('error: ' + JSON.stringify(err));
-//             }
-//             callback(task,context);
-//         });
-//     }
-// };
-//
-// bot.setTask('sendMessage', sendMessage);
 
 var reserveRequest = {
     name: 'reserveRequest',
@@ -401,7 +327,7 @@ function reserveRequest(task, context, callback) {
 
 
 function checkInDistance(str, task, context, callback) {
-    var address = {address: str}
+    var address = {address: str};
     var lat, lng, lat2, lng2;
     request({
             url: 'https://maps.googleapis.com/maps/api/geocode/json?&key=AIzaSyDFfCi-x6iMRxdN_V7U2pSCQFzGseNzSBM',
@@ -415,7 +341,7 @@ function checkInDistance(str, task, context, callback) {
             lng = location.lng;
             // console.log(lat);
             [lat2, lng2] = context.bot.restaurant.geocode;
-            context.dialog.inDistance = (getDistanceFromGeocode(lat,lng,lat2,lng2)<5);
+            context.dialog.deliveryDistance = (getDistanceFromGeocode(lat,lng,lat2,lng2)<context.bot.restaurant.deliveryDistance);
             callback(task, context);
         }
     );
@@ -531,9 +457,10 @@ var checkCondition = {
         context.dialog.priceCond = (totalPrice > context.bot.restaurant.minPrice);
         //context.dialog.priceCond = true;
         context.dialog.totalPrice = totalPrice;
-        callback(task,context);
+         // callback(task,context);
 
-        //if(context.user.address) checkInDistance(context.user.address.지번주소, task, context, callback);
+        if(context.user.address) checkInDistance(context.user.address.지번주소, task, context, callback);
+        else callback(task,context);
     }
 };
 

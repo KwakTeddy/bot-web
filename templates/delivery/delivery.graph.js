@@ -216,7 +216,11 @@ var dialogs = [
                             },
                             {
                                 "kind": "Action",
-                                "if": "!context.dialog.deliveryDistance"
+                                "if": "!context.dialog.deliveryDistance",
+                                "repeat": "1",
+                                "options": {
+                                    "output": "**죄송합니다. 배달가능지역이 아닙니다.**\n\n[주문 목록]\n\n#cart#[+name+] X+quant+, +price+원\n#\n1. 주문 완료\n2. 메뉴 추가\n3. 메뉴 삭제\n4. 메뉴 수량변경\n5. 주문 취소\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요."
+                                }
                             },
                             {
                                 "kind": "Action",
