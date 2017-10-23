@@ -4,14 +4,6 @@
  * Module dependencies.
  */
 
-var path = require('path');
-var logger = require(path.resolve('./config/lib/logger.js'));
-
-for(var key in process.env)
-{
-    logger.systemInfo('[' + key + '] ' + process.env[key]);
-}
-
 var app = require('./config/lib/app');
 var server = app.start();
 
