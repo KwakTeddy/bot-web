@@ -3,10 +3,96 @@
 {
     'use strict';
 
-    angular.module('playchat.working-ground').factory('Rayde', function($window, $rootScope)
+    angular.module('playchat.working-ground').factory('DialogGraph', function($window, $rootScope)
     {
         var instance = undefined;
-        var Rayde = function()
+        var menuInstance = undefined;
+
+        var Menu = function()
+        {
+            this.currentDialog = undefined;
+            this.isOpened = false;
+        };
+
+        Menu.prototype.setCurrentDialog = function(dialog)
+        {
+            this.currentDialog = dialog;
+        };
+
+        Menu.prototype.execute = function(name)
+        {
+            if(this[name])
+            {
+                this[name](this.currentDialog);
+            }
+            else
+            {
+                throw new Error('[' + name + '] menu is not defined');
+            }
+        };
+
+        Menu.prototype.addChild = function()
+        {
+        };
+
+        Menu.prototype.moveUp = function()
+        {
+
+        };
+
+        Menu.prototype.moveDown = function()
+        {
+
+        };
+
+        Menu.prototype.duplicate = function()
+        {
+
+        };
+
+        Menu.prototype.delete = function()
+        {
+
+        };
+
+        Menu.prototype.addMenu = function(name, callback)
+        {
+            this.menus[name] = callback;
+        };
+
+        Menu.prototype.openMenu = function(e, dialog)
+        {
+            this.isOpened = true;
+
+            var dialogCard = e.currentTarget.parentElement.parentElement;
+            var left = dialogCard.offsetLeft + dialogCard.offsetWidth + 20;
+            var top = dialogCard.offsetTop;
+
+            this.setCurrentDialog(dialog);
+
+            angular.element('.dialog-menu').css('left', left + 'px').css('top', top + 'px').show();
+
+            e.preventDefault();
+            e.stopPropagation();
+        };
+
+        Menu.prototype.closeMenu = function(e)
+        {
+            if(!this.isOpened)
+                return;
+
+            this.isOpened = false;
+            menuInstance.setCurrentDialog(undefined);
+            angular.element('.dialog-menu').hide();
+
+            e.preventDefault();
+            e.stopPropagation();
+        };
+
+        if(!menuInstance)
+            menuInstance = new Menu();
+
+        var DialogGraph = function()
         {
             this.originalFileData = undefined;
             this.rawDatas = undefined;
@@ -19,25 +105,25 @@
             this.focusedTarget = undefined;
         };
         
-        Rayde.prototype.setScope = function($compile, $scope)
+        DialogGraph.prototype.setScope = function($compile, $scope)
         {
             this.$compile = $compile;
             this.$scope = $scope;
         };
 
-        Rayde.prototype.setDialogTemplate = function(template)
+        DialogGraph.prototype.setDialogTemplate = function(template)
         {
             this.template = template;
         };
 
-        Rayde.prototype.setCanvas = function(selector)
+        DialogGraph.prototype.setCanvas = function(selector)
         {
             this.canvas = angular.element(selector);
             this.makeCanvasDraggable();
             this.bindKeyboardEventToCanvas();
         };
 
-        Rayde.prototype.makeCanvasDraggable = function()
+        DialogGraph.prototype.makeCanvasDraggable = function()
         {
             var prevLocation = undefined;
             var isDragStart = false;
@@ -55,6 +141,8 @@
             {
                 if(e.which != 1)
                     return;
+
+                menuInstance.closeMenu(e);
 
                 isDragStart = true;
                 e.preventDefault();
@@ -97,7 +185,7 @@
             });
         };
 
-        Rayde.prototype.bindKeyboardEventToCanvas = function()
+        DialogGraph.prototype.bindKeyboardEventToCanvas = function()
         {
             var that = this;
             window.addEventListener('keydown', function(e)
@@ -163,11 +251,11 @@
             });
         };
 
-        Rayde.prototype.load = function(data)
+        DialogGraph.prototype.load = function(data)
         {
             if(!this.template)
             {
-                throw new Error('[Rayde] Template is undefined');
+                throw new Error('[DialogGraph] Template is undefined');
             }
 
             try
@@ -211,7 +299,7 @@
             return false;
         };
 
-        Rayde.prototype.drawDialogs = function(parent, list)
+        DialogGraph.prototype.drawDialogs = function(parent, list)
         {
             for(var i=0, l=list.length; i<l; i++)
             {
@@ -220,7 +308,18 @@
             }
 
             //plus 버튼을 여기서 붙여주면..
-            parent.append('<button type="button" class="plus"></button>');
+            this.addPlusButton(parent);
+        };
+
+        DialogGraph.prototype.addPlusButton = function(parent, style)
+        {
+            var button = angular.element('<button type="button" class="plus"' + (style ? style : '') + '></button>');
+            parent.append(button);
+
+            button.on('click', function()
+            {
+                console.log('추가');
+            });
         };
 
         var makeInputTemplate = function(input)
@@ -280,7 +379,6 @@
 
         var makeDialogDraggble = function(item)
         {
-
             item.addEventListener('mousedown', function(e)
             {
 
@@ -288,16 +386,14 @@
 
             window.addEventListener('mousemove', function(e)
             {
-                console.log('마우스 무빙');
             });
 
             window.addEventListener('mouseup', function(e)
             {
-                console.log('마우스업');
             });
         };
 
-        Rayde.prototype.drawDialog = function(parent, dialog)
+        DialogGraph.prototype.drawDialog = function(parent, dialog)
         {
             var that = this;
             var t = this.template.replace('{id}', dialog.id).replace('{name}', dialog.name);
@@ -350,6 +446,11 @@
                 e.stopPropagation();
             });
 
+            t.find('.dialog-more').on('click', function(e)
+            {
+                that.openMenu(e, dialog);
+            });
+
             makeDialogDraggble(t.find('.graph-dialog-item').get(0));
 
             parent.append(t);
@@ -358,7 +459,8 @@
             {
                 t.find('.graph-fold').hide();
                 var target = t.find('.graph-dialog-item').get(0);
-                t.find('.graph-dialog-children').append('<button type="button" class="plus" style="margin-left: 0; margin-top: ' + (target.offsetHeight / 2 - 19 + 20) + 'px"></button>');
+
+                this.addPlusButton(t.find('.graph-dialog-children'), ' style="margin-left: 0; margin-top: ' + (target.offsetHeight / 2 - 19 + 20) + 'px"');
             }
             else
             {
@@ -366,6 +468,10 @@
             }
         };
 
+        DialogGraph.prototype.openMenu = function(e, dialog)
+        {
+            menuInstance.openMenu(e, dialog);
+        };
 
         var createLine = function(x1, y1, x2, y2)
         {
@@ -381,7 +487,7 @@
             return line;
         };
 
-        Rayde.prototype.drawHorizontalLineForPlusButton = function(src, dest)
+        DialogGraph.prototype.drawHorizontalLineForPlusButton = function(src, dest)
         {
             var x1 = src.offsetLeft + src.offsetWidth;
             var y1 = src.offsetTop + src.offsetHeight / 2;
@@ -394,7 +500,7 @@
             this.svg.appendChild(line);
         };
 
-        Rayde.prototype.drawVerticalLineForPlusButton = function(src, dest)
+        DialogGraph.prototype.drawVerticalLineForPlusButton = function(src, dest)
         {
             var x1 = src.offsetLeft + src.offsetWidth / 2;
             var y1 = src.offsetTop + src.offsetHeight;
@@ -407,7 +513,7 @@
             this.svg.appendChild(line);
         };
 
-        Rayde.prototype.drawLine = function(src, children)
+        DialogGraph.prototype.drawLine = function(src, children)
         {
             var svg = this.svg;
 
@@ -479,7 +585,7 @@
             }
         };
 
-        Rayde.prototype.drawLines = function(children)
+        DialogGraph.prototype.drawLines = function(children)
         {
             this.canvas.find('svg').remove();
 
@@ -495,7 +601,7 @@
             this.canvas.prepend(this.svg);
         };
 
-        Rayde.prototype.toggleChild = function(child)
+        DialogGraph.prototype.toggleChild = function(child)
         {
             if(child.style.display == 'none')
             {
@@ -509,7 +615,7 @@
             this.drawLines(this.canvas.find('.graph-dialog'));
         };
 
-        Rayde.prototype.focus = function(target)
+        DialogGraph.prototype.focus = function(target)
         {
             this.canvas.find('.selected').removeClass('selected');
             angular.element(target).addClass('selected');
@@ -519,7 +625,7 @@
             this.moveScrollToTarget(target);
         };
 
-        Rayde.prototype.moveScrollToTarget = function(target)
+        DialogGraph.prototype.moveScrollToTarget = function(target)
         {
             var canvas = this.canvas.get(0);
             var graphBody = canvas.parentElement;
@@ -568,8 +674,19 @@
             }
         };
 
+        DialogGraph.prototype.setMenu = function(selector)
+        {
+            angular.element(selector).find('.dialog-menu-item').each(function()
+            {
+                this.addEventListener('click' , function()
+                {
+                    menuInstance.execute(this.getAttribute('data-name'));
+                });
+            });
+        };
+
         if(!instance)
-            instance = new Rayde();
+            instance = new DialogGraph();
 
         return instance;
     });

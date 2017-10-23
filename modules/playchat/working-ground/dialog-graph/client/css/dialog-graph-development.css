@@ -439,11 +439,20 @@
 
 .dialog-menu
 {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
     width: 150px;
     padding: 10px;
     border-radius: 6px;
     border: 1px solid #ebebeb;
     box-shadow: 0 1px 11px rgba(0, 0, 0, 0.1), 0 1px 11px rgba(0, 0, 0, 0.1);
+
+    background-color: white;
+
+    z-index: 1000;
 }
 
 .dialog-menu .menu-title

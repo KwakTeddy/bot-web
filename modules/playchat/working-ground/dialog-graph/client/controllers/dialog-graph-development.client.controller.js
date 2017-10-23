@@ -1,4 +1,4 @@
-angular.module('playchat.working-ground').controller('DialogGraphDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', 'Rayde', function ($window, $scope, $resource, $cookies, $location, $compile, Rayde)
+angular.module('playchat.working-ground').controller('DialogGraphDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', 'DialogGraph', function ($window, $scope, $resource, $cookies, $location, $compile, DialogGraph)
 {
     $scope.$parent.changeWorkingGroundName('Development > Dialog Graph');
 
@@ -13,9 +13,10 @@ angular.module('playchat.working-ground').controller('DialogGraphDevelopmentCont
 
     $scope.currentTabName = fileName;
 
-    Rayde.setScope($compile, $scope);
-    Rayde.setDialogTemplate(angular.element('#dialogGraphTemplate').html());
-    Rayde.setCanvas('#graphDialogCanvas');
+    DialogGraph.setScope($compile, $scope);
+    DialogGraph.setDialogTemplate(angular.element('#dialogGraphTemplate').html());
+    DialogGraph.setCanvas('#graphDialogCanvas');
+    DialogGraph.setMenu('.dialog-menu');
 
     (function()
     {
@@ -45,7 +46,7 @@ angular.module('playchat.working-ground').controller('DialogGraphDevelopmentCont
                 var data = result.data;
                 if(data)
                 {
-                    var result = Rayde.load(data);
+                    var result = DialogGraph.load(data);
                     if(!result)
                     {
                         alert('로드실패');
@@ -70,7 +71,7 @@ angular.module('playchat.working-ground').controller('DialogGraphDevelopmentCont
             }
 
             var target = e.currentTarget.parentElement.nextElementSibling;
-            Rayde.toggleChild(target);
+            DialogGraph.toggleChild(target);
         };
     })();
 
