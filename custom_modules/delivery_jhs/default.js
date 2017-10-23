@@ -104,7 +104,7 @@ var startTask = {
     action: function (task,context,callback) {
         context.user.cart = [];
 
-        var restaurant = mongoModule.getModel('restaurantcontent');
+        var restaurant = mongoModule.getModel('templatedeliverycontent');
         restaurant.find({_id:ObjectId("59e0a265ae20b594f69b9a1d")}).lean().exec(function(err, docs) {
             context.bot.restaurant = docs[0];
             if(!isOpen(context.bot.restaurant.openTime)) context.dialog.notOpen = "\n(**현재는 영업시간이 아닙니다**)\n";
