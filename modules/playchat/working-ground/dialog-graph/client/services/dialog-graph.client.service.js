@@ -98,6 +98,7 @@
             this.rawDatas = undefined;
             this.template = undefined;
             this.canvas = undefined;
+            this.editor = undefined;
 
             this.$compile = undefined;
             this.$scope = undefined;
@@ -109,6 +110,11 @@
         {
             this.$compile = $compile;
             this.$scope = $scope;
+        };
+
+        DialogGraph.prototype.setEditor = function(editor)
+        {
+            this.editor = editor;
         };
 
         DialogGraph.prototype.setDialogTemplate = function(template)
@@ -316,9 +322,10 @@
             var button = angular.element('<button type="button" class="plus"' + (style ? style : '') + '></button>');
             parent.append(button);
 
+            var that = this;
             button.on('click', function()
             {
-                console.log('추가');
+                that.editor.open();
             });
         };
 

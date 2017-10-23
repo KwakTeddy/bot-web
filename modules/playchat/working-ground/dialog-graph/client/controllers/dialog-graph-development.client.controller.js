@@ -1,4 +1,4 @@
-angular.module('playchat.working-ground').controller('DialogGraphDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', 'DialogGraph', function ($window, $scope, $resource, $cookies, $location, $compile, DialogGraph)
+angular.module('playchat.working-ground').controller('DialogGraphDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', 'DialogGraph', 'DialogGraphEditor', function ($window, $scope, $resource, $cookies, $location, $compile, DialogGraph, DialogGraphEditor)
 {
     $scope.$parent.changeWorkingGroundName('Development > Dialog Graph');
 
@@ -17,6 +17,7 @@ angular.module('playchat.working-ground').controller('DialogGraphDevelopmentCont
     DialogGraph.setDialogTemplate(angular.element('#dialogGraphTemplate').html());
     DialogGraph.setCanvas('#graphDialogCanvas');
     DialogGraph.setMenu('.dialog-menu');
+    DialogGraph.setEditor(DialogGraphEditor);
 
     (function()
     {
