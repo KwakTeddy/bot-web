@@ -6,14 +6,9 @@ module.exports =
             name: "playchat",
             script: "./server.js",
             watch: false,
-            env_dev:
+            env:
             {
                 "PORT": 8443,
-                "NODE_ENV": "development"
-            },
-            env_staging:
-            {
-                "PORT": 443,
                 "NODE_ENV": "development"
             },
             env_production:

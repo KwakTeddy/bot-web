@@ -1,8 +1,8 @@
 'use strict';
 
 module.exports = {
-  client: {
-    css: 'public/dist/application.min.css',
-    js: 'public/js/dummy.js'
-  }
+    client: {
+        css: 'public/dist/application.min.css',
+        js: 'public/js/dummy.js'
+    }
 };
