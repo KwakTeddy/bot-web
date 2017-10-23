@@ -104,7 +104,7 @@ var startTask = {
     action: function (task,context,callback) {
         context.user.cart = [];
 
-        var restaurant = mongoModule.getModel('restaurantcontent');
+        var restaurant = mongoModule.getModel('templatedeliverycontent');
         restaurant.find({_id:ObjectId("59e08720ae20b594f69b8bdd")}).lean().exec(function(err, docs) {
             context.bot.restaurant = docs[0];
             if(!isOpen(context.bot.restaurant.openTime)) context.dialog.notOpen = "\n(**현재는 영업시간이 아닙니다**)\n";
@@ -309,15 +309,15 @@ var sendMessage = {
         });
 
         var OrderList = undefined;
-        if(!mongoose.models['orderList'])
+        if(!mongoose.models['templateorderlist'])
         {
             console.log('created schema');
-            OrderList = mongoose.model('orderList', orderListSchema);
+            OrderList = mongoose.model('templateorderlist', orderListSchema);
         }
         else
         {
             console.log('read schema');
-            OrderList = mongoose.model('orderList');
+            OrderList = mongoose.model('templateorderlist');
         }
 
         var orderList = new OrderList({
@@ -524,7 +524,7 @@ function sendSMS(phone, message) {
 
 var getOrderHistory = {
   action: function (task,context,callback) {
-    var orderList = mongoModule.getModel('orderList');
+    var orderList = mongoModule.getModel('templateorderlist');
     orderList.find({user:context.user.userKey}).sort({created:-1}).limit(1).lean().exec(function(err, docs){
         if(docs.length != 0){
             context.dialog.orderHistory = docs[0];

@@ -309,15 +309,15 @@ var sendMessage = {
         });
 
         var OrderList = undefined;
-        if(!mongoose.models['orderList'])
+        if(!mongoose.models['templateorderlist'])
         {
             console.log('created schema');
-            OrderList = mongoose.model('orderList', orderListSchema);
+            OrderList = mongoose.model('templateorderlist', orderListSchema);
         }
         else
         {
             console.log('read schema');
-            OrderList = mongoose.model('orderList');
+            OrderList = mongoose.model('templateorderlist');
         }
 
         var orderList = new OrderList({
@@ -523,7 +523,7 @@ function sendSMS(phone, message) {
 
 var getOrderHistory = {
   action: function (task,context,callback) {
-    var orderList = mongoModule.getModel('orderList');
+    var orderList = mongoModule.getModel('templateorderlist');
     orderList.find({user:context.user.userKey}).sort({created:-1}).limit(1).lean().exec(function(err, docs){
         if(docs.length != 0){
             context.dialog.orderHistory = docs[0];
