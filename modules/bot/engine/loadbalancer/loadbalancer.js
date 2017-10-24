@@ -201,7 +201,7 @@ function balance(channel, user, bot, text, json, callback) {
 
                 callback(body.text? body.text:body, body);
 
-                for(var i = 0; i < servers.length; i++) {
+                for(var i = 1; i < servers.length; i++) {
                     if(servers[i].server == server) {
                         servers[i].count++;
 
@@ -210,7 +210,7 @@ function balance(channel, user, bot, text, json, callback) {
                 }
 
             } else {
-                for(var i = 0; i < servers.length; i++) {
+                for(var i = 1; i < servers.length; i++) {
                     if(servers[i].server == server) {
                         servers[i].fail++;
                         servers[i].time = -1;
@@ -235,7 +235,7 @@ function balance(channel, user, bot, text, json, callback) {
             cache.get(channel + user, function (err, data) {
                 // console.log('loadbalancer:balance: ' + (channel + user) + '=' + data);
                 if (data) {
-                    for (var i = 0; i < servers.length; i++) {
+                    for (var i = 1; i < servers.length; i++) {
                         if (servers[i].server == data) {
                             if(servers[i].fail >= FAIL_OUT) server = undefined;
                             else server = data;
@@ -261,9 +261,9 @@ function balance(channel, user, bot, text, json, callback) {
                 // }
 
                 if (!server) {
-                    for (var i = 0; i < servers.length; i++) {
+                    for (var i = 1; i < servers.length; i++) {
                         serverNum = (++serverNum) % servers.length;
-                        if(servers[serverNum].fail < FAIL_OUT) break;
+                        if(serverNum != 0 && servers[serverNum].fail < FAIL_OUT) break;
                     }
 
                     server = servers[serverNum].server;
