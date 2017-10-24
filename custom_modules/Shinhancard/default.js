@@ -1003,7 +1003,7 @@ var Main = {
       task.buttons = [
         {
           text: "바로가기",
-          url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350237_39639.html"
+          url: "https://m.shinhancard.com/conts/html/card/apply/credit/1445616_33659.html?EntryLoc2=2872&empSeq=563&datakey=&agcCd="
         }
       ]
 
@@ -1011,7 +1011,7 @@ var Main = {
       task.buttons = [
         {
           text: "바로가기",
-          url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350237_39638.html"
+          url: "https://m.shinhancard.com/conts/html/card/apply/credit/1445616_33659.html?EntryLoc2=2872&empSeq=562&datakey=&agcCd="
         }
       ]
 
@@ -1019,7 +1019,7 @@ var Main = {
       task.buttons = [
         {
           text: "바로가기",
-          url: "https://m.shinhancard.com/conts/html/card/apply/credit/1350237_39388.html"
+          url: "https://m.shinhancard.com/conts/html/card/apply/credit/1445616_33659.html?EntryLoc2=2872&empSeq=561&datakey=&agcCd="
         }
       ]
 
@@ -1632,7 +1632,7 @@ var MainCheck = {
       task.buttons = [
         {
           text: "바로가기",
-          url: "https://m.shinhancard.com/conts/html/card/apply/check/1350268_39649.html"
+          url: "https://m.shinhancard.com/conts/html/card/apply/check/1446316_33660.html?EntryLoc2=2873&empSeq=563&datakey=&agcCd="
         }
       ]
 
@@ -1640,7 +1640,7 @@ var MainCheck = {
       task.buttons = [
         {
           text: "바로가기",
-          url: "https://m.shinhancard.com/conts/html/card/apply/check/1350268_39648.html"
+          url: "https://m.shinhancard.com/conts/html/card/apply/check/1446316_33660.html?EntryLoc2=2873&empSeq=562&datakey=&agcCd="
         }
       ]
 
@@ -1648,7 +1648,7 @@ var MainCheck = {
       task.buttons = [
         {
           text: "바로가기",
-          url: "https://m.shinhancard.com/conts/html/card/apply/check/1350268_39409.html"
+          url: "https://m.shinhancard.com/conts/html/card/apply/check/1446316_33660.html?EntryLoc2=2873&empSeq=561&datakey=&agcCd="
         }
       ]
 
