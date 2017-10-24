@@ -238,7 +238,7 @@ function balance(channel, user, bot, text, json, callback) {
 
             console.error('=======================================================================');
             console.error('loadbalancer:balance: ' + server + '[' + servers[i].count + '] ');
-            console.error(err.stack || err);
+            console.error(error.stack || error);
             console.error('channel: ' + channel);
             console.error('user: ' + user);
             console.error('bot: ' + bot);
