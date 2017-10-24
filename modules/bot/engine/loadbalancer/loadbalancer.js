@@ -43,7 +43,7 @@ function loadServers() {
 
     for(var i = 0; i < data.length; i++) {
       var bExist = false;
-      for(var j = 1; j < servers.length; j++) {
+      for(var j = 0; j < servers.length; j++) {
         if(servers[j].server == data[i]) {
           if(servers[j].fail >= FAIL_OUT) {
             // cache.lrem('servers', 0, data[i]);
