@@ -183,9 +183,30 @@ exports.init = init;
 
 function balance(channel, user, bot, text, json, callback) {
   var server;
+  var retryCount = 0;
   var _request = function() {
     // if(!server) server = config.loadBalance.host + ':' + config.loadBalance.port;
-    if(!server) server = 'http://' + localhost + ':3000';
+
+    if(!server)
+    {
+        server = 'http://' + localhost + ':3000';
+        var botServer = require(path.resolve('./modules/bot/server/controllers/bot.server.controller.js'));
+        botServer.write(channel, user, bot, text, json, function(_out, _task)
+        {
+            if(_task == undefined || (_task.result == undefined && _task.image == undefined && _task.buttons == undefined && _task.items == undefined)) {
+                callback(_out.text, _out);
+            } else if(_task.result) {
+                if(_task.result.text == undefined) _task.result.text = _out;
+                callback(JSON.stringify(_task.result), JSON.stringify(_task.result));
+            } else {
+                _task.text = _out;
+                _task.topTask = undefined;
+                callback(JSON.stringify(_task), JSON.stringify(_task));
+            }
+        });
+
+        return;
+    }
 
     request({
       uri: server + '/chat/' + bot + '/message',
@@ -214,10 +235,35 @@ function balance(channel, user, bot, text, json, callback) {
           if(servers[i].server == server) {
             servers[i].fail++;
             servers[i].time = -1;
-            console.log('loadbalancer:balance: ' + server + '[' + servers[i].count + '] ' + error);
+
+            console.error();
+            console.error();
+            console.error('=======================================================================');
+            console.error('loadbalancer:balance: ' + server + '[' + servers[i].count + '] ');
+            console.error(err.stack || err);
+            console.error('channel: ' + channel);
+            console.error('user: ' + user);
+            console.error('bot: ' + bot);
+            console.error('text: ' + text);
+            console.error('=======================================================================');
+            console.error();
+            console.error();
+
+            break;
           }
         }
-        callback(JSON.stringify(error));
+
+        setTimeout(function()
+        {
+            console.error('재시도 : ' + server + '[' + retryCount + '] ');
+            if(retryCount == 4)
+            {
+                return callback(JSON.stringify(error));
+            }
+
+            retryCount++;
+            _request();
+        }, 500);
       }
     });
   };
@@ -260,7 +306,7 @@ function balance(channel, user, bot, text, json, callback) {
         //   }
         // }
 
-        if (!server) {
+        if (!server && servers.length > 0) {
           for (var i = 0; i < servers.length; i++) {
             serverNum = (++serverNum) % servers.length;
             if(serverNum != 0 && servers[serverNum].fail < FAIL_OUT) break;
