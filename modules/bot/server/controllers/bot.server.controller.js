@@ -123,37 +123,41 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
 
             // 현재 발화의 대답이 중복인 경우, 중복된 발화의 category들을 저장하는 변수 (dsyoon)
             if (context.botUser["nlu"] == undefined || context.botUser["nlu"] == null) context.botUser["nlu"] = {};
-            if (context.botUser.nlu["contextinfo"] == undefined || context.botUser.nlu["contextinfo"] == null) context.botUser.nlu["contextinfo"] = {};
-
-            if (context.botUser["nlg"] == undefined || context.botUser["nlg"] == null) context.botUser["nlg"] = {};
-            //if (context.botUser.nlg["context"] == undefined || context.botUser.nlg["context"] == null) context.botUser.nlg["context"] = {};
-            context.botUser.nlg["context"] = {};
+            if (context.botUser.nlu["contextInfo"] == undefined || context.botUser.nlu["contextInfo"] == null) context.botUser.nlu["contextInfo"] = {};
 
             // 발화의 상태를 history로 저장한다 (일반, 멀티context 등..)
-            if (context.botUser.nlu.contextinfo["contextStateHistory"] == undefined || context.botUser.nlu.contextinfo["contextStateHistory"] == null) context.botUser.nlu.contextinfo["contextStateHistory"] = [];
+            if (context.botUser.nlu.contextInfo["lastContextHistory"] == undefined || context.botUser.nlu.contextInfo["lastContextHistory"] == null) context.botUser.nlu.contextInfo["lastContextHistory"] = [];
             // 사용자 발화를 history로 저장한다
-            if (context.botUser.nlu.contextinfo["queryHistory"] == undefined || context.botUser.nlu.contextinfo["queryHistory"] == null) context.botUser.nlu.contextinfo["queryHistory"] = [];
+            if (context.botUser.nlu.contextInfo["queryHistory"] == undefined || context.botUser.nlu.contextInfo["queryHistory"] == null) context.botUser.nlu.contextInfo["queryHistory"] = [];
+            // 현재 발화의 상태
+            if (context.botUser.nlu.contextInfo["context"] == undefined || context.botUser.nlu.contextInfo["context"] == null) context.botUser.nlu.contextInfo["context"] = {};
 
-            if (context.botUser.nlu["multicontext"] == undefined || context.botUser.nlu["multicontext"] == null) {
-                context.botUser.nlu["multicontext"] = {};
-            }
-            if (context.botUser.nlu.multicontext["sentence"] == undefined || context.botUser.nlu.multicontext["sentence"] == null) {
-                context.botUser.nlu.multicontext["sentence"] = "";
-            }
-            if (context.botUser.nlu.multicontext["context"] == undefined || context.botUser.nlu.multicontext["context"] == null) {
-                context.botUser.nlu.multicontext["context"] = "";
-            }
+            // 현재 발화의 매치 정보
+            if (context.botUser.nlu["matchInfo"] == undefined || context.botUser.nlu["matchInfo"] == null) context.botUser.nlu["matchInfo"] = {};
+            context.botUser.nlu.matchInfo["state"] = ""; // full, token or else
+            context.botUser.nlu.matchInfo["qa"] = [];
+            context.botUser.nlu.matchInfo["contextNames"] = {};
+            context.botUser.nlu.matchInfo["topScoreCount"] = 1; // answer들 중에서 상위 동일 점수 발화의 개수
+
 
             // 이전 발화가 multi context였다면,
-            if (context.botUser.nlu.contextinfo["contextStateHistory"][0] != undefined && context.botUser.nlu.contextinfo["contextStateHistory"][0] != null) {
-                if (inTextRaw in context.botUser.nlu.contextinfo["contextStateHistory"][0]) {
-                    context.botUser.nlu.multicontext["sentence"] = context.botUser.nlu.contextinfo["queryHistory"][0];
-                    context.botUser.nlu.multicontext["context"] = inTextRaw;
-                    inTextRaw =  context.botUser.nlu.contextinfo["queryHistory"][0];
+            if (context.botUser.nlu.contextInfo["lastContextHistory"][0] != undefined &&
+                context.botUser.nlu.contextInfo["lastContextHistory"][0] != null &&
+                Object.keys(context.botUser.nlu.contextInfo["lastContextHistory"][0]).length > 1) {
+                if (inTextRaw in context.botUser.nlu.contextInfo["lastContextHistory"][0]) {
+                    context.botUser.nlu.contextInfo.context["type"] = "CONTEXT_SELECTION";
+                    context.botUser.nlu.contextInfo.context["sentence"] = context.botUser.nlu.contextInfo["queryHistory"][0];
+                    context.botUser.nlu.contextInfo.context["name"] = inTextRaw;
+                    inTextRaw =  context.botUser.nlu.contextInfo["queryHistory"][0];
+                } else {
+                    context.botUser.nlu.contextInfo.context["type"] = "";
+                    context.botUser.nlu.contextInfo.context["sentence"] = "";
+                    context.botUser.nlu.contextInfo.context["name"] = "";
                 }
             } else {
-                context.botUser.nlu.multicontext["sentence"] = "";
-                context.botUser.nlu.multicontext["context"] = "";
+                context.botUser.nlu.contextInfo.context["type"] = "";
+                context.botUser.nlu.contextInfo.context["sentence"] = "";
+                context.botUser.nlu.contextInfo.context["name"] = "";
             }
 
             cb(null);
@@ -244,23 +248,6 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
                                 context.botUser.currentDialog = null;
                             }
 
-                            // context history 기능 추가: MAX 5개 history만 저장함 (dsyoon)
-                            /*
-                            if (!isFirst && context.botUser.nlu.contextinfo != undefined && context.botUser.nlu.contextinfo != null) {
-                                var MAX_CONTEXTHISTORY_LENGTH = 5;
-                                if (context.botUser.nlu["contextinfo"] == undefined || context.botUser.nlu["contextinfo"] == null) context.botUser.nlu["contextinfo"] = {};
-                                if (context.botUser.nlu.contextinfo["contextHistory"] == undefined || context.botUser.nlu.contextinfo["contextHistory"] == null) {
-                                    context.botUser.nlu.contextinfo["contextHistory"] = [context.botUser.contexts];
-                                } else {
-                                    context.botUser.nlu.contextinfo["contextHistory"].splice(0, 0, context.botUser.contexts);
-                                    if (context.botUser.nlu.contextinfo["contextHistory"].length > MAX_CONTEXTHISTORY_LENGTH) {
-                                        context.botUser.nlu.contextinfo["contextHistory"].splice(5, 1);
-                                    }
-                                }
-
-                                isFirst = true;
-                            }
-                            */
                             cb();
                         }
                         else cb(null);
