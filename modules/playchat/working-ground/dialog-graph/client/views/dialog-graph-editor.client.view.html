@@ -1,1 +1,232 @@
-dadfs
+<script type="text/template" id="outputButton">
+<div class="dialog-editor-output-box-row">
+    <span class="blue-label">Button name01</span>
+    <p class="output-button-label">www.mornbrain.ai</p>
+</div>
+</script>
+
+<div class="topicswitch2">
+    <span class="mr10">Advenced</span>
+    <!--<div class="tooltip">-->
+        <!--<span>Tooltip</span>-->
+        <!--<em class="tail"></em>-->
+    <!--</div>-->
+    <div class="minislide on inline-block">
+        <input type="checkbox" value="switch" id="advence" checked="">
+        <label for="advence"></label>
+    </div>
+</div>
+<div class="dialog-editor dialog-editor-basic" ng-controller="DialogGraphEditorBasicController">
+    <div class="dialog-editor-body">
+        <div class="dialog-editor-row">
+            <p class="dialog-editor-subject">Dialog name</p>
+            <div class="dialog-editor-input-box">
+                <input type="text" class="dialog-editor-input" placeholder="Dialog name" ng-model="basic.name">
+            </div>
+        </div>
+        <div class="dialog-editor-row">
+            <p class="dialog-editor-subject">Input <a href="#" class="codebtn"></a></p>
+            <div class="dialog-editor-input-box">
+                <div class="dialog-editor-input-wrapper" ng-repeat="input in basic.inputList">
+                    <input type="text" class="dialog-editor-input" value="{{ input.value }}">
+                    <img src="/modules/playchat/working-ground/common/client/img/delete.png" class="delete-img" ng-click="deleteInput($index);">
+                </div>
+                <div style="position: relative;">
+                    <a href="#" class="dialog-editor-plus-wrapper" ng-click="addInput($event);"><span class="dialog-editor-plus"></span></a>
+                </div>
+            </div>
+        </div>
+        <div class="dialog-editor-row">
+            <p class="dialog-editor-subject">Output <a href="#" class="codebtn"></a></p>
+            <a href="#" class="dialog-editor-output-add"><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/add.png"></a>
+            <div class="dialog-editor-output-box" ng-repeat="output in basic.outputList">
+                <div ng-if="output.type == 'text'">
+                    <p class="dialog-editor-output-text" contenteditable="true">{{ output.value }}</p>
+                    <div class="dialog-editor-output-box-row button">
+                        <span class="blue-label">Add image</span>
+                        <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/blue-arrow.png">
+                    </div>
+                    <div class="dialog-editor-output-box-row button">
+                        <span class="blue-label">Add button</span>
+                        <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/blue-arrow.png">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dialog-editor-row">
+            <p class="dialog-editor-subject">Action <a href="#" class="codebtn"></a></p>
+            <div style="padding: 8px 17px;">
+                <select class="jumbo-select dialog-editor-action-type">
+                    <option value="">none</option>
+                    <option>Call</option>
+                    <option>Call Child</option>
+                    <option>Return Call</option>
+                    <option>Up</option>
+                    <option>Repeat</option>
+                    <option>Return</option>
+                </select>
+                <select class="jumbo-select dialog-editor-action-dialog">
+                    <option value="">none</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="dialog-editor-footer">
+        <button type="button" class="blue-button">Save</button>
+        <button type="button" class="default-button" ng-click="close();">Cancel</button>
+    </div>
+</div>
+
+
+<div class="dialog-editor dialog-editor-advanced" style="display:none;">
+    <div class="dialog-editor-body">
+        <div class="dialog-editor-row">
+            <p class="dialog-editor-subject">Dialog name</p>
+            <div class="dialog-editor-input-box">
+                <input type="text" class="dialog-editor-input" placeholder="Dialog name">
+            </div>
+        </div>
+        <div class="dialog-editor-row">
+            <p class="dialog-editor-subject">Input <a href="#" class="codebtn"></a></p>
+            <div class="dialog-editor-input-box" style="margin-bottom: 30px;">
+                <div class="dialog-editor-input-textarea" data-nlu="NLP: 안녕 하다">
+                <span class="dialog-editor-input-item">
+                    <span>HelloHelloHelloh</span>
+                    <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/close.png">
+                </span>
+                    <span class="and">and</span>
+                    <span class="dialog-editor-input-item">
+                    <span>HelloHelloHelloh</span>
+                    <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/close.png">
+                </span>
+                </div>
+                <div class="or">
+                    <span>or</span>
+                </div>
+                <div class="dialog-editor-input-textarea"data-nlu="NLP: 안녕 하다">
+                <span class="dialog-editor-input-item">
+                    <span>HelloHelloHelloh</span>
+                    <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/close.png">
+                </span>
+                </div>
+            </div>
+        </div>
+        <div class="dialog-editor-row">
+            <p class="dialog-editor-subject">Task <a href="#" class="codebtn"></a></p>
+            <div class="dialog-editor-input-box">
+                <select class="jumbo-select"></select>
+            </div>
+        </div>
+        <div class="dialog-editor-row">
+            <p class="dialog-editor-subject">Output <a href="#" class="codebtn"></a></p>
+            <a href="#" class="flR inline-block mr20"><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/add.png"></a>
+            <div class="dialog-editor-output-box">
+                <div style="text-align: right; margin: 10px 5px;">
+                    <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/switch.png" class="image-button">
+                    <img src="/modules/playchat/working-ground/common/client/img/delete.png" class="delete-img">
+                </div>
+                <div class="dialog-editor-output-box-row">
+                    <span>IF</span>
+                    <input type="text">
+                </div>
+                <p class="dialog-editor-output-text" contenteditable="true">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                </p>
+                <div class="dialog-editor-output-box-row">
+                    <span class="blue-label">Add image</span>
+                    <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/blue-arrow.png">
+                </div>
+                <div class="dialog-editor-output-box-row">
+                    <span class="blue-label">Button name01</span>
+                    <p class="output-button-label">www.mornbrain.ai</p>
+                </div>
+                <div class="dialog-editor-output-box-row">
+                    <span class="blue-label">Add button</span>
+                    <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/blue-arrow.png">
+                </div>
+            </div>
+        </div>
+        <div class="dialog-editor-row">
+            <p class="dialog-editor-subject">Action <a href="#" class="codebtn"></a></p>
+            <div style="padding: 8px 17px;">
+                <select class="jumbo-select dialog-editor-action-type">
+                    <option></option>
+                    <option></option>
+                </select>
+                <select class="jumbo-select dialog-editor-action-dialog">
+                    <option></option>
+                    <option></option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="dialog-editor-footer">
+        <button type="button" class="blue-button">Save</button>
+        <button type="button" class="default-button">Cancel</button>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="dialog-editor-name" style="display: none;">
+    <div class="dialog-editor-row">
+        <p class="dialog-editor-subject">Dialog name</p>
+        <input type="text" class="dialog-editor-input" placeholder="Dialog name">
+    </div>
+    <div class="dialog-editor-row">
+        <p class="dialog-editor-subject">Input <a href="#" class="codebtn"></a></p>
+        <input type="text" class="dialog-editor-input">
+        <a href="#"><span class="dialog-editor-plus"></span></a>
+    </div>
+    <div class="dialog-editor-row">
+        <p class="dialog-editor-subject">Output <a href="#" class="codebtn"></a></p>
+        <a href="#" class="flR inline-block mr20"><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/add.png"></a>
+        <div class="dialog-editor-output-box">
+            <div style="text-align: right; margin: 10px 5px;">
+                <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/switch.png" class="image-button">
+                <img src="/modules/playchat/working-ground/common/client/img/delete.png" class="delete-img">
+            </div>
+            <div class="dialog-editor-output-box-row">
+                <p>Action</p>
+                <span>IF</span>
+                <input type="text">
+            </div>
+            <div class="dialog-editor-output-box-row">
+                <p>Action type</p>
+                <div class="dialog-editor-output-box-input-wrapper">
+                    <select>
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+            <div class="dialog-editor-output-box-row">
+                <p>Dialog Select</p>
+                <div class="dialog-editor-output-box-input-wrapper">
+                    <select>
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+            <div class="dialog-editor-output-box-row">
+                <p>Option</p>
+                <p>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="dialog-editor-footer">
+        <button type="button" class="blue-button">Save</button>
+        <button type="button" class="default-button">Cancel</button>
+    </div>
+</div>

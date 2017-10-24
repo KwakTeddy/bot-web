@@ -9,12 +9,19 @@
 
         var DialogGraphEditor = function()
         {
-
+            this.rightStyle = '-368px';
         };
 
-        DialogGraphEditor.prototype.open = function()
+        DialogGraphEditor.prototype.open = function(dialog)
         {
             angular.element('#graphDialogEditor').css('right', '0');
+
+            console.log(dialog);
+        };
+
+        DialogGraphEditor.prototype.close = function()
+        {
+            angular.element('#graphDialogEditor').css('right', this.rightStyle);
         };
 
         if(!instance)

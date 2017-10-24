@@ -70,9 +70,8 @@
     right: 0;
     bottom: 211px;
 
-    padding: 14px;
-
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .playchat-background .top-bar+div > div .log-analysis

@@ -3,6 +3,7 @@
     min-width: 800px;
     height: 100%;
     overflow: auto;
+    padding: 0 14px;
 
     position: relative;
 }
@@ -160,8 +161,8 @@
 {
     position: absolute;
     top: 120px;
-    left: 0;
-    right: 0;
+    left: 14px;
+    right: 14px;
     bottom: 0;
 
     overflow: auto;
@@ -516,18 +517,403 @@
 {
     position: absolute;
 
-    top: 135px;
-    bottom: 28px;
-    right: -400px;
-    width: 400px;
+    top: 0;
+    bottom: 0;
+    /*right: -400px;*/
+    right: -368px;
+    width: 368px;
 
-    background-color: white;
-
-    border: 1px solid #ddd;
+    background: #f8f8f8;
+    border-left: #e7e7e7 solid 1px;
 
     box-sizing: border-box;
-
     z-index: 1000;
-
     transition: right 0.5s;
+}
+
+.dialog-editor
+{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 40px;
+    bottom: 0;
+}
+
+.dialog-editor-body
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 64px;
+    overflow: auto;
+}
+
+.dialog-editor-row:first-child
+{
+    margin-top: 0;
+}
+
+.dialog-editor-row
+{
+    position: relative;
+    margin: 30px 0;
+}
+
+.topicswitch2
+{
+    width: 95%;
+    display: block;
+    text-align: right;
+    margin-top: 20px;
+}
+
+.tooltip
+{
+    padding: 3px 20px 5px;
+    background: #424242;
+    border-radius: 6px;
+    position: absolute;
+    right: 2px;
+    top: -19px;
+    z-index: 100001;
+}
+
+.tooltip .tail {
+    border-top: 8px solid #424242;
+    position: absolute;
+    right: 47px;
+    top: 25px;
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+}
+
+.minislide {
+    width: 68px;
+    height: 20px;
+    background: #e0e0e0;
+    margin: 0px auto;
+    position: relative;
+    border-radius: 50px;
+    box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,0.2);
+}
+
+.minislide.on {
+    background: #038eda;
+}
+
+.minislide:before {
+    content: 'ON';
+    color: #fff;
+    position: absolute;
+    left: 10px;
+    z-index: 0;
+    font: 10px/25px Arial, sans-serif;
+    font-weight: bold;
+    line-height: 21px;
+}
+
+.minislide:after {
+    content: 'OFF';
+    color: #fff;
+    position: absolute;
+    right: 10px;
+    z-index: 0;
+    font: 10px/25px Arial, sans-serif;
+    font-weight: bold;
+    text-shadow: 1px 1px 0px rgba(255,255,255,.15);
+    line-height: 21px;
+}
+
+.minislide>label {
+    display: block;
+    width: 30px;
+    height: 14px;
+    cursor: pointer;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    z-index: 1;
+    background: #fff;
+    background: linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+    border-radius: 50px;
+    transition: all 0.4s ease;
+    box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.3);
+}
+
+.minislide>input[type=checkbox] {
+    visibility: hidden;
+}
+
+.minislide input[type=checkbox]:checked + label {
+    left: 35px;
+}
+
+.dialog-editor-subject
+{
+    font-size: 15px;
+    font-weight: 600;
+    padding-left: 18px;
+    padding-top: 2px;
+    margin-bottom: 10px;
+}
+
+.dialog-editor-input
+{
+    width: 98%;
+
+    padding: 8px 18px 9px !important;
+    border-radius: 6px;
+    background: #fff;
+    border: 1px solid #d7d7d7;
+
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.dialog-editor-input-box
+{
+    position: relative;
+    margin: 0 12px;
+}
+
+.dialog-editor-input-textarea
+{
+    border: 1px solid #d7d7d7;
+    border-radius: 6px;
+    background: #fff;
+    padding: 5px;
+    position: relative;
+}
+
+.dialog-editor-input-textarea::after
+{
+    content: attr(data-nlu);
+    font-size: 11px;
+    font-weight: 100;
+    color: #363636;
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+}
+
+.dialog-editor-input-item
+{
+    font-size: 13px;
+    font-weight: 500;
+    background: #eef4ff;
+    border-radius: 18px;
+    padding: 4px 11px 6px;
+    line-height: 32px;
+}
+
+.dialog-editor-input-item > img
+{
+    vertical-align: middle;
+    padding-left: 6px;
+}
+
+.dialog-editor-input-box .and
+{
+    font-size: 12px;
+    font-weight: 100;
+    color: #58bcf3;
+    margin: 0 3px 0 6px;
+}
+
+.dialog-editor-input-box .or
+{
+    font-size: 12px;
+    font-weight: 100;
+    color: #58bcf3;
+    text-align: center;
+    margin: 8px 0;
+}
+
+.dialog-editor-input-box input + .delete-img
+{
+    position: absolute;
+    top: 7px;
+    right: 12px;
+}
+
+.dialog-editor-input-wrapper
+{
+    position: relative;
+    margin-top: 10px;
+}
+
+.dialog-editor-input-wrapper:first-child
+{
+    margin-top: 0;
+}
+
+.dialog-editor-output-box
+{
+    border: 1px solid #d7d7d7;
+    border-radius: 6px;
+    background: #fff;
+    margin: 8px auto 0;
+    width: 90%;
+}
+
+.dialog-editor-output-box-row
+{
+    padding: 7px 0;
+    border-top: 1px solid #d7d7d7;
+    text-align: center;
+}
+
+.dialog-editor-output-box-row .blue-label
+{
+    color: #038eda;
+    font-weight: 600;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.dialog-editor-output-box-row .blue-label + img
+{
+    vertical-align: middle;
+}
+
+.dialog-editor-output-box-row > p
+{
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.dialog-editor-output-box-row .dialog-editor-output-box-input-wrapper
+{
+    padding-left: 10px;
+}
+
+.dialog-editor-output-box-row > input
+{
+    padding: 8px 18px 9px 8px;
+    border-radius: 6px;
+    background: #fff;
+    border: 1px solid #d7d7d7;
+    margin-left: 9px;
+    width: 258px;
+}
+
+.dialog-editor-output-box-row select
+{
+    width: 100%;
+    border-radius: 6px;
+    border-color: #d7d7d7;
+    height: 34px;
+}
+
+.dialog-editor-footer
+{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    padding: 15px;
+
+    text-align: center;
+}
+
+.dialog-editor-footer > button
+{
+    width: 90px;
+    height: 34px;
+    border-radius: 4px;
+    vertical-align: top;
+    padding: 0;
+}
+
+.dialog-editor-footer > button:first-child
+{
+    margin-right: 15px;
+}
+
+.dialog-editor-plus-wrapper
+{
+    position: relative;
+    top: -10px;
+
+    text-align: center;
+}
+
+.dialog-editor-plus
+{
+    width: 22px;
+    height: 22px;
+    text-align: center;
+    border-radius: 50%;
+    background: #768ea2;
+    position: absolute;
+    bottom: -20px;
+    left: 161px;
+}
+
+.dialog-editor-plus::before
+{
+    font-size: 25px;
+    line-height: 18px;
+    content: '+';
+    color: #fff;
+}
+
+.dialog-editor-output-text
+{
+    margin: 10px;
+    padding: 10px;
+    outline: 0;
+}
+
+.dialog-editor-output-text:focus
+{
+    box-shadow: 0 0 2pt 2pt #d3efff;
+}
+
+.dialog-editor-action-type
+{
+    width: 30%;
+    margin-right: 16px;
+}
+
+.dialog-editor-action-dialog
+{
+    width: 63%;
+}
+
+.dialog-editor-output-box .dialog-editor-output-box-row
+{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.dialog-editor-output-box .dialog-editor-output-box-row:first-child
+{
+    border-top: 0;
+}
+
+.dialog-editor-output-box .dialog-editor-output-box-row > input
+{
+    width: 240px;
+}
+
+.dialog-editor-output-box .dialog-editor-output-box-row.button
+{
+    cursor: pointer;
+}
+
+.dialog-editor-output-box .dialog-editor-output-box-row.button:hover
+{
+    background-color: #f7fbff;
+}
+
+.dialog-editor-output-add
+{
+    position: absolute;
+    top: -3px;
+    right: 17px;
 }

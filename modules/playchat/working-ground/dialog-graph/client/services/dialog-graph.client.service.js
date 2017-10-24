@@ -442,21 +442,10 @@
                 outputTemplate = makeOutputTemplate(dialog.output);
             }
 
-
-
             t = t.replace('{input}', inputTemplate).replace('{output}', outputTemplate);
             t = angular.element(this.$compile(t)(this.$scope));
 
-            t.find('.graph-dialog-header').on('click', function(e)
-            {
-                that.focus(this.parentElement);
-                e.stopPropagation();
-            });
-
-            t.find('.dialog-more').on('click', function(e)
-            {
-                that.openMenu(e, dialog);
-            });
+            this.bindDialogFunctions(t);
 
             makeDialogDraggble(t.find('.graph-dialog-item').get(0));
 
@@ -473,6 +462,27 @@
             {
                 this.drawDialogs(t.find('.graph-dialog-children'), dialog.children);
             }
+        };
+
+        DialogGraph.prototype.bindDialogFunctions = function(dialog)
+        {
+            var that = this;
+            dialog.find('.graph-dialog-header').on('click', function(e)
+            {
+                that.focus(this.parentElement);
+                e.stopPropagation();
+            });
+
+            dialog.find('.graph-dialog-header').on('dblclick', function(e)
+            {
+                that.editor.open(dialog);
+                e.stopPropagation();
+            });
+
+            dialog.find('.dialog-more').on('click', function(e)
+            {
+                that.openMenu(e, dialog);
+            });
         };
 
         DialogGraph.prototype.openMenu = function(e, dialog)
