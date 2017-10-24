@@ -1,6 +1,5 @@
 var path = require('path');
 var request = require('request');
-var reqFast = require('req-fast');
 var config = require(path.resolve('./config/config'));
 var redis = require('redis');
 var cache;
@@ -209,8 +208,7 @@ function balance(channel, user, bot, text, json, callback) {
         return;
     }
 
-    // request({
-    reqFast({
+    request({
       uri: server + '/chat/' + bot + '/message',
       method: 'POST',
       json: query

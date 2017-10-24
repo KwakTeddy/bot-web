@@ -45,11 +45,11 @@ var _request = function(json, _ecb, _cb) {
     total++;
     if (error) {
       errorCount ++;
-      console.log('response: ' + total + '/' + numOfThread*texts.length*numOfRepeat + ', error= ' + errorCount + ', ' + responseTime + 'ms ' + json.content + ' error=' + error.code);
+      console.log('response: ' + ' ' + total + '/' + numOfThread*texts.length*numOfRepeat + ', error= ' + errorCount + ', ' + responseTime + 'ms ' + json.content + ' error=' + error.code);
       if(_ecb) _ecb(true);
     }
     else {
-      console.log('response: ' + total + '/' + numOfThread*texts.length*numOfRepeat + ', error= ' + errorCount + ', ' + responseTime + 'ms ' + json.content /*+ ' \t' + body*/);
+      console.log('response: ' + ' ' + total + '/' + numOfThread*texts.length*numOfRepeat + ', error= ' + errorCount + ', ' + responseTime + 'ms ' + json.content /*+ ' \t' + body*/);
     }
 
     if(_cb) _cb(null);
