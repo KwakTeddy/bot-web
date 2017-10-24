@@ -236,8 +236,6 @@ function balance(channel, user, bot, text, json, callback) {
             servers[i].fail++;
             servers[i].time = -1;
 
-            console.error();
-            console.error();
             console.error('=======================================================================');
             console.error('loadbalancer:balance: ' + server + '[' + servers[i].count + '] ');
             console.error(err.stack || err);
@@ -246,8 +244,6 @@ function balance(channel, user, bot, text, json, callback) {
             console.error('bot: ' + bot);
             console.error('text: ' + text);
             console.error('=======================================================================');
-            console.error();
-            console.error();
 
             break;
           }
