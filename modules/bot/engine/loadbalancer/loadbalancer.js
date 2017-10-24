@@ -276,20 +276,20 @@ function balance(channel, user, bot, text, json, callback) {
     try {
       cache.get(channel + user, function (err, data) {
         // console.log('loadbalancer:balance: ' + (channel + user) + '=' + data);
-        if (data) {
-          for (var i = 1; i < servers.length; i++) {
-            if (servers[i].server == data) {
-              if(servers[i].fail >= FAIL_OUT) server = undefined;
-              else server = data;
-            }
-          }
-        }
+        // if (data) {
+        //   for (var i = 1; i < servers.length; i++) {
+        //     if (servers[i].server == data) {
+        //       if(servers[i].fail >= FAIL_OUT) server = undefined;
+        //       else server = data;
+        //     }
+        //   }
+        // }
 
         // console.log('loadbalancer:balance: server0=' + server);
 
         // if (!server) {
         //   var minLoad = -1, minTime = 10000, minServer;
-        //   for (var i = 1; i < servers.length; i++) {
+        //   for (var i = 0; i < servers.length; i++) {
         //     if ((minLoad == -1 || servers[i].count < minLoad) && servers[i].fail < FAIL_OUT) {
         //       minLoad = servers[i].count;
         //       minServer = i;
