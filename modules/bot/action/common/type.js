@@ -90,14 +90,14 @@ function processInput(context, inRaw, callback) {
     // },
 
     function(cb) {
-      entity.matchDictionaryEntities(inRaw, commonTypes, doc, context, function(_inRaw, _entities) {
-        // doc.entities = doc.entities.concat(_doc.entities)
-        doc.entities = utils.merge(doc.entities, _entities);
-
-        console.log('entities: ' + JSON.stringify(_entities));
+      // entity.matchDictionaryEntities(inRaw, commonTypes, doc, context, function(_inRaw, _entities) {
+      //   // doc.entities = doc.entities.concat(_doc.entities)
+      //   doc.entities = utils.merge(doc.entities, _entities);
+      //
+      //   console.log('entities: ' + JSON.stringify(_entities));
 
         cb(null);
-      });
+      // });
     },
 
     function(cb) {
