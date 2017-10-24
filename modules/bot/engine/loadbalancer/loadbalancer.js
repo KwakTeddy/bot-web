@@ -189,6 +189,7 @@ function balance(channel, user, bot, text, json, callback) {
 
     if(!server)
     {
+        console.log('마스터 실행');
         server = 'http://' + localhost + ':3000';
         var botServer = require(path.resolve('./modules/bot/server/controllers/bot.server.controller.js'));
         botServer.write(channel, user, bot, text, json, function(_out, _task)
