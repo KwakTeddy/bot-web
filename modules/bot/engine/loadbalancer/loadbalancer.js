@@ -308,8 +308,6 @@ function balance(channel, user, bot, text, json, callback) {
             if(servers[serverNum].fail < FAIL_OUT) break;
           }
 
-          console.log("서버 변경 : " + server);
-
           server = servers[serverNum].server;
           cache.set(channel + user, server);
         }
