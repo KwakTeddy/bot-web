@@ -128,6 +128,14 @@ var dialogs = [
 						],
 						"task": "makeOrderList"
 					},
+                    {
+                        input: {regexp: /^<$/} ,
+                        output: {repeat: 1, options: {page: 'pre'}}
+                    },
+                    {
+                        input: {regexp: /^>$/} ,
+                        output: {repeat: 1, options: {page: 'next'}}
+                    },
 					{
 						"name": "메뉴재선택",
 						"id": "default78",
