@@ -49,6 +49,7 @@ var _request = function(json, _ecb, _cb) {
       if(_ecb) _ecb(true);
     }
     else {
+
       console.log('response: ' + ' ' + total + '/' + numOfThread*texts.length*numOfRepeat + ', error= ' + errorCount + ', ' + responseTime + 'ms ' + json.content /*+ ' \t' + body*/);
     }
 
