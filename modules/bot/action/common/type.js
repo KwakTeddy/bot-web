@@ -33,6 +33,12 @@ exports.DOC_NAME = DOC_NAME;
 exports.MAX_LIST= MAX_LIST;
 exports.LIST_PER_PAGE = LIST_PER_PAGE;
 
+var nlpKo = new nlp({
+    stemmer: true,      // (optional default: true)
+    normalizer: true,   // (optional default: true)
+    spamfilter: true     // (optional default: false)
+});
+
 function processInput(context, inRaw, callback) {
   if(inRaw.startsWith(":")) {
     callback(inRaw, null);
@@ -43,11 +49,7 @@ function processInput(context, inRaw, callback) {
 
   async.waterfall([
     function(cb) {
-      var nlpKo = new nlp({
-        stemmer: true,      // (optional default: true)
-        normalizer: true,   // (optional default: true)
-        spamfilter: true     // (optional default: false)
-      });
+
 
       nlpKo.tokenize/*ToStrings*/(inRaw, function(err, result) {
 
