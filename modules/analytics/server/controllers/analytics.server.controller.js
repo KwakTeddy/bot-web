@@ -1120,7 +1120,8 @@ exports.userCount = function (req, res) {
           navertalk: {$sum: "$navertalk"}
         }
       },
-      {$sort: {_id:-1,  date: -1}}
+      {$sort: {_id:-1,  date: -1}},
+        { allowDiskUse: true }
     ]
   ).exec(function (err, userCounts) {
     if (err) {
