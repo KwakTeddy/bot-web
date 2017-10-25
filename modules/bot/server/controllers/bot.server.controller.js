@@ -120,13 +120,15 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
         function(cb) {
             // 초기화
             logger.debug("사용자 입력>> " + inTextRaw);
+            inTextRaw = inTextRaw.replace(/^\s+|\s+$/g,"");
 
             // 현재 발화의 대답이 중복인 경우, 중복된 발화의 category들을 저장하는 변수 (dsyoon)
             if (context.botUser["nlu"] == undefined || context.botUser["nlu"] == null) context.botUser["nlu"] = {};
             if (context.botUser.nlu["contextInfo"] == undefined || context.botUser.nlu["contextInfo"] == null) context.botUser.nlu["contextInfo"] = {};
 
             // 발화의 상태를 history로 저장한다 (일반, 멀티context 등..)
-            if (context.botUser.nlu.contextInfo["lastContextHistory"] == undefined || context.botUser.nlu.contextInfo["lastContextHistory"] == null) context.botUser.nlu.contextInfo["lastContextHistory"] = [];
+            if (context.botUser.nlu.contextInfo["contextHistory"] == undefined || context.botUser.nlu.contextInfo["contextHistory"] == null) context.botUser.nlu.contextInfo["contextHistory"] = [];
+            if (context.botUser.nlu.contextInfo["matchContextHistory"] == undefined || context.botUser.nlu.contextInfo["matchContextHistory"] == null) context.botUser.nlu.contextInfo["matchContextHistory"] = [];
             // 사용자 발화를 history로 저장한다
             if (context.botUser.nlu.contextInfo["queryHistory"] == undefined || context.botUser.nlu.contextInfo["queryHistory"] == null) context.botUser.nlu.contextInfo["queryHistory"] = [];
             // 현재 발화의 상태
@@ -134,21 +136,20 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
 
             // 현재 발화의 매치 정보
             if (context.botUser.nlu["matchInfo"] == undefined || context.botUser.nlu["matchInfo"] == null) context.botUser.nlu["matchInfo"] = {};
-            context.botUser.nlu.matchInfo["state"] = ""; // full, token or else
             context.botUser.nlu.matchInfo["qa"] = [];
             context.botUser.nlu.matchInfo["contextNames"] = {};
             context.botUser.nlu.matchInfo["topScoreCount"] = 1; // answer들 중에서 상위 동일 점수 발화의 개수
 
 
             // 이전 발화가 multi context였다면,
-            if (context.botUser.nlu.contextInfo["lastContextHistory"][0] != undefined &&
-                context.botUser.nlu.contextInfo["lastContextHistory"][0] != null &&
-                Object.keys(context.botUser.nlu.contextInfo["lastContextHistory"][0]).length > 1) {
-                if (inTextRaw in context.botUser.nlu.contextInfo["lastContextHistory"][0]) {
+            if (context.botUser.nlu.contextInfo["contextHistory"][0] != undefined &&
+                context.botUser.nlu.contextInfo["contextHistory"][0] != null &&
+                Object.keys(context.botUser.nlu.contextInfo["contextHistory"][0]).length > 1) {
+                if (inTextRaw in context.botUser.nlu.contextInfo["contextHistory"][0]) {
                     context.botUser.nlu.contextInfo.context["type"] = "CONTEXT_SELECTION";
                     context.botUser.nlu.contextInfo.context["sentence"] = context.botUser.nlu.contextInfo["queryHistory"][0];
                     context.botUser.nlu.contextInfo.context["name"] = inTextRaw;
-                    inTextRaw =  context.botUser.nlu.contextInfo["queryHistory"][0];
+                    inTextRaw =  context.botUser.nlu.contextInfo["queryHistory"][0]['inputRaw'];
                 } else {
                     context.botUser.nlu.contextInfo.context["type"] = "";
                     context.botUser.nlu.contextInfo.context["sentence"] = "";

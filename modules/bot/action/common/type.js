@@ -360,53 +360,67 @@ function processOutput(task, context, out) {
         });
 
         // context를 고려한 bot 발화 출력 (dsyoon)
-        var outCount = 1;
-        var contextNames = Object.keys(context.botUser.nlu.matchInfo.contextNames);
-        if (contextNames.length>1) {
-            context.botUser.nlu.matchInfo = qaScore.assignScore(context.botUser.nlu.contextInfo, context.botUser.nlu.matchInfo);
-            outCount = context.botUser.nlu.matchInfo.topScoreCount;
-            if (outCount == 1) {
-                out = context.botUser.nlu.matchInfo.qa[0].output;
-            } else {
-                out = "";
-                for (var i=0; i<outCount; i++) {
-                    if (i>0) out += " ";
-                    out += context.botUser.nlu.matchInfo.qa[i].context.name + "?";
+        context.botUser.nlu.matchInfo = qaScore.assignScore(context.botUser.nlu);
+        var topScoreCount = context.botUser.nlu.matchInfo.topScoreCount;
+        var contextCount = Object.keys(context.botUser.nlu.matchInfo.contexts).length;
+        if (topScoreCount==0) {
+            //out = out.replace(/%2B/g, '+');
+            out = "알아듣지 못했습니다";
+        } else if (topScoreCount > 1 && contextCount > 1) {
+            out = "";
+            for (var i=0; i<topScoreCount; i++) {
+                if (i>0) out += " ";
+                out += context.botUser.nlu.matchInfo.qa[i].context.name + "?";
+                if (i>2) {
+                    out += " 등 모호하네요. 좀 더 자세히 이야기해 주세요.";
+                    break;
                 }
             }
         } else {
-            out = out.replace(/%2B/g, '+');
+            out = context.botUser.nlu.matchInfo.qa[0].output;
         }
+
 
         if (context.botUser.contexts != undefined && context.botUser.contexts != null) {
             if (context.botUser.nlu.contextInfo != undefined && context.botUser.nlu.contextInfo != null) {
                 var MAX_CONTEXTHISTORY_LENGTH = 5;
                 if (context.botUser.nlu["contextInfo"] == undefined || context.botUser.nlu["contextInfo"] == null) context.botUser.nlu["contextInfo"] = {};
-                if (context.botUser.nlu.contextInfo["lastContextHistory"] == undefined || context.botUser.nlu.contextInfo["lastContextHistory"] == null) {
+                if (context.botUser.nlu.contextInfo["contextHistory"] == undefined || context.botUser.nlu.contextInfo["contextHistory"] == null) {
+                    context.botUser.nlu.contextInfo["contextHistory"] = [context.botUser.nlu.matchInfo.contexts];
                     if (context.botUser.nlu.contextInfo.context.type=="CONTEXT_SELECTION") {
                         var json = {};
                         json[context.botUser.nlu.matchInfo.qa[0].context.name] = context.botUser.nlu.matchInfo.contextNames[context.botUser.nlu.matchInfo.qa[0].context.name];
-                        context.botUser.nlu.contextInfo["lastContextHistory"] = [json];
+                        context.botUser.nlu.contextInfo["matchContextHistory"] = [json];
                     } else {
-                        context.botUser.nlu.contextInfo["lastContextHistory"] = [context.botUser.nlu.matchInfo.contextNames];
+                        context.botUser.nlu.contextInfo["matchContextHistory"] = [context.botUser.nlu.matchInfo.contextNames];
                     }
-                    context.botUser.nlu.contextInfo["queryHistory"] = [context.botUser.nlu.sentence];
+                    var queryHistory = {};
+                    queryHistory["inputRaw"] = context.botUser.nlu.sentence;
+                    queryHistory["input"] = context.botUser.nlu.inNLP;
+                    context.botUser.nlu.contextInfo["queryHistory"] = [queryHistory];
                     if (context.botUser.nlu.matchInfo.qa && context.botUser.nlu.matchInfo.qa[0]) {
                         var context = [];
-                        for (var i=0; i<outCount; i++) context.push(context.botUser.nlu.matchInfo.qa[i].context);
+                        for (var i=0; i<topScoreCount; i++) context.push(context.botUser.nlu.matchInfo.qa[i].context);
                         context.botUser.nlu.contextInfo["contextHistory"] = context;
                     }
                 } else {
+                    context.botUser.nlu.contextInfo["contextHistory"].splice(0, 0, context.botUser.nlu.matchInfo.contexts);
                     if (context.botUser.nlu.contextInfo.context.type=="CONTEXT_SELECTION") {
                         var json = {};
                         json[context.botUser.nlu.matchInfo.qa[0].context.name] = context.botUser.nlu.matchInfo.contextNames[context.botUser.nlu.matchInfo.qa[0].context.name];
-                        context.botUser.nlu.contextInfo["lastContextHistory"].splice(0, 0, json);
+                        context.botUser.nlu.contextInfo["matchContextHistory"].splice(0, 0, json);
                     } else {
-                        context.botUser.nlu.contextInfo["lastContextHistory"].splice(0, 0, context.botUser.nlu.matchInfo.contextNames);
+                        context.botUser.nlu.contextInfo["matchContextHistory"].splice(0, 0, context.botUser.nlu.matchInfo.contextNames);
                     }
-                    context.botUser.nlu.contextInfo["queryHistory"].splice(0, 0, context.botUser.nlu.sentence);
-                    if (context.botUser.nlu.contextInfo["lastContextHistory"].length > MAX_CONTEXTHISTORY_LENGTH) {
-                        context.botUser.nlu.contextInfo["lastContextHistory"].splice(5, 1);
+                    var queryHistory = {};
+                    queryHistory["inputRaw"] = context.botUser.nlu.sentence;
+                    queryHistory["input"] = context.botUser.nlu.inNLP;
+                    context.botUser.nlu.contextInfo["queryHistory"].splice(0, 0, queryHistory);
+
+                    // history는 5개 이내로 유지하기 위해서
+                    if (context.botUser.nlu.contextInfo["contextHistory"].length > MAX_CONTEXTHISTORY_LENGTH) {
+                        context.botUser.nlu.contextInfo["contextHistory"].splice(5, 1);
+                        context.botUser.nlu.contextInfo["matchContextHistory"].splice(5, 1);
                         context.botUser.nlu.contextInfo["queryHistory"].splice(5, 1);
                     }
                 }
@@ -1591,82 +1605,6 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
 
         },
         function(_cb) {
-            // full Query로 Answer 체크
-            context.botUser.nlu["matchInfo"]["state"] = "";
-
-            if (nlps.length > 1) {
-                var _nlps = [];
-                var excluded = [];
-                for (var i = 0; i < nlps.length; i++) {
-                    var word = nlps[i].text;
-                    // if(word.length <= 1) continue;
-                    word = RegExp.escape(word);
-
-                    if (!(format.exclude && _.includes(format.exclude, word)))
-                        _nlps.push(nlps[i]);
-                    else
-                        excluded.push(nlps[i]);
-                }
-
-                if (_nlps.length == 0) _nlps.concat(excluded);
-
-                if (_nlps.length < 0) {
-                    _cb(null);
-                } else {
-                    var fullQuery = "";
-                    for (var i = 0; i < _nlps.length; i++) {
-                        if (i > 0) fullQuery += " ";
-                        fullQuery += _nlps[i].text;
-                    }
-                    var word = fullQuery ? RegExp.escape(fullQuery) : fullQuery;
-
-                    var query = {};
-                    if (format.mongo.queryStatic) query = format.mongo.queryStatic;
-                    else query = {};
-
-                    for (var j = 0; j < format.mongo.queryFields.length; j++) {
-                        try {
-                            if (!(format.exclude && _.includes(format.exclude, word))) {
-                                if (word.length == 1) query[format.mongo.queryFields[j]] = word;
-                                else query[format.mongo.queryFields[j]] = new RegExp('(?:^|\\s)' + word + '(?:$|\\s)', 'i');
-
-                            } else
-                                excluded.push(word);
-                        } catch (e) {
-                        }
-                    }
-
-                    if (format.query) query = utils.merge(query, format.query);
-
-                    var _query = model.find(query, format.mongo.fields, format.mongo.options);
-
-                    _query.populate('context');
-                    if (format.mongo.sort) _query.sort(format.mongo.sort);
-                    if (format.mongo.limit) _query.limit(format.mongo.limit || type.MAX_LIST);
-
-                    _query.lean().exec(function (err, docs) {
-                        nlpsCount++;
-
-                        if (err || !docs || docs.length <= 0) {
-                            //callback(text, inDoc);
-                        } else {
-                            for (var k = 0; k < docs.length; k++) {
-                                var doc = docs[k];
-                                doc["state"] = "FULL";
-                                doc["score"] = 0.0;
-                                matchedDoc.push(doc);
-                                context.botUser.nlu["matchInfo"]["qa"].push(doc);
-                            }
-                            _cb(null);
-                        }
-                    });
-                }
-                _cb(null);
-            } else {
-                _cb(null);
-            }
-        },
-        function(_cb) {
             // Token 단위로 Answer 체크
             var _nlps = [];
             var excluded = [];
@@ -1686,12 +1624,14 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
 
             if ((!context.bot.dialogsetOption || context.bot.dialogsetOption.useContext !== false) && context.botUser.contexts && context.botUser.contexts.length > 0) {
                 topicKeywords = [];
+                /* context를 통한 topicKeyword 검색은 하지 않는다.
                 for (var j = 0; j < context.botUser.contexts.length; j++)
                     if (context.botUser.contexts[j].name) topicKeywords.push({
                         text: context.botUser.contexts[j].name,
                         pos: 'Noun'
                     });
                 console.log('topicKeywords: contexts ' + topicKeywords);
+                */
             } else if ((!context.bot.dialogsetOption || context.bot.dialogsetOption.useTopic !== false) && topicKeywords.length == 0 && context.botUser.topic && context.botUser.topic.length > 0) {
                 topicKeywords = context.botUser.topic;
                 console.log('topicKeywords: topic ' + topicKeywords);
@@ -1712,9 +1652,12 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                     for (var j = 0; j < format.mongo.queryFields.length; j++) {
                         try {
                             if (!(format.exclude && _.includes(format.exclude, word))) {
+                                /*
                                 if (word.length == 1) query[format.mongo.queryFields[j]] = word;
                                 else query[format.mongo.queryFields[j]] = new RegExp('(?:^|\\s)' + word + '(?:$|\\s)', 'i');
-
+                                */
+                                // "몇 살?" 질의에 대해서 기존 "몇"의 Question이 있는 경우 "몇 살"을 검색하지 못함
+                                query[format.mongo.queryFields[j]] = new RegExp('(?:^|\\s)' + word + '(?:$|\\s)', 'i');
                             } else
                                 excluded.push(word);
                         } catch (e) {
@@ -1889,26 +1832,22 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                                         // doc.matchRate = matchCount / matchTotal;
 
                                         var doc = docs[k];
-                                        doc["state"] = "TOKEN";
                                         doc["score"] = 0.0;
                                         matchedDoc.push(doc);
-                                        context.botUser.nlu.matchInfo["qa"].push(doc);
 
                                         if (context.botUser.nlu["contextInfo"] == undefined || context.botUser.nlu["contextInfo"] == null) context.botUser.nlu["contextInfo"] = {};
                                         if (context.botUser.nlu.contextInfo["context"] == undefined || context.botUser.nlu.contextInfo["context"] == null) context.botUser.nlu.contextInfo["context"] = {};
                                     }
 
                                     // 멀티 Answer에 대해서 Context 확인을 위해서 모든 answer 저장 (dsyoon)
-                                    matchedDoc.push(doc);
-                                    if (context.botUser.nlu.matchInfo["state"] != "FULL") {
-                                        if (((nlps.length <= 2 && (matchCount == matchTotal ||
-                                                (matchCount / nlpMatchLength >= format.matchRate || matchCount1 >= format.matchCount))) ||
-                                                (nlps.length > 2 && (matchCount / nlpMatchLength >= format.matchRate ||
-                                                    matchCount1 >= format.matchCount)))) {
-                                            if (context.botUser.nlu["contextInfo"] == undefined || context.botUser.nlu["contextInfo"] == null) context.botUser.nlu["contextInfo"] = {};
-                                            if (doc.context) {
-                                                context.botUser.nlu.matchInfo.contextNames[doc.context.name] = doc.context;
-                                            }
+                                    context.botUser.nlu.matchInfo["qa"].push(doc);
+                                    if (((nlps.length <= 2 && (matchCount == matchTotal ||
+                                            (matchCount / nlpMatchLength >= format.matchRate || matchCount1 >= format.matchCount))) ||
+                                            (nlps.length > 2 && (matchCount / nlpMatchLength >= format.matchRate ||
+                                                matchCount1 >= format.matchCount)))) {
+                                        if (context.botUser.nlu["contextInfo"] == undefined || context.botUser.nlu["contextInfo"] == null) context.botUser.nlu["contextInfo"] = {};
+                                        if (doc.context) {
+                                            context.botUser.nlu.matchInfo.contextNames[doc.context.name] = doc.context;
                                         }
                                     }
                                 }
