@@ -1124,7 +1124,7 @@ exports.userCount = function (req, res) {
     ]
   ).exec(function (err, userCounts) {
     if (err) {
-        console.error(err.stack || err);
+        console.log(err);
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
