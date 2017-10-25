@@ -135,6 +135,7 @@ function processInput(context, inRaw, callback) {
                     context.botUser.nlu["sentence"] = inRaw;
                     var nlpJsonPOS = rma.tokens2json(inRaw, tokens);
                     context.botUser.nlu["pos"] = nlpJsonPOS;
+                    context.botUser.nlu["inNLP"] = inNLP;
 
                     cb(null);
                 }
@@ -145,11 +146,13 @@ function processInput(context, inRaw, callback) {
 
                 context.botUser.nlu["sentence"] = "";
                 context.botUser.nlu["pos"] = "";
+                context.botUser.nlu["inNLP"] = "";
                 cb(null);
             } else {
                 context.botUser["nlu"] = {};
                 context.botUser.nlu["sentence"] = "";
                 context.botUser.nlu["pos"] = "";
+                context.botUser.nlu["inNLP"] = "";
 
                 cb(null);
             }

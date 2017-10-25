@@ -33,6 +33,7 @@ function processInput(context, inRaw, callback) {
                 var nlpJsonPOS = result.body
                 context.botUser.nlu["sentence"] = inRaw;
                 context.botUser.nlu["pos"] = nlpJsonPOS;
+                context.botUser.nlu["inNLP"] = "";
 
                 context.botUser["inNLP"] = text;
                 context.botUser.nlpAll = nlpJsonPOS;

@@ -112,6 +112,7 @@ function processInput(context, inRaw, callback) {
                 context.botUser.nlu["sentence"] = inRaw;
                 var nlpJsonPOS = rma.tokens2json(inRaw, tokens);
                 context.botUser.nlu["pos"] = nlpJsonPOS;
+                context.botUser.nlu["inNLP"] = inNLP;
 
                 cb(null);
             } else if (Array.isArray(inRaw)) {
@@ -131,6 +132,7 @@ function processInput(context, inRaw, callback) {
 
                 context.botUser.nlu["sentence"] = "";
                 context.botUser.nlu["pos"] = "";
+                context.botUser.nlu["inNLP"] = "";
                 cb(null);
             } else {
                 cb(null);

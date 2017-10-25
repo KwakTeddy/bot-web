@@ -91,6 +91,7 @@ CBTags.prototype.setNormalizeTag = function() {
     koDictionary["Determiner"] = "Determiner"; // 이/그/저와 같은 한정사
     koDictionary["KoreanParticle"] = "Symbol";
     koDictionary["Noun"] = "Noun";
+    koDictionary["NounPrefix"] = "Noun";
     koDictionary["Number"] = "Number";
     koDictionary["PreEomi"] = "Suffix";
     koDictionary["Punctuation"] = "Symbol";

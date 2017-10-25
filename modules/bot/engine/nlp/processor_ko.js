@@ -159,6 +159,7 @@ function processInput(context, inRaw, callback) {
                     context.botUser.nlu["sentence"] = inRaw;
                     context.botUser.nlu["lastChar"] = lastChar;
                     context.botUser.nlu["nlp"] = _nlp;
+                    context.botUser.nlu["inNLP"] = inNLP;
 
                     findStemForm(inRaw, context, cb);
 
