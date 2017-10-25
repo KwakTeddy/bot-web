@@ -1120,10 +1120,9 @@ exports.userCount = function (req, res) {
           navertalk: {$sum: "$navertalk"}
         }
       },
-      {$sort: {_id:-1,  date: -1}},
-        { allowDiskUse: true }
+      {$sort: {_id:-1,  date: -1}}
     ]
-  ).exec(function (err, userCounts) {
+  ).allowDiskUse(true).exec(function (err, userCounts) {
     if (err) {
         console.error(err.stack || err);
       return res.status(400).send({
