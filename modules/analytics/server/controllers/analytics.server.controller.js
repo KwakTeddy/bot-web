@@ -1121,7 +1121,7 @@ exports.userCount = function (req, res) {
         }
       },
       {$sort: {_id:-1,  date: -1}}
-    ], { allowDiskUse: true }
+    ]
   ).exec(function (err, userCounts) {
     if (err) {
         console.error(err.stack || err);
