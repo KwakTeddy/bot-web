@@ -126,9 +126,11 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
             if (context.botUser["nlu"] == undefined || context.botUser["nlu"] == null) context.botUser["nlu"] = {};
             if (context.botUser.nlu["contextInfo"] == undefined || context.botUser.nlu["contextInfo"] == null) context.botUser.nlu["contextInfo"] = {};
 
-            // 발화의 상태를 history로 저장한다 (일반, 멀티context 등..)
+            // 발화의 상태를 history로 저장한다
             if (context.botUser.nlu.contextInfo["contextHistory"] == undefined || context.botUser.nlu.contextInfo["contextHistory"] == null) context.botUser.nlu.contextInfo["contextHistory"] = [];
             if (context.botUser.nlu.contextInfo["matchContextHistory"] == undefined || context.botUser.nlu.contextInfo["matchContextHistory"] == null) context.botUser.nlu.contextInfo["matchContextHistory"] = [];
+            // 발화에 대한 대답의 history로 저장한다 (일반, 멀티context 등..)
+            if (context.botUser.nlu.contextInfo["answerHistory"] == undefined || context.botUser.nlu.contextInfo["answerHistory"] == null) context.botUser.nlu.contextInfo["answerHistory"] = [];
             // 사용자 발화를 history로 저장한다
             if (context.botUser.nlu.contextInfo["queryHistory"] == undefined || context.botUser.nlu.contextInfo["queryHistory"] == null) context.botUser.nlu.contextInfo["queryHistory"] = [];
             // 현재 발화의 상태
@@ -142,23 +144,23 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
 
 
             // 이전 발화가 multi context였다면,
-            if (context.botUser.nlu.contextInfo["contextHistory"][0] != undefined &&
-                context.botUser.nlu.contextInfo["contextHistory"][0] != null &&
-                Object.keys(context.botUser.nlu.contextInfo["contextHistory"][0]).length > 1) {
-                if (inTextRaw in context.botUser.nlu.contextInfo["contextHistory"][0]) {
-                    context.botUser.nlu.contextInfo.context["type"] = "CONTEXT_SELECTION";
-                    context.botUser.nlu.contextInfo.context["sentence"] = context.botUser.nlu.contextInfo["queryHistory"][0];
-                    context.botUser.nlu.contextInfo.context["name"] = inTextRaw;
-                    inTextRaw =  context.botUser.nlu.contextInfo["queryHistory"][0]['inputRaw'];
+            if (context.botUser.nlu.contextInfo.answerHistory && context.botUser.nlu.contextInfo.answerHistory[0]) {
+                if (context.botUser.nlu.contextInfo.answerHistory[0].topScoreCount > 1 && context.botUser.nlu.contextInfo.answerHistory[0].contextCount > 1) {
+                    if (inTextRaw in context.botUser.nlu.contextInfo["contextHistory"][0]) {
+                        context.botUser.nlu.contextInfo.context["type"] = "CONTEXT_SELECTION";
+                        context.botUser.nlu.contextInfo.context["sentence"] = context.botUser.nlu.contextInfo["queryHistory"][0];
+                        context.botUser.nlu.contextInfo.context["name"] = inTextRaw;
+                        inTextRaw = context.botUser.nlu.contextInfo["queryHistory"][0]['inputRaw'];
+                    } else {
+                        context.botUser.nlu.contextInfo.context["type"] = "";
+                        context.botUser.nlu.contextInfo.context["sentence"] = "";
+                        context.botUser.nlu.contextInfo.context["name"] = "";
+                    }
                 } else {
                     context.botUser.nlu.contextInfo.context["type"] = "";
                     context.botUser.nlu.contextInfo.context["sentence"] = "";
                     context.botUser.nlu.contextInfo.context["name"] = "";
                 }
-            } else {
-                context.botUser.nlu.contextInfo.context["type"] = "";
-                context.botUser.nlu.contextInfo.context["sentence"] = "";
-                context.botUser.nlu.contextInfo.context["name"] = "";
             }
 
             cb(null);

@@ -381,48 +381,54 @@ function processOutput(task, context, out) {
         }
 
 
-        if (context.botUser.contexts != undefined && context.botUser.contexts != null) {
-            if (context.botUser.nlu.contextInfo != undefined && context.botUser.nlu.contextInfo != null) {
-                var MAX_CONTEXTHISTORY_LENGTH = 5;
-                if (context.botUser.nlu["contextInfo"] == undefined || context.botUser.nlu["contextInfo"] == null) context.botUser.nlu["contextInfo"] = {};
-                if (context.botUser.nlu.contextInfo["contextHistory"] == undefined || context.botUser.nlu.contextInfo["contextHistory"] == null) {
-                    context.botUser.nlu.contextInfo["contextHistory"] = [context.botUser.nlu.matchInfo.contexts];
-                    if (context.botUser.nlu.contextInfo.context.type=="CONTEXT_SELECTION") {
-                        var json = {};
-                        json[context.botUser.nlu.matchInfo.qa[0].context.name] = context.botUser.nlu.matchInfo.contextNames[context.botUser.nlu.matchInfo.qa[0].context.name];
-                        context.botUser.nlu.contextInfo["matchContextHistory"] = [json];
-                    } else {
-                        context.botUser.nlu.contextInfo["matchContextHistory"] = [context.botUser.nlu.matchInfo.contextNames];
-                    }
-                    var queryHistory = {};
-                    queryHistory["inputRaw"] = context.botUser.nlu.sentence;
-                    queryHistory["input"] = context.botUser.nlu.inNLP;
-                    context.botUser.nlu.contextInfo["queryHistory"] = [queryHistory];
-                    if (context.botUser.nlu.matchInfo.qa && context.botUser.nlu.matchInfo.qa[0]) {
-                        var context = [];
-                        for (var i=0; i<topScoreCount; i++) context.push(context.botUser.nlu.matchInfo.qa[i].context);
-                        context.botUser.nlu.contextInfo["contextHistory"] = context;
-                    }
+        if (context.botUser.nlu.contextInfo != undefined && context.botUser.nlu.contextInfo != null) {
+            var MAX_CONTEXTHISTORY_LENGTH = 5;
+            if (context.botUser.nlu["contextInfo"] == undefined || context.botUser.nlu["contextInfo"] == null) context.botUser.nlu["contextInfo"] = {};
+            if (context.botUser.nlu.contextInfo["contextHistory"] == undefined || context.botUser.nlu.contextInfo["contextHistory"] == null) {
+                context.botUser.nlu.contextInfo["contextHistory"] = [context.botUser.nlu.matchInfo.contexts];
+                if (context.botUser.nlu.contextInfo.context.type=="CONTEXT_SELECTION") {
+                    var json = {};
+                    json[context.botUser.nlu.matchInfo.qa[0].context.name] = context.botUser.nlu.matchInfo.contextNames[context.botUser.nlu.matchInfo.qa[0].context.name];
+                    context.botUser.nlu.contextInfo["matchContextHistory"] = [json];
                 } else {
-                    context.botUser.nlu.contextInfo["contextHistory"].splice(0, 0, context.botUser.nlu.matchInfo.contexts);
-                    if (context.botUser.nlu.contextInfo.context.type=="CONTEXT_SELECTION") {
-                        var json = {};
-                        json[context.botUser.nlu.matchInfo.qa[0].context.name] = context.botUser.nlu.matchInfo.contextNames[context.botUser.nlu.matchInfo.qa[0].context.name];
-                        context.botUser.nlu.contextInfo["matchContextHistory"].splice(0, 0, json);
-                    } else {
-                        context.botUser.nlu.contextInfo["matchContextHistory"].splice(0, 0, context.botUser.nlu.matchInfo.contextNames);
-                    }
-                    var queryHistory = {};
-                    queryHistory["inputRaw"] = context.botUser.nlu.sentence;
-                    queryHistory["input"] = context.botUser.nlu.inNLP;
-                    context.botUser.nlu.contextInfo["queryHistory"].splice(0, 0, queryHistory);
+                    context.botUser.nlu.contextInfo["matchContextHistory"] = [context.botUser.nlu.matchInfo.contextNames];
+                }
+                var queryHistory = {};
+                queryHistory["inputRaw"] = context.botUser.nlu.sentence;
+                queryHistory["input"] = context.botUser.nlu.inNLP;
+                context.botUser.nlu.contextInfo["queryHistory"] = [queryHistory];
+                if (context.botUser.nlu.matchInfo.qa && context.botUser.nlu.matchInfo.qa[0]) {
+                    var context = [];
+                    for (var i=0; i<topScoreCount; i++) context.push(context.botUser.nlu.matchInfo.qa[i].context);
+                    context.botUser.nlu.contextInfo["contextHistory"] = context;
+                }
+                var answerHistory = {};
+                answerHistory["topScoreCount"] = topScoreCount;
+                answerHistory["contextCount"] = contextCount;
+                context.botUser.nlu.contextInfo["answerHistory"] = [answerHistory];
+            } else {
+                context.botUser.nlu.contextInfo["contextHistory"].splice(0, 0, context.botUser.nlu.matchInfo.contexts);
+                if (context.botUser.nlu.contextInfo.context.type=="CONTEXT_SELECTION") {
+                    var json = {};
+                    json[context.botUser.nlu.matchInfo.qa[0].context.name] = context.botUser.nlu.matchInfo.contextNames[context.botUser.nlu.matchInfo.qa[0].context.name];
+                    context.botUser.nlu.contextInfo["matchContextHistory"].splice(0, 0, json);
+                } else {
+                    context.botUser.nlu.contextInfo["matchContextHistory"].splice(0, 0, context.botUser.nlu.matchInfo.contextNames);
+                }
+                var queryHistory = {};
+                queryHistory["inputRaw"] = context.botUser.nlu.sentence;
+                queryHistory["input"] = context.botUser.nlu.inNLP;
+                context.botUser.nlu.contextInfo["queryHistory"].splice(0, 0, queryHistory);
+                var answerHistory = {};
+                answerHistory["topScoreCount"] = topScoreCount;
+                answerHistory["contextCount"] = contextCount;
+                context.botUser.nlu.contextInfo["answerHistory"].splice(0, 0, answerHistory);
 
-                    // history는 5개 이내로 유지하기 위해서
-                    if (context.botUser.nlu.contextInfo["contextHistory"].length > MAX_CONTEXTHISTORY_LENGTH) {
-                        context.botUser.nlu.contextInfo["contextHistory"].splice(5, 1);
-                        context.botUser.nlu.contextInfo["matchContextHistory"].splice(5, 1);
-                        context.botUser.nlu.contextInfo["queryHistory"].splice(5, 1);
-                    }
+                // history는 5개 이내로 유지하기 위해서
+                if (context.botUser.nlu.contextInfo["contextHistory"].length > MAX_CONTEXTHISTORY_LENGTH) {
+                    context.botUser.nlu.contextInfo["contextHistory"].splice(5, 1);
+                    context.botUser.nlu.contextInfo["matchContextHistory"].splice(5, 1);
+                    context.botUser.nlu.contextInfo["queryHistory"].splice(5, 1);
                 }
             }
         }
@@ -1602,7 +1608,65 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                 })
 
             } else _cb(null);
+        },
 
+        function(_cb) {
+            // 명사 단어에 대한 bigram 적용
+            var nounList = [];
+            for (var i = 0; i < nlps.length; i++) {
+                var word = nlps[i].text;
+                if (nlps[i].pos == "Noun") {
+                    nounList.push(RegExp.escape(word));
+                }
+            }
+            if (nounList.length > 0) {
+                for (var i=0; i<nounList.length; i++) {
+                    var nounWord = nounList[i];
+                    for (var j=1; j<nounWord.length; j++) {
+                        var word = nounWord.substr(j-1, 2);
+                        var query = {};
+                        if (format.mongo.queryStatic) query = format.mongo.queryStatic;
+                        else query = {};
+
+                        for (var k = 0; k < format.mongo.queryFields.length; k++) {
+                            try {
+                                if (!(format.exclude && _.includes(format.exclude, word))) {
+                                    if (word.length == 1) query[format.mongo.queryFields[k]] = word;
+                                    else query[format.mongo.queryFields[k]] = new RegExp('(?:^|\\s)' + word + '(?:$|\\s)', 'i');
+                                } else
+                                    excluded.push(word);
+                            } catch (e) {
+                            }
+                        }
+
+                        if (format.query) query = utils.merge(query, format.query);
+
+                        var _query = model.find(query, format.mongo.fields, format.mongo.options);
+
+                        _query.populate('context');
+                        if (format.mongo.sort) _query.sort(format.mongo.sort);
+                        if (format.mongo.limit) _query.limit(format.mongo.limit || type.MAX_LIST);
+
+                        _query.lean().exec(function (err, docs) {
+                            nlpsCount++;
+
+                            if (err || !docs || docs.length <= 0) {
+                                //callback(text, inDoc);
+                            } else {
+                                for (var k = 0; k < docs.length; k++) {
+                                    var doc = docs[k];
+                                    doc["score"] = 0.0;
+                                    matchedDoc.push(doc);
+                                    context.botUser.nlu["matchInfo"]["qa"].push(doc);
+                                }
+                            }
+                        });
+                    }
+                }
+                _cb(null);
+            } else {
+                _cb(null);
+            }
         },
         function(_cb) {
             // Token 단위로 Answer 체크

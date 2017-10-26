@@ -19,7 +19,8 @@ QAScore.prototype.intersectArray = function(a, b) {
 QAScore.prototype.isSameSentence = function(question, answer) {
     if (Array.isArray(answer)) {
         for (var i=0; i<answer.length; i++) {
-            if (question.inputRaw == answer[i].inputRaw.replace(/^\s+|\s+$/g, "")) {
+            //if (question.inputRaw == answer[i].inputRaw.replace(/^\s+|\s+$/g, "")) {
+            if (question.inputRaw.replace(/\s/gi, "") == answer[i].inputRaw.replace(/\s/gi, "")) {
                 return true;
             }
 
@@ -34,7 +35,8 @@ QAScore.prototype.isSameSentence = function(question, answer) {
             return true;
         }
     } else {
-        if (question.inputRaw == answer.inputRaw.replace(/^\s+|\s+$/g, "")) {
+        //if (question.inputRaw == answer.inputRaw.replace(/^\s+|\s+$/g, "")) {
+        if (question.inputRaw.replace(/\s/gi, "") == answer.inputRaw.replace(/\s/gi, "")) {
             return true;
         }
 
@@ -111,15 +113,12 @@ QAScore.prototype.assignScore = function(nlu) {
         }
 
         // Full Match 인 경우
-        console.log("check:" + i);
         if (this.isSameSentence(question, answers[i])) {
             score += 200;
         }
 
         // context 매치
         if (contextInfo.contextHistory && contextInfo.contextHistory[0]) {
-            var categoryScore = 0;
-
             var previousContextName = Object.getOwnPropertyNames(contextInfo.contextHistory[0])[0];
 
             var currentContext = answers[i].context;
@@ -128,19 +127,29 @@ QAScore.prototype.assignScore = function(nlu) {
                 contexts.push(currentContext.name);
                 currentContext = currentContext.parent;
             }
+            var contextMatchByDepth = [];
             for (var j=0; j<contexts.length; j++) {
+                contextMatchByDepth[contextMatchByDepth.length] = 0;
                 var context = contexts[j];
                 var previousContext = contextInfo.matchContextHistory[0][previousContextName];
                 while (previousContext != null && previousContext.name) {
                     if (context == previousContext.name) {
-                        categoryScore += (contexts.length-j) * 20;
+                        contextMatchByDepth[contextMatchByDepth.length-1] = 1;
                         break;
                     }
                     if (previousContext.parent) previousContext = previousContext.parent;
                     else break;
                 }
             }
-            score += categoryScore;
+            // 1depth 부터 같은지 체크
+            var depth = 0;
+            for (var j=contextMatchByDepth.length-1; j>=0; j--) {
+                if (contextMatchByDepth[j] == 0) {
+                    break;
+                }
+                depth += 1;
+            }
+            score += depth * 20;
         }
 
         // 이전 Question과 현제 답변 문장의 Question (answers[i].input, answers[i].inputRaw)의 유사도 score 계산
@@ -162,15 +171,19 @@ QAScore.prototype.assignScore = function(nlu) {
         return answer2.score - answer1.score;
     });
 
+    var topSameScoreCount = 1;
     // 상위 동일 개수 체크
-    topSameScoreCount = 1;
-    var contexts = {};
-    if (answers.length>0) contexts[answers[0].context.name] = 1;
-    for (var i=1; i<answers.length; i++) {
-        if (answers[0].score == answers[i].score) {
-            topSameScoreCount += 1;
-            contexts[answers[i].context.name] = 1;
+    if (answers.length > 0) {
+        var contexts = {};
+        if (answers.length > 0) contexts[answers[0].context.name] = 1;
+        for (var i = 1; i < answers.length; i++) {
+            if (answers[0].score == answers[i].score) {
+                topSameScoreCount += 1;
+                contexts[answers[i].context.name] = 1;
+            }
         }
+    } else {
+        topSameScoreCount = 0;
     }
 
     matchInfo.topScoreCount = topSameScoreCount;
