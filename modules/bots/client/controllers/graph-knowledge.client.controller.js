@@ -1,11 +1,20 @@
 'use strict';
 
 // Bots controller
-angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootScope', '$state', '$window','$timeout', '$stateParams', '$resource',
-    function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, Authentication) {
+angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootScope', '$state', '$window','$timeout', '$stateParams', '$resource', 'Socket',
+    function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, Authentication, Socket) {
         var vm = this;
         //vm.user = Authentication.user;
         vm.userId = $rootScope.userId;
+
+        var botId = $rootScope.botId;
+        var botObjectrId = $rootScope.botObjectId;
+        if (botId == undefined || botId == null) {
+            botId = $stateParams.botId;
+        }
+        if (botObjectrId == undefined || botObjectrId == null) {
+            botObjectrId = $stateParams.botId;
+        }
 
         // if(vm.userBot && vm.userBot._id)
         //   $rootScope.$broadcast('setUserBot', vm.userBot);
@@ -46,7 +55,9 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
             }
         };
 
-        $resource('/api/factLinks/find/:factUserID', {}).query({factUserID: vm.userId}, function(res) {
+
+
+        $resource('/api/factLinks/findByBotId/:botId', {}).query({botId: botId /* or botObjectId */}, function(res) {
             for(var i = 0; i < res.length; i++) {
                 addLink(res[i]);
             }
@@ -133,6 +144,24 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
             }
         });
 
+        function createGradient(svg,id,stops){
+            var svgNS = svg.namespaceURI;
+            var grad  = document.createElementNS(svgNS,'linearGradient');
+            grad.setAttribute('id',id);
+            for (var i=0;i<stops.length;i++){
+                var attrs = stops[i];
+                var stop = document.createElementNS(svgNS,'stop');
+                for (var attr in attrs){
+                    if (attrs.hasOwnProperty(attr)) stop.setAttribute(attr,attrs[attr]);
+                }
+                grad.appendChild(stop);
+            }
+
+            var defs = svg.querySelector('defs') ||
+                       svg.insertBefore( document.createElementNS(svgNS,'defs'), svg.firstChild);
+            return defs.appendChild(grad);
+        }
+
         var width = document.getElementById('canvas').clientWidth;
         var height = document.getElementById('sidebar-left').clientHeight;
 
@@ -156,9 +185,47 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
             .call(zoom)
             .append('svg:g');
 
-        var path = svg.append('svg:g').selectAll('path'),
-            circle = svg.append('svg:g').selectAll('g'),
+        var defs = d3.select('#canvas svg').append('defs');
+        var rg = defs.append('radialGradient').attr('id', 'circlegradient');
+        rg.append('stop').attr('offset', '0%').attr('stop-color', 'white');
+        rg.append('stop').attr('offset', '75%').attr('stop-color', 'blue');
+        rg.append('stop').attr('offset', '100%').attr('stop-color', '#222244');
+
+        rg = defs.append('radialGradient').attr('id', 'circlegradient-highlighted');
+        rg.append('stop').attr('offset', '0%').attr('stop-color', 'white');
+        rg.append('stop').attr('offset', '75%').attr('stop-color', 'green');
+        rg.append('stop').attr('offset', '100%').attr('stop-color', '#113311');
+
+        rg = defs.append('radialGradient').attr('id', 'circlegradient-0');
+        rg.append('stop').attr('offset', '0%').attr('stop-color', 'white');
+        rg.append('stop').attr('offset', '75%').attr('stop-color', 'green');
+        rg.append('stop').attr('offset', '100%').attr('stop-color', '#113311');
+
+        rg = defs.append('radialGradient').attr('id', 'circlegradient-1');
+        rg.append('stop').attr('offset', '0%').attr('stop-color', 'white');
+        rg.append('stop').attr('offset', '50%').attr('stop-color', '#2F74ED');
+        rg.append('stop').attr('offset', '100%').attr('stop-color', '#2B3856');
+
+        rg = defs.append('radialGradient').attr('id', 'circlegradient-2');
+        rg.append('stop').attr('offset', '0%').attr('stop-color', 'white');
+        rg.append('stop').attr('offset', '50%').attr('stop-color', '#57AEE5');
+        rg.append('stop').attr('offset', '100%').attr('stop-color', '#004684');
+
+        rg = defs.append('radialGradient').attr('id', 'circlegradient-3');
+        rg.append('stop').attr('offset', '0%').attr('stop-color', 'white');
+        rg.append('stop').attr('offset', '50%').attr('stop-color', '#9ECAE1');
+        rg.append('stop').attr('offset', '100%').attr('stop-color', '#2D373F');
+
+        rg = defs.append('radialGradient').attr('id', 'circlegradient-4');
+        rg.append('stop').attr('offset', '0%').attr('stop-color', 'white');
+        rg.append('stop').attr('offset', '50%').attr('stop-color', '#C6DBEF');
+        rg.append('stop').attr('offset', '100%').attr('stop-color', '#505860');
+
+        var path = svg.append('svg:g').selectAll('path');
+        var gg = svg.append('svg:g');
+        var circle = gg.selectAll('g'),
             edgelabels = svg.selectAll(".edgelabel");
+
 
         force.drag().on("dragstart", function() { d3.event.sourceEvent.stopPropagation(); });
 
@@ -225,14 +292,15 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
         function fillCircle(d)
         {
             if (d.isMain) {
-                return mainColor;
+                // return mainColor;
+                return 'url(#circlegradient)';
             }
             else if (d.isHighlighted) {
-                return highlightedColor;
+                return 'url(#circlegradient-highlighted)';
             }
             else {
               var len = d.name.length;
-              return colors(len % 5);
+              return 'url(#circlegradient-' + (len % 5) + ')';
             }
         }
 
@@ -278,7 +346,7 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
             circle.selectAll('circle')
                 .transition().duration(700)
                 .attr("r", radiusCircle)
-                .style("fill", fillCircle);
+                .attr("fill", fillCircle);
 
             var g = circle.enter().append('svg:g');
 
@@ -289,7 +357,7 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
                 .attr("r", radiusCircle)
                 .attr("class", "node")
                 .transition().duration(700)
-                .style("fill", fillCircle);
+                .attr("fill", fillCircle);
 
 
             g.append("text")
@@ -310,6 +378,18 @@ angular.module('bots').controller('GraphKnowledgeController', ['$scope', '$rootS
                 .start();
         }
         update();
+
+        $rootScope.graphUpdate = function(){
+            console.log('업데이트');
+            $resource('/api/factLinks/findByBotId/:botId', {}).query({botId: botId /* or botObjectId */}, function(res) {
+                for(var i = 0; i < res.length; i++) {
+                    addLink(res[i]);
+                }
+                console.log(nodes);
+                console.log(links);
+                update();
+            });
+        };
 
     }]
 );

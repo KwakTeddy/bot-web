@@ -16,7 +16,7 @@ var dialogs = [
 		],
 		"output": [
 			{
-				"text": "[메뉴보기]\n주문하시고 싶은 카테고리 번호를 입력해주세요. \n\n#category#+index+. +name+ +price+\n#\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+				"text": "[메뉴보기]\n주문하시고 싶은 카테고리 번호를 입력해주세요. \n\n#category#+index+. +name+ +price+\n#\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
 				"kind": "Text"
 			}
 		],
@@ -35,8 +35,7 @@ var dialogs = [
 				"output": [
 					{
 						"kind": "Action",
-						"call": "메뉴보기",
-						"type": "Call"
+						"call": "메뉴보기"
 					}
 				],
 				"task": {
@@ -52,12 +51,10 @@ var dialogs = [
 						"if": "false"
 					}
 				],
-				"output": [
-					{
-						"text": "<+menu.name+>의 상세메뉴를 선택해주세요.\n\n#menu.subMenu#+index+. +name+ +price+\n#\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
-						"kind": "Text"
-					}
-				],
+				"output": {
+					"text": "<+menu.name+>의 상세메뉴를 선택해주세요.\n\n#menu.subMenu#+index+. +name+\n#",
+					"kind": "Text"
+				},
 				"task": {
 					"name": "makeSubMenuList",
 					"kind": "Text"
@@ -109,26 +106,6 @@ var dialogs = [
 						]
 					},
 					{
-						"name": "바로주문3",
-						"id": "default87",
-						"filename": "default",
-						"input": [
-							{
-								"types": [
-									"orderble"
-								]
-							}
-						],
-						"output": [
-							{
-								"if": "",
-								"kind": "Action",
-								"call": "바로주문"
-							}
-						],
-						"task": "makeOrderList"
-					},
-					{
 						"name": "메뉴재선택",
 						"id": "default78",
 						"filename": "default",
@@ -142,7 +119,7 @@ var dialogs = [
 								"kind": "Action",
 								"repeat": "1",
 								"options": {
-									"output": "보기중에 선택해주세요. (처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)"
+									"output": "올바른 상세메뉴를 선택해주세요. \n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요."
 								}
 							}
 						]
@@ -158,12 +135,10 @@ var dialogs = [
 						"if": "false"
 					}
 				],
-				"output": [
-					{
-						"text": "[주문 목록]\n\n#cart#[+name+] X+quant+, +price+원\n#\n1. 주문 완료\n2. 메뉴 추가\n3. 메뉴 삭제\n4. 메뉴 수량변경\n5. 주문 취소\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
-						"kind": "Text"
-					}
-				],
+				"output": {
+					"text": "[주문 목록]\n\n#cart#[+name+] X+quant+, +price+원\n#\n1. 주문 완료\n2. 메뉴 추가\n3. 메뉴 삭제\n4. 메뉴 수량변경\n5. 주문 취소\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
+					"kind": "Text"
+				},
 				"task": {
 					"0": "a",
 					"1": "d",
@@ -192,20 +167,18 @@ var dialogs = [
 							{
 								"kind": "Action",
 								"if": "!context.dialog.deliveryTime",
-								"repeat": "1",
-								"options": {
-									"output": "**죄송합니다. 현재는 영업시간이 아닙니다.**\n\n[주문 목록]\n\n#cart#[+name+] X+quant+, +price+원\n#\n1. 주문 완료\n2. 메뉴 추가\n3. 메뉴 삭제\n4. 메뉴 수량변경\n5. 주문 취소\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요."
-								}
+								"call": "카테고리선택",
+								"type": "Call"
 							},
 							{
 								"kind": "Action",
-								"if": "!context.dialog.priceCond",
-								"call": "최소가격미달"
+								"if": "!context.dialog.priceCond"
 							},
 							{
 								"kind": "Action",
 								"if": "!context.user.address",
-								"call": "주소등록"
+								"call": "주소등록",
+								"type": "Call"
 							},
 							{
 								"kind": "Action",
@@ -215,67 +188,15 @@ var dialogs = [
 								"kind": "Action",
 								"if": "!context.user.mobile",
 								"call": "번호등록",
-								"task": {
-									"0": "c",
-									"1": "h",
-									"2": "e",
-									"3": "c",
-									"4": "k",
-									"5": "C",
-									"6": "o",
-									"7": "n",
-									"8": "d",
-									"9": "i",
-									"10": "t",
-									"11": "i",
-									"12": "o",
-									"13": "n",
-									"name": "checkCondition",
-									"inRaw": "서울시 관악구 봉천동 1645-55 201호",
-									"inNLP": "서울시 관악구 봉천동 1645 55 201 호"
-								}
+								"type": "Call"
 							},
 							{
 								"kind": "Action",
 								"call": "주문조건만족",
-								"task": {
-									"0": "c",
-									"1": "h",
-									"2": "e",
-									"3": "c",
-									"4": "k",
-									"5": "C",
-									"6": "o",
-									"7": "n",
-									"8": "d",
-									"9": "i",
-									"10": "t",
-									"11": "i",
-									"12": "o",
-									"13": "n",
-									"name": "checkCondition",
-									"inRaw": "8497",
-									"inNLP": "8497"
-								}
+								"type": "Call"
 							}
 						],
-						"task": {
-							"0": "c",
-							"1": "h",
-							"2": "e",
-							"3": "c",
-							"4": "k",
-							"5": "C",
-							"6": "o",
-							"7": "n",
-							"8": "d",
-							"9": "i",
-							"10": "t",
-							"11": "i",
-							"12": "o",
-							"13": "n",
-							"name": "checkCondition"
-						}
+						"task": "checkCondition"
 					},
 					{
 						"name": "주문조건만족",
@@ -288,7 +209,7 @@ var dialogs = [
 						],
 						"output": [
 							{
-								"text": "[주문 정보]\n\n#cart#+name+ - +price+, +quant+개\n#\n총금액 : +totalPrice+\n배달주소 : +address.지번주소+\n휴대폰번호 : +mobile+\n\n위 내용이 맞습니까?\n\n1. 주문계속\n2. 메뉴변경\n3. 주소변경\n4. 핸드폰변경",
+								"text": "[주문 정보]\n\n#cart#+name+ - +price+, +quant+개\n#\n배달주소 : +address.지번주소+\n휴대폰번호 : +mobile+\n\n위 내용이 맞습니까?\n\n1. 주문계속\n2. 메뉴변경\n3. 주소변경\n4. 핸드폰변경",
 								"kind": "Text"
 							}
 						],
@@ -313,7 +234,7 @@ var dialogs = [
 								],
 								"output": [
 									{
-										"text": "결제방식을 선택하세요.\n\n1. 카드\n2. 현금\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+										"text": "결제방식을 선택하세요.\n\n1. 카드\n2. 현금\n\n이전으로 가려면 '9' 또는 '이전', \n주문 취소는 '취소'를 입력하세요.",
 										"kind": "Text"
 									}
 								],
@@ -354,7 +275,7 @@ var dialogs = [
 												],
 												"output": [
 													{
-														"text": "[주문최종확인]\n#cart#[+name+] X+quant+, +price+원\n#\n\n*총금액 : +totalPrice+\n*배달주소 : +address.지번주소+\n*주문자 전화번호 : +mobile+\n*결제 : +pay+\n*요청사항 : +request+\n\n위 내용대로 주문하시겠습니까?\n1. 주문\n2. 취소",
+														"text": "[주문최종확인]\n#cart#[+name+] X+quant+, +price+원\n#\n\n*배달주소 : +address.지번주소+\n*주문자 전화번호 : +mobile+\n*결제 : +pay+\n*요청사항 : +request+\n\n위 내용대로 주문하시겠습니까?\n1. 주문\n2. 취소",
 														"kind": "Text"
 													}
 												],
@@ -376,7 +297,7 @@ var dialogs = [
 														],
 														"output": [
 															{
-																"text": "주문이 완료되었습니다.\n\n배달은 30분 가량 소요될 예정입니다.\n\n처음으로 돌아가시려면 '시작'을 입력해주세요.",
+																"text": "주문이 완료되었습니다.\n\n배달은 30분 가량 소요될 예정입니다.\n\n처음으로 돌아가시려면 '0' 또는 '시작'을 입력해주세요.",
 																"kind": "Text"
 															}
 														],
@@ -399,24 +320,8 @@ var dialogs = [
 														],
 														"output": [
 															{
-																"text": "주문이 취소되었습니다.\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+																"text": "주문이 취소되었습니다.\n\n이전으로 가려면 '9' 또는 '이전', \n처음으로 가려면 '0' 또는 '시작'\n을 입력해주세요.",
 																"kind": "Text"
-															}
-														]
-													},
-													{
-														"name": "dialog_default96",
-														"id": "default96",
-														"filename": "default",
-														"input": [
-															{
-																"text": ""
-															}
-														],
-														"output": [
-															{
-																"kind": "Action",
-																"repeat": "1"
 															}
 														]
 													}
@@ -424,23 +329,9 @@ var dialogs = [
 												"task": "saveRequest"
 											}
 										],
-										"task": "savePay"
-									},
-									{
-										"name": "카드현금예외",
-										"id": "default92",
-										"filename": "default",
-										"input": [
-											{
-												"text": ""
-											}
-										],
-										"output": [
-											{
-												"kind": "Action",
-												"repeat": "1"
-											}
-										]
+										"task": {
+											"name": "savePay"
+										}
 									}
 								]
 							},
@@ -583,7 +474,9 @@ var dialogs = [
 												}
 											}
 										],
-										"task": "deleteCartItem"
+										"task": {
+											"name": "deleteCartItem"
+										}
 									},
 									{
 										"name": "삭제취소",
@@ -606,38 +499,6 @@ var dialogs = [
 												}
 											}
 										]
-									},
-									{
-										"name": "삭제예외",
-										"id": "default91",
-										"filename": "default",
-										"input": [
-											{
-												"text": ""
-											}
-										],
-										"output": [
-											{
-												"kind": "Action",
-												"repeat": "1"
-											}
-										]
-									}
-								]
-							},
-							{
-								"name": "수량변경바로가기",
-								"id": "default83",
-								"filename": "default",
-								"input": [
-									{
-										"text": "변경"
-									}
-								],
-								"output": [
-									{
-										"kind": "Action",
-										"call": "수량변경"
 									}
 								]
 							}
@@ -655,13 +516,14 @@ var dialogs = [
 								"text": "변경"
 							}
 						],
-						"output": {
-							"text": "수량을 변경할 메뉴를 선택하세요. \n\n#cart#+index+. +name+ - +price+, +quant+개\n#",
-							"kind": "Text"
-						},
+						"output": [
+							{
+								"text": "수량을 변경할 메뉴를 선택하세요. \n\n#cart#+index+. +name+ - +price+, +quant+개\n#",
+								"kind": "Text"
+							}
+						],
 						"task": {
-							"name": "makeCartList",
-							"kind": "Text"
+							"name": "makeCartList"
 						},
 						"children": [
 							{
@@ -704,38 +566,6 @@ var dialogs = [
 										"task": {
 											"name": "changeQuantity"
 										}
-									},
-									{
-										"name": "수량변경2예외",
-										"id": "default90",
-										"filename": "default",
-										"input": [
-											{
-												"text": ""
-											}
-										],
-										"output": [
-											{
-												"kind": "Action",
-												"repeat": "1"
-											}
-										]
-									}
-								]
-							},
-							{
-								"name": "수량변경예외",
-								"id": "default89",
-								"filename": "default",
-								"input": [
-									{
-										"text": ""
-									}
-								],
-								"output": [
-									{
-										"kind": "Action",
-										"repeat": "1"
 									}
 								]
 							}
@@ -820,27 +650,8 @@ var dialogs = [
 						]
 					},
 					{
-						"name": "최소가격미달",
-						"id": "default84",
-						"filename": "default",
-						"input": [
-							{
-								"if": "false"
-							}
-						],
-						"output": [
-							{
-								"kind": "Action",
-								"call": "주문목록",
-								"options": {
-									"output": "*배달가능한 최소가격은 +restaurant.minPrice+입니다.*[주문 목록]\n\n#cart#[+name+] X+quant+, +price+원\n#\n1. 주문 완료\n2. 메뉴 추가\n3. 메뉴 삭제\n4. 메뉴 수량변경\n5. 주문 취소\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요."
-								}
-							}
-						]
-					},
-					{
-						"name": "주문목록예외",
-						"id": "default88",
+						"name": "주문목록재선택",
+						"id": "default79",
 						"filename": "default",
 						"input": [
 							{
@@ -851,36 +662,17 @@ var dialogs = [
 							{
 								"kind": "Action",
 								"repeat": "1",
-								"type": "Repeat"
+								"options": {
+									"output": "보기중에서 선택해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요."
+								}
 							}
 						]
 					}
 				]
 			},
 			{
-				"name": "바로주문2",
-				"input": [
-					{
-						"types": [
-							"orderble"
-						]
-					}
-				],
-				"output": [
-					{
-						"if": "",
-						"kind": "Action",
-						"call": "바로주문",
-						"type": "Call"
-					}
-				],
-				"task": {
-					"name": "makeOrderList"
-				}
-			},
-			{
-				"name": "카테고리보기예외",
-				"id": "default86",
+				"name": "카테고리재선택",
+				"id": "default77",
 				"filename": "default",
 				"input": [
 					{
@@ -892,28 +684,13 @@ var dialogs = [
 						"kind": "Action",
 						"repeat": "1",
 						"options": {
-							"output": "보기중에 선택해주세요. (처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)"
-						},
-						"type": "Repeat"
+							"output": "보기중에서 선택해주세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요."
+						}
 					}
 				]
 			}
 		],
-		"task": {
-			"0": "g",
-			"1": "e",
-			"2": "t",
-			"3": "C",
-			"4": "a",
-			"5": "t",
-			"6": "e",
-			"7": "g",
-			"8": "o",
-			"9": "r",
-			"10": "y",
-			"name": "getCategory",
-			"kind": "Text"
-		}
+		"task": "getCategory"
 	},
 	{
 		"name": "바로주문",
@@ -950,11 +727,13 @@ var dialogs = [
 				"if": "false"
 			}
 		],
-		"output": {
-			"kind": "Action",
-			"call": "주문목록",
-			"type": "Call"
-		},
+		"output": [
+			{
+				"kind": "Action",
+				"call": "주문목록",
+				"type": "Call"
+			}
+		],
 		"task": {
 			"0": "m",
 			"1": "a",
@@ -1033,12 +812,10 @@ var dialogs = [
 				"text": "주소 변경"
 			}
 		],
-		"output": [
-			{
-				"text": "지번 또는 도로명을 포함한 상세주소를 말씀해주세요.\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
-				"kind": "Text"
-			}
-		],
+		"output": {
+			"text": "지번 또는 도로명을 포함한 상세주소를 말씀해주세요.",
+			"kind": "Text"
+		},
 		"children": [
 			{
 				"name": "주소입력",
@@ -1121,50 +898,19 @@ var dialogs = [
 					{
 						"kind": "Action",
 						"if": "context.dialog.ordering",
-						"call": "주문조건확인",
-						"output": {
-							"kind": "Action",
-							"if": "context.dialog.ordering",
-							"call": "주문조건확인"
-						},
-						"task": {
-							"0": "d",
-							"1": "e",
-							"2": "f",
-							"3": "a",
-							"4": "u",
-							"5": "l",
-							"6": "t",
-							"7": "T",
-							"8": "a",
-							"9": "s",
-							"10": "k",
-							"name": "defaultTask",
-							"inRaw": "서울시 관악구 봉천동 1645-55 201호",
-							"inNLP": "서울시 관악구 봉천동 1645 55 201 호"
-						}
+						"call": "주문조건확인"
 					},
 					{
 						"text": "주소가 \n\n\"+address.지번주소+\"\n\n로 등록되었습니다.",
 						"kind": "Text"
 					}
 				],
-				"task": {
-					"0": "d",
-					"1": "e",
-					"2": "f",
-					"3": "a",
-					"4": "u",
-					"5": "l",
-					"6": "t",
-					"7": "T",
-					"8": "a",
-					"9": "s",
-					"10": "k",
-					"name": "defaultTask"
-				}
+				"task": "defaultTask"
 			}
-		]
+		],
+		"task": {
+			"kind": "Text"
+		}
 	},
 	{
 		"name": "주소확인",
@@ -1182,13 +928,11 @@ var dialogs = [
 			{
 				"if": "context.user.address",
 				"kind": "Action",
-				"call": "주소있음",
-				"type": "Call"
+				"call": "주소있음"
 			},
 			{
 				"kind": "Action",
-				"call": "주소없음",
-				"type": "Call"
+				"call": "주소없음"
 			}
 		]
 	},
@@ -1203,7 +947,7 @@ var dialogs = [
 		],
 		"output": [
 			{
-				"text": "현재 등록된 주소는\n \n\"+address.지번주소+\"\n\n입니다. 변경을 원하시면 새로운 주소를 입력해주세요.",
+				"text": "등록된 주소는 \"+address.지번주소+\"입니다. 변경을 원하시면 '변경'을 입력해주세요.",
 				"kind": "Text"
 			}
 		],
@@ -1214,15 +958,13 @@ var dialogs = [
 				"filename": "default",
 				"input": [
 					{
-						"types": [
-							"address"
-						]
+						"text": "변경"
 					}
 				],
 				"output": [
 					{
 						"kind": "Action",
-						"call": "주소입력"
+						"call": "주소등록"
 					}
 				]
 			}
@@ -1237,12 +979,10 @@ var dialogs = [
 				"if": "false"
 			}
 		],
-		"output": [
-			{
-				"text": "현재 등록된 주소가 없습니다. 등록을 원하시면 새로운 주소를 입력해주세요.",
-				"kind": "Text"
-			}
-		],
+		"output": {
+			"text": "현재 등록된 주소가 없습니다. 등록을 원하시면 '등록'을 입력해주세요.",
+			"kind": "Text"
+		},
 		"children": [
 			{
 				"name": "주소등록바로가기",
@@ -1250,15 +990,13 @@ var dialogs = [
 				"filename": "default",
 				"input": [
 					{
-						"types": [
-							"address"
-						]
+						"text": ""
 					}
 				],
 				"output": [
 					{
 						"kind": "Action",
-						"call": "주소입력"
+						"call": "주소등록"
 					}
 				]
 			}
@@ -1278,7 +1016,7 @@ var dialogs = [
 		],
 		"output": [
 			{
-				"text": "핸드폰번호를 입력해주세요\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+				"text": "번호를 입력해주세요",
 				"kind": "Text"
 			}
 		],
@@ -1296,11 +1034,13 @@ var dialogs = [
 				],
 				"output": [
 					{
-						"text": "휴대폰으로 발송된 인증번호를 입력해주세요.\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+						"text": "휴대폰으로 발송된 인증번호를 입력해주세요.",
 						"kind": "Text"
 					}
 				],
-				"task": "sendSMSAuth",
+				"task": {
+					"name": "sendSMSAuth"
+				},
 				"children": [
 					{
 						"name": "등록완료",
@@ -1319,10 +1059,8 @@ var dialogs = [
 								"call": "인증번호일치"
 							},
 							{
-								"kind": "Action",
-								"options": {
-									"output": ""
-								}
+								"text": "wrong",
+								"kind": "Text"
 							}
 						]
 					},
@@ -1332,104 +1070,21 @@ var dialogs = [
 						"filename": "default",
 						"input": [
 							{
-								"if": "false"
+								"text": ""
 							}
 						],
 						"output": [
 							{
 								"kind": "Action",
 								"if": "context.dialog.ordering",
-								"call": "주문조건확인",
-								"task": {
-									"0": "s",
-									"1": "a",
-									"2": "v",
-									"3": "e",
-									"4": "M",
-									"5": "o",
-									"6": "b",
-									"7": "i",
-									"8": "l",
-									"9": "e",
-									"name": "saveMobile",
-									"inRaw": "8497",
-									"inNLP": "8497"
-								}
+								"call": "주문조건확인"
 							},
 							{
 								"text": "휴대폰 번호가\n\n+mobile+\n\n로 등록되었습니다.",
 								"kind": "Text"
 							}
 						],
-						"task": {
-							"0": "s",
-							"1": "a",
-							"2": "v",
-							"3": "e",
-							"4": "M",
-							"5": "o",
-							"6": "b",
-							"7": "i",
-							"8": "l",
-							"9": "e",
-							"name": "saveMobile"
-						}
-					},
-					{
-						"name": "인증번호불일치",
-						"id": "default93",
-						"filename": "default",
-						"input": [
-							{
-								"text": "취소"
-							}
-						],
-						"output": [
-							{
-								"text": "인증번호가 틀렸습니다. 원하시는 동작을 선택해주세요.\n\n1. 인증번호 재발송\n2. 휴대폰 등록 취소\n\n처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'",
-								"kind": "Text"
-							}
-						],
-						"children": [
-							{
-								"name": "재발송",
-								"id": "default94",
-								"filename": "default",
-								"input": [
-									{
-										"text": "1"
-									},
-									{
-										"text": "발송"
-									}
-								],
-								"output": [
-									{
-										"kind": "Action",
-										"call": "핸드폰번호"
-									}
-								]
-							},
-							{
-								"name": "휴대폰등록취소",
-								"id": "default95",
-								"filename": "default",
-								"input": [
-									{
-										"text": "2"
-									},
-									{
-										"text": "취소"
-									}
-								],
-								"output": [
-									{
-										"kind": "Action",
-										"call": "시작"
-									}
-								]
-							}
-						]
+						"task": "saveMobile"
 					}
 				]
 			}
@@ -1473,12 +1128,10 @@ var dialogs = [
 				"if": "false"
 			}
 		],
-		"output": [
-			{
-				"text": "현재 등록된 번호는\n \n\"+mobile+\"\n\n입니다. 변경을 원하실 경우 새로운 번호를 입력해주세요.\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
-				"kind": "Text"
-			}
-		],
+		"output": {
+			"text": "현재 번호는 +mobile+ 입니다. 변경을 원하실 경우 변경",
+			"kind": "Text"
+		},
 		"children": [
 			{
 				"name": "핸드폰변경",
@@ -1486,19 +1139,20 @@ var dialogs = [
 				"filename": "default",
 				"input": [
 					{
-						"types": [
-							"mobile"
-						]
+						"text": "변경"
 					}
 				],
 				"output": [
 					{
 						"kind": "Action",
-						"call": "핸드폰번호"
+						"call": "번호등록"
 					}
 				]
 			}
-		]
+		],
+		"task": {
+			"kind": "Text"
+		}
 	},
 	{
 		"name": "번호없음",
@@ -1511,7 +1165,7 @@ var dialogs = [
 		],
 		"output": [
 			{
-				"text": "현재 등록된 번호가 없습니다. 등록을 원하시면 핸드폰 번호를 입력해주세요.\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+				"text": "현재 등록된 번호가 없습니다. 등록을 원하시면 '등록'을 입력해주세요.",
 				"kind": "Text"
 			}
 		],
@@ -1522,16 +1176,13 @@ var dialogs = [
 				"filename": "default",
 				"input": [
 					{
-						"types": [
-							"mobile"
-						]
+						"text": "등록"
 					}
 				],
 				"output": [
 					{
 						"kind": "Action",
-						"call": "핸드폰번호",
-						"type": "Call"
+						"call": "번호등록"
 					}
 				]
 			}
@@ -1551,60 +1202,11 @@ var dialogs = [
 		],
 		"output": [
 			{
-				"if": "context.dialog.orderHistory",
-				"text": "[\"+mobile+\" 님의 최근 주문 내역]\n\n주문일시: +orderHistory.time.month+월 +orderHistory.time.date+일 +orderHistory.time.hour+:+orderHistory.time.minute+\n도착예정시각: +expectedTime.hour+:+expectedTime.minute+\n배달주소: +address.지번주소+\n총 금액: +totalPrice+원\n<주문내용>:\n#orderHistory.order#[+name+] X+quant+, +price+원\n#\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
-				"kind": "Text",
-				"id": "default22_0"
-			},
-			{
-				"text": "아직 회원님의 주문내역이 없네요.\n\n어서 <+restaurant.name+> 챗봇을 통해 음식을 주문해보세요!\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
-				"kind": "Text",
-				"id": "default22_1"
+				"text": "\"+mobile+\" 님의 최근 주문 내역\n\n주문일시: +orderHistory.time.month+월 +orderHistory.time.date+일 +orderHistory.time.hour+:+orderHistory.time.minute+\n도착예정시각: +expectedTime.hour+:+expectedTime.minute+\n배달주소: +address.지번주소+\n총 금액: +totalPrice+원\n주문내용: #orderHistory.order#[+name+] X+quant+, +price+원\n#",
+				"kind": "Text"
 			}
 		],
 		"task": "getOrderHistory"
-	},
-	{
-		"name": "매장안내",
-		"id": "default81",
-		"filename": "default",
-		"input": [
-			{
-				"text": "5"
-			},
-			{
-				"text": "매장"
-			},
-			{
-				"text": "안내"
-			}
-		],
-		"output": [
-			{
-				"text": "<+restaurant.name+>\n\n전화번호 : +restaurant.phone+\n주소: +restaurant.location.지번주소+\n<영업시간>\n#restaurant.openTime#+day+: +time+\n#\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
-				"kind": "Text"
-			}
-		],
-		"task": "makeOpenTime"
-	},
-	{
-		"name": "쿠폰",
-		"id": "default82",
-		"filename": "default",
-		"input": [
-			{
-				"text": "쿠폰"
-			},
-			{
-				"text": "6"
-			}
-		],
-		"output": [
-			{
-				"text": "<+restaurant.name+> 쿠폰정보입니다.\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
-				"kind": "Text"
-			}
-		]
 	}
 ];
 
@@ -1619,11 +1221,14 @@ var commonDialogs = [
 			},
 			{
 				"text": "처음"
+			},
+			{
+				"text": "0"
 			}
 		],
 		"output": [
 			{
-				"text": "안녕하세요. \n<+restaurant.name+>입니다.\n\n주문을 하고싶으신 메뉴를 보시려면 메뉴보기를 선택해주세요. \n+notOpen+\n1. 메뉴보기\n2. 배달받을 주소 확인 / 변경\n3. 배달받을 핸드폰번호 확인 / 변경\n4. 내 주문내역 보기\n5. 매장안내\n6. 쿠폰",
+				"text": "안녕하세요. \n<+restaurant.name+>입니다.\n\n주문을 하고싶으신 메뉴를 보시려면 메뉴보기를 선택해주세요. \n\n1. 메뉴보기\n2. 배달받을 주소 확인 / 변경\n3, 배달받을 핸드폰번호 확인 / 변경\n4. 내 주문내역 보기\n5. 매장안내\n6. 쿠폰",
 				"kind": "Text"
 			}
 		],
@@ -1641,6 +1246,9 @@ var commonDialogs = [
 			},
 			{
 				"text": "이전"
+			},
+			{
+				"text": "9"
 			}
 		],
 		"output": [

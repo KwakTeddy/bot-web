@@ -10,7 +10,6 @@ var ObjectId = mongoose.Types.ObjectId;
 var defaultTask = {
     name: 'defaultTask',
     action: function(task, context, callback) {
-        context.dialog.jiseob = 'jiseob';
         callback(task, context);
     }
 };
@@ -108,7 +107,6 @@ var startTask = {
         var restaurant = mongoModule.getModel('restaurantcontent');
         restaurant.find({_id:ObjectId("59dcd621874f5bbde7a10679")}).lean().exec(function(err, docs) {
             context.bot.restaurant = docs[0];
-            if(!isOpen(context.bot.restaurant.openTime)) context.dialog.notOpen = "\n(**현재는 영업시간이 아닙니다**)\n";
             callback(task,context);
         })
     }
@@ -202,9 +200,8 @@ bot.setType('menuElementText', menuElementText);
 var makeOrderList = {
   action: function (task,context,callback) {
     context.dialog.keyword = context.dialog.inRaw;
-    if(context.dialog.inRaw == 1) context.dialog.keyword = context.dialog.inCurRaw;
     context.dialog.menu = {};
-    context.dialog.menu.subMenu = filter(context.dialog.keyword, context.bot.restaurant.menu);
+    context.dialog.menu.subMenu = filter(context.dialog.inRaw, mdmenu);
     if(context.dialog.menu.subMenu.length==1) context.dialog.currentItem = context.dialog.menu.subMenu[0];
     // context.dialog.menuList = filter(context.dialog.inRaw, mdmenu);
 
@@ -279,7 +276,7 @@ var sendMessage = {
         }
 
 
-        message += '\n주소: ' + context.user.address.지번주소 + '\n';
+        message += '\n주소: ' + context.user.address.지번본번 + '\n';
         message += '번호: ' + context.user.mobile + '\n';
         message += '결제방법: ' + context.dialog.pay + '\n';
         message += '요청사항: ' + context.dialog.request + '\n';
@@ -305,8 +302,7 @@ var sendMessage = {
             address: mongoose.Schema.Types.Mixed,
             order: [],
             pay:String,
-            request:String,
-
+            request:String
         });
 
         var OrderList = undefined;
@@ -327,12 +323,12 @@ var sendMessage = {
             address: context.user.address,
             order: context.user.cart,
             pay: context.user.pay,
-            request: context.user.request,
+            request: context.user.request
         });
 
         console.log('orderList: ' + JSON.stringify(orderList));
 
-        orderList.save({setDefaultsOnInsert: true}, function(err){
+        orderList.save(function(err){
             if(err)
             {
                 console.log('error: ' + JSON.stringify(err));
@@ -345,6 +341,8 @@ var sendMessage = {
 bot.setTask('sendMessage', sendMessage);
 
 
+var reserveRequest = {action: 'reserveRequest'};
+bot.setTask('reserveRequest', reserveRequest);
 
 
 
@@ -364,80 +362,7 @@ bot.setTask('sendMessage', sendMessage);
 
 // -------------------- Functions --------------------------
 
-function checkInDistance(str, task, context, callback) {
-    var address = {address: str}
-    var lat, lng, lat2, lng2;
-    request({
-            url: 'https://maps.googleapis.com/maps/api/geocode/json?&key=AIzaSyDFfCi-x6iMRxdN_V7U2pSCQFzGseNzSBM',
-            method: 'GET',
-            qs: address
-        }, function(error, response, body) {
-            //console.log(response);
-            // console.log(JSON.parse(body));
-            var location = JSON.parse(body).results[0].geometry.location;
-            lat = location.lat;
-            lng = location.lng;
-            // console.log(lat);
-            [lat2, lng2] = context.bot.restaurant.geocode;
-            context.dialog.inDistance = (getDistanceFromGeocode(lat,lng,lat2,lng2)<5);
-            callback(task, context);
-        }
-    );
-}
-
-function getDistanceFromGeocode(lat1,lng1,lat2,lng2) {
-    function deg2rad(deg) {
-        return deg * (Math.PI/180)
-    }
-
-    var R = 6371; // Radius of the earth in km
-    var dLat = deg2rad(lat2-lat1);  // deg2rad below
-    var dLon = deg2rad(lng2-lng1);
-    var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2);
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    var d = R * c; // Distance in km
-    return d;
-}
-
-function isOpen(opentime) {
-    var now = new Date();
-    var nowTime = parseInt(""+now.getHours()+now.getMinutes());
-    // console.log(nowTime);
-    var time = opentime[now.getDay()-1].time;
-    var open = parseInt(time.substring(0,2) + time.substring(3,5));
-    var close = parseInt(time.substring(6,8) + time.substring(9,11));
-    // console.log(open, close);
-    return (open < nowTime && nowTime < close);
-};
-
-function transSynonim(word) {
-    var synonims = [
-        {
-            name: "라지",
-            list: ["l", "large", "대"]
-        },
-        {
-            name: "미디움",
-            list: ["m", "medium", "중"]
-        },
-        {
-            name: "후라이드",
-            list: ["프라이드"]
-        }
-    ];
-
-    for(var i=0; i<synonims.length; i++){
-        for(var j=0; j<synonims[i].list.length; j++){
-            word = word.toLowerCase().replace(synonims[i].list[j], synonims[i].name);
-        }
-    };
-    return word;
-
-}
-
 function matchFun(key, word) {
-    word = transSynonim(word.replace( /(\s*)/g, ""));
-    key = transSynonim(key.replace( /(\s*)/g, ""));
     if (word.search(key) >=0 ) return true;
     else return false;
 }
@@ -486,17 +411,17 @@ bot.setTask('saveMobile', saveMobile);
 
 var checkCondition = {
   action: function (task,context,callback) {
-      console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
     context.dialog.ordering = true;
-    context.dialog.deliveryTime = isOpen(context.bot.restaurant.openTime);
+    context.dialog.deliveryTime = true;
     context.dialog.deliveryDistance = true;
     var totalPrice = getTotalPrice(context.user.cart);
-    context.dialog.priceCond = (totalPrice > context.bot.restaurant.minPrice);
-    //context.dialog.priceCond = true;
-    context.dialog.totalPrice = totalPrice;
-    callback(task,context);
+    // for(var i=0; i<context.user.cart.length; i++){
+    //   totalPrice += context.user.cart[i].price;
+    // }
+    // context.dialog.priceCond = (totalPrice > context.dialog.minimumPrice);
+    context.dialog.priceCond = true;
 
-    //if(context.user.address) checkInDistance(context.user.address.지번주소, task, context, callback);
+    callback(task,context);
 	}
 };
 
@@ -526,14 +451,12 @@ var getOrderHistory = {
   action: function (task,context,callback) {
     var orderList = mongoModule.getModel('orderList');
     orderList.find({user:context.user.userKey}).sort({created:-1}).limit(1).lean().exec(function(err, docs){
-        if(docs.length != 0){
-            context.dialog.orderHistory = docs[0];
-            var created = context.dialog.orderHistory.created;
-            context.dialog.orderHistory.time = datePreProc(created);
-            created.setMinutes(created.getMinutes() + 30);
-            context.dialog.expectedTime = datePreProc(created);
-            context.dialog.totalPrice = getTotalPrice(context.dialog.orderHistory.order);
-        }
+        context.dialog.orderHistory = docs[0];
+        var created = context.dialog.orderHistory.created;
+        context.dialog.orderHistory.time = datePreProc(created);
+        created.setMinutes(created.getMinutes() + 30);
+        context.dialog.expectedTime = datePreProc(created);
+        context.dialog.totalPrice = getTotalPrice(context.dialog.orderHistory.order);
 
         callback(task,context);
     });
@@ -600,19 +523,3 @@ var deleteCartItem = {
 };
 
 bot.setTask('deleteCartItem', deleteCartItem);
-
-
-var makeOpenTime = {
-  action: function (task,context,callback) {
-    context.dialog.weekday = true;
-    for(var i=0; i<5; i++){
-      if(context.bot.restaurant.openTime[0].time != context.bot.restaurant.openTime[i].time) {
-        context.dialog.weekday = false;
-        break;
-      }
-    }
-    callback(task,context);
-	}
-};
-
-bot.setTask('makeOpenTime', makeOpenTime);

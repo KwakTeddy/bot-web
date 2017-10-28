@@ -83,7 +83,7 @@ var DialogsetDialogSchema = new Schema({
   parent: Schema.Types.Mixed,
   context: {
     type: Schema.ObjectId,
-    ref: 'CustomContext'
+    ref: 'customcontext'
   },
   depth: {
     type: Number,

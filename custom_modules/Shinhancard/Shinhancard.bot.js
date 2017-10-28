@@ -3,6 +3,7 @@ var botlib = require(path.resolve('config/lib/bot'));
 
 var Shinhancard = {
   use: true,
+  useAutoCorrection: true,
   kakao: {
     keyboard: { type :"buttons", buttons:["반가워요, 신한카드"]}
   },

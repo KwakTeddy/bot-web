@@ -48,7 +48,7 @@ exports.graph = function (req, res) {
         });
       },
       function (cb) {
-        dialogsetModule.analyzeKnowledgeDialog(realbot.dialogs, bot.id, result, function() {
+        dialogsetModule.analyzeKnowledgeDialog(realbot.dialogs, bot.id, bot.id, result, function() {
           cb(null);
         });
       },
@@ -199,7 +199,7 @@ exports.create = function (req, res) {
             });
           },
           function (cb) {
-            dialogsetModule.analyzeKnowledgeDialog(realbot.dialogs, bot.id, result, function() {
+            dialogsetModule.analyzeKnowledgeDialog(realbot.dialogs, bot.id, bot.id, result, function() {
                cb(null);
             });
           },
@@ -347,7 +347,7 @@ exports.update = function (req, res) {
           async.waterfall([
             function (cb) {
               async.eachSeries(realbot.dialogsets, function(dialogset, cb2) {
-                dialogsetModule.analyzeKnowledge(dialogset, bot.id, result, function () {
+                dialogsetModule.analyzeKnowledge(dialogset, bot.id, bot.id, result, function () {
                   cb2();
                 });
               }, function(err) {
@@ -355,7 +355,7 @@ exports.update = function (req, res) {
               });
             },
             function (cb) {
-              dialogsetModule.analyzeKnowledgeDialog(realbot.dialogs, bot.id, result, function() {
+              dialogsetModule.analyzeKnowledgeDialog(realbot.dialogs, bot.id, bot.id, result, function() {
                 cb(null);
               });
             },
@@ -678,6 +678,7 @@ exports.sharedBotList = function (req, res) {
   })
 };
 
+/*
 exports.nluProcess = function(req, res) {
   var input = '';
   var nlp = require(path.resolve('modules/bot/engine/nlp/processor'));
@@ -687,7 +688,7 @@ exports.nluProcess = function(req, res) {
     spamfilter: true     // (optional default: false)
   });
 
-  nlpKo.tokenize/*ToStrings*/(req.params.input, function(err, result) {
+  nlpKo.tokenize(req.params.input, function(err, result) {
     var _nlp = [], _in;
     for (var i = 0; i < result.length; i++) {
 
@@ -701,7 +702,45 @@ exports.nluProcess = function(req, res) {
     res.json(input);
   });
 };
+*/
 
+// 엔터티 입력 시 실시간 분석 결과 by dsyoon (2017. 09. 29.)
+exports.nluProcess = function(req, res) {
+    var koNLP = require(path.resolve('./modules/bot/engine/nlp/processor_ko'));
+    var enNLP = require(path.resolve('./modules/bot/engine/nlp/processor_en'));
+    var jaNLP = require(path.resolve('./modules/bot/engine/nlp/processor_ja'));
+    var zhNLP = require(path.resolve('./modules/bot/engine/nlp/processor_zh'));
+
+    var context;
+    if (context == null || context == undefined) context = {};
+    if (!("botUser" in context)) {context["botUser"] = {};}
+    if (!("language" in context)) {context.botUser["language"] = "ko";}
+    context.botUser.language = "ko";
+
+    var input = '';
+
+    if (context.botUser.language=="en") {
+        enNLP.processLiveInput(req.params.input, function(err, result) {
+            input = result;
+            res.json(input);
+        });
+    } else if (context.botUser.language=="zh") {
+        zhNLP.processLiveInput(req.params.input, function(err, result) {
+            input = result;
+            res.json(input);
+        });
+    } else if (context.botUser.language=="ja") {
+        jaNLP.processLiveInput(req.params.input, function(err, result) {
+            input = result;
+            res.json(input);
+        });
+    } else {
+        koNLP.processLiveInput(req.params.input, function(err, result) {
+            input = result;
+            res.json(input);
+        });
+    }
+};
 
 /**
  * Bot middleware
@@ -754,6 +793,7 @@ exports.botByID = function (req, res, next, id) {
               var templateDataModel = templateDatas.getTemplateDataModel(template.dataSchema);
               templateDataModel.findOne({_id: bot.templateDataId}).lean().exec(function (err, data) {
 
+                  data = (data || {});
                 async.eachSeries(lists, function(list, cb1) {
                   templateDatas.listTemplateData(template, list._key, bot.templateDataId, function(listData) {
                     data[list._key] = [];
@@ -835,6 +875,7 @@ exports.botByNameID = function (req, res, next, id) {
                 // console.log(util.inspect(lists));
                 // console.log(util.inspect(data));
                 // console.log('###################################')
+                  data = (data || {});
                 async.eachSeries(lists, function(list, cb1) {
                   templateDatas.listTemplateData(template, list._key, bot.templateDataId, function(listData) {
                     data[list._key] = [];

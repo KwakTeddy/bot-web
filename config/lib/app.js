@@ -81,6 +81,10 @@ module.exports.start = function start(callback) {
       console.log('--');
 
       console.log(chalk.red('CHAT_SERVER:\t\t\t' + process.env.CHAT_SERVER));
+
+      // var sip = require(path.resolve('./modules/bot/server/controllers/sip.server.controller'));
+      // sip.startSIP();
+
       if (callback) callback(app, db, config);
     });
 

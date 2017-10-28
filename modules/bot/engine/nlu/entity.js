@@ -12,22 +12,10 @@ function matchDictionaryEntities(inRaw, inNLP, inDoc, context, callback) {
 
   async.waterfall([
     function(cb) {
-      var nlpKo = new nlp({
-        stemmer: true,      // (optional default: true)
-        normalizer: true,   // (optional default: true)
-        spamfilter: true     // (optional default: false)
-      });
-
-      nlpKo.tokenize/*ToStrings*/(inRaw, function(err, result) {
-        _nlp = result;
-        cb(null);
-      })
-    },
-
-    function(cb) {
+      _nlp = context.botUser.nlu.nlp;
       phrase = ''; phraseCnt = 0;
       for(var i in _nlp) {
-        if(!(_nlp[i].pos == 'Josa' || _nlp[i].pos == 'Verb' || _nlp[i].pos == 'Adjective')) {
+        if(!(_nlp[i].pos == 'Josa' || _nlp[i].pos == 'Suffix' || _nlp[i].pos == 'Verb' || _nlp[i].pos == 'Adjective')) {
           if(_nlp[i].pos == 'Noun') nouns.push(_nlp[i].text);
 
           if(phraseCnt > 0 && _nlp[i].offset > _nlp[i-1].offset + _nlp[i-1].length) phrase += ' ';

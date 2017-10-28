@@ -39,7 +39,7 @@ exports.renderIndex = function (req, res) {
     res.render('modules/core/server/views/index', {
       user: req.user || null
     });
-  } else if(config.enterprise.name){
+  } else if(config.enterprise && config.enterprise.name){
     res.redirect('/developer')
   } else{
     res.render('modules/core/server/views/user-bot', {

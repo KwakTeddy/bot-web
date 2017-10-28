@@ -803,6 +803,13 @@ var dialogs = [
       }
     ],
     "name": "dialog_default29"
+  },
+  {
+    "id": "default999",
+    "filename": "defaultcommon",
+    "name": "답변없음",
+    "input": "",
+    "output": "还没学过这句话"
   }
 ];
 
@@ -835,7 +842,7 @@ var commonDialogs = [
       }
     ],
     "output": {
-      "text": "您好,欢迎光临Moneybrain酒店.\n提供酒店服务信息,请选择需要的选项. \n\n1. 房间 \n2. 餐饮 \n3. 设施 \n4. 活动 \n5. 咨询",
+      "text": "您好,欢迎光临Moneybrain酒店.\n提供酒店服务信息,请选择需要的选项. \n\n1. 房间 \n2. 餐饮 \n3. 设施 \n4. 活动 \n5. 咨询|您好,请选择需要的选项",
       "kind": "Text"
     }
   },
@@ -910,11 +917,7 @@ var commonDialogs = [
     "id": "defaultcommon2",
     "filename": "defaultcommon",
     "name": "답변없음",
-    "input": [
-      {
-        "text": ""
-      }
-    ],
+    "input": "",
     "output": "还没学过这句话"
   }
 ];

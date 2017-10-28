@@ -423,7 +423,15 @@ var dialogs = [
         ]
       }
     ]
+  },
+  {
+    "id": "default999",
+    "filename": "defaultcommon",
+    "name": "답변없음",
+    "input": "",
+    "output": "还没学过这句话"
   }
+
 ];
 var commonDialogs = [
   {
@@ -492,11 +500,7 @@ var commonDialogs = [
     "id": "defaultcommon2",
     "filename": "defaultcommon",
     "name": "답변없음",
-    "input": [
-      {
-        "text": ""
-      }
-    ],
+    "input": "",
     "output": "还没学过这句话"
   }
 ];
