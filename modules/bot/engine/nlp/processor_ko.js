@@ -135,8 +135,10 @@ function processInput(context, inRaw, callback) {
 
                         if(entry.pos == 'Alpha') entry.pos = 'Noun';
                         nlpAll.push(entry);
-                        if(entry.text && entry.text.search(/^(은|는|이|가|을|를)$/) == -1 && entry.pos !== 'Punctuation') _nlp.push(entry);
-                        if(entry.text && entry.text.search(/^(은|는|이|가|을|를)$/) == -1 && entry.pos !== 'Punctuation') _inNLP.push(entry.text);
+                        //if(entry.text && entry.text.search(/^(은|는|이|가|을|를)$/) == -1 && entry.pos !== 'Punctuation') _nlp.push(entry);
+                        //if(entry.text && entry.text.search(/^(은|는|이|가|을|를)$/) == -1 && entry.pos !== 'Punctuation') _inNLP.push(entry.text);
+                        _nlp.push(entry);
+                        _inNLP.push(entry.text);
                     }
                     inNLP = _inNLP.join(' ');
                     inNLP = inNLP.replace(/(?:\{ | \})/g, '+');
