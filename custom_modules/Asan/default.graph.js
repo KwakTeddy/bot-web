@@ -2229,7 +2229,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"intent": "서관 3층 강당"
+				"intent": "서관 강당"
 			}
 		],
 		"output": [
@@ -4919,38 +4919,6 @@ var dialogs = [
 		]
 	},
 	{
-		"name": "D신생아중환자실1",
-		"id": "default943",
-		"filename": "default",
-		"input": [
-			{
-				"intent": "신생아중환자실1"
-			}
-		],
-		"output": [
-			{
-				"kind": "Action",
-				"call": "신생아중환자실1"
-			}
-		]
-	},
-	{
-		"name": "D신생아중환자실2",
-		"id": "default944",
-		"filename": "default",
-		"input": [
-			{
-				"intent": "신생아중환자실2"
-			}
-		],
-		"output": [
-			{
-				"kind": "Action",
-				"call": "신생아중환자실2"
-			}
-		]
-	},
-	{
 		"name": "DR신생아중환자실",
 		"id": "default945",
 		"filename": "default",
@@ -5004,7 +4972,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "PET 검 사실"
+				"intent": "PET검사실"
 			}
 		],
 		"output": [
@@ -5020,7 +4988,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "강당"
+				"intent": "강당"
 			}
 		],
 		"output": [
@@ -5036,7 +5004,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "수술실"
+				"intent": "수술실"
 			}
 		],
 		"output": [
@@ -5052,7 +5020,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "촬영 실"
+				"intent": "촬영실"
 			}
 		],
 		"output": [
@@ -5068,7 +5036,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "주사실"
+				"intent": "주사실"
 			}
 		],
 		"output": [
@@ -5084,7 +5052,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "중환자실"
+				"intent": "중환자실"
 			}
 		],
 		"output": [
@@ -5100,10 +5068,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "체혈실"
-			},
-			{
-				"text": "채혈 실"
+				"intent": "채혈실"
 			}
 		],
 		"output": [
@@ -5135,7 +5100,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "초음파 실"
+				"intent": "초음파실"
 			}
 		],
 		"output": [
@@ -5151,7 +5116,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "투시 조 영실"
+				"intent": "투시조영실"
 			}
 		],
 		"output": [
@@ -5167,7 +5132,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "핵의학 검 사실"
+				"intent": "핵의학검사실"
 			}
 		],
 		"output": [
@@ -5231,7 +5196,7 @@ var dialogs = [
 		"filename": "default",
 		"input": [
 			{
-				"text": "외래 예약"
+				"intent": "예약"
 			}
 		],
 		"output": [
@@ -5269,7 +5234,8 @@ var dialogs = [
 		"output": [
 			{
 				"kind": "Action",
-				"call": "처음 오신 분"
+				"call": "처음 오신 분",
+				"type": "Call"
 			}
 		]
 	},
@@ -11277,22 +11243,34 @@ var dialogs = [
 						"intent": "응급의료센터"
 					}
 				],
-				"output": [
-					{
-						"text": "응급의료센터는 서관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
-						"image": {
-							"url": "/files/Asan1505971296970.jpg",
-							"displayname": "WG106.jpg"
-						},
-						"buttons": [
-							{
-								"text": "약도 자세히 보기",
-								"url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021052"
-							}
-						],
-						"kind": "Content"
-					}
-				],
+				"output": {
+					"text": "응급의료센터는 서관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
+					"image": {
+						"url": "/files/Asan1505971296970.jpg",
+						"displayname": "WG106.jpg"
+					},
+					"buttons": [
+						{
+							"text": "약도 자세히 보기",
+							"url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021052"
+						}
+					],
+					"kind": "Content"
+				},
+				"task": {
+					"text": "응급의료센터는 서관 1층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
+					"image": {
+						"url": "https://dev.moneybrain.ai/files/Asan1505971296970.jpg",
+						"displayname": "WG106.jpg"
+					},
+					"buttons": [
+						{
+							"text": "약도 자세히 보기",
+							"url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021052"
+						}
+					],
+					"kind": "Content"
+				},
 				"buttons": [
 					{
 						"text": "약도 자세히 보기",
@@ -12053,22 +12031,34 @@ var dialogs = [
 						"intent": "호흡기검사실"
 					}
 				],
-				"output": [
-					{
-						"text": "호흡기검사실은 서관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
-						"image": {
-							"url": "/files/Asan1505971806510.jpg",
-							"displayname": "WG202.jpg"
-						},
-						"buttons": [
-							{
-								"text": "약도 자세히 보기",
-								"url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021219"
-							}
-						],
-						"kind": "Content"
-					}
-				],
+				"output": {
+					"text": "호흡기검사실은 서관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
+					"image": {
+						"url": "/files/Asan1505971806510.jpg",
+						"displayname": "WG202.jpg"
+					},
+					"buttons": [
+						{
+							"text": "약도 자세히 보기",
+							"url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021219"
+						}
+					],
+					"kind": "Content"
+				},
+				"task": {
+					"text": "호흡기검사실은 서관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
+					"image": {
+						"url": "https://dev.moneybrain.ai/files/Asan1505971806510.jpg",
+						"displayname": "WG202.jpg"
+					},
+					"buttons": [
+						{
+							"text": "약도 자세히 보기",
+							"url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021219"
+						}
+					],
+					"kind": "Content"
+				},
 				"buttons": [
 					{
 						"text": "약도 자세히 보기",
@@ -12240,7 +12230,7 @@ var dialogs = [
 				"filename": "default",
 				"input": [
 					{
-						"intent": "서관 3층 강당"
+						"intent": "서관 강당"
 					}
 				],
 				"output": [
@@ -12535,7 +12525,7 @@ var dialogs = [
 				"task": {
 					"text": "췌담도검사실은 서관 4층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
 					"image": {
-						"url": "/files/Asan1505972216095.jpg",
+						"url": "https://dev.moneybrain.ai/files/Asan1505972216095.jpg",
 						"displayname": "WG404.jpg"
 					},
 					"buttons": [
@@ -14025,22 +14015,34 @@ var dialogs = [
 						"intent": "뇌신경검사실"
 					}
 				],
-				"output": [
-					{
-						"text": "뇌신경검사실은 동관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
-						"image": {
-							"url": "/files/Asan1505976280047.jpg",
-							"displayname": "EG206.jpg"
-						},
-						"buttons": [
-							{
-								"text": "약도 자세히 보기",
-								"url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021076"
-							}
-						],
-						"kind": "Content"
-					}
-				],
+				"output": {
+					"text": "뇌신경검사실은 동관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
+					"image": {
+						"url": "/files/Asan1505976280047.jpg",
+						"displayname": "EG206.jpg"
+					},
+					"buttons": [
+						{
+							"text": "약도 자세히 보기",
+							"url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021076"
+						}
+					],
+					"kind": "Content"
+				},
+				"task": {
+					"text": "뇌신경검사실은 동관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
+					"image": {
+						"url": "https://dev.moneybrain.ai/files/Asan1505976280047.jpg",
+						"displayname": "EG206.jpg"
+					},
+					"buttons": [
+						{
+							"text": "약도 자세히 보기",
+							"url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021076"
+						}
+					],
+					"kind": "Content"
+				},
 				"buttons": [
 					{
 						"text": "약도 자세히 보기",
@@ -14209,22 +14211,34 @@ var dialogs = [
 						"intent": "동관 핵의학과 혈액검사실"
 					}
 				],
-				"output": [
-					{
-						"text": "동관 핵의학과 혈액검사실은 동관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
-						"image": {
-							"url": "/files/Asan1505976450316.jpg",
-							"displayname": "EG210.jpg"
-						},
-						"buttons": [
-							{
-								"text": "약도 자세히 보기",
-								"url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021088"
-							}
-						],
-						"kind": "Content"
-					}
-				],
+				"output": {
+					"text": "동관 핵의학과 혈액검사실은 동관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
+					"image": {
+						"url": "/files/Asan1505976450316.jpg",
+						"displayname": "EG210.jpg"
+					},
+					"buttons": [
+						{
+							"text": "약도 자세히 보기",
+							"url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021088"
+						}
+					],
+					"kind": "Content"
+				},
+				"task": {
+					"text": "동관 핵의학과 혈액검사실은 동관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
+					"image": {
+						"url": "https://dev.moneybrain.ai/files/Asan1505976450316.jpg",
+						"displayname": "EG210.jpg"
+					},
+					"buttons": [
+						{
+							"text": "약도 자세히 보기",
+							"url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021088"
+						}
+					],
+					"kind": "Content"
+				},
 				"buttons": [
 					{
 						"text": "약도 자세히 보기",
@@ -14337,22 +14351,34 @@ var dialogs = [
 						"intent": "심장재활검사실"
 					}
 				],
-				"output": [
-					{
-						"text": "심장재활검사실은 동관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
-						"image": {
-							"url": "/files/Asan1505976547906.jpg",
-							"displayname": "EG201.jpg"
-						},
-						"buttons": [
-							{
-								"text": "약도 자세히 보기",
-								"url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021055"
-							}
-						],
-						"kind": "Content"
-					}
-				],
+				"output": {
+					"text": "심장재활검사실은 동관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
+					"image": {
+						"url": "/files/Asan1505976547906.jpg",
+						"displayname": "EG201.jpg"
+					},
+					"buttons": [
+						{
+							"text": "약도 자세히 보기",
+							"url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021055"
+						}
+					],
+					"kind": "Content"
+				},
+				"task": {
+					"text": "심장재활검사실은 동관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
+					"image": {
+						"url": "https://dev.moneybrain.ai/files/Asan1505976547906.jpg",
+						"displayname": "EG201.jpg"
+					},
+					"buttons": [
+						{
+							"text": "약도 자세히 보기",
+							"url": "http://www.amc.seoul.kr/asan/file/imageView.do?fileId=F000000021055"
+						}
+					],
+					"kind": "Content"
+				},
 				"buttons": [
 					{
 						"text": "약도 자세히 보기",
@@ -17825,22 +17851,34 @@ var dialogs = [
 						"intent": "안과검사실"
 					}
 				],
-				"output": [
-					{
-						"text": "안과검사실은 신관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
-						"image": {
-							"url": "/files/Asan1504941431202.jpg",
-							"displayname": "new-205.jpg"
-						},
-						"buttons": [
-							{
-								"text": "약도 자세히 보기",
-								"url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=238"
-							}
-						],
-						"kind": "Content"
-					}
-				],
+				"output": {
+					"text": "안과검사실은 신관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
+					"image": {
+						"url": "/files/Asan1504941431202.jpg",
+						"displayname": "new-205.jpg"
+					},
+					"buttons": [
+						{
+							"text": "약도 자세히 보기",
+							"url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=238"
+						}
+					],
+					"kind": "Content"
+				},
+				"task": {
+					"text": "안과검사실은 신관 2층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
+					"image": {
+						"url": "https://dev.moneybrain.ai/files/Asan1504941431202.jpg",
+						"displayname": "new-205.jpg"
+					},
+					"buttons": [
+						{
+							"text": "약도 자세히 보기",
+							"url": "http://www.amc.seoul.kr/asan/hospitalguide/lookaround/lookAroundDetail.do?placeId=238"
+						}
+					],
+					"kind": "Content"
+				},
 				"buttons": [
 					{
 						"text": "약도 자세히 보기",
@@ -18222,7 +18260,7 @@ var dialogs = [
 				"task": {
 					"text": "신관 주사실은 신관 3층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
 					"image": {
-						"url": "/files/Asan1504941707416.jpg",
+						"url": "https://dev.moneybrain.ai/files/Asan1504941707416.jpg",
 						"displayname": "new-304.jpg"
 					},
 					"buttons": [
@@ -18486,7 +18524,7 @@ var dialogs = [
 				"task": {
 					"text": "신생아실은 신관 6층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
 					"image": {
-						"url": "/files/Asan1504941851667.jpg",
+						"url": "https://dev.moneybrain.ai/files/Asan1504941851667.jpg",
 						"displayname": "new-601.jpg"
 					},
 					"buttons": [
@@ -18530,7 +18568,7 @@ var dialogs = [
 				"task": {
 					"text": "신생아중환자실1은 신관 6층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
 					"image": {
-						"url": "/files/Asan1504941869114.jpg",
+						"url": "https://dev.moneybrain.ai/files/Asan1504941869114.jpg",
 						"displayname": "new-605.jpg"
 					},
 					"buttons": [
@@ -18574,7 +18612,7 @@ var dialogs = [
 				"task": {
 					"text": "신생아중환자실2은 신관 6층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
 					"image": {
-						"url": "/files/Asan1504941897189.jpg",
+						"url": "https://dev.moneybrain.ai/files/Asan1504941897189.jpg",
 						"displayname": "new-603.jpg"
 					},
 					"buttons": [
@@ -19351,26 +19389,24 @@ var dialogs = [
 						"intent": "채혈실"
 					}
 				],
-				"output": [
-					{
-						"text": "다음 중 찾으시는 채혈실은 어디인가요?\n\n1. 서관 채혈실\n2. 신관 채혈실",
-						"buttons": [
-							{
-								"text": "서관 채혈실"
-							},
-							{
-								"text": "신관 채혈실"
-							},
-							{
-								"text": "처음"
-							},
-							{
-								"text": "이전"
-							}
-						],
-						"kind": "Content"
-					}
-				],
+				"output": {
+					"text": "다음 중 찾으시는 채혈실은 어디인가요?\n\n1. 서관 채혈실\n2. 신관 채혈실",
+					"buttons": [
+						{
+							"text": "서관 채혈실"
+						},
+						{
+							"text": "신관 채혈실"
+						},
+						{
+							"text": "처음"
+						},
+						{
+							"text": "이전"
+						}
+					],
+					"kind": "Content"
+				},
 				"children": [
 					{
 						"name": "서관 채혈실2",
@@ -19405,6 +19441,24 @@ var dialogs = [
 						]
 					}
 				],
+				"task": {
+					"text": "다음 중 찾으시는 채혈실은 어디인가요?\n\n1. 서관 채혈실\n2. 신관 채혈실",
+					"buttons": [
+						{
+							"text": "서관 채혈실"
+						},
+						{
+							"text": "신관 채혈실"
+						},
+						{
+							"text": "처음"
+						},
+						{
+							"text": "이전"
+						}
+					],
+					"kind": "Content"
+				},
 				"buttons": [
 					{
 						"text": "서관 채혈실"
@@ -20097,7 +20151,7 @@ var dialogs = [
 				"task": {
 					"text": "소화기내시경센터는 서관 4층에 있습니다. 자세한 위치는 아래 약도를 참고하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
 					"image": {
-						"url": "/files/Asan1505972192935.jpg",
+						"url": "https://dev.moneybrain.ai/files/Asan1505972192935.jpg",
 						"displayname": "WG405.jpg"
 					},
 					"buttons": [
@@ -20523,7 +20577,7 @@ var dialogs = [
 					}
 				],
 				"output": {
-					"text": "진료예약 일자확인과 예약, 변경 및 취소를 위한 상담방법을 알려드릴께요.\n\n병원대표번호 1688-7575로 전화 하셔서, 안내멘트에 따라 1번->1번을 순차적으로 누르시면 됩니다.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
+					"text": "진료예약 일자확인과 예약, 변경 및 취소를 위한 상담방법을 알려드릴께요.\n\n병원대표번호 1688-7575로 전화 하셔서, 안내멘트에 따라 1번->1번을 순차적으로 누르시면 됩니다.\n\n진료예약 업무 시간은 아래와 같습니다. \n• 평 일 : 08:30~17:30\n• 토요일 : 08:30~12:30\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
 					"kind": "Text"
 				},
 				"task": {
@@ -22804,42 +22858,88 @@ var dialogs = [
 				],
 				"output": [
 					{
-						"text": "의무기록 사본발급 절차 안내드립니다.\n\n사본발급 창구(서관: 지하1층 직원식당 앞, 동관: 1층 로비) 방문 → 신분증 확인 및 구비서류(준비물) 제출 → 수납 및 사본 수령\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
-						"buttons": [
-							{
-								"text": "서관 의무기록사본 발급처"
-							},
-							{
-								"text": "동관 의무기록사본 발급처"
-							}
-						],
-						"kind": "Content"
+						"text": "의무기록 사본발급 절차 안내드립니다.\n\n사본발급 창구(서관: 지하1층 직원식당 앞, 동관: 1층 로비) 방문 → 신분증 확인 및 구비서류(준비물) 제출 → 수납 및 사본 수령\n\n*의무기록 사본 발급처 안내를 원하시면 '발급처'라고 입력하세요.\n\n* 처음으로 가시려면 '처음' 또는 0번, 이전단계로 가시러면 '이전' 또는 9번을 입력해주세요.",
+						"kind": "Text"
 					}
 				],
 				"children": [
 					{
-						"name": "서관 의무기록/영상사본발급2",
-						"id": "default1160",
+						"name": "의무기록 사본 발급처 선택",
+						"id": "default1167",
 						"filename": "default",
 						"input": [
 							{
-								"text": "서관 의무 기록 사본 발급 처"
+								"text": "발급 처"
 							}
 						],
 						"output": [
 							{
-								"kind": "Action",
-								"call": "서관 의무기록/영상사본발급"
+								"text": "다음 중 어느 발급처를 안내해 드릴까요?",
+								"buttons": [
+									{
+										"text": "서관 의무기록 사본 발급처"
+									},
+									{
+										"text": "동관 의무기록 사본 발급처"
+									},
+									{
+										"text": "처음"
+									},
+									{
+										"text": "이전"
+									}
+								],
+								"kind": "Content"
+							}
+						],
+						"children": [
+							{
+								"name": "서관 의무기록/영상사본발급2",
+								"id": "default1168",
+								"filename": "default",
+								"input": [
+									{
+										"text": "서관 의무 기록 사본 발급 처"
+									}
+								],
+								"output": [
+									{
+										"kind": "Action",
+										"call": "서관 의무기록/영상사본발급"
+									}
+								]
+							},
+							{
+								"name": "동관 의무기록/영상사본발급2",
+								"id": "default1169",
+								"filename": "default",
+								"input": [
+									{
+										"text": "동관 의무 기록 사본 발급 처"
+									}
+								],
+								"output": [
+									{
+										"kind": "Action",
+										"call": "동관 의무기록/영상사본발급"
+									}
+								]
+							}
+						],
+						"buttons": [
+							{
+								"text": "서관 의무기록 사본 발급처"
+							},
+							{
+								"text": "동관 의무기록 사본 발급처"
+							},
+							{
+								"text": "처음"
+							},
+							{
+								"text": "이전"
 							}
 						]
-					}
-				],
-				"buttons": [
-					{
-						"text": "서관 의무기록사본 발급처"
-					},
-					{
-						"text": "동관 의무기록사본 발급처"
 					}
 				]
 			},
@@ -24501,6 +24601,162 @@ var dialogs = [
 			},
 			{
 				"text": "의무기록"
+			},
+			{
+				"text": "처음"
+			},
+			{
+				"text": "이전"
+			}
+		]
+	},
+	{
+		"name": "DCT검사",
+		"id": "default1161",
+		"filename": "default",
+		"input": [
+			{
+				"intent": "CT검사"
+			}
+		],
+		"output": [
+			{
+				"text": "원하시는 안내가 무엇인지요?",
+				"buttons": [
+					{
+						"text": "CT 검사실 안내"
+					},
+					{
+						"text": "의무기록 사본 발급 안내"
+					},
+					{
+						"text": "처음"
+					},
+					{
+						"text": "이전"
+					}
+				],
+				"kind": "Content"
+			}
+		],
+		"children": [
+			{
+				"name": "CT실2",
+				"id": "default1162",
+				"filename": "default",
+				"input": [
+					{
+						"text": "CT 검 사실 안내"
+					}
+				],
+				"output": [
+					{
+						"kind": "Action",
+						"call": "CT실"
+					}
+				]
+			},
+			{
+				"name": "의무기록 발급 절차2",
+				"id": "default1163",
+				"filename": "default",
+				"input": [
+					{
+						"text": "의무 기록 사본 발급 안내"
+					}
+				],
+				"output": [
+					{
+						"kind": "Action",
+						"call": "의무기록 발급 절차"
+					}
+				]
+			}
+		],
+		"buttons": [
+			{
+				"text": "CT 검사실 안내"
+			},
+			{
+				"text": "의무기록 사본 발급 안내"
+			},
+			{
+				"text": "처음"
+			},
+			{
+				"text": "이전"
+			}
+		]
+	},
+	{
+		"name": "DMR검사",
+		"id": "default1164",
+		"filename": "default",
+		"input": [
+			{
+				"intent": "MR검사"
+			}
+		],
+		"output": [
+			{
+				"text": "원하시는 안내가 무엇인지요?",
+				"buttons": [
+					{
+						"text": "MR 검사실 안내"
+					},
+					{
+						"text": "의무기록 사본 발급 안내"
+					},
+					{
+						"text": "처음"
+					},
+					{
+						"text": "이전"
+					}
+				],
+				"kind": "Content"
+			}
+		],
+		"children": [
+			{
+				"name": "MR실2",
+				"id": "default1165",
+				"filename": "default",
+				"input": [
+					{
+						"text": "MR 검 사실 안내"
+					}
+				],
+				"output": [
+					{
+						"kind": "Action",
+						"call": "MR실"
+					}
+				]
+			},
+			{
+				"name": "의무기록 발급 절차3",
+				"id": "default1166",
+				"filename": "default",
+				"input": [
+					{
+						"text": "의무 기록 사본 발급 안내"
+					}
+				],
+				"output": [
+					{
+						"kind": "Action",
+						"call": "의무기록 발급 절차"
+					}
+				]
+			}
+		],
+		"buttons": [
+			{
+				"text": "MR 검사실 안내"
+			},
+			{
+				"text": "의무기록 사본 발급 안내"
 			},
 			{
 				"text": "처음"

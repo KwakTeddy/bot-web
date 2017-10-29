@@ -2136,6 +2136,15 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
         if (format.mongo.taskSort && format.mongo.taskSort instanceof Function) {
             matchedDoc.sort(format.mongo.taskSort);
         } else {
+            var inNLP = context.botUser.nlu.inNLP;
+            for(var i = 0; i < matchedDoc.length /*&& i < 5*/; i++) {
+                if (inNLP == matchedDoc[i].input) {
+                    matchedDoc[i].matchRate = 1.0;
+                }
+            }
+            matchedDoc = matchedDoc.sort(function(doc1, doc2) {
+                return doc2.matchRate - doc1.matchRate;
+            });
             matchedDoc.sort(function (a, b) {
                 if(b.matchCount == a.matchCount) {
                     if(b.matchRate == a.matchRate) {
