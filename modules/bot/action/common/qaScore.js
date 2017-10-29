@@ -19,9 +19,10 @@ QAScore.prototype.intersectArray = function(a, b) {
 QAScore.prototype.isSameSentence = function(question, answer) {
     if (Array.isArray(answer)) {
         for (var i=0; i<answer.length; i++) {
-            //if (question.inputRaw == answer[i].inputRaw.replace(/^\s+|\s+$/g, "")) {
-            if (question.inputRaw.replace(/\s/gi, "") == answer[i].inputRaw.replace(/\s/gi, "")) {
-                return true;
+            if (answer.inputRaw) {
+                if (question.inputRaw.replace(/\s/gi, "") == answer[i].inputRaw.replace(/\s/gi, "")) {
+                    return true;
+                }
             }
 
             var questionArray = question.input.split(" ");
@@ -35,9 +36,10 @@ QAScore.prototype.isSameSentence = function(question, answer) {
             return true;
         }
     } else {
-        //if (question.inputRaw == answer.inputRaw.replace(/^\s+|\s+$/g, "")) {
-        if (question.inputRaw.replace(/\s/gi, "") == answer.inputRaw.replace(/\s/gi, "")) {
-            return true;
+        if (answer.inputRaw) {
+            if (question.inputRaw.replace(/\s/gi, "") == answer.inputRaw.replace(/\s/gi, "")) {
+                return true;
+            }
         }
 
         var questionArray = question.input.split(" ");
@@ -175,11 +177,13 @@ QAScore.prototype.assignScore = function(nlu) {
     // 상위 동일 개수 체크
     if (answers.length > 0) {
         var contexts = {};
-        if (answers.length > 0) contexts[answers[0].context.name] = 1;
-        for (var i = 1; i < answers.length; i++) {
-            if (answers[0].score == answers[i].score) {
-                topSameScoreCount += 1;
-                contexts[answers[i].context.name] = 1;
+        if (answers[0].context) {
+            if (answers.length > 0) contexts[answers[0].context.name] = 1;
+            for (var i = 1; i < answers.length; i++) {
+                if (answers[0].score == answers[i].score) {
+                    topSameScoreCount += 1;
+                    contexts[answers[i].context.name] = 1;
+                }
             }
         }
     } else {

@@ -377,7 +377,9 @@ function processOutput(task, context, out) {
                 }
             }
         } else {
-            out = context.botUser.nlu.matchInfo.qa[0].output;
+            if (context.botUser.nlu.matchInfo.qa[0].output) {
+                out = context.botUser.nlu.matchInfo.qa[0].output;
+            }
         }
 
 
@@ -1532,6 +1534,29 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
 
     async.waterfall([
         function(_cb) {
+            // 현재 발화의 대답이 중복인 경우, 중복된 발화의 category들을 저장하는 변수 (dsyoon)
+            if (context.botUser["nlu"] == undefined || context.botUser["nlu"] == null) context.botUser["nlu"] = {};
+            if (context.botUser.nlu["contextInfo"] == undefined || context.botUser.nlu["contextInfo"] == null) context.botUser.nlu["contextInfo"] = {};
+
+            // 발화의 상태를 history로 저장한다
+            if (context.botUser.nlu.contextInfo["contextHistory"] == undefined || context.botUser.nlu.contextInfo["contextHistory"] == null) context.botUser.nlu.contextInfo["contextHistory"] = [];
+            if (context.botUser.nlu.contextInfo["matchContextHistory"] == undefined || context.botUser.nlu.contextInfo["matchContextHistory"] == null) context.botUser.nlu.contextInfo["matchContextHistory"] = [];
+            // 발화에 대한 대답의 history로 저장한다 (일반, 멀티context 등..)
+            if (context.botUser.nlu.contextInfo["answerHistory"] == undefined || context.botUser.nlu.contextInfo["answerHistory"] == null) context.botUser.nlu.contextInfo["answerHistory"] = [];
+            // 사용자 발화를 history로 저장한다
+            if (context.botUser.nlu.contextInfo["queryHistory"] == undefined || context.botUser.nlu.contextInfo["queryHistory"] == null) context.botUser.nlu.contextInfo["queryHistory"] = [];
+            // 현재 발화의 상태
+            if (context.botUser.nlu.contextInfo["context"] == undefined || context.botUser.nlu.contextInfo["context"] == null) context.botUser.nlu.contextInfo["context"] = {};
+
+            // 현재 발화의 매치 정보
+            if (context.botUser.nlu["matchInfo"] == undefined || context.botUser.nlu["matchInfo"] == null) context.botUser.nlu["matchInfo"] = {};
+            if (context.botUser.nlu.matchInfo["qa"] == undefined || context.botUser.nlu.matchInfo["qa"] == null) context.botUser.nlu.matchInfo["qa"] = [];
+            if (context.botUser.nlu.matchInfo["contextNames"] == undefined || context.botUser.nlu.matchInfo["contextNames"] == null) context.botUser.nlu.matchInfo["contextNames"] = {};
+            if (context.botUser.nlu.matchInfo["topScoreCount"] == undefined || context.botUser.nlu.matchInfo["topScoreCount"] == null) context.botUser.nlu.matchInfo["topScoreCount"] = 1;
+
+            _cb(null);
+        },
+        function(_cb) {
             var matchConcepts = [];
             var bot = context.bot;
             if(bot && bot.concepts) {
@@ -1657,7 +1682,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                                     var doc = docs[k];
                                     doc["score"] = 0.0;
                                     matchedDoc.push(doc);
-                                    context.botUser.nlu["matchInfo"]["qa"].push(doc);
+                                    context.botUser.nlu.matchInfo["qa"].push(doc);
                                 }
                             }
                         });
