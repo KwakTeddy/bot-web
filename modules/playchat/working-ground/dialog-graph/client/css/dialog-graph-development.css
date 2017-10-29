@@ -1,3 +1,22 @@
+.dialog-graph-error
+{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dialog-graph-error h1
+{
+    font-size: 30px;
+    font-weight: bold;
+}
+
 .graph-background
 {
     min-width: 800px;
@@ -8,12 +27,22 @@
     position: relative;
 }
 
+.working-ground
+{
+    padding: 0 !important;
+}
+
 .graph-controller
 {
     height: 40px;
     padding-top: 15px;
 
     display: flex;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .graph-controller > div
@@ -519,7 +548,6 @@
 
     top: 0;
     bottom: 0;
-    /*right: -400px;*/
     right: -368px;
     width: 368px;
 
@@ -659,6 +687,11 @@
     margin-bottom: 10px;
 }
 
+.dialog-editor-subject input[type="radio"]
+{
+    margin-right: 5px;
+}
+
 .dialog-editor-input
 {
     width: 98%;
@@ -686,6 +719,7 @@
     background: #fff;
     padding: 5px;
     position: relative;
+    word-wrap: break-word;
 }
 
 .dialog-editor-input-textarea::after
@@ -706,13 +740,53 @@
     background: #eef4ff;
     border-radius: 18px;
     padding: 4px 11px 6px;
-    line-height: 32px;
+    margin-left: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+
+    display: inline-block;
 }
 
 .dialog-editor-input-item > img
 {
     vertical-align: middle;
     padding-left: 6px;
+}
+
+.dialog-editor-input-item.text
+{
+    background-color: rgba(243, 243, 243, 0.65);
+    border: 1px solid #bfbfbf;
+}
+
+.dialog-editor-input-item.regexp
+{
+    background-color: #fdf7f7;
+    border: 1px solid #ffb9cc;
+}
+
+.dialog-editor-input-item.intent
+{
+    background-color: #f8f8ff;
+    border: 1px solid #aeb0ff;
+}
+
+.dialog-editor-input-item.entities
+{
+    background-color: rgba(239, 255, 242, 0.46);
+    border: 1px solid rgba(2, 125, 24, 0.44);
+}
+
+.dialog-editor-input-item.if
+{
+    background-color: #fffbee;
+    border: 1px solid #ffbe3e;
+}
+
+.dialog-editor-input-item.types
+{
+    border: 1px solid #b5cfff;
+    background-color: #dbe3f3;
 }
 
 .dialog-editor-input-box .and
@@ -750,6 +824,17 @@
     margin-top: 0;
 }
 
+.dialog-editor-input-wrapper::after
+{
+    content: attr(data-nlu);
+    font-size: 11px;
+    font-weight: 100;
+    color: #363636;
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+}
+
 .dialog-editor-output-box
 {
     border: 1px solid #d7d7d7;
@@ -757,6 +842,11 @@
     background: #fff;
     margin: 8px auto 0;
     width: 90%;
+}
+
+.dialog-editor-output-box[disabled]
+{
+    background: #ddd;
 }
 
 .dialog-editor-output-box-row
@@ -808,6 +898,12 @@
     height: 34px;
 }
 
+.dialog-editor-output-box-row:last-child
+{
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
 .dialog-editor-footer
 {
     position: absolute;
@@ -850,7 +946,7 @@
     border-radius: 50%;
     background: #768ea2;
     position: absolute;
-    bottom: -20px;
+    bottom: -22px;
     left: 161px;
 }
 
@@ -864,14 +960,24 @@
 
 .dialog-editor-output-text
 {
-    margin: 10px;
     padding: 10px;
-    outline: 0;
 }
 
-.dialog-editor-output-text:focus
+.dialog-editor-output-text > input
 {
-    box-shadow: 0 0 2pt 2pt #d3efff;
+    width: 100%;
+
+    padding: 10px;
+    outline: 0;
+
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.dialog-editor-output-text > input:focus
+{
+    outline: 1px solid #d3efff;
 }
 
 .dialog-editor-action-type
@@ -889,9 +995,10 @@
 {
     padding-left: 10px;
     padding-right: 10px;
+    position: relative;
 }
 
-.dialog-editor-output-box .dialog-editor-output-box-row:first-child
+.dialog-editor-output-box > .dialog-editor-output-box-row:first-child
 {
     border-top: 0;
 }
@@ -911,9 +1018,248 @@
     background-color: #f7fbff;
 }
 
+.dialog-editor-output-box[disabled] .dialog-editor-output-box-row.button:hover
+{
+    background-color: transparent;
+}
+
 .dialog-editor-output-add
 {
     position: absolute;
     top: -3px;
     right: 17px;
+}
+
+.dialog-editor-output-image-box
+{
+    position: relative;
+}
+
+.dialog-editor-output-image-box > div
+{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.dialog-editor-output-image-box:hover > div
+{
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.dialog-editor-output-image-box:hover p
+{
+    color: white;
+    font-weight: 600;
+}
+
+.dialog-editor-output-image-box:hover img:last-child
+{
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+}
+
+.output-button-name, .output-button-url
+{
+    text-align: center;
+    border: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.output-button-name
+{
+    color: #038eda;
+    font-weight: 600;
+    height: 32px;
+}
+
+.output-button-name::placeholder, .output-button-name::-webkit-input-placeholder, .output-button-name::-moz-placeholder, .output-button-name:-ms-input-placeholder, .output-button-name:-moz-placeholder
+{
+    color: #038eda;
+    font-weight: 600;
+    text-align: center;
+}
+
+.output-button-url
+{
+    font-size: 12px;
+}
+
+.dialog-editor-action-type[disabled], .dialog-editor-action-dialog[disabled]
+{
+    background-color: #ddd;
+}
+
+.dialog-editor-output-file
+{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    opacity: 0;
+
+    width: 100% !important;
+
+    box-sizing: border-box;
+
+    margin: 0;
+}
+
+.dialog-editor-select-input
+{
+    width: 63%;
+    height: 33px;
+    display: inline-block;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    vertical-align: middle;
+
+    background-color: white;
+    background-image: url(/modules/playchat/working-ground/dialog-graph/client/imgs/default_select_arrow.png);
+    background-repeat: no-repeat;
+    background-position: right center;
+}
+
+.dialog-editor-select-input:focus
+{
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.dialog-editor-select-input[disabled]
+{
+    background-color: #ddd;
+    user-select: none;
+}
+
+.dialog-editor-select-input > input
+{
+    width: 100%;
+    box-sizing: border-box;
+    height: 100%;
+    border-radius: 6px;
+
+    padding: 5px 20px 5px 10px;
+
+    cursor: pointer;
+}
+
+.dialog-editor-select-input > input:focus
+{
+    cursor: text;
+}
+
+.dialog-editor-select-options
+{
+    border: 1px solid #ddd;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+
+    background-color: white;
+}
+
+.dialog-editor-select-options > li
+{
+    margin: 0;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.dialog-editor-select-input > input + .dialog-editor-select-options
+{
+    display: none;
+}
+
+.dialog-editor-select-input > input:focus + .dialog-editor-select-options
+{
+    display: block;
+}
+
+.dialog-editor-select-input > input:focus + .dialog-editor-select-options > li:hover
+{
+    background-color: #efefef;
+}
+
+.dialog-editor-input-nlu
+{
+    font-size: 11px;
+    margin-top: 5px;
+}
+
+.dialog-editor-input-key
+{
+    display: inline-block;
+    min-width: 20px;
+}
+
+.dialog-editor-input-key:focus
+{
+    outline: 0;
+}
+
+.dialog-editor-advanced-input-placeholder
+{
+    color: #757575;
+    font-size: 10px;
+    padding: 3px 0;
+    text-align: center;
+}
+
+.dialog-editor-input-list-modal
+{
+    position: absolute;
+
+    margin: 0;
+    padding: 0;
+
+    background-color: white;
+
+    box-shadow: 0 1px 11px rgba(0, 0, 0, 0.1), 0 1px 11px rgba(0, 0, 0, 0.1);
+
+    border: 1px solid #ddd;
+    border-radius: 6px;
+
+    z-index: 1000;
+
+    max-height: 400px;
+    overflow: auto;
+}
+
+.dialog-editor-input-list-modal > li
+{
+    padding: 10px 20px;
+    font-size: 12px;
+    cursor: pointer;
+    border-top: 1px solid #ddd;
+}
+
+.dialog-editor-input-list-modal > li:first-child
+{
+    border-top: 0;
+
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.dialog-editor-input-list-modal > li:last-child
+{
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+
+.dialog-editor-input-list-modal > li:hover
+{
+    background-color: #337ab7;
+    color: white;
 }

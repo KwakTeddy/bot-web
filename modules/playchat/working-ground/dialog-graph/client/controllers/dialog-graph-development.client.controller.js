@@ -8,11 +8,10 @@ angular.module('playchat.working-ground').controller('DialogGraphDevelopmentCont
     // var openDialogGraph = $cookies.getObject('openDialogGraph');
     
     var fileName = $location.search().fileName || 'default.graph.js';
-    if(fileName === true)
-        fileName = 'default.graph.js';
 
     $scope.currentTabName = fileName;
 
+    // 실제 그래프 로직이 들어있는 서비스
     DialogGraph.setScope($compile, $scope);
     DialogGraph.setDialogTemplate(angular.element('#dialogGraphTemplate').html());
     DialogGraph.setCanvas('#graphDialogCanvas');
@@ -50,13 +49,16 @@ angular.module('playchat.working-ground').controller('DialogGraphDevelopmentCont
                     var result = DialogGraph.load(data);
                     if(!result)
                     {
-                        alert('로드실패');
+                        angular.element('.graph-body').html('<div class="dialog-graph-error"><h1>그래프 로드 실패</h1></div>');
                     }
                 }
             },
             function(err)
             {
-                console.log('에러 : ', err);
+                if(err.status == 404)
+                {
+                    angular.element('.graph-body').html('<div class="dialog-graph-error"><h1>파일을 찾을 수 없습니다</h1></div>');
+                }
             });
         };
 

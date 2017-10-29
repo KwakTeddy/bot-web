@@ -3,11 +3,11 @@
 {
     'use strict';
 
+    var instance = undefined;
+    var menuInstance = undefined;
+
     angular.module('playchat.working-ground').factory('DialogGraph', function($window, $rootScope)
     {
-        var instance = undefined;
-        var menuInstance = undefined;
-
         var Menu = function()
         {
             this.currentDialog = undefined;
@@ -92,6 +92,14 @@
         if(!menuInstance)
             menuInstance = new Menu();
 
+
+
+
+
+
+
+
+
         var DialogGraph = function()
         {
             this.originalFileData = undefined;
@@ -100,12 +108,25 @@
             this.canvas = undefined;
             this.editor = undefined;
 
+            this.commonDialogs = undefined;
+            this.userDialogs = undefined;
+
             this.$compile = undefined;
             this.$scope = undefined;
 
             this.focusedTarget = undefined;
         };
-        
+
+        DialogGraph.prototype.getCommonDialogs = function()
+        {
+            return this.commonDialogs;
+        };
+
+        DialogGraph.prototype.getUserDialogs = function()
+        {
+            return this.userDialogs;
+        };
+
         DialogGraph.prototype.setScope = function($compile, $scope)
         {
             this.$compile = $compile;
@@ -135,6 +156,13 @@
             var isDragStart = false;
             var canvas = this.canvas.get(0);
             var graphBody = canvas.parentElement;
+
+            var that = this;
+
+            canvas.addEventListener('click', function(e)
+            {
+                that.editor.close();
+            });
 
             window.addEventListener('mouseup', function(e)
             {
@@ -196,6 +224,9 @@
             var that = this;
             window.addEventListener('keydown', function(e)
             {
+                if(e.srcElement.nodeName != 'BODY')
+                    return;
+
                 if(e.keyCode == 39) // right
                 {
                     if(that.focusedTarget.nextElementSibling && that.focusedTarget.nextElementSibling.children.length > 0)
@@ -275,19 +306,23 @@
                 {
                     var parsed = commandMatch[0].replace(/var commonDialogs[^\[]*/gi, '').replace(';', '');
 
-                    var startDialog = JSON.parse(parsed)[0];
+                    this.commonDialogs = JSON.parse(parsed);
+
+                    this.originalFileData = this.originalFileData.replace(commandMatch, '{{commonDialogs}}');
+
+                    var startDialog = this.commonDialogs[0];
 
                     var match = data.match(/var dialogs[^;]*;/gi);
                     if(match && match.length == 1)
                     {
                         parsed = match[0].replace(/var dialogs[^\[]*/gi, '').replace(';', '');
 
-                        startDialog.children = JSON.parse(parsed);
+                        startDialog.children = this.userDialogs = JSON.parse(parsed);
                         this.rawDatas = startDialog;
 
-                        this.drawDialog(this.canvas, this.rawDatas);
-                        this.drawLines(this.canvas.find('.graph-dialog'));
-                        this.focus(this.canvas.find('.graph-dialog:first .graph-dialog-item')[0]);
+                        this.originalFileData = this.originalFileData.replace(match, '{{dialogs}}');
+
+                        this.refresh(this.canvas, this.rawDatas);
 
                         return true;
                     }
@@ -323,22 +358,24 @@
             parent.append(button);
 
             var that = this;
-            button.on('click', function()
+            button.on('click', function(e)
             {
-                that.editor.open();
+                that.editor.open(parent.parent().find('.graph-dialog-item').get(0).dialog);
+                e.stopPropagation();
             });
         };
 
         var makeInputTemplate = function(input)
         {
+            console.log(input);
             var template = '';
             for(var key in input)
             {
                 var icon = key.charAt(0).toUpperCase();
                 if(key == 'if')
-                    icon = 'if';
+                    icon = 'IF';
 
-                template += '<span class="graph-dialog-input-span" data-key="' + icon + '" data-content="' + input[key] + '">' + input[key] + '</span>';
+                template += '<span class="graph-dialog-input-span" data-key="' + icon + '" data-content="' + input[key] + '">[' + key + '] ' + input[key] + '</span>';
             }
 
             return template;
@@ -402,7 +439,6 @@
 
         DialogGraph.prototype.drawDialog = function(parent, dialog)
         {
-            var that = this;
             var t = this.template.replace('{id}', dialog.id).replace('{name}', dialog.name);
 
             var inputTemplate = '';
@@ -445,6 +481,8 @@
             t = t.replace('{input}', inputTemplate).replace('{output}', outputTemplate);
             t = angular.element(this.$compile(t)(this.$scope));
 
+            t.find('.graph-dialog-item').get(0).dialog = dialog;
+
             this.bindDialogFunctions(t);
 
             makeDialogDraggble(t.find('.graph-dialog-item').get(0));
@@ -475,7 +513,12 @@
 
             dialog.find('.graph-dialog-header').on('dblclick', function(e)
             {
-                that.editor.open(dialog);
+                var parent = e.currentTarget.parentElement.parentElement.parentElement.previousElementSibling;
+                if(parent && parent.dialog)
+                {
+                    that.editor.open(parent.dialog, dialog.get(0).children[0].dialog);
+                }
+
                 e.stopPropagation();
             });
 
@@ -605,7 +648,6 @@
         DialogGraph.prototype.drawLines = function(children)
         {
             this.canvas.find('svg').remove();
-
             this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 
             for(var i=0, l=children.length; i<l; i++)
@@ -700,6 +742,26 @@
                     menuInstance.execute(this.getAttribute('data-name'));
                 });
             });
+        };
+
+        DialogGraph.prototype.refresh = function()
+        {
+            this.canvas.html('');
+            this.drawDialog(this.canvas, this.rawDatas);
+            this.drawLines(this.canvas.find('.graph-dialog'));
+            this.focus(this.canvas.find('.graph-dialog:first .graph-dialog-item')[0]);
+        };
+
+        DialogGraph.prototype.refreshLine = function()
+        {
+            this.drawLines(this.canvas.find('.graph-dialog'));
+        };
+
+        DialogGraph.prototype.getCompleteData = function()
+        {
+            delete this.commonDialogs[0].children;
+            var data = this.originalFileData.replace('{{dialogs}}', 'var dialogs = ' + JSON.stringify(JSON.parse(angular.toJson(this.userDialogs)), null, 4) + ';\r\n').replace('{{commonDialogs}}', 'var commonDialogs = ' + JSON.stringify(JSON.parse(angular.toJson(this.commonDialogs)), null, 4) + ';\r\n');
+            return data;
         };
 
         if(!instance)

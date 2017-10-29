@@ -383,6 +383,11 @@ div.slide>input[type=checkbox]{
 	padding-top: 16px;
 	line-height: 30px;
 	border-bottom: 2px solid #038eda;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 .tabs1{
 	display: table;

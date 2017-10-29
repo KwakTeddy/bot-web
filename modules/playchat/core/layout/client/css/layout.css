@@ -14,6 +14,11 @@
     width: 250px;
     background-color: #363636;
     text-transform: capitalize;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .playchat-background .gnb+div
@@ -31,6 +36,11 @@
     width: 100%;
     height: 63px;
     border-bottom: #e7e7e7 solid 1px;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .playchat-background .top-bar+div
@@ -69,6 +79,8 @@
     left: 0;
     right: 0;
     bottom: 211px;
+
+    padding: 20px;
 
     overflow-x: hidden;
     overflow-y: auto;
