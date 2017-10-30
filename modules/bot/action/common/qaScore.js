@@ -16,43 +16,34 @@ QAScore.prototype.intersectArray = function(a, b) {
     return res;
 }
 
-QAScore.prototype.isSameSentence = function(question, answer) {
+QAScore.prototype.levenshteinDistance = function(s, t) {
+    if (!s.length) return t.length;
+    if (!t.length) return s.length;
+
+    return Math.min(
+        levenshteinDistance(s.substr(1), t) + 1,
+        levenshteinDistance(t.substr(1), s) + 1,
+        levenshteinDistance(s.substr(1), t.substr(1)) + (s[0] !== t[0] ? 1 : 0)
+    ) + 1;
+}
+
+QAScore.prototype.getDistance = function(question, answer) {
+    var s = question.inputRaw.replace(/\s/gi, "");
     if (Array.isArray(answer)) {
         for (var i=0; i<answer.length; i++) {
             if (answer.inputRaw) {
-                if (question.inputRaw.replace(/\s/gi, "") == answer[i].inputRaw.replace(/\s/gi, "")) {
-                    return true;
-                }
+                var t = answer[i].inputRaw.replace(/\s/gi, "");
+                return this.levenshteinDistance(s, t);
             }
-
-            var questionArray = question.input.split(" ");
-            var answerArray = answer[i].input.split(" ");
-            if (questionArray.length != answerArray.length) return false;
-            for (var i=0; i<answerArray.length; i++) {
-                if (questionArray[i] != answerArray[i]) {
-                    return false;
-                }
-            }
-            return true;
         }
     } else {
         if (answer.inputRaw) {
-            if (question.inputRaw.replace(/\s/gi, "") == answer.inputRaw.replace(/\s/gi, "")) {
-                return true;
-            }
+            var t = answer.inputRaw.replace(/\s/gi, "");
+            return this.levenshteinDistance(s, t);
         }
-
-        var questionArray = question.input.split(" ");
-        var answerArray = answer.input.split(" ");
-        if (questionArray.length != answerArray.length) return false;
-        for (var i = 0; i < answerArray.length; i++) {
-            if (questionArray[i] != answerArray[i]) {
-                return false;
-            }
-        }
-        return true;
     }
-    return false;
+
+    return question.length;
 }
 
 QAScore.prototype.stripArray = function(answers) {
@@ -75,7 +66,33 @@ QAScore.prototype.stripArray = function(answers) {
     return result;
 }
 
-QAScore.prototype.assignScore = function(nlu) {
+QAScore.prototype.init = function(context) {
+    // 현재 발화의 대답이 중복인 경우, 중복된 발화의 category들을 저장하는 변수 (dsyoon)
+    if (context.botUser["nlu"] == undefined || context.botUser["nlu"] == null) context.botUser["nlu"] = {};
+    if (context.botUser.nlu["contextInfo"] == undefined || context.botUser.nlu["contextInfo"] == null) context.botUser.nlu["contextInfo"] = {};
+
+    // 발화의 상태를 history로 저장한다
+    if (context.botUser.nlu.contextInfo["contextHistory"] == undefined || context.botUser.nlu.contextInfo["contextHistory"] == null) context.botUser.nlu.contextInfo["contextHistory"] = [];
+    if (context.botUser.nlu.contextInfo["matchContextHistory"] == undefined || context.botUser.nlu.contextInfo["matchContextHistory"] == null) context.botUser.nlu.contextInfo["matchContextHistory"] = [];
+    // 발화에 대한 대답의 history로 저장한다 (일반, 멀티context 등..)
+    if (context.botUser.nlu.contextInfo["answerHistory"] == undefined || context.botUser.nlu.contextInfo["answerHistory"] == null) context.botUser.nlu.contextInfo["answerHistory"] = [];
+    // 사용자 발화를 history로 저장한다
+    if (context.botUser.nlu.contextInfo["queryHistory"] == undefined || context.botUser.nlu.contextInfo["queryHistory"] == null) context.botUser.nlu.contextInfo["queryHistory"] = [];
+    // 현재 발화의 상태
+    if (context.botUser.nlu.contextInfo["context"] == undefined || context.botUser.nlu.contextInfo["context"] == null) context.botUser.nlu.contextInfo["context"] = {};
+
+    // 현재 발화의 매치 정보
+    if (context.botUser.nlu["matchInfo"] == undefined || context.botUser.nlu["matchInfo"] == null) context.botUser.nlu["matchInfo"] = {};
+    if (context.botUser.nlu.matchInfo["qa"] == undefined || context.botUser.nlu.matchInfo["qa"] == null) context.botUser.nlu.matchInfo["qa"] = [];
+    if (context.botUser.nlu.matchInfo["contextNames"] == undefined || context.botUser.nlu.matchInfo["contextNames"] == null) context.botUser.nlu.matchInfo["contextNames"] = {};
+    if (context.botUser.nlu.matchInfo["context"] == undefined || context.botUser.nlu.matchInfo["context"] == null) context.botUser.nlu.matchInfo["context"] = {};
+    if (context.botUser.nlu.matchInfo["topScoreCount"] == undefined || context.botUser.nlu.matchInfo["topScoreCount"] == null) context.botUser.nlu.matchInfo["topScoreCount"] = 1;
+}
+
+QAScore.prototype.assignScore = function(context) {
+    this.init(context);
+
+    var nlu = context.botUser.nlu;
     var contextInfo = nlu.contextInfo;
     var matchInfo = nlu.matchInfo;
     var answers = this.stripArray(matchInfo.qa);
@@ -115,7 +132,8 @@ QAScore.prototype.assignScore = function(nlu) {
         }
 
         // Full Match 인 경우
-        if (this.isSameSentence(question, answers[i])) {
+        var distance = this.getDistance(question, answers[i]);
+        if (distance == 0) {
             score += 200;
         }
 

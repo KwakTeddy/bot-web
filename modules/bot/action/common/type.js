@@ -360,7 +360,7 @@ function processOutput(task, context, out) {
         });
 
         // context를 고려한 bot 발화 출력 (dsyoon)
-        context.botUser.nlu.matchInfo = qaScore.assignScore(context.botUser.nlu);
+        context.botUser.nlu.matchInfo = qaScore.assignScore(context);
         var topScoreCount = context.botUser.nlu.matchInfo.topScoreCount;
         var contextCount = Object.keys(context.botUser.nlu.matchInfo.contexts).length;
         if (topScoreCount==0) {
@@ -1552,6 +1552,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
             if (context.botUser.nlu["matchInfo"] == undefined || context.botUser.nlu["matchInfo"] == null) context.botUser.nlu["matchInfo"] = {};
             if (context.botUser.nlu.matchInfo["qa"] == undefined || context.botUser.nlu.matchInfo["qa"] == null) context.botUser.nlu.matchInfo["qa"] = [];
             if (context.botUser.nlu.matchInfo["contextNames"] == undefined || context.botUser.nlu.matchInfo["contextNames"] == null) context.botUser.nlu.matchInfo["contextNames"] = {};
+            if (context.botUser.nlu.matchInfo["context"] == undefined || context.botUser.nlu.matchInfo["context"] == null) context.botUser.nlu.matchInfo["context"] = {};
             if (context.botUser.nlu.matchInfo["topScoreCount"] == undefined || context.botUser.nlu.matchInfo["topScoreCount"] == null) context.botUser.nlu.matchInfo["topScoreCount"] = 1;
 
             _cb(null);
