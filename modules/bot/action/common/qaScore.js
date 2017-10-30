@@ -146,7 +146,7 @@ QAScore.prototype.assignScore = function(scope) {
     var answers = answers.reduce(function(answer1, answer2){
         var isExist = false;
         for (var i=0; i<answer1.length; i++) {
-            if (answer1[i].output == answer2.output) {
+            if (answer1[i].inputRaw == answer2.inputRaw) {
                 isExist = true;
                 break;
             }

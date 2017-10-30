@@ -1554,8 +1554,8 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
             if (context.botUser.nlu["matchInfo"] == undefined || context.botUser.nlu["matchInfo"] == null) context.botUser.nlu["matchInfo"] = {};
             if (context.botUser.nlu.matchInfo["qa"] == undefined || context.botUser.nlu.matchInfo["qa"] == null) context.botUser.nlu.matchInfo["qa"] = [];
             if (context.botUser.nlu.matchInfo["contextNames"] == undefined || context.botUser.nlu.matchInfo["contextNames"] == null) context.botUser.nlu.matchInfo["contextNames"] = {};
-            if (context.botUser.nlu.matchInfo["context"] == undefined || context.botUser.nlu.matchInfo["context"] == null) context.botUser.nlu.matchInfo["context"] = {};
-            if (context.botUser.nlu.matchInfo["topScoreCount"] == undefined || context.botUser.nlu.matchInfo["topScoreCount"] == null) context.botUser.nlu.matchInfo["topScoreCount"] = 1;
+            if (context.botUser.nlu.matchInfo["contexts"] == undefined || context.botUser.nlu.matchInfo["contexts"] == null) context.botUser.nlu.matchInfo["contexts"] = {};
+            if (context.botUser.nlu.matchInfo["topScoreCount"] == undefined || context.botUser.nlu.matchInfo["topScoreCount"] == null) context.botUser.nlu.matchInfo["topScoreCount"] = 0;
 
             _cb(null);
         },

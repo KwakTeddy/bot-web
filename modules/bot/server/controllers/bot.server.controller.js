@@ -133,11 +133,11 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
             if (context.botUser.nlu.contextInfo["context"] == undefined || context.botUser.nlu.contextInfo["context"] == null) context.botUser.nlu.contextInfo["context"] = {};
 
             // 현재 발화의 매치 정보
-            if (context.botUser.nlu["matchInfo"] == undefined || context.botUser.nlu["matchInfo"] == null) context.botUser.nlu["matchInfo"] = {};
-            if (context.botUser.nlu.matchInfo["qa"] == undefined || context.botUser.nlu.matchInfo["qa"] == null) context.botUser.nlu.matchInfo["qa"] = [];
-            if (context.botUser.nlu.matchInfo["contextNames"] == undefined || context.botUser.nlu.matchInfo["contextNames"] == null) context.botUser.nlu.matchInfo["contextNames"] = {};
-            if (context.botUser.nlu.matchInfo["contexts"] == undefined || context.botUser.nlu.matchInfo["contexts"] == null) context.botUser.nlu.matchInfo["contexts"] = {};
-            if (context.botUser.nlu.matchInfo["topScoreCount"] == undefined || context.botUser.nlu.matchInfo["topScoreCount"] == null) context.botUser.nlu.matchInfo["topScoreCount"] = 0;
+            context.botUser.nlu["matchInfo"] = {};
+            context.botUser.nlu.matchInfo["qa"] = [];
+            context.botUser.nlu.matchInfo["contextNames"] = {};
+            context.botUser.nlu.matchInfo["contexts"] = {};
+            context.botUser.nlu.matchInfo["topScoreCount"] = 0;
             cb(null);
         },
         function(cb) {
