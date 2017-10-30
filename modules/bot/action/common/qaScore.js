@@ -16,15 +16,41 @@ QAScore.prototype.intersectArray = function(a, b) {
     return res;
 }
 
-QAScore.prototype.levenshteinDistance = function(s, t) {
-    if (!s.length) return t.length;
-    if (!t.length) return s.length;
+QAScore.prototype.levenshteinDistance = function(src, tgt) {
+    var realCost;
 
-    return Math.min(
-        levenshteinDistance(s.substr(1), t) + 1,
-        levenshteinDistance(t.substr(1), s) + 1,
-        levenshteinDistance(s.substr(1), t.substr(1)) + (s[0] !== t[0] ? 1 : 0)
-    ) + 1;
+    var srcLength = src.length,
+        tgtLength = tgt.length,
+        tempString, tempLength; // for swapping
+
+    var resultMatrix = new Array();
+    resultMatrix[0] = new Array(); // Multi dimensional
+
+    // To limit the space in minimum of source and target,
+    // we make sure that srcLength is greater than tgtLength
+    if (srcLength < tgtLength) {
+        tempString = src; src = tgt; tgt = tempString;
+        tempLength = srcLength; srcLength = tgtLength; tgtLength = tempLength;
+    }
+
+    for (var c = 0; c < tgtLength+1; c++) {
+        resultMatrix[0][c] = c;
+    }
+
+    for (var i = 1; i < srcLength+1; i++) {
+        resultMatrix[i] = new Array();
+        resultMatrix[i][0] = i;
+        for (var j = 1; j < tgtLength+1; j++) {
+            realCost = (src.charAt(i-1) == tgt.charAt(j-1))? 0: 1;
+            resultMatrix[i][j] = Math.min(
+                resultMatrix[i-1][j]+1,
+                resultMatrix[i][j-1]+1,
+                resultMatrix[i-1][j-1] + realCost // same logic as our previous example.
+            );
+        }
+    }
+
+    return resultMatrix[srcLength][tgtLength];
 }
 
 QAScore.prototype.getDistance = function(question, answer) {
@@ -33,13 +59,15 @@ QAScore.prototype.getDistance = function(question, answer) {
         for (var i=0; i<answer.length; i++) {
             if (answer.inputRaw) {
                 var t = answer[i].inputRaw.replace(/\s/gi, "");
-                return this.levenshteinDistance(s, t);
+                var distance = this.levenshteinDistance(s, t);
+                return distance;
             }
         }
     } else {
         if (answer.inputRaw) {
             var t = answer.inputRaw.replace(/\s/gi, "");
-            return this.levenshteinDistance(s, t);
+            var distance = this.levenshteinDistance(s, t);
+            return distance;
         }
     }
 
@@ -85,14 +113,14 @@ QAScore.prototype.init = function(context) {
     if (context.botUser.nlu["matchInfo"] == undefined || context.botUser.nlu["matchInfo"] == null) context.botUser.nlu["matchInfo"] = {};
     if (context.botUser.nlu.matchInfo["qa"] == undefined || context.botUser.nlu.matchInfo["qa"] == null) context.botUser.nlu.matchInfo["qa"] = [];
     if (context.botUser.nlu.matchInfo["contextNames"] == undefined || context.botUser.nlu.matchInfo["contextNames"] == null) context.botUser.nlu.matchInfo["contextNames"] = {};
-    if (context.botUser.nlu.matchInfo["context"] == undefined || context.botUser.nlu.matchInfo["context"] == null) context.botUser.nlu.matchInfo["context"] = {};
-    if (context.botUser.nlu.matchInfo["topScoreCount"] == undefined || context.botUser.nlu.matchInfo["topScoreCount"] == null) context.botUser.nlu.matchInfo["topScoreCount"] = 1;
+    if (context.botUser.nlu.matchInfo["contexts"] == undefined || context.botUser.nlu.matchInfo["contexts"] == null) context.botUser.nlu.matchInfo["contexts"] = {};
+    if (context.botUser.nlu.matchInfo["topScoreCount"] == undefined || context.botUser.nlu.matchInfo["topScoreCount"] == null) context.botUser.nlu.matchInfo["topScoreCount"] = 0;
 }
 
-QAScore.prototype.assignScore = function(context) {
-    this.init(context);
+QAScore.prototype.assignScore = function(scope) {
+    this.init(scope);
 
-    var nlu = context.botUser.nlu;
+    var nlu = scope.botUser.nlu;
     var contextInfo = nlu.contextInfo;
     var matchInfo = nlu.matchInfo;
     var answers = this.stripArray(matchInfo.qa);
@@ -100,9 +128,18 @@ QAScore.prototype.assignScore = function(context) {
     question["inputRaw"] = nlu.sentence;
     question["input"] = nlu.inNLP;
 
+    if (!nlu.sentence && nlu.sentence == undefined) return scope;
+
     var previousSentenceArray = [];
     if (contextInfo.queryHistory.length > 0) {
-        previousSentenceArray = contextInfo.queryHistory[0].input.split(' ');
+        if (contextInfo.queryHistory[0].input && contextInfo.queryHistory[0].input != undefined) {
+            previousSentenceArray = contextInfo.queryHistory[0].input.split(' ');
+        } else {
+            var queryHistory = {};
+            queryHistory["input"] = "";
+            queryHistory["inputRaw"] = "";
+            previousSentenceArray.push(queryHistory);
+        }
     }
 
     // 중복 answer 제거
@@ -193,8 +230,8 @@ QAScore.prototype.assignScore = function(context) {
 
     var topSameScoreCount = 1;
     // 상위 동일 개수 체크
+    var contexts = {};
     if (answers.length > 0) {
-        var contexts = {};
         if (answers[0].context) {
             if (answers.length > 0) contexts[answers[0].context.name] = 1;
             for (var i = 1; i < answers.length; i++) {
@@ -208,10 +245,10 @@ QAScore.prototype.assignScore = function(context) {
         topSameScoreCount = 0;
     }
 
-    matchInfo.topScoreCount = topSameScoreCount;
-    matchInfo.qa = answers;
-    matchInfo.contexts = contexts;
-    return matchInfo;
+    scope.botUser.nlu.matchInfo.topScoreCount = topSameScoreCount;
+    scope.botUser.nlu.matchInfo.qa = answers;
+    scope.botUser.nlu.matchInfo.contexts = contexts;
+    return scope;
 }
 
 // for node.js library export
