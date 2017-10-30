@@ -11,7 +11,6 @@
 
             $scope.outputTypeChanged = function($event)
             {
-                console.log('하 : ', $scope.dialog.output);
             };
 
             $scope.setOutputButtons = function(index)

@@ -1,3 +1,10 @@
+<style>
+.working-ground
+{
+    padding: 0 !important;
+}
+</style>
+
 <script type="text/template" id="dialogGraphTemplate">
     <div class="graph-dialog" data-id="{id}">
         <div class="graph-dialog-item" draggable="true">
@@ -71,3 +78,5 @@
 </div>
 
 <div id="graphDialogEditor" ng-include="'/modules/playchat/working-ground/dialog-graph/client/views/dialog-graph-editor.client.view.html'"></div>
+<div ng-include="'/modules/playchat/working-ground/intent/client/views/intent-management-add.client.view.html'" class="dialog-editor-creation-panel" data-type="intent"></div>
+<div ng-include="'/modules/playchat/working-ground/entity/client/views/entity-management-add.client.view.html'" class="dialog-editor-creation-panel" data-type="entity"></div>

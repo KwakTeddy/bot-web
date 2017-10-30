@@ -7,16 +7,16 @@
     {
         var Instance = function()
         {
-            this.inputListModal = undefined;
+            this.inputModal = undefined;
         };
 
         Instance.prototype.open = function(type, y, x, dataCallback, selectCallback)
         {
             var that = this;
 
-            if(this.inputListModal)
+            if(this.inputModal)
             {
-                this.inputListModal.find('li').each(function(index)
+                this.inputModal.find('li').each(function(index)
                 {
                     if(index > 0)
                     {
@@ -33,11 +33,30 @@
 
                 var t = angular.element(template);
 
-                t.find('li').on('click', function(e)
+                t.find('li').on('mousedown', function(e)
                 {
                     if(this.getAttribute('data-new') == 'true')
                     {
                         //열어야 함.
+                        var target = angular.element('.dialog-editor-creation-panel[data-type="' + type + '"]');
+                        target.css('right', '0');
+
+                        var value = this.getAttribute('data-name');
+                        setTimeout(function()
+                        {
+                            target.find('form').get(0).openCallback(value);
+                        }, 501);
+
+                        target.find('form').get(0).saveCallback = function(name)
+                        {
+                            selectCallback(name);
+                            target.css('right', '-368px');
+                        };
+
+                        target.find('form').get(0).closeCallback = function()
+                        {
+                            target.css('right', '-368px');
+                        };
                     }
 
                     e.stopPropagation();
@@ -49,7 +68,7 @@
                     {
                         dataCallback(++page, function(name, list)
                         {
-                            that.inputListModal.find('li:first').attr('data-name', name);
+                            that.inputModal.find('li:first').attr('data-name', name);
                             for(var i=0; i<list.length; i++)
                             {
                                 var li = document.createElement('li');
@@ -61,7 +80,7 @@
                                     that.close();
                                 });
 
-                                that.inputListModal.append(li);
+                                that.inputModal.append(li);
                             }
                         });
                     }
@@ -71,12 +90,17 @@
 
                 angular.element('body').append(t);
 
-                this.inputListModal = t;
+                this.inputModal = t;
             }
 
             dataCallback(1, function(name, list)
             {
-                that.inputListModal.find('li:first').attr('data-name', name);
+                if(!that.inputModal)
+                {
+                    return;
+                }
+
+                that.inputModal.find('li:first').attr('data-name', name);
                 for(var i=0; i<list.length; i++)
                 {
                     var li = document.createElement('li');
@@ -90,7 +114,7 @@
                         e.stopPropagation();
                     });
 
-                    that.inputListModal.append(li);
+                    that.inputModal.append(li);
                 }
             });
         };
@@ -98,7 +122,7 @@
         Instance.prototype.close = function()
         {
             angular.element('.dialog-editor-input-list-modal').remove();
-            this.inputListModal = undefined;
+            this.inputModal = undefined;
         };
 
 
@@ -155,13 +179,23 @@
                     });
                 }, function(selectedText)
                 {
-                    $scope.$apply(function()
+                    if ($scope.$$phase == '$apply' || $scope.$$phase == '$digest' )
                     {
                         addOrPushData(input, 'entities', '@' + selectedText);
                         if(e.currentTarget.innerText) // 자동으로 화면쪽으로 바인딩이 안되서 임시적으로.
                             e.currentTarget.innerText = '@' + selectedText;
                         angular.element('.dialog-editor-input-key:last').focus();
-                    });
+                    }
+                    else
+                    {
+                        $scope.$apply(function()
+                        {
+                            addOrPushData(input, 'entities', '@' + selectedText);
+                            if(e.currentTarget.innerText) // 자동으로 화면쪽으로 바인딩이 안되서 임시적으로.
+                                e.currentTarget.innerText = '@' + selectedText;
+                            angular.element('.dialog-editor-input-key:last').focus();
+                        });
+                    }
 
                     e.currentTarget.value = '';
 
@@ -184,13 +218,24 @@
                     });
                 }, function(selectedText)
                 {
-                    $scope.$apply(function()
+                    // 새로 만들기에서 넘어오는 스코프가 있다.
+                    if ($scope.$$phase == '$apply' || $scope.$$phase == '$digest' )
                     {
                         input.intent = '#' + selectedText;
                         if(e.currentTarget.innerText) // 자동으로 화면쪽으로 바인딩이 안되서 임시적으로.
                             e.currentTarget.innerText = input.intent;
                         angular.element('.dialog-editor-input-key:last').focus();
-                    });
+                    }
+                    else
+                    {
+                        $scope.$apply(function()
+                        {
+                            input.intent = '#' + selectedText;
+                            if(e.currentTarget.innerText) // 자동으로 화면쪽으로 바인딩이 안되서 임시적으로.
+                                e.currentTarget.innerText = input.intent;
+                            angular.element('.dialog-editor-input-key:last').focus();
+                        });
+                    }
 
                     e.currentTarget.value = '';
 
@@ -219,13 +264,23 @@
 
                 }, function(selectedText)
                 {
-                    $scope.$apply(function()
+                    if ($scope.$$phase == '$apply' || $scope.$$phase == '$digest' )
                     {
                         addOrPushData(input, 'types', '$' + selectedText);
                         if(e.currentTarget.innerText) // 자동으로 화면쪽으로 바인딩이 안되서 임시적으로.
                             e.currentTarget.innerText = '$' + selectedText;
                         angular.element('.dialog-editor-input-key:last').focus();
-                    });
+                    }
+                    else
+                    {
+                        $scope.$apply(function()
+                        {
+                            addOrPushData(input, 'types', '$' + selectedText);
+                            if(e.currentTarget.innerText) // 자동으로 화면쪽으로 바인딩이 안되서 임시적으로.
+                                e.currentTarget.innerText = '$' + selectedText;
+                            angular.element('.dialog-editor-input-key:last').focus();
+                        });
+                    }
 
                     e.currentTarget.value = '';
 
@@ -272,7 +327,7 @@
                 }
                 else if(e.keyCode == 8)
                 {
-                    if(value.length <= 1 && $scope.dialog.inputList.length > 1)
+                    if(value.length <= 1 && $scope.dialog.input.length > 1)
                     {
                         if(_this.checkDelete)
                         {
@@ -282,7 +337,7 @@
                             target.focus();
                             target.setSelectionRange(strLength, strLength);
 
-                            $scope.dialog.inputList.splice(index, 1);
+                            $scope.dialog.input.splice(index, 1);
 
                             e.preventDefault();
                         }

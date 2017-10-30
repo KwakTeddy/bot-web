@@ -26,7 +26,7 @@
                     <p class="dialog-editor-subject">Input <a href="#" class="codebtn" tabindex="-1"></a></p>
                     <div class="dialog-editor-input-box">
                         <div class="dialog-editor-input-wrapper" ng-repeat="input in dialog.input" data-nlu="{{ nlpedText }}">
-                            <input type="text" class="dialog-editor-input" ng-model="input.text" ng-keydown="inputOnKeyDown($event, $index);" ng-keyup="inputKeyOnKeyUp($event);" ng-required="true">
+                            <input type="text" class="dialog-editor-input" ng-model="input.text" ng-keydown="inputOnKeyDown($event, $index);" ng-required="true">
                             <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteInput($index);">
                         </div>
                         <div style="position: relative;">
@@ -144,6 +144,10 @@
                                     </ul>
                                 </div>
                             </div>
+                            <div class="dialog-editor-output-action-row">
+                                <p class="dialog-editor-output-label">Option</p>
+                                <input type="text" class="dialog-editor-output-input" style="width: 100%;" ng-model="dialog.output.option">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -175,134 +179,4 @@
             </div>
         </form>
     </div>
-
-
-<!--<div class="dialog-editor dialog-editor-advanced" style="display:none;">-->
-    <!--<div class="dialog-editor-body">-->
-        <!--<div class="dialog-editor-row">-->
-            <!--<p class="dialog-editor-subject">Dialog name</p>-->
-            <!--<div class="dialog-editor-input-box">-->
-                <!--<input type="text" class="dialog-editor-input" placeholder="Dialog name">-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="dialog-editor-row">-->
-            <!--<div class="dialog-editor-row">-->
-                <!--<p class="dialog-editor-subject">Task <a href="#" class="codebtn"></a></p>-->
-                <!--<div class="dialog-editor-input-box">-->
-                    <!--<select class="jumbo-select"></select>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="dialog-editor-row">-->
-                <!--<p class="dialog-editor-subject">Output <a href="#" class="codebtn"></a></p>-->
-                <!--<a href="#" class="flR inline-block mr20"><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/add.png"></a>-->
-                <!--<div class="dialog-editor-output-box">-->
-                    <!--<div style="text-align: right; margin: 10px 5px;">-->
-                        <!--<img src="/modules/playchat/working-ground/dialog-graph/client/imgs/switch.png" class="image-button">-->
-                        <!--<img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img">-->
-                    <!--</div>-->
-                    <!--<div class="dialog-editor-output-box-row">-->
-                        <!--<span>IF</span>-->
-                        <!--<input type="text">-->
-                    <!--</div>-->
-                    <!--<p class="dialog-editor-output-text" contenteditable="true">-->
-                        <!--Lorem Ipsum is simply dummy text of the printing and typesetting industry.-->
-                    <!--</p>-->
-                    <!--<div class="dialog-editor-output-box-row">-->
-                        <!--<span class="blue-label">Add image</span>-->
-                        <!--<img src="/modules/playchat/working-ground/dialog-graph/client/imgs/blue-arrow.png">-->
-                    <!--</div>-->
-                    <!--<div class="dialog-editor-output-box-row">-->
-                        <!--<span class="blue-label">Button name01</span>-->
-                        <!--<p class="output-button-label">www.mornbrain.ai</p>-->
-                    <!--</div>-->
-                    <!--<div class="dialog-editor-output-box-row">-->
-                        <!--<span class="blue-label">Add button</span>-->
-                        <!--<img src="/modules/playchat/working-ground/dialog-graph/client/imgs/blue-arrow.png">-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="dialog-editor-row">-->
-                <!--<p class="dialog-editor-subject">Action <a href="#" class="codebtn"></a></p>-->
-                <!--<div style="padding: 8px 17px;">-->
-                    <!--<select class="jumbo-select dialog-editor-action-type">-->
-                        <!--<option></option>-->
-                        <!--<option></option>-->
-                    <!--</select>-->
-                    <!--<select class="jumbo-select dialog-editor-action-dialog">-->
-                        <!--<option></option>-->
-                        <!--<option></option>-->
-                    <!--</select>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="dialog-editor-footer">-->
-            <!--<button type="button" class="blue-button">Save</button>-->
-            <!--<button type="button" class="default-button">Cancel</button>-->
-        <!--</div>-->
-    <!--</div>-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!--<div class="dialog-editor-name" style="display: none;">-->
-        <!--<div class="dialog-editor-row">-->
-            <!--<p class="dialog-editor-subject">Dialog name</p>-->
-            <!--<input type="text" class="dialog-editor-input" placeholder="Dialog name">-->
-        <!--</div>-->
-        <!--<div class="dialog-editor-row">-->
-            <!--<p class="dialog-editor-subject">Input <a href="#" class="codebtn"></a></p>-->
-            <!--<input type="text" class="dialog-editor-input">-->
-            <!--<a href="#"><span class="dialog-editor-plus"></span></a>-->
-        <!--</div>-->
-        <!--<div class="dialog-editor-row">-->
-            <!--<p class="dialog-editor-subject">Output <a href="#" class="codebtn"></a></p>-->
-            <!--<a href="#" class="flR inline-block mr20"><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/add.png"></a>-->
-            <!--<div class="dialog-editor-output-box">-->
-                <!--<div style="text-align: right; margin: 10px 5px;">-->
-                    <!--<img src="/modules/playchat/working-ground/dialog-graph/client/imgs/switch.png" class="image-button">-->
-                    <!--<img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img">-->
-                <!--</div>-->
-                <!--<div class="dialog-editor-output-box-row">-->
-                    <!--<p>Action</p>-->
-                    <!--<span>IF</span>-->
-                    <!--<input type="text">-->
-                <!--</div>-->
-                <!--<div class="dialog-editor-output-box-row">-->
-                    <!--<p>Action type</p>-->
-                    <!--<div class="dialog-editor-output-box-input-wrapper">-->
-                        <!--<select>-->
-                            <!--<option></option>-->
-                        <!--</select>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="dialog-editor-output-box-row">-->
-                    <!--<p>Dialog Select</p>-->
-                    <!--<div class="dialog-editor-output-box-input-wrapper">-->
-                        <!--<select>-->
-                            <!--<option></option>-->
-                        <!--</select>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="dialog-editor-output-box-row">-->
-                    <!--<p>Option</p>-->
-                    <!--<p>-->
-                        <!--Lorem Ipsum is simply dummy text of the printing and typesetting industry.-->
-                    <!--</p>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="dialog-editor-footer">-->
-            <!--<button type="button" class="blue-button">Save</button>-->
-            <!--<button type="button" class="default-button">Cancel</button>-->
-        <!--</div>-->
-    <!--</div>-->
 </div>

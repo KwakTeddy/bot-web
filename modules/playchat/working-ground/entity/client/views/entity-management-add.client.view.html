@@ -1,0 +1,32 @@
+<form ng-controller="EntityManagementAddController" ng-submit="save($event);">
+    <div class="entity-management-add-header">
+        <a href="#" class="entity-management-add-close">
+            <img src="/modules/playchat/working-ground/common/client/imgs/close.png" ng-click="close($event);">
+        </a>
+        <p>Entity Add</p>
+    </div>
+    <div class="entity-management-add-content">
+        <p class="entity-management-add-subject">Entity name</p>
+        <input type="text" class="entity-management-add-input" placeholder="Entity Name" ng-model="entity.name" ng-required="true">
+        <ul class="entity-management-add-content-label">
+            <li class="entity-content">Value Name</li>
+            <li class="entity-synonyms">Synonyms</li>
+        </ul>
+        <div class="entity-management-add-content-row">
+            <div class="entity-management-add-content-box" style="width: 34%;">
+                <input type="text" class="inside" value="Value name" ng-required="true">
+            </div>
+            <div class="entity-management-add-content-box" style="width: 64%;">
+                <span class="element">HelloHelloHelloh <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/close.png"> </span>
+                <span class="element">HelloHelloHelloh <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/close.png"> </span>
+                <span class="element">HelloHelloHelloh <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/close.png"> </span>
+                <span class="element">HelloHelloHelloh <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/close.png"> </span>
+            </div>
+            <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="image-button">
+        </div>
+        <div class="dialog-editor-footer">
+            <button class="blue-button">Save</button>
+            <button type="button" class="default-button" ng-click="close($event);">Cancel</button>
+        </div>
+    </div>
+</form>
