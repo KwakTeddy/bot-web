@@ -146,7 +146,8 @@ QAScore.prototype.assignScore = function(scope) {
     var answers = answers.reduce(function(answer1, answer2){
         var isExist = false;
         for (var i=0; i<answer1.length; i++) {
-            if (answer1[i].inputRaw == answer2.inputRaw) {
+            if (answer1[i].inputRaw == answer2.inputRaw &&
+                answer1[i].context.name == answer2.context.name) {
                 isExist = true;
                 break;
             }
@@ -163,7 +164,7 @@ QAScore.prototype.assignScore = function(scope) {
 
         // multi context에 대한 선택이었는지 확인
         if (contextInfo.context.type=="CONTEXT_SELECTION") {
-            if (answers[i].context.name == contextInfo.context.name) {
+            if (answers[i].context.name == co2ntextInfo.context.name) {
                 score += 300;
             }
         }
@@ -176,37 +177,40 @@ QAScore.prototype.assignScore = function(scope) {
 
         // context 매치
         if (contextInfo.contextHistory && contextInfo.contextHistory[0]) {
-            var previousContextName = Object.getOwnPropertyNames(contextInfo.contextHistory[0])[0];
+            var previousContextNames = Object.getOwnPropertyNames(contextInfo.contextHistory[0]);
+            if (previousContextNames.length == 1) {
+                var previousContextName = previousContextNames[0];
 
-            var currentContext = answers[i].context;
-            var contexts = [];
-            while (currentContext != null && currentContext.name) {
-                contexts.push(currentContext.name);
-                currentContext = currentContext.parent;
-            }
-            var contextMatchByDepth = [];
-            for (var j=0; j<contexts.length; j++) {
-                contextMatchByDepth[contextMatchByDepth.length] = 0;
-                var context = contexts[j];
-                var previousContext = contextInfo.matchContextHistory[0][previousContextName];
-                while (previousContext != null && previousContext.name) {
-                    if (context == previousContext.name) {
-                        contextMatchByDepth[contextMatchByDepth.length-1] = 1;
+                var currentContext = answers[i].context;
+                var contexts = [];
+                while (currentContext != null && currentContext.name) {
+                    contexts.push(currentContext.name);
+                    currentContext = currentContext.parent;
+                }
+                var contextMatchByDepth = [];
+                for (var j = 0; j < contexts.length; j++) {
+                    contextMatchByDepth[contextMatchByDepth.length] = 0;
+                    var context = contexts[j];
+                    var previousContext = contextInfo.matchContextHistory[0][previousContextName];
+                    while (previousContext != null && previousContext.name) {
+                        if (context == previousContext.name) {
+                            contextMatchByDepth[contextMatchByDepth.length - 1] = 1;
+                            break;
+                        }
+                        if (previousContext.parent) previousContext = previousContext.parent;
+                        else break;
+                    }
+                }
+                // 1depth 부터 같은지 체크
+                var depth = 0;
+                for (var j = contextMatchByDepth.length - 1; j >= 0; j--) {
+                    if (contextMatchByDepth[j] == 0) {
                         break;
                     }
-                    if (previousContext.parent) previousContext = previousContext.parent;
-                    else break;
+                    depth += 1;
                 }
+                score += depth * 20;
             }
-            // 1depth 부터 같은지 체크
-            var depth = 0;
-            for (var j=contextMatchByDepth.length-1; j>=0; j--) {
-                if (contextMatchByDepth[j] == 0) {
-                    break;
-                }
-                depth += 1;
-            }
-            score += depth * 20;
         }
 
         // 이전 Question과 현제 답변 문장의 Question (answers[i].input, answers[i].inputRaw)의 유사도 score 계산

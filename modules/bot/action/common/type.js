@@ -414,7 +414,9 @@ function processOutput(task, context, out) {
                 context.botUser.nlu.contextInfo["contextHistory"].splice(0, 0, context.botUser.nlu.matchInfo.contexts);
                 if (context.botUser.nlu.contextInfo.context.type=="CONTEXT_SELECTION") {
                     var json = {};
-                    json[context.botUser.nlu.matchInfo.qa[0].context.name] = context.botUser.nlu.matchInfo.contextNames[context.botUser.nlu.matchInfo.qa[0].context.name];
+                    for (var i=0; i<topScoreCount; i++) {
+                        json[context.botUser.nlu.matchInfo.qa[i].context.name] = context.botUser.nlu.matchInfo.contextNames[context.botUser.nlu.matchInfo.qa[i].context.name];
+                    }
                     context.botUser.nlu.contextInfo["matchContextHistory"].splice(0, 0, json);
                 } else {
                     context.botUser.nlu.contextInfo["matchContextHistory"].splice(0, 0, context.botUser.nlu.matchInfo.contextNames);
