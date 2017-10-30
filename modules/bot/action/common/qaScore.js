@@ -54,18 +54,18 @@ QAScore.prototype.levenshteinDistance = function(src, tgt) {
 }
 
 QAScore.prototype.getDistance = function(question, answer) {
-    var s = question.inputRaw.replace(/\s/gi, "");
+    var s = question.inputRaw.replace(/\s|\"|\'|<|>|\(|\)/gi, "");
     if (Array.isArray(answer)) {
         for (var i=0; i<answer.length; i++) {
             if (answer.inputRaw) {
-                var t = answer[i].inputRaw.replace(/\s/gi, "");
+                var t = answer[i].inputRaw.replace(/\s|\"|\'|<|>|\(|\)/gi, "");
                 var distance = this.levenshteinDistance(s, t);
                 return distance;
             }
         }
     } else {
         if (answer.inputRaw) {
-            var t = answer.inputRaw.replace(/\s/gi, "");
+            var t = answer.inputRaw.replace(/\s|\"|\'|<|>|\(|\)/gi, "");
             var distance = this.levenshteinDistance(s, t);
             return distance;
         }
