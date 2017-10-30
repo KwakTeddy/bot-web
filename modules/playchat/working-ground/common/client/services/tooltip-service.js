@@ -9,7 +9,7 @@
                   '</div>';
 
    var instance = undefined;
-   angular.module('playchat.working-ground').factory('ToolTipService', function($window, $rootScope)
+   angular.module('playchat').factory('ToolTipService', function($window, $rootScope)
    {
         var ToolTip = function(target, direction, text)
         {

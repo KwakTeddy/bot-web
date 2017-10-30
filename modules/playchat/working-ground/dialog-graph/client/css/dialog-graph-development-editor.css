@@ -1,0 +1,32 @@
+.dialog-editor-output-functions
+{
+    text-align: right;
+    padding: 5px;
+}
+
+.dialog-editor-output-if, .dialog-editor-output-action-row
+{
+    padding: 14px;
+}
+
+.dialog-editor-output-label
+{
+    font-size: 12px;
+    margin-bottom: 4px;
+}
+
+.dialog-editor-output-input
+{
+    padding: 8px 18px 9px 8px;
+    border-radius: 6px;
+    background: #fff;
+    border: 1px solid #d7d7d7;
+
+    box-sizing: border-box;
+}
+
+.dialog-editor-output-input.if
+{
+    width: 90%;
+    margin-left: 10px;
+}

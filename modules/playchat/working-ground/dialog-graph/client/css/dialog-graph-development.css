@@ -694,7 +694,7 @@
 
 .dialog-editor-input
 {
-    width: 98%;
+    width: 100%;
 
     padding: 8px 18px 9px !important;
     border-radius: 6px;
@@ -841,7 +841,7 @@
     border-radius: 6px;
     background: #fff;
     margin: 8px auto 0;
-    width: 90%;
+    width: 93%;
 }
 
 .dialog-editor-output-box[disabled]
@@ -1117,7 +1117,7 @@
 
 .dialog-editor-select-input
 {
-    width: 63%;
+    width: 63.7%;
     height: 33px;
     display: inline-block;
     border: 1px solid #ddd;
@@ -1213,6 +1213,11 @@
     font-size: 10px;
     padding: 3px 0;
     text-align: center;
+
+    position: absolute;
+    top: -30px;
+    right: 20px;
+    z-index: 1000;
 }
 
 .dialog-editor-input-list-modal

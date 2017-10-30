@@ -3,7 +3,7 @@
 {
     'use strict';
 
-    angular.module('playchat.working-ground').factory('TabService', function($window, $rootScope)
+    angular.module('playchat').factory('TabService', function($window, $rootScope)
     {
         var Tab = function(tab)
         {

@@ -3,7 +3,7 @@
 {
     'use strict';
 
-    angular.module('playchat.working-ground').factory('ModalService', function($window, $rootScope)
+    angular.module('playchat').factory('ModalService', function($window, $rootScope)
     {
         var Modal = function(name, $scope)
         {

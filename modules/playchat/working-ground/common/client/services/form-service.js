@@ -3,7 +3,7 @@
 {
     'use strict';
 
-    angular.module('playchat.working-ground').factory('FormService', function($window, $rootScope)
+    angular.module('playchat').factory('FormService', function($window, $rootScope)
     {
         var f = function(selector)
         {

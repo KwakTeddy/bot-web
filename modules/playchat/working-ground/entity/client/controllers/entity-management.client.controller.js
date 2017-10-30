@@ -2,7 +2,7 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat.working-ground').controller('EntityManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService', function ($window, $scope, $resource, $cookies, $location, $compile, FileUploader, ModalService, TabService, FormService, PagingService)
+angular.module('playchat').controller('EntityManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService', function ($window, $scope, $resource, $cookies, $location, $compile, FileUploader, ModalService, TabService, FormService, PagingService)
 {
     $scope.$parent.changeWorkingGroundName('Management > Entity');
 
@@ -243,7 +243,7 @@ angular.module('playchat.working-ground').controller('EntityManagementController
                   '    <input type="text" required="required">' +
                   '    <input type="text" placeholder="동의어입력(enter)" ng-keydown="synonymInputKeydown($event);">' +
                   '</td>';
-            tr += '<td><img src="/modules/playchat/working-ground/common/client/img/delete.png" class="delete-img" ng-click="deleteEntityContent($event);"></td>';
+            tr += '<td><img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteEntityContent($event);"></td>';
             tr += '</tr>';
 
             tr = $compile(tr)($scope);

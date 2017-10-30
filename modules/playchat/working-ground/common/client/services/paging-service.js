@@ -3,7 +3,7 @@
 {
     'use strict';
 
-    angular.module('playchat.working-ground').factory('PagingService', function($window, $rootScope)
+    angular.module('playchat').factory('PagingService', function($window, $rootScope)
     {
         function getPrevNextPage(page, totalPage)
         {

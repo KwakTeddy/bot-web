@@ -5,9 +5,9 @@
         </form>
         <div class="funtionbtn1">
             <a href="#">
-                <img src="modules/playchat/working-ground/common/client/img/export.png">
+                <img src="modules/playchat/working-ground/common/client/imgs/export.png">
                 <span ng-click="modal.importModal.open();">Import</span>
-                <img src="modules/playchat/working-ground/common/client/img/Q.png">
+                <img src="modules/playchat/working-ground/common/client/imgs/Q.png">
             </a>
         </div>
     </div>
@@ -45,8 +45,8 @@
                     <td><a href="#" ng-click="modify(item);">{{ item.name }}</a></td>
                     <td>{{ item.user.displayName }}</td>
                     <td>
-                        <a href="#" class="flR" ng-click="delete(item);"><img src="modules/playchat/working-ground/common/client/img/delete.png" class="delete-img"></a>
-                        <a href="#" class="flR mr5" ng-click="modify(item);"><img src="modules/playchat/working-ground/common/client/img/modify.png" class="modify-img"></a>
+                        <a href="#" class="flR" ng-click="delete(item);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>
+                        <a href="#" class="flR mr5" ng-click="modify(item);"><img src="modules/playchat/working-ground/common/client/imgs/modify.png" class="modify-img"></a>
                     </td>
                     <!--<td>-->
                     <!--<div class="slide on">-->
@@ -60,11 +60,11 @@
         <div class="tablePaging">
             <div class="tablePagingC">
                 <a href="/playchat/management/intent?page={{ pageOptions.prev }}" ng-click="toPage(pageOptions.prev);" class="direction">
-                    <img src="modules/playchat/working-ground/common/client/img/btn_prev.png" alt="이전페이지이동">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="이전페이지이동">
                 </a>
                 <a ng-repeat="page in pageOptions.pages" href="/playchat/management/intent?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
                 <a href="/playchat/management/intent?page={{ pageOptions.next }}" ng-click="toPage(pageOptions.next);" class="direction">
-                    <img src="modules/playchat/working-ground/common/client/img/btn_next.png" alt="다음페이지이동">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="다음페이지이동">
                 </a>
             </div>
         </div>

@@ -2,7 +2,7 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat.working-ground').controller('IntentManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService', function ($window, $scope, $resource, $cookies, $location, $compile, FileUploader, ModalService, TabService, FormService, PagingService)
+angular.module('playchat').controller('IntentManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService', function ($window, $scope, $resource, $cookies, $location, $compile, FileUploader, ModalService, TabService, FormService, PagingService)
 {
     $scope.$parent.changeWorkingGroundName('Management > Intent');
 
@@ -147,7 +147,7 @@ angular.module('playchat.working-ground').controller('IntentManagementController
                 for(var i=0, l=result.length; i<l; i++)
                 {
                     var tr = '<tr class="intent-content-row">';
-                    tr += '<td>' + result[i].name + '</td> <td> <img src="modules/playchat/working-ground/common/client/img/delete.png" class="delete-img" ng-click="deleteContent($event);"> </td>';
+                    tr += '<td>' + result[i].name + '</td> <td> <img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteContent($event);"> </td>';
                     tr += '</tr>';
 
                     html += tr;
@@ -231,7 +231,7 @@ angular.module('playchat.working-ground').controller('IntentManagementController
             }
 
             var tr = '<tr class="intent-content-row">';
-            tr += '<td>' + input.value + '</td> <td> <img src="modules/playchat/working-ground/common/client/img/delete.png" class="delete-img" ng-click="deleteContent($event);"> </td>';
+            tr += '<td>' + input.value + '</td> <td> <img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteContent($event);"> </td>';
             tr += '</tr>';
 
             angular.element('#intentList').append($compile(tr)($scope));

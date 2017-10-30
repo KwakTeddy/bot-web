@@ -6,7 +6,7 @@
     var instance = undefined;
     var menuInstance = undefined;
 
-    angular.module('playchat.working-ground').factory('DialogGraph', function($window, $rootScope)
+    angular.module('playchat').factory('DialogGraph', function($window, $rootScope)
     {
         var Menu = function()
         {
@@ -360,7 +360,7 @@
             var that = this;
             button.on('click', function(e)
             {
-                that.editor.open(parent.parent().find('.graph-dialog-item').get(0).dialog);
+                that.editor.open(parent.parent().find('.graph-dialog-item').get(0).dialog, null);
                 e.stopPropagation();
             });
         };
