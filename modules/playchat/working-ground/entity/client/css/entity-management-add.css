@@ -111,7 +111,7 @@
     word-wrap: break-word;
 
     width: 90%;
-    margin: 0 auto;
+    margin: 5px auto;
     box-sizing: border-box;
 }
 
@@ -126,7 +126,7 @@
 {
     font-size: 14px;
     font-weight: 500;
-    margin: 10px 2px;
+    margin: 5px 2px;
     padding: 5px;
 
     border: 1px solid #efefef;
@@ -151,10 +151,16 @@
     max-width: 75%;
 }
 
+.entity-management-add-content-box .element span:focus
+{
+    outline: 1px solid #eef4ff;
+}
+
 .entity-management-add-content-box img
 {
     vertical-align: middle;
-    margin-left: 5px;
+    margin-left: 10px;
+    cursor: pointer;
 }
 
 .entity-management-add-content-row > img

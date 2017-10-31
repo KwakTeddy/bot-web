@@ -2,82 +2,125 @@
 {
     'use strict';
 
-    angular.module('playchat').controller('EntityManagementAddController', ['$scope', '$resource', '$cookies', '$timeout', '$element', function ($scope, $resource, $cookies, $timeout, $element)
+    angular.module('playchat').controller('EntityManagementAddController', ['$scope', '$resource', '$cookies', '$timeout', '$element', 'CaretService', function ($scope, $resource, $cookies, $timeout, $element, CaretService)
     {
-        var IntentService = $resource('/api/:botId/intents/:intentId', { botId: '@botId', intentId: '@intentId' }, { update: { method: 'PUT' } });
+        var EntityService = $resource('/api/:botId/entitys/:entityId', { botId: '@botId', entityId: '@entityId' }, { update: { method: 'PUT' } });
 
         var chatbot = $cookies.getObject('chatbot');
         var formElement = $element.get(0);
 
-        $scope.intent = {
+        $scope.entity = {
             name: '',
-            intentContents: [{ content: '' }]
+            entityContents: [{ name: '', synonyms: [''] }]
         };
 
         $scope.keydown = function(e, index)
         {
             if(e.keyCode == 13 && (e.ctrlKey || e.metaKey))
             {
-                console.log(index);
                 e.preventDefault();
-                $scope.intent.intentContents.splice(index + 1, 0, { content: '' });
+                $scope.entity.entityContents.splice(index + 1, 0, { name: '', synonyms: [''] });
 
                 $timeout(function()
                 {
-                    angular.element('.intent-management-add-input-wrapper .intent-management-add-input').get(index + 1).focus();
-                }, 100);
+                    angular.element('.entity-management-add-content-row').get(index + 1).children[0].children[0].focus();
+                }, 50);
             }
         };
 
-        $scope.addIntent = function()
+        $scope.synonymKeyDown = function(e, content, index)
         {
-            $scope.intent.intentContents.push({ content: '' });
+            if(e.keyCode == 13)
+            {
+                content.synonyms.splice(index + 1, 0, '');
+
+                $timeout(function()
+                {
+                    e.currentTarget.parentElement.nextElementSibling.children[0].focus();
+                }, 50);
+
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        };
+
+        $scope.synonymKeyUp = function(e, synonyms, index)
+        {
+            synonyms[index] = e.currentTarget.innerText;
+        };
+
+        $scope.focusToContentEditable = function(e)
+        {
+            e.currentTarget.children[0].focus();
+            e.stopPropagation();
+        };
+
+        $scope.addEntityContent = function()
+        {
+            $scope.entity.entityContents.push({ name: '', synonyms: [''] });
 
             $timeout(function()
             {
-                angular.element('.intent-management-add-input-wrapper .intent-management-add-input:last').focus();
-            }, 100);
+                angular.element('.entity-management-add-content-row:last .inside').focus();
+            }, 50);
         };
 
-        $scope.deleteContent = function(index)
+        $scope.deleteEntityContent = function(index)
         {
-            if($scope.intent.intentContents.length == 1)
+            if($scope.entity.entityContents.length == 1)
             {
-                alert('마지막 Input은 삭제할 수 없습니다');
+                alert('마지막 엔티티는 삭제할 수 없습니다');
                 return;
             }
 
-            $scope.intent.intentContents.splice(index, 1);
+            $scope.entity.entityContents.splice(index, 1);
 
             $timeout(function()
             {
-                angular.element('.intent-management-add-input-wrapper .intent-management-add-input').get(index).focus();
+                angular.element('.entity-management-add-content-row').get(index).children[0].children[0].focus();
             }, 100);
+        };
+
+        $scope.deleteEntityContentSynonym = function(content, index, e)
+        {
+            if(content.synonyms.length == 1)
+            {
+                alert('마지막 Synonym은 삭제할 수 없습니다');
+                return;
+            }
+
+            var target = e.currentTarget.parentElement.previousElementSibling;
+            if(!target)
+                target = e.currentTarget.parentElement.nextElementSibling;
+
+            target.children[0].focus();
+
+            content.synonyms.splice(index, 1);
         };
 
         $scope.save = function(e)
         {
             var params = {};
             params.botId = chatbot.id;
-            params.name = $scope.intent.name;
-            params.intentContents = [];
+            params.name = $scope.entity.name;
+            params.entityContents = JSON.parse(angular.toJson($scope.entity.entityContents));
 
-            for(var i=0,l=$scope.intent.intentContents.length; i<l; i++)
+            console.log(params);
+
+            EntityService.save(params, function()
             {
-                params.intentContents.push($scope.intent.intentContents[i].content);
-            }
-
-            IntentService.save(params, function()
+                if(formElement.saveCallback)
                 {
-                    if(formElement.saveCallback)
-                    {
-                        formElement.saveCallback($scope.intent.name);
-                    }
-                },
-                function(error)
+                    formElement.saveCallback($scope.entity.name);
+                }
+            },
+            function(err)
+            {
+                if(err.data.message == 'Duplicated entity name')
                 {
-                    alert(error.data.message);
-                });
+                    alert(err.data.message);
+                }
+            });
         };
 
         $scope.close = function(e)
@@ -90,7 +133,7 @@
 
         formElement.openCallback = function(name)
         {
-            $element.find('.intent-management-add-input:first').val(name || '').focus();
+            $element.find('.entity-management-add-input:first').val(name || '').focus();
         };
     }]);
 })();

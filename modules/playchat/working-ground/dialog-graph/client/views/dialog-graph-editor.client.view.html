@@ -37,7 +37,7 @@
                 <div class="dialog-editor-row" ng-if="isAdvancedMode === true">
                     <p class="dialog-editor-subject">Input <a href="#" class="codebtn" tabindex="-1"></a></p>
                     <div class="dialog-editor-input-box" style="margin-bottom: 30px;">
-                        <p class="dialog-editor-advanced-input-placeholder">키워드, #인텐트, @엔터티, $타입, /정규식/, if(조건식)</p>
+                        <p class="dialog-editor-advanced-input-placeholder">키워드, #인텐트, @엔티티, $타입, /정규식/, if(조건식)</p>
                         <div ng-repeat="input in dialog.input">
                             <div class="dialog-editor-input-textarea" data-nlu="{{ nlpedText }}" ng-click="focusToInputArea($event);">
                                 <span ng-repeat="(key, val) in input" ng-show="getInputKeyLength(input, key) > 0">

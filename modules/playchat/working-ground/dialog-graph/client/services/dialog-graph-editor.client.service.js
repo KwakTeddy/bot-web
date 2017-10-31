@@ -32,6 +32,7 @@
 
         DialogGraphEditor.prototype.close = function()
         {
+            angular.element('.dialog-editor-creation-panel').css('right', this.rightStyle);
             angular.element('#graphDialogEditor').css('right', this.rightStyle);
         };
 
