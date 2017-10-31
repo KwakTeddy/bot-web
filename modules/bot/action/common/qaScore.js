@@ -232,10 +232,10 @@ QAScore.prototype.assignScore = function(scope) {
         return answer2.score - answer1.score;
     });
 
-    var topSameScoreCount = 1;
-    // 상위 동일 개수 체크
-    var contexts = {};
-    if (answers.length > 0) {
+    if (answers.length>0  && answers[0].score > 1.0) {
+        var topSameScoreCount = 1;
+        // 상위 동일 개수 체크
+        var contexts = {};
         if (answers[0].context) {
             if (answers.length > 0) contexts[answers[0].context.name] = 1;
             for (var i = 1; i < answers.length; i++) {
