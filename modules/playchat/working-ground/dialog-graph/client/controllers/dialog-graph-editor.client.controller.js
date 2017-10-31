@@ -1,7 +1,5 @@
 angular.module('playchat').controller('DialogGraphEditorController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$timeout', 'DialogGraph', 'DialogGraphEditor', 'DialogGraphEditorInput', 'DialogGraphEditorOutput', 'DialogGraphEditorTask', function ($window, $scope, $resource, $cookies, $location, $compile, $timeout, DialogGraph, DialogGraphEditor, DialogGraphEditorInput, DialogGraphEditorOutput, DialogGraphEditorTask)
 {
-    var DialogGraphsService = $resource('/api/:botId/dialoggraphs/:fileName', { botId: '@botId', fileName: '@fileName' });
-
     var chatbot = $cookies.getObject('chatbot');
 
     $scope.chatbot = chatbot;
@@ -112,6 +110,12 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
     
     $scope.save = function()
     {
+        if(!DialogGraph.checkDuplicatedName($scope.dialog.name))
+        {
+            alert($scope.dialog.name + ' is duplicated');
+            return;
+        }
+
         var result = {};
         if($scope.oldDialog)
         {
@@ -147,23 +151,17 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         // 새로 추가되는 경우 실 데이터에도 추가해줌.
         if($scope.parentDialog && !$scope.oldDialog)
         {
-            ($scope.parentDialog.children || ($scope.parentDialog.children = [])).push(result);
+            // var fileName = $location.search().fileName || 'default.graph.js';
+            // var prefix = fileName.split('.')[0];
+            // ($scope.parentDialog.children || ($scope.parentDialog.children = [])).push(result);
+
+            DialogGraph.addChildDialog($scope.parentDialog, result);
         }
 
-        var data = DialogGraph.getCompleteData();
-
-        console.log('데이터 : ', data);
-
-        var fileName = $location.search().fileName || 'default.graph.js';
-        var data = DialogGraph.getCompleteData();
-        DialogGraphsService.save({ data: data, botId: chatbot.id, fileName: fileName }, function()
-        {
-            DialogGraph.refreshLine();
-            $scope.close();
-        }, function(error)
-        {
-            alert('저장 실패 : ' + error.message);
-        });
+        DialogGraph.refresh();
+        DialogGraph.setDirty(true);
+        DialogGraph.focusById(result.id);
+        $scope.close();
     };
 
     $scope.close = function()

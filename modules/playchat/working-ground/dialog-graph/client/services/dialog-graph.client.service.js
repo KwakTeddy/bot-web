@@ -33,26 +33,108 @@
 
         Menu.prototype.addChild = function()
         {
+            var dialog = this.currentDialog.get(0).children[0].dialog;
+            instance.editor.open(dialog, null);
+
+            this.closeMenu();
         };
 
         Menu.prototype.moveUp = function()
         {
+            var parentDialog = this.currentDialog.parent().prev().get(0).dialog;
+            var dialog = this.currentDialog.get(0).children[0].dialog;
+            var prevDialog = (this.currentDialog.prev().get(0) ? this.currentDialog.prev().get(0).children[0].dialog : undefined);
+            if(prevDialog)
+            {
+                var prevIndex = parentDialog.children.indexOf(prevDialog);
+                var currentIndex = parentDialog.children.indexOf(dialog);
 
+                var temp = parentDialog.children[prevIndex];
+                parentDialog.children[prevIndex] = dialog;
+                parentDialog.children[currentIndex] = temp;
+
+                //실제 엘리먼트들도 바꾼다.
+                this.currentDialog.insertBefore(this.currentDialog.prev());
+
+                instance.setDirty(true);
+            }
+
+            this.closeMenu();
         };
 
         Menu.prototype.moveDown = function()
         {
+            var parentDialog = this.currentDialog.parent().prev().get(0).dialog;
+            var dialog = this.currentDialog.get(0).children[0].dialog;
+            var nextDialog = (this.currentDialog.next().get(0) ? this.currentDialog.next().get(0).children[0].dialog : undefined);
+            if(nextDialog)
+            {
+                var nextIndex = parentDialog.children.indexOf(nextDialog);
+                var currentIndex = parentDialog.children.indexOf(dialog);
 
+                var temp = parentDialog.children[nextIndex];
+                parentDialog.children[nextIndex] = dialog;
+                parentDialog.children[currentIndex] = temp;
+
+                //실제 엘리먼트들도 바꾼다.
+                this.currentDialog.insertAfter(this.currentDialog.next());
+
+                instance.setDirty(true);
+            }
+
+            this.closeMenu();
         };
 
         Menu.prototype.duplicate = function()
         {
+            var parentDialog = this.currentDialog.parent().prev().get(0).dialog;
+            var dialog = this.currentDialog.get(0).children[0].dialog;
 
+            var clone = JSON.parse(JSON.stringify(dialog));
+
+            clone.name += ' Clone';
+
+            var index = parentDialog.children.indexOf(dialog);
+            instance.addChildDialog(parentDialog, clone, index + 1);
+
+            instance.refresh();
+            instance.setDirty(true);
+            instance.focusById(clone.id);
+
+            this.closeMenu();
         };
 
         Menu.prototype.delete = function()
         {
+            var parentDialog = this.currentDialog.parent().prev().get(0).dialog;
+            var dialog = this.currentDialog.get(0).children[0].dialog;
 
+            var prev = this.currentDialog.prev().get(0);
+            var next = this.currentDialog.next().get(0);
+
+            var afterFocusId = '';
+            if(prev)
+            {
+                afterFocusId = prev.children[0].dialog.id;
+            }
+            else if(next && next.children[0])
+            {
+                afterFocusId = next.children[0].dialog.id;
+            }
+            else
+            {
+                afterFocusId = parentDialog.id;
+            }
+
+            var index = parentDialog.children.indexOf(dialog);
+
+            parentDialog.children.splice(index, 1);
+
+            instance.refresh();
+            instance.setDirty(true);
+            instance.focusById(afterFocusId);
+
+            this.closeMenu();
         };
 
         Menu.prototype.addMenu = function(name, callback)
@@ -65,7 +147,7 @@
             this.isOpened = true;
 
             var dialogCard = e.currentTarget.parentElement.parentElement;
-            var left = dialogCard.offsetLeft + dialogCard.offsetWidth + 20;
+            var left = dialogCard.offsetLeft + dialogCard.offsetWidth - 20;
             var top = dialogCard.offsetTop;
 
             this.setCurrentDialog(dialog);
@@ -85,8 +167,11 @@
             menuInstance.setCurrentDialog(undefined);
             angular.element('.dialog-menu').hide();
 
-            e.preventDefault();
-            e.stopPropagation();
+            if(e)
+            {
+                e.preventDefault();
+                e.stopPropagation();
+            }
         };
 
         if(!menuInstance)
@@ -103,7 +188,7 @@
         var DialogGraph = function()
         {
             this.originalFileData = undefined;
-            this.rawDatas = undefined;
+            this.graphData = undefined;
             this.template = undefined;
             this.canvas = undefined;
             this.editor = undefined;
@@ -114,7 +199,14 @@
             this.$compile = undefined;
             this.$scope = undefined;
 
+            this.history = [];
+            this.historyIndex = 0;
+
             this.focusedTarget = undefined;
+
+            this.dirtyCallback = undefined;
+
+            this.fileName = undefined;
         };
 
         DialogGraph.prototype.getCommonDialogs = function()
@@ -162,6 +254,16 @@
             canvas.addEventListener('click', function(e)
             {
                 that.editor.close();
+            });
+
+            canvas.parentElement.addEventListener('mousedown', function(e)
+            {
+                if(e.which != 1)
+                    return;
+
+                menuInstance.closeMenu(e);
+
+                e.preventDefault();
             });
 
             window.addEventListener('mouseup', function(e)
@@ -288,8 +390,13 @@
             });
         };
 
-        DialogGraph.prototype.load = function(data)
+        DialogGraph.prototype.loadFromFile = function(data, fileName)
         {
+            if(fileName)
+            {
+                this.fileName = fileName;
+            }
+
             if(!this.template)
             {
                 throw new Error('[DialogGraph] Template is undefined');
@@ -318,11 +425,11 @@
                         parsed = match[0].replace(/var dialogs[^\[]*/gi, '').replace(';', '');
 
                         startDialog.children = this.userDialogs = JSON.parse(parsed);
-                        this.rawDatas = startDialog;
+                        this.graphData = startDialog;
 
                         this.originalFileData = this.originalFileData.replace(match, '{{dialogs}}');
 
-                        this.refresh(this.canvas, this.rawDatas);
+                        this.refresh();
 
                         return true;
                     }
@@ -360,6 +467,7 @@
             var that = this;
             button.on('click', function(e)
             {
+                console.log('흠 : ', parent.parent().find('.graph-dialog-item').get(0).dialog);
                 that.editor.open(parent.parent().find('.graph-dialog-item').get(0).dialog, null);
                 e.stopPropagation();
             });
@@ -494,11 +602,36 @@
                 t.find('.graph-fold').hide();
                 var target = t.find('.graph-dialog-item').get(0);
 
-                this.addPlusButton(t.find('.graph-dialog-children'), ' style="margin-left: 0; margin-top: ' + (target.offsetHeight / 2 - 19 + 20) + 'px"');
+                var half = (target.offsetHeight / 2);
+                this.addPlusButton(t.find('.graph-dialog-children'), ' style="margin-left: 0; margin-top: ' + (half > 90 ? 90 : half) + 'px"');
             }
             else
             {
                 this.drawDialogs(t.find('.graph-dialog-children'), dialog.children);
+            }
+        };
+
+        DialogGraph.prototype.setFoldButtonPosition = function(list)
+        {
+            for(var i=0; i<list.length; i++)
+            {
+                var target = list[i].previousElementSibling.parentElement;
+
+                var half = target.offsetHeight / 2;
+                list[i].style.top = ((half > 90 ? 90 : half) - 11) + 'px';
+            }
+        };
+
+        DialogGraph.prototype.setPlusButtonPosition = function(list)
+        {
+            for(var i=0; i<list.length; i++)
+            {
+                if(!list[i].previousElementSibling)
+                {
+                    var target = list[i].parentElement.previousElementSibling;
+                    var half = (target.offsetHeight / 2);
+                    list[i].style.marginTop = (half > 90 ? 90 : half) + 'px';
+                }
             }
         };
 
@@ -549,8 +682,9 @@
 
         DialogGraph.prototype.drawHorizontalLineForPlusButton = function(src, dest)
         {
+            var half = src.offsetHeight / 2;
             var x1 = src.offsetLeft + src.offsetWidth;
-            var y1 = src.offsetTop + src.offsetHeight / 2;
+            var y1 = src.offsetTop + (half > 90 ? 90 : half);
 
             var x2 = dest.offsetLeft;
             var y2 = dest.offsetTop + dest.offsetHeight / 2;
@@ -577,8 +711,10 @@
         {
             var svg = this.svg;
 
+            var srcHalf = (src.offsetHeight / 2);
+
             var x1 = src.offsetLeft + src.offsetWidth;
-            var y1 = src.offsetTop + 90;
+            var y1 = src.offsetTop + (srcHalf > 90 ? 90 : srcHalf);
 
             for(var i=0, l=children.length; i<l; i++)
             {
@@ -603,9 +739,13 @@
                         // continue;
 
                         // 상위 다이얼로그에서 선 그리는 방법.
+
                         dest = children[i];
+
+                        var destHalf = dest.offsetHeight / 2;
+
                         x2 = dest.offsetLeft - 80;
-                        y2 = dest.offsetTop + dest.offsetHeight / 2;
+                        y2 = dest.offsetTop + (destHalf > 90 ? 90 : destHalf);
 
                         // 세로선.
                         var x1_5 = (x2 - x1)/2 + x1;
@@ -621,7 +761,7 @@
                 {
                     //일반 다이얼로그
                     x2 = dest.offsetLeft;
-                    y2 = dest.offsetTop + 90;
+                    y2 = dest.offsetTop + (srcHalf > 90 ? 90 : srcHalf);
 
                     if(i == 0)
                     {
@@ -649,6 +789,7 @@
         {
             this.canvas.find('svg').remove();
             this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            this.svg.setAttribute('shape-rendering', 'geometricPrecision');
 
             for(var i=0, l=children.length; i<l; i++)
             {
@@ -674,6 +815,20 @@
             this.drawLines(this.canvas.find('.graph-dialog'));
         };
 
+        DialogGraph.prototype.checkDuplicatedName = function(name)
+        {
+            var check = true;
+            this.canvas.find('.graph-dialog-header > span').each(function()
+            {
+                if(this.innerText == name)
+                {
+                    check = false;
+                }
+            });
+
+            return check;
+        };
+
         DialogGraph.prototype.focus = function(target)
         {
             this.canvas.find('.selected').removeClass('selected');
@@ -682,6 +837,24 @@
             this.focusedTarget = target;
 
             this.moveScrollToTarget(target);
+        };
+
+        DialogGraph.prototype.focusByName = function(name)
+        {
+            var that = this;
+            this.canvas.find('.graph-dialog-header > span').each(function()
+            {
+                if(this.innerText == name)
+                {
+                    that.focus(this.parentElement.parentElement);
+                    return;
+                }
+            });
+        };
+
+        DialogGraph.prototype.focusById = function(id)
+        {
+            this.focus(this.canvas.find('#' + id + ' .graph-dialog-item'));
         };
 
         DialogGraph.prototype.moveScrollToTarget = function(target)
@@ -737,8 +910,13 @@
         {
             angular.element(selector).find('.dialog-menu-item').each(function()
             {
-                this.addEventListener('click' , function()
+                this.addEventListener('mousedown' , function(e)
                 {
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    var dialog = menuInstance.currentDialog.get(0).children[0].dialog;
+                    instance.focusById(dialog.id);
                     menuInstance.execute(this.getAttribute('data-name'));
                 });
             });
@@ -746,10 +924,12 @@
 
         DialogGraph.prototype.refresh = function()
         {
+            console.log(this.graphData);
             this.canvas.html('');
-            this.drawDialog(this.canvas, this.rawDatas);
+            this.drawDialog(this.canvas, this.graphData);
             this.drawLines(this.canvas.find('.graph-dialog'));
             this.focus(this.canvas.find('.graph-dialog:first .graph-dialog-item')[0]);
+            this.setFoldButtonPosition(this.canvas.find('.graph-dialog-item .graph-fold'));
         };
 
         DialogGraph.prototype.refreshLine = function()
@@ -757,11 +937,56 @@
             this.drawLines(this.canvas.find('.graph-dialog'));
         };
 
+        DialogGraph.prototype.refreshButtonsPosition = function()
+        {
+            this.setPlusButtonPosition(this.canvas.find('.graph-dialog-children .plus'));
+            this.setFoldButtonPosition(this.canvas.find('.graph-dialog-item .graph-fold'));
+        };
+
+        DialogGraph.prototype.addChildDialog = function(parent, dialog, index)
+        {
+            var prefix = this.fileName.split('.')[0];
+            var length = JSON.stringify(this.userDialogs).split('"name":').length;
+
+            dialog.id = prefix + (length-1);
+
+            if(!parent.children)
+                parent.children = [];
+
+            if(index)
+            {
+                parent.children.splice(index, 0, dialog);
+            }
+            else
+            {
+                parent.children.push(dialog);
+            }
+        };
+
         DialogGraph.prototype.getCompleteData = function()
         {
-            delete this.commonDialogs[0].children;
-            var data = this.originalFileData.replace('{{dialogs}}', 'var dialogs = ' + JSON.stringify(JSON.parse(angular.toJson(this.userDialogs)), null, 4) + ';\r\n').replace('{{commonDialogs}}', 'var commonDialogs = ' + JSON.stringify(JSON.parse(angular.toJson(this.commonDialogs)), null, 4) + ';\r\n');
+            var temp = JSON.parse(JSON.stringify(this.commonDialogs));
+            delete temp[0].children;
+
+            var data = this.originalFileData.replace('{{dialogs}}', 'var dialogs = ' + JSON.stringify(JSON.parse(angular.toJson(this.userDialogs)), null, 4) + ';\r\n').replace('{{commonDialogs}}', 'var commonDialogs = ' + JSON.stringify(JSON.parse(angular.toJson(temp)), null, 4) + ';\r\n');
             return data;
+        };
+
+        DialogGraph.prototype.setDirty = function(dirty)
+        {
+            this.isDirty = (dirty === undefined ? true : dirty);
+            if(this.dirtyCallback)
+                this.dirtyCallback(this.isDirty);
+        };
+
+        DialogGraph.prototype.isDirty = function()
+        {
+            return this.isDirty;
+        };
+
+        DialogGraph.prototype.setDirtyCallback = function(callback)
+        {
+            this.dirtyCallback = callback;
         };
 
         if(!instance)

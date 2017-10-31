@@ -88,6 +88,11 @@
     border-right: none;
 }
 
+.graph-zoom-controller a:hover
+{
+    background-color: #efefef;
+}
+
 .graph-zoom-in::before
 {
     content: '';
@@ -163,22 +168,52 @@
     padding-left: 5px;
 }
 
-.graph-controller .save
+.graph-controller .graph-button
 {
     display: inline-block;
 
     width: 90px;
     height: 35px;
     text-align: center;
-    background: #038eda;
     cursor: pointer;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 4px;
     vertical-align: top;
 
-    color: #fff;
     letter-spacing: 0.3px;
+
+    border: 1px solid #ddd;
+}
+
+.graph-controller .graph-button:hover
+{
+    background-color: #efefef;
+}
+
+.graph-controller .save
+{
+    border: 0;
+    color: #fff;
+    background: #038eda;
+}
+
+.graph-controller .save:hover
+{
+    background: #0075b7;
+}
+
+.graph-controller .graph-button[disabled], .graph-controller .graph-button.disabled
+{
+    background-color: #ddd;
+    cursor: default;
+    user-select: none;
+    color: #aaa;
+}
+
+.graph-controller .graph-button[disabled]:hover, .graph-controller .graph-button.disabled:hover
+{
+    background-color: #ddd;
 }
 
 .graph-body
@@ -314,6 +349,13 @@
     background-image: url(../imgs/more-black.png);
     background-repeat: no-repeat;
     background-position: center center;
+
+    opacity: 0.5;
+}
+
+.graph-dialog-header .dialog-more:hover
+{
+    opacity: 1;
 }
 
 .graph-dialog-item.selected .graph-dialog-header .dialog-more
@@ -382,7 +424,7 @@
 {
     position: absolute;
 
-    top: 76px;
+    top: 0;
     right: -29px;
     z-index: 1000;
 
@@ -392,8 +434,6 @@
     text-align: center;
     border-radius: 100%;
     background: #d7d7d7 url(../imgs/fold.png) no-repeat 80% 50%;
-
-    transition: all 0.5s;
 
     -ms-transform: rotate(180deg); /* IE 9 */
     -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */

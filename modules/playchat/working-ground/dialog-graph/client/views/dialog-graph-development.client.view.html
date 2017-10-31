@@ -6,7 +6,7 @@
 </style>
 
 <script type="text/template" id="dialogGraphTemplate">
-    <div class="graph-dialog" data-id="{id}">
+    <div class="graph-dialog" id="{id}">
         <div class="graph-dialog-item" draggable="true">
             <div class="graph-dialog-header">
                 <span>{name}</span>
@@ -42,23 +42,25 @@
     <div class="graph-controller">
         <div>
             <form>
-                <input id="search" name="search" type="search" class="search">
+                <input id="search" name="search" type="search" class="search" ng-keyup="searchDialog($event);">
             </form>
             <div class="graph-zoom-controller">
                 <div>
-                    <a class="graph-zoom-in" href="#">
+                    <a class="graph-zoom-in" ng-click="zoomIn();">
                     </a>
-                    <a class="graph-zoom-out" href="#">
+                    <a class="graph-zoom-out" ng-click="zoomOut();">
                     </a>
                 </div>
             </div>
         </div>
         <div style="text-align: right;">
-            <select></select>
-            <a class="refresh" href="#">
-                <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/refresh.png">
-            </a>
-            <button type="button" class="save">Save</button>
+            <button type="button" class="graph-button" ng-click="toggleCompactMode();">{{ compactMode }}</button>
+            <!--<a class="refresh" href="#">-->
+                <!--<img src="/modules/playchat/working-ground/dialog-graph/client/imgs/refresh.png" ng-click="undo();">-->
+            <!--</a>-->
+            <button type="button" class="graph-button" ng-click="undo();" ng-disabled="graphHistoryIndex == 0">Undo</button>
+            <button type="button" class="graph-button" ng-click="redo();" ng-disabled="graphHistoryIndex == graphHistory.length-1">Redo</button>
+            <button type="button" class="graph-button save" ng-click="save();" ng-disabled="!isDirty">Save</button>
         </div>
     </div>
     <div class="graph-body">
