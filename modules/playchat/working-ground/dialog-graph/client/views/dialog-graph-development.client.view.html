@@ -31,14 +31,23 @@
 
 
 <div ng-controller="DialogGraphDevelopmentController" class="graph-background">
-    <div class="tab01">
-        <ul class="tabs1">
-            <li ng-repeat="file in fileList" id="{{ file.name }}" ng-class="currentTabName == file.name ? 'select_tab' : ''">
-                <a href="#">{{ file.name }}</a>
+    <div class="tab">
+        <a class="prev-tab" ng-mousedown="prevTab($event);">&lt;</a>
+        <ul class="tab-body">
+            <li ng-repeat="file in fileList track by $index" id="{{ file }}" ng-class="currentTabName == file ? 'select_tab' : ''" ng-click="selectTab($event, file);">
+                <a>{{ file }}</a>
             </li>
-            <li class="mini"><a href="/playchat/management/dialog-set"><img src="modules/playchat/working-ground/common/client/imgs/plus.png"></a></li>
         </ul>
+        <a class="next-tab" ng-mousedown="nextTab($event);">&gt;</a>
     </div>
+    <!--<div class="tab01">-->
+        <!--<ul class="tabs1">-->
+            <!--<li ng-repeat="file in fileList" id="{{ file }}" ng-class="currentTabName == file ? 'select_tab' : ''">-->
+                <!--<a href="#">{{ file }}</a>-->
+            <!--</li>-->
+            <!--<li class="mini"><a href="/playchat/management/dialog-set"><img src="modules/playchat/working-ground/common/client/imgs/plus.png"></a></li>-->
+        <!--</ul>-->
+    <!--</div>-->
     <div class="graph-controller">
         <div>
             <form>
@@ -58,7 +67,7 @@
             <!--<a class="refresh" href="#">-->
                 <!--<img src="/modules/playchat/working-ground/dialog-graph/client/imgs/refresh.png" ng-click="undo();">-->
             <!--</a>-->
-            <button type="button" class="graph-button" ng-click="undo();" ng-disabled="graphHistoryIndex == 0">Undo</button>
+            <button type="button" class="graph-button" ng-click="undo();" ng-disabled="graphHistoryIndex <= 0">Undo</button>
             <button type="button" class="graph-button" ng-click="redo();" ng-disabled="graphHistoryIndex == graphHistory.length-1">Redo</button>
             <button type="button" class="graph-button save" ng-click="save();" ng-disabled="!isDirty">Save</button>
         </div>

@@ -418,6 +418,8 @@
                     this.originalFileData = this.originalFileData.replace(commandMatch, '{{commonDialogs}}');
 
                     var startDialog = this.commonDialogs[0];
+                    if(!startDialog)
+                        startDialog = { name: 'Default Start Dialog', input: [{ text: 'Default' }], output: { kind: 'Content', text: 'Hello World!' }};
 
                     var match = data.match(/var dialogs[^;]*;/gi);
                     if(match && match.length == 1)
@@ -475,7 +477,6 @@
 
         var makeInputTemplate = function(input)
         {
-            console.log(input);
             var template = '';
             for(var key in input)
             {
@@ -924,7 +925,6 @@
 
         DialogGraph.prototype.refresh = function()
         {
-            console.log(this.graphData);
             this.canvas.html('');
             this.drawDialog(this.canvas, this.graphData);
             this.drawLines(this.canvas.find('.graph-dialog'));

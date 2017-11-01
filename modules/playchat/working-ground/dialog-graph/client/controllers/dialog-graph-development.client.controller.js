@@ -11,14 +11,6 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
     $scope.currentTabName = fileName;
 
-    $scope.compactMode = 'Compact';
-    $scope.zoom = 1;
-    $scope.searchedDialogs = [];
-    $scope.searchedDialogFocus = 0;
-    $scope.graphHistory = [];
-    $scope.graphHistoryIndex = 0;
-    $scope.isDirty = false;
-
     // 실제 그래프 로직이 들어있는 서비스
     DialogGraph.setScope($compile, $scope);
     DialogGraph.setDialogTemplate(angular.element('#dialogGraphTemplate').html());
@@ -44,9 +36,20 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
     {
         $scope.$parent.loaded('working-ground');
 
+        $scope.initialize = function()
+        {
+            $scope.compactMode = 'Compact';
+            $scope.zoom = 1;
+            $scope.searchedDialogs = [];
+            $scope.searchedDialogFocus = 0;
+            $scope.graphHistory = [];
+            $scope.graphHistoryIndex = -1;
+            $scope.isDirty = false;
+        };
+
         $scope.getFileList = function()
         {
-            DialogGraphsService.query({ botId: chatbot._id }, function(fileList)
+            DialogGraphsService.query({ botId: chatbot.id }, function(fileList)
             {
                 $scope.fileList = fileList;
             },
@@ -56,13 +59,38 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             });
         };
 
-        $scope.selectTab = function(fileName)
+        $scope.prevTab = function(e)
         {
-            angular.element('#' + fileName).addClass('select_tab');
+            var tabBody = e.currentTarget.nextElementSibling;
+            tabBody.scrollLeft -= 100;
+        };
+
+        $scope.nextTab = function(e)
+        {
+            var tabBody = e.currentTarget.previousElementSibling;
+            tabBody.scrollLeft += 100;
+        };
+
+        $scope.selectTab = function(e, fileName)
+        {
+            angular.element('.tab-body .select_tab').removeClass('select_tab');
+            angular.element(e.currentTarget).addClass('select_tab');
+
+            if(fileName.endsWith('.graph.js'))
+            {
+                $location.search().fileName = fileName;
+                $scope.loadFile(fileName);
+            }
+            else
+            {
+                alert('소스코드편집기 준비중!');
+            }
         };
 
         $scope.loadFile = function(fileName)
         {
+            $scope.initialize();
+
             DialogGraphsService.get({ botId: chatbot.id, fileName: fileName }, function(result)
             {
                 var data = result.data;
@@ -225,7 +253,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
         $scope.undo = function()
         {
-            if($scope.graphHistoryIndex == 0)
+            if($scope.graphHistoryIndex <= 0)
             {
                 return;
             }
@@ -266,6 +294,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
         };
     })();
 
+    $scope.initialize();
     $scope.getFileList();
     $scope.loadFile(fileName);
 }]);

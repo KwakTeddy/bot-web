@@ -9,14 +9,36 @@ var BotFile = mongoose.model('BotFile');
 
 exports.find = function (req, res)
 {
-    BotFile.find({ bot: req.params.botId }).populate('user', 'displayName').populate('bot').exec(function (err, files)
+    // BotFile.find({ bot: req.params.botId }).populate('user', 'displayName').populate('bot').exec(function (err, files)
+    // {
+    //     if (err)
+    //     {
+    //         return res.status(400).send({ message: err.stack || err });
+    //     }
+    //
+    //     res.json(files);
+    // });
+
+    var botsPath = path.resolve('./custom_modules/' + req.params.botId);
+    fs.readdir(botsPath, function(err, list)
     {
-        if (err)
+        if(err)
         {
             return res.status(400).send({ message: err.stack || err });
         }
 
-        res.json(files);
+        var result = [];
+        for(var i=0; i<list.length; i++)
+        {
+            if(!list[i].endsWith('.js') || list[i].endsWith('.test.js'))
+            {
+                continue;
+            }
+
+            result.push(list[i]);
+        }
+
+        res.jsonp(result);
     });
 };
 
