@@ -4,7 +4,7 @@ var path = require('path');
 var _ = require('lodash');
 var async = require('async');
 
-var openNLP = require("opennlp");
+var openNLP = require(path.resolve('./external_modules/opennlp/opennlp.js'));
 var posTagger = new openNLP().posTagger;
 
 var logger = require(path.resolve('./config/lib/logger'));
@@ -123,8 +123,8 @@ function processInput(context, inRaw, callback) {
                     context.botUser.nlu["lastChar"] = lastChar;
                     context.botUser.nlu["nlp"] = _nlp;
                     context.botUser.nlu["inNLP"] = inNLP;
+                    cb(null);
                 });
-
             } else if (Array.isArray(inRaw)) {
                 if (context == null) {
                     context = {};

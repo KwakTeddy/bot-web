@@ -164,9 +164,7 @@ function processInput(context, inRaw, callback) {
                     context.botUser.nlu["inNLP"] = inNLP;
 
                     findStemForm(inRaw, context, cb);
-
-                    // cb(null);
-                })
+                });
             } else if (Array.isArray(inRaw)) {
                 if (context == null) {
                     context = {};
