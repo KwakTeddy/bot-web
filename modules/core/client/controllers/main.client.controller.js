@@ -2,7 +2,7 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('core').controller('MainController', ['$scope', '$location', '$timeout', '$cookies', 'Authentication', function ($scope, $location, $timeout, $cookies, Authentication)
+angular.module('playchat').controller('MainController', ['$scope', '$location', '$timeout', '$cookies', 'Authentication', function ($scope, $location, $timeout, $cookies, Authentication)
 {
     console.log('로그인 : ', Authentication);
 

@@ -1,7 +1,7 @@
 'use strict';
 
 // Setting up route
-angular.module('authentication').config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider)
+angular.module('playchat').config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider)
 {
     $stateProvider.state('signin', {
         url: '/signin',

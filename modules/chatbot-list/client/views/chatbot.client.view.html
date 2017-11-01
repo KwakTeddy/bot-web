@@ -1,3 +1,104 @@
-<div ng-repeat="chatbot in chatbotList">
-    <a href="#" ng-click="selectChatbot(chatbot)">{{chatbot.name}}</a>
+<div class="chatbot-body" ng-controlelr="ChatbotListController" ng-click="closeMenu();">
+    <div class="tab">
+        <ul class="tab-body">
+            <li>
+                <a>My chatbot</a>
+            </li>
+            <li>
+                <a>Shared chatbot</a>
+            </li>
+        </ul>
+    </div>
+    <div class="chatbot-new">
+        <img src="/modules/chatbot-list/client/imgs/plus_white.png">
+        <a href="#">New chatbot</a>
+    </div>
+    <div class="chatbot-list">
+        <div class="bot_unselect" ng-repeat="chatbot in list">
+            <ul class="hei50">
+                <li class="sub1"><img src="/modules/chatbot-list/client/imgs/user2.png"></li>
+                <li class="sub3">{{ chatbot.id }}</li>
+                <li>
+                    <div class="flR mt10">
+                        <a href="#" class="chatbot-menu-button" ng-click="openMenu($event, chatbot);"></a>
+                    </div>
+                </li>
+            </ul>
+            <ul>
+                <li class="sub2">{{ chatbot.description }}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="tablePaging" style="padding: 40px 0;">
+        <div class="tablePagingC">
+            <a href="/chatbot-list?page={{ pageOptions.prev }}" class="direction" ng-click="toPage(pageOptions.prev);">
+                <img src="/modules/chatbot-list/client/imgs/btn_prev.png" alt="이전페이지이동">
+            </a>
+            <a ng-repeat="page in pageOptions.pages" href="/chatbot-list?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
+            <a href="/chatbot-list?page={{ pageOptions.next }}" class="direction" ng-click="toPage(pageOptions.next);">
+                <img src="/modules/chatbot-list/client/imgs/btn_next.png" alt="다음페이지이동">
+            </a>
+        </div>
+    </div>
+
+    <ul class="chatbot-menu" style="display: none;">
+        <li class="chatbot-menu-item" ng-click="executeMenu('Rename');"><a>Rename</a></li>
+        <li class="chatbot-menu-item" ng-click="executeMenu('Share');"><a>Share</a></li>
+        <li class="chatbot-menu-item" ng-click="executeMenu('Duplicate');"><a>Duplicate</a></li>
+        <li class="chatbot-menu-item" ng-click="executeMenu('Delete');"><a>Delete</a></li>
+    </ul>
+
+    <div class="window_overlay" ng-show="openShareModal">
+        <div class="window">
+            <div class="card_detail_window">
+                <div class="window_header">
+				<span class="window_header_icon">
+					<img src="images/share.png">
+				</span>
+                    <div class="window_title">
+                        <h1>Shared chatbot</h1>
+                    </div>
+                </div>
+                <div class="window_main_col">
+                    <div class="card_detail_item">
+                        <ul class="list mt20">
+                            <li class="card_detail_item_header">Chatbot</li>
+                        </ul>
+                        <ul class="list mt20">
+                            <li class="card_detail_item_content1">Delivery bot</li>
+                        </ul>
+                        <ul class="list clear">
+                            <li class="card_detail_item_header">Share</li>
+                        </ul>
+                        <ul class="list2 mt10">
+                            <li class="ml7">Member ID(Email) :</li>
+                            <li class="ml8 mt23">Authorization :</li>
+                        </ul>
+                        <ul class="list4 mt4">
+                            <li><input type="text" class="input_pop" placeholder="ssss@moneybrain.ai"></li>
+                            <li class="ml10 mt10">
+                                <input id="checkBox1" type="checkbox" value="Read" class="styled-checkbox">
+                                <label for="checkBox1" class="label">Read</label>
+                                <input id="checkBox2" type="checkbox" value="Edit" class="styled-checkbox">
+                                <label for="checkBox2" class="label">Write</label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="list2 mt20 clear">
+                    <li class="card_detail_item_content4">
+                        Flow chatbots are tree-based. The user is driven down a specific path, a path previously defined by the chatbot's developer.
+                    </li>
+                </div>
+                <div class="popbtnarea">
+                    <div class="btn03">
+                        <a href="#" ng-click="closeShareModal();">Cancel</a>
+                    </div>
+                    <div class="btn01 ml15">
+                        <a href="#" ng-click="shareChatbot();">Share</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('core').factory('authInterceptor', ['$q', '$injector',
+angular.module('playchat').factory('authInterceptor', ['$q', '$injector',
   function ($q, $injector) {
     return {
       responseError: function(rejection) {

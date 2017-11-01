@@ -1,7 +1,7 @@
 'use strict';
 
 // Create the Socket.io wrapper service
-angular.module('core').service('Socket', ['$state', '$timeout', function ($state, $timeout)
+angular.module('playchat').service('Socket', ['$state', '$timeout', function ($state, $timeout)
 {
     this.connect = function ()
     {

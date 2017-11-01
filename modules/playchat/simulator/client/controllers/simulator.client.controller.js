@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playchat.simulator').controller('SimulatorController', ['$window', '$scope', '$cookies', '$resource', 'Socket',
+angular.module('playchat').controller('SimulatorController', ['$window', '$scope', '$cookies', '$resource', 'Socket',
 function ($window, $scope, $cookies, $resource, Socket)
 {
     $scope.$parent.loaded('simulator');

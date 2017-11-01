@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('core').controller('TitleController', ['$scope', '$http', function ($scope, $http)
+angular.module('playchat').controller('TitleController', ['$scope', '$http', function ($scope, $http)
 {
     $http.get('/config').then(function (result)
     {

@@ -17,9 +17,12 @@
 
 {% if env == 'development' %}
 <!-- Core -->
-<link href="modules/core/client/css/core.css" rel="stylesheet" type="text/css" />
+<link href="/modules/core/client/css/core.css" rel="stylesheet" type="text/css">
+<link href="/modules/core/client/css/popup.css" rel="stylesheet" type="text/css">
 
-<link href="modules/authentication/client/css/signin.css" rel="stylesheet" type="text/css" />
+<link href="/modules/authentication/client/css/signin.css" rel="stylesheet" type="text/css">
+
+<link href="/modules/chatbot-list/client/css/chatbot.css" rel="stylesheet" type="text/css">
 
 <!-- PlayChat Core -->
 
@@ -105,10 +108,10 @@ if('{{env}}' == 'production')
     <div class="logo"></div>
 </div>
 
-<!--<section ng-include="'/modules/core/client/views/header.client.view.html'"></section>-->
+<section ng-include="'/modules/core/client/views/header.client.view.html'"></section>
 
 <section id="main" role="main">
-    <section ui-view style="height: 100%;"></section>
+    <section ui-view style="height: 100%; overflow: auto;"></section>
 </section>
 
 <!--<aside id="chat-include" class="sidebar-right" style="z-index: 11;" ng-include="'/modules/bots/client/views/chat-user-bot.client.view.html'"></aside>-->
@@ -144,11 +147,10 @@ Beagle.error = function(e)
 
 <script src="modules/core/client/services/interceptors/auth.interceptor.client.service.js"></script>
 <script src="modules/core/client/services/socket.io.client.service.js"></script>
-<!--<script src="modules/core/client/services/menus.client.service.js"></script>-->
+<script src="modules/core/client/services/paging-service.js"></script>
 
 <script src="modules/core/client/controllers/title.client.controller.js"></script>
 <script src="modules/core/client/controllers/main.client.controller.js"></script>
-<script src="modules/core/client/controllers/common-error.client.controller.js"></script>
 
 <script src="modules/core/client/config/core.client.routes.js"></script>
 
@@ -171,7 +173,6 @@ Beagle.error = function(e)
 <!-- PlayChat Core -->
 
 <!-- PlayChat Core Layout -->
-<script src="modules/playchat/core/layout/client/config/modules.js"></script>
 <script src="modules/playchat/core/layout/client/controllers/layout.client.controller.js"></script>
 <script src="modules/playchat/core/layout/client/services/layout.client.service.js"></script>
 <script src="modules/playchat/core/layout/client/config/layout.routes.js"></script>
@@ -213,7 +214,6 @@ Beagle.error = function(e)
 <script src="modules/playchat/working-ground/common/client/services/modal-service.js"></script>
 <script src="modules/playchat/working-ground/common/client/services/tab-service.js"></script>
 <script src="modules/playchat/working-ground/common/client/services/form-service.js"></script>
-<script src="modules/playchat/working-ground/common/client/services/paging-service.js"></script>
 <script src="modules/playchat/working-ground/common/client/services/tooltip-service.js"></script>
 <script src="modules/playchat/working-ground/common/client/services/caret-service.js"></script>
 {% endif %}

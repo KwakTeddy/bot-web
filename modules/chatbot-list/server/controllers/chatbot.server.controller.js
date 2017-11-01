@@ -1,50 +1,56 @@
+var path = require('path');
 var mongoose = require('mongoose');
+
+var Common = require(path.resolve('./modules/core/server/services/common.server.service.js'));
+
 var ChatBot = mongoose.model('Bot');
 
-exports.find = function (req, res)
+exports.findTotalPage = function(req, res)
 {
-    var sort = req.query.sort || '-created';
-    var perPage = req.body.perPage || 10;
+    var countPerPage = req.query.countPerPage || 10;
 
-    if(req.query.developer)
+    var query = { user: req.user._id };
+    if(Common.isAdmin(req.user))
     {
-        perPage = 0;
+        delete query.user;
     }
 
-    var query = {};
-    query['public'] = true;
+    if(req.query.name)
+        query.name = { "$name": req.query.name, "$options": 'i' };
 
-    if(req.body.listType == 'popular')
-    {
-        sort = '-followed';
-    }
-    else if(req.body.listType == 'my')
-    {
-        delete query.public;
-        query['user'] = req.body.botUserId;
-    }
-
-    if(req.query.my)
-    {
-        delete query.public;
-        query['user'] =  req.user._id;
-    }
-
-    if(req.body.query)
-    {
-        query['name'] = new RegExp(req.body.query, 'i');
-    }
-
-    if(req.query.role && (req.query.role == 'admin'))
-    {
-        query = {};
-    }
-
-    ChatBot.find(query).sort(sort).populate('user').skip(req.body.currentPage * perPage).limit(perPage).exec(function (err, bots)
+    ChatBot.find(query).count(function(err, count)
     {
         if(err)
         {
-            return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+            logger.systemError(err);
+            return res.status(400).send({ message: err.stack || err });
+        }
+        else
+        {
+            res.jsonp({ totalPage: Math.ceil(count / countPerPage) });
+        }
+    });
+};
+
+exports.find = function (req, res)
+{
+    var page = req.query.page || 1;
+    var countPerPage = parseInt(req.query.countPerPage) || 10;
+
+    var query = { user: req.user._id };
+    if(Common.isAdmin(req.user))
+    {
+        delete query.user;
+    }
+
+    if(req.query.name)
+        query.name = { "$name": req.query.name, "$options": 'i' };
+
+    ChatBot.find(query).sort('-created').populate('user').skip(countPerPage*(page-1)).limit(countPerPage).exec(function (err, bots)
+    {
+        if(err)
+        {
+            return res.status(400).send({ message: err.stack || err });
         }
         else
         {
@@ -55,15 +61,59 @@ exports.find = function (req, res)
 
 exports.findOne = function(req, res)
 {
-    ChatBot.findOne({ id: req.params.id }).exec(function(err, item)
+    ChatBot.findOne({ _id: req.params.botId }).exec(function(err, item)
     {
         if(err)
         {
-            return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+            return res.status(400).send({ message: err.stack || err });
         }
         else
         {
             res.json(item);
+        }
+    });
+};
+
+exports.duplicate = function(req, res)
+{
+    ChatBot.findOne({ _id: req.params.botId }).exec(function(err, item)
+    {
+        if(err)
+        {
+            return res.status(400).send({ message: err.stack || err });
+        }
+        else
+        {
+            var clone = new ChatBot();
+            clone.id = item.id + ' Clone';
+            clone.name = item.name;
+            clone.description = item.description;
+            clone.user = req.user;
+
+            clone.save(function(err)
+            {
+                if(err)
+                {
+                    return res.status(400).send({ message: err.stack || err });
+                }
+
+                res.jsonp(item);
+            });
+        }
+    });
+};
+
+exports.delete = function(req, res)
+{
+    ChatBot.remove({ _id: req.params.botId }).exec(function(err)
+    {
+        if(err)
+        {
+            return res.status(400).send({ message: err.stack || err });
+        }
+        else
+        {
+            res.end();
         }
     });
 };

@@ -2,7 +2,7 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat.gnb').controller('GnbController', ['$window', '$scope', '$location', '$cookies', function ($window, $scope, $location, $cookies)
+angular.module('playchat').controller('GnbController', ['$window', '$scope', '$location', '$cookies', function ($window, $scope, $location, $cookies)
 {
     $scope.$parent.loaded('side-menu');
 
