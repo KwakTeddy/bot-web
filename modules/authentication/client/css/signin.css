@@ -1,82 +1,157 @@
-/* Sign Screens - Wrappers */
-.body-sign {
-    display: table;
-    height: 100vh;
+.signin-background
+{
+    width: 66%;
+
     margin: 0 auto;
-    max-width: 500px;
-    padding: 0 15px;
-    width: 100%;
-}
-.body-sign .center-sign {
-    display: table-cell;
-    padding-top: 20px;
-    vertical-align: middle;
-}
-.body-sign .panel-sign {
-    background: transparent;
-}
-.body-sign .panel-sign .panel-title-sign .title {
-    background-color: #CCC;
-    border-radius: 5px 5px 0 0;
-    color: #FFF;
-    display: inline-block;
-    font-size: 1.2rem;
-    line-height: 2rem;
-    padding: 13px 17px;
-    vertical-align: bottom;
-}
-.body-sign .panel-sign .panel-body {
-    background: #FFF;
-    border-top: 5px solid #CCC;
-    border-radius: 5px 0 5px 5px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    padding: 33px 33px 15px;
 }
 
-/* Sign Screens - Elements */
-.body-sign .input-group-icon .input-group-addon i {
-    width: 14px;
+#logincontents
+{
+    text-align:center;
+    padding-top: 100px;
 }
-.body-sign .checkbox-custom {
+
+.p1{
+    font-size: 24px;
+}
+.p2{
+    font-size: 15px;
+    color: #7e7e7e;
+}
+.social{
+    width: 400px;
+    margin: 0px 50px 0 250px;
+}
+.social p{
+    font-size: 13px;
+    color: #7e7e7e;
+}
+.fbbtn{
+    background: #3b589d url(../imgs/facebook.png) no-repeat 14px 8px;
+    padding:10px 0px;
+    border-radius: 6px;
+    width: 230px;
+    margin: 10px auto;
+}
+.fbbtn a{
+    color: #fff !important;
+    margin-left: 18px;
+    letter-spacing: 0.1px;
+    padding-left: 10px;
+}
+.gbtn{
+    background: #d84d32 url(../imgs/google.png) no-repeat 16px 8px;
+    padding:10px 0px;
+    border-radius: 6px;
+    width: 230px;
+    margin: 10px auto;
+}
+.gbtn a{
+    color: #fff;
+    letter-spacing: 0.1px;
+    padding-left: 10px;
+
+}
+.kbtn{
+    background: #ffeb00 url(../imgs/kakao.png) no-repeat 16px 8px;
+    padding:10px 0px;
+    border-radius: 6px;
+    width: 230px;
+    margin: 10px auto;
+}
+.kbtn a{
+    color: #3b1e1e;
+    letter-spacing: 0px;
+    /*padding-left: 10px;
+    font-weight: 600;*/
+}
+.input_type09{
+    width: 240px;
+    border: 1px solid #d7d7d7;
+    border-radius: 6px;
+    background: #fff;
+    margin: 3px auto 0px;
+    position: relative;
+    padding: 8px 18px 0px 8px;
+}
+.login p{
+    font-size: 13px;
+    color: #7e7e7e;
+    text-align: left;
+    text-indent: 5px;
+}
+.login span{
+    font-size: 13px;
+    color: #7e7e7e;
+    text-align: left;
+    text-indent: 5px;
+}
+.loginbtn{
+    background: #038eda;
+    padding:10px 0px;
+    border-radius: 6px;
+    width: 268px;
+    margin: 7px auto;
+    color: #fff;
+}
+.register{
+    width: 272px;
+    margin: 30px auto 0;
+}
+.register p{
+    font-size: 13px;
+    color: #7e7e7e;
+    text-align: left;
+    text-indent: 5px;
+}
+.register span{
+    font-size: 13px;
+    color: #7e7e7e;
+    text-align: left;
+    text-indent: 5px;
+}
+p.find{
+    color: #038eda;
+    text-align: right;
     margin-top: 8px;
 }
-.body-sign .line-thru {
+.agree{
+    text-align: left;
+    margin-top: 8px;
+    font-size: 12px;
+    color: #7e7e7e;
+}
+#bottoms{
+    position: fixed;
+    bottom: 90px;
+    text-align: center;
+    clear: both;
+    width: 66%;
+}
+#bottoms span{
+    font-size: 13px;
+}
+a.create{
+    color:#038eda !important;
+    padding-left: 4px;
+    font-size: 15px;
+}
+a.create:hover{
+    text-decoration: underline;
+}
+a.policy{
+    font-size: 13px;
+    text-decoration: underline !important;
+    margin-top: 10px;
     display: block;
-    font-size: 1.2rem;
-    position: relative;
 }
-.body-sign .line-thru span {
-    color: #CCC;
-    position: relative;
-    z-index: 3;
-}
-.body-sign .line-thru:before {
-    background-color: #FFF;
-    content: '';
-    height: 10px;
-    left: 50%;
-    position: absolute;
-    margin: -5px 0 0 -20px;
-    top: 50%;
-    width: 40px;
-    z-index: 2;
-}
-.body-sign .line-thru:after {
-    border-bottom: 1px solid #DADADA;
-    content: '';
-    display: block;
-    left: 10%;
-    position: absolute;
-    top: 47%;
-    width: 81%;
-    z-index: 1;
+.exclamation{
+    color: #f43e30;
+    font-weight: 600;
+    line-height: 25px;
 }
 
-/* Sign Screens - Wrappers */
-.body-sign .panel-sign .panel-title-sign .title {
-    background-color: #0088cc;
-}
 
-.body-sign .panel-sign .panel-body {
-    border-top-color: #0088cc;
+.flL {
+    float: left;
 }

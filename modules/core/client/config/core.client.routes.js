@@ -19,7 +19,8 @@ angular.module('playchat').config(['$stateProvider', '$urlRouterProvider', funct
         url: '/',
         controller: function($state, $stateParams)
         {
-            $state.go('chatbot-list');
+            $state.go('signin');
+            // $state.go('chatbot-list');
         }
     });
 
