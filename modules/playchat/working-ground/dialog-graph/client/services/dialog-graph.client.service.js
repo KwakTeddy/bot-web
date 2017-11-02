@@ -251,6 +251,11 @@
 
             var that = this;
 
+            angular.element('.graph-body').on('click' ,function()
+            {
+                that.editor.close();
+            });
+
             canvas.addEventListener('click', function(e)
             {
                 that.editor.close();
