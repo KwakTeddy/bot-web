@@ -2,7 +2,6 @@ var passport = require('passport');
 
 module.exports.signin = function(req, res, next)
 {
-    console.log('머지 : ', req.body);
     passport.authenticate('local', function (err, user, info)
     {
         if (err || !user)
@@ -29,4 +28,26 @@ module.exports.signin = function(req, res, next)
             });
         }
     })(req, res, next);
+};
+
+module.exports.signout = function (req, res)
+{
+    console.log('머야 : ');
+
+    req.logout();
+    req.session.destroy();
+    res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+
+    if(req.query['path'])
+    {
+        res.redirect(req.query['path']);
+    }
+    else if(req.query['redirect_to'])
+    {
+        res.redirect((req.query['redirect_to']));
+    }
+    else
+    {
+        res.redirect('/');
+    }
 };

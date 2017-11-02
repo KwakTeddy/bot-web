@@ -4,6 +4,7 @@ var authentication = require('../controllers/authentication.server.controller.js
 
 module.exports = function(app)
 {
+    app.get('/api/auth/signout', authentication.signout);
     app.post('/api/auth/signin', authentication.signin);
 };
 

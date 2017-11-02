@@ -1,4 +1,53 @@
-<header>
+<style>
+.popup-menu
+{
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 150px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ebebeb;
+    box-shadow: 0 1px 11px rgba(0, 0, 0, 0.1), 0 1px 11px rgba(0, 0, 0, 0.1);
+
+    background-color: white;
+
+    z-index: 1000;
+
+    display: none;
+}
+
+.popup-menu li a
+{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+
+    padding: 5px;
+    box-sizing: border-box;
+    border-radius: 6px;
+
+    cursor: pointer;
+}
+
+.popup-menu li:hover a
+{
+    background-color: #038eda;
+
+    color: white;
+}
+
+.popup-menu .popup-menu-divider
+{
+    height: 1px;
+    background-color: #ebebeb;
+    margin: 12px 0;
+}
+</style>
+
+<header ng-controller="HeaderController">
     <div class="gnb_entry">
         <div class="header">
             <a class="logo_min" href="#">
@@ -26,8 +75,14 @@
                     </a>
                 </li>
             </ul>
-            <a class="notify_silver" href="#"></a>
-            <a class="login_silver" href="#"></a>
+            <a class="notify_silver" href="#" ng-if="isLogin"></a>
+            <a class="login_silver" href="#" ng-if="isLogin" ng-click="openMenu($event);"></a>
+            <ul class="popup-menu user-menu">
+                <ul>
+                    <li><a href="#">Profile</a></li>
+                    <li><a href="/api/auth/signout">Signout</a></li>
+                </ul>
+            </ul>
         </div>
     </div>
 </header>

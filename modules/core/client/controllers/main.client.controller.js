@@ -25,11 +25,14 @@ angular.module('playchat').controller('MainController', ['$scope', '$location', 
         }
     });
 
-    console.log('흠 : ', Authentication.user);
-
     if(!Authentication.user)
     {
-        $location.url('/signin');
+        if(location.href.indexOf('/signin') == -1)
+        {
+            $cookies.putObject('user', null);
+            $cookies.put('login', false);
+            location.href = '/signin';
+        }
     }
     else
     {

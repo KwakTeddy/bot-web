@@ -7,7 +7,7 @@
         $scope.credentials = {};
 
         var isLogin = $cookies.get('login');
-        if(isLogin)
+        if(isLogin === true || isLogin === 'true')
         {
             if($state.previous.href)
                 location.href = $state.previous.href;

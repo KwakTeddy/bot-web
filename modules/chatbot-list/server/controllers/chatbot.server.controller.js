@@ -9,10 +9,15 @@ exports.findTotalPage = function(req, res)
 {
     var countPerPage = req.query.countPerPage || 10;
 
-    var query = { user: req.user._id };
-    if(Common.isAdmin(req.user))
+    var query = {  };
+    if(req.user)
     {
-        delete query.user;
+        query.user = req.user._id;
+
+        if(Common.isAdmin(req.user))
+        {
+            delete query.user;
+        }
     }
 
     if(req.query.name)
@@ -37,10 +42,15 @@ exports.find = function (req, res)
     var page = req.query.page || 1;
     var countPerPage = parseInt(req.query.countPerPage) || 10;
 
-    var query = { user: req.user._id };
-    if(Common.isAdmin(req.user))
+    var query = {  };
+    if(req.user)
     {
-        delete query.user;
+        query.user = req.user._id;
+
+        if(Common.isAdmin(req.user))
+        {
+            delete query.user;
+        }
     }
 
     if(req.query.name)
