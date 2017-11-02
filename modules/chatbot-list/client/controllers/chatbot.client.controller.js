@@ -115,6 +115,12 @@
 
         };
 
+        $scope.selectBot = function(bot)
+        {
+            $cookies.putObject('chatbot', bot);
+            location.href = '/playchat';
+        };
+
         $scope.getList();
     }]);
 })();

@@ -6,7 +6,7 @@ angular.module('playchat').config(['$stateProvider', '$urlRouterProvider', funct
     $stateProvider.state('signin', {
         url: '/signin',
         templateUrl: 'modules/authentication/client/views/signin.client.view.html',
-        controller: 'AuthenticationController'
+        controller: 'SigninController'
     });
 
     //

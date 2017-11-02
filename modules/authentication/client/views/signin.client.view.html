@@ -18,16 +18,16 @@
                 </div>
             </div>
         </div>
-        <div class="mt30 flL login">
+        <form class="mt30 flL login" ng-submit="signin();">
             <p>Email ID</p>
-            <input type="text" class="input_type09 mb10">
+            <input type="text" class="input_type09 mb10 username" ng-model="credentials.email" ng-required="true">
             <p>Password</p>
-            <input type="text" class="input_type09">
+            <input type="password" class="input_type09 password" ng-model="credentials.password" ng-required="true">
             <a href="#"><p class="find">Forget your password?</p></a>
             <a href="#">
-                <div class="loginbtn">Sign in</div>
+                <input type="submit" class="loginbtn" value="Sign in" ng-click="signin();">
             </a>
-        </div>
+        </form>
     </div>
     <div id="bottoms">
         <span>New to Playchat? <a href="#" class="create">Create Account</a></span>

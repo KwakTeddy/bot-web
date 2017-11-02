@@ -155,3 +155,16 @@ a.policy{
 .flL {
     float: left;
 }
+
+
+.username
+{
+    font-size: 12px;
+    height: 25px;
+}
+
+.password
+{
+    font-size: 12px;
+    height: 25px;
+}

@@ -14,7 +14,7 @@
         <a href="#">New chatbot</a>
     </div>
     <div class="chatbot-list">
-        <div class="bot_unselect" ng-repeat="chatbot in list">
+        <div class="bot_unselect" ng-repeat="chatbot in list" ng-click="selectBot(chatbot);">
             <ul class="hei50">
                 <li class="sub1"><img src="/modules/chatbot-list/client/imgs/user2.png"></li>
                 <li class="sub3">{{ chatbot.id }}</li>

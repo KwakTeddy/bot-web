@@ -11,8 +11,7 @@ angular.module('playchat').config(['$stateProvider', '$urlRouterProvider', funct
 
     $stateProvider.state('not-found', {
         url: '/not-found',
-        templateUrl: 'modules/core/client/views/404.client.view.html',
-        controller: 'CommonErrorController'
+        templateUrl: 'modules/core/client/views/404.client.view.html'
     });
 
     $stateProvider.state('home', {
