@@ -209,6 +209,7 @@
             this.fileName = undefined;
 
             this.focusedDialog = undefined;
+            this.idList = {};
         };
 
         DialogGraph.prototype.getCommonDialogs = function()
@@ -568,7 +569,7 @@
             return '<div class="graph-dialog-buttons"> ' + template + ' </div>';
         };
 
-        var makeDialogDraggble = function(item)
+        var makeDialogDraggable = function(item)
         {
             var clone = undefined;
             var line = document.createElement('div');
@@ -596,8 +597,6 @@
 
                 var left = angular.element('.playchat-background .gnb+div').get(0).offsetLeft;
                 var top = angular.element('.graph-body').get(0).offsetTop;
-
-                console.log(left, top);
 
                 clone.style.left = e.pageX - left - 50 + 'px';
                 clone.style.top = e.pageY - top - 63 - 30 + 'px';
@@ -698,6 +697,8 @@
 
         DialogGraph.prototype.drawDialog = function(parent, dialog)
         {
+            var prefix = this.fileName.split('.')[0];
+            this.idList[dialog.id.replace(prefix, '')] = true;
             var t = this.template.replace(/{id}/gi, dialog.id).replace('{name}', dialog.name);
 
             var inputTemplate = '';
@@ -758,7 +759,7 @@
 
             this.bindDialogFunctions(t);
 
-            makeDialogDraggble(t.find('.graph-dialog-item').get(0));
+            makeDialogDraggable(t.find('.graph-dialog-item').get(0));
 
             parent.append(t);
 
@@ -1026,7 +1027,7 @@
         DialogGraph.prototype.focusById = function(id)
         {
             this.focusedDialog = id;
-            this.focus(this.canvas.find('#' + id + ' > .graph-dialog-item'));
+            this.focus(this.canvas.find('#' + id + ' > .graph-dialog-item').get(0));
         };
 
         DialogGraph.prototype.moveScrollToTarget = function(target)
@@ -1096,6 +1097,7 @@
 
         DialogGraph.prototype.refresh = function()
         {
+            this.idList = {};
             this.canvas.html('');
             this.drawDialog(this.canvas, this.graphData);
             this.drawLines(this.canvas.find('.graph-dialog'));
@@ -1125,9 +1127,13 @@
         DialogGraph.prototype.addChildDialog = function(parent, dialog, index)
         {
             var prefix = this.fileName.split('.')[0];
-            var length = JSON.stringify(this.userDialogs).split('"name":').length;
+            var number = 0;
+            while(this.idList[number])
+            {
+                number++;
+            }
 
-            dialog.id = prefix + (length-1);
+            dialog.id = prefix + number;
 
             if(!parent.children)
                 parent.children = [];
