@@ -4,7 +4,7 @@
 
 angular.module('playchat').controller('PlayChatController', ['$location', '$scope', 'EventService', '$state', '$stateParams', function ($location, $scope, EventService, $state, $stateParams)
 {
-    angular.element('header').hide();
+    angular.element('header').css('display', 'none');
 
     $scope.componentsLoaded = {
         'side-menu': false,
