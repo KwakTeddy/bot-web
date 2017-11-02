@@ -270,6 +270,8 @@
     box-sizing: border-box;
 
     box-shadow: 0 1px 11px rgba(0, 0, 0, 0.1), 0 1px 11px rgba(0, 0, 0, 0.1);
+
+    cursor: pointer;
 }
 
 .graph-dialog-children
@@ -278,7 +280,7 @@
     vertical-align: top;
 }
 
-.graph-dialog-item.selected
+.graph-dialog-item.selected, .graph-dialog-item:hover
 {
     border-color: #bfe3f6;
 }
@@ -307,7 +309,7 @@
     border-top-right-radius: 6px;
 }
 
-.graph-dialog-item.selected .graph-dialog-header
+.graph-dialog-item.selected .graph-dialog-header, .graph-dialog-item:hover .graph-dialog-header
 {
     background: #bfe3f6;
     border-bottom: 0;
@@ -332,7 +334,7 @@
     word-wrap: normal !important;
 }
 
-.graph-dialog-item.selected .graph-dialog-header span
+.graph-dialog-item.selected .graph-dialog-header span, .graph-dialog-item:hover .graph-dialog-header span
 {
     color: #038eda;
 }
@@ -358,7 +360,7 @@
     opacity: 1;
 }
 
-.graph-dialog-item.selected .graph-dialog-header .dialog-more
+.graph-dialog-item.selected .graph-dialog-header .dialog-more, .graph-dialog-item:hover .graph-dialog-header .dialog-more
 {
     background-image: url(../imgs/more-blue.png);
 }
@@ -369,6 +371,13 @@
     height: 43px;
     text-align: center;
     line-height: 43px;
+}
+
+.graph-dialog-input, .graph-dialog-buttons span
+{
+    font-size: 11px;
+    color: #656565;
+    font-weight: 100;
 }
 
 .graph-dialog-input
@@ -385,7 +394,7 @@
     padding: 0 10px;
 }
 
-.graph-dialog-item.selected .graph-dialog-input
+.graph-dialog-item.selected .graph-dialog-input, .graph-dialog-item:hover .graph-dialog-input
 {
     border-color: #b1dbf4;
 }
@@ -415,7 +424,7 @@
     font-size: 12px;
 }
 
-.graph-dialog-item.selected .graph-dialog-output
+.graph-dialog-item.selected .graph-dialog-output, .graph-dialog-item:hover .graph-dialog-output
 {
     border-color: #b1dbf4;
 }
@@ -440,7 +449,7 @@
     transform: rotate(180deg);
 }
 
-.graph-dialog-item.selected .graph-fold
+.graph-dialog-item.selected .graph-fold, .graph-dialog-item:hover .graph-fold
 {
     background-color: #038eda;
 }
@@ -643,4 +652,27 @@
 .tab-body li:hover, .prev-tab:hover, .next-tab:hover
 {
     background-color: #fefefe;
+}
+
+.alert-success
+{
+    display: none;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #d6e9c6;
+    border-radius: 4px;
+    color: #3c763d;
+    background-color: #dff0d8;
+
+    position: absolute;
+    top: 120px;
+    right: 15px;
+
+    z-index: 1001;
+
+    opacity: 0;
+
+    transition: opacity 0.5s;
+
+    box-shadow: 0 1px 11px rgba(0, 0, 0, 0.1), 0 1px 11px rgba(0, 0, 0, 0.1);
 }

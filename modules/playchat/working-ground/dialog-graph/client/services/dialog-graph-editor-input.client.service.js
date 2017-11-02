@@ -66,25 +66,30 @@
                 {
                     if(e.currentTarget.scrollTop + e.currentTarget.offsetHeight >= e.currentTarget.scrollHeight)
                     {
-                        dataCallback(++page, function(name, list)
-                        {
-                            that.inputModal.find('li:first').attr('data-name', name);
-                            for(var i=0; i<list.length; i++)
-                            {
-                                var li = document.createElement('li');
-                                li.innerText = list[i].name;
-                                li.data = list[i];
-                                li.addEventListener('click', function()
-                                {
-                                    selectCallback(this.innerText);
-                                    that.close();
-                                });
-
-                                that.inputModal.append(li);
-                            }
-                        });
+                        that.nextPage();
                     }
                 });
+
+                this.nextPage = function()
+                {
+                    dataCallback(++page, function(name, list)
+                    {
+                        that.inputModal.find('li:first').attr('data-name', name);
+                        for(var i=0; i<list.length; i++)
+                        {
+                            var li = document.createElement('li');
+                            li.innerText = list[i].name;
+                            li.data = list[i];
+                            li.addEventListener('click', function()
+                            {
+                                selectCallback(this.innerText);
+                                that.close();
+                            });
+
+                            that.inputModal.append(li);
+                        }
+                    });
+                };
 
                 t.css('top', y + 'px').css('left', x + 'px');
 
@@ -119,6 +124,57 @@
             });
         };
 
+        Instance.prototype.moveDown = function()
+        {
+            var selected = this.inputModal.find('.selected');
+            if(selected.get(0))
+            {
+                var next = selected.get(0).nextElementSibling;
+                if(next)
+                {
+                    selected.removeClass('selected');
+                    angular.element(next).addClass('selected');
+                }
+                else
+                {
+                    this.nextPage();
+                }
+            }
+            else
+            {
+                this.inputModal.find('li:first').addClass('selected');
+            }
+        };
+
+        Instance.prototype.moveUp = function()
+        {
+            var selected = this.inputModal.find('.selected');
+            if(selected.get(0))
+            {
+                var prev = selected.get(0).previousElementSibling;
+                if(prev)
+                {
+                    selected.removeClass('selected');
+                    angular.element(prev).addClass('selected');
+                }
+            }
+        };
+
+        Instance.prototype.getSelectedItem = function()
+        {
+            var selected = this.inputModal.find('.selected').get(0);
+            if(selected)
+            {
+                var clickEvent = document.createEvent ('MouseEvents');
+                clickEvent.initEvent ('mousedown', true, true);
+                selected.dispatchEvent (clickEvent);
+
+                return true;
+            }
+
+            return false;
+        }
+
         Instance.prototype.close = function()
         {
             angular.element('.dialog-editor-input-list-modal').remove();
@@ -138,8 +194,6 @@
 
         var make = function($scope)
         {
-            $scope.isAdvancedMode = false;
-
             $scope.nlpedText = undefined;
             $scope.showNlpTimeout = undefined;
 
@@ -472,6 +526,16 @@
                 {
                     e.preventDefault();
                 }
+                else if(e.keyCode == 38)
+                {
+                    ListModal.moveUp();
+                    console.log('top');
+                }
+                else if(e.keyCode == 40)
+                {
+                    ListModal.moveDown();
+                    console.log('bottom');
+                }
             };
 
             // keyup
@@ -505,6 +569,12 @@
                 else if(e.keyCode == 13)
                 {
                     e.preventDefault();
+
+                    var item = ListModal.getSelectedItem();
+                    if(item)
+                    {
+                        return;
+                    }
 
                     if(value === undefined || value === null || value === '')
                     {

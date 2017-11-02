@@ -471,10 +471,21 @@
             var button = angular.element('<button type="button" class="plus"' + (style ? style : '') + '></button>');
             parent.append(button);
 
+            if(parent.get(0).children && parent.get(0).children[0])
+            {
+                var target = parent.get(0).children[0].children[0];
+                if(target)
+                {
+                    var bottom = target.offsetTop + target.offsetHeight;
+                    var top = button.get(0).offsetTop;
+
+                    button.css('top', (bottom-top + 20) + 'px').css('position', 'relative');
+                }
+            }
+
             var that = this;
             button.on('click', function(e)
             {
-                console.log('흠 : ', parent.parent().find('.graph-dialog-item').get(0).dialog);
                 that.editor.open(parent.parent().find('.graph-dialog-item').get(0).dialog, null);
                 e.stopPropagation();
             });
@@ -518,21 +529,40 @@
                 if(output.options)
                 {
                     if(typeof output.options.output != 'string')
+                    {
                         console.log('텍스트가 아닙니다 : ', output, typeof output.options.output);
+                    }
 
                     return '<div><span>' + output.options.output + '</span></div>';
                 }
-                else if(output.call)
+                else
                 {
-                    return '<div><span>[call]' + output.call + '</span></div>';
-                }
-                else if(output.callChild)
-                {
-                    return '<div><span>[callChild]' + output.callChild + '</span></div>';
+                    if(output.kind == 'Action')
+                    {
+                        for(var key in output)
+                        {
+                            if(key != 'kind')
+                            {
+                                return '<div><span>[' + key + '] ' + output[key] + '</span></div>';
+                            }
+                        }
+                    }
                 }
 
                 console.log('나머지 : ', output);
             }
+        };
+
+        var makeButtonsTemplate = function(buttons)
+        {
+            var template = ''
+
+            for(var i=0; i<buttons.length; i++)
+            {
+                template += '<a><span>[button] ' + buttons[i].text + '</span></a>';
+            }
+
+            return '<div class="graph-dialog-buttons"> ' + template + ' </div>';
         };
 
         var makeDialogDraggble = function(item)
@@ -557,6 +587,8 @@
 
             var inputTemplate = '';
             var outputTemplate = '';
+            var buttonTemplate = '';
+
             //or
             for(var i=0; i<dialog.input.length; i++)
             {
@@ -580,11 +612,22 @@
                         {
                             outputTemplate += makeOutputTemplate(output);
                         }
+
+                        if(dialog.output[i].buttons && dialog.output[i].buttons.length > 0)
+                        {
+                            buttonTemplate = makeButtonsTemplate(dialog.output[i].buttons);
+                        }
+
+                        break;
                     }
                 }
                 else
                 {
                     outputTemplate = makeOutputTemplate(dialog.output);
+                    if(dialog.output.buttons && dialog.output.buttons.length > 0)
+                    {
+                        buttonTemplate = makeButtonsTemplate(dialog.output.buttons);
+                    }
                 }
             }
             else
@@ -592,7 +635,8 @@
                 outputTemplate = makeOutputTemplate(dialog.output);
             }
 
-            t = t.replace('{input}', inputTemplate).replace('{output}', outputTemplate);
+
+            t = t.replace('{input}', inputTemplate).replace('{output}', outputTemplate).replace('{buttons}', buttonTemplate);
             t = angular.element(this.$compile(t)(this.$scope));
 
             t.find('.graph-dialog-item').get(0).dialog = dialog;
@@ -650,9 +694,10 @@
                 e.stopPropagation();
             });
 
-            dialog.find('.graph-dialog-header').on('dblclick', function(e)
+            dialog.find('.graph-dialog-item').on('dblclick', function(e)
             {
-                var parent = e.currentTarget.parentElement.parentElement.parentElement.previousElementSibling;
+                console.log('aaa');
+                var parent = e.currentTarget.parentElement.parentElement.previousElementSibling;
                 if(parent && parent.dialog)
                 {
                     that.editor.open(parent.dialog, dialog.get(0).children[0].dialog);
@@ -821,12 +866,13 @@
             this.drawLines(this.canvas.find('.graph-dialog'));
         };
 
-        DialogGraph.prototype.checkDuplicatedName = function(name)
+        DialogGraph.prototype.checkDuplicatedName = function(dialog)
         {
             var check = true;
             this.canvas.find('.graph-dialog-header > span').each(function()
             {
-                if(this.innerText == name)
+                console.log(this.parentElement.parentElement.dialog.id, dialog);
+                if(this.innerText == dialog.name && this.parentElement.parentElement.dialog.id != dialog.id)
                 {
                     check = false;
                 }

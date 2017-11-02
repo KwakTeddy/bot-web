@@ -3,7 +3,7 @@
 {
     'use strict';
 
-    angular.module('playchat').factory('DialogGraphEditorOutput', function ($window, $rootScope, FileUploader)
+    angular.module('playchat').factory('DialogGraphEditorOutput', function ($window, $timeout, $rootScope, FileUploader)
     {
         var make = function($scope)
         {
@@ -38,7 +38,6 @@
 
                 $scope.dialog.output[index].uploader.onSuccessItem = function(item, response, status, headers)
                 {
-                    // console.log('성공 : ', item, response, status, headers);
                     $scope.dialog.output[index].image = {
                         url: response.url,
                         displayname: item.file.name
@@ -112,7 +111,7 @@
 
                 $timeout(function()
                 {
-                    e.currentTarget.nextElementSibling.querySelector('input').focus();
+                    e.currentTarget.previousElementSibling.querySelector('input').focus();
                 });
             };
 

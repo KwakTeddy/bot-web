@@ -8,7 +8,7 @@
 <div ng-controller="DialogGraphEditorController">
     <div class="topicswitch2">
         <span class="mr10">Advenced</span>
-        <div class="minislide inline-block" ng-class="isAdvancedMode ? 'on' : ''">
+        <div class="minislide inline-block" ng-class="isAdvancedMode ? 'on' : ''" ng-click="changeMode();">
             <input type="checkbox" value="switch" id="advance" ng-model="isAdvancedMode">
             <label for="advance"></label>
         </div>
@@ -107,13 +107,13 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="dialog-editor-output-box-row" ng-repeat="button in output.buttons">
+                                <input type="text" class="output-button-name" placeholder="버튼 이름을 입력하세요" ng-model="button.text" ng-required="true" ng-disabled="isUseOutput === false">
+                                <input type="text" class="output-button-url" placeholder="URL을 입력하세요" ng-model="button.url" ng-disabled="isUseOutput === false">
+                            </div>
                             <div class="dialog-editor-output-box-row button" ng-click="addOutputButton($event, output);">
                                 <span class="blue-label">Add button</span>
                                 <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/blue-arrow.png">
-                            </div>
-                            <div class="dialog-editor-output-box-row" ng-repeat="button in output.buttons">
-                                <input type="text" class="output-button-name" placeholder="버튼 이름을 입력하세요" ng-model="button.text" ng-required="true">
-                                <input type="text" class="output-button-url" placeholder="URL을 입력하세요" ng-model="button.url" ng-required="true">
                             </div>
                         </div>
                         <div ng-if="output.kind == 'Action'">
@@ -166,7 +166,7 @@
                         <div class="dialog-editor-select-input" ng-disabled="isUseOutput === true">
                             <input type="text" ng-model="dialog.actionOutput.dialog" ng-required="isUseOutput === false" ng-disabled="isUseOutput === true">
                             <ul class="dialog-editor-select-options">
-                                <li ng-repeat="dialog in dialogs" ng-mousedown="selectActionDialog($event, dialog)">{{ dialog.name }}</li>
+                                <li ng-repeat="dialog in userDialogs" ng-mousedown="selectActionDialog($event, dialog)">{{ dialog.name }}</li>
                                 <li ng-repeat="dialog in commonDialogs" ng-mousedown="selectActionDialog($event, dialog)">{{ dialog.name }}</li>
                             </ul>
                         </div>

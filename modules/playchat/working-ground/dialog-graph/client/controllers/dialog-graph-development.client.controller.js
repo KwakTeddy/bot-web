@@ -1,4 +1,4 @@
-angular.module('playchat').controller('DialogGraphDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', 'DialogGraph', 'DialogGraphEditor', function ($window, $scope, $resource, $cookies, $location, $compile, DialogGraph, DialogGraphEditor)
+angular.module('playchat').controller('DialogGraphDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$timeout', 'DialogGraph', 'DialogGraphEditor', function ($window, $scope, $resource, $cookies, $location, $compile, $timeout, DialogGraph, DialogGraphEditor)
 {
     $scope.$parent.changeWorkingGroundName('Development > Dialog Graph');
 
@@ -45,6 +45,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             $scope.graphHistory = [];
             $scope.graphHistoryIndex = -1;
             $scope.isDirty = false;
+            $scope.saveState = 'ready';
         };
 
         $scope.getFileList = function()
@@ -245,6 +246,20 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                 $scope.graphHistoryIndex = $scope.graphHistory.length-1;
 
                 DialogGraph.setDirty(false);
+
+                angular.element('.alert-success').show();
+                $timeout(function()
+                {
+                    angular.element('.alert-success').css('opacity', 1);
+                    $timeout(function()
+                    {
+                        angular.element('.alert-success').css('opacity', 0);
+                        $timeout(function()
+                        {
+                            angular.element('.alert-success').hide();
+                        }, 600);
+                    }, 1500);
+                }, 5);
             }, function(error)
             {
                 alert('저장 실패 : ' + error.message);

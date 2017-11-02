@@ -8,6 +8,21 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
     $scope.oldDialog = undefined;
     $scope.dialog = {};
 
+    $scope.isAdvancedMode = false;
+
+    $scope.changeMode = function()
+    {
+        if($scope.isAdvancedMode)
+        {
+            $scope.isAdvancedMode = false;
+        }
+        else
+        {
+            $scope.isAdvancedMode = true;
+        }
+        console.log($scope.isAdvancedMode);
+    };
+
     $scope.initialize = function(parent, dialog)
     {
         $timeout(function()
@@ -18,6 +33,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             {
                 $scope.oldDialog = dialog;
 
+                $scope.dialog.id = dialog.id;
                 $scope.dialog.name = dialog.name;
                 $scope.dialog.input = dialog.input;
                 $scope.dialog.output = [];
@@ -102,6 +118,10 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
     $scope.$watch('isAdvancedMode', function()
     {
+        if($scope.isAdvancedMode)
+        {
+            $scope.useOutput();
+        }
     });
 
     DialogGraphEditorInput.make($scope);
@@ -110,7 +130,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
     
     $scope.save = function()
     {
-        if(!DialogGraph.checkDuplicatedName($scope.dialog.name))
+        if(!DialogGraph.checkDuplicatedName($scope.dialog))
         {
             alert($scope.dialog.name + ' is duplicated');
             return;
@@ -147,6 +167,9 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                 delete result.output[i].buttons;
             }
         }
+
+        result.input = JSON.parse(angular.toJson(result.input));
+        result.output = JSON.parse(angular.toJson(result.output));
 
         // 새로 추가되는 경우 실 데이터에도 추가해줌.
         if($scope.parentDialog && !$scope.oldDialog)

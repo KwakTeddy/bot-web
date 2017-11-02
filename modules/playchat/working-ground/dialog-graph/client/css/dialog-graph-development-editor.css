@@ -542,6 +542,16 @@
     height: 32px;
 }
 
+.output-button-name[disabled]
+{
+    background-color: #ddd;
+}
+
+.output-button-url[disabled]
+{
+    background-color: #ddd;
+}
+
 .output-button-name::placeholder, .output-button-name::-webkit-input-placeholder, .output-button-name::-moz-placeholder, .output-button-name:-ms-input-placeholder, .output-button-name:-moz-placeholder
 {
     color: #038eda;
@@ -577,7 +587,7 @@
 
 .dialog-editor-select-input
 {
-    width: 63.7%;
+    width: 63%;
     height: 33px;
     display: inline-block;
     border: 1px solid #ddd;
@@ -723,7 +733,7 @@
 }
 
 
-.dialog-editor-input-list-modal > li:hover
+.dialog-editor-input-list-modal > li:hover, .dialog-editor-input-list-modal > li.selected
 {
     background-color: #337ab7;
     color: white;
