@@ -84,7 +84,7 @@ function ($window, $scope, $cookies, $resource, Socket)
             simulatorBody = angular.element('#simulatorBody');
             // init
             simulatorBody.html('');
-            $resource('/api/chatbots/:id', { id: '@id' }).get({ id: chatbot.id }, function(data)
+            $resource('/api/chatbots/:id', { id: '@id' }).get({ id: chatbot._id }, function(data)
             {
                 $scope.chatbotName = data.name;
                 emitMsg(':reset user', false);

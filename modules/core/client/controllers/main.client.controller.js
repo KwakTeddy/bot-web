@@ -4,8 +4,6 @@
 
 angular.module('playchat').controller('MainController', ['$scope', '$location', '$timeout', '$cookies', 'Authentication', function ($scope, $location, $timeout, $cookies, Authentication)
 {
-    console.log('로그인 : ', Authentication);
-
     $scope.loading = true;
 
     $scope.$watch('loading', function(after, before)
@@ -26,6 +24,8 @@ angular.module('playchat').controller('MainController', ['$scope', '$location', 
             }, 100);
         }
     });
+
+    console.log('흠 : ', Authentication.user);
 
     if(!Authentication.user)
     {

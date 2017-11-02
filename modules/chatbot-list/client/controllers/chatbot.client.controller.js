@@ -2,7 +2,7 @@
 {
     'use strict';
 
-    angular.module('playchat').controller('ChatbotListController', ['$scope', '$resource', '$location', '$cookies', 'PagingService', function ($scope, $resource, $location, $cookies, PagingService)
+    angular.module('playchat').controller('ChatbotListController', ['$scope', '$resource', '$location', '$cookies', '$state', 'PagingService', function ($scope, $resource, $location, $cookies, $state, PagingService)
     {
         var ChatBotService = $resource('/api/chatbots/:botId', { botId: '@botId' }, { update: { method: 'PUT' } });
         var ChatBotDuplicateService = $resource('/api/chatbots/:botId/duplicate', { botId: '@botId' });
@@ -118,7 +118,7 @@
         $scope.selectBot = function(bot)
         {
             $cookies.putObject('chatbot', bot);
-            location.href = '/playchat';
+            $state.go('playchat');
         };
 
         $scope.getList();
