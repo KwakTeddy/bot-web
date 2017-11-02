@@ -648,6 +648,7 @@
 .dialog-editor-select-input > input + .dialog-editor-select-options
 {
     display: none;
+    position: relative;
 }
 
 .dialog-editor-select-input > input:focus + .dialog-editor-select-options

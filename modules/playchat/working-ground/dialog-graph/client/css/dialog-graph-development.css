@@ -280,7 +280,7 @@
     vertical-align: top;
 }
 
-.graph-dialog-item.selected, .graph-dialog-item:hover
+.graph-dialog-item.selected
 {
     border-color: #bfe3f6;
 }
@@ -309,7 +309,7 @@
     border-top-right-radius: 6px;
 }
 
-.graph-dialog-item.selected .graph-dialog-header, .graph-dialog-item:hover .graph-dialog-header
+.graph-dialog-item.selected .graph-dialog-header
 {
     background: #bfe3f6;
     border-bottom: 0;
@@ -334,7 +334,7 @@
     word-wrap: normal !important;
 }
 
-.graph-dialog-item.selected .graph-dialog-header span, .graph-dialog-item:hover .graph-dialog-header span
+.graph-dialog-item.selected .graph-dialog-header span
 {
     color: #038eda;
 }
@@ -360,7 +360,7 @@
     opacity: 1;
 }
 
-.graph-dialog-item.selected .graph-dialog-header .dialog-more, .graph-dialog-item:hover .graph-dialog-header .dialog-more
+.graph-dialog-item.selected .graph-dialog-header .dialog-more
 {
     background-image: url(../imgs/more-blue.png);
 }
@@ -394,7 +394,7 @@
     padding: 0 10px;
 }
 
-.graph-dialog-item.selected .graph-dialog-input, .graph-dialog-item:hover .graph-dialog-input
+.graph-dialog-item.selected .graph-dialog-input
 {
     border-color: #b1dbf4;
 }
@@ -424,7 +424,7 @@
     font-size: 12px;
 }
 
-.graph-dialog-item.selected .graph-dialog-output, .graph-dialog-item:hover .graph-dialog-output
+.graph-dialog-item.selected .graph-dialog-output
 {
     border-color: #b1dbf4;
 }
@@ -449,7 +449,7 @@
     transform: rotate(180deg);
 }
 
-.graph-dialog-item.selected .graph-fold, .graph-dialog-item:hover .graph-fold
+.graph-dialog-item.selected .graph-fold
 {
     background-color: #038eda;
 }

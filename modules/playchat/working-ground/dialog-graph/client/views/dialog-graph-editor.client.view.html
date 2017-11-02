@@ -71,7 +71,7 @@
                     </div>
                 </div>
                 <div class="dialog-editor-row">
-                    <p class="dialog-editor-subject"> <input type="radio" name="output" checked="true" ng-click="useOutput($event);" tabindex="-1"> Output <a href="#" class="codebtn" tabindex="-1"></a></p>
+                    <p class="dialog-editor-subject"> <input type="radio" name="output" ng-checked="isAdvancedMode || dialog.output.length > 1 || dialog.output[0].kind != 'Action'" ng-click="useOutput($event);" tabindex="-1"> Output <a href="#" class="codebtn" tabindex="-1"></a></p>
                     <a href="#" class="dialog-editor-output-add" ng-click="addOutput($event);" tabindex="-1"><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/add.png"></a>
                     <div class="dialog-editor-output-box" ng-repeat="output in dialog.output" ng-disabled="isUseOutput === false">
                         <div class="dialog-editor-output-functions">
@@ -86,7 +86,6 @@
                         </div>
                         <div ng-if="output.kind == 'Content'">
                             <div class="dialog-editor-output-if" ng-if="isAdvancedMode === true">
-                                <p class="dialog-editor-output-label">Action1</p>
                                 <span>IF</span>
                                 <input type="text" class="dialog-editor-output-input if">
                             </div>
@@ -116,15 +115,15 @@
                                 <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/blue-arrow.png">
                             </div>
                         </div>
-                        <div ng-if="output.kind == 'Action'">
+                        <div ng-if="output.kind == 'Action' && isAdvancedMode">
                             <div class="dialog-editor-output-action-row">
                                 <p class="dialog-editor-output-label">Action1</p>
                                 <span>IF</span>
-                                <input type="text" class="dialog-editor-output-input if">
+                                <input type="text" class="dialog-editor-output-input if" ng-model="output.if">
                             </div>
                             <div class="dialog-editor-output-action-row">
                                 <p class="dialog-editor-output-label">Action Type</p>
-                                <select class="jumbo-select dialog-editor-action-type" style="width: 100%; margin: 0 auto; display: block;" ng-model="dialog.output.type" ng-required="true">
+                                <select class="jumbo-select dialog-editor-action-type" style="width: 100%; margin: 0 auto; display: block;" ng-model="output.type" ng-required="true">
                                     <option value="">none</option>
                                     <option value="Call">Call</option>
                                     <option value="Call Child">Call Child</option>
@@ -137,9 +136,9 @@
                             <div class="dialog-editor-output-action-row">
                                 <p class="dialog-editor-output-label">Dialog Select</p>
                                 <div class="dialog-editor-select-input" style="width: 100%; margin: 0 auto; display: block;">
-                                    <input type="text" ng-model="dialog.output.dialog" ng-required="true">
+                                    <input type="text" ng-model="output.dialog" ng-required="true">
                                     <ul class="dialog-editor-select-options">
-                                        <li ng-repeat="dialog in dialogs" ng-mousedown="selectActionDialog($event, dialog)">{{ dialog.name }}</li>
+                                        <li ng-repeat="dialog in userDialogs" ng-mousedown="selectActionDialog($event, dialog)">{{ dialog.name }}</li>
                                         <li ng-repeat="dialog in commonDialogs" ng-mousedown="selectActionDialog($event, dialog)">{{ dialog.name }}</li>
                                     </ul>
                                 </div>
@@ -152,9 +151,9 @@
                     </div>
                 </div>
                 <div class="dialog-editor-row" ng-if="isAdvancedMode === false">
-                    <p class="dialog-editor-subject"> <input type="radio" name="output" ng-click="useAction($event);" tabindex="-1"> Action <a href="#" class="codebtn" tabindex="-1"></a></p>
+                    <p class="dialog-editor-subject"> <input type="radio" name="output" ng-checked="dialog.output.length == 1 && dialog.output[0].kind == 'Action'" ng-click="useAction($event);" tabindex="-1"> Action <a href="#" class="codebtn" tabindex="-1"></a></p>
                     <div style="padding: 8px 12px;">
-                        <select class="jumbo-select dialog-editor-action-type" ng-required="isUseOutput === false" ng-disabled="isUseOutput === true" ng-model="dialog.actionOutput.type">
+                        <select class="jumbo-select dialog-editor-action-type" ng-required="isUseOutput === false" ng-disabled="isUseOutput === true" ng-model="dialog.output[0].type">
                             <option value="">none</option>
                             <option value="Call">Call</option>
                             <option value="Call Child">Call Child</option>
@@ -164,7 +163,7 @@
                             <option value="Return">Return</option>
                         </select>
                         <div class="dialog-editor-select-input" ng-disabled="isUseOutput === true">
-                            <input type="text" ng-model="dialog.actionOutput.dialog" ng-required="isUseOutput === false" ng-disabled="isUseOutput === true">
+                            <input type="text" ng-model="dialog.output[0].dialog" ng-required="isUseOutput === false" ng-disabled="isUseOutput === true">
                             <ul class="dialog-editor-select-options">
                                 <li ng-repeat="dialog in userDialogs" ng-mousedown="selectActionDialog($event, dialog)">{{ dialog.name }}</li>
                                 <li ng-repeat="dialog in commonDialogs" ng-mousedown="selectActionDialog($event, dialog)">{{ dialog.name }}</li>

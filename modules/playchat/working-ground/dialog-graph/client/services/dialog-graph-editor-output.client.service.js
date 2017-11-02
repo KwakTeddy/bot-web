@@ -60,7 +60,7 @@
                 if(!$scope.useOutput)
                     return;
 
-                var output = { kind: 'text', text: '' };
+                var output = { kind: 'Content', text: '' };
                 $scope.dialog.output.unshift(output);
                 $scope.setOutputImageUploader(0);
             };

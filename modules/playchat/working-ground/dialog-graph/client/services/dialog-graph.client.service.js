@@ -871,7 +871,6 @@
             var check = true;
             this.canvas.find('.graph-dialog-header > span').each(function()
             {
-                console.log(this.parentElement.parentElement.dialog.id, dialog);
                 if(this.innerText == dialog.name && this.parentElement.parentElement.dialog.id != dialog.id)
                 {
                     check = false;
@@ -906,7 +905,7 @@
 
         DialogGraph.prototype.focusById = function(id)
         {
-            this.focus(this.canvas.find('#' + id + ' .graph-dialog-item'));
+            this.focus(this.canvas.find('#' + id + ' > .graph-dialog-item'));
         };
 
         DialogGraph.prototype.moveScrollToTarget = function(target)

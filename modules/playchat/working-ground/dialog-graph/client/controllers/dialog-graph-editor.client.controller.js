@@ -35,66 +35,109 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
                 $scope.dialog.id = dialog.id;
                 $scope.dialog.name = dialog.name;
-                $scope.dialog.input = dialog.input;
+                $scope.dialog.input = JSON.parse(angular.toJson(dialog.input));
                 $scope.dialog.output = [];
 
-                for(var i=0, l=dialog.input.length; i<l; i++)
+                for(var i=0, l=$scope.dialog.input.length; i<l; i++)
                 {
-                    if(Object.keys(dialog.input[i]).length > 1)
+                    if(Object.keys($scope.dialog.input[i]).length > 1)
                     {
                         $scope.isAdvancedMode = true;
                         break;
                     }
                 }
 
-                //output이 action인경우 다른 아웃풋은 존재할 수 없다.
-                if(dialog.output.length == 0 && dialog.output[0].kind == 'Action')
+                if(typeof dialog.output == 'string')
                 {
-                    var actionObject = {};
-                    for(var key in dialog.children[0])
-                    {
-                        if(key == 'kind')
-                        {
-                            actionObject[key] = 'Action';
-                        }
-                        else
-                        {
-                            actionObject.type = key;
-                            actionObject.dialog = dialog.children[0][key];
-                        }
-                    }
-
-                    $scope.dialog.output = [{ kind: 'Content', text: '', buttons: [] }];
-                    $scope.dialog.actionOutput = actionObject;
-
-                    $scope.isUseOutput = false;
+                    $scope.dialog.output.push({ kind: 'Content', text: dialog.output });
                 }
-                else
+                else if(typeof dialog.output == 'object')
                 {
-                    //ouput이 action이 아닌경우
-                    if(typeof dialog.output == 'string')
+                    if(dialog.output.length > 0)
                     {
-                        $scope.dialog.output.push({ kind: 'Content', text: dialog.output });
-                    }
-                    else if(typeof dialog.output == 'object')
-                    {
-                        if(dialog.output.length > 0)
+                        for(var i=0; i<dialog.output.length; i++)
                         {
-                            for(var i=0; i<dialog.output.length; i++)
+                            //advanced 모드일때는 action을 output쪽에 처리해서 넣어주면 됨.
+                            if(dialog.output[i].kind == 'Action')
+                            {
+                                if(!$scope.isAdvancedMode)
+                                {
+                                    $scope.isUseOutput = false;
+                                }
+
+                                var actionObject = {};
+                                actionObject.kind = 'Action';
+
+                                for(var key in dialog.output[i])
+                                {
+                                    if(key != 'kind')
+                                    {
+                                        actionObject.type = key;
+                                        actionObject.dialog = dialog.output[i][key];
+                                    }
+                                }
+
+                                $scope.dialog.output.push(actionObject);
+                            }
+                            else
                             {
                                 $scope.dialog.output.push(dialog.output[i]);
                             }
                         }
-                        else
-                        {
-                            $scope.dialog.output.push(dialog.output);
-                        }
                     }
                     else
                     {
-                        console.log('처리되지 않은 아웃풋 : ', dialog.output);
+                        $scope.dialog.output.push(dialog.output);
                     }
                 }
+                else
+                {
+                    console.log('처리되지 않은 아웃풋 : ', dialog.output);
+                }
+
+                console.log(dialog.output);
+
+                // if(dialog.output.length == 1 && dialog.output[0].kind == 'Action')
+                // {
+                //     $scope.isUseOutput = false;
+                //
+                //     for(var key in $scope.dialog.output[0])
+                //     {
+                //         if(key != 'kind')
+                //         {
+                //             $scope.dialog.actionOutput = { type: key, dialog: $scope.dialog.output[0][key] };
+                //             break;
+                //         }
+                //     }
+                //
+                //     $scope.dialog.output = [{ kind: 'Content', text: '', buttons: [] }];
+                // }
+                // else
+                // {
+                //     //output이 action이 아닌경우
+                //     if(typeof dialog.output == 'string')
+                //     {
+                //         $scope.dialog.output.push({ kind: 'Content', text: dialog.output });
+                //     }
+                //     else if(typeof dialog.output == 'object')
+                //     {
+                //         if(dialog.output.length > 0)
+                //         {
+                //             for(var i=0; i<dialog.output.length; i++)
+                //             {
+                //                 $scope.dialog.output.push(dialog.output[i]);
+                //             }
+                //         }
+                //         else
+                //         {
+                //             $scope.dialog.output.push(dialog.output);
+                //         }
+                //     }
+                //     else
+                //     {
+                //         console.log('처리되지 않은 아웃풋 : ', dialog.output);
+                //     }
+                // }
             }
             else
             {
@@ -127,7 +170,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
     DialogGraphEditorInput.make($scope);
     DialogGraphEditorOutput.make($scope);
     DialogGraphEditorTask.make($scope);
-    
+
     $scope.save = function()
     {
         if(!DialogGraph.checkDuplicatedName($scope.dialog))
