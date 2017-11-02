@@ -207,6 +207,8 @@
             this.dirtyCallback = undefined;
 
             this.fileName = undefined;
+
+            this.focusedDialog = undefined;
         };
 
         DialogGraph.prototype.getCommonDialogs = function()
@@ -469,17 +471,18 @@
         DialogGraph.prototype.addPlusButton = function(parent, style)
         {
             var button = angular.element('<button type="button" class="plus"' + (style ? style : '') + '></button>');
+
+            var target = parent.get(0).children[parent.get(0).children.length-1];
+
             parent.append(button);
 
-            if(parent.get(0).children && parent.get(0).children[0])
+            if(target)
             {
-                var target = parent.get(0).children[0].children[0];
-                if(target)
+                if(button[0].offsetTop - target.offsetTop > 188)
                 {
-                    var bottom = target.offsetTop + target.offsetHeight;
-                    var top = button.get(0).offsetTop;
-
-                    button.css('top', (bottom-top + 20) + 'px').css('position', 'relative');
+                    console.log(button[0].offsetTop - target.offsetTop);
+                    button[0].style.top = -414 + 'px';
+                    button[0].style.position = 'relative';
                 }
             }
 
@@ -567,23 +570,135 @@
 
         var makeDialogDraggble = function(item)
         {
+            var clone = undefined;
+            var line = document.createElement('div');
+            line.className = 'graph-dialog-line';
+
+            var parent = undefined;
+
+            var dragStart = false;
             item.addEventListener('mousedown', function(e)
             {
+                instance.focusById(item.dialog.id);
+                if(e.which != 1 || dragStart)
+                    return;
 
+                dragStart = true;
+
+                parent = item.parentElement.parentElement;
+
+                clone = item.cloneNode(true);
+                clone.origin = item;
+                clone.style.opacity = 0.8;
+                clone.style.position = 'absolute';
+                clone.style.pointerEvents = 'none';
+                angular.element(clone).find('.graph-fold').remove();
+
+                var left = angular.element('.playchat-background .gnb+div').get(0).offsetLeft;
+                var top = angular.element('.graph-body').get(0).offsetTop;
+
+                console.log(left, top);
+
+                clone.style.left = e.pageX - left - 50 + 'px';
+                clone.style.top = e.pageY - top - 63 - 30 + 'px';
+
+                e.stopPropagation();
             });
 
             window.addEventListener('mousemove', function(e)
             {
+                if(!dragStart)
+                    return;
+
+                if(!clone.parentElement)
+                {
+                    angular.element('#graphDialogCanvas').append(clone);
+                }
+
+                var left = angular.element('.playchat-background .gnb+div').get(0).offsetLeft;
+                var top = angular.element('.graph-body').get(0).offsetTop;
+
+                var target = document.elementFromPoint(e.clientX, e.clientY);
+
+                while(target && !target.dialog)
+                {
+                    target = target.parentElement;
+                }
+
+                if(target && target.parentElement.parentElement == parent)
+                {
+                    target.parentElement.insertBefore(line, target);
+
+                    line.style.top = target.offsetTop - 10 + 'px';
+                    line.style.left = target.offsetLeft + 'px';
+                }
+
+                // while (target && target.className != 'graph-body')
+                // {
+                //     if(target)
+                //     resetList.push(target);
+                //     target.style.pointerEvents = 'none';
+                //     target = document.elementFromPoint(e.clientX, e.clientY);
+                // }
+
+                // for(var i=0; i<resetList.length; i++)
+                // {
+                //     resetList[i].style.pointerEvents = 'auto';
+                // }
+
+                clone.style.left = e.pageX - left - 50 + 'px';
+                clone.style.top = e.pageY - top - 63 - 30 + 'px';
+
+                e.stopPropagation();
             });
 
             window.addEventListener('mouseup', function(e)
             {
+                if(dragStart)
+                {
+                    if(clone.parentElement)
+                    {
+                        var change = false;
+                        if(clone.origin.parentElement != line.parentElement)
+                        {
+
+                            var prev = clone.origin.parentElement.previousElementSibling;
+                            line.parentElement.parentElement.insertBefore(clone.origin.parentElement, line.parentElement);
+
+                            console.log(prev, clone.origin.parentElement.previousElementSibling);
+                            change = prev != clone.origin.parentElement.previousElementSibling;
+
+                            if(change)
+                            {
+                                var children = line.parentElement.parentElement.previousElementSibling.dialog.children;
+                                var index = children.indexOf(clone.origin.dialog);
+                                var targetIndex = children.indexOf(line.nextElementSibling.dialog);
+
+                                var origin = children[index];
+                                children[index] = children[targetIndex];
+                                children[targetIndex] = origin;
+                            }
+                        }
+
+                        clone.parentElement.removeChild(clone);
+                        line.parentElement.removeChild(line);
+
+                        if(change)
+                        {
+                            instance.setDirty(true);
+                            instance.refresh();
+                        }
+                    }
+
+                    dragStart = false;
+                    e.stopPropagation();
+                }
             });
         };
 
         DialogGraph.prototype.drawDialog = function(parent, dialog)
         {
-            var t = this.template.replace('{id}', dialog.id).replace('{name}', dialog.name);
+            var t = this.template.replace(/{id}/gi, dialog.id).replace('{name}', dialog.name);
 
             var inputTemplate = '';
             var outputTemplate = '';
@@ -696,7 +811,6 @@
 
             dialog.find('.graph-dialog-item').on('dblclick', function(e)
             {
-                console.log('aaa');
                 var parent = e.currentTarget.parentElement.parentElement.previousElementSibling;
                 if(parent && parent.dialog)
                 {
@@ -709,6 +823,12 @@
             dialog.find('.dialog-more').on('click', function(e)
             {
                 that.openMenu(e, dialog);
+                e.stopPropagation();
+                e.preventDefault();
+            }).on('mousedown', function(e)
+            {
+                e.stopPropagation();
+                e.preventDefault();
             });
         };
 
@@ -905,6 +1025,7 @@
 
         DialogGraph.prototype.focusById = function(id)
         {
+            this.focusedDialog = id;
             this.focus(this.canvas.find('#' + id + ' > .graph-dialog-item'));
         };
 
@@ -978,7 +1099,15 @@
             this.canvas.html('');
             this.drawDialog(this.canvas, this.graphData);
             this.drawLines(this.canvas.find('.graph-dialog'));
-            this.focus(this.canvas.find('.graph-dialog:first .graph-dialog-item')[0]);
+            if(this.focusedDialog)
+            {
+                this.focusById(this.focusedDialog);
+            }
+            else
+            {
+                this.focus(this.canvas.find('.graph-dialog:first .graph-dialog-item')[0]);
+            }
+
             this.setFoldButtonPosition(this.canvas.find('.graph-dialog-item .graph-fold'));
         };
 
