@@ -146,10 +146,17 @@ QAScore.prototype.assignScore = function(scope) {
     var answers = answers.reduce(function(answer1, answer2){
         var isExist = false;
         for (var i=0; i<answer1.length; i++) {
-            if (answer1[i].inputRaw == answer2.inputRaw &&
-                answer1[i].context.name == answer2.context.name) {
-                isExist = true;
-                break;
+            if (answer1[i].context && answer2.context) {
+                if (answer1[i].inputRaw == answer2.inputRaw &&
+                    answer1[i].context.name == answer2.context.name) {
+                    isExist = true;
+                    break;
+                }
+            } else {
+                if (answer1[i].inputRaw == answer2.inputRaw && answer1[i].output == answer2.output) {
+                    isExist = true;
+                    break;
+                }
             }
         }
         if (!isExist) {
@@ -164,8 +171,10 @@ QAScore.prototype.assignScore = function(scope) {
 
         // multi context에 대한 선택이었는지 확인
         if (contextInfo.context.type=="CONTEXT_SELECTION") {
-            if (answers[i].context.name == co2ntextInfo.context.name) {
-                score += 300;
+            if (answers[i].context) {
+                if (answers[i].context.name == co2ntextInfo.context.name) {
+                    score += 300;
+                }
             }
         }
 
@@ -232,10 +241,10 @@ QAScore.prototype.assignScore = function(scope) {
         return answer2.score - answer1.score;
     });
 
+    var topSameScoreCount = 1;
+    var contexts = {};
     if (answers.length>0  && answers[0].score > 1.0) {
-        var topSameScoreCount = 1;
         // 상위 동일 개수 체크
-        var contexts = {};
         if (answers[0].context) {
             if (answers.length > 0) contexts[answers[0].context.name] = 1;
             for (var i = 1; i < answers.length; i++) {

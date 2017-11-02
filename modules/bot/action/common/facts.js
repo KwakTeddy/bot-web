@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var mongoModule = require(path.resolve('modules/bot/action/common/mongo.js'));
 
 function memoryFacts(inRaw, context, callback) {
+
   if(context.botUser.sentenceInfo.sentenceType == 1 || context.botUser.nlu.sentenceInfo != 0) {
       // 평서문이 아니라면 종료
     callback(null, context);
@@ -13,6 +14,9 @@ function memoryFacts(inRaw, context, callback) {
 
   var node1, node2='', link;
   var result = context.botUser.nlp;
+
+    context.botUser.language == "ko";
+
     if (context.botUser.language == "zh") {
         var mode=0; // 1: the first noun, 2: verb, 3: the second noun
         for (var i = 0; i < result.length - 1; i++) {

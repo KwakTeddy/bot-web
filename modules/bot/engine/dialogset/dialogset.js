@@ -661,6 +661,8 @@ function analysisDoc(doc, bot_id, bot_name, cb) {
                     context.botUser["language"] = "ko";
                 }
 
+                context.botUser.language = "ko";
+
                 if (nlu.sentenceInfo == 0) {
                     // 평서문이라면 확인
                     if (context.botUser.language == "zh") {

@@ -712,6 +712,7 @@ exports.nluProcess = function(req, res) {
     var zhNLP = require(path.resolve('./modules/bot/engine/nlp/processor_zh'));
 
     var context;
+    context.botUser.language = "en";
     if (context == null || context == undefined) context = {};
     if (!("botUser" in context)) {context["botUser"] = {};}
     if (!("language" in context)) {context.botUser["language"] = "ko";}
