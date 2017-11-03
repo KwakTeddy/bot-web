@@ -481,8 +481,7 @@
             {
                 if(button[0].offsetTop - target.offsetTop > 188)
                 {
-                    console.log(button[0].offsetTop - target.offsetTop);
-                    button[0].style.top = -414 + 'px';
+                    button[0].style.top = -(button[0].offsetTop - target.offsetTop - 188) + 'px';
                     button[0].style.position = 'relative';
                 }
             }
