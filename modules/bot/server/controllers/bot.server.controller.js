@@ -232,6 +232,15 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
                                 context.botUser.currentDialog = null;
                             }
 
+                            // dialog graph 이면 qa로 넘어가지 않는다
+                            if (_dialog != undefined && _dialog.filename != undefined) {
+                                context.botUser.nlu["matchInfo"] = {};
+                                context.botUser.nlu.matchInfo["qa"] = [];
+                                context.botUser.nlu.matchInfo["contextNames"] = {};
+                                context.botUser.nlu.matchInfo["contexts"] = {};
+                                context.botUser.nlu.matchInfo["topScoreCount"] = 0;
+                            }
+
                             cb();
                         }
                         else cb(null);

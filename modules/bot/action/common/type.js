@@ -362,26 +362,28 @@ function processOutput(task, context, out) {
         });
 
         // context를 고려한 bot 발화 출력 (dsyoon)
-        context = qaScore.assignScore(context);
-        var topScoreCount = context.botUser.nlu.matchInfo.topScoreCount;
-        var contextCount = Object.keys(context.botUser.nlu.matchInfo.contexts).length;
-        if (context.botUser.nlu.sentence.substr(0,1) != ":") {
-            if (topScoreCount == 0) {
-                //out = out.replace(/%2B/g, '+');
-                out = "알아듣지 못했습니다";
-            } else if (topScoreCount > 1 && contextCount > 1) {
-                out = "";
-                for (var i = 0; i < topScoreCount; i++) {
-                    if (i > 0) out += " ";
-                    out += context.botUser.nlu.matchInfo.qa[i].context.name + "?";
-                    if (i > 2) {
-                        out += " 등 모호하네요. 좀 더 자세히 이야기해 주세요.";
-                        break;
+        if (context.botUser.nlu.matchInfo != undefined && context.botUser.nlu.matchInfo.qa.length > 0) {
+            context = qaScore.assignScore(context);
+            var topScoreCount = context.botUser.nlu.matchInfo.topScoreCount;
+            var contextCount = Object.keys(context.botUser.nlu.matchInfo.contexts).length;
+            if (context.botUser.nlu.sentence.substr(0, 1) != ":") {
+                if (topScoreCount == 0) {
+                    //out = out.replace(/%2B/g, '+');
+                    out = "알아듣지 못했습니다";
+                } else if (topScoreCount > 1 && contextCount > 1) {
+                    out = "";
+                    for (var i = 0; i < topScoreCount; i++) {
+                        if (i > 0) out += " ";
+                        out += context.botUser.nlu.matchInfo.qa[i].context.name + "?";
+                        if (i > 2) {
+                            out += " 등 모호하네요. 좀 더 자세히 이야기해 주세요.";
+                            break;
+                        }
                     }
-                }
-            } else {
-                if (context.botUser.nlu.matchInfo.qa[0].output) {
-                    out = context.botUser.nlu.matchInfo.qa[0].output;
+                } else {
+                    if (context.botUser.nlu.matchInfo.qa[0].output) {
+                        out = context.botUser.nlu.matchInfo.qa[0].output;
+                    }
                 }
             }
         }
