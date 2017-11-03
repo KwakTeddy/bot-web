@@ -17,7 +17,7 @@
         <div class="bot_unselect" ng-repeat="chatbot in list" ng-click="selectBot(chatbot);">
             <ul class="hei50">
                 <li class="sub1"><img src="/modules/chatbot-list/client/imgs/user2.png"></li>
-                <li class="sub3">{{ chatbot.id }}</li>
+                <li class="sub3" data-id="{{ chatbot.id }}" ng-keydown="chatbotNameKeyDown($event);" ng-blur="chatbotNameBlur($event);" ng-click="chatbotNameClick($event);">{{ chatbot.id }}</li>
                 <li>
                     <div class="flR mt10">
                         <a href="#" class="chatbot-menu-button" ng-click="openMenu($event, chatbot);"></a>
@@ -50,10 +50,10 @@
 
     <div class="window_overlay" ng-show="openShareModal">
         <div class="window">
-            <div class="card_detail_window">
+            <form class="card_detail_window">
                 <div class="window_header">
 				<span class="window_header_icon">
-					<img src="images/share.png">
+					<img src="/modules/chatbot-list/client/imgs/share.png">
 				</span>
                     <div class="window_title">
                         <h1>Shared chatbot</h1>
@@ -65,7 +65,7 @@
                             <li class="card_detail_item_header">Chatbot</li>
                         </ul>
                         <ul class="list mt20">
-                            <li class="card_detail_item_content1">Delivery bot</li>
+                            <li class="card_detail_item_content1">{{ selectedBot.id }}</li>
                         </ul>
                         <ul class="list clear">
                             <li class="card_detail_item_header">Share</li>
@@ -75,11 +75,11 @@
                             <li class="ml8 mt23">Authorization :</li>
                         </ul>
                         <ul class="list4 mt4">
-                            <li><input type="text" class="input_pop" placeholder="ssss@moneybrain.ai"></li>
+                            <li><input type="text" class="input_pop" placeholder="username@moneybrain.ai" ng-model="share.email" ng-required="true"></li>
                             <li class="ml10 mt10">
-                                <input id="checkBox1" type="checkbox" value="Read" class="styled-checkbox">
+                                <input id="checkBox1" type="checkbox" value="Read" class="styled-checkbox" ng-model="share.read">
                                 <label for="checkBox1" class="label">Read</label>
-                                <input id="checkBox2" type="checkbox" value="Edit" class="styled-checkbox">
+                                <input id="checkBox2" type="checkbox" value="Edit" class="styled-checkbox" ng-model="share.edit">
                                 <label for="checkBox2" class="label">Write</label>
                             </li>
                         </ul>
@@ -98,7 +98,7 @@
                         <a href="#" ng-click="shareChatbot();">Share</a>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>

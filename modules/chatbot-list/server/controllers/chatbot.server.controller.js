@@ -84,6 +84,38 @@ exports.findOne = function(req, res)
     });
 };
 
+exports.update = function(req, res)
+{
+    ChatBot.findOne({ _id: req.params.botId }).exec(function(err, item)
+    {
+        if(err)
+        {
+            return res.status(400).send({ message: err.stack || err });
+        }
+        else
+        {
+            for(var key in req.body)
+            {
+                item[key] = req.body[key];
+            }
+
+            console.log('허허하하하 : ', item);
+
+            item.save(function(err)
+            {
+                if(err)
+                {
+                    return res.status(400).send({ message: err.stack || err });
+                }
+                else
+                {
+                    res.end();
+                }
+            });
+        }
+    });
+};
+
 exports.duplicate = function(req, res)
 {
     ChatBot.findOne({ _id: req.params.botId }).exec(function(err, item)
