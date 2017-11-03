@@ -5,7 +5,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
     var DialogGraphsService = $resource('/api/:botId/dialoggraphs/:fileName', { botId: '@botId', fileName: '@fileName' });
 
     var chatbot = $cookies.getObject('chatbot');
-    // var openDialogGraph = $cookies.getObject('openDialogGraph');
+    var openDialogGraph = $cookies.getObject('openDialogGraph');
     
     var fileName = $location.search().fileName || 'default.graph.js';
 
@@ -77,14 +77,16 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             angular.element('.tab-body .select_tab').removeClass('select_tab');
             angular.element(e.currentTarget).addClass('select_tab');
 
+            $location.search().fileName = fileName;
+
             if(fileName.endsWith('.graph.js'))
             {
-                $location.search().fileName = fileName;
+                angular.element('.dialog-graph-code-editor').hide();
                 $scope.loadFile(fileName);
             }
             else
             {
-                alert('소스코드편집기 준비중!');
+                angular.element('.dialog-graph-code-editor').get(0).openCodeEditor(fileName);
             }
         };
 
@@ -247,16 +249,16 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
                 DialogGraph.setDirty(false);
 
-                angular.element('.alert-success').show();
+                angular.element('.graph-controller .alert-success').show();
                 $timeout(function()
                 {
-                    angular.element('.alert-success').css('opacity', 1);
+                    angular.element('.graph-controller .alert-success').css('opacity', 1);
                     $timeout(function()
                     {
-                        angular.element('.alert-success').css('opacity', 0);
+                        angular.element('.graph-controller .alert-success').css('opacity', 0);
                         $timeout(function()
                         {
-                            angular.element('.alert-success').hide();
+                            angular.element('.graph-controller .alert-success').hide();
                         }, 600);
                     }, 1500);
                 }, 5);

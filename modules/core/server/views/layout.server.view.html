@@ -16,6 +16,9 @@
 
 
 {% if env == 'development' %}
+
+<link rel="stylesheet" type="text/css" href="/lib/codemirror/lib/codemirror.css">
+
 <!-- Core -->
 <link href="/modules/core/client/css/core.css" rel="stylesheet" type="text/css">
 <link href="/modules/core/client/css/popup.css" rel="stylesheet" type="text/css">
@@ -129,6 +132,14 @@ if('{{env}}' == 'production')
 <script src="/lib/angular-ui-router/release/angular-ui-router.min.js"></script>
 <script src="/lib/angular-cookies/angular-cookies.js"></script>
 <script src="/lib/angular-file-upload/dist/angular-file-upload.js"></script>
+<script src="/lib/codemirror/lib/codemirror.js">
+
+</script>
+<link rel="stylesheet" href="/lib/codemirror/lib/codemirror.css">
+<script src="/lib/codemirror/mode/javascript/javascript.js"></script>
+
+<!--<script type="text/javascript" src="/lib/codemirror/lib/codemirror.js"></script>-->
+<!--<script type="text/javascript" src="/lib/angular-ui-codemirror/ui-codemirror.js"></script>-->
 
 <script>
 // UI 공통 에러 구현.. 임시로 여기 위치.
@@ -205,6 +216,7 @@ Beagle.error = function(e)
 <script src="modules/playchat/working-ground/dialog-graph/client/controllers/dialog-graph-management.client.controller.js"></script>
 <script src="modules/playchat/working-ground/dialog-graph/client/controllers/dialog-graph-development.client.controller.js"></script>
 <script src="modules/playchat/working-ground/dialog-graph/client/controllers/dialog-graph-editor.client.controller.js"></script>
+<script src="modules/playchat/working-ground/dialog-graph/client/controllers/dialog-graph-code-editor.client.controller.js"></script>
 
 
 <script src="modules/playchat/working-ground/dialog-graph/client/services/dialog-graph-editor-task.client.service.js"></script>

@@ -417,7 +417,7 @@
             $scope.inputKeyOnKeyUp = function(e)
             {
                 var text = e.currentTarget.value;
-                if(text)
+                if(text && !text.startsWith('/') && !text.startsWith('if('))
                 {
                     DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: text }, function(result)
                     {

@@ -479,7 +479,6 @@
 
             if(target)
             {
-                console.log(button[0].offsetTop - target.offsetTop - target.offsetHeight);
                 if(button[0].offsetTop - target.children[0].offsetTop - target.children[0].offsetHeight > 10)
                 {
                     console.log(button[0].offsetTop - target.offsetTop - 188);
@@ -564,7 +563,8 @@
 
             for(var i=0; i<buttons.length; i++)
             {
-                template += '<a><span>[button] ' + buttons[i].text + '</span></a>';
+                template += '<div><span>[button] ' + buttons[i].text + '</span></div>';
+                break;
             }
 
             return '<div class="graph-dialog-buttons"> ' + template + ' </div>';
