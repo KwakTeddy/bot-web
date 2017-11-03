@@ -6,6 +6,10 @@ module.exports = function(app)
 {
     app.get('/api/auth/signout', authentication.signout);
     app.post('/api/auth/signin', authentication.signin);
+    app.post('/api/auth/signup', authentication.signup);
+    app.post('/api/auth/forgot', authentication.forgot);
+    app.get('/api/auth/emailconfirm/:token', authentication.validateEmailConfirmToken);
+
 };
 
 /**

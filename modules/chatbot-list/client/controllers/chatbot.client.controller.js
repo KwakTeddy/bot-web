@@ -8,6 +8,12 @@
         var ChatBotDuplicateService = $resource('/api/chatbots/:botId/duplicate', { botId: '@botId' });
         var ChatBotPageService = $resource('/api/chatbots/totalpage');
 
+        if($cookies.get('login') === 'false')
+        {
+            $location.url('/signin');
+            return;
+        }
+
         $scope.selectedBot = undefined;
         $scope.openShareModal = false;
 

@@ -27,7 +27,7 @@ angular.module('playchat').controller('MainController', ['$scope', '$location', 
 
     if(!Authentication.user)
     {
-        if(location.href.indexOf('/signin') == -1)
+        if(location.href.indexOf('/signin') == -1 && location.href.indexOf('/password/forgot') == -1 && location.href.indexOf('/signup') == -1)
         {
             $cookies.putObject('user', null);
             $cookies.put('login', false);

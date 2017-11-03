@@ -168,3 +168,20 @@ a.policy{
     font-size: 12px;
     height: 25px;
 }
+
+.signup-complete-message
+{
+    padding-top: 120px;
+    width: 41%;
+    margin: 0 auto;
+}
+
+.signup-complete-message p
+{
+    margin: 5px 0;
+}
+
+.signup-complete-message div
+{
+    margin-top: 20px;
+}

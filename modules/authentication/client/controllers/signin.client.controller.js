@@ -17,6 +17,11 @@
             return;
         }
 
+        $scope.fotgotPassword = function()
+        {
+            location.href = '/password/forgot';
+        };
+
         $scope.signin = function()
         {
             $http.post('/api/auth/signin', $scope.credentials).success(function (response)

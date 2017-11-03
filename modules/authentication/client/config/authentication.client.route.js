@@ -9,6 +9,18 @@ angular.module('playchat').config(['$stateProvider', '$urlRouterProvider', funct
         controller: 'SigninController'
     });
 
+    $stateProvider.state('password-forgot', {
+        url: '/password/forgot',
+        templateUrl: 'modules/authentication/client/views/password-forgot.client.view.html',
+        controller: 'PasswordForgotController'
+    });
+
+    $stateProvider.state('signup', {
+        url: '/signup',
+        templateUrl: 'modules/authentication/client/views/signup.client.view.html',
+        controller: 'SignupController'
+    });
+
     //
     // var developerState = {
     //     url: '/developer',

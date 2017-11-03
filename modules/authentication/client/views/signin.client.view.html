@@ -23,14 +23,14 @@
             <input type="text" class="input_type09 mb10 username" ng-model="credentials.email" ng-required="true">
             <p>Password</p>
             <input type="password" class="input_type09 password" ng-model="credentials.password" ng-required="true">
-            <a href="#"><p class="find">Forget your password?</p></a>
+            <a href="#" ng-click="fotgotPassword();"><p class="find">Forget your password?</p></a>
             <a href="#">
                 <input type="submit" class="loginbtn" value="Sign in" ng-click="signin();">
             </a>
         </form>
     </div>
     <div id="bottoms">
-        <span>New to Playchat? <a href="#" class="create">Create Account</a></span>
+        <span>New to Playchat? <a ui-sref="signup" href="#" class="create">Create Account</a></span>
         <a class="policy" href="#">Terms of Use and Privacy Policy</a>
     </div>
 </div>
