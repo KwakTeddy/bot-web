@@ -1,16 +1,13 @@
-<div ng-controller="DialogGraphCodeEditorController">
+<form ng-controller="DialogGraphCodeEditorController">
     <div class="dialog-graph-code-editor-controller">
         <button type="button" class="blue-button" ng-click="save();">Save</button>
         <div class="alert-success" role="alert" style="top: 50px;"> <strong>저장되었습니다!</strong> </div>
     </div>
     <div class="dialog-graph-code-editor-body">
-        <textarea style="display: none;">&lt;!-- Create a simple CodeMirror instance --&gt;
-&lt;link rel="stylesheet" href="lib/codemirror.css"&gt;
-&lt;script src="lib/codemirror.js"&gt;&lt;/script&gt;
-&lt;script&gt;
-  var editor = CodeMirror.fromTextArea(myTextarea, {
-    lineNumbers: true
-  });
-&lt;/script&gt;</textarea>
+        <textarea style="display: none;"></textarea>
     </div>
-</div>
+    <div class="dialog-editor-footer">
+        <button class="blue-button">Save</button>
+        <button type="button" class="default-button" ng-click="close($event);">Cancel</button>
+    </div>
+</form>

@@ -162,6 +162,9 @@
 
         Instance.prototype.getSelectedItem = function()
         {
+            if(!this.inputModal)
+                return false;
+
             var selected = this.inputModal.find('.selected').get(0);
             if(selected)
             {

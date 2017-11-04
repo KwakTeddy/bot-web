@@ -45,11 +45,11 @@
                                         <span class="dialog-editor-input-key" contenteditable="true" data-key="{{ key }}" ng-click="inputKeyOnClick($event);" ng-focus="inputKeyOnFocus($event, input);" ng-blur="inputKeyOnBlur($event, input);" ng-keydown="inputKeyOnKeyDown($event, input);" ng-keyup="inputKeyOnKeyUp($event, input);">{{ val }}</span>
                                         <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/close.png" class="delete-img" ng-click="deleteInputKey(input, key);">
                                     </span>
-                                    <span class="and" ng-if="Object.keys(input).length > 1">and</span>
+                                    <span class="and" ng-if="getLength(input);">and</span>
                                 </span>
 
                                 <span class="dialog-editor-input-item">
-                                    <input type="text" class="dialog-editor-input-key" style="width: 80px; padding:0 4px;" ng-click="inputKeyOnClick($event);" ng-focus="inputKeyOnFocus($event, input);" ng-blur="inputKeyOnBlur($event, input);" ng-keydown="inputKeyOnKeyDown($event, input);" ng-keyup="inputKeyOnKeyUp($event, input);">
+                                    <input type="text" class="dialog-editor-input-key target-input" ng-class="isRequired(input) ? '' : ''" style="width: 80px; padding:0 4px;" ng-click="inputKeyOnClick($event);" ng-focus="inputKeyOnFocus($event, input);" ng-blur="inputKeyOnBlur($event, input);" ng-keydown="inputKeyOnKeyDown($event, input);" ng-keyup="inputKeyOnKeyUp($event, input);">
                                 </span>
                             </div>
                             <div class="or" ng-if="dialog.input.length > 1 && $index < dialog.input.length-1">
@@ -64,9 +64,12 @@
                 <div class="dialog-editor-row" ng-if="isAdvancedMode === true">
                     <p class="dialog-editor-subject">Task <a href="#" class="codebtn" tabindex="-1"></a></p>
                     <div class="dialog-editor-select-input" style="margin: 0 auto; display: block; width: 93%;">
-                        <input type="text" ng-model="dialog.task.name">
+                        <input type="text" ng-model="dialog.task.name" ng-keydown="taskKeydown($event);">
                         <ul class="dialog-editor-select-options">
-                            <li ng-repeat="task in tasks" ng-mousedown="selectTask($event, task)">{{ task.name }}</li>
+                            <li ng-mousedown="createTask();">새로 만들기</li>
+                            <li ng-repeat="task in tasks track by $index" ng-mousedown="selectTask($event, task)">
+                                <span data-filename="{{ task.fileName }}">{{ task.name }}</span>
+                            </li>
                         </ul>
                     </div>
                 </div>

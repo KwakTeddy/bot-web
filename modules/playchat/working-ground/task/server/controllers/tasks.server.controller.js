@@ -12,6 +12,8 @@ var TaskEntity = mongoose.model('TaskEntity');
 
 var util = require('util'); //temporary
 
+var fs = require('fs');
+
 
 exports.findTotalPage = function(req, res)
 {
@@ -58,42 +60,107 @@ exports.find = function(req, res)
     });
 };
 
+exports.findFiles = function(req, res)
+{
+    var filePath = path.resolve('./custom_modules/' + req.params.botId);
+    fs.readdir(filePath, function(err, list)
+    {
+        if(err)
+        {
+            return res.status(400).send({ message: err.stack || err });
+        }
+
+        var result = [];
+        for(var i=0, l=list.length; i<l; i++)
+        {
+            if(list[i].endsWith('.graph.js') || list[i].endsWith('.bot.js') || list[i].endsWith('.test.js') || !list[i].endsWith('.js'))
+            {
+                continue;
+            }
+
+            result.push(list[i]);
+        }
+
+        var tasks = [];
+        for(var i=0, l=result.length; i<l; i++)
+        {
+            var content = fs.readFileSync(path.resolve('./custom_modules/' + req.params.botId + '/' + result[i]));
+            if(content)
+            {
+                content = content.toString();
+
+                var match = content.match(/bot.setTask\([^,]*,/gi);
+                if(match)
+                {
+                    for(var j=0; j<match.length; j++)
+                    {
+                        var name = match[j].replace('bot.setTask(', '').replace(',', '').replace(/"/gi, '').replace(/'/gi, '');
+                        if(tasks.indexOf(name) == -1)
+                            tasks.push({ fileName: result[i], name: name });
+                    }
+                }
+            }
+        }
+
+        res.jsonp(tasks);
+    });
+};
+
+exports.saveTaskToFile = function(req, res)
+{
+    var filePath = path.resolve('./custom_modules/' + req.params.botId + '/default.js');
+
+    var content = '';
+    if(fs.existsSync(filePath))
+    {
+        content = fs.readFileSync(filePath).toString();
+        content += '\r\n\r\n';
+    }
+    else
+    {
+        content = "var path = require('path');\r\n";
+        content += "var bot = require(path.resolve('config/lib/bot')).getBot('" + req.params.botId + "');\r\n\r\n";
+    }
+
+    if(content.indexOf('var ' + req.body.name) != -1)
+    {
+        return res.status(400).send({ message: 'Duplicated task name'});
+    }
+
+    content += req.body.content;
+
+    fs.writeFile(filePath, content, function(err)
+    {
+        if(err)
+        {
+            return res.status(400).send({ message: err.stack || err });
+        }
+
+        res.end();
+    });
+};
+
 /**
  * Create a Custom action
  */
-exports.create = function(req, res) {
-  console.log(util.inspect(req.body));
-  console.log(util.inspect('------------------------'));
-  var task = new Task(req.body.task);
-  task.user = req.user;
-  task.open = true;
-  if(req.body.task.paramDefs){
-    task.entity = req.body.task.paramDefs;
-  }
-  // if (req.body.task.paramDefs){
-  //   Entity.find()
-  //  var taskEntity= new TaskEntity();
-  //  taskEntity.entityId =
-  //  taskEntity.taskId = task._id
-  //  taskEntity.use = true;
-  //  taskEntity.save(function (err) {
-  //    if (err) {
-  //      console.log(err);
-  //      return res.status(400).send({message: err});
-  //    } else {
-  //      res.jsonp(task);
-  //    }
-  //  })
-  // }
+exports.create = function(req, res)
+{
+    var task = new Task(req.body.task);
+    task.user = req.user;
+    task.open = true;
 
-  task.save(function(err) {
-    if (err) {
-      console.log(err);
-      return res.status(400).send({message: err});
-    } else {
-      res.jsonp(task);
-    }
-  });
+    task.save(function(err)
+    {
+        if (err)
+        {
+            console.log(err);
+            return res.status(400).send({message: err});
+        }
+        else
+        {
+            res.jsonp(task);
+        }
+    });
 };
 
 /**

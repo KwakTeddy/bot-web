@@ -37,6 +37,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                 $scope.dialog.name = dialog.name;
                 $scope.dialog.input = JSON.parse(angular.toJson(dialog.input));
                 $scope.dialog.output = [];
+                $scope.dialog.task = dialog.task;
 
                 for(var i=0, l=$scope.dialog.input.length; i<l; i++)
                 {
@@ -95,8 +96,6 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                     console.log('처리되지 않은 아웃풋 : ', dialog.output);
                 }
 
-                console.log(dialog.output);
-
                 // if(dialog.output.length == 1 && dialog.output[0].kind == 'Action')
                 // {
                 //     $scope.isUseOutput = false;
@@ -145,6 +144,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                 $scope.dialog.input = [{ text: '' }];
                 $scope.dialog.output = [{ kind: 'Content', text: '', buttons: [] }];
                 $scope.dialog.actionOutput = { kind: 'Action', type: '', dialog: '' };
+                $scope.dialog.task = undefined;
 
                 $scope.isUseOutput = true;
             }
@@ -188,6 +188,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         result.name = $scope.dialog.name;
         result.input = $scope.dialog.input;
         result.output = $scope.dialog.output;
+        result.task = $scope.dialog.task;
 
         if(!$scope.isUseOutput)
         {
@@ -213,6 +214,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
         result.input = JSON.parse(angular.toJson(result.input));
         result.output = JSON.parse(angular.toJson(result.output));
+        result.task = JSON.parse(angular.toJson(result.task));
 
         // 새로 추가되는 경우 실 데이터에도 추가해줌.
         if($scope.parentDialog && !$scope.oldDialog)
@@ -235,12 +237,81 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         DialogGraphEditor.close();
     };
 
+    $scope.isRequired = function(input)
+    {
+        input = JSON.parse(angular.toJson(input));
+        if(Object.keys(input).length <= 1)
+        {
+            var check = false;
+            for(var key in input)
+            {
+                if(!input[key])
+                {
+                    check = true;
+                }
+            }
+
+            if(check)
+            {
+                angular.element('.target-input').attr('required', 'true');
+            }
+            else
+            {
+                angular.element('.target-input').removeAttr('required');
+            }
+        }
+        else
+        {
+            angular.element('.target-input').removeAttr('required');
+        }
+    };
+
+    $scope.$watch('dialog.input', function(after, before)
+    {
+        console.log('흠', after, before);
+
+        if(after)
+        {
+            var input = JSON.parse(angular.toJson(after));
+            if(Object.keys(input).length <= 1)
+            {
+                var check = false;
+                for(var key in input)
+                {
+                    if(!input[key])
+                    {
+                        check = true;
+                    }
+                }
+
+                if(check)
+                {
+                    angular.element('.target-input').attr('required', 'true');
+                }
+                else
+                {
+                    angular.element('.target-input').removeAttr('required');
+                }
+            }
+            else
+            {
+                angular.element('.target-input').removeAttr('required');
+            }
+        }
+        else
+        {
+            angular.element('.target-input').attr('required', 'true');
+        }
+
+    }, true);
+
     $scope.initialize();
 
     DialogGraphEditor.setOpenCallback(function(parent, dialog)
     {
         $scope.commonDialogs = DialogGraph.getCommonDialogs();
         $scope.userDialogs = DialogGraph.getUserDialogs();
+
 
         $scope.initialize(parent, dialog);
     });

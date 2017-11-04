@@ -481,7 +481,6 @@
             {
                 if(button[0].offsetTop - target.children[0].offsetTop - target.children[0].offsetHeight > 10)
                 {
-                    console.log(button[0].offsetTop - target.offsetTop - 188);
                     button[0].style.top = -(button[0].offsetTop - target.offsetTop - 188) + 'px';
                     button[0].style.position = 'relative';
                 }
