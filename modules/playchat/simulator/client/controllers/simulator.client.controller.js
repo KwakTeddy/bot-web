@@ -50,9 +50,9 @@ function ($window, $scope, $cookies, $resource, Socket)
             var options = { dev: true };
 
             var params = {};
-            params.botId = chatbot._id;
-            params.userId = user._id;
-            params.rawText = msg;
+            params.bot = chatbot._id;
+            params.user = user._id;
+            params.msg = msg;
             params.options = options;
 
             Socket.emit('send_msg', params);
