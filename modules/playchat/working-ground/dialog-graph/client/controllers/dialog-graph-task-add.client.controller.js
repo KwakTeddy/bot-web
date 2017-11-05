@@ -2,7 +2,7 @@
 {
     angular.module('playchat').controller('TaskAddController', ['$window', '$scope', '$resource', '$cookies', '$element', '$timeout', function ($window, $scope, $resource, $cookies, $element, $timeout)
     {
-        var TaskService = $resource('/api/:botId/tasks/files', { botId: '@botId' }, { update: { method: 'PUT' } });
+        var TaskService = $resource('/api/:botId/tasks', { botId: '@botId' }, { update: { method: 'PUT' } });
 
         var chatbot = $cookies.getObject('chatbot');
 

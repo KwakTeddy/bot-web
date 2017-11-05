@@ -17,21 +17,23 @@
             <li><a href="#">Store</a></li>
             <li><a href="#">Shared</a></li>
         </ul>
-        <div class="btn02 flR" ng-click="modal.mgmtModal.open();">
+        <div class="btn02 flR" ng-click="open();">
             <a href="#" class="">Add New</a>
         </div>
     </div>
     <div class="downSide">
         <table class="tb02">
             <colgroup>
-                <col style="width: 55%;">
+                <col style="width: 30%;">
+                <col style="width: 30%;">
                 <col style="width: 30%;">
                 <col style="width: 15%;">
                 <!--<col style="width: 10%;">-->
             </colgroup>
             <thead>
             <tr>
-                <th>Name</th>
+                <th>File Name</th>
+                <th>Task Name</th>
                 <th>Last Update</th>
                 <th></th>
                 <!--<th>Usalbe</th>-->
@@ -39,10 +41,11 @@
             </thead>
             <tbody>
             <tr ng-if="tasks.length == 0">
-                <td colspan="3">empty</td>
+                <td colspan="4">empty</td>
             </tr>
             <tr ng-repeat="item in tasks">
-                <td>{{ item.name }}</td>
+                <td>{{ item.fileName }}</td>
+                <td style="text-align: left;">{{ item.name }}</td>
                 <td>{{ item.user.displayName }}</td>
                 <td>
                     <a href="#" class="flR" ng-click="delete(item);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>
@@ -57,33 +60,50 @@
             </tr>
             </tbody>
         </table>
-        <div class="tablePaging">
-            <div class="tablePagingC">
-                <a href="/playchat/management/task?page={{ pageOptions.prev }}" ng-click="toPage(pageOptions.prev);" class="direction">
-                    <img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="이전페이지이동">
-                </a>
-                <a ng-repeat="page in pageOptions.pages" href="/playchat/management/task?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
-                <a href="/playchat/management/task?page={{ pageOptions.next }}" ng-click="toPage(pageOptions.next);" class="direction">
-                    <img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="다음페이지이동">
-                </a>
-            </div>
-        </div>
+        <!--<div class="tablePaging">-->
+            <!--<div class="tablePagingC">-->
+                <!--<a href="/playchat/management/task?page={{ pageOptions.prev }}" ng-click="toPage(pageOptions.prev);" class="direction">-->
+                    <!--<img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="이전페이지이동">-->
+                <!--</a>-->
+                <!--<a ng-repeat="page in pageOptions.pages" href="/playchat/management/task?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>-->
+                <!--<a href="/playchat/management/task?page={{ pageOptions.next }}" ng-click="toPage(pageOptions.next);" class="direction">-->
+                    <!--<img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="다음페이지이동">-->
+                <!--</a>-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
 
 
     <div class="modal-background management-modal" ng-show="modal.mgmtModal.isOpened">
         <div class="modal">
-            <form name="modalFormDefault" ng-submit="save(modal.mgmtModal);">
+            <form name="modalFormDefault" ng-submit="save(modal.mgmtModal);" style="width: 600px;">
+                <div class="form-row">
+                    <label class="required" ng-if="!modal.mgmtModal.isNewFile">
+                        <span class="form-title">File Name</span>
+                        <select ng-model="modal.mgmtModal.data.fileName" ng-required="true" class="task-file-select jumbo-select" style="width: 40%;" ng-change="selectedFileName();">
+                            <option>[Create File]</option>
+                            <option ng-repeat="option in taskFiles" value="{{ option }}">{{ option }}</option>
+                        </select>
+                    </label>
+                    <label class="required" ng-if="modal.mgmtModal.isNewFile">
+                        <span class="form-title">File Name</span>
+                        <input type="text" placeholder="Enter file name" name="filename" ng-model="modal.mgmtModal.data.fileName" style="width: 40%;" class="task-title data-input" ng-required="true">
+                    </label>
+                </div>
                 <div class="form-row">
                     <label class="required">
                         <span class="form-title">Name</span>
-                        <input type="text" placeholder="태스크 이름을 입력해주세요" name="name" ng-model="modal.mgmtModal.data.name" class="task-title data-input" ng-required="true">
+                        <input type="text" placeholder="Task Name(English, Number, _)" name="name" ng-model="modal.mgmtModal.data.name" style="width: 40%;" class="task-title data-input" ng-required="true" pattern="[^0-9]+[a-zA-Z_0-9]*">
                     </label>
                 </div>
                 <div class="form-row">
                     <label>
                         <span>Content</span>
-                        <textarea placeholder="내용을 입력해주세요" name="content" ng-model="modal.mgmtModal.data.content" class="data-input"></textarea>
+                        <div class="dialog-graph-task-add-logic" style="margin: 0;">
+                            <p><span style="color: #708;">function</span>(<span style="color: #00f;">task</span>, <span style="color: #00f;">context</span>, <span style="color: #00f;">callback</span>) {</p>
+                            <textarea style="display: none;" id="dialogGraphEditorTaskLogic"></textarea>
+                            <p>}</p>
+                        </div>
                     </label>
                 </div>
                 <div class="tab-footer">

@@ -60,7 +60,32 @@ exports.find = function(req, res)
     });
 };
 
-exports.findFiles = function(req, res)
+exports.findTaskFiles = function(req, res)
+{
+    var filePath = path.resolve('./custom_modules/' + req.params.botId);
+    fs.readdir(filePath, function(err, list)
+    {
+        if (err)
+        {
+            return res.status(400).send({message: err.stack || err});
+        }
+
+        var result = [];
+        for (var i = 0, l = list.length; i < l; i++)
+        {
+            if (list[i].endsWith('.graph.js') || list[i].endsWith('.bot.js') || list[i].endsWith('.test.js') || !list[i].endsWith('.js'))
+            {
+                continue;
+            }
+
+            result.push(list[i]);
+        }
+
+        res.jsonp(result);
+    });
+};
+
+exports.findTasks = function(req, res)
 {
     var filePath = path.resolve('./custom_modules/' + req.params.botId);
     fs.readdir(filePath, function(err, list)
@@ -106,9 +131,85 @@ exports.findFiles = function(req, res)
     });
 };
 
+exports.readTask = function(req, res)
+{
+    var fileName = req.params.fileName;
+    var taskName = req.params.taskName;
+
+    if(!fileName.endsWith('.js'))
+        fileName += '.js';
+
+    var filePath = path.resolve('./custom_modules/' + req.params.botId + '/' + (fileName ? fileName : 'default.js'));
+
+    var content = '';
+    if(fs.existsSync(filePath))
+    {
+        content = fs.readFileSync(filePath).toString();
+
+        // var sdf2 = {
+        //     name: 'sdf2',
+        //     action: function(task, context, callback) {
+        //         callback(task, context);
+        //     }
+        // };
+        // bot.setTask('sdf2', sdf2);
+
+        var start = content.indexOf('var ' + taskName);
+        var end = content.indexOf('bot.setTask', start);
+
+        content = content.substring(start, end);
+
+        start = content.indexOf('{');
+        end = content.lastIndexOf('}');
+
+        content = content.substring(start + 1, end);
+
+        start = content.indexOf('{');
+        end = content.lastIndexOf('}');
+
+        content = content.substring(start + 1, end);
+
+        res.jsonp({ content : content });
+
+        // var match = content.match(new RegExp('var ' + taskName + '[^}]*}', 'gi'));
+        // if(match && match.length == 1)
+        // {
+        //     var start = match[0].indexOf('action:');
+        //     var end = match[0].indexOf('callback(task, context);');
+        //
+        //     match = match[0].substring(start, end);
+        //     console.log('매치 : ', match);
+        //
+        //     match = match.split('function(task')[1];
+        //
+        //     console.log('매치 : ', match);
+        //     match = match.replace(/\([^{]*{/g, '');
+        //
+        //     res.jsonp({ content: (match + '\r\n callback(task, context);').trim() });
+        //     // match = match[0].match(new RegExp('function(task, context, callback)[^}]*}', 'gi'));
+        //     //
+        //     // console.log(match);
+        //     // res.jsonp({ content : match[0].replace('function(task, context, callback) {', '') });
+        // }
+        // else
+        // {
+        //     res.status(404).end();
+        // }
+    }
+    else
+    {
+        res.status(404).end();
+    }
+};
+
 exports.saveTaskToFile = function(req, res)
 {
-    var filePath = path.resolve('./custom_modules/' + req.params.botId + '/default.js');
+    var fileName = req.body.fileName;
+
+    if(!fileName.endsWith('.js'))
+        fileName += '.js';
+
+    var filePath = path.resolve('./custom_modules/' + req.params.botId + '/' + (fileName ? fileName : 'default.js'));
 
     var content = '';
     if(fs.existsSync(filePath))
@@ -122,12 +223,13 @@ exports.saveTaskToFile = function(req, res)
         content += "var bot = require(path.resolve('config/lib/bot')).getBot('" + req.params.botId + "');\r\n\r\n";
     }
 
-    if(content.indexOf('var ' + req.body.name) != -1)
+    if(!req.body.editMode && content.indexOf('var ' + req.body.name) != -1)
     {
         return res.status(400).send({ message: 'Duplicated task name'});
     }
 
-    content += req.body.content;
+    if(req.body.content)
+        content += req.body.content;
 
     fs.writeFile(filePath, content, function(err)
     {

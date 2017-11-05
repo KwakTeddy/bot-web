@@ -7,7 +7,7 @@
 
     angular.module('playchat').factory('DialogGraphEditorTask', function ($cookies, $resource)
     {
-        var TaskService = $resource('/api/:botId/tasks/files', { botId: '@botId' }, { update: { method: 'PUT' } });
+        var TaskService = $resource('/api/:botId/tasks', { botId: '@botId' }, { update: { method: 'PUT' } });
 
         var chatbot = $cookies.getObject('chatbot');
 
