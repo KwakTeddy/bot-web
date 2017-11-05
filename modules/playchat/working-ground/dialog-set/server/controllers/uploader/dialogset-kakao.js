@@ -5,7 +5,7 @@ var fileutil = require(path.resolve('./bot-engine/action/common/fileutil.js'));
 var mongoModule = require(path.resolve('./bot-engine/action/common/mongo.js'));
 var dialogsetModule = require('./dialogset-uploader');
 
-// var bot = require(path.resolve('config/lib/bot')).getBot('private_bot');
+// var bot = require(path.resolve('./engine/bot.js')).getBot('private_bot');
 
 // var baseDir = path.resolve('public/files/');
 

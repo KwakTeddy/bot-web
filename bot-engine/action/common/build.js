@@ -124,13 +124,13 @@ function botBuild(bot, botPath, fileName, dialogs, commons)
         var tail;
         if(botDir.indexOf('templates') != -1)
         {
-            tail = '\nvar _bot = require(require(\'path\').resolve("config/lib/bot")).getTemplateBot(\'' + bot + '\');' +
+            tail = '\nvar _bot = require(require(\'path\').resolve("./engine/bot.js")).getTemplateBot(\'' + bot + '\');' +
                 '\n_bot.setDialogs(dialogs);' +
                 '\n_bot.setCommonDialogs(commonDialogs);\n';
         }
         else
         {
-            tail = '\nvar _bot = require(require(\'path\').resolve("config/lib/bot")).getBot(\'' + bot + '\');' +
+            tail = '\nvar _bot = require(require(\'path\').resolve("./engine/bot.js")).getBot(\'' + bot + '\');' +
                 '\n_bot.setDialogs(dialogs);' +
                 '\n_bot.setCommonDialogs(commonDialogs);\n';
         }

@@ -1,11 +1,11 @@
 var fs = require('fs');
 var async = require('async');
 var path = require('path');
-var fileutil = require(path.resolve('./bot-engine/action/common/fileutil.js'));
-var mongoModule = require(path.resolve('./bot-engine/action/common/mongo.js'));
+var fileutil = require(path.resolve('./engine/bot/action/common/fileutil.js'));
+var mongoModule = require(path.resolve('./engine/bot/action/common/mongo.js'));
 // var type = require(path.resolve('./bot-engine/action/common/type'));
 var mongoose = require('mongoose');
-var utils = require(path.resolve('./bot-engine/action/common/utils'));
+var utils = require(path.resolve('./engine/bot/action/common/utils'));
 
 var XLSX = require('xlsx');
 

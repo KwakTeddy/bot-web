@@ -67,7 +67,7 @@ module.exports.start = function start(callback)
 
     this.init(function (app, db, config)
     {
-        if(config.loadBalance)
+        if(config.loadBalance.use)
         {
             loadbalancer.init();
         }

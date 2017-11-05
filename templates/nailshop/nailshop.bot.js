@@ -1,5 +1,5 @@
 var path = require('path');
-var botlib = require(path.resolve('config/lib/bot'));
+var botlib = require(path.resolve('./engine/bot.js'));
 
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;

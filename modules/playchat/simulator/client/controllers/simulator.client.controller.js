@@ -50,7 +50,7 @@ function ($window, $scope, $cookies, $resource, Socket)
             var options = { dev: true };
 
             var params = {};
-            params.bot = chatbot._id;
+            params.bot = chatbot.id;
             params.user = user._id;
             params.msg = msg;
             params.options = options;

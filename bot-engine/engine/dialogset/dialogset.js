@@ -7,7 +7,7 @@ var type = require(path.resolve('./bot-engine/action/common/type'));
 var mongoose = require('mongoose');
 var utils = require(path.resolve('./bot-engine/action/common/utils'));
 
-// var bot = require(path.resolve('config/lib/bot')).getBot('private_bot');
+// var bot = require(path.resolve('./engine/bot.js')).getBot('private_bot');
 var dialogsetKakao = require('./dialogset-kakao');
 var dialogsetSmi = require('./dialogset-smi');
 var dialogsetKdrama = require('./dialogset-kdrama');

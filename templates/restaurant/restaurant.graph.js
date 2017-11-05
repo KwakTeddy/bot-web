@@ -522,6 +522,6 @@ var commonDialogs = [
 ];
 
 
-var _bot = require(require('path').resolve("config/lib/bot")).getTemplateBot('restaurant');
+var _bot = require(require('path').resolve("./engine/bot.js")).getTemplateBot('restaurant');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

@@ -1,5 +1,5 @@
 var path = require('path');
-var globalQuibbles = require(path.resolve('custom_modules/global/global-quibbles'));
+var globalQuibbles = require(path.resolve('./engine/global/global-quibbles'));
 
 function quibble(context) {
   var quibbleSentence = undefined;

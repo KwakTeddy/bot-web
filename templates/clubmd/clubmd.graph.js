@@ -503,6 +503,6 @@ var commonDialogs = [
 ];
 
 
-var _bot = require(require('path').resolve("config/lib/bot")).getTemplateBot('clubmd');
+var _bot = require(require('path').resolve("./engine/bot.js")).getTemplateBot('clubmd');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);
