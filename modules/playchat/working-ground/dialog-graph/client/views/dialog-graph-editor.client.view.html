@@ -90,7 +90,7 @@
                         <div ng-if="output.kind == 'Content'">
                             <div class="dialog-editor-output-if" ng-if="isAdvancedMode === true">
                                 <span>IF</span>
-                                <input type="text" class="dialog-editor-output-input if">
+                                <input type="text" class="dialog-editor-output-input if" ng-model="output.if">
                             </div>
                             <div class="dialog-editor-output-text">
                                 <input type="text" placeholder="여기를 편집하세요" ng-required="isUseOutput === true" ng-model="output.text" ng-disabled="isUseOutput === false">

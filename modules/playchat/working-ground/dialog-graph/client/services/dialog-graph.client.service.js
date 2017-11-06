@@ -578,6 +578,9 @@
 
             var parent = undefined;
 
+            var prevX = undefined;
+            var prevY = undefined;
+
             var dragStart = false;
             item.addEventListener('mousedown', function(e)
             {
@@ -609,6 +612,19 @@
             {
                 if(!dragStart)
                     return;
+
+                if(!clone.parentElement && prevX && prevY)
+                {
+                    if(Math.abs(prevX - e.clientX) < 10 && Math.abs(prevY - e.clientY) < 10)
+                    {
+                        prevX = e.clientX;
+                        prevY = e.clientY;
+                        return;
+                    }
+                }
+
+                prevX = e.clientX;
+                prevY = e.clientY;
 
                 if(!clone.parentElement)
                 {
@@ -1036,9 +1052,6 @@
             var graphBody = canvas.parentElement;
 
             // target이 보이는 부분에 있는지 검사.
-
-            console.log(target);
-
             var l = target.offsetLeft;
             var r = target.offsetLeft + target.offsetWidth;
             var t = target.offsetTop;
