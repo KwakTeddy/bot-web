@@ -90,7 +90,6 @@ exports.create = function(req, res)
         }
         else
         {
-            logger.systemLog('요기 : ', dialogset.title);
             if(dialogset.title == 'default')
             {
                 Bot.findOne({ _id: req.params.botId }).exec(function(err, bot)
@@ -328,7 +327,81 @@ exports.updateUsable = function(req, res)
                 return res.status(400).send({ message: err.stack || err });
             }
 
-            res.end();
+            if(dialogset.usable)
+            {
+                Bot.findOne({ _id: req.params.botId }).exec(function(err, bot)
+                {
+                    if(err)
+                    {
+                        return res.status(400).send({ message: err.stack || err });
+                    }
+
+                    var list = bot.dialogsets;
+                    if(!list)
+                        list = [];
+
+                    if(list)
+                    {
+                        for(var i=0; i<list.length; i++)
+                        {
+                            if(dialogset._id == list[i])
+                            {
+                                list.splice(i, 1);
+                                break;
+                            }
+                        }
+                    }
+
+                    list.push(dialogset._id);
+
+                    bot.dialogsets = list;
+
+                    bot.save(function(err)
+                    {
+                        if(err)
+                        {
+                            return res.status(400).send({ message: err.stack || err });
+                        }
+
+                        res.end();
+                    });
+                });
+            }
+            else
+            {
+                Bot.findOne({ _id: req.params.botId }).exec(function(err, bot)
+                {
+                    if(err)
+                    {
+                        return res.status(400).send({ message: err.stack || err });
+                    }
+
+                    var list = bot.dialogsets;
+                    if(list)
+                    {
+                        for(var i=0; i<list.length; i++)
+                        {
+                            if(req.body._id == list[i])
+                            {
+                                list.splice(i, 1);
+                                break;
+                            }
+                        }
+                    }
+
+                    bot.dialogsets = list;
+
+                    bot.save(function(err)
+                    {
+                        if(err)
+                        {
+                            return res.status(400).send({ message: err.stack || err });
+                        }
+
+                        res.end();
+                    });
+                });
+            }
         });
     });
 };

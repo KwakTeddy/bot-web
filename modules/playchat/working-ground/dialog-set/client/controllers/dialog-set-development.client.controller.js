@@ -274,7 +274,7 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                 e.currentTarget.prevValue = e.currentTarget.value;
             });
         };
-        
+
         $scope.isArray = function(item)
         {
             if((typeof item == 'Array' || typeof item == 'object') && item.length)
@@ -330,20 +330,20 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
         $scope.initialize = function()
         {
             //탭 불러오기.
-            $scope.loadTabs(openDialogsets);
+            $scope.loadTabs(openDialogsets[chatbot.id]);
 
             $scope.currentDialogsetId = $location.search().dialogsetId || 'default';
             $scope.currentDialogsetTitle = $location.search().dialogsetTitle || 'default';
 
             // 만약 다이얼로그셋 id가 default라면..
             if($scope.currentDialogsetId == 'default')
-                $scope.currentDialogsetId = openDialogsets['default'];
+                $scope.currentDialogsetId = openDialogsets[chatbot.id]['default'];
 
             // dialogsetId가 현재 열리지 않았다면.
-            if(!openDialogsets.hasOwnProperty($scope.currentDialogsetTitle))
+            if(!openDialogsets[chatbot.id].hasOwnProperty($scope.currentDialogsetTitle))
             {
                 //저장하고
-                openDialogsets[$scope.currentDialogsetTitle] = $scope.currentDialogsetId;
+                openDialogsets[chatbot.id][$scope.currentDialogsetTitle] = $scope.currentDialogsetId;
                 //쿠기는 string밖에 저장이 안되서 부득이하게
                 $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
 
@@ -352,9 +352,9 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             }
 
             var title = '';
-            for(var key in openDialogsets)
+            for(var key in openDialogsets[chatbot.id])
             {
-                if(openDialogsets[key] == $scope.currentDialogsetId)
+                if(openDialogsets[chatbot.id][key] == $scope.currentDialogsetId)
                 {
                     title = key;
                     break;
@@ -375,40 +375,50 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
         openDialogsets = JSON.parse(openDialogsets);
     }
 
-    //만약 default가 없다면 생성.
-    if(!openDialogsets.hasOwnProperty('default'))
+    if(!openDialogsets[chatbot.id])
     {
-        DialogsetsFindService.get({ botId: chatbot._id, title: 'default' }, function(dialogset)
+        openDialogsets[chatbot.id] = {};
+    }
+
+    function start()
+    {
+        //만약 default가 없다면 생성.
+        if(!openDialogsets[chatbot.id].hasOwnProperty('default'))
         {
-            if(!dialogset.title)
-            {
-                DialogSetsService.save({ botId: chatbot._id, title: 'default' }, function(dialogset)
-                {
-                    openDialogsets['default'] = dialogset._id;
+            openDialogsets[chatbot.id]['default'] = dialogset._id;
 
-                    //쿠기는 string밖에 저장이 안되서 부득이하게
-                    $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
+            //쿠기는 string밖에 저장이 안되서 부득이하게
+            $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
 
-                    $scope.initialize();
-                },
-                function(err)
-                {
-                    alert(err.data.error || err.data.message);
-                });
-            }
-            else
-            {
-                openDialogsets['default'] = dialogset._id;
+            $scope.initialize();
+        }
+        else
+        {
+            $scope.initialize();
+        }
+    };
 
-                //쿠기는 string밖에 저장이 안되서 부득이하게
-                $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
-
-                $scope.initialize();
-            }
-        });
-    }
-    else
+    DialogsetsFindService.get({ botId: chatbot._id, title: 'default' }, function(dialogset)
     {
-        $scope.initialize();
-    }
+        if(!dialogset.title)
+        {
+            DialogSetsService.save({ botId: chatbot._id, title: 'default', usable: true }, function(dialogset)
+            {
+                start();
+            },
+            function(err)
+            {
+                alert(err.data.error || err.data.message);
+            });
+        }
+        else
+        {
+            openDialogsets[chatbot.id]['default'] = dialogset._id;
+
+            //쿠기는 string밖에 저장이 안되서 부득이하게
+            $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
+
+            $scope.initialize();
+        }
+    });
 }]);
