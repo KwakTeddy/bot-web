@@ -228,8 +228,10 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
                                 context: context.botUser.context ? context.botUser.context.path : '', intent: context.botUser.intent,
                                 entities: context.botUser.entities}));
 
-                            if(_dialog && context.bot.startDialog.name == _dialog.name) {
-                                context.botUser.currentDialog = null;
+                            if (context.bot.startDialog != undefined && context.bot.startDialog.name != undefined && _dialog != undefined && _dialog.name) {
+                                if (_dialog && context.bot.startDialog.name == _dialog.name) {
+                                    context.botUser.currentDialog = null;
+                                }
                             }
 
                             // dialog graph 이면 qa로 넘어가지 않는다
