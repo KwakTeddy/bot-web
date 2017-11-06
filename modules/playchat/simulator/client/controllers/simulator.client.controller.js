@@ -45,6 +45,11 @@ function ($window, $scope, $cookies, $resource, Socket)
             body.scrollTop = body.scrollHeight;
         };
 
+        var clearBubble = function()
+        {
+            simulatorBody.html('');
+        };
+
         var emitMsg = function(msg, isUser)
         {
             var options = { dev: true };
@@ -79,6 +84,7 @@ function ($window, $scope, $cookies, $resource, Socket)
             }
             else if(e.keyCode == 116)
             {
+                clearBubble();
                 emitMsg(':build', false);
             }
         };
