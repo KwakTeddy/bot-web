@@ -90,11 +90,11 @@
                 </div>
                 <div class="question-area">
                     <textarea type="text" class="data-input" ng-required="true" ng-keydown="inputKeydown($event);"></textarea>
-                    <span class="plus-button" ng-click="addInput($event);"></span>
+                    <span class="plus-button" ng-click="addInputElement($event);"></span>
                 </div>
                 <div class="answer-area">
                     <textarea type="text" class="data-input" ng-required="true" ng-keydown="inputKeydown($event);"></textarea>
-                    <span class="plus-button" ng-click="addInput($event);"></span>
+                    <span class="plus-button" ng-click="addInputElement($event);"></span>
                 </div>
                 <div class="functions-area">
                     <button class="blue-button"> <img src="/modules/playchat/working-ground/common/client/imgs/add.png"> Add</button>
@@ -132,12 +132,12 @@
                 <div class="question-area">
                     <textarea type="text" class="data-input" ng-keydown="inputKeydown($event);" ng-if="isArray(dialog.inputRaw);" ng-repeat="input in dialog.inputRaw track by $index" ng-focus="checkModify($event);" ng-keyup="watchModified('input', $event)" ng-blur="saveModified('input', $event)">{{ input }}</textarea>
                     <textarea type="text" class="data-input" ng-keydown="inputKeydown($event);" ng-if="!isArray(dialog.inputRaw);" ng-focus="checkModify($event);" ng-keyup="watchModified('input', $event)" ng-blur="saveModified('input', $event)">{{ dialog.inputRaw }}</textarea>
-                    <span class="plus-button" ng-click="addInput($event);" ng-required="true"></span>
+                    <span class="plus-button" ng-click="addInput($event, dialog, 'inputRaw');" ng-required="true"></span>
                 </div>
                 <div class="answer-area">
-                    <textarea type="text" class="data-input" ng-keydown="inputKeydown($event);" ng-if="isArray(dialog.inputRaw);" ng-repeat="output in dialog.output track by $index" ng-focus="checkModify($event);" ng-keyup="watchModified('output', $event)" ng-blur="saveModified('input', $event)">{{ output }}</textarea>
-                    <textarea type="text" class="data-input" ng-keydown="inputKeydown($event);" ng-if="!isArray(dialog.inputRaw);" ng-focus="checkModify($event);" ng-keyup="watchModified('output', $event)" ng-blur="saveModified('input', $event)">{{ dialog.output }}</textarea>
-                    <span class="plus-button" ng-click="addInput($event);" ng-required="true"></span>
+                    <textarea type="text" class="data-input" ng-keydown="inputKeydown($event);" ng-if="isArray(dialog.output);" ng-repeat="output in dialog.output track by $index" ng-focus="checkModify($event);" ng-keyup="watchModified('output', $event)" ng-blur="saveModified('input', $event)">{{ output }}</textarea>
+                    <textarea type="text" class="data-input" ng-keydown="inputKeydown($event);" ng-if="!isArray(dialog.output);" ng-focus="checkModify($event);" ng-keyup="watchModified('output', $event)" ng-blur="saveModified('input', $event)">{{ dialog.output }}</textarea>
+                    <span class="plus-button" ng-click="addInput($event, dialog, 'output');" ng-required="true"></span>
                 </div>
                 <div class="functions-area">
                     <img src="/modules/playchat/working-ground/dialog-set/client/imgs/editing.gif" class="editing-img" style="display: none;">

@@ -170,7 +170,7 @@ exports.update = function(req, res)
         dialog.output = req.body.output;
 
         var inputList = [];
-        async.each(dialog.inputRaw, function(inputRaw, done)
+        async.eachSeries(dialog.inputRaw, function(inputRaw, done)
         {
             nlpManager.tokenize(req.user.language, inputRaw, function(result)
             {
