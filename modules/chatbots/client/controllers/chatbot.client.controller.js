@@ -4,7 +4,7 @@
 
     angular.module('playchat').controller('ChatbotListController', ['$scope', '$resource', '$location', '$cookies', '$state', 'PagingService', 'CaretService', function ($scope, $resource, $location, $cookies, $state, PagingService, CaretService)
     {
-        var ChatBotService = $resource('/api/chatbots/:botId', { botId: '@botId' }, { update: { method: 'PUT' } });
+        var ChatBotService = $resource('/api/chatbots/:botId', { botId: '@botId', botDisplayId: '@botDisplayId' }, { update: { method: 'PUT' } });
         var ChatBotDuplicateService = $resource('/api/chatbots/:botId/duplicate', { botId: '@botId' });
         var ChatBotPageService = $resource('/api/chatbots/totalpage');
 
@@ -102,7 +102,7 @@
             {
                 if(confirm('정말 삭제하시겠습니까?'))
                 {
-                    ChatBotService.delete({ botId : $scope.selectedBot._id }, function()
+                    ChatBotService.delete({ botId : $scope.selectedBot._id, botDisplayId: $scope.selectedBot.id }, function()
                     {
                         var index = $scope.list.indexOf($scope.selectedBot);
                         $scope.list.splice(index, 1);

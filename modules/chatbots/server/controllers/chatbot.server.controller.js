@@ -11,15 +11,6 @@ exports.findTotalPage = function(req, res)
     var countPerPage = req.query.countPerPage || 10;
 
     var query = {  };
-    if(req.user)
-    {
-        query.user = req.user._id;
-
-        if(Common.isAdmin(req.user))
-        {
-            delete query.user;
-        }
-    }
 
     if(req.query.name)
         query.name = { "$name": req.query.name, "$options": 'i' };
@@ -44,15 +35,6 @@ exports.find = function (req, res)
     var countPerPage = parseInt(req.query.countPerPage) || 10;
 
     var query = {  };
-    if(req.user)
-    {
-        query.user = req.user._id;
-
-        if(Common.isAdmin(req.user))
-        {
-            delete query.user;
-        }
-    }
 
     if(req.query.name)
         query.name = { "$name": req.query.name, "$options": 'i' };
@@ -197,7 +179,8 @@ exports.delete = function(req, res)
         }
         else
         {
-            res.end();
+            var rimraf = require('rimraf');
+            rimraf(path.resolve('./custom_modules') + '/' + req.query.botDisplayId, function () { res.end(); });
         }
     });
 };

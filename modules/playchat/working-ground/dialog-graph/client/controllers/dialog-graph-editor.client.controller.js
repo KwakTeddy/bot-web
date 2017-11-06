@@ -46,6 +46,15 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                         $scope.isAdvancedMode = true;
                         break;
                     }
+                    else
+                    {
+                        var string = JSON.stringify($scope.dialog.input[i]);
+                        if(string.indexOf('text') == -1)
+                        {
+                            $scope.isAdvancedMode = true;
+                            break;
+                        }
+                    }
                 }
 
                 if(typeof dialog.output == 'string')

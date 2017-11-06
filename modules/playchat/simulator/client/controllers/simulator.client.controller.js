@@ -27,9 +27,16 @@ function ($window, $scope, $cookies, $resource, Socket)
 
         var addBotBubble = function(text)
         {
-            var template = angular.element('#botAnswerTemplate').html();
-            template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', text);
-            simulatorBody.append(template);
+            if(typeof text == 'string')
+            {
+                var template = angular.element('#botAnswerTemplate').html();
+                template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', text);
+                simulatorBody.append(template);
+            }
+            else if(typeof text == 'object')
+            {
+
+            }
 
             var body = angular.element('#simulatorBody').get(0);
             body.scrollTop = body.scrollHeight;
