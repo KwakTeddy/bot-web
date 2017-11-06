@@ -192,13 +192,11 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
             context.dialog.inCurNLP = inTextNLP;
 
             if(inTextRaw.startsWith(':')) {
-                console.log('호잇222');
                 command.command(inTextRaw, inTextNLP, context, print, function(matched) {
                     if(matched) cb(true);
                     else cb(null);
                 });
             } else if(context.user.pendingCallback) {
-                console.log('호잇!!');
                 if(context.bot.dialogServer && context.bot.dialogServer.chatScript == true &&
                     inTextRaw.search(/(처음|메뉴)/g) != -1 || inTextRaw.startsWith(':')) {
                     context.user.pendingCallback = null;
@@ -217,8 +215,6 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
                 context.dialog.inRaw = inTextRaw;
                 context.dialog.inNLP = inTextNLP;
 
-                console.log('호잇');
-
                 if(context.bot.bMultiSentence &&
                     !(context.botUser.sentenceInfo.sentenceType == 1 || context.botUser.sentenceInfo.sentenceType == 2 ||context.botUser.sentenceInfo.sentenceType == 3)) {
                     dialog.sympathize(inTextRaw, inTextNLP, context, print, function() {
@@ -226,7 +222,6 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
                     })
                 } else {
 
-                    console.log('여긴 오냐');
                     // var isFirst = false;
                     dialog.matchGlobalDialogs(inTextRaw, inTextNLP, context.bot.dialogs, context, print, function(matched, _dialog) {
                         if(matched) {

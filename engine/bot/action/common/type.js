@@ -212,8 +212,6 @@ function processInput(context, inRaw, callback) {
             var dialogModule = require(path.resolve('engine/bot/action/common/dialog'));
             var globalDialogs = require(path.resolve('./engine/global/global-dialogs.js'));
 
-            console.log('일단 여기 오구요');
-
             dialogModule.executeType(inRaw, inNLP, globalDialogs.dialogsType, {}, context, function(inNLP, task, matched) {
                 if(matched) context.botUser.dialogsetDialogs = task.typeDoc;
                 else context.botUser.dialogsetDialogs = undefined;
