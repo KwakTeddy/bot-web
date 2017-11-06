@@ -79,8 +79,6 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             {
                 DialogsService.update(data, function(result)
                 {
-                    console.log('업데이트 : ', result);
-
                     if(callback)
                         callback(result);
                 });
@@ -163,44 +161,111 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 
         $scope.addInputElement = function(e)
         {
-            // 현재 element의 clone을 만들고 현재 element 이전으로 집어넣으면 완성.
-            var prev = e.currentTarget.previousElementSibling;
-            var clone = prev.cloneNode(true);
-            clone.value = '';
+            var check = false;
+            angular.element(e.currentTarget.parentElement).find('textarea').each(function()
+            {
+                if(!this.value)
+                {
+                    check = true;
+                    this.focus();
+                }
+            });
 
-            e.currentTarget.parentElement.insertBefore(clone, e.currentTarget);
-            clone.focus();
+            if(!check)
+            {
+                // 현재 element의 clone을 만들고 현재 element 이전으로 집어넣으면 완성.
+                var target = angular.element(e.currentTarget.parentElement).find('textarea:last').get(0);
+                angular.element($compile(target.outerHTML)($scope)).insertAfter(target).val('').focus();
+            }
         };
 
         // 각 input에서 중앙 plus 버튼 클릭시 호출.
         $scope.addInput = function(e, dialog, type)
         {
-            if(!$scope.isArray(dialog[type]))
+            var check = false;
+            angular.element(e.currentTarget.parentElement).find('textarea').each(function()
             {
-                dialog[type] = [dialog[type], ''];
-            }
-            else
+                if(!this.value)
+                {
+                    check = true;
+                    this.focus();
+                }
+            });
+
+            if(!check)
             {
-                dialog[type].push('');
+                if(!$scope.isArray(dialog[type]))
+                {
+                    dialog[type] = [dialog[type], ''];
+                }
+                else
+                {
+                    dialog[type].push('');
+                }
             }
         };
 
-        $scope.inputKeydown = function(e)
+        $scope.inputKeydownElement = function(e)
         {
             var event = e.originalEvent;
             if(e.keyCode == 13 && (event.ctrlKey || event.metaKey))
             {
-                console.log(e.currentTarget.parentElement.parentElement.parentElement.previousElementSibling);
-                var blur = ' ng-keyup="watchModified(\'output\', $event)" ng-blur="saveModified(\'input\', $event)"';
-                if(!e.currentTarget.parentElement.parentElement.parentElement.previousElementSibling)
-                    blur = '';
+                var check = false;
+                angular.element(e.currentTarget.parentElement).find('textarea').each(function()
+                {
+                    if(!this.value)
+                    {
+                        check = true;
+                        this.focus();
+                    }
+                });
 
-                var input = '<input type="text" class="data-input" ng-keydown="inputKeydown($event);" value="" ng-focus="checkModify($event);"' + blur + '>';
+                if(!check)
+                {
+                    angular.element($compile(e.currentTarget.outerHTML)($scope)).insertAfter(e.currentTarget).val('').focus();
+                }
+            }
+        };
 
-                angular.element($compile(input)($scope)).insertBefore(e.currentTarget.nextElementSibling).focus();
+        $scope.inputKeydown = function(e, dialog, type, current)
+        {
+            var event = e.originalEvent;
+            if(e.keyCode == 13 && (event.ctrlKey || event.metaKey))
+            {
+                var check = false;
+                angular.element(e.currentTarget.parentElement).find('textarea').each(function()
+                {
+                    if(!this.value)
+                    {
+                        check = true;
+                        this.focus();
+                    }
+                });
 
+                if(!check)
+                {
+                    if($scope.isArray(dialog[type]))
+                    {
+                        if(current)
+                        {
+                            var index = dialog[type].indexOf(current);
+                            dialog[type].splice(index + 1, 0, '');
+                        }
+                        else
+                        {
+                            dialog[type].push('');
+                        }
+                    }
+                    else
+                    {
+                        dialog[type] = [dialog[type], ''];
+                    }
 
-                // e.currentTarget.parentElement.insertBefore(clone, e.currentTarget.nextElementSibling);
+                    setTimeout(function()
+                    {
+                        angular.element(e.currentTarget.parentElement).find('textarea:last').focus();
+                    }, 10);
+                }
             }
         };
 
