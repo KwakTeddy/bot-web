@@ -12,6 +12,7 @@ var logger = require(path.resolve('./config/lib/logger.js'));
 
 var Dialogset = mongoose.model('Dialogset');
 var DialogsetDialog = mongoose.model('DialogsetDialog');
+var Bot = mongoose.model('Bot');
 
 var uploadModule = require('./uploader/dialogset-uploader');
 
@@ -89,17 +90,54 @@ exports.create = function(req, res)
         }
         else
         {
-            // 파일업로드 하면 바로 db에 저장하는 코드임.
-            if(dialogset.filename && dialogset.path)
+            logger.systemLog('요기 : ', dialogset.title);
+            if(dialogset.title == 'default')
             {
-                uploadModule.importFile(req.body.language, dialogset, function()
+                Bot.findOne({ _id: req.params.botId }).exec(function(err, bot)
+                {
+                    if(err)
+                    {
+                        return res.status(400).send({ message: err.stack || err });
+                    }
+
+                    var list = bot.dialogsets;
+                    if(!list)
+                        list = [];
+
+                    list.push(dialogset._id);
+
+                    bot.dialogsets = list;
+
+                    logger.systemLog('리스트 : ', JSON.stringify(bot.dialogsets));
+                    bot.save(function(err)
+                    {
+                        if(err)
+                        {
+                            return res.status(400).send({ message: err.stack || err });
+                        }
+
+                        res.jsonp(dialogset);
+                    });
+                });
+            }
+            else
+            {
+                // 파일업로드 하면 바로 db에 저장하는 코드임.
+                if(dialogset.filename && dialogset.path)
+                {
+                    uploadModule.importFile(req.body.language, dialogset, function()
+                    {
+                        res.jsonp(dialogset);
+                    });
+                    // dialogsetModule.convertDialogset1(dialogset, null, function(result)
+                    // {
+                    //     console.log(dialogset.filename + ' converted');
+                    // });
+                }
+                else
                 {
                     res.jsonp(dialogset);
-                });
-                // dialogsetModule.convertDialogset1(dialogset, null, function(result)
-                // {
-                //     console.log(dialogset.filename + ' converted');
-                // });
+                }
             }
         }
     });

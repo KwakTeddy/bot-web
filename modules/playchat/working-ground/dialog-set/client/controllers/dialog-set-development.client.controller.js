@@ -4,7 +4,8 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 {
     $scope.$parent.changeWorkingGroundName('Development > Dialog Learning');
 
-    var DialogsetsService = $resource('/api/:botId/dialogsets/findbytitle', { botId: '@botId' });
+    var DialogsetsFindService = $resource('/api/:botId/dialogsets/findbytitle', { botId: '@botId' });
+    var DialogSetsService = $resource('/api/:botId/dialogsets/:dialogsetId', { botId: '@botId', dialogsetId: '@dialogsetId' }, { update: { method: 'PUT' } });
     var DialogsService = $resource('/api/dialogsets/:dialogsetId/dialogs/:dialogsId', { dialogsetId: '@dialogset', dialogsId: '@dialogsId' }, { update: { method: 'PUT' } });
 
     //UI Data
@@ -42,7 +43,7 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
         $scope.getDialogs = function(dialogsetId, rawText)
         {
             // 현재 페이지에 해당하는 데이터 가져오기.
-            DialogsService.query({ dialogsetId: dialogsetId, page: currentPage, countPerPage: countPerPage, rawText: rawText }, function(list)
+            DialogsService.query({ dialogsetId: dialogsetId, page: currentPage, countPerPage: countPerPage, rawText: rawText, botId: chatbot.id }, function(list)
             {
                 $scope.dialogs = list;
 
@@ -55,7 +56,7 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
         {
             // 다음 페이지에 해당하는 내용 가져오기.
             angular.element('.more-progress').css('opacity', 1);
-            DialogsService.query({ dialogsetId: $scope.currentDialogsetId, page: currentPage+1, countPerPage: countPerPage, rawText: angular.element('#search').val() }, function(list)
+            DialogsService.query({ dialogsetId: $scope.currentDialogsetId, page: currentPage+1, countPerPage: countPerPage, rawText: angular.element('#search').val(), botId: chatbot.id }, function(list)
             {
                 angular.element('.more-progress').css('opacity', 0);
                 if(list.length > 0)
@@ -72,6 +73,7 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
         $scope.save = function(data, callback)
         {
             data.dialogset = $scope.currentDialogsetId;
+            data.botId = chatbot.id;
 
             if(data._id)
             {
@@ -97,8 +99,8 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 
         $scope.getDialogFromElement = function(element)
         {
-            var inputList = element.querySelectorAll('.question-area input');
-            var outputList = element.querySelectorAll('.answer-area input');
+            var inputList = element.querySelectorAll('.question-area textarea');
+            var outputList = element.querySelectorAll('.answer-area textarea');
 
             var data = {};
             data.inputRaw = [];
@@ -132,6 +134,7 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 
             // input과 output 데이터 가져와서 저장.
             var data = $scope.getDialogFromElement(parent);
+            console.log('데이터 : ', data);
             $scope.save(data, function(dialog)
             {
                 // 삭제버튼 handling
@@ -161,7 +164,6 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 
         $scope.inputKeydown = function(e)
         {
-            console.log('어이 : ', e.keyCode);
             var event = e.originalEvent;
             if(e.keyCode == 13 && (event.ctrlKey || event.metaKey))
             {
@@ -183,7 +185,7 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
         {
             if(confirm('정말 삭제하시겠습니까'))
             {
-                DialogsService.delete({ dialogsetId: dialog.dialogset, dialogsId: dialog._id }, function(err, result)
+                DialogsService.delete({ dialogsetId: dialog.dialogset, dialogsId: dialog._id, botId: chatbot.id }, function(err, result)
                 {
                     var target = e.currentTarget.parentElement.parentElement.parentElement;
                     target.parentElement.removeChild(target);
@@ -261,6 +263,7 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 
             var data = $scope.getDialogFromElement(element);
             data._id = element.getAttribute('data-id');
+            data.botId = chatbot.id;
 
             $scope.save(data, function()
             {
@@ -334,7 +337,7 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 
             // 만약 다이얼로그셋 id가 default라면..
             if($scope.currentDialogsetId == 'default')
-                $scope.currentDialogsetId = openDialogsets['default']
+                $scope.currentDialogsetId = openDialogsets['default'];
 
             // dialogsetId가 현재 열리지 않았다면.
             if(!openDialogsets.hasOwnProperty($scope.currentDialogsetTitle))
@@ -375,14 +378,33 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
     //만약 default가 없다면 생성.
     if(!openDialogsets.hasOwnProperty('default'))
     {
-        DialogsetsService.get({ botId: chatbot._id, title: 'default' }, function(dialogset)
+        DialogsetsFindService.get({ botId: chatbot._id, title: 'default' }, function(dialogset)
         {
-            openDialogsets['default'] = dialogset._id;
+            if(!dialogset.title)
+            {
+                DialogSetsService.save({ botId: chatbot._id, title: 'default' }, function(dialogset)
+                {
+                    openDialogsets['default'] = dialogset._id;
 
-            //쿠기는 string밖에 저장이 안되서 부득이하게
-            $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
+                    //쿠기는 string밖에 저장이 안되서 부득이하게
+                    $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
 
-            $scope.initialize();
+                    $scope.initialize();
+                },
+                function(err)
+                {
+                    alert(err.data.error || err.data.message);
+                });
+            }
+            else
+            {
+                openDialogsets['default'] = dialogset._id;
+
+                //쿠기는 string밖에 저장이 안되서 부득이하게
+                $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
+
+                $scope.initialize();
+            }
         });
     }
     else
