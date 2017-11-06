@@ -17,13 +17,13 @@
         </ul>
     </div>
     <div class="chatbot-new">
-        <img src="/modules/chatbot-list/client/imgs/plus_white.png">
-        <a href="#">New chatbot</a>
+        <img src="/modules/chatbots/client/imgs/plus_white.png">
+        <a href="/chatbots/create">New chatbot</a>
     </div>
-    <div class="chatbot-list">
+    <div class="chatbots">
         <div class="bot_unselect" ng-repeat="chatbot in list" ng-click="selectBot(chatbot);">
             <ul class="hei50">
-                <li class="sub1"><img src="/modules/chatbot-list/client/imgs/user2.png"></li>
+                <li class="sub1"><img src="/modules/chatbots/client/imgs/user2.png"></li>
                 <li class="sub3" data-id="{{ chatbot.id }}" ng-keydown="chatbotNameKeyDown($event);" ng-blur="chatbotNameBlur($event);" ng-click="chatbotNameClick($event);">{{ chatbot.id }}</li>
                 <li>
                     <div class="flR mt10">
@@ -38,12 +38,12 @@
     </div>
     <div class="tablePaging" style="padding: 40px 0;">
         <div class="tablePagingC">
-            <a href="/chatbot-list?page={{ pageOptions.prev }}" class="direction" ng-click="toPage(pageOptions.prev);">
-                <img src="/modules/chatbot-list/client/imgs/btn_prev.png" alt="이전페이지이동">
+            <a href="/chatbots?page={{ pageOptions.prev }}" class="direction" ng-click="toPage(pageOptions.prev);">
+                <img src="/modules/chatbots/client/imgs/btn_prev.png" alt="이전페이지이동">
             </a>
-            <a ng-repeat="page in pageOptions.pages" href="/chatbot-list?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
-            <a href="/chatbot-list?page={{ pageOptions.next }}" class="direction" ng-click="toPage(pageOptions.next);">
-                <img src="/modules/chatbot-list/client/imgs/btn_next.png" alt="다음페이지이동">
+            <a ng-repeat="page in pageOptions.pages" href="/chatbots?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
+            <a href="/chatbots?page={{ pageOptions.next }}" class="direction" ng-click="toPage(pageOptions.next);">
+                <img src="/modules/chatbots/client/imgs/btn_next.png" alt="다음페이지이동">
             </a>
         </div>
     </div>
@@ -60,7 +60,7 @@
             <form class="card_detail_window">
                 <div class="window_header">
 				<span class="window_header_icon">
-					<img src="/modules/chatbot-list/client/imgs/share.png">
+					<img src="/modules/chatbots/client/imgs/share.png">
 				</span>
                     <div class="window_title">
                         <h1>Shared chatbot</h1>

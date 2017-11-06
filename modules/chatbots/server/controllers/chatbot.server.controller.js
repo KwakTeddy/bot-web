@@ -1,5 +1,6 @@
 var path = require('path');
 var mongoose = require('mongoose');
+var fs = require('fs');
 
 var Common = require(path.resolve('./modules/core/server/services/common.server.service.js'));
 
@@ -81,6 +82,47 @@ exports.findOne = function(req, res)
         {
             res.json(item);
         }
+    });
+};
+
+exports.create = function(req, res)
+{
+    ChatBot.findOne({ id: req.body.id, name: req.body.name }).exec(function(err, bot)
+    {
+        if(err)
+        {
+            return res.status(400).send({ message: err.stack || err });
+        }
+
+        if(bot)
+        {
+            return res.status(400).send({ message: 'Duplicated Bot' });
+        }
+
+        var chatbot = new ChatBot(req.body);
+        chatbot.save(function(err)
+        {
+            if(err)
+            {
+                return res.status(400).send({ message: err.stack || err });
+            }
+
+            var dir = path.resolve('./custom_modules/' + req.body.id);
+            if(!fs.existsSync(dir))
+            {
+                fs.mkdirSync(dir);
+            }
+
+            var botjs = fs.readFileSync(__dirname + '/bot.template');
+            var defaultjs = fs.readFileSync(__dirname + '/default.template');
+            var graphjs = fs.readFileSync(__dirname + '/graph.template');
+
+            fs.writeFileSync(dir + '/default.graph.js', graphjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
+            fs.writeFileSync(dir + '/default.js', defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
+            fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
+
+            res.jsonp(chatbot);
+        });
     });
 };
 

@@ -5,7 +5,7 @@
 * athena - ai 서버 모듈.
 * core - 플레이챗 코어 모듈
 * login - 로그인 화면
-* chatbot-list - 챗봇목록 화면
+* chatbots - 챗봇목록 화면
 * playchat - 관리자/개발자 화면
 	* core
 		* layout - 전체 레이아웃 모듈

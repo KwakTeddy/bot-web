@@ -12,7 +12,7 @@
             if($state.previous.href)
                 location.href = $state.previous.href;
             else
-                location.href = '/chatbot-list';
+                location.href = '/chatbots';
 
             return;
         }
@@ -32,7 +32,7 @@
                 if($state.previous.href)
                     location.href = $state.previous.href;
                 else
-                    location.href = '/chatbot-list';
+                    location.href = '/chatbots';
             });
         };
     }]);

@@ -44,10 +44,10 @@ angular.module('playchat').controller('AuthenticationController', ['$scope', '$s
     //           $state.go('developer-home')
     //         }else {
     //             if($state.previous){
-    //                 $state.go($state.previous.state.name || 'chatbot-list', $state.previous.params);
+    //                 $state.go($state.previous.state.name || 'chatbots', $state.previous.params);
     //             }
     //             else {
-    //                 $state.go('chatbot-list');
+    //                 $state.go('chatbots');
     //             }
     //        }
     //     }
@@ -62,7 +62,7 @@ angular.module('playchat').controller('AuthenticationController', ['$scope', '$s
     //           if(window.location.href.indexOf('developer') > -1){
     //             $state.go('developer-home')
     //           }else {
-    //             $state.go($state.previous.state.name || 'chatbot-list', $state.previous.params);
+    //             $state.go($state.previous.state.name || 'chatbots', $state.previous.params);
     //           }
     //       }
     //   }
@@ -100,7 +100,7 @@ angular.module('playchat').controller('AuthenticationController', ['$scope', '$s
     //             if(window.location.href.indexOf('developer') > -1){
     //               $state.go('developer-home')
     //             }else {
-    //               $state.go($state.previous.state.name || 'chatbot-list', $state.previous.params);
+    //               $state.go($state.previous.state.name || 'chatbots', $state.previous.params);
     //             }
     //         };
     //         $scope.resend = function () {
@@ -119,7 +119,7 @@ angular.module('playchat').controller('AuthenticationController', ['$scope', '$s
     //                 if(window.location.href.indexOf('developer') > -1){
     //                   $state.go('developer-home')
     //                 }else {
-    //                   $state.go($state.previous.state.name || 'chatbot-list', $state.previous.params);
+    //                   $state.go($state.previous.state.name || 'chatbots', $state.previous.params);
     //                 }
     //
     //             }).error(function (response) {
@@ -179,7 +179,7 @@ angular.module('playchat').controller('AuthenticationController', ['$scope', '$s
     //         $state.go($state.previous.state.name || 'homeMobile', $state.previous.params);
     //     }else {
     //       if(window.location.href.indexOf('developer') > -1) $state.go('developer-home');
-    //       else                                               $state.go($state.previous.state.name || 'chatbot-list', $state.previous.params);
+    //       else                                               $state.go($state.previous.state.name || 'chatbots', $state.previous.params);
     //     }
     //   }).error(function (response) {
     //     console.log(response);
@@ -235,7 +235,7 @@ angular.module('playchat').controller('AuthenticationController', ['$scope', '$s
     //             if(window.location.href.indexOf('developer') > -1){
     //               $state.go('developer-home')
     //             }else {
-    //               $state.go($state.previous.state.name || 'chatbot-list', $state.previous.params);
+    //               $state.go($state.previous.state.name || 'chatbots', $state.previous.params);
     //             }
     //           };
     //           $scope.resend = function () {
@@ -252,7 +252,7 @@ angular.module('playchat').controller('AuthenticationController', ['$scope', '$s
     //                   if(window.location.href.indexOf('developer') > -1){
     //                     $state.go('developer-home')
     //                   }else {
-    //                     $state.go($state.previous.state.name || 'chatbot-list', $state.previous.params);
+    //                     $state.go($state.previous.state.name || 'chatbots', $state.previous.params);
     //                   }
     //
     //               }).error(function (response) {
