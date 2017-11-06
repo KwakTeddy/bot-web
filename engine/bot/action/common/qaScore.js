@@ -233,7 +233,7 @@ QAScore.prototype.assignScore = function(scope) {
         intersection = this.intersectArray(questionArray, answerArray);
         union = this.unionArray(questionArray, answerArray);
         score += (intersection.length / union.length);
-        
+
         answers[i].score = score;
     }
 
@@ -243,7 +243,7 @@ QAScore.prototype.assignScore = function(scope) {
 
     var topSameScoreCount = 1;
     var contexts = {};
-    if (answers.length>0  && answers[0].score > 1.0) {
+    if (answers.length>0  && answers[0].score >= 1.0) {
         // 상위 동일 개수 체크
         if (answers[0].context) {
             if (answers.length > 0) contexts[answers[0].context.name] = 1;
@@ -267,4 +267,3 @@ QAScore.prototype.assignScore = function(scope) {
 // for node.js library export
 if (typeof exports !== 'undefined')
     module.exports = QAScore;
-
