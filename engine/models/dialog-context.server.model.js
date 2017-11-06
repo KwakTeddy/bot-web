@@ -1,6 +1,8 @@
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
+var mongoWrapper = require('../utils/mongo-wrapper.js');
+
 var CustomContextSchema = new Schema(
 {
     bot: { type: Schema.ObjectId, ref: 'Bot' },
@@ -11,7 +13,7 @@ var CustomContextSchema = new Schema(
     user: { type: Schema.ObjectId, ref: 'User' }
 });
 
-mongoose.model('CustomContext', CustomContextSchema);
+mongoWrapper.model('CustomContext', CustomContextSchema);
 
 var CustomContextItemSchema = new Schema(
 {
@@ -24,4 +26,4 @@ var CustomContextItemSchema = new Schema(
     user: { type: Schema.ObjectId, ref: 'User' }
 });
 
-mongoose.model('CustomContextItem', CustomContextItemSchema);
+mongoWrapper.model('CustomContextItem', CustomContextItemSchema);
