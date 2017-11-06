@@ -14,6 +14,14 @@
             intentContents: [{ content: '' }]
         };
 
+        $scope.checkNamePattern = function(e)
+        {
+            if(e.keyCode == 51 && e.shiftKey)
+            {
+                e.preventDefault();
+            }
+        };
+
         $scope.keydown = function(e, index)
         {
             if(e.keyCode == 13 && (e.ctrlKey || e.metaKey))

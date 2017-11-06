@@ -7,7 +7,7 @@
     </div>
     <div class="entity-management-add-content">
         <p class="entity-management-add-subject">Entity name</p>
-        <input type="text" class="entity-management-add-input" placeholder="Entity Name" ng-model="entity.name" ng-required="true">
+        <input type="text" class="entity-management-add-input" placeholder="Entity Name" ng-model="entity.name" ng-required="true" ng-keydown="checkNamePattern($event);">
         <ul class="entity-management-add-content-label">
             <li class="entity-content">Value Name</li>
             <li class="entity-synonyms">Synonyms</li>

@@ -7,7 +7,7 @@
     </div>
     <div class="intent-management-add-content">
         <p class="intent-management-add-subject">Intent name</p>
-        <input type="text" class="intent-management-add-input" placeholder="Intent Name" ng-model="intent.name" ng-required="true">
+        <input type="text" class="intent-management-add-input" placeholder="Intent Name" ng-model="intent.name" ng-required="true" ng-keydown="checkNamePattern($event);">
         <p class="intent-management-add-subject">Intent sentence</p>
         <div class="intent-management-add-input-wrapper" ng-repeat="content in intent.intentContents">
             <input type="text" class="intent-management-add-input" ng-keydown="keydown($event, $index);" ng-required="true" ng-model="content.content">
