@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playchat').controller('DialogLearningDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', 'ModalService', 'PagingService', function ($window, $scope, $resource, $cookies, $location, $compile, ModalService, PagingService)
+angular.module('playchat').controller('DialogLearningDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$rootScope', 'ModalService', 'PagingService', function ($window, $scope, $resource, $cookies, $location, $compile, $rootScope)
 {
     $scope.$parent.changeWorkingGroundName('Development > Dialog Learning');
 
@@ -95,6 +95,8 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                         callback(result);
                 });
             }
+
+            $rootScope.$broadcast('simulator-build');
         };
 
         $scope.getDialogFromElement = function(element)
@@ -123,9 +125,9 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
         {
             var parent = e.currentTarget.parentElement;
             var data = $scope.getDialogFromElement(parent);
-            console.log('데이터 : ', data);
             $scope.save(data, function(dialog)
             {
+                angular.element(parent).find('textarea').val('');
                 $scope.dialogs.unshift(dialog);
             });
 
@@ -210,6 +212,8 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                 {
                     var target = e.currentTarget.parentElement.parentElement.parentElement;
                     target.parentElement.removeChild(target);
+
+                    $rootScope.$broadcast('simulator-build');
                 });
             }
         };

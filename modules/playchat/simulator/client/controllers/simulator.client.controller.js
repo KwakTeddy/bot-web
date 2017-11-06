@@ -101,6 +101,12 @@ function ($window, $scope, $cookies, $resource, Socket)
             }, Beagle.error);
         };
 
+        $scope.$on('simulator-build', function()
+        {
+            clearBubble();
+            emitMsg(':build', false);
+        });
+
         $scope.init();
     })();
 
