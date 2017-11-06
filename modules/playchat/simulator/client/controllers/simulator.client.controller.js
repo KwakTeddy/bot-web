@@ -77,6 +77,10 @@ function ($window, $scope, $cookies, $resource, Socket)
                 emitMsg(value, true);
                 e.currentTarget.value = '';
             }
+            else if(e.keyCode == 116)
+            {
+                emitMsg(':build', false);
+            }
         };
 
         $scope.init = function()

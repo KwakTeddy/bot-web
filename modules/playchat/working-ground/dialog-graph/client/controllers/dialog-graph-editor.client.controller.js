@@ -188,7 +188,8 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         result.name = $scope.dialog.name;
         result.input = $scope.dialog.input;
         result.output = $scope.dialog.output;
-        result.task = $scope.dialog.task;
+        if($scope.dialog.task)
+            result.task = $scope.dialog.task;
 
         if(!$scope.isUseOutput)
         {
@@ -214,7 +215,8 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
         result.input = JSON.parse(angular.toJson(result.input));
         result.output = JSON.parse(angular.toJson(result.output));
-        result.task = JSON.parse(angular.toJson(result.task));
+        if(result.task)
+            result.task = JSON.parse(angular.toJson(result.task));
 
         // 새로 추가되는 경우 실 데이터에도 추가해줌.
         if($scope.parentDialog && !$scope.oldDialog)

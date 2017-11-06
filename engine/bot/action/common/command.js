@@ -15,6 +15,8 @@ function command(inTextRaw, inTextNLP, context, print, callback) {
     }
       // message = 'build ' + context.bot.botName + ' completed!\n';
 
+      console.log('리빌드합니다');
+
       bot.loadBot(context.bot.botName, function(_bot) {
         // message += 'load ' + context.bot.botName + ' completed!\n';
 
