@@ -37,15 +37,16 @@ function ($window, $scope, $cookies, $resource, Socket)
 
             var template = undefined;
 
-            if(typeof text == 'string')
+            console.log(text, typeof text);
+
+            if(typeof text != 'object')
             {
                 template = angular.element('#botAnswerTemplate').html();
                 template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', text);
 
             }
-            else if(typeof text == 'object')
+            else
             {
-                console.log(text);
                 template = angular.element('#botAnswerTemplate').html();
                 template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', text.text);
 
