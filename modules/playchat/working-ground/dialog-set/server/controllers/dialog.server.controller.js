@@ -114,6 +114,7 @@ exports.create = function(req, res)
 
         async.eachSeries(dialog.inputRaw, function(inputRaw, done)
         {
+            inputRaw = inputRaw.trim();
             nlpManager.tokenize(req.user.language, inputRaw, function(result)
             {
                 var processed = result.processed;
@@ -172,6 +173,7 @@ exports.update = function(req, res)
         var inputList = [];
         async.eachSeries(dialog.inputRaw, function(inputRaw, done)
         {
+            inputRaw = inputRaw.trim();
             nlpManager.tokenize(req.user.language, inputRaw, function(result)
             {
                 var processed = result.processed;
