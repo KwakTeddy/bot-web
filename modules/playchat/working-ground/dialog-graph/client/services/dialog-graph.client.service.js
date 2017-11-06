@@ -130,6 +130,7 @@
 
             parentDialog.children.splice(index, 1);
 
+            instance.focusedDialog = null;
             instance.refresh();
             instance.setDirty(true);
             instance.focusById(afterFocusId);
@@ -1035,6 +1036,8 @@
             var graphBody = canvas.parentElement;
 
             // target이 보이는 부분에 있는지 검사.
+
+            console.log(target);
 
             var l = target.offsetLeft;
             var r = target.offsetLeft + target.offsetWidth;
