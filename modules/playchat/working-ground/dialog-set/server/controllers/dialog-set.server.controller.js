@@ -226,7 +226,41 @@ exports.delete = function(req, res)
                     return res.status(400).send({ message: err.stack || err });
                 }
 
-                res.end();
+                Bot.findOne({ _id: req.params.botId }).exec(function(err, bot)
+                {
+                    if(err)
+                    {
+                        return res.status(400).send({ message: err.stack || err });
+                    }
+
+                    var list = bot.dialogsets;
+                    if(!list)
+                        list = [];
+
+                    if(list)
+                    {
+                        for(var i=0; i<list.length; i++)
+                        {
+                            if(req.params.dialogsetId == list[i])
+                            {
+                                list.splice(i, 1);
+                                break;
+                            }
+                        }
+                    }
+
+                    bot.dialogsets = list;
+
+                    bot.save(function(err)
+                    {
+                        if(err)
+                        {
+                            return res.status(400).send({ message: err.stack || err });
+                        }
+
+                        res.end();
+                    });
+                });
             });
         }
     });
