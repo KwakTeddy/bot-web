@@ -88,9 +88,20 @@
             }
         };
 
-        formElement.openCallback = function(name)
+        formElement.open = function(name)
         {
             $element.find('.intent-management-add-input:first').val(name || '').focus();
+        };
+
+        formElement.openCallback = function()
+        {
+            $scope.$apply(function()
+            {
+                $scope.intent = {
+                    name: '',
+                    intentContents: [{ content: '' }]
+                };
+            });
         };
     }]);
 })();

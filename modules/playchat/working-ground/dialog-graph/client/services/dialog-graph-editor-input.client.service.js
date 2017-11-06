@@ -44,8 +44,10 @@
                         var value = this.getAttribute('data-name');
                         setTimeout(function()
                         {
-                            target.find('form').get(0).openCallback(value);
+                            target.find('form').get(0).open();
                         }, 501);
+
+                        target.find('form').get(0).openCallback(value);
 
                         target.find('form').get(0).saveCallback = function(name)
                         {

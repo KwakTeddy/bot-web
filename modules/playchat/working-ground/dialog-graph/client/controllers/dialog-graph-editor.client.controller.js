@@ -270,8 +270,6 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
     $scope.$watch('dialog.input', function(after, before)
     {
-        console.log('흠', after, before);
-
         if(after)
         {
             var input = JSON.parse(angular.toJson(after));

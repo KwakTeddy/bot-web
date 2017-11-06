@@ -131,9 +131,20 @@
             }
         };
 
-        formElement.openCallback = function(name)
+        formElement.open = function(name)
         {
             $element.find('.entity-management-add-input:first').val(name || '').focus();
+        };
+
+        formElement.openCallback = function()
+        {
+            $scope.$apply(function()
+            {
+                $scope.entity = {
+                    name: '',
+                    entityContents: [{ name: '', synonyms: [''] }]
+                };
+            });
         };
     }]);
 })();
