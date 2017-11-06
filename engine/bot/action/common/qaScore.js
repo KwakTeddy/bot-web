@@ -131,6 +131,7 @@ QAScore.prototype.assignScore = function(scope) {
     if (!nlu.sentence && nlu.sentence == undefined) return scope;
 
     var previousSentenceArray = [];
+
     if (contextInfo.queryHistory.length > 0) {
         if (contextInfo.queryHistory[0].input && contextInfo.queryHistory[0].input != undefined) {
             previousSentenceArray = contextInfo.queryHistory[0].input.split(' ');
@@ -223,16 +224,20 @@ QAScore.prototype.assignScore = function(scope) {
         }
 
         // 이전 Question과 현제 답변 문장의 Question (answers[i].input, answers[i].inputRaw)의 유사도 score 계산
-        var answerArray = answers[i].input.split(' ');
-        var intersection = this.intersectArray(previousSentenceArray, answerArray);
-        var union = this.unionArray(previousSentenceArray, answerArray);
-        score += (intersection.length / union.length) * 10;
+        if (answers[i].input != undefined) {
+            var answerArray = answers[i].input.split(' ');
+            var intersection = this.intersectArray(previousSentenceArray, answerArray);
+            var union = this.unionArray(previousSentenceArray, answerArray);
+            score += (intersection.length / union.length) * 10;
+        }
 
-        // 현재 Question과 현제 답변 문장의 Question (answers[i].input, answers[i].inputRaw)의 유사도 score 계산
-        var questionArray = question.input.split(' ');
-        intersection = this.intersectArray(questionArray, answerArray);
-        union = this.unionArray(questionArray, answerArray);
-        score += (intersection.length / union.length);
+        if (question.input != undefined) {
+            // 현재 Question과 현제 답변 문장의 Question (answers[i].input, answers[i].inputRaw)의 유사도 score 계산
+            var questionArray = question.input.split(' ');
+            intersection = this.intersectArray(questionArray, answerArray);
+            union = this.unionArray(questionArray, answerArray);
+            score += (intersection.length / union.length);
+        }
 
         answers[i].score = score;
     }
