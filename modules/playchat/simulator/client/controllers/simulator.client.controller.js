@@ -27,16 +27,54 @@ function ($window, $scope, $cookies, $resource, Socket)
 
         var addBotBubble = function(text)
         {
-            if(typeof text == 'string')
-            {
-                var template = angular.element('#botAnswerTemplate').html();
-                template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', text);
-                simulatorBody.append(template);
+            try {
+                text = JSON.parse(text);
             }
-            else if(typeof text == 'object')
+            catch(err)
             {
 
             }
+
+            var template = undefined;
+
+            if(typeof text == 'string')
+            {
+                template = angular.element('#botAnswerTemplate').html();
+                template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', text);
+
+            }
+            else if(typeof text == 'object')
+            {
+                console.log(text);
+                template = angular.element('#botAnswerTemplate').html();
+                template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', text.text);
+
+                template = angular.element(template);
+                if(text.image)
+                {
+                    var t = '<div class="output-image">';
+                    t += '<img src="' + text.image.url + '" alt="' + text.image.displayname + '">';
+                    t += '</div>';
+
+                    template.append(t);
+                }
+
+                if(text.buttons)
+                {
+                    var t = '<div class="output-buttons">';
+
+                    for(var i=0; i<text.buttons.length; i++)
+                    {
+                        t += '<a href="' + text.buttons[i].url + '" class="default-button">' + text.buttons[i].text + '</a>';
+                    }
+
+                    t += '</div>';
+
+                    template.append(t);
+                }
+            }
+
+            simulatorBody.append(template);
 
             var body = angular.element('#simulatorBody').get(0);
             body.scrollTop = body.scrollHeight;
@@ -110,6 +148,7 @@ function ($window, $scope, $cookies, $resource, Socket)
 
         $scope.$on('simulator-build', function()
         {
+            console.log('빌드');
             clearBubble();
             emitMsg(':build', false);
         });

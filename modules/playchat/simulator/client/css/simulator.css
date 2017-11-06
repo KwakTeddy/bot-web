@@ -83,7 +83,7 @@
     font-size: 16px;
 
 }
-.simulator .answer img
+.simulator .answer > img
 {
     position: absolute;
     top: 16px;

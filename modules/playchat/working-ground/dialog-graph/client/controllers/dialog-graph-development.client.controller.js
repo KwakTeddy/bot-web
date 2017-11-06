@@ -1,4 +1,4 @@
-angular.module('playchat').controller('DialogGraphDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$timeout', 'DialogGraph', 'DialogGraphEditor', function ($window, $scope, $resource, $cookies, $location, $compile, $timeout, DialogGraph, DialogGraphEditor)
+angular.module('playchat').controller('DialogGraphDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$timeout', '$rootScope', 'DialogGraph', 'DialogGraphEditor', function ($window, $scope, $resource, $cookies, $location, $compile, $timeout, $rootScope, DialogGraph, DialogGraphEditor)
 {
     $scope.$parent.changeWorkingGroundName('Development > Dialog Graph');
 
@@ -248,6 +248,8 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                 $scope.graphHistoryIndex = $scope.graphHistory.length-1;
 
                 DialogGraph.setDirty(false);
+
+                $rootScope.$broadcast('simulator-build');
 
                 angular.element('.graph-controller .alert-success').show();
                 $timeout(function()
