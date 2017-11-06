@@ -111,7 +111,8 @@ exports.create = function(req, res)
         dialog.id = dialogs && dialogs.length > 0 ? dialogs[0].id + 1 : 0;
 
         var inputList = [];
-        async.each(dialog.inputRaw, function(inputRaw, done)
+
+        async.eachSeries(dialog.inputRaw, function(inputRaw, done)
         {
             nlpManager.tokenize(req.user.language, inputRaw, function(result)
             {
