@@ -117,6 +117,7 @@ angular.module('playchat').controller('DialogSetManagementController', ['$window
 
         $scope.delete = function(item)
         {
+            console.log(item);
             if(confirm('정말 삭제하시겠습니까'))
             {
                 var params = {};
@@ -139,6 +140,19 @@ angular.module('playchat').controller('DialogSetManagementController', ['$window
                 {
                     var index = $scope.dialogsets.indexOf(item);
                     $scope.dialogsets.splice(index, 1);
+
+                    var openDialogsets = $cookies.getObject('openDialogsets');
+                    if(!openDialogsets)
+                    {
+                        openDialogsets = {};
+                    }
+                    else
+                    {
+                        openDialogsets = JSON.parse(openDialogsets);
+                    }
+
+                    delete openDialogsets[chatbot.id][item.title];
+                    $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
                 });
             }
         };
