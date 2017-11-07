@@ -364,7 +364,6 @@ function processOutput(task, context, out) {
         // context를 고려한 bot 발화 출력 (dsyoon)
         if (context.botUser.nlu.matchInfo != undefined && context.botUser.nlu.matchInfo.qa.length > 0) {
             context = qaScore.assignScore(context);
-            console.log("로그---2: " + JSON.stringify(context.botUser.nlu.matchInfo.qa));
 
             var topScoreCount = context.botUser.nlu.matchInfo.topScoreCount;
             var contextCount = Object.keys(context.botUser.nlu.matchInfo.contexts).length;
@@ -383,15 +382,11 @@ function processOutput(task, context, out) {
                         }
                     }
                 } else {
-                    console.log("로그--2: " + JSON.stringify(context.botUser.nlu.matchInfo.qa[0].output));
                     if (context.botUser.nlu.matchInfo.qa[0].output) {
-                        console.log("로그--3: ");
                         if (Array.isArray()) {
-                            console.log("로그--4: ");
                             var result = Math.floor(Math.random() * context.botUser.nlu.matchInfo.qa[0].output.length) + 1;
                             out = context.botUser.nlu.matchInfo.qa[0].output[result];
                         } else {
-                            console.log("로그--5: ");
                             out = context.botUser.nlu.matchInfo.qa[0].output;
                         }
                     }
@@ -1731,6 +1726,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
             // Token 단위로 Answer 체크
             var _nlps = [];
             var excluded = [];
+
             for (var i = 0; i < nlps.length; i++) {
                 var word = nlps[i].text;
                 // if(word.length <= 1) continue;

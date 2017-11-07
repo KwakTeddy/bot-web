@@ -110,7 +110,7 @@ function processInput(context, inRaw, callback) {
                 var mb_user_str = dicResult[1];
                 var mb_user_tag = dicResult[2];
                 var position = -1;
-                
+
                 nlpKo.tokenize(temp_inRaw, function (err, result) {
                     var _inNLP = [];
                     if (!result) result = _inRaw;
