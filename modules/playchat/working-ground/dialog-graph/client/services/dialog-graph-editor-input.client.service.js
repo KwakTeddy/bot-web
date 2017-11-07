@@ -241,18 +241,18 @@
                 {
                     if ($scope.$$phase == '$apply' || $scope.$$phase == '$digest' )
                     {
-                        addOrPushData(input, 'entities', '@' + selectedText);
+                        addOrPushData(input, 'entities', selectedText);
                         if(e.currentTarget.innerText) // 자동으로 화면쪽으로 바인딩이 안되서 임시적으로.
-                            e.currentTarget.innerText = '@' + selectedText;
+                            e.currentTarget.innerText = selectedText;
                         angular.element('.dialog-editor-input-key:last').focus();
                     }
                     else
                     {
                         $scope.$apply(function()
                         {
-                            addOrPushData(input, 'entities', '@' + selectedText);
+                            addOrPushData(input, 'entities', selectedText);
                             if(e.currentTarget.innerText) // 자동으로 화면쪽으로 바인딩이 안되서 임시적으로.
-                                e.currentTarget.innerText = '@' + selectedText;
+                                e.currentTarget.innerText = selectedText;
                             angular.element('.dialog-editor-input-key:last').focus();
                         });
                     }
@@ -281,7 +281,7 @@
                     // 새로 만들기에서 넘어오는 스코프가 있다.
                     if ($scope.$$phase == '$apply' || $scope.$$phase == '$digest' )
                     {
-                        input.intent = '#' + selectedText;
+                        input.intent = selectedText;
                         if(e.currentTarget.innerText) // 자동으로 화면쪽으로 바인딩이 안되서 임시적으로.
                             e.currentTarget.innerText = input.intent;
                         angular.element('.dialog-editor-input-key:last').focus();
@@ -290,7 +290,7 @@
                     {
                         $scope.$apply(function()
                         {
-                            input.intent = '#' + selectedText;
+                            input.intent = selectedText;
                             if(e.currentTarget.innerText) // 자동으로 화면쪽으로 바인딩이 안되서 임시적으로.
                                 e.currentTarget.innerText = input.intent;
                             angular.element('.dialog-editor-input-key:last').focus();
@@ -341,18 +341,38 @@
                 {
                     if ($scope.$$phase == '$apply' || $scope.$$phase == '$digest' )
                     {
-                        addOrPushData(input, 'types', '$' + selectedText);
+                        if(!input.types)
+                        {
+                            input.types = [selectedText];
+                        }
+                        else
+                        {
+                            input.types.push(selectedText);
+                        }
+
+                        // addOrPushData(input, 'types', selectedText);
                         if(e.currentTarget.innerText) // 자동으로 화면쪽으로 바인딩이 안되서 임시적으로.
-                            e.currentTarget.innerText = '$' + selectedText;
+                            e.currentTarget.innerText = selectedText;
                         angular.element('.dialog-editor-input-key:last').focus();
                     }
                     else
                     {
                         $scope.$apply(function()
                         {
-                            addOrPushData(input, 'types', '$' + selectedText);
+                            if(!input.types)
+                            {
+                                input.types = [selectedText];
+                            }
+                            else
+                            {
+                                input.types.push(selectedText);
+                            }
+
+                            // addOrPushData(input, 'types', selectedText);
                             if(e.currentTarget.innerText) // 자동으로 화면쪽으로 바인딩이 안되서 임시적으로.
-                                e.currentTarget.innerText = '$' + selectedText;
+                                e.currentTarget.innerText = selectedText;
+
+                            console.log(input);
                             angular.element('.dialog-editor-input-key:last').focus();
                         });
                     }
@@ -709,7 +729,7 @@
                             return alert('다른 형태의 Input으로 변경할 수 없습니다.');
                         }
 
-                        addOrPushData(input, 'types', value);
+                        addOrPushData(input, 'types', value.replace('$', ''));
                         e.currentTarget.value = '';
                     }
                     else if(value[0] == '/' && value[value.length-1] == '/')

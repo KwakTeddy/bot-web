@@ -1690,7 +1690,9 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                             nlpsCount++;
 
                             if (err || !docs || docs.length <= 0) {
-                                logger.systemError(err);
+                                if(err) {
+                                    logger.systemError(err);
+                                }
                                 //callback(text, inDoc);
                             } else {
                                 for (var k = 0; k < docs.length; k++) {

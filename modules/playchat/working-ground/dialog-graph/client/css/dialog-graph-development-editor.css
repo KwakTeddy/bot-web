@@ -698,6 +698,21 @@
     outline: 0;
 }
 
+.dialog-editor-input-key[data-key="types"]::before
+{
+    content: '$';
+}
+
+.dialog-editor-input-key[data-key="intent"]::before
+{
+    content: '#';
+}
+
+.dialog-editor-input-key[data-key="entities"]::before
+{
+    content: '@';
+}
+
 .dialog-editor-advanced-input-placeholder
 {
     color: #757575;
