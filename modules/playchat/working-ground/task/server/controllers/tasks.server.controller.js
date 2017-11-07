@@ -131,6 +131,52 @@ exports.findTasks = function(req, res)
     });
 };
 
+exports.findTypes = function(req, res)
+{
+    var filePath = path.resolve('./custom_modules/' + req.params.botId);
+    fs.readdir(filePath, function(err, list)
+    {
+        if(err)
+        {
+            return res.status(400).send({ message: err.stack || err });
+        }
+
+        var result = [];
+        for(var i=0, l=list.length; i<l; i++)
+        {
+            if(list[i].endsWith('.graph.js') || list[i].endsWith('.bot.js') || list[i].endsWith('.test.js') || !list[i].endsWith('.js'))
+            {
+                continue;
+            }
+
+            result.push(list[i]);
+        }
+
+        var types = [];
+        for(var i=0, l=result.length; i<l; i++)
+        {
+            var content = fs.readFileSync(path.resolve('./custom_modules/' + req.params.botId + '/' + result[i]));
+            if(content)
+            {
+                content = content.toString();
+
+                var match = content.match(/bot.setType\([^,]*,/gi);
+                if(match)
+                {
+                    for(var j=0; j<match.length; j++)
+                    {
+                        var name = match[j].replace('bot.setType(', '').replace(',', '').replace(/"/gi, '').replace(/'/gi, '');
+                        if(types.indexOf(name) == -1)
+                            types.push({ fileName: result[i], name: name });
+                    }
+                }
+            }
+        }
+
+        res.jsonp(types);
+    });
+};
+
 exports.readTask = function(req, res)
 {
     var fileName = req.params.fileName;

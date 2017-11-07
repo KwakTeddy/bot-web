@@ -505,7 +505,7 @@
             if(target)
             {
                 var diff = button[0].offsetTop - target.children[0].offsetTop - target.children[0].offsetHeight - 10;
-                if(diff > 20)
+                if(diff > 50)
                 {
                     button[0].style.top = -(button[0].offsetTop - target.offsetTop - 188) + 'px';
                     button[0].style.position = 'relative';
