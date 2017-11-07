@@ -47,7 +47,7 @@ function processInput(context, inRaw, callback) {
     function findStemForm(inRaw, context, callback) {
         var nlpKo = new nlp({
             stemmer: true,      // (optional default: true)
-            normalizer: true,   // (optional default: true)
+            normalizer: false,   // (optional default: true)
             spamfilter: false     // (optional default: false)
         });
 
@@ -110,7 +110,7 @@ function processInput(context, inRaw, callback) {
                 var mb_user_str = dicResult[1];
                 var mb_user_tag = dicResult[2];
                 var position = -1;
-                
+
                 nlpKo.tokenize(temp_inRaw, function (err, result) {
                     var _inNLP = [];
                     if (!result) result = _inRaw;
