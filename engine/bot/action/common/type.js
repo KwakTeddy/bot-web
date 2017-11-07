@@ -12,6 +12,8 @@ var zhNLP = require(path.resolve('./engine/bot/engine/nlp/processor_zh'));
 
 var QAScore = require(path.resolve('./engine/bot/action/common/qaScore'));
 var qaScore = new QAScore();
+var TypeUtil = require(path.resolve('./engine/bot/action/common/typeUtil'));
+var typeUtil = new TypeUtil();
 
 var utils = require(path.resolve('./engine/bot/action/common/utils'));
 var address = require(path.resolve('./engine/bot/action/common/address'));
@@ -362,6 +364,8 @@ function processOutput(task, context, out) {
         // context를 고려한 bot 발화 출력 (dsyoon)
         if (context.botUser.nlu.matchInfo != undefined && context.botUser.nlu.matchInfo.qa.length > 0) {
             context = qaScore.assignScore(context);
+            console.log("로그---2: " + JSON.stringify(context.botUser.nlu.matchInfo.qa));
+
             var topScoreCount = context.botUser.nlu.matchInfo.topScoreCount;
             var contextCount = Object.keys(context.botUser.nlu.matchInfo.contexts).length;
             if (context.botUser.nlu.sentence.substr(0, 1) != ":") {
@@ -379,8 +383,17 @@ function processOutput(task, context, out) {
                         }
                     }
                 } else {
+                    console.log("로그--2: " + JSON.stringify(context.botUser.nlu.matchInfo.qa[0].output));
                     if (context.botUser.nlu.matchInfo.qa[0].output) {
-                        out = context.botUser.nlu.matchInfo.qa[0].output;
+                        console.log("로그--3: ");
+                        if (Array.isArray()) {
+                            console.log("로그--4: ");
+                            var result = Math.floor(Math.random() * context.botUser.nlu.matchInfo.qa[0].output.length) + 1;
+                            out = context.botUser.nlu.matchInfo.qa[0].output[result];
+                        } else {
+                            console.log("로그--5: ");
+                            out = context.botUser.nlu.matchInfo.qa[0].output;
+                        }
                     }
                 }
             }
@@ -1927,8 +1940,12 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                                             (matchCount / nlpMatchLength >= format.matchRate || matchCount1 >= format.matchCount))) ||
                                             (nlps.length > 2 && (matchCount / nlpMatchLength >= format.matchRate ||
                                                 matchCount1 >= format.matchCount)))) {
-                                        if (Array.isArray(doc.input)) doc.input = doc.input[maxMatchIndex];
-                                        doc.inputLen = doc.input.split(' ').length;
+                                        //if (Array.isArray(doc.input)) doc.input = doc.input[maxMatchIndex];
+                                        if (Array.isArray(doc.input)) {
+                                            doc.inputLen = doc.input[maxMatchIndex].split(' ').length;
+                                        } else {
+                                            doc.inputLen = doc.input.split(' ').length;
+                                        }
                                         doc.matchWord = matchedWord;
                                         doc.matchCount = matchCount1;
                                         doc.matchNLP = matchNLP;
@@ -1946,7 +1963,11 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                                     }
 
                                     // 멀티 Answer에 대해서 Context 확인을 위해서 모든 answer 저장 (dsyoon)
-                                    context.botUser.nlu.matchInfo["qa"].push(doc);
+                                    var parsedDoc = typeUtil.parseDialogSetDocs(doc);
+                                    for (var pdx=0; pdx<parsedDoc.length; pdx++) {
+                                        context.botUser.nlu.matchInfo["qa"].push(parsedDoc[pdx]);
+                                    }
+
                                     if (((nlps.length <= 2 && (matchCount == matchTotal ||
                                             (matchCount / nlpMatchLength >= format.matchRate || matchCount1 >= format.matchCount))) ||
                                             (nlps.length > 2 && (matchCount / nlpMatchLength >= format.matchRate ||
