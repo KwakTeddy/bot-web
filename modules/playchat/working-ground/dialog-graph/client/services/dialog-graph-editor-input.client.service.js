@@ -398,7 +398,6 @@
 
                 if(e.keyCode == 13)
                 {
-                    e.currentTarget.value = $scope.nlpedText[index] || '';
                     e.preventDefault();
                     e.stopPropagation();
                 }
@@ -422,6 +421,7 @@
                             $scope.$apply(function()
                             {
                                 $scope.nlpedTextPrefix = '';
+                                $scope.nlpedText[index] = '';
                             });
                         }, 2000);
                     });
@@ -447,6 +447,24 @@
                 }
                 else if(e.keyCode == 13)
                 {
+                    DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
+                    {
+                        $scope.nlpedTextPrefix = 'nlu: ';
+                        $scope.dialog.input[index].text = result.text;
+
+                        if($scope.showNlpTimeout)
+                            clearTimeout($scope.showNlpTimeout);
+
+                        $scope.showNlpTimeout = setTimeout(function()
+                        {
+                            $scope.$apply(function()
+                            {
+                                $scope.nlpedTextPrefix = '';
+                                $scope.nlpedText[index] = '';
+                            });
+                        }, 2000);
+                    });
+
                     e.preventDefault();
                 }
                 else if(e.keyCode == 8)
@@ -748,7 +766,24 @@
                                 return alert('다른 형태의 Input으로 변경할 수 없습니다.');
                             }
 
-                            input.text = $scope.nlpedText[index];
+                            DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
+                            {
+                                $scope.nlpedTextPrefix = 'nlu: ';
+                                input.text = $scope.nlpedText[index];
+
+                                if($scope.showNlpTimeout)
+                                    clearTimeout($scope.showNlpTimeout);
+
+                                $scope.showNlpTimeout = setTimeout(function()
+                                {
+                                    $scope.$apply(function()
+                                    {
+                                        $scope.nlpedTextPrefix = '';
+                                        $scope.nlpedText[index] = '';
+                                    });
+                                }, 2000);
+                            });
+
                             e.currentTarget.value = '';
 
                             angular.element('.dialog-editor-input-key:last').focus();
