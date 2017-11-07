@@ -233,8 +233,6 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
                                 context.botUser.currentDialog = null;
                             }
 
-                            console.log("------_dialog------" + JSON.stringify(_dialog));
-
                             // dialog graph 이면 qa로 넘어가지 않는다
                             if (_dialog != undefined && (_dialog.filename != undefined || _dialog.name != undefined)) {
                                 context.botUser.nlu["matchInfo"] = {};
