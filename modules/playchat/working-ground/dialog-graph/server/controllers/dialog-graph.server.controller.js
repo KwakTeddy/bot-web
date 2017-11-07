@@ -3,6 +3,8 @@ var mongoose = require('mongoose');
 var fs = require('fs');
 var multer = require('multer');
 
+var NLPManager = require(path.resolve('./engine/bot/engine/nlp/nlp_manager.js'));
+
 var logger = require(path.resolve('./config/lib/logger.js'));
 
 var BotFile = mongoose.model('BotFile');
@@ -126,5 +128,15 @@ exports.uploadImage = function(req, res)
 
 module.exports.getNlp = function(req, res)
 {
-    res.jsonp({ text: req.params.text });
+    var language = 'ko'; //temporary
+    NLPManager.getNlpedText(req.params.text, language, function(err, result)
+    {
+        if(err)
+        {
+            return res.status(400).send({ message: uploadError.message });
+        }
+
+        console.log('결과 : ' + result);
+        res.jsonp({ text: result });
+    });
 };

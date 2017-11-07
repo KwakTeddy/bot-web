@@ -438,8 +438,6 @@
                         startDialog.children = this.userDialogs = JSON.parse(parsed);
                         this.graphData = startDialog;
 
-                        // this.userDialogs = this.setUserDialogs(this.userDialogs);
-
                         this.originalFileData = this.originalFileData.replace(match, '{{dialogs}}');
 
                         this.refresh();
@@ -460,7 +458,7 @@
             return false;
         };
 
-        DialogGraph.prototype.getUserDialogs = function(dialogs)
+        DialogGraph.prototype.getAllUserDialogs = function(dialogs)
         {
             if(!dialogs)
                 dialogs = this.userDialogs;
@@ -471,7 +469,7 @@
                 list.push(dialogs[i]);
                 if(dialogs[i].children)
                 {
-                    var children = this.getUserDialogs(dialogs[i].children);
+                    var children = this.getAllUserDialogs(dialogs[i].children);
                     for(var j=0; j<children.length; j++)
                     {
                         list.push(children[j]);

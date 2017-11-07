@@ -202,7 +202,7 @@
 
         var make = function($scope)
         {
-            $scope.nlpedText = [];
+            $scope.nlpedText = {};
             $scope.showNlpTimeout = undefined;
 
             function addOrPushData(input, key, text)
@@ -391,6 +391,34 @@
                 $scope.dialog.input.push({ text: '' });
             };
 
+            $scope.inputOnKeyUp = function(e, index)
+            {
+                var value = e.currentTarget.value;
+
+                if(e.keyCode == 13)
+                {
+                    e.currentTarget.value = $scope.nlpedText[index];
+                }
+                else
+                {
+                    DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
+                    {
+                        $scope.nlpedText[index] = result.text;
+
+                        if($scope.showNlpTimeout)
+                            clearTimeout($scope.showNlpTimeout);
+
+                        $scope.showNlpTimeout = setTimeout(function()
+                        {
+                            $scope.$apply(function()
+                            {
+                                $scope.nlpedText[index] = undefined;
+                            });
+                        }, 2000);
+                    });
+                }
+            };
+
             $scope.inputOnKeyDown = function(e, index)
             {
                 var _this = e.currentTarget;
@@ -399,7 +427,7 @@
                 {
                     if(value)
                     {
-                        $scope.dialog.input.unshift({ kind: 'text', text: value });
+                        $scope.dialog.input.unshift({ kind: 'text', text: $scope.nlpedText[index] });
                         e.currentTarget.value = '';
                     }
 
@@ -707,7 +735,7 @@
                                 return alert('다른 형태의 Input으로 변경할 수 없습니다.');
                             }
 
-                            input.text = value;
+                            input.text = $scope.nlpedText[index];
                             e.currentTarget.value = '';
 
                             angular.element('.dialog-editor-input-key:last').focus();
@@ -754,7 +782,9 @@
                     {
                         DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
                         {
-                            $scope.nlpedText[index] = 'nlu: ' + result.text;
+                            $scope.nlpedText[index] = result.text;
+
+                            console.log($scope.nlpedText, index);
 
                             if($scope.showNlpTimeout)
                                 clearTimeout($scope.showNlpTimeout);

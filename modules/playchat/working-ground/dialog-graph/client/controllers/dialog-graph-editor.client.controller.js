@@ -327,7 +327,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
     DialogGraphEditor.setOpenCallback(function(parent, dialog)
     {
         $scope.commonDialogs = DialogGraph.getCommonDialogs();
-        $scope.userDialogs = DialogGraph.getUserDialogs();
+        $scope.userDialogs = DialogGraph.getAllUserDialogs();
 
 
         $scope.initialize(parent, dialog);
