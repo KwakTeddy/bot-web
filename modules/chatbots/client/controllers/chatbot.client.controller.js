@@ -189,12 +189,12 @@
         $scope.selectBot = function(bot)
         {
             $cookies.putObject('chatbot', bot);
-            $state.go('playchat');
+            $state.go('playchat-main');
         };
 
         $scope.moveToCreate = function()
         {
-            $location.url('/chatbots/create');
+            $location.url('/playchat/chatbots/create');
         };
 
         $scope.getList();

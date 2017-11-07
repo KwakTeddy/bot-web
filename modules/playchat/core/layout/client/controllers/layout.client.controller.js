@@ -2,7 +2,7 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat').controller('PlayChatController', ['$location', '$scope', 'EventService', '$state', '$stateParams', function ($location, $scope, EventService, $state, $stateParams)
+angular.module('playchat').controller('LayoutController', ['$location', '$scope', 'EventService', '$state', '$stateParams', function ($location, $scope, EventService, $state, $stateParams)
 {
     $scope.componentsLoaded = {
         'side-menu': false,
