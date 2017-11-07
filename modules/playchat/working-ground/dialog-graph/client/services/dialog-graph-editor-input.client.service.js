@@ -199,7 +199,7 @@
 
         var make = function($scope)
         {
-            $scope.nlpedText = undefined;
+            $scope.nlpedText = [];
             $scope.showNlpTimeout = undefined;
 
             //나중에 실제로 서버에서 타입을 가져와야 함.
@@ -419,28 +419,28 @@
                 }
             };
 
-            $scope.inputKeyOnKeyUp = function(e)
-            {
-                var text = e.currentTarget.value;
-                if(text && !text.startsWith('/') && !text.startsWith('if('))
-                {
-                    DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: text }, function(result)
-                    {
-                        $scope.nlpedText = 'nlu: ' + result.text;
-
-                        if($scope.showNlpTimeout)
-                            clearTimeout($scope.showNlpTimeout);
-
-                        $scope.showNlpTimeout = setTimeout(function()
-                        {
-                            $scope.$apply(function()
-                            {
-                                $scope.nlpedText = undefined;
-                            });
-                        }, 2000);
-                    });
-                }
-            };
+            // $scope.inputKeyOnKeyUp = function(e, index)
+            // {
+            //     var text = e.currentTarget.value;
+            //     if(text && !text.startsWith('/') && !text.startsWith('if('))
+            //     {
+            //         DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: text }, function(result)
+            //         {
+            //             $scope.nlpedText[index] = 'nlu: ' + result.text;
+            //
+            //             if($scope.showNlpTimeout)
+            //                 clearTimeout($scope.showNlpTimeout);
+            //
+            //             $scope.showNlpTimeout = setTimeout(function()
+            //             {
+            //                 $scope.$apply(function()
+            //                 {
+            //                     $scope.nlpedText[index] = undefined;
+            //                 });
+            //             }, 2000);
+            //         });
+            //     }
+            // };
 
 
 
@@ -545,7 +545,7 @@
 
             // keyup
             // -
-            $scope.inputKeyOnKeyUp = function(e, input)
+            $scope.inputKeyOnKeyUp = function(e, input, index)
             {
                 var value = e.currentTarget.value;
                 if(e.currentTarget.nodeName == 'SPAN')
@@ -730,7 +730,7 @@
                     {
                         DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
                         {
-                            $scope.nlpedText = 'nlu: ' + result.text;
+                            $scope.nlpedText[index] = 'nlu: ' + result.text;
 
                             if($scope.showNlpTimeout)
                                 clearTimeout($scope.showNlpTimeout);
@@ -739,7 +739,7 @@
                             {
                                 $scope.$apply(function()
                                 {
-                                    $scope.nlpedText = undefined;
+                                    $scope.nlpedText[index] = undefined;
                                 });
                             }, 2000);
                         });
