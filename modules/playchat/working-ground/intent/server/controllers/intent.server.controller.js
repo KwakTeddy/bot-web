@@ -157,7 +157,6 @@ var saveIntentContents = function(botId, user, intentId, contents, success, erro
             intentContent.intentId = intentId;
             intentContent.name = name;
 
-            console.log('여기--------------------------');
             var language = 'ko'; //temporary
             NLPManager.getNlpedText(name, language, function(err, result)
             {
@@ -165,8 +164,6 @@ var saveIntentContents = function(botId, user, intentId, contents, success, erro
                 {
                     return res.status(400).send({ message: err.stack || err });
                 }
-
-                console.log('여기--------------------------' + result);
 
                 intentContent.input = result;
                 list.push(intentContent);
