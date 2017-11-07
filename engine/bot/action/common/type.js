@@ -1712,7 +1712,11 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                                     var doc = docs[k];
                                     doc["score"] = 0.0;
                                     matchedDoc.push(doc);
-                                    context.botUser.nlu.matchInfo["qa"].push(doc);
+
+                                    var parsedDoc = typeUtil.parseDialogSetDocs(doc);
+                                    for (var pdx=0; pdx<parsedDoc.length; pdx++) {
+                                        context.botUser.nlu.matchInfo["qa"].push(doc);
+                                    }
                                 }
                             }
                         });

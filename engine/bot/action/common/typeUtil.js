@@ -9,15 +9,15 @@ TypeUtil.prototype.parseDialogSetDocs = function(docs) {
     if (!docs && docs == undefined) return [];
     if (!docs.inputRaw && docs.inputRaw == undefined) return [];
 
-    var randomInt = -1;
-    if (Array.isArray(docs.output)) {
-        randomInt = Math.floor(Math.random() * docs.output.length); // 0 ~ len
-    }
-
     if (Array.isArray(docs.inputRaw)) {
         var len = docs.inputRaw;
         var results = [];
         for (var i = 0; i<docs.inputRaw.length; i++) {
+            var randomInt = -1;
+            if (Array.isArray(docs.output)) {
+                randomInt = Math.floor(Math.random() * docs.output.length); // 0 ~ len
+            }
+
             var result = {};
             if (docs._id && docs._id != undefined) result["_id"] = docs._id;
             if (docs.input && docs.input != undefined) result["input"] = docs.input[i];
