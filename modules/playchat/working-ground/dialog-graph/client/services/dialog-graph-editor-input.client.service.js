@@ -241,18 +241,28 @@
                 {
                     if ($scope.$$phase == '$apply' || $scope.$$phase == '$digest' )
                     {
-                        addOrPushData(input, 'entities', selectedText);
+                        if(!input.entities)
+                            input.entities = [];
+
+                        input.entities.push('@' + selectedText);
+
+                        // addOrPushData(input, 'entities', selectedText);
                         if(e.currentTarget.innerText) // 자동으로 화면쪽으로 바인딩이 안되서 임시적으로.
-                            e.currentTarget.innerText = selectedText;
+                            e.currentTarget.innerText = '@' + selectedText;
                         angular.element('.dialog-editor-input-key:last').focus();
                     }
                     else
                     {
                         $scope.$apply(function()
                         {
-                            addOrPushData(input, 'entities', selectedText);
+                            if(!input.entities)
+                                input.entities = [];
+
+                            input.entities.push('@' + selectedText);
+
+                            // addOrPushData(input, 'entities', selectedText);
                             if(e.currentTarget.innerText) // 자동으로 화면쪽으로 바인딩이 안되서 임시적으로.
-                                e.currentTarget.innerText = selectedText;
+                                e.currentTarget.innerText = '@' + selectedText;
                             angular.element('.dialog-editor-input-key:last').focus();
                         });
                     }

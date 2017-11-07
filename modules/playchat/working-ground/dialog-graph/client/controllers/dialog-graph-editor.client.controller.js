@@ -232,7 +232,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             }
         }
 
-        result.input = JSON.parse(angular.toJson(result.input).replace('#', '').replace('@', '').replace('$', ''));
+        result.input = JSON.parse(angular.toJson(result.input).replace('#', '').replace('$', ''));
         result.output = JSON.parse(angular.toJson(result.output));
         if(result.task)
             result.task = JSON.parse(angular.toJson(result.task));

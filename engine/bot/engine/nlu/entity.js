@@ -36,7 +36,7 @@ function matchDictionaryEntities(inRaw, inNLP, inDoc, context, callback) {
 
     function(cb) {
       var Dic = mongoose.model('EntityContentSynonym');
-      async.eachSeries(nouns, function(word, cb1) {
+       async.eachSeries(nouns, function(word, cb1) {
         Dic.find({botId: context.bot.id, name: word}).lean().populate('entityId').populate('contentId').exec(function(err, docs) {
           for(var i in docs) {
             if(docs[i].entityId && entities[docs[i].entityId.name] == undefined)
