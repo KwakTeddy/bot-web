@@ -398,9 +398,9 @@
 
                 if(e.keyCode == 13)
                 {
-                    console.log('여기');
-                    e.currentTarget.value = $scope.nlpedText[index];
+                    e.currentTarget.value = $scope.nlpedText[index] || '';
                     e.preventDefault();
+                    e.stopPropagation();
                 }
                 else
                 {
@@ -421,7 +421,6 @@
                         {
                             $scope.$apply(function()
                             {
-                                $scope.nlpedText[index] = undefined;
                                 $scope.nlpedTextPrefix = '';
                             });
                         }, 2000);
@@ -445,6 +444,10 @@
                     e.stopPropagation();
 
                     return;
+                }
+                else if(e.keyCode == 13)
+                {
+                    e.preventDefault();
                 }
                 else if(e.keyCode == 8)
                 {
@@ -809,7 +812,6 @@
                             {
                                 $scope.$apply(function()
                                 {
-                                    $scope.nlpedText[index] = undefined;
                                     $scope.nlpedTextPrefix = '';
                                 });
                             }, 2000);
