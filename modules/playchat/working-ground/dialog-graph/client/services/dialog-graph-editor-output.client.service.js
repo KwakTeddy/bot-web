@@ -70,6 +70,17 @@
                 angular.element(e.currentTarget).prev().find('input:first').prop('checked', true);
             };
 
+            $scope.deleteOutput = function(output, index)
+            {
+                if(output.length == 1)
+                {
+                    alert('마지막 Output은 삭제할 수 없습니다');
+                    return;
+                }
+
+                output.splice(index, 1);
+            };
+
             $scope.changeOutputType = function(e)
             {
 

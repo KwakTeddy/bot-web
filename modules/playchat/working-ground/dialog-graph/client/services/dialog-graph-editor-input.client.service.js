@@ -383,10 +383,7 @@
                     return;
                 }
 
-                if(confirm('정말 삭제하시겠습니까?'))
-                {
-                    $scope.dialog.input.splice(index, 1);
-                }
+                $scope.dialog.input.splice(index, 1);
             };
 
             $scope.addInput = function()
