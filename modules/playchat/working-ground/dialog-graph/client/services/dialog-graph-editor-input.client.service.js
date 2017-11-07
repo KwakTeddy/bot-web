@@ -203,6 +203,7 @@
         var make = function($scope)
         {
             $scope.nlpedText = {};
+            $scope.nlpedTextPrefix = '';
             $scope.showNlpTimeout = undefined;
 
             function addOrPushData(input, key, text)
@@ -403,6 +404,7 @@
                 {
                     DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
                     {
+                        $scope.nlpedTextPrefix = 'nlu: ';
                         $scope.nlpedText[index] = result.text;
 
                         if($scope.showNlpTimeout)
@@ -413,6 +415,7 @@
                             $scope.$apply(function()
                             {
                                 $scope.nlpedText[index] = undefined;
+                                $scope.nlpedTextPrefix = '';
                             });
                         }, 2000);
                     });
@@ -782,6 +785,7 @@
                     {
                         DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
                         {
+                            $scope.nlpedTextPrefix = 'nlu: ';
                             $scope.nlpedText[index] = result.text;
 
                             console.log($scope.nlpedText, index);
@@ -794,6 +798,7 @@
                                 $scope.$apply(function()
                                 {
                                     $scope.nlpedText[index] = undefined;
+                                    $scope.nlpedTextPrefix = '';
                                 });
                             }, 2000);
                         });
