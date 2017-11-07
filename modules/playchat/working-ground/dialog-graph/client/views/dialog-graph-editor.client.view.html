@@ -42,7 +42,7 @@
                             <div class="dialog-editor-input-textarea" data-nlu="{{ nlpedText[$index] }}" ng-click="focusToInputArea($event);">
                                 <span ng-repeat="(key, val) in input" ng-show="getInputKeyLength(input, key) > 0">
                                     <span class="dialog-editor-input-item" ng-class="key" ng-click="inputKeyOnClick($event);">
-                                        <span class="dialog-editor-input-key" contenteditable="true" data-key="{{ key }}" ng-click="inputKeyOnClick($event);" ng-focus="inputKeyOnFocus($event, input);" ng-blur="inputKeyOnBlur($event, input);" ng-keydown="inputKeyOnKeyDown($event, input, $index);" ng-keyup="inputKeyOnKeyUp($event, input, $parent.$index);">{{ val }}</span>
+                                        <span class="dialog-editor-input-key" contenteditable="true" data-key="{{ key }}" ng-click="inputKeyOnClick($event);" ng-focus="inputKeyOnFocus($event, input);" ng-blur="inputKeyOnBlur($event, input);" ng-keydown="inputKeyOnKeyDown($event, input, $parent.$index);" ng-keyup="inputKeyOnKeyUp($event, input, $parent.$index);">{{ getValueName(val); }}</span>
                                         <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/close.png" class="delete-img" ng-click="deleteInputKey(input, key);">
                                     </span>
                                     <span class="and" ng-if="getLength(input);">and</span>

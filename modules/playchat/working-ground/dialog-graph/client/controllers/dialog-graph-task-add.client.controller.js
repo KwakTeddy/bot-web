@@ -16,14 +16,14 @@
 
         $element.get(0).openCallback = function()
         {
-            TaskService.query({ botId: chatbot.id }, function(list)
-            {
-                console.log('리스트', list);
-            },
-            function(err)
-            {
-                alert(err.data.message);
-            });
+            // TaskService.query({ botId: chatbot.id }, function(list)
+            // {
+            //     console.log('리스트', list);
+            // },
+            // function(err)
+            // {
+            //     alert(err.data.message);
+            // });
         };
 
         $scope.save = function()
@@ -34,6 +34,7 @@
             content += "    name: '" + $scope.task.name + "',\r\n";
             content += "    action: function(task, context, callback) {\r\n";
             content += logic + '\r\n';
+            content += 'callback(task, context);\r\n';
             content += "    }\r\n";
             content += "};\r\n";
             content += "bot.setTask('" + $scope.task.name + "', " + $scope.task.name + ");";

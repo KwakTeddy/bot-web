@@ -3,13 +3,13 @@
         <form class="inline-block">
             <input id="search" name="search" type="search" class="search">
         </form>
-        <div class="funtionbtn1">
-            <a href="#">
-                <img src="modules/playchat/working-ground/common/client/imgs/export.png">
-                <span ng-click="modal.importModal.open();">Import</span>
-                <img src="modules/playchat/working-ground/common/client/imgs/Q.png">
-            </a>
-        </div>
+        <!--<div class="funtionbtn1">-->
+            <!--<a href="#">-->
+                <!--<img src="modules/playchat/working-ground/common/client/imgs/export.png">-->
+                <!--<span ng-click="modal.importModal.open();">Import</span>-->
+                <!--<img src="modules/playchat/working-ground/common/client/imgs/Q.png">-->
+            <!--</a>-->
+        <!--</div>-->
     </div>
     <div class="tab01">
         <ul class="tabs1">
@@ -17,9 +17,9 @@
             <li><a href="#">Store</a></li>
             <li><a href="#">Shared</a></li>
         </ul>
-        <div class="btn02 flR" ng-click="open();">
-            <a href="#" class="">Add New</a>
-        </div>
+        <!--<div class="btn02 flR" ng-click="open();">-->
+            <!--<a href="#" class="">Add New</a>-->
+        <!--</div>-->
     </div>
     <div class="downSide">
         <table class="tb02">
@@ -48,7 +48,7 @@
                 <td style="text-align: left;">{{ item.name }}</td>
                 <td>{{ item.user.displayName }}</td>
                 <td>
-                    <a href="#" class="flR" ng-click="delete(item);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>
+                    <!--<a href="#" class="flR" ng-click="delete(item);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>-->
                     <a href="#" class="flR mr5" ng-click="modify(item);"><img src="modules/playchat/working-ground/common/client/imgs/modify.png" class="modify-img"></a>
                 </td>
                 <!--<td>-->
@@ -87,13 +87,13 @@
                     </label>
                     <label class="required" ng-if="modal.mgmtModal.isNewFile">
                         <span class="form-title">File Name</span>
-                        <input type="text" placeholder="Enter file name" name="filename" ng-model="modal.mgmtModal.data.fileName" style="width: 40%;" class="task-title data-input" ng-required="true">
+                        <input type="text" placeholder="Enter file name" name="filename" ng-model="modal.mgmtModal.data.fileName" style="width: 40%;" class="task-title data-input" ng-required="true" disabled="true">
                     </label>
                 </div>
                 <div class="form-row">
                     <label class="required">
                         <span class="form-title">Name</span>
-                        <input type="text" placeholder="Task Name(English, Number, _)" name="name" ng-model="modal.mgmtModal.data.name" style="width: 40%;" class="task-title data-input" ng-required="true" pattern="[^0-9]+[a-zA-Z_0-9]*">
+                        <input type="text" placeholder="Task Name(English, Number, _)" name="name" ng-model="modal.mgmtModal.data.name" style="width: 40%;" class="task-title data-input" ng-required="true" pattern="[^0-9]+[a-zA-Z_0-9]*" disabled="true">
                     </label>
                 </div>
                 <div class="form-row">
@@ -107,7 +107,7 @@
                     </label>
                 </div>
                 <div class="tab-footer">
-                    <button class="blue-button">저장</button>
+                    <!--<button class="blue-button">저장</button>-->
                     <button type="button" class="default-button" ng-click="modal.mgmtModal.close();">닫기</button>
                 </div>
             </form>

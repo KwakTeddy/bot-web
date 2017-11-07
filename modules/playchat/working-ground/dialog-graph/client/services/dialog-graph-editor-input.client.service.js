@@ -44,10 +44,12 @@
                         var value = this.getAttribute('data-name');
                         setTimeout(function()
                         {
-                            target.find('form').get(0).open();
+                            if(target.find('form').get(0).open)
+                                target.find('form').get(0).open();
                         }, 501);
 
-                        target.find('form').get(0).openCallback(value);
+                        if(target.find('form').get(0).openCallback)
+                            target.find('form').get(0).openCallback(value);
 
                         target.find('form').get(0).saveCallback = function(name)
                         {
@@ -196,14 +198,12 @@
         var DialogGraphsNLPService = $resource('/api/:botId/dialoggraphs/nlp/:text', { botId: '@botId', text: '@text' });
         var IntentService = $resource('/api/:botId/intents/:intentId', { botId: '@botId', intentId: '@intentId' }, { update: { method: 'PUT' } });
         var EntityService = $resource('/api/:botId/entitys/:entityId', { botId: '@botId', entityId: '@entityId' }, { update: { method: 'PUT' } });
+        var TypeService = $resource('/api/:botId/types', { botId: '@botId' });
 
         var make = function($scope)
         {
             $scope.nlpedText = [];
             $scope.showNlpTimeout = undefined;
-
-            //나중에 실제로 서버에서 타입을 가져와야 함.
-            $scope.commonTypes = ["mobile","phone","date","timeType","account","count","faqType","address","number","amountType","mobileType","phoneType","dateType","accountType","countType"];
 
             function addOrPushData(input, key, text)
             {
@@ -309,16 +309,31 @@
                 {
                     if(page == 1)
                     {
-                        var list = [];
-                        for(var i=0, l=$scope.commonTypes.length; i<l; i++)
-                        {
-                            if(!name || new RegExp(name, 'gi').exec($scope.commonTypes[i]))
-                            {
-                                list.push({ name: $scope.commonTypes[i] });
-                            }
-                        }
+                        //나중에 실제로 서버에서 타입을 가져와야 함.
+                        $scope.commonTypes = ["mobile","phone","date","timeType","account","count","faqType","address","number","amountType","mobileType","phoneType","dateType","accountType","countType"];
 
-                        bind(name, list);
+                        TypeService.query({ botId: $scope.chatbot.id }, function(result)
+                        {
+                            var list = [];
+                            for(var i=0, l=$scope.commonTypes.length; i<l; i++)
+                            {
+                                if(!name || new RegExp(name, 'gi').exec($scope.commonTypes[i]))
+                                {
+                                    list.push({ name: $scope.commonTypes[i] });
+                                }
+                            }
+
+                            for(var i=0; i<result.length; i++)
+                            {
+                                list.push({ name : result[i].name, fileName: result[i].fileName });
+                            }
+
+                            bind(name, list);
+                        },
+                        function(err)
+                        {
+                            alert(err.data.error || err.data.message);
+                        });
                     }
 
                 }, function(selectedText)
@@ -346,6 +361,18 @@
                     e.stopPropagation();
                     e.preventDefault();
                 });
+            };
+
+            $scope.getValueName = function(value)
+            {
+                if(typeof value == 'object')
+                {
+                    return value.join(', ');
+                }
+                else
+                {
+                    return value;
+                }
             };
 
             $scope.deleteInput = function(index)
