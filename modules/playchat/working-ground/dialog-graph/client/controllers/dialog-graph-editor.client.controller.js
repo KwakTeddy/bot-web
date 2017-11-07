@@ -217,6 +217,8 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             delete $scope.dialog.actionOutput;
         }
 
+        console.log(result.output);
+
         // 저장시 불필요한 데이터 삭제.
         for(var i=0; i<result.output.length; i++)
         {

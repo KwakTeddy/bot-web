@@ -129,12 +129,12 @@
                                 <p class="dialog-editor-output-label">Action Type</p>
                                 <select class="jumbo-select dialog-editor-action-type" style="width: 100%; margin: 0 auto; display: block;" ng-model="output.type" ng-required="true" ng-change="actionValueChanged(output);">
                                     <option value="">none</option>
-                                    <option value="Call">Call</option>
-                                    <option value="Call Child">Call Child</option>
-                                    <option value="Return Call">Return Call</option>
-                                    <option value="Up">Up</option>
-                                    <option value="Repeat">Repeat</option>
-                                    <option value="Return">Return</option>
+                                    <option value="call">Call</option>
+                                    <option value="callChild">Call Child</option>
+                                    <option value="returnCall">Return Call</option>
+                                    <option value="up">Up</option>
+                                    <option value="repeat">Repeat</option>
+                                    <option value="return">Return</option>
                                 </select>
                             </div>
                             <div class="dialog-editor-output-action-row">
@@ -159,12 +159,12 @@
                     <div style="padding: 8px 12px;">
                         <select class="jumbo-select dialog-editor-action-type" ng-required="isUseOutput === false" ng-disabled="isUseOutput === true" ng-model="dialog.actionOutput.type" ng-change="actionValueChanged(dialog.actionOutput);">
                             <option value="">none</option>
-                            <option value="Call">Call</option>
-                            <option value="Call Child">Call Child</option>
-                            <option value="Return Call">Return Call</option>
-                            <option value="Up">Up</option>
-                            <option value="Repeat">Repeat</option>
-                            <option value="Return">Return</option>
+                            <option value="call">Call</option>
+                            <option value="callChild">Call Child</option>
+                            <option value="returnCall">Return Call</option>
+                            <option value="up">Up</option>
+                            <option value="repeat">Repeat</option>
+                            <option value="return">Return</option>
                         </select>
                         <div class="dialog-editor-select-input" ng-disabled="isUseOutput === true || actionTypeCheck === true">
                             <input type="text" ng-model="dialog.actionOutput.dialog" ng-required="isUseOutput === false" ng-disabled="isUseOutput === true || actionTypeCheck === true">
