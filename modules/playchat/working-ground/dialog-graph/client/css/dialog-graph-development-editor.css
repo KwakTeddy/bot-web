@@ -423,21 +423,23 @@
     padding: 10px;
 }
 
-.dialog-editor-output-text > input
+.dialog-editor-output-text > textarea
 {
     width: 100%;
 
     padding: 10px;
     outline: 0;
+    border: 0;
 
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
 
-.dialog-editor-output-text > input:focus
+.dialog-editor-output-text > textarea:focus
 {
     outline: 1px solid #d3efff;
+    height: 150px;
 }
 
 .dialog-editor-action-type

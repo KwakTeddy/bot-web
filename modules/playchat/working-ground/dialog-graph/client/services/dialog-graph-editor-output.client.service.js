@@ -8,6 +8,7 @@
         var make = function($scope)
         {
             $scope.isUseOutput = true;
+            $scope.actionTypeCheck = false;
 
             $scope.outputTypeChanged = function($event)
             {
@@ -63,6 +64,10 @@
                 var output = { kind: 'Content', text: '' };
                 $scope.dialog.output.unshift(output);
                 $scope.setOutputImageUploader(0);
+
+                $scope.isUseOutput = true;
+
+                angular.element(e.currentTarget).prev().find('input:first').prop('checked', true);
             };
 
             $scope.changeOutputType = function(e)
@@ -136,6 +141,20 @@
                     $scope.dialog.actionOutput.dialog = dialog.name;
                 }
             }
+
+            $scope.actionValueChanged = function(dialog)
+            {
+                var type = dialog.type;
+                if(type == 'Up' || type == 'Repeat' || type == 'Return')
+                {
+                    $scope.actionTypeCheck = true;
+                    dialog.dialog = 1;
+                }
+                else
+                {
+                    $scope.actionTypeCheck = false;
+                }
+            };
         };
 
         return { make: make };

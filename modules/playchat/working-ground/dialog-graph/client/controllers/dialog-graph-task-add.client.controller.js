@@ -2,7 +2,7 @@
 {
     angular.module('playchat').controller('TaskAddController', ['$window', '$scope', '$resource', '$cookies', '$element', '$timeout', function ($window, $scope, $resource, $cookies, $element, $timeout)
     {
-        var TaskService = $resource('/api/:botId/tasks', { botId: '@botId' }, { update: { method: 'PUT' } });
+        var TaskService = $resource('/api/:botId/tasks/:fileName', { botId: '@botId', fileName: '@fileName' }, { update: { method: 'PUT' } });
 
         var chatbot = $cookies.getObject('chatbot');
 
@@ -38,7 +38,7 @@
             content += "};\r\n";
             content += "bot.setTask('" + $scope.task.name + "', " + $scope.task.name + ");";
 
-            TaskService.save({ botId: chatbot.id, name: $scope.task.name, content: content }, function()
+            TaskService.save({ botId: chatbot.id, name: $scope.task.name, content: content, fileName: 'default.js' }, function()
             {
                 $element.get(0).saveCallback($scope.task.name);
             }, function(err)

@@ -70,11 +70,6 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                             //advanced 모드일때는 action을 output쪽에 처리해서 넣어주면 됨.
                             if(dialog.output[i].kind == 'Action')
                             {
-                                if(!$scope.isAdvancedMode)
-                                {
-                                    $scope.isUseOutput = false;
-                                }
-
                                 var actionObject = {};
                                 actionObject.kind = 'Action';
 
@@ -87,7 +82,16 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                                     }
                                 }
 
-                                $scope.dialog.output.push(actionObject);
+                                if(!$scope.isAdvancedMode)
+                                {
+                                    $scope.isUseOutput = false;
+                                    $scope.dialog.actionOutput = actionObject;
+                                    $scope.dialog.output.push( { kind: 'Content', text: '' } );
+                                }
+                                else
+                                {
+                                    $scope.dialog.output.push(actionObject);
+                                }
                             }
                             else
                             {
@@ -182,6 +186,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
     $scope.save = function()
     {
+        console.log('저장');
         if(!DialogGraph.checkDuplicatedName($scope.dialog))
         {
             alert($scope.dialog.name + ' is duplicated');
@@ -207,6 +212,10 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             var output = { kind: 'Action' };
             output[$scope.dialog.actionOutput.type] = $scope.dialog.actionOutput.dialog;
             result.output = [output];
+        }
+        else
+        {
+            delete $scope.dialog.actionOutput;
         }
 
         // 저장시 불필요한 데이터 삭제.
