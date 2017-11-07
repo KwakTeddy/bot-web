@@ -402,6 +402,11 @@
                 }
                 else
                 {
+                    if(value.startsWith('if(') || value.startsWith('/'))
+                    {
+                        return;
+                    }
+
                     DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
                     {
                         $scope.nlpedTextPrefix = 'nlu: ';
@@ -718,7 +723,7 @@
                                 return alert('다른 형태의 Input으로 변경할 수 없습니다.');
                             }
 
-                            input.if = value;
+                            input.if = value.replace('if(', '').replace(')', '');
                             e.currentTarget.value = '';
 
                             angular.element('.dialog-editor-input-key:last').focus();
@@ -783,6 +788,11 @@
 
                     if(value !== undefined && value !== null && value !== '')
                     {
+                        if(value.startsWith('if(') || value.startsWith('/'))
+                        {
+                            return;
+                        }
+
                         DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
                         {
                             $scope.nlpedTextPrefix = 'nlu: ';

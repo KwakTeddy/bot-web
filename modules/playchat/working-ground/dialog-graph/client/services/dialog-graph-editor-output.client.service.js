@@ -143,10 +143,8 @@
 
             $scope.selectActionDialog = function(e, dialog)
             {
-                console.log('머야 : ', dialog);
                 if($scope.isAdvancedMode)
                 {
-                    console.log('흠', $scope.dialog.output);
                     $scope.dialog.output.dialog = dialog.name;
                 }
                 else
