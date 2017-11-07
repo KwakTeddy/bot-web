@@ -154,7 +154,7 @@
 
         $scope.chatbotNameClick = function(e)
         {
-            e.stopPropagation();
+            // e.stopPropagation();
         };
 
         $scope.chatbotNameBlur = function(e)
@@ -190,6 +190,11 @@
         {
             $cookies.putObject('chatbot', bot);
             $state.go('playchat');
+        };
+
+        $scope.moveToCreate = function()
+        {
+            $location.url('/chatbots/create');
         };
 
         $scope.getList();
