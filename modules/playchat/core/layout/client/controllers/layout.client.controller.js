@@ -19,6 +19,8 @@ angular.module('playchat').controller('PlayChatController', ['$location', '$scop
 
     $scope.page = '/modules/playchat/working-ground/' + page + '/client/views/' + page + (menu ? '-' + menu : '') + '.client.view.html';
 
+    console.log("페이지 : ", $scope.page);
+
     //각 컴포넌트가 자신의 로딩작업이 끝나면 호출한다.
     $scope.loaded = function(name)
     {

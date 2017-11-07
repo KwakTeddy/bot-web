@@ -1,0 +1,59 @@
+<div ng-controller="OperationUserController">
+    <h2 class="operation-title">User</h2>
+    <div class="operation-advance-search">
+        <div class="slide" ng-class="isAdvancedMode ? 'on' : ''">
+            <input type="checkbox" id="advancedMode" ng-model="isAdvancedMode" />
+            <label for="advancedMode"></label>
+        </div>
+    </div>
+    <div class="operation-search-area" ng-if="!isAdvancedMode">
+        <input type="text" placeholder="Search" class="input_type09" ng-keydown="searchKeyDown($event);" id="operationSearchInput">
+        <button type="button" class="btn04" style="color: white;" ng-click="search($event);">Search</button>
+    </div>
+    <div class="operation-search-area" ng-if="isAdvancedMode">
+
+    </div>
+    <div class="operation-content">
+        <table class="tb02">
+            <colgroup>
+                <col style="width: 17%;">
+                <col style="width: 17%;">
+                <col style="width: 17%;">
+                <col style="width: 16%;">
+                <col style="width: 18%;">
+                <col style="width: 15%;">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>Channel</th>
+                <th>User Key</th>
+                <th>Last Update</th>
+                <th>Created</th>
+                <th>Dialog Count</th>
+                <th>Dialog</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-if="entitys.length == 0">
+                <td colspan="6">empty</td>
+            </tr>
+            <tr ng-repeat="item in list">
+                <td>{{ item.channel }}</td>
+                <td>{{ item.userKey }}</td>
+                <td>{{ item.lastUpdate }}</td>
+                <td>{{ item.created }}</td>
+                <td>{{ item.dialogCount }}</td>
+                <td>
+                    <a href="#" class="operation-user-dialog-button">Dialog</a>
+                </td>
+                <!--<td>-->
+                <!--<div class="slide on">-->
+                <!--<input type="checkbox" id="{{ item._id }}" ng-model="item.usable" />-->
+                <!--<label for="{{ item._id }}" ng-click="updateUsable(item);"></label>-->
+                <!--</div>-->
+                <!--</td>-->
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

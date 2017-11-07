@@ -25,7 +25,9 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
         ] });
         $scope.menus.push({ name: 'Contents', icon: 'contents.png' });
         $scope.menus.push({ name: 'Channel', icon: 'channel.png' });
-        $scope.menus.push({ name: 'Operating', icon: 'operating.png' });
+        $scope.menus.push({ name: 'Operating', icon: 'operation.png', childMenus: [
+            { name: 'User', url: '/operation/user', icon: 'operation.png' }
+        ] });
         $scope.menus.push({ name: 'Analysis', icon: 'analysis.png' });
         $scope.menus.push({ name: 'Setting', icon: 'setting.png' });
 
