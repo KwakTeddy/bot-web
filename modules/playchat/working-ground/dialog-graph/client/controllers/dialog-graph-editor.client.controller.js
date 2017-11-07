@@ -186,7 +186,6 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
     $scope.save = function()
     {
-        console.log('저장');
         if(!DialogGraph.checkDuplicatedName($scope.dialog))
         {
             alert($scope.dialog.name + ' is duplicated');

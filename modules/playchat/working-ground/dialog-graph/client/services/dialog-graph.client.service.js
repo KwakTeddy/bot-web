@@ -504,7 +504,8 @@
 
             if(target)
             {
-                if(button[0].offsetTop - target.children[0].offsetTop - target.children[0].offsetHeight > 10)
+                var diff = button[0].offsetTop - target.children[0].offsetTop - target.children[0].offsetHeight - 10;
+                if(diff > 20)
                 {
                     button[0].style.top = -(button[0].offsetTop - target.offsetTop - 188) + 'px';
                     button[0].style.position = 'relative';
@@ -527,6 +528,9 @@
                 var icon = key.charAt(0).toUpperCase();
                 if(key == 'if')
                     icon = 'IF';
+
+                if(!input[key])
+                    continue;
 
                 template += '<span class="graph-dialog-input-span" data-key="' + icon + '" data-content="' + input[key] + '">[' + key + '] ' + input[key] + '</span>';
             }
