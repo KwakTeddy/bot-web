@@ -51,6 +51,7 @@
                                 <span class="dialog-editor-input-item">
                                     <input type="text" class="dialog-editor-input-key target-input" ng-class="isRequired(input) ? '' : ''" style="width: 80px; padding:0 4px;" ng-click="inputKeyOnClick($event);" ng-focus="inputKeyOnFocus($event, input);" ng-blur="inputKeyOnBlur($event, input);" ng-keydown="inputKeyOnKeyDown($event, input);" ng-keyup="inputKeyOnKeyUp($event, input, $parent.$index);">
                                 </span>
+                                <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteInput($index);" style="position: absolute; top: 7px; right: 12px;">
                             </div>
                             <div class="or" ng-if="dialog.input.length > 1 && $index < dialog.input.length-1">
                                 <span>or</span>
