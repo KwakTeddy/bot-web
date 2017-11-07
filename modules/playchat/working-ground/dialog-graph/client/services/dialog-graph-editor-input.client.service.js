@@ -398,11 +398,13 @@
 
                 if(e.keyCode == 13)
                 {
+                    console.log('여기');
                     e.currentTarget.value = $scope.nlpedText[index];
+                    e.preventDefault();
                 }
                 else
                 {
-                    if(value.startsWith('if(') || value.startsWith('/'))
+                    if(!value || value == '' || value.startsWith('if(') || value.startsWith('/'))
                     {
                         return;
                     }
