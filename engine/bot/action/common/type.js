@@ -367,6 +367,7 @@ function processOutput(task, context, out) {
 
             var topScoreCount = context.botUser.nlu.matchInfo.topScoreCount;
             var contextCount = Object.keys(context.botUser.nlu.matchInfo.contexts).length;
+
             if (context.botUser.nlu.sentence.substr(0, 1) != ":") {
                 if (topScoreCount == 0) {
                     //out = out.replace(/%2B/g, '+');
