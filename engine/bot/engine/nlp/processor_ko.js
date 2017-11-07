@@ -47,7 +47,7 @@ function processInput(context, inRaw, callback) {
     function findStemForm(inRaw, context, callback) {
         var nlpKo = new nlp({
             stemmer: true,      // (optional default: true)
-            normalizer: false,   // (optional default: true)
+            normalizer: true,   // (optional default: true)
             spamfilter: false     // (optional default: false)
         });
 
