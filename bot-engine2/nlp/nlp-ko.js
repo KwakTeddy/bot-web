@@ -9,7 +9,7 @@ var async = require('async');
 java.classpath.push(path.resolve('./external_modules/scala-library-2.11.6.jar'));
 java.classpath.push(path.resolve('./external_modules/twitter-text-1.11.1.jar'));
 java.classpath.push(path.resolve('./external_modules/korean-text-3.0.jar'));
-
+java.classpath.push(path.resolve('./external_modules/opennlp/lib/opennlp-tools-1.6.0.jar'));
 
 java.options.push('-Xmx2048m');
 java.options.push('-Xmx4096m');

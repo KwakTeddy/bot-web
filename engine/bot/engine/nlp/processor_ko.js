@@ -44,13 +44,13 @@ function processInput(context, inRaw, callback) {
 
     var inNLP, nlpAll = [], _nlp = [];
 
-    function findStemForm(inRaw, context, callback) {
-        var nlpKo = new nlp({
-            stemmer: true,      // (optional default: true)
-            normalizer: false,   // (optional default: true)
-            spamfilter: false     // (optional default: false)
-        });
+    var nlpKo = new nlp({
+        stemmer: true,      // (optional default: true)
+        normalizer: true,   // (optional default: true)
+        spamfilter: true     // (optional default: false)
+    });
 
+    function findStemForm(inRaw, context, callback) {
         var _nlp = context.botUser.nlu.nlp;
         async.eachSeries(_nlp, function(item, next) {
             if(item.pos == 'Verb') {
@@ -90,12 +90,6 @@ function processInput(context, inRaw, callback) {
                 inRaw = inRaw.replace(/\"/gi, "");
 
                 var userDictionary = new UserDictionary(path.resolve('./external_modules/resources/ko'));
-
-                var nlpKo = new nlp({
-                    stemmer: false,      // (optional default: true)
-                    normalizer: false,   // (optional default: true)
-                    spamfilter: false     // (optional default: false)
-                });
 
                 var _inRaw = inRaw;
                 var lastChar = _inRaw.charAt(_inRaw.length - 1);

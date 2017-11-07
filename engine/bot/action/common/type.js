@@ -497,9 +497,6 @@ function processButtons(task, context, text) {
     if(formatArray && formatArray.length > 0) return formatArray;
     else return undefined;
 
-//  console.log(text);
-
-
     return text;
 
 }
@@ -1234,8 +1231,6 @@ function mongoTypeCheck(text, format, inDoc, context, callback) {
     //   logger.debug('type.js:mongoTypeCheck: START ' + format.name + ' "' + text + '"');
     // }
 
-    console.log('몽고고고고고고고고');
-
     if(text == null) {
         callback(text, inDoc, false);
         return;
@@ -1300,8 +1295,6 @@ function mongoTypeCheck(text, format, inDoc, context, callback) {
                         if(format.mongo.sort) _query.sort(format.mongo.sort);
                         if(format.mongo.limit) _query.limit(format.mongo.limit || type.MAX_LIST);
 
-                        // console.log(query);
-                        console.log('쿼리리리리 : ' + JSON.stringify(query));
                         _query.lean().exec(function (err, docs) {
                             if (err || !docs || docs.length <= 0) {
                                 //callback(text, inDoc);
@@ -1375,7 +1368,6 @@ function mongoTypeCheck(text, format, inDoc, context, callback) {
                     if(format.mongo.sort) _query.sort(format.mongo.sort);
                     if(format.mongo.limit) _query.limit(format.mongo.limit || type.MAX_LIST);
 
-                    console.log('쿼리리리리2 : ' + JSON.stringify(query));
                     _query.lean().exec(function (err, docs) {
                         wordsCount++;
 
@@ -1621,9 +1613,6 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                         if(format.mongo.sort) _query.sort(format.mongo.sort);
                         if(format.mongo.limit) _query.limit(format.mongo.limit || type.MAX_LIST);
 
-                        console.log('여긴가보다 : ', query);
-
-                        // console.log(query);
                         _query.lean().exec(function (err, docs) {
                             if (err || !docs || docs.length <= 0) {
                                 //callback(text, inDoc);
@@ -1845,7 +1834,6 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                                                         _matchCount1[n]++;
                                                     }
 
-                                                    // console.log(word + ' ' + _word + ' ' + doc[format.mongo.queryFields[l]][n] + ' ' +_matchCount[n]);
                                                     if (!bMatchTotal) {
                                                         _matchTotal[n] += doc[format.mongo.queryFields[l]][n].split(' ').length;
                                                         bMatchTotal = true
@@ -1894,7 +1882,6 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                                                     matchCount++;
                                                     matchCount1++;
                                                 }
-                                                // console.log(word + ' ' + _word + ' ' + doc[format.mongo.queryFields[l]] + ' ' +matchCount);
 
                                                 if (!bMatchTotal) {
                                                     matchTotal += doc[format.mongo.queryFields[l]].split(' ').length;
@@ -1902,8 +1889,6 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                                                 }
                                                 matchedWord += nlps[m];
                                                 matchNLP.push({text: _nlps[m].text, pos: _nlps[m].pos});
-
-                                                // console.log(l + ',' + doc[format.mongo.queryFields[l]] + ', ' + matchCount + ',' + matchTotal);
 
                                                 var __word = nlps[m].text;
                                                 __word = RegExp.escape(__word);
