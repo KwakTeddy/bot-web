@@ -7,7 +7,7 @@ var Dialogset = mongoose.model('Dialogset');
 var DialogsetDialog = mongoose.model('DialogsetDialog');
 var CustomContext = mongoose.model('CustomContext');
 
-var nlpManager = require(path.resolve('./bot-engine2/nlp-manager.js'));
+var NLPManager = require(path.resolve('./engine/bot/engine/nlp/nlp-manager.js'));
 
 exports.findTotalPage = function(req, res)
 {
@@ -115,28 +115,17 @@ exports.create = function(req, res)
         async.eachSeries(dialog.inputRaw, function(inputRaw, done)
         {
             inputRaw = inputRaw.trim();
-            nlpManager.tokenize(req.user.language, inputRaw, function(result)
-            {
-                var processed = result.processed;
 
-                var nlp = [];
-                for(var i in processed)
+            var language = 'ko'; //temporary
+            NLPManager.getNlpedText(inputRaw, language, function(err, result)
+            {
+                if(err)
                 {
-                    if(processed[i].pos !== 'Josa' && processed[i].pos !== 'Punctuation')
-                    {
-                        nlp.push(processed[i].text);
-                    }
+                    return res.status(400).send({ message: err.stack || err });
                 }
 
-                var input = nlp.join(' ');
-                inputList.push(input);
-
+                inputList.push(result);
                 done();
-            },
-            function(err)
-            {
-                logger.systemError(err);
-                return res.status(400).send({ message: err.stack || err });
             });
         },
         function()
@@ -174,28 +163,16 @@ exports.update = function(req, res)
         async.eachSeries(dialog.inputRaw, function(inputRaw, done)
         {
             inputRaw = inputRaw.trim();
-            nlpManager.tokenize(req.user.language, inputRaw, function(result)
+            var language = 'ko'; //temporary
+            NLPManager.getNlpedText(inputRaw, language, function(err, result)
             {
-                var processed = result.processed;
-
-                var nlp = [];
-                for(var i in processed)
+                if(err)
                 {
-                    if(processed[i].pos !== 'Josa' && processed[i].pos !== 'Punctuation')
-                    {
-                        nlp.push(processed[i].text);
-                    }
+                    return res.status(400).send({ message: err.stack || err });
                 }
 
-                var input = nlp.join(' ');
-                inputList.push(input);
-
+                inputList.push(result);
                 done();
-            },
-            function(err)
-            {
-                logger.systemError(err);
-                return res.status(400).send({ message: err.stack || err });
             });
         },
         function()

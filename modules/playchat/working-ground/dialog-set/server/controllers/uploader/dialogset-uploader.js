@@ -15,7 +15,7 @@ var commonWords = ['하나요', '경우', '에서', '어디', '무엇', '까지'
 
 var dialogsetKakao = require('./dialogset-kakao');
 
-var nlpManager = require(path.resolve('./bot-engine2/nlp-manager.js'));
+var NLPManager = require(path.resolve('./engine/bot/engine/nlp/nlp-manager.js'));
 
 var Dialogset = mongoose.model('Dialogset');
 var DialogsetDialog = mongoose.model('DialogsetDialog');
@@ -24,17 +24,28 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
 {
     function processInput(language, rawText, done)
     {
-        nlpManager.tokenize(language, rawText, function(result)
+        var language = 'ko'; //temporary
+        NLPManager.getNlpedText(rawText, language, function(err, result)
         {
-            var processed = result.processed;
-            var nlp = [];
-            for(var i in processed)
+            if(err)
             {
-                if(processed[i].text.search(/^(은|는|이|가|을|를)$/) == -1 && processed[i].pos !== 'Punctuation') nlp.push(processed[i].text);
+                return res.status(400).send({ message: err.stack || err });
             }
 
-            done(nlp.join(''));
+            done(result);
         });
+
+        // nlpManager.tokenize(language, rawText, function(result)
+        // {
+        //     var processed = result.processed;
+        //     var nlp = [];
+        //     for(var i in processed)
+        //     {
+        //         if(processed[i].text.search(/^(은|는|이|가|을|를)$/) == -1 && processed[i].pos !== 'Punctuation') nlp.push(processed[i].text);
+        //     }
+        //
+        //     done(nlp.join(' '));
+        // });
     };
 
     function insertDatasetFile1(infile, dialogset, callback)

@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var fs = require('fs');
 var multer = require('multer');
 
-var NLPManager = require(path.resolve('./engine/bot/engine/nlp/nlp_manager.js'));
+var NLPManager = require(path.resolve('./engine/bot/engine/nlp/nlp-manager.js'));
 
 var logger = require(path.resolve('./config/lib/logger.js'));
 

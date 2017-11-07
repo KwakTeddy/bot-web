@@ -19,7 +19,7 @@ var Intent = mongoose.model('Intent');
 var IntentContent = mongoose.model('IntentContent');
 var IntentContext = mongoose.model('IntentContext');
 
-var nlpManager = require(path.resolve('./bot-engine2/nlp-manager.js'));
+var NLPManager = require(path.resolve('./engine/bot/engine/nlp/nlp-manager.js'));
 
 exports.findTotalPage = function(req, res)
 {
@@ -157,30 +157,20 @@ var saveIntentContents = function(botId, user, intentId, contents, success, erro
             intentContent.intentId = intentId;
             intentContent.name = name;
 
-            nlpManager.tokenize(user.language, name, function(result)
+            console.log('여기--------------------------');
+            var language = 'ko'; //temporary
+            NLPManager.getNlpedText(name, language, function(err, result)
             {
-                var processed = result.processed;
-
-                var nlp = [];
-                for(var i in processed)
+                if(err)
                 {
-                    if(processed[i].pos !== 'Josa' && processed[i].pos !== 'Punctuation')
-                    {
-                        nlp.push(processed[i].text);
-                    }
+                    return res.status(400).send({ message: err.stack || err });
                 }
 
-                var input = nlp.join(' ');
+                console.log('여기--------------------------' + result);
 
-                intentContent.input = input;
+                intentContent.input = result;
                 list.push(intentContent);
-
                 done();
-
-            }, function(err)
-            {
-                logger.systemError(err);
-                return error(err);
             });
         }, function()
         {
