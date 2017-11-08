@@ -1,0 +1,54 @@
+<style>
+video,
+canvas {
+    margin-left: 50px;
+    margin-top: 50px;
+    position: absolute;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.demo-title a {
+    color: #fff;
+    border-bottom: 1px dotted #a64ceb;
+    text-decoration: none;
+}
+
+.demo-title p {
+    color: #fff;
+    text-align: center;
+    text-transform: lowercase;
+    font-size: 15px;
+}
+
+.diagram
+{
+    position: absolute;
+    left: 1000px;
+    top: 100px;
+    transition: all 1s;
+
+    width: 100px;
+    height: 100px;
+
+    background-color: rgba(0, 0, 0, 0.5);
+
+    z-index: 10000;
+}
+
+header
+{
+    display: none;
+}
+</style>
+<video id="video" width="800" height="600" preload autoplay loop muted></video>
+<canvas id="canvas" width="800" height="600"></canvas>
+<br>
+<p>TRACK_DELAY = 100ms</p>
+<button id="toggletracking">toggle tracking</button>
+
+<div class="diagram"></div>
