@@ -24,4 +24,24 @@ var jp = require('./processor_ja.js');
             ja.processLiveInput(text, callback);
         }
     };
+
+    module.exports.processInput = function(context, text, lan, callback)
+    {
+        if(lan == 'ko')
+        {
+            ko.processInput(context, text, callback);
+        }
+        else if(lan == 'en')
+        {
+            en.processInput(context, text, callback);
+        }
+        else if(lan == 'zh')
+        {
+            zh.processInput(context, text, callback);
+        }
+        else if(lan == 'ja')
+        {
+            ja.processInput(context, text, callback);
+        }
+    };
 })();

@@ -14,7 +14,7 @@
         {
             ChatbotService.save({ id: $scope.bot.id, name: $scope.bot.name, description: $scope.bot.descipriont }, function()
             {
-                $location.url('/chatbots');
+                $location.url('/playchat/chatbots');
             },
             function(err)
             {

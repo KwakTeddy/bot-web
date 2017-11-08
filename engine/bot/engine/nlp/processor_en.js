@@ -4,8 +4,8 @@ var path = require('path');
 var _ = require('lodash');
 var async = require('async');
 
-// var openNLP = require(path.resolve('./external_modules/opennlp/opennlp.js'));
-// var posTagger = new openNLP().posTagger;
+var openNLP = require(path.resolve('./external_modules/opennlp/opennlp.js'));
+var posTagger = new openNLP().posTagger;
 
 var logger = require(path.resolve('./config/lib/logger'));
 var utils = require(path.resolve('./engine/bot/action/common/utils'));
@@ -108,12 +108,15 @@ function processInput(context, inRaw, callback) {
                     if (context == null) {
                         context = {};
                     }
-                    if (!("botUser" in context)) {
-                        context["botUser"] = {}
-                    }
-                    if (!("nlu" in context["botUser"])) {
-                        context.botUser["nlu"] = {};
-                    }
+                    // if (!("botUser" in context)) {
+                    //     context["botUser"] = {}
+                    // }
+                    // if (!("nlu" in context["botUser"])) {
+                    //     context.botUser["nlu"] = {};
+                    // }
+
+                    context.botUser = context.botUser || {};
+                    context.botUser["nlu"] = context.botUser["nlu"] || {};
 
                     context.botUser["inNLP"] = inNLP;
                     context.botUser["nlpAll"] = nlpAll;

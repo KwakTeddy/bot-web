@@ -6,6 +6,8 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
 
     angular.module('playchat').controller('DemoController', ['$scope', '$resource', 'Socket', function ($scope, $resource, Socket)
     {
+        var ContextAnalyticsService = $resource('/api/demo/context');
+
         $scope.$parent.loading = false;
 
         var video = document.getElementById('video');
@@ -63,7 +65,7 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                 var options = { dev: true };
 
                 var params = {};
-                params.bot = 'test';
+                params.bot = 'demo';
                 params.user = 'demo-user';
                 params.msg = msg;
                 params.options = options;
@@ -72,11 +74,12 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
             };
 
             // voice
-            var recognizeTimer = undefined;
+            var selected = undefined
+            var timer = undefined;
             var recognition = new webkitSpeechRecognition();
             recognition.continuous = true;
             recognition.interimResults = true;
-            recognition.lang = "ko-KR";
+            recognition.lang = "en-US";
             recognition.onend = function()
             {
                 console.log('끝');
@@ -88,14 +91,38 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                 var results = event.results;
                 for(var i=0; i<results.length; i++)
                 {
-                    if(results[i].isFinal)
-                    {
-                        console.log(results[i][0]);
-                        emitMsg(results[i][0].transcript);
-                    }
+                    console.log(results[i][0]);
+                    selected = results[i][0];
                 }
 
-                recognition.stop();
+                if(selected.used)
+                {
+                    return;
+                }
+
+                if(timer)
+                {
+                    clearTimeout(timer);
+                }
+
+                timer = setTimeout(function()
+                {
+                    console.log('실행 : ', selected);
+                    selected.used = true;
+
+                    ContextAnalyticsService.get({ botId: 'demo', userId: 'demo-user', input: selected.transcript }, function(context)
+                    {
+                        console.log('컨텍스트 : ', context);
+                    },
+                    function(err)
+                    {
+                        console.log(err);
+                    });
+
+                    selected = undefined
+
+                    recognition.stop();
+                }, 1000);
             };
 
             recognition.start();

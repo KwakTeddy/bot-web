@@ -1,6 +1,8 @@
 var path = require('path');
 var type = require(path.resolve('./engine/bot/action/common/type.js'));
 
+var dialogset = require(path.resolve('./engine/bot/engine/dialogset/dialogset.js'));
+
 var NLPManager = require(path.resolve('./engine/bot/engine/nlp/nlp-manager.js'));
 
 module.exports.contextAnalytics = function(req, res)
@@ -32,14 +34,18 @@ module.exports.contextAnalytics = function(req, res)
         }
     }
 
-    var context = {bot: global._bots[req.query.botId], botUser: global._botusers[req.query.botUser]};
-    dialogsetModule.processInput(null, req.query.input, function(_input, json) {
+    var context = { bot: global._bots[req.query.botId], botUser: global._botusers[req.query.botId + ' ' + req.query.userId] };
+
+    var language = 'en'; //temporary
+    NLPManager.processInput(context, req.query.input, language, function(result)
+    {
         if(context.botUser == undefined) context.botUser = {};
-        context.botUser.nlp = json._nlp;
+        context.botUser.nlp = result;
         context.botUser.analytics = true;
         context.botUser.analytics2 = null;
 
-        type.executeType(_input, faqType, {}, context, function(_text, _result) {
+        type.executeType(_input, faqType, {}, context, function(_text, _result)
+        {
             _result.context = {botUser: {nlp: context.botUser.nlp, topic: context.botUser.topic}};
             res.json(_result);
             console.log('context analytics: ');
