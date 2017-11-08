@@ -103,10 +103,11 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
             Socket.on('send_msg', function(data)
             {
                 console.log('데이터 : ', data);
-                setTimeout(function()
-                {
-                    window.speechSynthesis.speak(new SpeechSynthesisUtterance(data));
-                }, 500);
+                // setTimeout(function()
+                // {
+                //     var msg = new SpeechSynthesisUtterance(data);
+                //     window.speechSynthesis.speak(msg);
+                // }, 500);
             });
 
             emitMsg(':build');
