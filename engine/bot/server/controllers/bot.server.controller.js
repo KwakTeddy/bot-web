@@ -122,6 +122,9 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
             if (context.botUser["nlu"] == undefined || context.botUser["nlu"] == null) context.botUser["nlu"] = {};
             if (context.botUser.nlu["contextInfo"] == undefined || context.botUser.nlu["contextInfo"] == null) context.botUser.nlu["contextInfo"] = {};
 
+            // dialog를 저장한다.
+            if (context.botUser.nlu["dialog"] == undefined || context.botUser.nlu["dialog"] == null) context.botUser.nlu["dialog"] = {};
+
             // 발화의 상태를 history로 저장한다
             if (context.botUser.nlu.contextInfo["contextHistory"] == undefined || context.botUser.nlu.contextInfo["contextHistory"] == null) context.botUser.nlu.contextInfo["contextHistory"] = [];
             if (context.botUser.nlu.contextInfo["matchContextHistory"] == undefined || context.botUser.nlu.contextInfo["matchContextHistory"] == null) context.botUser.nlu.contextInfo["matchContextHistory"] = [];
@@ -225,21 +228,19 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
                     // var isFirst = false;
                     dialog.matchGlobalDialogs(inTextRaw, inTextNLP, context.bot.dialogs, context, print, function(matched, _dialog) {
                         if(matched) {
-                            if(_dialog) console.log('[DIALOG_SEL]' + JSON.stringify({id: _dialog.id, name: _dialog.name, input: _dialog.input,
-                                context: context.botUser.context ? context.botUser.context.path : '', intent: context.botUser.intent,
-                                entities: context.botUser.entities}));
+                            if(_dialog) {
+                                console.log('[DIALOG_SEL]' + JSON.stringify({id: _dialog.id, name: _dialog.name, input: _dialog.input,
+                                    context: context.botUser.context ? context.botUser.context.path : '', intent: context.botUser.intent,
+                                    entities: context.botUser.entities}));
+
+                                var mappedDialog = {id: _dialog.id, name: _dialog.name, input: _dialog.input,
+                                    context: context.botUser.context ? context.botUser.context.path : '', intent: context.botUser.intent,
+                                    entities: context.botUser.entities};
+                                context.botUser.nlu.dialog = mappedDialog;
+                            }
 
                             if(_dialog && context.bot.startDialog && context.bot.startDialog.name == _dialog.name) {
                                 context.botUser.currentDialog = null;
-                            }
-
-                            // dialog graph 이면 qa로 넘어가지 않는다
-                            if (_dialog != undefined && (_dialog.filename != undefined || _dialog.name != undefined)) {
-                                context.botUser.nlu["matchInfo"] = {};
-                                context.botUser.nlu.matchInfo["qa"] = [];
-                                context.botUser.nlu.matchInfo["contextNames"] = {};
-                                context.botUser.nlu.matchInfo["contexts"] = {};
-                                context.botUser.nlu.matchInfo["topScoreCount"] = 0;
                             }
 
                             cb();

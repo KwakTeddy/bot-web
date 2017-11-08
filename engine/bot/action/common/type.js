@@ -361,6 +361,34 @@ function processOutput(task, context, out) {
             // return p1;
         });
 
+
+        var mappedDialog = context.botUser.nlu.dialog;
+        // dialog가 매치되는 경우를 qa보다 우선 순위를 높게 둔다.
+        if (mappedDialog != undefined && (mappedDialog.filename != undefined || mappedDialog.name != undefined)) {
+            if (mappedDialog.input && mappedDialog.input != undefined) {
+                if (Array.isArray(mappedDialog.input)) {
+                    for (var i=0; i<mappedDialog.input.length; i++) {
+                        if (mappedDialog.input[i].text == context.botUser.nlu.inNLP) {
+                            context.botUser.nlu["matchInfo"] = {};
+                            context.botUser.nlu.matchInfo["qa"] = [];
+                            context.botUser.nlu.matchInfo["contextNames"] = {};
+                            context.botUser.nlu.matchInfo["contexts"] = {};
+                            context.botUser.nlu.matchInfo["topScoreCount"] = 0;
+                            break;
+                        }
+                    }
+                } else {
+                    if (mappedDialog.input.text == context.botUser.nlu.inNLP) {
+                        context.botUser.nlu["matchInfo"] = {};
+                        context.botUser.nlu.matchInfo["qa"] = [];
+                        context.botUser.nlu.matchInfo["contextNames"] = {};
+                        context.botUser.nlu.matchInfo["contexts"] = {};
+                        context.botUser.nlu.matchInfo["topScoreCount"] = 0;
+                    }
+                }
+            }
+        }
+
         // context를 고려한 bot 발화 출력 (dsyoon)
         if (context.botUser.nlu.matchInfo != undefined && context.botUser.nlu.matchInfo.qa.length > 0) {
             context = qaScore.assignScore(context);
@@ -394,7 +422,6 @@ function processOutput(task, context, out) {
                 }
             }
         }
-
 
         if (context.botUser.nlu.contextInfo != undefined && context.botUser.nlu.contextInfo != null) {
             var MAX_CONTEXTHISTORY_LENGTH = 5;
@@ -1549,6 +1576,8 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
             if (context.botUser["nlu"] == undefined || context.botUser["nlu"] == null) context.botUser["nlu"] = {};
             if (context.botUser.nlu["contextInfo"] == undefined || context.botUser.nlu["contextInfo"] == null) context.botUser.nlu["contextInfo"] = {};
 
+            // dialog를 저장한다.
+            if (context.botUser.nlu["dialog"] == undefined || context.botUser.nlu["dialog"] == null) context.botUser.nlu["dialog"] = {};
             // 발화의 상태를 history로 저장한다
             if (context.botUser.nlu.contextInfo["contextHistory"] == undefined || context.botUser.nlu.contextInfo["contextHistory"] == null) context.botUser.nlu.contextInfo["contextHistory"] = [];
             if (context.botUser.nlu.contextInfo["matchContextHistory"] == undefined || context.botUser.nlu.contextInfo["matchContextHistory"] == null) context.botUser.nlu.contextInfo["matchContextHistory"] = [];
