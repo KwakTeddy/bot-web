@@ -713,9 +713,8 @@ exports.nluProcess = function(req, res) {
 
     var context;
     if (context == null || context == undefined) context = {};
-    if (!("botUser" in context)) {context["botUser"] = {};}
-    if (!("language" in context)) {context.botUser["language"] = "ko";}
-    context.botUser.language = "ko";
+    context.botUser = context.botUser || {};
+    context.botUser.language = context.botUser.language || {};
 
     var input = '';
 

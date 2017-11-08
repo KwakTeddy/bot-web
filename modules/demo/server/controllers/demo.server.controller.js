@@ -8,6 +8,20 @@ var NLPManager = require(path.resolve('./engine/bot/engine/nlp/nlp-manager.js'))
 
 var bot = require(path.resolve('./engine/bot/server/controllers/bot.server.controller.js'));
 
+var PROTO_PATH = __dirname + '/helloworld.proto';
+
+var grpc = require('grpc');
+var hello_proto = grpc.load(PROTO_PATH).helloworld;
+var client = new hello_proto.Greeter('localhost:50051', grpc.credentials.createInsecure());
+
+module.exports.deepLearning = function(req, res)
+{
+    client.sayHello({name: req.query.user}, function(err, response)
+    {
+        res.jsonp({ message: 'Greeting:' + response.message });
+    });
+};
+
 module.exports.contextAnalytics = function(req, res)
 {
     var msg = {};
@@ -18,19 +32,27 @@ module.exports.contextAnalytics = function(req, res)
 
     bot.botProc(msg.bot, 'socket', msg.user, msg.msg, msg, function(_out, _task)
     {
-        var nlp = _task.inNLP;
-        var typeDoc = _task.typeDoc;
-        var context = '';
-
-        if(typeDoc && typeDoc.length > 1)
+        if(_task)
         {
-            context = typeDoc[0].context.name;
+            var nlp = _task.inNLP;
+            var typeDoc = _task.typeDoc;
+            var context = '';
+
+            if(typeDoc && typeDoc.length > 1 && typeDoc[0].context)
+            {
+                context = typeDoc[0].context.name;
+            }
+
+            var suggestion = global._botusers[msg.bot + '_' + msg.user].nlu.matchInfo.qa;
+
+            res.jsonp({ nlp : nlp, context: context, suggestion: suggestion });
+        }
+        else
+        {
+            res.jsonp({ nlp : '', context: '', suggestion: [] });
         }
 
-        var suggestion = global._botusers[msg.bot + '_' + msg.user].nlu.matchInfo.qa;
-
-        res.jsonp({ nlp : nlp, context: context, suggestion: suggestion });
-    });
+    }, { dev: true, language: req.query.language });
     //     name: 'result',
     //     typeCheck: type.dialogTypeCheck,
     //     limit: 10,

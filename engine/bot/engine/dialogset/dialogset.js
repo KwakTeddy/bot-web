@@ -653,15 +653,10 @@ function analysisDoc(doc, bot_id, bot_name, cb) {
                 var NUMBER_PTN=/\[.+?\]/g;
 
                 if (context == null || context == undefined) context = {};
-                if (!("botUser" in context)) {
-                    context["botUser"] = {};
-                }
+                context.botUser = context.botUser || {};
+                context.botUser.language = context.botUser.language || {};
 
-                if (!("language" in context)) {
-                    context.botUser["language"] = "ko";
-                }
-
-                context.botUser.language = "ko";
+                // context.botUser.language = "ko";
 
                 if (nlu.sentenceInfo == 0) {
                     // 평서문이라면 확인
@@ -757,13 +752,8 @@ function analysisDoc(doc, bot_id, bot_name, cb) {
             var context = null;
 
             if (context == null || context == undefined) context = {};
-            if (!("botUser" in context)) {
-                context["botUser"] = {};
-            }
-            if (!("language" in context)) {
-                context.botUser["language"] = "ko";
-            }
-            context.botUser.language = "ko";
+            context.botUser = context.botUser || {};
+            context.botUser.language = context.botUser.language || {};
 
             if (nlu.sentenceInfo == 0) {
                 // 평서문이라면 확인
@@ -995,9 +985,8 @@ function processInput(context, inRaw, callback) {
 
     var result = {};
     if (context == null || context == undefined) context = {};
-    if (!("botUser" in context)) {context["botUser"] = {};}
-    if (!("language" in context)) {context.botUser["language"] = "ko";}
-    context.botUser.language = "en";
+    context.botUser = context.botUser || {};
+    context.botUser.language = context.botUser.language || {};
 
     if (context.botUser.language=="en") {
         enNLP.processInput(result, inRaw, function(_inTextNLP, _inDoc) {

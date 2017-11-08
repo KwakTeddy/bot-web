@@ -98,7 +98,7 @@ function ($window, $scope, $cookies, $resource, Socket)
 
         var emitMsg = function(msg, isUser)
         {
-            var options = { dev: true };
+            var options = { dev: true, language: 'en' };
 
             var params = {};
             params.bot = chatbot.id;

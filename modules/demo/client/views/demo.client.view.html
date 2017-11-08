@@ -1,8 +1,28 @@
 <style>
+.demo-screen
+{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+
+    background-color: black;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.video-container, .diagram-container
+{
+    position: relative;
+    width: 1024px;
+    height: 768px;
+}
+
 video,
 canvas {
-    margin-left: 50px;
-    margin-top: 50px;
     position: absolute;
 }
 
@@ -28,27 +48,60 @@ canvas {
 .diagram
 {
     position: absolute;
-    left: 1000px;
-    top: 100px;
     transition: all 1s;
 
-    width: 100px;
-    height: 100px;
-
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.3);
 
     z-index: 10000;
+
+    padding: 20px;
 }
 
+.diagram > div
+{
+    padding: 10px 0;
+}
+
+.diagram > p, .diagram > div > span
+{
+    padding: 10px;
+    color: white;
+    font-size: 18px;
+}
+
+.diagram .diagram-label
+{
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(67, 219, 255);
+}
 header
 {
     display: none;
 }
 </style>
-<video id="video" width="800" height="600" preload autoplay loop muted></video>
-<canvas id="canvas" width="800" height="600"></canvas>
-<br>
-<p>TRACK_DELAY = 100ms</p>
-<button id="toggletracking">toggle tracking</button>
+<div class="demo-screen">
+    <div class="video-container">
+        <video id="video" width="1024" height="768" preload autoplay loop muted></video>
+        <canvas id="canvas" width="1024" height="768"></canvas>
+        <div class="diagram" id="nlpDiagram" style="top: 30px; left: 30px;" ng-if="diagram.nlp != ''">
+            <div>
+                <span>{{ diagram.nlp }}</span>
+            </div>
+            <div class="diagram-label" style="text-align: right;">NLP</div>
+        </div>
 
-<div class="diagram"></div>
+        <div class="diagram" id="suggestionDiagram" style="bottom: 20px; left: 150px;" ng-show="diagram.suggestion.length > 0">
+            <div class="diagram-label">SUGGESTION</div>
+            <div ng-repeat="item in diagram.suggestion">
+                <span>{{ item.output }}</span>
+                <span>{{ item.matchPercent }}</span>
+                <span>{{ item.matchRate }}</span>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" id="toggletracking" style="color: white; margin-left: 10px; border: 1px solid white; padding: 10px;">Tracking Start</button>
+</div>
+
+<!--<img src="/modules/demo/client/views/demo-page__.png">-->

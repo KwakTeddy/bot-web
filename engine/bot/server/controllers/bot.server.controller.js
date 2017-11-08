@@ -42,15 +42,15 @@ var botSocket;
 exports.setBotSocket = function(socket) {botSocket = socket};
 
 // console = {};
-console.log = function(out) {
-    process.stdout.write(out+'\n');
-    if(botSocket) botSocket.emit('send_msg', ":log \n" + out +"\n");
-}
-
-console.error = function(out) {
-    process.stderr.write((out.stack ? out.stack : out) +'\n');
-    if(botSocket) botSocket.emit('send_msg', ":log \n" + (out.stack ? out.stack : out) +"\n");
-}
+// console.log = function(out) {
+//     process.stdout.write(out+'\n');
+//     if(botSocket) botSocket.emit('send_msg', ":log \n" + out +"\n");
+// }
+//
+// console.error = function(out) {
+//     process.stderr.write((out.stack ? out.stack : out) +'\n');
+//     if(botSocket) botSocket.emit('send_msg', ":log \n" + (out.stack ? out.stack : out) +"\n");
+// }
 
 // console.trace = function(out, t) {
 //   process.stderr.write(out+'\n');
@@ -114,6 +114,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
         function(cb) {
             contextModule.getContext(botName, channel, user, options, function(_context) {
                 context = _context;
+                context.botUser.language = options.language || 'ko';
                 cb(null);
             });
         },

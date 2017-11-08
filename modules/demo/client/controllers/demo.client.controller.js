@@ -6,13 +6,23 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
 
     angular.module('playchat').controller('DemoController', ['$scope', '$resource', 'Socket', function ($scope, $resource, Socket)
     {
+        $scope.diagram = {
+            nlp: '',
+            suggestion: []
+        };
+
         var ContextAnalyticsService = $resource('/api/demo/context');
+        var DeepLearningService = $resource('/api/demo/deeplearning');
 
         $scope.$parent.loading = false;
 
         var video = document.getElementById('video');
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext('2d');
+
+        var lastSquare = undefined;
+
+        var prevNlpDiagramPosition = { x: 30, y: 30 };
 
         var tracker = new tracking.ObjectTracker('face');
         tracker.setInitialScale(4);
@@ -43,8 +53,24 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                 context.fillText('x: ' + rect.x + 'px', rect.x + rect.width + 5, rect.y + 11);
                 context.fillText('y: ' + rect.y + 'px', rect.x + rect.width + 5, rect.y + 22);
 
-                document.querySelector('.diagram').style.left = rect.x + 'px';
-                document.querySelector('.diagram').style.top = rect.y + 'px';
+                if(lastSquare)
+                {
+                    var x = rect.x - 300;
+                    x = x <= 30 ? 30 : x;
+
+                    var y = rect.y - 300;
+                    y = y <= 30 ? 30 : y;
+
+                    if(Math.abs(x - prevNlpDiagramPosition.x) < 100 && Math.abs(y - prevNlpDiagramPosition.y) < 100)
+                    {
+                        angular.element('#nlpDiagram').css('left', x + 'px').css('top', y + 'px');
+
+                        prevNlpDiagramPosition.x = x;
+                        prevNlpDiagramPosition.y = y;
+                    }
+                }
+
+                lastSquare = rect;
             });
         });
 
@@ -74,12 +100,13 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
             };
 
             // voice
+            var printScript = '';
             var selected = undefined
             var timer = undefined;
             var recognition = new webkitSpeechRecognition();
             recognition.continuous = true;
             recognition.interimResults = true;
-            recognition.lang = 'ko-KR';
+            recognition.lang = 'en-US';
             recognition.onend = function()
             {
                 console.log('끝');
@@ -95,10 +122,12 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                     selected = results[i][0];
                 }
 
-                if(selected.used)
+                if(selected.used || printScript == selected.transcript)
                 {
                     return;
                 }
+
+                selected.used = true;
 
                 if(timer)
                 {
@@ -107,25 +136,67 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
 
                 timer = setTimeout(function()
                 {
-                    console.log('실행 : ', selected);
-                    selected.used = true;
-
-                    ContextAnalyticsService.get({ botId: 'demo', userId: 'demo-user', input: selected.transcript }, function(context)
+                    recognition.stop();
+                    printScript = selected.transcript;
+                    ContextAnalyticsService.get({ botId: 'demo', userId: 'demo-user', input: selected.transcript, language: 'en' }, function(context)
                     {
                         console.log('컨텍스트 : ', context);
+
+                        if(context.nlp)
+                            $scope.diagram.nlp = context.nlp;
+
+                        if(context.suggestion.length > 0)
+                        {
+                            $scope.diagram.suggestion = [];
+                            for(var i=0; i<context.suggestion.length; i++)
+                            {
+                                var matchRate = parseInt((context.suggestion[i].matchRate || 0) * 10);
+
+                                if(matchRate == 0)
+                                    continue;
+
+                                context.suggestion[i].matchPercent = '';
+                                for(var j=0; j<matchRate; j++)
+                                {
+                                    context.suggestion[i].matchPercent += '|';
+                                }
+
+                                context.suggestion[i].matchRate = matchRate / 10;
+
+                                $scope.diagram.suggestion.push(context.suggestion[i]);
+                            }
+
+                            console.log('흠', context.suggestion[0].output);
+                            var msg = new SpeechSynthesisUtterance(context.suggestion[0].output);
+                            msg.lang = 'en-US';
+                            window.speechSynthesis.speak(msg);
+                        }
+                        else
+                        {
+                            $scope.diagram.suggestion = [];
+                        }
                     },
                     function(err)
                     {
                         console.log(err);
                     });
 
-                    selected = undefined;
+                    // DeepLearningService.get({ user: selected.transcript }, function(dlResult)
+                    // {
+                    //     console.log(dlResult);
+                    //     var msg = new SpeechSynthesisUtterance(dlResult);
+                    //     window.speechSynthesis.speak(msg);
+                    // },
+                    // function(err)
+                    // {
+                    //     console.log(err);
+                    // });
 
-                    recognition.stop();
+                    selected = undefined;
                 }, 1000);
             };
 
-            // recognition.start();
+            recognition.start();
 
             Socket.on('send_msg', function(data)
             {
@@ -137,14 +208,14 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                 // }, 500);
             });
 
-            ContextAnalyticsService.get({ botId: 'demo', userId: 'demo-user', input: '양문형 형태 알려줘' }, function(context)
-            {
-                console.log('컨텍스트 : ', context);
-            },
-            function(err)
-            {
-                console.log(err);
-            });
+            // ContextAnalyticsService.get({ botId: 'demo', userId: 'demo-user', input: '양문형 형태 알려줘' }, function(context)
+            // {
+            //     console.log('컨텍스트 : ', context);
+            // },
+            // function(err)
+            // {
+            //     console.log(err);
+            // });
 
             emitMsg(':build');
         })();
