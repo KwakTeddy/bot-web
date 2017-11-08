@@ -119,13 +119,13 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                         console.log(err);
                     });
 
-                    selected = undefined
+                    selected = undefined;
 
                     recognition.stop();
                 }, 1000);
             };
 
-            recognition.start();
+            // recognition.start();
 
             Socket.on('send_msg', function(data)
             {
@@ -135,6 +135,15 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                 //     var msg = new SpeechSynthesisUtterance(data);
                 //     window.speechSynthesis.speak(msg);
                 // }, 500);
+            });
+
+            ContextAnalyticsService.get({ botId: 'demo', userId: 'demo-user', input: '양문형 형태 알려줘' }, function(context)
+            {
+                console.log('컨텍스트 : ', context);
+            },
+            function(err)
+            {
+                console.log(err);
             });
 
             emitMsg(':build');

@@ -380,7 +380,7 @@ function loadBot(botName, callback) {
         }
 
     ], function(err) {
-        if(bot && bot.error.length === 0) delete bot.error;
+        if(bot && bot.error && bot.error.length === 0) delete bot.error;
         if(callback) callback(bot);
     });
 

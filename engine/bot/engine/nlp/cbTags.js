@@ -138,7 +138,7 @@ CBTags.prototype.setNormalizeTag = function() {
 CBTags.prototype.normalizeTag = function (language, word, tag) {
     if (language != "en") {
         var otherChar = 0;
-        for (var i=0; i<word.length; i++)  {
+        for (var i=0; word && i<word.length; i++)  {
             var chk = word.substring(i,i+1);
             if(!chk.match(/[a-z]|[A-Z]/)) {
                 otherChar = otherChar + 1;
