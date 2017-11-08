@@ -141,12 +141,9 @@ function processInput(context, inRaw, callback) {
                     if (context == null) {
                         context = {};
                     }
-                    if (!("botUser" in context)) {
-                        context["botUser"] = {}
-                    }
-                    if (!("nlu" in context["botUser"])) {
-                        context.botUser["nlu"] = {};
-                    }
+
+                    context.botUser = context.botUser || {};
+                    context.botUser["nlu"] = context.botUser["nlu"] || {};
 
                     context.botUser["inNLP"] = inNLP;
                     context.botUser["nlpAll"] = nlpAll;

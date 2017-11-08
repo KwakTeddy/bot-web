@@ -36,11 +36,11 @@ module.exports.contextAnalytics = function(req, res)
 
     var context = { bot: global._bots[req.query.botId], botUser: global._botusers[req.query.botId + ' ' + req.query.userId] };
 
-    var language = 'en'; //temporary
-    NLPManager.processInput(context, req.query.input, language, function(result)
+    var language = 'ko'; //temporary
+    NLPManager.processInput(context, req.query.input, language, function(_input, json)
     {
         if(context.botUser == undefined) context.botUser = {};
-        context.botUser.nlp = result;
+        // context.botUser.nlp = json._nlp;;
         context.botUser.analytics = true;
         context.botUser.analytics2 = null;
 

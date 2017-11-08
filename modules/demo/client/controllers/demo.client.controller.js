@@ -79,7 +79,7 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
             var recognition = new webkitSpeechRecognition();
             recognition.continuous = true;
             recognition.interimResults = true;
-            recognition.lang = "en-US";
+            recognition.lang = 'ko-KR';
             recognition.onend = function()
             {
                 console.log('끝');

@@ -59,12 +59,9 @@ function processInput(context, inRaw, callback) {
             if (context == null) {
                 context = {};
             }
-            if (!("botUser" in context)) {
-                context["botUser"] = {}
-            }
-            if (!("nlu" in context["botUser"])) {
-                context.botUser["nlu"] = {};
-            }
+
+            context.botUser = context.botUser || {};
+            context.botUser["nlu"] = context.botUser["nlu"] || {};
 
             if (inRaw != undefined && inRaw != null && !Array.isArray(inRaw)) {
                 var cbTags = new CBTags();
@@ -72,12 +69,8 @@ function processInput(context, inRaw, callback) {
                     if (context == null) {
                         context = {};
                     }
-                    if (!("botUser" in context)) {
-                        context["botUser"] = {}
-                    }
-                    if (!("nlu" in context["botUser"])) {
-                        context.botUser["nlu"] = {};
-                    }
+                    context.botUser = context.botUser || {};
+                    context.botUser["nlu"] = context.botUser["nlu"] || {};
                     context.botUser.nlu["sentence"] = "";
                     context.botUser.nlu["pos"] = "";
                     cb(null);
