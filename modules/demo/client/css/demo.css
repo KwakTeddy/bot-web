@@ -1,0 +1,47 @@
+header
+{
+    display: none;
+}
+
+.demo-screen
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background-color: black;
+}
+
+.demo-screen .video-container
+{
+    text-align: center;
+    height: 100%;
+}
+
+.demo-screen .video-container video, .demo-screen .video-container canvas
+{
+    height: 100%;
+}
+
+.demo-screen .diagram-container
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.demo-screen .diagram-container .diagram
+{
+    position: absolute;
+    top: 100px;
+    left: 400px;
+
+    width: 150px;
+    height: 100px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid #ddd;
+}

@@ -11,6 +11,19 @@
     right: 20px;
 }
 
+.operation-advance-search > span
+{
+    vertical-align: middle;
+    font-weight: 600;
+    font-size: 13px;
+    margin-right: 10px;
+}
+
+.operation-advance-search > span + div
+{
+    display: inline-block;
+}
+
 .operation-search-area
 {
     margin-top: 20px;
@@ -30,6 +43,53 @@
 .operation-search-area > button
 {
     margin-left: 14px;
+}
+
+.operation-search-area.advanced
+{
+    background-color: #f8f8f8;
+    border: 1px solid #e8e8e8;
+    border-radius: 6px;
+    padding: 20px 46px;
+
+    position: relative;
+}
+
+.operation-search-area.advanced button
+{
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    width: 100px;
+}
+
+.operation-search-area th
+{
+    font-size: 15px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.operation-search-area th, .operation-search-area td
+{
+    padding: 5px 0;
+}
+
+.operation-search-area td span
+{
+    vertical-align: middle;
+    font-size: 20px;
+    color: #bfbfbf;
+}
+
+.operation-search-area input
+{
+    width: 150px;
+}
+
+.operation-search-area table
+{
+    width: 90%;
 }
 
 .operation-content
