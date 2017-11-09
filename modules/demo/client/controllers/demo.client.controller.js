@@ -24,29 +24,17 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
         //// Tracking
         (function()
         {
-            var canvas = document.getElementById('canvas');
+            var canvas = document.querySelector('canvas');
             var context = canvas.getContext('2d');
-
             var diagramPositions = {};
 
-            diagramPositions.nlpDiagram = { x: 30, y: 60 };
-            diagramPositions.contextDiagram = { x: 400, y: 60 };
-            diagramPositions.intentDiagram = { x: 30, y: 200 };
-            diagramPositions.turnTakingDiagram = { x: 750, y: 150 };
+            diagramPositions.nlpDiagram = { x: 30, y: 60, width: 300, height: 80 };
+            diagramPositions.contextDiagram = { x: 400, y: 60, width: 150, height: 80 };
+            diagramPositions.intentDiagram = { x: 30, y: 200, width: 300, height: 80 };
+            diagramPositions.turnTakingDiagram = { x: 750, y: 150, width: 180, height: 35 };
 
-            // 최초에 거리를 먼저 측정해둠.
-            for(var key in diagramPositions)
-            {
-                var x1 = diagramPositions[key].x;
-                var y1 = diagramPositions[key].y;
-
-                var x2 = 1024 / 2;
-                var y2 = 768 / 2;
-
-                var distance = Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2 - y1, 2));
-                diagramPositions[key].distance = distance;
-            }
-
+            var cx = 1280 / 2;
+            var cy = 960 / 2;
 
             var tracker = new tracking.ObjectTracker('face');
             tracker.setInitialScale(4);
@@ -77,42 +65,26 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                     context.fillText('x: ' + rect.x + 'px', rect.x + rect.width + 5, rect.y + 11);
                     context.fillText('y: ' + rect.y + 'px', rect.x + rect.width + 5, rect.y + 22);
 
+                    var x2 = rect.x + rect.width / 2;
+                    var y2 = rect.y + rect.height / 2;
 
-                    for(var key in diagramPositions)
+                    var xOffset = x2 - cx;
+                    var yOffset = y2 - cy;
+
+                    if(xOffset > 100 || yOffset > 100)
+                        return;
+
+                    // for(var key in diagramPositions)
+                    var key = 'nlpDiagram';
                     {
-                        var x1 = diagramPositions[key].x;
-                        var y1 = diagramPositions[key].y;
-
                         // 사각형의 중심을 구하고.
-                        var x2 = rect.x + rect.width / 2;
-                        var y2 = rect.y + rect.height / 2;
+                        // if(diagramPositions[key].x + xOffset >= 0 && diagramPositions[key].x + xOffset + diagramPositions[key].width <= 1290 && diagramPositions[key].y + yOffset >= 0 && diagramPositions[key].y + yOffset + diagramPositions[key].height <= 920)
+                            angular.element('.diagram-container').css('left', xOffset + 'px').css('top', yOffset + 'px');
+                        // else
+                        //     break;
 
-                        var distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-
-                        //최초 거리보다 멀어졌다면.
-                        if(diagramPositions[key].distance < distance)
-                        {
-                            var offset = distance - diagramPositions[key].distance;
-                            if(x2 >= 1024 / 2)
-                            {
-                                diagramPositions[key].x += offset;
-                            }
-                            else
-                            {
-                                diagramPositions[key].x -= offset;
-                            }
-
-                            if(y2 >= 768 / 2)
-                            {
-                                diagramPositions[key].y += offset;
-                            }
-                            else
-                            {
-                                diagramPositions[key].y -= offset;
-                            }
-
-                            angular.element('#' + key).css('left', diagramPositions[key].x + 'px').css('top', diagramPositions[key].y + 'px');
-                        }
+                        // if(diagramPositions[key].y + yOffset >= 0 && diagramPositions[key].y + yOffset + diagramPositions[key].height <= 920)
+                        //     angular.element('#' + key).css('top', diagramPositions[key].y + yOffset + 'px');
                     }
                 });
             });
@@ -123,9 +95,11 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
 
                 if (window.senddata)
                 {
-                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    // context.clearRect(0, 0, canvas.width, canvas.height);
                 }
             });
+
+            window.senddata = true;
         })();
 
 
@@ -150,6 +124,9 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
             };
 
             // voice
+            window.utterances = undefined;
+
+            var pause = false;
             var printScript = '';
             var selected = undefined
             var timer = undefined;
@@ -160,11 +137,14 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
             recognition.onend = function()
             {
                 console.log('끝');
-                recognition.start();
+                printScript = undefined;
             };
 
             recognition.onresult = function(event)
             {
+                if(pause)
+                    return;
+
                 var results = event.results;
                 for(var i=0; i<results.length; i++)
                 {
@@ -186,10 +166,13 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
 
                 timer = setTimeout(function()
                 {
+                    console.log('실행 : ', selected);
                     recognition.stop();
                     printScript = selected.transcript;
                     ContextAnalyticsService.get({ botId: 'demo', userId: 'demo-user', input: selected.transcript, language: 'en' }, function(context)
                     {
+                        recognition.start();
+                        console.log('컨텍스트 : ', context);
                         if(context.nlp)
                         {
                             $scope.diagram.nlp = context.nlp;
@@ -216,18 +199,40 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                                 $scope.diagram.suggestion.push(context.suggestion[i]);
                             }
 
+                            pause = true;
                             var msg = new SpeechSynthesisUtterance(context.suggestion[0].output);
                             msg.lang = 'en-US';
-                            window.speechSynthesis.speak(msg);
+                            msg.pitch = 1;
+                            msg.onstart = function()
+                            {
+                                console.log('봇 말하기 시작');
+                            };
+
+                            msg.onend = function()
+                            {
+                                console.log('봇 말하기 끝');
+                                pause = false;
+
+                                setTimeout(function()
+                                {
+                                    $scope.$apply(function()
+                                    {
+                                        $scope.initDiagram();
+                                    });
+                                }, 3000);
+                            };
+
+                            setTimeout(function()
+                            {
+                                window.utterances = msg;
+                                window.speechSynthesis.speak(msg);
+                            }, 100);
                         }
 
-                        setTimeout(function()
+                        if(context.turnTaking)
                         {
-                            $scope.$apply(function()
-                            {
-                                $scope.initDiagram();
-                            });
-                        }, 5000);
+                            $scope.diagram.turnTaking = context.turnTaking;
+                        }
                     },
                     function(err)
                     {

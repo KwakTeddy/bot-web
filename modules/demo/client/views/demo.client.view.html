@@ -21,6 +21,11 @@
     height: 960px;
 }
 
+.diagram-container
+{
+    transition: all 1s;
+}
+
 video,
 canvas {
     position: absolute;
@@ -86,46 +91,92 @@ header
 {
     display: none;
 }
+
+canvas
+{
+    filter:contrast(200%)  brightness(150%) blur(1px);
+}
+
+.progress-box
+{
+    width: 3px;
+    height: 15px;
+
+    display: inline-block;
+    background-color: white;
+    transition: opacity 1s;
+
+    opacity: 0;
+}
+
+.progress-box.show
+{
+    opacity: 1;
+}
 </style>
 <div class="demo-screen">
     <div class="video-container">
         <video id="video" width="1280" height="960" preload autoplay loop muted></video>
         <canvas id="canvas" width="1280" height="960"></canvas>
-        <div class="diagram" id="nlpDiagram" style="top: 60px; left: 30px; min-width: 300px; min-height: 80px;" ng-class="diagram.nlp !== undefined ? 'show' : 'hide'">
-            <div>
-                <span>{{ diagram.nlp }}</span>
+        <div class="diagram-container">
+            <div class="diagram" id="nlpDiagram" style="top: 60px; left: 30px; width: 300px; height: 80px;" ng-class="diagram.nlp !== undefined ? 'show' : 'hide'">
+                <div>
+                    <span>{{ diagram.nlp }}</span>
+                </div>
+                <div class="diagram-label" style="text-align: right;">NLP</div>
             </div>
-            <div class="diagram-label" style="text-align: right;">NLP</div>
-        </div>
 
-        <div class="diagram" id="contextDiagram" style="top: 60px; left: 400px; min-width: 150px; min-height: 80px;" ng-class="diagram.context !== undefined ? 'show' : 'hide'">
-            <div>
-                <span>{{ diagram.context }}</span>
+            <div class="diagram" id="contextDiagram" style="top: 60px; left: 400px; width: 150px; height: 80px;" ng-class="diagram.context !== undefined ? 'show' : 'hide'">
+                <div>
+                    <span>{{ diagram.context }}</span>
+                </div>
+                <div class="diagram-label" style="text-align: right;">CONTEXT</div>
             </div>
-            <div class="diagram-label" style="text-align: right;">CONTEXT</div>
-        </div>
 
-        <div class="diagram" id="intentDiagram" style="top: 200px; left: 30px; min-width: 300px; min-height: 80px;" ng-class="diagram.intent !== undefined ? 'show' : 'hide'">
-            <div>
-                <span>{{ diagram.intent }}</span>
+            <div class="diagram" id="intentDiagram" style="top: 200px; left: 30px; width: 300px; height: 80px;" ng-class="diagram.intent !== undefined ? 'show' : 'hide'">
+                <div>
+                    <span>{{ diagram.intent }}</span>
+                </div>
+                <div class="diagram-label" style="text-align: right;">INTENT</div>
             </div>
-            <div class="diagram-label" style="text-align: right;">INTENT</div>
-        </div>
 
-        <div class="diagram" id="turnTakingDiagram" style="top: 200px; left: 750px; min-width: 180px; min-height: 35px;" ng-class="diagram.turnTaking !== undefined ? 'show' : 'hide'">
-            <div>
-                <span>Turn Taking</span>
-                <span>||||</span>
-                <span>{{ diagram.turnTaking }}</span>
+            <div class="diagram" id="turnTakingDiagram" style="top: 200px; left: 750px; width: 250px; height: 35px;" ng-class="diagram.turnTaking !== undefined ? 'show' : 'hide'">
+                <div>
+                    <span>Turn Taking</span>
+                    <span>
+                        <span class="progress-box" ng-class="diagram.turnTaking > 0 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="diagram.turnTaking > 0.1 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="diagram.turnTaking > 0.2 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="diagram.turnTaking > 0.3 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="diagram.turnTaking > 0.4 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="diagram.turnTaking > 0.5 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="diagram.turnTaking > 0.6 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="diagram.turnTaking > 0.7 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="diagram.turnTaking > 0.8 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="diagram.turnTaking > 0.9 ? 'show' : 'hide'"></span>
+                    </span>
+                    <span>{{ diagram.turnTaking }}</span>
+                </div>
             </div>
-        </div>
 
-        <div class="diagram" id="suggestionDiagram" style="bottom: 70px; left: 150px; min-width: 700px; height: 150px; overflow: hidden;" ng-class="diagram.suggestion.length > 0 ? 'show' : 'hide'">
-            <div class="diagram-label">SUGGESTION</div>
-            <div ng-repeat="item in diagram.suggestion">
-                <span>{{ item.output }}</span>
-                <span>{{ item.matchPercent }}</span>
-                <span>{{ item.matchRate }}</span>
+            <div class="diagram" id="suggestionDiagram" style="bottom: 70px; left: 150px; min-width: 700px; height: 150px; overflow: hidden;" ng-class="diagram.suggestion.length > 0 ? 'show' : 'hide'">
+                <div class="diagram-label">SUGGESTION</div>
+                <div ng-repeat="item in diagram.suggestion">
+                    <span>{{ item.output }}</span>
+                    <span>
+                        <span class="progress-box" ng-class="item.matchRate > 0 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="item.matchRate > 0.1 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="item.matchRate > 0.2 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="item.matchRate > 0.3 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="item.matchRate > 0.4 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="item.matchRate > 0.5 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="item.matchRate > 0.6 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="item.matchRate > 0.7 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="item.matchRate > 0.8 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="item.matchRate > 0.9 ? 'show' : 'hide'"></span>
+                    </span>
+                    <span>{{ item.matchRate }}</span>
+                </div>
             </div>
         </div>
     </div>
