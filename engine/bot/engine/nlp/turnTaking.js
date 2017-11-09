@@ -18,8 +18,14 @@ TurnTaking.prototype.parse = function (language) {
     var entries = data.split('\n');
     for (var i in entries) {
         var entry = entries[i].split('\t');
-        if (entry[0]!='' && entry[1]!='') {
-            this.dictionary[entry[0]] = entry[1];
+        if (entry.length==2) {
+            if (entry[0] != '' && entry[1] != '') {
+                this.dictionary[entry[0]] = entry[1];
+            }
+        } else {
+            if (entry[0] != '' && entry[3] != '') {
+                this.dictionary[entry[0]] = entry[3];
+            }
         }
     }
 }
