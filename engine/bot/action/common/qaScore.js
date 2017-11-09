@@ -54,18 +54,18 @@ QAScore.prototype.levenshteinDistance = function(src, tgt) {
 }
 
 QAScore.prototype.getDistance = function(question, answer) {
-    var s = question.inputRaw.replace(/\s|\"|\.|\?|\'|<|>|\(|\)/gi, "");
+    var s = question.inputRaw.replace(/\s|\"|\.|\?|\'|<|>|\(|\)/gi, "").toLowerCase();
     if (Array.isArray(answer)) {
         for (var i=0; i<answer.length; i++) {
             if (answer.inputRaw) {
-                var t = answer[i].inputRaw.replace(/\s|\"|\.|\?|\'|<|>|\(|\)/gi, "");
+                var t = answer[i].inputRaw.replace(/\s|\"|\.|\?|\'|<|>|\(|\)/gi, "").toLowerCase();
                 var distance = this.levenshteinDistance(s, t);
                 return distance;
             }
         }
     } else {
         if (answer.inputRaw) {
-            var t = answer.inputRaw.replace(/\s|\"|\.|\?|\'|<|>|\(|\)/gi, "");
+            var t = answer.inputRaw.replace(/\s|\"|\.|\?|\'|<|>|\(|\)/gi, "").toLowerCase();
             var distance = this.levenshteinDistance(s, t);
             return distance;
         }
@@ -184,15 +184,15 @@ QAScore.prototype.assignScore = function(scope) {
         if (distance == 0) {
             score += 200;
         } else if (distance == 1) {
-            score += 100;
-        } else if (distance == 2) {
             score += 50;
-        } else if (distance == 3) {
-            score += 30;
-        } else if (distance == 4) {
+        } else if (distance == 2) {
             score += 20;
-        } else if (distance == 5) {
+        } else if (distance == 3) {
             score += 10;
+        } else if (distance == 4) {
+            score += 5;
+        } else if (distance == 5) {
+            score += 1;
         }
 
         // context 매치
