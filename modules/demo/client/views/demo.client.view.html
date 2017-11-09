@@ -1,8 +1,28 @@
 <style>
+.demo-screen
+{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+
+    background-color: black;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.video-container, .diagram-container
+{
+    position: relative;
+    width: 1280px;
+    height: 960px;
+}
+
 video,
 canvas {
-    margin-left: 50px;
-    margin-top: 50px;
     position: absolute;
 }
 
@@ -28,27 +48,89 @@ canvas {
 .diagram
 {
     position: absolute;
-    left: 1000px;
-    top: 100px;
     transition: all 1s;
 
-    width: 100px;
-    height: 100px;
-
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.3);
 
     z-index: 10000;
+
+    padding: 20px;
+
+    opacity: 0;
 }
 
+.diagram.show
+{
+    opacity: 1;
+}
+
+.diagram > div
+{
+    padding: 10px 0;
+}
+
+.diagram > p, .diagram > div > span
+{
+    padding: 10px;
+    color: white;
+    font-size: 18px;
+}
+
+.diagram .diagram-label
+{
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(67, 219, 255);
+}
 header
 {
     display: none;
 }
 </style>
-<video id="video" width="800" height="600" preload autoplay loop muted></video>
-<canvas id="canvas" width="800" height="600"></canvas>
-<br>
-<p>TRACK_DELAY = 100ms</p>
-<button id="toggletracking">toggle tracking</button>
+<div class="demo-screen">
+    <div class="video-container">
+        <video id="video" width="1280" height="960" preload autoplay loop muted></video>
+        <canvas id="canvas" width="1280" height="960"></canvas>
+        <div class="diagram" id="nlpDiagram" style="top: 60px; left: 30px; min-width: 300px; min-height: 80px;" ng-class="diagram.nlp !== undefined ? 'show' : 'hide'">
+            <div>
+                <span>{{ diagram.nlp }}</span>
+            </div>
+            <div class="diagram-label" style="text-align: right;">NLP</div>
+        </div>
 
-<div class="diagram"></div>
+        <div class="diagram" id="contextDiagram" style="top: 60px; left: 400px; min-width: 150px; min-height: 80px;" ng-class="diagram.context !== undefined ? 'show' : 'hide'">
+            <div>
+                <span>{{ diagram.context }}</span>
+            </div>
+            <div class="diagram-label" style="text-align: right;">CONTEXT</div>
+        </div>
+
+        <div class="diagram" id="intentDiagram" style="top: 200px; left: 30px; min-width: 300px; min-height: 80px;" ng-class="diagram.intent !== undefined ? 'show' : 'hide'">
+            <div>
+                <span>{{ diagram.intent }}</span>
+            </div>
+            <div class="diagram-label" style="text-align: right;">INTENT</div>
+        </div>
+
+        <div class="diagram" id="turnTakingDiagram" style="top: 200px; left: 750px; min-width: 180px; min-height: 35px;" ng-class="diagram.turnTaking !== undefined ? 'show' : 'hide'">
+            <div>
+                <span>Turn Taking</span>
+                <span>||||</span>
+                <span>{{ diagram.turnTaking }}</span>
+            </div>
+        </div>
+
+        <div class="diagram" id="suggestionDiagram" style="bottom: 70px; left: 150px; min-width: 700px; height: 150px; overflow: hidden;" ng-class="diagram.suggestion.length > 0 ? 'show' : 'hide'">
+            <div class="diagram-label">SUGGESTION</div>
+            <div ng-repeat="item in diagram.suggestion">
+                <span>{{ item.output }}</span>
+                <span>{{ item.matchPercent }}</span>
+                <span>{{ item.matchRate }}</span>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" id="toggletracking" style="color: white; margin-left: 10px; border: 1px solid white; padding: 10px;">Tracking Start</button>
+</div>
+
+<!--<img src="/modules/demo/client/views/demo-page__.png">-->

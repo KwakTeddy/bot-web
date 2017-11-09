@@ -15,7 +15,7 @@ function memoryFacts(inRaw, context, callback) {
   var node1, node2='', link;
   var result = context.botUser.nlp;
 
-    context.botUser.language == "ko";
+    // context.botUser.language == "ko";
 
     if (context.botUser.language == "zh") {
         var mode=0; // 1: the first noun, 2: verb, 3: the second noun
