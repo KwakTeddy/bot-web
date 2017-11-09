@@ -134,22 +134,38 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
             recognition.continuous = true;
             recognition.interimResults = true;
             recognition.lang = 'en-US';
+
+            recognition.onstart = function()
+            {
+                console.log('시작');
+            };
+
             recognition.onend = function()
             {
                 console.log('끝');
                 printScript = undefined;
+                if(pause)
+                {
+                    return;
+                }
+
+                recognition.start();
             };
 
             recognition.onresult = function(event)
             {
+                console.log('퍼즈 : ', pause);
                 if(pause)
                     return;
 
                 var results = event.results;
                 for(var i=0; i<results.length; i++)
                 {
-                    console.log(results[i][0]);
                     selected = results[i][0];
+                    if(results[i].isFinal)
+                    {
+                        recognition.stop();
+                    }
                 }
 
                 if(selected.used || printScript == selected.transcript)
@@ -167,16 +183,33 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                 timer = setTimeout(function()
                 {
                     console.log('실행 : ', selected);
-                    recognition.stop();
                     printScript = selected.transcript;
                     ContextAnalyticsService.get({ botId: 'demo', userId: 'demo-user', input: selected.transcript, language: 'en' }, function(context)
                     {
-                        recognition.start();
                         console.log('컨텍스트 : ', context);
                         if(context.nlp)
                         {
                             $scope.diagram.nlp = context.nlp;
                         }
+
+                        if(context.nlu)
+                        {
+                            if(context.nlu.contextInfo && context.nlu.contextInfo.contextHistory && context.nlu.contextInfo.contextHistory[0])
+                            {
+                                $scope.diagram.context = Object.keys(context.nlu.contextInfo.contextHistory[0])[0];
+                            }
+
+                            if(context.nlu.dialog.intent)
+                            {
+                                $scope.diagram.intent = context.nlu.dialog.intent;
+                            }
+                        }
+
+                        if(context.turnTaking)
+                        {
+                            $scope.diagram.turnTaking = context.turnTaking;
+                        }
+
 
                         if(context.suggestion.length > 0)
                         {
@@ -199,25 +232,33 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                                 $scope.diagram.suggestion.push(context.suggestion[i]);
                             }
 
-                            pause = true;
                             var msg = new SpeechSynthesisUtterance(context.suggestion[0].output);
                             msg.lang = 'en-US';
                             msg.pitch = 1;
                             msg.onstart = function()
                             {
                                 console.log('봇 말하기 시작');
+                                pause = true;
+                                recognition.stop();
                             };
 
                             msg.onend = function()
                             {
                                 console.log('봇 말하기 끝');
-                                pause = false;
+
+                                pause = false
+
+                                recognition.start();
 
                                 setTimeout(function()
                                 {
                                     $scope.$apply(function()
                                     {
-                                        $scope.initDiagram();
+                                        $scope.diagram.suggestion = [];
+                                        $scope.diagram.nlp = undefined;
+                                        $scope.diagram.turnTaking = undefined;
+                                        $scope.diagram.intent = undefined;
+                                        $scope.diagram.context = undefined;
                                     });
                                 }, 3000);
                             };
@@ -228,10 +269,21 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                                 window.speechSynthesis.speak(msg);
                             }, 100);
                         }
-
-                        if(context.turnTaking)
+                        else
                         {
-                            $scope.diagram.turnTaking = context.turnTaking;
+                            console.log('퍼즈 : ', pause);
+                            recognition.stop();
+
+                            setTimeout(function()
+                            {
+                                $scope.$apply(function()
+                                {
+                                    $scope.diagram.nlp = undefined;
+                                    $scope.diagram.turnTaking = undefined;
+                                    $scope.diagram.intent = undefined;
+                                    $scope.diagram.context = undefined;
+                                });
+                            }, 3000);
                         }
                     },
                     function(err)

@@ -135,7 +135,20 @@ canvas
 
             <div class="diagram" id="intentDiagram" style="top: 200px; left: 30px; width: 300px; height: 80px;" ng-class="diagram.intent !== undefined ? 'show' : 'hide'">
                 <div>
-                    <span>{{ diagram.intent }}</span>
+                    <span>{{ diagram.intent.name }}</span>
+                    <span>
+                        <span class="progress-box" ng-class="diagram.intent.matchRate > 0 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="diagram.intent.matchRate > 0.1 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="diagram.intent.matchRate > 0.2 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="diagram.intent.matchRate > 0.3 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="diagram.intent.matchRate > 0.4 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="diagram.intent.matchRate > 0.5 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="diagram.intent.matchRate > 0.6 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="diagram.intent.matchRate > 0.7 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="diagram.intent.matchRate > 0.8 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="diagram.intent.matchRate > 0.9 ? 'show' : 'hide'"></span>
+                    </span>
+                    <span>{{ diagram.intent.matchRate }}</span>
                 </div>
                 <div class="diagram-label" style="text-align: right;">INTENT</div>
             </div>

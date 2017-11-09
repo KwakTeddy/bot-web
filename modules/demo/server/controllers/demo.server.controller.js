@@ -46,7 +46,7 @@ module.exports.contextAnalytics = function(req, res)
             var suggestion = global._botusers[msg.bot + '_' + msg.user].nlu.matchInfo.qa;
             var turnTaking = global._botusers[msg.bot + '_' + msg.user].nlu.turnTaking;
 
-            res.jsonp({ nlp : nlp, context: context, suggestion: suggestion, turnTaking: turnTaking });
+            res.jsonp({ nlp : nlp, context: context, suggestion: suggestion, turnTaking: turnTaking, nlu : global._botusers[msg.bot + '_' + msg.user].nlu });
         }
         else
         {

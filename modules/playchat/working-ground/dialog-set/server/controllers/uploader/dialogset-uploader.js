@@ -339,6 +339,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
 
                     function(cb2)
                     {
+                        console.log('인풋 : ' + input);
                         if(input != null && output != null && (values[endOfCol - 1] != '' && values[endOfCol] != '') &&  ((Array.isArray(input) && input[input.length-1] != values[endOfCol - 1]) || input != values[endOfCol - 1]) && ((Array.isArray(output) && output[output.length-1] != values[endOfCol]) || output != values[endOfCol]))
                         {
                             count++;
@@ -393,34 +394,37 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                     {
                         if(values[endOfCol - 1] != '')
                         {
-                            if(input == null)
-                            {
-                                input = values[endOfCol - 1];
-                            }
-                            else if(Array.isArray(input))
-                            {
-                                input.push(values[endOfCol - 1]);
-                            }
-                            else
-                            {
-                                input = [input, values[endOfCol - 1]];
-                            }
+                            input = values[endOfCol - 1];
+                            // if(input == null)
+                            // {
+                            //     input = values[endOfCol - 1];
+                            // }
+                            // else if(Array.isArray(input))
+                            // {
+                            //     input.push(values[endOfCol - 1]);
+                            // }
+                            // else
+                            // {
+                            //     input = [input, values[endOfCol - 1]];
+                            // }
                         }
 
                         if(values[endOfCol] != '')
                         {
-                            if(output == null)
-                            {
-                                output = values[endOfCol];
-                            }
-                            else if(Array.isArray(output))
-                            {
-                                output.push(values[endOfCol]);
-                            }
-                            else
-                            {
-                                output = [output, values[endOfCol]];
-                            }
+                            output = values[endOfCol];
+
+                            // if(output == null)
+                            // {
+                            //     output = values[endOfCol];
+                            // }
+                            // else if(Array.isArray(output))
+                            // {
+                            //     output.push(values[endOfCol]);
+                            // }
+                            // else
+                            // {
+                            //     output = [output, values[endOfCol]];
+                            // }
                         }
 
                         cb2(null);
