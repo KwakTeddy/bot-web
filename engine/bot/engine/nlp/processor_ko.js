@@ -11,6 +11,7 @@ var CBTags = require(path.resolve('./engine/bot/engine/nlp/cbTags.js'));
 var UserDictionary = require(path.resolve('./engine/bot/engine/nlp/userDictionary.js'));
 var SentenceInfo = require(path.resolve('./engine/bot/engine/nlp/sentenceInfo.js'));
 var TurnTaking = require(path.resolve('./engine/bot/engine/nlp/turnTaking.js'));
+var turnTaking = new TurnTaking("ko");
 var NLPUtil = require(path.resolve('./engine/bot/engine/nlp/nlpUtil.js'));
 
 var address = require(path.resolve('./engine/bot/action/common/address'));
