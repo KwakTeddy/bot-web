@@ -17,8 +17,8 @@
 .video-container, .diagram-container
 {
     position: relative;
-    width: 1024px;
-    height: 768px;
+    width: 1280px;
+    height: 960px;
 }
 
 video,
@@ -55,6 +55,13 @@ canvas {
     z-index: 10000;
 
     padding: 20px;
+
+    opacity: 0;
+}
+
+.diagram.show
+{
+    opacity: 1;
 }
 
 .diagram > div
@@ -82,16 +89,38 @@ header
 </style>
 <div class="demo-screen">
     <div class="video-container">
-        <video id="video" width="1024" height="768" preload autoplay loop muted></video>
-        <canvas id="canvas" width="1024" height="768"></canvas>
-        <div class="diagram" id="nlpDiagram" style="top: 30px; left: 30px;" ng-if="diagram.nlp != ''">
+        <video id="video" width="1280" height="960" preload autoplay loop muted></video>
+        <canvas id="canvas" width="1280" height="960"></canvas>
+        <div class="diagram" id="nlpDiagram" style="top: 60px; left: 30px; min-width: 300px; min-height: 80px;" ng-class="diagram.nlp !== undefined ? 'show' : 'hide'">
             <div>
                 <span>{{ diagram.nlp }}</span>
             </div>
             <div class="diagram-label" style="text-align: right;">NLP</div>
         </div>
 
-        <div class="diagram" id="suggestionDiagram" style="bottom: 20px; left: 150px;" ng-show="diagram.suggestion.length > 0">
+        <div class="diagram" id="contextDiagram" style="top: 60px; left: 400px; min-width: 150px; min-height: 80px;" ng-class="diagram.context !== undefined ? 'show' : 'hide'">
+            <div>
+                <span>{{ diagram.context }}</span>
+            </div>
+            <div class="diagram-label" style="text-align: right;">CONTEXT</div>
+        </div>
+
+        <div class="diagram" id="intentDiagram" style="top: 200px; left: 30px; min-width: 300px; min-height: 80px;" ng-class="diagram.intent !== undefined ? 'show' : 'hide'">
+            <div>
+                <span>{{ diagram.intent }}</span>
+            </div>
+            <div class="diagram-label" style="text-align: right;">INTENT</div>
+        </div>
+
+        <div class="diagram" id="turnTakingDiagram" style="top: 200px; left: 750px; min-width: 180px; min-height: 35px;" ng-class="diagram.turnTaking !== undefined ? 'show' : 'hide'">
+            <div>
+                <span>Turn Taking</span>
+                <span>||||</span>
+                <span>{{ diagram.turnTaking }}</span>
+            </div>
+        </div>
+
+        <div class="diagram" id="suggestionDiagram" style="bottom: 70px; left: 150px; min-width: 700px; height: 150px; overflow: hidden;" ng-class="diagram.suggestion.length > 0 ? 'show' : 'hide'">
             <div class="diagram-label">SUGGESTION</div>
             <div ng-repeat="item in diagram.suggestion">
                 <span>{{ item.output }}</span>
