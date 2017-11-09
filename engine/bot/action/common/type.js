@@ -1757,7 +1757,6 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                 word = RegExp.escape(word);
 
                 if ((!context.bot.dialogsetOption || context.bot.dialogsetOption.useTopic !== false) && context.bot.topicKeywords && _.includes(context.bot.topicKeywords, word)) {
-                    console.log('헤이아아------------------ : ' + word + ' , ' + topicKeywords.length)
                     topicKeywords.push(nlps[i]);
                 }
                 if (!(format.exclude && _.includes(format.exclude, word)))
