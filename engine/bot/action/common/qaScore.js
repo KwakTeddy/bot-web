@@ -169,12 +169,15 @@ QAScore.prototype.assignScore = function(scope) {
     // score 계산
     for (var i=0; i<answers.length; i++) {
         var score = 0.0;
+        var score_multi_context = 0;
+        var score_text_match = 0;
+        var score_context = 0;
 
         // multi context에 대한 선택이었는지 확인
         if (contextInfo.context.type=="CONTEXT_SELECTION") {
             if (answers[i].context) {
                 if (answers[i].context.name == co2ntextInfo.context.name) {
-                    score += 300;
+                    score_multi_context = 300;
                 }
             }
         }
@@ -182,17 +185,17 @@ QAScore.prototype.assignScore = function(scope) {
         // Full Match 인 경우
         var distance = this.getDistance(question, answers[i]);
         if (distance == 0) {
-            score += 200;
+            score_text_match = 200;
         } else if (distance == 1) {
-            score += 50;
+            score_text_match = 50;
         } else if (distance == 2) {
-            score += 20;
+            score_text_match = 20;
         } else if (distance == 3) {
-            score += 10;
+            score_text_match = 10;
         } else if (distance == 4) {
-            score += 5;
+            score_text_match = 5;
         } else if (distance == 5) {
-            score += 1;
+            score_text_match = 1;
         }
 
         // context 매치
@@ -229,32 +232,47 @@ QAScore.prototype.assignScore = function(scope) {
                     }
                     depth += 1;
                 }
-                score += depth * 20;
+                score_context = depth * 20;
             }
         }
 
         // 이전 Question과 현제 답변 문장의 Question (answers[i].input, answers[i].inputRaw)의 유사도 score 계산
+        /*
         if (answers[i].input != undefined) {
             var answerArray = answers[i].input.split(' ');
             var intersection = this.intersectArray(previousSentenceArray, answerArray);
             var union = this.unionArray(previousSentenceArray, answerArray);
-            score += (intersection.length / union.length) * 10;
+            score_ = (intersection.length / union.length);
         }
+        */
 
+        // 현재 Question과 현제 답변 문장의 Question (answers[i].input, answers[i].inputRaw)의 유사도 score 계산
+        /*
         if (question.input != undefined) {
-            // 현재 Question과 현제 답변 문장의 Question (answers[i].input, answers[i].inputRaw)의 유사도 score 계산
             var questionArray = question.input.split(' ');
             intersection = this.intersectArray(questionArray, answerArray);
             union = this.unionArray(questionArray, answerArray);
             score += (intersection.length / union.length);
         }
+        */
 
+        score = score_multi_context + score_text_match + score_context;
         answers[i].score = score;
+
+        answers[i]["scoreInfo"] = {};
+        answers[i].scoreInfo["multi_context"] = score_multi_context;
+        answers[i].scoreInfo["score_text_match"] = score_text_match;
+        answers[i].scoreInfo["score_context"] = score_context;
     }
 
     answers = answers.sort(function(answer1, answer2) {
         return answer2.score - answer1.score;
     });
+
+    //console.log("--------- score ---------");
+    //console.log("inputRaw     score     multi_context     score_text_match     score_context");
+    //console.log(answers[0].inputRaw + "     " + answers[0].score + "     " + answers[0].scoreInfo.multi_context + "     " + answers[0].scoreInfo.score_text_match + "     " + answers[0].scoreInfo.score_context);
+    //console.log(answers[1].inputRaw + "     " + answers[1].score + "     " + answers[1].scoreInfo.multi_context + "     " + answers[1].scoreInfo.score_text_match + "     " + answers[1].scoreInfo.score_context);
 
     var topSameScoreCount = 1;
     var contexts = {};

@@ -364,7 +364,6 @@ function processOutput(task, context, out) {
             // return p1;
         });
 
-
         var mappedDialog = context.botUser.nlu.dialog;
         // dialog가 매치되는 경우를 qa보다 우선 순위를 높게 둔다.
         if (mappedDialog != undefined && (mappedDialog.filename != undefined || mappedDialog.name != undefined)) {
