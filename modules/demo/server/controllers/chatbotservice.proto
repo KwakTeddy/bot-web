@@ -1,0 +1,43 @@
+syntax="proto3";
+
+option java_multiple_files = true;
+option java_package = "mb.demo.chatbotservice";
+option java_outer_classname="ChatbotService";
+
+package ChatbotService;
+
+service ChatbotService{
+	rpc retrieval (RtRequest) returns (RtResponse) {}
+	rpc sentiment (EsRequest) returns (EsResponse) {}
+	rpc emotion (EsRequest) returns (EsResponse) {}
+	rpc speech (SpRequest) returns (SpResponse) {}
+}
+
+message RtRequest{
+	string question = 1;
+}
+
+message RtResponse{
+	// -1 for no error, 0 for bad request, 1 for process error
+	int32 error = 1;
+	string answer = 2;
+	float possibility = 3;
+}
+
+message EsRequest{
+	string sentence = 1;
+}
+
+message EsResponse{
+	int32 error = 1;
+	repeated float probability = 2;
+}
+
+message SpRequest{
+	string input = 1;
+}
+
+message SpResponse{
+	int32 error = 1;
+	string locationUrl = 2;
+}

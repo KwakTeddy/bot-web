@@ -29,8 +29,8 @@ module.exports =
                 "MONGO_RSNAME": "rs1",
                 "REDIS": "172.31.26.141",
                 "LB_USE": "false",
-                "LB_MASTER": "",
-                "LB_SLAVE": "",
+                "LB_MASTER": "false",
+                "LB_SLAVE": "false",
                 "LB_HOST": "",
                 "LB_PORT": "",
                 "NODE_ENV": "prod"

@@ -14,6 +14,7 @@ function matchDictionaryEntities(inRaw, inNLP, inDoc, context, callback) {
     function(cb) {
       _nlp = context.botUser.nlu.nlp;
       phrase = ''; phraseCnt = 0;
+
       for(var i in _nlp) {
         if(!(_nlp[i].pos == 'Josa' || _nlp[i].pos == 'Suffix' || _nlp[i].pos == 'Verb' || _nlp[i].pos == 'Adjective')) {
           if(_nlp[i].pos == 'Noun') nouns.push(_nlp[i].text);
@@ -37,15 +38,22 @@ function matchDictionaryEntities(inRaw, inNLP, inDoc, context, callback) {
     function(cb) {
       var Dic = mongoose.model('EntityContentSynonym');
        async.eachSeries(nouns, function(word, cb1) {
+           console.log('워드 : ' + word);
         Dic.find({botId: context.bot.id, name: word}).lean().populate('entityId').populate('contentId').exec(function(err, docs) {
           for(var i in docs) {
-            if(docs[i].entityId && entities[docs[i].entityId.name] == undefined)
-              entities[docs[i].entityId.name] = docs[i].contentId.name;
+            if(docs[i].entityId)
+            {
+                if(entities[docs[i].entityId.name] == undefined)
+                    entities[docs[i].entityId.name] = [];
+
+                entities[docs[i].entityId.name].push({ word: word, synonym: docs[i].contentId.name });
+            }
           }
 
           cb1(null);
         })
       }, function(err) {
+           console.log('에러 : ' + err);
         cb(null);
       });
     },
@@ -56,7 +64,10 @@ function matchDictionaryEntities(inRaw, inNLP, inDoc, context, callback) {
         Dic.find({botId: null, name: word}).lean().populate('entityId').populate('contentId').exec(function(err, docs) {
           for(var i in docs) {
             if(docs[i].entityId && entities[docs[i].entityId.name] == undefined)
-              entities[docs[i].entityId.name] = docs[i].contentId.name;
+                if(entities[docs[i].entityId.name] == undefined)
+                    entities[docs[i].entityId.name] = [];
+
+              entities[docs[i].entityId.name].push({ word: word, synonym: docs[i].contentId.name });
           }
 
           cb1(null);

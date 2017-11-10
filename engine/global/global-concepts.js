@@ -1,5 +1,5 @@
 var path = require('path');
-var globals = require(path.resolve('modules/bot/engine/common/globals'));
+var globals = require(path.resolve('./engine/bot/engine/common/globals'));
 
 var concepts =  {
   '네': ['응', '그래', '어', '네', '그렇다', '오케이', '오키', '오냐', '그려', '예스', '맞다', 'ㅇㅋ','ㅇ', 'ㅇㅇ', 'OK', 'ok', 'Ok', 'YES', 'yes', 'Yes', 'sp', 'SP'],

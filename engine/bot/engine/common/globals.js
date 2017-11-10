@@ -24,7 +24,7 @@ exports.initGlobals = function() {
 
   require(path.resolve('engine/bot/action/common/type'));
   loadGlobals(path.resolve('engine/bot/global'));
-  loadGlobals(path.resolve('custom_modules/global'));
+  loadGlobals(path.resolve('engine/global'));
   console.log('Load Global: [END]');
 };
 

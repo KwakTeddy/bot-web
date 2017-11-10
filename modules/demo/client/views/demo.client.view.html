@@ -1,53 +1,74 @@
 <style>
+header
+{
+    display: none;
+}
+
 .demo-screen
 {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-
     background-color: black;
 
     display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 100%;
+    height: 100%;
 }
 
-.video-container, .diagram-container
+.video-container
 {
-    position: relative;
-    width: 1280px;
-    height: 960px;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    right: 0;
+}
+
+.video-container1
+{
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.video-wrapper
+{
+    position: absolute;
+    left: 3px;
+    top: 0px;
+}
+
+/*video*/
+/*{*/
+    /*height: -webkit-calc(100% + 2px);*/
+    /*height: calc(100% + 2px);*/
+    /*left: -1px;*/
+    /*pointer-events: none;*/
+    /*position: absolute;*/
+    /*top: -1px;*/
+    /*width: -webkit-calc(100% + 2px);*/
+    /*width: calc(100% + 2px);*/
+    /*transform: scaleX(-1);*/
+}
+
+video
+{
+    width: 100%;
+    opacity:.65;
+    min-height:100vh;
+    margin:0 auto;
+    position:fixed;
+    background: transparent;
+    border-radius: 5px;
 }
 
 .diagram-container
 {
-    transition: all 1s;
-}
-
-video,
-canvas {
     position: absolute;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    font-family: Helvetica, Arial, sans-serif;
-}
-
-.demo-title a {
-    color: #fff;
-    border-bottom: 1px dotted #a64ceb;
-    text-decoration: none;
-}
-
-.demo-title p {
-    color: #fff;
-    text-align: center;
-    text-transform: lowercase;
-    font-size: 15px;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
 }
 
 .diagram
@@ -59,26 +80,34 @@ canvas {
 
     z-index: 10000;
 
-    padding: 20px;
+    padding: 20px 40px;
+
+    min-height: 70px;
 
     opacity: 0;
 }
 
-.diagram.show
+.diagram > table
 {
-    opacity: 1;
+    width: 100%;
 }
 
-.diagram > div
+.diagram > table + div
 {
-    padding: 10px 0;
+    margin-top: 20px;
 }
 
-.diagram > p, .diagram > div > span
+.diagram > table td
 {
-    padding: 10px;
+    padding: 5px 10px;
     color: white;
-    font-size: 18px;
+    font-size: 15px;
+}
+
+.diagram > table td span
+{
+    position: relative;
+    vertical-align: middle;
 }
 
 .diagram .diagram-label
@@ -86,15 +115,7 @@ canvas {
     font-size: 20px;
     font-weight: bold;
     color: rgb(67, 219, 255);
-}
-header
-{
-    display: none;
-}
-
-canvas
-{
-    filter:contrast(200%)  brightness(150%) blur(1px);
+    margin-bottom: 10px;
 }
 
 .progress-box
@@ -113,88 +134,204 @@ canvas
 {
     opacity: 1;
 }
+
+.pos
+{
+    font-size: 11px;
+    color: #dedede;
+}
 </style>
 <div class="demo-screen">
-    <div class="video-container">
-        <video id="video" width="1280" height="960" preload autoplay loop muted></video>
-        <canvas id="canvas" width="1280" height="960"></canvas>
-        <div class="diagram-container">
-            <div class="diagram" id="nlpDiagram" style="top: 60px; left: 30px; width: 300px; height: 80px;" ng-class="diagram.nlp !== undefined ? 'show' : 'hide'">
-                <div>
-                    <span>{{ diagram.nlp }}</span>
-                </div>
-                <div class="diagram-label" style="text-align: right;">NLP</div>
-            </div>
-
-            <div class="diagram" id="contextDiagram" style="top: 60px; left: 400px; width: 150px; height: 80px;" ng-class="diagram.context !== undefined ? 'show' : 'hide'">
-                <div>
-                    <span>{{ diagram.context }}</span>
-                </div>
-                <div class="diagram-label" style="text-align: right;">CONTEXT</div>
-            </div>
-
-            <div class="diagram" id="intentDiagram" style="top: 200px; left: 30px; width: 300px; height: 80px;" ng-class="diagram.intent !== undefined ? 'show' : 'hide'">
-                <div>
-                    <span>{{ diagram.intent.name }}</span>
-                    <span>
-                        <span class="progress-box" ng-class="diagram.intent.matchRate > 0 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="diagram.intent.matchRate > 0.1 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="diagram.intent.matchRate > 0.2 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="diagram.intent.matchRate > 0.3 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="diagram.intent.matchRate > 0.4 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="diagram.intent.matchRate > 0.5 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="diagram.intent.matchRate > 0.6 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="diagram.intent.matchRate > 0.7 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="diagram.intent.matchRate > 0.8 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="diagram.intent.matchRate > 0.9 ? 'show' : 'hide'"></span>
-                    </span>
-                    <span>{{ diagram.intent.matchRate }}</span>
-                </div>
-                <div class="diagram-label" style="text-align: right;">INTENT</div>
-            </div>
-
-            <div class="diagram" id="turnTakingDiagram" style="top: 200px; left: 750px; width: 250px; height: 35px;" ng-class="diagram.turnTaking !== undefined ? 'show' : 'hide'">
-                <div>
-                    <span>Turn Taking</span>
-                    <span>
-                        <span class="progress-box" ng-class="diagram.turnTaking > 0 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="diagram.turnTaking > 0.1 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="diagram.turnTaking > 0.2 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="diagram.turnTaking > 0.3 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="diagram.turnTaking > 0.4 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="diagram.turnTaking > 0.5 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="diagram.turnTaking > 0.6 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="diagram.turnTaking > 0.7 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="diagram.turnTaking > 0.8 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="diagram.turnTaking > 0.9 ? 'show' : 'hide'"></span>
-                    </span>
-                    <span>{{ diagram.turnTaking }}</span>
-                </div>
-            </div>
-
-            <div class="diagram" id="suggestionDiagram" style="bottom: 70px; left: 150px; min-width: 700px; height: 150px; overflow: hidden;" ng-class="diagram.suggestion.length > 0 ? 'show' : 'hide'">
-                <div class="diagram-label">SUGGESTION</div>
-                <div ng-repeat="item in diagram.suggestion">
-                    <span>{{ item.output }}</span>
-                    <span>
-                        <span class="progress-box" ng-class="item.matchRate > 0 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="item.matchRate > 0.1 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="item.matchRate > 0.2 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="item.matchRate > 0.3 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="item.matchRate > 0.4 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="item.matchRate > 0.5 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="item.matchRate > 0.6 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="item.matchRate > 0.7 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="item.matchRate > 0.8 ? 'show' : 'hide'"></span>
-                        <span class="progress-box" ng-class="item.matchRate > 0.9 ? 'show' : 'hide'"></span>
-                    </span>
-                    <span>{{ item.matchRate }}</span>
-                </div>
-            </div>
+    <video id="video" autoplay></video>
+    <div class="diagram-container">
+        <div class="diagram" id="nlpDiagram" style="top: 60px; left: 100px; width: 300px;">
+            <table>
+                <colgroup>
+                    <col style="width: 65%;"/>
+                    <col style="width: 28%;"/>
+                    <col style="width: 8%;"/>
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td>
+                            <span ng-repeat="nlp in diagram.nlp">
+                                <span>{{ nlp.text }}</span> <span class="pos">({{ nlp.pos }})</span>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="diagram-label" style="text-align: right;">NLP</div>
         </div>
+
+        <div class="diagram" id="intentDiagram" style="top: 340px; left: 80px; width: 300px;">
+            <table>
+                <colgroup>
+                    <col style="width: 60%;"/>
+                    <col style="width: 30%;"/>
+                    <col style="width: 10%;"/>
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td>{{ diagram.intent.name }}</td>
+                        <td>
+                            <span class="progress-box" ng-class="diagram.intent.matchRate > 0 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="diagram.intent.matchRate > 0.1 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="diagram.intent.matchRate > 0.2 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="diagram.intent.matchRate > 0.3 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="diagram.intent.matchRate > 0.4 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="diagram.intent.matchRate > 0.5 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="diagram.intent.matchRate > 0.6 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="diagram.intent.matchRate > 0.7 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="diagram.intent.matchRate > 0.8 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="diagram.intent.matchRate > 0.9 ? 'show' : 'hide'"></span>
+                        </td>
+                        <td>
+                            {{ diagram.intent.matchRate }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="diagram-label" style="text-align: right;">INTENT</div>
+        </div>
+
+        <div class="diagram" id="entityDiagram" style="top: 500px; left: 130px; width: 300px;">
+            <table>
+                <colgroup>
+                    <col style="width: 65%;"/>
+                    <col style="width: 28%;"/>
+                    <col style="width: 8%;"/>
+                </colgroup>
+                <tbody>
+                <tr>
+                    <td>
+                        <span ng-repeat="entity in diagram.entity">
+                            <span style="font-size: 20px;">{{ entity.word }}</span> <span class="pos" style="font-size: 17px;">({{ entity.synonym }})</span>
+                        </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="diagram-label" style="text-align: right;">ENTITY</div>
+        </div>
+
+        <div class="diagram" id="suggestionDiagram" style="bottom: 50px; left: 600px; width: 45%; height: 50px; overflow: hidden;">
+            <div class="diagram-label">SUGGESTION</div>
+            <table>
+                <colgroup>
+                    <col style="width: 75%;"/>
+                    <col style="width: 15%;"/>
+                    <col style="width: 10%;"/>
+                </colgroup>
+                <tbody>
+                    <tr ng-repeat="item in diagram.suggestion">
+                        <td><span>{{ item.output }}</span></td>
+                        <td>
+                            <span class="progress-box" ng-class="item.matchRate > 0 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="item.matchRate > 0.1 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="item.matchRate > 0.2 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="item.matchRate > 0.3 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="item.matchRate > 0.4 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="item.matchRate > 0.5 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="item.matchRate > 0.6 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="item.matchRate > 0.7 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="item.matchRate > 0.8 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="item.matchRate > 0.9 ? 'show' : 'hide'"></span>
+                        </td>
+                        <td>
+                            {{ item.matchRate }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="diagram" id="contextDiagram" style="top: 40px; left: 600px; width: 150px;">
+            <table>
+                <colgroup>
+                    <col style="width: 65%;"/>
+                    <col style="width: 28%;"/>
+                    <col style="width: 8%;"/>
+                </colgroup>
+                <tbody>
+                <tr>
+                    <td>
+                           {{ diagram.context }}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="diagram-label" style="text-align: right;">CONTEXT</div>
+        </div>
+
+        <div class="diagram" id="emotionDiagram" style="top: 80px; right: 100px; width: 300px; height: 220px;">
+            <table>
+                <colgroup>
+                    <col style="width: 55%;"/>
+                    <col style="width: 35%;"/>
+                    <col style="width: 10%;"/>
+                </colgroup>
+                <tbody>
+                <tr ng-repeat="item in diagram.emotion">
+                    <td>{{ item.name }}</td>
+                    <td>
+                        <span class="progress-box" ng-class="item.value > 0 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="item.value > 0.1 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="item.value > 0.2 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="item.value > 0.3 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="item.value > 0.4 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="item.value > 0.5 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="item.value > 0.6 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="item.value > 0.7 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="item.value > 0.8 ? 'show' : 'hide'"></span>
+                        <span class="progress-box" ng-class="item.value > 0.9 ? 'show' : 'hide'"></span>
+                    </td>
+                    <td>
+                        {{ item.value }}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="diagram-label" style="text-align: right;">EMOTION</div>
+        </div>
+
+        <div class="diagram" id="turnTakingDiagram" style="top: 360px; right: 80px; width: 330px;">
+            <table>
+                <colgroup>
+                    <col style="width: 65%;"/>
+                    <col style="width: 28%;"/>
+                    <col style="width: 8%;"/>
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td>
+                            Turn Taking
+                        </td>
+                        <td>
+                            <span class="progress-box" ng-class="diagram.turnTaking > 0 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="diagram.turnTaking > 0.1 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="diagram.turnTaking > 0.2 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="diagram.turnTaking > 0.3 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="diagram.turnTaking > 0.4 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="diagram.turnTaking > 0.5 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="diagram.turnTaking > 0.6 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="diagram.turnTaking > 0.7 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="diagram.turnTaking > 0.8 ? 'show' : 'hide'"></span>
+                            <span class="progress-box" ng-class="diagram.turnTaking > 0.9 ? 'show' : 'hide'"></span>
+                        </td>
+                        <td>
+                            {{ diagram.turnTaking }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!--<div class="diagram" id="emotionDiagram" style="top: 120px; right: 220px; width: 300px; height: 80px;">-->
+            <!--<div>-->
+                <!--<span></span>-->
+            <!--</div>-->
+            <!--<div class="diagram-label" style="text-align: right;">SPEECH</div>-->
+        <!--</div>-->
     </div>
-
-    <button type="button" id="toggletracking" style="color: white; margin-left: 10px; border: 1px solid white; padding: 10px;">Tracking Start</button>
 </div>
-
-<!--<img src="/modules/demo/client/views/demo-page__.png">-->

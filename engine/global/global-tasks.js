@@ -1,6 +1,6 @@
 var path = require('path');
-var globals = require(path.resolve('modules/bot/engine/common/globals'));
-var http = require(path.resolve('modules/bot/action/common/http'));
+var globals = require(path.resolve('./engine/bot/engine/common/globals'));
+var http = require(path.resolve('./engine/bot/action/common/http'));
 
 var httpRequest = {
   action: http.simpleRequest,

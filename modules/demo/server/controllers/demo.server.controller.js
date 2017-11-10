@@ -1,105 +1,103 @@
 var path = require('path');
-var logger = require(path.resolve('./config/lib/logger.js'));
-var type = require(path.resolve('./engine/bot/action/common/type.js'));
-
-var dialogset = require(path.resolve('./engine/bot/engine/dialogset/dialogset.js'));
-
-var NLPManager = require(path.resolve('./engine/bot/engine/nlp/nlp-manager.js'));
 
 var bot = require(path.resolve('./engine/bot/server/controllers/bot.server.controller.js'));
 
-var PROTO_PATH = __dirname + '/helloworld.proto';
-
+var PROTO_PATH = __dirname + '/chatbotservice.proto';
+//
 var grpc = require('grpc');
-var hello_proto = grpc.load(PROTO_PATH).helloworld;
-var client = new hello_proto.Greeter('localhost:50051', grpc.credentials.createInsecure());
+// var ChatbotService = grpc.load(PROTO_PATH, 'proto').ChatbotService;
+// var client = new ChatbotService.ChatbotService('10.7.9.39:50051', grpc.credentials.createInsecure());
 
-module.exports.deepLearning = function(req, res)
+module.exports = function (io, socket)
 {
-    client.sayHello({name: req.query.user}, function(err, response)
+    console.log('데모 소켓 커넥션');
+    socket.on('deeplearning', function(msg)
     {
-        res.jsonp({ message: 'Greeting:' + response.message });
-    });
-};
-
-module.exports.contextAnalytics = function(req, res)
-{
-    var msg = {};
-    msg.bot = req.query.botId;
-    msg.user = req.query.userId;
-    msg.channel = 'socket';
-    msg.msg = req.query.input;
-
-    bot.botProc(msg.bot, 'socket', msg.user, msg.msg, msg, function(_out, _task)
-    {
-        if(_task)
+        client.emotion({ sentence: msg.msg }, function(err, response)
         {
-            var nlp = _task.inNLP;
-            var typeDoc = _task.typeDoc;
+            if (err)
+                console.error(err);
+            else
+                console.log('GRPC------------------' + response);
+
+            socket.emit('response-dl', response);
+        });
+    });
+
+    socket.on('analytics', function(msg)
+    {
+        console.log('에미 :  ', msg);
+        bot.botProc(msg.bot, 'socket', msg.user, msg.msg, msg, function(_out, _task)
+        {
+            var nlp = '';
             var context = '';
+            var suggestion = [];
 
-            if(typeDoc && typeDoc.length > 1 && typeDoc[0].context)
-            {
-                context = typeDoc[0].context.name;
-            }
-
-            var suggestion = global._botusers[msg.bot + '_' + msg.user].nlu.matchInfo.qa;
+            var entities = global._botusers[msg.bot + '_' + msg.user].entities;
+            var nlu = global._botusers[msg.bot + '_' + msg.user].nlu;
             var turnTaking = global._botusers[msg.bot + '_' + msg.user].nlu.turnTaking;
 
-            res.jsonp({ nlp : nlp, context: context, suggestion: suggestion, turnTaking: turnTaking, nlu : global._botusers[msg.bot + '_' + msg.user].nlu });
-        }
-        else
-        {
-            res.jsonp({ nlp : '', context: '', suggestion: [] });
-        }
+            if(_task)
+            {
+                nlp = _task.inNLP;
+                var typeDoc = _task.typeDoc;
+                context = '';
 
-    }, { dev: true, language: req.query.language });
-    //     name: 'result',
-    //     typeCheck: type.dialogTypeCheck,
-    //     limit: 10,
-    //     matchRate: 0,
-    //     exclude: ['하다', '이다'],
-    //     mongo: {
-    //         model: 'DialogsetDialog',
-    //         // queryStatic: {dialogset: '기본대화1'},
-    //         queryFields: ['input'],
-    //         fields: 'dialogset input output' ,
-    //         taskFields: ['input', 'output', 'matchRate', 'matchCount'],
-    //         minMatch: 1
-    //     }
-    // };
+                if(typeDoc && typeDoc.length > 1 && typeDoc[0].context)
+                {
+                    context = typeDoc[0].context.name;
+                }
 
-    // if(req.query.dialogsets) {
-    //     var dialogsetIds = undefined;
-    //     if(Array.isArray(req.query.dialogsets)) dialogsetIds = req.query.dialogsets;
-    //     else dialogsetIds = [req.query.dialogsets];
-    //
-    //     faqType.mongo.queryStatic = {$or: []};
-    //     for(var i = 0; i < dialogsetIds.length; i++) {
-    //         faqType.mongo.queryStatic.$or.push({dialogset: dialogsetIds[i]});
-    //     }
-    // }
-    //
-    // faqType.mongo.queryStatic = {$or: [{ dialogset: '5a02d191e012fa941181061b' }]};
-    //
-    // console.log('봇 : ' + JSON.stringify(global._bots[req.query.botId]));
-    //
-    // var context = { bot: {}, botUser: global._botusers[req.query.botId + ' ' + req.query.userId] };
-    //
-    // var language = 'ko'; //temporary
-    // NLPManager.processInput(context, req.query.input, language, function(_input, json)
-    // {
-    //     if(context.botUser == undefined) context.botUser = {};
-    //     // context.botUser.nlp = json._nlp;;
-    //     context.botUser.analytics = true;
-    //     context.botUser.analytics2 = null;
-    //
-    //     type.executeType(_input, faqType, {}, context, function(_text, _result)
-    //     {
-    //         console.log('컨텍스트 : ' + JSON.stringify(context.botUser.nlu));
-    //         _result.context = {botUser: {nlp: context.botUser.nlp, topic: context.botUser.topic}};
-    //         res.json(_result);
-    //         console.log('context analytics: ');
-    //     });
-    // });
+                suggestion = global._botusers[msg.bot + '_' + msg.user].nlu.matchInfo.qa;
+            }
+
+            socket.emit('response-analytics', { nlp : nlp, context: context, suggestion: suggestion, turnTaking: turnTaking, entities: entities, nlu: nlu });
+
+        }, { dev: true, language: msg.options.language });
+    })
 };
+
+// module.exports.deepLearning = function(req, res)
+// {
+//     // client.sayHello({name: req.query.user}, function(err, response)
+//     // {
+//     //     res.jsonp({ message: 'Greeting:' + response.message });
+//     // });
+// };
+//
+// module.exports.contextAnalytics = function(req, res)
+// {
+//     var msg = {};
+//     msg.bot = req.query.botId;
+//     msg.user = req.query.userId;
+//     msg.channel = 'socket';
+//     msg.msg = req.query.input;
+//
+//     bot.botProc(msg.bot, 'socket', msg.user, msg.msg, msg, function(_out, _task)
+//     {
+//         var nlp = '';
+//         var context = '';
+//         var suggestion = [];
+//
+//         var entities = global._botusers[msg.bot + '_' + msg.user].entities;
+//         var nlu = global._botusers[msg.bot + '_' + msg.user].nlu;
+//         var turnTaking = global._botusers[msg.bot + '_' + msg.user].nlu.turnTaking;
+//
+//         if(_task)
+//         {
+//             nlp = _task.inNLP;
+//             var typeDoc = _task.typeDoc;
+//             context = '';
+//
+//             if(typeDoc && typeDoc.length > 1 && typeDoc[0].context)
+//             {
+//                 context = typeDoc[0].context.name;
+//             }
+//
+//             suggestion = global._botusers[msg.bot + '_' + msg.user].nlu.matchInfo.qa;
+//         }
+//
+//
+//
+//     }, { dev: true, language: req.query.language });
+// };

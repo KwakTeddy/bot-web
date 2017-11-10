@@ -78,6 +78,7 @@ module.exports.start = function start(callback)
             {
                 console.log('커넥션');
                 require(path.resolve('./engine/bot/server/sockets/bot.server.socket.config.js'))(app.io, socket);
+                require(path.resolve('./modules/demo/server/controllers/demo.server.controller.js'))(app.io, socket);
             });
 
             // Logging initialization
