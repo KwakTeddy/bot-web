@@ -174,7 +174,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
                             if (context.botUser.language == "zh") {
                                 print('我学到了你说的话。');
                             } else if (context.botUser.language == "en") {
-                                print("I don't understand.");
+                                print("I understand.");
                             } else {
                                 print('말씀하신 내용을 학습했어요.');
                             }

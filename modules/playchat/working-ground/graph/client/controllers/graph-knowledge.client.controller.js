@@ -5,7 +5,6 @@ angular.module('playchat').controller('GraphKnowledgeController', ['$scope', '$r
         function ($scope, $rootScope, $state, $window, $timeout, $stateParams, $resource, $cookies, Authentication, Socket) {
             var vm = this;
 
-            console.log('ㅁㄴㅇㄹ');
             $scope.$parent.loaded('working-ground');
             //vm.user = Authentication.user;
             vm.userId = $cookies.getObject('user').userId;
@@ -123,29 +122,33 @@ angular.module('playchat').controller('GraphKnowledgeController', ['$scope', '$r
             });
 
             $scope.$on('onmsg', function(event, arg0) {
-                var input = arg0.message;
-                resetNodes();
-                $resource('/api/user-bots-analytics/nlp', {}).get({input: input}, function(res) {
-                    if(res.result) {
-                        var centeredNodes = res.result.split(' ');
-                        // 이 노드 값들 가운데로 이동함
-                        if (centeredNodes != undefined) {
-                            for (var i=0; i < centeredNodes.length; ++i) {
-                                if (nodes[centeredNodes[i]] != undefined) {
-                                    nodes[centeredNodes[i]].isMain = true;
-                                    nodes[centeredNodes[i]].x = width / 2;
-                                    nodes[centeredNodes[i]].y = height / 2;
-                                    console.log(JSON.stringify(nodes[centeredNodes[i]]));
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                });
-                update();
-                if (timer3 == null) {
-                    timer3 = setTimeout(function() { resetNodes(); update(); timer3 = null; }, 3000);
-                }
+
+                console.log('흠 : ', arg0);
+                $rootScope.graphUpdate();
+
+                // var input = arg0.message;
+                // resetNodes();
+                // $resource('/api/user-bots-analytics/nlp', {}).get({input: input}, function(res) {
+                //     if(res.result) {
+                //         var centeredNodes = res.result.split(' ');
+                //         // 이 노드 값들 가운데로 이동함
+                //         if (centeredNodes != undefined) {
+                //             for (var i=0; i < centeredNodes.length; ++i) {
+                //                 if (nodes[centeredNodes[i]] != undefined) {
+                //                     nodes[centeredNodes[i]].isMain = true;
+                //                     nodes[centeredNodes[i]].x = width / 2;
+                //                     nodes[centeredNodes[i]].y = height / 2;
+                //                     console.log(JSON.stringify(nodes[centeredNodes[i]]));
+                //                     break;
+                //                 }
+                //             }
+                //         }
+                //     }
+                // });
+                // update();
+                // if (timer3 == null) {
+                //     timer3 = setTimeout(function() { resetNodes(); update(); timer3 = null; }, 3000);
+                // }
             });
 
             function createGradient(svg,id,stops){

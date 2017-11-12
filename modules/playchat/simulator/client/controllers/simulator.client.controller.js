@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('playchat').controller('SimulatorController', ['$window', '$scope', '$cookies', '$resource', 'Socket',
-function ($window, $scope, $cookies, $resource, Socket)
+angular.module('playchat').controller('SimulatorController', ['$window', '$scope', '$cookies', '$resource', '$rootScope', 'Socket',
+function ($window, $scope, $cookies, $resource, $rootScope, Socket)
 {
     $scope.$parent.loaded('simulator');
 
@@ -118,6 +118,8 @@ function ($window, $scope, $cookies, $resource, Socket)
         Socket.on('send_msg', function(data)
         {
             addBotBubble(data);
+
+            $rootScope.$broadcast('onmsg', { message: data });
         });
 
         $scope.sendMessage = function(e)
