@@ -16,7 +16,7 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
             $scope.diagram.context = undefined;
             $scope.diagram.turnTaking = undefined;
             $scope.diagram.emotion = undefined;
-            $scope.diagram.profile = {};
+            $scope.diagram.profile = undefined;
             $scope.diagram.speech = {};
 
             // $scope.diagram = $scope.diagram || {};
@@ -136,6 +136,8 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
             {
                 clearTimeout(analyticsTimer);
 
+                $scope.diagram.profile = {};
+
                 var context = data;
                 if(context.nlu.nlp)
                 {
@@ -238,7 +240,7 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                     // recognizeStart();
                 }
 
-                $scope.diagram.profile.age = getRandomInt(25, 35);
+                $scope.diagram.profile.age = getRandomInt(30, 40);
                 $scope.diagram.profile.language = [];
 
                 data.language.sort(function(a, b)
@@ -254,19 +256,19 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                 console.log('랭', data.language);
 
 
-                // analyticsTimer = setTimeout(function()
-                // {
-                //     $scope.diagram.nlp = undefined;
-                //     $scope.diagram.context = undefined;
-                //     $scope.diagram.intent = undefined;
-                //     $scope.diagram.entity = undefined;
-                //     $scope.diagram.turnTaking = undefined;
-                //     $scope.diagram.emotion = undefined;
-                //     $scope.diagram.suggestion = [];
-                // $scope.diagram.profile = undefined;
-                //
-                //     console.log('초기화');
-                // }, 1000 * 10);
+                analyticsTimer = setTimeout(function()
+                {
+                    $scope.diagram.nlp = undefined;
+                    $scope.diagram.context = undefined;
+                    $scope.diagram.intent = undefined;
+                    $scope.diagram.entity = undefined;
+                    $scope.diagram.turnTaking = undefined;
+                    $scope.diagram.emotion = undefined;
+                    $scope.diagram.suggestion = [];
+                    $scope.diagram.profile = undefined;
+
+                    console.log('초기화');
+                }, 1000 * 10);
             });
 
             var sendSocket = function(text)
