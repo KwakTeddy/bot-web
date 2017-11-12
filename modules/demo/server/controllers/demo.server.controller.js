@@ -5,8 +5,8 @@ var bot = require(path.resolve('./engine/bot/server/controllers/bot.server.contr
 var PROTO_PATH = __dirname + '/chatbotservice.proto';
 //
 var grpc = require('grpc');
-// var ChatbotService = grpc.load(PROTO_PATH, 'proto').ChatbotService;
-// var client = new ChatbotService.ChatbotService('10.7.9.39:50051', grpc.credentials.createInsecure());
+var ChatbotService = grpc.load(PROTO_PATH, 'proto').ChatbotService;
+var client = new ChatbotService.ChatbotService('52.38.34.39:50051', grpc.credentials.createInsecure());
 
 module.exports = function (io, socket)
 {
@@ -17,8 +17,6 @@ module.exports = function (io, socket)
         {
             if (err)
                 console.error(err);
-            else
-                console.log('GRPC------------------' + response);
 
             socket.emit('response-dl', response);
         });
@@ -26,7 +24,6 @@ module.exports = function (io, socket)
 
     socket.on('analytics', function(msg)
     {
-        console.log('에미 :  ', msg);
         bot.botProc(msg.bot, 'socket', msg.user, msg.msg, msg, function(_out, _task)
         {
             var nlp = '';

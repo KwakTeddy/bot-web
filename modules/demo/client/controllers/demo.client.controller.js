@@ -15,7 +15,15 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
             $scope.diagram.intent = undefined;
             $scope.diagram.context = undefined;
             $scope.diagram.turnTaking = undefined;
-            // $scope.diagram.emotion = [];
+            $scope.diagram.emotion = undefined;
+            $scope.diagram.speech = {};
+
+            // $scope.diagram = $scope.diagram || {};
+            // $scope.diagram.nlp = [{ text: 'ajskdfjaosifjoawjefowjiofejwofjioewjfoweajfoiweajfowajfoewjf', pos: ''}];
+            // $scope.diagram.suggestion = [];
+            // $scope.diagram.intent = { name: '이름이 뭐니?', matchRate: 0.7 };
+            // $scope.diagram.context = '이름';
+            // $scope.diagram.turnTaking = 0.7;
 
             console.log('초기화 : ', $scope.diagram);
 
@@ -24,108 +32,9 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
 
         $scope.initDiagram();
 
-        // (function()
-        // {
-        //     //Camera size setting;
-        //     var width = angular.element(window).width();
-        //     var height = angular.element(window).height();
-        //
-        //     angular.element('.video-wrapper').css('width', width + 'px').css('height', height + 'px');
-        //     angular.element(window).on('resize', function()
-        //     {
-        //         console.log('리사이즈');
-        //         var width = angular.element(window).width();
-        //         var height = angular.element(window).height();
-        //         angular.element('.video-wrapper').css('width', width + 'px').css('height', height + 'px');
-        //     });
-        // })();
-
-
         (function()
         {
-            // Tracking setting
-
-            // tracking.initUserMedia_ = function(element, opt_options)
-            // {
-            //     window.navigator.getUserMedia({
-            //         video: {
-            //             width: 1280,
-            //             height: 720
-            //         },
-            //         audio: !!(opt_options && opt_options.audio)
-            //     }, function(stream) {
-            //         try {
-            //             element.src = window.URL.createObjectURL(stream);
-            //         } catch (err) {
-            //             element.src = stream;
-            //         }
-            //     }, function() {
-            //         throw Error('Cannot capture user camera.');
-            //     });
-            // };
-            //
-            // var tracker = new tracking.ObjectTracker('face');
-            // tracker.setInitialScale(4);
-            // tracker.setStepSize(2);
-            // tracker.setEdgesDensity(0.1);
-            //
-            //
-            // tracking.track('#video', tracker,
-            // {
-            //     camera: true
-            // });
-
-            // Tracking setting
-
-            // tracking.initUserMedia_ = function(element, opt_options)
-            // {
-            //     window.navigator.getUserMedia({
-            //         video: {
-            //             width: 1280,
-            //             height: 720
-            //         },
-            //         audio: !!(opt_options && opt_options.audio)
-            //     }, function(stream) {
-            //         try {
-            //             element.src = window.URL.createObjectURL(stream);
-            //         } catch (err) {
-            //             element.src = stream;
-            //         }
-            //     }, function() {
-            //         throw Error('Cannot capture user camera.');
-            //     });
-            // };
-            //
-            // var tracker = new tracking.ObjectTracker('face');
-            // tracker.setInitialScale(4);
-            // tracker.setStepSize(2);
-            // tracker.setEdgesDensity(0.1);
-            //
-            //
-            // tracking.track('#video', tracker,
-            // {
-            //     camera: true
-            // });
-
             var video = angular.element('video').get(0);
-
-            navigator.getMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
-
-            navigator.getMedia({ video: !0, audio: !1 }, function(stream)
-            {
-                if(navigator.mozGetUserMedia)
-                    video.mozSrcObject = stream;
-                else
-                {
-                    var vu = window.URL || window.webkitURL;
-                    video.src = vu.createObjectURL(stream);
-                }
-                video.play();
-            }, function(error)
-            {
-                if(window.console)
-                    console.error(error);
-            });
 
             var streaming = false;
 
@@ -179,11 +88,15 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
             var start_timestamp;
             var finalFinish = false, timeoutFinish = false;
             var regcognitionTimer;
-            var opacityTimer = undefined;
+
+            var analyticsTimer = undefined;
+            var deeplearningTimer = undefined;
 
             Socket.on('response-dl', function(data)
             {
                 console.log('딥러닝 데이터 : ' , data);
+
+                clearTimeout(deeplearningTimer);
 
                 if(data.error == -1)
                 {
@@ -203,19 +116,18 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
 
                     $scope.diagram.emotion = probability;
                 }
-                else
-                {
-                    $scope.diagram.emotion = [];
-                }
+
+                // deeplearningTimer = setTimeout(function()
+                // {
+                //     $scope.diagram.emotion = [];
+                // }, 1000 * 10);
             });
 
             Socket.on('response-analytics', function(data)
             {
-                clearTimeout(opacityTimer);
+                clearTimeout(analyticsTimer);
 
                 var context = data;
-                angular.element('.diagram').css('opacity', '1');
-                console.log('분석 데이터 : ' , data);
                 if(context.nlu.nlp)
                 {
                     $scope.diagram.nlp = context.nlu.nlp;
@@ -283,7 +195,8 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                 if(context.nlu.matchInfo.qa.length > 0)
                 {
                     // angular.element('#suggestionDiagram').css('height', '220px');
-                    $scope.diagram.suggestion = [];
+                    // $scope.diagram.suggestion = [];
+                    var temp = [];
                     for(var i=0; i<context.nlu.matchInfo.qa.length && i < 5; i++)
                     {
                         var matchRate = parseInt((context.nlu.matchInfo.qa[i].matchRate || 0) * 10);
@@ -293,38 +206,47 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
 
                         context.nlu.matchInfo.qa[i].matchRate = matchRate / 10;
 
-                        $scope.diagram.suggestion.push(context.nlu.matchInfo.qa[i]);
+                        temp.push(context.nlu.matchInfo.qa[i]);
                     }
 
-                    if($scope.diagram.suggestion.length == 0)
+                    if(temp.length == 0)
                     {
                         // recognizeStart();
-                        return;
                     }
-
-                    setTimeout(function()
+                    else
                     {
-                        var height = angular.element('#suggestionDiagram table').css('height');
-                        angular.element('#suggestionDiagram').css('height', height.replace('px', '')*1 + 40 + 'px');
-                    }, 100);
+                        $scope.diagram.suggestion = temp;
 
-                    // recognizeStart();
+                        setTimeout(function()
+                        {
+                            var height = angular.element('#suggestionDiagram table').css('height');
+                            angular.element('#suggestionDiagram').css('height', height.replace('px', '')*1 + 40 + 'px');
+                        }, 100);
+                    }
                 }
                 else
                 {
                     // recognizeStart();
                 }
 
-                // opacityTimer = setTimeout(function()
+                // analyticsTimer = setTimeout(function()
                 // {
-                //     angular.element('.diagram').css('opacity', '0');
+                //     $scope.diagram.nlp = undefined;
+                //     $scope.diagram.context = undefined;
+                //     $scope.diagram.intent = undefined;
+                //     $scope.diagram.entity = undefined;
+                //     $scope.diagram.turnTaking = undefined;
+                //     $scope.diagram.emotion = undefined;
+                //     $scope.diagram.suggestion = [];
+                //
+                //     console.log('초기화');
                 // }, 1000 * 10);
             });
 
             var sendSocket = function(text)
             {
                 console.log('실행 : ', text);
-                // Socket.emit('deeplearning', { bot: 'demo', user: 'demo-user', msg: text, options: { language: 'en' } });
+                Socket.emit('deeplearning', { bot: 'demo', user: 'demo-user', msg: text, options: { language: 'en' } });
                 Socket.emit('analytics', { bot: 'demo', user: 'demo-user', msg: text, options: { language: 'en' } });
             };
 
@@ -370,6 +292,8 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                     {
                         console.log('recognition.onend');
 
+                        recognizeStart();
+
                         // if(recognizing) recognizeStart();
                         recognizing = false;
                         if (ignore_onend) return;
@@ -379,15 +303,16 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                             // console.log('info_start');
                             return;
                         }
-                        // console.log('recognition.onend: ' + final_transcript);
-
-                        // recognizeStart();
-
-                        // vm.sendMsg(final_transcript);
                     };
+
+                    var timeForSpeed = undefined;
+                    var timerForSpeed = undefined;
 
                     recognition.onresult = function(event) {
                         console.log('recognition.onresult');
+
+                        if(!timeForSpeed)
+                            timeForSpeed = new Date().getTime();
 
                         // clearTimeout(remainTimer);
 
@@ -402,15 +327,25 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                                 isFinal = true;
                             }
 
-                            // if (event.results[i].isFinal) {
-                            //   final_transcript += event.results[i][0].transcript;
-                            //   isFinal = true;
-                            // } else {
                             interim_transcript += event.results[i][0].transcript;
-                            // }
                         }
 
                         final_transcript = interim_transcript;
+
+                        clearTimeout(timerForSpeed);
+                        timerForSpeed = setTimeout(function()
+                        {
+                            timeForSpeed = undefined;
+                            console.log('시간 초기화');
+                        }, 1000 * 2);
+
+                        var now = new Date().getTime();
+
+                        var sec = (now - timeForSpeed) / 1000;
+
+                        console.log('초초 : ', sec);
+
+                        $scope.diagram.speech.speed = Math.round(final_transcript.length / sec);
 
                         if (final_transcript || interim_transcript)
                         {
@@ -468,13 +403,6 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                             }, 3000);
                         }
                     };
-
-                    // setInterval(function()
-                    // {
-                    //     console.log('재개설 : ');
-                    //     makeRecognition();
-                    //     recognizeStart();
-                    // }, 1000 * 30);
                 }
             };
 
@@ -488,11 +416,6 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
             }
 
             function recognizeStart() {
-                // console.log('recognizeStart');
-                // if (recognizing && recognition != undefined) {
-                //     recognition.stop();
-                //     return;
-                // }
 
                 recognition.lang = 'en-US';
                 // console.log(recognition);
@@ -511,300 +434,222 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
         })();
 
 
-        //// Tracking
-        // (function()
-        // {
-        //     var width = angular.element(window).width();
-        //     var height = angular.element(window).height();
-        //
-        //     angular.element('.video-container').css('width', width + 'px').css('height', height + 'px');
-        //     angular.element(window).on('resize', function()
-        //     {
-        //         console.log('리사이즈');
-        //         var width = angular.element(window).width();
-        //         var height = angular.element(window).height();
-        //         angular.element('.video-container').css('width', width + 'px').css('height', height + 'px');
-        //     });
-        //
-        //     var canvas = document.querySelector('canvas');
-        //     var context = canvas.getContext('2d');
-        //     var diagramPositions = {};
-        //
-        //     diagramPositions.nlpDiagram = { x: 30, y: 60, width: 300, height: 80 };
-        //     diagramPositions.contextDiagram = { x: 400, y: 60, width: 150, height: 80 };
-        //     diagramPositions.intentDiagram = { x: 30, y: 200, width: 300, height: 80 };
-        //     diagramPositions.turnTakingDiagram = { x: 750, y: 150, width: 180, height: 35 };
-        //
-        //     var cx = 1280 / 2;
-        //     var cy = 960 / 2;
-        //
-        //     var tracker = new tracking.ObjectTracker('face');
-        //     tracker.setInitialScale(4);
-        //     tracker.setStepSize(2);
-        //     tracker.setEdgesDensity(0.1);
-        //
-        //     tracking.track('#video', tracker,
-        //     {
-        //         camera: true
-        //     });
-        //
-        //     myWorker.onmessage = function(event)
-        //     {
-        //         tracker.emit('track', event);
-        //     };
-        //
-        //     tracker.on('track', function(event)
-        //     {
-        //         context.clearRect(0, 0, canvas.width, canvas.height);
-        //
-        //         event.data.forEach(function(rect)
-        //         {
-        //             //console.log(rect.x);
-        //             context.strokeStyle = '#a64ceb';
-        //             context.strokeRect(rect.x, rect.y, rect.width, rect.height);
-        //             context.font = '11px Helvetica';
-        //             context.fillStyle = "#fff";
-        //             context.fillText('x: ' + rect.x + 'px', rect.x + rect.width + 5, rect.y + 11);
-        //             context.fillText('y: ' + rect.y + 'px', rect.x + rect.width + 5, rect.y + 22);
-        //
-        //             var x2 = rect.x + rect.width / 2;
-        //             var y2 = rect.y + rect.height / 2;
-        //
-        //             var xOffset = x2 - cx;
-        //             var yOffset = y2 - cy;
-        //
-        //             if(xOffset > 100 || yOffset > 100)
-        //                 return;
-        //
-        //             // for(var key in diagramPositions)
-        //             var key = 'nlpDiagram';
-        //             {
-        //                 // 사각형의 중심을 구하고.
-        //                 // if(diagramPositions[key].x + xOffset >= 0 && diagramPositions[key].x + xOffset + diagramPositions[key].width <= 1290 && diagramPositions[key].y + yOffset >= 0 && diagramPositions[key].y + yOffset + diagramPositions[key].height <= 920)
-        //                     angular.element('.diagram-container').css('left', xOffset + 'px').css('top', yOffset + 'px');
-        //                 // else
-        //                 //     break;
-        //
-        //                 // if(diagramPositions[key].y + yOffset >= 0 && diagramPositions[key].y + yOffset + diagramPositions[key].height <= 920)
-        //                 //     angular.element('#' + key).css('top', diagramPositions[key].y + yOffset + 'px');
-        //             }
-        //         });
-        //     });
-        //
-        //     document.getElementById("toggletracking").addEventListener("click", function()
-        //     {
-        //         window.senddata = !window.senddata;
-        //
-        //         if (window.senddata)
-        //         {
-        //             // context.clearRect(0, 0, canvas.width, canvas.height);
-        //         }
-        //     });
-        //
-        //     window.senddata = true;
-        // })();
-        //
-        //
-        //
-        // ///// Voice & Diagram
-        // (function()
-        // {
-        //     var ContextAnalyticsService = $resource('/api/demo/context');
-        //     var DeepLearningService = $resource('/api/demo/deeplearning');
-        //
-        //     var emitMsg = function(msg)
-        //     {
-        //         var options = { dev: true };
-        //
-        //         var params = {};
-        //         params.bot = 'demo';
-        //         params.user = 'demo-user';
-        //         params.msg = msg;
-        //         params.options = options;
-        //
-        //         Socket.emit('send_msg', params);
-        //     };
-        //
-        //     // voice
-        //     window.utterances = undefined;
-        //
-        //     var pause = false;
-        //     var printScript = '';
-        //     var selected = undefined
-        //     var timer = undefined;
-        //     var recognition = new webkitSpeechRecognition();
-        //     recognition.continuous = true;
-        //     recognition.interimResults = true;
-        //     recognition.lang = 'en-US';
-        //
-        //     recognition.onstart = function()
-        //     {
-        //         console.log('시작');
-        //     };
-        //
-        //     recognition.onend = function()
-        //     {
-        //         console.log('끝');
-        //         printScript = undefined;
-        //         if(pause)
-        //         {
-        //             return;
-        //         }
-        //
-        //         recognition.start();
-        //     };
-        //
-        //     recognition.onresult = function(event)
-        //     {
-        //         console.log('퍼즈 : ', pause);
-        //         if(pause)
-        //             return;
-        //
-        //         var results = event.results;
-        //         for(var i=0; i<results.length; i++)
-        //         {
-        //             selected = results[i][0];
-        //             if(results[i].isFinal)
-        //             {
-        //                 recognition.stop();
-        //             }
-        //         }
-        //
-        //         if(selected.used || printScript == selected.transcript)
-        //         {
-        //             return;
-        //         }
-        //
-        //         selected.used = true;
-        //
-        //         if(timer)
-        //         {
-        //             clearTimeout(timer);
-        //         }
-        //
-        //         timer = setTimeout(function()
-        //         {
-        //             console.log('실행 : ', selected);
-        //             printScript = selected.transcript;
-        //             ContextAnalyticsService.get({ botId: 'demo', userId: 'demo-user', input: selected.transcript, language: 'en' }, function(context)
-        //             {
-        //                 console.log('컨텍스트 : ', context);
-        //                 if(context.nlp)
-        //                 {
-        //                     $scope.diagram.nlp = context.nlp;
-        //                 }
-        //
-        //                 if(context.nlu)
-        //                 {
-        //                     if(context.nlu.contextInfo && context.nlu.contextInfo.contextHistory && context.nlu.contextInfo.contextHistory[0])
-        //                     {
-        //                         $scope.diagram.context = Object.keys(context.nlu.contextInfo.contextHistory[0])[0];
-        //                     }
-        //
-        //                     if(context.nlu.dialog.intent)
-        //                     {
-        //                         $scope.diagram.intent = context.nlu.dialog.intent;
-        //                     }
-        //                 }
-        //
-        //                 if(context.turnTaking)
-        //                 {
-        //                     $scope.diagram.turnTaking = context.turnTaking;
-        //                 }
-        //
-        //
-        //                 if(context.suggestion.length > 0)
-        //                 {
-        //                     $scope.diagram.suggestion = [];
-        //                     for(var i=0; i<context.suggestion.length; i++)
-        //                     {
-        //                         var matchRate = parseInt((context.suggestion[i].matchRate || 0) * 10);
-        //
-        //                         if(matchRate == 0)
-        //                             continue;
-        //
-        //                         context.suggestion[i].matchPercent = '';
-        //                         for(var j=0; j<matchRate; j++)
-        //                         {
-        //                             context.suggestion[i].matchPercent += '|';
-        //                         }
-        //
-        //                         context.suggestion[i].matchRate = matchRate / 10;
-        //
-        //                         $scope.diagram.suggestion.push(context.suggestion[i]);
-        //                     }
-        //
-        //                     var msg = new SpeechSynthesisUtterance(context.suggestion[0].output);
-        //                     msg.lang = 'en-US';
-        //                     msg.pitch = 1;
-        //                     msg.onstart = function()
-        //                     {
-        //                         console.log('봇 말하기 시작');
-        //                         pause = true;
-        //                         recognition.stop();
-        //                     };
-        //
-        //                     msg.onend = function()
-        //                     {
-        //                         console.log('봇 말하기 끝');
-        //
-        //                         pause = false
-        //
-        //                         recognition.start();
-        //
-        //                         setTimeout(function()
-        //                         {
-        //                             $scope.$apply(function()
-        //                             {
-        //                                 $scope.diagram.suggestion = [];
-        //                                 $scope.diagram.nlp = undefined;
-        //                                 $scope.diagram.turnTaking = undefined;
-        //                                 $scope.diagram.intent = undefined;
-        //                                 $scope.diagram.context = undefined;
-        //                             });
-        //                         }, 10000);
-        //                     };
-        //
-        //                     setTimeout(function()
-        //                     {
-        //                         window.utterances = msg;
-        //                         window.speechSynthesis.speak(msg);
-        //                     }, 100);
-        //                 }
-        //                 else
-        //                 {
-        //                     console.log('퍼즈 : ', pause);
-        //                     recognition.stop();
-        //
-        //                     setTimeout(function()
-        //                     {
-        //                         $scope.$apply(function()
-        //                         {
-        //                             $scope.diagram.nlp = undefined;
-        //                             $scope.diagram.turnTaking = undefined;
-        //                             $scope.diagram.intent = undefined;
-        //                             $scope.diagram.context = undefined;
-        //                         });
-        //                     }, 10000);
-        //                 }
-        //             },
-        //             function(err)
-        //             {
-        //                 console.log(err);
-        //             });
-        //
-        //             selected = undefined;
-        //         }, 1000);
-        //     };
-        //
-        //     recognition.start();
-        //
-        //     Socket.on('send_msg', function(data)
-        //     {
-        //         console.log('데이터 : ', data);
-        //     });
-        //
-        //     emitMsg(':build');
-        // })();
+        (function()
+        {
+            window.AudioContext = window.AudioContext || window.webkitAudioContext;
+
+            var audioContext = new AudioContext();
+            var isPlaying = false;
+            var sourceNode = null;
+            var analyser = null;
+            var theBuffer = null;
+            var DEBUGCANVAS = null;
+            var mediaStreamSource = null;
+            var detectorElem,
+                canvasElem,
+                waveCanvas,
+                pitchElem,
+                noteElem,
+                detuneElem,
+                detuneAmount;
+
+            var rafID = null;
+            var tracks = null;
+            var buflen = 1024;
+            var buf = new Float32Array( buflen );
+
+            var MIN_SAMPLES = 0;  // will be initialized when AudioContext is created.
+            var GOOD_ENOUGH_CORRELATION = 0.9; // this is the "bar" for how close a correlation needs to be
+
+            var noteStrings = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+
+            function autoCorrelate( buf, sampleRate ) {
+                var SIZE = buf.length;
+                var MAX_SAMPLES = Math.floor(SIZE/2);
+                var best_offset = -1;
+                var best_correlation = 0;
+                var rms = 0;
+                var foundGoodCorrelation = false;
+                var correlations = new Array(MAX_SAMPLES);
+
+                for (var i=0;i<SIZE;i++) {
+                    var val = buf[i];
+                    rms += val*val;
+                }
+                rms = Math.sqrt(rms/SIZE);
+                if (rms<0.01) // not enough signal
+                    return -1;
+
+                var lastCorrelation=1;
+                for (var offset = MIN_SAMPLES; offset < MAX_SAMPLES; offset++) {
+                    var correlation = 0;
+
+                    for (var i=0; i<MAX_SAMPLES; i++) {
+                        correlation += Math.abs((buf[i])-(buf[i+offset]));
+                    }
+                    correlation = 1 - (correlation/MAX_SAMPLES);
+                    correlations[offset] = correlation; // store it, for the tweaking we need to do below.
+                    if ((correlation>GOOD_ENOUGH_CORRELATION) && (correlation > lastCorrelation)) {
+                        foundGoodCorrelation = true;
+                        if (correlation > best_correlation) {
+                            best_correlation = correlation;
+                            best_offset = offset;
+                        }
+                    } else if (foundGoodCorrelation) {
+                        // short-circuit - we found a good correlation, then a bad one, so we'd just be seeing copies from here.
+                        // Now we need to tweak the offset - by interpolating between the values to the left and right of the
+                        // best offset, and shifting it a bit.  This is complex, and HACKY in this code (happy to take PRs!) -
+                        // we need to do a curve fit on correlations[] around best_offset in order to better determine precise
+                        // (anti-aliased) offset.
+
+                        // we know best_offset >=1,
+                        // since foundGoodCorrelation cannot go to true until the second pass (offset=1), and
+                        // we can't drop into this clause until the following pass (else if).
+                        var shift = (correlations[best_offset+1] - correlations[best_offset-1])/correlations[best_offset];
+                        return sampleRate/(best_offset+(8*shift));
+                    }
+                    lastCorrelation = correlation;
+                }
+                if (best_correlation > 0.01) {
+                    // console.log("f = " + sampleRate/best_offset + "Hz (rms: " + rms + " confidence: " + best_correlation + ")")
+                    return sampleRate/best_offset;
+                }
+                return -1;
+//	var best_frequency = sampleRate/best_offset;
+            }
+
+            function noteFromPitch( frequency ) {
+                var noteNum = 12 * (Math.log( frequency / 440 )/Math.log(2) );
+                return Math.round( noteNum ) + 69;
+            }
+
+            function frequencyFromNoteNumber( note ) {
+                return 440 * Math.pow(2,(note-69)/12);
+            }
+
+            function centsOffFromPitch( frequency, note ) {
+                return Math.floor( 1200 * Math.log( frequency / frequencyFromNoteNumber( note ))/Math.log(2) );
+            }
+
+            function getAverageVolume(array) {
+                var values = 0;
+                var average;
+
+                var length = array.length;
+
+                // get all the frequency amplitudes
+                for (var i = 0; i < length; i++) {
+                    values += array[i];
+                }
+
+                average = values / length;
+                return average;
+            }
+
+            function updatePitch()
+            {
+                analyser.getFloatTimeDomainData( buf );
+                var ac = autoCorrelate( buf, audioContext.sampleRate );
+                // TODO: Paint confidence meter on canvasElem here.
+
+                if (ac == -1) {
+                } else {
+                    var pitch = ac;
+                    // pitchElem.innerText = Math.round( pitch ) ;
+                    var note =  noteFromPitch( pitch );
+                    // noteElem.innerHTML = noteStrings[note%12];
+                    var detune = centsOffFromPitch( pitch, note );
+
+                    $scope.$apply(function()
+                    {
+                        $scope.diagram.speech.pitch = Math.round( pitch );
+                        $scope.diagram.speech.note = noteStrings[note%12];
+                        if (detune == 0 ) {
+                            $scope.diagram.speech.detune = undefined;
+                        } else {
+                            // detuneAmount.innerHTML = Math.abs( detune );
+
+                            $scope.diagram.speech.detune = { type: detune < 0 ? 'flat' : 'sharp', value: Math.abs(detune) };
+                        }
+                    });
+                }
+
+                var array =  new Uint8Array(analyser.frequencyBinCount);
+                analyser.getByteFrequencyData(array);
+                var average = getAverageVolume(array);
+
+                $scope.diagram.speech.volume = Math.round(average);
+
+                if (!window.requestAnimationFrame)
+                    window.requestAnimationFrame = window.webkitRequestAnimationFrame;
+                rafID = window.requestAnimationFrame( updatePitch );
+            }
+
+            function gotStream(stream) {
+                // Create an AudioNode from the stream.
+                mediaStreamSource = audioContext.createMediaStreamSource(stream);
+
+                // Connect it to the destination.
+                analyser = audioContext.createAnalyser();
+                analyser.fftSize = 2048;
+                mediaStreamSource.connect( analyser );
+
+                updatePitch();
+            }
+
+            function initAudio() {
+                if (!navigator.getUserMedia)
+                    navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+                if (!navigator.cancelAnimationFrame)
+                    navigator.cancelAnimationFrame = navigator.webkitCancelAnimationFrame || navigator.mozCancelAnimationFrame;
+                if (!navigator.requestAnimationFrame)
+                    navigator.requestAnimationFrame = navigator.webkitRequestAnimationFrame || navigator.mozRequestAnimationFrame;
+
+                navigator.getUserMedia(
+                    {
+                        "audio": {
+                            "mandatory": {
+                                "googEchoCancellation": "false",
+                                "googAutoGainControl": "false",
+                                "googNoiseSuppression": "false",
+                                "googHighpassFilter": "false"
+                            },
+                            "optional": []
+                        }
+                    }, gotStream, function(e) {
+                        alert('Error getting audio');
+                        console.log(e);
+                    });
+            }
+
+            function initVideo() {
+                if (!navigator.getUserMedia)
+                    navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+                if (!navigator.cancelAnimationFrame)
+                    navigator.cancelAnimationFrame = navigator.webkitCancelAnimationFrame || navigator.mozCancelAnimationFrame;
+                if (!navigator.requestAnimationFrame)
+                    navigator.requestAnimationFrame = navigator.webkitRequestAnimationFrame || navigator.mozRequestAnimationFrame;
+
+                navigator.getUserMedia(
+                    {
+                        video: true
+                    }, function(stream){
+                        if(navigator.mozGetUserMedia)
+                            video.mozSrcObject = stream;
+                        else
+                        {
+                            var vu = window.URL || window.webkitURL;
+                            video.src = vu.createObjectURL(stream);
+                        }
+                        video.play();
+                    }, function(e) {
+                        alert('Error getting video');
+                        console.log(e);
+                    });
+            }
+
+            initAudio();
+            initVideo();
+        })();
     }]);
 })();
