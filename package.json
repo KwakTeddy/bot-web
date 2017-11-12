@@ -70,6 +70,7 @@
     "json-editor": "^0.7.28",
     "jsoneditor": "^5.9.6",
     "kerberos": "0.0.22",
+    "languagedetect": "^1.1.1",
     "lodash": "^3.10.0",
     "method-override": "^2.3.10",
     "minimist": "^1.2.0",

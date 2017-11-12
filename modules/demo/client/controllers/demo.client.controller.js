@@ -16,6 +16,7 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
             $scope.diagram.context = undefined;
             $scope.diagram.turnTaking = undefined;
             $scope.diagram.emotion = undefined;
+            $scope.diagram.profile = {};
             $scope.diagram.speech = {};
 
             // $scope.diagram = $scope.diagram || {};
@@ -91,6 +92,14 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
 
             var analyticsTimer = undefined;
             var deeplearningTimer = undefined;
+
+            /**
+             * Returns a random integer between min (inclusive) and max (inclusive)
+             * Using Math.round() will give you a non-uniform distribution!
+             */
+            function getRandomInt(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
 
             Socket.on('response-dl', function(data)
             {
@@ -229,6 +238,22 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                     // recognizeStart();
                 }
 
+                $scope.diagram.profile.age = getRandomInt(25, 35);
+                $scope.diagram.profile.language = [];
+
+                data.language.sort(function(a, b)
+                {
+                    return b[1] - a[1];
+                });
+
+                for(var i=0; i<data.language.length && i<1; i++)
+                {
+                    $scope.diagram.profile.language.push({ name: data.language[i][0], rate: Math.round(data.language[i][1] * 100) / 100 });
+                }
+
+                console.log('랭', data.language);
+
+
                 // analyticsTimer = setTimeout(function()
                 // {
                 //     $scope.diagram.nlp = undefined;
@@ -238,6 +263,7 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                 //     $scope.diagram.turnTaking = undefined;
                 //     $scope.diagram.emotion = undefined;
                 //     $scope.diagram.suggestion = [];
+                // $scope.diagram.profile = undefined;
                 //
                 //     console.log('초기화');
                 // }, 1000 * 10);
@@ -298,7 +324,6 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                         recognizing = false;
                         if (ignore_onend) return;
 
-
                         if (!final_transcript) {
                             // console.log('info_start');
                             return;
@@ -307,6 +332,7 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
 
                     var timeForSpeed = undefined;
                     var timerForSpeed = undefined;
+                    var count = 0;
 
                     recognition.onresult = function(event) {
                         console.log('recognition.onresult');
@@ -337,6 +363,7 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                         {
                             timeForSpeed = undefined;
                             console.log('시간 초기화');
+                            recognizeStop();
                         }, 1000 * 2);
 
                         var now = new Date().getTime();
@@ -345,14 +372,15 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
 
                         console.log('초초 : ', sec);
 
-                        $scope.diagram.speech.speed = Math.round(final_transcript.length / sec);
+                        if(sec > 0)
+                        {
+                            $scope.diagram.speech.speed = Math.round(final_transcript.length / sec);
+                        }
 
                         if (final_transcript || interim_transcript)
                         {
                             // console.log('transcript: ' + interim_transcript);
                         }
-
-                        sendSocket(interim_transcript);
 
                         if(isFinal)
                         {
@@ -363,45 +391,55 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                             }
                             finalFinish = true;
                             // console.log('isFinal:' + interim_transcript);
-                            // recognizeStop();
+                            recognizeStop();
 
                             //send
                             sendSocket(interim_transcript);
                         }
                         else
                         {
-                            if(regcognitionTimer)
+                            if(count % 2 == 0)
                             {
-                                clearTimeout(regcognitionTimer);
+                                sendSocket(interim_transcript);
+                                count = 0;
                             }
 
-                            regcognitionTimer = setTimeout(function()
-                            {
-                                // console.log('timeout:' + 'final('+finalFinish + '),timeout(' + timeoutFinish + ')');
-                                if(finalFinish)
-                                {
-                                    // console.log('여기');
-                                    finalFinish = false; timeoutFinish = false;
-                                    return;
-                                }
-                                else if(timeoutFinish)
-                                {
-                                    // console.log('여기');
-                                    return;
-                                }
-
-                                timeoutFinish = true;
-                                // console.log('timeout: ' + interim_transcript);
-                                if(interim_transcript != undefined && interim_transcript != '')
-                                {
-                                    ignore_onend = true;
-                                    // recognizeStop();
-
-                                    //send
-                                    sendSocket(interim_transcript);
-                                }
-                            }, 3000);
+                            count++;
                         }
+                        // else
+                        // {
+                        //     if(regcognitionTimer)
+                        //     {
+                        //         clearTimeout(regcognitionTimer);
+                        //     }
+                        //
+                        //     regcognitionTimer = setTimeout(function()
+                        //     {
+                        //         // console.log('timeout:' + 'final('+finalFinish + '),timeout(' + timeoutFinish + ')');
+                        //         if(finalFinish)
+                        //         {
+                        //             // console.log('여기');
+                        //             finalFinish = false; timeoutFinish = false;
+                        //             return;
+                        //         }
+                        //         else if(timeoutFinish)
+                        //         {
+                        //             // console.log('여기');
+                        //             return;
+                        //         }
+                        //
+                        //         timeoutFinish = true;
+                        //         // console.log('timeout: ' + interim_transcript);
+                        //         if(interim_transcript != undefined && interim_transcript != '')
+                        //         {
+                        //             ignore_onend = true;
+                        //             // recognizeStop();
+                        //
+                        //             //send
+                        //             sendSocket(interim_transcript);
+                        //         }
+                        //     }, 3000);
+                        // }
                     };
                 }
             };

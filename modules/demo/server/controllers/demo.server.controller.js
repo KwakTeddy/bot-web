@@ -8,6 +8,9 @@ var grpc = require('grpc');
 var ChatbotService = grpc.load(PROTO_PATH, 'proto').ChatbotService;
 var client = new ChatbotService.ChatbotService('52.38.34.39:50051', grpc.credentials.createInsecure());
 
+var LanguageDetect = require('languagedetect');
+var lngDetector = new LanguageDetect();
+
 module.exports = function (io, socket)
 {
     console.log('데모 소켓 커넥션');
@@ -48,7 +51,9 @@ module.exports = function (io, socket)
                 suggestion = global._botusers[msg.bot + '_' + msg.user].nlu.matchInfo.qa;
             }
 
-            socket.emit('response-analytics', { nlp : nlp, context: context, suggestion: suggestion, turnTaking: turnTaking, entities: entities, nlu: nlu });
+            console.log(msg.msg);
+
+            socket.emit('response-analytics', { nlp : nlp, context: context, suggestion: suggestion, turnTaking: turnTaking, entities: entities, nlu: nlu, language: lngDetector.detect(msg.msg) });
 
         }, { dev: true, language: msg.options.language });
     })

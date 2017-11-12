@@ -169,12 +169,12 @@ canvas {
 <div class="demo-screen">
     <video id="video" autoplay></video>
     <div class="diagram-container">
-        <div class="diagram" style="top: 10px; left: 750px; width: 300px; height: 130px; opacity: 1;">
+        <div class="diagram" style="top: 10px; left: 750px; width: 300px; height: 130px;" ng-class="diagram.profile == undefined ? 'hide' : 'show'">
             <table style="margin: 0;">
                 <colgroup>
-                    <col style="width: 65%;"/>
-                    <col style="width: 28%;"/>
-                    <col style="width: 8%;"/>
+                    <col style="width: 40%;"/>
+                    <col style="width: 50%;"/>
+                    <col style="width: 10%;"/>
                 </colgroup>
                 <tbody>
                 <tr>
@@ -183,11 +183,11 @@ canvas {
                 </tr>
                 <tr>
                     <td>Age</td>
-                    <td>25~35</td>
+                    <td>{{ diagram.profile.age }}</td>
                 </tr>
-                <tr>
-                    <td>Country</td>
-                    <td>USA</td>
+                <tr ng-repeat="lan in diagram.profile.language">
+                    <td>Language </td>
+                    <td>{{ lan.name }}</td>
                 </tr>
                 </tbody>
             </table>
