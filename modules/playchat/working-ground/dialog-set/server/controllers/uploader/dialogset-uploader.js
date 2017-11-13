@@ -444,7 +444,6 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                                 var nlu = res.botUser.nlu;
                                 var node1, node2, link;
                                 var context = null;
-                                var NUMBER_PTN = /\[.+?\]/g;
                                 console.log("analysisDoc >> " + nlu.sentence);
                                 console.log("nlp >> " + JSON.stringify( nlp ));
 
@@ -453,12 +452,11 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                                     // 평서문이라면 확인
                                     if (language == "en") {
                                         var index = -1, mode = 0; // 1: the first noun, 2: verb, 3: the second noun
-                                        for (var i = 0; i < nlp.length - 1; i++) {
+                                        for (var i = 0; i < nlp.length; i++) {
                                             var token = nlp[i];
 
                                             if (isNaN(token.text) != true) continue;
                                             if (node1 == token.text) continue;
-                                            if (NUMBER_PTN.test(token)) continue;
                                             if (token.text == "the" || token.text == "a" || token.text == "an") continue;
 
                                             // 초기화
@@ -474,24 +472,21 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                                                     node1 = token.text;
                                                     mode = 1;
                                                     index = i;
-                                                    console.log("mode0: " + JSON.stringify( node1 ));
                                                 }
                                             } else if (mode == 1) {
                                                 if (token.pos == 'Adjective' || token.pos == 'Verb') {
                                                     link = token.text;
                                                     mode = 2;
                                                     index = i;
-                                                    console.log("mode1: " + JSON.stringify( link ));
                                                 }
                                             } else if (mode == 2) {
                                                 if (token.pos == 'Noun' || token.pos == 'Pronoun' || token.pos == 'Foreign') {
                                                     node2 = token.text;
-                                                    console.log("mode2: " + JSON.stringify( node2 ));
                                                     break;
                                                 }
                                             }
                                         }
-                                    } if (language == "zh") {
+                                    } else if (language == "zh") {
                                         var mode = 0; // 1: the first noun, 2: verb, 3: the second noun
                                         for (var i = 0; i < nlp.length - 1; i++) {
                                             var token = nlp[i];
@@ -519,7 +514,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                                                 }
                                             }
                                         }
-                                    } else if (language == "ko") {
+                                    } else {
                                         for (var i = 0; i < nlp.length; i++) {
                                             if (nlp[i].pos == 'Noun') {
                                                 node1 = nlp[i].text;
