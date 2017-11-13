@@ -428,6 +428,147 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                         }
 
                         cb2(null);
+                    },
+                    function(cb)
+                    {
+                        // knowledge fact (dsyoon)
+                        var language = "en";
+                        var context = {};
+                        var bot_name = 'demo';
+                        var bot_id = 'demo';
+                        NLPManager.processInput(context, output, language, function(err, res)
+                        {
+                            if (res.botUser.nlu["nlp"] && res.botUser.nlu["nlp"] != undefined) {
+
+                                var nlp = res.botUser.nlu["nlp"];
+                                var nlu = res.botUser.nlu;
+                                var node1, node2, link;
+                                var context = null;
+                                console.log("analysisDoc >> " + nlu.sentence);
+                                console.log("nlp >> " + JSON.stringify( nlp ));
+
+                                var language = "en";
+                                if (nlu.sentenceInfo == 0) {
+                                    // 평서문이라면 확인
+                                    if (language == "en") {
+                                        var index = -1, mode = 0; // 1: the first noun, 2: verb, 3: the second noun
+                                        for (var i = 0; i < nlp.length; i++) {
+                                            var token = nlp[i];
+
+                                            if (isNaN(token.text) != true) continue;
+                                            if (node1 == token.text) continue;
+                                            if (token.text == "the" || token.text == "a" || token.text == "an") continue;
+
+                                            // 초기화
+                                            if (mode==1) {
+                                                if (token.pos == 'Noun' || token.pos == 'Pronoun' || token.pos == 'Foreign') {
+                                                    mode = 0;
+                                                    node1 = "";
+                                                }
+                                            }
+
+                                            if (mode == 0) {
+                                                if (token.pos == 'Noun' || token.pos == 'Pronoun' || token.pos == 'Foreign') {
+                                                    node1 = token.text;
+                                                    mode = 1;
+                                                    index = i;
+                                                }
+                                            } else if (mode == 1) {
+                                                if (token.pos == 'Adjective' || token.pos == 'Verb') {
+                                                    link = token.text;
+                                                    mode = 2;
+                                                    index = i;
+                                                }
+                                            } else if (mode == 2) {
+                                                if (token.pos == 'Noun' || token.pos == 'Pronoun' || token.pos == 'Foreign') {
+                                                    node2 = token.text;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    } else if (language == "zh") {
+                                        var mode = 0; // 1: the first noun, 2: verb, 3: the second noun
+                                        for (var i = 0; i < nlp.length - 1; i++) {
+                                            var token = nlp[i];
+                                            if (isNaN(token.text) != true) continue;
+                                            if ((token.text.indexOf("年") >= 0) ||
+                                                (token.text.indexOf("月") >= 0) ||
+                                                (token.text.indexOf("日") >= 0)) continue;
+                                            if (node1 == token.text) continue;
+
+                                            if (NUMBER_PTN.test(token)) continue;
+                                            if (mode == 0) {
+                                                if (token.pos == 'Noun' || token.pos == 'Pronoun' || token.pos == 'Foreign') {
+                                                    node1 = token.text;
+                                                    mode = 1;
+                                                }
+                                            } else if (mode == 1) {
+                                                if (token.pos == 'Adjective' || token.pos == 'Verb') {
+                                                    link = token.text;
+                                                    mode = 2;
+                                                }
+                                            } else if (mode == 2) {
+                                                if (token.pos == 'Noun' || token.pos == 'Pronoun' || token.pos == 'Foreign') {
+                                                    node2 = token.text;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        for (var i = 0; i < nlp.length; i++) {
+                                            if (nlp[i].pos == 'Noun') {
+                                                node1 = nlp[i].text;
+                                                break;
+                                            }
+                                        }
+
+                                        if (node1) {
+                                            for (var i = nlp.length - 1; i >= 0; i--) {
+                                                if (node2 && link) break;
+                                                if (nlp[i].pos == 'Noun' && nlp[i].text != node1) {
+                                                    node2 = nlp[i].text;
+                                                } else if (nlp[i].pos == 'Verb' || nlp[i].pos == 'Adjective') {
+                                                    link = nlp[i].text;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    if (node1 && node2 && link) {
+                                        node1 = node1.replace(/,/,"");
+                                        node2 = node2.replace(/,/,"");
+                                        link = link.replace(/,/,"");
+                                        console.log("factLink (dialogset.js)>> " + node1 + ', ' + node2 + ' <-> ' + link + ' | ' + nlu.sentence);
+                                        var task = {
+                                            doc: {
+                                                bot_id: bot_name,
+                                                botUser: bot_id,
+                                                node1: node1,
+                                                node2: node2,
+                                                link: link,
+                                                created: new Date()
+                                            },
+
+                                            mongo: {
+                                                model: 'FactLink',
+                                                query: {node1: '', node2: '', link: ''},
+                                                options: {upsert: true}
+                                            }
+                                        };
+
+                                        mongoModule.update(task, null, function (_task, _context) {
+                                            cb();
+                                        })
+                                    } else {
+                                        cb();
+                                    }
+                                } else {
+                                    cb();
+                                }
+                            } else {
+                                cb();
+                            }
+                        })
                     }
                 ],
                 function(err2)
@@ -549,4 +690,5 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
             });
         }
     };
+
 })();

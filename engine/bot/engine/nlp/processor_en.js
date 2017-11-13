@@ -196,7 +196,7 @@ function processInput(context, inRaw, callback) {
             context.botUser.wordCorrection = undefined;
         }
 
-        callback(inNLP, null, null);
+        callback(inNLP, context, null);
     });
 }
 exports.processInput = processInput;
