@@ -85,6 +85,8 @@ video
     min-height: 70px;
 
     opacity: 0;
+
+    border: 1px solid #ddd;
 }
 
 .diagram.show
@@ -220,7 +222,7 @@ canvas {
             <div class="diagram-label" style="text-align: right;">NLP</div>
         </div>
 
-        <div class="diagram" id="intentDiagram" style="top: 350px; left: 80px; width: 300px;" ng-class="diagram.context != undefined || diagram.intent != undefined || diagram.entity != undefined || diagram.turnTaking != undefined ? 'show' : 'hide'">
+        <div class="diagram" id="intentDiagram" style="top: 250px; left: 80px; width: 300px;" ng-class="diagram.context != undefined || diagram.intent != undefined || diagram.entity != undefined || diagram.turnTaking != undefined ? 'show' : 'hide'">
             <table ng-if="diagram.context != undefined">
                 <colgroup>
                     <col style="width: 60%;"/>
@@ -312,7 +314,7 @@ canvas {
             <div class="diagram-label" style="text-align: right;" ng-if="diagram.turnTaking != undefined">TURN TAKING</div>
         </div>
 
-        <div class="diagram" id="suggestionDiagram" style="bottom: 50px; left: 470px; width: 45%; height: 50px; overflow: hidden;" ng-class="diagram.suggestion.length > 0 ? 'show' : 'hide'">
+        <div class="diagram" id="suggestionDiagram" style="bottom: 50px; left: 300px; width: 45%; height: 50px; overflow: hidden;" ng-class="diagram.suggestion.length > 0 ? 'show' : 'hide'">
             <div class="diagram-label">SUGGESTION</div>
             <table>
                 <colgroup>
@@ -343,7 +345,7 @@ canvas {
             </table>
         </div>
 
-        <div class="diagram" id="emotionDiagram" style="top: 80px; right: 100px; width: 300px; height: 250px;" ng-class="diagram.emotion == undefined ? 'hide' : 'show'">
+        <div class="diagram" id="emotionDiagram" style="top: 10px; right: 100px; width: 300px; height: 250px;" ng-class="diagram.emotion == undefined ? 'hide' : 'show'">
             <table>
                 <colgroup>
                     <col style="width: 55%;"/>
@@ -374,7 +376,7 @@ canvas {
             <div class="diagram-label" style="text-align: right;">EMOTION</div>
         </div>
 
-        <div class="diagram" id="speechDiagram" style="top: 400px; right: 100px; width: 300px; height: 250px;" ng-class="diagram.speech == undefined ? 'hide' : 'show'">
+        <div class="diagram" id="speechDiagram" style="top: 310px; right: 100px; width: 300px; height: 210px;" ng-class="diagram.speech == undefined ? 'hide' : 'show'">
 
             <table>
                 <colgroup>

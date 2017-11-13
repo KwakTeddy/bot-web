@@ -253,7 +253,7 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                     $scope.diagram.turnTaking = 0;
                 }
 
-                $scope.diagram.profile.age = getRandomInt(16, 24);
+                $scope.diagram.profile.age = getRandomInt(25, 35);
                 $scope.diagram.profile.language = [];
 
                 data.language.sort(function(a, b)
