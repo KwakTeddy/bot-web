@@ -224,7 +224,7 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                     if(temp.length == 0)
                     {
                         // recognizeStart();
-                        $scope.diagram.turnTaking = getRandomInt(0, 1) + (getRandomInt(1, 9) / 10);
+                        $scope.diagram.turnTaking = getRandomInt(1, 8) / 10;
                     }
                     else
                     {
