@@ -170,7 +170,7 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                     }
                 }
 
-                if(context.entities)
+                if(context.entities && Object.keys(context.entities).length > 0)
                 {
                     $scope.diagram.entity = [];
                     for(var key in context.entities)
