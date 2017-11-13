@@ -164,6 +164,12 @@ canvas {
     width: 300px;
     height: 100px;
 }
+
+    tr.bold td:first-child
+    {
+        font-size: 20px;
+        font-weight: bold;
+    }
 </style>
 
 <div class="demo-screen">
@@ -238,7 +244,7 @@ canvas {
                 </colgroup>
                 <tbody>
                 <tr>
-                    <td>{{ diagram.intent.name }}</td>
+                    <td style="font-weight: bold; font-size: 20px; font-style: italic;">{{ diagram.intent.name }}</td>
                     <td>
                         <span class="progress-box" ng-class="diagram.intent.matchRate > 0 ? 'show' : 'hide'"></span>
                         <span class="progress-box" ng-class="diagram.intent.matchRate > 0.1 ? 'show' : 'hide'"></span>
@@ -315,7 +321,7 @@ canvas {
                     <col style="width: 10%;"/>
                 </colgroup>
                 <tbody>
-                    <tr ng-repeat="item in diagram.suggestion">
+                    <tr ng-repeat="item in diagram.suggestion" ng-class="$index == 0 ? 'bold' : ''">
                         <td><span>{{ item.output }}</span></td>
                         <td>
                             <span class="progress-box" ng-class="item.matchRate > 0 ? 'show' : 'hide'"></span>
