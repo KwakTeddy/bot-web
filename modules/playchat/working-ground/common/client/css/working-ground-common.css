@@ -55,12 +55,20 @@
     position: relative;
 }
 
-.operation-search-area.advanced button
+.operation-search-area.advanced button.clear
 {
     position: absolute;
     right: 20px;
     bottom: 20px;
-    width: 100px;
+    width: 80px;
+}
+
+.operation-search-area.advanced button.search
+{
+    position: absolute;
+    right: 110px;
+    bottom: 20px;
+    width: 80px;
 }
 
 .operation-search-area th
@@ -107,4 +115,20 @@
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+}
+
+.operation-active-area
+{
+    padding: 10px;
+    background-color: #d9eefa;
+    border-radius: 4px;
+    margin-top: 8px;
+}
+
+.operation-active-area .operation-active-area-title
+{
+    font-size: 15px;
+    font-weight: 600;
+    color: #038eda;
+    padding-left: 20px;
 }

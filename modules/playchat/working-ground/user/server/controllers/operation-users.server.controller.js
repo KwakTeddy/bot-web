@@ -1,3 +1,6 @@
+var path = require('path');
+var logger = require(path.resolve('./config/lib/logger.js'));
+
 var async = require('async');
 var mongoose = require('mongoose');
 
@@ -20,16 +23,6 @@ var getQuerystring = function(req, query)
     {
         query.mobile = { "$regex": req.query.mobile, "$options": 'i' };
     }
-
-    // if(req.query.lastUpdateStart && req.query.lastUpdateEnd)
-    // {
-    //     query.lastUpdate = {"$gte": new Date(req.query.lastUpdateStart), "$lte": new Date(req.query.lastUpdateEnd)};
-    // }
-    //
-    // if(req.query.dialogCountStart && req.query.dialogCountEnd)
-    // {
-    //     query.dialogCount = {"$gte": new Date(req.query.dialogCountStart), "$lte": new Date(req.query.dialogCountEnd)};
-    // }
 
     if(req.query.createdStart && req.query.createdEnd)
     {
@@ -129,6 +122,38 @@ exports.find = function(req, res)
             function()
             {
                 res.jsonp(result);
+            });
+        }
+    });
+};
+
+module.exports.findOne = function(req, res)
+{
+    BotUser.findOne({ botId: req.params.botId, _id: req.params._id }).exec(function(err, item)
+    {
+        if (err)
+        {
+            return res.status(400).send({message: err.stack || err});
+        }
+        else
+        {
+            item = JSON.parse(JSON.stringify(item));
+            UserDialog.findOne({ botId: req.params.botId, userId: item.userKey }).sort('-created').exec(function(err, userDialog)
+            {
+                if(err)
+                {
+                    return res.status(400).send({ message: err.stack || err });
+                }
+
+                if(userDialog)
+                {
+                    logger.systemLog('우이야 : ', JSON.stringify(userDialog));
+                    // userDialog가 있으면 lastUpdate에 created를 저장해주고.
+                    item.lastUpdate = userDialog.created;
+                    item.newMsg = userDialog.dialog;
+                }
+
+                res.jsonp(item);
             });
         }
     });

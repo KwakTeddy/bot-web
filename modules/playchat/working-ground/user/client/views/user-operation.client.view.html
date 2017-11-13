@@ -35,7 +35,7 @@
                 <tr>
                     <th>Last update</th>
                     <td>
-                        <div id="lastUpdateRange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                        <div id="lastUpdateRange" class="pull-right range-input" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
                             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
                             <span></span> <b class="caret"></b>
                         </div>
@@ -50,9 +50,10 @@
                 <tr>
                     <th>Created</th>
                     <td>
-                        <input type="text" class="input_type09" ng-model="searchValues.createdStart">
-                        <span> ~ </span>
-                        <input type="text" class="input_type09" ng-model="searchValues.createdEnd">
+                        <div id="createdRange" class="pull-right range-input" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                            <span></span> <b class="caret"></b>
+                        </div>
                     </td>
                     <th>Mobile</th>
                     <td>
@@ -62,7 +63,7 @@
             </tbody>
         </table>
         <button type="button" class="blue-button search" ng-click="search();">Search</button>
-        <button type="button" class="blue-button clear" ng-click="clear();">Clear</button>
+        <button type="button" class="default-button clear" ng-click="clear();">Clear</button>
     </div>
     <div class="operation-content">
         <table class="tb02">
@@ -98,7 +99,7 @@
                 <td>{{ dateFormat(item.created) }}</td>
                 <td>{{ item.dialogCount }}</td>
                 <td>
-                    <a href="#" class="operation-user-dialog-button">Dialog</a>
+                    <a href="/playchat/user/operation/{{ item._id }}" class="operation-user-dialog-button">Dialog</a>
                 </td>
                 <!--<td>-->
                 <!--<div class="slide on">-->

@@ -14,10 +14,11 @@ angular.module('playchat').controller('LayoutController', ['$location', '$scope'
 
     EventService.subscribeMe();
 
-    var menu = $stateParams.menu ? $stateParams.menu : '';
+    var subpage = $stateParams.subpage ? $stateParams.subpage : '';
     var page = $stateParams.page ? $stateParams.page : 'summary';
+    var detail = $stateParams.detail ? $stateParams.detail: '';
 
-    $scope.page = '/modules/playchat/working-ground/' + page + '/client/views/' + page + (menu ? '-' + menu : '') + '.client.view.html';
+    $scope.page = '/modules/playchat/working-ground/' + page + '/client/views/' + page + (subpage ? '-' + subpage : '') + (detail ? '-detail' : '') + '.client.view.html';
 
     console.log("페이지 : ", $scope.page);
 
