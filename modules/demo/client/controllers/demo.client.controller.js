@@ -219,10 +219,6 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                         context.nlu.matchInfo.qa[i].matchRate = matchRate / 10;
 
                         temp.push(context.nlu.matchInfo.qa[i]);
-                        if(temp.length == 1)
-                        {
-                            temp[0].matchRate += 0.05;
-                        }
                     }
 
                     if(temp.length == 0)
@@ -232,6 +228,12 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                     }
                     else
                     {
+                        temp.sort(function(a, b)
+                        {
+                            return b.matchRate - a.matchRate;
+                        });
+
+                        temp[0].matchRate += 0.05;
                         $scope.diagram.turnTaking = 1;
                         $scope.diagram.suggestion = temp;
 
