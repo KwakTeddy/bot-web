@@ -14,6 +14,8 @@ var UserDictionary = require(path.resolve('./engine/bot/engine/nlp/userDictionar
 var SentenceInfo = require(path.resolve('./engine/bot/engine/nlp/sentenceInfo.js'));
 var TurnTaking = require(path.resolve('./engine/bot/engine/nlp/turnTaking.js'));
 var turnTaking = new TurnTaking("en");
+var Typos = require(path.resolve('./engine/bot/engine/nlp/typos.js'));
+var typos = new Typos("en");
 
 var NLPUtil = require(path.resolve('./engine/bot/engine/nlp/nlpUtil.js'));
 
@@ -85,6 +87,9 @@ function processInput(context, inRaw, callback) {
                     // 사용자 사전 적용
                     for (var i=0; i<result.length; i++) {
                         var entry = {};
+                        //var tempStr = typos.checkAndReplace('en', textArr[i]);
+                        //if (tempStr == "")  continue;
+
                         entry["text"] = textArr[i];
                         entry["pos"] = result[i];
 
