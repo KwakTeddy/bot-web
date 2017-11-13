@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playchat').controller('SummaryController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService', function ($window, $scope, $resource, $cookies, $location, $compile, TabService)
+angular.module('playchat').controller('SummaryController', ['$window', '$scope', function ($window, $scope)
 {
     $scope.$parent.loaded('working-ground');
 }]);

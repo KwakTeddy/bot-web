@@ -638,14 +638,14 @@ exports.matchDialogs = matchDialogs;
 
 function executeDialog(dialog, context, print, callback, options) {
   if(dialog.name || dialog.input) {
-    console.log('executeDialog: ' + toDialogString(dialog) + ' options= ' + (options?options.prefix: ''), context);
+    // console.log('executeDialog: ' + toDialogString(dialog) + ' options= ' + (options?options.prefix: ''), context);
 
     var contexts;
     if(context.botUser.contexts) contexts = context.botUser.contexts.map(function(i) { return i.name; });
 
-    if(dialog) console.log('[DIALOG_SEL]' + JSON.stringify({id: dialog.id, name: dialog.name, input: dialog.input,
-        contexts: contexts, intent: context.botUser.intent,
-        entities: context.botUser.entities}), context);
+    // if(dialog) console.log('[DIALOG_SEL]' + JSON.stringify({id: dialog.id, name: dialog.name, input: dialog.input,
+    //     contexts: contexts, intent: context.botUser.intent,
+    //     entities: context.botUser.entities}), context);
   }
 
   // context.botUser.currentDialog = null;

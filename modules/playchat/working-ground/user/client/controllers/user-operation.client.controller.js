@@ -1,7 +1,5 @@
 'use strict';
 
-//플레이챗 전반적인 관리
-
 angular.module('playchat').controller('OperationUserController', ['$window', '$scope', '$resource', '$cookies', '$location', '$element', 'PagingService', function ($window, $scope, $resource, $cookies, $location, $element, PagingService)
 {
     $scope.$parent.changeWorkingGroundName('Operation > User');
@@ -19,9 +17,15 @@ angular.module('playchat').controller('OperationUserController', ['$window', '$s
         var start = moment().subtract(29, 'days');
         var end = moment();
 
-        function cb(start, end) {
-            $('#lastUpdateRange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-        }
+        var rangeCallback = function(id)
+        {
+            return function cb(start, end){
+                angular.element('#' + id + ' span').html(start.format('YYYY/MM/DD') + ' - ' + end.format('YYYY/MM/DD'));
+
+                $scope.searchValues[id.replace('Range', '') + 'Start'] = start.format('YYYY/MM/DD');
+                $scope.searchValues[id.replace('Range', '') + 'End'] = end.format('YYYY/MM/DD');
+            };
+        };
 
         angular.element('#lastUpdateRange').daterangepicker({
             startDate: start,
@@ -34,9 +38,28 @@ angular.module('playchat').controller('OperationUserController', ['$window', '$s
                 'This Month': [moment().startOf('month'), moment().endOf('month')],
                 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             }
-        }, cb);
+        }, rangeCallback('lastUpdateRange'));
 
-        cb(start, end);
+        angular.element('#createdRange').daterangepicker({
+            startDate: start,
+            endDate: end,
+            ranges: {
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
+        }, rangeCallback('createdRange'));
+
+        // $('#lastUpdateRange span').html(start.format('YYYY/MM/DD') + ' - ' + end.format('YYYY/MM/DD'));
+        // $('#createdRange span').html(start.format('YYYY/MM/DD') + ' - ' + end.format('YYYY/MM/DD'));
+
+        // $scope.searchValues.lastUpdateStart = start.format('YYYY/MM/DD');
+        // $scope.searchValues.lastUpdateEnd = end.format('YYYY/MM/DD');
+        // $scope.searchValues.createdStart = start.format('YYYY/MM/DD');
+        // $scope.searchValues.createdEnd = end.format('YYYY/MM/DD');
     })();
 
     (function()
@@ -59,8 +82,16 @@ angular.module('playchat').controller('OperationUserController', ['$window', '$s
 
         $scope.search = function()
         {
-            var value = angular.element('#operationSearchInput').val();
-            $scope.getList(1, value);
+            if($scope.isAdvancedMode)
+            {
+                console.log('서치 : ', $scope.searchValues);
+                $scope.getList(1);
+            }
+            else
+            {
+                var value = angular.element('#operationSearchInput').val();
+                $scope.getList(1, value);
+            }
         };
 
         $scope.clear = function()
@@ -76,6 +107,8 @@ angular.module('playchat').controller('OperationUserController', ['$window', '$s
                 createdStart: '',
                 createdEnd: ''
             };
+
+            angular.element('.range-input span').html('');
         };
 
         $scope.getList = function(page, searchValue)
@@ -98,14 +131,11 @@ angular.module('playchat').controller('OperationUserController', ['$window', '$s
                     query.userKey = searchValue;
                 }
             }
-
-            var searchString = angular.toJson($scope.searchValues);
-            if(searchString)
+            else if($scope.isAdvancedMode)
             {
-                var searchObject = JSON.parse(searchString);
-                for(var key in searchObject)
+                for(var key in $scope.searchValues)
                 {
-                    query[key] = searchObject[key];
+                    query[key] = $scope.searchValues[key];
                 }
             }
 
