@@ -233,7 +233,8 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                             return b.matchRate - a.matchRate;
                         });
 
-                        temp[0].matchRate += 0.05;
+                        if(temp[0].matchRate < 1)
+                            temp[0].matchRate += 0.05;
                         $scope.diagram.turnTaking = 1;
                         $scope.diagram.suggestion = temp;
 
