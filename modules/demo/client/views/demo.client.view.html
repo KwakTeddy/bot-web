@@ -85,6 +85,8 @@ video
     min-height: 70px;
 
     opacity: 0;
+
+    border: 1px solid #ddd;
 }
 
 .diagram.show
@@ -164,12 +166,18 @@ canvas {
     width: 300px;
     height: 100px;
 }
+
+    tr.bold td:first-child
+    {
+        font-size: 20px;
+        font-weight: bold;
+    }
 </style>
 
 <div class="demo-screen">
     <video id="video" autoplay></video>
     <div class="diagram-container">
-        <div class="diagram" style="top: 10px; left: 750px; width: 300px; height: 130px;" ng-class="diagram.profile == undefined ? 'hide' : 'show'">
+        <div class="diagram" style="top: 10px; left: 520px; width: 300px; height: 130px;" ng-class="diagram.profile == undefined ? 'hide' : 'show'">
             <table style="margin: 0;">
                 <colgroup>
                     <col style="width: 40%;"/>
@@ -179,7 +187,7 @@ canvas {
                 <tbody>
                 <tr>
                     <td>Gender</td>
-                    <td>Male</td>
+                    <td>Female</td>
                 </tr>
                 <tr>
                     <td>Age</td>
@@ -214,7 +222,7 @@ canvas {
             <div class="diagram-label" style="text-align: right;">NLP</div>
         </div>
 
-        <div class="diagram" id="intentDiagram" style="top: 350px; left: 80px; width: 300px;" ng-class="diagram.context != undefined || diagram.intent != undefined || diagram.entity != undefined || diagram.turnTaking != undefined ? 'show' : 'hide'">
+        <div class="diagram" id="intentDiagram" style="top: 250px; left: 80px; width: 300px;" ng-class="diagram.context != undefined || diagram.intent != undefined || diagram.entity != undefined || diagram.turnTaking != undefined ? 'show' : 'hide'">
             <table ng-if="diagram.context != undefined">
                 <colgroup>
                     <col style="width: 60%;"/>
@@ -238,7 +246,7 @@ canvas {
                 </colgroup>
                 <tbody>
                 <tr>
-                    <td>{{ diagram.intent.name }}</td>
+                    <td style="font-weight: bold; font-size: 20px; font-style: italic;">{{ diagram.intent.name }}</td>
                     <td>
                         <span class="progress-box" ng-class="diagram.intent.matchRate > 0 ? 'show' : 'hide'"></span>
                         <span class="progress-box" ng-class="diagram.intent.matchRate > 0.1 ? 'show' : 'hide'"></span>
@@ -306,7 +314,7 @@ canvas {
             <div class="diagram-label" style="text-align: right;" ng-if="diagram.turnTaking != undefined">TURN TAKING</div>
         </div>
 
-        <div class="diagram" id="suggestionDiagram" style="bottom: 50px; left: 470px; width: 45%; height: 50px; overflow: hidden;" ng-class="diagram.suggestion.length > 0 ? 'show' : 'hide'">
+        <div class="diagram" id="suggestionDiagram" style="bottom: 50px; left: 300px; width: 45%; height: 50px; overflow: hidden;" ng-class="diagram.suggestion.length > 0 ? 'show' : 'hide'">
             <div class="diagram-label">SUGGESTION</div>
             <table>
                 <colgroup>
@@ -315,7 +323,7 @@ canvas {
                     <col style="width: 10%;"/>
                 </colgroup>
                 <tbody>
-                    <tr ng-repeat="item in diagram.suggestion">
+                    <tr ng-repeat="item in diagram.suggestion" ng-class="$index == 0 ? 'bold' : ''">
                         <td><span>{{ item.output }}</span></td>
                         <td>
                             <span class="progress-box" ng-class="item.matchRate > 0 ? 'show' : 'hide'"></span>
@@ -337,7 +345,7 @@ canvas {
             </table>
         </div>
 
-        <div class="diagram" id="emotionDiagram" style="top: 80px; right: 100px; width: 300px; height: 250px;" ng-class="diagram.emotion == undefined ? 'hide' : 'show'">
+        <div class="diagram" id="emotionDiagram" style="top: 10px; right: 100px; width: 300px; height: 250px;" ng-class="diagram.emotion == undefined ? 'hide' : 'show'">
             <table>
                 <colgroup>
                     <col style="width: 55%;"/>
@@ -368,7 +376,7 @@ canvas {
             <div class="diagram-label" style="text-align: right;">EMOTION</div>
         </div>
 
-        <div class="diagram" id="speechDiagram" style="top: 400px; right: 100px; width: 300px; height: 250px;" ng-class="diagram.speech == undefined ? 'hide' : 'show'">
+        <div class="diagram" id="speechDiagram" style="top: 310px; right: 100px; width: 300px; height: 210px;" ng-class="diagram.speech == undefined ? 'hide' : 'show'">
 
             <table>
                 <colgroup>

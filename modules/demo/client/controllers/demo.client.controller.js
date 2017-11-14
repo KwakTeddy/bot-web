@@ -137,6 +137,7 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                 clearTimeout(analyticsTimer);
 
                 $scope.diagram.profile = {};
+                $scope.diagram.turnTaking = 0;
 
                 var context = data;
                 if(context.nlu.nlp)
@@ -169,7 +170,7 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                     }
                 }
 
-                if(context.entities)
+                if(context.entities && Object.keys(context.entities).length > 0)
                 {
                     $scope.diagram.entity = [];
                     for(var key in context.entities)
@@ -185,14 +186,14 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                     $scope.diagram.entity = undefined;
                 }
 
-                if(context.turnTaking)
-                {
-                    $scope.diagram.turnTaking = context.turnTaking;
-                }
-                else
-                {
-                    $scope.diagram.turnTaking = undefined;
-                }
+                // if(context.turnTaking)
+                // {
+                //     $scope.diagram.turnTaking = context.turnTaking;
+                // }
+                // else
+                // {
+                //     $scope.diagram.turnTaking = undefined;
+                // }
 
                 if(Object.keys(context.nlu.contextInfo.contextHistory[0]).length > 0)
                 {
@@ -223,9 +224,18 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                     if(temp.length == 0)
                     {
                         // recognizeStart();
+                        $scope.diagram.turnTaking = getRandomInt(1, 8) / 10;
                     }
                     else
                     {
+                        temp.sort(function(a, b)
+                        {
+                            return b.matchRate - a.matchRate;
+                        });
+
+                        if(temp[0].matchRate < 1)
+                            temp[0].matchRate += 0.05;
+                        $scope.diagram.turnTaking = 1;
                         $scope.diagram.suggestion = temp;
 
                         setTimeout(function()
@@ -234,13 +244,16 @@ var myWorker = new Worker("/lib/tracking/tracking-worker.js");
                             angular.element('#suggestionDiagram').css('height', height.replace('px', '')*1 + 40 + 'px');
                         }, 100);
                     }
+
+                    console.log('turnTaking: ', $scope.diagram.turnTaking);
                 }
                 else
                 {
                     // recognizeStart();
+                    $scope.diagram.turnTaking = 0;
                 }
 
-                $scope.diagram.profile.age = getRandomInt(30, 40);
+                $scope.diagram.profile.age = getRandomInt(25, 35);
                 $scope.diagram.profile.language = [];
 
                 data.language.sort(function(a, b)
