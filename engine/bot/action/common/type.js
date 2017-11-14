@@ -401,15 +401,24 @@ function processOutput(task, context, out) {
             if (context.botUser.nlu.sentence.substr(0, 1) != ":") {
                 if (topScoreCount == 0) {
                     //out = out.replace(/%2B/g, '+');
-                    out = "알아듣지 못했습니다";
+                    if (context.botUser.language == "en") {
+                        out = "I didn't understand.";
+                    } else {
+                        out = "알아듣지 못했습니다";
+                    }
                 } else if (topScoreCount > 1 && contextCount > 1) {
                     out = "";
                     for (var i = 0; i < topScoreCount; i++) {
                         if (i > 0) out += " ";
                         out += context.botUser.nlu.matchInfo.qa[i].context.name + "?";
                         if (i > 2) {
-                            out += " 등 모호하네요. 좀 더 자세히 이야기해 주세요.";
-                            break;
+                            if (context.botUser.language == "en") {
+                                out += "... please tell me more detail.";
+                                break;
+                            } else {
+                                out += " 등 모호하네요. 좀 더 자세히 이야기해 주세요.";
+                                break;
+                            }
                         }
                     }
                 } else {

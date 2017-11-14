@@ -5,7 +5,64 @@ var mongoModule = require(path.resolve('./engine/bot/action/common/mongo'));
 var toneModule = require(path.resolve('./engine/bot/action/common/tone'));
 
 function factsTypeCheck(text, format, inDoc, context, callback) {
-    if (context.botUser.language == "zh") {
+    if (context.botUser.language == "en") {
+
+        // 영어
+        if (!context.bot.useMemoryFacts || context.botUser.nlu.sentenceInfo != 2) {
+            callback(text, inDoc, false);
+            return;
+        }
+
+        var node1;
+        for (var j = 0; j < context.botUser.nlp.length; j++) {
+            var token1 = context.botUser.nlp[j];
+            if (token1.pos == 'Noun' || token1.pos == 'Pronoun' || token1.pos == 'Foreign') {
+                node1 = token1.text;
+                break;
+            }
+        }
+
+        var edge;
+        for (var j = 0; j < context.botUser.nlp.length; j++) {
+            var token1 = context.botUser.nlp[j];
+            if (token1.pos == 'Verb' || token1.pos == 'Adjective') {
+                edge = token1.text;
+                break;
+            }
+        }
+
+        var edges = [{link: edge}];
+        var query = {botUser: {$ne: null}};
+        if (edges.length == 1) query = edges[0];
+        else {
+            query = {$or: []};
+            for (var i = 0; i < edges.length; i++) {
+                query.$or.push(edges[i]);
+            }
+        }
+
+        query['botUser'] = context.user.userKey;
+
+        var model = mongoModule.getModel('factlink', undefined);
+        model.find(query, null, {sort: {created: -1}}, function (err, docs) {
+            if (docs && docs.length > 0) {
+                var _node1 = docs[0]._doc.node1;
+                var _node2 = docs[0]._doc.node2;
+                var _link = docs[0]._doc.link;
+
+                inDoc._output = _node1 + ' ' + _link + ' ' + _node2;
+
+                toneModule.toneSentence(inDoc._output, context.botUser.tone || '해요체', function (out) {
+                    inDoc._output = out;
+
+                    callback(text, inDoc, true);
+                });
+
+            } else {
+                callback(text, inDoc, false);
+            }
+        });
+    } else if (context.botUser.language == "zh") {
         // 중국어
         if (!context.bot.useMemoryFacts || context.botUser.nlu.sentenceInfo != 2 || context.botUser.sentenceInfo.verbToken == undefined) {
             callback(text, inDoc, false);
