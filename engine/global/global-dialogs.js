@@ -50,7 +50,7 @@ function factsTypeCheck(text, format, inDoc, context, callback) {
                 var _node2 = docs[0]._doc.node2;
                 var _link = docs[0]._doc.link;
 
-                inDoc._output = _node1 + ' ' + _link + ' ' + _node2;
+                inDoc._output = _node1 + ' ' + _link + '' + _node2;
 
                 toneModule.toneSentence(inDoc._output, context.botUser.tone || '해요체', function (out) {
                     inDoc._output = out;
