@@ -660,7 +660,51 @@ function analysisDoc(doc, bot_id, bot_name, cb) {
 
                 if (nlu.sentenceInfo == 0) {
                     // 평서문이라면 확인
-                    if (context.botUser.language == "zh") {
+                    if (context.botUser.language == "en") {
+                        var index = -1, mode = 0; // 1: the first noun, 2: verb, 3: the second noun
+                        for (var i = 0; i < nlp.length; i++) {
+                            var token = nlp[i];
+                            if (isNaN(token.text) != true) continue;
+                            if (node1 == token.text) continue;
+                            if (token.text == "the" || token.text == "a" || token.text == "an") continue;
+
+                            var lastChar = token.text.charAt(token.text.length-1);
+                            if (lastChar == "." || lastChar == "!" || lastChar == "?") {
+                                if (mode == 0 || mode == 1) {
+                                    mode = 0;
+                                    node1 = ""; node2 = ""; link = "";
+                                }
+                                continue;
+                            }
+
+                            // 초기화
+                            if (mode==1) {
+                                if (token.pos == 'Noun' || token.pos == 'Pronoun' || token.pos == 'Foreign') {
+                                    mode = 0;
+                                    node1 = ""; node2 = ""; link = "";
+                                }
+                            }
+
+                            if (mode == 0) {
+                                if (token.pos == 'Noun' || token.pos == 'Pronoun' || token.pos == 'Foreign') {
+                                    node1 = token.text;
+                                    mode = 1;
+                                    index = i;
+                                }
+                            } else if (mode == 1) {
+                                if (token.pos == 'Adjective' || token.pos == 'Verb') {
+                                    link = token.text;
+                                    mode = 2;
+                                    index = i;
+                                }
+                            } else if (mode == 2) {
+                                if (token.pos == 'Noun' || token.pos == 'Foreign') {
+                                    node2 = token.text;
+                                    break;
+                                }
+                            }
+                        }
+                    } else if (context.botUser.language == "zh") {
                         var mode = 0; // 1: the first noun, 2: verb, 3: the second noun
                         for (var i = 0; i < nlp.length - 1; i++) {
                             var token = nlp[i];
@@ -757,7 +801,51 @@ function analysisDoc(doc, bot_id, bot_name, cb) {
 
             if (nlu.sentenceInfo == 0) {
                 // 평서문이라면 확인
-                if (context.botUser.language == "zh") {
+                if (context.botUser.language == "en") {
+                    var index = -1, mode = 0; // 1: the first noun, 2: verb, 3: the second noun
+                    for (var i = 0; i < nlp.length; i++) {
+                        var token = nlp[i];
+                        if (isNaN(token.text) != true) continue;
+                        if (node1 == token.text) continue;
+                        if (token.text == "the" || token.text == "a" || token.text == "an") continue;
+
+                        var lastChar = token.text.charAt(token.text.length-1);
+                        if (lastChar == "." || lastChar == "!" || lastChar == "?") {
+                            if (mode == 0 || mode == 1) {
+                                mode = 0;
+                                node1 = ""; node2 = ""; link = "";
+                            }
+                            continue;
+                        }
+
+                        // 초기화
+                        if (mode==1) {
+                            if (token.pos == 'Noun' || token.pos == 'Pronoun' || token.pos == 'Foreign') {
+                                mode = 0;
+                                node1 = ""; node2 = ""; link = "";
+                            }
+                        }
+
+                        if (mode == 0) {
+                            if (token.pos == 'Noun' || token.pos == 'Pronoun' || token.pos == 'Foreign') {
+                                node1 = token.text;
+                                mode = 1;
+                                index = i;
+                            }
+                        } else if (mode == 1) {
+                            if (token.pos == 'Adjective' || token.pos == 'Verb') {
+                                link = token.text;
+                                mode = 2;
+                                index = i;
+                            }
+                        } else if (mode == 2) {
+                            if (token.pos == 'Noun' || token.pos == 'Foreign') {
+                                node2 = token.text;
+                                break;
+                            }
+                        }
+                    }
+                } else if (context.botUser.language == "zh") {
                     var mode = 0; // 1: the first noun, 2: verb, 3: the second noun
                     for (var i = 0; i < nlp.length - 1; i++) {
                         var token = nlp[i];
