@@ -480,7 +480,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                                                     index = i;
                                                 }
                                             } else if (mode == 2) {
-                                                if (token.pos == 'Noun' || token.pos == 'Pronoun' || token.pos == 'Foreign') {
+                                                if (token.pos == 'Noun' || token.pos == 'Foreign') {
                                                     node2 = token.text;
                                                     break;
                                                 }

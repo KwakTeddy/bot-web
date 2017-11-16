@@ -25,11 +25,20 @@ function memoryFacts(inRaw, context, callback) {
             if (node1 == token.text) continue;
             if (token.text == "the" || token.text == "a" || token.text == "an") continue;
 
+            var lastChar = token.text.charAt(token.text.length-1);
+            if (lastChar == "." || lastChar == "!" || lastChar == "?") {
+                if (mode == 0 || mode == 1) {
+                    mode = 0;
+                    node1 = ""; node2 = ""; link = "";
+                }
+                continue;
+            }
+
             // 초기화
             if (mode==1) {
                 if (token.pos == 'Noun' || token.pos == 'Pronoun' || token.pos == 'Foreign') {
                     mode = 0;
-                    node1 = "";
+                    node1 = ""; node2 = ""; link = "";
                 }
             }
 
@@ -46,7 +55,7 @@ function memoryFacts(inRaw, context, callback) {
                     index = i;
                 }
             } else if (mode == 2) {
-                if (token.pos == 'Noun' || token.pos == 'Pronoun' || token.pos == 'Foreign') {
+                if (token.pos == 'Noun' || token.pos == 'Foreign') {
                     node2 = token.text;
                     break;
                 }
