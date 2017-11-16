@@ -15,7 +15,8 @@ var BotUserSchema = new Schema(
     lat: Number,
     created: { type: Date, default: Date.now },
     confirmTerms: Boolean,
-    botId: []
+    botId: [],
+    memo: []
 });
 
 mongoose.model('BotUser', BotUserSchema);

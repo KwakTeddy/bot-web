@@ -138,23 +138,38 @@ module.exports.findOne = function(req, res)
         else
         {
             item = JSON.parse(JSON.stringify(item));
-            UserDialog.findOne({ botId: req.params.botId, userId: item.userKey }).sort('-created').exec(function(err, userDialog)
+            UserDialog.find({ botId: req.params.botId, userId: item.userKey }).limit(50).sort('-created').sort('-inOut').exec(function(err, userDialog)
             {
                 if(err)
                 {
                     return res.status(400).send({ message: err.stack || err });
                 }
 
-                if(userDialog)
-                {
-                    logger.systemLog('우이야 : ', JSON.stringify(userDialog));
-                    // userDialog가 있으면 lastUpdate에 created를 저장해주고.
-                    item.lastUpdate = userDialog.created;
-                    item.newMsg = userDialog.dialog;
-                }
+                item.userDialog = userDialog;
+                // if(userDialog)
+                // {
+                //     // userDialog가 있으면 lastUpdate에 created를 저장해주고.
+                //     item.lastUpdate = userDialog.created;
+                //     item.newMsg = userDialog.dialog;
+                // }
 
                 res.jsonp(item);
             });
+        }
+    });
+};
+
+module.exports.saveMemo = function(req, res)
+{
+    BotUser.update({ botId: req.params.botId, _id: req.params._id }, { memo: req.body.memo }, function(err)
+    {
+        if(err)
+        {
+            res.status(400).send({ message: err.stack || err });
+        }
+        else
+        {
+            res.end();
         }
     });
 };

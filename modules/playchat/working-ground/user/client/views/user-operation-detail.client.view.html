@@ -19,7 +19,7 @@
                 </td>
                 <th>New Msg</th>
                 <td>
-                    <input type="text" class="input_type09" ng-model="data.newMsg" disabled="true">
+                    <input type="text" class="input_type09" ng-model="data.newMsg" disabled="true" style="width: 90%;">
                 </td>
             </tr>
             <tr>
@@ -38,16 +38,19 @@
     <div class="operation-active-area">
         <p class="operation-active-area-title">New Memo</p>
         <div class="user-operation-memo-area">
-            <textarea placeholder="Enter memo"></textarea>
+            <textarea placeholder="Enter memo" ng-model="data.memo"></textarea>
             <div style="text-align: right;">
-                <button type="button" class="blue-button">Save</button>
+                <button type="button" class="blue-button" ng-click="saveUserMemo();">Save</button>
             </div>
         </div>
     </div>
     <div class="user-operation-history-area">
         <p class="operation-history-title">History</p>
-        <div class="operation-history-card">
-
+        <div class="operation-history-card" ng-repeat="dialog in data.userDialog">
+            <div class="operation-history-card-content">
+                {{ dialog.dialog }}
+            </div>
+            <span class="operation-history-card-date">{{ formatDate(dialog.created) }}</span>
         </div>
     </div>
 </div>

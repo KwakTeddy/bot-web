@@ -144,6 +144,11 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket)
             simulatorBody.html('');
             $resource('/api/chatbots/:id', { id: '@id' }).get({ id: chatbot._id }, function(data)
             {
+                if(angular.element('.simulator-background input').parent().is(':hidden'))
+                {
+                    return;
+                }
+
                 $scope.chatbotName = data.name;
                 emitMsg(':reset user', false);
             }, Beagle.error);
@@ -154,6 +159,30 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket)
             console.log('빌드');
             clearBubble();
             emitMsg(':build', false);
+        });
+
+        $scope.$on('set-simulator-content', function(context, data)
+        {
+            for(var i=data.dialog.length-1; i>=0; i--)
+            {
+                if(data.dialog[i].inOut)
+                {
+                    addUserBubble(data.dialog[i].dialog);
+                }
+                else
+                {
+                    addBotBubble(data.dialog[i].dialog);
+                }
+            }
+
+            if(data.readonly)
+            {
+                angular.element('.simulator-background input').parent().hide();
+            }
+            else
+            {
+                angular.element('.simulator-background input').parent().show();
+            }
         });
 
         $scope.init();
