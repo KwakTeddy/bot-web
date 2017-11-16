@@ -76,6 +76,20 @@ function processInput(context, inRaw, callback) {
                 var mb_user_tag = dicResult[2];
                 var position = -1;
 
+                var tempInRaw = "";
+                var arr = inRaw.split(" ");
+                for (var i=0; i<arr.length; i++) {
+                    if (i>0) tempInRaw += " ";
+                    var tempStr = typos.checkAndReplace('en', arr[i]);
+
+                    if (tempStr == "") {
+                        tempInRaw += arr[i];
+                    } else {
+                        tempInRaw += tempStr;
+                    }
+                }
+                inRaw = tempInRaw;
+
                 posTagger.tag(inRaw, function(err, result) {
                     var _inNLP = [];
                     if (!result) result = _inRaw;
@@ -87,11 +101,18 @@ function processInput(context, inRaw, callback) {
                     // 사용자 사전 적용
                     for (var i=0; i<result.length; i++) {
                         var entry = {};
-                        //var tempStr = typos.checkAndReplace('en', textArr[i]);
-                        //if (tempStr == "")  continue;
 
                         entry["text"] = textArr[i];
                         entry["pos"] = result[i];
+                        if (entry.text == 'like' || entry.text == 'like.' || entry.text == 'like?') {
+                            entry.pos = 'Verb'
+                        }
+                        if (entry.text == 'apple' || entry.text == 'apple.'|| entry.text == 'apple?') {
+                            entry.pos = 'Noun'
+                        }
+                        if (entry.text == 'i' || entry.text == 'I') {
+                            entry.pos = 'Pronoun'
+                        }
 
                         for (var key in dicResult[1]) {
                             position = entry.text.indexOf(key);
@@ -246,6 +267,9 @@ function processLiveInput(inRaw, callback) {
                     var entry = {};
                     entry["text"] = textArr[i];
                     entry["pos"] = result[i];
+                    if (entry.text == 'like') {
+                        entry.pos = 'Verb'
+                    }
 
                     for (var key in dicResult[1]) {
                         position = entry.text.indexOf(key);

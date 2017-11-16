@@ -16,6 +16,14 @@ function factsTypeCheck(text, format, inDoc, context, callback) {
         var node1;
         for (var j = 0; j < context.botUser.nlp.length; j++) {
             var token1 = context.botUser.nlp[j];
+            if (token1.text.toLowerCase() == 'what' ||
+                token1.text.toLowerCase() == 'who' ||
+                token1.text.toLowerCase() == 'why' ||
+                token1.text.toLowerCase() == 'how' ||
+                token1.text.toLowerCase() == 'when' ||
+                token1.text.toLowerCase() == 'where') {
+                continue;
+            }
             if (token1.pos == 'Noun' || token1.pos == 'Pronoun' || token1.pos == 'Foreign') {
                 node1 = token1.text;
                 break;
@@ -26,10 +34,24 @@ function factsTypeCheck(text, format, inDoc, context, callback) {
         for (var j = 0; j < context.botUser.nlp.length; j++) {
             var token1 = context.botUser.nlp[j];
             if (token1.pos == 'Verb' || token1.pos == 'Adjective') {
-                edge = token1.text;
+                if (j<3 && (token1.text =='do' || token1.text =='did')) {
+                    if (context.botUser.nlp[0].text.toLowerCase() == 'what' ||
+                        context.botUser.nlp[0].text.toLowerCase() == 'who' ||
+                        context.botUser.nlp[0].text.toLowerCase() == 'why' ||
+                        context.botUser.nlp[0].text.toLowerCase() == 'how' ||
+                        context.botUser.nlp[0].text.toLowerCase() == 'when' ||
+                        context.botUser.nlp[0].text.toLowerCase() == 'where') {
+                        continue;
+                    }
+                }
+                edge = token1.text.replace(/[\?\.!]/gi, "");
                 break;
             }
         }
+
+        console.log("input: " + JSON.stringify(context.botUser.nlp));
+        console.log("input---node1: " + node1);
+        console.log("input---edge: " + edge);
 
         var edges = [{link: edge}];
         var query = {botUser: {$ne: null}};
@@ -50,7 +72,24 @@ function factsTypeCheck(text, format, inDoc, context, callback) {
                 var _node2 = docs[0]._doc.node2;
                 var _link = docs[0]._doc.link;
 
-                inDoc._output = _node1 + ' ' + _link + '' + _node2;
+                switch (_node1.toLowerCase()) {
+                    case 'i'  :
+                        _node1 = 'you';
+                        break;
+                    case 'you' :
+                        _node1 = 'i';
+                        break;
+                }
+                switch (_link.toLowerCase()) {
+                    case 'am'  :
+                        _link = 'are';
+                        break;
+                    case 'are' :
+                        _link = 'am';
+                        break;
+                }
+
+                inDoc._output = _node1 + ' ' + _link + ' ' + _node2;
 
                 toneModule.toneSentence(inDoc._output, context.botUser.tone || '해요체', function (out) {
                     inDoc._output = out;

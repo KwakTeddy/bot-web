@@ -443,6 +443,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                                 var nlp = res.botUser.nlu["nlp"];
                                 var nlu = res.botUser.nlu;
                                 var node1, node2, link;
+                                var allPronoun = 0;
                                 var context = null;
                                 console.log("analysisDoc >> " + nlu.sentence);
                                 console.log("nlp >> " + JSON.stringify( nlp ));
@@ -461,9 +462,10 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
 
                                             // 초기화
                                             if (mode==1) {
-                                                if (token.pos == 'Noun' || token.pos == 'Pronoun' || token.pos == 'Foreign') {
+                                                if (token.pos == 'Pronoun' || token.pos == 'Foreign') {
                                                     mode = 0;
                                                     node1 = "";
+                                                    allPronoun = 0;
                                                 }
                                             }
 
@@ -472,6 +474,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                                                     node1 = token.text;
                                                     mode = 1;
                                                     index = i;
+                                                    if (token.pos == 'Pronoun') allPronoun = 1;
                                                 }
                                             } else if (mode == 1) {
                                                 if (token.pos == 'Adjective' || token.pos == 'Verb') {
@@ -482,6 +485,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                                             } else if (mode == 2) {
                                                 if (token.pos == 'Noun' || token.pos == 'Foreign') {
                                                     node2 = token.text;
+                                                    if (token.pos == 'Pronoun') allPronoun = 1;
                                                     break;
                                                 }
                                             }
@@ -535,6 +539,14 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                                     }
 
                                     if (node1 && node2 && link) {
+                                        var tempNode1 = node1.toLowerCase();
+                                        var tempNode2 = node2.toLowerCase();
+                                        if (tempNode1=='it' || tempNode1=='that' || tempNode1=="I've" || tempNode2=="my") {
+                                            node1 = ''; node2 = ''; link = '';
+                                        }
+                                        if (tempNode2=='it' || tempNode2=='that' || tempNode2=="I've" || tempNode2=="my") {
+                                            node1 = ''; node2 = ''; link = '';
+                                        }
                                         node1 = node1.replace(/,/,"");
                                         node2 = node2.replace(/,/,"");
                                         link = link.replace(/,/,"");

@@ -25,10 +25,13 @@ Typos.prototype.read = function (language) {
 }
 
 Typos.prototype.checkAndReplace = function (language, str) {
+    var result = "";
     if (str != undefined && str != null) {
-        if (str in this.dictionary) return this.dictionary[str];
+        if (str in this.dictionary) {
+            result = this.dictionary[str];
+        }
     }
-    return str;
+    return result;
 }
 
 // for node.js library export

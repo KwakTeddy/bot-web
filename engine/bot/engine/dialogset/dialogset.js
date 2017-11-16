@@ -803,6 +803,7 @@ function analysisDoc(doc, bot_id, bot_name, cb) {
                 // 평서문이라면 확인
                 if (context.botUser.language == "en") {
                     var index = -1, mode = 0; // 1: the first noun, 2: verb, 3: the second noun
+                    var allPronoun = 0;
                     for (var i = 0; i < nlp.length; i++) {
                         var token = nlp[i];
                         if (isNaN(token.text) != true) continue;
@@ -814,6 +815,7 @@ function analysisDoc(doc, bot_id, bot_name, cb) {
                             if (mode == 0 || mode == 1) {
                                 mode = 0;
                                 node1 = ""; node2 = ""; link = "";
+                                allPronoun = 0;
                             }
                             continue;
                         }
@@ -823,6 +825,7 @@ function analysisDoc(doc, bot_id, bot_name, cb) {
                             if (token.pos == 'Noun' || token.pos == 'Pronoun' || token.pos == 'Foreign') {
                                 mode = 0;
                                 node1 = ""; node2 = ""; link = "";
+                                allPronoun = 0;
                             }
                         }
 
@@ -831,6 +834,7 @@ function analysisDoc(doc, bot_id, bot_name, cb) {
                                 node1 = token.text;
                                 mode = 1;
                                 index = i;
+                                if (token.pos = 'Pronoun') allPronoun = 1;
                             }
                         } else if (mode == 1) {
                             if (token.pos == 'Adjective' || token.pos == 'Verb') {
@@ -839,11 +843,15 @@ function analysisDoc(doc, bot_id, bot_name, cb) {
                                 index = i;
                             }
                         } else if (mode == 2) {
-                            if (token.pos == 'Noun' || token.pos == 'Foreign') {
+                            if (token.pos == 'Noun' || token.pos == 'Foreign' || token.pos == 'Pronoun') {
                                 node2 = token.text;
+                                if (token.pos = 'Pronoun') allPronoun = 2;
                                 break;
                             }
                         }
+                    }
+                    if (allPronoun == 2) {
+                        node1 = ""; node2 = ""; link = "";
                     }
                 } else if (context.botUser.language == "zh") {
                     var mode = 0; // 1: the first noun, 2: verb, 3: the second noun
