@@ -298,6 +298,7 @@ angular.module('playchat').controller('GraphKnowledgeController', ['$scope', '$r
             var colors = d3.scale.category20c(d3.range(0,20));
             function fillCircle(d)
             {
+                console.log(d.count, d.weight);
                 if (d.isMain) {
                     // return mainColor;
                     return 'url(#circlegradient)';
