@@ -5,6 +5,7 @@ angular.module('playchat').controller('OperationUserDetailController', ['$window
     $scope.$parent.changeWorkingGroundName('Operation > User Detail');
 
     var BotUserService = $resource('/api/:botId/operation/users/:id', { botId: '@botId', id: '@id' });
+    var MemoService = $resource('/api/:botId/operation/users/:userKey/memo', { botId: '@botId', userKey: '@userKey' });
 
 
     (function()
@@ -34,6 +35,15 @@ angular.module('playchat').controller('OperationUserDetailController', ['$window
                     $rootScope.$broadcast('set-simulator-content', { dialog: $scope.data.userDialog, readonly: true });
 
                     $scope.data.lastUpdate = DateService.formatDate($scope.data.lastUpdate);
+
+                    MemoService.query({ botId: chatbot.id, userKey: $scope.data.userKey }, function(memoList)
+                    {
+                        $scope.data.memos = JSON.parse(JSON.stringify(memoList));
+                    },
+                    function(err)
+                    {
+                        alert(err.data.error || err.data.message);
+                    });
                 }
             },
             function(err)
@@ -44,9 +54,9 @@ angular.module('playchat').controller('OperationUserDetailController', ['$window
 
         $scope.saveUserMemo = function()
         {
-            BotUserService.save({ botId: chatbot.id, id: $scope.data._id, memo: $scope.data.memo }, function(result)
+            MemoService.save({ botId: chatbot.id, userKey: $scope.data.userKey, memo: $scope.memo }, function(result)
             {
-                console.log(result);
+                $scope.data.memos.unshift(JSON.parse(JSON.stringify(result)));
             },
             function(err)
             {

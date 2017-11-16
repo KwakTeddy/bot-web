@@ -5,6 +5,7 @@ var async = require('async');
 var mongoose = require('mongoose');
 
 var BotUser = mongoose.model('BotUser');
+var BotUserMemo = mongoose.model('BotUserMemo');
 var UserDialog = mongoose.model('UserDialog');
 
 var getQuerystring = function(req, query)
@@ -159,9 +160,27 @@ module.exports.findOne = function(req, res)
     });
 };
 
+module.exports.findMemo = function(req, res)
+{
+    BotUserMemo.find({ botId: req.params.botId, userKey: req.params.userKey }).sort('-created').lean().exec(function(err, list)
+    {
+        if(err)
+        {
+            return res.status(400).send({ message: err.stack || err });
+        }
+
+        res.jsonp(list);
+    });
+};
+
 module.exports.saveMemo = function(req, res)
 {
-    BotUser.update({ botId: req.params.botId, _id: req.params._id }, { memo: req.body.memo }, function(err)
+    var memo = new BotUserMemo();
+    memo.botId = req.params.botId;
+    memo.userKey = req.params.userKey;
+    memo.memo = req.body.memo;
+
+    memo.save(function(err)
     {
         if(err)
         {
@@ -169,7 +188,7 @@ module.exports.saveMemo = function(req, res)
         }
         else
         {
-            res.end();
+            res.jsonp(memo);
         }
     });
 };

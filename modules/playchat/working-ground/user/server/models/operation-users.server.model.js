@@ -15,11 +15,20 @@ var BotUserSchema = new Schema(
     lat: Number,
     created: { type: Date, default: Date.now },
     confirmTerms: Boolean,
-    botId: [],
-    memo: []
+    botId: []
 });
 
 mongoose.model('BotUser', BotUserSchema);
+
+var BotUserMemoSchema = new Schema(
+{
+    userKey: { type: String },
+    botId: { type: String },
+    created: { type: Date, default: Date.now },
+    memo: String
+});
+
+mongoose.model('BotUserMemo', BotUserMemoSchema);
 
 
 var UserDialogSchema = new Schema({

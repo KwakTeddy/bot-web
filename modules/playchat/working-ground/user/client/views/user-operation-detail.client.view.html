@@ -38,7 +38,7 @@
     <div class="operation-active-area">
         <p class="operation-active-area-title">New Memo</p>
         <div class="user-operation-memo-area">
-            <textarea placeholder="Enter memo" ng-model="data.memo"></textarea>
+            <textarea placeholder="Enter memo" ng-model="memo"></textarea>
             <div style="text-align: right;">
                 <button type="button" class="blue-button" ng-click="saveUserMemo();">Save</button>
             </div>
@@ -46,11 +46,11 @@
     </div>
     <div class="user-operation-history-area">
         <p class="operation-history-title">History</p>
-        <div class="operation-history-card" ng-repeat="dialog in data.userDialog">
+        <div class="operation-history-card" ng-repeat="memo in data.memos">
             <div class="operation-history-card-content">
-                {{ dialog.dialog }}
+                {{ memo.memo }}
             </div>
-            <span class="operation-history-card-date">{{ formatDate(dialog.created) }}</span>
+            <span class="operation-history-card-date">{{ formatDate(memo.created) }}</span>
         </div>
     </div>
 </div>
