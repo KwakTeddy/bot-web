@@ -124,3 +124,42 @@
     background-color: gray;
     color: white;
 }
+
+.failed-intent
+{
+    margin-top: 28px;
+}
+
+.failed-intent-title
+{
+    display: inline-block;
+    width: 10%;
+    position: relative;
+
+    vertical-align: top;
+}
+
+.failed-intent-title > span
+{
+    position: absolute;
+    top: 0px;
+    right: 20px;
+}
+
+.failed-intent-content
+{
+    display: inline-block;
+    width: 89%;
+    vertical-align: top;
+}
+
+.failed-intent-content td
+{
+    text-align: left !important;
+}
+
+.failed-intent-name
+{
+    border-bottom: 1px solid #c7c7c7;
+    width: 40%;
+}

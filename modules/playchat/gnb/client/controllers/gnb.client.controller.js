@@ -27,9 +27,22 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
         $scope.menus.push({ name: 'Channel', icon: 'channel.png' });
         $scope.menus.push({ name: 'Operating', icon: 'operation.png', childMenus: [
             { name: 'User', url: '/operation/user', icon: 'operation.png' },
-            { name: 'Failed Chat Log', url: '/operation/failed-chat-log', icon: 'operation.png' }
+            { name: 'Human Chat log', url: '/operation/human-chat-log', icon: 'operation.png' },
+            { name: 'AI Chat log', url: '/operation/ai-chat-log', icon: 'operation.png' },
+            { name: 'Failed Chat log', url: '/operation/failed-chat-log', icon: 'operation.png' }
         ] });
-        $scope.menus.push({ name: 'Analysis', icon: 'analysis.png' });
+        $scope.menus.push({ name: 'Analysis', icon: 'analysis.png', childMenus: [
+            { name: 'Summery', url : '/analysis', icon: 'analysis.png' },
+            { name: 'Dialog Traffic', url : '/analysis/dialog-traffic', icon: 'analysis.png' },
+            { name: 'User', url : '/analysis/user', icon: 'analysis.png' },
+            { name: 'Session', url : '/analysis/session', icon: 'analysis.png' },
+            { name: 'Dialog Path', url : '/analysis/dialog-path', icon: 'analysis.png' },
+            { name: 'Dialog Training Usage', url : '/analysis/dialog-training-usage', icon: 'analysis.png' },
+            { name: 'Dialog Graph Usage', url : '/analysis/dialog-graph-usage', icon: 'analysis.png' },
+            { name: 'Dialog Training Input', url : '/analysis/dialog-training-input', icon: 'analysis.png' },
+            { name: 'Dialog Graph Input', url : '/analysis/dialog-graph-input', icon: 'analysis.png' },
+            { name: 'Intent', url : '/analysis/intent', icon: 'analysis.png' }
+        ] });
         $scope.menus.push({ name: 'Setting', icon: 'setting.png' });
 
         $scope.path = $location.path();

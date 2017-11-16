@@ -1,35 +1,30 @@
-<table class="tb02">
+<table class="tb02" style="margin-top: 28px;">
     <colgroup>
-        <col style="width: 30%;">
-        <col style="width: 30%;">
-        <col style="width: 10%;">
-        <col style="width: 20%;">
+        <col style="width: 33%;">
+        <col style="width: 33%;">
+        <col style="width: 7%;">
+        <col style="width: 17%;">
     </colgroup>
     <thead>
     <tr>
-        <th>Pre</th>
-        <th>Last Update</th>
-        <th></th>
-        <!--<th>Usable</th>-->
+        <th>Previous Dialog</th>
+        <th>User Input</th>
+        <th>Count</th>
+        <th>Manage</th>
     </tr>
     </thead>
     <tbody>
-    <tr ng-if="entitys.length == 0">
+    <tr ng-if="list.length == 0">
         <td colspan="4">empty</td>
     </tr>
-    <tr ng-repeat="item in entitys">
-        <td><a href="#" ng-click="modify(item);">{{ item.name }}</a></td>
-        <td>{{ item.user.displayName }}</td>
+    <tr>
+        <td>How are you doing?</td>
+        <td>Dialog Knowledge</td>
+        <td>1213</td>
         <td>
-            <a href="#" class="flR" ng-click="delete(item);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>
-            <a href="#" class="flR mr5" ng-click="modify(item);"><img src="modules/playchat/working-ground/common/client/imgs/modify.png" class="modify-img"></a>
+            <button type="button" class="jump-button">Jump</button>
+            <button type="button" class="ignore-button">ignore</button>
         </td>
-        <!--<td>-->
-        <!--<div class="slide on">-->
-        <!--<input type="checkbox" id="{{ item._id }}" ng-model="item.usable" />-->
-        <!--<label for="{{ item._id }}" ng-click="updateUsable(item);"></label>-->
-        <!--</div>-->
-        <!--</td>-->
     </tr>
     </tbody>
 </table>
