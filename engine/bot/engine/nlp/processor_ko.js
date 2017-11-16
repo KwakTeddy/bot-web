@@ -203,7 +203,6 @@ function processInput(context, inRaw, callback) {
         function(cb) {
             if (inRaw != undefined && inRaw != null && !Array.isArray(inRaw)) {
                 if ("nlu" in context.botUser) {
-                    var turnTaking = new TurnTaking();
                     var value = turnTaking.analyze("ko", context.botUser.nlu);
                     context.botUser.nlu["turnTaking"] = value;
 
