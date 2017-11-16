@@ -171,7 +171,7 @@ angular.module('playchat').controller('GraphKnowledgeController', ['$scope', '$r
 
             var width = document.getElementById('canvas').clientWidth;
             // var height = document.getElementById('sidebar-left').clientHeight;
-            var height = 700;
+            var height = 808;
 
             var force = d3.layout.force()
                           .nodes(d3.values(nodes))

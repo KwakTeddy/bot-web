@@ -3,7 +3,7 @@
 /**
  * Module dependencies
  */
-var facts = require('../controllers/graph-knowledge.server.controller.js');
+var facts = require('../controllers/knowledge-graph.server.controller.js');
 
 module.exports = function(app) {
     app.route('/api/facts')//all(factsPolicy.isAllowed)

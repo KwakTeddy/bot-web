@@ -1,9 +1,9 @@
 <div style="margin-top: 28px;">
-    <div class="failed-dialog-training-row selected">
+    <div class="failed-dialog-training-row selected" ng-click="focusByClick($event)">
         <form ng-submit="save($event);">
             <div class="failed-dialog-training-input">
                 <span class="failed-dialog-question">Hello, how are you?</span>
-                <input type="text" class="failed-dialog-input-raw input_type09" name="failed-dialog-input-raw" value="i am fine, thank you. and you?" ng-required="true">
+                <input type="text" class="failed-dialog-input-raw input_type09" name="failed-dialog-input-raw" value="i am fine, thank you. and you?" ng-click="focus($event);" ng-required="true">
                 <span class="failed-dialog-count">
                     <span>Count</span><br/>
                     <span>11</span>
@@ -31,11 +31,11 @@
             </div>
         </form>
     </div>
-    <div class="failed-dialog-training-row">
+    <div class="failed-dialog-training-row" ng-click="focusByClick($event)">
         <form ng-submit="save($event);">
             <div class="failed-dialog-training-input">
                 <span class="failed-dialog-question">Hello, how are you?</span>
-                <input type="text" class="failed-dialog-input-raw input_type09" name="failed-dialog-input-raw" value="i am fine, thank you. and you?" ng-required="true">
+                <input type="text" class="failed-dialog-input-raw input_type09" name="failed-dialog-input-raw" value="i am fine, thank you. and you?" ng-focus="focus($event);" ng-required="true">
                 <span class="failed-dialog-count">
                     <span>Count</span><br/>
                     <span>11</span>

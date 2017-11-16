@@ -404,6 +404,7 @@ function processOutput(task, context, out) {
                 if (topScoreCount == 0) {
                     //out = out.replace(/%2B/g, '+');
                     out = "알아듣지 못했습니다";
+                    out = 'I don\'t understand';
                 } else if (topScoreCount > 1 && contextCount > 1) {
                     out = "";
                     for (var i = 0; i < topScoreCount; i++) {
