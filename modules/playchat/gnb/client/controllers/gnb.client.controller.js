@@ -27,9 +27,9 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
         $scope.menus.push({ name: 'Channel', icon: 'channel.png' });
         $scope.menus.push({ name: 'Operating', icon: 'operation.png', childMenus: [
             { name: 'User', url: '/operation/user', icon: 'operation.png' },
-            { name: 'Human Chat log', url: '/operation/human-chat-log', icon: 'operation.png' },
-            { name: 'AI Chat log', url: '/operation/ai-chat-log', icon: 'operation.png' },
-            { name: 'Failed Chat log', url: '/operation/failed-chat-log', icon: 'operation.png' }
+            { name: 'Human Chat log', url: '/operation/chat-log/human', icon: 'operation.png' },
+            { name: 'AI Chat log', url: '/operation/chat-log/ai', icon: 'operation.png' },
+            { name: 'Failed Chat log', url: '/operation/chat-log/failed', icon: 'operation.png' }
         ] });
         $scope.menus.push({ name: 'Analysis', icon: 'analysis.png', childMenus: [
             { name: 'Summery', url : '/analysis', icon: 'analysis.png' },
