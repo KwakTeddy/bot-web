@@ -367,6 +367,8 @@ function processOutput(task, context, out) {
         var mappedDialog = context.botUser.nlu.dialog;
         // dialog가 매치되는 경우를 qa보다 우선 순위를 높게 둔다.
         if (mappedDialog != undefined && (mappedDialog.filename != undefined || mappedDialog.name != undefined || (mappedDialog.intent != undefined && mappedDialog.intent.name != undefined))) {
+            // if (mappedDialog != undefined && (mappedDialog.filename != undefined || mappedDialog.name != undefined || (mappedDialog.intent.name != undefined && mappedDialog.intent.name != undefined))) {
+            // if (mappedDialog != undefined && (mappedDialog.filename != undefined || mappedDialog.name != undefined)) {
             if (mappedDialog.input && mappedDialog.input != undefined) {
                 if (Array.isArray(mappedDialog.input)) {
                     for (var i=0; i<mappedDialog.input.length; i++) {
@@ -1956,9 +1958,9 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
 
                                     if (!bExist &&
                                         ((nlps.length <= 2 && (matchCount == matchTotal ||
-                                            (matchCount / nlpMatchLength >= format.matchRate || matchCount1 >= format.matchCount))) ||
-                                            (nlps.length > 2 && (matchCount / nlpMatchLength >= format.matchRate ||
-                                                matchCount1 >= format.matchCount)))) {
+                                                               (matchCount / nlpMatchLength >= format.matchRate || matchCount1 >= format.matchCount))) ||
+                                         (nlps.length > 2 && (matchCount / nlpMatchLength >= format.matchRate ||
+                                                              matchCount1 >= format.matchCount)))) {
                                         //if (Array.isArray(doc.input)) doc.input = doc.input[maxMatchIndex];
                                         if (Array.isArray(doc.input)) {
                                             doc.inputLen = doc.input[maxMatchIndex].split(' ').length;
@@ -1988,9 +1990,9 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                                     }
 
                                     if (((nlps.length <= 2 && (matchCount == matchTotal ||
-                                            (matchCount / nlpMatchLength >= format.matchRate || matchCount1 >= format.matchCount))) ||
-                                            (nlps.length > 2 && (matchCount / nlpMatchLength >= format.matchRate ||
-                                                matchCount1 >= format.matchCount)))) {
+                                                               (matchCount / nlpMatchLength >= format.matchRate || matchCount1 >= format.matchCount))) ||
+                                         (nlps.length > 2 && (matchCount / nlpMatchLength >= format.matchRate ||
+                                                              matchCount1 >= format.matchCount)))) {
                                         if (context.botUser.nlu["contextInfo"] == undefined || context.botUser.nlu["contextInfo"] == null) context.botUser.nlu["contextInfo"] = {};
                                         if (doc.context) {
                                             context.botUser.nlu.matchInfo.contextNames[doc.context.name] = doc.context;
@@ -2304,8 +2306,8 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
             }
 
             if(((context.botUser.topic && context.botUser.topic.length > 0) ||
-                    (context.botUser.contexts && context.botUser.contexts.length > 0))&&
-                (context.botUser.analytics == null || context.botUser.analytics2 == null)) {
+                (context.botUser.contexts && context.botUser.contexts.length > 0))&&
+               (context.botUser.analytics == null || context.botUser.analytics2 == null)) {
                 if(context.botUser.analytics == null) {
                     context.botUser.topic = null;
                     context.botUser.contexts = null;
