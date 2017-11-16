@@ -53,5 +53,10 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
             ignoreState: true
         }
     })
+        .state('text-expand', {
+            url: '/developer/text-expand',
+            templateUrl: 'modules/core/client/views/text-expand.client.view.html',
+            controller: 'TextExpandController'
+        })
   }
 ]);
