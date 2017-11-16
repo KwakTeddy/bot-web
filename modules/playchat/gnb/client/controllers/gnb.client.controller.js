@@ -13,20 +13,21 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
 
         $scope.menus.push({ name: 'Dashboard', icon: 'dashboard.png' });
         $scope.menus.push({ name: 'Development', icon: 'develop.png', childMenus: [
-            { name: 'Dialog Set', url: '/dialog-set/development', icon: 'speech.png' },
-            { name: 'Dialog Graph', url: '/dialog-graph/development', icon: 'scenario.png' }
+            { name: 'Dialog Set', url: '/development/dialog-set', icon: 'speech.png' },
+            { name: 'Dialog Graph', url: '/development/dialog-graph', icon: 'scenario.png' }
         ] });
         $scope.menus.push({ name: 'Management', icon: 'Managemant.png', childMenus: [
-            { name: 'Dialog Set', url: '/dialog-set/management', icon: 'speech.png' },
-            { name: 'Dialog Graph', url: '/dialog-graph/management', icon: 'scenario.png' },
-            { name: 'Entity', url: '/entity/management', icon: 'entity.png' },
-            { name: 'Intent', url: '/intent/management', icon: 'intent.png' },
-            { name: 'Task', url: '/task/management', icon: 'task.png' }
+            { name: 'Dialog Set', url: '/management/dialog-set', icon: 'speech.png' },
+            { name: 'Dialog Graph', url: '/management/dialog-graph', icon: 'scenario.png' },
+            { name: 'Entity', url: '/management/entity', icon: 'entity.png' },
+            { name: 'Intent', url: '/management/intent', icon: 'intent.png' },
+            { name: 'Task', url: '/management/task', icon: 'task.png' }
         ] });
         $scope.menus.push({ name: 'Contents', icon: 'contents.png' });
         $scope.menus.push({ name: 'Channel', icon: 'channel.png' });
         $scope.menus.push({ name: 'Operating', icon: 'operation.png', childMenus: [
-            { name: 'User', url: '/user/operation', icon: 'operation.png' }
+            { name: 'User', url: '/operation/user', icon: 'operation.png' },
+            { name: 'Failed Chat Log', url: '/operation/failed-chat-log', icon: 'operation.png' }
         ] });
         $scope.menus.push({ name: 'Analysis', icon: 'analysis.png' });
         $scope.menus.push({ name: 'Setting', icon: 'setting.png' });

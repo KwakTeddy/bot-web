@@ -30,7 +30,7 @@ angular.module('playchat').config(['$stateProvider', '$urlRouterProvider', funct
     });
 
     $stateProvider.state('playchat-page-subpage', {
-        url: '/playchat/:page/:subpage',
+        url: '/playchat/:category/:page',
         templateUrl: 'modules/playchat/core/layout/client/views/layout.client.view.html',
         controller: 'LayoutController',
         data: {
@@ -39,7 +39,7 @@ angular.module('playchat').config(['$stateProvider', '$urlRouterProvider', funct
     });
 
     $stateProvider.state('playchat-page-detail', {
-        url: '/playchat/:page/:subpage/:detail',
+        url: '/playchat/:category/:page/:detail',
         templateUrl: 'modules/playchat/core/layout/client/views/layout.client.view.html',
         controller: 'LayoutController',
         data: {
