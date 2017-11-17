@@ -29,16 +29,22 @@ module.exports = function (io, socket) {
 
       if(_task == undefined || (_task.result == undefined && _task.image == undefined && _task.buttons == undefined && _task.items == undefined)) {
         socket.emit('send_msg', _out);
-          io.emit('send_msg_text', _out);
+        if(msg.bot.indexOf('Dennis') != -1) {
+            io.emit('send_msg_text', _out);
+        }
       } else if(_task.result) {
         if(_task.result.text == undefined) _task.result.text = _out;
         socket.emit('send_msg', JSON.stringify(_task.result));
-          io.emit('send_msg_text', JSON.stringify(_task.result));
+          if(msg.bot.indexOf('Dennis') != -1) {
+              io.emit('send_msg_text', JSON.stringify(_task.result));
+          }
       } else {
         _task.text = _out;
         _task.topTask = undefined;
         socket.emit('send_msg', JSON.stringify(_task));
-          io.emit('send_msg_text', JSON.stringify(_task));
+          if(msg.bot.indexOf('Dennis') != -1) {
+              io.emit('send_msg_text', JSON.stringify(_task));
+          }
       }
 
     }, msg.options, socket);
