@@ -7,7 +7,6 @@ module.exports = function(app)
     app.get('/api/:botId/operation/faileddialogs', failedDialogTraining.find);
     app.get('/api/:botId/operation/failedintents', failedIntent.find);
 
-    app.get('/api/:botId/operation/humanchatlog/totalpage', humanChatLog.findTotalPage);
     app.get('/api/:botId/operation/humanchatlog/:userKey', humanChatLog.findBotUser);
     app.get('/api/:botId/operation/humanchatlog', humanChatLog.find);
 };

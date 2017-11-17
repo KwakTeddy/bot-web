@@ -70,6 +70,8 @@
 <link href="/modules/playchat/working-ground/user/client/css/user-operation.css" rel="stylesheet" type="text/css">
 <link href="/modules/playchat/working-ground/chat-log/client/css/failed-chat-log.css" rel="stylesheet" type="text/css">
 
+<link href="/modules/playchat/working-ground/dialog-traffic/client/css/dialog-traffic.css" rel="stylesheet" type="text/css">
+
 <script src="/js/witch/witch.js"></script>
 
 <script src="modules/playchat/gnb/client/gnb.witch.test.js"></script>
@@ -140,7 +142,9 @@ if('{{env}}' == 'production')
 <script src="/lib/codemirror/lib/codemirror.js"></script>
 <link rel="stylesheet" href="/lib/codemirror/lib/codemirror.css">
 <script src="/lib/codemirror/mode/javascript/javascript.js"></script>
-<script src="/lib/d3/d3.min.js"></script>
+<!--<script src="/lib/d3/d3.min.js"></script>-->
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="/lib/chart.js/dist/Chart.js"></script>
 
 <link rel="stylesheet" href="/lib/bootstrap-daterangepicker/daterangepicker.css">
 <!--<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css">-->
@@ -259,6 +263,8 @@ Beagle.error = function(e)
 <script src="modules/playchat/working-ground/chat-log/client/controllers/failed-intent.client.controller.js"></script>
 <script src="modules/playchat/working-ground/chat-log/client/controllers/ai-chat-log-operation.client.controller.js"></script>
 <script src="modules/playchat/working-ground/chat-log/client/controllers/human-chat-log-operation.client.controller.js"></script>
+
+<script src="modules/playchat/working-ground/dialog-traffic/client/controllers/dialog-traffic-analysis.client.controller.js"></script>
 
 
 
