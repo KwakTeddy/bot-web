@@ -77,38 +77,49 @@
                 <col style="width: 14%;">
             </colgroup>
             <thead>
-            <tr>
-                <th>Channel</th>
-                <th>User Key</th>
-                <th>Mobile</th>
-                <th>Last Update</th>
-                <th>Created</th>
-                <th>Dialog Count</th>
-                <th>Dialog</th>
-            </tr>
+                <tr>
+                    <th>Channel</th>
+                    <th>User Key</th>
+                    <th>Mobile</th>
+                    <th>Last Update</th>
+                    <th>Created</th>
+                    <th>Dialog Count</th>
+                    <th>Dialog</th>
+                </tr>
             </thead>
             <tbody>
-            <tr ng-if="entitys.length == 0">
-                <td colspan="6">empty</td>
-            </tr>
-            <tr ng-repeat="item in list">
-                <td>{{ item.channel }}</td>
-                <td>{{ item.userKey }}</td>
-                <td>{{ item.mobile }}</td>
-                <td>{{ dateFormat(item.lastUpdate) }}</td>
-                <td>{{ dateFormat(item.created) }}</td>
-                <td>{{ item.dialogCount }}</td>
-                <td>
-                    <a href="/playchat/user/operation/{{ item._id }}" class="operation-user-dialog-button">Dialog</a>
-                </td>
-                <!--<td>-->
-                <!--<div class="slide on">-->
-                <!--<input type="checkbox" id="{{ item._id }}" ng-model="item.usable" />-->
-                <!--<label for="{{ item._id }}" ng-click="updateUsable(item);"></label>-->
-                <!--</div>-->
-                <!--</td>-->
-            </tr>
+                <tr ng-if="entitys.length == 0">
+                    <td colspan="6">empty</td>
+                </tr>
+                <tr ng-repeat="item in list">
+                    <td>{{ item.channel }}</td>
+                    <td>{{ item.userKey }}</td>
+                    <td>{{ item.mobile }}</td>
+                    <td>{{ dateFormat(item.lastUpdate) }}</td>
+                    <td>{{ dateFormat(item.created) }}</td>
+                    <td>{{ item.dialogCount }}</td>
+                    <td>
+                        <a href="/playchat/operation/user/detail?_id={{ item._id }}" class="operation-user-dialog-button">Dialog</a>
+                    </td>
+                    <!--<td>-->
+                    <!--<div class="slide on">-->
+                    <!--<input type="checkbox" id="{{ item._id }}" ng-model="item.usable" />-->
+                    <!--<label for="{{ item._id }}" ng-click="updateUsable(item);"></label>-->
+                    <!--</div>-->
+                    <!--</td>-->
+                </tr>
             </tbody>
         </table>
+        <div class="tablePaging">
+            <div class="tablePagingC">
+                <a href="/playchat/management/entity?page={{ pageOptions.prev }}" ng-click="toPage(pageOptions.prev);" class="direction">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="이전페이지이동">
+                </a>
+                <a ng-repeat="page in pageOptions.pages" href="/playchat/management/entity?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
+                <a href="/playchat/management/entity?page={{ pageOptions.next }}" ng-click="toPage(pageOptions.next);" class="direction">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="다음페이지이동">
+                </a>
+            </div>
+        </div>
     </div>
 </div>

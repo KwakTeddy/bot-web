@@ -29,6 +29,24 @@ var getQuerystring = function(req, query)
     {
         query.created = {"$gte": new Date(req.query.createdStart), "$lte": new Date(req.query.createdEnd)};
     }
+
+    if(req.query.search)
+    {
+        var searchQuery = {};
+        searchQuery['$and'] = [];
+        searchQuery.$and.push(query);
+        searchQuery.$and.push({
+            $or : [
+                { channel: { $regex: req.query.search } },
+                { userKey: { $regex: req.query.search } },
+                { mobile: { $regex: req.query.search } }
+            ]
+        });
+
+        query = searchQuery;
+    };
+
+    return query;
 };
 
 exports.findTotalPage = function(req, res)
@@ -37,7 +55,7 @@ exports.findTotalPage = function(req, res)
 
     var query = { botId: req.params.botId };
 
-    getQuerystring(req, query);
+    query = getQuerystring(req, query);
 
     BotUser.find(query).count(function(err, count)
     {
@@ -59,7 +77,12 @@ exports.find = function(req, res)
 
     var query = { botId: req.params.botId };
 
-    getQuerystring(req, query);
+    query = getQuerystring(req, query);
+
+    if(req.query.neSocket)
+    {
+        query.channel = { $ne: "socket" };
+    }
 
     BotUser.find(query).sort('-created').skip(countPerPage*(page-1)).limit(countPerPage).exec(function(err, list)
     {
@@ -73,6 +96,7 @@ exports.find = function(req, res)
             async.eachSeries(list, function(item, next)
             {
                 item = JSON.parse(JSON.stringify(item));
+
                 UserDialog.find({ botId: req.params.botId, userId: item.userKey, dialog: /^[^:]/ }).count(function(err, count)
                 {
                     if(err)
@@ -139,7 +163,14 @@ module.exports.findOne = function(req, res)
         else
         {
             item = JSON.parse(JSON.stringify(item));
-            UserDialog.find({ botId: req.params.botId, userId: item.userKey }).limit(50).sort('-created').sort('-inOut').exec(function(err, userDialog)
+            var query = { botId: req.params.botId, userId: item.userKey };
+
+            if(req.query.liveChat)
+            {
+                query.liveChat = true;
+            }
+
+            UserDialog.find(query).limit(50).sort('-created').sort('-inOut').exec(function(err, userDialog)
             {
                 if(err)
                 {
