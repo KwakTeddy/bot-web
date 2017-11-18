@@ -1,0 +1,60 @@
+<div ng-controller="UserStatisticsController" data-ng-init="init();">
+    <div style="text-align: right; margin-bottom: 20px;">
+        <button type="button" class="default-button" ng-click="exelDownload('dailyUser')">Excel 다운로드</button>
+        <div id="createdRange" class="pull-right" style="width: 40%;">
+            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+            <span></span> <b class="caret"></b>
+        </div>
+    </div>
+
+    <div>
+        <h2 class="dialog-traffic-title">일별 사용자</h2>
+        <div>
+            <canvas id="dailyUser" width="400" height="150"></canvas>
+        </div>
+    </div>
+
+    <div>
+        <h2 class="dialog-traffic-title">채널별 사용자</h2>
+        <div style="display: flex;">
+            <div style="flex: 1">
+                <div>
+                    <canvas id="userRatioByChannel" width="400" height="200"></canvas>
+                </div>
+            </div >
+            <div style="flex: 1">
+                <table class="tb02" style="height:100%">
+                    <thead>
+                    <tr>
+                        <th class="text-center">채널</th>
+                        <th class="text-center">비율</th>
+                        <th class="text-center">이용자수</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="text-center">카카오톡</td>
+                        <td class="text-center">{{kakao*100/(kakao + facebook + navertalk)| number:1}}%</td>
+                        <td class="text-center">{{kakao}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">페이스북</td>
+                        <td class="text-center">{{facebook*100/(kakao + facebook + navertalk)| number:1}}%</td>
+                        <td class="text-center">{{facebook}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">네이버톡톡</td>
+                        <td class="text-center">{{navertalk*100/(kakao + facebook + navertalk)| number:1}}%</td>
+                        <td class="text-center">{{navertalk}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">합계</td>
+                        <td class="text-center">100%</td>
+                        <td class="text-center">{{kakao + facebook + navertalk}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

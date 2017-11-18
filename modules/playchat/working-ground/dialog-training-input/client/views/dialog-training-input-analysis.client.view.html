@@ -1,0 +1,34 @@
+<div ng-controller="DialogTrainingInputController" data-ng-init="init()">
+    <div style="text-align: right; margin-bottom: 20px;">
+        <button type="button" class="default-button" ng-click="exelDownload('dailyUser')">Excel 다운로드</button>
+        <div id="createdRange" class="pull-right" style="width: 40%;">
+            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+            <span></span> <b class="caret"></b>
+        </div>
+    </div>
+    <!-- start: page -->
+
+    <div>
+        <h2 class="dialog-traffic-title">사용자 입력 통계</h2>
+        <div class="panel-body" style="position: relative;min-height: 100px">
+            <table class="tb02">
+                <thead>
+                <tr>
+                    <th class="text-center">시나리오</th>
+                    <th class="text-center">시나리오 ID</th>
+                    <th class="text-center">이용자 입력</th>
+                    <th class="text-center">개수</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="userInput in userInputUsageList">
+                    <td class="text-center">{{userInput._id.dialogName}}</td>
+                    <td class="text-center">{{userInput._id.dialogId}}</td>
+                    <td class="text-center">{{userInput._id.dialog}}</td>
+                    <td class="text-center">{{userInput.count}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
