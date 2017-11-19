@@ -9,7 +9,7 @@ module.exports.analysis = function(req, res)
     var endDate = req.query.endDate;
 
     UserDialog.aggregate([
-        {$match: { botId: botId, created: {$gte: new Date(startDate), $lte: new Date(endDate) }, dialogId: null, dialogName: null, inOut: false, fail: false, channel: { $ne: 'socket' } } },
+        {$match: { botId: botId, created: {$gte: new Date(startDate), $lte: new Date(endDate) }, dialogId: null, dialogName: {$nin: ["답변없음"]}, inOut: false, fail: false, channel: { $ne: 'socket' } } },
         {$group: { _id: '$dialog', count: {$sum: 1} }},
         {$sort: { count: -1 }}
     ]).exec(function(err, list)

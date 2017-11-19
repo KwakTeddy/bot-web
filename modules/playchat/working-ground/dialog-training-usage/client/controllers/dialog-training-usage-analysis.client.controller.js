@@ -2,7 +2,7 @@
 
 angular.module("playchat").controller("DialogTrainingUsageAnalysisController", ['$scope', '$resource', '$cookies', '$http', 'DateRangePickerService', 'ExcelDownloadService', function ($scope, $resource, $cookies, $http, DateRangePickerService, ExcelDownloadService)
 {
-    $scope.$parent.changeWorkingGroundName('Analysis > Dialog Training Input');
+    $scope.$parent.changeWorkingGroundName('Analysis > Dialog Training Usage');
 
     //서비스 선언
     var DialogTrainingUsageService = $resource('/api/:botId/analysis/dialog-training-usage', { botId: '@botId' });
@@ -63,6 +63,6 @@ angular.module("playchat").controller("DialogTrainingUsageAnalysisController", [
     })();
 
     //initialize
-    DateRangePickerService.init('#createdRange', $scope.date);
+    DateRangePickerService.init('#createdRange', $scope.date, $scope.getList);
     $scope.getList();
 }]);

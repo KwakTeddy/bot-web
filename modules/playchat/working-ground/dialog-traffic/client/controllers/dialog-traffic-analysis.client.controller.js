@@ -131,9 +131,6 @@ angular.module('playchat').controller('DialogTrafficAnalysisController', ['$wind
             plugins: [
                 {
                     afterInit: function() {
-                        document.getElementsByName('dataLoading')[0].style.setProperty("display", "none", "important");
-                        document.getElementsByName('dataLoading')[1].style.setProperty("display", "none", "important");
-                        document.getElementsByName('dataLoading')[2].style.setProperty("display", "none", "important");
                     }
                 }
             ]
@@ -168,9 +165,6 @@ angular.module('playchat').controller('DialogTrafficAnalysisController', ['$wind
         pieChart.update();
         isFailBarChart.data = isFailBarData;
         isFailBarChart.update();
-        document.getElementsByName('dataLoading')[0].style.setProperty("display", "none", "important");
-        document.getElementsByName('dataLoading')[1].style.setProperty("display", "none", "important");
-        document.getElementsByName('dataLoading')[2].style.setProperty("display", "none", "important");
     };
 
     //대화수 데이터 불러오는 함수
@@ -302,9 +296,6 @@ angular.module('playchat').controller('DialogTrafficAnalysisController', ['$wind
     };
     //업데이트 함수
     $scope.update = function () {
-        document.getElementsByName('dataLoading')[0].style.setProperty("display", "block", "important");
-        document.getElementsByName('dataLoading')[1].style.setProperty("display", "block", "important");
-        document.getElementsByName('dataLoading')[2].style.setProperty("display", "block", "important");
         dialogCount(formatDate($scope.date.start, $scope.date.end), $scope.userType, $scope.channel, true);
     };
     //Datepicker 스크립트

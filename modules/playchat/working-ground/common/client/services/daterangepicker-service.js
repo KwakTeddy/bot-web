@@ -5,15 +5,20 @@
 
     angular.module('playchat').factory('DateRangePickerService', function($window, $rootScope)
     {
-        var f = function(selector, dateObject)
+        var f = function(selector, dateObject, updateCallback)
         {
             var start = moment().subtract(29, 'days');
             var end = moment();
 
-            function cb(start, end) {
+            function cb(start, end, isFirst) {
                 dateObject.start = start._d;
                 dateObject.end = end._d;
                 $(selector + ' span').html(start.format('YYYY/MM/DD') + ' - ' + end.format('YYYY/MM/DD'));
+
+                if(isFirst !== true)
+                {
+                    updateCallback();
+                }
             }
 
             $(selector).daterangepicker({
@@ -67,7 +72,7 @@
                 }
             }, cb);
 
-            cb(start, end);
+            cb(start, end, true);
         };
 
         return { init: f };
