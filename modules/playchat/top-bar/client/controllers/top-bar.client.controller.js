@@ -27,4 +27,10 @@ angular.module('playchat').controller('TopBarController', ['$window', '$scope', 
     {
         $window.location.href = '/api/auth/signout';
     };
+
+    $scope.$on('update-topbar-title', function(scope, data)
+    {
+        angular.element('.breadcrumbs .menu-name').text(data.name);
+        angular.element('.breadcrumbs .menu-name-icon').get(0).src = data.imgUrl;
+    });
 }]);

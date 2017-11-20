@@ -235,6 +235,25 @@ module.exports.initModulesServerPolicies = function (app)
  */
 module.exports.initModulesServerRoutes = function (app)
 {
+    app.all('/api*', function(req, res, next)
+    {
+        if(req.url.startsWith('/api/auth/signin') || req.url.startsWith('/api/auth/signup') || req.url.startsWith('/api/auth/forgot') || req.url.startsWith('/api/auth/emailconfirm'))
+        {
+            next();
+        }
+        else
+        {
+            if(!req.user)
+            {
+                res.status(401).end();
+            }
+            else
+            {
+                next();
+            }
+        }
+    });
+
     // Globbing routing files
     config.files.server.routes.forEach(function (routePath)
     {

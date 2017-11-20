@@ -2,7 +2,7 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat').controller('LayoutController', ['$location', '$scope', 'EventService', '$state', '$stateParams', function ($location, $scope, EventService, $state, $stateParams)
+angular.module('playchat').controller('LayoutController', ['$location', '$scope', '$rootScope', 'EventService', '$state', '$stateParams', function ($location, $scope, $rootScope, EventService, $state, $stateParams)
 {
     $scope.componentsLoaded = {
         'side-menu': false,
@@ -43,8 +43,8 @@ angular.module('playchat').controller('LayoutController', ['$location', '$scope'
         });
     };
 
-    $scope.changeWorkingGroundName = function(name)
+    $scope.changeWorkingGroundName = function(name, imgUrl)
     {
-        angular.element('.breadcrumbs .menu-name').text(name);
+        $rootScope.$broadcast('update-topbar-title', { name: name, imgUrl: imgUrl });
     };
 }]);

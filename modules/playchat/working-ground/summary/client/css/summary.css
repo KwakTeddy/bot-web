@@ -1,0 +1,156 @@
+.dashboard-summary-title
+{
+    font-size: 15px;
+    font-weight: 600;
+    color: #424242;
+    padding-left: 30px;
+
+    margin-top: 20px;
+}
+
+.dashboard-summary-title:first-child
+{
+    margin-top: 0;
+}
+
+.dashboard-summary-body
+{
+    padding: 40px;
+}
+
+.dashboard-bot-profile
+{
+    display: flex;
+    padding: 20px 40px;
+}
+
+.dashboard-bot-profile-image
+{
+    width: 150px;
+}
+
+.dashboard-bot-profile-image-wrapper
+{
+    width: 150px;
+    height: 150px;
+    border-radius: 4px;
+
+    background-color: gray;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+}
+
+.dashboard-bot-profile-image-wrapper > img
+{
+    width: 135px;
+    height: 135px;
+}
+
+.dashboard-bot-profile-image-wrapper > span
+{
+    color: white;
+    position: absolute;
+    left: 0;
+    right: 0;
+
+    font-weight: 600;
+
+    text-align: center;
+}
+
+.dashboard-bot-profile-content
+{
+    padding: 0 40px;
+}
+
+.dashboard-bot-profile-content span, .dashboard-bot-profile-content p
+{
+    font-size: 13px;
+    color: #656565;
+}
+
+.dashboard-bot-profile-content p
+{
+    margin-top: 6px;
+    margin-bottom: 5px;
+}
+
+.dashboard-bot-profile-content input
+{
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-left: 20px;
+    vertical-align: middle;
+
+    width: 400px;
+}
+
+.dashboard-bot-profile-content textarea
+{
+    width: 498px;
+    height: 75px;
+
+    border-radius: 4px;
+}
+
+.dashboard-dialog-develop
+{
+    padding: 20px 40px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dashboard-dialog-learning, .dashboard-dialog-graph
+{
+    flex: 1;
+    padding: 0 30px;
+
+    display: flex;
+}
+
+.dashboard-dialog-learning > div, .dashboard-dialog-graph > div
+{
+    padding: 0 40px;
+}
+
+.dashboard-dialog-management-card
+{
+    flex: 1;
+    padding: 10px;
+}
+
+.dashboard-dialog-management-card > div
+{
+    border: 1px solid #038eda;
+    border-radius: 6px;
+    padding: 20px 30px;
+}
+
+.dashboard-dialog-management-card > div > div
+{
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.dashboard-dialog-learning > div p:first-child, .dashboard-dialog-graph > div p:first-child
+{
+    margin-bottom: 10px;
+    margin-top: 0;
+    font-weight: 600;
+}
+
+.dashboard-dialog-learning > div p, .dashboard-dialog-graph > div p
+{
+    margin: 15px 0 30px 0;
+}
+
+.dashboard-dialog-learning > div a, .dashboard-dialog-graph > div a
+{
+    color: white;
+}
