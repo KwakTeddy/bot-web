@@ -15,7 +15,7 @@ angular.module('playchat').controller('LayoutController', ['$location', '$scope'
     EventService.subscribeMe();
 
     var category = $stateParams.category ? $stateParams.category : '';
-    var page = $stateParams.page ? $stateParams.page : 'summary';
+    var page = $stateParams.page ? $stateParams.page : 'dashboard';
     var detail = $stateParams.detail ? $stateParams.detail: '';
 
     $scope.page = '/modules/playchat/working-ground/' + page + '/client/views/' + page + (category ? '-' + category : '') + (detail ? '-' + detail : '') + '.client.view.html';

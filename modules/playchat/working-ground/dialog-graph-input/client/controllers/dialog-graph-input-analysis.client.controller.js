@@ -40,18 +40,32 @@ angular.module("playchat").controller("DialogGraphInputAnalysisController", ['$s
                     html += '<td rowspan="2">' + key + '</td>';
                     html += '<td>입력내용</td>';
 
-                    for(var i=0; i<list[key].length && i<5; i++)
+                    for(var i=0; i<5; i++)
                     {
-                        html += '<td>' + list[key][i].dialog + '</td>';
+                        if(i < list[key].length)
+                        {
+                            html += '<td>' + list[key][i].dialog + '</td>';
+                        }
+                        else
+                        {
+                            html += '<td></td>';
+                        }
                     }
 
                     html += '</tr>';
                     html += '<tr>';
                     html += '<td>횟수</td>';
 
-                    for(var i=0; i<list[key].length && i<5; i++)
+                    for(var i=0; i<5; i++)
                     {
-                        html += '<td>' + list[key][i].count + '</td>';
+                        if(i < list[key].length)
+                        {
+                            html += '<td>' + list[key][i].count + '</td>';
+                        }
+                        else
+                        {
+                            html += '<td></td>';
+                        }
                     }
 
                     html += '</tr>';

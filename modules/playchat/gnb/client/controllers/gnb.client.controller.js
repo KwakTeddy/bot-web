@@ -11,7 +11,7 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
         // 최초 메뉴 초기화
         $scope.menus = [];
 
-        $scope.menus.push({ name: 'Dashboard', icon: 'dashboard.png' });
+        $scope.menus.push({ name: 'Dashboard', url:'/playchat', icon: 'dashboard.png' });
         $scope.menus.push({ name: 'Development', icon: 'develop.png', childMenus: [
             { name: 'Dialog Set', url: '/development/dialog-set', icon: 'speech.png' },
             { name: 'Dialog Graph', url: '/development/dialog-graph', icon: 'scenario.png' }
@@ -32,7 +32,7 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
             { name: 'Failed Chat log', url: '/operation/chat-log/failed', icon: 'operation.png' }
         ] });
         $scope.menus.push({ name: 'Analysis', icon: 'analysis.png', childMenus: [
-            { name: 'Summery', url : '/analysis', icon: 'analysis.png' },
+            { name: 'Summery', url : '/analysis/summary', icon: 'analysis.png' },
             { name: 'Dialog Traffic', url : '/analysis/dialog-traffic', icon: 'analysis.png' },
             { name: 'User', url : '/analysis/user', icon: 'analysis.png' },
             { name: 'Session', url : '/analysis/session', icon: 'analysis.png' },
