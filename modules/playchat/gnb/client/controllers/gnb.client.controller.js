@@ -11,7 +11,7 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
         // 최초 메뉴 초기화
         $scope.menus = [];
 
-        $scope.menus.push({ name: 'Dashboard', url:'/playchat', icon: 'dashboard.png' });
+        $scope.menus.push({ name: 'Dashboard', url:'/', icon: 'dashboard.png' });
         $scope.menus.push({ name: 'Development', icon: 'develop.png', childMenus: [
             { name: 'Dialog Set', url: '/development/dialog-set', icon: 'speech.png' },
             { name: 'Dialog Graph', url: '/development/dialog-graph', icon: 'scenario.png' }
@@ -25,7 +25,7 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
         ] });
         $scope.menus.push({ name: 'Contents', icon: 'contents.png' });
         $scope.menus.push({ name: 'Channel', icon: 'channel.png' });
-        $scope.menus.push({ name: 'Operating', icon: 'operation.png', childMenus: [
+        $scope.menus.push({ name: 'Operation', icon: 'operation.png', childMenus: [
             { name: 'User', url: '/operation/user', icon: 'operation.png' },
             { name: 'Human Chat log', url: '/operation/chat-log/human', icon: 'operation.png' },
             { name: 'AI Chat log', url: '/operation/chat-log/ai', icon: 'operation.png' },
@@ -46,6 +46,8 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
         $scope.menus.push({ name: 'Setting', icon: 'setting.png' });
 
         $scope.path = $location.path();
+
+        console.log('흠 : ', $scope.path);
     })();
 
     var chatbot = $cookies.getObject('chatbot');
@@ -65,7 +67,7 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
         //         link.attr('media', link.attr('data-media'));
         // });
 
-        $scope.toggleGnb = function(e)
+        $scope.toggleGnb = function()
         {
             var isClosed = !angular.element('.gnb .logo-min img').is(':visible');
 
@@ -84,19 +86,22 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
         };
     })();
 
-
     $scope.toggleMenuItem = function(e)
     {
         var target = e.currentTarget;
         var subMenuItemGroup = target.parentElement;
 
-        if(subMenuItemGroup.className.indexOf('open') != -1)
+        angular.element('.menu-item-list .open').removeClass('open');
+        subMenuItemGroup.className = subMenuItemGroup.className + ' open';
+    };
+
+    $scope.checkUrl = function(name)
+    {
+        if($scope.path.indexOf('/playchat/' + name.toLowerCase()) != -1)
         {
-            subMenuItemGroup.className = subMenuItemGroup.className.replace('open', '');
+            return 'open';
         }
-        else
-        {
-            subMenuItemGroup.className = subMenuItemGroup.className + ' open';
-        }
+
+        return '';
     };
 }]);
