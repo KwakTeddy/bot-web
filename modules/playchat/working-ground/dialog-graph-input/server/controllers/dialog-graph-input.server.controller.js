@@ -1,3 +1,7 @@
+var path = require('path');
+
+var botLib = require(path.resolve('./engine/bot.js'));
+
 var mongoose = require('mongoose');
 var UserDialog = mongoose.model('UserDialog');
 
@@ -18,7 +22,22 @@ module.exports.analysis = function(req, res)
         }
         else
         {
-            res.jsonp(list);
+            var result = {};
+            if(global._bot && global._bot[req.params.botId])
+            {
+                result.list = list
+                result.botScenario = global._bot[req.params.botId];
+                res.jsonp(result);
+            }
+            else
+            {
+                botLib.loadBot(req.params.botId, function (realbot)
+                {
+                    result.list = list
+                    result.botScenario = realbot.dialogs;
+                    res.jsonp(result);
+                })
+            }
         }
     });
 };

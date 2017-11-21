@@ -13,18 +13,42 @@ angular.module("playchat").controller("DialogGraphInputAnalysisController", ['$s
 
     (function()
     {
+        var indexing = function(index, source, target)
+        {
+            index = index || '';
+
+            for(var i=0; i<source.length; i++)
+            {
+                if(source[i].name == target._id.dialogName)
+                {
+                    return index + (index ? '-' : '') + (i+1);
+                }
+                else if(source[i].children)
+                {
+                    return indexing(index + (index ? '-' : '') + (i+1), source[i].children, target);
+                }
+            }
+
+            return '';
+        }
+
         $scope.getList = function()
         {
-            DialogGraphInputService.query({ botId: chatbot.id, startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString() }, function(result)
+            DialogGraphInputService.get({ botId: chatbot.id, startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString() }, function(result)
             {
+                var indexList = {};
                 var list = {};
-
-                for(var i=0; i<result.length; i++)
+                for(var i=0; i<result.list.length; i++)
                 {
-                    if(!list[result[i]._id.dialogName])
-                        list[result[i]._id.dialogName] = [];
+                    if(!list[result.list[i]._id.dialogName])
+                        list[result.list[i]._id.dialogName] = [];
 
-                    list[result[i]._id.dialogName].push({ dialog: result[i]._id.dialog, count: result[i].count});
+                    if(!indexList[result.list[i]._id.dialogName])
+                    {
+                        indexList[result.list[i]._id.dialogName] = indexing('', result.botScenario, result.list[i]);
+                    }
+
+                    list[result.list[i]._id.dialogName].push({ dialog: result.list[i]._id.dialog, count: result.list[i].count});
                 }
 
                 var html = '';
@@ -36,7 +60,7 @@ angular.module("playchat").controller("DialogGraphInputAnalysisController", ['$s
                     });
 
                     html += '<tr>';
-                    html += '<td rowspan="2">' + '</td>';
+                    html += '<td rowspan="2">' + indexList[key] + '</td>';
                     html += '<td rowspan="2">' + key + '</td>';
                     html += '<td>입력내용</td>';
 
@@ -72,8 +96,6 @@ angular.module("playchat").controller("DialogGraphInputAnalysisController", ['$s
                 }
 
                 angular.element('tbody').html(html);
-
-                console.log(list);
             },
             function(err)
             {

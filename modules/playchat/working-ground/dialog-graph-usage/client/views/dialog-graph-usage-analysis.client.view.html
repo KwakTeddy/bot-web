@@ -27,8 +27,8 @@ table tbody td
     <table class="tb02" style="width: 100%;">
         <colgroup>
             <col style="width: 20%;">
-            <col style="width: 65%;">
-            <col style="width: 15%;">
+            <col style="width: 40%;">
+            <col style="width: 40%;">
         </colgroup>
         <thead>
         <tr>
@@ -41,7 +41,10 @@ table tbody td
         <tr ng-repeat="item in list">
             <td>{{ item.index }}</td>
             <td>{{ item._id.dialogName }}</td>
-            <td>{{ item.total }}</td>
+            <td>
+                <span>{{ item.total }}</span>
+                <span class="percent-bar" style="width: {{ item.percent }}%;"></span>
+            </td>
         </tr>
         </tbody>
     </table>

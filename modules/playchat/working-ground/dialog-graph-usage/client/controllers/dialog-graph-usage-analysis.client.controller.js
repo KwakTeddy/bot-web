@@ -33,7 +33,6 @@ angular.module("playchat").controller("DialogGraphUsageAnalysisController", ['$s
         {
             DialogGraphUsageService.get({ botId: chatbot.id, startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString() }, function(doc)
             {
-                console.log(doc);
                 $scope.senarioIndex = {};
                 $scope.senarioUsageList = [];
 
@@ -102,6 +101,18 @@ angular.module("playchat").controller("DialogGraphUsageAnalysisController", ['$s
 
                 var result = [];
                 result.push.apply($scope.senarioUsageList, doc.senarioUsage);
+
+                var max = 0;
+                for(var i=0; i<$scope.senarioUsageList.length; i++)
+                {
+                    if(max < $scope.senarioUsageList[i].total)
+                        max = $scope.senarioUsageList[i].total;
+                }
+
+                for(var i=0; i<$scope.senarioUsageList.length; i++)
+                {
+                    $scope.senarioUsageList[i].percent = Math.round(($scope.senarioUsageList[i].total / max) * 100);
+                }
 
                 $scope.list = $scope.senarioUsageList;
             },
