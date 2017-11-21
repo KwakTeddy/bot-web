@@ -4,13 +4,7 @@ var UserDialog = mongoose.model('UserDialog');
 
 module.exports.analysis = function(req, res)
 {
-    var query = [
-        { $match: { botId: req.params.botId, inOut: false, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) }, dialogId: { $nin: [null]} } },
-        { $group: { _id: { dialogId: '$dialogId', preDialogId: '$preDialogId' }, dialogName: { $first: '$dialogName' }, dialog: { $first: '$dialog'} }},
-        { $sort: { created: -1} }
-    ];
-
-    UserDialog.aggregate(query).exec(function(err, list)
+    UserDialog.find({ botId: req.params.botId, inOut: false, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) }, dialogId: { $nin: [null]} }).sort({ created: 1 }).exec(function(err, list)
     {
         if(err)
         {

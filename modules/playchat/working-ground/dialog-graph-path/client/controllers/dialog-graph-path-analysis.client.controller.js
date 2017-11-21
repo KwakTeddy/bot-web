@@ -13,13 +13,23 @@ angular.module("playchat").controller("DialogGraphPathAnalysisController", ['$sc
 
     (function()
     {
-        var getPath = function(map, source)
+        var getPath = function(list, item)
         {
-            if(source._id.preDialogId)
+            // item이 preDialogId가 없을때까지 recursive 돌아서 string으로 된 path를 만들고 그 값으로 list를 넣는다.
+
+            if(item.preDialogId && item.dialogId != item.preDialogId)
             {
-                console.log(source.dialogName);
-                getPath(map, map[source._id.preDialogId]);
+                for(var i=0; i<list.length; i++)
+                {
+                    if(item != list[i] && list[i].userId == item.userId && list[i].dialogId == item.preDialogId && new Date(item.created).getTime() > new Date(list[i].created).getTime())
+                    {
+                        // 이전 다이얼로그를 찾았다.
+                        return getPath(list, list[i]) + '-' + item.dialogName;
+                    }
+                }
             }
+
+            return item.dialogName;
         };
 
         $scope.getList = function()
@@ -31,52 +41,42 @@ angular.module("playchat").controller("DialogGraphPathAnalysisController", ['$sc
                 var dialogMap = {};
                 for(var i=0; i<list.length; i++)
                 {
-                    var dialogId = list[i]._id.dialogId;
-                    if(dialogId)
+                    var path = getPath(list,  list[i]);
+                    if(!dialogMap.hasOwnProperty(path))
                     {
-                        dialogMap[dialogId] = list[i];
+                        dialogMap[path] = 1;
                     }
-                }
-
-                for(var i=0; i<list.length; i++)
-                {
-                    var dialogId = list[i]._id.dialogId;
-                    if(!dialogMap[dialogId].next)
+                    else
                     {
-                        dialogMap[dialogId].next = [];
+                        dialogMap[path]++;
                     }
-
-                    dialogMap[dialogId].next.push(dialogId);
                 }
 
                 console.log(dialogMap);
 
-                // var dialogMap = {};
+                // var paths = [];
+                //
                 // for(var i=0; i<list.length; i++)
                 // {
-                //     if(list[i]._id.dialogId)
-                //         dialogMap[list[i]._id.dialogId] = list[i];
-                // }
+                //     var dialogId = list[i]._id.dialogId;
+                //     var preDialogId = list[i]._id.preDialogId;
                 //
-                // var start = [];
-                // for(var i=0; i<list.length; i++)
-                // {
-                //     if(list[i]._id.preDialogId)
+                //     if(!preDialogId)
                 //     {
-                //         if(!dialogMap[list[i]._id.preDialogId].next)
-                //         {
-                //             dialogMap[list[i]._id.preDialogId].next = [];
-                //         }
-                //
-                //         dialogMap[list[i]._id.preDialogId].next.push(list[i]);
+                //         paths.push(dialogMap[dialogId]);
+                //         continue;
                 //     }
-                //     else
+                //
+                //     if(!dialogMap[preDialogId].next)
                 //     {
-                //         start.push(list[i]);
+                //         dialogMap[preDialogId].next = [];
+                //     }
+                //
+                //     if(dialogId != preDialogId)
+                //     {
+                //         dialogMap[preDialogId].next.push(dialogMap[dialogId]);
                 //     }
                 // }
-                //
-                // console.log(list);
 
                 $scope.$parent.loaded('working-ground');
             },

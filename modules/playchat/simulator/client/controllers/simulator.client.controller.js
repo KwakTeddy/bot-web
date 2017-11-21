@@ -37,8 +37,6 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket)
 
             var template = undefined;
 
-            console.log(text, typeof text);
-
             if(typeof text != 'object')
             {
                 template = angular.element('#botAnswerTemplate').html();

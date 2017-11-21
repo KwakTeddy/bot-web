@@ -46,8 +46,6 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
         $scope.menus.push({ name: 'Setting', icon: 'setting.png' });
 
         $scope.path = $location.path();
-
-        console.log('흠 : ', $scope.path);
     })();
 
     var chatbot = $cookies.getObject('chatbot');

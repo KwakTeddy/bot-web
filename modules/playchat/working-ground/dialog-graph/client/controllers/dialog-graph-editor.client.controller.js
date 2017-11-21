@@ -159,6 +159,8 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                 $scope.dialog.actionOutput = { kind: 'Action', type: '', dialog: '' };
                 $scope.dialog.task = undefined;
 
+                $scope.oldDialog = undefined;
+
                 $scope.isUseOutput = true;
             }
 
@@ -330,7 +332,6 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
     {
         $scope.commonDialogs = DialogGraph.getCommonDialogs();
         $scope.userDialogs = DialogGraph.getAllUserDialogs();
-
 
         $scope.initialize(parent, dialog);
     });
