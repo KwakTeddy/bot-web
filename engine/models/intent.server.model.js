@@ -121,3 +121,12 @@ var BotIntentFailSchema = new Schema({
 
 mongoWrapper.model('BotIntentFail', BotIntentFailSchema);
 
+
+var MatchedIntentSchema = new Schema(
+{
+    botId: String,
+    intent: { type: Schema.ObjectId, ref: 'Intent' },
+    created: { type: Date, default: Date.now },
+});
+
+mongoWrapper.model('MatchedIntent', MatchedIntentSchema);

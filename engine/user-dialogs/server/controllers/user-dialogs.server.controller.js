@@ -246,18 +246,20 @@ exports.list = function (req, res) {
   });
 };
 
-function addDialog(inText, outText, isFail, dialog, context, callback) {
-  var dialogId, dialogName, preDialogId, preDialogName;
+function addDialog(inText, outText, isFail, dialog, context, callback)
+{
+    var dialogId, dialogName, preDialogId, preDialogName;
 
-  if(dialog != undefined) {
-    dialogId = dialog.id;
-    dialogName = dialog.name;
+    if(dialog != undefined)
+    {
+        dialogId = dialog.id;
+        dialogName = dialog.name;
 
-    if(context.botUser.lastDialog != undefined) {
-      preDialogId = context.botUser.lastDialog.id;
-      preDialogName = context.botUser.lastDialog.name;
+        if(context.botUser.lastDialog != undefined) {
+          preDialogId = context.botUser.lastDialog.id;
+          preDialogName = context.botUser.lastDialog.name;
+        }
     }
-  }
 
   var inQuery = {
     botId: context.bot.botName,

@@ -1,4 +1,5 @@
 var intent = require('../controllers/intent.server.controller.js');
+var IntentAnalysisController = require('../controllers/intent-analysis.server.controller.js');
 
 module.exports = function(app)
 {
@@ -9,4 +10,6 @@ module.exports = function(app)
     app.post('/api/:botId/intents', intent.create);
     app.put('/api/:botId/intents', intent.update);
     app.delete('/api/:botId/intents/:intentId', intent.delete);
+
+    app.get('/api/:botId/analysis/intent', IntentAnalysisController.analysis);
 };

@@ -22,6 +22,10 @@ var concept = require(path.resolve('engine/bot/engine/concept/concept.js'));
 var entity = utils.requireNoCache(path.resolve('engine/bot/engine/nlu/entity'));
 var intent = utils.requireNoCache(path.resolve('engine/bot/engine/nlu/intent'));
 
+var mongoWrapper = require('../../../utils/mongo-wrapper.js');
+
+var MatchedIntent = mongoWrapper.model('MatchedIntent');
+
 const TAG_START = '\\+';
 const TAG_END = '\\+';
 const ARRAY_TAG_START = '#';
@@ -181,6 +185,20 @@ function processInput(context, inRaw, callback) {
                     if(_intent) {
                         doc.intent = _intent;
                         context.botUser.intent = _intent;
+
+                        //분석 Top 10 인텐트를 위한 임시코드
+                        var matchedIntent = new MatchedIntent();
+                        matchedIntent.botId = context.bot.id;
+                        matchedIntent.intent = _intent._id;
+
+                        matchedIntent.save(function(err)
+                        {
+                            if(err)
+                            {
+                                return console.log(err);
+                            }
+                        });
+
                     } else {
                         doc.intent = undefined;
                         context.botUser.intent = undefined;

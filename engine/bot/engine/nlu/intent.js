@@ -89,12 +89,12 @@ function matchIntent(inRaw, inNLP, context, callback) {
           for(var i in context.bot.dialogs) {
             var dialog = context.bot.dialogs[i];
             if(dialog.input.intent && dialog.input.intent == _intent.name) {
-              callback(true, {name: _intent.name, matchRate: matchRate, matchCount: matchCount}, dialog);
+              callback(true, {_id: _intent._id, name: _intent.name, matchRate: matchRate, matchCount: matchCount}, dialog);
               return;
             }
           }
 
-          callback(true, {name: _intent.name, matchRate: matchRate, matchCount: matchCount}, null);
+          callback(true, {_id: _intent._id, name: _intent.name, matchRate: matchRate, matchCount: matchCount}, null);
         } else {
           callback(false, null, null);
         }

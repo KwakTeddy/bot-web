@@ -78,3 +78,11 @@ var BotIntentFailSchema = new Schema(
 
 mongoose.model('BotIntentFail', BotIntentFailSchema);
 
+var MatchedIntentSchema = new Schema(
+{
+    botId: String,
+    intent: { type: Schema.ObjectId, ref: 'Intent' },
+    created: { type: Date, default: Date.now },
+});
+
+mongoose.model('MatchedIntent', MatchedIntentSchema);
