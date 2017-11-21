@@ -1,6 +1,18 @@
-<div>
-    세션 정보 저장 필요. 현재 없는것으로 보임.
-    세션별 대화량 저장. 역시 없는것으로 보임.
+<div ng-controller="SessionAnalysisController">
+    <div style="text-align: right; margin-bottom: 20px;">
+        <button type="button" class="default-button" ng-click="exelDownload()">Excel 다운로드</button>
+        <div id="createdRange" class="pull-right" style="width: 40%;">
+            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+            <span></span> <b class="caret"></b>
+        </div>
+    </div>
+
+    <div style="margin-top: 30px; padding: 0 10px;">
+        <canvas id="sessionCountChart" width="400" height="200"></canvas>
+    </div>
+    <div style="margin-top: 60px; padding: 0 10px;">
+        <canvas id="sessionAverageCountChart" width="400" height="200"></canvas>
+    </div>
 </div>
 
 

@@ -1,516 +1,243 @@
 'use strict';
 
-// 분석 관련된 장원준 코드
-angular.module('playchat').controller('AnalyticsListController', ['$scope', '$rootScope', '$stateParams', '$location', '$window', '$http', '$cookies', '$resource', function ($scope, $rootScope, $stateParams, $location, $window, $http, $cookies, $resource)
+angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$cookies', '$resource', 'DateRangePickerService', 'ExcelDownloadService', function ($scope, $cookies, $resource, DateRangePickerService, ExcelDownloadService)
 {
+    $scope.$parent.changeWorkingGroundName('Session Analysis', '/modules/playchat/gnb/client/imgs/analysis.png');
+
+    var SessionAnalysisService = $resource('/api/:botId/analysis/session-usage', { botId: '@botId' });
+
     var chatbot = $cookies.getObject('chatbot');
 
-    $scope.kind = "all";
-    $scope.year = new Date().getFullYear();
-    $scope.ym = new Date();
-    $scope.failedIntent = [];
+    var excelData = undefined;
 
-      var AnalyticsService = $resource('api/user-count/:bId/:kind/:arg', {
-                  bId: 'bId',
-                  kind: 'kind',
-                  arg: 'arg'
-              }, {});
+    //스코프 변수 선언
+    $scope.date = {};
+    $scope.list = [];
 
-      var DialogUsageService = $resource('api/dialog-usage/:bId/:kind/:arg', {
-                  bId: 'bId',
-                  kind: 'kind',
-                  arg: 'arg'
-              }, {});
-
-      var SessionSuccessService = $resource('api/session-success/:bId/:kind/:arg', {
-                  kind: 'kind',
-                  arg: 'arg'
-              }, {});
-
-      var DialogSuccessService = $resource('api/dialog-success/:bId/:kind/:arg', {
-                  bId: 'bId',
-                  kind: 'kind',
-                  arg: 'arg'
-              }, {});
-
-      var DialogFailureService = $resource('api/dialog-failure/:bId/:kind/:arg', {
-                  bId: 'bId',
-                  kind: 'kind',
-                  arg: 'arg'
-              }, {});
-
-      var Dialogs = $resource('api/dialog/:botId/:dialogId', {
-                  botId: '@botId',
-                  dialogId: '@dialogId'
-              }, {
-                  update: {
-                      method: 'PUT'
-                  }
-              });
-
-      var DialogSaveService = $resource('api/saveDialog/:botId/:fileName', {
-                  botId: 'botId',
-                  fileName: 'fileName'
-              }, {
-                  update: {
-                      method: 'PUT'
-                  }
-              });
-
-      var DialogChildren = $resource('api/dialogchildren/:botId/:dialogId', {
-                  botId: '@botId',
-                  dialogId: '@dialogId'
-              }, {});
-
-      var DialogFailureMaintenanceService = $resource('/api/dialog-failure-maintenance/:botId/:intentId', {
-                  botId: '@botId',
-                  intentId: '@intentId'
-              }, {
-                  update: {
-                      method: 'PUT'
-                  }
-              });
-
-    // Find a list of UserCount
-    $scope.find = function () {
-      var arg = 'empty';
-      if ($scope.kind == 'year')
-        arg = $scope.year;
-      else if ($scope.kind == 'month')
-        arg = $scope.ym;
-      var userCounts = AnalyticsService.query(
+    (function()
+    {
+        var checkNewSession = function(s, d)
         {
-          bId: chatbot.id,
-          kind: $scope.kind,
-          arg: arg
-        }, function() {
-          console.log(userCounts);
-          $scope.userCounts = userCounts;
-        }, function(err) {
-          console.log(err);
-        });
-    };
+            var time = (d.getTime() - s.getTime()) / 1000;
+            return (time / 60) > 5;
+        };
 
-    // Find a list of dialog usage
-    $scope.find_dialog = function () {
-      var arg = 'empty';
-      if ($scope.kind == 'year')
-        arg = $scope.year;
-      else if ($scope.kind == 'month')
-        arg = $scope.ym;
-      var dialogUsages = DialogUsageService.query(
-        {
-          bId: chatbot.id,
-          kind: $scope.kind,
-          arg: arg
-        }, function() {
-          $scope.dialogUsages = dialogUsages;
-        }, function(err) {
-          console.log(err);
-        });
-    };
+        var sessionCountContext = document.getElementById("sessionCountChart").getContext('2d');
+        var sessionAverageCountContext = document.getElementById('sessionAverageCountChart').getContext('2d');
 
-    // Find a list of dialog success rate
-    $scope.find_dialog_success = function () {
-      var arg = 'empty';
-      if ($scope.kind == 'year')
-        arg = $scope.year;
-      else if ($scope.kind == 'month')
-        arg = $scope.ym;
-      var dialogSuccess = DialogSuccessService.query(
-        {
-          bId: chatbot.id,
-          kind: $scope.kind,
-          arg: arg
-        }, function() {
-          console.log(dialogSuccess);
-          $scope.dialogSuccess = dialogSuccess;
-        }, function(err) {
-          console.log(err);
-        });
-    };
+        var sessionCountDataTemplate = {
+            labels: [],
+            datasets: [{
+                label: '카카오톡',
+                data: [],
+                backgroundColor: [],
+                borderColor: [],
+                borderWidth: 1
+            }, {
+                label: '페이스북',
+                data: [],
+                backgroundColor: [],
+                borderColor: [],
+                borderWidth: 1
+            }, {
+                label: '네이버톡톡',
+                data: [],
+                backgroundColor: [],
+                borderColor: [],
+                borderWidth: 1
+            }]
+        };
 
-    // Find a list of session success rate
-    $scope.find_session_success = function () {
-      var arg = 'empty';
-      if ($scope.kind == 'year')
-        arg = $scope.year;
-      else if ($scope.kind == 'month')
-        arg = $scope.ym;
-      var sessionSuccess = SessionSuccessService.query(
-        {
-          kind: $scope.kind,
-          arg: arg
-        }, function() {
-          $scope.sessionSuccess = sessionSuccess;
-        }, function(err) {
-          console.log(err);
-        });
-    };
+        var sessionAverageCountDataTemplate = {
+            labels: [],
+            datasets: [{
+                label: '세션당 평균 대화량',
+                data: [],
+                backgroundColor: [],
+                borderColor: [],
+                borderWidth: 1
+            }]
+        };
 
-    // dialog editing
-    $scope.addInput = function() {
-      $scope.selected.inputs.push({str:""});
-    };
-    $scope.addOutput= function() {
-      $scope.selected.outputs.push({str:{text: "", kind: "Text"}});
-      console.log($scope.selected.outputs);
-    };
-
-    $scope.dialogFailureClear = function (target) {
-      console.log(target)
-      $http.put('/api/user-dialogs/failedDialog', target).then(function (result) {
-        console.log(result)
-        $scope.find_dialog_failure();
-      }, function (err) {
-        console.log(err)
-
-      })
-    };
-
-    var makeStr = function(obj) {
-      if (Array.isArray(obj)) {
-        return obj.map(function (o) { return {str: o}; });
-      }
-      return [{str: obj}];
-    };
-
-    var unMake = function(obj) {
-      if (Array.isArray(obj)) {
-        return obj.map(function (o) { return o['str']; });
-      }
-    };
-
-    $scope.findOne = function (dialogId, newDialog) {
-      var botId = $rootScope.botId;
-      $scope.dialog = { botId: botId, dialogId: dialogId };
-
-      var dialog = Dialogs.get({
-        botId: botId,
-        dialogId: dialogId
-      }, function() {
-        $scope.dialog.name = dialog.name;
-        $scope.dialog.inputs = makeStr(dialog.inputs);
-        $scope.dialog.outputs = makeStr(dialog.outputs);
-        $scope.dialog.inputs.push({str:newDialog});
-        $('.modal-with-form').click();
-      });
-    };
-
-    $scope.findChildren = function (dialogId, newDialog) {
-      var botId = $rootScope.botId;
-
-      $scope.targetDialog = newDialog;
-      $scope.targetPreDialog = dialogId;
-      console.log(dialogId)
-
-      var dialogs = DialogChildren.query({
-        botId: botId,
-        dialogId: dialogId
-      }, function() {
-        console.log(dialogs);
-        if (dialogs.length){
-          dialogs.forEach(function(obj, i) {
-            obj.idx = i;
-            obj.inputs = makeStr(obj.inputs);
-            obj.outputs = makeStr(obj.outputs);
-            obj.inputs.push({str:newDialog});
-          });
-          $scope.dialogs = dialogs;
-          $scope.selected = $scope.dialogs[0];
-
-          console.log($scope.dialogs);
-          console.log($scope.selected);
-
-          $('#modalForm').css('display', 'block');
-          $('.modal-with-form').click();
-        }else {
-          alert('시작 다이얼로그 입니다')
-        }
-      }, function(err) {
-        console.log(err);
-      });
-    };
-
-    $scope.selectDialog = function (target) {
-      $scope.selected = target
-    };
-
-    $scope.update = function (isValid) {
-      $scope.error = null;
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'dialogForm');
-        return false;
-      }
-      var dialog = $scope.selected;
-      dialog.botId = $rootScope.botId;
-      dialog.inputs = unMake(dialog.inputs);
-      dialog.outputs = unMake(dialog.outputs);
-      dialog.originalDialog = $scope.targetDialog;
-      dialog.targetPreDialog = $scope.targetPreDialog;
-      console.log(dialog);
-      console.log($scope.selected);
-
-      Dialogs.update(dialog, function (result) {
-        console.log(result);
-        $scope.find_dialog_failure();
-      }, function (err) {
-        console.log(err);
-      });
-
-
-    };
-
-    // Find a list of dialog fail
-    $scope.find_dialog_failure = function () {
-
-      var arg = 'empty';
-      if ($scope.kind == 'year')
-        arg = $scope.year;
-      else if ($scope.kind == 'month')
-        arg = $scope.ym;
-      var dialogFailure = DialogFailureService.query(
-        {
-          bId: chatbot.id,
-          kind: $scope.kind,
-          arg: arg
-        }, function() {
-          $scope.dialogFailure = dialogFailure;
-        }, function(err) {
-          console.log(err);
-        });
-    };
-
-    $scope.dashboard = function() {
-      $scope.find_dialog();
-      var userCounts = AnalyticsService.query({
-          bId: chatbot.id,
-          kind: "all",
-          arg: "empty"
-        }, function() {
-
-          var val = [];
-          for (var i=0; i < userCounts.length && i < 10; ++i) {
-            val.unshift([userCounts[i]._id.month + "/" + userCounts[i]._id.date, userCounts[i].count]);
-          }
-          var flotUserData = [{
-            data: val,
-            color: "#0088cc"
-          }];
-          drawFlot(flotUserData);
-
-        }, function(err) {
-          console.log(err);
+        var sessionCountChart = new Chart(sessionCountContext, {
+            type: 'bar',
+            data: angular.copy(sessionCountDataTemplate),
+            options: {
+                scales: {
+                    xAxes: [{
+                        stacked: true
+                    }],
+                    yAxes: [{
+                        stacked: true,
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            }
         });
 
-      var dialogSuccess = DialogSuccessService.query(
-        {
-          bId: chatbot.id,
-          kind: 'all',
-          arg: 'empty'
-        }, function() {
-          console.log(dialogSuccess);
-
-          var val = [];
-          for (var i=0; i < dialogSuccess.length && i < 10; ++i) {
-            val.unshift(
-              {
-                y: dialogSuccess[i]._id.month + "/" + dialogSuccess[i]._id.date,
-                a: dialogSuccess[i].success_count,
-                b: dialogSuccess[i].fail_count
-              });
-          }
-          console.log(val);
-          if (val.length > 1)
-            drawBar(val);
-        }, function(err) {
-          console.log(err);
+        var sessionAverageCountChart = new Chart(sessionAverageCountContext, {
+            type: 'bar',
+            data: angular.copy(sessionAverageCountDataTemplate),
+            options: {
+                scales: {
+                    xAxes: [{
+                        stacked: true
+                    }],
+                    yAxes: [{
+                        stacked: true,
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            }
         });
 
-      var calcRate = function(list) {
-        var success = 0, fail = 0;
-        list.forEach(function(obj) {
-          success += obj.success_count;
-          fail += obj.fail_count;
-        });
+        var excelData = [];
 
-        if (success == 0)
-          return 100.0;
-        return (success-fail) / success * 100.0;
-      };
-
-      var dialogSuccessYear = DialogSuccessService.query(
+        $scope.getList = function()
         {
-          bId: chatbot.id,
-          kind: 'year',
-          arg: $scope.year
-        }, function() {
-          console.log(dialogSuccessYear);
-          drawLiquid("#meterYear", calcRate(dialogSuccessYear), '#0088cc');
-        }, function(err) {
-          console.log(err);
-      });
+            SessionAnalysisService.query({ botId: chatbot.id, startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString() }, function(result)
+            {
+                var list = {};
 
-      var dialogSuccessMonth = DialogSuccessService.query(
-        {
-          bId: chatbot.id,
-          kind: 'month',
-          arg: $scope.ym
-        }, function() {
-          console.log(dialogSuccessMonth);
-          drawLiquid("#meterMonth", calcRate(dialogSuccessMonth), '#2baab1');
-        }, function(err) {
-          console.log(err);
-      });
+                var check = {};
 
-    };
+                for(var i=0; i<result.length; i++)
+                {
+                    var date = new Date(result[i].created);
 
-    var drawFlot= function(flotUserData) {
-      (function ($) {
-        'use strict';
-        var flotUser = $.plot('#flotUser', flotUserData, {
-          series: {
-            lines: {
-              show: true,
-              lineWidth: 2,
-              // fill : true,
-              // fillColor: "rgba(255, 255, 255, 0.8)"
+                    var year = date.getFullYear();
+                    var month = date.getMonth() + 1;
+                    var dayOfMonth = date.getDate();
+
+                    if(!check[result[i].userId] || checkNewSession(check[result[i].userId], date))
+                    {
+                        if(!list[year + '-' + month + '-' + dayOfMonth])
+                        {
+                            list[year + '-' + month + '-' + dayOfMonth] = { kakao: 0, facebook: 0, navertalk: 0, dialogCount: 0};
+                        }
+
+                        //만약 UserID에 대해 새로운 세션이라면.
+                        // 여기는 세션수 체크
+                        list[year + '-' + month + '-' + dayOfMonth][result[i].channel]++;
+
+                        check[result[i].userId] = date;
+                    }
+
+                    // 모든 대화 수
+                    list[year + '-' + month + '-' + dayOfMonth].dialogCount++;
+                }
+
+
+                var labels = [];
+                var dataset = [{
+                    label: '카카오톡',
+                    data: [],
+                    backgroundColor: [],
+                    borderColor: [],
+                    borderWidth: 1
+                }, {
+                    label: '페이스북',
+                    data: [],
+                    backgroundColor: [],
+                    borderColor: [],
+                    borderWidth: 1
+                }, {
+                    label: '네이버톡톡',
+                    data: [],
+                    backgroundColor: [],
+                    borderColor: [],
+                    borderWidth: 1
+                }];
+
+                var averageDataset = [{
+                    label: '세션당 평균 대화량',
+                    data: [],
+                    backgroundColor: [],
+                    borderColor: [],
+                    borderWidth: 1
+                }];
+
+                var startDate = new Date($scope.date.start);
+                var endDate = new Date($scope.date.end);
+
+                while(startDate.getTime() <= endDate.getTime())
+                {
+                    labels.push(startDate.getFullYear() + '/' + (startDate.getMonth() + 1) + '/' + startDate.getDate());
+                    var key = startDate.getFullYear() + '-' + (startDate.getMonth() + 1) + '-' + startDate.getDate();
+                    if(list[key])
+                    {
+                        dataset[0].data.push(list[key].kakao);
+                        dataset[1].data.push(list[key].facebook);
+                        dataset[2].data.push(list[key].navertalk);
+
+                        var avg = Math.round(list[key].dialogCount / (list[key].kakao + list[key].facebook + list[key].navertalk))
+                        averageDataset[0].data.push(avg);
+
+                        excelData.push({ year: startDate.getFullYear(), month: startDate.getMonth() + 1, date : startDate.getDate(), kakao: list[key].kakao, facebook: list[key].facebook, navertalk: list[key].navertalk, average: avg });
+                        // averageDatas.push({ date: key, count: Math.round(list[key].dialogCount / (list[key].kakao + list[key].facebook + list[key].navertalk)) });
+                    }
+                    else
+                    {
+                        dataset[0].data.push(0);
+                        dataset[1].data.push(0);
+                        dataset[2].data.push(0);
+
+                        averageDataset[0].data.push(0);
+
+                        excelData.push({ year: startDate.getFullYear(), month: startDate.getMonth() + 1, date : startDate.getDate(), kakao: 0, facebook: 0, navertalk: 0, average: 0 });
+                        // datas.push({ date: key, kakao: 0, facebook: 0, navertalk: 0 });
+                        // averageDatas.push({ date: key, count: 0 });
+                    }
+
+                    dataset[0].backgroundColor.push('#fbe600');
+                    dataset[1].backgroundColor.push('#3b5998');
+                    dataset[2].backgroundColor.push('#00c73c');
+
+                    averageDataset[0].backgroundColor.push('#00c73c');
+
+                    dataset[0].borderColor.push('#ede500');
+                    dataset[1].borderColor.push('#29487d');
+                    dataset[2].borderColor.push('#00af35');
+
+                    averageDataset[0].borderColor.push('#00af35');
+
+                    startDate.setDate(startDate.getDate() + 1);
+                }
+
+                sessionCountChart.data = { labels: labels, datasets: dataset };
+                sessionCountChart.update();
+
+                sessionAverageCountChart.data = { labels: labels, datasets: averageDataset };
+                sessionAverageCountChart.update();
+
+
+
+                // createChart(parseData(list));
             },
-            points: {
-              show: true
-            },
-            shadowSize: 0
-          },
-          grid: {
-            hoverable: true,
-            clickable: true,
-            borderColor: 'rgba(0,0,0,0.1)',
-            borderWidth: 1,
-            labelMargin: 15,
-            backgroundColor: 'transparent'
-          },
-          yaxis: {
-            min: 0,
-            color: 'rgba(0,0,0,0.1)'
-          },
-          xaxis: {
-            mode: 'categories',
-            color: 'rgba(0,0,0,0)'
-          },
-          legend: {
-            show: false
-          },
-          tooltip: true,
-          tooltipOpts: {
-            content: '%x: %y',
-            shifts: {
-              x: -30,
-              y: 25
-            },
-            defaultTheme: false
-          }
-        });
-      }).apply(this, [jQuery]);
-    };
+            function(err)
+            {
+                alert(err.data.error || err.data.message);
+            });
+        };
 
-    var drawLiquid = function(name, value, color) {
-      $(name)[0].value = parseInt(value ,10);
-      (function($) {
-        'use strict';
+        $scope.exelDownload = function()
+        {
+            var template = {
+                sheetName: "세션수량",
+                columnOrder: ["year", "month", "date", "kakao", "facebook", "navertalk", 'average'],
+                orderedData: excelData
+            };
 
-        $(name).liquidMeter({
-          shape: 'circle',
-          color: color,
-          background: '#F9F9F9',
-          fontSize: '24px',
-          fontWeight: '600',
-          stroke: '#F2F2F2',
-          textColor: '#333',
-          liquidOpacity: 0.9,
-          liquidPalette: ['#333'],
-          speed: 3000,
-          animate: !$.browser.mobile
-        });
+            ExcelDownloadService.download(chatbot.id, '세션수량', $scope.date, template);
+        };
+    })();
 
-      }).apply(this, [jQuery]);
-    };
+    DateRangePickerService.init('#createdRange', $scope.date, $scope.getList);
+    $scope.getList();
 
-    var drawBar = function(barData) {
-      (function ($) {
-        'use strict';
-
-        Morris.Bar({
-          resize: true,
-          element: 'morrisStacked',
-          data: barData,
-          xkey: 'y',
-          ykeys: ['a', 'b'],
-          labels: ['성공', '실패'],
-          barColors: ['#0088cc', '#2baab1'],
-          fillOpacity: 0.7,
-          smooth: false,
-          stacked: true,
-          hideHover: true
-        });
-
-      }).apply(this, [jQuery]);
-    };
-
-    var vm = this;
-
-    var abcd =
-      '<form name="form" novalidate="novalidate">' +
-      '<table width="100%"><tr><td>' +
-      '<h2 class="panel-title">&nbsp;</h2>' +
-      '<td align="right">' +
-      '<select name="kind" ng-model="kind"  onchange="changeFunc(this)">' +
-      '<option selected="selected" value="all">전체</option>' +
-      '<option value="year">연도별</option>' +
-      '<option value="month">월별</option>' +
-      '</select>' +
-      '<input type="number" id="year" ng-model="year" min="1999" max="2100" value="2017" style="display:none">' +
-      '<input type="month" id="ym" ng-model="ym" style="display:none" value="2017-03">' +
-      '<button class="btn btn-primary" ng-click="find_dialog_failure()">검색</button>' +
-      '</td></tr></table>' +
-      '</form>';
-
-    // vm.dtOptions = DTOptionsBuilder.newOptions()
-    //   .withOption('bLengthChange', false)
-    //   .withOption('info', false)
-    //   .withOption('dom', 'l<"toolbar">frtip')
-    //   .withOption('initComplete', function(settings, json) {
-    //     $('#dt_filter > label > input[type="search"]').addClass('form-control').attr('placeholder', 'Search');
-    //     $compile(angular.element(document.querySelector('div.toolbar')).contents())($scope);
-    //   })
-    //
-    // vm.dtOptions2 = DTOptionsBuilder.newOptions()
-    //   .withOption('bLengthChange', false)
-    //   .withOption('info', false)
-    //   .withOption('dom', 'l<"toolbar">frtip')
-    //   .withOption('initComplete', function(settings, json) {
-    //     $('#dt_filter > label > input[type="search"]').addClass('form-control').attr('placeholder', 'Search');
-    //     $("div.toolbar").html('<button class="btn btn-primary" ng-click="find_dialog_failure_maintenance()">검사</button>');
-    //     $compile(angular.element(document.querySelector('div.toolbar')).contents())($scope);
-    //   })
-
-    // $scope.find_dialog_failure_maintenance = function () {
-    //   $http.get('/api/intent/analyzeFailIntent/'+ chatbot.id).then(function (data) {
-    //     console.log('분석 완료');
-    //     $scope.initDialogFailure();
-    //   }, function (err) {
-    //     console.log(err)
-    //   })
-    // }
-    //
-    //
-    // $scope.initDialogFailure = function() {
-    //   DialogFailureMaintenanceService.query({botId: chatbot.id}, function (result) {
-    //     $scope.failedIntent = result;
-    //   }, function (err) {
-    //     console.log(err);
-    //   })
-    // };
-    // $scope.initDialogFailure();
-
-  }
-]);
+    $scope.$parent.loaded('working-ground');
+}]);
