@@ -36,7 +36,7 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
             { name: 'Dialog Traffic', url : '/analysis/dialog-traffic', icon: 'analysis.png' },
             { name: 'User', url : '/analysis/user', icon: 'analysis.png' },
             { name: 'Session', url : '/analysis/session', icon: 'analysis.png' },
-            { name: 'Dialog Path', url : '/analysis/dialog-path', icon: 'analysis.png' },
+            { name: 'Dialog Graph Path', url : '/analysis/dialog-graph-path', icon: 'analysis.png' },
             { name: 'Dialog Training Usage', url : '/analysis/dialog-training-usage', icon: 'analysis.png' },
             { name: 'Dialog Graph Usage', url : '/analysis/dialog-graph-usage', icon: 'analysis.png' },
             { name: 'Dialog Training Input', url : '/analysis/dialog-training-input', icon: 'analysis.png' },

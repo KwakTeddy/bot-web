@@ -157,43 +157,4 @@ angular.module("playchat").controller("DialogGraphUsageAnalysisController", ['$s
 
     DateRangePickerService.init('#createdRange', $scope.date, $scope.getList);
     $scope.getList();
-
-    //
-    //
-    //
-    //
-    // $scope.userType = "total";
-    // $scope.channel = "total";
-    // $scope.senarioIndex = {};
-    // $scope.senarioUsageList = [];
-    // var dataBackup;
-    //
-    // var senarioCount = function (date, userType, channel, update) {
-    //     $http.post('/api/senarioUsage/' + $cookies.get("default_bot"), {date: date, userType: userType, channel: channel}).then(function (doc) {
-    //         $scope.senarioIndex = {};
-    //         $scope.senarioUsageList = [];
-    //         var depth = "1";
-    //         for(var i = 0; i < botSenario.length; i++){
-    //             if(!doc.data.botSenario[i].name) {
-    //                 continue;
-    //             }else{
-    //                 $scope.senarioIndex[doc.data.botSenario[i].name] = depth + "-0";
-    //             }
-    //             if(doc.data.botSenario[i].children){
-    //                 doc.data.botSenario[i].children.forEach(function (child, index) {
-    //                     index++;
-    //                     index = index.toString();
-    //                     indexing(child, depth, index)
-    //                 });
-    //             }
-    //             depth = parseInt(depth) + 1;
-    //             depth = depth.toString();
-    //         }
-    //         document.getElementById('loading-screen').style.setProperty("display", "none", "important");
-    //         document.getElementsByName('dataLoading')[0].style.setProperty("display", "none", "important");
-    //
-    //     }, function (err) {
-    //         console.log(err);
-    //     });
-    // };
 }]);
