@@ -7,10 +7,19 @@
         </div>
     </div>
 
-    <div class="dialog-graph-path-row">
-        <div class="dialog-graph-path-title">
-            <span>Count</span>
-            <span>Graph Path</span>
+    <div class="dialog-graph-path-title">
+        <span>Count</span>
+        <span>Graph Path</span>
+    </div>
+    <div class="dialog-graph-path-body">
+        <div class="dialog-graph-path-row" ng-repeat="path in paths">
+            <span>{{ path.count }}</span>
+            <div class="dialog-graph-paths">
+                <span class="dialog-graph-path-card" ng-repeat="dialog in path.list track by $index">
+                    {{ dialog }}
+                </span>
+            </div>
         </div>
+        <svg id="lineSvg" style="width: 100%; height: 100%; position: absolute; left: 0; top: 0;"></svg>
     </div>
 </div>
