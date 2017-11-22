@@ -1,0 +1,14 @@
+.dialog-graph-path-title
+{
+    display: flex;
+}
+
+.dialog-graph-path-title span
+{
+
+}
+
+.dialog-graph-path-title > span:first-child
+{
+    width: 100px;
+}

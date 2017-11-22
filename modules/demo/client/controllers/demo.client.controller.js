@@ -1,5 +1,3 @@
-var myWorker = new Worker("/lib/tracking/tracking-worker.js");
-
 (function()
 {
     'use strict';

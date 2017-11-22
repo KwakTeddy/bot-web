@@ -36,8 +36,6 @@ angular.module("playchat").controller("DialogGraphPathAnalysisController", ['$sc
         {
             DialogGraphPathService.query({ botId: chatbot.id, startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString() }, function(list)
             {
-                console.log('리스트 : ', list);
-
                 var dialogMap = {};
                 for(var i=0; i<list.length; i++)
                 {
@@ -52,31 +50,14 @@ angular.module("playchat").controller("DialogGraphPathAnalysisController", ['$sc
                     }
                 }
 
-                console.log(dialogMap);
+                $scope.paths = [];
+                for(var key in dialogMap)
+                {
+                    var list = [];
+                    var count = dialogMap[key];
 
-                // var paths = [];
-                //
-                // for(var i=0; i<list.length; i++)
-                // {
-                //     var dialogId = list[i]._id.dialogId;
-                //     var preDialogId = list[i]._id.preDialogId;
-                //
-                //     if(!preDialogId)
-                //     {
-                //         paths.push(dialogMap[dialogId]);
-                //         continue;
-                //     }
-                //
-                //     if(!dialogMap[preDialogId].next)
-                //     {
-                //         dialogMap[preDialogId].next = [];
-                //     }
-                //
-                //     if(dialogId != preDialogId)
-                //     {
-                //         dialogMap[preDialogId].next.push(dialogMap[dialogId]);
-                //     }
-                // }
+                    $scope.paths.push({ list: key.split('-'), count: count });
+                }
 
                 $scope.$parent.loaded('working-ground');
             },
