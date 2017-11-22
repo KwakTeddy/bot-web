@@ -1735,9 +1735,6 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                         if (format.mongo.sort) _query.sort(format.mongo.sort);
                         if (format.mongo.limit) _query.limit(format.mongo.limit || type.MAX_LIST);
 
-                        logger.systemLog('머야 : ', JSON.stringify(format.query));
-                        logger.systemLog(JSON.stringify(query), format.mongo.fields, format.mongo.options);
-
                         _query.lean().exec(function (err, docs) {
                             nlpsCount++;
 

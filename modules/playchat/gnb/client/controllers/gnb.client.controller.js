@@ -41,7 +41,8 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
             { name: 'Dialog Graph Usage', url : '/analysis/dialog-graph-usage', icon: 'analysis.png' },
             { name: 'Dialog Training Input', url : '/analysis/dialog-training-input', icon: 'analysis.png' },
             { name: 'Dialog Graph Input', url : '/analysis/dialog-graph-input', icon: 'analysis.png' },
-            { name: 'Intent', url : '/analysis/intent', icon: 'analysis.png' }
+            { name: 'Intent', url : '/analysis/intent', icon: 'analysis.png' },
+            { name: 'Failed Dialogs', url : '/analysis/failed-dialogs', icon: 'analysis.png' }
         ] });
         $scope.menus.push({ name: 'Setting', icon: 'setting.png' });
 

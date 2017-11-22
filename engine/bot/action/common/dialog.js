@@ -1010,6 +1010,8 @@ function executeDialog(dialog, context, print, callback, options) {
 
         print(userOut, dialog.task);
 
+        dialog.dialogType = context.dialog.dialogType;
+
          userDilaog.addDialog(dialog.inRaw || context.dialog.inCurRaw || context.dialog.inRaw, userOut, context.dialog.isFail, dialog, context, function() {
           cb(null, _output);
         });
@@ -1159,6 +1161,10 @@ function executeType(inRaw, inNLP, type, task, context, callback) {
                 if (type.save == undefined || type.save == true) {
                   context.dialog[type.name] = task[type.name];
                   context.dialog.typeMatches[type.name] = task[type.name];
+                  if(type.mongo.model == 'dialogsetdialogs')
+                  {
+                      context.dialog.dialogType = 'qna';
+                  }
                 }
               }
 

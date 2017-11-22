@@ -270,6 +270,7 @@ function addDialog(inText, outText, isFail, dialog, context, callback)
     dialog: inText,
     dialogId: dialogId,
     dialogName: dialogName,
+      dialogType: dialog.dialogType || 'graph',
     preDialogId: preDialogId,
     preDialogName: preDialogName,
     created: new Date()
@@ -284,6 +285,7 @@ function addDialog(inText, outText, isFail, dialog, context, callback)
     dialog: outText,
     dialogId: dialogId,
     dialogName: dialogName,
+      dialogType: dialog.dialogType || 'graph',
     preDialogId: preDialogId,
     preDialogName: preDialogName,
     created: new Date()
