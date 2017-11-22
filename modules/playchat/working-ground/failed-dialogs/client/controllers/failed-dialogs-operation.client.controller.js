@@ -1,4 +1,4 @@
-angular.module('playchat').controller('FailedChatLogController', ['$window', '$scope', '$resource', '$cookies', '$location', function ($window, $scope, $resource, $cookies, $location)
+angular.module('playchat').controller('FailedDialogsOperationController', ['$window', '$scope', '$resource', '$cookies', '$location', function ($window, $scope, $resource, $cookies, $location)
 {
     $scope.$parent.changeWorkingGroundName('Operation > Failed Chat Log');
 

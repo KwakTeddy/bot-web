@@ -10,57 +10,21 @@ var Schema = mongoose.Schema;
 /**
  * Bot user Schema
  */
-var UserDialogSchema = new Schema({
-  botId: {
-    type: String
-  },
-
-  userId: {
-    type: String
-  },
-
-  channel: {
-    type: String
-  },
-
-  inOut: {
-    type: Boolean
-  },
-
-  fail: {
-    type: Boolean
-  },
-
-  dialog: {
-    type: String
-  },
-
-  dialogId: {
-    type: String
-  },
-
-  dialogName: {
-    type: String
-  },
-
-  preDialogId: {
-    type: String
-  },
-
-  preDialogName: {
-    type: String
-  },
-
-  created: {
-    type: Date,
-    default: Date.now
-  },
-  clear: {
-    type: Boolean
-  },
-  liveChat: {
-    type: Boolean
-  }
+var UserDialogSchema = new Schema(
+{
+    botId: { type: String },
+    userId: { type: String },
+    channel: { type: String },
+    inOut: { type: Boolean },
+    fail: { type: Boolean },
+    dialog: { type: String },
+    dialogId: { type: String },
+    dialogName: { type: String },
+    preDialogId: { type: String },
+    preDialogName: { type: String },
+    created: { type: Date, default: Date.now },
+    clear: { type: String },
+    liveChat: { type: Boolean }
 });
 
 mongoWrapper.model('UserDialog', UserDialogSchema);

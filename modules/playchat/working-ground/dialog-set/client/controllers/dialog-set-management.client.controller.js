@@ -62,6 +62,30 @@ angular.module('playchat').controller('DialogSetManagementController', ['$window
             DialogSetsService.query({ botId: chatbot._id, page: page, countPerPage: countPerPage, title: title }, function(list)
             {
                 $scope.dialogsets = list;
+
+                var check = false;
+                for(var i=0; i<list.length; i++)
+                {
+                    if(list[i].title == 'default')
+                    {
+                        check = true;
+                        break;
+                    }
+                }
+
+                if(!check)
+                {
+                    DialogSetsService.save({ botId: chatbot._id, title: 'default', usable: true }, function(dialogset)
+                    {
+                        console.log(dialogset);
+                        $scope.dialogsets = [dialogset];
+                    },
+                    function(err)
+                    {
+                        alert(err.data.error || err.data.message);
+                    });
+                }
+
                 $scope.$parent.loaded('working-ground');
             });
         };

@@ -10,6 +10,7 @@ module.exports.analysis = function(req, res)
     match.inOut = true;
     match.dialog = { $ne: null, $nin: [":reset user", ":build " + req.params.botId + " reset", ':build'] };
     match.fail = true;
+    match.channel = { $ne: 'channel' };
 
     UserDialog.aggregate(
         [

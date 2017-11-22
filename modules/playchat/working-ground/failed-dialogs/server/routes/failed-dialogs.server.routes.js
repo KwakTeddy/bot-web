@@ -1,6 +1,14 @@
 var FailedDialogsAnalysisController = require('../controllers/failed-dialogs-analysis.server.controller.js');
+var FailedDialogsOperationController = require('../controllers/failed-dialogs-operation.server.controller.js');
+var FailedDialogTrainingController = require('../controllers/failed-dialog-training.server.controller.js');
 
 module.exports = function(app)
 {
     app.get('/api/:botId/analysis/failed-dialogs', FailedDialogsAnalysisController.analysis);
+
+    app.get('/api/:botId/operation/failed-dialogs', FailedDialogsOperationController.analysis);
+    app.put('/api/:botId/operation/failed-dialogs/:_id', FailedDialogsOperationController.clear);
+
+    app.get('/api/:botId/operation/training/similiars', FailedDialogTrainingController.findSimiliars);
+    app.post('/api/:botId/operation/training/save', FailedDialogTrainingController.create);
 };

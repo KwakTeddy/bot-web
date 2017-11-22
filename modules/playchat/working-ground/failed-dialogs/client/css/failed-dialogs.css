@@ -75,6 +75,16 @@
     text-align: center;
 }
 
+.failed-dialog-suggestion
+{
+    margin-top: 30px;
+}
+
+.failed-dialog-suggestion > div
+{
+    margin: 10px 0;
+}
+
 .failed-dialog-suggestion-title
 {
     color: #038eda;
@@ -96,6 +106,13 @@
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    word-wrap:normal;
+    overflow:hidden;
+
+    vertical-align: middle;
 }
 
 .failed-dialog-suggestion-question
