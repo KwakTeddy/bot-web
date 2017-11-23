@@ -290,38 +290,29 @@ function addDialog(inText, outText, isFail, dialog, context, callback)
     preDialogName: preDialogName,
     created: new Date()
   };
+
+  if(dialog.dialogType == 'qna')
+  {
+      inQuery.dialogId = undefined;
+      inQuery.dialogName = undefined;
+      inQuery.preDialogId = undefined;
+      inQuery.preDialogName = undefined;
+      outQuery.dialogId = undefined;
+      outQuery.dialogName = undefined;
+      outQuery.preDialogId = undefined;
+      if(dialog.task)
+      {
+          outQuery.dialogId = dialog.task.typeDoc._id;
+      }
+
+      outQuery.preDialogName = inText; // 대화학습입력 통계를 위한 데이터
+  }
+
   if(context.user.liveChat >= 1){
     inQuery['liveChat'] = true;
     outQuery = {};
   }
 
-  if (false) {
-    UserDialog.create([inQuery, outQuery], function (err) {
-      if (err) {
-      }
-      else {
-      }
-
-      var query = {
-        botId: context.bot.botName,
-        userId: context.user.userKey,
-        channel: context.channel.name,
-        year: (new Date()).getYear() + 1900,
-        month: (new Date()).getMonth() + 1,
-        date: (new Date()).getDate()
-      };
-
-      UserDialogLog.update(query, query, {upsert: true}, function (err) {
-        if (err) {
-        }
-        else {
-        }
-
-        callback();
-      });
-
-    });
-  } else {
     if(dialogCache.length < LIMIT_CACHE_DIALOG) {
       dialogCache.push(inQuery);
       dialogCache.push(outQuery);
@@ -349,8 +340,6 @@ function addDialog(inText, outText, isFail, dialog, context, callback)
     // console.log('Memory: ' + m.heapUsed + '/' + m.heapTotal + '=' + m.heapUsed/m.heapTotal);
 
     callback();
-
-  }
 }
 
 exports.addDialog = addDialog;

@@ -1,6 +1,6 @@
-var dialogTrainingInput = require('../controllers/dialog-training-input-analysis.server.controller.js');
+var DialogTrainingInputController = require('../controllers/dialog-training-input-analysis.server.controller.js');
 
 module.exports = function(app)
 {
-    app.route('/api/:botId/dialog-training-input-statistics').post(dialogTrainingInput.dialogTrainingInputStatistics);
+    app.route('/api/:botId/analysis/dialog-training-input').get(DialogTrainingInputController.analysis);
 };

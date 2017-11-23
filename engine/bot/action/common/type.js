@@ -2259,6 +2259,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                     for (var l = 0; format.mongo.taskFields && l < format.mongo.taskFields.length; l++) {
                         addDoc[format.mongo.taskFields[l]] = matchDoc[format.mongo.taskFields[l]];
                     }
+                    addDoc._id = matchDoc._id; // addDialog시 qna의 경우 dialogsetdialog의 _id가 필요해서 넣음
                     inDoc[format.name].push(addDoc);
                 } else {
                     inDoc[format.name].push(matchDoc);
