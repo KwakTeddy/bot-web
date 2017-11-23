@@ -26,7 +26,7 @@ angular.module('playchat').controller('FailedDialogGraphController', ['$window',
 
         $scope.jump = function(item)
         {
-
+            
         };
 
         $scope.ignore = function(item)

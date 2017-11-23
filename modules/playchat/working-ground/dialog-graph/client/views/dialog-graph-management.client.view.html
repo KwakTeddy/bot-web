@@ -24,55 +24,49 @@
     <div class="downSide">
         <table class="tb02">
             <colgroup>
-                <col style="width: 15%;">
-                <col style="width: 25%;">
-                <col style="width: 10%;">
-                <col style="width: 40%;">
+                <col style="width: 90%;">
                 <col style="width: 10%;">
             </colgroup>
             <thead>
             <tr>
-                <th>Title</th>
-                <th>Content</th>
-                <th>Last Update</th>
+                <th>File Name</th>
                 <th></th>
-                <th>Usable</th>
             </tr>
             </thead>
             <tbody>
-                <tr ng-if="dialoggraphs.length == 0">
-                    <td colspan="5">empty</td>
+                <tr ng-if="dialogGraphs.length == 0">
+                    <td colspan="2">empty</td>
+                </tr>
+                <tr ng-repeat="fileName in dialogGraphs track by $index">
+                    <td style="text-align: left;">{{ fileName }}</td>
+                    <td>
+                        <a href="#" class="flR" ng-click="delete(fileName);" ng-if="checkEssentionFile(fileName);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>
+                    </td>
                 </tr>
             </tbody>
         </table>
-        <div class="tablePaging">
-            <div class="tablePagingC">
-                <a href="/playchat/management/dialog-set?page={{ pageOptions.prev }}" ng-click="toPage(pageOptions.prev);" class="direction">
-                    <img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="이전페이지이동">
-                </a>
-                <a ng-repeat="page in pageOptions.pages" href="/playchat/management/dialog-set?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
-                <a href="/playchat/management/dialog-set?page={{ pageOptions.next }}" ng-click="toPage(pageOptions.next);" class="direction">
-                    <img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="다음페이지이동">
-                </a>
-            </div>
-        </div>
     </div>
 
-
     <div class="modal-background management-modal" ng-show="modal.mgmtModal.isOpened">
-        <div class="modal">
+        <div class="modal" style="width: 400px;">
             <form name="modalFormDefault" ng-submit="save(modal.mgmtModal);">
                 <div class="form-row">
                     <label class="required">
-                        <span class="form-title">Title</span>
-                        <input type="text" placeholder="대화셋 이름을 입력해주세요" name="title" ng-model="modal.mgmtModal.data.title" class="dialoggraph-title data-input" ng-required="true">
+                        <span class="form-title">File Type</span>
+                        <label>
+                            <input type="radio" name="fileType" ng-model="modal.mgmtModal.data.fileType" value=".graph.js"> graph file
+                        </label>
+                        <label>
+                            <input type="radio" name="fileType" ng-model="modal.mgmtModal.data.fileType" value=".js" selected="true"> logic file
+                        </label>
                     </label>
                 </div>
                 <div class="form-row">
-                    <label>
-                        <span>Content</span>
-                        <textarea placeholder="내용을 입력해주세요" name="content" ng-model="modal.mgmtModal.data.content" class="data-input"></textarea>
+                    <label class="required">
+                        <span class="form-title">File Name</span>
+                        <input type="text" placeholder="파일 이름을 입력해주세요" name="title" ng-model="modal.mgmtModal.data.fileName" class="dialoggraph-title data-input" pattern="^[a-z]*$" ng-required="true" style="width: 85%;"> {{ modal.mgmtModal.data.fileType }}
                     </label>
+                    <p style="color: red; font-size: 12px; padding-left: 20px;">{{ modal.mgmtModal.data.error }}</p>
                 </div>
                 <div class="tab-footer">
                     <button class="blue-button">저장</button>
@@ -83,35 +77,14 @@
     </div>
 
     <div class="modal-background management-modal" ng-show="modal.importModal.isOpened">
-        <div class="modal">
+        <div class="modal" style="width: 400px;">
             <form name="modalFormDefault" ng-submit="save(modal.importModal);">
-                <div class="form-row">
-                    <label class="required">
-                        <span class="form-title">Title</span>
-                        <input type="text" placeholder="대화셋 이름을 입력해주세요" name="title" ng-model="modal.importModal.data.title" class="dialoggraph-title data-input" ng-required="true">
-                    </label>
-                </div>
-                <div class="form-row">
-                    <label class="required">
-                        <span>Type</span>
-                        <div class="form-box">
-                            <input type="radio" checked="true" ng-model="modal.importModal.data.type" ng-required="true">
-                            <span> (csv 또는 xlsx 파일)</span>
-                        </div>
-                    </label>
-                </div>
                 <div class="form-row">
                     <label class="required">
                         <span>File</span>
                         <div class="form-box">
                             <input type="file" nv-file-select uploader="uploader" ng-required="true" />
                         </div>
-                    </label>
-                </div>
-                <div class="form-row">
-                    <label>
-                        <span>Content</span>
-                        <textarea placeholder="내용을 입력해주세요" name="content" ng-model="modal.importModal.data.content" class="data-input"></textarea>
                     </label>
                 </div>
                 <div class="tab-footer">

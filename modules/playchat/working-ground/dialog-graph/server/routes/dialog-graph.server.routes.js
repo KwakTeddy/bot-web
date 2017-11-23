@@ -2,9 +2,12 @@ var dialoggraphs = require('../controllers/dialog-graph.server.controller.js');
 
 module.exports = function(app)
 {
-    app.get('/api/:botId/dialoggraphs/:fileName', dialoggraphs.findFile);
-    app.get('/api/:botId/dialoggraphs', dialoggraphs.find);
-    app.post('/api/:botId/dialoggraphs/uploadImage', dialoggraphs.uploadImage);
-    app.post('/api/:botId/dialoggraphs/:fileName', dialoggraphs.saveFile);
-    app.get('/api/:botId/dialoggraphs/nlp/:text', dialoggraphs.getNlp);
+    app.get('/api/:botId/dialog-graphs/:fileName/exist', dialoggraphs.checkFile);
+    app.get('/api/:botId/dialog-graphs/:fileName', dialoggraphs.findFile);
+    app.get('/api/:botId/dialog-graphs', dialoggraphs.find);
+    app.post('/api/:botId/dialog-graphs/uploadImage', dialoggraphs.uploadImage);
+    app.post('/api/:botId/dialog-graphs/uploadFile', dialoggraphs.uploadFile);
+    app.post('/api/:botId/dialog-graphs/:fileName', dialoggraphs.saveFile);
+    app.delete('/api/:botId/dialog-graphs/:fileName', dialoggraphs.deleteFile);
+    app.get('/api/:botId/dialog-graphs/nlp/:text', dialoggraphs.getNlp);
 };

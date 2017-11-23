@@ -195,7 +195,7 @@
 
     angular.module('playchat').factory('DialogGraphEditorInput', function ($resource)
     {
-        var DialogGraphsNLPService = $resource('/api/:botId/dialoggraphs/nlp/:text', { botId: '@botId', text: '@text' });
+        var DialogGraphsNLPService = $resource('/api/:botId/dialog-graphs/nlp/:text', { botId: '@botId', text: '@text' });
         var IntentService = $resource('/api/:botId/intents/:intentId', { botId: '@botId', intentId: '@intentId' }, { update: { method: 'PUT' } });
         var EntityService = $resource('/api/:botId/entitys/:entityId', { botId: '@botId', entityId: '@entityId' }, { update: { method: 'PUT' } });
         var TypeService = $resource('/api/:botId/types', { botId: '@botId' });

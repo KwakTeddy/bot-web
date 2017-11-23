@@ -2,7 +2,7 @@
 {
     angular.module('playchat').controller('DialogGraphCodeEditorController', ['$window', '$scope', '$resource', '$cookies', '$element', '$timeout', function ($window, $scope, $resource, $cookies, $element, $timeout)
     {
-        var DialogGraphsService = $resource('/api/:botId/dialoggraphs/:fileName', { botId: '@botId', fileName: '@fileName' });
+        var DialogGraphsService = $resource('/api/:botId/dialog-graphs/:fileName', { botId: '@botId', fileName: '@fileName' });
 
         var chatbot = $cookies.getObject('chatbot');
 

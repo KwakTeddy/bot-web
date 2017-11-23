@@ -4,12 +4,10 @@ angular.module('playchat').controller('DialogGraphManagementController', ['$wind
 {
     $scope.$parent.changeWorkingGroundName('Management > Dialog Graph');
 
-    var DialogGraphsService = $resource('/api/:botId/dialoggraphs/:dialoggraphId', { botId: '@botId', dialoggraphId: '@dialoggraphId' }, { update: { method: 'PUT' } });
-    var DialogGraphsPageService = $resource('/api/:botId/dialoggraphs/totalpage', { botId: '@botId' });
-    var DialogGraphsUsableService = $resource('/api/:botId/dialoggraphs/usable', { botId: '@botId' }, { update: { method: 'PUT' } });
+    var DialogGraphExistService = $resource('/api/:botId/dialog-graphs/:fileName/exist', { botId: '@botId', fileName: '@fileName' });
+    var DialogGraphsService = $resource('/api/:botId/dialog-graphs/:fileName', { botId: '@botId', fileName: '@fileName' });
 
     var chatbot = $cookies.getObject('chatbot');
-    var user = $cookies.getObject('user');
 
     (function()
     {
@@ -22,6 +20,8 @@ angular.module('playchat').controller('DialogGraphManagementController', ['$wind
                 angular.element('.dialoggraph-title').focus();
             }, 100);
         });
+
+        $scope.modal.mgmtModal.data.fileType = '.js';
 
         var importModal = new ModalService('importModal', $scope);
         importModal.setOpenCallback(function()
@@ -50,18 +50,9 @@ angular.module('playchat').controller('DialogGraphManagementController', ['$wind
 
         $scope.getList = function(page, title)
         {
-            var page = page || $location.search().page || 1;
-            var countPerPage = $location.search().countPerPage || 10;
-
-            DialogGraphsPageService.get({ botId: chatbot._id, countPerPage: countPerPage, title: title }, function(result)
+            DialogGraphsService.query({ botId: chatbot.id, title: title }, function(list)
             {
-                var totalPage = result.totalPage;
-                $scope.pageOptions = PagingService(page, totalPage);
-            });
-
-            DialogGraphsService.query({ botId: chatbot._id, page: page, countPerPage: countPerPage, title: title }, function(list)
-            {
-                $scope.dialoggraphs = list;
+                $scope.dialogGraphs = list;
                 $scope.$parent.loaded('working-ground');
             });
         };
@@ -71,87 +62,79 @@ angular.module('playchat').controller('DialogGraphManagementController', ['$wind
             $scope.getList(page);
         };
 
-        $scope.save = function(modal)
+        var saveFunc = function(modal)
         {
             var params = {};
-            params.botId = chatbot._id;
-            params.title = modal.data.title;
-            params.content = modal.data.content;
-            params.type = modal.data.type;
-            params.path = modal.data.path;
-            params.filename = modal.data.filename;
-            params.user = user._id;
+            params.botId = chatbot.id;
+            params.fileName = modal.data.fileName + modal.data.fileType;
 
-            if(modal.data._id)
-                params._id = modal.data._id;
-
-            if(params._id)
+            if(modal.data.path)
             {
-                DialogGraphsService.update(params, function(result)
-                {
-                    for(var key in result)
-                    {
-                        updateTarget[key] = result[key];
-                    }
+                params.path = modal.data.path;
+                params.fileName = modal.data.fileName;
+            }
 
-                    updateTarget = undefined;
-                    modal.close();
-                });
-            }
-            else
+            DialogGraphsService.save(params, function(result)
             {
-                DialogGraphsService.save(params, function(result)
-                {
-                    $scope.dialoggraphs.unshift(result);
-                    modal.close();
-                });
-            }
+                $scope.dialogGraphs.unshift(result.fileName);
+                modal.close();
+            });
         };
 
-        $scope.modify = function(item)
+        $scope.save = function(modal)
         {
-            updateTarget = item;
-            mgmtModal.setData(item);
-            mgmtModal.open();
+            DialogGraphExistService.get({ botId: chatbot.id, fileName: modal.data.fileName + modal.data.fileType }, function(result)
+            {
+                if(result.exist)
+                {
+                    if(confirm('Filename is duplicated. Keep going?'))
+                    {
+                        saveFunc(modal);
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
+                saveFunc(modal);
+            },
+            function(err)
+            {
+                alert(JSON.stringify(err, null, 4));
+            });
         };
 
-        $scope.delete = function(item)
+        $scope.checkEssentionFile = function(fileName)
+        {
+            if(fileName == 'default.graph.js' || fileName.endsWith('.bot.js') || fileName == 'default.js')
+                return false;
+
+            return true;
+        };
+
+        $scope.delete = function(fileName)
         {
             if(confirm('정말 삭제하시겠습니까'))
             {
                 var params = {};
-                params.botId = chatbot._id;
-                params.dialoggraphId = item._id;
+                params.botId = chatbot.id;
+                params.fileName = fileName;
 
-                var openDialogsets = $cookies.getObject('openDialogsets');
-                for(var key in openDialogsets)
+                DialogGraphsService.delete(params, function()
                 {
-                    if(openDialogsets[key] == item._id)
-                    {
-                        delete openDialogsets[key];
-                        break;
-                    }
-                }
-
-                $cookies.putObject(JSON.stringify(openDialogsets));
-
-                DialogGraphsService.delete(params, function(result)
+                    var index = $scope.dialogGraphs.indexOf(fileName);
+                    $scope.dialogGraphs.splice(index, 1);
+                },
+                function(err)
                 {
-                    var index = $scope.dialoggraphs.indexOf(item);
-                    $scope.dialoggraphs.splice(index, 1);
+                    alert(err.error);
                 });
             }
         };
 
-        $scope.updateUsable = function(item)
-        {
-            DialogGraphsUsableService.update({ botId: chatbot._id, _id: item._id, usable: item.usable ? false : true }, function(result)
-            {
-            });
-        };
-
         $scope.uploader = new FileUploader({
-            url: '/api/dialoggraphs/uploadfile',
+            url: '/api/' + chatbot.id + '/dialog-graphs/uploadfile',
             alias: 'uploadFile',
             autoUpload: true
         });
@@ -164,12 +147,8 @@ angular.module('playchat').controller('DialogGraphManagementController', ['$wind
 
         $scope.uploader.onSuccessItem = function(item, response, status, headers)
         {
-            console.log('성공 : ', item, response, status, headers);
-
             importModal.data.path = response.path;
-            importModal.data.filename = response.filename;
-
-            console.log(importModal);
+            importModal.data.fileName = response.fileName;
         };
 
         $scope.uploader.onProgressItem = function(fileItem, progress)

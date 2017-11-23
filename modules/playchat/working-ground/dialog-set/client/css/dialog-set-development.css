@@ -246,3 +246,13 @@
     left: -1.5px;
     font-weight: normal;
 }
+
+.tabs1 li
+{
+    padding: 0 10px;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    word-wrap: normal !important;
+}

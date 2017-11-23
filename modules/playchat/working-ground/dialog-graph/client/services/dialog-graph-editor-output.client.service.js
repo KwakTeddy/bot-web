@@ -23,7 +23,7 @@
             $scope.setOutputImageUploader = function(index)
             {
                 $scope.dialog.output[index].uploader = new FileUploader({
-                    url: '/api/' + $scope.chatbot.id + '/dialoggraphs/uploadImage',
+                    url: '/api/' + $scope.chatbot.id + '/dialog-graphs/uploadImage',
                     alias: 'uploadFile',
                     autoUpload: true
                 });

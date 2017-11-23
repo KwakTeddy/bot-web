@@ -2,7 +2,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 {
     $scope.$parent.changeWorkingGroundName('Development > Dialog Graph');
 
-    var DialogGraphsService = $resource('/api/:botId/dialoggraphs/:fileName', { botId: '@botId', fileName: '@fileName' });
+    var DialogGraphsService = $resource('/api/:botId/dialog-graphs/:fileName', { botId: '@botId', fileName: '@fileName' });
 
     var chatbot = $cookies.getObject('chatbot');
     var openDialogGraph = $cookies.getObject('openDialogGraph');
