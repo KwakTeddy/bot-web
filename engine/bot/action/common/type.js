@@ -62,25 +62,26 @@ function processInput(context, inRaw, callback) {
             if (context == null || context == undefined) context = {};
 
             context.botUser = context.botUser || {};
-            context.botUser.language = context.botUser.language || {};
+            var language = context.bot.language || 'ko';
+            // context.botUser.language = context.botUser.language || {};
             // if (!("botUser" in context)) {context["botUser"] = {};}
             // if (!("language" in context)) {context.botUser["language"] = "ko";}
 
-            context.botUser.language = "en";
+            // context.botUser.language = "en";
 
-            if (context.botUser.language=="en") {
+            if (language=="en") {
                 enNLP.processInput(context, inRaw, function(_inTextNLP, _inDoc) {
                     inNLP = context.botUser.inNLP;
                     nlpAll = context.botUser.nlpAll;
                     cb(null);
                 });
-            } else if (context.botUser.language=="zh") {
+            } else if (language=="zh") {
                 zhNLP.processInput(context, inRaw, function(_inTextNLP, _inDoc) {
                     inNLP = context.botUser.inNLP;
                     nlpAll = context.botUser.nlpAll;
                     cb(null);
                 });
-            } else if (context.botUser.language=="ja") {
+            } else if (language=="ja") {
                 jaNLP.processInput(context, inRaw, function(_inTextNLP, _inDoc) {
                     inNLP = context.botUser.inNLP;
                     nlpAll = context.botUser.nlpAll

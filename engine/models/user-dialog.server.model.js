@@ -18,6 +18,7 @@ var UserDialogSchema = new Schema(
     inOut: { type: Boolean },
     fail: { type: Boolean },
     dialog: { type: String },
+    nlpDialog: { type: String },
     dialogId: { type: String },
     dialogName: { type: String },
     preDialogId: { type: String },

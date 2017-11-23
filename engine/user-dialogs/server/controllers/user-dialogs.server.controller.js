@@ -273,6 +273,7 @@ function addDialog(inText, outText, isFail, dialog, context, callback)
       dialogType: dialog.dialogType || 'graph',
     preDialogId: preDialogId,
     preDialogName: preDialogName,
+      nlpDialog: context.dialog.inNLP,
     created: new Date()
   };
 

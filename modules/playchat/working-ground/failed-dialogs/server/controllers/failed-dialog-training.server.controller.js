@@ -104,9 +104,6 @@ module.exports.create = function(req, res)
             return res.status(400).send({ message: err.stack || err });
         }
 
-        console.log('흠 : ', req.params.botId);
-        console.log('다이얼로그셋 : ', dialogset);
-
         DialogsetDialog.find({ dialogset: dialogset._id }).sort('-id').limit(1).exec(function(err, dialogs)
         {
             if (err)

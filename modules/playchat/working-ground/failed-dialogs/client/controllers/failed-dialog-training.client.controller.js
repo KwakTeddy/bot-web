@@ -16,7 +16,6 @@ angular.module('playchat').controller('FailedDialogTrainingController', ['$windo
         {
             FailedDialogService.query({ botId: chatbot.id, ignoreType: 'qna' }, function(list)
             {
-                console.log(list);
                 $scope.list = list;
 
                 $scope.$parent.loaded('working-ground');
