@@ -1,34 +1,37 @@
 <div class="signin-background">
-    <div id="logincontents">
-        <div class="mt16 mb70">
-            <span class="p1">Welcome to Playchat!</span>
-            <p class="p2">Please sign in with your account.</p>
-        </div>
-        <div class="mt40 flL">
-            <div class="social">
-                <p class="mb25">Sign in with your social network account.</p>
-                <div class="fbbtn">
-                    <a href="#">Sign in with Facebook</a>
-                </div>
-                <div class="gbtn">
-                    <a href="#">Sign in with Google</a>
-                </div>
-                <div class="kbtn">
-                    <a href="#">Sign in with Kakao</a>
-                </div>
+
+    <div class="signin-title">
+        <span class="p1">Welcome to Playchat!</span>
+        <p class="p2">Please sign in with your account.</p>
+    </div>
+
+    <div class="signin-body">
+        <div class="social">
+            <p class="mb25">Sign in with your social network account.</p>
+            <div class="fbbtn">
+                <a href="#">Sign in with Facebook</a>
+            </div>
+            <div class="gbtn">
+                <a href="#">Sign in with Google</a>
+            </div>
+            <div class="kbtn">
+                <a href="#">Sign in with Kakao</a>
             </div>
         </div>
-        <form class="mt30 flL login" ng-submit="signin();">
-            <p>Email ID</p>
-            <input type="text" class="input_type09 mb10 username" ng-model="credentials.email" ng-required="true">
-            <p>Password</p>
-            <input type="password" class="input_type09 password" ng-model="credentials.password" ng-required="true">
-            <a href="#" ng-click="fotgotPassword();"><p class="find">Forget your password?</p></a>
-            <a href="#">
-                <input type="submit" class="loginbtn" value="Sign in" ng-click="signin();">
-            </a>
-        </form>
+        <div class="email">
+            <form class="login" ng-submit="signin();">
+                <p>Email ID</p>
+                <input type="text" class="input_type09 mb10 username" ng-model="credentials.email" ng-required="true">
+                <p>Password</p>
+                <input type="password" class="input_type09 password" ng-model="credentials.password" ng-required="true">
+                <a href="#" ng-click="fotgotPassword();"><p class="find">Forget your password?</p></a>
+                <a href="#">
+                    <input type="submit" class="loginbtn" value="Sign in" ng-click="signin();">
+                </a>
+            </form>
+        </div>
     </div>
+
     <div id="bottoms">
         <span>New to Playchat? <a ui-sref="signup" href="#" class="create">Create Account</a></span>
         <a class="policy" href="#">Terms of Use and Privacy Policy</a>

@@ -1,8 +1,28 @@
 .signin-background
 {
+    position: relative;
+    top: 65px;
     width: 66%;
-
     margin: 0 auto;
+}
+
+.signin-title
+{
+    text-align: center;
+    margin-top: 70px;
+}
+
+.signin-body
+{
+    display: flex;
+    margin-top: 50px;
+    align-items: center;
+    justify-content: center;
+}
+
+.social, .email
+{
+    padding: 0 20px;
 }
 
 #logincontents
@@ -18,10 +38,7 @@
     font-size: 15px;
     color: #7e7e7e;
 }
-.social{
-    width: 400px;
-    margin: 0px 50px 0 250px;
-}
+
 .social p{
     font-size: 13px;
     color: #7e7e7e;
@@ -35,7 +52,7 @@
 }
 .fbbtn a{
     color: #fff !important;
-    margin-left: 18px;
+    margin-left: 45px;
     letter-spacing: 0.1px;
     padding-left: 10px;
 }
@@ -47,10 +64,10 @@
     margin: 10px auto;
 }
 .gbtn a{
-    color: #fff;
+    color: #fff !important;
     letter-spacing: 0.1px;
     padding-left: 10px;
-
+    margin-left: 45px;
 }
 .kbtn{
     background: #ffeb00 url(../imgs/kakao.png) no-repeat 16px 8px;
@@ -60,10 +77,10 @@
     margin: 10px auto;
 }
 .kbtn a{
-    color: #3b1e1e;
+    color: #3b1e1e !important;
     letter-spacing: 0px;
-    /*padding-left: 10px;
-    font-weight: 600;*/
+    margin-left: 45px;
+    padding-left: 10px;
 }
 .input_type09{
     width: 240px;

@@ -2,6 +2,7 @@ var FailedDialogsAnalysisController = require('../controllers/failed-dialogs-ana
 var FailedDialogsOperationController = require('../controllers/failed-dialogs-operation.server.controller.js');
 var FailedDialogTrainingController = require('../controllers/failed-dialog-training.server.controller.js');
 var FailedDialogIntentController = require('../controllers/failed-dialog-intent.server.controller.js');
+var FailedDialogGraphController = require('../controllers/failed-dialog-graph.server.controller.js');
 
 module.exports = function(app)
 {
@@ -15,4 +16,6 @@ module.exports = function(app)
 
     app.get('/api/:botId/operation/failed-intent', FailedDialogIntentController.analysis);
     app.post('/api/:botId/operation/failed-intent/:intentId', FailedDialogIntentController.saveIntentContents);
+
+    app.get('/api/:botId/operation/failed-graph', FailedDialogGraphController.analysis);
 };

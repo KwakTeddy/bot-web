@@ -6,26 +6,26 @@
         <col style="width: 17%;">
     </colgroup>
     <thead>
-    <tr>
-        <th>Previous Dialog</th>
-        <th>User Input</th>
-        <th>Count</th>
-        <th>Manage</th>
-    </tr>
+        <tr>
+            <th>Previous Dialog</th>
+            <th>User Input</th>
+            <th>Count</th>
+            <th>Manage</th>
+        </tr>
     </thead>
     <tbody>
-    <tr ng-if="list.length == 0">
-        <td colspan="4">empty</td>
-    </tr>
-    <tr>
-        <td>How are you doing?</td>
-        <td>Dialog Knowledge</td>
-        <td>1213</td>
-        <td>
-            <button type="button" class="jump-button">Jump</button>
-            <button type="button" class="ignore-button">ignore</button>
-        </td>
-    </tr>
+        <tr ng-if="list.length == 0">
+            <td colspan="4">empty</td>
+        </tr>
+        <tr ng-repeat="item in list">
+            <td>{{ item.preDialogName }}</td>
+            <td>{{ item._id.dialog }}</td>
+            <td>{{ item.count }}</td>
+            <td>
+                <button type="button" class="jump-button" ng-click="jump(item);">Jump</button>
+                <button type="button" class="ignore-button" ng-click="ignore(item);">ignore</button>
+            </td>
+        </tr>
     </tbody>
 </table>
 
