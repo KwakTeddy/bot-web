@@ -54,8 +54,11 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             var dialog = $location.search().dialog;
             var preDialogId = $location.search().preDialogId;
 
+            console.log('머지 : ', dialog, preDialogId);
+
             if(!dialog || !preDialogId)
             {
+                DialogGraph.removeOnLoad();
                 return;
             }
 
@@ -73,8 +76,6 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                     DialogGraph.openEditorForFocused();
                     DialogGraphEditor.setSaveCallback(function(data)
                     {
-                        console.log('데이터 : ', data);
-
                         for(var i=0; i<data.input.length; i++)
                         {
                             if(data.input[i].text == dialog)
@@ -96,18 +97,6 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
         $scope.backToFailedDialog = function()
         {
             $location.url('/playchat/operation/failed-dialogs#failedDialogGraph');
-
-            // if(DialogGraph.isDirty())
-            // {
-            //     if(confirm('변경사항이 저장되지 않았습니다. 이동하시겠습니까?'))
-            //     {
-            //         $rootScope.$broadcast('clearUserDialog', { userDialogId: userDialogId });
-            //     }
-            // }
-            // else
-            // {
-            //     $rootScope.$broadcast('clearUserDialog', { userDialogId: userDialogId });
-            // }
         };
 
         $scope.initialize = function()

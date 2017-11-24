@@ -212,7 +212,7 @@
             this.focusedDialog = undefined;
             this.idList = {};
 
-            this.onLoadCallback = [];
+            this.onLoadCallback = undefined;
 
             this.dirty = false;
         };
@@ -1238,15 +1238,18 @@
         {
             if(callback)
             {
-                this.onLoadCallback.push(callback);
+                this.onLoadCallback = callback;
             }
             else
             {
-                for(var i=0; i<this.onLoadCallback.length; i++)
-                {
-                    this.onLoadCallback[i]();
-                }
+                if(this.onLoadCallback)
+                    this.onLoadCallback();
             }
+        };
+
+        DialogGraph.prototype.removeOnLoad = function()
+        {
+            this.onLoadCallback = undefined;
         };
 
         if(!instance)
