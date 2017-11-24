@@ -179,7 +179,12 @@
     color: #b7bbc4;
 }
 
-.playchat-background .gnb .menu-item-list .sub-menu-item-group li.selected
+.playchat-background .gnb .menu-item-list .sub-menu-item-group li
+{
+    cursor: pointer;
+}
+
+.playchat-background .gnb .menu-item-list .sub-menu-item-group li.selected, .playchat-background .gnb .menu-item-list .sub-menu-item-group li:hover
 {
     background: #038eda;
     padding: 2px 42px;
@@ -190,7 +195,13 @@
     line-height: 48px;
 }
 
-.playchat-background .gnb .menu-item-list .sub-menu-item-group li.selected a
+.playchat-background .gnb .menu-item-list .sub-menu-item-group li:hover
+{
+    height: 34px;
+    line-height: 34px;
+}
+
+.playchat-background .gnb .menu-item-list .sub-menu-item-group li.selected a, .playchat-background .gnb .menu-item-list .sub-menu-item-group li:hover a
 {
     color: #fff;
 }
