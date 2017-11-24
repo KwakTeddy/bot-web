@@ -11,6 +11,8 @@
         {
             this.rightStyle = '-368px';
             this.callback = undefined;
+            this.bindCallback = undefined;
+            this.saveCallback = undefined;
         };
 
         DialogGraphEditor.prototype.open = function(parent, dialog)
@@ -25,9 +27,21 @@
                 this.callback(parent, dialog);
         };
 
-        DialogGraphEditor.prototype.setOpenCallback = function(callback)
+        DialogGraphEditor.prototype.bindData = function(data)
+        {
+            if(this.bindCallback)
+                this.bindCallback(data);
+        };
+
+        DialogGraphEditor.prototype.setOpenCallback = function(callback, bindCallback)
         {
             this.callback = callback;
+            this.bindCallback = bindCallback;
+        };
+
+        DialogGraphEditor.prototype.setSaveCallback = function(callback)
+        {
+            this.saveCallback = callback;
         };
 
         DialogGraphEditor.prototype.close = function()

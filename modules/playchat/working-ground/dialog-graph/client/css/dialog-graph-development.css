@@ -626,16 +626,20 @@
 .prev-tab, .next-tab
 {
     height: 19px;
-    text-align: center;
-    padding: 10px 5px;
-
-    font-size: 10px;
-
-    line-height: 23px;
-
-    color: #777;
-
     top: 2px;
+    border: 0;
+    background-color: white;
+    padding: 0 10px;
+    margin: 0;
+    position: relative;
+    top: 17px;
+
+    opacity: 0.5;
+}
+
+.prev-tab:hover, .next-tab:hover
+{
+    opacity: 1;
 }
 
 .tab-body li.select_tab

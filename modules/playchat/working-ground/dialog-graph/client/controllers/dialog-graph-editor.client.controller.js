@@ -20,7 +20,6 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         {
             $scope.isAdvancedMode = true;
         }
-        console.log($scope.isAdvancedMode);
     };
 
     $scope.initialize = function(parent, dialog)
@@ -108,48 +107,6 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                 {
                     console.log('처리되지 않은 아웃풋 : ', dialog.output);
                 }
-
-                // if(dialog.output.length == 1 && dialog.output[0].kind == 'Action')
-                // {
-                //     $scope.isUseOutput = false;
-                //
-                //     for(var key in $scope.dialog.output[0])
-                //     {
-                //         if(key != 'kind')
-                //         {
-                //             $scope.dialog.actionOutput = { type: key, dialog: $scope.dialog.output[0][key] };
-                //             break;
-                //         }
-                //     }
-                //
-                //     $scope.dialog.output = [{ kind: 'Content', text: '', buttons: [] }];
-                // }
-                // else
-                // {
-                //     //output이 action이 아닌경우
-                //     if(typeof dialog.output == 'string')
-                //     {
-                //         $scope.dialog.output.push({ kind: 'Content', text: dialog.output });
-                //     }
-                //     else if(typeof dialog.output == 'object')
-                //     {
-                //         if(dialog.output.length > 0)
-                //         {
-                //             for(var i=0; i<dialog.output.length; i++)
-                //             {
-                //                 $scope.dialog.output.push(dialog.output[i]);
-                //             }
-                //         }
-                //         else
-                //         {
-                //             $scope.dialog.output.push(dialog.output);
-                //         }
-                //     }
-                //     else
-                //     {
-                //         console.log('처리되지 않은 아웃풋 : ', dialog.output);
-                //     }
-                // }
             }
             else
             {
@@ -242,16 +199,19 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         // 새로 추가되는 경우 실 데이터에도 추가해줌.
         if($scope.parentDialog && !$scope.oldDialog)
         {
-            // var fileName = $location.search().fileName || 'default.graph.js';
-            // var prefix = fileName.split('.')[0];
-            // ($scope.parentDialog.children || ($scope.parentDialog.children = [])).push(result);
-
             DialogGraph.addChildDialog($scope.parentDialog, result);
         }
 
         DialogGraph.refresh();
         DialogGraph.setDirty(true);
         DialogGraph.focusById(result.id);
+
+        if(DialogGraphEditor.saveCallback)
+        {
+            DialogGraphEditor.saveCallback(result);
+            DialogGraphEditor.saveCallback = undefined;
+        }
+
         $scope.close();
     };
 
@@ -334,5 +294,11 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         $scope.userDialogs = DialogGraph.getAllUserDialogs();
 
         $scope.initialize(parent, dialog);
+    },
+    function(data)
+    {
+        $scope.$apply(function(){
+            $scope.dialog.input = data.input;
+        })
     });
 }]);

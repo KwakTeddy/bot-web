@@ -29,13 +29,13 @@
 
 <div ng-controller="DialogGraphDevelopmentController" class="graph-background">
     <div class="tab">
-        <a class="prev-tab" ng-mousedown="prevTab($event);">&lt;</a>
+        <a class="prev-tab" ng-mousedown="prevTab($event);"><img src="/modules/playchat/gnb/client/imgs/left.png"></a>
         <ul class="tab-body">
             <li ng-repeat="file in fileList track by $index" id="{{ file }}" ng-class="currentTabName == file ? 'select_tab' : ''" ng-click="selectTab($event, file);">
                 <a>{{ file }}</a>
             </li>
         </ul>
-        <a class="next-tab" ng-mousedown="nextTab($event);">&gt;</a>
+        <a class="next-tab" ng-mousedown="nextTab($event);"><img src="/modules/playchat/gnb/client/imgs/right.png"></a>
     </div>
     <!--<div class="tab01">-->
         <!--<ul class="tabs1">-->
@@ -67,6 +67,7 @@
             <button type="button" class="graph-button" ng-click="undo();" ng-disabled="graphHistoryIndex <= 0">Undo</button>
             <button type="button" class="graph-button" ng-click="redo();" ng-disabled="graphHistoryIndex == graphHistory.length-1">Redo</button>
             <button type="button" class="graph-button save" ng-click="save();" ng-disabled="!isDirty">Save</button>
+            <button type="button" class="graph-button save" ng-if="fromFailedDialog" ng-click="backToFailedDialog();" style="width: 170px;">Back to Failed Dialog</button>
             <div class="alert-success" role="alert"> <strong>저장되었습니다!</strong> </div>
                 <!--font-size: 12px;-->
                 <!--vertical-align: middle;-->

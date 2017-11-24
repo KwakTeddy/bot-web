@@ -10,7 +10,22 @@ angular.module('playchat').controller('FailedDialogsOperationController', ['$win
         angular.element('.tab-body').hide();
         angular.element('.tab-body[data-id="' + name + '"]').show();
 
+        $location.hash(name);
+
         e.preventDefault();
         e.stopPropagation();
     };
+
+    if($location.hash())
+    {
+        angular.element('.failed-dialog .select_tab').removeClass('select_tab');
+        angular.element('.failed-dialog a[href="#' + $location.hash() + '"]').parent().addClass('select_tab');
+
+        setTimeout(function()
+        {
+            console.log('나와라 : ', angular.element('.failed-dialog .tab-body'));
+            angular.element('.failed-dialog .tab-body').hide();
+            angular.element('.failed-dialog .tab-body[data-id="' + $location.hash() + '"]').show();
+        }, 100);
+    }
 }]);

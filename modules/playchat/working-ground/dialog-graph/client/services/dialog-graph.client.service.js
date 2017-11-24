@@ -211,6 +211,10 @@
 
             this.focusedDialog = undefined;
             this.idList = {};
+
+            this.onLoadCallback = [];
+
+            this.dirty = false;
         };
 
         DialogGraph.prototype.getCommonDialogs = function()
@@ -401,6 +405,9 @@
 
         DialogGraph.prototype.loadFromFile = function(data, fileName)
         {
+            this.dirty = false;
+            this.focusedDialog = undefined;
+
             if(fileName)
             {
                 this.fileName = fileName;
@@ -441,6 +448,8 @@
                         this.originalFileData = this.originalFileData.replace(match, '{{dialogs}}');
 
                         this.refresh();
+
+                        this.onLoad();
 
                         return true;
                     }
@@ -1072,6 +1081,16 @@
             this.focus(this.canvas.find('#' + id + ' > .graph-dialog-item').get(0));
         };
 
+        DialogGraph.prototype.openEditorForFocused = function()
+        {
+            this.editor.open(this.canvas.find('#' + this.focusedDialog + ' > .graph-dialog-item').get(0).dialog, null);
+        };
+
+        DialogGraph.prototype.bindDataToEditor = function(data)
+        {
+            this.editor.bindData(data);
+        };
+
         DialogGraph.prototype.moveScrollToTarget = function(target)
         {
             var canvas = this.canvas.get(0);
@@ -1200,19 +1219,34 @@
 
         DialogGraph.prototype.setDirty = function(dirty)
         {
-            this.isDirty = (dirty === undefined ? true : dirty);
+            this.dirty = (dirty === undefined ? true : dirty);
             if(this.dirtyCallback)
-                this.dirtyCallback(this.isDirty);
+                this.dirtyCallback(this.dirty);
         };
 
         DialogGraph.prototype.isDirty = function()
         {
-            return this.isDirty;
+            return this.dirty;
         };
 
         DialogGraph.prototype.setDirtyCallback = function(callback)
         {
             this.dirtyCallback = callback;
+        };
+
+        DialogGraph.prototype.onLoad = function(callback)
+        {
+            if(callback)
+            {
+                this.onLoadCallback.push(callback);
+            }
+            else
+            {
+                for(var i=0; i<this.onLoadCallback.length; i++)
+                {
+                    this.onLoadCallback[i]();
+                }
+            }
         };
 
         if(!instance)

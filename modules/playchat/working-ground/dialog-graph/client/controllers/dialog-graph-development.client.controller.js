@@ -2,14 +2,16 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 {
     $scope.$parent.changeWorkingGroundName('Development > Dialog Graph');
 
+    var FailedDialogService = $resource('/api/:botId/operation/failed-dialogs/:_id', { botId: '@botId', _id: '@_id' }, { update: { method: 'PUT' } });
     var DialogGraphsService = $resource('/api/:botId/dialog-graphs/:fileName', { botId: '@botId', fileName: '@fileName' });
 
     var chatbot = $cookies.getObject('chatbot');
-    var openDialogGraph = $cookies.getObject('openDialogGraph');
-    
-    var fileName = $location.search().fileName || 'default.graph.js';
 
+    var fileName = $location.search().fileName || 'default.graph.js';
     $scope.currentTabName = fileName;
+
+    $scope.fromFailedDialog = false;
+    $scope.failedDialogSaved = false;
 
     // 실제 그래프 로직이 들어있는 서비스
     DialogGraph.setScope($compile, $scope);
@@ -35,6 +37,78 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
     (function()
     {
         $scope.$parent.loaded('working-ground');
+
+        $scope.$on('$locationChangeStart', function(event, next, current)
+        {
+            if(DialogGraph.isDirty())
+            {
+                if(!confirm('변경사항이 저장되지 않았습니다. 이동하시겠습니까?'))
+                {
+                    event.preventDefault();
+                }
+            }
+        });
+
+        $scope.checkFailedDialog = function()
+        {
+            var dialog = $location.search().dialog;
+            var preDialogId = $location.search().preDialogId;
+
+            if(!dialog || !preDialogId)
+            {
+                return;
+            }
+
+            $scope.fromFailedDialog = true;
+
+            DialogGraph.onLoad(function()
+            {
+                var data = {
+                    input: [{ text: dialog }]
+                };
+                DialogGraph.focusById(preDialogId);
+
+                setTimeout(function()
+                {
+                    DialogGraph.openEditorForFocused();
+                    DialogGraphEditor.setSaveCallback(function(data)
+                    {
+                        console.log('데이터 : ', data);
+
+                        for(var i=0; i<data.input.length; i++)
+                        {
+                            if(data.input[i].text == dialog)
+                            {
+                                $scope.failedDialogSaved = true;
+                                break;
+                            }
+                        }
+                    });
+                }, 100);
+
+                setTimeout(function()
+                {
+                    DialogGraph.bindDataToEditor(data);
+                }, 500);
+            });
+        };
+
+        $scope.backToFailedDialog = function()
+        {
+            $location.url('/playchat/operation/failed-dialogs#failedDialogGraph');
+
+            // if(DialogGraph.isDirty())
+            // {
+            //     if(confirm('변경사항이 저장되지 않았습니다. 이동하시겠습니까?'))
+            //     {
+            //         $rootScope.$broadcast('clearUserDialog', { userDialogId: userDialogId });
+            //     }
+            // }
+            // else
+            // {
+            //     $rootScope.$broadcast('clearUserDialog', { userDialogId: userDialogId });
+            // }
+        };
 
         $scope.initialize = function()
         {
@@ -237,7 +311,6 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
         {
             var data = DialogGraph.getCompleteData();
 
-            console.log('데이터 : ', data);
             var fileName = $location.search().fileName || 'default.graph.js';
             DialogGraphsService.save({ data: data, botId: chatbot.id, fileName: fileName }, function()
             {
@@ -248,6 +321,17 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                 $scope.graphHistoryIndex = $scope.graphHistory.length-1;
 
                 DialogGraph.setDirty(false);
+
+                if($scope.fromFailedDialog && $scope.failedDialogSaved)
+                {
+                    FailedDialogService.update({ botId: chatbot._id, _id: $location.search().userDialogId }, function()
+                    {
+                    },
+                    function(err)
+                    {
+                        alert(err.data.error || err.data.message);
+                    });
+                }
 
                 $rootScope.$broadcast('simulator-build');
 
@@ -313,6 +397,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
         };
     })();
 
+    $scope.checkFailedDialog();
     $scope.initialize();
     $scope.getFileList();
     $scope.loadFile(fileName);
