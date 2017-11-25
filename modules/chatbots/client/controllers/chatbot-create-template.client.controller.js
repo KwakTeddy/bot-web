@@ -111,7 +111,7 @@
                     data.language = 'ko';
                 }
 
-                ChatbotService.save({ id: $scope.template.name + '_' + $cookies.getObject('user').username + '_' + new Date().getTime(), name: data.name, language: data.language, description: data.description }, function(chatbot)
+                ChatbotService.save({ id: $scope.template.name + '_' + $cookies.getObject('user').username + '_' + new Date().getTime(), name: data.name, language: data.language, description: data.description, templateId: $scope.template._id }, function(chatbot)
                 {
                     $cookies.putObject('chatbot', chatbot);
                     ChatbotTemplateDataService.save({ templateName: $scope.template.name, botId: chatbot.id, data: data }, function(result)

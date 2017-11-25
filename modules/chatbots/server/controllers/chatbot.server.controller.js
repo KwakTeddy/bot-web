@@ -2,9 +2,8 @@ var path = require('path');
 var mongoose = require('mongoose');
 var fs = require('fs');
 
-var Common = require(path.resolve('./modules/core/server/services/common.server.service.js'));
-
 var ChatBot = mongoose.model('Bot');
+var BotAuth = mongoose.model('BotAuth');
 
 exports.findTotalPage = function(req, res)
 {
@@ -82,10 +81,12 @@ exports.create = function(req, res)
         }
 
         var chatbot = new ChatBot(req.body);
+        chatbot.user = req.user;
         chatbot.save(function(err)
         {
             if(err)
             {
+                console.error(err);
                 return res.status(400).send({ message: err.stack || err });
             }
 
@@ -103,7 +104,22 @@ exports.create = function(req, res)
             fs.writeFileSync(dir + '/default.js', defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
             fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
 
-            res.jsonp(chatbot);
+            var botAuth = new BotAuth();
+            botAuth.bot = chatbot._id;
+            botAuth.user = req.user;
+            botAuth.giver = req.user;
+            botAuth.edit = true;
+
+            botAuth.save(function(err)
+            {
+                if(err)
+                {
+                    console.error(err);
+                    return res.status(400).send({ message: err.stack || err });
+                }
+
+                res.jsonp(chatbot);
+            });
         });
     });
 };

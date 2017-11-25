@@ -1,0 +1,12 @@
+{
+    "menus" : [
+        { "name" : "대시보드", "url" : "/templates/demo/dashboard", "icon" : "" },
+        { "name" : "컨텐츠 관리", "icon" : "", "childMenus" : [
+            { "name" : "기본정보", "url" : "/templates/demo/basic", "icon" : "" },
+            { "name" : "메뉴관리", "url" : "/templates/demo/menu", "icon" : "" },
+            { "name" : "주문관리", "url" : "/templates/demo/order", "icon" : "" },
+            { "name" : "쿠폰정보", "url" : "/templates/demo/cupon", "icon" : "" }
+        ] },
+        { "name" : "대화 관리", "url" : "", "icon" : "" }
+    ]
+}

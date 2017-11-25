@@ -17,7 +17,7 @@
         <div class="bot_unselect" ng-repeat="chatbot in list" ng-click="selectBot(chatbot);">
             <ul class="hei50">
                 <li class="sub1"><img src="/modules/chatbots/client/imgs/user2.png"></li>
-                <li class="sub3" data-id="{{ chatbot.id }}" ng-keydown="chatbotNameKeyDown($event);" ng-blur="chatbotNameBlur($event);" ng-click="chatbotNameClick($event);">{{ chatbot.id }}</li>
+                <li class="sub3" data-id="{{ chatbot.id }}" ng-keydown="chatbotNameKeyDown($event);" ng-blur="chatbotNameBlur($event);" ng-click="chatbotNameClick($event);">{{ chatbot.name }}</li>
                 <li>
                     <div class="flR mt10">
                         <a href="#" class="chatbot-menu-button" ng-click="openMenu($event, chatbot);"></a>

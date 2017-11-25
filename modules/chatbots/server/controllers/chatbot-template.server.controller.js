@@ -53,7 +53,7 @@ exports.findOne = function(req, res)
         }
 
         template = JSON.parse(JSON.stringify(template));
-        fs.readFile(path.resolve('./templates') + '/' + template.name + '/create.html', function(err, data)
+        fs.readFile(path.resolve('./templates') + '/' + template.name + '/views/html/basic.html', function(err, data)
         {
             template.createHtml = data.toString();
 
@@ -64,7 +64,6 @@ exports.findOne = function(req, res)
 
 exports.saveData = function(req, res)
 {
-    var botId = req.params.botId;
     var data = req.body.data;
     var templateName = req.body.templateName;
 

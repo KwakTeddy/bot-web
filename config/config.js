@@ -127,6 +127,7 @@ var initGlobalConfigFolders = function (config, assets) {
         getGlobbedPaths(path.join(cwd, 'modules/*/client/'), replacedCwd),
         getGlobbedPaths(path.join(cwd, 'modules/*/*/client/'), replacedCwd),
         getGlobbedPaths(path.join(cwd, 'modules/*/*/*/client/'), replacedCwd),
+        getGlobbedPaths(path.join(cwd, 'templates/*/views/'), replacedCwd),
         config.folders.client
     );
 };
