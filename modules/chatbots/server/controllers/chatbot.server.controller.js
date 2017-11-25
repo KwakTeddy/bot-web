@@ -53,7 +53,7 @@ exports.find = function (req, res)
 
 exports.findOne = function(req, res)
 {
-    ChatBot.findOne({ _id: req.params.botId }).exec(function(err, item)
+    ChatBot.findOne({ _id: req.params.botId }).populate('templateId').exec(function(err, item)
     {
         if(err)
         {
