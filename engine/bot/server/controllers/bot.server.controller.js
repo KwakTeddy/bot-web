@@ -114,7 +114,7 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
         function(cb) {
             contextModule.getContext(botName, channel, user, options, function(_context) {
                 context = _context;
-                context.botUser.language = options.language || 'ko';
+                context.bot.language = options.language || 'ko';
                 cb(null);
             });
         },
@@ -171,9 +171,9 @@ function botProc(botName, channel, user, inTextRaw, json, outCallback, options) 
                         if(_task && _task.numAffected && (_task.numAffected.ok == 1 && _task.numAffected.n > 0)) {
                             // _task.numAffected.nModified = 0: insert, _task.numAffected.nModified > 0: update
                             console.log('[FACT_ADD]' + JSON.stringify(_task.doc));
-                            if (context.botUser.language == "zh") {
+                            if (context.bot.language == "zh") {
                                 print('我学到了你说的话。');
-                            } else if (context.botUser.language == "en") {
+                            } else if (context.bot.language == "en") {
                                 print("I understand.");
                             } else {
                                 print('말씀하신 내용을 학습했어요.');

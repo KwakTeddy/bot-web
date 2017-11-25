@@ -59,15 +59,7 @@ function processInput(context, inRaw, callback) {
 
         function(cb) {
 
-            if (context == null || context == undefined) context = {};
-
-            context.botUser = context.botUser || {};
             var language = context.bot.language || 'ko';
-            // context.botUser.language = context.botUser.language || {};
-            // if (!("botUser" in context)) {context["botUser"] = {};}
-            // if (!("language" in context)) {context.botUser["language"] = "ko";}
-
-            // context.botUser.language = "en";
 
             if (language=="en") {
                 enNLP.processInput(context, inRaw, function(_inTextNLP, _inDoc) {

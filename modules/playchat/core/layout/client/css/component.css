@@ -33,7 +33,32 @@
     color: white;
 }
 
-.blue-button span
+.red-button
+{
+    outline: 0;
+    text-align: center;
+    background: #d9534f;
+    cursor: pointer;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+
+    border: 1px solid #d43f3a;
+
+    padding: 10px 12px;
+
+    font-size: 14px;
+
+    color: white;
+}
+
+.red-button:hover
+{
+    background-color: #c9302c;
+    border-color: #ac2925;
+}
+
+.blue-button span, .red-button. span
 {
     color: #fff;
     letter-spacing: 0.3px;
@@ -109,10 +134,10 @@
     transition: border 0.5s;
 }
 
-.data-input.ng-invalid
-{
-    border-color: red;
-}
+/*.data-input.ng-invalid*/
+/*{*/
+    /*border-color: red;*/
+/*}*/
 
 .data-input:focus, .form-box.focused
 {

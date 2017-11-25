@@ -18,6 +18,21 @@ module.exports = {
     },
     debug: process.env.MONGODB_DEBUG || false
   },
+    templatesdb: {
+        uri: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://' + (process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost') + '/templates-dev',
+        options: {
+            user: '',
+            pass: '',
+            db: {
+                readPreference: "secondaryPreferred"
+            },
+            replset: {
+                rs_name: 'rs0',
+                debug: false
+            }
+        },
+        debug: process.env.MONGODB_DEBUG || false
+    },
   redis: {
     host: process.env.REDIS ||  '127.0.0.1',
     port: 6379

@@ -1,34 +1,31 @@
-<style>
-.tab-body li
-{
-    top: 0px !important;
-}
-</style>
+<div class="create-chatbot-body">
+    <p class="create-chatbot-row-title">New Chatbot</p>
+    <div class="create-chatbot-row">
+        <a class="create-chatbot-item" href="/playchat/chatbots/create/blank">
+            <span class="create-chatbot-item-icon"></span>
+            <span class="create-chatbot-item-name">Blank Bot</span>
+        </a>
+    </div>
 
-<div class="chatbot-body">
-    <form ng-submit="save();" style="width: 600px; margin: 30px auto;">
-        <h2 style="font-size: 20px; font-weight: bold; border-bottom: 1px solid #ddd; padding: 20px 0;">Create Bot</h2>
-        <div class="form-row">
-            <label class="required">
-                <span class="form-title">Id</span>
-                <input type="text" placeholder="" ng-model="bot.id" class="entity-title data-input" ng-required="true" autofocus="true">
-            </label>
-        </div>
-        <div class="form-row">
-            <label class="required">
-                <span class="form-title">Name</span>
-                <input type="text" placeholder="" ng-model="bot.name" class="entity-title data-input" ng-required="true" autofocus="true">
-            </label>
-        </div>
-        <div class="form-row">
-            <label class="required">
-                <span class="form-title">Description</span>
-                <input type="text" placeholder="" ng-model="bot.description" class="entity-title data-input" ng-required="true" autofocus="true">
-            </label>
-        </div>
-        <div class="tab-footer">
-            <button class="blue-button">Create</button>
-            <a href="/playchat/chatbots" class="default-button">Cancel</a>
-        </div>
-    </form>
+    <p class="create-chatbot-row-title">Templates</p>
+    <div class="create-chatbot-row">
+        <a class="create-chatbot-item" href="/playchat/chatbots/create/{{ item._id }}" ng-repeat="item in list">
+            <span class="create-chatbot-item-icon">
+                <img src="{{ item.image }}">
+            </span>
+            <span class="create-chatbot-item-name">{{ item.name }}</span>
+        </a>
+    </div>
+
+    <p class="create-chatbot-row-title">Service</p>
+    <div class="create-chatbot-row">
+        <a class="create-chatbot-item">
+            <span class="create-chatbot-item-icon"></span>
+            <span class="create-chatbot-item-name">Delivery</span>
+        </a>
+        <a class="create-chatbot-item">
+            <span class="create-chatbot-item-icon"></span>
+            <span class="create-chatbot-item-name">Hospital</span>
+        </a>
+    </div>
 </div>

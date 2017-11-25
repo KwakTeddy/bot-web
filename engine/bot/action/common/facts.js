@@ -15,9 +15,9 @@ function memoryFacts(inRaw, context, callback) {
   var node1='', node2='', link='';
   var result = context.botUser.nlp;
 
-    // context.botUser.language == "ko";
+    // context.bot.language == "ko";
 
-    if (context.botUser.language == "en") {
+    if (context.bot.language == "en") {
         var index = -1, mode = 0; // 1: the first noun, 2: verb, 3: the second noun
         var allPronoun = 0;
         for (var i = 0; i < result.length; i++) {
@@ -61,7 +61,7 @@ function memoryFacts(inRaw, context, callback) {
             node1 = ""; node2 = ""; link = "";
         }
         console.log("--- factMemory: " + node1 + " / " + node2 + " / " + link + " / " + allPronoun);
-    } else if (context.botUser.language == "zh") {
+    } else if (context.bot.language == "zh") {
         var mode=0; // 1: the first noun, 2: verb, 3: the second noun
         for (var i = 0; i < result.length - 1; i++) {
             var token = result[i];

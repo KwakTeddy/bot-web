@@ -107,6 +107,7 @@ var BotSchema = new Schema({
   description: {
     type: String
   },
+    language: { type: String, default: 'ko' },
   kakao: {
     type: Boolean,
     default: false

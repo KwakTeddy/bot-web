@@ -1,0 +1,49 @@
+<div class="chatbot-body">
+    <form ng-submit="save();" style="width: 600px; margin: 30px auto;" ng-if="templateId == 'blank'">
+        <h2 style="font-size: 20px; font-weight: bold; border-bottom: 1px solid #ddd; padding: 20px 0;">Create Bot</h2>
+        <div class="form-row">
+            <label class="required">
+                <span class="form-title">Id</span>
+                <input type="text" placeholder="" ng-model="bot.id" class="entity-title data-input" ng-required="true" pattern="^[a-z]+[a-zA-Z0-9_-]*" autofocus="true">
+            </label>
+        </div>
+        <div class="form-row">
+            <label class="required">
+                <span class="form-title">Name</span>
+                <input type="text" placeholder="" ng-model="bot.name" class="entity-title data-input" ng-required="true">
+            </label>
+        </div>
+        <div class="form-row">
+            <label class="required">
+                <span class="form-title">Language</span>
+                <select class="jumbo-select" ng-model="bot.language">
+                    <option value="ko">ko-KR</option>
+                    <option value="en">en-US</option>
+                    <option value="zh">zh-cn</option>
+                    <option value="jp">ja-jp</option>
+                </select>
+            </label>
+        </div>
+        <div class="form-row">
+            <label>
+                <span class="form-title">Description</span>
+                <input type="text" placeholder="" ng-model="bot.description" class="entity-title data-input">
+            </label>
+        </div>
+        <div class="tab-footer" style="border-top: 0;">
+            <button class="blue-button">Create</button>
+            <button class="default-button" ng-click="cancel();">Cancel</button>
+        </div>
+    </form>
+
+    <form ng-submit="saveTemplateBot($event);" style="width: 600px; margin: 30px auto;" ng-if="templateId != 'blank'">
+        <h2 style="font-size: 20px; font-weight: bold; border-bottom: 1px solid #ddd; padding: 20px 0;">{{ template.name }} - 기본정보</h2>
+
+        <div id="templateCreateHtml"></div>
+
+        <div class="tab-footer" style="border-top: 0;">
+            <button class="blue-button">Create</button>
+            <button class="default-button" ng-click="cancel();">Cancel</button>
+        </div>
+    </form>
+</div>

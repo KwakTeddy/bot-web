@@ -14,4 +14,10 @@ angular.module('playchat').config(['$stateProvider', '$urlRouterProvider', funct
         templateUrl: 'modules/chatbots/client/views/chatbot-create.client.view.html',
         controller: 'ChatbotCreateController'
     });
+
+    $stateProvider.state('chatbots-create-template', {
+        url: '/playchat/chatbots/create/:templateId',
+        templateUrl: 'modules/chatbots/client/views/chatbot-create-template.client.view.html',
+        controller: 'ChatbotCreateTemplateController'
+    });
 }]);

@@ -5,7 +5,7 @@ var mongoModule = require(path.resolve('./engine/bot/action/common/mongo'));
 var toneModule = require(path.resolve('./engine/bot/action/common/tone'));
 
 function factsTypeCheck(text, format, inDoc, context, callback) {
-    if (context.botUser.language == "en") {
+    if (context.bot.language == "en") {
 
         // 영어
         if (!context.bot.useMemoryFacts || context.botUser.nlu.sentenceInfo != 2) {
@@ -101,7 +101,7 @@ function factsTypeCheck(text, format, inDoc, context, callback) {
                 callback(text, inDoc, false);
             }
         });
-    } else if (context.botUser.language == "zh") {
+    } else if (context.bot.language == "zh") {
         // 중국어
         if (!context.bot.useMemoryFacts || context.botUser.nlu.sentenceInfo != 2 || context.botUser.sentenceInfo.verbToken == undefined) {
             callback(text, inDoc, false);

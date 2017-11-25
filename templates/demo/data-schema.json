@@ -1,0 +1,8 @@
+{
+    "name": "String",
+    "phone": "String",
+    "mobile": "String",
+    "address": "String",
+    "holiday": "Object",
+    "language": "String"
+}

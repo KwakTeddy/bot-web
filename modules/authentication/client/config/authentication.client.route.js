@@ -21,6 +21,12 @@ angular.module('playchat').config(['$stateProvider', '$urlRouterProvider', funct
         controller: 'SignupController'
     });
 
+    $stateProvider.state('user-profile', {
+        url: '/playchat/user-profile',
+        templateUrl: 'modules/authentication/client/views/user-profile.client.view.html',
+        controller: 'UserProfileController'
+    });
+
     //
     // var developerState = {
     //     url: '/developer',

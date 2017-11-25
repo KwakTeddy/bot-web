@@ -711,24 +711,19 @@ exports.nluProcess = function(req, res) {
     var jaNLP = require(path.resolve('./engine/bot/engine/nlp/processor_ja'));
     var zhNLP = require(path.resolve('./engine/bot/engine/nlp/processor_zh'));
 
-    var context;
-    if (context == null || context == undefined) context = {};
-    context.botUser = context.botUser || {};
-    context.botUser.language = context.botUser.language || {};
-
     var input = '';
 
-    if (context.botUser.language=="en") {
+    if (req.body.language=="en") {
         enNLP.processLiveInput(req.params.input, function(err, result) {
             input = result;
             res.json(input);
         });
-    } else if (context.botUser.language=="zh") {
+    } else if (req.body.language=="zh") {
         zhNLP.processLiveInput(req.params.input, function(err, result) {
             input = result;
             res.json(input);
         });
-    } else if (context.botUser.language=="ja") {
+    } else if (req.body.language=="ja") {
         jaNLP.processLiveInput(req.params.input, function(err, result) {
             input = result;
             res.json(input);

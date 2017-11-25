@@ -654,13 +654,13 @@ function analysisDoc(doc, bot_id, bot_name, cb) {
 
                 if (context == null || context == undefined) context = {};
                 context.botUser = context.botUser || {};
-                context.botUser.language = context.botUser.language || {};
+                context.bot.language = context.bot.language || {};
 
-                // context.botUser.language = "ko";
+                // context.bot.language = "ko";
 
                 if (nlu.sentenceInfo == 0) {
                     // 평서문이라면 확인
-                    if (context.botUser.language == "en") {
+                    if (context.bot.language == "en") {
                         var index = -1, mode = 0; // 1: the first noun, 2: verb, 3: the second noun
                         for (var i = 0; i < nlp.length; i++) {
                             var token = nlp[i];
@@ -704,7 +704,7 @@ function analysisDoc(doc, bot_id, bot_name, cb) {
                                 }
                             }
                         }
-                    } else if (context.botUser.language == "zh") {
+                    } else if (context.bot.language == "zh") {
                         var mode = 0; // 1: the first noun, 2: verb, 3: the second noun
                         for (var i = 0; i < nlp.length - 1; i++) {
                             var token = nlp[i];
@@ -797,11 +797,11 @@ function analysisDoc(doc, bot_id, bot_name, cb) {
 
             if (context == null || context == undefined) context = {};
             context.botUser = context.botUser || {};
-            context.botUser.language = context.botUser.language || {};
+            context.bot.language = context.bot.language || {};
 
             if (nlu.sentenceInfo == 0) {
                 // 평서문이라면 확인
-                if (context.botUser.language == "en") {
+                if (context.bot.language == "en") {
                     var index = -1, mode = 0; // 1: the first noun, 2: verb, 3: the second noun
                     var allPronoun = 0;
                     for (var i = 0; i < nlp.length; i++) {
@@ -853,7 +853,7 @@ function analysisDoc(doc, bot_id, bot_name, cb) {
                     if (allPronoun == 2) {
                         node1 = ""; node2 = ""; link = "";
                     }
-                } else if (context.botUser.language == "zh") {
+                } else if (context.bot.language == "zh") {
                     var mode = 0; // 1: the first noun, 2: verb, 3: the second noun
                     for (var i = 0; i < nlp.length - 1; i++) {
                         var token = nlp[i];
@@ -1080,11 +1080,7 @@ function processInput(context, inRaw, callback) {
     var _nlpRaw = [];
 
     var result = {};
-    if (context == null || context == undefined) context = {};
-    context.botUser = context.botUser || {};
-    context.botUser.language = context.botUser.language || {};
-
-    if (context.botUser.language=="en") {
+    if (context.bot.language=="en") {
         enNLP.processInput(result, inRaw, function(_inTextNLP, _inDoc) {
             if (_inTextNLP != undefined && _inTextNLP != null) {
                 _in = result.botUser.inNLP;
@@ -1094,7 +1090,7 @@ function processInput(context, inRaw, callback) {
                 callback(_in, {_nlu: ""}, {_nlp: ""});
             }
         });
-    } else if (context.botUser.language=="zh") {
+    } else if (context.bot.language=="zh") {
         zhNLP.processInput(result, inRaw, function(_inTextNLP, _inDoc) {
             if (_inTextNLP != undefined && _inTextNLP != null) {
                 _in = result.botUser.inNLP;
@@ -1104,7 +1100,7 @@ function processInput(context, inRaw, callback) {
                 callback(_in, {_nlu: ""}, {_nlp: ""});
             }
         });
-    } else if (context.botUser.language=="ja") {
+    } else if (context.bot.language=="ja") {
         jaNLP.processInput(result, inRaw, function(_inTextNLP, _inDoc) {
             if (_inTextNLP != undefined && _inTextNLP != null) {
                 _in = result.botUser.inNLP;
