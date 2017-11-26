@@ -8,8 +8,6 @@ angular.module('template').controller('basicController', ['$scope', '$resource',
 
     var chatbot = $cookies.getObject('chatbot');
 
-    console.log('챗봇: ', chatbot);
-
     (function()
     {
         ChatbotTemplateService.get({ templateId: chatbot.templateId }, function(result)
@@ -100,7 +98,6 @@ angular.module('template').controller('basicController', ['$scope', '$resource',
 
         ChatbotService.update({ botId: chatbot._id, name: data.name, language: data.language, description: data.description }, function()
         {
-            console.log('봇아이디 : ', chatbot.id);
             ChatbotTemplateDataService.update({ botId: chatbot.id, templateName: $scope.template.name, _id: $scope.templateData._id, data: data }, function(result)
             {
                 console.log(result);

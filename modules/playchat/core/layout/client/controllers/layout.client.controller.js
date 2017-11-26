@@ -45,7 +45,7 @@ angular.module('playchat').controller('LayoutController', ['$location', '$scope'
 
     if(templateName && templatePage)
     {
-        $scope.page = '/templates/' + templateName + '/views/html/' + templatePage + '.html';
+        $scope.page = '/templates/' + templateName + '/client/views/html/' + templatePage + '.html';
 
         $scope.loaded('working-ground');
     }

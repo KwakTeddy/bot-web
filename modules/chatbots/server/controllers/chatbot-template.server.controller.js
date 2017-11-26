@@ -54,7 +54,7 @@ exports.findOne = function(req, res)
         }
 
         template = JSON.parse(JSON.stringify(template));
-        fs.readFile(path.resolve('./templates') + '/' + template.name + '/views/html/basic.html', function(err, data)
+        fs.readFile(path.resolve('./templates') + '/' + template.name + '/client/views/html/basic.html', function(err, data)
         {
             var $ = cheerio.load(data.toString());
             template.createHtml = $('form').parent().html().replace(/ng-controller/gi, 'data-controller').replace(/ng-model/gi, 'name');
@@ -108,7 +108,6 @@ exports.updateData = function(req, res)
 {
     var data = req.body.data;
     var templateName = req.body.templateName;
-    var botId = req.params.botId;
     var _id = req.body._id;
 
     // 컬렉션정보를 생성하기 위해 data-schema 파일을 가져온다.
@@ -122,6 +121,8 @@ exports.updateData = function(req, res)
 
         //JSON 객체로 만들고
         var json = JSON.parse(jsonData.toString());
+
+        json.botId = 'String';
 
         //몽고디비 스키마 생성
         var schema = new Schema(json);
@@ -166,6 +167,7 @@ exports.saveData = function(req, res)
 
         //JSON 객체로 만들고
         var json = JSON.parse(jsonData.toString());
+        json.botId = 'String';
 
         //몽고디비 스키마 생성
         var schema = new Schema(json);

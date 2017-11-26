@@ -166,148 +166,148 @@ function loadBot(botName, callback) {
             cb(null);
         },
 
-        function(cb) {
-            if(bot && bot.template && global._templates[bot.template.id] && global._templates[bot.template.id].loaded == true) {
-                cb(null);
-            } else {
-                var fileFilter;
-                var files;
-
-                var filePaths = [];
-                if(fs.existsSync(botDir)) {
-                    if(bot && bot.dialogFiles) {
-                        for (var i = 0; i < bot.dialogFiles.length; i++) {
-                            var file = bot.dialogFiles[i];
-                            var filePath = path.join(botDir, file);
-                            filePaths.push(filePath);
-                            //bot.dialogFiles[i] = filePath;
-
-                            try {
-                                console.log('\tloading file: ' + file);
-
-                                utils.requireNoCache(filePath, true);
-                            } catch(e) {
-                                console.log('\tloading file: ' + file + ' error or not found');
-                                console.error(e);
-                                bot.error.push(e.stack);
-                            }
-                        }
-                    }
-
-                    fileFilter = function(file) {
-                        if(bot && bot.dialogFiles && _.includes(filePaths, file)) return false;
-                        else return file.endsWith('.dialog.js');
-                    };
-
-                    try {
-                        files = utils.readdirRecursive(botDir);
-                        for (var i = 0; i < files.length; i++) {
-                            var file = files[i];
-                            if(file != file.normalize('NFC')) {
-                                files[i] = file.normalize('NFC');
-                            }
-                        }
-                        files = files.filter(fileFilter);
-                    } catch(e) {
-                        console.log('loadBot: ' + botDir + ' 경로 없음');
-                        bot.error.push(e.stack);
-                        if(bot.error.length === 0) delete bot.error;
-                        return;
-                    }
-
-                    for (var i = 0; i < files.length; i++) {
-                        var file = files[i];
-                        // var filePath = path.join(botDir, file);
-
-                        try {
-                            console.log('\tloading file: ' + file);
-
-                            utils.requireNoCache(file, true);
-                        } catch(e) {
-                            console.error(e);
-                            bot.error.push(e.stack);
-                        }
-                    }
-
-                    // bot.setDialogs([dialogsetModule.faqDialog]);
-
-                    fileFilter = function(file) {
-                        if(bot && bot.dialogFiles && _.includes(filePaths, file)) return false;
-
-                        else if(file.endsWith('.js') && !file.endsWith('.dialog.js') && !file.endsWith('.test.js') && !file.endsWith('.bot.js')) {
-                            // var jsPath = path.resolve('custom_modules/' + botName + '/' + file);
-                            // var info = path.parse(jsPath);
-                            // var dlgPath = path.resolve('custom_modules/' + botName + '/' + info.name + '.dlg');
-                            //
-                            // if(fs.existsSync(dlgPath)) return false;
-                            // else
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    };
-
-                    try {
-                        files = utils.readdirRecursive(botDir);
-                        for (var i = 0; i < files.length; i++) {
-                            var file = files[i];
-                            if(file != file.normalize('NFC')) {
-                                files[i] = file.normalize('NFC');
-                            }
-                        }
-                        files = files.filter(fileFilter);
-                    } catch(e) {
-                        console.log('loadBot: ' + botDir + ' 경로 없음');
-                        console.log(e);
-                        bot.error.push(e.stack);
-                        if(bot.error.length === 0) delete bot.error;
-                        return;
-                    }
-
-                    for (var i = 0; i < files.length; i++) {
-                        var file = files[i];
-                        // var filePath = path.join(botDir, file);
-
-                        try {
-                            console.log('\tloading file: ' + file);
-
-                            utils.requireNoCache(file, true);
-                        } catch(e) {
-                            console.error(e);
-                            bot.error.push(e.stack);
-                        }
-                    }
-
-                    // dialog pattern 처리
-                    for (var i = 0; bot && i < bot.dialogs.length; i++) {
-                        var dialog = bot.dialogs[i];
-
-                        if(dialog.input && dialog.input.pattern) {
-                            var patternDialog;
-                            if('string' == typeof dialog.input.pattern) patternDialog = bot.patterns[dialog.input.pattern];
-                            else patternDialog = dialog.input.pattern;
-
-                            if(patternDialog != undefined)
-                                bot.dialogs[i] = changeDialogPattern(patternDialog, dialog.input.params);
-                        }
-                    }
-
-                    for (var i = 0; bot && i < bot.commonDialogs.length; i++) {
-                        var dialog = bot.commonDialogs[i];
-
-                        if(dialog.input && dialog.input.pattern) {
-                            var patternDialog;
-                            if('string' == typeof dialog.input.pattern) patternDialog = bot.patterns[dialog.input.pattern];
-                            else patternDialog = dialog.input.pattern;
-
-                            bot.commonDialogs[i] = changeDialogPattern(patternDialog, dialog.input.params);
-                        }
-                    }
-                }
-
-                cb(null);
-            }
-        },
+        // function(cb) {
+        //     if(bot && bot.template && global._templates[bot.template.id] && global._templates[bot.template.id].loaded == true) {
+        //         cb(null);
+        //     } else {
+        //         var fileFilter;
+        //         var files;
+        //
+        //         var filePaths = [];
+        //         if(fs.existsSync(botDir)) {
+        //             if(bot && bot.dialogFiles) {
+        //                 for (var i = 0; i < bot.dialogFiles.length; i++) {
+        //                     var file = bot.dialogFiles[i];
+        //                     var filePath = path.join(botDir, file);
+        //                     filePaths.push(filePath);
+        //                     //bot.dialogFiles[i] = filePath;
+        //
+        //                     try {
+        //                         console.log('\tloading file: ' + file);
+        //
+        //                         utils.requireNoCache(filePath, true);
+        //                     } catch(e) {
+        //                         console.log('\tloading file: ' + file + ' error or not found');
+        //                         console.error(e);
+        //                         bot.error.push(e.stack);
+        //                     }
+        //                 }
+        //             }
+        //
+        //             fileFilter = function(file) {
+        //                 if(bot && bot.dialogFiles && _.includes(filePaths, file)) return false;
+        //                 else return file.endsWith('.dialog.js');
+        //             };
+        //
+        //             try {
+        //                 files = utils.readdirRecursive(botDir);
+        //                 for (var i = 0; i < files.length; i++) {
+        //                     var file = files[i];
+        //                     if(file != file.normalize('NFC')) {
+        //                         files[i] = file.normalize('NFC');
+        //                     }
+        //                 }
+        //                 files = files.filter(fileFilter);
+        //             } catch(e) {
+        //                 console.log('loadBot: ' + botDir + ' 경로 없음');
+        //                 bot.error.push(e.stack);
+        //                 if(bot.error.length === 0) delete bot.error;
+        //                 return;
+        //             }
+        //
+        //             for (var i = 0; i < files.length; i++) {
+        //                 var file = files[i];
+        //                 // var filePath = path.join(botDir, file);
+        //
+        //                 try {
+        //                     console.log('\tloading file: ' + file);
+        //
+        //                     utils.requireNoCache(file, true);
+        //                 } catch(e) {
+        //                     console.error(e);
+        //                     bot.error.push(e.stack);
+        //                 }
+        //             }
+        //
+        //             // bot.setDialogs([dialogsetModule.faqDialog]);
+        //
+        //             fileFilter = function(file) {
+        //                 if(bot && bot.dialogFiles && _.includes(filePaths, file)) return false;
+        //
+        //                 else if(file.endsWith('.js') && !file.endsWith('.dialog.js') && !file.endsWith('.test.js') && !file.endsWith('.bot.js')) {
+        //                     // var jsPath = path.resolve('custom_modules/' + botName + '/' + file);
+        //                     // var info = path.parse(jsPath);
+        //                     // var dlgPath = path.resolve('custom_modules/' + botName + '/' + info.name + '.dlg');
+        //                     //
+        //                     // if(fs.existsSync(dlgPath)) return false;
+        //                     // else
+        //                     return true;
+        //                 } else {
+        //                     return false;
+        //                 }
+        //             };
+        //
+        //             try {
+        //                 files = utils.readdirRecursive(botDir);
+        //                 for (var i = 0; i < files.length; i++) {
+        //                     var file = files[i];
+        //                     if(file != file.normalize('NFC')) {
+        //                         files[i] = file.normalize('NFC');
+        //                     }
+        //                 }
+        //                 files = files.filter(fileFilter);
+        //             } catch(e) {
+        //                 console.log('loadBot: ' + botDir + ' 경로 없음');
+        //                 console.log(e);
+        //                 bot.error.push(e.stack);
+        //                 if(bot.error.length === 0) delete bot.error;
+        //                 return;
+        //             }
+        //
+        //             for (var i = 0; i < files.length; i++) {
+        //                 var file = files[i];
+        //                 // var filePath = path.join(botDir, file);
+        //
+        //                 try {
+        //                     console.log('\tloading file: ' + file);
+        //
+        //                     utils.requireNoCache(file, true);
+        //                 } catch(e) {
+        //                     console.error(e);
+        //                     bot.error.push(e.stack);
+        //                 }
+        //             }
+        //
+        //             // dialog pattern 처리
+        //             for (var i = 0; bot && i < bot.dialogs.length; i++) {
+        //                 var dialog = bot.dialogs[i];
+        //
+        //                 if(dialog.input && dialog.input.pattern) {
+        //                     var patternDialog;
+        //                     if('string' == typeof dialog.input.pattern) patternDialog = bot.patterns[dialog.input.pattern];
+        //                     else patternDialog = dialog.input.pattern;
+        //
+        //                     if(patternDialog != undefined)
+        //                         bot.dialogs[i] = changeDialogPattern(patternDialog, dialog.input.params);
+        //                 }
+        //             }
+        //
+        //             for (var i = 0; bot && i < bot.commonDialogs.length; i++) {
+        //                 var dialog = bot.commonDialogs[i];
+        //
+        //                 if(dialog.input && dialog.input.pattern) {
+        //                     var patternDialog;
+        //                     if('string' == typeof dialog.input.pattern) patternDialog = bot.patterns[dialog.input.pattern];
+        //                     else patternDialog = dialog.input.pattern;
+        //
+        //                     bot.commonDialogs[i] = changeDialogPattern(patternDialog, dialog.input.params);
+        //                 }
+        //             }
+        //         }
+        //
+        //         cb(null);
+        //     }
+        // },
 
         function(cb) {
             if(bot && bot.template && global._templates[bot.template.id]) {
