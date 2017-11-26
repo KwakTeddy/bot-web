@@ -14,6 +14,8 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
     $scope.botName = chatbot.name;
     $scope.path = $location.path();
 
+    console.log('패스', $scope.path);
+
     (function()
     {
         ChatbotService.get({ botId: chatbot._id }, function(result)
@@ -80,9 +82,10 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
         subMenuItemGroup.className = subMenuItemGroup.className + ' open';
     };
 
-    $scope.checkUrl = function(name)
+    $scope.checkUrl = function(menu)
     {
-        if($scope.path.indexOf('/playchat/' + name.toLowerCase()) != -1)
+        console.log($scope.path, menu.name, '/playchat' + menu.url, $scope.path == '/playchat' + menu.url);
+        if($scope.path.startsWith('/playchat' + menu.url))
         {
             return 'open';
         }
