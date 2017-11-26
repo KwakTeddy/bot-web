@@ -2,7 +2,7 @@
 
 angular.module('playchat').controller('DialogGraphManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService', function ($window, $scope, $resource, $cookies, $location, FileUploader, ModalService, TabService, FormService, PagingService)
 {
-    $scope.$parent.changeWorkingGroundName('Management > Dialog Graph');
+    $scope.$parent.changeWorkingGroundName('Management > Dialog Graph', '/modules/playchat/gnb/client/imgs/scenario.png');
 
     var DialogGraphExistService = $resource('/api/:botId/dialog-graphs/:fileName/exist', { botId: '@botId', fileName: '@fileName' });
     var DialogGraphsService = $resource('/api/:botId/dialog-graphs/:fileName', { botId: '@botId', fileName: '@fileName' });

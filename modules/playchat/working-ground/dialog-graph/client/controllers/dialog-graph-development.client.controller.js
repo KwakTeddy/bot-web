@@ -1,6 +1,6 @@
 angular.module('playchat').controller('DialogGraphDevelopmentController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', '$timeout', '$rootScope', 'DialogGraph', 'DialogGraphEditor', function ($window, $scope, $resource, $cookies, $location, $compile, $timeout, $rootScope, DialogGraph, DialogGraphEditor)
 {
-    $scope.$parent.changeWorkingGroundName('Development > Dialog Graph');
+    $scope.$parent.changeWorkingGroundName('Development > Dialog Graph', '/modules/playchat/gnb/client/imgs/scenario.png');
 
     var FailedDialogService = $resource('/api/:botId/operation/failed-dialogs/:_id', { botId: '@botId', _id: '@_id' }, { update: { method: 'PUT' } });
     var DialogGraphsService = $resource('/api/:botId/dialog-graphs/:fileName', { botId: '@botId', fileName: '@fileName' });

@@ -4,7 +4,7 @@
 
 angular.module('playchat').controller('IntentManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService', function ($window, $scope, $resource, $cookies, $location, $compile, FileUploader, ModalService, TabService, FormService, PagingService)
 {
-    $scope.$parent.changeWorkingGroundName('Management > Intent');
+    $scope.$parent.changeWorkingGroundName('Management > Intent', '/modules/playchat/gnb/client/imgs/intent.png');
 
     var IntentService = $resource('/api/:botId/intents/:intentId', { botId: '@botId', intentId: '@intentId' }, { update: { method: 'PUT' } });
     var IntentContentsService = $resource('/api/:botId/intents/:intentId/contents', { botId: '@botId', intentId: '@intentId' });
