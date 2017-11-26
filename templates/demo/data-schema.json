@@ -4,5 +4,7 @@
     "mobile": "String",
     "address": "String",
     "holiday": "Object",
-    "language": "String"
+    "language": "String",
+    "description" : "String",
+    "botId": "String"
 }

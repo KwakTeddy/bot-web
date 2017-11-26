@@ -11,6 +11,15 @@ angular.module('playchat').config(['$stateProvider', '$urlRouterProvider', funct
         }
     });
 
+    $stateProvider.state('playchat-template', {
+        url: '/playchat/templates/:templateName/:templatePage',
+        templateUrl: 'modules/playchat/core/layout/client/views/layout.client.view.html',
+        controller: 'LayoutController',
+        data: {
+            roles: ['user', 'admin']
+        }
+    });
+
     $stateProvider.state('playchat-page-main', {
         url: '/playchat',
         templateUrl: 'modules/playchat/core/layout/client/views/layout.client.view.html',

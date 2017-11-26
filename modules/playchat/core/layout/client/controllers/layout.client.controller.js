@@ -2,7 +2,7 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat').controller('LayoutController', ['$location', '$scope', '$rootScope', 'EventService', '$state', '$stateParams', function ($location, $scope, $rootScope, EventService, $state, $stateParams)
+angular.module('playchat').controller('LayoutController', ['$location', '$scope', '$rootScope', 'EventService', '$state', '$stateParams', '$compile', function ($location, $scope, $rootScope, EventService, $state, $stateParams, $compile)
 {
     $scope.componentsLoaded = {
         'side-menu': false,
@@ -14,13 +14,8 @@ angular.module('playchat').controller('LayoutController', ['$location', '$scope'
 
     EventService.subscribeMe();
 
-    var category = $stateParams.category ? $stateParams.category : '';
-    var page = $stateParams.page ? $stateParams.page : 'dashboard';
-    var detail = $stateParams.detail ? $stateParams.detail: '';
-
-    $scope.page = '/modules/playchat/working-ground/' + page + '/client/views/' + page + (category ? '-' + category : '') + (detail ? '-' + detail : '') + '.client.view.html';
-
-    console.log("페이지 : ", $scope.page);
+    var templateName = $stateParams.templateName || '';
+    var templatePage = $stateParams.templatePage || '';
 
     //각 컴포넌트가 자신의 로딩작업이 끝나면 호출한다.
     $scope.loaded = function(name)
@@ -47,4 +42,19 @@ angular.module('playchat').controller('LayoutController', ['$location', '$scope'
     {
         $rootScope.$broadcast('update-topbar-title', { name: name, imgUrl: imgUrl });
     };
+
+    if(templateName && templatePage)
+    {
+        $scope.page = '/templates/' + templateName + '/views/html/' + templatePage + '.html';
+
+        $scope.loaded('working-ground');
+    }
+    else
+    {
+        var category = $stateParams.category ? $stateParams.category : '';
+        var page = $stateParams.page ? $stateParams.page : 'dashboard';
+        var detail = $stateParams.detail ? $stateParams.detail: '';
+
+        $scope.page = '/modules/playchat/working-ground/' + page + '/client/views/' + page + (category ? '-' + category : '') + (detail ? '-' + detail : '') + '.client.view.html';
+    }
 }]);

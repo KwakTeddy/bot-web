@@ -139,8 +139,6 @@ exports.update = function(req, res)
                 item[key] = req.body[key];
             }
 
-            console.log('허허하하하 : ', item);
-
             item.save(function(err)
             {
                 if(err)
