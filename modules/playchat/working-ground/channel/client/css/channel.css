@@ -1,0 +1,56 @@
+.channel-title
+{
+    font-size: 17px;
+    font-weight: 600;
+    margin-left: 15px;
+}
+
+.channel-content-row
+{
+    display: flex;
+    margin: 28px 0;
+}
+
+.channel-content-item
+{
+    width: 350px;
+
+    border: 1px solid #038eda;
+    border-radius: 6px;
+
+    padding: 12px;
+    margin: 0 20px;
+}
+
+.channel-content-item > div > *
+{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.channel-content-item img
+{
+    margin-left: 12px;
+}
+
+.channel-content-item-name
+{
+    padding-left: 15px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.channel-input
+{
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 75%;
+
+    font-size: 13px;
+}
+
+.bot-link-text
+{
+    font-size: 14px;
+    font-weight: 100;
+}

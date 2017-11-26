@@ -18,7 +18,7 @@
                 { name: 'Dialog Graph', url: '/development/dialog-graph', icon: 'scenario_select.png' }
             ] };
 
-            this.management = { name: 'Management', icon: 'Managemant.png', childMenus: [
+            this.management = { name: 'Management', url: '/management', icon: 'Managemant.png', childMenus: [
                 { name: 'Dialog Set', url: '/management/dialog-set', icon: 'speech_select.png' },
                 { name: 'Dialog Graph', url: '/management/dialog-graph', icon: 'scenario_select.png' },
                 { name: 'Entity', url: '/management/entity', icon: 'entity_select.png' },
@@ -27,7 +27,7 @@
             ] };
 
             this.contents = { name: 'Contents', icon: 'contents.png' };
-            this.channel = { name: 'Channel', icon: 'channel.png' };
+            this.channel = { name: 'Channel', url: '/channel', icon: 'channel.png' };
 
             this.operation = { name: 'Operation', icon: 'operation.png', childMenus: [
                 { name: 'User', url: '/operation/user', icon: 'users_select.png' },
@@ -81,7 +81,7 @@
                 menus.push(this.dashboard);
                 menus.push(this.development);
                 menus.push(this.management);
-                menus.push(this.contents);
+                // menus.push(this.contents);
                 menus.push(this.channel);
                 menus.push(this.operation);
                 menus.push(this.analysis);
