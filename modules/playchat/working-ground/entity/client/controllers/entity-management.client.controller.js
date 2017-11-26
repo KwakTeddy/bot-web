@@ -4,7 +4,7 @@
 
 angular.module('playchat').controller('EntityManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', '$compile', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService', function ($window, $scope, $resource, $cookies, $location, $compile, FileUploader, ModalService, TabService, FormService, PagingService)
 {
-    $scope.$parent.changeWorkingGroundName('Management > Entity', '/modules/playchat/gnb/client/imgs/entity.png');
+    $scope.$parent.changeWorkingGroundName('Management > Entity');
 
     var EntityService = $resource('/api/:botId/entitys/:entityId', { botId: '@botId', entityId: '@entityId' }, { update: { method: 'PUT' } });
     var EntityContentService = $resource('/api/:botId/entitys/:entityId/contents', { botId: '@botId', entityId: '@entityId' });

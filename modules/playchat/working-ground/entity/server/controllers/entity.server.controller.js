@@ -65,6 +65,22 @@ exports.find = function(req, res)
     });
 };
 
+exports.findOne = function(req, res)
+{
+    Entity.findOne({ _id: req.params._id }).exec(function(err, item)
+    {
+        if (err)
+        {
+            logger.systemError(err);
+            return res.status(400).send({ error: err.stack || err });
+        }
+        else
+        {
+            res.jsonp(item);
+        }
+    });
+};
+
 exports.findEntityContents = function(req, res)
 {
     EntityContent.find({ botId: req.params.botId, user: req.user._id, entityId: req.params.entityId }).exec(function(err, entityContents)

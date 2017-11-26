@@ -1,158 +1,143 @@
-(function()
+'use strict';
+
+angular.module('playchat').controller('EntityManagementAddController', ['$scope', '$resource', '$cookies', '$location', function ($scope, $resource, $cookies, $location)
 {
-    'use strict';
+    $scope.$parent.changeWorkingGroundName('Management > Entity > Add', '/modules/playchat/gnb/client/imgs/entity.png');
 
-    angular.module('playchat').controller('EntityManagementAddController', ['$scope', '$resource', '$cookies', '$timeout', '$element', 'CaretService', function ($scope, $resource, $cookies, $timeout, $element, CaretService)
+    var EntityService = $resource('/api/:botId/entitys/:entityId', { botId: '@botId', entityId: '@entityId' }, { update: { method: 'PUT' } });
+    var EntityContentService = $resource('/api/:botId/entitys/:entityId/contents', { botId: '@botId', entityId: '@entityId' });
+
+    var chatbot = $cookies.getObject('chatbot');
+
+    $scope.$parent.loaded('working-ground');
+
+    $scope.entities = [];
+    $scope.entity = {};
+
+    (function()
     {
-        var EntityService = $resource('/api/:botId/entitys/:entityId', { botId: '@botId', entityId: '@entityId' }, { update: { method: 'PUT' } });
+        var _id = $location.search()._id;
+        console.log('아이디 : ', _id);
 
-        var chatbot = $cookies.getObject('chatbot');
-        var formElement = $element.get(0);
-
-        $scope.entity = {
-            name: '',
-            entityContents: [{ name: '', synonyms: [''] }]
-        };
-
-        $scope.checkNamePattern = function(e)
+        EntityService.get({ botId: chatbot.id, entityId: _id }, function(entity)
         {
-            if(e.keyCode == 50 && e.shiftKey)
+            $scope.name = entity.name;
+            $scope.entity = entity;
+        },
+        function(err)
+        {
+            alert(err);
+        });
+
+        EntityContentService.query({ botId: chatbot.id, entityId: _id }, function(entityContents)
+        {
+            if(entityContents.length > 0)
             {
-                e.preventDefault();
+                console.log(entityContents);
+                $scope.entities = entityContents;
             }
-        };
+        });
+    })();
 
-        $scope.keydown = function(e, index)
+    $scope.contentInputKeydown = function(e)
+    {
+        if(e.keyCode == 13)
         {
-            if(e.keyCode == 13 && (e.ctrlKey || e.metaKey))
+            if(e.currentTarget.value)
             {
-                e.preventDefault();
-                $scope.entity.entityContents.splice(index + 1, 0, { name: '', synonyms: [''] });
-
-                $timeout(function()
-                {
-                    angular.element('.entity-management-add-content-row').get(index + 1).children[0].children[0].focus();
-                }, 50);
+                $scope.entities.push({ name: e.currentTarget.value, synonyms: [{ name: '' }] });
+                e.currentTarget.value = '';
             }
-        };
 
-        $scope.synonymKeyDown = function(e, content, index)
+            e.currentTarget.focus();
+            e.preventDefault();
+        }
+    };
+
+    $scope.addEntityContentClick = function(e)
+    {
+        var input = e.currentTarget.previousElementSibling;
+        if(input.value)
         {
-            if(e.keyCode == 13)
-            {
-                content.synonyms.splice(index + 1, 0, '');
+            $scope.entities.push({ name: input.value, synonyms: [{ name: '' }] });
+            input.value = '';
+        }
 
-                $timeout(function()
+        input.focus();
+    };
+
+    $scope.addEntityContentSynonym = function(e, synonyms)
+    {
+        if(e.keyCode == 13)
+        {
+            var value = e.currentTarget.value;
+            if(value)
+            {
+                synonyms.push({ name: '' });
+                setTimeout(function()
                 {
-                    e.currentTarget.parentElement.nextElementSibling.children[0].focus();
-                }, 50);
+                    console.log('머지', angular.element(e.currentTarget).parent().find('input:last'));
+                    angular.element(e.currentTarget).parent().parent().find('input:last').focus();
+                }, 300);
 
                 e.preventDefault();
                 e.stopPropagation();
             }
-        };
+        }
+    };
 
-        $scope.synonymKeyUp = function(e, synonyms, index)
+    $scope.save = function(modal)
+    {
+        var params = {};
+        params.botId = chatbot.id;
+        params.name = $scope.name;
+        params.entityContents = JSON.parse(angular.toJson($scope.entities));
+
+        for(var i=0; i<params.entityContents.length; i++)
         {
-            synonyms[index] = e.currentTarget.innerText;
-        };
-
-        $scope.focusToContentEditable = function(e)
-        {
-            e.currentTarget.children[0].focus();
-            e.stopPropagation();
-        };
-
-        $scope.addEntityContent = function()
-        {
-            $scope.entity.entityContents.push({ name: '', synonyms: [''] });
-
-            $timeout(function()
+            for(var j=0; j<params.entityContents[i].synonyms.length; j++)
             {
-                angular.element('.entity-management-add-content-row:last .inside').focus();
-            }, 50);
-        };
-
-        $scope.deleteEntityContent = function(index)
-        {
-            if($scope.entity.entityContents.length == 1)
-            {
-                alert('마지막 엔티티는 삭제할 수 없습니다');
-                return;
+                params.entityContents[i].synonyms[j] = params.entityContents[i].synonyms[j].name;
             }
+        }
 
-            $scope.entity.entityContents.splice(index, 1);
-
-            $timeout(function()
-            {
-                angular.element('.entity-management-add-content-row').get(index).children[0].children[0].focus();
-            }, 100);
-        };
-
-        $scope.deleteEntityContentSynonym = function(content, index, e)
+        if($scope.entity._id)
         {
-            if(content.synonyms.length == 1)
+            params._id = $scope.entity._id;
+            EntityService.update(params, function(result)
             {
-                alert('마지막 Synonym은 삭제할 수 없습니다');
-                return;
-            }
-
-            var target = e.currentTarget.parentElement.previousElementSibling;
-            if(!target)
-                target = e.currentTarget.parentElement.nextElementSibling;
-
-            target.children[0].focus();
-
-            content.synonyms.splice(index, 1);
-        };
-
-        $scope.save = function(e)
-        {
-            var params = {};
-            params.botId = chatbot.id;
-            params.name = $scope.entity.name;
-            params.entityContents = JSON.parse(angular.toJson($scope.entity.entityContents));
-
-            console.log(params);
-
-            EntityService.save(params, function()
+                console.log('업데이트 : ', result);
+                $location.url('/playchat/management/entity');
+            },
+            function(err)
             {
-                if(formElement.saveCallback)
+                alert(err);
+                if(err.data.message == 'Duplicated entity name')
                 {
-                    formElement.saveCallback($scope.entity.name);
+                    alert(params.name + '은 중복된 이름 입니다.');
                 }
+            });
+        }
+        else
+        {
+            EntityService.save(params, function(result)
+            {
+                $location.url('/playchat/management/entity');
             },
             function(err)
             {
                 if(err.data.message == 'Duplicated entity name')
                 {
-                    alert(err.data.message);
+                    alert(params.name + '은 중복된 이름 입니다.');
                 }
             });
-        };
+        }
+    };
 
-        $scope.close = function(e)
-        {
-            if(formElement.closeCallback)
-            {
-                formElement.closeCallback();
-            }
-        };
+    $scope.cancel = function()
+    {
+        $location.url('/playchat/management/entity');
+    };
 
-        formElement.open = function(name)
-        {
-            $element.find('.entity-management-add-input:first').val(name || '').focus();
-        };
-
-        formElement.openCallback = function()
-        {
-            $scope.$apply(function()
-            {
-                $scope.entity = {
-                    name: '',
-                    entityContents: [{ name: '', synonyms: [''] }]
-                };
-            });
-        };
-    }]);
-})();
+    console.log('채널');
+}]);
