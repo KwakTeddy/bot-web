@@ -10,17 +10,88 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
     $scope.isAdvancedMode = false;
 
-    $scope.changeMode = function()
+    $scope.changeMode = function(e)
     {
         if($scope.isAdvancedMode)
         {
+            if($scope.dialog.output.length > 1)
+            {
+                var check = false;
+                for(var i=0; i<$scope.dialog.output.length; i++)
+                {
+                    if($scope.dialog.output[i].kind == 'Action')
+                    {
+                        check = true;
+                        break;
+                    }
+                }
+
+                if(check)
+                {
+                    //아웃풋이 여러개고 그 중에 Action도 있는경우는 basic모드에서 편집 불가
+                    alert('복잡한 Output 구조 편집중에는 Basic 모드로 전환할 수 없습니다.');
+                    return;
+                }
+            }
+
             $scope.isAdvancedMode = false;
         }
         else
         {
             $scope.isAdvancedMode = true;
         }
+
+        e.preventDefault();
+        e.stopPropagation();
     };
+
+    $scope.$watch('isAdvancedMode', function(after, before)
+    {
+        if(after && !before && !$scope.isUseOutput && $scope.dialog.actionOutput)
+        {
+            // basic에서 advanced로 바뀐경우 이미 actionObject가 있다면 변환해줘야 함.
+            $scope.isUseOutput = true;
+            var actionObject = JSON.parse(angular.toJson($scope.dialog.actionOutput));
+            for(var key in actionObject)
+            {
+                $scope.dialog.output[0][key] = actionObject[key];
+            }
+
+            delete $scope.dialog.output[0].text;
+
+            angular.element('input[type="radio"][name="output"]').get(0).checked = true;
+        }
+        else if(!after && before)
+        {
+            // Advanced에서 basic으로 바뀐경우 여기는 변경이 가능한 조건일때만 수행된다. 즉 output이 Action 하나이거나 Content가 여러개.
+
+            if($scope.dialog.output.length == 1 && $scope.dialog.output[0].kind == 'Action')
+            {
+                // Action이 하나인경우 actionObject로 변환하고
+                var actionObject = {};
+                actionObject.kind = 'Action';
+                actionObject.type = $scope.dialog.output[0].type;
+                actionObject.dialog = $scope.dialog.output[0].dialog;
+
+                // Basic모드에 맞게 데이터 구조 변경
+                $scope.isUseOutput = false;
+                $scope.dialog.actionOutput = actionObject;
+                // $scope.dialog.output;
+
+                console.log($scope.dialog.actionOutput);
+
+                $scope.dialog.output[0].kind = 'Content';
+                $scope.dialog.output[0].text = '';
+                delete $scope.dialog.output[0].type;
+                delete $scope.dialog.output[0].dialog;
+            }
+            else if($scope.dialog.output.length > 1)
+            {
+                // Content로 여러개인경우는 걍 놔둬도 될듯
+                $scope.isUseOutput = true;
+            }
+        }
+    });
 
     $scope.initialize = function(parent, dialog)
     {
@@ -75,7 +146,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                                 for(var key in dialog.output[i])
                                 {
                                     if(key != 'kind')
-                                    {
+                                     {
                                         actionObject.type = key;
                                         actionObject.dialog = dialog.output[i][key];
                                     }
@@ -157,19 +228,48 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
             result = $scope.oldDialog;
         }
 
+        // 저장시 불필요한 데이터 삭제.
+        for(var i=0; i<$scope.dialog.output.length; i++)
+        {
+            // 이미지 업로드를 위한 데이터
+            delete $scope.dialog.output[i].uploader;
+
+            if($scope.dialog.output[i].buttons && $scope.dialog.output[i].buttons.length == 0)
+            {
+                // 화면 viewing을 위해 필요한 데이터 이므로 버튼이 없는경우 삭제.
+                delete $scope.dialog.output[i].buttons;
+            }
+        }
+
         result.name = $scope.dialog.name;
         result.input = $scope.dialog.input;
-        result.output = $scope.dialog.output;
+        result.output = JSON.parse(JSON.stringify($scope.dialog.output));
         if($scope.dialog.task)
             result.task = $scope.dialog.task;
 
-        if(!$scope.isUseOutput)
+        if(!$scope.isUseOutput || $scope.isAdvancedMode)
         {
-            //액션 타입을 선택한 경우 저장시 액션데이터만 저장하도록.
-            //이렇게 하면 저장하기 전에 다시 Content등의 아웃풋을 선택하면 기존 데이터를 그대로 활용할 수 있음.
-            var output = { kind: 'Action' };
-            output[$scope.dialog.actionOutput.type] = $scope.dialog.actionOutput.dialog;
-            result.output = [output];
+            if($scope.isAdvancedMode)
+            {
+                //Advanced모드인경우 데이터를 잘 만들어야함.
+                for(var i=0; i<result.output.length; i++)
+                {
+                    if(result.output[i].kind == 'Action')
+                    {
+                        var actionObject = { kind: 'Action' };
+                        actionObject[result.output[i].type] = result.output[i].dialog;
+                        result.output[i] = actionObject;
+                    }
+                }
+            }
+            else
+            {
+                //액션 타입을 선택한 경우 저장시 액션데이터만 저장하도록.
+                //이렇게 하면 저장하기 전에 다시 Content등의 아웃풋을 선택하면 기존 데이터를 그대로 활용할 수 있음.
+                var output = { kind: 'Action' };
+                output[$scope.dialog.actionOutput.type] = $scope.dialog.actionOutput.dialog;
+                result.output = [output];
+            }
         }
         else
         {
@@ -177,19 +277,6 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
         }
 
         console.log(result.output);
-
-        // 저장시 불필요한 데이터 삭제.
-        for(var i=0; i<result.output.length; i++)
-        {
-            // 이미지 업로드를 위한 데이터
-            delete result.output[i].uploader;
-
-            if(result.output[i].buttons && result.output[i].buttons.length == 0)
-            {
-                // 화면 viewing을 위해 필요한 데이터 이므로 버튼이 없는경우 삭제.
-                delete result.output[i].buttons;
-            }
-        }
 
         result.input = JSON.parse(angular.toJson(result.input).replace('#', '').replace('$', ''));
         result.output = JSON.parse(angular.toJson(result.output));

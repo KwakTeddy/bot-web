@@ -1161,7 +1161,7 @@ function executeType(inRaw, inNLP, type, task, context, callback) {
                 if (type.save == undefined || type.save == true) {
                   context.dialog[type.name] = task[type.name];
                   context.dialog.typeMatches[type.name] = task[type.name];
-                  if(type.mongo.model == 'dialogsetdialogs')
+                  if(type.mongo && type.mongo.model == 'dialogsetdialogs')
                   {
                       context.dialog.dialogType = 'qna';
                   }

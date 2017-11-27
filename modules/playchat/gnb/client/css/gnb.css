@@ -190,7 +190,7 @@
     cursor: pointer;
 }
 
-.playchat-background .gnb .menu-item-list .sub-menu-item-group li.selected, .playchat-background .gnb .menu-item-list .sub-menu-item-group li:hover
+.playchat-background .gnb .menu-item-list .sub-menu-item-group li.selected
 {
     background: #038eda;
     padding: 2px 42px;
@@ -201,7 +201,7 @@
     line-height: 48px;
 }
 
-.playchat-background .gnb .menu-item-list .sub-menu-item-group li.selected a, .playchat-background .gnb .menu-item-list .sub-menu-item-group li:hover a
+.playchat-background .gnb .menu-item-list .sub-menu-item-group li.selected a
 {
     color: #fff;
 }

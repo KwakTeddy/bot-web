@@ -96,17 +96,17 @@
             }
         };
 
-        formElement.open = function(name)
+        formElement.open = function()
         {
-            $element.find('.intent-management-add-input:first').val(name || '').focus();
+            $element.find('.intent-management-add-input:first').focus();
         };
 
-        formElement.openCallback = function()
+        formElement.openCallback = function(name)
         {
             $scope.$apply(function()
             {
                 $scope.intent = {
-                    name: '',
+                    name: name,
                     intentContents: [{ content: '' }]
                 };
             });

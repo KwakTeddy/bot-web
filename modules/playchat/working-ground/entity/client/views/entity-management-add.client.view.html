@@ -95,8 +95,9 @@
                                 <tr ng-repeat="item in entities">
                                     <td> {{ item.name }}</td>
                                     <td class="entity-content-synonyms" style="text-align: left;">
-                                        <span ng-repeat="synonym in item.synonyms">
+                                        <span ng-repeat="synonym in item.synonyms" style="position: relative;">
                                             <input type="text" class="entity-content-synonym" style="width: 100px; padding: 10px;" ng-model="synonym.name" required="true" ng-keydown="addEntityContentSynonym($event, item.synonyms);">
+                                            <img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" style="position: absolute; right: 5px; top: -1px;" ng-click="deleteSynonym(item.synonyms, $index);">
                                         </span>
                                     </td>
                                     <td></td>

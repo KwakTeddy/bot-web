@@ -141,11 +141,12 @@
                 $scope.isUseOutput = false;
             };
 
-            $scope.selectActionDialog = function(e, dialog)
+            $scope.selectActionDialog = function(e, dialog, output)
             {
                 if($scope.isAdvancedMode)
                 {
-                    $scope.dialog.output.dialog = dialog.name;
+                    output.dialog = dialog.name;
+                    // $scope.dialog.output[index].dialog = dialog.name;
                 }
                 else
                 {
@@ -156,8 +157,10 @@
             $scope.actionValueChanged = function(dialog)
             {
                 var type = dialog.type;
-                if(type == 'Up' || type == 'Repeat' || type == 'Return')
+                console.log('타입 : ', type);
+                if(type == 'up' || type == 'repeat' || type == 'return')
                 {
+                    console.log('머야 : ', dialog);
                     $scope.actionTypeCheck = true;
                     dialog.dialog = 1;
                 }

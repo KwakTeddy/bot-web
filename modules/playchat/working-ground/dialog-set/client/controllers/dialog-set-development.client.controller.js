@@ -47,8 +47,6 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             {
                 $scope.dialogs = list;
 
-                console.log('리스트 : ', list);
-
                 // 로딩 끝.
                 $scope.$parent.loaded('working-ground');
             });
@@ -130,35 +128,6 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                 angular.element(parent).find('textarea').val('');
                 $scope.dialogs.unshift(dialog);
             });
-
-
-            // 파란색 입력창에서 add 버튼을 클릭하면 입력내용 저장하고 해당 element를 아래로 내린다.
-
-            // 회색 입력창은 add버튼이 필요 없으므로 add 버튼 삭제.
-            // var parent = e.currentTarget.parentElement;
-            // parent.removeChild(parent.querySelector('.new-dialog-title'));
-            // parent.querySelector('button').parentElement.removeChild(parent.querySelector('button'));
-            //
-            // // 삭제 버튼 활성화
-            // var deleteButton = parent.querySelector('.functions-area .delete-img');
-            // deleteButton.style.display = 'inline';
-            //
-            // // input과 output 데이터 가져와서 저장.
-            // var data = $scope.getDialogFromElement(parent);
-            // console.log('데이터 : ', data);
-            // $scope.save(data, function(dialog)
-            // {
-            //     // 삭제버튼 handling
-            //     deleteButton.addEventListener('click', function(e)
-            //     {
-            //         $scope.deleteDialog(dialog, { currentTarget: deleteButton });
-            //     });
-            // });
-
-            // 새로 템플릿에서 element를 가져와서 파란색 입력창을 만들어낸다.
-            // var template = angular.element('#dialogLearningRowTemplate').html();
-            // var el = angular.element('.dialog-learning-development-content').prepend($compile(template)($scope));
-            // el.find('input:first').focus();
         };
 
         $scope.addInputElement = function(e)

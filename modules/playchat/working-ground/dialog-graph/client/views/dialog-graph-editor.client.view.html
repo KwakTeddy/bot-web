@@ -1,14 +1,13 @@
 <script type="text/template" id="inputListModalTemplate">
 <ul class="dialog-editor-input-list-modal">
     <li>새로만들기</li>
-    <li>asdf</li>
 </ul>
 </script>
 
 <div ng-controller="DialogGraphEditorController">
     <div class="topicswitch2">
         <span class="mr10">Advenced</span>
-        <div class="minislide inline-block" ng-class="isAdvancedMode ? 'on' : ''" ng-click="changeMode();">
+        <div class="minislide inline-block" ng-class="isAdvancedMode ? 'on' : ''" ng-click="changeMode($event);">
             <input type="checkbox" value="switch" id="advance" ng-model="isAdvancedMode">
             <label for="advance"></label>
         </div>
@@ -42,14 +41,14 @@
                             <div class="dialog-editor-input-textarea" data-nlu="nlu: {{ nlpedText[$index] }}" ng-click="focusToInputArea($event);">
                                 <span ng-repeat="(key, val) in input" ng-show="getInputKeyLength(input, key) > 0">
                                     <span class="dialog-editor-input-item" ng-class="key" ng-click="inputKeyOnClick($event);">
-                                        <span class="dialog-editor-input-key" contenteditable="true" data-key="{{ key }}" ng-click="inputKeyOnClick($event);" ng-focus="inputKeyOnFocus($event, input);" ng-blur="inputKeyOnBlur($event, input);" ng-keydown="inputKeyOnKeyDown($event, input, $parent.$index);" ng-keyup="inputKeyOnKeyUp($event, input, $parent.$index);">{{ getValueName(val); }}</span>
+                                        <span class="dialog-editor-input-key" contenteditable="true" data-key="{{ key }}" ng-click="inputKeyOnClick($event);" ng-focus="inputKeyOnFocus($event, input);" ng-blur="inputKeyOnBlur($event, input, true);" ng-keydown="inputKeyOnKeyDown($event, input, $parent.$index);" ng-keyup="inputKeyOnKeyUp($event, input, $parent.$index);">{{ getValueName(val); }}</span>
                                         <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/close.png" class="delete-img" ng-click="deleteInputKey(input, key);">
                                     </span>
                                     <span class="and" ng-if="getLength(input);">and</span>
                                 </span>
 
                                 <span class="dialog-editor-input-item">
-                                    <input type="text" class="dialog-editor-input-key target-input" ng-class="isRequired(input) ? '' : ''" style="width: 80px; padding:0 4px;" ng-click="inputKeyOnClick($event);" ng-focus="inputKeyOnFocus($event, input);" ng-blur="inputKeyOnBlur($event, input);" ng-keydown="inputKeyOnKeyDown($event, input);" ng-keyup="inputKeyOnKeyUp($event, input, $index);">
+                                    <input type="text" class="dialog-editor-input-key target-input" ng-class="isRequired(input) ? '' : ''" style="width: 80px; padding:0 4px;" ng-click="inputKeyOnClick($event);" ng-focus="inputKeyOnFocus($event, input);" ng-blur="inputKeyOnBlur($event, input, true);" ng-keydown="inputKeyOnKeyDown($event, input);" ng-keyup="inputKeyOnKeyUp($event, input, $index, true);">
                                 </span>
                                 <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteInput($index);" style="position: absolute; top: 7px; right: 12px;">
                             </div>
@@ -142,8 +141,8 @@
                                 <div class="dialog-editor-select-input" style="width: 100%; margin: 0 auto; display: block;" ng-disabled="actionTypeCheck === true">
                                     <input type="text" ng-model="output.dialog" ng-required="true" ng-disabled="actionTypeCheck === true">
                                     <ul class="dialog-editor-select-options">
-                                        <li ng-repeat="dialog in userDialogs" ng-mousedown="selectActionDialog($event, dialog, index)">{{ dialog.name }}</li>
-                                        <li ng-repeat="dialog in commonDialogs" ng-mousedown="selectActionDialog($event, dialog, index)">{{ dialog.name }}</li>
+                                        <li ng-repeat="dialog in userDialogs" ng-mousedown="selectActionDialog($event, dialog, output)">{{ dialog.name }}</li>
+                                        <li ng-repeat="dialog in commonDialogs" ng-mousedown="selectActionDialog($event, dialog, output)">{{ dialog.name }}</li>
                                     </ul>
                                 </div>
                             </div>
@@ -167,7 +166,7 @@
                             <option value="return">Return</option>
                         </select>
                         <div class="dialog-editor-select-input" ng-disabled="isUseOutput === true || actionTypeCheck === true">
-                            <input type="text" ng-model="dialog.actionOutput.dialog" ng-required="isUseOutput === false" ng-disabled="isUseOutput === true || actionTypeCheck === true">
+                            <input type="text" ng-model="dialog.actionOutput.dialog" ng-required="isUseOutput === false" ng-disabled="(isUseOutput === true || actionTypeCheck === true) ? true : false">
                             <ul class="dialog-editor-select-options">
                                 <li ng-repeat="dialog in userDialogs" ng-mousedown="selectActionDialog($event, dialog)">{{ dialog.name }}</li>
                                 <li ng-repeat="dialog in commonDialogs" ng-mousedown="selectActionDialog($event, dialog)">{{ dialog.name }}</li>

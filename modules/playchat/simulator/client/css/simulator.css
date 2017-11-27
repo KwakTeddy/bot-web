@@ -113,6 +113,11 @@
     margin-bottom: 8px;
 }
 
+.simulator .answer .output-image img
+{
+    max-width: 100%;
+}
+
 .simulator .answer em.tail
 {
     border-top: 10px solid #dfdfdf;

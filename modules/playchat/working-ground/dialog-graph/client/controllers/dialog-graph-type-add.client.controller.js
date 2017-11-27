@@ -5,6 +5,7 @@
         var TaskService = $resource('/api/:botId/types/:fileName', { botId: '@botId', fileName: '@fileName' }, { update: { method: 'PUT' } });
 
         var chatbot = $cookies.getObject('chatbot');
+        var formElement = $element.get(0);
 
         $scope.type = {};
 
@@ -13,23 +14,6 @@
             lineNumbers: true,
             smartIndent: true
         });
-
-        $element.get(0).open = function()
-        {
-
-        };
-
-        $element.get(0).openCallback = function()
-        {
-            // TaskService.query({ botId: chatbot.id }, function(list)
-            // {
-            //     console.log('리스트', list);
-            // },
-            // function(err)
-            // {
-            //     alert(err.data.message);
-            // });
-        };
 
         $scope.save = function()
         {
@@ -49,6 +33,29 @@
             }, function(err)
             {
                 alert(err.data.message);
+            });
+        };
+
+        $scope.close = function(e)
+        {
+            if(formElement.closeCallback)
+            {
+                formElement.closeCallback();
+            }
+        };
+
+        formElement.open = function()
+        {
+            $element.find('.dialog-graph-instant-add-input.type-add').focus();
+        };
+
+        formElement.openCallback = function(name)
+        {
+            $scope.$apply(function()
+            {
+                $scope.type = {
+                    name: name
+                };
             });
         };
     }]);

@@ -17,7 +17,6 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
     (function()
     {
         var _id = $location.search()._id;
-        console.log('아이디 : ', _id);
 
         EntityService.get({ botId: chatbot.id, entityId: _id }, function(entity)
         {
@@ -76,7 +75,6 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
                 synonyms.push({ name: '' });
                 setTimeout(function()
                 {
-                    console.log('머지', angular.element(e.currentTarget).parent().find('input:last'));
                     angular.element(e.currentTarget).parent().parent().find('input:last').focus();
                 }, 300);
 
@@ -84,6 +82,11 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
                 e.stopPropagation();
             }
         }
+    };
+
+    $scope.deleteSynonym = function(synonyms, index)
+    {
+        synonyms.splice(index, 1);
     };
 
     $scope.save = function(modal)
@@ -106,7 +109,6 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
             params._id = $scope.entity._id;
             EntityService.update(params, function(result)
             {
-                console.log('업데이트 : ', result);
                 $location.url('/playchat/management/entity');
             },
             function(err)
@@ -138,6 +140,4 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
     {
         $location.url('/playchat/management/entity');
     };
-
-    console.log('채널');
 }]);

@@ -13,7 +13,7 @@
         {
             this.dashboard = { name: 'Dashboard', url:'/', icon: 'dashboard.png' };
 
-            this.development = { name: 'Development', icon: 'develop.png', childMenus: [
+            this.development = { name: 'Development', url: '/development', icon: 'develop.png', childMenus: [
                 { name: 'Dialog Set', url: '/development/dialog-set', icon: 'speech.png' },
                 { name: 'Dialog Graph', url: '/development/dialog-graph', icon: 'scenario_select.png' }
             ] };

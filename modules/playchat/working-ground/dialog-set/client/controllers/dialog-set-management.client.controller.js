@@ -202,8 +202,6 @@ angular.module('playchat').controller('DialogSetManagementController', ['$window
 
         $scope.uploader.onSuccessItem = function(item, response, status, headers)
         {
-            console.log('성공 : ', item, response, status, headers);
-
             importModal.data.path = response.path;
             importModal.data.filename = response.filename;
             

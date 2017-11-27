@@ -241,10 +241,7 @@
                 {
                     if ($scope.$$phase == '$apply' || $scope.$$phase == '$digest' )
                     {
-                        if(!input.entities)
-                            input.entities = [];
-
-                        input.entities.push('@' + selectedText);
+                        addOrPushData(input, 'entities', '@' + selectedText);
 
                         // addOrPushData(input, 'entities', selectedText);
                         if(e.currentTarget.innerText) // 자동으로 화면쪽으로 바인딩이 안되서 임시적으로.
@@ -255,10 +252,7 @@
                     {
                         $scope.$apply(function()
                         {
-                            if(!input.entities)
-                                input.entities = [];
-
-                            input.entities.push('@' + selectedText);
+                            addOrPushData(input, 'entities', '@' + selectedText);
 
                             // addOrPushData(input, 'entities', selectedText);
                             if(e.currentTarget.innerText) // 자동으로 화면쪽으로 바인딩이 안되서 임시적으로.
@@ -351,14 +345,7 @@
                 {
                     if ($scope.$$phase == '$apply' || $scope.$$phase == '$digest' )
                     {
-                        if(!input.types)
-                        {
-                            input.types = [selectedText];
-                        }
-                        else
-                        {
-                            input.types.push(selectedText);
-                        }
+                        addOrPushData(input, 'types', selectedText);
 
                         // addOrPushData(input, 'types', selectedText);
                         if(e.currentTarget.innerText) // 자동으로 화면쪽으로 바인딩이 안되서 임시적으로.
@@ -369,14 +356,7 @@
                     {
                         $scope.$apply(function()
                         {
-                            if(!input.types)
-                            {
-                                input.types = [selectedText];
-                            }
-                            else
-                            {
-                                input.types.push(selectedText);
-                            }
+                            addOrPushData(input, 'types', selectedText);
 
                             // addOrPushData(input, 'types', selectedText);
                             if(e.currentTarget.innerText) // 자동으로 화면쪽으로 바인딩이 안되서 임시적으로.
@@ -532,29 +512,6 @@
                 }
             };
 
-            // $scope.inputKeyOnKeyUp = function(e, index)
-            // {
-            //     var text = e.currentTarget.value;
-            //     if(text && !text.startsWith('/') && !text.startsWith('if('))
-            //     {
-            //         DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: text }, function(result)
-            //         {
-            //             $scope.nlpedText[index] = 'nlu: ' + result.text;
-            //
-            //             if($scope.showNlpTimeout)
-            //                 clearTimeout($scope.showNlpTimeout);
-            //
-            //             $scope.showNlpTimeout = setTimeout(function()
-            //             {
-            //                 $scope.$apply(function()
-            //                 {
-            //                     $scope.nlpedText[index] = undefined;
-            //                 });
-            //             }, 2000);
-            //         });
-            //     }
-            // };
-
 
 
 
@@ -615,8 +572,147 @@
 
             // blur
             // - 에디터 닫음.
-            $scope.inputKeyOnBlur = function(e, input)
+            $scope.inputKeyOnBlur = function(e, input, isSpan)
             {
+                if(e.which == 3)
+                {
+                    return;
+                }
+
+                if(isSpan)
+                {
+                    var key = e.currentTarget.getAttribute('data-key');
+
+                    var value = e.currentTarget.value;
+                    if(e.currentTarget.nodeName == 'SPAN')
+                        value = e.currentTarget.innerText;
+
+                    //기 입력된 내용에 대해서는 엔터를 입력하지 않아도 수정이 될거라는 생각이 든다. 그러므로 여기서 저장을 해주자.
+                    var item = ListModal.getSelectedItem();
+                    if(item)
+                    {
+                        return;
+                    }
+
+                    if(value === undefined || value === null || value === '')
+                    {
+                        return
+                    }
+
+                    if(e.currentTarget.parentElement.className.indexOf('entities') != -1 || value.indexOf('@') != -1)
+                    {
+                        //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
+                        if(key && key != 'entities')
+                        {
+                            alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                            return e.preventDefault();
+                        }
+
+                        // addOrPushData(input, 'entities', value);
+                        e.currentTarget.value = ''; // span의 경우 value가 없으므로 문제 없음.
+                    }
+                    else if(e.currentTarget.parentElement.className.indexOf('intent') != -1 || value[0] == '#')
+                    {
+                        if(checkDuplicateInput(e.currentTarget, 'intent'))
+                        {
+                            //이미 추가된게 있으면 추가 할 수 없게 함.
+                            alert('이미 인텐트 형태의 Input이 추가되어 있습니다');
+                            e.preventDefault();
+                        }
+                        else
+                        {
+                            //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
+                            if(key && key != 'intent')
+                            {
+                                alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                                return e.preventDefault();
+                            }
+
+                            input.intent = value;
+                            e.currentTarget.value = '';
+
+                            angular.element('.dialog-editor-input-key:last').focus();
+                        }
+                    }
+                    else if(e.currentTarget.parentElement.className.indexOf('types') != -1 || value[0] == '$')
+                    {
+                        //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
+                        if(key && key != 'types')
+                        {
+                            alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                            return e.preventDefault();
+                        }
+
+                        // addOrPushData(input, 'types', value.replace('$', ''));
+                        e.currentTarget.value = '';
+                    }
+                    else if(e.currentTarget.parentElement.className.indexOf('regexp') != -1 || (value[0] == '/' && value[value.length-1] == '/'))
+                    {
+                        if(checkDuplicateInput(e.currentTarget, 'regexp'))
+                        {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            alert('이미 정규식 형태의 Input이 추가되어 있습니다');
+                            return;
+                        }
+                        else
+                        {
+                            //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
+                            if(key && key != 'regexp')
+                            {
+                                alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                                return e.preventDefault();
+                            }
+
+                            input.regexp = value.replace(/\//gi, '');
+                            e.currentTarget.value = '';
+
+                            angular.element('.dialog-editor-input-key:last').focus();
+                        }
+                    }
+                    else if(e.currentTarget.parentElement.className.indexOf('if') != -1 || value.startsWith('if('))
+                    {
+                        if (checkDuplicateInput(e.currentTarget, 'if'))
+                        {
+                            alert('이미 조건식 형태의 Input이 추가되어 있습니다');
+                            e.preventDefault();
+                        }
+                        else
+                        {
+                            //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
+                            if(key && key != 'if')
+                            {
+                                alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                                return e.preventDefault();
+                            }
+
+                            input.if = value.replace('if(', '').replace(')', '');
+                            e.currentTarget.value = '';
+
+                            angular.element('.dialog-editor-input-key:last').focus();
+                        }
+                    }
+                    else
+                    {
+                        if(input.text && key != 'text')
+                        {
+                            alert('이미 텍스트 형태의 Input이 추가되어 있습니다');
+                            e.preventDefault();
+                        }
+                        else
+                        {
+                            //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
+                            if(key && key != 'text')
+                            {
+                                alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                                return e.preventDefault();
+                            }
+
+                            input.text = value;
+                        }
+                    }
+                }
+
                 ListModal.close();
             };
 
@@ -656,9 +752,22 @@
                 }
             };
 
+            var checkDuplicateInput = function(target, key)
+            {
+                // var duplicatedTarget = angular.element(target).parent().parent().parent().find('.' + key).get(0);
+
+                var duplicatedTarget = target.parentElement.parentElement.parentElement.querySelector('.' + key);
+                if(duplicatedTarget && duplicatedTarget != target.parentElement)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
             // keyup
             // -
-            $scope.inputKeyOnKeyUp = function(e, input, index)
+            $scope.inputKeyOnKeyUp = function(e, input, index, isInput)
             {
                 var value = e.currentTarget.value;
                 if(e.currentTarget.nodeName == 'SPAN')
@@ -699,30 +808,33 @@
                         return
                     }
 
-                    if(value.indexOf('@') != -1)
+                    if(e.currentTarget.parentElement.className.indexOf('entities') != -1 || value.indexOf('@') != -1)
                     {
                         //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
                         if(key && key != 'entities')
                         {
-                            return alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                            alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                            return e.preventDefault();
                         }
 
                         addOrPushData(input, 'entities', value);
                         e.currentTarget.value = ''; // span의 경우 value가 없으므로 문제 없음.
                     }
-                    else if(value[0] == '#')
+                    else if(e.currentTarget.parentElement.className.indexOf('intent') != -1 || value[0] == '#')
                     {
-                        if(input.intent && key != 'intent')
+                        if(checkDuplicateInput(e.currentTarget, 'intent'))
                         {
                             //이미 추가된게 있으면 추가 할 수 없게 함.
                             alert('이미 인텐트 형태의 Input이 추가되어 있습니다');
+                            e.preventDefault();
                         }
                         else
                         {
                             //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
                             if(key && key != 'intent')
                             {
-                                return alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                                alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                                return e.preventDefault();
                             }
 
                             input.intent = value;
@@ -731,49 +843,56 @@
                             angular.element('.dialog-editor-input-key:last').focus();
                         }
                     }
-                    else if(value[0] == '$')
+                    else if(e.currentTarget.parentElement.className.indexOf('types') != -1 || value[0] == '$')
                     {
                         //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
                         if(key && key != 'types')
                         {
-                            return alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                            alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                            return e.preventDefault();
                         }
 
                         addOrPushData(input, 'types', value.replace('$', ''));
                         e.currentTarget.value = '';
                     }
-                    else if(value[0] == '/' && value[value.length-1] == '/')
+                    else if(e.currentTarget.parentElement.className.indexOf('regexp') != -1 || (value[0] == '/' && value[value.length-1] == '/'))
                     {
-                        if(input.regexp)
+                        if(checkDuplicateInput(e.currentTarget, 'regexp'))
                         {
+                            e.preventDefault();
+                            e.stopPropagation();
                             alert('이미 정규식 형태의 Input이 추가되어 있습니다');
+                            return;
                         }
                         else
                         {
                             //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
                             if(key && key != 'regexp')
                             {
-                                return alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                                alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                                return e.preventDefault();
                             }
 
-                            input.regexp = value;
+                            input.regexp = value.replace(/\//gi, '');
                             e.currentTarget.value = '';
 
                             angular.element('.dialog-editor-input-key:last').focus();
                         }
                     }
-                    else if(value.startsWith('if('))
+                    else if(e.currentTarget.parentElement.className.indexOf('if') != -1 || value.startsWith('if('))
                     {
-                        if (input.if)
+                        if (checkDuplicateInput(e.currentTarget, 'if'))
                         {
                             alert('이미 조건식 형태의 Input이 추가되어 있습니다');
+                            e.preventDefault();
                         }
                         else
                         {
                             //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
                             if(key && key != 'if')
                             {
-                                return alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                                alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                                return e.preventDefault();
                             }
 
                             input.if = value.replace('if(', '').replace(')', '');
@@ -787,13 +906,15 @@
                         if(input.text && key != 'text')
                         {
                             alert('이미 텍스트 형태의 Input이 추가되어 있습니다');
+                            e.preventDefault();
                         }
                         else
                         {
                             //다른 타입의 span에서 수정한다음 엔터를 누른 경우.
                             if(key && key != 'text')
                             {
-                                return alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                                alert('다른 형태의 Input으로 변경할 수 없습니다.');
+                                return e.preventDefault();
                             }
 
                             DialogGraphsNLPService.get({ botId: $scope.chatbot.id, text: value }, function(result)
@@ -858,7 +979,7 @@
 
                     if(value !== undefined && value !== null && value !== '')
                     {
-                        if(value.startsWith('if(') || value.startsWith('/'))
+                        if(e.currentTarget.parentElement.className.indexOf('regexp') != -1 || e.currentTarget.parentElement.className.indexOf('if') != -1 || value.startsWith('if(') || value.startsWith('/'))
                         {
                             return;
                         }
@@ -867,8 +988,6 @@
                         {
                             $scope.nlpedTextPrefix = 'nlu: ';
                             $scope.nlpedText[index] = result.text;
-
-                            console.log($scope.nlpedText, index);
 
                             if($scope.showNlpTimeout)
                                 clearTimeout($scope.showNlpTimeout);

@@ -54,8 +54,6 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             var dialog = $location.search().dialog;
             var preDialogId = $location.search().preDialogId;
 
-            console.log('머지 : ', dialog, preDialogId);
-
             if(!dialog || !preDialogId)
             {
                 DialogGraph.removeOnLoad();

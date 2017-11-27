@@ -14,8 +14,6 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
     $scope.botName = chatbot.name;
     $scope.path = $location.path();
 
-    console.log('패스', $scope.path);
-
     (function()
     {
         ChatbotService.get({ botId: chatbot._id }, function(result)

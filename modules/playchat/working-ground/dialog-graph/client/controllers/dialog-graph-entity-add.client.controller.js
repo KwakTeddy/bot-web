@@ -139,17 +139,17 @@
             }
         };
 
-        formElement.open = function(name)
+        formElement.open = function()
         {
-            $element.find('.entity-management-add-input:first').val(name || '').focus();
+            $element.find('.entity-management-add-input:first').focus();
         };
 
-        formElement.openCallback = function()
+        formElement.openCallback = function(name)
         {
             $scope.$apply(function()
             {
                 $scope.entity = {
-                    name: '',
+                    name: name,
                     entityContents: [{ name: '', synonyms: [''] }]
                 };
             });
