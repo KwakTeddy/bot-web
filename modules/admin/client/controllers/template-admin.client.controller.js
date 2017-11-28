@@ -13,7 +13,7 @@
         }
 
         var TemplateService = $resource('/api/admin/templates');
-        var TemplateCategoriesService = $resource('/api/admin/template-categories');
+        var TemplateCategoriesService = $resource('/api/template-categories');
 
         $scope.template = {
             language: 'ko'
