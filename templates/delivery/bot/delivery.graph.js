@@ -1760,6 +1760,6 @@ var commonDialogs = [
 ];
 
 
-var _bot = require(require('path').resolve("engine/bot")).getBot('{botId}');
+var _bot = require(require('path').resolve("engine/bot")).getTemplateBot('delivery');
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

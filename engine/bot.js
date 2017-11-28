@@ -90,7 +90,12 @@ function loadBot(botName, callback) {
                 var TemplateModel = mongoose.model('Template');
                 TemplateModel.findOne({_id: bot.templateId}).lean().exec(function(err, doc) {
                     if(doc) {
-                        // bot.template = doc;
+                        bot.template = doc;
+
+                        if(!bot.path) bot.path = 'templates/' + doc.id + '/bot';
+
+                        if(global._templates[bot.template.id] && global._templates[bot.template.id].loaded != true)
+                            global._templates[bot.template.id] = undefined;
 
                         var files = fs.readdirSync(path.resolve('./templates/' + doc.id));
                         async.eachSeries(files, function(file, next)
@@ -118,7 +123,6 @@ function loadBot(botName, callback) {
                                         var tempData = {};
                                         tempData[schemaPostFix] = doc1 || [];
 
-                                        console.log('하하 : ', tempData);
                                         utils.merge(bot, tempData);
                                     }
                                     // utils.merge(bot, doc1);
@@ -237,7 +241,7 @@ function loadBot(botName, callback) {
                             //bot.dialogFiles[i] = filePath;
 
                             try {
-                                console.log('\tloading file: ' + file);
+                                console.log('\tloading file2: ' + file);
 
                                 utils.requireNoCache(filePath, true);
                             } catch(e) {
@@ -275,8 +279,8 @@ function loadBot(botName, callback) {
 
                         try {
                             console.log('\tloading file: ' + file);
-
                             utils.requireNoCache(file, true);
+                            console.log('머지 : ', global._bots[botName].commonDialogs);
                         } catch(e) {
                             console.error(e);
                             bot.error.push(e.stack);
@@ -364,6 +368,7 @@ function loadBot(botName, callback) {
         },
 
         function(cb) {
+            console.log('하하호히핳 : ', JSON.stringify(global._templates));
             if(bot && bot.template && global._templates[bot.template.id]) {
                 utils.merge(bot.template, global._templates[bot.template.id]);
                 // var template = global._templates[bot.template.id];
@@ -375,6 +380,8 @@ function loadBot(botName, callback) {
 
                 bot.commonDialogs =bot.commonDialogs.concat(bot.template.commonDialogs);
                 bot.dialogs = bot.dialogs.concat(bot.template.dialogs);
+
+                console.log('머냐 : ', bot.commonDialogs);
                 utils.merge(bot.tasks, bot.template.tasks);
                 utils.merge(bot.actions , bot.template.actions );
                 utils.merge(bot.types, bot.template.types);

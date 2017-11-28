@@ -99,22 +99,23 @@ exports.create = function(req, res)
                     fs.mkdirSync(dir);
                 }
 
-                if(chatbot.templateId)
-                {
-                    var templateDir = path.resolve('./templates/' + req.body.templateDir);
-
-                    var files = fs.readdirSync(templateDir + '/bot');
-                    for(var i=0; i<files.length; i++)
-                    {
-                        if(files[i].endsWith('.js'))
-                        {
-                            var fileData = fs.readFileSync(templateDir + '/bot/' + files[i]).toString();
-                            fs.writeFileSync(dir + '/' + files[i], fileData.replace(/{botId}/gi, chatbot.id));
-                        }
-                    }
-                }
-                else
-                {
+                // 배달봇같은 서비스 형태의 봇은 카피하지 않고 원천소스를 그대로 사용한다.
+                // if(chatbot.templateId)
+                // {
+                //     var templateDir = path.resolve('./templates/' + req.body.templateDir);
+                //
+                //     var files = fs.readdirSync(templateDir + '/bot');
+                //     for(var i=0; i<files.length; i++)
+                //     {
+                //         if(files[i].endsWith('.js'))
+                //         {
+                //             var fileData = fs.readFileSync(templateDir + '/bot/' + files[i]).toString();
+                //             fs.writeFileSync(dir + '/' + files[i], fileData.replace(/{botId}/gi, chatbot.id));
+                //         }
+                //     }
+                // }
+                // else
+                // {
                     var botjs = fs.readFileSync(__dirname + '/bot.template');
                     var defaultjs = fs.readFileSync(__dirname + '/default.template');
                     var graphjs = fs.readFileSync(__dirname + '/graph.template');
@@ -122,7 +123,7 @@ exports.create = function(req, res)
                     fs.writeFileSync(dir + '/default.graph.js', graphjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
                     fs.writeFileSync(dir + '/default.js', defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
                     fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
-                }
+                // }
 
                 var botAuth = new BotAuth();
                 botAuth.bot = chatbot._id;

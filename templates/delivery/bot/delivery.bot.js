@@ -13,4 +13,4 @@ var delivery = {
     }
 };
 
-botlib.makeBot('{botId}', delivery);
+botlib.makeTemplateBot('delivery', delivery);

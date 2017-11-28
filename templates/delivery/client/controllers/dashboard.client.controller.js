@@ -10,7 +10,7 @@ angular.module('template').controller('dashboardController', ['$scope', '$resour
     (function()
     {
         $scope.chatbot = chatbot;
-        ChatbotTemplateService.get({ templateId: chatbot.templateId }, function(result)
+        ChatbotTemplateService.get({ templateId: chatbot.templateId._id }, function(result)
         {
             $scope.template = result;
         },

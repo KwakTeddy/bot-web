@@ -1,5 +1,5 @@
 var path = require('path');
-var bot = require(require('path').resolve("engine/bot")).getBot('{botId}');
+var bot = require(require('path').resolve("engine/bot")).getTemplateBot('delivery');
 
 
 var config = require(path.resolve('./config/config'));
