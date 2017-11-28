@@ -87,24 +87,76 @@ function loadBot(botName, callback) {
 
         function(cb) {
             if(bot && bot.templateId) {
-                // var TemplateModel = mongoose.model('Template');
-                // TemplateModel.findOne({_id: bot.templateId}).lean().exec(function(err, doc) {
-                //     if(doc) {
-                //         bot.template = doc;
-                //         if(!bot.path) bot.path = 'templates/' + doc.id;
-                //
-                //         if(global._templates[bot.template.id] && global._templates[bot.template.id].loaded != true)
-                //             global._templates[bot.template.id] = undefined;
-                //
-                //         var templateDataModel = TemplateDataModule.getTemplateDataModel(doc.dataSchema);
-                //         templateDataModel.findOne({_id: bot.templateDataId}).lean().exec(function(err, doc1) {
-                //             utils.merge(bot, doc1);
-                //             cb(null);
-                //         });
-                //     } else {
-                //         cb(null);
-                //     }
-                // });
+                var TemplateModel = mongoose.model('Template');
+                TemplateModel.findOne({_id: bot.templateId}).lean().exec(function(err, doc) {
+                    if(doc) {
+                        // bot.template = doc;
+
+                        var files = fs.readdirSync(path.resolve('./templates/' + doc.id));
+                        async.eachSeries(files, function(file, next)
+                        {
+                            if(!file.startsWith('playchat-') && file.endsWith('.json'))
+                            {
+                                var data = fs.readFileSync(path.resolve('./templates/' + doc.id + '/' + file));
+
+                                var schemaPostFix = file.split('-')[0];
+
+                                var schema = new mongoose.Schema(JSON.parse(data));
+                                if(mongoose.models[doc.id + '-' + schemaPostFix])
+                                    schema = mongoose.model(doc.id + '-' + schemaPostFix);
+                                else
+                                    schema = mongoose.model(doc.id + '-' + schemaPostFix, schema);
+
+                                schema.find({ botId: bot.id }).lean().exec(function(err, doc1)
+                                {
+                                    if(schemaPostFix == 'data')
+                                    {
+                                        utils.merge(bot, (doc1.length == 1 && doc1[0]) || {});
+                                    }
+                                    else
+                                    {
+                                        var tempData = {};
+                                        tempData[schemaPostFix] = doc1 || [];
+
+                                        console.log('하하 : ', tempData);
+                                        utils.merge(bot, tempData);
+                                    }
+                                    // utils.merge(bot, doc1);
+                                    next();
+                                });
+                            }
+                            else
+                            {
+                                next();
+                            }
+                        },
+                        function()
+                        {
+                            cb();
+                        });
+
+
+
+                        // templateDataModel.findOne({_id: bot.templateDataId}).lean().exec(function(err, doc1) {
+                        //     utils.merge(bot, doc1);
+                        //     cb(null);
+                        // });
+
+                        // bot.template = doc;
+                        // if(!bot.path) bot.path = 'templates/' + doc.id;
+                        //
+                        // if(global._templates[bot.template.id] && global._templates[bot.template.id].loaded != true)
+                        //     global._templates[bot.template.id] = undefined;
+                        //
+                        // var templateDataModel = TemplateDataModule.getTemplateDataModel(doc.dataSchema);
+                        // templateDataModel.findOne({_id: bot.templateDataId}).lean().exec(function(err, doc1) {
+                        //     utils.merge(bot, doc1);
+                        //     cb(null);
+                        // });
+                    } else {
+                        cb(null);
+                    }
+                });
                 cb(null);
             } else {
                 cb(null);

@@ -8,9 +8,9 @@ var async = require('async');
 module.exports.findMenus = function(req, res)
 {
     var botId = req.params.botId;
-    var templateName = req.params.templateName;
+    var templateId = req.params.templateId;
 
-    fs.readFile(path.resolve('./templates/' + templateName + '/menu-schema.json'), function(err, data)
+    fs.readFile(path.resolve('./templates/' + templateId + '/menu-schema.json'), function(err, data)
     {
         if(err)
         {
@@ -24,7 +24,7 @@ module.exports.findMenus = function(req, res)
         //몽고디비 스키마 생성
         var schema = new Schema(json);
 
-        var name = templateName + '-menu';
+        var name = templateId + '-menu';
 
         var model = undefined;
 
@@ -49,10 +49,10 @@ module.exports.findMenus = function(req, res)
 module.exports.saveMenus = function(req, res)
 {
     var botId = req.params.botId;
-    var templateName = req.params.templateName;
+    var templateId = req.params.templateId;
     var menus = req.body.menus;
 
-    fs.readFile(path.resolve('./templates/' + templateName + '/menu-schema.json'), function(err, data)
+    fs.readFile(path.resolve('./templates/' + templateId + '/menu-schema.json'), function(err, data)
     {
         if(err)
         {
@@ -67,7 +67,7 @@ module.exports.saveMenus = function(req, res)
         //몽고디비 스키마 생성
         var schema = new Schema(json);
 
-        var name = templateName + '-menu';
+        var name = templateId + '-menu';
 
         var model = undefined;
 
@@ -111,9 +111,9 @@ module.exports.saveMenus = function(req, res)
 module.exports.findEvents = function(req, res)
 {
     var botId = req.params.botId;
-    var templateName = req.params.templateName;
+    var templateId = req.params.templateId;
 
-    fs.readFile(path.resolve('./templates/' + templateName + '/event-schema.json'), function(err, data)
+    fs.readFile(path.resolve('./templates/' + templateId + '/event-schema.json'), function(err, data)
     {
         if(err)
         {
@@ -127,7 +127,7 @@ module.exports.findEvents = function(req, res)
         //몽고디비 스키마 생성
         var schema = new Schema(json);
 
-        var name = templateName + '-event';
+        var name = templateId + '-event';
 
         var model = undefined;
 
@@ -152,10 +152,10 @@ module.exports.findEvents = function(req, res)
 module.exports.saveEvents = function(req, res)
 {
     var botId = req.params.botId;
-    var templateName = req.params.templateName;
+    var templateId = req.params.templateId;
     var events = req.body.events;
 
-    fs.readFile(path.resolve('./templates/' + templateName + '/event-schema.json'), function(err, data)
+    fs.readFile(path.resolve('./templates/' + templateId + '/event-schema.json'), function(err, data)
     {
         if(err)
         {
@@ -170,7 +170,7 @@ module.exports.saveEvents = function(req, res)
         //몽고디비 스키마 생성
         var schema = new Schema(json);
 
-        var name = templateName + '-event';
+        var name = templateId + '-event';
 
         var model = undefined;
 

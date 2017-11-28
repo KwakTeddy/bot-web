@@ -126,26 +126,12 @@ var dialogs = [
                         "task": "makeOrderList"
                     },
                     {
-                        "input": {
-                            "regexp": "/^<$/"
-                        },
-                        "output": {
-                            "repeat": 1,
-                            "options": {
-                                "page": "pre"
-                            }
-                        }
+                        "input": {"regexp": "/^<$/"} ,
+                        "output": {"repeat": 1, "options": {"page": "pre"}}
                     },
                     {
-                        "input": {
-                            "regexp": "/^>$/"
-                        },
-                        "output": {
-                            "repeat": 1,
-                            "options": {
-                                "page": "next"
-                            }
-                        }
+                        "input": {"regexp": "/^>$/"} ,
+                        "output": {"repeat": 1, "options": {"page": 'next'}}
                     },
                     {
                         "name": "메뉴재선택",
@@ -1521,7 +1507,7 @@ var dialogs = [
         "output": [
             {
                 "if": "context.dialog.orderHistory",
-                "text": "[\"+mobile+\" 님의 최근 주문 내역]\n\n주문상태: +orderHistory.status+\n주문일시: +orderHistory.time.month+월 +orderHistory.time.date+일 +orderHistory.time.hour+:+orderHistory.time.minute+\n도착예정시각: +expectedTime.hour+:+expectedTime.minute+\n배달주소: +address.지번주소+\n총 금액: +totalPrice+원\n[주문내용]:\n#orderHistory.order#[+name+] X+quant+, +price+원\n#\n* '주문취소' - 승인대기중인 주문 취소\n*'그대로' - 예전과 똑같이 주문\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+                "text": "[\"+mobile+\" 님의 최근 주문 내역]\n\n주문상태: +orderHistory.status+\n주문일시: +orderHistory.time.month+월 +orderHistory.time.date+일 +orderHistory.time.hour+:+orderHistory.time.minute+\n도착예정시각: +expectedTime.hour+:+expectedTime.minute+\n배달주소: +address.지번주소+\n총 금액: +totalPrice+원\n<주문내용>:\n#orderHistory.order#[+name+] X+quant+, +price+원\n#\n* '주문취소' - 승인대기중인 주문 취소\n*'그대로' - 예전과 똑같이 주문\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
                 "kind": "Text",
                 "id": "default22_0"
             },
@@ -1550,7 +1536,7 @@ var dialogs = [
         ],
         "output": [
             {
-                "text": "[[+resname+]]\n\n전화번호 : +phone+\n주소: +address+\n [영업시간] \n+startTime+ ~ +endTime+\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
+                "text": "[[+resname+]]\n\n전화번호 : +phone+\n주소: +address+\n<영업시간>\n+startTime+ ~ +endTime+\n\n(처음으로 돌아가려면 '처음', 이전으로 돌아가려면 '이전'을 입력해주세요.)",
                 "kind": "Text"
             }
         ]
@@ -1617,7 +1603,7 @@ var dialogs = [
         ],
         "output": [
             {
-                "text": "주문상태: +orderHistory.status+\n주문일시: +orderHistory.time.month+월 +orderHistory.time.date+일 +orderHistory.time.hour+:+orderHistory.time.minute+\n도착예정시각: +expectedTime.hour+:+expectedTime.minute+\n배달주소: +address.지번주소+\n총 금액: +totalPrice+원\n[주문내용]:\n#orderHistory.order#[+name+] X+quant+, +price+원\n#\n위 주문을 취소하시겠습니까?\"\n\n1. 네\n2. 아니오",
+                "text": "주문상태: +orderHistory.status+\n주문일시: +orderHistory.time.month+월 +orderHistory.time.date+일 +orderHistory.time.hour+:+orderHistory.time.minute+\n도착예정시각: +expectedTime.hour+:+expectedTime.minute+\n배달주소: +address.지번주소+\n총 금액: +totalPrice+원\n&gt;주문내용&lt;:\n#orderHistory.order#[+name+] X+quant+, +price+원\n#\n위 주문을 취소하시겠습니까?\"\n\n1. 네\n2. 아니오",
                 "kind": "Text"
             }
         ],
@@ -1643,7 +1629,7 @@ var dialogs = [
                         "kind": "Text"
                     }
                 ],
-                "task": "orderCancel"
+                "task":"orderCancel"
             },
             {
                 "name": "주문취소중단",
@@ -1759,7 +1745,5 @@ var commonDialogs = [
     }
 ];
 
-
-var _bot = require(require('path').resolve("engine/bot")).getBot('{botId}');
-_bot.setDialogs(dialogs);
-_bot.setCommonDialogs(commonDialogs);
+var fs = require('fs');
+fs.writeFileSync('./t.txt', JSON.stringify(dialogs, null, 4) + '\r\n' + JSON.stringify(commonDialogs, null, 4));

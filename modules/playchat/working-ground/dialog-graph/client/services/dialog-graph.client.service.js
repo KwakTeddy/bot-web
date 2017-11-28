@@ -442,6 +442,8 @@
                     {
                         parsed = match[0].replace(/var dialogs[^\[]*/gi, '').replace(';', '');
 
+                        console.log(parsed);
+
                         startDialog.children = this.userDialogs = JSON.parse(parsed);
                         this.graphData = startDialog;
 
@@ -594,7 +596,8 @@
                     }
                 }
 
-                console.log('나머지 : ', output);
+                if(!template)
+                    console.log('나머지 : ', output);
 
                 return template;
             }

@@ -109,13 +109,13 @@ exports.create = function(req, res)
                         if(files[i].endsWith('.js'))
                         {
                             var fileData = fs.readFileSync(templateDir + '/bot/' + files[i]).toString();
-                            fs.writeFileSync(dir + '/' + files[i], fileData);
+                            fs.writeFileSync(dir + '/' + files[i], fileData.replace(/{botId}/gi, chatbot.id));
                         }
                     }
                 }
                 else
                 {
-                    var botjs = fs.readFileSync(__dirname + '/bot.template');
+                    var botjs = fs.readFileSync(__dirname + '/bot.emplate');
                     var defaultjs = fs.readFileSync(__dirname + '/default.template');
                     var graphjs = fs.readFileSync(__dirname + '/graph.template');
 
