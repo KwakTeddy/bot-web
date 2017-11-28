@@ -4,6 +4,7 @@ var fs = require('fs');
 
 var ChatBot = mongoose.model('Bot');
 var BotAuth = mongoose.model('BotAuth');
+var Template = mongoose.model('Template');
 
 exports.findTotalPage = function(req, res)
 {
@@ -38,7 +39,7 @@ exports.find = function (req, res)
     if(req.query.name)
         query.name = { "$name": req.query.name, "$options": 'i' };
 
-    ChatBot.find(query).sort('-created').populate('user').skip(countPerPage*(page-1)).limit(countPerPage).exec(function (err, bots)
+    ChatBot.find(query).sort('-created').populate('templateId').populate('user').skip(countPerPage*(page-1)).limit(countPerPage).exec(function (err, bots)
     {
         if(err)
         {
@@ -90,35 +91,55 @@ exports.create = function(req, res)
                 return res.status(400).send({ message: err.stack || err });
             }
 
-            var dir = path.resolve('./custom_modules/' + req.body.id);
-            if(!fs.existsSync(dir))
+            Template.populate(chatbot, {path:"templateId"}, function(err, chatbot)
             {
-                fs.mkdirSync(dir);
-            }
-
-            var botjs = fs.readFileSync(__dirname + '/bot.template');
-            var defaultjs = fs.readFileSync(__dirname + '/default.template');
-            var graphjs = fs.readFileSync(__dirname + '/graph.template');
-
-            fs.writeFileSync(dir + '/default.graph.js', graphjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
-            fs.writeFileSync(dir + '/default.js', defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
-            fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
-
-            var botAuth = new BotAuth();
-            botAuth.bot = chatbot._id;
-            botAuth.user = req.user;
-            botAuth.giver = req.user;
-            botAuth.edit = true;
-
-            botAuth.save(function(err)
-            {
-                if(err)
+                var dir = path.resolve('./custom_modules/' + req.body.id);
+                if(!fs.existsSync(dir))
                 {
-                    console.error(err);
-                    return res.status(400).send({ message: err.stack || err });
+                    fs.mkdirSync(dir);
                 }
 
-                res.jsonp(chatbot);
+                if(chatbot.templateId)
+                {
+                    var templateDir = path.resolve('./templates/' + req.body.templateDir);
+
+                    var files = fs.readdirSync(templateDir + '/bot');
+                    for(var i=0; i<files.length; i++)
+                    {
+                        if(files[i].endsWith('.js'))
+                        {
+                            var fileData = fs.readFileSync(templateDir + '/bot/' + files[i]).toString();
+                            fs.writeFileSync(dir + '/' + files[i], fileData);
+                        }
+                    }
+                }
+                else
+                {
+                    var botjs = fs.readFileSync(__dirname + '/bot.template');
+                    var defaultjs = fs.readFileSync(__dirname + '/default.template');
+                    var graphjs = fs.readFileSync(__dirname + '/graph.template');
+
+                    fs.writeFileSync(dir + '/default.graph.js', graphjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
+                    fs.writeFileSync(dir + '/default.js', defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
+                    fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
+                }
+
+                var botAuth = new BotAuth();
+                botAuth.bot = chatbot._id;
+                botAuth.user = req.user;
+                botAuth.giver = req.user;
+                botAuth.edit = true;
+
+                botAuth.save(function(err)
+                {
+                    if(err)
+                    {
+                        console.error(err);
+                        return res.status(400).send({ message: err.stack || err });
+                    }
+
+                    res.jsonp(chatbot);
+                });
             });
         });
     });

@@ -87,24 +87,25 @@ function loadBot(botName, callback) {
 
         function(cb) {
             if(bot && bot.templateId) {
-                var TemplateModel = mongoose.model('Template');
-                TemplateModel.findOne({_id: bot.templateId}).lean().exec(function(err, doc) {
-                    if(doc) {
-                        bot.template = doc;
-                        if(!bot.path) bot.path = 'templates/' + doc.id;
-
-                        if(global._templates[bot.template.id] && global._templates[bot.template.id].loaded != true)
-                            global._templates[bot.template.id] = undefined;
-
-                        var templateDataModel = TemplateDataModule.getTemplateDataModel(doc.dataSchema);
-                        templateDataModel.findOne({_id: bot.templateDataId}).lean().exec(function(err, doc1) {
-                            utils.merge(bot, doc1);
-                            cb(null);
-                        });
-                    } else {
-                        cb(null);
-                    }
-                });
+                // var TemplateModel = mongoose.model('Template');
+                // TemplateModel.findOne({_id: bot.templateId}).lean().exec(function(err, doc) {
+                //     if(doc) {
+                //         bot.template = doc;
+                //         if(!bot.path) bot.path = 'templates/' + doc.id;
+                //
+                //         if(global._templates[bot.template.id] && global._templates[bot.template.id].loaded != true)
+                //             global._templates[bot.template.id] = undefined;
+                //
+                //         var templateDataModel = TemplateDataModule.getTemplateDataModel(doc.dataSchema);
+                //         templateDataModel.findOne({_id: bot.templateDataId}).lean().exec(function(err, doc1) {
+                //             utils.merge(bot, doc1);
+                //             cb(null);
+                //         });
+                //     } else {
+                //         cb(null);
+                //     }
+                // });
+                cb(null);
             } else {
                 cb(null);
             }

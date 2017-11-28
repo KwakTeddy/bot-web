@@ -4,9 +4,10 @@
 
     angular.module('playchat').controller('ChatbotCreateController', ['$scope', '$resource', function ($scope, $resource)
     {
+        var ChatbotTemplateCategoryService = $resource('/api/template-categories');
         var ChatbotTemplatesService = $resource('/api/chatbots/templates');
 
-        $scope.list = [];
+        $scope.list = {};
 
         (function()
         {
@@ -14,8 +15,16 @@
             {
                 ChatbotTemplatesService.query({}, function(result)
                 {
-                    console.log(result);
-                    $scope.list = result;
+                    for(var i=0; i<result.length; i++)
+                    {
+                        if(!$scope.list[result[i].category.name])
+                            $scope.list[result[i].category.name] = [];
+
+                        $scope.list[result[i].category.name].push(result[i]);
+                    }
+                    // $scope.list = result;
+
+                    console.log($scope.list);
 
                     $scope.$parent.loading = false;
                 },

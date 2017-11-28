@@ -27,21 +27,6 @@
                     $scope.template = template;
 
                     angular.element('#templateCreateHtml').html('').append($compile(template.createHtml)($scope));
-
-
-                    // $scope.template = template;
-                    //
-                    // var template = new ChatbotTemplateService(template.dataSchema.basic, { modelName: 'templateData' });
-                    // var result = template.make($scope);
-                    //
-                    // var html = '';
-                    // html += result.name;
-                    // html += result.phone;
-                    // html += result.mobile;
-                    // html += result.address;
-                    // html += result.holiday;
-                    //
-                    // angular.element('#templateJsonEditor').append($compile(html)($scope));
                 },
                 function(err)
                 {
@@ -51,7 +36,7 @@
 
             $scope.save = function()
             {
-                if(!$scope.bot.id.match(/^[a-z]+/))
+                if(!$scope.bot.id.match(/^[a-zA-Z]+/))
                 {
                     return alert('아이디는 영문자 소문자로 시작해야합니다.');
                 }
@@ -111,10 +96,12 @@
                     data.language = 'ko';
                 }
 
-                ChatbotService.save({ id: $scope.template.name + '_' + $cookies.getObject('user').username + '_' + new Date().getTime(), name: data.name, language: data.language, description: data.description, templateId: $scope.template._id }, function(chatbot)
+                data.name = angular.element('input[data-bot-name="true"]').val();
+
+                ChatbotService.save({ id: $scope.template.id + '_' + $cookies.getObject('user').username + '_' + new Date().getTime(), name: data.name, language: data.language, description: data.description, templateId: $scope.template._id, templateDir: $scope.template.id }, function(chatbot)
                 {
                     $cookies.putObject('chatbot', chatbot);
-                    ChatbotTemplateDataService.save({ templateName: $scope.template.name, botId: chatbot.id, data: data }, function(result)
+                    ChatbotTemplateDataService.save({ templateId: $scope.template.id, botId: chatbot.id, data: data }, function(result)
                     {
                         $location.url('/playchat');
                     },

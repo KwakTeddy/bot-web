@@ -118,6 +118,11 @@
     max-width: 100%;
 }
 
+.simulator .answer .output-buttons a
+{
+    display: block;
+}
+
 .simulator .answer em.tail
 {
     border-top: 10px solid #dfdfdf;

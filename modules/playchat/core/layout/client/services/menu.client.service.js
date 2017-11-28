@@ -5,7 +5,7 @@
 
     angular.module('playchat').factory('MenuService', function($cookies, $resource)
     {
-        var TemplateGnbService = $resource('/api/:templateName/gnb', { templateName : '@templateName' });
+        var TemplateGnbService = $resource('/api/:templateId/gnb', { templateId : '@templateId' });
 
         var instance = undefined;
 
@@ -53,12 +53,12 @@
             this.setting = { name: 'Setting', icon: 'setting.png' };
         };
 
-        Menu.prototype.get = function(templateName, callback)
+        Menu.prototype.get = function(templateId, callback)
         {
             var that = this;
-            if(typeof templateName == 'string' && callback)
+            if(typeof templateId == 'string' && callback)
             {
-                TemplateGnbService.get({ templateName : templateName }, function(menu)
+                TemplateGnbService.get({ templateId : templateId }, function(menu)
                 {
                     console.log('템플릿 메뉴 : ', menu);
 

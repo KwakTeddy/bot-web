@@ -75,6 +75,20 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket)
 
             simulatorBody.append(template);
 
+            simulatorBody.find('.output-buttons a').on('click', function(e)
+            {
+                var href = angular.element(this).attr('href');
+                if(href === undefined || href == 'undefined')
+                {
+                    var text = angular.element(this).text();
+
+                    emitMsg(text, true);
+
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            });
+
             var body = angular.element('#simulatorBody').get(0);
             body.scrollTop = body.scrollHeight;
         };

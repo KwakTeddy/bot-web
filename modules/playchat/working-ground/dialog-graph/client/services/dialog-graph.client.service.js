@@ -576,7 +576,7 @@
                 }
                 else
                 {
-                    if(output.kind == 'Action')
+                    if(output.kind == 'Action' || output.callChild || output.call || output.returnCall || output.up || output.repeat || output.return)
                     {
                         for(var key in output)
                         {

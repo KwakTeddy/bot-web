@@ -2,7 +2,7 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat').controller('LayoutController', ['$location', '$scope', '$rootScope', 'EventService', '$state', '$stateParams', '$compile', function ($location, $scope, $rootScope, EventService, $state, $stateParams, $compile)
+angular.module('playchat').controller('LayoutController', ['$location', '$scope', '$rootScope', 'EventService', '$state', '$stateParams', '$compile', '$cookies', function ($location, $scope, $rootScope, EventService, $state, $stateParams, $compile, $cookies)
 {
     $scope.componentsLoaded = {
         'side-menu': false,
@@ -14,7 +14,8 @@ angular.module('playchat').controller('LayoutController', ['$location', '$scope'
 
     EventService.subscribeMe();
 
-    var templateName = $stateParams.templateName || '';
+    var chatbot = $cookies.getObject('chatbot');
+    var templateId = chatbot.templateId.id || '';
     var templatePage = $stateParams.templatePage || '';
 
     //각 컴포넌트가 자신의 로딩작업이 끝나면 호출한다.
@@ -43,9 +44,10 @@ angular.module('playchat').controller('LayoutController', ['$location', '$scope'
         $rootScope.$broadcast('update-topbar-title', { name: name, imgUrl: imgUrl });
     };
 
-    if(templateName && templatePage)
+    if(templateId && templatePage)
     {
-        $scope.page = '/templates/' + templateName + '/client/views/html/' + templatePage + '.html';
+        $scope.page = '/templates/' + templateId + '/client/views/html/' + templatePage + '.html';
+        console.log('여기 안옴?', templateId);
 
         $scope.loaded('working-ground');
     }

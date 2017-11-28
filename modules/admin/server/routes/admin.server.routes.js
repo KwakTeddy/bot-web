@@ -4,6 +4,6 @@ var TemplateAdminController = require('../controllers/template-admin.server.cont
 module.exports = function(app)
 {
     app.all('/api/admin/*', AdminController.core);
-    app.get('/api/admin/template-categories', TemplateAdminController.findTemplateCategories);
+    app.get('/api/template-categories', TemplateAdminController.findTemplateCategories);
     app.post('/api/admin/templates', TemplateAdminController.createTemplate);
 };

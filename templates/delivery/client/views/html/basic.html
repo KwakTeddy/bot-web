@@ -1,0 +1,85 @@
+<style>
+.template-demo-title
+{
+    font-size: 20px;
+    font-weight: 600;
+    padding-left: 30px;
+}
+
+.template-demo-basic
+{
+    width: 70%;
+    margin: 0 auto;
+}
+</style>
+
+<h1 class="template-demo-title">기본정보</h1>
+<div> <!-- 템플릿봇 생성시 구조로 인해 반드시 필요한 div -->
+    <div ng-controller="deliveryBasicController" class="template-demo-basic">
+        <form ng-submit="saveTemplateBot($event);">
+            <div class="form-row">
+                <label class="required">
+                    <span class="form-title">매장명</span>
+                    <input type="text" class="data-input" data-bot-name="true" name="resname" required="true" autofocus="true">
+                </label>
+            </div>
+            <div class="form-row">
+                <label class="required">
+                    <span class="form-title">매장 전화번호</span>
+                    <input type="text" class="data-input" name="phone" required="true">
+                </label>
+            </div>
+            <div class="form-row">
+                <label>
+                    <span class="form-title">핸드폰 번호</span>
+                    <input type="text" class="data-input" name="mobile">
+                </label>
+            </div>
+            <div class="form-row">
+                <label>
+                    <span class="form-title">주소</span>
+                    <input type="text" class="data-input" name="address">
+                </label>
+            </div>
+            <div class="form-row">
+                <label>
+                    <span class="form-title">최소배달금액</span>
+                    <input type="number" class="data-input" name="minPrice">
+                </label>
+            </div>
+            <div class="form-row">
+                <label>
+                    <span class="form-title">시작시간</span>
+                    <input type="time" class="data-input" name="startTime">
+                </label>
+            </div>
+            <div class="form-row">
+                <label>
+                    <span class="form-title">종료시간</span>
+                    <input type="time" class="data-input" name="endTime">
+                </label>
+            </div>
+            <div class="form-row">
+                <label>
+                    <span class="form-title">언어</span>
+                    <select class="jumbo-select" required="true" name="language">
+                        <option value="ko" selected="selected">Korean</option>
+                        <option value="en">English</option>
+                        <option value="zh">Chinese</option>
+                        <option value="jp">Japanese</option>
+                    </select>
+                </label>
+            </div>
+            <div class="form-row">
+                <label class="required">
+                    <span class="form-title">설명</span>
+                    <textarea class="data-input" name="description"></textarea>
+                </label>
+            </div>
+            <div class="tab-footer" style="border-top: 0;">
+                <button class="blue-button">Save</button>
+                <button class="default-button" ng-click="cancel();">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

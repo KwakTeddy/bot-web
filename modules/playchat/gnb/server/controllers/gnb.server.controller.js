@@ -3,7 +3,7 @@ var fs = require('fs');
 
 module.exports.getTemplateGnb = function(req, res)
 {
-    fs.readFile(path.resolve('./templates/' + req.params.templateName + '/playchat-menu-schema.json'), function(err, data)
+    fs.readFile(path.resolve('./templates/' + req.params.templateId + '/playchat-menu-schema.json'), function(err, data)
     {
         if(err)
         {

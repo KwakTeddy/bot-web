@@ -20,7 +20,7 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
         {
             if(result.templateId)
             {
-                MenuService.get(result.templateId.name, function(menus)
+                MenuService.get(result.templateId.id, function(menus)
                 {
                     $scope.menus = menus;
                 });

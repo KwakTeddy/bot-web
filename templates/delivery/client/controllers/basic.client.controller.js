@@ -1,42 +1,31 @@
 'use strict';
 
-angular.module('template').controller('demoBasicController', ['$scope', '$resource', '$cookies', function ($scope, $resource, $cookies)
+angular.module('template').controller('deliveryBasicController', ['$scope', '$resource', '$cookies', '$stateParams', function ($scope, $resource, $cookies, $stateParams)
 {
     var ChatbotService = $resource('/api/chatbots/:botId', { botId: '@botId' }, { update: { method: 'PUT' } });
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
     var ChatbotTemplateDataService = $resource('/api/:botId/template-data', { botId: '@botId' }, { update: { method: 'PUT' } });
 
     var chatbot = $cookies.getObject('chatbot');
-
     (function()
     {
-        ChatbotTemplateService.get({ templateId: chatbot.templateId.id }, function(result)
+        ChatbotTemplateService.get({ templateId: chatbot.templateId._id }, function(result)
         {
+            console.log('여기 나온다 : ', result);
             $scope.template = result;
             ChatbotTemplateDataService.get({ botId: chatbot.id, templateId: result.id }, function(result)
             {
+                console.log('데이터 : ', result);
                 result = JSON.parse(JSON.stringify(result));
 
                 $scope.templateData = result;
 
-                console.log(result);
-
                 for(var key in result)
                 {
-                    if(key == 'holiday')
-                    {
-                        for(var holidayKey in result[key])
-                        {
-                            angular.element('input[name="holiday.' + holidayKey + '.start"]').val(result[key][holidayKey].start);
-                            angular.element('input[name="holiday.' + holidayKey + '.end"]').val(result[key][holidayKey].end);
-                            angular.element('input[name="holiday.' + holidayKey + '.close"]').get(0).checked = result[key][holidayKey].close;
-                        }
-                    }
-                    else
-                    {
-                        angular.element('*[name="' + key + '"]').val(result[key]);
-                    }
+                    angular.element('*[name="' + key + '"]').val(result[key]);
                 }
+
+                console.log(result);
             },
             function(err)
             {
@@ -96,7 +85,7 @@ angular.module('template').controller('demoBasicController', ['$scope', '$resour
 
         console.log(data);
 
-        ChatbotService.update({ botId: chatbot._id, name: data.name, language: data.language, description: data.description }, function()
+        ChatbotService.update({ botId: chatbot._id, name: data.resname, language: data.language, description: data.description }, function()
         {
             ChatbotTemplateDataService.update({ botId: chatbot.id, templateId: $scope.template.id, _id: $scope.templateData._id, data: data }, function(result)
             {
