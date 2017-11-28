@@ -442,8 +442,6 @@
                     {
                         parsed = match[0].replace(/var dialogs[^\[]*/gi, '').replace(';', '');
 
-                        console.log(parsed);
-
                         startDialog.children = this.userDialogs = JSON.parse(parsed);
                         this.graphData = startDialog;
 

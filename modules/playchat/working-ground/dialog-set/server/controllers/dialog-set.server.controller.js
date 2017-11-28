@@ -183,7 +183,7 @@ exports.update = function(req, res)
                         {
                             if(err)
                             {
-                                logger.systemError(err);
+                                logger.systemError(err.stack || err);
                             }
                             // dialogsetModule.convertDialogset1(dialogset, null, function(result)
                             // {
@@ -347,7 +347,7 @@ exports.updateUsable = function(req, res)
     {
         if(err)
         {
-            logger.systemError(err);
+            logger.systemError(err.stack || err);
             return res.status(400).send({ message: err.stack || err });
         }
 
@@ -357,7 +357,7 @@ exports.updateUsable = function(req, res)
         {
             if(err)
             {
-                logger.systemError(err);
+                logger.systemError(err.stack || err);
                 return res.status(400).send({ message: err.stack || err });
             }
 

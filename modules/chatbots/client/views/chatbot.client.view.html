@@ -29,17 +29,6 @@
             </ul>
         </div>
     </div>
-    <div class="tablePaging" style="padding: 40px 0;">
-        <div class="tablePagingC">
-            <a href="/chatbots?page={{ pageOptions.prev }}" class="direction" ng-click="toPage(pageOptions.prev);">
-                <img src="/modules/chatbots/client/imgs/btn_prev.png" alt="이전페이지이동">
-            </a>
-            <a ng-repeat="page in pageOptions.pages" href="/chatbots?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
-            <a href="/chatbots?page={{ pageOptions.next }}" class="direction" ng-click="toPage(pageOptions.next);">
-                <img src="/modules/chatbots/client/imgs/btn_next.png" alt="다음페이지이동">
-            </a>
-        </div>
-    </div>
 
     <ul class="chatbot-menu" style="display: none;">
         <li class="chatbot-menu-item" ng-click="executeMenu('Rename');"><a>Rename</a></li>

@@ -1733,7 +1733,7 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
 
                             if (err || !docs || docs.length <= 0) {
                                 if(err) {
-                                    logger.systemError(err);
+                                    // logger.systemError(err.stack || err);
                                 }
                                 //callback(text, inDoc);
                             } else {

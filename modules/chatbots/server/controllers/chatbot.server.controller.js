@@ -19,7 +19,7 @@ exports.findTotalPage = function(req, res)
     {
         if(err)
         {
-            logger.systemError(err);
+            logger.systemError(err.stack || err);
             return res.status(400).send({ message: err.stack || err });
         }
         else
@@ -115,7 +115,7 @@ exports.create = function(req, res)
                 }
                 else
                 {
-                    var botjs = fs.readFileSync(__dirname + '/bot.emplate');
+                    var botjs = fs.readFileSync(__dirname + '/bot.template');
                     var defaultjs = fs.readFileSync(__dirname + '/default.template');
                     var graphjs = fs.readFileSync(__dirname + '/graph.template');
 

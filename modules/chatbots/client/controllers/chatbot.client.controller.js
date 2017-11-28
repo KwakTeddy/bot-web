@@ -14,6 +14,9 @@
             return;
         }
 
+        var page = 1;
+        var countPerPage = $location.search().countPerPage || 50;
+
         var chatbot = $cookies.getObject('chatbot');
 
         $scope.selectedBot = undefined;
@@ -25,16 +28,13 @@
             $scope.closeMenu();
         });
 
-        $scope.getList = function(page, name)
+        $scope.getList = function(name)
         {
-            var page = page || $location.search().page || 1;
-            var countPerPage = $location.search().countPerPage || 12;
-
-            ChatBotPageService.get({ countPerPage: countPerPage, name : name }, function(result)
-            {
-                var totalPage = result.totalPage;
-                $scope.pageOptions = PagingService(page, totalPage);
-            });
+            // ChatBotPageService.get({ countPerPage: countPerPage, name : name }, function(result)
+            // {
+            //     var totalPage = result.totalPage;
+            //     $scope.pageOptions = PagingService(page, totalPage);
+            // });
 
             ChatBotService.query({ page: page, countPerPage: countPerPage, name : name }, function(list)
             {
@@ -42,6 +42,21 @@
                 $scope.$parent.loading = false;
             });
         };
+
+        angular.element('#main > section').on('scroll', function(e)
+        {
+            if(e.currentTarget.scrollTop + e.currentTarget.offsetHeight >= e.currentTarget.scrollHeight)
+            {
+                page++;
+                ChatBotService.query({ page: page, countPerPage: countPerPage, name : name }, function(list)
+                {
+                    for(var i=0; i<list.length; i++)
+                    {
+                        $scope.list.push(list[i]);
+                    }
+                });
+            }
+        });
 
         $scope.selectChatbot = function(chatbot)
         {
