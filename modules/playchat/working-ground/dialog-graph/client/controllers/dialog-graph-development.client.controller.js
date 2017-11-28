@@ -162,8 +162,11 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
         {
             $scope.initialize();
 
+            angular.element('.graph-body').append('<div class="dialog-graph-error"><h1>Loading...</h1></div>');
             DialogGraphsService.get({ botId: chatbot.id, fileName: fileName }, function(result)
             {
+                angular.element('.graph-body .dialog-graph-error').remove();
+
                 var data = result.data;
                 if(data)
                 {
