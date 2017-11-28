@@ -38,9 +38,9 @@ module.exports = {
     port: 6379
   },
   loadBalance: {
-    use: process.env.LB_USE || false,
-    isMaster: process.env.LB_MASTER || false,
-    isSlave: process.env.LB_SLAVE || false
+    use: process.env.LB_USE == "true" || false,
+    isMaster: process.env.LB_MASTER == "true"|| false,
+    isSlave: process.env.LB_SLAVE == "true" || false
   },
   host: process.env.HOST || 'http://localhost',
   log: {
