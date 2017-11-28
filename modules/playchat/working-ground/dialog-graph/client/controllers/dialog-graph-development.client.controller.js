@@ -7,9 +7,6 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
     var chatbot = $cookies.getObject('chatbot');
 
-    var fileName = $location.search().fileName || 'default.graph.js';
-    $scope.currentTabName = fileName;
-
     $scope.fromFailedDialog = false;
     $scope.failedDialogSaved = false;
 
@@ -114,6 +111,16 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             DialogGraphsService.query({ botId: chatbot.id }, function(fileList)
             {
                 $scope.fileList = fileList;
+
+                for(var i=0; i<fileList.length; i++)
+                {
+                    if(fileList[i].endsWith('graph.js'))
+                    {
+                        $scope.currentTabName = fileList[i];
+                        $scope.loadFile($scope.currentTabName);
+                        break;
+                    }
+                }
             },
             function(err)
             {
@@ -387,5 +394,4 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
     $scope.checkFailedDialog();
     $scope.initialize();
     $scope.getFileList();
-    $scope.loadFile(fileName);
 }]);

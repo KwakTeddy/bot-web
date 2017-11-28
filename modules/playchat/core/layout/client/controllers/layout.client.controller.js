@@ -15,7 +15,7 @@ angular.module('playchat').controller('LayoutController', ['$location', '$scope'
     EventService.subscribeMe();
 
     var chatbot = $cookies.getObject('chatbot');
-    var templateId = chatbot.templateId.id || '';
+    var templateId = chatbot.templateId && chatbot.templateId.id || '';
     var templatePage = $stateParams.templatePage || '';
 
     //각 컴포넌트가 자신의 로딩작업이 끝나면 호출한다.
@@ -47,8 +47,6 @@ angular.module('playchat').controller('LayoutController', ['$location', '$scope'
     if(templateId && templatePage)
     {
         $scope.page = '/templates/' + templateId + '/client/views/html/' + templatePage + '.html';
-        console.log('여기 안옴?', templateId);
-
         $scope.loaded('working-ground');
     }
     else

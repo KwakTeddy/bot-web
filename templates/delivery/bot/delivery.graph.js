@@ -1,8 +1,8 @@
-var path = require('path')
-var address = require(path.resolve('./engine/bot/action/common/address'));
-var type = require(path.resolve('./engine/bot/action/common/type'));
-var shop = require(path.resolve('./engine/bot/common/shop'));
-var start = require('./start');
+var path = require("path")
+var address = require(path.resolve("./engine/bot/action/common/address"));
+var type = require(path.resolve("./engine/bot/action/common/type"));
+var shop = require(path.resolve("./engine/bot/common/shop"));
+var start = require("./start");
 
 
 
@@ -135,12 +135,12 @@ var dialogs = [
                         "task": "makeOrderList"
                     },
                     {
-                        input: {regexp: /^<$/} ,
-                        output: {repeat: 1, options: {page: 'pre'}}
+                        "input": {"regexp": "/^<$/"} ,
+                        "output": {"repeat": 1, "options": {"page": "pre"}}
                     },
                     {
-                        input: {regexp: /^>$/} ,
-                        output: {repeat: 1, options: {page: 'next'}}
+                        "input": {"regexp": "/^>$/"} ,
+                        "output": {"repeat": 1, "options": {"page": "next"}}
                     },
                     {
                         "name": "메뉴재선택",
@@ -232,11 +232,11 @@ var dialogs = [
                             {
                                 "kind": "Action",
                                 "if": "!context.user.mobile",
-                                "call": "번호등록",
+                                "call": "번호등록"
                             },
                             {
                                 "kind": "Action",
-                                "call": "주문조건만족",
+                                "call": "주문조건만족"
                             }
                         ],
                         "task": "checkCondition"
@@ -1579,21 +1579,20 @@ var dialogs = [
                 "if": "false"
             }
         ],
-        output: [
-            {if: 'context.botUser.isOwner && context.dialog.reserves != undefined', output: '사장님으로 접속하였습니다. 미처리 예약내역입니다.\n#reserves#+index+. +mobile+,+address+[+status+]\n#\n처리할 예약번호를 말씀해주세요.',
-                children: [
+        "output": [
+            { "if": "context.botUser.isOwner && context.dialog.reserves != undefined", "output": "사장님으로 접속하였습니다. 미처리 예약내역입니다.\n#reserves#+index+. +mobile+,+address+[+status+]\n#\n처리할 예약번호를 말씀해주세요.",
+                "children": [
                     {
-                        id: 'restaurant30',
-                        filename: 'restaurant',
-                        input: {types: [{name: 'reserve', listName: 'reserves', typeCheck: 'listTypeCheck'}]},
-                        // task:       {action: function(task, context, callback) { task.result = {smartReply: ['예약확정', '예약취소']}; callback(task, context);}},
-                        task: "makeReserve",
-                        output: '상세 예약내역입니다.\n상태: +reserve.status+\n예약자명: +reserve.mobile+\n일시: +reserveTime.month+.+reserveTime.date+ +reserveTime.hour+:+reserveTime.minute+ \n#reserve.order#+name+, +quant+, +price+\n#\n\n1.확정\n2.취소',
-                        children: [
+                        "id": "restaurant30",
+                        "filename": "restaurant",
+                        "input": {"types": [{"name": "reserve", "listName": "reserves", "typeCheck": "listTypeCheck"}]},
+                        "task": "makeReserve",
+                        "output": "상세 예약내역입니다.\n상태: +reserve.status+\n예약자명: +reserve.mobile+\n일시: +reserveTime.month+.+reserveTime.date+ +reserveTime.hour+:+reserveTime.minute+ \n#reserve.order#+name+, +quant+, +price+\n#\n\n1.확정\n2.취소",
+                        "children": [
                             {
-                                id: 'restaurant26',
-                                filename: 'restaurant',
-                                input: [
+                                "id": "restaurant26",
+                                "filename": "restaurant",
+                                "input": [
                                     {
                                         "text": "1"
                                     },
@@ -1601,13 +1600,13 @@ var dialogs = [
                                         "text": "확정"
                                     }
                                 ],
-                                task:           'reserveOwnerConfirm',
-                                output: {call: '예약내역', options: {prefix: '예약이 확정 되었습니다. 고객님에게 문자가 발송되었습니다.\n\n'}}
+                                "task": "reserveOwnerConfirm",
+                                "output": {"call": "예약내역", "options": {"prefix": "예약이 확정 되었습니다. 고객님에게 문자가 발송되었습니다.\n\n"}}
                             },
                             {
-                                id: 'restaurant28',
-                                filename: 'restaurant',
-                                input: [
+                                "id": "restaurant28",
+                                "filename": "restaurant",
+                                "input": [
                                     {
                                         "text": "2"
                                     },
@@ -1615,59 +1614,61 @@ var dialogs = [
                                         "text": "취소"
                                     }
                                 ],
-                                output: '취소 이유를 입력해주세요.',
-                                children: [
+                                "output": "취소 이유를 입력해주세요.",
+                                "children": [
                                     {
-                                        id: 'restaurant27',
-                                        filename: 'restaurant',
-                                        input: {if: 'true'},
-                                        task:               'reserveOwnerCancel',
-                                        output: {call: '예약내역', options: {prefix: '예약이 취소 되었습니다.\n\n'}}
+                                        "id": "restaurant27",
+                                        "filename": "restaurant",
+                                        "input": {"if": "true"},
+                                        "task": "reserveOwnerCancel",
+                                        "output": {"call": "예약내역", "options": {"prefix": "예약이 취소 되었습니다.\n\n"}}
                                     }
                                 ]
                             },
                             {
-                                id: 'restaurant29',
-                                filename: 'restaurant',
-                                input: {if: 'true'},
-                                output: {repeat: 1, options: {output: '"확정" 또는 "취소"라고 말씀해주세요.'}}
+                                "id": "restaurant29",
+                                "filename": "restaurant",
+                                "input": {"if": "true"},
+                                "output": {"repeat": 1, "options": {"output": "'확정' 또는 '취소'라고 말씀해주세요."}}
                             }
                         ]
                     },
                     {
-                        id: 'restaurant31',
-                        filename: 'restaurant',
-                        input: {if: 'true'},
-                        output: {repeat: 1, options: {prefix: '목록에서 선택해주세요.\n'}}
+                        "id": "restaurant31",
+                        "filename": "restaurant",
+                        "input": {"if": "true"},
+                        "output": {"repeat": 1, "options": {"prefix": "목록에서 선택해주세요.\n"}}
                     }
                 ]},
-            {if: 'context.botUser.isOwner && context.dialog.reserves == undefined', output: '미처리 예약내역이 없습니다.'},
-            {if: 'context.dialog.reserves != undefined', output: '고객님의 예약 내역입니다.\n#reserves#+index+. +dateStr+ +time+ +numOfPerson+명 [+status+]\n#\n예약을 취소하시려면, 취소할 번호를 말씀해주세요.',
-                children: [
+            {"if": "context.botUser.isOwner && context.dialog.reserves == undefined", "output": "미처리 예약내역이 없습니다."},
+            {"if": "context.dialog.reserves != undefined", "output": "고객님의 예약 내역입니다.\n#reserves#+index+. +dateStr+ +time+ +numOfPerson+명 [+status+]\n#\n예약을 취소하시려면, 취소할 번호를 말씀해주세요.",
+                "children": [
                     {
-                        id: 'restaurant32',
-                        filename: 'restaurant',
-                        input: {types: [{name: 'reserve', listName: 'reserves', typeCheck: 'listTypeCheck'}]},
-                        task:       'reserveCancel',
-                        output: '예약이 취소되었습니다.'
+                        "id": "restaurant32",
+                        "filename": "restaurant",
+                        "input": {"types": [{"name": "reserve", "listName": "reserves", "typeCheck": "listTypeCheck"}]},
+                        "task": "reserveCancel",
+                        "output": "예약이 취소되었습니다."
                     },
                     {
-                        id: 'restaurant33',
-                        filename: 'restaurant',
-                        input: {if: 'true'},
-                        output: {repeat: 1, options: {prefix: '목록에서 선택해주세요.\n'}}
+                        "id": "restaurant33",
+                        "filename": "restaurant",
+                        "input": {"if": "true"},
+                        "output": {"repeat": 1, "options": {"prefix": "목록에서 선택해주세요.\n"}}
                     }
                 ]},
-            {if: 'context.dialog.reserve != undefined', output: '고객님의 예약 내역입니다.\n상태: +reserve.status+\n일시: +reserve.dateStr+ +reserve.time+\n인원: +reserve.numOfPerson+명\n예약자명: +reserve.name+\n연락처: +reserve.mobile+\n\n예약을 취소하시려면 "취소"라고 말씀해주세요.',
-                children: [
+            {"if": "context.dialog.reserve != undefined", "output": "고객님의 예약 내역입니다.\n상태: +reserve.status+\n일시: +reserve.dateStr+ +reserve.time+\n인원: +reserve.numOfPerson+명\n예약자명: +reserve.name+\n연락처: +reserve.mobile+\n\n예약을 취소하시려면 '취소'라고 말씀해주세요.",
+                "children": [
                     {
-                        id: 'restaurant34',
-                        filename: 'restaurant',
-                        input: '취소',
-                        task:       'reserveCancel',
-                        output: '예약이 취소되었습니다.'
+                        "id": "restaurant34",
+                        "filename": "restaurant",
+                        "input": "취소",
+                        "task": "reserveCancel",
+                        "output": "예약이 취소되었습니다."
                     }
-                ]}]
+                ]
+            }
+        ]
     }
 ];
 
@@ -1733,6 +1734,6 @@ var commonDialogs = [
 ];
 
 
-var _bot = require(require('path').resolve("./engine/bot")).getTemplateBot('delivery');
+var _bot = require(require("path").resolve("./engine/bot")).getTemplateBot("delivery");
 _bot.setDialogs(dialogs);
 _bot.setCommonDialogs(commonDialogs);

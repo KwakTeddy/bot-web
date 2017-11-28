@@ -75,7 +75,7 @@
                     alert(err);
                 });
             }
-            else if(typeof templateName == 'function')
+            else if(typeof templateId == 'function')
             {
                 var menus = [];
                 menus.push(this.dashboard);
@@ -87,7 +87,7 @@
                 menus.push(this.analysis);
                 menus.push(this.setting);
 
-                templateName(menus);
+                templateId(menus);
             }
         };
 

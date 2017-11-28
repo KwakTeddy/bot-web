@@ -565,30 +565,38 @@
             }
             else
             {
-                if(output.options)
-                {
-                    if(typeof output.options.output != 'string')
-                    {
-                        console.log('텍스트가 아닙니다 : ', output, typeof output.options.output);
-                    }
+                var template = '';
 
-                    return '<div><span>' + output.options.output + '</span></div>';
-                }
-                else
+                if(output.kind == 'Action' || output.callChild || output.call || output.returnCall || output.up || output.repeat || output.return)
                 {
-                    if(output.kind == 'Action' || output.callChild || output.call || output.returnCall || output.up || output.repeat || output.return)
+                    for(var key in output)
                     {
-                        for(var key in output)
+                        if(key != 'kind' && key != 'options')
                         {
-                            if(key != 'kind')
-                            {
-                                return '<div><span>[' + key + '] ' + output[key] + '</span></div>';
-                            }
+                            template = '<div><span>[' + key + '] ' + output[key] + '</span></div>';
                         }
                     }
                 }
 
+                if(output.options)
+                {
+                    if(typeof output.options == 'object')
+                    {
+                        template += '<div><span>' + JSON.stringify(output.options) + '</span></div>';
+                    }
+                    else if(typeof output.options.output == 'string')
+                    {
+                        template += '<div><span>' + output.options.output + '</span></div>';
+                    }
+                    else if(typeof output.options.output != 'string')
+                    {
+                        console.log('텍스트가 아닙니다 : ', output, typeof output.options.output);
+                    }
+                }
+
                 console.log('나머지 : ', output);
+
+                return template;
             }
         };
 
@@ -746,8 +754,23 @@
             });
         };
 
+        //아이디가 없으면 생성하게끔 하려고 임시로 넣음.
+        var tempIdCount = new Date().getTime();
         DialogGraph.prototype.drawDialog = function(parent, dialog)
         {
+            if(!dialog.id)
+            {
+                dialog.id = 'default' + tempIdCount;
+            }
+
+            if(!dialog.name)
+            {
+                console.log(dialog);
+                dialog.name = '생성된 이름 ' + tempIdCount;
+            }
+
+            tempIdCount++;
+
             var prefix = this.fileName.split('.')[0];
             this.idList[dialog.id.replace(prefix, '')] = true;
             var t = this.template.replace(/{id}/gi, dialog.id).replace('{name}', dialog.name);
@@ -756,11 +779,19 @@
             var outputTemplate = '';
             var buttonTemplate = '';
 
-            //or
-            for(var i=0; i<dialog.input.length; i++)
+            if(!dialog.input.length)
             {
-                var input = dialog.input[i];
-                inputTemplate += '<div>' + makeInputTemplate(input) + '</div>';
+                // 예전 그래프에 input이 리스트가 아닌것도 있었다.
+                inputTemplate = '<div>' + makeInputTemplate(dialog.input) + '</div>';
+            }
+            else
+            {
+                //or
+                for(var i=0; i<dialog.input.length; i++)
+                {
+                    var input = dialog.input[i];
+                    inputTemplate += '<div>' + makeInputTemplate(input) + '</div>';
+                }
             }
 
             if(typeof dialog.output == 'object')
