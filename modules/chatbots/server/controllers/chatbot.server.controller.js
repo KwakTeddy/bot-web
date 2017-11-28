@@ -115,7 +115,7 @@ exports.create = function(req, res)
                 }
                 else
                 {
-                    var botjs = fs.readFileSync(__dirname + '/bot.emplate');
+                    var botjs = fs.readFileSync(__dirname + '/bot.template');
                     var defaultjs = fs.readFileSync(__dirname + '/default.template');
                     var graphjs = fs.readFileSync(__dirname + '/graph.template');
 

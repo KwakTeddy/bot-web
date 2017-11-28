@@ -28,16 +28,19 @@
                 <li class="sub2">{{ chatbot.description }}</li>
             </ul>
         </div>
-    </div>
-    <div class="tablePaging" style="padding: 40px 0;">
-        <div class="tablePagingC">
-            <a href="/chatbots?page={{ pageOptions.prev }}" class="direction" ng-click="toPage(pageOptions.prev);">
-                <img src="/modules/chatbots/client/imgs/btn_prev.png" alt="이전페이지이동">
-            </a>
-            <a ng-repeat="page in pageOptions.pages" href="/chatbots?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
-            <a href="/chatbots?page={{ pageOptions.next }}" class="direction" ng-click="toPage(pageOptions.next);">
-                <img src="/modules/chatbots/client/imgs/btn_next.png" alt="다음페이지이동">
-            </a>
+        <div class="bot_unselect" ng-repeat="chatbot in list" ng-click="selectBot(chatbot);">
+            <ul class="hei50">
+                <li class="sub1"><img src="/modules/chatbots/client/imgs/user2.png"></li>
+                <li class="sub3" data-id="{{ chatbot.id }}" ng-keydown="chatbotNameKeyDown($event);" ng-blur="chatbotNameBlur($event);" ng-click="chatbotNameClick($event);">{{ chatbot.name }}</li>
+                <li>
+                    <div class="flR mt10">
+                        <a href="#" class="chatbot-menu-button" ng-click="openMenu($event, chatbot);"></a>
+                    </div>
+                </li>
+            </ul>
+            <ul>
+                <li class="sub2">{{ chatbot.description }}</li>
+            </ul>
         </div>
     </div>
 
