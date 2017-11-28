@@ -164,7 +164,8 @@ function loadBot(botName, callback) {
         },
 
         function(cb) {
-            if(bot && bot.template && global._templates[bot.template.id] && global._templates[bot.template.id].loaded == true) {
+            if(bot != undefined && bot.template != undefined && global._templates[bot.template.id] != undefined &&
+              global._templates[bot.template.id].loaded == true) {
                 cb(null);
             } else {
                 if(bot && bot.path) botDir = path.resolve(bot.path);
