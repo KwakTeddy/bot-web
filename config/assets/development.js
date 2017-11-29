@@ -13,7 +13,6 @@ module.exports = {
             'modules/playchat/gnb/client/css/gnb.css',
             'modules/playchat/top-bar/client/css/top-bar.css',
             'modules/playchat/simulator/client/css/simulator.css',
-            'modules/playchat/simulator/client/css/simulator-responsive.css',
             'modules/playchat/log-analysis/client/css/log-analysis.css',
             'modules/playchat/working-ground/common/client/css/working-ground-common.css',
             'modules/playchat/working-ground/!(common)/client/css/*.css',
