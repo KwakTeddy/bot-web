@@ -17,8 +17,8 @@
             <li><a href="#">Store</a></li>
             <li><a href="#">Shared</a></li>
         </ul>
-        <div class="btn02 flR" ng-click="modal.mgmtModal.open();" id="openNewModal">
-            <a href="#" class="">Add New</a>
+        <div class="btn02 flR" id="openNewModal">
+            <a href="/playchat/management/intent/add" class="">Add New</a>
         </div>
     </div>
     <div class="downSide">
@@ -42,11 +42,11 @@
                     <td colspan="4">empty</td>
                 </tr>
                 <tr ng-repeat="item in intents">
-                    <td><a href="#" ng-click="modify(item);">{{ item.name }}</a></td>
+                    <td><a href="/playchat/management/intent/add?_id={{item._id}}">{{ item.name }}</a></td>
                     <td>{{ item.user.displayName }}</td>
                     <td>
                         <a href="#" class="flR" ng-click="delete(item);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>
-                        <a href="#" class="flR mr5" ng-click="modify(item);"><img src="modules/playchat/working-ground/common/client/imgs/modify.png" class="modify-img"></a>
+                        <a href="/playchat/management/intent/add?_id={{item._id}}" class="flR mr5"><img src="modules/playchat/working-ground/common/client/imgs/modify.png" class="modify-img"></a>
                     </td>
                     <!--<td>-->
                     <!--<div class="slide on">-->

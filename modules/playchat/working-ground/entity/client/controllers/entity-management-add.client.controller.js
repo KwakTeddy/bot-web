@@ -76,7 +76,7 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
                 setTimeout(function()
                 {
                     angular.element(e.currentTarget).parent().parent().find('input:last').focus();
-                }, 300);
+                }, 100);
 
                 e.preventDefault();
                 e.stopPropagation();

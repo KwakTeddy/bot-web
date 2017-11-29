@@ -68,6 +68,22 @@ exports.find = function(req, res)
     });
 };
 
+exports.findOne = function(req, res)
+{
+    Intent.findOne({ _id: req.params.intentId }).exec(function(err, item)
+    {
+        if (err)
+        {
+            logger.systemError(err.stack || err);
+            return res.status(400).send({ message: err.stack || err });
+        }
+        else
+        {
+            res.jsonp(item);
+        }
+    });
+};
+
 exports.findIntentContent = function(req, res)
 {
     IntentContent.find({ botId: req.params.botId, intentId: req.params.intentId, user: req.user._id }).exec(function(err, items)
