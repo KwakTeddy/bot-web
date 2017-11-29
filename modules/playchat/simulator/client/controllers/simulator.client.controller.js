@@ -75,7 +75,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket)
 
             simulatorBody.append(template);
 
-            simulatorBody.find('.output-buttons a').on('click', function(e)
+            simulatorBody.find('.output-buttons a').off('click').on('click', function(e)
             {
                 var href = angular.element(this).attr('href');
                 if(href === undefined || href == 'undefined')

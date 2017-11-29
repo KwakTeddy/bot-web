@@ -15,8 +15,7 @@ module.exports = {
             'modules/playchat/simulator/client/css/simulator.css',
             'modules/playchat/log-analysis/client/css/log-analysis.css',
             'modules/playchat/working-ground/common/client/css/working-ground-common.css',
-            'modules/playchat/working-ground/!(common)/client/css/*.css',
-
+            'modules/playchat/working-ground/!(common)/client/css/*.css'
         ],
         less: [
         ],

@@ -1,6 +1,7 @@
 'use strict';
 
 var authentication = require('../controllers/authentication.server.controller.js');
+var UserController = require('../controllers/users.server.controller.js');
 
 module.exports = function(app)
 {
@@ -9,6 +10,7 @@ module.exports = function(app)
     app.post('/api/auth/signup', authentication.signup);
     app.post('/api/auth/forgot', authentication.forgot);
     app.get('/api/auth/emailconfirm/:token', authentication.validateEmailConfirmToken);
+    app.post('/api/users/language', UserController.saveLanguage);
 
 };
 

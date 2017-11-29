@@ -1965,6 +1965,11 @@ function dialogTypeCheck(text, format, inDoc, context, callback) {
                                         }
                                     }
 
+                                    // intent 매치의 경우 위에서 bExist가 모두 true로 나와서 아래 if문이 실행 안됨. 따라서 matchRate가 계산이 안되는 문제가 있었음.
+                                    //일단 임시로 intent매치의 경우 bExist를 false로 해서 matchRate를 계산한다
+                                    if(format.mongo.model == 'intentcontent')
+                                        bExist = false;
+
                                     if (!bExist &&
                                         ((nlps.length <= 2 && (matchCount == matchTotal ||
                                                                (matchCount / nlpMatchLength >= format.matchRate || matchCount1 >= format.matchCount))) ||
