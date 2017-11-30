@@ -45,9 +45,9 @@
 }
 .fbbtn{
     background: #3b589d url(../imgs/facebook.png) no-repeat 14px 8px;
-    padding:10px 0px;
+    padding:10px;
     border-radius: 6px;
-    width: 230px;
+    /*width: 230px;*/
     margin: 10px auto;
 }
 .fbbtn a{
@@ -58,9 +58,9 @@
 }
 .gbtn{
     background: #d84d32 url(../imgs/google.png) no-repeat 16px 8px;
-    padding:10px 0px;
+    padding:10px;
     border-radius: 6px;
-    width: 230px;
+    /*width: 230px;*/
     margin: 10px auto;
 }
 .gbtn a{
@@ -71,9 +71,9 @@
 }
 .kbtn{
     background: #ffeb00 url(../imgs/kakao.png) no-repeat 16px 8px;
-    padding:10px 0px;
+    padding:10px;
     border-radius: 6px;
-    width: 230px;
+    /*width: 230px;*/
     margin: 10px auto;
 }
 .kbtn a{

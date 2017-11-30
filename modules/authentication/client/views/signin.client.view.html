@@ -1,39 +1,39 @@
 <div class="signin-background">
 
     <div class="signin-title">
-        <span class="p1">Welcome to Playchat!</span>
-        <p class="p2">Please sign in with your account.</p>
+        <span class="p1">{{ lan('Welcome to Playchat!') }}</span>
+        <p class="p2" style="margin-top: 15px;">{{ lan('Please sign in with your account.') }}</p>
     </div>
 
     <div class="signin-body">
         <div class="social">
-            <p class="mb25">Sign in with your social network account.</p>
+            <p class="mb25">{{ lan('Sign in with your social network account.') }}</p>
             <div class="fbbtn">
-                <a href="#">Sign in with Facebook</a>
+                <a href="#">{{ lan('Sign in with Facebook') }}</a>
             </div>
             <div class="gbtn">
-                <a href="#">Sign in with Google</a>
+                <a href="#">{{ lan('Sign in with Google') }}</a>
             </div>
             <div class="kbtn">
-                <a href="#">Sign in with Kakao</a>
+                <a href="#">{{ lan('Sign in with Kakao') }}</a>
             </div>
         </div>
         <div class="email">
             <form class="login" ng-submit="signin();">
-                <p>Email ID</p>
+                <p>{{ lan('Email ID') }}</p>
                 <input type="text" class="input_type09 mb10 username" ng-model="credentials.email" ng-required="true">
-                <p>Password</p>
+                <p>{{ lan('Password') }}</p>
                 <input type="password" class="input_type09 password" ng-model="credentials.password" ng-required="true">
-                <a href="#" ng-click="fotgotPassword();"><p class="find">Forget your password?</p></a>
+                <a href="#" ng-click="fotgotPassword();"><p class="find">{{ lan('Forget your password?') }}</p></a>
                 <a href="#">
-                    <input type="submit" class="loginbtn" value="Sign in" ng-click="signin();">
+                    <input type="submit" class="loginbtn" value="{{ lan('Sign in') }}" ng-click="signin();">
                 </a>
             </form>
         </div>
     </div>
 
     <div id="bottoms">
-        <span>New to Playchat? <a ui-sref="signup" href="#" class="create">Create Account</a></span>
-        <a class="policy" href="#">Terms of Use and Privacy Policy</a>
+        <span>{{ lan('New to Playchat?') }} <a ui-sref="signup" href="#" class="create">{{ lan('Create Account') }}</a></span>
+        <a class="policy" href="#">{{ lan('Terms of Use and Privacy Policy') }}</a>
     </div>
 </div>

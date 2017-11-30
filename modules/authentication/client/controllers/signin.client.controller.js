@@ -1,7 +1,7 @@
 (function()
 {
     'use strict';
-    angular.module('playchat').controller('SigninController', ['$scope', '$state', '$http', '$cookies', function ($scope, $state, $http, $cookies)
+    angular.module('playchat').controller('SigninController', ['$scope', '$state', '$http', '$cookies', 'LanguageService', function ($scope, $state, $http, $cookies, LanguageService)
     {
         $scope.$parent.loading = false;
         $scope.credentials = {};
@@ -35,5 +35,8 @@
                     location.href = '/playchat/chatbots';
             });
         };
+
+
+        $scope.lan = LanguageService;
     }]);
 })();

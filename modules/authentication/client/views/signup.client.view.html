@@ -1,36 +1,36 @@
 <div class="signin-background">
     <div id="logincontents" ng-if="successSignup === false">
         <div class="mt16 mb45">
-            <span class="p1">Create your account</span>
-            <p class="p2">Please create your account.</p>
+            <span class="p1">{{ lan('Create your account') }}</span>
+            <p class="p2" style="margin-top: 15px;">{{ lan('Please create your account.') }}</p>
         </div>
         <p class="exclamation pl5" ng-show="signupErrorMessage"><img src="/modules/authentication/client/imgs/exclamation_mark.png">{{ signupErrorMessage }}</p>
         <form class="register" ng-submit="signup();">
-            <p>Email ID</p>
+            <p>{{ lan('Email ID') }}</p>
             <input type="text" class="input_type09 mb10" ng-model="credentials.email" ng-required="true" autofocus="true">
-            <p>Username</p>
+            <p>{{ lan('Username') }}</p>
             <input type="text" class="input_type09 mb10" ng-model="credentials.username" ng-required="true" autofocus="true">
-            <p>Password</p>
+            <p>{{ lan('Password') }}</p>
             <input type="password" class="input_type09 mb10" ng-model="credentials.password" ng-required="true">
-            <p>Password confirm</p>
+            <p>{{ lan('Password confirm') }}</p>
             <input type="password" class="input_type09 mb20" ng-model="credentials.passwordConfirm" ng-required="true">
 
             <div style="position: relative;">
                 <input id="checkBox1" type="checkbox" value="Read" class="styled-checkbox" ng-model="agree" ng-required="true" style="position: absolute; top: 4px; left: 3px;">
                 <label for="checkBox1" class="label">
-                    <span class="agree v_line_t">Agree to <span class="fontblue">Terms of Use and Privacy Policy</span></span>
+                    <span class="agree v_line_t"><span class="fontblue">{{ lan('Agree to Terms of Use and Privacy Policy') }}</span></span>
                 </label>
             </div>
 
-            <button class="loginbtn">Sign up</button>
+            <button class="loginbtn">{{ lan('Sign up') }}</button>
         </form>
     </div>
     <div class="signup-complete-message" ng-if="successSignup === true">
-        <p class="p2">We sent a verification e-mail({{ credentials.email }}) to you.</p>
-        <p class="p2">Please check your e-mail box. The validity time of the certificate is one hour.</p>
-        <p class="p2">If you would like to receive the e-mail again, please click on the again button.</p>
+        <p class="p2">{{ lan('We sent a verification e-mail to') }} {{ credentials.email }}</p>
+        <p class="p2">{{ lan('Please check your e-mail box. The validity time of the certificate is one hour.') }}</p>
+        <p class="p2">{{ lan('If you would like to receive the e-mail again, please click on the again button.') }}</p>
         <div>
-            <button type="button" class="blue-button">Receive again</button>
+            <button type="button" class="blue-button">{{ lan('Receive again') }}</button>
         </div>
     </div>
 </div>

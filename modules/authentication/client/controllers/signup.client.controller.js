@@ -1,7 +1,7 @@
 (function()
 {
     'use strict';
-    angular.module('playchat').controller('SignupController', ['$scope', '$state', '$http', '$cookies', function ($scope, $state, $http, $cookies)
+    angular.module('playchat').controller('SignupController', ['$scope', '$state', '$http', '$cookies', 'LanguageService', function ($scope, $state, $http, $cookies, LanguageService)
     {
         $scope.$parent.loading = false;
 
@@ -54,5 +54,8 @@
                 }
             });
         };
+
+
+        $scope.lan = LanguageService;
     }]);
 })();

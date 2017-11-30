@@ -1,7 +1,7 @@
 (function()
 {
     'use strict';
-    angular.module('playchat').controller('PasswordForgotController', ['$scope', '$state', '$http', '$cookies', function ($scope, $state, $http, $cookies)
+    angular.module('playchat').controller('PasswordForgotController', ['$scope', '$state', '$http', '$cookies', 'LanguageService', function ($scope, $state, $http, $cookies, LanguageService)
     {
         $scope.$parent.loading = false;
 
@@ -24,5 +24,7 @@
                 }
             });
         };
+
+        $scope.lan = LanguageService;
     }]);
 })();

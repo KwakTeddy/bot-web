@@ -38,7 +38,7 @@ window.saveAs || ( window.saveAs = (window.navigator.msSaveBlob ? function(b,n){
 
 })() );
 
-angular.module('playchat').controller('MainController', ['$scope', '$location', '$timeout', '$cookies', 'Authentication', function ($scope, $location, $timeout, $cookies, Authentication)
+angular.module('playchat').controller('MainController', ['$scope', '$location', '$timeout', '$cookies', 'Authentication', 'LanguageService', function ($scope, $location, $timeout, $cookies, Authentication, LanguageService)
 {
     $scope.loading = true;
 
@@ -74,4 +74,13 @@ angular.module('playchat').controller('MainController', ['$scope', '$location', 
     {
         $cookies.putObject('user', Authentication.user);
     }
+
+
+
+
+
+    (function()
+    {
+        $scope.lan = LanguageService;
+    })();
 }]);
