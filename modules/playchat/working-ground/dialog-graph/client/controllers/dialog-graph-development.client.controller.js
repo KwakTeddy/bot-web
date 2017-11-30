@@ -108,7 +108,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
         $scope.getFileList = function()
         {
-            DialogGraphsService.query({ botId: chatbot.id }, function(fileList)
+            DialogGraphsService.query({ botId: chatbot.id, templateId: chatbot.templateId ? chatbot.templateId.id : '' }, function(fileList)
             {
                 $scope.fileList = fileList;
 
@@ -163,7 +163,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             $scope.initialize();
 
             angular.element('.graph-body').append('<div class="dialog-graph-error"><h1>Loading...</h1></div>');
-            DialogGraphsService.get({ botId: chatbot.id, fileName: fileName }, function(result)
+            DialogGraphsService.get({ botId: chatbot.id, templateId: chatbot.templateId ? chatbot.templateId.id : '', fileName: fileName }, function(result)
             {
                 angular.element('.graph-body .dialog-graph-error').remove();
 

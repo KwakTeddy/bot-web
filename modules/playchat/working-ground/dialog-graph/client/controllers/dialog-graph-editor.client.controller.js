@@ -100,7 +100,6 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
     $scope.initialize = function(parent, dialog)
     {
-        console.log('다이얼로그 : ', dialog);
         $timeout(function()
         {
             $scope.parentDialog = parent;

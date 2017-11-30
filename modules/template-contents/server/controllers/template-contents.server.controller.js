@@ -5,6 +5,109 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var async = require('async');
 
+module.exports.findDatas = function(req, res)
+{
+    var botId = req.params.botId;
+    var templateId = req.params.templateId;
+    var datasKey = req.params.datas;
+
+    fs.readFile(path.resolve('./templates/' + templateId + '/' + datasKey + '-schema.json'), function(err, data)
+    {
+        if(err)
+        {
+            console.error(err);
+            return res.status(400).send({ error: err });
+        }
+
+        var json = JSON.parse(data.toString());
+        json.botId = 'String';
+
+        //몽고디비 스키마 생성
+        var schema = new Schema(json);
+
+        var name = templateId + '-menu';
+
+        var model = undefined;
+
+        if(mongoose.models[name])
+            model = mongoose.model(name);
+        else
+            model = mongoose.model(name, schema);
+
+        model.find({ botId: botId }).exec(function(err, list)
+        {
+            if(err)
+            {
+                console.error(err);
+                return res.status(400).send({ error: err });
+            }
+
+            res.jsonp(list);
+        });
+    });
+};
+
+module.exports.createDatas = function(req, res)
+{
+    var botId = req.params.botId;
+    var templateId = req.params.templateId;
+    var datasKey = req.params.datas;
+    var datas = req.body[datasKey];
+
+    fs.readFile(path.resolve('./templates/' + templateId + '/' + datasKey + '-schema.json'), function(err, data)
+    {
+        if(err)
+        {
+            console.error(err);
+            return res.status(400).send({ error: err });
+        }
+
+        var json = JSON.parse(data.toString());
+
+        json.botId = 'String';
+
+        //몽고디비 스키마 생성
+        var schema = new Schema(json);
+
+        var name = templateId + '-' + datasKey;
+
+        var model = undefined;
+
+        if(mongoose.models[name])
+            model = mongoose.model(name);
+        else
+            model = mongoose.model(name, schema);
+
+        model.remove({ botId: botId }).exec(function(err)
+        {
+            if(err)
+            {
+                console.error(err);
+                return res.status(400).send({ error: err });
+            }
+
+            async.eachSeries(datas, function(data, next)
+            {
+                data = new model(data);
+                data.botId = botId;
+                data.save(function(err)
+                {
+                    if(err)
+                    {
+                        console.error(err);
+                    }
+
+                    next();
+                })
+            },
+            function()
+            {
+                res.end();
+            })
+        });
+    });
+};
+
 module.exports.findMenus = function(req, res)
 {
     var botId = req.params.botId;

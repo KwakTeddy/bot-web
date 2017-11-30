@@ -38,7 +38,8 @@ module.exports = {
             'modules/playchat/core/layout/client/services/menu.client.service.js',
             'modules/playchat/core/layout/client/config/layout.routes.js',
             'modules/playchat/!(core)/client/controllers/*.js',
-            'modules/playchat/working-ground/*/client/*/*.js'
+            'modules/playchat/working-ground/*/client/*/*.js',
+            'templates/*/client/controllers/*.js'
         ]
     },
     server: {

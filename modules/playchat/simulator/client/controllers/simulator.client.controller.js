@@ -40,8 +40,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket)
             if(typeof text != 'object')
             {
                 template = angular.element('#botAnswerTemplate').html();
-                template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', text.replace(/\n/gi, '<br>'));
-
+                template = template.replace('{botName}', chatbot.name).replace('{time}', getCurrentTime()).replace('{text}', (text + '').replace(/\n/gi, '<br>'));
             }
             else
             {

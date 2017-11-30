@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('template').controller('deliveryDashboardController', ['$scope', '$resource', '$cookies', function ($scope, $resource, $cookies)
+angular.module('template').controller('hotelDashboardController', ['$scope', '$resource', '$cookies', function ($scope, $resource, $cookies)
 {
     var ChatbotService = $resource('/api/chatbots/:botId', { botId: '@botId' }, { update: { method: 'PUT' } });
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });

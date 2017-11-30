@@ -17,27 +17,29 @@ angular.module('playchat').controller('IntentManagementAddController', ['$scope'
     (function()
     {
         var _id = $location.search()._id;
-
-        IntentService.get({ botId: chatbot.id, intentId: _id }, function(intent)
+        if(_id)
         {
-            $scope.name = intent.name;
-            $scope.intent = intent;
-
-            console.log('인텐트 : ', intent);
-        },
-        function(err)
-        {
-            alert(err);
-        });
-
-        IntentContentsService.query({ botId: chatbot.id, intentId: _id }, function(intentContents)
-        {
-            if(intentContents.length > 0)
+            IntentService.get({ botId: chatbot.id, intentId: _id }, function(intent)
             {
-                console.log(intentContents);
-                $scope.intents = intentContents;
-            }
-        });
+                $scope.name = intent.name;
+                $scope.intent = intent;
+
+                console.log('인텐트 : ', intent);
+            },
+            function(err)
+            {
+                alert(err);
+            });
+
+            IntentContentsService.query({ botId: chatbot.id, intentId: _id }, function(intentContents)
+            {
+                if(intentContents.length > 0)
+                {
+                    console.log(intentContents);
+                    $scope.intents = intentContents;
+                }
+            });
+        }
     })();
 
     $scope.contentInputKeydown = function(e)

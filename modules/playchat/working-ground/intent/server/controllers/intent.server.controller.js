@@ -70,6 +70,7 @@ exports.find = function(req, res)
 
 exports.findOne = function(req, res)
 {
+    console.log('ㄹㄹㄹㄹ : ', req.params);
     Intent.findOne({ _id: req.params.intentId }).exec(function(err, item)
     {
         if (err)

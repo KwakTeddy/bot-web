@@ -12,6 +12,12 @@ var BotFile = mongoose.model('BotFile');
 exports.find = function (req, res)
 {
     var botsPath = path.resolve('./custom_modules/' + req.params.botId);
+    if(req.query.templateId)
+    {
+        // 추후 서비스봇과 템플릿 클론봇 구분
+        botsPath = path.resolve('./templates/' + req.query.templateId + '/bot');
+    }
+
     fs.readdir(botsPath, function(err, list)
     {
         if(err)
@@ -44,6 +50,12 @@ exports.checkFile = function(req, res)
 exports.findFile = function(req, res)
 {
     var filePath = path.resolve('./custom_modules/' + req.params.botId + '/' + req.params.fileName);
+
+    if(req.query.templateId)
+    {
+        // 추후 서비스봇과 템플릿 클론봇 구분
+        filePath = path.resolve('./templates/' + req.query.templateId + '/bot/' + req.params.fileName);
+    }
 
     fs.stat(filePath, function(err, stat)
     {

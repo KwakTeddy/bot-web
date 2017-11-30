@@ -280,7 +280,6 @@ function loadBot(botName, callback) {
                         try {
                             console.log('\tloading file: ' + file);
                             utils.requireNoCache(file, true);
-                            console.log('머지 : ', global._bots[botName].commonDialogs);
                         } catch(e) {
                             console.error(e);
                             bot.error.push(e.stack);
@@ -368,7 +367,6 @@ function loadBot(botName, callback) {
         },
 
         function(cb) {
-            console.log('하하호히핳 : ', JSON.stringify(global._templates));
             if(bot && bot.template && global._templates[bot.template.id]) {
                 utils.merge(bot.template, global._templates[bot.template.id]);
                 // var template = global._templates[bot.template.id];

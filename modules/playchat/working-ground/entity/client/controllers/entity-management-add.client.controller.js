@@ -18,24 +18,27 @@ angular.module('playchat').controller('EntityManagementAddController', ['$scope'
     {
         var _id = $location.search()._id;
 
-        EntityService.get({ botId: chatbot.id, entityId: _id }, function(entity)
+        if(_id)
         {
-            $scope.name = entity.name;
-            $scope.entity = entity;
-        },
-        function(err)
-        {
-            alert(err);
-        });
-
-        EntityContentService.query({ botId: chatbot.id, entityId: _id }, function(entityContents)
-        {
-            if(entityContents.length > 0)
+            EntityService.get({ botId: chatbot.id, entityId: _id }, function(entity)
             {
-                console.log(entityContents);
-                $scope.entities = entityContents;
-            }
-        });
+                $scope.name = entity.name;
+                $scope.entity = entity;
+            },
+            function(err)
+            {
+                alert(err);
+            });
+
+            EntityContentService.query({ botId: chatbot.id, entityId: _id }, function(entityContents)
+            {
+                if(entityContents.length > 0)
+                {
+                    console.log(entityContents);
+                    $scope.entities = entityContents;
+                }
+            });
+        }
     })();
 
     $scope.contentInputKeydown = function(e)
