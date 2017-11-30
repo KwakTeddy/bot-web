@@ -1,0 +1,69 @@
+<style>
+.template-title
+{
+    font-size: 20px;
+    font-weight: 600;
+    padding-left: 30px;
+}
+
+.template-body
+{
+    width: 80%;
+    margin: 0 auto;
+}
+
+.template-body input
+{
+    border: 1px solid #ddd;
+    padding: 10px 20px;
+}
+</style>
+
+<h1 class="template-title">객실정보관리</h1>
+<div ng-controller="hotelRoomController" class="template-body">
+    <form ng-submit="save($event);">
+        <table class="tb02" style="table-layout:fixed;">
+            <colgroup>
+                <col style="width: 20%;">
+                <col style="width: 20%;">
+                <col style="width: 20%;">
+                <col style="width: 20%;">
+                <col style="width: 10%;">
+                <col style="width: 10%;">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>객실 종류(ex:싱글룸)</th>
+                    <th>구성(ex:침실1, 욕실1, 화장실1)</th>
+                    <th>전망(ex:시티뷰 또는 오션뷰)</th>
+                    <th>침대(ex:더블 또는 트윈)</th>
+                    <th>크기(ex:36m2)</th>
+                    <th>체크인 시간(ex:오후 3시)</th>
+                    <th>체크인 시간(ex:낮 12시)</th>
+                    <th>가격(ex:80000)</th>
+                    <th>TV정보</th>
+                    <th>위성체널정보</th>
+                    <th>인터네정보</th>
+                    <th>전압정보</th>
+                    <th>음료제공정보</th>
+                    <th>엑스트라 베드 요금정보</th>
+                    <th>베이비 그립 제공정보</th>
+                    <th>객실 소객(한 마디)</th>
+                    <th>객실 이미지</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="data in datas">
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <button type="button" class="default-button" ng-click="add();">추가</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="tab-footer" style="border-top: 0;">
+            <button class="blue-button">Save</button>
+        </div>
+    </form>
+</div>

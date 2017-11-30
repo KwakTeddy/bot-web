@@ -9,10 +9,10 @@ var mongo = require(path.resolve('./engine/bot/action/common/mongo'));
 var async = require('async');
 var mongoose = require('mongoose');
 var mongoModule = require(path.resolve('engine/bot/action/common/mongo'));
-var categoryrooms = mongo.getModel('templatehotelrooms');
-var categoryrestaurants = mongo.getModel('templatehotelrestaurants');
-var categoryfacilities = mongo.getModel('templatehotelfacilities');
-var categoryevents = mongo.getModel('templatehotelevents');
+var categoryrooms = mongo.getModel('hotel-room');
+var categoryrestaurants = mongo.getModel('hotel-restaurant');
+var categoryfacilities = mongo.getModel('hotel-facility');
+var categoryevents = mongo.getModel('hotel-event');
 var order = mongo.getModel('hotelorders');
 var config = require(path.resolve('./config/config'));
 
@@ -130,7 +130,7 @@ var categoryroomlist = {
     name: 'categoryroomlist',
     action: function(task, context, callback) {
 
-        if(context.bot.hotelrooms[0]===undefined){context.dialog.roomno=undefined;callback(task,context);}
+        if(context.bot.room[0]===undefined){context.dialog.roomno=undefined;callback(task,context);}
         else {
             context.dialog.roomno = 0;
         var mydate=new Date().toLocaleDateString();
@@ -195,7 +195,7 @@ var saveMobile = {
         context.dialog.myyear=x[2];
         context.dialog.mymonth=x[0];
         context.dialog.myday=Number(x[1])+1;
-      if(context.bot.hotelrooms[0]===undefined){context.dialog.roomno=undefined;callback(task,context);}
+      if(context.bot.room[0]===undefined){context.dialog.roomno=undefined;callback(task,context);}
       else {
           context.dialog.roomno = 0;
           categoryrooms.find({upTemplateId: context.bot.templateDataId}).lean().exec(function (err, docs) {
@@ -219,7 +219,7 @@ bot.setTask('saveMobile', saveMobile);
 var categoryrestaurantlist = {
     name: 'categoryrestaurantlist',
     action: function(task, context, callback) {
-        if(context.bot.hotelrestaurants[0]===undefined){context.dialog.restaurantno=undefined;callback(task,context);}
+        if(context.bot.restaurant[0]===undefined){context.dialog.restaurantno=undefined;callback(task,context);}
         else {
             context.dialog.restaurantno=0;
             categoryrestaurants.find({upTemplateId: context.bot.templateDataId}).lean().exec(function (err, docs) {
@@ -239,7 +239,7 @@ bot.setTask("categoryrestaurantlist", categoryrestaurantlist);
 var categoryfacilitylist = {
     name: 'categoryfacilitylist',
     action: function(task, context, callback) {
-        if(context.bot.hotelfacilities[0]===undefined){context.dialog.facilityno=undefined;callback(task,context);}
+        if(context.bot.facility[0]===undefined){context.dialog.facilityno=undefined;callback(task,context);}
         else {
             context.dialog.facilityno = 0;
             categoryfacilities.find({upTemplateId: context.bot.templateDataId}).lean().exec(function (err, docs) {
@@ -260,7 +260,7 @@ bot.setTask("categoryfacilitylist", categoryfacilitylist);
 var categoryeventlist = {
     name: 'categoryeventlist',
     action: function(task, context, callback) {
-        if(context.bot.hotelevents[0]===undefined){context.dialog.eventno=undefined;callback(task,context);}
+        if(context.bot.event[0]===undefined){context.dialog.eventno=undefined;callback(task,context);}
         else {
             context.dialog.eventno = 0;
             categoryevents.find({upTemplateId: context.bot.templateDataId}).lean().exec(function (err, docs) {
@@ -280,12 +280,12 @@ bot.setTask("categoryeventlist", categoryeventlist);
 var inforshuttle = {
     name: 'inforshuttle',
     action: function(task, context, callback) {
-        if(context.bot.hotelshuttles[0]===undefined){context.dialog.shuttleno=undefined;callback(task,context);}
-        else if(context.bot.hotelshuttles[0].shuttleornot==="부"){context.dialog.shuttleno=1;callback(task,context);}
+        if(context.bot.shuttle[0]===undefined){context.dialog.shuttleno=undefined;callback(task,context);}
+        else if(context.bot.shuttle[0].shuttleornot==="부"){context.dialog.shuttleno=1;callback(task,context);}
         else {context.dialog.shuttleno=0;
-            var ss=context.bot.hotelshuttles[0].shuttleimage[0];
+            var ss=context.bot.shuttle[0].shuttleimage[0];
             //console.log(ss+"000000000000");
-            var img = context.bot.hotelshuttles[0].shuttleimage[0]=='h' ? context.bot.hotelshuttles[0].shuttleimage : config.host + context.bot.hotelshuttles[0].shuttleimage;
+            var img = context.bot.shuttle[0].shuttleimage[0]=='h' ? context.bot.shuttle[0].shuttleimage : config.host + context.bot.shuttle[0].shuttleimage;
             console.log(img+"222222222222");
             task.buttons = [{text:"자세히보기",url:img}];
             task.image = {url: img};
@@ -302,14 +302,14 @@ var inforpark = {
         //console.log(context.bot.parks+"222222222");
         // console.log(typeof JSON.stringify(context.bot.parks[0]));
         // console.log(typeof JSON.parse(JSON.stringify(context.bot.parks[0])));
-       if(context.bot.hotelparks[0]===undefined){context.dialog.parkno=undefined;callback(task,context);}
-       else if(context.bot.hotelparks[0].parkornot==="부"){context.dialog.parkno=1; callback(task,context);}
+       if(context.bot.park[0]===undefined){context.dialog.parkno=undefined;callback(task,context);}
+       else if(context.bot.park[0].parkornot==="부"){context.dialog.parkno=1; callback(task,context);}
        else {context.dialog.parkno=0;
-       context.dialog.parkaddress=context.bot.hotelparks[0].parkaddress;
-       context.dialog.parkdetails=context.bot.hotelparks[0].parkdetails;
-       context.dialog.parksize=context.bot.hotelparks[0].parksize;
-       context.dialog.parkname=context.bot.hotelparks[0].parkname;
-       context.dialog.parkornot=context.bot.hotelparks[0].parkornot;
+       context.dialog.parkaddress=context.bot.park[0].parkaddress;
+       context.dialog.parkdetails=context.bot.park[0].parkdetails;
+       context.dialog.parksize=context.bot.park[0].parksize;
+       context.dialog.parkname=context.bot.park[0].parkname;
+       context.dialog.parkornot=context.bot.park[0].parkornot;
 
        task.buttons = [{text:"지도보기(클릭)", url: "http://map.naver.com/?query=" + context.dialog.parkaddress}];
        callback(task,context);}

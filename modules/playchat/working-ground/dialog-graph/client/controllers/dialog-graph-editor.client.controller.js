@@ -100,6 +100,7 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
 
     $scope.initialize = function(parent, dialog)
     {
+        console.log('다이얼로그 : ', dialog);
         $timeout(function()
         {
             $scope.parentDialog = parent;
@@ -188,6 +189,12 @@ angular.module('playchat').controller('DialogGraphEditorController', ['$window',
                             }
                             else
                             {
+                                if(dialog.output[i].if)
+                                {
+                                    $scope.isAdvancedMode = true;
+                                    $scope.isUseOutput = true;
+                                }
+
                                 $scope.dialog.output.push(dialog.output[i]);
                             }
                         }

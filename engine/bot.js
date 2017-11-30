@@ -379,7 +379,6 @@ function loadBot(botName, callback) {
                 bot.commonDialogs =bot.commonDialogs.concat(bot.template.commonDialogs);
                 bot.dialogs = bot.dialogs.concat(bot.template.dialogs);
 
-                console.log('머냐 : ', bot.commonDialogs);
                 utils.merge(bot.tasks, bot.template.tasks);
                 utils.merge(bot.actions , bot.template.actions );
                 utils.merge(bot.types, bot.template.types);
