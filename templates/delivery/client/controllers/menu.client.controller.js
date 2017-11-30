@@ -1,9 +1,9 @@
 'use strict';
 
-angular.module('template').controller('menuController', ['$scope', '$resource', '$cookies', 'FileUploader', function ($scope, $resource, $cookies, FileUploader)
+angular.module('template').controller('deliveryMenuController', ['$scope', '$resource', '$cookies', 'FileUploader', function ($scope, $resource, $cookies, FileUploader)
 {
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
-    var MenuService = $resource('/api/:templateId/:botId/menus', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
+    var MenuService = $resource('/api/:templateId/:botId/menu', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
 
     var chatbot = $cookies.getObject('chatbot');
 
@@ -48,7 +48,7 @@ angular.module('template').controller('menuController', ['$scope', '$resource', 
         {
             var menus = JSON.parse(angular.toJson($scope.menus));
 
-            MenuService.save({ templateId: $scope.template.id, botId: chatbot.id, menus: menus }, function(result)
+            MenuService.save({ templateId: $scope.template.id, botId: chatbot.id, datas: menus }, function(result)
             {
                 console.log(result);
             },

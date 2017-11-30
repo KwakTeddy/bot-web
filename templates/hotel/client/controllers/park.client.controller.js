@@ -3,7 +3,7 @@
 angular.module('template').controller('hotelParkController', ['$scope', '$resource', '$cookies', 'FileUploader', function ($scope, $resource, $cookies, FileUploader)
 {
     var ChatbotTemplateService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' }, { update: { method: 'PUT' } });
-    var DataService = $resource('/api/:templateId/:botId/parks', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
+    var DataService = $resource('/api/:templateId/:botId/park', { templateId : '@templateId', botId: '@botId' }, { update: { method: 'PUT' } });
 
     var chatbot = $cookies.getObject('chatbot');
 
@@ -34,19 +34,21 @@ angular.module('template').controller('hotelParkController', ['$scope', '$resour
             });
         };
 
-        $scope.addMenu = function()
+        $scope.add = function()
         {
-            $scope.datas.push({ category1: '', category2: '', name: '', price: '' });
+            $scope.datas.push({ parkname: '', parksize: '', parkdetails: '', parkaddress: '', parkornot: '' });
         };
 
-        $scope.deleteMenu = function(index)
+        $scope.delete = function(index)
         {
             $scope.datas.splice(index, 1);
         };
 
-        $scope.saveMenu = function()
+        $scope.save = function()
         {
             var datas = JSON.parse(angular.toJson($scope.datas));
+
+            console.log('데이터스 : ', datas);
 
             DataService.save({ templateId: $scope.template.id, botId: chatbot.id, datas: datas }, function(result)
             {

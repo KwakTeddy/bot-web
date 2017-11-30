@@ -1,0 +1,19 @@
+{
+    "category_name" : "String",
+    "room_form" : "String",
+    "room_kind" : "String",
+    "room_bed" : "String",
+    "room_size" : "String",
+    "room_checkin" : "String",
+    "room_checkout" : "String",
+    "room_price" : "Number",
+    "room_facility1" : "String",
+    "room_facility2" : "String",
+    "room_facility3" : "String",
+    "room_facility4" : "String",
+    "room_facility5" : "String",
+    "room_facility6" : "String",
+    "room_facility7" : "String",
+    "room_introduction" : "String",
+    "room_image" : "String"
+}

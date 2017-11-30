@@ -85,9 +85,6 @@ angular.module('template').controller('menuController', ['$scope', '$resource', 
             }
 
             var menus = JSON.parse(angular.toJson($scope.menus));
-
-            console.log(menus);
-
             MenuService.save({ templateName: $scope.template.name, botId: chatbot.id, menus: menus }, function(result)
             {
                 console.log(result);

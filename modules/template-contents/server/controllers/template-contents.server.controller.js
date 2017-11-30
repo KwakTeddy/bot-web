@@ -25,7 +25,7 @@ module.exports.findDatas = function(req, res)
         //몽고디비 스키마 생성
         var schema = new Schema(json);
 
-        var name = templateId + '-menu';
+        var name = templateId + '-' + datasKey;
 
         var model = undefined;
 
@@ -33,6 +33,8 @@ module.exports.findDatas = function(req, res)
             model = mongoose.model(name);
         else
             model = mongoose.model(name, schema);
+
+        console.log('모델명 : ', name);
 
         model.find({ botId: botId }).exec(function(err, list)
         {
@@ -52,7 +54,7 @@ module.exports.createDatas = function(req, res)
     var botId = req.params.botId;
     var templateId = req.params.templateId;
     var datasKey = req.params.datas;
-    var datas = req.body[datasKey];
+    var datas = req.body.datas;
 
     fs.readFile(path.resolve('./templates/' + templateId + '/' + datasKey + '-schema.json'), function(err, data)
     {
@@ -63,7 +65,6 @@ module.exports.createDatas = function(req, res)
         }
 
         var json = JSON.parse(data.toString());
-
         json.botId = 'String';
 
         //몽고디비 스키마 생성
@@ -77,6 +78,8 @@ module.exports.createDatas = function(req, res)
             model = mongoose.model(name);
         else
             model = mongoose.model(name, schema);
+
+        console.log('모델명', name);
 
         model.remove({ botId: botId }).exec(function(err)
         {
