@@ -25,7 +25,7 @@
                     <p class="dialog-editor-subject">Input <a href="#" class="codebtn" tabindex="-1"></a></p>
                     <div class="dialog-editor-input-box">
                         <div class="dialog-editor-input-wrapper" ng-repeat="input in dialog.input" data-nlu="{{nlpedTextPrefix}} {{ nlpedText[$index] }}">
-                            <input type="text" class="dialog-editor-input" ng-model="input.text" ng-keydown="inputOnKeyDown($event, $index);" ng-keyup="inputOnKeyUp($event, $index)" ng-required="true">
+                            <input type="text" class="dialog-editor-input" ng-model="input.text" ng-keydown="inputOnKeyDown($event, $index);" ng-keyup="inputOnKeyUp($event, $index)" ng-blur="inputOnBlur($event, $index);" ng-required="true">
                             <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteInput($index);">
                         </div>
                         <div style="position: relative;">
