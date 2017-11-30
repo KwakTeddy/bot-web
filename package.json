@@ -48,6 +48,7 @@
     "event-stream": "^3.1.1",
     "express": "^4.16.2",
     "express-session": "^1.15.6",
+    "extendy": "^1.0.1",
     "fast-csv": "^2.4.1",
     "file-stream-rotator": "~0.0.6",
     "forever": "~0.14.2",
