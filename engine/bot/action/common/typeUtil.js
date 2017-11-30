@@ -5,7 +5,6 @@ TypeUtil.prototype.parseDialogSetDocs = function(docs) {
 /*
 {"_id":"5a0110e2e02af33e51af7e71","input":["언제 출근 하다","출근 하다","222","111"],"inputRaw":["언제 출근해?","출근해?","222","111"],"output":["아침","이른 시간"],"dialogset":"5a00455eea534fcc3e8chWord":"[object Object]","matchCount":null,"matchNLP":[],"matchMin":0,"matchMax":3,"matchRate":1,"score":0}
 */
-
     if (!docs && docs == undefined) return [];
     if (!docs.inputRaw && docs.inputRaw == undefined) return [];
 
@@ -17,6 +16,8 @@ TypeUtil.prototype.parseDialogSetDocs = function(docs) {
             if (Array.isArray(docs.output)) {
                 randomInt = Math.floor(Math.random() * docs.output.length); // 0 ~ len
             }
+
+            console.log('랜덤 인트 : ', randomInt, docs.output[randomInt]);
 
             var result = {};
             if (docs._id && docs._id != undefined) result["_id"] = docs._id;
@@ -38,6 +39,7 @@ TypeUtil.prototype.parseDialogSetDocs = function(docs) {
             } else {
                 result["score"] = 0.0;
             }
+
             results.push(result);
         }
         return results;

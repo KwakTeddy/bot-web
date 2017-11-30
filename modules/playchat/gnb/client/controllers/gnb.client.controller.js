@@ -4,8 +4,6 @@
 
 angular.module('playchat').controller('GnbController', ['$window', '$scope', '$location', '$cookies', '$resource', 'MenuService', function ($window, $scope, $location, $cookies, $resource, MenuService)
 {
-    $scope.$parent.loaded('side-menu');
-
     var ChatbotService = $resource('/api/chatbots/:botId', { botId : '@botId'});
 
     var chatbot = $cookies.getObject('chatbot');
@@ -23,6 +21,7 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
                 MenuService.get(result.templateId.id, function(menus)
                 {
                     $scope.menus = menus;
+                    $scope.$parent.loaded('side-menu');
                 });
             }
             else
@@ -30,6 +29,7 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
                 MenuService.get(function(menus)
                 {
                     $scope.menus = menus;
+                    $scope.$parent.loaded('side-menu');
                 });
             }
         },

@@ -428,7 +428,7 @@ function processOutput(task, context, out) {
                     }
                 } else {
                     if (context.botUser.nlu.matchInfo.qa[0].output) {
-                        if (Array.isArray()) {
+                        if (Array.isArray(ontext.botUser.nlu.matchInfo.qa[0].output)) {
                             var result = Math.floor(Math.random() * context.botUser.nlu.matchInfo.qa[0].output.length) + 1;
                             out = context.botUser.nlu.matchInfo.qa[0].output[result];
                         } else {
