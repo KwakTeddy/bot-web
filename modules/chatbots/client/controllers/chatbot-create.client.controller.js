@@ -15,7 +15,6 @@
             {
                 ChatbotTemplatesService.query({}, function(result)
                 {
-                    console.log(result);
                     for(var i=0; i<result.length; i++)
                     {
                         if(!$scope.list[result[i].category.name])

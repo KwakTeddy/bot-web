@@ -1,0 +1,10 @@
+{
+    "menus" : [
+        { "name" : "대시보드", "url" : "/templates/dashboard", "icon" : "dashboard.png" },
+        { "name" : "컨텐츠 관리", "url" : "/templates/contents", "icon" : "contents.png", "childMenus" : [
+            { "name" : "기본정보", "url" : "/templates/contents/basic", "icon" : "contents.png" }
+        ] },
+        { "name" : "대화관리", "url": "/development/dialog-set", "icon": "speech.png" },
+        { "name" : "대화그래프관리", "url": "/development/dialog-graph", "icon": "scenario.png" }
+    ]
+}
