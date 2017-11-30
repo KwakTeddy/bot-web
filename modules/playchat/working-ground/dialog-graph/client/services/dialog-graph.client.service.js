@@ -514,8 +514,10 @@
                 var diff = button[0].offsetTop - target.children[0].offsetTop - target.children[0].offsetHeight - 10;
                 if(diff > 50)
                 {
-                    button[0].style.top = -(button[0].offsetTop - target.offsetTop - 188) + 'px';
+
+                    button[0].style.top = -(button[0].offsetTop - target.offsetTop) + (target.children[0].offsetHeight + button[0].offsetHeight) + 'px';
                     button[0].style.position = 'relative';
+                    button[0].setAttribute('data-diff', diff);
                 }
             }
 
