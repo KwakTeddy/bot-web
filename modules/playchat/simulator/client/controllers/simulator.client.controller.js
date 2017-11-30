@@ -77,7 +77,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket)
             simulatorBody.find('.output-buttons a').off('click').on('click', function(e)
             {
                 var href = angular.element(this).attr('href');
-                if(href === undefined || href == 'undefined')
+                if(href === undefined || href == 'undefined' || href == '#')
                 {
                     var text = angular.element(this).text();
 
