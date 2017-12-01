@@ -9,24 +9,26 @@
             </li>
         </ul>
     </div>
-    <div class="chatbot-new" ng-click="moveToCreate();">
-        <img src="/modules/chatbots/client/imgs/plus_white.png">
-        <a href="/playchat/chatbots/create">New chatbot</a>
-    </div>
-    <div class="chatbots">
-        <div class="bot_unselect" ng-repeat="chatbot in list" ng-click="selectBot(chatbot);">
-            <ul class="hei50">
-                <li class="sub1"><img src="/modules/chatbots/client/imgs/user2.png"></li>
-                <li class="sub3" data-id="{{ chatbot.id }}" ng-keydown="chatbotNameKeyDown($event);" ng-blur="chatbotNameBlur($event);" ng-click="chatbotNameClick($event);">{{ chatbot.name }}</li>
-                <li>
-                    <div class="flR mt10">
-                        <a href="#" class="chatbot-menu-button" ng-click="openMenu($event, chatbot);"></a>
-                    </div>
-                </li>
-            </ul>
-            <ul>
-                <li class="sub2">{{ chatbot.description }}</li>
-            </ul>
+    <div>
+        <div class="chatbot-new" ng-click="moveToCreate();">
+            <img src="/modules/chatbots/client/imgs/plus_white.png">
+            <a href="/playchat/chatbots/create">New chatbot</a>
+        </div>
+        <div class="chatbots">
+            <div class="bot_unselect" ng-repeat="chatbot in list" ng-click="selectBot(chatbot);">
+                <ul class="hei50">
+                    <li class="sub1"><img src="/modules/chatbots/client/imgs/user2.png"></li>
+                    <li class="sub3" data-id="{{ chatbot.id }}" ng-keydown="chatbotNameKeyDown($event);" ng-blur="chatbotNameBlur($event);" ng-click="chatbotNameClick($event);">{{ chatbot.name }}</li>
+                    <li>
+                        <div class="flR mt10">
+                            <a href="#" class="chatbot-menu-button" ng-click="openMenu($event, chatbot);"></a>
+                        </div>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="sub2">{{ chatbot.description }}</li>
+                </ul>
+            </div>
         </div>
     </div>
 
@@ -39,7 +41,7 @@
 
     <div class="window_overlay" ng-show="openShareModal">
         <div class="window">
-            <form class="card_detail_window">
+            <form class="card_detail_window" ng-submit="shareChatbot();">
                 <div class="window_header">
 				<span class="window_header_icon">
 					<img src="/modules/chatbots/client/imgs/share.png">
@@ -80,12 +82,8 @@
                     </li>
                 </div>
                 <div class="popbtnarea">
-                    <div class="btn03">
-                        <a href="#" ng-click="closeShareModal();">Cancel</a>
-                    </div>
-                    <div class="btn01 ml15">
-                        <a href="#" ng-click="shareChatbot();">Share</a>
-                    </div>
+                    <button type="button" class="default-button" ng-click="closeShareModal();">Cancel</button>
+                    <button class="blue-button" style="margin-left: 20px;">Share</button>
                 </div>
             </form>
         </div>

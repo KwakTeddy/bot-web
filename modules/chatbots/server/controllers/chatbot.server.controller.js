@@ -5,6 +5,7 @@ var fs = require('fs');
 var ChatBot = mongoose.model('Bot');
 var BotAuth = mongoose.model('BotAuth');
 var Template = mongoose.model('Template');
+var User = mongoose.model('User');
 
 exports.findTotalPage = function(req, res)
 {
@@ -181,6 +182,20 @@ exports.update = function(req, res)
     });
 };
 
+exports.rename = function(req, res)
+{
+    ChatBot.update({ _id: req.params.botId }, { $set: { name: req.body.name } }).exec(function(err, result)
+    {
+        if(err)
+        {
+            console.error(err);
+            return res.status(400).send({ message: err.stack || err });
+        }
+
+        res.jsonp(result);
+    });
+};
+
 exports.duplicate = function(req, res)
 {
     ChatBot.findOne({ _id: req.params.botId }).exec(function(err, item)
@@ -193,7 +208,7 @@ exports.duplicate = function(req, res)
         {
             var clone = new ChatBot();
             clone.id = item.id + ' Clone';
-            clone.name = item.name;
+            clone.name = item.name + 'Clone';
             clone.description = item.description;
             clone.user = req.user;
 
@@ -204,7 +219,7 @@ exports.duplicate = function(req, res)
                     return res.status(400).send({ message: err.stack || err });
                 }
 
-                res.jsonp(item);
+                res.jsonp(clone);
             });
         }
     });
@@ -216,12 +231,49 @@ exports.delete = function(req, res)
     {
         if(err)
         {
+            console.error(err);
             return res.status(400).send({ message: err.stack || err });
         }
         else
         {
             var rimraf = require('rimraf');
             rimraf(path.resolve('./custom_modules') + '/' + req.query.botDisplayId, function () { res.end(); });
+        }
+    });
+};
+
+exports.share = function(req, res)
+{
+    User.findOne({ email: req.body.data.email }).exec(function(err, item)
+    {
+        if(err)
+        {
+            console.error(err);
+            return res.status(400).send({ message: err.stack || err });
+        }
+
+        if(item)
+        {
+            var botAuth = new BotAuth();
+            botAuth.bot = req.params.botId;
+            botAuth.user = item._id;
+            botAuth.giver = req.user;
+            botAuth.edit = req.body.data.write ? true : false;
+
+            botAuth.save(function(err)
+            {
+                if(err)
+                {
+                    console.error(err);
+                    return res.status(400).send({ message: err.stack || err });
+                }
+
+                res.end();
+            });
+        }
+        else
+        {
+            res.status(404).send({ message: req.body.data.email + ' is not found' });
         }
     });
 };

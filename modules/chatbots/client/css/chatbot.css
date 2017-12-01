@@ -114,6 +114,8 @@
     overflow: hidden;
     white-space: nowrap;
     word-wrap: normal !important;
+
+    transition: color 1s;
 }
 
 .bot_unselect
