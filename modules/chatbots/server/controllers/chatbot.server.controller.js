@@ -11,7 +11,7 @@ exports.findTotalPage = function(req, res)
 {
     var countPerPage = req.query.countPerPage || 10;
 
-    var query = {  };
+    var query = { user: req.user._id };
 
     if(req.query.name)
         query.name = { "$name": req.query.name, "$options": 'i' };
@@ -35,7 +35,7 @@ exports.find = function (req, res)
     var page = req.query.page || 1;
     var countPerPage = parseInt(req.query.countPerPage) || 10;
 
-    var query = {  };
+    var query = { user: req.user._id };
 
     if(req.query.name)
         query.name = { "$name": req.query.name, "$options": 'i' };

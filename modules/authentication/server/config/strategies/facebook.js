@@ -34,7 +34,7 @@ module.exports = function (config) {
           // firstName: profile.name.givenName,
           // lastName: profile.name.familyName,
           displayName: profile.displayName,
-          email: profile.emails ? profile.emails[0].value : undefined,
+          email: profile._json ? profile._json.email : 'facebook',
           username: profile.username || generateUsername(profile),
           profileImageURL: (profile.id) ? '//graph.facebook.com/' + profile.id + '/picture?type=large' : undefined,
           provider: 'facebook',

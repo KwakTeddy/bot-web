@@ -130,6 +130,7 @@
     border: 1px solid #038eda;
     border-radius: 6px;
     padding: 20px 30px;
+    height: 75px;
 }
 
 .dashboard-dialog-management-card > div > div
