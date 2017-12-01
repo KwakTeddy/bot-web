@@ -8,6 +8,7 @@
         var ChatBotRenameService = $resource('/api/chatbots/:botId/rename', { botId: '@botId' }, { update: { method: 'PUT' } });
         var ChatBotDuplicateService = $resource('/api/chatbots/:botId/duplicate', { botId: '@botId' });
         var ChatBotShareService = $resource('/api/chatbots/:botId/share', { botId: '@botId' });
+        var SharedChatBotService = $resource('/api/chatbots/shared');
 
         if($cookies.get('login') === 'false')
         {
@@ -24,6 +25,8 @@
         $scope.openShareModal = false;
         $scope.share = {};
 
+        $scope.sharedList = [];
+
         window.addEventListener('click', function()
         {
             $scope.closeMenu();
@@ -35,6 +38,11 @@
             {
                 $scope.list = list;
                 $scope.$parent.loading = false;
+            });
+
+            SharedChatBotService.query({}, function(list)
+            {
+                $scope.sharedList = list;
             });
         };
 
@@ -57,6 +65,15 @@
         {
             $cookies.putObject('chatbot', chatbot);
             $location.url('/playchat');
+        };
+
+        $scope.moveTab = function(e, name)
+        {
+            angular.element('.select_tab').removeClass('select_tab');
+            angular.element('#botContent').hide();
+            angular.element('#sharedBotContent').hide();
+            angular.element('#' + name).show();
+            angular.element(e.currentTarget).parent().addClass('select_tab');
         };
 
         $scope.toPage = function(page)

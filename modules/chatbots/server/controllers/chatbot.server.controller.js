@@ -53,6 +53,22 @@ exports.find = function (req, res)
     });
 };
 
+exports.sharedList = function(req, res)
+{
+    BotAuth.find({ user: req.user._id, giver: { $ne : req.user._id } }).populate('bot').exec(function(err, list)
+    {
+        if(err)
+        {
+            console.error(err);
+            return res.status(400).send({ message: err.stack || err });
+        }
+        else
+        {
+            res.jsonp(list);
+        }
+    });
+};
+
 exports.findOne = function(req, res)
 {
     ChatBot.findOne({ _id: req.params.botId }).populate('templateId').exec(function(err, item)

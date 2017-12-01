@@ -2,14 +2,14 @@
     <div class="tab">
         <ul class="tab-body">
             <li class="select_tab">
-                <a>My chatbot</a>
+                <a ng-click="moveTab($event, 'botContent');">My chatbot</a>
             </li>
             <li>
-                <a>Shared chatbot</a>
+                <a ng-click="moveTab($event, 'sharedBotContent');">Shared chatbot</a>
             </li>
         </ul>
     </div>
-    <div>
+    <div id="botContent">
         <div class="chatbot-new" ng-click="moveToCreate();">
             <img src="/modules/chatbots/client/imgs/plus_white.png">
             <a href="/playchat/chatbots/create">New chatbot</a>
@@ -24,6 +24,23 @@
                             <a href="#" class="chatbot-menu-button" ng-click="openMenu($event, chatbot);"></a>
                         </div>
                     </li>
+                </ul>
+                <ul>
+                    <li class="sub2">{{ chatbot.description }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="sharedBotContent" style="display: none;">
+        <div class="chatbot-new" ng-click="moveToCreate();">
+            <img src="/modules/chatbots/client/imgs/plus_white.png">
+            <a href="/playchat/chatbots/create">New chatbot</a>
+        </div>
+        <div class="chatbots">
+            <div class="bot_unselect" ng-repeat="chatbot in sharedList" ng-click="selectBot(chatbot);">
+                <ul class="hei50">
+                    <li class="sub1"><img src="/modules/chatbots/client/imgs/user2.png"></li>
+                    <li class="sub3" data-id="{{ chatbot.bot.id }}" ng-keydown="chatbotNameKeyDown($event);" ng-blur="chatbotNameBlur($event);" ng-click="chatbotNameClick($event);">{{ chatbot.bot.name }}</li>
                 </ul>
                 <ul>
                     <li class="sub2">{{ chatbot.description }}</li>
