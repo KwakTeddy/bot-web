@@ -2,7 +2,7 @@
 {
     'use strict';
 
-    angular.module('playchat').controller('ChatbotListController', ['$scope', '$resource', '$location', '$cookies', '$state', 'PagingService', 'CaretService', function ($scope, $resource, $location, $cookies, $state, PagingService, CaretService)
+    angular.module('playchat').controller('ChatbotListController', ['$scope', '$resource', '$location', '$cookies', '$state', 'PagingService', 'CaretService', 'LanguageService', function ($scope, $resource, $location, $cookies, $state, PagingService, CaretService, LanguageService)
     {
         var ChatBotService = $resource('/api/chatbots/:botId', { botId: '@botId', botDisplayId: '@botDisplayId' }, { update: { method: 'PUT' } });
         var ChatBotRenameService = $resource('/api/chatbots/:botId/rename', { botId: '@botId' }, { update: { method: 'PUT' } });
@@ -133,7 +133,7 @@
             }
             else if(name == 'Delete')
             {
-                if(confirm('정말 삭제하시겠습니까?'))
+                if(confirm($scope.lan('Are you sure you want to delete this item?')))
                 {
                     ChatBotService.delete({ botId : $scope.selectedBot._id, botDisplayId: $scope.selectedBot.id }, function()
                     {
@@ -207,14 +207,14 @@
         {
             if(!$scope.share.read && !$scope.share.write)
             {
-                alert('Please select at least one permission.');
+                alert($scope.lan('Please select at least one permission.'));
                 return false;
             }
 
             ChatBotShareService.save({ botId: $scope.selectedBot._id, data: JSON.parse(angular.toJson($scope.share)) }, function(result)
             {
                 $scope.openShareModal = false;
-                alert('Shared ' + $scope.selectedBot.name + ' to ' + $scope.share.email);
+                alert($scope.lan('Shared ') + $scope.selectedBot.name + ' to ' + $scope.share.email);
             },
             function(err)
             {
@@ -234,5 +234,9 @@
         };
 
         $scope.getList();
+
+
+
+        $scope.lan = LanguageService;
     }]);
 })();

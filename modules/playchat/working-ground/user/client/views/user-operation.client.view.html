@@ -1,9 +1,9 @@
 <!--<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css">-->
 
 <div ng-controller="OperationUserController">
-    <h2 class="operation-title">User</h2>
+    <h2 class="operation-title">{{lan('User') }}</h2>
     <div class="operation-advance-search">
-        <span>Advanced Search</span>
+        <span>{{lan('Advanced Search') }}</span>
         <div class="slide" ng-class="isAdvancedMode ? 'on' : ''" style="display: inline-block;">
             <input type="checkbox" id="advancedMode" ng-model="isAdvancedMode" />
             <label for="advancedMode"></label>
@@ -11,7 +11,7 @@
     </div>
     <div class="operation-search-area" ng-show="!isAdvancedMode">
         <input type="text" placeholder="Search" class="input_type09" ng-keydown="searchKeyDown($event);" id="operationSearchInput">
-        <button type="button" class="btn04" style="color: white;" ng-click="search($event);">Search</button>
+        <button type="button" class="btn04" style="color: white;" ng-click="search($event);">{{lan('Search') }}</button>
     </div>
     <div class="operation-search-area advanced" ng-show="isAdvancedMode">
         <table>
@@ -23,24 +23,24 @@
             </colgroup>
             <tbody>
                 <tr>
-                    <th>Channel</th>
+                    <th>{{lan('Channel') }}</th>
                     <td>
                         <input type="text" class="input_type09" ng-model="searchValues.channel">
                     </td>
-                    <th>User Key</th>
+                    <th>{{lan('User Key') }}</th>
                     <td>
                         <input type="text" class="input_type09" ng-model="searchValues.userKey">
                     </td>
                 </tr>
                 <tr>
-                    <th>Last update</th>
+                    <th>{{lan('Last update') }}</th>
                     <td>
                         <div id="lastUpdateRange" class="pull-right range-input" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
                             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
                             <span></span> <b class="caret"></b>
                         </div>
                     </td>
-                    <th>Dialog Count</th>
+                    <th>{{lan('Dialog Count') }}</th>
                     <td>
                         <input type="number" class="input_type09" ng-model="searchValues.dialogCountStart">
                         <span> ~ </span>
@@ -48,22 +48,22 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>Created</th>
+                    <th>{{lan('Created') }}</th>
                     <td>
                         <div id="createdRange" class="pull-right range-input" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
                             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
                             <span></span> <b class="caret"></b>
                         </div>
                     </td>
-                    <th>Mobile</th>
+                    <th>{{lan('Mobile') }}</th>
                     <td>
                         <input type="number" class="input_type09" ng-model="searchValues.mobile">
                     </td>
                 </tr>
             </tbody>
         </table>
-        <button type="button" class="blue-button search" ng-click="search();">Search</button>
-        <button type="button" class="default-button clear" ng-click="clear();">Clear</button>
+        <button type="button" class="blue-button search" ng-click="search();">{{lan('Search') }}</button>
+        <button type="button" class="default-button clear" ng-click="clear();">{{lan('Clear') }}</button>
     </div>
     <div class="operation-content">
         <table class="tb02">
@@ -78,18 +78,18 @@
             </colgroup>
             <thead>
                 <tr>
-                    <th>Channel</th>
-                    <th>User Key</th>
-                    <th>Mobile</th>
-                    <th>Last Update</th>
-                    <th>Created</th>
-                    <th>Dialog Count</th>
-                    <th>Dialog</th>
+                    <th>{{lan('Channel') }}</th>
+                    <th>{{lan('User Key') }}</th>
+                    <th>{{lan('Mobile') }}</th>
+                    <th>{{lan('Last Update') }}</th>
+                    <th>{{lan('Created') }}</th>
+                    <th>{{lan('Dialog Count') }}</th>
+                    <th>{{lan('Dialog') }}</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-if="entitys.length == 0">
-                    <td colspan="6">empty</td>
+                    <td colspan="6">{{lan('empty') }}</td>
                 </tr>
                 <tr ng-repeat="item in list">
                     <td>{{ item.channel }}</td>
@@ -99,7 +99,7 @@
                     <td>{{ dateFormat(item.created) }}</td>
                     <td>{{ item.dialogCount }}</td>
                     <td>
-                        <a href="/playchat/operation/user/detail?_id={{ item._id }}" class="operation-user-dialog-button">Dialog</a>
+                        <a href="/playchat/operation/user/detail?_id={{ item._id }}" class="operation-user-dialog-button">{{lan('Dialog') }}</a>
                     </td>
                     <!--<td>-->
                     <!--<div class="slide on">-->

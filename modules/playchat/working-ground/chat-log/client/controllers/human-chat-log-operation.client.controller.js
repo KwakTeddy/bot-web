@@ -1,4 +1,4 @@
-angular.module('playchat').controller('HumanChatLogController', ['$window', '$scope', '$resource', '$cookies', '$location', 'DateService', 'PagingService', function ($window, $scope, $resource, $cookies, $location, DateService, PagingService)
+angular.module('playchat').controller('HumanChatLogController', ['$window', '$scope', '$resource', '$cookies', '$location', 'DateService', 'PagingService','LanguageService', function ($window, $scope, $resource, $cookies, $location, DateService, PagingService, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName('Operation > Human Chat Log');
 
@@ -77,4 +77,6 @@ angular.module('playchat').controller('HumanChatLogController', ['$window', '$sc
     $scope.getList();
 
     $scope.$parent.loaded('working-ground');
+
+    $scope.lan=LanguageService;
 }]);

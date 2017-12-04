@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playchat').controller('IntentManagementAddController', ['$scope', '$resource', '$cookies', '$location', function ($scope, $resource, $cookies, $location)
+angular.module('playchat').controller('IntentManagementAddController', ['$scope', '$resource', '$cookies', '$location', 'LanguageService',function ($scope, $resource, $cookies, $location, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName('Management > Intent > Add', '/modules/playchat/gnb/client/imgs/intent.png');
 
@@ -97,7 +97,7 @@ angular.module('playchat').controller('IntentManagementAddController', ['$scope'
                 alert(err);
                 if(err.data.message == 'Duplicated intent name')
                 {
-                    alert(params.name + '은 중복된 이름 입니다.');
+                    alert(params.name + $scope.lan('is duplicated name.'));
                 }
             });
         }
@@ -111,7 +111,7 @@ angular.module('playchat').controller('IntentManagementAddController', ['$scope'
             {
                 if(err.data.message == 'Duplicated intent name')
                 {
-                    alert(params.name + '은 중복된 이름 입니다.');
+                    alert(params.name + $scope.lan('is duplicated name.'));
                 }
             });
         }
@@ -121,4 +121,5 @@ angular.module('playchat').controller('IntentManagementAddController', ['$scope'
     {
         $location.url('/playchat/management/intent');
     };
+    $scope.lan=LanguageService;
 }]);

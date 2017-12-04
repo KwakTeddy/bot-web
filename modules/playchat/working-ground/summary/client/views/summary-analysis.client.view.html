@@ -1,45 +1,45 @@
 <div ng-controller="SummaryAnalysisController">
     <div class="analysis-summary-row">
         <div class="analysis-summary-card">
-            <p>실시간 이용자</p>
+            <p>{{lan('Real Time Users') }}</p>
             <p class="analysis-summary-card-count">{{ data.liveUserCount }}</p>
         </div>
         <div class="analysis-summary-card">
-            <p>누적 대화량</p>
+            <p>{{lan('Cumulated number of Dialogs') }}</p>
             <p class="analysis-summary-card-count">{{ data.totalDialogCount }}</p>
         </div>
         <div class="analysis-summary-card">
-            <p>대화량(30일)</p>
+            <p>{{lan('Number of Dialogs(30days)') }}</p>
             <p class="analysis-summary-card-count">{{ data.periodDialogCount }}</p>
         </div>
         <div class="analysis-summary-card">
-            <p>누적 이용자</p>
+            <p>{{lan('Number of Cumulated Users') }}</p>
             <p class="analysis-summary-card-count">{{ data.totalUserCount }}</p>
         </div>
         <div class="analysis-summary-card">
-            <p>최근 30일 이용자</p>
+            <p>{{lan('Recent(30 days) Users.') }}</p>
             <p class="analysis-summary-card-count">{{ data.periodUserCount }}</p>
         </div>
     </div>
     <div class="analysis-summary-row">
         <div style="flex: 1;">
-            <div class="analysis-summary-title">일자별 대화량</div>
+            <div class="analysis-summary-title">{{lan('Number of daily Users') }}</div>
             <canvas id="dailyDialogUsage" width="400" height="200"></canvas>
         </div>
     </div>
     <div class="analysis-summary-row">
         <div style="flex: 1;">
-            <div class="analysis-summary-title">채널별 이용자 분포</div>
+            <div class="analysis-summary-title">{{lan('User distribution on channels') }}</div>
             <canvas id="botUserByChannel" width="300" height="250"></canvas>
         </div>
         <div style="flex: 1;">
-            <div class="analysis-summary-title">대화 성공률</div>
+            <div class="analysis-summary-title">{{lan('Rate of Successive Dialogs') }}</div>
             <canvas id="dialogSuccessRate" width="300" height="250"></canvas>
         </div>
     </div>
     <div class="analysis-summary-row">
         <div style="flex: 1; padding: 0 10px;">
-            <div class="analysis-summary-title">사용자 입력 TOP 10</div>
+            <div class="analysis-summary-title">{{lan('Top 10 Most Frequently Used Input') }}</div>
             <table class="tb02">
                 <colgroup>
                     <col style="width: 70%;">
@@ -47,8 +47,8 @@
                 </colgroup>
                 <thead>
                     <tr>
-                        <th>대화</th>
-                        <th>사용량</th>
+                        <th>{{lan('Dialog') }}</th>
+                        <th>{{lan('amount of usage') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -60,7 +60,7 @@
             </table>
         </div>
         <div style="flex: 1; padding: 0 10px;">
-            <div class="analysis-summary-title">대화 실패 TOP 10</div>
+            <div class="analysis-summary-title">{{lan('Top 10 Failed Dialog') }}</div>
             <table class="tb02">
                 <colgroup>
                     <col style="width: 70%;">
@@ -68,8 +68,8 @@
                 </colgroup>
                 <thead>
                 <tr>
-                    <th>대화</th>
-                    <th>사용량</th>
+                    <th>{{lan('Dialog') }}</th>
+                    <th>{{lan('amount of usage') }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -81,7 +81,7 @@
             </table>
         </div>
         <div style="flex: 1; padding: 0 10px;">
-            <div class="analysis-summary-title">시나리오 사용량 TOP 10</div>
+            <div class="analysis-summary-title">{{lan('Top 10 scenario usage') }}</div>
             <table class="tb02">
                 <colgroup>
                     <col style="width: 70%;">
@@ -89,8 +89,8 @@
                 </colgroup>
                 <thead>
                 <tr>
-                    <th>대화</th>
-                    <th>사용량</th>
+                    <th>{{lan('Dialog') }}</th>
+                    <th>{{lan('amount of usage') }}</th>
                 </tr>
                 </thead>
                 <tbody>

@@ -1,6 +1,6 @@
 "user strict"
 
-angular.module("playchat").controller("IntentAnalysisController", ['$scope', '$http', '$cookies', '$resource', 'DateRangePickerService', 'ExcelDownloadService', function ($scope, $http, $cookies, $resource, DateRangePickerService, ExcelDownloadService)
+angular.module("playchat").controller("IntentAnalysisController", ['$scope', '$http', '$cookies', '$resource', 'DateRangePickerService', 'ExcelDownloadService', 'LanguageService',function ($scope, $http, $cookies, $resource, DateRangePickerService, ExcelDownloadService, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName('Analysis > Intent');
 
@@ -98,4 +98,5 @@ angular.module("playchat").controller("IntentAnalysisController", ['$scope', '$h
 
     DateRangePickerService.init('#createdRange', $scope.date, $scope.getList);
     $scope.getList();
+    $scope.lan=LanguageService;
 }]);

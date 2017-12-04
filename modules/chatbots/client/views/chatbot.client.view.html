@@ -2,17 +2,17 @@
     <div class="tab">
         <ul class="tab-body">
             <li class="select_tab">
-                <a ng-click="moveTab($event, 'botContent');">My chatbot</a>
+                <a ng-click="moveTab($event, 'botContent');">{{ lan('My chatbot') }}</a>
             </li>
             <li>
-                <a ng-click="moveTab($event, 'sharedBotContent');">Shared chatbot</a>
+                <a ng-click="moveTab($event, 'sharedBotContent');">{{ lan('Shared chatbot') }}</a>
             </li>
         </ul>
     </div>
     <div id="botContent">
         <div class="chatbot-new" ng-click="moveToCreate();">
             <img src="/modules/chatbots/client/imgs/plus_white.png">
-            <a href="/playchat/chatbots/create">New chatbot</a>
+            <a href="/playchat/chatbots/create">{{ lan('New chatbot') }}</a>
         </div>
         <div class="chatbots">
             <div class="bot_unselect" ng-repeat="chatbot in list" ng-click="selectBot(chatbot);">
@@ -34,7 +34,7 @@
     <div id="sharedBotContent" style="display: none;">
         <div class="chatbot-new" ng-click="moveToCreate();">
             <img src="/modules/chatbots/client/imgs/plus_white.png">
-            <a href="/playchat/chatbots/create">New chatbot</a>
+            <a href="/playchat/chatbots/create">{{ lan('New chatbot') }}</a>
         </div>
         <div class="chatbots">
             <div class="bot_unselect" ng-repeat="chatbot in sharedList" ng-click="selectBot(chatbot);">
@@ -50,10 +50,10 @@
     </div>
 
     <ul class="chatbot-menu" style="display: none;">
-        <li class="chatbot-menu-item" ng-click="executeMenu('Rename');"><a>Rename</a></li>
-        <li class="chatbot-menu-item" ng-click="executeMenu('Share');"><a>Share</a></li>
-        <li class="chatbot-menu-item" ng-click="executeMenu('Duplicate');"><a>Duplicate</a></li>
-        <li class="chatbot-menu-item" ng-click="executeMenu('Delete');"><a>Delete</a></li>
+        <li class="chatbot-menu-item" ng-click="executeMenu('Rename');"><a>{{ lan('Rename') }}</a></li>
+        <li class="chatbot-menu-item" ng-click="executeMenu('Share');"><a>{{ lan('Share') }}</a></li>
+        <li class="chatbot-menu-item" ng-click="executeMenu('Duplicate');"><a>{{ lan('Duplicate') }}</a></li>
+        <li class="chatbot-menu-item" ng-click="executeMenu('Delete');"><a>{{ lan('Delete') }}</a></li>
     </ul>
 
     <div class="window_overlay" ng-show="openShareModal">
@@ -64,43 +64,43 @@
 					<img src="/modules/chatbots/client/imgs/share.png">
 				</span>
                     <div class="window_title">
-                        <h1>Shared chatbot</h1>
+                        <h1>{{ lan('Shared chatbot')}}</h1>
                     </div>
                 </div>
                 <div class="window_main_col">
                     <div class="card_detail_item">
                         <ul class="list mt20">
-                            <li class="card_detail_item_header">Chatbot</li>
+                            <li class="card_detail_item_header">{{ lan('Chatbot') }}</li>
                         </ul>
                         <ul class="list mt20">
                             <li class="card_detail_item_content1">{{ selectedBot.id }}</li>
                         </ul>
                         <ul class="list clear">
-                            <li class="card_detail_item_header">Share</li>
+                            <li class="card_detail_item_header">{{ lan('Share') }}</li>
                         </ul>
                         <ul class="list2 mt10">
-                            <li class="ml7">Member ID(Email) :</li>
-                            <li class="ml8 mt23">Authorization :</li>
+                            <li class="ml7">{{ lan('Member ID(Email) :') }}</li>
+                            <li class="ml8 mt23">{{ lan('Authorization :') }}</li>
                         </ul>
                         <ul class="list4 mt4">
                             <li><input type="text" class="input_pop" placeholder="username@moneybrain.ai" ng-model="share.email" ng-required="true"></li>
                             <li class="ml10 mt10">
                                 <input id="checkBox1" type="checkbox" value="Read" class="styled-checkbox" ng-model="share.read">
-                                <label for="checkBox1" class="label">Read</label>
+                                <label for="checkBox1" class="label">{{ lan('Read') }}</label>
                                 <input id="checkBox2" type="checkbox" value="Edit" class="styled-checkbox" ng-model="share.edit">
-                                <label for="checkBox2" class="label">Write</label>
+                                <label for="checkBox2" class="label">{{ lan('Write') }}</label>
                             </li>
                         </ul>
                     </div>
                 </div>
                 <div class="list2 mt20 clear">
                     <li class="card_detail_item_content4">
-                        Flow chatbots are tree-based. The user is driven down a specific path, a path previously defined by the chatbot's developer.
+                        {{ lan("Flow chatbots are tree-based. The user is driven down a specific path, a path previously defined by the chatbot's developer.") }}
                     </li>
                 </div>
                 <div class="popbtnarea">
-                    <button type="button" class="default-button" ng-click="closeShareModal();">Cancel</button>
-                    <button class="blue-button" style="margin-left: 20px;">Share</button>
+                    <button type="button" class="default-button" ng-click="closeShareModal();">{{ lan('Cancel') }}</button>
+                    <button class="blue-button" style="margin-left: 20px;">{{ lan('Share') }}</button>
                 </div>
             </form>
         </div>

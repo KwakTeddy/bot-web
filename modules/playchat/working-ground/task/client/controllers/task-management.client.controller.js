@@ -2,7 +2,7 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat').controller('TaskManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', '$element', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService', function ($window, $scope, $resource, $cookies, $location, $element, FileUploader, ModalService)
+angular.module('playchat').controller('TaskManagementController', ['$window', '$scope', '$resource', '$cookies', '$location', '$element', 'FileUploader', 'ModalService', 'TabService', 'FormService', 'PagingService', 'LanguageService',function ($window, $scope, $resource, $cookies, $location, $element, FileUploader, ModalService, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName('Management > Task', '/modules/playchat/gnb/client/imgs/task.png');
 
@@ -154,7 +154,7 @@ angular.module('playchat').controller('TaskManagementController', ['$window', '$
 
         $scope.delete = function(item)
         {
-            if(confirm('정말 삭제하시겠습니까'))
+            if(confirm($scope.lan('Are you sure you want to delete this item?')))
             {
                 var params = {};
                 params.botId = chatbot._id;
@@ -208,4 +208,5 @@ angular.module('playchat').controller('TaskManagementController', ['$window', '$
         // initialize
         $scope.getList();
     })();
+    $scope.lan=LanguageService;
 }]);

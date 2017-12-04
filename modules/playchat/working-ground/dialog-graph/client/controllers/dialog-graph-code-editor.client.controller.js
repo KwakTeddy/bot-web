@@ -1,6 +1,6 @@
 (function()
 {
-    angular.module('playchat').controller('DialogGraphCodeEditorController', ['$window', '$scope', '$resource', '$cookies', '$element', '$timeout', function ($window, $scope, $resource, $cookies, $element, $timeout)
+    angular.module('playchat').controller('DialogGraphCodeEditorController', ['$window', '$scope', '$resource', '$cookies', '$element', '$timeout','LanguageService', function ($window, $scope, $resource, $cookies, $element, $timeout, LanguageService)
     {
         var DialogGraphsService = $resource('/api/:botId/dialog-graphs/:fileName', { botId: '@botId', fileName: '@fileName' });
 
@@ -51,5 +51,7 @@
                 alert(err.data.message);
             });
         };
+
+        $scope.lan=LanguageService;
     }]);
 })();

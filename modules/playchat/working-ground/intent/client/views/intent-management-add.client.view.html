@@ -58,25 +58,25 @@
 </style>
 
 <div ng-controller="IntentManagementAddController">
-    <div class="channel-title">Intent edit</div>
+    <div class="channel-title">{{lan('Intent edit') }}</div>
     <div style="width: 90%; margin: 0 auto;">
         <form class="intent-management-add-form" ng-submit="save();">
             <div>
                 <label class="required">
-                    <span>Name</span>
+                    <span>{{lan('Name') }}</span>
                     <input type="text" ng-model="name" required="true">
                 </label>
             </div>
             <div>
                 <label>
-                    <span>Contents</span>
+                    <span>{{lan('Contents') }}</span>
                     <input type="text" ng-keydown="contentInputKeydown($event);">
-                    <button type="button" class="intent-management-add-button" ng-click="addIntentContentClick($event);">+ Add</button>
+                    <button type="button" class="intent-management-add-button" ng-click="addIntentContentClick($event);">{{lan('+ Add') }}</button>
                 </label>
             </div>
             <div>
                 <label class="required" style="width: 100%;">
-                    <span style="vertical-align: top;">List</span>
+                    <span style="vertical-align: top;">{{lan('List') }}</span>
                     <div style="display: inline-block; vertical-align: top; width: 90%;">
                         <table class="tb02" style="width: 100%;">
                             <colgroup>
@@ -85,7 +85,7 @@
                             </colgroup>
                             <thead>
                                 <tr>
-                                    <th>Contents</th>
+                                    <th>{{lan('Contents') }}</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -102,8 +102,8 @@
                 </label>
             </div>
             <div style="text-align: right; padding-right: 12px;">
-                <button class="blue-button">Save</button>
-                <button type="button" class="default-button" ng-click="cancel();">Cancel</button>
+                <button class="blue-button">{{lan('Save') }}</button>
+                <button type="button" class="default-button" ng-click="cancel();">{{lan('Cancel') }}</button>
             </div>
         </form>
     </div>

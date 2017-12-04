@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playchat').controller('DialogTrafficAnalysisController', ['$window', '$scope', '$resource', '$cookies', '$http', function ($window, $scope, $resource, $cookies, $http)
+angular.module('playchat').controller('DialogTrafficAnalysisController', ['$window', '$scope', '$resource', '$cookies', '$http','LanguageService', function ($window, $scope, $resource, $cookies, $http, LanguageService)
 {
     $scope.$parent.changeWorkingGroundName('Analysis > Dialog Traffic');
 
@@ -432,4 +432,5 @@ angular.module('playchat').controller('DialogTrafficAnalysisController', ['$wind
             console.log(err);
         });
     };
+    $scope.lan=LanguageService;
 }]);

@@ -2,7 +2,7 @@
 
 //플레이챗 전반적인 관리
 
-angular.module('playchat').controller('GnbController', ['$window', '$scope', '$location', '$cookies', '$resource', 'MenuService', function ($window, $scope, $location, $cookies, $resource, MenuService)
+angular.module('playchat').controller('GnbController', ['$window', '$scope', '$location', '$cookies', '$resource', 'MenuService','LanguageService', function ($window, $scope, $location, $cookies, $resource, MenuService, LanguageService)
 {
     var ChatbotService = $resource('/api/chatbots/:botId', { botId : '@botId'});
 
@@ -91,4 +91,7 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
 
         return '';
     };
+
+    $scope.lan=LanguageService;
+
 }]);

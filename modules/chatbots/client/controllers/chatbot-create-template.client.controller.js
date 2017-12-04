@@ -2,7 +2,7 @@
 {
     'use strict';
 
-    angular.module('playchat').controller('ChatbotCreateTemplateController', ['$scope', '$resource', '$stateParams', '$location', '$compile', '$cookies', function ($scope, $resource, $stateParams, $location, $compile, $cookies)
+    angular.module('playchat').controller('ChatbotCreateTemplateController', ['$scope', '$resource', '$stateParams', '$location', '$compile', '$cookies', 'LanguageService', function ($scope, $resource, $stateParams, $location, $compile, $cookies,LanguageService)
     {
         var ChatbotService = $resource('/api/chatbots');
         var ChatbotTemplatesService = $resource('/api/chatbots/templates/:templateId', { templateId: '@templateId' });
@@ -99,7 +99,7 @@
             {
                 if(!$scope.bot.id.match(/^[a-zA-Z]+/))
                 {
-                    return alert('아이디는 영문자 소문자로 시작해야합니다.');
+                    return alert($scope.lan('아이디는 영문자 소문자로 시작해야합니다.'));
                 }
 
                 ChatbotService.save({ id: $scope.bot.id, name: $scope.bot.name, language: $scope.bot.language, description: $scope.bot.description }, function()
@@ -181,6 +181,9 @@
             {
                 location.href = '/playchat/chatbots';
             };
+
+
+            $scope.lan=LanguageService;
         })();
     }]);
 })();
